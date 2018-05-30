@@ -44,16 +44,18 @@ function setWallabyConfig(name, overrides = {}) {
         global.IS_WALLABY = true;
         global.fetch = require('node-fetch');
 
+        // Activate JSDOM only if needed, it crashes production servers
+
         // Configure jsdom for react mount tests
-        const jsdom = require('jsdom');
-        const { JSDOM } = jsdom;
-        const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
-        global.document = document;
-        global.window = document.defaultView;
-        global.navigator = {
-          userAgent: 'node.js',
-          platform: 'Win32',
-        };
+        // const jsdom = require('jsdom');
+        // const { JSDOM } = jsdom;
+        // const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
+        // global.document = document;
+        // global.window = document.defaultView;
+        // global.navigator = {
+        //   userAgent: 'node.js',
+        //   platform: 'Win32',
+        // };
       },
       ...overrides,
     };

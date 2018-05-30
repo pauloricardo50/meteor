@@ -10,14 +10,14 @@ const DatePicker = Loadable({
   loader: () => import('./DatePicker'),
 });
 
-const styles = theme => ({
+// Make sure the underline shows
+const styles = {
   underline: {
     '&:before': {
       zIndex: 1,
-      color: 'red',
     },
   },
-});
+};
 
 class DateInput extends Component {
   constructor(props) {

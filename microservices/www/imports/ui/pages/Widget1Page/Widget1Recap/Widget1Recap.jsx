@@ -9,17 +9,22 @@ import Widget1LenderCount from './Widget1LenderCount';
 
 const Widget1Recap = ({ array, finma }) => (
   <div className="card1 widget1-recap">
-    <h2>
+    <h3>
       <T id="Widget1Recap.title" />
-    </h2>
-    <RecapSimple array={array} className="recap" />
-    <div className="card-bottom">
+    </h3>
+    <div className="recap-wrapper">
+      <RecapSimple array={array} className="recap" />
+    </div>
+    <div className="card-bottom no-responsive-typo-m">
       <Widget1Finma {...finma} />
       <Widget1LenderCount {...finma} />
     </div>
   </div>
 );
 
-Widget1Recap.propTypes = {};
+Widget1Recap.propTypes = {
+  array: PropTypes.array.isRequired,
+  finma: PropTypes.object.isRequired,
+};
 
 export default Widget1RecapContainer(Widget1Recap);

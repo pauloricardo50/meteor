@@ -24,6 +24,7 @@ body,
 html,
 #react-root {
   display: flex;
+  overflow: hidden; // Prevent double-scrollbars due to admin-layout
   flex: 1;
   flex-direction: column;
 }

@@ -9,9 +9,6 @@ const HomePageReviewsTitle = () => (
         <T id="HomePageReviewsTitle.title" />
       </h2>
     </b>
-    <h4 className="description">
-      <T id="HomePageReviewsTitle.description" />
-    </h4>
   </div>
 );
 

@@ -10,6 +10,14 @@
   width: 100%;
   min-height: 600px;
   padding: 32px;
+
+  line-height: 1.4em;
+}
+
+@media (max-width: $med) {
+  .www-footer {
+    padding: 16px;
+  }
 }
 
 .www-footer .waves {
@@ -23,9 +31,18 @@
   overflow: visible;
 }
 
-.www-footer h2,
+.www-footer h3,
 .www-footer p {
   color: white;
+}
+
+.www-footer h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.www-footer .cta {
+  margin-bottom: 16px;
 }
 
 .www-footer .www-footer-content {
@@ -71,7 +88,7 @@
   justify-content: space-between;
 }
 
-.www-footer .www-footer-links h3 {
+.www-footer .www-footer-links h4 {
   color: white;
 }
 
@@ -109,6 +126,8 @@
   margin-bottom: 0;
 
   text-align: center;
+
+  color: white;
 }
 
 .www-footer .social-links {

@@ -21,9 +21,9 @@ const HomePageHeader = ({ history }) => (
         </h1>
       </b>
       <span className="separator" />
-      <h3>
+      <h4>
         <T id="HomePageHeader.description" />
-      </h3>
+      </h4>
     </div>
     <TooltipProvider tooltipList={TOOLTIP_LISTS.WIDGET1}>
       <Widget1SingleInputForm
