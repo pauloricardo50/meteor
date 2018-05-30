@@ -1,4 +1,9 @@
-import { DEV_EMAIL, USER_EMAIL, USER_PASSWORD } from '../testHelpers';
+import {
+  DEV_EMAIL,
+  E2E_USER_EMAIL,
+  USER_PASSWORD,
+  getTestUserByRole,
+} from '../testHelpers';
 
 Cypress.Commands.add('eraseAndGenerateTestData', () =>
   cy.meteorLogoutAndLogin(DEV_EMAIL).then(window =>
@@ -83,29 +88,25 @@ Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
   cy.window().then(({ Meteor }) => {
     if (pageAuthentication === 'public') {
       cy.meteorLogout();
-    }
-    else {
-      cy.meteorLogoutAndLogin(`${pageAuthentication}-1@e-potek.ch`);
+    } else {
+      cy.meteorLogoutAndLogin(getTestUserByRole(pageAuthentication));
     }
   });
 });
 
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
-  (email = USER_EMAIL, password = USER_PASSWORD) => {
-    cy
-      .window()
-      .then(({ Meteor }) =>
-        new Cypress.Promise((resolve, reject) => {
-          Meteor.logout((err) => {
-            if (err) {
-              return reject(err);
-            }
+  (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
+    cy.window().then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        Meteor.logout((err) => {
+          if (err) {
+            return reject(err);
+          }
 
-            resolve();
-          })
-        })
-      );
+          resolve();
+        });
+      }));
 
     cy.get('.login-page').should('exist');
 
@@ -117,8 +118,7 @@ Cypress.Commands.add(
           password,
           loginError => (loginError ? reject(loginError) : resolve()),
         );
-      })
-    );
+      }));
 
     cy.window();
   },

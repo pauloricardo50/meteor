@@ -18,15 +18,15 @@ import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
-  STEP_2_LOANS_PER_USER,
-  STEP_1_LOANS_PER_USER,
   UNOWNED_LOANS_COUNT,
+  LOANS_PER_USER,
 } from './config';
 import { createFakeLoan } from './loans';
 import { createFakeTask, deleteUsersTasks } from './tasks';
-import { createFakeUsers, getFakeUsersIds } from './users';
+import { createFakeUsers, getFakeUsersIds, createUser } from './users';
 import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
+import { E2E_USER_EMAIL } from './constants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -73,6 +73,25 @@ const createFakeLoanFixture = ({
   createFakeOffer(loanId, userId);
 };
 
+// Create a test user used in app's e2e tests and all the fixtures it needs
+const createTestUserWithData = () => {
+  const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
+
+  const admins = getAdmins();
+
+  // Create step 3 loans with all types of auction statuses for the app's test user
+  Object.keys(AUCTION_STATUS).forEach((statusKey) => {
+    createFakeLoanFixture({
+      step: 3,
+      userId: testUserId,
+      adminId: admins[0]._id,
+      completeFiles: true,
+      auctionStatus: AUCTION_STATUS[statusKey],
+      twoBorrowers: true,
+    });
+  });
+};
+
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
@@ -84,33 +103,23 @@ Meteor.methods({
         currentUserEmail,
       );
 
-      newUsers.forEach((userId) => {
+      // for each regular fixture user, create a loan with a certain step
+      newUsers.forEach((userId, index) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
 
-        // 3 step loans with all type of auction
-        Object.keys(AUCTION_STATUS).forEach((statusKey) => {
-          createFakeLoanFixture({
-            step: 3,
-            userId,
-            adminId,
-            completeFiles: true,
-            auctionStatus: AUCTION_STATUS[statusKey],
-            twoBorrowers: true,
-          });
-        });
+        // based on index, always generate 1, 2 and 3 numbers
+        const loanStep = index % 3 + 1;
 
-        range(STEP_2_LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({ step: 2, userId, adminId });
-        });
-
-        range(STEP_1_LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({ step: 1, userId, adminId });
-        });
-
-        range(UNOWNED_LOANS_COUNT).forEach(() => {
-          createFakeLoan({});
+        range(LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({ step: loanStep, userId, adminId });
         });
       });
+
+      range(UNOWNED_LOANS_COUNT).forEach(() => {
+        createFakeLoan({});
+      });
+
+      createTestUserWithData();
     }
   },
 

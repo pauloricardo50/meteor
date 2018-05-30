@@ -1,14 +1,22 @@
 import capitalize from 'lodash/capitalize';
+import { ROLES } from '../api/users/userConstants';
+import { E2E_USER_EMAIL } from '../fixtures/constants';
 
 export const DEV_EMAIL = 'dev-1@e-potek.ch';
 export const ADMIN_EMAIL = 'admin-1@e-potek.ch';
-export const USER_EMAIL = 'user-1@e-potek.ch';
-export const USER_PASSWORD = '12345';
+export { USER_PASSWORD, E2E_USER_EMAIL } from '../fixtures/constants';
 
 export const route = (uri, options = {}) => ({
   uri,
   options,
 });
+
+export const getTestUserByRole = role =>
+  ({
+    [ROLES.USER]: E2E_USER_EMAIL,
+    [ROLES.ADMIN]: ADMIN_EMAIL,
+    [ROLES.DEV]: DEV_EMAIL,
+  }[role]);
 
 let testData;
 export const generateTestsFromPagesConfig = (pages, getTestData) => {

@@ -1,5 +1,5 @@
 import {
-  USER_EMAIL,
+  E2E_USER_EMAIL,
   route,
   generateTestsFromPagesConfig,
 } from '../../imports/core/cypress/testHelpers';
@@ -126,7 +126,7 @@ describe('App Pages', () => {
 
     cy
       .eraseAndGenerateTestData()
-      .getTestData(USER_EMAIL)
+      .getTestData(E2E_USER_EMAIL)
       .then((data) => {
         testData = data;
       });
