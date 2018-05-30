@@ -20,11 +20,11 @@ const Widget1SingleInput = ({
 }) => (
   <div className="widget1-single-input">
     <div className="box">
-      <h4>
-        <label htmlFor={name}>
-          <T id={`Widget1SingleInput.${name}`} />
-        </label>
-      </h4>
+      {/* <h4> */}
+      <label htmlFor={name}>
+        <T id={`Widget1SingleInput.${name}`} />
+      </label>
+      {/* </h4> */}
       <div className="box-content">
         <Widget1SingleInputInput
           value={value}

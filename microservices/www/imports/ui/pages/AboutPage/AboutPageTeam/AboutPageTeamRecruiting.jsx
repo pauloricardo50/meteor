@@ -7,12 +7,12 @@ const AboutPageTeamRecruiting = () => (
   <Link to="/careers" className="about-page-team-recruiting">
     <span className="about-page-team-member-image">+</span>
     <div className="about-page-team-member-info">
-      <h3>
-        <T id="AboutPageTeamRecruiting.title" />
-      </h3>
       <h4>
-        <T id="AboutPageTeamRecruiting.subtitle" />
+        <T id="AboutPageTeamRecruiting.title" />
       </h4>
+      <h5>
+        <T id="AboutPageTeamRecruiting.subtitle" />
+      </h5>
       <b className="hover-show">
         <T id="AboutPageTeamRecruiting.hoverText" />
       </b>

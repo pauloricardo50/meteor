@@ -1,22 +1,20 @@
-// @font-face {
-//   font-family: 'Eina04-Regular';
-//   src: url('/fonts/Eina04-Regular.ttf');
-// }
-// @font-face {
-//   font-family: 'Eina04-Bold';
-//   src: url('/fonts/Eina04-Bold.ttf');
-// }
+@font-face {
+  font-family: 'Eina04-Regular';
+
+  src: url('fonts/Eina04-Regular.ttf');
+}
+@font-face {
+  font-family: 'Eina04-Bold';
+
+  src: url('fonts/Eina04-Bold.ttf');
+}
 
 body {
-  color: $body-text;
+  letter-spacing: .048em; // 0.75px / 16px
 
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.5em;
-
-  // font-family: 'Eina04-Regular';
-  // letter-spacing: 0.75px;
+  font-family: 'Eina04-Regular';
+  font-size: $font-size-s;
+  line-height: 1.4em;
 }
 
 h1,
@@ -27,34 +25,23 @@ h5,
 h6 {
   margin: .67em 0;
 
-  color: $title-text;
+  letter-spacing: .048em; // 0.75px / 16px
 
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 400;
-  line-height: 1.1em;
-
-  // font-family: 'Eina04-Bold';
-  // letter-spacing: 0.046875em;
+  font-family: 'Eina04-Bold';
+  font-weight: normal;
+  line-height: 1.3em;
 }
 
 h1 {
   font-size: 2em;
-
-  &.display2 {
-    font-size: 3em;
-  }
-
-  &.display3 {
-    font-size: 5em;
-  }
 }
 
 h2 {
-  font-size: 1.625em;
+  font-size: 1.8em;
 }
 
 h3 {
-  font-size: 1.375em;
+  font-size: 1.6em;
 }
 
 h4 {
@@ -66,41 +53,29 @@ h5 {
 }
 
 h6 {
-  font-size: .75em;
+  font-size: .6em;
 }
 
 @media (min-width: $med) {
-  h1 {
-    font-size: 2.5em;
-
-    &.display2 {
-      font-size: 4em;
-    }
-
-    &.display2 {
-      font-size: 6em;
-    }
-  }
-
-  h2 {
-    font-size: 2em;
-  }
-
-  h3 {
-    font-size: 1.5em;
+  body {
+    font-size: $font-size-m;
   }
 }
 
 @media (min-width: $wide) {
-  h1 {
-    font-size: 3em;
+  body {
+    font-size: $font-size-l;
   }
+}
 
-  h2 {
-    font-size: 2.25em;
-  }
+.no-responsive-typo-s {
+  font-size: $font-size-s !important;
+}
 
-  h3 {
-    font-size: 1.75em;
-  }
+.no-responsive-typo-m {
+  font-size: $font-size-m !important;
+}
+
+.bold {
+  font-family: 'Eina04-Bold';
 }

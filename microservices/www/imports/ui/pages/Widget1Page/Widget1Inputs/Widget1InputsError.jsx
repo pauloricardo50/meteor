@@ -44,7 +44,7 @@ const Widget1InputsError = ({
   const messageId = getMessage(worstStatus, index, borrowStatus, incomeStatus);
 
   return (
-    <div className="card-bottom">
+    <div className="card-bottom no-responsive-typo-s">
       <StatusIcon status={worstStatus} className="icon" />
       <p className="message">
         <T id={messageId} />

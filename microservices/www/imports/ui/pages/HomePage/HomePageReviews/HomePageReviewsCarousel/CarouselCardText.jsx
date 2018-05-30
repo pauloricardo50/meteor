@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import DialogSimple from 'core/components/DialogSimple';
 
-const MAX_LENGTH = 160;
+const MAX_LENGTH = 120;
 
 const CarouselCardText = ({ name, title, text }) => {
   const showExtraTextInDialog = text.length > MAX_LENGTH;
@@ -11,7 +11,7 @@ const CarouselCardText = ({ name, title, text }) => {
   if (showExtraTextInDialog) {
     return (
       <p className="carousel-card-text">
-        {text.slice(0, MAX_LENGTH)}...{' '}
+        {text.slice(0, MAX_LENGTH)}...
         <DialogSimple
           label="Afficher plus"
           buttonProps={{ style: { marginTop: 16 }, raised: false }}

@@ -9,9 +9,9 @@ const WwwFooterLinks = () => (
   <div className="www-footer-links">
     <div className="links">
       <div className="list">
-        <h3>
+        <h4>
           <T id="WwwFooterLinks.info" />
-        </h3>
+        </h4>
         {infoLinks.map(link => (
           <Link key={link} to={`/${link}`}>
             <T id={`WwwFooterLinks.${link}`} />

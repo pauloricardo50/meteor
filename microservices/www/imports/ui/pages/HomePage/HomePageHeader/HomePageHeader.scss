@@ -12,7 +12,7 @@
 }
 
 .home-page header .text h1,
-.home-page header .text h3 {
+.home-page header .text h4 {
   color: white;
 }
 
@@ -44,11 +44,11 @@
 .home-page header .text h1 {
   max-width: 500px;
 }
-.home-page header .text h3 {
+.home-page header .text h4 {
   max-width: 500px;
 
-  font-weight: 300;
-  line-height: 1.5em;
+  // font-weight: 300;
+  // line-height: 1.5em;
 }
 
 .home-page header .widget1-single-input-form {

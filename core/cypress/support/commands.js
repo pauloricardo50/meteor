@@ -53,51 +53,29 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  let hasLoggedOut = false;
+  cy
+    .window()
+    .then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        if (!Meteor.userId()) {
+          return resolve(false);
+        }
 
-  cy.window().then(({ Meteor }) => {
-    if (Meteor.userId()) {
-      return new Cypress.Promise((resolve, reject) => {
         Meteor.logout((err) => {
           if (err) {
             return reject(err);
           }
 
-          hasLoggedOut = true;
-
-          return resolve();
+          resolve(true);
         });
-      });
-    }
-  });
-
-  // after the promise above (logout) finishes, wait
-  // until it gets to the login screen, if it actually logged out
-  cy.get('.login-page').should(($loginPage) => {
-    if (hasLoggedOut) {
-      expect($loginPage).to.have.length(1);
-    }
-  });
+      }))
+    .then(loggedOut =>
+      cy.get('.login-page').should(($loginPage) => {
+        if (loggedOut) {
+          expect($loginPage).to.have.length(1);
+        }
+      }));
 });
-
-Cypress.Commands.add(
-  'meteorLogoutAndLogin',
-  (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
-    cy
-      .meteorLogout()
-      .window()
-      .then(window =>
-        new Cypress.Promise((resolve, reject) => {
-          const { Meteor } = window;
-
-          return Meteor.loginWithPassword(
-            email,
-            password,
-            loginError => (loginError ? reject(loginError) : resolve(window)),
-          );
-        }));
-  },
-);
 
 Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
@@ -107,12 +85,44 @@ Cypress.Commands.add('routeShouldExist', (expectedPageUri) => {
 });
 
 Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
-  if (pageAuthentication === 'public') {
-    cy.meteorLogout();
-  } else {
-    cy.meteorLogoutAndLogin(getTestUserByRole(pageAuthentication));
-  }
+  cy.window().then(({ Meteor }) => {
+    if (pageAuthentication === 'public') {
+      cy.meteorLogout();
+    } else {
+      cy.meteorLogoutAndLogin(getTestUserByRole(pageAuthentication));
+    }
+  });
 });
+
+Cypress.Commands.add(
+  'meteorLogoutAndLogin',
+  (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
+    cy.window().then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        Meteor.logout((err) => {
+          if (err) {
+            return reject(err);
+          }
+
+          resolve();
+        });
+      }));
+
+    cy.get('.login-page').should('exist');
+
+    cy.window().then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        console.log(email, password);
+        Meteor.loginWithPassword(
+          email,
+          password,
+          loginError => (loginError ? reject(loginError) : resolve()),
+        );
+      }));
+
+    cy.window();
+  },
+);
 
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
