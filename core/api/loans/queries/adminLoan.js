@@ -137,4 +137,5 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
       ),
     },
   },
+  userFormsDisabled: 1,
 });

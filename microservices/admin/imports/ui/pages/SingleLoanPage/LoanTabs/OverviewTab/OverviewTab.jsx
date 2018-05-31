@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 import Recap from 'core/components/Recap';
+import Toggle from 'core/components/Material/Toggle';
 import renderObject from 'core/utils/renderObject';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
 import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
+import { loanUpdate } from 'core/api/methods';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import LoanTasksTable from '../LoanTasksTable';
 import LoanValidation from './LoanValidation';
+import DisableUserFormsToggle from '../../../../../ui/components/DisableUserFormsToggle';
 
 export default class OverviewTab extends React.Component {
   constructor(props) {
@@ -28,12 +31,15 @@ export default class OverviewTab extends React.Component {
     return (
       <div className="mask1 overview-tab">
         <div className="admin-section">
-          <AdminNote
-            loanId={_id}
-            adminNoteText={adminNote}
-            className="admin-note"
-          />
-          <ImpersonateLink user={user} />
+          <DisableUserFormsToggle loan={loan} />
+          <div className="admin-note-wrapper">
+            <AdminNote
+              loanId={_id}
+              adminNoteText={adminNote}
+              className="admin-note"
+            />
+            <ImpersonateLink user={user} />
+          </div>
         </div>
 
         <StepStatus {...this.props} serverTime={serverTime} />

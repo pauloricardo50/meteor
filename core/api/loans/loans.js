@@ -68,6 +68,7 @@ const LoanSchema = new SimpleSchema({
     regEx: SimpleSchema.RegEx.Email,
   },
   'contacts.$.phone': String,
+  userFormsDisabled: { type: Boolean, defaultValue: false },
 });
 
 // Finally, attach schema to the Mongo collection and export
