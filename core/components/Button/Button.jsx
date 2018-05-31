@@ -32,7 +32,7 @@ const Button = (props) => {
       variant={
         props.variant || (props.raised ? 'raised' : undefined) || undefined
       }
-      component={props.component || (props.link ? Link : null)}
+      component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
     >
       {props.icon}
