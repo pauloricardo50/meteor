@@ -40,9 +40,9 @@ const MainSideNavListItem = ({
       })}
     >
       <Icon type={icon} size={32} />
-      <h6 className="label">
+      <h5 className="label">
         {label || <T id={`collections.${collection}`} noTooltips />}
-      </h6>
+      </h5>
     </div>
   </ListItem>
 );
