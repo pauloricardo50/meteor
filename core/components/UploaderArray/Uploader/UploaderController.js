@@ -18,8 +18,12 @@ const filesExistAndAreValid = files =>
   files.length > 0 &&
   files.every(file => file.status === FILE_STATUS.VALID);
 
-const propHasChanged = (oldProp, newProp) =>
-  oldProp && newProp && oldProp.length !== newProp.length;
+export const propHasChanged = (oldProp, newProp) =>
+  !!(
+    (!oldProp && newProp) ||
+    (oldProp && !newProp) ||
+    (oldProp && newProp && oldProp.length !== newProp.length)
+  );
 
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
