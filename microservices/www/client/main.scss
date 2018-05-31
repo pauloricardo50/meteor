@@ -33,3 +33,23 @@ html,
   flex: 1 0 auto;
   flex-direction: column;
 }
+
+@media (min-width: $med) {
+  body {
+    font-size: $font-size-m;
+  }
+}
+
+@media (min-width: $wide) {
+  body {
+    font-size: $font-size-l;
+  }
+}
+
+.no-responsive-typo-s {
+  font-size: $font-size-s !important;
+}
+
+.no-responsive-typo-m {
+  font-size: $font-size-m !important;
+}
