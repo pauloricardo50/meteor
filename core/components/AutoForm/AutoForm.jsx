@@ -15,13 +15,6 @@ import ArrayInput from './ArrayInput';
 import AutoFormContainer from './AutoFormContainer';
 
 const styles = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   subtitle: {
     marginTop: 40,
   },
@@ -171,7 +164,7 @@ const mapInputs = (singleInput, index, parentProps) => {
 
 const AutoForm = props => (
   <div className={props.formClasses}>
-    <div style={styles.form} onSubmit={e => e.preventDefault()}>
+    <div onSubmit={e => e.preventDefault()}>
       {props.inputs.map((input, i) => mapInputs(input, i, props))}
     </div>
   </div>

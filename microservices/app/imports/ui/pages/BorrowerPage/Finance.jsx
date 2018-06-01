@@ -12,6 +12,7 @@ import T from 'core/components/Translation';
 import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
 import { borrowerUpdate } from 'core/api';
+import { BORROWERS_COLLECTION } from 'core/api/constants';
 
 const styles = {
   div: {
@@ -39,7 +40,7 @@ const handleCheck = (_, isInputChecked, id) => {
 const handleClick = (event, id) => {
   const object = { 'logic.hasValidatedFinances': true };
   borrowerUpdate
-    .run({ object, borrowerId: id })
+    .run({ object, id })
     .then(() => track('validated finances', {}));
 };
 
@@ -51,10 +52,10 @@ const BorrowerFinancePage = (props) => {
     borrowers,
     loan,
   } = props;
-  const borrower = borrowers.find(b => b._id === borrowerId);
+  const borrowerLogic = borrowers.find(b => b._id === borrowerId);
+
   return (
-    <section className="borrower-finance-page animated fadeIn" key={borrowerId}>
-      <hr />
+    <section className="borrower-finance-page animated fadeIn flex-justify--center">
       <h2 className="text-center">
         <T id="Finance.title" />
       </h2>
@@ -65,54 +66,59 @@ const BorrowerFinancePage = (props) => {
         </p>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          margin: '0 20px',
-        }}
-      >
-        <h3>
-          <T
-            id="Finance.recapTitle"
-            values={{ currency: financeConstants.CURRENCY }}
-          />
-        </h3>
-        <Recap arrayName="borrower" borrower={borrower} />
-      </div>
+      <div className="borrower-finance__wrapper flex--helper flex-justify--center">
+        {borrowers.map((borrower, borrowerIndex) => (
+          <div className="borrower-finance__item col--50" key={borrowerIndex}>
+            <div className="flex--helper flex--column flex--center m--20">
+              <h3>
+                <T
+                  id="Finance.recapTitle"
+                  values={{ currency: financeConstants.CURRENCY }}
+                />
+              </h3>
+              <Recap arrayName="borrower" borrower={borrower} />
+            </div>
 
-      <div className="description">
-        <p>
-          <T id="Forms.mandatory" />
-        </p>
-      </div>
+            <div className="description">
+              <p>
+                <T id="Forms.mandatory" />
+              </p>
+            </div>
 
-      <AutoForm
-        inputs={getBorrowerFinanceArray({ ...props, borrowerId })}
-        borrowers={borrowers}
-        docId={borrowerId}
-        collection="borrowers"
-        doc={borrower}
-        disabled={disableForms({ loan }) || borrower.logic.hasValidatedFinances}
-      />
+            <AutoForm
+              formClasses="user-form user-form__finance"
+              inputs={getBorrowerFinanceArray({
+                ...props,
+                borrowerId: borrower._id,
+              })}
+              borrowers={borrowers}
+              docId={borrower._id}
+              collection={BORROWERS_COLLECTION}
+              doc={borrower}
+              disabled={
+                disableForms({ loan }) || borrower.logic.hasValidatedFinances
+              }
+            />
+          </div>
+        ))}
+      </div>
 
       <div className="conditions mask2 primary-border">
         <span>
           <Checkbox
             id="hasValidatedFinances"
-            value={borrower.logic.financeEthics}
+            value={borrowerLogic.logic.financeEthics}
             label="Les informations entrées ci-dessus sont exhaustives et correctes"
             style={styles.checkbox}
             onChange={(_, isChecked) => handleCheck(_, isChecked, borrowerId)}
-            disabled={borrower.logic.hasValidatedFinances}
+            disabled={borrowerLogic.logic.hasValidatedFinances}
           />
         </span>
         <LoadingButton
           label="Valider mes finances"
           handleClick={e => handleClick(e, borrowerId)}
-          disabled={!borrower.logic.financeEthics}
-          value={borrower.logic.hasValidatedFinances}
+          disabled={!borrowerLogic.logic.financeEthics}
+          value={borrowerLogic.logic.hasValidatedFinances}
         />
       </div>
     </section>

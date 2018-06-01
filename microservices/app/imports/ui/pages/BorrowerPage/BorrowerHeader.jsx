@@ -1,50 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 
 import Progress from './Progress';
 
-export const getLink = (tab, borrowerId, pathname) =>
-  `${pathname.split('borrowers/')[0]}borrowers/${borrowerId}/${tab}`;
-
-const BorrowerHeader = ({ borrowers, match, history }) => {
-  const { tab, borrowerId } = match.params;
-  const { pathname } = history.location;
-
-  return (
-    <header className="flex center">
-      {borrowers.map((b, i) => (
+const BorrowerHeader = ({ borrowers, match }) => (
+  <header className="borrower-header--fixed p-d--16">
+    <div className="borrower-header__row flex p-d--16">
+      {borrowers.map((borrower, borrowerIndex) => (
         <div
-          className={classNames({
-            'flex-col center borrower': true,
-            scale: b._id === borrowerId,
-          })}
-          key={b._id}
+          className="col--50 flex-col borrower-header__info flex--helper"
+          key={borrower._id}
         >
-          <Link to={getLink(tab, b._id, pathname)}>
-            <span
-              className={classNames({
-                'fa fa-user-circle-o fa-5x': true,
-                secondary: b._id !== borrowerId,
-              })}
-            />
-          </Link>
-          <h1 className="no-margin">
-            {b.firstName || (
-              <T id="BorrowerHeader.title" values={{ index: i + 1 }} />
-            )}
-          </h1>
-          <h3 className="secondary no-margin">
-            <Progress borrower={b} match={match} />
-          </h3>
+          <div className="flex--row flex--center flex--helper borrower">
+            <span className="fa fa-user-circle-o fa-5x" />
+            <div className="borrower-header__user flex--helper flex--column">
+              <h1 className="no-margin">
+                {borrower.firstName || (
+                  <T
+                    id="BorrowerHeader.title"
+                    values={{ index: borrowerIndex + 1 }}
+                  />
+                )}
+              </h1>
+              <div className="borrower-num">
+                {borrower.lastName || (
+                  <T
+                    id="BorrowerHeader.title"
+                    values={{ index: borrowerIndex + 1 }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <Progress borrower={borrower} match={match} />
         </div>
       ))}
-    </header>
-  );
-};
+    </div>
+  </header>
+);
 
 BorrowerHeader.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,

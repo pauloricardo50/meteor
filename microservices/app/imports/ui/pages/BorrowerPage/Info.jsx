@@ -9,28 +9,34 @@ import T from 'core/components/Translation';
 
 const Info = (props) => {
   const { borrowerId } = props.match.params;
-  const borrower = props.borrowers.find(b => b._id === borrowerId);
+  const { borrowers, loan } = props;
 
   return (
-    <section className="animated fadeIn borrower-page-info" key={borrowerId}>
-      <hr />
-      <h2 className="text-center">
-        <T id="Info.title" />
-      </h2>
-      <div className="description">
-        <p>
-          <T id="Forms.mandatory" />
-        </p>
-      </div>
+    <section className="animated borrower-page-info flex--helper flex-justify--center fadeIn">
+      {borrowers.map(borrower => (
+        <div className="borrower-page__wrapper col--50" key={borrower._id}>
+          <h2 className="">
+            <T id="Info.title" />
+          </h2>
+          <div className="description">
+            <p>
+              <T id="Forms.mandatory" />
+            </p>
+          </div>
 
-      <AutoForm
-        inputs={getBorrowerInfoArray({ ...props, borrowerId })}
-        formClasses="user-form"
-        docId={borrowerId}
-        collection="borrowers"
-        doc={borrower}
-        disabled={disableForms({ loan: props.loan })}
-      />
+          <AutoForm
+            inputs={getBorrowerInfoArray({
+              ...props,
+              borrowerId: borrower._id,
+            })}
+            formClasses="user-form user-form__info"
+            docId={borrower._id}
+            collection="borrowers"
+            doc={borrower}
+            disabled={disableForms({ loan })}
+          />
+        </div>
+      ))}
     </section>
   );
 };

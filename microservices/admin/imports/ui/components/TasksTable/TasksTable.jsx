@@ -182,7 +182,7 @@ class TasksTable extends Component {
         columnOptions={this.getColumnOptions({ showAssignee })}
         rows={this.setupRows({ data, showAssignee })}
         noIntl
-        className='tasks-table'
+        className="tasks-table"
       />
     );
   }

@@ -73,7 +73,7 @@ describe('getStepValues', () => {
     parameters = {
       ...data,
       stepNb: 1,
-      id: 'files',
+      id: 'property',
     };
   });
 
@@ -82,13 +82,20 @@ describe('getStepValues', () => {
     resetDatabase();
   });
 
-  it('Works for any item of a step', () => {
+  it('Works for any item of a step with an available next link', () => {
+    parameters.id = 'borrowers';
     const steps = getSteps(parameters);
 
-    expect(getStepValues(parameters).index).to.equal(2);
-    expect(getStepValues(parameters).length).to.equal(5);
-    expect(getStepValues(parameters).prevLink).to.equal(steps[0].items[1].link);
-    expect(getStepValues(parameters).nextLink).to.equal(steps[0].items[3].link);
+    expect(getStepValues(parameters).index).to.equal(0);
+    expect(getStepValues(parameters).nextLink).to.equal(steps[0].items[1].link);
+  });
+
+  it('Works for any item of a step with a prev link', () => {
+    parameters.id = 'property';
+    const steps = getSteps(parameters);
+
+    expect(getStepValues(parameters).index).to.equal(1);
+    expect(getStepValues(parameters).prevLink).to.equal(steps[0].items[0].link);
   });
 
   it('Works for the last item of a step', () => {
@@ -96,9 +103,8 @@ describe('getStepValues', () => {
 
     const steps = getSteps(parameters);
 
-    expect(getStepValues(parameters).index).to.equal(4);
-    expect(getStepValues(parameters).length).to.equal(5);
-    expect(getStepValues(parameters).prevLink).to.equal(steps[0].items[3].link);
+    expect(getStepValues(parameters).index).to.equal(2);
+    expect(getStepValues(parameters).prevLink).to.equal(steps[0].items[1].link);
     expect(getStepValues(parameters).nextLink).to.equal(steps[1].items[0].link);
   });
 });

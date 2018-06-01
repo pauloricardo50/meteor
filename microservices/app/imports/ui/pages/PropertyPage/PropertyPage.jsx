@@ -44,33 +44,38 @@ const PropertyPage = (props) => {
         </div>
 
         <UploaderArray
-          fileArray={loanDocuments(loan).auction}
+          documentArray={loanDocuments(loan).auction}
           doc={loan}
           collection={LOANS_COLLECTION}
           disabled={disableForms({ loan })}
         />
+
         <UploaderArray
-          fileArray={propertyDocuments(property, loan).auction}
+          documentArray={propertyDocuments(property, loan).auction}
           doc={property}
           collection={PROPERTIES_COLLECTION}
           disabled={disableForms({ loan })}
         />
 
-        <AutoForm
-          inputs={getPropertyLoanArray({ loan, borrowers })}
-          docId={loan._id}
-          collection={LOANS_COLLECTION}
-          doc={loan}
-          disabled={disableForms({ loan })}
-        />
+        <div className="flex--helper flex-justify--center">
+          <AutoForm
+            formClasses="user-form"
+            inputs={getPropertyLoanArray({ loan, borrowers })}
+            collection={LOANS_COLLECTION}
+            doc={loan}
+            disabled={disableForms({ loan })}
+          />
+        </div>
 
-        <AutoForm
-          inputs={getPropertyArray({ loan, borrowers, property })}
-          docId={property._id}
-          collection={PROPERTIES_COLLECTION}
-          doc={property}
-          disabled={disableForms({ loan })}
-        />
+        <div className="flex--helper flex-justify--center">
+          <AutoForm
+            formClasses="user-form"
+            inputs={getPropertyArray({ loan, borrowers, property })}
+            collection={PROPERTIES_COLLECTION}
+            doc={property}
+            disabled={disableForms({ loan })}
+          />
+        </div>
       </section>
     </ProcessPage>
   );

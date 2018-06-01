@@ -17,10 +17,9 @@ const styles = {
   },
 };
 
-const Files = ({ borrower, loan }) => (
+const Files = ({ borrowers, loan }) => (
   <section
     className="animated fadeIn borrower-page-files"
-    key={borrower._id}
     style={styles.section}
   >
     <hr />
@@ -33,17 +32,22 @@ const Files = ({ borrower, loan }) => (
         <T id="Files.description" />
       </p>
     </div>
+    <div className="borrower-files__wrapper flex--helper flex-justify--center">
+      {borrowers.map(borrower => (
+        <div className="borrower-files__item col--50" key={borrower._id}>
+          <h3 className="text-center">
+            <T id="Files.files1.title" />
+          </h3>
 
-    <h3 className="text-center">
-      <T id="Files.files1.title" />
-    </h3>
-
-    <UploaderArray
-      documentArray={borrowerDocuments(borrower).auction}
-      doc={borrower}
-      collection="borrowers"
-      disabled={disableForms({ loan })}
-    />
+          <UploaderArray
+            documentArray={borrowerDocuments(borrower).auction}
+            doc={borrower}
+            collection="borrowers"
+            disabled={disableForms({ loan })}
+          />
+        </div>
+      ))}
+    </div>
   </section>
 );
 

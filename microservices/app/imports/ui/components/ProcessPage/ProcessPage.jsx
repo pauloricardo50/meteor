@@ -7,6 +7,7 @@ import { injectIntl } from 'react-intl';
 import getSteps from 'core/arrays/steps';
 import withLoan from 'core/containers/withLoan';
 import ProcessPageBar from './ProcessPageBar';
+
 import StepperContainer from '../../containers/StepperContainer';
 
 const isLastItemOfStep = (index, length) => index >= length - 1;
@@ -87,6 +88,7 @@ class ProcessPage extends Component {
     const { id } = this.props;
 
     this.setBarProps();
+
     return (
       <section id={id} className="page-title">
         <ProcessPageBar {...this.barProps} className="top-bar" />

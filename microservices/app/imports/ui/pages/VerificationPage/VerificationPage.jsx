@@ -17,7 +17,7 @@ export default class VerificationPage extends Component {
   };
 
   render() {
-    const { loan } = this.props;
+    const { loan, borrowers } = this.props;
     let content = null;
     const verification = loan.logic.verification;
 

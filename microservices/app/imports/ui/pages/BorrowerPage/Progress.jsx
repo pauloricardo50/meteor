@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import T from 'core/components/Translation';
 import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
@@ -12,11 +13,21 @@ const Progress = ({ match, borrower }) => {
   switch (tab) {
   case 'personal': {
     const percent = personalInfoPercent(borrower);
+    const progressClasses = classNames('progress-block', {
+      success: percent >= 1,
+    });
+
     return (
-      <small className={percent >= 1 && 'success'}>
+      <div className={progressClasses}>
         <T id="general.progress" values={{ value: percent }} />{' '}
         {percent >= 1 && <span className="fa fa-check" />}
-      </small>
+        <div className="progress-bar">
+          <span
+            className="progress-bar__wrapper"
+            style={{ width: `${percent * 100}%` }}
+          />
+        </div>
+      </div>
     );
   }
   case 'finance':
@@ -37,7 +48,7 @@ const Progress = ({ match, borrower }) => {
     });
 
     return (
-      <small className={percent >= 1 && 'success'}>
+      <small className={percent >= 1 ? 'success' : undefined}>
         <T id="general.progress" values={{ value: percent }} />{' '}
         {percent >= 1 && <span className="fa fa-check" />}
       </small>

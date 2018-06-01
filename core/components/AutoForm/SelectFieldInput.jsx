@@ -10,10 +10,6 @@ const styles = {
   div: {
     position: 'relative',
   },
-  savingIcon: {
-    top: 0,
-    right: -50,
-  },
 };
 
 export default class SelectFieldInput extends Component {
@@ -77,7 +73,7 @@ export default class SelectFieldInput extends Component {
     const renderedOptions = this.mapOptions();
 
     return (
-      <div style={{ ...styles.div, ...style }}>
+      <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <Select
           id={id}
           label={label}

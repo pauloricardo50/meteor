@@ -135,7 +135,7 @@ export default class ProcessPageBar extends Component {
 
     return (
       <div className={this.props.className}>
-        <h3 className="title fixed-size bold secondary">
+        <h3 className="title fixed-size bold">
           <T id={`steps.${this.props.currentStep.id}.title`} />
         </h3>
         {showButtons && this.renderButtons()}

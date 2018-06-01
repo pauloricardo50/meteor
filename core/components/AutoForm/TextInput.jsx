@@ -19,10 +19,6 @@ const styles = {
     left: -40,
     padding: 10,
   },
-  savingIcon: {
-    top: 0,
-    right: -50,
-  },
   infoStyle: {
     color: colors.primary,
     borderColor: colors.primary,
@@ -150,7 +146,7 @@ class TextInput extends Component {
     }
 
     return (
-      <div style={{ ...styles.div, ...style }}>
+      <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <MyTextInput
           {...otherProps}
           label={label}

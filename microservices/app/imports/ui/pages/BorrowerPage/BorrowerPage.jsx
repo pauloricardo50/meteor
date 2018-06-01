@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import ProcessPage from '/imports/ui/components/ProcessPage';
@@ -9,6 +8,8 @@ import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
+
+import Tabs from './Tabs';
 
 export default class BorrowerPage extends Component {
   constructor(props) {
@@ -43,9 +44,12 @@ export default class BorrowerPage extends Component {
   }
 
   render() {
+    const { loan, borrowers, property } = this.props;
+
     return (
-      <ProcessPage {...this.props} stepNb={1} id={this.state.tab}>
-        <section className="mask1 borrower-page">
+      <ProcessPage {...this.props} stepNb={1} id="borrowers">
+        <section className="mask1 borrower-page p-t--117">
+          <Tabs loan={loan} borrowers={borrowers} />
           <BorrowerHeader {...this.props} />
 
           {this.getContent()}

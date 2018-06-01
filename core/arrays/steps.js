@@ -28,37 +28,10 @@ const getSteps = (props) => {
       nb: 1,
       items: [
         {
-          id: 'personal',
+          id: 'borrowers',
           link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/personal`,
+          // TODO: Use percent of info, finance and documents
           percent: () => personalInfoPercent(borrowers),
-          isDone() {
-            return this.percent() >= 1;
-          },
-        },
-        {
-          id: 'finance',
-          link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/finance`,
-
-          isDone: () =>
-            borrowers.reduce(
-              (res, b) => res && b.logic.hasValidatedFinances,
-              true,
-            ),
-          percent: () =>
-            borrowers.reduce(
-              (res, b) => (b.logic.hasValidatedFinances ? res + 1 : res),
-              0,
-            ) / borrowers.length,
-        },
-        {
-          id: 'files',
-          link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/files`,
-          percent: () =>
-            filesPercent({
-              doc: borrowers,
-              fileArrayFunc: borrowerDocuments,
-              step: FILE_STEPS.AUCTION,
-            }),
           isDone() {
             return this.percent() >= 1;
           },
@@ -78,6 +51,7 @@ const getSteps = (props) => {
             loan.logic.verification.requested &&
             !loan.logic.verification.validated,
           isDone: () => loan.logic.verification.validated === true,
+          tabs: true,
         },
       ],
     },
@@ -165,7 +139,7 @@ const getSteps = (props) => {
     },
   ];
 
-  setPreviousDone(steps, 0, 4); // Vérification e-Potek
+  setPreviousDone(steps, 0, 2); // Vérification e-Potek
   setPreviousDone(steps, 1, 1); // Enchères
   setPreviousDone(steps, 1, 2); // Stratégie
   setPreviousDone(steps, 1, 3); // Choix du prêteur

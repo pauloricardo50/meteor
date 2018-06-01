@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import {
   E2E_USER_EMAIL,
   route,
@@ -93,17 +94,17 @@ const pages = {
 
     'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
       route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
-        shouldRender: '#personal .borrower-page-info',
+        shouldRender: '.borrower-page-info',
       }),
 
     'Borrower Finance': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
       route(`/loans/${_id}/borrowers/${borrowers[0]._id}/finance`, {
-        shouldRender: '#finance .borrower-finance-page',
+        shouldRender: '.borrower-finance-page',
       }),
 
     'Borrower Files': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
       route(`/loans/${_id}/borrowers/${borrowers[0]._id}/files`, {
-        shouldRender: '#files .borrower-page-files .uploader',
+        shouldRender: '.borrower-page-files .uploader',
       }),
 
     'Not Found': route('/a-page-that-does-not-exist', {
