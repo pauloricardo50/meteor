@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 
-import DialogSimple from 'core/components/DialogSimple';
 import { AUCTION_STATUS } from 'core/api/constants';
+import DialogSimple from 'core/components/DialogSimple';
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import ClosingForm from '/imports/ui/components/ClosingForm';
-import ClosingStepsForm from '/imports/ui/components/ClosingStepsForm';
 import { cancelAuction, endAuction, loanDelete, downloadPDF } from 'core/api';
+import ClosingForm from '../../../../components/ClosingForm';
+import ClosingStepsForm from '../../../../components/ClosingStepsForm';
 
 const styles = {
   div: {
