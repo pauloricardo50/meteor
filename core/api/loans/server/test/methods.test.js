@@ -2,23 +2,19 @@ import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Factory } from 'meteor/dburles:factory';
 
 import {
   stubCollections,
   generateData,
   getMethodHandler,
 } from '../../../../utils/testHelpers';
-import { disableUserForms, enableUserForms } from '../../../../api/methods';
-
-import { Loans } from '../../loans';
 import LoanService from '../../LoanService';
 
 let adminId;
 let userId;
 let loanId;
 
-describe.only('Loan methods', () => {
+describe('Loan methods', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
@@ -29,7 +25,7 @@ describe.only('Loan methods', () => {
     userId = user._id;
     loanId = loan._id;
 
-    // make sure these actually exist
+    // make sure these variables actually exist
     [adminId, userId, loanId].forEach((variable) => {
       expect(variable).to.be.a('string');
     });
