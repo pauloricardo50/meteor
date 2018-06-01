@@ -1,21 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { loanUpdate } from 'core/api';
+import { disableUserForms, enableUserForms } from 'core/api';
 import { T } from 'core/components/Translation';
 import Toggle from 'core/components/Material/Toggle';
 
 const makeHandleForDisablingUserForms = ({
   _id: loanId,
   userFormsDisabled,
-}) => (event, isToggledOn) => {
-  loanUpdate.run({
-    object: {
-      userFormsDisabled: isToggledOn,
-    },
-    loanId,
-  });
-};
+}) => (event, isToggledOn) =>
+  (isToggledOn
+    ? disableUserForms.run({ loanId })
+    : enableUserForms.run({ loanId }));
 
 const DisableUserFormsToggle = ({ loan }) => {
   const { userFormsDisabled = false } = loan;

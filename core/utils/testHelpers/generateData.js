@@ -2,6 +2,7 @@ import { Factory } from 'meteor/dburles:factory';
 
 export const generateData = (overrides = {}) => {
   const user = Factory.create('user', { ...overrides.user });
+  const admin = Factory.create('admin', { ...overrides.admin });
   const borrower = Factory.create('borrower', {
     userId: user._id,
     ...overrides.borrowers,
@@ -24,6 +25,7 @@ export const generateData = (overrides = {}) => {
   return {
     loan,
     user,
+    admin,
     borrowers: [borrower],
     property,
     offers: [offer],

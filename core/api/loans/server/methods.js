@@ -15,6 +15,8 @@ import {
   loanChangeAdminNote,
   pushLoanValue,
   popLoanValue,
+  disableUserForms,
+  enableUserForms,
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { loan, userId }) => {
@@ -78,4 +80,14 @@ pushLoanValue.setHandler((context, { loanId, object }) => {
 popLoanValue.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.pushValue(object);
+});
+
+disableUserForms.setHandler((context, { loanId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.disableUserForms({ loanId });
+});
+
+enableUserForms.setHandler((context, { loanId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.enableUserForms({ loanId });
 });

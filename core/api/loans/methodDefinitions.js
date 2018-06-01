@@ -90,3 +90,17 @@ export const popLoanValue = new Method({
     object: Object,
   },
 });
+
+export const disableUserForms = new Method({
+  name: 'disableUserForms',
+  params: {
+    loanId: String,
+  },
+});
+
+export const enableUserForms = new Method({
+  name: 'enableUserForms',
+  params: {
+    loanId: String,
+  },
+});

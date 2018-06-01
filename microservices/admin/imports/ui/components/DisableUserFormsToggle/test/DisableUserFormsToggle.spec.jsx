@@ -7,7 +7,7 @@ import merge from 'lodash/merge';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { T } from 'core/components/Translation';
 import Toggle from 'core/components/Material/Toggle';
-import { loanUpdate } from 'core/api';
+import { disableUserForms, enableUserForms } from 'core/api';
 
 import DisableUserFormsToggle from '../DisableUserFormsToggle';
 
@@ -87,17 +87,16 @@ describe('DisableUserFormsToggle', () => {
       .find(Toggle)
       .prop('onToggle');
 
-    sinon.stub(loanUpdate, 'run');
+    sinon.stub(disableUserForms, 'run');
     onToggle(null, true);
 
-    expect(loanUpdate.run.getCall(0).args).to.deep.equal([
+    expect(disableUserForms.run.getCall(0).args).to.deep.equal([
       {
-        object: { userFormsDisabled: true },
         loanId: '1234',
       },
     ]);
 
-    loanUpdate.run.restore();
+    disableUserForms.run.restore();
   });
 
   it('enables the user forms when toggled off', () => {
@@ -111,16 +110,15 @@ describe('DisableUserFormsToggle', () => {
       .find(Toggle)
       .prop('onToggle');
 
-    sinon.stub(loanUpdate, 'run');
+    sinon.stub(enableUserForms, 'run');
     onToggle(null, false);
 
-    expect(loanUpdate.run.getCall(0).args).to.deep.equal([
+    expect(enableUserForms.run.getCall(0).args).to.deep.equal([
       {
-        object: { userFormsDisabled: false },
         loanId: '1234',
       },
     ]);
 
-    loanUpdate.run.restore();
+    enableUserForms.run.restore();
   });
 });

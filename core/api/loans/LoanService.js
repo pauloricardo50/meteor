@@ -82,6 +82,12 @@ class LoanServiceModel {
       },
     });
 
+  disableUserForms = ({ loanId }) =>
+    Loans.update(loanId, { $set: { userFormsDisabled: true } });
+
+  enableUserForms = ({ loanId }) =>
+    Loans.update(loanId, { $set: { userFormsDisabled: false } });
+
   static pushValue = ({ loanId, object }) =>
     Loans.update(loanId, { $push: object });
 
