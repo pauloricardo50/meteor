@@ -6,18 +6,18 @@
 @import '../imports/core/assets/css/external-styles/rc-slider.scss';
 
 // Layout
-@import '../imports/ui/layouts/AdminLayout/AdminLayout.scss';
+@import '../imports/client/layouts/AdminLayout/AdminLayout.scss';
 
 // Pages
-@import '../imports/ui/pages/SingleLoanPage/SingleLoanPage.scss';
-@import '../imports/ui/pages/SingleUserPage/SingleUserPage.scss';
-@import '../imports/ui/pages/SearchPage/SearchPage.scss';
-@import '../imports/ui/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
-@import '../imports/ui/pages/SinglePropertyPage/SinglePropertyPage.scss';
+@import '../imports/client/pages/SingleLoanPage/SingleLoanPage.scss';
+@import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
+@import '../imports/client/pages/SearchPage/SearchPage.scss';
+@import '../imports/client/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
+@import '../imports/client/pages/SinglePropertyPage/SinglePropertyPage.scss';
 
 // Components
-@import '../imports/ui/components/AdminNote/AdminNote.scss';
-@import '../imports/ui/components/MixpanelAnalytics/MixpanelAnalytics.scss';
+@import '../imports/client/components/AdminNote/AdminNote.scss';
+@import '../imports/client/components/MixpanelAnalytics/MixpanelAnalytics.scss';
 
 // Make sure everything expands properly to take the full size of the browser
 body,
