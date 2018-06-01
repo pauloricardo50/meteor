@@ -1,20 +1,12 @@
-.toggle-wrapper {
-  float: left;
-}
-
 .toggle {
   padding: 11px 0;
   display: inline-block;
 
   .toggle-label-top {
-    text-align: center;
     font-size: $font-size-s;
   }
 
   .toggle-content {
-    display: flex;
-    justify-content: center;
-
     .toggle-label-left,
     .toggle-label-right {
       font-size: $font-size-m;

@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import sinon from 'sinon';
 
 import Switch from '@material-ui/core/Switch';
 
-import { shallow, mount } from 'core/utils/testHelpers/enzyme';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 import Toggle from '../Toggle';
 
 const component = props => shallow(<Toggle {...props} />);
