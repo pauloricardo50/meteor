@@ -5,32 +5,32 @@ import NotFound from 'core/components/NotFound';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
-import AppStore from '../../ui/components/AppStore';
+import AppStore from '../../client/components/AppStore';
 
 import LoanContainer from 'core/containers/LoanContainer';
 
 import DevPage from 'core/components/DevPage';
-import DashboardPage from '../../ui/pages/DashboardPage';
-import BorrowerPage from '../../ui/pages/BorrowerPage';
-import PropertyPage from '../../ui/pages/PropertyPage';
-import AuctionPage from '../../ui/pages/AuctionPage';
-import StrategyPage from '../../ui/pages/StrategyPage';
-import OfferPickerPage from '../../ui/pages/OfferPickerPage';
-import StructurePage from '../../ui/pages/StructurePage';
-import VerificationPage from '../../ui/pages/VerificationPage';
-import ContractPage from '../../ui/pages/ContractPage';
-import ClosingPage from '../../ui/pages/ClosingPage';
-import FinancePage from '../../ui/pages/FinancePage';
-import FilesPage from '../../ui/pages/FilesPage';
-import EmailVerificationPage from '../../ui/pages/EmailVerificationPage';
-import PasswordResetPage from '../../ui/pages/PasswordResetPage';
+import DashboardPage from '../../client/pages/DashboardPage';
+import BorrowerPage from '../../client/pages/BorrowerPage';
+import PropertyPage from '../../client/pages/PropertyPage';
+import AuctionPage from '../../client/pages/AuctionPage';
+import StrategyPage from '../../client/pages/StrategyPage';
+import OfferPickerPage from '../../client/pages/OfferPickerPage';
+import StructurePage from '../../client/pages/StructurePage';
+import VerificationPage from '../../client/pages/VerificationPage';
+import ContractPage from '../../client/pages/ContractPage';
+import ClosingPage from '../../client/pages/ClosingPage';
+import FinancePage from '../../client/pages/FinancePage';
+import FilesPage from '../../client/pages/FilesPage';
+import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
+import PasswordResetPage from '../../client/pages/PasswordResetPage';
 
-import AppPage from '../../ui/pages/AppPage';
-import AccountPage from '../../ui/pages/AccountPage';
-import AddLoanPage from '../../ui/pages/AddLoanPage';
-import PasswordResetpage from '../../ui/pages/PasswordResetPage';
+import AppPage from '../../client/pages/AppPage';
+import AccountPage from '../../client/pages/AccountPage';
+import AddLoanPage from '../../client/pages/AddLoanPage';
+import PasswordResetpage from '../../client/pages/PasswordResetPage';
 
-import AppLayout from '../../ui/layouts/AppLayout';
+import AppLayout from '../../client/layouts/AppLayout';
 
 // Impersonation
 import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';

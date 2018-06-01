@@ -6,24 +6,24 @@
 @import '../imports/core/assets/css/external-styles/rc-slider.scss';
 
 // Layout
-@import '../imports/ui/layouts/AppLayout/AppLayout.scss';
+@import '../imports/client/layouts/AppLayout/AppLayout.scss';
 
 // Pages
-@import '../imports/ui/pages/ContractPage/ContractPage.scss';
-@import '../imports/ui/pages/DashboardPage/DashboardPage.scss';
-@import '../imports/ui/pages/StrategyPage/StrategyPage.scss';
-@import '../imports/ui/pages/BorrowerPage/BorrowerPage.scss';
-@import '../imports/ui/pages/PropertyPage/PropertyPage.scss';
-@import '../imports/ui/pages/VerificationPage/VerificationPage.scss';
-@import '../imports/ui/pages/StructurePage/StructurePage.scss';
-@import '../imports/ui/pages/AuctionPage/AuctionPage.scss';
-@import '../imports/ui/pages/ClosingPage/ClosingPage.scss';
+@import '../imports/client/pages/ContractPage/ContractPage.scss';
+@import '../imports/client/pages/DashboardPage/DashboardPage.scss';
+@import '../imports/client/pages/StrategyPage/StrategyPage.scss';
+@import '../imports/client/pages/BorrowerPage/BorrowerPage.scss';
+@import '../imports/client/pages/PropertyPage/PropertyPage.scss';
+@import '../imports/client/pages/VerificationPage/VerificationPage.scss';
+@import '../imports/client/pages/StructurePage/StructurePage.scss';
+@import '../imports/client/pages/AuctionPage/AuctionPage.scss';
+@import '../imports/client/pages/ClosingPage/ClosingPage.scss';
 
 // Components
-@import '../imports/ui/components/Page/Page.scss';
-@import '../imports/ui/components/SideNavUser/SideNavUser.scss';
-@import '../imports/ui/components/StrategyChoices/StrategyChoices.scss';
-@import '../imports/ui/components/SummaryComponent/SummaryComponent.scss';
+@import '../imports/client/components/Page/Page.scss';
+@import '../imports/client/components/SideNavUser/SideNavUser.scss';
+@import '../imports/client/components/StrategyChoices/StrategyChoices.scss';
+@import '../imports/client/components/SummaryComponent/SummaryComponent.scss';
 
 // Make sure everything expands properly to take the full size of the browser
 body,
