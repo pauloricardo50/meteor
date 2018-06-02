@@ -93,16 +93,6 @@ export const createEmailVerificationToken = (userId, email) => {
   return token;
 };
 
-/**
- * getMethodHandler - Returns the method's handler function from inside Meteor
- *
- * @param {string} name  The name of the method
- *
- * @return {function} the method's handler function
- */
-export const getMethodHandler = name =>
-  Meteor.default_server.method_handlers[name];
-
 stubCollections.restore = () => {
   StubCollections.restore();
 };

@@ -82,12 +82,14 @@ popLoanValue.setHandler((context, { loanId, object }) => {
   return LoanService.pushValue(object);
 });
 
-disableUserForms.setHandler((context, { loanId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+export const disableUserFormsHandler = ({ userId }, { loanId }) => {
+  SecurityService.checkUserIsAdmin(userId);
   return LoanService.disableUserForms({ loanId });
-});
+};
+disableUserForms.setHandler(disableUserFormsHandler);
 
-enableUserForms.setHandler((context, { loanId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+export const enableUserFormsHandler = ({ userId }, { loanId }) => {
+  SecurityService.checkUserIsAdmin(userId);
   return LoanService.enableUserForms({ loanId });
-});
+};
+enableUserForms.setHandler(enableUserFormsHandler);

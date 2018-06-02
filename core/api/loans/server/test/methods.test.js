@@ -3,36 +3,31 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import {
-  stubCollections,
-  generateData,
-  getMethodHandler,
-} from '../../../../utils/testHelpers';
+import { stubCollections, generateData } from '../../../../utils/testHelpers';
+import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
+import Loans from '../../loans';
 import LoanService from '../../LoanService';
 
-let adminId;
 let userId;
-let loanId;
+let adminId;
 
 describe('Loan methods', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
 
-    const { admin, user, loan } = generateData();
-
-    adminId = admin._id;
+    const { user, admin } = generateData();
     userId = user._id;
-    loanId = loan._id;
+    adminId = admin._id;
 
-    // make sure these variables actually exist
-    [adminId, userId, loanId].forEach((variable) => {
+    [userId, adminId].forEach((variable) => {
       expect(variable).to.be.a('string');
     });
   });
 
   afterEach(() => {
-    Meteor.userId.restore();
+    stubCollections.restore();
+    // Meteor.userId.restore();
   });
 
   describe('disableUserForms', () => {
@@ -44,23 +39,22 @@ describe('Loan methods', () => {
       LoanService.disableUserForms.restore();
     });
 
-    it('calls `LoanService.disableUserForms` when current user is admin', () => {
-      sinon.stub(Meteor, 'userId').callsFake(() => adminId);
+    it('calls `LoanService.disableUserForms` in order to disable the user forms', () => {
+      const loanId = 'aFakeLoanId';
 
-      const methodHandler = getMethodHandler('disableUserForms');
-      methodHandler.call({ userId: adminId }, { loanId });
-
+      expect(LoanService.disableUserForms.called).to.equal(false);
+      disableUserFormsHandler({ userId: adminId }, { loanId });
       expect(LoanService.disableUserForms.getCall(0).args).to.deep.equal([
         { loanId },
       ]);
     });
 
-    it('throws and does not call `LoanService.disableUserForms` for non-admin users', () => {
-      sinon.stub(Meteor, 'userId').callsFake(() => userId);
+    it(`throws and does not call \`LoanService.disableUserForms\`
+        when current user is a non-admin`, () => {
+      const loanId = 'aFakeLoanId';
 
-      const methodHandler = getMethodHandler('disableUserForms');
-
-      expect(() => methodHandler.call({ userId }, { loanId })).to.throw();
+      expect(LoanService.disableUserForms.called).to.equal(false);
+      expect(() => disableUserFormsHandler({ userId }, { loanId })).to.throw();
       expect(LoanService.disableUserForms.called).to.equal(false);
     });
   });
@@ -74,23 +68,22 @@ describe('Loan methods', () => {
       LoanService.enableUserForms.restore();
     });
 
-    it('calls `LoanService.enableUserForms` when current user is admin', () => {
-      sinon.stub(Meteor, 'userId').callsFake(() => adminId);
+    it('calls `LoanService.enableUserForms` in order to enable the user forms', () => {
+      const loanId = 'aFakeLoanId';
 
-      const methodHandler = getMethodHandler('enableUserForms');
-      methodHandler.call({ userId: adminId }, { loanId });
-
+      expect(LoanService.enableUserForms.called).to.equal(false);
+      enableUserFormsHandler({ userId: adminId }, { loanId });
       expect(LoanService.enableUserForms.getCall(0).args).to.deep.equal([
         { loanId },
       ]);
     });
 
-    it('throws and does not call `LoanService.enableUserForms` for non-admin users', () => {
-      sinon.stub(Meteor, 'userId').callsFake(() => userId);
+    it(`throws and does not call \`LoanService.enableUserForms\`
+        when current user is a non-admin`, () => {
+      const loanId = 'aFakeLoanId';
 
-      const methodHandler = getMethodHandler('enableUserForms');
-
-      expect(() => methodHandler.call({ userId }, { loanId })).to.throw();
+      expect(LoanService.enableUserForms.called).to.equal(false);
+      expect(() => enableUserFormsHandler({ userId }, { loanId })).to.throw();
       expect(LoanService.enableUserForms.called).to.equal(false);
     });
   });
