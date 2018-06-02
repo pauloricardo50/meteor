@@ -321,7 +321,10 @@
     }
 
     .about-page-office-info-wrapper {
+      display: flex;
+      align-items: flex-start;
       align-self: center;
+      flex-direction: column;
 
       max-width: 400px;
     }

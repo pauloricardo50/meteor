@@ -4,16 +4,23 @@
   "scripts": {
     "prestart": "cd ../.. && npm run lang -- www",
     "start": "meteor --settings settings-dev.json --port 3000",
-    "start-e2e": "meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 3015",
-    "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
+    "start-e2e":
+      "meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 3015",
+    "cypress-run-CI":
+      "../../node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
     "cypress-open": "../../node_modules/cypress/bin/cypress open",
-    "test": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
-    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
-    "test-e2e": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-open",
-    "test-e2e-CI": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
-    "ngrok": "cd ../../scripts/ && ./ngrok.sh",
+    "test":
+      "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 3005",
+    "test-CI":
+      "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "test-e2e":
+      "meteor start-server-and-test start-e2e http://localhost:3015 cypress-open",
+    "test-e2e-CI":
+      "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
+    "ngrok": "cd ../../scripts/ && ./ngrok.sh 3000",
     "debug": "meteor npm run start -- --inspect",
-    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
+    "visualize":
+      "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.47",
@@ -21,8 +28,8 @@
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/react-fontawesome": "0.0.20",
-    "@material-ui/core": "^1.0.0",
-    "@material-ui/icons": "^1.0.0",
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.1.0",
     "@storybook/react-komposer": "^2.0.4",
     "aws-sdk": "^2.244.1",
     "babel-polyfill": "^6.26.0",
@@ -91,9 +98,7 @@
   "postcss": {
     "plugins": {
       "autoprefixer": {
-        "browsers": [
-          "last 3 versions"
-        ]
+        "browsers": ["last 3 versions"]
       },
       "postcss-flexbox": {}
     }

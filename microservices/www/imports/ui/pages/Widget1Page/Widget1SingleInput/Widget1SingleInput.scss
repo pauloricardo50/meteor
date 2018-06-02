@@ -34,24 +34,22 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-}
 
-.widget1-single-input .widget1-input .currency {
-  padding-right: 8px;
+   > * {
+    align-items: center;
 
-  color: $primary;
+    color: $primary;
+  }
+
+  .widget1-input-currency {
+    color: $primary;
+  }
 }
 
 .widget1-single-input .widget1-input input {
-  flex: 1;
-
   width: 100%;
-  // Fix for Firefox and android
-  min-width: 0;
-  padding: 8px;
 
   color: $primary;
-  border: none;
 
   font-size: 32px;
 }

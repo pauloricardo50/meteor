@@ -30,6 +30,12 @@ const employees = [
     title: 'Conseiller en financement',
   },
   {
+    email: 'jeanluc@e-potek.ch',
+    src: '/img/team/jeanluc.jpg',
+    name: 'Jean-Luc Kringel',
+    title: 'Responsable Assurances',
+  },
+  {
     email: '',
     src: '/img/team/tarik.jpg',
     name: 'Tarik Lamkarfed',

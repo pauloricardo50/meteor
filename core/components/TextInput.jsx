@@ -5,13 +5,13 @@ import MaskedInput from 'react-text-mask';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import classnames from 'classnames';
 
 import { swissFrancMask, percentMask } from '../utils/textMasks';
 import { toNumber } from '../utils/conversionFunctions';
-import * as financeConstants from '../config/financeConstants';
 
 const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   if (simpleOnChange) {
@@ -24,7 +24,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
       onChangeHandler: event => onChange(id, toNumber(event.target.value)),
       showMask: true,
       mask: swissFrancMask,
-      placeholder: financeConstants.CURRENCY,
+      placeholder: 0,
       value,
     };
   case 'percent':
@@ -137,6 +137,11 @@ const TextInput = (props) => {
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
         }}
+        startAdornment={
+          props.type === 'money' ? (
+            <InputAdornment position="start">CHF</InputAdornment>
+          ) : null
+        }
       />
       {info && <FormHelperText>{info}</FormHelperText>}
     </FormControl>

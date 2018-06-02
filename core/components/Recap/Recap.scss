@@ -37,7 +37,7 @@
   width: 100%;
   margin: 0;
 
-  transition: all .2s $bezier;
+  transition: all 0.2s $bezier;
 }
 
 .validator .result div p {
@@ -46,6 +46,7 @@
 
 .validator .result div p span.sum {
   margin-top: 16px;
+  padding-top: 4px;
 
   border-top: solid 1px #808080;
 }

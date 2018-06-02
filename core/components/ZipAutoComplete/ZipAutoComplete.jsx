@@ -11,10 +11,6 @@ const styles = {
   div: {
     position: 'relative',
   },
-  savingIcon: {
-    top: 0,
-    right: -50,
-  },
 };
 
 class ZipAutoComplete extends Component {
@@ -129,7 +125,7 @@ class ZipAutoComplete extends Component {
     } = this.props;
 
     return (
-      <div style={{ ...styles.div, ...style }}>
+      <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <AutoComplete
           id="ZipAutoComplete"
           label={label}
@@ -145,7 +141,6 @@ class ZipAutoComplete extends Component {
         />
         <ValidIcon
           saving={saving}
-          style={styles.savingIcon}
           error={false}
           // Only show the valid icon when isValid is true
           value={isValid === true ? true : undefined}

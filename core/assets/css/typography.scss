@@ -1,16 +1,25 @@
 @font-face {
   font-family: 'Eina04-Regular';
 
-  src: url('fonts/Eina04-Regular.ttf');
+  src: url('fonts/Eina04_Regular.eot');
+  src: url('fonts/Eina04_Regular.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Eina04_Regular.woff2') format('woff2'),
+    url('fonts/Eina04_Regular.woff') format('woff'),
+    url('fonts/Eina04_Regular.ttf') format('truetype');
 }
+
 @font-face {
   font-family: 'Eina04-Bold';
 
-  src: url('fonts/Eina04-Bold.ttf');
+  src: url('fonts/Eina04_Bold.eot');
+  src: url('fonts/Eina04_Bold.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Eina04_Bold.woff2') format('woff2'),
+    url('fonts/Eina04_Bold.woff') format('woff'),
+    url('fonts/Eina04_Bold.ttf') format('truetype');
 }
 
 body {
-  letter-spacing: .048em; // 0.75px / 16px
+  letter-spacing: 0.048em; // 0.75px / 16px
 
   font-family: 'Eina04-Regular';
   font-size: $font-size-s;
@@ -23,9 +32,9 @@ h3,
 h4,
 h5,
 h6 {
-  margin: .67em 0;
+  margin: 0.67em 0;
 
-  letter-spacing: .048em; // 0.75px / 16px
+  letter-spacing: 0.048em; // 0.75px / 16px
 
   font-family: 'Eina04-Bold';
   font-weight: normal;
@@ -49,31 +58,11 @@ h4 {
 }
 
 h5 {
-  font-size: .83em;
+  font-size: 0.83em;
 }
 
 h6 {
-  font-size: .6em;
-}
-
-@media (min-width: $med) {
-  body {
-    font-size: $font-size-m;
-  }
-}
-
-@media (min-width: $wide) {
-  body {
-    font-size: $font-size-l;
-  }
-}
-
-.no-responsive-typo-s {
-  font-size: $font-size-s !important;
-}
-
-.no-responsive-typo-m {
-  font-size: $font-size-m !important;
+  font-size: 0.6em;
 }
 
 .bold {

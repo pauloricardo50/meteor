@@ -1,4 +1,5 @@
 {
+  "steps.borrowers.title": "Emprunteurs",
   "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
   "tooltip2.financialPlan": "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
 
@@ -22,7 +23,7 @@
 
   "FaqPageFaqs.what.question": "C'est quoi e-Potek ?",
   "FaqPageFaqs.what.answer":
-    "e-Potek SA est une société anonyme basée à Genève spécialisée dans la recherche de financement hypothécaire soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
+    "e-Potek SA est une société anonyme basée à Genève spécialisée dans la recherche de financement hypothécaire soumise aux règles imposées par la FINMA.",
   "FaqPageFaqs.who.question": "Qui a créé e-Potek ?",
   "FaqPageFaqs.who.answer":
     "Depuis 2016 : un conseiller hypothécaire (actif depuis plus de 18 ans en Suisse), un conseiller en prévoyance (actif depuis plus de 20 ans en Suisse), ainsi qu’un spécialiste du domaine digital (EPFL & Stanford University) ont unis leurs visions et compétences pour créer e-Potek qui repose sur le savoir faire de plusieurs domaines ainsi qu’un système informatique conçu sur-mesure.",
@@ -95,7 +96,7 @@
 
   "AboutPagePart3.title1": "Un acteur crédible",
   "AboutPagePart3.description1":
-    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse) et composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA et composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
   "AboutPagePart3.title2": "Un service de premier ordre",
   "AboutPagePart3.description2":
     "Disposez de conseils avisés concernant l’optimisation fiscale, les choix relatifs à vos fonds propres, l’expertise de logements ainsi que toutes informations relatives au domaine du financement hypothécaire.",
