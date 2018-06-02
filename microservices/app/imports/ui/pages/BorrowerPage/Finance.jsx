@@ -9,7 +9,6 @@ import Recap from 'core/components/Recap';
 import * as financeConstants from 'core/config/financeConstants';
 import LoadingButton from '/imports/ui/components/LoadingButton';
 import T from 'core/components/Translation';
-import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
 import { borrowerUpdate } from 'core/api';
 
@@ -49,7 +48,7 @@ const BorrowerFinancePage = (props) => {
       params: { borrowerId },
     },
     borrowers,
-    loan,
+    loan: { userFormsDisabled },
   } = props;
   const borrower = borrowers.find(b => b._id === borrowerId);
   return (
@@ -94,7 +93,7 @@ const BorrowerFinancePage = (props) => {
         docId={borrowerId}
         collection="borrowers"
         doc={borrower}
-        disabled={disableForms({ loan }) || borrower.logic.hasValidatedFinances}
+        disabled={userFormsDisabled || borrower.logic.hasValidatedFinances}
       />
 
       <div className="conditions mask2 primary-border">

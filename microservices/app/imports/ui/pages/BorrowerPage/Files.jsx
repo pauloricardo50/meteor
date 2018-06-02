@@ -4,7 +4,6 @@ import React from 'react';
 import UploaderArray from 'core/components/UploaderArray';
 import { borrowerDocuments } from 'core/api/files/documents';
 import T from 'core/components/Translation';
-import { disableForms } from 'core/utils/loanFunctions';
 
 const styles = {
   section: {
@@ -17,7 +16,7 @@ const styles = {
   },
 };
 
-const Files = ({ borrower, loan }) => (
+const Files = ({ borrower, loan: { userFormsDisabled } }) => (
   <section
     className="animated fadeIn borrower-page-files"
     key={borrower._id}
@@ -42,7 +41,7 @@ const Files = ({ borrower, loan }) => (
       documentArray={borrowerDocuments(borrower).auction}
       doc={borrower}
       collection="borrowers"
-      disabled={disableForms({ loan })}
+      disabled={userFormsDisabled}
     />
   </section>
 );

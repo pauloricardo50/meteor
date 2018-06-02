@@ -8,7 +8,7 @@ import {
 } from 'core/arrays/PropertyFormArray';
 import UploaderArray from 'core/components/UploaderArray';
 import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
-import { disableForms, getPropertyCompletion } from 'core/utils/loanFunctions';
+import { getPropertyCompletion } from 'core/utils/loanFunctions';
 import T from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
@@ -17,6 +17,7 @@ import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
+  const { userFormsDisabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
@@ -47,13 +48,13 @@ const PropertyPage = (props) => {
           fileArray={loanDocuments(loan).auction}
           doc={loan}
           collection={LOANS_COLLECTION}
-          disabled={disableForms({ loan })}
+          disabled={userFormsDisabled}
         />
         <UploaderArray
           fileArray={propertyDocuments(property, loan).auction}
           doc={property}
           collection={PROPERTIES_COLLECTION}
-          disabled={disableForms({ loan })}
+          disabled={userFormsDisabled}
         />
 
         <AutoForm
@@ -61,7 +62,7 @@ const PropertyPage = (props) => {
           docId={loan._id}
           collection={LOANS_COLLECTION}
           doc={loan}
-          disabled={disableForms({ loan })}
+          disabled={userFormsDisabled}
         />
 
         <AutoForm
@@ -69,7 +70,7 @@ const PropertyPage = (props) => {
           docId={property._id}
           collection={PROPERTIES_COLLECTION}
           doc={property}
-          disabled={disableForms({ loan })}
+          disabled={userFormsDisabled}
         />
       </section>
     </ProcessPage>
