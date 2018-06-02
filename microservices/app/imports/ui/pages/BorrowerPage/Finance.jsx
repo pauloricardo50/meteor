@@ -93,7 +93,7 @@ const BorrowerFinancePage = (props) => {
         docId={borrowerId}
         collection="borrowers"
         doc={borrower}
-        disabled={userFormsDisabled || borrower.logic.hasValidatedFinances}
+        disabled={userFormsDisabled}
       />
 
       <div className="conditions mask2 primary-border">

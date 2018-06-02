@@ -9,7 +9,7 @@ import { requestLoanVerification } from '../../methodDefinitions';
 import LoanService from '../../LoanService';
 
 describe('Loan Listeners', () => {
-  describe(`${requestLoanVerification.config.name} method listener`, () => {
+  describe('disableUserFormsListener', () => {
     it(`listens to \`${requestLoanVerification.config.name}\` method`, () => {
       const {
         config: { name: methodName },
