@@ -12,7 +12,7 @@ let userId;
 let adminId;
 let loanId;
 
-describe.only('TaskService', () => {
+describe('TaskService', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
