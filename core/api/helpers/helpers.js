@@ -1,4 +1,7 @@
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
+import { LOANS_COLLECTION } from '../loans/loanConstants';
+import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
 
 export const getDocFromCollection = (collectionName, docId) => {
   let collection;
@@ -27,3 +30,9 @@ export const getDocFromCollection = (collectionName, docId) => {
 
   return collection.findOne(docId);
 };
+
+export const getIdFieldNameFromCollection = collectionName => ({
+  [LOANS_COLLECTION]: 'loanId',
+  [BORROWERS_COLLECTION]: 'borrowerId',
+  [PROPERTIES_COLLECTION]: 'propertyId',
+}[collectionName]);

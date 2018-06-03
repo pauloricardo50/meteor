@@ -7,6 +7,7 @@ import {
   cancelAuction,
   assignAdminToNewUser,
   completeAddAssignedToTask,
+  addFileToDoc,
 } from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE, TASK_STATUS } from '../taskConstants';
@@ -40,6 +41,23 @@ EventService.addMethodListener(assignAdminToNewUser, ({ adminId, userId }) => {
   completeAddAssignedToTask.run({ userId });
   TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
 });
+
+export const insertTaskWhenFileAdded = ({
+  collection,
+  docId,
+  documentId,
+  file: { key: fileKey },
+  userId,
+}) => {
+  TaskService.insertTaskForAddedFile({
+    collection,
+    docId,
+    documentId,
+    fileKey,
+    userId,
+  });
+};
+EventService.addMethodListener(addFileToDoc, insertTaskWhenFileAdded);
 
 EventService.addListener(USER_EVENTS.USER_CREATED, ({ userId }) => {
   const type = TASK_TYPE.ADD_ASSIGNED_TO;

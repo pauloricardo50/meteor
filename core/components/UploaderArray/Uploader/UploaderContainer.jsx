@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { compose } from 'recompose';
 
 import {
@@ -27,6 +28,7 @@ const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, 
         docId,
         documentId: id,
         file,
+        userId: Meteor.userId(),
       }),
     deleteFile: fileKey =>
       deleteFile.run({
