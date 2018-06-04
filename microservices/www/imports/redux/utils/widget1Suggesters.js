@@ -1,4 +1,4 @@
-import { compose } from 'core/api/containerToolkit';
+import { compose } from 'recompose';
 import {
   SALARY,
   FORTUNE,
@@ -42,6 +42,9 @@ const suggesters = {
 const makeValueSuggester = (name, [firstManualKey, secondManualKey]) => {
   if (secondManualKey) {
     return suggesters[name].both;
+  } else if (!firstManualKey) {
+    // If all values are auto, just set them all to 0
+    return () => 0;
   }
   return suggesters[name][firstManualKey];
 };

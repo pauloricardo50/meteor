@@ -12,25 +12,28 @@ import suggestValue from '../utils/widget1Suggesters';
 export const suggestValues = () => (dispatch, getState) => {
   const state = getState();
   const step = makeWidget1Selector('step')(state);
+  let suggestActions = [];
 
   if (step >= FINAL_STEP) {
-    NAMES.forEach(NAME =>
+    suggestActions = NAMES.map(NAME =>
       dispatch({
         type: suggestValueAction(NAME),
         value: suggestValue(NAME, state),
       }));
   }
+
+  return Promise.all(suggestActions);
 };
 
-export const setValue = (name, nextValue) => (dispatch) => {
-  dispatch({ type: setValueAction(name), value: nextValue });
-  dispatch(suggestValues());
-};
+export const setValue = (name, nextValue) => dispatch =>
+  Promise.resolve()
+    .then(() => dispatch({ type: setValueAction(name), value: nextValue }))
+    .then(() => dispatch(suggestValues()));
 
-export const setAuto = (name, nextAuto) => (dispatch) => {
-  dispatch({ type: setAutoAction(name), auto: nextAuto });
-  dispatch(suggestValues());
-};
+export const setAuto = (name, nextAuto) => dispatch =>
+  Promise.resolve()
+    .then(() => dispatch({ type: setAutoAction(name), auto: nextAuto }))
+    .then(() => dispatch(suggestValues()));
 
 export const increaseSliderMax = name => ({
   type: increaseSliderMaxAction(name),
@@ -42,20 +45,21 @@ export const setStep = nextStep => (dispatch, getState) => {
 
   // Only set the step if we're not going down
   if (step <= nextStep) {
-    dispatch({ type: 'step_SET', value: nextStep });
     const willBeFinalStep = nextStep === FINAL_STEP;
-    if (willBeFinalStep) {
+    return Promise.resolve()
+      .then(() => dispatch({ type: 'step_SET', value: nextStep }))
+      .then(() =>
       // Special exception here, as suggestValues only runs once
       // the widget1 is at the FINAL_STEP. Suggest values should be run
       // if the user enters a value here
-      dispatch(suggestValues());
-    }
+        willBeFinalStep && dispatch(suggestValues()));
   }
+
+  return Promise.resolve();
 };
 
-export const resetCalculator = () => (dispatch) => {
-  NAMES.forEach((name) => {
-    dispatch({ type: setValueAction(name), value: undefined });
+export const resetCalculator = () => dispatch =>
+  Promise.all(NAMES.map((name) => {
+    dispatch({ type: setValueAction(name), value: 0 });
     dispatch({ type: setAutoAction(name), auto: true });
-  });
-};
+  }));
