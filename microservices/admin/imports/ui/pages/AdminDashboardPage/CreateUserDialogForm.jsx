@@ -1,0 +1,45 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import { DialogForm, email } from 'core/components/Form';
+import { T } from 'core/components/Translation';
+import Button from 'core/components/Button';
+import { adminCreateUser } from 'core/api/methods';
+import { ROLES } from 'core/api/users/userConstants';
+
+export const formFields = ['firstName', 'lastName', 'email', 'phone'];
+
+const formArray = formFields
+  .map(fieldName =>
+    (fieldName !== 'email'
+      ? { id: fieldName }
+      : { id: 'email', validate: [email] }))
+  .map(field => ({
+    ...field,
+    label: <T id={`CreateUserDialogForm.${field.id}`} />,
+    required: field.id === 'email',
+  }));
+
+const onSubmit = (data) => {
+  adminCreateUser.run({
+    options: data,
+    role: ROLES.USER,
+  });
+};
+
+const CreateUserDialogForm = () => (
+  <DialogForm
+    form="admin-add-user"
+    onSubmit={onSubmit}
+    button={
+      <Button raised primary>
+        <T id="CreateUserDialogForm.buttonLabel" />
+      </Button>
+    }
+    title={<T id="CreateUserDialogForm.dialogTitle" />}
+    description={<T id="CreateUserDialogForm.dialogDescription" />}
+    formArray={formArray}
+  />
+);
+
+export default CreateUserDialogForm;

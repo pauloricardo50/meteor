@@ -6,7 +6,7 @@ import NotFound from 'core/components/NotFound';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import DevPage from 'core/components/DevPage';
 
-import messagesFR from '../../../lang/fr.json';
+import messagesFR from '../../core/lang/fr';
 
 import AdminLayout from '../../ui/layouts/AdminLayout';
 import AdminDashboardPage from '../../ui/pages/AdminDashboardPage';

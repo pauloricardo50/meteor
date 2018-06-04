@@ -7,6 +7,9 @@ import {
   assignAdminToUser,
   assignAdminToNewUser,
   setRole,
+  adminCreateUser,
+  checkPermissionToAddUser,
+  editUser,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -46,4 +49,19 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsDev();
   UserService.setRole(params);
+});
+
+adminCreateUser.setHandler((context, { options, role }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+
+  return UserService.adminCreateUser({ options, role });
+});
+
+checkPermissionToAddUser.setHandler((context, { role }) =>
+  UserService.checkPermissionToAddUser({ role }));
+
+editUser.setHandler((context, { userId, object }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+
+  return UserService.update({ userId, object });
 });

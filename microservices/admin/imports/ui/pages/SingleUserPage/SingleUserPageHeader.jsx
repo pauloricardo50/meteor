@@ -7,6 +7,7 @@ import { T } from 'core/components/Translation';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import RolePicker from '../../components/RolePicker';
+import EditUserFormDialog from './EditUserFormDialog';
 
 const SingleUserPageHeader = ({ user }) => (
   <div className="single-user-page-header">
@@ -18,6 +19,7 @@ const SingleUserPageHeader = ({ user }) => (
         </small>
         <RolePicker userId={user._id} />
       </h1>
+      <EditUserFormDialog user={user} />
       <ImpersonateLink user={user} className="impersonate-link" />
     </div>
 
