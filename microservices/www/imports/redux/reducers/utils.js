@@ -1,6 +1,6 @@
 export const createValueReducer = (storeName, initialState = null) => (
   state = initialState,
-  { type, value },
+  { type, value } = {},
 ) => {
   switch (type) {
   case `${storeName}_SET`:

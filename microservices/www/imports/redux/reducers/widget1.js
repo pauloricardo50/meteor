@@ -16,26 +16,26 @@ export const increaseSliderMaxAction = name => `${name}_INCREASE_SLIDER_MAX`;
 
 const roundedValue = value => value && Math.round(value);
 
-const createWidget1ValueReducers = names =>
+export const createWidget1ValueReducers = names =>
   names.reduce(
     (acc, { name, initialSliderMax }) => ({
       ...acc,
       [name]: (
         state = { value: 0, auto: false, sliderMax: initialSliderMax },
-        action,
+        action = {},
       ) => {
         switch (action.type) {
         case setValueAction(name):
-          // Set auto to true if the value is changed to 0 or empty string
-          if (!action.value) {
-            return { ...state, value: action.value };
+          if (action.value === '') {
+            // Allow empty string if the user edits the textfield
+            return { ...state, value: '', auto: false };
+          } else if (!action.value) {
+            // Set auto to true if the value is changed to 0 (via slider)
+            return { ...state, value: 0, auto: true };
           }
           // Set auto to false if this value is set
           return { ...state, auto: false, value: roundedValue(action.value) };
         case suggestValueAction(name):
-          if (!action.value) {
-            return { ...state, value: action.value };
-          }
           // If the value is suggested, don't change auto
           return { ...state, value: roundedValue(action.value) };
         case setAutoAction(name): {
@@ -44,7 +44,10 @@ const createWidget1ValueReducers = names =>
           return { ...state, auto: nextAuto };
         }
         case increaseSliderMaxAction(name):
-          return { ...state, sliderMax: state.sliderMax + initialSliderMax };
+          return {
+            ...state,
+            sliderMax: Math.min(state.sliderMax * 2, 100000000),
+          };
         default:
           return state;
         }
