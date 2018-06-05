@@ -1,5 +1,7 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
+import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import Loans from '../../loans';
@@ -26,20 +28,34 @@ describe('LoanService', () => {
   });
 
   describe('disableUserForms', () => {
-    it('disables the user forms', () => {
-      expect(Loans.findOne(loanId).userFormsDisabled).to.equal(undefined);
+    it('calls `LoanService.update` with the correct params', () => {
+      sinon.stub(LoanService, 'update');
+
+      expect(LoanService.update.called).to.equal(false);
       LoanService.disableUserForms({ loanId });
-      expect(Loans.findOne(loanId).userFormsDisabled).to.equal(true);
+      console.log('>>>', LoanService.update.getCall(0).args);
+      expect(LoanService.update.getCall(0).args).to.deep.equal([
+        { loanId, object: { userFormsDisabled: true } },
+      ]);
+
+      LoanService.update.restore();
     });
   });
 
   describe('enableUserForms', () => {
     it('enables the user forms', () => {
-      Loans.update({ _id: loanId }, { $set: { userFormsDisabled: true } });
+      sinon.stub(LoanService, 'update');
 
+      Loans.update({ _id: loanId }, { $set: { userFormsDisabled: true } });
       expect(Loans.findOne(loanId).userFormsDisabled).to.equal(true);
+
+      expect(LoanService.update.called).to.equal(false);
       LoanService.enableUserForms({ loanId });
-      expect(Loans.findOne(loanId).userFormsDisabled).to.equal(false);
+      expect(LoanService.update.getCall(0).args).to.deep.equal([
+        { loanId, object: { userFormsDisabled: false } },
+      ]);
+
+      LoanService.update.restore();
     });
   });
 });

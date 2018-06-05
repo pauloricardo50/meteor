@@ -5,6 +5,7 @@ import { requestLoanVerification } from '../methodDefinitions';
 export const disableUserFormsListener = ({ loanId }) => {
   LoanService.disableUserForms({ loanId });
 };
+
 EventService.addMethodListener(
   requestLoanVerification,
   disableUserFormsListener,

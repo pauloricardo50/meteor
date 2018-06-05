@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -27,7 +28,6 @@ describe('Loan methods', () => {
 
   afterEach(() => {
     stubCollections.restore();
-    // Meteor.userId.restore();
   });
 
   describe('disableUserForms', () => {
