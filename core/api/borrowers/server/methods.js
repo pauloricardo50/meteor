@@ -2,20 +2,38 @@ import { Meteor } from 'meteor/meteor';
 
 import { SecurityService } from '../..';
 import BorrowerService from '../BorrowerService';
+import UserService from '../../users/UserService';
 import {
   borrowerInsert,
   borrowerUpdate,
   borrowerDelete,
   pushBorrowerValue,
   popBorrowerValue,
+  setNewBorrowerNames,
 } from '../methodDefinitions';
+
+setNewBorrowerNames.setHandler((context, { borrower, userId }) => {
+  const { firstName, lastName } = UserService.getUserNames({ userId });
+
+  if (firstName) {
+    borrower.firstName = firstName;
+  }
+
+  if (lastName) {
+    borrower.lastName = lastName;
+  }
+
+  return borrower;
+});
 
 borrowerInsert.setHandler((context, { borrower, userId }) => {
   if (userId === undefined && Meteor.userId()) {
     userId = Meteor.userId();
   }
 
-  return BorrowerService.insert({ borrower, userId });
+  const borrowerToInsert = this.setNewBorrowerNames({ userId, borrower });
+
+  return BorrowerService.insert({ borrower: borrowerToInsert, userId });
 });
 
 borrowerUpdate.setHandler((context, { borrowerId, object }) => {

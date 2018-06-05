@@ -3,7 +3,9 @@ import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { doesUserExist } from '../../methodDefinitions';
+
+import { doesUserExist, getUserNames } from '../../methodDefinitions';
+
 
 describe('users', () => {
   beforeEach(() => {
@@ -49,6 +51,24 @@ describe('users', () => {
         const inexistentEmail = 'hello@world.com';
         return doesUserExist.run({ email: inexistentEmail }).then((result) => {
           expect(result).to.equal(false);
+        });
+      });
+    });
+    describe('getUserNames', () => {
+      let user;
+      const email = 'yep@yop.com';
+      let firstName = 'testFirstName';
+      let lastName = 'testLastName';
+
+      it('returns a user firstName and lastName ', () => {
+        user = Factory.create('user', {
+          emails: [{ address: email, verified: false }],
+          firstName,
+          lastName,
+        });
+
+        getUserNames.run({ userId: user._id }).then((result) => {
+          expect(result).to.equal({ firstName, lastName });
         });
       });
     });

@@ -39,3 +39,11 @@ export const popBorrowerValue = new Method({
     object: Object,
   },
 });
+
+export const setNewBorrowerNames = new Method({
+  name: 'setNewBorrowerNames',
+  params: {
+    userId: String,
+    borrower: Object,
+  },
+});

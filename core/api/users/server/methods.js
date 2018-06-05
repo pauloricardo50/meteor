@@ -7,6 +7,7 @@ import {
   assignAdminToUser,
   assignAdminToNewUser,
   setRole,
+  getUserNames,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -46,4 +47,9 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsDev();
   UserService.setRole(params);
+});
+
+getUserNames.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  UserService.getUserName(params);
 });
