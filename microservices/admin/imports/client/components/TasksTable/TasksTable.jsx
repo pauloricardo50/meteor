@@ -171,9 +171,10 @@ class TasksTable extends Component {
     return data.map((task, index) => ({
       id: task._id,
       columns: this.getColumns({ showAssignee, index, task }),
-      handleClick: () =>
-        getTaskRelatedLoan(task)
-          .then(({ _id }) => history.push(`/loans/${_id}/forms`)),
+      handleClick: () => {
+        const { _id } = getTaskRelatedLoan(task);
+        history.push(`/loans/${_id}/forms`)
+      },
     }));
   };
 
