@@ -2,16 +2,25 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import EventService from '../../../events';
+import '../../../events/registerListeners';
+import { addFileToDoc, setFileStatus } from '../../../files/methodDefinitions';
 import {
-  insertTaskWhenFileAdded,
-  completeTaskOnFileVerification,
+  insertTaskWhenFileAddedListener,
+  completeTaskOnFileVerificationListener,
 } from '../taskListeners';
 import TaskService from '../../TaskService';
 
 describe('Task Listeners', () => {
-  describe('insertTaskWhenFileAdded', () => {
-    // this test depends on EP-190 being merged into staging
-    it.skip('listens to `addFileToDoc` method');
+  describe('insertTaskWhenFileAddedListener', () => {
+    it(`listens to \`${addFileToDoc.config.name}\` method`, () => {
+      const {
+        config: { name: methodName },
+      } = addFileToDoc;
+
+      const listeners = EventService.getListenerFunctions(methodName);
+      expect(listeners.includes(insertTaskWhenFileAddedListener)).to.equal(true);
+    });
 
     it('calls `TaskService.insertTaskForAddedFile` function', () => {
       sinon.stub(TaskService, 'insertTaskForAddedFile');
@@ -24,7 +33,7 @@ describe('Task Listeners', () => {
       };
 
       expect(TaskService.insertTaskForAddedFile.called).to.equal(false);
-      insertTaskWhenFileAdded(listenerParams);
+      insertTaskWhenFileAddedListener(listenerParams);
       expect(TaskService.insertTaskForAddedFile.getCall(0).args).to.deep.equal([
         {
           collection: 'loans',
@@ -39,9 +48,15 @@ describe('Task Listeners', () => {
     });
   });
 
-  describe('completeTaskOnFileVerification', () => {
-    // this test depends on EP-190 being merged into staging
-    it.skip('listens to `setFileStatus` method');
+  describe('completeTaskOnFileVerificationListener', () => {
+    it(`listens to \`${setFileStatus.config.name}\` method`, () => {
+      const {
+        config: { name: methodName },
+      } = setFileStatus;
+
+      const listeners = EventService.getListenerFunctions(methodName);
+      expect(listeners.includes(completeTaskOnFileVerificationListener)).to.equal(true);
+    });
 
     it('calls `TaskService.completeFileTask` function', () => {
       sinon.stub(TaskService, 'completeFileTask');
@@ -55,7 +70,7 @@ describe('Task Listeners', () => {
       };
 
       expect(TaskService.completeFileTask.called).to.equal(false);
-      completeTaskOnFileVerification(listenerParams);
+      completeTaskOnFileVerificationListener(listenerParams);
       expect(TaskService.completeFileTask.getCall(0).args).to.deep.equal([
         {
           collection: 'borrowers',

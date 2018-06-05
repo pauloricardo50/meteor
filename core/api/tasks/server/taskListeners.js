@@ -43,7 +43,7 @@ EventService.addMethodListener(assignAdminToNewUser, ({ adminId, userId }) => {
   TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
 });
 
-export const insertTaskWhenFileAdded = ({
+export const insertTaskWhenFileAddedListener = ({
   collection,
   docId,
   documentId,
@@ -58,9 +58,10 @@ export const insertTaskWhenFileAdded = ({
     userId,
   });
 };
-EventService.addMethodListener(addFileToDoc, insertTaskWhenFileAdded);
 
-export const completeTaskOnFileVerification = ({
+EventService.addMethodListener(addFileToDoc, insertTaskWhenFileAddedListener);
+
+export const completeTaskOnFileVerificationListener = ({
   collection,
   docId,
   documentId,
@@ -68,7 +69,11 @@ export const completeTaskOnFileVerification = ({
 }) => {
   TaskService.completeFileTask({ collection, docId, documentId, fileKey });
 };
-EventService.addMethodListener(setFileStatus, completeTaskOnFileVerification);
+
+EventService.addMethodListener(
+  setFileStatus,
+  completeTaskOnFileVerificationListener,
+);
 
 EventService.addListener(USER_EVENTS.USER_CREATED, ({ userId }) => {
   const type = TASK_TYPE.ADD_ASSIGNED_TO;
