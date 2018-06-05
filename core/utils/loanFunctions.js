@@ -216,15 +216,6 @@ export const getLenderCount = ({ loan, borrowers, property }) => {
   return 0;
 };
 
-export const disableForms = ({ loan }) =>
-  !!(
-    loan.logic &&
-    (loan.logic.step > 1 ||
-      (loan.logic.verification &&
-        (loan.logic.verification.requested ||
-          loan.logic.verification.validated !== undefined)))
-  );
-
 export const getFees = ({ loan, property }) => {
   const notaryFees = property.value * NOTARY_FEES;
   const insuranceFees =

@@ -16,5 +16,8 @@
 @import '{}/imports/core/components/MissingDoc/MissingDoc.scss';
 @import '{}/imports/core/components/tooltips/Tooltip.scss';
 
+// core components that extend Material UI components
+@import '{}/imports/core/components/Material/Toggle/Toggle.scss';
+
 // External components SCSS
 @import './external-styles/rc-slider.scss';
