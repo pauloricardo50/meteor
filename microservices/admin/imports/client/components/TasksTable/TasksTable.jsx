@@ -11,6 +11,7 @@ import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
+import { TASK_TYPE } from 'core/api/tasks/taskConstants';
 import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
@@ -172,8 +173,10 @@ class TasksTable extends Component {
       id: task._id,
       columns: this.getColumns({ showAssignee, index, task }),
       handleClick: () => {
-        const { _id } = getTaskRelatedLoan(task);
-        history.push(`/loans/${_id}/forms`)
+        if (task.type === TASK_TYPE.USER_ADDED_FILE) {
+          const { _id } = getTaskRelatedLoan(task);
+          history.push(`/loans/${_id}/forms`);
+        }
       },
     }));
   };
