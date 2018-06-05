@@ -33,7 +33,7 @@ describe('LoanService', () => {
 
       expect(LoanService.update.called).to.equal(false);
       LoanService.disableUserForms({ loanId });
-      console.log('>>>', LoanService.update.getCall(0).args);
+
       expect(LoanService.update.getCall(0).args).to.deep.equal([
         { loanId, object: { userFormsDisabled: true } },
       ]);
