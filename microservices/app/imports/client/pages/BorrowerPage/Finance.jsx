@@ -8,7 +8,6 @@ import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import Recap from 'core/components/Recap';
 import * as financeConstants from 'core/config/financeConstants';
 import T from 'core/components/Translation';
-import { disableForms } from 'core/utils/loanFunctions';
 import track from 'core/utils/analytics';
 import { borrowerUpdate } from 'core/api';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
@@ -50,7 +49,7 @@ const BorrowerFinancePage = (props) => {
       params: { borrowerId },
     },
     borrowers,
-    loan,
+    loan: { userFormsDisabled },
   } = props;
   const borrowerLogic = borrowers.find(b => b._id === borrowerId);
 
@@ -95,9 +94,7 @@ const BorrowerFinancePage = (props) => {
               docId={borrower._id}
               collection={BORROWERS_COLLECTION}
               doc={borrower}
-              disabled={
-                disableForms({ loan }) || borrower.logic.hasValidatedFinances
-              }
+              disabled={userFormsDisabled}
             />
           </div>
         ))}

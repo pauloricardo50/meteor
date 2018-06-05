@@ -229,10 +229,9 @@ export default class FormsTab extends Component {
           style={{ width: '100%', maxWidth: 250 }}
         />
         <Toggle
-          label="Peut modifier"
+          labelRight="Peut modifier"
           toggled={modify}
           onToggle={this.handleToggle}
-          style={{ width: 'unset' }}
         />
 
         <div>

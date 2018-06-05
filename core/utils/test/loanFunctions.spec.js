@@ -13,7 +13,6 @@ import {
   getPropAndWork,
   getTotalUsed,
   getLenderCount,
-  disableForms,
   isLoanValid,
   validateRatios,
   validateRatiosCompletely,
@@ -344,33 +343,6 @@ describe('Loan functions', () => {
   describe('getLenderCount', () => {
     it('returns 0 if empty objects are given', () => {
       expect(getLenderCount({})).to.equal(0);
-    });
-  });
-
-  describe('disableForms', () => {
-    it('returns true when the right conditions are true', () => {
-      expect(disableForms({ loan: { logic: { step: 2 } } })).to.equal(true);
-      expect(
-        disableForms({
-          loan: { logic: { verification: { requested: true } } },
-        }),
-      ).to.equal(true);
-      expect(
-        disableForms({
-          loan: { logic: { verification: { validated: true } } },
-        }),
-      ).to.equal(true);
-    });
-
-    it("returns false if the conditions aren't met", () => {
-      expect(disableForms({ loan: { logic: { step: 1 } } })).to.equal(false);
-      expect(disableForms({ loan: { logic: { step: 0 } } })).to.equal(false);
-      expect(
-        disableForms({ loan: { verification: { requested: false } } }),
-      ).to.equal(false);
-      expect(
-        disableForms({ loan: { verification: { validated: false } } }),
-      ).to.equal(false);
     });
   });
 

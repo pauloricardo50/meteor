@@ -1,8 +1,13 @@
 .single-loan-page .overview-tab .admin-section {
   display: flex;
+  flex-direction: column;
 
-  .admin-note {
-    flex-grow: 1;
+  .admin-note-wrapper {
+    display: flex;
+
+    .admin-note {
+      flex-grow: 1;
+    }
   }
 }
 

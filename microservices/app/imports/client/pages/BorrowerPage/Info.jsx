@@ -3,13 +3,15 @@ import React from 'react';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
-import { disableForms } from 'core/utils/loanFunctions';
 
 import T from 'core/components/Translation';
 
 const Info = (props) => {
   const { borrowerId } = props.match.params;
-  const { borrowers, loan } = props;
+  const {
+    borrowers,
+    loan: { userFormsDisabled },
+  } = props;
 
   return (
     <section className="animated borrower-page-info flex--helper flex-justify--center fadeIn">
@@ -33,7 +35,7 @@ const Info = (props) => {
             docId={borrower._id}
             collection="borrowers"
             doc={borrower}
-            disabled={disableForms({ loan })}
+            disabled={userFormsDisabled}
           />
         </div>
       ))}
