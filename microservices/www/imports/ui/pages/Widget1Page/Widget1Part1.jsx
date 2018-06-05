@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';
+import {
+  SALARY,
+  FORTUNE,
+  PROPERTY,
+} from '../../../redux/constants/widget1Constants';
 import Widget1SingleInputForm from './Widget1SingleInputForm';
 
 const fields = [PROPERTY, SALARY, FORTUNE];

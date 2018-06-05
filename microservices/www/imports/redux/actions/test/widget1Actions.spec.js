@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 
 import * as widget1Actions from '../widget1Actions';
 import * as widget1Constants from '../../reducers/widget1';
+import { NAMES, FINAL_STEP } from '../../constants/widget1Constants';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -16,8 +17,8 @@ const expectActions = (actionCreator, expectedActions) =>
 const prepareStore = overrides =>
   mockStore({
     widget1: {
-      step: widget1Constants.FINAL_STEP,
-      ...widget1Constants.NAMES.reduce(
+      step: FINAL_STEP,
+      ...NAMES.reduce(
         (acc, name) => ({ ...acc, [name]: { value: 0, auto: true } }),
         {},
       ),
@@ -41,7 +42,7 @@ describe('widget1Actions', () => {
     });
 
     it('dispatches one action for each NAME if the step is the final one', () => {
-      const expectedActions = widget1Constants.NAMES.map(name => ({
+      const expectedActions = NAMES.map(name => ({
         type: widget1Constants.suggestValueAction(name),
         value: 0,
       }));
@@ -50,7 +51,7 @@ describe('widget1Actions', () => {
 
     it('suggests the right values for a 180k salary', () => {
       store = prepareStore();
-      const expectedActions = widget1Constants.NAMES.map(name => ({
+      const expectedActions = NAMES.map(name => ({
         type: widget1Constants.suggestValueAction(name),
         value: 0,
       }));
@@ -62,7 +63,7 @@ describe('widget1Actions', () => {
     it('sets a value and suggests values', () => {
       const expectedActions = [
         { type: widget1Constants.setValueAction(NAME), value },
-        ...widget1Constants.NAMES.map(name => ({
+        ...NAMES.map(name => ({
           type: widget1Constants.suggestValueAction(name),
           value: 0,
         })),
@@ -78,7 +79,7 @@ describe('widget1Actions', () => {
       it('sets a value to auto, and resuggests all values', () => {
         const expectedActions = [
           { type: widget1Constants.setAutoAction(NAME), auto: true },
-          ...widget1Constants.NAMES.map(name => ({
+          ...NAMES.map(name => ({
             type: widget1Constants.suggestValueAction(name),
             value: 0,
           })),
@@ -118,16 +119,16 @@ describe('widget1Actions', () => {
         // getState does not work in redux-mock-store, so set the final step
         // initially as well to make sure getState gets the right value
         // for the `suggestValues` action
-        store = prepareStore({ step: widget1Constants.FINAL_STEP });
+        store = prepareStore({ step: FINAL_STEP });
         const expectedActions = [
-          { type: 'step_SET', value: widget1Constants.FINAL_STEP },
-          ...widget1Constants.NAMES.map(name => ({
+          { type: 'step_SET', value: FINAL_STEP },
+          ...NAMES.map(name => ({
             type: widget1Constants.suggestValueAction(name),
             value: 0,
           })),
         ];
         return expectActions(
-          widget1Actions.setStep(widget1Constants.FINAL_STEP),
+          widget1Actions.setStep(FINAL_STEP),
           expectedActions,
         );
       });
@@ -137,11 +138,11 @@ describe('widget1Actions', () => {
   describe('resetCalculator', () => {
     it('resets all the values', () => {
       const expectedActions = [
-        { type: 'salary_CHANGE', value: 0 },
+        { type: 'salary_SET', value: 0 },
         { type: 'salary_AUTO', auto: true },
-        { type: 'fortune_CHANGE', value: 0 },
+        { type: 'fortune_SET', value: 0 },
         { type: 'fortune_AUTO', auto: true },
-        { type: 'property_CHANGE', value: 0 },
+        { type: 'property_SET', value: 0 },
         { type: 'property_AUTO', auto: true },
       ];
       return expectActions(widget1Actions.resetCalculator(), expectedActions);

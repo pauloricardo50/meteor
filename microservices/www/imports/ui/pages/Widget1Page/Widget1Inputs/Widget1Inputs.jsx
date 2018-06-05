@@ -2,7 +2,11 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 
-import { SALARY, FORTUNE, PROPERTY } from '../../../../redux/reducers/widget1';
+import {
+  SALARY,
+  FORTUNE,
+  PROPERTY,
+} from '../../../../redux/constants/widget1Constants';
 import Widget1SingleInput from '../Widget1SingleInput';
 import Widget1InputsError from './Widget1InputsError';
 import Widget1InputsReset from './Widget1InputsReset';

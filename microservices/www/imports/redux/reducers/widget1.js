@@ -2,14 +2,16 @@ import { combineReducers } from 'redux';
 import { createSelector } from 'reselect';
 import { DEFAULT_INTEREST_RATE } from 'core/config/financeConstants';
 import { createValueReducer } from './utils';
+import {
+  NAMES,
+  SALARY,
+  PROPERTY,
+  FORTUNE,
+  USAGE_TYPE,
+  PURCHASE_TYPE,
+} from '../constants/widget1Constants';
 
-export const SALARY = 'salary';
-export const FORTUNE = 'fortune';
-export const PROPERTY = 'property';
-export const NAMES = [SALARY, FORTUNE, PROPERTY];
-export const FINAL_STEP = 3;
-
-export const setValueAction = name => `${name}_CHANGE`;
+export const setValueAction = name => `${name}_SET`;
 export const suggestValueAction = name => `${name}_SUGGEST`;
 export const setAutoAction = name => `${name}_AUTO`;
 export const increaseSliderMaxAction = name => `${name}_INCREASE_SLIDER_MAX`;
@@ -62,8 +64,10 @@ const widget1 = combineReducers({
     { name: FORTUNE, initialSliderMax: 500000 },
     { name: PROPERTY, initialSliderMax: 2000000 },
   ]),
-  step: createValueReducer('step', 0),
+  step: createValueReducer('step', 0), // TODO: Set me back to 0 for production
   interestRate: createValueReducer('interestRate', DEFAULT_INTEREST_RATE),
+  usageType: createValueReducer('usageType', USAGE_TYPE.PRIMARY),
+  purchaseType: createValueReducer('purchaseType', PURCHASE_TYPE.ACQUISITION),
 });
 
 export const makeWidget1Selector = name => state => state.widget1[name];

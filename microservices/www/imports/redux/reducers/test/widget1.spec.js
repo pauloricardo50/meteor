@@ -2,14 +2,13 @@
 import { expect } from 'chai';
 
 import widget1, {
-  NAMES,
-  PROPERTY,
   createWidget1ValueReducers,
   setValueAction,
   suggestValueAction,
   setAutoAction,
   increaseSliderMaxAction,
 } from '../widget1';
+import { NAMES, PROPERTY } from '../../constants/widget1Constants';
 
 describe('widget1 Reducer', () => {
   it('should return the initial state', () => {
@@ -27,6 +26,8 @@ describe('widget1 Reducer', () => {
       ),
       step: 0,
       interestRate: 0.015,
+      purchaseType: 'ACQUISITION',
+      usageType: 'PRIMARY',
     });
   });
 

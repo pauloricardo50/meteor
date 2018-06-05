@@ -4,9 +4,8 @@ import {
   increaseSliderMaxAction,
   makeWidget1Selector,
   suggestValueAction,
-  NAMES,
-  FINAL_STEP,
 } from '../reducers/widget1';
+import { NAMES, FINAL_STEP } from '../constants/widget1Constants';
 import suggestValue from '../utils/widget1Suggesters';
 
 export const suggestValues = () => (dispatch, getState) => {

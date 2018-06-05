@@ -1,11 +1,6 @@
 import { compose } from 'recompose';
-import {
-  SALARY,
-  FORTUNE,
-  PROPERTY,
-  makeSelectValue,
-  selectAutoValues,
-} from '../reducers/widget1';
+import { makeSelectValue, selectAutoValues } from '../reducers/widget1';
+import { SALARY, FORTUNE, PROPERTY } from '../constants/widget1Constants';
 import {
   suggestSalary,
   suggestFortune,

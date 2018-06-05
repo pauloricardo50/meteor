@@ -4,7 +4,11 @@ import {
   setStep,
   setValue,
 } from '../../../../redux/actions/widget1Actions';
-import { SALARY, FORTUNE, PROPERTY } from '../../../../redux/reducers/widget1';
+import {
+  SALARY,
+  FORTUNE,
+  PROPERTY,
+} from '../../../../redux/constants/widget1Constants';
 
 const order = [PROPERTY, SALARY, FORTUNE];
 

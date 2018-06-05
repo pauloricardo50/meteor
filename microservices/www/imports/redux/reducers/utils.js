@@ -1,3 +1,6 @@
+export const setValueAction = name => `${name}_SET`;
+export const resetValueAction = name => `${name}_RESET`;
+
 export const createValueReducer = (storeName, initialState = null) => (
   state = initialState,
   { type, value } = {},
