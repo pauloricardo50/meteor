@@ -2,7 +2,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import { insertTaskWhenFileAdded } from '../taskListeners';
+import {
+  insertTaskWhenFileAdded,
+  completeTaskOnFileVerification,
+} from '../taskListeners';
 import TaskService from '../../TaskService';
 
 describe('Task Listeners', () => {
@@ -33,6 +36,36 @@ describe('Task Listeners', () => {
       ]);
 
       TaskService.insertTaskForAddedFile.restore();
+    });
+  });
+
+  describe('completeTaskOnFileVerification', () => {
+    // this test depends on EP-190 being merged into staging
+    it.skip('listens to `setFileStatus` method');
+
+    it('calls `TaskService.completeFileTask` function', () => {
+      sinon.stub(TaskService, 'completeFileTask');
+
+      const listenerParams = {
+        collection: 'borrowers',
+        docId: 'someLoanId',
+        documentId: 'someDocumentId',
+        fileKey: 'someFileKey',
+        newStatus: 'VALID',
+      };
+
+      expect(TaskService.completeFileTask.called).to.equal(false);
+      completeTaskOnFileVerification(listenerParams);
+      expect(TaskService.completeFileTask.getCall(0).args).to.deep.equal([
+        {
+          collection: 'borrowers',
+          docId: 'someLoanId',
+          documentId: 'someDocumentId',
+          fileKey: 'someFileKey',
+        },
+      ]);
+
+      TaskService.completeFileTask.restore();
     });
   });
 });

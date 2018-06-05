@@ -4,8 +4,8 @@ export const getUploadCountPrefix = lastUploadCount =>
   (lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`);
 
 export const fakeFile = {
-  name: 'fakeFile.pdf',
-  initialName: 'fakeFile.pdf',
+  name: 'fakeFile',
+  initialName: 'fakeFile',
   size: 10000,
   type: 'application/pdf',
   url: 'https://www.fake-url.com',
@@ -15,7 +15,7 @@ export const fakeFile = {
 
 export const validFakeFile = {
   ...fakeFile,
-  name: 'validFakeFile.pdf',
+  name: 'validFakeFile',
   key: 'asdf/fakeKey/validFakeFile.pdf',
   status: FILE_STATUS.VALID,
   error: '',
@@ -23,7 +23,7 @@ export const validFakeFile = {
 
 export const invalidFakeFile = {
   ...fakeFile,
-  name: 'invalidFakeFile.pdf',
+  name: 'invalidFakeFile',
   key: 'asdf/fakeKey/invalidFakeFile.pdf',
   error: 'Incorrect file format',
   status: FILE_STATUS.ERROR,

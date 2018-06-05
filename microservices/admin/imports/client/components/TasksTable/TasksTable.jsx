@@ -8,6 +8,7 @@ import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
 import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
+import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
 import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
@@ -164,11 +165,17 @@ class TasksTable extends Component {
     return columns;
   };
 
-  setupRows = ({ data, showAssignee }) =>
-    data.map((task, index) => ({
+  setupRows = ({ data, showAssignee }) => {
+    const { history } = this.props;
+
+    return data.map((task, index) => ({
       id: task._id,
       columns: this.getColumns({ showAssignee, index, task }),
+      handleClick: () =>
+        getTaskRelatedLoan(task)
+          .then(({ _id }) => history.push(`/loans/${_id}/forms`)),
     }));
+  };
 
   render() {
     const { data, isLoading, showAssignee } = this.props;
@@ -183,6 +190,7 @@ class TasksTable extends Component {
         rows={this.setupRows({ data, showAssignee })}
         noIntl
         className="tasks-table"
+        clickable
       />
     );
   }
@@ -191,6 +199,7 @@ class TasksTable extends Component {
 TasksTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
   showAssignee: PropTypes.bool,
 };
 

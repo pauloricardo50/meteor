@@ -31,8 +31,16 @@ export const getDocFromCollection = (collectionName, docId) => {
   return collection.findOne(docId);
 };
 
-export const getIdFieldNameFromCollection = collectionName => ({
-  [LOANS_COLLECTION]: 'loanId',
-  [BORROWERS_COLLECTION]: 'borrowerId',
-  [PROPERTIES_COLLECTION]: 'propertyId',
-}[collectionName]);
+export const getIdFieldNameFromCollection = collectionName =>
+  ({
+    [LOANS_COLLECTION]: 'loanId',
+    [BORROWERS_COLLECTION]: 'borrowerId',
+    [PROPERTIES_COLLECTION]: 'propertyId',
+  }[collectionName]);
+
+export const getCollectionNameFromIdField = idFieldName =>
+  ({
+    loanId: LOANS_COLLECTION,
+    borrowerId: BORROWERS_COLLECTION,
+    propertyId: PROPERTIES_COLLECTION,
+  }[idFieldName]);

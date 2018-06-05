@@ -8,6 +8,7 @@ import {
   assignAdminToNewUser,
   completeAddAssignedToTask,
   addFileToDoc,
+  setFileStatus,
 } from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE, TASK_STATUS } from '../taskConstants';
@@ -58,6 +59,16 @@ export const insertTaskWhenFileAdded = ({
   });
 };
 EventService.addMethodListener(addFileToDoc, insertTaskWhenFileAdded);
+
+export const completeTaskOnFileVerification = ({
+  collection,
+  docId,
+  documentId,
+  fileKey,
+}) => {
+  TaskService.completeFileTask({ collection, docId, documentId, fileKey });
+};
+EventService.addMethodListener(setFileStatus, completeTaskOnFileVerification);
 
 EventService.addListener(USER_EVENTS.USER_CREATED, ({ userId }) => {
   const type = TASK_TYPE.ADD_ASSIGNED_TO;

@@ -153,6 +153,25 @@ class TaskService {
     });
   };
 
+  completeFileTask = ({ collection, docId, documentId, fileKey }) => {
+    const type = TASK_TYPE.USER_ADDED_FILE;
+    const relatedDocIdFieldName = getIdFieldNameFromCollection(collection);
+
+    const fileTask = Tasks.findOne({
+      type,
+      [relatedDocIdFieldName]: docId,
+      documentId,
+      fileKey,
+      status: TASK_STATUS.ACTIVE,
+    });
+
+    if (!fileTask) {
+      throw new Meteor.Error("task couldn't be found");
+    }
+
+    return this.complete({ taskId: fileTask._id });
+  };
+
   changeStatus = ({ taskId, newStatus }) =>
     this.update({ taskId, object: { status: newStatus } });
 

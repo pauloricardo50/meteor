@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { Factory } from 'meteor/dburles:factory';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { stubCollections, generateData } from '../../../../utils/testHelpers';
@@ -11,22 +12,24 @@ import { TASK_STATUS } from '../../taskConstants';
 let userId;
 let adminId;
 let loanId;
+let borrowerId;
 
 describe('TaskService', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
 
-    const { user, admin, loan } = generateData({
+    const { user, admin, loan, borrowers } = generateData({
       loan: { user: { assignedEmployeeId: 'anEmployeeId' } },
     });
     userId = user._id;
     adminId = admin._id;
     loanId = loan._id;
+    borrowerId = borrowers[0]._id;
 
-    expect(userId).to.be.a('string');
-    expect(adminId).to.be.a('string');
-    expect(loanId).to.be.a('string');
+    [userId, adminId, loanId, borrowerId].forEach((id) => {
+      expect(id).to.be.a('string');
+    });
   });
 
   afterEach(() => {
@@ -36,8 +39,6 @@ describe('TaskService', () => {
   describe('insert', () => {
     describe('file related tasks', () => {
       it('inserts a Task with the necessary file data in it', () => {
-        expect(Tasks.find().count()).to.equal(0);
-
         const insertParams = {
           type: 'USER_ADDED_FILE',
           loanId,
@@ -45,9 +46,9 @@ describe('TaskService', () => {
           fileKey: 'someFileKey',
           userId,
         };
-        TaskService.insert(insertParams);
 
-        expect(Tasks.find().count()).to.equal(1);
+        expect(Tasks.findOne(insertParams)).to.equal(undefined);
+        TaskService.insert(insertParams);
         expect(Tasks.findOne(insertParams)).to.deep.include(insertParams);
       });
 
@@ -60,15 +61,14 @@ describe('TaskService', () => {
           userId,
         };
 
-        expect(Tasks.find().count()).to.equal(0);
+        expect(Tasks.find(insertParams).count()).to.equal(0);
         TaskService.insert(insertParams);
-        expect(Tasks.find().count()).to.equal(1);
+        expect(Tasks.find(insertParams).count()).to.equal(1);
 
         Tasks.update(insertParams, { $set: { status: TASK_STATUS.ACTIVE } });
 
         expect(() => TaskService.insert(insertParams)).to.throw(/duplicate active task/);
-
-        expect(Tasks.find().count()).to.equal(1);
+        expect(Tasks.find(insertParams).count()).to.equal(1);
       });
 
       it('inserts multiple active tasks that have only the file key different', () => {
@@ -137,6 +137,50 @@ describe('TaskService', () => {
       });
 
       expect(TaskService.insert.called).to.equal(false);
+    });
+  });
+
+  describe('completeFileTask', () => {
+    beforeEach(() => {
+      sinon.stub(TaskService, 'complete');
+    });
+
+    afterEach(() => {
+      TaskService.complete.restore();
+    });
+
+    it('calls `TaskService.complete` with the correct task id', () => {
+      expect(TaskService.complete.called).to.equal(false);
+
+      const task = Factory.create('task');
+
+      TaskService.completeFileTask({
+        collection: 'borrowers',
+        docId: task.borrowerId,
+        documentId: task.documentId,
+        fileKey: task.fileKey,
+      });
+
+      expect(TaskService.complete.getCall(0).args).to.deep.equal([
+        {
+          taskId: task._id,
+        },
+      ]);
+    });
+
+    it('throws and does not `TaskService.complete` when the task does not exist', () => {
+      expect(TaskService.complete.called).to.equal(false);
+
+      const completeFileTaskFunction = () =>
+        TaskService.completeFileTask({
+          collection: 'borrowers',
+          docId: 'nonExistentBorrowerId',
+          documentId: 'identity',
+          fileKey: 'asdf/fakeKey/fakeFile.pdf',
+        });
+
+      expect(completeFileTaskFunction).to.throw(/task couldn't be found/);
+      expect(TaskService.complete.called).to.equal(false);
     });
   });
 });
