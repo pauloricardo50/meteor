@@ -1,7 +1,7 @@
 .widget1-options {
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 }
 
 .widget1-options .usage-type,
@@ -9,22 +9,26 @@
   // display: flex;
   // align-items: center;
   margin: 16px;
+
   border-radius: 4px;
 
   .widget1-option {
     margin: 16px;
-    border-radius: 4px;
+
     transition: color 200ms $bezier, background-color 200ms $bezier;
 
+    border-radius: 4px;
+
     &:hover {
-      background-color: $primary;
-      color: white;
       cursor: pointer;
+
+      color: white;
+      background-color: $primary;
     }
 
     &[aria-selected='true'] {
-      background-color: $primary;
       color: white;
+      background-color: $primary;
     }
 
     h4 {
