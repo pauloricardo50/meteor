@@ -7,19 +7,30 @@ import widget1, {
   suggestValueAction,
   setAutoAction,
   increaseSliderMaxAction,
+  makeWidget1Selector,
+  makeSelectValue,
+  selectFields,
+  selectAutoValues,
 } from '../widget1';
-import { NAMES, PROPERTY } from '../../constants/widget1Constants';
+import {
+  ALL_FIELDS,
+  SALARY,
+  FORTUNE,
+  PURCHASE_TYPE,
+  ACQUISITION_FIELDS,
+  REFINANCING_FIELDS,
+} from '../../constants/widget1Constants';
 
 describe('widget1 Reducer', () => {
   it('should return the initial state', () => {
     expect(widget1()).to.deep.equal({
-      ...NAMES.reduce(
+      ...ALL_FIELDS.reduce(
         (acc, name) => ({
           ...acc,
           [name]: {
             value: 0,
             auto: false,
-            sliderMax: name === PROPERTY ? 2000000 : 500000,
+            sliderMax: name === SALARY || name === FORTUNE ? 500000 : 2000000,
           },
         }),
         {},
@@ -28,6 +39,7 @@ describe('widget1 Reducer', () => {
       interestRate: 0.015,
       purchaseType: 'ACQUISITION',
       usageType: 'PRIMARY',
+      finishedTutorial: false,
     });
   });
 
@@ -144,6 +156,51 @@ describe('widget1 Reducer', () => {
           { sliderMax: 50000001 },
           { type: increaseSliderMaxAction(TEST) },
         )).to.deep.equal({ sliderMax: 100000000 });
+      });
+    });
+  });
+
+  describe('selectors', () => {
+    describe('makeWidget1Selector', () => {
+      it('should select widget1', () => {
+        const myField = 'hello world';
+        expect(makeWidget1Selector('myField')({ widget1: { myField } })).to.equal(myField);
+      });
+    });
+
+    describe('makeSelectValue', () => {
+      it('should get the value of a field', () => {
+        const myField = { value: 200 };
+        expect(makeSelectValue('myField')({ widget1: { myField } })).to.equal(myField.value);
+      });
+    });
+
+    describe('selectFields', () => {
+      it('should select the right fields', () => {
+        expect(selectFields({
+          widget1: { purchaseType: PURCHASE_TYPE.ACQUISITION },
+        })).to.equal(ACQUISITION_FIELDS);
+        expect(selectFields({
+          widget1: { purchaseType: PURCHASE_TYPE.REFINANCING },
+        })).to.equal(REFINANCING_FIELDS);
+      });
+    });
+
+    describe('selectAutoValues', () => {
+      const autoValues = {
+        salary: { auto: true },
+        fortune: { auto: false },
+        property: { auto: false },
+      };
+      expect(selectAutoValues({
+        widget1: {
+          purchaseType: PURCHASE_TYPE.ACQUISITION,
+          ...autoValues,
+        },
+      })).to.deep.equal({
+        salary: autoValues.salary.auto,
+        fortune: autoValues.fortune.auto,
+        property: autoValues.property.auto,
       });
     });
   });

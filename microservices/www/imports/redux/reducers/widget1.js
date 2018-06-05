@@ -3,12 +3,16 @@ import { createSelector } from 'reselect';
 import { DEFAULT_INTEREST_RATE } from 'core/config/financeConstants';
 import { createValueReducer } from './utils';
 import {
-  NAMES,
   SALARY,
   PROPERTY,
   FORTUNE,
   USAGE_TYPE,
   PURCHASE_TYPE,
+  CURRENT_LOAN,
+  WANTED_LOAN,
+  ALL_FIELDS,
+  ACQUISITION_FIELDS,
+  REFINANCING_FIELDS,
 } from '../constants/widget1Constants';
 
 export const setValueAction = name => `${name}_SET`;
@@ -63,29 +67,43 @@ const widget1 = combineReducers({
     { name: SALARY, initialSliderMax: 500000 },
     { name: FORTUNE, initialSliderMax: 500000 },
     { name: PROPERTY, initialSliderMax: 2000000 },
+    { name: CURRENT_LOAN, initialSliderMax: 2000000 },
+    { name: WANTED_LOAN, initialSliderMax: 2000000 },
   ]),
   step: createValueReducer('step', 0), // TODO: Set me back to 0 for production
   interestRate: createValueReducer('interestRate', DEFAULT_INTEREST_RATE),
   usageType: createValueReducer('usageType', USAGE_TYPE.PRIMARY),
   purchaseType: createValueReducer('purchaseType', PURCHASE_TYPE.ACQUISITION),
+  finishedTutorial: createValueReducer('finishedTutorial', false),
 });
 
 export const makeWidget1Selector = name => state => state.widget1[name];
+
 export const makeSelectValue = name =>
   createSelector(
     makeWidget1Selector(name),
     widget1Object => widget1Object.value,
   );
-export const selectAutoValues = createSelector(
-  NAMES.map(makeWidget1Selector),
-  (...args) =>
-    NAMES.reduce(
+
+export const selectFields = createSelector(
+  makeWidget1Selector('purchaseType'),
+  purchaseType =>
+    (purchaseType === PURCHASE_TYPE.ACQUISITION
+      ? ACQUISITION_FIELDS
+      : REFINANCING_FIELDS),
+);
+
+export const selectAutoValues = (state) => {
+  const fields = selectFields(state);
+
+  return createSelector(fields.map(makeWidget1Selector), (...args) =>
+    fields.reduce(
       (accumulator, NAME, index) => ({
         ...accumulator,
         [NAME]: args[index].auto,
       }),
       {},
-    ),
-);
+    ))(state);
+};
 
 export default widget1;

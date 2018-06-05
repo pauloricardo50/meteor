@@ -14,6 +14,8 @@ const RecapSimple = ({ array, noScale, className }) => (
     {array.map((item) => {
       if (item.hide) {
         return null;
+      } else if (item.space) {
+        return <div style={{ height: 16 }} />;
       } else if (item.title) {
         return (
           <h4
@@ -49,6 +51,8 @@ const RecapSimple = ({ array, noScale, className }) => (
 );
 
 RecapSimple.propTypes = {
+  array: PropTypes.arrayOf(PropTypes.object).isRequired,
+  noScale: PropTypes.bool.isRequired,
   className: PropTypes.string,
 };
 

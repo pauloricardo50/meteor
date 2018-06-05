@@ -9,9 +9,13 @@ export function toMoney(value) {
     // Don't format the value if it is undefined or an empty string
     return value;
   }
-  return String(Math.round(Number(Math.round(value))))
-    .replace(/\D/g, '')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const negativePrefix = value < 0 ? '-' : '';
+  return (
+    negativePrefix +
+    String(Math.round(Number(Math.round(value))))
+      .replace(/\D/g, '')
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  );
 }
 
 // Replaces any nondigit character by an empty character, to prevent the use of non-digits

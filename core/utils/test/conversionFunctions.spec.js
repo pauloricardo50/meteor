@@ -22,8 +22,8 @@ describe('Conversion functions', () => {
       expect(toMoney(100000)).to.equal('100 000');
     });
 
-    it("Should return '100 000' for -100000", () => {
-      expect(toMoney(-100000)).to.equal('100 000');
+    it("Should return '-100 000' for -100000", () => {
+      expect(toMoney(-100000)).to.equal('-100 000');
     });
   });
 

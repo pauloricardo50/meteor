@@ -7,6 +7,7 @@ import {
   validateIncomeRatio,
   validateBorrowRatio,
 } from 'core/utils/finance';
+import { selectFields } from '../../../redux/reducers/widget1';
 
 const getFinmaValues = ({ salary, fortune, propertyValue }) => {
   const { totalMonthly: finmaMonthlyCost } = getFinmaMonthlyCost(
@@ -25,14 +26,26 @@ const getFinmaValues = ({ salary, fortune, propertyValue }) => {
   };
 };
 
-export default connect(({
-  widget1: {
-    step,
-    salary: { value: salary },
-    fortune: { value: fortune },
-    property: { value: propertyValue },
-  },
-}) => {
+const mapStateToProps = (state) => {
+  const {
+    widget1: {
+      step,
+      finishedTutorial,
+      salary: { value: salary },
+      fortune: { value: fortune },
+      property: { value: propertyValue },
+    },
+  } = state;
   const finma = getFinmaValues({ salary, fortune, propertyValue });
-  return { step, finma, salary, fortune, propertyValue };
-});
+  return {
+    step,
+    finishedTutorial,
+    finma,
+    salary,
+    fortune,
+    propertyValue,
+    fields: selectFields(state),
+  };
+};
+
+export default connect(mapStateToProps);

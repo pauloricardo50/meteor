@@ -1,4 +1,11 @@
 {
+"Widget1SingleInput.currentLoan": "Prêt existant",
+"Widget1SingleInput.wantedLoan": "Prêt voulu",
+
+"Recap.propertyValue": "Valeur du bien",
+"Recap.loanIncrease": "Augmentation du prêt",
+"Recap.loanReduction": "Réduction du prêt",
+
   "Widget1OptionSelector.ACQUISITION": "Acquisition",
   "Widget1OptionSelector.REFINANCING": "Refinancement",
   "Widget1OptionSelector.PRIMARY": "Résidence principale",
