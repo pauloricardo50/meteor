@@ -6,6 +6,9 @@ import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
 import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
 import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 import { validateTask } from './taskValidation';
+import Users from '../users';
+import { isUser } from '../../utils/userFunctions';
+import { getIdFieldNameFromCollection } from '../helpers';
 
 class TaskService {
   insert = ({
@@ -13,6 +16,8 @@ class TaskService {
     borrowerId,
     loanId,
     propertyId,
+    documentId,
+    fileKey,
     userId,
     assignedTo,
     createdBy,
@@ -20,13 +25,17 @@ class TaskService {
     if (type === TASK_TYPE.ADD_ASSIGNED_TO) {
       return Tasks.insert({ type, userId });
     }
+
     const existingTask = Tasks.findOne({
       type,
       borrowerId,
       loanId,
       propertyId,
       status: TASK_STATUS.ACTIVE,
+      documentId,
+      fileKey,
     });
+
     if (existingTask) {
       throw new Meteor.Error('duplicate active task');
     }
@@ -51,6 +60,33 @@ class TaskService {
       borrowerId,
       loanId,
       propertyId,
+      documentId,
+      fileKey,
+      userId,
+    });
+  };
+
+  insertTaskForAddedFile = ({
+    collection,
+    docId,
+    documentId,
+    fileKey,
+    userId,
+  }) => {
+    const userWhoAddedTheFile = Users.findOne(userId);
+    if (!isUser(userWhoAddedTheFile)) {
+      return;
+    }
+
+    const type = TASK_TYPE.USER_ADDED_FILE;
+    const relatedDocIdFieldName = getIdFieldNameFromCollection(collection);
+
+    this.insert({
+      type,
+      [relatedDocIdFieldName]: docId,
+      documentId,
+      fileKey,
+      userId,
     });
   };
 
@@ -115,6 +151,25 @@ class TaskService {
         completedAt: new Date(),
       },
     });
+  };
+
+  completeFileTask = ({ collection, docId, documentId, fileKey }) => {
+    const type = TASK_TYPE.USER_ADDED_FILE;
+    const relatedDocIdFieldName = getIdFieldNameFromCollection(collection);
+
+    const fileTask = Tasks.findOne({
+      type,
+      [relatedDocIdFieldName]: docId,
+      documentId,
+      fileKey,
+      status: TASK_STATUS.ACTIVE,
+    });
+
+    if (!fileTask) {
+      throw new Meteor.Error("task couldn't be found");
+    }
+
+    return this.complete({ taskId: fileTask._id });
   };
 
   changeStatus = ({ taskId, newStatus }) =>

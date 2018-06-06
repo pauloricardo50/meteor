@@ -7,7 +7,9 @@ export const isUser = (user) => {
   }
 
   const { ADMIN, DEV } = ROLES;
-  const { roles: userRoles } = user;
+  const { roles } = user;
+  // make sure `userRoles` is always an array - in case `roles` is a string
+  const userRoles = _.flatten([roles]);
 
   const userHasRoles = userRoles && userRoles.length > 0;
   return userHasRoles && _.intersection(userRoles, [ADMIN, DEV]).length === 0;

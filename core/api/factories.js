@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { Loans, Borrowers, Offers, Properties } from '.';
+import { Loans, Borrowers, Offers, Properties, Tasks } from '.';
+import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
+import { fakeFile } from '../api/files/fileHelpers';
 
 const TEST_EMAIL = 'test@test.com';
 
@@ -34,6 +36,14 @@ Factory.define('borrower', Borrowers, {
   documents: () => ({}),
   logic: () => ({}),
   age: 18,
+});
+
+Factory.define('task', Tasks, {
+  type: TASK_TYPE.USER_ADDED_FILE,
+  createdAt: () => new Date(),
+  status: TASK_STATUS.ACTIVE,
+  documentId: 'aDocumentId',
+  fileKey: fakeFile.key,
 });
 
 Factory.define('loan', Loans, {
