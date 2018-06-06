@@ -14,7 +14,8 @@
     "test-e2e-CI": "meteor start-server-and-test start-e2e http://localhost:5015 cypress-run-CI",
     "clean": "rm -rf node_modules/ && meteor npm install",
     "debug": "meteor npm run start -- --inspect",
-    "ngrok": "cd ../../scripts/ && ./ngrok.sh 5000"
+    "ngrok": "cd ../../scripts/ && ./ngrok.sh 5000",
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.47",

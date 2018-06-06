@@ -13,7 +13,7 @@
     "test-e2e-CI": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 3000",
     "debug": "meteor npm run start -- --inspect",
-    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 5010"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.47",
