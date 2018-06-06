@@ -1,11 +1,12 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import sinon from 'sinon';
 
 import { doesUserExist, getUserNames } from '../../methodDefinitions';
-
 
 describe('users', () => {
   beforeEach(() => {
@@ -57,20 +58,27 @@ describe('users', () => {
     describe('getUserNames', () => {
       let user;
       const email = 'yep@yop.com';
-      let firstName = 'testFirstName';
-      let lastName = 'testLastName';
+      const firstName = 'testFirstName';
+      const lastName = 'testLastName';
 
-      it('returns a user firstName and lastName ', () => {
+      beforeEach(() => {
         user = Factory.create('user', {
           emails: [{ address: email, verified: false }],
           firstName,
           lastName,
         });
 
-        getUserNames.run({ userId: user._id }).then((result) => {
-          expect(result).to.equal({ firstName, lastName });
-        });
+        sinon.stub(Meteor, 'userId').callsFake(() => user._id);
       });
+
+      afterEach(() => {
+        Meteor.userId.restore();
+      });
+
+      it("returns a user's firstName and lastName ", () =>
+        getUserNames.run({ userId: user._id }).then((result) => {
+          expect(result).to.deep.equal({ firstName, lastName });
+        }));
     });
   });
 });

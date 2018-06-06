@@ -40,7 +40,7 @@ export const setRole = new Method({
 });
 
 export const getUserNames = new Method({
-  name: 'getUserName',
+  name: 'getUserNames',
   params: {
     userId: String,
   },

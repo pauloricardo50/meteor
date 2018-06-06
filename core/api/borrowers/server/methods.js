@@ -12,19 +12,20 @@ import {
   setNewBorrowerNames,
 } from '../methodDefinitions';
 
-setNewBorrowerNames.setHandler((context, { borrower, userId }) => {
-  const { firstName, lastName } = UserService.getUserNames({ userId });
+import { getUserNames } from '../../users/methodDefinitions';
 
-  if (firstName) {
-    borrower.firstName = firstName;
-  }
+setNewBorrowerNames.setHandler((context, { borrower, userId }) =>
+  getUserNames.run({ userId }).then(({ firstName, lastName }) => {
+    if (firstName) {
+      borrower.firstName = firstName;
+    }
 
-  if (lastName) {
-    borrower.lastName = lastName;
-  }
+    if (lastName) {
+      borrower.lastName = lastName;
+    }
 
-  return borrower;
-});
+    return borrower;
+  }));
 
 borrowerInsert.setHandler((context, { borrower, userId }) => {
   if (userId === undefined && Meteor.userId()) {
