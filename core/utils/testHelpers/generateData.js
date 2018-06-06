@@ -37,10 +37,7 @@ export const generateTaskRelatedToAFile = (fileOverrides) => {
   const task = Factory.create('task');
   const { fileKey: taskFileKey, documentId: taskDocumentId } = task;
 
-  const taskRelatedFile = {
-    key: taskFileKey,
-    ...fileOverrides,
-  };
+  const taskRelatedFile = { key: taskFileKey, ...fileOverrides };
   const taskRelatedDocuments = {
     [taskDocumentId]: {
       files: [taskRelatedFile],

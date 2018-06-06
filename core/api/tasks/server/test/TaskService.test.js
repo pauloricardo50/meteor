@@ -162,9 +162,7 @@ describe('TaskService', () => {
       });
 
       expect(TaskService.complete.getCall(0).args).to.deep.equal([
-        {
-          taskId: task._id,
-        },
+        { taskId: task._id },
       ]);
     });
 

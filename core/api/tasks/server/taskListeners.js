@@ -49,7 +49,7 @@ export const insertTaskWhenFileAddedListener = ({
   documentId,
   file: { key: fileKey },
   userId,
-}) => {
+}) =>
   TaskService.insertTaskForAddedFile({
     collection,
     docId,
@@ -57,7 +57,6 @@ export const insertTaskWhenFileAddedListener = ({
     fileKey,
     userId,
   });
-};
 
 EventService.addMethodListener(addFileToDoc, insertTaskWhenFileAddedListener);
 
@@ -66,9 +65,7 @@ export const completeTaskOnFileVerificationListener = ({
   docId,
   documentId,
   fileKey,
-}) => {
-  TaskService.completeFileTask({ collection, docId, documentId, fileKey });
-};
+}) => TaskService.completeFileTask({ collection, docId, documentId, fileKey });
 
 EventService.addMethodListener(
   setFileStatus,

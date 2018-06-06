@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Loans } from '..';
 import { loanIsVerified } from '../../utils/loanFunctions';
-import { getCollectionNameFromIdField } from '../helpers/helpers';
+import { getCollectionNameFromIdField } from '../helpers';
 import { AUCTION_STATUS, TASK_TYPE, FILE_STATUS } from '../constants';
 
 const verifyTaskValidation = ({ loanId }) => {

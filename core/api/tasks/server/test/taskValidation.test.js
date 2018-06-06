@@ -10,8 +10,7 @@ import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { validateTask } from '../../taskValidation';
-import { TASK_TYPE, AUCTION_STATUS } from '../../../constants';
-import { FILE_STATUS } from '../../../files/fileConstants';
+import { TASK_TYPE, AUCTION_STATUS, FILE_STATUS } from '../../../constants';
 
 describe('Task Validation', () => {
   it('throws if no task is given', () => {

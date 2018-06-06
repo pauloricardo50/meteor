@@ -1,7 +1,9 @@
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
-import { LOANS_COLLECTION } from '../loans/loanConstants';
-import { BORROWERS_COLLECTION } from '../borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from '../properties/propertyConstants';
+import {
+  LOANS_COLLECTION,
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+} from '../constants';
 
 export const getDocFromCollection = (collectionName, docId) => {
   let collection;

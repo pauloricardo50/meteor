@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { Loans, Borrowers, Offers, Properties } from '.';
-import Tasks from '../api/tasks/tasks';
+import { Loans, Borrowers, Offers, Properties, Tasks } from '.';
 import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
 import { fakeFile } from '../api/files/fileHelpers';
 

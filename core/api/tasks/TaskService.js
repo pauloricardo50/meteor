@@ -6,9 +6,9 @@ import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
 import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
 import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 import { validateTask } from './taskValidation';
-import Users from '../users/users';
+import Users from '../users';
 import { isUser } from '../../utils/userFunctions';
-import { getIdFieldNameFromCollection } from '../helpers/helpers';
+import { getIdFieldNameFromCollection } from '../helpers';
 
 class TaskService {
   insert = ({
