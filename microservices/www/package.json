@@ -13,10 +13,10 @@
     "test-e2e-CI": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 3000",
     "debug": "meteor npm run start -- --inspect",
-    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 5010"
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.47",
+    "@babel/runtime": "^7.0.0-beta.49",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
@@ -66,12 +66,12 @@
     "uninstall": "0.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.47",
-    "@babel/plugin-proposal-class-properties": "7.0.0-beta.47",
+    "@babel/core": "7.0.0-beta.49",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.49",
     "autoprefixer": "^8.5.0",
     "babel-eslint": "^8.2.3",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-preset-meteor": "7.0.0-beta.47",
+    "babel-preset-meteor": "7.0.0-beta.49",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

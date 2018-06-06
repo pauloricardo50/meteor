@@ -15,7 +15,7 @@
     "clean": "rm -rf node_modules/ && meteor npm install",
     "debug": "meteor npm run start -- --inspect",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 5000",
-    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 5010"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.47",
