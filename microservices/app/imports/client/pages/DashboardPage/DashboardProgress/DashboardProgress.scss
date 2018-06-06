@@ -1,10 +1,10 @@
 .dashboard-progress {
+  box-sizing: border-box;
   width: calc(100% + 32px);
   margin-top: -16px;
   margin-bottom: 16px;
   margin-left: -16px;
   padding: 24px;
-  box-sizing: border-box;
 
   color: white;
   background-color: $primary;
@@ -59,7 +59,7 @@
   margin-bottom: 8px;
 
   border-radius: 50%;
-  background-color: #ced4da;
+  background-color: #CED4DA;
   &.done {
     background-color: $success;
   }
@@ -67,7 +67,7 @@
 
 .dashboard-progress .dashboard-progress-bar .dashboard-progress-bar-step {
   .fa {
-    transform: scale(0.7);
+    transform: scale(.7);
 
     color: white !important;
   }

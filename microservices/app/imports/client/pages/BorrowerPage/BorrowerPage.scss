@@ -34,28 +34,37 @@
   &-block {
     text-align: right;
 
-    > span {
-      font-size: 14px;
-      color: #4890e2;
+     > span {
       display: inline-block;
+
       margin-bottom: 15px;
+
+      color: #4890E2;
+
+      font-size: 14px;
       font-weight: 400;
     }
   }
 
   &-bar {
-    height: 2px;
-    display: block;
-    background: #e7ebef;
     position: relative;
+
+    display: block;
+
+    height: 2px;
+
+    background: #E7EBEF;
 
     &__wrapper {
       position: absolute;
-      left: 0;
       top: 0;
-      background: #4890e2;
+      left: 0;
+
       height: 2px;
+
       transition: width 300ms ease;
+
+      background: #4890E2;
     }
   }
 }
@@ -101,27 +110,32 @@
 .borrower-header {
   &--fixed {
     position: fixed;
+    z-index: 15;
     top: 172px;
     right: 0;
-    z-index: 15;
-    height: 108px;
+
     width: calc(100% - 332px);
+    height: 108px;
   }
 
   &__row {
-    background: #fff;
+    align-items: flex-start;
+
+    box-sizing: border-box;
     width: 100%;
     padding: 25px 32px 0;
-    align-items: flex-start;
-    box-sizing: border-box;
+
+    background: #FFF;
   }
 
   &__info {
-    border-left: 1px #e4e4e4 solid;
     box-sizing: border-box;
+
+    border-left: 1px #E4E4E4 solid;
 
     &:first-of-type {
       padding-right: 30px;
+
       border-left: 0;
     }
 
@@ -131,13 +145,16 @@
 
     h1 {
       margin: 0;
-      font-size: 18px;
+
       color: #212529;
+
+      font-size: 18px;
       font-weight: bold;
     }
 
     .borrower-num {
-      color: #9cb2cb;
+      color: #9CB2CB;
+
       font-weight: 400;
     }
 
@@ -153,10 +170,11 @@
 
 .user-form {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
 
   .form-input__row {
     .todo-circle {
@@ -171,8 +189,8 @@
   }
 
   .form-radio__row {
-    padding-right: 50px;
     box-sizing: border-box;
+    padding-right: 50px;
 
     .saving-icon {
       top: 16px;
@@ -181,20 +199,22 @@
   }
 
   &__finance {
-    > div {
+     > div {
       width: 400px;
     }
   }
 }
 
 .borrower-page__wrapper {
-  padding: 0 16px;
-  border-left: 1px #e4e4e4 solid;
   box-sizing: border-box;
+  padding: 0 16px;
+
+  border-left: 1px #E4E4E4 solid;
 
   &:first-of-type {
-    border-left: 0;
     padding-right: 32px;
+
+    border-left: 0;
   }
 
   &:nth-of-type(2) {
@@ -204,8 +224,9 @@
 
 .borrower-finance {
   &__item {
-    border-left: 1px #e4e4e4 solid;
     box-sizing: border-box;
+
+    border-left: 1px #E4E4E4 solid;
 
     &:first-of-type {
       border-left: 0;
@@ -215,8 +236,9 @@
 
 .borrower-files {
   &__item {
-    border-left: 1px #e4e4e4 solid;
     box-sizing: border-box;
+
+    border-left: 1px #E4E4E4 solid;
 
     &:first-of-type {
       border-left: 0;
@@ -232,9 +254,10 @@
 .borrower-page-info {
   .user-form__info h3,
   h2 {
+    margin-bottom: 25px;
+
     font-size: 17px;
     font-weight: bold;
-    margin-bottom: 25px;
   }
 
   .user-form__info {
@@ -243,29 +266,31 @@
     }
 
     .form-group {
-      > div {
+       > div {
         max-width: 100% !important;
       }
     }
 
-    > div > div {
+     > div > div {
       max-width: 100% !important;
     }
 
     .mui-text-input {
-      padding-right: 50px;
-      max-width: 100% !important;
       box-sizing: border-box;
+      max-width: 100% !important;
+      padding-right: 50px;
     }
   }
 
   .description {
     align-self: initial;
 
-    > p {
-      margin-top: 0;
-      max-width: 100%;
+     > p {
       justify-content: flex-start;
+
+      max-width: 100%;
+      margin-top: 0;
+
       font-size: 17px;
       font-style: italic;
     }
