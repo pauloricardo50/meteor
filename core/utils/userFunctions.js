@@ -1,4 +1,4 @@
-import { _ } from 'meteor/underscore';
+import intersection from 'lodash/interesection';
 import { ROLES } from '../api/users/userConstants';
 
 export const isUser = (user) => {
@@ -10,5 +10,5 @@ export const isUser = (user) => {
   const { roles: userRoles } = user;
 
   const userHasRoles = userRoles && userRoles.length > 0;
-  return userHasRoles && _.intersection(userRoles, [ADMIN, DEV]).length === 0;
+  return userHasRoles && intersection(userRoles, [ADMIN, DEV]).length === 0;
 };
