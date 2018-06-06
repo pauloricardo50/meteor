@@ -56,22 +56,12 @@ then
   echo "Cleaning and installing root npm packages"
   ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
 
-  echo "Cleaning and installing core npm packages"
-  ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
-
   echo "Cleaning up all CSS"
   ./clean-css.sh
 fi
 
 echo "Installing npm packages in root"
 ( cd .. && meteor npm install );
-
-# Install core npm packages only on non-circleCI environments
-if [[ $CIRCLE_CI != 1 ]];
-then
-  echo "Installing npm packages in core/"
-  ( cd ../core && meteor npm install );
-fi
 
 meteor npm i -g babel-cli start-server-and-test
 
