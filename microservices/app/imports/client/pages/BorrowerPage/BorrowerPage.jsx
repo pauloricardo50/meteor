@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 
 import PropTypes from 'prop-types';
 
@@ -7,6 +8,7 @@ import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
+import BorrowerAdder from './../../components/BorrowerAdder';
 
 import Tabs from './Tabs';
 
@@ -44,12 +46,23 @@ export default class BorrowerPage extends Component {
 
   render() {
     const { loan, borrowers, property } = this.props;
+    const sectionClasses = classNames({
+      'mask1 borrower-page': true,
+      'p-t--109': borrowers.length > 1,
+      'p-t--159': borrowers.length == 1,
+    });
 
     return (
       <ProcessPage {...this.props} stepNb={1} id="borrowers">
-        <section className="mask1 borrower-page p-t--117">
+        <section className={sectionClasses}>
           <Tabs loan={loan} borrowers={borrowers} />
-          <BorrowerHeader {...this.props} />
+          <BorrowerHeader {...this.props}>
+            {borrowers.length == 1 && (
+              <div className="btn-group text--center">
+                <BorrowerAdder />
+              </div>
+            )}
+          </BorrowerHeader>
 
           {this.getContent()}
         </section>
