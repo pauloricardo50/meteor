@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Tab from 'react-bootstrap/lib/Tab';
 import FileVerificator from './FileVerificator';
 
 const styles = {
@@ -21,22 +20,20 @@ const FilesVerificationTab = ({
   doc,
   ...otherProps
 }) => (
-  <Tab eventKey={index} title={title}>
-    <div style={styles.tabContent}>
-      {documentArray.map(({ condition, id: documentId }) =>
-        shouldShowDocument(condition) && (
-          <FileVerificator
-            currentValue={
-              doc.documents[documentId] && doc.documents[documentId].files
-            }
-            docId={doc._id}
-            key={documentId}
-            id={documentId}
-            {...otherProps}
-          />
-        ))}
-    </div>
-  </Tab>
+  <div style={styles.tabContent}>
+    {documentArray.map(({ condition, id: documentId }) =>
+      shouldShowDocument(condition) && (
+        <FileVerificator
+          currentValue={
+            doc.documents[documentId] && doc.documents[documentId].files
+          }
+          docId={doc._id}
+          key={documentId}
+          id={documentId}
+          {...otherProps}
+        />
+      ))}
+  </div>
 );
 
 FilesVerificationTab.propTypes = {

@@ -5,7 +5,7 @@ import FileTabs from 'core/components/FileTabs';
 import NewDocumentForm from './NewDocumentForm';
 
 const FilesTab = props => (
-  <div className="mask1">
+  <div>
     <NewDocumentForm loanId={props.loan._id} />
     <FileTabs {...props} />
   </div>
