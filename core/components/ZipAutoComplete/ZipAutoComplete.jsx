@@ -3,17 +3,13 @@ import PropTypes from 'prop-types';
 
 import { getLocations } from 'core/utils/APIs';
 
-import ValidIcon from 'core/components/AutoForm/ValidIcon';
+import ValidIcon from '../AutoForm/ValidIcon';
+import FormValidator from '../AutoForm/FormValidator';
 import AutoComplete from '../AutoComplete';
 
 const styles = {
   div: {
     position: 'relative',
-  },
-  savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
   },
 };
 
@@ -54,12 +50,7 @@ class ZipAutoComplete extends Component {
             });
           } else {
             this.setState({
-              data: [
-                {
-                  label: '-',
-                  value: '-',
-                },
-              ],
+              data: [{ label: '-', value: '-' }],
             });
           }
         })
@@ -80,6 +71,9 @@ class ZipAutoComplete extends Component {
       // Set the text input
       this.setState({ searchText: value, isValid: true }, () =>
         this.saveValue(zipCode, city));
+    } else {
+      this.setState({ searchText: '', isValid: false }, () =>
+        this.saveValue(null, ''));
     }
   };
 
@@ -87,7 +81,9 @@ class ZipAutoComplete extends Component {
     const {
       updateFunc,
       docId,
-      inputProps: { componentProps: { savePath } },
+      inputProps: {
+        componentProps: { savePath },
+      },
     } = this.props;
 
     // Save data to DB
@@ -124,12 +120,12 @@ class ZipAutoComplete extends Component {
   render() {
     const { searchText, data, saving, isValid } = this.state;
     const {
-      inputProps: { disabled, style, label, placeholder },
+      inputProps: { disabled, style, label, placeholder, required },
       admin,
     } = this.props;
 
     return (
-      <div style={{ ...styles.div, ...style }}>
+      <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <AutoComplete
           id="ZipAutoComplete"
           label={label}
@@ -145,13 +141,13 @@ class ZipAutoComplete extends Component {
         />
         <ValidIcon
           saving={saving}
-          style={styles.savingIcon}
           error={false}
           // Only show the valid icon when isValid is true
           value={isValid === true ? true : undefined}
-          required
+          required={required}
           hide={admin}
         />
+        <FormValidator {...this.props} />
       </div>
     );
   }

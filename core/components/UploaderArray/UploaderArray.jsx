@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Uploader from './Uploader.jsx';
+import Uploader from './Uploader';
 
 const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
   <div className="flex-col center">
@@ -14,7 +14,10 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
               ...doc.documents[documentObject.id],
             }}
             key={doc._id + documentObject.id}
-            currentValue={doc.documents[documentObject.id].files}
+            currentValue={
+              doc.documents[documentObject.id] &&
+                  doc.documents[documentObject.id].files
+            }
             docId={doc._id}
             disabled={disabled}
             collection={collection}
@@ -30,7 +33,9 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
             collection={collection}
             key={documentId}
             docId={doc._id}
-            currentValue={doc.documents[documentId].files}
+            currentValue={
+              doc.documents[documentId] && doc.documents[documentId].files
+            }
             disabled={disabled}
           />
         ))}

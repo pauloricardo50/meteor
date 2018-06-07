@@ -25,59 +25,58 @@ done
 find .. -type l -exec unlink {} \;
 
 # Prepare every microservice
-for i in 'admin' 'app' 'lender' 'www'
+for i in 'admin' 'app' 'www'
   do
     echo "Preparing $i microservice..."
 
     echo "Creating symlinks"
     ln -s ../../../core ../microservices/$i/imports/core
 
-    if [[ $i == 'www' ]];
-    then
-      #only need variables.scss in www
-      mkdir ../microservices/$i/client/css
-      ln -s ../../../../core/assets/css/variables.scss ../microservices/$i/client/css/variables.scss
-
-      mkdir ../microservices/$i/client/css/external-styles      
-      ln -s ../../../../../core/assets/css/external-styles/bootstrap-popover.css ../microservices/$i/client/css/external-styles/bootstrap-popover.css
-      ln -s ../../../../../core/assets/css/external-styles/animate.css ../microservices/$i/client/css/external-styles/animate.css
-    else
-      ln -s ../../../core/assets/css ../microservices/$i/client/css
-    fi
-
-    # ln -s ../../core/.babelrc ../microservices/$i/.babelrc
-
     # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
+    # So copy them over with rsync
     echo "Copying public/private folders from core"
     rsync -a --delete-before ../core/assets/public/ ../microservices/$i/public/
-
     rsync -a --delete-before ../core/assets/private/ ../microservices/$i/private/
-
 
     if [[ $DO_CLEAN == true ]];
     then
-      echo "Cleaning and installing npm packages"
-      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force && meteor npm install );
+      echo "Cleaning npm packages"
+      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
 
       echo "Resetting meteor"
-      ( cd ../microservices/$i && meteor reset )
-    else
-      echo "Installing npm packages"
-      ( cd ../microservices/$i && meteor npm install );
+      ( cd ../microservices/$i && meteor reset );
     fi
 
-
+    echo "Installing npm packages"
+    ( cd ../microservices/$i && meteor npm install );
   done
 
+if [[ $DO_CLEAN == true ]];
+then
+  echo "Cleaning and installing root npm packages"
+  ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
 
-echo "Installing npm packages in core/"
-( cd ../core && meteor npm install );
+  echo "Cleaning and installing core npm packages"
+  ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
+
+  echo "Cleaning up all CSS"
+  ./clean-css.sh
+fi
 
 echo "Installing npm packages in root"
 ( cd .. && meteor npm install );
 
+# Install core npm packages only on non-circleCI environments
+if [[ $CIRCLE_CI != 1 ]];
+then
+  echo "Installing npm packages in core/"
+  ( cd ../core && meteor npm install );
+fi
+
+meteor npm i -g babel-cli start-server-and-test
+
 echo "Creating language files..."
-babel-node ./createLanguages.js
+meteor babel-node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))

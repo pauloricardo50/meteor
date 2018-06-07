@@ -10,7 +10,8 @@ import { LOANS_COLLECTION } from '../constants';
 class FileService {
   addFileToDoc = ({ collection, docId, documentId, file, userIsAdmin }) => {
     const doc = Mongo.Collection.get(collection).findOne(docId);
-    const { uploadCount } = this._getCurrentFileValue({ doc, documentId });
+    const currentFileValue = this._getCurrentFileValue({ doc, documentId });
+    const uploadCount = (currentFileValue && currentFileValue.uploadCount) || 0;
     const uploadCountPrefix = getUploadCountPrefix(uploadCount);
     const newFile = {
       ...file,

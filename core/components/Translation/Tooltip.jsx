@@ -5,10 +5,8 @@ import omit from 'lodash/omit';
 
 import { FormattedMessage } from 'react-intl';
 import Popover from 'react-bootstrap/lib/Popover';
-// import Transition from './Transition';
-import DialogSimple from 'core/components/DialogSimple';
-
-import track from 'core/utils/analytics';
+import DialogSimple from '../DialogSimple';
+import track from '../../utils/analytics';
 
 // Required functions if react motion is used, which wraps the popover
 // and shifts it down or right depending on the placement

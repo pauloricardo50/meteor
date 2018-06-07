@@ -1,0 +1,25 @@
+.summary-component {
+  padding: 16px;
+
+  color: #FFF;
+  border-radius: 4px;
+  background-color: $primary;
+}
+
+.summary-component h1,
+.summary-component h2,
+.summary-component h3,
+.summary-component h4,
+.summary-component h5,
+.summary-component h6 {
+  margin: 0;
+
+  opacity: .6;
+  color: #FFF;
+
+  font-weight: 400;
+}
+
+.summary-component label {
+  margin: 0;
+}

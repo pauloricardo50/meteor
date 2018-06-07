@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import range from 'lodash/range';
 import {
   Borrowers,
   Loans,
@@ -12,20 +13,22 @@ import {
 import UserService from '../api/users/UserService';
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
+import { AUCTION_STATUS } from '../api/loans/loanConstants';
 import {
   DEV_COUNT,
   USER_COUNT,
   ADMIN_COUNT,
-  MAX_LOANS_PER_USER,
+  UNOWNED_LOANS_COUNT,
+  LOANS_PER_USER,
 } from './config';
 import { createFakeLoan } from './loans';
 import { createFakeTask, deleteUsersTasks } from './tasks';
-import { createFakeUsers, getFakeUsersIds } from './users';
+import { createFakeUsers, getFakeUsersIds, createUser } from './users';
 import { createFakeOffer } from './offers';
 import { ROLES } from '../api/users/userConstants';
+import { E2E_USER_EMAIL } from './constants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
-const generateNumberOfLoans = max => Math.floor(Math.random() * max + 1);
 
 const getAdmins = (currentUserEmail) => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
@@ -51,6 +54,44 @@ const deleteUsersRelatedData = (usersToDelete) => {
 const deleteUsers = usersToDelete =>
   Users.remove({ _id: { $in: usersToDelete } });
 
+const createFakeLoanFixture = ({
+  userId,
+  step,
+  adminId,
+  completeFiles,
+  auctionStatus,
+  twoBorrowers,
+}) => {
+  const loanId = createFakeLoan({
+    userId,
+    step,
+    completeFiles,
+    auctionStatus,
+    twoBorrowers,
+  });
+  createFakeTask(loanId, adminId);
+  createFakeOffer(loanId, userId);
+};
+
+// Create a test user used in app's e2e tests and all the fixtures it needs
+const createTestUserWithData = () => {
+  const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
+
+  const admins = getAdmins();
+
+  // Create step 3 loans with all types of auction statuses for the app's test user
+  Object.keys(AUCTION_STATUS).forEach((statusKey) => {
+    createFakeLoanFixture({
+      step: 3,
+      userId: testUserId,
+      adminId: admins[0]._id,
+      completeFiles: true,
+      auctionStatus: AUCTION_STATUS[statusKey],
+      twoBorrowers: true,
+    });
+  });
+};
+
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
@@ -61,28 +102,43 @@ Meteor.methods({
         ROLES.USER,
         currentUserEmail,
       );
-      newUsers.map((userId) => {
+
+      // for each regular fixture user, create a loan with a certain step
+      newUsers.forEach((userId, index) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
-        const numberOfLoans = generateNumberOfLoans(MAX_LOANS_PER_USER);
-        for (let i = 0; i < numberOfLoans; i += 1) {
-          const loanId = createFakeLoan(userId, adminId);
-          createFakeTask(loanId, adminId);
-          createFakeOffer(loanId, userId);
-        }
-        return userId;
+
+        // based on index, always generate 1, 2 and 3 numbers
+        const loanStep = index % 3 + 1;
+
+        range(LOANS_PER_USER).forEach(() => {
+          createFakeLoanFixture({
+            step: loanStep,
+            userId,
+            adminId,
+            twoBorrowers: true,
+          });
+        });
       });
+
+      range(UNOWNED_LOANS_COUNT).forEach(() => {
+        createFakeLoan({});
+      });
+
+      createTestUserWithData();
     }
   },
 
-  purgeDatabase(currentUserId) {
+  async purgeDatabase(currentUserId) {
     check(currentUserId, String);
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
-      Borrowers.remove({});
-      Loans.remove({});
-      Offers.remove({});
-      Properties.remove({});
-      Tasks.remove({});
-      Users.remove({ _id: { $ne: currentUserId } });
+      await Promise.all([
+        Borrowers.rawCollection().remove({}),
+        Offers.rawCollection().remove({}),
+        Loans.rawCollection().remove({}),
+        Properties.rawCollection().remove({}),
+        Tasks.rawCollection().remove({}),
+        Users.rawCollection().remove({ _id: { $ne: currentUserId } }),
+      ]);
     }
   },
 

@@ -17,19 +17,35 @@ class MapWithMarker extends Component {
   }
 
   render() {
-    const { address } = this.props;
+    const { address, options, id } = this.props;
     const { latlng } = this.state;
 
-    if (!latlng) {
-      return null;
-    }
-
-    return <GoogleMap address={address} latlng={latlng} id="some-id" />;
+    return (
+      <div className="map-with-marker">
+        {latlng ? (
+          <GoogleMap
+            address={address}
+            latlng={latlng}
+            id={id}
+            options={options}
+          />
+        ) : (
+          <p className="description">Adresse pas trouvée!</p>
+        )}
+      </div>
+    );
   }
 }
 
 MapWithMarker.propTypes = {
   address: PropTypes.string.isRequired,
+  options: PropTypes.object,
+  id: PropTypes.string,
+};
+
+MapWithMarker.defaultProps = {
+  options: undefined,
+  id: undefined,
 };
 
 export default GoogleMapContainer(MapWithMarker);

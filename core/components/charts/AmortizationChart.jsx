@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactHighcharts from 'react-highcharts';
-// import ReactHighstock from 'react-highcharts/ReactHighstock';
-// const ReactHighcharts = require('react-highcharts').withHighcharts(ReactHighstock);
 
 import { injectIntl } from 'react-intl';
 
@@ -13,7 +11,6 @@ import {
   getPropAndWork,
 } from 'core/utils/loanFunctions';
 import colors from 'core/config/colors';
-import withLoan from 'core/containers/withLoan';
 
 const chartColors = {
   debt: colors.charts[0],
@@ -128,13 +125,6 @@ class AmortizationChart extends Component {
           yAxis: 1,
           color: chartColors.amortization,
         },
-        // {
-        //   name: f({ id: 'AmortizationChart.refinancingFlag' }),
-        //   type: 'flags',
-        //   y: 0,
-        //   data: [{ x: new Date().getFullYear() + 10 }],
-        //   shape: 'squarepin',
-        // },
       ],
       responsive: {
         rules: [
@@ -193,4 +183,4 @@ AmortizationChart.defaultProps = {
   totalYears: 20,
 };
 
-export default injectIntl(withLoan(AmortizationChart));
+export default injectIntl(AmortizationChart);

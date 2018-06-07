@@ -1,12 +1,5 @@
 // Use old-school javascript in this file to make it work nicely
 
-const packageStubs = [
-  {
-    expose: 'meteor',
-    src: 'imports/core/utils/testHelpers/meteorStubs',
-  },
-];
-
 function setWallabyConfig(name, overrides = {}) {
   return function setupWallaby(wallaby) {
     return {
@@ -22,17 +15,26 @@ function setWallabyConfig(name, overrides = {}) {
         '!imports/core/assets/**',
         // Don't load tests here, but in the next variable
         '!imports/**/*.spec.js*',
-        // For a weird reason wallaby fucks up on .json files
-        '!**/*.json',
+        // Load language files for some tests
+        'lang/*.json',
       ],
       tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
       compilers: {
-        '**/*.js*': wallaby.compilers.babel({
-          presets: ['env', 'react', 'stage-0'],
+        '**/*.js?(x)': wallaby.compilers.babel({
+          presets: ['meteor', '@babel/preset-react'],
           plugins: [
+            '@babel/plugin-transform-modules-commonjs',
+            '@babel/plugin-proposal-class-properties',
+            'meteor-babel/plugins/dynamic-import',
             [
-              'module-alias',
-              [{ src: 'imports/core', expose: 'core' }, ...packageStubs],
+              'module-resolver',
+              {
+                root: ['.'],
+                alias: {
+                  core: './imports/core',
+                  meteor: './imports/core/utils/testHelpers/meteorStubs',
+                },
+              },
             ],
           ],
         }),
@@ -41,6 +43,19 @@ function setWallabyConfig(name, overrides = {}) {
       setup() {
         global.IS_WALLABY = true;
         global.fetch = require('node-fetch');
+
+        // Activate JSDOM only if needed, it crashes production servers
+
+        // Configure jsdom for react mount tests
+        // const jsdom = require('jsdom');
+        // const { JSDOM } = jsdom;
+        // const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
+        // global.document = document;
+        // global.window = document.defaultView;
+        // global.navigator = {
+        //   userAgent: 'node.js',
+        //   platform: 'Win32',
+        // };
       },
       ...overrides,
     };

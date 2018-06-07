@@ -47,6 +47,8 @@ export const INTEREST_RATES = {
   YEARS_5: 'interest5',
   YEARS_10: 'interest10',
   YEARS_15: 'interest15',
+  YEARS_20: 'interest20',
+  YEARS_25: 'interest25',
 };
 
 export const OWNER = {
@@ -105,4 +107,5 @@ export const LOAN_QUERIES = {
   ADMIN_LOANS: 'ADMIN_LOANS',
   LOANS_ASSIGNED_TO: 'LOANS_ASSIGNED_TO',
   SIDENAV_LOANS: 'SIDENAV_LOANS',
+  USER_LOANS: 'USER_LOANS',
 };

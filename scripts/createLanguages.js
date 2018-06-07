@@ -17,7 +17,6 @@ const config = {
       path: '../microservices/app',
       exceptions: [
         'steps',
-        'ProjectBarChart',
         'LoginPage',
         'Forms',
         'files',
@@ -29,6 +28,7 @@ const config = {
         'ArrayInput',
         'Impersonation',
         'AdminFilesTab',
+        'AmortizationChart',
       ],
     },
     {
@@ -37,16 +37,10 @@ const config = {
       exceptions: ['Start2Form', 'Forms', 'offer'],
     },
     {
-      id: 'lender',
-      path: '../microservices/lender',
-      exceptions: ['LoginPage'],
-    },
-    {
       id: 'admin',
       path: '../microservices/admin',
       exceptions: [
         'steps',
-        'ProjectBarChart',
         'LoginPage',
         'Forms',
         'files',
@@ -81,7 +75,8 @@ const config = {
     'File',
     'property',
     'roles',
-    'Form'
+    'Form',
+    'TooltipSynonyms',
   ],
 };
 

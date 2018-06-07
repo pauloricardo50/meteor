@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FormControlLabel } from 'material-ui/Form';
-import MuiCheckbox from 'material-ui/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import MuiCheckbox from '@material-ui/core/Checkbox';
 
 const Checkbox = ({ value, onChange, label, id, disabled, style }) => (
   <FormControlLabel
@@ -17,11 +17,12 @@ Checkbox.propTypes = {
   value: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   label: PropTypes.node,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
 Checkbox.defaultProps = {
+  id: undefined,
   label: undefined,
   disabled: false,
 };

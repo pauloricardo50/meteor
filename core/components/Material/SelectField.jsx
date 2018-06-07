@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MuiSelectField from 'material-ui/SelectField';
+import MuiSelectField from '@material-ui/core/SelectField';
 
 const SelectField = props => <MuiSelectField {...props} />;
 

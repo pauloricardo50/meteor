@@ -3,43 +3,51 @@ import { GoogleMaps } from 'meteor/dburles:google-maps';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import merge from 'lodash/merge';
+
+import defaultOptions from './defaultOptions';
 
 export default class GoogleMap extends Component {
   componentDidMount() {
+    const { id, latlng, options } = this.props;
+    const combinedOptions = merge(
+      {},
+      defaultOptions,
+      { center: latlng },
+      options,
+    );
+
     GoogleMaps.create({
-      name: this.name,
+      name: id,
       element: this.map,
-      options: {
-        center: this.props.latlng,
-        zoom: 14,
-        scrollwheel: false,
-        disableDefaultUI: true,
-        fullscreenControl: true,
-      },
+      options: combinedOptions,
     });
 
     this.addMarker();
   }
 
   componentWillUnmount() {
-    if (GoogleMaps.maps[this.name]) {
-      window.google.maps.event.clearInstanceListeners(GoogleMaps.maps[this.name].instance);
-      delete GoogleMaps.maps[this.name];
+    const { id } = this.props;
+    if (GoogleMaps.maps[id]) {
+      window.google.maps.event.clearInstanceListeners(GoogleMaps.maps[id].instance);
+      delete GoogleMaps.maps[id];
     }
   }
 
   addMarker = () => {
-    GoogleMaps.ready(this.name, (map) => {
+    const { id, latlng, address } = this.props;
+
+    GoogleMaps.ready(id, (map) => {
       const infowindow = new window.google.maps.InfoWindow({
-        content: this.props.address,
+        content: address,
       });
 
-      map.instance.setCenter(this.props.latlng);
+      map.instance.setCenter(latlng);
 
       const marker = new window.google.maps.Marker({
         draggable: false,
         animation: window.google.maps.Animation.DROP,
-        position: this.props.latlng,
+        position: latlng,
         map: map.instance,
         id: 'propertyMarker',
       });
@@ -68,9 +76,11 @@ GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
   address: PropTypes.string,
+  options: PropTypes.object,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
   address: undefined,
+  options: {},
 };

@@ -2,51 +2,56 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
   width: 100%;
 }
 
 .widget1-single-input .box {
   display: flex;
   flex-direction: column;
-  background-color: rgb(244, 247, 249);
+
   border-radius: 4px;
+  background-color: rgb(244, 247, 249);
 }
 
-.widget1-single-input .box h4 {
-  padding: 4px 16px;
+.widget1-single-input .box label {
   margin: 0;
+  padding: 4px 16px;
 }
 
 .widget1-single-input .box .box-content {
-  background-color: white;
-  padding: 8px;
-  margin: 4px;
-  border-radius: 4px;
   display: flex;
   flex-direction: column;
+
+  margin: 4px;
+  padding: 8px;
+
+  border-radius: 4px;
+  background-color: white;
 }
 
 .widget1-single-input .widget1-input {
   display: flex;
-  flex-direction: row;
   align-items: center;
-}
+  flex-direction: row;
 
-.widget1-single-input .widget1-input .currency {
-  padding-right: 8px;
-  color: $primary;
+   > * {
+    align-items: center;
+
+    color: $primary;
+  }
+
+  .widget1-input-currency {
+    color: $primary;
+  }
 }
 
 .widget1-single-input .widget1-input input {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  color: $primary;
-  font-size: 32px;
   width: 100%;
 
-  // Fix for Firefox and android
-  min-width: 0;
+  color: $primary;
+
+  font-size: 32px;
 }
 
 @media (max-width: $med) {
@@ -57,8 +62,9 @@
 
 .widget1-single-input .widget1-slider {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
+
   padding-left: 8px;
 }
 
@@ -69,5 +75,5 @@
 
 .widget1-single-input .widget1-input.auto input,
 .widget1-single-input .widget1-input.auto .currency {
-  opacity: 0.5;
+  opacity: .5;
 }

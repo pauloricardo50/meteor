@@ -1,11 +1,11 @@
 import { GENDER, USAGE_TYPE } from '../api/constants';
-import constants from '../config/constants';
+import * as constants from '../config/constants';
 import {
-  getLoanValue,
-  getPropAndWork,
-  getMaintenance,
-  getFees,
-} from './loanFunctions';
+  NOTARY_FEES,
+  MAINTENANCE_FINMA,
+  INTERESTS_FINMA,
+} from '../config/financeConstants';
+import { getLoanValue, getPropAndWork, getMaintenance } from './loanFunctions';
 import {
   getFortune,
   getInsuranceFortune,
@@ -14,13 +14,15 @@ import {
 } from './borrowerFunctions';
 import { arrayify } from './general';
 
+export const getRetirementForGender = gender => (gender === GENDER.F ? 64 : 65);
+
 // Determine retirement age depending on the gender of the borrowers
 // Return a positive value only, negative values rounded to 0
 export const getYearsToRetirement = (age1, age2, gender1, gender2) => {
-  const retirement1 = gender1 === GENDER.F ? 64 : 65;
+  const retirement1 = getRetirementForGender(gender1);
   let retirement2 = null;
   if (gender2) {
-    retirement2 = gender2 === GENDER.F ? 64 : 65;
+    retirement2 = getRetirementForGender(gender2);
   }
 
   // Substract age to determine remaining time to retirement for both borrowers
@@ -114,10 +116,10 @@ export const getMonthlyPayment = ({ loan, borrowers, property }) => {
 
 export const getTheoreticalMonthly = ({ loan, borrowers, property }) => {
   const maintenance =
-    getPropAndWork({ loan, property }) * constants.maintenance / 12;
+    getPropAndWork({ loan, property }) * MAINTENANCE_FINMA / 12;
   const loanValue = getLoanValue({ loan, property });
 
-  const interests = loanValue * constants.interests / 12;
+  const interests = loanValue * INTERESTS_FINMA / 12;
   const { amortization } = getAmortization({
     loan,
     borrowers,
@@ -152,8 +154,7 @@ export const canAffordRank1 = ({ loan, borrowers, property }) => {
   const totalFortune = getTotalFortune({ borrowers });
   const fortune = getFortune({ borrowers });
   const insuranceFortune = getInsuranceFortune({ borrowers });
-  const fortuneRequired =
-    0.35 * propAndWork + property.value * constants.notaryFees;
+  const fortuneRequired = 0.35 * propAndWork + property.value * NOTARY_FEES;
 
   if (fortune >= fortuneRequired) {
     return true;

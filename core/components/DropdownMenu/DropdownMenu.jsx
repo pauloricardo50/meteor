@@ -1,109 +1,76 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import MenuItem from '../Material/MenuItem';
-import Divider from '../Material/Divider';
 import Menu from '../Material/Menu';
 import IconButton from '../IconButton';
+import DropdownMenuContainer from './DropdownMenuContainer';
 
-const ITEM_HEIGHT = 48;
+const styles = theme => ({
+  menuItem: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& $primary, & $icon': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+  primary: {},
+  icon: {},
+});
 
-export default class DropdownMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isOpen: false, anchorEl: null };
-  }
+const DropdownMenu = ({
+  isOpen,
+  anchorEl,
+  handleOpen,
+  handleClose,
+  iconType,
+  options,
+  style,
+  tooltip,
+  tooltipPlacement,
+}) => (
+  <div style={{ ...style }}>
+    <IconButton
+      onClick={(event) => {
+        // Prevent background from receiving clicks
+        event.stopPropagation();
+        // Pass currentTarget directly, to avoid it resetting to null
+        // https://stackoverflow.com/questions/17607766/how-come-my-event-currenttarget-is-changing-automatically
+        handleOpen(event.currentTarget);
+      }}
+      type={iconType}
+      tooltip={tooltip}
+      tooltipPlacement={tooltipPlacement}
+    />
 
-  handleOpen = (event) => {
-    event.stopPropagation();
-    this.setState({ isOpen: true, anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => this.setState({ isOpen: false });
-
-  mapOption = ({
-    id,
-    onClick,
-    link,
-    icon,
-    label,
-    dividerTop,
-    dividerBottom,
-    tooltip,
-    ...otherProps
-  }) => {
-    const arr = [
-      <MenuItem
-        key={id}
-        onClick={(event, index) => {
-          event.stopPropagation();
-          if (onClick) {
-            onClick(index);
-          }
-          this.handleClose();
-        }}
-        {...otherProps}
-        component={link ? Link : null}
-      >
-        {icon && (
-          <IconButton
-            type={icon}
-            style={{ marginRight: 8 }}
-            tooltip={tooltip}
-          />
-        )}
-        {label}
-      </MenuItem>,
-    ];
-
-    // Add support for adding Dividers at the top or bottom of an option
-    if (dividerTop) {
-      arr.unshift(<Divider key={`divider${id}`} />);
-    } else if (dividerBottom) {
-      arr.push(<Divider key={`divider${id}`} />);
-    }
-
-    return arr;
-  };
-
-  render() {
-    const { iconType, options, style, tooltip, tooltipPlacement } = this.props;
-    const { isOpen, anchorEl } = this.state;
-
-    return (
-      <div style={{ ...style }}>
-        <IconButton
-          onClick={this.handleOpen}
-          type={iconType}
-          tooltip={tooltip}
-          tooltipPlacement={tooltipPlacement}
-        />
-
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          open={isOpen}
-          onClose={this.handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-            },
-          }}
-        >
-          {options.map(this.mapOption)}
-        </Menu>
-      </div>
-    );
-  }
-}
+    <Menu
+      id="long-menu"
+      anchorEl={anchorEl}
+      open={isOpen}
+      onClose={handleClose}
+    >
+      {options}
+    </Menu>
+  </div>
+);
 
 DropdownMenu.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  anchorEl: PropTypes.any,
+  handleOpen: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
   iconType: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  options: PropTypes.array.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
+  tooltip: PropTypes.node,
+  tooltipPlacement: PropTypes.string,
 };
 
 DropdownMenu.defaultProps = {
+  anchorEl: null,
   style: {},
+  tooltip: undefined,
+  tooltipPlacement: undefined,
 };
+
+export default DropdownMenuContainer(DropdownMenu);

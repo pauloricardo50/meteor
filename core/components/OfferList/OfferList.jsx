@@ -68,6 +68,7 @@ class OfferList extends Component {
   render() {
     const { loan, offers, disabled, property, allowDelete } = this.props;
     const { sort, isAscending } = this.state;
+
     const filteredOffers = sortOffers(
       extractOffers({ offers, loan, property }),
       sort,
@@ -109,6 +110,7 @@ class OfferList extends Component {
 OfferList.propTypes = {
   loan: PropTypes.object.isRequired,
   offers: PropTypes.array,
+  property: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
   allowDelete: PropTypes.bool,
 };

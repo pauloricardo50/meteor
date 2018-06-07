@@ -6,7 +6,6 @@ export const ROLES = {
   USER: 'user',
   ADMIN: 'admin',
   DEV: 'dev',
-  LENDER: 'lender',
 };
 
 export const USER_QUERIES = {
@@ -14,6 +13,7 @@ export const USER_QUERIES = {
   ADMIN_USER: 'ADMIN_USER',
   ADMINS: 'ADMINS',
   SIDENAV_USERS: 'SIDENAV_USERS',
+  CURRENT_USER: 'CURRENT_USER',
 };
 
 export const USER_EVENTS = {

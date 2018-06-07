@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
 
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 import classnames from 'classnames';
 
 import { swissFrancMask, percentMask } from '../utils/textMasks';
 import { toNumber } from '../utils/conversionFunctions';
-import constants from '../config/constants';
 
 const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   if (simpleOnChange) {
-    return {
-      onChangeHandler: onChange,
-      value,
-    };
+    return { onChangeHandler: onChange, value };
   }
 
   switch (type) {
@@ -25,7 +24,7 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
       onChangeHandler: event => onChange(id, toNumber(event.target.value)),
       showMask: true,
       mask: swissFrancMask,
-      placeholder: constants.getCurrency(),
+      placeholder: 0,
       value,
     };
   case 'percent':
@@ -72,7 +71,6 @@ const TextInput = (props) => {
     id,
     info,
     error,
-    inputRef,
     placeholder,
     fullWidth,
     onChange,
@@ -82,6 +80,8 @@ const TextInput = (props) => {
     InputProps,
     noIntl,
     classes,
+    simpleOnChange,
+    inputRef,
     ...otherProps
   } = props;
 
@@ -136,8 +136,12 @@ const TextInput = (props) => {
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
-          ref: inputRef,
         }}
+        startAdornment={
+          props.type === 'money' ? (
+            <InputAdornment position="start">CHF</InputAdornment>
+          ) : null
+        }
       />
       {info && <FormHelperText>{info}</FormHelperText>}
     </FormControl>
@@ -145,22 +149,22 @@ const TextInput = (props) => {
 };
 
 TextInput.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   onChange: PropTypes.func,
   type: PropTypes.string,
   info: PropTypes.node,
-  placeholder: PropTypes.string,
+  placeholder: PropTypes.node,
   error: PropTypes.bool,
   inputComponent: PropTypes.func,
   inputProps: PropTypes.object,
   noIntl: PropTypes.bool,
-  inputRef: PropTypes.func,
   simpleOnChange: PropTypes.bool, // Removes all onChange modifications
 };
 
 TextInput.defaultProps = {
+  id: undefined,
   onChange: undefined,
   label: '',
   value: undefined,
@@ -171,7 +175,6 @@ TextInput.defaultProps = {
   inputComponent: null,
   inputProps: undefined,
   noIntl: false,
-  inputRef: undefined,
   simpleOnChange: false,
 };
 

@@ -1,5 +1,7 @@
 import { fakeDocument } from 'core/api/files/fileHelpers';
 
+export const emptyFakeBorrower = {};
+
 export const fakeBorrower = {
   firstName: 'Marie',
   lastName: 'Rochat',

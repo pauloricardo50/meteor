@@ -2,12 +2,15 @@
 import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from 'core/utils/testHelpers';
+import {
+  stubCollections,
+  generateTaskRelatedToAFile,
+} from 'core/utils/testHelpers';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { validateTask } from '../../taskValidation';
-import { TASK_TYPE, AUCTION_STATUS } from '../../../constants';
+import { TASK_TYPE, AUCTION_STATUS, FILE_STATUS } from '../../../constants';
 
 describe('Task Validation', () => {
   it('throws if no task is given', () => {
@@ -95,6 +98,25 @@ describe('Task Validation', () => {
 
     describe('LENDER_CHOSEN', () => {
       it('works');
+    });
+
+    describe('USER_ADDED_FILE', () => {
+      beforeEach(() => {});
+
+      it('returns true when the related file is valid', () => {
+        const task = generateTaskRelatedToAFile({ status: FILE_STATUS.VALID });
+        expect(validateTask(task)).to.equal(true);
+      });
+
+      it('returns true when the related file is invalid', () => {
+        const task = generateTaskRelatedToAFile({ status: FILE_STATUS.ERROR });
+        expect(validateTask(task)).to.equal(true);
+      });
+
+      it('returns false when the related file is not valid or invalid', () => {
+        const task = generateTaskRelatedToAFile({ status: FILE_STATUS.ERROR });
+        expect(validateTask(task)).to.equal(true);
+      });
     });
   });
 });

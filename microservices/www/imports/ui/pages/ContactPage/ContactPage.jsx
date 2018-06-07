@@ -1,15 +1,14 @@
 import React from 'react';
-import Mailto from 'react-protected-mailto';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
-import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
-import { PHONE, EMAIL, ADDRESS, MAPS_ADDRESS } from './contactConstants';
+import { ADDRESS, MAPS_ADDRESS } from './contactConstants';
 
 import ContactUsForm from '../../components/ContactUsForm';
+import ContactPageInformation from './ContactPageInformation';
 
 const ContactPage = () => (
   <WwwLayout className="contact-page">
@@ -37,23 +36,12 @@ const ContactPage = () => (
       >
         Directions
       </Button>
-      <MapWithMarker address={ADDRESS} className="map" />
+      <MapWithMarker address={ADDRESS} className="map" options={{ zoom: 12 }} />
     </div>
     <WwwLayout.Footer transparent={false}>
       <WwwLayout.Footer.Top>
         <div className="contact-footer">
-          <div className="email">
-            <Icon type="mail" className="icon" />
-            <h3>
-              <Mailto email={EMAIL} />
-            </h3>
-          </div>
-          <div className="phone">
-            <Icon type="phone" className="icon" />
-            <h3>
-              <Mailto tel={PHONE} />
-            </h3>
-          </div>
+          <ContactPageInformation />
         </div>
       </WwwLayout.Footer.Top>
     </WwwLayout.Footer>

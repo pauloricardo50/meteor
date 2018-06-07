@@ -1,31 +1,36 @@
 @import './DescriptionItem/DescriptionItem.scss';
-
-$progression-color: #8db6e6;
+$progression-color: #8DB6E6;
 
 .home-page-description {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
   padding: 16px;
 }
 
 .home-page-description .title {
   align-self: center;
+
   color: $primary;
 }
 
 .home-page-description .seo-title {
   align-self: center;
-  color: $primary;
+
   padding-top: 100px;
+
+  color: $primary;
 }
 
 .home-page-description .description {
   display: flex;
   flex-direction: column;
+
   max-width: 800px;
-  text-align: justify;
-  
+
+  // text-align: justify;
+
   span {
     width: 100%;
   }
@@ -33,26 +38,31 @@ $progression-color: #8db6e6;
 
 .home-page-description .steps {
   position: relative;
+
   display: flex;
   flex-direction: column;
+
   width: 100%;
 }
 
 .home-page-description .progression {
   position: absolute;
-  width: 100%;
-  height: calc(#{$step-height} * 4);
   top: calc(#{$step-height}/ 2);
   left: 50%;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  width: 100%;
+  height: calc(#{$step-height} * 4);
 }
 
 @media (max-width: $break-off) {
   .home-page-description .progression {
-    left: 10%;
     top: calc(#{$image-height} + 16px);
+    left: 10%;
+
     height: calc((#{$step-height} + 80px) * 4);
   }
 }
@@ -60,26 +70,39 @@ $progression-color: #8db6e6;
 .home-page-description .progression .segment {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   flex-grow: 1;
+  justify-content: space-around;
 }
 
 .home-page-description .progression .dot {
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  border: 2px solid $progression-color;
   flex-shrink: 0;
+
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid $progression-color;
+  border-radius: 50%;
 }
 
 .home-page-description .progression .dash {
-  height: 3px;
   width: 2px;
+  height: 3px;
   margin-left: 9px;
+
   background-color: $progression-color;
 }
 
-.home-page-description-seo-a {
+// For width: auto; specificity
+span.home-page-description-seo-click.home-page-description-seo-click {
   display: flex;
   align-items: center;
+  align-self: center;
+
+  width: auto;
+
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

@@ -2,11 +2,19 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
-import Tooltip from 'material-ui/Tooltip';
-import { completeFakeBorrower } from '../../api/borrowers/fakes';
-import { loanStep1, loanStep2, loanStep3 } from '../../api/loans/fakes';
+import Tooltip from '@material-ui/core/Tooltip';
+import {
+  completeFakeBorrower,
+  emptyFakeBorrower,
+} from '../../api/borrowers/fakes';
+import {
+  loanStep1,
+  loanStep2,
+  loanStep3,
+  emptyLoan,
+} from '../../api/loans/fakes';
 import { getRandomOffer } from '../../api/offers/fakes';
-import { fakeProperty } from '../../api/properties/fakes';
+import { fakeProperty, emptyProperty } from '../../api/properties/fakes';
 import {
   borrowerInsert,
   propertyInsert,
@@ -16,6 +24,32 @@ import {
 } from '../../api';
 import Button from '../Button';
 import Icon from '../Icon';
+
+const addEmptyStep1Loan = (twoBorrowers) => {
+  const borrowerIds = [];
+  borrowerInsert
+    .run({ borrower: emptyFakeBorrower })
+    .then((id1) => {
+      borrowerIds.push(id1);
+      return twoBorrowers
+        ? borrowerInsert.run({ borrower: emptyFakeBorrower })
+        : false;
+    })
+    .then((id2) => {
+      if (id2) {
+        borrowerIds.push(id2);
+      }
+
+      return propertyInsert.run({ property: emptyProperty });
+    })
+    .then((propertyId) => {
+      const loan = emptyLoan;
+      loan.borrowerIds = borrowerIds;
+      loan.propertyId = propertyId;
+      loanInsert.run({ loan });
+    })
+    .catch(console.log);
+};
 
 const addStep1Loan = (twoBorrowers) => {
   const borrowerIds = [];
@@ -148,7 +182,7 @@ export default class DevPage extends Component {
 
     if (!Meteor.isProduction || Meteor.isStaging) {
       return (
-        <div>
+        <section id="dev-page">
           <div>
             {!Meteor.isDevelopment ? (
               <h4 className="error">
@@ -235,6 +269,14 @@ export default class DevPage extends Component {
             raised
             secondary
             className="mr20"
+            onClick={() => addEmptyStep1Loan(twoBorrowers)}
+          >
+            Empty step 1 Loan
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
             onClick={() => addStep1Loan(twoBorrowers)}
           >
             step 1 Loan
@@ -294,7 +336,7 @@ export default class DevPage extends Component {
               Property Task
             </Button>
           </Tooltip>
-        </div>
+        </section>
       );
     }
     return null;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MuiDivider from 'material-ui/Divider';
+import MuiDivider from '@material-ui/core/Divider';
 
 const Divider = props => <MuiDivider {...props} />;
 

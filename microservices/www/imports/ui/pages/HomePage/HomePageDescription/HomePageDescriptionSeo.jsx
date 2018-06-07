@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { withState } from 'recompose';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
 // TODO: Actually optimize this for SEO, don't hide it but show it with display none
@@ -17,28 +17,26 @@ const HomePageDescriptionSeo = ({ showText, setShowText }) => {
         <T id="HomePageDescription.description3" />
         <br />
         <T id="HomePageDescription.description4" />
-        <a
-          href="javascript:;"
-          className="home-page-description-seo-a"
+        <span
+          className="home-page-description-seo-click"
           onClick={() => setShowText(false)}
         >
           <T id="HomePageDescriptionSeo.less" />
           <Icon type="up" />
-        </a>
+        </span>
       </p>
     );
   }
   return (
     <p className="description">
       <T id="HomePageDescription.description" />
-      <a
-        href="javascript:;"
-        className="home-page-description-seo-a"
+      <span
+        className="home-page-description-seo-click"
         onClick={() => setShowText(true)}
       >
         <T id="HomePageDescriptionSeo.more" />
         <Icon type="down" />
-      </a>
+      </span>
     </p>
   );
 };

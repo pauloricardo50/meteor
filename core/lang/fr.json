@@ -1,4 +1,158 @@
 {
+  "steps.borrowers.title": "Emprunteurs",
+  "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
+  "tooltip2.financialPlan": "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
+
+  "tooltip.incomeRatio": "Le ratio des charges financières théoriques et de vos revenus considérés est également appelé le taux d’effort par les prêteurs.",
+  "tooltip2.incomeRatio": "Tous les prêteurs ont des critères différents pour calculer ce ratio. Ce calcul permet aux prêteurs de déterminer s’ils considèrent que vous pourrez assumer les charges du prêt hypothécaire que vous sollicitez même en cas de forte hausse des taux. En effet, les taux d’intérêts sont très bas aujourd’hui. Mais pour éviter une crise économique en cas de forte hausse des taux d’intérêt, les banques ont le devoir de prendre en compte une possible hausse des taux.{verticalSpace}C’est pour cela que le taux d’intérêt théorique imposé par la FINMA est souvent calculé à hauteur de 5%. A ce taux vous devez prendre en compte un amortissement et des charges d’entretien également théorique.",
+  "tooltip.income": "La somme cumulée des revenus bruts que perçoivent tous les emprunteurs",
+  "tooltip2.income": "Tous les prêteurs ont des critères différents pour calculer les revenus disponibles des emprunteurs. Ce calcul permet aux prêteurs d’identifier si les emprunteurs ont la capacité d’assumer la charge financière que va générer le financement hypothécaire selon les règles établies par la FINMA.{verticalSpace}Voici un exemple de calcul de revenus considérés :{verticalSpace}Salaire brut de tous les emprunteurs, (+) Derniers bonus considérés à 50%, (+) Allocations Familiales, (+) Autres allocations / pensions, (+) Revenus de la Fortune immobilière, (+) Revenus de la Fortune mobilière, (-) Loyers existants, (-) Leasings et autres charges d’intérêt et d’amortissement de crédit existant, (-) Pensions",
+  "tooltip.bonus": "Revenus variables supplémentaires à votre salaire qui ne sont pas un engagement ferme de la part de votre employeur.",
+  "tooltip2.bonus": "Les bonus sont les montants variables que l’emprunteur perçoit. Les prêteurs ne les prennent pas en considération à 100%.{verticalSpace}Par exemple, si vous avez perçu des bonus ces 3 dernières années de 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
+  "tooltip.borrower": "Celui qui emprunte. La personne qui est à la recherche d’un financement hypothécaire deviendra l’emprunteur lorsque le prêteur aura mis à sa disposition la somme empruntée.",
+  "tooltip.finma": "Autorité fédérale de surveillance des marchés financiers.",
+  "tooltip2.finma": "La FINMA détermine les règles que doivent suivre les banques et les intermédiaires financiers. Elle détermine notamment quelles sont les conditions minimales à remplir pour que vous puissiez obtenir un prêt. Les taux sont très bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
+  "tooltip.interestedLenders": "Nous sommes en contact fréquent avec plus de 15 prêteurs. La quantité de prêteurs intéressés dépend de différents critères.",
+  "tooltip.borrowRatio": "Le ratio du prêt hypothécaire et du prix d’achat (ou de la valeur du logement) est également appelé le taux d’avance par les prêteurs.",
+  "tooltip2.borrowRatio": "Tous les prêteurs ont des critères différents concernant les taux d’avance. Il délimite le montant maximal qu’un emprunteur peut obtenir par rapport au type de bien immobilier. Nous parlons souvent d’un taux d’avance de 80% de la valeur du logement. Cependant certains établissements ont des critères plus stricts et ne peuvent pas dépasser un taux d’avance de 65% de la valeur du logement.",
+
+  "TooltipSynonyms.title": "{count, plural, one {Synonyme} other {Synonymes}}",
+
+  "FaqPage.categories.general": "Général",
+  "FaqPage.categories.services": "Services",
+
+  "FaqPageFaqs.what.question": "C'est quoi e-Potek ?",
+  "FaqPageFaqs.what.answer":
+    "e-Potek SA est une société anonyme basée à Genève spécialisée dans la recherche de financement hypothécaire soumise aux règles imposées par la FINMA.",
+  "FaqPageFaqs.who.question": "Qui a créé e-Potek ?",
+  "FaqPageFaqs.who.answer":
+    "Depuis 2016 : un conseiller hypothécaire (actif depuis plus de 18 ans en Suisse), un conseiller en prévoyance (actif depuis plus de 20 ans en Suisse), ainsi qu’un spécialiste du domaine digital (EPFL & Stanford University) ont unis leurs visions et compétences pour créer e-Potek qui repose sur le savoir faire de plusieurs domaines ainsi qu’un système informatique conçu sur-mesure.",
+  "FaqPageFaqs.forWhom.question": "À qui s’adresse e-Potek ?",
+  "FaqPageFaqs.forWhom.answer":
+    "e-Potek s’adresse à toute personne qui souhaite obtenir le meilleur financement hypothécaire du marché.",
+  "FaqPageFaqs.propertyNotFoundYet.question":
+    "Je n’ai pas encore trouvé mon logement, est-ce que je peux utiliser e-Potek ?",
+  "FaqPageFaqs.propertyNotFoundYet.answer":
+    "Naturellement, il est fortement conseillé de tester votre solvabilité afin d’identifier quel est le montant du prêt maximum que vous pourrez obtenir afin d'affiner vos projets, cliquez {start1Link}. Cela vous permettra d’être proactif et efficace dans vos négociations avec les vendeurs.",
+  "FaqPageFaqs.cost.question": "Combien me coûte le service e-Potek ?",
+  "FaqPageFaqs.cost.answer":
+    "e-Potek ne vous coûte rien. La société perçoit des revenus de la part de la majorité des prêteurs.",
+  "FaqPageFaqs.mandate.question": "C’est quoi le Mandat e-Potek ?",
+  "FaqPageFaqs.mandate.answer":
+    "Le mandat e-Potek définit les engagements d’e-Potek ainsi que les vôtres et permet à e-Potek de vous accompagner auprès du prêteur que vous aurez choisi.",
+  "FaqPageFaqs.cancelMandate.question": "Comment puis-je résilier le mandat ?",
+  "FaqPageFaqs.cancelMandate.answer":
+    "Aucun problème, en tout temps, envoyez simplement votre requête par email à {contactMail}, et vous recevrez une confirmation d’annulation.",
+  "FaqPageFaqs.contact.question":
+    "Comment puis-je contacter un employé de e-Potek ?",
+  "FaqPageFaqs.contact.answer":
+    "Contactez-nous via la page de contact, vous pourrez y laisser un message, ou directement nous joindre par téléphone ({contactPhone}) ou e-mail ({contactMail}).",
+  "FaqPageFaqs.howMuchCanIBorrow.question":
+    "Comment puis-je savoir combien je peux emprunter ?",
+  "FaqPageFaqs.howMuchCanIBorrow.answer":
+    "Utilisez notre calculateur {start1Link}.",
+  "FaqPageFaqs.howToStart.question": "",
+  "FaqPageFaqs.howToStart.answer": "",
+  "FaqPageFaqs.getFinancingCertificate.question":
+    "Comment puis-je obtenir une attestation de financement ?",
+  "FaqPageFaqs.getFinancingCertificate.answer":
+    "Contactez votre conseiller, puis il vous enverra votre attestation.",
+  "FaqPageFaqs.importantElements.question":
+    "Quels sont les sujets importants que je dois anticiper pour mon hypothèque ?",
+  "FaqPageFaqs.importantElements.answer":
+    "Le montant du prêt : Attentions aux incidences fiscales.{verticalSpace}Le type d’amortissement : Possibilité d’optimiser votre fiscalité.{verticalSpace}La durée des taux : Taux fixe vs. Taux variable.{verticalSpace}L’utilisation des fonds propres : Attention aux incidences fiscales (surtout dans le cadre d’une acquisition de résidence principale).",
+  "FaqPageFaqs.howLong.question":
+    "Combien de temps est-ce que ça prend pour obtenir un prêt hypothécaire ?",
+  "FaqPageFaqs.howLong.answer":
+    "Du moment que nous avons toutes les pièces nécessaires un prêt peut être obtenu très rapidement. Afin de ne pas être dans le stress nous suggérons toujours un délai de 1 mois, en sachant que nous avons déjà obtenu des prêt en 48 heures dans des situations d’urgence.",
+  "FaqPageFaqs.specialCases.question":
+    "Mon cas est particulier, est-ce qu’e-Potek peut quand même m’aider ?",
+  "FaqPageFaqs.specialCases.answer":
+    "Avec toutes nos années d’expérience, nous avons vu passer et financé avec succès des milliers de dossiers, des plus simples au très complèxes. Nous pouvons vous assurer que peu importe votre situation, s'il y a une solution, nous la trouverons. N’hésitez pas à nous contacter pour en discuter !{verticalSpace}Quelques exemples de situations complexes : Indépendants et chefs d’entreprise - Rentiers - Acquisitions en famille - Successions.",
+  "FaqPageFaqs.emergencies.question":
+    "J’aimerais acquérir un bien d’urgence car sinon il va me passer entre les mains",
+  "FaqPageFaqs.emergencies.answer":
+    "Nous sommes une équipe très réactive qui mettons la priorité maximale sur notre clientèle. Appelez-nous pour décrire votre cas, et nous vous obtiendrons votre résidence peu importe le jour ou l’heure.",
+
+  "general.here": "ici",
+
+  "OverviewTab.emptyRecap":
+    "Il manque le valeur du bien et/ou les fonds propres voulus pour afficher ce recap",
+
+  "AboutPageTeamRecruiting.title": "Vous !",
+  "AboutPageTeamRecruiting.subtitle": "e-Potek recrute",
+  "AboutPageTeamRecruiting.hoverText": "Voir nos postes ouverts",
+
+  "AboutPagePart1.description":
+    "Les conseillers d’e-Potek sont des professionnels d’expérience, en phase avec les évolutions d’un marché en permanente évolution. L'équipe est composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
+  "AboutPagePart1.title": "À propos d'e-Potek",
+  "AboutPagePart2.title": "Méthodes",
+  "AboutPagePart2.title1": "Classique",
+  "AboutPagePart2.title2": "e-Potek",
+  "AboutPagePart2.description1":
+    "Face aux nombreuses options proposées sur le marché de l’hypothèque, comparer différents prêteurs et produits de financement hypothécaire peut devenir un processus fastidieux.{verticalSpace}Il est ainsi facile de se perdre dans la jungle hypothécaire face à des offres aux conditions de taux hypothécaires apparaissant très avantageuses mais malheureusement valables uniquement sous certaines conditions exceptionnelles et donc applicables qu’à une faible minorité du marché.",
+  "AboutPagePart2.description2":
+    "Soyez accompagné et conseillé par des experts en financement hypothécaire et identifiez facilement les meilleures solutions de financement du marché pour vos projets d’achats immobiliers.{verticalSpace}Profitez d’un outil qu’e-Potek a créé sur-mesure, proposant des solutions rapides et impartiales, vous permettant de structurer de manière efficace vos projets de recherche de financement.",
+
+  "AboutPagePart3.title1": "Un acteur crédible",
+  "AboutPagePart3.description1":
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA et composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
+  "AboutPagePart3.title2": "Un service de premier ordre",
+  "AboutPagePart3.description2":
+    "Disposez de conseils avisés concernant l’optimisation fiscale, les choix relatifs à vos fonds propres, l’expertise de logements ainsi que toutes informations relatives au domaine du financement hypothécaire.",
+
+  "AboutPagePart4.title1": "Un usage facilité",
+  "AboutPagePart4.description1":
+    "e-Potek facilite l’accès aux financements hypothécaires et à leur traitement. La soumission de documents et l’interaction avec le prêteur deviennent plus simples et agréables.",
+  "AboutPagePart4.title0": "Des données fiables",
+  "AboutPagePart4.description0":
+    "Evitez les pièges et soyez au courant des réalités du marché hypothécaire en recevant des conditions de financement sur-mesure et classées par ordre de pertinence.",
+  "AboutPagePart4.title2": "Des dossiers irréprochables",
+  "AboutPagePart4.description2":
+    "Les conseillers e-Potek vérifient l’intégralité des dossiers et documents justificatifs afin qu’ils soient conformes et personnalisés aux directives internes de chaque prêteur.",
+
+  "CareersPage.description":
+    "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.{verticalSpace}Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
+  "CareersPage.title": "Travailler chez e-Potek",
+  "CareersPageJob.hoverText": "Voir l'annonce",
+  "CareersPageList.advisory": "Conseil",
+  "CareersPageList.engineering": "Ingénierie",
+  "CareersPageList.admin": "Opérations",
+  "CareersPageList.emptyDepartment":
+    "Pas de postes ouverts dans ce département pour l'instant. Réessayez demain, ou envoyez nous une candidature spontanée en expliquant ce que vous pensez pouvoir apporter à notre entreprise, et pourquoi nous en aurions besoin !",
+  "InterestsTable.interest1": "1 an",
+  "InterestsTable.interest10": "10 ans",
+  "InterestsTable.interest15": "15 ans",
+  "InterestsTable.interest20": "20 ans",
+  "InterestsTable.interest25": "25 ans",
+  "InterestsTable.interest2": "2 ans",
+  "InterestsTable.interest5": "5 ans",
+  "InterestsTable.interestLibor": "Libor",
+
+  "WwwTopNavLinks.interests": "Nos taux",
+  "WwwTopNavLinks.faq": "FAQ",
+  "WwwTopNavLinks.contact": "Nous contacter",
+  "WwwTopNavLinks.careers": "Carrières",
+  "WwwTopNavLinks.about": "À propos",
+  "InterestsPage.title": "Nos taux hypothécaires",
+  "InterestsPage.description":
+    "e-Potek est ravi de vous présenter sa palette complète de taux hypothécaires reçus de la part des prêteurs lors des dernières négociations. Attention à ne pas oublier que les conditions de taux varient fortement selon les dossiers. Ils dépendent principalement de la solvabilité et du montant emprunté.",
+
+  "InterestsTable.duration": "Durée",
+  "InterestsTable.trend": "Tendance",
+  "InterestsTable.rate": "Taux",
+
+  "DashboardRecapProperty.empty":
+    "Ajoutez l'adresse complète de votre bien pour afficher ce récapitulatif",
+  "AboutPageOffice.title": "Nos bureaux",
+  "AboutPageOffice.description":
+    "Basés à Genève, nous travaillons tous les jours pour transformer le marché de l'hypothèque.",
+
+  "AboutPageTeam.title": "Nos experts vous accompagnent",
+  "AboutPageTeamMember.emailTooltip": "Envoyer un email à {name}",
+  "AboutPageTeamMember.phoneTooltip": "Appeler {name}",
+
+  "WwwFooterLinks.about": "À propos",
   "ContactUsFormSuccess.text": "C'est dans la boite !",
   "Widget1LenderCount.label": "Prêteurs intéressés",
 
@@ -34,6 +188,8 @@
   "OfferAdder.discount": "Rabais (valeur positive)",
 
   "DashboardRecapFinance.title": "Plan financier",
+  "DashboardRecapFinance.empty":
+    "Ajoutez la valeur du bien et vos finances pour afficher ce récapitulatif",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
 
@@ -56,7 +212,6 @@
   "DashboardRecapFinancing.sumTitle": "Financement",
 
   "DashboardRecapChartInfo.label": "Simulation des coûts mensuels",
-  "DashboardRecapChartInfo.revenuePercent": "{revenuePercent}% de vos revenus",
 
   "Recap.property": "Bien immobilier",
   "property.expertise": "Expertise",
@@ -75,12 +230,13 @@
   "Forms.futureOwner.BOTH": "Les deux",
   "Forms.futureOwner.OTHER": "Autre",
   "WwwFooterLinks.info": "Liens utiles",
-  "WwwFooterLinks.faq": "Questions que vous vous posez",
+  "WwwFooterLinks.faq": "FAQ",
   "WwwFooterLinks.contact": "Nous contacter",
   "WwwFooterLinks.careers": "Carrières",
   "WwwFooterLinks.conditions": "Conditions Générales",
+  "WwwFooterLinks.interests": "Nos taux",
   "WwwFooterLinks.company":
-    "e-Potek SA est une société soumise aux règles imposées par la FINMA (organe suprême de contrôle du système financier Suisse).",
+    "e-Potek SA est une société soumise aux règles imposées par la FINMA.",
   "general.start": "Commencer",
 
   "Recap.project": "Projet",
@@ -101,8 +257,6 @@
   "Widget1SingleInput.property": "Prix d'achat",
 
   "HomePageReviewsTitle.title": "Ce qu'on dit à propos d'e-Potek",
-  "HomePageReviewsTitle.description":
-    "Plus que tout, nos clients apprécient nos compétences, notre disponibilité ainsi que notre transparence - c'est ce qui fait notre force.",
   "DescriptionItemText.eligibility.title": "Testez votre éligibilité",
   "DescriptionItemText.eligibility.description":
     "Identifiez le montant que vous pouvez emprunter en quelques minutes",
@@ -148,9 +302,6 @@
   "HomePageDescriptionSeo.less": "Masquer",
   "HomePageDescriptionSeo.more": "En savoir plus",
 
-  "AboutPage.description":
-    "e-Potek vous permet de facilement trouver un prêt hypothécaire dans le canton de Genève. Expansion prévue prochainement.{verticalSpace}L'équipe derrière e-Potek est composée d'entrepreneurs expérimentés dans la finance et les prêts hypothécaires en Suisse.",
-  "AboutPage.title": "Le Prêt Hypothécaire de Demain",
   "AcceptClosingModal.description":
     "Toute l'équipe d'e-Potek vous félicite pour le décaissement de votre prêt hypothécaire, et d'être enfin propriétaire de votre bien immobilier.{verticalSpace}Vous pouvez maintenant utiliser votre tableau de bord e-Potek pour garder un oeil sur votre prochaine échéance de paiement, et consulter les taux lorsque le refinancement s'approchera.",
   "AcceptClosingModal.description2":
@@ -236,9 +387,6 @@
   "BorrowersTable.createdAt": "Créé le",
   "BorrowersTable.name": "Nom",
   "BorrowersTable.updatedAt": "Modifié le",
-  "CareersPage.description":
-    "Nous ne cherchons pas activement de nouveaux candidats en ce moment. Cependant, nous sommes toujours ouverts aux candidatures spontanées, écris-nous à {email}.",
-  "CareersPage.title": "Travailler à e-Potek",
   "ClosingPage.CTA": "Demander le décaissement",
   "ClosingPage.description":
     "Lorsque vous avez soumis les derniers documents, vous pourrez demander à votre prêteur de décaisser le prêt.",
@@ -441,7 +589,7 @@
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",
   "ExpensesChartInterests.years":
     "{years} ans moyen: {value, number, percentage}",
-  "FaqPage.description": "En développement..",
+  "FaqPage.description": "e-Potek répond à toutes vos questions concernant le financement de votre projet.",
   "FaqPage.title": "Questions fréquentes",
   "FieldToggles.customFields": "Champs personnels",
   "FieldToggles.defaultFields": "Champs e-Potek",
@@ -702,12 +850,12 @@
   "Forms.materialsQuality.3": "Très Bon",
   "Forms.minergie": "Est-ce une construction Minergie ?",
   "Forms.otherFortune": "Autre Fortune",
-  "Forms.otherFortune.airplanes": "Aéronefs",
-  "Forms.otherFortune.art": "Objets d'art",
-  "Forms.otherFortune.boats": "Bateaux",
-  "Forms.otherFortune.cars": "Véhicules",
+  "Forms.otherFortune.AIRPLANES": "Aéronefs",
+  "Forms.otherFortune.ART": "Objets d'art",
+  "Forms.otherFortune.BOATS": "Bateaux",
+  "Forms.otherFortune.CARS": "Véhicules",
   "Forms.otherFortune.description": "Type de Fortune",
-  "Forms.otherFortune.jewelry": "Bijoux",
+  "Forms.otherFortune.JEWELRY": "Bijoux",
   "Forms.otherFortune.value": "Valeur",
   "Forms.otherFortune.value.description": "CHF 100 000",
   "Forms.otherIncome": "Autres revenus",
@@ -806,6 +954,7 @@
   "general.close": "Fermer",
   "general.continue": "Continuer",
   "general.delete": "Supprimer",
+  "general.erase": "Effacer",
   "general.download": "Télécharger",
   "general.hide": "Masquer",
   "general.income": "Revenus",
@@ -898,9 +1047,9 @@
   "LoanStrategyPicker.disclaimer":
     "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
   "LoanStrategyPicker.title": "Stratégie de taux",
-  "LoanSummaryList.noLoans": "Aucun hypothèque trouvé!",
+  "LoanSummaryList.noLoans": "Aucune hypothèque trouvée!",
   "LoanTabs.actions": "Actions",
-  "LoanTabs.analytics": "Analytique",
+  "LoanTabs.analytics": "Analytics",
   "LoanTabs.borrowers": "Emprunteurs",
   "LoanTabs.communication": "Communication",
   "LoanTabs.files": "Documents",
@@ -937,6 +1086,8 @@
   "offer.interest1": "Taux 1 an",
   "offer.interest10": "Taux 10 ans",
   "offer.interest15": "Taux 15 ans",
+  "offer.interest20": "Taux 20 ans",
+  "offer.interest25": "Taux 25 ans",
   "offer.interest2": "Taux 2 ans",
   "offer.interest5": "Taux 5 ans",
   "offer.interestLibor": "Taux Libor",
@@ -956,6 +1107,7 @@
   "OfferToggle.standard": "Offres standard ({count})",
   "OfferToggle.standard-short": "Standard",
   "OverviewTab.recap": "Récapitulatif",
+  "DisableUserFormsToggle.canEdit": "Peut modifier",
   "PasswordChange.change": "Changer",
   "PasswordChange.dialogTitle": "Changer mon mot de passe",
   "PasswordChange.oldPassword": "Ancien mot de passe",
@@ -971,9 +1123,6 @@
   "ProcessPageBar.next": "Suivant",
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
-  "ProjectBarChart.fees": "Frais",
-  "ProjectBarChart.property": "Propriété",
-  "ProjectBarChart.title": "Mon Projet",
   "PropertyAdder.add": "Ajouter",
   "PropertyPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
@@ -987,6 +1136,7 @@
   "Recap.borrowRatio2": "Prêt / Valeur du bien",
   "Recap.consideredBonus": "Bonus considéré",
   "Recap.consideredIncome": "Revenus considérés",
+  "Recap.details": "Détails",
   "Recap.expenses": "Charges",
   "Recap.financing": "Financement",
   "Recap.finmaRules": "Règles FINMA",
@@ -1021,6 +1171,9 @@
   "SingleBorrowerPageHeader.age": "{value} ans",
   "SingleBorrowerPageHeader.assignedTo": "Assigné à",
   "SingleBorrowerPageHeader.createdBy": "Créé par",
+  "SinglePropertyPageHeader.assignedTo": "Assigné à",
+  "SinglePropertyPageHeader.createdBy": "Créé par",
+  "SinglePropertyPageHeader.roomCount": "{value} pièces",
   "Start1Page.chartTitle": "Charges estimées",
   "Start1Page.CTA": "Passer au check-up complet",
   "Start1Page.description":
@@ -1165,39 +1318,22 @@
   "StartSignUp.notSignedUp": "Entrez votre nouveau mot de passe",
   "StartSignUp.signedUp":
     "Cette adresse existe déjà, entrez votre mot de passe",
-  "steps.0.subtitle": "5 min",
   "steps.0.title": "0. Passez le test",
-  "steps.1.subtitle": "15 minutes",
   "steps.1.title": "1. Préparez votre dossier",
-  "steps.2.subtitle": "30 minutes",
   "steps.2.title": "2. Trouvez votre prêteur",
-  "steps.3.subtitle": "60 minutes",
   "steps.3.title": "3. Finalisez votre demande",
-  "steps.4.title": "",
-  "steps.auction.subtitle": "2 jours",
   "steps.auction.title": "Envoyez les enchères",
   "steps.auction.waiting": "Enchères en cours...",
-  "steps.closing.subtitle": "30 min",
   "steps.closing.title": "Décaissez votre emprunt",
-  "steps.contract.subtitle": "30 min",
   "steps.contract.title": "Obtenez le contrat",
-  "steps.files.subtitle": "15 min",
   "steps.files.title": "Uploadez vos documents",
-  "steps.finance.subtitle": "10 min",
   "steps.finance.title": "Vérifiez vos finances",
-  "steps.lenderPicker.subtitle": "5 min",
   "steps.lenderPicker.title": "Choisissez votre prêteur",
-  "steps.offerPicker.subtitle": "5 min",
   "steps.offerPicker.title": "Choisissez votre prêteur",
-  "steps.personal.subtitle": "1 min",
   "steps.personal.title": "Dites en plus sur vous",
-  "steps.property.subtitle": "4 min",
   "steps.property.title": "Détaillez votre propriété",
-  "steps.strategy.subtitle": "15 min",
   "steps.strategy.title": "Les grandes décisions",
-  "steps.structure.subtitle": "2h",
   "steps.structure.title": "Structure finale",
-  "steps.verification.subtitle": "2h",
   "steps.verification.title": "Vérification d'e-Potek",
   "steps.verification.waiting": "Vérification demandée...",
   "StrategyChoices.recommended": "Recommandé pour vous",
@@ -1234,67 +1370,6 @@
   "TasksTabs.allTasks": "Toutes les tâches",
   "TasksTabs.myTasks": "Mes tâches",
   "TasksTabs.unassignedTasks": "Tâches non assignées",
-  "tooltip.bonus":
-    "Tout revenu variable supplémentaire à votre salaire de base, lié à vos performances",
-  "tooltip.borrowers":
-    "Les personnes financièrement et légalement bénéficiaires du prêt",
-  "tooltip.borrowRatio":
-    "Ce ratio détermine combien est couvert par le prêt hypothécaire, il ne doit pas dépasser 80% dans la majorité des cas.",
-  "tooltip.consideredBonus":
-    "Nous utilisons 50% de la moyenne de vos 3 meilleurs bonus.",
-  "tooltip.counterpartOffers":
-    "Les meilleures offres des prêteurs, qui vous donnent un taux d'intérêt spécialement bas, en échange d'une contrepartie.",
-  "tooltip.expertise":
-    "Vérification de la valeur du bien par rapport à son état et son emplacement",
-  "tooltip.finma": "Autorité fédérale de surveillance des marchés financiers",
-  "tooltip.incomeRatio":
-    "Ce ratio indique combien de vos revenus vont théoriquement être utilisés pour payer les charges de votre bien. Il ne doit pas dépasser 33%, exceptions jusqu'à 38%.",
-  "tooltip.insuranceFees":
-    "Lorsque vous retirez votre lpp en avance, vous devez payer des impôts sur ce retrait",
-  "tooltip.interestedLenders":
-    "La quantité de prêteurs e-Potek dont les conditions correspondent à votre dossier",
-  "tooltip.lpp": "Aussi appelé 2ème pilier",
-  "tooltip.monthlyEstimated":
-    "Avant les enchères d'e-Potek, cette estimation conservative sert d'indication",
-  "tooltip.notaryFees":
-    "Frais obligatoires lorsqu'on conclut un prêt hypothécaire - environ 5% du prix d'achat",
-  "tooltip.offerTable.10": "Un taux d'intérêt qui arrive à échéance en 10 ans",
-  "tooltip.offerTable.2": "Un taux d'intérêt qui arrive à échéance en 2 ans",
-  "tooltip.offerTable.5": "Un taux d'intérêt qui arrive à échéance en 5 ans",
-  "tooltip.offerTable.amortization":
-    "L'amortissement annuel minimum de l'emprunt demandé par la banque",
-  "tooltip.offerTable.amount":
-    "Le montant maximal que la banque peut vous prêter",
-  "tooltip.offerTable.conditions":
-    "Les conditions que vous devez remplir pour avoir accès à cette offre",
-  "tooltip.offerTable.expertise":
-    "Indique si la banque veut faire une expertise supplémentaire, ajoute environ 2 semaines à la procédure",
-  "tooltip.offerTable.libor":
-    "\"London Interbank Offered Rate\", c'est un type de taux d'intérêt parmi les plus bas mais aussi le plus volatile",
-  "tooltip.otherIncome":
-    "Allocations, rentes, pensions, loyers, investissements, revenus de titres, ou autres activités",
-  "tooltip.ownFunds":
-    "Vos économies, prévoyance et dons de tiers que vous allez engager dans le projet",
-  "tooltip.ownFundsRequired":
-    "Les fonds propres nécessaires de votre part pour financer ce projet, y compris les frais de notaire",
-  "tooltip.propertyWork":
-    "Agrandissements, rénovations ou améliorations du bien.",
-  "tooltip.purchasePrice": "La valeur du bien que vous voulez acquérir",
-  "tooltip.secondPillar": "Aussi appelé LPP",
-  "tooltip.standardOffers": "Les offres de base des banques.",
-  "tooltip.thirdPillar": "XXX",
-  "tooltip.usageType":
-    "Les résidences principales permettent l'utilisation du 2ème pilier en tant que fonds propres",
-  "tooltip.yearlyIncome":
-    "La somme de votre salaire, et toute autre source de revenus",
-  "tooltip2.consideredBonus":
-    "Les bonus étant des montants variables, les banques ne les comptent pas à 100%.{verticalSpace}Si vous avez 4 bonus sur les années précédentes de 10, 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
-  "tooltip2.finma":
-    "La FINMA détermine quelles sont les conditions minimales pour que vous puissiez obtenir un prêt, pour vous protéger d'éventuelles remontées imprévues des taux hypothécaires.{verticalSpace}Les taux sont bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
-  "tooltip2.notaryFees":
-    "Les frais de notaire sont compris d'une multitude de frais supplémentaires que vous devrez couvrir avec votre épargne, il est impossible d'utiliser sa prévoyance ou son prêt hypothécaire pour les payer.",
-  "tooltip2.propertyWork":
-    "Ces travaux sont une bonne façon d'augmenter la valeur de votre bien, sans augmenter les frais de notaire.",
   "TopNav.login": "Login",
   "TopNavDropdown.account": "Mon Compte",
   "TopNavDropdown.admin": "Admin Dashboard",

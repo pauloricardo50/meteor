@@ -1,21 +1,27 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { Users } from '../api';
+import { USER_PASSWORD } from './constants';
 
 export const createFakeUsers = (count, role, currentUserEmail = '') => {
   const insertedUsers = [];
   for (let i = 0; i < count; i += 1) {
     const email = `${role}-${i + 1}@e-potek.ch`;
     if (email !== currentUserEmail) {
-      const userId = Accounts.createUser({
-        email,
-        password: '12345',
-      });
-      Roles.addUsersToRoles(userId, [role]);
-      insertedUsers.push(userId);
+      insertedUsers.push(createUser(email, role));
     }
   }
   return insertedUsers;
+};
+
+export const createUser = (email, role) => {
+  const userId = Accounts.createUser({
+    email,
+    password: USER_PASSWORD,
+  });
+  Roles.addUsersToRoles(userId, [role]);
+
+  return userId;
 };
 
 export const getFakeUsersIds = () => {

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { SALARY, FORTUNE, PROPERTY } from '../Widget1Page';
 import {
   setAuto,
   setStep,
   setValue,
 } from '../../../../redux/actions/widget1Actions';
+import { SALARY, FORTUNE, PROPERTY } from '../../../../redux/reducers/widget1';
 
 const order = [SALARY, FORTUNE, PROPERTY];
 

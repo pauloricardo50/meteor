@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
 import { isUser } from '../../utils/userFunctions';
@@ -25,11 +25,12 @@ const ImpersonateLink = ({ user, className }) => {
 };
 
 ImpersonateLink.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   className: PropTypes.string,
 };
 
 ImpersonateLink.defaultProps = {
+  user: undefined,
   // This `undefined` default value makes sure the `class` html attribute
   // doesn't get rendered when no className prop is passed, for performance.
   className: undefined,

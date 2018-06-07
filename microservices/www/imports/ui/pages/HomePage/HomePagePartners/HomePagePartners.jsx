@@ -8,8 +8,8 @@ const HomePagePartners = () => (
       Voir nos partenaires
     </Button>
     <div className="list">
-      <img src="/partners/UBS_Logo.svg" alt="UBS" />
-      <img src="/partners/Credit_Suisse_Logo.svg" alt="Credit Suisse" />
+      <img src="/img/partners/UBS_Logo.svg" alt="UBS" />
+      <img src="/img/partners/Credit_Suisse_Logo.svg" alt="Credit Suisse" />
     </div>
   </div>
 );

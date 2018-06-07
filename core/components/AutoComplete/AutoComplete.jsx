@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import Paper from 'material-ui/Paper';
-import { MenuItem } from 'material-ui/Menu';
-import { withStyles } from 'material-ui/styles';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 
 import TextInput from 'core/components/TextInput';
 
@@ -26,7 +26,6 @@ const renderInput = (inputProps) => {
       autoFocus={autoFocus}
       className={classes.textField}
       value={value}
-      inputRef={ref}
       inputProps={{ ...other }}
       onChange={(_, __, event) => onChange(event)}
       onBlur={onBlur}

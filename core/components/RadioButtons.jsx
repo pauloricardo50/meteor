@@ -2,9 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Radio, { RadioGroup } from 'core/components/Material/Radio';
-import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const safeChange = (value, id, onChange, options) => {
   // If all options are booleans, transform the onChange handler's value

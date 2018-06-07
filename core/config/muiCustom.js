@@ -1,4 +1,4 @@
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import colors from './colors';
 
 const theme = createMuiTheme({
@@ -9,7 +9,7 @@ const theme = createMuiTheme({
           transition: 'background-color 200ms ease, height 200ms ease',
         },
         '&:hover:not($disabled):before': {
-          backgroundColor: '#666',
+          borderBottomColor: '#666',
         },
       },
       input: {
@@ -51,6 +51,22 @@ const theme = createMuiTheme({
         color: colors.error,
       },
     },
+    MuiExpansionPanel: {
+      root: {
+        border: 'none',
+        // border: `1px solid ${colors.primary}`,
+        marginBottom: 8,
+        boxShadow: '0 2px 60px 5px rgba(0, 0, 0, 0.05)',
+        borderRadius: 16,
+        '&:before': {
+          backgroundColor: 'transparent',
+        },
+        '&:last-child': {
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
+        },
+      },
+    },
   },
   // direction: 'ltr',
   palette: {
@@ -89,13 +105,14 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: 'Source Sans Pro, sans-serif',
+    fontFamily: 'Eina04-Regular',
     fontSize: 16,
+    letterSpacing: '0.048em',
     fontWeightRegular: 400,
     fontWeightMedium: 600,
     button: {
       fontWeight: 400,
-      // textTransform: '',
+      textTransform: '',
     },
   },
 });

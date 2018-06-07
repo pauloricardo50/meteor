@@ -1,0 +1,77 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+
+  height: auto;
+  min-height: 100%;
+  padding: 16px;
+  padding-left: 316px; // side-nav width + 16px
+}
+
+@media (min-width: $med) {
+  .app-layout {
+    padding-top: 80px;
+    padding-bottom: 16px;
+  }
+}
+
+.app-layout.no-nav {
+  padding-left: 16px;
+}
+
+.app-layout.always-side-nav {
+  padding-left: 266px;
+}
+
+.app-layout .wrapper {
+  height: 100%;
+  min-height: 100%;
+}
+
+.app-layout .wrapper .page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.app-layout .wrapper .page.full-width {
+  max-width: unset;
+}
+
+.app-layout .transition-wrapper {
+  position: absolute;
+
+  width: calc(100% - 32px);
+  margin: auto;
+}
+
+// Change this with a media query if the side-bar disappears
+.app-layout .transition-wrapper {
+  width: calc(100% - 250px - 32px);
+}
+
+.layout-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.full-screen {
+  width: 100%;
+  min-height: 100%;
+}
+
+.app-root .navs {
+  display: flex;
+
+  width: 100%;
+}
+
+.app-root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}

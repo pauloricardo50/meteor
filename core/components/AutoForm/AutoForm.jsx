@@ -3,7 +3,7 @@ import React from 'react';
 
 import get from 'lodash/get';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import ZipAutoComplete from 'core/components/ZipAutoComplete';
 
 import TextInput from './TextInput';
@@ -15,13 +15,6 @@ import ArrayInput from './ArrayInput';
 import AutoFormContainer from './AutoFormContainer';
 
 const styles = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   subtitle: {
     marginTop: 40,
   },
@@ -135,7 +128,7 @@ const mapInputs = (singleInput, index, parentProps) => {
             childProps.inputProps.id}`}
           values={childProps.inputProps.intlValues}
         />
-        {' *'}
+        <span style={{ color: 'red' }}> *</span>
       </span>
     );
   } else {
@@ -171,7 +164,7 @@ const mapInputs = (singleInput, index, parentProps) => {
 
 const AutoForm = props => (
   <div className={props.formClasses}>
-    <div style={styles.form} onSubmit={e => e.preventDefault()}>
+    <div onSubmit={e => e.preventDefault()}>
       {props.inputs.map((input, i) => mapInputs(input, i, props))}
     </div>
   </div>

@@ -41,11 +41,12 @@ import ErrorIcon from '@material-ui/icons/Error';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RadioButtonChecked from '@material-ui/icons/RadioButtonChecked';
 import Edit from '@material-ui/icons/Edit';
-
+import TrendingUp from '@material-ui/icons/TrendingUp';
+import TrendingDown from '@material-ui/icons/TrendingDown';
+import TrendingFlat from '@material-ui/icons/TrendingFlat';
 import Star from '@material-ui/icons/Star';
 import StarHalf from '@material-ui/icons/StarHalf';
 import StarEmpty from '@material-ui/icons/StarBorder';
-
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import OfflinePin from '@material-ui/icons/OfflinePin';
 import Save from '@material-ui/icons/Save';
@@ -55,6 +56,7 @@ import Report from '@material-ui/icons/Report';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import DeleteSweep from '@material-ui/icons/DeleteSweep';
 import GroupAdd from '@material-ui/icons/GroupAdd';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const iconMap = {
   close: CloseIcon,
@@ -110,6 +112,10 @@ const iconMap = {
   deleteSweep: DeleteSweep,
   groupAdd: GroupAdd,
   edit: Edit,
+  trendingUp: TrendingUp,
+  trendingDown: TrendingDown,
+  trendingFlat: TrendingFlat,
+  expandMore: ExpandMoreIcon,
 };
 
 const Icon = ({ type, size, ...props }) => {

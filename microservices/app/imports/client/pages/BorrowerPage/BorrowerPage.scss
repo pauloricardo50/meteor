@@ -1,0 +1,273 @@
+.borrower-finance-page {
+  .conditions {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto 0 auto;
+    padding: 40px;
+  }
+
+  .recap {
+    max-width: 400px;
+  }
+}
+
+.borrower-page-files,
+.borrower-finance-page {
+  display: flex;
+  flex-direction: column;
+
+  .description {
+    align-self: center;
+  }
+
+  hr {
+    width: 100%;
+  }
+}
+
+.progress {
+  &-block {
+    text-align: right;
+
+    > span {
+      font-size: 14px;
+      color: #4890e2;
+      display: inline-block;
+      margin-bottom: 15px;
+      font-weight: 400;
+    }
+  }
+
+  &-bar {
+    height: 2px;
+    display: block;
+    background: #e7ebef;
+    position: relative;
+
+    &__wrapper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #4890e2;
+      height: 2px;
+      transition: width 300ms ease;
+    }
+  }
+}
+
+.flex {
+  &-justify--center {
+    justify-content: center;
+  }
+
+  &--column {
+    flex-direction: column;
+  }
+
+  &--row {
+    flex-direction: row;
+  }
+
+  &--helper {
+    display: flex;
+  }
+
+  &--center {
+    align-items: center;
+  }
+}
+
+.m--20 {
+  margin: 0 20px;
+}
+
+.p-d--16 {
+  padding: 0 16px;
+}
+
+.p-t--117 {
+  padding-top: 117px;
+}
+
+.col--50 {
+  width: 50%;
+}
+
+.borrower-header {
+  &--fixed {
+    position: fixed;
+    top: 172px;
+    right: 0;
+    z-index: 15;
+    height: 108px;
+    width: calc(100% - 332px);
+  }
+
+  &__row {
+    background: #fff;
+    width: 100%;
+    padding: 25px 32px 0;
+    align-items: flex-start;
+    box-sizing: border-box;
+  }
+
+  &__info {
+    border-left: 1px #e4e4e4 solid;
+    box-sizing: border-box;
+
+    &:first-of-type {
+      padding-right: 30px;
+      border-left: 0;
+    }
+
+    &:nth-of-type(2) {
+      padding-left: 30px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      color: #212529;
+      font-weight: bold;
+    }
+
+    .borrower-num {
+      color: #9cb2cb;
+      font-weight: 400;
+    }
+
+    .fa-5x {
+      font-size: 50px;
+    }
+  }
+
+  &__user {
+    padding-left: 15px;
+  }
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+  .form-input__row {
+    .todo-circle {
+      top: 0;
+      right: 0;
+    }
+
+    .saving-icon {
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .form-radio__row {
+    padding-right: 50px;
+    box-sizing: border-box;
+
+    .saving-icon {
+      top: 16px;
+      right: 0;
+    }
+  }
+
+  &__finance {
+    > div {
+      width: 400px;
+    }
+  }
+}
+
+.borrower-page__wrapper {
+  padding: 0 16px;
+  border-left: 1px #e4e4e4 solid;
+  box-sizing: border-box;
+
+  &:first-of-type {
+    border-left: 0;
+    padding-right: 32px;
+  }
+
+  &:nth-of-type(2) {
+    padding-left: 32px;
+  }
+}
+
+.borrower-finance {
+  &__item {
+    border-left: 1px #e4e4e4 solid;
+    box-sizing: border-box;
+
+    &:first-of-type {
+      border-left: 0;
+    }
+  }
+}
+
+.borrower-files {
+  &__item {
+    border-left: 1px #e4e4e4 solid;
+    box-sizing: border-box;
+
+    &:first-of-type {
+      border-left: 0;
+    }
+
+    .uploader {
+      width: 80%;
+      max-width: 100%;
+    }
+  }
+}
+
+.borrower-page-info {
+  .user-form__info h3,
+  h2 {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
+
+  .user-form__info {
+    h3 {
+      margin-top: 40px;
+    }
+
+    .form-group {
+      > div {
+        max-width: 100% !important;
+      }
+    }
+
+    > div > div {
+      max-width: 100% !important;
+    }
+
+    .mui-text-input {
+      padding-right: 50px;
+      max-width: 100% !important;
+      box-sizing: border-box;
+    }
+  }
+
+  .description {
+    align-self: initial;
+
+    > p {
+      margin-top: 0;
+      max-width: 100%;
+      justify-content: flex-start;
+      font-size: 17px;
+      font-style: italic;
+    }
+  }
+}

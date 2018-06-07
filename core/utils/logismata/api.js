@@ -1,14 +1,14 @@
 import { _ } from 'lodash';
 import { Meteor } from 'meteor/meteor';
 
+import constants, { logismataValues } from './constants';
+
 let fetch;
 if (Meteor.isServer) {
   fetch = require('node-fetch');
 } else {
   fetch = global.fetch;
 }
-
-import constants, { logismataValues } from './constants';
 
 // Where the current token will be stored
 let token;

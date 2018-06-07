@@ -1,10 +1,12 @@
 .widget1-single-input-form {
+  z-index: 20;
+
   display: flex;
-  padding: 32px;
-  margin: 16px;
+
   width: 100%;
   max-width: 300px;
-  z-index: 20;
+  margin: 16px;
+  padding: 32px;
 }
 
 @media (max-width: $med) {
@@ -14,21 +16,23 @@
 }
 
 .widget1-single-input-form form {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-  justify-content: space-around;
   z-index: 20;
+
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .widget1-single-input-form .buttons {
-  width: 100%;
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  padding-top: 16px;
+  align-items: stretch;
+  flex-direction: column;
+
+  width: 100%;
   margin-bottom: -16px;
+  padding-top: 16px;
 }
 
 @media (max-width: $med) {

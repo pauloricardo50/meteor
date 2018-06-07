@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import JssProvider from 'react-jss/lib/JssProvider';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from 'core/config/muiCustom';
 
 const MaterialUiServer = ({ children, registry, generateClassName }) => (

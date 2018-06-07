@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import Button from 'core/components/Button';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import TextInput from './TextInput';
 import SelectFieldInput from './SelectFieldInput';
 
@@ -30,7 +30,10 @@ class ArrayInput extends Component {
 
   getArray = () => {
     const array = [];
-    const { inputProps: { id, currentValue, inputs } } = this.props;
+    const {
+      inputProps: { id, currentValue, inputs },
+      disabled,
+    } = this.props;
 
     const mapInput = (input, i) => {
       const { id: inputId, type, options } = input;
@@ -45,7 +48,7 @@ class ArrayInput extends Component {
           label: <T id={`Forms.${id}.${inputId}`} />,
           placeholder: `Forms.${id}.${inputId}.placeholder`,
           required: true,
-          disabled: this.props.disabled,
+          disabled,
         },
       };
 
@@ -85,7 +88,9 @@ class ArrayInput extends Component {
       .then(() => this.setState({ count: this.state.count - 1 }));
 
   render() {
-    const { inputProps: { style, label, disabled } } = this.props;
+    const {
+      inputProps: { style, label, disabled },
+    } = this.props;
     const { count } = this.state;
 
     return (

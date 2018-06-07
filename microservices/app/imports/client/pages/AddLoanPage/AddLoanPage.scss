@@ -1,0 +1,13 @@
+#add-loan-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#add-loan-page .buttons {
+  display: flex;
+}
+
+#add-loan-page .buttons > button {
+  margin-right: 8px;
+}

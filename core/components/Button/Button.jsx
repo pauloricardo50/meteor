@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 import omit from 'lodash/omit';
-import MuiButton from 'material-ui/Button';
+import MuiButton from '@material-ui/core/Button';
 
 const getColor = ({ primary, secondary, color }) => {
   if (primary) {
@@ -32,7 +32,7 @@ const Button = (props) => {
       variant={
         props.variant || (props.raised ? 'raised' : undefined) || undefined
       }
-      component={props.component || (props.link ? Link : null)}
+      component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
     >
       {props.icon}

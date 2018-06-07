@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 import Widget1SingleInputContainer from './Widget1SingleInputContainer';
 import Widget1SingleInputInput from './Widget1SingleInputInput';
@@ -20,9 +20,11 @@ const Widget1SingleInput = ({
 }) => (
   <div className="widget1-single-input">
     <div className="box">
-      <h4>
+      {/* <h4> */}
+      <label htmlFor={name}>
         <T id={`Widget1SingleInput.${name}`} />
-      </h4>
+      </label>
+      {/* </h4> */}
       <div className="box-content">
         <Widget1SingleInputInput
           value={value}
@@ -30,6 +32,7 @@ const Widget1SingleInput = ({
           auto={auto}
           setAuto={setAuto}
           unsetValue={unsetValue}
+          name={name}
         />
         <Widget1SingleInputSlider
           value={value}

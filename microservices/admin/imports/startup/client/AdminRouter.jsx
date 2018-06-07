@@ -8,19 +8,20 @@ import DevPage from 'core/components/DevPage';
 
 import messagesFR from '../../core/lang/fr';
 
-import AdminLayout from '../../ui/layouts/AdminLayout';
-import AdminDashboardPage from '../../ui/pages/AdminDashboardPage';
-import LoansPage from '../../ui/pages/LoansPage';
-import SingleLoanPage from '../../ui/pages/SingleLoanPage';
-import UsersPage from '../../ui/pages/UsersPage/UsersPage';
-import SingleUserPage from '../../ui/pages/SingleUserPage';
-import TasksPage from '../../ui/pages/TasksPage/TasksPage';
-import BorrowersPage from '../../ui/pages/BorrowersPage';
-import SearchPage from '../../ui/pages/SearchPage/SearchPage';
-import AdminProfilePage from '../../ui/pages/AdminProfilePage';
-import SingleBorrowerPage from '../../ui/pages/SingleBorrowerPage';
+import AdminLayout from '../../client/layouts/AdminLayout';
+import AdminDashboardPage from '../../client/pages/AdminDashboardPage';
+import LoansPage from '../../client/pages/LoansPage';
+import SingleLoanPage from '../../client/pages/SingleLoanPage';
+import UsersPage from '../../client/pages/UsersPage/UsersPage';
+import SingleUserPage from '../../client/pages/SingleUserPage';
+import TasksPage from '../../client/pages/TasksPage/TasksPage';
+import BorrowersPage from '../../client/pages/BorrowersPage';
+import SearchPage from '../../client/pages/SearchPage/SearchPage';
+import AdminProfilePage from '../../client/pages/AdminProfilePage';
+import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
+import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage';
 
-import AdminStore from '../../ui/components/AdminStore';
+import AdminStore from '../../client/components/AdminStore';
 
 const AdminRouter = () => (
   <BaseRouter
@@ -36,6 +37,7 @@ const AdminRouter = () => (
         <Route exact path="/loans" component={LoansPage} />
         <Route path="/loans/:loanId/:tabId?" component={SingleLoanPage} />
         <Route path="/users/:userId" component={SingleUserPage} />
+        <Route path="/properties/:propertyId" component={SinglePropertyPage} />
         <Route path="/tasks" component={TasksPage} />
         <Route path="/borrowers/:borrowerId" component={SingleBorrowerPage} />
         <Route path="/borrowers" component={BorrowersPage} />

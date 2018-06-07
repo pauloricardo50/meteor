@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 export default class DialogSimple extends Component {
   constructor(props) {
@@ -54,7 +54,8 @@ export default class DialogSimple extends Component {
     } = this.props;
 
     const finalActions =
-      actions || cancelOnly
+      (actions && actions(this.handleClose)) ||
+      (cancelOnly
         ? [
           <Button
             primary
@@ -78,7 +79,7 @@ export default class DialogSimple extends Component {
             disabled={disabled}
             key="submit"
           />,
-        ];
+        ]);
 
     const childProps = {
       disableClose: this.disableClose,
@@ -117,7 +118,7 @@ export default class DialogSimple extends Component {
 }
 
 DialogSimple.propTypes = {
-  actions: PropTypes.arrayOf(PropTypes.object),
+  actions: PropTypes.func,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   primary: PropTypes.bool,

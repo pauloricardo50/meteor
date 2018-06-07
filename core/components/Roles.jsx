@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T } from './Translation';
+import T from './Translation';
 
 const Roles = ({ roles }) => (
   <span>
@@ -18,7 +18,11 @@ const Roles = ({ roles }) => (
 );
 
 Roles.propTypes = {
-  roles: PropTypes.array.isRequired,
+  roles: PropTypes.array,
+};
+
+Roles.defaultProps = {
+  roles: [],
 };
 
 export default Roles;

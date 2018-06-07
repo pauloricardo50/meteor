@@ -1,0 +1,144 @@
+.about-page-team {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .about-page-team-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    max-width: 1400px;
+  }
+
+  h2,
+  h4,
+  h5 {
+    color: $primary;
+  }
+
+  h5 {
+    opacity: .7;
+  }
+}
+
+.about-page-team-member,
+.about-page-team-recruiting {
+  display: flex;
+  align-items: flex-start;
+  flex-basis: 400px;
+  flex-direction: row;
+
+  height: 120px;
+  padding: 32px;
+
+  transition: background-color 200ms $bezier, transform 200ms $bezier;
+
+  border-radius: 16px;
+
+  .about-page-team-member-image {
+    align-self: center;
+    flex-shrink: 0;
+
+    width: 100px;
+    height: 100px;
+    margin-right: 32px;
+
+    border-radius: 50%;
+  }
+
+  .about-page-team-member-info {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 32px;
+
+    h4,
+    h5,
+    p {
+      margin: 0;
+    }
+
+    h4,
+    h5 {
+      margin-bottom: 8px;
+    }
+  }
+
+  .about-page-team-member-contact {
+    display: none;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+
+    background-color: white;
+
+    .about-page-team-member-contact {
+      display: flex;
+    }
+  }
+
+  a.email {
+    margin-left: -12px;
+  }
+}
+
+@media (max-width: $small) {
+  .about-page-team-member.about-page-team-member-contact,
+  .about-page-team-member:hover .about-page-team-member-contact {
+    display: none;
+  }
+}
+
+.about-page-team-recruiting {
+  text-decoration: none;
+
+  .about-page-team-member-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    transition: color 200ms $bezier, transform 200ms $bezier;
+
+    border: 2px solid $border-grey;
+
+    font-size: 4em;
+  }
+
+  .hover-show {
+    display: none;
+  }
+}
+
+.about-page-team-recruiting:hover {
+  .hover-show {
+    display: flex;
+
+    text-decoration: underline;
+  }
+
+  .about-page-team-member-image {
+    transform: rotate(180deg);
+
+    color: $primary;
+    border-color: $primary;
+  }
+}
+
+@media (max-width: $small) {
+  .about-page-team-member {
+    padding: 8px;
+
+    .about-page-team-member-info {
+      margin-top: 16px;
+    }
+  }
+
+  .about-page-team-recruiting {
+    padding: 8px;
+  }
+}

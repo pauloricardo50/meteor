@@ -2,7 +2,8 @@
   "public": {
     "environment": "staging",
     "features": {
-      "LITE_VERSION": true
+      "LITE_VERSION": true,
+      "NOT_PRODUCTION_READY": false 
     },
     "analyticsSettings": {
       "Google Analytics": {
@@ -17,8 +18,7 @@
     "subdomains": {
       "www": "https://www.staging.e-potek.ch",
       "app": "https://app.staging.e-potek.ch",
-      "admin": "https://admin.staging.e-potek.ch",
-      "lender": "https://lender.staging.e-potek.ch"
+      "admin": "https://admin.staging.e-potek.ch"
     }
   },
   "AWS": {

@@ -1,5 +1,5 @@
 import { SheetsRegistry } from 'react-jss/lib/jss';
-import { createGenerateClassName } from 'material-ui/styles';
+import { createGenerateClassName } from '@material-ui/core/styles';
 
 // This has to be done once for every request from the client
 const setupMaterialUiServer = () => {

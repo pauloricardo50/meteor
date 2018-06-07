@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import JsSearch from 'js-search';
 import { injectIntl } from 'react-intl';
 
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import { generalTooltips } from 'core/arrays/tooltips';
 import Button from 'core/components/Button';
 

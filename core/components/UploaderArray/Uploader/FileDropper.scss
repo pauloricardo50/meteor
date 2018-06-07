@@ -1,0 +1,11 @@
+.uploader {
+  position: relative;
+
+  cursor: auto;
+}
+
+.uploader.dragging {
+  cursor: copy;
+
+  border: 1px solid $primary;
+}

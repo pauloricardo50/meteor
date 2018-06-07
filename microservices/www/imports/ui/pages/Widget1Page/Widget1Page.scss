@@ -1,23 +1,28 @@
-@import '{}/client/css/variables.scss';
-
-@import './Widget1Nav/Widget1Nav.scss';
-@import './Widget1SingleInput/Widget1SingleInput.scss';
+// Keep these 2 SCSS files outside, as they're also used on the home page
 @import './Widget1SingleInputForm/Widget1SingleInputForm.scss';
-@import './Widget1Recap/Widget1Recap.scss';
-@import './Widget1Monthly/Widget1Monthly.scss';
-@import './Widget1Inputs/Widget1Inputs.scss';
+@import './Widget1SingleInput/Widget1SingleInput.scss';
+
+.widget1-page {
+  @import './Widget1Nav/Widget1Nav.scss';
+  @import './Widget1Recap/Widget1Recap.scss';
+  @import './Widget1Monthly/Widget1Monthly.scss';
+  @import './Widget1Inputs/Widget1Inputs.scss';
+}
 
 .widget1-page {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .widget1-page .widget1-page-content {
   display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
   box-sizing: border-box;
   padding: 8px;
-  align-items: center;
-  justify-content: center;
 }
 
 @media (min-width: $med) {
@@ -28,56 +33,74 @@
 }
 
 .widget1-page .widget1-part-1 {
-  width: 100%;
-  max-width: 1000px;
   display: flex;
+  align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+
+  width: 100%;
 }
 
 .widget1-page .input-form-placeholder {
   display: flex;
+  align-self: stretch;
   flex-grow: 1;
+
+  width: 100%;
+  max-width: 300px;
   margin: 16px;
-  padding: 16px;
+  padding: 32px;
+}
+
+@media (max-width: $med) {
+  .widget1-page .input-form-placeholder {
+    padding: 16px;
+  }
 }
 
 .widget1-page .widget1-part-2 {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
   width: 100%;
   max-width: 1200px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-around;
-  flex-shrink: 0;
 }
 
 .widget1-page .widget1-part-2 .card1 {
   display: flex;
-  flex-direction: column;
-  padding: 32px;
-  margin: 16px;
-  flex-grow: 1;
+  align-items: stretch;
   flex-basis: 300px;
+  flex-direction: column;
+  flex-grow: 1;
+
   max-width: 300px;
-  align-items: center;
+  margin: 16px;
+  padding: 32px;
 }
 
-.widget1-page .widget1-part-2 .card1 h2 {
-  color: $primary;
+.widget1-page .widget1-part-2 .card1 h3 {
   margin-top: 0;
+
+  text-align: center;
+
+  color: $primary;
 }
 
 .widget1-page .widget1-part-2 .card1 .card-bottom {
-  margin-left: -32px;
-  margin-bottom: -32px;
-  width: 100%;
-  padding: 32px;
   align-self: flex-start;
-  border-bottom-left-radius: 16px;
+
+  width: 100%;
+  margin-bottom: -32px;
+  margin-left: -32px;
+  padding: 32px;
+
   border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
 }
 
 @media (max-width: $med) {
@@ -86,8 +109,8 @@
     padding: 16px;
 
     .card-bottom {
-      margin-left: -16px;
       margin-bottom: -16px;
+      margin-left: -16px;
       padding: 16px;
     }
   }
@@ -95,18 +118,28 @@
 
 .widget1-page .cta {
   align-self: flex-end;
+
   margin: 16px;
 }
 
 .widget1-page-disclaimer {
-  width: 100%;
   display: flex;
-  justify-content: center;
   flex-shrink: 0;
-  font-size: 0.9em;
+  justify-content: center;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+
   text-align: justify;
 
-  p {
-    max-width: 400px;
+  .description {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: $med) {
+  .widget1-page-disclaimer {
+    text-align: left;
   }
 }

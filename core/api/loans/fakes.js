@@ -71,7 +71,7 @@ export const logic3 = {
   },
   // auctionEndTime: new Date(),
   hasValidatedStructure: true,
-  insuranceUsePreset: 'WITHDRAWAL',
+  insuranceUsePreset: 'COLLATERAL',
   loanStrategyPreset: 'FIXED',
   amortizationStrategyPreset: 'INDIRECT',
   lender: {},
@@ -112,26 +112,32 @@ export const fakeFiles = {
 
 export const fakeFiles2 = {};
 
+export const emptyLoan = {
+  name: 'Rue du Test 42 - empty',
+  general: {},
+  logic: logic1,
+  documents: {},
+  contacts: [],
+};
+
 export const loanStep1 = {
-  name: 'Rue du Test 42',
+  name: 'Rue du Test 42 - 1',
   general: fakeGeneral,
-  property: fakeProperty,
   logic: logic1,
   documents: fakeFiles,
   contacts: [],
 };
 
 export const loanStep2 = {
-  name: 'Rue du Test 42',
+  name: 'Rue du Test 42 - 2',
   general: fakeGeneral,
-  property: fakeProperty,
   logic: logic2,
   documents: fakeFiles,
   contacts: [],
 };
 
 export const loanStep3 = completeFiles => ({
-  name: 'Rue du Test 42',
+  name: 'Rue du Test 42 - 3',
   general: {
     ...fakeGeneral,
     loanTranches: [

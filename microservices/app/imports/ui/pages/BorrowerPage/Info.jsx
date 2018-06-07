@@ -3,16 +3,18 @@ import React from 'react';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
-import { disableForms } from 'core/utils/loanFunctions';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 
 const Info = (props) => {
   const { borrowerId } = props.match.params;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
+  const {
+    loan: { userFormsDisabled },
+  } = props;
 
   return (
-    <section className="animated fadeIn" key={borrowerId}>
+    <section className="animated fadeIn borrower-page-info" key={borrowerId}>
       <hr />
       <h2 className="text-center">
         <T id="Info.title" />
@@ -29,7 +31,7 @@ const Info = (props) => {
         docId={borrowerId}
         collection="borrowers"
         doc={borrower}
-        disabled={disableForms({ loan: props.loan })}
+        disabled={userFormsDisabled}
       />
     </section>
   );

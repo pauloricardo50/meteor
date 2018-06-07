@@ -1,0 +1,15 @@
+.new-document-form {
+  display: flex;
+  flex-direction: row;
+
+  width: 500px;
+  padding: 16px;
+}
+
+.new-document-form > * {
+  margin: 8px;
+}
+
+.new-document-form > div:first-child {
+  flex: 1;
+}

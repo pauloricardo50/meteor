@@ -1,0 +1,20 @@
+.single-loan-page .overview-tab .admin-section {
+  display: flex;
+  flex-direction: column;
+
+  .admin-note-wrapper {
+    display: flex;
+
+    .admin-note {
+      flex-grow: 1;
+    }
+  }
+}
+
+.recap-div {
+  display: 'flex';
+  align-items: 'center';
+  flex-direction: 'column';
+
+  width: 400px;
+}

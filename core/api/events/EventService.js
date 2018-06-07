@@ -6,6 +6,8 @@ const IS_LOGGING = true;
 export class EventService {
   constructor({ emmitter }) {
     this.emmitter = emmitter;
+    // contains arrays of listener functions, grouped by event names
+    this.listenerFunctions = {};
     this.addErrorListener();
   }
 
@@ -23,9 +25,21 @@ export class EventService {
       this.logListener(eventName, params);
       listenerFunction(params);
     });
+
+    const listenersForEvent = this.listenerFunctions[eventName] || [];
+
+    this.listenerFunctions[eventName] = [
+      ...listenersForEvent,
+      listenerFunction,
+    ];
   }
 
-  addMethodListener({ config: { name } }, listenerFunction) {
+  addMethodListener(
+    {
+      config: { name },
+    },
+    listenerFunction,
+  ) {
     this.addListener(name, listenerFunction);
   }
 
@@ -49,6 +63,10 @@ export class EventService {
       console.log(`Event "${eventName}" listened to with params:`);
       console.log(params);
     }
+  }
+
+  getListenerFunctions(eventName) {
+    return this.listenerFunctions[eventName];
   }
 }
 

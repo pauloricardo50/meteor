@@ -1,0 +1,64 @@
+.admin-loan {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+
+  .flex-col {
+    padding-right: 32px;
+    padding-bottom: 8px;
+    label {
+      margin: 0;
+
+      color: #222;
+    }
+  }
+}
+
+.single-borrower-page-header {
+  display: flex;
+  flex-direction: column;
+
+  .top {
+    display: flex;
+    h1 {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+
+      margin: 0;
+    }
+  }
+
+  .secondary {
+    margin: 4px;
+
+    text-align: left;
+
+    font-size: 16px;
+  }
+
+  .bottom {
+    display: flex;
+  }
+
+  .created-at {
+    margin-bottom: 32px;
+    a:hover {
+      transform: scale(1.03);
+
+      opacity: 1;
+      color: #000;
+    }
+  }
+}
+
+.borrower-recap {
+  margin-bottom: 60px;
+
+  text-align: center;
+
+  .recap {
+    margin: auto;
+  }
+}

@@ -1,18 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import RadioButtons from 'core/components/RadioButtons';
 import FormValidator from './FormValidator';
 import ValidIcon from './ValidIcon';
-
-const styles = {
-  validIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
-  },
-};
 
 export default class RadioInput extends Component {
   constructor(props) {
@@ -81,7 +73,10 @@ export default class RadioInput extends Component {
 
     return (
       // relative position for the FormValidator
-      <div style={{ ...style, marginBottom: 16, position: 'relative' }}>
+      <div
+        className="form-radio__row"
+        style={{ ...style, marginBottom: 16, position: 'relative' }}
+      >
         <RadioButtons
           label={label}
           id={id}
@@ -102,7 +97,6 @@ export default class RadioInput extends Component {
           saving={saving}
           value={value}
           required={required}
-          style={styles.validIcon}
           hide={admin}
         />
         <FormValidator {...this.props} />

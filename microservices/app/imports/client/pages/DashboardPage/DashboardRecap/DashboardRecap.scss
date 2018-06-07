@@ -1,0 +1,26 @@
+@import './DashboardRecapFinance/DashboardRecapFinance.scss';
+@import './DashboardRecapProperty/DashboardRecapProperty.scss';
+
+.dashboard-recap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  width: 100%;
+}
+
+.dashboard-recap .cards {
+  display: flex;
+  overflow-x: scroll;
+
+  width: 100%;
+
+  white-space: nowrap;
+
+  & > * {
+    flex-basis: 0;
+
+    margin: 8px;
+  }
+}

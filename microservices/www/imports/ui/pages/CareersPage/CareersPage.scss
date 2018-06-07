@@ -1,0 +1,94 @@
+.careers-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .careers-page-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 32px;
+    padding-top: 0;
+
+    h1,
+    h2 {
+      color: $primary;
+    }
+
+    .careers-page-content-subtitle {
+      margin-top: 64px;
+    }
+  }
+}
+
+@media (max-width: $med) {
+  .careers-page-content {
+    padding: 16px;
+  }
+}
+
+.careers-page-list,
+.careers-page-list-department {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
+
+  .careers-page-list-empty {
+    align-self: center;
+
+    width: 100%;
+    max-width: 500px;
+
+    text-align: center;
+  }
+}
+
+.careers-page-list-department {
+  margin-bottom: 40px;
+  padding: 16px;
+
+  .careers-page-list-department-title {
+    color: $primary;
+  }
+}
+
+.careers-page-job {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+  padding: 16px 24px;
+
+  transition: transform 200ms $bezier, color 200ms $bezier,
+  backgorund-color 200ms $bezier;
+  text-decoration: none;
+
+  border-radius: 16px;
+
+  .careers-page-job-hover {
+    display: none;
+
+    margin: 0;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+    text-decoration: underline;
+
+    color: grey;
+    background-color: $background-color;
+
+    .careers-page-job-hover {
+      display: flex;
+    }
+  }
+}

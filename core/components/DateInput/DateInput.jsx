@@ -4,20 +4,20 @@ import moment from 'moment';
 
 import TextInput from 'core/components/TextInput';
 import Loadable from 'core/utils/loadable';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const DatePicker = Loadable({
   loader: () => import('./DatePicker'),
 });
 
-const styles = theme => ({
+// Make sure the underline shows
+const styles = {
   underline: {
     '&:before': {
       zIndex: 1,
-      color: 'red',
     },
   },
-});
+};
 
 class DateInput extends Component {
   constructor(props) {

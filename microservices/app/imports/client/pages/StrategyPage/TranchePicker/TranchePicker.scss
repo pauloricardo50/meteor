@@ -1,0 +1,39 @@
+.tranche-picker {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  padding: 16px;
+}
+
+.tranche-picker .picker-content {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.tranche-picker .picker-content .selector {
+  display: flex;
+  flex-direction: column;
+}
+
+.tranche-picker .picker-content .selector .tranche-count {
+  display: flex;
+  align-items: center;
+}
+
+.tranche-picker .buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.tranche-picker #tranche-chart {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}

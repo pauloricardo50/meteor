@@ -1,0 +1,117 @@
+.dashboard-recap-finance {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+
+  .accounting {
+    display: flex;
+
+     > * {
+      display: flex;
+      display: flex;
+      align-items: center;
+      flex-basis: 0;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .divider {
+      flex-basis: unset;
+      flex-grow: 0;
+
+      width: 1px;
+      margin: 0 16px;
+      margin-bottom: -16px;
+
+      background-color: $border-grey;
+    }
+
+    .validator {
+      min-height: 100px;
+    }
+  }
+
+  .card-bottom {
+    display: flex;
+
+     > * {
+      flex-grow: 1;
+    }
+  }
+}
+
+.dashboard-recap-sum {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+
+  margin-top: 16px;
+
+   > * {
+    margin: 0;
+  }
+
+  .value {
+    margin-left: 16px;
+  }
+}
+
+.dashboard-recap-chart {
+  display: flex;
+  flex-direction: column;
+
+  .chart {
+    display: flex;
+    align-items: center;
+
+     > *:not(:first-child) {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+  }
+}
+
+.dashboard-recap-chart-info {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 16px;
+
+  .value {
+    font-size: 3em;
+    line-height: 1em;
+  }
+}
+
+.dashboard-recap-chart-legend {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 300px;
+
+  .legend-line {
+    display: flex;
+    align-items: center;
+
+    .color {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+
+      background-color: white;
+    }
+
+    .id {
+      flex-grow: 1;
+    }
+  }
+}
+
+.dashboard-recap-finance-empty.dashboard-recap-finance-empty {
+  align-self: center;
+
+  max-width: 300px;
+  padding: 16px;
+
+  white-space: normal;
+}

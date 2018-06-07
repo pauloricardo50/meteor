@@ -39,6 +39,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       disabled: disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
+      required: !disableAddress,
     },
     {
       id: 'address2',
@@ -63,6 +64,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
+      required: !disableAddress,
     },
     {
       type: 'conditionalInput',

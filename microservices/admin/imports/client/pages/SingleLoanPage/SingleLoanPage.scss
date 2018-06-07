@@ -1,0 +1,19 @@
+@import './LoanTabs/FilesTab/FilesTab.scss';
+@import './LoanTabs/OverviewTab/OverviewTab.scss';
+@import './LoanTabs/OffersTab/OffersTab.scss';
+
+.single-loan-page {
+  .google-map {
+    position: relative;
+
+    display: flex;
+    flex: 1;
+
+    width: 100%;
+    min-height: 400px;
+
+    .map {
+      flex: 1;
+    }
+  }
+}

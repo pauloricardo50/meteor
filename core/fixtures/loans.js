@@ -1,19 +1,23 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
-import { PURCHASE_TYPE } from 'core/api/loans/loanConstants';
+import {
+  PURCHASE_TYPE,
+  INSURANCE_USE_PRESET,
+  AUCTION_STATUS,
+  LOAN_STRATEGY_PRESET,
+  AMORTIZATION_STRATEGY_PRESET,
+  CLOSING_STEPS_TYPE,
+  CLOSING_STEPS_STATUS,
+} from 'core/api/loans/loanConstants';
 import {
   fakeDocument,
   fakeDocumentWithLabel,
 } from 'core/api/files/fileHelpers';
 import { createFakeBorrowers } from './borrowers';
 import { createFakeProperty } from './properties';
-import { STEPS_PER_LOAN } from './config';
 import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
-
-const generateRandomNumber = maxSteps =>
-  Math.floor(Math.random() * maxSteps + 1);
 
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
@@ -47,39 +51,43 @@ const logic3 = {
     comments: [],
   },
   auction: {
-    status: 'ENDED',
+    status: AUCTION_STATUS.ENDED,
     startTime: new Date(),
     endTime: new Date(),
   },
   hasValidatedStructure: true,
-  insuranceUsePreset: 'WITHDRAWAL',
-  loanStrategyPreset: 'FIXED',
-  amortizationStrategyPreset: 'INDIRECT',
+  insuranceUsePreset: INSURANCE_USE_PRESET.COLLATERAL,
+  loanStrategyPreset: LOAN_STRATEGY_PRESET.FIXED,
+  amortizationStrategyPreset: AMORTIZATION_STRATEGY_PRESET.INDIRECT,
   lender: {},
   closingSteps: [
-    { id: 'upload0', title: 'Contrat de prêt signé', type: 'UPLOAD' },
+    {
+      id: 'upload0',
+      title: 'Contrat de prêt signé',
+      type: CLOSING_STEPS_TYPE.UPLOAD,
+    },
     {
       id: 'todo0',
       title: 'Ouverture de compte chez votre prêteur',
       description:
         'Il faut ouvrir un compte bancaire chez votre prêteur où les fonds de votre hypothèque résideront.',
-      type: 'TODO',
-      status: 'VALID',
+      type: CLOSING_STEPS_TYPE.TODO,
+      status: CLOSING_STEPS_STATUS.VALID,
     },
     {
       id: 'todo1',
       title: 'Versement des fonds propres',
       description:
         'Vous devez aller chez le notaire et verser les fonds propres nécessaires sur un compte escrow.',
-      type: 'TODO',
-      status: 'UNVERIFIED',
+      type: CLOSING_STEPS_TYPE.TODO,
+      status: CLOSING_STEPS_STATUS.UNVERIFIED,
     },
     {
       id: 'todo2',
       title: 'Engagement du notaire relative aux cédules hypothécaires',
       description: '',
-      type: 'TODO',
-      status: 'ERROR',
+      type: CLOSING_STEPS_TYPE.TODO,
+      status: CLOSING_STEPS_STATUS.ERROR,
       error: 'Le notaire doit vous convier à un 2ème rendez-vous',
     },
   ],
@@ -93,9 +101,14 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
-export const createFakeLoan = (userId) => {
-  const completeFiles = Math.random() > 0.5;
-  const borrowerIds = createFakeBorrowers(userId);
+export const createFakeLoan = ({
+  userId,
+  step,
+  completeFiles = Math.random() > 0.5,
+  auctionStatus = AUCTION_STATUS.NONE,
+  twoBorrowers,
+}) => {
+  const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
   const propertyId = createFakeProperty(userId);
   const loan = {
     name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,
@@ -106,14 +119,18 @@ export const createFakeLoan = (userId) => {
     contacts: [],
   };
 
-  switch (generateRandomNumber(STEPS_PER_LOAN)) {
+  switch (step) {
   case 3:
     loan.logic = logic3;
     loan.adminValidation = {
       bonus_bonus2017: 'Does not match with taxes location',
       bankFortune: 'Not enough',
     };
-    loan.files = completeFiles ? fakeFiles : fakeFiles2;
+
+    if (!completeFiles) {
+      loan.documents = fakeFiles2;
+    }
+
     loan.loanTranches = [
       {
         value: 750000,
@@ -127,6 +144,22 @@ export const createFakeLoan = (userId) => {
     break;
   default:
     loan.logic = logic1;
+  }
+
+  if (auctionStatus === AUCTION_STATUS.NONE) {
+    loan.logic.auction = {};
+  } else if (auctionStatus === AUCTION_STATUS.STARTED) {
+    loan.logic.auction = {
+      status: AUCTION_STATUS.STARTED,
+      startTime: new Date(Date.now() - 1000),
+      endTime: new Date(Date.now() + 60 * 60 * 1000),
+    };
+  } else if (auctionStatus === AUCTION_STATUS.ENDED) {
+    loan.logic.auction = {
+      status: AUCTION_STATUS.ENDED,
+      startTime: new Date(),
+      endTime: new Date(),
+    };
   }
 
   return LoanService.insert({ loan, userId });

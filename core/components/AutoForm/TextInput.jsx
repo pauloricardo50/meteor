@@ -2,12 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
-import constants from 'core/config/constants';
-import colors from 'core/config/colors';
-import { toNumber, toDecimalNumber } from 'core/utils/conversionFunctions';
-
-import MyTextInput from 'core/components/TextInput';
-
+import * as constants from '../../config/constants';
+import colors from '../../config/colors';
+import { toNumber, toDecimalNumber } from '../../utils/conversionFunctions';
+import MyTextInput from '../TextInput';
 import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
@@ -21,18 +19,13 @@ const styles = {
     left: -40,
     padding: 10,
   },
-  savingIcon: {
-    position: 'absolute',
-    top: 16,
-    right: -25,
-  },
   infoStyle: {
     color: colors.primary,
     borderColor: colors.primary,
   },
 };
 
-export default class TextInput extends Component {
+class TextInput extends Component {
   constructor(props) {
     super(props);
 
@@ -88,7 +81,11 @@ export default class TextInput extends Component {
   };
 
   saveValue = (showSaving = true) => {
-    const { updateFunc, docId, inputProps: { id, currentValue } } = this.props;
+    const {
+      updateFunc,
+      docId,
+      inputProps: { id, currentValue },
+    } = this.props;
     const { value } = this.state;
     // Save data to DB
     const object = { [id]: value };
@@ -106,7 +103,7 @@ export default class TextInput extends Component {
           // If there was an error, reset value to the backend value
           this.setState({ saving: false, value: currentValue });
         });
-    }, constants.cpsLimit);
+    }, constants.CHARACTERS_TYPES_PER_SECOND_AVG);
   };
 
   render() {
@@ -122,10 +119,19 @@ export default class TextInput extends Component {
         info,
         disabled,
         money,
-        noValidator,
         required,
+
+        // Destructure these props to avoid warnings
+        inputRef,
+        currentValue,
+        condition,
+        decimal,
+        intlId,
+        saveOnChange,
+
         ...otherProps
       },
+      noValidator,
       admin,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
@@ -140,7 +146,7 @@ export default class TextInput extends Component {
     }
 
     return (
-      <div style={{ ...styles.div, ...style }}>
+      <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <MyTextInput
           {...otherProps}
           label={label}
@@ -215,3 +221,5 @@ TextInput.defaultProps = {
   saveOnChange: true,
   noValidator: false,
 };
+
+export default TextInput;

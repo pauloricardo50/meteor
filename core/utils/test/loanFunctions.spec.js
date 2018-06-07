@@ -1,7 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import moment from 'moment';
-import constants from 'core/config/constants';
+
+import { INSURANCE_USE_PRESET, USAGE_TYPE } from '../../api/constants';
 import {
   getProjectValue,
   getLoanValue,
@@ -12,16 +13,15 @@ import {
   getPropAndWork,
   getTotalUsed,
   getLenderCount,
-  disableForms,
   isLoanValid,
-  getPropertyCompletion,
   validateRatios,
   validateRatiosCompletely,
   getFees,
   getMaintenance,
-  getBorrowRatio,
   getAuctionEndTime,
+  loanHasMinimalInformation,
 } from '../loanFunctions';
+import { DEFAULT_AMORTIZATION } from '../../config/financeConstants';
 
 describe('Loan functions', () => {
   let props = {};
@@ -30,10 +30,9 @@ describe('Loan functions', () => {
     props = {
       loan: {
         general: { propertyWork: 200000, usageType: 'PRIMARY' },
+        logic: {},
       },
-      property: {
-        value: 1000000,
-      },
+      property: { value: 1000000 },
     };
   });
 
@@ -44,12 +43,13 @@ describe('Loan functions', () => {
 
     it('Should return 1.27M with 1M property, 200k property work, and 200k insuranceFortuneUsed and a primary residence', () => {
       props.loan.general.insuranceFortuneUsed = 200000;
+      props.loan.logic.insuranceUsePreset = INSURANCE_USE_PRESET.WITHDRAWAL;
 
       expect(getProjectValue(props)).to.equal(1270000);
     });
 
     it('Should return 1.25M with 1M property, 200k property work, and 200k insuranceFortuneUsed for a non primary residence', () => {
-      props.loan.general.usageType = 'INVESTMENT';
+      props.loan.general.usageType = USAGE_TYPE.INVESTMENT;
       props.loan.general.insuranceFortuneUsed = 200000;
 
       expect(getProjectValue(props)).to.equal(1250000);
@@ -74,34 +74,27 @@ describe('Loan functions', () => {
 
   describe('Get loan value', () => {
     it('returns the property value + fees if no fortune is used', () => {
-      expect(getLoanValue({
-        loan: {
-          general: {
-            fortuneUsed: undefined,
-          },
-        },
-        property: {
-          value: 100,
-        },
-      })).to.equal(105);
+      expect(
+        getLoanValue({
+          loan: { general: { fortuneUsed: undefined }, logic: {} },
+          property: { value: 100 },
+        }),
+      ).to.equal(105);
     });
 
-    it('returns the property value if 0 fortune is used', () => {
-      expect(getLoanValue({
-        loan: {
-          general: {
-            fortuneUsed: 0,
-          },
-        },
-        property: {
-          value: 100,
-        },
-      })).to.equal(105);
+    it('returns the property value with fees if 0 fortune is used', () => {
+      expect(
+        getLoanValue({
+          loan: { general: { fortuneUsed: 0 }, logic: {} },
+          property: { value: 100 },
+        }),
+      ).to.equal(105);
     });
 
     it("Should return 800'000 with 1M property, 250k cash", () => {
       const loan = {
         general: { fortuneUsed: 250000, insuranceFortuneUsed: 0 },
+        logic: {},
       };
       const property = { value: 1000000 };
 
@@ -113,25 +106,27 @@ describe('Loan functions', () => {
         general: {
           fortuneUsed: 270000,
           insuranceFortuneUsed: 200000,
-          usageType: 'PRIMARY',
+          usageType: USAGE_TYPE.PRIMARY,
         },
+        logic: { insuranceUsePreset: INSURANCE_USE_PRESET.WITHDRAWAL },
       };
       const property = { value: 1000000 };
 
       expect(getLoanValue({ loan, property })).to.equal(600000);
     });
 
-    it("Should return 700'000 with 1M property, 260k fortune, 100k insurance fortune", () => {
+    it("Should return 690'000 with 1M property, 260k fortune, 100k insurance fortune, but no withdrawal", () => {
       const loan = {
         general: {
           fortuneUsed: 260000,
           insuranceFortuneUsed: 100000,
-          usageType: 'PRIMARY',
+          usageType: USAGE_TYPE.PRIMARY,
         },
+        logic: {},
       };
-      const property = { value: 1000000, usageType: 'primary' };
+      const property = { value: 1000000, usageType: USAGE_TYPE.PRIMARY };
 
-      expect(getLoanValue({ loan, property })).to.equal(700000);
+      expect(getLoanValue({ loan, property })).to.equal(690000);
     });
   });
 
@@ -142,10 +137,12 @@ describe('Loan functions', () => {
     });
 
     it('Should properly verify a loan strategy is complete with two values', () => {
-      expect(loanStrategySuccess(
-        [{ type: 'libor', value: 100 }, { type: 'interest10', value: 100 }],
-        200,
-      )).to.equal(true);
+      expect(
+        loanStrategySuccess(
+          [{ type: 'libor', value: 100 }, { type: 'interest10', value: 100 }],
+          200,
+        ),
+      ).to.equal(true);
     });
 
     it('Should return false if no loanTranche was given', () => {
@@ -172,7 +169,9 @@ describe('Loan functions', () => {
 
     it('returns true if tranches do add up', () => {
       expect(loanStrategySuccess([{ value: 2 }], 2)).to.equal(true);
-      expect(loanStrategySuccess([{ value: 1 }, { value: 2 }], 3)).to.equal(true);
+      expect(loanStrategySuccess([{ value: 1 }, { value: 2 }], 3)).to.equal(
+        true,
+      );
     });
 
     it('throws if loanValue is not an integer', () => {
@@ -182,16 +181,18 @@ describe('Loan functions', () => {
 
   describe('strategiesChosen', () => {
     it('returns true for the right reasons', () => {
-      expect(strategiesChosen({
-        loan: {
-          general: { loanTranches: [{ value: 80 }], fortuneUsed: 25 },
-          logic: {
-            amortizationStrategyPreset: 'hello',
-            hasValidatedCashStrategy: true,
+      expect(
+        strategiesChosen({
+          loan: {
+            general: { loanTranches: [{ value: 80 }], fortuneUsed: 25 },
+            logic: {
+              amortizationStrategyPreset: 'hello',
+              hasValidatedCashStrategy: true,
+            },
           },
-        },
-        property: { value: 100 },
-      })).to.equal(true);
+          property: { value: 100 },
+        }),
+      ).to.equal(true);
     });
 
     describe('getInterestsWithOffer', () => {
@@ -200,66 +201,76 @@ describe('Loan functions', () => {
       });
 
       it('returns -1 if an interest rate does not exist', () => {
-        expect(getInterestsWithOffer({
-          loan: {
-            general: {
-              loanTranches: [
-                { type: 'test', value: 120000 },
-                { type: 'test2, value: 9' },
-              ],
+        expect(
+          getInterestsWithOffer({
+            loan: {
+              general: {
+                loanTranches: [
+                  { type: 'test', value: 120000 },
+                  { type: 'test2, value: 9' },
+                ],
+              },
             },
-          },
-          offer: { standardOffer: { test: 0.01 } },
-        })).to.equal(-1);
+            offer: { standardOffer: { test: 0.01 } },
+          }),
+        ).to.equal(-1);
       });
     });
 
     it('returns the right interests if everything is okay', () => {
-      expect(getInterestsWithOffer({
-        loan: {
-          general: { loanTranches: [{ type: 'test', value: 120000 }] },
-        },
-        offer: { standardOffer: { test: 0.01 } },
-      })).to.equal(100);
-
-      expect(getInterestsWithOffer({
-        loan: {
-          general: {
-            loanTranches: [
-              { type: 'test', value: 120000 }, // 100
-              { type: 'test2', value: 240000 }, // 400
-            ],
-          },
-        },
-        offer: { standardOffer: { test: 0.01, test2: 0.02 } },
-      })).to.equal(500);
-    });
-
-    it('uses the counterpartOffer if asked nicely', () => {
-      expect(getInterestsWithOffer(
-        {
+      expect(
+        getInterestsWithOffer({
           loan: {
             general: { loanTranches: [{ type: 'test', value: 120000 }] },
           },
-          offer: { counterpartOffer: { test: 0.01 } },
-        },
-        false,
-      )).to.equal(100);
+          offer: { standardOffer: { test: 0.01 } },
+        }),
+      ).to.equal(100);
+
+      expect(
+        getInterestsWithOffer({
+          loan: {
+            general: {
+              loanTranches: [
+                { type: 'test', value: 120000 }, // 100
+                { type: 'test2', value: 240000 }, // 400
+              ],
+            },
+          },
+          offer: { standardOffer: { test: 0.01, test2: 0.02 } },
+        }),
+      ).to.equal(500);
+    });
+
+    it('uses the counterpartOffer if asked nicely', () => {
+      expect(
+        getInterestsWithOffer(
+          {
+            loan: {
+              general: { loanTranches: [{ type: 'test', value: 120000 }] },
+            },
+            offer: { counterpartOffer: { test: 0.01 } },
+          },
+          false,
+        ),
+      ).to.equal(100);
     });
 
     it('works with multiple interest rates', () => {
-      expect(getInterestsWithOffer({
-        loan: {
-          general: {
-            loanTranches: [
-              { type: 'test', value: 120000 }, // 100
-              { type: 'test2', value: 240000 }, // 400
-              { type: 'test3', value: 360000 }, // 400
-            ],
+      expect(
+        getInterestsWithOffer({
+          loan: {
+            general: {
+              loanTranches: [
+                { type: 'test', value: 120000 }, // 100
+                { type: 'test2', value: 240000 }, // 400
+                { type: 'test3', value: 360000 }, // 400
+              ],
+            },
           },
-        },
-        offer: { standardOffer: { testx: 0.01, test2: 0.01, test3: 0.02 } },
-      })).to.equal(-1);
+          offer: { standardOffer: { testx: 0.01, test2: 0.01, test3: 0.02 } },
+        }),
+      ).to.equal(-1);
     });
   });
 
@@ -274,12 +285,10 @@ describe('Loan functions', () => {
           loanTranches: [{ value: 720000, type: 'test' }],
           fortuneUsed: 250000,
         },
+        logic: {},
       };
       property = { value: 1000000 };
-      offer = {
-        standardOffer: {},
-        counterpartOffer: {},
-      };
+      offer = { standardOffer: {}, counterpartOffer: {} };
     });
 
     it('returns 0 if interests is wrong', () => {
@@ -288,7 +297,7 @@ describe('Loan functions', () => {
 
     it('returns the right value if everything is wired up', () => {
       offer.standardOffer.test = 0.01;
-      expect(getMonthlyWithOffer({ property, loan, offer })).to.equal((5000 + 800000 * 0.0125 + 600) / 12);
+      expect(getMonthlyWithOffer({ property, loan, offer })).to.equal(Math.round((5000 + 800000 * DEFAULT_AMORTIZATION + 600) / 12));
     });
   });
 
@@ -302,24 +311,32 @@ describe('Loan functions', () => {
     });
 
     it('should add value and propertyWork', () => {
-      expect(getPropAndWork({
-        property: { value: 1 },
-        loan: { general: { propertyWork: 2 } },
-      })).to.equal(3);
+      expect(
+        getPropAndWork({
+          property: { value: 1 },
+          loan: { general: { propertyWork: 2 } },
+        }),
+      ).to.equal(3);
     });
   });
 
   describe('getTotalUsed', () => {
     it('should add fortuneUsed and insuranceFortuneUsed', () => {
-      expect(getTotalUsed({ loan: { general: { fortuneUsed: 1 } } })).to.equal(1);
-      expect(getTotalUsed({
-        loan: { general: { fortuneUsed: 1, insuranceFortuneUsed: 2 } },
-      })).to.equal(3);
-      expect(getTotalUsed({
-        loan: {
-          general: { fortuneUsed: 1, insuranceFortuneUsed: undefined },
-        },
-      })).to.equal(1);
+      expect(getTotalUsed({ loan: { general: { fortuneUsed: 1 } } })).to.equal(
+        1,
+      );
+      expect(
+        getTotalUsed({
+          loan: { general: { fortuneUsed: 1, insuranceFortuneUsed: 2 } },
+        }),
+      ).to.equal(3);
+      expect(
+        getTotalUsed({
+          loan: {
+            general: { fortuneUsed: 1, insuranceFortuneUsed: undefined },
+          },
+        }),
+      ).to.equal(1);
     });
   });
 
@@ -329,47 +346,42 @@ describe('Loan functions', () => {
     });
   });
 
-  describe('disableForms', () => {
-    it('returns true when the right conditions are true', () => {
-      expect(disableForms({ loan: { logic: { step: 2 } } })).to.equal(true);
-      expect(disableForms({
-        loan: { logic: { verification: { requested: true } } },
-      })).to.equal(true);
-      expect(disableForms({
-        loan: { logic: { verification: { validated: true } } },
-      })).to.equal(true);
-    });
-
-    it("returns false if the conditions aren't met", () => {
-      expect(disableForms({ loan: { logic: { step: 1 } } })).to.equal(false);
-      expect(disableForms({ loan: { logic: { step: 0 } } })).to.equal(false);
-      expect(disableForms({ loan: { verification: { requested: false } } })).to.equal(false);
-      expect(disableForms({ loan: { verification: { validated: false } } })).to.equal(false);
-    });
-  });
-
   describe('getFees', () => {
     it('returns notaryFees correctly', () => {
-      expect(getFees({
-        property: { value: 100 },
-        loan: { general: { usageType: 'PRIMARY' } },
-      })).to.equal(5);
+      expect(
+        getFees({
+          property: { value: 100 },
+          loan: { general: { usageType: 'PRIMARY' }, logic: {} },
+        }),
+      ).to.equal(5);
     });
 
-    it('returns insuranceFortune fees only if property is a primary residency', () => {
-      expect(getFees({
-        property: { value: 100 },
-        loan: {
-          general: { usageType: 'PRIMARY', insuranceFortuneUsed: 10 },
-        },
-      })).to.equal(6);
+    it('returns insuranceFortune fees only if property is a primary residency and is withdrawal', () => {
+      expect(
+        getFees({
+          property: { value: 100 },
+          loan: {
+            general: {
+              usageType: USAGE_TYPE.PRIMARY,
+              insuranceFortuneUsed: 10,
+            },
+            logic: { insuranceUsePreset: INSURANCE_USE_PRESET.WITHDRAWAL },
+          },
+        }),
+      ).to.equal(6);
 
-      expect(getFees({
-        property: { value: 100 },
-        loan: {
-          general: { usageType: 'SECONDARY', insuranceFortuneUsed: 10 },
-        },
-      })).to.equal(5);
+      expect(
+        getFees({
+          property: { value: 100 },
+          loan: {
+            general: {
+              usageType: USAGE_TYPE.SECONDARY,
+              insuranceFortuneUsed: 10,
+            },
+            logic: {},
+          },
+        }),
+      ).to.equal(5);
     });
   });
 
@@ -390,7 +402,9 @@ describe('Loan functions', () => {
     });
 
     it('should throw for insufficient revenues', () => {
-      expect(() => isLoanValid({ loan, borrowers, property })).to.throw('income');
+      expect(() => isLoanValid({ loan, borrowers, property })).to.throw(
+        'income',
+      );
     });
 
     it('should throw for insufficient cash', () => {
@@ -405,7 +419,9 @@ describe('Loan functions', () => {
       loan.general.fortuneUsed = 160000;
       loan.general.insuranceFortuneUsed = 80000;
       borrowers = [{ salary: 300000 }];
-      expect(() => isLoanValid({ loan, borrowers, property })).to.throw('ownFunds');
+      expect(() => isLoanValid({ loan, borrowers, property })).to.throw(
+        'ownFunds',
+      );
     });
   });
 
@@ -421,7 +437,9 @@ describe('Loan functions', () => {
     });
 
     it('should throw fortuneTight if insuranceFortune is allowed and conditions', () => {
-      expect(() => validateRatios(0.2, 0.85, true, 0.9)).to.throw('fortuneTight');
+      expect(() => validateRatios(0.2, 0.85, true, 0.9)).to.throw(
+        'fortuneTight',
+      );
     });
 
     it('should throw fortune if insuranceFortune is not allowed and conditions', () => {
@@ -504,7 +522,9 @@ describe('getAuctionEndTime', () => {
       .hours(14);
     endDate.date(4);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return monday night for a thursday afternoon', () => {
@@ -516,7 +536,9 @@ describe('getAuctionEndTime', () => {
       .hours(14);
     endDate.date(9);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return Tuesday night for a friday afternoon', () => {
@@ -528,7 +550,9 @@ describe('getAuctionEndTime', () => {
       .hours(14);
     endDate.date(10);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return Tuesday night for a monday early morning', () => {
@@ -540,7 +564,9 @@ describe('getAuctionEndTime', () => {
       .hours(5);
     endDate.date(3);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return Tuesday night for a saturday afternoon', () => {
@@ -552,7 +578,9 @@ describe('getAuctionEndTime', () => {
       .hours(14);
     endDate.date(10);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return Tuesday night for a saturday early morning', () => {
@@ -564,7 +592,9 @@ describe('getAuctionEndTime', () => {
       .hours(5);
     endDate.date(10);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return Tuesday night for a sunday afternoon', () => {
@@ -576,7 +606,9 @@ describe('getAuctionEndTime', () => {
       .hours(14);
     endDate.date(10);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
   });
 
   it('Should return Tuesday night for a sunday early morning', () => {
@@ -588,6 +620,41 @@ describe('getAuctionEndTime', () => {
       .hours(5);
     endDate.date(10);
 
-    expect(getAuctionEndTime(date).getTime()).to.equal(endDate.toDate().getTime());
+    expect(getAuctionEndTime(date).getTime()).to.equal(
+      endDate.toDate().getTime(),
+    );
+  });
+
+  describe('loanHasMinimalInformation', () => {
+    it('returns false if the loan is not ready', () => {
+      expect(loanHasMinimalInformation({ loan: {} })).to.equal(false);
+      expect(loanHasMinimalInformation({ loan: { general: {} } })).to.equal(
+        false,
+      );
+      expect(loanHasMinimalInformation({ loan: { property: {} } })).to.equal(
+        false,
+      );
+      expect(
+        loanHasMinimalInformation({ loan: { general: {}, property: {} } }),
+      ).to.equal(false);
+      expect(
+        loanHasMinimalInformation({
+          loan: { general: { fortuneUsed: 100 }, property: {} },
+        }),
+      ).to.equal(false);
+      expect(
+        loanHasMinimalInformation({
+          loan: { general: {}, property: { value: 100 } },
+        }),
+      ).to.equal(false);
+    });
+
+    it('returns true if the loan is ready', () => {
+      expect(
+        loanHasMinimalInformation({
+          loan: { general: { fortuneUsed: 100 }, property: { value: 100 } },
+        }),
+      ).to.equal(true);
+    });
   });
 });

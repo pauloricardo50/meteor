@@ -192,19 +192,16 @@ export const LogicSchema = new SimpleSchema({
   },
   insuranceUsePreset: {
     type: String,
-    // defaultValue: '',
     optional: true,
     allowedValues: Object.values(INSURANCE_USE_PRESET),
   },
   loanStrategyPreset: {
     type: String,
-    // defaultValue: '',
     optional: true,
     allowedValues: Object.values(LOAN_STRATEGY_PRESET),
   },
   amortizationStrategyPreset: {
     type: String,
-    // defaultValue: '',
     optional: true,
     allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
   },

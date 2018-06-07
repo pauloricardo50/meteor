@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import Button from 'core/components/Button';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
+import {
+  TooltipProviderContainer,
+  TOOLTIP_LISTS,
+} from 'core/components/tooltips/TooltipContext';
+import { compose } from 'recompose';
 import Widget1PageContainer from './Widget1PageContainer';
 import Widget1Part1 from './Widget1Part1';
 import Widget1Part2 from './Widget1Part2';
@@ -52,4 +57,7 @@ Widget1Page.propTypes = {
 };
 
 export { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';
-export default Widget1PageContainer(Widget1Page);
+export default compose(
+  TooltipProviderContainer(TOOLTIP_LISTS.WIDGET1),
+  Widget1PageContainer,
+)(Widget1Page);
