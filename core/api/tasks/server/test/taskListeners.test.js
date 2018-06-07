@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { ServerEventService } from '../../../events';
-import '../../../events/registerListeners';
+import '../../../events/registerServerListeners';
 import { addFileToDoc, setFileStatus } from '../../../files/methodDefinitions';
 import {
   insertTaskWhenFileAddedListener,

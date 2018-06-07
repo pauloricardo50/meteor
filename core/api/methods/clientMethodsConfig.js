@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Method } from './methods';
+import { ClientEventService } from '../events';
 
 const handleError = (error) => {
   if (Meteor.isClient) {
@@ -17,9 +18,11 @@ const handleError = (error) => {
   }
 };
 
-Method.addAfterCall(({ context, config, params, result, error }) => {
+Method.addAfterCall(({ config, params, result, error }) => {
   if (error) {
     handleError(error);
+  } else {
+    ClientEventService.emitMethod(config, params);
   }
   // Do something on the client
 });

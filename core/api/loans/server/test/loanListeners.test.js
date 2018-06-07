@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { ServerEventService } from '../../../events';
-import '../../../events/registerListeners';
+import '../../../events/registerServerListeners';
 import { disableUserFormsListener } from '../loanListeners';
 import { requestLoanVerification } from '../../methodDefinitions';
 
