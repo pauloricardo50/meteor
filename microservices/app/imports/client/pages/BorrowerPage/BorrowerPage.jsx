@@ -46,10 +46,9 @@ export default class BorrowerPage extends Component {
 
   render() {
     const { loan, borrowers, property } = this.props;
-    const sectionClasses = classNames({
-      'mask1 borrower-page': true,
+    const sectionClasses = classNames('mask1 borrower-page', {
       'p-t--109': borrowers.length > 1,
-      'p-t--159': borrowers.length == 1,
+      'p-t--159': borrowers.length === 1,
     });
 
     return (
@@ -57,7 +56,7 @@ export default class BorrowerPage extends Component {
         <section className={sectionClasses}>
           <Tabs loan={loan} borrowers={borrowers} />
           <BorrowerHeader {...this.props}>
-            {borrowers.length == 1 && (
+            {borrowers.length === 1 && (
               <div className="btn-group text--center">
                 <BorrowerAdder />
               </div>
