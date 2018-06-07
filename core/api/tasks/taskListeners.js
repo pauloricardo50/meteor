@@ -1,13 +1,16 @@
 import { ClientEventService } from '../events';
 import { setFileStatus, completeAddAssignedToTask } from '../methods';
+import TasksNotificationService from './TasksNotificationService';
 
 export const notifyAdminOfCompletedTaskOnFileStatusChangedListener = ({
-  collection,
-  docId,
-  documentId,
   fileKey,
   newStatus,
-}) => {};
+}) => {
+  TasksNotificationService.notifyTaskCompletedWhenFileStatusChanged({
+    fileKey,
+    newStatus,
+  });
+};
 
 ClientEventService.addMethodListener(
   setFileStatus,
@@ -16,7 +19,11 @@ ClientEventService.addMethodListener(
 
 export const notifyAdminOfCompletedTaskOnAdminAssignedToTaskListener = ({
   userId,
-}) => {};
+}) => {
+  TasksNotificationService.notifyTaskCompletedWhenAdminAssignedToTask({
+    userId,
+  });
+};
 
 ClientEventService.addMethodListener(
   completeAddAssignedToTask,
