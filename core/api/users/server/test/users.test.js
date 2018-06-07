@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import Roles from 'core/components/Roles';
+import { Roles } from 'meteor/alanning:roles';
 import { expect, assert } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
@@ -186,9 +186,7 @@ describe.only('users', () => {
         options.email = newUserEmail;
         return adminCreateUser
           .run({ options, role })
-          .then(newUserId =>
-            Roles.userIsInRole(newUserId, [role]).then(result =>
-              assert.equal(result, true)));
+          .then(newUserId => assert.equal(Roles.userIsInRole(newUserId, role), true));
       });
     });
 
