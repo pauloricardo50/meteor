@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 
 import FileVerificator from './FileVerificator';
 
-const styles = {
-  tabContent: {
-    padding: '40px 0',
-  },
-};
-
 // Documents are required by default, and should only be hidden if
 // the condition is explicitly false
 const shouldShowDocument = condition => condition !== false;
@@ -20,7 +14,7 @@ const FilesVerificationTab = ({
   doc,
   ...otherProps
 }) => (
-  <div style={styles.tabContent}>
+  <div style={{ padding: '40px 0' }}>
     {documentArray.map(({ condition, id: documentId }) =>
       shouldShowDocument(condition) && (
         <FileVerificator

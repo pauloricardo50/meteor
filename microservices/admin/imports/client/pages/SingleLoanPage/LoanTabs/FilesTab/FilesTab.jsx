@@ -5,12 +5,14 @@ import FileTabs from 'core/components/FileTabs';
 import NewDocumentForm from './NewDocumentForm';
 
 const FilesTab = props => (
-  <div>
+  <React.Fragment>
     <NewDocumentForm loanId={props.loan._id} />
     <FileTabs {...props} />
-  </div>
+  </React.Fragment>
 );
 
-FilesTab.propTypes = {};
+FilesTab.propTypes = {
+  loan: PropTypes.object.isRequired,
+};
 
 export default FilesTab;
