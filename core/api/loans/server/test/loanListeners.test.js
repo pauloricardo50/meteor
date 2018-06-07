@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import EventService from '../../../events';
+import { ServerEventService } from '../../../events';
 import '../../../events/registerListeners';
 import { disableUserFormsListener } from '../loanListeners';
 import { requestLoanVerification } from '../../methodDefinitions';
@@ -16,7 +16,7 @@ describe('Loan Listeners', () => {
         config: { name: methodName },
       } = requestLoanVerification;
 
-      const listeners = EventService.getListenerFunctions(methodName);
+      const listeners = ServerEventService.getListenerFunctions(methodName);
       expect(listeners.includes(disableUserFormsListener)).to.equal(true);
     });
 

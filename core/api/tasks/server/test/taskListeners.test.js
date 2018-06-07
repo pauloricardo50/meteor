@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import EventService from '../../../events';
+import { ServerEventService } from '../../../events';
 import '../../../events/registerListeners';
 import { addFileToDoc, setFileStatus } from '../../../files/methodDefinitions';
 import {
@@ -18,7 +18,7 @@ describe('Task Listeners', () => {
         config: { name: methodName },
       } = addFileToDoc;
 
-      const listeners = EventService.getListenerFunctions(methodName);
+      const listeners = ServerEventService.getListenerFunctions(methodName);
       expect(listeners.includes(insertTaskWhenFileAddedListener)).to.equal(true);
     });
 
@@ -54,7 +54,7 @@ describe('Task Listeners', () => {
         config: { name: methodName },
       } = setFileStatus;
 
-      const listeners = EventService.getListenerFunctions(methodName);
+      const listeners = ServerEventService.getListenerFunctions(methodName);
       expect(listeners.includes(completeTaskOnFileVerificationListener)).to.equal(true);
     });
 

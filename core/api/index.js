@@ -11,7 +11,7 @@ export { default as Users } from './users';
 export { default as Tasks } from './tasks';
 
 export { default as SecurityService } from './security';
-export { default as EventService } from './events';
+export { ServerEventService, ClientEventService } from './events';
 export * from './methods';
 export * from './helpers';
 export * from './containerToolkit';

@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import { Meteor } from 'meteor/meteor';
 
 const IS_LOGGING = true;
@@ -69,6 +68,3 @@ export class EventService {
     return this.listenerFunctions[eventName];
   }
 }
-
-const defaultEmmitter = new EventEmitter();
-export default new EventService({ emmitter: defaultEmmitter });
