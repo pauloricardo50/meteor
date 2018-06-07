@@ -7,13 +7,16 @@ import Button from 'core/components/Button';
 import { editUser } from 'core/api/methods';
 import { FIELD_TYPES } from 'core/components/Form/formConstants';
 
-export const formFields = ['firstName', 'lastName', 'phone'];
+export const editUserFormFields = ['firstName', 'lastName', 'phone'];
 
-const formArray = formFields.map(field => ({
-  id: field,
-  label: <T id={`EditUserDialogForm.${field}`} />,
-  fieldType: field === 'phone' ? FIELD_TYPES.ARRAY : FIELD_TYPES.TEXT,
-}));
+export const getEditUserFormArray = formFields =>
+  formFields.map(field => ({
+    id: field,
+    label: <T id={`EditUserDialogForm.${field}`} />,
+    fieldType: field === 'phone' ? FIELD_TYPES.ARRAY : FIELD_TYPES.TEXT,
+  }));
+
+const formArray = getEditUserFormArray(editUserFormFields);
 
 const onSubmit = ({ userId, data }) =>
   editUser.run({
