@@ -1,17 +1,43 @@
 import Borrowers from '../borrowers';
+import UserService from '../users/UserService';
 
-export default class {
-  static update = ({ borrowerId, object }) =>
+class BorrowerService {
+  update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
-  static insert = ({ borrower, userId }) =>
-    Borrowers.insert({ ...borrower, userId });
+  insert = ({ borrower, userId }) => Borrowers.insert({ ...borrower, userId });
 
-  static remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
+  insertWithUserNames = ({ borrower, userId }) => {
+    const { firstName, lastName } = UserService.getUserNames({ userId });
 
-  static pushValue = ({ borrowerId, object }) =>
+    if (firstName) {
+      borrower.firstName = firstName;
+    }
+
+    if (lastName) {
+      borrower.lastName = lastName;
+    }
+
+    return this.insert({ borrower, userId });
+  };
+
+  smartInsert = ({ borrower, userId }) => {
+    const isFirstBorrowerForUser = Borrowers.find({ userId }).count() === 0;
+
+    if (isFirstBorrowerForUser) {
+      return this.insertWithUserNames({ borrower, userId });
+    }
+    
+    return this.insert({ borrower, userId });
+  };
+
+  remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
+
+  pushValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $push: object });
 
-  static popValue = ({ borrowerId, object }) =>
+  popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });
 }
+
+export default new BorrowerService();

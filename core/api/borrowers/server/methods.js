@@ -9,23 +9,7 @@ import {
   borrowerDelete,
   pushBorrowerValue,
   popBorrowerValue,
-  setNewBorrowerNames,
 } from '../methodDefinitions';
-
-import { getUserNames } from '../../users/methodDefinitions';
-
-setNewBorrowerNames.setHandler((context, { borrower, userId }) =>
-  getUserNames.run({ userId }).then(({ firstName, lastName }) => {
-    if (firstName) {
-      borrower.firstName = firstName;
-    }
-
-    if (lastName) {
-      borrower.lastName = lastName;
-    }
-
-    return borrower;
-  }));
 
 borrowerInsert.setHandler((context, { borrower, userId }) => {
   if (userId === undefined && Meteor.userId()) {

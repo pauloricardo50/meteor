@@ -35,8 +35,10 @@ class UserService {
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
   getUserNames = ({ userId }) => {
-    const user = Users.findOne(userId, { firstName: 1, lastName: 1 });
-    const { firstName, lastName } = user;
+    const { firstName, lastName } = Users.findOne(userId, {
+      firstName: 1,
+      lastName: 1,
+    });
 
     return { firstName, lastName };
   };
