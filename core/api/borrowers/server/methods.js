@@ -11,15 +11,8 @@ import {
   popBorrowerValue,
 } from '../methodDefinitions';
 
-borrowerInsert.setHandler((context, { borrower, userId }) => {
-  if (userId === undefined && Meteor.userId()) {
-    userId = Meteor.userId();
-  }
-
-  const borrowerToInsert = this.setNewBorrowerNames({ userId, borrower });
-
-  return BorrowerService.insert({ borrower: borrowerToInsert, userId });
-});
+borrowerInsert.setHandler((context, { borrower, userId }) =>
+  BorrowerService.smartInsert({ borrower, userId }));
 
 borrowerUpdate.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
