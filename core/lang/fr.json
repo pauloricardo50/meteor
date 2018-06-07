@@ -283,7 +283,7 @@
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 
-  "NewDocumentForm.label": "Ajouter un nouveau document au prêt hypothécaire",
+  "NewDocumentForm.label": "Ajouter nouveau document à ce prêt",
   "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
   "NewDocumentForm.cta": "Ajouter",
 
