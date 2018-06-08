@@ -13,7 +13,7 @@ import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import LoanTasksTable from '../LoanTasksTable';
 import LoanValidation from './LoanValidation';
-import DisableUserFormsToggle from '../../../../../ui/components/DisableUserFormsToggle';
+import DisableUserFormsToggle from '../../../../../client/components/DisableUserFormsToggle';
 
 export default class OverviewTab extends React.Component {
   constructor(props) {

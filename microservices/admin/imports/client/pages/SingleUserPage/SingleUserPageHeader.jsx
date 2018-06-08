@@ -7,7 +7,7 @@ import T from 'core/components/Translation';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import RolePicker from '../../components/RolePicker';
-import EditUserFormDialog from './EditUserFormDialog';
+import EditUserFormDialog from './EditUserDialogForm';
 
 const SingleUserPageHeader = ({ user }) => (
   <div className="single-user-page-header">
