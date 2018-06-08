@@ -22,7 +22,7 @@
   height: 64px;
   padding: 0 16px;
 
-  background-color: #F1F3F5;
+  background-color: #f1f3f5;
 }
 
 @media (min-width: $med) {
@@ -31,7 +31,7 @@
     position: fixed;
 
     width: calc(
-    100% - 300px - 32px
+      100% - 300px - 32px
     ); // Side-nav width, careful, not updated with variable
   }
 }
@@ -65,7 +65,7 @@
 
 @media (min-width: $med) {
   .page-title .children {
-    padding-top: 112px;
+    padding-top: 128px;
   }
 }
 
@@ -80,6 +80,7 @@
 
 .process-tabs {
   padding: 0 16px;
+  margin-top: 16px;
   position: fixed;
   top: 120px;
   right: 0;
@@ -89,7 +90,7 @@
 
   &__wrapper {
     display: flex;
-    color: #9EA6AF;
+    color: #9ea6af;
     list-style: none;
     width: 100%;
     margin: 0;
@@ -104,7 +105,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: #EFF0F1;
+      background: #eff0f1;
       height: 50px;
     }
   }
@@ -112,7 +113,7 @@
   &__item {
     font-weight: 400;
     position: relative;
-    
+
     > a {
       text-decoration: none;
       padding: 9px 30px 13px;
@@ -126,9 +127,9 @@
         top: -3px;
         bottom: 0;
         right: 0;
-        background: #E2E2E2;
+        background: #e2e2e2;
       }
-      
+
       &.active {
         color: #212529;
         font-weight: 700;
