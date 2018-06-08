@@ -68,7 +68,7 @@
   "FaqPageFaqs.specialCases.question":
     "Mon cas est particulier, est-ce qu’e-Potek peut quand même m’aider ?",
   "FaqPageFaqs.specialCases.answer":
-    "Avec toutes nos années d’expérience, nous avons vu passer et financé avec succès des milliers de dossiers, des plus simples au très complèxes. Nous pouvons vous assurer que peu importe votre situation, s'il y a une solution, nous la trouverons. N’hésitez pas à nous contacter pour en discuter !{verticalSpace}Quelques exemples de situations complexes : Indépendants et chefs d’entreprise - Rentiers - Acquisitions en famille - Successions.",
+    "Avec toutes nos années d’expérience, nous avons vu passer et financé avec succès des milliers de dossiers, des plus simples aux très complexes. Nous pouvons vous assurer que peu importe votre situation, s'il y a une solution, nous la trouverons. N’hésitez pas à nous contacter pour en discuter !{verticalSpace}Quelques exemples de situations complexes : Indépendants et chefs d’entreprise - Rentiers - Acquisitions en famille - Successions.",
   "FaqPageFaqs.emergencies.question":
     "J’aimerais acquérir un bien d’urgence car sinon il va me passer entre les mains",
   "FaqPageFaqs.emergencies.answer":
@@ -283,7 +283,7 @@
 
   "AdminFilesTab.empty": "Vos documents officiels e-Potek apparaîtront ici.",
 
-  "NewDocumentForm.label": "Ajouter un nouveau document au prêt hypothécaire",
+  "NewDocumentForm.label": "Ajouter nouveau document à ce prêt",
   "NewDocumentForm.placeholder": "Nom du document (visible à l'utilisateur)",
   "NewDocumentForm.cta": "Ajouter",
 
