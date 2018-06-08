@@ -4,21 +4,21 @@ import sinon from 'sinon';
 
 import { ClientEventService } from '../../../events';
 import '../../../events/registerClientListeners';
-import { setFileStatus, completeAddAssignedToTask } from '../../../methods';
+import { setFileStatus, assignAdminToNewUser } from '../../../methods';
 import {
-  fileStatusChangedCompletedTaskNotificationListener,
-  addAssignedToCompletedTaskNotificationListener,
+  fileStatusChangedTaskNotificationListener,
+  adminAssignedTaskNotificationListener,
 } from '../../taskListeners';
 import TaskNotificationService from '../../TasksNotificationService';
 
 describe('Task Client Listeners', () => {
-  describe('fileStatusChangedCompletedTaskNotificationListener', () => {
+  describe('fileStatusChangedTaskNotificationListener', () => {
     it(`listens to \`${setFileStatus.config.name}\` method`, () => {
       const {
         config: { name: methodName },
       } = setFileStatus;
       const listeners = ClientEventService.getListenerFunctions(methodName);
-      expect(listeners.includes(fileStatusChangedCompletedTaskNotificationListener)).to.equal(true);
+      expect(listeners.includes(fileStatusChangedTaskNotificationListener)).to.equal(true);
     });
 
     it('calls `TaskNotificationService.notifyTaskCompletedWhenFileStatusChanged` function with the needed params', () => {
@@ -32,7 +32,7 @@ describe('Task Client Listeners', () => {
       };
 
       expect(TaskNotificationService.notifyTaskCompletedWhenFileStatusChanged.called).to.equal(false);
-      fileStatusChangedCompletedTaskNotificationListener(listenerParams);
+      fileStatusChangedTaskNotificationListener(listenerParams);
 
       expect(TaskNotificationService.notifyTaskCompletedWhenFileStatusChanged.getCall(0).args).to.deep.equal([
         {
@@ -45,35 +45,36 @@ describe('Task Client Listeners', () => {
     });
   });
 
-  describe('addAssignedToCompletedTaskNotificationListener', () => {
-    it(`listens to \`${completeAddAssignedToTask.config.name}\` method`, () => {
+  describe('adminAssignedTaskNotificationListener', () => {
+    it(`listens to \`${assignAdminToNewUser.config.name}\` method`, () => {
       const {
         config: { name: methodName },
-      } = completeAddAssignedToTask;
+      } = assignAdminToNewUser;
       const listeners = ClientEventService.getListenerFunctions(methodName);
-      expect(listeners.includes(addAssignedToCompletedTaskNotificationListener)).to.equal(true);
+      expect(listeners.includes(adminAssignedTaskNotificationListener)).to.equal(true);
     });
 
-    it('calls `TaskNotificationService.notifyTaskCompletedWhenAddedAssignedAdmin` function with the needed params', () => {
+    it('calls `TaskNotificationService.notifyTaskCompletedWhenAdminAssigned` function with the needed params', () => {
       sinon.stub(
         TaskNotificationService,
-        'notifyTaskCompletedWhenAddedAssignedAdmin',
+        'notifyTaskCompletedWhenAdminAssigned',
       );
       const listenerParams = {
         userId: 'someUserId',
+        adminId: 'someAdminId',
       };
 
-      expect(TaskNotificationService.notifyTaskCompletedWhenAddedAssignedAdmin
-        .called).to.equal(false);
-      addAssignedToCompletedTaskNotificationListener(listenerParams);
+      expect(TaskNotificationService.notifyTaskCompletedWhenAdminAssigned.called).to.equal(false);
+      adminAssignedTaskNotificationListener(listenerParams);
 
-      expect(TaskNotificationService.notifyTaskCompletedWhenAddedAssignedAdmin.getCall(0).args).to.deep.equal([
+      expect(TaskNotificationService.notifyTaskCompletedWhenAdminAssigned.getCall(0)
+        .args).to.deep.equal([
         {
           userId: 'someUserId',
         },
       ]);
 
-      TaskNotificationService.notifyTaskCompletedWhenAddedAssignedAdmin.restore();
+      TaskNotificationService.notifyTaskCompletedWhenAdminAssigned.restore();
     });
   });
 });
