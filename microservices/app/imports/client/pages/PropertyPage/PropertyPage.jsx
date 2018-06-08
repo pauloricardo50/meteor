@@ -17,7 +17,7 @@ import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
-  const { userFormsDisabled } = loan;
+  const { userFormsEnabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
@@ -48,14 +48,14 @@ const PropertyPage = (props) => {
           documentArray={loanDocuments(loan).auction}
           doc={loan}
           collection={LOANS_COLLECTION}
-          disabled={userFormsDisabled}
+          disabled={!userFormsEnabled}
         />
 
         <UploaderArray
           documentArray={propertyDocuments(property, loan).auction}
           doc={property}
           collection={PROPERTIES_COLLECTION}
-          disabled={userFormsDisabled}
+          disabled={!userFormsEnabled}
         />
 
         <div className="flex--helper flex-justify--center">
@@ -64,7 +64,7 @@ const PropertyPage = (props) => {
             inputs={getPropertyLoanArray({ loan, borrowers })}
             collection={LOANS_COLLECTION}
             doc={loan}
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
 
@@ -74,7 +74,7 @@ const PropertyPage = (props) => {
             inputs={getPropertyArray({ loan, borrowers, property })}
             collection={PROPERTIES_COLLECTION}
             doc={property}
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
       </section>

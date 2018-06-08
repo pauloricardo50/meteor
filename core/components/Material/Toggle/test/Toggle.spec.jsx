@@ -7,17 +7,23 @@ import Switch from '@material-ui/core/Switch';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import Toggle from '../Toggle';
 
+const requiredProps = { toggle: false, onToggle: () => {} };
+
 const component = props => shallow(<Toggle {...props} />);
 
 describe('Toggle', () => {
   it('renders only the right label', () => {
-    const labels = component({ labelRight: 'Right Label' }).find('.toggle-label');
+    const labels = component({
+      ...requiredProps,
+      labelRight: 'Right Label',
+    }).find('.toggle-label');
     expect(labels.length).to.equal(1);
     expect(labels.first().text()).to.equal('Right Label');
   });
 
   it('renders top, left and right labels', () => {
     const props = {
+      ...requiredProps,
       labelTop: 'Top Label',
       labelLeft: 'Left Label',
       labelRight: 'Right Label',
@@ -31,7 +37,7 @@ describe('Toggle', () => {
 
   it('passes the toggle callback function to the Switch component', () => {
     const onToggle = () => {};
-    expect(component({ onToggle })
+    expect(component({ ...requiredProps, onToggle })
       .find(Switch)
       .first()
       .prop('onChange')).to.equal(onToggle);
