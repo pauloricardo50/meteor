@@ -18,12 +18,8 @@ import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
-<<<<<<< HEAD
-  const { userFormsDisabled } = loan;
   const { address1, zipCode, city } = property;
-=======
   const { userFormsEnabled } = loan;
->>>>>>> fc00e26f456de1f5698de067e31c0d9cb6dca9e4
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
