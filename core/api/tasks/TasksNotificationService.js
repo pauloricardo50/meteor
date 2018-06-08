@@ -15,13 +15,11 @@ class TaskNotificationService {
       tasksQuery
         .clone({ file: fileKey, status: TASK_STATUS.COMPLETED })
         .fetchOne((err, task) => {
-          if (err) {
-            console.log(
-              'ERROR in notifyTaskCompletedWhenFileStatusChanged:',
-              err,
-            );
-          }
-
+          console.log(
+            'in notifyTaskCompletedWhenFileStatusChanged:',
+            err,
+            task,
+          );
           this.notifyAdminOfCompletedTask({ task });
           resolve();
         });
@@ -40,9 +38,7 @@ class TaskNotificationService {
           status: TASK_STATUS.COMPLETED,
         })
         .fetchOne((err, task) => {
-          if (err) {
-            console.log('ERROR in notifyTaskCompletedWhenAdminAssigned:', err);
-          }
+          console.log('in notifyTaskCompletedWhenAdminAssigned:', err, task);
 
           this.notifyAdminOfCompletedTask({ task });
           resolve();
@@ -50,7 +46,6 @@ class TaskNotificationService {
     });
 
   notifyAdminOfCompletedTask = ({ task }) => {
-    console.log('notifyAdminOfCompletedTask-->', task);
     if (task) {
       const { _id, status } = task;
 

@@ -5,7 +5,15 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({
     filters,
     options,
-    params: { assignedTo, unassigned, dashboardTasks, file, status, type },
+    params: {
+      assignedTo,
+      unassigned,
+      dashboardTasks,
+      file,
+      status,
+      type,
+      user,
+    },
   }) {
     if (assignedTo) {
       filters.assignedEmployeeId = assignedTo;
@@ -33,6 +41,10 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
 
     if (type) {
       filters.type = type;
+    }
+
+    if (user) {
+      filters.userId = user;
     }
   },
   $options: {
@@ -81,4 +93,5 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     },
   },
   userId: 1,
+  fileKey: 1,
 });

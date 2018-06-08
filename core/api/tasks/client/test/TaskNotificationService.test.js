@@ -19,7 +19,11 @@ describe('Task Client Service', () => {
       resetDatabase();
       sinon.stub(TasksNotificationService, 'notifyAdminOfCompletedTask');
 
-      completedTask = Factory.create('task', { status: TASK_STATUS.COMPLETED });
+      completedTask = Factory.create('task', {
+        status: TASK_STATUS.COMPLETED,
+        fileKey: 'someFileKey.pdf',
+        userId: 'someUserId',
+      });
     });
 
     afterEach(() => {
@@ -35,7 +39,10 @@ describe('Task Client Service', () => {
           fileKey: completedTask.fileKey,
           newStatus: FILE_STATUS.VALID,
         });
-        expect(TasksNotificationService.notifyAdminOfCompletedTask.getCall(0).args).to.deep.equal([{ task: completedTask }]);
+
+        const args = TasksNotificationService.notifyAdminOfCompletedTask.getCall(0).args;
+        const { _id, status } = completedTask;
+        expect(args[0].task).to.deep.include({ _id, status });
       });
 
       // check it actually fails, after the above test is working
@@ -52,7 +59,16 @@ describe('Task Client Service', () => {
 
     describe('notifyTaskCompletedWhenAdminAssigned', () => {
       // TODO
-      it('calls `TaskNotificationService.notifyAdminOfCompletedTask` on the correct task');
+      it('calls `TaskNotificationService.notifyAdminOfCompletedTask` on the correct task', async () => {
+        expect(TasksNotificationService.notifyAdminOfCompletedTask.called).to.equal(false);
+        await TasksNotificationService.notifyTaskCompletedWhenAdminAssigned({
+          userId: completedTask.userId,
+        });
+
+        const args = TasksNotificationService.notifyAdminOfCompletedTask.getCall(0).args;
+        const { _id, status } = completedTask;
+        expect(args[0].task).to.deep.include({ _id, status });
+      });
 
       // check it actually fails, after the above test is working
       it('does not call `TaskNotificationService.notifyAdminOfCompletedTask` when `userId` is undefined', async () => {
