@@ -1055,8 +1055,7 @@
   "LoginForm.email": "Adresse e-mail",
   "LoginForm.password": "Mot de passe",
   "LoginPage.loggedIn": "Vous êtes connecté",
-  "LoginPage.title": "Login / Créer un compte",
-  "MapWithMarkerWrapper.incompleteAddress": "Entrez votre adresse complet pour afficher la carte!",
+  "LoginPage.title": "Login / Créer un compte",  
   "MissingDoc.text": "Le document a été supprimé ou n'existe pas!",
   "MissingDoc.redirectHome": "Page d'accueil",
   "NewLoanModal.description": "Ça nous permettra de l'identifier",
@@ -1114,6 +1113,7 @@
   "PropertyAdder.add": "Ajouter",
   "PropertyPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
+  "PropertyPage.incompleteAddress": "Entrez votre adresse complet pour afficher la carte!",
   "PropertyPage.progress": "Progrès: {value, number, percent}",
   "PropertyPage.title":
     "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",

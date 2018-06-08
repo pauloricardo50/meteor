@@ -22,7 +22,6 @@ describe('MapWithMarkerWrapper', () => {
     address = { city: 'Kathmandu', zipCode: '123456' };
     const errorParagraph = component(address).find('.incomplete-address');
     expect(errorParagraph.length).to.equal(1);
-    expect(errorParagraph.first().text()).to.equal('Entrez votre adresse complet pour afficher la carte!');
   });
 
   it('renders MapWithMarker if address is complete', () =>
