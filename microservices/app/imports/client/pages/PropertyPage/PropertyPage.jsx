@@ -34,7 +34,12 @@ const PropertyPage = (props) => {
           </small>
         </h1>
 
-        <MapWithMarkerWrapper address1={address1} city={city} zipCode={zipCode} />
+        <MapWithMarkerWrapper
+          address1={address1}
+          city={city}
+          zipCode={zipCode}
+          options={{ zoom: 14 }}
+        />
 
         <div className="description">
           <p>
