@@ -17,7 +17,7 @@ class TaskNotificationService {
     }
   };
 
-  notifyTaskCompletedWhenAdminAssignedToTask = ({ userId }) => {
+  notifyTaskCompletedWhenAddedAssignedAdmin = ({ userId }) => {
     tasksQuery
       .clone({
         user: userId,
