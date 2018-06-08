@@ -55,30 +55,5 @@ describe('users', () => {
         });
       });
     });
-    describe('getUserNames', () => {
-      let user;
-      const email = 'yep@yop.com';
-      const firstName = 'testFirstName';
-      const lastName = 'testLastName';
-
-      beforeEach(() => {
-        user = Factory.create('user', {
-          emails: [{ address: email, verified: false }],
-          firstName,
-          lastName,
-        });
-
-        sinon.stub(Meteor, 'userId').callsFake(() => user._id);
-      });
-
-      afterEach(() => {
-        Meteor.userId.restore();
-      });
-
-      it("returns a user's firstName and lastName ", () =>
-        getUserNames.run({ userId: user._id }).then((result) => {
-          expect(result).to.deep.equal({ firstName, lastName });
-        }));
-    });
   });
 });

@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import sinon, { spy } from 'sinon';
+import { expect } from 'chai';
+import sinon from 'sinon';
+import { stubCollections } from 'core/utils/testHelpers';
 
 import BorrowerService from '../../BorrowerService';
 import Borrowers from '../../borrowers';
@@ -26,9 +26,6 @@ describe('BorrowerService', () => {
 
   describe('insertWithUserNames', () => {
     beforeEach(() => {
-      resetDatabase();
-      stubCollections();
-
       user = Factory.create('user', { firstName, lastName });
       borrower = {
         expenses: [{ description: 'test', value: 1 }],
@@ -37,10 +34,6 @@ describe('BorrowerService', () => {
         age: 18,
         userId: user._id,
       };
-    });
-
-    afterEach(() => {
-      stubCollections.restore();
     });
 
     it("sets the borrowers first and last name when the user's first and last name are defined", () => {
@@ -55,7 +48,7 @@ describe('BorrowerService', () => {
       });
     });
 
-    it("doesn't modify the borrower when the user' firstName and lastName are not defined", () => {
+    it("doesn't modify the borrower when the user's firstName and lastName are not defined", () => {
       Meteor.users.update(
         { _id: user._id },
         { $unset: { firstName: '', lastName: '' } },
@@ -66,10 +59,10 @@ describe('BorrowerService', () => {
         userId: user._id,
       });
 
-      borrower._id = newBorrowerId;
-
+      const expectedBorrower = { ...borrower, _id: newBorrowerId };
+      
       return expect(Borrowers.findOne(newBorrowerId))
-        .to.deep.equal(borrower)
+        .to.deep.equal(expectedBorrower)
         .and.not.to.include({ firstName, lastName });
     });
 
@@ -85,20 +78,13 @@ describe('BorrowerService', () => {
 
       const newBorrower = Borrowers.findOne(newBorrowerId);
 
-      expect(newBorrower)
-        .to.have.property('lastName')
-        .and.not.to.have.property('firstName');
-
-      expect(newBorrower.lastName).to.deep.equal(lastName);
+      expect(newBorrower.firstName).to.equal(undefined);
+      expect(newBorrower.lastName).to.equal(lastName);
     });
   });
 
   describe('smartInsert', () => {
     beforeEach(() => {
-      resetDatabase();
-      stubCollections();
-
-      user = Factory.create('user', { firstName, lastName });
       Factory.create('borrower', { userId: user._id });
 
       sinon.stub(BorrowerService, 'insert');
@@ -106,7 +92,6 @@ describe('BorrowerService', () => {
     });
 
     afterEach(() => {
-      stubCollections.restore();
       BorrowerService.insert.restore();
       BorrowerService.insertWithUserNames.restore();
     });
@@ -119,6 +104,7 @@ describe('BorrowerService', () => {
       BorrowerService.smartInsert({ borrower, userId: user._id });
 
       expect(BorrowerService.insertWithUserNames.called).to.equal(true);
+      expect(BorrowerService.insertWithUserNames.getCall(0).args).to.deep.equal([{ borrower, userId: user._id }]);
     });
 
     it('calls BorrowerService.insert when there is at least one borrower for the provided userId', () => {
@@ -129,6 +115,9 @@ describe('BorrowerService', () => {
 
       expect(BorrowerService.insertWithUserNames.called).to.equal(false);
       expect(BorrowerService.insert.callCount).to.equal(1);
+      expect(BorrowerService.insert.getCall(0).args).to.deep.equal([
+        { borrower, userId: user._id },
+      ]);
     });
   });
 });

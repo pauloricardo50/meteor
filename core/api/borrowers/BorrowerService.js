@@ -27,7 +27,7 @@ class BorrowerService {
     if (isFirstBorrowerForUser) {
       return this.insertWithUserNames({ borrower, userId });
     }
-    
+
     return this.insert({ borrower, userId });
   };
 

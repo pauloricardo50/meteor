@@ -49,7 +49,3 @@ setRole.setHandler((context, params) => {
   UserService.setRole(params);
 });
 
-getUserNames.setHandler((context, { userId }) => {
-  SecurityService.checkUserLoggedIn(userId);
-  return UserService.getUserNames({ userId });
-});

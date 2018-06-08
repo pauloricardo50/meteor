@@ -38,10 +38,3 @@ export const setRole = new Method({
     role: String,
   },
 });
-
-export const getUserNames = new Method({
-  name: 'getUserNames',
-  params: {
-    userId: String,
-  },
-});
