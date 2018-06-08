@@ -11,7 +11,7 @@ import { disableUserForms, enableUserForms } from 'core/api';
 
 import DisableUserFormsToggle from '../DisableUserFormsToggle';
 
-const component = (props = { loan: {} }) =>
+const component = (props = { loan: { userFormsEnabled: true } }) =>
   shallow(<DisableUserFormsToggle {...props} />);
 
 const getLabel = (component, labelSelector) =>
@@ -22,7 +22,7 @@ const getLabel = (component, labelSelector) =>
     .first();
 
 const completeProps = {
-  loan: { _id: '123' },
+  loan: { _id: '123', userFormsEnabled: true },
   labelTop: 'Top Label',
   labelLeft: 'Left Label',
   labelRight: 'Right Label',
@@ -51,21 +51,16 @@ describe('DisableUserFormsToggle', () => {
       .prop('labelRight')).to.deep.equal(<T id="general.yes" />);
   });
 
-  it('is toggled off by default', () => {
-    const toggles = component().find(Toggle);
-    expect(toggles.first().prop('toggled')).to.equal(false);
-  });
-
-  it('is toggled off when user forms are enabled', () => {
-    const props = { loan: { userFormsDisabled: false } };
-    const toggles = component(props).find(Toggle);
-    expect(toggles.first().prop('toggled')).to.equal(false);
-  });
-
-  it('is toggled on when user forms are disabled', () => {
-    const props = { loan: { userFormsDisabled: true } };
+  it('is toggled on when user forms are enabled', () => {
+    const props = { loan: { userFormsEnabled: true } };
     const toggles = component(props).find(Toggle);
     expect(toggles.first().prop('toggled')).to.equal(true);
+  });
+
+  it('is toggled off when user forms are disabled', () => {
+    const props = { loan: { userFormsEnabled: false } };
+    const toggles = component(props).find(Toggle);
+    expect(toggles.first().prop('toggled')).to.equal(false);
   });
 
   it('passes a disable function', () => {
@@ -76,9 +71,9 @@ describe('DisableUserFormsToggle', () => {
     expect(onToggle).to.be.a('function');
   });
 
-  it('disables the user forms when toggled on', () => {
+  it('enables the user forms when toggled on', () => {
     const toggledOffProps = {
-      loan: { _id: '1234', userFormsDisabled: false },
+      loan: { _id: '1234', userFormsEnabled: false },
       labelTop: 'top',
       labelLeft: 'left',
       labelRight: 'right',
@@ -87,31 +82,8 @@ describe('DisableUserFormsToggle', () => {
       .find(Toggle)
       .prop('onToggle');
 
-    sinon.stub(disableUserForms, 'run');
-    onToggle(null, true);
-
-    expect(disableUserForms.run.getCall(0).args).to.deep.equal([
-      {
-        loanId: '1234',
-      },
-    ]);
-
-    disableUserForms.run.restore();
-  });
-
-  it('enables the user forms when toggled off', () => {
-    const toggledOnProps = {
-      loan: { _id: '1234', userFormsDisabled: true },
-      labelTop: 'top',
-      labelLeft: 'left',
-      labelRight: 'right',
-    };
-    const onToggle = component(toggledOnProps)
-      .find(Toggle)
-      .prop('onToggle');
-
     sinon.stub(enableUserForms, 'run');
-    onToggle(null, false);
+    onToggle(null, true);
 
     expect(enableUserForms.run.getCall(0).args).to.deep.equal([
       {
@@ -120,5 +92,28 @@ describe('DisableUserFormsToggle', () => {
     ]);
 
     enableUserForms.run.restore();
+  });
+
+  it('disables the user forms when toggled off', () => {
+    const toggledOnProps = {
+      loan: { _id: '1234', userFormsEnabled: true },
+      labelTop: 'top',
+      labelLeft: 'left',
+      labelRight: 'right',
+    };
+    const onToggle = component(toggledOnProps)
+      .find(Toggle)
+      .prop('onToggle');
+
+    sinon.stub(disableUserForms, 'run');
+    onToggle(null, false);
+
+    expect(disableUserForms.run.getCall(0).args).to.deep.equal([
+      {
+        loanId: '1234',
+      },
+    ]);
+
+    disableUserForms.run.restore();
   });
 });

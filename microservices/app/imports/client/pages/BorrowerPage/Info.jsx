@@ -10,7 +10,7 @@ const Info = (props) => {
   const { borrowerId } = props.match.params;
   const {
     borrowers,
-    loan: { userFormsDisabled },
+    loan: { userFormsEnabled },
   } = props;
 
   return (
@@ -35,7 +35,7 @@ const Info = (props) => {
             docId={borrower._id}
             collection="borrowers"
             doc={borrower}
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
       ))}

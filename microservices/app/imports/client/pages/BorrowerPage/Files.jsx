@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const Files = ({ borrowers, loan: { userFormsDisabled } }) => (
+const Files = ({ borrowers, loan: { userFormsEnabled } }) => (
   <section
     className="animated fadeIn borrower-page-files"
     style={styles.section}
@@ -42,7 +42,7 @@ const Files = ({ borrowers, loan: { userFormsDisabled } }) => (
             documentArray={borrowerDocuments(borrower).auction}
             doc={borrower}
             collection="borrowers"
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
       ))}
