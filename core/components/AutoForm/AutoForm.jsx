@@ -163,10 +163,8 @@ const mapInputs = (singleInput, index, parentProps) => {
 };
 
 const AutoForm = props => (
-  <div className={props.formClasses}>
-    <div onSubmit={e => e.preventDefault()}>
-      {props.inputs.map((input, i) => mapInputs(input, i, props))}
-    </div>
+  <div className={props.formClasses} onSubmit={e => e.preventDefault()}>
+    {props.inputs.map((input, i) => mapInputs(input, i, props))}
   </div>
 );
 

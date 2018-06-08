@@ -10,7 +10,7 @@ const Info = (props) => {
   const { borrowerId } = props.match.params;
   const borrower = props.borrowers.find(b => b._id === borrowerId);
   const {
-    loan: { userFormsDisabled },
+    loan: { userFormsEnabled },
   } = props;
 
   return (
@@ -31,7 +31,7 @@ const Info = (props) => {
         docId={borrowerId}
         collection="borrowers"
         doc={borrower}
-        disabled={userFormsDisabled}
+        disabled={!userFormsEnabled}
       />
     </section>
   );

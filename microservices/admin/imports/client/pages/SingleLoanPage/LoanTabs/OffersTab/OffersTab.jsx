@@ -6,7 +6,7 @@ import OfferList from 'core/components/OfferList';
 import OfferAdder from './OfferAdder';
 
 const OffersTab = props => (
-  <div className="mask1 offers-tab">
+  <div className="offers-tab">
     <h2>
       <T id="collections.offers" />
     </h2>

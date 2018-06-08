@@ -111,7 +111,12 @@ Meteor.methods({
         const loanStep = index % 3 + 1;
 
         range(LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({ step: loanStep, userId, adminId });
+          createFakeLoanFixture({
+            step: loanStep,
+            userId,
+            adminId,
+            twoBorrowers: true,
+          });
         });
       });
 

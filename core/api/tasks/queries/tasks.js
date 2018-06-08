@@ -47,6 +47,9 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     user: {
       assignedEmployeeId: 1,
     },
+    loans: {
+      _id: 1,
+    },
   },
   loan: {
     name: 1,
@@ -58,6 +61,9 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     address1: 1,
     user: {
       assignedEmployeeId: 1,
+    },
+    loans: {
+      _id: 1,
     },
   },
   userId: 1,

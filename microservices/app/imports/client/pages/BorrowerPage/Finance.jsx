@@ -49,7 +49,7 @@ const BorrowerFinancePage = (props) => {
       params: { borrowerId },
     },
     borrowers,
-    loan: { userFormsDisabled },
+    loan: { userFormsEnabled },
   } = props;
   const borrowerLogic = borrowers.find(b => b._id === borrowerId);
 
@@ -94,7 +94,7 @@ const BorrowerFinancePage = (props) => {
               docId={borrower._id}
               collection={BORROWERS_COLLECTION}
               doc={borrower}
-              disabled={userFormsDisabled}
+              disabled={!userFormsEnabled}
             />
           </div>
         ))}

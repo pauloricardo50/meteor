@@ -7,6 +7,7 @@ export const addFileToDoc = new Method({
     documentId: String,
     collection: String,
     docId: String,
+    userId: String,
   },
 });
 
