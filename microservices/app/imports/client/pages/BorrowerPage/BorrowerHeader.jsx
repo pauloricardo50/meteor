@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
-
+import BorrowerAdder from '../../components/BorrowerAdder';
 import Progress from './Progress';
 
-const BorrowerHeader = ({ borrowers, match, children }) => (
+const BorrowerHeader = ({ borrowers, match, loan: { _id: loanId } }) => (
   <header className="borrower-header borrower-header--fixed p-d--16">
     <div className="borrower-header__row flex p-d--16">
       {borrowers.map((borrower, borrowerIndex) => (
@@ -42,10 +42,14 @@ const BorrowerHeader = ({ borrowers, match, children }) => (
               </div>
             </div>
           </div>
-          {children}
           <Progress borrower={borrower} match={match} />
         </div>
       ))}
+      {borrowers.length === 1 && (
+        <div className="borrower-adder col--50">
+          <BorrowerAdder loanId={loanId} />
+        </div>
+      )}
     </div>
   </header>
 );
@@ -54,6 +58,7 @@ BorrowerHeader.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.object.isRequired,
 };
 
 export default BorrowerHeader;

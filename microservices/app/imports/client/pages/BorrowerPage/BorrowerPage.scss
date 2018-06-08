@@ -178,6 +178,13 @@
     padding-left: 15px;
     width: calc(100% - 60px);
   }
+
+  .borrower-adder {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .user-form {

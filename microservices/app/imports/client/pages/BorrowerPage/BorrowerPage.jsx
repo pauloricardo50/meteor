@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
-
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import ProcessPage from '../../components/ProcessPage';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
-import BorrowerAdder from './../../components/BorrowerAdder';
-
 import Tabs from './Tabs';
 
 export default class BorrowerPage extends Component {
@@ -45,7 +42,7 @@ export default class BorrowerPage extends Component {
   }
 
   render() {
-    const { loan, borrowers, property } = this.props;
+    const { loan, borrowers } = this.props;
     const sectionClasses = classNames('mask1 borrower-page', {
       'p-t--109': borrowers.length > 1,
       'p-t--159': borrowers.length === 1,
@@ -55,13 +52,8 @@ export default class BorrowerPage extends Component {
       <ProcessPage {...this.props} stepNb={1} id="borrowers">
         <section className={sectionClasses}>
           <Tabs loan={loan} borrowers={borrowers} />
-          <BorrowerHeader {...this.props}>
-            {borrowers.length === 1 && (
-              <div className="btn-group text--center">
-                <BorrowerAdder />
-              </div>
-            )}
-          </BorrowerHeader>
+
+          <BorrowerHeader {...this.props} />
 
           {this.getContent()}
         </section>
@@ -71,6 +63,6 @@ export default class BorrowerPage extends Component {
 }
 
 BorrowerPage.propTypes = {
-  // loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
