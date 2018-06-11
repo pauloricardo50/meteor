@@ -16,14 +16,14 @@ const interestRates = [
   {
     type: INTEREST_RATES.YEARS_5,
     rateLow: 0.009,
-    rateHigh: 0.0125,
-    trend: TRENDS.DOWN,
+    rateHigh: 0.0135,
+    trend: TRENDS.UP,
   },
   {
     type: INTEREST_RATES.YEARS_10,
-    rateLow: 0.0114,
-    rateHigh: 0.0165,
-    trend: TRENDS.DOWN,
+    rateLow: 0.0121,
+    rateHigh: 0.0175,
+    trend: TRENDS.UP,
   },
   {
     type: INTEREST_RATES.YEARS_15,
