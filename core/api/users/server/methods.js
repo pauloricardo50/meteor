@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import { SecurityService } from '../..';
+import UserSecurity from '../../security/collections/UserSecurity';
 import {
   doesUserExist,
   sendVerificationLink,
@@ -52,7 +53,7 @@ setRole.setHandler((context, params) => {
 });
 
 adminCreateUser.setHandler((context, { options, role }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  UserSecurity.checkPermissionToAddUser({ role });
 
   return UserService.adminCreateUser({ options, role });
 });
@@ -61,7 +62,9 @@ checkPermissionToAddUser.setHandler((context, { role }) =>
   UserService.checkPermissionToAddUser({ role }));
 
 editUser.setHandler((context, { userId, object }) => {
-  SecurityService.checkCurrentUserIsAdmin();
+  if (!SecurityService.currentUserIsAdmin()) {
+    SecurityService.checkUserLoggedIn(userId);
+  }
 
   return UserService.update({ userId, object });
 });

@@ -28,6 +28,10 @@ export default class Security {
     if (!userId) {
       this.handleUnauthorized('Checking if logged in');
     }
+
+    if (userId !== Meteor.userId()) {
+      this.handleUnauthorized('Checking if logged in');
+    }
   }
 
   static checkLoggedOut() {

@@ -10,13 +10,13 @@ import sinon from 'sinon';
 import { stubCollections } from 'core/utils/testHelpers';
 import {
   doesUserExist,
-  checkPermissionToAddUser,
   adminCreateUser,
   editUser,
 } from '../../methodDefinitions';
 import { ROLES } from '../../userConstants';
+import { SecurityService } from '../../../';
 
-describe.only('users', () => {
+describe('users', () => {
   beforeEach(() => {
     resetDatabase();
     stubCollections();
@@ -61,62 +61,6 @@ describe.only('users', () => {
         return doesUserExist.run({ email: inexistentEmail }).then((result) => {
           expect(result).to.equal(false);
         });
-      });
-    });
-
-    describe('checkPermissionToAddUser', () => {
-      const userRole = ROLES.USER;
-      const adminRole = ROLES.ADMIN;
-      const devRole = ROLES.DEV;
-      const lenderRole = ROLES.LENDER;
-      const otherRole = 'OTHER';
-      let context;
-      let admin;
-
-      beforeEach(() => {
-        admin = Factory.create('admin');
-        context = { userId: admin._id };
-
-        sinon.stub(Meteor, 'userId').callsFake(() => admin._id);
-      });
-
-      afterEach(() => {
-        stubCollections.restore();
-        Meteor.userId.restore();
-      });
-
-      it('throws if passed another role than the ones defined', () =>
-        checkPermissionToAddUser
-          .run({ role: otherRole })
-          .catch(({ error }) => {
-            assert.equal(error, 'INCORRECT_ROLE');
-          }));
-
-      it('throws if you try to add devs without dev privileges', () =>
-        checkPermissionToAddUser
-          .run({ role: devRole })
-          .catch(({ error }) => {
-            assert.equal(error, 'NOT_AUTHORIZED');
-          }));
-
-      it('throws if you try to add admins without dev privileges', () =>
-        checkPermissionToAddUser
-          .run({ role: adminRole })
-          .catch(({ error }) => {
-            assert.equal(error, 'NOT_AUTHORIZED');
-          }));
-
-      it('throws if you try to add users with user privileges', () => {
-        const user = Factory.create('user')._id;
-        context = { userId: user._id };
-
-        Meteor.userId.restore();
-        sinon.stub(Meteor, 'userId').callsFake(() => user._id);
-        return checkPermissionToAddUser
-          .run({ role: userRole })
-          .catch(({ error }) => {
-            assert.equal(error, 'NOT_AUTHORIZED');
-          });
       });
     });
 
@@ -210,21 +154,33 @@ describe.only('users', () => {
       afterEach(() => {
         stubCollections.restore();
         Meteor.userId.restore();
+        SecurityService.currentUserIsAdmin.restore();
+        SecurityService.checkUserLoggedIn.restore();
       });
 
-      it('it throws if a user tries to edit another user', () => {
-        context = { userId: otherUser._id };
-        sinon.stub(Meteor, 'userId').callsFake(() => otherUser._id);
-
+      it('calls apropriate methods from SecurityService to check wheather the user doing the edit, is admin or owner', () => {
+        sinon.stub(Meteor, 'userId').callsFake(() => user._id);
+        sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => false);
+        sinon.stub(SecurityService, 'checkUserLoggedIn').callsFake(() => true);
+       
         return editUser
           .run({ userId: user._id, object })
-          .catch(({ error }) => assert.equal(error, 'NOT_AUTHORIZED'));
+          .then(() => {
+            expect(SecurityService.currentUserIsAdmin.called).to.equal(true);
+            expect(SecurityService.currentUserIsAdmin.getCall(0).args)
+              .to.deep.equal([]);
+            expect(SecurityService.checkUserLoggedIn.called).to.equal(true);
+            expect(SecurityService.checkUserLoggedIn.getCall(0).args)
+              .to.deep.equal([user._id]);
+          });
       });
 
       it('it updates the user account with provided data', (done) => {
         context = { userId: adminId };
         const userId = user._id;
         sinon.stub(Meteor, 'userId').callsFake(() => adminId);
+        sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => true);
+        sinon.stub(SecurityService, 'checkUserLoggedIn').callsFake(() => false);
 
         return editUser
           .run({ userId, object })
