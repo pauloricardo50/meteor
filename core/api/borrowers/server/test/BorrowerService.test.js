@@ -36,50 +36,17 @@ describe('BorrowerService', () => {
       };
     });
 
-    it("sets the borrowers first and last name when the user's first and last name are defined", () => {
+    it("sets the borrowers first and last name with the user's first and last name", () => {
       const newBorrowerId = BorrowerService.insertWithUserNames({
         borrower,
         userId: user._id,
       });
 
-      return expect(Borrowers.findOne(newBorrowerId)).to.deep.include({
-        firstName,
-        lastName,
-      });
-    });
+      const expectedBorrower = { ...borrower, _id: newBorrowerId, firstName, lastName };
 
-    it("doesn't modify the borrower when the user's firstName and lastName are not defined", () => {
-      Meteor.users.update(
-        { _id: user._id },
-        { $unset: { firstName: '', lastName: '' } },
-      );
-
-      const newBorrowerId = BorrowerService.insertWithUserNames({
-        borrower,
-        userId: user._id,
-      });
-
-      const expectedBorrower = { ...borrower, _id: newBorrowerId };
-      
       return expect(Borrowers.findOne(newBorrowerId))
-        .to.deep.equal(expectedBorrower)
-        .and.not.to.include({ firstName, lastName });
-    });
-
-    it("only adds on the borrower the user's names that are defined", () => {
-      // if user's lastName is defined, but firstName not,
-      // it will only add lastName to the borrower
-      Meteor.users.update({ _id: user._id }, { $unset: { firstName: '' } });
-
-      const newBorrowerId = BorrowerService.insertWithUserNames({
-        borrower,
-        userId: user._id,
-      });
-
-      const newBorrower = Borrowers.findOne(newBorrowerId);
-
-      expect(newBorrower.firstName).to.equal(undefined);
-      expect(newBorrower.lastName).to.equal(lastName);
+        .to.deep.include({ firstName, lastName })
+        .and.to.deep.equal(expectedBorrower);
     });
   });
 
