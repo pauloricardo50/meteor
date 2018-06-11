@@ -61,13 +61,14 @@
   position: relative;
 
   padding: 16px;
+  padding-top: 64px;
 }
 
-@media (min-width: $med) {
-  .page-title .children {
-    padding-top: 128px;
-  }
-}
+// @media (min-width: $med) {
+//   .page-title .children {
+//     padding-top: 128px;
+//   }
+// }
 
 .top-bar__row {
   display: flex;
