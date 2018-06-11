@@ -6,11 +6,9 @@ import {
   SALARY,
   PROPERTY,
   FORTUNE,
-  USAGE_TYPE,
   PURCHASE_TYPE,
   CURRENT_LOAN,
   WANTED_LOAN,
-  ALL_FIELDS,
   ACQUISITION_FIELDS,
   REFINANCING_FIELDS,
 } from '../constants/widget1Constants';
@@ -72,7 +70,6 @@ const widget1 = combineReducers({
   ]),
   step: createValueReducer('step', 0), // TODO: Set me back to 0 for production
   interestRate: createValueReducer('interestRate', DEFAULT_INTEREST_RATE),
-  usageType: createValueReducer('usageType', USAGE_TYPE.PRIMARY),
   purchaseType: createValueReducer('purchaseType', PURCHASE_TYPE.ACQUISITION),
   finishedTutorial: createValueReducer('finishedTutorial', false),
 });

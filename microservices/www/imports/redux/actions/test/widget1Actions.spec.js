@@ -22,11 +22,11 @@ const expectActions = (actionCreator, expectedActions) =>
 const prepareStore = overrides =>
   mockStore({
     widget1: {
-      step: FINAL_STEP,
       ...ACQUISITION_FIELDS.reduce(
         (acc, name) => ({ ...acc, [name]: { value: 0, auto: true } }),
         {},
       ),
+      step: FINAL_STEP,
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       ...overrides,
     },

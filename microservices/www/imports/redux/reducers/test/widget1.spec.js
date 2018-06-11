@@ -38,7 +38,6 @@ describe('widget1 Reducer', () => {
       step: 0,
       interestRate: 0.015,
       purchaseType: 'ACQUISITION',
-      usageType: 'PRIMARY',
       finishedTutorial: false,
     });
   });
