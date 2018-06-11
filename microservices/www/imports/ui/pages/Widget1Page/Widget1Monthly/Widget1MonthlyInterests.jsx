@@ -1,14 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { lifecycle } from 'recompose';
 
 import Select from 'core/components/Select';
-import T from 'core/components/Translation';
+import T, { Percent } from 'core/components/Translation';
+import { INTEREST_RATES } from 'core/api/constants';
+import interestRates from '../../InterestsPage/interestRates';
 
-const options = [
-  { id: 0.01, label: 'Libor moyen, 1.00%' },
-  { id: 0.012, label: '5 ans moyen, 1.20%' },
-  { id: 0.015, label: '10 ans moyen, 1.50%' },
+const displayedRates = [
+  INTEREST_RATES.LIBOR,
+  INTEREST_RATES.YEARS_5,
+  INTEREST_RATES.YEARS_10,
+  INTEREST_RATES.YEARS_20,
 ];
+
+const options = interestRates
+  .filter(({ type }) => displayedRates.indexOf(type) > -1)
+  .map(({ type, rateLow, rateHigh }) => {
+    const averageRate = (rateHigh + rateLow) / 2;
+    return {
+      type,
+      id: averageRate,
+      label: (
+        <span>
+          <T
+            id="Widget1MonthlyInterests.optionLabel"
+            values={{
+              type: <T id={`InterestsTable.${type}`} />,
+              rate: <Percent value={averageRate} />,
+            }}
+          />
+        </span>
+      ),
+    };
+  });
 
 const Widget1MonthlyInterests = ({ value, onChange }) => (
   <div className="card-bottom">
@@ -26,4 +51,11 @@ Widget1MonthlyInterests.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default Widget1MonthlyInterests;
+// Set the initial value of the dropdown, do this here to allow custom interest
+// rates
+export default lifecycle({
+  componentDidMount() {
+    const initialRate = options.find(rate => rate.type === INTEREST_RATES.YEARS_10).id;
+    this.props.onChange(initialRate);
+  },
+})(Widget1MonthlyInterests);

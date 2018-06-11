@@ -1,4 +1,6 @@
 {
+"Widget1MonthlyInterests.optionLabel": "{type} moyen: {rate}",
+
 "Widget1SingleInput.currentLoan": "Prêt existant",
 "Widget1SingleInput.wantedLoan": "Nouveau prêt",
 
