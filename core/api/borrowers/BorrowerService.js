@@ -10,15 +10,10 @@ class BorrowerService {
   insertWithUserNames = ({ borrower, userId }) => {
     const { firstName, lastName } = UserService.getUserNames({ userId });
 
-    if (firstName) {
-      borrower.firstName = firstName;
-    }
-
-    if (lastName) {
-      borrower.lastName = lastName;
-    }
-
-    return this.insert({ borrower, userId });
+    return this.insert({
+      borrower: { ...borrower, firstName, lastName },
+      userId,
+    });
   };
 
   smartInsert = ({ borrower, userId }) => {
