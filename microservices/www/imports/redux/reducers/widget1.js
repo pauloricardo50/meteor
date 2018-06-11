@@ -72,6 +72,7 @@ const widget1 = combineReducers({
   interestRate: createValueReducer('interestRate', DEFAULT_INTEREST_RATE),
   purchaseType: createValueReducer('purchaseType', PURCHASE_TYPE.ACQUISITION),
   finishedTutorial: createValueReducer('finishedTutorial', false),
+  useMaintenance: createValueReducer('useMaintenance', true),
 });
 
 export const makeWidget1Selector = name => state => state.widget1[name];

@@ -36,14 +36,13 @@ const options = interestRates
   });
 
 const Widget1MonthlyInterests = ({ value, onChange }) => (
-  <div className="card-bottom">
-    <Select
-      label={<T id="Widget1MonthlyInterests.label" />}
-      value={value}
-      onChange={(_, val) => onChange(val)}
-      options={options}
-    />
-  </div>
+  <Select
+    label={<T id="Widget1MonthlyInterests.label" />}
+    value={value}
+    onChange={(_, val) => onChange(val)}
+    options={options}
+    className="widget1-montly-interests"
+  />
 );
 
 Widget1MonthlyInterests.propTypes = {

@@ -6,8 +6,16 @@ import DonutChart from 'core/components/charts/DonutChart';
 import { toMoney } from 'core/utils/conversionFunctions';
 import Widget1MonthlyContainer from './Widget1MonthlyContainer';
 import Widget1MonthlyInterests from './Widget1MonthlyInterests';
+import Widget1MonthlyMaintenance from './Widget1MonthlyMaintenance';
 
-const Widget1Monthly = ({ data, total, interestRate, setInterestRate }) => (
+const Widget1Monthly = ({
+  data,
+  total,
+  interestRate,
+  setInterestRate,
+  useMaintenance,
+  setMaintenance,
+}) => (
   <div className="card1 widget1-monthly">
     <h3>
       <T id="Widget1Monthly.title" />
@@ -16,7 +24,6 @@ const Widget1Monthly = ({ data, total, interestRate, setInterestRate }) => (
       <DonutChart
         data={data}
         intlPrefix="Widget1Monthly"
-        // 300 width - 2*32 padding
         config={{
           chart: { width: 300, spacingTop: 0, marginTop: 0 },
           plotOptions: {
@@ -31,7 +38,16 @@ const Widget1Monthly = ({ data, total, interestRate, setInterestRate }) => (
         title={`${toMoney(total)} /mois`}
       />
     </span>
-    <Widget1MonthlyInterests value={interestRate} onChange={setInterestRate} />
+    <div className="card-bottom">
+      <Widget1MonthlyInterests
+        value={interestRate}
+        onChange={setInterestRate}
+      />
+      <Widget1MonthlyMaintenance
+        value={useMaintenance}
+        onChange={setMaintenance}
+      />
+    </div>
   </div>
 );
 
@@ -40,6 +56,8 @@ Widget1Monthly.propTypes = {
   total: PropTypes.number.isRequired,
   interestRate: PropTypes.number.isRequired,
   setInterestRate: PropTypes.func.isRequired,
+  useMaintenance: PropTypes.bool.isRequired,
+  setMaintenance: PropTypes.func.isRequired,
 };
 
 export default Widget1MonthlyContainer(Widget1Monthly);

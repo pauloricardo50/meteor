@@ -52,12 +52,13 @@ const RecapSimple = ({ array, noScale, className }) => (
 
 RecapSimple.propTypes = {
   array: PropTypes.arrayOf(PropTypes.object).isRequired,
-  noScale: PropTypes.bool.isRequired,
+  noScale: PropTypes.bool,
   className: PropTypes.string,
 };
 
 RecapSimple.defaultProps = {
   className: '',
+  noScale: false,
 };
 
 export default RecapSimple;
