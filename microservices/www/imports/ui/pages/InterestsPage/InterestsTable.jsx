@@ -4,6 +4,7 @@ import Table from 'core/components/Table';
 import T from 'core/components/Translation';
 import interestRates from './interestRates';
 import InterestsTableTrend from './InterestsTableTrend';
+import InterestsTableDate from './InterestsTableDate';
 
 const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
@@ -35,6 +36,7 @@ const rows = interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
 const InterestsTable = () => (
   <div className="interests-page-table">
     <Table columnOptions={columnOptions} rows={rows} sortable={false} />
+    <InterestsTableDate />
   </div>
 );
 
