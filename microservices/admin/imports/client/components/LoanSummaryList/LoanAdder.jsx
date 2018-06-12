@@ -6,6 +6,8 @@ import IconButton from 'core/components/IconButton';
 import { DialogForm } from 'core/components/Form';
 import LoanAdderContainer from './LoanAdderContainer';
 
+// TODO: This will eventually be turned into a form, for now it just
+// serves as an additional modal to confirm inserting a loan
 const formArray = [];
 
 const LoanAdder = ({ onSubmit }) => (
