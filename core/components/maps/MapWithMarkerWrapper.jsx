@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MapWithMarker from 'core/components/maps/MapWithMarker';
-import { T } from 'core/components/Translation';
+import MapWithMarker from './MapWithMarker';
+import T from '../Translation';
 import { getAddressString, isAddressIncomplete } from './googleMapsHelpers';
 
 const MapWithMarkerWrapper = ({ address1, zipCode, city, options }) => {
