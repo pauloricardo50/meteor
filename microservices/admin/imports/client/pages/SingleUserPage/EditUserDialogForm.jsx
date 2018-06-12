@@ -18,16 +18,12 @@ export const getEditUserFormArray = formFields =>
 
 const formArray = getEditUserFormArray(editUserFormFields);
 
-const onSubmit = ({ userId, data }) =>
-  editUser.run({
-    userId,
-    object: data,
-  });
+const onSubmit = ({ data, userId }) => editUser.run({ userId, object: data });
 
 const EditUserDialogForm = ({ user: { _id, firstName, lastName, phone } }) => (
   <DialogForm
     form="admin-edit-user"
-    onSubmit={data => onSubmit({ userId: _id, data })}
+    onSubmit={data => onSubmit({ data, userId: _id })}
     button={
       <Button raised primary>
         <T id="EditUserDialogForm.buttonLabel" />
@@ -38,5 +34,9 @@ const EditUserDialogForm = ({ user: { _id, firstName, lastName, phone } }) => (
     initialValues={{ firstName, lastName, phone }}
   />
 );
+
+EditUserDialogForm.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 export default EditUserDialogForm;

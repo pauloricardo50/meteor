@@ -88,12 +88,11 @@ describe('users', () => {
       });
 
       afterEach(() => {
-        stubCollections.restore();
         Meteor.userId.restore();
         Accounts.sendEnrollmentEmail.restore();
       });
 
-      it('it throws if it finds a user with the same email', () => {
+      it('throws if it finds a user with the same email', () => {
         Factory.create('user', {
           emails: [{ address: existingUserEmail, verified: false }],
         });
@@ -105,7 +104,7 @@ describe('users', () => {
           .catch(({ error }) => assert.equal(error, 'DUPLICATE_EMAIL'));
       });
 
-      it('it creates a new account', () => {
+      it('creates a new account', () => {
         options.email = newUserEmail;
         return adminCreateUser.run({ options, role }).then(() => {
           // expect to find 2 users: admin and newUser
@@ -113,7 +112,7 @@ describe('users', () => {
         });
       });
 
-      it('it creates a new account with the provided email', (done) => {
+      it('creates a new account with the provided email', (done) => {
         options.email = newUserEmail;
         return adminCreateUser
           .run({ options, role })
@@ -126,7 +125,7 @@ describe('users', () => {
           });
       });
 
-      it('it creates a new account with the provided role', () => {
+      it('creates a new account with the provided role', () => {
         options.email = newUserEmail;
         return adminCreateUser
           .run({ options, role })
@@ -152,47 +151,69 @@ describe('users', () => {
       });
 
       afterEach(() => {
-        stubCollections.restore();
         Meteor.userId.restore();
         SecurityService.currentUserIsAdmin.restore();
         SecurityService.checkUserLoggedIn.restore();
       });
 
-      it('calls apropriate methods from SecurityService to check wheather the user doing the edit, is admin or owner', () => {
+      it('updates the user when current user is admin', (done) => {
+        sinon.stub(Meteor, 'userId').callsFake(() => adminId);
+        sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => true);
+        sinon.stub(SecurityService, 'checkUserLoggedIn').callsFake(() => false);
+
+        return editUser
+          .run({ userId: user._id, object })
+          .then((result) => {
+            expect(SecurityService.currentUserIsAdmin.called).to.equal(true);
+            expect(SecurityService.currentUserIsAdmin.getCall(0).args)
+              .to.deep.equal([]);
+
+            if (result > 0) {
+              const editedUser = Meteor.users.findOne(user._id);
+              assert.equal(editedUser.firstName, object.firstName);
+              assert.equal(editedUser.lastName, object.lastName);
+              assert.equal(editedUser.phone, object.phone);
+            }
+
+            done();
+          });
+      });
+
+
+      it('updates the user when current user is owner', (done) => {
         sinon.stub(Meteor, 'userId').callsFake(() => user._id);
         sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => false);
         sinon.stub(SecurityService, 'checkUserLoggedIn').callsFake(() => true);
-       
+
         return editUser
           .run({ userId: user._id, object })
-          .then(() => {
+          .then((result) => {
             expect(SecurityService.currentUserIsAdmin.called).to.equal(true);
             expect(SecurityService.currentUserIsAdmin.getCall(0).args)
               .to.deep.equal([]);
             expect(SecurityService.checkUserLoggedIn.called).to.equal(true);
             expect(SecurityService.checkUserLoggedIn.getCall(0).args)
               .to.deep.equal([user._id]);
-          });
-      });
 
-      it('it updates the user account with provided data', (done) => {
-        context = { userId: adminId };
-        const userId = user._id;
-        sinon.stub(Meteor, 'userId').callsFake(() => adminId);
-        sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => true);
-        sinon.stub(SecurityService, 'checkUserLoggedIn').callsFake(() => false);
-
-        return editUser
-          .run({ userId, object })
-          .then((result) => {
             if (result > 0) {
-              const editedUser = Meteor.users.findOne(userId);
+              const editedUser = Meteor.users.findOne(user._id);
               assert.equal(editedUser.firstName, object.firstName);
               assert.equal(editedUser.lastName, object.lastName);
               assert.equal(editedUser.phone, object.phone);
             }
+            
             done();
           });
+      });
+
+      it('does not update the user when current user is neither admin or owner', () => {
+        sinon.stub(Meteor, 'userId').callsFake(() => user._id);
+        sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => false);
+        sinon.stub(SecurityService, 'checkUserLoggedIn').callsFake(() => false);
+
+        return editUser
+          .run({ userId: user._id, object })
+          .catch(({ error }) => assert.equal(error, 'SECURITY_ERROR'));
       });
     });
   });

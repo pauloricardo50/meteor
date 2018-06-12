@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { DialogForm, email } from 'core/components/Form';
-import { T } from 'core/components/Translation';
+import DialogForm, { email } from 'core/components/Form';
+import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { adminCreateUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
@@ -11,13 +10,10 @@ export const createUserFormFields = ['firstName', 'lastName', 'email', 'phone'];
 
 export const getFormArray = formFields =>
   formFields
-    .map(fieldName => {
-      if (fieldName !== 'email') {
-        return { id: fieldName };
-      }
-
-      return { id: 'email', validate: [email] };
-    })
+    .map(fieldName =>
+      (fieldName !== 'email'
+        ? { id: fieldName }
+        : { id: 'email', validate: [email] }))
     .map(field => ({
       ...field,
       label: <T id={`CreateUserDialogForm.${field.id}`} />,
@@ -26,12 +22,8 @@ export const getFormArray = formFields =>
 
 const formArray = getFormArray(createUserFormFields);
 
-const onSubmit = data => {
-  adminCreateUser.run({
-    options: data,
-    role: ROLES.USER,
-  });
-};
+const onSubmit = data =>
+  adminCreateUser.run({ options: data, role: ROLES.USER });
 
 const CreateUserDialogForm = () => (
   <DialogForm

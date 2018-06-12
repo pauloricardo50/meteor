@@ -15,10 +15,14 @@ describe('<CreateUserDialogForm />', () => {
   const formArray = getFormArray(createUserFormFields);
 
   it('passes the correct formArray to the DialogForm component', () =>
-    expect(
-      component()
-        .find(DialogForm)
-        .first()
-        .prop('formArray'),
-    ).to.deep.equal(formArray));
+    expect(component()
+      .find(DialogForm)
+      .first()
+      .prop('formArray')).to.deep.equal(formArray));
+
+  it('adds a validator for the email field', () =>
+    expect(component()
+      .find(DialogForm)
+      .first()
+      .prop('formArray')).to.have.property('validate'));
 });

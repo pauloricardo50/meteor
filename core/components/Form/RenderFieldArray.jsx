@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, FieldArray } from 'redux-form';
+import { Field } from 'redux-form';
 
 import { T } from 'core/components/Translation';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
-    <div>
-      <input {...input} type={type} placeholder={label} />
-      {touched && error && <span>{error}</span>}
-    </div>
+    <input {...input} type={type} placeholder={label} />
+    {touched && error && <span>{error}</span>}
   </div>
 );
 
