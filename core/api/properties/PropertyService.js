@@ -1,7 +1,7 @@
 import Properties from '../properties';
 
 export default class {
-  static insert = ({ property, userId }) =>
+  static insert = ({ property = {}, userId }) =>
     Properties.insert({ ...property, userId });
 
   static update = ({ propertyId, object }) =>

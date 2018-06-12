@@ -3,6 +3,8 @@ import Loans from '../loans';
 
 import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
+import BorrowerService from '../borrowers/BorrowerService';
+import PropertyService from '../properties/PropertyService';
 
 class LoanServiceModel {
   insert = ({ loan, userId }) => Loans.insert({ ...loan, userId });
@@ -10,6 +12,12 @@ class LoanServiceModel {
   update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
 
   remove = ({ loanId }) => Loans.remove(loanId);
+
+  adminLoanInsert = ({ userId }) => {
+    const borrowerId = BorrowerService.insert({ userId });
+    const propertyId = PropertyService.insert({ userId });
+    return this.insert({ loan: { propertyId, borrowerId }, userId });
+  };
 
   // TODO: make sure step is really done
   incrementStep = ({ loanId }) =>

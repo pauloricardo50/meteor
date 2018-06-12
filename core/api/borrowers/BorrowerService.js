@@ -4,7 +4,7 @@ export default class {
   static update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
-  static insert = ({ borrower, userId }) =>
+  static insert = ({ borrower = {}, userId }) =>
     Borrowers.insert({ ...borrower, userId });
 
   static remove = ({ borrowerId }) => Borrowers.remove(borrowerId);

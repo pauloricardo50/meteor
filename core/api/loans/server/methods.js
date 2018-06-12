@@ -17,6 +17,7 @@ import {
   popLoanValue,
   disableUserForms,
   enableUserForms,
+  adminLoanInsert,
 } from '../methodDefinitions';
 
 loanInsert.setHandler((context, { loan, userId }) => {
@@ -93,3 +94,9 @@ export const enableUserFormsHandler = ({ userId }, { loanId }) => {
   return LoanService.enableUserForms({ loanId });
 };
 enableUserForms.setHandler(enableUserFormsHandler);
+
+export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
+  SecurityService.checkUserIsAdmin(adminUserId);
+  return LoanService.adminLoanInsert({ userId });
+};
+adminLoanInsert.setHandler(adminLoanInsertHandler);
