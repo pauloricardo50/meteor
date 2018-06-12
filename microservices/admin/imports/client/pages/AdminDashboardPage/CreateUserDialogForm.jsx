@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DialogForm, { email } from 'core/components/Form';
+import { DialogForm, email } from 'core/components/Form';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { adminCreateUser } from 'core/api/methods';

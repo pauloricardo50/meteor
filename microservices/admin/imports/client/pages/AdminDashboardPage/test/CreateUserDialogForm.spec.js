@@ -24,5 +24,5 @@ describe('<CreateUserDialogForm />', () => {
     expect(component()
       .find(DialogForm)
       .first()
-      .prop('formArray')).to.have.property('validate'));
+      .prop('formArray')[2]).to.have.property('validate'));
 });
