@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
+import TableFilters from 'core/components/Table/TableFilters';
 import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
@@ -189,13 +190,17 @@ class TasksTable extends Component {
     }
 
     return (
-      <Table
-        columnOptions={this.getColumnOptions({ showAssignee })}
-        rows={this.setupRows({ data, showAssignee })}
-        noIntl
-        className="tasks-table"
-        clickable
-      />
+      <TableFilters data={data} filters={{ assignedEmployee: [] }}>
+        {filteredData => (
+          <Table
+            columnOptions={this.getColumnOptions({ showAssignee })}
+            rows={this.setupRows({ data: filteredData, showAssignee })}
+            noIntl
+            className="tasks-table"
+            clickable
+          />
+        )}
+      </TableFilters>
     );
   }
 }
