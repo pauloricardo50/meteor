@@ -16,7 +16,10 @@ class LoanServiceModel {
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
-    return this.insert({ loan: { propertyId, borrowerId }, userId });
+    return this.insert({
+      loan: { propertyId, borrowerIds: [borrowerId] },
+      userId,
+    });
   };
 
   // TODO: make sure step is really done
