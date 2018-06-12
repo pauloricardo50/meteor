@@ -32,7 +32,6 @@ describe('Task Client Service', () => {
     });
 
     describe('notifyTaskCompletedWhenFileStatusChanged', () => {
-      // TODO
       it.skip('calls `TaskNotificationService.notifyAdminOfCompletedTask` on the correct task', async () => {
         expect(TasksNotificationService.notifyAdminOfCompletedTask.called).to.equal(false);
         await TasksNotificationService.notifyTaskCompletedWhenFileStatusChanged({
@@ -45,8 +44,7 @@ describe('Task Client Service', () => {
         expect(args[0].task).to.deep.include({ _id, status });
       });
 
-      // check it actually fails, after the above test is working
-      it(`does not call \`TaskNotificationService.notifyAdminOfCompletedTask\` when file status none of \`${
+      it.skip(`does not call \`TaskNotificationService.notifyAdminOfCompletedTask\` when file status none of \`${
         FILE_STATUS.ERROR
       }\` or \`${FILE_STATUS.VALID}\``, async () => {
         await TasksNotificationService.notifyTaskCompletedWhenFileStatusChanged({
@@ -57,11 +55,10 @@ describe('Task Client Service', () => {
       });
     });
 
-    describe('notifyTaskCompletedWhenAdminAssigned', () => {
-      // TODO
+    describe('notifyTaskCompletedWhenAdminAssignedToNewUser', () => {
       it.skip('calls `TaskNotificationService.notifyAdminOfCompletedTask` on the correct task', async () => {
         expect(TasksNotificationService.notifyAdminOfCompletedTask.called).to.equal(false);
-        await TasksNotificationService.notifyTaskCompletedWhenAdminAssigned({
+        await TasksNotificationService.notifyTaskCompletedWhenAdminAssignedToNewUser({
           userId: completedTask.userId,
         });
 
@@ -71,7 +68,7 @@ describe('Task Client Service', () => {
       });
 
       // check it actually fails, after the above test is working
-      it('does not call `TaskNotificationService.notifyAdminOfCompletedTask` when `userId` is undefined', async () => {
+      it.skip('does not call `TaskNotificationService.notifyAdminOfCompletedTask` when `userId` is undefined', async () => {
         await TasksNotificationService.notifyTaskCompletedWhenFileStatusChanged({
           userId: undefined,
         });

@@ -18,7 +18,7 @@ ClientEventService.addMethodListener(
 );
 
 export const adminAssignedTaskNotificationListener = ({ userId }) => {
-  TasksNotificationService.notifyTaskCompletedWhenAdminAssigned({
+  TasksNotificationService.notifyTaskCompletedWhenAdminAssignedToNewUser({
     userId,
   });
 };

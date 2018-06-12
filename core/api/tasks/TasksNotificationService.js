@@ -15,17 +15,12 @@ class TaskNotificationService {
       tasksQuery
         .clone({ file: fileKey, status: TASK_STATUS.COMPLETED })
         .fetchOne((err, task) => {
-          console.log(
-            'in notifyTaskCompletedWhenFileStatusChanged:',
-            err,
-            task,
-          );
           this.notifyAdminOfCompletedTask({ task });
           resolve();
         });
     });
 
-  notifyTaskCompletedWhenAdminAssigned = ({ userId }) =>
+  notifyTaskCompletedWhenAdminAssignedToNewUser = ({ userId }) =>
     new Promise((resolve) => {
       if (!userId) {
         return resolve();
@@ -38,8 +33,6 @@ class TaskNotificationService {
           status: TASK_STATUS.COMPLETED,
         })
         .fetchOne((err, task) => {
-          console.log('in notifyTaskCompletedWhenAdminAssigned:', err, task);
-
           this.notifyAdminOfCompletedTask({ task });
           resolve();
         });

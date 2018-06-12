@@ -54,27 +54,27 @@ describe('Task Client Listeners', () => {
       expect(listeners.includes(adminAssignedTaskNotificationListener)).to.equal(true);
     });
 
-    it('calls `TaskNotificationService.notifyTaskCompletedWhenAdminAssigned` function with the needed params', () => {
+    it('calls `TaskNotificationService.notifyTaskCompletedWhenAdminAssignedToNewUser` function with the needed params', () => {
       sinon.stub(
         TaskNotificationService,
-        'notifyTaskCompletedWhenAdminAssigned',
+        'notifyTaskCompletedWhenAdminAssignedToNewUser',
       );
       const listenerParams = {
         userId: 'someUserId',
         adminId: 'someAdminId',
       };
 
-      expect(TaskNotificationService.notifyTaskCompletedWhenAdminAssigned.called).to.equal(false);
+      expect(TaskNotificationService.notifyTaskCompletedWhenAdminAssignedToNewUser.called).to.equal(false);
       adminAssignedTaskNotificationListener(listenerParams);
 
-      expect(TaskNotificationService.notifyTaskCompletedWhenAdminAssigned.getCall(0)
+      expect(TaskNotificationService.notifyTaskCompletedWhenAdminAssignedToNewUser.getCall(0)
         .args).to.deep.equal([
         {
           userId: 'someUserId',
         },
       ]);
 
-      TaskNotificationService.notifyTaskCompletedWhenAdminAssigned.restore();
+      TaskNotificationService.notifyTaskCompletedWhenAdminAssignedToNewUser.restore();
     });
   });
 });
