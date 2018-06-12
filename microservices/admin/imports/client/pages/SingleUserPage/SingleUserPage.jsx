@@ -12,7 +12,7 @@ const SingleUserPage = ({ user, className }) => {
   return (
     <section className={classnames('mask1', 'single-user-page', className)}>
       <SingleUserPageHeader user={user} />
-      {loans && <LoanSummaryList loans={loans} />}
+      {loans && <LoanSummaryList loans={loans} userId={user._id} />}
     </section>
   );
 };
