@@ -106,6 +106,7 @@ describe('users', () => {
 
       it('creates a new account', () => {
         options.email = newUserEmail;
+
         return adminCreateUser.run({ options, role }).then(() => {
           // expect to find 2 users: admin and newUser
           assert.equal(Meteor.users.find({}).count(), 2);
@@ -114,6 +115,7 @@ describe('users', () => {
 
       it('creates a new account with the provided email', (done) => {
         options.email = newUserEmail;
+
         return adminCreateUser
           .run({ options, role })
           .then((newUserId) => {
@@ -127,6 +129,7 @@ describe('users', () => {
 
       it('creates a new account with the provided role', () => {
         options.email = newUserEmail;
+
         return adminCreateUser
           .run({ options, role })
           .then(newUserId => assert.equal(Roles.userIsInRole(newUserId, role), true));
@@ -137,7 +140,6 @@ describe('users', () => {
       let user;
       let otherUser;
       let adminId;
-      let context;
       const object = {
         firstName: 'newFirstName',
         lastName: 'newLastName',

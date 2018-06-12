@@ -58,9 +58,6 @@ adminCreateUser.setHandler((context, { options, role }) => {
   return UserService.adminCreateUser({ options, role });
 });
 
-checkPermissionToAddUser.setHandler((context, { role }) =>
-  UserService.checkPermissionToAddUser({ role }));
-
 editUser.setHandler((context, { userId, object }) => {
   if (!SecurityService.currentUserIsAdmin()) {
     SecurityService.checkUserLoggedIn(userId);

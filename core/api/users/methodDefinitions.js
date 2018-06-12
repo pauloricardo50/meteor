@@ -47,13 +47,6 @@ export const adminCreateUser = new Method({
   },
 });
 
-export const checkPermissionToAddUser = new Method({
-  name: 'checkPermissionToAddUser',
-  params: {
-    role: String,
-  },
-});
-
 export const editUser = new Method({
   name: 'editUser',
   params: {
