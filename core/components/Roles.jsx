@@ -8,14 +8,11 @@ const Roles = ({ roles }) => (
     {roles && roles.length > 0
       ? roles
         .map(role => <T id={`roles.${role}`} key={role} />)
-        .reduce(
-          (acc, currentValue, currentIndex) => [
-            acc,
-            <span key={currentIndex}>,&nbsp;</span>,
-            currentValue,
-          ],
-          [],
-        )
+        .reduce((acc, currentValue, currentIndex) => [
+          acc,
+          <span key={currentIndex}>,&nbsp;</span>,
+          currentValue,
+        ])
       : null}
   </span>
 );
