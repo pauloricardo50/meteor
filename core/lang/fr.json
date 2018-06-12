@@ -1343,6 +1343,7 @@
   "TasksStatusDropdown.CUSTOM": "Personnalisé",
   "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
   "TasksStatusDropdown.VERIFY": "Vérifier",
+  "TasksStatusDropdown.USER_ADDED_FILE": "Vérifier nouveau document",
   "TasksTable.actions": "Actions",
   "TasksTable.assignedTo": "Assigné à",
   "TasksTable.completedAt": "Complété le",
