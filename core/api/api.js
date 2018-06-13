@@ -1,4 +1,4 @@
 import './factories';
 import './files/meteor-slingshot';
-import './events/registerClientListeners';
+import './events/client/registerClientListeners';
 import './links';

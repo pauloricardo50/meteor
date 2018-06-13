@@ -9,8 +9,10 @@ import {
   addDocument,
   removeDocument,
 } from '../methodDefinitions';
+import { notifyAdmin } from '../../notifications/methodDefinitions';
 import FileService from '../FileService';
 import { setupS3, isAllowed } from './s3';
+import { FILE_STATUS } from '../../constants';
 
 addFileToDoc.setHandler((context, { collection, docId, documentId, file }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
@@ -40,6 +42,7 @@ deleteFile.setHandler((context, { collection, docId, documentId, fileKey }) => {
 
 setFileStatus.setHandler((context, { collection, docId, documentId, fileKey, newStatus }) => {
   SecurityService[collection].isAllowedToUpdate(docId);
+
   FileService.setFileStatus({
     collection,
     docId,
@@ -47,6 +50,13 @@ setFileStatus.setHandler((context, { collection, docId, documentId, fileKey, new
     fileKey,
     newStatus,
   });
+
+  if ([FILE_STATUS.VALID, FILE_STATUS.ERROR].includes(newStatus)) {
+    notifyAdmin.run({
+      title: 'Task Completed',
+      message: 'Completed task for added file',
+    });
+  }
 });
 
 setFileError.setHandler((context, { collection, docId, documentId, fileKey, error }) => {

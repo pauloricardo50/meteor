@@ -8,6 +8,7 @@ import {
   assignAdminToNewUser,
   setRole,
 } from '../methodDefinitions';
+import { notifyAdmin } from '../../notifications/methodDefinitions';
 import UserService from '../UserService';
 
 doesUserExist.setHandler((context, { email }) =>
@@ -40,7 +41,12 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
   // listener that would complete & reassign the user's tasks
   SecurityService.checkCurrentUserIsAdmin();
 
-  return UserService.assignAdminToUser({ userId, adminId });
+  UserService.assignAdminToUser({ userId, adminId });
+
+  notifyAdmin.run({
+    title: 'Task Completed',
+    message: 'Completed task for admin to user assignment',
+  });
 });
 
 setRole.setHandler((context, params) => {

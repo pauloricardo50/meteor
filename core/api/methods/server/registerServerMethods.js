@@ -7,5 +7,6 @@ import '../../tasks/server/methods';
 import '../../impersonation/server/methods';
 import '../../files/server/methods';
 import '../../email/server/methods';
+import '../../notifications/server/methods';
 
 import './methods';

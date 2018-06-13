@@ -65,6 +65,6 @@ export class EventService {
   }
 
   getListenerFunctions(eventName) {
-    return this.listenerFunctions[eventName];
+    return this.listenerFunctions[eventName] || [];
   }
 }
