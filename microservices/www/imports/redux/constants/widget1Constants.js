@@ -12,6 +12,7 @@ export const ALL_FIELDS = [
   CURRENT_LOAN,
   WANTED_LOAN,
 ];
+export const CAPPED_FIELDS = [CURRENT_LOAN, WANTED_LOAN];
 export const FINAL_STEP = 3;
 export const PURCHASE_TYPE = {
   ACQUISITION: 'ACQUISITION',

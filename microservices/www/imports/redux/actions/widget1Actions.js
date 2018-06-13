@@ -5,8 +5,14 @@ import {
   makeWidget1Selector,
   suggestValueAction,
   selectFields,
+  makeSelectValue,
 } from '../reducers/widget1';
-import { ALL_FIELDS, FINAL_STEP } from '../constants/widget1Constants';
+import {
+  ALL_FIELDS,
+  FINAL_STEP,
+  PROPERTY,
+  CAPPED_FIELDS,
+} from '../constants/widget1Constants';
 import suggestValue from '../utils/widget1Suggesters';
 
 export const suggestValues = () => (dispatch, getState) => {
@@ -25,9 +31,24 @@ export const suggestValues = () => (dispatch, getState) => {
   return Promise.all(suggestActions);
 };
 
-export const setValue = (name, nextValue) => dispatch =>
+export const cleanNextValue = (name, nextValue, getState) => {
+  if (CAPPED_FIELDS.includes(name)) {
+    const state = getState();
+    const propertyValue = makeSelectValue(PROPERTY)(state);
+
+    return Math.min(nextValue, propertyValue);
+  }
+
+  return nextValue;
+};
+
+export const setValue = (name, nextValue) => (dispatch, getState) =>
   Promise.resolve()
-    .then(() => dispatch({ type: setValueAction(name), value: nextValue }))
+    .then(() =>
+      dispatch({
+        type: setValueAction(name),
+        value: cleanNextValue(name, nextValue, getState),
+      }))
     .then(() => dispatch(suggestValues()));
 
 export const setAuto = (name, nextAuto) => dispatch =>

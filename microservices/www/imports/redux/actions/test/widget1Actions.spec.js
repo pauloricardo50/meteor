@@ -4,20 +4,21 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import * as widget1Actions from '../widget1Actions';
-import * as widget1Constants from '../../reducers/widget1';
+import * as widget1 from '../../reducers/widget1';
 import {
   ALL_FIELDS,
   ACQUISITION_FIELDS,
   FINAL_STEP,
   PURCHASE_TYPE,
+  CAPPED_FIELDS,
 } from '../../constants/widget1Constants';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 let store;
-const expectActions = (actionCreator, expectedActions) =>
+const expectActions = (actionCreator, expectedActions, comment) =>
   store.dispatch(actionCreator).then(() => {
-    expect(store.getActions()).deep.equal(expectedActions);
+    expect(store.getActions()).deep.equal(expectedActions, comment);
   });
 const prepareStore = overrides =>
   mockStore({
@@ -49,7 +50,7 @@ describe('widget1Actions', () => {
 
     it('dispatches one action for each NAME if the step is the final one', () => {
       const expectedActions = ACQUISITION_FIELDS.map(name => ({
-        type: widget1Constants.suggestValueAction(name),
+        type: widget1.suggestValueAction(name),
         value: 0,
       }));
       return expectActions(widget1Actions.suggestValues(), expectedActions);
@@ -58,7 +59,7 @@ describe('widget1Actions', () => {
     it('suggests the right values for a 180k salary', () => {
       store = prepareStore();
       const expectedActions = ACQUISITION_FIELDS.map(name => ({
-        type: widget1Constants.suggestValueAction(name),
+        type: widget1.suggestValueAction(name),
         value: 0,
       }));
       return expectActions(widget1Actions.suggestValues(), expectedActions);
@@ -68,9 +69,9 @@ describe('widget1Actions', () => {
   describe('setValue', () => {
     it('sets a value and suggests values', () => {
       const expectedActions = [
-        { type: widget1Constants.setValueAction(NAME), value },
+        { type: widget1.setValueAction(NAME), value },
         ...ACQUISITION_FIELDS.map(name => ({
-          type: widget1Constants.suggestValueAction(name),
+          type: widget1.suggestValueAction(name),
           value: 0,
         })),
       ];
@@ -81,64 +82,83 @@ describe('widget1Actions', () => {
       );
     });
 
-    describe('setAuto', () => {
-      it('sets a value to auto, and resuggests all values', () => {
+    ALL_FIELDS.forEach((field) => {
+      const cappedFields = CAPPED_FIELDS;
+
+      it(`caps field ${field} at the property price`, () => {
+        const propertyValue = 100;
+        const nextValue = 200;
+        store = prepareStore({ step: 0, property: { value: propertyValue } });
         const expectedActions = [
-          { type: widget1Constants.setAutoAction(NAME), auto: true },
-          ...ACQUISITION_FIELDS.map(name => ({
-            type: widget1Constants.suggestValueAction(name),
-            value: 0,
-          })),
+          {
+            type: widget1.setValueAction(field),
+            value: cappedFields.includes(field) ? propertyValue : nextValue,
+          },
         ];
 
         return expectActions(
-          widget1Actions.setAuto(NAME, true),
+          widget1Actions.setValue(field, nextValue),
           expectedActions,
+          `failed for field: ${field}`,
         );
       });
     });
+  });
 
-    describe('increaseSliderMax', () => {
-      it('creates the right action', () => {
-        const expectedActions = {
-          type: widget1Constants.increaseSliderMaxAction(NAME),
-        };
+  describe('setAuto', () => {
+    it('sets a value to auto, and resuggests all values', () => {
+      const expectedActions = [
+        { type: widget1.setAutoAction(NAME), auto: true },
+        ...ACQUISITION_FIELDS.map(name => ({
+          type: widget1.suggestValueAction(name),
+          value: 0,
+        })),
+      ];
 
-        expect(widget1Actions.increaseSliderMax(NAME)).to.deep.equal(expectedActions);
-      });
+      return expectActions(widget1Actions.setAuto(NAME, true), expectedActions);
+    });
+  });
+
+  describe('increaseSliderMax', () => {
+    it('creates the right action', () => {
+      const expectedActions = {
+        type: widget1.increaseSliderMaxAction(NAME),
+      };
+
+      expect(widget1Actions.increaseSliderMax(NAME)).to.deep.equal(expectedActions);
+    });
+  });
+
+  describe('setStep', () => {
+    it('does not dispatch anything if the next step if lower than current step', () => {
+      store = prepareStore({ step: 1 });
+      const expectedActions = [];
+      return expectActions(widget1Actions.setStep(0), expectedActions);
     });
 
-    describe('setStep', () => {
-      it('does not dispatch anything if the next step if lower than current step', () => {
-        store = prepareStore({ step: 1 });
-        const expectedActions = [];
-        return expectActions(widget1Actions.setStep(0), expectedActions);
-      });
+    it('sets the step if it is not the final step', () => {
+      store = prepareStore({ step: 0 });
+      const expectedActions = [{ type: 'step_SET', value: 1 }];
+      return expectActions(widget1Actions.setStep(1), expectedActions);
+    });
 
-      it('sets the step if it is not the final step', () => {
-        store = prepareStore({ step: 0 });
-        const expectedActions = [{ type: 'step_SET', value: 1 }];
-        return expectActions(widget1Actions.setStep(1), expectedActions);
-      });
-
-      it('sets the step and suggests values if it will be the final step', () => {
-        // getState does not work in redux-mock-store, so set the final step
-        // initially as well to make sure getState gets the right value
-        // for the `suggestValues` action
-        store = prepareStore({ step: ACQUISITION_FIELDS.length });
-        const expectedActions = [
-          { type: 'step_SET', value: ACQUISITION_FIELDS.length },
-          ...ACQUISITION_FIELDS.map(name => ({
-            type: widget1Constants.suggestValueAction(name),
-            value: 0,
-          })),
-          { type: 'finishedTutorial_SET', value: true },
-        ];
-        return expectActions(
-          widget1Actions.setStep(ACQUISITION_FIELDS.length),
-          expectedActions,
-        );
-      });
+    it('sets the step and suggests values if it will be the final step', () => {
+      // getState does not work in redux-mock-store, so set the final step
+      // initially as well to make sure getState gets the right value
+      // for the `suggestValues` action
+      store = prepareStore({ step: ACQUISITION_FIELDS.length });
+      const expectedActions = [
+        { type: 'step_SET', value: ACQUISITION_FIELDS.length },
+        ...ACQUISITION_FIELDS.map(name => ({
+          type: widget1.suggestValueAction(name),
+          value: 0,
+        })),
+        { type: 'finishedTutorial_SET', value: true },
+      ];
+      return expectActions(
+        widget1Actions.setStep(ACQUISITION_FIELDS.length),
+        expectedActions,
+      );
     });
   });
 
@@ -147,8 +167,8 @@ describe('widget1Actions', () => {
       const expectedActions = ALL_FIELDS.reduce(
         (acc, field) => [
           ...acc,
-          { type: widget1Constants.setValueAction(field), value: 0 },
-          { type: widget1Constants.setAutoAction(field), auto: true },
+          { type: widget1.setValueAction(field), value: 0 },
+          { type: widget1.setAutoAction(field), auto: true },
         ],
         [],
       );
