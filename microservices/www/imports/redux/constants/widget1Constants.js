@@ -3,12 +3,12 @@ export const FORTUNE = 'fortune';
 export const PROPERTY = 'property';
 export const CURRENT_LOAN = 'currentLoan';
 export const WANTED_LOAN = 'wantedLoan';
-export const ACQUISITION_FIELDS = [SALARY, FORTUNE, PROPERTY];
-export const REFINANCING_FIELDS = [SALARY, PROPERTY, CURRENT_LOAN, WANTED_LOAN];
+export const ACQUISITION_FIELDS = [PROPERTY, SALARY, FORTUNE];
+export const REFINANCING_FIELDS = [PROPERTY, SALARY, CURRENT_LOAN, WANTED_LOAN];
 export const ALL_FIELDS = [
+  PROPERTY,
   SALARY,
   FORTUNE,
-  PROPERTY,
   CURRENT_LOAN,
   WANTED_LOAN,
 ];
