@@ -24,7 +24,7 @@
   flex-direction: column;
 
   margin: 4px;
-  padding: 8px;
+  padding: 0 8px;
 
   border-radius: 4px;
   background-color: white;
@@ -35,7 +35,7 @@
   align-items: center;
   flex-direction: row;
 
-   > * {
+  > * {
     align-items: center;
 
     color: $primary;
@@ -75,5 +75,5 @@
 
 .widget1-single-input .widget1-input.auto input,
 .widget1-single-input .widget1-input.auto .currency {
-  opacity: .5;
+  opacity: 0.5;
 }
