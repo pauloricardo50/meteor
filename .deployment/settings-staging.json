@@ -43,5 +43,20 @@
   "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
   "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
   "MIXPANEL_API_KEY": "904fedcb38c172174737132a4ea6dbe1",
-  "MIXPANEL_API_SECRET": "e760363faa39456bc5f8d679eb38cb29"
+  "MIXPANEL_API_SECRET": "e760363faa39456bc5f8d679eb38cb29",
+  "Kadira": {
+    "endpoint": "https://kadira.e-potek.ch:22022",
+    "www": {
+      "appId": "QsCGDb6p6BaDs54B2", 
+      "appSecret": "7770029a-a864-49ab-a375-101ac065c2b6" 
+    },
+    "admin": {
+      "appId": "taBKubDqL7ALCFXDo", 
+      "appSecret": "39f46dec-f82f-4cc4-9eea-81d3039d73b6" 
+    },
+    "app": {
+      "appId": "fqNXNjD5zbt3GjjQY", 
+      "appSecret": "893ab5f2-157d-40ba-a9b9-a5b9cf8107fc" 
+    }
+  }
 }

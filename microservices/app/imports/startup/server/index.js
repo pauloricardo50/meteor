@@ -6,7 +6,7 @@ import 'core/api/api';
 import 'core/api/api-server';
 import jc from 'core/api/jobs/server/jobs';
 import '../accounts-config';
-import './kadira-dev.js';
+import './kadira.js';
 
 Meteor.startup(() => {
   jc.startJobServer();
