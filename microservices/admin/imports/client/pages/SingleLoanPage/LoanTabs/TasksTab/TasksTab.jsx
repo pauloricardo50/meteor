@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import LoanTasksTable from '../LoanTasksTable';
 
 const TasksTab = ({ loan: { borrowerIds, property, _id } }) => (
-  <div className="mask1 tasks-tab">
+  <div className="tasks-tab">
     <h2>
       <T id="collections.tasks" />
     </h2>

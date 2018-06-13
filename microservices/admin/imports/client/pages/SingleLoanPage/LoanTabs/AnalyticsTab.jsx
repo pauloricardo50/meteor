@@ -3,7 +3,7 @@ import React from 'react';
 import MixpanelAnalytics from '../../../components/MixpanelAnalytics';
 
 const AnalyticsTab = ({ loan }) => (
-  <div className="mask1">
+  <div>
     <MixpanelAnalytics loan={loan} />
   </div>
 );

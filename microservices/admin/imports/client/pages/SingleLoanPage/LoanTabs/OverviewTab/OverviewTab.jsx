@@ -29,7 +29,7 @@ export default class OverviewTab extends React.Component {
     const displayRecap = loanHasMinimalInformation({ loan });
 
     return (
-      <div className="mask1 overview-tab">
+      <div className="overview-tab">
         <div className="admin-section">
           <DisableUserFormsToggle loan={loan} />
           <div className="admin-note-wrapper">

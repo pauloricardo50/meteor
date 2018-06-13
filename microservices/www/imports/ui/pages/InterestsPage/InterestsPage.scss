@@ -26,6 +26,8 @@
 }
 
 .interests-page-table {
+  display: flex;
+  flex-direction: column;
   margin: 80px 32px 0 32px;
 
   transform: scale(1.25);
@@ -45,4 +47,9 @@
   &.DOWN {
     color: $success;
   }
+}
+
+.interests-table-date {
+  margin-top: 16px;
+  align-self: flex-end;
 }

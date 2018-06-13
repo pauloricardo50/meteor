@@ -35,7 +35,7 @@ describe('LoanService', () => {
       LoanService.disableUserForms({ loanId });
 
       expect(LoanService.update.getCall(0).args).to.deep.equal([
-        { loanId, object: { userFormsDisabled: true } },
+        { loanId, object: { userFormsEnabled: false } },
       ]);
 
       LoanService.update.restore();
@@ -46,13 +46,11 @@ describe('LoanService', () => {
     it('enables the user forms', () => {
       sinon.stub(LoanService, 'update');
 
-      Loans.update({ _id: loanId }, { $set: { userFormsDisabled: true } });
-      expect(Loans.findOne(loanId).userFormsDisabled).to.equal(true);
-
       expect(LoanService.update.called).to.equal(false);
       LoanService.enableUserForms({ loanId });
+
       expect(LoanService.update.getCall(0).args).to.deep.equal([
-        { loanId, object: { userFormsDisabled: false } },
+        { loanId, object: { userFormsEnabled: true } },
       ]);
 
       LoanService.update.restore();
