@@ -7,7 +7,7 @@ import Widget1SingleInput from '../Widget1SingleInput';
 import Widget1InputsError from './Widget1InputsError';
 import Widget1InputsReset from './Widget1InputsReset';
 
-const fields = [SALARY, FORTUNE, PROPERTY];
+const fields = [PROPERTY, SALARY, FORTUNE];
 
 const Widget1Inputs = ({ finma }) => (
   <div className="widget1-inputs card1">
