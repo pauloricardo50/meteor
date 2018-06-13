@@ -26,7 +26,7 @@ const arrayField = props => (
 const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   switch (fieldType) {
   case FIELD_TYPES.TEXT:
-    return defaultField({ ...rest, ...defaultFieldProps });
+    return defaultField({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.CHECKBOX:
     return <Field component={FormCheckbox} validate={validate} {...rest} />;
@@ -36,24 +36,24 @@ const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
       inputComponent: MaskedInput,
       inputProps: { mask: percentMask },
       ...percentFormatters,
-    })(defaultField)({ ...rest, ...defaultFieldProps });
+    })(defaultField)({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.MONEY:
     return withProps({
       inputComponent: MaskedInput,
       inputProps: { mask: swissFrancMask },
       ...moneyFormatters,
-    })(defaultField)({ ...rest, ...defaultFieldProps });
+    })(defaultField)({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.NUMBER:
     return withProps({
       ...numberFormatters,
-    })(defaultField)({ ...rest, ...defaultFieldProps });
+    })(defaultField)({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.PHONE:
     return withProps({
       ...phoneFormatters,
-    })(defaultField)({ ...rest, ...defaultFieldProps });
+    })(defaultField)({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.TEXT_AREA:
     return withProps({ multiline: true, rows: 3 })(defaultField)({
@@ -62,7 +62,7 @@ const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
     });
 
   case FIELD_TYPES.ARRAY:
-    return arrayField({ ...rest, ...defaultFieldProps });
+    return arrayField({ ...defaultFieldProps, ...rest });
 
   default:
     return defaultField;
