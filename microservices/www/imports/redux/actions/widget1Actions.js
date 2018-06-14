@@ -17,6 +17,8 @@ import {
   FINAL_STEP,
   PROPERTY,
   CAPPED_FIELDS,
+  CURRENT_LOAN,
+  PURCHASE_TYPE,
 } from '../constants/widget1Constants';
 import suggestValue from '../utils/widget1Suggesters';
 
@@ -100,11 +102,21 @@ export const setStep = nextStep => (dispatch, getState) => {
     });
 };
 
-export const resetCalculator = () => dispatch =>
-  Promise.all(ALL_FIELDS.map((name) => {
+export const resetCalculator = () => (dispatch, getState) => {
+  const state = getState();
+  const purchaseType = makeWidget1Selector('purchaseType')(state);
+
+  return Promise.all(ALL_FIELDS.map((name) => {
     dispatch({ type: setValueAction(name), value: 0 });
     dispatch({ type: setAutoAction(name), auto: true });
-  }));
+  })).then(() => {
+    if (purchaseType === PURCHASE_TYPE.REFINANCING) {
+      // Keep property and current loan to false during refinancing
+      dispatch({ type: setAutoAction(PROPERTY), auto: false });
+      dispatch({ type: setAutoAction(CURRENT_LOAN), auto: false });
+    }
+  });
+};
 
 export const setAllowExtremeLoan = name => ({
   type: setAllowExtremeLoanAction(name),

@@ -16,6 +16,8 @@ import {
   PURCHASE_TYPE,
   CAPPED_FIELDS,
   WANTED_LOAN,
+  CURRENT_LOAN,
+  PROPERTY,
 } from '../../constants/widget1Constants';
 
 const middlewares = [thunk];
@@ -201,6 +203,24 @@ describe('widget1Actions', () => {
         [],
       );
       return expectActions(widget1Actions.resetCalculator(), expectedActions);
+    });
+
+    it('sets property and currentLoan to auto false in refinancing', () => {
+      store = prepareStore({ purchaseType: PURCHASE_TYPE.REFINANCING });
+
+      const expectedActions = ALL_FIELDS.reduce(
+        (acc, field) => [
+          ...acc,
+          { type: widget1.setValueAction(field), value: 0 },
+          { type: widget1.setAutoAction(field), auto: true },
+        ],
+        [],
+      );
+      return expectActions(widget1Actions.resetCalculator(), [
+        ...expectedActions,
+        { type: widget1.setAutoAction(PROPERTY), auto: false },
+        { type: widget1.setAutoAction(CURRENT_LOAN), auto: false },
+      ]);
     });
   });
 });
