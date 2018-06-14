@@ -8,7 +8,7 @@ import {
   makeSelectValue,
   makeWidget1Selector,
 } from '../../../../redux/reducers/widget1';
-import { Widget1SuggesterClass } from '../../../../redux/utils/Widget1Suggester';
+import Widget1Suggester from '../../../../redux/utils/Widget1Suggester';
 
 const getAcquisitionArray = (state) => {
   const propertyValue = makeSelectValue('property')(state);
@@ -38,9 +38,10 @@ const getRefinancingArray = (state) => {
   const wantedLoan = makeSelectValue('wantedLoan')(state);
   const salary = makeSelectValue('salary')(state);
   const loanChange = wantedLoan - currentLoan;
-  const maxPossibleLoan = new Widget1SuggesterClass({
-    notaryFees: 0,
-  }).getMaxPossibleLoan(propertyValue, salary);
+  const maxPossibleLoan = Widget1Suggester.getMaxPossibleLoan(
+    propertyValue,
+    salary,
+  );
 
   return [
     { label: 'Recap.maxPossibleLoan', value: maxPossibleLoan },

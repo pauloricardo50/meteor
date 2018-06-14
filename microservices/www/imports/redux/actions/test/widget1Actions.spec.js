@@ -133,6 +133,24 @@ describe('widget1Actions', () => {
         expectedActions,
       );
     });
+
+    it('allows capped fields to be set to an empty string', () => {
+      const propertyValue = 100;
+      const nextValue = '';
+      store = prepareStore({
+        step: 0,
+        property: { value: propertyValue },
+        wantedLoan: { allowExtremeLoan: true },
+      });
+      const expectedActions = [
+        { type: widget1.setValueAction(WANTED_LOAN), value: '' },
+      ];
+
+      return expectActions(
+        widget1Actions.setValue(WANTED_LOAN, nextValue),
+        expectedActions,
+      );
+    });
   });
 
   describe('setAuto', () => {

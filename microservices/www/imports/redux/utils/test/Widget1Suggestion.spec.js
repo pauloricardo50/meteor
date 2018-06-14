@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import merge from 'lodash/merge';
 
-import widget1Suggesters, { makeSuggestValue } from '../widget1Suggesters';
+import widget1Suggesters, { makeSuggestValue } from '../widget1Suggestion';
 import {
   PURCHASE_TYPE,
   SALARY,
@@ -16,8 +16,8 @@ const prepareState = overrides => ({
   widget1: merge(
     {
       purchaseType: PURCHASE_TYPE.ACQUISITION,
-      salary: { value, auto: false },
       property: { value, auto: false },
+      salary: { value, auto: false },
       fortune: { value, auto: false },
       currentLoan: { value, auto: false },
       wantedLoan: { value, auto: false },
@@ -74,6 +74,19 @@ describe('widget1Suggesters', () => {
         }),
       )).to.equal(5);
     });
+
+    it('suggests a salary with all and proper values', () => {
+      expect(widget1Suggesters(
+        SALARY,
+        prepareState({
+          salary: { auto: true },
+          property: { auto: false, value: 1000000 },
+          fortune: { auto: false, value: 250000 },
+        }),
+        // + 1 here because of rounding issues
+      )).to.equal(180000 + 1);
+    });
+
     it('suggests a salary with property', () => {
       expect(widget1Suggesters(
         SALARY,
@@ -108,6 +121,18 @@ describe('widget1Suggesters', () => {
         }),
       )).to.equal(25);
     });
+
+    it('suggests a fortune with all and proper values', () => {
+      expect(widget1Suggesters(
+        FORTUNE,
+        prepareState({
+          property: { auto: false, value: 1000000 },
+          salary: { auto: false, value: 120000 },
+          fortune: { auto: true },
+        }),
+      )).to.equal(250000);
+    });
+
     it('suggests a fortune with property', () => {
       expect(widget1Suggesters(
         FORTUNE,
@@ -142,6 +167,7 @@ describe('widget1Suggesters', () => {
         }),
       )).to.equal(400);
     });
+
     it('suggests a property with salary', () => {
       expect(widget1Suggesters(
         PROPERTY,

@@ -4,6 +4,7 @@ import {
   INTERESTS_FINMA,
   MAX_INCOME_RATIO,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MAX_BORROW_RATIO_WITH_INSURANCE,
   AMORTIZATION_STOP,
   MAX_AMORTIZATION_DURATION,
 } from 'core/config/financeConstants';
@@ -13,7 +14,7 @@ export class Widget1SuggesterClass {
     this.notaryFees = notaryFees || NOTARY_FEES;
   }
   // This function is documented in the google drive: "Maths widget1.pdf" document
-  suggestSalary = (fortune, property) => {
+  suggestSalary = (property, fortune) => {
     const loan = property * (1 + this.notaryFees) - fortune;
     const m = MAINTENANCE_FINMA;
     const i = INTERESTS_FINMA;
@@ -28,7 +29,7 @@ export class Widget1SuggesterClass {
   };
 
   // This function is documented in the google drive: "Maths widget1.pdf" document
-  suggestFortune = (salary, property) => {
+  suggestFortune = (property, salary) => {
     const m = MAINTENANCE_FINMA;
     const i = INTERESTS_FINMA;
     const mR = MAX_INCOME_RATIO;
@@ -94,26 +95,26 @@ export class Widget1SuggesterClass {
   //
   // Property < > Fortune
   //
-  propertyToFortuneRatio = 1 -
-  MAX_BORROW_RATIO_PRIMARY_PROPERTY +
-  this.notaryFees;
-  propertyToFortune = property => property * this.propertyToFortuneRatio;
-  fortuneToProperty = fortune => fortune / this.propertyToFortuneRatio;
+  propertyToFortuneRatio = () =>
+    1 - MAX_BORROW_RATIO_PRIMARY_PROPERTY + this.notaryFees;
+  propertyToFortune = property => property * this.propertyToFortuneRatio();
+  fortuneToProperty = fortune => fortune / this.propertyToFortuneRatio();
 
   //
   // Property < > Salary
   //
-  defaultAmortization = (MAX_BORROW_RATIO_PRIMARY_PROPERTY -
-    AMORTIZATION_STOP) /
-  MAX_BORROW_RATIO_PRIMARY_PROPERTY /
-  MAX_AMORTIZATION_DURATION;
-  loanCost = INTERESTS_FINMA + this.defaultAmortization;
-  propertyToSalaryRatio = 3 *
-  (MAINTENANCE_FINMA + MAX_BORROW_RATIO_PRIMARY_PROPERTY * this.loanCost);
-  propertyToSalary = property => property * this.propertyToSalaryRatio;
+  defaultAmortization = () =>
+    (MAX_BORROW_RATIO_PRIMARY_PROPERTY - AMORTIZATION_STOP) /
+    MAX_BORROW_RATIO_PRIMARY_PROPERTY /
+    MAX_AMORTIZATION_DURATION;
+  loanCost = () => INTERESTS_FINMA + this.defaultAmortization();
+  propertyToSalaryRatio = () =>
+    3 *
+    (MAINTENANCE_FINMA + MAX_BORROW_RATIO_PRIMARY_PROPERTY * this.loanCost());
+  propertyToSalary = property => property * this.propertyToSalaryRatio();
   // This one flickers between 80% and >80%, so round it up to make sure
   // the loan is always at or below 80%
-  salaryToProperty = salary => Math.ceil(salary / this.propertyToSalaryRatio);
+  salaryToProperty = salary => Math.ceil(salary / this.propertyToSalaryRatio());
 
   suggestWantedLoan = (...args) => {
     const { currentLoan } = args[args.length - 1];
@@ -121,9 +122,13 @@ export class Widget1SuggesterClass {
   };
 
   getMaxPossibleLoan = (property, salary) => {
+    const currentNotaryFees = this.notaryFees;
+    this.notaryFees = 0;
     const fortune = this.suggestFortune(property, salary);
+    this.notaryFees = currentNotaryFees;
     const maxLoan = property - fortune;
-    return maxLoan;
+    const hardCap = Math.floor(property * MAX_BORROW_RATIO_WITH_INSURANCE);
+    return Math.min(maxLoan, hardCap);
   };
 }
 

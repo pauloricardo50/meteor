@@ -49,7 +49,7 @@ export const getPropertyCappedValue = (name, state) => {
 };
 
 export const cleanNextValue = (name, nextValue, getState) => {
-  if (CAPPED_FIELDS.includes(name)) {
+  if (CAPPED_FIELDS.includes(name) && nextValue !== '') {
     const state = getState();
     const maxValue = getPropertyCappedValue(name, state);
 
