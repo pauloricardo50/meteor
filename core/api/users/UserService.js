@@ -1,4 +1,6 @@
 import { Roles } from 'meteor/alanning:roles';
+import { Accounts } from 'meteor/accounts-base';
+
 import EventService from '../events';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
@@ -33,6 +35,8 @@ class UserService {
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
+
+  getUserById = ({ userId }) => Users.findOne(userId);
 }
 
 export default new UserService();
