@@ -22,7 +22,7 @@
   height: 64px;
   padding: 0 16px;
 
-  background-color: #f1f3f5;
+  background-color: #F1F3F5;
 }
 
 @media (min-width: $med) {
@@ -31,19 +31,21 @@
     position: fixed;
 
     width: calc(
-      100% - 300px - 32px
+    100% - 300px - 32px
     ); // Side-nav width, careful, not updated with variable
   }
 }
 
 .page-title .top-bar {
   height: 56px;
-  background-color: #f1f3f5;
+
+  background-color: #F1F3F5;
 }
 
 .page-title .top-bar .title,
 .page-title .bottom-bar .title {
   margin: 0;
+
   color: #212529;
 }
 
@@ -72,70 +74,89 @@
 
 .top-bar__row {
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: space-between;
+
+  width: 100%;
   margin-bottom: 2px;
   padding: 8px 16px;
 }
 
 .process-tabs {
-  padding: 0 16px;
-  margin-top: 16px;
   position: fixed;
+  z-index: 15;
   top: 120px;
   right: 0;
-  z-index: 15;
-  border-top: 2px #f8f8f8 solid;
+
   width: calc(100% - 332px);
+  margin-top: 16px;
+  padding: 0 16px;
+
+  border-top: 2px #F8F8F8 solid;
 
   &__wrapper {
+    position: relative;
+
     display: flex;
-    color: #9ea6af;
-    list-style: none;
+    align-items: flex-start;
+
     width: 100%;
     margin: 0;
     padding-top: 4px;
     padding-left: 2px;
-    align-items: flex-start;
-    position: relative;
+
+    list-style: none;
+
+    color: #9EA6AF;
 
     &:before {
-      content: ' ';
       position: absolute;
       top: 0;
       left: 0;
+
       width: 100%;
-      background: #eff0f1;
       height: 50px;
+
+      content: ' ';
+
+      background: #EFF0F1;
     }
   }
 
   &__item {
-    font-weight: 400;
     position: relative;
 
-    > a {
-      text-decoration: none;
-      padding: 9px 30px 13px;
-      display: block;
+    font-weight: 400;
+
+     > a {
       position: relative;
 
+      display: block;
+
+      padding: 9px 30px 13px;
+
+      text-decoration: none;
+
       &:before {
-        content: ' ';
         position: absolute;
-        width: 1px;
         top: -3px;
-        bottom: 0;
         right: 0;
-        background: #e2e2e2;
+        bottom: 0;
+
+        width: 1px;
+
+        content: ' ';
+
+        background: #E2E2E2;
       }
 
       &.active {
-        color: #212529;
-        font-weight: 700;
-        background: #fff;
         padding-bottom: 19px;
+
+        color: #212529;
+        background: #FFF;
+
+        font-weight: 700;
 
         &:before {
           display: none;
