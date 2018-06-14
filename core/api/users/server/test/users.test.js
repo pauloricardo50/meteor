@@ -1,12 +1,10 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import sinon from 'sinon';
 
-import { doesUserExist, getUserNames } from '../../methodDefinitions';
+import { doesUserExist } from '../../methodDefinitions';
 
 describe('users', () => {
   beforeEach(() => {

@@ -22,11 +22,8 @@ describe('UserService', () => {
     stubCollections.restore();
   });
 
-  describe('getUserNames', () => {
-    it("returns a user's firstName and lastName ", () =>
-      expect(UserService.getUserNames({ userId: user._id })).to.deep.equal({
-        firstName,
-        lastName,
-      }));
+  describe('getUserById', () => {
+    it('returns a user', () =>
+      expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user));
   });
 });

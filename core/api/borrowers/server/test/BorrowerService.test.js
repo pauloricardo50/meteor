@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
@@ -27,13 +26,7 @@ describe('BorrowerService', () => {
   describe('insertWithUserNames', () => {
     beforeEach(() => {
       user = Factory.create('user', { firstName, lastName });
-      borrower = {
-        expenses: [{ description: 'test', value: 1 }],
-        documents: {},
-        logic: {},
-        age: 18,
-        userId: user._id,
-      };
+      borrower = { userId: user._id };
     });
 
     it("sets the borrowers first and last name with the user's first and last name", () => {
@@ -42,11 +35,14 @@ describe('BorrowerService', () => {
         userId: user._id,
       });
 
-      const expectedBorrower = { ...borrower, _id: newBorrowerId, firstName, lastName };
+      const expectedBorrower = {
+        ...borrower,
+        _id: newBorrowerId,
+        firstName,
+        lastName,
+      };
 
-      return expect(Borrowers.findOne(newBorrowerId))
-        .to.deep.include({ firstName, lastName })
-        .and.to.deep.equal(expectedBorrower);
+      expect(Borrowers.findOne(newBorrowerId)).and.to.deep.equal(expectedBorrower);
     });
   });
 
@@ -70,7 +66,6 @@ describe('BorrowerService', () => {
 
       BorrowerService.smartInsert({ borrower, userId: user._id });
 
-      expect(BorrowerService.insertWithUserNames.called).to.equal(true);
       expect(BorrowerService.insertWithUserNames.getCall(0).args).to.deep.equal([{ borrower, userId: user._id }]);
     });
 

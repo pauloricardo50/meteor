@@ -8,7 +8,7 @@ class BorrowerService {
   insert = ({ borrower, userId }) => Borrowers.insert({ ...borrower, userId });
 
   insertWithUserNames = ({ borrower, userId }) => {
-    const { firstName, lastName } = UserService.getUserNames({ userId });
+    const { firstName, lastName } = UserService.getUserById({ userId });
 
     return this.insert({
       borrower: { ...borrower, firstName, lastName },
