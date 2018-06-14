@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Widget1OptionSelector from './Widget1OptionSelector';
 import { PURCHASE_TYPE } from '../../../../redux/constants/widget1Constants';
@@ -11,7 +10,5 @@ const Widget1OptionsType = props => (
     {...props}
   />
 );
-
-Widget1OptionsType.propTypes = {};
 
 export default Widget1OptionsType;
