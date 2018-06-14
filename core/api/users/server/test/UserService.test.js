@@ -21,7 +21,6 @@ describe('UserService', () => {
     resetDatabase();
     stubCollections();
 
-    // user = Factory.create('user', { firstName, lastName, phone });
     newUserId = 'newUserId';
     existingUserEmail = 'existing@yop.com';
     newUserEmail = 'new@yop.com';
@@ -38,7 +37,6 @@ describe('UserService', () => {
 
   describe('adminCreateUser', () => {
     beforeEach(() => {
-      // user = { ...options, newUserEmail, _id: 'newUserId' };
       sinon
         .stub(UserSecurity, 'checkPermissionToAddUser')
         .callsFake(() => true);
