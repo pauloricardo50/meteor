@@ -1,5 +1,5 @@
 import { USER_EVENTS } from 'core/api/users/userConstants';
-import { ServerEventService } from '../../events';
+import ServerEventService from '../../events/server/ServerEventService';
 import {
   requestLoanVerification,
   startAuction,
@@ -38,10 +38,13 @@ ServerEventService.addMethodListener(cancelAuction, ({ loanId }) => {
   });
 });
 
-ServerEventService.addMethodListener(assignAdminToNewUser, ({ adminId, userId }) => {
-  completeAddAssignedToTask.run({ userId });
-  TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
-});
+ServerEventService.addMethodListener(
+  assignAdminToNewUser,
+  ({ adminId, userId }) => {
+    completeAddAssignedToTask.run({ userId });
+    TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
+  },
+);
 
 export const insertTaskWhenFileAddedListener = ({
   collection,
@@ -58,7 +61,10 @@ export const insertTaskWhenFileAddedListener = ({
     userId,
   });
 
-ServerEventService.addMethodListener(addFileToDoc, insertTaskWhenFileAddedListener);
+ServerEventService.addMethodListener(
+  addFileToDoc,
+  insertTaskWhenFileAddedListener,
+);
 
 export const completeTaskOnFileVerificationListener = ({
   collection,

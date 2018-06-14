@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ServerEventService } from '../../events';
+import ServerEventService from '../../events/server/ServerEventService';
 import {
   requestLoanVerification,
   startAuction,

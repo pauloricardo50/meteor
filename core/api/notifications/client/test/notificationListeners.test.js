@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import ClientEventService from '../../../events/ClientEventService';
+import ClientEventService from '../../../events/client/ClientEventService';
 import '../../../events/client/registerClientListeners';
 import { setFileStatus, assignAdminToNewUser } from '../../../methods';
 import {

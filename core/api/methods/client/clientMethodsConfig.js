@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { Method } from './methods';
-import { ClientEventService } from '../events';
+import { Method } from '../methods';
+import ClientEventService from '../../events/client/ClientEventService';
 
 const handleError = (error) => {
   if (Meteor.isClient) {

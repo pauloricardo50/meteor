@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ServerEventService } from '../../events';
+import ServerEventService from '../../events/server/ServerEventService';
 import { startAuction, endAuction } from '../../methods';
 import JobService from './JobService';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';

@@ -1,5 +1,5 @@
 import { Roles } from 'meteor/alanning:roles';
-import { ServerEventService } from '../events';
+import ServerEventService from '../events/server/ServerEventService';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
 
