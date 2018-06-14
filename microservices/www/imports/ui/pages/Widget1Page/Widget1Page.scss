@@ -24,10 +24,8 @@
 
   box-sizing: border-box;
   padding: 8px;
-}
 
-@media (min-width: $wide) {
-  .widget1-page .widget1-page-content {
+  @include screen(wide, min) {
     padding-bottom: 32px;
   }
 }
@@ -80,20 +78,15 @@
   margin: 16px;
   padding: 32px;
 
-  @include screen(wide) {
+  @include screen(xwide) {
     margin: 8px;
     padding: 16px;
-
-    .card-bottom {
-      margin-bottom: -16px;
-      margin-left: -16px;
-      padding: 16px;
-    }
   }
 }
 
 .widget1-page .widget1-part-2 .card1 h3 {
   margin: 0;
+  font-size: 1.4em;
 
   text-align: center;
 
@@ -111,7 +104,7 @@
   border-bottom-right-radius: 16px;
   border-bottom-left-radius: 16px;
 
-  @include screen(wide) {
+  @include screen(xwide) {
     margin-bottom: -16px;
     margin-left: -16px;
     padding: 16px;
