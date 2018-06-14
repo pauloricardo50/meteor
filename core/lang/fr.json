@@ -1,5 +1,7 @@
 {
 
+  "Widget1SingleInput.propertyValue": "Valeur du bien",
+
   "Widget1InputsError.empty": "Entrez des valeurs dans les champs au dessus !",
 
   "Widget1SingleInputSlider.buttonTooltip": "Agrandir le slider",

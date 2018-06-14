@@ -74,8 +74,8 @@
 
     src: url($file-name+'.eot');
     src: url($file-name+'.eot?#iefix') format('embedded-opentype'),
-      url($file-name+'.woff2') format('woff2'),
-      url($file-name+'.woff') format('woff'),
-      url($file-name+'.ttf') format('truetype');
+    url($file-name+'.woff2') format('woff2'),
+    url($file-name+'.woff') format('woff'),
+    url($file-name+'.ttf') format('truetype');
   }
 }

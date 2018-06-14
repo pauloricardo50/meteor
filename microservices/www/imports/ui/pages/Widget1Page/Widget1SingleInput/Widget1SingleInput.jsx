@@ -11,6 +11,7 @@ const Widget1SingleInput = ({
   value,
   auto,
   name,
+  labelName = name,
   setValue,
   setInputValue,
   unsetValue,
@@ -23,7 +24,7 @@ const Widget1SingleInput = ({
   <div className="widget1-single-input">
     <div className="box">
       <label htmlFor={name}>
-        <T id={`Widget1SingleInput.${name}`} />
+        <T id={`Widget1SingleInput.${labelName}`} />
       </label>
       <div className="box-content">
         <Widget1SingleInputInput
@@ -59,11 +60,13 @@ Widget1SingleInput.propTypes = {
   setAuto: PropTypes.func.isRequired,
   isLoanValue: PropTypes.bool.isRequired,
   allowExtremeLoan: PropTypes.bool,
+  labelName: PropTypes.string,
 };
 
 Widget1SingleInput.defaultProps = {
   value: undefined,
   allowExtremeLoan: undefined,
+  labelName: undefined,
 };
 
 export default Widget1SingleInputContainer(Widget1SingleInput);
