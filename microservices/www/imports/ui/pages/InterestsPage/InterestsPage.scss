@@ -28,6 +28,7 @@
 .interests-page-table {
   display: flex;
   flex-direction: column;
+
   margin: 80px 32px 0 32px;
 
   transform: scale(1.25);
@@ -50,6 +51,7 @@
 }
 
 .interests-table-date {
-  margin-top: 16px;
   align-self: flex-end;
+
+  margin-top: 16px;
 }
