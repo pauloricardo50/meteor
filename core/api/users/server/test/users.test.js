@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { doesUserExist } from '../../methodDefinitions';
 
 describe('users', () => {

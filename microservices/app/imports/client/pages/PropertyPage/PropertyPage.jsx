@@ -13,11 +13,13 @@ import T from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 
+import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
-  const { userFormsDisabled } = loan;
+  const { address1, zipCode, city } = property;
+  const { userFormsEnabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
@@ -31,6 +33,13 @@ const PropertyPage = (props) => {
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
+
+        <MapWithMarkerWrapper
+          address1={address1}
+          city={city}
+          zipCode={zipCode}
+          options={{ zoom: 14 }}
+        />
 
         <div className="description">
           <p>
@@ -48,14 +57,14 @@ const PropertyPage = (props) => {
           documentArray={loanDocuments(loan).auction}
           doc={loan}
           collection={LOANS_COLLECTION}
-          disabled={userFormsDisabled}
+          disabled={!userFormsEnabled}
         />
 
         <UploaderArray
           documentArray={propertyDocuments(property, loan).auction}
           doc={property}
           collection={PROPERTIES_COLLECTION}
-          disabled={userFormsDisabled}
+          disabled={!userFormsEnabled}
         />
 
         <div className="flex--helper flex-justify--center">
@@ -64,7 +73,7 @@ const PropertyPage = (props) => {
             inputs={getPropertyLoanArray({ loan, borrowers })}
             collection={LOANS_COLLECTION}
             doc={loan}
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
 
@@ -74,7 +83,7 @@ const PropertyPage = (props) => {
             inputs={getPropertyArray({ loan, borrowers, property })}
             collection={PROPERTIES_COLLECTION}
             doc={property}
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
       </section>

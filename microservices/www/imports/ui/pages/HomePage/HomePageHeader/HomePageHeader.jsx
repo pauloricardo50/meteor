@@ -9,7 +9,7 @@ import {
 } from 'core/components/tooltips/TooltipContext';
 import Waves from '../../../components/Waves';
 import Widget1SingleInputForm from '../../Widget1Page/Widget1SingleInputForm';
-import { SALARY } from '../../Widget1Page/Widget1Page';
+import { PROPERTY } from '../../Widget1Page/Widget1Page';
 
 const HomePageHeader = ({ history }) => (
   <header>
@@ -27,7 +27,7 @@ const HomePageHeader = ({ history }) => (
     </div>
     <TooltipProvider tooltipList={TOOLTIP_LISTS.WIDGET1}>
       <Widget1SingleInputForm
-        name={SALARY}
+        name={PROPERTY}
         onClick={() => history.push('/start/1')}
       />
     </TooltipProvider>

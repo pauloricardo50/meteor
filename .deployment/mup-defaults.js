@@ -28,6 +28,8 @@ const createMupConfig = ({ name, path, rootUrl, domain }) => {
       },
       docker: {
         image: 'abernix/meteord:node-8-base',
+        stopAppDuringPrepareBundle: false,
+        prepareBundle: true,
       },
       enableUploadProgressBar: true,
       deployCheckWaitTime: 120,

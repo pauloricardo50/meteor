@@ -6,7 +6,7 @@ import {
 } from '../../../../redux/actions/widget1Actions';
 import { SALARY, FORTUNE, PROPERTY } from '../../../../redux/reducers/widget1';
 
-const order = [SALARY, FORTUNE, PROPERTY];
+const order = [PROPERTY, SALARY, FORTUNE];
 
 const mapStateToProps = ({ widget1 }, { name }) => ({
   ...widget1[name],
