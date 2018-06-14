@@ -3,6 +3,10 @@ import { expect } from 'chai';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import {
+  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MAX_BORROW_RATIO_WITH_INSURANCE,
+} from 'core/config/financeConstants';
 import * as widget1Actions from '../widget1Actions';
 import * as widget1 from '../../reducers/widget1';
 import {
@@ -11,6 +15,7 @@ import {
   FINAL_STEP,
   PURCHASE_TYPE,
   CAPPED_FIELDS,
+  WANTED_LOAN,
 } from '../../constants/widget1Constants';
 
 const middlewares = [thunk];
@@ -23,7 +28,7 @@ const expectActions = (actionCreator, expectedActions, comment) =>
 const prepareStore = overrides =>
   mockStore({
     widget1: {
-      ...ACQUISITION_FIELDS.reduce(
+      ...ALL_FIELDS.reduce(
         (acc, name) => ({ ...acc, [name]: { value: 0, auto: true } }),
         {},
       ),
@@ -85,14 +90,16 @@ describe('widget1Actions', () => {
     ALL_FIELDS.forEach((field) => {
       const cappedFields = CAPPED_FIELDS;
 
-      it(`caps field ${field} at the property price`, () => {
+      it(`caps field ${field} at 80% of the property price`, () => {
         const propertyValue = 100;
         const nextValue = 200;
         store = prepareStore({ step: 0, property: { value: propertyValue } });
         const expectedActions = [
           {
             type: widget1.setValueAction(field),
-            value: cappedFields.includes(field) ? propertyValue : nextValue,
+            value: cappedFields.includes(field)
+              ? MAX_BORROW_RATIO_PRIMARY_PROPERTY * propertyValue
+              : nextValue,
           },
         ];
 
@@ -102,6 +109,27 @@ describe('widget1Actions', () => {
           `failed for field: ${field}`,
         );
       });
+    });
+
+    it('caps a field at 90% of the property price if allowExtremeValue is true', () => {
+      const propertyValue = 100;
+      const nextValue = 200;
+      store = prepareStore({
+        step: 0,
+        property: { value: propertyValue },
+        wantedLoan: { allowExtremeLoan: true },
+      });
+      const expectedActions = [
+        {
+          type: widget1.setValueAction(WANTED_LOAN),
+          value: MAX_BORROW_RATIO_WITH_INSURANCE * propertyValue,
+        },
+      ];
+
+      return expectActions(
+        widget1Actions.setValue(WANTED_LOAN, nextValue),
+        expectedActions,
+      );
     });
   });
 

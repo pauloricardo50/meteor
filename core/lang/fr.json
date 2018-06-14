@@ -1,5 +1,8 @@
 {
 
+  "Widget1SingleInputSlider.buttonTooltip": "Agrandir le slider",
+  "Widget1SingleInputSlider.buttonTooltipLoan": "Emprunter plus",
+
   "Widget1MonthlyMaintenance.label": "Frais d'entretien",
 "Widget1MonthlyMaintenance.yes": "Estimation",
 "Widget1MonthlyMaintenance.no": "Sans",

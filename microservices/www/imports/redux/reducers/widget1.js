@@ -17,6 +17,7 @@ export const setValueAction = name => `${name}_SET`;
 export const suggestValueAction = name => `${name}_SUGGEST`;
 export const setAutoAction = name => `${name}_AUTO`;
 export const increaseSliderMaxAction = name => `${name}_INCREASE_SLIDER_MAX`;
+export const setAllowExtremeLoanAction = name => `${name}_ALLOW_EXTREME_LOAN`;
 
 const roundedValue = value => value && Math.round(value);
 
@@ -52,6 +53,8 @@ export const createWidget1ValueReducers = names =>
             ...state,
             sliderMax: Math.min(state.sliderMax * 2, 100000000),
           };
+        case setAllowExtremeLoanAction(name):
+          return { ...state, allowExtremeLoan: true };
         default:
           return state;
         }

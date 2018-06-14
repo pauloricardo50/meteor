@@ -25,7 +25,7 @@ const Widget1Monthly = ({
         data={data}
         intlPrefix="Widget1Monthly"
         config={{
-          chart: { width: 300, spacingTop: 0, marginTop: 0, marginBottom: 0 },
+          chart: { width: 300, spacingTop: 0, marginTop: 0, marginBottom: 8 },
           plotOptions: {
             pie: {
               tooltip: {

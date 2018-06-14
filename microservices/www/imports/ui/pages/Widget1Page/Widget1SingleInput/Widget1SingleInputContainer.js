@@ -3,16 +3,17 @@ import { toNumber } from 'core/utils/conversionFunctions';
 import {
   setValue,
   setAuto,
+  setAllowExtremeLoan,
   increaseSliderMax,
+  getPropertyCappedValue,
 } from '../../../../redux/actions/widget1Actions';
-import {
-  CAPPED_FIELDS,
-  PROPERTY,
-} from '../../../../redux/constants/widget1Constants';
+import { CAPPED_FIELDS } from '../../../../redux/constants/widget1Constants';
+
+const isLoanValue = name => CAPPED_FIELDS.includes(name);
 
 const getSliderMax = (widget1, name) => {
-  if (CAPPED_FIELDS.includes(name)) {
-    return widget1[PROPERTY].value;
+  if (isLoanValue(name)) {
+    return getPropertyCappedValue(name, { widget1 });
   }
 
   return widget1[name].sliderMax;
@@ -22,6 +23,7 @@ export default connect(
   ({ widget1 }, { name }) => ({
     ...widget1[name],
     sliderMax: getSliderMax(widget1, name),
+    isLoanValue: isLoanValue(name),
   }),
   (dispatch, { name }) => ({
     setInputValue: (event) => {
@@ -34,6 +36,11 @@ export default connect(
     setValue: value => dispatch(setValue(name, value)),
     unsetValue: () => dispatch(setValue(name, '')),
     setAuto: () => dispatch(setAuto(name)),
-    increaseSliderMax: () => dispatch(increaseSliderMax(name)),
+    increaseSliderMax: () => {
+      if (isLoanValue(name)) {
+        return dispatch(setAllowExtremeLoan(name));
+      }
+      return dispatch(increaseSliderMax(name));
+    },
   }),
 );

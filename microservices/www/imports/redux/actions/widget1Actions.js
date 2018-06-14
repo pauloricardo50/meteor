@@ -1,11 +1,16 @@
 import {
+  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MAX_BORROW_RATIO_WITH_INSURANCE,
+} from 'core/config/financeConstants';
+import {
   setValueAction,
+  makeSelectValue,
+  setAllowExtremeLoanAction,
   setAutoAction,
   increaseSliderMaxAction,
   makeWidget1Selector,
   suggestValueAction,
   selectFields,
-  makeSelectValue,
 } from '../reducers/widget1';
 import {
   ALL_FIELDS,
@@ -31,12 +36,22 @@ export const suggestValues = () => (dispatch, getState) => {
   return Promise.all(suggestActions);
 };
 
+export const getPropertyCappedValue = (name, state) => {
+  const propertyValue = makeSelectValue(PROPERTY)(state);
+  const { allowExtremeLoan } = makeWidget1Selector(name)(state);
+  const maxValue = allowExtremeLoan
+    ? propertyValue * MAX_BORROW_RATIO_WITH_INSURANCE
+    : propertyValue * MAX_BORROW_RATIO_PRIMARY_PROPERTY;
+
+  return Math.floor(maxValue);
+};
+
 export const cleanNextValue = (name, nextValue, getState) => {
   if (CAPPED_FIELDS.includes(name)) {
     const state = getState();
-    const propertyValue = makeSelectValue(PROPERTY)(state);
+    const maxValue = getPropertyCappedValue(name, state);
 
-    return Math.min(nextValue, propertyValue);
+    return Math.min(nextValue, maxValue);
   }
 
   return nextValue;
@@ -90,3 +105,7 @@ export const resetCalculator = () => dispatch =>
     dispatch({ type: setValueAction(name), value: 0 });
     dispatch({ type: setAutoAction(name), auto: true });
   }));
+
+export const setAllowExtremeLoan = name => ({
+  type: setAllowExtremeLoanAction(name),
+});
