@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 
 import MapWithMarker from './MapWithMarker';
 import T from '../Translation';
-import { getAddressString, isAddressIncomplete } from './googleMapsHelpers';
+import { getAddressString, isIncompleteAddress } from './googleMapsHelpers';
 
 const MapWithMarkerWrapper = ({ address1, zipCode, city, options }) => {
-  const incompleteAddress = isAddressIncomplete({ address1, zipCode, city });
-
-  if (incompleteAddress) {
+  if (isIncompleteAddress({ address1, zipCode, city })) {
     return (
       <p className="description incomplete-address">
         <T id="PropertyPage.incompleteAddress" />

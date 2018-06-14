@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { getAddressString, isAddressIncomplete } from '../googleMapsHelpers';
+import { getAddressString, isIncompleteAddress } from '../googleMapsHelpers';
 
 describe('googleMapsHelpers', () => {
   let address;
@@ -10,19 +10,19 @@ describe('googleMapsHelpers', () => {
     address = { address1: 'Thamel Marg', city: 'Kathmandu', zipCode: '123456' };
   });
 
-  describe('isAddressIncomplete', () => {
+  describe('isIncompleteAddress', () => {
     it('returns true when the address is incomplete', () => {
       address = { city: 'Kathmandu', zipCode: '123456' };
-      expect(isAddressIncomplete(address)).to.equal(true);
+      expect(isIncompleteAddress(address)).to.equal(true);
     });
 
     it('returns true when the address is an empty string', () => {
       address = { address1: '', city: 'Kathmandu', zipCode: '123456' };
-      expect(isAddressIncomplete(address)).to.equal(true);
+      expect(isIncompleteAddress(address)).to.equal(true);
     });
 
     it('returns false when the address is complete', () => {
-      expect(isAddressIncomplete(address)).to.equal(false);
+      expect(isIncompleteAddress(address)).to.equal(false);
     });
   });
 
