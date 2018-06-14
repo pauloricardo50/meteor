@@ -54,6 +54,8 @@ class UserService {
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
+
+  getUserById = ({ userId }) => Users.findOne(userId);
 }
 
 export default new UserService();

@@ -9,7 +9,6 @@ import {
   assignAdminToNewUser,
   setRole,
   adminCreateUser,
-  checkPermissionToAddUser,
   editUser,
 } from '../methodDefinitions';
 import UserService from '../UserService';

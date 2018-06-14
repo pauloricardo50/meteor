@@ -11,6 +11,9 @@ import UserSecurity from '../../../security/collections/UserSecurity';
 import { ROLES } from '../../userConstants';
 
 describe('UserService', () => {
+  const firstName = 'testFirstName';
+  const lastName = 'testLastName';
+  let user;
   let newUserId;
   let existingUserEmail;
   let newUserEmail;
@@ -29,6 +32,7 @@ describe('UserService', () => {
       lastName: 'lastName',
       phone: '12345678',
     };
+    user = Factory.create('user', { firstName, lastName });
   });
 
   afterEach(() => {
@@ -101,5 +105,10 @@ describe('UserService', () => {
         newUserId,
       ]);
     });
+  });
+
+  describe('getUserById', () => {
+    it('returns a user', () =>
+      expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user));
   });
 });
