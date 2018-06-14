@@ -56,6 +56,12 @@ describe('Widget1SingleInputSlider', () => {
     expect(component().find(IconButton).length).to.equal(1);
   });
 
+  it('should render an IconButton if value is at least 90% of sliderMax', () => {
+    props.sliderMax = 1;
+    props.value = 0.95;
+    expect(component().find(IconButton).length).to.equal(1);
+  });
+
   it('should not render an IconButton if sliderMax is 0', () => {
     props.sliderMax = 0;
     expect(component().find(IconButton).length).to.equal(0);

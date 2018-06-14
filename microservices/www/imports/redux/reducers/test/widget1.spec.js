@@ -7,6 +7,7 @@ import widget1, {
   suggestValueAction,
   setAutoAction,
   increaseSliderMaxAction,
+  setAllowExtremeLoanAction,
   makeWidget1Selector,
   makeSelectValue,
   selectFields,
@@ -62,9 +63,7 @@ describe('widget1 Reducer', () => {
     describe('setValue action', () => {
       it('should handle setValue and put auto to false', () => {
         const value = 100;
-        expect(
-          reducer({}, { type: setValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value,
           auto: false,
         });
@@ -72,23 +71,17 @@ describe('widget1 Reducer', () => {
 
       it('It should set auto to true and value to 0 if the value is set to 0 or falsy', () => {
         let value = 0;
-        expect(
-          reducer({}, { type: setValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value: 0,
           auto: true,
         });
         value = undefined;
-        expect(
-          reducer({}, { type: setValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value: 0,
           auto: true,
         });
         value = false;
-        expect(
-          reducer({}, { type: setValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value: 0,
           auto: true,
         });
@@ -96,9 +89,7 @@ describe('widget1 Reducer', () => {
 
       it('should allow the value to be an empty string, so that the user can keep typing', () => {
         const value = '';
-        expect(
-          reducer({}, { type: setValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value,
           auto: false,
         });
@@ -106,9 +97,7 @@ describe('widget1 Reducer', () => {
 
       it('rounds the value that is set', () => {
         const value = 100.2;
-        expect(
-          reducer({}, { type: setValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value: 100,
           auto: false,
         });
@@ -119,17 +108,13 @@ describe('widget1 Reducer', () => {
       it('sets the value without changing auto', () => {
         const value = 100;
         let auto = true;
-        expect(
-          reducer({ auto }, { type: suggestValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({ auto }, { type: suggestValueAction(TEST), value })).to.deep.equal({
           value,
           auto,
         });
 
         auto = false;
-        expect(
-          reducer({ auto }, { type: suggestValueAction(TEST), value }),
-        ).to.deep.equal({
+        expect(reducer({ auto }, { type: suggestValueAction(TEST), value })).to.deep.equal({
           value,
           auto,
         });
@@ -162,20 +147,24 @@ describe('widget1 Reducer', () => {
 
     describe('increaseSliderMax action', () => {
       it('doubles sliderMax', () => {
-        expect(
-          reducer({ sliderMax: 50 }, { type: increaseSliderMaxAction(TEST) }),
-        ).to.deep.equal({
+        expect(reducer({ sliderMax: 50 }, { type: increaseSliderMaxAction(TEST) })).to.deep.equal({
           sliderMax: 2 * 50,
         });
       });
 
       it('prevents a user from going above 100M', () => {
-        expect(
-          reducer(
-            { sliderMax: 50000001 },
-            { type: increaseSliderMaxAction(TEST) },
-          ),
-        ).to.deep.equal({ sliderMax: 100000000 });
+        expect(reducer(
+          { sliderMax: 50000001 },
+          { type: increaseSliderMaxAction(TEST) },
+        )).to.deep.equal({ sliderMax: 100000000 });
+      });
+    });
+
+    describe('setAllowExtremeLoan action', () => {
+      it('sets allowExtremeLoan to true', () => {
+        expect(reducer({}, { type: setAllowExtremeLoanAction(TEST) })).to.deep.equal({
+          allowExtremeLoan: true,
+        });
       });
     });
   });
@@ -184,33 +173,25 @@ describe('widget1 Reducer', () => {
     describe('makeWidget1Selector', () => {
       it('should select widget1', () => {
         const myField = 'hello world';
-        expect(
-          makeWidget1Selector('myField')({ widget1: { myField } }),
-        ).to.equal(myField);
+        expect(makeWidget1Selector('myField')({ widget1: { myField } })).to.equal(myField);
       });
     });
 
     describe('makeSelectValue', () => {
       it('should get the value of a field', () => {
         const myField = { value: 200 };
-        expect(makeSelectValue('myField')({ widget1: { myField } })).to.equal(
-          myField.value,
-        );
+        expect(makeSelectValue('myField')({ widget1: { myField } })).to.equal(myField.value);
       });
     });
 
     describe('selectFields', () => {
       it('should select the right fields', () => {
-        expect(
-          selectFields({
-            widget1: { purchaseType: PURCHASE_TYPE.ACQUISITION },
-          }),
-        ).to.equal(ACQUISITION_FIELDS);
-        expect(
-          selectFields({
-            widget1: { purchaseType: PURCHASE_TYPE.REFINANCING },
-          }),
-        ).to.equal(REFINANCING_FIELDS);
+        expect(selectFields({
+          widget1: { purchaseType: PURCHASE_TYPE.ACQUISITION },
+        })).to.equal(ACQUISITION_FIELDS);
+        expect(selectFields({
+          widget1: { purchaseType: PURCHASE_TYPE.REFINANCING },
+        })).to.equal(REFINANCING_FIELDS);
       });
     });
 
@@ -220,14 +201,12 @@ describe('widget1 Reducer', () => {
         fortune: { auto: false },
         property: { auto: false },
       };
-      expect(
-        selectAutoValues({
-          widget1: {
-            purchaseType: PURCHASE_TYPE.ACQUISITION,
-            ...autoValues,
-          },
-        }),
-      ).to.deep.equal({
+      expect(selectAutoValues({
+        widget1: {
+          purchaseType: PURCHASE_TYPE.ACQUISITION,
+          ...autoValues,
+        },
+      })).to.deep.equal({
         salary: autoValues.salary.auto,
         fortune: autoValues.fortune.auto,
         property: autoValues.property.auto,

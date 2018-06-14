@@ -17,8 +17,12 @@ const getSliderValue = (value, sliderMax) => {
   return 0;
 };
 
+const INCREASE_SLIDER_LIMIT = 0.9;
+
 const showIncreaseButton = (value, sliderMax, allowExtremeLoan) =>
-  sliderMax > 0 && value >= sliderMax && !allowExtremeLoan;
+  sliderMax > 0 &&
+  value >= INCREASE_SLIDER_LIMIT * sliderMax &&
+  !allowExtremeLoan;
 
 const Widget1SingleInputSlider = ({
   value,
