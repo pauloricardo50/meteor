@@ -66,7 +66,7 @@ describe('LoanService', () => {
       userId = 'testId';
     });
 
-    it('inserts a property, borrower and loan with same userId', () => {
+    it('inserts a property, borrower and loan', () => {
       expect(Loans.find({}).count()).to.equal(0, 'loans 0');
       expect(Borrowers.find({}).count()).to.equal(0, 'borrowers 0');
       expect(Properties.find({}).count()).to.equal(0, 'properties 0');
