@@ -1,5 +1,7 @@
 {
 
+  "Widget1InputsError.empty": "Entrez des valeurs dans les champs au dessus !",
+
   "Widget1SingleInputSlider.buttonTooltip": "Agrandir le slider",
   "Widget1SingleInputSlider.buttonTooltipLoan": "Emprunter plus",
 

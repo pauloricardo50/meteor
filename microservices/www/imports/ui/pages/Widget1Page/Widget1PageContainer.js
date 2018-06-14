@@ -11,6 +11,11 @@ import {
 import { selectFields } from '../../../redux/reducers/widget1';
 import { PURCHASE_TYPE } from '../../../redux/constants/widget1Constants';
 
+export const hideFinmaValues = (borrowRatio, incomeRatio) =>
+  !(borrowRatio && incomeRatio) ||
+  Math.abs(borrowRatio) === Infinity ||
+  Math.abs(incomeRatio) === Infinity;
+
 const getFinmaValues = ({
   salary,
   fortune,
@@ -30,6 +35,14 @@ const getFinmaValues = ({
   const incomeRatio = getIncomeRatio(salary, finmaMonthlyCost);
   const borrowRuleStatus = validateBorrowRatio(borrowRatio);
   const incomeRuleStatus = validateIncomeRatio(incomeRatio);
+
+  if (hideFinmaValues(borrowRatio, incomeRatio)) {
+    return {
+      borrowRule: { value: 0, ...borrowRuleStatus },
+      incomeRule: { value: 0, ...incomeRuleStatus },
+      finmaMonthlyCost: 0,
+    };
+  }
 
   return {
     borrowRule: { value: borrowRatio, ...borrowRuleStatus },
