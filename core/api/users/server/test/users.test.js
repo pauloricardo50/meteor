@@ -15,6 +15,8 @@ import {
 } from '../../methodDefinitions';
 import { ROLES } from '../../userConstants';
 import { SecurityService } from '../../../';
+import UserSecurity from '../../../security/collections/UserSecurity';
+import UserService from '../../UserService';
 
 describe('users', () => {
   beforeEach(() => {
@@ -92,18 +94,6 @@ describe('users', () => {
         Accounts.sendEnrollmentEmail.restore();
       });
 
-      it('throws if it finds a user with the same email', () => {
-        Factory.create('user', {
-          emails: [{ address: existingUserEmail, verified: false }],
-        });
-
-        options.email = existingUserEmail;
-
-        return adminCreateUser
-          .run({ options, role })
-          .catch(({ error }) => assert.equal(error, 'DUPLICATE_EMAIL'));
-      });
-
       it('creates a new account', () => {
         options.email = newUserEmail;
 
@@ -111,6 +101,32 @@ describe('users', () => {
           // expect to find 2 users: admin and newUser
           assert.equal(Meteor.users.find({}).count(), 2);
         });
+      });
+
+      it('calls UserSecurity', (done) => {
+        sinon.stub(UserSecurity, 'checkPermissionToAddUser').callsFake(() => true);
+        options.email = newUserEmail;
+
+        adminCreateUser.run({ options, role }).then(() => {
+          expect(UserSecurity.checkPermissionToAddUser.getCall(0).args)
+            .to.deep.equal([{ role }]);
+        });
+
+        UserSecurity.checkPermissionToAddUser.restore();
+        done();
+      });
+
+      it('calls UserService.adminCreateUser', (done) => {
+        sinon.stub(UserService, 'adminCreateUser').callsFake(() => true);
+        options.email = newUserEmail;
+
+        adminCreateUser.run({ options, role }).then(() => {
+          expect(UserService.adminCreateUser.getCall(0).args)
+            .to.deep.equal([{ options, role }]);
+        });
+
+        UserService.adminCreateUser.restore();
+        done();
       });
 
       it('creates a new account with the provided email', (done) => {
@@ -203,7 +219,7 @@ describe('users', () => {
               assert.equal(editedUser.lastName, object.lastName);
               assert.equal(editedUser.phone, object.phone);
             }
-            
+
             done();
           });
       });
