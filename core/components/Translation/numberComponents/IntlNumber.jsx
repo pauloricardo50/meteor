@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 
 const IntlNumber = ({ type, value, ...rest }) => {
-  // If this is passed something else than a number, render the value directly
+  // Render a dash if the number is not well specified
   if (!value) {
     return '-';
   } else if (typeof value !== 'number') {
+    // Render whatever comes if it is not a number
     return value;
   }
 
