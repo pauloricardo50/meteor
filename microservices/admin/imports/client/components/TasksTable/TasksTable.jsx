@@ -184,13 +184,14 @@ class TasksTable extends Component {
 
   render() {
     const { data, isLoading, showAssignee } = this.props;
+    const filters = { assignedEmployee: { emails: [{ address: 1 }] }, type: 1 };
 
     if (isLoading) {
       return <Loading />;
     }
 
     return (
-      <TableFilters data={data} filters={{ assignedEmployee: [] }}>
+      <TableFilters data={data} filters={filters}>
         {filteredData => (
           <Table
             columnOptions={this.getColumnOptions({ showAssignee })}
