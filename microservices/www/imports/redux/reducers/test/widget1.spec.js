@@ -20,6 +20,7 @@ import {
   PURCHASE_TYPE,
   ACQUISITION_FIELDS,
   REFINANCING_FIELDS,
+  CURRENT_LOAN,
 } from '../../constants/widget1Constants';
 
 describe('widget1 Reducer', () => {
@@ -84,6 +85,17 @@ describe('widget1 Reducer', () => {
         expect(reducer({}, { type: setValueAction(TEST), value })).to.deep.equal({
           value: 0,
           auto: true,
+        });
+      });
+
+      it('should not set auto to true for CURRENT_LOAN if it is set to 0', () => {
+        const currentLoanReducer = createWidget1ValueReducers([
+          { name: CURRENT_LOAN, initialSliderMax },
+        ])[CURRENT_LOAN];
+        const value = 0;
+        expect(currentLoanReducer({}, { type: setValueAction(CURRENT_LOAN), value })).to.deep.equal({
+          value: 0,
+          auto: false,
         });
       });
 

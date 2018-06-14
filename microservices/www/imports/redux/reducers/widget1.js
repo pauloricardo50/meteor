@@ -34,8 +34,11 @@ export const createWidget1ValueReducers = names =>
           if (action.value === '') {
             // Allow empty string if the user edits the textfield
             return { ...state, value: '', auto: false };
-          } else if (!action.value) {
-            // Set auto to true if the value is changed to 0 (via slider)
+          } else if (!action.value && name !== CURRENT_LOAN) {
+            // Set auto to true if the value is changed to 0
+            // (via slider or by typing 0)
+            // Exception for current_loan which is the only value that
+            // can explicitly be set to 0
             return { ...state, value: 0, auto: true };
           }
           // Set auto to false if this value is set
