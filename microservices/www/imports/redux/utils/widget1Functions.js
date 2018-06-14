@@ -111,3 +111,8 @@ export const propertyToSalary = property => property * propertyToSalaryRatio;
 // the loan is always at or below 80%
 export const salaryToProperty = salary =>
   Math.ceil(salary / propertyToSalaryRatio);
+
+export const suggestWantedLoan = (...args) => {
+  const { currentLoan } = args[args.length - 1];
+  return currentLoan;
+};

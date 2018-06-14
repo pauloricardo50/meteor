@@ -20,6 +20,7 @@ import {
   propertyToSalary,
   salaryToProperty,
   propertyToFortune,
+  suggestWantedLoan,
 } from './widget1Functions';
 
 // For each name, there are 3 suggesters, based on which other values are
@@ -44,7 +45,6 @@ const acquisitionSuggesters = {
   },
 };
 
-// TODO: !!!
 const refinancingSuggesters = {
   [SALARY]: {
     all: () => 0,
@@ -58,9 +58,7 @@ const refinancingSuggesters = {
     default: () => 0,
   },
   [WANTED_LOAN]: {
-    all: () => 0,
-    [SALARY]: () => 0,
-    [PROPERTY]: () => 0,
+    default: suggestWantedLoan,
   },
 };
 
@@ -109,7 +107,14 @@ export const makeSuggestValue = suggesters => (name, state) => {
     name,
     manualValueKeys,
   );
-  const suggestedValue = suggester(...manualValues);
+
+  // Allow all values to be accessed by key as well, for suggestWantedLoan
+  const suggestingValues = manualValueKeys.reduce(
+    (acc, key, index) => ({ ...acc, [key]: manualValues[index] }),
+    {},
+  );
+
+  const suggestedValue = suggester(...manualValues, suggestingValues);
   return suggestedValue;
 };
 
