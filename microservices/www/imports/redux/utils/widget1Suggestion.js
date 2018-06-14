@@ -22,16 +22,18 @@ const acquisitionSuggesters = {
   [SALARY]: {
     all: Widget1Suggester.suggestSalary,
     [FORTUNE]: compose(
-      Widget1Suggester.fortuneToProperty,
       Widget1Suggester.propertyToSalary,
+      property => ({ property }),
+      Widget1Suggester.fortuneToProperty,
     ),
     [PROPERTY]: Widget1Suggester.propertyToSalary,
   },
   [FORTUNE]: {
     all: Widget1Suggester.suggestFortune,
     [SALARY]: compose(
-      Widget1Suggester.salaryToProperty,
       Widget1Suggester.propertyToFortune,
+      property => ({ property }),
+      Widget1Suggester.salaryToProperty,
     ),
     [PROPERTY]: Widget1Suggester.propertyToFortune,
   },
@@ -111,7 +113,7 @@ export const makeSuggestValue = suggesters => (name, state) => {
     {},
   );
 
-  const suggestedValue = suggester(...manualValues, suggestingValues);
+  const suggestedValue = suggester(suggestingValues);
   return suggestedValue;
 };
 

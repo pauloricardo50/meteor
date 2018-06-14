@@ -14,7 +14,7 @@ export class Widget1SuggesterClass {
     this.notaryFees = notaryFees || NOTARY_FEES;
   }
   // This function is documented in the google drive: "Maths widget1.pdf" document
-  suggestSalary = (property, fortune) => {
+  suggestSalary = ({ property, fortune }) => {
     const loan = property * (1 + this.notaryFees) - fortune;
     const m = MAINTENANCE_FINMA;
     const i = INTERESTS_FINMA;
@@ -29,7 +29,7 @@ export class Widget1SuggesterClass {
   };
 
   // This function is documented in the google drive: "Maths widget1.pdf" document
-  suggestFortune = (property, salary) => {
+  suggestFortune = ({ property, salary }) => {
     const m = MAINTENANCE_FINMA;
     const i = INTERESTS_FINMA;
     const mR = MAX_INCOME_RATIO;
@@ -56,7 +56,7 @@ export class Widget1SuggesterClass {
   };
 
   // This function is documented in the google drive: "Maths widget1.pdf" document
-  getSalaryLimitedProperty = (salary, fortune) => {
+  getSalaryLimitedProperty = ({ salary, fortune }) => {
     // The arithmetic relation to have the cost of the loan be at exactly the max ratio of income
     // Derive it like this:
     // maxRatio * salary >= property * maintenance + loan * loanCost
@@ -81,12 +81,12 @@ export class Widget1SuggesterClass {
     return Math.floor(Math.min(incomeLimited1, incomeLimited2));
   };
 
-  suggestProperty = (salary, fortune) => {
-    const fortuneLimitedProperty = this.fortuneToProperty(fortune);
-    const salaryLimitedProperty = this.getSalaryLimitedProperty(
+  suggestProperty = ({ salary, fortune }) => {
+    const fortuneLimitedProperty = this.fortuneToProperty({ fortune });
+    const salaryLimitedProperty = this.getSalaryLimitedProperty({
       salary,
       fortune,
-    );
+    });
 
     // Use floor to make sure the ratios are respected and avoid edge cases
     return Math.round(Math.min(fortuneLimitedProperty, salaryLimitedProperty));
@@ -97,8 +97,9 @@ export class Widget1SuggesterClass {
   //
   propertyToFortuneRatio = () =>
     1 - MAX_BORROW_RATIO_PRIMARY_PROPERTY + this.notaryFees;
-  propertyToFortune = property => property * this.propertyToFortuneRatio();
-  fortuneToProperty = fortune => fortune / this.propertyToFortuneRatio();
+  propertyToFortune = ({ property }) =>
+    property * this.propertyToFortuneRatio();
+  fortuneToProperty = ({ fortune }) => fortune / this.propertyToFortuneRatio();
 
   //
   // Property < > Salary
@@ -111,20 +112,18 @@ export class Widget1SuggesterClass {
   propertyToSalaryRatio = () =>
     3 *
     (MAINTENANCE_FINMA + MAX_BORROW_RATIO_PRIMARY_PROPERTY * this.loanCost());
-  propertyToSalary = property => property * this.propertyToSalaryRatio();
+  propertyToSalary = ({ property }) => property * this.propertyToSalaryRatio();
   // This one flickers between 80% and >80%, so round it up to make sure
   // the loan is always at or below 80%
-  salaryToProperty = salary => Math.ceil(salary / this.propertyToSalaryRatio());
+  salaryToProperty = ({ salary }) =>
+    Math.ceil(salary / this.propertyToSalaryRatio());
 
-  suggestWantedLoan = (...args) => {
-    const { currentLoan } = args[args.length - 1];
-    return currentLoan;
-  };
+  suggestWantedLoan = ({ currentLoan }) => currentLoan;
 
-  getMaxPossibleLoan = (property, salary) => {
+  getMaxPossibleLoan = ({ property, salary }) => {
     const currentNotaryFees = this.notaryFees;
     this.notaryFees = 0;
-    const fortune = this.suggestFortune(property, salary);
+    const fortune = this.suggestFortune({ property, salary });
     this.notaryFees = currentNotaryFees;
     const maxLoan = property - fortune;
     const hardCap = Math.floor(property * MAX_BORROW_RATIO_WITH_INSURANCE);
