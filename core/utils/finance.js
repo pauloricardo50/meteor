@@ -20,8 +20,14 @@ import {
 export const getLoanValue = (propertyValue, fortune) =>
   propertyValue * (1 + NOTARY_FEES) - fortune;
 
+export const getRefinancingBorrowRatio = (propertyValue, loan) =>
+  loan / propertyValue;
+
 export const getBorrowRatio = (propertyValue, fortune) =>
-  getLoanValue(propertyValue, fortune) / propertyValue;
+  getRefinancingBorrowRatio(
+    propertyValue,
+    getLoanValue(propertyValue, fortune),
+  );
 
 export const getYearlyAmortization = ({
   propertyValue,
@@ -56,10 +62,10 @@ export const getSimpleYearlyMaintenance = (
 export const getIncomeRatio = (yearlySalary, monthlyCost) =>
   monthlyCost / (yearlySalary / 12);
 
-export const getFinmaMonthlyCost = (propertyValue, fortune) => {
+export const getFinmaMonthlyCost = (propertyValue, fortune, wantedLoan) => {
   const maintenanceMonthly =
     getSimpleYearlyMaintenance(propertyValue, MAINTENANCE_FINMA) / 12;
-  const loanValue = getLoanValue(propertyValue, fortune);
+  const loanValue = wantedLoan || getLoanValue(propertyValue, fortune);
   const interestsMonthly =
     getSimpleYearlyInterests(loanValue, INTERESTS_FINMA) / 12;
   const amortizationMonthly =
