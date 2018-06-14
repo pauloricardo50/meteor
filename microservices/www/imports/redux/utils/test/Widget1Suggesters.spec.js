@@ -47,4 +47,9 @@ describe('suggestValue', () => {
       prepareState({ salary: { auto: true }, property: { auto: true } }),
     )).to.equal(1);
   });
+
+  it('should use the default suggester if none is found', () => {
+    suggesters[PURCHASE_TYPE.ACQUISITION][SALARY] = { default: () => 42 };
+    expect(createSuggestValue()(SALARY, prepareState({ salary: { auto: true } }))).to.equal(42);
+  });
 });

@@ -24,7 +24,7 @@ import {
 
 // For each name, there are 3 suggesters, based on which other values are
 // currently set to `auto` or not.
-// If both other values are set to `auto: false`, use `both` function,
+// If all other values are set to `auto: false`, use `all` function,
 // otherwise use the 2nd or 3rd function
 const acquisitionSuggesters = {
   [SALARY]: {
@@ -44,26 +44,23 @@ const acquisitionSuggesters = {
   },
 };
 
+// TODO: !!!
 const refinancingSuggesters = {
   [SALARY]: {
-    both: suggestSalary,
-    [FORTUNE]: compose(fortuneToProperty, propertyToSalary),
-    [PROPERTY]: propertyToSalary,
+    all: () => 0,
+    [WANTED_LOAN]: () => 0,
+    [PROPERTY]: () => 0,
   },
   [PROPERTY]: {
-    both: suggestProperty,
-    [SALARY]: salaryToProperty,
-    [FORTUNE]: fortuneToProperty,
+    default: () => 0,
   },
   [CURRENT_LOAN]: {
-    both: suggestProperty,
-    [SALARY]: salaryToProperty,
-    [FORTUNE]: fortuneToProperty,
+    default: () => 0,
   },
   [WANTED_LOAN]: {
-    both: suggestProperty,
-    [SALARY]: salaryToProperty,
-    [FORTUNE]: fortuneToProperty,
+    all: () => 0,
+    [SALARY]: () => 0,
+    [PROPERTY]: () => 0,
   },
 };
 
@@ -73,13 +70,20 @@ const makeValueSuggester = (
   name,
   [firstManualKey, secondManualKey],
 ) => {
+  let suggester;
   if (secondManualKey) {
-    return suggesters[name].all;
+    // Both keys are manual, use `all` suggester
+    suggester = suggesters[name].all;
   } else if (!firstManualKey) {
     // If all values are auto, just set them all to 0
-    return () => 0;
+    suggester = () => 0;
+  } else {
+    // Only one value is manual, use it to suggest the other ones
+    suggester = suggesters[name][firstManualKey];
   }
-  return suggesters[name][firstManualKey];
+
+  // Make sure we have a fallback suggester
+  return suggester || suggesters[name].default;
 };
 
 export const makeSuggestValue = suggesters => (name, state) => {
