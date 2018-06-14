@@ -7,11 +7,7 @@ import Chip from '@material-ui/core/Chip';
 
 import Icon from 'core/components/Icon';
 import { IntlNumber } from 'core/components/Translation';
-
-const getBorrowerTitle = (firstName, lastName, index) =>
-  (firstName && lastName
-    ? `${firstName} ${lastName}`
-    : `Emprunteur ${index + 1}`);
+import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 
 const LoanSummary = ({
   loan: {
@@ -73,16 +69,16 @@ const LoanSummary = ({
     </div>
 
     <h5>Emprunteurs</h5>
-    {borrowers.map(({ firstName, lastName, _id: borrowerId }, index) => (
+    {borrowers.map((borrower, index) => (
       <Chip
         style={{ margin: 8 }}
-        key={borrowerId}
+        key={borrower._id}
         avatar={
           <Avatar>
             <Icon type="face" />
           </Avatar>
         }
-        label={getBorrowerTitle(firstName, lastName, index)}
+        label={getBorrowerFullName(borrower) || `Emprunteur ${index + 1}`}
       />
     ))}
   </div>
