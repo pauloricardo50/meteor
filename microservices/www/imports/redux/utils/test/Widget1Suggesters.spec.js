@@ -8,7 +8,6 @@ import {
   SALARY,
   PROPERTY,
   FORTUNE,
-  CURRENT_LOAN,
   WANTED_LOAN,
 } from '../../constants/widget1Constants';
 

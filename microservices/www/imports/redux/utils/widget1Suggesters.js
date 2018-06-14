@@ -12,16 +12,7 @@ import {
   WANTED_LOAN,
   PURCHASE_TYPE,
 } from '../constants/widget1Constants';
-import {
-  suggestSalary,
-  suggestFortune,
-  suggestProperty,
-  fortuneToProperty,
-  propertyToSalary,
-  salaryToProperty,
-  propertyToFortune,
-  suggestWantedLoan,
-} from './widget1Functions';
+import Widget1Suggester from './widget1Functions';
 
 // For each name, there are 3 suggesters, based on which other values are
 // currently set to `auto` or not.
@@ -29,19 +20,25 @@ import {
 // otherwise use the 2nd or 3rd function
 const acquisitionSuggesters = {
   [SALARY]: {
-    all: suggestSalary,
-    [FORTUNE]: compose(fortuneToProperty, propertyToSalary),
-    [PROPERTY]: propertyToSalary,
+    all: Widget1Suggester.suggestSalary,
+    [FORTUNE]: compose(
+      Widget1Suggester.fortuneToProperty,
+      Widget1Suggester.propertyToSalary,
+    ),
+    [PROPERTY]: Widget1Suggester.propertyToSalary,
   },
   [FORTUNE]: {
-    all: suggestFortune,
-    [SALARY]: compose(salaryToProperty, propertyToFortune),
-    [PROPERTY]: propertyToFortune,
+    all: Widget1Suggester.suggestFortune,
+    [SALARY]: compose(
+      Widget1Suggester.salaryToProperty,
+      Widget1Suggester.propertyToFortune,
+    ),
+    [PROPERTY]: Widget1Suggester.propertyToFortune,
   },
   [PROPERTY]: {
-    all: suggestProperty,
-    [SALARY]: salaryToProperty,
-    [FORTUNE]: fortuneToProperty,
+    all: Widget1Suggester.suggestProperty,
+    [SALARY]: Widget1Suggester.salaryToProperty,
+    [FORTUNE]: Widget1Suggester.fortuneToProperty,
   },
 };
 
@@ -58,7 +55,7 @@ const refinancingSuggesters = {
     default: () => 0,
   },
   [WANTED_LOAN]: {
-    default: suggestWantedLoan,
+    default: Widget1Suggester.suggestWantedLoan,
   },
 };
 
