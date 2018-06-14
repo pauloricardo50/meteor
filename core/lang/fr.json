@@ -1,4 +1,6 @@
 {
+"LoanAdder.dialogTitle" :"Ajouter une hypothèque",
+
   "steps.borrowers.title": "Emprunteurs",
   "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
   "tooltip2.financialPlan": "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
