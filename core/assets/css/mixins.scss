@@ -1,0 +1,77 @@
+// CSS mixin for our break-points
+// Use it like this:
+// .my-box {
+//   padding: 10px;
+
+//   @include screen(medium) {
+//     padding: 20px;
+//   }
+
+//   @include screen(custom, min, 1400) {
+//     padding: 40px;
+//   }
+// }
+@mixin screen($size, $type: max, $pixels: $small) {
+  @if $size == 'small' {
+    @media screen and ($type + -width: $small) {
+      @content;
+    }
+  } @else if $size == 'med' {
+    @media screen and ($type + -width: $med) {
+      @content;
+    }
+  } @else if $size == 'large' {
+    @media screen and ($type + -width: $large) {
+      @content;
+    }
+  } @else if $size == 'wide' {
+    @media screen and ($type + -width: $wide) {
+      @content;
+    }
+  } @else if $size == 'xwide' {
+    @media screen and ($type + -width: $xwide) {
+      @content;
+    }
+  } @else if $size == 'custom' {
+    @media screen and ($type + -width: $pixels + px) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Define default font size
+// // Usage
+// p {
+//   @include font-size(14px)
+// }
+// // Output
+// p {
+//   font-size: 14px; //For unsupported browsers
+//   font-size: 0.8rem;
+// }
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+// Font face mixin
+@mixin font-face($font-name, $file-name, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: quote($font-name);
+    font-weight: $weight;
+    font-style: $style;
+
+    src: url($file-name+'.eot');
+    src: url($file-name+'.eot?#iefix') format('embedded-opentype'),
+    url($file-name+'.woff2') format('woff2'),
+    url($file-name+'.woff') format('woff'),
+    url($file-name+'.ttf') format('truetype');
+  }
+}

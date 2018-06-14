@@ -36,13 +36,13 @@ html,
 
 @media (min-width: $med) {
   body {
-    font-size: $font-size-m;
+    @include font-size($font-size-m);
   }
 }
 
 @media (min-width: $wide) {
   body {
-    font-size: $font-size-l;
+    @include font-size($font-size-l);
   }
 }
 

@@ -5,6 +5,7 @@
 @include normalize();
 
 @import './variables.scss';
+@import './mixins.scss';
 @import './core-components.scss';
 @import './typography.scss';
 
