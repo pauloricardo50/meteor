@@ -4,35 +4,66 @@ import sinon from 'sinon';
 
 import ClientEventService from '../../../events/ClientEventService';
 import '../../../events/client/registerClientListeners';
-import { notifyAdmin } from '../../../methods';
-import { notifyAdminListener } from '../notificationListeners';
+import { setFileStatus, assignAdminToNewUser } from '../../../methods';
+import {
+  fileVerifiedNotificationListener,
+  adminAssignedToNewUserNotificationListener,
+} from '../notificationListeners';
 import NotificationService from '../NotificationService';
+import { FILE_STATUS } from '../../../constants';
 
 describe('Notification Listeners', () => {
-  describe('notifyAdminListener', () => {
-    it(`listens to ${notifyAdmin.config.name} method`, () => {
+  describe('fileVerifiedNotificationListener', () => {
+    it(`listens to ${setFileStatus.config.name} method`, () => {
       const {
         config: { name: methodName },
-      } = notifyAdmin;
+      } = setFileStatus;
       const listeners = ClientEventService.getListenerFunctions(methodName);
-      expect(listeners.includes(notifyAdminListener)).to.equal(true);
+      expect(listeners.includes(fileVerifiedNotificationListener)).to.equal(true);
     });
 
-    it('calls `NotificationService.alert` with correct arguments', () => {
-      sinon.stub(NotificationService, 'alert');
+    it('calls `NotificationService.notifyAdmin` with correct arguments', () => {
+      sinon.stub(NotificationService, 'notifyAdmin');
 
-      const alertParams = { title: 'Title', message: 'A message' };
-
-      notifyAdminListener({
-        ...alertParams,
-        something: 'else',
+      fileVerifiedNotificationListener({
+        newStatus: FILE_STATUS.VALID,
       });
 
-      expect(NotificationService.alert.getCall(0).args).to.deep.equal([
-        alertParams,
+      expect(NotificationService.notifyAdmin.getCall(0).args).to.deep.equal([
+        {
+          title: 'Task Completed',
+          message: 'Completed task of added file',
+        },
       ]);
 
-      NotificationService.alert.restore();
+      NotificationService.notifyAdmin.restore();
+    });
+  });
+
+  describe('adminAssignedToNewUserNotificationListener', () => {
+    it(`listens to ${assignAdminToNewUser.config.name} method`, () => {
+      const {
+        config: { name: methodName },
+      } = assignAdminToNewUser;
+      const listeners = ClientEventService.getListenerFunctions(methodName);
+      expect(listeners.includes(adminAssignedToNewUserNotificationListener)).to.equal(true);
+    });
+
+    it('calls `NotificationService.notifyAdmin` with correct arguments', () => {
+      sinon.stub(NotificationService, 'notifyAdmin');
+
+      adminAssignedToNewUserNotificationListener({
+        newStatus: FILE_STATUS.VALID,
+      });
+
+      expect(NotificationService.notifyAdmin.getCall(0).args).to.deep.equal([
+        {
+          title: 'Task Completed',
+          message: 'Completed task of admin to user assignment',
+        },
+      ]);
+
+      NotificationService.notifyAdmin.restore();
     });
   });
 });
