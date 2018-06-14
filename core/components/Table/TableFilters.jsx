@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+
 import uniqBy from 'lodash/uniqBy';
+import get from 'lodash/get';
+import set from 'lodash/set';
+import isArray from 'lodash/isArray';
+import flatten from 'lodash/flatten';
+import intersection from 'lodash/intersection';
+
+import { flattenObject } from '../../utils/general';
 
 class TableFilters extends Component {
   constructor(props) {
@@ -14,41 +22,25 @@ class TableFilters extends Component {
     };
   }
 
-  // 1. filters the data with the new filters
-  // 2. sets the filtered data and the new filters in the state
-  makeHandleFiltersChanged = column => (selectedColumnOptions) => {
-    console.log('HandleFiltersChanged', column, selectedColumnOptions);
-
-    const { filters } = this.state;
-
-    const newFilters = {
-      ...filters,
-      [column]: selectedColumnOptions.map(option => option.value),
-    };
-
-    this.setState({ filters: newFilters });
-  };
-
   filterData(filters, data) {
-    // select only the filters wnich have values in them
-    const filterColumns = Object.keys(filters).filter(column => filters[column].length > 0);
+    // select only the filters have values in them
+    const nonEmptyFilters = this.getNonEmptyFlattenedFilters(filters);
 
-    // the comparison is made only by strings, to solve issues such as dates
-    // of which values are in ms but are displayed as the same string (in the dates
-    // case we basically select a range of them which is pretty convenient)
+    // check a data item matches all filters
     const itemMatchesAllFilters = dataItem =>
-      filterColumns.every((column) => {
-        const dataItemValue = this.normalizeFieldValue(dataItem[column]);
-        return filters[column].includes(dataItemValue);
+      nonEmptyFilters.every(({ path, value }) => {
+        const itemValue = get(dataItem, path);
+        return value.includes(itemValue)
       });
 
     return data.filter(itemMatchesAllFilters);
   }
 
-  createSelectOptionsForColumn(column, data) {
+  createSelectOptionsForColumn(filterPath, data) {
     const options = data.map((item) => {
-      const normalizedValue = this.normalizeFieldValue(item[column]);
-      return this.getSelectOption(normalizedValue);
+      const itemValue = get(item, filterPath);
+      // const normalizedValue = this.normalizeFieldValue(itemValue);
+      return this.getSelectOption(itemValue);
     });
 
     return uniqBy(options, option => option.value);
@@ -61,18 +53,33 @@ class TableFilters extends Component {
     };
   }
 
-  normalizeFieldValue(value) {
-    if (value && value.constructor === Date) {
-      return value.toString();
-    }
-
-    return value;
+  // TODO: here, get the translation of the value and of "None"
+  getSelectOptionLabel(value) {
+    return value || 'None';
   }
 
-  // TODO: here, get the eventual translation of the value and of "None"
-  getSelectOptionLabel(itemValue) {
-    return itemValue || 'None';
+  getFlattenedFilters(filters) {
+    console.log(flattenObject(filters));
+    return flattenObject(filters)
   }
+
+  getNonEmptyFlattenedFilters(filters) {
+    return this.getFlattenedFilters(filters).filter(({ value }) => !this.isEmptyFilterValue(value))
+  }
+  
+  isEmptyFilterValue(filterValue) {
+    return !isArray(filterValue) || filterValue.length === 0;
+  }
+
+  makeHandleFiltersChanged = filterPath => (newSelectOptions) => {
+    console.log('HandleFiltersChanged', filterPath, newSelectOptions);
+
+    const { filters } = this.state;
+    const newFilterValues = newSelectOptions.map(option => option.value);
+
+    const newFilters = set(filters, filterPath, newFilterValues)
+    this.setState({ filters: newFilters });
+  };
 
   render() {
     const { data } = this.props;
@@ -82,19 +89,27 @@ class TableFilters extends Component {
     return (
       <React.Fragment>
         <div>
-          {Object.keys(filters).map(column => (
-            <div key={column}>
-              <span>{column}:&nbsp;</span>
-              <Select
-                multi
-                onChange={this.makeHandleFiltersChanged(column)}
-                options={this.createSelectOptionsForColumn(column, data)}
-                placeholder={`Filter by ${column}`}
-                simpleValue={false}
-                value={filters[column].map(this.getSelectOption, this)}
-              />
-            </div>
-          ))}
+          {this.getFlattenedFilters(filters).map(({ path: filterPath, value }) => {
+            const filterKey = filterPath.join('.');
+            const defaultSelectOptions =
+              this.isEmptyFilterValue(value) ?
+              [] :
+              value.map(this.getSelectOption, this);
+
+            return (
+              <div key={filterKey}>
+                <span>{filterKey}:&nbsp;</span>
+                <Select
+                  multi
+                  onChange={this.makeHandleFiltersChanged(filterPath)}
+                  options={this.createSelectOptionsForColumn(filterPath, data)}
+                  placeholder={`Filter by ${filterKey}`}
+                  simpleValue={false}
+                  value={defaultSelectOptions}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {this.props.children(filteredData)}
