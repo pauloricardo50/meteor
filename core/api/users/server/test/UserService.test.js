@@ -62,6 +62,8 @@ describe('UserService', () => {
     });
 
     it('calls UserService.createUser when receives a valid, new email', () => {
+      sinon.stub(UserService, 'createUser');
+
       expect(UserService.createUser.called).to.equal(false);
 
       options.email = newUserEmail;
@@ -70,9 +72,14 @@ describe('UserService', () => {
       expect(UserService.createUser.getCall(0).args).to.deep.equal([
         { options, role },
       ]);
+
+      UserService.createUser.restore();
     });
 
-    it('calls UserService.editUser when receiving a userId from UserService.createUser', () => {
+    it('calls UserService.update when receiving a userId from UserService.createUser', () => {
+      sinon.stub(UserService, 'createUser').callsFake(() => newUserId);
+      sinon.stub(UserService, 'update');
+
       expect(UserService.update.called).to.equal(false);
 
       options.email = newUserEmail;
@@ -81,6 +88,9 @@ describe('UserService', () => {
       expect(UserService.update.getCall(0).args).to.deep.equal([
         { userId: newUserId, object: { ...options } },
       ]);
+
+      UserService.createUser.restore();
+      UserService.update.restore();
     });
 
     it('calls Accounts.sendEnrollmentEmai when receiving a userId from UserService.createUser', () => {
