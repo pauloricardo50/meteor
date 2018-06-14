@@ -33,7 +33,7 @@
     "modernizr": "^3.6.0",
     "moment": "^2.22.1",
     "normalize-scss": "^7.0.1",
-    "query-string": "^6.1.0",
+    "query-string": "5.1.1",
     "rc-slider": "^8.6.1",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
