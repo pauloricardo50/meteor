@@ -8,7 +8,7 @@ import {
   makeSelectValue,
   makeWidget1Selector,
 } from '../../../../redux/reducers/widget1';
-import { Widget1SuggesterClass } from '../../../../redux/utils/widget1Functions';
+import { Widget1SuggesterClass } from '../../../../redux/utils/Widget1Suggester';
 
 const getAcquisitionArray = (state) => {
   const propertyValue = makeSelectValue('property')(state);

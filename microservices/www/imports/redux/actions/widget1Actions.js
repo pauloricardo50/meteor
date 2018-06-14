@@ -20,7 +20,7 @@ import {
   CURRENT_LOAN,
   PURCHASE_TYPE,
 } from '../constants/widget1Constants';
-import suggestValue from '../utils/widget1Suggesters';
+import suggestValue from '../utils/widget1Suggestion';
 
 export const suggestValues = () => (dispatch, getState) => {
   const state = getState();

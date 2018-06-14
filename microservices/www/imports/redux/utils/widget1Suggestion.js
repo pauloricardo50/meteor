@@ -12,7 +12,7 @@ import {
   WANTED_LOAN,
   PURCHASE_TYPE,
 } from '../constants/widget1Constants';
-import Widget1Suggester from './widget1Functions';
+import Widget1Suggester from './Widget1Suggester';
 
 // For each name, there are 3 suggesters, based on which other values are
 // currently set to `auto` or not.
