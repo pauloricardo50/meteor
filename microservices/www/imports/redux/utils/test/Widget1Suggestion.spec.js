@@ -127,7 +127,7 @@ describe('widget1Suggesters', () => {
         FORTUNE,
         prepareState({
           property: { auto: false, value: 1000000 },
-          salary: { auto: false, value: 120000 },
+          salary: { auto: false, value: 180000 },
           fortune: { auto: true },
         }),
       )).to.equal(250000);
@@ -152,7 +152,7 @@ describe('widget1Suggesters', () => {
           property: { auto: true },
           fortune: { auto: true },
         }),
-      )).to.equal(139);
+      )).to.be.within(138.9, 139);
     });
   });
 
@@ -166,6 +166,17 @@ describe('widget1Suggesters', () => {
           fortune: { auto: false },
         }),
       )).to.equal(400);
+    });
+
+    it('suggests a property with proper values', () => {
+      expect(widget1Suggesters(
+        PROPERTY,
+        prepareState({
+          salary: { auto: false, value: 180000 },
+          property: { auto: true },
+          fortune: { auto: false, value: 250000 },
+        }),
+      )).to.equal(1000000);
     });
 
     it('suggests a property with salary', () => {

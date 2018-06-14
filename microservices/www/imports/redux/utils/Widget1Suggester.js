@@ -25,7 +25,7 @@ export class Widget1SuggesterClass {
 
     const withoutAmortizing = (property * m + loan * i) / mR;
 
-    return Math.ceil(Math.max(withAmortizing, withoutAmortizing) + 1);
+    return Math.round(Math.max(withAmortizing, withoutAmortizing) + 1);
   };
 
   // This function is documented in the google drive: "Maths widget1.pdf" document
@@ -49,7 +49,7 @@ export class Widget1SuggesterClass {
 
     const rankFortune = Math.max(rank1Fortune, rank2Fortune);
 
-    const maxFortune = Math.ceil(Math.max(0, rankFortune, basicValue));
+    const maxFortune = Math.round(Math.max(0, rankFortune, basicValue));
 
     // Make sure fortune never goes above the property value
     return Math.min(maxFortune, property);

@@ -38,10 +38,10 @@ const getRefinancingArray = (state) => {
   const wantedLoan = makeSelectValue('wantedLoan')(state);
   const salary = makeSelectValue('salary')(state);
   const loanChange = wantedLoan - currentLoan;
-  const maxPossibleLoan = Widget1Suggester.getMaxPossibleLoan(
-    propertyValue,
+  const maxPossibleLoan = Widget1Suggester.getMaxPossibleLoan({
+    property: propertyValue,
     salary,
-  );
+  });
 
   return [
     { label: 'Recap.maxPossibleLoan', value: maxPossibleLoan },
