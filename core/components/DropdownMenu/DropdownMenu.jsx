@@ -5,19 +5,6 @@ import Menu from '../Material/Menu';
 import IconButton from '../IconButton';
 import DropdownMenuContainer from './DropdownMenuContainer';
 
-const styles = theme => ({
-  menuItem: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& $primary, & $icon': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-  primary: {},
-  icon: {},
-});
-
 const DropdownMenu = ({
   isOpen,
   anchorEl,
@@ -42,7 +29,6 @@ const DropdownMenu = ({
       tooltip={tooltip}
       tooltipPlacement={tooltipPlacement}
     />
-
     <Menu
       id="long-menu"
       anchorEl={anchorEl}

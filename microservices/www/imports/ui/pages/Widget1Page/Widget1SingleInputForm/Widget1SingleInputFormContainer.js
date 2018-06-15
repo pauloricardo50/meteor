@@ -4,22 +4,25 @@ import {
   setStep,
   setValue,
 } from '../../../../redux/actions/widget1Actions';
-import { SALARY, FORTUNE, PROPERTY } from '../../../../redux/reducers/widget1';
-
-const order = [PROPERTY, SALARY, FORTUNE];
+import { selectFields } from '../../../../redux/reducers/widget1';
 
 const mapStateToProps = ({ widget1 }, { name }) => ({
   ...widget1[name],
   disableSubmit: !widget1[name].value,
+  fields: selectFields({ widget1 }),
 });
 
-const mapDispatchToProps = (
-  dispatch,
-  { name, onClick = () => {}, disableSubmit },
+const mergeProps = (
+  { fields, ...stateProps },
+  { dispatch },
+  { name, onClick = () => {}, disableSubmit, ...ownProps },
 ) => {
-  const nextStep = order.indexOf(name) + 1;
+  const nextStep = fields.indexOf(name) + 1;
 
   return {
+    ...stateProps,
+    ...ownProps,
+    name,
     onSubmit: (event) => {
       event.preventDefault();
       if (!disableSubmit) {
@@ -36,4 +39,4 @@ const mapDispatchToProps = (
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps);
+export default connect(mapStateToProps, null, mergeProps);
