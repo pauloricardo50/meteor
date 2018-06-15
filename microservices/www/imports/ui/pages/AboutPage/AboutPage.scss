@@ -62,6 +62,10 @@
 
     margin-bottom: 32px;
 
+    @include screen(small) {
+      flex-direction: column;
+    }
+
     p.description {
       display: flex;
       align-items: flex-start;
@@ -103,6 +107,10 @@
 
         border-radius: 50%;
         background-color: $success;
+
+        @include screen(small) {
+          align-self: center;
+        }
       }
 
       .icon-error {
@@ -112,20 +120,6 @@
 
     .icon-circle-error {
       border-color: $error;
-    }
-  }
-}
-
-@media (max-width: $small) {
-  .about-page-part-2 {
-    .about-page-part-2-left,
-    .about-page-part-2-right {
-      flex-direction: column;
-
-      .icon-circle-error,
-      .icon-circle-success {
-        align-self: center;
-      }
     }
   }
 }
@@ -153,12 +147,10 @@
     margin: 8px;
     margin-bottom: 40px;
     padding: 64px;
-  }
-}
 
-@media (max-width: $med) {
-  .about-page-part-3 .card1 {
-    padding: 32px;
+    @include screen(med) {
+      padding: 32px;
+    }
   }
 }
 
@@ -205,6 +197,12 @@
       padding: 10% 16px;
 
       background-color: $primary-dark;
+
+      &.about-page-part-4-text {
+        @include screen(small) {
+          min-width: unset;
+        }
+      }
     }
 
     .about-page-part-4-image {
@@ -212,6 +210,10 @@
       background-repeat: no-repeat;
       background-position: center center;
       background-size: cover;
+
+      @include screen(small) {
+        display: none;
+      }
     }
   }
 
@@ -228,20 +230,14 @@
       max-width: 400px;
       padding: 0 16px;
 
+      @include screen(small) {
+        padding: 0;
+      }
+
       h3 {
         text-align: center;
       }
     }
-  }
-}
-
-@media (max-width: $small) {
-  .about-page-part-4-text.about-page-part-4-text {
-    min-width: unset;
-  }
-
-  .about-page-part-4-image {
-    display: none;
   }
 }
 
@@ -276,16 +272,12 @@
     &.active {
       background-color: $primary;
     }
-  }
-}
 
-@media (max-width: $small) {
-  .about-page-part-4 .about-page-part-4-list > * {
-    padding: 0;
-  }
-
-  .about-page-part-4-tabs-tab.about-page-part-4-tabs-tab {
-    padding: 8px;
+    &.about-page-part-4-tabs-tab {
+      @include screen(small) {
+        padding: 8px;
+      }
+    }
   }
 }
 
@@ -303,6 +295,10 @@
 
   &.about-page-office {
     padding: 80px 0;
+
+    @include screen(med) {
+      padding: 40px 0;
+    }
   }
 
   .about-page-office-info {
@@ -349,7 +345,7 @@
         margin-bottom: 16px;
 
         &:hover {
-          opacity: .5;
+          opacity: 0.5;
         }
 
         .icon {
@@ -374,21 +370,13 @@
     max-width: 600px;
     height: 600px;
 
-    .map {
-      flex: 1;
-    }
-  }
-}
-
-@media (max-width: $med) {
-  .about-page-office {
-    &.about-page-office {
-      padding: 40px 0;
-    }
-
-    .about-page-office-map {
+    @include screen(med) {
       max-width: 500px;
       height: 500px;
+    }
+
+    .map {
+      flex: 1;
     }
   }
 }

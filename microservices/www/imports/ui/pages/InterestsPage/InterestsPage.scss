@@ -16,12 +16,10 @@
     width: 100%;
     padding: 32px;
     padding-top: 0;
-  }
-}
 
-@media (max-width: $med) {
-  .interests-page-content {
-    padding: 16px;
+    @include screen(med) {
+      padding: 16px;
+    }
   }
 }
 
@@ -32,10 +30,8 @@
   margin: 80px 32px 0 32px;
 
   transform: scale(1.25);
-}
 
-@media (min-width: $med) {
-  .interests-page-table {
+  @include screen(med, min) {
     width: $small;
   }
 }
