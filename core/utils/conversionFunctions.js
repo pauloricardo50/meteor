@@ -53,3 +53,20 @@ export const toDistanceString = (dist) => {
 
   return `${Math.round(dist / 1000)} km`;
 };
+
+export const roundValue = (value, digits) =>
+  Math.round(value / 10 ** digits) * 10 ** digits;
+
+export const roundTo = (value, digits) => {
+  if (digits === 0) {
+    return value;
+  }
+
+  const roundedValue = roundValue(value, digits);
+
+  if (digits > 0) {
+    return roundedValue;
+  }
+
+  return parseFloat(roundedValue.toFixed(-digits));
+};

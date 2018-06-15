@@ -6,6 +6,7 @@ import {
   toNumber,
   toDecimalNumber,
   toDistanceString,
+  roundTo,
 } from '../conversionFunctions';
 
 describe('Conversion functions', () => {
@@ -124,6 +125,43 @@ describe('Conversion functions', () => {
 
     it('returns 55 for 54987', () => {
       expect(toDistanceString(54987)).to.equal('55 km');
+    });
+  });
+
+  describe('roundTo', () => {
+    it('rounds to nearest 10000', () => {
+      expect(roundTo(12345, 4)).to.equal(10000);
+    });
+
+    it('rounds to nearest 10', () => {
+      expect(roundTo(12, 1)).to.equal(10);
+    });
+
+    it('rounds 1 to nearest 10000', () => {
+      expect(roundTo(1, 4)).to.equal(0);
+    });
+
+    it('rounds decimal values to decimal places', () => {
+      expect(roundTo(0.5689, -2)).to.equal(0.57);
+    });
+
+    it('does nothing if 0 is used', () => {
+      expect(roundTo(123.456789, 0)).to.equal(123.456789);
+    });
+
+    it('rounds 0 properly', () => {
+      expect(roundTo(0, 4)).to.equal(0);
+      expect(roundTo(0, 0)).to.equal(0);
+      expect(roundTo(0, -4)).to.equal(0);
+    });
+
+    it('parses strings with numbers to get a number out of it', () => {
+      expect(roundTo('123', 2)).to.equal(100);
+      expect(roundTo('123.321', -2)).to.equal(123.32);
+    });
+
+    it('parses weird strings as NaN', () => {
+      expect(roundTo('hello', 3)).to.deep.equal(NaN);
     });
   });
 });

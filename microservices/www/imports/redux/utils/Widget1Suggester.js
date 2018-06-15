@@ -8,6 +8,7 @@ import {
   AMORTIZATION_STOP,
   MAX_AMORTIZATION_DURATION,
 } from 'core/config/financeConstants';
+import { roundTo } from 'core/utils/conversionFunctions';
 
 export class Widget1SuggesterClass {
   constructor({ notaryFees }) {
@@ -121,13 +122,17 @@ export class Widget1SuggesterClass {
   suggestWantedLoan = ({ currentLoan }) => currentLoan;
 
   getMaxPossibleLoan = ({ property, salary }) => {
+    // temporarily disable notaryFees
     const currentNotaryFees = this.notaryFees;
     this.notaryFees = 0;
+
     const fortune = this.suggestFortune({ property, salary });
+
     this.notaryFees = currentNotaryFees;
+
     const maxLoan = property - fortune;
     const hardCap = Math.floor(property * MAX_BORROW_RATIO_WITH_INSURANCE);
-    return Math.min(maxLoan, hardCap);
+    return roundTo(Math.min(maxLoan, hardCap), 3);
   };
 }
 
