@@ -2,31 +2,22 @@ const createMupConfig = ({ name, path, rootUrl, domain, env }) => {
   const sshPath = 'auth.pem';
 
   return {
-    servers: {
-      one: {
-        host: '167.99.254.87',
-        username: 'root',
-        pem: sshPath,
-      },
-    },
+    servers: { one: { host: '167.99.254.87', username: 'root', pem: sshPath } },
     meteor: {
       name,
       path,
-      servers: {
-        one: {
-          env: {},
+      servers: { one: { env: {} } },
+      buildOptions: { serverOnly: true },
+      env: Object.assign(
+        {},
+        {
+          NODE_ENV: 'production',
+          ROOT_URL: rootUrl,
+          MONGO_URL:
+            'mongodb://admin1:password@aws-eu-central-1-portal.2.dblayer.com:15723,aws-eu-central-1-portal.0.dblayer.com:15723/e-potek?ssl=true',
         },
-      },
-      buildOptions: {
-        serverOnly: true,
-      },
-      env: {
-        NODE_ENV: 'production',
-        ROOT_URL: rootUrl,
-        MONGO_URL:
-          'mongodb://admin1:password@aws-eu-central-1-portal.2.dblayer.com:15723,aws-eu-central-1-portal.0.dblayer.com:15723/e-potek?ssl=true',
-        ...env
-        },
+        env,
+      ),
       docker: {
         image: 'abernix/meteord:node-8-base',
         stopAppDuringPrepareBundle: false,
@@ -37,10 +28,7 @@ const createMupConfig = ({ name, path, rootUrl, domain, env }) => {
     },
     proxy: {
       domains: domain,
-      ssl: {
-        letsEncryptEmail: 'florian@e-potek.ch',
-        forceSSL: true,
-      },
+      ssl: { letsEncryptEmail: 'florian@e-potek.ch', forceSSL: true },
     },
   };
 };
