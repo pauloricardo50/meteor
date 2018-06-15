@@ -37,7 +37,7 @@
   width: 100%;
   margin: 0;
 
-  transition: all .2s $bezier;
+  transition: all 0.2s $bezier;
 }
 
 .validator .result div h3,
@@ -46,10 +46,10 @@
 }
 
 .validator .result div h3 {
-  transition: color .2s ease;
+  transition: color 0.2s ease;
   text-align: right;
 
-  opacity: .8;
+  opacity: 0.8;
 
   font-size: 1.375em !important;
 }

@@ -178,11 +178,11 @@
 
   width: 100%;
 
-  transition: all .3s ease;
-  transform: scale(.8);
+  transition: all 0.3s ease;
+  transform: scale(0.8);
   transform-origin: left center;
 
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .start2 .scroll .startArticle .delete-button {
@@ -196,11 +196,11 @@
 }
 
 .start2 .scroll .startArticle .delete-button svg {
-  color: rgba(34, 34, 34, .7) !important;
+  color: rgba(34, 34, 34, 0.7) !important;
 }
 
 .start2 .scroll .startArticle .delete-button:hover svg {
-  color: rgba(34, 34, 34, .9) !important;
+  color: rgba(34, 34, 34, 0.9) !important;
 }
 
 .start2 .scroll .startArticle .delete-button.off {
@@ -208,7 +208,7 @@
 }
 
 .start2 .scroll .startArticle .delete-button.off svg {
-  color: rgba(34, 34, 34, .4) !important;
+  color: rgba(34, 34, 34, 0.4) !important;
 }
 
 .start2 .scroll .startArticle .delete-button .absolute-wrapper {
@@ -232,9 +232,9 @@
 
 .start2 .scroll .startArticle:hover {
   cursor: pointer;
-  transform: scale(.9);
+  transform: scale(0.9);
 
-  opacity: .9;
+  opacity: 0.9;
 }
 
 .start2 .scroll .startArticle:hover:before {
@@ -353,9 +353,9 @@
 
 .start2 .scroll:last-child .last {
   cursor: pointer;
-  transform: scale(.9);
+  transform: scale(0.9);
 
-  opacity: .9;
+  opacity: 0.9;
 }
 
 .start2 .scroll:last-child:hover:before .startArticle {
@@ -388,7 +388,7 @@
   width: 200px;
   margin: 0 auto;
 
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 
 @media (min-width: $med) {

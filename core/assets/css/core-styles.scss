@@ -47,7 +47,7 @@ hr {
 .card1 {
   border-radius: 16px;
   background: #fff;
-  box-shadow: 0 2px 60px 5px rgba(0, 0, 0, .05);
+  box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 }
 
 .card1 .card-top {
@@ -73,14 +73,14 @@ hr {
   padding: 0 1px;
 
   cursor: help;
-  transition: background-size .2s ease-in, color .2s ease-in;
+  transition: background-size 0.2s ease-in, color 0.2s ease-in;
   transform: scale(1);
 
   border-radius: 4px;
   background-image: linear-gradient(120deg, $primary 0%, $success 100%);
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: 100% .15em;
+  background-size: 100% 0.15em;
   &:hover {
     transform: scale(1.02);
 
@@ -113,16 +113,16 @@ hr {
     transform: scale(1);
   }
   25% {
-    transform: scale(.97);
+    transform: scale(0.97);
   }
   35% {
-    transform: scale(.9);
+    transform: scale(0.9);
   }
   45% {
     transform: scale(1.1);
   }
   55% {
-    transform: scale(.9);
+    transform: scale(0.9);
   }
   65% {
     transform: scale(1.1);
@@ -179,7 +179,7 @@ hr {
 }
 
 .mask1 {
-  box-shadow: 0 0 4px 0 rgba(33, 37, 41, .16);
+  box-shadow: 0 0 4px 0 rgba(33, 37, 41, 0.16);
 }
 
 .mask1 > h1:first-child {
@@ -213,11 +213,11 @@ hr {
 }
 
 .mask2 {
-  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, .08);
+  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.08);
 }
 
 .mask3 {
-  box-shadow: 0 40px 40px 0 rgba(0, 0, 0, .16);
+  box-shadow: 0 40px 40px 0 rgba(0, 0, 0, 0.16);
 }
 
 // A .description <p /> is a nice styled paragraph optimized for reading
@@ -272,14 +272,14 @@ p.description,
 }
 
 .secondary {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 // This also adds the right cursor on disabled elements
 .disabled {
   cursor: not-allowed;
 
-  opacity: .25;
+  opacity: 0.25;
 }
 
 // Change it from the material-ui default inline-flex, which makes them take full width
