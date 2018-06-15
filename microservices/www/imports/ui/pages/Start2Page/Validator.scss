@@ -14,7 +14,7 @@
   margin-top: 16px;
 }
 
-.validator p:first-child {
+.validator h4 {
   margin: auto;
 
   text-align: left;
@@ -40,18 +40,27 @@
   transition: all 0.2s $bezier;
 }
 
-.validator .result div p {
+.validator .result div h3,
+.validator .result div h4 {
   margin: 0;
 }
 
-.validator .result div p span.sum {
+.validator .result div h3 {
+  transition: color 0.2s ease;
+  text-align: right;
+
+  opacity: 0.8;
+
+  font-size: 1.375em !important;
+}
+
+.validator .result div h3 span.sum {
   margin-top: 16px;
-  padding-top: 4px;
 
   border-top: solid 1px #808080;
 }
 
-.validator .result div p .fa {
+.validator .result div h3 .fa {
   width: 21px;
 
   text-align: center;
@@ -68,8 +77,8 @@
   transform: none;
 }
 
-.validator .result div:hover p,
-.validator .result div:hover p {
+.validator .result div:hover h3,
+.validator .result div:hover h4 {
   opacity: inherit;
   color: inherit;
 }
