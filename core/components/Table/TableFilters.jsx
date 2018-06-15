@@ -16,38 +16,33 @@ class TableFilters extends Component {
   constructor(props) {
     super(props);
 
-    console.log('DATA=', props);
-
     this.state = {
       filters: this.props.filters,
     };
   }
 
-  getSelectOptions(filterValue, filterPath) {
-    return isEmptyFilterValue(filterValue)
+  getSelectOptions = (filterValue, filterPath) =>
+    (isEmptyFilterValue(filterValue)
       ? []
-      : filterValue.map(value => this.getSelectOption(value, filterPath));
-  }
+      : filterValue.map(value => this.getSelectOption(value, filterPath)));
 
-  getSelectOption(value, filterPath) {
-    return {
-      label: this.getSelectOptionLabel(value, filterPath),
-      value,
-    };
-  }
+  getSelectOption = (value, filterPath) => ({
+    label: this.getSelectOptionLabel(value, filterPath),
+    value,
+  });
 
   // Translate the label when it should be translated
-  getSelectOptionLabel(value, filterPath) {
+  getSelectOptionLabel = (value, filterPath) => {
     if (!value) {
-      return <T id="TableFitlers.none" />;
+      return <T id="TableFilters.none" />;
     }
 
     return this.getTranslationOfValueForPath(value, filterPath) || value;
-  }
+  };
 
-  getTranslationOfValueForPath(value, filterPath) {
+  getTranslationOfValueForPath = (value, filterPath) => {
     const lastKey = filterPath[filterPath.length - 1];
-    const filterKey = filterPath.join('.');
+    const filterKey = this.getFilterKeyFromPath(filterPath);
 
     const translationId =
       filterKey === 'type' && `TasksStatusDropdown.${value}`;
@@ -57,20 +52,20 @@ class TableFilters extends Component {
     }
 
     return <T id={translationId} />;
-  }
+  };
 
-  createSelectOptionsForColumn(filterPath, data) {
+  getFilterKeyFromPath = filterPath => filterPath.join('.');
+
+  createSelectOptionsForColumn = (filterPath, data) => {
     const options = data.map((item) => {
       const itemValue = get(item, filterPath);
       return this.getSelectOption(itemValue, filterPath);
     });
 
     return uniqBy(options, option => option.value);
-  }
+  };
 
   makeHandleFiltersChanged = filterPath => (newSelectOptions) => {
-    console.log('HandleFiltersChanged', filterPath, newSelectOptions);
-
     const { filters } = this.state;
     const newFilterValues = newSelectOptions.map(option => option.value);
 
@@ -87,7 +82,7 @@ class TableFilters extends Component {
       <React.Fragment>
         <div className="table-filters">
           {flattenObjectTree(filters).map(({ path: filterPath, value }) => {
-            const filterKey = filterPath.join('.');
+            const filterKey = this.getFilterKeyFromPath(filterPath);
 
             return (
               <div className="table-filter" key={filterKey}>
