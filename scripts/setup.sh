@@ -32,6 +32,11 @@ for i in 'admin' 'app' 'www'
     echo "Creating symlinks"
     ln -s ../../../core ../microservices/$i/imports/core
 
+    
+    echo "Storing current commit message to public assets"
+    git rev-parse --short HEAD > "../core/assets/public/commit.txt"
+
+
     # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
     # So copy them over with rsync
     echo "Copying public/private folders from core"
