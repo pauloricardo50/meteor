@@ -16,7 +16,7 @@ const createMupConfig = ({ name, path, rootUrl, domain, env }) => {
           MONGO_URL:
             'mongodb://admin1:password@aws-eu-central-1-portal.2.dblayer.com:15723,aws-eu-central-1-portal.0.dblayer.com:15723/e-potek?ssl=true',
         },
-        env,
+        env // Make sure to not have a trailing comma in this function call
       ),
       docker: {
         image: 'abernix/meteord:node-8-base',
