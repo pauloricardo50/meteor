@@ -1,12 +1,18 @@
 import query from 'core/api/tasks/queries/tasks';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import { Tracker } from 'meteor/tracker';
+import { compose } from 'recompose';
+
+import withTableFilters from 'core/containers/withTableFilters';
 import TasksTable from './TasksTable';
 
-const TasksTableWithData = withQuery(
-  ({ assignedTo, unassigned, dashboardTasks }) =>
-    query.clone({ assignedTo, unassigned, dashboardTasks }),
-  { reactive: true },
+const TasksTableWithData = compose(
+  withQuery(
+    ({ assignedTo, unassigned, dashboardTasks }) =>
+      query.clone({ assignedTo, unassigned, dashboardTasks }),
+    { reactive: true },
+  ),
+  withTableFilters,
 )(TasksTable);
 
 const subscriptionHandle = query.subscribe();

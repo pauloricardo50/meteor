@@ -47,8 +47,10 @@ class TableFilters extends Component {
 
   getTranslationOfValueForPath(value, filterPath) {
     const lastKey = filterPath[filterPath.length - 1];
+    const filterKey = filterPath.join('.');
 
-    const translationId = lastKey === 'type' && `TasksStatusDropdown.${value}`;
+    const translationId =
+      filterKey === 'type' && `TasksStatusDropdown.${value}`;
 
     if (!translationId) {
       return null;
