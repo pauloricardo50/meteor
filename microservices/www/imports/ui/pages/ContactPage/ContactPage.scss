@@ -55,12 +55,12 @@
 
   color: white;
 
-   > div {
+  > div {
     display: flex;
     align-items: center;
 
     &:hover {
-      opacity: .5;
+      opacity: 0.5;
     }
 
     &.email {
@@ -116,10 +116,8 @@
   max-width: 800px;
   margin: 16px;
   margin-bottom: -120px;
-}
 
-@media (max-width: $large) {
-  .contact-page .contact-us-form {
+  @include screen(large) {
     margin-bottom: 0;
   }
 }

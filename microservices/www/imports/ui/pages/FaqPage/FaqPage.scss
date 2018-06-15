@@ -12,13 +12,11 @@
     color: $primary;
   }
 
-   > p {
+  > p {
     align-self: center;
   }
-}
 
-@media (max-width: $med) {
-  .faq-page-content {
+  @include screen(med) {
     padding: 16px;
   }
 }
@@ -45,10 +43,6 @@
 
     color: $primary;
   }
-
-  // h4 {
-  //   color: $primary;
-  // }
 
   .faq-page-faqs-expand-icon {
     color: $primary;

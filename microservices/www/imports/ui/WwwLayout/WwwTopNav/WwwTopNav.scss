@@ -46,10 +46,8 @@
     height: 48px;
     margin: 16px;
   }
-}
 
-@media (max-width: $med) {
-  .www-top-nav-logo {
+  @include screen(med) {
     width: 160px;
   }
 }
@@ -74,7 +72,7 @@
     opacity: 1;
 
     &:hover {
-      opacity: .5;
+      opacity: 0.5;
     }
 
     .www-top-nav-link-label {
@@ -87,6 +85,20 @@
       color: $primary;
     }
   }
+
+  display: flex;
+
+  @include screen(med) {
+    display: none;
+  }
+}
+
+.www-top-nav-links-small {
+  display: none;
+
+  @include screen(med) {
+    display: flex;
+  }
 }
 
 .www-top-nav-links-small-link {
@@ -98,23 +110,5 @@
     span {
       text-decoration: none;
     }
-  }
-}
-
-@media (max-width: $med) {
-  .www-top-nav-links-small {
-    display: flex;
-  }
-  .www-top-nav-links-large {
-    display: none;
-  }
-}
-
-@media (min-width: $med) {
-  .www-top-nav-links-small {
-    display: none;
-  }
-  .www-top-nav-links-large {
-    display: flex;
   }
 }

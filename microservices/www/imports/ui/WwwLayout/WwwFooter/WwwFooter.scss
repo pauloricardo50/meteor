@@ -12,10 +12,8 @@
   padding: 32px;
 
   line-height: 1.4em;
-}
 
-@media (max-width: $med) {
-  .www-footer {
+  @include screen(med) {
     padding: 16px;
   }
 }
@@ -143,5 +141,5 @@
 }
 
 .www-footer .social-links a:hover {
-  opacity: .5;
+  opacity: 0.5;
 }

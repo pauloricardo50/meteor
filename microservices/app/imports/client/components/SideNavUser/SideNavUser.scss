@@ -13,7 +13,7 @@
 
   transition: all 300ms $bezier;
 
-  background-color: #FFF;
+  background-color: #fff;
 
   .mui-select div[role='button'][aria-haspopup='true'] {
     display: block;
@@ -21,7 +21,7 @@
     padding-top: 0;
     padding-right: 30px;
 
-     > svg {
+    > svg {
       vertical-align: text-top;
     }
   }
@@ -51,7 +51,7 @@
   transition: all 300ms $bezier;
   text-decoration: none;
 
-  color: #343A40 !important;
+  color: #343a40 !important;
 }
 
 .side-nav-user .link .title {
@@ -66,12 +66,12 @@
 }
 
 .side-nav-user .link:hover {
-  background-color: #F4F6F8;
+  background-color: #f4f6f8;
 }
 
 .side-nav-user .link.active-link {
   border-left: 2px solid $primary;
-  background-color: #F1F3F5;
+  background-color: #f1f3f5;
 }
 
 .side-nav-user .link.active-link h4 {
@@ -92,10 +92,8 @@
   margin-top: 16px;
 
   transition: all 300ms $bezier;
-}
 
-@media (max-width: $med) {
-  .side-nav-user .side-stepper {
+  @include screen(med) {
     margin-bottom: 44px; // extra padding for iOS bottom bar
   }
 }
@@ -105,7 +103,7 @@
   height: 4px;
 
   border-radius: 100%;
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .side-nav-user .side-stepper .top-title {
@@ -139,7 +137,7 @@
 }
 
 .side-nav-user .side-stepper .list .step.isActive {
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
 }
 
 .side-nav-user .side-stepper .list .step.isActive .title {
@@ -147,7 +145,7 @@
 }
 
 .side-nav-user .side-stepper .list .step:hover {
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
 }
 
 .side-nav-user .side-stepper .list .step:first-child {
@@ -189,9 +187,9 @@
   height: 32px;
   margin-right: 8px;
 
-  color: #FFF;
+  color: #fff;
   border-radius: 100%;
-  background-color: #CED4DA;
+  background-color: #ced4da;
 }
 
 .side-nav-user .side-stepper .list .step .top .icon.done {
@@ -202,7 +200,7 @@
   width: 18px !important;
   height: 18px !important;
 
-  color: #FFF !important;
+  color: #fff !important;
 }
 
 .side-nav-user .side-stepper .list .step .top .text {
@@ -213,13 +211,13 @@
 }
 
 .side-nav-user .side-stepper .list .step .top .text .title {
-  color: #343A40;
+  color: #343a40;
 
   font-weight: 400;
 }
 
 .side-nav-user .side-stepper .list .step .top .text .subtitle {
-  color: #868E96;
+  color: #868e96;
 
   font-weight: 400;
 }
@@ -230,8 +228,8 @@
 
   height: 100%;
 
-  opacity: .5;
-  border-right: 1px solid #DEE2E6;
+  opacity: 0.5;
+  border-right: 1px solid #dee2e6;
 }
 
 .side-nav-user .side-stepper .list .step:first-child .absolute-line {
@@ -274,7 +272,7 @@
 .side-nav-user .side-stepper .list .step .step-list .item:hover {
   cursor: pointer;
 
-  background-color: #F4F6F8;
+  background-color: #f4f6f8;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item.disable {
@@ -292,7 +290,7 @@
 
   width: 48px;
 
-  color: #DEE2E6;
+  color: #dee2e6;
 }
 
 .side-nav-user
@@ -319,7 +317,7 @@
   .item
   .icon
   .available-icon {
-  background-color: #DEE2E6;
+  background-color: #dee2e6;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item .icon.warning {
@@ -349,13 +347,13 @@
 .side-nav-user .side-stepper .list .step .step-list .item .text .title {
   overflow: hidden;
 
-  color: #343A40;
+  color: #343a40;
 
   font-weight: 400;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item .text .subtitle {
-  color: #ADB5BD;
+  color: #adb5bd;
 
   font-weight: 400;
 }
@@ -373,7 +371,7 @@
 
 .side-nav-user .side-stepper .list .step .step-list .item.active {
   border-left: 1px solid $primary;
-  background-color: #F1F3F5;
+  background-color: #f1f3f5;
 }
 
 .side-nav-user .side-stepper .list .step .step-list .item.active .title {
@@ -416,11 +414,8 @@
 .side-nav-user .top-bar img,
 .side-nav-user .top-bar a {
   height: 64px;
-}
 
-@media (min-width: $med) {
-  .side-nav-user .top-bar img,
-  .side-nav-user .top-bar a {
+  @include screen(med, min) {
     height: 64px;
   }
 }

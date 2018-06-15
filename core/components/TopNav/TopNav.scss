@@ -8,11 +8,9 @@
   padding: 0 8px;
 
   border-bottom: 1px solid $border-grey;
-  background-color: #FFF;
-}
+  background-color: #fff;
 
-@media (max-width: $med) {
-  .top-nav {
+  @include screen(med) {
     position: relative;
   }
 }
@@ -27,11 +25,8 @@
 .top-nav .top-nav-content .empty,
 .top-nav .top-nav-content .menu-button {
   display: flex;
-}
 
-@media (min-width: $med) {
-  .top-nav .top-nav-content .empty,
-  .top-nav .top-nav-content .menu-button {
+  @include screen(med, min) {
     display: none;
   }
 }
