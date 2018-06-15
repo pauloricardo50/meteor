@@ -2,7 +2,7 @@
   "exclude": [".git/**", "../**/node_modules/**", "../**/.meteor/**"],
   "always-semicolon": true,
   "block-indent": 2,
-  "color-case": "upper",
+  "color-case": "lower",
   "color-shorthand": true,
   "element-case": "lower",
   "eof-newline": true,

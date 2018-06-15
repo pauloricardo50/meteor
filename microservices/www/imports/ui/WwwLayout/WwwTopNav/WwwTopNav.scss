@@ -41,22 +41,27 @@
   width: 80px;
   height: 80px;
 
+  @include screen(med) {
+    width: 160px;
+  }
+
   img {
     width: 48px;
     height: 48px;
     margin: 16px;
   }
-
-  @include screen(med) {
-    width: 160px;
-  }
 }
 
 .www-top-nav-links-large {
   display: inline-flex;
+  display: flex;
 
   height: 80px;
   margin-left: 32px;
+
+  @include screen(med) {
+    display: none;
+  }
 
   .www-top-nav-link {
     display: flex;
@@ -72,7 +77,7 @@
     opacity: 1;
 
     &:hover {
-      opacity: 0.5;
+      opacity: .5;
     }
 
     .www-top-nav-link-label {
@@ -84,12 +89,6 @@
     &.transparent .www-top-nav-link-label {
       color: $primary;
     }
-  }
-
-  display: flex;
-
-  @include screen(med) {
-    display: none;
   }
 }
 

@@ -1,7 +1,7 @@
 @import './AboutPageTeam/AboutPageTeam.scss';
 
 .about-page {
-  > [class*='about-page-'] {
+   > [class*='about-page-'] {
     padding: 80px 16px;
   }
 }
@@ -62,6 +62,10 @@
 
     margin-bottom: 32px;
 
+    @include screen(small) {
+      flex-direction: column;
+    }
+
     p.description {
       display: flex;
       align-items: flex-start;
@@ -116,10 +120,6 @@
 
     .icon-circle-error {
       border-color: $error;
-    }
-
-    @include screen(small) {
-      flex-direction: column;
     }
   }
 }
@@ -181,7 +181,7 @@
 
     width: 100%;
 
-    > * {
+     > * {
       flex: 1;
 
       box-sizing: border-box;
@@ -226,16 +226,16 @@
     width: 100%;
     max-width: 1400px;
 
-    > * {
+     > * {
       max-width: 400px;
       padding: 0 16px;
 
-      h3 {
-        text-align: center;
-      }
-
       @include screen(small) {
         padding: 0;
+      }
+
+      h3 {
+        text-align: center;
       }
     }
   }
@@ -345,7 +345,7 @@
         margin-bottom: 16px;
 
         &:hover {
-          opacity: 0.5;
+          opacity: .5;
         }
 
         .icon {
@@ -370,13 +370,13 @@
     max-width: 600px;
     height: 600px;
 
-    .map {
-      flex: 1;
-    }
-
     @include screen(med) {
       max-width: 500px;
       height: 500px;
+    }
+
+    .map {
+      flex: 1;
     }
   }
 }

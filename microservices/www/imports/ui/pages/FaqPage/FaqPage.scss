@@ -4,6 +4,10 @@
 
   padding: 32px;
 
+  @include screen(med) {
+    padding: 16px;
+  }
+
   h1 {
     align-self: center;
 
@@ -12,12 +16,8 @@
     color: $primary;
   }
 
-  > p {
+   > p {
     align-self: center;
-  }
-
-  @include screen(med) {
-    padding: 16px;
   }
 }
 
