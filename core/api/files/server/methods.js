@@ -11,6 +11,7 @@ import {
 } from '../methodDefinitions';
 import FileService from '../FileService';
 import { setupS3, isAllowed } from './s3';
+import { FILE_STATUS } from '../../constants';
 
 addFileToDoc.setHandler((context, { collection, docId, documentId, file }) => {
   SecurityService[collection].isAllowedToUpdate(docId);

@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import EventService from '../../../events';
-import '../../../events/registerListeners';
+import ServerEventService from '../../../events/server/ServerEventService';
+import '../../../events/server/registerServerListeners';
 import { disableUserFormsListener } from '../loanListeners';
 import { requestLoanVerification } from '../../methodDefinitions';
 
@@ -11,12 +11,12 @@ import LoanService from '../../LoanService';
 
 describe('Loan Listeners', () => {
   describe('disableUserFormsListener', () => {
-    it(`listens to \`${requestLoanVerification.config.name}\` method`, () => {
+    it(`listens to '${requestLoanVerification.config.name}' method`, () => {
       const {
         config: { name: methodName },
       } = requestLoanVerification;
 
-      const listeners = EventService.getListenerFunctions(methodName);
+      const listeners = ServerEventService.getListenerFunctions(methodName);
       expect(listeners.includes(disableUserFormsListener)).to.equal(true);
     });
 

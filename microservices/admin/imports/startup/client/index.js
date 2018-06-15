@@ -9,6 +9,8 @@ import '../accounts-config';
 import './css';
 import AdminRouter from './AdminRouter';
 
+import 'core/api/client/api';
+
 /**
  * start - sets the app up
  *
