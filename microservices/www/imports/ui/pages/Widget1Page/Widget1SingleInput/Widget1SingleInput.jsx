@@ -20,6 +20,7 @@ const Widget1SingleInput = ({
   increaseSliderMax,
   isLoanValue,
   allowExtremeLoan,
+  tabIndex,
 }) => (
   <div className="widget1-single-input">
     <div className="box">
@@ -34,6 +35,7 @@ const Widget1SingleInput = ({
           setAuto={setAuto}
           unsetValue={unsetValue}
           name={name}
+          tabIndex={tabIndex}
         />
         <Widget1SingleInputSlider
           value={value}
@@ -61,12 +63,14 @@ Widget1SingleInput.propTypes = {
   isLoanValue: PropTypes.bool.isRequired,
   allowExtremeLoan: PropTypes.bool,
   labelName: PropTypes.string,
+  tabIndex: PropTypes.number,
 };
 
 Widget1SingleInput.defaultProps = {
   value: undefined,
   allowExtremeLoan: undefined,
   labelName: undefined,
+  tabIndex: undefined
 };
 
 export default Widget1SingleInputContainer(Widget1SingleInput);

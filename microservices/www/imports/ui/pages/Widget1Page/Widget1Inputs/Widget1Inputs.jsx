@@ -14,7 +14,7 @@ export const Widget1Inputs = ({ finma, fields }) => (
       <T id="Widget1Inputs.title" />
     </h3>
     <Widget1InputsReset />
-    {fields.map(field => <Widget1SingleInput key={field} name={field} />)}
+    {fields.map((field, index) => <Widget1SingleInput key={field} name={field} tabIndex={index} />)}
     <Widget1InputsError {...finma} />
   </div>
 );

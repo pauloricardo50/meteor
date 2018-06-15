@@ -42,6 +42,7 @@ const Widget1SingleInputSlider = ({
       value={getSliderValue(value, sliderMax)}
       onChange={setValue}
       className="slider"
+      tabIndex={-1}
     />
     {showIncreaseButton(value, sliderMax, allowExtremeLoan) ? (
       <IconButton
@@ -54,6 +55,7 @@ const Widget1SingleInputSlider = ({
           />
         }
         onClick={increaseSliderMax}
+        tabIndex={-1}
       />
     ) : (
       <div className="button-placeholder" />
