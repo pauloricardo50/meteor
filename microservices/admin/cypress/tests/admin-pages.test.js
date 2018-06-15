@@ -32,11 +32,11 @@ const pages = {
     }),
     Loan: ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}`, {
-        shouldRender: '.overview-tab .tasks-table',
+        shouldRender: '.overview-tab',
       }),
     'Loan Overview Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/overview`, {
-        shouldRender: '.overview-tab .tasks-table',
+        shouldRender: '.overview-tab',
       }),
     'Loan Borrowers Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/borrowers`, {
@@ -57,10 +57,6 @@ const pages = {
     'Loan Analytics Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/analytics`, {
         shouldRender: '.mixpanel-analytics',
-      }),
-    'Loan Tasks Tab': ({ step3Loan: { _id } }) =>
-      route(`/loans/${_id}/tasks`, {
-        shouldRender: '.tasks-tab .tasks-table',
       }),
 
     'Loan Forms Tab': ({ step3Loan: { _id, borrowers } }) =>
