@@ -13,7 +13,7 @@ import TaskService from '../../TaskService';
 
 describe('Task Listeners', () => {
   describe('insertTaskWhenFileAddedListener', () => {
-    it(`listens to \`${addFileToDoc.config.name}\` method`, () => {
+    it(`listens to '${addFileToDoc.config.name}' method`, () => {
       const {
         config: { name: methodName },
       } = addFileToDoc;
@@ -49,7 +49,7 @@ describe('Task Listeners', () => {
   });
 
   describe('completeTaskOnFileVerificationListener', () => {
-    it(`listens to \`${setFileStatus.config.name}\` method`, () => {
+    it(`listens to '${setFileStatus.config.name}' method`, () => {
       const {
         config: { name: methodName },
       } = setFileStatus;

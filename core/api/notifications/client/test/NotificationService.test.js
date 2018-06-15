@@ -24,16 +24,13 @@ describe('Notification Service', () => {
 
       NotificationService.notifyAdmin({ title, message });
       expect(NotificationService.alert.getCall(0).args).to.deep.equal([
-        {
-          title,
-          message,
-        },
+        { title, message },
       ]);
 
       SecurityService.currentUserIsAdmin.restore();
     });
 
-    it(`prevents calling \`NotificationService.alert\`
+    it(`prevents calling 'NotificationService.alert'
         when current user is not admin`, () => {
       sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => false);
 

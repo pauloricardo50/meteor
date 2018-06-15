@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 const IS_LOGGING = true;
 
-export class EventService {
+export default class EventService {
   constructor({ emmitter }) {
     this.emmitter = emmitter;
     // contains arrays of listener functions, grouped by event names

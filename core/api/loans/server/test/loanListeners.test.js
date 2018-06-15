@@ -11,7 +11,7 @@ import LoanService from '../../LoanService';
 
 describe('Loan Listeners', () => {
   describe('disableUserFormsListener', () => {
-    it(`listens to \`${requestLoanVerification.config.name}\` method`, () => {
+    it(`listens to '${requestLoanVerification.config.name}' method`, () => {
       const {
         config: { name: methodName },
       } = requestLoanVerification;

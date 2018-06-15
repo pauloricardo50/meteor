@@ -101,8 +101,8 @@ describe('TaskService', () => {
       TaskService.insert.restore();
     });
 
-    it(`calls \`TaskService.insert\` in order to add
-        a task of type \`USER_ADDED_FILE\``, () => {
+    it(`calls 'TaskService.insert' in order to add
+        a task of type 'USER_ADDED_FILE'`, () => {
       expect(TaskService.insert.called).to.equal(false);
 
       TaskService.insertTaskForAddedFile({
@@ -124,7 +124,7 @@ describe('TaskService', () => {
       ]);
     });
 
-    it(`does not call \`TaskService.insert\`
+    it(`does not call 'TaskService.insert'
         when task was added by a non-user`, () => {
       expect(TaskService.insert.called).to.equal(false);
 
