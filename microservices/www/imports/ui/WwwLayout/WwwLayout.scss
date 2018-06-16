@@ -2,17 +2,20 @@
 @import './WwwTopNav/WwwTopNav.scss';
 
 .www-layout {
-  flex: 1;
-
+  box-sizing: border-box;
   padding-top: 80px;
-}
-
-.www-layout {
   display: flex;
-  // To hide the waves that overflow
-  overflow-x: hidden;
   flex-direction: column;
   justify-content: space-between;
 
   width: 100%;
+  height: 100%;
+}
+
+
+.www-main {
+  width: 100%;
+
+  flex-grow: 1;
+  flex-shrink: 0;
 }

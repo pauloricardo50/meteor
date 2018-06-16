@@ -12,12 +12,14 @@ import AboutPageOffice from './AboutPageOffice';
 const AboutPage = () => (
   <WwwLayout className="about-page">
     <WwwLayout.TopNav variant={VARIANTS.WHITE} />
-    <AboutPagePart1 />
-    <AboutPagePart2 />
-    <AboutPageTeam />
-    <AboutPagePart3 />
-    <AboutPagePart4 />
-    <AboutPageOffice />
+    <main className="www-main">
+      <AboutPagePart1 />
+      <AboutPagePart2 />
+      <AboutPageTeam />
+      <AboutPagePart3 />
+      <AboutPagePart4 />
+      <AboutPageOffice />
+    </main>
     <WwwLayout.Footer />
   </WwwLayout>
 );

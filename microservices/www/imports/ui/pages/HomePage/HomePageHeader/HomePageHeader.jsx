@@ -13,7 +13,6 @@ import Widget1SingleInputForm from '../../Widget1Page/Widget1SingleInputForm';
 
 const HomePageHeader = ({ history }) => (
   <header>
-    <Waves noSlope={false} />
     <div className="text">
       <b>
         <h1>
@@ -25,6 +24,7 @@ const HomePageHeader = ({ history }) => (
         <T id="HomePageHeader.description" />
       </h4>
     </div>
+    <Waves noSlope={false} />
     <TooltipProvider tooltipList={TOOLTIP_LISTS.WIDGET1}>
       <Widget1SingleInputForm
         name={PROPERTY}
