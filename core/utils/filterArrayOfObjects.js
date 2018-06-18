@@ -2,8 +2,7 @@ import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 import { flattenObjectTreeToArrays } from './general';
 
-export const isEmptyFilterValue = filterValue =>
-  !isArray(filterValue) || filterValue.length === 0;
+export const isEmptyFilterValue = filterValue => !isArray(filterValue);
 
 const getNonEmptyFlattenedFilters = filters =>
   flattenObjectTreeToArrays(filters).filter(({ value }) => !isEmptyFilterValue(value));
@@ -15,9 +14,11 @@ const objectMatchesAllFilters = (object, filters) =>
     return value.includes(valueOfObject);
   });
 
-export const filterArrayOfObjects = (filters, arrayOfObjects) => {
+const filterArrayOfObjects = (filters, arrayOfObjects) => {
   // select only the filters have values in them
   const nonEmptyFilters = getNonEmptyFlattenedFilters(filters);
   return arrayOfObjects.filter(object =>
     objectMatchesAllFilters(object, nonEmptyFilters));
 };
+
+export default filterArrayOfObjects;

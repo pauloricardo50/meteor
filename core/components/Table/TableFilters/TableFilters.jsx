@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TableFilter from './TableFilter';
 import { flattenObjectTreeToArrays } from '../../../utils/general';
-import { filterArrayOfObjects } from '../../../utils/filterArrayOfObjects';
+import filterArrayOfObjects from '../../../utils/filterArrayOfObjects';
 import { getFilterKeyFromPath } from './TableFilterContainer';
 import TableFiltersContainer from './TableFiltersContainer';
 

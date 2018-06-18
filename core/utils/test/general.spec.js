@@ -20,7 +20,7 @@ describe('general helpers', () => {
     });
   });
 
-  describe.only('flattenObjectTreeToArrays', () => {
+  describe('flattenObjectTreeToArrays', () => {
     it("flattens an object tree into arrays of leaf's path & value", () => {
       const tree = {
         type: 1,
