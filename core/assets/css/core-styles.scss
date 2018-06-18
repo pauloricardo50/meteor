@@ -9,8 +9,12 @@
 @import './core-components.scss';
 @import './typography.scss';
 
-html {
-  min-height: 100%;
+body,
+html,
+#react-root {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
 body {

@@ -23,14 +23,6 @@
 @import '{}/imports/ui/components/Widget1/Widget1.scss';
 @import '{}/imports/ui/components/ContactUsForm/ContactUsForm.scss';
 
-body,
-html,
-#react-root {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-}
-
 body {
   @include screen(med, min) {
     @include font-size($font-size-m);

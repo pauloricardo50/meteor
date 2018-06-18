@@ -19,12 +19,8 @@
   display: flex;
 
   width: 70%;
-<<<<<<< HEAD
-  height: 300px;
-=======
   height: 340px;
-}
->>>>>>> ies-11 fix for layout www homepage
+
 
   @include screen(small) {
     height: 400px;
