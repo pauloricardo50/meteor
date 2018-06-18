@@ -8,15 +8,17 @@ import FaqPageList from './FaqPageList';
 const FaqPage = () => (
   <WwwLayout className="faq-page">
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <div className="faq-page-content">
-      <h1>
-        <T id="FaqPage.title" />
-      </h1>
-      <p className="description">
-        <T id="FaqPage.description" />
-      </p>
-      <FaqPageList />
-    </div>
+    <main className="www-main">
+      <div className="faq-page-content">
+        <h1>
+          <T id="FaqPage.title" />
+        </h1>
+        <p className="description">
+          <T id="FaqPage.description" />
+        </p>
+        <FaqPageList />
+      </div>
+    </main>
     <WwwLayout.Footer />
   </WwwLayout>
 );

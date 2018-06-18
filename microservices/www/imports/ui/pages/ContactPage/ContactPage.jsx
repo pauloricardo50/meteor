@@ -13,31 +13,33 @@ import ContactPageInformation from './ContactPageInformation';
 const ContactPage = () => (
   <WwwLayout className="contact-page">
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <div className="contact-info">
-      <div className="contact-page-top">
-        <b>
-          <h1 className="title">
-            <T id="ContactPage.title" />
-          </h1>
-        </b>
-        <p className="description">
-          <T id="ContactPage.description" />
-        </p>
+    <main className="www-main">
+      <div className="contact-info">
+        <div className="contact-page-top">
+          <b>
+            <h1 className="title">
+              <T id="ContactPage.title" />
+            </h1>
+          </b>
+          <p className="description">
+            <T id="ContactPage.description" />
+          </p>
+        </div>
+        <ContactUsForm />
       </div>
-      <ContactUsForm />
-    </div>
-    <div className="google-map">
-      <Button
-        className="directions-button"
-        raised
-        link
-        to={`https://maps.google.com?daddr=${MAPS_ADDRESS}`}
-        target="_blank"
-      >
-        Directions
-      </Button>
-      <MapWithMarker address={ADDRESS} className="map" options={{ zoom: 12 }} />
-    </div>
+      <div className="google-map">
+        <Button
+          className="directions-button"
+          raised
+          link
+          to={`https://maps.google.com?daddr=${MAPS_ADDRESS}`}
+          target="_blank"
+        >
+          Directions
+        </Button>
+        <MapWithMarker address={ADDRESS} className="map" options={{ zoom: 12 }} />
+      </div>
+    </main>
     <WwwLayout.Footer transparent={false}>
       <WwwLayout.Footer.Top>
         <div className="contact-footer">
