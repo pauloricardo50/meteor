@@ -10,9 +10,7 @@ $image-height: 300px;
   justify-content: space-around;
 
   width: 100%;
-  height: $step-height;
-
-  @include screen(custom, max, $break-off) {
+  height: $step-height;@include screen(custom, max, $break-off) {
     flex-direction: column-reverse;
     flex-wrap: nowrap;
 
@@ -22,9 +20,7 @@ $image-height: 300px;
 }
 
 .description-item:nth-child(2n) {
-  flex-direction: row-reverse;
-
-  @include screen(custom, max, $break-off) {
+  flex-direction: row-reverse;@include screen(custom, max, $break-off) {
     flex-direction: column-reverse;
   }
 }

@@ -19,8 +19,8 @@ const HomePage = () => (
       <HomePageDescription />
       <HomePageReviews />
       {/* <HomePageNewsletter /> */}
-      <WwwLayout.Footer />
     </main>
+    <WwwLayout.Footer />
   </WwwLayout>
 );
 

@@ -2,13 +2,12 @@
 
 .home-page-reviews {
   display: flex;
+  overflow: hidden;
   align-items: center;
   flex: 1;
   flex-direction: column;
-  padding: 32px;
-  overflow: hidden;
 
-  @include screen(med) {
+  padding: 32px;@include screen(med) {
     padding: 16px;
   }
 }

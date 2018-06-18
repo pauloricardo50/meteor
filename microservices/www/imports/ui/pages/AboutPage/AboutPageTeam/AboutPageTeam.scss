@@ -67,9 +67,7 @@
   }
 
   .about-page-team-member-contact {
-    display: none;
-
-    @include screen(small) {
+    display: none;@include screen(small) {
       display: none;
     }
   }
@@ -80,9 +78,7 @@
     background-color: white;
 
     .about-page-team-member-contact {
-      display: flex;
-
-      @include screen(small) {
+      display: flex;@include screen(small) {
         display: none;
       }
     }
@@ -106,9 +102,7 @@
 }
 
 .about-page-team-recruiting {
-  text-decoration: none;
-
-  @include screen(small) {
+  text-decoration: none;@include screen(small) {
     padding: 8px;
   }
 

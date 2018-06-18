@@ -34,8 +34,7 @@
 .home-page .interest-rates .rate .value {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  // Allow spaces between percentages to appear
+  flex-wrap: nowrap;// Allow spaces between percentages to appear
 
   white-space: pre;
 

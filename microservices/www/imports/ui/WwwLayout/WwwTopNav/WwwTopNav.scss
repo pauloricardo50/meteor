@@ -39,9 +39,7 @@
   display: flex;
 
   width: 80px;
-  height: 80px;
-
-  @include screen(med) {
+  height: 80px;@include screen(med) {
     width: 160px;
   }
 
@@ -57,9 +55,7 @@
   display: flex;
 
   height: 80px;
-  margin-left: 32px;
-
-  @include screen(med) {
+  margin-left: 32px;@include screen(med) {
     display: none;
   }
 
@@ -93,9 +89,7 @@
 }
 
 .www-top-nav-links-small {
-  display: none;
-
-  @include screen(med) {
+  display: none;@include screen(med) {
     display: flex;
   }
 }

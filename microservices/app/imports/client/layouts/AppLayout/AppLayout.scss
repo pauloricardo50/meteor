@@ -1,14 +1,12 @@
 .app-layout {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 
+  box-sizing: border-box;
   height: auto;
   min-height: 100%;
   padding: 16px;
-  padding-left: 316px; // side-nav width + 16px
-
-  @include screen(med, min) {
+  padding-left: 316px; // side-nav width + 16px@include screen(med, min) {
     padding-top: 80px;
     padding-bottom: 16px;
   }
@@ -70,6 +68,6 @@
 }
 
 .app-root {
- width: 100%;
+  width: 100%;
   height: 100%;
 }

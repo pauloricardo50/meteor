@@ -47,12 +47,12 @@ $progression-color: #8db6e6;
   position: absolute;
   top: calc(#{$step-height}/ 2);
   left: 50%;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(#{$step-height} * 4);
 
-  @include screen(custom, max, $break-off) {
+  height: calc(#{$step-height} * 4);@include screen(custom, max, $break-off) {
     top: calc(#{$image-height} + 16px);
     left: 10%;
 

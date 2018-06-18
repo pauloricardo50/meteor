@@ -8,9 +8,7 @@
   padding: 0 8px;
 
   border-bottom: 1px solid $border-grey;
-  background-color: #fff;
-
-  @include screen(med) {
+  background-color: #fff;@include screen(med) {
     position: relative;
   }
 }
@@ -24,9 +22,7 @@
 
 .top-nav .top-nav-content .empty,
 .top-nav .top-nav-content .menu-button {
-  display: flex;
-
-  @include screen(med, min) {
+  display: flex;@include screen(med, min) {
     display: none;
   }
 }

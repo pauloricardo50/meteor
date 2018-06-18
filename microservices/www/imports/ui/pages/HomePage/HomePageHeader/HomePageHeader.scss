@@ -2,6 +2,7 @@
   position: relative;
 
   display: flex;
+  overflow: hidden;
   align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
@@ -9,7 +10,6 @@
 
   height: 600px;
   padding: 40px 16px 80px 16px;
-  overflow: hidden;
 }
 
 .home-page header .text h1,
@@ -53,10 +53,8 @@
 }
 
 .home-page header .widget1-single-input-form {
-  max-width: 300px;
-
-  @include screen(small) {
-    margin-left: 0;
+  max-width: 300px;@include screen(small) {
     margin-right: 0;
+    margin-left: 0;
   }
 }

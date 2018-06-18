@@ -1,22 +1,19 @@
 .www-footer {
-  flex-shrink: 0;
-  flex-grow: 0;
-
   position: relative;
 
   display: flex;
   overflow: hidden;
   align-items: center;
   flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
 
   box-sizing: border-box;
   width: 100%;
   min-height: 600px;
   padding: 32px;
 
-  line-height: 1.4em;
-
-  @include screen(med) {
+  line-height: 1.4em;@include screen(med) {
     padding: 16px;
   }
 }

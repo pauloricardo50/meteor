@@ -26,8 +26,7 @@
 body {
   @include screen(med, min) {
     @include font-size($font-size-m);
-  }
-  @include screen(xwide, min) {
+  }@include screen(xwide, min) {
     @include font-size($font-size-l);
   }
 }
