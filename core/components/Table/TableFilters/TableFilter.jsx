@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 import T from '../../Translation';
+import TableFilterContainer from './TableFilterContainer';
 
-const TableFilter = ({ filterKey, data, onChange, options, value }) => (
+const TableFilter = ({ filterKey, onChange, options, value }) => (
   <div className="table-filter">
     <div className="table-filter-label">
       <T id={`TableFilters.filterLabels.${filterKey}`} />
@@ -22,11 +23,10 @@ const TableFilter = ({ filterKey, data, onChange, options, value }) => (
 );
 
 TableFilter.propTypes = {
-  data: PropTypes.array.isRequired,
+  filterKey: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   value: PropTypes.array.isRequired,
-  filterKey: PropTypes.string.isRequired,
 };
 
-export default TableFilter;
+export default TableFilterContainer(TableFilter);

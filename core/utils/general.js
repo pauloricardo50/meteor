@@ -12,6 +12,14 @@ export const arrayify = (value) => {
   return [];
 };
 
+const isNonEmptyObject = variable =>
+  variable.constructor === Object && Object.keys(variable).length > 0;
+
+const isArrayOfObjects = variable =>
+  isArray(variable) &&
+  variable.length > 0 &&
+  variable.every(item => item && item.constructor === Object);
+
 // TODO: TEST for: simple, nested objects, nested objects with array & undefined data values.
 // Converts an object to an array of objects containing
 // the path to the leaf & leaf's value:
@@ -24,20 +32,17 @@ export const arrayify = (value) => {
 //   { path: ['key1', 'key2', 'key3', '0', 'key31'], value: 1 },
 //   { path: ['key4']: value: 2}
 // ]
-export const flattenObjectTree = (object, ancestorsPath = []) => {
+export const flattenObjectTreeToArrays = (object, ancestorsPath = []) => {
   const result = [];
 
   forEach(object, (value, key) => {
     const keyPath = [...ancestorsPath, key.toString()];
 
-    // check if the value of this key is a branch of the object's tree
-    const isBranch =
-      value.constructor === Object ||
-      (value.constructor === Array &&
-        (value.length > 0 && value[0] && value[0].constructor === Object));
+    // check if the value of this key is a branch in the tree
+    const isBranch = isNonEmptyObject(value) || isArrayOfObjects(value);
 
     if (isBranch) {
-      result.push(...flattenObjectTree(value, keyPath));
+      result.push(...flattenObjectTreeToArrays(value, keyPath));
     } else {
       result.push({ path: keyPath, value });
     }
