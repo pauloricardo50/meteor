@@ -28,13 +28,15 @@ const SingleLoanPage = ({ loan, serverTime, ...rest }) => {
         />
       </h1>
       <div className="mask1 single-loan-page-tasks">
-        <h3>Tâches</h3>
         <LoanTasksTable
           showAssignee
           loanId={loan._id}
           propertyId={loan.property._id}
           borrowerIds={loan.borrowerIds}
-        />
+          hideIfNoData
+        >
+          <h3>Tâches</h3>
+        </LoanTasksTable>
       </div>
       <LoanTabs
         {...dataToPassDown}
@@ -50,4 +52,7 @@ SingleLoanPage.propTypes = {
   serverTime: PropTypes.object.isRequired,
 };
 
-export default compose(SingleLoanPageContainer, ServerTimeContainer)(SingleLoanPage);
+export default compose(
+  SingleLoanPageContainer,
+  ServerTimeContainer,
+)(SingleLoanPage);
