@@ -42,6 +42,8 @@
 
 .validator .result div p {
   margin: 0;
+  // Make sure the numbers aren't wrapped
+  flex-shrink: 0;
 }
 
 .validator .result div p span.sum {

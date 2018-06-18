@@ -92,6 +92,10 @@
   color: $primary;
 
   font-size: 1.4em;
+
+  @include screen(med) {
+    margin-bottom: 8px;
+  }
 }
 
 .widget1-page .widget1-part-2 .card1 .card-bottom {
