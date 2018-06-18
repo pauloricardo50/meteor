@@ -15,6 +15,12 @@ const jobs = {
       url: 'https://www.indeed.ch/Zeige-Job?jk=b406857e4e970697',
     },
   ],
+  design: [
+    {
+      title: 'Product Designer',
+      url: 'https://www.indeed.ch/Zeige-Job?jk=4a24882bc5b8',
+    },
+  ],
   admin: [],
 };
 
