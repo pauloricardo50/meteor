@@ -25,15 +25,16 @@ const styles = theme => ({
   menuItemRoot: {
     height: 'unset',
   },
+  listItemTextWithIcon: {
+    paddingLeft: 0,
+  },
   colorClass: {},
 });
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
 
 const makeMapOption = ({
   menuItem: menuItemClass,
   menuItemRoot,
+  listItemTextWithIcon,
   colorClass,
 }) => (option) => {
   // If a component is provided, return the component
@@ -54,7 +55,11 @@ const makeMapOption = ({
         </ListItemIcon>
       )}
       <ListItemText
-        classes={{ primary: colorClass, secondary: colorClass }}
+        classes={{
+          primary: colorClass,
+          secondary: colorClass,
+          root: icon ? listItemTextWithIcon : '',
+        }}
         inset={!!icon}
         primary={label}
       />
