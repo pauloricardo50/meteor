@@ -8,7 +8,7 @@ export const PageHead = ({
   titleId,
   descriptionId,
 }) => (
-  <Helmet>
+  <Helmet defaultTitle="e-Potek">
     <meta charSet="UTF-8" />
     <title>
       e-Potek{titleId ? ` | ${formatMessage({ id: titleId })}` : ''}
