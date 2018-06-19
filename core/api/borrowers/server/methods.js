@@ -1,8 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-
 import { SecurityService } from '../..';
 import BorrowerService from '../BorrowerService';
-import UserService from '../../users/UserService';
 import {
   borrowerInsert,
   borrowerUpdate,
@@ -10,9 +7,12 @@ import {
   pushBorrowerValue,
   popBorrowerValue,
 } from '../methodDefinitions';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
-borrowerInsert.setHandler((context, { borrower, userId }) =>
-  BorrowerService.smartInsert({ borrower, userId }));
+borrowerInsert.setHandler((context, { borrower, userId }) => {
+  userId = checkInsertUserId(userId);
+  return BorrowerService.smartInsert({ borrower, userId });
+});
 
 borrowerUpdate.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);

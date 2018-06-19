@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import SecurityService from '../../security';
 import LoanService from '../LoanService';
 import {
@@ -19,12 +17,10 @@ import {
   enableUserForms,
   adminLoanInsert,
 } from '../methodDefinitions';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
 loanInsert.setHandler((context, { loan, userId }) => {
-  if (userId === undefined && Meteor.userId()) {
-    userId = Meteor.userId();
-  }
-
+  userId = checkInsertUserId(userId);
   return LoanService.insert({ loan, userId });
 });
 
