@@ -7,7 +7,7 @@ class UserSecurity {
   checkPermissionToAddUser = ({ role }) => {
     const userId = Meteor.userId();
 
-    if (Object.values(ROLES).indexOf(role) < 0) {
+    if (!Object.values(ROLES).includes(role)) {
       throw new Meteor.Error(
         'INCORRECT_ROLE',
         'You can only create accounts with one of the accepted roles.',

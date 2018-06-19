@@ -54,19 +54,8 @@ describe('UserService', () => {
       Accounts.createUser.restore();
     });
 
-    it('throws if it finds a user with the same email', () => {
-      Factory.create('user', {
-        emails: [{ address: existingUserEmail, verified: false }],
-      });
-
-      options.email = existingUserEmail;
-      expect(() => UserService.adminCreateUser({ options, role })).to.throw(/[DUPLICATE_EMAIL]/);
-    });
-
     it('calls UserService.createUser when receives a valid, new email', () => {
       sinon.stub(UserService, 'createUser');
-
-      expect(UserService.createUser.called).to.equal(false);
 
       options.email = newUserEmail;
       UserService.adminCreateUser({ options, role });
@@ -82,8 +71,6 @@ describe('UserService', () => {
       sinon.stub(UserService, 'createUser').callsFake(() => newUserId);
       sinon.stub(UserService, 'update');
 
-      expect(UserService.update.called).to.equal(false);
-
       options.email = newUserEmail;
       UserService.adminCreateUser({ options, role });
 
@@ -96,8 +83,6 @@ describe('UserService', () => {
     });
 
     it('calls Accounts.sendEnrollmentEmai when receiving a userId from UserService.createUser', () => {
-      expect(Accounts.sendEnrollmentEmail.called).to.equal(false);
-
       options.email = newUserEmail;
       UserService.adminCreateUser({ options, role });
 

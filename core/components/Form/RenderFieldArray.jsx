@@ -5,10 +5,10 @@ import { Field } from 'redux-form';
 import { T } from 'core/components/Translation';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
+  <React.Fragment>
     <input {...input} type={type} placeholder={label} />
     {touched && error && <span>{error}</span>}
-  </div>
+  </React.Fragment>
 );
 
 const RenderFieldArray = ({ fields, meta: { error }, label }) => (
@@ -23,7 +23,11 @@ const RenderFieldArray = ({ fields, meta: { error }, label }) => (
         <li key={index}>
           <p>
             <Field name={field} type="text" component={renderField} />
-            <button className="pull-right" type="button" onClick={() => fields.remove(index)}>
+            <button
+              className="pull-right"
+              type="button"
+              onClick={() => fields.remove(index)}
+            >
               <T id="RenderFieldArray.remove" />
             </button>
           </p>

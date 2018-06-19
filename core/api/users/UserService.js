@@ -15,15 +15,11 @@ class UserService {
   };
 
   adminCreateUser = ({ options, role }) => {
-    const { email } = options;
-
-    if (this.doesUserExist({ email })) {
-      throw new Meteor.Error('DUPLICATE_EMAIL', 'Email already exists.');
-    }
+    const { lastName, firstName, phone } = options;
 
     const newUserId = this.createUser({ options, role });
 
-    if (newUserId) {
+    if (newUserId && (firstName || lastName || phone)) {
       this.update({ userId: newUserId, object: { ...options } });
       Accounts.sendEnrollmentEmail(newUserId);
     }
