@@ -20,9 +20,12 @@ describe('<CreateUserDialogForm />', () => {
       .first()
       .prop('formArray')).to.deep.equal(formArray));
 
-  it('adds a validator for the email field', () =>
-    expect(component()
+  it('adds a validator for the email field', () => {
+    const componentFormArray = component()
       .find(DialogForm)
       .first()
-      .prop('formArray')[2]).to.have.property('validate'));
+      .prop('formArray');
+
+    expect(componentFormArray.find(field => field.id === 'email')).to.have.property('validate');
+  });
 });
