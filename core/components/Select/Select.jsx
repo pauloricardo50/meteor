@@ -15,7 +15,7 @@ import Icon from '../Icon';
 
 const styles = theme => ({
   menuItem: {
-    '&:hover': {
+    '&:hover, &:focus': {
       backgroundColor: theme.palette.primary.main,
       '& $colorClass': {
         color: theme.palette.common.white,
@@ -35,7 +35,6 @@ const makeMapOption = ({
   menuItem: menuItemClass,
   menuItemRoot,
   colorClass,
-  selected,
 }) => (option) => {
   // If a component is provided, return the component
   if (React.isValidElement(option)) {
