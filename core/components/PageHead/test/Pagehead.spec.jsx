@@ -24,7 +24,7 @@ describe('PageHead', () => {
     expect(component().find('meta').length).to.equal(1);
     expect(component()
       .find('meta')
-      .props().charSet).to.equal('utf-8');
+      .props().charSet).to.equal('UTF-8');
   });
 
   it('renders the title with more stuff if titleId is provided', () => {
