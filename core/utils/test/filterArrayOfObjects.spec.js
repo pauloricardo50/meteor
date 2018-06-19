@@ -14,6 +14,7 @@ const car2 = {
   properties: { color: 'blue', options: 'full' },
   tests: [{ type: 'crash', result: 5 }, { type: 'speed', result: 5 }],
   type: 'compact',
+  fuelConsumtion: undefined,
 };
 
 const car3 = {
@@ -21,11 +22,12 @@ const car3 = {
   properties: { color: 'white', options: undefined },
   tests: [{ type: 'speed', result: 7 }],
   type: 'compact',
+  fuelConsumtion: 8,
 };
 
 const data = [car1, car2, car3];
 
-describe.only('filterArrayOfObjects', () => {
+describe('filterArrayOfObjects', () => {
   it('filters data by a root property', () => {
     const filters = { type: ['compact'] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2, car3]);
@@ -57,16 +59,32 @@ describe.only('filterArrayOfObjects', () => {
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2]);
   });
 
-  it('filters data by any array item at a given index', () => {
+  it('filters data by an array item at any given index', () => {
     const filters = {
       tests: { 1: { type: ['speed'], result: [5] } },
     };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2]);
   });
 
-  it('does not filter a data item when unless it matches all filters', () => {
-    const filters = { name: ['Car 2'], properties: { color: ['red'] } };
-    expect(filterArrayOfObjects(filters, data)).to.deep.equal([]);
+  it('filters by `undefined` filters', () => {
+    const filters = {
+      fuelConsumtion: [undefined],
+    };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal([car1, car2]);
+  });
+
+  it('filters by interger filters', () => {
+    const filters = {
+      fuelConsumtion: [8, 9],
+    };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal([car3]);
+  });
+
+  it('filters by string filters', () => {
+    const filters = {
+      name: ['Car 2', 'Car 3'],
+    };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2, car3]);
   });
 
   it('returns an empty array when no data is matched', () => {
@@ -76,13 +94,24 @@ describe.only('filterArrayOfObjects', () => {
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([]);
   });
 
-  it('filters by `undefined` filters');
+  it('does not filter a data item when unless it matches all filters', () => {
+    const filters = { name: ['Car 2'], properties: { color: ['red'] } };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal([]);
+  });
 
-  it('filters by interger filters');
+  it(`does not filter data by a filter of which value
+      is something other than an array`, () => {
+    const filters = {
+      name: 'Car 2',
+    };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal(data);
+  });
 
-  it('filters by string filters');
-
-  it('does not filter data by a filter of which value is something other than an array');
-
-  it('does not filter data by a filter of which value is an empty array');
+  it(`does not filter data by a filter of which value
+      is an empty array`, () => {
+    const filters = {
+      name: [],
+    };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal(data);
+  });
 });
