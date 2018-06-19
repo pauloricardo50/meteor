@@ -7,7 +7,11 @@ import filterArrayOfObjects from '../../../utils/filterArrayOfObjects';
 import { getFilterKeyFromPath } from './TableFilterContainer';
 import TableFiltersContainer from './TableFiltersContainer';
 
-const TableFilters = ({ data, filters, children, handleOnChange }) => {
+export const TableFilters = ({ data, filters, children, handleOnChange }) => {
+  if (Object.keys(filters).length === 0) {
+    return null;
+  }
+
   const filteredData = filterArrayOfObjects(filters, data);
 
   return (

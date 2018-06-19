@@ -17,7 +17,7 @@ const TableFilter = ({ filterKey, onChange, options, value }) => (
       placeholder={`Filter by ${filterKey}`}
       simpleValue={false}
       value={value}
-      inputProps={{ class: 'table-filter-input' }}
+      closeOnSelect={false}
     />
   </div>
 );

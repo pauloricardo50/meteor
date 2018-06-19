@@ -1,21 +1,11 @@
 import { compose, withStateHandlers, withProps } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
-import set from 'lodash/set';
-import cloneDeep from 'lodash/cloneDeep';
 
 import T from '../../Translation';
 import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
 
-const getSelectOption = (value, filterPath) => ({
-  label: getSelectOptionLabel(value, filterPath),
-  value,
-});
-
-const getSelectOptions = (filterValue, filterPath) =>
-  (isEmptyFilterValue(filterValue)
-    ? []
-    : filterValue.map(value => getSelectOption(value, filterPath)));
+export const getFilterKeyFromPath = filterPath => filterPath.join('.');
 
 // Translate the label when it should be translated
 const getTranslationOfValueForPath = (value, filterPath) => {
@@ -38,7 +28,15 @@ const getSelectOptionLabel = (value, filterPath) => {
   return getTranslationOfValueForPath(value, filterPath) || value;
 };
 
-export const getFilterKeyFromPath = filterPath => filterPath.join('.');
+const getSelectOption = (value, filterPath) => ({
+  label: getSelectOptionLabel(value, filterPath),
+  value,
+});
+
+const getSelectOptions = (filterValue, filterPath) =>
+  (isEmptyFilterValue(filterValue)
+    ? []
+    : filterValue.map(value => getSelectOption(value, filterPath)));
 
 const createSelectOptionsForColumn = (filterPath, data) => {
   const options = data.map((item) => {
