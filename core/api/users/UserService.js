@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
-import EventService from '../events';
+import ServerEventService from '../events/server/ServerEventService';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
 
@@ -35,7 +35,7 @@ class UserService {
 
   // This is used to hook into Accounts
   onCreateUser = (options, user) => {
-    EventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
+    ServerEventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
 
     return { ...user, roles: [ROLES.USER] };
   };

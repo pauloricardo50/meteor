@@ -24,6 +24,7 @@ export default class IconButton extends Component {
       iconStyle,
       iconProps,
       disabled,
+      ...rest
     } = this.props;
 
     const button = (
@@ -33,6 +34,7 @@ export default class IconButton extends Component {
         className="icon-button"
         aria-label={tooltip || undefined}
         disabled={disabled}
+        {...rest}
       >
         <Icon type={type} style={iconStyle} {...iconProps} />
       </MuiIconButton>

@@ -1,4 +1,32 @@
 {
+  "Recap.maxPossibleLoan": "Prêt max possible",
+
+  "Widget1SingleInput.propertyValue": "Valeur du bien",
+
+  "Widget1InputsError.empty": "Entrez des valeurs dans les champs au dessus !",
+
+  "Widget1SingleInputSlider.buttonTooltip": "Agrandir le slider",
+  "Widget1SingleInputSlider.buttonTooltipLoan": "Emprunter plus",
+
+  "Widget1MonthlyMaintenance.label": "Frais d'entretien",
+"Widget1MonthlyMaintenance.yes": "Estimation",
+"Widget1MonthlyMaintenance.no": "Sans",
+
+"Widget1MonthlyInterests.optionLabel": "{type} moyen: {rate}",
+
+"Widget1SingleInput.currentLoan": "Prêt existant",
+"Widget1SingleInput.wantedLoan": "Nouveau prêt",
+
+"Recap.propertyValue": "Valeur du bien",
+"Recap.loanIncrease": "Augmentation du prêt",
+"Recap.loanReduction": "Réduction du prêt",
+
+  "Widget1OptionSelector.ACQUISITION": "Acquisition",
+  "Widget1OptionSelector.REFINANCING": "Refinancement",
+  "Widget1OptionSelector.PRIMARY": "Résidence principale",
+  "Widget1OptionSelector.SECONDARY": "Résidence secondaire",
+  "Widget1OptionSelector.INVESTMENT": "Bien de rendement",
+  
 "LoanAdder.dialogTitle" :"Ajouter une hypothèque",
 
   "steps.borrowers.title": "Emprunteurs",
@@ -120,6 +148,7 @@
   "CareersPageList.advisory": "Conseil",
   "CareersPageList.engineering": "Ingénierie",
   "CareersPageList.admin": "Opérations",
+  "CareersPageList.design": "Design",
   "CareersPageList.emptyDepartment":
     "Pas de postes ouverts dans ce département pour l'instant. Réessayez demain, ou envoyez nous une candidature spontanée en expliquant ce que vous pensez pouvoir apporter à notre entreprise, et pourquoi nous en aurions besoin !",
   "InterestsTable.interest1": "1 an",

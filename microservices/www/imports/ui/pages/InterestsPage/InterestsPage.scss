@@ -16,25 +16,22 @@
     width: 100%;
     padding: 32px;
     padding-top: 0;
-  }
-}
 
-@media (max-width: $med) {
-  .interests-page-content {
-    padding: 16px;
+    @include screen(med) {
+      padding: 16px;
+    }
   }
 }
 
 .interests-page-table {
   display: flex;
   flex-direction: column;
+
   margin: 80px 32px 0 32px;
 
   transform: scale(1.25);
-}
 
-@media (min-width: $med) {
-  .interests-page-table {
+  @include screen(med, min) {
     width: $small;
   }
 }
@@ -50,6 +47,7 @@
 }
 
 .interests-table-date {
-  margin-top: 16px;
   align-self: flex-end;
+
+  margin-top: 16px;
 }

@@ -13,6 +13,10 @@
     padding: 32px;
     padding-top: 0;
 
+    @include screen(med) {
+      padding: 16px;
+    }
+
     h1,
     h2 {
       color: $primary;
@@ -21,12 +25,6 @@
     .careers-page-content-subtitle {
       margin-top: 64px;
     }
-  }
-}
-
-@media (max-width: $med) {
-  .careers-page-content {
-    padding: 16px;
   }
 }
 

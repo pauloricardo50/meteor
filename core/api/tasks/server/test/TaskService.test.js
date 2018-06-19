@@ -101,8 +101,8 @@ describe('TaskService', () => {
       TaskService.insert.restore();
     });
 
-    it(`calls \`TaskService.insert\` in order to add
-        a task of type \`USER_ADDED_FILE\``, () => {
+    it(`calls 'TaskService.insert' in order to add
+        a task of type 'USER_ADDED_FILE'`, () => {
       expect(TaskService.insert.called).to.equal(false);
 
       TaskService.insertTaskForAddedFile({
@@ -124,7 +124,7 @@ describe('TaskService', () => {
       ]);
     });
 
-    it(`does not call \`TaskService.insert\`
+    it(`does not call 'TaskService.insert'
         when task was added by a non-user`, () => {
       expect(TaskService.insert.called).to.equal(false);
 
@@ -149,10 +149,11 @@ describe('TaskService', () => {
       TaskService.complete.restore();
     });
 
-    it('calls `TaskService.complete` with the correct task id', () => {
+    it(`calls 'TaskService.complete'
+        with the correct file-related task id when task is active`, () => {
       expect(TaskService.complete.called).to.equal(false);
 
-      const task = Factory.create('task');
+      const task = Factory.create('task', { status: TASK_STATUS.ACTIVE });
 
       TaskService.completeFileTask({
         collection: 'borrowers',
@@ -166,18 +167,28 @@ describe('TaskService', () => {
       ]);
     });
 
-    it('throws and does not `TaskService.complete` when the task does not exist', () => {
+    it(`does not call 'TaskService.complete'
+        when the file-related task isn't active`, () => {
+      const task = Factory.create('task', { status: TASK_STATUS.COMPLETED });
+
+      TaskService.completeFileTask({
+        collection: 'borrowers',
+        docId: task.borrowerId,
+        documentId: task.documentId,
+        fileKey: task.fileKey,
+      });
+
       expect(TaskService.complete.called).to.equal(false);
+    });
 
-      const completeFileTaskFunction = () =>
-        TaskService.completeFileTask({
-          collection: 'borrowers',
-          docId: 'nonExistentBorrowerId',
-          documentId: 'identity',
-          fileKey: 'asdf/fakeKey/fakeFile.pdf',
-        });
-
-      expect(completeFileTaskFunction).to.throw(/task couldn't be found/);
+    it(`does not call 'TaskService.complete'
+        when file-related task cannot be found`, () => {
+      TaskService.completeFileTask({
+        collection: 'borrowers',
+        docId: 'nonExistentBorrowerId',
+        documentId: 'identity',
+        fileKey: 'asdf/fakeKey/fakeFile.pdf',
+      });
       expect(TaskService.complete.called).to.equal(false);
     });
   });

@@ -34,8 +34,8 @@ html,
 }
 
 // Do this to counter TopNav.scss
-@media (max-width: $med) {
-  .admin-top-nav .top-nav {
+.admin-top-nav .top-nav {
+  @include screen(med) {
     position: fixed;
   }
 }

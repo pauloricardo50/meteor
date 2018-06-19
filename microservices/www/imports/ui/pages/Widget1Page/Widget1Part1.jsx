@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';
 import Widget1SingleInputForm from './Widget1SingleInputForm';
 
-const fields = [PROPERTY, SALARY, FORTUNE];
-
-const Widget1Part1 = ({ step }) => (
+const Widget1Part1 = ({ step, fields }) => (
   <div className="widget1-part-1">
     {fields.map((field, index) =>
       (step >= index ? (
@@ -23,6 +20,7 @@ const Widget1Part1 = ({ step }) => (
 
 Widget1Part1.propTypes = {
   step: PropTypes.number.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Widget1Part1;

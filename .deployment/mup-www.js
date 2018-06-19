@@ -5,4 +5,5 @@ module.exports = createMupConfig({
   path: '../microservices/www',
   rootUrl: 'https://www.staging.e-potek.ch',
   domain: 'www.staging.e-potek.ch',
+  env: { DISABLE_WEBSOCKETS: 1 },
 });

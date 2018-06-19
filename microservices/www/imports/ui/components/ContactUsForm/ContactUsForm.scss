@@ -3,10 +3,8 @@
   flex-direction: column;
 
   padding: 32px;
-}
 
-@media (min-width: $large) {
-  .contact-us-form {
+  @include screen(large, min) {
     padding: 64px;
   }
 }
@@ -27,9 +25,6 @@
 
   width: 100%;
   min-height: 200px;
-
-  // Hide animated content when it's gone
-  // overflow-y: hidden;
 }
 
 .contact-us-form-success {
