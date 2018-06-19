@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import PageHead from 'core/components/PageHead';
 import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import {
   TooltipProviderContainer,
@@ -32,6 +33,10 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
   const showPart2 = finishedTutorial;
   return (
     <WwwLayout className="widget1-page">
+      <PageHead
+        titleId="Widget1Page.title"
+        descriptionId="Widget1Page.description"
+      />
       <WwwLayout.TopNav variant={VARIANTS.GREY} />
       <div className="widget1-page-content">
         <Widget1Options />
