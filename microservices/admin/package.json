@@ -68,6 +68,7 @@
     "recompose": "^0.27.1",
     "redux": "^4.0.0",
     "redux-form": "^7.3.0",
+    "redux-mock-store": "^1.5.1",
     "s3": "^4.4.0",
     "simpl-schema": "^1.5.0",
     "text-mask-addons": "^3.7.2",

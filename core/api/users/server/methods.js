@@ -7,7 +7,8 @@ import {
   assignAdminToUser,
   assignAdminToNewUser,
   setRole,
-  getUserNames,
+  adminCreateUser,
+  editUser,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -41,11 +42,24 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
   // listener that would complete & reassign the user's tasks
   SecurityService.checkCurrentUserIsAdmin();
 
-  UserService.assignAdminToUser({ userId, adminId });
+  return UserService.assignAdminToUser({ userId, adminId });
 });
 
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsDev();
-  UserService.setRole(params);
+  return UserService.setRole(params);
 });
 
+adminCreateUser.setHandler((context, { options, role }) => {
+  SecurityService.users.isAllowedToInsertByRole({ role });
+
+  return UserService.adminCreateUser({ options, role });
+});
+
+editUser.setHandler((context, { userId, object }) => {
+  if (!SecurityService.currentUserIsAdmin()) {
+    SecurityService.checkUserLoggedIn(userId);
+  }
+
+  return UserService.update({ userId, object });
+});
