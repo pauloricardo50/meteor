@@ -5,7 +5,16 @@ import PropTypes from 'prop-types';
 
 const main = (n: number): number => n * 2;
 
-const FlowTest = (props: object) => <div>{main('hello')}</div>;
+interface FlowTestProps {
+  hello: string;
+}
+
+const FlowTest = (props: FlowTestProps) => (
+  <div>
+    {main('hello')}
+    {props.hello}
+  </div>
+);
 
 FlowTest.propTypes = {};
 
