@@ -6,7 +6,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['import', 'jsx-a11y', 'meteor', 'react'],
+  plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'flowtype'],
   extends: ['airbnb', 'plugin:meteor/recommended', 'plugin:react/recommended'],
   env: {
     es6: true,
