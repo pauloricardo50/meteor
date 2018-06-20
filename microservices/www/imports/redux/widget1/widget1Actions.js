@@ -2,16 +2,12 @@ import {
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_INSURANCE,
 } from 'core/config/financeConstants';
+import * as types from './widget1Types';
 import {
-  setValueAction,
-  makeSelectValue,
-  setAllowExtremeLoanAction,
-  setAutoAction,
-  increaseSliderMaxAction,
   makeWidget1Selector,
-  suggestValueAction,
   selectFields,
-} from '../reducers/widget1';
+  makeSelectValue,
+} from './widget1Selectors';
 import {
   ALL_FIELDS,
   FINAL_STEP,
@@ -19,8 +15,8 @@ import {
   CAPPED_FIELDS,
   CURRENT_LOAN,
   PURCHASE_TYPE,
-} from '../constants/widget1Constants';
-import suggestValue from '../utils/widget1Suggestion';
+} from './widget1Constants';
+import suggestValue from './widget1Suggestion';
 
 export const suggestValues = () => (dispatch, getState) => {
   const state = getState();
@@ -30,7 +26,7 @@ export const suggestValues = () => (dispatch, getState) => {
   if (step >= FINAL_STEP) {
     suggestActions = selectFields(state).map(NAME =>
       dispatch({
-        type: suggestValueAction(NAME),
+        type: types.SUGGEST_VALUE(NAME),
         value: suggestValue(NAME, state),
       }));
   }
@@ -63,18 +59,18 @@ export const setValue = (name, nextValue) => (dispatch, getState) =>
   Promise.resolve()
     .then(() =>
       dispatch({
-        type: setValueAction(name),
+        type: types.SET_VALUE(name),
         value: cleanNextValue(name, nextValue, getState),
       }))
     .then(() => dispatch(suggestValues()));
 
 export const setAuto = (name, nextAuto) => dispatch =>
   Promise.resolve()
-    .then(() => dispatch({ type: setAutoAction(name), auto: nextAuto }))
+    .then(() => dispatch({ type: types.SET_AUTO(name), auto: nextAuto }))
     .then(() => dispatch(suggestValues()));
 
 export const increaseSliderMax = name => ({
-  type: increaseSliderMaxAction(name),
+  type: types.INCREASE_SLIDER_MAX(name),
 });
 
 export const setStep = nextStep => (dispatch, getState) => {
@@ -88,7 +84,7 @@ export const setStep = nextStep => (dispatch, getState) => {
 
   const willBeFinalStep = nextStep === FINAL_STEP;
   return Promise.resolve()
-    .then(() => dispatch({ type: setValueAction('step'), value: nextStep }))
+    .then(() => dispatch({ type: types.SET_VALUE('step'), value: nextStep }))
     .then(() =>
     // Special exception here, as suggestValues only runs once
     // the widget1 is at the FINAL_STEP. Suggest values should be run
@@ -97,7 +93,7 @@ export const setStep = nextStep => (dispatch, getState) => {
     .then(() => {
       const fields = selectFields(state);
       if (step >= fields.length - 1) {
-        dispatch({ type: setValueAction('finishedTutorial'), value: true });
+        dispatch({ type: types.SET_VALUE('finishedTutorial'), value: true });
       }
     });
 };
@@ -107,17 +103,17 @@ export const resetCalculator = () => (dispatch, getState) => {
   const purchaseType = makeWidget1Selector('purchaseType')(state);
 
   return Promise.all(ALL_FIELDS.map((name) => {
-    dispatch({ type: setValueAction(name), value: 0 });
-    dispatch({ type: setAutoAction(name), auto: true });
+    dispatch({ type: types.SET_VALUE(name), value: 0 });
+    dispatch({ type: types.SET_AUTO(name), auto: true });
   })).then(() => {
     if (purchaseType === PURCHASE_TYPE.REFINANCING) {
       // Keep property and current loan to false during refinancing
-      dispatch({ type: setAutoAction(PROPERTY), auto: false });
-      dispatch({ type: setAutoAction(CURRENT_LOAN), auto: false });
+      dispatch({ type: types.SET_AUTO(PROPERTY), auto: false });
+      dispatch({ type: types.SET_AUTO(CURRENT_LOAN), auto: false });
     }
   });
 };
 
 export const setAllowExtremeLoan = name => ({
-  type: setAllowExtremeLoanAction(name),
+  type: types.SET_ALLOW_EXTREME_LOAN(name),
 });

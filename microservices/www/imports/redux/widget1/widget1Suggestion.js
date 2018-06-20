@@ -3,7 +3,7 @@ import {
   makeSelectValue,
   selectAutoValues,
   makeWidget1Selector,
-} from '../reducers/widget1';
+} from './widget1Selectors';
 import {
   SALARY,
   FORTUNE,
@@ -11,7 +11,7 @@ import {
   CURRENT_LOAN,
   WANTED_LOAN,
   PURCHASE_TYPE,
-} from '../constants/widget1Constants';
+} from './widget1Constants';
 import Widget1Suggester from './Widget1Suggester';
 
 // For each name, there are 3 suggesters, based on which other values are

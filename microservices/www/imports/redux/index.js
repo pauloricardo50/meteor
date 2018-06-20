@@ -3,7 +3,7 @@ import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
 
-import createRootReducer from '../reducers';
+import createRootReducer from './reducers';
 
 const isClient = typeof window === 'object';
 const composeEnhancers =

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import { reducer as formReducer } from 'redux-form';
 
-import widget1 from './widget1';
+import widget1Reducer from './widget1';
 
 const PERSIST_STORE = true;
 // This whitelist essentially disabled redux-persist.
@@ -24,7 +24,10 @@ const appReducer = (state, action) => {
   if (action.type === 'RESET') {
     state = undefined;
   }
-  return combineReducers({ widget1, form: formReducer })(state, action);
+  return combineReducers({ widget1: widget1Reducer, form: formReducer })(
+    state,
+    action,
+  );
 };
 
 const createRootReducer = (isClient) => {

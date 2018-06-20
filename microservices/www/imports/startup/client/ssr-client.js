@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { onPageLoad } from 'meteor/server-render';
 
-import createStore from '../../redux/store';
+import createStore from '../../redux';
 import * as startupConstants from '../shared/startupConstants';
 import MaterialUiClient from '../shared/MaterialUi/MaterialUiClient';
 import ClientApp from './ClientApp';

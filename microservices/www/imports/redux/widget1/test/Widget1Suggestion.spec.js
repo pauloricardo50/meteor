@@ -9,7 +9,7 @@ import {
   PROPERTY,
   FORTUNE,
   WANTED_LOAN,
-} from '../../constants/widget1Constants';
+} from '../widget1Constants';
 
 const value = 100;
 const prepareState = overrides => ({

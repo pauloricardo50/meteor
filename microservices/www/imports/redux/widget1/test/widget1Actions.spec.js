@@ -8,17 +8,8 @@ import {
   MAX_BORROW_RATIO_WITH_INSURANCE,
 } from 'core/config/financeConstants';
 import * as widget1Actions from '../widget1Actions';
-import * as widget1 from '../../reducers/widget1';
-import {
-  ALL_FIELDS,
-  ACQUISITION_FIELDS,
-  FINAL_STEP,
-  PURCHASE_TYPE,
-  CAPPED_FIELDS,
-  WANTED_LOAN,
-  CURRENT_LOAN,
-  PROPERTY,
-} from '../../constants/widget1Constants';
+import * as widget1Types from '../widget1Types';
+import * as widget1Constants from '../widget1Constants';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -30,12 +21,12 @@ const expectActions = (actionCreator, expectedActions, comment) =>
 const prepareStore = overrides =>
   mockStore({
     widget1: {
-      ...ALL_FIELDS.reduce(
+      ...widget1Constants.ALL_FIELDS.reduce(
         (acc, name) => ({ ...acc, [name]: { value: 0, auto: true } }),
         {},
       ),
-      step: FINAL_STEP,
-      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      step: widget1Constants.FINAL_STEP,
+      purchaseType: widget1Constants.PURCHASE_TYPE.ACQUISITION,
       ...overrides,
     },
   });
@@ -56,8 +47,8 @@ describe('widget1Actions', () => {
     });
 
     it('dispatches one action for each NAME if the step is the final one', () => {
-      const expectedActions = ACQUISITION_FIELDS.map(name => ({
-        type: widget1.suggestValueAction(name),
+      const expectedActions = widget1Constants.ACQUISITION_FIELDS.map(name => ({
+        type: widget1Types.SUGGEST_VALUE(name),
         value: 0,
       }));
       return expectActions(widget1Actions.suggestValues(), expectedActions);
@@ -65,8 +56,8 @@ describe('widget1Actions', () => {
 
     it('suggests the right values for a 180k salary', () => {
       store = prepareStore();
-      const expectedActions = ACQUISITION_FIELDS.map(name => ({
-        type: widget1.suggestValueAction(name),
+      const expectedActions = widget1Constants.ACQUISITION_FIELDS.map(name => ({
+        type: widget1Types.SUGGEST_VALUE(name),
         value: 0,
       }));
       return expectActions(widget1Actions.suggestValues(), expectedActions);
@@ -76,9 +67,9 @@ describe('widget1Actions', () => {
   describe('setValue', () => {
     it('sets a value and suggests values', () => {
       const expectedActions = [
-        { type: widget1.setValueAction(NAME), value },
-        ...ACQUISITION_FIELDS.map(name => ({
-          type: widget1.suggestValueAction(name),
+        { type: widget1Types.SET_VALUE(NAME), value },
+        ...widget1Constants.ACQUISITION_FIELDS.map(name => ({
+          type: widget1Types.SUGGEST_VALUE(name),
           value: 0,
         })),
       ];
@@ -89,8 +80,8 @@ describe('widget1Actions', () => {
       );
     });
 
-    ALL_FIELDS.forEach((field) => {
-      const cappedFields = CAPPED_FIELDS;
+    widget1Constants.ALL_FIELDS.forEach((field) => {
+      const cappedFields = widget1Constants.CAPPED_FIELDS;
 
       it(`caps field ${field} at 80% of the property price`, () => {
         const propertyValue = 100;
@@ -98,7 +89,7 @@ describe('widget1Actions', () => {
         store = prepareStore({ step: 0, property: { value: propertyValue } });
         const expectedActions = [
           {
-            type: widget1.setValueAction(field),
+            type: widget1Types.SET_VALUE(field),
             value: cappedFields.includes(field)
               ? MAX_BORROW_RATIO_PRIMARY_PROPERTY * propertyValue
               : nextValue,
@@ -123,13 +114,13 @@ describe('widget1Actions', () => {
       });
       const expectedActions = [
         {
-          type: widget1.setValueAction(WANTED_LOAN),
+          type: widget1Types.SET_VALUE(widget1Constants.WANTED_LOAN),
           value: MAX_BORROW_RATIO_WITH_INSURANCE * propertyValue,
         },
       ];
 
       return expectActions(
-        widget1Actions.setValue(WANTED_LOAN, nextValue),
+        widget1Actions.setValue(widget1Constants.WANTED_LOAN, nextValue),
         expectedActions,
       );
     });
@@ -143,11 +134,14 @@ describe('widget1Actions', () => {
         wantedLoan: { allowExtremeLoan: true },
       });
       const expectedActions = [
-        { type: widget1.setValueAction(WANTED_LOAN), value: '' },
+        {
+          type: widget1Types.SET_VALUE(widget1Constants.WANTED_LOAN),
+          value: '',
+        },
       ];
 
       return expectActions(
-        widget1Actions.setValue(WANTED_LOAN, nextValue),
+        widget1Actions.setValue(widget1Constants.WANTED_LOAN, nextValue),
         expectedActions,
       );
     });
@@ -156,9 +150,9 @@ describe('widget1Actions', () => {
   describe('setAuto', () => {
     it('sets a value to auto, and resuggests all values', () => {
       const expectedActions = [
-        { type: widget1.setAutoAction(NAME), auto: true },
-        ...ACQUISITION_FIELDS.map(name => ({
-          type: widget1.suggestValueAction(name),
+        { type: widget1Types.SET_AUTO(NAME), auto: true },
+        ...widget1Constants.ACQUISITION_FIELDS.map(name => ({
+          type: widget1Types.SUGGEST_VALUE(name),
           value: 0,
         })),
       ];
@@ -170,7 +164,7 @@ describe('widget1Actions', () => {
   describe('increaseSliderMax', () => {
     it('creates the right action', () => {
       const expectedActions = {
-        type: widget1.increaseSliderMaxAction(NAME),
+        type: widget1Types.INCREASE_SLIDER_MAX(NAME),
       };
 
       expect(widget1Actions.increaseSliderMax(NAME)).to.deep.equal(expectedActions);
@@ -194,17 +188,19 @@ describe('widget1Actions', () => {
       // getState does not work in redux-mock-store, so set the final step
       // initially as well to make sure getState gets the right value
       // for the `suggestValues` action
-      store = prepareStore({ step: ACQUISITION_FIELDS.length });
+      store = prepareStore({
+        step: widget1Constants.ACQUISITION_FIELDS.length,
+      });
       const expectedActions = [
-        { type: 'step_SET', value: ACQUISITION_FIELDS.length },
-        ...ACQUISITION_FIELDS.map(name => ({
-          type: widget1.suggestValueAction(name),
+        { type: 'step_SET', value: widget1Constants.ACQUISITION_FIELDS.length },
+        ...widget1Constants.ACQUISITION_FIELDS.map(name => ({
+          type: widget1Types.SUGGEST_VALUE(name),
           value: 0,
         })),
         { type: 'finishedTutorial_SET', value: true },
       ];
       return expectActions(
-        widget1Actions.setStep(ACQUISITION_FIELDS.length),
+        widget1Actions.setStep(widget1Constants.ACQUISITION_FIELDS.length),
         expectedActions,
       );
     });
@@ -212,11 +208,11 @@ describe('widget1Actions', () => {
 
   describe('resetCalculator', () => {
     it('resets all the values', () => {
-      const expectedActions = ALL_FIELDS.reduce(
+      const expectedActions = widget1Constants.ALL_FIELDS.reduce(
         (acc, field) => [
           ...acc,
-          { type: widget1.setValueAction(field), value: 0 },
-          { type: widget1.setAutoAction(field), auto: true },
+          { type: widget1Types.SET_VALUE(field), value: 0 },
+          { type: widget1Types.SET_AUTO(field), auto: true },
         ],
         [],
       );
@@ -224,20 +220,25 @@ describe('widget1Actions', () => {
     });
 
     it('sets property and currentLoan to auto false in refinancing', () => {
-      store = prepareStore({ purchaseType: PURCHASE_TYPE.REFINANCING });
+      store = prepareStore({
+        purchaseType: widget1Constants.PURCHASE_TYPE.REFINANCING,
+      });
 
-      const expectedActions = ALL_FIELDS.reduce(
+      const expectedActions = widget1Constants.ALL_FIELDS.reduce(
         (acc, field) => [
           ...acc,
-          { type: widget1.setValueAction(field), value: 0 },
-          { type: widget1.setAutoAction(field), auto: true },
+          { type: widget1Types.SET_VALUE(field), value: 0 },
+          { type: widget1Types.SET_AUTO(field), auto: true },
         ],
         [],
       );
       return expectActions(widget1Actions.resetCalculator(), [
         ...expectedActions,
-        { type: widget1.setAutoAction(PROPERTY), auto: false },
-        { type: widget1.setAutoAction(CURRENT_LOAN), auto: false },
+        { type: widget1Types.SET_AUTO(widget1Constants.PROPERTY), auto: false },
+        {
+          type: widget1Types.SET_AUTO(widget1Constants.CURRENT_LOAN),
+          auto: false,
+        },
       ]);
     });
   });

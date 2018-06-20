@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 
 import { mapStateToProps } from '../Widget1PageContainer';
-import { PURCHASE_TYPE } from '../../../../redux/constants/widget1Constants';
+import { widget1Constants } from '../../../../redux/widget1';
 
 describe('Widget1PageContainer', () => {
   let state;
@@ -14,7 +14,7 @@ describe('Widget1PageContainer', () => {
         fortune: {},
         property: {},
         wantedLoan: {},
-        purchaseType: PURCHASE_TYPE.ACQUISITION,
+        purchaseType: widget1Constants.PURCHASE_TYPE.ACQUISITION,
       },
     };
   });
@@ -63,7 +63,7 @@ describe('Widget1PageContainer', () => {
     state.widget1.wantedLoan.value = 80;
     state.widget1.salary.value = 1;
     state.widget1.property.value = 100;
-    state.widget1.purchaseType = PURCHASE_TYPE.REFINANCING;
+    state.widget1.purchaseType = widget1Constants.PURCHASE_TYPE.REFINANCING;
     expect(mapStateToProps(state).finma.borrowRule.value).to.equal(0.8);
   });
 
@@ -78,7 +78,7 @@ describe('Widget1PageContainer', () => {
     state.widget1.wantedLoan.value = 80;
     state.widget1.property.value = 100;
     state.widget1.salary.value = 40;
-    state.widget1.purchaseType = PURCHASE_TYPE.REFINANCING;
+    state.widget1.purchaseType = widget1Constants.PURCHASE_TYPE.REFINANCING;
     expect(mapStateToProps(state).finma.incomeRule.value).to.equal(0.15);
   });
 });
