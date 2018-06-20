@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import { route } from '../../imports/core/cypress/testHelpers';
 
 const pages = {

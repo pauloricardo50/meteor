@@ -53,4 +53,9 @@
 
 .home-page header .widget1-single-input-form {
   max-width: 300px;
+
+  @include screen(small) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }

@@ -1,4 +1,4 @@
-$break-off: 1000px;
+$break-off: 1000;
 $step-height: 400px;
 $image-height: 300px;
 
@@ -11,10 +11,22 @@ $image-height: 300px;
 
   width: 100%;
   height: $step-height;
+
+  @include screen(custom, max, $break-off) {
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+
+    margin-bottom: 80px;
+    padding-left: 32px;
+  }
 }
 
 .description-item:nth-child(2n) {
   flex-direction: row-reverse;
+
+  @include screen(custom, max, $break-off) {
+    flex-direction: column-reverse;
+  }
 }
 
 .description-item .description-item-text {
@@ -45,7 +57,7 @@ $image-height: 300px;
 
   vertical-align: middle;
 
-  opacity: .1;
+  opacity: 0.1;
   color: $primary;
 
   font-family: 'Eina04-Bold';
@@ -74,18 +86,4 @@ $image-height: 300px;
   width: $image-height;
   height: $image-height;
   padding: 0 32px;
-}
-
-@media (max-width: $break-off) {
-  .description-item {
-    flex-direction: column-reverse;
-    flex-wrap: nowrap;
-
-    margin-bottom: 80px;
-    padding-left: 32px;
-  }
-
-  .description-item:nth-child(2n) {
-    flex-direction: column-reverse;
-  }
 }

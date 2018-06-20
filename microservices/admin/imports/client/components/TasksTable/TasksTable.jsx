@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 
-import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
 import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
@@ -182,21 +181,25 @@ class TasksTable extends Component {
   };
 
   render() {
-    const { data, isLoading, showAssignee } = this.props;
-    const filters = { assignedEmployee: { emails: [{ address: 1 }] } };
+    const { data, isLoading, showAssignee, children, hideIfNoData, hideIfNoDataText } = this.props;
 
     if (isLoading) {
       return <Loading />;
     }
 
+    const rows = this.setupRows({ data, showAssignee })
+
     return (
-      <Table
-        columnOptions={this.getColumnOptions({ showAssignee })}
-        rows={this.setupRows({ data, showAssignee })}
-        noIntl
-        className="tasks-table"
-        clickable
-      />
+      <React.Fragment>
+        {children}
+        {hideIfNoData && !rows.length ? <p className="text-center">{hideIfNoDataText}</p> : <Table
+          columnOptions={this.getColumnOptions({ showAssignee })}
+          rows={rows}
+          noIntl
+          className="tasks-table"
+          clickable
+        />}
+      </React.Fragment>
     );
   }
 }
@@ -206,10 +209,16 @@ TasksTable.propTypes = {
   data: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   showAssignee: PropTypes.bool,
+  children: PropTypes.node,
+  hideIfNoData: PropTypes.bool,
+  hideIfNoDataText: PropTypes.string,
 };
 
 TasksTable.defaultProps = {
   showAssignee: false,
+  children: null,
+  hideIfNoData: false,
+  hideIfNoDataText: "Pas de taches pour l'instant"
 };
 
 export default withRouter(TasksTable);

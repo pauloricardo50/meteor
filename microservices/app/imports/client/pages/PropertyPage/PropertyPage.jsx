@@ -13,10 +13,12 @@ import T from 'core/components/Translation';
 import withLoan from 'core/containers/withLoan';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 
+import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
   const { loan, borrowers, property } = props;
+  const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
@@ -31,6 +33,13 @@ const PropertyPage = (props) => {
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
+
+        <MapWithMarkerWrapper
+          address1={address1}
+          city={city}
+          zipCode={zipCode}
+          options={{ zoom: 14 }}
+        />
 
         <div className="description">
           <p>

@@ -19,7 +19,7 @@ export const createUser = (email, role) => {
     email,
     password: USER_PASSWORD,
   });
-  Roles.addUsersToRoles(userId, [role]);
+  Roles.setUserRoles(userId, [role]);
 
   return userId;
 };

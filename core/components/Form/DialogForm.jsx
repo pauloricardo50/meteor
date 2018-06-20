@@ -35,7 +35,7 @@ export default class DialogForm extends Component {
     const { open } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
         {React.cloneElement(button, { onClick: this.handleClickOpen })}
         <Dialog
           open={open}
@@ -75,13 +75,13 @@ export default class DialogForm extends Component {
             {...otherProps}
           />
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
 DialogForm.propTypes = {
-  button: PropTypes.node,
+  button: PropTypes.node.isRequired,
   title: PropTypes.node,
   description: PropTypes.node,
   form: PropTypes.string.isRequired,
@@ -92,7 +92,6 @@ DialogForm.propTypes = {
 };
 
 DialogForm.defaultProps = {
-  button: null,
   title: null,
   description: null,
   initialValues: undefined,

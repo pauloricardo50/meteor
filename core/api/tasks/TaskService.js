@@ -157,7 +157,7 @@ class TaskService {
     const type = TASK_TYPE.USER_ADDED_FILE;
     const relatedDocIdFieldName = getIdFieldNameFromCollection(collection);
 
-    const fileTask = Tasks.findOne({
+    const activeFileTask = Tasks.findOne({
       type,
       [relatedDocIdFieldName]: docId,
       documentId,
@@ -165,11 +165,9 @@ class TaskService {
       status: TASK_STATUS.ACTIVE,
     });
 
-    if (!fileTask) {
-      throw new Meteor.Error("task couldn't be found");
+    if (activeFileTask) {
+      return this.complete({ taskId: activeFileTask._id });
     }
-
-    return this.complete({ taskId: fileTask._id });
   };
 
   changeStatus = ({ taskId, newStatus }) =>

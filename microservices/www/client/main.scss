@@ -34,15 +34,12 @@ html,
   flex-direction: column;
 }
 
-@media (min-width: $med) {
-  body {
-    font-size: $font-size-m;
+body {
+  @include screen(med, min) {
+    @include font-size($font-size-m);
   }
-}
-
-@media (min-width: $wide) {
-  body {
-    font-size: $font-size-l;
+  @include screen(xwide, min) {
+    @include font-size($font-size-l);
   }
 }
 

@@ -1,4 +1,38 @@
 {
+"Widget1Page.title": "Calculateur hypothécaire",
+"Widget1Page.description": "Déterminez facilement combien vous devez gagner, combien de fonds propres vous devez mettre, ou la valeur maximale du bien que vous pouvez acquérir.",
+
+  "ConditionsPage.title": "Conditions générales d'utilisation",
+  "Recap.maxPossibleLoan": "Prêt max possible",
+
+  "Widget1SingleInput.propertyValue": "Valeur du bien",
+
+  "Widget1InputsError.empty": "Entrez des valeurs dans les champs au dessus !",
+
+  "Widget1SingleInputSlider.buttonTooltip": "Agrandir le slider",
+  "Widget1SingleInputSlider.buttonTooltipLoan": "Emprunter plus",
+
+  "Widget1MonthlyMaintenance.label": "Frais d'entretien",
+"Widget1MonthlyMaintenance.yes": "Estimation",
+"Widget1MonthlyMaintenance.no": "Sans",
+
+"Widget1MonthlyInterests.optionLabel": "{type} moyen: {rate}",
+
+"Widget1SingleInput.currentLoan": "Prêt existant",
+"Widget1SingleInput.wantedLoan": "Nouveau prêt",
+
+"Recap.propertyValue": "Valeur du bien",
+"Recap.loanIncrease": "Augmentation du prêt",
+"Recap.loanReduction": "Réduction du prêt",
+
+  "Widget1OptionSelector.ACQUISITION": "Acquisition",
+  "Widget1OptionSelector.REFINANCING": "Refinancement",
+  "Widget1OptionSelector.PRIMARY": "Résidence principale",
+  "Widget1OptionSelector.SECONDARY": "Résidence secondaire",
+  "Widget1OptionSelector.INVESTMENT": "Bien de rendement",
+  
+"LoanAdder.dialogTitle" :"Ajouter une hypothèque",
+
   "steps.borrowers.title": "Emprunteurs",
   "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
   "tooltip2.financialPlan": "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
@@ -111,13 +145,16 @@
   "AboutPagePart4.description2":
     "Les conseillers e-Potek vérifient l’intégralité des dossiers et documents justificatifs afin qu’ils soient conformes et personnalisés aux directives internes de chaque prêteur.",
 
-  "CareersPage.description":
-    "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.{verticalSpace}Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
+  "CareersPage.description1":
+    "e-Potek est en forte croissance et recrute souvent de nouveaux talents au sein de nos différents départements.",
+  "CareersPage.description2":
+    "Nous faisons le plus possible pour créer et maintenir un environnement de travail agréable, avec beaucoup d'opportunités et de responsabilités pour ceux qui souhaitent les prendre.",
   "CareersPage.title": "Travailler chez e-Potek",
   "CareersPageJob.hoverText": "Voir l'annonce",
   "CareersPageList.advisory": "Conseil",
   "CareersPageList.engineering": "Ingénierie",
   "CareersPageList.admin": "Opérations",
+  "CareersPageList.design": "Design",
   "CareersPageList.emptyDepartment":
     "Pas de postes ouverts dans ce département pour l'instant. Réessayez demain, ou envoyez nous une candidature spontanée en expliquant ce que vous pensez pouvoir apporter à notre entreprise, et pourquoi nous en aurions besoin !",
   "InterestsTable.interest1": "1 an",
@@ -1113,6 +1150,7 @@
   "PropertyAdder.add": "Ajouter",
   "PropertyPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
+  "PropertyPage.incompleteAddress": "Entrez votre adresse complet pour afficher la carte!",
   "PropertyPage.progress": "Progrès: {value, number, percent}",
   "PropertyPage.title":
     "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
@@ -1343,6 +1381,7 @@
   "TasksStatusDropdown.CUSTOM": "Personnalisé",
   "TasksStatusDropdown.LENDER_CHOSEN": "Prêteur choisi",
   "TasksStatusDropdown.VERIFY": "Vérifier",
+  "TasksStatusDropdown.USER_ADDED_FILE": "Vérifier nouveau document",
   "TasksTable.actions": "Actions",
   "TasksTable.assignedTo": "Assigné à",
   "TasksTable.completedAt": "Complété le",

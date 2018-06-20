@@ -7,10 +7,8 @@
   max-width: 300px;
   margin: 16px;
   padding: 32px;
-}
 
-@media (max-width: $med) {
-  .widget1-single-input-form {
+  @include screen(xwide) {
     padding: 16px;
   }
 }
@@ -33,10 +31,8 @@
   width: 100%;
   margin-bottom: -16px;
   padding-top: 16px;
-}
 
-@media (max-width: $med) {
-  .widget1-single-input-form .buttons {
+  @include screen(xwide) {
     margin-bottom: 0;
   }
 }

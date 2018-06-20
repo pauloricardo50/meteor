@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import SecurityService from '../../security';
 import LoanService from '../LoanService';
 import {
@@ -17,13 +15,12 @@ import {
   popLoanValue,
   disableUserForms,
   enableUserForms,
+  adminLoanInsert,
 } from '../methodDefinitions';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
 loanInsert.setHandler((context, { loan, userId }) => {
-  if (userId === undefined && Meteor.userId()) {
-    userId = Meteor.userId();
-  }
-
+  userId = checkInsertUserId(userId);
   return LoanService.insert({ loan, userId });
 });
 
@@ -93,3 +90,9 @@ export const enableUserFormsHandler = ({ userId }, { loanId }) => {
   return LoanService.enableUserForms({ loanId });
 };
 enableUserForms.setHandler(enableUserFormsHandler);
+
+export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
+  SecurityService.checkUserIsAdmin(adminUserId);
+  return LoanService.adminLoanInsert({ userId });
+};
+adminLoanInsert.setHandler(adminLoanInsertHandler);

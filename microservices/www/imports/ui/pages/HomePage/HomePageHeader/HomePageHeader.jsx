@@ -7,9 +7,9 @@ import {
   TooltipProvider,
   TOOLTIP_LISTS,
 } from 'core/components/tooltips/TooltipContext';
+import { PROPERTY } from '../../../../redux/constants/widget1Constants';
 import Waves from '../../../components/Waves';
 import Widget1SingleInputForm from '../../Widget1Page/Widget1SingleInputForm';
-import { SALARY } from '../../Widget1Page/Widget1Page';
 
 const HomePageHeader = ({ history }) => (
   <header>
@@ -27,7 +27,7 @@ const HomePageHeader = ({ history }) => (
     </div>
     <TooltipProvider tooltipList={TOOLTIP_LISTS.WIDGET1}>
       <Widget1SingleInputForm
-        name={SALARY}
+        name={PROPERTY}
         onClick={() => history.push('/start/1')}
       />
     </TooltipProvider>

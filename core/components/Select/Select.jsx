@@ -6,30 +6,63 @@ import MuiSelect from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import withStyles from '@material-ui/core/styles/withStyles';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
+import MenuItem from '../Material/MenuItem';
+import Divider from '../Material/Divider';
 import Icon from '../Icon';
-import MenuItem from 'core/components/Material/MenuItem';
-import Divider from 'core/components/Material/Divider';
 
-const styles = {
-  icon: {
-    top: 'calc(50% - 12px)',
+const styles = theme => ({
+  menuItem: {
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& $colorClass': {
+        color: theme.palette.common.white,
+      },
+    },
   },
-};
+  menuItemRoot: {
+    height: 'unset',
+  },
+  listItemTextWithIcon: {
+    paddingLeft: 0,
+  },
+  colorClass: {},
+});
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const mapOption = (option) => {
+const makeMapOption = ({
+  menuItem: menuItemClass,
+  menuItemRoot,
+  listItemTextWithIcon,
+  colorClass,
+}) => (option) => {
   // If a component is provided, return the component
   if (React.isValidElement(option)) {
     return option;
   }
   const { id, label, icon, dividerTop, dividerBottom } = option;
   const arr = [
-    <MenuItem value={id} key={id}>
-      {icon && <Icon type={icon} style={{ margin: '0 16px 0 8px' }} />}
-      {label}
+    <MenuItem
+      value={id}
+      key={id}
+      className={menuItemClass}
+      classes={{ root: menuItemRoot }}
+    >
+      {icon && (
+        <ListItemIcon className={colorClass}>
+          <Icon type={icon} />
+        </ListItemIcon>
+      )}
+      <ListItemText
+        classes={{
+          primary: colorClass,
+          secondary: colorClass,
+          root: icon ? listItemTextWithIcon : '',
+        }}
+        inset={!!icon}
+        primary={label}
+      />
     </MenuItem>,
   ];
 
@@ -55,6 +88,7 @@ const Select = (props) => {
     inputStyle,
     ...otherProps
   } = props;
+  const mapOption = makeMapOption(classes);
 
   return (
     <FormControl className="mui-select" style={style}>
@@ -68,15 +102,6 @@ const Select = (props) => {
         value={value}
         onChange={e => onChange(id, e.target.value)}
         input={<Input id={id} style={inputStyle} />}
-        classes={{ ...classes, icon: classes.icon }}
-        MenuProps={{
-          PaperProps: {
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-              minWidth: 200,
-            },
-          },
-        }}
       >
         {options.map(mapOption)}
       </MuiSelect>
@@ -90,7 +115,7 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   id: PropTypes.string,
   label: PropTypes.node,
-  classes: PropTypes.object,
+  classes: PropTypes.object.isRequired,
   style: PropTypes.object,
   inputStyle: PropTypes.object,
 };
@@ -98,7 +123,6 @@ Select.propTypes = {
 Select.defaultProps = {
   value: undefined,
   label: undefined,
-  classes: undefined,
   style: {},
   inputStyle: {},
   id: '',

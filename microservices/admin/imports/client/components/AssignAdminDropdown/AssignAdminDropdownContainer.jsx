@@ -2,8 +2,8 @@ import query from 'core/api/users/queries/admins';
 import { compose, createContainer, withQuery } from 'core/api';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
-  const oldAdmin = relatedDoc.assignedEmployeeId
-    ? relatedDoc.assignedEmployeeId
+  const oldAdmin = relatedDoc.assignedEmployee
+    ? relatedDoc.assignedEmployee._id
     : undefined;
   const options = admins.map(admin => ({
     id: admin._id,

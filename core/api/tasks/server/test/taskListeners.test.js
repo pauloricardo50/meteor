@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import EventService from '../../../events';
-import '../../../events/registerListeners';
+import ServerEventService from '../../../events/server/ServerEventService';
+import '../../../events/server/registerServerListeners';
 import { addFileToDoc, setFileStatus } from '../../../files/methodDefinitions';
 import {
   insertTaskWhenFileAddedListener,
@@ -13,12 +13,12 @@ import TaskService from '../../TaskService';
 
 describe('Task Listeners', () => {
   describe('insertTaskWhenFileAddedListener', () => {
-    it(`listens to \`${addFileToDoc.config.name}\` method`, () => {
+    it(`listens to '${addFileToDoc.config.name}' method`, () => {
       const {
         config: { name: methodName },
       } = addFileToDoc;
 
-      const listeners = EventService.getListenerFunctions(methodName);
+      const listeners = ServerEventService.getListenerFunctions(methodName);
       expect(listeners.includes(insertTaskWhenFileAddedListener)).to.equal(true);
     });
 
@@ -49,12 +49,12 @@ describe('Task Listeners', () => {
   });
 
   describe('completeTaskOnFileVerificationListener', () => {
-    it(`listens to \`${setFileStatus.config.name}\` method`, () => {
+    it(`listens to '${setFileStatus.config.name}' method`, () => {
       const {
         config: { name: methodName },
       } = setFileStatus;
 
-      const listeners = EventService.getListenerFunctions(methodName);
+      const listeners = ServerEventService.getListenerFunctions(methodName);
       expect(listeners.includes(completeTaskOnFileVerificationListener)).to.equal(true);
     });
 

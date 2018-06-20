@@ -16,33 +16,33 @@ const interestRates = [
   {
     type: INTEREST_RATES.YEARS_5,
     rateLow: 0.009,
-    rateHigh: 0.0135,
-    trend: TRENDS.UP,
+    rateHigh: 0.0125,
+    trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_10,
     rateLow: 0.0121,
-    rateHigh: 0.0175,
-    trend: TRENDS.UP,
+    rateHigh: 0.0172,
+    trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_15,
-    rateLow: 0.0172,
-    rateHigh: 0.021,
+    rateLow: 0.0181,
+    rateHigh: 0.0192,
     trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_20,
-    rateLow: 0.0185,
-    rateHigh: 0.0224,
+    rateLow: 0.0187,
+    rateHigh: 0.0227,
     trend: TRENDS.FLAT,
   },
-  {
-    type: INTEREST_RATES.YEARS_25,
-    rateLow: 0.0192,
-    rateHigh: 0.0232,
-    trend: TRENDS.FLAT,
-  },
+  // {
+  //   type: INTEREST_RATES.YEARS_25,
+  //   rateLow: 0.0192,
+  //   rateHigh: 0.0232,
+  //   trend: TRENDS.FLAT,
+  // },
 ];
 
 export default interestRates;

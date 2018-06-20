@@ -7,6 +7,7 @@
   @import './Widget1Recap/Widget1Recap.scss';
   @import './Widget1Monthly/Widget1Monthly.scss';
   @import './Widget1Inputs/Widget1Inputs.scss';
+  @import './Widget1Options/Widget1Options.scss';
 }
 
 .widget1-page {
@@ -23,11 +24,8 @@
 
   box-sizing: border-box;
   padding: 8px;
-}
 
-@media (min-width: $med) {
-  .widget1-page .widget1-page-content {
-    padding: 80px;
+  @include screen(wide, min) {
     padding-bottom: 32px;
   }
 }
@@ -51,10 +49,8 @@
   max-width: 300px;
   margin: 16px;
   padding: 32px;
-}
 
-@media (max-width: $med) {
-  .widget1-page .input-form-placeholder {
+  @include screen(wide) {
     padding: 16px;
   }
 }
@@ -81,14 +77,25 @@
   max-width: 300px;
   margin: 16px;
   padding: 32px;
+
+  @include screen(xwide) {
+    margin: 8px;
+    padding: 16px;
+  }
 }
 
 .widget1-page .widget1-part-2 .card1 h3 {
-  margin-top: 0;
+  margin: 0;
 
   text-align: center;
 
   color: $primary;
+
+  font-size: 1.4em;
+
+  @include screen(med) {
+    margin-bottom: 8px;
+  }
 }
 
 .widget1-page .widget1-part-2 .card1 .card-bottom {
@@ -101,18 +108,11 @@
 
   border-bottom-right-radius: 16px;
   border-bottom-left-radius: 16px;
-}
 
-@media (max-width: $med) {
-  .widget1-page .widget1-part-2 .card1 {
-    margin: 8px;
+  @include screen(xwide) {
+    margin-bottom: -16px;
+    margin-left: -16px;
     padding: 16px;
-
-    .card-bottom {
-      margin-bottom: -16px;
-      margin-left: -16px;
-      padding: 16px;
-    }
   }
 }
 
@@ -133,13 +133,11 @@
 
   text-align: justify;
 
+  @include screen(medium) {
+    text-align: left;
+  }
+
   .description {
     max-width: 600px;
-  }
-}
-
-@media (max-width: $med) {
-  .widget1-page-disclaimer {
-    text-align: left;
   }
 }
