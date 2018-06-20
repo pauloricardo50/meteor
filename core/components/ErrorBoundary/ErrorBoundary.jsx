@@ -7,7 +7,7 @@ import RootError from './RootError';
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, errorMessage: '' };
+    this.state = { hasError: false, error: null };
   }
 
   componentDidCatch(error, info) {
@@ -15,35 +15,34 @@ export default class ErrorBoundary extends Component {
     console.log('componentDidCatch!');
     console.log('error: ', error);
     console.log('info: ', info);
-    this.setState({ hasError: true });
+    this.setState({ hasError: true, error });
   }
 
   // Remove error if user switches page
   // If it crashes again then it will simply go through componentDidCatch
   componentWillReceiveProps({ pathname }) {
     if (this.state.hasError && pathname !== this.props.pathname) {
-      this.setState({ hasError: false, errorMessage: '' });
+      this.setState({ hasError: false, error: null });
     }
   }
 
   render() {
     const { children, helper } = this.props;
-    const { hasError, errorMessage } = this.state;
-    const errorProps = { ...this.props, errorMessage };
+    const { hasError, error } = this.state;
 
     if (hasError) {
       switch (helper) {
       case 'layout':
-        return <LayoutError {...errorProps} />;
+        return <LayoutError error={error} />;
       case 'app':
         return (
           <LayoutError
-            {...errorProps}
+            error={error}
             style={{ width: '100%', height: '100%' }}
           />
         );
       case 'root':
-        return <RootError />;
+        return <RootError error={error} />;
       default:
         return <div>Woops!</div>;
       }

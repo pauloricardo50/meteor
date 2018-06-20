@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 
 import T from '../Translation';
 import Button from '../Button';
+import DevError from './DevError';
 
-const LayoutError = ({ style }) => (
+const LayoutError = ({ style, error }) => (
   <div className="flex-col center animated jackInTheBox" style={style}>
     <h2 className="error">
       <T id="LayoutError.title" />
@@ -15,6 +16,7 @@ const LayoutError = ({ style }) => (
         <T id="LayoutError.description" />
       </p>
     </div>
+    <DevError error={error} />
     <div className="flex center">
       <Button raised color="primary" onClick={() => location.reload()}>
         <T id="LayoutError.reload" />
@@ -30,6 +32,7 @@ const LayoutError = ({ style }) => (
 
 LayoutError.propTypes = {
   style: PropTypes.object,
+  error: PropTypes.object.isRequired,
 };
 
 LayoutError.defaultProps = {
