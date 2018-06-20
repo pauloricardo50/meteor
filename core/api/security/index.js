@@ -5,9 +5,14 @@ import {
   BorrowerSecurity,
   PropertySecurity,
   TaskSecurity,
+  UserSecurity,
 } from './collections';
 
 class SecurityService extends Security {
+  static get users() {
+    return UserSecurity;
+  }
+
   static get loans() {
     return LoanSecurity;
   }

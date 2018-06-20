@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
@@ -15,15 +14,9 @@ class UserService {
   };
 
   adminCreateUser = ({ options, role }) => {
-    const { lastName, firstName, phone } = options;
-
     const newUserId = this.createUser({ options, role });
-
-    if (newUserId && (firstName || lastName || phone)) {
-      this.update({ userId: newUserId, object: { ...options } });
-      Accounts.sendEnrollmentEmail(newUserId);
-    }
-
+    this.update({ userId: newUserId, object: { ...options } });
+    Accounts.sendEnrollmentEmail(newUserId);
     return newUserId;
   };
 

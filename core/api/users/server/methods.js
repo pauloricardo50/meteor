@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 import { SecurityService } from '../..';
-import UserSecurity from '../../security/collections/UserSecurity';
 import {
   doesUserExist,
   sendVerificationLink,
@@ -52,7 +51,7 @@ setRole.setHandler((context, params) => {
 });
 
 adminCreateUser.setHandler((context, { options, role }) => {
-  UserSecurity.checkPermissionToAddUser({ role });
+  SecurityService.users.isAllowedToInsertByRole({ role });
 
   return UserService.adminCreateUser({ options, role });
 });

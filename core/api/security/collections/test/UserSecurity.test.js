@@ -6,7 +6,8 @@ import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { stubCollections } from '../../../../utils/testHelpers/testHelpers';
-import { ROLES } from '../../../users/userConstants';
+import { ROLES } from '../../../constants';
+import { SECURITY_ERROR } from '../../Security';
 import UserSecurity from '../UserSecurity';
 
 describe('UserSecurity', () => {
@@ -19,7 +20,7 @@ describe('UserSecurity', () => {
     stubCollections.restore();
   });
 
-  describe('checkPermissionToAddUser', () => {
+  describe('isAllowedToInsertByRole', () => {
     const userRole = ROLES.USER;
     const adminRole = ROLES.ADMIN;
     const devRole = ROLES.DEV;
@@ -35,17 +36,28 @@ describe('UserSecurity', () => {
       Meteor.userId.restore();
     });
 
-    it('throws if passed another role than the ones defined', () =>
-      expect(() =>
-        UserSecurity.checkPermissionToAddUser({ role: otherRole })).to.throw('INCORRECT_ROLE'));
+    it('throws if no argument is provided', () => {
+      expect(() => UserSecurity.isAllowedToInsertByRole()).to.throw();
+    });
 
-    it('throws if you try to add devs without dev privileges', () =>
-      expect(() =>
-        UserSecurity.checkPermissionToAddUser({ role: devRole })).to.throw('NOT_AUTHORIZED'));
+    it('throws if no role is provided', () => {
+      expect(() => UserSecurity.isAllowedToInsertByRole({})).to.throw(SECURITY_ERROR);
+    });
 
-    it('throws if you try to add admins without dev privileges', () =>
+    it('throws if passed another role than the ones defined', () => {
       expect(() =>
-        UserSecurity.checkPermissionToAddUser({ role: adminRole })).to.throw('NOT_AUTHORIZED'));
+        UserSecurity.isAllowedToInsertByRole({ role: otherRole })).to.throw(SECURITY_ERROR);
+    });
+
+    it('throws if you try to add devs without dev privileges', () => {
+      expect(() =>
+        UserSecurity.isAllowedToInsertByRole({ role: devRole })).to.throw(SECURITY_ERROR);
+    });
+
+    it('throws if you try to add admins without dev privileges', () => {
+      expect(() =>
+        UserSecurity.isAllowedToInsertByRole({ role: adminRole })).to.throw(SECURITY_ERROR);
+    });
 
     it('throws if you try to add users with user privileges', () => {
       const user = Factory.create('user')._id;
@@ -54,7 +66,7 @@ describe('UserSecurity', () => {
       sinon.stub(Meteor, 'userId').callsFake(() => user._id);
 
       return expect(() =>
-        UserSecurity.checkPermissionToAddUser({ role: userRole })).to.throw('NOT_AUTHORIZED');
+        UserSecurity.isAllowedToInsertByRole({ role: userRole })).to.throw(SECURITY_ERROR);
     });
   });
 });

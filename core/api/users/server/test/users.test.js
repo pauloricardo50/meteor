@@ -97,26 +97,22 @@ describe('users', () => {
       it('creates a new account', (done) => {
         options.email = newUserEmail;
 
-        adminCreateUser
-          .run({ options, role })
-          .then((newUserId) => {
-            expect(Meteor.users.find({ _id: newUserId }).count()).to.equal(1);
+        adminCreateUser.run({ options, role }).then((newUserId) => {
+          expect(Meteor.users.find({ _id: newUserId }).count()).to.equal(1);
 
-            done();
-          });
+          done();
+        });
       });
 
       it('calls UserSecurity', (done) => {
         sinon
-          .stub(UserSecurity, 'checkPermissionToAddUser')
+          .stub(UserSecurity, 'isAllowedToInsertByRole')
           .callsFake(() => true);
         options.email = newUserEmail;
 
         adminCreateUser.run({ options, role }).then(() => {
-          expect(UserSecurity.checkPermissionToAddUser.getCall(0).args).to.deep.equal([{ role }]);
-
-          UserSecurity.checkPermissionToAddUser.restore();
-
+          expect(UserSecurity.isAllowedToInsertByRole.getCall(0).args).to.deep.equal([{ role }]);
+          UserSecurity.isAllowedToInsertByRole.restore();
           done();
         });
       });
@@ -131,7 +127,7 @@ describe('users', () => {
           ]);
 
           UserService.adminCreateUser.restore();
-          
+
           done();
         });
       });
@@ -152,13 +148,11 @@ describe('users', () => {
       it('creates a new account with the provided role', (done) => {
         options.email = newUserEmail;
 
-        adminCreateUser
-          .run({ options, role })
-          .then((newUserId) => {
-            assert.equal(Roles.userIsInRole(newUserId, role), true);
+        adminCreateUser.run({ options, role }).then((newUserId) => {
+          assert.equal(Roles.userIsInRole(newUserId, role), true);
 
-            done();
-          });
+          done();
+        });
       });
     });
 
@@ -189,7 +183,7 @@ describe('users', () => {
       it('calls UserService.update  when current user is admin', (done) => {
         sinon.stub(Meteor, 'userId').callsFake(() => adminId);
         sinon.stub(SecurityService, 'currentUserIsAdmin').callsFake(() => true);
-       
+
         editUser.run({ userId: user._id, object }).then(() => {
           expect(SecurityService.currentUserIsAdmin.getCall(0).args).to.deep.equal([]);
 

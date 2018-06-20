@@ -15,7 +15,6 @@ describe('UserService', () => {
   const lastName = 'testLastName';
   let user;
   let newUserId;
-  let existingUserEmail;
   let newUserEmail;
   let options;
   const role = ROLES.USER;
@@ -25,7 +24,6 @@ describe('UserService', () => {
     stubCollections();
 
     newUserId = 'newUserId';
-    existingUserEmail = 'existing@yop.com';
     newUserEmail = 'new@yop.com';
     options = {
       firstName: 'firstName',
@@ -41,15 +39,13 @@ describe('UserService', () => {
 
   describe('adminCreateUser', () => {
     beforeEach(() => {
-      sinon
-        .stub(UserSecurity, 'checkPermissionToAddUser')
-        .callsFake(() => true);
+      sinon.stub(UserSecurity, 'isAllowedToInsertByRole').callsFake(() => true);
       sinon.stub(Accounts, 'sendEnrollmentEmail');
       sinon.stub(Accounts, 'createUser').callsFake(() => newUserId);
     });
 
     afterEach(() => {
-      UserSecurity.checkPermissionToAddUser.restore();
+      UserSecurity.isAllowedToInsertByRole.restore();
       Accounts.sendEnrollmentEmail.restore();
       Accounts.createUser.restore();
     });
@@ -82,7 +78,7 @@ describe('UserService', () => {
       UserService.update.restore();
     });
 
-    it('calls Accounts.sendEnrollmentEmai when receiving a userId from UserService.createUser', () => {
+    it('calls Accounts.sendEnrollmentEmail when receiving a userId from UserService.createUser', () => {
       options.email = newUserEmail;
       UserService.adminCreateUser({ options, role });
 
