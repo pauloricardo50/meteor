@@ -42,12 +42,12 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
   // listener that would complete & reassign the user's tasks
   SecurityService.checkCurrentUserIsAdmin();
 
-  UserService.assignAdminToUser({ userId, adminId });
+  return UserService.assignAdminToUser({ userId, adminId });
 });
 
 setRole.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsDev();
-  UserService.setRole(params);
+  return UserService.setRole(params);
 });
 
 adminCreateUser.setHandler((context, { options, role }) => {

@@ -60,8 +60,11 @@ export const getMandrillTemplate = ({
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });
 
-export const renderMandrillTemplate = mandrillTemplate =>
-  Mandrill.templates.render(mandrillTemplate);
+export const renderMandrillTemplate = (mandrillTemplate) => {
+  console.log('this is mandrill:', Mandrill);
+
+  return Mandrill.templates.render(mandrillTemplate);
+};
 
 export const sendMandrillTemplate = mandrillTemplate =>
   new Promise((resolve, reject) => {
