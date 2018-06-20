@@ -9,7 +9,8 @@
     "lang": "cd scripts/ && meteor babel-node createLanguages.js",
     "clean-run": "npm run setup-clean && npm run run",
     "remove-core": "cd scripts/ && ./remove-core.sh",
-    "clean-css": "cd scripts/ && ./clean-css.sh"
+    "clean-css": "cd scripts/ && ./clean-css.sh",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "eslint-plugin-meteor": "^5.0.0",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-react": "^7.8.2",
+    "flow-bin": "^0.74.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.1.2",
     "prettier-eslint-cli": "^4.7.1"
