@@ -38,14 +38,15 @@ class TableFilters extends React.Component {
   // }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.data, this.props.data)) {
-      const { data } = this.props;
-      this.setState({ data });
+    const { filters: currentFiltersProp, data: currentDataProp } = this.props;
+    const { filters: oldFiltersProp, data: oldDataProp } = prevProps;
+
+    if (!isEqual(currentDataProp, oldDataProp)) {
+      this.setState({ data: currentDataProp });
     }
 
-    if (!isEqual(prevProps.filters, this.props.filters)) {
-      const { filters } = this.props;
-      this.setState({ filters });
+    if (!isEqual(currentFiltersProp, oldFiltersProp)) {
+      this.setState({ filters: currentFiltersProp });
     }
   }
 
