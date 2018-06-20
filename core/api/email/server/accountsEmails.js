@@ -11,8 +11,6 @@ Accounts.emailTemplates.from = FROM_DEFAULT;
 export const createAccountsEmailConfig = emailId => ({
   subject: () => EmailService.getEmailPart(emailId, EMAIL_PARTS.SUBJECT),
   html(user, url) {
-    console.log('create accounts config context:', this);
-
     // TODO: Make sure this doesn't block
     const template = EmailService.getAccountsTemplate(emailId, { user, url });
     const result = EmailService.renderTemplate(template, emailId);
