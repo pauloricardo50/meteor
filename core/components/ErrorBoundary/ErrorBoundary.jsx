@@ -12,9 +12,6 @@ export default class ErrorBoundary extends Component {
 
   componentDidCatch(error, info) {
     // Error should also log to kadira
-    console.log('componentDidCatch!');
-    console.log('error: ', error);
-    console.log('info: ', info);
     this.setState({ hasError: true, error });
   }
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import T from '../Translation';
@@ -21,11 +20,11 @@ const LayoutError = ({ style, error }) => (
       <Button raised color="primary" onClick={() => location.reload()}>
         <T id="LayoutError.reload" />
       </Button>
-      <Link to="/" className="home-link">
+      <a href="/" className="home-link">
         <Button raised color="secondary">
           <T id="LayoutError.redirectHome" />
         </Button>
-      </Link>
+      </a>
     </div>
   </div>
 );
