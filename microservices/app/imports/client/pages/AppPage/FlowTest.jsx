@@ -11,11 +11,13 @@ interface FlowTestProps {
 
 const FlowTest = (props: FlowTestProps) => (
   <div>
-    {main('hello')}
+    {main('hello')} {/* This line should show an error in the editor */}
     {props.hello}
   </div>
 );
 
-FlowTest.propTypes = {};
+FlowTest.propTypes = {
+  hello: PropTypes.string.isRequired,
+};
 
 export default FlowTest;
