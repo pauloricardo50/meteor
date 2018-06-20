@@ -1,15 +1,10 @@
 import { connect } from 'react-redux';
-import {
-  setAuto,
-  setStep,
-  setValue,
-} from '../../../../redux/actions/widget1Actions';
-import { selectFields } from '../../../../redux/reducers/widget1';
+import { widget1Selectors, widget1Actions } from '../../../../redux/widget1';
 
 const mapStateToProps = ({ widget1 }, { name }) => ({
   ...widget1[name],
   disableSubmit: !widget1[name].value,
-  fields: selectFields({ widget1 }),
+  fields: widget1Selectors.selectFields({ widget1 }),
 });
 
 const mergeProps = (
@@ -27,16 +22,20 @@ const mergeProps = (
       event.preventDefault();
       if (!disableSubmit) {
         onClick();
-        dispatch(setStep(nextStep));
+        dispatch(widget1Actions.setStep(nextStep));
       }
     },
     onDoNotKnow: () => {
       onClick();
-      dispatch(setStep(nextStep));
-      dispatch(setAuto(name, true));
-      dispatch(setValue(name, undefined));
+      dispatch(widget1Actions.setStep(nextStep));
+      dispatch(widget1Actions.setAuto(name, true));
+      dispatch(widget1Actions.setValue(name, undefined));
     },
   };
 };
 
-export default connect(mapStateToProps, null, mergeProps);
+export default connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+);

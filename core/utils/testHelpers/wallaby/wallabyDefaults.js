@@ -43,6 +43,8 @@ function setWallabyConfig(name, overrides = {}) {
       setup() {
         global.IS_WALLABY = true;
         global.fetch = require('node-fetch');
+        // Do this to prevent some weird issues
+        global.window = { navigator: { userAgent: 'node.js' } };
 
         // Activate JSDOM only if needed, it crashes production servers
 

@@ -68,7 +68,6 @@ Widget1Page.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';
 export default compose(
   TooltipProviderContainer(TOOLTIP_LISTS.WIDGET1),
   Widget1PageContainer,
