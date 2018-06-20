@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import createRootReducer from '../reducers';
+import createRootReducer from './reducers';
 
 const createCustomStore = () => {
   const initialState = {};

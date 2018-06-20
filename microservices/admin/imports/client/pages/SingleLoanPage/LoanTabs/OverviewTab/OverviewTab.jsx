@@ -5,7 +5,7 @@ import Recap from 'core/components/Recap';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
 import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
-import DisableUserFormsToggle from '../../../../../ui/components/DisableUserFormsToggle';
+import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import AdminNote from '../../../../components/AdminNote';
 import StepStatus from './StepStatus';
 import LoanValidation from './LoanValidation';

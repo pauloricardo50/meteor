@@ -1,15 +1,12 @@
-const initialState = { activeStep: -1 };
+import * as stepperTypes from './stepperTypes';
 
-export const stepperActions = {
-  SET_STEP: 'SET_STEP',
-  HIDE_STEPS: 'HIDE_STEPS',
-};
+const initialState = { activeStep: -1 };
 
 const stepper = (state = initialState, action) => {
   switch (action.type) {
-  case stepperActions.SET_STEP:
+  case stepperTypes.SET_STEP:
     return { ...state, activeStep: action.step };
-  case stepperActions.HIDE_STEPS:
+  case stepperTypes.HIDE_STEPS:
     return initialState;
   default:
     return state;
