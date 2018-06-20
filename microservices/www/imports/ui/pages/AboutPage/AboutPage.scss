@@ -60,7 +60,9 @@
 
     width: 100%;
     max-width: 500px;
-    margin-bottom: 32px;@include screen(small) {
+    margin-bottom: 32px;
+
+    @include screen(small) {
       flex-direction: column;
     }
 
@@ -104,7 +106,9 @@
         height: 32px;
 
         border-radius: 50%;
-        background-color: $success;@include screen(small) {
+        background-color: $success;
+
+        @include screen(small) {
           align-self: center;
         }
       }
@@ -142,7 +146,9 @@
     max-width: 500px;
     margin: 8px;
     margin-bottom: 40px;
-    padding: 64px;@include screen(med) {
+    padding: 64px;
+
+    @include screen(med) {
       padding: 32px;
     }
   }
@@ -203,7 +209,9 @@
       background-image: url('/img/placeholder.png');
       background-repeat: no-repeat;
       background-position: center center;
-      background-size: cover;@include screen(small) {
+      background-size: cover;
+
+      @include screen(small) {
         display: none;
       }
     }
@@ -220,7 +228,9 @@
 
      > * {
       max-width: 400px;
-      padding: 0 16px;@include screen(small) {
+      padding: 0 16px;
+
+       @include screen(small) {
         padding: 0;
       }
 
@@ -284,7 +294,9 @@
   }
 
   &.about-page-office {
-    padding: 80px 0;@include screen(med) {
+    padding: 80px 0;
+
+    @include screen(med) {
       padding: 40px 0;
     }
   }
@@ -356,7 +368,9 @@
 
     width: 100%;
     max-width: 600px;
-    height: 600px;@include screen(med) {
+    height: 600px;
+
+    @include screen(med) {
       max-width: 500px;
       height: 500px;
     }

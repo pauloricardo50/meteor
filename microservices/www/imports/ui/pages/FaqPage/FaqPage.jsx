@@ -8,7 +8,7 @@ import FaqPageList from './FaqPageList';
 const FaqPage = () => (
   <WwwLayout className="faq-page">
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <main className="www-main">
+    <WwwLayout.Content>
       <div className="faq-page-content">
         <h1>
           <T id="FaqPage.title" />
@@ -18,7 +18,7 @@ const FaqPage = () => (
         </p>
         <FaqPageList />
       </div>
-    </main>
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

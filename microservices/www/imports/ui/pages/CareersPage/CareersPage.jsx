@@ -8,7 +8,7 @@ import CareersPageList from './CareersPageList';
 const CareersPage = () => (
   <WwwLayout className="careers-page">
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <main className="www-main">
+    <WwwLayout.Content>
       <section className="careers-page-content">
         <h1>
           <T id="CareersPage.title" />
@@ -18,7 +18,7 @@ const CareersPage = () => (
         </p>
         <CareersPageList />
       </section>
-    </main>
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

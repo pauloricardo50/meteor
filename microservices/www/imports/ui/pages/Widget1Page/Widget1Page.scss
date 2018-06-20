@@ -3,7 +3,11 @@
 @import './Widget1SingleInput/Widget1SingleInput.scss';
 
 .widget1-page {
-  @import './Widget1Nav/Widget1Nav.scss';@import './Widget1Recap/Widget1Recap.scss';@import './Widget1Monthly/Widget1Monthly.scss';@import './Widget1Inputs/Widget1Inputs.scss';@import './Widget1Options/Widget1Options.scss';
+  @import './Widget1Nav/Widget1Nav.scss';
+  @import './Widget1Recap/Widget1Recap.scss';
+  @import './Widget1Monthly/Widget1Monthly.scss';
+  @import './Widget1Inputs/Widget1Inputs.scss';
+  @import './Widget1Options/Widget1Options.scss';
 }
 
 .widget1-page {
@@ -19,7 +23,9 @@
   justify-content: center;
 
   box-sizing: border-box;
-  padding: 8px;@include screen(wide, min) {
+  padding: 8px;
+
+  @include screen(wide, min) {
     padding-bottom: 32px;
   }
 }
@@ -42,7 +48,9 @@
   width: 100%;
   max-width: 300px;
   margin: 16px;
-  padding: 32px;@include screen(wide) {
+  padding: 32px;
+
+  @include screen(wide) {
     padding: 16px;
   }
 }
@@ -68,7 +76,9 @@
 
   max-width: 300px;
   margin: 16px;
-  padding: 32px;@include screen(xwide) {
+  padding: 32px;
+
+  @include screen(xwide) {
     margin: 8px;
     padding: 16px;
   }
@@ -81,7 +91,9 @@
 
   color: $primary;
 
-  font-size: 1.4em;@include screen(med) {
+  font-size: 1.4em;
+
+  @include screen(med) {
     margin-bottom: 8px;
   }
 }
@@ -95,7 +107,9 @@
   padding: 32px;
 
   border-bottom-right-radius: 16px;
-  border-bottom-left-radius: 16px;@include screen(xwide) {
+  border-bottom-left-radius: 16px;
+
+  @include screen(xwide) {
     margin-bottom: -16px;
     margin-left: -16px;
     padding: 16px;
@@ -117,7 +131,9 @@
   width: 100%;
   padding: 16px;
 
-  text-align: justify;@include screen(medium) {
+  text-align: justify;
+
+  @include screen(medium) {
     text-align: left;
   }
 

@@ -22,12 +22,12 @@
   height: 64px;
   padding: 0 16px;
 
-  background-color: #f1f3f5;@include screen(med, min) {
+  background-color: #f1f3f5;
+
+  @include screen(med, min) {
     position: fixed;
 
-    width: calc(
-    100% - 300px - 32px
-    ); // Side-nav width, careful, not updated with variable
+    width: calc(100% - 300px - 32px); /* Side-nav width, careful, not updated with variable */
   }
 }
 

@@ -37,6 +37,7 @@
   .widget1-input-currency {
     color: $primary;
   }
+
 }
 
 .widget1-single-input .widget1-input input {
@@ -44,7 +45,9 @@
 
   color: $primary;
 
-  font-size: 32px;@include screen(xwide) {
+  font-size: 32px;
+
+@include screen(xwide) {
     font-size: 24px;
   }
 }

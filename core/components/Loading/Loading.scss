@@ -19,7 +19,9 @@
   width: 100px;
   height: 100px;
 
-  transition: all 0.2s ease;@include screen(med) {
+  transition: all 0.2s ease;
+
+  @include screen(med) {
     width: 100%;
   }
 }

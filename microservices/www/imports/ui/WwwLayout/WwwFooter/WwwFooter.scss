@@ -13,7 +13,9 @@
   min-height: 600px;
   padding: 32px;
 
-  line-height: 1.4em;@include screen(med) {
+  line-height: 1.4em;
+
+  @include screen(med) {
     padding: 16px;
   }
 }

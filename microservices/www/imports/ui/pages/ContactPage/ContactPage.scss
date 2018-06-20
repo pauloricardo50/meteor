@@ -112,7 +112,9 @@
   width: 100%;
   max-width: 800px;
   margin: 16px;
-  margin-bottom: -120px;@include screen(large) {
+  margin-bottom: -120px;
+
+  @include screen(large) {
     margin-bottom: 0;
   }
 }

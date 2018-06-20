@@ -5,12 +5,12 @@ import Conditions from './Conditions/Loadable';
 const AboutPage = () => (
   <WwwLayout className="conditions-page">
     <WwwLayout.TopNav />
-    <main className="www-main">
+    <WwwLayout.Content>
       <div className="conditions-page-content">
         <h1>Conditions générales d'utilisation</h1>
         <Conditions />
       </div>
-    </main>
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

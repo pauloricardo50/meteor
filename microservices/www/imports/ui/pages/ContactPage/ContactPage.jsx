@@ -13,7 +13,7 @@ import ContactPageInformation from './ContactPageInformation';
 const ContactPage = () => (
   <WwwLayout className="contact-page">
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <main className="www-main">
+    <WwwLayout.Content>
       <div className="contact-info">
         <div className="contact-page-top">
           <b>
@@ -39,7 +39,7 @@ const ContactPage = () => (
         </Button>
         <MapWithMarker address={ADDRESS} className="map" options={{ zoom: 12 }} />
       </div>
-    </main>
+    </WwwLayout.Content>
     <WwwLayout.Footer transparent={false}>
       <WwwLayout.Footer.Top>
         <div className="contact-footer">

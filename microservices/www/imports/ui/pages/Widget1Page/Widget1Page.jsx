@@ -34,7 +34,7 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
   return (
     <WwwLayout className="widget1-page">
       <WwwLayout.TopNav variant={VARIANTS.GREY} />
-      <main className="www-main">
+      <WwwLayout.Content>
       <div className="widget1-page-content">
         <Widget1Options />
         {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
@@ -54,7 +54,7 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
         )}
       </div>
       {showPart2 && <Widget1PageDisclaimer />}
-      </main>
+      </WwwLayout.Content>
     </WwwLayout>
   );
 };

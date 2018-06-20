@@ -8,7 +8,7 @@ import InterestsTable from './InterestsTable';
 const InterestsPage = () => (
   <WwwLayout className="interests-page">
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <main className="www-main">
+    <WwwLayout.Content>
       <section className="interests-page-content">
         <h1>
           <T id="InterestsPage.title" />
@@ -18,7 +18,7 @@ const InterestsPage = () => (
         </p>
         <InterestsTable />
       </section>
-    </main>
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );
