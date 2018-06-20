@@ -7,6 +7,7 @@ import {
   getSimpleYearlyMaintenance,
 } from 'core/utils/finance';
 import { widget1Types, widget1Constants } from '../../../../redux/widget1';
+import { commonTypes } from '../../../../redux/common';
 
 const mapStateToProps = ({
   widget1: {
@@ -44,9 +45,9 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = dispatch => ({
   setInterestRate: value =>
-    dispatch({ type: widget1Types.SET_VALUE('interestRate'), value }),
+    dispatch({ type: commonTypes.SET_VALUE('interestRate'), value }),
   setMaintenance: value =>
-    dispatch({ type: widget1Types.SET_VALUE('useMaintenance'), value }),
+    dispatch({ type: commonTypes.SET_VALUE('useMaintenance'), value }),
 });
 
 export default connect(

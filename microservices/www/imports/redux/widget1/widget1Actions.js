@@ -17,6 +17,7 @@ import {
   PURCHASE_TYPE,
 } from './widget1Constants';
 import suggestValue from './widget1Suggestion';
+import { commonTypes } from '../common';
 
 export const suggestValues = () => (dispatch, getState) => {
   const state = getState();
@@ -84,7 +85,8 @@ export const setStep = nextStep => (dispatch, getState) => {
 
   const willBeFinalStep = nextStep === FINAL_STEP;
   return Promise.resolve()
-    .then(() => dispatch({ type: types.SET_VALUE('step'), value: nextStep }))
+    .then(() =>
+      dispatch({ type: commonTypes.SET_VALUE('step'), value: nextStep }))
     .then(() =>
     // Special exception here, as suggestValues only runs once
     // the widget1 is at the FINAL_STEP. Suggest values should be run
@@ -93,7 +95,10 @@ export const setStep = nextStep => (dispatch, getState) => {
     .then(() => {
       const fields = selectFields(state);
       if (step >= fields.length - 1) {
-        dispatch({ type: types.SET_VALUE('finishedTutorial'), value: true });
+        dispatch({
+          type: commonTypes.SET_VALUE('finishedTutorial'),
+          value: true,
+        });
       }
     });
 };

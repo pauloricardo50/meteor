@@ -10,6 +10,7 @@ import {
 import * as widget1Actions from '../widget1Actions';
 import * as widget1Types from '../widget1Types';
 import * as widget1Constants from '../widget1Constants';
+import { commonTypes } from '../../common';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -180,7 +181,9 @@ describe('widget1Actions', () => {
 
     it('sets the step if it is not the final step', () => {
       store = prepareStore({ step: 0 });
-      const expectedActions = [{ type: 'step_SET', value: 1 }];
+      const expectedActions = [
+        { type: commonTypes.SET_VALUE('step'), value: 1 },
+      ];
       return expectActions(widget1Actions.setStep(1), expectedActions);
     });
 
@@ -192,12 +195,15 @@ describe('widget1Actions', () => {
         step: widget1Constants.ACQUISITION_FIELDS.length,
       });
       const expectedActions = [
-        { type: 'step_SET', value: widget1Constants.ACQUISITION_FIELDS.length },
+        {
+          type: commonTypes.SET_VALUE('step'),
+          value: widget1Constants.ACQUISITION_FIELDS.length,
+        },
         ...widget1Constants.ACQUISITION_FIELDS.map(name => ({
           type: widget1Types.SUGGEST_VALUE(name),
           value: 0,
         })),
-        { type: 'finishedTutorial_SET', value: true },
+        { type: commonTypes.SET_VALUE('finishedTutorial'), value: true },
       ];
       return expectActions(
         widget1Actions.setStep(widget1Constants.ACQUISITION_FIELDS.length),
