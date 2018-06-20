@@ -17,7 +17,6 @@ const TableFilter = ({ filterKey, onChange, options, value }) => (
       placeholder={`Filter by ${filterKey}`}
       simpleValue={false}
       value={value}
-      closeOnSelect={false}
     />
   </div>
 );
