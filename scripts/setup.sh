@@ -24,6 +24,17 @@ done
 # Remove all symlinks in the parent directory
 find .. -type l -exec unlink {} \;
 
+# Install flow-typed globally to install all used packages' types
+if [[ $DO_CLEAN == true ]];
+then
+  echo "Installing flow and flow-typed"
+  meteor npm i -gq flow-typed
+  npm i -g flow-bin
+
+  echo "Remove current flow typed libdefs"
+  ( cd .. && rm -rf flow-typed );
+fi
+
 # Prepare every microservice
 for i in 'admin' 'app' 'www'
   do
@@ -52,39 +63,47 @@ for i in 'admin' 'app' 'www'
     if [[ $DO_CLEAN == true ]];
     then
       echo "Cleaning npm packages"
-      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
+      ( cd ../microservices/$i && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
 
       echo "Resetting meteor"
       ( cd ../microservices/$i && meteor reset );
     fi
 
     echo "Installing npm packages"
-    ( cd ../microservices/$i && meteor npm install );
+    ( cd ../microservices/$i && meteor npm i -q );
+
+    # Do this after installing npm packages
+    if [[ $DO_CLEAN == true ]];
+    then
+      # Use --skip to ignore missing libdefs
+      echo "Fetching types for installed node_modules"
+      ( cd ../microservices/$i && meteor flow-typed install --skip );
+    fi
   done
 
 if [[ $DO_CLEAN == true ]];
 then
   echo "Cleaning and installing root npm packages"
-  ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
+  ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
 
   echo "Cleaning and installing core npm packages"
-  ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear --force);
+  ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
 
   echo "Cleaning up all CSS"
   ./clean-css.sh
 fi
 
 echo "Installing npm packages in root"
-( cd .. && meteor npm install );
+( cd .. && meteor npm i -q );
 
 # Install core npm packages only on non-circleCI environments
 if [[ $CIRCLE_CI != 1 ]];
 then
   echo "Installing npm packages in core/"
-  ( cd ../core && meteor npm install );
+  ( cd ../core && meteor npm i -q );
 fi
 
-meteor npm i -g babel-cli start-server-and-test
+meteor npm i -gq babel-cli start-server-and-test
 
 echo "Creating language files..."
 meteor babel-node ./createLanguages.js
