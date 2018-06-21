@@ -52,7 +52,6 @@ $progression-color: #8db6e6;
   flex-direction: column;
   justify-content: space-between;
 
-  width: 100%;
   height: calc(#{$step-height} * 4);
 
   @include screen(custom, max, $break-off) {

@@ -18,11 +18,13 @@ const HomePage = () => (
     />
     {/* <HomePageInterestRates /> */}
     <WwwLayout.TopNav variant={VARIANTS.WHITE} />
-    <HomePageHeader />
-    {/* <HomePagePartners /> */}
-    <HomePageDescription />
-    <HomePageReviews />
-    {/* <HomePageNewsletter /> */}
+    <WwwLayout.Content>
+      <HomePageHeader />
+      {/* <HomePagePartners /> */}
+      <HomePageDescription />
+      <HomePageReviews />
+      {/* <HomePageNewsletter /> */}
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

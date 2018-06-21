@@ -2,6 +2,7 @@
   position: relative;
 
   display: flex;
+  overflow: hidden;
   align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
@@ -46,9 +47,6 @@
 }
 .home-page header .text h4 {
   max-width: 500px;
-
-  // font-weight: 300;
-  // line-height: 1.5em;
 }
 
 .home-page header .widget1-single-input-form {

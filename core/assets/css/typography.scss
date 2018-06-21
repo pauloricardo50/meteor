@@ -2,12 +2,10 @@
 @include font-face('Eina04-Bold', 'fonts/Eina04_Bold');
 
 body {
-  letter-spacing: 0.048em; // 0.75px / 16px
-
+  letter-spacing: 0.048em; /* 0.75px / 16px  */
   font-family: 'Eina04-Regular';
-  line-height: 1.4em;
 
-  @include font-size($font-size-s);
+  line-height: 1.4em;@include font-size($font-size-s);
 }
 
 h1,
@@ -18,9 +16,9 @@ h5,
 h6 {
   margin: 0.67em 0;
 
-  letter-spacing: 0.048em; // 0.75px / 16px
-
+  letter-spacing: 0.048em; /* 0.75px / 16px  */
   font-family: 'Eina04-Bold';
+
   font-weight: normal;
   line-height: 1.3em;
 }

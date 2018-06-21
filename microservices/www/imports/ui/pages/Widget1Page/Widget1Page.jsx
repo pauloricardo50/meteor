@@ -29,6 +29,7 @@ const getUrl = ({ salary, fortune, propertyValue }) => {
   return `/start/2?${queryString.stringify(queryparams)}`;
 };
 
+
 const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
   const showPart2 = finishedTutorial;
   return (
@@ -38,6 +39,7 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
         descriptionId="Widget1Page.description"
       />
       <WwwLayout.TopNav variant={VARIANTS.GREY} />
+      <WwwLayout.Content>
       <div className="widget1-page-content">
         <Widget1Options />
         {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
@@ -57,9 +59,11 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
         )}
       </div>
       {showPart2 && <Widget1PageDisclaimer />}
+      </WwwLayout.Content>
     </WwwLayout>
   );
 };
+
 
 Widget1Page.propTypes = {
   step: PropTypes.number.isRequired,

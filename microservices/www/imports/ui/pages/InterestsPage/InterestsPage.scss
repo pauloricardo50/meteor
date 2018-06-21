@@ -15,9 +15,7 @@
     box-sizing: border-box;
     width: 100%;
     padding: 32px;
-    padding-top: 0;
-
-    @include screen(med) {
+    padding-top: 0;@include screen(med) {
       padding: 16px;
     }
   }
@@ -29,9 +27,7 @@
 
   margin: 80px 32px 0 32px;
 
-  transform: scale(1.25);
-
-  @include screen(med, min) {
+  transform: scale(1.25);@include screen(med, min) {
     width: $small;
   }
 }
