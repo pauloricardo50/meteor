@@ -104,7 +104,7 @@ jobs:
             ./setup.sh
       - run:
           name: Check flow types
-          command: node_modules/.bin/flow
+          command: ./node_modules/.bin/flow
       - run:
           name: create results directories
           command: mkdir ./results ./e2e-results
