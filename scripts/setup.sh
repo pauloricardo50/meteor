@@ -64,8 +64,9 @@ for i in 'admin' 'app' 'www'
       echo "Resetting meteor"
       ( cd ../microservices/$i && meteor reset );
 
+      # Use --skip to ignore missing libdefs
       echo "Fetching types for installed node_modules"
-      ( cd ../microservices/$i && meteor flow-typed install );
+      ( cd ../microservices/$i && meteor flow-typed install --skip );
     fi
 
     echo "Installing npm packages"
