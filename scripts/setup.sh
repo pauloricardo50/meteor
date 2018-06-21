@@ -21,8 +21,9 @@ while getopts ":c" opt; do
  esac
 done
 
-# Remove all symlinks in the parent directory
-find .. -type l -exec unlink {} \;
+# Remove all symlinks in the parent directory except node_modules to
+# keep .bin symlinks
+find .. -type l -not -path "**/node_modules/**" -exec unlink {} \;
 
 # Install flow-typed globally to install all used packages' types
 if [[ $DO_CLEAN == true ]];
