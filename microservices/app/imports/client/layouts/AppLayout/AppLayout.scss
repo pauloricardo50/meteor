@@ -8,7 +8,7 @@
   padding: 16px;
   padding-left: 316px; /* side-nav width + 16px  */
 
-   @include screen(med, min) {
+  @include screen(med, min) {
     padding-top: 80px;
     padding-bottom: 16px;
   }

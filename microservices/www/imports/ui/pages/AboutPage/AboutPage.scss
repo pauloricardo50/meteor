@@ -230,7 +230,7 @@
       max-width: 400px;
       padding: 0 16px;
 
-       @include screen(small) {
+      @include screen(small) {
         padding: 0;
       }
 

@@ -21,7 +21,7 @@
   width: 70%;
   height: 340px;
 
-@include screen(small) {
+  @include screen(small) {
     height: 400px;
   }
 }
@@ -44,7 +44,6 @@
 
   @include screen(med) {
     width: calc(100% + 16px);
-
     /* Make the cards extend below the buttons which looks a bit better */
     margin: 0 -8px;
     padding: 16px;
