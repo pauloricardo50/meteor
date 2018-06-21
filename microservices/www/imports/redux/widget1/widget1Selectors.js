@@ -5,7 +5,10 @@ import {
   REFINANCING_FIELDS,
 } from './widget1Constants';
 
-export const makeWidget1Selector = name => state => state.widget1[name];
+const selectWidget1 = state => state.widget1;
+
+export const makeWidget1Selector = name =>
+  createSelector(selectWidget1, widget1 => widget1[name]);
 
 export const makeSelectValue = name =>
   createSelector(
