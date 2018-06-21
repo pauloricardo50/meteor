@@ -44,7 +44,12 @@ module.exports = {
 
     // FIXME: Find a solution for math parentheses mess:
     // https://github.com/prettier/prettier/issues/3968
-    'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
+    // 'no-extra-parens': [
+    //   'error',
+    //   'all',
+    //   { nestedBinaryExpressions: false, ignoreJSX: 'multi-line' },
+    // ],
+    'no-extra-parens': ['error', 'all'],
     'no-mixed-operators': ['error', { allowSamePrecedence: false }],
 
     // eslint-plugin-import rules
