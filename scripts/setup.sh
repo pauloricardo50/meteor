@@ -63,13 +63,13 @@ for i in 'admin' 'app' 'www'
 
       echo "Resetting meteor"
       ( cd ../microservices/$i && meteor reset );
+
+      echo "Fetching types for installed node_modules"
+      ( cd ../microservices/$i && meteor flow-typed install );
     fi
 
     echo "Installing npm packages"
     ( cd ../microservices/$i && meteor npm install );
-
-    echo "Fetching types for installed node_modules"
-    ( cd ../microservices/$i && meteor flow-typed install );
   done
 
 if [[ $DO_CLEAN == true ]];
