@@ -29,6 +29,9 @@ if [[ $DO_CLEAN == true ]];
 then
   echo "Installing flow typed"
   meteor npm i -g flow-typed
+
+  echo "Remove current flow typed libdefs"
+  ( cd .. && rm -rf flow-typed );
 fi
 
 # Prepare every microservice
