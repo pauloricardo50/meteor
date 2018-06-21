@@ -10,7 +10,8 @@
     "clean-run": "npm run setup-clean && npm run run",
     "remove-core": "cd scripts/ && ./remove-core.sh",
     "clean-css": "cd scripts/ && ./clean-css.sh",
-    "flow": "flow"
+    "flow": "flow",
+    "flow-typed": "flow-typed install"
   },
   "repository": {
     "type": "git",
