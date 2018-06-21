@@ -21,7 +21,7 @@ export default class UserJoyride extends Component {
   render() {
     return (
       <Joyride
-        ref={c => (this.joyride = c)}
+        ref={c => this.joyride = c}
         steps={steps}
         // autoStart
         run={this.state.run} // or some other boolean for when you want to start it

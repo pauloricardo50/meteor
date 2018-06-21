@@ -121,9 +121,9 @@ class TasksTable extends Component {
     });
 
     const relatedDoc = {
-      label: link ? (
+      label: link ?
         <IconLink link={link} icon={icon} text={text || translationId} />
-      ) : null,
+        : null,
       raw: text,
     };
 
@@ -199,17 +199,17 @@ class TasksTable extends Component {
     return (
       <React.Fragment>
         {children}
-        {hideIfNoData && !rows.length ? (
+        {hideIfNoData && !rows.length ?
           <p className="text-center">{hideIfNoDataText}</p>
-        ) : (
-          <Table
-            columnOptions={this.getColumnOptions({ showAssignee })}
-            rows={rows}
-            noIntl
-            className="tasks-table"
-            clickable
-          />
-        )}
+          : (
+            <Table
+              columnOptions={this.getColumnOptions({ showAssignee })}
+              rows={rows}
+              noIntl
+              className="tasks-table"
+              clickable
+            />
+          )}
       </React.Fragment>
     );
   }

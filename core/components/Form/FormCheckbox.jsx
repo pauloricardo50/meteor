@@ -17,9 +17,9 @@ const FormCheckbox = ({ input, meta: { touched, error }, label, required }) => (
         <span>
           {label} <span className="error">*</span>
         </span>
-      ) : (
+      ) :
         label
-      )
+
     }
   />
 );

@@ -28,9 +28,9 @@ class Form extends Accounts.ui.Form {
         }}
         className={['accounts', className].join(' ')}
       >
-        {Object.keys(fields).length > 0 ? (
+        {Object.keys(fields).length > 0 ?
           <Accounts.ui.Fields fields={fields} />
-        ) : null}
+          : null}
         <Accounts.ui.Buttons buttons={buttons} />
         <br />
         {formState === STATES.SIGN_IN || formState === STATES.SIGN_UP ? (
@@ -38,9 +38,9 @@ class Form extends Accounts.ui.Form {
             <Accounts.ui.PasswordOrService oauthServices={oauthServices} />
           </div>
         ) : null}
-        {formState === STATES.SIGN_IN || formState === STATES.SIGN_UP ? (
+        {formState === STATES.SIGN_IN || formState === STATES.SIGN_UP ?
           <Accounts.ui.SocialButtons oauthServices={oauthServices} />
-        ) : null}
+          : null}
         <br />
         <Accounts.ui.FormMessage {...message} />
       </form>

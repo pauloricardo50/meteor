@@ -9,9 +9,8 @@ export class FormMessages extends Component {
         <div className="messages">
           {messages
             .filter(message => !('field' in message))
-            .map(({ message, type }, i) => (
-              <Accounts.ui.FormMessage message={message} type={type} key={i} />
-            ))}
+            .map(({ message, type }, i) =>
+              <Accounts.ui.FormMessage message={message} type={type} key={i} />)}
         </div>
       )
     );

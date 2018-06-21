@@ -211,9 +211,8 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.netFortune',
-      value: (
-        <span className="sum">{toMoney(totalFortune + realEstateFortune)}</span>
-      ),
+      value:
+  <span className="sum">{toMoney(totalFortune + realEstateFortune)}</span>,
       spacingTop: true,
       hide: !realEstateFortune,
     },
@@ -387,9 +386,8 @@ const getBorrowerArray = (props) => {
     },
     {
       label: 'Recap.netFortune',
-      value: (
-        <span className="sum">{toMoney(totalFortune + realEstateFortune)}</span>
-      ),
+      value:
+  <span className="sum">{toMoney(totalFortune + realEstateFortune)}</span>,
       spacingTop: true,
       hide: !realEstateFortune,
     },

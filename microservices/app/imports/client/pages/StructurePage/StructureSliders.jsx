@@ -16,7 +16,7 @@ const getArray = (borrowers, showInsurance) => [
     sliderIncrement: 0,
     max: getFortune({ borrowers }),
   },
-  ...(showInsurance
+  ...showInsurance
     ? [
       {
         labelText: <T id="general.insuranceFunds" />,
@@ -25,7 +25,7 @@ const getArray = (borrowers, showInsurance) => [
         max: getInsuranceFortune({ borrowers }),
       },
     ]
-    : []),
+    : [],
 ];
 
 // Round values here as they might appear wrong

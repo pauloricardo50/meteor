@@ -74,7 +74,9 @@ Accounts.ui.config = function (options) {
   ];
 
   Object.keys(options).forEach((key) => {
-    if (!VALID_KEYS.includes(key)) { throw new Error(`Accounts.ui.config: Invalid key: ${key}`); }
+    if (!VALID_KEYS.includes(key)) {
+      throw new Error(`Accounts.ui.config: Invalid key: ${key}`);
+    }
   });
 
   // Deal with `passwordSignupFields`
@@ -92,7 +94,8 @@ Accounts.ui.config = function (options) {
       Accounts.ui._options.passwordSignupFields = options.passwordSignupFields;
     } else {
       throw new Error(`Accounts.ui.config: Invalid option for \`passwordSignupFields\`: ${
-        options.passwordSignupFields}`);
+        options.passwordSignupFields
+      }`);
     }
   }
 
@@ -101,8 +104,7 @@ Accounts.ui.config = function (options) {
     Object.keys(options.requestPermissions).forEach((service) => {
       const scope = options.requestPermissions[service];
       if (Accounts.ui._options.requestPermissions[service]) {
-        throw new Error(`Accounts.ui.config: Can't set \`requestPermissions\` more than once for ${
-          service}`);
+        throw new Error(`Accounts.ui.config: Can't set \`requestPermissions\` more than once for ${service}`);
       } else if (!(scope instanceof Array)) {
         throw new Error('Accounts.ui.config: Value for `requestPermissions` must be an array');
       } else {
@@ -120,8 +122,7 @@ Accounts.ui.config = function (options) {
       }
 
       if (Accounts.ui._options.requestOfflineToken[service]) {
-        throw new Error(`Accounts.ui.config: Can't set \`requestOfflineToken\` more than once for ${
-          service}`);
+        throw new Error(`Accounts.ui.config: Can't set \`requestOfflineToken\` more than once for ${service}`);
       } else {
         Accounts.ui._options.requestOfflineToken[service] = value;
       }
@@ -137,8 +138,7 @@ Accounts.ui.config = function (options) {
       }
 
       if (Accounts.ui._options.forceApprovalPrompt[service]) {
-        throw new Error(`Accounts.ui.config: Can't set \`forceApprovalPrompt\` more than once for ${
-          service}`);
+        throw new Error(`Accounts.ui.config: Can't set \`forceApprovalPrompt\` more than once for ${service}`);
       } else {
         Accounts.ui._options.forceApprovalPrompt[service] = value;
       }

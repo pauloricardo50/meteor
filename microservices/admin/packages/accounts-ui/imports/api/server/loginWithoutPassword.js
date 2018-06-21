@@ -66,7 +66,9 @@ Accounts.sendLoginEmail = function (userId, address) {
   if (
     !address ||
     !(user.emails || []).map(({ address }) => address).includes(address)
-  ) { throw new Error('No such email address for user.'); }
+  ) {
+    throw new Error('No such email address for user.');
+  }
 
   const tokenRecord = {
     token: Random.secret(),
@@ -99,7 +101,9 @@ Accounts.sendLoginEmail = function (userId, address) {
     options.text = Accounts.emailTemplates.loginNoPassword.text(user, loginUrl);
   }
 
-  if (typeof Accounts.emailTemplates.loginNoPassword.html === 'function') { options.html = Accounts.emailTemplates.loginNoPassword.html(user, loginUrl); }
+  if (typeof Accounts.emailTemplates.loginNoPassword.html === 'function') {
+    options.html = Accounts.emailTemplates.loginNoPassword.html(user, loginUrl);
+  }
 
   if (typeof Accounts.emailTemplates.headers === 'object') {
     options.headers = Accounts.emailTemplates.headers;

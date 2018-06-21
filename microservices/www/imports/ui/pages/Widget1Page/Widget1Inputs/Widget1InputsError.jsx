@@ -10,13 +10,13 @@ import { hideFinmaValues } from '../Widget1PageContainer';
 const STATUSES = [SUCCESS, WARNING, ERROR];
 
 const getBorrowError = status =>
-  (status === ERROR
+  status === ERROR
     ? 'Widget1InputsError.borrowError'
-    : 'Widget1InputsError.borrowWarning');
+    : 'Widget1InputsError.borrowWarning';
 const getIncomeError = status =>
-  (status === ERROR
+  status === ERROR
     ? 'Widget1InputsError.incomeError'
-    : 'Widget1InputsError.incomeWarning');
+    : 'Widget1InputsError.incomeWarning';
 
 const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
   if (worstStatus === SUCCESS) {

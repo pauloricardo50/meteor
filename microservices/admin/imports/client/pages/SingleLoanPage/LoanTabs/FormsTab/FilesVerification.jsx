@@ -39,9 +39,9 @@ const FilesVerification = ({ loan, borrowers, property }) => (
       })),
     ].map(({ label, doc, ...rest }, index) => ({
       label,
-      content: (
-        <FilesVerificationTab key={doc._id} doc={doc} index={index} {...rest} />
-      ),
+      content:
+  <FilesVerificationTab key={doc._id} doc={doc} index={index} {...rest} />
+      ,
     }))}
   />
 );

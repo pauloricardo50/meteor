@@ -138,9 +138,9 @@ const TextInput = (props) => {
           pattern: mask ? '[0-9]*' : undefined,
         }}
         startAdornment={
-          props.type === 'money' ? (
+          props.type === 'money' ?
             <InputAdornment position="start">CHF</InputAdornment>
-          ) : null
+            : null
         }
       />
       {info && <FormHelperText>{info}</FormHelperText>}

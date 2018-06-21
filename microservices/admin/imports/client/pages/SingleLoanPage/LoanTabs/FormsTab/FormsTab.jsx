@@ -147,7 +147,7 @@ const shouldCountField = field =>
   field.condition !== false && field.ignore !== true;
 
 const getFirstInputOfConditionalField = field =>
-  (field.type === 'conditionalInput' ? field.inputs[0] : field);
+  field.type === 'conditionalInput' ? field.inputs[0] : field;
 
 const makeCompareToValidationArray = validationArray => (
   tot,

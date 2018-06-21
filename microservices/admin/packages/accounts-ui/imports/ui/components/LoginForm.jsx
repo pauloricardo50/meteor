@@ -47,9 +47,8 @@ class LoginForm extends Component {
     this.state = {
       messages: [],
       waiting: true,
-      formState: formState || (Accounts.user()
-        ? STATES.PROFILE
-        : STATES.SIGN_IN),
+      formState:
+        formState || (Accounts.user() ? STATES.PROFILE : STATES.SIGN_IN),
       onSubmitHook: props.onSubmitHook || Accounts.ui._options.onSubmitHook,
       onSignedInHook:
         props.onSignedInHook || Accounts.ui._options.onSignedInHook,
@@ -451,10 +450,9 @@ class LoginForm extends Component {
 
     // Sort the button array so that the submit button always comes first, and
     // buttons should also come before links.
-    loginButtons.sort((a, b) => (
+    loginButtons.sort((a, b) =>
       (b.type == 'submit' && a.type != undefined) -
-        (a.type == 'submit' && b.type != undefined)
-    ));
+        (a.type == 'submit' && b.type != undefined));
 
     return indexBy(loginButtons, 'id');
   }
@@ -776,7 +774,7 @@ class LoginForm extends Component {
       }
     } else if (
       ['USERNAME_AND_EMAIL', 'USERNAME_AND_EMAIL_NO_PASSWORD'].includes(passwordSignupFields()) &&
-        !this.validateField('username', username)
+      !this.validateField('username', username)
     ) {
       if (this.state.formState == STATES.SIGN_UP) {
         this.state.onSubmitHook(
@@ -992,7 +990,7 @@ class LoginForm extends Component {
         messages.push({
           message,
           type,
-          ...(field && { field }),
+          ...field && { field },
         });
         return { messages };
       });

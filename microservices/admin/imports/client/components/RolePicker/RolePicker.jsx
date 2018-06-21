@@ -7,7 +7,7 @@ import { ROLES } from 'core/api/constants';
 import RolePickerContainer from './RolePickerContainer';
 
 const RolePicker = ({ onChooseRole, shouldDisplay }) =>
-  (shouldDisplay ? (
+  shouldDisplay ? (
     <DropdownMenu
       iconType="edit"
       options={Object.values(ROLES).map(role => ({
@@ -16,7 +16,7 @@ const RolePicker = ({ onChooseRole, shouldDisplay }) =>
         onClick: () => onChooseRole(role),
       }))}
     />
-  ) : null);
+  ) : null;
 
 RolePicker.propTypes = {
   shouldDisplay: PropTypes.bool.isRequired,

@@ -45,9 +45,9 @@ const UploaderBottom = ({
         />
       ))}
 
-      {!disableAdd && (
+      {!disableAdd &&
         <FileAdder id={id} handleAddFiles={handleAddFiles} docId={docId} />
-      )}
+      }
     </React.Fragment>
   );
 };

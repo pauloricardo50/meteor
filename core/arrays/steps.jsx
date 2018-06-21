@@ -127,11 +127,12 @@ const getSteps = (props) => {
 
     {
       nb: 4,
-      title:
-  <span
-    className="fa fa-home fa-2x"
-    style={{ color: '#ADB5BD', paddingLeft: 8 }}
-  />,
+      title: (
+        <span
+          className="fa fa-home fa-2x"
+          style={{ color: '#ADB5BD', paddingLeft: 8 }}
+        />
+      ),
       disabled: true, // TODO
       subtitle: null,
       items: [],

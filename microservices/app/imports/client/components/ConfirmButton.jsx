@@ -70,11 +70,11 @@ export default class ConfirmButton extends Component {
 
     return (
       <div>
-        {buttonComponent ? (
+        {buttonComponent ?
           React.cloneElement(buttonComponent, { ...buttonProps })
-        ) : (
+          :
           <Button {...buttonProps} />
-        )}
+        }
         <Dialog
           title={<T id="general.areYouSure" />}
           actions={actions}

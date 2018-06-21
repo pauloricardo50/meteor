@@ -94,9 +94,9 @@ export function validateUsername(
     return true;
   }
   const fieldName =
-      passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP
-        ? 'username'
-        : 'usernameOrEmail';
+    passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP
+      ? 'username'
+      : 'usernameOrEmail';
   showMessage('error.usernameRequired', 'warning', false, fieldName);
   return false;
 }

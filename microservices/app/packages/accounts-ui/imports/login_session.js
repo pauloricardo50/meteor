@@ -26,7 +26,9 @@ const VALID_KEYS = [
 ];
 
 export const validateKey = function (key) {
-  if (!VALID_KEYS.includes(key)) { throw new Error(`Invalid key in loginButtonsSession: ${key}`); }
+  if (!VALID_KEYS.includes(key)) {
+    throw new Error(`Invalid key in loginButtonsSession: ${key}`);
+  }
 };
 
 export const KEY_PREFIX = 'Meteor.loginButtons.';
@@ -38,7 +40,9 @@ export const KEY_PREFIX = 'Meteor.loginButtons.';
 Accounts._loginButtonsSession = {
   set(key, value) {
     validateKey(key);
-    if (['errorMessage', 'infoMessage'].includes(key)) { throw new Error("Don't set errorMessage or infoMessage directly. Instead, use errorMessage() or infoMessage()."); }
+    if (['errorMessage', 'infoMessage'].includes(key)) {
+      throw new Error("Don't set errorMessage or infoMessage directly. Instead, use errorMessage() or infoMessage().");
+    }
 
     this._set(key, value);
   },
@@ -66,7 +70,9 @@ if (Meteor.isClient) {
       getLoginServices()
         .map(({ name }) => name)
         .includes(attemptInfo.type)
-    ) { loginResultCallback(attemptInfo.type, attemptInfo.error); }
+    ) {
+      loginResultCallback(attemptInfo.type, attemptInfo.error);
+    }
   });
 
   let doneCallback;

@@ -27,18 +27,18 @@ const VerificationFailed = ({ verification, onClick }) => (
           ))
           .reduce((prev, curr) => [prev, <hr key={prev.length} />, curr])}
     </ul>
-    {verification.requested ? (
+    {verification.requested ?
       <VerificationRequested />
-    ) : (
-      <div style={{ marginTop: 40 }}>
-        <ConfirmButton
-          raised
-          label={<T id="VerificationPage.CTA2" />}
-          primary
-          handleClick={onClick}
-        />
-      </div>
-    )}
+      : (
+        <div style={{ marginTop: 40 }}>
+          <ConfirmButton
+            raised
+            label={<T id="VerificationPage.CTA2" />}
+            primary
+            handleClick={onClick}
+          />
+        </div>
+      )}
   </div>
 );
 

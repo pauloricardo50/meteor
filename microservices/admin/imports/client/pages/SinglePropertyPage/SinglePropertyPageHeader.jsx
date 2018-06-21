@@ -21,9 +21,9 @@ const SinglePropertyHeader = ({
   <div className="single-property-page-header">
     <div className="top">
       <h1>
-        {getPropertyAddress({ address1, city, zipCode }) || (
+        {getPropertyAddress({ address1, city, zipCode }) ||
           <T id="general.property" />
-        )}
+        }
       </h1>
     </div>
 

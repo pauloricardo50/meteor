@@ -5,20 +5,20 @@ import Switch from '@material-ui/core/Switch';
 
 const Toggle = ({ toggled, onToggle, labelTop, labelLeft, labelRight }) => (
   <div className="toggle">
-    {labelTop && (
+    {labelTop &&
       <div className="toggle-label toggle-label-top">{labelTop}</div>
-    )}
+    }
 
     <div className="toggle-content">
-      {labelLeft && (
+      {labelLeft &&
         <span className="toggle-label toggle-label-left">{labelLeft}</span>
-      )}
+      }
 
       <Switch style={{ height: 26 }} checked={toggled} onChange={onToggle} />
 
-      {labelRight && (
+      {labelRight &&
         <span className="toggle-label toggle-label-right">{labelRight}</span>
-      )}
+      }
     </div>
   </div>
 );

@@ -1,7 +1,7 @@
 import { FILE_STATUS } from './fileConstants';
 
 export const getUploadCountPrefix = lastUploadCount =>
-  (lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`);
+  lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`;
 
 export const fakeFile = {
   name: 'fakeFile.pdf',

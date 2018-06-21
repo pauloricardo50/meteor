@@ -13,9 +13,9 @@ export const PageHead = ({
     <title>
       e-Potek{titleId ? ` | ${formatMessage({ id: titleId })}` : ''}
     </title>
-    {descriptionId && (
+    {descriptionId &&
       <meta name="description" content={formatMessage({ id: descriptionId })} />
-    )}
+    }
   </Helmet>
 );
 

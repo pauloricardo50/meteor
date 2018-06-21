@@ -12,9 +12,9 @@ const SingleBorrowerHeader = ({
   <div className="single-borrower-page-header">
     <div className="top">
       <h1>
-        {getBorrowerFullName({ firstName, lastName }) || (
+        {getBorrowerFullName({ firstName, lastName }) ||
           <T id="general.borrower" />
-        )}
+        }
       </h1>
     </div>
 
