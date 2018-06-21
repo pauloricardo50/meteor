@@ -7,7 +7,6 @@ import T from 'core/components/Translation';
 import { LOAN_STATUS } from 'core/api/constants';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import AppItem from './AppItem';
-import FlowTest from './FlowTest';
 
 const AppPage = ({ loans, currentUser }) => (
   <section id="app-page" className="flex-col center">
@@ -48,8 +47,6 @@ const AppPage = ({ loans, currentUser }) => (
         href={`/loans/${loan._id}`}
       />
     ))}
-
-    <FlowTest />
 
     <AppItem
       title={<T id="AppPage.newLoan" />}
