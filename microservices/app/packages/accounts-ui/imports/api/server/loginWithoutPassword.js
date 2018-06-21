@@ -1,39 +1,41 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-///
-/// LOGIN WITHOUT PASSWORD
-///
+// /
+// / LOGIN WITHOUT PASSWORD
+// /
 
 // Method called by a user to request a password reset email. This is
 // the start of the reset process.
 Meteor.methods({
-  loginWithoutPassword: function ({ email, username = null }) {
+  loginWithoutPassword({ email, username = null }) {
     if (username !== null) {
       check(username, String);
 
-      var user = Meteor.users.findOne({ $or: [{
-          "username": username, "emails.address": { $exists: 1 }
-        }, {
-          "emails.address": email
-        }]
+      var user = Meteor.users.findOne({
+        $or: [
+          {
+            username,
+            'emails.address': { $exists: 1 },
+          },
+          {
+            'emails.address': email,
+          },
+        ],
       });
-      if (!user)
-        throw new Meteor.Error(403, "User not found");
+      if (!user) throw new Meteor.Error(403, 'User not found');
 
       email = user.emails[0].address;
-    }
-    else {
+    } else {
       check(email, String);
 
-      var user = Meteor.users.findOne({ "emails.address": email });
-      if (!user)
-        throw new Meteor.Error(403, "User not found");
+      var user = Meteor.users.findOne({ 'emails.address': email });
+      if (!user) throw new Meteor.Error(403, 'User not found');
     }
 
     if (Accounts.ui._options.requireEmailVerification) {
       if (!user.emails[0].verified) {
-        throw new Meteor.Error(403, "Email not verified");
+        throw new Meteor.Error(403, 'Email not verified');
       }
     }
 
@@ -53,26 +55,28 @@ Accounts.sendLoginEmail = function (userId, address) {
   // this account.
 
   // Make sure the user exists, and address is one of their addresses.
-  var user = Meteor.users.findOne(userId);
-  if (!user)
-    throw new Error("Can't find user");
+  const user = Meteor.users.findOne(userId);
+  if (!user) throw new Error("Can't find user");
   // pick the first unverified address if we weren't passed an address.
   if (!address) {
-    var email = (user.emails || []).find(({ verified }) => !verified);
+    const email = (user.emails || []).find(({ verified }) => !verified);
     address = (email || {}).address;
   }
   // make sure we have a valid address
-  if (!address || !(user.emails || []).map(({ address }) => address).includes(address))
-    throw new Error("No such email address for user.");
+  if (
+    !address ||
+    !(user.emails || []).map(({ address }) => address).includes(address)
+  ) { throw new Error('No such email address for user.'); }
 
-
-  var tokenRecord = {
+  const tokenRecord = {
     token: Random.secret(),
-    address: address,
-    when: new Date()};
+    address,
+    when: new Date(),
+  };
   Meteor.users.update(
-    {_id: userId},
-    {$push: {'services.email.verificationTokens': tokenRecord}});
+    { _id: userId },
+    { $push: { 'services.email.verificationTokens': tokenRecord } },
+  );
 
   // before passing to template, update user object with new token
   Meteor._ensure(user, 'services', 'email');
@@ -81,24 +85,21 @@ Accounts.sendLoginEmail = function (userId, address) {
   }
   user.services.email.verificationTokens.push(tokenRecord);
 
-  var loginUrl = Accounts.urls.verifyEmail(tokenRecord.token);
+  const loginUrl = Accounts.urls.verifyEmail(tokenRecord.token);
 
-  var options = {
+  const options = {
     to: address,
     from: Accounts.emailTemplates.loginNoPassword.from
       ? Accounts.emailTemplates.loginNoPassword.from(user)
       : Accounts.emailTemplates.from,
-    subject: Accounts.emailTemplates.loginNoPassword.subject(user)
+    subject: Accounts.emailTemplates.loginNoPassword.subject(user),
   };
 
   if (typeof Accounts.emailTemplates.loginNoPassword.text === 'function') {
-    options.text =
-      Accounts.emailTemplates.loginNoPassword.text(user, loginUrl);
+    options.text = Accounts.emailTemplates.loginNoPassword.text(user, loginUrl);
   }
 
-  if (typeof Accounts.emailTemplates.loginNoPassword.html === 'function')
-    options.html =
-      Accounts.emailTemplates.loginNoPassword.html(user, loginUrl);
+  if (typeof Accounts.emailTemplates.loginNoPassword.html === 'function') { options.html = Accounts.emailTemplates.loginNoPassword.html(user, loginUrl); }
 
   if (typeof Accounts.emailTemplates.headers === 'object') {
     options.headers = Accounts.emailTemplates.headers;
@@ -110,17 +111,19 @@ Accounts.sendLoginEmail = function (userId, address) {
 // Check for installed accounts-password dependency.
 if (Accounts.emailTemplates) {
   Accounts.emailTemplates.loginNoPassword = {
-    subject: function(user) {
-      return "Login on " + Accounts.emailTemplates.siteName;
+    subject(user) {
+      return `Login on ${Accounts.emailTemplates.siteName}`;
     },
-    text: function(user, url) {
-      var greeting = (user.profile && user.profile.name) ?
-            ("Hello " + user.profile.name + ",") : "Hello,";
+    text(user, url) {
+      const greeting =
+        user.profile && user.profile.name
+          ? `Hello ${user.profile.name},`
+          : 'Hello,';
       return `${greeting}
 To login, simply click the link below.
 ${url}
 Thanks.
 `;
-    }
+    },
   };
 }

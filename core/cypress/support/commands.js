@@ -53,8 +53,7 @@ Cypress.Commands.add('getTestData', (email) => {
 });
 
 Cypress.Commands.add('meteorLogout', () => {
-  cy
-    .window()
+  cy.window()
     .then(({ Meteor }) =>
       new Cypress.Promise((resolve, reject) => {
         if (!Meteor.userId()) {
@@ -144,8 +143,7 @@ Cypress.Commands.add(
       });
     }
 
-    cy
-      .routeShouldExist(uri)
+    cy.routeShouldExist(uri)
       .get(expectedDomElement)
       .should('exist')
 

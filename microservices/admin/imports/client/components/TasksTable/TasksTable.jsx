@@ -181,24 +181,35 @@ class TasksTable extends Component {
   };
 
   render() {
-    const { data, isLoading, showAssignee, children, hideIfNoData, hideIfNoDataText } = this.props;
+    const {
+      data,
+      isLoading,
+      showAssignee,
+      children,
+      hideIfNoData,
+      hideIfNoDataText,
+    } = this.props;
 
     if (isLoading) {
       return <Loading />;
     }
 
-    const rows = this.setupRows({ data, showAssignee })
+    const rows = this.setupRows({ data, showAssignee });
 
     return (
       <React.Fragment>
         {children}
-        {hideIfNoData && !rows.length ? <p className="text-center">{hideIfNoDataText}</p> : <Table
-          columnOptions={this.getColumnOptions({ showAssignee })}
-          rows={rows}
-          noIntl
-          className="tasks-table"
-          clickable
-        />}
+        {hideIfNoData && !rows.length ? (
+          <p className="text-center">{hideIfNoDataText}</p>
+        ) : (
+          <Table
+            columnOptions={this.getColumnOptions({ showAssignee })}
+            rows={rows}
+            noIntl
+            className="tasks-table"
+            clickable
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -218,7 +229,7 @@ TasksTable.defaultProps = {
   showAssignee: false,
   children: null,
   hideIfNoData: false,
-  hideIfNoDataText: "Pas de taches pour l'instant"
+  hideIfNoDataText: "Pas de taches pour l'instant",
 };
 
 export default withRouter(TasksTable);

@@ -23,10 +23,8 @@ describe('<EditUserDialogForm />', () => {
   const formArray = getEditUserFormArray(editUserFormFields);
 
   it('passes the correct formArray to the DialogForm component', () =>
-    expect(
-      component(params)
-        .find(DialogForm)
-        .first()
-        .prop('formArray'),
-    ).to.deep.equal(formArray));
+    expect(component(params)
+      .find(DialogForm)
+      .first()
+      .prop('formArray')).to.deep.equal(formArray));
 });

@@ -140,8 +140,7 @@ describe('Admin Pages', () => {
     // from which we get the `Meteor` instance used in tests
     cy.visit('/');
 
-    cy
-      .eraseAndGenerateTestData()
+    cy.eraseAndGenerateTestData()
       .getTestData(ADMIN_EMAIL)
       .then((data) => {
         testData = data;

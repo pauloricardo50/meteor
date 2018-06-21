@@ -42,7 +42,11 @@ const ContactPage = () => (
         >
           Directions
         </Button>
-        <MapWithMarker address={ADDRESS} className="map" options={{ zoom: 12 }} />
+        <MapWithMarker
+          address={ADDRESS}
+          className="map"
+          options={{ zoom: 12 }}
+        />
       </div>
     </WwwLayout.Content>
     <WwwLayout.Footer transparent={false}>

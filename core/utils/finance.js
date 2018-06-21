@@ -45,7 +45,7 @@ export const getYearlyAmortization = ({
   // borrowValue is above 65%
   // 15 years amortization is the default, but if you're older, you'll
   // have to amortize faster
-  return percentToAmortize * propertyValue / yearsToRetirement;
+  return (percentToAmortize * propertyValue) / yearsToRetirement;
 };
 
 // Given the value of a property, the down payment and interest rate,
