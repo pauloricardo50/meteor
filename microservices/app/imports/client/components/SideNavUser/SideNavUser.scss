@@ -11,20 +11,9 @@
   width: 300px;
   min-height: calc(100% - 64px);
 
-  transition: all 300ms $bezier;
+  transition: background-color 300ms $bezier, color 300ms $bezier;
 
   background-color: #fff;
-
-  .mui-select div[role='button'][aria-haspopup='true'] {
-    display: block;
-
-    padding-top: 0;
-    padding-right: 30px;
-
-     > svg {
-      vertical-align: text-top;
-    }
-  }
 }
 
 .side-nav-user .scrollable {
@@ -41,13 +30,13 @@
 
 .side-nav-user .link {
   display: flex;
-  align-items: center;// flex-shrink: 0;
+  align-items: center;
   justify-content: flex-start;
 
   width: 100%;
   height: 64px;
 
-  transition: all 300ms $bezier;
+  transition: background-color 300ms $bezier, color 300ms $bezier;
   text-decoration: none;
 
   color: #343a40 !important;
@@ -90,7 +79,9 @@
   width: 100%;
   margin-top: 16px;
 
-  transition: all 300ms $bezier;@include screen(med) {
+  transition: all 300ms $bezier;
+
+  @include screen(med) {
     margin-bottom: 44px; // extra padding for iOS bottom bar
   }
 }
@@ -160,7 +151,7 @@
 .side-nav-user .side-stepper .list .step .top {
   display: flex;
   align-items: center;
-  justify-content: flex-start;// width: 100%;
+  justify-content: flex-start;
 
   height: 64px;
 
@@ -241,7 +232,6 @@
 }
 
 .side-nav-user .side-stepper .list .step .step-list {
-  // width: 100%;
   padding: 0;
   padding-left: 16px;
 
@@ -253,7 +243,7 @@
 
   display: flex;
   align-items: center;
-  justify-content: flex-start;// width: 100%;
+  justify-content: flex-start;
 
   height: 64px;
   padding-right: 16px;
@@ -408,7 +398,9 @@
 
 .side-nav-user .top-bar img,
 .side-nav-user .top-bar a {
-  height: 64px;@include screen(med, min) {
+  height: 64px;
+
+  @include screen(med, min) {
     height: 64px;
   }
 }

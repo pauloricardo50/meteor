@@ -5,29 +5,42 @@ import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
 import { fakeFile } from '../api/files/fileHelpers';
 
 const TEST_EMAIL = 'test@test.com';
+const TEST_LASTNAME = 'TestLastName';
+const TEST_FIRSTNAME = 'TestFirstName';
+const TEST_PHONE = '0123456789';
 
 Factory.define('user', Meteor.users, {
   roles: () => 'user',
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: {},
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
 });
 
 Factory.define('dev', Meteor.users, {
   roles: () => 'dev',
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: {},
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
 });
 
 Factory.define('admin', Meteor.users, {
   roles: () => 'admin',
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: {},
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
 });
 
 Factory.define('lender', Meteor.users, {
   roles: () => 'lender',
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: () => ({ organization: 'bankName', cantons: ['GE'] }),
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
+  organization: 'bankName',
+  cantons: ['GE'],
 });
 
 Factory.define('borrower', Borrowers, {

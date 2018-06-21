@@ -12,6 +12,12 @@ const isInvalidated = (validated, requested) =>
 
 const LoanValidation = ({ loan }) => {
   const { logic } = loan;
+
+  if (!logic) {
+    console.warn('Inside LoanValidation we could not find logic', { loan, now: new Date() }); // eslint-disable-line
+    return null;
+  }
+
   const { requested, requestedAt, validated, verifiedAt } = logic.verification;
 
   if (isBeforeFirstRequest(validated, requested)) {

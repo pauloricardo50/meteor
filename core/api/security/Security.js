@@ -28,6 +28,10 @@ export default class Security {
     if (!userId) {
       this.handleUnauthorized('Checking if logged in');
     }
+
+    if (userId !== Meteor.userId()) {
+      this.handleUnauthorized('Checking if logged in');
+    }
   }
 
   static checkLoggedOut() {
@@ -45,10 +49,8 @@ export default class Security {
   }
 
   static currentUserIsAdmin() {
-    return (
-      this.hasRole(Meteor.userId(), ROLES.ADMIN) ||
-      this.hasRole(Meteor.userId(), ROLES.DEV)
-    );
+    const userId = Meteor.userId();
+    return this.hasRole(userId, ROLES.ADMIN) || this.hasRole(userId, ROLES.DEV);
   }
 
   static checkCurrentUserIsAdmin() {

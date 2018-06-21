@@ -38,3 +38,19 @@ export const setRole = new Method({
     role: String,
   },
 });
+
+export const adminCreateUser = new Method({
+  name: 'adminCreateUser',
+  params: {
+    options: Object,
+    role: String,
+  },
+});
+
+export const editUser = new Method({
+  name: 'editUser',
+  params: {
+    userId: String,
+    object: Object,
+  },
+});

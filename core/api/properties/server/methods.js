@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import SecurityService from '../../security';
 import PropertyService from '../PropertyService';
 import {
@@ -9,15 +7,12 @@ import {
   pushPropertyValue,
   popPropertyValue,
 } from '../methodDefinitions';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
 propertyInsert.setHandler((context, { property, userId }) => {
-  if (userId === undefined && Meteor.userId()) {
-    userId = Meteor.userId();
-  }
-
+  userId = checkInsertUserId(userId);
   return PropertyService.insert({ property, userId });
 });
-
 propertyUpdate.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
   return PropertyService.update({ propertyId, object });

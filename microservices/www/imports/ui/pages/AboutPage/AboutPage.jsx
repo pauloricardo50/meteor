@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PageHead from 'core/components/PageHead';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 import AboutPagePart1 from './AboutPagePart1';
@@ -11,6 +12,10 @@ import AboutPageOffice from './AboutPageOffice';
 
 const AboutPage = () => (
   <WwwLayout className="about-page">
+    <PageHead
+      titleId="AboutPagePart1.title"
+      descriptionId="AboutPagePart1.description"
+    />
     <WwwLayout.TopNav variant={VARIANTS.WHITE} />
     <WwwLayout.Content>
       <AboutPagePart1 />

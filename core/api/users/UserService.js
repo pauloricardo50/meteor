@@ -9,6 +9,18 @@ class UserService {
   createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
+
+    return newUserId;
+  };
+
+  adminCreateUser = ({ options, role }) => {
+    const newUserId = this.createUser({ options, role });
+    this.update({ userId: newUserId, object: { ...options } });
+    try {
+      this.sendEnrollmentEmail({ userId: newUserId });
+    } catch (error) {
+      console.log('Theodor error: ', error);
+    }
     return newUserId;
   };
 
@@ -17,6 +29,8 @@ class UserService {
 
   sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
+
+  sendEnrollmentEmail = ({ userId }) => Accounts.sendEnrollmentEmail(userId);
 
   // This is used to hook into Accounts
   onCreateUser = (options, user) => {
