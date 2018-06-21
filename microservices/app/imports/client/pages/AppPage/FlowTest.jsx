@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 
 const main = (n: number): number => n * 2;
 
-interface FlowTestProps {
+interface Props {
   hello: string;
 }
 
-const FlowTest = (props: FlowTestProps) => (
+const FlowTest = (props: Props) => (
   <div>
-    {main('hello')} {/* This line should show an error in the editor */}
+    {main(1)} {/* This line should show an error in the editor */}
     {props.hello}
   </div>
 );

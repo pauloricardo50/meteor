@@ -27,8 +27,9 @@ find .. -type l -exec unlink {} \;
 # Install flow-typed globally to install all used packages' types
 if [[ $DO_CLEAN == true ]];
 then
-  echo "Installing flow typed"
+  echo "Installing flow and flow-typed"
   meteor npm i -g flow-typed
+  npm i -g flow-bin
 
   echo "Remove current flow typed libdefs"
   ( cd .. && rm -rf flow-typed );
