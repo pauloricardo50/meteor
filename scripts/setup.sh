@@ -24,6 +24,13 @@ done
 # Remove all symlinks in the parent directory
 find .. -type l -exec unlink {} \;
 
+# Install flow-typed globally to install all used packages' types
+if [[ $DO_CLEAN == true ]];
+then
+  echo "Installing flow typed"
+  meteor npm i -g flow-typed
+fi
+
 # Prepare every microservice
 for i in 'admin' 'app' 'www'
   do
@@ -60,6 +67,9 @@ for i in 'admin' 'app' 'www'
 
     echo "Installing npm packages"
     ( cd ../microservices/$i && meteor npm install );
+
+    echo "Fetching types for installed node_modules"
+    ( cd ../microservices/$i && meteor flow-typed install );
   done
 
 if [[ $DO_CLEAN == true ]];
