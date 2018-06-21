@@ -4,6 +4,7 @@
 .*/microservices/www/.meteor/.*\.json
 ../../.meteor/.*\.json
 .*/**/.npm/.*\.json
+.*/**/node_modules/**/.*\.json
 .*/node_modules/cypress/
 
 [options]
