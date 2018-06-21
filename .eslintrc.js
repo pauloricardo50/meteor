@@ -39,10 +39,13 @@ module.exports = {
     'object-curly-newline': ['error', { consistent: true }],
     'multiline-ternary': ['error', 'always-multiline'],
 
+    // UPDATE: This math issue appears to be fixed, try it out for a while
+    // and then remove these comments
+
     // FIXME: Find a solution for math parentheses mess:
     // https://github.com/prettier/prettier/issues/3968
-    // 'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
-    // 'no-mixed-operators': ['error', { allowSamePrecedence: false }],
+    'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
+    'no-mixed-operators': ['error', { allowSamePrecedence: false }],
 
     // eslint-plugin-import rules
 
