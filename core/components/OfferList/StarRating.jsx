@@ -17,11 +17,11 @@ const StarRating = ({ value }) => (
     starColor={colors.warning}
     emptyStarColor={colors.lightBorder}
     renderStarIcon={(index, val) =>
-      index <= val ? (
+      (index <= val ? (
         <Icon type="star" style={styles.svg} />
       ) : (
         <Icon type="starEmpty" style={styles.svg} />
-      )
+      ))
     }
     renderStarIconHalf={() => <Icon type="starHalf" style={styles.svg} />}
   />

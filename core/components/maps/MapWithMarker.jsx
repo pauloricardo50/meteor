@@ -29,9 +29,9 @@ class MapWithMarker extends Component {
             id={id}
             options={options}
           />
-        ) :
+        ) : (
           <p className="description">Adresse pas trouvée!</p>
-        }
+        )}
       </div>
     );
   }

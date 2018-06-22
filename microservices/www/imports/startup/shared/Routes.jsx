@@ -40,8 +40,9 @@ const routesConfig = [
 const Routes = () => (
   <ScrollToTop>
     <Switch>
-      {routesConfig.map((routeProps, index) =>
-        <Route key={index} {...routeProps} />)}
+      {routesConfig.map((routeProps, index) => (
+        <Route key={index} {...routeProps} />
+      ))}
     </Switch>
   </ScrollToTop>
 );

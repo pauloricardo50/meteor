@@ -27,8 +27,9 @@ const HomePageDescription = () => (
       </h2>
     </b>
     <div className="steps">
-      {steps.map((step, index) =>
-        <DescriptionItem nb={index + 1} key={step.id} step={step} />)}
+      {steps.map((step, index) => (
+        <DescriptionItem nb={index + 1} key={step.id} step={step} />
+      ))}
       <HomePageProgression />
     </div>
   </div>

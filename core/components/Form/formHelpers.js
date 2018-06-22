@@ -25,7 +25,7 @@ export const moneyFormatters = {
 };
 
 const setRequired = initialValue =>
-  initialValue === undefined ? true : initialValue;
+  (initialValue === undefined ? true : initialValue);
 
 export const makeFormArray = (array, intlPrefix) =>
   array.map(field => ({

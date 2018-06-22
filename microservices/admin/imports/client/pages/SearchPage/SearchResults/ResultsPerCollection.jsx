@@ -17,8 +17,9 @@ import {
 import ResultSecondaryText from './ResultSecondaryText';
 
 const getBorrowerInfo = ({ firstName, lastName, createdAt, updatedAt }) => ({
-  primary: getBorrowerFullName({ firstName, lastName }) ||
-    <T id="general.borrower" />,
+  primary: getBorrowerFullName({ firstName, lastName }) || (
+    <T id="general.borrower" />
+  ),
   secondary: <ResultSecondaryText infos={{ createdAt, updatedAt }} />,
 });
 

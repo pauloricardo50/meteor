@@ -34,7 +34,7 @@ export class Form extends React.Component {
     } = this.props;
     return (
       <form
-        ref={ref => this.form = ref}
+        ref={ref => (this.form = ref)}
         className={[className, ready ? 'ready' : null].join(' ')}
         className="accounts-ui"
         noValidate

@@ -5,8 +5,9 @@ import createStore from '../../redux';
 
 const store = createStore();
 
-const AppStore = ({ children }) =>
-  <Provider store={store}>{children}</Provider>;
+const AppStore = ({ children }) => (
+  <Provider store={store}>{children}</Provider>
+);
 AppStore.propTypes = {
   children: PropTypes.node.isRequired,
 };

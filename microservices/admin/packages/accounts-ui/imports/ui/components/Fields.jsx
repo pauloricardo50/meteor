@@ -7,8 +7,9 @@ export class Fields extends React.Component {
     const { fields = {}, className = 'fields' } = this.props;
     return (
       <div className={className}>
-        {Object.keys(fields).map((id, i) =>
-          <Accounts.ui.Field {...fields[id]} key={i} />)}
+        {Object.keys(fields).map((id, i) => (
+          <Accounts.ui.Field {...fields[id]} key={i} />
+        ))}
       </div>
     );
   }

@@ -3,14 +3,12 @@ import { getMixpanelAuthorization } from 'core/api';
 const MIXPANEL_URL = 'https://mixpanel.com/api/2.0/';
 
 export const createQuery = params =>
-  params
+  (params
     ? `?${Object.keys(params)
-        .map(
-          param =>
-            `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`,
-        )
-        .join('&')}`
-    : '';
+      .map(param =>
+        `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
+      .join('&')}`
+    : '');
 
 const buildUrl = ({ params, endpoint = 'segmentation' }) => {
   const url = MIXPANEL_URL + endpoint + createQuery(params);

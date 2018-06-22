@@ -397,7 +397,7 @@ export const useLppFees = ({
   insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
 
 export const getLppFees = ({ loan }) =>
-  useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0;
+  (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
 
 export const getInsuranceFees = ({ loan }) =>
   getLppFees({ loan }) * loan.general.insuranceFortuneUsed;

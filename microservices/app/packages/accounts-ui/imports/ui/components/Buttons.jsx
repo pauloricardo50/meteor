@@ -7,8 +7,9 @@ export class Buttons extends React.Component {
     const { buttons = {}, className = 'buttons' } = this.props;
     return (
       <div className={className}>
-        {Object.keys(buttons).map((id, i) =>
-          <Accounts.ui.Button {...buttons[id]} key={i} />)}
+        {Object.keys(buttons).map((id, i) => (
+          <Accounts.ui.Button {...buttons[id]} key={i} />
+        ))}
       </div>
     );
   }

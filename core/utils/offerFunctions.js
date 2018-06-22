@@ -73,16 +73,14 @@ export const getBestRate = (
   { offers = [] },
   duration = INTEREST_RATES.YEARS_10,
 ) =>
-  offers.length
-    ? Math.min(
-        ...offers.reduce((acc, offer) => {
-          if (offer.standardOffer[duration]) {
-            acc.push(offer.standardOffer[duration]);
-          }
-          if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
-            acc.push(offer.counterpartOffer[duration]);
-          }
-          return acc;
-        }, []),
-      )
-    : undefined;
+  (offers.length
+    ? Math.min(...offers.reduce((acc, offer) => {
+      if (offer.standardOffer[duration]) {
+        acc.push(offer.standardOffer[duration]);
+      }
+      if (offer.counterpartOffer && offer.counterpartOffer[duration]) {
+        acc.push(offer.counterpartOffer[duration]);
+      }
+      return acc;
+    }, []))
+    : undefined);

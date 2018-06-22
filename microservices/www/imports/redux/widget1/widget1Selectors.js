@@ -19,9 +19,9 @@ export const makeSelectValue = name =>
 export const selectFields = createSelector(
   makeWidget1Selector('purchaseType'),
   purchaseType =>
-    purchaseType === PURCHASE_TYPE.ACQUISITION
+    (purchaseType === PURCHASE_TYPE.ACQUISITION
       ? ACQUISITION_FIELDS
-      : REFINANCING_FIELDS,
+      : REFINANCING_FIELDS),
 );
 
 export const selectAutoValues = (state) => {

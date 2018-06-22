@@ -9,9 +9,9 @@ const makeHandleForDisablingUserForms = ({ _id: loanId }) => (
   event,
   isToggledOn,
 ) =>
-  isToggledOn
+  (isToggledOn
     ? enableUserForms.run({ loanId })
-    : disableUserForms.run({ loanId });
+    : disableUserForms.run({ loanId }));
 
 const DisableUserFormsToggle = ({ loan }) => {
   const { userFormsEnabled } = loan;

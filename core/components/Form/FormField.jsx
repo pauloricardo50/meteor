@@ -19,8 +19,9 @@ import { required as requiredFunc } from './validators';
 
 const defaultField = props => <Field {...props} />;
 
-const arrayField = props =>
-  <FieldArray {...props} component={RenderFieldArray} />;
+const arrayField = props => (
+  <FieldArray {...props} component={RenderFieldArray} />
+);
 const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   switch (fieldType) {
   case FIELD_TYPES.TEXT:

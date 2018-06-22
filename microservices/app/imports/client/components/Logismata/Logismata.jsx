@@ -31,13 +31,13 @@ export default class Logismata extends Component {
 
     return (
       <div>
-        {authToken ?
+        {authToken ? (
           children
-          : (
-            <div style={{ height: 100 }}>
-              <Loading />
-            </div>
-          )}
+        ) : (
+          <div style={{ height: 100 }}>
+            <Loading />
+          </div>
+        )}
       </div>
     );
   }

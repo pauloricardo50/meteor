@@ -59,11 +59,11 @@ const LoanSummary = ({
       <div className="flex-col">
         <label htmlFor="">2-3e pillier utilisé</label>
         <p>
-          {insuranceFortuneUsed ?
+          {insuranceFortuneUsed ? (
             <IntlNumber value={insuranceFortuneUsed} format="money" />
-            :
+          ) : (
             '-'
-          }
+          )}
         </p>
       </div>
     </div>

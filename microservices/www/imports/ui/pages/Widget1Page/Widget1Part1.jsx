@@ -12,9 +12,9 @@ const Widget1Part1 = ({ step, fields }) => (
           name={field}
           isCurrentStep={step === index}
         />
-      ) : 
-          <div className="input-form-placeholder" key={field} />)
-    )}
+      ) : (
+        <div className="input-form-placeholder" key={field} />
+      )))}
   </div>
 );
 

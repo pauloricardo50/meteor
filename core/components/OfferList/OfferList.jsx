@@ -34,9 +34,9 @@ const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
   { key: 'interest5', format: 'percentage' },
   { key: 'interest10', format: 'percentage' },
   {
-    component:
-  <ConditionsButton conditions={conditions} counterparts={counterparts} />
-    ,
+    component: (
+      <ConditionsButton conditions={conditions} counterparts={counterparts} />
+    ),
   },
 ];
 

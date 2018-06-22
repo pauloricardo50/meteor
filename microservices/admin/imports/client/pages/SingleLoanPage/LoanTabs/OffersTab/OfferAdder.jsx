@@ -46,9 +46,9 @@ const counterpartsForm = isDiscount => [
     },
     { id: IS_DISCOUNT, fieldType: FIELD_TYPES.CHECKBOX },
   ],
-  ...isDiscount
+  ...(isDiscount
     ? [{ id: 'discount', fieldType: FIELD_TYPES.PERCENT }]
-    : [...interestRatesFormArray(2)],
+    : [...interestRatesFormArray(2)]),
 ];
 
 const getFormArray = (hasCounterparts, isDiscount) =>

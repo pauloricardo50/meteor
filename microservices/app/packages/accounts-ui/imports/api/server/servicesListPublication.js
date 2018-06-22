@@ -8,6 +8,6 @@ Meteor.publish('servicesList', function () {
   }
   const fields = {};
   // Publish the existing services for a user, only name or nothing else.
-  services.forEach(service => fields[`services.${service.name}.name`] = 1);
+  services.forEach(service => (fields[`services.${service.name}.name`] = 1));
   return Meteor.users.find({ _id: this.userId }, { fields });
 });

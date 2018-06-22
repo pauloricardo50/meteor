@@ -48,19 +48,19 @@ const TopNav = (props) => {
         <div className="buttons">
           <ImpersonateWarningWithTracker />
           {children}
-          {currentUser ?
+          {currentUser ? (
             <TopNavDropdown {...props} />
-            : (
-              <Button
-                label={<T id="TopNav.login" />}
-                primary
-                dense
-                onClick={() => {
-                  track('TopNav - clicked login', {});
-                  window.location.replace(`${Meteor.settings.public.subdomains.app}/login`);
-                }}
-              />
-            )}
+          ) : (
+            <Button
+              label={<T id="TopNav.login" />}
+              primary
+              dense
+              onClick={() => {
+                track('TopNav - clicked login', {});
+                window.location.replace(`${Meteor.settings.public.subdomains.app}/login`);
+              }}
+            />
+          )}
         </div>
       </div>
     </Toolbar>

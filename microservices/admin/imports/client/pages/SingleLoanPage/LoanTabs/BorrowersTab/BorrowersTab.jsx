@@ -10,9 +10,9 @@ export default class BorrowersTab extends React.Component {
         borrower.firstName || borrower.lastName
           ? `${borrower.firstName} ${borrower.lastName}`
           : `Emprunteur ${i + 1}`,
-      content:
-  <SingleBorrowerTab {...props} borrower={borrower} key={borrower._id} />
-      ,
+      content: (
+        <SingleBorrowerTab {...props} borrower={borrower} key={borrower._id} />
+      ),
     }));
 
   render() {

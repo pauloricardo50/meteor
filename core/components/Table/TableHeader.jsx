@@ -59,17 +59,17 @@ const TableHeader = ({
                 onClick={() => onSort(index)}
               >
                 {label ||
-                    (noIntl ?
+                    (noIntl ? (
                       id
-                      :
+                    ) : (
                       <T id={id} values={intlValues} list="table" />
-                    )}
+                    ))}
               </TableSortLabel>
             </Tooltip>
-          ) :
+          ) : (
             label ||
               (noIntl ? id : <T id={id} values={intlValues} list="table" />)
-          }
+          )}
         </TableCell>
       ))}
     </TableRow>

@@ -5,8 +5,9 @@ import { TOOLTIP_LISTS } from '../../arrays/tooltips';
 
 const { Provider, Consumer } = React.createContext();
 
-export const TooltipProvider = ({ tooltipList, children }) =>
-  <Provider value={tooltipList}>{children}</Provider>;
+export const TooltipProvider = ({ tooltipList, children }) => (
+  <Provider value={tooltipList}>{children}</Provider>
+);
 export const TooltipProviderContainer = tooltipList => Component => props => (
   <Provider value={tooltipList}>
     <Component {...props} />

@@ -58,9 +58,9 @@ export default class ConditionalInput extends Component {
                 noValidator: true,
               }))}
           </div>
-        ) :
+        ) : (
           ''
-        }
+        )}
         <FormValidator {...this.props} id={children[0].id} />
       </div>
     );
