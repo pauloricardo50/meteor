@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DevError = ({ error }) =>
-  Meteor.isDevelopment || Meteor.isTest ? (
+  (Meteor.isDevelopment || Meteor.isTest ? (
     <div className="error" style={{ margin: 40 }}>
       <span style={{ display: 'flex', alignItems: 'center' }}>
         <h4>{error.name}</h4>:
@@ -12,7 +12,7 @@ const DevError = ({ error }) =>
       </span>
       {error.stack}
     </div>
-  ) : null;
+  ) : null);
 
 DevError.propTypes = {
   error: PropTypes.object.isRequired,

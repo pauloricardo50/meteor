@@ -31,11 +31,11 @@ const renderObject = (key, obj) => {
     return (
       <li key={key}>
         <h4>{stringKey}</h4>
-        {value > 10000 ?
+        {value > 10000 ? (
           <p>{`CHF ${toMoney(value)}`}</p>
-          :
+        ) : (
           <p>{`${value}`}</p>
-        }
+        )}
       </li>
     );
   default:

@@ -8,8 +8,9 @@ const HomePageProgression = () => (
     {dots.map((dot, dotIndex) => (
       <span key={dotIndex} className="segment">
         <span className="dot" />
-        {dashes.map((dash, dashIndex) =>
-          <span className="dash" key={dashIndex} />)}
+        {dashes.map((dash, dashIndex) => (
+          <span className="dash" key={dashIndex} />
+        ))}
       </span>
     ))}
     <span className="dot" />

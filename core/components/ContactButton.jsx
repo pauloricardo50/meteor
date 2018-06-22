@@ -174,7 +174,7 @@ export default class ContactButton extends Component {
           className="mask1"
           style={{
             ...styles.overlay,
-            ...open ? {} : styles.closed,
+            ...(open ? {} : styles.closed),
           }}
         >
           {overlayContent(history.location.pathname)}

@@ -10,7 +10,7 @@ import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 
 export const getPropertyAddress = ({ address1, zipCode, city }) =>
-  address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined;
+  (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = ({
   data: property,

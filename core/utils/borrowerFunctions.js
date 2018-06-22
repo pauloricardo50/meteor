@@ -65,7 +65,7 @@ export const getArrayValues = ({ borrowers }, key, mapFunc) => {
       return 0;
     }
     sum += [
-      ...borrower[key] ? borrower[key].map(mapFunc || (i => i.value)) : [],
+      ...(borrower[key] ? borrower[key].map(mapFunc || (i => i.value)) : []),
     ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
   });
 

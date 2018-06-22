@@ -990,7 +990,7 @@ class LoginForm extends Component {
         messages.push({
           message,
           type,
-          ...field && { field },
+          ...(field && { field }),
         });
         return { messages };
       });

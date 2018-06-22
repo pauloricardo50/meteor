@@ -45,9 +45,9 @@ export default class ClosingVerification extends Component {
 
     return (
       <div id="closing-verification" style={{ padding: '0 16px' }}>
-        {steps && steps.length ?
+        {steps && steps.length ? (
           steps.map(step =>
-            step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
+            (step.type === CLOSING_STEPS_TYPE.UPLOAD ? (
               <FileVerificator
                 currentValue={loan.documents[step.id]}
                 id={step.id}
@@ -74,10 +74,10 @@ export default class ClosingVerification extends Component {
                   saveError={this.saveError}
                 />
               </div>
-            ))
-          :
-              <h3>Pas d&apos;étapes à vérifier</h3>
-        }
+            )))
+        ) : (
+          <h3>Pas d&apos;étapes à vérifier</h3>
+        )}
       </div>
     );
   }

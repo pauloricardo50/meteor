@@ -54,7 +54,7 @@ export class Field extends React.Component {
         <label htmlFor={id}>{label}</label>
         <input
           id={id}
-          ref={ref => this.input = ref}
+          ref={ref => (this.input = ref)}
           type={type}
           onChange={onChange}
           placeholder={hint}

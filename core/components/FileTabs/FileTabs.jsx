@@ -13,9 +13,9 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
       tabs={[
         {
           label: <T id="general.mortgageLoan" />,
-          content:
-  <UploaderArray doc={loan} collection="loans" disabled={disabled} />
-          ,
+          content: (
+            <UploaderArray doc={loan} collection="loans" disabled={disabled} />
+          ),
         },
         {
           label: <T id="general.property" />,

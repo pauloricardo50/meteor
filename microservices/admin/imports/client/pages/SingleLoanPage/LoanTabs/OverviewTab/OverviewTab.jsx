@@ -37,11 +37,11 @@ const OverviewTab = (props) => {
           <h2 className="fixed-size">
             <T id="OverviewTab.recap" />
           </h2>
-          {displayRecap ?
+          {displayRecap ? (
             <Recap {...props} arrayName="dashboard" />
-            :
+          ) : (
             <T id="OverviewTab.emptyRecap" />
-          }
+          )}
         </div>
 
         <div className="borrower-recaps">

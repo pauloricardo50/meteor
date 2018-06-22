@@ -24,13 +24,13 @@ class FileVerificator extends Component {
         <h4>
           {/* If this is a custom uploadX file,
                     get title in the loan's last steps */}
-          {id.indexOf('upload') >= 0 ?
+          {id.indexOf('upload') >= 0 ? (
             (closingSteps.find(s => s.id === id) &&
               closingSteps.find(s => s.id === id).title) ||
             id
-            :
+          ) : (
             <T id={`files.${id}`} />
-          }
+          )}
         </h4>
         {currentValue &&
           currentValue

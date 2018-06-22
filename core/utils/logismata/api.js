@@ -29,14 +29,14 @@ export const handleResponse = (response) => {
  * @return {String} The authentication token
  */
 export const getAuthToken = testKey =>
-  token
+  (token
     ? Promise.resolve(token)
     : fetch(constants.authUrl(testKey), { method: 'GET' })
-        .then(handleResponse)
-        .then(body => {
-          token = body.authToken;
-          return body.authToken;
-        });
+      .then(handleResponse)
+      .then((body) => {
+        token = body.authToken;
+        return body.authToken;
+      }));
 
 export const setToken = authToken =>
   Promise.resolve(authToken).then(() => {
@@ -168,7 +168,7 @@ export const callApi = (method, params) => {
       method,
       // Stringify objects in the array, do not stringify strings once again
       params: [
-        ...getParamsArray(method, params).map(i => (typeof i === 'object' ? JSON.stringify(i) : i), ),
+        ...getParamsArray(method, params).map(i => (typeof i === 'object' ? JSON.stringify(i) : i)),
       ],
     },
   });

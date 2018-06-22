@@ -63,8 +63,9 @@ const getColumns = ({ props, index, user }) => {
       <ImpersonateLink user={user} />
       <UserAssignDropdown doc={user} />
     </div>
-  ) :
-    <div style={actionsColumnStyle} />;
+  ) : (
+    <div style={actionsColumnStyle} />
+  );
   columns.push(actionsColumn);
 
   return columns;

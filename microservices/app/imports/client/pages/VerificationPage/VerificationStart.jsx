@@ -13,34 +13,34 @@ const VerificationStart = ({ verification, loanId, onClick }) => (
         <T id="VerificationPage.description" />
       </p>
     </div>
-    {verification.requested ?
+    {verification.requested ? (
       <VerificationRequested />
-      : (
-        <div
-          className="text-center"
-          style={{
-            margin: '40px 0',
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          <Button
-            raised
-            label={<T id="general.cancel" />}
-            link
-            to={`/loans/${loanId}`}
-            style={{ marginRight: 8 }}
-          />
-          <ConfirmButton
-            raised
-            label={<T id="VerificationPage.CTA" />}
-            primary
-            handleClick={onClick}
-            text={<T id="VerificationPage.CTA.warning" />}
-          />
-        </div>
-      )}
+    ) : (
+      <div
+        className="text-center"
+        style={{
+          margin: '40px 0',
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
+        <Button
+          raised
+          label={<T id="general.cancel" />}
+          link
+          to={`/loans/${loanId}`}
+          style={{ marginRight: 8 }}
+        />
+        <ConfirmButton
+          raised
+          label={<T id="VerificationPage.CTA" />}
+          primary
+          handleClick={onClick}
+          text={<T id="VerificationPage.CTA.warning" />}
+        />
+      </div>
+    )}
   </article>
 );
 

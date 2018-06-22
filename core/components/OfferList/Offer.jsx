@@ -26,7 +26,7 @@ const Offer = ({
     className={classNames({ 'choice flex center': true, chosen, disabled })}
     style={{ flexWrap: 'nowrap', padding: 0 }}
     onClick={() =>
-      disabled ? {} : handleSave(chosen ? '' : offer.id, offer.type)
+      (disabled ? {} : handleSave(chosen ? '' : offer.id, offer.type))
     }
   >
     <h3 style={{ margin: 0, padding: 16 }}>{offer.organization}</h3>
