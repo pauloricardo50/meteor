@@ -14,7 +14,10 @@ const LoanValidation = ({ loan }) => {
   const { logic } = loan;
 
   if (!logic) {
-    console.warn('Inside LoanValidation we could not find logic', { loan, now: new Date() }); // eslint-disable-line
+    console.warn('Inside LoanValidation we could not find logic', {
+      loan,
+      now: new Date(),
+    }); // eslint-disable-line
     return null;
   }
 

@@ -312,7 +312,7 @@ export const validateRatiosCompletely = (
 };
 
 // Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
-export const getMaintenance = ({ property }) => property.value * 0.01 / 12;
+export const getMaintenance = ({ property }) => (property.value * 0.01) / 12;
 
 export const strategyDone = ({ loan, property }) => {
   const { general, logic } = loan;
@@ -397,7 +397,7 @@ export const useLppFees = ({
   insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
 
 export const getLppFees = ({ loan }) =>
-  (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
+  useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0;
 
 export const getInsuranceFees = ({ loan }) =>
   getLppFees({ loan }) * loan.general.insuranceFortuneUsed;

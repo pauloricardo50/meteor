@@ -9,9 +9,8 @@ describe('TooltipContext', () => {
     // FIXME: Can't test react context for now
     // https://github.com/airbnb/enzyme/pulls
     const id = 'test';
-    const Component = TooltipContainer(({ tooltipList }) => (
-      <div>{tooltipList}</div>
-    ));
+    const Component = TooltipContainer(({ tooltipList }) =>
+      <div>{tooltipList}</div>);
     const wrapper = mount(<TooltipProvider tooltipList={id}>
       <div>
         <span>

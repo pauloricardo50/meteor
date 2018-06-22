@@ -20,9 +20,9 @@ const getTabs = () => [
   {
     id: 'unassignedTasks',
     label: <T id="TasksTabs.unassignedTasks" />,
-    content: (
-      <TasksTableWithData unassigned showAssignee key="unassignedTasks" />
-    ),
+    content:
+  <TasksTableWithData unassigned showAssignee key="unassignedTasks" />
+    ,
   },
   {
     id: 'allTasks',

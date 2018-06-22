@@ -66,7 +66,7 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
           id: 'general.currentOwner',
           type: 'radioInput',
           options: Object.values(OWNER)
-            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true), )
             .map((value) => {
               const isFirst = value === OWNER.FIRST;
               const isSecond = value === OWNER.SECOND;
@@ -96,7 +96,7 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
           id: 'general.futureOwner',
           type: 'radioInput',
           options: Object.values(OWNER)
-            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true), )
             .map((value) => {
               const isFirst = value === OWNER.FIRST;
               const isSecond = value === OWNER.SECOND;

@@ -26,7 +26,8 @@ export function adjustLegend(that) {
     const itemsPerRow = i < 3 ? 3 : 2;
 
     item.legendGroup.attr({
-      translateX: (i % itemsPerRow) * (legendWidth - width) / (itemsPerRow - 1),
+      translateX:
+        ((i % itemsPerRow) * (legendWidth - width)) / (itemsPerRow - 1),
       translateY: Math.floor(i / 3) * (height + 5),
     });
   });

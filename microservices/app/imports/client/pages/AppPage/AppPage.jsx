@@ -21,11 +21,11 @@ const AppPage = ({ loans, currentUser }) => (
         key={loan._id}
         title={loan.name || <T id="AppPage.noName" />}
         subtitle={
-          loan.status === LOAN_STATUS.ACTIVE ? (
+          loan.status === LOAN_STATUS.ACTIVE ?
             <T id="AppPage.loan" />
-          ) : (
+            :
             <T id="AppPage.loan.done" />
-          )
+
         }
         mainText={
           loan.status === LOAN_STATUS.ACTIVE ? (
@@ -40,9 +40,9 @@ const AppPage = ({ loans, currentUser }) => (
                 </span>
               )}
             </span>
-          ) : (
+          ) :
             <span className="fa fa-home fa-2x heart-beat active" />
-          )
+
         }
         href={`/loans/${loan._id}`}
       />

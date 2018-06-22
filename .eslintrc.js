@@ -6,7 +6,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['import', 'jsx-a11y', 'meteor', 'react'],
+  plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'flowtype'],
   extends: ['airbnb', 'plugin:meteor/recommended', 'plugin:react/recommended'],
   env: {
     es6: true,
@@ -39,10 +39,18 @@ module.exports = {
     'object-curly-newline': ['error', { consistent: true }],
     'multiline-ternary': ['error', 'always-multiline'],
 
+    // UPDATE: This math issue appears to be fixed, try it out for a while
+    // and then remove these comments
+
     // FIXME: Find a solution for math parentheses mess:
     // https://github.com/prettier/prettier/issues/3968
-    // 'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
-    // 'no-mixed-operators': ['error', { allowSamePrecedence: false }],
+    // 'no-extra-parens': [
+    //   'error',
+    //   'all',
+    //   { nestedBinaryExpressions: false, ignoreJSX: 'multi-line' },
+    // ],
+    'no-extra-parens': ['error', 'all'],
+    'no-mixed-operators': ['error', { allowSamePrecedence: false }],
 
     // eslint-plugin-import rules
 

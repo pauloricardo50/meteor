@@ -57,9 +57,9 @@ const Widget1SingleInputSlider = ({
         onClick={increaseSliderMax}
         tabIndex={-1}
       />
-    ) : (
+    ) :
       <div className="button-placeholder" />
-    )}
+    }
   </div>
 );
 

@@ -13,6 +13,7 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-flowtype": "^2.49.3",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-meteor": "^5.0.0",

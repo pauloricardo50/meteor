@@ -5,7 +5,10 @@ import {
   REFINANCING_FIELDS,
 } from './widget1Constants';
 
-export const makeWidget1Selector = name => state => state.widget1[name];
+const selectWidget1 = state => state.widget1;
+
+export const makeWidget1Selector = name =>
+  createSelector(selectWidget1, widget1 => widget1[name]);
 
 export const makeSelectValue = name =>
   createSelector(
@@ -16,9 +19,9 @@ export const makeSelectValue = name =>
 export const selectFields = createSelector(
   makeWidget1Selector('purchaseType'),
   purchaseType =>
-    (purchaseType === PURCHASE_TYPE.ACQUISITION
+    purchaseType === PURCHASE_TYPE.ACQUISITION
       ? ACQUISITION_FIELDS
-      : REFINANCING_FIELDS),
+      : REFINANCING_FIELDS,
 );
 
 export const selectAutoValues = (state) => {

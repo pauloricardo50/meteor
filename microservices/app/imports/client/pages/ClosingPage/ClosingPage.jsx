@@ -18,9 +18,9 @@ const ClosingPage = (props) => {
             loan={loan}
             disabled={loan.logic.step > 3}
           />
-        ) : (
+        ) :
           <Empty />
-        )}
+        }
       </section>
     </ProcessPage>
   );

@@ -121,23 +121,23 @@ const mapInputs = (singleInput, index, parentProps) => {
   }
 
   if (childProps.inputProps.required === true) {
-    childProps.inputProps.label = (
-      <span>
+    childProps.inputProps.label =
+      (<span>
         <T
           id={`Forms.${childProps.inputProps.intlId ||
             childProps.inputProps.id}`}
           values={childProps.inputProps.intlValues}
         />
         <span style={{ color: 'red' }}> *</span>
-      </span>
-    );
+      </span>)
+    ;
   } else {
-    childProps.inputProps.label = (
-      <T
+    childProps.inputProps.label =
+      (<T
         id={`Forms.${childProps.inputProps.intlId || childProps.inputProps.id}`}
         values={childProps.inputProps.intlValues}
-      />
-    );
+      />)
+    ;
   }
 
   // Support options that are only string/boolean ids instead of objects
@@ -146,27 +146,27 @@ const mapInputs = (singleInput, index, parentProps) => {
     childProps.inputProps.type === 'radioInput' ||
     childProps.inputProps.type === 'selectFieldInput'
   ) {
-    childProps.inputProps.options = childProps.inputProps.options.map(o => (o.id === undefined ? { id: o } : o));
+    childProps.inputProps.options = childProps.inputProps.options.map(o => (o.id === undefined ? { id: o } : o), );
   }
 
   // if info is true, map it to a i18n string
   if (childProps.inputProps.info) {
-    childProps.inputProps.info = (
-      <T
+    childProps.inputProps.info =
+      (<T
         id={`Forms.${childProps.inputProps.intlId ||
           childProps.inputProps.id}.info`}
-      />
-    );
+      />)
+    ;
   }
 
   return inputSwitch(childProps, index, parentProps);
 };
 
-const AutoForm = props => (
-  <div className={props.formClasses} onSubmit={e => e.preventDefault()}>
+const AutoForm = props =>
+  (<div className={props.formClasses} onSubmit={e => e.preventDefault()}>
     {props.inputs.map((input, i) => mapInputs(input, i, props))}
-  </div>
-);
+  </div>)
+;
 
 AutoForm.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.object).isRequired,

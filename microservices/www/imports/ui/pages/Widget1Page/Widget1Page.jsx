@@ -38,25 +38,27 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
         descriptionId="Widget1Page.description"
       />
       <WwwLayout.TopNav variant={VARIANTS.GREY} />
-      <div className="widget1-page-content">
-        <Widget1Options />
-        {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
-        {showPart2 && <Widget1Part2 finma={finma} />}
-        {showPart2 && (
-          <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
-            <Button
-              color="secondary"
-              className="cta"
-              variant="raised"
-              link
-              to={getUrl(rest)}
-            >
-              <T id="general.continue" />
-            </Button>
-          </TogglePoint>
-        )}
-      </div>
-      {showPart2 && <Widget1PageDisclaimer />}
+      <WwwLayout.Content>
+        <div className="widget1-page-content">
+          <Widget1Options />
+          {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
+          {showPart2 && <Widget1Part2 finma={finma} />}
+          {showPart2 && (
+            <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
+              <Button
+                color="secondary"
+                className="cta"
+                variant="raised"
+                link
+                to={getUrl(rest)}
+              >
+                <T id="general.continue" />
+              </Button>
+            </TogglePoint>
+          )}
+        </div>
+        {showPart2 && <Widget1PageDisclaimer />}
+      </WwwLayout.Content>
     </WwwLayout>
   );
 };

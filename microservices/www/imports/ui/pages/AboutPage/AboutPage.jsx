@@ -17,12 +17,14 @@ const AboutPage = () => (
       descriptionId="AboutPagePart1.description"
     />
     <WwwLayout.TopNav variant={VARIANTS.WHITE} />
-    <AboutPagePart1 />
-    <AboutPagePart2 />
-    <AboutPageTeam />
-    <AboutPagePart3 />
-    <AboutPagePart4 />
-    <AboutPageOffice />
+    <WwwLayout.Content>
+      <AboutPagePart1 />
+      <AboutPagePart2 />
+      <AboutPageTeam />
+      <AboutPagePart3 />
+      <AboutPagePart4 />
+      <AboutPageOffice />
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

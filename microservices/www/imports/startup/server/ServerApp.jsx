@@ -6,9 +6,9 @@ import App from '../shared/App';
 
 const ServerApp = ({ context, location, ...otherProps }) => (
   <App
-    Router={routerProps => (
+    Router={routerProps =>
       <StaticRouter context={context} location={location} {...routerProps} />
-    )}
+    }
     {...otherProps}
   />
 );

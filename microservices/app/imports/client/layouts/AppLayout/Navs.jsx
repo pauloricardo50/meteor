@@ -13,9 +13,9 @@ export default class Navs extends Component {
   }
 
   handleToggle = nextState =>
-    (typeof nextState === 'boolean'
+    typeof nextState === 'boolean'
       ? this.setState({ open: nextState })
-      : this.setState(prev => ({ open: !prev.open })));
+      : this.setState(prev => ({ open: !prev.open }));
 
   handleClickLink = () => Meteor.defer(() => this.setState({ open: false }));
 

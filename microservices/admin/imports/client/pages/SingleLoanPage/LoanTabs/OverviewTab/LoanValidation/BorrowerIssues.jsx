@@ -8,9 +8,8 @@ import FieldsIssuesList from './FieldsIssuesList';
 const BorrowerIssues = ({ borrowers }) => {
   const borrowerAdminValidations = borrowers.map(({ firstName, lastName, adminValidation, documents }, i) => ({
     key: i,
-    borrowerName: getBorrowerFullName({ firstName, lastName }) || (
-      <T id="BorrowerIssues.itemTitle" values={{ index: i + 1 }} />
-    ),
+    borrowerName: getBorrowerFullName({ firstName, lastName }) ||
+    <T id="BorrowerIssues.itemTitle" values={{ index: i + 1 }} />,
     fieldsIssues: <FieldsIssuesList adminValidation={adminValidation} />,
     filesIssues: <FilesIssuesList documents={documents} />,
   }));

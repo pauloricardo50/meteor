@@ -37,7 +37,7 @@ export default class RadioInput extends Component {
     );
   };
 
-  saveValue = value => {
+  saveValue = (value) => {
     this.setState({ saving: true });
     // For radiobuttons, check if I actually want to pass a boolean instead of a String
     // event.target.value is always a String

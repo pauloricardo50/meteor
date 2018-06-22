@@ -64,11 +64,11 @@ const DropzoneArrayItem = (props) => {
         onDragEnter={handleMouseEnter}
       >
         <div className="left">
-          {currentValue && currentValue.length > 0 ? (
+          {currentValue && currentValue.length > 0 ?
             <span className="fa fa-check" style={styles.icon} />
-          ) : (
+            :
             <span />
-          )}
+          }
         </div>
 
         <div className="text">

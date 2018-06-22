@@ -21,7 +21,10 @@ export const defaultOptions = {
 };
 
 const composeWithTracker = (loadFunc, options) => component =>
-  compose(getTrackerLoader(loadFunc), { ...options, ...defaultOptions })(component);
+  compose(
+    getTrackerLoader(loadFunc),
+    { ...options, ...defaultOptions },
+  )(component);
 // compose(getTrackerLoader(loadFunc), options)(component);
 
 export default composeWithTracker;

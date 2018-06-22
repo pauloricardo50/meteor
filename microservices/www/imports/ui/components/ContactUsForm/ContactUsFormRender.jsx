@@ -7,7 +7,7 @@ import ContactUsFormContainer from './ContactUsFormContainer';
 import ContactUsFormSuccess from './ContactUsFormSuccess';
 
 const ContactUsFormRender = ({ submitSucceeded, ...rest }) => (
-  <span className="contact-us-form-wrapper">
+  <div className="contact-us-form-wrapper">
     <ContactUsForm
       {...rest}
       className={submitSucceeded ? 'animated bounceOutDown' : ''}
@@ -21,7 +21,7 @@ const ContactUsFormRender = ({ submitSucceeded, ...rest }) => (
     >
       <ContactUsFormSuccess />
     </div>
-  </span>
+  </div>
 );
 
 ContactUsFormRender.propTypes = {

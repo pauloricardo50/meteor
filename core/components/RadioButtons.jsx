@@ -32,7 +32,9 @@ const RadioButtons = ({
   <FormControl style={style} className="mui-radio-group">
     {React.isValidElement(label) && <FormLabel htmlFor={id}>{label}</FormLabel>}
     <RadioGroup
-      onChange={(event, newValue) => safeChange(newValue, id, onChange, options)}
+      onChange={(event, newValue) =>
+        safeChange(newValue, id, onChange, options)
+      }
       value={`${value}`}
       name={id}
       className="flex"

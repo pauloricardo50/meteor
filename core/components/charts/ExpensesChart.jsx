@@ -110,7 +110,7 @@ class ExpensesChart extends Component {
       this.state = {
         interests: realRate || getInterests(props, this.props.interestRate),
         amortization: getAmortization(this.props).amortization,
-        maintenance: this.props.property.value * 0.01 / 12,
+        maintenance: (this.props.property.value * 0.01) / 12,
       };
     } else {
       this.state = {
@@ -136,7 +136,7 @@ class ExpensesChart extends Component {
           {
             interests: getInterests(n, n.interestRate),
             amortization: getAmortization(n).amortization,
-            maintenance: n.property.value * 0.01 / 12,
+            maintenance: (n.property.value * 0.01) / 12,
           },
           () => update(this),
         );
@@ -165,8 +165,8 @@ class ExpensesChart extends Component {
         type: 'pie',
         style: { fontFamily: 'Source Sans Pro' },
         // animation: { duration: 400 },
-        ...(!this.props.title && { spacingTop: 0 }),
-        ...(!this.props.title && { marginTop: 0 }),
+        ...!this.props.title && { spacingTop: 0 },
+        ...!this.props.title && { marginTop: 0 },
         events: {
           load() {
             // adjustLegend(this);

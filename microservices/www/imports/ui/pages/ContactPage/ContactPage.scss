@@ -1,10 +1,13 @@
 .contact-page {
-  display: flex;
-  // To hide animated form when it's moved
-  overflow-y: hidden;
-  align-items: center;
-  flex-direction: column;
-  flex-grow: 1;
+  .www-main {
+    overflow: hidden;
+  }
+
+  .www-footer {
+    z-index: 1;
+
+    margin-top: -300px;
+  }
 }
 
 .contact-page-top {
@@ -85,11 +88,9 @@
   position: relative;
 
   display: flex;
-  flex: 1;
 
   width: 100%;
-  min-height: 600px;
-  margin-bottom: -300px;
+  height: 600px;
 
   .directions-button {
     position: absolute;
@@ -99,16 +100,12 @@
   }
 
   .map {
-    flex: 1;
+    flex-grow: 1;
   }
 }
 
-// To put the footer above the google map
-.contact-page .www-footer {
-  z-index: 1;
-}
-
 .contact-page .contact-us-form {
+  position: relative;
   z-index: 1;
 
   box-sizing: border-box;
