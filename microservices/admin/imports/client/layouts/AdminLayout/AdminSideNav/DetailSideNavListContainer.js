@@ -5,7 +5,8 @@ import sideNavLoans from 'core/api/loans/queries/sideNavLoans';
 import sideNavProperties from 'core/api/properties/queries/sideNavProperties';
 import sideNavUsers from 'core/api/users/queries/sideNavUsers';
 import { withQuery, compose } from 'core/api';
-import { withState, lifecycle } from 'recompose';
+import withFilterAndSortData from 'core/api/containerToolkit/withFilterAndSortData';
+import { withState, withProps, lifecycle } from 'recompose';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -37,6 +38,8 @@ const setTotalCount = (props) => {
   });
 };
 
+const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
+
 export default compose(
   withState('totalCount', 'updateTotalCount', 0),
   lifecycle({
@@ -56,10 +59,14 @@ export default compose(
   withQuery(
     ({ collectionName, showMoreCount }) =>
       getQuery({ collectionName }).clone({
-        limit: PAGINATION_AMOUNT * (showMoreCount + 1),
+        limit: getQueryLimit(showMoreCount),
         skip: 0,
       }),
     { reactive: true },
   ),
+  withProps(({ showMoreCount, totalCount }) => ({
+    isEnd: getQueryLimit(showMoreCount) >= totalCount,
+  })),
+  withFilterAndSortData(),
   withRouter,
 );

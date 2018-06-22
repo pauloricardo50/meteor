@@ -40,7 +40,7 @@ const DetailSideNavList = ({
   hideDetailNav,
   showMore,
   collectionName,
-  totalCount,
+  isEnd,
   history: { push },
 }) => {
   if (isLoading) {
@@ -61,10 +61,7 @@ const DetailSideNavList = ({
           <ListItemText {...getListItemDetails(collectionName, doc)} />
         </ListItem>
       ))}
-      <DetailSideNavPagination
-        showMore={showMore}
-        isEnd={data.length >= totalCount}
-      />
+      <DetailSideNavPagination showMore={showMore} isEnd={isEnd} />
     </List>
   );
 };
@@ -76,7 +73,7 @@ DetailSideNavList.propTypes = {
   collectionName: PropTypes.string.isRequired,
   hideDetailNav: PropTypes.func.isRequired,
   showMore: PropTypes.func.isRequired,
-  totalCount: PropTypes.number.isRequired,
+  isEnd: PropTypes.bool.isRequired,
 };
 
 DetailSideNavList.defaultProps = {
