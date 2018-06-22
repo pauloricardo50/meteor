@@ -9,21 +9,8 @@ import {
   INCREASE_SLIDER_MAX,
   SET_ALLOW_EXTREME_LOAN,
 } from '../widget1Types';
-import {
-  makeWidget1Selector,
-  makeSelectValue,
-  selectFields,
-  selectAutoValues,
-} from '../widget1Selectors';
-import {
-  ALL_FIELDS,
-  SALARY,
-  FORTUNE,
-  PURCHASE_TYPE,
-  ACQUISITION_FIELDS,
-  REFINANCING_FIELDS,
-  CURRENT_LOAN,
-} from '../widget1Constants';
+
+import { ALL_FIELDS, SALARY, FORTUNE, CURRENT_LOAN } from '../widget1Constants';
 
 describe('widget1 Reducer', () => {
   it('should return the initial state', () => {
@@ -176,51 +163,6 @@ describe('widget1 Reducer', () => {
         expect(reducer({}, { type: SET_ALLOW_EXTREME_LOAN(TEST) })).to.deep.equal({
           allowExtremeLoan: true,
         });
-      });
-    });
-  });
-
-  describe('selectors', () => {
-    describe('makeWidget1Selector', () => {
-      it('should select widget1', () => {
-        const myField = 'hello world';
-        expect(makeWidget1Selector('myField')({ widget1: { myField } })).to.equal(myField);
-      });
-    });
-
-    describe('makeSelectValue', () => {
-      it('should get the value of a field', () => {
-        const myField = { value: 200 };
-        expect(makeSelectValue('myField')({ widget1: { myField } })).to.equal(myField.value);
-      });
-    });
-
-    describe('selectFields', () => {
-      it('should select the right fields', () => {
-        expect(selectFields({
-          widget1: { purchaseType: PURCHASE_TYPE.ACQUISITION },
-        })).to.equal(ACQUISITION_FIELDS);
-        expect(selectFields({
-          widget1: { purchaseType: PURCHASE_TYPE.REFINANCING },
-        })).to.equal(REFINANCING_FIELDS);
-      });
-    });
-
-    describe('selectAutoValues', () => {
-      const autoValues = {
-        salary: { auto: true },
-        fortune: { auto: false },
-        property: { auto: false },
-      };
-      expect(selectAutoValues({
-        widget1: {
-          purchaseType: PURCHASE_TYPE.ACQUISITION,
-          ...autoValues,
-        },
-      })).to.deep.equal({
-        salary: autoValues.salary.auto,
-        fortune: autoValues.fortune.auto,
-        property: autoValues.property.auto,
       });
     });
   });
