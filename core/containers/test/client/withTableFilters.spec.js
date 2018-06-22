@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import withTableFilters from '../withTableFilters';
-import TableFilters from '../../components/Table/TableFilters';
+import withTableFilters from '../../withTableFilters';
+import TableFilters from '../../../components/Table/TableFilters';
 
-import { getMountedComponent } from '../../utils/testHelpers';
+import { getMountedComponent } from '../../../utils/testHelpers';
 
 const WrappedComponent = () => null;
 
