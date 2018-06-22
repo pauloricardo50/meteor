@@ -41,16 +41,11 @@ module.exports = {
 
     // UPDATE: This math issue appears to be fixed, try it out for a while
     // and then remove these comments
-
-    // FIXME: Find a solution for math parentheses mess:
-    // https://github.com/prettier/prettier/issues/3968
-    // 'no-extra-parens': [
-    //   'error',
-    //   'all',
-    //   { nestedBinaryExpressions: false, ignoreJSX: 'multi-line' },
-    // ],
-    'no-extra-parens': ['error', 'all'],
+    // Use "functions"  instead of "all" to avoid this issue:
+    // https://github.com/prettier/prettier-eslint/issues/180
+    'no-extra-parens': ['error', 'functions'],
     'no-mixed-operators': ['error', { allowSamePrecedence: false }],
+    'function-paren-newline': ['error', 'multiline'],
 
     // eslint-plugin-import rules
 
