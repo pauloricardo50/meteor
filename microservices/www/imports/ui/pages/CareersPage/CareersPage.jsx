@@ -19,7 +19,10 @@ const CareersPage = () => (
           <T id="CareersPage.title" />
         </h1>
         <p className="description">
-          <T id="CareersPage.description" />
+          <T id="CareersPage.description1" />
+          <br />
+          <br />
+          <T id="CareersPage.description2" />
         </p>
         <CareersPageList />
       </section>
