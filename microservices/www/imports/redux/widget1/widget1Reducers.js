@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { DEFAULT_INTEREST_RATE } from 'core/config/financeConstants';
-import { createValueReducer } from '../common';
+import { createValueReducer } from '../common/reducers';
 import {
   SALARY,
   PROPERTY,

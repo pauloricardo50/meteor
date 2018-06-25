@@ -108,7 +108,7 @@ Meteor.methods({
         const adminId = admins[Math.floor(Math.random() * admins.length)];
 
         // based on index, always generate 1, 2 and 3 numbers
-        const loanStep = index % 3 + 1;
+        const loanStep = (index % 3) + 1;
 
         range(LOANS_PER_USER).forEach(() => {
           createFakeLoanFixture({

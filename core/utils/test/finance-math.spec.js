@@ -69,13 +69,13 @@ describe('Finance Math', () => {
 
     it('returns the correct value', () => {
       const loan = 100000;
-      expect(getInterests({}, 0, loan)).to.equal(loan * 0.015 / 12);
+      expect(getInterests({}, 0, loan)).to.equal((loan * 0.015) / 12);
     });
 
     it('uses the interestRate', () => {
       const loan = 100000;
       const rate = 0.01;
-      expect(getInterests({}, rate, loan)).to.equal(loan * rate / 12);
+      expect(getInterests({}, rate, loan)).to.equal((loan * rate) / 12);
     });
   });
 

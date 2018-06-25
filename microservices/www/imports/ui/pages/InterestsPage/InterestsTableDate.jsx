@@ -14,7 +14,7 @@ export const getLastFriday = (testDate) => {
   if (prevFriday.getDay() === 5) {
     prevFriday.setDate(prevFriday.getDate() - 7);
   } else {
-    prevFriday.setDate(prevFriday.getDate() - (prevFriday.getDay() + 2) % 7);
+    prevFriday.setDate(prevFriday.getDate() - ((prevFriday.getDay() + 2) % 7));
   }
   return prevFriday;
 };

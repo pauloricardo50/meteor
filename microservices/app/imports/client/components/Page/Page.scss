@@ -27,9 +27,7 @@
   @include screen(med, min) {
     position: fixed;
 
-    width: calc(
-    100% - 300px - 32px
-    ); // Side-nav width, careful, not updated with variable
+    width: calc(100% - 300px - 32px); /* Side-nav width, careful, not updated with variable */
   }
 }
 

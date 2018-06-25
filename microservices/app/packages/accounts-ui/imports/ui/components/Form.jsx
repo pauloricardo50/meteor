@@ -12,7 +12,7 @@ import './FormMessages.jsx';
 
 export class Form extends React.Component {
   componentDidMount() {
-    let form = this.form;
+    const form = this.form;
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -30,19 +30,22 @@ export class Form extends React.Component {
       messages,
       translate,
       ready = true,
-      className
+      className,
     } = this.props;
     return (
       <form
-        ref={(ref) => this.form = ref}
-        className={[className, ready ? "ready" : null].join(' ')}
+        ref={ref => (this.form = ref)}
+        className={[className, ready ? 'ready' : null].join(' ')}
         className="accounts-ui"
         noValidate
       >
-        <Accounts.ui.Fields fields={ fields } />
-        <Accounts.ui.Buttons buttons={ buttons } />
-        <Accounts.ui.PasswordOrService oauthServices={ oauthServices } translate={ translate } />
-        <Accounts.ui.SocialButtons oauthServices={ oauthServices } />
+        <Accounts.ui.Fields fields={fields} />
+        <Accounts.ui.Buttons buttons={buttons} />
+        <Accounts.ui.PasswordOrService
+          oauthServices={oauthServices}
+          translate={translate}
+        />
+        <Accounts.ui.SocialButtons oauthServices={oauthServices} />
         <Accounts.ui.FormMessages messages={messages} />
       </form>
     );
@@ -55,7 +58,7 @@ Form.propTypes = {
   buttons: PropTypes.object.isRequired,
   translate: PropTypes.func.isRequired,
   error: PropTypes.string,
-  ready: PropTypes.bool
+  ready: PropTypes.bool,
 };
 
 Accounts.ui.Form = Form;

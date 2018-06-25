@@ -13,12 +13,11 @@ const composeEnhancers =
     })
     : compose;
 
+// Add other store enhancers if any
 const enhancer = middlewares =>
-  composeEnhancers(applyMiddleware(...middlewares),
-    // other store enhancers if any
-  );
+  composeEnhancers(applyMiddleware(...middlewares));
 
-const setMiddlewares = () => {
+const getMiddlewares = () => {
   const middlewares = [];
 
   middlewares.push(thunk);
@@ -33,8 +32,8 @@ const setMiddlewares = () => {
 
 const createCustomStore = ({ preloadedState } = {}) => {
   const rootReducer = createRootReducer(isClient);
-  const middlewares = setMiddlewares();
-  const store = createStore(rootReducer, preloadedState, enhancer(middlewares));
+  const middlewareEnhancer = enhancer(getMiddlewares());
+  const store = createStore(rootReducer, preloadedState, middlewareEnhancer);
   const persistor = persistStore(store);
   return { store, persistor };
 };

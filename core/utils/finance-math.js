@@ -94,7 +94,7 @@ export const getInterests = ({ loan, property }, rate, loanValue) => {
   // Use a base interest rate of 1.5%
   const interests = rate || 0.015;
 
-  return loanValue * interests / 12;
+  return (loanValue * interests) / 12;
 };
 
 export const getMonthlyPayment = ({ loan, borrowers, property }) => {
@@ -116,10 +116,10 @@ export const getMonthlyPayment = ({ loan, borrowers, property }) => {
 
 export const getTheoreticalMonthly = ({ loan, borrowers, property }) => {
   const maintenance =
-    getPropAndWork({ loan, property }) * MAINTENANCE_FINMA / 12;
+    (getPropAndWork({ loan, property }) * MAINTENANCE_FINMA) / 12;
   const loanValue = getLoanValue({ loan, property });
 
-  const interests = loanValue * INTERESTS_FINMA / 12;
+  const interests = (loanValue * INTERESTS_FINMA) / 12;
   const { amortization } = getAmortization({
     loan,
     borrowers,

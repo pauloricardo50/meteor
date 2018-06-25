@@ -15,7 +15,6 @@ const withLoan = (WrappedComponent, contextKeys) => {
   const LoanComponent = (props, context) => (
     <WrappedComponent {...props} {...context} />
   );
-
   LoanComponent.contextTypes = contextKeys
     ? contextKeys.reduce(
       (accumulator, type) => ({

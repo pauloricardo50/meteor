@@ -70,7 +70,7 @@ Widget1SingleInput.defaultProps = {
   value: undefined,
   allowExtremeLoan: undefined,
   labelName: undefined,
-  tabIndex: undefined
+  tabIndex: undefined,
 };
 
 export default Widget1SingleInputContainer(Widget1SingleInput);

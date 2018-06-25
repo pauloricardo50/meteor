@@ -1,15 +1,8 @@
 .widget1-single-input {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-
   width: 100%;
 }
 
 .widget1-single-input .box {
-  display: flex;
-  flex-direction: column;
-
   border-radius: 4px;
   background-color: rgb(244, 247, 249);
 }
@@ -21,9 +14,6 @@
 }
 
 .widget1-single-input .box .box-content {
-  display: flex;
-  flex-direction: column;
-
   margin: 4px;
   padding: 0 8px;
 
@@ -32,14 +22,16 @@
 }
 
 .widget1-single-input .widget1-input {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-
    > * {
+    display: flex;
     align-items: center;
 
     color: $primary;
+
+    & > div {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
   }
 
   .widget1-input-currency {

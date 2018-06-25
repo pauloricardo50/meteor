@@ -1,16 +1,27 @@
-import { createSelector } from 'reselect';
+import { createSelector, createStructuredSelector } from 'reselect';
 import {
   PURCHASE_TYPE,
   ACQUISITION_FIELDS,
   REFINANCING_FIELDS,
 } from './widget1Constants';
 
-export const makeWidget1Selector = name => state => state.widget1[name];
+const selectWidget1 = state => state.widget1;
+
+const selectState = state => state;
+
+export const makeWidget1Selector = name =>
+  createSelector(selectWidget1, widget1 => widget1[name]);
 
 export const makeSelectValue = name =>
   createSelector(
     makeWidget1Selector(name),
     widget1Object => widget1Object.value,
+  );
+
+export const makeSelectAuto = name =>
+  createSelector(
+    makeWidget1Selector(name),
+    widget1Object => widget1Object.auto,
   );
 
 export const selectFields = createSelector(
@@ -21,15 +32,13 @@ export const selectFields = createSelector(
       : REFINANCING_FIELDS),
 );
 
-export const selectAutoValues = (state) => {
-  const fields = selectFields(state);
+const pickAutoValues = (state, fields) =>
+  createStructuredSelector(fields.reduce(
+    (acc, name) => ({ ...acc, [name]: makeSelectAuto(name) }),
+    {},
+  ))(state);
 
-  return createSelector(fields.map(makeWidget1Selector), (...args) =>
-    fields.reduce(
-      (accumulator, NAME, index) => ({
-        ...accumulator,
-        [NAME]: args[index].auto,
-      }),
-      {},
-    ))(state);
-};
+export const selectAutoValues = createSelector(
+  [selectState, selectFields],
+  pickAutoValues,
+);

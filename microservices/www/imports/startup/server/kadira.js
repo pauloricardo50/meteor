@@ -4,5 +4,9 @@ import { Kadira } from 'meteor/meteorhacks:kadira';
 if (!Meteor.isDevelopment && Meteor.settings.Kadira) {
   const { endpoint, www } = Meteor.settings.Kadira;
 
-  Kadira.connect(www.appId, www.appSecret, { endpoint });
+  Kadira.connect(
+    www.appId,
+    www.appSecret,
+    { endpoint },
+  );
 }

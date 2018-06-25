@@ -13,15 +13,17 @@ const InterestsPage = () => (
       descriptionId="InterestsPage.description"
     />
     <WwwLayout.TopNav variant={VARIANTS.GREY} />
-    <section className="interests-page-content">
-      <h1>
-        <T id="InterestsPage.title" />
-      </h1>
-      <p className="description">
-        <T id="InterestsPage.description" />
-      </p>
-      <InterestsTable />
-    </section>
+    <WwwLayout.Content>
+      <section className="interests-page-content">
+        <h1>
+          <T id="InterestsPage.title" />
+        </h1>
+        <p className="description">
+          <T id="InterestsPage.description" />
+        </p>
+        <InterestsTable />
+      </section>
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

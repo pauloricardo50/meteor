@@ -4,6 +4,7 @@
   "scripts": {
     "prestart": "cd ../.. && npm run lang -- app",
     "start": "meteor --settings settings-dev.json --port 4000",
+    "start:win": "set NODE_OPTIONS=--max-old-space-size=4096&& set METEOR_OFFLINE_CATALOG=1&& set MONGO_URL=mongodb://localhost:27017/epotek&& meteor --settings settings-dev.json --port 4000",
     "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
     "start-e2e": "meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 4015",
     "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
@@ -29,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.47",
+    "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
     "@storybook/react-komposer": "^2.0.4",
@@ -49,7 +51,7 @@
     "moment-duration-format": "^2.2.2",
     "normalize-scss": "^7.0.1",
     "prop-types": "^15.6.1",
-    "query-string": "^6.1.0",
+    "query-string": "5.1.1",
     "rc-slider": "^8.6.1",
     "rc-tooltip": "^3.7.2",
     "react": "^16.3.2",
@@ -90,23 +92,26 @@
     "babel-eslint": "^8.2.3",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-preset-flow": "^6.23.0",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-flowtype": "^2.49.3",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-meteor": "^5.0.0",
     "eslint-plugin-react": "^7.8.2",
+    "flow-bin": "^0.74.0",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.17.0",
     "mocha-multi-reporters": "^1.1.7",
     "proxyquire": "^2.0.1",
     "react-test-renderer": "^16.3.2",
-    "redux-mock-store": "1.5.1",
+    "redux-mock-store": "^1.5.3",
     "require-main-filename": "^1.0.1",
-    "sinon": "^5.0.7"
+    "sinon": "^6.0.0"
   }
 }

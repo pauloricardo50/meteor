@@ -1,9 +1,7 @@
 @import './AboutPageTeam/AboutPageTeam.scss';
 
-.about-page {
-   > [class*='about-page-'] {
-    padding: 80px 16px;
-  }
+.about-section {
+  padding: 80px 16px;
 }
 
 .about-page-part-1 {
@@ -60,6 +58,8 @@
     align-items: flex-start;
     flex-direction: column;
 
+    width: 100%;
+    max-width: 500px;
     margin-bottom: 32px;
 
     @include screen(small) {
@@ -67,12 +67,12 @@
     }
 
     p.description {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
-
       max-width: 500px;
       margin: 0;
+
+      & > span {
+        display: block;
+      }
     }
 
     .about-page-part-2-header {
