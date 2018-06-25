@@ -27,7 +27,9 @@
   @include screen(med, min) {
     position: fixed;
 
-    width: calc(100% - 300px - 32px); /* Side-nav width, careful, not updated with variable */
+    width: calc(
+      100% - 300px - 32px
+    ); /* Side-nav width, careful, not updated with variable */
   }
 }
 
@@ -58,7 +60,7 @@
   position: relative;
 
   padding: 16px;
-  padding-top: 64px;
+  padding-top: 72px;
 }
 
 .top-bar__row {
@@ -69,88 +71,4 @@
   width: 100%;
   margin-bottom: 2px;
   padding: 8px 16px;
-}
-
-.process-tabs {
-  position: fixed;
-  z-index: 15;
-  top: 120px;
-  right: 0;
-
-  width: calc(100% - 332px);
-  margin-top: 16px;
-  padding: 0 16px;
-
-  border-top: 2px #f8f8f8 solid;
-
-  &__wrapper {
-    position: relative;
-
-    display: flex;
-    align-items: flex-start;
-
-    width: 100%;
-    margin: 0;
-    padding-top: 4px;
-    padding-left: 2px;
-
-    list-style: none;
-
-    color: #9ea6af;
-
-    &:before {
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 50px;
-
-      content: ' ';
-
-      background: #eff0f1;
-    }
-  }
-
-  &__item {
-    position: relative;
-
-    font-weight: 400;
-
-     > a {
-      position: relative;
-
-      display: block;
-
-      padding: 9px 30px 13px;
-
-      text-decoration: none;
-
-      &:before {
-        position: absolute;
-        top: -3px;
-        right: 0;
-        bottom: 0;
-
-        width: 1px;
-
-        content: ' ';
-
-        background: #e2e2e2;
-      }
-
-      &.active {
-        padding-bottom: 19px;
-
-        color: #212529;
-        background: #fff;
-
-        font-weight: 700;
-
-        &:before {
-          display: none;
-        }
-      }
-    }
-  }
 }
