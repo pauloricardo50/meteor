@@ -1,28 +1,14 @@
-import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
+import { compose, withProps } from 'recompose';
+import { connect } from 'react-redux';
 
 import { appendFilters } from './DetailSideNavFilters/filterOptions';
 
-// const defaultFilterOptions = { field: 'name', order: 'desc' };
-const defaultSortOptions = { field: 'name', order: 'desc' };
-
-const withFilterState = withStateHandlers(
-  props => {
-    return {
-      selectedFilterOptions: {},
-      selectedSortOptions: defaultSortOptions,
-    };
-  },
-  {
-    handleSorting: () => selectedSortOptions => ({ selectedSortOptions }),
-  },
-);
+const withFilterAndSortOptionsConnect = connect(({ sidenav: { filters, sortOption } }) => ({ filters, sortOption }));
 
 export default compose(
-  withFilterState,
-  withProps(({ filters }) => {
-    console.log('>>>', filters);
-    return {
-      filterOptions: appendFilters(filters),
-    };
-  }),
+  withFilterAndSortOptionsConnect,
+  withProps(({ collectionName, filters, sortOption }) => ({
+    filterOptions: appendFilters(filters[collectionName]),
+    sortOption: sortOption[collectionName],
+  })),
 );

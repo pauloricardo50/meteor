@@ -1,9 +1,12 @@
 import * as sidenavTypes from './sidenavTypes';
+import { defaultSortOption } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavSort/sortOptions';
 
 const initialState = {
   showDetail: false,
   collectionName: undefined,
   showMoreCount: 0,
+  filters: {},
+  sortOption: defaultSortOption,
 };
 
 const stepper = (state = initialState, action) => {
@@ -19,10 +22,18 @@ const stepper = (state = initialState, action) => {
     return { ...state, showDetail: false, collectionName: undefined };
   case sidenavTypes.SHOW_MORE:
     return { ...state, showMoreCount: state.showMoreCount + 1 };
-  case sidenavActions.SET_FILTERS:
+  case sidenavTypes.SET_FILTERS:
     return {
       ...state,
       filters: { ...state.filters, [action.collectionName]: action.filters },
+    };
+  case sidenavTypes.SET_SORT_OPTION:
+    return {
+      ...state,
+      sortOption: {
+        ...state.sortOption,
+        [action.collectionName]: action.sortOption,
+      },
     };
   default:
     return state;

@@ -3,22 +3,22 @@ import { withProps } from 'recompose';
 import sortArray from '../../utils/sortArray';
 
 export default (config = {}) =>
-  withProps((props) => {
+  withProps(props => {
     const {
       dataName = 'data',
       filterOptionsName = 'filterOptions',
-      sortOptionsName = 'sortOptions',
+      sortOptionName = 'sortOption',
     } = config;
 
     const filterOptions = props[filterOptionsName] || {};
-    const sortOptions = props[sortOptionsName] || {};
+    const sortOption = props[sortOptionName] || {};
     const data = props[dataName] || [];
 
     const filteredData = sift(filterOptions, data);
     const sortedData = sortArray(
       filteredData,
-      sortOptions.field,
-      sortOptions.order,
+      sortOption.field,
+      sortOption.order,
     );
 
     return {

@@ -9,10 +9,10 @@ import DetailSideNavSortContainer from './DetailSideNavSortContainer';
 const DetailSideNavSort = ({ options, handleSort }) => (
   <DropdownMenu
     iconType="sort"
-    options={options.map((option, index) => ({
+    options={options.map(option => ({
       ...option,
       onClick: () => {
-        handleSort(index);
+        handleSort(option);
       },
     }))}
     tooltip={<T id="general.sortBy" />}
@@ -20,8 +20,8 @@ const DetailSideNavSort = ({ options, handleSort }) => (
 );
 
 DetailSideNavSort.propTypes = {
-  options: PropTypes.array.isRequired,
   handleSort: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
 };
 
 export default DetailSideNavSortContainer(DetailSideNavSort);

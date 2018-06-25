@@ -6,53 +6,65 @@ import { Link } from 'react-router-dom';
 import T from 'core/components/Translation';
 import DetailSideNavSort from './DetailSideNavSort';
 import DetailSideNavFilters from './DetailSideNavFilters';
+import getFilterOptions, {
+  getFilterOptionFromValue,
+} from './DetailSideNavFilters/filterOptions';
+import sortOptions, {
+  getSortOptionFromField,
+} from './DetailSideNavSort/sortOptions';
 
 const DetailSideNavHeader = (props) => {
-  const {
-    collectionName,
-    hideDetailNav,
-    onSort,
-    onFilter,
-    sortOptions,
-    selectedFilterOptions,
-    handleFiltering,
-  } = props;
+  const { collectionName, hideDetailNav, sortOption, filters } = props;
+
+  const filterArray = filters[collectionName] || [];
+  const currentSortOption =
+    sortOption.field &&
+    getSortOptionFromField(sortOptions[collectionName], sortOption.field);
 
   return (
-    <div className="detail-side-nav-header">
-      {/* <DetailSideNavSort onChange={onSort} sortOptions={sortOptions} /> */}
+    <div>
+      <div className="detail-side-nav-header">
+        <DetailSideNavSort {...props} />
 
-      <Link to={`/${collectionName}`} onClick={hideDetailNav}>
-        <h3>
-          <T id={`collections.${collectionName}`} noTooltips />
-        </h3>
-      </Link>
+        <Link to={`/${collectionName}`} onClick={hideDetailNav}>
+          <h3>
+            <T id={`collections.${collectionName}`} noTooltips />
+          </h3>
+        </Link>
 
-      <DetailSideNavFilters
-        {...props}
-        filters={selectedFilterOptions[collectionName]}
-        onChange={handleFiltering}
-      />
+        <DetailSideNavFilters {...props} />
+      </div>
+
+      {filterArray.length > 0 && (
+        <div>
+          <T id="DetailSideNavHeader.filters" />:{' '}
+          {filterArray
+            .map(filter =>
+              getFilterOptionFromValue(getFilterOptions(props), filter).label)
+            .reduce((prev, curr) => [prev, ', ', curr])}
+        </div>
+      )}
+
+      {currentSortOption && (
+        <div>
+          <T id="DetailSideNavHeader.sort" />: {currentSortOption.label}
+          <T id={`DetailSideNavHeader.sortOrder.${sortOption.order}`} />
+        </div>
+      )}
     </div>
   );
 };
 
 DetailSideNavHeader.propTypes = {
   collectionName: PropTypes.string.isRequired,
-  selectedFilterOptions: PropTypes.array,
+  filters: PropTypes.object,
   hideDetailNav: PropTypes.func.isRequired,
-  onSort: PropTypes.func,
-  onFilter: PropTypes.func,
-  sortOptions: PropTypes.object,
-  filters: PropTypes.array,
+  sortOption: PropTypes.object,
 };
 
 DetailSideNavHeader.defaultProps = {
-  selectedFilterOptions: [],
-  onSort: undefined,
-  onFilter: undefined,
-  sortOptions: undefined,
-  filters: [],
+  filters: {},
+  sortOption: undefined,
 };
 
 export default DetailSideNavHeader;

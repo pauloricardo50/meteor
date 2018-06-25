@@ -6,7 +6,7 @@ import DetailSideNavList from './DetailSideNavList';
 import DetailSideNavContainer from './DetailSideNavContainer';
 
 const DetailSideNav = (props) => {
-  const { selectedSortOptions, filterOptions } = props;
+  const { filterOptions, sortOption } = props;
 
   return (
     <div className="detail-side-nav">
@@ -14,20 +14,20 @@ const DetailSideNav = (props) => {
       <DetailSideNavList
         {...props}
         filterOptions={filterOptions}
-        sortOptions={selectedSortOptions}
+        sortOption={sortOption}
       />
     </div>
   );
 };
 
 DetailSideNav.propTypes = {
-  selectedSortOptions: PropTypes.object,
   filterOptions: PropTypes.object,
+  sortOption: PropTypes.object,
 };
 
 DetailSideNav.defaultProps = {
-  selectedSortOptions: {},
   filterOptions: {},
+  sortOption: {},
 };
 
 export default DetailSideNavContainer(DetailSideNav);

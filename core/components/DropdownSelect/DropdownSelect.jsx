@@ -1,99 +1,60 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import DropdownSelectContainer from './DropdownSelectContainer';
 import IconButton from '../IconButton';
 
-class DropdownSelect extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      anchorEl: null,
-      selectedOptions: this.props.selectedOptions || [],
-    };
-  }
-
-  componentDidUpdate = ({ options: prevOptionsProps }) => {
-    const { options } = this.props;
-    if (!isEqual(options, prevOptionsProps)) {
-      this.setState({ options });
-    }
-  };
-
-  handleClick = (event) => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  optionsIncludeOption = (options, { value }) =>
-    !!options.find(option => isEqual(option.value, value));
-
-  removeOptionFromOptions = (option, options) =>
-    options.filter(({ value }) => !isEqual(value, option.value));
-
-  handleSelect = (option) => {
-    const { selectedOptions } = this.state;
-
-    const newSelected = this.optionsIncludeOption(selectedOptions, option)
-      ? this.removeOptionFromOptions(option, selectedOptions)
-      : [...selectedOptions, option];
-
-    this.setState({ selectedOptions: newSelected });
-
-    this.props.onChange(newSelected);
-  };
-
-  render() {
-    const { anchorEl, selectedOptions } = this.state;
-    const { options, iconType, tooltip } = this.props;
-
-    return (
-      <div>
-        <IconButton
-          onClick={this.handleClick}
-          type={iconType}
-          tooltip={tooltip}
-        />
-        <Menu
-          id="long-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
+const DropdownSelect = ({
+  handleClick,
+  handleClose,
+  handleChange,
+  iconType,
+  tooltip,
+  anchorEl,
+  options,
+  selected,
+  optionsIncludeOption,
+}) => (
+  <div>
+    <IconButton onClick={handleClick} type={iconType} tooltip={tooltip} />
+    <Menu
+      id="long-menu"
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+    >
+      {options.map((option, index) => (
+        <MenuItem
+          key={index}
+          selected={optionsIncludeOption(selected, option)}
+          onClick={() => handleChange(option)}
         >
-          {options.map((option, index) => (
-            <MenuItem
-              key={index}
-              selected={this.optionsIncludeOption(selectedOptions, option)}
-              onClick={() => this.handleSelect(option)}
-            >
-              {option.label}
-            </MenuItem>
-          ))}
-        </Menu>
-      </div>
-    );
-  }
-}
+          {option.label}
+        </MenuItem>
+      ))}
+    </Menu>
+  </div>
+);
 
 DropdownSelect.propTypes = {
-  options: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  optionsIncludeOption: PropTypes.func.isRequired,
   iconType: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
   tooltip: PropTypes.node,
-  selectedOptions: PropTypes.array,
+  anchorEl: PropTypes.any,
+  selected: PropTypes.array,
 };
 
 DropdownSelect.defaultProps = {
-  tooltip: undefined,
-  selectedOptions: [],
+  tooltip: null,
+  anchorEl: null,
+  selected: [],
 };
 
-export default DropdownSelect;
+export default DropdownSelectContainer(DropdownSelect);

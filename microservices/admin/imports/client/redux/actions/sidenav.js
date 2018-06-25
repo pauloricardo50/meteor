@@ -14,3 +14,9 @@ export const setFilters = (collectionName, filters) => ({
   collectionName,
   filters,
 });
+
+export const setSortOption = (collectionName, sortOption) => ({
+  type: sidenavActions.SET_SORT_OPTION,
+  collectionName,
+  sortOption,
+});

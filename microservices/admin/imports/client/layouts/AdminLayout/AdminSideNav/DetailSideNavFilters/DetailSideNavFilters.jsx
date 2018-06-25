@@ -6,10 +6,9 @@ import T from 'core/components/Translation';
 
 import DetailSideNavFiltersContainer from './DetailSideNavFiltersContainer';
 
-// TODO: put logic in container
-const DetailSideNavFilters = ({ options, selectedOptions, handleChange }) => (
+const DetailSideNavFilters = ({ options, selected, handleChange }) => (
   <DropdownSelect
-    selectedOptions={selectedOptions}
+    selected={selected}
     options={options}
     onChange={handleChange}
     iconType="filter"
@@ -18,13 +17,13 @@ const DetailSideNavFilters = ({ options, selectedOptions, handleChange }) => (
 );
 
 DetailSideNavFilters.propTypes = {
-  options: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
-  selectedOptions: PropTypes.array,
+  options: PropTypes.array.isRequired,
+  selected: PropTypes.array,
 };
 
 DetailSideNavFilters.defaultProps = {
-  selectedOptions: [],
+  selected: [],
 };
 
 export default DetailSideNavFiltersContainer(DetailSideNavFilters);
