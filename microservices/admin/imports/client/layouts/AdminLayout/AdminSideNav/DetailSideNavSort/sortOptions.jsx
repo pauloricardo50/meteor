@@ -24,16 +24,7 @@ const updateAtSortOption = {
   },
 };
 
-const nameSortOption = {
-  label: 'Name',
-  value: { field: 'name', order: ORDER.DESC },
-};
-
-const loansSortOptions = [
-  createdAtSortOption,
-  updateAtSortOption,
-  nameSortOption,
-];
+const loansSortOptions = [createdAtSortOption, updateAtSortOption];
 
 const borrowersSortOptions = [createdAtSortOption, updateAtSortOption];
 
@@ -46,7 +37,7 @@ const sortOptions = {
 };
 
 export const defaultSortOption = {
-  [LOANS_COLLECTION]: nameSortOption.value,
+  [LOANS_COLLECTION]: createdAtSortOption.value,
   [BORROWERS_COLLECTION]: createdAtSortOption.value,
   [USERS_COLLECTION]: createdAtSortOption.value,
 };
