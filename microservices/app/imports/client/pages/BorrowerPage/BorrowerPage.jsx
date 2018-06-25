@@ -11,12 +11,11 @@ import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
 
 const getTabs = (props) => {
-  const { loan, borrowers, borrowerId } = props;
-  const borrower = borrowers.find(b => b._id === borrowerId);
+  const { loan, borrowers } = props;
   return [
     { id: 'personal', content: <Info {...props} /> },
     { id: 'finance', content: <Finance {...props} /> },
-    { id: 'files', content: <Files {...props} borrower={borrower} /> },
+    { id: 'files', content: <Files {...props} /> },
   ].map(tab => ({
     ...tab,
     content: (
