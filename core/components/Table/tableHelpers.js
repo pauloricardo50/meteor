@@ -1,7 +1,6 @@
-export const ORDER = {
-  ASC: 'asc',
-  DESC: 'desc',
-};
+import { ORDER } from '../../utils/sortArray';
+
+export { ORDER } from '../../utils/sortArray';
 
 // "raw" and "label" keys have to be present in the object to display it
 // this way
