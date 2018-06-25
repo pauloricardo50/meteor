@@ -8,6 +8,8 @@ import merge from 'lodash/merge';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
+import { ORDER } from 'core/utils/sortArray';
+
 const initialSortingOptions = [
   {
     label: <T id="TasksTable.createdAt" />,
@@ -32,7 +34,7 @@ const initialSortingOptions = [
 ];
 
 const renderOrderIcon = order => (
-  <Icon type={order === 'asc' ? 'up' : 'down'} />
+  <Icon type={order === ORDER.ASC ? 'up' : 'down'} />
 );
 
 const mapOptions = sortingOptions =>
@@ -49,7 +51,7 @@ const mapOptions = sortingOptions =>
 const toggleSortOrder = (sortingOptions, optionIndex) => {
   const optionPath = [optionIndex, 'value', 'order'];
   const currentOrder = sortingOptions[optionIndex].value.order;
-  const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+  const newOrder = currentOrder === ORDER.ASC ? ORDER.DESC : ORDER.ASC;
 
   return set(cloneDeep(sortingOptions), optionPath, newOrder);
 };
@@ -79,8 +81,6 @@ const toggleOption = (sortingOptions, optionIndex) => {
 const withState = withStateHandlers(
   ({ sortOptions }) => {
     const defaultOptionIndex = initialSortingOptions.findIndex(({ value: { field } }) => field === sortOptions.field);
-
-    console.log('>>>', defaultOptionIndex, sortOptions);
 
     let initialOptions = initialSortingOptions;
 

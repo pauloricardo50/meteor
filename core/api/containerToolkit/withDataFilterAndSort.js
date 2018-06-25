@@ -1,6 +1,6 @@
 import sift from 'sift';
 import { withProps } from 'recompose';
-import { sortArray } from '../../utils/general';
+import sortArray from '../../utils/sortArray';
 
 export default (config = {}) =>
   withProps((props) => {
@@ -20,8 +20,6 @@ export default (config = {}) =>
       sortOptions.field,
       sortOptions.order,
     );
-
-    console.log('>>', sortOptions.field, sortOptions.order, sortedData);
 
     return {
       [dataName]: sortedData,

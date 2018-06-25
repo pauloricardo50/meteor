@@ -5,7 +5,7 @@ import sideNavLoans from 'core/api/loans/queries/sideNavLoans';
 import sideNavProperties from 'core/api/properties/queries/sideNavProperties';
 import sideNavUsers from 'core/api/users/queries/sideNavUsers';
 import { withQuery, compose } from 'core/api';
-import withFilterAndSortData from 'core/api/containerToolkit/withFilterAndSortData';
+import withDataFilterAndSort from 'core/api/containerToolkit/withDataFilterAndSort';
 import { withState, withProps, lifecycle } from 'recompose';
 import {
   BORROWERS_COLLECTION,
@@ -67,6 +67,6 @@ export default compose(
   withProps(({ showMoreCount, totalCount }) => ({
     isEnd: getQueryLimit(showMoreCount) >= totalCount,
   })),
-  withFilterAndSortData(),
+  withDataFilterAndSort(),
   withRouter,
 );
