@@ -77,8 +77,12 @@ export default class FileDropper extends Component {
 }
 
 FileDropper.propTypes = {
+  children: PropTypes.node.isRequired,
+  disabled: PropTypes.bool,
   handleAddFiles: PropTypes.func.isRequired,
   showFull: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  disabled: PropTypes.bool.isRequired,
+};
+
+FileDropper.defaultProps = {
+  disabled: false,
 };
