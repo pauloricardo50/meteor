@@ -19,6 +19,11 @@ const stepper = (state = initialState, action) => {
     return { ...state, showDetail: false, collectionName: undefined };
   case sidenavTypes.SHOW_MORE:
     return { ...state, showMoreCount: state.showMoreCount + 1 };
+  case sidenavActions.SET_FILTERS:
+    return {
+      ...state,
+      filters: { ...state.filters, [action.collectionName]: action.filters },
+    };
   default:
     return state;
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,9 +9,20 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '../IconButton';
 
 class DropdownSelect extends React.Component {
-  state = {
-    anchorEl: null,
-    selected: [],
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      anchorEl: null,
+      selectedOptions: this.props.selectedOptions || [],
+    };
+  }
+
+  componentDidUpdate = ({ options: prevOptionsProps }) => {
+    const { options } = this.props;
+    if (!isEqual(options, prevOptionsProps)) {
+      this.setState({ options });
+    }
   };
 
   handleClick = (event) => {
@@ -21,20 +33,26 @@ class DropdownSelect extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  optionsIncludeOption = (options, { value }) =>
+    !!options.find(option => isEqual(option.value, value));
+
+  removeOptionFromOptions = (option, options) =>
+    options.filter(({ value }) => !isEqual(value, option.value));
+
   handleSelect = (option) => {
-    const { selected } = this.state;
+    const { selectedOptions } = this.state;
 
-    const newSelected = selected.includes(option)
-      ? selected.filter(selectedOption => selectedOption !== option)
-      : [...selected, option];
+    const newSelected = this.optionsIncludeOption(selectedOptions, option)
+      ? this.removeOptionFromOptions(option, selectedOptions)
+      : [...selectedOptions, option];
 
-    this.setState({ selected: newSelected });
+    this.setState({ selectedOptions: newSelected });
 
     this.props.onChange(newSelected);
   };
 
   render() {
-    const { anchorEl, selected } = this.state;
+    const { anchorEl, selectedOptions } = this.state;
     const { options, iconType, tooltip } = this.props;
 
     return (
@@ -50,10 +68,10 @@ class DropdownSelect extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          {options.map(option => (
+          {options.map((option, index) => (
             <MenuItem
-              key={option.label}
-              selected={selected.includes(option)}
+              key={index}
+              selected={this.optionsIncludeOption(selectedOptions, option)}
               onClick={() => this.handleSelect(option)}
             >
               {option.label}
@@ -70,10 +88,12 @@ DropdownSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   iconType: PropTypes.string.isRequired,
   tooltip: PropTypes.node,
+  selectedOptions: PropTypes.array,
 };
 
 DropdownSelect.defaultProps = {
   tooltip: undefined,
+  selectedOptions: [],
 };
 
 export default DropdownSelect;

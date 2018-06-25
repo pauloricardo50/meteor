@@ -6,37 +6,28 @@ import DetailSideNavList from './DetailSideNavList';
 import DetailSideNavContainer from './DetailSideNavContainer';
 
 const DetailSideNav = (props) => {
-  const { handleSorting, handleFiltering, filterOptions, sortOptions } = props;
+  const { selectedSortOptions, filterOptions } = props;
 
   return (
     <div className="detail-side-nav">
-      <DetailSideNavHeader
-        {...props}
-        onSort={handleSorting}
-        sortOptions={sortOptions}
-        onFilter={handleFiltering}
-      />
+      <DetailSideNavHeader {...props} />
       <DetailSideNavList
         {...props}
         filterOptions={filterOptions}
-        sortOptions={sortOptions}
+        sortOptions={selectedSortOptions}
       />
     </div>
   );
 };
 
 DetailSideNav.propTypes = {
-  handleSorting: PropTypes.func,
-  handleFiltering: PropTypes.func,
+  selectedSortOptions: PropTypes.object,
   filterOptions: PropTypes.object,
-  sortOptions: PropTypes.object,
 };
 
 DetailSideNav.defaultProps = {
-  handleSorting: undefined,
-  handleFiltering: undefined,
+  selectedSortOptions: {},
   filterOptions: {},
-  sortOptions: {},
 };
 
 export default DetailSideNavContainer(DetailSideNav);
