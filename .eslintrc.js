@@ -83,8 +83,17 @@ module.exports = {
     // eslint-plugin-react rules
 
     // Lots of objects are being passed around in this repo,
-    // this rule makes it iconvenient to do that
+    // this rule makes it inconvenient to do that
     'react/forbid-prop-types': 'off',
+    'react/sort-prop-types': [
+      'error',
+      {
+        callbacksLast: false,
+        ignoreCase: true,
+        requiredFirst: false,
+        sortShapeProp: false,
+      },
+    ],
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',
