@@ -8,7 +8,8 @@ import LoanSelector from './LoanSelector';
 import DrawerHeader from '../AppTopNav/DrawerHeader';
 import LoanSideNav from './LoanSideNav';
 
-const SideNavUser = ({ loans, style, fixed, toggleDrawer, history }) => {
+const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
+  const { loans } = currentUser;
   // Return an empty side nav if there is no loan
   if (loans.length <= 0) {
     return (
@@ -17,15 +18,15 @@ const SideNavUser = ({ loans, style, fixed, toggleDrawer, history }) => {
       </nav>
     );
   }
+  // FIXME: What follows is excessively complex for what it does,
+  // However props.match.params.loanId does not get defined to easily pick
+  // it up... wtf?
 
-  const {
-    params: { loanId },
-  } = matchPath(history.location.pathname, {
-    path: '/loans/:loanId',
-    exact: false,
-    strict: false,
-  });
-
+  // Get the pathname, remove the leading '/', and split by '/'
+  const splittedUrl = history.location.pathname.substring(1).split('/');
+  // If it has enough elements, parse the loanId
+  const loanId =
+    splittedUrl.length >= 2 && splittedUrl[0] === 'loans' ? splittedUrl[1] : '';
   let currentLoan;
 
   if (loanId) {
@@ -44,7 +45,7 @@ const SideNavUser = ({ loans, style, fixed, toggleDrawer, history }) => {
       <div className="scrollable">
         <LoanSelector
           history={history}
-          loans={loans}
+          currentUser={currentUser}
           value={loanId}
           toggleDrawer={toggleDrawer}
         />
@@ -55,15 +56,14 @@ const SideNavUser = ({ loans, style, fixed, toggleDrawer, history }) => {
 };
 
 SideNavUser.propTypes = {
+  currentUser: PropTypes.object.isRequired,
   fixed: PropTypes.bool,
   history: PropTypes.object.isRequired,
-  loans: PropTypes.arrayOf(PropTypes.object),
   style: PropTypes.object,
   toggleDrawer: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
-  loans: [],
   fixed: false,
   style: {},
   toggleDrawer: () => {},

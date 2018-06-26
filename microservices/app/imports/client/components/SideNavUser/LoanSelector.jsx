@@ -25,7 +25,7 @@ const getOptions = (loans) => {
     array.push({
       id: r._id,
       label: r.name,
-      icon: r.propertyId.style === 'villa' ? 'home' : 'building',
+      icon: 'home',
     }));
 
   array.push(<Divider key="divider" />);
@@ -38,7 +38,12 @@ const getOptions = (loans) => {
   return array;
 };
 
-const LoanSelector = ({ value, toggleDrawer, history, loans }) => (
+const LoanSelector = ({
+  value,
+  toggleDrawer,
+  history,
+  currentUser: { loans },
+}) => (
   <div className="loan-selector">
     <Select
       id="loan-selector"
@@ -52,13 +57,12 @@ const LoanSelector = ({ value, toggleDrawer, history, loans }) => (
 
 LoanSelector.propTypes = {
   history: PropTypes.object.isRequired,
-  loans: PropTypes.arrayOf(PropTypes.object),
+  currentUser: PropTypes.object.isRequired,
   toggleDrawer: PropTypes.func.isRequired,
   value: PropTypes.string,
 };
 
 LoanSelector.defaultProps = {
-  loans: [],
   value: '',
 };
 
