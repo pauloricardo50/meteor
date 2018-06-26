@@ -6,7 +6,7 @@ import { Accounts } from 'meteor/accounts-base';
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 import { AUCTION_STATUS } from 'core/api/loans/loanConstants';
-import userLoansQuery from 'core/api/loans/queries/userLoans';
+import userLoansQueryE2E from 'core/api/loans/queries/userLoansE2E';
 import {
   createLoginToken,
   createEmailVerificationToken,
@@ -26,19 +26,19 @@ Meteor.methods({
       { fields: { _id: 1 } },
     );
 
-    const step3LoanWithNoAuction = userLoansQuery
+    const step3LoanWithNoAuction = userLoansQueryE2E
       .clone({ userId, step: 3, auction: AUCTION_STATUS.NONE })
       .fetchOne();
 
-    const step3LoanWithStartedAuction = userLoansQuery
+    const step3LoanWithStartedAuction = userLoansQueryE2E
       .clone({ userId, step: 3, auction: AUCTION_STATUS.STARTED })
       .fetchOne();
 
-    const step3LoanWithEndedAuction = userLoansQuery
+    const step3LoanWithEndedAuction = userLoansQueryE2E
       .clone({ userId, step: 3, auction: AUCTION_STATUS.ENDED })
       .fetchOne();
 
-    const unownedLoan = userLoansQuery.clone({ owned: false }).fetchOne();
+    const unownedLoan = userLoansQueryE2E.clone({ owned: false }).fetchOne();
 
     const adminLoginToken = createLoginToken(admin._id);
     const emailVerificationToken = createEmailVerificationToken(
