@@ -7,11 +7,11 @@ import withTableFilters from 'core/containers/withTableFilters';
 import TasksTable from './TasksTable';
 
 const TasksTableWithData = compose(
-  withSmartQuery(
+  withSmartQuery({
     query: ({ assignedTo, unassigned, dashboardTasks }) =>
       query.clone({ assignedTo, unassigned, dashboardTasks }),
     queryOptions: { reactive: true },
-  ),
+  }),
   withTableFilters,
 )(TasksTable);
 
