@@ -1,4 +1,11 @@
 {
+"LoanSideNav.dashboard": "Tableau de bord",
+"LoanSideNav.files": "Documents",
+"LoanSideNav.closing": "Closing",
+"LoanSideNav.borrowers": "Emprunteurs",
+"LoanSideNav.financing": "Financement",
+"LoanSideNav.properties": "Biens immobiliers",
+
 "AppPage.empty":"Contactez nous à info@e-potek.ch ou au 022 566 01 10 pour commencer à utiliser e-Potek.",
 
 "Widget1Page.title": "Calculateur hypothécaire",
@@ -33,7 +40,7 @@
   "Widget1OptionSelector.SECONDARY": "Résidence secondaire",
   "Widget1OptionSelector.INVESTMENT": "Bien de rendement",
   
-"LoanAdder.dialogTitle" :"Ajouter une hypothèque",
+  "LoanAdder.dialogTitle" :"Ajouter une hypothèque",
 
   "steps.borrowers.title": "Emprunteurs",
   "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
