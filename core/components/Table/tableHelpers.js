@@ -1,6 +1,6 @@
-import { ORDER } from '../../utils/sortArray';
+import { ORDER } from '../../utils/sortArrayOfObjects';
 
-export { ORDER } from '../../utils/sortArray';
+export { ORDER } from '../../utils/sortArrayOfObjects';
 
 // "raw" and "label" keys have to be present in the object to display it
 // this way

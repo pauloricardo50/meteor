@@ -6,7 +6,7 @@ import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
 } from 'core/api/constants';
-import { ORDER } from 'core/utils/sortArray';
+import { ORDER } from 'core/utils/sortArrayOfObjects';
 
 const createdAtSortOption = {
   label: <T id="TasksTable.createdAt" />,

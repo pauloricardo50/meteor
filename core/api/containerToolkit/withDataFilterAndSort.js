@@ -1,6 +1,6 @@
 import sift from 'sift';
 import { withProps } from 'recompose';
-import sortArray from '../../utils/sortArray';
+import sortArray from '../../utils/sortArrayOfObjects';
 
 export default (config = {}) =>
   withProps(props => {

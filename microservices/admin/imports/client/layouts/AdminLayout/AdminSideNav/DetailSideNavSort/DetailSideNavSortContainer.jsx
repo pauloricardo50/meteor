@@ -2,7 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import Icon from 'core/components/Icon';
-import { ORDER } from 'core/utils/sortArray';
+import { ORDER } from 'core/utils/sortArrayOfObjects';
 
 import sortOptions, { getSortOptionFromField } from './sortOptions';
 
