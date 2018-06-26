@@ -1,4 +1,5 @@
-import { compose, withStateHandlers, withProps } from 'recompose';
+import React from 'react';
+import { withProps } from 'recompose';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
 
@@ -17,12 +18,12 @@ const getTranslationOfValueForPath = (value, filterPath) => {
     return null;
   }
 
-  return T({ id: translationId });
+  return <T id={translationId} />;
 };
 
 const getSelectOptionLabel = (value, filterPath) => {
   if (!value) {
-    return T({ id: 'TableFilters.none' });
+    return <T id="TableFilters.none" />;
   }
 
   return getTranslationOfValueForPath(value, filterPath) || value;
@@ -44,7 +45,7 @@ const createSelectOptionsForColumn = (filterPath, data) => {
     return getSelectOption(itemValue, filterPath);
   });
 
-  return uniqBy(options, option => option.value);
+  return uniqBy(options, ({ value }) => value);
 };
 
 export default withProps(({ onChange, data, filter: { path: filterPath, value: filterValue } }) => ({

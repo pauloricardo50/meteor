@@ -10,6 +10,22 @@ import filterArrayOfObjects from '../../../utils/filterArrayOfObjects';
 import { getFilterKeyFromPath } from './TableFilterContainer';
 import TableFiltersContainer from './TableFiltersContainer';
 
+/*
+ * Flters usage explanation:
+ *   - If you use `withTableFilters`, pass the `tableFilters` prop to the
+ *     initial component. If you use `<TableFilters />` directly, pass the
+ *     `filters` prop to it.
+ *   - If you pass `true` or `[]` to a filter, it renders the filter but doesn't
+ *     filter the data by default. E.g.: filters={{ name: true }}
+ *   - To filter the data by default, pass an array of values to the filter
+ *     The data will be filtered by those
+ *     values and the filters' UI will be prepopulated with those values. E.g.:
+ *     filters={{ name: ["John", "Alex"] }}
+ *   - You can filter by nested object and array values,
+ *     similar to mongo queries:
+ *     E.g.: filters={{ emails: [{address: ["my.email@gmail.com"]}] }} or
+ *           filters={{ assignee: { name: true } }}
+ */
 class TableFilters extends React.Component {
   constructor(props) {
     super(props);
@@ -18,35 +34,16 @@ class TableFilters extends React.Component {
     this.state = { filters, data };
   }
 
-  // this is called on every render with the prevState being my current state!
-  // WHY with current state??
-  // of course they're different!
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (
-  //     !isEqual(nextProps.filters, prevState.filters) ||
-  //     !isEqual(nextProps.data, prevState.data)
-  //   ) {
-  //     console.log(
-  //       'getDSFP updates state',
-  //       nextProps.filters,
-  //       prevState.filters,
-  //     );
-  //     return { filters: nextProps.filters, data: nextProps.data };
-  //   }
-
-  //   return null;
-  // }
-
   componentDidUpdate(prevProps) {
     const { filters: currentFiltersProp, data: currentDataProp } = this.props;
     const { filters: oldFiltersProp, data: oldDataProp } = prevProps;
 
     if (!isEqual(currentDataProp, oldDataProp)) {
-      this.setState({ data: currentDataProp });
+      this.setState(() => ({ data: currentDataProp }));
     }
 
     if (!isEqual(currentFiltersProp, oldFiltersProp)) {
-      this.setState({ filters: currentFiltersProp });
+      this.setState(() => ({ filters: currentFiltersProp }));
     }
   }
 
@@ -58,7 +55,7 @@ class TableFilters extends React.Component {
       newFilterValue,
     );
 
-    this.setState({ filters: newFilters });
+    this.setState(() => ({ filters: newFilters }));
   };
 
   render() {

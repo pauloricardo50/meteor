@@ -60,58 +60,44 @@ describe('filterArrayOfObjects', () => {
   });
 
   it('filters data by an array item at any given index', () => {
-    const filters = {
-      tests: { 1: { type: ['speed'], result: [5] } },
-    };
+    const filters = { tests: { 1: { type: ['speed'], result: [5] } } };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2]);
   });
 
   it('filters by `undefined` filters', () => {
-    const filters = {
-      fuelConsumtion: [undefined],
-    };
+    const filters = { fuelConsumtion: [undefined] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car1, car2]);
   });
 
-  it('filters by interger filters', () => {
-    const filters = {
-      fuelConsumtion: [8, 9],
-    };
+  it('filters by integer filters', () => {
+    const filters = { fuelConsumtion: [8, 9] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car3]);
   });
 
   it('filters by string filters', () => {
-    const filters = {
-      name: ['Car 2', 'Car 3'],
-    };
+    const filters = { name: ['Car 2', 'Car 3'] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2, car3]);
   });
 
   it('returns an empty array when no data is matched', () => {
-    const filters = {
-      type: ['inexistent type'],
-    };
+    const filters = { type: ['inexistent type'] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([]);
   });
 
-  it('does not filter a data item when unless it matches all filters', () => {
+  it("removes the data items that don't match all filters", () => {
     const filters = { name: ['Car 2'], properties: { color: ['red'] } };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([]);
   });
 
   it(`does not filter data by a filter of which value
       is something other than an array`, () => {
-    const filters = {
-      name: 'Car 2',
-    };
+    const filters = { name: 'Car 2' };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal(data);
   });
 
   it(`does not filter data by a filter of which value
       is an empty array`, () => {
-    const filters = {
-      name: [],
-    };
+    const filters = { name: [] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal(data);
   });
 });

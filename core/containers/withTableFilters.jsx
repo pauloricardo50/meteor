@@ -3,11 +3,16 @@ import { branch } from 'recompose';
 
 import TableFilters from '../components/Table/TableFilters';
 
+/**
+ * Use this HoC when you want the initial component to
+ * be wrapped inside the filters and be bassed the filtered data
+ */
+
 const withTableFilters = branch(
   ({ tableFilters }) => !!tableFilters,
-  WrapperComponent => props => (
+  WrappedComponent => props => (
     <TableFilters filters={props.tableFilters} data={props.data}>
-      {filteredData => <WrapperComponent {...props} data={filteredData} />}
+      {filteredData => <WrappedComponent {...props} data={filteredData} />}
     </TableFilters>
   ),
 );

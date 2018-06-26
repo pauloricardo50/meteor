@@ -20,7 +20,6 @@ const isArrayOfObjects = variable =>
   variable.length > 0 &&
   variable.every(item => item && item.constructor === Object);
 
-// TODO: TEST for: simple, nested objects, nested objects with array & undefined data values.
 // Converts an object to an array of objects containing
 // the path to the leaf & leaf's value:
 // The returned array be the exact structure that lodash's
