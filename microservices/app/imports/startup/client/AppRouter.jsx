@@ -36,6 +36,8 @@ import AppLayout from '../../client/layouts/AppLayout';
 import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 
+import * as ROUTES from './appRoutes';
+
 const AppRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
@@ -45,58 +47,64 @@ const AppRouter = () => (
   >
     <AppLayout type="app">
       <Switch>
-        <Route path="/dev" component={DevPage} />
-        <Route path="/profile" component={AccountPage} />
+        <Route path={ROUTES.DEV_PAGE} component={DevPage} />
+        <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route
-          path="/loans/:loanId/borrowers/:borrowerId/:tabId"
+          path={ROUTES.BORROWERS_PAGE}
           component={LoanContainer(BorrowerPage)}
         />
         <Route
-          path="/loans/:loanId/property"
+          path={ROUTES.PROPERTIES_PAGE}
           component={LoanContainer(PropertyPage)}
         />
+        <Route path={ROUTES.DEV_PAGE} component={LoanContainer(FinancePage)} />
         <Route
-          path="/loans/:loanId/finance"
-          component={LoanContainer(FinancePage)}
-        />
-        <Route
-          path="/loans/:loanId/verification"
+          path={ROUTES.VERIFICATION_PAGE}
           component={LoanContainer(VerificationPage)}
         />
         <Route
-          path="/loans/:loanId/structure"
+          path={ROUTES.STRUCTURE_PAGE}
           component={LoanContainer(StructurePage)}
         />
         <Route
-          path="/loans/:loanId/auction"
+          path={ROUTES.AUCTION_PAGE}
           component={LoanContainer(AuctionPage)}
         />
         <Route
-          path="/loans/:loanId/strategy"
+          path={ROUTES.STRATEGY_PAGE}
           component={LoanContainer(StrategyPage)}
         />
         <Route
-          path="/loans/:loanId/offerpicker"
+          path={ROUTES.OFFER_PICKER_PAGE}
           component={LoanContainer(OfferPickerPage)}
         />
         <Route
-          path="/loans/:loanId/contract"
+          path={ROUTES.CONTRACT_PAGE}
           component={LoanContainer(ContractPage)}
         />
         <Route
-          path="/loans/:loanId/closing"
+          path={ROUTES.CLOSING_PAGE}
           component={LoanContainer(ClosingPage)}
         />
+        <Route path={ROUTES.FILES_PAGE} component={LoanContainer(FilesPage)} />
         <Route
-          path="/loans/:loanId/files"
-          component={LoanContainer(FilesPage)}
+          path={ROUTES.DASHBOARD_PAGE}
+          component={LoanContainer(DashboardPage)}
         />
-        <Route path="/loans/:loanId" component={LoanContainer(DashboardPage)} />
-        <Route path="/add-loan/:loanId" component={AddLoanPage} />
-        <Route path="/reset-password/:token" component={PasswordResetPage} />
-        <Route path="/enroll-account/:token" component={PasswordResetpage} />
-        <Route path="/verify-email/:token" component={EmailVerificationPage} />
-        <Route exact path="/" component={AppPage} />
+        <Route path={ROUTES.ADD_LOAN_PAGE} component={AddLoanPage} />
+        <Route
+          path={ROUTES.PASSWORD_RESET_PAGE}
+          component={PasswordResetPage}
+        />
+        <Route
+          path={ROUTES.ENROLL_ACCOUNT_PAGE}
+          component={PasswordResetpage}
+        />
+        <Route
+          path={ROUTES.EMAIL_VERIFICATION_PAGE}
+          component={EmailVerificationPage}
+        />
+        <Route exact path={ROUTES.APP_PAGE} component={AppPage} />
         <Route exact path={IMPERSONATE_ROUTE} component={ImpersonatePage} />
         <Route component={NotFound} />
       </Switch>
