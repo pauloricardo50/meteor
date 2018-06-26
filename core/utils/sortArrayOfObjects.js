@@ -13,5 +13,14 @@ export default (data, fieldPath, order) => {
     return data;
   }
 
-  return orderBy(data, item => get(item, fieldPath), order);
+  const iteratee = item => {
+    const value = get(item, fieldPath);
+    if (typeof value === 'string') {
+      return value.toLowerCase();
+    }
+
+    return value;
+  };
+
+  return orderBy(data, iteratee, order);
 };

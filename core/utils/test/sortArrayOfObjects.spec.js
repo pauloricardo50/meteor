@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import { expect } from 'chai';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -46,18 +47,18 @@ describe('sortArrayOfObjects', () => {
 
   it('sorts objects ascending by nested values', () => {
     const input = [
-      { someValue: 4, a: { b: 'some' } },
-      { someValue: -3, anotherVal: 'val', a: { b: 'Some' } },
-      { someValue: 2, anotherVal: 'val', a: { b: 'Another' } },
-      { a: { b: 'abc' }, someValue: 4 },
-      { someValue: 1, a: { b: 'text' } },
+      { someValue: -3, anotherVal: 'val', a: { b: 'x' } },
+      { someValue: 2, anotherVal: 'val', a: { b: 'a' } },
+      { someValue: 4, a: { b: 'z' } },
+      { someValue: 1, a: { b: 'cc' } },
+      { a: { b: 'dd' }, someValue: 4 },
     ];
     const expectedOutput = [
-      { someValue: 2, anotherVal: 'val', a: { b: 'Another' } },
-      { someValue: -3, anotherVal: 'val', a: { b: 'Some' } },
-      { a: { b: 'abc' }, someValue: 4 },
-      { someValue: 4, a: { b: 'some' } },
-      { someValue: 1, a: { b: 'text' } },
+      { someValue: 2, anotherVal: 'val', a: { b: 'a' } },
+      { someValue: 1, a: { b: 'cc' } },
+      { a: { b: 'dd' }, someValue: 4 },
+      { someValue: -3, anotherVal: 'val', a: { b: 'x' } },
+      { someValue: 4, a: { b: 'z' } },
     ];
     expect(sortArrayOfObjects(input, 'a.b', ORDER.ASC)).to.deep.equal(
       expectedOutput,
@@ -66,20 +67,28 @@ describe('sortArrayOfObjects', () => {
 
   it('sorts objects descending by nested values', () => {
     const input = [
-      { someValue: 4, a: { b: 'some' } },
-      { someValue: -3, anotherVal: 'val', a: { b: 'Some' } },
-      { someValue: 2, anotherVal: 'val', a: { b: 'Another' } },
-      { a: { b: 'abc' }, someValue: 4 },
-      { someValue: 1, a: { b: 'text' } },
+      { someValue: -3, anotherVal: 'val', a: { b: 'x' } },
+      { someValue: 2, anotherVal: 'val', a: { b: 'a' } },
+      { someValue: 4, a: { b: 'z' } },
+      { someValue: 1, a: { b: 'cc' } },
+      { a: { b: 'dd' }, someValue: 4 },
     ];
     const expectedOutput = [
-      { someValue: 1, a: { b: 'text' } },
-      { someValue: 4, a: { b: 'some' } },
-      { a: { b: 'abc' }, someValue: 4 },
-      { someValue: -3, anotherVal: 'val', a: { b: 'Some' } },
-      { someValue: 2, anotherVal: 'val', a: { b: 'Another' } },
+      { someValue: 4, a: { b: 'z' } },
+      { someValue: -3, anotherVal: 'val', a: { b: 'x' } },
+      { a: { b: 'dd' }, someValue: 4 },
+      { someValue: 1, a: { b: 'cc' } },
+      { someValue: 2, anotherVal: 'val', a: { b: 'a' } },
     ];
     expect(sortArrayOfObjects(input, 'a.b', ORDER.DESC)).to.deep.equal(
+      expectedOutput,
+    );
+  });
+
+  it('sorts objects by case-insensitive string values', () => {
+    const input = [{ a: 'ba' }, { a: 'aa' }, { a: 'Aa' }, { a: 'Zz' }];
+    const expectedOutput = [{ a: 'aa' }, { a: 'Aa' }, { a: 'ba' }, { a: 'Zz' }];
+    expect(sortArrayOfObjects(input, 'a', ORDER.ASC)).to.deep.equal(
       expectedOutput,
     );
   });
