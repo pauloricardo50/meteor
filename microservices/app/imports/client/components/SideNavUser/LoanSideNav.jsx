@@ -24,8 +24,8 @@ export const LoanSideNav = ({ loan, links }) => (
         ...link,
         to: createRoute(link.to, {
           ':loanId': loan._id,
-          ':borrowerId': loan.borrowerIds[0],
-          ':propertyId': loan.propertyId,
+          ':borrowerId': loan.borrowers[0]._id,
+          ':propertyId': loan.property._id,
         }),
       }))
       .map(({ to, id, ...otherProps }) => (
