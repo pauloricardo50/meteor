@@ -9,8 +9,18 @@
 
 [options]
 module.name_mapper='^\/\(.*\)$' -> '<PROJECT_ROOT>/\1'
-module.name_mapper='^meteor\/\(.*\):\(.*\)$' -> '<PROJECT_ROOT>/.meteor/local/build/programs/server/packages/\1_\2'
-module.name_mapper='^meteor\/\(.*\):\(.*\)$' -> '<PROJECT_ROOT>/.meteor/local/build/programs/web.browser/packages/\1_\2'
-module.name_mapper='^meteor\/\(.*\)$' -> '<PROJECT_ROOT>/.meteor/local/build/programs/server/packages/\1'
-module.name_mapper='^meteor\/\(.*\)$' -> '<PROJECT_ROOT>/.meteor/local/build/programs/web.browser/packages/\1'
+# Map core/ properly
 module.name_mapper='^core' ->'<PROJECT_ROOT>/core'
+
+# Use meteor packages from admin, as nested configs are not supported
+# It is therefore assumed that any meteor package used in a microservice,
+# is also used in admin, so that flow never complains
+# https://github.com/facebook/flow/issues/238
+# FIXME: Not working at the moment
+# https://forums.meteor.com/t/work-in-progress-flowtype-typings/40978
+
+# module.name_mapper='^meteor\/\(.*\):\(.*\)$' -> '<PROJECT_ROOT>/microservices/admin/.meteor/local/build/programs/web.browser/packages/\1_\2'
+# module.name_mapper='^meteor\/\(.*\)$' -> '<PROJECT_ROOT>/microservices/admin/.meteor/local/build/programs/web.browser/packages/\1'
+
+# module.name_mapper='^meteor\/\(.*\):\(.*\)$' -> '~/.meteor/packages/\1_\2'
+# module.name_mapper='^meteor\/\(.*\)$' -> '~/.meteor/packages/\1'

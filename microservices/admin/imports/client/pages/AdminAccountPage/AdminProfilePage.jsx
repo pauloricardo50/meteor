@@ -3,11 +3,11 @@ import React from 'react';
 
 import SingleUserPage from '../SingleUserPage';
 
-const AdminProfilePage = () => (
+const AdminAccountPage = () => (
   <SingleUserPage
     match={{ params: { userId: Meteor.userId() } }}
-    className="admin-profile-page"
+    className="admin-account-page"
   />
 );
 
-export default AdminProfilePage;
+export default AdminAccountPage;

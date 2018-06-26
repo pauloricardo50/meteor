@@ -7,8 +7,6 @@ import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../client/components/AppStore';
 
-import LoanContainer from 'core/containers/LoanContainer';
-
 import DevPage from 'core/components/DevPage';
 import DashboardPage from '../../client/pages/DashboardPage';
 import BorrowerPage from '../../client/pages/BorrowerPage';
@@ -49,48 +47,18 @@ const AppRouter = () => (
       <Switch>
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
-        <Route
-          path={ROUTES.BORROWERS_PAGE}
-          component={LoanContainer(BorrowerPage)}
-        />
-        <Route
-          path={ROUTES.PROPERTIES_PAGE}
-          component={LoanContainer(PropertyPage)}
-        />
-        <Route path={ROUTES.DEV_PAGE} component={LoanContainer(FinancePage)} />
-        <Route
-          path={ROUTES.VERIFICATION_PAGE}
-          component={LoanContainer(VerificationPage)}
-        />
-        <Route
-          path={ROUTES.STRUCTURE_PAGE}
-          component={LoanContainer(StructurePage)}
-        />
-        <Route
-          path={ROUTES.AUCTION_PAGE}
-          component={LoanContainer(AuctionPage)}
-        />
-        <Route
-          path={ROUTES.STRATEGY_PAGE}
-          component={LoanContainer(StrategyPage)}
-        />
-        <Route
-          path={ROUTES.OFFER_PICKER_PAGE}
-          component={LoanContainer(OfferPickerPage)}
-        />
-        <Route
-          path={ROUTES.CONTRACT_PAGE}
-          component={LoanContainer(ContractPage)}
-        />
-        <Route
-          path={ROUTES.CLOSING_PAGE}
-          component={LoanContainer(ClosingPage)}
-        />
-        <Route path={ROUTES.FILES_PAGE} component={LoanContainer(FilesPage)} />
-        <Route
-          path={ROUTES.DASHBOARD_PAGE}
-          component={LoanContainer(DashboardPage)}
-        />
+        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowerPage} />
+        <Route path={ROUTES.PROPERTIES_PAGE} component={PropertyPage} />
+        <Route path={ROUTES.DEV_PAGE} component={FinancePage} />
+        <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
+        <Route path={ROUTES.STRUCTURE_PAGE} component={StructurePage} />
+        <Route path={ROUTES.AUCTION_PAGE} component={AuctionPage} />
+        <Route path={ROUTES.STRATEGY_PAGE} component={StrategyPage} />
+        <Route path={ROUTES.OFFER_PICKER_PAGE} component={OfferPickerPage} />
+        <Route path={ROUTES.CONTRACT_PAGE} component={ContractPage} />
+        <Route path={ROUTES.CLOSING_PAGE} component={ClosingPage} />
+        <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
+        <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
         <Route path={ROUTES.ADD_LOAN_PAGE} component={AddLoanPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}

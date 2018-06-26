@@ -23,7 +23,7 @@ const getMenuItems = (currentUser) => {
     },
     {
       id: 'account',
-      link: '/profile',
+      link: '/account',
       icon: 'accountCircle',
       secondary: currentUser.emails[0].address,
       show: true,

@@ -54,7 +54,6 @@ const TopNav = (props) => {
             <Button
               label={<T id="TopNav.login" />}
               primary
-              dense
               onClick={() => {
                 track('TopNav - clicked login', {});
                 window.location.replace(`${Meteor.settings.public.subdomains.app}/login`);

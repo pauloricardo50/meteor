@@ -83,6 +83,7 @@ const AccountPage = props => (
 
 AccountPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default AccountPage;

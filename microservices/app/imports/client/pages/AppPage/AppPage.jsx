@@ -30,8 +30,8 @@ const AppPage = ({ loans, currentUser }) => {
 };
 
 AppPage.propTypes = {
-  loans: PropTypes.arrayOf(PropTypes.object),
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  loans: PropTypes.arrayOf(PropTypes.object),
 };
 
 AppPage.defaultProps = {

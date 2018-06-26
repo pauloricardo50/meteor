@@ -10,7 +10,6 @@ import UploaderArray from 'core/components/UploaderArray';
 import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import { getPropertyCompletion } from 'core/utils/loanFunctions';
 import T from 'core/components/Translation';
-import withLoan from 'core/containers/withLoan';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
@@ -99,4 +98,4 @@ PropertyPage.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withLoan(PropertyPage);
+export default PropertyPage;

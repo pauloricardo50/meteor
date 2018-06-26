@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { T, IntlNumber } from 'core/components/Translation';
 import { getRange } from 'core/utils/offerFunctions';
 import { getMonthlyWithOffer } from 'core/utils/loanFunctions';
-import withLoan from 'core/containers/withLoan';
 import SummaryComponent from '../../components/SummaryComponent';
 
 const values = ({ offers, loan, property }) => {
@@ -69,4 +68,4 @@ LenderSummary.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withLoan(LenderSummary);
+export default LenderSummary;
