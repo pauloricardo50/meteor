@@ -49,7 +49,7 @@ const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
           value={loanId}
           toggleDrawer={toggleDrawer}
         />
-        {loanId && <LoanSideNav loan={currentLoan} />}
+        {/* {loanId && <LoanSideNav loan={currentLoan} />} */}
       </div>
     </nav>
   );
