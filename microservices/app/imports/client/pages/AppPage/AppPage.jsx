@@ -1,11 +1,8 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import T from 'core/components/Translation';
 import DashboardUnverified from '../../components/DashboardUnverified';
-import AppItem from './AppItem';
 import LoanAppItem from './LoanAppItem';
 
 const AppPage = ({ loans, currentUser }) => {
@@ -24,13 +21,9 @@ const AppPage = ({ loans, currentUser }) => {
       {loans.map(loan => <LoanAppItem loan={loan} key={loan._id} />)}
 
       {loans.length === 0 && (
-        <AppItem
-          title={<T id="AppPage.newLoan" />}
-          mainText={<span className="active">+</span>}
-          onClick={() => {
-            window.location.replace(`${Meteor.settings.public.subdomains.www}/start/1`);
-          }}
-        />
+        <p className="description">
+          <T id="AppPage.empty" />
+        </p>
       )}
     </section>
   );
