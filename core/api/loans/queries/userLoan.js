@@ -64,6 +64,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
     customFields: 1,
     adminValidation: 1,
     documents: 1,
+    expertise: 1,
   },
   borrowerIds: 1,
   borrowers: {

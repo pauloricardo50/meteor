@@ -1,5 +1,4 @@
 import { GENDER, USAGE_TYPE } from '../api/constants';
-import * as constants from '../config/constants';
 import {
   NOTARY_FEES,
   MAINTENANCE_FINMA,
