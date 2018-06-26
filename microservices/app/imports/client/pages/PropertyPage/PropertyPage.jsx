@@ -16,7 +16,8 @@ import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
-  const { loan, borrowers, property } = props;
+  const { loan } = props;
+  const { borrowers, property } = loan;
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
@@ -94,8 +95,6 @@ const PropertyPage = (props) => {
 
 PropertyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default PropertyPage;
