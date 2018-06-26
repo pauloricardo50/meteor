@@ -13,8 +13,9 @@ const isLastItemOfStep = (index, length) => index >= length - 1;
 const isFirstItemOfStep = index => index <= 0;
 
 export const getStepValues = (props) => {
-  const { id: itemId, stepNb } = props;
-  const steps = getSteps(props);
+  const { id: itemId, stepNb, loan } = props;
+  const { borrowers, property } = loan;
+  const steps = getSteps({ loan, borrowers, property });
 
   const currentStepIndex = stepNb - 1;
   const prevStepIndex = currentStepIndex - 1;
@@ -101,13 +102,12 @@ class ProcessPage extends Component {
 
 ProcessPage.propTypes = {
   children: PropTypes.element,
-  stepNb: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  showBottom: PropTypes.bool,
   serverTime: PropTypes.instanceOf(Date),
   setStep: PropTypes.func.isRequired,
+  showBottom: PropTypes.bool,
+  stepNb: PropTypes.number.isRequired,
 };
 
 ProcessPage.defaultProps = {

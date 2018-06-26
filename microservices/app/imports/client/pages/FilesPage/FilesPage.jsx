@@ -12,15 +12,17 @@ const FilesPage = props => (
         <T id="FilesPage.description" />
       </p>
 
-      <FileTabs {...props} />
+      <FileTabs
+        {...props}
+        property={props.loan.property}
+        borrowers={props.loan.borrowers}
+      />
     </div>
   </Page>
 );
 
 FilesPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default FilesPage;

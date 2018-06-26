@@ -14,7 +14,11 @@ describe('LoanSideNav', () => {
   beforeEach(() => {
     props = {
       links: [],
-      loan: { _id: 'testId', borrowerIds: ['testBorrower'] },
+      loan: {
+        _id: 'testId',
+        borrowers: [{ _id: 'testBorrower' }],
+        property: { _id: '' },
+      },
     };
   });
 

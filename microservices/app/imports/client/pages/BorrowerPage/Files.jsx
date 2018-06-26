@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const Files = ({ borrowers, loan: { userFormsEnabled } }) => (
+const Files = ({ loan: { userFormsEnabled, borrowers } }) => (
   <section
     className="animated fadeIn borrower-page-files"
     style={styles.section}
@@ -50,7 +50,6 @@ const Files = ({ borrowers, loan: { userFormsEnabled } }) => (
 );
 
 Files.propTypes = {
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

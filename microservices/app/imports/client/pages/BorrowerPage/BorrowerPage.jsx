@@ -11,7 +11,8 @@ import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
 
 const getTabs = (props) => {
-  const { loan, borrowers } = props;
+  const { loan } = props;
+  const { borrowers } = loan;
   return [
     { id: 'personal', content: <Info {...props} /> },
     { id: 'finance', content: <Finance {...props} /> },
@@ -45,9 +46,7 @@ const BorrowerPage = (props) => {
 
 BorrowerPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  borrowerId: PropTypes.string.isRequired,
   tabId: PropTypes.string.isRequired,
 };
 
-export default withMatchParam(['tabId', 'borrowerId'])(BorrowerPage);
+export default withMatchParam('tabId')(BorrowerPage);
