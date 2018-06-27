@@ -1,88 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
 
-import Icon from 'core/components/Icon';
-import { IntlNumber } from 'core/components/Translation';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
+import T from 'core/components/Translation';
+import LoanSummaryColumns from './LoanSummaryColumns';
+import BorrowersSummary from '../BorrowersSummary';
 
-const LoanSummary = ({
-  loan: {
-    _id,
-    name,
-    logic: { step },
-    general: { fortuneUsed, insuranceFortuneUsed },
-    createdAt,
-    updatedAt,
-    borrowers,
-    property: { value },
-  },
-}) => (
-  <div className="mask1" style={{ marginBottom: 16 }}>
-    <h4 style={{ marginBottom: 16 }}>
-      <Link to={`/loans/${_id}`}>{name || 'Demande de Prêt'}</Link>
-    </h4>
+const LoanSummary = ({ loan }) => {
+  const { _id, borrowers, name } = loan;
 
-    <div className="flex admin-loan" style={{ flexWrap: 'wrap' }}>
-      <div className="flex-col">
-        <label htmlFor="">Étape</label>
-        <p>{step + 1}</p>
-      </div>
+  return (
+    <div className="mask1 loan-summary">
+      <h4>
+        <Link to={`/loans/${_id}`}>{name || <T id="general.loan" />}</Link>
+      </h4>
 
-      <div className="flex-col">
-        <label htmlFor="">Créé le</label>
-        <p>{moment(createdAt).format('D MMM YY à HH:mm:ss')}</p>
-      </div>
+      <LoanSummaryColumns loan={loan} />
 
-      <div className="flex-col">
-        <label htmlFor="">Updaté le</label>
-        <p>{moment(updatedAt).format('D MMM YY à HH:mm:ss')}</p>
-      </div>
-
-      <div className="flex-col">
-        <label htmlFor="">Valeur du bien</label>
-        <p>
-          <IntlNumber value={value} format="money" />
-        </p>
-      </div>
-
-      <div className="flex-col">
-        <label htmlFor="">Fortune utilisée</label>
-        <p>
-          <IntlNumber value={fortuneUsed} format="money" />
-        </p>
-      </div>
-
-      <div className="flex-col">
-        <label htmlFor="">2-3e pillier utilisé</label>
-        <p>
-          {insuranceFortuneUsed ? (
-            <IntlNumber value={insuranceFortuneUsed} format="money" />
-          ) : (
-            '-'
-          )}
-        </p>
-      </div>
+      <BorrowersSummary borrowers={borrowers} />
     </div>
-
-    <h5>Emprunteurs</h5>
-    {borrowers.map((borrower, index) => (
-      <Chip
-        style={{ margin: 8 }}
-        key={borrower._id}
-        avatar={
-          <Avatar>
-            <Icon type="face" />
-          </Avatar>
-        }
-        label={getBorrowerFullName(borrower) || `Emprunteur ${index + 1}`}
-      />
-    ))}
-  </div>
-);
+  );
+};
 
 LoanSummary.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
