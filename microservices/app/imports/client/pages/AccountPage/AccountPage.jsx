@@ -46,7 +46,6 @@ const AccountPage = props => (
           <h4 style={styles.h}>
             <T id="AccountPage.email" />
           </h4>
-          {/* <a><T id="AccountPage.change" /></a> */}
           <br />
           <p className="secondary">{props.currentUser.emails[0].address}</p>
         </div>
@@ -58,24 +57,6 @@ const AccountPage = props => (
           <br />
           <PasswordChange />
         </div>
-
-        {/* <div className="form-group">
-          <h4 style={styles.h}><T id="AccountPage.phone" /></h4><a><T id="AccountPage.change" /></a>
-          <br />
-          <p className="secondary">+41 78 000 00 00</p>
-        </div> */}
-
-        {/* <div className="form-group">
-          <h4 style={styles.h}>Langue</h4><a>Changer</a>
-          <br />
-          <p className="secondary">Français</p>
-        </div> */}
-
-        {/* <div className="form-group">
-          <h4><T id="AccountPage.notifications" /></h4>
-          <Checkbox label={<T id="AccountPage.notifications.email" />} style={{ zIndex: 1 }} />
-          <Checkbox label={<T id="AccountPage.notifications.sms" />} style={{ zIndex: 1 }} />
-        </div> */}
       </div>
     </div>
   </Page>

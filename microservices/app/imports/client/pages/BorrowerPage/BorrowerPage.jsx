@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
-import ProcessPage from '../../components/ProcessPage';
+import Page from '../../components/Page';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
@@ -36,11 +36,11 @@ const BorrowerPage = (props) => {
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
   return (
-    <ProcessPage {...props} stepNb={1} id="borrowers">
+    <Page id="borrowers">
       <section className="borrower-page">
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
-    </ProcessPage>
+    </Page>
   );
 };
 

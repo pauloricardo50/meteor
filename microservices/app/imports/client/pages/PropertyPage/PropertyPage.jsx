@@ -13,7 +13,7 @@ import T from 'core/components/Translation';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import ProcessPage from '../../components/ProcessPage';
+import Page from '../../components/Page';
 
 const PropertyPage = (props) => {
   const { loan } = props;
@@ -23,7 +23,7 @@ const PropertyPage = (props) => {
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
-    <ProcessPage {...props} stepNb={1} id="property">
+    <Page id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
           <T id="PropertyPage.title" values={{ count: borrowers.length }} />
@@ -89,7 +89,7 @@ const PropertyPage = (props) => {
           />
         </div>
       </section>
-    </ProcessPage>
+    </Page>
   );
 };
 

@@ -6,7 +6,7 @@ import T from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { toNumber } from 'core/utils/conversionFunctions';
 import { loanUpdate } from 'core/api';
-import ProcessPage from '../../components/ProcessPage';
+import Page from '../../components/Page';
 import LoadingButton from '../../components/LoadingButton';
 import StructureSliders from './StructureSliders';
 import StructureRecap from './StructureRecap';
@@ -48,7 +48,7 @@ export default class StructurePage extends Component {
     });
 
     return (
-      <ProcessPage {...this.props} stepNb={2} id="structure" showBottom={false}>
+      <Page id="structure">
         <section className="mask1 structure-page">
           <div className="description">
             <p>
@@ -86,7 +86,7 @@ export default class StructurePage extends Component {
             />
           </div>
         </section>
-      </ProcessPage>
+      </Page>
     );
   }
 }

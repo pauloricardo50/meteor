@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
 import OfferList from 'core/components/OfferList';
-import ProcessPage from '../../components/ProcessPage';
+import Page from '../../components/Page';
 
 const OfferPickerPage = (props) => {
   const { offers, loan, property } = props;
   return (
-    <ProcessPage {...props} stepNb={2} id="offerPicker">
+    <Page id="offerPicker">
       <section className="mask1">
         <h1>
           <T id="OfferPickerPage.title" />
@@ -24,7 +24,7 @@ const OfferPickerPage = (props) => {
           disabled={loan.logic.step > 2}
         />
       </section>
-    </ProcessPage>
+    </Page>
   );
 };
 
