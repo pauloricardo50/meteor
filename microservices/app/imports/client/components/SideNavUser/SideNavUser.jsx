@@ -44,7 +44,7 @@ const SideNavUser = ({
     <nav
       className={classnames({
         'side-nav-user': true,
-        'joyride-side-nav fixed': fixed,
+        fixed,
       })}
       style={style}
     >
