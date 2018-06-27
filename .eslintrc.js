@@ -6,7 +6,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['import', 'jsx-a11y', 'meteor', 'react'],
+  plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'flowtype'],
   extends: ['airbnb', 'plugin:meteor/recommended', 'plugin:react/recommended'],
   env: {
     es6: true,
@@ -39,10 +39,13 @@ module.exports = {
     'object-curly-newline': ['error', { consistent: true }],
     'multiline-ternary': ['error', 'always-multiline'],
 
-    // FIXME: Find a solution for math parentheses mess:
-    // https://github.com/prettier/prettier/issues/3968
-    // 'no-extra-parens': ['error', 'all', { nestedBinaryExpressions: false }],
-    // 'no-mixed-operators': ['error', { allowSamePrecedence: false }],
+    // UPDATE: This math issue appears to be fixed, try it out for a while
+    // and then remove these comments
+    // Use "functions"  instead of "all" to avoid this issue:
+    // https://github.com/prettier/prettier-eslint/issues/180
+    'no-extra-parens': ['error', 'functions'],
+    'no-mixed-operators': ['error', { allowSamePrecedence: false }],
+    'function-paren-newline': ['error', 'multiline'],
 
     // eslint-plugin-import rules
 
@@ -80,8 +83,17 @@ module.exports = {
     // eslint-plugin-react rules
 
     // Lots of objects are being passed around in this repo,
-    // this rule makes it iconvenient to do that
+    // this rule makes it inconvenient to do that
     'react/forbid-prop-types': 'off',
+    'react/sort-prop-types': [
+      'error',
+      {
+        callbacksLast: false,
+        ignoreCase: true,
+        requiredFirst: false,
+        sortShapeProp: false,
+      },
+    ],
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',

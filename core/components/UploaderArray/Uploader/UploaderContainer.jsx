@@ -47,4 +47,7 @@ const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, 
   return additionalProps;
 });
 
-export default compose(UploaderContainer, UploaderController);
+export default compose(
+  UploaderContainer,
+  UploaderController,
+);

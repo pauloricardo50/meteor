@@ -8,9 +8,9 @@ import { borrowerDocuments } from 'core/api/files/documents';
 import { FILE_STEPS } from 'core/api/constants';
 
 const Progress = ({ match, borrower }) => {
-  const { tab } = match.params;
+  const { tabId } = match.params;
 
-  switch (tab) {
+  switch (tabId) {
   case 'personal': {
     const percent = personalInfoPercent(borrower);
     const progressClasses = classNames('progress-block', {

@@ -1,0 +1,17 @@
+.table-filters {
+  display: flex;
+  flex-wrap: wrap;
+
+  .table-filter {
+    min-width: 180px;
+    margin-right: 7px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .table-filter-input {
+    min-width: 25px;
+  }
+}

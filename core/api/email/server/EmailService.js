@@ -81,8 +81,9 @@ class EmailService {
     } catch (error) {
       throw new Meteor.Error(
         'MANDRILL_ERROR',
-        `Error while rendering mandrill template for ${emailId}: ${
-          error.reason || error.message || error}`,
+        `Error while rendering mandrill template for ${emailId}: ${error.reason ||
+          error.message ||
+          error}`,
       );
     }
 

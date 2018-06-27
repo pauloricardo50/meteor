@@ -8,8 +8,7 @@ import {
   validateIncomeRatio,
   validateBorrowRatio,
 } from 'core/utils/finance';
-import { selectFields } from '../../../redux/reducers/widget1';
-import { PURCHASE_TYPE } from '../../../redux/constants/widget1Constants';
+import { widget1Selectors, widget1Constants } from '../../../redux/widget1';
 
 export const hideFinmaValues = (borrowRatio, incomeRatio) =>
   !(borrowRatio && incomeRatio) ||
@@ -29,7 +28,7 @@ const getFinmaValues = ({
     wantedLoan,
   );
   const borrowRatio =
-    purchaseType === PURCHASE_TYPE.ACQUISITION
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
       ? getBorrowRatio(propertyValue, fortune)
       : getRefinancingBorrowRatio(propertyValue, wantedLoan);
   const incomeRatio = getIncomeRatio(salary, finmaMonthlyCost);
@@ -77,7 +76,7 @@ export const mapStateToProps = (state) => {
     salary,
     fortune,
     propertyValue,
-    fields: selectFields(state),
+    fields: widget1Selectors.selectFields(state),
   };
 };
 

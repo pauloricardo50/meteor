@@ -1,0 +1,167 @@
+/* eslint-env mocha */
+import React from 'react';
+import { expect } from 'chai';
+import sinon from 'sinon';
+
+import { shallow } from '../../../../../utils/testHelpers/enzyme';
+import { getMountedComponent } from '../../../../../utils/testHelpers';
+import TableFilters from '../../TableFilters';
+import TableFilter from '../../TableFilter';
+import { flattenObjectTreeToArrays } from '../../../../../utils/general';
+
+let defaultProps;
+
+const component = props =>
+  shallow(<TableFilters {...props}>
+    {filteredData =>
+      filteredData.map(({ name }) => (
+        <div className="person" key={name}>
+          {name}
+        </div>
+      ))
+    }
+  </TableFilters>);
+
+const mountedComponent = props =>
+  getMountedComponent({
+    Component: TableFilters,
+    props,
+    withRouter: false,
+  });
+
+describe('TableFilters', () => {
+  beforeEach(() => {
+    getMountedComponent.reset();
+
+    // don't change this as it could compromise the tests that are based on it
+    defaultProps = {
+      data: [
+        { name: 'John', city: 'London', eyesColor: 'blue', age: 24 },
+        { name: 'Alex', city: 'London', eyesColor: 'green', age: 20 },
+        { name: 'Rebecca', city: 'Portland', eyesColor: 'black', age: 24 },
+      ],
+      filters: { eyesColor: ['black'], age: [24, 20] },
+      children: filteredData =>
+        filteredData.map(({ name }) => (
+          <div className="person" key={name}>
+            {name}
+          </div>
+        )),
+      handleOnChange: () => {},
+    };
+  });
+
+  it('renders a `TableFilter` component for each filter', () => {
+    expect(component(defaultProps).find(TableFilter).length).to.equal(2);
+  });
+
+  it('passes the `data` prop to all `TableFilter` components', () => {
+    const { data } = defaultProps;
+    component(defaultProps)
+      .find(TableFilter)
+      .forEach(tableFilter =>
+        expect(tableFilter.prop('data')).to.deep.equal(data));
+  });
+
+  it('passes the correct `filter` prop each `TableFilter` component', () => {
+    const flattenedFilters = flattenObjectTreeToArrays(defaultProps.filters);
+
+    const componentFilters = component(defaultProps)
+      .find(TableFilter)
+      .map(tableFilter => tableFilter.prop('filter'));
+
+    expect(componentFilters).to.deep.equal(flattenedFilters);
+  });
+
+  it('renders only the filtered children', () => {
+    expect(component(defaultProps).find('.person').length).to.equal(1);
+  });
+
+  it('renders all children when filters are undefined', () => {
+    const props = { ...defaultProps, filters: undefined };
+    expect(component(props).find('.person').length).to.equal(props.data.length);
+  });
+
+  it('renders all children when filters are empty', () => {
+    const props = { ...defaultProps, filters: {} };
+    expect(component(props).find('.person').length).to.equal(props.data.length);
+  });
+
+  it('does not render the filters UI when filters are undefined', () => {
+    const props = { ...defaultProps, filters: undefined };
+    expect(component(props).find('.table-filters').length).to.equal(0);
+  });
+
+  it('does not render the filters UI when filters are empty', () => {
+    const props = { ...defaultProps, filters: {} };
+    expect(component(props).find('.table-filters').length).to.equal(0);
+  });
+
+  it('renders new filtered children after filters state changes', () => {
+    const { data, children } = defaultProps;
+    const initialProps = {
+      data,
+      children,
+      filters: { city: ['London'], age: [24] },
+    };
+    const filterComponent = mountedComponent(initialProps);
+
+    expect(filterComponent.find('.person').map(item => item.text())).to.deep.equal(['John']);
+
+    const handleChangeAgeFilter = filterComponent
+      .find(TableFilter)
+      .at(1)
+      .prop('onChange');
+
+    const newFilterOptions = [
+      { label: 24, value: 24 },
+      { label: 20, value: 20 },
+    ];
+    handleChangeAgeFilter(newFilterOptions);
+
+    expect(filterComponent
+      .update()
+      .find('.person')
+      .map(item => item.text())).to.deep.equal(['John', 'Alex']);
+  });
+
+  it("filters children when filters' props change", () => {
+    const filtersComponent = component(defaultProps);
+    expect(filtersComponent.find('.person').length).to.equal(1);
+
+    expect(filtersComponent
+      .setProps({
+        filters: { city: ['London'] },
+      })
+      .find('.person').length).to.equal(2);
+  });
+
+  it("updates the filters UI when filters' props change", () => {
+    const filtersComponent = component(defaultProps);
+    expect(filtersComponent.find(TableFilter).length).to.equal(2);
+
+    expect(filtersComponent
+      .setProps({
+        filters: { city: ['London'] },
+      })
+      .find(TableFilter).length).to.equal(1);
+  });
+
+  it("updates the filtered data when data' props change", () => {
+    const props = {
+      ...defaultProps,
+      filters: { city: ['London'] },
+    };
+    const filtersComponent = component(props);
+    expect(filtersComponent
+      .find('.person').map(node => node.text()))
+      .to.deep.equal(['John', 'Alex']);
+
+    expect(filtersComponent
+      .setProps({
+        data: [...props.data, { name: 'James', city: 'London' }],
+      })
+      .find('.person')
+      .map(node => node.text())).to.deep.equal(['John', 'Alex', 'James']);
+  });
+});

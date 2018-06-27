@@ -39,6 +39,7 @@ class Tabs extends Component {
       className,
       ...otherProps
     } = this.props;
+    const { value } = this.state;
     // initial index is destructured to avoid passing down an unrecognized prop
     // to MuiTabs
 
@@ -47,19 +48,19 @@ class Tabs extends Component {
         <MuiTabs
           classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
           className="core-tabs-top"
-          value={this.state.value}
+          value={value}
           onChange={this.handleChange}
           indicatorColor="primary"
           textColor="primary"
           {...otherProps}
         >
-          {tabs.map(({ label, to }, i) => (
+          {tabs.map(({ label, to, id }, i) => (
             <Tab
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
               label={label}
               component={to ? Link : undefined}
               to={to}
-              key={i}
+              key={id || i}
             />
           ))}
         </MuiTabs>
@@ -71,15 +72,15 @@ class Tabs extends Component {
 
 Tabs.propTypes = {
   // Array of objects with 'label' and 'content'
-  tabs: PropTypes.arrayOf(PropTypes.object).isRequired,
-  initialIndex: PropTypes.number,
-  className: PropTypes.string,
   classes: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  initialIndex: PropTypes.number,
+  tabs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 Tabs.defaultProps = {
-  initialIndex: 0,
   className: '',
+  initialIndex: 0,
 };
 
 export default withStyles(styles)(Tabs);

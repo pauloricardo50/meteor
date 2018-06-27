@@ -66,7 +66,6 @@ const getColumns = ({ props, index, user }) => {
   ) : (
     <div style={actionsColumnStyle} />
   );
-
   columns.push(actionsColumn);
 
   return columns;

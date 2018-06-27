@@ -27,4 +27,7 @@ Search.propTypes = {
   changeSearch: PropTypes.func.isRequired,
 };
 
-export default compose(withState('search', 'changeSearch', ''), injectIntl)(Search);
+export default compose(
+  withState('search', 'changeSearch', ''),
+  injectIntl,
+)(Search);

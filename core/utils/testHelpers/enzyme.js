@@ -3,7 +3,7 @@ import defaultEnzyme, {
   mount as defaultMount,
   shallow as defaultShallow,
 } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-react-adapter-future';
 
 configure({ adapter: new Adapter() });
 

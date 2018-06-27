@@ -22,7 +22,6 @@ const defaultField = props => <Field {...props} />;
 const arrayField = props => (
   <FieldArray {...props} component={RenderFieldArray} />
 );
-
 const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   switch (fieldType) {
   case FIELD_TYPES.TEXT:

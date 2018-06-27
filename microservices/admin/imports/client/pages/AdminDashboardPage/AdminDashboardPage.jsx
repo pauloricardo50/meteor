@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import T from 'core/components/Translation/';
@@ -19,20 +18,9 @@ const AdminDashboardPage = ({ history }) => (
       showAssignee
       dashboardTasks
       assignedTo={Meteor.userId()}
+      tableFilters={{ assignedEmployee: { emails: [{ address: true }] } }}
     />
   </section>
 );
-
-AdminDashboardPage.defaultProps = {
-  loans: [],
-  users: [],
-  offers: [],
-};
-
-AdminDashboardPage.propTypes = {
-  loans: PropTypes.arrayOf(PropTypes.object),
-  users: PropTypes.arrayOf(PropTypes.object).isRequired,
-  offers: PropTypes.arrayOf(PropTypes.object),
-};
 
 export default AdminDashboardPage;

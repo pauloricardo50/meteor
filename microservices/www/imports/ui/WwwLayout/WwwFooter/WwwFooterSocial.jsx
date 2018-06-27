@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import faLinkedin from '@fortawesome/fontawesome-free-brands/faLinkedin';
 import faFacebook from '@fortawesome/fontawesome-free-brands/faFacebook';
 import faInstagram from '@fortawesome/fontawesome-free-brands/faInstagram';

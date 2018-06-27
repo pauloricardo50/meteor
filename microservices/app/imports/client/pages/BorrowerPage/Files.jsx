@@ -21,7 +21,6 @@ const Files = ({ borrowers, loan: { userFormsEnabled } }) => (
     className="animated fadeIn borrower-page-files"
     style={styles.section}
   >
-    <hr />
     <h2 className="text-center">
       <T id="Files.title" />
     </h2>
@@ -51,8 +50,8 @@ const Files = ({ borrowers, loan: { userFormsEnabled } }) => (
 );
 
 Files.propTypes = {
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrower: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Files;

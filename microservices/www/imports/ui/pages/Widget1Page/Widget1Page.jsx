@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import PageHead from 'core/components/PageHead';
 import TogglePoint, { TOGGLE_POINTS } from 'core/components/TogglePoint';
 import {
   TooltipProviderContainer,
@@ -32,26 +33,32 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
   const showPart2 = finishedTutorial;
   return (
     <WwwLayout className="widget1-page">
+      <PageHead
+        titleId="Widget1Page.title"
+        descriptionId="Widget1Page.description"
+      />
       <WwwLayout.TopNav variant={VARIANTS.GREY} />
-      <div className="widget1-page-content">
-        <Widget1Options />
-        {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
-        {showPart2 && <Widget1Part2 finma={finma} />}
-        {showPart2 && (
-          <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
-            <Button
-              color="secondary"
-              className="cta"
-              variant="raised"
-              link
-              to={getUrl(rest)}
-            >
-              <T id="general.continue" />
-            </Button>
-          </TogglePoint>
-        )}
-      </div>
-      {showPart2 && <Widget1PageDisclaimer />}
+      <WwwLayout.Content>
+        <div className="widget1-page-content">
+          <Widget1Options />
+          {!showPart2 && <Widget1Part1 step={step} fields={fields} />}
+          {showPart2 && <Widget1Part2 finma={finma} />}
+          {showPart2 && (
+            <TogglePoint id={TOGGLE_POINTS.WIDGET1_CONTINUE_BUTTON}>
+              <Button
+                color="secondary"
+                className="cta"
+                variant="raised"
+                link
+                to={getUrl(rest)}
+              >
+                <T id="general.continue" />
+              </Button>
+            </TogglePoint>
+          )}
+        </div>
+        {showPart2 && <Widget1PageDisclaimer />}
+      </WwwLayout.Content>
     </WwwLayout>
   );
 };
@@ -63,7 +70,6 @@ Widget1Page.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export { SALARY, FORTUNE, PROPERTY } from '../../../redux/reducers/widget1';
 export default compose(
   TooltipProviderContainer(TOOLTIP_LISTS.WIDGET1),
   Widget1PageContainer,

@@ -6,8 +6,8 @@ import {
   getYearlyAmortization,
   getSimpleYearlyMaintenance,
 } from 'core/utils/finance';
-import { setValueAction } from '../../../../redux/reducers/widget1';
-import { PURCHASE_TYPE } from '../../../../redux/constants/widget1Constants';
+import { widget1Types, widget1Constants } from '../../../../redux/widget1';
+import { commonTypes } from '../../../../redux/common';
 
 const mapStateToProps = ({
   widget1: {
@@ -20,7 +20,7 @@ const mapStateToProps = ({
   },
 }) => {
   const loanValue =
-    purchaseType === PURCHASE_TYPE.ACQUISITION
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
       ? getLoanValue(propertyValue, fortune)
       : wantedLoan;
   const yearlyValues = {
@@ -45,9 +45,9 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = dispatch => ({
   setInterestRate: value =>
-    dispatch({ type: setValueAction('interestRate'), value }),
+    dispatch({ type: commonTypes.SET_VALUE('interestRate'), value }),
   setMaintenance: value =>
-    dispatch({ type: setValueAction('useMaintenance'), value }),
+    dispatch({ type: commonTypes.SET_VALUE('useMaintenance'), value }),
 });
 
 export default connect(

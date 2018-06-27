@@ -1,24 +1,13 @@
 import { connect } from 'react-redux';
 import { withProps, compose } from 'recompose';
 import { toNumber } from 'core/utils/conversionFunctions';
-import {
-  setValue,
-  setAuto,
-  setAllowExtremeLoan,
-  increaseSliderMax,
-  getPropertyCappedValue,
-} from '../../../../redux/actions/widget1Actions';
-import {
-  CAPPED_FIELDS,
-  PURCHASE_TYPE,
-  PROPERTY,
-} from '../../../../redux/constants/widget1Constants';
+import { widget1Constants, widget1Actions } from '../../../../redux/widget1';
 
-const isLoanValue = name => CAPPED_FIELDS.includes(name);
+const isLoanValue = name => widget1Constants.CAPPED_FIELDS.includes(name);
 
 const getSliderMax = (widget1, name) => {
   if (isLoanValue(name)) {
-    return getPropertyCappedValue(name, { widget1 });
+    return widget1Actions.getPropertyCappedValue(name, { widget1 });
   }
 
   return widget1[name].sliderMax;
@@ -37,25 +26,29 @@ const withConnect = connect(
       if (value) {
         value = toNumber(value);
       }
-      dispatch(setValue(name, value));
+      dispatch(widget1Actions.setValue(name, value));
     },
-    setValue: value => dispatch(setValue(name, value)),
-    unsetValue: () => dispatch(setValue(name, '')),
-    setAuto: () => dispatch(setAuto(name)),
+    setValue: value => dispatch(widget1Actions.setValue(name, value)),
+    unsetValue: () => dispatch(widget1Actions.setValue(name, '')),
+    setAuto: () => dispatch(widget1Actions.setAuto(name)),
     increaseSliderMax: () => {
       if (isLoanValue(name)) {
-        return dispatch(setAllowExtremeLoan(name));
+        return dispatch(widget1Actions.setAllowExtremeLoan(name));
       }
-      return dispatch(increaseSliderMax(name));
+      return dispatch(widget1Actions.increaseSliderMax(name));
     },
   }),
 );
 
 const withCorrectPropertyName = withProps(({ name, purchaseType }) => ({
   labelName:
-    name === PROPERTY && purchaseType === PURCHASE_TYPE.REFINANCING
+    name === widget1Constants.PROPERTY &&
+    purchaseType === widget1Constants.PURCHASE_TYPE.REFINANCING
       ? 'propertyValue'
       : undefined,
 }));
 
-export default compose(withConnect, withCorrectPropertyName);
+export default compose(
+  withConnect,
+  withCorrectPropertyName,
+);

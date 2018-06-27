@@ -36,7 +36,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
     {
       id: 'address1',
       type: 'textInput',
-      disabled: disableAddress,
+      condition: !disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
       required: !disableAddress,
@@ -44,7 +44,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
     {
       id: 'address2',
       type: 'textInput',
-      disabled: !!b.sameAddress && !isFirst,
+      condition: !disableAddress,
       required: false,
       placeholder: disableAddress && borrowers[0].address2,
       noIntl: disableAddress,
@@ -57,7 +57,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
         savePath: '',
         initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
       },
-      disabled: !!b.sameAddress && !isFirst,
+      condition: !disableAddress,
       placeholder:
         disableAddress &&
         (borrowers[0].zipCode && borrowers[0].city

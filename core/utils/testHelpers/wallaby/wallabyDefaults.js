@@ -21,7 +21,7 @@ function setWallabyConfig(name, overrides = {}) {
       tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
       compilers: {
         '**/*.js?(x)': wallaby.compilers.babel({
-          presets: ['meteor', '@babel/preset-react'],
+          presets: ['meteor', '@babel/preset-react', '@babel/preset-flow'],
           plugins: [
             '@babel/plugin-transform-modules-commonjs',
             '@babel/plugin-proposal-class-properties',
@@ -43,6 +43,8 @@ function setWallabyConfig(name, overrides = {}) {
       setup() {
         global.IS_WALLABY = true;
         global.fetch = require('node-fetch');
+        // Do this to prevent some weird issues
+        global.window = { navigator: { userAgent: 'node.js' } };
 
         // Activate JSDOM only if needed, it crashes production servers
 

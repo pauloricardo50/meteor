@@ -31,16 +31,13 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
           it('should render', () => {
             // logout the impersonated user
             const { IMPERSONATE_SESSION_KEY } = testData;
-            cy
-              .window()
-              .then(({ Session }) => Session.clear(IMPERSONATE_SESSION_KEY));
+            cy.window().then(({ Session }) =>
+              Session.clear(IMPERSONATE_SESSION_KEY));
 
-            cy
-              .setAuthentication(pageAuthentication)
-              .routeShouldRenderSuccessfully(
-                pages[pageAuthentication][pageName],
-                testData,
-              );
+            cy.setAuthentication(pageAuthentication).routeShouldRenderSuccessfully(
+              pages[pageAuthentication][pageName],
+              testData,
+            );
           });
         });
       });

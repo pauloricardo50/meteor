@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import { getLoanValue } from 'core/utils/finance';
 import { NOTARY_FEES } from 'core/config/financeConstants';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { PURCHASE_TYPE } from '../../../../redux/constants/widget1Constants';
 import {
-  makeSelectValue,
-  makeWidget1Selector,
-} from '../../../../redux/reducers/widget1';
-import Widget1Suggester from '../../../../redux/utils/Widget1Suggester';
+  widget1Constants,
+  widget1Selectors,
+  Widget1Suggester,
+} from '../../../../redux/widget1';
 
 const getAcquisitionArray = (state) => {
-  const propertyValue = makeSelectValue('property')(state);
-  const fortune = makeSelectValue('fortune')(state);
+  const propertyValue = widget1Selectors.makeSelectValue('property')(state);
+  const fortune = widget1Selectors.makeSelectValue('fortune')(state);
   const loanValue = getLoanValue(propertyValue, fortune);
 
   return [
@@ -33,10 +32,10 @@ const getAcquisitionArray = (state) => {
 };
 
 const getRefinancingArray = (state) => {
-  const propertyValue = makeSelectValue('property')(state);
-  const currentLoan = makeSelectValue('currentLoan')(state);
-  const wantedLoan = makeSelectValue('wantedLoan')(state);
-  const salary = makeSelectValue('salary')(state);
+  const propertyValue = widget1Selectors.makeSelectValue('property')(state);
+  const currentLoan = widget1Selectors.makeSelectValue('currentLoan')(state);
+  const wantedLoan = widget1Selectors.makeSelectValue('wantedLoan')(state);
+  const salary = widget1Selectors.makeSelectValue('salary')(state);
   const loanChange = wantedLoan - currentLoan;
   const maxPossibleLoan = Widget1Suggester.getMaxPossibleLoan({
     property: propertyValue,
@@ -63,17 +62,17 @@ const cleanUpArray = (array, showValues) =>
   }));
 
 const getArray = (state) => {
-  const propertyValue = makeSelectValue('property')(state);
-  const fortune = makeSelectValue('fortune')(state);
-  const purchaseType = makeWidget1Selector('purchaseType')(state);
-  const currentLoan = makeSelectValue('currentLoan')(state);
-  const wantedLoan = makeSelectValue('wantedLoan')(state);
+  const propertyValue = widget1Selectors.makeSelectValue('property')(state);
+  const fortune = widget1Selectors.makeSelectValue('fortune')(state);
+  const purchaseType = widget1Selectors.makeWidget1Selector('purchaseType')(state);
+  const currentLoan = widget1Selectors.makeSelectValue('currentLoan')(state);
+  const wantedLoan = widget1Selectors.makeSelectValue('wantedLoan')(state);
   const showValues =
-    purchaseType === PURCHASE_TYPE.ACQUISITION
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
       ? propertyValue && fortune
       : propertyValue && currentLoan && wantedLoan;
 
-  const array = (purchaseType === PURCHASE_TYPE.ACQUISITION
+  const array = (purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
     ? getAcquisitionArray
     : getRefinancingArray)(state);
 
