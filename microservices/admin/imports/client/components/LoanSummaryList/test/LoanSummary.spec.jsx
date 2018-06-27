@@ -29,7 +29,7 @@ describe('LoanSummary />', () => {
 
     const loanSummaryTitleLink = wrapper.find(Link).first();
 
-    expect(loanSummaryTitleLink.prop('to')).to.deep.equal(`/loans/${loan._id}`);
+    expect(loanSummaryTitleLink.prop('to')).to.equal(`/loans/${loan._id}`);
   });
   it('renders LoanSummaryColumns with correct props', () => {
     const props = { loan };

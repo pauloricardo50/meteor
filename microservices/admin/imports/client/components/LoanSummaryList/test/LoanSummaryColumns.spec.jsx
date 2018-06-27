@@ -33,7 +33,7 @@ describe('LoanSummaryColumns />', () => {
     const firstLoanSummaryColumn = wrapper.find(LoanSummaryColumn).first();
 
     expect(loanSummaryColumnsArray).to.have.length(expectedNbOfColumns);
-    expect(firstLoanSummaryColumn.prop('translationId')).to.deep.equal(loanSummaryColumnsDetails[0].translationId);
-    expect(firstLoanSummaryColumn.prop('content')).to.deep.equal(loanSummaryColumnsDetails[0].content);
+    expect(firstLoanSummaryColumn.prop('translationId')).to.equal(loanSummaryColumnsDetails[0].translationId);
+    expect(firstLoanSummaryColumn.prop('content')).to.equal(loanSummaryColumnsDetails[0].content);
   });
 });

@@ -20,7 +20,7 @@ describe('LoanSummaryColumn />', () => {
       .first()
       .find(T)
       .first()
-      .prop('id')).to.deep.equal(props.translationId);
+      .prop('id')).to.equal(props.translationId);
   });
 
   it('displays the correct content', () => {
@@ -29,6 +29,6 @@ describe('LoanSummaryColumn />', () => {
     expect(wrapper
       .find('p')
       .first()
-      .text()).to.deep.equal(props.content);
+      .text()).to.equal(props.content);
   });
 });
