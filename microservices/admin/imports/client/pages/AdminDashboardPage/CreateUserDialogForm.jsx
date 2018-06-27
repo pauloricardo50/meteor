@@ -22,13 +22,15 @@ export const getFormArray = formFields =>
 
 const formArray = getFormArray(createUserFormFields);
 
-const onSubmit = data =>
-  adminCreateUser.run({ options: data, role: ROLES.USER });
+const onSubmit = (data, history) =>
+  adminCreateUser
+    .run({ options: data, role: ROLES.USER })
+    .then(newId => history.push(`/users/${newId}`));
 
-const CreateUserDialogForm = () => (
+const CreateUserDialogForm = ({ history }) => (
   <DialogForm
     form="admin-add-user"
-    onSubmit={onSubmit}
+    onSubmit={data => onSubmit(data, history)}
     button={
       <Button raised primary>
         <T id="CreateUserDialogForm.buttonLabel" />
