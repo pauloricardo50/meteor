@@ -19,7 +19,7 @@ import {
   getFees,
   getMaintenance,
   getAuctionEndTime,
-  loanHasMinimalInformation,
+  loanHasMinimalInformation, closingPercent
 } from '../loanFunctions';
 import { DEFAULT_AMORTIZATION } from '../../config/financeConstants';
 
@@ -587,6 +587,65 @@ describe('getAuctionEndTime', () => {
       expect(loanHasMinimalInformation({
         loan: { general: { fortuneUsed: 100 }, property: { value: 100 } },
       })).to.equal(true);
+    });
+  });
+
+
+  describe('closingPercent', () => {
+    it('returns 0 for no steps', () => {
+      const r = { logic: { closingSteps: [] } };
+      expect(closingPercent(r)).to.equal(0);
+    });
+
+    it('returns 1 for one valid todo step', () => {
+      const r = {
+        logic: { closingSteps: [{ status: 'VALID', type: 'TODO' }] },
+      };
+      expect(closingPercent(r)).to.equal(1);
+    });
+
+    it('returns 0.5 for one valid and invalid todo step', () => {
+      const r = {
+        logic: {
+          closingSteps: [
+            { status: 'VALID', type: 'TODO' },
+            { status: 'UNVERIFIED', type: 'TODO' },
+          ],
+        },
+      };
+      expect(closingPercent(r)).to.equal(0.5);
+    });
+
+    it('returns 0 for one unverified upload', () => {
+      const r = {
+        logic: { closingSteps: [{ type: 'UPLOAD', id: 'myFile' }] },
+        documents: { myFile: { files: [{ status: 'UNVERIFIED' }] } },
+      };
+      expect(closingPercent(r)).to.equal(0);
+    });
+
+    it('returns 1 for one valid upload', () => {
+      const r = {
+        logic: { closingSteps: [{ type: 'UPLOAD', id: 'myFile' }] },
+        documents: { myFile: { files: [{ status: 'VALID' }] } },
+      };
+      expect(closingPercent(r)).to.equal(1);
+    });
+
+    it('returns 0.5 for one valid and invalid upload', () => {
+      const r = {
+        logic: {
+          closingSteps: [
+            { type: 'UPLOAD', id: 'myFile' },
+            { type: 'UPLOAD', id: 'myFile2' },
+          ],
+        },
+        documents: {
+          myFile: { files: [{ status: 'VALID' }] },
+          myFile2: { files: [{ status: 'UNVERIFIED' }] },
+        },
+      };
+      expect(closingPercent(r)).to.equal(0.5);
     });
   });
 });

@@ -9,10 +9,7 @@ import {
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
 } from 'core/api/loans/loanConstants';
-import {
-  fakeDocument,
-  fakeDocumentWithLabel,
-} from 'core/api/files/fileHelpers';
+import { fakeDocument, fakeDocumentWithLabel } from 'core/api/files/fakes';
 import { createFakeBorrowers } from './borrowers';
 import { createFakeProperty } from './properties';
 import { Loans } from '../api';

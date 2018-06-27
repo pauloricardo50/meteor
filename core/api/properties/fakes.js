@@ -1,4 +1,4 @@
-import { fakeDocument } from 'core/api/files/fileHelpers';
+import { fakeDocument } from 'core/api/files/fakes';
 import { EXPERTISE_STATUS } from './propertyConstants';
 
 export const emptyProperty = {};

@@ -1,7 +1,35 @@
-import { personalInfoPercent, filesPercent } from '../arrays/steps';
+import { filesPercent } from '../api/files/fileHelpers';
+import { getBorrowerInfoArray } from '../arrays/BorrowerFormArray';
 import { borrowerDocuments } from '../api/files/documents';
-import { arrayify } from './general';
 import { FILE_STEPS } from '../api/constants';
+import { arrayify, getPercent } from './general';
+import { getCountedArray } from './formArrayHelpers';
+
+// personalInfoPercent - Determines the completion rate of the borrower's
+// personal information forms
+export const personalInfoPercent = (borrowers) => {
+  const a = [];
+  arrayify(borrowers).forEach((b) => {
+    const formArray = getBorrowerInfoArray({
+      borrowers: arrayify(borrowers),
+      borrowerId: b._id,
+    });
+    getCountedArray(formArray, b, a);
+  });
+
+  return getPercent(a);
+};
+
+export const auctionFilesPercent = (borrowers) => {
+  const a = [];
+  arrayify(borrowers).forEach((b) => {
+    const fileArray = borrowerDocuments(b).auction;
+
+    fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
+  });
+
+  return getPercent(a);
+};
 
 export const getFortune = ({ borrowers }) => {
   const array = [];

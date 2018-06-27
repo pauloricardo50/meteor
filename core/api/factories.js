@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { Loans, Borrowers, Offers, Properties, Tasks } from '.';
 import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
-import { fakeFile } from '../api/files/fileHelpers';
+import { fakeFile } from '../api/files/fakes';
 
 const TEST_EMAIL = 'test@test.com';
 const TEST_LASTNAME = 'TestLastName';
