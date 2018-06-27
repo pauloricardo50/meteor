@@ -4,21 +4,17 @@ import classnames from 'classnames';
 
 import T from 'core/components/Translation';
 
-const DashboardProgressBarStep = ({
-  step: { nb, title },
-  isCurrentStep,
-  isDone,
-}) => (
+const DashboardProgressBarStep = ({ id, isDone, nb }) => (
   <div key={nb} className="dashboard-progress-bar-step">
     <span className={classnames({ step: true, done: isDone })}>{nb}</span>
-    {title || <T id={`steps.${nb}.title`} />}
+    <T id={`steps.${id}`} />
   </div>
 );
 
 DashboardProgressBarStep.propTypes = {
-  step: PropTypes.object.isRequired,
-  isCurrentStep: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
   isDone: PropTypes.bool.isRequired,
+  nb: PropTypes.number.isRequired,
 };
 
 export default DashboardProgressBarStep;

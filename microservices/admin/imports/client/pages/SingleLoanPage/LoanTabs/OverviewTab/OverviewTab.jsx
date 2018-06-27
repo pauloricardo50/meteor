@@ -29,7 +29,6 @@ const OverviewTab = (props) => {
           <ImpersonateLink user={user} />
         </div>
       </div>
-      <StepStatus {...props} serverTime={serverTime} />
       <LoanValidation loan={loan} />
       <hr />
       <div className="overview-recap">

@@ -1,4 +1,4 @@
-import React from 'react';
+// @flow
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
 
@@ -9,144 +9,19 @@ import {
   propertyDocuments,
 } from '../api/files/documents';
 import { getPropertyArray, getPropertyLoanArray } from './PropertyFormArray';
-import { strategyDone, getPropertyCompletion } from '../utils/loanFunctions';
 import { arrayify } from '../utils/general';
 import {
-  LOAN_STATUS,
-  AUCTION_STATUS,
   FILE_STATUS,
   CLOSING_STEPS_STATUS,
   CLOSING_STEPS_TYPE,
-  FILE_STEPS,
 } from '../api/constants';
 
-const getSteps = (props) => {
-  const { loan, borrowers, property } = props;
-
-  const steps = [
-    {
-      nb: 1,
-      items: [
-        {
-          id: 'borrowers',
-          link: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/personal`,
-          // TODO: Use percent of info, finance and documents
-          percent: () => personalInfoPercent(borrowers),
-          isDone() {
-            return this.percent() >= 1;
-          },
-        },
-        {
-          id: 'property',
-          link: `/loans/${loan._id}/property`,
-          percent: () => getPropertyCompletion(props),
-          isDone() {
-            return this.percent() >= 1;
-          },
-        },
-        {
-          id: 'verification',
-          link: `/loans/${loan._id}/verification`,
-          waiting: () =>
-            loan.logic.verification.requested &&
-            !loan.logic.verification.validated,
-          isDone: () => loan.logic.verification.validated === true,
-          tabs: true,
-        },
-      ],
-    },
-
-    {
-      nb: 2,
-      items: [
-        {
-          id: 'structure',
-          link: `/loans/${loan._id}/structure`,
-          isDone: () => loan.logic.hasValidatedStructure,
-          disabled: loan.logic.step < 2,
-        },
-        {
-          id: 'auction',
-          link: `/loans/${loan._id}/auction`,
-          waiting: () => loan.logic.auction.status === AUCTION_STATUS.STARTED,
-          isDone: () => loan.logic.auction.status === AUCTION_STATUS.ENDED,
-          disabled: loan.logic.step < 2,
-        },
-        {
-          id: 'strategy',
-          link: `/loans/${loan._id}/strategy`,
-          isDone: () => strategyDone({ loan }),
-        },
-        {
-          id: 'offerPicker',
-          link: `/loans/${loan._id}/offerpicker`,
-          isDone: () => !!(loan.logic.lender && loan.logic.lender.offerId),
-        },
-      ],
-    },
-
-    {
-      nb: 3,
-      items: [
-        {
-          id: 'contract',
-          link: `/loans/${loan._id}/contract`,
-          disabled:
-            loan.logic.step < 3 &&
-            !(loan.logic.lender && loan.logic.lender.offerId),
-          percent: () =>
-            getAllFilesPercent(
-              { loan, borrowers, property },
-              FILE_STEPS.CONTRACT,
-            ),
-          waiting: () =>
-            loan.logic.lender.contractRequested && !loan.logic.lender.contract,
-          isDone() {
-            return (
-              loan.documents.contract &&
-              loan.documents.contract.files &&
-              loan.documents.contract.files.length
-            );
-          },
-        },
-        {
-          id: 'closing',
-          link: `/loans/${loan._id}/closing`,
-          // FIXME: true && value used because of weird linting...
-          disabled:
-            (true &&
-              getAllFilesPercent(
-                { loan, borrowers, property },
-                FILE_STEPS.CONTRACT,
-              )) < 1 || loan.logic.step < 3,
-          percent: () => closingPercent(loan),
-          isDone: () => loan.status === LOAN_STATUS.DONE,
-        },
-      ],
-    },
-
-    {
-      nb: 4,
-      title: (
-        <span
-          className="fa fa-home fa-2x"
-          style={{ color: '#ADB5BD', paddingLeft: 8 }}
-        />
-      ),
-      disabled: true, // TODO
-      subtitle: null,
-      items: [],
-    },
-  ];
-
-  setPreviousDone(steps, 0, 2); // Vérification e-Potek
-  setPreviousDone(steps, 1, 1); // Enchères
-  setPreviousDone(steps, 1, 2); // Stratégie
-  setPreviousDone(steps, 1, 3); // Choix du prêteur
-
-  return steps;
-};
-
+const getSteps = () => [
+  { id: 'preparation' },
+  { id: 'auction' },
+  { id: 'contract' },
+  { id: 'closing' },
+];
 export default getSteps;
 
 // Returns the current value of an autoForm input
@@ -174,14 +49,6 @@ export const previousDone = (steps, stepNb, itemNb) => {
     .reduce((res, i) => res && i.isDone(), true);
 };
 
-const setPreviousDone = (steps, stepIndex, itemIndex) => {
-  steps[stepIndex].items[itemIndex].disabled = !previousDone(
-    steps,
-    stepIndex,
-    itemIndex,
-  );
-};
-
 /**
  * getPercent - Given an array of values, any value that is undefined or null
  * will be counted as incomplete, make sure we don't divide by 0
@@ -200,7 +67,7 @@ export const getPercent = (array = []) => {
       }
       return tot;
     }, 0) / array.length;
-  return isFinite(percent) ? percent : 0;
+  return Number.isFinite(percent) ? percent : 0;
 };
 
 /**
