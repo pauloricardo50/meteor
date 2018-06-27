@@ -102,6 +102,7 @@ jobs:
             sudo apt install rsync
             cd scripts
             ./setup.sh
+          no_output_timeout: 20m
       - run:
           name: Check flow types
           command: meteor npm run flow
