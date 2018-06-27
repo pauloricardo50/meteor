@@ -12,6 +12,7 @@ export default compose(
     query: () => appUserQuery.clone(),
     queryOptions: { reactive: true, single: true },
     dataName: 'currentUser',
+    renderMissingDoc: false,
   }),
   withSmartQuery({
     query: ({ loanId }) => userLoanQuery.clone({ loanId }),

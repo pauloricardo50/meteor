@@ -21,12 +21,7 @@ const LoanSchema = new SimpleSchema({
   updatedAt: {
     type: Date,
     autoValue() {
-      // Verify the update is from the user owning this doc, ignoring admin/partner updates
-      const doc = Loans.findOne({ _id: this.docId }, { fields: { userId: 1 } });
-
-      if (this.isInsert) {
-        return new Date();
-      } else if (this.isUpdate && doc && this.userId === doc.userId) {
+      if (this.isInsert || this.isUpdate) {
         return new Date();
       }
     },

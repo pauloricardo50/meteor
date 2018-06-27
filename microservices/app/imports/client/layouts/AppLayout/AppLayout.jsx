@@ -28,7 +28,6 @@ const getRedirect = ({
     location: { pathname },
   },
 }) => {
-  const { loans } = currentUser;
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
@@ -50,6 +49,7 @@ const getRedirect = ({
   }
   // If there is no active loan, force route to app page, except if
   // user is on allowed routes
+  const { loans } = currentUser;
   if (
     loans &&
     loans.length < 1 &&
@@ -65,7 +65,7 @@ const getShowSideNav = ({ location }) =>
   routesWithoutSidenav.indexOf(location.pathname) === -1;
 
 const AppLayout = (props) => {
-  console.log('Applayout props:', props);
+  // console.log('Applayout props:', props);
   const { history, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);

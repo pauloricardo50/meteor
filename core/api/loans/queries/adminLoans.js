@@ -1,5 +1,4 @@
-import _ from 'lodash';
-import Loans from '..';
+import Loans from '../loans';
 import { LOAN_QUERIES } from '../loanConstants';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
 

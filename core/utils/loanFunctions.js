@@ -18,8 +18,9 @@ import {
   MIN_CASH,
 } from '../config/financeConstants';
 import { getIncomeRatio } from './finance-math';
-import { propertyPercent, filesPercent } from '../arrays/steps';
+import { propertyPercent } from './propertyFunctions';
 import { propertyDocuments } from '../api/files/documents';
+import { filesPercent } from '../api/files/fileHelpers';
 import { getPercent } from './general';
 
 export const getProjectValue = ({ loan, property }) => {
