@@ -19,6 +19,7 @@ const AdminDashboardPage = props => (
       showAssignee
       dashboardTasks
       assignedTo={Meteor.userId()}
+      tableFilters={{ type: 1, assignedEmployee: { emails: [{ address: 1 }] } }}
     />
   </section>
 );
