@@ -73,6 +73,7 @@ const PropertyPage = (props) => {
             inputs={getPropertyLoanArray({ loan, borrowers })}
             collection={LOANS_COLLECTION}
             doc={loan}
+            docId={loan._id}
             disabled={!userFormsEnabled}
           />
         </div>
@@ -83,6 +84,7 @@ const PropertyPage = (props) => {
             inputs={getPropertyArray({ loan, borrowers, property })}
             collection={PROPERTIES_COLLECTION}
             doc={property}
+            docId={property._id}
             disabled={!userFormsEnabled}
           />
         </div>

@@ -815,7 +815,7 @@
   "Forms.company.placeholder": "Nestlé",
   "Forms.constructionYear": "Année de construction",
   "Forms.constructionYear.placeholder": "2005",
-  "Forms.copropertyPercentage": "Répartition du bien au sein de la copropriété",
+  "Forms.copropertyPercentage": "Répartition $au sein de la copropriété",
   "Forms.copropertyPercentage.info": "En millièmes",
   "Forms.copropertyPercentage.placeholder": "125",
   "Forms.createdAt": "Créé le",

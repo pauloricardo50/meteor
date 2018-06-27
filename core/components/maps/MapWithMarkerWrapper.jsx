@@ -26,14 +26,14 @@ const MapWithMarkerWrapper = ({ address1, zipCode, city, options }) => {
 MapWithMarkerWrapper.propTypes = {
   address1: PropTypes.string,
   city: PropTypes.string,
-  zipCode: PropTypes.string,
   options: PropTypes.object,
+  zipCode: PropTypes.number,
 };
 
 MapWithMarkerWrapper.defaultProps = {
   address1: '',
   city: '',
-  zipCode: '',
+  zipCode: undefined,
   options: { zoom: 10 },
 };
 

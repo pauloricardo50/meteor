@@ -1,3 +1,19 @@
+.borrower-page {
+  .core-tabs-top {
+    // position: fixed;
+    // background-color: white;
+    // z-index: 15;
+    // border-top-left-radius: 4px;
+    // border-top-right-radius: 4px;
+    // width: 100%;
+    // box-sizing: border-box;
+  }
+
+  .tab-content {
+    padding-top: 32px;
+  }
+}
+
 .borrower-finance-page {
   .conditions {
     display: flex;
@@ -34,7 +50,7 @@
   &-block {
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -125,12 +141,12 @@
 
 .borrower-header {
   &--fixed {
-    position: fixed;
+    // position: fixed;
     z-index: 15;
-    top: 172px;
-    right: 0;
+    // right: 0;
 
-    width: calc(100% - 332px);
+    // width: calc(100% - 332px);
+    // width: 100%;
     height: 108px;
   }
 
@@ -167,7 +183,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -248,7 +264,7 @@
   }
 
   &__finance {
-     > div {
+    > div {
       width: 400px;
     }
   }
@@ -315,12 +331,12 @@
     }
 
     .form-group {
-       > div {
+      > div {
         max-width: 100% !important;
       }
     }
 
-     > div {
+    > div {
       max-width: 100% !important;
     }
 
@@ -334,7 +350,7 @@
   .description {
     align-self: initial;
 
-     > p {
+    > p {
       justify-content: flex-start;
 
       max-width: 100%;
