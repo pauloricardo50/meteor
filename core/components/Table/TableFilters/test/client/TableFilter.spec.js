@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 import Select from 'react-select';
 
@@ -45,7 +44,8 @@ describe('TableFilter', () => {
       .prop('simpleValue')).to.equal(false);
   });
 
-  it('renders the `Select` component with the correct `options` prop for the current filter', () => {
+  it(`renders the 'Select' component with the correct 'options'
+      prop for primitive data values`, () => {
     const expectedOptions = [
       { label: 'blue', value: 'blue' },
       { label: 'green', value: 'green' },
@@ -57,7 +57,31 @@ describe('TableFilter', () => {
       .prop('options')).to.deep.equal(expectedOptions);
   });
 
-  it(`removes duplicate options before passing them
+  it(`renders the 'Select' component with unique primitive options
+      when having array values in the data`, () => {
+    const data = [
+      { roles: ['admin'] },
+      { roles: ['user'] },
+      { roles: 'anotherRole' },
+      { roles: ['dev', 'user'] },
+      { roles: ['admin'] },
+    ];
+    const filter = { path: ['roles'], value: true };
+
+    const expectedOptions = [
+      { label: 'admin', value: 'admin' },
+      { label: 'user', value: 'user' },
+      { label: 'anotherRole', value: 'anotherRole' },
+      { label: 'dev', value: 'dev' },
+    ];
+
+    expect(component({ data, filter })
+      .find(Select)
+      .first()
+      .prop('options')).to.deep.equal(expectedOptions);
+  });
+
+  it(`removes duplicate options with primitive values before passing them
       to the 'Select' component`, () => {
     const data = [{ name: 'Name 1' }, { name: 'Name 1' }, { name: 'Name 2' }];
     const filter = { path: ['name'], value: 1 };
