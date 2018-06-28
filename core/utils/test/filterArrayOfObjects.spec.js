@@ -7,6 +7,7 @@ const car1 = {
   properties: { color: 'red', options: 'full' },
   tests: [{ type: 'crash', result: 5 }, { type: 'speed', result: 6 }],
   type: 'small',
+  tags: ['reddish'],
 };
 
 const car2 = {
@@ -15,6 +16,7 @@ const car2 = {
   tests: [{ type: 'crash', result: 5 }, { type: 'speed', result: 5 }],
   type: 'compact',
   fuelConsumtion: undefined,
+  tags: ['sport'],
 };
 
 const car3 = {
@@ -23,6 +25,7 @@ const car3 = {
   tests: [{ type: 'speed', result: 7 }],
   type: 'compact',
   fuelConsumtion: 8,
+  tags: ['sport', 'rally'],
 };
 
 const data = [car1, car2, car3];
@@ -77,6 +80,11 @@ describe('filterArrayOfObjects', () => {
   it('filters by string filters', () => {
     const filters = { name: ['Car 2', 'Car 3'] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2, car3]);
+  });
+
+  it('filters data items by their array fields', () => {
+    const filters = { tags: ['rally', 'reddish'] };
+    expect(filterArrayOfObjects(filters, data)).to.deep.equal([car1, car3]);
   });
 
   it('returns an empty array when no data is matched', () => {
