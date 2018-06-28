@@ -30,17 +30,10 @@ describe('UsersTabs', () => {
   ['myUsers', 'allUsers'].forEach((tabId) => {
     describe(tabId, () => {
       it('enables filtering tasks by type and status', () => {
-        console.log(
-          '>>>>>>',
-          getTabById(tabId)
-            .childAt(0)
-            .props(),
-        );
-
         const filtersProp = getUsersTableFiltersProp(tabId);
 
         expect(filtersProp).to.deep.equal({
-          role: true,
+          roles: true,
           assignedEmployee: { emails: [{ address: true }] },
         });
       });

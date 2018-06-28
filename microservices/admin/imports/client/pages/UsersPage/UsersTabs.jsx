@@ -9,7 +9,7 @@ import T from 'core/components/Translation/';
 import UsersTable from './UsersTable';
 
 const usersTableFilters = {
-  role: true,
+  roles: true,
   assignedEmployee: { emails: [{ address: true }] },
 };
 
