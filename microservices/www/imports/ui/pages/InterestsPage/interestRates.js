@@ -15,9 +15,9 @@ const interestRates = [
   },
   {
     type: INTEREST_RATES.YEARS_5,
-    rateLow: 0.009,
+    rateLow: 0.0075,
     rateHigh: 0.0125,
-    trend: TRENDS.FLAT,
+    trend: TRENDS.DOWN,
   },
   {
     type: INTEREST_RATES.YEARS_10,
@@ -27,9 +27,9 @@ const interestRates = [
   },
   {
     type: INTEREST_RATES.YEARS_15,
-    rateLow: 0.0181,
-    rateHigh: 0.0192,
-    trend: TRENDS.FLAT,
+    rateLow: 0.0178,
+    rateHigh: 0.0195,
+    trend: TRENDS.DOWN,
   },
   {
     type: INTEREST_RATES.YEARS_20,
