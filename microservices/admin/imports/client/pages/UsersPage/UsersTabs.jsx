@@ -8,11 +8,6 @@ import queryString from 'query-string';
 import T from 'core/components/Translation/';
 import UsersTable from './UsersTable';
 
-const usersTableFilters = {
-  roles: true,
-  assignedEmployee: { emails: [{ address: true }] },
-};
-
 export const getTabs = ({ history }) => [
   {
     id: 'myUsers',
@@ -23,21 +18,13 @@ export const getTabs = ({ history }) => [
         showAssignee={false}
         history={history}
         key="myUsers"
-        tableFilters={usersTableFilters}
       />
     ),
   },
   {
     id: 'allUsers',
     label: <T id="UsersTabs.allUsers" />,
-    content: (
-      <UsersTable
-        showAssignee
-        key="allUsers"
-        history={history}
-        tableFilters={usersTableFilters}
-      />
-    ),
+    content: <UsersTable showAssignee key="allUsers" history={history} />,
   },
 ];
 

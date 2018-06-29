@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import Select from 'react-select';
+import { shallow } from 'enzyme';
 
 import { getMountedComponent } from '../../../../../utils/testHelpers';
 import T from '../../../../Translation';
@@ -26,18 +27,19 @@ describe('TableFilter', () => {
         { name: 'Rebecca', city: 'Portland', eyesColor: 'black', age: 24 },
       ],
       filter: { path: ['eyesColor'], value: ['blue', 'black'] },
+      value: ['blue', 'green', 'black', 'yellow'],
       onChange: () => {},
     };
   });
 
-  it('renders the `Select` component with a `true` multi prop', () => {
+  it('renders the `Select` component with a true `multi` prop', () => {
     expect(component(defaultProps)
       .find(Select)
       .first()
       .prop('multi')).to.equal(true);
   });
 
-  it('renders the `Select` component with a `false` simpleValue prop', () => {
+  it('renders the `Select` component with a false `simpleValue` prop', () => {
     expect(component(defaultProps)
       .find(Select)
       .first()
@@ -45,11 +47,12 @@ describe('TableFilter', () => {
   });
 
   it(`renders the 'Select' component with the correct 'options'
-      prop for primitive data values`, () => {
+      prop based on the passed value prop`, () => {
     const expectedOptions = [
       { label: 'blue', value: 'blue' },
       { label: 'green', value: 'green' },
       { label: 'black', value: 'black' },
+      { label: 'yellow', value: 'yellow' },
     ];
     expect(component(defaultProps)
       .find(Select)
@@ -57,44 +60,52 @@ describe('TableFilter', () => {
       .prop('options')).to.deep.equal(expectedOptions);
   });
 
-  it(`renders the 'Select' component with unique primitive options
-      when having array values in the data`, () => {
-    const data = [
-      { roles: ['admin'] },
-      { roles: ['user'] },
-      { roles: 'anotherRole' },
-      { roles: ['dev', 'user'] },
-      { roles: ['admin'] },
-    ];
-    const filter = { path: ['roles'], value: true };
-
-    const expectedOptions = [
-      { label: 'admin', value: 'admin' },
-      { label: 'user', value: 'user' },
-      { label: 'anotherRole', value: 'anotherRole' },
-      { label: 'dev', value: 'dev' },
-    ];
-
-    expect(component({ data, filter })
-      .find(Select)
-      .first()
-      .prop('options')).to.deep.equal(expectedOptions);
-  });
-
-  it(`removes duplicate options with primitive values before passing them
+  it(`removes duplicate options with before passing them
       to the 'Select' component`, () => {
-    const data = [{ name: 'Name 1' }, { name: 'Name 1' }, { name: 'Name 2' }];
-    const filter = { path: ['name'], value: 1 };
+    const filter = { path: ['name'], value: true };
+    const optionValues = ['Name 1', 'Name 2', 'Name 1'];
 
     const expectedOptions = [
       { label: 'Name 1', value: 'Name 1' },
       { label: 'Name 2', value: 'Name 2' },
     ];
 
-    expect(component({ data, filter })
+    expect(component({ filter, value: optionValues })
       .find(Select)
       .first()
       .prop('options')).to.deep.equal(expectedOptions);
+  });
+
+  it(`removes options which have undefined or null values
+      before passing them to the 'Select' component`, () => {
+    const filter = { path: ['name'], value: true };
+    const optionValues = ['Name 1', null, undefined, 'Name 4'];
+
+    const expectedOptions = [
+      { label: 'Name 1', value: 'Name 1' },
+      { label: 'Name 4', value: 'Name 4' },
+    ];
+
+    expect(component({ filter, value: optionValues })
+      .find(Select)
+      .first()
+      .prop('options')).to.deep.equal(expectedOptions);
+  });
+
+  it("adds a 'None' label when there are undefined values in the data", () => {
+    const data = [{ name: 'John' }, { name: undefined }];
+    const filter = { path: ['name'], value: true };
+    const optionValues = ['Name 1', 'Name 2'];
+
+    const optionsProp = component({ data, filter, value: optionValues })
+      .find(Select)
+      .first()
+      .prop('options');
+
+    const noneLabelWrapper = shallow(optionsProp[2].label);
+
+    expect(noneLabelWrapper.prop('id')).to.equal('TableFilters.none');
+    expect(optionsProp[2].value).to.equal(undefined);
   });
 
   it('renders the `Select` component with the correct `value` prop', () => {

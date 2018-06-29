@@ -1,9 +1,7 @@
 import React from 'react';
 import { withProps } from 'recompose';
-import uniqBy from 'lodash/uniqBy';
+import uniq from 'lodash/uniq';
 import get from 'lodash/get';
-import isArray from 'lodash/isArray';
-import flatten from 'lodash/flatten';
 
 import T from '../../Translation';
 import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
@@ -41,24 +39,41 @@ const getSelectOptions = (filterValue, filterPath) =>
     ? []
     : filterValue.map(value => getSelectOption(value, filterPath)));
 
-const createSelectOptionsForColumn = (filterPath, data) => {
-  const options = data.map((item) => {
+const isUndefinedValue = value => !value && value !== false;
+
+const undefinedDataValuesExist = (data, filterPath) =>
+  data.some((item) => {
     const itemValue = get(item, filterPath);
-    // if the option value is an array,
-    // return an array of options for each value
-    // we will flatten all options later
-    if (isArray(itemValue)) {
-      return itemValue.map(value => getSelectOption(value, filterPath));
-    }
-    return getSelectOption(itemValue, filterPath);
+    // maybe we'll filter boolean values, so consider `false` a valid value
+    return isUndefinedValue(itemValue);
   });
 
-  return uniqBy(flatten(options), ({ value }) => value);
+const removeUndefinedOptionValues = optionValues =>
+  optionValues.filter(optionValue => !isUndefinedValue(optionValue));
+
+const createSelectOptionsForColumn = (filterPath, value = [], data = []) => {
+  let optionValues = removeUndefinedOptionValues(value);
+  optionValues = uniq(optionValues);
+
+  // in case there are data items with undefined fields for the given filter,
+  // insert an undefined value so that a 'None' label will also be generated.
+  // (See the `getSelectOptionLabel` method)
+  if (undefinedDataValuesExist(data, filterPath)) {
+    optionValues = [...optionValues, undefined];
+  }
+
+  return optionValues.map(optionValue =>
+    getSelectOption(optionValue, filterPath));
 };
 
-export default withProps(({ onChange, data, filter: { path: filterPath, value: filterValue } }) => ({
+export default withProps(({
+  onChange,
+  filter: { path: filterPath, value: filterValue },
+  data,
+  value,
+}) => ({
   filterKey: getFilterKeyFromPath(filterPath),
   value: getSelectOptions(filterValue, filterPath),
-  options: createSelectOptionsForColumn(filterPath, data),
+  options: createSelectOptionsForColumn(filterPath, value, data),
   onChange,
 }));

@@ -8,67 +8,59 @@ import { getMountedComponent } from '../../../utils/testHelpers';
 
 const WrappedComponent = () => null;
 
-const mountedComponent = props =>
+const mountedComponent = (props, generateFiltersFromProps) =>
   getMountedComponent({
-    Component: withTableFilters(WrappedComponent),
+    Component: withTableFilters(generateFiltersFromProps)(WrappedComponent),
     props,
     withRouter: false,
   });
 
 describe('withTableFilters', () => {
+  let wrapper;
+  let props;
+  let filtersGeneratorFunction;
+
   beforeEach(() => {
     getMountedComponent.reset();
-  });
 
-  it('should wrap the given component with the TableFilters component', () => {
-    const props = {
-      tableFilters: { name: ['Alex'] },
+    props = {
       data: [{ name: 'John' }, { name: 'Alex' }],
       otherProps: 1,
     };
 
-    expect(mountedComponent(props)
+    filtersGeneratorFunction = ({ data }) => ({
+      filters: { name: ['Alex'] },
+      options: { name: data.map(({ name }) => name) },
+    });
+
+    wrapper = mountedComponent(props, filtersGeneratorFunction)
       .find(TableFilters)
-      .first()
-      .find(WrappedComponent).length).to.equal(1);
+      .first();
   });
 
-  it(`passes the 'tableFilters' as 'filters' and the 'data' props
-      to the TableFilters component`, () => {
-    const props = {
-      tableFilters: { name: ['Alex'] },
-      data: [{ name: 'John' }, { name: 'Alex' }],
-      otherProps: 1,
-    };
+  it('passes filters based on props to the TableFilters component', () => {
+    const generatedFilters = filtersGeneratorFunction(props);
+    expect(wrapper.prop('filters')).to.deep.equal(generatedFilters);
+  });
 
-    const wrapperProps = mountedComponent(props)
-      .find(TableFilters)
-      .first()
-      .props();
+  it('passes the correct data prop to the TableFilters component', () => {
+    expect(wrapper.prop('data')).to.equal(props.data);
+  });
 
-    expect(Object.keys(wrapperProps)).to.deep.equal([
+  it('passes the correct children to the TableFilters component', () => {
+    expect(wrapper.find(WrappedComponent).length).to.equal(1);
+  });
+
+  it('passes only the `data`, `filters` and `children` props to TableFilters component', () => {
+    expect(Object.keys(wrapper.props())).to.deep.equal([
       'filters',
       'data',
       'children',
     ]);
-    expect(wrapperProps.filters).to.equal(props.tableFilters);
-    expect(wrapperProps.data).to.equal(props.data);
   });
 
-  it('should wrap the given component with the correct props', () => {
-    const props = {
-      tableFilters: { name: ['Alex'] },
-      data: [{ name: 'John' }, { name: 'Alex' }],
-      otherProps: 1,
-    };
-
+  it('passes the correct props to the wrapped component', () => {
     const propsWithFilteredData = { ...props, data: [{ name: 'Alex' }] };
-
-    const wrapper = mountedComponent(props);
-    expect(wrapper.find(WrappedComponent).length).to.equal(1);
-    expect(wrapper
-      .find(WrappedComponent)
-      .first()
-      .props()).to.deep.equal(propsWithFilteredData);
+    expect(wrapper.find(WrappedComponent).props()).to.deep.equal(propsWithFilteredData);
   });
 });
