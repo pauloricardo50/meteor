@@ -43,7 +43,7 @@ export default compose(
     componentDidMount() {
       setTotalCount(this.props);
     },
-    componentDidUpdate({ prevCollectionName, filters: prevFilters }) {
+    componentDidUpdate({ collectionName: prevCollectionName, filters: prevFilters }) {
       const { collectionName, filters } = this.props;
       const shouldSetTotalCount =
         collectionName !== prevCollectionName || prevFilters !== filters;
