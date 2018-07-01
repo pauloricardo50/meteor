@@ -163,7 +163,7 @@ class ExpensesChart extends Component {
     const options = {
       chart: {
         type: 'pie',
-        style: { fontFamily: 'Source Sans Pro' },
+        style: { fontFamily: 'Eina04-Regular' },
         // animation: { duration: 400 },
         ...(!this.props.title && { spacingTop: 0 }),
         ...(!this.props.title && { marginTop: 0 }),

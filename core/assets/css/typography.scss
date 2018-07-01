@@ -5,7 +5,8 @@ body {
   letter-spacing: 0.048em; /* 0.75px / 16px  */
 
   font-family: 'Eina04-Regular';
-  line-height: 1.4em;@include font-size($font-size-s);
+  line-height: 1.4em;
+  @include font-size($font-size-s);
 }
 
 h1,
