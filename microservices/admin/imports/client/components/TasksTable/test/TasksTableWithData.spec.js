@@ -6,17 +6,12 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Composer } from 'core/api';
 import TableFilters from 'core/components/Table/TableFilters';
 
-import {
-  TasksTableContainer,
-  withTasksQuery,
-  withTasksTableFilters,
-} from '../TasksTableContainer';
+import { withTasksQuery, withTasksTableFilters } from '../TasksTableWithData';
 
 describe('TasksTableContainer', () => {
   it('should compose HoCs in the correct order', () => {
     const hocs = [withTasksQuery, withTasksTableFilters];
-    TasksTableContainer(() => null);
-    expect(Composer.compose.lastCall.args).to.deep.equal(hocs);
+    expect(Composer.compose.calledWith(...hocs)).to.equal(true);
   });
 
   describe('withTasksTableFilters', () => {

@@ -60,6 +60,22 @@ describe('TableFilter', () => {
       .prop('options')).to.deep.equal(expectedOptions);
   });
 
+  it(`converts the option labels with no translation
+      to strings before passing them to 'Select'`, () => {
+    const filter = { path: ['userInput'], value: [true, false, 24] };
+    const data = [];
+    const expectedOptions = [
+      { label: 'true', value: true },
+      { label: 'false', value: false },
+      { label: '24', value: 24 },
+    ];
+
+    expect(component({ data, filter })
+      .find(Select)
+      .first()
+      .prop('value')).to.deep.equal(expectedOptions);
+  });
+
   it(`removes duplicate options with before passing them
       to the 'Select' component`, () => {
     const filter = { path: ['name'], value: true };

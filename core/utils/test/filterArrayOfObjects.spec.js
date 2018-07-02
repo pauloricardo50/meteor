@@ -82,6 +82,17 @@ describe('filterArrayOfObjects', () => {
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car2, car3]);
   });
 
+  it('filters by boolean filters', () => {
+    const file1 = { name: 'File 1', isValid: true };
+    const file2 = { name: 'File 2' };
+    const file3 = { name: 'File 3', isValid: false };
+
+    const files = [file1, file2, file3];
+    const filters = { isValid: [true, false] };
+
+    expect(filterArrayOfObjects(filters, files)).to.deep.equal([file1, file3]);
+  });
+
   it('filters data items by their array fields', () => {
     const filters = { tags: ['rally', 'reddish'] };
     expect(filterArrayOfObjects(filters, data)).to.deep.equal([car1, car3]);

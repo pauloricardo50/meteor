@@ -13,7 +13,7 @@ const withState = withStateHandlers(({ filters = {} }) => ({ filters }), {
       filterPath,
       newFilterValue,
     );
-
+    console.log('>>newFilters', newFilters);
     return { filters: { ...filters, filters: newFilters } };
   },
 

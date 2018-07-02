@@ -89,6 +89,14 @@ describe('general helpers', () => {
       ]);
     });
 
+    it('flattens trees with boolean values', () => {
+      const tree = { key1: [{ key2: false }], key3: true };
+      expect(flattenObjectTreeToArrays(tree)).to.deep.equal([
+        { path: ['key1', '0', 'key2'], value: false },
+        { path: ['key3'], value: true },
+      ]);
+    });
+
     it('does not flatten empty arrays', () => {
       const tree = { key1: [] };
       expect(flattenObjectTreeToArrays(tree)).to.deep.equal([

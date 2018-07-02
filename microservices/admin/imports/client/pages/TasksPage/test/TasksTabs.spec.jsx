@@ -1,6 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
+
 import { shallow } from 'core/utils/testHelpers/enzyme';
+import { TASK_TYPE, TASK_STATUS } from 'core/api/constants';
 
 import { getTabs } from '../TasksTabs';
 
@@ -16,8 +18,14 @@ describe('TasksTabs', () => {
         const filtersProp = getTasksTableFiltersProp(tabId);
 
         expect(filtersProp).to.deep.equal({
-          type: true,
-          status: true,
+          filters: {
+            type: true,
+            status: true,
+          },
+          options: {
+            type: Object.values(TASK_TYPE),
+            status: Object.values(TASK_STATUS),
+          },
         });
       });
     });

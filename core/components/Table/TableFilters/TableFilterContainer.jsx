@@ -8,11 +8,15 @@ import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
 
 export const getFilterKeyFromPath = filterPath => filterPath.join('.');
 
+const isUndefinedValue = value => !value && value !== false;
+
 // Translate the label when it should be translated
 const getTranslationOfValueForPath = (value, filterPath) => {
   const filterKey = getFilterKeyFromPath(filterPath);
 
-  const translationId = filterKey === 'type' && `TasksStatusDropdown.${value}`;
+  const translationId =
+    (filterKey === 'type' && `TasksStatusDropdown.${value}`) ||
+    (filterKey === 'roles' && `roles.${value}`);
 
   if (!translationId) {
     return null;
@@ -22,11 +26,11 @@ const getTranslationOfValueForPath = (value, filterPath) => {
 };
 
 const getSelectOptionLabel = (value, filterPath) => {
-  if (!value) {
+  if (isUndefinedValue(value)) {
     return <T id="TableFilters.none" />;
   }
 
-  return getTranslationOfValueForPath(value, filterPath) || value;
+  return getTranslationOfValueForPath(value, filterPath) || value.toString();
 };
 
 const getSelectOption = (value, filterPath) => ({
@@ -38,8 +42,6 @@ const getSelectOptions = (filterValue, filterPath) =>
   (isEmptyFilterValue(filterValue)
     ? []
     : filterValue.map(value => getSelectOption(value, filterPath)));
-
-const isUndefinedValue = value => !value && value !== false;
 
 const undefinedDataValuesExist = (data, filterPath) =>
   data.some((item) => {

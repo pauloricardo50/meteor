@@ -3,9 +3,17 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation/';
+import { TASK_TYPE, TASK_STATUS } from 'core/api/constants';
+
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
-const tasksTableFilters = { type: true, status: true };
+const tasksTableFilters = {
+  filters: { type: true, status: true },
+  options: {
+    type: Object.values(TASK_TYPE),
+    status: Object.values(TASK_STATUS),
+  },
+};
 
 export const getTabs = () => [
   {
