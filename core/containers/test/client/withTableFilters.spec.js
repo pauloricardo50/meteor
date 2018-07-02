@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import withTableFilters from '../../withTableFilters';
+import { makeTableFiltersContainer } from '../../withTableFilters';
 import TableFilters from '../../../components/Table/TableFilters';
 
 import { getMountedComponent } from '../../../utils/testHelpers';
@@ -10,12 +10,12 @@ const WrappedComponent = () => null;
 
 const mountedComponent = (props, generateFiltersFromProps) =>
   getMountedComponent({
-    Component: withTableFilters(generateFiltersFromProps)(WrappedComponent),
+    Component: makeTableFiltersContainer(generateFiltersFromProps)(WrappedComponent),
     props,
     withRouter: false,
   });
 
-describe('withTableFilters', () => {
+describe('makeTableFiltersContainer', () => {
   let wrapper;
   let props;
   let filtersGeneratorFunction;

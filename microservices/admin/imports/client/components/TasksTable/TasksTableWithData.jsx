@@ -12,11 +12,9 @@ export const withTasksQuery = withSmartQuery({
   queryOptions: { reactive: true },
 });
 
-export const withTasksTableFilters = withTableFilters(({ tableFilters }) => tableFilters);
-
 export const TasksTableContainer = Composer.compose(
   withTasksQuery,
-  withTasksTableFilters,
+  withTableFilters,
 );
 
 export default TasksTableContainer(TasksTable);

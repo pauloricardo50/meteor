@@ -8,10 +8,11 @@ import TableFilters from '../components/Table/TableFilters';
  * be wrapped inside the filters and be bassed the filtered data
  */
 
-const withTableFilters = (generateFiltersFromProps = () => undefined) => WrappedComponent => props => (
+export const makeTableFiltersContainer = (generateFiltersFromProps = passTableFiltersProp) => WrappedComponent => props => (
   <TableFilters filters={generateFiltersFromProps(props)} data={props.data}>
     {filteredData => <WrappedComponent {...props} data={filteredData} />}
   </TableFilters>
 );
 
-export default withTableFilters;
+const passTableFiltersProp = ({ tableFilters }) => tableFilters;
+export default makeTableFiltersContainer(passTableFiltersProp);

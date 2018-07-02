@@ -5,11 +5,11 @@ import { expect } from 'chai';
 import { Composer } from 'core/api';
 import withTableFilters from 'core/containers/withTableFilters';
 
-import { withTasksQuery } from '../TasksTableWithData';
+import { withUsersQuery } from '../UsersTableContainer';
 
-describe('TasksTableContainer', () => {
+describe('UsersTableContainer', () => {
   it('composes HoCs in the correct order', () => {
-    const hocs = [withTasksQuery, withTableFilters];
+    const hocs = [withUsersQuery, withTableFilters];
     expect(Composer.compose.calledWith(...hocs)).to.equal(true);
   });
 });
