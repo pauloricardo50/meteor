@@ -1,5 +1,5 @@
+import { Meteor } from 'meteor/meteor';
 import { compose } from 'recompose';
-import sinon from 'sinon';
 
 class Composer {
   compose = (...args) => compose(...args);
@@ -7,6 +7,9 @@ class Composer {
 
 const composer = new Composer();
 
-sinon.spy(composer, 'compose');
+if (Meteor.isTest) {
+  const sinon = require('sinon');
+  sinon.spy(composer, 'compose');
+}
 
 export default composer;
