@@ -6,7 +6,26 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import T from 'core/components/Translation/';
+import adminsQuery from 'core/api/users/queries/admins';
+import { ROLES } from 'core/api/constants';
+
 import UsersTable from './UsersTable';
+
+const getAdminsEmails = async () => {
+  const admins = await adminsQuery.clone().fetchSync();
+  return admins.map(({ emails: [{ address }] }) => address);
+};
+
+const usersTableFilters = {
+  filters: {
+    roles: true,
+    assignedEmployee: { emails: [{ address: true }] },
+  },
+  options: {
+    roles: Object.values(ROLES),
+    address: getAdminsEmails(),
+  },
+};
 
 export const getTabs = ({ history }) => [
   {
@@ -18,13 +37,21 @@ export const getTabs = ({ history }) => [
         showAssignee={false}
         history={history}
         key="myUsers"
+        tableFilters={usersTableFilters}
       />
     ),
   },
   {
     id: 'allUsers',
     label: <T id="UsersTabs.allUsers" />,
-    content: <UsersTable showAssignee key="allUsers" history={history} />,
+    content: (
+      <UsersTable
+        showAssignee
+        key="allUsers"
+        history={history}
+        tableFilters={usersTableFilters}
+      />
+    ),
   },
 ];
 
