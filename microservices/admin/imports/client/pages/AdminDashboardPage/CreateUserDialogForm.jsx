@@ -25,10 +25,14 @@ const formArray = getFormArray(createUserFormFields);
 const onSubmit = data =>
   adminCreateUser.run({ options: data, role: ROLES.USER });
 
-const CreateUserDialogForm = () => (
+const redirectToUserProfile = (newId, history) => history.push(`/users/${newId}`);
+
+
+const CreateUserDialogForm = ({ history }) => (
   <DialogForm
     form="admin-add-user"
     onSubmit={onSubmit}
+    onSubmitSuccess={newUserId => redirectToUserProfile(newUserId, history)}
     button={
       <Button raised primary>
         <T id="CreateUserDialogForm.buttonLabel" />

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 
 import { T } from 'core/components/Translation';
+import { phoneFormatters } from './formHelpers';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <React.Fragment>
@@ -15,20 +16,25 @@ const RenderFieldArray = ({ fields, meta: { error }, label }) => (
   <div>
     <label>{label}</label>
     <button className="pull-right" type="button" onClick={() => fields.push()}>
-      <T id="RenderFieldArray.add" />
+      <T id="general.add" />
     </button>
 
     <ul>
       {fields.map((field, index) => (
         <li key={index}>
           <p>
-            <Field name={field} type="text" component={renderField} />
+            {field.includes('phone') ? (
+              <Field name={field} type="text" component={renderField} {...phoneFormatters} />
+            ) : (
+              <Field name={field} type="text" component={renderField} />
+            )}
+
             <button
               className="pull-right"
               type="button"
               onClick={() => fields.remove(index)}
             >
-              <T id="RenderFieldArray.remove" />
+              <T id="general.remove" />
             </button>
           </p>
         </li>

@@ -6,11 +6,11 @@ import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 import CreateUserDialogForm from './CreateUserDialogForm';
 import AdminInterestRatesCard from '../../components/AdminInterestRates/AdminInterestRatesCard';
 
-const AdminDashboardPage = () => (
+const AdminDashboardPage = ({ history }) => (
   <section className="mask1 admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
-    <CreateUserDialogForm />
+    <CreateUserDialogForm history={history} />
 
     <AdminInterestRatesCard />
 
