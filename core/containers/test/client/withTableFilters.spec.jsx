@@ -1,7 +1,11 @@
 /* eslint-env mocha */
+import React from 'react';
 import { expect } from 'chai';
+import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import { makeTableFiltersContainer } from '../../withTableFilters';
+import withTableFilters, {
+  makeTableFiltersContainer,
+} from '../../withTableFilters';
 import TableFilters from '../../../components/Table/TableFilters';
 
 import { getMountedComponent } from '../../../utils/testHelpers';
@@ -14,6 +18,27 @@ const mountedComponent = (props, generateFiltersFromProps) =>
     props,
     withRouter: false,
   });
+
+describe('withTableFilters', () => {
+  beforeEach(() => {
+    getMountedComponent.reset();
+  });
+
+  it('passes the tableFilters prop to the TableFilters component', () => {
+    const tableFilters = {
+      filters: { name: ['James'] },
+      options: { name: ['James', 'John'] },
+    };
+
+    const Component = withTableFilters(() => null);
+    const wrapper = shallow(<Component tableFilters={tableFilters} />);
+
+    expect(wrapper
+      .find(TableFilters)
+      .first()
+      .prop('filters')).to.deep.equal(tableFilters);
+  });
+});
 
 describe('makeTableFiltersContainer', () => {
   let wrapper;
