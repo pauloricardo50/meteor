@@ -13,7 +13,8 @@ import UsersTable from './UsersTable';
 
 const getAdminsEmails = async () => {
   const admins = await adminsQuery.clone().fetchSync();
-  return admins.map(({ emails: [{ address }] }) => address);
+  const adminsEmails = admins.map(({ emails: [{ address }] }) => address);
+  return [...adminsEmails, undefined];
 };
 
 const usersTableFilters = {

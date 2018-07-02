@@ -62,11 +62,12 @@ describe('TableFilter', () => {
 
   it(`converts the option labels with no translation
       to strings before passing them to 'Select'`, () => {
-    const filter = { path: ['userInput'], value: [true, false, 24] };
+    const filter = { path: ['userInput'], value: [true, false, null, 24] };
     const data = [];
     const expectedOptions = [
       { label: 'true', value: true },
       { label: 'false', value: false },
+      { label: 'null', value: null },
       { label: '24', value: 24 },
     ];
 
@@ -92,26 +93,32 @@ describe('TableFilter', () => {
       .prop('options')).to.deep.equal(expectedOptions);
   });
 
-  it(`removes options which have undefined or null values
-      before passing them to the 'Select' component`, () => {
+  it(`when there are undefined values, keep only an undefined option at the end
+      when passing options to 'Select' component`, () => {
     const filter = { path: ['name'], value: true };
-    const optionValues = ['Name 1', null, undefined, 'Name 4'];
+    const optionValues = ['Name 1', undefined, undefined, 'Name 4'];
 
     const expectedOptions = [
       { label: 'Name 1', value: 'Name 1' },
       { label: 'Name 4', value: 'Name 4' },
     ];
 
-    expect(component({ filter, value: optionValues })
+    const renderedOptions = component({ filter, value: optionValues })
       .find(Select)
       .first()
-      .prop('options')).to.deep.equal(expectedOptions);
+      .prop('options');
+
+    expect(renderedOptions.length).to.equal(3);
+    expect(renderedOptions[0]).to.deep.equal(expectedOptions[0]);
+    expect(renderedOptions[1]).to.deep.equal(expectedOptions[1]);
+    expect(renderedOptions[2].value).to.equal(undefined);
   });
 
-  it("adds a 'None' label when there are undefined values in the data", () => {
-    const data = [{ name: 'John' }, { name: undefined }];
+  it(`adds a specific 'None' label when there are undefined values
+      in the 'value' prop`, () => {
+    const data = [{ name: 'John' }];
     const filter = { path: ['name'], value: true };
-    const optionValues = ['Name 1', 'Name 2'];
+    const optionValues = ['Name 1', 'Name 2', undefined];
 
     const optionsProp = component({ data, filter, value: optionValues })
       .find(Select)
@@ -120,7 +127,7 @@ describe('TableFilter', () => {
 
     const noneLabelWrapper = shallow(optionsProp[2].label);
 
-    expect(noneLabelWrapper.prop('id')).to.equal('TableFilters.none');
+    expect(noneLabelWrapper.prop('id')).to.equal('TableFilters.noneLabels.name');
     expect(optionsProp[2].value).to.equal(undefined);
   });
 

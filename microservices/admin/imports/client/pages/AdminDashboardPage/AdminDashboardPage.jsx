@@ -21,7 +21,7 @@ const AdminDashboardPage = ({ currentUser }) => (
       tableFilters={{
         filters: { assignedEmployee: { emails: [{ address: true }] } },
         options: {
-          address: [currentUser.emails[0].address],
+          address: [currentUser.emails[0].address, undefined],
         },
       }}
     />

@@ -9,12 +9,10 @@ import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
 
 export const getFilterKeyFromPath = filterPath => filterPath.join('.');
 
-const isUndefinedValue = value => !value && value !== false;
+const isUndefinedValue = value => typeof value === 'undefined';
 
 // Translate the label when it should be translated
-const getTranslationOfValueForPath = (value, filterPath) => {
-  const filterKey = getFilterKeyFromPath(filterPath);
-
+const getTranslationOfValueForPath = (value, filterKey) => {
   const translationId =
     (filterKey === 'type' && `TasksStatusDropdown.${value}`) ||
     (filterKey === 'roles' && `roles.${value}`);
@@ -27,11 +25,13 @@ const getTranslationOfValueForPath = (value, filterPath) => {
 };
 
 const getSelectOptionLabel = (value, filterPath) => {
+  const filterKey = getFilterKeyFromPath(filterPath);
+
   if (isUndefinedValue(value)) {
-    return <T id="TableFilters.none" />;
+    return <T id={`TableFilters.noneLabels.${filterKey}`} />;
   }
 
-  return getTranslationOfValueForPath(value, filterPath) || value.toString();
+  return getTranslationOfValueForPath(value, filterKey) || `${value}`;
 };
 
 const getSelectOption = (value, filterPath) => ({
@@ -44,54 +44,46 @@ const getSelectOptions = (filterValue, filterPath) =>
     ? []
     : filterValue.map(value => getSelectOption(value, filterPath)));
 
-const undefinedDataValuesExist = (data, filterPath) =>
-  data.some((item) => {
-    const itemValue = get(item, filterPath);
-    // maybe we'll filter boolean values, so consider `false` a valid value
-    return isUndefinedValue(itemValue);
-  });
+const undefinedValuesExist = values => values.some(isUndefinedValue);
 
-const removeUndefinedOptionValues = optionValues =>
-  optionValues.filter(optionValue => !isUndefinedValue(optionValue));
+const removeUndefinedValues = values =>
+  values.filter(value => !isUndefinedValue(value));
 
 const isAsyncSelect = value => value && value.constructor === Promise;
 
-const createSelectOptionsForColumn = (filterPath, value = [], data = []) => {
+const createSelectOptionsForColumn = (filterPath, value) => {
   if (isAsyncSelect(value)) {
     return undefined;
   }
 
-  let optionValues = removeUndefinedOptionValues(value);
-  optionValues = uniq(optionValues);
+  let uniqueOptionValues = uniq(value);
 
-  // in case there are data items with undefined fields for the given filter,
-  // insert an undefined value so that a 'None' label will also be generated.
-  // (See the `getSelectOptionLabel` method)
-  if (undefinedDataValuesExist(data, filterPath)) {
-    optionValues = [...optionValues, undefined];
+  // in case undefined values are passed,
+  // remove them and only put an undefined value at the end
+  // so that a 'None' label will be put at the end
+  if (undefinedValuesExist(uniqueOptionValues)) {
+    uniqueOptionValues = [
+      ...removeUndefinedValues(uniqueOptionValues),
+      undefined,
+    ];
   }
 
-  return optionValues.map(optionValue =>
+  return uniqueOptionValues.map(optionValue =>
     getSelectOption(optionValue, filterPath));
 };
 
-const makeAsyncOptionsLoader = (filterPath, promisedValue, data) => () =>
+const makeAsyncOptionsLoader = (filterPath, promisedValue) => () =>
   promisedValue.then(value => ({
-    options: createSelectOptionsForColumn(filterPath, value, data),
+    options: createSelectOptionsForColumn(filterPath, value),
     complete: true,
   }));
 
-export default withProps(({
-  onChange,
-  filter: { path: filterPath, value: filterValue },
-  data,
-  value,
-}) => ({
+export default withProps(({ onChange, filter: { path: filterPath, value: filterValue }, value }) => ({
   filterKey: getFilterKeyFromPath(filterPath),
   value: getSelectOptions(filterValue, filterPath),
-  options: createSelectOptionsForColumn(filterPath, value, data),
+  options: createSelectOptionsForColumn(filterPath, value),
   loadOptions: isAsyncSelect(value)
-    ? makeAsyncOptionsLoader(filterPath, value, data)
+    ? makeAsyncOptionsLoader(filterPath, value)
     : undefined,
   onChange,
   SelectComponent: isAsyncSelect(value) ? Select.Async : Select,

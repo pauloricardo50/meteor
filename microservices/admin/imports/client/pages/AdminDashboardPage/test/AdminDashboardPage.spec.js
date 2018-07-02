@@ -22,7 +22,7 @@ describe('AdminDashboardPage', () => {
 
     expect(tableFiltersProp).to.deep.equal({
       filters: { assignedEmployee: { emails: [{ address: true }] } },
-      options: { address: [adminEmail] },
+      options: { address: [adminEmail, undefined] },
     });
   });
 });
