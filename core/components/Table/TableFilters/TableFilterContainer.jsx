@@ -2,6 +2,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 import uniq from 'lodash/uniq';
 import get from 'lodash/get';
+import Select from 'react-select';
 
 import T from '../../Translation';
 import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
@@ -53,7 +54,13 @@ const undefinedDataValuesExist = (data, filterPath) =>
 const removeUndefinedOptionValues = optionValues =>
   optionValues.filter(optionValue => !isUndefinedValue(optionValue));
 
+const isAsyncSelect = value => value && value.constructor === Promise;
+
 const createSelectOptionsForColumn = (filterPath, value = [], data = []) => {
+  if (isAsyncSelect(value)) {
+    return undefined;
+  }
+
   let optionValues = removeUndefinedOptionValues(value);
   optionValues = uniq(optionValues);
 
@@ -68,14 +75,30 @@ const createSelectOptionsForColumn = (filterPath, value = [], data = []) => {
     getSelectOption(optionValue, filterPath));
 };
 
+class AsyncOptionsLoader {
+  makeLoader = (filterPath, promisedValue, data) => () =>
+    promisedValue.then(value => ({
+      options: createSelectOptionsForColumn(filterPath, value, data),
+      complete: true,
+    }));
+}
+export const asyncOptionsLoader = new AsyncOptionsLoader();
+
 export default withProps(({
   onChange,
   filter: { path: filterPath, value: filterValue },
   data,
   value,
-}) => ({
-  filterKey: getFilterKeyFromPath(filterPath),
-  value: getSelectOptions(filterValue, filterPath),
-  options: createSelectOptionsForColumn(filterPath, value, data),
-  onChange,
-}));
+}) => {
+  console.log('value', value);
+  return {
+    filterKey: getFilterKeyFromPath(filterPath),
+    value: getSelectOptions(filterValue, filterPath),
+    options: createSelectOptionsForColumn(filterPath, value, data),
+    loadOptions: isAsyncSelect(value)
+      ? asyncOptionsLoader.makeLoader(filterPath, value, data)
+      : undefined,
+    onChange,
+    SelectComponent: isAsyncSelect(value) ? Select.Async : Select,
+  };
+});

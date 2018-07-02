@@ -2,10 +2,12 @@
 import { expect } from 'chai';
 import Select from 'react-select';
 import { shallow } from 'enzyme';
+import sinon from 'sinon';
 
 import { getMountedComponent } from '../../../../../utils/testHelpers';
 import T from '../../../../Translation';
 import TableFilter from '../../TableFilter';
+import { asyncOptionsLoader } from '../../TableFilterContainer';
 
 let defaultProps;
 
@@ -16,7 +18,7 @@ const component = props =>
     withRouter: false,
   });
 
-describe('TableFilter', () => {
+describe.only('TableFilter', () => {
   beforeEach(() => {
     getMountedComponent.reset();
 
@@ -175,5 +177,46 @@ describe('TableFilter', () => {
       .find(T)
       .first()
       .prop('id')).to.equal('TableFilters.filterLabels.preferences.0.food');
+  });
+
+  it(`renders the Select.Async component
+      when passed a value of type Promise`, () => {
+    const filter = { path: ['name'], value: 1 };
+    const wrapper = component({ data: [], value: Promise.resolve(), filter });
+    expect(wrapper.find(Select.Async).length).to.equal(1);
+  });
+
+  it("passes 'loadOptions' prop to 'Select.Async' when passed a value of type 'Promise'", () => {
+    const filter = { path: ['name'], value: 1 };
+    const selectAsyncComponent = component({
+      data: [],
+      value: Promise.resolve(),
+      filter,
+    }).find(Select.Async);
+    expect(selectAsyncComponent.prop('loadOptions')).to.be.a('function');
+  });
+
+  it("calls 'asyncOptionsLoader.makeLoader' with correct when passed a value of type 'Promise'", (done) => {
+    const props = {
+      data: [{ name: 'John' }],
+      value: Promise.resolve(['value1', 'value2']),
+      filter: { path: ['name'], value: 1 },
+    };
+
+    const asyncSelectComponent = component(props).find(Select.Async);
+    const loadOptionsProp = asyncSelectComponent.prop('loadOptions');
+
+    loadOptionsProp().then((result) => {
+      const expectedAsyncOptions = {
+        options: [
+          { label: 'value1', value: 'value1' },
+          { label: 'value2', value: 'value2' },
+        ],
+        complete: true,
+      };
+
+      expect(result).to.deep.equal(expectedAsyncOptions);
+      done();
+    });
   });
 });

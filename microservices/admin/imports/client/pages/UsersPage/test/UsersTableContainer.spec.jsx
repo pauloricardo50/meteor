@@ -7,7 +7,11 @@ import { Composer } from 'core/api';
 import { ROLES } from 'core/api/constants';
 import TableFilters from 'core/components/Table/TableFilters';
 
-import { withQueryUsers, withUsersTableFilters } from '../UsersTableContainer';
+import {
+  withQueryUsers,
+  withUsersTableFilters,
+  getAdminsEmails,
+} from '../UsersTableContainer';
 
 describe('UsersTableContainer', () => {
   it('should compose HoCs in the correct order', () => {
@@ -16,49 +20,28 @@ describe('UsersTableContainer', () => {
   });
 
   describe('withUsersTableFilters', () => {
-    let expectedUserFilters;
-    let adminDashboardProps;
-    beforeEach(() => {
-      expectedUserFilters = {
+    it("enables filtering by users' role and assigned employee", () => {
+      const expectedUserFilters = {
         filters: {
           roles: true,
           assignedEmployee: { emails: [{ address: true }] },
         },
         options: {
           roles: Object.values(ROLES),
-          address: ['admin1@asignee.com', 'admin2@asignee.com'],
+          address: getAdminsEmails(),
         },
       };
 
-      adminDashboardProps = {
-        data: [
-          { assignedEmployee: { emails: [{ address: 'admin1@asignee.com' }] } },
-          { assignedEmployee: { emails: [{ address: 'admin2@asignee.com' }] } },
-        ],
-      };
-    });
-
-    it("enables filtering by users' role and assigned employee", () => {
       const WrappedComponent = () => null;
       const Component = withUsersTableFilters(WrappedComponent);
+      const wrapper = shallow(<Component />);
 
-      const wrapper = shallow(<Component {...adminDashboardProps} />);
       const filtersProp = wrapper.find(TableFilters).prop('filters');
-      console.log('filtersProp', filtersProp);
-      expect(filtersProp).to.deep.equal(expectedUserFilters);
-    });
+      expect(filtersProp.filters).to.deep.equal(expectedUserFilters.filters);
 
-    it(`enables filtering by users' role and assigned employee
-        when there's no assigned employee for the user`, () => {
-      const WrappedComponent = () => null;
-      const Component = withUsersTableFilters(WrappedComponent);
+      expect(filtersProp.options.roles).to.deep.equal(expectedUserFilters.options.roles);
 
-      adminDashboardProps.data[1] = {};
-      expectedUserFilters.options.address[1] = undefined;
-
-      const wrapper = shallow(<Component {...adminDashboardProps} />);
-      const filtersProp = wrapper.find(TableFilters).prop('filters');
-      expect(filtersProp).to.deep.equal(expectedUserFilters);
+      expect(filtersProp.options.address.constructor).to.equal(Promise);
     });
   });
 });
