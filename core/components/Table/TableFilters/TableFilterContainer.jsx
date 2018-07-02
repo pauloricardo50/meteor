@@ -75,30 +75,24 @@ const createSelectOptionsForColumn = (filterPath, value = [], data = []) => {
     getSelectOption(optionValue, filterPath));
 };
 
-class AsyncOptionsLoader {
-  makeLoader = (filterPath, promisedValue, data) => () =>
-    promisedValue.then(value => ({
-      options: createSelectOptionsForColumn(filterPath, value, data),
-      complete: true,
-    }));
-}
-export const asyncOptionsLoader = new AsyncOptionsLoader();
+const makeAsyncOptionsLoader = (filterPath, promisedValue, data) => () =>
+  promisedValue.then(value => ({
+    options: createSelectOptionsForColumn(filterPath, value, data),
+    complete: true,
+  }));
 
 export default withProps(({
   onChange,
   filter: { path: filterPath, value: filterValue },
   data,
   value,
-}) => {
-  console.log('value', value);
-  return {
-    filterKey: getFilterKeyFromPath(filterPath),
-    value: getSelectOptions(filterValue, filterPath),
-    options: createSelectOptionsForColumn(filterPath, value, data),
-    loadOptions: isAsyncSelect(value)
-      ? asyncOptionsLoader.makeLoader(filterPath, value, data)
-      : undefined,
-    onChange,
-    SelectComponent: isAsyncSelect(value) ? Select.Async : Select,
-  };
-});
+}) => ({
+  filterKey: getFilterKeyFromPath(filterPath),
+  value: getSelectOptions(filterValue, filterPath),
+  options: createSelectOptionsForColumn(filterPath, value, data),
+  loadOptions: isAsyncSelect(value)
+    ? makeAsyncOptionsLoader(filterPath, value, data)
+    : undefined,
+  onChange,
+  SelectComponent: isAsyncSelect(value) ? Select.Async : Select,
+}));

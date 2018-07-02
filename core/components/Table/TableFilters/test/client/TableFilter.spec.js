@@ -2,12 +2,10 @@
 import { expect } from 'chai';
 import Select from 'react-select';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import { getMountedComponent } from '../../../../../utils/testHelpers';
 import T from '../../../../Translation';
 import TableFilter from '../../TableFilter';
-import { asyncOptionsLoader } from '../../TableFilterContainer';
 
 let defaultProps;
 
@@ -186,7 +184,8 @@ describe.only('TableFilter', () => {
     expect(wrapper.find(Select.Async).length).to.equal(1);
   });
 
-  it("passes 'loadOptions' prop to 'Select.Async' when passed a value of type 'Promise'", () => {
+  it(`passes loadOptions prop to Select.Async
+      when passed a value of type Promise`, () => {
     const filter = { path: ['name'], value: 1 };
     const selectAsyncComponent = component({
       data: [],
@@ -196,7 +195,8 @@ describe.only('TableFilter', () => {
     expect(selectAsyncComponent.prop('loadOptions')).to.be.a('function');
   });
 
-  it("calls 'asyncOptionsLoader.makeLoader' with correct when passed a value of type 'Promise'", (done) => {
+  it(`asynchronously loads the correct options
+      when passed a value of type Promise`, (done) => {
     const props = {
       data: [{ name: 'John' }],
       value: Promise.resolve(['value1', 'value2']),
