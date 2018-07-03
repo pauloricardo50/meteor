@@ -35,7 +35,7 @@ export function adjustLegend(that) {
 
 export const defaultConfig = {
   chart: {
-    style: { fontFamily: 'Source Sans Pro' },
+    style: { fontFamily: 'Eina04-Regular' },
     animation: { duration: 400 },
     backgroundColor: 'rgba(255, 255, 255, 0.0)',
   },

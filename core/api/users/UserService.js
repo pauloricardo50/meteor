@@ -16,11 +16,8 @@ class UserService {
   adminCreateUser = ({ options, role }) => {
     const newUserId = this.createUser({ options, role });
     this.update({ userId: newUserId, object: { ...options } });
-    try {
-      this.sendEnrollmentEmail({ userId: newUserId });
-    } catch (error) {
-      console.log('Theodor error: ', error);
-    }
+    this.sendEnrollmentEmail({ userId: newUserId });
+
     return newUserId;
   };
 
