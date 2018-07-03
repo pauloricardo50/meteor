@@ -1,5 +1,4 @@
 import React from 'react';
-import { branch } from 'recompose';
 
 import TableFilters from '../components/Table/TableFilters';
 
