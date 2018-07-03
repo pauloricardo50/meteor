@@ -9,19 +9,28 @@ import TableFiltersContainer from './TableFiltersContainer';
 
 /*
  * Flters usage explanation:
- *   - If you use `withTableFilters`, pass the `tableFilters` prop to the
- *     initial component. If you use `<TableFilters />` directly, pass the
+ *   - If you use `withTableFilters` HoC, pass the `tableFilters` prop to the
+ *     initial component and the HoC will wrap the initial component with those filters. =
+ *   - If you use `<TableFilters />` directly, pass the
  *     `filters` prop to it.
  *   - If you pass `true` or `[]` to a filter, it renders the filter but doesn't
- *     filter the data by default. E.g.: filters={{ name: true }}
+ *     filter the data by default. E.g.: filters={filters: { name: true }}
  *   - To filter the data by default, pass an array of values to the filter
- *     The data will be filtered by those
- *     values and the filters' UI will be prepopulated with those values. E.g.:
- *     filters={{ name: ["John", "Alex"] }}
+ *     The data will be filtered by those values and the filters' UI will be
+ *     prepopulated with those values. E.g.: filters={filters: { name: ["John", "Alex"] }}
  *   - You can filter by nested object and array values,
  *     similar to mongo queries:
- *     E.g.: filters={{ emails: [{address: ["my.email@gmail.com"]}] }} or
- *           filters={{ assignee: { name: true } }}
+ *     E.g.: filters={filters: { emails: [{address: ["my.email@gmail.com"]}] }} or
+ *           filters={filters: { assignee: { name: true } }}
+ *   - The dropdown options of the filter component are passed in the `options`
+ *     of the filter: filters={filters: {name: ['John']}, options: ['John', 'James', 'Alex']}
+ *   - Pass an `undefined` option if you want to filter by undefined data values also:
+ *     filters={
+ *       filters: {name: ['John']},
+ *       options: ['John', 'James', 'Alex', undefined]
+ *     }
+ *     This will make a 'None' option appear which allows the user to filter the
+ *     data items where the filtered field is undefined.
  */
 const TableFilters = ({
   filters: { filters, options },
