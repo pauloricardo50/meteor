@@ -67,6 +67,6 @@ export default compose(
   withProps(({ showMoreCount, totalCount }) => ({
     isEnd: getQueryLimit(showMoreCount) >= totalCount,
   })),
-  withDataFilterAndSort(),
+  withDataFilterAndSort,
   withRouter,
 );
