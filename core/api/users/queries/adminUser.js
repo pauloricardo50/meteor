@@ -30,6 +30,8 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   },
   assignedEmployee: {
     emails: 1,
+    firstName: 1,
+    lastName: 1,
   },
   firstName: 1,
   lastName: 1,

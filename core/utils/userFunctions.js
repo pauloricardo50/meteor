@@ -14,3 +14,6 @@ export const isUser = (user) => {
   const userHasRoles = userRoles && userRoles.length > 0;
   return userHasRoles && _.intersection(userRoles, [ADMIN, DEV]).length === 0;
 };
+
+export const getUserFullName = ({ firstName, lastName }) =>
+  [firstName, lastName].filter(name => name).join(' ');

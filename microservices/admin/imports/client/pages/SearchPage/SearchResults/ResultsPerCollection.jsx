@@ -8,12 +8,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import T from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
+import { getUserFullName } from 'core/utils/userFunctions';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   USERS_COLLECTION,
 } from 'core/api/constants';
+
 import ResultSecondaryText from './ResultSecondaryText';
 
 const getBorrowerInfo = ({ firstName, lastName, createdAt, updatedAt }) => ({
@@ -82,6 +84,8 @@ const getUserInfo = ({
   roles,
   createdAt,
   assignedEmployee,
+  firstName,
+  lastName,
 }) => {
   const organization = profile && profile.organization;
   const assignedEmployeeName = assignedEmployee
@@ -89,7 +93,7 @@ const getUserInfo = ({
     : 'unassigned';
 
   return {
-    primary: emails[0].address || <T id="general.user" />,
+    primary: getUserFullName({ firstName, lastName }) || emails[0].address || <T id="general.user" />,
     secondary: (
       <ResultSecondaryText
         infos={{

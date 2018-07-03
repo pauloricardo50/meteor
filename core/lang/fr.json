@@ -1439,6 +1439,7 @@
   "UsersTable.roles": "Rôles",
   "UsersTable.assignedTo": "Assigné à",
   "UsersTable.actions": "Actions",
+  "UsersTable.name": "Nom",
   "UsersTabs.myUsers": "Mes utilisateurs",
   "UsersTabs.allUsers": "Tous les utilisateurs",
   "ValidatorItem.error.fortune": "Manque de fortune",
