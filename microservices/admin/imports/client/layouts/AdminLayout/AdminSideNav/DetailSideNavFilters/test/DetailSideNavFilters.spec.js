@@ -30,10 +30,11 @@ const renderDropdownSelect = (collectionName, additionalProps) => {
     .first();
 };
 
-// test correct options are passed√
-// test correct action on click
-// test correct action on deselect
-// test correct action on selected 2 items
+const assignedToMeFilter = {
+  'user.assignedEmployee.emails': {
+    $elemMatch: { address: 'admin@test.com' },
+  },
+};
 
 describe('DetailSideNavFilters', () => {
   [LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
@@ -41,12 +42,6 @@ describe('DetailSideNavFilters', () => {
       it(`should pass the 'Show assigned to me' filter
           option to DropdownMenu component`, () => {
         const menuOptions = renderDropdownSelect(collectionName).prop('options');
-
-        const assignedToMeFilter = {
-          'user.assignedEmployee.emails': {
-            $elemMatch: { address: 'admin@test.com' },
-          },
-        };
 
         expect(menuOptions[0].value).to.deep.equal(assignedToMeFilter);
         expect(shallow(menuOptions[0].label).prop('id')).to.equal('DetailSideNavFilters.showAssignedToMe');
@@ -70,5 +65,21 @@ describe('DetailSideNavFilters', () => {
       'loans',
       [filter1Value, filter2Value],
     ]);
+  });
+
+  it('should pass the selected filters as selected dropdown options', () => {
+    const additionalProps = {
+      filters: { [LOANS_COLLECTION]: [assignedToMeFilter] },
+    };
+
+    const selectedMenuOptions = renderDropdownSelect(
+      'loans',
+      additionalProps,
+    ).prop('selected');
+
+    expect(selectedMenuOptions.length).to.equal(1);
+    expect(selectedMenuOptions[0].value).to.deep.equal(assignedToMeFilter);
+    const filterLabel = shallow(selectedMenuOptions[0].label);
+    expect(filterLabel.prop('id')).to.equal('DetailSideNavFilters.showAssignedToMe');
   });
 });

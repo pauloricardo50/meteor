@@ -31,10 +31,10 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
   }
 
   if (withStore) {
-    const configureStore = require('redux-mock-store');
+    const configureStore = require('redux-mock-store').default;
     const { Provider } = require('react-redux');
     const mockStore = configureStore();
-    const initialState = { stepper: {} };
+    const initialState = withStore;
     const store = mockStore(initialState);
     testComponent = <Provider store={store}>{testComponent}</Provider>;
   }

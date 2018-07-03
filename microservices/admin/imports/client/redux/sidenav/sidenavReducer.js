@@ -1,7 +1,7 @@
 import * as sidenavTypes from './sidenavTypes';
 import { defaultSortOption } from '../../layouts/AdminLayout/AdminSideNav/DetailSideNavSort/sortOptions';
 
-const initialState = {
+export const initialState = {
   showDetail: false,
   collectionName: undefined,
   showMoreCount: 0,
