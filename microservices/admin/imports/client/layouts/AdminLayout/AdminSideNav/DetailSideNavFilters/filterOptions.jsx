@@ -21,25 +21,6 @@ const getAssignedToMeFilter = ({
   },
 });
 
-const getFilterOptions = (props) => {
-  const { collectionName } = props;
-
-  const loanFilters = [
-    getAssignedToMeFilter(props),
-    { label: 'bla bla', value: {} },
-  ];
-
-  const borrowerFilters = [getAssignedToMeFilter(props)];
-
-  const userFilters = [getAssignedToMeFilter(props)];
-
-  return {
-    [LOANS_COLLECTION]: loanFilters,
-    [BORROWERS_COLLECTION]: borrowerFilters,
-    [USERS_COLLECTION]: userFilters,
-  }[collectionName];
-};
-
 export const appendFilters = filterArray =>
   (filterArray ? { $and: filterArray } : {});
 
@@ -52,5 +33,21 @@ export const filterFilterOptionsByValues = (filterOptions, filterArray = []) =>
 
 export const getFilterOptionFromValue = (options, filterValue) =>
   options.find(({ value }) => isEqual(value, filterValue));
+
+const getFilterOptions = (props) => {
+  const { collectionName } = props;
+
+  const loanFilters = [getAssignedToMeFilter(props)];
+
+  const borrowerFilters = [getAssignedToMeFilter(props)];
+
+  const userFilters = [getAssignedToMeFilter(props)];
+
+  return {
+    [LOANS_COLLECTION]: loanFilters,
+    [BORROWERS_COLLECTION]: borrowerFilters,
+    [USERS_COLLECTION]: userFilters,
+  }[collectionName];
+};
 
 export default getFilterOptions;

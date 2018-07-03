@@ -12,7 +12,6 @@ import {
   USERS_COLLECTION,
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
-import merge from 'lodash/merge';
 
 import DetailSideNavSort from '../DetailSideNavSort';
 
@@ -38,7 +37,7 @@ const renderDropdownMenu = (collectionName) => {
     .first();
 };
 
-describe.only('DetailSideNavSort', () => {
+describe('DetailSideNavSort', () => {
   let menuOptions;
 
   beforeEach(() => {
@@ -46,15 +45,17 @@ describe.only('DetailSideNavSort', () => {
   });
 
   [LOANS_COLLECTION, BORROWERS_COLLECTION, USERS_COLLECTION].forEach((collectionName) => {
-    it(`should pass the created and updated at
+    describe(`for ${collectionName} collection`, () => {
+      it(`should pass the created and updated at
       sort options to DropdownMenu component`, () => {
-      menuOptions = renderDropdownMenu(collectionName).prop('options');
+        menuOptions = renderDropdownMenu(collectionName).prop('options');
 
-      expect(menuOptions[0].id).to.equal('createdAt');
-      expect(getTranslationId(menuOptions[0].label)).to.equal('TasksTable.createdAt');
+        expect(menuOptions[0].id).to.equal('createdAt');
+        expect(getTranslationId(menuOptions[0].label)).to.equal('TasksTable.createdAt');
 
-      expect(menuOptions[1].id).to.equal('updatedAt');
-      expect(getTranslationId(menuOptions[1].label)).to.equal('TasksTable.updatedAt');
+        expect(menuOptions[1].id).to.equal('updatedAt');
+        expect(getTranslationId(menuOptions[1].label)).to.equal('TasksTable.updatedAt');
+      });
     });
   });
 
