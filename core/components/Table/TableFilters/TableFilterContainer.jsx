@@ -14,7 +14,8 @@ const isUndefinedValue = value => typeof value === 'undefined';
 // Translate the label when it should be translated
 const getTranslationOfValueForPath = (value, filterKey) => {
   const translationId =
-    (filterKey === 'type' && `TasksStatusDropdown.${value}`) ||
+    (['type', 'status'].includes(filterKey) &&
+      `TasksStatusDropdown.${value}`) ||
     (filterKey === 'roles' && `roles.${value}`);
 
   if (!translationId) {
