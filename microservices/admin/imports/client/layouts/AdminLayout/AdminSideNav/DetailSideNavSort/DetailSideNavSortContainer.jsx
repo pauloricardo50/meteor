@@ -14,12 +14,12 @@ const mapOptions = (options, currentSortOption) =>
   options.map(({ label, value }) => ({
     id: value.field,
     label: (
-      <React.Fragment>
+      <span>
         {label}
-        {currentSortOption.field === value.field
+        {currentSortOption && currentSortOption.field === value.field
           ? renderOrderIcon(currentSortOption.order)
           : null}
-      </React.Fragment>
+      </span>
     ),
   }));
 
