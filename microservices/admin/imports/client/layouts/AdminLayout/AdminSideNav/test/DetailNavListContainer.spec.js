@@ -12,7 +12,7 @@ import {
   withIsEndProp,
 } from '../DetailSideNavListContainer';
 
-describe.only('DetailSideNavListContainer', () => {
+describe('DetailSideNavListContainer', () => {
   it('composes HoCs in the correct order', () => {
     const hocs = [
       withTotalCountState,
