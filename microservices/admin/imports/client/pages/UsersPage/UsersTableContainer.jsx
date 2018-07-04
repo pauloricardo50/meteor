@@ -1,9 +1,19 @@
 import query from 'core/api/users/queries/adminUsers';
-import { withQuery } from 'core/api';
+import { compose, createContainer } from 'core/api';
+import { withSmartQuery } from 'core/api/containerToolkit';
 
-export default withQuery(
-  props => query.clone({ assignedTo: props.assignedTo }),
-  {
-    reactive: true,
-  },
+import { getColumnOptions, getRows } from './userTableHelpers';
+
+export default compose(
+  withSmartQuery({
+    query: ({ assignedTo }) => query.clone({ assignedTo }),
+    queryOptions: { reactive: true },
+    dataName: 'users',
+  }),
+  createContainer(({ users, history, showAssignee }) => ({
+    options: {
+      getColumnOptions: getColumnOptions({ showAssignee }),
+      getRows: getRows({ users, history, showAssignee }),
+    },
+  })),
 );
