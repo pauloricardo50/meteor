@@ -59,6 +59,8 @@ for i in 'admin' 'app' 'www'
     then
       echo "Copying sitemap to www"
       rsync ../core/other/sitemap.xml ../microservices/$i/public/sitemap.xml
+      echo "Copying robots.txt to www"
+      rsync ../core/other/robots.txt ../microservices/$i/public/robots.txt
     fi
 
     if [[ $DO_CLEAN == true ]];
