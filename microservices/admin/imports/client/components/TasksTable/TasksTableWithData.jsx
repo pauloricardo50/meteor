@@ -1,7 +1,7 @@
 import { Tracker } from 'meteor/tracker';
 
 import query from 'core/api/tasks/queries/tasks';
-import { Composer, withSmartQuery } from 'core/api';
+import { compose, withSmartQuery } from 'core/api';
 import withTableFilters from 'core/containers/withTableFilters';
 
 import TasksTable from './TasksTable';
@@ -12,7 +12,7 @@ export const withTasksQuery = withSmartQuery({
   queryOptions: { reactive: true },
 });
 
-export const TasksTableContainer = Composer.compose(
+export const TasksTableContainer = compose(
   withTasksQuery,
   withTableFilters,
 );

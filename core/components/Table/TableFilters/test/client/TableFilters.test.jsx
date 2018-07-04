@@ -98,23 +98,23 @@ describe('TableFilters', () => {
       },
     ];
 
+    const ageDropdownValues = [21, 15, 20, 29];
+    const firstNameDropdownValues = ['James', 'Sebastian'];
+
     const filters = {
       filters: {
         firstName: true,
         lastName: true,
         info: { weight: [70], age: [24, 20] },
       },
-      options: { age: [21, 15, 20, 29], firstName: ['James', 'Sebastian'] },
+      options: { age: ageDropdownValues, firstName: firstNameDropdownValues },
     };
 
     const props = { ...defaultProps, data, filters };
     const tableFilterComponents = component(props).find(TableFilter);
 
     const firstNameFilter = tableFilterComponents.at(0);
-    expect(firstNameFilter.prop('value')).to.deep.equal([
-      'James',
-      'Sebastian',
-    ]);
+    expect(firstNameFilter.prop('value')).to.deep.equal(firstNameDropdownValues);
 
     const lastNameFilter = tableFilterComponents.at(1);
     expect(lastNameFilter.prop('value')).to.equal(undefined);
@@ -123,7 +123,7 @@ describe('TableFilters', () => {
     expect(weightFilter.prop('value')).to.equal(undefined);
 
     const ageFilter = tableFilterComponents.at(3);
-    expect(ageFilter.prop('value')).to.deep.equal([21, 15, 20, 29]);
+    expect(ageFilter.prop('value')).to.deep.equal(ageDropdownValues);
   });
 
   it('renders only the filtered children', () => {

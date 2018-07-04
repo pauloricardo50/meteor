@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
 import isEqual from 'lodash/isEqual';
 
-import { Composer } from 'core/api';
+import { compose } from 'core/api';
 
 const withState = withStateHandlers(({ filters = {} }) => ({ filters }), {
   handleOptionsSelect: ({ filters }) => (filterPath, selectedOptions) => {
@@ -17,16 +17,12 @@ const withState = withStateHandlers(({ filters = {} }) => ({ filters }), {
     return { filters: { ...filters, filters: newFilters } };
   },
 
-  handleFiltersChange: () => filters => ({
-    filters,
-  }),
+  handleFiltersChange: () => filters => ({ filters }),
 
-  handleDataChange: () => data => ({
-    data,
-  }),
+  handleDataChange: () => data => ({ data }),
 });
 
-export default Composer.compose(
+export default compose(
   withState,
 
   lifecycle({

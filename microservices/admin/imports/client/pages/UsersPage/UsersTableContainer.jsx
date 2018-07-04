@@ -1,4 +1,4 @@
-import { Composer } from 'core/api';
+import { compose } from 'core/api';
 import adminUsersQuery from 'core/api/users/queries/adminUsers';
 import withTableFilters from 'core/containers/withTableFilters';
 import { withQuery } from 'core/api';
@@ -10,7 +10,7 @@ export const withUsersQuery = withQuery(
   },
 );
 
-export default Composer.compose(
+export default compose(
   withUsersQuery,
   withTableFilters,
 );
