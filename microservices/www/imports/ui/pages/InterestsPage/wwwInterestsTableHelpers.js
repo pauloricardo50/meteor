@@ -1,6 +1,8 @@
+import React from 'react';
+
 import T from 'core/components/Translation';
 import interestRates from 'core/components/InterestRatesTable/interestRates';
-import InterestsTableTrend from './InterestsTableTrend';
+import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 
 export const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
