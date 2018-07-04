@@ -1,15 +1,16 @@
-import query from 'core/api/users/queries/adminUsers';
-import { compose, createContainer } from 'core/api';
-import { withSmartQuery } from 'core/api/containerToolkit';
-
+import { compose, createContainer, withQuery } from 'core/api';
+import adminUsersQuery from 'core/api/users/queries/adminUsers';
+import withTableFilters from 'core/containers/withTableFilters';
 import { getColumnOptions, getRows } from './userTableHelpers';
 
+export const withUsersQuery = withQuery(
+  ({ assignedTo }) => adminUsersQuery.clone({ assignedTo }),
+  { reactive: true },
+);
+
 export default compose(
-  withSmartQuery({
-    query: ({ assignedTo }) => query.clone({ assignedTo }),
-    queryOptions: { reactive: true },
-    dataName: 'users',
-  }),
+  withUsersQuery,
+  withTableFilters,
   createContainer(({ users, history, showAssignee }) => ({
     options: {
       getColumnOptions: getColumnOptions({ showAssignee }),
