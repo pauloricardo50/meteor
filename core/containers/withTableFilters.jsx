@@ -1,5 +1,4 @@
 import React from 'react';
-import { branch } from 'recompose';
 
 import TableFilters from '../components/Table/TableFilters';
 
@@ -8,13 +7,11 @@ import TableFilters from '../components/Table/TableFilters';
  * be wrapped inside the filters and be bassed the filtered data
  */
 
-const withTableFilters = branch(
-  ({ tableFilters }) => !!tableFilters,
-  WrappedComponent => props => (
-    <TableFilters filters={props.tableFilters} data={props.data}>
-      {filteredData => <WrappedComponent {...props} data={filteredData} />}
-    </TableFilters>
-  ),
+export const makeTableFiltersContainer = generateFiltersFromProps => WrappedComponent => props => (
+  <TableFilters filters={generateFiltersFromProps(props)} data={props.data}>
+    {filteredData => <WrappedComponent {...props} data={filteredData} />}
+  </TableFilters>
 );
 
-export default withTableFilters;
+const passTableFiltersProp = ({ tableFilters }) => tableFilters;
+export default makeTableFiltersContainer(passTableFiltersProp);

@@ -1,18 +1,22 @@
 import React from 'react';
 import { withProps } from 'recompose';
-import uniqBy from 'lodash/uniqBy';
+import uniq from 'lodash/uniq';
 import get from 'lodash/get';
+import Select from 'react-select';
 
 import T from '../../Translation';
 import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
 
 export const getFilterKeyFromPath = filterPath => filterPath.join('.');
 
-// Translate the label when it should be translated
-const getTranslationOfValueForPath = (value, filterPath) => {
-  const filterKey = getFilterKeyFromPath(filterPath);
+const isUndefinedValue = value => typeof value === 'undefined';
 
-  const translationId = filterKey === 'type' && `TasksStatusDropdown.${value}`;
+// Translate the label when it should be translated
+const getTranslationOfValueForPath = (value, filterKey) => {
+  const translationId =
+    (['type', 'status'].includes(filterKey) &&
+      `TasksStatusDropdown.${value}`) ||
+    (filterKey === 'roles' && `roles.${value}`);
 
   if (!translationId) {
     return null;
@@ -22,11 +26,13 @@ const getTranslationOfValueForPath = (value, filterPath) => {
 };
 
 const getSelectOptionLabel = (value, filterPath) => {
-  if (!value) {
-    return <T id="TableFilters.none" />;
+  const filterKey = getFilterKeyFromPath(filterPath);
+
+  if (isUndefinedValue(value)) {
+    return <T id={`TableFilters.noneLabels.${filterKey}`} />;
   }
 
-  return getTranslationOfValueForPath(value, filterPath) || value;
+  return getTranslationOfValueForPath(value, filterKey) || `${value}`;
 };
 
 const getSelectOption = (value, filterPath) => ({
@@ -39,18 +45,47 @@ const getSelectOptions = (filterValue, filterPath) =>
     ? []
     : filterValue.map(value => getSelectOption(value, filterPath)));
 
-const createSelectOptionsForColumn = (filterPath, data) => {
-  const options = data.map((item) => {
-    const itemValue = get(item, filterPath);
-    return getSelectOption(itemValue, filterPath);
-  });
+const undefinedValuesExist = values => values.some(isUndefinedValue);
 
-  return uniqBy(options, ({ value }) => value);
+const removeUndefinedValues = values =>
+  values.filter(value => !isUndefinedValue(value));
+
+const isAsyncSelect = value => value && value.constructor === Promise;
+
+const createSelectOptionsForColumn = (filterPath, value) => {
+  if (isAsyncSelect(value)) {
+    return undefined;
+  }
+
+  let uniqueOptionValues = uniq(value);
+
+  // in case undefined values are passed,
+  // remove them and only put an undefined value at the end
+  // so that a 'None' label will be put at the end
+  if (undefinedValuesExist(uniqueOptionValues)) {
+    uniqueOptionValues = [
+      ...removeUndefinedValues(uniqueOptionValues),
+      undefined,
+    ];
+  }
+
+  return uniqueOptionValues.map(optionValue =>
+    getSelectOption(optionValue, filterPath));
 };
 
-export default withProps(({ onChange, data, filter: { path: filterPath, value: filterValue } }) => ({
+const makeAsyncOptionsLoader = (filterPath, promisedValue) => () =>
+  promisedValue.then(value => ({
+    options: createSelectOptionsForColumn(filterPath, value),
+    complete: true,
+  }));
+
+export default withProps(({ onChange, filter: { path: filterPath, value: filterValue }, value }) => ({
   filterKey: getFilterKeyFromPath(filterPath),
   value: getSelectOptions(filterValue, filterPath),
-  options: createSelectOptionsForColumn(filterPath, data),
+  options: createSelectOptionsForColumn(filterPath, value),
+  loadOptions: isAsyncSelect(value)
+    ? makeAsyncOptionsLoader(filterPath, value)
+    : undefined,
   onChange,
+  SelectComponent: isAsyncSelect(value) ? Select.Async : Select,
 }));

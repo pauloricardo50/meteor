@@ -5,7 +5,7 @@ import T from 'core/components/Translation/';
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 import CreateUserDialogForm from './CreateUserDialogForm';
 
-const AdminDashboardPage = ({ history }) => (
+const AdminDashboardPage = ({ currentUser }) => (
   <section className="mask1 admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
@@ -18,7 +18,12 @@ const AdminDashboardPage = ({ history }) => (
       showAssignee
       dashboardTasks
       assignedTo={Meteor.userId()}
-      tableFilters={{ assignedEmployee: { emails: [{ address: true }] } }}
+      tableFilters={{
+        filters: { assignedEmployee: { emails: [{ address: true }] } },
+        options: {
+          address: [currentUser.emails[0].address, undefined],
+        },
+      }}
     />
   </section>
 );

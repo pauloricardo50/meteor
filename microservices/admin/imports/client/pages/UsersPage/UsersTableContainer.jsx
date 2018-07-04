@@ -1,9 +1,16 @@
-import query from 'core/api/users/queries/adminUsers';
+import { compose } from 'core/api';
+import adminUsersQuery from 'core/api/users/queries/adminUsers';
+import withTableFilters from 'core/containers/withTableFilters';
 import { withQuery } from 'core/api';
 
-export default withQuery(
-  props => query.clone({ assignedTo: props.assignedTo }),
+export const withUsersQuery = withQuery(
+  props => adminUsersQuery.clone({ assignedTo: props.assignedTo }),
   {
     reactive: true,
   },
+);
+
+export default compose(
+  withUsersQuery,
+  withTableFilters,
 );
