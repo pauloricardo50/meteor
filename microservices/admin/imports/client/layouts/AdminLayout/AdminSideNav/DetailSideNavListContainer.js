@@ -40,33 +40,48 @@ const setTotalCount = (props) => {
 
 const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
 
-export default compose(
-  withState('totalCount', 'updateTotalCount', 0),
-  lifecycle({
-    componentDidMount() {
-      setTotalCount(this.props);
-    },
-    componentDidUpdate({ collectionName: prevCollectionName, filters: prevFilters }) {
-      const { collectionName, filters } = this.props;
-      const shouldSetTotalCount =
-        collectionName !== prevCollectionName || prevFilters !== filters;
+export const withTotalCountState = withState(
+  'totalCount',
+  'updateTotalCount',
+  0,
+);
 
-      if (shouldSetTotalCount) {
-        setTotalCount(this.props);
-      }
-    },
-  }),
-  withQuery(
-    ({ collectionName, showMoreCount }) =>
-      getQuery({ collectionName }).clone({
-        limit: getQueryLimit(showMoreCount),
-        skip: 0,
-      }),
-    { reactive: true },
-  ),
-  withProps(({ showMoreCount, totalCount }) => ({
-    isEnd: getQueryLimit(showMoreCount) >= totalCount,
-  })),
+export const withSetTotalCountLifecycle = lifecycle({
+  componentDidMount() {
+    setTotalCount(this.props);
+  },
+  componentDidUpdate({
+    collectionName: prevCollectionName,
+    filters: prevFilters,
+  }) {
+    const { collectionName, filters } = this.props;
+    const shouldSetTotalCount =
+      collectionName !== prevCollectionName || prevFilters !== filters;
+
+    if (shouldSetTotalCount) {
+      setTotalCount(this.props);
+    }
+  },
+});
+
+export const withSideNavQuery = withQuery(
+  ({ collectionName, showMoreCount }) =>
+    getQuery({ collectionName }).clone({
+      limit: getQueryLimit(showMoreCount),
+      skip: 0,
+    }),
+  { reactive: true },
+);
+
+export const withIsEndProp = withProps(({ showMoreCount, totalCount }) => ({
+  isEnd: getQueryLimit(showMoreCount) >= totalCount,
+}));
+
+export default compose(
+  withTotalCountState,
+  withSetTotalCountLifecycle,
+  withSideNavQuery,
+  withIsEndProp,
   withDataFilterAndSort,
   withRouter,
 );
