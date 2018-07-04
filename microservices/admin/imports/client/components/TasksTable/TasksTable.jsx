@@ -8,7 +8,7 @@ import Table from 'core/components/Table';
 import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
-import { getUserFullName } from 'core/utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
 import { TASK_TYPE } from 'core/api/tasks/taskConstants';
@@ -70,7 +70,7 @@ class TasksTable extends Component {
       return {
         link: `/users/${_id}`,
         icon: 'contactMail',
-        text: getUserFullName({ firstName, lastName }) || username || emails[0].address,
+        text: getUserDisplayName({ firstName, lastName, username, emails }),
         translationId: 'user',
       };
     }
@@ -145,7 +145,7 @@ class TasksTable extends Component {
       if (assignedEmployee) {
         const { _id, emails, username, firstName, lastName } = assignedEmployee;
         const cellText =
-          getUserFullName({ firstName, lastName }) || username || emails[0].address;
+          getUserDisplayName({ firstName, lastName, username, emails });
         columns.push({
           label: <Link to={`/users/${_id}`}>{cellText}</Link>,
           raw: cellText,

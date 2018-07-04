@@ -1,18 +1,18 @@
 import query from 'core/api/users/queries/admins';
 import { compose, createContainer, withQuery } from 'core/api';
-import { getUserFullName } from 'core/utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
   const oldAdmin = relatedDoc.assignedEmployee
     ? relatedDoc.assignedEmployee._id
     : undefined;
   const options = admins.map((admin) => {
-    const { _id, firstName, lastName, emails } = admin;
+    const { _id, firstName, lastName, emails, username } = admin;
 
     return {
       id: _id,
       show: _id !== oldAdmin,
-      label: getUserFullName({ firstName, lastName }) || emails[0].address,
+      label: getUserDisplayName({ firstName, lastName, username, emails }),
       link: false,
       onClick: () =>
         onAdminSelectHandler({

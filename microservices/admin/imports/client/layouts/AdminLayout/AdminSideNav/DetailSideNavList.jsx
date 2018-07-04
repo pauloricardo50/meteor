@@ -12,25 +12,28 @@ import {
   BORROWERS_COLLECTION,
 } from 'core/api/constants';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
-import { getUserFullName } from 'core/utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { emails, roles, _id, name, firstName, lastName },
+  { emails, roles, _id, name, firstName, lastName, username },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {
-      primary: getUserFullName({ firstName, lastName }) || emails[0].address,
+      primary: getUserDisplayName({ firstName, lastName, username, emails }),
       secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION:
     return { primary: _id, secondary: name };
   case BORROWERS_COLLECTION:
-    return { primary: getBorrowerFullName({ firstName, lastName }), secondary: '' };
+    return {
+      primary: getBorrowerFullName({ firstName, lastName }),
+      secondary: '',
+    };
   default:
     throw new Error('invalid collection name');
   }

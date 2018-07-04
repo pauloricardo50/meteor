@@ -11,5 +11,6 @@ export default Users.createQuery(USER_QUERIES.SIDENAV_USERS, {
   emails: 1,
   firstName: 1,
   lastName: 1,
+  username: 1,
   roles: 1,
 });

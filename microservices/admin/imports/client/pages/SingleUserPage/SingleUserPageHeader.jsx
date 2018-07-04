@@ -6,7 +6,7 @@ import moment from 'moment';
 import T from 'core/components/Translation';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import { getUserFullName } from 'core/utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 import RolePicker from '../../components/RolePicker';
 import EditUserFormDialog from './EditUserDialogForm';
 
@@ -18,6 +18,7 @@ const SingleUserPageHeader = ({ user }) => {
     emails,
     firstName,
     lastName,
+    username,
     roles,
   } = user;
 
@@ -25,7 +26,7 @@ const SingleUserPageHeader = ({ user }) => {
     <div className="single-user-page-header">
       <div className="top">
         <h1>
-          {getUserFullName({ firstName, lastName }) || emails[0].address}
+          {getUserDisplayName({ firstName, lastName, username, emails })}
           <small className="secondary">
             &nbsp;-&nbsp;<Roles roles={roles} />
           </small>
@@ -45,10 +46,12 @@ const SingleUserPageHeader = ({ user }) => {
           <p>
             &nbsp; - &nbsp;
             <T id="UsersTable.assignedTo" />{' '}
-            {getUserFullName({
+            {getUserDisplayName({
               firstName: assignedEmployee.firstName,
               lastName: assignedEmployee.lastName,
-            }) || assignedEmployee.emails[0].address}
+              username: assignedEmployee.username,
+              emails: assignedEmployee.emails,
+            })}
           </p>
         )}
       </div>
