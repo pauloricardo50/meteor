@@ -7,7 +7,6 @@ import T from 'core/components/Translation';
 import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import AdminNote from '../../../../components/AdminNote';
-import StepStatus from './StepStatus';
 import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 
