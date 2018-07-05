@@ -78,6 +78,7 @@ const config = {
     'Form',
     'TooltipSynonyms',
     'SearchResults',
+    'InterestsTable'
   ],
 };
 
