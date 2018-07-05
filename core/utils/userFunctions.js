@@ -1,4 +1,8 @@
+import React from 'react';
 import { _ } from 'meteor/underscore';
+
+import T from 'core/components/Translation';
+
 import { ROLES } from '../api/users/userConstants';
 
 export const isUser = (user) => {
@@ -14,3 +18,9 @@ export const isUser = (user) => {
   const userHasRoles = userRoles && userRoles.length > 0;
   return userHasRoles && _.intersection(userRoles, [ADMIN, DEV]).length === 0;
 };
+
+export const getUserDisplayName = ({ firstName, lastName, username, emails }) =>
+  [firstName, lastName].filter(name => name).join(' ') ||
+  username ||
+  (emails && emails[0] && emails[0].address) ||
+  '';
