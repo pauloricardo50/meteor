@@ -2,17 +2,10 @@ import { compose, withStateHandlers, withProps } from 'recompose';
 import isEqual from 'lodash/isEqual';
 
 const withToggleState = withStateHandlers(
+  { anchorEl: null },
   {
-    anchorEl: null,
-  },
-  {
-    handleClick: () => event => ({
-      anchorEl: event.target,
-    }),
-
-    handleClose: () => () => ({
-      anchorEl: null,
-    }),
+    handleClick: () => event => ({ anchorEl: event.target }),
+    handleClose: () => () => ({ anchorEl: null }),
   },
 );
 
@@ -26,7 +19,7 @@ export default compose(
   withProps(({ options, selected, onChange }) => ({
     optionsIncludeOption,
 
-    handleChange: option => {
+    handleChange: (option) => {
       const newOptions = optionsIncludeOption(selected, option)
         ? removeOptionFromOptions(option, selected)
         : [...selected, option];

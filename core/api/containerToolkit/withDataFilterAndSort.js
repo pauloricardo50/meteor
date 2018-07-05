@@ -7,11 +7,11 @@ export const makeDataFilterAndSort = ({
   filterOptionsName = 'filterOptions',
   sortOptionName = 'sortOption',
 }) =>
-  withProps((props) => {
-    const filterOptions = props[filterOptionsName] || {};
-    const sortOption = props[sortOptionName] || {};
-    const data = props[dataName] || [];
-
+  withProps(({
+    [filterOptionsName]: filterOptions = {},
+    [sortOptionName]: sortOption = {},
+    [dataName]: data = [],
+  }) => {
     const filteredData = sift(filterOptions, data);
     const sortedData = sortArray(
       filteredData,
