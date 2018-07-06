@@ -1,9 +1,13 @@
+// NOTE: A great way to refactor this would be to use only async options
+// by Promistifying the `value` and thus be able to use only
+// `loadOptions` prop & Select.Async and remove `options` and Select component
+// However, many tests are based on the `options` prop, so they should be refactored
 import React from 'react';
 import { withProps } from 'recompose';
 import uniq from 'lodash/uniq';
-import get from 'lodash/get';
 import Select from 'react-select';
 
+import formatMessage from '../../../utils/intl';
 import T from '../../Translation';
 import { isEmptyFilterValue } from '../../../utils/filterArrayOfObjects';
 
@@ -11,8 +15,15 @@ export const getFilterKeyFromPath = filterPath => filterPath.join('.');
 
 const isUndefinedValue = value => typeof value === 'undefined';
 
-// Translate the label when it should be translated
-const getTranslationOfValueForPath = (value, filterKey) => {
+const convertValueToString = value => `${value}`;
+
+const getValueTranslationIdForPath = (value, filterPath) => {
+  const filterKey = getFilterKeyFromPath(filterPath);
+
+  if (isUndefinedValue(value)) {
+    return `TableFilters.noneLabels.${filterKey}`;
+  }
+
   const translationId =
     (['type', 'status'].includes(filterKey) &&
       `TasksStatusDropdown.${value}`) ||
@@ -22,22 +33,22 @@ const getTranslationOfValueForPath = (value, filterKey) => {
     return null;
   }
 
-  return <T id={translationId} />;
+  return translationId;
 };
 
-const getSelectOptionLabel = (value, filterPath) => {
-  const filterKey = getFilterKeyFromPath(filterPath);
+const getOptionLabelTranslation = (value, filterPath) => {
+  const translationId = getValueTranslationIdForPath(value, filterPath);
+  return translationId ? <T id={translationId} /> : convertValueToString(value);
+};
 
-  if (isUndefinedValue(value)) {
-    return <T id={`TableFilters.noneLabels.${filterKey}`} />;
-  }
-
-  return getTranslationOfValueForPath(value, filterKey) || `${value}`;
+export const getOptionValueTranslation = (value, filterPath) => {
+  const translationId = getValueTranslationIdForPath(value, filterPath);
+  return translationId ? formatMessage(translationId) : value;
 };
 
 const getSelectOption = (value, filterPath) => ({
-  label: getSelectOptionLabel(value, filterPath),
-  value,
+  label: getOptionLabelTranslation(value, filterPath),
+  value: getOptionValueTranslation(value, filterPath),
 });
 
 const getSelectOptions = (filterValue, filterPath) =>
@@ -50,10 +61,10 @@ const undefinedValuesExist = values => values.some(isUndefinedValue);
 const removeUndefinedValues = values =>
   values.filter(value => !isUndefinedValue(value));
 
-const isAsyncSelect = value => value && value.constructor === Promise;
+const isPromise = value => value && value.constructor === Promise;
 
-const createSelectOptionsForColumn = (filterPath, value) => {
-  if (isAsyncSelect(value)) {
+const createSelectOptionsForColumn = (value, filterPath) => {
+  if (isPromise(value)) {
     return undefined;
   }
 
@@ -73,19 +84,45 @@ const createSelectOptionsForColumn = (filterPath, value) => {
     getSelectOption(optionValue, filterPath));
 };
 
-const makeAsyncOptionsLoader = (filterPath, promisedValue) => () =>
+const makeAsyncOptionsLoader = (promisedValue, filterPath) => () =>
   promisedValue.then(value => ({
-    options: createSelectOptionsForColumn(filterPath, value),
+    options: createSelectOptionsForColumn(value, filterPath),
     complete: true,
   }));
 
-export default withProps(({ onChange, filter: { path: filterPath, value: filterValue }, value }) => ({
-  filterKey: getFilterKeyFromPath(filterPath),
-  value: getSelectOptions(filterValue, filterPath),
-  options: createSelectOptionsForColumn(filterPath, value),
-  loadOptions: isAsyncSelect(value)
-    ? makeAsyncOptionsLoader(filterPath, value)
-    : undefined,
-  onChange,
-  SelectComponent: isAsyncSelect(value) ? Select.Async : Select,
-}));
+// Returns the untranslated values of the given options.
+// The options are an array of label/value pair objects,
+// and their value is translated, so we find their untranslated version.
+const getUntranslatedOptionsValues = (
+  options,
+  allUntranslatedValues,
+  filterPath,
+) =>
+  Promise.resolve(allUntranslatedValues).then((untranslatedValues) => {
+    const untranslatedOptionValues = options.map(({ value: translatedValue }) =>
+      untranslatedValues.find(value =>
+        translatedValue === getOptionValueTranslation(value, filterPath)));
+
+    return untranslatedOptionValues;
+  });
+
+export default withProps((props) => {
+  const {
+    onChange,
+    filter: { path: filterPath, value: filterValue },
+    value,
+  } = props;
+
+  return {
+    filterKey: getFilterKeyFromPath(filterPath),
+    value: getSelectOptions(filterValue, filterPath),
+    options: createSelectOptionsForColumn(value, filterPath),
+    loadOptions: isPromise(value)
+      ? makeAsyncOptionsLoader(value, filterPath)
+      : undefined,
+    SelectComponent: isPromise(value) ? Select.Async : Select,
+    onChange: (selectedOptions) => {
+      getUntranslatedOptionsValues(selectedOptions, value, filterPath).then(onChange);
+    },
+  };
+});

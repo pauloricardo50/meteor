@@ -6,6 +6,8 @@ import { shallow } from 'enzyme';
 import { getMountedComponent } from '../../../../../utils/testHelpers';
 import T from '../../../../Translation';
 import TableFilter from '../../TableFilter';
+import messagesFR from '../../../../../lang/fr.json';
+import { TASK_STATUS } from '../../../../../api/tasks/taskConstants';
 
 let defaultProps;
 
@@ -16,7 +18,7 @@ const component = props =>
     withRouter: false,
   });
 
-describe('TableFilter', () => {
+describe.only('TableFilter', () => {
   beforeEach(() => {
     getMountedComponent.reset();
 
@@ -54,6 +56,13 @@ describe('TableFilter', () => {
       { label: 'black', value: 'black' },
       { label: 'yellow', value: 'yellow' },
     ];
+    console.log(
+      '>>',
+      component(defaultProps)
+        .find(Select)
+        .first()
+        .prop('options'),
+    );
     expect(component(defaultProps)
       .find(Select)
       .first()
@@ -93,8 +102,8 @@ describe('TableFilter', () => {
       .prop('options')).to.deep.equal(expectedOptions);
   });
 
-  it(`when there are undefined values, keep only an undefined option at the end
-      when passing options to 'Select' component`, () => {
+  it(`keep only an option with undefined value at the end
+      when there are undefined option values passed to Select`, () => {
     const filter = { path: ['name'], value: true };
     const optionValues = ['Name 1', undefined, undefined, 'Name 4'];
 
@@ -111,7 +120,9 @@ describe('TableFilter', () => {
     expect(renderedOptions.length).to.equal(3);
     expect(renderedOptions[0]).to.deep.equal(expectedOptions[0]);
     expect(renderedOptions[1]).to.deep.equal(expectedOptions[1]);
-    expect(renderedOptions[2].value).to.equal(undefined);
+
+    const undefinedValueTranslation = 'TableFilters.noneLabels.name';
+    expect(renderedOptions[2].value).to.equal(undefinedValueTranslation);
   });
 
   it(`adds a specific 'None' label when there are undefined values
@@ -128,7 +139,6 @@ describe('TableFilter', () => {
     const noneLabelWrapper = shallow(optionsProp[2].label);
 
     expect(noneLabelWrapper.prop('id')).to.equal('TableFilters.noneLabels.name');
-    expect(optionsProp[2].value).to.equal(undefined);
   });
 
   it('renders the `Select` component with the correct `value` prop', () => {
@@ -158,18 +168,6 @@ describe('TableFilter', () => {
       .find(Select)
       .first()
       .prop('value')).to.deep.equal([]);
-  });
-
-  it(`renders the 'Select' component
-      with the 'onChange' prop passed from above`, () => {
-    const filter = { path: ['name'], value: [] };
-    const data = [];
-    const onChange = () => {};
-
-    expect(component({ data, filter, onChange })
-      .find(Select)
-      .first()
-      .prop('onChange')).to.equal(onChange);
   });
 
   it('renders the translation for the filter', () => {
@@ -225,5 +223,33 @@ describe('TableFilter', () => {
       expect(result).to.deep.equal(expectedAsyncOptions);
       done();
     });
+  });
+
+  it(`translates undefined option values to a specific translation
+      based on the filter path`, () => {
+      const filter = { path: ['prefs', 'language'], value: true };
+
+      const renderedOptions = component({ filter, value: [undefined] })
+        .find(Select)
+        .first()
+        .prop('options');
+
+      expect(renderedOptions[0].value).to.equal('TableFilters.noneLabels.prefs.language');
+    });
+
+  it('translates option values when it was decided for a specific filter path', () => {
+    const filter = { path: ['status'], value: true };
+
+    const renderedOptions = component({
+      filter,
+      value: [TASK_STATUS.COMPLETED],
+    })
+      .find(Select)
+      .first()
+      .prop('options');
+
+    const translation =
+      messagesFR[`TasksStatusDropdown.${TASK_STATUS.COMPLETED}`];
+    expect(renderedOptions[0].value).to.equal(translation);
   });
 });
