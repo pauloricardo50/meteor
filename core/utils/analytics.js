@@ -8,32 +8,12 @@ import { storageAvailable } from './browserFunctions';
  * @return {Boolean}
  */
 export const allowTracking = () => {
-  if (Meteor.isTest) {
+  if (Meteor.isTest || Meteor.isAppTest) {
     return false;
   }
 
   return true;
 };
-
-export const addUserTracking = (userId, metadata) => {
-  if (!userId) {
-    throw new Error('no tracking identification userId provided');
-  }
-  if (allowTracking()) {
-    analytics.identify(userId, metadata);
-  }
-};
-
-const track = (eventName, metadata) => {
-  if (!eventName) {
-    throw new Error('no tracking eventName provided');
-  }
-  if (allowTracking()) {
-    analytics.track(eventName, metadata);
-  }
-};
-
-export default track;
 
 export const trackOncePerSession = (eventName, metadata) => {
   const localId = `epotek-tracking.${eventName}`;
@@ -51,3 +31,14 @@ export const trackOncePerSession = (eventName, metadata) => {
     }
   }
 };
+
+const track = (eventName, metadata) => {
+  if (!eventName) {
+    throw new Error('no tracking eventName provided');
+  }
+  if (allowTracking()) {
+    analytics.track(eventName, metadata);
+  }
+};
+
+export default track;
