@@ -18,7 +18,7 @@ const component = props =>
     withRouter: false,
   });
 
-describe.only('TableFilter', () => {
+describe('TableFilter', () => {
   beforeEach(() => {
     getMountedComponent.reset();
 
