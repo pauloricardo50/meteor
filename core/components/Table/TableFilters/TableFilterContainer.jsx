@@ -95,17 +95,14 @@ const makeAsyncOptionsLoader = (promisedValue, filterPath) => () =>
 const getUntranslatedValue = (translation, filterOptions, filterPath) =>
   filterOptions.find(value => translation === getOptionValueTranslation(value, filterPath));
 
-// Returns the untranslated values of the given options.
-// The options are an array of label/value pair objects,
-// and their value is translated, so we find their untranslated version.
-const getUntranslatedValues = (
-  filterDropdownOptions,
-  filterOptions,
-  filterPath,
-) =>
+// Returns the untranslated values of the given dropdown options.
+// The dropdown options are an array of label/value pair objects,
+// and their value is translated, so we find & return
+//  their untranslated corresponding values
+const getUntranslatedValues = (dropdownOptions, filterOptions, filterPath) =>
   // promisify `filterOptions` because it can be either an array of a Promise
   Promise.resolve(filterOptions).then(resolvedFilterOptions =>
-    filterDropdownOptions.map(({ value: translation }) =>
+    dropdownOptions.map(({ value: translation }) =>
       getUntranslatedValue(translation, resolvedFilterOptions, filterPath)));
 
 export default withProps((props) => {
