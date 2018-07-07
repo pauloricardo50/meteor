@@ -16,6 +16,7 @@ const component = (props, withAnalyticsContainer) => {
 
 describe('withAnalytics', () => {
   beforeEach(() => {
+    // I think it would be much better to use a Analytics class / function class of which methods we can stub
     Meteor.isTest = false;
   });
 
