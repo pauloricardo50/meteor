@@ -11,10 +11,10 @@ export const withUsersQuery = withQuery(
 export default compose(
   withUsersQuery,
   withTableFilters,
-  createContainer(({ users, history, showAssignee }) => ({
+  createContainer(({ data, history, showAssignee }) => ({
     options: {
       getColumnOptions: getColumnOptions({ showAssignee }),
-      getRows: getRows({ users, history, showAssignee }),
+      getRows: getRows({ data, history, showAssignee }),
     },
   })),
 );

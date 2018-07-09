@@ -80,7 +80,7 @@ const getColumns = ({ showAssignee, index, user }) => {
   return columns;
 };
 
-export const getRows = ({ users, history, showAssignee }) => {
+export const getRows = ({ data: users, history, showAssignee }) => {
   if (users && users.length) {
     return users.map((user, index) => ({
       id: user._id,
