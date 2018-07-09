@@ -1,51 +1,80 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
+import React from 'react';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { shallow } from '../../../utils/testHelpers/enzyme';
 
 import withAnalytics from '../../withAnalytics';
+import analytics from '../../../api/analytics/client/analytics';
 
-const component = (props, withAnalyticsContainer) => {
+const trackedComponent = (trackerHoc, props) => {
   const WrappedComponent = () => null;
-  const Component = withAnalyticsContainer(WrappedComponent);
-
+  const Component = trackerHoc(WrappedComponent);
   return shallow(<Component {...props} />);
 };
 
-describe('withAnalytics', () => {
+describe.only('withAnalytics', () => {
   beforeEach(() => {
-    // I think it would be much better to use a Analytics class / function class of which methods we can stub
-    Meteor.isTest = false;
+    sinon.stub(analytics, 'track');
   });
 
   afterEach(() => {
-    Meteor.isTest = true;
+    analytics.track.restore();
   });
 
-  it('tracks a function prop', () => {
-    const track = sinon.spy();
-    const hoc = withAnalytics({ func: 'onClick', track });
+  describe('Callback Tracker', () => {
+    it('calls `analytics.track` with the event name and metadata', () => {
+      const trackerHoc = withAnalytics({
+        func: 'onChange',
+        track: submittedText => ({
+          eventName: 'Submitted Text',
+          metadata: { text: submittedText },
+        }),
+      });
 
-    const wrapper = component({ onClick: () => {} }, hoc);
-    wrapper.prop('onClick')();
+      const originalOnChange = sinon.spy();
+      const component = trackedComponent(trackerHoc, {
+        onChange: originalOnChange,
+      });
+      component.prop('onChange')('my name is John');
 
-    expect(track.called).to.equal(true);
+      expect(analytics.track.lastCall.args).to.deep.equal([
+        'Submitted Text',
+        { text: 'my name is John' },
+      ]);
+
+      expect(originalOnChange.lastCall.args).to.deep.equal(['my name is John']);
+    });
+
+    it('calls the original function with all arguments the event name only');
+
+    it('returns the return value of the original function');
+
+    it('tracks the event name only');
   });
 
-  it('intercepts the params of the tracked function');
+  describe('Lifecycle Tracker', () => {
+    it('tracks a lifecycle method by event name and metadata', () => {
+      const trackerHoc = withAnalytics({
+        lifecycleMethod: 'componentWillUnmount',
+        track: ({ email }) => ({
+          eventName: 'Closed User Preferences',
+          metadata: { email },
+        }),
+      });
 
-  it('tracks the event name');
+      const component = trackedComponent(trackerHoc, {
+        user: { email: 'user@test.com' },
+      });
+      component.unmount();
 
-  it('tracks the event metadata');
+      expect(analytics.track.lastCall.args).to.deep.equal([
+        'Closed User Preferences',
+        { email: 'user@test.com' },
+      ]);
+    });
 
-  it('tracks a lifecycle method', () => {
-    const track = sinon.spy();
-    const hoc = withAnalytics({ lifecycleMethod: 'componentDidMount', track });
-
-    component({}, hoc);
-
-    expect(track.called).to.equal(true);
+    it('does not crash the original component');
   });
 });

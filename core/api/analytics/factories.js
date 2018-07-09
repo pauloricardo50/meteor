@@ -1,7 +1,11 @@
 // Here we have all the factory methods. They help on creating different
 // familties of analytics modules (client and server)
 import { Meteor } from 'meteor/meteor';
-import { storageAvailable } from './browserFunctions';
+import { storageAvailable } from '../../utils/browserFunctions';
+
+// having this as a function enables us to test the `allowTracking`
+// param of `makeClientAnalytics`
+const isTestMode = () => Meteor.isTest || Meteor.isAppTest;
 
 const trackOncePerSession = (eventName, metadata) => {
   const localId = `epotek-tracking.${eventName}`;
@@ -20,35 +24,11 @@ const trackOncePerSession = (eventName, metadata) => {
   }
 };
 
-/** This allows us to create a custom method but with an enforced behaviour
- *  Prevents repeating the enforcement code (such as `validateArgs`
- *  or allowTracking) when creating another factory, such as one for
- *  server side analytics.
- */
-const makeTrackFunction = analyticsModule => analyticsCallee => (...args) => ({
-  validateArgs = () => {},
-  transformArgs = (...argsToTransform) => [argsToTransform],
-  allowTracking,
-}) => {
-  validateArgs(args);
-
-  if (allowTracking) {
-    const calleeArgs = transformArgs(args);
-    return analyticsModule[analyticsCallee](...calleeArgs);
+const validateParam = (eventName, paramName) => {
+  if (!eventName) {
+    throw new Error(`the tracking ${paramName} was not provided`);
   }
 };
-
-// This is an example of creating a repeating function in multiple factories,
-// without actually repeating the code for its creation
-const makeIdentify = (analyticsModule, allowTracking) =>
-  makeTrackFunction(analyticsModule)('identify')('userId')({
-    validateArgs: (userId) => {
-      if (!userId) {
-        throw new Error('no userId provided for identifing the user');
-      }
-    },
-    allowTracking,
-  });
 
 /**
  * This is a factory of analytics modules
@@ -61,39 +41,38 @@ const makeIdentify = (analyticsModule, allowTracking) =>
  * @returns an analytics module
  */
 export const makeClientAnalytics = (
-  analyticsModule,
-  allowTracking = Meteor.isTest || Meteor.isAppTest,
+  okgrowAnalytics,
+  allowTracking = !isTestMode(),
 ) => ({
-  identify: makeIdentify(analyticsModule, allowTracking),
+  track: (eventName, metadata) => {
+    validateParam(eventName, 'eventName');
 
-  track: makeTrackFunction(analyticsModule)('track')('eventName', 'metadata')({
-    validateArgs: (eventName) => {
-      if (!eventName) {
-        throw new Error('no tracking eventName provided');
-      }
-    },
-    allowTracking,
-  }),
+    if (!allowTracking) {
+      return null;
+    }
+
+    okgrowAnalytics.track(eventName, metadata);
+  },
 });
 
 export const makeServerAnalytics = (
-  analyticsModule,
-  allowTracking = Meteor.isTest || Meteor.isAppTest,
+  analyticsNode,
+  allowTracking = !isTestMode(),
 ) => ({
-  identify: makeIdentify(analyticsModule, allowTracking),
+  identify: (traits) => {
+    validateParam(Meteor.userId(), 'Meteor.userId()');
 
-  track: makeTrackFunction(analyticsModule)('track')(
-    'userId',
-    'eventName',
-    'properties',
-  )({
-    validateArgs: (userId, eventName) => {
-      [userId, eventName].forEach((argument) => {
-        if (!argument) {
-          throw new Error(`no tracking ${argument} provided`);
-        }
-      });
-    },
-    allowTracking,
-  }),
+    if (allowTracking) {
+      analyticsNode.identify(Meteor.userId(), traits);
+    }
+  },
+
+  track: (eventName, metadata) => {
+    validateParam(Meteor.userId(), 'Meteor.userId()');
+    validateParam(eventName, 'eventName');
+
+    if (allowTracking) {
+      analyticsNode.track(Meteor.userId(), eventName, metadata);
+    }
+  },
 });
