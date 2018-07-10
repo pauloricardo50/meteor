@@ -16,10 +16,15 @@ class LoanServiceModel {
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
-    return this.insert({
+    const newLoanId = this.insert({
       loan: { propertyId, borrowerIds: [borrowerId] },
       userId,
     });
+    
+    // The first borrower for this loan, we can take the names from the user
+    BorrowerService.updateBorrowerNamesFromUser({ borrowerId, userId });
+
+    return newLoanId;
   };
 
   // TODO: make sure step is really done

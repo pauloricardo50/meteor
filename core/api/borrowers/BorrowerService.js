@@ -19,10 +19,10 @@ class BorrowerService {
     const newBorrowerLoans = LoanService.getLoansByBorrower({
       borrowerId: newBorrowerId,
     });
-    // first borrower on a lon should take the user's names:
+    // first borrower on a loan should take the user's names:
     // check if the new borrower is the first/ only borrower for any loans
     // and, if it is, update it's names from the corresponding user
-    newBorrowerLoans.foreach(({ borrowerIds }) =>
+    newBorrowerLoans.forEach(({ borrowerIds }) =>
       borrowerIds.length === 1 &&
         this.updateBorrowerNamesFromUser({ borrowerId: newBorrowerId, userId }));
 
