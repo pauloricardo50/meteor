@@ -6,9 +6,17 @@ import { analytics as okgrowAnalyticsModule } from 'meteor/okgrow:analytics';
 
 import { makeClientAnalytics } from '../../factories';
 import analytics from '../analytics';
+import EVENTS, { addEvent } from '../../events';
 
 let okgrowAnalytics;
 let clientAnalytics;
+
+addEvent('SUBMITTED_USER_FORM', {
+  config: ({ name }) => ({
+    eventName: 'Submitted form',
+    metadata: { name, staticMeta: 'info' },
+  }),
+});
 
 describe('Client analytics', () => {
   beforeEach(() => {
@@ -32,7 +40,7 @@ describe('Client analytics', () => {
       };
       const analyticsModule = makeClientAnalytics(analyticsLibraryStub);
 
-      analyticsModule.track('Some event', { someInfo: 'abc' });
+      analyticsModule.track(EVENTS.SUBMITTED_USER_FORM, { name: 'Alex' });
 
       expect(analyticsLibraryStub.track.called).to.equal(false);
     });
@@ -47,7 +55,7 @@ describe('Client analytics', () => {
       };
       const analyticsModule = makeClientAnalytics(analyticsLibraryStub);
 
-      analyticsModule.track('Some event', { someInfo: 'abc' });
+      analyticsModule.track(EVENTS.SUBMITTED_USER_FORM, { name: 'Alex' });
 
       expect(analyticsLibraryStub.track.called).to.equal(false);
 
@@ -55,30 +63,42 @@ describe('Client analytics', () => {
       Meteor.isTest = true;
     });
 
-    it('throws when no eventName is provided', () => {
+    it('throws when no event name is provided', () => {
+      addEvent('TEST_EVENT', {
+        config: () => ({
+          metadata: { some: 'info' },
+        }),
+      });
+
       const throwMessageRegEx = /the tracking eventName was not provided/;
-      expect(() => clientAnalytics.track()).to.throw(throwMessageRegEx);
+      expect(() => clientAnalytics.track(EVENTS.TEST_EVENT)).to.throw(throwMessageRegEx);
     });
 
     it('calls `analytics.track` with the event name only', () => {
-      clientAnalytics.track('Event name');
+      addEvent('TEST_EVENT', {
+        config: {
+          eventName: 'Test Event',
+        },
+      });
+
+      clientAnalytics.track(EVENTS.TEST_EVENT);
       expect(okgrowAnalytics.track.lastCall.args).to.deep.equal([
-        'Event name',
+        'Test Event',
         undefined,
       ]);
     });
 
     it('calls `analytics.track` with both event name and metadata', () => {
-      const metadata = { nameInput: 'Alex Lawson' };
-      clientAnalytics.track('Clicked button', metadata);
+      const user = { name: 'Alex Lawson' };
+      clientAnalytics.track(EVENTS.SUBMITTED_USER_FORM, user);
 
       expect(okgrowAnalytics.track.lastCall.args).to.deep.equal([
-        'Clicked button',
-        metadata,
+        'Submitted form',
+        { name: user.name, staticMeta: 'info' },
       ]);
     });
 
-    // we can throttle by event name
+    // we could throttle by event name
     it.skip(`throttles the tracking by event name
         for the given amount of time`, (done) => {
       const callerFunction = () =>

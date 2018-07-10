@@ -2,6 +2,7 @@
 // familties of analytics modules (client and server)
 import { Meteor } from 'meteor/meteor';
 import { storageAvailable } from '../../utils/browserFunctions';
+import { getEventConfig } from './events';
 
 // having this as a function enables us to test the `allowTracking`
 // param of `makeClientAnalytics`
@@ -30,6 +31,11 @@ const validateParam = (eventName, paramName) => {
   }
 };
 
+const validateEvent = (event, params) => {
+  const { eventName } = getEventConfig(event, params);
+  validateParam(eventName, 'eventName');
+};
+
 /**
  * This is a factory of analytics modules
  *
@@ -44,13 +50,14 @@ export const makeClientAnalytics = (
   okgrowAnalytics,
   allowTracking = !isTestMode(),
 ) => ({
-  track: (eventName, metadata) => {
-    validateParam(eventName, 'eventName');
+  track: (event, params) => {
+    validateEvent(event, params);
 
     if (!allowTracking) {
       return null;
     }
 
+    const { eventName, metadata } = getEventConfig(event, params);
     okgrowAnalytics.track(eventName, metadata);
   },
 });

@@ -8,6 +8,23 @@ import { getMountedComponent } from '../../../utils/testHelpers';
 
 import withAnalytics from '../../withAnalytics';
 import analytics from '../../../api/analytics/client/analytics';
+import EVENTS, { addEvent } from '../../../api/analytics/events';
+
+addEvent('SUBMITTED_USER_FORM', {
+  func: 'onChange',
+  config: submittedText => ({
+    eventName: 'Submitted Text',
+    metadata: { text: submittedText },
+  }),
+});
+
+addEvent('OPENED_USER_PREFS', {
+  lifecycleMethod: 'componentDidMount',
+  config: ({ user: { email } }) => ({
+    eventName: 'Opened User Preferences',
+    metadata: { email },
+  }),
+});
 
 const trackedComponent = (trackerHoc, props) => {
   const WrappedComponent = () => null;
@@ -38,13 +55,7 @@ describe.only('withAnalytics', () => {
 
   describe('Callback Tracker', () => {
     it('calls `analytics.track` with the event name and metadata', () => {
-      const trackerHoc = withAnalytics({
-        func: 'onChange',
-        track: submittedText => ({
-          eventName: 'Submitted Text',
-          metadata: { text: submittedText },
-        }),
-      });
+      const trackerHoc = withAnalytics(EVENTS.SUBMITTED_USER_FORM);
 
       const originalOnChange = sinon.spy();
       const component = trackedComponent(trackerHoc, {
@@ -54,14 +65,14 @@ describe.only('withAnalytics', () => {
       component.prop('onChange')('my name is John');
 
       expect(analytics.track.lastCall.args).to.deep.equal([
-        'Submitted Text',
-        { text: 'my name is John' },
+        EVENTS.SUBMITTED_USER_FORM,
+        'my name is John',
       ]);
 
       expect(originalOnChange.lastCall.args).to.deep.equal(['my name is John']);
     });
 
-    it('calls the original function with all arguments the event name only');
+    it('calls the original function with all original arguments');
 
     it('returns the return value of the original function');
 
@@ -74,22 +85,16 @@ describe.only('withAnalytics', () => {
     });
 
     it('tracks a lifecycle method by event name and metadata', () => {
-      const trackerHoc = withAnalytics({
-        lifecycleMethod: 'componentDidMount',
-        track: () => ({
-          eventName: 'Opened User Preferences',
-          metadata: { some: 'meta' },
-        }),
-      });
+      const trackerHoc = withAnalytics(EVENTS.OPENED_USER_PREFS);
 
-      const component = mountedComponent(trackerHoc, {
-        user: { email: 'user@test.com' },
+      const user = { email: 'user@test.com' };
+      mountedComponent(trackerHoc, {
+        user,
       });
-      component.unmount();
 
       expect(analytics.track.lastCall.args).to.deep.equal([
-        'Opened User Preferences',
-        { some: 'meta' },
+        EVENTS.OPENED_USER_PREFS,
+        { user },
       ]);
     });
 

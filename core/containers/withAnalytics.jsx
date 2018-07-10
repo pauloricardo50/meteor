@@ -1,17 +1,14 @@
 import React from 'react';
 import { branch, lifecycle } from 'recompose';
-import analytics from '../api/analytics/client/analytics';
+import analytics, { getEvent } from '../api/analytics/client/analytics';
 
-const withFunctionAnalytics = ({
-  func,
-  track,
-}) => WrappedComponent => (props) => {
+const withFunctionAnalytics = event => WrappedComponent => (props) => {
+  const { func } = getEvent(event);
   const { [func]: functionToTrack } = props;
 
   const trackedFunction = (...args) => {
     // here you can track later and run the tracked function first if you want
-    const { eventName, metadata } = track(...args);
-    analytics.track(eventName, metadata);
+    analytics.track(event, ...args);
 
     return functionToTrack(...args);
   };
@@ -20,20 +17,23 @@ const withFunctionAnalytics = ({
   return <WrappedComponent {...trackedProps} />;
 };
 
-const withLifecycleAnalytics = ({ lifecycleMethod, track }) =>
-  branch(
+const withLifecycleAnalytics = (event) => {
+  const { lifecycleMethod } = getEvent(event);
+
+  return branch(
     () => !!lifecycleMethod,
     lifecycle({
-      [lifecycleMethod]: () => {
-        const { eventName, metadata } = track();
-        analytics.track(eventName, metadata);
+      [lifecycleMethod]() {
+        analytics.track(event, this.props);
       },
     }),
   );
+};
 
-const withAnalytics = analyticsArgs =>
-  (analyticsArgs.func
-    ? withFunctionAnalytics(analyticsArgs)
-    : withLifecycleAnalytics(analyticsArgs));
+const withAnalytics = (event) => {
+  const { func } = getEvent(event);
+
+  return func ? withFunctionAnalytics(event) : withLifecycleAnalytics(event);
+};
 
 export default withAnalytics;
