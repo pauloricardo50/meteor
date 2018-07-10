@@ -99,10 +99,10 @@ const getUntranslatedValue = (translation, filterOptions, filterPath) =>
 // The dropdown options are an array of label/value pair objects,
 // and their value is translated, so we find & return
 //  their untranslated corresponding values
-const getUntranslatedValues = (dropdownOptions, filterOptions, filterPath) =>
+const getUntranslatedValues = (translatedValues, filterOptions, filterPath) =>
   // promisify `filterOptions` because it can be either an array of a Promise
   Promise.resolve(filterOptions).then(resolvedFilterOptions =>
-    dropdownOptions.map(({ value: translation }) =>
+    translatedValues.map(translation =>
       getUntranslatedValue(translation, resolvedFilterOptions, filterPath)));
 
 export default withProps((props) => {
