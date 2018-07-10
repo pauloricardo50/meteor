@@ -10,7 +10,7 @@ const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
 Factory.define('user', Meteor.users, {
-  roles: () => 'user',
+  roles: () => ['user'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -18,7 +18,7 @@ Factory.define('user', Meteor.users, {
 });
 
 Factory.define('dev', Meteor.users, {
-  roles: () => 'dev',
+  roles: () => ['dev'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -26,7 +26,7 @@ Factory.define('dev', Meteor.users, {
 });
 
 Factory.define('admin', Meteor.users, {
-  roles: () => 'admin',
+  roles: () => ['admin'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -34,7 +34,7 @@ Factory.define('admin', Meteor.users, {
 });
 
 Factory.define('lender', Meteor.users, {
-  roles: () => 'lender',
+  roles: () => ['lender'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
