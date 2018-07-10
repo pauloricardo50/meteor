@@ -26,10 +26,17 @@ addEvent('OPENED_USER_PREFS', {
   }),
 });
 
+addEvent('CLICKED_LOGO', {
+  func: 'onClick',
+  config: {
+    eventName: 'Clicked Logo',
+  },
+});
+
 addEvent('SOME_LIFECYCLE_EVENT', {
   lifecycleMethod: 'componentDidMount',
   config: {
-    eventName: 'Some Event',
+    eventName: 'Some Lyfecicle Event',
   },
 });
 
@@ -77,7 +84,18 @@ describe('withAnalytics', () => {
       returnValueOfTrackedFunction = component.prop('onChange')('my name is John');
     });
 
-    it.skip('calls `analytics.track` with the event name only');
+    it('calls `analytics.track` with the event name only', () => {
+      const trackerHoc = withAnalytics(EVENTS.CLICKED_LOGO);
+
+      component = trackedComponent(trackerHoc, {
+        onClick: () => {},
+      });
+      component.prop('onClick')();
+
+      expect(analytics.track.lastCall.args).to.deep.equal([
+        EVENTS.CLICKED_LOGO,
+      ]);
+    });
 
     it('calls `analytics.track` with the event name and metadata', () => {
       expect(analytics.track.lastCall.args).to.deep.equal([
@@ -116,7 +134,7 @@ describe('withAnalytics', () => {
       });
     });
 
-    it('tracks a lifecycle method by event name and metadata', () => {
+    it('tracks a lifecycle method by event name and props', () => {
       expect(analytics.track.lastCall.args).to.deep.equal([
         EVENTS.OPENED_USER_PREFS,
         { user },
@@ -125,16 +143,6 @@ describe('withAnalytics', () => {
 
     it('does not crash the original component', () => {
       expect(component.find(WrappedWithLifecyle).length).to.equal(1);
-    });
-
-    it.skip('tracks a lifecycle method when there are no input props', () => {
-      const trackerHoc = withAnalytics(EVENTS.SOME_LIFECYCLE_EVENT);
-      mountedComponent(trackerHoc);
-
-      expect(analytics.track.lastCall.args).to.deep.equal([
-        EVENTS.SOME_LIFECYCLE_EVENT,
-        undefined,
-      ]);
     });
   });
 });

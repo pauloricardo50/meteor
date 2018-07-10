@@ -119,7 +119,6 @@ describe('Client analytics', () => {
       ]);
     });
 
-    // we could throttle by event name
     it(`throttles the tracking by event name
         for the given amount of time`, (done) => {
       const callerFunction = () =>
