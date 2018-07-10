@@ -6,8 +6,7 @@ import isEqual from 'lodash/isEqual';
 import { compose } from 'core/api';
 
 const withState = withStateHandlers(({ filters = {} }) => ({ filters }), {
-  handleOptionsSelect: ({ filters }) => (filterPath, selectedOptions) => {
-    const newFilterValue = selectedOptions.map(option => option.value);
+  handleOptionsSelect: ({ filters }) => (filterPath, newFilterValue) => {
     const newFilters = set(
       cloneDeep(filters.filters),
       filterPath,
@@ -46,7 +45,7 @@ export default compose(
   }),
 
   withProps(({ filters: { filters } }) => ({
-    pickOptionsForFilter(options = {}, { path }) {
+    pickOptionsForFilter(options = {}, path) {
       const lastFilterKey = path[path.length - 1];
       return options[lastFilterKey];
     },

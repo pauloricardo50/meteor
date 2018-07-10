@@ -6,6 +6,8 @@ import { shallow } from 'enzyme';
 import { getMountedComponent } from '../../../../../utils/testHelpers';
 import T from '../../../../Translation';
 import TableFilter from '../../TableFilter';
+import messagesFR from '../../../../../lang/fr.json';
+import { TASK_STATUS } from '../../../../../api/tasks/taskConstants';
 
 let defaultProps;
 
@@ -27,7 +29,7 @@ describe('TableFilter', () => {
         { name: 'Rebecca', city: 'Portland', eyesColor: 'black', age: 24 },
       ],
       filter: { path: ['eyesColor'], value: ['blue', 'black'] },
-      value: ['blue', 'green', 'black', 'yellow'],
+      options: ['blue', 'green', 'black', 'yellow'],
       onChange: () => {},
     };
   });
@@ -47,13 +49,14 @@ describe('TableFilter', () => {
   });
 
   it(`renders the 'Select' component with the correct 'options'
-      prop based on the passed value prop`, () => {
+      prop based on the input 'options' prop`, () => {
     const expectedOptions = [
       { label: 'blue', value: 'blue' },
       { label: 'green', value: 'green' },
       { label: 'black', value: 'black' },
       { label: 'yellow', value: 'yellow' },
     ];
+
     expect(component(defaultProps)
       .find(Select)
       .first()
@@ -62,7 +65,7 @@ describe('TableFilter', () => {
 
   it(`converts the option labels with no translation
       to strings before passing them to 'Select'`, () => {
-    const filter = { path: ['userInput'], value: [true, false, null, 24] };
+    const filter = { path: ['userInput'] };
     const data = [];
     const expectedOptions = [
       { label: 'true', value: true },
@@ -71,39 +74,39 @@ describe('TableFilter', () => {
       { label: '24', value: 24 },
     ];
 
-    expect(component({ data, filter })
+    expect(component({ data, filter, options: [true, false, null, 24] })
       .find(Select)
       .first()
-      .prop('value')).to.deep.equal(expectedOptions);
+      .prop('options')).to.deep.equal(expectedOptions);
   });
 
   it(`removes duplicate options with before passing them
       to the 'Select' component`, () => {
     const filter = { path: ['name'], value: true };
-    const optionValues = ['Name 1', 'Name 2', 'Name 1'];
+    const options = ['Name 1', 'Name 2', 'Name 1'];
 
     const expectedOptions = [
       { label: 'Name 1', value: 'Name 1' },
       { label: 'Name 2', value: 'Name 2' },
     ];
 
-    expect(component({ filter, value: optionValues })
+    expect(component({ filter, options })
       .find(Select)
       .first()
       .prop('options')).to.deep.equal(expectedOptions);
   });
 
-  it(`when there are undefined values, keep only an undefined option at the end
-      when passing options to 'Select' component`, () => {
+  it(`keeps only an undefined option at the end when there are
+      one or more undefined options passed to Select`, () => {
     const filter = { path: ['name'], value: true };
-    const optionValues = ['Name 1', undefined, undefined, 'Name 4'];
+    const options = ['Name 1', undefined, undefined, 'Name 4'];
 
     const expectedOptions = [
       { label: 'Name 1', value: 'Name 1' },
       { label: 'Name 4', value: 'Name 4' },
     ];
 
-    const renderedOptions = component({ filter, value: optionValues })
+    const renderedOptions = component({ filter, options })
       .find(Select)
       .first()
       .prop('options');
@@ -111,27 +114,26 @@ describe('TableFilter', () => {
     expect(renderedOptions.length).to.equal(3);
     expect(renderedOptions[0]).to.deep.equal(expectedOptions[0]);
     expect(renderedOptions[1]).to.deep.equal(expectedOptions[1]);
-    expect(renderedOptions[2].value).to.equal(undefined);
+
+    const undefinedValueTranslation = 'TableFilters.noneLabels.name';
+    expect(renderedOptions[2].value).to.equal(undefinedValueTranslation);
   });
 
-  it(`adds a specific 'None' label when there are undefined values
-      in the 'value' prop`, () => {
+  it("adds a specific 'None' label when undefined 'options' are passed", () => {
     const data = [{ name: 'John' }];
     const filter = { path: ['name'], value: true };
     const optionValues = ['Name 1', 'Name 2', undefined];
 
-    const optionsProp = component({ data, filter, value: optionValues })
+    const optionsProp = component({ data, filter, options: optionValues })
       .find(Select)
       .first()
       .prop('options');
 
     const noneLabelWrapper = shallow(optionsProp[2].label);
-
     expect(noneLabelWrapper.prop('id')).to.equal('TableFilters.noneLabels.name');
-    expect(optionsProp[2].value).to.equal(undefined);
   });
 
-  it('renders the `Select` component with the correct `value` prop', () => {
+  it('fills `Select` input with the default filter values', () => {
     const filter = { path: ['name'], value: ['Name 2', 'Name 3'] };
     const data = [];
     const expectedOptions = [
@@ -145,34 +147,23 @@ describe('TableFilter', () => {
       .prop('value')).to.deep.equal(expectedOptions);
   });
 
-  it('renders no values in the `Select` component when the filter value is not an array', () => {
-    expect(component({ data: [], filter: { path: ['name'], value: 1 } })
+  it(`does not fill the 'Select' input with any values when the
+      default filters are non-array`, () => {
+    expect(component({ data: [], filter: { path: ['name'], value: true } })
       .find(Select)
       .first()
       .prop('value')).to.deep.equal([]);
   });
 
-  it(`renders no values in the 'Select' component
-      when the filter value is an empty array`, () => {
+  it(`deos not fill the 'Select' input with any values
+      when the default filters are an empty array`, () => {
     expect(component({ data: [], filter: { path: ['name'], value: [] } })
       .find(Select)
       .first()
       .prop('value')).to.deep.equal([]);
   });
 
-  it(`renders the 'Select' component
-      with the 'onChange' prop passed from above`, () => {
-    const filter = { path: ['name'], value: [] };
-    const data = [];
-    const onChange = () => {};
-
-    expect(component({ data, filter, onChange })
-      .find(Select)
-      .first()
-      .prop('onChange')).to.equal(onChange);
-  });
-
-  it('renders the translation for the filter', () => {
+  it('renders the translation for the filter label', () => {
     expect(component({
       data: [],
       filter: { path: ['preferences', '0', 'food'], value: 1 },
@@ -185,28 +176,28 @@ describe('TableFilter', () => {
   });
 
   it(`renders the Select.Async component
-      when passed a value of type Promise`, () => {
+      when passed 'options' of type Promise`, () => {
     const filter = { path: ['name'], value: 1 };
-    const wrapper = component({ data: [], value: Promise.resolve(), filter });
+    const wrapper = component({ data: [], options: Promise.resolve(), filter });
     expect(wrapper.find(Select.Async).length).to.equal(1);
   });
 
-  it(`passes loadOptions prop to Select.Async
-      when passed a value of type Promise`, () => {
+  it(`passes 'loadOptions' prop to Select.Async
+      when passed 'options' of type Promise`, () => {
     const filter = { path: ['name'], value: 1 };
     const selectAsyncComponent = component({
       data: [],
-      value: Promise.resolve(),
+      options: Promise.resolve(),
       filter,
     }).find(Select.Async);
     expect(selectAsyncComponent.prop('loadOptions')).to.be.a('function');
   });
 
   it(`asynchronously loads the correct options
-      when passed a value of type Promise`, (done) => {
+      when passed 'options' of type Promise`, (done) => {
     const props = {
       data: [{ name: 'John' }],
-      value: Promise.resolve(['value1', 'value2']),
+      options: Promise.resolve(['value1', 'value2']),
       filter: { path: ['name'], value: 1 },
     };
 
@@ -225,5 +216,50 @@ describe('TableFilter', () => {
       expect(result).to.deep.equal(expectedAsyncOptions);
       done();
     });
+  });
+
+  it(`translates each undefined option value to a specific translation
+      based on the filter path`, () => {
+    const filter = { path: ['prefs', 'language'], value: true };
+
+    const renderedOptions = component({ filter, options: [undefined] })
+      .find(Select)
+      .first()
+      .prop('options');
+
+    expect(renderedOptions[0].value).to.equal('TableFilters.noneLabels.prefs.language');
+  });
+
+  it('translates option values for a specific filter path when it was decided to do so', () => {
+    // we chose to translate the 'status' path
+    const filter = { path: ['status'], value: true };
+
+    const renderedOptions = component({
+      filter,
+      options: [TASK_STATUS.COMPLETED],
+    })
+      .find(Select)
+      .first()
+      .prop('options');
+
+    const translation =
+      messagesFR[`TasksStatusDropdown.${TASK_STATUS.COMPLETED}`];
+    expect(renderedOptions[0].value).to.equal(translation);
+  });
+
+  it(`does not translate an option value
+      when it was not decided to do so in the code`, () => {
+    // we chose to translate the 'status' path
+    const filter = { path: ['someField'], value: true };
+
+    const renderedOptions = component({
+      filter,
+      options: ['a value'],
+    })
+      .find(Select)
+      .first()
+      .prop('options');
+
+    expect(renderedOptions[0].value).to.equal('a value');
   });
 });
