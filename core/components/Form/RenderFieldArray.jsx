@@ -16,7 +16,7 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 );
 
 const RenderFieldArray = ({ fields, meta: { error }, label }) => (
-  <div>
+  <React.Fragment>
     <div className="render-field-array-header">
       <InputLabel shrink className="render-field-array-label">
         {label}
@@ -57,7 +57,7 @@ const RenderFieldArray = ({ fields, meta: { error }, label }) => (
       ))}
       {error && <li className="error">{error}</li>}
     </ul>
-  </div>
+  </React.Fragment>
 );
 
 export default RenderFieldArray;

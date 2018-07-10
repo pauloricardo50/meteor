@@ -30,7 +30,7 @@ const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
     }
   }
   return (
-    <div>
+    <React.Fragment>
       {/* Remove duplicates from array if they exist */}
       {removeDuplicates(team, 'email').map(teamMember => (
         <DashboardInfoTeamMember
@@ -39,7 +39,7 @@ const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
           src={teamMember.src || '/img/placeholder.png'}
         />
       ))}
-    </div>
+    </React.Fragment>
   );
 };
 

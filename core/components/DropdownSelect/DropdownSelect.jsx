@@ -18,7 +18,7 @@ const DropdownSelect = ({
   selected,
   optionsIncludeOption,
 }) => (
-  <div>
+  <React.Fragment>
     <IconButton onClick={handleClick} type={iconType} tooltip={tooltip} />
     <Menu
       id="long-menu"
@@ -36,7 +36,7 @@ const DropdownSelect = ({
         </MenuItem>
       ))}
     </Menu>
-  </div>
+  </React.Fragment>
 );
 
 DropdownSelect.propTypes = {

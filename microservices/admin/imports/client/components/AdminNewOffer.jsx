@@ -37,7 +37,7 @@ export default class AdminNewOffer extends React.Component {
     ];
 
     return (
-      <div>
+      <React.Fragment>
         <Button
           raised
           label="Ajouter une offre"
@@ -55,7 +55,7 @@ export default class AdminNewOffer extends React.Component {
         >
           <OfferForm {...this.props} callback={this.handleClose} admin />
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }

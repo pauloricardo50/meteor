@@ -67,14 +67,14 @@ export default class Auction extends Component {
         <p className="disabled text-center" style={styles.p}>
           <T id="Auction.notified" />
         </p>
-        <div>
+        <React.Fragment>
           <p className="secondary bold text-center animated pulse infinite">
             <T id="Auction.tableText" />
           </p>
           <div style={{ height: 150 }}>
             <Loading />
           </div>
-        </div>
+        </React.Fragment>
       </section>
     );
   }

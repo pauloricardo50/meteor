@@ -183,7 +183,7 @@ export default class DevPage extends Component {
     if (!Meteor.isProduction || Meteor.isStaging) {
       return (
         <section id="dev-page">
-          <div>
+          <React.Fragment>
             {!Meteor.isDevelopment ? (
               <h4 className="error">
                 You are on a shared database. Avoid touching these buttons if
@@ -222,7 +222,7 @@ export default class DevPage extends Component {
                 Purge database & Generate test data
               </Button>
             </Tooltip>
-          </div>
+          </React.Fragment>
           <hr className="mbt20" />
           <Tooltip title="Generate fake users, loans, borrowers, properties, tasks and offers">
             <Button

@@ -29,7 +29,7 @@ class Tabs extends Component {
     const { classes, tabs } = this.props;
 
     return (
-      <div>
+      <React.Fragment>
         <Paper className={classes.root}>
           <MuiTabs
             value={this.state.value}
@@ -44,7 +44,7 @@ class Tabs extends Component {
         <div className="mask1" style={{ paddingTop: 16, marginTop: 40 }}>
           {this.getContent()}
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

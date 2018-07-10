@@ -11,7 +11,7 @@ const AssignAdminDropdown = (props) => {
     return <Loading />;
   }
   if (error) {
-    return <div>Error: {error.reason}</div>;
+    return <React.Fragment>Error: {error.reason}</React.Fragment>;
   }
 
   return (
