@@ -3,13 +3,7 @@ const EVENTS = {
   SUBMITTED_SURVEY_FORM: 'SUBMITTED_SURVEY_FORM',
 };
 
-const EVENT_OPTIONS = {
-  // Example:
-  // [EVENTS.CLICKED_LOGIN_BUTTON]: {
-  //   func: 'openUserTooltip',
-  //   config: ({ user: { email } }) => ({ eventName: 'Event name', metadata: { email } }),
-  // },
-};
+const EVENT_OPTIONS = {};
 
 // this is useful in tests
 export const addEvent = (eventName, options) => {

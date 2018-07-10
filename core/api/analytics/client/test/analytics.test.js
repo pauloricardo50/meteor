@@ -18,6 +18,27 @@ addEvent('SUBMITTED_USER_FORM', {
   }),
 });
 
+addEvent('SCROLLED_PAGE', {
+  throttle: 250,
+  config: ({ yCoordinate }) => ({
+    eventName: 'Scrolled Page',
+    metadata: { yCoordinate },
+  }),
+});
+
+addEvent('CLICKED_LOGIN_BUTTON', {
+  config: {
+    eventName: 'Clicked Login Button',
+  },
+});
+
+addEvent('TRACKED_ONLY_ONCE', {
+  trackOncePerSession: true,
+  config: {
+    eventName: 'Some event name',
+  },
+});
+
 describe('Client analytics', () => {
   beforeEach(() => {
     okgrowAnalytics = {
@@ -27,7 +48,7 @@ describe('Client analytics', () => {
     clientAnalytics = makeClientAnalytics(okgrowAnalytics, true);
   });
 
-  it('is correctly using the factory for instantiation', () => {
+  it('is correctly being initialized using the factory', () => {
     const analyticsProduct = makeClientAnalytics(okgrowAnalyticsModule);
     expect(analytics.track.toString()).to.equal(analyticsProduct.track.toString());
   });
@@ -99,10 +120,10 @@ describe('Client analytics', () => {
     });
 
     // we could throttle by event name
-    it.skip(`throttles the tracking by event name
+    it(`throttles the tracking by event name
         for the given amount of time`, (done) => {
       const callerFunction = () =>
-        clientAnalytics.track('Event name', { throttle: 250 });
+        clientAnalytics.track(EVENTS.SCROLLED_PAGE, { yCoordinate: 123 });
 
       callerFunction();
       callerFunction();
@@ -113,36 +134,33 @@ describe('Client analytics', () => {
         expect(okgrowAnalytics.track.callCount).to.equal(2);
 
         done();
-      }, 250);
+      }, 260);
     });
 
-    it.skip('does not throttle an event with a different name than the throttled one', () => {
-      clientAnalytics.track('Event name 1', { throttle: 250 });
-      clientAnalytics.track('Event name 2');
-      clientAnalytics.track('Event name 2');
+    it('does not throttle an event with a different name than the throttled one', () => {
+      clientAnalytics.track(EVENTS.SCROLLED_PAGE, { yCoordinate: 123 });
+      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
+      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
 
       expect(okgrowAnalytics.track.callCount).to.equal(3);
     });
 
-    it.skip('tracks by event name once per session', () => {
-      const eventName = 'An event';
-      const callerFunction = () =>
-        clientAnalytics.track(eventName, { oncePerSession: true });
+    it('tracks by event name once per session', () => {
+      sessionStorage.clear();
 
-      expect(sessionStorage.getItem(`epotek-tracking.${eventName}`)).to.equal(undefined);
-      callerFunction();
-      expect(sessionStorage.getItem(`epotek-tracking.${eventName}`)).to.equal(eventName);
-
-      callerFunction();
+      clientAnalytics.track(EVENTS.TRACKED_ONLY_ONCE);
+      clientAnalytics.track(EVENTS.TRACKED_ONLY_ONCE);
 
       expect(okgrowAnalytics.track.callCount).to.equal(1);
     });
 
-    it.skip(`does not limit an event's tracking to once per session
+    it(`does not limit an event's tracking to once per session
         when another event was limited like that`, () => {
-      clientAnalytics.track('Event 1', { oncePerSession: true });
-      clientAnalytics.track('Event 2');
-      clientAnalytics.track('Event 2');
+      sessionStorage.clear();
+
+      clientAnalytics.track(EVENTS.TRACKED_ONLY_ONCE);
+      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
+      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
 
       expect(okgrowAnalytics.track.callCount).to.equal(3);
     });

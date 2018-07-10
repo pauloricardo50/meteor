@@ -10,7 +10,7 @@ import withAnalytics from '../../withAnalytics';
 import analytics from '../../../api/analytics/client/analytics';
 import EVENTS, { addEvent } from '../../../api/analytics/events';
 
-addEvent('SUBMITTED_USER_FORM', {
+addEvent('SUBMITTED_USER_SURVEY', {
   func: 'onChange',
   config: submittedText => ({
     eventName: 'Submitted Text',
@@ -45,7 +45,7 @@ const mountedComponent = (trackerHoc, props) => {
   });
 };
 
-describe.only('withAnalytics', () => {
+describe('withAnalytics', () => {
   beforeEach(() => {
     sinon.stub(analytics, 'track');
   });
@@ -60,7 +60,7 @@ describe.only('withAnalytics', () => {
     let returnValueOfTrackedFunction;
 
     beforeEach(() => {
-      const trackerHoc = withAnalytics(EVENTS.SUBMITTED_USER_FORM);
+      const trackerHoc = withAnalytics(EVENTS.SUBMITTED_USER_SURVEY);
 
       originalOnChange = sinon.stub().callsFake(() => 'the return value');
       component = trackedComponent(trackerHoc, {
@@ -72,7 +72,7 @@ describe.only('withAnalytics', () => {
 
     it('calls `analytics.track` with the event name and metadata', () => {
       expect(analytics.track.lastCall.args).to.deep.equal([
-        EVENTS.SUBMITTED_USER_FORM,
+        EVENTS.SUBMITTED_USER_SURVEY,
         'my name is John',
       ]);
     });
