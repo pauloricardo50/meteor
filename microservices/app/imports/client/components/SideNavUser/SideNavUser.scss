@@ -29,7 +29,12 @@
 }
 
 .side-nav-user [aria-haspopup='true'] {
-  padding-right: 18px;
+  padding-right: 23px;
+
+  svg:first-child {
+    padding-right: 6px;
+    margin: 0;
+  }
 
   [class*='MuiListItemText'] {
     padding-right: 0;
