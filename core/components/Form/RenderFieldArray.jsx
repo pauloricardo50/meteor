@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import { T } from 'core/components/Translation';
 import Button from 'core/components/Button';
@@ -8,7 +10,7 @@ import { phoneFormatters } from './formHelpers';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <React.Fragment>
-    <input {...input} type={type} placeholder={label} />
+    <Input {...input} type={type} placeholder={label} />
     {touched && error && <span>{error}</span>}
   </React.Fragment>
 );
@@ -16,10 +18,12 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 const RenderFieldArray = ({ fields, meta: { error }, label }) => (
   <div>
     <div className="render-field-array-header">
-      <label className="render-field-array-label">{label}</label>
+      <InputLabel shrink className="render-field-array-label">
+        {label}
+      </InputLabel>
 
       <Button
-        className="pull-right render-field-array-button"
+        className="render-field-array-add-item-button"
         primary
         raised
         onClick={() => fields.push()}
@@ -28,7 +32,7 @@ const RenderFieldArray = ({ fields, meta: { error }, label }) => (
       </Button>
     </div>
 
-    <ul>
+    <ul className="render-field-ul">
       {fields.map((field, index) => (
         <li className="render-field-array-item" key={index}>
           {field.includes('phone') ? (
