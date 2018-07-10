@@ -9,7 +9,7 @@ setupMandrill();
 
 describe('EmailService', () => {
   describe('renderTemplate', () => {
-    it('should not throw', (done) => {
+    it('should not throw', () => {
       const emailId = EMAIL_IDS.ENROLL_ACCOUNT;
       const template = EmailService.getAccountsTemplate(emailId, {
         user: { roles: 'user' },
@@ -17,8 +17,6 @@ describe('EmailService', () => {
       });
       expect(() =>
         EmailService.renderTemplate(template, emailId)).to.not.throw();
-
-      done();
     });
   });
 });
