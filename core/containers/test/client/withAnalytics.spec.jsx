@@ -26,6 +26,13 @@ addEvent('OPENED_USER_PREFS', {
   }),
 });
 
+addEvent('SOME_LIFECYCLE_EVENT', {
+  lifecycleMethod: 'componentDidMount',
+  config: {
+    eventName: 'Some Event',
+  },
+});
+
 const trackedComponent = (trackerHoc, props) => {
   const WrappedWithTrackedFunction = () => null;
   const Component = trackerHoc(WrappedWithTrackedFunction);
@@ -69,6 +76,8 @@ describe('withAnalytics', () => {
 
       returnValueOfTrackedFunction = component.prop('onChange')('my name is John');
     });
+
+    it.skip('calls `analytics.track` with the event name only');
 
     it('calls `analytics.track` with the event name and metadata', () => {
       expect(analytics.track.lastCall.args).to.deep.equal([
@@ -116,6 +125,16 @@ describe('withAnalytics', () => {
 
     it('does not crash the original component', () => {
       expect(component.find(WrappedWithLifecyle).length).to.equal(1);
+    });
+
+    it.skip('tracks a lifecycle method when there are no input props', () => {
+      const trackerHoc = withAnalytics(EVENTS.SOME_LIFECYCLE_EVENT);
+      mountedComponent(trackerHoc);
+
+      expect(analytics.track.lastCall.args).to.deep.equal([
+        EVENTS.SOME_LIFECYCLE_EVENT,
+        undefined,
+      ]);
     });
   });
 });
