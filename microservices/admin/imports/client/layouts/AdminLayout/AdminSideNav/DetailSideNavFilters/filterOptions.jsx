@@ -15,9 +15,19 @@ const getAssignedToMeFilter = ({
 }) => ({
   label: <T id="DetailSideNavFilters.showAssignedToMe" />,
   value: {
-    'user.assignedEmployee.emails': {
-      $elemMatch: { address: currentUserEmail },
-    },
+    $or: [
+      {
+        'user.assignedEmployee.emails': {
+          $elemMatch: { address: currentUserEmail },
+        },
+      },
+
+      {
+        'assignedEmployee.emails': {
+          $elemMatch: { address: currentUserEmail },
+        },
+      },
+    ],
   },
 });
 

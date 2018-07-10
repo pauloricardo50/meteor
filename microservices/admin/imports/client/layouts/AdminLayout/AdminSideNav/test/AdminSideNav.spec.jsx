@@ -20,9 +20,18 @@ import { defaultSortOption } from '../DetailSideNavSort/sortOptions';
 
 const currentUser = { emails: [{ address: 'admin@test.com' }] };
 const assignedToMeFilterValue = {
-  'user.assignedEmployee.emails': {
-    $elemMatch: { address: 'admin@test.com' },
-  },
+  $or: [
+    {
+      'user.assignedEmployee.emails': {
+        $elemMatch: { address: 'admin@test.com' },
+      },
+    },
+    {
+      'assignedEmployee.emails': {
+        $elemMatch: { address: 'admin@test.com' },
+      },
+    },
+  ],
 };
 
 const component = state =>

@@ -31,9 +31,18 @@ const renderDropdownSelect = (collectionName, additionalProps) => {
 };
 
 const assignedToMeFilter = {
-  'user.assignedEmployee.emails': {
-    $elemMatch: { address: 'admin@test.com' },
-  },
+  $or: [
+    {
+      'user.assignedEmployee.emails': {
+        $elemMatch: { address: 'admin@test.com' },
+      },
+    },
+    {
+      'assignedEmployee.emails': {
+        $elemMatch: { address: 'admin@test.com' },
+      },
+    },
+  ],
 };
 
 describe('DetailSideNavFilters', () => {

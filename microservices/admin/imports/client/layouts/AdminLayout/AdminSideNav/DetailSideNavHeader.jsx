@@ -35,6 +35,13 @@ const DetailSideNavHeader = (props) => {
         <DetailSideNavFilters {...props} />
       </div>
 
+      {currentSortOption && (
+        <div>
+          <T id="general.sortBy" />: {currentSortOption.label}
+          <T id={`DetailSideNavHeader.sortOrder.${sortOption.order}`} />
+        </div>
+      )}
+
       {filterArray.length > 0 && (
         <div>
           <T id="general.filterBy" />:{' '}
@@ -42,13 +49,6 @@ const DetailSideNavHeader = (props) => {
             .map(filter =>
               getFilterOptionFromValue(getFilterOptions(props), filter).label)
             .reduce((prev, curr) => [prev, ', ', curr])}
-        </div>
-      )}
-
-      {currentSortOption && (
-        <div>
-          <T id="general.sortBy" />: {currentSortOption.label}
-          <T id={`DetailSideNavHeader.sortOrder.${sortOption.order}`} />
         </div>
       )}
     </div>
