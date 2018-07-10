@@ -25,17 +25,15 @@ const withLifecycleAnalytics = ({ lifecycleMethod, track }) =>
     () => !!lifecycleMethod,
     lifecycle({
       [lifecycleMethod]: () => {
-        const { eventName, metadata } = track(this.props, this.state);
+        const { eventName, metadata } = track();
         analytics.track(eventName, metadata);
       },
     }),
-  )();
+  );
 
-const withAnalytics = (...analyticsArgs) =>
-  branch(
-    props => !!props[analyticsArgs.func],
-    withFunctionAnalytics(...analyticsArgs),
-    withLifecycleAnalytics(...analyticsArgs),
-  )();
+const withAnalytics = analyticsArgs =>
+  (analyticsArgs.func
+    ? withFunctionAnalytics(analyticsArgs)
+    : withLifecycleAnalytics(analyticsArgs));
 
 export default withAnalytics;

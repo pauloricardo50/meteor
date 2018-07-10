@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { shallow } from '../../../utils/testHelpers/enzyme';
+import { getMountedComponent } from '../../../utils/testHelpers';
 
 import withAnalytics from '../../withAnalytics';
 import analytics from '../../../api/analytics/client/analytics';
@@ -11,7 +12,19 @@ import analytics from '../../../api/analytics/client/analytics';
 const trackedComponent = (trackerHoc, props) => {
   const WrappedComponent = () => null;
   const Component = trackerHoc(WrappedComponent);
+
   return shallow(<Component {...props} />);
+};
+
+const mountedComponent = (trackerHoc, props) => {
+  const WrappedComponent = () => null;
+  const Component = trackerHoc(WrappedComponent);
+
+  return getMountedComponent({
+    Component,
+    props,
+    withRouter: false,
+  });
 };
 
 describe.only('withAnalytics', () => {
@@ -37,6 +50,7 @@ describe.only('withAnalytics', () => {
       const component = trackedComponent(trackerHoc, {
         onChange: originalOnChange,
       });
+
       component.prop('onChange')('my name is John');
 
       expect(analytics.track.lastCall.args).to.deep.equal([
@@ -55,23 +69,27 @@ describe.only('withAnalytics', () => {
   });
 
   describe('Lifecycle Tracker', () => {
+    beforeEach(() => {
+      getMountedComponent.reset();
+    });
+
     it('tracks a lifecycle method by event name and metadata', () => {
       const trackerHoc = withAnalytics({
-        lifecycleMethod: 'componentWillUnmount',
-        track: ({ email }) => ({
-          eventName: 'Closed User Preferences',
-          metadata: { email },
+        lifecycleMethod: 'componentDidMount',
+        track: () => ({
+          eventName: 'Opened User Preferences',
+          metadata: { some: 'meta' },
         }),
       });
 
-      const component = trackedComponent(trackerHoc, {
+      const component = mountedComponent(trackerHoc, {
         user: { email: 'user@test.com' },
       });
       component.unmount();
 
       expect(analytics.track.lastCall.args).to.deep.equal([
-        'Closed User Preferences',
-        { email: 'user@test.com' },
+        'Opened User Preferences',
+        { some: 'meta' },
       ]);
     });
 
