@@ -360,7 +360,6 @@
   "ActionsTable.loanName": "Projet",
   "AddLoanPage.logIntoOtherAccount": "Utiliser un autre compte",
   "AdminDashboardPage.tasks": "Tâches",
-  "AdminInterestRatesCard.title": " Nos taux d'intérêts",
   "AdvancedOptions.borrowRatio": "Endettement voulu",
   "AllUsersTable.email": "Email",
   "AllUsersTable.createdAt": "Créé le",
@@ -1082,6 +1081,7 @@
   "LenderTable.conditions": "Conditions ?",
   "LenderTable.monthly": "Coût mensuel",
   "LenderTable.perMonth": "/mois",
+  "LoanInterestRatesCard.title": " Nos taux d'intérêts",
   "LoanSelector.addLoan": "Ajouter nouvelle demande",
   "LoanStrategyPicker.description":
     "Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant, nous pouvons vous aiguiller dans la bonne direction grâce à notre savoir-faire.{verticalSpace}Sinon, utilisez notre outil interactif ci-dessous.",

@@ -6,14 +6,14 @@ import InterestRatesTable from 'core/components/InterestRatesTable';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { getMountedComponent } from 'core/utils/testHelpers';
 
-import AdminInterestRatesTable from '../AdminInterestRatesTable';
-import { columnOptions, rows } from '../adminInterestsTableHelpers';
+import LoanInterestRatesTable from '../LoanInterestRatesTable';
+import { columnOptions, rows } from '../loanInterestsTableHelpers';
 
 const defaultProps = { columnOptions, rows };
 
-const component = props => shallow(<AdminInterestRatesTable {...props} />);
+const component = props => shallow(<LoanInterestRatesTable {...props} />);
 
-describe('AdminInterestRatesTable', () => {
+describe('LoanInterestRatesTable', () => {
   beforeEach(() => getMountedComponent.reset());
 
   it('renders a `InterestRatesTable` component with correct props', () => {
