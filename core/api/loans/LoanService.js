@@ -99,6 +99,9 @@ class LoanServiceModel {
   enableUserForms = ({ loanId }) =>
     this.update({ loanId, object: { userFormsEnabled: true } });
 
+  getLoansByBorrower = ({ borrowerId }) =>
+    Loans.find({ borrowerIds: borrowerId }).fetch();
+
   static pushValue = ({ loanId, object }) =>
     Loans.update(loanId, { $push: object });
 
