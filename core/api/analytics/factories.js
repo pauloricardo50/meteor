@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import throttle from 'lodash/throttle';
 import { storageAvailable } from '../../utils/browserFunctions';
 import { getEvent, getEventConfig } from './events';
 
@@ -17,27 +18,6 @@ const validateEvent = (event, params) => {
   validateParam(eventName, 'eventName');
 };
 
-const throttleEvent = (event, throttledEvents) => {
-  const { throttle: timeToThrottle } = getEvent(event);
-
-  if (!timeToThrottle) {
-    return false;
-  }
-
-  // if there's no throttle set or the throttle expited,
-  // start over with the throttling
-  const throttleIsActive =
-    throttledEvents[event] &&
-    Date.now() - throttledEvents[event] <= timeToThrottle;
-
-  if (!throttleIsActive) {
-    throttledEvents[event] = Date.now();
-    return false;
-  }
-
-  return true;
-};
-
 const limitEventOncePerSession = (event, params) => {
   const { trackOncePerSession } = getEvent(event);
   const { eventName } = getEventConfig(event, params);
@@ -53,6 +33,7 @@ const limitEventOncePerSession = (event, params) => {
   const localEventId = `epotek-tracking.${eventName}`;
 
   const hasAlreadyRunOnce = !!sessionStorage.getItem(localEventId);
+  console.log('hasAlreadyRunOnce', hasAlreadyRunOnce);
   if (hasAlreadyRunOnce) {
     return true;
   }
@@ -61,11 +42,36 @@ const limitEventOncePerSession = (event, params) => {
   return false;
 };
 
-const limitEventTracking = (event, { throttledEvents, params }) => {
-  const isLimitedByThrottling = throttleEvent(event, throttledEvents);
-  const isLimitedOncePerSession = limitEventOncePerSession(event, params);
+const makeThrottledTrackFunction = (
+  trackFunction,
+  event,
+  throttledTrackFunctionsCache,
+) => {
+  const { throttle: timeToThrottle } = getEvent(event);
 
-  return isLimitedByThrottling || isLimitedOncePerSession;
+  if (!timeToThrottle) {
+    return trackFunction;
+  }
+
+  // cache the throttled function so we return only once instance of it
+  throttledTrackFunctionsCache[event] =
+    throttledTrackFunctionsCache[event] ||
+    throttle(trackFunction, timeToThrottle, { trailing: false });
+
+  return throttledTrackFunctionsCache[event];
+};
+
+const makeLimitedOncePerSessionTrackFunction = (
+  trackFunction,
+  event,
+  params,
+) => () => {
+  const isLimitedOncePerSession = limitEventOncePerSession(event, params);
+  if (isLimitedOncePerSession) {
+    return null;
+  }
+
+  return trackFunction();
 };
 
 /**
@@ -82,7 +88,7 @@ export const makeClientAnalytics = (
   okgrowAnalytics,
   allowTracking = !isTestMode(),
 ) => {
-  const throttledEvents = {};
+  const throttledTrackFunctionsCache = {};
 
   return {
     track: (event, params) => {
@@ -92,13 +98,24 @@ export const makeClientAnalytics = (
         return null;
       }
 
-      const isLimited = limitEventTracking(event, { throttledEvents, params });
-      if (isLimited) {
-        return null;
-      }
+      const trackFunction = () => {
+        const { eventName, metadata } = getEventConfig(event, params);
+        okgrowAnalytics.track(eventName, metadata);
+      };
 
-      const { eventName, metadata } = getEventConfig(event, params);
-      okgrowAnalytics.track(eventName, metadata);
+      const performMaybePerSessionTrack = makeLimitedOncePerSessionTrackFunction(
+        trackFunction,
+        event,
+        params,
+      );
+
+      const performMaybePerSessionOrThrottledTrack = makeThrottledTrackFunction(
+        performMaybePerSessionTrack,
+        event,
+        throttledTrackFunctionsCache,
+      );
+
+      performMaybePerSessionOrThrottledTrack();
     },
   };
 };

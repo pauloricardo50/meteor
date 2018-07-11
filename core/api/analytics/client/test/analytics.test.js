@@ -119,7 +119,7 @@ describe('Client analytics', () => {
       ]);
     });
 
-    it(`throttles the tracking by event name
+    it(`throttles the tracking by event
         for the given amount of time`, (done) => {
       const callerFunction = () =>
         clientAnalytics.track(EVENTS.SCROLLED_PAGE, { yCoordinate: 123 });
@@ -136,7 +136,7 @@ describe('Client analytics', () => {
       }, 260);
     });
 
-    it('does not throttle an event with a different name than the throttled one', () => {
+    it('does not throttle an event different than the throttled one', () => {
       clientAnalytics.track(EVENTS.SCROLLED_PAGE, { yCoordinate: 123 });
       clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
       clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
