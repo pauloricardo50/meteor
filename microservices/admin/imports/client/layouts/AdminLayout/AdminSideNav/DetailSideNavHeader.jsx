@@ -22,7 +22,7 @@ const DetailSideNavHeader = (props) => {
     getSortOptionFromField(sortOptions[collectionName], sortOption.field);
 
   return (
-    <div>
+    <React.Fragment>
       <div className="detail-side-nav-header">
         <DetailSideNavSort {...props} />
 
@@ -36,22 +36,22 @@ const DetailSideNavHeader = (props) => {
       </div>
 
       {currentSortOption && (
-        <div>
+        <React.Fragment>
           <T id="general.sortBy" />: {currentSortOption.label}
           <T id={`DetailSideNavHeader.sortOrder.${sortOption.order}`} />
-        </div>
+        </React.Fragment>
       )}
 
       {filterArray.length > 0 && (
-        <div>
+        <React.Fragment>
           <T id="general.filterBy" />:{' '}
           {filterArray
             .map(filter =>
               getFilterOptionFromValue(getFilterOptions(props), filter).label)
             .reduce((prev, curr) => [prev, ', ', curr])}
-        </div>
+        </React.Fragment>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

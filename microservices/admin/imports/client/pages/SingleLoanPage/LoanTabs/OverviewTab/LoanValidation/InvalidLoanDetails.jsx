@@ -38,7 +38,7 @@ const InvalidLoanDetails = ({ loan }) => {
   });
 
   return (
-    <div>
+    <React.Fragment>
       <hr />
       <h2 className="fixed-size bold error">
         <T id="LoanValidation.invalidatedAt" /> <FullDate date={verifiedAt} />
@@ -62,7 +62,7 @@ const InvalidLoanDetails = ({ loan }) => {
           />
         )}
       </ul>
-    </div>
+    </React.Fragment>
   );
 };
 

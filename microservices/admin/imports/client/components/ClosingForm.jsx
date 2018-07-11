@@ -52,7 +52,7 @@ export default class ClosingForm extends Component {
     const { date, schedule } = this.state;
 
     return (
-      <div>
+      <React.Fragment>
         <DateInput
           placeholder="Première date de paiement"
           value={date}
@@ -65,7 +65,7 @@ export default class ClosingForm extends Component {
           options={schedules.map(s => ({ id: s, label: s }))}
           renderValue={val => val}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }

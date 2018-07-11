@@ -14,7 +14,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
 
   return (
     <section className="login-page">
-      <div>
+      <React.Fragment>
         <h1>
           <T id="LoginPage.title" />
         </h1>
@@ -31,7 +31,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
             });
           }}
         />
-      </div>
+      </React.Fragment>
     </section>
   );
 };

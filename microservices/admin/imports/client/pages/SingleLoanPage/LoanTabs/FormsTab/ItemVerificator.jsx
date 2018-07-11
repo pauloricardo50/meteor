@@ -41,7 +41,7 @@ export default class ItemVerificator extends Component {
           />
         </div>
         {item.status === FILE_STATUS.ERROR && (
-          <div>
+          <React.Fragment>
             <TextInput
               currentValue={error}
               onChange={this.handleChange}
@@ -57,7 +57,7 @@ export default class ItemVerificator extends Component {
               disabled={error === item.error}
               style={{ marginBottom: 8 }}
             />
-          </div>
+          </React.Fragment>
         )}
       </div>
     );
