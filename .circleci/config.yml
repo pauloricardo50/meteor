@@ -52,10 +52,10 @@ jobs:
       - add_ssh_keys
       
       - *restore_meteor_system_cache
-      # - restore_cache:
-      #     name: restore root cached node_modules
-      #     keys:
-      #       - build-epotek-v5-node_modules-{{ checksum "./package.json" }}
+      - restore_cache:
+          name: restore root cached node_modules
+          keys:
+            - build-epotek-v5-node_modules-{{ checksum "./package.json" }}
       - restore_cache:
           name: restore global system cache
           keys:
@@ -171,7 +171,7 @@ jobs:
           name: cache global system cache
           key: *global_system_cache_key
           paths:
-            - /home/circleci/.cache/Cypress
+            - ~/.cache/Cypress
       - save_cache:
           name: cache app's meteor build
           key: *app_meteor_cache_key
