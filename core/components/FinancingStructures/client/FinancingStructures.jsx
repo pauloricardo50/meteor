@@ -14,7 +14,7 @@ type FinancingStructuresProps = {
 };
 
 const FinancingStructures = ({ loan }: FinancingStructuresProps) => (
-  <div>
+  <div className="financing-structures">
     <FinancingStructuresHeader />
     <FinancingStructuresProject />
     <FinancingStructuresFinancing />
