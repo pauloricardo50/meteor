@@ -3,6 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
+import StructureSchema from './StructureSchema';
 import { contactsSchema, borrowerIdsSchema } from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
@@ -39,6 +40,8 @@ const LoanSchema = new SimpleSchema({
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   adminNote: { type: String, defaultValue: '', optional: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
+  structures: { type: Array, defaultValue: [] },
+  'structures.$': { type: StructureSchema },
   ...borrowerIdsSchema,
   ...contactsSchema,
 });

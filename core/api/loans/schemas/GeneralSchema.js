@@ -9,7 +9,7 @@ import {
   USAGE_TYPE,
 } from '../../constants';
 
-const loanTranchesSchema = {
+export const loanTranchesSchema = {
   loanTranches: {
     type: Array,
     defaultValue: [{ type: INTEREST_RATES.LIBOR, value: 100000 }],

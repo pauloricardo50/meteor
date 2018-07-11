@@ -123,7 +123,7 @@ const auctionSchema = {
 };
 
 // All logic fields required by the app to trigger the right things at the right time
-export const LogicSchema = new SimpleSchema({
+const LogicSchema = new SimpleSchema({
   step: {
     type: Number,
     defaultValue: 1,
@@ -186,3 +186,5 @@ export const LogicSchema = new SimpleSchema({
   ...lenderSchema,
   ...auctionSchema,
 });
+
+export default LogicSchema;
