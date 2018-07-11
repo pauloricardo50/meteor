@@ -22,11 +22,10 @@ import FinancePage from '../../client/pages/FinancePage';
 import FilesPage from '../../client/pages/FilesPage';
 import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
 import PasswordResetPage from '../../client/pages/PasswordResetPage';
-
+import FinancingPage from '../../client/pages/FinancingPage';
 import AppPage from '../../client/pages/AppPage';
 import AccountPage from '../../client/pages/AccountPage';
 import AddLoanPage from '../../client/pages/AddLoanPage';
-import PasswordResetpage from '../../client/pages/PasswordResetPage';
 
 import AppLayout from '../../client/layouts/AppLayout';
 
@@ -58,7 +57,9 @@ const AppRouter = () => (
         <Route path={ROUTES.CONTRACT_PAGE} component={ContractPage} />
         <Route path={ROUTES.CLOSING_PAGE} component={ClosingPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
+        <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
+
         <Route path={ROUTES.ADD_LOAN_PAGE} component={AddLoanPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
@@ -66,7 +67,7 @@ const AppRouter = () => (
         />
         <Route
           path={ROUTES.ENROLL_ACCOUNT_PAGE}
-          component={PasswordResetpage}
+          component={PasswordResetPage}
         />
         <Route
           path={ROUTES.EMAIL_VERIFICATION_PAGE}

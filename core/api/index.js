@@ -1,3 +1,4 @@
+// @flow
 import { Meteor } from 'meteor/meteor';
 import * as _constants from './constants';
 
@@ -14,6 +15,7 @@ export { default as SecurityService } from './security';
 export * from './methods';
 export * from './helpers';
 export * from './containerToolkit';
+export * from './types';
 
 // Do this for autocompletion...
 export const constants = _constants;

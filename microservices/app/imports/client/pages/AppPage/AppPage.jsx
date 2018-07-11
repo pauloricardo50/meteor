@@ -5,14 +5,14 @@ import T from 'core/components/Translation';
 import DashboardUnverified from '../../components/DashboardUnverified';
 import LoanAppItem from './LoanAppItem';
 
-const AppPage = ({ loans, currentUser }) => {
+const AppPage = ({ currentUser: { emails, loans } }) => {
   if (loans.length === 1) {
     return <Redirect to={`/loans/${loans[0]._id}`} />;
   }
 
   return (
     <section id="app-page" className="flex-col center">
-      {!currentUser.emails[0].verified && (
+      {!emails[0].verified && (
         <div style={{ marginBottom: 16 }}>
           <DashboardUnverified />
         </div>
@@ -31,11 +31,8 @@ const AppPage = ({ loans, currentUser }) => {
 
 AppPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
-  loans: PropTypes.arrayOf(PropTypes.object),
 };
 
-AppPage.defaultProps = {
-  loans: [],
-};
+AppPage.defaultProps = {};
 
 export default AppPage;

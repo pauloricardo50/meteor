@@ -8,7 +8,8 @@ import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
 import * as ROUTES from '../../../startup/client/appRoutes';
 
-const links = [
+type linksType = Array<{| id: string, to: string, exact?: boolean |}>;
+const sideNavLinks: linksType = [
   { id: 'dashboard', to: ROUTES.DASHBOARD_PAGE, exact: true },
   { id: 'files', to: ROUTES.FILES_PAGE },
   { id: 'closing', to: ROUTES.CLOSING_PAGE },
@@ -17,7 +18,13 @@ const links = [
   { id: 'properties', to: ROUTES.PROPERTIES_PAGE },
 ];
 
-export const LoanSideNav = ({ loan, links }) => (
+export const LoanSideNav = ({
+  loan,
+  links,
+}: {
+  loan: any,
+  links: linksType,
+}) => (
   <ul className="loan-side-nav">
     {links
       .map(link => ({
@@ -46,4 +53,4 @@ LoanSideNav.propTypes = {
   loan: PropTypes.object.isRequired,
 };
 
-export default withProps({ links })(LoanSideNav);
+export default withProps({ links: sideNavLinks })(LoanSideNav);

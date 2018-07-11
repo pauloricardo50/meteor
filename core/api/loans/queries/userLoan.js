@@ -1,5 +1,6 @@
+// @flow
 import { Meteor } from 'meteor/meteor';
-import { Loans } from '../../';
+import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
@@ -123,3 +124,9 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   },
   userFormsEnabled: 1,
 });
+
+export type userLoan = { _id: string };
+
+const obj: userLoan = {};
+
+obj._id = 'hello';
