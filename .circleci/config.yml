@@ -2,6 +2,9 @@ defaults: &defaults
   working_directory: ~/app
 
 # caching paths
+global_system_cache_key: &global_system_cache_key
+  build-epotek-v5-global-system-{{ checksum "./package.json" }}-{{ checksum "./microservices/app/package.json" }}-{{ checksum "./microservices/admin/package.json" }}-{{ checksum "./microservices/www/package.json" }}
+  
 meteor_system_cache_key: &meteor_system_cache_key
   build-epotek-v5-meteor-system-{{ checksum "./.circleci/config.yml" }}
 
@@ -53,6 +56,10 @@ jobs:
           name: restore root cached node_modules
           keys:
             - build-epotek-v5-node_modules-{{ checksum "./package.json" }}
+      - restore_cache:
+          name: restore global system cache
+          keys:
+            - *global_system_cache_key
       - restore_cache:
           name: restore app's meteor cached build
           keys:
@@ -160,6 +167,11 @@ jobs:
           key: build-epotek-v5-node_modules-{{ checksum "./package.json" }}
           paths:
             - ./node_modules
+      - save_cache:
+          name: cache global system cache
+          key: *global_system_cache_key
+          paths:
+            - /home/circleci/.cache/Cypress
       - save_cache:
           name: cache app's meteor build
           key: *app_meteor_cache_key
