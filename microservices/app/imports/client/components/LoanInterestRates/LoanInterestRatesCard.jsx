@@ -15,6 +15,9 @@ const LoanInterestRatesCard = ({ loan }) => {
       auction: { status },
     },
   } = loan;
+
+  const hasAuctionEnded = status === AUCTION_STATUS.ENDED;
+
   return (
     <Card className="loan-interest-rates-card">
       <h3>
@@ -24,9 +27,11 @@ const LoanInterestRatesCard = ({ loan }) => {
         />
       </h3>
       <CardContent>
+        <h4>{hasAuctionEnded ? 'Auction ended' : 'Ongoing auction'}</h4>
+
         <LoanInterestRatesTable
           loanId={_id}
-          hasAuctionEnded={status === AUCTION_STATUS.ENDED}
+          hasAuctionEnded={hasAuctionEnded}
         />
       </CardContent>
     </Card>

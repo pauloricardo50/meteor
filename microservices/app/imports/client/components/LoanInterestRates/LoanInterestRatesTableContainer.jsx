@@ -5,6 +5,7 @@ import generalInterestRates from 'core/components/InterestRatesTable/interestRat
 import {
   columnOptions,
   rows,
+  getBestRatesInAllOffers,
   getInterestRatesFromOffers,
 } from './loanInterestsTableHelpers';
 
@@ -17,7 +18,7 @@ export const LoanInterestsTableContainer = compose(
   createContainer(({ hasAuctionEnded, offers }) => ({
     columnOptions,
     rows: hasAuctionEnded
-      ? rows({ interestRates: getInterestRatesFromOffers({ offers }) })
+      ? rows({ interestRates: getBestRatesInAllOffers({ offers }) })
       : rows({ interestRates: generalInterestRates }),
   })),
 );
