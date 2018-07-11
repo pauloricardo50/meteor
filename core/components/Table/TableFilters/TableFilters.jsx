@@ -48,9 +48,9 @@ const TableFilters = ({
             key={getFilterKeyFromPath(filter.path)}
             data={data}
             filter={filter}
-            value={pickOptionsForFilter(options, filter)}
-            onChange={selectedOptions =>
-              handleOptionsSelect(filter.path, selectedOptions)
+            options={pickOptionsForFilter(options, filter.path)}
+            onChange={selectedValues =>
+              handleOptionsSelect(filter.path, selectedValues)
             }
           />
         ))}

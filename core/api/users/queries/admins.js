@@ -11,4 +11,7 @@ export default Users.createQuery(USER_QUERIES.ADMINS, {
     },
   },
   emails: 1,
+  firstName: 1,
+  lastName: 1,
+  username: 1,
 });

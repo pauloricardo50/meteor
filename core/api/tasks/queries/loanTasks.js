@@ -28,10 +28,14 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
     emails: 1,
     roles: 1,
     username: 1,
+    firstName: 1,
+    lastName: 1,
   },
   user: {
     emails: 1,
     username: 1,
+    firstName: 1,
+    lastName: 1,
   },
   borrower: {
     firstName: 1,

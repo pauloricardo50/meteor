@@ -45,7 +45,7 @@ export default class ErrorBoundary extends Component {
       case 'root':
         return <RootError error={error} />;
       default:
-        return <div>Woops!</div>;
+        return <React.Fragment>Woops!</React.Fragment>;
       }
     }
 

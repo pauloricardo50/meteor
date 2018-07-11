@@ -13,7 +13,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
 
   return (
     <section className="login-page">
-      <div>
+      <React.Fragment>
         <h1>
           <T id="LoginPage.title" />
         </h1>
@@ -24,7 +24,7 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
             sendVerificationLink.run({});
           }}
         />
-      </div>
+      </React.Fragment>
     </section>
   );
 };

@@ -87,7 +87,7 @@ describe('TableFilters', () => {
     expect(componentFilters).to.deep.equal(flattenedFilters);
   });
 
-  it(`passes the correct 'value' prop to TableFilter
+  it(`passes the correct 'options' prop to TableFilter
       based on the given options and filters`, () => {
     const data = [
       { firstName: 'James', lastName: 'Berg', info: { weight: 68, age: 20 } },
@@ -98,8 +98,8 @@ describe('TableFilters', () => {
       },
     ];
 
-    const ageDropdownValues = [21, 15, 20, 29];
-    const firstNameDropdownValues = ['James', 'Sebastian'];
+    const ageOptions = [21, 15, 20, 29];
+    const firstNameOptions = ['James', 'Sebastian'];
 
     const filters = {
       filters: {
@@ -107,23 +107,23 @@ describe('TableFilters', () => {
         lastName: true,
         info: { weight: [70], age: [24, 20] },
       },
-      options: { age: ageDropdownValues, firstName: firstNameDropdownValues },
+      options: { age: ageOptions, firstName: firstNameOptions },
     };
 
     const props = { ...defaultProps, data, filters };
     const tableFilterComponents = component(props).find(TableFilter);
 
     const firstNameFilter = tableFilterComponents.at(0);
-    expect(firstNameFilter.prop('value')).to.deep.equal(firstNameDropdownValues);
+    expect(firstNameFilter.prop('options')).to.deep.equal(firstNameOptions);
 
     const lastNameFilter = tableFilterComponents.at(1);
-    expect(lastNameFilter.prop('value')).to.equal(undefined);
+    expect(lastNameFilter.prop('options')).to.equal(undefined);
 
     const weightFilter = tableFilterComponents.at(2);
-    expect(weightFilter.prop('value')).to.equal(undefined);
+    expect(weightFilter.prop('options')).to.equal(undefined);
 
     const ageFilter = tableFilterComponents.at(3);
-    expect(ageFilter.prop('value')).to.deep.equal(ageDropdownValues);
+    expect(ageFilter.prop('options')).to.deep.equal(ageOptions);
   });
 
   it('renders only the filtered children', () => {

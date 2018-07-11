@@ -1,12 +1,10 @@
 import React from 'react';
 
-import Table from 'core/components/Table';
 import T from 'core/components/Translation';
-import interestRates from './interestRates';
-import InterestsTableTrend from './InterestsTableTrend';
-import InterestsTableDate from './InterestsTableDate';
+import interestRates from 'core/components/InterestRatesTable/interestRates';
+import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 
-const columnOptions = [
+export const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
   {
     id: 'InterestsTable.trend',
@@ -15,14 +13,14 @@ const columnOptions = [
   { id: 'InterestsTable.rate', style: { textAlign: 'center' } },
 ];
 
-const formatRate = rate => (
+export const formatRate = rate => (
   <span>
     <b>{(rate * 100).toFixed(2)}</b>
     <span>%</span>
   </span>
 );
 
-const rows = interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
+export const rows = interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
   id: type,
   columns: [
     <T id={`InterestsTable.${type}`} />,
@@ -32,12 +30,3 @@ const rows = interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
     </span>,
   ],
 }));
-
-const InterestsTable = () => (
-  <div className="interests-page-table">
-    <Table columnOptions={columnOptions} rows={rows} sortable={false} />
-    <InterestsTableDate />
-  </div>
-);
-
-export default InterestsTable;

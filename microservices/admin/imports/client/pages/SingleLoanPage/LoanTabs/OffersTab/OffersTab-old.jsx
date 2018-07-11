@@ -34,7 +34,7 @@ export default class OffersTab extends Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <div className="text-center">
           <AdminNewOffer {...this.props} style={{ margin: 8 }} />
         </div>
@@ -141,13 +141,13 @@ export default class OffersTab extends Component {
                 )}
               </div>
               {active === i && (
-                <div>
+                <React.Fragment>
                   <ConfirmMethod
                     label="Supprimer"
                     keyword="SUPPRIMER"
                     method={cb => deleteOffer.run({ id: _id }).then(cb)}
                   />
-                </div>
+                </React.Fragment>
               )}
             </li>
           ))}

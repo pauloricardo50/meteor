@@ -20,10 +20,10 @@ const StepStatus = (props) => {
     >
       {steps.map((step, i) => (
         <li key={step.nb} style={{ display: 'flex', flexDirection: 'column' }}>
-          <div>
+          <React.Fragment>
             <T id={`steps.${step.nb}.title`} />{' '}
             {currentStep > i && <Icon type="check" />}
-          </div>
+          </React.Fragment>
           <ul>
             {step.items.map(item => (
               <li key={item.id}>

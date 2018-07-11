@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const HomePageNewsletter = props => <div>Hello World</div>;
+const HomePageNewsletter = props => (
+  <React.Fragment>Hello World</React.Fragment>
+);
 
 HomePageNewsletter.propTypes = {};
 

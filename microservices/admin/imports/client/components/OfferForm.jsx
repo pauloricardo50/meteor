@@ -198,7 +198,7 @@ export default class OfferForm extends Component {
             noIntl
           />
 
-          <div>
+          <React.Fragment>
             <TextInput
               id="maxAmount"
               label="Prêt Maximal *"
@@ -208,9 +208,9 @@ export default class OfferForm extends Component {
               value={maxAmount}
               noIntl
             />
-          </div>
+          </React.Fragment>
 
-          <div>
+          <React.Fragment>
             <TextInput
               id="amortization"
               label="Amortissement *"
@@ -220,7 +220,7 @@ export default class OfferForm extends Component {
               value={amortization}
               noIntl
             />
-          </div>
+          </React.Fragment>
 
           <h4 className="text-center" style={styles.h4}>
             Taux Standard
@@ -253,12 +253,12 @@ export default class OfferForm extends Component {
           />
 
           {showCounterpart && (
-            <div>
+            <React.Fragment>
               <h4 className="text-center" style={styles.h4}>
                 Taux d'intérêt avec contrepartie
               </h4>
 
-              <div>
+              <React.Fragment>
                 <TextInput
                   id="counterparts"
                   label="Contrepartie(s) spéciale(s) *"
@@ -271,7 +271,7 @@ export default class OfferForm extends Component {
                   value={counterparts}
                   noIntl
                 />
-              </div>
+              </React.Fragment>
 
               <div className="flex" style={{ flexWrap: 'wrap' }}>
                 {getFormArray(1).map(({ name, label }) => (
