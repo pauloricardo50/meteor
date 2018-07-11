@@ -1,8 +1,23 @@
 import React from 'react';
-import { branch, lifecycle } from 'recompose';
+import { branch, lifecycle, withProps } from 'recompose';
 import analytics, { getEvent } from '../api/analytics/client/analytics';
 
-const withFunctionAnalytics = event => WrappedComponent => (props) => {
+const withFunctionAnalytics = event =>
+  withProps((props) => {
+    const { func } = getEvent(event);
+    const { [func]: functionToTrack } = props;
+
+    const trackedFunction = (...args) => {
+      // here you can track later and run the tracked function first if you want
+      analytics.track(event, ...args);
+
+      return functionToTrack(...args);
+    };
+
+    return { [func]: trackedFunction };
+  });
+
+withProps(() => {
   const { func } = getEvent(event);
   const { [func]: functionToTrack } = props;
 
@@ -14,8 +29,7 @@ const withFunctionAnalytics = event => WrappedComponent => (props) => {
   };
 
   const trackedProps = { ...props, [func]: trackedFunction };
-  return <WrappedComponent {...trackedProps} />;
-};
+});
 
 const withLifecycleAnalytics = (event) => {
   const { lifecycleMethod } = getEvent(event);
