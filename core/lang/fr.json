@@ -1082,6 +1082,8 @@
   "LenderTable.monthly": "Coût mensuel",
   "LenderTable.perMonth": "/mois",
   "LoanInterestRatesCard.title": " Nos taux d'intérêts",
+  "LoanInterestRatesCard.auctionEnded": "Enchères fini",
+  "LoanInterestRatesCard.auctionOngoing": "Enchères en cours",
   "LoanSelector.addLoan": "Ajouter nouvelle demande",
   "LoanStrategyPicker.description":
     "Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant, nous pouvons vous aiguiller dans la bonne direction grâce à notre savoir-faire.{verticalSpace}Sinon, utilisez notre outil interactif ci-dessous.",
