@@ -5,7 +5,6 @@ import queryString from 'query-string';
 
 import { sendVerificationLink } from 'core/api/methods';
 
-import { addUserTracking } from '../../utils/analytics';
 import T from '../Translation';
 import Accounts from './Accounts';
 
@@ -23,12 +22,6 @@ const LoginPage = ({ location: { search }, history: { push } }) => {
           onPostSignUpHook={() => {
             push(path || '/');
             sendVerificationLink.run({});
-
-            // Create user for analytics
-            addUserTracking(Meteor.userId(), {
-              email: Meteor.user().emails[0].address,
-              id: Meteor.userId(),
-            });
           }}
         />
       </React.Fragment>
