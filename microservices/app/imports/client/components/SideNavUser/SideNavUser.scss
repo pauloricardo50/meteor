@@ -28,6 +28,24 @@
   height: calc(100vh - 64px);
 }
 
+.side-nav-user [aria-haspopup='true'] {
+  padding-right: 23px;
+
+  svg:first-child {
+    padding-right: 8px;
+    margin: 0;
+  }
+
+  [class*='MuiListItemText'] {
+    padding-right: 0;
+  }
+
+  span:first-child {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
 .side-nav-user .link {
   display: flex;
   align-items: center;
