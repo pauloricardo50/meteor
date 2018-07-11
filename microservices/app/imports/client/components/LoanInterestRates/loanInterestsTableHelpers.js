@@ -77,7 +77,7 @@ const getBestRate = ({ offers, interestKey }) => {
   return { rateLow: min, rateHigh: max };
 };
 
-export const getBestRatesInAllOffers = ({ offers }) =>
+export const getInterestRatesFromOffers = ({ offers }) =>
   interestRatesTableOptions
     .map((interestKey) => {
       const rates = getBestRate({ offers, interestKey });
