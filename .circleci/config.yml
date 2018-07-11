@@ -52,10 +52,10 @@ jobs:
       - add_ssh_keys
       
       - *restore_meteor_system_cache
-      - restore_cache:
-          name: restore root cached node_modules
-          keys:
-            - build-epotek-v5-node_modules-{{ checksum "./package.json" }}
+      # - restore_cache:
+      #     name: restore root cached node_modules
+      #     keys:
+      #       - build-epotek-v5-node_modules-{{ checksum "./package.json" }}
       - restore_cache:
           name: restore cypress binary cache
           keys:
