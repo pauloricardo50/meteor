@@ -12,7 +12,7 @@ describe('AppPage', () => {
   const component = () => shallow(<AppPage {...props} />);
 
   beforeEach(() => {
-    props = { loans: [], currentUser: { emails: [{}] } };
+    props = { currentUser: { emails: [{}], loans: [] } };
   });
 
   it('renders some text if no loan is passed', () => {
@@ -26,7 +26,7 @@ describe('AppPage', () => {
 
   it('redirects to the loan if only one loan exists', () => {
     const id = 'testId';
-    props.loans = [{ _id: id }];
+    props.currentUser.loans = [{ _id: id }];
     expect(component().find(Redirect).length).to.equal(1);
     expect(component()
       .find(Redirect)
@@ -35,7 +35,7 @@ describe('AppPage', () => {
   });
 
   it('renders one LoanAppitem per loan', () => {
-    props.loans = [{}, {}];
-    expect(component().find(LoanAppItem).length).to.equal(props.loans.length);
+    props.currentUser.loans = [{}, {}];
+    expect(component().find(LoanAppItem).length).to.equal(props.currentUser.loans.length);
   });
 });
