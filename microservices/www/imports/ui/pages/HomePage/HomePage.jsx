@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PageHead from 'core/components/PageHead';
 // import HomePageInterestRates from './HomePageInterestRates';
 import HomePageHeader from './HomePageHeader';
 // import HomePagePartners from './HomePagePartners';
@@ -11,13 +12,19 @@ import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
 const HomePage = () => (
   <WwwLayout className="home-page">
+    <PageHead
+      titleId="HomePageHeader.title"
+      descriptionId="HomePageHeader.description"
+    />
     {/* <HomePageInterestRates /> */}
     <WwwLayout.TopNav variant={VARIANTS.WHITE} />
-    <HomePageHeader />
-    {/* <HomePagePartners /> */}
-    <HomePageDescription />
-    <HomePageReviews />
-    {/* <HomePageNewsletter /> */}
+    <WwwLayout.Content>
+      <HomePageHeader />
+      {/* <HomePagePartners /> */}
+      <HomePageDescription />
+      <HomePageReviews />
+      {/* <HomePageNewsletter /> */}
+    </WwwLayout.Content>
     <WwwLayout.Footer />
   </WwwLayout>
 );

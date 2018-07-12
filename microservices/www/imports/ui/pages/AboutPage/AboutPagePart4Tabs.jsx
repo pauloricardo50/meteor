@@ -16,6 +16,7 @@ const AboutPagePart4Tabs = ({ setIndex, index: activeIndex }) => (
         })}
         key={index}
         onClick={() => setIndex(index)}
+        onMouseEnter={() => setIndex(index)}
       >
         <h4>
           <T id={`AboutPagePart4.title${index}`} />

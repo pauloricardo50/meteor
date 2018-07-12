@@ -15,24 +15,19 @@
     box-sizing: border-box;
     width: 100%;
     padding: 32px;
-    padding-top: 0;
-  }
-}
-
-@media (max-width: $med) {
-  .interests-page-content {
-    padding: 16px;
+    padding-top: 0;@include screen(med) {
+      padding: 16px;
+    }
   }
 }
 
 .interests-page-table {
+  display: flex;
+  flex-direction: column;
+
   margin: 80px 32px 0 32px;
 
-  transform: scale(1.25);
-}
-
-@media (min-width: $med) {
-  .interests-page-table {
+  transform: scale(1.25);@include screen(med, min) {
     width: $small;
   }
 }
@@ -45,4 +40,10 @@
   &.DOWN {
     color: $success;
   }
+}
+
+.interests-table-date {
+  align-self: flex-end;
+
+  margin-top: 16px;
 }

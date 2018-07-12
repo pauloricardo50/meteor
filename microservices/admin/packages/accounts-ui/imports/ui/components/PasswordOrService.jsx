@@ -9,9 +9,7 @@ export class PasswordOrService extends React.Component {
     super(props);
     this.state = {
       hasPasswordService: hasPasswordService(),
-      services: Object.keys(props.oauthServices).map(service => {
-        return props.oauthServices[service].label
-      })
+      services: Object.keys(props.oauthServices).map(service => props.oauthServices[service].label),
     };
   }
 
@@ -22,9 +20,9 @@ export class PasswordOrService extends React.Component {
     return T9n.get(text);
   }
 
-  render () {
-    let { className = "password-or-service", style = {} } = this.props;
-    let { hasPasswordService, services } = this.state;
+  render() {
+    const { className = 'password-or-service', style = {} } = this.props;
+    const { hasPasswordService, services } = this.state;
     labels = services;
     if (services.length > 2) {
       labels = [];
@@ -32,8 +30,8 @@ export class PasswordOrService extends React.Component {
 
     if (hasPasswordService && services.length > 0) {
       return (
-        <div style={ style } className={ className }>
-          { `${this.translate('orUse')} ${ labels.join(' / ') }` }
+        <div style={style} className={className}>
+          {`${this.translate('orUse')} ${labels.join(' / ')}`}
         </div>
       );
     }
@@ -42,7 +40,7 @@ export class PasswordOrService extends React.Component {
 }
 
 PasswordOrService.propTypes = {
-  oauthServices: PropTypes.object
+  oauthServices: PropTypes.object,
 };
 
 Accounts.ui.PasswordOrService = PasswordOrService;

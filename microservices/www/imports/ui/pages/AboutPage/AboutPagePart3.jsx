@@ -4,7 +4,7 @@ import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 
 const AboutPagePart3 = () => (
-  <div className="about-page-part-3">
+  <div className="about-section about-page-part-3">
     <div className="card1 about-page-part-3-left">
       <h3>
         <T id="AboutPagePart3.title1" />

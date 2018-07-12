@@ -4,7 +4,7 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 
 const AboutPagePart2 = () => (
-  <div className="about-page-part-2">
+  <div className="about-section about-page-part-2">
     <h2>
       <T id="AboutPagePart2.title" />
     </h2>

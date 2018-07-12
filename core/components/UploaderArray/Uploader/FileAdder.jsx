@@ -28,7 +28,13 @@ const FileAdder = ({ docId, id, handleAddFiles }) => (
       style={styles.input}
       multiple
       // Do Array.from to extract file from the FileList object
-      onChange={({ target: { files } }) => handleAddFiles(Array.from(files))}
+      onChange={(event) => {
+        handleAddFiles(Array.from(event.target.files));
+        // Clear the input after upload to be able to upload the same file
+        // twice: https://stackoverflow.com/questions/42192346/how-to-reset-reactjs-file-input
+        event.target.value = null;
+      }}
+      // value={null}
       // This piece of shit is important or inputs will get mixed up...
       key={docId + id}
     />

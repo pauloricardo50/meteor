@@ -20,8 +20,14 @@ import {
 export const getLoanValue = (propertyValue, fortune) =>
   propertyValue * (1 + NOTARY_FEES) - fortune;
 
+export const getRefinancingBorrowRatio = (propertyValue, loan) =>
+  loan / propertyValue;
+
 export const getBorrowRatio = (propertyValue, fortune) =>
-  getLoanValue(propertyValue, fortune) / propertyValue;
+  getRefinancingBorrowRatio(
+    propertyValue,
+    getLoanValue(propertyValue, fortune),
+  );
 
 export const getYearlyAmortization = ({
   propertyValue,
@@ -39,7 +45,7 @@ export const getYearlyAmortization = ({
   // borrowValue is above 65%
   // 15 years amortization is the default, but if you're older, you'll
   // have to amortize faster
-  return percentToAmortize * propertyValue / yearsToRetirement;
+  return (percentToAmortize * propertyValue) / yearsToRetirement;
 };
 
 // Given the value of a property, the down payment and interest rate,
@@ -56,10 +62,10 @@ export const getSimpleYearlyMaintenance = (
 export const getIncomeRatio = (yearlySalary, monthlyCost) =>
   monthlyCost / (yearlySalary / 12);
 
-export const getFinmaMonthlyCost = (propertyValue, fortune) => {
+export const getFinmaMonthlyCost = (propertyValue, fortune, wantedLoan) => {
   const maintenanceMonthly =
     getSimpleYearlyMaintenance(propertyValue, MAINTENANCE_FINMA) / 12;
-  const loanValue = getLoanValue(propertyValue, fortune);
+  const loanValue = wantedLoan || getLoanValue(propertyValue, fortune);
   const interestsMonthly =
     getSimpleYearlyInterests(loanValue, INTERESTS_FINMA) / 12;
   const amortizationMonthly =

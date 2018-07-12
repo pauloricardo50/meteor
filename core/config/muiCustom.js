@@ -36,9 +36,9 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         borderRadius: 8,
-        color: colors.primary,
       },
-      raised: {
+      containedPrimary: {},
+      contained: {
         backgroundColor: 'white',
         color: colors.primary,
       },
@@ -54,7 +54,6 @@ const theme = createMuiTheme({
     MuiExpansionPanel: {
       root: {
         border: 'none',
-        // border: `1px solid ${colors.primary}`,
         marginBottom: 8,
         boxShadow: '0 2px 60px 5px rgba(0, 0, 0, 0.05)',
         borderRadius: 16,
@@ -68,16 +67,13 @@ const theme = createMuiTheme({
       },
     },
   },
-  // direction: 'ltr',
   palette: {
     primary: {
-      // light: '',
       main: colors.primary,
       dark: '#0048bb', // Darken 20%
       contrastText: '#fff',
     },
     secondary: {
-      // light: '',
       main: colors.success,
       dark: '#1aa890', // Darken 20%
       contrastText: '#fff',

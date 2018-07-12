@@ -5,13 +5,13 @@ import FieldsIssuesList from './FieldsIssuesList';
 import FilesIssuesList from './FilesIssuesList';
 
 const DocErrorsDetails = ({ translationId, adminValidation, documents }) => (
-  <div>
+  <React.Fragment>
     <h4 className="bold">
       <T id={translationId} />
     </h4>
     <FieldsIssuesList adminValidation={adminValidation} />
     <FilesIssuesList documents={documents} />
-  </div>
+  </React.Fragment>
 );
 
 DocErrorsDetails.propTypes = {

@@ -70,6 +70,21 @@ const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  firstName: {
+    type: String,
+    optional: true,
+  },
+  lastName: {
+    type: String,
+    optional: true,
+  },
+  phone: {
+    type: Array,
+    optional: true,
+  },
+  'phone.$': {
+    type: String,
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);

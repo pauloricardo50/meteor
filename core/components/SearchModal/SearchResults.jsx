@@ -42,23 +42,23 @@ class SearchResults extends Component {
     this.search.addIndex('tooltipMatch');
     this.search.addIndex('tooltipValue1');
     this.search.addIndex('tooltipValue2');
-    this.search.addDocuments(this.getTooltips());
+
+    this.tooltips = this.getTooltips();
+    this.search.addDocuments(this.tooltips);
   };
 
   getTooltips = () => {
     const f = this.props.intl.formatMessage;
-    const intlValues = {
-      verticalSpace: ' ',
-    };
+    const intlValues = { verticalSpace: ' ' };
 
     return Object.keys(generalTooltips).map((match) => {
-      const tooltipId = generalTooltips[match];
+      const tooltipId = generalTooltips[match].id;
       const tooltip = {
         id: tooltipId,
         tooltipMatch: match,
         tooltipValue1: f({ id: `tooltip.${tooltipId}` }, intlValues),
       };
-      if (typeof generalTooltips[match] !== 'string') {
+      if (generalTooltips[match].double) {
         tooltip.tooltipValue2 = f({ id: `tooltip2.${tooltipId}` }, intlValues);
       }
 
@@ -71,23 +71,12 @@ class SearchResults extends Component {
     const { showId } = this.state;
     const results = this.search.search(search);
 
-    if (search && results.length === 0) {
-      return (
-        <div className="description">
-          <p>
-            <T id="SearchResults.none" />
-          </p>
-        </div>
-      );
-    }
-
     if (showId) {
-      const selectedResult = results.filter(result => result.id === showId)[0];
+      const selectedResult = this.tooltips.filter(result => result.id === showId)[0];
       return (
         <div className="flex-col" style={styles.selected}>
           <h3>{selectedResult.tooltipMatch}</h3>
           <p>{selectedResult.tooltipValue1}</p>
-          <br />
           <p>{selectedResult.tooltipValue2}</p>
           <div className="text-center" style={{ paddingTop: 16 }}>
             <Button
@@ -100,9 +89,39 @@ class SearchResults extends Component {
       );
     }
 
+    if (search === '') {
+      return (
+        <List style={styles.list}>
+          {this.tooltips.map(result => (
+            <ListItem
+              button
+              divider
+              onClick={() => this.setState({ showId: result.id })}
+              key={result.id}
+            >
+              <ListItemText
+                primary={result.tooltipMatch}
+                secondary={result.tooltipValue1}
+              />
+            </ListItem>
+          ))}
+        </List>
+      );
+    }
+
+    if (search && results.length === 0) {
+      return (
+        <div className="description">
+          <p>
+            <T id="SearchResults.none" />
+          </p>
+        </div>
+      );
+    }
+
     return (
       <List style={styles.list}>
-        {results.slice(0, 5).map(result => (
+        {results.map(result => (
           <ListItem
             button
             divider

@@ -7,7 +7,7 @@ import ContactPageInformation from '../ContactPage/ContactPageInformation';
 export const ADDRESS = 'Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex';
 
 const AboutPageOffice = () => (
-  <div className="about-page-office">
+  <div className="about-section about-page-office">
     <div className="about-page-office-info">
       <div className="about-page-office-info-wrapper">
         <h2>

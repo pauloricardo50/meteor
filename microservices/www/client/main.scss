@@ -23,26 +23,12 @@
 @import '{}/imports/ui/components/Widget1/Widget1.scss';
 @import '{}/imports/ui/components/ContactUsForm/ContactUsForm.scss';
 
-body,
-html,
-#react-root {
-  // This is needed for the interests page, as its content is small, and we want
-  // the footer to be at the bottom.
-  // Inspired by this: https://stackoverflow.com/questions/31835164/how-do-i-fix-a-flexbox-sticky-footer-in-ie11
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-}
-
-@media (min-width: $med) {
-  body {
-    font-size: $font-size-m;
+body {
+  @include screen(med, min) {
+    @include font-size($font-size-m);
   }
-}
-
-@media (min-width: $wide) {
-  body {
-    font-size: $font-size-l;
+  @include screen(xwide, min) {
+    @include font-size($font-size-l);
   }
 }
 

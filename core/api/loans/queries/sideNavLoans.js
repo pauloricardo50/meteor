@@ -9,4 +9,9 @@ export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
   },
   $paginate: true,
   name: 1,
+  createdAt: 1,
+  updatedAt: 1,
+  user: {
+    assignedEmployee: { emails: 1 },
+  },
 });

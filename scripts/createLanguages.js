@@ -77,6 +77,8 @@ const config = {
     'roles',
     'Form',
     'TooltipSynonyms',
+    'SearchResults',
+    'InterestsTable'
   ],
 };
 

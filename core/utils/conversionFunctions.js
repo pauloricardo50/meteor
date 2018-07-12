@@ -9,9 +9,13 @@ export function toMoney(value) {
     // Don't format the value if it is undefined or an empty string
     return value;
   }
-  return String(Math.round(Number(Math.round(value))))
-    .replace(/\D/g, '')
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const negativePrefix = value < 0 ? '-' : '';
+  return (
+    negativePrefix +
+    String(Math.round(Number(Math.round(value))))
+      .replace(/\D/g, '')
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  );
 }
 
 // Replaces any nondigit character by an empty character, to prevent the use of non-digits
@@ -48,4 +52,21 @@ export const toDistanceString = (dist) => {
   }
 
   return `${Math.round(dist / 1000)} km`;
+};
+
+export const roundValue = (value, digits) =>
+  Math.round(value / 10 ** digits) * 10 ** digits;
+
+export const roundTo = (value, digits) => {
+  if (digits === 0) {
+    return value;
+  }
+
+  const roundedValue = roundValue(value, digits);
+
+  if (digits > 0) {
+    return roundedValue;
+  }
+
+  return parseFloat(roundedValue.toFixed(-digits));
 };

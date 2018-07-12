@@ -10,14 +10,14 @@ describe('TooltipContext', () => {
     // https://github.com/airbnb/enzyme/pulls
     const id = 'test';
     const Component = TooltipContainer(({ tooltipList }) => (
-      <div>{tooltipList}</div>
+      <React.Fragment>{tooltipList}</React.Fragment>
     ));
     const wrapper = mount(<TooltipProvider tooltipList={id}>
-      <div>
+      <React.Fragment>
         <span>
           <Component />
         </span>
-      </div>
+      </React.Fragment>
     </TooltipProvider>);
     expect(wrapper.find(Component)).to.have.length(1);
     expect(wrapper

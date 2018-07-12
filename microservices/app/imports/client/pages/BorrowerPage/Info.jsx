@@ -10,11 +10,11 @@ const Info = (props) => {
   const { borrowerId } = props.match.params;
   const {
     borrowers,
-    loan: { userFormsDisabled },
+    loan: { userFormsEnabled },
   } = props;
 
   return (
-    <section className="animated borrower-page-info flex--helper flex-justify--center fadeIn">
+    <section className="animated borrower-page-info flex--helper fadeIn">
       {borrowers.map(borrower => (
         <div className="borrower-page__wrapper col--50" key={borrower._id}>
           <h2 className="">
@@ -35,7 +35,7 @@ const Info = (props) => {
             docId={borrower._id}
             collection="borrowers"
             doc={borrower}
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
       ))}

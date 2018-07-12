@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Link, withRouter } from 'react-router-dom';
 
-import Icon from 'core/components/Icon';
 import Table from 'core/components/Table';
 import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
+import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
+import { TASK_TYPE } from 'core/api/tasks/taskConstants';
 import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
@@ -60,7 +62,7 @@ class TasksTable extends Component {
     }
 
     if (user) {
-      const { _id, username, emails } = user;
+      const { _id, username, emails, firstName, lastName } = user;
       if (!_id) {
         return {};
       }
@@ -68,7 +70,7 @@ class TasksTable extends Component {
       return {
         link: `/users/${_id}`,
         icon: 'contactMail',
-        text: username || emails[0].address,
+        text: getUserDisplayName({ firstName, lastName, username, emails }),
         translationId: 'user',
       };
     }
@@ -141,10 +143,11 @@ class TasksTable extends Component {
     ];
     if (showAssignee) {
       if (assignedEmployee) {
+        const { _id, emails, username, firstName, lastName } = assignedEmployee;
         const cellText =
-          assignedEmployee.username || assignedEmployee.emails[0].address;
+          getUserDisplayName({ firstName, lastName, username, emails });
         columns.push({
-          label: <Link to={`/users/${assignedEmployee._id}`}>{cellText}</Link>,
+          label: <Link to={`/users/${_id}`}>{cellText}</Link>,
           raw: cellText,
         });
       } else {
@@ -164,26 +167,52 @@ class TasksTable extends Component {
     return columns;
   };
 
-  setupRows = ({ data, showAssignee }) =>
-    data.map((task, index) => ({
+  setupRows = ({ data, showAssignee }) => {
+    const { history } = this.props;
+
+    return data.map((task, index) => ({
       id: task._id,
       columns: this.getColumns({ showAssignee, index, task }),
+      handleClick: () => {
+        if (task.type === TASK_TYPE.USER_ADDED_FILE) {
+          const { _id } = getTaskRelatedLoan(task);
+          history.push(`/loans/${_id}/forms`);
+        }
+      },
     }));
+  };
 
   render() {
-    const { data, isLoading, showAssignee } = this.props;
+    const {
+      data,
+      isLoading,
+      showAssignee,
+      children,
+      hideIfNoData,
+      hideIfNoDataText,
+    } = this.props;
 
     if (isLoading) {
       return <Loading />;
     }
 
+    const rows = this.setupRows({ data, showAssignee });
+
     return (
-      <Table
-        columnOptions={this.getColumnOptions({ showAssignee })}
-        rows={this.setupRows({ data, showAssignee })}
-        noIntl
-        className="tasks-table"
-      />
+      <React.Fragment>
+        {children}
+        {hideIfNoData && !rows.length ? (
+          <p className="text-center">{hideIfNoDataText}</p>
+        ) : (
+          <Table
+            columnOptions={this.getColumnOptions({ showAssignee })}
+            rows={rows}
+            noIntl
+            className="tasks-table"
+            clickable
+          />
+        )}
+      </React.Fragment>
     );
   }
 }
@@ -191,11 +220,18 @@ class TasksTable extends Component {
 TasksTable.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
   showAssignee: PropTypes.bool,
+  children: PropTypes.node,
+  hideIfNoData: PropTypes.bool,
+  hideIfNoDataText: PropTypes.string,
 };
 
 TasksTable.defaultProps = {
   showAssignee: false,
+  children: null,
+  hideIfNoData: false,
+  hideIfNoDataText: "Pas de taches pour l'instant",
 };
 
 export default withRouter(TasksTable);

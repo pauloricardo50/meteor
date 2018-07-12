@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import { SecurityService } from '../..';
 import BorrowerService from '../BorrowerService';
 import {
@@ -9,13 +7,11 @@ import {
   pushBorrowerValue,
   popBorrowerValue,
 } from '../methodDefinitions';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
 borrowerInsert.setHandler((context, { borrower, userId }) => {
-  if (userId === undefined && Meteor.userId()) {
-    userId = Meteor.userId();
-  }
-
-  return BorrowerService.insert({ borrower, userId });
+  userId = checkInsertUserId(userId);
+  return BorrowerService.smartInsert({ borrower, userId });
 });
 
 borrowerUpdate.setHandler((context, { borrowerId, object }) => {

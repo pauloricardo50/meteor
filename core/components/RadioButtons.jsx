@@ -30,7 +30,7 @@ const RadioButtons = ({
   disabled,
 }) => (
   <FormControl style={style} className="mui-radio-group">
-    <FormLabel htmlFor={id}>{label}</FormLabel>
+    {React.isValidElement(label) && <FormLabel htmlFor={id}>{label}</FormLabel>}
     <RadioGroup
       onChange={(event, newValue) =>
         safeChange(newValue, id, onChange, options)
@@ -38,7 +38,7 @@ const RadioButtons = ({
       value={`${value}`}
       name={id}
       className="flex"
-      style={{ justifyContent: 'flex-start' }}
+      style={{ justifyContent: 'flex-start', flexDirection: 'row' }}
     >
       {options.map(option => (
         <FormControlLabel
@@ -54,7 +54,7 @@ const RadioButtons = ({
 );
 
 RadioButtons.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   label: PropTypes.node,
   intlPrefix: PropTypes.string,
   options: PropTypes.array.isRequired,

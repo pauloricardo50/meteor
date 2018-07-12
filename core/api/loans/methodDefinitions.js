@@ -104,3 +104,10 @@ export const enableUserForms = new Method({
     loanId: String,
   },
 });
+
+export const adminLoanInsert = new Method({
+  name: 'adminLoanInsert',
+  params: {
+    userId: String,
+  },
+});

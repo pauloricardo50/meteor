@@ -3,9 +3,9 @@ import React from 'react';
 import MixpanelAnalytics from '../../../components/MixpanelAnalytics';
 
 const AnalyticsTab = ({ loan }) => (
-  <div className="mask1">
+  <React.Fragment>
     <MixpanelAnalytics loan={loan} />
-  </div>
+  </React.Fragment>
 );
 
 export default AnalyticsTab;

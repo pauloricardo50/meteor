@@ -1,5 +1,5 @@
 import { USER_EVENTS } from 'core/api/users/userConstants';
-import EventService from '../../events';
+import ServerEventService from '../../events/server/ServerEventService';
 import {
   requestLoanVerification,
   startAuction,
@@ -7,27 +7,29 @@ import {
   cancelAuction,
   assignAdminToNewUser,
   completeAddAssignedToTask,
+  addFileToDoc,
+  setFileStatus,
 } from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE, TASK_STATUS } from '../taskConstants';
 
-EventService.addMethodListener(requestLoanVerification, ({ loanId }) => {
+ServerEventService.addMethodListener(requestLoanVerification, ({ loanId }) => {
   const type = TASK_TYPE.VERIFY;
   TaskService.insert({ type, loanId });
 });
 
-EventService.addMethodListener(startAuction, (params) => {
+ServerEventService.addMethodListener(startAuction, (params) => {
   const { loanId } = params;
   const type = TASK_TYPE.AUCTION;
   TaskService.insert({ type, loanId });
 });
 
-EventService.addMethodListener(endAuction, ({ loanId }) => {
+ServerEventService.addMethodListener(endAuction, ({ loanId }) => {
   const type = TASK_TYPE.AUCTION;
   TaskService.completeTaskByType({ type, loanId });
 });
 
-EventService.addMethodListener(cancelAuction, ({ loanId }) => {
+ServerEventService.addMethodListener(cancelAuction, ({ loanId }) => {
   const type = TASK_TYPE.AUCTION;
   TaskService.completeTaskByType({
     type,
@@ -36,12 +38,47 @@ EventService.addMethodListener(cancelAuction, ({ loanId }) => {
   });
 });
 
-EventService.addMethodListener(assignAdminToNewUser, ({ adminId, userId }) => {
-  completeAddAssignedToTask.run({ userId });
-  TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
-});
+ServerEventService.addMethodListener(
+  assignAdminToNewUser,
+  ({ adminId, userId }) => {
+    completeAddAssignedToTask.run({ userId });
+    TaskService.assignAllTasksToAdmin({ userId, newAssignee: adminId });
+  },
+);
 
-EventService.addListener(USER_EVENTS.USER_CREATED, ({ userId }) => {
+export const insertTaskWhenFileAddedListener = ({
+  collection,
+  docId,
+  documentId,
+  file: { key: fileKey },
+  userId,
+}) =>
+  TaskService.insertTaskForAddedFile({
+    collection,
+    docId,
+    documentId,
+    fileKey,
+    userId,
+  });
+
+ServerEventService.addMethodListener(
+  addFileToDoc,
+  insertTaskWhenFileAddedListener,
+);
+
+export const completeTaskOnFileVerificationListener = ({
+  collection,
+  docId,
+  documentId,
+  fileKey,
+}) => TaskService.completeFileTask({ collection, docId, documentId, fileKey });
+
+ServerEventService.addMethodListener(
+  setFileStatus,
+  completeTaskOnFileVerificationListener,
+);
+
+ServerEventService.addListener(USER_EVENTS.USER_CREATED, ({ userId }) => {
   const type = TASK_TYPE.ADD_ASSIGNED_TO;
   TaskService.insert({ type, userId });
 });

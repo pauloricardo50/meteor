@@ -13,7 +13,6 @@ import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
 import FilesTab from './FilesTab';
 import FormsTab from './FormsTab';
-import TasksTab from './TasksTab';
 
 const getTabs = props =>
   [
@@ -40,10 +39,6 @@ const getTabs = props =>
     {
       id: 'analytics',
       content: <MixpanelAnalytics {...props} />,
-    },
-    {
-      id: 'tasks',
-      content: <TasksTab {...props} />,
     },
     {
       id: 'forms',

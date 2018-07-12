@@ -1,50 +1,44 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { withStateHandlers } from 'recompose';
 
 import Dialog from '../Material/Dialog';
-
 import T from '../Translation';
 import IconButton from '../IconButton';
 import Button from '../Button';
 import Search from './Search';
 
-export default class SearchModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isOpen: false };
-  }
+export const SearchModal = ({ isOpen, handleOpen, handleClose }) => (
+  <React.Fragment>
+    <IconButton type="search" onClick={handleOpen} />
+    <Dialog
+      fullScreen
+      title={<T id="general.search" />}
+      actions={[
+        <Button
+          onClick={handleClose}
+          key={0}
+          label={<T id="general.close" />}
+        />,
+      ]}
+      open={isOpen}
+      onClose={handleClose}
+    >
+      <Search />
+    </Dialog>
+  </React.Fragment>
+);
 
-  handleOpen = () => this.setState({ isOpen: true });
-  handleClose = () => this.setState({ isOpen: false });
+SearchModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  handleOpen: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
 
-  render() {
-    const { isOpen } = this.state;
-    return (
-      <span>
-        <IconButton
-          type="search"
-          onClick={this.handleOpen}
-          // tooltip={<T id="general.search" />}
-          // tooltipPlacement="bottom-end"
-        />
-        <Dialog
-          fullScreen
-          title={<T id="general.search" />}
-          actions={[
-            <Button
-              onClick={this.handleClose}
-              key={0}
-              label={<T id="general.close" />}
-            />,
-          ]}
-          open={isOpen}
-          onClose={this.handleClose}
-        >
-          <Search />
-        </Dialog>
-      </span>
-    );
-  }
-}
-
-SearchModal.propTypes = {};
+export default withStateHandlers(
+  { isOpen: false },
+  {
+    handleOpen: () => () => ({ isOpen: true }),
+    handleClose: () => () => ({ isOpen: false }),
+  },
+)(SearchModal);

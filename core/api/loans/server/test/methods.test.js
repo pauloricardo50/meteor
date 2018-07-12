@@ -49,7 +49,7 @@ describe('Loan methods', () => {
       ]);
     });
 
-    it(`throws and does not call \`LoanService.disableUserForms\`
+    it(`throws and does not call 'LoanService.disableUserForms'
         when current user is a non-admin`, () => {
       const loanId = 'aFakeLoanId';
 
@@ -78,7 +78,7 @@ describe('Loan methods', () => {
       ]);
     });
 
-    it(`throws and does not call \`LoanService.enableUserForms\`
+    it(`throws and does not call 'LoanService.enableUserForms'
         when current user is a non-admin`, () => {
       const loanId = 'aFakeLoanId';
 

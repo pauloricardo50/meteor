@@ -3,3 +3,4 @@ node_modules/
 **/.DS_Store
 microservices/**/lang/*
 .idea/
+**/commit.txt

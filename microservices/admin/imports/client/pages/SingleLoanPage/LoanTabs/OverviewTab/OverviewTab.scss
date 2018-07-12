@@ -1,4 +1,4 @@
-.single-loan-page .overview-tab .admin-section {
+.overview-tab .admin-section {
   display: flex;
   flex-direction: column;
 
@@ -11,10 +11,26 @@
   }
 }
 
-.recap-div {
-  display: 'flex';
-  align-items: 'center';
-  flex-direction: 'column';
+.overview-tab {
+  .overview-recap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 
-  width: 400px;
+    width: 100%;
+
+    .borrower-recaps {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .recap-div {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      width: 400px;
+    }
+  }
 }

@@ -1,5 +1,7 @@
 import { Roles } from 'meteor/alanning:roles';
-import EventService from '../events';
+import { Accounts } from 'meteor/accounts-base';
+
+import ServerEventService from '../events/server/ServerEventService';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '../users';
 
@@ -7,6 +9,15 @@ class UserService {
   createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
+
+    return newUserId;
+  };
+
+  adminCreateUser = ({ options, role }) => {
+    const newUserId = this.createUser({ options, role });
+    this.update({ userId: newUserId, object: { ...options } });
+    this.sendEnrollmentEmail({ userId: newUserId });
+
     return newUserId;
   };
 
@@ -16,9 +27,11 @@ class UserService {
   sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
 
+  sendEnrollmentEmail = ({ userId }) => Accounts.sendEnrollmentEmail(userId);
+
   // This is used to hook into Accounts
   onCreateUser = (options, user) => {
-    EventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
+    ServerEventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
 
     return { ...user, roles: [ROLES.USER] };
   };
@@ -33,6 +46,8 @@ class UserService {
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
+
+  getUserById = ({ userId }) => Users.findOne(userId);
 }
 
 export default new UserService();

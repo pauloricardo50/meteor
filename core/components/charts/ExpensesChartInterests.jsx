@@ -58,7 +58,7 @@ export default class ExpensesChartInterests extends Component {
       <div className="interestPicker flex-col center">
         <ExpensesChart
           {...rest}
-          interests={loan * rates[selectValue] / 12}
+          interests={(loan * rates[selectValue]) / 12}
           interestRate={rates[selectValue]}
         />
         {/* Add a div for easier styling */}

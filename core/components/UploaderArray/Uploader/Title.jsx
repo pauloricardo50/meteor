@@ -72,7 +72,7 @@ Title.propTypes = {
   doubleTooltip: PropTypes.bool,
   noTooltips: PropTypes.bool,
   required: PropTypes.bool,
-  currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentValue: PropTypes.arrayOf(PropTypes.object),
   tooltipSuffix: PropTypes.string,
   label: PropTypes.string,
   userIsAdmin: PropTypes.bool.isRequired,
@@ -90,6 +90,7 @@ Title.defaultProps = {
   tooltipSuffix: undefined,
   label: undefined,
   isOwnedByAdmin: false,
+  currentValue: [],
 };
 
 export default Title;

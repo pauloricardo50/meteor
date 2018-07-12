@@ -29,7 +29,7 @@ const getConfig = ({ tranches, total, intl }) => {
   return {
     chart: {
       type: 'pie',
-      style: { fontFamily: 'Source Sans Pro' },
+      style: { fontFamily: 'Eina04-Regular' },
       animation: false,
       height: 250,
       width: 250,

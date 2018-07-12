@@ -3,10 +3,10 @@ Package.describe({
   version: '1.3.2',
   summary: 'Accounts UI for React in Meteor 1.3+',
   git: 'https://github.com/studiointeract/accounts-ui',
-  documentation: 'README.md'
+  documentation: 'README.md',
 });
 
-Package.onUse(function(api) {
+Package.onUse((api) => {
   api.versionsFrom('1.3');
   api.use('ecmascript');
   api.use('accounts-base');
@@ -21,8 +21,8 @@ Package.onUse(function(api) {
   api.imply('accounts-base');
   api.imply('softwarerero:accounts-t9n@1.3.3');
 
-  api.use('accounts-oauth', {weak: true});
-  api.use('accounts-password', {weak: true});
+  api.use('accounts-oauth', { weak: true });
+  api.use('accounts-password', { weak: true });
 
   api.addFiles('check-npm.js', ['client', 'server']);
 

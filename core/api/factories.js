@@ -1,31 +1,46 @@
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { Loans, Borrowers, Offers, Properties } from '.';
+import { Loans, Borrowers, Offers, Properties, Tasks } from '.';
+import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
+import { fakeFile } from '../api/files/fileHelpers';
 
 const TEST_EMAIL = 'test@test.com';
+const TEST_LASTNAME = 'TestLastName';
+const TEST_FIRSTNAME = 'TestFirstName';
+const TEST_PHONE = '0123456789';
 
 Factory.define('user', Meteor.users, {
-  roles: () => 'user',
+  roles: () => ['user'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: {},
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
 });
 
 Factory.define('dev', Meteor.users, {
-  roles: () => 'dev',
+  roles: () => ['dev'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: {},
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
 });
 
 Factory.define('admin', Meteor.users, {
-  roles: () => 'admin',
+  roles: () => ['admin'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: {},
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
 });
 
 Factory.define('lender', Meteor.users, {
-  roles: () => 'lender',
+  roles: () => ['lender'],
   emails: () => [{ address: TEST_EMAIL, verified: false }],
-  profile: () => ({ organization: 'bankName', cantons: ['GE'] }),
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phone: TEST_PHONE,
+  organization: 'bankName',
+  cantons: ['GE'],
 });
 
 Factory.define('borrower', Borrowers, {
@@ -34,6 +49,14 @@ Factory.define('borrower', Borrowers, {
   documents: () => ({}),
   logic: () => ({}),
   age: 18,
+});
+
+Factory.define('task', Tasks, {
+  type: TASK_TYPE.USER_ADDED_FILE,
+  createdAt: () => new Date(),
+  status: TASK_STATUS.ACTIVE,
+  documentId: 'aDocumentId',
+  fileKey: fakeFile.key,
 });
 
 Factory.define('loan', Loans, {

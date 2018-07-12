@@ -5,20 +5,46 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({
     filters,
     options,
-    params: { assignedTo, unassigned, dashboardTasks },
+    params: {
+      assignedTo,
+      unassigned,
+      dashboardTasks,
+      file,
+      status,
+      type,
+      user,
+    },
   }) {
     if (assignedTo) {
       filters.assignedEmployeeId = assignedTo;
     }
+
     if (unassigned) {
       filters.assignedEmployeeId = { $exists: false };
     }
+
     if (dashboardTasks) {
       delete filters.assignedEmployeeId;
       filters.$or = [
         { assignedEmployeeId: { $in: [assignedTo] } },
         { assignedEmployeeId: { $exists: false } },
       ];
+    }
+
+    if (file) {
+      filters.fileKey = file;
+    }
+
+    if (status) {
+      filters.status = status;
+    }
+
+    if (type) {
+      filters.type = type;
+    }
+
+    if (user) {
+      filters.userId = user;
     }
   },
   $options: {
@@ -36,16 +62,23 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     emails: 1,
     roles: 1,
     username: 1,
+    firstName: 1,
+    lastName: 1,
   },
   user: {
     emails: 1,
     username: 1,
+    firstName: 1,
+    lastName: 1,
   },
   borrower: {
     firstName: 1,
     lastName: 1,
     user: {
       assignedEmployeeId: 1,
+    },
+    loans: {
+      _id: 1,
     },
   },
   loan: {
@@ -59,6 +92,10 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     user: {
       assignedEmployeeId: 1,
     },
+    loans: {
+      _id: 1,
+    },
   },
   userId: 1,
+  fileKey: 1,
 });

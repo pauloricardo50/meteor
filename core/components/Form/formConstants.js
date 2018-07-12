@@ -6,4 +6,5 @@ export const FIELD_TYPES = {
   MONEY: 'MONEY',
   TEXT_AREA: 'TEXT_AREA',
   PHONE: 'PHONE',
+  ARRAY: 'ARRAY',
 };

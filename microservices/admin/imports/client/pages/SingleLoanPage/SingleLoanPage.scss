@@ -3,6 +3,10 @@
 @import './LoanTabs/OffersTab/OffersTab.scss';
 
 .single-loan-page {
+  .single-loan-page-tasks {
+    margin: 16px 0;
+  }
+
   .google-map {
     position: relative;
 

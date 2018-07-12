@@ -6,8 +6,14 @@ function isObject(obj) {
 }
 
 export class FormMessage extends React.Component {
-  render () {
-    let { message, type, className = "message", style = {}, deprecated } = this.props;
+  render() {
+    let {
+      message,
+      type,
+      className = 'message',
+      style = {},
+      deprecated,
+    } = this.props;
     // XXX Check for deprecations.
     if (deprecated) {
       // Found backwords compatibility issue.
@@ -15,8 +21,9 @@ export class FormMessage extends React.Component {
     }
     message = isObject(message) ? message.message : message; // If message is object, then try to get message from it
     return message ? (
-      <div style={ style } 
-           className={[ className, type ].join(' ')}>{ message }</div>
+      <div style={style} className={[className, type].join(' ')}>
+        {message}
+      </div>
     ) : null;
   }
 }

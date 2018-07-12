@@ -6,22 +6,30 @@ import {
   getYearlyAmortization,
   getSimpleYearlyMaintenance,
 } from 'core/utils/finance';
+import { widget1Types, widget1Constants } from '../../../../redux/widget1';
+import { commonTypes } from '../../../../redux/common';
 
 const mapStateToProps = ({
   widget1: {
     fortune: { value: fortune },
     property: { value: propertyValue },
+    wantedLoan: { value: wantedLoan },
     interestRate,
+    useMaintenance,
+    purchaseType,
   },
 }) => {
-  const loanValue = getLoanValue(propertyValue, fortune);
+  const loanValue =
+    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
+      ? getLoanValue(propertyValue, fortune)
+      : wantedLoan;
   const yearlyValues = {
     interests: getSimpleYearlyInterests(loanValue, interestRate),
     amortization: getYearlyAmortization({
       propertyValue,
       loanValue,
     }),
-    maintenance: getSimpleYearlyMaintenance(propertyValue),
+    maintenance: useMaintenance ? getSimpleYearlyMaintenance(propertyValue) : 0,
   };
 
   const data = Object.keys(yearlyValues).map(valueName => ({
@@ -32,11 +40,17 @@ const mapStateToProps = ({
   // total can be NaN, set it to 0 in that case
   const total = data.reduce((acc, val) => acc + val.value, 0) || 0;
 
-  return { data, total, interestRate };
+  return { data, total, interestRate, useMaintenance };
 };
 
 const mapDispatchToProps = dispatch => ({
-  setInterestRate: value => dispatch({ type: 'interestRate_SET', value }),
+  setInterestRate: value =>
+    dispatch({ type: commonTypes.SET_VALUE('interestRate'), value }),
+  setMaintenance: value =>
+    dispatch({ type: commonTypes.SET_VALUE('useMaintenance'), value }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);

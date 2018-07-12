@@ -15,6 +15,9 @@ const Widget1Finma = ({ borrowRule, incomeRule }) => (
   </div>
 );
 
-Widget1Finma.propTypes = {};
+Widget1Finma.propTypes = {
+  borrowRule: PropTypes.object.isRequired,
+  incomeRule: PropTypes.object.isRequired,
+};
 
 export default Widget1Finma;

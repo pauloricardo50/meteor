@@ -6,7 +6,7 @@ import Widget1InputsResetContainer from './Widget1InputsResetContainer';
 
 const Widget1InputsReset = ({ onClick }) => (
   <span className="widget1-inputs-reset">
-    <IconButton type="loop" tooltip="Reset" onClick={onClick} />
+    <IconButton type="backupRestore" tooltip="Reset" onClick={onClick} />
   </span>
 );
 

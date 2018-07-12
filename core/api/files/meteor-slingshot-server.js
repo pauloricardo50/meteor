@@ -2,8 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
-import Loans from 'core/api/loans/loans';
-import Borrowers from 'core/api/borrowers/borrowers';
+import { Loans, Properties, Borrowers } from '..';
+import {
+  LOANS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  BORROWERS_COLLECTION,
+} from '../constants';
 import { getUploadCountPrefix } from './fileHelpers';
 import './meteor-slingshot';
 
@@ -28,14 +32,19 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
     }
 
     // Make sure this user is the owner of the document
-    if (collection === 'borrowers') {
+    if (collection === BORROWERS_COLLECTION) {
       const doc = Borrowers.findOne(docId);
 
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }
-    } else if (collection === 'loans') {
+    } else if (collection === LOANS_COLLECTION) {
       const doc = Loans.findOne(docId);
+      if (doc.userId !== this.userId) {
+        throw new Meteor.Error('Invalid user', "You're not allowed to do this");
+      }
+    } else if (collection === PROPERTIES_COLLECTION) {
+      const doc = Properties.findOne(docId);
       if (doc.userId !== this.userId) {
         throw new Meteor.Error('Invalid user', "You're not allowed to do this");
       }

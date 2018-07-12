@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Slider from 'core/components/Material/Slider';
-
+import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
 // Avoid weird slider bug, by first checking if value exists
@@ -17,11 +17,20 @@ const getSliderValue = (value, sliderMax) => {
   return 0;
 };
 
+const INCREASE_SLIDER_LIMIT = 0.9;
+
+const showIncreaseButton = (value, sliderMax, allowExtremeLoan) =>
+  sliderMax > 0 &&
+  value >= INCREASE_SLIDER_LIMIT * sliderMax &&
+  !allowExtremeLoan;
+
 const Widget1SingleInputSlider = ({
   value,
   setValue,
   sliderMax,
   increaseSliderMax,
+  isLoanValue,
+  allowExtremeLoan,
 }) => (
   <div className="widget1-slider">
     <Slider
@@ -33,12 +42,20 @@ const Widget1SingleInputSlider = ({
       value={getSliderValue(value, sliderMax)}
       onChange={setValue}
       className="slider"
+      tabIndex={-1}
     />
-    {value >= sliderMax ? (
+    {showIncreaseButton(value, sliderMax, allowExtremeLoan) ? (
       <IconButton
         type="add"
-        tooltip="Agrandir le slider"
+        tooltip={
+          <T
+            id={`Widget1SingleInputSlider.${
+              isLoanValue ? 'buttonTooltipLoan' : 'buttonTooltip'
+            }`}
+          />
+        }
         onClick={increaseSliderMax}
+        tabIndex={-1}
       />
     ) : (
       <div className="button-placeholder" />
@@ -51,10 +68,13 @@ Widget1SingleInputSlider.propTypes = {
   setValue: PropTypes.func.isRequired,
   sliderMax: PropTypes.number.isRequired,
   increaseSliderMax: PropTypes.func.isRequired,
+  isLoanValue: PropTypes.bool.isRequired,
+  allowExtremeLoan: PropTypes.bool,
 };
 
 Widget1SingleInputSlider.defaultProps = {
   value: undefined,
+  allowExtremeLoan: undefined,
 };
 
 export default Widget1SingleInputSlider;

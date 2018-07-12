@@ -15,6 +15,7 @@ const Widget1SingleInputInput = ({
   setInputValue,
   auto,
   unsetValue,
+  tabIndex,
 }) => (
   <div className={classnames('widget1-input', { auto })}>
     {/* Use type tel to display right keyboard without type number issues */}
@@ -34,9 +35,11 @@ const Widget1SingleInputInput = ({
             type="close"
             tooltip={<T id="general.erase" />}
             onClick={unsetValue}
+            tabIndex={-1}
           />
         </InputAdornment>
       }
+      tabIndex={tabIndex}
     />
   </div>
 );
@@ -47,10 +50,12 @@ Widget1SingleInputInput.propTypes = {
   setInputValue: PropTypes.func.isRequired,
   auto: PropTypes.bool.isRequired,
   unsetValue: PropTypes.func.isRequired,
+  tabIndex: PropTypes.number,
 };
 
 Widget1SingleInputInput.defaultProps = {
   value: '',
+  tabIndex: undefined,
 };
 
 export default Widget1SingleInputInput;

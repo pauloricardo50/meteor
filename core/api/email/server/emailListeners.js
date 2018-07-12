@@ -1,5 +1,5 @@
 import moment from 'moment';
-import EventService from '../../events';
+import ServerEventService from '../../events/server/ServerEventService';
 import {
   requestLoanVerification,
   startAuction,
@@ -12,7 +12,7 @@ import { EMAIL_IDS, INTERNAL_EMAIL } from '../emailConstants';
 import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 import { getAuctionEndTime } from '../../../utils/loanFunctions';
 
-EventService.addMethodListener(requestLoanVerification, (params) => {
+ServerEventService.addMethodListener(requestLoanVerification, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
@@ -23,7 +23,7 @@ EventService.addMethodListener(requestLoanVerification, (params) => {
   });
 });
 
-EventService.addMethodListener(startAuction, (params) => {
+ServerEventService.addMethodListener(startAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
@@ -34,7 +34,7 @@ EventService.addMethodListener(startAuction, (params) => {
   });
 });
 
-EventService.addMethodListener(endAuction, (params) => {
+ServerEventService.addMethodListener(endAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
@@ -45,7 +45,7 @@ EventService.addMethodListener(endAuction, (params) => {
   });
 });
 
-EventService.addMethodListener(cancelAuction, (params) => {
+ServerEventService.addMethodListener(cancelAuction, (params) => {
   const { loanId } = params;
   const { userId } = Loans.findOne(loanId);
 
@@ -56,14 +56,14 @@ EventService.addMethodListener(cancelAuction, (params) => {
   });
 });
 
-EventService.addMethodListener(submitContactForm, params =>
+ServerEventService.addMethodListener(submitContactForm, params =>
   sendEmailToAddress.run({
     emailId: EMAIL_IDS.CONTACT_US,
     address: params.email,
     params,
   }));
 
-EventService.addMethodListener(submitContactForm, params =>
+ServerEventService.addMethodListener(submitContactForm, params =>
   sendEmailToAddress.run({
     emailId: EMAIL_IDS.CONTACT_US_ADMIN,
     address: INTERNAL_EMAIL,

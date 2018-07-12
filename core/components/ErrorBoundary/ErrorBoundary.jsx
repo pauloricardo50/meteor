@@ -7,45 +7,45 @@ import RootError from './RootError';
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, errorMessage: '' };
-  }
-
-  componentDidCatch(error, info) {
-    // Error should also log to kadira
-    console.log('componentDidCatch!');
-    console.log('error: ', error);
-    console.log('info: ', info);
-    this.setState({ hasError: true });
+    this.state = { hasError: false, error: null };
   }
 
   // Remove error if user switches page
   // If it crashes again then it will simply go through componentDidCatch
   componentWillReceiveProps({ pathname }) {
     if (this.state.hasError && pathname !== this.props.pathname) {
-      this.setState({ hasError: false, errorMessage: '' });
+      this.setState({ hasError: false, error: null });
+    }
+  }
+
+  componentDidCatch(error) {
+    // Error should also log to kadira
+    this.setState({ hasError: true, error });
+    const Kadira = { window };
+    if (Kadira) {
+      Kadira.trackError('react', error.stack.toString());
     }
   }
 
   render() {
     const { children, helper } = this.props;
-    const { hasError, errorMessage } = this.state;
-    const errorProps = { ...this.props, errorMessage };
+    const { hasError, error } = this.state;
 
     if (hasError) {
       switch (helper) {
       case 'layout':
-        return <LayoutError {...errorProps} />;
+        return <LayoutError error={error} />;
       case 'app':
         return (
           <LayoutError
-            {...errorProps}
+            error={error}
             style={{ width: '100%', height: '100%' }}
           />
         );
       case 'root':
-        return <RootError />;
+        return <RootError error={error} />;
       default:
-        return <div>Woops!</div>;
+        return <React.Fragment>Woops!</React.Fragment>;
       }
     }
 

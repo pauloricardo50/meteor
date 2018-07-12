@@ -17,7 +17,7 @@
 
   width: 100%;
 
-  transition: 1s cubic-bezier(.19, 1, .22, 1);
+  transition: 1s cubic-bezier(0.19, 1, 0.22, 1);
 
   filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="0" /></filter></svg>#filter');
   filter: blur(0);
@@ -34,9 +34,9 @@
   top: calc(50% - 44px);
   left: 50%;
 
-  transition: all .15s ease;
-  transition: .7s cubic-bezier(.19, 1, .22, 1);
-  transform: translate(-50%, 5px) scale(.95);
+  transition: all 0.15s ease;
+  transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translate(-50%, 5px) scale(0.95);
 
   opacity: 0;
 }
@@ -46,9 +46,9 @@
 }
 
 .home-page .partners:hover .list {
-  transform: scale(.95);
+  transform: scale(0.95);
 
-  opacity: .7;
+  opacity: 0.7;
 
   filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><f…ter id="filter"><feGaussianBlur stdDeviation="10" /></filter></svg>#filter');
   filter: blur(10px);

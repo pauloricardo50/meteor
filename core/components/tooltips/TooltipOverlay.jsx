@@ -45,7 +45,7 @@ const TooltipOverlay = ({
       container={global.document !== undefined ? document.body : undefined}
       onClick={handleClick}
     >
-      <span className="tooltip-overlay" tabIndex="0">
+      <span className="tooltip-overlay" tabIndex={-1}>
         {children}
       </span>
     </OverlayTrigger>

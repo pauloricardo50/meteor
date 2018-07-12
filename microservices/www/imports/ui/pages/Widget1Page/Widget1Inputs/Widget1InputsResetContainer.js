@@ -1,8 +1,11 @@
 import { connect } from 'react-redux';
-import { resetCalculator } from '../../../../redux/actions/widget1Actions';
+import { widget1Actions } from '../../../../redux/widget1';
 
 const mapDispatchToProps = dispatch => ({
-  onClick: () => dispatch(resetCalculator()),
+  onClick: () => dispatch(widget1Actions.resetCalculator()),
 });
 
-export default connect(null, mapDispatchToProps);
+export default connect(
+  null,
+  mapDispatchToProps,
+);

@@ -37,10 +37,13 @@
   width: 100%;
   margin: 0;
 
-  transition: all .2s $bezier;
+  transition: all 0.2s $bezier;
 }
 
 .validator .result div p {
+  // Make sure the numbers aren't wrapped
+  flex-shrink: 0;
+
   margin: 0;
 }
 

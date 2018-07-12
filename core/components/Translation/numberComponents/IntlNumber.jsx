@@ -2,9 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 
+const shouldRenderDash = value => (!value && value !== 0) || value === Infinity;
+
 const IntlNumber = ({ type, value, ...rest }) => {
-  // If this is passed something else than a number, render the value directly
-  if (typeof value !== 'number') {
+  // Render a dash if the number is not well specified
+  if (shouldRenderDash(value)) {
+    return '-';
+  } else if (typeof value !== 'number') {
+    // Render whatever comes if it is not a number
     return value;
   }
 
@@ -17,7 +22,11 @@ const IntlNumber = ({ type, value, ...rest }) => {
 };
 
 IntlNumber.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
+};
+
+IntlNumber.defaultProps = {
+  value: undefined,
 };
 
 export default IntlNumber;

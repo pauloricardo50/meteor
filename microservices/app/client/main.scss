@@ -2,7 +2,6 @@
 @import '../imports/core/assets/css/core-styles.scss';
 @import '../imports/core/assets/css/external-styles/animate.scss';
 @import '../imports/core/assets/css/external-styles/bootstrap-popover.scss';
-@import '../imports/core/assets/css/external-styles/bootstrap-tabs.scss';
 @import '../imports/core/assets/css/external-styles/rc-slider.scss';
 
 // Layout
@@ -24,12 +23,3 @@
 @import '../imports/client/components/SideNavUser/SideNavUser.scss';
 @import '../imports/client/components/StrategyChoices/StrategyChoices.scss';
 @import '../imports/client/components/SummaryComponent/SummaryComponent.scss';
-
-// Make sure everything expands properly to take the full size of the browser
-body,
-html,
-#react-root {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}

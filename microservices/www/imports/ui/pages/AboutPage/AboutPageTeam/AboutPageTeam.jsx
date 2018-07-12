@@ -6,7 +6,7 @@ import AboutPageTeamMember from './AboutPageTeamMember';
 import AboutPageTeamRecruiting from './AboutPageTeamRecruiting';
 
 const AboutPageTeam = () => (
-  <div className="about-page-team">
+  <div className="about-section about-page-team">
     <h2>
       <T id="AboutPageTeam.title" />
     </h2>

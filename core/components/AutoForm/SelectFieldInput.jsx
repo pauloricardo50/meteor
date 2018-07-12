@@ -6,12 +6,6 @@ import Select from 'core/components/Select';
 import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
-const styles = {
-  div: {
-    position: 'relative',
-  },
-};
-
 export default class SelectFieldInput extends Component {
   constructor(props) {
     super(props);
@@ -73,13 +67,12 @@ export default class SelectFieldInput extends Component {
     const renderedOptions = this.mapOptions();
 
     return (
-      <div className="form-input__row" style={{ ...styles.div, ...style }}>
+      <div className="form-input__row form-select__row">
         <Select
           id={id}
           label={label}
           value={value || ''}
           onChange={this.handleChange}
-          style={{ ...style, marginBottom: 8 }}
           disabled={disabled}
           renderValue={val =>
             renderedOptions.find(option => option.id === val).label
@@ -89,7 +82,6 @@ export default class SelectFieldInput extends Component {
         <ValidIcon
           saving={saving}
           error={errorText !== ''}
-          style={styles.savingIcon}
           value={value}
           required={required}
           hide={admin}

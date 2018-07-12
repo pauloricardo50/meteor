@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RootError = () => (
+import DevError from './DevError';
+
+const RootError = ({ error }) => (
   <div
     style={{
       display: 'flex',
@@ -15,10 +17,13 @@ const RootError = () => (
       You can try to reload the page to fix it, or else reach out to
       florian@e-potek.ch
     </p>
+    <DevError error={error} />
     <button onClick={() => location.reload()}>Reload the page</button>
   </div>
 );
 
-RootError.propTypes = {};
+RootError.propTypes = {
+  error: PropTypes.object.isRequired,
+};
 
 export default RootError;

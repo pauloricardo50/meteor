@@ -1,13 +1,18 @@
 import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import T from 'core/components/Translation/';
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
+import CreateUserDialogForm from './CreateUserDialogForm';
+import AdminInterestRatesCard from '../../components/AdminInterestRates/AdminInterestRatesCard';
 
-const AdminDashboardPage = props => (
+const AdminDashboardPage = ({ currentUser, history }) => (
   <section className="mask1 admin-dashboard-page">
     <h1>Admin Dashboard</h1>
+
+    <CreateUserDialogForm history={history} />
+
+    <AdminInterestRatesCard />
 
     <h2 className="fixed-size text-center">
       <T id="AdminDashboardPage.tasks" />
@@ -16,20 +21,14 @@ const AdminDashboardPage = props => (
       showAssignee
       dashboardTasks
       assignedTo={Meteor.userId()}
+      tableFilters={{
+        filters: { assignedEmployee: { emails: [{ address: true }] } },
+        options: {
+          address: [currentUser.emails[0].address, undefined],
+        },
+      }}
     />
   </section>
 );
-
-AdminDashboardPage.defaultProps = {
-  loans: [],
-  users: [],
-  offers: [],
-};
-
-AdminDashboardPage.propTypes = {
-  loans: PropTypes.arrayOf(PropTypes.object),
-  users: PropTypes.arrayOf(PropTypes.object).isRequired,
-  offers: PropTypes.arrayOf(PropTypes.object),
-};
 
 export default AdminDashboardPage;

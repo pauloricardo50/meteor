@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import T from 'core/components/Translation';
+import Icon from 'core/components/Icon';
 import StatusIcon from '../../../components/StatusIcon';
+import { hideFinmaValues } from '../Widget1PageContainer';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];
 
@@ -36,9 +38,20 @@ const getWorstStatus = (values, orderedValues) => {
 };
 
 const Widget1InputsError = ({
-  borrowRule: { status: borrowStatus },
-  incomeRule: { status: incomeStatus },
+  borrowRule: { status: borrowStatus, value: borrowRatio },
+  incomeRule: { status: incomeStatus, value: incomeRatio },
 }) => {
+  if (hideFinmaValues(borrowRatio, incomeRatio)) {
+    return (
+      <div className="card-bottom no-responsive-typo-s">
+        <Icon type="up" className="icon" />
+        <p>
+          <T id="Widget1InputsError.empty" />
+        </p>
+      </div>
+    );
+  }
+
   const statuses = [borrowStatus, incomeStatus];
   const { match: worstStatus, index } = getWorstStatus(statuses, STATUSES);
   const messageId = getMessage(worstStatus, index, borrowStatus, incomeStatus);

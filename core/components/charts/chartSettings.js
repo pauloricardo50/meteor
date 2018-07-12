@@ -26,7 +26,8 @@ export function adjustLegend(that) {
     const itemsPerRow = i < 3 ? 3 : 2;
 
     item.legendGroup.attr({
-      translateX: (i % itemsPerRow) * (legendWidth - width) / (itemsPerRow - 1),
+      translateX:
+        ((i % itemsPerRow) * (legendWidth - width)) / (itemsPerRow - 1),
       translateY: Math.floor(i / 3) * (height + 5),
     });
   });
@@ -34,7 +35,7 @@ export function adjustLegend(that) {
 
 export const defaultConfig = {
   chart: {
-    style: { fontFamily: 'Source Sans Pro' },
+    style: { fontFamily: 'Eina04-Regular' },
     animation: { duration: 400 },
     backgroundColor: 'rgba(255, 255, 255, 0.0)',
   },

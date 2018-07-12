@@ -53,6 +53,7 @@ class Buttons extends Accounts.ui.Buttons {}
 class Button extends Accounts.ui.Button {
   render() {
     const {
+      id,
       label,
       href = null,
       type,
@@ -61,29 +62,34 @@ class Button extends Accounts.ui.Button {
       className,
       icon,
     } = this.props;
-    return type == 'link' ? (
-      <MuiButton
-        href={href}
-        label={label}
-        icon={icon ? <span className={`fa ${icon}`} /> : null}
-        className={className}
-        onClick={onClick}
-        disabled={disabled}
-        style={{ marginRight: 5, marginTop: 8 }}
-      />
-    ) : (
-      <MuiButton
-        raised
-        label={label}
-        icon={icon ? <span className={`fa ${icon}`} /> : null}
-        primary
-        type={type}
-        className={className}
-        onClick={onClick}
-        disabled={disabled}
-        style={{ marginRight: 5, marginTop: 8 }}
-      />
-    );
+
+    if (id !== 'switchToSignUp') {
+      return type === 'link' ? (
+        <MuiButton
+          href={href}
+          label={label}
+          icon={icon ? <span className={`fa ${icon}`} /> : null}
+          className={className}
+          onClick={onClick}
+          disabled={disabled}
+          style={{ marginRight: 5, marginTop: 8 }}
+        />
+      ) : (
+        <MuiButton
+          raised
+          label={label}
+          icon={icon ? <span className={`fa ${icon}`} /> : null}
+          primary
+          type={type}
+          className={className}
+          onClick={onClick}
+          disabled={disabled}
+          style={{ marginRight: 5, marginTop: 8 }}
+        />
+      );
+    }
+
+    return null;
   }
 }
 class Fields extends Accounts.ui.Fields {

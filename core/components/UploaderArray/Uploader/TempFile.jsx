@@ -28,6 +28,8 @@ export default class TempFile extends Component {
     this.uploader.send(this.props.file, (error, downloadUrl) => {
       progressSetter.stop();
       if (error) {
+        // TODO: Show an error here
+        console.log('TempFile error', error);
         this.setState({ error: error.message });
       } else {
         this.props.handleSave(this.props.file, downloadUrl);

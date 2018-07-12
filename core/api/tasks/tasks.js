@@ -76,6 +76,14 @@ const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  documentId: {
+    type: String,
+    optional: true,
+  },
+  fileKey: {
+    type: String,
+    optional: true,
+  },
   userId: {
     type: String,
     optional: true,

@@ -6,7 +6,7 @@ import T from 'core/components/Translation';
 import AboutPagePart4Tabs from './AboutPagePart4Tabs';
 
 const AboutPagePart4 = ({ index, setIndex }) => (
-  <div className="about-page-part-4">
+  <div className="about-section about-page-part-4">
     <AboutPagePart4Tabs setIndex={setIndex} index={index} />
     <div className="about-page-part-4-content">
       <div className="about-page-part-4-text">

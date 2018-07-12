@@ -16,12 +16,11 @@ const styles = {
   },
 };
 
-const Files = ({ borrowers, loan: { userFormsDisabled } }) => (
+const Files = ({ borrowers, loan: { userFormsEnabled } }) => (
   <section
     className="animated fadeIn borrower-page-files"
     style={styles.section}
   >
-    <hr />
     <h2 className="text-center">
       <T id="Files.title" />
     </h2>
@@ -42,7 +41,7 @@ const Files = ({ borrowers, loan: { userFormsDisabled } }) => (
             documentArray={borrowerDocuments(borrower).auction}
             doc={borrower}
             collection="borrowers"
-            disabled={userFormsDisabled}
+            disabled={!userFormsEnabled}
           />
         </div>
       ))}
@@ -51,8 +50,8 @@ const Files = ({ borrowers, loan: { userFormsDisabled } }) => (
 );
 
 Files.propTypes = {
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrower: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default Files;

@@ -1,6 +1,8 @@
 .admin-layout .main-row .admin-side-nav {
   display: flex;
   flex-direction: row;
+  flex-grow: 0;
+  flex-shrink: 0;
 
   border-right: 1px solid $border-grey;
   background-color: white;

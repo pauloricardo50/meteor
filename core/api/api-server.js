@@ -25,7 +25,7 @@ import '../utils/logismata/methods';
 
 import './email/server';
 
-import './events/registerListeners';
+import './events/server/registerServerListeners';
 
 import './links';
 
