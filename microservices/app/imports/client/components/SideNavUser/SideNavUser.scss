@@ -53,12 +53,15 @@
 .loan-side-nav {
   display: flex;
   flex-direction: column;
-  list-style: none;
-  padding-left: 0;
+
   width: 100%;
+  padding-left: 0;
+
+  list-style: none;
 
   .loan-side-nav-link {
     padding: 16px;
+
     text-decoration: none;
 
     &.active {
@@ -71,7 +74,7 @@
   width: 75%;
   margin: 16px 0;
 
-  > * {
+   > * {
     width: 100%;
   }
 }

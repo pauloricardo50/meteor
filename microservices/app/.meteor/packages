@@ -18,6 +18,8 @@ shell-server@0.3.1           # Server-side component of the `meteor shell` comma
 meteortoys:allthings@4.0.0
 fourseven:scss@4.5.4
 
+# Put this before factory
+aldeed:collection2-core
 
 # Testing
 cultofcoders:mocha
@@ -37,7 +39,7 @@ email@1.2.3
 didericis:callpromise-mixin
 check@1.3.0                    # variable type verification for server side validation
 session@1.1.7                  # Lets you use Session variables
-aldeed:collection2-core
+# aldeed:collection2-core
 edgee:slingshot
 cultofcoders:grapher
 cultofcoders:grapher-react
