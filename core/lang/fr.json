@@ -1,15 +1,18 @@
 {
-"LoanSideNav.dashboard": "Tableau de bord",
-"LoanSideNav.files": "Documents",
-"LoanSideNav.closing": "Closing",
-"LoanSideNav.borrowers": "Emprunteurs",
-"LoanSideNav.financing": "Financement",
-"LoanSideNav.properties": "Biens immobiliers",
+  "FinancingPage.title": "Financement",
+  "LoanSideNav.dashboard": "Tableau de bord",
+  "LoanSideNav.files": "Documents",
+  "LoanSideNav.closing": "Closing",
+  "LoanSideNav.borrowers": "Emprunteurs",
+  "LoanSideNav.financing": "Financement",
+  "LoanSideNav.properties": "Biens immobiliers",
 
-"AppPage.empty":"Contactez nous à info@e-potek.ch ou au 022 566 01 10 pour commencer à utiliser e-Potek.",
+  "AppPage.empty":
+    "Contactez nous à info@e-potek.ch ou au 022 566 01 10 pour commencer à utiliser e-Potek.",
 
-"Widget1Page.title": "Calculateur hypothécaire",
-"Widget1Page.description": "Déterminez facilement combien vous devez gagner, combien de fonds propres vous devez mettre, ou la valeur maximale du bien que vous pouvez acquérir.",
+  "Widget1Page.title": "Calculateur hypothécaire",
+  "Widget1Page.description":
+    "Déterminez facilement combien vous devez gagner, combien de fonds propres vous devez mettre, ou la valeur maximale du bien que vous pouvez acquérir.",
 
   "ConditionsPage.title": "Conditions générales d'utilisation",
   "Recap.maxPossibleLoan": "Prêt max possible",
@@ -22,42 +25,55 @@
   "Widget1SingleInputSlider.buttonTooltipLoan": "Emprunter plus",
 
   "Widget1MonthlyMaintenance.label": "Frais d'entretien",
-"Widget1MonthlyMaintenance.yes": "Estimation",
-"Widget1MonthlyMaintenance.no": "Sans",
+  "Widget1MonthlyMaintenance.yes": "Estimation",
+  "Widget1MonthlyMaintenance.no": "Sans",
 
-"Widget1MonthlyInterests.optionLabel": "{type} moyen: {rate}",
+  "Widget1MonthlyInterests.optionLabel": "{type} moyen: {rate}",
 
-"Widget1SingleInput.currentLoan": "Prêt existant",
-"Widget1SingleInput.wantedLoan": "Nouveau prêt",
+  "Widget1SingleInput.currentLoan": "Prêt existant",
+  "Widget1SingleInput.wantedLoan": "Nouveau prêt",
 
-"Recap.propertyValue": "Valeur du bien",
-"Recap.loanIncrease": "Augmentation du prêt",
-"Recap.loanReduction": "Réduction du prêt",
+  "Recap.propertyValue": "Valeur du bien",
+  "Recap.loanIncrease": "Augmentation du prêt",
+  "Recap.loanReduction": "Réduction du prêt",
 
   "Widget1OptionSelector.ACQUISITION": "Acquisition",
   "Widget1OptionSelector.REFINANCING": "Refinancement",
   "Widget1OptionSelector.PRIMARY": "Résidence principale",
   "Widget1OptionSelector.SECONDARY": "Résidence secondaire",
   "Widget1OptionSelector.INVESTMENT": "Bien de rendement",
-  
-  "LoanAdder.dialogTitle" :"Ajouter une hypothèque",
+
+  "LoanAdder.dialogTitle": "Ajouter une hypothèque",
 
   "steps.borrowers.title": "Emprunteurs",
-  "tooltip.financialPlan": "Le plan financier représente la structure de financement de votre projet.",
-  "tooltip2.financialPlan": "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
+  "tooltip.financialPlan":
+    "Le plan financier représente la structure de financement de votre projet.",
+  "tooltip2.financialPlan":
+    "Il met en évidence la/les façon(s) dont vous pouvez financer votre projet, à l’aide de (1) vos fonds propres ainsi que (2) du Financement Hypothécaire que vous pouvez solliciter. Le plan financier vous permet d’identifier en un coup d’oeil les différents poste de votre projet (1) La Valeur du logement ou son prix d’achat (2) le montant des crédits existants que vous souhaiteriez refinancer (3) les éventuels frais de notaires (4) le montant des travaux si votre projet en contient.",
 
-  "tooltip.incomeRatio": "Le ratio des charges financières théoriques et de vos revenus considérés est également appelé le taux d’effort par les prêteurs.",
-  "tooltip2.incomeRatio": "Tous les prêteurs ont des critères différents pour calculer ce ratio. Ce calcul permet aux prêteurs de déterminer s’ils considèrent que vous pourrez assumer les charges du prêt hypothécaire que vous sollicitez même en cas de forte hausse des taux. En effet, les taux d’intérêts sont très bas aujourd’hui. Mais pour éviter une crise économique en cas de forte hausse des taux d’intérêt, les banques ont le devoir de prendre en compte une possible hausse des taux.{verticalSpace}C’est pour cela que le taux d’intérêt théorique imposé par la FINMA est souvent calculé à hauteur de 5%. A ce taux vous devez prendre en compte un amortissement et des charges d’entretien également théorique.",
-  "tooltip.income": "La somme cumulée des revenus bruts que perçoivent tous les emprunteurs",
-  "tooltip2.income": "Tous les prêteurs ont des critères différents pour calculer les revenus disponibles des emprunteurs. Ce calcul permet aux prêteurs d’identifier si les emprunteurs ont la capacité d’assumer la charge financière que va générer le financement hypothécaire selon les règles établies par la FINMA.{verticalSpace}Voici un exemple de calcul de revenus considérés :{verticalSpace}Salaire brut de tous les emprunteurs, (+) Derniers bonus considérés à 50%, (+) Allocations Familiales, (+) Autres allocations / pensions, (+) Revenus de la Fortune immobilière, (+) Revenus de la Fortune mobilière, (-) Loyers existants, (-) Leasings et autres charges d’intérêt et d’amortissement de crédit existant, (-) Pensions",
-  "tooltip.bonus": "Revenus variables supplémentaires à votre salaire qui ne sont pas un engagement ferme de la part de votre employeur.",
-  "tooltip2.bonus": "Les bonus sont les montants variables que l’emprunteur perçoit. Les prêteurs ne les prennent pas en considération à 100%.{verticalSpace}Par exemple, si vous avez perçu des bonus ces 3 dernières années de 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
-  "tooltip.borrower": "Celui qui emprunte. La personne qui est à la recherche d’un financement hypothécaire deviendra l’emprunteur lorsque le prêteur aura mis à sa disposition la somme empruntée.",
+  "tooltip.incomeRatio":
+    "Le ratio des charges financières théoriques et de vos revenus considérés est également appelé le taux d’effort par les prêteurs.",
+  "tooltip2.incomeRatio":
+    "Tous les prêteurs ont des critères différents pour calculer ce ratio. Ce calcul permet aux prêteurs de déterminer s’ils considèrent que vous pourrez assumer les charges du prêt hypothécaire que vous sollicitez même en cas de forte hausse des taux. En effet, les taux d’intérêts sont très bas aujourd’hui. Mais pour éviter une crise économique en cas de forte hausse des taux d’intérêt, les banques ont le devoir de prendre en compte une possible hausse des taux.{verticalSpace}C’est pour cela que le taux d’intérêt théorique imposé par la FINMA est souvent calculé à hauteur de 5%. A ce taux vous devez prendre en compte un amortissement et des charges d’entretien également théorique.",
+  "tooltip.income":
+    "La somme cumulée des revenus bruts que perçoivent tous les emprunteurs",
+  "tooltip2.income":
+    "Tous les prêteurs ont des critères différents pour calculer les revenus disponibles des emprunteurs. Ce calcul permet aux prêteurs d’identifier si les emprunteurs ont la capacité d’assumer la charge financière que va générer le financement hypothécaire selon les règles établies par la FINMA.{verticalSpace}Voici un exemple de calcul de revenus considérés :{verticalSpace}Salaire brut de tous les emprunteurs, (+) Derniers bonus considérés à 50%, (+) Allocations Familiales, (+) Autres allocations / pensions, (+) Revenus de la Fortune immobilière, (+) Revenus de la Fortune mobilière, (-) Loyers existants, (-) Leasings et autres charges d’intérêt et d’amortissement de crédit existant, (-) Pensions",
+  "tooltip.bonus":
+    "Revenus variables supplémentaires à votre salaire qui ne sont pas un engagement ferme de la part de votre employeur.",
+  "tooltip2.bonus":
+    "Les bonus sont les montants variables que l’emprunteur perçoit. Les prêteurs ne les prennent pas en considération à 100%.{verticalSpace}Par exemple, si vous avez perçu des bonus ces 3 dernières années de 20, 30 et 40 CHF, nous utiliserons 50% de la moyenne de 20, 30 et 40, soit 15 CHF.",
+  "tooltip.borrower":
+    "Celui qui emprunte. La personne qui est à la recherche d’un financement hypothécaire deviendra l’emprunteur lorsque le prêteur aura mis à sa disposition la somme empruntée.",
   "tooltip.finma": "Autorité fédérale de surveillance des marchés financiers.",
-  "tooltip2.finma": "La FINMA détermine les règles que doivent suivre les banques et les intermédiaires financiers. Elle détermine notamment quelles sont les conditions minimales à remplir pour que vous puissiez obtenir un prêt. Les taux sont très bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
-  "tooltip.interestedLenders": "Nous sommes en contact fréquent avec plus de 15 prêteurs. La quantité de prêteurs intéressés dépend de différents critères.",
-  "tooltip.borrowRatio": "Le ratio du prêt hypothécaire et du prix d’achat (ou de la valeur du logement) est également appelé le taux d’avance par les prêteurs.",
-  "tooltip2.borrowRatio": "Tous les prêteurs ont des critères différents concernant les taux d’avance. Il délimite le montant maximal qu’un emprunteur peut obtenir par rapport au type de bien immobilier. Nous parlons souvent d’un taux d’avance de 80% de la valeur du logement. Cependant certains établissements ont des critères plus stricts et ne peuvent pas dépasser un taux d’avance de 65% de la valeur du logement.",
+  "tooltip2.finma":
+    "La FINMA détermine les règles que doivent suivre les banques et les intermédiaires financiers. Elle détermine notamment quelles sont les conditions minimales à remplir pour que vous puissiez obtenir un prêt. Les taux sont très bas aujourd'hui, mais si vos finances ne sont pas assez solides et que les taux montent, vous pourriez avoir de sérieuses difficultés financières.",
+  "tooltip.interestedLenders":
+    "Nous sommes en contact fréquent avec plus de 15 prêteurs. La quantité de prêteurs intéressés dépend de différents critères.",
+  "tooltip.borrowRatio":
+    "Le ratio du prêt hypothécaire et du prix d’achat (ou de la valeur du logement) est également appelé le taux d’avance par les prêteurs.",
+  "tooltip2.borrowRatio":
+    "Tous les prêteurs ont des critères différents concernant les taux d’avance. Il délimite le montant maximal qu’un emprunteur peut obtenir par rapport au type de bien immobilier. Nous parlons souvent d’un taux d’avance de 80% de la valeur du logement. Cependant certains établissements ont des critères plus stricts et ne peuvent pas dépasser un taux d’avance de 65% de la valeur du logement.",
 
   "TooltipSynonyms.title": "{count, plural, one {Synonyme} other {Synonymes}}",
 
@@ -635,7 +651,8 @@
   "ExpensesChartInterests.selectFieldLabel": "Taux d'intérêt indicatif",
   "ExpensesChartInterests.years":
     "{years} ans moyen: {value, number, percentage}",
-  "FaqPage.description": "e-Potek répond à toutes vos questions concernant le financement de votre projet.",
+  "FaqPage.description":
+    "e-Potek répond à toutes vos questions concernant le financement de votre projet.",
   "FaqPage.title": "Questions fréquentes",
   "FieldToggles.customFields": "Champs personnels",
   "FieldToggles.defaultFields": "Champs e-Potek",
@@ -1172,7 +1189,8 @@
   "PropertyAdder.add": "Ajouter",
   "PropertyPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
-  "PropertyPage.incompleteAddress": "Entrez votre adresse complet pour afficher la carte!",
+  "PropertyPage.incompleteAddress":
+    "Entrez votre adresse complet pour afficher la carte!",
   "PropertyPage.progress": "Progrès: {value, number, percent}",
   "PropertyPage.title":
     "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
