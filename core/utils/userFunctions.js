@@ -1,4 +1,4 @@
-import intersection from 'lodash/interesection';
+import intersection from 'lodash/intersection';
 import flatten from 'lodash/flatten';
 
 import { ROLES } from '../api/users/userConstants';
