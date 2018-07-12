@@ -94,8 +94,6 @@ describe('LoanService', () => {
       loanId = Factory.create('loan')._id;
       let loan = LoanService.getLoanById(loanId);
 
-      console.log('new loan:', loan);
-
       expect(loan.structures).to.deep.equal([]);
 
       LoanService.addStructure({ loanId });
@@ -104,6 +102,14 @@ describe('LoanService', () => {
       expect(loan.structures).to.have.length(1);
       expect(typeof loan.structures[0].id).to.equal('string');
     });
+
+    it('selects the structure if it is the first one', () => {
+      loanId = Factory.create('loan')._id;
+      LoanService.addStructure({ loanId });
+
+      let loan = LoanService.getLoanById(loanId);
+      expect(loan.selectedStructure).to.equal(loan.structures[0].id);
+    });
   });
 
   describe('removeStructure', () => {
@@ -111,12 +117,14 @@ describe('LoanService', () => {
       loanId = Factory.create('loan')._id;
       let loan = LoanService.getLoanById(loanId);
 
-      expect(loan.structures).to.deep.equal([]);
-
       LoanService.addStructure({ loanId });
       LoanService.addStructure({ loanId });
       loan = LoanService.getLoanById(loanId);
       expect(loan.structures.length).to.equal(2);
+      LoanService.selectStructure({
+        loanId,
+        structureId: loan.structures[1].id,
+      });
 
       const structureId = loan.structures[0].id;
 
@@ -126,6 +134,108 @@ describe('LoanService', () => {
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.not.equal(structureId);
+    });
+
+    it('throws if you try to delete the current selected structure', () => {
+      const structureId = 'someId';
+      loanId = Factory.create('loan', {
+        structures: [{ id: structureId }],
+        selectedStructure: structureId,
+      })._id;
+
+      expect(() =>
+        LoanService.removeStructure({ loanId, structureId }),
+      ).to.throw("Can't delete");
+    });
+  });
+
+  describe('updateStructure', () => {
+    it('updates a structure', () => {
+      const structureId = 'testId';
+      const propertyId = 'property1';
+      loanId = Factory.create('loan', {
+        structures: [
+          { id: structureId },
+          { id: structureId + '0' },
+          { id: structureId + '1' },
+        ],
+      })._id;
+      let loan = LoanService.getLoanById(loanId);
+      expect(loan.structures.propertyId).to.equal(undefined);
+      LoanService.updateStructure({
+        loanId,
+        structureId,
+        structure: { propertyId },
+      });
+
+      loan = LoanService.getLoanById(loanId);
+      // This structure is correct
+      expect(
+        loan.structures.find(({ id }) => id === structureId),
+      ).to.deep.equal({ id: structureId, propertyId, loanTranches: [] });
+
+      // Other structures are unaffected
+      loan.structures
+        .filter(({ id }) => id !== structureId)
+        .forEach((structure, index) => {
+          expect(structure).to.deep.equal({
+            id: structureId + index,
+            loanTranches: [],
+          });
+        });
+    });
+  });
+
+  describe('selectStructure', () => {
+    it('selects an existing structure', () => {
+      const structureId = 'testId';
+      const structureId2 = 'testId2';
+
+      loanId = Factory.create('loan', {
+        structures: [{ id: structureId }, { id: structureId2 }],
+        selectedStructure: structureId,
+      })._id;
+
+      LoanService.selectStructure({ loanId, structureId: structureId2 });
+      const { selectedStructure } = LoanService.getLoanById(loanId);
+
+      expect(selectedStructure).to.equal(structureId2);
+    });
+
+    it('throws if the structure does not exist', () => {
+      loanId = Factory.create('loan')._id;
+      const badId = 'inexistentId';
+
+      expect(() =>
+        LoanService.selectStructure({ loanId, structureId: badId }),
+      ).to.throw(badId);
+    });
+  });
+
+  describe('duplicateStructure', () => {
+    it('duplicates a structure with a new id', () => {
+      const structureId = 'testId';
+
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: structureId,
+            name: 'joe',
+            description: 'hello',
+            fortuneUsed: 100,
+          },
+        ],
+      })._id;
+
+      LoanService.duplicateStructure({ loanId, structureId });
+
+      const loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(2);
+      const { id: id1, ...structure1 } = loan.structures[0];
+      const { id: id2, ...structure2 } = loan.structures[1];
+      expect(id1).to.not.equal(id2);
+      expect(structure1).to.deep.equal(structure2);
     });
   });
 });

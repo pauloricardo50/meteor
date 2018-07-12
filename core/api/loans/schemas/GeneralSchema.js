@@ -12,7 +12,7 @@ import {
 export const loanTranchesSchema = {
   loanTranches: {
     type: Array,
-    defaultValue: [{ type: INTEREST_RATES.LIBOR, value: 100000 }],
+    defaultValue: [],
   },
   'loanTranches.$': Object,
   'loanTranches.$.type': {

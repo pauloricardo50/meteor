@@ -143,3 +143,11 @@ export const selectStructure = new Method({
     structureId: String,
   },
 });
+
+export const duplicateStructure = new Method({
+  name: 'duplicateStructure',
+  params: {
+    loanId: String,
+    structureId: String,
+  },
+});

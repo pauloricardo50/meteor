@@ -42,6 +42,7 @@ const LoanSchema = new SimpleSchema({
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
+  selectedStructure: { type: String, optional: true },
   ...borrowerIdsSchema,
   ...contactsSchema,
 });

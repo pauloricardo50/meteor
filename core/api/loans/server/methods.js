@@ -20,6 +20,7 @@ import {
   removeStructure,
   updateStructure,
   selectStructure,
+  duplicateStructure,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -127,3 +128,12 @@ export const selectStructureHandler = ({ userId }, { loanId, structureId }) => {
   return LoanService.selectStructure({ loanId, structureId });
 };
 selectStructure.setHandler(selectStructureHandler);
+
+export const duplicateStructureHandler = (
+  { userId },
+  { loanId, structureId },
+) => {
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.duplicateStructure({ loanId, structureId });
+};
+duplicateStructure.setHandler(duplicateStructureHandler);

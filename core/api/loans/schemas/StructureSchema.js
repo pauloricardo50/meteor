@@ -10,7 +10,6 @@ const StructureSchema = new SimpleSchema({
   amortization: { type: Number, min: 0, max: 100000000, optional: true },
   amortizationType: {
     type: String,
-    defaultValue: AMORTIZATION_STRATEGY_PRESET.DIRECT,
     allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
     optional: true,
   },
