@@ -7,7 +7,7 @@ echo Running e-Potek...
 # Check if tmux is installed
 if ! type "tmux" > /dev/null; then
   #if not tell user
-  echo You need to install tmux (brew: brew install tmux, apt: apt-get install tmux)
+  echo "You need to install tmux (brew: brew install tmux, apt: apt-get install tmux)"
 fi
 
 # Start tmux session
