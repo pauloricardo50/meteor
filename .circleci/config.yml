@@ -102,9 +102,10 @@ jobs:
             sudo apt install rsync
             cd scripts
             ./setup.sh
-      - run:
-          name: Check flow types
-          command: meteor npm run flow
+      # TODO: To be added back later
+      # - run:
+      #     name: Check flow types
+      #     command: meteor npm run flow
       - run:
           name: create results directories
           command: mkdir ./results ./e2e-results
