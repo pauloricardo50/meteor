@@ -14,7 +14,7 @@ const factories = [
   'property',
 ];
 
-describe.only('Factories', () => {
+describe('Factories', () => {
   beforeEach(() => {
     resetDatabase();
   });
