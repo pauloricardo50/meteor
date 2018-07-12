@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
+import '../../../factories';
 import { Loans, Borrowers, Properties } from '../../..';
-import { stubCollections, generateData } from '../../../../utils/testHelpers';
 import LoanService from '../../LoanService';
 
 let loanId;
@@ -14,13 +13,12 @@ let loan;
 describe('LoanService', () => {
   beforeEach(() => {
     resetDatabase();
-
-    loanId = Factory.create('loan')._id;
-    loan = LoanService.getLoanById(loanId);
   });
 
   describe('disableUserForms', () => {
     it('disables user forms', () => {
+      loanId = Factory.create('loan')._id;
+      loan = LoanService.getLoanById(loanId);
       LoanService.disableUserForms({ loanId });
       loan = LoanService.getLoanById(loanId);
       expect(loan.userFormsEnabled).to.equal(false);
@@ -29,6 +27,8 @@ describe('LoanService', () => {
 
   describe('enableUserForms', () => {
     it('enables the user forms', () => {
+      loanId = Factory.create('loan')._id;
+      loan = LoanService.getLoanById(loanId);
       LoanService.enableUserForms({ loanId });
       loan = LoanService.getLoanById(loanId);
       expect(loan.userFormsEnabled).to.equal(true);
