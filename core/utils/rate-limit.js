@@ -14,7 +14,7 @@ let rateLimitedMethods = [];
 export const getRateLimitedMethods = () => rateLimitedMethods;
 
 const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
-  if (Meteor.isServer && !Meteor.isTest && !Meteor.isAppTest) {
+  if (Meteor.isServer && !Meteor.isAppTest) {
     DDPRateLimiter.addRule(
       {
         name(name) {
