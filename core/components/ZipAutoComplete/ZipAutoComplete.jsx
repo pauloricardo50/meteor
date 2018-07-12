@@ -93,20 +93,12 @@ class ZipAutoComplete extends Component {
     };
 
     updateFunc({ object, id: docId })
-      .then(() =>
-        // on success, set saving briefly to true,
-        // before setting it to false again to trigger icon
-        this.setState(
-          { errorText: '', saving: true },
-          this.setState({ saving: false }),
-        ))
-      .catch(() => {
-        // If there was an error, reset value to the backend value
-        this.setState({
-          saving: false,
-          searchText: this.props.initialValue,
-        });
-      });
+      // on success, set saving briefly to true,
+      // before setting it to false again to trigger icon
+      .then(() => this.setState({ errorText: '', saving: true }))
+      // If there was an error, reset value to the backend value
+      .catch(() => this.setState({ searchText: this.props.initialValue }))
+      .finally(() => this.setState({ saving: false }));
   };
 
   handleBlur = () => {

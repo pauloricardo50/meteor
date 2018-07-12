@@ -52,8 +52,7 @@ export default class RadioInput extends Component {
     const object = { [this.props.inputProps.id]: safeValue };
     this.props
       .updateFunc({ object, id: this.props.docId })
-      .then(() => this.setState({ saving: false }))
-      .catch(() => this.setState({ saving: false }));
+      .finally(() => this.setState({ saving: false }));
   };
 
   render() {
