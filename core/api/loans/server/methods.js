@@ -16,6 +16,10 @@ import {
   disableUserForms,
   enableUserForms,
   adminLoanInsert,
+  addStructure,
+  removeStructure,
+  updateStructure,
+  selectStructure,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -96,3 +100,30 @@ export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   return LoanService.adminLoanInsert({ userId });
 };
 adminLoanInsert.setHandler(adminLoanInsertHandler);
+
+export const addStructureHandler = ({ userId }, { loanId }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.addStructure({ loanId });
+};
+addStructure.setHandler(addStructureHandler);
+
+export const removeStructureHandler = ({ userId }, { loanId, structureId }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.removeStructure({ loanId, structureId });
+};
+removeStructure.setHandler(removeStructureHandler);
+
+export const updateStructureHandler = (
+  { userId },
+  { loanId, structureId, structure },
+) => {
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.updateStructure({ loanId, structureId, structure });
+};
+updateStructure.setHandler(updateStructureHandler);
+
+export const selectStructureHandler = ({ userId }, { loanId, structureId }) => {
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.selectStructure({ loanId, structureId });
+};
+selectStructure.setHandler(selectStructureHandler);

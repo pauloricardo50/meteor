@@ -111,3 +111,35 @@ export const adminLoanInsert = new Method({
     userId: String,
   },
 });
+
+export const addStructure = new Method({
+  name: 'addStructure',
+  params: {
+    loanId: String,
+  },
+});
+
+export const removeStructure = new Method({
+  name: 'removeStructure',
+  params: {
+    loanId: String,
+    structureId: String,
+  },
+});
+
+export const updateStructure = new Method({
+  name: 'updateStructure',
+  params: {
+    loanId: String,
+    structureId: String,
+    structure: Object,
+  },
+});
+
+export const selectStructure = new Method({
+  name: 'selectStructure',
+  params: {
+    loanId: String,
+    structureId: String,
+  },
+});

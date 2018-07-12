@@ -1,3 +1,5 @@
+import { Random } from 'meteor/random';
+
 import moment from 'moment';
 import Loans from '../loans';
 
@@ -13,6 +15,8 @@ class LoanServiceModel {
 
   remove = ({ loanId }) => Loans.remove(loanId);
 
+  getLoanById = loanId => Loans.findOne(loanId);
+
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
@@ -27,7 +31,7 @@ class LoanServiceModel {
     Loans.update(loanId, { $inc: { 'logic.step': 1 } });
 
   askVerification = ({ loanId }) => {
-    const loan = Loans.findOne(loanId);
+    const loan = this.getLoanById(loanId);
 
     if (loan.logic.verification.requested) {
       // Don't do anything if this loan is already in requested mode
@@ -99,11 +103,19 @@ class LoanServiceModel {
   enableUserForms = ({ loanId }) =>
     this.update({ loanId, object: { userFormsEnabled: true } });
 
-  static pushValue = ({ loanId, object }) =>
-    Loans.update(loanId, { $push: object });
+  pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
-  static popValue = ({ loanId, object }) =>
-    Loans.update(loanId, { $pop: object });
+  popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
+
+  addStructure = ({ loanId }) =>
+    Loans.update(loanId, { $push: { structures: { id: Random.id() } } });
+
+  removeStructure = ({ loanId, structureId }) =>
+    Loans.update(loanId, { $pull: { structures: { id: structureId } } });
+
+  updateStructure = ({ loanId, structureId, structure }) => {};
+
+  selectStructure = ({ loanId, structureId }) => {};
 }
 
 const LoanService = new LoanServiceModel({});

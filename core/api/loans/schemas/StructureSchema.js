@@ -12,11 +12,13 @@ const StructureSchema = new SimpleSchema({
     type: String,
     defaultValue: AMORTIZATION_STRATEGY_PRESET.DIRECT,
     allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
+    optional: true,
   },
   '2ndPillarUsed': { type: Number, min: 0, max: 100000000, optional: true },
   '2ndPillarUsageType': {
     type: String,
     allowedValues: Object.values(INSURANCE_USE_PRESET),
+    optional: true,
   },
   '3rdPillarUsed': { type: Number, min: 0, max: 100000000, optional: true },
   description: { type: String, optional: true },

@@ -12,7 +12,6 @@ let loanId;
 describe('LoanService', () => {
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
 
     const {
       loan: { _id },
@@ -20,10 +19,6 @@ describe('LoanService', () => {
     loanId = _id;
 
     expect(loanId).to.be.a('string');
-  });
-
-  afterEach(() => {
-    stubCollections.restore();
   });
 
   describe('disableUserForms', () => {
@@ -87,6 +82,50 @@ describe('LoanService', () => {
         userId,
         'properties userId',
       );
+    });
+  });
+
+  describe('addStructure', () => {
+    it('adds a new structure to a loan', () => {
+      loanId = LoanService.insert({
+        loan: { propertyId: 'testId' },
+        userId: 'test',
+      });
+      let loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures).to.deep.equal([]);
+
+      LoanService.addStructure({ loanId });
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures).to.have.length(1);
+      expect(typeof loan.structures[0].id).to.equal('string');
+    });
+  });
+
+  describe('removeStructure', () => {
+    it('removes an existing structure from a loan', () => {
+      loanId = LoanService.insert({
+        loan: { propertyId: 'testId' },
+        userId: 'test',
+      });
+      let loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures).to.deep.equal([]);
+
+      LoanService.addStructure({ loanId });
+      LoanService.addStructure({ loanId });
+      loan = LoanService.getLoanById(loanId);
+      expect(loan.structures.length).to.equal(2);
+
+      const structureId = loan.structures[0].id;
+
+      LoanService.removeStructure({ loanId, structureId });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(1);
+      expect(loan.structures[0].id).to.not.equal(structureId);
     });
   });
 });
