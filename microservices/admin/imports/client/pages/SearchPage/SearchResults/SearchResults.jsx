@@ -15,7 +15,7 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
   }
 
   if (error) {
-    return <div>Error: {error.reason}</div>;
+    return <React.Fragment>Error: {error.reason}</React.Fragment>;
   }
 
   const hasNoSearchResults = Object.values(searchResults).every(collection => collection.length === 0);

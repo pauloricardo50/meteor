@@ -62,8 +62,8 @@ accounts-password@1.5.0
 wylio:mandrill
 dburles:google-maps
 meteorhacks:kadira
-okgrow:analytics@=3.0.1
 softwarerero:accounts-t9n
 u2622:persistent-session
 tmeasday:acceptance-test-driver
 std:accounts-ui
+okgrow:analytics

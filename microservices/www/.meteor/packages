@@ -40,9 +40,9 @@ accounts-password@1.5.0
 
 
 # Production
-okgrow:analytics
 wylio:mandrill
 edgee:slingshot
 dburles:google-maps
 tmeasday:acceptance-test-driver
 meteorhacks:kadira
+okgrow:analytics

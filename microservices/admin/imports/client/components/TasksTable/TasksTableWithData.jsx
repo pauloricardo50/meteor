@@ -1,13 +1,23 @@
-import query from 'core/api/tasks/queries/tasks';
-import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import { Tracker } from 'meteor/tracker';
+
+import query from 'core/api/tasks/queries/tasks';
+import { compose, withSmartQuery } from 'core/api';
+import withTableFilters from 'core/containers/withTableFilters';
+
 import TasksTable from './TasksTable';
 
-const TasksTableWithData = withQuery(
-  ({ assignedTo, unassigned, dashboardTasks }) =>
+export const withTasksQuery = withSmartQuery({
+  query: ({ assignedTo, unassigned, dashboardTasks }) =>
     query.clone({ assignedTo, unassigned, dashboardTasks }),
-  { reactive: true },
-)(TasksTable);
+  queryOptions: { reactive: true },
+});
+
+export const TasksTableContainer = compose(
+  withTasksQuery,
+  withTableFilters,
+);
+
+export default TasksTableContainer(TasksTable);
 
 const subscriptionHandle = query.subscribe();
 
@@ -16,5 +26,3 @@ Tracker.autorun(() => {
     query.unsubscribe();
   }
 });
-
-export default TasksTableWithData;

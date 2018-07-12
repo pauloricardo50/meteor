@@ -30,7 +30,28 @@
 
 .side-nav-user .top-bar {
   position: relative;
+}
 
+.side-nav-user [aria-haspopup='true'] {
+  padding-right: 23px;
+
+  svg:first-child {
+    margin: 0;
+    padding-right: 8px;
+  }
+
+  [class*='MuiListItemText'] {
+    padding-right: 0;
+  }
+
+  span:first-child {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+}
+
+.side-nav-user .link {
   display: flex;
   align-items: center;
   justify-content: center;

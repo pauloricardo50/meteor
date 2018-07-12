@@ -52,7 +52,7 @@ export default class ConfirmMethod extends Component {
     ];
 
     return (
-      <div>
+      <React.Fragment>
         <Button
           raised
           label={label}
@@ -66,7 +66,7 @@ export default class ConfirmMethod extends Component {
             <TextField value={text} autoFocus onChange={this.handleChange} />
           </form>
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }

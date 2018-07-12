@@ -78,7 +78,8 @@ const config = {
     'Form',
     'TooltipSynonyms',
     'SearchResults',
-    'MissingDoc'
+    'MissingDoc',
+    'InterestsTable',
   ],
 };
 

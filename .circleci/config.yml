@@ -2,6 +2,9 @@ defaults: &defaults
   working_directory: ~/app
 
 # caching paths
+cypress_binary_cache: &cypress_binary_cache
+  build-epotek-v5-cypress-binary-{{ checksum "./package.json" }}
+  
 meteor_system_cache_key: &meteor_system_cache_key
   build-epotek-v5-meteor-system-{{ checksum "./.circleci/config.yml" }}
 
@@ -54,6 +57,10 @@ jobs:
           keys:
             - build-epotek-v5-node_modules-{{ checksum "./package.json" }}
       - restore_cache:
+          name: restore cypress binary cache
+          keys:
+            - *cypress_binary_cache
+      - restore_cache:
           name: restore app's meteor cached build
           keys:
             - *app_meteor_cache_key
@@ -102,6 +109,7 @@ jobs:
             sudo apt install rsync
             cd scripts
             ./setup.sh
+          no_output_timeout: 20m
       # TODO: To be added back later
       # - run:
       #     name: Check flow types
@@ -143,7 +151,7 @@ jobs:
           command: |
             cd microservices/www
             meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
-            meteor npm run test-CI      
+            meteor npm run test-CI
       - run:
           name: copy meteor bin to build cache
           command: |
@@ -160,6 +168,11 @@ jobs:
           key: build-epotek-v5-node_modules-{{ checksum "./package.json" }}
           paths:
             - ./node_modules
+      - save_cache:
+          name: cache cypress binary
+          key: *cypress_binary_cache
+          paths:
+            - ~/.cache/Cypress
       - save_cache:
           name: cache app's meteor build
           key: *app_meteor_cache_key

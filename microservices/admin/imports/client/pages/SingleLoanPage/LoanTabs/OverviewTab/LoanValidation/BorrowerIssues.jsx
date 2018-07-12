@@ -17,7 +17,7 @@ const BorrowerIssues = ({ borrowers }) => {
 
   if (borrowerAdminValidations.length > 0) {
     return (
-      <div>
+      <React.Fragment>
         <h4 className="bold">
           <T id="collections.borrowers" />
         </h4>
@@ -32,7 +32,7 @@ const BorrowerIssues = ({ borrowers }) => {
             </li>
           ))}
         </ul>
-      </div>
+      </React.Fragment>
     );
   }
 

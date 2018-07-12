@@ -11,24 +11,29 @@ import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
 } from 'core/api/constants';
+import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { emails, roles, _id, name, firstName, lastName },
+  { emails, roles, _id, name, firstName, lastName, username },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {
-      primary: emails[0].address,
+      primary: getUserDisplayName({ firstName, lastName, username, emails }),
       secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION:
     return { primary: _id, secondary: name };
   case BORROWERS_COLLECTION:
-    return { primary: `${firstName} ${lastName}`, secondary: '' };
+    return {
+      primary: getBorrowerFullName({ firstName, lastName }),
+      secondary: '',
+    };
   default:
     throw new Error('invalid collection name');
   }
@@ -40,7 +45,7 @@ const DetailSideNavList = ({
   hideDetailNav,
   showMore,
   collectionName,
-  totalCount,
+  isEnd,
   history: { push },
 }) => {
   if (isLoading) {
@@ -61,10 +66,7 @@ const DetailSideNavList = ({
           <ListItemText {...getListItemDetails(collectionName, doc)} />
         </ListItem>
       ))}
-      <DetailSideNavPagination
-        showMore={showMore}
-        isEnd={data.length >= totalCount}
-      />
+      <DetailSideNavPagination showMore={showMore} isEnd={isEnd} />
     </List>
   );
 };
@@ -76,7 +78,7 @@ DetailSideNavList.propTypes = {
   collectionName: PropTypes.string.isRequired,
   hideDetailNav: PropTypes.func.isRequired,
   showMore: PropTypes.func.isRequired,
-  totalCount: PropTypes.number.isRequired,
+  isEnd: PropTypes.bool.isRequired,
 };
 
 DetailSideNavList.defaultProps = {

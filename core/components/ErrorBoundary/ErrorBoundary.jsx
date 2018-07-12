@@ -10,16 +10,20 @@ export default class ErrorBoundary extends Component {
     this.state = { hasError: false, error: null };
   }
 
-  componentDidCatch(error, info) {
-    // Error should also log to kadira
-    this.setState({ hasError: true, error });
-  }
-
   // Remove error if user switches page
   // If it crashes again then it will simply go through componentDidCatch
   componentWillReceiveProps({ pathname }) {
     if (this.state.hasError && pathname !== this.props.pathname) {
       this.setState({ hasError: false, error: null });
+    }
+  }
+
+  componentDidCatch(error) {
+    // Error should also log to kadira
+    this.setState({ hasError: true, error });
+    const Kadira = { window };
+    if (Kadira) {
+      Kadira.trackError('react', error.stack.toString());
     }
   }
 
@@ -41,7 +45,7 @@ export default class ErrorBoundary extends Component {
       case 'root':
         return <RootError error={error} />;
       default:
-        return <div>Woops!</div>;
+        return <React.Fragment>Woops!</React.Fragment>;
       }
     }
 

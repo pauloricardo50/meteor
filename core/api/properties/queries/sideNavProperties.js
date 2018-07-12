@@ -6,4 +6,9 @@ export default Property.createQuery(PROPERTY_QUERIES.SIDENAV_PROPERTIES, {
     filters._id = params.propertyId;
   },
   $paginate: true,
+  createdAt: 1,
+  updatedAt: 1,
+  user: {
+    assignedEmployee: { emails: 1 },
+  },
 });
