@@ -1,7 +1,7 @@
 import { Random } from 'meteor/random';
 
 import moment from 'moment';
-import Loans from '../loans';
+import Loans from './loans';
 
 import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';

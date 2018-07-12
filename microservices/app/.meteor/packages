@@ -25,7 +25,7 @@ aldeed:collection2-core
 cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
-hwillson:stub-collections@=1.0.3
+hwillson:stub-collections
 meteortesting:mocha
 
 

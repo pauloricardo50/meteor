@@ -52,7 +52,7 @@ export const stubCollections = () => {
  *
  * @return {string} the generated login token
  */
-export const createLoginToken = (userId) => {
+export const createLoginToken = userId => {
   const loginToken = Random.id();
   const hashedToken = Accounts._hashLoginToken(loginToken);
 
@@ -93,9 +93,7 @@ export const createEmailVerificationToken = (userId, email) => {
   return token;
 };
 
-stubCollections.restore = () => {
-  StubCollections.restore();
-};
+stubCollections.restore = StubCollections.restore;
 
 if (Meteor.isTest) {
   // This is some test initialization, stubbing all the collections here,

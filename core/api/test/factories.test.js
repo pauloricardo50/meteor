@@ -28,7 +28,7 @@ describe('Factories', () => {
       stubCollections.restore();
     });
 
-    factories.forEach((fact) => {
+    factories.forEach(fact => {
       it(`${fact} builds correctly`, () => {
         const result = Factory.create(fact, {
           userId: 'testId',
@@ -46,7 +46,7 @@ describe('Factories', () => {
       stubCollections.restore();
     });
 
-    factories.forEach((fact) => {
+    factories.forEach(fact => {
       it(`${fact} builds correctly`, () => {
         const result = Factory.create(fact, {
           userId: 'testId',

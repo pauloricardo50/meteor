@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { Factory } from 'meteor/dburles:factory';
 
 import { Loans, Borrowers, Properties } from '../../..';
 import { stubCollections, generateData } from '../../../../utils/testHelpers';
@@ -55,10 +56,13 @@ describe('LoanService', () => {
     let userId;
 
     beforeEach(() => {
-      stubCollections.restore();
       stubCollections();
       resetDatabase();
       userId = 'testId';
+    });
+
+    afterEach(() => {
+      stubCollections.restore();
     });
 
     it('inserts a property, borrower and loan', () => {
@@ -87,11 +91,10 @@ describe('LoanService', () => {
 
   describe('addStructure', () => {
     it('adds a new structure to a loan', () => {
-      loanId = LoanService.insert({
-        loan: { propertyId: 'testId' },
-        userId: 'test',
-      });
+      loanId = Factory.create('loan')._id;
       let loan = LoanService.getLoanById(loanId);
+
+      console.log('new loan:', loan);
 
       expect(loan.structures).to.deep.equal([]);
 
@@ -105,10 +108,7 @@ describe('LoanService', () => {
 
   describe('removeStructure', () => {
     it('removes an existing structure from a loan', () => {
-      loanId = LoanService.insert({
-        loan: { propertyId: 'testId' },
-        userId: 'test',
-      });
+      loanId = Factory.create('loan')._id;
       let loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures).to.deep.equal([]);

@@ -12,7 +12,7 @@
     "production": "meteor run --production --settings settings-dev.json",
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010",
     "test": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 4005",
-    "test-console": "meteor test --driver-package=meteortesting:mocha --settings settings-dev.json  --port 4005",
+    "test-console": "meteor test --driver-package=meteortesting:mocha --settings settings-dev.json  --port 4006",
     "test-debug": "meteor test --driver-package=cultofcoders:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
     "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "test-e2e": "meteor start-server-and-test start-e2e http://localhost:4015 cypress-open",
