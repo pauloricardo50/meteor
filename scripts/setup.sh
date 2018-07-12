@@ -49,11 +49,10 @@ for i in 'admin' 'app' 'www'
     git rev-parse --short HEAD > "../core/assets/public/commit.txt"
 
 
-    # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
-    # So copy them over with rsync
-    echo "Copying public/private folders from core"
-      rsync -a --delete-before ../core/assets/public/ ../microservices/$i/public/
-      rsync -a --delete-before ../core/assets/private/ ../microservices/$i/private/
+    echo "Symlinking public/private folders from core"
+    ln -s ../../core/assets/public ../microservices/$i/public
+    ln -s ../../core/assets/private ../microservices/$i/private
+
 
     if [[ $i == "www" ]];
     then
