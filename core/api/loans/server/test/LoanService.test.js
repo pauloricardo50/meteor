@@ -9,46 +9,29 @@ import { stubCollections, generateData } from '../../../../utils/testHelpers';
 import LoanService from '../../LoanService';
 
 let loanId;
+let loan;
 
 describe('LoanService', () => {
   beforeEach(() => {
     resetDatabase();
 
-    const {
-      loan: { _id },
-    } = generateData();
-    loanId = _id;
-
-    expect(loanId).to.be.a('string');
+    loanId = Factory.create('loan')._id;
+    loan = LoanService.getLoanById(loanId);
   });
 
   describe('disableUserForms', () => {
-    it('calls `LoanService.update` with the correct params', () => {
-      sinon.stub(LoanService, 'update');
-
-      expect(LoanService.update.called).to.equal(false);
+    it('disables user forms', () => {
       LoanService.disableUserForms({ loanId });
-
-      expect(LoanService.update.getCall(0).args).to.deep.equal([
-        { loanId, object: { userFormsEnabled: false } },
-      ]);
-
-      LoanService.update.restore();
+      loan = LoanService.getLoanById(loanId);
+      expect(loan.userFormsEnabled).to.equal(false);
     });
   });
 
   describe('enableUserForms', () => {
     it('enables the user forms', () => {
-      sinon.stub(LoanService, 'update');
-
-      expect(LoanService.update.called).to.equal(false);
       LoanService.enableUserForms({ loanId });
-
-      expect(LoanService.update.getCall(0).args).to.deep.equal([
-        { loanId, object: { userFormsEnabled: true } },
-      ]);
-
-      LoanService.update.restore();
+      loan = LoanService.getLoanById(loanId);
+      expect(loan.userFormsEnabled).to.equal(true);
     });
   });
 
@@ -56,13 +39,7 @@ describe('LoanService', () => {
     let userId;
 
     beforeEach(() => {
-      stubCollections();
-      resetDatabase();
       userId = 'testId';
-    });
-
-    afterEach(() => {
-      stubCollections.restore();
     });
 
     it('inserts a property, borrower and loan', () => {
@@ -92,7 +69,7 @@ describe('LoanService', () => {
   describe('addStructure', () => {
     it('adds a new structure to a loan', () => {
       loanId = Factory.create('loan')._id;
-      let loan = LoanService.getLoanById(loanId);
+      loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures).to.deep.equal([]);
 
@@ -107,7 +84,7 @@ describe('LoanService', () => {
       loanId = Factory.create('loan')._id;
       LoanService.addStructure({ loanId });
 
-      let loan = LoanService.getLoanById(loanId);
+      loan = LoanService.getLoanById(loanId);
       expect(loan.selectedStructure).to.equal(loan.structures[0].id);
     });
   });
@@ -115,7 +92,7 @@ describe('LoanService', () => {
   describe('removeStructure', () => {
     it('removes an existing structure from a loan', () => {
       loanId = Factory.create('loan')._id;
-      let loan = LoanService.getLoanById(loanId);
+      loan = LoanService.getLoanById(loanId);
 
       LoanService.addStructure({ loanId });
       LoanService.addStructure({ loanId });
@@ -144,8 +121,7 @@ describe('LoanService', () => {
       })._id;
 
       expect(() =>
-        LoanService.removeStructure({ loanId, structureId }),
-      ).to.throw("Can't delete");
+        LoanService.removeStructure({ loanId, structureId })).to.throw("Can't delete");
     });
   });
 
@@ -156,11 +132,11 @@ describe('LoanService', () => {
       loanId = Factory.create('loan', {
         structures: [
           { id: structureId },
-          { id: structureId + '0' },
-          { id: structureId + '1' },
+          { id: `${structureId}0` },
+          { id: `${structureId}1` },
         ],
       })._id;
-      let loan = LoanService.getLoanById(loanId);
+      loan = LoanService.getLoanById(loanId);
       expect(loan.structures.propertyId).to.equal(undefined);
       LoanService.updateStructure({
         loanId,
@@ -170,9 +146,7 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
       // This structure is correct
-      expect(
-        loan.structures.find(({ id }) => id === structureId),
-      ).to.deep.equal({ id: structureId, propertyId, loanTranches: [] });
+      expect(loan.structures.find(({ id }) => id === structureId)).to.deep.equal({ id: structureId, propertyId, loanTranches: [] });
 
       // Other structures are unaffected
       loan.structures
@@ -207,8 +181,7 @@ describe('LoanService', () => {
       const badId = 'inexistentId';
 
       expect(() =>
-        LoanService.selectStructure({ loanId, structureId: badId }),
-      ).to.throw(badId);
+        LoanService.selectStructure({ loanId, structureId: badId })).to.throw(badId);
     });
   });
 
@@ -229,7 +202,7 @@ describe('LoanService', () => {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      const loan = LoanService.getLoanById(loanId);
+      loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, ...structure1 } = loan.structures[0];

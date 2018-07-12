@@ -1,13 +1,14 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
+
+import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
+import { fakeFile } from '../api/files/fakes';
 import Loans from './loans';
 import Borrowers from './borrowers';
 import Properties from './properties';
 import Offers from './offers';
 import Tasks from './tasks';
 import Users from './users';
-import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
-import { fakeFile } from '../api/files/fakes';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -37,7 +38,7 @@ Factory.define('admin', Users, {
   phone: TEST_PHONE,
 });
 
-Factory.define('borrower', Borrowers, {});
+Factory.define('borrower', Borrowers);
 
 Factory.define('task', Tasks, {
   type: TASK_TYPE.USER_ADDED_FILE,

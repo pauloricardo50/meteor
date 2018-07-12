@@ -57,7 +57,8 @@ describe('general helpers', () => {
     it("returns 0 if it isn't given any argument", () => {
       expect(getPercent()).to.equal(0);
     });
-    
+  });
+
   describe('flattenObjectTreeToArrays', () => {
     it("flattens an object tree into arrays of leaf's path & value", () => {
       const tree = {
