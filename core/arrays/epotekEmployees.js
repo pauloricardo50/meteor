@@ -4,12 +4,21 @@ const employees = [
     src: '/img/team/lydia.jpg',
     name: 'Lydia Abraha',
     title: 'Conseillère en financement',
+    phone: '+41 22 566 82 92',
+  },
+  {
+    email: 'lydia@e-potek.ch',
+    src: '/img/team/lydia.jpg',
+    name: 'Lydia Abraha',
+    title: 'Conseillère en financement',
+    phone: '+41 22 566 82 95',
   },
   {
     email: 'florian@e-potek.ch',
     src: '/img/team/florian.jpg',
     name: 'Florian Bienefelt',
     title: 'CTO',
+    phone: '+41 22 566 82 91',
   },
   {
     email: '',
@@ -28,12 +37,14 @@ const employees = [
     src: '/img/team/yannis.jpg',
     name: 'Yannis Eggert',
     title: 'Conseiller en financement',
+    phone: '+41 22 566 82 90',
   },
   {
     email: 'jeanluc@e-potek.ch',
     src: '/img/team/jeanluc.jpg',
     name: 'Jean-Luc Kringel',
     title: 'Responsable Assurances',
+    phone: '+41 22 566 82 94',
   },
   {
     email: '',
