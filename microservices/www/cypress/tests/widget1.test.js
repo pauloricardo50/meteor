@@ -81,7 +81,7 @@ describe('Widget1', () => {
     });
   });
 
-  describe.only('full calculator', () => {
+  describe('full calculator', () => {
     before(() => {
       cy.visit('/start/1')
         .get('input#property')
@@ -119,6 +119,30 @@ describe('Widget1', () => {
         .should('have.value', '125 000')
         .then(assertFinmaValue("Prêt / Prix d'achat", '80,00%'))
         .then(assertFinmaValue('Charges / Revenus', '33,33%'));
+    });
+  });
+
+  describe.only('refinancing', () => {
+    before(() => {
+      cy.visit('/start/1')
+        .get('#REFINANCING')
+        .click()
+        .get('input#property')
+        .type(1000000)
+        .type('{enter}')
+        .get('input#salary')
+        .type(180000)
+        .type('{enter}')
+        .get('input#currentLoan')
+        .type(500000)
+        .type('{enter}')
+        .get('input#wantedLoan')
+        .type(800000)
+        .type('{enter}');
+    });
+
+    it('shows the proper recap fields', () => {
+      cy.then(assertRecapValue('Prêt max possible', '800 000')).then(assertRecapValue('Augmentation du prêt', '300 000'));
     });
   });
 });
