@@ -7,6 +7,8 @@ import T from 'core/components/Translation';
 import employees from 'core/arrays/epotekEmployees';
 import Icon from 'core/components/Icon';
 
+import ContactButtonContainer from './ContactButtonContainer';
+
 const styles = {
   div: {
     position: 'fixed',
@@ -49,9 +51,9 @@ const styles = {
   },
 };
 
-const staff = employees[0];
+// const staff = employees[0];
 
-const overlayContent = path => (
+const overlayContent = staff => (
   <div
     style={{
       display: 'flex',
@@ -102,11 +104,7 @@ const overlayContent = path => (
         <p className="bold" style={{ margin: 0 }}>
           <T id="ContactButton.byPhone" />
         </p>
-        <a
-          href={`tel:${staff.phone}`}
-          className="active"
-          onClick={() => track('ContactButton - clicked on phone', { path })}
-        >
+        <a href={`tel:${staff.phone}`} className="active">
           {staff.phone}
         </a>
       </div>
@@ -125,11 +123,7 @@ const overlayContent = path => (
         <p className="bold" style={{ margin: 0 }}>
           <T id="ContactButton.byEmail" />
         </p>
-        <a
-          href={`mailto:${staff.email}`}
-          className="active"
-          onClick={() => track('ContactButton - clicked on email', { path })}
-        >
+        <a href={`mailto:${staff.email}`} className="active">
           {staff.email}
         </a>
       </div>
@@ -137,7 +131,7 @@ const overlayContent = path => (
   </div>
 );
 
-export default class ContactButton extends Component {
+class ContactButton extends Component {
   constructor(props) {
     super(props);
 
@@ -146,19 +140,11 @@ export default class ContactButton extends Component {
     };
   }
 
-  handleClick = () => {
-    // Track when the button is clicked
-    if (!this.state.open) {
-      track('ContactButton - clicked', {
-        path: this.props.history.location.pathname,
-      });
-    }
-    this.setState({ open: !this.state.open });
-  };
+  handleClick = () => this.setState({ open: !this.state.open });
 
   render() {
     const { open } = this.state;
-    const { history } = this.props;
+    const { history, staff } = this.props;
 
     return (
       <div style={styles.div}>
@@ -177,7 +163,7 @@ export default class ContactButton extends Component {
             ...(open ? {} : styles.closed),
           }}
         >
-          {overlayContent(history.location.pathname)}
+          {overlayContent(staff)}
         </div>
       </div>
     );
@@ -187,3 +173,5 @@ export default class ContactButton extends Component {
 ContactButton.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
+export default ContactButtonContainer(ContactButton);
