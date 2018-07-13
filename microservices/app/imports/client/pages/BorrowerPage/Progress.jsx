@@ -7,7 +7,9 @@ import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
 import { borrowerDocuments } from 'core/api/files/documents';
 import { FILE_STEPS } from 'core/api/constants';
 
-const Progress = ({ tabId, borrower }) => {
+const Progress = ({ match, borrower }) => {
+  const { tabId } = match.params;
+
   switch (tabId) {
   case 'personal': {
     const percent = personalInfoPercent(borrower);
@@ -58,7 +60,7 @@ const Progress = ({ tabId, borrower }) => {
 };
 
 Progress.propTypes = {
-  tabId: PropTypes.string.isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
   borrower: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

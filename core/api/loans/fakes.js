@@ -1,4 +1,4 @@
-import { fakeDocument } from 'core/api/files/fakes';
+import { fakeDocument } from 'core/api/files/fileHelpers';
 import moment from 'moment';
 
 export const fakeGeneral = {

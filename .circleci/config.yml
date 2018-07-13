@@ -110,10 +110,9 @@ jobs:
             cd scripts
             ./setup.sh
           no_output_timeout: 20m
-      # TODO: To be added back later
-      # - run:
-      #     name: Check flow types
-      #     command: meteor npm run flow
+      - run:
+          name: Check flow types
+          command: meteor npm run flow
       - run:
           name: create results directories
           command: mkdir ./results ./e2e-results

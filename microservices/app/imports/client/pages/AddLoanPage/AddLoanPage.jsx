@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import { generalContainer } from 'core/containers/Containers';
 import { setUserToLoan } from 'core/api';
 
 import './AddLoanPage.scss';
@@ -57,4 +58,4 @@ AddLoanPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default AddLoanPage;
+export default generalContainer(AddLoanPage);

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
-import Page from '../../components/Page';
+import ProcessPage from '../../components/ProcessPage';
 import FileTabs from './FileTabs';
 import ContractDownloader from './ContractDownloader';
 
 const ContractPage = props => (
-  <Page id="contract">
+  <ProcessPage {...props} stepNb={3} id="contract" showBottom={false}>
     <section className="mask1 contract-page">
       <div className="description">
         <p>
@@ -19,7 +19,7 @@ const ContractPage = props => (
 
       <FileTabs {...props} />
     </section>
-  </Page>
+  </ProcessPage>
 );
 
 ContractPage.propTypes = {

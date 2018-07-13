@@ -11,32 +11,20 @@ const RecapSimple = ({ array, noScale, className }) => (
       className,
     )}
   >
-    {array.map(({
-      hide,
-      space,
-      title,
-      props,
-      label,
-      labelStyle,
-      noIntl,
-      bold,
-      spacing,
-      spacingTop,
-      value,
-    }) => {
-      if (hide) {
+    {array.map((item) => {
+      if (item.hide) {
         return null;
-      } else if (space) {
+      } else if (item.space) {
         return <div style={{ height: 16 }} />;
-      } else if (title) {
+      } else if (item.title) {
         return (
           <h4
             className="text-center"
-            {...props}
-            key={label}
-            style={labelStyle}
+            {...item.props}
+            key={item.label}
+            style={item.labelStyle}
           >
-            {noIntl ? label : <T id={label} />}
+            <T id={item.label} />
           </h4>
         );
       }
@@ -44,16 +32,18 @@ const RecapSimple = ({ array, noScale, className }) => (
         <div
           className={classnames('fixed-size recap-item', {
             'no-scale': noScale,
-            bold,
+            bold: item.bold,
           })}
           style={{
-            marginBottom: spacing && 16,
-            marginTop: spacingTop && 16,
+            marginBottom: item.spacing && 16,
+            marginTop: item.spacingTop && 16,
           }}
-          key={label}
+          key={item.label}
         >
-          <p>{noIntl ? label : <T id={label} tooltipPlacement="bottom" />}</p>
-          <p {...props}>{value}</p>
+          <p>
+            <T id={item.label} tooltipPlacement="bottom" />
+          </p>
+          <p {...item.props}>{item.value}</p>
         </div>
       );
     })}

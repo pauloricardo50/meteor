@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import BorrowerAdder from '../../components/BorrowerAdder';
 import Progress from './Progress';
 
-const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
+const BorrowerHeader = ({ borrowers, match, loan: { _id: loanId } }) => (
   <header className="borrower-header borrower-header--fixed p-d--16">
     <div className="borrower-header__row flex p-d--16">
       {borrowers.map((borrower, borrowerIndex) => (
@@ -42,7 +42,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
               </div>
             </div>
           </div>
-          <Progress borrower={borrower} match={tabId} />
+          <Progress borrower={borrower} match={match} />
         </div>
       ))}
       {borrowers.length === 1 && (
@@ -55,8 +55,10 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
 );
 
 BorrowerHeader.propTypes = {
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   loan: PropTypes.object.isRequired,
-  tabId: PropTypes.string.isRequired,
 };
 
 export default BorrowerHeader;

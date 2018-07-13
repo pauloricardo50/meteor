@@ -27,8 +27,8 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             />
           ),
         },
-        ...borrowers.map((borrower, index) => ({
-          label: borrower.firstName || `Emprunteur ${index + 1}`,
+        ...borrowers.map(borrower => ({
+          label: borrower.firstName,
           content: (
             <UploaderArray
               doc={borrower}
@@ -43,10 +43,10 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
 );
 
 FileTabs.propTypes = {
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  disabled: PropTypes.bool.isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default FileTabsContainer(FileTabs);

@@ -7,23 +7,13 @@ module.exports = {
     },
   },
   plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'flowtype'],
-  extends: [
-    'airbnb',
-    'plugin:meteor/recommended',
-    'plugin:react/recommended',
-    'plugin:flowtype/recommended',
-  ],
+  extends: ['airbnb', 'plugin:meteor/recommended', 'plugin:react/recommended'],
   env: {
     es6: true,
     node: true,
     browser: true,
   },
   globals: {},
-  settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: true,
-    },
-  },
   rules: {
     // eslint default rules
     'class-methods-use-this': 'off',

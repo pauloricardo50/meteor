@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { loanUpdate } from 'core/api';
-import Page from '../../components/Page';
+import ProcessPage from '../../components/ProcessPage';
 import RankStrategy from './RankStrategy';
 import AmortizingPicker from './AmortizingPicker';
 import InsuranceStrategy from './InsuranceStrategy';
@@ -41,7 +41,7 @@ const createHandleSave = loanId => object => loanUpdate.run({ object, loanId });
 const StrategyPage = (props) => {
   const { loan } = props;
   return (
-    <Page id="strategy">
+    <ProcessPage {...props} stepNb={2} id="strategy">
       <section className="mask1">
         {getComponents(props, createHandleSave(loan._id))
           .filter(i => i.condition)
@@ -52,7 +52,7 @@ const StrategyPage = (props) => {
             curr,
           ])}
       </section>
-    </Page>
+    </ProcessPage>
   );
 };
 

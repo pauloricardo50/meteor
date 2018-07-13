@@ -30,11 +30,6 @@ const UserSchema = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-    },
   },
   // Make sure this services field is in your schema if you're using any of the accounts packages
   services: {

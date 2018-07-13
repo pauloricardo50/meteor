@@ -10,20 +10,20 @@ import UploaderArray from 'core/components/UploaderArray';
 import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import { getPropertyCompletion } from 'core/utils/loanFunctions';
 import T from 'core/components/Translation';
+import withLoan from 'core/containers/withLoan';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import Page from '../../components/Page';
+import ProcessPage from '../../components/ProcessPage';
 
 const PropertyPage = (props) => {
-  const { loan } = props;
-  const { borrowers, property } = loan;
+  const { loan, borrowers, property } = props;
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
-    <Page id="property">
+    <ProcessPage {...props} stepNb={1} id="property">
       <section className="mask1 property-page">
         <h1 className="text-center">
           <T id="PropertyPage.title" values={{ count: borrowers.length }} />
@@ -89,12 +89,14 @@ const PropertyPage = (props) => {
           />
         </div>
       </section>
-    </Page>
+    </ProcessPage>
   );
 };
 
 PropertyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default PropertyPage;
+export default withLoan(PropertyPage);

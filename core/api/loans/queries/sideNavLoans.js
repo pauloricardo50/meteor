@@ -1,4 +1,4 @@
-import Loans from '../loans';
+import Loans from '..';
 import { LOAN_QUERIES } from '../loanConstants';
 
 export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {

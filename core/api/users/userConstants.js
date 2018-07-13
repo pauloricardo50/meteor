@@ -14,7 +14,6 @@ export const USER_QUERIES = {
   ADMINS: 'ADMINS',
   SIDENAV_USERS: 'SIDENAV_USERS',
   CURRENT_USER: 'CURRENT_USER',
-  APP_USER: 'APP_USER',
 };
 
 export const USER_EVENTS = {

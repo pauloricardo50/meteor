@@ -1,5 +1,14 @@
 import BorrowerService from '../api/borrowers/BorrowerService';
-import { fakeDocument } from '../api/files/fakes';
+import {
+  RESIDENCY_PERMIT,
+  GENDER,
+  CIVIL_STATUS,
+  OTHER_FORTUNE,
+  OTHER_INCOME,
+  EXPENSES,
+  REAL_ESTATE,
+} from '../api/borrowers/borrowerConstants';
+import { fakeDocument } from '../api/files/fileHelpers';
 import { Borrowers } from '../api';
 
 const firstNames = [
