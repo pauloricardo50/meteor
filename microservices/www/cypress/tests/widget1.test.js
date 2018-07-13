@@ -122,7 +122,7 @@ describe('Widget1', () => {
     });
   });
 
-  describe.only('refinancing', () => {
+  describe('refinancing', () => {
     before(() => {
       cy.visit('/start/1')
         .get('#REFINANCING')
