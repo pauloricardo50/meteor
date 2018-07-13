@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import track from 'core/utils/analytics';
 import { requestLoanVerification } from 'core/api';
-import Page from '../../components/Page';
+import ProcessPage from '../../components/ProcessPage';
 import VerificationStart from './VerificationStart';
 import VerificationValidated from './VerificationValidated';
 import VerificationFailed from './VerificationFailed';
@@ -40,9 +40,14 @@ export default class VerificationPage extends Component {
     }
 
     return (
-      <Page id="verification">
+      <ProcessPage
+        {...this.props}
+        stepNb={1}
+        id="verification"
+        showBottom={false}
+      >
         <section className="mask1 verification-page">{content}</section>
-      </Page>
+      </ProcessPage>
     );
   }
 }

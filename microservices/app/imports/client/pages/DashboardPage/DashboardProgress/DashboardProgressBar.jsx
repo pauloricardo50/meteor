@@ -8,11 +8,11 @@ const DashboardProgressBar = ({ steps, currentStep }) => (
     <div className="steps">
       {steps.map((step, index) => (
         <DashboardProgressBarStep
-          isDone={currentStep > index}
+          isDone={currentStep > step.nb}
+          isCurrentStep={currentStep === step.nb}
           step={step}
-          key={step.id}
-          id={step.id}
-          nb={index + 1}
+          key={step.nb}
+          label={step.title}
         />
       ))}
     </div>
@@ -24,9 +24,6 @@ const DashboardProgressBar = ({ steps, currentStep }) => (
   </div>
 );
 
-DashboardProgressBar.propTypes = {
-  currentStep: PropTypes.number.isRequired,
-  steps: PropTypes.array.isRequired,
-};
+DashboardProgressBar.propTypes = {};
 
 export default DashboardProgressBar;

@@ -23,9 +23,9 @@ const getRecapArray = (loan, property) => [
   },
 ];
 
-const DashboardRecapCost = ({ loan,  total }) => (
+const DashboardRecapCost = ({ loan, property, total }) => (
   <React.Fragment>
-    <Recap array={getRecapArray(loan, loan.property)} />
+    <Recap array={getRecapArray(loan, property)} />
     <DashboardRecapSum
       label={<T id="DashboardRecapCost.sumTitle" />}
       value={total}
@@ -35,6 +35,7 @@ const DashboardRecapCost = ({ loan,  total }) => (
 
 DashboardRecapCost.propTypes = {
   loan: PropTypes.object.isRequired,
+  property: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
 };
 

@@ -1,5 +1,4 @@
 import moment from 'moment';
-import isArray from 'lodash/isArray';
 
 import {
   USAGE_TYPE,
@@ -7,8 +6,6 @@ import {
   OFFER_TYPE,
   FILE_STEPS,
   INSURANCE_USE_PRESET,
-  CLOSING_STEPS_STATUS,
-  CLOSING_STEPS_TYPE,
 } from '../api/constants';
 import {
   APPROXIMATE_LPP_FEES,
@@ -18,10 +15,8 @@ import {
   MIN_CASH,
 } from '../config/financeConstants';
 import { getIncomeRatio } from './finance-math';
-import { propertyPercent } from './propertyFunctions';
+import { propertyPercent, filesPercent } from '../arrays/steps';
 import { propertyDocuments } from '../api/files/documents';
-import { filesPercent } from '../api/files/fileHelpers';
-import { getPercent } from './general';
 
 export const getProjectValue = ({ loan, property }) => {
   const {
@@ -419,23 +414,4 @@ export const getMaxBorrowRatio = (
   }
 
   return 0.8;
-};
-
-const closingStepsFilesAreValid = (loan, stepId) =>
-  isArray(loan.documents[stepId].files) &&
-  loan.documents[stepId].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID);
-
-export const closingPercent = (loan) => {
-  const { closingSteps } = loan.logic;
-  const arr = [];
-
-  closingSteps.forEach(({ type, status, id: stepId }) => {
-    if (type === CLOSING_STEPS_TYPE.TODO) {
-      arr.push(status === CLOSING_STEPS_STATUS.VALID ? true : undefined);
-    } else if (loan.documents[stepId]) {
-      arr.push(closingStepsFilesAreValid(loan, stepId) ? true : undefined);
-    }
-  });
-
-  return getPercent(arr);
 };

@@ -1,4 +1,4 @@
-import Loans from '../loans';
+import { Loans } from '../../';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {

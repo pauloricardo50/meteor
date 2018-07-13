@@ -5,7 +5,7 @@ import {
   PROPERTY_STYLE,
   VOLUME_NORM,
 } from '../api/properties/propertyConstants';
-import { fakeDocument } from '../api/files/fakes';
+import { fakeDocument } from '../api/files/fileHelpers';
 import { Properties } from '../api';
 
 const statuses = Object.values(PROPERTY_STATUS);

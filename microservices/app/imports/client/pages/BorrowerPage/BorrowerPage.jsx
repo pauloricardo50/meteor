@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
-import Page from '../../components/Page';
+import ProcessPage from '../../components/ProcessPage';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
 
 const getTabs = (props) => {
-  const { loan } = props;
-  const { borrowers } = loan;
+  const { loan, borrowers } = props;
   return [
     { id: 'personal', content: <Info {...props} /> },
     { id: 'finance', content: <Finance {...props} /> },
@@ -36,17 +35,19 @@ const BorrowerPage = (props) => {
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
   return (
-    <Page id="borrowers">
+    <ProcessPage {...props} stepNb={1} id="borrowers">
       <section className="borrower-page">
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
-    </Page>
+    </ProcessPage>
   );
 };
 
 BorrowerPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  borrowerId: PropTypes.string.isRequired,
   tabId: PropTypes.string.isRequired,
 };
 
-export default withMatchParam('tabId')(BorrowerPage);
+export default withMatchParam(['tabId', 'borrowerId'])(BorrowerPage);

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
-import Page from '../../components/Page';
+import ProcessPage from '../../components/ProcessPage';
 
 import Empty from './Empty';
 import Content from './Content';
@@ -10,7 +10,7 @@ import Content from './Content';
 const ClosingPage = (props) => {
   const { loan } = props;
   return (
-    <Page id="closing">
+    <ProcessPage {...props} stepNb={3} id="closing" showBottom={false}>
       <section className="mask1 closing-page">
         {loan.logic.closingSteps && loan.logic.closingSteps.length ? (
           <Content
@@ -22,7 +22,7 @@ const ClosingPage = (props) => {
           <Empty />
         )}
       </section>
-    </Page>
+    </ProcessPage>
   );
 };
 

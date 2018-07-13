@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import FormControl from '@material-ui/core/FormControl';
 import MuiSelect from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -30,51 +31,49 @@ const styles = theme => ({
   colorClass: {},
 });
 
-const mapOptions = (
-  options,
-  { menuItem: menuItemClass, menuItemRoot, listItemTextWithIcon, colorClass },
-) => {
-  const array = [];
-  options.forEach((option) => {
-    if (React.isValidElement(option)) {
-      return option;
-    }
-    const { id, label, icon, dividerTop, dividerBottom } = option;
-
-    if (dividerTop) {
-      array.push(<Divider key={`divider${id}`} />);
-    }
-
-    array.push(<MenuItem
+const makeMapOption = ({
+  menuItem: menuItemClass,
+  menuItemRoot,
+  listItemTextWithIcon,
+  colorClass,
+}) => (option) => {
+  // If a component is provided, return the component
+  if (React.isValidElement(option)) {
+    return option;
+  }
+  const { id, label, icon, dividerTop, dividerBottom } = option;
+  const arr = [
+    <MenuItem
       value={id}
       key={id}
       className={menuItemClass}
       classes={{ root: menuItemRoot }}
     >
-      <React.Fragment>
-        {icon && (
-          <ListItemIcon className={colorClass}>
-            <Icon type={icon} />
-          </ListItemIcon>
-        )}
-        <ListItemText
-          classes={{
-            primary: colorClass,
-            secondary: colorClass,
-            root: icon ? listItemTextWithIcon : '',
-          }}
-          inset={!!icon}
-          primary={label}
-        />
-      </React.Fragment>
-    </MenuItem>);
+      {icon && (
+        <ListItemIcon className={colorClass}>
+          <Icon type={icon} />
+        </ListItemIcon>
+      )}
+      <ListItemText
+        classes={{
+          primary: colorClass,
+          secondary: colorClass,
+          root: icon ? listItemTextWithIcon : '',
+        }}
+        inset={!!icon}
+        primary={label}
+      />
+    </MenuItem>,
+  ];
 
-    if (dividerBottom) {
-      array.push(<Divider key={`divider${id}`} />);
-    }
-  });
+  // Add support for adding Dividers at the top or bottom of an option
+  if (dividerTop) {
+    arr.unshift(<Divider key={`divider${id}`} />);
+  } else if (dividerBottom) {
+    arr.push(<Divider key={`divider${id}`} />);
+  }
 
-  return array;
+  return arr;
 };
 
 const Select = (props) => {
@@ -86,8 +85,10 @@ const Select = (props) => {
     label,
     style,
     classes,
+    inputStyle,
     ...otherProps
   } = props;
+  const mapOption = makeMapOption(classes);
 
   return (
     <FormControl className="mui-select" style={style}>
@@ -100,28 +101,30 @@ const Select = (props) => {
         {...otherProps}
         value={value}
         onChange={e => onChange(id, e.target.value)}
-        id={id}
+        input={<Input id={id} style={inputStyle} />}
       >
-        {mapOptions(options, classes)}
+        {options.map(mapOption)}
       </MuiSelect>
     </FormControl>
   );
 };
 
 Select.propTypes = {
-  classes: PropTypes.object.isRequired,
-  id: PropTypes.string,
-  label: PropTypes.node,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  id: PropTypes.string,
+  label: PropTypes.node,
+  classes: PropTypes.object.isRequired,
   style: PropTypes.object,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  inputStyle: PropTypes.object,
 };
 
 Select.defaultProps = {
   value: undefined,
   label: undefined,
   style: {},
+  inputStyle: {},
   id: '',
 };
 
