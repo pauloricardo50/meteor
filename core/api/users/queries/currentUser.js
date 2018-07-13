@@ -18,4 +18,7 @@ export default Users.createQuery(USER_QUERIES.CURRENT_USER, {
   username: 1,
   createdAt: 1,
   updatedAt: 1,
+  assignedEmployee: {
+    emails: 1,
+  },
 });
