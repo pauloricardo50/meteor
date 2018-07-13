@@ -1,6 +1,27 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+const assertRecapValue = (label, value) => () =>
+  cy
+    .contains(label)
+    .parent()
+    .siblings('p')
+    .invoke('text')
+    .then((text) => {
+      expect(text).to.eq(value);
+    });
+
+const assertFinmaValue = () => () =>
+  cy
+    .contains("Prêt / Prix d'achat")
+    .parent()
+    .parent()
+    .siblings()
+    .invoke('text')
+    .then((text) => {
+      expect(text).to.eq('80,00%');
+    });
+
 describe('Widget1', () => {
   describe('On homepage', () => {
     before(() => {
@@ -21,7 +42,7 @@ describe('Widget1', () => {
 
     it('changes the CHF value to "1 000 000"', () => {
       cy.get('input#property')
-        .type(1000000, { delay: 10 })
+        .type(1000000)
         .should('have.value', '1 000 000');
     });
 
@@ -53,7 +74,7 @@ describe('Widget1', () => {
 
     it('navigates to `/start/1` when Enter key is pressed', () => {
       cy.get('input#property')
-        .type(1000000, { delay: 10 })
+        .type(1000000)
         .type('{enter}')
         .location('pathname')
         .should('eq', '/start/1');
@@ -62,19 +83,42 @@ describe('Widget1', () => {
 
   describe.only('full calculator', () => {
     before(() => {
-      cy.visit('/start/1');
-    });
-
-    it('displays the full calculator when all forms are filled', () => {
-      cy.get('input#property')
-        .type(1000000, { delay: 10 })
+      cy.visit('/start/1')
+        .get('input#property')
+        .type(1000000)
         .type('{enter}')
         .get('input#salary')
-        .type(180000, { delay: 10 })
+        .type(180000)
         .type('{enter}')
         .get('input#fortune')
-        .type(250000, { delay: 10 })
+        .type(250000)
         .type('{enter}');
+    });
+
+    it('displays the full calculator when matching recap values', () => {
+      cy.then(assertRecapValue('Coût total du projet', '1 050 000')).then(assertRecapValue('Financement total', '1 050 000'));
+    });
+
+    it('resets the calculator when clicking reset', () => {
+      cy.get('.widget1-inputs-reset')
+        .click()
+        .get('input#property')
+        .should('have.value', '0')
+        .get('input#salary')
+        .should('have.value', '0')
+        .get('input#fortune')
+        .should('have.value', '0');
+    });
+
+    it('suggests values at perfect percentages', () => {
+      cy.get('input#property')
+        .type(500000)
+        .get('input#salary')
+        .should('have.value', '90 000')
+        .get('input#fortune')
+        .should('have.value', '125 000')
+        .then(assertFinmaValue("Prêt / Prix d'achat", '80,00%'))
+        .then(assertFinmaValue('Charges / Revenus', '33,33%'));
     });
   });
 });
