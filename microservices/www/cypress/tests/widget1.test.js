@@ -59,4 +59,22 @@ describe('Widget1', () => {
         .should('eq', '/start/1');
     });
   });
+
+  describe.only('full calculator', () => {
+    before(() => {
+      cy.visit('/start/1');
+    });
+
+    it('displays the full calculator when all forms are filled', () => {
+      cy.get('input#property')
+        .type(1000000, { delay: 10 })
+        .type('{enter}')
+        .get('input#salary')
+        .type(180000, { delay: 10 })
+        .type('{enter}')
+        .get('input#fortune')
+        .type(250000, { delay: 10 })
+        .type('{enter}');
+    });
+  });
 });
