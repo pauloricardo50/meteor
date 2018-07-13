@@ -26,7 +26,7 @@ const TableHeader = ({
   orderBy,
   noIntl,
 }) => (
-  <TableHead>
+  <TableHead className="table-header">
     <TableRow>
       {selectAll && (
         <TableCell padding="checkbox">

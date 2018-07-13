@@ -11,13 +11,18 @@
     box-sizing: border-box;
     width: 100%;
     padding: 32px;
-    padding-top: 0;@include screen(med) {
+    padding-top: 0;
+    @include screen(med) {
       padding: 16px;
     }
 
     h1,
     h2 {
       color: $primary;
+    }
+
+    > p {
+      text-align: center;
     }
 
     .careers-page-content-subtitle {
@@ -36,12 +41,12 @@
   max-width: 800px;
 
   .careers-page-list-empty {
-    align-self: center;
+    // align-self: center;
 
     width: 100%;
     max-width: 500px;
 
-    text-align: center;
+    // text-align: center;
   }
 }
 
@@ -65,7 +70,7 @@
   padding: 16px 24px;
 
   transition: transform 200ms $bezier, color 200ms $bezier,
-  backgorund-color 200ms $bezier;
+    backgorund-color 200ms $bezier;
   text-decoration: none;
 
   border-radius: 16px;

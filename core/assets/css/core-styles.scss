@@ -228,7 +228,7 @@ p.description,
 .description p {
   max-width: 600px;
 
-  text-align: justify;
+  text-align: left;
 
   line-height: 1.8em;
 }
@@ -236,17 +236,7 @@ p.description,
 .description > p,
 .description > h4 {
   max-width: 600px;
-
-  text-align: justify;
-}
-
-p.description,
-.description p,
-.description > p,
-.description > h4 {
-  @include screen(med) {
-    text-align: left;
-  }
+  text-align: left;
 }
 
 // Flex helper classes

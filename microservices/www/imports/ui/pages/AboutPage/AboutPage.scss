@@ -18,6 +18,10 @@
   h1 {
     color: $primary;
   }
+
+  p {
+    text-align: center;
+  }
 }
 
 .about-page-part-2 {
@@ -152,6 +156,10 @@
       padding: 32px;
     }
   }
+
+  p {
+    text-align: center;
+  }
 }
 
 .about-page-part-4 {
@@ -181,7 +189,7 @@
 
     width: 100%;
 
-     > * {
+    > * {
       flex: 1;
 
       box-sizing: border-box;
@@ -202,6 +210,10 @@
         @include screen(small) {
           min-width: unset;
         }
+      }
+
+      p {
+        text-align: center;
       }
     }
 
@@ -226,7 +238,7 @@
     width: 100%;
     max-width: 1400px;
 
-     > * {
+    > * {
       max-width: 400px;
       padding: 0 16px;
 
