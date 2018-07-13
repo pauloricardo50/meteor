@@ -43,17 +43,11 @@ for i in 'admin' 'app' 'www'
 
     echo "Creating symlinks"
     ln -s ../../../core ../microservices/$i/imports/core
-
+    ln -s ../../core/assets/public ../microservices/$i/public
+    ln -s ../../core/assets/private ../microservices/$i/private
     
     echo "Storing current commit message to public assets"
     git rev-parse --short HEAD > "../core/assets/public/commit.txt"
-
-
-    # public and private folders can't have any symlink: https://github.com/meteor/meteor/issues/7013
-    # So copy them over with rsync
-    echo "Copying public/private folders from core"
-      rsync -a --delete-before ../core/assets/public/ ../microservices/$i/public/
-      rsync -a --delete-before ../core/assets/private/ ../microservices/$i/private/
 
     if [[ $i == "www" ]];
     then
@@ -89,9 +83,6 @@ then
   echo "Cleaning and installing root npm packages"
   ( cd ../ && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
 
-  echo "Cleaning and installing core npm packages"
-  ( cd ../core && rm -f ./package-lock.json && rm -rf node_modules/ && npm cache clear -fq );
-
   echo "Cleaning up all CSS"
   ./clean-css.sh
 fi
@@ -99,14 +90,14 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
 
+meteor npm i -g babel-cli start-server-and-test
+
 # Install core npm packages only on non-circleCI environments
 if [[ $CIRCLE_CI != 1 ]];
 then
   echo "Installing npm packages in core/"
   ( cd ../core && meteor npm i -q );
 fi
-
-meteor npm i -gq babel-cli start-server-and-test
 
 echo "Creating language files..."
 meteor babel-node ./createLanguages.js

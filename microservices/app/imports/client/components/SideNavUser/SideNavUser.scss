@@ -32,8 +32,8 @@
   padding-right: 23px;
 
   svg:first-child {
-    padding-right: 8px;
     margin: 0;
+    padding-right: 8px;
   }
 
   [class*='MuiListItemText'] {
@@ -41,8 +41,9 @@
   }
 
   span:first-child {
-    text-overflow: ellipsis;
     overflow: hidden;
+
+    text-overflow: ellipsis;
   }
 }
 

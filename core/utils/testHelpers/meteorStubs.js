@@ -1,5 +1,3 @@
-import { _ } from 'underscore';
-
 const stubs = {
   meteor: {
     Meteor: {
@@ -48,7 +46,7 @@ const stubs = {
     '@global': true,
   },
   meteorUnderscore: {
-    _,
+    _: {},
     '@noCallThru': true,
     '@global': true,
   },

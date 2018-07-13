@@ -27,9 +27,9 @@ tmux splitw -t 2 -v -p 50
 tmux select-pane -t 0
 tmux send-keys "cd ../microservices/www; meteor npm start" C-m
 tmux select-pane -t 1
-tmux send-keys "cd ../microservices/app; export MONGO_URL=mongodb://localhost:3001/meteor; meteor npm start" C-m
+tmux send-keys "cd ../microservices/app; env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start" C-m
 tmux select-pane -t 2
-tmux send-keys "cd ../microservices/admin; export MONGO_URL=mongodb://localhost:3001/meteor; meteor npm start" C-m
+tmux send-keys "cd ../microservices/admin; env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start" C-m
 
 #Prepare 'meteor mongo' command for user in 4th pane with focus on it
 tmux select-pane -t 3

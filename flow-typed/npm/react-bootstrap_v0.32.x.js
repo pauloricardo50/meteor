@@ -1,5 +1,5 @@
-// flow-typed signature: e930b773e24b59a7383b17ae28c9e85f
-// flow-typed version: ee427be177/react-bootstrap_v0.32.x/flow_>=v0.53.x
+// flow-typed signature: 5fd48bf434ff6f7e2a8bd94e78101371
+// flow-typed version: c82b762649/react-bootstrap_v0.32.x/flow_>=v0.53.x
 
 declare module "react-bootstrap" {
   import type { Node, Element, Component, ComponentType, Ref } from 'react';
@@ -722,5 +722,9 @@ declare module "react-bootstrap" {
     visibleMdBlock?: boolean,
     visibleLgBlock?: boolean,
     bsClass?: string
+  }> {}
+
+  declare export class Glyphicon extends React$Component<{
+      glyph: string
   }> {}
 }
