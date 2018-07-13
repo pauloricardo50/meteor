@@ -1,4 +1,6 @@
 /* eslint-env mocha */
+import { expect } from 'chai';
+
 describe('Widget1', () => {
   describe('On homepage', () => {
     before(() => {
@@ -44,7 +46,7 @@ describe('Widget1', () => {
     });
   });
 
-  describe.only('On homepage with keyboard', () => {
+  describe('On homepage with keyboard', () => {
     before(() => {
       cy.visit('/');
     });
