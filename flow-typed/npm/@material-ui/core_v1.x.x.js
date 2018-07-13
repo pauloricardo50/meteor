@@ -1,5 +1,5 @@
-// flow-typed signature: ad434d25ad90d266f3785a3059f2249d
-// flow-typed version: 87af10140d/@material-ui/core_v1.x.x/flow_>=v0.58.x
+// flow-typed signature: acb22200b3bf5b15bf7e627f36c19123
+// flow-typed version: 6de4ffcf55/@material-ui/core_v1.x.x/flow_>=v0.58.x
 
 declare module "@material-ui/core/AppBar/AppBar" {
   declare type Color = "inherit" | "primary" | "secondary" | "default";
@@ -1302,7 +1302,7 @@ declare module "@material-ui/core/Modal/Modal" {
     disableBackdrop?: boolean,
     ignoreBackdropClick?: boolean,
     ignoreEscapeKeyUp?: boolean,
-    modalManager: Object,
+    modalManager?: Object,
     onBackdropClick?: Function,
     onEnter?: TransitionCallback,
     onEntering?: TransitionCallback,

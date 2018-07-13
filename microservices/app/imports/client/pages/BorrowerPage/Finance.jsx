@@ -11,6 +11,7 @@ import T from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import { borrowerUpdate } from 'core/api';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
+import withMatchParam from 'core/containers/withMatchParam';
 import LoadingButton from '../../components/LoadingButton';
 
 const styles = {
@@ -45,11 +46,8 @@ const handleClick = (event, id) => {
 
 const BorrowerFinancePage = (props) => {
   const {
-    match: {
-      params: { borrowerId },
-    },
-    borrowers,
-    loan: { userFormsEnabled },
+    borrowerId,
+    loan: { userFormsEnabled, borrowers },
   } = props;
   const borrowerLogic = borrowers.find(b => b._id === borrowerId);
 
@@ -66,8 +64,8 @@ const BorrowerFinancePage = (props) => {
       </div>
 
       <div className="borrower-finance__wrapper flex--helper flex-justify--center">
-        {borrowers.map((borrower, borrowerIndex) => (
-          <div className="borrower-finance__item col--50" key={borrowerIndex}>
+        {borrowers.map(borrower => (
+          <div className="borrower-finance__item col--50" key={borrower._id}>
             <div className="flex--helper flex--column flex--center m--20">
               <h3>
                 <T
@@ -87,7 +85,7 @@ const BorrowerFinancePage = (props) => {
             <AutoForm
               formClasses="user-form user-form__finance"
               inputs={getBorrowerFinanceArray({
-                ...props,
+                borrowers,
                 borrowerId: borrower._id,
               })}
               borrowers={borrowers}
@@ -123,9 +121,8 @@ const BorrowerFinancePage = (props) => {
 };
 
 BorrowerFinancePage.propTypes = {
+  borrowerId: PropTypes.string.isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  match: PropTypes.object.isRequired,
 };
 
-export default BorrowerFinancePage;
+export default withMatchParam('borrowerId')(BorrowerFinancePage);

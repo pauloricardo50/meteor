@@ -7,7 +7,7 @@ import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
 
-const shouldDisplayRecap = ({ property, loan, borrowers }) => property.value;
+const shouldDisplayRecap = ({ loan }) => loan.property.value;
 
 const DashboardRecapFinance = (props) => {
   if (!shouldDisplayRecap(props)) {
@@ -40,7 +40,6 @@ const DashboardRecapFinance = (props) => {
 
 DashboardRecapFinance.propTypes = {
   loan: PropTypes.object.isRequired,
-  property: PropTypes.object.isRequired,
 };
 
 export default DashboardRecapFinance;

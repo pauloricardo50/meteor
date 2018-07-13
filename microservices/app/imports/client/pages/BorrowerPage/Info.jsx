@@ -7,10 +7,8 @@ import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
 import T from 'core/components/Translation';
 
 const Info = (props) => {
-  const { borrowerId } = props.match.params;
   const {
-    borrowers,
-    loan: { userFormsEnabled },
+    loan: { userFormsEnabled, borrowers },
   } = props;
 
   return (
@@ -28,7 +26,7 @@ const Info = (props) => {
 
           <AutoForm
             inputs={getBorrowerInfoArray({
-              ...props,
+              borrowers,
               borrowerId: borrower._id,
             })}
             formClasses="user-form user-form__info"
@@ -45,7 +43,6 @@ const Info = (props) => {
 
 Info.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Info;

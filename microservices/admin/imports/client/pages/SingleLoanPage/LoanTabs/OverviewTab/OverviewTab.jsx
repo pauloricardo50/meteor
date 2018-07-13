@@ -7,7 +7,6 @@ import T from 'core/components/Translation';
 import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import AdminNote from '../../../../components/AdminNote';
-import StepStatus from './StepStatus';
 import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 
@@ -29,7 +28,6 @@ const OverviewTab = (props) => {
           <ImpersonateLink user={user} />
         </div>
       </div>
-      <StepStatus {...props} serverTime={serverTime} />
       <LoanValidation loan={loan} />
       <hr />
       <div className="overview-recap">

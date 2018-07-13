@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import Loading from 'core/components/Loading';
 import { AUCTION_STATUS } from 'core/api/constants';
 
-import ProcessPage from '../../components/ProcessPage';
+import Page from '../../components/Page';
 import AuctionStart from './AuctionStart';
 import Auction from './Auction';
 import AuctionResults from './AuctionResults';
@@ -72,7 +72,7 @@ export default class AuctionPage extends Component {
     const { serverTime } = this.state;
 
     return (
-      <ProcessPage
+      <Page
         {...this.props}
         stepNb={2}
         id="auction"
@@ -80,7 +80,7 @@ export default class AuctionPage extends Component {
         showBottom={false}
       >
         {this.getContent()}
-      </ProcessPage>
+      </Page>
     );
   }
 }
