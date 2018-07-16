@@ -9,10 +9,11 @@ import {
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
-borrowerInsert.setHandler((context, { borrower, userId }) => {
-  userId = checkInsertUserId(userId);
-  return BorrowerService.smartInsert({ borrower, userId });
-});
+borrowerInsert.setHandler((context, { borrower, userId }) =>
+  BorrowerService.insert({
+    borrower,
+    userId: checkInsertUserId(userId),
+  }));
 
 borrowerUpdate.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
