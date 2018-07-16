@@ -11,7 +11,11 @@ type ContactButtonProps = {
   toggleOpen: Function,
 };
 
-const ContactButton = ({ open, toggleOpen, ...props }: ContactButtonProps) => (
+export const ContactButton = ({
+  open,
+  toggleOpen,
+  ...props
+}: ContactButtonProps) => (
   <div className="contact-button">
     <Button onClick={() => toggleOpen(!open)} variant="fab" color="primary">
       {open ? <Icon type="close" /> : <Icon type="forum" />}
