@@ -123,6 +123,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
     },
   },
   userFormsEnabled: 1,
+  contacts: 1,
 });
 
 export type userLoan = { _id: string };

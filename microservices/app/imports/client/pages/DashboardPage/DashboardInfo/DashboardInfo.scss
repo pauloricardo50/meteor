@@ -22,7 +22,11 @@
 }
 
 .dashboard-info-team {
+  display: flex;
+  flex-direction: column;
+
   .card-bottom {
+    flex-grow: 0;
     display: flex;
     justify-content: center;
   }
