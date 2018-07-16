@@ -8,14 +8,14 @@ import { getInterestsWithOffer } from 'core/utils/loanFunctions';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
-const getChartData = (props) => {
-  const { offer, interestRate } = props;
+const getChartData = ({ loan, offer, interestRate }) => {
+  const { borrowers, property } = loan;
   let interests = 0;
 
   if (offer) {
-    interests = getInterestsWithOffer(props, false);
+    interests = getInterestsWithOffer({ loan, borrowers, property }, false);
   } else {
-    interests = getInterests(props, interestRate);
+    interests = getInterests({ loan, borrowers, property }, interestRate);
   }
 
   return [
@@ -25,7 +25,7 @@ const getChartData = (props) => {
     },
     {
       id: 'general.amortization',
-      value: getAmortization(props).amortization,
+      value: getAmortization({ loan, borrowers, property }).amortization,
     },
     { id: 'general.buildingMaintenance', value: 800 },
   ].map(dataPoint => ({ ...dataPoint, value: Math.round(dataPoint.value) }));
@@ -65,8 +65,8 @@ const DashboardRecapChart = (props) => {
 };
 
 DashboardRecapChart.propTypes = {
-  borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   interestRate: PropTypes.number,
+  loan: PropTypes.object.isRequired,
   offer: PropTypes.object,
 };
 

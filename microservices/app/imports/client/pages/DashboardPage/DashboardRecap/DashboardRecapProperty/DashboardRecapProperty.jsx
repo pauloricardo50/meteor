@@ -19,8 +19,8 @@ const getRecapArray = (property) => {
       subtitle: true,
       label: getPropertyAddressString(property),
       labelStyle: { marginTop: 0, marginBottom: 16, textAlign: 'left' },
+      noIntl: true,
     },
-
     {
       label: 'Forms.insideArea',
       value: <MetricArea value={insideArea} />,
@@ -40,7 +40,7 @@ const getRecapArray = (property) => {
 const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;
 
-const DashboardRecapProperty = ({ property }) => {
+const DashboardRecapProperty = ({ loan: { property } }) => {
   if (!shouldDisplay(property)) {
     return (
       <div className="dashboard-recap-property card1">
@@ -67,7 +67,7 @@ const DashboardRecapProperty = ({ property }) => {
 };
 
 DashboardRecapProperty.propTypes = {
-  property: PropTypes.object.isRequired,
+  loan: PropTypes.object.isRequired,
 };
 
 export default DashboardRecapProperty;

@@ -27,7 +27,6 @@ const getRedirect = ({
   history: {
     location: { pathname },
   },
-  loans,
 }) => {
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
@@ -50,6 +49,7 @@ const getRedirect = ({
   }
   // If there is no active loan, force route to app page, except if
   // user is on allowed routes
+  const { loans } = currentUser;
   if (
     loans &&
     loans.length < 1 &&
@@ -65,7 +65,8 @@ const getShowSideNav = ({ location }) =>
   routesWithoutSidenav.indexOf(location.pathname) === -1;
 
 const AppLayout = (props) => {
-  const { type, history, children } = props;
+  // console.log('Applayout props:', props);
+  const { history, children } = props;
   const redirect = getRedirect(props);
   const showSideNav = getShowSideNav(history);
   const classes = classnames({ 'app-layout': true, 'no-nav': !showSideNav });
@@ -90,27 +91,19 @@ const AppLayout = (props) => {
         </ErrorBoundary>
       </div>
 
-      {type === 'app' && <ContactButton history={history} />}
+      <ContactButton history={history} />
     </div>
   );
 };
 
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
-  type: PropTypes.string,
-  render: PropTypes.func,
   currentUser: PropTypes.objectOf(PropTypes.any),
-  noNav: PropTypes.bool,
-  loans: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 AppLayout.defaultProps = {
-  type: 'user',
-  render: () => null,
   currentUser: undefined,
-  noNav: false,
-  loans: undefined,
 };
 
 export default AppLayoutContainer(AppLayout);

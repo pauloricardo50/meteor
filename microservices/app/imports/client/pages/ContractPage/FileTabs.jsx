@@ -11,7 +11,6 @@ import {
 } from 'core/api/files/documents';
 import { filesPercent } from 'core/arrays/steps';
 import { T, IntlNumber } from 'core/components/Translation';
-import withLoan from 'core/containers/withLoan';
 import {
   FILE_STEPS,
   LOANS_COLLECTION,
@@ -112,4 +111,4 @@ FileTabs.propTypes = {
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withLoan(FileTabs);
+export default FileTabs;

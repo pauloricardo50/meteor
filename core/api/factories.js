@@ -1,55 +1,44 @@
-import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import { Loans, Borrowers, Offers, Properties, Tasks } from '.';
-import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
-import { fakeFile } from '../api/files/fileHelpers';
+import faker from 'faker';
 
-const TEST_EMAIL = 'test@test.com';
+import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
+import { fakeFile } from '../api/files/fakes';
+import Loans from './loans';
+import Borrowers from './borrowers';
+import Properties from './properties';
+import Offers from './offers';
+import Tasks from './tasks';
+import Users from './users';
+
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
-Factory.define('user', Meteor.users, {
-  roles: () => ['user'],
-  emails: () => [{ address: TEST_EMAIL, verified: false }],
+Factory.define('user', Users, {
+  roles: () => 'user',
+  emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
   phone: TEST_PHONE,
 });
 
-Factory.define('dev', Meteor.users, {
-  roles: () => ['dev'],
-  emails: () => [{ address: TEST_EMAIL, verified: false }],
+Factory.define('dev', Users, {
+  roles: () => 'dev',
+  emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
   phone: TEST_PHONE,
 });
 
-Factory.define('admin', Meteor.users, {
-  roles: () => ['admin'],
-  emails: () => [{ address: TEST_EMAIL, verified: false }],
+Factory.define('admin', Users, {
+  roles: () => 'admin',
+  emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
   phone: TEST_PHONE,
 });
 
-Factory.define('lender', Meteor.users, {
-  roles: () => ['lender'],
-  emails: () => [{ address: TEST_EMAIL, verified: false }],
-  lastName: TEST_LASTNAME,
-  firstName: TEST_FIRSTNAME,
-  phone: TEST_PHONE,
-  organization: 'bankName',
-  cantons: ['GE'],
-});
-
-Factory.define('borrower', Borrowers, {
-  createdAt: () => new Date(),
-  expenses: () => [{ description: 'test', value: 1 }],
-  documents: () => ({}),
-  logic: () => ({}),
-  age: 18,
-});
+Factory.define('borrower', Borrowers);
 
 Factory.define('task', Tasks, {
   type: TASK_TYPE.USER_ADDED_FILE,
@@ -66,7 +55,7 @@ Factory.define('loan', Loans, {
     insuranceFortuneUsed: 0,
     partnersToAvoid: ['joe', 'john'],
   }),
-  borrowers: [],
+  borrowerIds: [],
   status: 'ACTIVE',
   documents: () => ({}),
   logic: () => ({
@@ -87,8 +76,7 @@ Factory.define('property', Properties, {
 });
 
 Factory.define('offer', Offers, {
-  loanId: 'loanId',
-  userId: 'userId',
+  userId: () => faker.random.uuid(),
   createdAt: () => new Date(),
   organization: 'bankName',
   canton: 'GE',

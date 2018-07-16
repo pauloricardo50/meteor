@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "baseUrl": "./",
+    "paths": {
+      "core/*": ["./core/*"]
+    },
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
