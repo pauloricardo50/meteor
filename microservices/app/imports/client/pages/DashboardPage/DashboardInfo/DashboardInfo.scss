@@ -1,3 +1,5 @@
+@import './DashboardInfoInterests/DashboardInfoInterests.scss';
+
 .dashboard-info {
   display: flex;
   align-items: center;
@@ -45,7 +47,7 @@
     flex-direction: column;
     flex-grow: 1;
 
-     > * {
+    > * {
       margin: 0;
     }
   }

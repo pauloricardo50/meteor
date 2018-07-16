@@ -3,9 +3,7 @@ import React from 'react';
 import T from 'core/components/Translation';
 
 import DashboardInfoTeam from './DashboardInfoTeam';
-import LoanInterestRatesCard from '../../../components/LoanInterestRates/LoanInterestRatesCard';
-// import DashboardInfoInterests from './DashboardInfoInterests';
-// import DashboardInfoLinks from './DashboardInfoLinks';
+import DashboardInfoInterests from './DashboardInfoInterests';
 
 const DashboardInfo = (props) => {
   const { loan } = props;
@@ -20,9 +18,7 @@ const DashboardInfo = (props) => {
 
       <div className="cards">
         <DashboardInfoTeam {...props} />
-        <LoanInterestRatesCard loan={loan} />
-        {/* <DashboardInfoInterests {...props} />
-      <DashboardInfoLinks {...props} /> */}
+        <DashboardInfoInterests loan={loan} />
       </div>
     </div>
   );

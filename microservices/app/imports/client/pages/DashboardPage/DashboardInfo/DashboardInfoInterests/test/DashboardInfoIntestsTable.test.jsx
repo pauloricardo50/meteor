@@ -7,12 +7,12 @@ import InterestRatesTable from 'core/components/InterestRatesTable';
 import { AUCTION_STATUS } from 'core/api/constants';
 import { getMountedComponent } from 'core/utils/testHelpers';
 import pollUntilReady from 'core/utils/testHelpers/pollUntilReady';
-import LoanInterestRatesTable from '../LoanInterestRatesTable';
+import LoanInterestRatesTable from '../DashboardInfoInterestsTable';
 import {
   columnOptions,
   rows,
   getInterestRatesFromOffers,
-} from '../loanInterestsTableHelpers';
+} from '../dashboardInfoInterestsHelpers';
 
 const propsWithDefaultRates = {
   columnOptions,

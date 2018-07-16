@@ -7,9 +7,9 @@ import {
   columnOptions,
   rows,
   getInterestRatesFromOffers,
-} from './loanInterestsTableHelpers';
+} from './dashboardInfoInterestsHelpers';
 
-export const LoanInterestsTableContainer = compose(
+export const DashboardInfoInterestsTableContainer = compose(
   withSmartQuery({
     query: ({ loanId }) => offersQuery.clone({ loanId }),
     queryOptions: { reactive: true },
@@ -24,4 +24,4 @@ export const LoanInterestsTableContainer = compose(
   })),
 );
 
-export default LoanInterestsTableContainer;
+export default DashboardInfoInterestsTableContainer;

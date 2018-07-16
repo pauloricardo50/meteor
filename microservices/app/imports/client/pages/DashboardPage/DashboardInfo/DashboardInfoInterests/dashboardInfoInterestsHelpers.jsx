@@ -2,7 +2,6 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import { AUCTION_STATUS, INTEREST_RATES } from 'core/api/constants';
-import { access } from 'fs';
 
 export const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
