@@ -35,7 +35,7 @@ addBorrower.setHandler((context, { loanId }) => {
     return false;
   }
 
-  const newBorrowerId = Borrowers.insert({ userId: Meteor.userId() });
+  const newBorrowerId = Borrowers.smartInsert({ userId: Meteor.userId() });
 
   return Loans.update(loanId, { $push: { borrowerIds: newBorrowerId } });
 });
