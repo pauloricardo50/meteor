@@ -17,7 +17,7 @@ import SingleUserPage from '../../client/pages/SingleUserPage';
 import TasksPage from '../../client/pages/TasksPage/TasksPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import SearchPage from '../../client/pages/SearchPage/SearchPage';
-import AdminProfilePage from '../../client/pages/AdminProfilePage';
+import AdminAccountPage from '../../client/pages/AdminAccountPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage';
 
@@ -46,7 +46,7 @@ const AdminRouter = () => (
         <Route path="/borrowers/:borrowerId" component={SingleBorrowerPage} />
         <Route path="/borrowers" component={BorrowersPage} />
         <Route path="/search" component={SearchPage} />
-        <Route path="/profile" component={AdminProfilePage} />
+        <Route path="/account" component={AdminAccountPage} />
         <Route path="/dev" component={DevPage} />
         <Route component={NotFound} />
       </Switch>

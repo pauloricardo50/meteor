@@ -7,16 +7,6 @@ import track from 'core/utils/analytics';
 import Select from 'core/components/Select';
 import Divider from 'core/components/Material/Divider';
 
-const styles = {
-  div: {
-    width: '75%',
-    margin: '16px 0',
-  },
-  dropdown: {
-    width: '100%',
-  },
-};
-
 const handleChange = (value, toggleDrawer, history) => {
   if (value === 0) {
     track('LoanSelector - clicked on new loan', {});
@@ -35,7 +25,7 @@ const getOptions = (loans) => {
     array.push({
       id: r._id,
       label: r.name,
-      icon: r.propertyId.style === 'villa' ? 'home' : 'building',
+      icon: 'home',
     }));
 
   array.push(<Divider key="divider" />);
@@ -48,28 +38,31 @@ const getOptions = (loans) => {
   return array;
 };
 
-const LoanSelector = ({ value, toggleDrawer, history, loans }) => (
-  <div style={styles.div}>
+const LoanSelector = ({
+  value,
+  toggleDrawer,
+  history,
+  currentUser: { loans },
+}) => (
+  <div className="loan-selector">
     <Select
       id="loan-selector"
       value={value}
       onChange={(id, newValue) => handleChange(newValue, toggleDrawer, history)}
       options={getOptions(loans)}
-      style={styles.dropdown}
       displayEmpty
     />
   </div>
 );
 
 LoanSelector.propTypes = {
-  loans: PropTypes.arrayOf(PropTypes.object),
-  value: PropTypes.string,
-  toggleDrawer: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  toggleDrawer: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 
 LoanSelector.defaultProps = {
-  loans: [],
   value: '',
 };
 

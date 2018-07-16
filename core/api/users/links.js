@@ -1,8 +1,16 @@
-import { Users, Loans, Offers } from '../';
+import { Users, Loans, Offers, Borrowers, Properties } from '../';
 
 Users.addLinks({
   loans: {
     collection: Loans,
+    inversedBy: 'user',
+  },
+  borrowers: {
+    collection: Borrowers,
+    inversedBy: 'user',
+  },
+  properties: {
+    collection: Properties,
     inversedBy: 'user',
   },
   offers: {

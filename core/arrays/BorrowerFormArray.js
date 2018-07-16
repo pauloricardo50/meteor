@@ -115,11 +115,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
   ];
 };
 
-export const getBorrowerFinanceArray = ({
-  borrowers,
-  borrowerId: id,
-  loan,
-}) => {
+export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
   const b = borrowers.find(borr => borr._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address

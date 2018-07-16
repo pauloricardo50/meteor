@@ -1,5 +1,7 @@
+import { Random } from 'meteor/random';
+
 import moment from 'moment';
-import Loans from '../loans';
+import Loans from './loans';
 
 import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
@@ -12,6 +14,8 @@ class LoanServiceModel {
   update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
 
   remove = ({ loanId }) => Loans.remove(loanId);
+
+  getLoanById = loanId => Loans.findOne(loanId);
 
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
@@ -32,7 +36,7 @@ class LoanServiceModel {
     Loans.update(loanId, { $inc: { 'logic.step': 1 } });
 
   askVerification = ({ loanId }) => {
-    const loan = Loans.findOne(loanId);
+    const loan = this.getLoanById(loanId);
 
     if (loan.logic.verification.requested) {
       // Don't do anything if this loan is already in requested mode
@@ -104,14 +108,70 @@ class LoanServiceModel {
   enableUserForms = ({ loanId }) =>
     this.update({ loanId, object: { userFormsEnabled: true } });
 
-  getLoansByBorrower = ({ borrowerId }) =>
-    Loans.find({ borrowerIds: borrowerId }).fetch();
+  pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
-  static pushValue = ({ loanId, object }) =>
-    Loans.update(loanId, { $push: object });
+  popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
 
-  static popValue = ({ loanId, object }) =>
-    Loans.update(loanId, { $pop: object });
+  addStructure = ({ loanId, structure = {} }) => {
+    const isFirstStructure = this.getLoanById(loanId).structures.length === 0;
+    const newStructureId = Random.id();
+    return Loans.update(loanId, {
+      $push: { structures: { ...structure, id: newStructureId } },
+      $set: { selectedStructure: newStructureId },
+    });
+  };
+
+  removeStructure = ({ loanId, structureId }) => {
+    const currentlySelected = this.getLoanById(loanId).selectedStructure;
+
+    if (currentlySelected !== structureId) {
+      return Loans.update(loanId, {
+        $pull: { structures: { id: structureId } },
+      });
+    }
+
+    throw new Meteor.Error("Can't delete selected structure");
+  };
+
+  updateStructure = ({ loanId, structureId, structure }) => {
+    const currentStructure = this.getLoanById(loanId).structures.find(
+      ({ id }) => id === structureId,
+    );
+
+    return Loans.update(
+      { _id: loanId, 'structures.id': structureId },
+      { $set: { 'structures.$': { ...currentStructure, ...structure } } },
+    );
+  };
+
+  selectStructure = ({ loanId, structureId }) => {
+    // Make sure the structure exists
+    const structureExists = this.getLoanById(loanId).structures.some(
+      ({ id }) => id === structureId,
+    );
+
+    if (structureExists) {
+      return this.update({
+        loanId,
+        object: { selectedStructure: structureId },
+      });
+    }
+
+    throw new Meteor.Error(
+      'Structure with id "' + structureId + '" does not exist',
+    );
+  };
+
+  duplicateStructure = ({ loanId, structureId }) => {
+    const currentStructure = this.getLoanById(loanId).structures.find(
+      ({ id }) => id === structureId,
+    );
+
+    return (
+      !!currentStructure &&
+      this.addStructure({ loanId, structure: currentStructure })
+    );
+  };
 }
 
 const LoanService = new LoanServiceModel({});

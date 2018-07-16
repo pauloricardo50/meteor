@@ -30,11 +30,8 @@ const DashboardPage = (props) => {
 
 DashboardPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  borrowers: PropTypes.arrayOf(PropTypes.object),
 };
 
-DashboardPage.defaultProps = {
-  borrowers: [],
-};
+DashboardPage.defaultProps = {};
 
 export default DashboardPage;

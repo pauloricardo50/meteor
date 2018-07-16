@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
-import withLoan from 'core/containers/withLoan';
 import { loanUpdate } from 'core/api';
 import Tranche from './Tranche';
 import TrancheChart from './TrancheChart';
@@ -132,4 +131,5 @@ TranchePicker.propTypes = {
   offers: PropTypes.arrayOf(PropTypes.object).isRequired,
   property: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-export default withLoan(TranchePicker);
+
+export default TranchePicker;
