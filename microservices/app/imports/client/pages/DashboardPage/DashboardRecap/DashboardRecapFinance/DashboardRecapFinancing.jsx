@@ -41,13 +41,13 @@ const getRecapArray = (props) => {
 };
 
 const DashboardRecapFinancing = props => (
-  <React.Fragment>
+  <div className="dashboard-recap-financing">
     <Recap array={getRecapArray(props)} />
     <DashboardRecapSum
       label={<T id="DashboardRecapFinancing.sumTitle" />}
       value={props.total}
     />
-  </React.Fragment>
+  </div>
 );
 
 DashboardRecapFinancing.propTypes = {

@@ -21,7 +21,6 @@ const DashboardInfoTeam = ({
 
       <DashboardInfoTeamCompany assignedEmployee={assignedEmployee} />
 
-      {console.log('hi', contacts)}
       {contacts &&
         contacts.length > 0 && (
         <DashboardInfoTeamExternal
