@@ -37,9 +37,9 @@
 .detail-side-nav .detail-side-nav-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
-  padding: 16px;
+  padding: 16px 0;
 
   text-decoration: underline;
 
@@ -69,4 +69,17 @@
 
   padding: 16px;
   padding-top: 32px;
+}
+
+.detail-side-nav {
+  .filter-value {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .filter-value-chip {
+      margin: 4px;
+    }
+  }
 }

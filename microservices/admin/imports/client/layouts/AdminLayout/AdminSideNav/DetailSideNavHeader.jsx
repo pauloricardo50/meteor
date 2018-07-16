@@ -1,25 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { Link } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import DetailSideNavSort from './DetailSideNavSort';
 import DetailSideNavFilters from './DetailSideNavFilters';
-import getFilterOptions, {
-  getFilterOptionFromValue,
-} from './DetailSideNavFilters/filterOptions';
-import sortOptions, {
-  getSortOptionFromField,
-} from './DetailSideNavSort/sortOptions';
+import CurrentFilters from './CurrentFilters';
 
 const DetailSideNavHeader = (props) => {
-  const { collectionName, hideDetailNav, sortOption, filters } = props;
-
+  const { collectionName, hideDetailNav, filters } = props;
   const filterArray = filters[collectionName] || [];
-  const currentSortOption =
-    sortOption.field &&
-    getSortOptionFromField(sortOptions[collectionName], sortOption.field);
 
   return (
     <React.Fragment>
@@ -35,22 +25,7 @@ const DetailSideNavHeader = (props) => {
         <DetailSideNavFilters {...props} />
       </div>
 
-      {currentSortOption && (
-        <React.Fragment>
-          <T id="general.sortBy" />: {currentSortOption.label}
-          <T id={`DetailSideNavHeader.sortOrder.${sortOption.order}`} />
-        </React.Fragment>
-      )}
-
-      {filterArray.length > 0 && (
-        <React.Fragment>
-          <T id="general.filterBy" />:{' '}
-          {filterArray
-            .map(filter =>
-              getFilterOptionFromValue(getFilterOptions(props), filter).label)
-            .reduce((prev, curr) => [prev, ', ', curr])}
-        </React.Fragment>
-      )}
+      <CurrentFilters {...props} filterArray={filterArray} />
     </React.Fragment>
   );
 };

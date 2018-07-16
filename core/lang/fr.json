@@ -1,4 +1,13 @@
 {
+"general.filterBy":"Filtrer par",
+
+"TableFilters.filterLabels.assignedEmployee.emails.0.address": "Email",
+
+"DetailSideNavHeader.sortOrder.desc": "Décroissant",
+"DetailSideNavHeader.sortOrder.asc": "Croissant",
+
+"DetailSideNavFilters.showAssignedToMe": "Assigné à moi",
+
 "Widget1Page.title": "Calculateur hypothécaire",
 "Widget1Page.description": "Déterminez facilement combien vous devez gagner, combien de fonds propres vous devez mettre, ou la valeur maximale du bien que vous pouvez acquérir.",
 
