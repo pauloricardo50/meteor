@@ -1401,11 +1401,11 @@
   "StartSignUp.notSignedUp": "Entrez votre nouveau mot de passe",
   "StartSignUp.signedUp":
     "Cette adresse existe déjà, entrez votre mot de passe",
-  "steps.preparatio": "0. Passez le test",
-  "steps.preparation": "Préparez votre dossier",
-  "steps.auction": "Lancez les enchères",
-  "steps.contract": "Obtenez le contrat",
-  "steps.closing": "Décaissez votre prêt",
+  "steps.preparation": "Préparation du dossier",
+  "steps.auction": "Identification du prêteur",
+  "steps.contract": "Obtention du contrat",
+  "steps.closing": "Décaissement du prêt",
+
   "StrategyChoices.recommended": "Recommandé pour vous",
   "StructureError.cash":
     "Vous n'avez pas assez d'épargne engagée dans ce projet",
