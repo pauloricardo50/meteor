@@ -17,7 +17,7 @@ const Widget1OptionSelector = ({ options, value, onChange, className }) => (
         key={option}
         value={option}
         label={
-          <div className="label">
+          <div className="label" id={option}>
             <img src={`/img/widget1_${option}.svg`} alt={option} />
             <h4>
               <T id={`Widget1OptionSelector.${option}`} />

@@ -134,33 +134,36 @@ Cypress.Commands.add(
       options: { shouldRender: expectedDomElement, dropdownShouldRender },
     } = pageRoute;
 
-    const { reloadWindowOnNavigation } = options;
-    if (reloadWindowOnNavigation) {
+    if (options.reloadWindowOnNavigation) {
+      // this is used for navigating on a static router/website
       cy.visit(uri);
     } else {
       cy.window().then(({ reactRouterDomHistory }) => {
+        // this is used for navigating on a dynamic router
         reactRouterDomHistory.push(uri);
       });
     }
 
-    cy.routeShouldExist(uri)
-      .get(expectedDomElement)
-      .should('exist')
-
-      // select dropdown items and check if what we want gets rendered
-      .then(() => {
-        if (dropdownShouldRender) {
-          Object.keys(dropdownShouldRender).forEach((dropdownSelector) => {
-            const items = dropdownShouldRender[dropdownSelector];
-            items.forEach(({ item: itemSelector, shouldRender }) => {
-              cy.selectDropdownOption(dropdownSelector, itemSelector);
-              cy.get(shouldRender).should('exist');
-            });
-          });
-        }
-      });
+    cy.routeShouldExist(uri);
+    cy.get(expectedDomElement).should('exist');
+    cy.dropdownShouldRender(dropdownShouldRender);
   },
 );
+
+// select dropdown items and check if what we want gets rendered
+Cypress.Commands.add('dropdownShouldRender', (dropdownAssertionConfig) => {
+  if (!dropdownAssertionConfig) {
+    return;
+  }
+
+  Object.keys(dropdownAssertionConfig).forEach((dropdownSelector) => {
+    const items = dropdownAssertionConfig[dropdownSelector];
+    items.forEach(({ item: itemSelector, shouldRender }) => {
+      cy.selectDropdownOption(dropdownSelector, itemSelector);
+      cy.get(shouldRender).should('exist');
+    });
+  });
+});
 
 Cypress.Commands.add(
   'selectDropdownOption',
