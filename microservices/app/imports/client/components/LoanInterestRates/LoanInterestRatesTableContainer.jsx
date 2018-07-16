@@ -1,4 +1,5 @@
-import { compose, createContainer, withSmartQuery } from 'core/api';
+import { withProps, compose } from 'recompose';
+import { withSmartQuery } from 'core/api';
 import offersQuery from 'core/api/offers/queries/offers';
 import generalInterestRates from 'core/components/InterestRatesTable/interestRates';
 
@@ -14,7 +15,7 @@ export const LoanInterestsTableContainer = compose(
     queryOptions: { reactive: true },
     dataName: 'offers',
   }),
-  createContainer(({ hasAuctionEnded, offers }) => ({
+  withProps(({ hasAuctionEnded, offers }) => ({
     columnOptions,
     rows: hasAuctionEnded
       ? rows({ interestRates: getInterestRatesFromOffers({ offers }) })

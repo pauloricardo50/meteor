@@ -3,6 +3,6 @@ import query from './offers';
 
 query.expose({
   firewall(userId) {
-    SecurityService.checkUserIsAdmin(userId);
+    SecurityService.checkLoggedIn();
   },
 });

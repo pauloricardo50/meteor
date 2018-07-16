@@ -2,6 +2,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import { AUCTION_STATUS, INTEREST_RATES } from 'core/api/constants';
+import { access } from 'fs';
 
 export const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
@@ -28,53 +29,23 @@ const formatInterestRates = interestRatesArray =>
     ],
   }));
 
-const getMinimumRate = ({ min, firstValue, secondValue }) => {
-  if (min > firstValue) {
-    min = firstValue;
-  }
+const getSameRatesFromOffers = (offers, interestKey) =>
+  offers.reduce((rates, { standardOffer, counterpartOffer }) => {
+    const array = [];
+    if (standardOffer && standardOffer[interestKey]) {
+      array.push(standardOffer[interestKey]);
+    }
+    if (counterpartOffer && counterpartOffer[interestKey]) {
+      array.push(counterpartOffer[interestKey]);
+    }
 
-  if (min > secondValue) {
-    min = secondValue;
-  }
+    return [...rates, ...array];
+  }, []);
 
-  return min;
-};
+export const getBestRate = (offers, interestKey) => {
+  const rates = getSameRatesFromOffers(offers, interestKey);
 
-const getMaximumRate = ({ max, firstValue, secondValue }) => {
-  if (max < firstValue) {
-    max = firstValue;
-  }
-
-  if (max < secondValue) {
-    max = secondValue;
-  }
-
-  return max;
-};
-
-const getBestRate = ({ offers, interestKey }) => {
-  let min = 1;
-  let max = 0;
-
-  offers.forEach(({ standardOffer, counterpartOffer }) => {
-    min = getMinimumRate({
-      min,
-      firstValue: standardOffer[interestKey],
-      secondValue: counterpartOffer[interestKey],
-    });
-
-    max = getMaximumRate({
-      max,
-      firstValue: standardOffer[interestKey],
-      secondValue: counterpartOffer[interestKey],
-    });
-  });
-
-  if (min === 1 || max === 0) {
-    return null;
-  }
-
-  return { rateLow: min, rateHigh: max };
+  return { rateLow: Math.min(...rates), rateHigh: Math.max(...rates) };
 };
 
 export const getInterestRatesFromOffers = ({ offers }) =>
