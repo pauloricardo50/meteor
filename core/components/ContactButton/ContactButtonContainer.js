@@ -1,9 +1,11 @@
-import { compose, withProps } from 'recompose';
-import { withSmartQuery } from '../../api';
-import currentUserQuery from '../../api/users/queries/currentUser';
 import employees from 'core/arrays/epotekEmployees';
 
-const getStaffByEmail = email => employees.find(employee => employee.email === email);
+import { compose, withProps, withState } from 'recompose';
+import { withSmartQuery } from '../../api';
+import currentUserQuery from '../../api/users/queries/currentUser';
+
+const getStaffByEmail = email =>
+  employees.find(employee => employee.email === email);
 
 const ContactButtonContainer = compose(
   withSmartQuery({
@@ -17,16 +19,15 @@ const ContactButtonContainer = compose(
   }),
   withProps(({ currentUser }) => {
     if (!currentUser.assignedEmployee) {
-      console.log(currentUser);
       return {
         staff: getStaffByEmail('yannis@e-potek.ch'),
       };
     }
-    console.log(currentUser);
     return {
       staff: getStaffByEmail(currentUser.assignedEmployee.emails[0].address),
     };
   }),
+  withState('open', 'toggleOpen', false),
 );
 
 export default ContactButtonContainer;
