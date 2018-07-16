@@ -15,11 +15,12 @@ export const LoanInterestsTableContainer = compose(
     queryOptions: { reactive: true },
     dataName: 'offers',
   }),
-  withProps(({ hasAuctionEnded, offers }) => ({
+  withProps(({ auctionHasEnded, offers }) => ({
     columnOptions,
-    rows: hasAuctionEnded
-      ? rows({ interestRates: getInterestRatesFromOffers({ offers }) })
-      : rows({ interestRates: generalInterestRates }),
+    rows:
+      auctionHasEnded && offers && offers.length > 0
+        ? rows({ interestRates: getInterestRatesFromOffers(offers) })
+        : rows({ interestRates: generalInterestRates }),
   })),
 );
 

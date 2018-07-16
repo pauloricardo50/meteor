@@ -16,7 +16,7 @@ const LoanInterestRatesCard = ({ loan }) => {
     },
   } = loan;
 
-  const hasAuctionEnded = status === AUCTION_STATUS.ENDED;
+  const auctionHasEnded = status === AUCTION_STATUS.ENDED;
 
   return (
     <div className="dashboard-info-team card1">
@@ -26,7 +26,7 @@ const LoanInterestRatesCard = ({ loan }) => {
         </h3>
 
         <h4>
-          {hasAuctionEnded ? (
+          {auctionHasEnded ? (
             <T id="LoanInterestRatesCard.auctionEnded" />
           ) : (
             <T id="LoanInterestRatesCard.auctionOngoing" />
@@ -35,7 +35,7 @@ const LoanInterestRatesCard = ({ loan }) => {
 
         <LoanInterestRatesTable
           loanId={_id}
-          hasAuctionEnded={hasAuctionEnded}
+          auctionHasEnded={auctionHasEnded}
         />
       </div>
     </div>
