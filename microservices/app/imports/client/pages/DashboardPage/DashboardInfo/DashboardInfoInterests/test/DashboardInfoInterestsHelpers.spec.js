@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { getBestRate } from '../loanInterestsTableHelpers';
+import { getBestRate } from '../dashboardInfoInterestsHelpers';
 
-describe('loanInterestsTableHelpers', () => {
+describe('dashboardInfoInterestsHelpers', () => {
   describe('getBestRate', () => {
     let offers;
     it('returns the min and max of a rate', () => {

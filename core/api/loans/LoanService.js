@@ -20,15 +20,10 @@ class LoanServiceModel {
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
-    const newLoanId = this.insert({
+    return this.insert({
       loan: { propertyId, borrowerIds: [borrowerId] },
       userId,
     });
-    
-    // The first borrower for this loan, we can take the names from the user
-    BorrowerService.updateBorrowerNamesFromUser({ borrowerId, userId });
-
-    return newLoanId;
   };
 
   // TODO: make sure step is really done
@@ -134,9 +129,7 @@ class LoanServiceModel {
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
-    const currentStructure = this.getLoanById(loanId).structures.find(
-      ({ id }) => id === structureId,
-    );
+    const currentStructure = this.getLoanById(loanId).structures.find(({ id }) => id === structureId);
 
     return Loans.update(
       { _id: loanId, 'structures.id': structureId },
@@ -146,9 +139,7 @@ class LoanServiceModel {
 
   selectStructure = ({ loanId, structureId }) => {
     // Make sure the structure exists
-    const structureExists = this.getLoanById(loanId).structures.some(
-      ({ id }) => id === structureId,
-    );
+    const structureExists = this.getLoanById(loanId).structures.some(({ id }) => id === structureId);
 
     if (structureExists) {
       return this.update({
@@ -157,15 +148,11 @@ class LoanServiceModel {
       });
     }
 
-    throw new Meteor.Error(
-      'Structure with id "' + structureId + '" does not exist',
-    );
+    throw new Meteor.Error(`Structure with id "${structureId}" does not exist`);
   };
 
   duplicateStructure = ({ loanId, structureId }) => {
-    const currentStructure = this.getLoanById(loanId).structures.find(
-      ({ id }) => id === structureId,
-    );
+    const currentStructure = this.getLoanById(loanId).structures.find(({ id }) => id === structureId);
 
     return (
       !!currentStructure &&

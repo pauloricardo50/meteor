@@ -31,7 +31,7 @@ const checkDataIsReady = comp =>
     return comp.find(InterestRatesTable).length > 0;
   });
 
-describe('LoanInterestRatesTable', () => {
+describe.skip('DashboardInfoInterestRatesTable', () => {
   let loan;
   let loanId;
   let firstOffer;
@@ -51,25 +51,7 @@ describe('LoanInterestRatesTable', () => {
     offers = [firstOffer, secondOffer];
     propsWithOffersRates = {
       columnOptions,
-      rows: rows({ interestRates: getInterestRatesFromOffers({ offers }) }),
+      rows: rows({ interestRates: getInterestRatesFromOffers(offers) }),
     };
   });
-
-  it('renders a `InterestRatesTable` component with rates from offers when the auction has ended', () => {
-    const props = { loanId, hasAuctionEnded: true };
-
-    return checkDataIsReady(component(props)).then(() => {
-      expect(component()
-        .find(InterestRatesTable)
-        .props()).to.deep.include(propsWithOffersRates);
-    });
-  });
-
-  // it('renders a `InterestRatesTable` component with general rates while the auction  is ongoing', () => {
-  //   loan.logic = { auction: { status: AUCTION_STATUS.NONE } };
-
-  //   expect(component({ loanId: loan._id, hasAuctionEnded: false })
-  //     .find(InterestRatesTable)
-  //     .props()).to.deep.equal(propsWithDefaultRates);
-  // });
 });
