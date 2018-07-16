@@ -34,19 +34,19 @@ const assignedToMeFilterValue = {
   ],
 };
 
-const component = state =>
-  getMountedComponent({
-    Component: AdminSideNav,
-    props: { currentUser },
-    withStore: {
-      sidenav: {
-        ...initialState,
-        showDetail: true,
-        ...state,
-      },
+const component = state => getMountedComponent({
+  Component: AdminSideNav,
+  props: { currentUser },
+  withStore: {
+    sidenav: {
+      ...initialState,
+      showDetail: true,
+      ...state,
     },
-    withRouter: true,
-  });
+  },
+  withRouter: true,
+});
+
 describe('AdminSideNav', () => {
   beforeEach(() => {
     getMountedComponent.reset();

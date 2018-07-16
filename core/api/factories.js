@@ -70,13 +70,14 @@ Factory.define('loan', Loans, {
   status: 'ACTIVE',
   documents: () => ({}),
   logic: () => ({
-    auction: {},
+    auction: { status: '' },
     lender: {},
     verification: {},
     step: 1,
   }),
   name: () => 'loan name',
   emails: () => [],
+  propertyId: () => 'propertyId',
 });
 
 Factory.define('property', Properties, {
@@ -86,6 +87,8 @@ Factory.define('property', Properties, {
 });
 
 Factory.define('offer', Offers, {
+  loanId: 'loanId',
+  userId: 'userId',
   createdAt: () => new Date(),
   organization: 'bankName',
   canton: 'GE',
