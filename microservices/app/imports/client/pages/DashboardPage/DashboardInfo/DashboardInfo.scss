@@ -25,6 +25,10 @@
   display: flex;
   flex-direction: column;
 
+  .card-top {
+    flex-grow: 1;
+  }
+
   .card-bottom {
     flex-grow: 0;
     display: flex;
