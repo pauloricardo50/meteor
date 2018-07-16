@@ -20,7 +20,11 @@ const DashboardRecapFinance = (props) => {
     );
   }
 
-  const totalCost = getProjectValue(props);
+  const totalCost = getProjectValue({
+    loan: props.loan,
+    property: props.loan.property,
+  });
+
   return (
     <div className="dashboard-recap-finance card1">
       <div className="card-top">
