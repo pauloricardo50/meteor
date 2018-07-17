@@ -1,4 +1,6 @@
 {
+  "FinancingStructuresHeaderAdder.label": "Ajouter structure",
+
   "general.filterBy": "Filtrer par",
 
   "TableFilters.filterLabels.assignedEmployee.emails.0.address": "Email",

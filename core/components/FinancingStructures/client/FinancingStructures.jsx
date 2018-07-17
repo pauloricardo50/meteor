@@ -8,6 +8,7 @@ import FinancingStructuresOffers from './FinancingStructuresOffers';
 import FinancingStructuresOwnFunds from './FinancingStructuresOwnFunds';
 import FinancingStructuresProject from './FinancingStructuresProject';
 import FinancingStructuresResult from './FinancingStructuresResult';
+import FinancingStructuresContainer from './FinancingStructuresContainer';
 
 type FinancingStructuresProps = {
   loan: userLoan,
@@ -15,7 +16,7 @@ type FinancingStructuresProps = {
 
 const FinancingStructures = ({ loan }: FinancingStructuresProps) => (
   <div className="financing-structures">
-    <FinancingStructuresHeader />
+    <FinancingStructuresHeader loan={loan} />
     <FinancingStructuresProject />
     <FinancingStructuresFinancing />
     <FinancingStructuresOwnFunds />
@@ -24,4 +25,4 @@ const FinancingStructures = ({ loan }: FinancingStructuresProps) => (
   </div>
 );
 
-export default FinancingStructures;
+export default FinancingStructuresContainer(FinancingStructures);

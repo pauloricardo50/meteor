@@ -29,7 +29,11 @@ const config = {
         'Impersonation',
         'AdminFilesTab',
         'AmortizationChart',
+<<<<<<< HEAD
         'PropertyForm',
+=======
+        'FinancingStructures',
+>>>>>>> Add header for FinancingStructures
       ],
     },
     {
@@ -54,6 +58,7 @@ const config = {
         'collections',
         'Impersonation',
         'AdminFilesTab',
+        'FinancingStructures',
       ],
     },
   ],
@@ -109,6 +114,10 @@ const findFilesWithExtension = (startPath, extension) => {
   return results;
 };
 
+const isKeyAllowed = allowedKeys => key => {
+  return allowedKeys.some(allowedKey => key.startsWith(allowedKey));
+};
+
 // Given a lang/ directory and a specific language, get all the strings with
 // keys provided in the allowedKeys array
 const filterLanguageKeys = (pathToLangDir, language, allowedKeys) => {
@@ -116,9 +125,7 @@ const filterLanguageKeys = (pathToLangDir, language, allowedKeys) => {
     fs.readFileSync(createPathToLanguage(pathToLangDir, language), 'utf8'),
   );
   const langKeys = Object.keys(langObject);
-  const remainingKeys = langKeys.filter(
-    key => allowedKeys.indexOf(key.split('.')[0]) >= 0,
-  );
+  const remainingKeys = langKeys.filter(isKeyAllowed(allowedKeys));
 
   const optimizedLangObject = Object.keys(langObject)
     .filter(key => remainingKeys.includes(key))

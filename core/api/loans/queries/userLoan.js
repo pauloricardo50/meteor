@@ -124,10 +124,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   },
   userFormsEnabled: 1,
   contacts: 1,
+  structures: { id: 1 },
 });
 
-export type userLoan = { _id: string };
-
-const obj: userLoan = {};
-
-obj._id = 'hello';
+export type userLoan = { _id: string, structures: Array<{ id: string }> };
