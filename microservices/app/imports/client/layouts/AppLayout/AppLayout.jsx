@@ -12,9 +12,16 @@ import Navs from './Navs';
 
 import AppLayoutContainer from './AppLayoutContainer';
 
-const allowedRoutesWithoutLoan = ['/', '/profile', '/add-loan'];
+const allowedRoutesWithoutLoan = [
+  '/',
+  '/profile',
+  '/add-loan',
+  '/enroll-account',
+  '/reset-password',
+];
 
 const allowedRoutesWithoutLogin = [
+  '/login',
   '/enroll-account',
   '/reset-password',
   IMPERSONATE_ROUTE,
@@ -87,7 +94,7 @@ const AppLayout = (props) => {
 
       <div className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
+          <div x="wrapper">{React.cloneElement(children, props)}</div>
         </ErrorBoundary>
       </div>
 

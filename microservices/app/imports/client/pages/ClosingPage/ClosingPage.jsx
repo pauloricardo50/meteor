@@ -10,7 +10,7 @@ import Content from './Content';
 const ClosingPage = (props) => {
   const { loan } = props;
   return (
-    <Page id="closing">
+    <Page id="ClosingPage">
       <section className="mask1 closing-page">
         {loan.logic.closingSteps && loan.logic.closingSteps.length ? (
           <Content

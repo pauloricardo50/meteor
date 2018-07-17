@@ -25,18 +25,18 @@ const getTabs = (props) => {
         {tab.content}
       </React.Fragment>
     ),
-    label: <T id={`BorrowerPage.${tab.id}`} noTooltips />,
+    label: <T id={`BorrowersPage.${tab.id}`} noTooltips />,
     to: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/${tab.id}`,
   }));
 };
 
-const BorrowerPage = (props) => {
+const BorrowersPage = (props) => {
   const { tabId } = props;
   const tabs = getTabs(props);
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
   return (
-    <Page id="borrowers">
+    <Page id="BorrowersPage">
       <section className="borrower-page">
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
@@ -44,9 +44,9 @@ const BorrowerPage = (props) => {
   );
 };
 
-BorrowerPage.propTypes = {
+BorrowersPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   tabId: PropTypes.string.isRequired,
 };
 
-export default withMatchParam('tabId')(BorrowerPage);
+export default withMatchParam('tabId')(BorrowersPage);

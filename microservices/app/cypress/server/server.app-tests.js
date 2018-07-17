@@ -12,6 +12,7 @@ import {
   createEmailVerificationToken,
 } from 'core/utils/testHelpers/testHelpers';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
+import 'core/cypress/server/methods';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();

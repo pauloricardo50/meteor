@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { matchPath } from 'react-router-dom';
 
 import classnames from 'classnames';
 
@@ -8,23 +7,17 @@ import LoanSelector from './LoanSelector';
 import DrawerHeader from '../AppTopNav/DrawerHeader';
 import LoanSideNav from './LoanSideNav';
 
-const SideNavUser = ({
-  currentUser,
-  style,
-  fixed,
-  toggleDrawer,
-  history,
-  loan,
-}) => {
-  const { loans } = currentUser;
+const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
   // Return an empty side nav if there is no loan
-  if (loans.length <= 0) {
+  if (!currentUser) {
     return (
       <nav className="side-nav-user hidden-xs">
         <DrawerHeader permanent />
       </nav>
     );
   }
+  const { loans } = currentUser;
+
   // FIXME: What follows is excessively complex for what it does,
   // However props.match.params.loanId does not get defined to easily pick
   // it up... wtf?
@@ -50,13 +43,15 @@ const SideNavUser = ({
     >
       <DrawerHeader permanent />
       <div className="scrollable">
-        <LoanSelector
-          history={history}
-          currentUser={currentUser}
-          value={loanId}
-          toggleDrawer={toggleDrawer}
-        />
-        {loanId && <LoanSideNav loan={currentLoan} />}
+        {loans.length > 0 && (
+          <LoanSelector
+            history={history}
+            currentUser={currentUser}
+            value={loanId}
+            toggleDrawer={toggleDrawer}
+          />
+        )}
+        {loanId && currentLoan && <LoanSideNav loan={currentLoan} />}
       </div>
     </nav>
   );

@@ -1,3 +1,4 @@
+import pollUntilReady from '../../utils/testHelpers/pollUntilReady';
 import {
   DEV_EMAIL,
   E2E_USER_EMAIL,
@@ -93,6 +94,20 @@ Cypress.Commands.add('setAuthentication', (pageAuthentication) => {
   });
 });
 
+const waitForLoggedIn = Meteor =>
+  new Promise((resolve, reject) =>
+    pollUntilReady(() =>
+      new Promise((resolve2, reject2) =>
+        Meteor.call('isLoggedIn', (err, userId) => {
+          if (err) {
+            reject2(err);
+          }
+
+          resolve2(userId);
+        })))
+      .then(resolve)
+      .catch(reject));
+
 Cypress.Commands.add(
   'meteorLogoutAndLogin',
   (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
@@ -107,17 +122,20 @@ Cypress.Commands.add(
         });
       }));
 
-    cy.get('.login-page').should('exist');
+    cy.get('.login-page')
+      .then(obj => obj)
+      .should('exist');
 
-    cy.window().then(({ Meteor }) =>
-      new Cypress.Promise((resolve, reject) => {
-        console.log(email, password);
-        Meteor.loginWithPassword(
-          email,
-          password,
-          loginError => (loginError ? reject(loginError) : resolve()),
-        );
-      }));
+    cy.window().then(({ Meteor }) => new Cypress.Promise((resolve, reject) => {
+      Meteor.loginWithPassword(email, password, (loginError) => {
+        if (loginError) {
+          reject(loginError);
+        }
+        waitForLoggedIn(Meteor)
+          .then(resolve)
+          .catch(reject);
+      });
+    }));
 
     cy.window();
   },
@@ -176,3 +194,14 @@ Cypress.Commands.add(
     dropdown.get(itemSelector).click();
   },
 );
+
+Cypress.Commands.add('printTestNameOnServer', (testName) => {
+  cy.window().then(({ Meteor }) =>
+    new Cypress.Promise((resolve, reject) => {
+      Meteor.call(
+        'serverLog',
+        `Test started: ${testName}`,
+        err => (err ? reject(err) : resolve()),
+      );
+    }));
+});

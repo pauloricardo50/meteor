@@ -19,13 +19,17 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error) {
-    // Error should also log to kadira
     this.setState({ hasError: true, error });
-    const Kadira = { window };
-    if (Kadira) {
+    this.sendToKadira(error);
+  }
+
+  sendToKadira = (error) => {
+    // Error should also log to kadira
+    const { Kadira } = window;
+    if (Kadira && Kadira.trackError) {
       Kadira.trackError('react', error.stack.toString());
     }
-  }
+  };
 
   render() {
     const { children, helper } = this.props;

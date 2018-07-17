@@ -73,10 +73,11 @@
 
 .detail-side-nav {
   .filter-value {
-    padding: 8px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+
+    padding: 8px;
 
     .filter-value-chip {
       margin: 4px;

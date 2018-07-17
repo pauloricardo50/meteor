@@ -9,8 +9,8 @@ import AppStore from '../../client/components/AppStore';
 
 import DevPage from 'core/components/DevPage';
 import DashboardPage from '../../client/pages/DashboardPage';
-import BorrowerPage from '../../client/pages/BorrowerPage';
-import PropertyPage from '../../client/pages/PropertyPage';
+import BorrowersPage from '../../client/pages/BorrowersPage';
+import PropertiesPage from '../../client/pages/PropertiesPage';
 import AuctionPage from '../../client/pages/AuctionPage';
 import StrategyPage from '../../client/pages/StrategyPage';
 import OfferPickerPage from '../../client/pages/OfferPickerPage';
@@ -25,7 +25,6 @@ import PasswordResetPage from '../../client/pages/PasswordResetPage';
 import FinancingPage from '../../client/pages/FinancingPage';
 import AppPage from '../../client/pages/AppPage';
 import AccountPage from '../../client/pages/AccountPage';
-import AddLoanPage from '../../client/pages/AddLoanPage';
 
 import AppLayout from '../../client/layouts/AppLayout';
 
@@ -46,8 +45,8 @@ const AppRouter = () => (
       <Switch>
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
-        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowerPage} />
-        <Route path={ROUTES.PROPERTIES_PAGE} component={PropertyPage} />
+        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
         <Route path={ROUTES.DEV_PAGE} component={FinancePage} />
         <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
         <Route path={ROUTES.STRUCTURE_PAGE} component={StructurePage} />
@@ -60,7 +59,6 @@ const AppRouter = () => (
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
 
-        <Route path={ROUTES.ADD_LOAN_PAGE} component={AddLoanPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
           component={PasswordResetPage}
