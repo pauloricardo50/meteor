@@ -5,7 +5,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 
 const DashboardRecapSum = ({ label, value }) => (
   <div className="dashboard-recap-sum fixed-size">
-    <h4 className="label">{label}:</h4>
+    <h4 className="label">{label}</h4>
     <h3 className="value">{toMoney(value)}</h3>
   </div>
 );

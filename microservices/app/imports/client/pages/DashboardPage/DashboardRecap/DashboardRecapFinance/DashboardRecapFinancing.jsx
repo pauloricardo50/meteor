@@ -14,7 +14,10 @@ const getRecapArray = (props) => {
       general: { insuranceFortuneUsed, fortuneUsed },
     },
   } = props;
-  const loanValue = getLoanValue(props);
+  const loanValue = getLoanValue({
+    loan: props.loan,
+    property: props.loan.property,
+  });
   const totalUsed = getTotalUsed(props);
 
   return [
