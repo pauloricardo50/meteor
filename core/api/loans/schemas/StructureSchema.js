@@ -1,3 +1,4 @@
+// @flow
 import SimpleSchema from 'simpl-schema';
 import {
   AMORTIZATION_STRATEGY_PRESET,
@@ -31,5 +32,23 @@ const StructureSchema = new SimpleSchema({
   wantedLoan: { type: Number, min: 0, max: 100000000, optional: true },
   ...loanTranchesSchema,
 });
+
+export type structureType = {
+  id: string,
+  amortization: number,
+  amortizationType: string,
+  '2ndPillarUsed': number,
+  '2ndPillarUsageType': string,
+  '3rdPillarUsed': string,
+  description: string,
+  fortuneUsed: number,
+  loanValue: number,
+  name: string,
+  offerId: string,
+  propertyId: string,
+  propertyWork: number,
+  sortOffersBy: string,
+  wantedLoan: number,
+};
 
 export default StructureSchema;

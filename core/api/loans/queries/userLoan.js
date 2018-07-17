@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
+import type { structureType } from '../types';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   $filter({ filters, params: { loanId } }) {
@@ -127,4 +128,4 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   structures: { id: 1, name: 1, description: 1 },
 });
 
-export type userLoan = { _id: string, structures: Array<{ id: string }> };
+export type userLoan = { _id: string, structures: Array<structureType> };

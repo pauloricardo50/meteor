@@ -7,16 +7,18 @@ $labels-width: 200px;
   flex-direction: column;
   align-items: flex-start;
 
-  .financing-structures-section {
-    position: relative;
-  }
-
   .structure {
     flex-shrink: 0;
     width: 300px;
     border-right: solid 1px $light-grey;
     border-left: solid 1px $light-grey;
   }
+}
+
+.financing-structures-section {
+  position: relative;
+  background-color: #f7fafb;
+  margin-bottom: 32px;
 }
 
 .financing-structures-labels {
