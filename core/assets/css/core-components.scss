@@ -1,6 +1,8 @@
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
+@import '{}/imports/core/components/ClickToEditField/ClickToEditField.scss';
+@import '{}/imports/core/components/ContactButton/ContactButton.scss';
 @import '{}/imports/core/components/DateInput/DateInput.scss';
 @import '{}/imports/core/components/DevPage/DevPage.scss';
 @import '{}/imports/core/components/ErrorBoundary/ErrorBoundary.scss';
@@ -13,7 +15,6 @@
 @import '{}/imports/core/components/MissingDoc/MissingDoc.scss';
 @import '{}/imports/core/components/Recap/Recap.scss';
 @import '{}/imports/core/components/SearchModal/SearchModal.scss';
-@import '{}/imports/core/components/ContactButton/ContactButton.scss';
 @import '{}/imports/core/components/Table/Table.scss';
 @import '{}/imports/core/components/Tabs/Tabs.scss';
 @import '{}/imports/core/components/tooltips/Tooltip.scss';

@@ -1,7 +1,7 @@
-import { mapProps } from 'recompose';
+import { withProps } from 'recompose';
 import { addStructure } from 'core/api';
 
-const FinancingStructuresHeaderAdderContainer = mapProps(({ loanId }) => ({
+const FinancingStructuresHeaderAdderContainer = withProps(({ loanId }) => ({
   handleAdd: () => addStructure.run({ loanId }),
 }));
 

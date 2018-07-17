@@ -1,15 +1,39 @@
 // @flow
 import React from 'react';
 
-type FinancingStructuresSingleHeaderProps = {};
+import ClickToEditField from '../../../ClickToEditField';
+import FinancingStructuresSingleHeaderContainer from './FinancingStructuresSingleHeaderContainer';
+
+type FinancingStructuresSingleHeaderProps = {
+  structure: {},
+  index: number,
+  handleEditTitle: Function,
+  handleEditDescription: Function,
+};
 
 const FinancingStructuresSingleHeader = ({
   structure,
   index,
+  handleEditTitle,
+  handleEditDescription,
 }: FinancingStructuresSingleHeaderProps) => (
   <div className="financing-structures-single-header structure">
-    {structure.name || `Structure ${index + 1}`}
+    <h3>
+      <ClickToEditField
+        value={structure.name}
+        placeholder={`Structure ${index + 1}`}
+        onSubmit={handleEditTitle}
+      />
+    </h3>
+
+    <span className="secondary">
+      <ClickToEditField
+        value={structure.description}
+        placeholder="Description"
+        onSubmit={handleEditDescription}
+      />
+    </span>
   </div>
 );
 
-export default FinancingStructuresSingleHeader;
+export default FinancingStructuresSingleHeaderContainer(FinancingStructuresSingleHeader);
