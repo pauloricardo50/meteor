@@ -56,9 +56,6 @@ const pages = {
         shouldRender: '#verification',
       }),
 
-    'Loan Structure': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/structure`, { shouldRender: '#structure' }),
-
     'Loan Auction (Auction Not Started)': ({
       step3LoanWithNoAuction: { _id },
     }) =>
@@ -78,19 +75,8 @@ const pages = {
         shouldRender: '#auction .auction-page-results',
       }),
 
-    'Loan Strategy': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/strategy`, { shouldRender: '#strategy' }),
-
-    'Loan Contract': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/contract`, {
-        shouldRender: '#contract .uploader',
-      }),
-
     'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/closing`, { shouldRender: '#closing' }),
-
-    'Loan Finance': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/finance`, { shouldRender: '#FinancePage' }),
 
     'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
       route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
