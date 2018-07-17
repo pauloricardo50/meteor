@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, FieldArray } from 'redux-form';
 import { withProps } from 'recompose';
 import MaskedInput from 'react-text-mask';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { swissFrancMask, percentMask } from '../../utils/textMasks';
 import FormInput from './FormInput';
@@ -40,7 +41,10 @@ const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   case FIELD_TYPES.MONEY:
     return withProps({
       inputComponent: MaskedInput,
-      inputProps: { mask: swissFrancMask },
+      inputProps: {
+        mask: swissFrancMask,
+      },
+      startAdornment: <InputAdornment position="start">CHF</InputAdornment>,
       ...moneyFormatters,
     })(defaultField)({ ...defaultFieldProps, ...rest });
 

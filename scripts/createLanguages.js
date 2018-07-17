@@ -29,6 +29,7 @@ const config = {
         'Impersonation',
         'AdminFilesTab',
         'AmortizationChart',
+        'PropertyForm',
       ],
     },
     {
