@@ -15,7 +15,7 @@ import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import Page from '../../components/Page';
 
-const PropertyPage = (props) => {
+const PropertiesPage = (props) => {
   const { loan } = props;
   const { borrowers, property } = loan;
   const { address1, zipCode, city } = property;
@@ -23,13 +23,13 @@ const PropertyPage = (props) => {
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
   return (
-    <Page id="property">
+    <Page id="PropertiesPage">
       <section className="mask1 property-page">
         <h1 className="text-center">
-          <T id="PropertyPage.title" values={{ count: borrowers.length }} />
+          <T id="PropertiesPage.title" values={{ count: borrowers.length }} />
           <br />
           <small className={percent >= 1 && 'success'}>
-            <T id="PropertyPage.progress" values={{ value: percent }} />{' '}
+            <T id="PropertiesPage.progress" values={{ value: percent }} />{' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
@@ -43,7 +43,7 @@ const PropertyPage = (props) => {
 
         <div className="description">
           <p>
-            <T id="PropertyPage.description" />
+            <T id="PropertiesPage.description" />
           </p>
         </div>
 
@@ -93,8 +93,8 @@ const PropertyPage = (props) => {
   );
 };
 
-PropertyPage.propTypes = {
+PropertiesPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default PropertyPage;
+export default PropertiesPage;

@@ -4,7 +4,7 @@ export const ACCOUNT_PAGE = '/account';
 
 export const DASHBOARD_PAGE = '/loans/:loanId';
 export const BORROWERS_PAGE = '/loans/:loanId/borrowers/:borrowerId/:tabId';
-export const PROPERTIES_PAGE = '/loans/:loanId/properties/:property';
+export const PROPERTIES_PAGE = '/loans/:loanId/properties/:propertyId';
 export const FINANCE_PAGE = '/loans/:loanId/finance';
 export const VERIFICATION_PAGE = '/loans/:loanId/verification';
 export const STRUCTURE_PAGE = '/loans/:loanId/structure';

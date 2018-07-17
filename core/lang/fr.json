@@ -12,12 +12,9 @@
   "Widget1Page.description":
     "Déterminez facilement combien vous devez gagner, combien de fonds propres vous devez mettre, ou la valeur maximale du bien que vous pouvez acquérir.",
   "FinancingPage.title": "Financement",
-  "LoanSideNav.dashboard": "Tableau de bord",
-  "LoanSideNav.files": "Documents",
-  "LoanSideNav.closing": "Closing",
-  "LoanSideNav.borrowers": "Emprunteurs",
-  "LoanSideNav.financing": "Financement",
-  "LoanSideNav.properties": "Biens immobiliers",
+  "ClosingPage.title": "Closing",
+  "BorrowersPage.title": "Emprunteurs",
+  "PropertiesPage.title": "Biens immobiliers",
 
   "AppPage.empty":
     "Contactez nous à info@e-potek.ch ou au 022 566 01 10 pour commencer à utiliser e-Potek.",
@@ -450,9 +447,9 @@
   "BorrowerHeader.age": "{value} ans",
   "BorrowerHeader.title": "Emprunteur {index}",
   "BorrowerIssues.itemTitle": "Emprunteur {index}",
-  "BorrowerPage.files": "Documents",
-  "BorrowerPage.finance": "Finances",
-  "BorrowerPage.personal": "Perso",
+  "BorrowersPage.files": "Documents",
+  "BorrowersPage.finance": "Finances",
+  "BorrowersPage.personal": "Perso",
   "BorrowersPage.borrowers": "Emprunteurs",
   "BorrowersTable.createdAt": "Créé le",
   "BorrowersTable.name": "Nom",
@@ -1207,11 +1204,11 @@
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
   "PropertyAdder.add": "Ajouter",
-  "PropertyPage.description":
+  "PropertiesPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
-  "PropertyPage.incompleteAddress":
+  "PropertiesPage.incompleteAddress":
     "Entrez votre adresse complet pour afficher la carte!",
-  "PropertyPage.progress": "Progrès: {value, number, percent}",
+  "PropertiesPage.progress": "Progrès: {value, number, percent}",
   "PropertyPage.title":
     "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
   "Recap.availableFunds": "Fonds propres dispo",
