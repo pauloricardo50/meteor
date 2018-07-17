@@ -12,7 +12,13 @@ import Navs from './Navs';
 
 import AppLayoutContainer from './AppLayoutContainer';
 
-const allowedRoutesWithoutLoan = ['/', '/profile', '/add-loan'];
+const allowedRoutesWithoutLoan = [
+  '/',
+  '/profile',
+  '/add-loan',
+  '/enroll-account',
+  '/reset-password',
+];
 
 const allowedRoutesWithoutLogin = [
   '/enroll-account',

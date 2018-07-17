@@ -26,7 +26,7 @@ const pages = {
   user: {
     App: route('/', { shouldRender: '#app-page' }),
 
-    Profile: route('/profile', { shouldRender: '#AccountPage' }),
+    Account: route('/account', { shouldRender: '#AccountPage' }),
     'Verify Email (Invalid Token)': route('/verify-email/invalidToken', {
       shouldRender: '#email-verification-page',
     }),

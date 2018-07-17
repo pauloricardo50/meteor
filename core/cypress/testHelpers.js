@@ -24,23 +24,27 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
     testData = getTestData();
   });
 
-  Object.keys(pages).forEach((pageAuthentication) => {
-    describe(capitalize(pageAuthentication), () => {
-      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        describe(`${pageName} Page`, () => {
-          it('should render', () => {
-            // logout the impersonated user
-            const { IMPERSONATE_SESSION_KEY } = testData;
-            cy.window().then(({ Session }) =>
-              Session.clear(IMPERSONATE_SESSION_KEY));
+  Object.keys(pages)
+    .filter(page => page === 'user')
+    .forEach((pageAuthentication) => {
+      describe(capitalize(pageAuthentication), () => {
+        Object.keys(pages[pageAuthentication])
+          .filter(pageName => pageName === 'Dashboard')
+          .forEach((pageName) => {
+            describe(`${pageName} Page`, () => {
+              it('should render', () => {
+                // logout the impersonated user
+                const { IMPERSONATE_SESSION_KEY } = testData;
+                cy.window().then(({ Session }) =>
+                  Session.clear(IMPERSONATE_SESSION_KEY));
 
-            cy.setAuthentication(pageAuthentication).routeShouldRenderSuccessfully(
-              pages[pageAuthentication][pageName],
-              testData,
-            );
+                cy.setAuthentication(pageAuthentication).routeShouldRenderSuccessfully(
+                  pages[pageAuthentication][pageName],
+                  testData,
+                );
+              });
+            });
           });
-        });
       });
     });
-  });
 };
