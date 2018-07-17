@@ -20,10 +20,13 @@ const makeRenderMissingDocIfNoData = (render: boolean = false) =>
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
 const makeMapProps = dataName =>
-  mapProps(({ data, isLoading, error, ...rest }) => ({
-    [dataName]: data,
-    ...rest,
-  }));
+  mapProps(({ data, isLoading, error, ...rest }) => {
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+    return { [dataName]: data, ...rest };
+  });
 
 type withSmartQueryArgs = {
   query: (params: Object) => mixed,

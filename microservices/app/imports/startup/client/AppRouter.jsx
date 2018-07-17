@@ -25,7 +25,6 @@ import PasswordResetPage from '../../client/pages/PasswordResetPage';
 import FinancingPage from '../../client/pages/FinancingPage';
 import AppPage from '../../client/pages/AppPage';
 import AccountPage from '../../client/pages/AccountPage';
-import AddLoanPage from '../../client/pages/AddLoanPage';
 
 import AppLayout from '../../client/layouts/AppLayout';
 
@@ -60,7 +59,6 @@ const AppRouter = () => (
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
 
-        <Route path={ROUTES.ADD_LOAN_PAGE} component={AddLoanPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
           component={PasswordResetPage}

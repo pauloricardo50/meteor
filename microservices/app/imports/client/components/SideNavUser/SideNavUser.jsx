@@ -43,12 +43,14 @@ const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
     >
       <DrawerHeader permanent />
       <div className="scrollable">
-        <LoanSelector
-          history={history}
-          currentUser={currentUser}
-          value={loanId}
-          toggleDrawer={toggleDrawer}
-        />
+        {loans.length > 0 && (
+          <LoanSelector
+            history={history}
+            currentUser={currentUser}
+            value={loanId}
+            toggleDrawer={toggleDrawer}
+          />
+        )}
         {loanId && currentLoan && <LoanSideNav loan={currentLoan} />}
       </div>
     </nav>

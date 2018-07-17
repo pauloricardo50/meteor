@@ -26,11 +26,15 @@ export default class Security {
 
   static checkUserLoggedIn(userId) {
     if (!userId) {
-      this.handleUnauthorized('Checking if logged in');
+      console.log('no userId');
+
+      this.handleUnauthorized('Checking if logged in, no user');
     }
 
     if (userId !== Meteor.userId()) {
-      this.handleUnauthorized('Checking if logged in');
+      console.log('no maatching userId');
+
+      this.handleUnauthorized('Checking if logged in, not the right user');
     }
   }
 

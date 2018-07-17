@@ -42,7 +42,6 @@ session@1.1.7                  # Lets you use Session variables
 # aldeed:collection2-core
 edgee:slingshot
 cultofcoders:grapher
-cultofcoders:grapher-react
 cultofcoders:mutations
 dburles:mongo-collection-instances
 vsivsi:job-collection
@@ -68,3 +67,4 @@ tmeasday:acceptance-test-driver
 std:accounts-ui
 okgrow:analytics
 underscore@1.0.10
+cultofcoders:grapher-react

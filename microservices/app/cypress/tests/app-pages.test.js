@@ -39,14 +39,18 @@ const pages = {
     Dashboard: ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
 
-    'Add Loan': ({ unownedLoan: { _id } }) =>
-      route(`/add-loan/${_id}`, { shouldRender: '#add-loan-page' }),
-
     'Loan Files': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
 
-    'Loan Property': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/property`, { shouldRender: '#property' }),
+    'Loan Properties': ({
+      step3LoanWithEndedAuction: {
+        _id,
+        property: { _id: propertyId },
+      },
+    }) =>
+      route(`/loans/${_id}/properties/${propertyId}`, {
+        shouldRender: '#property',
+      }),
 
     'Loan Offerpicker': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/offerpicker`, { shouldRender: '#offerPicker' }),

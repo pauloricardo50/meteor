@@ -1,8 +1,7 @@
-import SecurityService from '../../security';
 import query from './appUser';
 
 query.expose({
   firewall() {
-    return SecurityService.checkLoggedIn();
+    // Only logged in user data
   },
 });

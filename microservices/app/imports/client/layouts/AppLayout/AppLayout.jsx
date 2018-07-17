@@ -21,6 +21,7 @@ const allowedRoutesWithoutLoan = [
 ];
 
 const allowedRoutesWithoutLogin = [
+  '/login',
   '/enroll-account',
   '/reset-password',
   IMPERSONATE_ROUTE,
@@ -93,7 +94,7 @@ const AppLayout = (props) => {
 
       <div className={classes}>
         <ErrorBoundary helper="layout" pathname={history.location.pathname}>
-          <div x="wrapper">{React.cloneElement(children, { ...props })}</div>
+          <div x="wrapper">{React.cloneElement(children, props)}</div>
         </ErrorBoundary>
       </div>
 
