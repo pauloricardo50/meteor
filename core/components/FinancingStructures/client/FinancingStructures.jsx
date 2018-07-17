@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { ScrollSync } from 'react-scroll-sync';
 
 import type { userLoan } from 'core/api';
 import FinancingStructuresFinancing from './FinancingStructuresFinancing';
@@ -15,14 +16,16 @@ type FinancingStructuresProps = {
 };
 
 const FinancingStructures = ({ loan }: FinancingStructuresProps) => (
-  <div className="financing-structures">
-    <FinancingStructuresHeader loan={loan} />
-    <FinancingStructuresProject />
-    <FinancingStructuresFinancing />
-    <FinancingStructuresOwnFunds />
-    <FinancingStructuresOffers />
-    <FinancingStructuresResult />
-  </div>
+  <ScrollSync proportional={false} vertical={false}>
+    <div className="financing-structures">
+      <FinancingStructuresHeader loan={loan} />
+      <FinancingStructuresProject structures={loan.structures} />
+      <FinancingStructuresFinancing />
+      <FinancingStructuresOwnFunds />
+      <FinancingStructuresOffers />
+      <FinancingStructuresResult />
+    </div>
+  </ScrollSync>
 );
 
 export default FinancingStructuresContainer(FinancingStructures);

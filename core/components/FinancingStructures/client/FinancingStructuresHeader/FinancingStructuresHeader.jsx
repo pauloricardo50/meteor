@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { ScrollSyncPane } from 'react-scroll-sync';
 
 import type { userLoan } from 'core/api';
 import FinancingStructuresLabels from '../FinancingStructuresLabels';
@@ -17,20 +18,22 @@ const FinancingStructuresHeader = ({
   handleEditTitle,
   handleEditDescription,
 }: FinancingStructuresHeaderProps) => (
-  <div className="financing-structures-section financing-structures-header card1">
-    <FinancingStructuresLabels labels={[]} />
-    {structures.map((structure, index) => (
-      <FinancingStructuresSingleHeader
-        structure={structure}
-        key={structure.id}
-        index={index}
-        handleEditTitle={handleEditTitle}
-        handleEditDescription={handleEditDescription}
-        loanId={loanId}
-      />
-    ))}
-    <FinancingStructuresHeaderAdder loanId={loanId} />
-  </div>
+  <ScrollSyncPane>
+    <div className="financing-structures-section financing-structures-header card1">
+      <FinancingStructuresLabels labels={[]} />
+      {structures.map((structure, index) => (
+        <FinancingStructuresSingleHeader
+          structure={structure}
+          key={structure.id}
+          index={index}
+          handleEditTitle={handleEditTitle}
+          handleEditDescription={handleEditDescription}
+          loanId={loanId}
+        />
+      ))}
+      <FinancingStructuresHeaderAdder loanId={loanId} />
+    </div>
+  </ScrollSyncPane>
 );
 
 export default FinancingStructuresHeader;
