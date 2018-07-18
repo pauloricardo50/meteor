@@ -124,5 +124,9 @@ describe('financingStructuresMiddleware', () => {
 
       actionHandler(actionObj);
     });
+
+    it('calls the saveDataFunc once if 2 UPDATE_STRUCTURE come through', () => {
+      // Test code
+    });
   });
 });
