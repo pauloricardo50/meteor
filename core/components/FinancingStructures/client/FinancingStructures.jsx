@@ -22,7 +22,7 @@ const FinancingStructures = ({ loan }: FinancingStructuresProps) => (
       <FinancingStructuresProject structures={loan.structures} />
       <FinancingStructuresFinancing />
       <FinancingStructuresOwnFunds />
-      <FinancingStructuresOffers />
+      {/* <FinancingStructuresOffers /> */}
       <FinancingStructuresResult />
     </div>
   </ScrollSync>
