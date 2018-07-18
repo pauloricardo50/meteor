@@ -9,11 +9,13 @@ import { updateStructure } from '../../api';
 
 const DEBOUNCE_TIMEOUT_MS = 500;
 
-const saveStructures = debounce((saveDataFunc, ids, getState) => {
-  ids = []; // Immediately reset ids so they start accumulating again
+export const saveStructures = debounce((saveDataFunc, ids, getState) => {
+  const idsToUse = [...ids];
+  ids.splice(0, ids.length); // Empty the ids array when this function runs
+
   const store = getState();
   const loanId = selectLoan(store)._id;
-  return Promise.all(ids.map((structureId) => {
+  return Promise.all(idsToUse.map((structureId) => {
     const structure = selectStructure(structureId)(store);
     return saveDataFunc({ structureId, structure, loanId });
   }));
@@ -36,11 +38,13 @@ export const makeSaveDataMiddleware = (saveDataFunc) => {
   return ({ dispatch, getState }) => next => (action: Action) => {
     if (action.type === UPDATE_STRUCTURE) {
       const { structureId } = action.payload;
-      if (updatedIds.includes(structureId)) {
+
+      if (!updatedIds.includes(structureId)) {
         updatedIds.push(structureId);
       }
       saveStructures(saveDataFunc, updatedIds, getState);
     }
+
     return next(action);
   };
 };
