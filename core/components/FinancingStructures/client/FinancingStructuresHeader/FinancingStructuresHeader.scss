@@ -12,6 +12,7 @@
   justify-content: flex-start;
   padding: 16px;
   text-align: center;
+  position: relative;
 
   &.selected {
     background-color: $primary;
@@ -20,5 +21,11 @@
 
   &.structure-adder {
     justify-content: center;
+  }
+
+  .financing-structures-header-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
 }

@@ -6,6 +6,7 @@ import IconButton from '../IconButton';
 import DropdownMenuContainer from './DropdownMenuContainer';
 
 const DropdownMenu = ({
+  className,
   isOpen,
   anchorEl,
   handleOpen,
@@ -16,7 +17,7 @@ const DropdownMenu = ({
   tooltip,
   tooltipPlacement,
 }) => (
-  <div style={{ ...style }}>
+  <div className={className} style={{ ...style }}>
     <IconButton
       onClick={(event) => {
         // Prevent background from receiving clicks
@@ -41,11 +42,12 @@ const DropdownMenu = ({
 );
 
 DropdownMenu.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   anchorEl: PropTypes.any,
-  handleOpen: PropTypes.func.isRequired,
+  className: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
+  handleOpen: PropTypes.func.isRequired,
   iconType: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
   options: PropTypes.array.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
   tooltip: PropTypes.node,
@@ -54,6 +56,7 @@ DropdownMenu.propTypes = {
 
 DropdownMenu.defaultProps = {
   anchorEl: null,
+  className: '',
   style: {},
   tooltip: undefined,
   tooltipPlacement: undefined,

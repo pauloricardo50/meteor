@@ -14,7 +14,7 @@ type FinancingStructuresHeaderProps = {
 };
 
 const FinancingStructuresHeader = ({
-  loan: { structures, _id: loanId },
+  loan: { structures, _id: loanId, selectedStructure },
   handleEditTitle,
   handleEditDescription,
 }: FinancingStructuresHeaderProps) => (
@@ -29,6 +29,7 @@ const FinancingStructuresHeader = ({
           handleEditTitle={handleEditTitle}
           handleEditDescription={handleEditDescription}
           loanId={loanId}
+          selected={selectedStructure === structure.id}
         />
       ))}
       <FinancingStructuresHeaderAdder loanId={loanId} />
