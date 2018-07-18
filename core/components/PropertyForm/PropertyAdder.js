@@ -3,7 +3,7 @@ import { propertyInsert } from 'core/api';
 import PropertyForm from './PropertyForm';
 
 const PropertyAdderContainer = withProps(() => ({
-  onSubmit: formValues => propertyInsert.run({ formValues }),
+  onSubmit: property => propertyInsert.run({ property }),
   buttonLabelId: 'PropertyForm.adderLabel',
   form: 'add-property',
   formTitleId: 'PropertyForm.adderDialogTitle',
