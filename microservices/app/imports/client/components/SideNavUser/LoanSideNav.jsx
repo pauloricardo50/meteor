@@ -10,12 +10,12 @@ import * as ROUTES from '../../../startup/client/appRoutes';
 
 type linksType = Array<{| id: string, to: string, exact?: boolean |}>;
 const sideNavLinks: linksType = [
-  { id: 'dashboard', to: ROUTES.DASHBOARD_PAGE, exact: true },
-  { id: 'files', to: ROUTES.FILES_PAGE },
-  { id: 'closing', to: ROUTES.CLOSING_PAGE },
-  { id: 'borrowers', to: ROUTES.BORROWERS_PAGE },
-  { id: 'financing', to: ROUTES.FINANCING_PAGE },
-  { id: 'properties', to: ROUTES.PROPERTIES_PAGE },
+  { id: 'DashboardPage', to: ROUTES.DASHBOARD_PAGE, exact: true },
+  { id: 'FilesPage', to: ROUTES.FILES_PAGE },
+  { id: 'ClosingPage', to: ROUTES.CLOSING_PAGE },
+  { id: 'BorrowersPage', to: ROUTES.BORROWERS_PAGE },
+  { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE },
+  { id: 'PropertiesPage', to: ROUTES.PROPERTIES_PAGE },
 ];
 
 export const LoanSideNav = ({
@@ -42,7 +42,7 @@ export const LoanSideNav = ({
           className="loan-side-nav-link"
           {...otherProps}
         >
-          <T id={`LoanSideNav.${id}`} />
+          <T id={`${id}.title`} />
         </NavLink>
       ))}
   </ul>

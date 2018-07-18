@@ -18,10 +18,8 @@ const ContactButtonContainer = compose(
     renderMissingDoc: false,
   }),
   withProps(({ currentUser }) => {
-    if (!currentUser.assignedEmployee) {
-      return {
-        staff: getStaffByEmail('yannis@e-potek.ch'),
-      };
+    if (!currentUser || !currentUser.assignedEmployee) {
+      return { staff: getStaffByEmail('yannis@e-potek.ch') };
     }
     return {
       staff: getStaffByEmail(currentUser.assignedEmployee.emails[0].address),

@@ -12,7 +12,7 @@ import {
 export const DashboardInfoInterestsTableContainer = compose(
   withSmartQuery({
     query: ({ loanId }) => offersQuery.clone({ loanId }),
-    queryOptions: { reactive: true },
+    // queryOptions: { reactive: true }, // FIXME: Crashes E2E tests
     dataName: 'offers',
   }),
   withProps(({ auctionHasEnded, offers }) => ({
