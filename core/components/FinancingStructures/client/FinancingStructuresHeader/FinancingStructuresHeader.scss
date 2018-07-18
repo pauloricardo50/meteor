@@ -5,7 +5,7 @@
   justify-content: flex-start;
 }
 
-.financing-structures-single-header {
+.financing-structures-single-header.structure {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,5 +16,9 @@
   &.selected {
     background-color: $primary;
     color: white;
+  }
+
+  &.structure-adder {
+    justify-content: center;
   }
 }

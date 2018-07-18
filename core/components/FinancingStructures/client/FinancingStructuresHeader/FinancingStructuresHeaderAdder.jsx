@@ -12,7 +12,7 @@ type FinancingStructuresHeaderAdderProps = {
 const FinancingStructuresHeaderAdder = ({
   handleAdd,
 }: FinancingStructuresHeaderAdderProps) => (
-  <div className="financing-structures-single-header structure">
+  <div className="financing-structures-single-header structure structure-adder">
     <Button primary raised onClick={handleAdd}>
       <T id="FinancingStructuresHeaderAdder.label" />
     </Button>

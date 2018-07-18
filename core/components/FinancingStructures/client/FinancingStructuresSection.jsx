@@ -21,7 +21,18 @@ type FinancingStructuresSectionProps = {
 const styles = {
   container: {
     overflow: 'visible',
+    overflowY: 'hidden',
   },
+  entered: {
+    overflowY: 'visible',
+  },
+  content: {
+    margin: 0,
+    '&$expanded': {
+      margin: 0,
+    },
+  },
+  expanded: {},
 };
 
 const FinancingStructuresSection = ({
@@ -31,14 +42,17 @@ const FinancingStructuresSection = ({
   structures,
   renderSummary,
   renderDetail,
-  classes,
+  classes: { container, entered, content, expanded },
 }: FinancingStructuresSectionProps) => (
   <ScrollSyncPane>
     <ExpansionPanel
       className="financing-structures-section"
-      CollapseProps={{ classes }}
+      CollapseProps={{ classes: { container, entered } }}
     >
-      <ExpansionPanelSummary className="section-summary">
+      <ExpansionPanelSummary
+        className="section-summary"
+        classes={{ content, expanded }}
+      >
         <FinancingStructuresLabels labels={[titleId, topLabel]} />
         {structures.map((structure, index) => (
           <div className="structure" key={structure.id}>
@@ -46,7 +60,7 @@ const FinancingStructuresSection = ({
           </div>
         ))}
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails className="section-detail" classes={classes}>
+      <ExpansionPanelDetails className="section-detail">
         <FinancingStructuresLabels labels={labels} />
         {structures.map((structure, index) => (
           <div className="structure" key={structure.id}>
