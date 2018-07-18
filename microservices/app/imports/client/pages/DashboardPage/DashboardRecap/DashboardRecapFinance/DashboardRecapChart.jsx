@@ -27,7 +27,6 @@ const getChartData = ({ loan, offer, interestRate }) => {
       id: 'general.amortization',
       value: getAmortization({ loan, borrowers, property }).amortization,
     },
-    { id: 'general.buildingMaintenance', value: 800 },
   ].map(dataPoint => ({ ...dataPoint, value: Math.round(dataPoint.value) }));
 };
 
@@ -42,6 +41,7 @@ const DashboardRecapChart = (props) => {
       </h3>
 
       <div className="chart">
+        <DashboardRecapChartInfo {...props} total={total} />
         <DonutChart
           data={data}
           config={{
@@ -57,7 +57,6 @@ const DashboardRecapChart = (props) => {
             },
           }}
         />
-        <DashboardRecapChartInfo {...props} total={total} />
         <DashboardRecapChartLegend data={data} />
       </div>
     </div>

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
+import { PropertyAdder, PropertyModifier } from 'core/components/PropertyForm';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
@@ -40,19 +41,16 @@ const getRecapArray = (property) => {
 const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;
 
-const DashboardRecapProperty = ({ loan: { property } }) => {
+const getContent = (property, loanId) => {
+  // if (!property) {
+  //   return <PropertyAdder loanId={loanId} />;
+  // } else
   if (!shouldDisplay(property)) {
-    return (
-      <div className="dashboard-recap-property card1">
-        <p className="dashboard-recap-property-empty description">
-          <T id="DashboardRecapProperty.empty" />
-        </p>
-      </div>
-    );
+    return <PropertyModifier loanId={loanId} property={property} />;
   }
 
   return (
-    <div className="dashboard-recap-property card1">
+    <React.Fragment>
       <MapWithMarker
         address={getPropertyAddressString(property)}
         className="map"
@@ -62,9 +60,15 @@ const DashboardRecapProperty = ({ loan: { property } }) => {
         <T id="Recap.property" />
       </h3>
       <Recap array={getRecapArray(property)} className="recap" />
-    </div>
+    </React.Fragment>
   );
 };
+
+const DashboardRecapProperty = ({ loan: { property, _id: loanId } }) => (
+  <div className="dashboard-recap-property card1">
+    {getContent(property, loanId)}
+  </div>
+);
 
 DashboardRecapProperty.propTypes = {
   loan: PropTypes.object.isRequired,

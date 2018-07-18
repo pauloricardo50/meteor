@@ -262,8 +262,8 @@
 
   "DashboardInfoTeamAdder.label": "Ajouter un contact",
   "DashboardInfo.title": "INFORMATIONS PRATIQUES",
-  "DashboardInfoTeam.title": "Votre équipe",
-  "DashboardInfoTeamExternal.title": "Carnet d'adresse",
+  "DashboardInfoTeam.title": "Votre équipe e-Potek",
+  "DashboardInfoTeamExternal.title": "Autres contacts utiles",
 
   "DashboardInfoTeamForm.dialogTitle": "Ajoutez un contact",
   "DashboardInfoTeamForm.dialogDescription":
@@ -273,12 +273,10 @@
   "DashboardInfoTeamForm.email": "E-mail",
   "DashboardInfoTeamForm.phone": "Téléphone",
 
-  "DashboardRecapChart.title": "Coût mensuel",
+  "DashboardRecapChart.title": "Charges mensuelles",
 
   "DashboardRecapCost.sumTitle": "Coût total",
-  "DashboardRecapFinancing.sumTitle": "Financement",
-
-  "DashboardRecapChartInfo.label": "Simulation des coûts mensuels",
+  "DashboardRecapFinancing.sumTitle": "Financement total",
 
   "Recap.property": "Bien immobilier",
   "property.expertise": "Expertise",
@@ -559,7 +557,7 @@
   "DashboardProperty.title": "Bien immobilier",
   "DashboardRecap.detail": "Détail",
   "DashboardRecap.overview": "Résumé",
-  "DashboardRecap.title": "RÉCAPITULATIF",
+  "DashboardRecap.title": "EN RÉSUMÉ",
   "DashboardStatus.auction": "Enchères en cours...",
   "DashboardStatus.step":
     "{step, plural, one {1ère étape} =2 {2ème étape} =3 {3ème étape} =4 {4ème étape}}",
@@ -1203,7 +1201,18 @@
   "ProcessPageBar.next": "Suivant",
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
-  "PropertyAdder.add": "Ajouter",
+  "PropertyForm.adderLabel": "Ajouter un bien immobilier",
+  "PropertyForm.modifierLabel": "Modifier votre bien immobilier",
+  "PropertyForm.adderDialogTitle": "Ajouter un bien immobilier",
+  "PropertyForm.adderDialogDescription":
+    "Entrez les informations de votre bien immobilier",
+  "PropertyForm.modifierDialogTitle": "Modifier votre bien immobilier",
+  "PropertyForm.modifierDialogDescription":
+    "Entrez les informations de votre bien immobilier",
+  "PropertyForm.address1": "Adresse",
+  "PropertyForm.zipCode": "NPA",
+  "PropertyForm.city": "Localité",
+  "PropertyForm.value": "Prix d'achat",
   "PropertiesPage.description":
     "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
   "PropertiesPage.incompleteAddress":

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+// @flow
+import React from 'react';
 
 import Button from 'core/components/Button';
 import Icon from 'core/components/Icon';
