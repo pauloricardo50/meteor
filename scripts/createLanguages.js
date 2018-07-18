@@ -29,11 +29,8 @@ const config = {
         'Impersonation',
         'AdminFilesTab',
         'AmortizationChart',
-<<<<<<< HEAD
         'PropertyForm',
-=======
         'FinancingStructures',
->>>>>>> Add header for FinancingStructures
       ],
     },
     {
