@@ -14,7 +14,11 @@ const CarouselCardText = ({ name, title, text }) => {
         {text.slice(0, MAX_LENGTH)}...
         <DialogSimple
           label="Afficher plus"
-          buttonProps={{ style: { marginTop: 16 }, raised: false }}
+          buttonProps={{
+            style: { marginTop: 16 },
+            raised: false,
+            primary: true,
+          }}
           cancelOnly
           title={name}
         >

@@ -7,6 +7,10 @@
     color: $primary;
   }
 
+  p {
+    text-align: center;
+  }
+
   .interests-page-content {
     display: flex;
     align-items: center;
@@ -15,8 +19,12 @@
     box-sizing: border-box;
     width: 100%;
     padding: 32px;
-    padding-top: 0;@include screen(med) {
-      padding: 16px;
+    padding-top: 0;
+    padding-bottom: 80px;
+
+    @include screen(med) {
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 }
@@ -27,8 +35,9 @@
 
   margin: 80px 32px 0 32px;
 
-  transform: scale(1.25);@include screen(med, min) {
-    width: $small;
+  transform: scale(1.25);
+  @include screen(large, min) {
+    width: $med;
   }
 }
 
