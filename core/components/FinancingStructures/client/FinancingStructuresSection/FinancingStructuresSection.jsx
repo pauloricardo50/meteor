@@ -6,8 +6,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import { ScrollSyncPane } from 'react-scroll-sync';
 
-import type { structureType } from '../../../api/types';
-import FinancingStructuresLabels from './FinancingStructuresLabels';
+import type { structureType } from '../../../../api/types';
+import FinancingStructuresLabels from '../FinancingStructuresLabels';
 
 type FinancingStructuresSectionProps = {
   titleId: string,
