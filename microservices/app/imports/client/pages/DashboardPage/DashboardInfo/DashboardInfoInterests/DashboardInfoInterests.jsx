@@ -19,16 +19,8 @@ const DashboardInfoInterests = ({ loan }) => {
     <div className="dashboard-info-team card1">
       <div className="card-top">
         <h3>
-          <T id="LoanInterestRatesCard.title" />
+          <T id="DashboardInfoInterests.title" />
         </h3>
-
-        <h4>
-          {auctionHasEnded ? (
-            <T id="LoanInterestRatesCard.auctionEnded" />
-          ) : (
-            <T id="LoanInterestRatesCard.auctionOngoing" />
-          )}
-        </h4>
 
         <DashboardInfoInterestsTable
           loanId={_id}
