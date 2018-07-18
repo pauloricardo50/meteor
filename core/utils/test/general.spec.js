@@ -2,7 +2,12 @@
 import { expect } from 'chai';
 import { _ } from 'lodash';
 
-import { arrayify, getPercent, flattenObjectTreeToArrays } from '../general';
+import {
+  arrayify,
+  getPercent,
+  flattenObjectTreeToArrays,
+  normalize,
+} from '../general';
 
 describe('general helpers', () => {
   describe('arrayify', () => {
@@ -168,6 +173,22 @@ describe('general helpers', () => {
 
     it('returns an empty array when object tree is empty', () => {
       expect(flattenObjectTreeToArrays({})).to.deep.equal([]);
+    });
+  });
+
+  describe('normalize', () => {
+    it('transforms an array of objects into a normalized object', () => {
+      expect(normalize([{ id: 1 }, { id: 2 }])).to.deep.equal({
+        1: { id: 1 },
+        2: { id: 2 },
+      });
+    });
+
+    it('works with _id', () => {
+      expect(normalize([{ _id: 1 }, { _id: 2 }])).to.deep.equal({
+        1: { _id: 1 },
+        2: { _id: 2 },
+      });
     });
   });
 });

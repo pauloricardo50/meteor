@@ -1,2 +1,2 @@
-export PropertyAdder from './PropertyAdder';
-export PropertyModifier from './PropertyModifier';
+export { default as PropertyAdder } from './PropertyAdder';
+export { default as PropertyModifier } from './PropertyModifier';
