@@ -17,7 +17,7 @@ const InputAndSlider = ({
   max = 1000000,
 }: InputAndSliderProps) => (
   <div className="input-and-slider">
-    <MoneyInput value={value} onChange={val => handleChange(val)} />
+    <MoneyInput value={value || 0} onChange={val => handleChange(val || 0)} />
     <Slider
       min={0}
       max={max}

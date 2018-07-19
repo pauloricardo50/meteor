@@ -8,6 +8,13 @@ import FinancingStructuresSection, {
 
 type FinancingStructuresProjectProps = {};
 
+const calculateNotaryFees = ({ structure: { propertyValue } }) =>
+  propertyValue * 0.05;
+
+const calculateProjectValue = ({
+  structure: { propertyValue, propertyWork },
+}) => propertyValue * 1.05 + propertyWork;
+
 const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection
     summaryConfig={[
@@ -15,11 +22,20 @@ const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
       {
         id: 'projectCost',
         Component: CalculatedValue,
-        value: ({ structure: { fortuneUsed } }) => fortuneUsed,
+        value: calculateProjectValue,
         money: true,
       },
     ]}
-    detailConfig={[{ Component: InputAndSlider, id: 'fortuneUsed' }]}
+    detailConfig={[
+      { Component: InputAndSlider, id: 'propertyValue' },
+      {
+        id: 'notaryFees',
+        Component: CalculatedValue,
+        value: calculateNotaryFees,
+        money: true,
+      },
+      { Component: InputAndSlider, id: 'propertyWork' },
+    ]}
   />
 );
 

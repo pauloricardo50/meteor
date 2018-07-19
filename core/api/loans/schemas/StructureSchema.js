@@ -30,6 +30,7 @@ const StructureSchema = new SimpleSchema({
   propertyWork: { type: Number, min: 0, max: 100000000, optional: true },
   sortOffersBy: { type: String, optional: true },
   wantedLoan: { type: Number, min: 0, max: 100000000, optional: true },
+  propertyValue: { type: Number, min: 0, max: 100000000, optional: true },
   ...loanTranchesSchema,
 });
 
@@ -49,6 +50,7 @@ export type structureType = {
   propertyWork: number,
   sortOffersBy: string,
   wantedLoan: number,
+  propertyValue: number,
 };
 
 export default StructureSchema;

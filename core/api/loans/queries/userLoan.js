@@ -141,6 +141,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
     propertyWork: 1,
     sortOffersBy: 1,
     wantedLoan: 1,
+    propertyValue: 1,
     loanTranches: {
       type: 1,
       value: 1,

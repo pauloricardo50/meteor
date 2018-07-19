@@ -19,10 +19,13 @@ $item-height: 48px;
   justify-content: center;
   box-sizing: border-box;
 
+  .card1 > *,
   > * {
     min-height: $item-height;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
   }
 }
 
@@ -52,14 +55,14 @@ $item-height: 48px;
     justify-content: flex-start;
 
     .structure {
-      padding: 8px;
+      padding: 16px;
       box-sizing: border-box;
 
       .card1 {
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        padding: 16px;
+        padding: 32px;
       }
     }
   }

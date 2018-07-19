@@ -10,7 +10,7 @@ import {
 import { normalize } from '../../utils/general';
 import { updateStructure } from '../../api';
 
-const DEBOUNCE_TIMEOUT_MS = 500;
+const DEBOUNCE_TIMEOUT_MS = 1000;
 
 export const saveStructures = debounce((saveDataFunc, ids, getState) => {
   const idsToUse = [...ids];
@@ -24,11 +24,16 @@ export const saveStructures = debounce((saveDataFunc, ids, getState) => {
   }));
 }, DEBOUNCE_TIMEOUT_MS);
 
-export const rehydrateMiddleware = ({ dispatch }) => next => (action: Action) => {
+export const rehydrateMiddleware = ({ dispatch, getState }) => next => (action: Action) => {
   if (action.type === REHYDRATE_LOAN) {
+    const {
+      financingStructures: { isLoaded },
+    } = getState();
     const { loan } = action.payload;
     dispatch(rehydrateData(loan, 'loan'));
+    // if (!isLoaded) {
     dispatch(rehydrateData(normalize(loan.structures), 'structures'));
+    // }
     dispatch(rehydrateData(normalize(loan.borrowers), 'borrowers'));
     dispatch(rehydrateData(loan.property, 'property'));
     return;
