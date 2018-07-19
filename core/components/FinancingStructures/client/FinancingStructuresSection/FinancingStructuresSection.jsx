@@ -62,7 +62,10 @@ const FinancingStructuresSection = ({
           className="section-summary"
           classes={{ content, expanded }}
         >
-          <FinancingStructuresLabels config={summaryConfig} />
+          <FinancingStructuresLabels
+            config={summaryConfig}
+            className="summary-labels"
+          />
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>

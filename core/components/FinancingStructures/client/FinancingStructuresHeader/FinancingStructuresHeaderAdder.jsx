@@ -13,9 +13,12 @@ const FinancingStructuresHeaderAdder = ({
   handleAdd,
 }: FinancingStructuresHeaderAdderProps) => (
   <div className="financing-structures-single-header structure structure-adder">
-    <Button primary raised onClick={handleAdd}>
-      <T id="FinancingStructuresHeaderAdder.label" />
-    </Button>
+    {/* Add a span to absorb all CSS styles applied to direct children of .structure */}
+    <span>
+      <Button primary raised onClick={handleAdd}>
+        <T id="FinancingStructuresHeaderAdder.label" />
+      </Button>
+    </span>
   </div>
 );
 

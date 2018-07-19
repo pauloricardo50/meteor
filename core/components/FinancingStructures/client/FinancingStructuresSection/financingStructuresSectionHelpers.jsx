@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 
 export const makeRenderSummary = configArray => ({ id: structureId }) =>
   configArray.map(({ Component, id, ...props }) =>
@@ -11,7 +12,7 @@ export const makeRenderSummary = configArray => ({ id: structureId }) =>
         {...props}
       />
     ) : (
-      <div className="empty-line" />
+      <div className={cx('empty-line', id)} />
     )));
 
 export const makeRenderDetail = configArray => ({ id: structureId }) =>
@@ -25,5 +26,5 @@ export const makeRenderDetail = configArray => ({ id: structureId }) =>
         {...props}
       />
     ) : (
-      <div className="empty-line" />
+      <div className={cx('empty-line', id)} />
     )));
