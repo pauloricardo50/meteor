@@ -1,7 +1,7 @@
 @import './client/FinancingStructuresHeader/FinancingStructuresHeader.scss';
 $labels-width: 200px;
-$item-height: 48px;
-$card1_padding: 32px;
+$item-height: 32px;
+$card1_padding: 24px;
 
 .financing-structures {
   display: flex;
@@ -110,7 +110,6 @@ $card1_padding: 32px;
   }
 
   .label {
-    min-height: $item-height;
     display: flex;
     align-items: center;
   }
