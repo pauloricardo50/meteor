@@ -20,7 +20,6 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         label: <h3 className="section-title">Prêt hypothécaire</h3>,
         Component: CalculatedValue,
         value: calculateLoan,
-        money: true,
       },
     ]}
     detailConfig={[

@@ -6,10 +6,14 @@ import SingleStructureContainer from '../../containers/SingleStructureContainer'
 
 type CalculatedValueProps = {
   value: number,
-  money: ?boolean,
+  money?: boolean,
 };
 
-const CalculatedValue = ({ value, money, ...props }: CalculatedValueProps) => {
+const CalculatedValue = ({
+  value,
+  money = true,
+  ...props
+}: CalculatedValueProps) => {
   const displayValue = typeof value === 'function' ? value(props) : value;
 
   return (

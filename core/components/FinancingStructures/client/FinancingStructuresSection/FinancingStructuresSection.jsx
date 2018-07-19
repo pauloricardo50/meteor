@@ -6,6 +6,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import { ScrollSyncPane } from 'react-scroll-sync';
 import { compose } from 'recompose';
+import cx from 'classnames';
 
 import type { structureType } from '../../../../api/types';
 import StructuresContainer from '../containers/StructuresContainer';
@@ -22,6 +23,7 @@ type FinancingStructuresSectionProps = {
   structures: Array<structureType>,
   summaryConfig: configArray,
   detailConfig: configArray,
+  className?: string,
 };
 
 const styles = {
@@ -45,6 +47,7 @@ const FinancingStructuresSection = ({
   structures,
   detailConfig,
   summaryConfig,
+  className,
   classes: { container, entered, content, expanded },
 }: FinancingStructuresSectionProps) => {
   const renderDetail = makeRenderDetail(detailConfig);
@@ -52,7 +55,7 @@ const FinancingStructuresSection = ({
   return (
     <ScrollSyncPane>
       <ExpansionPanel
-        className="financing-structures-section"
+        className={cx('financing-structures-section', className)}
         CollapseProps={{ classes: { container, entered } }}
       >
         <ExpansionPanelSummary

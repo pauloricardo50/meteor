@@ -22,7 +22,6 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         label: <h3 className="section-title">Fonds Propres</h3>,
         Component: CalculatedValue,
         value: calculateOwnFunds,
-        money: true,
       },
     ]}
     detailConfig={[

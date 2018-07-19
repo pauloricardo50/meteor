@@ -36,6 +36,21 @@ $item-height: 48px;
   margin-bottom: 32px;
   overflow-x: scroll;
 
+  &.result-section {
+    background-color: $primary;
+    color: white;
+
+    .card1 {
+      box-shadow: unset;
+      background-color: unset;
+    }
+
+    .structure {
+      border-left-color: rgba($color: #000000, $alpha: 0.1);
+      border-right-color: rgba($color: #000000, $alpha: 0.1);
+    }
+  }
+
   .section-summary {
     padding: 0;
     display: flex;

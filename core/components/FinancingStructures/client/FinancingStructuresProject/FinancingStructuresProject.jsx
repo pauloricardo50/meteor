@@ -23,7 +23,6 @@ const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
         label: <h3 className="section-title">Projet</h3>,
         Component: CalculatedValue,
         value: calculateProjectValue,
-        money: true,
       },
     ]}
     detailConfig={[
@@ -32,7 +31,6 @@ const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
         id: 'notaryFees',
         Component: CalculatedValue,
         value: calculateNotaryFees,
-        money: true,
       },
       { Component: InputAndSlider, id: 'propertyWork' },
     ]}
