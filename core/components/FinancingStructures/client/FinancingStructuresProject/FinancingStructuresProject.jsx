@@ -18,9 +18,9 @@ const calculateProjectValue = ({
 const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection
     summaryConfig={[
-      { id: 'project', label: <h3 className="section-title">Projet</h3> },
       {
-        id: 'projectCost',
+        id: 'project',
+        label: <h3 className="section-title">Projet</h3>,
         Component: CalculatedValue,
         value: calculateProjectValue,
         money: true,
