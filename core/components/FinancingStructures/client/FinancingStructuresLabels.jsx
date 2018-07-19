@@ -15,7 +15,7 @@ const FinancingStructuresLabels = ({
 }: FinancingStructureLabelsProps) => (
   <div className={cx('financing-structures-labels', className)}>
     {config.map(({ id, label }) => (
-      <FinancingStructuresLabel id={id} key={label}>
+      <FinancingStructuresLabel id={id} key={id}>
         {label || id}
       </FinancingStructuresLabel>
     ))}

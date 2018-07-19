@@ -102,19 +102,15 @@ describe('LoanService', () => {
 
   describe('removeStructure', () => {
     it('removes an existing structure from a loan', () => {
-      loanId = Factory.create('loan')._id;
+      loanId = Factory.create('loan', {
+        structures: [{ id: 1 }, { id: 2 }],
+        selectedStructure: '1',
+      })._id;
       loan = LoanService.getLoanById(loanId);
 
-      LoanService.addStructure({ loanId });
-      LoanService.addStructure({ loanId });
-      loan = LoanService.getLoanById(loanId);
       expect(loan.structures.length).to.equal(2);
-      LoanService.selectStructure({
-        loanId,
-        structureId: loan.structures[1].id,
-      });
 
-      const structureId = loan.structures[0].id;
+      const structureId = loan.structures[1].id;
 
       LoanService.removeStructure({ loanId, structureId });
 
@@ -157,15 +153,14 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
       // This structure is correct
-      expect(loan.structures.find(({ id }) => id === structureId)).to.deep.equal({ id: structureId, propertyId, loanTranches: [] });
+      expect(loan.structures.find(({ id }) => id === structureId)).to.deep.include({ id: structureId, propertyId });
 
       // Other structures are unaffected
       loan.structures
         .filter(({ id }) => id !== structureId)
         .forEach((structure, index) => {
-          expect(structure).to.deep.equal({
+          expect(structure).to.deep.include({
             id: structureId + index,
-            loanTranches: [],
           });
         });
     });

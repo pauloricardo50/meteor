@@ -117,7 +117,7 @@ class LoanServiceModel {
   };
 
   removeStructure = ({ loanId, structureId }) => {
-    const currentlySelected = this.getLoanById(loanId).selectedStructure;
+    const { selectedStructure: currentlySelected } = this.getLoanById(loanId);
 
     if (currentlySelected !== structureId) {
       return Loans.update(loanId, {
