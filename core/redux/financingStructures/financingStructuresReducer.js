@@ -1,13 +1,13 @@
 // @flow
 import { REHYDRATE_DATA, UPDATE_STRUCTURE } from './financingStructuresTypes';
 
-const initialState = {};
+const initialState = { isLoaded: false };
 
 const financingStructuresReducer = (state = initialState, action) => {
   switch (action.type) {
   case REHYDRATE_DATA: {
     const { dataName, data } = action.payload;
-    return { ...state, [dataName]: data };
+    return { ...state, [dataName]: data, isLoaded: true };
   }
   case UPDATE_STRUCTURE: {
     const { structureId, structure } = action.payload;

@@ -17,6 +17,11 @@
   &.selected {
     background-color: $primary;
     color: white;
+
+    .click-to-edit-field:hover {
+      background-color: white;
+      color: $primary;
+    }
   }
 
   &.structure-adder {

@@ -3,7 +3,10 @@ import debounce from 'lodash/debounce';
 import { REHYDRATE_LOAN, UPDATE_STRUCTURE } from './financingStructuresTypes';
 import { rehydrateData } from './financingStructuresActions';
 import type { Action } from './financingStructuresActions';
-import { selectStructure, selectLoan } from './financingStructuresSelectors';
+import {
+  makeSelectStructure,
+  selectLoan,
+} from './financingStructuresSelectors';
 import { normalize } from '../../utils/general';
 import { updateStructure } from '../../api';
 
@@ -16,7 +19,7 @@ export const saveStructures = debounce((saveDataFunc, ids, getState) => {
   const store = getState();
   const loanId = selectLoan(store)._id;
   return Promise.all(idsToUse.map((structureId) => {
-    const structure = selectStructure(structureId)(store);
+    const structure = makeSelectStructure(structureId)(store);
     return saveDataFunc({ structureId, structure, loanId });
   }));
 }, DEBOUNCE_TIMEOUT_MS);
@@ -27,8 +30,8 @@ export const rehydrateMiddleware = ({ dispatch }) => next => (action: Action) =>
     dispatch(rehydrateData(loan, 'loan'));
     dispatch(rehydrateData(normalize(loan.structures), 'structures'));
     dispatch(rehydrateData(normalize(loan.borrowers), 'borrowers'));
-    dispatch(rehydrateData(normalize(loan.properties), 'properties'));
-    return next();
+    dispatch(rehydrateData(loan.property, 'property'));
+    return;
   }
   return next(action);
 };
@@ -49,5 +52,10 @@ export const makeSaveDataMiddleware = (saveDataFunc) => {
   };
 };
 
-export const saveDataMiddleWare = makeSaveDataMiddleware((id, data) =>
-  updateStructure.run({ structureId: id, structure: data }));
+export const saveDataMiddleWare = makeSaveDataMiddleware(params =>
+  updateStructure.run(params));
+
+export const financingStructuresMiddleware = [
+  rehydrateMiddleware,
+  saveDataMiddleWare,
+];

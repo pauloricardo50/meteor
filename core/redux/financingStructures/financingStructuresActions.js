@@ -1,5 +1,5 @@
 // @flow
-import type { userLoan, ExtractReturn } from '../../api/types';
+import type { userLoan } from '../../api/types';
 import {
   REHYDRATE_DATA,
   REHYDRATE_LOAN,

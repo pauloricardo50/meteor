@@ -1,9 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
 import createRootReducer from './reducers';
+import { financingStructuresMiddleware } from 'core/redux/financingStructures';
 
 const createCustomStore = () => {
   const initialState = {};
-  const middlewares = [];
+  const middlewares = [createLogger(), ...financingStructuresMiddleware];
   const rootReducer = createRootReducer();
 
   const composeEnhancers =

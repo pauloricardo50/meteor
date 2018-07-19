@@ -125,7 +125,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   },
   userFormsEnabled: 1,
   contacts: 1,
-  structures: { id: 1, name: 1, description: 1 },
+  structures: { id: 1, name: 1, description: 1, fortuneUsed: 1 },
   selectedStructure: 1,
 });
 

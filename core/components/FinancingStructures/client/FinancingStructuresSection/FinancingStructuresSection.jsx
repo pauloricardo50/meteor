@@ -8,14 +8,18 @@ import { ScrollSyncPane } from 'react-scroll-sync';
 
 import type { structureType } from '../../../../api/types';
 import FinancingStructuresLabels from '../FinancingStructuresLabels';
+import { makeRenderDetail } from './financingStructuresSectionHelpers';
+
+type configArray = Array<{
+  Component: React.Component,
+  id: string,
+  label?: React.Node,
+}>;
 
 type FinancingStructuresSectionProps = {
-  titleId: string,
-  topLabel: string,
-  labels: Array<string>,
   structures: Array<structureType>,
-  renderSummary: Function,
-  renderDetail: Function,
+  summaryConfig: configArray,
+  detailConfig: configArray,
 };
 
 const styles = {
@@ -36,40 +40,47 @@ const styles = {
 };
 
 const FinancingStructuresSection = ({
-  titleId,
-  topLabel,
-  labels,
   structures,
-  renderSummary,
-  renderDetail,
+  detailConfig,
+  summaryConfig,
   classes: { container, entered, content, expanded },
-}: FinancingStructuresSectionProps) => (
-  <ScrollSyncPane>
-    <ExpansionPanel
-      className="financing-structures-section"
-      CollapseProps={{ classes: { container, entered } }}
-    >
-      <ExpansionPanelSummary
-        className="section-summary"
-        classes={{ content, expanded }}
+}: FinancingStructuresSectionProps) => {
+  const renderDetail = makeRenderDetail(detailConfig);
+  const renderSummary = makeRenderDetail(summaryConfig);
+  return (
+    <ScrollSyncPane>
+      <ExpansionPanel
+        className="financing-structures-section"
+        CollapseProps={{ classes: { container, entered } }}
       >
-        <FinancingStructuresLabels labels={[titleId, topLabel]} />
-        {structures.map((structure, index) => (
-          <div className="structure" key={structure.id}>
-            {renderSummary(structure, index)}
-          </div>
-        ))}
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className="section-detail">
-        <FinancingStructuresLabels labels={labels} />
-        {structures.map((structure, index) => (
-          <div className="structure" key={structure.id}>
-            <span className="card1">{renderDetail(structure, index)}</span>
-          </div>
-        ))}
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
-  </ScrollSyncPane>
-);
+        <ExpansionPanelSummary
+          className="section-summary"
+          classes={{ content, expanded }}
+        >
+          <FinancingStructuresLabels
+            labels={summaryConfig.map(({ id, label }) => label || id)}
+          />
+
+          {structures.map((structure, index) => (
+            <div className="structure" key={structure.id}>
+              {renderSummary(structure, index)}
+            </div>
+          ))}
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className="section-detail">
+          <FinancingStructuresLabels
+            labels={detailConfig.map(({ id }) => id)}
+          />
+
+          {structures.map((structure, index) => (
+            <div className="structure" key={structure.id}>
+              <span className="card1">{renderDetail(structure, index)}</span>
+            </div>
+          ))}
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </ScrollSyncPane>
+  );
+};
 
 export default withStyles(styles)(FinancingStructuresSection);

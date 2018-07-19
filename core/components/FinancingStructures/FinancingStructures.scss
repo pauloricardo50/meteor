@@ -1,5 +1,6 @@
 @import './client/FinancingStructuresHeader/FinancingStructuresHeader.scss';
 $labels-width: 200px;
+$item-height: 48px;
 
 .financing-structures {
   display: flex;
@@ -17,6 +18,12 @@ $labels-width: 200px;
   align-items: stretch;
   justify-content: center;
   box-sizing: border-box;
+
+  > * {
+    min-height: $item-height;
+    display: flex;
+    align-items: center;
+  }
 }
 
 .financing-structures-section {
@@ -56,6 +63,10 @@ $labels-width: 200px;
       }
     }
   }
+
+  .section-title {
+    margin: 0;
+  }
 }
 
 .financing-structures-labels {
@@ -67,6 +78,8 @@ $labels-width: 200px;
   flex-shrink: 0;
 
   .label {
-    padding: 8px 0;
+    min-height: $item-height;
+    display: flex;
+    align-items: center;
   }
 }

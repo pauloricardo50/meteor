@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
-
 import Input from '@material-ui/core/Input';
 import Slider from 'core/components/Material/Slider';
+
+import StructureUpdateContainer from './StructureUpdateContainer';
 
 type InputAndSliderProps = {
   value: number,
@@ -10,16 +11,13 @@ type InputAndSliderProps = {
   max?: number,
 };
 
-// If no max is provided, multiply value by 2, or 1 000 000 if it's 0
-const initialMaxValue = value => value * 2 || 1000000;
-
 const InputAndSlider = ({
   value,
   handleChange,
-  max = initialMaxValue(value),
+  max = 1000000,
 }: InputAndSliderProps) => (
   <div className="input-and-slider">
-    <Input value={value} onChange={handleChange} />
+    <Input value={value} onChange={event => handleChange(event.target.value)} />
     <Slider
       min={0}
       max={max}
@@ -31,4 +29,4 @@ const InputAndSlider = ({
   </div>
 );
 
-export default InputAndSlider;
+export default StructureUpdateContainer(InputAndSlider);
