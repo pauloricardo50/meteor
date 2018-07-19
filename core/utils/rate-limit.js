@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
-import includes from 'lodash/pickBy';
+import includes from 'lodash/includes';
 
 if (Meteor.isServer) {
   DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
@@ -17,12 +17,9 @@ const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
   if (Meteor.isServer && !Meteor.isAppTest) {
     DDPRateLimiter.addRule(
       {
-        name(name) {
-          return includes(methods, name);
-        },
-        connectionId() {
-          return true;
-        },
+        name: name => includes(methods, name),
+        connectionId: () => true,
+        type: 'method',
       },
       limit,
       timeRange,
