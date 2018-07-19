@@ -121,16 +121,19 @@ jobs:
           name: run end-to-end tests for Admin
           command: |
             cd microservices/admin
+            meteor npm i -g start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for App
           command: |
             cd microservices/app
+            meteor npm i -g start-server-and-test            
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for Www
           command: |
-            cd microservices/www
+            cd microservices/www3
+            meteor npm i -g start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run tests for App
