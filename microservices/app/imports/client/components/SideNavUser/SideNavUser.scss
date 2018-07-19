@@ -8,7 +8,7 @@
   align-items: center;
   flex-direction: column;
 
-  width: 300px;
+  width: 200px;
   min-height: calc(100% - 64px);
 
   transition: background-color 300ms $bezier, color 300ms $bezier;
@@ -62,6 +62,10 @@
   border-bottom: 1px solid $border-grey;
 }
 
+.side-nav-user .top-bar {
+  border-bottom: 1px solid $border-grey;
+}
+
 .side-nav-user .top-bar img,
 .side-nav-user .top-bar a {
   height: 64px;
@@ -92,10 +96,12 @@
 }
 
 .loan-selector {
-  width: 75%;
+  width: 100%;
   margin: 16px 0;
+  padding: 0 16px;
+  box-sizing: border-box;
 
-   > * {
+  > * {
     width: 100%;
   }
 }

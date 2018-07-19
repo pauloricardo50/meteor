@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import createRootReducer from './reducers';
 import { financingStructuresMiddleware } from 'core/redux/financingStructures';
