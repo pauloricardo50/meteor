@@ -29,15 +29,37 @@ installPackage () {
     case "${machine}"  in 
         "${MAC}")
         # If brew is not installed, tell user and exit script
-        if ! type "brew" > /dev/null; then
-            echo "Please install homebrew"
-            exit 1
-        else
-            brew install "${package}"
-        fi
-        ;;
+            if ! type "brew" > /dev/null; then
+                echo "Please install homebrew"
+                exit 1
+            else
+                brew install "${package}"
+            fi
+            ;;
         "${LINUX}")
-        sudo apt-get install "${package}";;
+            sudo apt-get install "${package}";;
+        *)
+        # If OS not supported, tell user and exit script
+        echo "Unknown OS (supported: Mac or Linux)"
+        exit 1
+    esac
+}
+
+isPackageInstalled() {
+    local package=$1
+    local machine=$(getOS)
+
+    case "${machine}"  in 
+        "${MAC}")
+            if ! brew list "${package}" >/dev/null 2>&1; then
+                echo 0
+            fi
+            ;;
+        "${LINUX}")
+            if ! type "${package}" > dev/null 2>&1; then
+                echo 0
+            fi
+            ;;
         *)
         # If OS not supported, tell user and exit script
         echo "Unknown OS (supported: Mac or Linux)"
@@ -47,6 +69,7 @@ installPackage () {
 
 # Package to check
 package=$1
+isInstalled=$(isPackageInstalled $package)
 
 # install arg given?
 if [ -z "$2" ]; then
@@ -58,7 +81,7 @@ else
 fi
 
 # Check if package is installed
-if ! type "${package}" >/dev/null 2>&1; then
+if [[ $isInstalled = 0 ]] ; then
     # If not installed and install arg given, install it
     if [ $install = true ]; then
         installPackage "${package}"
@@ -67,5 +90,6 @@ if ! type "${package}" >/dev/null 2>&1; then
         echo 0
     fi
 fi 
+
 
 
