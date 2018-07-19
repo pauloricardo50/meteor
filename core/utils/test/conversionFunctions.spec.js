@@ -59,6 +59,11 @@ describe('Conversion functions', () => {
     it('should return 0 if given true', () => {
       expect(toNumber(true)).to.equal(0);
     });
+
+    it('should return number types', () => {
+      expect(toNumber('1 000 000')).to.equal(1000000);
+      expect(typeof toNumber('1 000 000')).to.equal('number');
+    });
   });
 
   describe('To decimal number', () => {

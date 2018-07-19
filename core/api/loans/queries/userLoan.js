@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
-import type { structureType } from '../types';
+import type { structureType, loanTranchesType } from '../types';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   $filter({ filters, params: { loanId } }) {
@@ -125,7 +125,27 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   },
   userFormsEnabled: 1,
   contacts: 1,
-  structures: { id: 1, name: 1, description: 1, fortuneUsed: 1 },
+  structures: {
+    id: 1,
+    amortization: 1,
+    amortizationType: 1,
+    '2ndPillarUsed': 1,
+    '2ndPillarUsageType': 1,
+    '3rdPillarUsed': 1,
+    name: 1,
+    description: 1,
+    fortuneUsed: 1,
+    loanValue: 1,
+    offerId: 1,
+    propertyId: 1,
+    propertyWork: 1,
+    sortOffersBy: 1,
+    wantedLoan: 1,
+    loanTranches: {
+      type: 1,
+      value: 1,
+    },
+  },
   selectedStructure: 1,
 });
 
@@ -133,4 +153,5 @@ export type userLoan = {
   _id: string,
   structures: Array<structureType>,
   selectedStructure: string,
+  loanTranches: loanTranchesType,
 };

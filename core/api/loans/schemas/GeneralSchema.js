@@ -1,3 +1,4 @@
+// @flow
 import SimpleSchema from 'simpl-schema';
 import {
   PURCHASE_TYPE,
@@ -27,6 +28,11 @@ export const loanTranchesSchema = {
     max: 100000000,
   },
 };
+
+export type loanTranchesType = Array<{
+  type: string,
+  value: number,
+}>;
 
 const GeneralSchema = new SimpleSchema({
   purchaseType: {

@@ -2,6 +2,7 @@
 import { LOAN_STATUS } from './loanConstants';
 
 import type { structureType as _structureType } from './schemas/StructureSchema';
+import type { loanTranchesType as _loanTranchesType } from './schemas/GeneralSchema';
 
 export type loanType = {
   userId: string,
@@ -10,3 +11,4 @@ export type loanType = {
   status: $Values<LOAN_STATUS>,
 };
 export type structureType = _structureType;
+export type loanTranchesType = _loanTranchesType;

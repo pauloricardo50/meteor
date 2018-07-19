@@ -5,8 +5,10 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import { ScrollSyncPane } from 'react-scroll-sync';
+import { compose } from 'recompose';
 
 import type { structureType } from '../../../../api/types';
+import StructuresContainer from '../containers/StructuresContainer';
 import FinancingStructuresLabels from '../FinancingStructuresLabels';
 import { makeRenderDetail } from './financingStructuresSectionHelpers';
 
@@ -83,4 +85,7 @@ const FinancingStructuresSection = ({
   );
 };
 
-export default withStyles(styles)(FinancingStructuresSection);
+export default compose(
+  StructuresContainer,
+  withStyles(styles),
+)(FinancingStructuresSection);

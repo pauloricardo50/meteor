@@ -19,7 +19,7 @@ const FinancingStructures = ({ loan }: FinancingStructuresProps) => (
   <ScrollSync proportional={false} vertical={false}>
     <div className="financing-structures">
       <FinancingStructuresHeader loan={loan} />
-      <FinancingStructuresProject structures={loan.structures} />
+      <FinancingStructuresProject />
       <FinancingStructuresFinancing />
       <FinancingStructuresOwnFunds />
       {/* <FinancingStructuresOffers /> */}

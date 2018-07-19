@@ -8,18 +8,16 @@ import FinancingStructuresSection, {
 
 type FinancingStructuresProjectProps = {};
 
-const FinancingStructuresProject = ({
-  structures,
-}: FinancingStructuresProjectProps) => (
+const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection
-    titleId="project"
-    structures={structures}
-    labels={['fortuneUsed']}
-    topLabel="Coût"
-    renderSummary={(structure, index) => <span>{index}</span>}
     summaryConfig={[
       { id: 'project', label: <h3 className="section-title">Projet</h3> },
-      { id: 'projectCost', Component: CalculatedValue, value: 100 },
+      {
+        id: 'projectCost',
+        Component: CalculatedValue,
+        value: ({ structure: { fortuneUsed } }) => fortuneUsed,
+        money: true,
+      },
     ]}
     detailConfig={[{ Component: InputAndSlider, id: 'fortuneUsed' }]}
   />

@@ -112,7 +112,7 @@ class LoanServiceModel {
     const newStructureId = Random.id();
     return Loans.update(loanId, {
       $push: { structures: { ...structure, id: newStructureId } },
-      $set: { selectedStructure: newStructureId },
+      $set: isFirstStructure ? { selectedStructure: newStructureId } : {},
     });
   };
 

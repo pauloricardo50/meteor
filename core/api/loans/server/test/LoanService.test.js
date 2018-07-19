@@ -87,6 +87,17 @@ describe('LoanService', () => {
       loan = LoanService.getLoanById(loanId);
       expect(loan.selectedStructure).to.equal(loan.structures[0].id);
     });
+
+    it('does not select the structure if it is not the first one', () => {
+      loanId = Factory.create('loan', {
+        structures: [{ id: 'first' }],
+        selectedStructure: 'first',
+      })._id;
+      LoanService.addStructure({ loanId });
+
+      loan = LoanService.getLoanById(loanId);
+      expect(loan.selectedStructure).to.equal('first');
+    });
   });
 
   describe('removeStructure', () => {
