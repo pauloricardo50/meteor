@@ -1,24 +1,8 @@
 import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
 
-import getMountedComponent from './getMountedComponent';
-
-// This has to be imported here for client side tests to use factories
-// Because each test using factories also uses stubCollections
-import '../../api/factories';
-
 import { Users } from '../../api';
-
-/**
- * Unknown - Resets the component, to be called in beforeEach hooks
- *
- * @return {type} undefined
- */
-getMountedComponent.reset = () => {
-  getMountedComponent.mountedComponent = undefined;
-};
-
-export { getMountedComponent };
+import './setupTests';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id
