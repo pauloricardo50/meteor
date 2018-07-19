@@ -62,9 +62,7 @@ const FinancingStructuresSection = ({
           className="section-summary"
           classes={{ content, expanded }}
         >
-          <FinancingStructuresLabels
-            labels={summaryConfig.map(({ id, label }) => label || id)}
-          />
+          <FinancingStructuresLabels config={summaryConfig} />
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
@@ -73,9 +71,7 @@ const FinancingStructuresSection = ({
           ))}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="section-detail">
-          <FinancingStructuresLabels
-            labels={detailConfig.map(({ id }) => id)}
-          />
+          <FinancingStructuresLabels config={detailConfig} />
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>

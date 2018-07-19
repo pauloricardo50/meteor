@@ -1,18 +1,20 @@
 // @flow
 import React from 'react';
 
+import FinancingStructuresLabel from './FinancingStructuresLabel';
+
 type FinancingStructureLabelsProps = {
-  labels: Array<string>,
+  config: Array<{ id: string, label: React.Node }>,
 };
 
 const FinancingStructuresLabels = ({
-  labels,
+  config,
 }: FinancingStructureLabelsProps) => (
   <div className="financing-structures-labels">
-    {labels.map(label => (
-      <span className="label" key={label}>
-        {label}
-      </span>
+    {config.map(({ id, label }) => (
+      <FinancingStructuresLabel id={id} key={label}>
+        {label || id}
+      </FinancingStructuresLabel>
     ))}
   </div>
 );

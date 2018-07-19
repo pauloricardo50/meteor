@@ -3,7 +3,13 @@ import React from 'react';
 export const makeRenderSummary = configArray => ({ id: structureId }) =>
   configArray.map(({ Component, id, ...props }) =>
     (Component ? (
-      <Component key={id} structureId={structureId} id={id} {...props} />
+      <Component
+        key={id}
+        structureId={structureId}
+        id={id}
+        className={id}
+        {...props}
+      />
     ) : (
       <div className="empty-line" />
     )));
@@ -11,7 +17,13 @@ export const makeRenderSummary = configArray => ({ id: structureId }) =>
 export const makeRenderDetail = configArray => ({ id: structureId }) =>
   configArray.map(({ Component, id, ...props }) =>
     (Component ? (
-      <Component key={id} structureId={structureId} id={id} {...props} />
+      <Component
+        key={id}
+        structureId={structureId}
+        id={id}
+        className={id}
+        {...props}
+      />
     ) : (
       <div className="empty-line" />
     )));

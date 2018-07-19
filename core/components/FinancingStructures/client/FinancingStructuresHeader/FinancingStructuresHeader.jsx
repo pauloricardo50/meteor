@@ -20,7 +20,7 @@ const FinancingStructuresHeader = ({
 }: FinancingStructuresHeaderProps) => (
   <ScrollSyncPane>
     <div className="financing-structures-section financing-structures-header card1">
-      <FinancingStructuresLabels labels={[]} />
+      <FinancingStructuresLabels config={[]} />
       {structures.map((structure, index) => (
         <FinancingStructuresSingleHeader
           structure={structure}
