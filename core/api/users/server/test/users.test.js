@@ -7,7 +7,6 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
-import { stubCollections } from 'core/utils/testHelpers';
 import {
   doesUserExist,
   adminCreateUser,
@@ -21,11 +20,6 @@ import UserService from '../../UserService';
 describe('users', () => {
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
-  });
-
-  afterEach(() => {
-    stubCollections.restore();
   });
 
   describe('methods', () => {

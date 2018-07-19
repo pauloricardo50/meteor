@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { stubCollections, generateData } from '../../../../utils/testHelpers';
+import { generateData } from '../../../../utils/testHelpers';
 import TaskService from '../../TaskService';
 import Tasks from '../../tasks';
 import { TASK_STATUS } from '../../taskConstants';
@@ -17,7 +17,6 @@ let borrowerId;
 describe('TaskService', () => {
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
 
     const { user, admin, loan, borrowers } = generateData({
       loan: { user: { assignedEmployeeId: 'anEmployeeId' } },
@@ -32,9 +31,6 @@ describe('TaskService', () => {
     });
   });
 
-  afterEach(() => {
-    stubCollections.restore();
-  });
 
   describe('insert', () => {
     describe('file related tasks', () => {

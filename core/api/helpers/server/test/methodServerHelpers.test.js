@@ -5,7 +5,6 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
-import { stubCollections } from 'core/utils/testHelpers';
 import { checkInsertUserId } from '../methodServerHelpers';
 
 describe('methodServerHelpers', () => {
@@ -17,7 +16,6 @@ describe('methodServerHelpers', () => {
 
     beforeEach(() => {
       resetDatabase();
-      stubCollections();
       user = Factory.create('user');
       admin = Factory.create('admin');
       userId = user._id;
@@ -26,7 +24,6 @@ describe('methodServerHelpers', () => {
     });
 
     afterEach(() => {
-      stubCollections.restore();
       Meteor.userId.restore();
     });
 

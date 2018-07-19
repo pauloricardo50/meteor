@@ -5,8 +5,6 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
-import { stubCollections } from 'core/utils/testHelpers';
-
 import { SECURITY_ERROR } from '..';
 import LoanSecurity from '../collections/LoanSecurity';
 
@@ -19,7 +17,6 @@ describe('LoanSecurity', () => {
 
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
     userId = Factory.create('user')._id;
     userId2 = Factory.create('user')._id;
     adminId = Factory.create('admin')._id;
@@ -29,7 +26,6 @@ describe('LoanSecurity', () => {
   });
 
   afterEach(() => {
-    stubCollections.restore();
     Meteor.userId.restore();
   });
 

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
-import includes from 'lodash/pickBy';
+import includes from 'lodash/includes';
 
 if (Meteor.isServer) {
   DDPRateLimiter.setErrorMessage(({ timeToReset }) => {

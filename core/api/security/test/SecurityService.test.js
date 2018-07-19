@@ -5,8 +5,6 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
-import { stubCollections } from 'core/utils/testHelpers';
-
 import SecurityService, { SECURITY_ERROR } from '../index';
 import {
   LoanSecurity,
@@ -22,14 +20,12 @@ describe('Security service', () => {
 
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
     userId = Factory.create('user')._id;
     devId = Factory.create('dev')._id;
     sinon.stub(Meteor, 'userId').callsFake(() => userId);
   });
 
   afterEach(() => {
-    stubCollections.restore();
     Meteor.userId.restore();
   });
 

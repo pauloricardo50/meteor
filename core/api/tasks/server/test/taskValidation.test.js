@@ -2,10 +2,7 @@
 import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
-import {
-  stubCollections,
-  generateTaskRelatedToAFile,
-} from 'core/utils/testHelpers';
+import { generateTaskRelatedToAFile } from 'core/utils/testHelpers';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
@@ -33,14 +30,12 @@ describe('Task Validation', () => {
 
     beforeEach(() => {
       resetDatabase();
-      stubCollections();
       userId = Factory.create('user')._id;
       loan = Factory.create('loan');
       sinon.stub(Meteor, 'userId').callsFake(() => userId);
     });
 
     afterEach(() => {
-      stubCollections.restore();
       Meteor.userId.restore();
     });
 

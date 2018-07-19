@@ -5,7 +5,6 @@ import sinon from 'sinon';
 import { Accounts } from 'meteor/accounts-base';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { stubCollections } from '../../../../utils/testHelpers';
 import UserService from '../../UserService';
 import UserSecurity from '../../../security/collections/UserSecurity';
 import { ROLES } from '../../userConstants';
@@ -21,7 +20,6 @@ describe('UserService', () => {
 
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
 
     newUserId = 'newUserId';
     newUserEmail = 'new@yop.com';
@@ -31,10 +29,6 @@ describe('UserService', () => {
       phone: '12345678',
     };
     user = Factory.create('user', { firstName, lastName });
-  });
-
-  afterEach(() => {
-    stubCollections.restore();
   });
 
   describe('adminCreateUser', () => {
