@@ -90,7 +90,7 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
 
-meteor npm i -g babel-cli start-server-and-test
+meteor npm i -g babel-cli
 
 # Install core npm packages only on non-circleCI environments
 if [[ $CIRCLE_CI != 1 ]];
