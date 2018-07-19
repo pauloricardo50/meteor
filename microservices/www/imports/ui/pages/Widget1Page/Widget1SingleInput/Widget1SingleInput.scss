@@ -3,12 +3,12 @@
 }
 
 .widget1-single-input .box {
-  border-radius: 4px;
-  background-color: rgb(244, 247, 249);
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  border-radius: 4px;
+  background-color: rgb(244, 247, 249);
 }
 
 .widget1-single-input .box label {
@@ -26,7 +26,7 @@
 }
 
 .widget1-single-input .widget1-input {
-  > * {
+   > * {
     display: flex;
     align-items: center;
 

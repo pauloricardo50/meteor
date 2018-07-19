@@ -1,0 +1,23 @@
+name: run
+root: ./
+
+windows:
+  - e-Potek:
+      layout: tiled
+
+      panes:
+        - www:
+            - cd ../microservices/www
+            - meteor npm start
+        - app:
+            - cd ../microservices/app
+            - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
+        - admin:
+            - cd ../microservices/admin
+            - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
+        - mongo:
+            - ./tcpWait.sh 3001
+            - cd ../microservices/www
+            - meteor mongo
+
+

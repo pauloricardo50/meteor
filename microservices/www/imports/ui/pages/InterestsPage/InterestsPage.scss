@@ -23,8 +23,8 @@
     padding-bottom: 80px;
 
     @include screen(med) {
-      padding-left: 16px;
       padding-right: 16px;
+      padding-left: 16px;
     }
   }
 }
@@ -36,6 +36,7 @@
   margin: 80px 32px 0 32px;
 
   transform: scale(1.25);
+
   @include screen(large, min) {
     width: $med;
   }
