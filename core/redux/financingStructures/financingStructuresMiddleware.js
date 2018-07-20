@@ -1,5 +1,8 @@
 // @flow
 import debounce from 'lodash/debounce';
+
+import { normalize } from '../../utils/general';
+import { updateStructure } from '../../api';
 import { REHYDRATE_LOAN, UPDATE_STRUCTURE } from './financingStructuresTypes';
 import { rehydrateData } from './financingStructuresActions';
 import type { Action } from './financingStructuresActions';
@@ -7,10 +10,8 @@ import {
   makeSelectStructure,
   selectLoan,
 } from './financingStructuresSelectors';
-import { normalize } from '../../utils/general';
-import { updateStructure } from '../../api';
 
-const DEBOUNCE_TIMEOUT_MS = 1000;
+const DEBOUNCE_TIMEOUT_MS = 500;
 
 export const saveStructures = debounce((saveDataFunc, ids, getState) => {
   const idsToUse = [...ids];
