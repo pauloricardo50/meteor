@@ -30,7 +30,7 @@ describe('files', () => {
     });
 
     it('should return true if the user is dev', () => {
-      Meteor.users.update(userId, { $set: { roles: 'dev' } });
+      Meteor.users.update(userId, { $set: { roles: ['dev'] } });
 
       expect(isAllowed('')).to.equal(true);
     });

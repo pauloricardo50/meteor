@@ -49,7 +49,7 @@ const pages = {
       },
     }) =>
       route(`/loans/${_id}/properties/${propertyId}`, {
-        shouldRender: '#property',
+        shouldRender: '#PropertiesPage',
       }),
 
     'Loan Offerpicker': ({ step3LoanWithEndedAuction: { _id } }) =>
@@ -80,7 +80,7 @@ const pages = {
       }),
 
     'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/closing`, { shouldRender: '#closing' }),
+      route(`/loans/${_id}/closing`, { shouldRender: '#ClosingPage' }),
 
     'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
       route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
