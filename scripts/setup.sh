@@ -45,19 +45,11 @@ for i in 'admin' 'app' 'www'
     pwd
     ln -s ../../../core ../microservices/$i/imports/core
     ./link.sh ../core/assets/public ../microservices/$i/public
-    # ln -s ../../core/assets/public ../microservices/$i/public
     ln -s ../../core/assets/private ../microservices/$i/private
     
     echo "Storing current commit message to public assets"
     git rev-parse --short HEAD > "../core/assets/public/commit.txt"
 
-    # if [[ $i == "www" ]];
-    # then
-    #   echo "Copying sitemap to www"
-    #   rsync ../core/other/sitemap.xml ../microservices/$i/public/sitemap.xml
-    #   echo "Copying robots.txt to www"
-    #   rsync ../core/other/robots.txt ../microservices/$i/public/robots.txt
-    # fi
 
     if [[ $DO_CLEAN == true ]];
     then
