@@ -36,7 +36,7 @@
     "@storybook/react-komposer": "^2.0.4",
     "aws-sdk": "^2.244.1",
     "babel-polyfill": "^6.26.0",
-    "bcrypt": "^2.0.1",
+    "bcrypt": "2.0.1",
     "btoa": "^1.2.1",
     "classnames": "^2.2.5",
     "core-js": "^2.5.6",
