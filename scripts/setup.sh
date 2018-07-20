@@ -84,14 +84,8 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
 
+echo "Installing babel-cli to be able to run babel-node"
 meteor npm i -g babel-cli
-
-# Install core npm packages only on non-circleCI environments
-if [[ $CIRCLE_CI != 1 ]];
-then
-  echo "Installing npm packages in core/"
-  ( cd ../core && meteor npm i -q );
-fi
 
 echo "Creating language files..."
 meteor babel-node ./createLanguages.js
