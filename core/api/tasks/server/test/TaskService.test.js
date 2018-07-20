@@ -34,7 +34,7 @@ describe('TaskService', () => {
 
   describe('insert', () => {
     describe('file related tasks', () => {
-      it.only('inserts a Task with the necessary file data in it', () => {
+      it('inserts a Task with the necessary file data in it', () => {
         const insertParams = {
           type: 'USER_ADDED_FILE',
           loanId,
