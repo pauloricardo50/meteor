@@ -7,6 +7,7 @@ import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
 import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 import { validateTask } from './taskValidation';
 import Users from '../users';
+import Loans from '../loans';
 import { isUser } from '../../utils/userFunctions';
 import { getIdFieldNameFromCollection } from '../helpers';
 
@@ -92,8 +93,17 @@ class TaskService {
 
   getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
     if (loanId) {
-      const loans = loanAssignedToQuery.clone({ loanId }).fetchOne();
-      return loans.user.assignedEmployeeId;
+      console.log('What the fuck theodor?');
+
+      console.log('getRelatedDocAssignedTo loanId');
+
+      const loan = loanAssignedToQuery.clone({ loanId }).fetchOne();
+      console.log('loan?', loan);
+      const sameloan = Loans.findOne(loanId);
+      console.log('same loan?', sameloan);
+      console.log('same user?', Users.findOne(sameloan.userId));
+
+      return loan.user.assignedEmployeeId;
     }
     if (borrowerId) {
       const borrowers = borrowerAssignedToQuery

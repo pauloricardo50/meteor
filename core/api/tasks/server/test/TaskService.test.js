@@ -17,9 +17,10 @@ let borrowerId;
 describe('TaskService', () => {
   beforeEach(() => {
     resetDatabase();
-
+    const adminIdToUse = 'someAdmin';
     const { user, admin, loan, borrowers } = generateData({
-      loan: { user: { assignedEmployeeId: 'anEmployeeId' } },
+      user: { assignedEmployeeId: adminIdToUse },
+      admin: { _id: adminIdToUse },
     });
     userId = user._id;
     adminId = admin._id;
@@ -31,10 +32,9 @@ describe('TaskService', () => {
     });
   });
 
-
   describe('insert', () => {
     describe('file related tasks', () => {
-      it('inserts a Task with the necessary file data in it', () => {
+      it.only('inserts a Task with the necessary file data in it', () => {
         const insertParams = {
           type: 'USER_ADDED_FILE',
           loanId,
