@@ -132,7 +132,7 @@ jobs:
       - run:
           name: run end-to-end tests for Www
           command: |
-            cd microservices/www3
+            cd microservices/www
             meteor npm i -g start-server-and-test
             meteor npm run test-e2e-CI
       - run:
