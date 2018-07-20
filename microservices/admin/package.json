@@ -9,6 +9,7 @@
     "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
     "cypress-open": "../../node_modules/cypress/bin/cypress open",
     "test": "meteor test --driver-package cultofcoders:mocha --settings settings-dev.json --port 5005",
+    "test-console": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json  --port 5006",
     "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit-admin.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "test-e2e": "meteor start-server-and-test start-e2e http://localhost:5015 cypress-open",
     "test-e2e-CI": "meteor start-server-and-test start-e2e http://localhost:5015 cypress-run-CI",
