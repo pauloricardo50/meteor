@@ -66,7 +66,7 @@ export default class Security {
   }
 
   static checkOwnership(doc) {
-    if (Meteor.userId() !== doc.userId) {
+    if (doc && Meteor.userId() !== doc.userId) {
       this.handleUnauthorized('Checking ownership');
     }
   }
