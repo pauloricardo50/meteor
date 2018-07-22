@@ -58,6 +58,9 @@ import DeleteSweep from '@material-ui/icons/DeleteSweep';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
+import FilterList from '@material-ui/icons/FilterList';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 
 const iconMap = {
   close: CloseIcon,
@@ -118,6 +121,9 @@ const iconMap = {
   trendingFlat: TrendingFlat,
   expandMore: ExpandMoreIcon,
   backupRestore: SettingsBackupRestore,
+  filter: FilterList,
+  arrowUp: ArrowUpward,
+  arrowDown: ArrowDownward,
 };
 
 const Icon = ({ type, size, ...props }) => {

@@ -8,13 +8,13 @@ import LoanAdder from './LoanAdder';
 const LoanSummaryList = ({ loans, userId }) => {
   if (loans.length > 0) {
     return (
-      <div>
+      <React.Fragment>
         <h3>
           <T id="collections.loans" />
           <LoanAdder userId={userId} />
         </h3>
         {loans.map(loan => <LoanSummary loan={loan} key={loan._id} />)}
-      </div>
+      </React.Fragment>
     );
   }
 

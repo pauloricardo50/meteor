@@ -1,6 +1,6 @@
 import { createContainer, loanUpdate } from 'core/api';
 
-export default createContainer(({ loan: { _id: loanId, contacts } }) => ({
+export default createContainer(({ loan: { _id: loanId, contacts = [] } }) => ({
   addContact: newContact =>
     loanUpdate.run({
       loanId,

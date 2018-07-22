@@ -26,11 +26,11 @@ export default class Security {
 
   static checkUserLoggedIn(userId) {
     if (!userId) {
-      this.handleUnauthorized('Checking if logged in');
+      this.handleUnauthorized('Checking if logged in, no user');
     }
 
     if (userId !== Meteor.userId()) {
-      this.handleUnauthorized('Checking if logged in');
+      this.handleUnauthorized('Checking if logged in, not the right user');
     }
   }
 
@@ -66,7 +66,7 @@ export default class Security {
   }
 
   static checkOwnership(doc) {
-    if (Meteor.userId() !== doc.userId) {
+    if (doc && Meteor.userId() !== doc.userId) {
       this.handleUnauthorized('Checking ownership');
     }
   }

@@ -1,4 +1,5 @@
-import { Properties, Users, Loans } from '../';
+import Properties from './properties';
+import { Users, Loans } from '../';
 
 Properties.addLinks({
   user: {

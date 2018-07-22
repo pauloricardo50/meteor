@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import capitalize from 'lodash/capitalize';
 import { ROLES } from '../api/users/userConstants';
 import { E2E_USER_EMAIL } from '../fixtures/constants';
@@ -27,14 +28,22 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
   Object.keys(pages).forEach((pageAuthentication) => {
     describe(capitalize(pageAuthentication), () => {
       Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        describe(`${pageName} Page`, () => {
+        const testName = `${pageName} Page`;
+        describe(testName, () => {
           it('should render', () => {
+            console.log('-------------------------');
+            console.log('-------------------------');
+            console.log('starting test: ', testName);
+            console.log('-------------------------');
+            console.log('-------------------------');
+
             // logout the impersonated user
             const { IMPERSONATE_SESSION_KEY } = testData;
             cy.window().then(({ Session }) =>
-              Session.clear(IMPERSONATE_SESSION_KEY));
-
-            cy.setAuthentication(pageAuthentication).routeShouldRenderSuccessfully(
+              Session && Session.clear(IMPERSONATE_SESSION_KEY));
+            cy.printTestNameOnServer(testName);
+            cy.setAuthentication(pageAuthentication);
+            cy.routeShouldRenderSuccessfully(
               pages[pageAuthentication][pageName],
               testData,
             );

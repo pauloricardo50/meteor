@@ -1,30 +1,10 @@
 import Borrowers from '../borrowers';
-import UserService from '../users/UserService';
 
 class BorrowerService {
   update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
   insert = ({ borrower, userId }) => Borrowers.insert({ ...borrower, userId });
-
-  insertWithUserNames = ({ borrower, userId }) => {
-    const { firstName, lastName } = UserService.getUserById({ userId });
-
-    return this.insert({
-      borrower: { ...borrower, firstName, lastName },
-      userId,
-    });
-  };
-
-  smartInsert = ({ borrower, userId }) => {
-    const isFirstBorrowerForUser = Borrowers.find({ userId }).count() === 0;
-
-    if (isFirstBorrowerForUser) {
-      return this.insertWithUserNames({ borrower, userId });
-    }
-
-    return this.insert({ borrower, userId });
-  };
 
   remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
 

@@ -26,11 +26,11 @@ export default class Logismata extends Component {
       React.cloneElement(child, { logismataToken: authToken }));
 
     if (error) {
-      return <div>{error}</div>;
+      return <React.Fragment>{error}</React.Fragment>;
     }
 
     return (
-      <div>
+      <React.Fragment>
         {authToken ? (
           children
         ) : (
@@ -38,7 +38,7 @@ export default class Logismata extends Component {
             <Loading />
           </div>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -69,7 +69,7 @@ export default class ConfirmButton extends Component {
     ];
 
     return (
-      <div>
+      <React.Fragment>
         {buttonComponent ? (
           React.cloneElement(buttonComponent, { ...buttonProps })
         ) : (
@@ -83,7 +83,7 @@ export default class ConfirmButton extends Component {
         >
           {text}
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }

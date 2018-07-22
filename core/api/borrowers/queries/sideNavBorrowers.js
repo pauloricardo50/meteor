@@ -10,4 +10,9 @@ export default Borrowers.createQuery(BORROWER_QUERIES.SIDENAV_BORROWERS, {
   $paginate: true,
   firstName: 1,
   lastName: 1,
+  createdAt: 1,
+  updatedAt: 1,
+  user: {
+    assignedEmployee: { emails: 1 },
+  },
 });

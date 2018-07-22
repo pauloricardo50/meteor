@@ -14,7 +14,10 @@ const getRecapArray = (props) => {
       general: { insuranceFortuneUsed, fortuneUsed },
     },
   } = props;
-  const loanValue = getLoanValue(props);
+  const loanValue = getLoanValue({
+    loan: props.loan,
+    property: props.loan.property,
+  });
   const totalUsed = getTotalUsed(props);
 
   return [
@@ -41,7 +44,7 @@ const getRecapArray = (props) => {
 };
 
 const DashboardRecapFinancing = props => (
-  <div>
+  <div className="dashboard-recap-financing">
     <Recap array={getRecapArray(props)} />
     <DashboardRecapSum
       label={<T id="DashboardRecapFinancing.sumTitle" />}

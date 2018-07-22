@@ -85,17 +85,14 @@ class GoogleMapsAutocomplete extends Component {
     geocodeByAddress(address || this.state.address)
       .then(results => getLatLng(results[0]))
       .then((latlng) => {
-        this.props.onChange('isValidPlace', true);
         this.props.onChange('latlng', latlng);
         this.props.onChange('address', this.state.address);
 
         // Necessary for the dialog to resize properly after changing its contents
         Meteor.defer(() => window.dispatchEvent(new Event('resize')));
       })
-      .catch((error) => {
-        this.props.onChange('isValidPlace', true);
-        console.error('Error', error);
-      });
+      .catch(error => console.error('Error', error))
+      .finally(() => this.props.onChange('isValidPlace', true));
   };
 
   render() {

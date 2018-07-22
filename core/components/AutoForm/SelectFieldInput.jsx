@@ -31,17 +31,10 @@ export default class SelectFieldInput extends Component {
     const object = { [id]: value };
 
     updateFunc({ object, id: docId })
-      .then((result) =>
       // on success, set saving briefly to true, before setting it to false again to trigger icon
-      {
-        this.setState(
-          { errorText: '', saving: true },
-          this.setState({ saving: false }),
-        );
-      })
-      .catch((error) => {
-        this.setState({ saving: false, errorText: error.message });
-      });
+      .then(() => this.setState({ errorText: '', saving: true }))
+      .catch(error => this.setState({ errorText: error.message }))
+      .finally(() => this.setState({ saving: false }));
   };
 
   mapOptions = () =>

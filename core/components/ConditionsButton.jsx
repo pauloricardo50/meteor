@@ -50,7 +50,7 @@ export default class ConditionsButton extends Component {
     ];
 
     return (
-      <div>
+      <React.Fragment>
         <Button
           raised
           label={<T id="ConditionsButton.title" />}
@@ -66,25 +66,25 @@ export default class ConditionsButton extends Component {
         >
           <div className="conditions-modal">
             {!!(conditions.length > 0) && (
-              <div>
+              <React.Fragment>
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.mandatory" />
                 </h2>
                 {conditions}
-              </div>
+              </React.Fragment>
             )}
 
             {!!(counterparts.length > 0) && (
-              <div>
+              <React.Fragment>
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.counterparts" />
                 </h2>
                 {counterparts}
-              </div>
+              </React.Fragment>
             )}
           </div>
         </Dialog>
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -1,3 +1,5 @@
+@import './DashboardInfoInterests/DashboardInfoInterests.scss';
+
 .dashboard-info {
   display: flex;
   align-items: center;
@@ -20,8 +22,16 @@
 }
 
 .dashboard-info-team {
+  display: flex;
+  flex-direction: column;
+
+  .card-top {
+    flex-grow: 1;
+  }
+
   .card-bottom {
     display: flex;
+    flex-grow: 0;
     justify-content: center;
   }
 }

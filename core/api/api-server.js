@@ -36,6 +36,7 @@ import './tasks/queries/exposures';
 import './borrowers/queries/exposures';
 import './properties/queries/exposures';
 import './resolvers/exposures';
+import './offers/queries/exposures';
 
 import { Loans, Borrowers, Offers, Properties } from '.';
 

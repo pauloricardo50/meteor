@@ -5,7 +5,7 @@ import { lifecycle } from 'recompose';
 import Select from 'core/components/Select';
 import T, { Percent } from 'core/components/Translation';
 import { INTEREST_RATES } from 'core/api/constants';
-import interestRates from '../../InterestsPage/interestRates';
+import interestRates from 'core/components/InterestRatesTable/interestRates';
 
 const displayedRates = [
   INTEREST_RATES.LIBOR,

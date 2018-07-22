@@ -23,7 +23,7 @@ const getMenuItems = (currentUser) => {
     },
     {
       id: 'account',
-      link: '/profile',
+      link: '/account',
       icon: 'accountCircle',
       secondary: currentUser.emails[0].address,
       show: true,
@@ -38,9 +38,7 @@ const getMenuItems = (currentUser) => {
       id: 'logout',
       label: <T id="general.logout" />,
       onClick: () => {
-        track('TopNavDropdown - logged out', {});
-        Meteor.logout(() =>
-          handleLoggedOut(`${Meteor.settings.public.subdomains.www}`));
+        Meteor.logout();
       },
       link: '/',
       show: true,

@@ -4,7 +4,7 @@ import T from 'core/components/Translation';
 import PageHead from 'core/components/PageHead';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
-import InterestsTable from './InterestsTable';
+import WwwInterestRatesTable from './WwwInterestRatesTable';
 
 const InterestsPage = () => (
   <WwwLayout className="interests-page">
@@ -21,7 +21,7 @@ const InterestsPage = () => (
         <p className="description">
           <T id="InterestsPage.description" />
         </p>
-        <InterestsTable />
+        <WwwInterestRatesTable />
       </section>
     </WwwLayout.Content>
     <WwwLayout.Footer />

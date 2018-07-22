@@ -29,6 +29,7 @@ const config = {
         'Impersonation',
         'AdminFilesTab',
         'AmortizationChart',
+        'PropertyForm',
       ],
     },
     {
@@ -78,6 +79,8 @@ const config = {
     'Form',
     'TooltipSynonyms',
     'SearchResults',
+    'MissingDoc',
+    'InterestsTable',
   ],
 };
 

@@ -27,8 +27,8 @@ describe('<AutoTooltip />', () => {
   });
 
   it('returns the child if it is not a string', () => {
-    props = { children: <div>test</div> };
-    expect(component().equals(<div>test</div>)).to.equal(true);
+    props = { children: <React.Fragment>test</React.Fragment> };
+    expect(component().equals(<React.Fragment>test</React.Fragment>)).to.equal(true);
   });
 
   it('returns a parsed string with tooltips', () => {

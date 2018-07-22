@@ -1,5 +1,7 @@
 import get from 'lodash/get';
 import isArray from 'lodash/isArray';
+import flatten from 'lodash/flatten';
+import intersection from 'lodash/intersection';
 import { flattenObjectTreeToArrays } from './general';
 
 export const isEmptyFilterValue = filterValue =>
@@ -12,7 +14,12 @@ const getNonEmptyFlattenedFilters = filters =>
 const objectMatchesAllFilters = (object, filters) =>
   filters.every(({ path, value }) => {
     const valueOfObject = get(object, path);
-    return value.includes(valueOfObject);
+    // since valueOfObject can be a primitive or an array,
+    // we make sure it's always an array by flattening it
+    // one level deep. E.g.: 'abc' => ['abc']; ['a', 'b'] => ['a', 'b']
+    const arrayValueOfObject = flatten([valueOfObject]);
+
+    return intersection(value, arrayValueOfObject).length > 0;
   });
 
 const filterArrayOfObjects = (filters, arrayOfObjects) => {

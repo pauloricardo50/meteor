@@ -40,9 +40,9 @@ export default class AmortizationCalculator extends Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
-      </div>
+      </React.Fragment>
     );
   }
 }

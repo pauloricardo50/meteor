@@ -8,6 +8,7 @@ import Table from 'core/components/Table';
 import T from 'core/components/Translation';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
 import { TASK_TYPE } from 'core/api/tasks/taskConstants';
@@ -61,7 +62,7 @@ class TasksTable extends Component {
     }
 
     if (user) {
-      const { _id, username, emails } = user;
+      const { _id, username, emails, firstName, lastName } = user;
       if (!_id) {
         return {};
       }
@@ -69,7 +70,7 @@ class TasksTable extends Component {
       return {
         link: `/users/${_id}`,
         icon: 'contactMail',
-        text: username || emails[0].address,
+        text: getUserDisplayName({ firstName, lastName, username, emails }),
         translationId: 'user',
       };
     }
@@ -142,10 +143,11 @@ class TasksTable extends Component {
     ];
     if (showAssignee) {
       if (assignedEmployee) {
+        const { _id, emails, username, firstName, lastName } = assignedEmployee;
         const cellText =
-          assignedEmployee.username || assignedEmployee.emails[0].address;
+          getUserDisplayName({ firstName, lastName, username, emails });
         columns.push({
-          label: <Link to={`/users/${assignedEmployee._id}`}>{cellText}</Link>,
+          label: <Link to={`/users/${_id}`}>{cellText}</Link>,
           raw: cellText,
         });
       } else {

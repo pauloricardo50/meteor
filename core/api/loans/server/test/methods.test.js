@@ -1,12 +1,10 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { stubCollections, generateData } from '../../../../utils/testHelpers';
+import { generateData } from '../../../../utils/testHelpers';
 import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
-import Loans from '../../loans';
 import LoanService from '../../LoanService';
 
 let userId;
@@ -15,7 +13,6 @@ let adminId;
 describe('Loan methods', () => {
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
 
     const { user, admin } = generateData();
     userId = user._id;
@@ -24,10 +21,6 @@ describe('Loan methods', () => {
     [userId, adminId].forEach((variable) => {
       expect(variable).to.be.a('string');
     });
-  });
-
-  afterEach(() => {
-    stubCollections.restore();
   });
 
   describe('disableUserForms', () => {

@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import { CLOSING_STEPS_TYPE } from 'core/api/constants';
 
 const Adder = ({ handleAdd }) => (
-  <div>
+  <React.Fragment>
     <Button
       raised
       onClick={() => handleAdd(CLOSING_STEPS_TYPE.UPLOAD)}
@@ -17,7 +17,7 @@ const Adder = ({ handleAdd }) => (
       onClick={() => handleAdd(CLOSING_STEPS_TYPE.TODO)}
       label="Ajouter Todo"
     />
-  </div>
+  </React.Fragment>
 );
 
 Adder.propTypes = {

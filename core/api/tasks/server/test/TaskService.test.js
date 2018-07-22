@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { stubCollections, generateData } from '../../../../utils/testHelpers';
+import { generateData } from '../../../../utils/testHelpers';
 import TaskService from '../../TaskService';
 import Tasks from '../../tasks';
 import { TASK_STATUS } from '../../taskConstants';
@@ -17,10 +17,10 @@ let borrowerId;
 describe('TaskService', () => {
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
-
+    const adminIdToUse = 'someAdmin';
     const { user, admin, loan, borrowers } = generateData({
-      loan: { user: { assignedEmployeeId: 'anEmployeeId' } },
+      user: { assignedEmployeeId: adminIdToUse },
+      admin: { _id: adminIdToUse },
     });
     userId = user._id;
     adminId = admin._id;
@@ -30,10 +30,6 @@ describe('TaskService', () => {
     [userId, adminId, loanId, borrowerId].forEach((id) => {
       expect(id).to.be.a('string');
     });
-  });
-
-  afterEach(() => {
-    stubCollections.restore();
   });
 
   describe('insert', () => {

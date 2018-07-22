@@ -1,4 +1,4 @@
-import Loans from '..';
+import Loans from '../loans';
 import { LOAN_QUERIES } from '../loanConstants';
 
 export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
@@ -9,4 +9,9 @@ export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
   },
   $paginate: true,
   name: 1,
+  createdAt: 1,
+  updatedAt: 1,
+  user: {
+    assignedEmployee: { emails: 1 },
+  },
 });

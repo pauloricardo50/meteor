@@ -96,7 +96,7 @@ const getForm = (props, value, modify) => {
   }
   case 'loan': {
     return (
-      <div>
+      <React.Fragment>
         <AutoForm
           key={`${value}1`}
           formClasses="loan-autoform"
@@ -119,7 +119,7 @@ const getForm = (props, value, modify) => {
           noPlaceholders
           admin
         />
-      </div>
+      </React.Fragment>
     );
   }
   case 'files':
@@ -234,10 +234,10 @@ export default class FormsTab extends Component {
           onToggle={this.handleToggle}
         />
 
-        <div>
+        <React.Fragment>
           Vérification:{' '}
           <IntlNumber value={getPercent(this.props)} format="percentage" />
-        </div>
+        </React.Fragment>
 
         <hr />
 

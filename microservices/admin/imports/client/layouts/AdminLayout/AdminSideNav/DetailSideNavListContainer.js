@@ -5,7 +5,8 @@ import sideNavLoans from 'core/api/loans/queries/sideNavLoans';
 import sideNavProperties from 'core/api/properties/queries/sideNavProperties';
 import sideNavUsers from 'core/api/users/queries/sideNavUsers';
 import { withQuery, compose } from 'core/api';
-import { withState, lifecycle } from 'recompose';
+import withDataFilterAndSort from 'core/api/containerToolkit/withDataFilterAndSort';
+import { withState, withProps, lifecycle } from 'recompose';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -37,29 +38,50 @@ const setTotalCount = (props) => {
   });
 };
 
-export default compose(
-  withState('totalCount', 'updateTotalCount', 0),
-  lifecycle({
-    componentDidMount() {
-      setTotalCount(this.props);
-    },
-    componentDidUpdate({ collectionName: prevCollectionName, filters: prevFilters }) {
-      const { collectionName, filters } = this.props;
-      const shouldSetTotalCount =
-        collectionName !== prevCollectionName || prevFilters !== filters;
+const getQueryLimit = showMoreCount => PAGINATION_AMOUNT * (showMoreCount + 1);
 
-      if (shouldSetTotalCount) {
-        setTotalCount(this.props);
-      }
-    },
-  }),
-  withQuery(
-    ({ collectionName, showMoreCount }) =>
-      getQuery({ collectionName }).clone({
-        limit: PAGINATION_AMOUNT * (showMoreCount + 1),
-        skip: 0,
-      }),
-    { reactive: true },
-  ),
+export const withTotalCountState = withState(
+  'totalCount',
+  'updateTotalCount',
+  0,
+);
+
+export const withSetTotalCountLifecycle = lifecycle({
+  componentDidMount() {
+    setTotalCount(this.props);
+  },
+  componentDidUpdate({
+    collectionName: prevCollectionName,
+    filters: prevFilters,
+  }) {
+    const { collectionName, filters } = this.props;
+    const shouldSetTotalCount =
+      collectionName !== prevCollectionName || prevFilters !== filters;
+
+    if (shouldSetTotalCount) {
+      setTotalCount(this.props);
+    }
+  },
+});
+
+export const withSideNavQuery = withQuery(
+  ({ collectionName, showMoreCount }) =>
+    getQuery({ collectionName }).clone({
+      limit: getQueryLimit(showMoreCount),
+      skip: 0,
+    }),
+  { reactive: true },
+);
+
+export const withIsEndProp = withProps(({ showMoreCount, totalCount }) => ({
+  isEnd: getQueryLimit(showMoreCount) >= totalCount,
+}));
+
+export default compose(
+  withTotalCountState,
+  withSetTotalCountLifecycle,
+  withSideNavQuery,
+  withIsEndProp,
+  withDataFilterAndSort,
   withRouter,
 );
