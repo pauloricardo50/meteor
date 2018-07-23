@@ -2,7 +2,6 @@ import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
 
 import { Users } from '../../api';
-import './setupTests';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id
@@ -11,7 +10,7 @@ import './setupTests';
  *
  * @return {string} the generated login token
  */
-export const createLoginToken = (userId) => {
+export const createLoginToken = userId => {
   const loginToken = Random.id();
   const hashedToken = Accounts._hashLoginToken(loginToken);
 
