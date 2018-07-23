@@ -85,7 +85,7 @@ echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
 
 echo "Installing babel-cli to be able to run babel-node"
-meteor npm i -g babel-cli
+meteor npm i -g @babel/node
 
 echo "Creating language files..."
 meteor babel-node ./createLanguages.js
