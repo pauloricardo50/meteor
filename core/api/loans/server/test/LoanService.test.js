@@ -18,8 +18,6 @@ describe('LoanService', () => {
 
   describe('disableUserForms', () => {
     it('disables user forms', () => {
-      console.log('testing');
-
       loanId = Factory.create('loan')._id;
       loan = LoanService.getLoanById(loanId);
       LoanService.disableUserForms({ loanId });
@@ -106,7 +104,7 @@ describe('LoanService', () => {
   describe('removeStructure', () => {
     it('removes an existing structure from a loan', () => {
       loanId = Factory.create('loan', {
-        structures: [{ id: 1 }, { id: 2 }],
+        structures: [{ id: '1' }, { id: '2' }],
         selectedStructure: '1',
       })._id;
       loan = LoanService.getLoanById(loanId);
@@ -131,7 +129,51 @@ describe('LoanService', () => {
       })._id;
 
       expect(() =>
-        LoanService.removeStructure({ loanId, structureId })).to.throw("Can't delete");
+        LoanService.removeStructure({ loanId, structureId }),
+      ).to.throw("Can't delete");
+    });
+
+    it('removes a duplicate structure', () => {
+      loanId = Factory.create('loan', {
+        structures: [{ id: '1' }],
+        selectedStructure: '1',
+      })._id;
+
+      LoanService.duplicateStructure({ loanId, structureId: '1' });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(2);
+
+      LoanService.removeStructure({
+        loanId,
+        structureId: loan.structures[1].id,
+      });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(1);
+    });
+
+    it('works for this edge case', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'poKbbHPf3FTKWt7vd',
+            propertyWork: 339000,
+          },
+          {
+            id: 'CfN4k8WKqRySCfvns',
+            propertyWork: 339000,
+          },
+        ],
+      })._id;
+
+      LoanService.removeStructure({ loanId, structureId: 'CfN4k8WKqRySCfvns' });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(1);
     });
   });
 
@@ -156,7 +198,9 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
       // This structure is correct
-      expect(loan.structures.find(({ id }) => id === structureId)).to.deep.include({ id: structureId, propertyId });
+      expect(
+        loan.structures.find(({ id }) => id === structureId),
+      ).to.deep.include({ id: structureId, propertyId });
 
       // Other structures are unaffected
       loan.structures
@@ -190,7 +234,8 @@ describe('LoanService', () => {
       const badId = 'inexistentId';
 
       expect(() =>
-        LoanService.selectStructure({ loanId, structureId: badId })).to.throw(badId);
+        LoanService.selectStructure({ loanId, structureId: badId }),
+      ).to.throw(badId);
     });
   });
 
