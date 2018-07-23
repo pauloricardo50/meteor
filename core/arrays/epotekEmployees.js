@@ -39,13 +39,13 @@ const employees = [
     title: 'Conseiller en financement',
     phone: '+41 22 566 82 90',
   },
-  {
-    email: 'jeanluc@e-potek.ch',
-    src: '/img/team/jeanluc.jpg',
-    name: 'Jean-Luc Kringel',
-    title: 'Responsable Assurances',
-    phone: '+41 22 566 82 94',
-  },
+  // {
+  //   email: 'jeanluc@e-potek.ch',
+  //   src: '/img/team/jeanluc.jpg',
+  //   name: 'Jean-Luc Kringel',
+  //   title: 'Responsable Assurances',
+  //   phone: '+41 22 566 82 94',
+  // },
   {
     email: '',
     src: '/img/team/tarik.jpg',
