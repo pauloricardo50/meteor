@@ -7,7 +7,6 @@ import sinon from 'sinon';
 import AWS from 'aws-sdk';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { stubCollections } from 'core/utils/testHelpers';
 import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
 import { isAllowed } from '../s3';
@@ -19,7 +18,6 @@ describe('files', () => {
 
     beforeEach(() => {
       resetDatabase();
-      stubCollections();
       user = Factory.create('user');
       userId = user._id;
       sinon.stub(Meteor, 'user').callsFake(() => user);
@@ -27,13 +25,12 @@ describe('files', () => {
     });
 
     afterEach(() => {
-      stubCollections.restore();
       Meteor.user.restore();
       Meteor.userId.restore();
     });
 
     it('should return true if the user is dev', () => {
-      Meteor.users.update(userId, { $set: { roles: 'dev' } });
+      Meteor.users.update(userId, { $set: { roles: ['dev'] } });
 
       expect(isAllowed('')).to.equal(true);
     });
@@ -69,7 +66,6 @@ describe('files', () => {
 
     beforeEach(() => {
       resetDatabase();
-      stubCollections();
       user = Factory.create('admin');
       sinon.stub(AWS, 'S3').callsFake(() => ({
         deleteObject: (params, callback) => callback(undefined, callbackResult),
@@ -79,7 +75,6 @@ describe('files', () => {
     });
 
     afterEach(() => {
-      stubCollections.restore();
       AWS.S3.restore();
       AWS.config.update.restore();
       Meteor.userId.restore();

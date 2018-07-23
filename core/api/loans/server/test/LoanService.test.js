@@ -4,7 +4,8 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
 import '../../../factories';
-import { Loans, Borrowers, Properties } from '../../..';
+import Loans from '../../loans';
+import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
 
 let loanId;
@@ -17,6 +18,8 @@ describe('LoanService', () => {
 
   describe('disableUserForms', () => {
     it('disables user forms', () => {
+      console.log('testing');
+
       loanId = Factory.create('loan')._id;
       loan = LoanService.getLoanById(loanId);
       LoanService.disableUserForms({ loanId });

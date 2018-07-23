@@ -33,7 +33,6 @@ const limitEventOncePerSession = (event, params) => {
   const localEventId = `epotek-tracking.${eventName}`;
 
   const hasAlreadyRunOnce = !!sessionStorage.getItem(localEventId);
-  console.log('hasAlreadyRunOnce', hasAlreadyRunOnce);
   if (hasAlreadyRunOnce) {
     return true;
   }

@@ -1,49 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
 
-import StubCollections from 'meteor/hwillson:stub-collections';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-import getMountedComponent from './getMountedComponent';
-
-// This has to be imported here for client side tests to use factories
-// Because each test using factories also uses stubCollections
-import '../../api/factories';
-
-import { Loans, Borrowers, Properties, Offers, Tasks, Users } from '../../api';
-
-/**
- * Unknown - Resets the component, to be called in beforeEach hooks
- *
- * @return {type} undefined
- */
-getMountedComponent.reset = (useStubs = true) => {
-  getMountedComponent.mountedComponent = undefined;
-  if (useStubs) {
-    StubCollections.restore();
-    StubCollections.stub([Loans, Borrowers, Offers, Meteor.users]);
-  }
-};
-
-export { getMountedComponent };
-
-/**
- * stubCollections - Stubs collections, for tests using Factory package
- * on the client, no frills attached
- *
- * @return {type} undefined
- */
-export const stubCollections = () => {
-  StubCollections.stub([
-    Meteor.users,
-    Loans,
-    Borrowers,
-    Offers,
-    Properties,
-    Tasks,
-  ]);
-};
+import { Users } from '../../api';
+import './setupTests';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id
@@ -52,7 +11,7 @@ export const stubCollections = () => {
  *
  * @return {string} the generated login token
  */
-export const createLoginToken = userId => {
+export const createLoginToken = (userId) => {
   const loginToken = Random.id();
   const hashedToken = Accounts._hashLoginToken(loginToken);
 
@@ -92,24 +51,3 @@ export const createEmailVerificationToken = (userId, email) => {
 
   return token;
 };
-
-stubCollections.restore = StubCollections.restore;
-
-if (Meteor.isTest) {
-  // This is some test initialization, stubbing all the collections here,
-  // avoids all timeouts coming later due to us using this function.
-  console.log('Initializing Tests...');
-  resetDatabase();
-  StubCollections.add([
-    Meteor.users,
-    Loans,
-    Borrowers,
-    Offers,
-    Properties,
-    Tasks,
-  ]);
-  StubCollections.stub(); // This part is critical, need to stub once beforeAll
-  stubCollections.restore();
-
-  console.log('Ready to roll');
-}

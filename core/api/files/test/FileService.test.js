@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
-import { stubCollections } from 'core/utils/testHelpers';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import FileService from '../FileService';
@@ -12,7 +11,6 @@ describe('FileService', () => {
 
     beforeEach(() => {
       resetDatabase();
-      stubCollections();
       docId = Factory.create('loan')._id;
     });
 

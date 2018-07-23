@@ -1,4 +1,5 @@
-import { Loans, Properties, Borrowers, Users, Tasks, Offers } from '../';
+import Loans from './loans';
+import { Properties, Borrowers, Users, Tasks, Offers } from '../';
 
 Loans.addLinks({
   property: {

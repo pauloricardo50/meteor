@@ -5,7 +5,6 @@ import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { stubCollections } from '../../../../utils/testHelpers/testHelpers';
 import { ROLES } from '../../../constants';
 import { SECURITY_ERROR } from '../../Security';
 import UserSecurity from '../UserSecurity';
@@ -13,11 +12,6 @@ import UserSecurity from '../UserSecurity';
 describe('UserSecurity', () => {
   beforeEach(() => {
     resetDatabase();
-    stubCollections();
-  });
-
-  afterEach(() => {
-    stubCollections.restore();
   });
 
   describe('isAllowedToInsertByRole', () => {

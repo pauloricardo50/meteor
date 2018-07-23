@@ -118,19 +118,22 @@ jobs:
           name: create results directories
           command: mkdir ./results ./e2e-results
       - run:
-          name: run end-to-end tests for Admin
-          command: |
-            cd microservices/admin
-            meteor npm run test-e2e-CI
-      - run:
           name: run end-to-end tests for App
           command: |
             cd microservices/app
+            meteor npm i -g start-server-and-test            
+            meteor npm run test-e2e-CI
+      - run:
+          name: run end-to-end tests for Admin
+          command: |
+            cd microservices/admin
+            meteor npm i -g start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run end-to-end tests for Www
           command: |
             cd microservices/www
+            meteor npm i -g start-server-and-test
             meteor npm run test-e2e-CI
       - run:
           name: run tests for App
@@ -141,13 +144,13 @@ jobs:
             meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
             meteor npm run test-CI
       - run:
-          name: run tests for admin
+          name: run tests for Admin
           command: |
             cd microservices/admin
             meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
             meteor npm run test-CI      
       - run:
-          name: run tests for www
+          name: run tests for Www
           command: |
             cd microservices/www
             meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save

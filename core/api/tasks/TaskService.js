@@ -92,8 +92,8 @@ class TaskService {
 
   getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
     if (loanId) {
-      const loans = loanAssignedToQuery.clone({ loanId }).fetchOne();
-      return loans.user.assignedEmployeeId;
+      const loan = loanAssignedToQuery.clone({ loanId }).fetchOne();
+      return loan.user.assignedEmployeeId;
     }
     if (borrowerId) {
       const borrowers = borrowerAssignedToQuery

@@ -2,7 +2,6 @@
 import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { stubCollections } from 'core/utils/testHelpers';
 
 const factories = [
   'user',
@@ -20,15 +19,7 @@ describe('Factories', () => {
   });
 
   describe('with stubbed collections', () => {
-    beforeEach(() => {
-      stubCollections();
-    });
-
-    afterEach(() => {
-      stubCollections.restore();
-    });
-
-    factories.forEach(fact => {
+    factories.forEach((fact) => {
       it(`${fact} builds correctly`, () => {
         const result = Factory.create(fact, {
           userId: 'testId',
@@ -42,11 +33,7 @@ describe('Factories', () => {
   });
 
   describe('without stubbed collections', () => {
-    beforeEach(() => {
-      stubCollections.restore();
-    });
-
-    factories.forEach(fact => {
+    factories.forEach((fact) => {
       it(`${fact} builds correctly`, () => {
         const result = Factory.create(fact, {
           userId: 'testId',
