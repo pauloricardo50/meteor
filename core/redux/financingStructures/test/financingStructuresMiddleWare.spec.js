@@ -39,21 +39,19 @@ describe('financingStructuresMiddleware', () => {
       actionHandler(actionObj);
     });
 
-    it('does not let REHYDRATE_LOAN pass through', (done) => {
+    it('does not let REHYDRATE_LOAN pass through', () => {
       const actionObj = {
         type: REHYDRATE_LOAN,
         payload: { loan: { structures: [], borrowers: [], properties: [] } },
       };
 
-      const actionHandler = nextHandler((result) => {
-        expect(result).to.equal(undefined);
-        done();
-      });
+      const actionHandler = nextHandler(action => action);
+      const actionHandlerReturn = actionHandler(actionObj);
 
-      actionHandler(actionObj);
+      expect(actionHandlerReturn).to.equal(undefined);
     });
 
-    it('dispatches 4 correct REHYDRATE_DATA actions', (done) => {
+    it('dispatches 4 correct REHYDRATE_DATA actions', () => {
       const actionObj = {
         type: REHYDRATE_LOAN,
         payload: {
@@ -65,34 +63,33 @@ describe('financingStructuresMiddleware', () => {
         },
       };
 
-      const actionHandler = nextHandler((result) => {
-        expect(result).to.equal(undefined);
-        expect(doDispatch.callCount).to.equal(4);
-        const spyCalls = doDispatch.getCalls();
+      const actionHandler = nextHandler(action => action);
+      const actionHandlerReturn = actionHandler(actionObj);
 
-        expect(spyCalls[0].args[0]).to.deep.equal({
-          type: 'REHYDRATE_DATA',
-          payload: { dataName: 'loan', data: actionObj.payload.loan },
-        });
-        expect(spyCalls[1].args[0]).to.deep.equal({
-          type: 'REHYDRATE_DATA',
-          payload: { dataName: 'structures', data: { 1: { id: 1 } } },
-        });
-        expect(spyCalls[2].args[0]).to.deep.equal({
-          type: 'REHYDRATE_DATA',
-          payload: { dataName: 'borrowers', data: { 2: { id: 2 } } },
-        });
-        expect(spyCalls[3].args[0]).to.deep.equal({
-          type: 'REHYDRATE_DATA',
-          payload: {
-            dataName: 'property',
-            data: { id: 3 },
-          },
-        });
-        done();
+      expect(actionHandlerReturn).to.equal(undefined);
+
+      expect(doDispatch.callCount).to.equal(4);
+      const spyCalls = doDispatch.getCalls();
+
+      expect(spyCalls[0].args[0]).to.deep.equal({
+        type: 'REHYDRATE_DATA',
+        payload: { dataName: 'loan', data: actionObj.payload.loan },
       });
-
-      actionHandler(actionObj);
+      expect(spyCalls[1].args[0]).to.deep.equal({
+        type: 'REHYDRATE_DATA',
+        payload: { dataName: 'structures', data: { 1: { id: 1 } } },
+      });
+      expect(spyCalls[2].args[0]).to.deep.equal({
+        type: 'REHYDRATE_DATA',
+        payload: { dataName: 'borrowers', data: { 2: { id: 2 } } },
+      });
+      expect(spyCalls[3].args[0]).to.deep.equal({
+        type: 'REHYDRATE_DATA',
+        payload: {
+          dataName: 'property',
+          data: { id: 3 },
+        },
+      });
     });
   });
 

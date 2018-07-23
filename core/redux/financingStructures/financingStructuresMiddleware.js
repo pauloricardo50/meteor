@@ -41,7 +41,7 @@ export const rehydrateMiddleware = ({ dispatch, getState }) => next => (
     // }
     dispatch(rehydrateData(normalize(loan.borrowers), 'borrowers'));
     dispatch(rehydrateData(loan.property, 'property'));
-    return next();
+    return;
   }
   return next(action);
 };
