@@ -13,7 +13,7 @@ import { REHYDRATE_LOAN, UPDATE_STRUCTURE } from '../financingStructuresTypes';
 describe('financingStructuresMiddleware', () => {
   describe('rehydrateMiddleware', () => {
     const doDispatch = sinon.spy();
-    const doGetState = () => {};
+    const doGetState = () => ({ financingStructures: {} });
     const nextHandler = rehydrateMiddleware({
       dispatch: doDispatch,
       getState: doGetState,
@@ -60,7 +60,7 @@ describe('financingStructuresMiddleware', () => {
           loan: {
             structures: [{ id: 1 }],
             borrowers: [{ id: 2 }],
-            properties: [{ id: 3 }, { id: 4 }],
+            property: { id: 3 },
           },
         },
       };
@@ -85,8 +85,8 @@ describe('financingStructuresMiddleware', () => {
         expect(spyCalls[3].args[0]).to.deep.equal({
           type: 'REHYDRATE_DATA',
           payload: {
-            dataName: 'properties',
-            data: { 3: { id: 3 }, 4: { id: 4 } },
+            dataName: 'property',
+            data: { id: 3 },
           },
         });
         done();

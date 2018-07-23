@@ -13,6 +13,7 @@ describe('financingStructuresReducer', () => {
       };
       expect(financingStructuresReducer(null, action)).to.deep.equal({
         hello: 'world',
+        isLoaded: true,
       });
     });
 
@@ -24,6 +25,7 @@ describe('financingStructuresReducer', () => {
       };
       expect(financingStructuresReducer(state, action)).to.deep.equal({
         hello: 'world',
+        isLoaded: true,
       });
     });
   });
