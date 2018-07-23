@@ -6,13 +6,13 @@ const employees = [
     title: 'Conseillère en financement',
     phone: '+41 22 566 82 92',
   },
-  {
-    email: 'lydia@e-potek.ch',
-    src: '/img/team/lydia.jpg',
-    name: 'Lydia Abraha',
-    title: 'Conseillère en financement',
-    phone: '+41 22 566 82 95',
-  },
+  // {
+  //   email: 'joel@e-potek.ch',
+  //   src: '/img/team/joel.jpg',
+  //   name: 'Joel Xavier Santos',
+  //   title: 'Conseiller en financement',
+  //   phone: '+41 22 566 82 95',
+  // },
   {
     email: 'florian@e-potek.ch',
     src: '/img/team/florian.jpg',
