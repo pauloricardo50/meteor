@@ -4,7 +4,7 @@ import {
   AMORTIZATION_STRATEGY_PRESET,
   INSURANCE_USE_PRESET,
 } from '../loanConstants';
-import { loanTranchesSchema } from './GeneralSchema';
+import { loanTranchesSchema } from './otherSchemas';
 
 const StructureSchema = new SimpleSchema({
   id: String,

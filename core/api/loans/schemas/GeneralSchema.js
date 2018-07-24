@@ -2,37 +2,13 @@
 import SimpleSchema from 'simpl-schema';
 import {
   PURCHASE_TYPE,
-  INTEREST_RATES,
   OWNER,
   CANTONS,
   AUCTION_MOST_IMPORTANT,
   GENDER,
   USAGE_TYPE,
 } from '../../constants';
-
-export const loanTranchesSchema = {
-  loanTranches: {
-    type: Array,
-    defaultValue: [],
-  },
-  'loanTranches.$': Object,
-  'loanTranches.$.type': {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(INTEREST_RATES),
-  },
-  'loanTranches.$.value': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-};
-
-export type loanTranchesType = Array<{
-  type: string,
-  value: number,
-}>;
+import { loanTranchesSchema } from './otherSchemas';
 
 const GeneralSchema = new SimpleSchema({
   purchaseType: {
