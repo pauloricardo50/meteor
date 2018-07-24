@@ -24,20 +24,26 @@ export class FinanceCalculator {
     notaryFees = 0,
     amortizationBaseRate = 0,
     amortizationGoal = 0,
+    middlewares = [],
+    middlewareObject,
   }: {
     notaryFees?: number,
     amortizationBaseRate?: number,
     amortizationGoal?: number,
+    middlewares?: Array<Function>,
   } = {}) {
     this.notaryFees = notaryFees;
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
-    this.setRoundValuesMiddleware();
+    this.setRoundValuesMiddleware(middlewares, middlewareObject);
   }
 
-  setRoundValuesMiddleware = () => {
-    const middlewareManager = new MiddlewareManager(this);
-    middlewareManager.applyToAllMethods(precisionMiddleware);
+  setRoundValuesMiddleware = (
+    middlewares?: Array<Function>,
+    middlewareObject,
+  ) => {
+    const middlewareManager = new MiddlewareManager(this, middlewareObject);
+    middlewareManager.applyToAllMethods([precisionMiddleware, ...middlewares]);
   };
 
   getLoanValue({
