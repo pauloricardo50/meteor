@@ -2,7 +2,9 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { FinanceCalculator } from '../FinanceCalculator';
+import DefaultFinanceCalculator, {
+  FinanceCalculator,
+} from '../FinanceCalculator';
 import { NO_INTEREST_RATE_ERROR } from '../financeCalculatorConstants';
 
 describe('FinanceCalculator', () => {
@@ -139,6 +141,18 @@ describe('FinanceCalculator', () => {
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
+      expect(calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 })).to.equal(0.0125);
+    });
+  });
+
+  describe('DefaultFinanceCalculator', () => {
+    beforeEach(() => {
+      calc = DefaultFinanceCalculator;
+    });
+
+    it('has default initialization settings', () => {
+      expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(80);
+      expect(calc.getAmortizationRate({ borrowRatio: 0.8 })).to.equal(0.01);
       expect(calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
   });

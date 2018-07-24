@@ -21,9 +21,9 @@ export class FinanceCalculator {
   amortizationGoal: number;
 
   init({
-    notaryFees = 0,
-    amortizationBaseRate = 0,
-    amortizationGoal = 0,
+    notaryFees = NOTARY_FEES,
+    amortizationBaseRate = DEFAULT_AMORTIZATION,
+    amortizationGoal = AMORTIZATION_STOP,
     middlewares = [],
     middlewareObject,
   }: {
@@ -168,8 +168,4 @@ export class FinanceCalculator {
   }
 }
 
-export default new FinanceCalculator({
-  amortizationGoal: AMORTIZATION_STOP,
-  notaryFees: NOTARY_FEES,
-  amortizationBaseRate: DEFAULT_AMORTIZATION,
-});
+export default new FinanceCalculator();
