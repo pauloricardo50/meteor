@@ -94,5 +94,14 @@ describe('MiddlewareManager', () => {
         expect(calc.divide(4, 4)).to.equal(1.25);
       });
     });
+
+    it('works with multiple middleware managers', () => {
+      middlewareManager.applyToMethod('multiply', [addingMiddleware]);
+
+      const middlewareManager2 = new MiddlewareManager(calc);
+      middlewareManager2.applyToMethod('multiply', [subtractingMiddleware]);
+
+      expect(calc.multiply(2, 3)).to.equal(6);
+    });
   });
 });
