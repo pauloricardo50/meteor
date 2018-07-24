@@ -1,5 +1,9 @@
 {
-  "LoanTAbs.structures": "Structures",
+  "FinancingStructuresResult.title": "Résultat",
+  "FinancingStructuresResult.fiscalTitle": "Incidences fiscales",
+  "FinancingStructuresResult.future": "Situation future",
+
+  "LoanTabs.structures": "Structures",
 
   "general.settings": "Réglages",
 

@@ -1,1 +1,2 @@
-export { default } from './FinanceCalculator';
+// @flow
+export { default, FinanceCalculator } from './FinanceCalculator';

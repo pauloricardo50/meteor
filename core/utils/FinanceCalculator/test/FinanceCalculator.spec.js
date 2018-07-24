@@ -16,12 +16,12 @@ describe('FinanceCalculator', () => {
 
   describe('getLoanValue', () => {
     it('returns the difference between property and fortune without fees', () => {
-      expect(calc.getLoanValue({ propertyValue: 100, fortune: 20 })).to.equal(80);
+      expect(calc.getLoanValue({ propertyValue: 100, fortune: 20 })).to.equal(85);
     });
 
     it('uses fortune to pay for fees', () => {
-      calc = new FinanceCalculator({ notaryFees: 0.05 });
-      expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(80);
+      calc = new FinanceCalculator({ notaryFees: 0.1 });
+      expect(calc.getLoanValue({ propertyValue: 100, fortune: 30 })).to.equal(80);
     });
   });
 
@@ -37,7 +37,7 @@ describe('FinanceCalculator', () => {
 
   describe('getBorrowRatioWithoutLoan', () => {
     it('returns a percentage borrowRatio', () => {
-      expect(calc.getBorrowRatioWithoutLoan({ propertyValue: 100, fortune: 20 })).to.equal(0.8);
+      expect(calc.getBorrowRatioWithoutLoan({ propertyValue: 100, fortune: 25 })).to.equal(0.8);
     });
   });
 
