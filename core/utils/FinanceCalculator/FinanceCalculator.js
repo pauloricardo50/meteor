@@ -1,6 +1,8 @@
 // @flow
 import { GENDER } from '../../api/constants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
+import MiddlewareManager from '../MiddlewareManager';
+import { precisionMiddleware } from './financeCalculatorMiddlewares';
 
 export class FinanceCalculator {
   constructor(settings?: Object) {
@@ -25,46 +27,56 @@ export class FinanceCalculator {
     this.notaryFees = notaryFees;
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
+    this.setRoundValuesMiddleware();
   }
 
-  getLoanValue = ({
+  setRoundValuesMiddleware = () => {
+    const middlewareManager = new MiddlewareManager(this);
+    middlewareManager.applyToAllMethods(precisionMiddleware);
+  };
+
+  getLoanValue({
     propertyValue,
     fortune,
   }: {
     propertyValue: number,
     fortune: number,
-  }) => propertyValue * (1 + this.notaryFees) - fortune;
+  }) {
+    return propertyValue * (1 + this.notaryFees) - fortune;
+  }
 
-  getBorrowRatio = ({
+  getBorrowRatio({
     propertyValue,
     loan = 0,
   }: {
     propertyValue: number,
     loan: number,
-  }) => loan / propertyValue;
+  }) {
+    return loan / propertyValue;
+  }
 
-  getBorrowRatioWithoutLoan = ({
+  getBorrowRatioWithoutLoan({
     propertyValue,
     fortune,
   }: {
     propertyValue: number,
     fortune: number,
-  }) => this.getBorrowRatio({
-    propertyValue,
-    loan: this.getLoanValue({ propertyValue, fortune }),
-  });
+  }) {
+    return this.getBorrowRatio({
+      propertyValue,
+      loan: this.getLoanValue({ propertyValue, fortune }),
+    });
+  }
 
-  getRetirementForGender = ({ gender = GENDER.M }: { gender?: string } = {}) => (gender === GENDER.F ? 64 : 65);
+  getRetirementForGender({ gender = GENDER.M }: { gender?: string } = {}) {
+    return gender === GENDER.F ? 64 : 65;
+  }
 
-  getIncomeRatio = ({
-    income,
-    payment = 0,
-  }: {
-    income: number,
-    payment: number,
-  }) => payment / income;
+  getIncomeRatio({ income, payment = 0 }: { income: number, payment: number }) {
+    return payment / income;
+  }
 
-  getLoanCost = ({
+  getLoanCost({
     maintenance = 0,
     interests = 0,
     amortization = 0,
@@ -72,9 +84,11 @@ export class FinanceCalculator {
     maintenance?: number,
     interests?: number,
     amortization?: number,
-  } = {}) => maintenance + interests + amortization;
+  } = {}) {
+    return maintenance + interests + amortization;
+  }
 
-  getLoanCostWithParts = ({
+  getLoanCostWithParts({
     maintenance,
     interests,
     amortization,
@@ -82,14 +96,16 @@ export class FinanceCalculator {
     maintenance: number,
     interests: number,
     amortization?: number,
-  }) => ({
-    maintenance,
-    interests,
-    amortization,
-    total: this.getLoanCost({ maintenance, interests, amortization }),
-  });
+  }) {
+    return {
+      maintenance,
+      interests,
+      amortization,
+      total: this.getLoanCost({ maintenance, interests, amortization }),
+    };
+  }
 
-  getInterests = ({
+  getInterests({
     tranches,
     interestRates,
   }: {
@@ -98,17 +114,19 @@ export class FinanceCalculator {
     } = {
     tranches: [],
     interestRates: {},
-  }) => tranches.reduce((acc, { type, value }) => {
-    const rate = interestRates[type];
+  }) {
+    return tranches.reduce((acc, { type, value }) => {
+      const rate = interestRates[type];
 
-    if (!rate) {
-      throw new Error(NO_INTEREST_RATE_ERROR, type);
-    }
+      if (!rate) {
+        throw new Error(NO_INTEREST_RATE_ERROR, type);
+      }
 
-    return acc + value * rate;
-  }, 0);
+      return acc + value * rate;
+    }, 0);
+  }
 
-  getAmortizationRate = ({ borrowRatio, amortizationYears = 15 }) => {
+  getAmortizationRate({ borrowRatio, amortizationYears = 15 }) {
     let amortizationRate = 0;
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
@@ -127,9 +145,9 @@ export class FinanceCalculator {
     }
 
     return amortizationRate;
-  };
+  }
 
-  getAmortization = () => {};
+  getAmortization() {}
 }
 
 export default new FinanceCalculator();

@@ -99,7 +99,7 @@ describe('FinanceCalculator', () => {
   });
 
   describe('getAmortizationRate', () => {
-    it('returns the amortization base rate for an 80% loan', () => {
+    it('returns the amortization base rate for an 80% loan with proper precision', () => {
       calc = new FinanceCalculator({
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,

@@ -21,7 +21,7 @@ type MiddlewareType = Array<Function> | Function;
 type MiddlewareObjectType = Array<Object> | Object;
 
 class MiddlewareManager {
-  constructor(target: Object, middlewareObjects: MiddlewareObjectType) {
+  constructor(target: Object, middlewareObjects?: MiddlewareObjectType) {
     let instance = middlewareManagerHash.find(key => key._target === target);
     // a target can only has one MiddlewareManager instance
     if (instance === undefined) {
