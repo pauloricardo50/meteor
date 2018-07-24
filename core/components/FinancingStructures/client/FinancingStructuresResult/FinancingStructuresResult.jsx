@@ -6,6 +6,7 @@ import FinanceCalculator from '../FinancingStructuresCalculator';
 import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
+import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 
 type FinancingStructuresResultProps = {};
 
@@ -29,8 +30,9 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
             <T id="FinancingStructuresResult.title" />
           </h3>
         ),
-        Component: CalculatedValue,
-        value: getMonthly,
+        Component: FinancingStructuresResultChart,
+        getAmortization,
+        getInterests,
       },
     ]}
     detailConfig={[
@@ -40,7 +42,7 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
         value: getAmortization,
       },
       { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
-      { id: 'otherCosts', Component: CalculatedValue, value: returnZero },
+      // { id: 'otherCosts', Component: CalculatedValue, value: returnZero },
       {
         id: 'fiscal',
         label: (

@@ -7,6 +7,7 @@ import FinancingStructuresSection, {
   CalculatedValue,
   RadioButtons,
 } from '../FinancingStructuresSection';
+import T from '../../../Translation';
 
 const calculateLoan = ({ structure: { wantedLoan } }) => wantedLoan;
 
@@ -17,14 +18,17 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
     summaryConfig={[
       {
         id: 'mortgageLoan',
-        label: <h3 className="section-title">Prêt hypothécaire</h3>,
+        label: (
+          <h3 className="section-title">
+            <T id="general.mortgageLoan" />
+          </h3>
+        ),
         Component: CalculatedValue,
         value: calculateLoan,
       },
     ]}
     detailConfig={[
       { Component: InputAndSlider, id: 'wantedLoan' },
-      { Component: InputAndSlider, id: 'amortization' },
       {
         Component: RadioButtons,
         id: 'amortizationType',

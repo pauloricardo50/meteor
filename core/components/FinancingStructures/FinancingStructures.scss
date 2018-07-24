@@ -13,6 +13,11 @@ $card1_padding: 24px;
       margin-bottom: 8px;
     }
   }
+
+  .calculated-value {
+    // Match Mui-Input font-size roughly
+    font-size: 1.142rem;
+  }
 }
 
 .structure {
@@ -112,5 +117,17 @@ $card1_padding: 24px;
   .label {
     display: flex;
     align-items: center;
+  }
+}
+
+.financing-structures-result-chart {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+
+  .total {
+    font-size: 30px;
   }
 }

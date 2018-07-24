@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
+
 export const makeRenderSummary = configArray => ({ id: structureId }) => configArray.map(({ Component, id, ...props }) => (Component ? (
   <Component
     key={id}
