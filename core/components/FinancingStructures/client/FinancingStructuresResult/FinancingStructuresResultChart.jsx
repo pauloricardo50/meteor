@@ -20,6 +20,7 @@ const FinancingStructuresResultChart = ({
           { value: amortization, id: 'amortization' },
           { value: interests, id: 'interests' },
         ]}
+        intlPrefix="general"
         config={{
           chart: {
             width: 100,

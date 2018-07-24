@@ -36,6 +36,9 @@ const styles = {
   },
   content: {
     margin: 0,
+    '& > :last-child': {
+      paddingRight: 0,
+    },
     '&$expanded': {
       margin: 0,
     },
