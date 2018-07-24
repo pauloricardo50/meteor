@@ -1,16 +1,27 @@
 // @flow
 import { compose } from 'recompose';
 import isArray from 'lodash/isArray';
+import difference from 'lodash/difference';
 
 const middlewareManagerHash = [];
+const CLASS_METHODS_TO_EXCLUDE = [
+  'hasOwnProperty',
+  'isPrototypeOf',
+  'propertyIsEnumerable',
+  'toString',
+  'valueOf',
+  'toLocaleString',
+  '__defineGetter__',
+  '__defineSetter__',
+  '__lookupGetter__',
+  '__lookupSetter__',
+];
+
+type MiddlewareType = Array<Function> | Function;
+type MiddlewareObjectType = Array<Object> | Object;
 
 class MiddlewareManager {
-  /**
-   * @param {object} target The target object.
-   * @param {...object} middlewareObjects Middleware objects.
-   * @return {object} this
-   */
-  constructor(target: Object, middlewareObjects) {
+  constructor(target: Object, middlewareObjects: MiddlewareObjectType) {
     let instance = middlewareManagerHash.find(key => key._target === target);
     // a target can only has one MiddlewareManager instance
     if (instance === undefined) {
@@ -28,38 +39,65 @@ class MiddlewareManager {
     return instance;
   }
 
-  applyToMethod(methodName, _middlewares) {
+  applyToAllMethods(_middlewares: MiddlewareType) {
+    const middlewares = this.arrayify(_middlewares);
+    const methods = this.getAllMethodNames(this._target);
+
+    methods.forEach(method => this.applyToMethod(method, middlewares));
+
+    return this;
+  }
+
+  getAllMethodNames(obj: Object, stop: mixed) {
+    const methodNames = [];
+    let proto = Object.getPrototypeOf(obj);
+    while (proto && proto !== stop) {
+      Object.getOwnPropertyNames(proto).forEach((name) => {
+        if (name !== 'constructor') {
+          if (this.hasMethod(proto, name)) {
+            methodNames.push(name);
+          }
+        }
+      });
+      proto = Object.getPrototypeOf(proto);
+    }
+    return difference(methodNames, CLASS_METHODS_TO_EXCLUDE);
+  }
+
+  hasMethod(obj: Object, name: string) {
+    const desc = Object.getOwnPropertyDescriptor(obj, name);
+    return !!desc && typeof desc.value === 'function';
+  }
+
+  applyToMethod(methodName: string, _middlewares: MiddlewareType) {
     const middlewares = this.arrayify(_middlewares);
 
-    if (typeof methodName === 'string' && !/^_+|_+$/g.test(methodName)) {
+    if (
+      typeof methodName === 'string'
+      && !this.stringStartsWithUnderscore(methodName)
+    ) {
       const method = this._methods[methodName] || this._target[methodName];
       if (typeof method === 'function') {
         this._methods[methodName] = method;
+
         if (this._methodMiddlewares[methodName] === undefined) {
           this._methodMiddlewares[methodName] = [];
         }
+
         middlewares.forEach(middleware => typeof middleware === 'function'
             && this._methodMiddlewares[methodName].push(middleware(this._target)));
         this._target[methodName] = compose(...this._methodMiddlewares[methodName])(method.bind(this._target));
       }
     }
-  }
-
-  /**
-   * Apply (register) middleware functions to the target function or apply (register) middleware objects.
-   * If the first argument is a middleware object, the rest arguments must be middleware objects.
-   *
-   * @param {string|object} methodName String for target function name, object for a middleware object.
-   * @param {...function|...object} middlewares The middleware chain to be applied.
-   * @return {object} this
-   */
-  use(methodName, middlewares) {
-    this.applyToMethod(methodName, middlewares);
 
     return this;
   }
 
-  useObjectMiddleware(_objectMiddlewares) {
+  stringStartsWithUnderscore(string: string) {
+    return /^_+|_+$/g.test(string);
+  }
+
+  useObjectMiddleware(_objectMiddlewares: MiddlewareObjectType) {
     const objectMiddlewares = this.arrayify(_objectMiddlewares);
 
     Array.prototype.slice.call(objectMiddlewares).forEach((arg) => {
@@ -72,9 +110,11 @@ class MiddlewareManager {
             && this.applyToMethod(key, arg[key].bind(arg));
         });
     });
+
+    return this;
   }
 
-  arrayify(maybeArray) {
+  arrayify(maybeArray: mixed | Array): Array<Object | Function> {
     return isArray(maybeArray) ? maybeArray : [maybeArray];
   }
 }
