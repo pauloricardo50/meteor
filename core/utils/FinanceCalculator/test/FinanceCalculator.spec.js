@@ -78,20 +78,20 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getInterests', () => {
+  describe('getInterestsWithTranches', () => {
     it('aggregates interest rates with loan tranches', () => {
-      expect(calc.getInterests({
+      expect(calc.getInterestsWithTranches({
         tranches: [{ value: 0.5, type: 'a' }, { value: 0.5, type: 'b' }],
         interestRates: { a: 0.01, b: 0.02 },
       })).to.equal(0.5 * 0.01 + 0.5 * 0.02);
     });
 
     it('returns zero if nothing is provided', () => {
-      expect(calc.getInterests()).to.equal(0);
+      expect(calc.getInterestsWithTranches()).to.equal(0);
     });
 
     it('throws if an interest rate is not present', () => {
-      expect(() => calc.getInterests({
+      expect(() => calc.getInterestsWithTranches({
         tranches: [{ value: 0.5, type: 'a' }],
         interestRates: { b: 0.02 },
       })).to.throw(NO_INTEREST_RATE_ERROR);
@@ -105,6 +105,41 @@ describe('FinanceCalculator', () => {
         amortizationGoal: 0.65,
       });
       expect(calc.getAmortizationRate({ borrowRatio: 0.8 })).to.equal(0.01);
+    });
+
+    it('returns zero if already below the amortizationGoal', () => {
+      calc = new FinanceCalculator({
+        amortizationBaseRate: 0.01,
+        amortizationGoal: 0.65,
+      });
+      expect(calc.getAmortizationRate({ borrowRatio: 0.64 })).to.equal(0);
+    });
+
+    it('returns zero if already exactly at the amortizationGoal', () => {
+      calc = new FinanceCalculator({
+        amortizationBaseRate: 0.01,
+        amortizationGoal: 0.65,
+      });
+      expect(calc.getAmortizationRate({ borrowRatio: 0.65 })).to.equal(0);
+    });
+
+    it('returns zero if nothing is provided', () => {
+      calc = new FinanceCalculator({
+        amortizationBaseRate: 0.01,
+        amortizationGoal: 0.65,
+      });
+      expect(calc.getAmortizationRate()).to.equal(0);
+      expect(calc.getAmortizationRate({})).to.equal(0);
+    });
+  });
+
+  describe('getAmortizationRateRelativeToLoan', () => {
+    it('returns amortization, but relative to the borrowRatio', () => {
+      calc = new FinanceCalculator({
+        amortizationBaseRate: 0.01,
+        amortizationGoal: 0.65,
+      });
+      expect(calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
   });
 });

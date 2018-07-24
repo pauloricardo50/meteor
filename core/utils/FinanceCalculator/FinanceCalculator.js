@@ -1,5 +1,10 @@
 // @flow
 import { GENDER } from '../../api/constants';
+import {
+  NOTARY_FEES,
+  AMORTIZATION_STOP,
+  DEFAULT_AMORTIZATION,
+} from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
@@ -105,7 +110,7 @@ export class FinanceCalculator {
     };
   }
 
-  getInterests({
+  getInterestsWithTranches({
     tranches,
     interestRates,
   }: {
@@ -126,7 +131,10 @@ export class FinanceCalculator {
     }, 0);
   }
 
-  getAmortizationRate({ borrowRatio, amortizationYears = 15 }) {
+  getAmortizationRate({
+    borrowRatio,
+    amortizationYears = 15,
+  }: { borrowRatio: number, amortizationRate?: number } = {}) {
     let amortizationRate = 0;
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
@@ -147,7 +155,15 @@ export class FinanceCalculator {
     return amortizationRate;
   }
 
-  getAmortization() {}
+  getAmortizationRateRelativeToLoan({ borrowRatio, amortizationYears }) {
+    return (
+      this.getAmortizationRate({ borrowRatio, amortizationYears }) / borrowRatio
+    );
+  }
 }
 
-export default new FinanceCalculator();
+export default new FinanceCalculator({
+  amortizationGoal: AMORTIZATION_STOP,
+  notaryFees: NOTARY_FEES,
+  amortizationBaseRate: DEFAULT_AMORTIZATION,
+});
