@@ -1,3 +1,4 @@
+// @flow
 export * from './borrowers/borrowerConstants';
 export * from './loans/loanConstants';
 export * from './offers/offerConstants';
