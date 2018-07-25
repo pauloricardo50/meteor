@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import T from 'core/components/Translation';
 import { INSURANCE_USE_PRESET } from '../../../../api/constants';
 import FinancingStructuresSection, {
   InputAndSlider,
@@ -11,31 +12,39 @@ import FinancingStructuresSection, {
 type FinancingStructuresOwnFundsProps = {};
 
 const calculateOwnFunds = ({
-  structure: { fortuneUsed, secondPillarUsed, thirdPillarUsed },
-}) => fortuneUsed + secondPillarUsed + thirdPillarUsed;
+  structure: {
+    fortuneUsed,
+    secondPillarPledged,
+    secondPillarWithdrawal,
+    thirdPillarPledged,
+    thirdPillarWithdrawal,
+  },
+}) => fortuneUsed
+  + secondPillarPledged
+  + secondPillarWithdrawal
+  + thirdPillarPledged
+  + thirdPillarWithdrawal;
 
 const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) => (
   <FinancingStructuresSection
     summaryConfig={[
       {
         id: 'ownFunds',
-        label: <h3 className="section-title">Fonds Propres</h3>,
+        label: (
+          <h3 className="section-title">
+            <T id="FinancingStructuresOwnFunds.title" />
+          </h3>
+        ),
         Component: CalculatedValue,
         value: calculateOwnFunds,
       },
     ]}
     detailConfig={[
       { Component: InputAndSlider, id: 'fortuneUsed' },
-      { Component: InputAndSlider, id: 'secondPillarUsed' },
-      {
-        Component: RadioButtons,
-        id: 'secondPillarUsageType',
-        options: Object.values(INSURANCE_USE_PRESET).map(key => ({
-          id: key,
-          label: key,
-        })),
-      },
-      { Component: InputAndSlider, id: 'thirdPillarUsed' },
+      { Component: InputAndSlider, id: 'secondPillarPledged' },
+      { Component: InputAndSlider, id: 'secondPillarWithdrawal' },
+      { Component: InputAndSlider, id: 'thirdPillarPledged' },
+      { Component: InputAndSlider, id: 'thirdPillarWithdrawal' },
     ]}
   />
 );

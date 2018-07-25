@@ -1,7 +1,28 @@
 {
+  "FinancingStructures.propertyValue": "Prix d'achat",
+  "FinancingStructures.notaryFees": "Frais de notaire",
+  "FinancingStructures.propertyWork": "Travaux à plus-value",
+  "FinancingStructures.wantedLoan": "Prêt hypothécaire",
+  "FinancingStructures.fortuneUsed": "Cash et titres",
+  "FinancingStructures.secondPillarPledged": "2ème pillier - nantissement",
+  "FinancingStructures.secondPillarWithdrawal": "2ème pillier - retrait",
+  "FinancingStructures.thirdPillarPledged": "3ème pillier - nantissement",
+  "FinancingStructures.thirdPillarWithdrawal": "3ème pillier - retrait",
+  "FinancingStructures.amortizationType": "Type d'amortissement",
+  "FinancingStructures.amortizationCost": "Amortissement mensuel",
+  "FinancingStructures.interestsCost": "Intérêts mensuels",
+  "FinancingStructures.secondPillarWithdrawalTax":
+    "Frais de retrait 2ème Pilier",
+  "FinancingStructures.amortizationDeduction":
+    "Déductions amortissement indirect",
+  "FinancingStructures.totalFiscal": "Total",
+  "FinancingStructures.remainingCash": "Cash et titres restants",
+  "FinancingStructures.remainingSecondPillar": "2ème pilier restant",
+  "FinancingStructures.remainingThirdPillar": "3ème pilier restant",
   "FinancingStructuresResult.title": "Résultat",
   "FinancingStructuresResult.fiscalTitle": "Incidences fiscales",
   "FinancingStructuresResult.future": "Situation future",
+  "FinancingStructuresOwnFunds.title": "Fonds propres",
 
   "LoanTabs.structures": "Structures",
 

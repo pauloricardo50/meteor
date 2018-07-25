@@ -42,7 +42,6 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
         value: getAmortization,
       },
       { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
-      // { id: 'otherCosts', Component: CalculatedValue, value: returnZero },
       {
         id: 'fiscal',
         label: (
@@ -51,7 +50,11 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
           </h4>
         ),
       },
-      { id: 'secondPillarTax', Component: CalculatedValue, value: returnZero },
+      {
+        id: 'secondPillarWithdrawalTax',
+        Component: CalculatedValue,
+        value: returnZero,
+      },
       {
         id: 'amortizationDeduction',
         Component: CalculatedValue,

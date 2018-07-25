@@ -13,6 +13,7 @@
   padding: 16px;
   text-align: center;
   position: relative;
+  transition: color 200ms $bezier, background-color 200ms $bezier;
 
   &.selected {
     background-color: $primary;
@@ -30,7 +31,8 @@
 
   .financing-structures-header-actions {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 0;
+    right: 0;
+    padding: 0;
   }
 }
