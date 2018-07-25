@@ -44,7 +44,10 @@ const FinancingStructuresResultChart = ({
         title=""
       />
       <span className="total">
-        {`CHF ${toMoney(amortization + interests)}`}
+        <span className="chf">
+          {'CHF '}
+        </span>
+        {toMoney(amortization + interests)}
       </span>
     </div>
   );

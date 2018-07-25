@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import T from 'core/components/Translation';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
@@ -8,8 +9,7 @@ import FinancingStructuresSection, {
 
 type FinancingStructuresProjectProps = {};
 
-const calculateNotaryFees = ({ structure: { propertyValue } }) =>
-  propertyValue * 0.05;
+const calculateNotaryFees = ({ structure: { propertyValue } }) => propertyValue * 0.05;
 
 const calculateProjectValue = ({
   structure: { propertyValue, propertyWork },
@@ -20,7 +20,11 @@ const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
     summaryConfig={[
       {
         id: 'project',
-        label: <h3 className="section-title">Projet</h3>,
+        label: (
+          <span className="section-title">
+            <T id="FinancingStructuresProject.title" />
+          </span>
+        ),
         Component: CalculatedValue,
         value: calculateProjectValue,
       },

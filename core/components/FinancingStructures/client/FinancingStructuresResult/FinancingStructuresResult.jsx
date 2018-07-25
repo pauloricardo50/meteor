@@ -26,9 +26,9 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       {
         id: 'result',
         label: (
-          <h3 className="section-title">
+          <span className="section-title">
             <T id="FinancingStructuresResult.title" />
-          </h3>
+          </span>
         ),
         Component: FinancingStructuresResultChart,
         getAmortization,
@@ -49,6 +49,7 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
             <T id="FinancingStructuresResult.fiscalTitle" />
           </h4>
         ),
+        className: 'section-subtitle',
       },
       {
         id: 'secondPillarWithdrawalTax',
@@ -68,6 +69,7 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
             <T id="FinancingStructuresResult.future" />
           </h4>
         ),
+        className: 'section-subtitle',
       },
       { id: 'remainingCash', Component: CalculatedValue, value: returnZero },
       {

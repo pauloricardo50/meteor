@@ -19,11 +19,12 @@
   "FinancingStructures.remainingCash": "Cash et titres restants",
   "FinancingStructures.remainingSecondPillar": "2ème pilier restant",
   "FinancingStructures.remainingThirdPillar": "3ème pilier restant",
-  "FinancingStructuresResult.title": "Résultat",
+  "FinancingStructuresResult.title": "RÉSULTAT",
   "FinancingStructuresResult.fiscalTitle": "Incidences fiscales",
   "FinancingStructuresResult.future": "Situation future",
-  "FinancingStructuresOwnFunds.title": "Fonds propres",
-
+  "FinancingStructuresOwnFunds.title": "FONDS PROPRES",
+  "FinancingStructuresProject.title": "PROJET",
+  "FinancingStructuresFinancing.title": "PRÊT HYPOTHÉCAIRE",
   "LoanTabs.structures": "Structures",
 
   "general.settings": "Réglages",

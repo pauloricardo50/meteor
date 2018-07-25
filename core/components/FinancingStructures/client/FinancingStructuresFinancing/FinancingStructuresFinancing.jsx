@@ -19,9 +19,9 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       {
         id: 'mortgageLoan',
         label: (
-          <h3 className="section-title">
-            <T id="general.mortgageLoan" />
-          </h3>
+          <span className="section-title">
+            <T id="FinancingStructuresFinancing.title" />
+          </span>
         ),
         Component: CalculatedValue,
         value: calculateLoan,

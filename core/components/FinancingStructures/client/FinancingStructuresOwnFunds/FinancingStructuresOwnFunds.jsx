@@ -31,9 +31,9 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
       {
         id: 'ownFunds',
         label: (
-          <h3 className="section-title">
+          <span className="section-title">
             <T id="FinancingStructuresOwnFunds.title" />
-          </h3>
+          </span>
         ),
         Component: CalculatedValue,
         value: calculateOwnFunds,

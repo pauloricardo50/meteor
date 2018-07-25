@@ -21,7 +21,16 @@ const CalculatedValue = ({
 
   return (
     <div className={cx('calculated-value', className)}>
-      {money ? <span>CHF {toMoney(displayValue)}</span> : displayValue}
+      {money ? (
+        <span>
+          <span className="chf">
+            {'CHF '}
+          </span>
+          {toMoney(displayValue)}
+        </span>
+      ) : (
+        displayValue
+      )}
     </div>
   );
 };
