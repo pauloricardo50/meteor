@@ -72,7 +72,7 @@ const FinancingStructuresSection = ({
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
-              {renderSummary(structure, index)}
+              {renderSummary(structure, structures, index)}
             </div>
           ))}
         </ExpansionPanelSummary>
@@ -81,7 +81,9 @@ const FinancingStructuresSection = ({
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
-              <span className="card1">{renderDetail(structure, index)}</span>
+              <span className="card1">
+                {renderDetail(structure, structures, index)}
+              </span>
             </div>
           ))}
         </ExpansionPanelDetails>

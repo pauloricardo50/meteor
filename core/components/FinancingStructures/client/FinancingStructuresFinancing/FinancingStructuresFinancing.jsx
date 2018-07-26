@@ -20,6 +20,8 @@ const calculateLoan = (params) => {
   return wantedLoan + getPledgedAmount(params);
 };
 
+const oneStructureHasPledge = structures => structures.some(({ secondPillarPledged, thirdPillarPledged }) => secondPillarPledged || thirdPillarPledged);
+
 type FinancingStructuresFinancingProps = {};
 
 const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) => (
@@ -50,6 +52,7 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         id: 'pledgedIncrease',
         Component: CalculatedValue,
         value: getPledgedAmount,
+        condition: oneStructureHasPledge,
       },
     ]}
   />
