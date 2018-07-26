@@ -24,14 +24,15 @@ class WuestService {
     this.properties = [];
   }
 
-  getData = property => fetch(URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: `Bearer ${TOKEN}`,
-    },
-    body: JSON.stringify(property),
-  });
+  getData = property =>
+    fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${TOKEN}`,
+      },
+      body: JSON.stringify(property),
+    });
 
   addProperty(property) {
     let data;
@@ -235,13 +236,25 @@ class WuestService {
     return results;
   }
 
+  handleResult(result) {
+    return result.json().then((response) => {
+      if (response.errorCode) {
+        const errorMessage = response.message.replace(
+          "'{0}'",
+          response.validationErrors[0].message,
+        );
+        throw new Meteor.Error(errorMessage);
+      }
+      return response;
+    });
+  }
+
   evaluate(properties) {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
       return this.getData(property.property.JSONData)
-        .then(data => data.json())
-        .then(this.formatResult)
-        .catch(console.error);
+        .then(this.handleResult)
+        .then(this.formatResult);
     });
     return Promise.all(promises).then(this.cleanUpResults);
   }

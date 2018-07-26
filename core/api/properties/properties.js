@@ -271,15 +271,39 @@ export const PropertySchema = new SimpleSchema({
     blackbox: true,
     defaultValue: {},
   },
-  expertise: {
+  valuation: {
     type: Object,
     defaultValue: {},
   },
-  'expertise.status': {
+  'valuation.status': {
     type: String,
     defaultValue: EXPERTISE_STATUS.NONE,
     allowedValues: Object.keys(EXPERTISE_STATUS),
   },
+  'valuation.min': {
+    type: Number,
+    min: 0,
+    optional: true,
+  },
+  'valuation.max': {
+    type: Number,
+    optional: true,
+    min: 0,
+  },
+  'valuation.value': {
+    type: Number,
+    min: 0,
+    optional: true,
+  },
+  'valuation.date': {
+    type: Date,
+    optional: true,
+  },
+  'valuation.error': {
+    type: String,
+    optional: true,
+  },
+
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   documents: {
     type: Object,

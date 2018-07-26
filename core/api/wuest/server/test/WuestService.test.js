@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import WuestService from '../WuestService';
 import { ERRORS } from '../../wuestConstants';
 
-describe.only('WuestService', () => {
+describe('WuestService', () => {
   beforeEach(() => {
     resetDatabase();
   });

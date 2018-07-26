@@ -39,3 +39,10 @@ export const popPropertyValue = new Method({
     object: Object,
   },
 });
+
+export const evaluateProperty = new Method({
+  name: 'evaluateProperty',
+  params: {
+    propertyId: String,
+  },
+});
