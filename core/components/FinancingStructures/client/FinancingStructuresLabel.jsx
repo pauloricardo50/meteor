@@ -12,8 +12,10 @@ const getLabelHeight = (id) => {
     const nodes = document.querySelectorAll(`.${id}`);
     const heights = Array.prototype.slice
       .call(nodes)
-      .map(node => node.clientHeight);
-    return Math.max(...heights);
+      .map(({ clientHeight }) => clientHeight);
+
+    // This complains if heights is an empty array, so add 0 by default
+    return Math.max(...heights, 0);
   }
 };
 
