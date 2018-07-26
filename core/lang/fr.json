@@ -1,4 +1,7 @@
 {
+  "FinancingStructuresFinancing.DIRECT": "Direct",
+  "FinancingStructuresFinancing.INDIRECT": "Indirect",
+
   "FinancingStructures.propertyValue": "Prix d'achat",
   "FinancingStructures.notaryFees": "Frais de notaire",
   "FinancingStructures.propertyWork": "Travaux à plus-value",
