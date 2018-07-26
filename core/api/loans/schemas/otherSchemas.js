@@ -1,3 +1,4 @@
+// @flow
 import SimpleSchema from 'simpl-schema';
 
 export const contactsSchema = {
@@ -15,4 +16,9 @@ export const contactsSchema = {
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
   'borrowerIds.$': String,
+};
+
+export const propertyIdsSchema = {
+  propertyIds: { type: Array, defaultValue: [] },
+  'propertyIds.$': String,
 };

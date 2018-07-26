@@ -1,5 +1,5 @@
 import Properties from './properties';
-import { Users, Loans } from '../';
+import { Users, Loans } from '..';
 
 Properties.addLinks({
   user: {
@@ -9,6 +9,6 @@ Properties.addLinks({
   },
   loans: {
     collection: Loans,
-    inversedBy: 'property',
+    inversedBy: 'properties',
   },
 });

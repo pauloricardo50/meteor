@@ -1,8 +1,8 @@
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
 import { Tasks } from '../api';
-import { getRelatedBorrowersIds } from './borrowers';
-import { getRelatedPropertiesIds } from './properties';
+import { getRelatedBorrowerIds } from './borrowers';
+import { getRelatedPropertyIds } from './properties';
 import { getRelatedLoansIds } from './loans';
 
 const types = Object.values(TASK_TYPE).filter(item => item !== TASK_TYPE.ADD_ASSIGNED_TO);
@@ -18,8 +18,8 @@ export const createFakeTask = (loanId, assignedTo) => {
 };
 
 export const deleteUsersTasks = (usersIds) => {
-  const borrowersIds = getRelatedBorrowersIds(usersIds);
-  const propertiesIds = getRelatedPropertiesIds(usersIds);
+  const borrowerIds = getRelatedBorrowerIds(usersIds);
+  const propertyIds = getRelatedPropertyIds(usersIds);
   const loansIds = getRelatedLoansIds(usersIds);
   Tasks.update(
     { assignedEmployeeId: { $in: usersIds } },
@@ -29,9 +29,9 @@ export const deleteUsersTasks = (usersIds) => {
   return Tasks.remove({
     $or: [
       { userId: { $in: usersIds } },
-      { propertyId: { $in: propertiesIds } },
+      { propertyId: { $in: propertyIds } },
       { loanId: { $in: loansIds } },
-      { borrowerId: { $in: borrowersIds } },
+      { borrowerId: { $in: borrowerIds } },
     ],
   });
 };

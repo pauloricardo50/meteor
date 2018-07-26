@@ -110,7 +110,7 @@ export const createFakeLoan = ({
   const loan = {
     name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,
     borrowerIds,
-    propertyId,
+    propertyIds: [propertyId],
     general: fakeGeneral,
     documents: fakeFiles,
     contacts: [],

@@ -1,10 +1,15 @@
+// @flow
 import SimpleSchema from 'simpl-schema';
 
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
-import { contactsSchema, borrowerIdsSchema } from './otherSchemas';
+import {
+  contactsSchema,
+  borrowerIdsSchema,
+  propertyIdsSchema,
+} from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -35,7 +40,6 @@ const LoanSchema = new SimpleSchema({
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
-  propertyId: { type: String, optional: true },
   documents: { type: Object, defaultValue: {}, blackbox: true },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   adminNote: { type: String, defaultValue: '', optional: true },
@@ -44,6 +48,7 @@ const LoanSchema = new SimpleSchema({
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
   ...borrowerIdsSchema,
+  ...propertyIdsSchema,
   ...contactsSchema,
 });
 

@@ -4,7 +4,7 @@ import { Loans, Properties } from 'core/api';
 
 export const createFakeOffer = (loanId, userId) => {
   const loan = Loans.findOne(loanId);
-  const property = Properties.findOne(loan.propertyId);
+  const property = Properties.findOne(loan.propertyIds[0]);
   const offer = getRandomOffer(
     { loan: { ...loan, _id: loan._id }, property },
     true,
