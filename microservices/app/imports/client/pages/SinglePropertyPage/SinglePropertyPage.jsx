@@ -11,25 +11,29 @@ import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import { getPropertyCompletion } from 'core/utils/loanFunctions';
 import T from 'core/components/Translation';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
-
+import withMatchParam from 'core/containers/withMatchParam';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import Page from '../../components/Page';
 
-const PropertiesPage = (props) => {
-  const { loan } = props;
-  const { borrowers, property } = loan;
+const SinglePropertyPage = (props) => {
+  const { loan, propertyId } = props;
+  const { borrowers, properties } = loan;
+  const property = properties.find(({ _id }) => _id === propertyId);
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
   const percent = getPropertyCompletion({ loan, borrowers, property });
 
+  const title = address1 || <T id="SinglePropertyPage.title"></T>;
+
   return (
-    <Page id="PropertiesPage">
+    <Page id="SinglePropertyPage" title={title}>
       <section className="mask1 property-page">
         <h1 className="text-center">
-          <T id="PropertiesPage.title" values={{ count: borrowers.length }} />
+          {title}
           <br />
           <small className={percent >= 1 && 'success'}>
-            <T id="PropertiesPage.progress" values={{ value: percent }} />{' '}
+            <T id="PropertiesPage.progress" values={{ value: percent }} />
+            {' '}
             {percent >= 1 && <span className="fa fa-check" />}
           </small>
         </h1>
@@ -93,8 +97,8 @@ const PropertiesPage = (props) => {
   );
 };
 
-PropertiesPage.propTypes = {
+SinglePropertyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default PropertiesPage;
+export default withMatchParam('propertyId')(SinglePropertyPage);

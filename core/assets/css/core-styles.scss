@@ -40,6 +40,10 @@ a:not([role='button']) {
   }
 }
 
+a:-webkit-any-link {
+  text-decoration: none;
+}
+
 hr {
   height: 1px;
 
@@ -52,6 +56,7 @@ hr {
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 200ms $bezier;
 }
 
 .card1 .card-top {
@@ -67,6 +72,10 @@ hr {
   border-bottom-right-radius: 16px;
   border-bottom-left-radius: 16px;
   background-color: #fafafa;
+}
+
+.card1.card-hover:hover {
+  box-shadow: 0 2px 30px 5px rgba(0, 0, 0, 0.2);
 }
 
 // Pretty text effect for tooltips, shows a gradient underline on the text

@@ -35,7 +35,7 @@ const PropertyForm = ({
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
       button={
-        <Button raised icon={<Icon type="home" />}>
+        <Button raised primary icon={<Icon type="home" />}>
           <T id={buttonLabelId} />
         </Button>
       }

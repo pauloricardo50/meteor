@@ -53,6 +53,7 @@ const getContent = (property, loanId) => {
         address={getPropertyAddressString(property)}
         className="map"
         options={{ zoom: 10 }}
+        id={property._id}
       />
       <h3>
         <T id="Recap.property" />

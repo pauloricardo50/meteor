@@ -27,8 +27,7 @@ class LoanServiceModel {
   };
 
   // TODO: make sure step is really done
-  incrementStep = ({ loanId }) =>
-    Loans.update(loanId, { $inc: { 'logic.step': 1 } });
+  incrementStep = ({ loanId }) => Loans.update(loanId, { $inc: { 'logic.step': 1 } });
 
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
@@ -80,28 +79,24 @@ class LoanServiceModel {
     });
   };
 
-  cancelAuction = ({ loanId }) =>
-    Loans.update(loanId, {
-      $set: {
-        'logic.auction.endTime': undefined,
-        'logic.auction.status': '',
-        'logic.auction.startTime': undefined,
-      },
-    });
+  cancelAuction = ({ loanId }) => Loans.update(loanId, {
+    $set: {
+      'logic.auction.endTime': undefined,
+      'logic.auction.status': '',
+      'logic.auction.startTime': undefined,
+    },
+  });
 
-  confirmClosing = ({ loanId, object }) =>
-    Loans.update(loanId, {
-      $set: {
-        status: LOAN_STATUS.DONE,
-        ...object,
-      },
-    });
+  confirmClosing = ({ loanId, object }) => Loans.update(loanId, {
+    $set: {
+      status: LOAN_STATUS.DONE,
+      ...object,
+    },
+  });
 
-  disableUserForms = ({ loanId }) =>
-    this.update({ loanId, object: { userFormsEnabled: false } });
+  disableUserForms = ({ loanId }) => this.update({ loanId, object: { userFormsEnabled: false } });
 
-  enableUserForms = ({ loanId }) =>
-    this.update({ loanId, object: { userFormsEnabled: true } });
+  enableUserForms = ({ loanId }) => this.update({ loanId, object: { userFormsEnabled: true } });
 
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
@@ -155,9 +150,13 @@ class LoanServiceModel {
     const currentStructure = this.getLoanById(loanId).structures.find(({ id }) => id === structureId);
 
     return (
-      !!currentStructure &&
-      this.addStructure({ loanId, structure: currentStructure })
+      !!currentStructure
+      && this.addStructure({ loanId, structure: currentStructure })
     );
+  };
+
+  addPropertyToLoan = ({ loanId, propertyId }) => {
+    this.pushValue({ loanId, object: { propertyIds: propertyId } });
   };
 }
 

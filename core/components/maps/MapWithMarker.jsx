@@ -20,6 +20,8 @@ class MapWithMarker extends Component {
     const { address, options, id } = this.props;
     const { latlng } = this.state;
 
+    console.log('map Id', id);
+
     return (
       <div className="map-with-marker">
         {latlng ? (
@@ -30,7 +32,9 @@ class MapWithMarker extends Component {
             options={options}
           />
         ) : (
-          <p className="description">Adresse pas trouvée!</p>
+          <p className="description">
+Adresse pas trouvée!
+          </p>
         )}
       </div>
     );

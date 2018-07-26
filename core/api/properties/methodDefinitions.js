@@ -6,6 +6,7 @@ export const propertyInsert = new Method({
   params: {
     property: Object,
     userId: Match.Optional(String),
+    loanId: Match.Optional(String),
   },
 });
 
