@@ -6,8 +6,7 @@ import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
 import { PropertyAdder, PropertyModifier } from 'core/components/PropertyForm';
 
-const getPropertyAddressString = ({ address1, zipCode, city }) =>
-  `${address1}, ${zipCode} ${city}`;
+const getPropertyAddressString = ({ address1, zipCode, city }) => `${address1}, ${zipCode} ${city}`;
 
 const getRecapArray = (property) => {
   const {
@@ -38,15 +37,14 @@ const getRecapArray = (property) => {
   ];
 };
 
-const shouldDisplay = ({ address1, zipCode, city }) =>
-  address1 && city && zipCode;
+const shouldDisplay = ({ address1, zipCode, city }) => address1 && city && zipCode;
 
 const getContent = (property, loanId) => {
   // if (!property) {
   //   return <PropertyAdder loanId={loanId} />;
   // } else
   if (!shouldDisplay(property)) {
-    return <PropertyModifier loanId={loanId} property={property} />;
+    return <PropertyModifier property={property} />;
   }
 
   return (
@@ -64,14 +62,15 @@ const getContent = (property, loanId) => {
   );
 };
 
-const DashboardRecapProperty = ({ loan: { property, _id: loanId } }) => (
+const DashboardRecapProperty = ({ property, loanId }) => (
   <div className="dashboard-recap-property card1">
     {getContent(property, loanId)}
   </div>
 );
 
 DashboardRecapProperty.propTypes = {
-  loan: PropTypes.object.isRequired,
+  property: PropTypes.object.isRequired,
+  loanId: PropTypes.string,
 };
 
 export default DashboardRecapProperty;

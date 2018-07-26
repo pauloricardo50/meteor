@@ -7,7 +7,7 @@ import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
 
-const shouldDisplayRecap = ({ loan }) => loan.property.value;
+const shouldDisplayRecap = ({ loan }) => loan.properties[0].value;
 
 const DashboardRecapFinance = (props) => {
   if (!shouldDisplayRecap(props)) {
@@ -22,7 +22,7 @@ const DashboardRecapFinance = (props) => {
 
   const totalCost = getProjectValue({
     loan: props.loan,
-    property: props.loan.property,
+    property: props.loan.properties[0],
   });
 
   return (

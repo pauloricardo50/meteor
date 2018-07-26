@@ -28,7 +28,7 @@ const getRecapArray = (loan, property) => [
 
 const DashboardRecapCost = ({ loan, total }) => (
   <div className="dashboard-recap-cost">
-    <Recap array={getRecapArray(loan, loan.property)} />
+    <Recap array={getRecapArray(loan, loan.properties[0])} />
     <DashboardRecapSum
       label={<T id="DashboardRecapCost.sumTitle" />}
       value={total}

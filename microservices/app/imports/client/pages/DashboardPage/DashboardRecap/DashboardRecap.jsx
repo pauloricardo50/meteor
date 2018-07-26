@@ -15,7 +15,10 @@ const DashboardRecap = props => (
 
     <div className="cards">
       <DashboardRecapFinance {...props} />
-      <DashboardRecapProperty {...props} />
+      <DashboardRecapProperty
+        property={props.loan.properties[0]}
+        loanId={props.loan._id}
+      />
     </div>
   </div>
 );
