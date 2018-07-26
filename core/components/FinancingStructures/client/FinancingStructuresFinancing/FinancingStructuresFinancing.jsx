@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { AMORTIZATION_STRATEGY_PRESET } from '../../../../api/constants';
+import { AMORTIZATION_TYPE } from '../../../../api/constants';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
@@ -43,9 +43,9 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       {
         Component: RadioButtons,
         id: 'amortizationType',
-        options: Object.values(AMORTIZATION_STRATEGY_PRESET).map(key => ({
+        options: Object.values(AMORTIZATION_TYPE).map(key => ({
           id: key,
-          label: key,
+          label: `FinancingStructuresFinancing.${key}`,
         })),
       },
       {

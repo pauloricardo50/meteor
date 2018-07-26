@@ -1,7 +1,7 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
 import {
-  AMORTIZATION_STRATEGY_PRESET,
+  AMORTIZATION_TYPE,
   INSURANCE_USE_PRESET,
 } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
@@ -11,7 +11,7 @@ const StructureSchema = new SimpleSchema({
   amortization: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   amortizationType: {
     type: String,
-    allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
+    allowedValues: Object.values(AMORTIZATION_TYPE),
     optional: true,
   },
   secondPillarPledged: {

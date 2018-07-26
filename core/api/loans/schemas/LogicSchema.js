@@ -6,7 +6,7 @@ import {
   CLOSING_STEPS_STATUS,
   INSURANCE_USE_PRESET,
   LOAN_STRATEGY_PRESET,
-  AMORTIZATION_STRATEGY_PRESET,
+  AMORTIZATION_TYPE,
   PAYMENT_SCHEDULES,
 } from '../../constants';
 
@@ -161,7 +161,7 @@ const LogicSchema = new SimpleSchema({
   amortizationStrategyPreset: {
     type: String,
     optional: true,
-    allowedValues: Object.values(AMORTIZATION_STRATEGY_PRESET),
+    allowedValues: Object.values(AMORTIZATION_TYPE),
   },
   acceptedClosing: {
     type: Boolean,
