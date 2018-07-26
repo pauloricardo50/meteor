@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { compose } from 'recompose';
 
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
+import StructuresContainer from '../../containers/StructuresContainer';
 
 type CalculatedValueProps = {
   value: number,
@@ -35,4 +37,7 @@ const CalculatedValue = ({
   );
 };
 
-export default SingleStructureContainer(CalculatedValue);
+export default compose(
+  SingleStructureContainer,
+  StructuresContainer,
+)(CalculatedValue);

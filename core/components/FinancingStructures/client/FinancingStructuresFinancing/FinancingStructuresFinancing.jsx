@@ -9,7 +9,16 @@ import FinancingStructuresSection, {
 } from '../FinancingStructuresSection';
 import T from '../../../Translation';
 
-const calculateLoan = ({ structure: { wantedLoan } }) => wantedLoan;
+const getPledgedAmount = ({
+  structure: { secondPillarPledged, thirdPillarPledged },
+}) => secondPillarPledged + thirdPillarPledged;
+
+const calculateLoan = (params) => {
+  const {
+    structure: { wantedLoan },
+  } = params;
+  return wantedLoan + getPledgedAmount(params);
+};
 
 type FinancingStructuresFinancingProps = {};
 
@@ -36,6 +45,11 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
           id: key,
           label: key,
         })),
+      },
+      {
+        id: 'pledgedIncrease',
+        Component: CalculatedValue,
+        value: getPledgedAmount,
       },
     ]}
   />

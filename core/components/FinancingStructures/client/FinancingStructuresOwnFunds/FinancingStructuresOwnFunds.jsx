@@ -2,28 +2,16 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import { INSURANCE_USE_PRESET } from '../../../../api/constants';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
-  RadioButtons,
 } from '../FinancingStructuresSection';
 
 type FinancingStructuresOwnFundsProps = {};
 
 const calculateOwnFunds = ({
-  structure: {
-    fortuneUsed,
-    secondPillarPledged,
-    secondPillarWithdrawal,
-    thirdPillarPledged,
-    thirdPillarWithdrawal,
-  },
-}) => fortuneUsed
-  + secondPillarPledged
-  + secondPillarWithdrawal
-  + thirdPillarPledged
-  + thirdPillarWithdrawal;
+  structure: { fortuneUsed, secondPillarWithdrawal, thirdPillarWithdrawal },
+}) => fortuneUsed + secondPillarWithdrawal + thirdPillarWithdrawal;
 
 const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) => (
   <FinancingStructuresSection
