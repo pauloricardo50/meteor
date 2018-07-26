@@ -19,18 +19,9 @@ export default class FinancingStructuresLabel extends Component<
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => {
-      const height = this.getLabelHeight();
-      this.setState({ height });
-
-      if (height) {
-        clearInterval(this.interval);
-      }
-    }, 100);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    setTimeout(() => {
+      this.setState({ height: this.getLabelHeight() });
+    }, 0);
   }
 
   getLabelHeight = () => {
