@@ -205,9 +205,9 @@ describe('FinanceCalculator', () => {
 
     it('deduces less if there is less to amortize', () => {
       expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 400000,
+        loanValue: 250000,
         amortizationRateRelativeToLoan: 0.01,
-      })).to.equal(800);
+      })).to.equal(825);
     });
   });
 });
