@@ -1,14 +1,5 @@
 import 'core/fixtures/methods';
 
-import './borrowers/server/publications';
-
-import './loans/server/publications';
-
-import './offers/server/publications';
-
-import './properties/server/publications';
-
-import './users/server/publications';
 import './users/server/accounts-server-config';
 
 import './methods/server';
