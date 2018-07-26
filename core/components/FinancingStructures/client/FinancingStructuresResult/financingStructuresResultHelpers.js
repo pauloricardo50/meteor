@@ -23,3 +23,7 @@ export const getAmortizationDeduction = (params) => {
 };
 
 export const getSecondPillarWithdrawalTax = FinanceCalculator.getSecondPillarWithdrawalTax;
+
+export const getRemainingCash = params => 0;
+export const getRemainingSecondPillar = params => 0;
+export const getRemainingThirdPillar = params => 0;

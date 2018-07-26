@@ -12,6 +12,9 @@ import {
   getAmortization,
   getAmortizationDeduction,
   getSecondPillarWithdrawalTax,
+  getRemainingCash,
+  getRemainingSecondPillar,
+  getRemainingThirdPillar,
 } from './financingStructuresResultHelpers';
 
 type FinancingStructuresResultProps = {};
@@ -73,11 +76,20 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
         ),
         className: 'section-subtitle',
       },
-      { id: 'remainingCash', Component: CalculatedValue, value: returnZero },
+      {
+        id: 'remainingCash',
+        Component: CalculatedValue,
+        value: getRemainingCash,
+      },
       {
         id: 'remainingSecondPillar',
         Component: CalculatedValue,
-        value: returnZero,
+        value: getRemainingSecondPillar,
+      },
+      {
+        id: 'remainingThirdPillar',
+        Component: CalculatedValue,
+        value: getRemainingThirdPillar,
       },
     ]}
   />
