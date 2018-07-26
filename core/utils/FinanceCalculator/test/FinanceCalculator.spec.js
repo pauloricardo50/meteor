@@ -210,4 +210,26 @@ describe('FinanceCalculator', () => {
       })).to.equal(825);
     });
   });
+
+  describe('getSecondPillarWithdrawalTax', () => {
+    it('returns zero if nothing is provided', () => {
+      expect(calc.getSecondPillarWithdrawalTax()).to.equal(0);
+      expect(calc.getSecondPillarWithdrawalTax({})).to.equal(0);
+    });
+
+    it('multiplies by the withdrawal tax', () => {
+      expect(calc.getSecondPillarWithdrawalTax({ secondPillarWithdrawal: 100 })).to.equal(-10);
+    });
+  });
+
+  describe('getEffectiveLoan', () => {
+    it('returns zero if nothing is provided', () => {
+      expect(calc.getEffectiveLoan()).to.equal(0);
+      expect(calc.getEffectiveLoan({})).to.equal(0);
+    });
+
+    it('adds the 2 values', () => {
+      expect(calc.getEffectiveLoan({ loanValue: 100, pledgedValue: 50 })).to.equal(150);
+    });
+  });
 });
