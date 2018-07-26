@@ -17,7 +17,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   adminNote: 1,
   adminValidation: 1,
   documents: 1,
-  property: {
+  properties: {
     userId: 1,
     createdAt: 1,
     updatedAt: 1,

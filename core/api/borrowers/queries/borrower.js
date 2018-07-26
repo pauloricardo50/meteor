@@ -24,7 +24,7 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER, {
     createdAt: 1,
     updatedAt: 1,
     borrowers: { firstName: 1, lastName: 1 },
-    property: { value: 1 },
+    properties: { value: 1 },
   },
   // fields used in Recap component
   salary: 1,
