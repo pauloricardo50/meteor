@@ -2,22 +2,19 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import FinanceCalculator from '../FinancingStructuresCalculator';
 import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
+import {
+  returnZero,
+  getInterests,
+  getAmortization,
+  getAmortizationDeduction,
+  getSecondPillarWithdrawalTax,
+} from './financingStructuresResultHelpers';
 
 type FinancingStructuresResultProps = {};
-
-const returnZero = () => 0;
-const getInterests = params => (FinanceCalculator.getInterestsWithTranches(params)
-    * params.structure.wantedLoan)
-  / 12;
-const getAmortization = params => (FinanceCalculator.getAmortizationRate(params)
-    * params.structure.wantedLoan)
-  / 12;
-const getMonthly = params => getInterests(params) + getAmortization(params);
 
 const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
   <FinancingStructuresSection
@@ -54,14 +51,19 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       {
         id: 'secondPillarWithdrawalTax',
         Component: CalculatedValue,
-        value: returnZero,
+        value: getSecondPillarWithdrawalTax,
       },
       {
         id: 'amortizationDeduction',
         Component: CalculatedValue,
-        value: returnZero,
+        value: getAmortizationDeduction,
       },
-      { id: 'totalFiscal', Component: CalculatedValue, value: returnZero },
+      {
+        id: 'totalFiscal',
+        Component: CalculatedValue,
+        value: params => getSecondPillarWithdrawalTax(params)
+          + getAmortizationDeduction(params),
+      },
       {
         id: 'future',
         label: (

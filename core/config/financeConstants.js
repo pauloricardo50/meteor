@@ -18,3 +18,6 @@ export const FORTUNE_ERROR = 'FORTUNE_ERROR';
 export const INCOME_ERROR = 'INCOME_ERROR';
 export const CURRENCY = 'CHF';
 export const MIN_CASH = 0.1; // Percent of property value
+export const MAX_YEARLY_THIRD_PILLAR_PAYMENTS = 6768;
+export const AVERAGE_TAX_RATE = 0.2;
+export const SECOND_PILLAR_WITHDRAWAL_TAX_RATE = 0.1;

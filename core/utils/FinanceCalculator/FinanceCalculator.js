@@ -4,6 +4,9 @@ import {
   NOTARY_FEES,
   AMORTIZATION_STOP,
   DEFAULT_AMORTIZATION,
+  MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
+  AVERAGE_TAX_RATE,
+  SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
 } from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
@@ -24,17 +27,24 @@ export class FinanceCalculator {
     notaryFees = NOTARY_FEES,
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
+    taxRate = AVERAGE_TAX_RATE,
+    secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
     middlewares = [],
     middlewareObject,
   }: {
     notaryFees?: number,
     amortizationBaseRate?: number,
     amortizationGoal?: number,
+    taxRate?: number,
+    secondPillarWithdrawalTaxRate?: number,
     middlewares?: Array<Function>,
+    middlewareObject: Object,
   } = {}) {
     this.notaryFees = notaryFees;
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
+    this.taxRate = taxRate;
+    this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
     this.setRoundValuesMiddleware(middlewares, middlewareObject);
   }
 
@@ -165,6 +175,23 @@ export class FinanceCalculator {
     return (
       this.getAmortizationRate({ borrowRatio, amortizationYears }) / borrowRatio
     );
+  }
+
+  getIndirectAmortizationDeduction({
+    amortizationRateRelativeToLoan = 0,
+    loanValue = 0,
+  }: { amortizationRateRelativeToLoan: number, loanValue: 0 } = {}) {
+    const yearlyAmortization = amortizationRateRelativeToLoan * loanValue;
+    const cappedThirdPillar = Math.min(
+      yearlyAmortization,
+      MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
+    );
+    const deduction = this.taxRate * cappedThirdPillar;
+    return deduction;
+  }
+
+  getSecondPillarWithdrawalTax({ secondPillarWithdrawal }) {
+    return -secondPillarWithdrawal * this.secondPillarWithdrawalTaxRate;
   }
 }
 

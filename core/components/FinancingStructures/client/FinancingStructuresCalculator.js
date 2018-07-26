@@ -1,6 +1,6 @@
 // @flow
 import { averageRates } from 'core/components/InterestRatesTable/interestRates';
-import { FinanceCalculator } from 'core/utils/FinanceCalculator';
+import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
 
 const argumentMappings = {
@@ -26,6 +26,18 @@ const argumentMappings = {
       interestRates,
     };
   },
+  getIndirectAmortizationDeduction: ({
+    structure: { propertyValue, wantedLoan, propertyWork },
+  }) => ({
+    loanValue: wantedLoan,
+    amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoan({
+      borrowRatio: wantedLoan / (propertyValue + propertyWork),
+    }),
+  }),
+
+  getSecondPillarWithdrawalTax: ({
+    structure: { secondPillarWithdrawal },
+  }) => ({ secondPillarWithdrawal }),
 };
 
 const argumentMapperMiddleware = makeArgumentMapper(argumentMappings);

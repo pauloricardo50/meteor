@@ -2,6 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { MAX_YEARLY_THIRD_PILLAR_PAYMENTS } from '../../../config/financeConstants';
 import DefaultFinanceCalculator, {
   FinanceCalculator,
 } from '../FinanceCalculator';
@@ -154,6 +155,59 @@ describe('FinanceCalculator', () => {
       expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(80);
       expect(calc.getAmortizationRate({ borrowRatio: 0.8 })).to.equal(0.01);
       expect(calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 })).to.equal(0.0125);
+    });
+  });
+
+  describe('getIndirectAmortizationDeduction', () => {
+    it('returns zero if nothing is provided', () => {
+      expect(calc.getIndirectAmortizationDeduction()).to.equal(0);
+    });
+
+    it('returns zero if the loan is zero', () => {
+      expect(calc.getIndirectAmortizationDeduction({
+        loanValue: 0,
+        amortizationRateRelativeToLoan: 2,
+      })).to.equal(0);
+      expect(calc.getIndirectAmortizationDeduction({
+        amortizationRateRelativeToLoan: 2,
+      })).to.equal(0);
+    });
+
+    it('returns zero if the rate is zero', () => {
+      expect(calc.getIndirectAmortizationDeduction({
+        loanValue: 2,
+        amortizationRateRelativeToLoan: 0,
+      })).to.equal(0);
+      expect(calc.getIndirectAmortizationDeduction({
+        loanValue: 2,
+      })).to.equal(0);
+    });
+
+    it('caps deduction at the swiss national level', () => {
+      expect(calc.getIndirectAmortizationDeduction({
+        loanValue: 1000000,
+        amortizationRateRelativeToLoan: 0.01,
+      })).to.equal(calc.getIndirectAmortizationDeduction({
+        loanValue: 2000000,
+        amortizationRateRelativeToLoan: 0.01,
+      }));
+    });
+
+    it('uses the taxRate to calculate deduction', () => {
+      const taxRate = 0.5;
+      calc = new FinanceCalculator({ taxRate });
+      const rate = calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 });
+      expect(calc.getIndirectAmortizationDeduction({
+        loanValue: 800000,
+        amortizationRateRelativeToLoan: rate,
+      })).to.equal(MAX_YEARLY_THIRD_PILLAR_PAYMENTS * taxRate);
+    });
+
+    it('deduces less if there is less to amortize', () => {
+      expect(calc.getIndirectAmortizationDeduction({
+        loanValue: 400000,
+        amortizationRateRelativeToLoan: 0.01,
+      })).to.equal(800);
     });
   });
 });
