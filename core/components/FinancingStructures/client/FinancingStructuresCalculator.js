@@ -38,6 +38,13 @@ const argumentMappings = {
   getSecondPillarWithdrawalTax: ({
     structure: { secondPillarWithdrawal },
   }) => ({ secondPillarWithdrawal }),
+
+  getEffectiveLoan: ({
+    structure: { wantedLoan, secondPillarPledged, thirdPillarPledged },
+  }) => ({
+    loanValue: wantedLoan,
+    pledgedValue: secondPillarPledged + thirdPillarPledged,
+  }),
 };
 
 const argumentMapperMiddleware = makeArgumentMapper(argumentMappings);

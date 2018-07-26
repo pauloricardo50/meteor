@@ -3,10 +3,10 @@ import FinanceCalculator from '../FinancingStructuresCalculator';
 
 export const returnZero = () => 0;
 export const getInterests = params => (FinanceCalculator.getInterestsWithTranches(params)
-    * params.structure.wantedLoan)
+    * FinanceCalculator.getEffectiveLoan(params))
   / 12;
 export const getAmortization = params => (FinanceCalculator.getAmortizationRate(params)
-    * params.structure.wantedLoan)
+    * FinanceCalculator.getEffectiveLoan(params))
   / 12;
 export const getMonthly = params => getInterests(params) + getAmortization(params);
 
