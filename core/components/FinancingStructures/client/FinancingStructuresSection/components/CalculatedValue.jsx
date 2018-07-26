@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
-import StructuresContainer from '../../containers/StructuresContainer';
+import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
 
 type CalculatedValueProps = {
   value: number,
@@ -39,5 +39,5 @@ const CalculatedValue = ({
 
 export default compose(
   SingleStructureContainer,
-  StructuresContainer,
+  FinancingStructuresDataContainer,
 )(CalculatedValue);

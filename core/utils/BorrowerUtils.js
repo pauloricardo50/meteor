@@ -1,3 +1,4 @@
+// @flow
 import { filesPercent } from '../api/files/fileHelpers';
 import { getBorrowerInfoArray } from '../arrays/BorrowerFormArray';
 import { borrowerDocuments } from '../api/files/documents';
@@ -6,6 +7,11 @@ import { arrayify, getPercent } from './general';
 import { getCountedArray } from './formArrayHelpers';
 
 export class BorrowerUtils {
+  sumValues = (borrowers, keys) => arrayify(keys).reduce(
+    (total, key) => total + borrowers.reduce((t, b) => t + (b[key] || 0), 0),
+    0,
+  );
+
   // personalInfoPercent - Determines the completion rate of the borrower's
   // personal information forms
   personalInfoPercent = ({ borrowers }) => {
@@ -32,24 +38,12 @@ export class BorrowerUtils {
     return getPercent(a);
   };
 
-  getFortune = ({ borrowers }) => {
-    const array = [];
+  getFortune = ({ borrowers }) => this.sumValues(borrowers, 'bankFortune');
 
-    arrayify(borrowers).forEach((b) => {
-      array.push(b.bankFortune);
-    });
-    return array.reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-  };
-
-  getInsuranceFortune = ({ borrowers }) => {
-    const array = [];
-
-    arrayify(borrowers).forEach((b) => {
-      array.push(b.insuranceSecondPillar);
-      array.push(b.insuranceThirdPillar);
-    });
-    return array.reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
-  };
+  getInsuranceFortune = ({ borrowers }) => this.sumValues(borrowers, [
+    'insuranceSecondPillar',
+    'insuranceThirdPillar',
+  ]);
 
   getBorrowerCompletion = ({ borrower }) => (filesPercent({
     doc: [borrower],
@@ -115,22 +109,14 @@ export class BorrowerUtils {
       sum -= this.getExpenses({ borrowers: borrower }) || 0;
     });
 
-    return Math.max(sum, 0);
+    return sum;
   };
 
-  getTotalFortune = ({ borrowers }) => {
-    let sum = 0;
-
-    arrayify(borrowers).forEach((borrower) => {
-      sum += borrower.bankFortune || 0;
-      sum += borrower.insuranceSecondPillar || 0;
-      sum += borrower.insuranceThirdPillar || 0;
-
-      // TODO: Complete with all fortune fields !!
-    });
-
-    return Math.max(0, Math.round(sum));
-  };
+  getTotalFortune = ({ borrowers }) => this.sumValues(borrowers, [
+    'bankFortune',
+    'insuranceSecondPillar',
+    'insuranceThirdPillar',
+  ]);
 
   getRealEstateFortune = ({ borrowers }) => this.getArrayValues({ borrowers }, 'realEstate', i => i.value - i.loan);
 
@@ -138,7 +124,11 @@ export class BorrowerUtils {
 
   getRealEstateDebt = ({ borrowers }) => this.getArrayValues({ borrowers }, 'realEstate', i => i.loan);
 
-  getBorrowerSalary = ({ borrowers }) => arrayify(borrowers).reduce((t, b) => t + (b.salary || 0), 0);
+  getBorrowerSalary = ({ borrowers }) => this.sumValues(borrowers, 'salary');
+
+  getSecondPillar = ({ borrowers }) => this.sumValues(borrowers, 'insuranceSecondPillar');
+
+  getThirdPillar = ({ borrowers }) => this.sumValues(borrowers, 'insuranceThirdPillar');
 
   getBorrowerFullName = ({ firstName, lastName }) => [firstName, lastName].filter(name => name).join(' ');
 }
