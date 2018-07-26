@@ -5,7 +5,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import { ScrollSyncPane } from 'react-scroll-sync';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import cx from 'classnames';
 
 import type { structureType } from '../../../../api/types';
@@ -54,8 +54,6 @@ const FinancingStructuresSection = ({
   summaryConfig,
   className,
   classes: { container, entered, content, expanded },
-  labelKey,
-  changeLabelKey,
 }: FinancingStructuresSectionProps) => {
   const renderDetail = makeRenderDetail(detailConfig);
   const renderSummary = makeRenderDetail(summaryConfig);
@@ -64,7 +62,6 @@ const FinancingStructuresSection = ({
       <ExpansionPanel
         className={cx('financing-structures-section', className)}
         CollapseProps={{ classes: { container, entered } }}
-        onChange={() => changeLabelKey(labelKey + 1)}
       >
         <ExpansionPanelSummary
           className="section-summary"
@@ -73,7 +70,6 @@ const FinancingStructuresSection = ({
           <FinancingStructuresLabels
             config={summaryConfig}
             className="summary-labels"
-            key={labelKey}
           />
 
           {structures.map((structure, index) => (
@@ -83,7 +79,7 @@ const FinancingStructuresSection = ({
           ))}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="section-detail">
-          <FinancingStructuresLabels config={detailConfig} key={labelKey} />
+          <FinancingStructuresLabels config={detailConfig} />
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
@@ -99,7 +95,6 @@ const FinancingStructuresSection = ({
 };
 
 export default compose(
-  withState('labelKey', 'changeLabelKey', 0),
   StructuresContainer,
   withStyles(styles),
 )(FinancingStructuresSection);
