@@ -14,7 +14,7 @@ const FinancingStructuresResultChart = ({
   const interests = getInterests(props);
   const amortization = getAmortization(props);
   return (
-    <div className="financing-structures-result-chart">
+    <div className="financing-structures-result-chart result">
       <DonutChart
         data={[
           { value: amortization, id: 'amortization' },
