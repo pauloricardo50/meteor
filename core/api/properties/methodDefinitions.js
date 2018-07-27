@@ -46,3 +46,10 @@ export const evaluateProperty = new Method({
     propertyId: String,
   },
 });
+
+export const propertyDataIsInvalid = new Method({
+  name: 'propertyDataIsInvalid',
+  params: {
+    propertyId: String,
+  },
+});

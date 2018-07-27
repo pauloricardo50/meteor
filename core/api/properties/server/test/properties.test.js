@@ -4,9 +4,9 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import PropertyService from '../../PropertyService';
 import { EXPERTISE_STATUS } from '../../propertyConstants';
-import { ERRORS } from '../../../wuest/wuestConstants';
+import { WUEST_ERRORS } from '../../../wuest/wuestConstants';
 
-describe.only('PropertyService', () => {
+describe('PropertyService', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -28,7 +28,7 @@ describe.only('PropertyService', () => {
     });
 
     it('throws if it cannot find the property', () => {
-      expect(() => PropertyService.evaluateProperty('test')).to.throw(ERRORS.NO_PROPERTY_FOUND);
+      expect(() => PropertyService.evaluateProperty('test')).to.throw(WUEST_ERRORS.NO_PROPERTY_FOUND);
     });
 
     it('adds min, max and value on the property', () => {

@@ -48,8 +48,16 @@ export class PropertyService {
           },
         });
       });
-
   getPropertyById = propertyId => Properties.findOne(propertyId);
+
+  propertyDataIsInvalid = (propertyId) => {
+    try {
+      WuestService.createPropertyFromCollection(propertyId);
+    } catch (error) {
+      return error.message;
+    }
+    return false;
+  };
 }
 
 export default new PropertyService();
