@@ -40,10 +40,14 @@
   transition: all 0.2s $bezier;
 }
 
-.validator .result div p {
+.validator .result div p:last-of-type {
   // Make sure the numbers aren't wrapped
   flex-shrink: 0;
 
+  margin: 0;
+}
+
+.validator .result div p:first-of-type {
   margin: 0;
 }
 

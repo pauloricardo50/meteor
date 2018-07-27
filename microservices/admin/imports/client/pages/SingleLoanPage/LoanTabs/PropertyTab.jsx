@@ -1,13 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Tabs from 'core/components/Tabs';
 import SinglePropertyPage from '../../SinglePropertyPage/SinglePropertyPage';
 
-const PropertyTab = ({ property }) => (
-  <SinglePropertyPage propertyId={property._id} displayLoans={false} />
+const PropertiesTab = ({ properties }) => (
+  <Tabs
+    tabs={properties.map(property => ({
+      id: property._id,
+      labeL: property.address1,
+      content: (
+        <SinglePropertyPage propertyId={property._id} displayLoans={false} />
+      ),
+    }))}
+  />
 );
-PropertyTab.propTypes = {
-  property: PropTypes.objectOf(PropTypes.any).isRequired,
+
+PropertiesTab.propTypes = {
+  properties: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-export default PropertyTab;
+export default PropertiesTab;

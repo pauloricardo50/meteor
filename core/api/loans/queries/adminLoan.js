@@ -1,9 +1,13 @@
+import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
+  },
+  $postFilter(loans, params) {
+    return loans.map(formatLoanWithStructure);
   },
   userId: 1,
   user: {
@@ -17,7 +21,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   adminNote: 1,
   adminValidation: 1,
   documents: 1,
-  property: {
+  properties: {
     userId: 1,
     createdAt: 1,
     updatedAt: 1,

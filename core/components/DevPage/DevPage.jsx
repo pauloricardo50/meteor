@@ -45,7 +45,7 @@ const addEmptyStep1Loan = (twoBorrowers) => {
     .then((propertyId) => {
       const loan = emptyLoan;
       loan.borrowerIds = borrowerIds;
-      loan.propertyId = propertyId;
+      loan.propertyIds = [propertyId];
       loanInsert.run({ loan });
     })
     .catch(console.log);
@@ -71,7 +71,7 @@ const addStep1Loan = (twoBorrowers) => {
     .then((propertyId) => {
       const loan = loanStep1;
       loan.borrowerIds = borrowerIds;
-      loan.propertyId = propertyId;
+      loan.propertyIds = [propertyId];
       loanInsert.run({ loan });
     })
     .catch(console.log);
@@ -98,7 +98,7 @@ const addStep2Loan = (twoBorrowers) => {
     .then((propertyId) => {
       const loan = loanStep2;
       loan.borrowerIds = borrowerIds;
-      loan.propertyId = propertyId;
+      loan.propertyIds = [propertyId];
       loanInsert.run({ loan });
     })
     .catch(console.log);
@@ -125,7 +125,7 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
     })
     .then((propertyId) => {
       loan.borrowerIds = borrowerIds;
-      loan.propertyId = propertyId;
+      loan.propertyIds = [propertyId];
     })
     .then(() => loanInsert.run({ loan }))
     .then((id) => {
@@ -136,14 +136,13 @@ const addStep3Loan = (twoBorrowers, completeFiles = true) => {
       );
       return offerInsert.run({ offer: object, loanId });
     })
-    .then(offerId =>
-      loanUpdate.run({
-        object: {
-          'logic.lender.offerId': offerId,
-          'logic.lender.chosenTime': new Date(),
-        },
-        loanId,
-      }))
+    .then(offerId => loanUpdate.run({
+      object: {
+        'logic.lender.offerId': offerId,
+        'logic.lender.chosenTime': new Date(),
+      },
+      loanId,
+    }))
     .then(() => {
       // Weird bug with offers publications that forces me to reload TODO: fix it
       location.reload();
@@ -163,8 +162,7 @@ export default class DevPage extends Component {
     }
   }
 
-  handleChange = () =>
-    this.setState(prev => ({ twoBorrowers: !prev.twoBorrowers }));
+  handleChange = () => this.setState(prev => ({ twoBorrowers: !prev.twoBorrowers }));
 
   purgeAndGenerateDatabase = (currentUserId, currentUserEmail) => {
     Meteor.call('purgeDatabase', currentUserId, (err, res) => {
@@ -211,11 +209,10 @@ export default class DevPage extends Component {
               <Button
                 raised
                 className="error mr20"
-                onClick={() =>
-                  this.purgeAndGenerateDatabase(
-                    currentUser._id,
-                    currentUser.emails[0].address,
-                  )
+                onClick={() => this.purgeAndGenerateDatabase(
+                  currentUser._id,
+                  currentUser.emails[0].address,
+                )
                 }
               >
                 <Icon type="report" />
@@ -229,8 +226,7 @@ export default class DevPage extends Component {
               raised
               secondary
               className="mr20"
-              onClick={() =>
-                Meteor.call('generateTestData', currentUser.emails[0].address)
+              onClick={() => Meteor.call('generateTestData', currentUser.emails[0].address)
               }
             >
               <Icon type="groupAdd" />
@@ -264,7 +260,8 @@ export default class DevPage extends Component {
             value={twoBorrowers}
             onChange={this.handleChange}
           />
-          2 borrowers<br />
+          2 borrowers
+          <br />
           <Button
             raised
             secondary

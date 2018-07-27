@@ -35,6 +35,7 @@
 
   "FinancingStructuresHeaderAdder.label": "Ajouter structure",
 
+  "SinglePropertyPage.title": "Bien immobilier",
   "general.filterBy": "Filtrer par",
 
   "TableFilters.filterLabels.assignedEmployee.emails.0.address": "Email",
@@ -1170,7 +1171,7 @@
   "LoanTabs.forms": "Formulaires",
   "LoanTabs.offers": "Offres des prêteurs",
   "LoanTabs.overview": "Résumé",
-  "LoanTabs.property": "Propriété",
+  "LoanTabs.properties": "Biens immobiliers",
   "LoanTabs.tasks": "Tâches",
   "LoanValidation.invalidatedAt": "Invalidé le",
   "LoanValidation.field": "Champ",

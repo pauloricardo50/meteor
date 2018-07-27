@@ -1,5 +1,6 @@
 // @flow
 import { Meteor } from 'meteor/meteor';
+import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
 import type { structureType, loanTranchesType } from '../types';
@@ -8,6 +9,9 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   $filter({ filters, params: { loanId } }) {
     filters.userId = Meteor.userId();
     filters._id = loanId;
+  },
+  $postFilter(loans, params) {
+    return loans.map(formatLoanWithStructure);
   },
   userId: 1,
   user: {
@@ -20,7 +24,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   updatedAt: 1,
   adminValidation: 1,
   documents: 1,
-  property: {
+  properties: {
     userId: 1,
     createdAt: 1,
     updatedAt: 1,

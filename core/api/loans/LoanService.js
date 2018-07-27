@@ -21,7 +21,7 @@ class LoanServiceModel {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
     return this.insert({
-      loan: { propertyId, borrowerIds: [borrowerId] },
+      loan: { propertyIds: [propertyId], borrowerIds: [borrowerId] },
       userId,
     });
   };
@@ -158,6 +158,10 @@ class LoanServiceModel {
       !!currentStructure
       && this.addStructure({ loanId, structure: currentStructure })
     );
+  };
+
+  addPropertyToLoan = ({ loanId, propertyId }) => {
+    this.pushValue({ loanId, object: { propertyIds: propertyId } });
   };
 }
 

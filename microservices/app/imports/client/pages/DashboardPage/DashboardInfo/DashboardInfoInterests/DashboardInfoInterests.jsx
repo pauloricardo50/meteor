@@ -2,7 +2,6 @@ import React from 'react';
 
 import T from 'core/components/Translation/';
 import { AUCTION_STATUS } from 'core/api/constants';
-
 import DashboardInfoInterestsTable from './DashboardInfoInterestsTable';
 
 const DashboardInfoInterests = ({ loan }) => {

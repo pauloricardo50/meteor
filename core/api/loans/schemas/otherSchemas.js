@@ -1,3 +1,4 @@
+// @flow
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES } from '../../constants';
 
@@ -41,3 +42,7 @@ export type loanTranchesType = Array<{
   type: string,
   value: number,
 }>;
+export const propertyIdsSchema = {
+  propertyIds: { type: Array, defaultValue: [] },
+  'propertyIds.$': String,
+};

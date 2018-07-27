@@ -26,7 +26,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
   general: 1,
   createdAt: 1,
   updatedAt: 1,
-  property: {
+  properties: {
     value: 1,
   },
   borrowers: {

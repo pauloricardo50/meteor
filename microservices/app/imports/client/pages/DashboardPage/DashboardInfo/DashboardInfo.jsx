@@ -1,7 +1,6 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-
 import DashboardInfoTeam from './DashboardInfoTeam';
 import DashboardInfoInterests from './DashboardInfoInterests';
 

@@ -1,12 +1,23 @@
-.property-page {
+.properties-page {
   display: flex;
   flex-direction: column;
 
-  .description {
-    align-self: center;
+  .properties {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .map-container {
-    height: 400px;
+  .adder {
+    padding: 32px;
   }
+}
+
+.properties-page-detail {
+  flex-grow: 1;
+  width: 100%;
+  box-sizing: border-box;
+  width: 400px;
+  margin: 16px;
 }
