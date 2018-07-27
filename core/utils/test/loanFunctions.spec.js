@@ -19,7 +19,9 @@ import {
   getFees,
   getMaintenance,
   getAuctionEndTime,
-  loanHasMinimalInformation, closingPercent
+  loanHasMinimalInformation,
+  closingPercent,
+  formatLoanWithStructure,
 } from '../loanFunctions';
 import { DEFAULT_AMORTIZATION } from '../../config/financeConstants';
 
@@ -590,7 +592,6 @@ describe('getAuctionEndTime', () => {
     });
   });
 
-
   describe('closingPercent', () => {
     it('returns 0 for no steps', () => {
       const r = { logic: { closingSteps: [] } };
@@ -646,6 +647,81 @@ describe('getAuctionEndTime', () => {
         },
       };
       expect(closingPercent(r)).to.equal(0.5);
+    });
+  });
+
+  describe('formatLoanWithStructure', () => {
+    it('sets the right structure', () => {
+      expect(formatLoanWithStructure({
+        selectedStructure: 'test',
+        structures: [{ id: 'test', hello: 'world' }],
+      })).to.deep.include({
+        structure: { id: 'test', hello: 'world' },
+      });
+    });
+
+    it('adds an empty structure if the structure was not found', () => {
+      expect(formatLoanWithStructure({
+        selectedStructure: 'test2',
+        structures: [{ id: 'test', hello: 'world' }],
+      })).to.deep.include({
+        structure: {},
+      });
+    });
+
+    it('adds no structure if selectedStructure is not defined', () => {
+      expect(formatLoanWithStructure({
+        structures: [{ id: 'test', hello: 'world' }],
+      })).to.deep.equal({
+        structures: [{ id: 'test', hello: 'world' }],
+      });
+    });
+
+    it('adds the right property if it exists', () => {
+      expect(formatLoanWithStructure({
+        properties: [{ _id: 'property1', value: 100 }],
+        selectedStructure: 'test',
+        structures: [{ id: 'test', propertyId: 'property1' }],
+      })).to.deep.include({
+        structure: {
+          id: 'test',
+          propertyId: 'property1',
+          property: { _id: 'property1', value: 100 },
+        },
+      });
+    });
+
+    it('adds the right offer if it exists', () => {
+      expect(formatLoanWithStructure({
+        offers: [{ _id: 'offer1', amortization: 100 }],
+        selectedStructure: 'test',
+        structures: [{ id: 'test', offerId: 'offer1' }],
+      })).to.deep.include({
+        structure: {
+          id: 'test',
+          offerId: 'offer1',
+          offer: { _id: 'offer1', amortization: 100 },
+        },
+      });
+    });
+
+    it('adds both offer and property', () => {
+      expect(formatLoanWithStructure({
+        offers: [{ _id: 'offer1', amortization: 100 }],
+        properties: [{ _id: 'property1', value: 100 }],
+        selectedStructure: 'test',
+        structures: [
+          { id: 'test', offerId: 'offer1', propertyId: 'property1' },
+        ],
+      })).to.deep.include({
+        structure: {
+          id: 'test',
+          offerId: 'offer1',
+          propertyId: 'property1',
+          offer: { _id: 'offer1', amortization: 100 },
+          property: { _id: 'property1', value: 100 },
+        },
+      });
     });
   });
 });
