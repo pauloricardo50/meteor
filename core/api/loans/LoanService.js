@@ -103,10 +103,18 @@ class LoanServiceModel {
   popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
 
   addStructure = ({ loanId, structure = {} }) => {
-    const isFirstStructure = this.getLoanById(loanId).structures.length === 0;
+    const loan = this.getLoanById(loanId);
+    const isFirstStructure = loan.structures.length === 0;
     const newStructureId = Random.id();
     return Loans.update(loanId, {
-      $push: { structures: { ...structure, id: newStructureId } },
+      $push: {
+        structures: {
+          ...structure,
+          id: newStructureId,
+          propertyId:
+            loan.propertyIds.length > 0 ? loan.propertyIds[0] : undefined,
+        },
+      },
       $set: isFirstStructure ? { selectedStructure: newStructureId } : {},
     });
   };

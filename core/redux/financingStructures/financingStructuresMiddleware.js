@@ -19,17 +19,13 @@ export const saveStructures = debounce((saveDataFunc, ids, getState) => {
 
   const store = getState();
   const loanId = selectLoan(store)._id;
-  return Promise.all(
-    idsToUse.map(structureId => {
-      const structure = makeSelectStructure(structureId)(store);
-      return saveDataFunc({ structureId, structure, loanId });
-    }),
-  );
+  return Promise.all(idsToUse.map((structureId) => {
+    const structure = makeSelectStructure(structureId)(store);
+    return saveDataFunc({ structureId, structure, loanId });
+  }));
 }, DEBOUNCE_TIMEOUT_MS);
 
-export const rehydrateMiddleware = ({ dispatch, getState }) => next => (
-  action: Action,
-) => {
+export const rehydrateMiddleware = ({ dispatch, getState }) => next => (action: Action) => {
   if (action.type === REHYDRATE_LOAN) {
     const {
       financingStructures: { isLoaded },
@@ -40,13 +36,13 @@ export const rehydrateMiddleware = ({ dispatch, getState }) => next => (
     dispatch(rehydrateData(normalize(loan.structures), 'structures'));
     // }
     dispatch(rehydrateData(normalize(loan.borrowers), 'borrowers'));
-    dispatch(rehydrateData(loan.property, 'property'));
+    dispatch(rehydrateData(normalize(loan.properties), 'properties'));
     return;
   }
   return next(action);
 };
 
-export const makeSaveDataMiddleware = saveDataFunc => {
+export const makeSaveDataMiddleware = (saveDataFunc) => {
   const updatedIds = [];
   return ({ dispatch, getState }) => next => (action: Action) => {
     if (action.type === UPDATE_STRUCTURE) {
@@ -62,9 +58,7 @@ export const makeSaveDataMiddleware = saveDataFunc => {
   };
 };
 
-export const saveDataMiddleWare = makeSaveDataMiddleware(params =>
-  updateStructure.run(params),
-);
+export const saveDataMiddleWare = makeSaveDataMiddleware(params => updateStructure.run(params));
 
 export const financingStructuresMiddleware = [
   rehydrateMiddleware,

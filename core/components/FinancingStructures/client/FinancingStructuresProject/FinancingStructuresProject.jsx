@@ -6,6 +6,7 @@ import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
 } from '../FinancingStructuresSection';
+import FinancingStructuresPropertyPicker from './FinancingStructuresPropertyPicker';
 
 type FinancingStructuresProjectProps = {};
 
@@ -30,7 +31,7 @@ const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
       },
     ]}
     detailConfig={[
-      { Component: InputAndSlider, id: 'propertyValue' },
+      { Component: FinancingStructuresPropertyPicker, id: 'propertyId' },
       {
         id: 'notaryFees',
         Component: CalculatedValue,

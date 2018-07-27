@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import cx from 'classnames';
 
 import T from 'core/components/Translation';
-import StructureUpdateContainer from './StructureUpdateContainer';
+import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 
 type RadioButtonsProps = {
   value: string,

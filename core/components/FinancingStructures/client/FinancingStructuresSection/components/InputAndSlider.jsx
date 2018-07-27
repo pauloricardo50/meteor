@@ -4,7 +4,7 @@ import Slider from 'core/components/Material/Slider';
 import cx from 'classnames';
 
 import MoneyInput from '../../../../MoneyInput';
-import StructureUpdateContainer from './StructureUpdateContainer';
+import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 
 type InputAndSliderProps = {
   value: number,
