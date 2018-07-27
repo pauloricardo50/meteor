@@ -4,7 +4,7 @@
 # such as installing things, symlinks, copying necessary folders
 
 start=`date +%s`
-echo "Preparing e-Potek..."
+echo "Preparing e-Potek :]"
 DO_CLEAN=false
 
 # check for flag arguments
@@ -39,7 +39,7 @@ fi
 # Prepare every microservice
 for i in 'admin' 'app' 'www'
   do
-    echo "Preparing $i microservice..."
+    echo "Preparing $i microservice"
 
     echo "Creating symlinks"
     pwd
@@ -84,10 +84,10 @@ fi
 echo "Installing npm packages in root"
 ( cd .. && meteor npm i -q );
 
-echo "Installing babel-cli to be able to run babel-node"
-meteor npm i -g babel-cli
+echo "Installing babel-node"
+meteor npm i -g @babel/node
 
-echo "Creating language files..."
+echo "Creating language files"
 meteor babel-node ./createLanguages.js
 
 end=`date +%s`

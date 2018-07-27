@@ -1,20 +1,12 @@
 import colors from '../../config/colors';
 
 export const legendConfig = {
-  // align: 'center',
-  // verticalAlign: 'bottom',
-  // layout: 'horizontal',
   itemStyle: {
     fontSize: '14px',
-    fontWeight: 400,
-    // whiteSpace: 'nowrap',
   },
-  symbolWidth: 10,
-  symbolHeight: 10,
-  // useHTML: true,
-  // labelFormatter() {
-  //   return this.y ? `${this.name}` : '';
-  // },
+  floating: false,
+  itemMarginBottom: 4,
+  margin: 30,
 };
 
 export function adjustLegend(that) {
@@ -45,4 +37,5 @@ export const defaultConfig = {
   colors: colors.charts,
   lang: { thousandsSep: "'" },
   credits: { enabled: false },
+  legend: legendConfig,
 };

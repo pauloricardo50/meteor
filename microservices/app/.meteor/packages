@@ -23,6 +23,7 @@ aldeed:collection2-core
 
 # Testing
 cultofcoders:mocha
+xolvio:cleaner
 hwillson:stub-collections
 meteortesting:mocha
 
@@ -67,4 +68,3 @@ okgrow:analytics
 underscore@1.0.10
 cultofcoders:grapher-react
 dburles:factory
-xolvio:cleaner

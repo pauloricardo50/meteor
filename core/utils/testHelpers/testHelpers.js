@@ -2,7 +2,6 @@ import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
 
 import { Users } from '../../api';
-import './setupTests';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id

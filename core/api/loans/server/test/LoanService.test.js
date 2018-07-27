@@ -18,6 +18,8 @@ describe('LoanService', () => {
 
   describe('disableUserForms', () => {
     it('disables user forms', () => {
+      console.log('testing');
+
       loanId = Factory.create('loan')._id;
       loan = LoanService.getLoanById(loanId);
       LoanService.disableUserForms({ loanId });
