@@ -17,8 +17,6 @@ export default class GoogleMap extends Component {
       options,
     );
 
-    console.log('creating google map', id);
-
     GoogleMaps.create({
       name: id,
       element: this.map,
@@ -40,8 +38,6 @@ export default class GoogleMap extends Component {
     const { id, latlng, address } = this.props;
 
     GoogleMaps.ready(id, (map) => {
-      console.log('map is ready', id);
-
       const infowindow = new window.google.maps.InfoWindow({
         content: address,
       });

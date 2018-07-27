@@ -19,9 +19,7 @@ export default class FinancingStructuresLabel extends Component<
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ height: this.getLabelHeight() });
-    }, 0);
+    setTimeout(() => this.setState({ height: this.getLabelHeight() }), 0);
   }
 
   getLabelHeight = () => {

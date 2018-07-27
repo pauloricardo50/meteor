@@ -7,7 +7,6 @@ import FinancingStructuresSection, {
 } from '../FinancingStructuresSection';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import {
-  returnZero,
   getInterests,
   getAmortization,
   getAmortizationDeduction,

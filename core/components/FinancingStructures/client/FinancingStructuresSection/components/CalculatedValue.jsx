@@ -24,12 +24,12 @@ const CalculatedValue = ({
   return (
     <div className={cx('calculated-value', className)}>
       {money ? (
-        <span>
+        <React.Fragment>
           <span className="chf">
-            {'CHF '}
+            {'CHF'}
           </span>
           {toMoney(displayValue)}
-        </span>
+        </React.Fragment>
       ) : (
         displayValue
       )}

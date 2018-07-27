@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { compose, mapProps } from 'recompose';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
@@ -14,23 +15,34 @@ const FinancingStructuresPropertyPickerContainer = compose(
     properties,
     loanId,
   })),
-  mapProps(({ properties, loanId, structure: { propertyId }, handleChange }) => ({
+  withRouter,
+  mapProps(({
+    properties,
+    loanId,
+    structure: { propertyId },
+    handleChange,
+    history: { push },
+  }) => ({
     options: [
       ...Object.values(properties).map(({ _id, address1, value }) => ({
         id: _id,
         label: address1,
-        secondary: `CHF ${toMoney(value)}`,
       })),
       {
         id: 'add',
         dividerTop: true,
-        link: `/loans/${loanId}/properties`,
         label: <T id="FinancingStructuresPropertyPicker.addProperty" />,
       },
     ],
     value: propertyId,
     property: properties[propertyId],
-    handleChange: (_, value) => value && handleChange(value),
+    handleChange: (_, value) => {
+      if (value === 'add') {
+        push(`/loans/${loanId}/properties`);
+      } else {
+        handleChange(value);
+      }
+    },
   })),
 );
 

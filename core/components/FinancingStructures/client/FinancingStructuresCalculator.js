@@ -2,16 +2,23 @@
 import { averageRates } from 'core/components/InterestRatesTable/interestRates';
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
+import { makeSelectPropertyValue } from '../../../redux/financingStructures';
 
 const argumentMappings = {
-  getBorrowRatio: ({ structure: { propertyValue, wantedLoan } }) => ({
-    propertyValue,
+  getBorrowRatio: ({
+    structure: { id, wantedLoan },
+    ...financingStructures
+  }) => ({
+    propertyValue: makeSelectPropertyValue(id)({ financingStructures }),
     loan: wantedLoan,
   }),
   getAmortizationRate: ({
-    structure: { propertyValue, wantedLoan, propertyWork },
+    structure: { id, wantedLoan, propertyWork },
+    ...financingStructures
   }) => ({
-    borrowRatio: wantedLoan / (propertyValue + propertyWork),
+    borrowRatio:
+        wantedLoan
+        / (makeSelectPropertyValue(id)({ financingStructures }) + propertyWork),
   }),
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
@@ -27,11 +34,14 @@ const argumentMappings = {
     };
   },
   getIndirectAmortizationDeduction: ({
-    structure: { propertyValue, wantedLoan, propertyWork },
+    structure: { id, wantedLoan, propertyWork },
+    ...financingStructures
   }) => ({
     loanValue: wantedLoan,
     amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoan({
-      borrowRatio: wantedLoan / (propertyValue + propertyWork),
+      borrowRatio:
+        wantedLoan
+        / (makeSelectPropertyValue(id)({ financingStructures }) + propertyWork),
     }),
   }),
 

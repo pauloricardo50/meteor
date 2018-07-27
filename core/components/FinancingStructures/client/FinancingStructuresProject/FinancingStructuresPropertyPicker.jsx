@@ -2,6 +2,7 @@
 import React from 'react';
 
 import Select from '../../../Select';
+import CalculatedValue from '../FinancingStructuresSection/components/CalculatedValue';
 import FinancingStructuresPropertyPickerContainer from './FinancingStructuresPropertyPickerContainer';
 
 type FinancingStructuresPropertyPickerProps = {
@@ -16,8 +17,9 @@ const FinancingStructuresPropertyPicker = ({
   property,
   handleChange,
 }: FinancingStructuresPropertyPickerProps) => (
-  <div className="financing-structures-property-picker">
+  <div className="financing-structures-property-picker propertyId">
     <Select value={value} options={options} onChange={handleChange} />
+    <CalculatedValue value={property.value} money />
   </div>
 );
 

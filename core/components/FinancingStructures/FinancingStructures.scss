@@ -1,4 +1,5 @@
 @import './client/FinancingStructuresHeader/FinancingStructuresHeader.scss';
+@import './client/FinancingStructuresProject/FinancingStructuresProject.scss';
 $labels-width: 200px;
 $item-height: 32px;
 $card1_padding: 24px;
@@ -11,18 +12,6 @@ $card1_padding: 24px;
   .input-and-slider {
     > *:first-child {
       margin-bottom: 8px;
-    }
-  }
-
-  .calculated-value {
-    // Match Mui-Input font-size roughly
-    font-size: 1.142rem;
-    color: $primary;
-
-    .chf {
-      color: initial;
-      font-size: 12px;
-      opacity: 0.5;
     }
   }
 }
@@ -47,6 +36,27 @@ $card1_padding: 24px;
     justify-content: center;
     // Use padding on both sides to allow labels to center properly
     padding: 8px 0;
+  }
+
+  .radio-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .calculated-value {
+    // Match Mui-Input font-size roughly
+    font-size: 1.142rem;
+    color: $primary;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    .chf {
+      color: initial;
+      font-size: 12px;
+      opacity: 0.5;
+      margin-right: 4px;
+    }
   }
 }
 

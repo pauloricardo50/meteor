@@ -12,30 +12,39 @@ const styles = theme => ({
   menuItem: {
     '&:hover, &:focus': {
       backgroundColor: theme.palette.primary.main,
-      '& $colorClass': {
-        color: theme.palette.common.white,
-      },
+      '& $colorClass': { color: theme.palette.common.white },
     },
   },
-  menuItemRoot: {
-    height: 'unset',
-  },
-  listItemTextWithIcon: {
-    paddingLeft: 0,
-  },
+  menuItemRoot: { height: 'unset' },
+  listItemTextWithIcon: { paddingLeft: 0 },
+  listItemtext: { paddingLeft: 0, paddingRight: 0 },
   colorClass: {},
 });
 
 const mapOptions = (
   options,
-  { menuItem: menuItemClass, menuItemRoot, listItemTextWithIcon, colorClass },
+  {
+    menuItem: menuItemClass,
+    menuItemRoot,
+    listItemTextWithIcon,
+    listItemtext,
+    colorClass,
+  },
 ) => {
   const array = [];
   options.forEach((option) => {
     if (React.isValidElement(option)) {
       return option;
     }
-    const { id, label, icon, dividerTop, dividerBottom, secondary } = option;
+    const {
+      id,
+      label,
+      icon,
+      dividerTop,
+      dividerBottom,
+      secondary,
+      ...otherProps
+    } = option;
 
     if (dividerTop) {
       array.push(<Divider key={`divider${id}`} />);
@@ -46,6 +55,7 @@ const mapOptions = (
       key={id}
       className={menuItemClass}
       classes={{ root: menuItemRoot }}
+      {...otherProps}
     >
       <React.Fragment>
         {icon && (
@@ -57,7 +67,7 @@ const mapOptions = (
           classes={{
             primary: colorClass,
             secondary: colorClass,
-            root: icon ? listItemTextWithIcon : '',
+            root: icon ? listItemTextWithIcon : listItemtext,
           }}
           inset={!!icon}
           primary={label}

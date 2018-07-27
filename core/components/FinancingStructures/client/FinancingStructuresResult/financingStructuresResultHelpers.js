@@ -3,7 +3,6 @@ import { AMORTIZATION_TYPE } from 'core/api/constants';
 import BorrowerUtils from 'core/utils/BorrowerUtils';
 import FinanceCalculator from '../FinancingStructuresCalculator';
 
-export const returnZero = () => 0;
 export const getInterests = params => (FinanceCalculator.getInterestsWithTranches(params)
     * FinanceCalculator.getEffectiveLoan(params))
   / 12;
@@ -26,10 +25,8 @@ export const getAmortizationDeduction = (params) => {
 
 export const getSecondPillarWithdrawalTax = FinanceCalculator.getSecondPillarWithdrawalTax;
 
-export const getRemainingCash = ({
-  borrowers,
-  structure: { fortuneUsed },
-}) => BorrowerUtils.getFortune({ borrowers: Object.values(borrowers) }) - fortuneUsed;
+export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) => BorrowerUtils.getFortune({ borrowers: Object.values(borrowers) })
+  - fortuneUsed;
 
 export const getRemainingSecondPillar = ({
   borrowers,

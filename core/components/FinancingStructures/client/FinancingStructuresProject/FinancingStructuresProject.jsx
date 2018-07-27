@@ -7,14 +7,16 @@ import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
 import FinancingStructuresPropertyPicker from './FinancingStructuresPropertyPicker';
+import { makeSelectPropertyValue } from '../../../../redux/financingStructures';
 
 type FinancingStructuresProjectProps = {};
 
-const calculateNotaryFees = ({ structure: { propertyValue } }) => propertyValue * 0.05;
+const calculateNotaryFees = ({ structure: { id }, ...financingStructures }) => makeSelectPropertyValue(id)({ financingStructures }) * 0.05;
 
 const calculateProjectValue = ({
-  structure: { propertyValue, propertyWork },
-}) => propertyValue * 1.05 + propertyWork;
+  structure: { id, propertyWork },
+  ...financingStructures
+}) => makeSelectPropertyValue(id)({ financingStructures }) * 1.05 + propertyWork;
 
 const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection

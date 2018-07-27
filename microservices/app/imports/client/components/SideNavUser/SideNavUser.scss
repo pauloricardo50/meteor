@@ -39,16 +39,6 @@
     margin: 0;
     padding-right: 8px;
   }
-
-  [class*='MuiListItemText'] {
-    padding-right: 0;
-  }
-
-  span:first-child {
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-  }
 }
 
 .side-nav-user .link {

@@ -1,9 +1,6 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import {
-  AMORTIZATION_TYPE,
-  INSURANCE_USE_PRESET,
-} from '../loanConstants';
+import { AMORTIZATION_TYPE } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
 
 const StructureSchema = new SimpleSchema({
@@ -47,7 +44,6 @@ const StructureSchema = new SimpleSchema({
   propertyWork: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   sortOffersBy: { type: String, optional: true },
   wantedLoan: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
-  propertyValue: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   ...loanTranchesSchema,
 });
 
@@ -68,7 +64,6 @@ export type structureType = {
   propertyWork: number,
   sortOffersBy: string,
   wantedLoan: number,
-  propertyValue: number,
 };
 
 export default StructureSchema;
