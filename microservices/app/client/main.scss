@@ -8,17 +8,18 @@
 @import '../imports/client/layouts/AppLayout/AppLayout.scss';
 
 // Pages
+@import '../imports/client/pages/AuctionPage/AuctionPage.scss';
+@import '../imports/client/pages/BorrowersPage/BorrowersPage.scss';
+@import '../imports/client/pages/ClosingPage/ClosingPage.scss';
 @import '../imports/client/pages/ContractPage/ContractPage.scss';
 @import '../imports/client/pages/DashboardPage/DashboardPage.scss';
-@import '../imports/client/pages/StrategyPage/StrategyPage.scss';
-@import '../imports/client/pages/BorrowersPage/BorrowersPage.scss';
 @import '../imports/client/pages/PropertiesPage/PropertiesPage.scss';
-@import '../imports/client/pages/VerificationPage/VerificationPage.scss';
+@import '../imports/client/pages/StrategyPage/StrategyPage.scss';
 @import '../imports/client/pages/StructurePage/StructurePage.scss';
-@import '../imports/client/pages/AuctionPage/AuctionPage.scss';
-@import '../imports/client/pages/ClosingPage/ClosingPage.scss';
+@import '../imports/client/pages/VerificationPage/VerificationPage.scss';
 
 // Components
+@import '../imports/client/components/AppTopNav/AppTopNav.scss';
 @import '../imports/client/components/Page/Page.scss';
 @import '../imports/client/components/SideNavUser/SideNavUser.scss';
 @import '../imports/client/components/StrategyChoices/StrategyChoices.scss';
