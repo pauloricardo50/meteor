@@ -2,36 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { withStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
-
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
-const styles = theme => ({
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-});
-
-const DrawerHeader = ({ showButton, onClick, permanent, classes }) => (
-  <div
-    className={classnames({
-      'top-bar': true,
-      [classes.drawerHeader]: permanent,
-    })}
-  >
+const DrawerHeader = ({ showButton, onClick }) => (
+  <div className="top-bar drawer-header">
     <Link to="/">
-      <img
-        src="/img/logo_black.svg"
-        alt="e-Potek"
-        style={styles.logo}
-        className="logo"
-      />
+      <img src="/img/logo_square_black.svg" alt="e-Potek" className="logo" />
     </Link>
     {showButton && (
       <IconButton
@@ -51,17 +28,13 @@ const DrawerHeader = ({ showButton, onClick, permanent, classes }) => (
 );
 
 DrawerHeader.propTypes = {
-  showButton: PropTypes.bool,
   onClick: PropTypes.func,
-  permanent: PropTypes.bool,
-  classes: PropTypes.object,
+  showButton: PropTypes.bool,
 };
 
 DrawerHeader.defaultProps = {
   showButton: false,
   onClick: undefined,
-  permanent: false,
-  classes: undefined,
 };
 
-export default withStyles(styles)(DrawerHeader);
+export default DrawerHeader;
