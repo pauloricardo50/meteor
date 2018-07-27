@@ -11,7 +11,7 @@ import {
 } from '../../wuestConstants';
 import { PROPERTY_STYLE } from '../../../properties/propertyConstants';
 
-describe.only('WuestService', () => {
+describe('WuestService', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -352,6 +352,22 @@ describe.only('WuestService', () => {
         },
       };
       expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_USABLE_AREA_TYPE);
+    });
+  });
+
+  describe('formatError', () => {
+    it('formats an error correctly', () => {
+      const error = {
+        message: 'Error {0}',
+        validationErrors: [
+          {
+            field: 'field1',
+            message: 'on field1',
+          },
+        ],
+      };
+
+      expect(WuestService.formatError(error)).to.equal('Error on field1');
     });
   });
 

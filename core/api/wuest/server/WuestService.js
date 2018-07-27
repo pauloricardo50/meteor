@@ -470,13 +470,16 @@ class WuestService {
     return results;
   }
 
+  formatError(error) {
+    return error.message.replace(
+      "{0}",
+      error.validationErrors[0].message,
+    );
+  }
   handleResult(result) {
     return result.json().then((response) => {
       if (response.errorCode) {
-        const errorMessage = response.message.replace(
-          "'{0}'",
-          response.validationErrors[0].message,
-        );
+        const errorMessage = this.formatError(response);
         throw new Meteor.Error(errorMessage);
       }
       return response;

@@ -11,7 +11,7 @@ describe('PropertyService', () => {
     resetDatabase();
   });
   describe('evaluateProperty', () => {
-    it('adds an error on the property', () => {
+    it.skip('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
         address1: 'rue du four 2',
         zipCode: '1400',
