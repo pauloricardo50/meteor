@@ -3,5 +3,6 @@ export const Mongo = {
     deny: () => {},
     allow: () => {},
     attachSchema: () => {},
+    createQuery: () => {},
   }),
 };

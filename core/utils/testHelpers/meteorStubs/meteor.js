@@ -3,4 +3,8 @@ export const Meteor = {
   users: {
     attachSchema: () => {},
   },
+  settings: {
+    public: {},
+    private: {},
+  },
 };
