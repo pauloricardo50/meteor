@@ -30,6 +30,8 @@ const config = {
         'AdminFilesTab',
         'AmortizationChart',
         'PropertyForm',
+        'ValuationButton',
+        'Valuation',
       ],
     },
     {

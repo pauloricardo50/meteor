@@ -2,9 +2,12 @@
 import React from 'react';
 
 import Button from 'core/components/Button';
+import T from 'core/components/Translation';
+
 import { EXPERTISE_STATUS } from '../../api/constants';
 import Loading from '../Loading';
 import ValuationContainer from './ValuationContainer';
+import { toMoney } from 'core/utils/conversionFunctions';
 
 type ValuationProps = {
   property: Object,
@@ -14,9 +17,12 @@ type ValuationProps = {
 };
 
 const renderResults = ({ min, max }) => (
-  <h2>
-    {min} - {max}
-  </h2>
+  <div className="valuation-results">
+    <h3>CHF</h3>
+    <h2>
+      {toMoney(min)} - {toMoney(max)}
+    </h2>
+  </div>
 );
 const renderError = error => <h3 className="error">{error}</h3>;
 
@@ -42,10 +48,22 @@ export const Valuation = ({
   }
 
   return (
-    <div>
+    <div className="card1 valuation">
+      <h2>
+        <T id="Valuation.title" />
+      </h2>
       {content}
-      <Button onClick={handleEvaluateProperty} disabled={disabled}>
-        Evaluez votre bien
+      <Button
+        onClick={handleEvaluateProperty}
+        raised
+        primary
+        disabled={disabled}
+      >
+        {disabled ? (
+          <T id="ValuationButton.disabled" />
+        ) : (
+          <T id="ValuationButton.enabled" />
+        )}
       </Button>
     </div>
   );

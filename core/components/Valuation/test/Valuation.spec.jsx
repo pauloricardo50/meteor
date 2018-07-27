@@ -3,6 +3,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
+import { toMoney } from 'core/utils/conversionFunctions';
+
 import Button from 'core/components/Button';
 import Loading from '../../Loading';
 
@@ -37,8 +39,9 @@ describe('Valuation', () => {
       min,
       max,
     };
-    expect(component().contains(min)).to.equal(true);
-    expect(component().contains(max)).to.equal(true);
+
+    expect(component().contains(toMoney(min))).to.equal(true);
+    expect(component().contains(toMoney(max))).to.equal(true);
   });
 
   it('renders the button when the valuation exists', () => {
