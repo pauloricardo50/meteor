@@ -1,13 +1,12 @@
 {
-  "screenshotOnRunFailure": true,
-  "screenshotsFolder":
-    "/home/circleci/app/e2e-results/cypress/admin-screenshots",
-  "video": false,
-  "videosFolder": "/home/circleci/app/e2e-results/cypress/admin-videos",
-  "integrationFolder": "cypress/tests",
-  "pluginsFile": false,
-  "fixturesFolder": false,
-  "supportFile": "imports/core/cypress/support",
+  "baseUrl": "http://localhost:5015",
   "defaultCommandTimeout": 30000,
-  "baseUrl": "http://localhost:5015"
+  "fixturesFolder": false,
+  "integrationFolder": "cypress/tests",
+  "pluginsFile": "imports/core/cypress/plugins",
+  "screenshotOnRunFailure": true,
+  "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/admin-screenshots",
+  "supportFile": "imports/core/cypress/support",
+  "video": false,
+  "videosFolder": "/home/circleci/app/e2e-results/cypress/admin-videos"
 }

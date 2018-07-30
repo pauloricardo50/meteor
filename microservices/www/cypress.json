@@ -1,12 +1,12 @@
 {
+  "baseUrl": "http://localhost:3015",
+  "defaultCommandTimeout": 30000,
+  "fixturesFolder": false,
+  "integrationFolder": "cypress/tests",
+  "pluginsFile": "imports/core/cypress/plugins",
   "screenshotOnRunFailure": true,
   "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/www-screenshots",
-  "video": false,
-  "videosFolder": "/home/circleci/app/e2e-results/cypress/www-videos",
-  "integrationFolder": "cypress/tests",
-  "pluginsFile": false,
-  "fixturesFolder": false,
   "supportFile": "imports/core/cypress/support",
-  "defaultCommandTimeout": 30000,
-  "baseUrl": "http://localhost:3015"
+  "video": false,
+  "videosFolder": "/home/circleci/app/e2e-results/cypress/www-videos"
 }
