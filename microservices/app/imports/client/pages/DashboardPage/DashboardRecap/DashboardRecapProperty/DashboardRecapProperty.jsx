@@ -35,15 +35,9 @@ export const getRecapArray = (property) => {
     {
       label: 'property.expertise',
       value:
-        status == EXPERTISE_STATUS.DONE ? (
+        status === EXPERTISE_STATUS.DONE ? (
           <p>
-            CHF
-            {' '}
-            {toMoney(min)}
-            {' '}
--
-            {' '}
-            {toMoney(max)}
+            {`CHF ${toMoney(min)} - ${toMoney(max)}`}
           </p>
         ) : (
           <T id={`property.expertiseStatus.${status}`} />
