@@ -1496,7 +1496,6 @@
   "Impersonation.impersonateLinkText": "Se faire passer pour cet utilisateur",
   "Impersonation.impersonationSuccess": "Actuellement connecté comme {email}",
   "Impersonation.impersonateWarning": "Connecté comme {email}",
-  "Dummy_Blank": "Dummy_Blank",
   "ValuationButton.disabled": "Il manque des informations",
   "ValuationButton.enabled": "Evaluez votre bien",
   "Valuation.title": "Expertise"

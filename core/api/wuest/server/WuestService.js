@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { Meteor } from 'meteor/meteor';
-import House from './House';
-import Flat from './Flat';
+import WuestHouse from './WuestHouse';
+import WuestFlat from './WuestFlat';
 import {
   URL,
   TOKEN,
@@ -25,8 +25,8 @@ class WuestService {
     this.properties = [];
   }
 
-  getData = property =>
-    fetch(URL, {
+  getData(property) {
+    return fetch(URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,6 +34,7 @@ class WuestService {
       },
       body: JSON.stringify(property),
     });
+  }
 
   addProperty(property) {
     this.checkPropertySanity(property);
@@ -286,7 +287,7 @@ class WuestService {
 
   buildHouse(property) {
     const { id, type, data: houseData } = property;
-    const house = new House();
+    const house = new WuestHouse();
     house.setValue({ path: 'address', value: houseData.address });
     house.setValue({ path: 'residenceType', value: houseData.residenceType });
     house.setValue({ path: 'houseType', value: houseData.houseType });
@@ -314,7 +315,7 @@ class WuestService {
 
   buildFlat(property) {
     const { id, type, data: flatData } = property;
-    const flat = new Flat();
+    const flat = new WuestFlat();
     flat.setValue({ path: 'address', value: flatData.address });
     flat.setValue({ path: 'residenceType', value: flatData.residenceType });
     flat.setValue({ path: 'flatType', value: flatData.flatType });
@@ -471,12 +472,11 @@ class WuestService {
   }
 
   formatError(error) {
-    return error.message.replace(
-      "{0}",
-      error.validationErrors[0].message,
-    );
+    return error.message.replace('{0}', error.validationErrors[0].message);
   }
+
   handleResult(result) {
+    console.log('this:', this);
     return result.json().then((response) => {
       if (response.errorCode) {
         const errorMessage = this.formatError(response);
@@ -490,7 +490,7 @@ class WuestService {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
       return this.getData(property.property.JSONData)
-        .then(this.handleResult)
+        .then((result) => this.handleResult(result))
         .then(this.formatResult);
     });
     this.properties = [];

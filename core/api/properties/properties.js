@@ -23,6 +23,37 @@ Properties.allow({
   remove: () => false,
 });
 
+export const ValuatioSchema = new SimpleSchema({
+  status: {
+    type: String,
+    defaultValue: EXPERTISE_STATUS.NONE,
+    allowedValues: Object.keys(EXPERTISE_STATUS),
+  },
+  min: {
+    type: Number,
+    min: 0,
+    optional: true,
+  },
+  max: {
+    type: Number,
+    min: 0,
+    optional: true,
+  },
+  value: {
+    type: Number,
+    min: 0,
+    optional: true,
+  },
+  date: {
+    type: Date,
+    optional: true,
+  },
+  error: {
+    type: String,
+    optional: true,
+  },
+});
+
 export const PropertySchema = new SimpleSchema({
   userId: {
     type: String,
@@ -272,38 +303,9 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: {},
   },
   valuation: {
-    type: Object,
+    type: ValuatioSchema,
     defaultValue: {},
   },
-  'valuation.status': {
-    type: String,
-    defaultValue: EXPERTISE_STATUS.NONE,
-    allowedValues: Object.keys(EXPERTISE_STATUS),
-  },
-  'valuation.min': {
-    type: Number,
-    min: 0,
-    optional: true,
-  },
-  'valuation.max': {
-    type: Number,
-    optional: true,
-    min: 0,
-  },
-  'valuation.value': {
-    type: Number,
-    min: 0,
-    optional: true,
-  },
-  'valuation.date': {
-    type: Date,
-    optional: true,
-  },
-  'valuation.error': {
-    type: String,
-    optional: true,
-  },
-
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   documents: {
     type: Object,

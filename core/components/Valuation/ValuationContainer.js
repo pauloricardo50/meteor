@@ -1,3 +1,4 @@
+// @flow
 import { withProps, withState, compose, lifecycle } from 'recompose';
 import { evaluateProperty, propertyDataIsInvalid } from '../../api';
 
@@ -6,9 +7,7 @@ export default compose(
   withProps(({ property: { _id: propertyId }, setIsLoading }) => ({
     handleEvaluateProperty: () => {
       setIsLoading(true);
-      evaluateProperty.run({ propertyId }).finally(() => {
-        setIsLoading(false);
-      });
+      evaluateProperty.run({ propertyId }).finally(() => setIsLoading(false));
     },
   })),
   lifecycle({
@@ -18,15 +17,13 @@ export default compose(
     componentDidMount() {
       propertyDataIsInvalid
         .run({ propertyId: this.props.property._id })
-        .then((error) => {
-          this.setState({ disabled: !!error });
-        });
+        .then(error => this.setState({ disabled: !!error }));
     },
     componentWillReceiveProps({ property }) {
       if (JSON.stringify(property) !== JSON.stringify(this.props.property)) {
-        propertyDataIsInvalid.run({ propertyId: property._id }).then((error) => {
-          this.setState({ disabled: !!error });
-        });
+        propertyDataIsInvalid
+          .run({ propertyId: property._id })
+          .then(error => this.setState({ disabled: !!error }));
       }
     },
   }),

@@ -1,9 +1,8 @@
-import set from 'lodash/set';
 import merge from 'lodash/merge';
 import Property from './Property';
 import { HED_METHOD, AREA_TYPE } from '../wuestConstants';
 
-class Flat extends Property {
+class WuestFlat extends Property {
   constructor() {
     super();
     this.method = HED_METHOD.CON;
@@ -19,31 +18,31 @@ class Flat extends Property {
   }
 
   setFlatType(flatType) {
-    set(this, 'flatType', flatType);
+    this.setValue('flatType', flatType);
   }
 
   setNumberOfFloors(numberOfFloors) {
-    set(this, 'numberOfFloors', numberOfFloors);
+    this.setValue('numberOfFloors', numberOfFloors);
   }
 
   setFloorType(floorType) {
-    set(this, 'floorType', floorType);
+    this.setValue('floorType', floorType);
   }
 
   setNumberOfFlats() {
-    set(this, 'numberOfFlats', 2 * this.numberOfFloors);
+    this.setValue('numberOfFlats', 2 * this.numberOfFloors);
   }
 
   setTerraceArea(terraceArea) {
-    set(this, 'terraceArea', terraceArea);
+    this.setValue('terraceArea', terraceArea);
   }
 
   setUsableArea(usableArea) {
-    set(this, 'usableArea.value', usableArea);
+    this.setValue('usableArea.value', usableArea);
   }
 
   setUsableAreaType(usableAreaType) {
-    set(this, 'usableArea.type', usableAreaType);
+    this.setValue('usableArea.type', usableAreaType);
   }
 
   addUsableAreaToJSON() {
@@ -91,4 +90,4 @@ class Flat extends Property {
   }
 }
 
-export default Flat;
+export default WuestFlat;

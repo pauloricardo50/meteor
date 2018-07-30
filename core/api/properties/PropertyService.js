@@ -18,17 +18,15 @@ export class PropertyService {
 
   evaluateProperty = propertyId =>
     WuestService.evaluateById(propertyId)
-      .then(({ value, min, max }) => {
+      .then((valuation) => {
         this.update({
           propertyId,
           object: {
             valuation: {
               status: EXPERTISE_STATUS.DONE,
-              min,
-              max,
-              value,
               date: new Date(),
               error: '',
+              ...valuation,
             },
           },
         });
@@ -48,6 +46,7 @@ export class PropertyService {
           },
         });
       });
+
   getPropertyById = propertyId => Properties.findOne(propertyId);
 
   propertyDataIsInvalid = (propertyId) => {

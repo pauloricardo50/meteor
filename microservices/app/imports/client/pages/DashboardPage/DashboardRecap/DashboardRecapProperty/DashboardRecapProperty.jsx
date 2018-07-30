@@ -6,14 +6,13 @@ import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
 import { PropertyAdder, PropertyModifier } from 'core/components/PropertyForm';
 
-const getPropertyAddressString = ({ address1, zipCode, city }) =>
-  `${address1}, ${zipCode} ${city}`;
+const getPropertyAddressString = ({ address1, zipCode, city }) => `${address1}, ${zipCode} ${city}`;
 
 const getRecapArray = (property) => {
   const {
     landArea,
     insideArea,
-    expertise: { status },
+    valuation: { status },
   } = property;
   return [
     {
@@ -38,8 +37,7 @@ const getRecapArray = (property) => {
   ];
 };
 
-const shouldDisplay = ({ address1, zipCode, city }) =>
-  address1 && city && zipCode;
+const shouldDisplay = ({ address1, zipCode, city }) => address1 && city && zipCode;
 
 const getContent = (property, loanId) => {
   // if (!property) {

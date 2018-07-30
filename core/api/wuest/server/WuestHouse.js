@@ -3,7 +3,7 @@ import merge from 'lodash/merge';
 import Property from './Property';
 import { HED_METHOD, VOLUME_TYPE } from '../wuestConstants';
 
-class House extends Property {
+class WuestHouse extends Property {
   constructor() {
     super();
     this.method = HED_METHOD.SFH;
@@ -69,4 +69,4 @@ class House extends Property {
   }
 }
 
-export default House;
+export default WuestHouse;

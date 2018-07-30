@@ -36,9 +36,7 @@ class Property {
       rel: 'objectData',
       value: {
         ownershipType: 'SOLE_OWNERSHIP',
-        location: {
-          address: this.address,
-        },
+        location: { address: this.address },
       },
     });
   }
@@ -68,11 +66,7 @@ class Property {
             value: [
               {
                 isMaster: true,
-                constructions: [
-                  {
-                    year: this.constructionYear,
-                  },
-                ],
+                constructions: [{ year: this.constructionYear }],
               },
             ],
           },
@@ -107,21 +101,15 @@ class Property {
         entries: [
           {
             type: 'residential.object.standard',
-            grade: {
-              manualValue: this.qualityProfile.standard,
-            },
+            grade: { manualValue: this.qualityProfile.standard },
           },
           {
             type: 'residential.object.condition',
-            grade: {
-              manualValue: this.qualityProfile.condition,
-            },
+            grade: { manualValue: this.qualityProfile.condition },
           },
           {
             type: 'residential.location.microlocation',
-            grade: {
-              manualValue: this.qualityProfile.situation,
-            },
+            grade: { manualValue: this.qualityProfile.situation },
           },
         ],
       },

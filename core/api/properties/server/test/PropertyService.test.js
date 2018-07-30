@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import PropertyService from '../../PropertyService';
-import { EXPERTISE_STATUS } from '../../propertyConstants';
+import { EXPERTISE_STATUS, PROPERTY_STYLE } from '../../propertyConstants';
 import { WUEST_ERRORS } from '../../../wuest/wuestConstants';
 
 describe('PropertyService', () => {
@@ -11,25 +11,27 @@ describe('PropertyService', () => {
     resetDatabase();
   });
   describe('evaluateProperty', () => {
-    it.skip('adds an error on the property', () => {
+    it('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
+        style: PROPERTY_STYLE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',
         roomCount: 4,
         insideArea: 100,
         terraceArea: 20,
+        constructionYear: 1,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation.status).to.equal(EXPERTISE_STATUS.ERROR);
-        expect(property.valuation.error).to.equal('[Le champ Année de construction est obligatoire.]');
+        expect(property.valuation.error).contains('entre 1000 et 3000');
       });
-    });
+    }).timeout(10000);
 
     it('throws if it cannot find the property', () => {
       expect(() => PropertyService.evaluateProperty('test')).to.throw(WUEST_ERRORS.NO_PROPERTY_FOUND);
-    });
+    }).timeout(10000);
 
     it('adds min, max and value on the property', () => {
       const propertyId = Factory.create('property', {
