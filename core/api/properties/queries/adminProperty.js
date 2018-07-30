@@ -1,7 +1,7 @@
 import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
 
-export default Properties.createQuery(PROPERTY_QUERIES.PROPERTY, {
+export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
   $filter({ filters, params: { _id } }) {
     filters._id = _id;
   },
@@ -34,5 +34,13 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTY, {
     updatedAt: 1,
     borrowers: { firstName: 1, lastName: 1 },
     property: { value: 1 },
+  },
+  valuation: {
+    min: 1,
+    max: 1,
+    value: 1,
+    status: 1,
+    error: 1,
+    date: 1,
   },
 });

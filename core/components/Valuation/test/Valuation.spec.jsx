@@ -34,6 +34,13 @@ describe('Valuation', () => {
     expect(component().contains(toMoney(max))).to.equal(true);
   });
 
+  it('renders the value when it exists', () => {
+    const value = 1000000;
+    props.property.valuation = { status: EXPERTISE_STATUS.DONE, value };
+
+    expect(component().contains(toMoney(value))).to.equal(true);
+  });
+
   it('renders the button when the valuation exists', () => {
     props.property.valuation = { status: EXPERTISE_STATUS.DONE };
     expect(component()
@@ -50,10 +57,7 @@ describe('Valuation', () => {
 
   it('renders the error when error exists', () => {
     const error = 'testError';
-    props.property.valuation = {
-      status: EXPERTISE_STATUS.ERROR,
-      error,
-    };
+    props.property.valuation = { status: EXPERTISE_STATUS.ERROR, error };
     expect(component().contains(error)).to.equal(true);
   });
 

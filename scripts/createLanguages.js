@@ -56,6 +56,8 @@ const config = {
         'collections',
         'Impersonation',
         'AdminFilesTab',
+        'ValuationButton',
+        'Valuation',
       ],
     },
   ],

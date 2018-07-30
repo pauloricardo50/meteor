@@ -16,12 +16,13 @@ type ValuationProps = {
   disabled: boolean,
 };
 
-const renderResults = ({ min, max }) => (
+const renderResults = ({ min, max, value }) => (
   <div className="valuation-results">
     <h3>CHF</h3>
     <h2>
       {toMoney(min)} - {toMoney(max)}
     </h2>
+    <h1>{toMoney(value)}</h1>
   </div>
 );
 const renderError = error => <h3 className="error">{error}</h3>;

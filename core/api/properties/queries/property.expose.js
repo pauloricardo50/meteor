@@ -1,5 +1,5 @@
 import Security from '../../security';
-import query from './property';
+import query from './userProperty';
 
 query.expose({
   firewall(userId) {
