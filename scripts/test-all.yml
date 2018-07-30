@@ -1,0 +1,19 @@
+name: test-all
+root: ./
+
+windows:
+  - e-Potek Test All:
+      layout: tiled
+
+      panes:
+        - www-unit:
+            - cd ../microservices/www
+            - meteor npm run test-console-once
+        - app-unit:
+            - cd ../microservices/app
+            - meteor npm run test-console-once
+        - admin-unit:
+            - cd ../microservices/admin
+            - meteor npm run test-console-once
+
+
