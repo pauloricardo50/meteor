@@ -11,7 +11,8 @@
     "remove-core": "cd scripts/ && ./remove-core.sh",
     "clean-css": "cd scripts/ && ./clean-css.sh",
     "flow": "flow",
-    "flow-typed": "flow-typed install"
+    "flow-typed": "flow-typed install",
+    "test-all": "cd scripts/ && ./test-all.sh"
   },
   "repository": {
     "type": "git",
