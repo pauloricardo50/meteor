@@ -18,11 +18,22 @@ type ValuationProps = {
 
 const renderResults = ({ min, max, value }) => (
   <div className="valuation-results">
-    <h3>CHF</h3>
-    <h2>
-      {toMoney(min)} - {toMoney(max)}
-    </h2>
-    <h1>{toMoney(value)}</h1>
+    <div className="valuation-value">
+      <h3 className="valuation-label">
+        <T id="Valuation.rangeLabel" />
+      </h3>
+      <h2>
+        {toMoney(min)} - {toMoney(max)}
+      </h2>
+    </div>
+    {value && (
+      <div className="valuation-value">
+        <h3 className="valuation-label">
+          <T id="Valuation.preciseValueLabel" />
+        </h3>
+        <h2>{toMoney(value)}</h2>
+      </div>
+    )}
   </div>
 );
 const renderError = error => <h3 className="error">{error}</h3>;

@@ -2,8 +2,8 @@ import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
 
 export default Properties.createQuery(PROPERTY_QUERIES.USER_PROPERTY, {
-  $filter({ filters, params: { _id } }) {
-    filters._id = _id;
+  $filter({ filters, params: { propertyId } }) {
+    filters._id = propertyId;
   },
   address1: 1,
   address2: 1,
