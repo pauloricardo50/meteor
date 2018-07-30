@@ -67,6 +67,14 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     customFields: 1,
     adminValidation: 1,
     documents: 1,
+    valuation: {
+      min: 1,
+      max: 1,
+      value: 1,
+      status: 1,
+      error: 1,
+      date: 1,
+    },
   },
   borrowerIds: 1,
   borrowers: {

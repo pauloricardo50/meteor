@@ -1,8 +1,10 @@
-import Properties from './properties';
 import LoanService from '../loans/LoanService';
+import Properties from '.';
+import WuestService from '../wuest/server/WuestService';
+import { EXPERTISE_STATUS } from './propertyConstants';
 
-export default class {
-  static insert = ({ property, userId, loanId }) => {
+export class PropertyService {
+  insert = ({ property, userId, loanId }) => {
     const propertyId = Properties.insert({ ...property, userId });
     if (loanId) {
       LoanService.addPropertyToLoan({ loanId, propertyId });
@@ -11,11 +13,54 @@ export default class {
     return propertyId;
   };
 
-  static update = ({ propertyId, object }) => Properties.update(propertyId, { $set: object });
+  update = ({ propertyId, object }) => Properties.update(propertyId, { $set: object });
 
-  static remove = ({ propertyId }) => Properties.remove(propertyId);
+  remove = ({ propertyId }) => Properties.remove(propertyId);
 
-  static pushValue = ({ propertyId, object }) => Properties.update(propertyId, { $push: object });
+  pushValue = ({ propertyId, object }) => Properties.update(propertyId, { $push: object });
 
-  static popValue = ({ propertyId, object }) => Properties.update(propertyId, { $pop: object });
+  popValue = ({ propertyId, object }) => Properties.update(propertyId, { $pop: object });
+
+  evaluateProperty = propertyId => WuestService.evaluateById(propertyId)
+    .then((valuation) => {
+      this.update({
+        propertyId,
+        object: {
+          valuation: {
+            status: EXPERTISE_STATUS.DONE,
+            date: new Date(),
+            error: '',
+            ...valuation,
+          },
+        },
+      });
+    })
+    .catch((error) => {
+      this.update({
+        propertyId,
+        object: {
+          valuation: {
+            status: EXPERTISE_STATUS.ERROR,
+            min: null,
+            max: null,
+            value: null,
+            date: new Date(),
+            error: error.message,
+          },
+        },
+      });
+    });
+
+  getPropertyById = propertyId => Properties.findOne(propertyId);
+
+  propertyDataIsInvalid = (propertyId) => {
+    try {
+      WuestService.createPropertyFromCollection(propertyId);
+    } catch (error) {
+      return error.message;
+    }
+    return false;
+  };
 }
+
+export default new PropertyService();

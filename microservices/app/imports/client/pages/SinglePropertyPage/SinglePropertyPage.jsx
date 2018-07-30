@@ -12,6 +12,7 @@ import { getPropertyCompletion } from 'core/utils/loanFunctions';
 import T from 'core/components/Translation';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
+import Valuation from 'core/components/Valuation'
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import Page from '../../components/Page';
 
@@ -50,6 +51,9 @@ const SinglePropertyPage = (props) => {
             <T id="PropertiesPage.description" />
           </p>
         </div>
+
+        <Valuation property={property} />
+
 
         <div className="description">
           <p>

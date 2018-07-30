@@ -31,6 +31,8 @@ const config = {
         'AmortizationChart',
         'PropertyForm',
         'FinancingStructures',
+        'ValuationButton',
+        'Valuation',
       ],
     },
     {
@@ -56,6 +58,8 @@ const config = {
         'Impersonation',
         'AdminFilesTab',
         'FinancingStructures',
+        'ValuationButton',
+        'Valuation',
       ],
     },
   ],

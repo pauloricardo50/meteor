@@ -4,13 +4,14 @@ import cx from 'classnames';
 
 import Loading from 'core/components/Loading';
 import Recap from 'core/components/Recap';
+import Valuation from 'core/components/Valuation';
+
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 
-export const getPropertyAddress = ({ address1, zipCode, city }) =>
-  (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
+export const getPropertyAddress = ({ address1, zipCode, city }) => (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = ({
   data: property,
@@ -28,6 +29,7 @@ const SinglePropertyPage = ({
   return (
     <section className={cx('single-property-page', className)}>
       <SinglePropertyPageHeader property={property} />
+      <Valuation property={property} /> 
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>
