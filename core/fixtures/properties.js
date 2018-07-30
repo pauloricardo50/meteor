@@ -14,8 +14,7 @@ const styles = Object.values(PROPERTY_STYLE);
 const volumeNorms = Object.values(VOLUME_NORM);
 
 const getRandomValueInRange = (min, max) => Math.random() * (max - min) + min;
-const getRandomValueInArray = array =>
-  array[Math.floor(Math.random() * array.length)];
+const getRandomValueInArray = array => array[Math.floor(Math.random() * array.length)];
 
 export const createFakeProperty = (userId) => {
   const object = {
@@ -65,7 +64,6 @@ export const createFakeProperty = (userId) => {
   return PropertyService.insert({ property: object, userId });
 };
 
-export const getRelatedPropertiesIds = usersIds =>
-  Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-    .fetch()
-    .map(item => item._id);
+export const getRelatedPropertyIds = usersIds => Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+  .fetch()
+  .map(item => item._id);

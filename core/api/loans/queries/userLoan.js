@@ -1,12 +1,17 @@
 // @flow
 import { Meteor } from 'meteor/meteor';
+import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
+import type { structureType, loanTranchesType } from '../types';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   $filter({ filters, params: { loanId } }) {
     filters.userId = Meteor.userId();
     filters._id = loanId;
+  },
+  $postFilter(loans, params) {
+    return loans.map(formatLoanWithStructure);
   },
   userId: 1,
   user: {
@@ -19,7 +24,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   updatedAt: 1,
   adminValidation: 1,
   documents: 1,
-  property: {
+  properties: {
     userId: 1,
     createdAt: 1,
     updatedAt: 1,
@@ -130,10 +135,35 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   },
   userFormsEnabled: 1,
   contacts: 1,
+  structures: {
+    id: 1,
+    amortization: 1,
+    amortizationType: 1,
+    secondPillarPledged: 1,
+    secondPillarWithdrawal: 1,
+    thirdPillarPledged: 1,
+    thirdPillarWithdrawal: 1,
+    name: 1,
+    description: 1,
+    fortuneUsed: 1,
+    loanValue: 1,
+    offerId: 1,
+    propertyId: 1,
+    propertyWork: 1,
+    sortOffersBy: 1,
+    wantedLoan: 1,
+    propertyValue: 1,
+    loanTranches: {
+      type: 1,
+      value: 1,
+    },
+  },
+  selectedStructure: 1,
 });
 
-export type userLoan = { _id: string };
-
-const obj: userLoan = {};
-
-obj._id = 'hello';
+export type userLoan = {
+  _id: string,
+  structures: Array<structureType>,
+  selectedStructure: string,
+  loanTranches: loanTranchesType,
+};

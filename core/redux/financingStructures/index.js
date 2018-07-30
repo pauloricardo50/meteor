@@ -1,11 +1,8 @@
 // @flow
-import * as _financingStructuresSelectors from './financingStructuresSelectors';
-import * as _financingStructuresActions from './financingStructuresActions';
-import * as _financingStructuresConstants from './financingStructuresConstants';
-import * as _financingStructuresTypes from './financingStructuresTypes';
+export * from './financingStructuresSelectors';
+export * from './financingStructuresActions';
+export * from './financingStructuresConstants';
+export * from './financingStructuresTypes';
+export * from './financingStructuresMiddleware';
 
 export { default } from './financingStructuresReducer';
-export const financingStructuresSelectors = _financingStructuresSelectors;
-export const financingStructuresActions = _financingStructuresActions;
-export const financingStructuresConstants = _financingStructuresConstants;
-export const financingStructuresTypes = _financingStructuresTypes;

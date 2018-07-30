@@ -21,14 +21,13 @@ class LoanServiceModel {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
     return this.insert({
-      loan: { propertyId, borrowerIds: [borrowerId] },
+      loan: { propertyIds: [propertyId], borrowerIds: [borrowerId] },
       userId,
     });
   };
 
   // TODO: make sure step is really done
-  incrementStep = ({ loanId }) =>
-    Loans.update(loanId, { $inc: { 'logic.step': 1 } });
+  incrementStep = ({ loanId }) => Loans.update(loanId, { $inc: { 'logic.step': 1 } });
 
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
@@ -80,48 +79,57 @@ class LoanServiceModel {
     });
   };
 
-  cancelAuction = ({ loanId }) =>
-    Loans.update(loanId, {
-      $set: {
-        'logic.auction.endTime': undefined,
-        'logic.auction.status': '',
-        'logic.auction.startTime': undefined,
-      },
-    });
+  cancelAuction = ({ loanId }) => Loans.update(loanId, {
+    $set: {
+      'logic.auction.endTime': undefined,
+      'logic.auction.status': '',
+      'logic.auction.startTime': undefined,
+    },
+  });
 
-  confirmClosing = ({ loanId, object }) =>
-    Loans.update(loanId, {
-      $set: {
-        status: LOAN_STATUS.DONE,
-        ...object,
-      },
-    });
+  confirmClosing = ({ loanId, object }) => Loans.update(loanId, {
+    $set: {
+      status: LOAN_STATUS.DONE,
+      ...object,
+    },
+  });
 
-  disableUserForms = ({ loanId }) =>
-    this.update({ loanId, object: { userFormsEnabled: false } });
+  disableUserForms = ({ loanId }) => this.update({ loanId, object: { userFormsEnabled: false } });
 
-  enableUserForms = ({ loanId }) =>
-    this.update({ loanId, object: { userFormsEnabled: true } });
+  enableUserForms = ({ loanId }) => this.update({ loanId, object: { userFormsEnabled: true } });
 
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
   popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
 
   addStructure = ({ loanId, structure = {} }) => {
-    const isFirstStructure = this.getLoanById(loanId).structures.length === 0;
+    const loan = this.getLoanById(loanId);
+    const isFirstStructure = loan.structures.length === 0;
     const newStructureId = Random.id();
     return Loans.update(loanId, {
-      $push: { structures: { ...structure, id: newStructureId } },
-      $set: { selectedStructure: newStructureId },
+      $push: {
+        structures: {
+          ...structure,
+          id: newStructureId,
+          propertyId:
+            loan.propertyIds.length > 0 ? loan.propertyIds[0] : undefined,
+        },
+      },
+      $set: isFirstStructure ? { selectedStructure: newStructureId } : {},
     });
   };
 
   removeStructure = ({ loanId, structureId }) => {
-    const currentlySelected = this.getLoanById(loanId).selectedStructure;
+    const { selectedStructure: currentlySelected } = this.getLoanById(loanId);
 
     if (currentlySelected !== structureId) {
-      return Loans.update(loanId, {
+      const updateObj = {
         $pull: { structures: { id: structureId } },
+      };
+
+      return Loans.update(loanId, updateObj, {
+        // Edge case fix: https://github.com/meteor/meteor/issues/4342
+        getAutoValues: false,
       });
     }
 
@@ -155,9 +163,13 @@ class LoanServiceModel {
     const currentStructure = this.getLoanById(loanId).structures.find(({ id }) => id === structureId);
 
     return (
-      !!currentStructure &&
-      this.addStructure({ loanId, structure: currentStructure })
+      !!currentStructure
+      && this.addStructure({ loanId, structure: currentStructure })
     );
+  };
+
+  addPropertyToLoan = ({ loanId, propertyId }) => {
+    this.pushValue({ loanId, object: { propertyIds: propertyId } });
   };
 }
 

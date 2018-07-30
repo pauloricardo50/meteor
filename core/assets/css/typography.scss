@@ -7,7 +7,7 @@ body {
   font-family: 'Eina04-Regular';
   line-height: 1.4em;
 
-  @include font-size($font-size-s);
+  @include font-size($font-size-xs);
 }
 
 h1,

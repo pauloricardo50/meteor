@@ -6,61 +6,36 @@ import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
-import PropertyTab from './PropertyTab';
+import PropertiesTab from './PropertiesTab';
 import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
 import FilesTab from './FilesTab';
 import FormsTab from './FormsTab';
+import StructuresTab from './StructuresTab';
 
-const getTabs = props =>
-  [
-    {
-      id: 'overview',
-      content: <OverviewTab {...props} />,
-    },
-    {
-      id: 'borrowers',
-      content: <BorrowersTab {...props} />,
-    },
-    {
-      id: 'property',
-      content: <PropertyTab {...props} />,
-    },
-    {
-      id: 'offers',
-      content: <OffersTab {...props} />,
-    },
-    {
-      id: 'communication',
-      content: <CommunicationTab {...props} />,
-    },
-    {
-      id: 'analytics',
-      content: <MixpanelAnalytics {...props} />,
-    },
-    {
-      id: 'forms',
-      content: <FormsTab {...props} />,
-    },
-    {
-      id: 'files',
-      content: <FilesTab {...props} />,
-    },
-    {
-      id: 'actions',
-      content: <ActionsTab {...props} />,
-    },
-  ].map(tab => ({
-    ...tab,
-    label: <T id={`LoanTabs.${tab.id}`} noTooltips />,
-    to: `/loans/${props.loan._id}/${tab.id}`,
-  }));
+const getTabs = props => [
+  { id: 'overview', Component: OverviewTab },
+  { id: 'structures', Component: StructuresTab },
+  { id: 'borrowers', Component: BorrowersTab },
+  { id: 'properties', Component: PropertiesTab },
+  { id: 'offers', Component: OffersTab },
+  { id: 'communication', Component: CommunicationTab },
+  { id: 'analytics', Component: MixpanelAnalytics },
+  { id: 'forms', Component: FormsTab },
+  { id: 'files', Component: FilesTab },
+  { id: 'actions', Component: ActionsTab },
+].map(({ id, Component }) => ({
+  id,
+  content: <Component {...props} />,
+  label: <T id={`LoanTabs.${id}`} noTooltips />,
+  to: `/loans/${props.loan._id}/${id}`,
+}));
 
-const LoanTabs = (props) => {
+const LoanTabs = ({ tabId, ...props }) => {
   const tabs = getTabs(props);
-  const initialIndex = tabs.map(tab => tab.id).indexOf(props.tabId);
+  const initialIndex = tabs.map(tab => tab.id).indexOf(tabId);
 
   return (
     <Tabs

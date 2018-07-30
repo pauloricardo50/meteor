@@ -1,0 +1,12 @@
+.property-page {
+  display: flex;
+  flex-direction: column;
+
+  .description {
+    align-self: center;
+  }
+
+  .map-container {
+    height: 400px;
+  }
+}

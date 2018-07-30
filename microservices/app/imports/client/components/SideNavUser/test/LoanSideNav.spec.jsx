@@ -17,7 +17,7 @@ describe('LoanSideNav', () => {
       loan: {
         _id: 'testId',
         borrowers: [{ _id: 'testBorrower' }],
-        property: { _id: '' },
+        properties: [{ _id: '' }],
       },
     };
   });

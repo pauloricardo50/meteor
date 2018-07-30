@@ -1,0 +1,54 @@
+.financing-structures-header {
+  min-height: 80px;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  box-shadow: 0 0 15px 0 rgba(33, 37, 41, 0.09) !important;
+}
+
+.financing-structures-single-header.structure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  transition: color 200ms $bezier, background-color 200ms $bezier;
+
+  .financing-structures-header-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+  }
+
+  > * {
+    padding: 0;
+  }
+
+  h3 {
+    font-family: 'Eina04-Regular';
+    color: rgba(0, 0, 0, 0.2);
+    margin: 0;
+  }
+
+  &.selected {
+    background-color: $primary;
+    color: white;
+
+    .click-to-edit-field:hover {
+      background-color: white;
+      color: $primary;
+    }
+
+    h3 {
+      font-family: 'Eina04-Bold';
+      color: white;
+    }
+  }
+
+  &.structure-adder {
+    justify-content: center;
+  }
+}

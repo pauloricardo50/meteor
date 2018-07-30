@@ -1,3 +1,4 @@
+// @flow
 export const LOANS_COLLECTION = 'loans';
 
 export const LOAN_STATUS = {
@@ -91,7 +92,7 @@ export const LOAN_STRATEGY_PRESET = {
   MANUAL: 'MANUAL',
 };
 
-export const AMORTIZATION_STRATEGY_PRESET = {
+export const AMORTIZATION_TYPE = {
   INDIRECT: 'INDIRECT',
   DIRECT: 'DIRECT',
 };

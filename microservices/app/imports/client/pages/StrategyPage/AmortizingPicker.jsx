@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import T from 'core/components/Translation';
-import { AMORTIZATION_STRATEGY_PRESET } from 'core/api/constants';
+import { AMORTIZATION_TYPE } from 'core/api/constants';
 import StrategyChoices from '../../components/StrategyChoices';
 
 const getChoices = () => [
   {
-    id: AMORTIZATION_STRATEGY_PRESET.INDIRECT,
+    id: AMORTIZATION_TYPE.INDIRECT,
     title: 'Amortissement Indirect',
     reasons: [
       'Paiements ne changent pas avec les années',
@@ -17,7 +17,7 @@ const getChoices = () => [
     isBest: true,
   },
   {
-    id: AMORTIZATION_STRATEGY_PRESET.DIRECT,
+    id: AMORTIZATION_TYPE.DIRECT,
     title: 'Amortissement Direct',
     reasons: ['Paiements diminuent avec les années', 'Charge fiscale augmente'],
   },

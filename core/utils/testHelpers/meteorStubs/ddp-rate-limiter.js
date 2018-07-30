@@ -1,1 +1,1 @@
-export const DDPRatelimiter = {};
+export const DDPRateLimiter = {};

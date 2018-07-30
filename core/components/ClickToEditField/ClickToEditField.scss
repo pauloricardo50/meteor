@@ -1,0 +1,14 @@
+.click-to-edit-field {
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 200ms $bezier, background-color 200ms $bezier;
+
+  &.not-editing {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+    }
+  }
+}

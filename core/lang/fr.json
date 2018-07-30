@@ -1,4 +1,43 @@
 {
+  "FinancingStructuresPropertyPicker.addProperty": "Ajouter bien immobilier",
+
+  "FinancingStructuresFinancing.DIRECT": "Direct",
+  "FinancingStructuresFinancing.INDIRECT": "Indirect",
+
+  "FinancingStructures.propertyId": "Bien immobilier",
+  "FinancingStructures.notaryFees": "Frais de notaire",
+  "FinancingStructures.propertyWork": "Travaux à plus-value",
+  "FinancingStructures.wantedLoan": "Prêt hypothécaire",
+  "FinancingStructures.fortuneUsed": "Cash et titres",
+  "FinancingStructures.secondPillarPledged": "2ème pillier - Nantissement",
+  "FinancingStructures.secondPillarWithdrawal": "2ème pillier - Retrait",
+  "FinancingStructures.thirdPillarPledged": "3ème pillier - Nantissement",
+  "FinancingStructures.thirdPillarWithdrawal": "3ème pillier - Retrait",
+  "FinancingStructures.amortizationType": "Type d'amortissement",
+  "FinancingStructures.amortizationCost": "Amortissement mensuel",
+  "FinancingStructures.interestsCost": "Intérêts mensuels",
+  "FinancingStructures.secondPillarWithdrawalTax":
+    "Frais de retrait 2ème Pilier",
+  "FinancingStructures.amortizationDeduction":
+    "Déductions amortissement indirect",
+  "FinancingStructures.totalFiscal": "Total",
+  "FinancingStructures.remainingCash": "Cash et titres restants",
+  "FinancingStructures.remainingSecondPillar": "2ème pilier restant",
+  "FinancingStructures.remainingThirdPillar": "3ème pilier restant",
+  "FinancingStructures.pledgedIncrease": "Nantissement à couvrir",
+  "FinancingStructuresResult.title": "RÉSULTAT",
+  "FinancingStructuresResult.fiscalTitle": "Incidences fiscales",
+  "FinancingStructuresResult.future": "Situation future",
+  "FinancingStructuresOwnFunds.title": "FONDS PROPRES",
+  "FinancingStructuresProject.title": "PROJET",
+  "FinancingStructuresFinancing.title": "PRÊT HYPOTHÉCAIRE",
+  "LoanTabs.structures": "Structures",
+
+  "general.settings": "Réglages",
+
+  "FinancingStructuresHeaderAdder.label": "Ajouter structure",
+
+  "SinglePropertyPage.title": "Bien immobilier",
   "general.filterBy": "Filtrer par",
 
   "TableFilters.filterLabels.assignedEmployee.emails.0.address": "Email",
@@ -1134,7 +1173,7 @@
   "LoanTabs.forms": "Formulaires",
   "LoanTabs.offers": "Offres des prêteurs",
   "LoanTabs.overview": "Résumé",
-  "LoanTabs.property": "Propriété",
+  "LoanTabs.properties": "Biens immobiliers",
   "LoanTabs.tasks": "Tâches",
   "LoanValidation.invalidatedAt": "Invalidé le",
   "LoanValidation.field": "Champ",

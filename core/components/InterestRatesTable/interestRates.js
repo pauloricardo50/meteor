@@ -1,3 +1,4 @@
+// @flow
 import { INTEREST_RATES } from 'core/api/constants';
 
 export const TRENDS = {
@@ -44,5 +45,13 @@ const interestRates = [
   //   trend: TRENDS.FLAT,
   // },
 ];
+
+export const averageRates = interestRates.reduce(
+  (rates, { type, rateLow, rateHigh }) => ({
+    ...rates,
+    [type]: (rateLow + rateHigh) / 2,
+  }),
+  {},
+);
 
 export default interestRates;

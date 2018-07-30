@@ -11,10 +11,11 @@ import {
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
-propertyInsert.setHandler((context, { property, userId }) => {
+propertyInsert.setHandler((context, { property, userId, loanId }) => {
   userId = checkInsertUserId(userId);
-  return PropertyService.insert({ property, userId });
+  return PropertyService.insert({ property, userId, loanId });
 });
+
 propertyUpdate.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
   return PropertyService.update({ propertyId, object });

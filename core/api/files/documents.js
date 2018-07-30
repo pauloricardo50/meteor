@@ -98,20 +98,6 @@ export const loanDocuments = (r = {}) => ({
       id: 'reimbursementStatement',
       condition: !!r.general && r.general.purchaseType === 'refinancing',
     },
-    {
-      id: 'coownershipAllocationAgreement',
-      condition: !!r.propertyId && !!r.propertyId.isCoproperty,
-      doubleTooltip: true,
-    },
-    {
-      id: 'coownershipAgreement',
-      condition: !!r.propertyId && !!r.propertyId.isCoproperty,
-      doubleTooltip: true,
-    },
-    {
-      id: 'fireAndWaterInsurance',
-      condition: !!(r.propertyId && r.propertyId.isNew),
-    },
   ],
   closing: [],
   other: [
@@ -149,9 +135,9 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'marketingBrochure',
       condition: !!(
-        loan &&
-        loan.general &&
-        loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        loan
+        && loan.general
+        && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
       ),
       required: false,
     },
@@ -166,6 +152,20 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'landRegisterExtract',
       doubleTooltip: true,
+    },
+    {
+      id: 'coownershipAllocationAgreement',
+      condition: property.isCoproperty,
+      doubleTooltip: true,
+    },
+    {
+      id: 'coownershipAgreement',
+      condition: property.isCoproperty,
+      doubleTooltip: true,
+    },
+    {
+      id: 'fireAndWaterInsurance',
+      condition: !!property.isNew,
     },
   ],
   all() {

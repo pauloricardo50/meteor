@@ -1,8 +1,8 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { TASK_STATUS, TASK_TYPE } from '../api/tasks/taskConstants';
-import { fakeFile } from '../api/files/fakes';
+import { TASK_STATUS, TASK_TYPE } from './tasks/taskConstants';
+import { fakeFile } from './files/fakes';
 import Loans from './loans';
 import Borrowers from './borrowers';
 import Properties from './properties';
@@ -66,7 +66,7 @@ Factory.define('loan', Loans, {
   }),
   name: () => 'loan name',
   emails: () => [],
-  propertyId: () => 'propertyId',
+  propertyIds: [],
 });
 
 Factory.define('property', Properties, {

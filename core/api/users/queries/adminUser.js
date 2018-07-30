@@ -1,4 +1,4 @@
-import { Users } from '../../';
+import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
@@ -19,7 +19,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
     createdAt: 1,
     updatedAt: 1,
     general: { insuranceFortuneUsed: 1, fortuneUsed: 1 },
-    property: {
+    properties: {
       value: 1,
       address1: 1,
     },

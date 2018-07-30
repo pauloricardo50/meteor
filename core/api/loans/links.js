@@ -1,11 +1,12 @@
+// @flow
 import Loans from './loans';
-import { Properties, Borrowers, Users, Tasks, Offers } from '../';
+import { Properties, Borrowers, Users, Tasks, Offers } from '..';
 
 Loans.addLinks({
-  property: {
-    field: 'propertyId',
+  properties: {
+    field: 'propertyIds',
     collection: Properties,
-    type: 'one',
+    type: 'many',
   },
   borrowers: {
     field: 'borrowerIds',

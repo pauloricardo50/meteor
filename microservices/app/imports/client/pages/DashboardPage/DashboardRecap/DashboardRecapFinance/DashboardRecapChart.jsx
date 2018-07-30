@@ -9,7 +9,8 @@ import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
 const getChartData = ({ loan, offer, interestRate }) => {
-  const { borrowers, property } = loan;
+  const { borrowers, properties } = loan;
+  const property = properties[0];
   let interests = 0;
 
   if (offer) {

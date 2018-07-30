@@ -5,7 +5,7 @@ import {
   INSURANCE_USE_PRESET,
   AUCTION_STATUS,
   LOAN_STRATEGY_PRESET,
-  AMORTIZATION_STRATEGY_PRESET,
+  AMORTIZATION_TYPE,
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
 } from 'core/api/loans/loanConstants';
@@ -55,7 +55,7 @@ const logic3 = {
   hasValidatedStructure: true,
   insuranceUsePreset: INSURANCE_USE_PRESET.COLLATERAL,
   loanStrategyPreset: LOAN_STRATEGY_PRESET.FIXED,
-  amortizationStrategyPreset: AMORTIZATION_STRATEGY_PRESET.INDIRECT,
+  amortizationStrategyPreset: AMORTIZATION_TYPE.INDIRECT,
   lender: {},
   closingSteps: [
     {
@@ -110,7 +110,7 @@ export const createFakeLoan = ({
   const loan = {
     name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,
     borrowerIds,
-    propertyId,
+    propertyIds: [propertyId],
     general: fakeGeneral,
     documents: fakeFiles,
     contacts: [],

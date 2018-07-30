@@ -1,51 +1,55 @@
-import Properties from '../properties';
+import LoanService from '../loans/LoanService';
+import Properties from '.';
 import WuestService from '../wuest/server/WuestService';
 import { EXPERTISE_STATUS } from './propertyConstants';
 
 export class PropertyService {
-  insert = ({ property, userId }) => Properties.insert({ ...property, userId });
+  insert = ({ property, userId, loanId }) => {
+    const propertyId = Properties.insert({ ...property, userId });
+    if (loanId) {
+      LoanService.addPropertyToLoan({ loanId, propertyId });
+    }
 
-  update = ({ propertyId, object }) =>
-    Properties.update(propertyId, { $set: object });
+    return propertyId;
+  };
+
+  update = ({ propertyId, object }) => Properties.update(propertyId, { $set: object });
 
   remove = ({ propertyId }) => Properties.remove(propertyId);
 
-  pushValue = ({ propertyId, object }) =>
-    Properties.update(propertyId, { $push: object });
+  pushValue = ({ propertyId, object }) => Properties.update(propertyId, { $push: object });
 
-  popValue = ({ propertyId, object }) =>
-    Properties.update(propertyId, { $pop: object });
+  popValue = ({ propertyId, object }) => Properties.update(propertyId, { $pop: object });
 
-  evaluateProperty = propertyId =>
-    WuestService.evaluateById(propertyId)
-      .then((valuation) => {
-        this.update({
-          propertyId,
-          object: {
-            valuation: {
-              status: EXPERTISE_STATUS.DONE,
-              date: new Date(),
-              error: '',
-              ...valuation,
-            },
+  evaluateProperty = propertyId => WuestService.evaluateById(propertyId)
+    .then((valuation) => {
+      this.update({
+        propertyId,
+        object: {
+          valuation: {
+            status: EXPERTISE_STATUS.DONE,
+            date: new Date(),
+            error: '',
+            ...valuation,
           },
-        });
-      })
-      .catch((error) => {
-        this.update({
-          propertyId,
-          object: {
-            valuation: {
-              status: EXPERTISE_STATUS.ERROR,
-              min: null,
-              max: null,
-              value: null,
-              date: new Date(),
-              error: error.message,
-            },
-          },
-        });
+        },
       });
+    })
+    .catch((error) => {
+      this.update({
+        propertyId,
+        object: {
+          valuation: {
+            status: EXPERTISE_STATUS.ERROR,
+            min: null,
+            max: null,
+            value: null,
+            date: new Date(),
+            error: error.message,
+          },
+        },
+      });
+    });
 
   getPropertyById = propertyId => Properties.findOne(propertyId);
 

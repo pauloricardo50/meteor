@@ -53,7 +53,7 @@ const getContent = (property, loanId) => {
   //   return <PropertyAdder loanId={loanId} />;
   // } else
   if (!shouldDisplay(property)) {
-    return <PropertyModifier loanId={loanId} property={property} />;
+    return <PropertyModifier property={property} />;
   }
   console.log(getRecapArray(property));
   return (
@@ -62,6 +62,7 @@ const getContent = (property, loanId) => {
         address={getPropertyAddressString(property)}
         className="map"
         options={{ zoom: 10 }}
+        id={property._id}
       />
       <h3>
         <T id="Recap.property" />
@@ -71,14 +72,15 @@ const getContent = (property, loanId) => {
   );
 };
 
-const DashboardRecapProperty = ({ loan: { property, _id: loanId } }) => (
+const DashboardRecapProperty = ({ property, loanId }) => (
   <div className="dashboard-recap-property card1">
     {getContent(property, loanId)}
   </div>
 );
 
 DashboardRecapProperty.propTypes = {
-  loan: PropTypes.object.isRequired,
+  property: PropTypes.object.isRequired,
+  loanId: PropTypes.string,
 };
 
 export default DashboardRecapProperty;

@@ -17,12 +17,9 @@ const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
   if (Meteor.isServer && !Meteor.isAppTest) {
     DDPRateLimiter.addRule(
       {
-        name(name) {
-          return includes(methods, name);
-        },
-        connectionId() {
-          return true;
-        },
+        name: name => includes(methods, name),
+        connectionId: () => true,
+        type: 'method',
       },
       limit,
       timeRange,

@@ -1,3 +1,4 @@
+// @flow
 import isArray from 'lodash/isArray';
 import forEach from 'lodash/forEach';
 
@@ -70,3 +71,6 @@ export const flattenObjectTreeToArrays = (object, ancestorsPath = []) => {
 
   return result;
 };
+
+export const normalize = array =>
+  array.reduce((obj, item) => ({ ...obj, [item.id || item._id]: item }), {});
