@@ -1498,5 +1498,7 @@
   "Impersonation.impersonateWarning": "Connecté comme {email}",
   "ValuationButton.disabled": "Il manque des informations",
   "ValuationButton.enabled": "Evaluez votre bien",
-  "Valuation.title": "Expertise"
+  "Valuation.title": "Expertise",
+  "Valuation.rangeLabel": "Fourchette:",
+  "Valuation.preciseValueLabel": "Valeur précise:"
 }

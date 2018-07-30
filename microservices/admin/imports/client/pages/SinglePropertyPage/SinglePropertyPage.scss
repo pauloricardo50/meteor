@@ -1,4 +1,6 @@
 .single-property-page {
+  display: flex;
+  flex-direction: column;
   .admin-loan {
     display: flex;
     justify-content: space-between;

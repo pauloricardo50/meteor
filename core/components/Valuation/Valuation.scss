@@ -4,7 +4,11 @@
   flex-direction: column;
   align-items: center;
   margin: 80px;
-  padding: 80px;
+  padding: 48px;
+
+  &-label {
+    margin-bottom: 0px;
+  }
 
   &-results {
     display: flex;
@@ -12,5 +16,12 @@
     align-items: center;
     justify-content: center;
     padding: 24px;
+  }
+
+  &-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
