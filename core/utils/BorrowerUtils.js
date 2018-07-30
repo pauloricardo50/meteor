@@ -7,8 +7,8 @@ import { arrayify, getPercent } from './general';
 import { getCountedArray } from './formArrayHelpers';
 
 export class BorrowerUtils {
-  sumValues = (borrowers, keys) => arrayify(keys).reduce(
-    (total, key) => total + borrowers.reduce((t, b) => t + (b[key] || 0), 0),
+  sumValues = ({ borrowers, keys }) => arrayify(keys).reduce(
+    (total, key) => total + arrayify(borrowers).reduce((t, b) => t + (b[key] || 0), 0),
     0,
   );
 
@@ -38,12 +38,12 @@ export class BorrowerUtils {
     return getPercent(a);
   };
 
-  getFortune = ({ borrowers }) => this.sumValues(borrowers, 'bankFortune');
+  getFortune = ({ borrowers }) => this.sumValues({ borrowers, keys: 'bankFortune' });
 
-  getInsuranceFortune = ({ borrowers }) => this.sumValues(borrowers, [
-    'insuranceSecondPillar',
-    'insuranceThirdPillar',
-  ]);
+  getInsuranceFortune = ({ borrowers }) => this.sumValues({
+    borrowers,
+    keys: ['insuranceSecondPillar', 'insuranceThirdPillar'],
+  });
 
   getBorrowerCompletion = ({ borrower }) => (filesPercent({
     doc: [borrower],
@@ -112,11 +112,10 @@ export class BorrowerUtils {
     return sum;
   };
 
-  getTotalFortune = ({ borrowers }) => this.sumValues(borrowers, [
-    'bankFortune',
-    'insuranceSecondPillar',
-    'insuranceThirdPillar',
-  ]);
+  getTotalFortune = ({ borrowers }) => this.sumValues({
+    borrowers,
+    keys: ['bankFortune', 'insuranceSecondPillar', 'insuranceThirdPillar'],
+  });
 
   getRealEstateFortune = ({ borrowers }) => this.getArrayValues({ borrowers }, 'realEstate', i => i.value - i.loan);
 
@@ -124,11 +123,11 @@ export class BorrowerUtils {
 
   getRealEstateDebt = ({ borrowers }) => this.getArrayValues({ borrowers }, 'realEstate', i => i.loan);
 
-  getBorrowerSalary = ({ borrowers }) => this.sumValues(borrowers, 'salary');
+  getBorrowerSalary = ({ borrowers }) => this.sumValues({ borrowers, keys: 'salary' });
 
-  getSecondPillar = ({ borrowers }) => this.sumValues(borrowers, 'insuranceSecondPillar');
+  getSecondPillar = ({ borrowers }) => this.sumValues({ borrowers, keys: 'insuranceSecondPillar' });
 
-  getThirdPillar = ({ borrowers }) => this.sumValues(borrowers, 'insuranceThirdPillar');
+  getThirdPillar = ({ borrowers }) => this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
 
   getBorrowerFullName = ({ firstName, lastName }) => [firstName, lastName].filter(name => name).join(' ');
 }
