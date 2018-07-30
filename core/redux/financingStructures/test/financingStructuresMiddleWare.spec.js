@@ -58,7 +58,7 @@ describe('financingStructuresMiddleware', () => {
           loan: {
             structures: [{ id: 1 }],
             borrowers: [{ id: 2 }],
-            property: { id: 3 },
+            properties: [{ id: 3 }],
           },
         },
       };
@@ -86,8 +86,8 @@ describe('financingStructuresMiddleware', () => {
       expect(spyCalls[3].args[0]).to.deep.equal({
         type: 'REHYDRATE_DATA',
         payload: {
-          dataName: 'property',
-          data: { id: 3 },
+          dataName: 'properties',
+          data: { 3: { id: 3 } },
         },
       });
     });
