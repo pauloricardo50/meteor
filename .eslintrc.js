@@ -46,7 +46,11 @@ module.exports = {
       },
     ],
     // The most sane value, allows objects to stay on a single line if possible
-    'object-curly-newline': ['error', { consistent: true }],
+    'object-curly-newline': ['error', { multiline: true, consistent: true }],
+    'object-property-newline': [
+      'error',
+      { allowMultiplePropertiesPerLine: true },
+    ],
     'multiline-ternary': ['error', 'always-multiline'],
     'no-debugger': 'off',
 

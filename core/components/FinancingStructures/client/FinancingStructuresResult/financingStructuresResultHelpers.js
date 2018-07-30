@@ -25,17 +25,16 @@ export const getAmortizationDeduction = (params) => {
 
 export const getSecondPillarWithdrawalTax = FinanceCalculator.getSecondPillarWithdrawalTax;
 
-export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) => BorrowerUtils.getFortune({ borrowers: Object.values(borrowers) })
-  - fortuneUsed;
+export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) => BorrowerUtils.getFortune({ borrowers }) - fortuneUsed;
 
 export const getRemainingSecondPillar = ({
   borrowers,
   structure: { secondPillarWithdrawal },
-}) => BorrowerUtils.getSecondPillar({ borrowers: Object.values(borrowers) })
+}) => BorrowerUtils.getSecondPillar({ borrowers })
   - secondPillarWithdrawal;
 
 export const getRemainingThirdPillar = ({
   borrowers,
   structure: { thirdPillarWithdrawal },
-}) => BorrowerUtils.getThirdPillar({ borrowers: Object.values(borrowers) })
+}) => BorrowerUtils.getThirdPillar({ borrowers })
   - thirdPillarWithdrawal;

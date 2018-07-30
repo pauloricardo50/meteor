@@ -39,5 +39,5 @@ const CalculatedValue = ({
 
 export default compose(
   SingleStructureContainer,
-  FinancingStructuresDataContainer,
+  FinancingStructuresDataContainer({ asArrays: true }),
 )(CalculatedValue);

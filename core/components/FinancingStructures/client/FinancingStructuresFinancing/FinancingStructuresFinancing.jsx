@@ -3,14 +3,13 @@ import React from 'react';
 
 import { AMORTIZATION_TYPE } from '../../../../api/constants';
 import T from '../../../Translation';
-import { makeSelectPropertyValue } from '../../../../redux/financingStructures';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
   RadioButtons,
 } from '../FinancingStructuresSection';
 
-import Calc from '../FinancingStructuresCalculator';
+import Calc, { getProperty } from '../FinancingStructuresCalculator';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -23,15 +22,12 @@ const calculateLoan = (params) => {
   return wantedLoan + getPledgedAmount(params);
 };
 
-const calculateMaxLoan = ({
-  structure: { propertyWork, id },
-  ...financingStructures
-}) => Calc.getMaxLoan({
-  propertyWork,
-  propertyValue: makeSelectPropertyValue(id)({ financingStructures }),
+const calculateMaxLoan = data => Calc.getMaxLoan({
+  propertyWork: data.structure.propertyWork,
+  propertyValue: getProperty(data).value,
 });
 
-const oneStructureHasPledge = ({structures}) => structures.some(({ secondPillarPledged, thirdPillarPledged }) => secondPillarPledged || thirdPillarPledged);
+const oneStructureHasPledge = ({ structures }) => structures.some(({ secondPillarPledged, thirdPillarPledged }) => secondPillarPledged || thirdPillarPledged);
 
 type FinancingStructuresFinancingProps = {};
 

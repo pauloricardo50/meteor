@@ -14,33 +14,31 @@ const calculateOwnFunds = ({
   structure: { fortuneUsed, secondPillarWithdrawal, thirdPillarWithdrawal },
 }) => fortuneUsed + secondPillarWithdrawal + thirdPillarWithdrawal;
 
-const calculateMaxFortune = ({ borrowers }) => BorrowerUtils.getFortune({ borrowers: Object.values(borrowers) });
+const calculateMaxFortune = ({ borrowers }) => BorrowerUtils.getFortune({ borrowers });
 
 const calculateMaxSecondPillarPledged = ({
   borrowers,
   structure: { secondPillarWithdrawal },
-}) => BorrowerUtils.getSecondPillar({ borrowers: Object.values(borrowers) })
+}) => BorrowerUtils.getSecondPillar({ borrowers })
   - secondPillarWithdrawal;
 
 const calculateMaxSecondPillarWithdrawal = ({
   borrowers,
   structure: { secondPillarPledged },
-}) => BorrowerUtils.getSecondPillar({ borrowers: Object.values(borrowers) })
-  - secondPillarPledged;
+}) => BorrowerUtils.getSecondPillar({ borrowers }) - secondPillarPledged;
 
 const calculateMaxThirdPillarPledged = ({
   borrowers,
   structure: { thirdPillarWithdrawal },
-}) => BorrowerUtils.getThirdPillar({ borrowers: Object.values(borrowers) })
+}) => BorrowerUtils.getThirdPillar({ borrowers })
   - thirdPillarWithdrawal;
 
 const calculateMaxThirdPillarWithdrawal = ({
   borrowers,
   structure: { thirdPillarPledged },
-}) => BorrowerUtils.getThirdPillar({ borrowers: Object.values(borrowers) })
-  - thirdPillarPledged;
+}) => BorrowerUtils.getThirdPillar({ borrowers }) - thirdPillarPledged;
 
-const makeConditionForValue = funcName => ({ borrowers }) => BorrowerUtils[funcName]({ borrowers: Object.values(borrowers) }) > 0;
+const makeConditionForValue = funcName => ({ borrowers }) => BorrowerUtils[funcName]({ borrowers }) > 0;
 
 const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) => (
   <FinancingStructuresSection

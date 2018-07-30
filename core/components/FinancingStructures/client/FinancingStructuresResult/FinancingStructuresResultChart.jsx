@@ -56,6 +56,6 @@ const FinancingStructuresResultChart = ({
 };
 
 export default compose(
-  FinancingStructuresDataContainer,
+  FinancingStructuresDataContainer({ asArrays: true }),
   SingleStructureContainer,
 )(FinancingStructuresResultChart);

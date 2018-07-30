@@ -42,7 +42,7 @@ const InputAndSlider = (props: InputAndSliderProps) => {
 };
 
 export default compose(
-  FinancingStructuresDataContainer,
+  FinancingStructuresDataContainer({ asArrays: true }),
   SingleStructureContainer,
   StructureUpdateContainer,
   withProps(({ max: _max, ...props }) => ({

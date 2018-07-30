@@ -96,6 +96,6 @@ const FinancingStructuresSection = ({
 };
 
 export default compose(
-  FinancingStructuresDataContainer,
+  FinancingStructuresDataContainer({ asArrays: true }),
   withStyles(styles),
 )(FinancingStructuresSection);

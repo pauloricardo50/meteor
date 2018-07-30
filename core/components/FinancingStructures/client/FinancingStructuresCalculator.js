@@ -2,24 +2,22 @@
 import { averageRates } from 'core/components/InterestRatesTable/interestRates';
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
-import { makeSelectPropertyValue } from '../../../redux/financingStructures';
+
+export const getProperty = ({ structure: { propertyId }, properties }) => properties.find(({ _id }) => _id === propertyId);
 
 const argumentMappings = {
-  getBorrowRatio: ({
-    structure: { id, wantedLoan },
-    ...financingStructures
-  }) => ({
-    propertyValue: makeSelectPropertyValue(id)({ financingStructures }),
-    loan: wantedLoan,
+  getBorrowRatio: data => ({
+    propertyValue: getProperty(data).value,
+    loan: data.structure.wantedLoan,
   }),
-  getAmortizationRate: ({
-    structure: { id, wantedLoan, propertyWork },
-    ...financingStructures
-  }) => ({
-    borrowRatio:
-        wantedLoan
-        / (makeSelectPropertyValue(id)({ financingStructures }) + propertyWork),
-  }),
+  getAmortizationRate: (data) => {
+    const {
+      structure: { wantedLoan, propertyWork },
+    } = data;
+    return {
+      borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
+    };
+  },
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
     offers,
@@ -33,17 +31,17 @@ const argumentMappings = {
       interestRates,
     };
   },
-  getIndirectAmortizationDeduction: ({
-    structure: { id, wantedLoan, propertyWork },
-    ...financingStructures
-  }) => ({
-    loanValue: wantedLoan,
-    amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoan({
-      borrowRatio:
-        wantedLoan
-        / (makeSelectPropertyValue(id)({ financingStructures }) + propertyWork),
-    }),
-  }),
+  getIndirectAmortizationDeduction: (data) => {
+    const {
+      structure: { wantedLoan, propertyWork },
+    } = data;
+    return {
+      loanValue: wantedLoan,
+      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoan({
+        borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
+      }),
+    };
+  },
 
   getSecondPillarWithdrawalTax: ({
     structure: { secondPillarWithdrawal },
