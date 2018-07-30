@@ -6,13 +6,13 @@ class PropertySecurity {
     Security.checkLoggedIn();
   }
 
-  static isAllowedToUpdate(loanId) {
+  static isAllowedToUpdate(propertyId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
-    const loan = Properties.findOne(loanId);
-    Security.checkOwnership(loan);
+    const property = Properties.findOne(propertyId);
+    Security.checkOwnership(property);
   }
 
   static isAllowedToDelete() {

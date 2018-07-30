@@ -1,2 +1,2 @@
 export const check = {};
-export const Match = {};
+export const Match = { Optional: () => {} };

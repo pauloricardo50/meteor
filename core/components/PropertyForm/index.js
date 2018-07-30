@@ -1,2 +1,3 @@
-export PropertyAdder from './PropertyAdder';
-export PropertyModifier from './PropertyModifier';
+// @flow
+export { default as PropertyAdder } from './PropertyAdder';
+export { default as PropertyModifier } from './PropertyModifier';

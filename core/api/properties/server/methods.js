@@ -6,6 +6,8 @@ import {
   propertyDelete,
   pushPropertyValue,
   popPropertyValue,
+  evaluateProperty,
+  propertyDataIsInvalid,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -31,4 +33,14 @@ pushPropertyValue.setHandler((context, { propertyId, object }) => {
 popPropertyValue.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
   return PropertyService.pushValue(object);
+});
+
+evaluateProperty.setHandler((context, { propertyId }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId);
+  return PropertyService.evaluateProperty(propertyId);
+});
+
+propertyDataIsInvalid.setHandler((context, { propertyId }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId);
+  return PropertyService.propertyDataIsInvalid(propertyId);
 });
