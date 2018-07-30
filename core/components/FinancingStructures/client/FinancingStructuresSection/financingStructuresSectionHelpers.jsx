@@ -14,10 +14,10 @@ export const makeFilterConfig = structures => ({ condition }) => {
 
 export const makeRenderSummary = configArray => (
   { id: structureId },
-  structures,
+  data,
   index,
 ) => configArray
-  .filter(makeFilterConfig(structures))
+  .filter(makeFilterConfig(data))
   .map(({ Component, id, ...props }) => (Component ? (
     <Component
       key={id}
@@ -32,10 +32,10 @@ export const makeRenderSummary = configArray => (
 
 export const makeRenderDetail = configArray => (
   { id: structureId },
-  structures,
+  data,
   index,
 ) => configArray
-  .filter(makeFilterConfig(structures))
+  .filter(makeFilterConfig(data))
   .map(({ Component, id, ...props }) => (Component ? (
     <Component
       key={id}

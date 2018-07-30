@@ -2,12 +2,15 @@
 import React from 'react';
 
 import { AMORTIZATION_TYPE } from '../../../../api/constants';
+import T from '../../../Translation';
+import { makeSelectPropertyValue } from '../../../../redux/financingStructures';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
   RadioButtons,
 } from '../FinancingStructuresSection';
-import T from '../../../Translation';
+
+import Calc from '../FinancingStructuresCalculator';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -20,7 +23,15 @@ const calculateLoan = (params) => {
   return wantedLoan + getPledgedAmount(params);
 };
 
-const oneStructureHasPledge = structures => structures.some(({ secondPillarPledged, thirdPillarPledged }) => secondPillarPledged || thirdPillarPledged);
+const calculateMaxLoan = ({
+  structure: { propertyWork, id },
+  ...financingStructures
+}) => Calc.getMaxLoan({
+  propertyWork,
+  propertyValue: makeSelectPropertyValue(id)({ financingStructures }),
+});
+
+const oneStructureHasPledge = ({structures}) => structures.some(({ secondPillarPledged, thirdPillarPledged }) => secondPillarPledged || thirdPillarPledged);
 
 type FinancingStructuresFinancingProps = {};
 
@@ -39,7 +50,7 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       },
     ]}
     detailConfig={[
-      { Component: InputAndSlider, id: 'wantedLoan' },
+      { Component: InputAndSlider, id: 'wantedLoan', max: calculateMaxLoan },
       {
         Component: RadioButtons,
         id: 'amortizationType',

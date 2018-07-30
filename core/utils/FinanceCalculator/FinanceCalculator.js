@@ -7,6 +7,7 @@ import {
   MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
   AVERAGE_TAX_RATE,
   SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
+  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
 } from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
@@ -29,6 +30,7 @@ export class FinanceCalculator {
     amortizationGoal = AMORTIZATION_STOP,
     taxRate = AVERAGE_TAX_RATE,
     secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
+    maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
     middlewares = [],
     middlewareObject,
   }: {
@@ -37,6 +39,7 @@ export class FinanceCalculator {
     amortizationGoal?: number,
     taxRate?: number,
     secondPillarWithdrawalTaxRate?: number,
+    maxBorrowRatio?: number,
     middlewares?: Array<Function>,
     middlewareObject: Object,
   } = {}) {
@@ -45,6 +48,7 @@ export class FinanceCalculator {
     this.amortizationGoal = amortizationGoal;
     this.taxRate = taxRate;
     this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
+    this.maxBorrowRatio = maxBorrowRatio;
     this.setRoundValuesMiddleware(middlewares, middlewareObject);
   }
 
@@ -201,6 +205,13 @@ export class FinanceCalculator {
     pledgedValue = 0,
   }: { loanValue: number, pledgedValue: number } = {}) {
     return loanValue + pledgedValue;
+  }
+
+  getMaxLoan({
+    propertyValue,
+    propertyWork,
+  }: { propertyValue: number, propertyWork: number } = {}) {
+    return (propertyValue + propertyWork) * this.maxBorrowRatio;
   }
 }
 

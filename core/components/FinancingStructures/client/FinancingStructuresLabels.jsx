@@ -6,21 +6,21 @@ import T from 'core/components/Translation';
 import type { structureType } from 'core/api';
 import { makeFilterConfig } from './FinancingStructuresSection/financingStructuresSectionHelpers';
 import FinancingStructuresLabel from './FinancingStructuresLabel';
-import StructuresContainer from './containers/StructuresContainer';
+import FinancingStructuresDataContainer from './containers/FinancingStructuresDataContainer';
 
 type FinancingStructureLabelsProps = {
   config: Array<{ id: string, label: React.Node }>,
   className?: string,
-  structures: Array<structureType>,
+  data: Object,
 };
 
 const FinancingStructuresLabels = ({
   config,
   className,
-  structures,
+  ...data
 }: FinancingStructureLabelsProps) => (
   <div className={cx('financing-structures-labels', className)}>
-    {config.filter(makeFilterConfig(structures)).map(({ id, label }) => (
+    {config.filter(makeFilterConfig(data)).map(({ id, label }) => (
       <FinancingStructuresLabel id={id} key={id}>
         {label || <T id={`FinancingStructures.${id}`} />}
       </FinancingStructuresLabel>
@@ -28,4 +28,4 @@ const FinancingStructuresLabels = ({
   </div>
 );
 
-export default StructuresContainer(FinancingStructuresLabels);
+export default FinancingStructuresDataContainer(FinancingStructuresLabels);

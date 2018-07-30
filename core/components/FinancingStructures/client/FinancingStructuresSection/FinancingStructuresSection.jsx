@@ -9,9 +9,9 @@ import { compose } from 'recompose';
 import cx from 'classnames';
 
 import type { structureType } from '../../../../api/types';
-import StructuresContainer from '../containers/StructuresContainer';
 import FinancingStructuresLabels from '../FinancingStructuresLabels';
 import { makeRenderDetail } from './financingStructuresSectionHelpers';
+import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 
 type configArray = Array<{
   Component: React.Component,
@@ -22,7 +22,7 @@ type configArray = Array<{
 }>;
 
 type FinancingStructuresSectionProps = {
-  structures: Array<structureType>,
+  data: Object,
   summaryConfig: configArray,
   detailConfig: configArray,
   className?: string,
@@ -49,12 +49,13 @@ const styles = {
 };
 
 const FinancingStructuresSection = ({
-  structures,
   detailConfig,
   summaryConfig,
   className,
   classes: { container, entered, content, expanded },
+  ...data
 }: FinancingStructuresSectionProps) => {
+  const { structures } = data;
   const renderDetail = makeRenderDetail(detailConfig);
   const renderSummary = makeRenderDetail(summaryConfig);
   return (
@@ -74,7 +75,7 @@ const FinancingStructuresSection = ({
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
-              {renderSummary(structure, structures, index)}
+              {renderSummary(structure, data, index)}
             </div>
           ))}
         </ExpansionPanelSummary>
@@ -84,7 +85,7 @@ const FinancingStructuresSection = ({
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
               <span className="card1">
-                {renderDetail(structure, structures, index)}
+                {renderDetail(structure, data, index)}
               </span>
             </div>
           ))}
@@ -95,6 +96,6 @@ const FinancingStructuresSection = ({
 };
 
 export default compose(
-  StructuresContainer,
+  FinancingStructuresDataContainer,
   withStyles(styles),
 )(FinancingStructuresSection);

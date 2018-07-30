@@ -40,6 +40,8 @@ const calculateMaxThirdPillarWithdrawal = ({
 }) => BorrowerUtils.getThirdPillar({ borrowers: Object.values(borrowers) })
   - thirdPillarPledged;
 
+const makeConditionForValue = funcName => ({ borrowers }) => BorrowerUtils[funcName]({ borrowers: Object.values(borrowers) }) > 0;
+
 const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) => (
   <FinancingStructuresSection
     summaryConfig={[
@@ -64,21 +66,25 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         Component: InputAndSlider,
         id: 'secondPillarPledged',
         max: calculateMaxSecondPillarPledged,
+        condition: makeConditionForValue('getSecondPillar'),
       },
       {
         Component: InputAndSlider,
         id: 'secondPillarWithdrawal',
         max: calculateMaxSecondPillarWithdrawal,
+        condition: makeConditionForValue('getSecondPillar'),
       },
       {
         Component: InputAndSlider,
         id: 'thirdPillarPledged',
         max: calculateMaxThirdPillarPledged,
+        condition: makeConditionForValue('getThirdPillar'),
       },
       {
         Component: InputAndSlider,
         id: 'thirdPillarWithdrawal',
         max: calculateMaxThirdPillarWithdrawal,
+        condition: makeConditionForValue('getThirdPillar'),
       },
     ]}
   />
