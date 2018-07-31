@@ -390,7 +390,24 @@ describe('WuestService', () => {
     });
   });
 
-  describe.only('evaluateById', () => {
+  describe('formatMicrolocationId', () => {
+    describe('formats the id correctly when', () => {
+      it('a prefix is given', () => {
+        const prefix = 'SOME_PREFIX';
+        const id = `${prefix}.SOME_ID_WITH_PREFIX`;
+
+        expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithPrefix');
+      });
+      it('no prefix is given', () => {
+        const prefix = 'SOME_PREFIX';
+        const id = 'SOME_ID_WITHOUT_PREFIX';
+
+        expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithoutPrefix');
+      });
+    });
+  });
+
+  describe('evaluateById', () => {
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
         style: PROPERTY_STYLE.FLAT,
@@ -421,7 +438,11 @@ describe('WuestService', () => {
         terraceArea: 20,
       })._id;
       return WuestService.evaluateById(propertyId).then((result) => {
-        expect(result).to.have.property('microLocation');
+        expect(result).to.have.property('microlocation');
+        expect(result.microlocation).to.have.property('grade');
+        expect(result.microlocation.factors).to.have.property('terrain');
+        expect(result.microlocation.factors).to.have.property('infrastructure');
+        expect(result.microlocation.factors).to.have.property('immission');
       });
     }).timeout(10000);
   });

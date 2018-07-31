@@ -49,6 +49,22 @@ describe('PropertyService', () => {
         expect(property.valuation.max).to.equal(730000);
         expect(property.valuation.value).to.equal(668000);
       });
+    });
+
+    it('adds microlocation on the property', () => {
+      const propertyId = Factory.create('property', {
+        address1: 'rue du four 2',
+        zipCode: '1400',
+        city: 'Yverdon-les-Bains',
+        roomCount: 4,
+        constructionYear: 2000,
+        insideArea: 100,
+        terraceArea: 20,
+      })._id;
+      return PropertyService.evaluateProperty(propertyId).then(() => {
+        const property = PropertyService.getPropertyById(propertyId);
+        expect(property.valuation).to.have.property('microlocation');
+      });
     }).timeout(10000);
   });
 });

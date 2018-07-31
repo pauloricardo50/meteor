@@ -1,4 +1,8 @@
 import fetch from 'node-fetch';
+import camelCase from 'lodash/camelCase';
+import omit from 'lodash/omit';
+import merge from 'lodash/merge';
+
 import { Meteor } from 'meteor/meteor';
 import WuestHouse from './WuestHouse';
 import WuestFlat from './WuestFlat';
@@ -439,6 +443,87 @@ class WuestService {
     return this.evaluate(this.properties);
   }
 
+  formatMicrolocationId(id, filter) {
+    let formattedId = id;
+    if (formattedId.includes('.')) {
+      formattedId = id.replace(filter, '');
+    }
+    return camelCase(formattedId);
+  }
+
+  buildMicrolocationObject(ids, microlocationData) {
+    const factors = ids.reduce((acc, id) => {
+      const { grade, text } = microlocationData.find(({ type }) => type === id);
+      return {
+        ...acc,
+        [this.formatMicrolocationId(id, ids[0])]: { grade, text },
+      };
+    }, {});
+
+    const rootFactor = Object.keys(factors)[0];
+
+    return merge(
+      { grade: factors[rootFactor].grade },
+      omit(factors, rootFactor),
+    );
+  }
+
+  formatMicrolocation(microlocationData) {
+    const terrain = this.buildMicrolocationObject(
+      [
+        'TERRAIN',
+        'TERRAIN.SLOPE_INCLINATION',
+        'TERRAIN.EXPOSITION',
+        'TERRAIN.SUN_SHINE_DURATION_SUMMER',
+        'TERRAIN.SUN_SHINE_DURATION_WINTER',
+        'TERRAIN.LAKE_VIEW',
+        'TERRAIN.MOUNTAIN_VIEW',
+      ],
+      microlocationData.factors,
+    );
+
+    const infrastructure = this.buildMicrolocationObject(
+      [
+        'INFRASTRUCTURE',
+        'INFRASTRUCTURE.DISTANCE_CENTER',
+        'INFRASTRUCTURE.DISTANCE_SCHOOL',
+        'INFRASTRUCTURE.DISTANCE_SHOPPING',
+        'INFRASTRUCTURE.DISTANCE_BUS_STOP',
+        'INFRASTRUCTURE.PUBLIC_TRANSPORT_GRADE',
+        'INFRASTRUCTURE.DISTANCE_RECREATION_AREA',
+        'INFRASTRUCTURE.DISTANCE_LAKE',
+        'INFRASTRUCTURE.DISTANCE_RIVER',
+      ],
+      microlocationData.factors,
+    );
+
+    const immission = this.buildMicrolocationObject(
+      [
+        'IMMISSION',
+        'IMMISSION.IMMISSION_TRAIN_DAY',
+        'IMMISSION.IMMISSION_TRAIN_NIGHT',
+        'IMMISSION.IMMISSION_STREET_DAY',
+        'IMMISSION.IMMISSION_STREET_NIGHT',
+        'IMMISSION.DISTANCE_MAIN_ROAD_RESIDENTIAL',
+        'IMMISSION.DISTANCE_RAILWAY',
+        'IMMISSION.DISTANCE_RADIO_ANTENNA',
+        'IMMISSION.DISTANCE_NUCLEAR_POWER',
+        'IMMISSION.DISTANCE_HIGH_VOLTAGE_POWER_LINE',
+      ],
+      microlocationData.factors,
+    );
+
+    const microlocation = {
+      grade: microlocationData.grade,
+      factors: {
+        terrain,
+        infrastructure,
+        immission,
+      },
+    };
+    return microlocation;
+  }
+
   formatResult({ keyFigures: { marketValueBeforeCorrection }, embedded }) {
     const {
       statisticalPriceRangeMin,
@@ -446,13 +531,14 @@ class WuestService {
     } = embedded.find(({ rel }) => rel === 'keyFigureExtension').value;
 
     const {
-      value: { content: microLocation },
+      value: { content: microlocation },
     } = embedded.find(({ rel }) => rel === 'microLocationProfiles');
+
     return {
       value: marketValueBeforeCorrection,
       min: statisticalPriceRangeMin,
       max: statisticalPriceRangeMax,
-      microLocation,
+      microlocation: this.formatMicrolocation(microlocation[0]),
     };
   }
 
@@ -482,7 +568,7 @@ class WuestService {
       property.property.generateJSONData();
       return this.getData(property.property.JSONData)
         .then(result => this.handleResult(result))
-        .then(this.formatResult);
+        .then(result => this.formatResult(result));
     });
     this.properties = [];
     return Promise.all(promises).then(this.cleanUpResults);
