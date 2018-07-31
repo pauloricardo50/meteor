@@ -25,31 +25,35 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
     testData = getTestData();
   });
 
-  Object.keys(pages).forEach((pageAuthentication) => {
-    describe(capitalize(pageAuthentication), () => {
-      Object.keys(pages[pageAuthentication]).forEach((pageName) => {
-        const testName = `${pageName} Page`;
-        describe(testName, () => {
-          it('should render', () => {
-            console.log('-------------------------');
-            console.log('-------------------------');
-            console.log('starting test: ', testName);
-            console.log('-------------------------');
-            console.log('-------------------------');
+  Object.keys(pages)
+    // .filter(page => page === 'admin')
+    .forEach((pageAuthentication) => {
+      describe(capitalize(pageAuthentication), () => {
+        Object.keys(pages[pageAuthentication])
+          // .filter(page => page === 'Property')
+          .forEach((pageName) => {
+            const testName = `${pageName} Page`;
+            describe(testName, () => {
+              it('should render', () => {
+                console.log('-------------------------');
+                console.log('-------------------------');
+                console.log('starting test: ', testName);
+                console.log('-------------------------');
+                console.log('-------------------------');
 
-            // logout the impersonated user
-            const { IMPERSONATE_SESSION_KEY } = testData;
-            cy.window().then(({ Session }) =>
-              Session && Session.clear(IMPERSONATE_SESSION_KEY));
-            cy.printTestNameOnServer(testName);
-            cy.setAuthentication(pageAuthentication);
-            cy.routeShouldRenderSuccessfully(
-              pages[pageAuthentication][pageName],
-              testData,
-            );
+                // logout the impersonated user
+                const { IMPERSONATE_SESSION_KEY } = testData;
+                cy.window().then(({ Session }) =>
+                  Session && Session.clear(IMPERSONATE_SESSION_KEY));
+                cy.printTestNameOnServer(testName);
+                cy.setAuthentication(pageAuthentication);
+                cy.routeShouldRenderSuccessfully(
+                  pages[pageAuthentication][pageName],
+                  testData,
+                );
+              });
+            });
           });
-        });
       });
     });
-  });
 };

@@ -16,12 +16,12 @@ Meteor.methods({
       .fetchOne();
 
     const {
-      property,
+      properties,
       borrowers: [borrower],
     } = step3Loan;
 
     const user = Users.findOne(step3Loan.userId);
 
-    return { step3Loan, user, property, borrower };
+    return { step3Loan, user, property: properties[0], borrower };
   },
 });

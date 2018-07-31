@@ -126,16 +126,17 @@ Cypress.Commands.add(
       .then(obj => obj)
       .should('exist');
 
-    cy.window().then(({ Meteor }) => new Cypress.Promise((resolve, reject) => {
-      Meteor.loginWithPassword(email, password, (loginError) => {
-        if (loginError) {
-          reject(loginError);
-        }
-        waitForLoggedIn(Meteor)
-          .then(resolve)
-          .catch(reject);
-      });
-    }));
+    cy.window().then(({ Meteor }) =>
+      new Cypress.Promise((resolve, reject) => {
+        Meteor.loginWithPassword(email, password, (loginError) => {
+          if (loginError) {
+            reject(loginError);
+          }
+          waitForLoggedIn(Meteor)
+            .then(resolve)
+            .catch(reject);
+        });
+      }));
 
     cy.window();
   },
@@ -144,8 +145,8 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
   (routeConfig, testData, options = {}) => {
-    const pageRoute =
-      typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
+
+    const pageRoute = typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
 
     const {
       uri,

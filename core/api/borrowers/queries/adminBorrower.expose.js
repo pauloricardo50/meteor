@@ -1,5 +1,5 @@
 import Security from 'core/api/security';
-import query from './borrower';
+import query from './adminBorrower';
 
 query.expose({
   firewall(userId) {

@@ -1,14 +1,21 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
+import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
-  $filter({ filters, options, params }) {
+  $filter({ filters, params }) {
     filters._id = params._id;
   },
   $options: {
     sort: {
       createdAt: -1,
     },
+  },
+  $postFilter(users) {
+    return users.map(({ loans, ...user }) => ({
+      ...user,
+      loans: loans.map(formatLoanWithStructure),
+    }));
   },
   roles: 1,
   emails: 1,
@@ -27,6 +34,10 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
       firstName: 1,
       lastName: 1,
     },
+    structures: {
+      propertyId: 1,
+    },
+    selectedStructure: 1,
   },
   assignedEmployee: {
     emails: 1,

@@ -669,11 +669,12 @@ describe('getAuctionEndTime', () => {
       });
     });
 
-    it('adds no structure if selectedStructure is not defined', () => {
+    it('adds an empty structure if selectedStructure is not defined', () => {
       expect(formatLoanWithStructure({
         structures: [{ id: 'test', hello: 'world' }],
       })).to.deep.equal({
         structures: [{ id: 'test', hello: 'world' }],
+        structure: {},
       });
     });
 

@@ -1,5 +1,6 @@
+// @flow
 import query from 'core/api/users/queries/currentUser';
-import { withSmartQuery } from 'core/api/containerToolkit/';
+import { withSmartQuery } from 'core/api/containerToolkit';
 
 export default withSmartQuery({
   query: () => query.clone({}),

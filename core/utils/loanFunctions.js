@@ -458,5 +458,5 @@ export const formatLoanWithStructure = (loan) => {
     }
   }
 
-  return newLoan;
+  return { ...newLoan, structure: {} };
 };

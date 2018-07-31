@@ -1,9 +1,16 @@
 import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
+import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER, {
   $filter({ filters, params }) {
     filters._id = params._id;
+  },
+  $postFilter(borrowers) {
+    return borrowers.map(({ loans, ...borrower }) => ({
+      ...borrower,
+      loans: loans.map(formatLoanWithStructure),
+    }));
   },
   createdAt: 1,
   updatedAt: 1,
@@ -25,6 +32,8 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER, {
     updatedAt: 1,
     borrowers: { firstName: 1, lastName: 1 },
     properties: { value: 1 },
+    structures: { propertyId: 1 },
+    selectedStructure: 1,
   },
   // fields used in Recap component
   salary: 1,

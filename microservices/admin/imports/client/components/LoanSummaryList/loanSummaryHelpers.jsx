@@ -1,21 +1,14 @@
 import React from 'react';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
 
-import Icon from 'core/components/Icon';
-import T, { IntlNumber } from 'core/components/Translation';
+import { IntlNumber } from 'core/components/Translation';
 
 export const getLoanSummaryColumns = ({
-  _id,
-  name,
   logic: { step },
   general: { fortuneUsed, insuranceFortuneUsed },
   createdAt,
   updatedAt,
-  borrowers,
-  property: { value },
+  structure: { property },
 }) => [
   {
     translationId: 'LoanSummaryColumn.etape',
@@ -31,7 +24,7 @@ export const getLoanSummaryColumns = ({
   },
   {
     translationId: 'LoanSummaryColumn.propertyValue',
-    content: <IntlNumber value={value} format="money" />,
+    content: <IntlNumber value={property && property.value} format="money" />,
   },
   {
     translationId: 'LoanSummaryColumn.fortuneUsed',

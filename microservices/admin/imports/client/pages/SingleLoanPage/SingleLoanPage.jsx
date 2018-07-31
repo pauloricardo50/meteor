@@ -12,7 +12,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
   const dataToPassDown = {
     ...rest,
     loan,
-    property: loan.structure && loan.structure.property,
+    property: (loan.structure && loan.structure.property) || loan.properties[0],
     properties: loan.properties,
     borrowers: loan.borrowers,
     offers: loan.offers,
@@ -31,7 +31,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
         <LoanTasksTable
           showAssignee
           loanId={loan._id}
-          propertyId={dataToPassDown.property._id}
+          propertyId={dataToPassDown.property && dataToPassDown.property._id}
           borrowerIds={loan.borrowerIds}
           hideIfNoData
         >
