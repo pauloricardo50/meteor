@@ -45,9 +45,9 @@ describe('PropertyService', () => {
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
-        expect(property.valuation.min).to.equal(580000);
-        expect(property.valuation.max).to.equal(690000);
-        expect(property.valuation.value).to.equal(633000);
+        expect(property.valuation.min).to.equal(610000);
+        expect(property.valuation.max).to.equal(730000);
+        expect(property.valuation.value).to.equal(668000);
       });
     }).timeout(10000);
   });

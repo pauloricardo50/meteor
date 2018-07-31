@@ -140,17 +140,6 @@ class WuestService {
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION,
       },
       {
-        sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile && !!qualityProfile.situation,
-        error: WUEST_ERRORS.NO_QUALITY_PROFILE_SITUATION_PROVIDED,
-      },
-      {
-        sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile &&
-          Object.values(QUALITY.SITUATION).includes(qualityProfile.situation),
-        error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_SITUATION,
-      },
-      {
         sanityCheck: ({ data: { residenceType } }) => !!residenceType,
         error: WUEST_ERRORS.NO_RESIDENCE_TYPE_PROVIDED,
       },
@@ -397,7 +386,6 @@ class WuestService {
           qualityProfile: {
             standard: QUALITY.STANDARD.AVERAGE,
             condition: QUALITY.CONDITION.INTACT,
-            situation: QUALITY.SITUATION.AVERAGE,
           },
         },
       });
@@ -436,7 +424,6 @@ class WuestService {
           qualityProfile: {
             standard: QUALITY.STANDARD.AVERAGE,
             condition: QUALITY.CONDITION.INTACT,
-            situation: QUALITY.SITUATION.AVERAGE,
           },
         },
       });
@@ -457,10 +444,15 @@ class WuestService {
       statisticalPriceRangeMin,
       statisticalPriceRangeMax,
     } = embedded.find(({ rel }) => rel === 'keyFigureExtension').value;
+
+    const {
+      value: { content: microLocation },
+    } = embedded.find(({ rel }) => rel === 'microLocationProfiles');
     return {
       value: marketValueBeforeCorrection,
       min: statisticalPriceRangeMin,
       max: statisticalPriceRangeMax,
+      microLocation,
     };
   }
 
@@ -476,7 +468,6 @@ class WuestService {
   }
 
   handleResult(result) {
-    console.log('this:', this);
     return result.json().then((response) => {
       if (response.errorCode) {
         const errorMessage = this.formatError(response);
@@ -490,7 +481,7 @@ class WuestService {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
       return this.getData(property.property.JSONData)
-        .then((result) => this.handleResult(result))
+        .then(result => this.handleResult(result))
         .then(this.formatResult);
     });
     this.properties = [];
