@@ -4,10 +4,10 @@ import React from 'react';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 
+import { toMoney } from 'core/utils/conversionFunctions';
 import { EXPERTISE_STATUS } from '../../api/constants';
 import Loading from '../Loading';
 import ValuationContainer from './ValuationContainer';
-import { toMoney } from 'core/utils/conversionFunctions';
 
 type ValuationProps = {
   property: Object,
@@ -45,7 +45,11 @@ export const Valuation = ({
   disabled,
 }: ValuationProps) => {
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="card1 valuation">
+        <Loading />
+      </div>
+    );
   }
   let content;
   switch (valuation.status) {

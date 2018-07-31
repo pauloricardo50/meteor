@@ -11,7 +11,7 @@ import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 
 const OverviewTab = (props) => {
-  const { loan, borrowers, serverTime } = props;
+  const { loan, borrowers } = props;
   const { adminNote, user, _id } = loan;
   const displayRecap = loanHasMinimalInformation({ loan });
 
@@ -62,8 +62,6 @@ const OverviewTab = (props) => {
 OverviewTab.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dataToPassDown: PropTypes.objectOf(PropTypes.any).isRequired,
-  serverTime: PropTypes.object.isRequired,
 };
 
 export default OverviewTab;

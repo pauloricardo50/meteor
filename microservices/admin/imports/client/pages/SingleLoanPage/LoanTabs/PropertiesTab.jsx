@@ -8,7 +8,7 @@ const PropertiesTab = ({ properties }) => (
   <Tabs
     tabs={properties.map(property => ({
       id: property._id,
-      labeL: property.address1,
+      label: property.address1,
       content: (
         <SinglePropertyPage propertyId={property._id} displayLoans={false} />
       ),

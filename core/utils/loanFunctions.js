@@ -385,7 +385,12 @@ export const loanIsVerified = ({
   },
 }) => validated !== undefined;
 
-export const loanHasMinimalInformation = ({ loan: { general, property } }) => !!(general && general.fortuneUsed && (property && property.value));
+export const loanHasMinimalInformation = ({
+  loan: {
+    general,
+    structure: { property },
+  },
+}) => !!(general && general.fortuneUsed && (property && property.value));
 
 export const useLppFees = ({
   loan: {

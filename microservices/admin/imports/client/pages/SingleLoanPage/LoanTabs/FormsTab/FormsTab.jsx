@@ -234,10 +234,10 @@ export default class FormsTab extends Component {
           onToggle={this.handleToggle}
         />
 
-        <React.Fragment>
+        <div>
           Vérification:{' '}
           <IntlNumber value={getPercent(this.props)} format="percentage" />
-        </React.Fragment>
+        </div>
 
         <hr />
 
