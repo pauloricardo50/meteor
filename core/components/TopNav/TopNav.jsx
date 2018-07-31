@@ -41,7 +41,7 @@ const TopNav = (props) => {
             className="link"
             onClick={() => track('TopNav - clicked logo', {})}
           >
-            <img src="/img/logo_square_black.svg" alt="e-Potek" />
+            <img src="/img/logo_square_black.svg" alt="e-Potek" className="logo-home" />
           </Link>
         </div>
 

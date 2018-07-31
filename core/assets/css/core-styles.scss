@@ -348,3 +348,25 @@ p.description,
 .text-center {
   text-align: center;
 }
+
+.logo-home {
+  transform: none;
+
+  &:hover {
+    animation-name: icon-animate;
+    animation-duration: 600ms;
+    animation-timing-function: $bezier;
+  }
+}
+
+@keyframes icon-animate {
+  25% {
+    transform: rotate(10deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
