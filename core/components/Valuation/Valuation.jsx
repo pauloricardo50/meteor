@@ -3,11 +3,12 @@ import React from 'react';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
+import { toMoney } from 'core/utils/conversionFunctions';
 
 import { EXPERTISE_STATUS } from '../../api/constants';
 import Loading from '../Loading';
 import ValuationContainer from './ValuationContainer';
-import { toMoney } from 'core/utils/conversionFunctions';
+import Microlocation from './Microlocation/Microlocation';
 
 type ValuationProps = {
   property: Object,
@@ -16,7 +17,7 @@ type ValuationProps = {
   disabled: boolean,
 };
 
-const renderResults = ({ min, max, value }) => (
+const renderResults = ({ min, max, value, microlocation }) => (
   <div className="valuation-results">
     <div className="valuation-value">
       <h3 className="valuation-label">
@@ -34,6 +35,7 @@ const renderResults = ({ min, max, value }) => (
         <h2>{toMoney(value)}</h2>
       </div>
     )}
+    <Microlocation microlocation={microlocation} />
   </div>
 );
 const renderError = error => <h3 className="error">{error}</h3>;

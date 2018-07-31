@@ -33,6 +33,7 @@ const config = {
         'FinancingStructures',
         'ValuationButton',
         'Valuation',
+        'Microlocation',
       ],
     },
     {
@@ -60,6 +61,7 @@ const config = {
         'FinancingStructures',
         'ValuationButton',
         'Valuation',
+        'Microlocation',
       ],
     },
   ],

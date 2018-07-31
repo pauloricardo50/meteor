@@ -25,3 +25,38 @@
     justify-content: center;
   }
 }
+
+.microlocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &-factors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  &-factor {
+    padding: 0 16px;
+  }
+
+  &-rating {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 8px 0;
+    max-width: 240px;
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    > :first-child {
+      margin-right: 8px;
+    }
+  }
+}

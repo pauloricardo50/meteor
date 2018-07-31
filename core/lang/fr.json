@@ -1538,6 +1538,36 @@
   "ValuationButton.disabled": "Il manque des informations",
   "ValuationButton.enabled": "Evaluez votre bien",
   "Valuation.title": "Expertise",
-  "Valuation.rangeLabel": "Fourchette:",
-  "Valuation.preciseValueLabel": "Valeur précise:"
+  "Valuation.rangeLabel": "Fourchette",
+  "Valuation.preciseValueLabel": "Valeur précise",
+  "Microlocation.title": "Microsituation",
+  "Microlocation.terrainLabel": "Terrain, vue et climat",
+  "Microlocation.slopeInclinationLabel": "Inclinaison",
+  "Microlocation.expositionLabel": "Exposition",
+  "Microlocation.sunShineDurationSummerLabel": "Durée d'ensoleillement en été",
+  "Microlocation.sunShineDurationWinterLabel":
+    "Durée d'ensoleillement en hiver",
+  "Microlocation.lakeViewLabel": "Vue sur le lac",
+  "Microlocation.mountainViewLabel": "Vue sur les montagnes",
+  "Microlocation.infrastructureLabel": "Infrastructure",
+  "Microlocation.distanceCenterLabel": "Centre",
+  "Microlocation.distanceSchoolLabel": "École/jardin d'enfants",
+  "Microlocation.distanceShoppingLabel": "Centre commercial",
+  "Microlocation.distanceBusStopLabel": "Arrêt de transport public",
+  "Microlocation.publicTransportGradeLabel":
+    "Qualité de la desserte en transports publics",
+  "Microlocation.distanceRecreationAreaLabel": "Espaces de détente, nature",
+  "Microlocation.distanceLakeLabel": "Lac",
+  "Microlocation.distanceRiverLabel": "Rivière",
+  "Microlocation.immissionLabel": "Émissions",
+  "Microlocation.immissionTrainDayLabel": "Émissions ferroviaire (journée)",
+  "Microlocation.immissionTrainNightLabel": "Émissions ferroviaire (nuit)",
+  "Microlocation.immissionStreetDayLabel": "Émissions routières (journée)",
+  "Microlocation.immissionStreetNightLabel": "Émissions routières (nuit)",
+  "Microlocation.distanceMainRoadResidentialLabel":
+    "Route principale (résidentielle)",
+  "Microlocation.distanceRailwayLabel": "Chemin de fer",
+  "Microlocation.distanceRadioAntennaLabel": "Antenne radio mobile",
+  "Microlocation.distanceNuclearPowerLabel": "Centrale nucléaire",
+  "Microlocation.distanceHighVoltagePowerLineLabel": "Lignes à haute tension"
 }
