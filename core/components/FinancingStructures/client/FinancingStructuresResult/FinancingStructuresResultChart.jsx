@@ -9,8 +9,8 @@ import FinancingStructuresDataContainer from '../containers/FinancingStructuresD
 type FinancingStructuresResultChartProps = {};
 
 const FinancingStructuresResultChart = ({
-  getAmortization,
   getInterests,
+  getAmortization,
   ...props
 }: FinancingStructuresResultChartProps) => {
   const interests = getInterests(props);
@@ -19,8 +19,8 @@ const FinancingStructuresResultChart = ({
     <div className="financing-structures-result-chart result">
       <DonutChart
         data={[
-          { value: amortization, id: 'amortization' },
           { value: interests, id: 'interests' },
+          { value: amortization, id: 'amortization' },
         ]}
         intlPrefix="general"
         config={{
@@ -46,9 +46,7 @@ const FinancingStructuresResultChart = ({
         title=""
       />
       <span className="total">
-        <span className="chf">
-          {'CHF '}
-        </span>
+        <span className="chf">CHF </span>
         {toMoney(amortization + interests)}
       </span>
     </div>

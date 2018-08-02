@@ -35,12 +35,12 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       },
     ]}
     detailConfig={[
+      { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
       {
         id: 'amortizationCost',
         Component: CalculatedValue,
         value: getAmortization,
       },
-      { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
       {
         id: 'fiscal',
         label: (
@@ -63,7 +63,8 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       {
         id: 'totalFiscal',
         Component: CalculatedValue,
-        value: params => getSecondPillarWithdrawalTax(params)
+        value: params =>
+          getSecondPillarWithdrawalTax(params)
           + getAmortizationDeduction(params),
       },
       {
