@@ -207,7 +207,7 @@ describe('FinanceCalculator', () => {
       expect(calc.getIndirectAmortizationDeduction({
         loanValue: 250000,
         amortizationRateRelativeToLoan: 0.01,
-      })).to.equal(825);
+      })).to.equal(625);
     });
   });
 

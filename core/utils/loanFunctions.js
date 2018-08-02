@@ -441,6 +441,7 @@ export const formatLoanWithStructure = (loan) => {
   const newLoan = { ...loan };
   if (loan.selectedStructure) {
     const structure = loan.structures.find(({ id }) => id === loan.selectedStructure);
+    
     if (structure) {
       newLoan.structure = structure;
 
@@ -456,6 +457,8 @@ export const formatLoanWithStructure = (loan) => {
     } else {
       newLoan.structure = {};
     }
+
+    return newLoan;
   }
 
   return { ...newLoan, structure: {} };
