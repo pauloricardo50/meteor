@@ -2,9 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import DefaultLoanCalculator, {
-  LoanCalculator,
-} from '../LoanCalculator/LoanCalculator';
+import DefaultLoanCalculator, { LoanCalculator } from '../LoanCalculator';
 
 describe('LoanCalculator', () => {
   describe('getProjectValue', () => {
@@ -15,7 +13,7 @@ describe('LoanCalculator', () => {
       })).to.equal(0);
     });
 
-    it.only('uses notaryFees passed in the constructor', () => {
+    it('uses notaryFees passed in the constructor', () => {
       const calc = new LoanCalculator({ notaryFees: 1, hello: 'world' });
       expect(calc.getProjectValue({
         loan: { structure: { property: { value: 100 } } },
