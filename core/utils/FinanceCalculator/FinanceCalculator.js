@@ -67,11 +67,12 @@ export class FinanceCalculator {
   getLoanValue({
     propertyValue,
     fortune,
+    pledgedValue = 0,
   }: {
     propertyValue: number,
     fortune: number,
   }) {
-    return propertyValue * (1 + this.notaryFees) - fortune;
+    return propertyValue * (1 + this.notaryFees) - fortune + pledgedValue;
   }
 
   getPropAndWork({ propertyValue, propertyWork }) {

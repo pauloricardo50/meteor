@@ -8,12 +8,19 @@ export const withSelector = (SuperClass = class {}) =>
       return loan.structure.property;
     }
 
+    selectStructure({ loan }: { loan: userLoan } = {}): {} {
+      return loan.structure;
+    }
+
     makeSelectPropertyKey(key: string): Function {
-      return ({ loan }) =>
-        createSelector(
-          this.selectProperty,
-          property => property && property[key],
-        )({ loan });
+      return createSelector(
+        this.selectProperty,
+        property => property && property[key],
+      );
+    }
+
+    makeSelectStructureKey(key: string): Function {
+      return createSelector(this.selectStructure, structure => structure[key]);
     }
 
     selectPropertyValue({ loan }: { loan: userLoan } = {}): number {
@@ -21,12 +28,20 @@ export const withSelector = (SuperClass = class {}) =>
     }
 
     selectPropertyWork({ loan }: { loan: userLoan } = {}): number {
-      return this.makeSelectPropertyKey('propertyWork')({ loan });
+      return this.makeSelectStructureKey('propertyWork')({ loan });
     }
 
     selectLoanValue({ loan }: { loan: userLoan } = {}): number {
       return loan.structure.wantedLoan;
     }
+
+    getCashUsed = this.makeSelectStructureKey('fortuneUsed');
+
+    getInsuranceWithdrawn = createSelector(
+      this.makeSelectStructureKey('secondPillarWithdrawal'),
+      this.makeSelectStructureKey('thirdPillarWithdrawal'),
+      (second = 0, third = 0) => second + third,
+    );
   };
 
 export const Selector = withSelector();

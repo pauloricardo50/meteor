@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getProjectValue } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
 import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
@@ -20,10 +20,7 @@ const DashboardRecapFinance = (props) => {
     );
   }
 
-  const totalCost = getProjectValue({
-    loan: props.loan,
-    property: props.loan.properties[0],
-  });
+  const totalCost = Calculator.getProjectValue({ loan: props.loan });
 
   return (
     <div className="dashboard-recap-finance card1">

@@ -55,6 +55,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return true;
     };
+
+    getEffectiveLoanValue({ loan }) {
+      const wantedLoan = this.makeSelectStructureKey('wantedLoan')({ loan });
+      const pledgedValue = this.makeSelectStructureKey('secondPillarPledged')({ loan })
+        + this.makeSelectStructureKey('thirdPillarPledged')({ loan });
+      return wantedLoan + pledgedValue;
+    }
   };
 
 export const LoanCalculator = withLoanCalculator(FinanceCalculator);
