@@ -255,63 +255,6 @@ export const getPropertyCompletion = ({ loan, borrowers, property }) => {
 
   return (formsProgress + filesProgress) / 2;
 };
-export const validateRatios = (
-  incomeRatio,
-  borrowRatio,
-  allowInsurance = true,
-  borrowRatioWanted,
-) => {
-  // To prevent rounding errors
-  const incomeRatioSafe = incomeRatio - 0.001;
-  const borrowRatioSafe = borrowRatio - 0.001;
-
-  if (borrowRatioWanted && borrowRatioWanted !== 0.8) {
-    if (borrowRatioSafe > borrowRatioWanted) {
-      throw new Error('fortune');
-    }
-  }
-
-  if (incomeRatioSafe > 0.38) {
-    throw new Error('income');
-  } else if (!allowInsurance && borrowRatioSafe > 0.8) {
-    throw new Error('fortune');
-  } else if (borrowRatioSafe > 0.9) {
-    throw new Error('fortune');
-  } else if (incomeRatioSafe > 1 / 3) {
-    throw new Error('incomeTight');
-  } else if (borrowRatioSafe > 0.8) {
-    throw new Error('fortuneTight');
-  }
-
-  return true;
-};
-
-export const validateRatiosCompletely = (
-  incomeRatio,
-  borrowRatio,
-  allowInsurance = true,
-  borrowRatioWanted = 0.9,
-) => {
-  try {
-    validateRatios(incomeRatio, borrowRatio, borrowRatioWanted, allowInsurance);
-    return {
-      isValid: true,
-      message: 'valid',
-      message2: '',
-      icon: 'check',
-      className: 'success',
-    };
-  } catch (error) {
-    const isTight = error.message.indexOf('Tight') >= 0;
-    return {
-      isValid: false,
-      message: `${error.message}`,
-      message2: `${error.message}2`,
-      icon: isTight ? 'warning' : 'close',
-      className: isTight ? 'warning' : 'error',
-    };
-  }
-};
 
 // Returns the maintenance to pay every month, i.e. 1% of the property divided by 12 months
 export const getMaintenance = ({ property }) => (property.value * 0.01) / 12;
