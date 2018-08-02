@@ -187,25 +187,7 @@ describe('Loan functions', () => {
       })).to.equal(true);
     });
 
-    describe('getInterestsWithOffer', () => {
-      it('returns 0 if no offer is provided', () => {
-        expect(getInterestsWithOffer({})).to.equal(0);
-      });
 
-      it('returns -1 if an interest rate does not exist', () => {
-        expect(getInterestsWithOffer({
-          loan: {
-            general: {
-              loanTranches: [
-                { type: 'test', value: 120000 },
-                { type: 'test2, value: 9' },
-              ],
-            },
-          },
-          offer: { standardOffer: { test: 0.01 } },
-        })).to.equal(-1);
-      });
-    });
 
     it('returns the right interests if everything is okay', () => {
       expect(getInterestsWithOffer({
@@ -252,6 +234,26 @@ describe('Loan functions', () => {
           },
         },
         offer: { standardOffer: { testx: 0.01, test2: 0.01, test3: 0.02 } },
+      })).to.equal(-1);
+    });
+  });
+
+  describe('getInterestsWithOffer', () => {
+    it('returns 0 if no offer is provided', () => {
+      expect(getInterestsWithOffer({})).to.equal(0);
+    });
+
+    it('returns -1 if an interest rate does not exist', () => {
+      expect(getInterestsWithOffer({
+        loan: {
+          general: {
+            loanTranches: [
+              { type: 'test', value: 120000 },
+              { type: 'test2, value: 9' },
+            ],
+          },
+        },
+        offer: { standardOffer: { test: 0.01 } },
       })).to.equal(-1);
     });
   });

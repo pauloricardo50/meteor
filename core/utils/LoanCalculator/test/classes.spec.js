@@ -19,6 +19,10 @@ class RootCalculator {
   return2(): number {
     return 2;
   }
+
+  parentFunc() {
+    return this.childFunc();
+  }
 }
 
 const addClass = SuperClass => class extends SuperClass {};
@@ -56,6 +60,10 @@ const withCalc3 = SuperClass =>
 
     return2(): number {
       return -2;
+    }
+
+    childFunc() {
+      return 'it works';
     }
   };
 
@@ -178,5 +186,9 @@ describe('Class composition', () => {
     // Inspect types here to make sure they are correct
     expect(new MyClass().return2()).to.equal('2');
     expect(new MyClass().returnNumber()).to.equal(-2);
+  });
+
+  it('parent can call child funcs', () => {
+    expect(new UberClass().parentFunc()).to.equal('it works');
   });
 });

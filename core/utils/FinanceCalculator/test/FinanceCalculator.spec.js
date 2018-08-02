@@ -94,10 +94,11 @@ describe('FinanceCalculator', () => {
     });
 
     it('throws if an interest rate is not present', () => {
-      expect(() => calc.getInterestsWithTranches({
-        tranches: [{ value: 0.5, type: 'a' }],
-        interestRates: { b: 0.02 },
-      })).to.throw(NO_INTEREST_RATE_ERROR);
+      expect(() =>
+        calc.getInterestsWithTranches({
+          tranches: [{ value: 0.5, type: 'a' }],
+          interestRates: { b: 0.02 },
+        })).to.throw(NO_INTEREST_RATE_ERROR);
     });
   });
 
@@ -230,6 +231,37 @@ describe('FinanceCalculator', () => {
 
     it('adds the 2 values', () => {
       expect(calc.getEffectiveLoan({ loanValue: 100, pledgedValue: 50 })).to.equal(150);
+    });
+  });
+
+  describe('Calculate Years to Retirement', () => {
+    it('Should return 35 with a male of 30 yo', () => {
+      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(35);
+    });
+
+    it('Should return 34 with a female of 30 yo', () => {
+      expect(calc.getYearsToRetirement({ age1: 30, gender1: 'F' })).to.equal(34);
+    });
+
+    it('Should return 35 with an undefined gender of 30 yo', () => {
+      expect(calc.getYearsToRetirement({ age1: 30 })).to.equal(35);
+    });
+
+    it('Should return 0 with a female of 64 yo', () => {
+      expect(calc.getYearsToRetirement({ age1: 64, gender1: 'F' })).to.equal(0);
+    });
+
+    it('Should return 0 with a female over 64 yo', () => {
+      expect(calc.getYearsToRetirement({ age1: 80, gender1: 'F' })).to.equal(0);
+    });
+
+    it('Should return 10 with a female of 54 yo and male of 54 yo', () => {
+      expect(calc.getYearsToRetirement({
+        age1: 54,
+        age2: 54,
+        gender1: 'F',
+        gender2: 'M',
+      })).to.equal(10);
     });
   });
 });

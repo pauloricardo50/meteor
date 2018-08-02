@@ -111,14 +111,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       this.getArrayValues({ borrowers }, 'expenses');
 
     getBorrowerIncome = ({ borrowers }) => {
-      let sum = 0;
-
-      arrayify(borrowers).forEach((borrower) => {
-        sum += borrower.salary || 0;
-        sum += this.getBonusIncome({ borrowers: borrower }) || 0;
-        sum += this.getOtherIncome({ borrowers: borrower }) || 0;
-        sum -= this.getExpenses({ borrowers: borrower }) || 0;
-      });
+      const sum = arrayify(borrowers).reduce((total, borrower) => {
+        let borrowerIncome = 0;
+        borrowerIncome += borrower.salary || 0;
+        borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
+        borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
+        borrowerIncome -= this.getExpenses({ borrowers: borrower }) || 0;
+        return total + borrowerIncome;
+      }, 0);
 
       return sum;
     };
@@ -130,13 +130,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
 
     getRealEstateFortune = ({ borrowers }) =>
-      this.getArrayValues({ borrowers }, 'realEstate', i => i.value - i.loan);
+      this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: i => i.value - i.loan,
+      });
 
     getRealEstateValue = ({ borrowers }) =>
-      this.getArrayValues({ borrowers }, 'realEstate');
+      this.getArrayValues({ borrowers, key: 'realEstate' });
 
     getRealEstateDebt = ({ borrowers }) =>
-      this.getArrayValues({ borrowers }, 'realEstate', i => i.loan);
+      this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: i => i.loan,
+      });
 
     getBorrowerSalary = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'salary' });

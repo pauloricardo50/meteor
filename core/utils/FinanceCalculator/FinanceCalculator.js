@@ -213,6 +213,41 @@ export class FinanceCalculator {
   }: { propertyValue: number, propertyWork: number } = {}) {
     return (propertyValue + propertyWork) * this.maxBorrowRatio;
   }
+
+  getYearsToRetirement = ({
+    age1,
+    age2,
+    gender1,
+    gender2,
+  }: {
+    age1?: number,
+    age2?: number,
+    gender1?: 'F' | 'M',
+    gender2?: 'F' | 'M',
+  } = {}) => {
+    const retirement1 = this.getRetirementForGender({ gender: gender1 });
+    let retirement2 = null;
+    if (gender2) {
+      retirement2 = this.getRetirementForGender({ gender: gender2 });
+    }
+
+    // Substract age to determine remaining time to retirement for both borrowers
+    const toRetirement1 = retirement1 - age1;
+    let toRetirement2;
+    if (retirement2 && age2) {
+      toRetirement2 = retirement2 - age2;
+    }
+
+    // Get the most limiting time to retirement for both borrowers, in years
+    let yearsToRetirement;
+    if (toRetirement2) {
+      yearsToRetirement = Math.min(toRetirement1, toRetirement2);
+    } else {
+      yearsToRetirement = toRetirement1;
+    }
+
+    return Math.max(yearsToRetirement, 0);
+  };
 }
 
 export default new FinanceCalculator();
