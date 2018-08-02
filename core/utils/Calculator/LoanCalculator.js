@@ -1,5 +1,6 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
+import { averageRates } from '../../components/InterestRatesTable/interestRates';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -31,7 +32,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return secondPillarPledged + thirdPillarPledged + fortuneUsed;
     }
 
-    getFees({ loan, property }): number {
+    getFees({ loan }): number {
       const notaryFees = this.selectPropertyValue({ loan }) * this.notaryFees;
 
       return notaryFees;
@@ -56,11 +57,44 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return true;
     };
 
-    getEffectiveLoanValue({ loan }) {
+    getEffectiveLoan({ loan }) {
       const wantedLoan = this.makeSelectStructureKey('wantedLoan')({ loan });
       const pledgedValue = this.makeSelectStructureKey('secondPillarPledged')({ loan })
         + this.makeSelectStructureKey('thirdPillarPledged')({ loan });
-      return wantedLoan + pledgedValue;
+      return super.getEffectiveLoan({ loanValue: wantedLoan, pledgedValue });
+    }
+
+    getInterests({ loan, interestRates }) {
+      let finalInterestRates = interestRates;
+      const offer = this.makeSelectStructureKey('offer')({ loan });
+      if (offer) {
+        finalInterestRates = offer;
+      } else if (!interestRates) {
+        finalInterestRates = averageRates;
+      }
+
+      return (
+        (this.getInterestsWithTranches({
+          tranches: this.makeSelectStructureKey('loanTranches')({ loan }),
+          interestRates: finalInterestRates,
+        })
+          * this.getEffectiveLoan({ loan }))
+        / 12
+      );
+    }
+
+    getAmortization({ loan }) {
+      return (
+        (this.getAmortizationRate({ loan }) * this.getEffectiveLoan({ loan }))
+        / 12
+      );
+    }
+
+    getMonthly({ loan, interestRates }) {
+      return (
+        this.getInterests({ loan, interestRates })
+        + this.getAmortization({ loan })
+      );
     }
   };
 

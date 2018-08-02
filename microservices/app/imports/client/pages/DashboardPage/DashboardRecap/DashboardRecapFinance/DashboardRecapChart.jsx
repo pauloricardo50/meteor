@@ -3,20 +3,17 @@ import PropTypes from 'prop-types';
 
 import DonutChart from 'core/components/charts/DonutChart';
 import T from 'core/components/Translation';
-import { getInterests, getAmortization } from 'core/utils/finance-math';
-import { getInterestsWithOffer } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
 const getChartData = ({ loan, offer, interestRate }) => {
-  const { borrowers, properties } = loan;
-  const property = properties[0];
   let interests = 0;
 
   if (offer) {
-    interests = getInterestsWithOffer({ loan, borrowers, property }, false);
+    interests = Calculator.getInterestsWithOffer({ loan }, false);
   } else {
-    interests = getInterests({ loan, borrowers, property }, interestRate);
+    interests = Calculator.getInterests({ loan }, interestRate);
   }
 
   return [
@@ -26,7 +23,7 @@ const getChartData = ({ loan, offer, interestRate }) => {
     },
     {
       id: 'general.amortization',
-      value: getAmortization({ loan, borrowers, property }).amortization,
+      value: Calculator.getAmortization({ loan }).amortization,
     },
   ].map(dataPoint => ({ ...dataPoint, value: Math.round(dataPoint.value) }));
 };

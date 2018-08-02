@@ -140,15 +140,12 @@ export class FinanceCalculator {
   }
 
   getInterestsWithTranches({
-    tranches,
-    interestRates,
+    tranches = [],
+    interestRates = {},
   }: {
-      tranches: Array<{ type: string, value: number }>,
-      interestRates: Object,
-    } = {
-    tranches: [],
-    interestRates: {},
-  }) {
+    tranches: Array<{ type: string, value: number }>,
+    interestRates: Object,
+  } = {}) {
     return tranches.reduce((acc, { type, value }) => {
       const rate = interestRates[type];
 
