@@ -31,7 +31,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return secondPillarPledged + thirdPillarPledged + fortuneUsed;
     }
 
-    getFees({ loan, property }) {
+    getFees({ loan, property }): number {
       const notaryFees = this.selectPropertyValue({ loan }) * this.notaryFees;
 
       return notaryFees;

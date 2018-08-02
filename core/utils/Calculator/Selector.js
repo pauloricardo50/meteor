@@ -1,13 +1,14 @@
 // @flow
 import { createSelector } from 'reselect';
+import type { userLoan, userProperty } from '../../api/types';
 
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
-    selectProperty({ loan }) {
+    selectProperty({ loan }: { loan: userLoan } = {}): userProperty {
       return loan.structure.property;
     }
 
-    makeSelectPropertyKey(key) {
+    makeSelectPropertyKey(key: string): Function {
       return ({ loan }) =>
         createSelector(
           this.selectProperty,
@@ -15,15 +16,15 @@ export const withSelector = (SuperClass = class {}) =>
         )({ loan });
     }
 
-    selectPropertyValue({ loan }) {
+    selectPropertyValue({ loan }: { loan: userLoan } = {}): number {
       return this.makeSelectPropertyKey('value')({ loan });
     }
 
-    selectPropertyWork({ loan }) {
+    selectPropertyWork({ loan }: { loan: userLoan } = {}): number {
       return this.makeSelectPropertyKey('propertyWork')({ loan });
     }
 
-    selectLoanValue({ loan }) {
+    selectLoanValue({ loan }: { loan: userLoan } = {}): number {
       return loan.structure.wantedLoan;
     }
   };
