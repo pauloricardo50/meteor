@@ -1,6 +1,7 @@
 {
   "FinancingStructures.propertyCost": "Charges mensuelles",
   "Forms.monthlyExpenses": "Charges mensuelles",
+  "Forms.monthlyExpenses.placeholder": "0",
   "general.maintenance": "Charges mensuelles",
 
   "AboutPageOffice.description": "Basés à Genève, nous travaillons tous les jours pour transformer le marché de l'hypothèque.",
@@ -549,7 +550,7 @@
   "Forms.constructionYear": "Année de construction",
   "Forms.copropertyPercentage.info": "En millièmes",
   "Forms.copropertyPercentage.placeholder": "125",
-  "Forms.copropertyPercentage": "Répartition $au sein de la copropriété",
+  "Forms.copropertyPercentage": "Répartition au sein de la copropriété",
   "Forms.createdAt": "Créé le",
   "Forms.currentOwner.0": "{name}",
   "Forms.currentOwner.1": "{name}",
