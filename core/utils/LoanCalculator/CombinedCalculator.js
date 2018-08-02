@@ -9,14 +9,41 @@ import { withSelector } from './Selector';
 export const withCombinedCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     // add combined functions here
-    getMonthlyWithOffer = ({
+    getInterestsWithOffer({ loan, offer, isStandard = true }) {
+      if (!offer) {
+        return 0;
+      }
+
+      const tranches = loan.general.loanTranches;
+      const interestRates = isStandard
+        ? offer.standardOffer
+        : offer.counterpartOffer;
+
+      let interests = 0;
+      tranches.every((tranche) => {
+        const rate = interestRates[tranche.type];
+
+        // If the lender doesn't have this interest rate, return false
+        if (!rate) {
+          interests = -1;
+          // break loop
+          return false;
+        }
+
+        interests += tranche.value * rate;
+        return true;
+      });
+
+      return interests >= 0 ? Math.round(interests / 12) : interests;
+    }
+
+    getMonthlyWithOffer({
       loan,
-      property,
       offer,
       isStandard = true,
       fortuneUsed = 0,
       insuranceFortuneUsed = 0,
-    }) => {
+    }) {
       // Return undefined if the counterpartOffer doesn't exist
       if (!isStandard && !offer.counterpartOffer) {
         return undefined;
@@ -55,9 +82,9 @@ export const withCombinedCalculator = (SuperClass = class {}) =>
       return interests >= 0
         ? Math.round((maintenance + loanValue * amortization + interests) / 12) || 0
         : 0;
-    };
+    }
 
-    getMonthlyWithExtractedOffer = ({ loan, offer, property }) =>
+    getMonthlyWithExtractedOffer({ loan, offer, property }) {
       this.getMonthlyWithOffer({
         loan,
         property,
@@ -68,34 +95,7 @@ export const withCombinedCalculator = (SuperClass = class {}) =>
         },
         isStandard: offer.type === OFFER_TYPE.STANDARD,
       });
-
-    getInterestsWithOffer = ({ loan, offer, isStandard = true }) => {
-      if (!offer) {
-        return 0;
-      }
-
-      const tranches = loan.general.loanTranches;
-      const interestRates = isStandard
-        ? offer.standardOffer
-        : offer.counterpartOffer;
-
-      let interests = 0;
-      tranches.every((tranche) => {
-        const rate = interestRates[tranche.type];
-
-        // If the lender doesn't have this interest rate, return false
-        if (!rate) {
-          interests = -1;
-          // break loop
-          return false;
-        }
-
-        interests += tranche.value * rate;
-        return true;
-      });
-
-      return interests >= 0 ? Math.round(interests / 12) : interests;
-    };
+    }
   };
 
 export const CombinedCalculator = withSelector(withCombinedCalculator());

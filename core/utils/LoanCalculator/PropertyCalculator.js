@@ -5,7 +5,7 @@ import {
 } from '../../arrays/PropertyFormArray';
 import { getPercent } from '../general';
 import { getCountedArray } from '../formArrayHelpers';
-import { FinanceCalculator } from '../../FinanceCalculator';
+import { FinanceCalculator } from '../FinanceCalculator';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
