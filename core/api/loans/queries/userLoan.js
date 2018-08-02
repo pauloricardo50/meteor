@@ -77,6 +77,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
       error: 1,
       date: 1,
     },
+    monthlyExpenses: 1,
   },
   borrowerIds: 1,
   borrowers: {

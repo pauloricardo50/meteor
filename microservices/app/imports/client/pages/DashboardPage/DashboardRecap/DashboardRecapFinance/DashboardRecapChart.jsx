@@ -7,16 +7,16 @@ import Calculator from 'core/utils/Calculator';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
-const getChartData = ({ loan, offer, interestRate }) => {
+const getChartData = ({ loan, offer }) => {
   let interests = 0;
 
   if (offer) {
     interests = Calculator.getInterestsWithOffer({ loan }, false);
   } else {
-    interests = Calculator.getInterests({ loan }, interestRate);
+    interests = Calculator.getInterests({ loan });
   }
 
-  return [
+  const data = [
     {
       id: 'general.interests',
       value: interests,
@@ -25,7 +25,20 @@ const getChartData = ({ loan, offer, interestRate }) => {
       id: 'general.amortization',
       value: Calculator.getAmortization({ loan }),
     },
-  ].map(dataPoint => ({ ...dataPoint, value: Math.round(dataPoint.value) }));
+  ];
+
+  const expenses = Calculator.makeSelectPropertyKey('monthlyExpenses')({
+    loan,
+  });
+
+  if (expenses) {
+    data.push({ id: 'Forms.monthlyExpenses', value: expenses });
+  }
+
+  return data.map(dataPoint => ({
+    ...dataPoint,
+    value: Math.round(dataPoint.value),
+  }));
 };
 
 const DashboardRecapChart = (props) => {

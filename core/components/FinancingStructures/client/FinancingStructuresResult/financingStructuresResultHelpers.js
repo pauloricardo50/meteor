@@ -1,7 +1,9 @@
 // @flow
 import { AMORTIZATION_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
-import FinanceCalculator from '../FinancingStructuresCalculator';
+import FinanceCalculator, {
+  getProperty,
+} from '../FinancingStructuresCalculator';
 
 export const getInterests = params =>
   (FinanceCalculator.getInterestsWithTranches(params)
@@ -24,6 +26,11 @@ export const getAmortizationDeduction = (params) => {
   }
 
   return 0;
+};
+
+export const getPropertyExpenses = (data) => {
+  const property = getProperty(data);
+  return (property && property.monthlyExpenses) || 0;
 };
 
 export const getSecondPillarWithdrawalTax = FinanceCalculator.getSecondPillarWithdrawalTax;
