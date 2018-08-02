@@ -17,7 +17,9 @@ const loan = {
   createdAt,
   updatedAt,
   borrowers: [],
-  property: { value: 100000 },
+  structure: {
+    property: { value: 100000 },
+  },
 };
 
 describe('LoanSummaryColumns />', () => {

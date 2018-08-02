@@ -476,7 +476,6 @@ class WuestService {
   }
 
   handleResult(result) {
-    console.log('this:', this);
     return result.json().then((response) => {
       if (response.errorCode) {
         const errorMessage = this.formatError(response);
