@@ -1,27 +1,29 @@
 .valuation {
-  align-self: center;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  align-self: center;
+  flex-direction: column;
+
   margin: 80px;
   padding: 48px;
 
   &-label {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   &-results {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
+
     padding: 24px;
   }
 
   &-value {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
   }
 }

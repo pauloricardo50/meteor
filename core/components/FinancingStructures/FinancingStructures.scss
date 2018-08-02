@@ -6,34 +6,37 @@ $card1_padding: 24px;
 
 .financing-structures {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-direction: column;
 
   .input-and-slider {
-    > *:first-child {
+     > *:first-child {
       margin-bottom: 8px;
     }
   }
 }
 
 .structure {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
   flex-shrink: 0;
+  justify-content: center;
+
+  box-sizing: border-box;
   width: 300px;
+
   border-right: solid 1px $light-grey;
   border-left: solid 1px $light-grey;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  box-sizing: border-box;
 
   .card1 > *,
-  > * {
-    min-height: $item-height;
+   > * {
     display: flex;
-    flex-direction: column;
     align-items: stretch;
+    flex-direction: column;
     justify-content: center;
+
+    min-height: $item-height;
     // Use padding on both sides to allow labels to center properly
     padding: 8px 0;
   }
@@ -44,36 +47,44 @@ $card1_padding: 24px;
   }
 
   .calculated-value {
-    // Match Mui-Input font-size roughly
-    font-size: 1.142rem;
-    color: $primary;
+    align-items: center;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
+
+    color: $primary;
+    // Match Mui-Input font-size roughly
+
+    font-size: 1.142rem;
 
     .chf {
-      color: initial;
-      font-size: 12px;
-      opacity: 0.5;
       margin-right: 4px;
+
+      opacity: 0.5;
+      color: initial;
+
+      font-size: 12px;
     }
   }
 }
 
 .financing-structures-section {
-  width: 100%;
   position: relative;
-  background-color: #f7fafb;
-  margin-bottom: 32px;
+
   overflow-x: scroll;
+
+  width: 100%;
+  margin-bottom: 32px;
+
+  background-color: #f7fafb;
 
   input {
     color: $primary;
   }
 
   &.result-section {
-    background-color: $primary;
     color: white;
+    background-color: $primary;
+
     font-family: 'Eina04-Bold';
 
     .label {
@@ -90,13 +101,13 @@ $card1_padding: 24px;
     }
 
     .card1 {
-      box-shadow: unset;
       background-color: unset;
+      box-shadow: unset;
     }
 
     .structure {
-      border-left-color: rgba($color: #000000, $alpha: 0.1);
-      border-right-color: rgba($color: #000000, $alpha: 0.1);
+      border-right-color: rgba($color: #000, $alpha: 0.1);
+      border-left-color: rgba($color: #000, $alpha: 0.1);
     }
 
     h4 {
@@ -105,14 +116,16 @@ $card1_padding: 24px;
   }
 
   .section-summary {
-    padding: 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
 
+    padding: 0;
+
     .structure {
-      box-sizing: border-box;
       align-items: center;
+
+      box-sizing: border-box;
     }
 
     .calculated-value {
@@ -125,18 +138,20 @@ $card1_padding: 24px;
   }
 
   .section-detail {
-    padding: 0;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
 
+    padding: 0;
+
     .structure {
-      padding: 16px;
       box-sizing: border-box;
+      padding: 16px;
 
       .card1 {
         display: flex;
         flex-direction: column;
+
         box-sizing: border-box;
         padding: $card1_padding;
       }
@@ -145,6 +160,7 @@ $card1_padding: 24px;
 
   .section-title {
     margin: 0;
+
     color: #69707a;
   }
 
@@ -155,12 +171,13 @@ $card1_padding: 24px;
 
 .financing-structures-labels {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-direction: column;
+  flex-shrink: 0;
+
   width: $labels-width;
   padding: 16px;
   padding-top: calc(16px + #{$card1_padding});
-  flex-shrink: 0;
 
   &.summary-labels {
     padding-top: 16px;
@@ -169,15 +186,17 @@ $card1_padding: 24px;
   .label {
     display: flex;
     align-items: center;
+
     color: rgba(0, 0, 0, 0.68);
   }
 }
 
 .financing-structures-result-chart {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  flex-direction: row;
   justify-content: space-around;
+
   width: 100%;
 
   .total {
