@@ -1,3 +1,4 @@
+// @flow
 import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
 
@@ -36,3 +37,9 @@ export default Properties.createQuery(PROPERTY_QUERIES.USER_PROPERTY, {
     property: { value: 1 },
   },
 });
+
+export type userProperty = {
+  value: number,
+  address1: string,
+  style: string,
+};
