@@ -98,7 +98,7 @@ describe('Class composition', () => {
   });
 
   it('combines multiple classes with compose hidden away', () => {
-    class MyClass extends UberClass {}
+    const MyClass = class extends UberClass {};
 
     expect(new MyClass().increment(1)).to.equal(2);
     expect(new MyClass().add(1, 2)).to.equal(3);
