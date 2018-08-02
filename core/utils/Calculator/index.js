@@ -7,6 +7,12 @@ import { withOfferCalculator } from './OfferCalculator';
 import { withPropertyCalculator } from './PropertyCalculator';
 import { withCombinedCalculator } from './CombinedCalculator';
 import { withSelector } from './Selector';
+import { withConfig } from './classUtils';
+import { financeCalculatorArgumentMapper } from './middleware';
+
+const MappedFinanceCalculator = withConfig({
+  middlewareObject: financeCalculatorArgumentMapper,
+})(FinanceCalculator);
 
 // Put CombinedCalculator first, so that it can modify the following calculators
 // with middleware
@@ -17,6 +23,6 @@ export const Calculator = compose(
   withPropertyCalculator,
   withOfferCalculator,
   withSelector,
-)(FinanceCalculator);
+)(MappedFinanceCalculator);
 
 export default new Calculator();

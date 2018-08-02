@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import BorrowerCalculator from '../BorrowerCalculator';
+import BorrowerCalculator from '..';
 
 describe('BorrowerCalculator', () => {
   describe('sumValues', () => {

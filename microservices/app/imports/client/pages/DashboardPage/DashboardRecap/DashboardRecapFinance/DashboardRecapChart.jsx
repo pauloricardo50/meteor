@@ -23,7 +23,7 @@ const getChartData = ({ loan, offer, interestRate }) => {
     },
     {
       id: 'general.amortization',
-      value: Calculator.getAmortization({ loan }).amortization,
+      value: Calculator.getAmortization({ loan }),
     },
   ].map(dataPoint => ({ ...dataPoint, value: Math.round(dataPoint.value) }));
 };

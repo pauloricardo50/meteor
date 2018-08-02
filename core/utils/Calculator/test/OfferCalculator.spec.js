@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import OfferCalculator from '../OfferCalculator';
+import OfferCalculator from '..';
 
 describe('OfferCalculator', () => {
   it('test name', () => {
