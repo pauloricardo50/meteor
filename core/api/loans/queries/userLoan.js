@@ -76,6 +76,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
       status: 1,
       error: 1,
       date: 1,
+      microlocation: 1,
     },
   },
   borrowerIds: 1,

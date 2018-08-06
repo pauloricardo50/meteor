@@ -22,7 +22,6 @@ class Property {
     this.qualityProfile = {
       standard: 0,
       condition: 0,
-      situation: 0,
     };
     this.JSONData = JSON_DATA_STRUCTURE;
   }
@@ -109,7 +108,6 @@ class Property {
           },
           {
             type: 'residential.location.microlocation',
-            grade: { manualValue: this.qualityProfile.situation },
           },
         ],
       },
