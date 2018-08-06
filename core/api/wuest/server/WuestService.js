@@ -485,15 +485,10 @@ class WuestService {
       microlocationData.factors,
     );
 
-    const microlocation = {
+    return {
       grade: microlocationData.grade,
-      factors: {
-        terrain,
-        infrastructure,
-        immission,
-      },
+      factors: { terrain, infrastructure, immission },
     };
-    return microlocation;
   }
 
   formatResult({ keyFigures: { marketValueBeforeCorrection }, embedded }) {
@@ -502,15 +497,16 @@ class WuestService {
       statisticalPriceRangeMax,
     } = embedded.find(({ rel }) => rel === 'keyFigureExtension').value;
 
+    // Get first element of 'content' because wuest API returns an array of microlocations
     const {
-      value: { content: microlocation },
+      value: { content: [microlocation] },
     } = embedded.find(({ rel }) => rel === 'microLocationProfiles');
 
     return {
       value: marketValueBeforeCorrection,
       min: statisticalPriceRangeMin,
       max: statisticalPriceRangeMax,
-      microlocation: this.formatMicrolocation(microlocation[0]),
+      microlocation: this.formatMicrolocation(microlocation),
     };
   }
 
