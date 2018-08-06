@@ -1,5 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import faker from 'faker';
+
 import { Users } from '../api';
 import { USER_PASSWORD } from './constants';
 import UserService from '../api/users/UserService';
@@ -24,8 +26,8 @@ export const createFakeUsers = (count, role, currentUserEmail = '') => {
       UserService.update({
         userId: newUserId,
         object: {
-          firstName: `firstName${i + 1}`,
-          lastName: `lastName${i + 1}`,
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       });
       insertedUsers.push(newUserId);

@@ -1,24 +1,11 @@
+import faker from 'faker';
 import BorrowerService from '../api/borrowers/BorrowerService';
 import { fakeDocument } from '../api/files/fakes';
 import { Borrowers } from '../api';
 
-const firstNames = [
-  'Marie',
-  'Camille',
-  'Léa',
-  'Manon',
-  'Thomas',
-  'Nicolas',
-  'Julien',
-];
-
-const lastNames = ['Arsenault', 'Babel', 'Rochat'];
-
-const getRandomArrayElement = array => array[Math.floor(Math.random() * array.length)];
-
 const insertFakeBorrower = (userId) => {
-  const firstName = getRandomArrayElement(firstNames);
-  const lastName = getRandomArrayElement(lastNames);
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
 
   const borrower = {
     firstName,
@@ -108,6 +95,7 @@ export const createFakeBorrowers = (userId, twoBorrowers = false) => {
   return borrowerIds;
 };
 
-export const getRelatedBorrowerIds = usersIds => Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-  .fetch()
-  .map(item => item._id);
+export const getRelatedBorrowerIds = usersIds =>
+  Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);
