@@ -121,6 +121,24 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }) {
       return !!(fortuneUsed && (property && property.value));
     }
+
+    getLenderCount({ loan }) {
+      const incomeRatio = this.getIncomeRatio({ loan });
+      const borrowRatio = this.getBorrowRatio({ loan });
+      if (incomeRatio > 0.38) {
+        return 0;
+      }
+      if (incomeRatio > 1 / 3) {
+        return 4;
+      }
+      if (borrowRatio <= 0.65) {
+        return 20;
+      }
+      if (borrowRatio > 0.65 && borrowRatio <= 0.9) {
+        return 10;
+      }
+      return 0;
+    }
   };
 
 export const LoanCalculator = withLoanCalculator(FinanceCalculator);

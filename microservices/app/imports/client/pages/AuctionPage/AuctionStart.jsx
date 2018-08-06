@@ -4,7 +4,7 @@ import CountUp from 'react-countup';
 import { injectIntl } from 'react-intl';
 
 import Button from 'core/components/Button';
-import { getLenderCount } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import { startAuction } from 'core/api/methods';
 
 import T from 'core/components/Translation';
@@ -38,7 +38,7 @@ const styles = {
 };
 
 const AuctionStart = (props) => {
-  const lenderCount = getLenderCount(props);
+  const lenderCount = Calculator.getLenderCount(props);
   const r = props.loan;
   const f = props.intl.formatMessage;
   return (
