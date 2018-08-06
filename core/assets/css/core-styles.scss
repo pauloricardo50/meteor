@@ -53,10 +53,11 @@ hr {
 
 // White backgrounds with shadows to put things on
 .card1 {
+  transition: box-shadow 200ms $bezier;
+
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 200ms $bezier;
 }
 
 .card1 .card-top {
@@ -347,4 +348,26 @@ p.description,
 
 .text-center {
   text-align: center;
+}
+
+.logo-home {
+  transform: none;
+
+  &:hover {
+    animation-name: icon-animate;
+    animation-duration: 600ms;
+    animation-timing-function: $bezier;
+  }
+}
+
+@keyframes icon-animate {
+  25% {
+    transform: rotate(10deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
 }

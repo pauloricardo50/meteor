@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 
 const LoanSummaryColumn = ({ translationId, content }) => (
   <div className="flex-col">
-    <label htmlFor="">
+    <label>
       <T id={translationId} />
     </label>
     <p>{content}</p>
@@ -13,8 +13,8 @@ const LoanSummaryColumn = ({ translationId, content }) => (
 );
 
 LoanSummaryColumn.propTypes = {
-  translationId: PropTypes.objectOf(PropTypes.any).isRequired,
-  content: PropTypes.objectOf(PropTypes.any).isRequired,
+  content: PropTypes.node.isRequired,
+  translationId: PropTypes.string.isRequired,
 };
 
 export default LoanSummaryColumn;

@@ -1,4 +1,4 @@
-import query from 'core/api/borrowers/queries/borrower';
+import query from 'core/api/borrowers/queries/adminBorrower';
 import { withSmartQuery } from 'core/api';
 
 export default withSmartQuery({

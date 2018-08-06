@@ -1,5 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { SecurityService, Loans, Borrowers, Properties } from '../..';
+import { SecurityService } from '../..';
+import LoanService from '../../loans/LoanService';
+import BorrowerService from '../../borrowers/BorrowerService';
+import PropertyService from '../../properties/PropertyService';
 import {
   getMixpanelAuthorization,
   getServerTime,
@@ -28,21 +31,27 @@ downloadPDF.setHandler(() => {
 
 addBorrower.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  const loan = Loans.findOne(loanId);
+  const loan = LoanService.getLoanById(loanId);
 
   // A loan can't have more than 2 borrowers at the moment
   if (loan.borrowerIds.length >= 2) {
     return false;
   }
 
-  const newBorrowerId = Borrowers.smartInsert({ userId: Meteor.userId() });
+  const newBorrowerId = BorrowerService.insert({
+    borrower: {},
+    userId: Meteor.userId(),
+  });
 
-  return Loans.update(loanId, { $push: { borrowerIds: newBorrowerId } });
+  return LoanService.pushValue({
+    loanId,
+    object: { borrowerIds: newBorrowerId },
+  });
 });
 
 setUserToLoan.setHandler((context, { loanId }) => {
   SecurityService.checkLoggedIn();
-  const loan = Loans.findOne(loanId);
+  const loan = LoanService.getLoanById(loanId);
   const { borrowerIds, propertyId } = loan;
 
   if (loan.userId) {
@@ -51,26 +60,27 @@ setUserToLoan.setHandler((context, { loanId }) => {
 
   const currentUserId = Meteor.userId();
 
-  Loans.update(loanId, { $set: { userId: currentUserId } });
+  LoanService.update({ loanId, object: { userId: currentUserId } });
   borrowerIds.forEach((borrowerId) => {
-    Borrowers.update(borrowerId, { $set: { userId: currentUserId } });
+    BorrowerService.update({ borrowerId, object: { userId: currentUserId } });
   });
-  Properties.update(propertyId, { $set: { userId: currentUserId } });
+  PropertyService.update({ propertyId, object: { userId: currentUserId } });
 });
 
 removeBorrower.setHandler((context, { loanId, borrowerId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
 
-  const loan = Loans.findOne(loanId);
+  const loan = LoanService.getLoanById(loanId);
 
   // A loan has to have at least 1 borrower
   if (loan.borrowerIds.length <= 1) {
     return false;
   }
 
-  Borrowers.remove(borrowerId);
-  return Loans.update(loanId, { $pull: { borrowerIds: borrowerId } });
+  BorrowerService.remove({ borrowerId });
+
+  return LoanService.pullValue({ loanId, object: { borrowerIds: borrowerId } });
 });
 
 // This method needs to exist as its being listened to in EmailListeners

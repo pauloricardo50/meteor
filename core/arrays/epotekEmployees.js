@@ -6,13 +6,13 @@ const employees = [
     title: 'Conseillère en financement',
     phone: '+41 22 566 82 92',
   },
-  // {
-  //   email: 'joel@e-potek.ch',
-  //   src: '/img/team/joel.jpg',
-  //   name: 'Joel Xavier Santos',
-  //   title: 'Conseiller en financement',
-  //   phone: '+41 22 566 82 95',
-  // },
+  {
+    email: 'joel@e-potek.ch',
+    src: '/img/team/joel.jpg',
+    name: 'Joel Xavier Santos',
+    title: 'Conseiller en financement',
+    phone: '+41 22 566 82 95',
+  },
   {
     email: 'florian@e-potek.ch',
     src: '/img/team/florian.jpg',
@@ -21,10 +21,11 @@ const employees = [
     phone: '+41 22 566 82 91',
   },
   {
-    email: '',
-    src: '/img/team/alexandra.jpg',
-    name: 'Alexandra Caldarov',
-    title: 'QA Tester',
+    email: 'quentin@e-potek.ch',
+    src: '/img/team/quentin.jpg',
+    name: 'Quentin Herzig',
+    title: 'Software Engineer',
+    phone: '+41 22 566 01 10',
   },
   {
     email: '',
@@ -39,6 +40,7 @@ const employees = [
     title: 'Conseiller en financement',
     phone: '+41 22 566 82 90',
   },
+  // Attendre début emploiement de Jean-Luc pour éviter problèmes avec chomage
   // {
   //   email: 'jeanluc@e-potek.ch',
   //   src: '/img/team/jeanluc.jpg',
@@ -54,27 +56,9 @@ const employees = [
   },
   {
     email: '',
-    src: '/img/team/andra.jpg',
-    name: 'Andra Lazariuc',
-    title: 'Junior Software Engineer',
-  },
-  {
-    email: '',
     src: '/img/team/harrison.jpg',
     name: 'Harrison Mean',
     title: 'Operations',
-  },
-  {
-    email: '',
-    src: '/img/team/claudiu.jpg',
-    name: 'Claudiu Teodorescu',
-    title: 'Software Engineer',
-  },
-  {
-    email: '',
-    src: '/img/team/norbert.jpg',
-    name: 'Norbert Tulbure',
-    title: 'Project Manager',
   },
 ];
 

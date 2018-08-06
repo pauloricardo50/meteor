@@ -1,4 +1,7 @@
 {
+  "BorrowerHeader.firstName": "Prénom",
+  "BorrowerHeader.lastName": "Nom",
+
   "FinancingStructuresPropertyPicker.addProperty": "Ajouter bien immobilier",
 
   "FinancingStructuresFinancing.DIRECT": "Direct",

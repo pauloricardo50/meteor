@@ -1,17 +1,17 @@
 import { Random } from 'meteor/random';
-
 import moment from 'moment';
-import Loans from './loans';
 
-import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import { getAuctionEndTime } from '../../utils/loanFunctions';
+import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
+import Loans from './loans';
 
 class LoanServiceModel {
   insert = ({ loan, userId }) => Loans.insert({ ...loan, userId });
 
-  update = ({ loanId, object }) => Loans.update(loanId, { $set: object });
+  update = ({ loanId, object, operator = '$set' }) =>
+    Loans.update(loanId, { [operator]: object });
 
   remove = ({ loanId }) => Loans.remove(loanId);
 
@@ -27,7 +27,8 @@ class LoanServiceModel {
   };
 
   // TODO: make sure step is really done
-  incrementStep = ({ loanId }) => Loans.update(loanId, { $inc: { 'logic.step': 1 } });
+  incrementStep = ({ loanId }) =>
+    this.update({ loanId, operator: '$inc', object: { 'logic.step': 1 } });
 
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
@@ -37,8 +38,9 @@ class LoanServiceModel {
       return false;
     }
 
-    return Loans.update(loanId, {
-      $set: {
+    return this.update({
+      loanId,
+      object: {
         'logic.verification.requested': true,
         'logic.verification.requestedAt': new Date(),
       },
@@ -46,15 +48,16 @@ class LoanServiceModel {
   };
 
   startAuction = ({ loanId }) => {
-    const loan = Loans.findOne(loanId);
+    const loan = this.getLoanById(loanId);
 
     if (loan.logic.auction.status !== AUCTION_STATUS.NONE) {
       // Don't do anything if this auction has already started or ended
       return false;
     }
 
-    return Loans.update(loanId, {
-      $set: {
+    return this.update({
+      loanId,
+      object: {
         'logic.auction.status': AUCTION_STATUS.STARTED,
         'logic.auction.startTime': moment().toDate(),
         'logic.auction.endTime': getAuctionEndTime(moment()),
@@ -63,7 +66,7 @@ class LoanServiceModel {
   };
 
   endAuction = ({ loanId }) => {
-    const loan = Loans.findOne(loanId);
+    const loan = this.getLoanById(loanId);
 
     // This method is called in the future (through a job),
     // so only call this if the auction is ongoing
@@ -71,36 +74,42 @@ class LoanServiceModel {
       return false;
     }
 
-    return Loans.update(id, {
-      $set: {
+    return this.update({
+      loanId,
+      object: {
         'logic.auction.status': AUCTION_STATUS.ENDED,
         'logic.auction.endTime': new Date(),
       },
     });
   };
 
-  cancelAuction = ({ loanId }) => Loans.update(loanId, {
-    $set: {
-      'logic.auction.endTime': undefined,
-      'logic.auction.status': '',
-      'logic.auction.startTime': undefined,
-    },
-  });
+  cancelAuction = ({ loanId }) =>
+    this.update({
+      loanId,
+      object: {
+        'logic.auction.endTime': undefined,
+        'logic.auction.status': '',
+        'logic.auction.startTime': undefined,
+      },
+    });
 
-  confirmClosing = ({ loanId, object }) => Loans.update(loanId, {
-    $set: {
-      status: LOAN_STATUS.DONE,
-      ...object,
-    },
-  });
+  confirmClosing = ({ loanId, object }) =>
+    this.update({
+      loanId,
+      object: { status: LOAN_STATUS.DONE, ...object },
+    });
 
-  disableUserForms = ({ loanId }) => this.update({ loanId, object: { userFormsEnabled: false } });
+  disableUserForms = ({ loanId }) =>
+    this.update({ loanId, object: { userFormsEnabled: false } });
 
-  enableUserForms = ({ loanId }) => this.update({ loanId, object: { userFormsEnabled: true } });
+  enableUserForms = ({ loanId }) =>
+    this.update({ loanId, object: { userFormsEnabled: true } });
 
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
   popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
+
+  pullValue = ({ loanId, object }) => Loans.update(loanId, { $pull: object });
 
   addStructure = ({ loanId, structure = {} }) => {
     const loan = this.getLoanById(loanId);

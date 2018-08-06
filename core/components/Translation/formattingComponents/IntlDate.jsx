@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedDate, FormattedTime, FormattedRelative } from 'react-intl';
 
-export const IntlDate = (props) => {
-  switch (props.type) {
+export const IntlDate = ({ type, ...props }) => {
+  switch (type) {
   case 'time':
     return <FormattedTime {...props} />;
   case 'relative':
@@ -14,7 +14,7 @@ export const IntlDate = (props) => {
 };
 
 IntlDate.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
 };
 
 export default IntlDate;

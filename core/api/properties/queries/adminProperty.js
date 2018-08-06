@@ -1,9 +1,16 @@
+import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
 
 export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
   $filter({ filters, params: { propertyId } }) {
     filters._id = propertyId;
+  },
+  $postFilter(properties) {
+    return properties.map(({ loans, ...property }) => ({
+      ...property,
+      loans: loans.map(formatLoanWithStructure),
+    }));
   },
   address1: 1,
   address2: 1,
@@ -33,7 +40,9 @@ export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
     createdAt: 1,
     updatedAt: 1,
     borrowers: { firstName: 1, lastName: 1 },
-    property: { value: 1 },
+    properties: { value: 1, address1: 1 },
+    structures: { propertyId: 1 },
+    selectedStructure: 1,
   },
   valuation: {
     min: 1,

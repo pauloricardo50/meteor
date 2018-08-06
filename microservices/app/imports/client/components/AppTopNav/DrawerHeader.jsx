@@ -8,7 +8,11 @@ import IconButton from 'core/components/IconButton';
 const DrawerHeader = ({ showButton, onClick }) => (
   <div className="top-bar drawer-header">
     <Link to="/">
-      <img src="/img/logo_square_black.svg" alt="e-Potek" className="logo" />
+      <img
+        src="/img/logo_square_black.svg"
+        alt="e-Potek"
+        className="logo logo-home"
+      />
     </Link>
     {showButton && (
       <IconButton

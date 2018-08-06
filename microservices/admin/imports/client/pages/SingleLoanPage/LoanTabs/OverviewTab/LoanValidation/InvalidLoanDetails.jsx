@@ -17,25 +17,18 @@ const hasDocumentsErrors = documents =>
   });
 
 const hasErrors = ({ adminValidation, documents }) =>
-  (adminValidation && Object.keys(adminValidation).length > 0) ||
-  (documents && hasDocumentsErrors(documents));
+  (adminValidation && Object.keys(adminValidation).length > 0)
+  || (documents && hasDocumentsErrors(documents));
 
 const InvalidLoanDetails = ({ loan }) => {
   const { logic, adminValidation, documents, borrowers, property } = loan;
   const { verifiedAt } = logic.verification;
 
-  const hasLoanIssues = hasErrors({ adminValidation, documents });
+  const hasLoanIssues = hasErrors(loan);
 
-  const hasBorrowersIssues = borrowers.some(borrower =>
-    hasErrors({
-      adminValidation: borrower.adminValidation,
-      documents: borrower.documents,
-    }));
+  const hasBorrowersIssues = borrowers.some(borrower => hasErrors(borrower));
 
-  const hasPropertyIssues = hasErrors({
-    adminValidation: property.adminValidation,
-    documents: property.documents,
-  });
+  const hasPropertyIssues = property && hasErrors(property);
 
   return (
     <React.Fragment>

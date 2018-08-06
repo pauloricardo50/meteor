@@ -4,30 +4,10 @@ import PropTypes from 'prop-types';
 import LoanSummaryColumn from './LoanSummaryColumn';
 import { getLoanSummaryColumns } from './loanSummaryHelpers';
 
-const LoanSummaryColumns = ({
-  loan: {
-    _id,
-    name,
-    logic: { step },
-    general: { fortuneUsed, insuranceFortuneUsed },
-    createdAt,
-    updatedAt,
-    borrowers,
-    property: { value },
-  },
-}) => (
+const LoanSummaryColumns = ({ loan }) => (
   <div className="flex admin-loan">
-    {getLoanSummaryColumns({
-      _id,
-      name,
-      logic: { step },
-      general: { fortuneUsed, insuranceFortuneUsed },
-      createdAt,
-      updatedAt,
-      borrowers,
-      property: { value },
-    }).map(({ translationId, content }) => (
-      <LoanSummaryColumn translationId={translationId} content={content} />
+    {getLoanSummaryColumns(loan).map(({ translationId, content }) => (
+      <LoanSummaryColumn translationId={translationId} content={content} key={translationId} />
     ))}
   </div>
 );

@@ -31,6 +31,7 @@ describe('LoanSummary />', () => {
 
     expect(loanSummaryTitleLink.prop('to')).to.equal(`/loans/${loan._id}`);
   });
+  
   it('renders LoanSummaryColumns with correct props', () => {
     const props = { loan };
 

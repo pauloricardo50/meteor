@@ -27,7 +27,9 @@ describe('UserSecurity', () => {
     });
 
     afterEach(() => {
-      Meteor.userId.restore();
+      if (Meteor.userId.restore) {
+        Meteor.userId.restore();
+      }
     });
 
     it('throws if no argument is provided', () => {
@@ -55,11 +57,10 @@ describe('UserSecurity', () => {
 
     it('throws if you try to add users with user privileges', () => {
       const user = Factory.create('user')._id;
-
       Meteor.userId.restore();
       sinon.stub(Meteor, 'userId').callsFake(() => user._id);
 
-      return expect(() =>
+      expect(() =>
         UserSecurity.isAllowedToInsertByRole({ role: userRole })).to.throw(SECURITY_ERROR);
     });
   });

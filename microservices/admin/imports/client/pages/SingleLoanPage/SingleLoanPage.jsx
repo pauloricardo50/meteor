@@ -4,16 +4,16 @@ import { compose } from 'recompose';
 
 import { IntlNumber } from 'core/components/Translation';
 import { getLoanValue } from 'core/utils/loanFunctions';
-import ServerTimeContainer from 'core/components/ServerTimeContainer';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import LoanTasksTable from './LoanTabs/LoanTasksTable';
 
-const SingleLoanPage = ({ loan, serverTime, ...rest }) => {
+const SingleLoanPage = ({ loan, ...rest }) => {
   const dataToPassDown = {
     ...rest,
     loan,
-    property: loan.property,
+    property: (loan.structure && loan.structure.property) || loan.properties[0],
+    properties: loan.properties,
     borrowers: loan.borrowers,
     offers: loan.offers,
   };
@@ -31,28 +31,20 @@ const SingleLoanPage = ({ loan, serverTime, ...rest }) => {
         <LoanTasksTable
           showAssignee
           loanId={loan._id}
-          propertyId={loan.property._id}
+          propertyId={dataToPassDown.property && dataToPassDown.property._id}
           borrowerIds={loan.borrowerIds}
           hideIfNoData
         >
           <h3>Tâches</h3>
         </LoanTasksTable>
       </div>
-      <LoanTabs
-        {...dataToPassDown}
-        serverTime={serverTime}
-        dataToPassDown={dataToPassDown}
-      />
+      <LoanTabs {...dataToPassDown} />
     </section>
   );
 };
 
 SingleLoanPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  serverTime: PropTypes.object.isRequired,
 };
 
-export default compose(
-  SingleLoanPageContainer,
-  ServerTimeContainer,
-)(SingleLoanPage);
+export default compose(SingleLoanPageContainer)(SingleLoanPage);

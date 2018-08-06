@@ -2,34 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import Loading from 'core/components/Loading';
 import Recap from 'core/components/Recap';
 import Valuation from 'core/components/Valuation';
-
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 
-export const getPropertyAddress = ({ address1, zipCode, city }) => (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
+export const getPropertyAddress = ({ address1, zipCode, city }) =>
+  (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = ({
-  data: property,
-  isLoading,
+  property,
   displayLoans,
   className,
 }) => {
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const { loans } = property;
   const address = getPropertyAddress(property);
 
   return (
     <section className={cx('single-property-page', className)}>
       <SinglePropertyPageHeader property={property} />
-      <Valuation property={property} /> 
+      <Valuation property={property} />
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>
@@ -44,10 +38,9 @@ const SinglePropertyPage = ({
 };
 
 SinglePropertyPage.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  data: PropTypes.object.isRequired,
-  displayLoans: PropTypes.bool,
   className: PropTypes.string,
+  displayLoans: PropTypes.bool,
+  property: PropTypes.object.isRequired,
 };
 
 SinglePropertyPage.defaultProps = {

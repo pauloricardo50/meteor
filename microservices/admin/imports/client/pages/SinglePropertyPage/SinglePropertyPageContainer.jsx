@@ -1,14 +1,9 @@
 import query from 'core/api/properties/queries/adminProperty';
-import { compose, withQuery, branch, renderComponent } from 'core/api';
-import MissingDoc from 'core/components/MissingDoc';
+import { withSmartQuery } from 'core/api';
 
-export default compose(
-  withQuery(
-    ({ match, propertyId }) => query.clone({ propertyId: propertyId || match.params.propertyId }),
-    { reactive: true, single: true },
-  ),
-  branch(
-    ({ isLoading, data }) => !isLoading && !data,
-    renderComponent(MissingDoc),
-  ),
-);
+export default withSmartQuery({
+  query: ({ match, propertyId }) =>
+    query.clone({ propertyId: propertyId || match.params.propertyId }),
+  queryOptions: { reactive: true, single: true },
+  dataName: 'property',
+});

@@ -47,7 +47,11 @@ export const Valuation = ({
   disabled,
 }: ValuationProps) => {
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="card1 valuation">
+        <Loading />
+      </div>
+    );
   }
   let content;
   switch (valuation.status) {

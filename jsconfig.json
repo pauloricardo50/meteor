@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "target": "es2018",
+    "module": "commonjs",
     "baseUrl": "./",
     "paths": {
       "core/*": ["./core/*"]
     },
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "bower_components"
   ]
 }

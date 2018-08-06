@@ -13,6 +13,7 @@ const WwwTopNavLogo = ({ variant }) => (
           : '/img/logo_square_black.svg'
       }
       alt="e-Potek"
+      className="logo-home"
     />
   </Link>
 );

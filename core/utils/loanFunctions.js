@@ -385,7 +385,12 @@ export const loanIsVerified = ({
   },
 }) => validated !== undefined;
 
-export const loanHasMinimalInformation = ({ loan: { general, property } }) => !!(general && general.fortuneUsed && (property && property.value));
+export const loanHasMinimalInformation = ({
+  loan: {
+    general,
+    structure: { property },
+  },
+}) => !!(general && general.fortuneUsed && (property && property.value));
 
 export const useLppFees = ({
   loan: {
@@ -436,6 +441,7 @@ export const formatLoanWithStructure = (loan) => {
   const newLoan = { ...loan };
   if (loan.selectedStructure) {
     const structure = loan.structures.find(({ id }) => id === loan.selectedStructure);
+    
     if (structure) {
       newLoan.structure = structure;
 
@@ -451,7 +457,9 @@ export const formatLoanWithStructure = (loan) => {
     } else {
       newLoan.structure = {};
     }
+
+    return newLoan;
   }
 
-  return newLoan;
+  return { ...newLoan, structure: {} };
 };

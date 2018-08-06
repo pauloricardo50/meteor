@@ -20,7 +20,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
                 <span>
                   {borrower.firstName || (
                     <T
-                      id="BorrowerHeader.title"
+                      id="BorrowerHeader.firstName"
                       values={{ index: borrowerIndex + 1 }}
                     />
                   )}
@@ -28,7 +28,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
                 <span>
                   {borrower.lastName || (
                     <T
-                      id="BorrowerHeader.title"
+                      id="BorrowerHeader.lastName"
                       values={{ index: borrowerIndex + 1 }}
                     />
                   )}

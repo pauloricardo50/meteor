@@ -16,13 +16,7 @@ export default class BorrowerAdder extends Component {
     this.setState({ loading: true });
     addBorrower
       .run({ loanId })
-      .then((result) => {
-        console.log('Done!', result);
-        this.setState({ loading: false });
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
+      .finally(() => this.setState({ loading: false }));
   };
 
   render() {
