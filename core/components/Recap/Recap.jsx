@@ -19,7 +19,7 @@ const getDashboardArray = (props) => {
   const insuranceFortune = Calculator.getInsuranceFortune(props);
   const insurancePledged = Calculator.getInsuranceWithdrawn(props);
   const insuranceWithdrawn = Calculator.getInsuranceWithdrawn(props);
-  const loanValue = Calculator.makeSelectStructureKey('wantedLoan')(props);
+  const loanValue = Calculator.getEffectiveLoan(props);
   const maxBorrowRatio = Calculator.getMaxBorrowRatio(props);
   const monthly = Calculator.getMonthly(props);
   const notaryFees = Calculator.getNotaryFees(props);
@@ -393,7 +393,7 @@ const getPropertyArray = ({ property }) => {
 const getStructureArray = (props) => {
   const borrowRatio = Calculator.getBorrowRatio(props);
   const incomeRatio = Calculator.getIncomeRatio(props);
-  const loanValue = Calculator.makeSelectStructureKey('wantedLoan')(props);
+  const loanValue = Calculator.getEffectiveLoan(props);
   const maxBorrowRatio = Calculator.getMaxBorrowRatio(props);
   const monthly = Calculator.getMonthly(props);
   const project = Calculator.getProjectValue(props);
