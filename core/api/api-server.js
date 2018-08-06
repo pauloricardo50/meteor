@@ -12,8 +12,6 @@ import './jobs/server';
 import './files/server/methods';
 import './files/meteor-slingshot-server';
 
-import '../utils/logismata/methods';
-
 import './email/server';
 
 import './events/server/registerServerListeners';
