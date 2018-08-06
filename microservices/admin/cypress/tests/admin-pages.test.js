@@ -30,7 +30,7 @@ const pages = {
     User: ({ user: { _id } }) =>
       route(`/users/${_id}`, { shouldRender: '.single-user-page' }),
 
-    Loans: route('/loans', { shouldRender: '.all-loans-table' }),
+    Loans: route('/loans', { shouldRender: '.loans-page' }),
 
     Loan: ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '.overview-tab' }),
