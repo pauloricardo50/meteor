@@ -1,6 +1,7 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
 import { formatLoanWithStructure } from '../../../utils/loanFunctions';
+import { loanSummary } from '../../loans/queries/loanFragments';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   $filter({ filters, params }) {
@@ -20,24 +21,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   roles: 1,
   emails: 1,
   createdAt: 1,
-  loans: {
-    name: 1,
-    logic: { step: 1 },
-    createdAt: 1,
-    updatedAt: 1,
-    properties: {
-      value: 1,
-      address1: 1,
-    },
-    borrowers: {
-      firstName: 1,
-      lastName: 1,
-    },
-    structures: {
-      propertyId: 1,
-    },
-    selectedStructure: 1,
-  },
+  loans: loanSummary,
   assignedEmployee: {
     emails: 1,
     firstName: 1,
