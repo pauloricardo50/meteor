@@ -1,11 +1,11 @@
 import { getLocationId, callApi } from './api';
 import { getLoanValue } from '../loanFunctions';
 import { getBestRate } from '../offerFunctions';
-import { USAGE_TYPE } from 'core/api/constants';
+import { RESIDENCE_TYPE } from 'core/api/constants';
 
 export const getLocation = ({ loan, borrowers, property }) => {
   let search = '';
-  if (loan.general.usageType === USAGE_TYPE.PRIMARY) {
+  if (loan.general.usageType === RESIDENCE_TYPE.MAIN) {
     // use future property address
     search = `${property.zipCode.toString()} ${property.city}`;
   } else {

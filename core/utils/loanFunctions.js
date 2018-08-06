@@ -2,7 +2,7 @@ import moment from 'moment';
 import isArray from 'lodash/isArray';
 
 import {
-  USAGE_TYPE,
+  RESIDENCE_TYPE,
   LOAN_STRATEGY_PRESET,
   OFFER_TYPE,
   FILE_STEPS,
@@ -36,7 +36,8 @@ export const getProjectValue = ({ loan, property }) => {
   }
 
   const insuranceFees = (insuranceFortuneUsed || 0) * getLppFees({ loan });
-  const value = property.value * (1 + NOTARY_FEES) + (propertyWork || 0) + insuranceFees;
+  const value =
+    property.value * (1 + NOTARY_FEES) + (propertyWork || 0) + insuranceFees;
 
   return Math.max(0, Math.round(value));
 };
@@ -52,7 +53,7 @@ export const getLoanValue = ({ loan, property }, roundedTo10000) => {
 
   let value = getProjectValue({ loan, property }) - (fortuneUsed || 0);
 
-  if (usageType === USAGE_TYPE.PRIMARY) {
+  if (usageType === RESIDENCE_TYPE.MAIN) {
     value -= insuranceFortuneUsed || 0;
   }
 
@@ -86,12 +87,13 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
   return false;
 };
 
-export const strategiesChosen = ({ loan, property }) => loanStrategySuccess(
-  loan.general.loanTranches,
-  getLoanValue({ loan, property }),
-)
-  && loan.logic.amortizationStrategyPreset
-  && loan.logic.hasValidatedCashStrategy;
+export const strategiesChosen = ({ loan, property }) =>
+  loanStrategySuccess(
+    loan.general.loanTranches,
+    getLoanValue({ loan, property }),
+  ) &&
+  loan.logic.amortizationStrategyPreset &&
+  loan.logic.hasValidatedCashStrategy;
 
 /**
  * getInterestsWithOffer - Get the aggregate monthly interest rate for a
@@ -159,7 +161,8 @@ export const getMonthlyWithOffer = (
   //   insuranceFortuneUsed || r.general.insuranceFortuneUsed;
   const loanValue = getLoanValue({ loan: r, property });
 
-  const maintenance = MAINTENANCE_REAL * (property.value + (r.general.propertyWork || 0));
+  const maintenance =
+    MAINTENANCE_REAL * (property.value + (r.general.propertyWork || 0));
 
   let amortization = isStandard
     ? offer.standardOffer.amortization
@@ -173,25 +176,28 @@ export const getMonthlyWithOffer = (
     : 0;
 };
 
-export const getMonthlyWithExtractedOffer = ({ loan, offer, property }) => getMonthlyWithOffer(
-  {
-    loan,
-    property,
-    offer: {
-      [offer.type === OFFER_TYPE.STANDARD
-        ? 'standardOffer'
-        : 'counterpartOffer']: offer,
+export const getMonthlyWithExtractedOffer = ({ loan, offer, property }) =>
+  getMonthlyWithOffer(
+    {
+      loan,
+      property,
+      offer: {
+        [offer.type === OFFER_TYPE.STANDARD
+          ? 'standardOffer'
+          : 'counterpartOffer']: offer,
+      },
     },
-  },
-  offer.type === OFFER_TYPE.STANDARD,
-);
+    offer.type === OFFER_TYPE.STANDARD,
+  );
 
-export const getPropAndWork = ({ loan, property }) => (property
-    && property.value
-      + ((loan && loan.general && loan.general.propertyWork) || 0))
-  || 0;
+export const getPropAndWork = ({ loan, property }) =>
+  (property &&
+    property.value +
+      ((loan && loan.general && loan.general.propertyWork) || 0)) ||
+  0;
 
-export const getTotalUsed = ({ loan }) => Math.round(loan.general.fortuneUsed + (loan.general.insuranceFortuneUsed || 0));
+export const getTotalUsed = ({ loan }) =>
+  Math.round(loan.general.fortuneUsed + (loan.general.insuranceFortuneUsed || 0));
 
 export const getBorrowRatio = ({ loan, property }) => {
   const loanValue = getLoanValue({ loan, property });
@@ -221,7 +227,8 @@ export const getLenderCount = ({ loan, borrowers, property }) => {
 
 export const getFees = ({ loan, property }) => {
   const notaryFees = property.value * NOTARY_FEES;
-  const insuranceFees = loan.general.insuranceFortuneUsed * getLppFees({ loan });
+  const insuranceFees =
+    loan.general.insuranceFortuneUsed * getLppFees({ loan });
 
   return notaryFees + (insuranceFees || 0);
 };
@@ -331,8 +338,8 @@ export const strategyDone = ({ loan, property }) => {
   }
 
   if (
-    logic.loanStrategyPreset === LOAN_STRATEGY_PRESET.MANUAL
-    && !loanStrategySuccess(
+    logic.loanStrategyPreset === LOAN_STRATEGY_PRESET.MANUAL &&
+    !loanStrategySuccess(
       general.loanTranches,
       getLoanValue({ loan, property }, true),
     )
@@ -397,30 +404,34 @@ export const useLppFees = ({
     general: { insuranceFortuneUsed, usageType },
     logic: { insuranceUsePreset },
   },
-}) => insuranceFortuneUsed > 0
-  && usageType === USAGE_TYPE.PRIMARY
-  && insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
+}) =>
+  insuranceFortuneUsed > 0 &&
+  usageType === RESIDENCE_TYPE.MAIN &&
+  insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
 
-export const getLppFees = ({ loan }) => (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
+export const getLppFees = ({ loan }) =>
+  (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
 
-export const getInsuranceFees = ({ loan }) => getLppFees({ loan }) * loan.general.insuranceFortuneUsed;
+export const getInsuranceFees = ({ loan }) =>
+  getLppFees({ loan }) * loan.general.insuranceFortuneUsed;
 
 export const getMaxBorrowRatio = (
-  usageType = USAGE_TYPE.PRIMARY,
+  usageType = RESIDENCE_TYPE.MAIN,
   toRetirement = 15,
 ) => {
   if (toRetirement <= 0) {
     return 0.65;
   }
-  if (usageType === USAGE_TYPE.SECONDARY) {
+  if (usageType === RESIDENCE_TYPE.SECOND) {
     return 0.7;
   }
 
   return 0.8;
 };
 
-const closingStepsFilesAreValid = (loan, stepId) => isArray(loan.documents[stepId].files)
-  && loan.documents[stepId].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID);
+const closingStepsFilesAreValid = (loan, stepId) =>
+  isArray(loan.documents[stepId].files) &&
+  loan.documents[stepId].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID);
 
 export const closingPercent = (loan) => {
   const { closingSteps } = loan.logic;
@@ -441,7 +452,7 @@ export const formatLoanWithStructure = (loan) => {
   const newLoan = { ...loan };
   if (loan.selectedStructure) {
     const structure = loan.structures.find(({ id }) => id === loan.selectedStructure);
-    
+
     if (structure) {
       newLoan.structure = structure;
 

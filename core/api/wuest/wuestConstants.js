@@ -1,18 +1,24 @@
-export const PROPERTY_TYPE = {
-  HOUSE: 'HOUSE',
-  FLAT: 'FLAT',
+import {
+  RESIDENCE_TYPE,
+  PROPERTY_TYPE,
+} from 'core/api/properties/propertyConstants';
+
+export const WUEST_PROPERTY_TYPE = {
+  HOUSE: PROPERTY_TYPE.HOUSE,
+  FLAT: PROPERTY_TYPE.FLAT,
 };
-export const HED_METHOD = {
+export const WUEST_HED_METHOD = {
   SFH: 'HED_SFH',
   CON: 'HED_CON',
 };
 
-export const RESIDENCE_TYPE = {
-  MAIN: 'MAIN_RESIDENCE',
-  SECOND: 'SECOND_RESIDENCE',
+export const WUEST_RESIDENCE_TYPE = {
+  MAIN: RESIDENCE_TYPE.MAIN,
+  SECOND: RESIDENCE_TYPE.SECOND,
+  INVESTMENT: RESIDENCE_TYPE.MAIN,
 };
 
-export const MINERGIE_CERTIFICATE = {
+export const WUEST_MINERGIE_CERTIFICATE = {
   WITHOUT: 'WITHOUT_CERTIFICATE',
   P: 'MINERGIE_P',
   ECO: 'MINERGIE_ECO',
@@ -20,13 +26,13 @@ export const MINERGIE_CERTIFICATE = {
   OTHER: 'OTHER_CERTIFICATE',
 };
 
-export const HOUSE_TYPE = {
+export const WUEST_HOUSE_TYPE = {
   DETACHED: 'DETACHED',
   ATTACHED_END: 'ATTACHED_END_BUILDING',
   ATTACHED_MID: 'ATTACHED_MID_TERRACE_BUILDING',
 };
 
-export const FLAT_TYPE = {
+export const WUEST_FLAT_TYPE = {
   SINGLE_FLOOR: 'SINGLE_FLOOR_APARTMENT',
   DUPLEX: 'DUPLEX_APARTMENT',
   PENTHOUSE: 'PENTHOUSE_APARTMENT',
@@ -35,7 +41,7 @@ export const FLAT_TYPE = {
 };
 
 // TODO: check size of array
-export const FLOOR_NUMBER = [
+export const WUEST_FLOOR_NUMBER = [
   'GROUND_FLOOR',
   'FIRST_FLOOR',
   'SECOND_FLOOR',
@@ -59,18 +65,18 @@ export const FLOOR_NUMBER = [
   'TWENTIETH_FLOOR',
 ];
 
-export const VOLUME_TYPE = {
+export const WUEST_VOLUME_TYPE = {
   SIA_416: 'SIA_416',
   SIA_116: 'SIA_116',
   BIC: 'BIC',
 };
 
-export const AREA_TYPE = {
+export const WUEST_AREA_TYPE = {
   NET: 'NIA',
   GROSS: 'NLS',
 };
 
-export const QUALITY = {
+export const WUEST_QUALITY = {
   CONDITION: {
     NEEDS_RENNOVATION: 1,
     INTACT: 3,
@@ -88,7 +94,7 @@ export const QUALITY = {
   },
 };
 
-export const JSON_DATA_STRUCTURE = {
+export const WUEST_JSON_DATA_STRUCTURE = {
   embedded: [
     { rel: 'valueCorrections' },
     { rel: 'objectData', value: { embedded: [{ rel: 'buildings' }] } },

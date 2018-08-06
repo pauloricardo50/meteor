@@ -6,15 +6,15 @@ export const PROPERTY_STATUS = {
   FOR_SALE: 'FOR_SALE',
 };
 
-export const USAGE_TYPE = {
-  PRIMARY: 'PRIMARY',
-  SECONDARY: 'SECONDARY',
+export const RESIDENCE_TYPE = {
+  MAIN: 'MAIN_RESIDENCE',
+  SECOND: 'SECOND_RESIDENCE',
   INVESTMENT: 'INVESTMENT',
 };
 
-export const PROPERTY_STYLE = {
+export const PROPERTY_TYPE = {
   FLAT: 'FLAT',
-  VILLA: 'VILLA',
+  HOUSE: 'HOUSE',
 };
 
 export const VOLUME_NORM = {

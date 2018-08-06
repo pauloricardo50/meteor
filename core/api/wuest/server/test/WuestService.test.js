@@ -6,15 +6,15 @@ import { Factory } from 'meteor/dburles:factory';
 import WuestService from '../WuestService';
 import {
   WUEST_ERRORS,
-  FLOOR_NUMBER,
-  PROPERTY_TYPE,
-  RESIDENCE_TYPE,
-  HOUSE_TYPE,
-  MINERGIE_CERTIFICATE,
-  VOLUME_TYPE,
-  QUALITY,
+  WUEST_FLOOR_NUMBER,
+  WUEST_PROPERTY_TYPE,
+  WUEST_RESIDENCE_TYPE,
+  WUEST_HOUSE_TYPE,
+  WUEST_MINERGIE_CERTIFICATE,
+  WUEST_VOLUME_TYPE,
+  WUEST_QUALITY,
 } from '../../wuestConstants';
-import { PROPERTY_STYLE } from '../../../properties/propertyConstants';
+import { PROPERTY_TYPE } from '../../../properties/propertyConstants';
 
 describe('WuestService', () => {
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('WuestService', () => {
   context('getErrors ', () => {
     it('returns an empty array if provided data is correct', () => {
       const property = {
-        type: PROPERTY_TYPE.HOUSE,
+        type: WUEST_PROPERTY_TYPE.HOUSE,
         data: {
           address: {
             addressLine1: 'Rue du test 12',
@@ -38,23 +38,23 @@ describe('WuestService', () => {
             place: 'Genève',
             countryIsoCode: 'CH',
           },
-          residenceType: RESIDENCE_TYPE.MAIN,
-          houseType: HOUSE_TYPE.DETACHED,
+          residenceType: WUEST_RESIDENCE_TYPE.MAIN,
+          houseType: WUEST_HOUSE_TYPE.DETACHED,
           numberOfRooms: 4,
           parking: {
             indoor: 1,
             outdoor: 1,
           },
           constructionYear: 2000,
-          minergieCertificate: MINERGIE_CERTIFICATE.WITHOUT,
+          minergieCertificate: WUEST_MINERGIE_CERTIFICATE.WITHOUT,
           buildingVolume: {
-            type: VOLUME_TYPE.SIA_416,
+            type: WUEST_VOLUME_TYPE.SIA_416,
             value: 1000,
           },
           landPlotArea: 1000,
           qualityProfile: {
-            standard: QUALITY.STANDARD.AVERAGE,
-            condition: QUALITY.CONDITION.NEEDS_RENNOVATION,
+            standard: WUEST_QUALITY.STANDARD.AVERAGE,
+            condition: WUEST_QUALITY.CONDITION.NEEDS_RENNOVATION,
           },
         },
       };
@@ -65,7 +65,7 @@ describe('WuestService', () => {
     context('returns an error when ', () => {
       it('floor number is not provided', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: { floorType: null },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_FLOOR_NUMBER_PROVIDED);
@@ -73,8 +73,8 @@ describe('WuestService', () => {
 
       it('floor number exceeds 20', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
-          data: { floorType: FLOOR_NUMBER[21] },
+          type: WUEST_PROPERTY_TYPE.FLAT,
+          data: { floorType: WUEST_FLOOR_NUMBER[21] },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_FLOOR_NUMBER);
       });
@@ -182,13 +182,16 @@ describe('WuestService', () => {
       });
 
       it('no house type is provided', () => {
-        const property = { type: PROPERTY_TYPE.HOUSE, data: { houseType: '' } };
+        const property = {
+          type: WUEST_PROPERTY_TYPE.HOUSE,
+          data: { houseType: '' },
+        };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_HOUSE_TYPE_PROVIDED);
       });
 
       it('house type is invalid', () => {
         const property = {
-          type: PROPERTY_TYPE.HOUSE,
+          type: WUEST_PROPERTY_TYPE.HOUSE,
           data: { houseType: 'not known' },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_HOUSE_TYPE);
@@ -196,7 +199,7 @@ describe('WuestService', () => {
 
       it('no building volume is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.HOUSE,
+          type: WUEST_PROPERTY_TYPE.HOUSE,
           data: { buildingVolume: {} },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_HOUSE_TYPE_PROVIDED);
@@ -204,7 +207,7 @@ describe('WuestService', () => {
 
       it('no building volume value is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.HOUSE,
+          type: WUEST_PROPERTY_TYPE.HOUSE,
           data: { buildingVolume: { value: null } },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_BUILDING_VOLUME_VALUE_PROVIDED);
@@ -212,7 +215,7 @@ describe('WuestService', () => {
 
       it('no building volume type is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.HOUSE,
+          type: WUEST_PROPERTY_TYPE.HOUSE,
           data: { buildingVolume: { type: '' } },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_BUILDING_VOLUME_TYPE_PROVIDED);
@@ -220,7 +223,7 @@ describe('WuestService', () => {
 
       it('building volume type is invalid', () => {
         const property = {
-          type: PROPERTY_TYPE.HOUSE,
+          type: WUEST_PROPERTY_TYPE.HOUSE,
           data: { buildingVolume: { type: 'not known' } },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_BUILDING_VOLUME_TYPE);
@@ -228,7 +231,7 @@ describe('WuestService', () => {
 
       it('no landplot area is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.HOUSE,
+          type: WUEST_PROPERTY_TYPE.HOUSE,
           data: { landPlotArea: null },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_LANDPLOT_AREA_PROVIDED);
@@ -287,7 +290,7 @@ describe('WuestService', () => {
 
       it('no flat type is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             flatType: null,
           },
@@ -297,7 +300,7 @@ describe('WuestService', () => {
 
       it('flat type is invalid', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             flatType: 'not known',
           },
@@ -307,7 +310,7 @@ describe('WuestService', () => {
 
       it('no number of floors is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             numberOfFloors: null,
           },
@@ -317,10 +320,10 @@ describe('WuestService', () => {
 
       it('floor number exceeds total number of floors', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             numberOfFloors: 5,
-            floorType: FLOOR_NUMBER[6],
+            floorType: WUEST_FLOOR_NUMBER[6],
           },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS);
@@ -328,7 +331,7 @@ describe('WuestService', () => {
 
       it('no usable area is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             usableArea: null,
           },
@@ -338,7 +341,7 @@ describe('WuestService', () => {
 
       it('no usable area value is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             usableArea: {
               value: null,
@@ -350,7 +353,7 @@ describe('WuestService', () => {
 
       it('no usable area type is provided', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             usableArea: {
               type: null,
@@ -362,7 +365,7 @@ describe('WuestService', () => {
 
       it('usable area type is invalid', () => {
         const property = {
-          type: PROPERTY_TYPE.FLAT,
+          type: WUEST_PROPERTY_TYPE.FLAT,
           data: {
             usableArea: {
               type: 'not known',
@@ -398,7 +401,7 @@ describe('WuestService', () => {
 
         expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithPrefix');
       });
-      
+
       it('no prefix is given', () => {
         const prefix = 'SOME_PREFIX';
         const id = 'SOME_ID_WITHOUT_PREFIX';
@@ -411,7 +414,7 @@ describe('WuestService', () => {
   context('evaluateById', () => {
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_STYLE.FLAT,
+        style: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',
@@ -429,7 +432,7 @@ describe('WuestService', () => {
 
     it('returns micro location', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_STYLE.FLAT,
+        style: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',

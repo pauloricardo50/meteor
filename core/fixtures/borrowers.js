@@ -14,7 +14,8 @@ const firstNames = [
 
 const lastNames = ['Arsenault', 'Babel', 'Rochat'];
 
-const getRandomArrayElement = array => array[Math.floor(Math.random() * array.length)];
+const getRandomArrayElement = array =>
+  array[Math.floor(Math.random() * array.length)];
 
 const insertFakeBorrower = (userId) => {
   const firstName = getRandomArrayElement(firstNames);
@@ -71,7 +72,7 @@ const insertFakeBorrower = (userId) => {
       {
         value: 433000,
         loan: 240000,
-        description: 'PRIMARY',
+        description: 'MAIN_RESIDENCE',
       },
     ],
     bankFortune: 300000,
@@ -108,6 +109,7 @@ export const createFakeBorrowers = (userId, twoBorrowers = false) => {
   return borrowerIds;
 };
 
-export const getRelatedBorrowerIds = usersIds => Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-  .fetch()
-  .map(item => item._id);
+export const getRelatedBorrowerIds = usersIds =>
+  Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

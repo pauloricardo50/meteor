@@ -1,6 +1,8 @@
 import { fakeDocument } from 'core/api/files/fakes';
 import moment from 'moment';
 
+import { RESIDENCE_TYPE, PROPERTY_TYPE } from '../constants';
+
 export const fakeGeneral = {
   purchaseType: 'ACQUISITION',
   fortuneUsed: 250000,
@@ -16,8 +18,8 @@ export const fakeProperty = {
   address1: 'Rue du Succès 18',
   zipCode: 1000,
   city: 'Lausanne',
-  usageType: 'PRIMARY',
-  type: 'FLAT',
+  usageType: RESIDENCE_TYPE.MAIN,
+  type: PROPERTY_TYPE.FLAT,
   futureOwner: 0,
   constructionYear: 2010,
   landArea: 300,

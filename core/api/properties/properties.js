@@ -3,8 +3,8 @@ import SimpleSchema from 'simpl-schema';
 import {
   PROPERTIES_COLLECTION,
   PROPERTY_STATUS,
-  USAGE_TYPE,
-  PROPERTY_STYLE,
+  RESIDENCE_TYPE,
+  PROPERTY_TYPE,
   VOLUME_NORM,
   EXPERTISE_STATUS,
 } from './propertyConstants';
@@ -184,8 +184,8 @@ export const PropertySchema = new SimpleSchema({
   },
   usageType: {
     type: String,
-    defaultValue: USAGE_TYPE.PRIMARY,
-    allowedValues: Object.values(USAGE_TYPE),
+    defaultValue: RESIDENCE_TYPE.MAIN,
+    allowedValues: Object.values(RESIDENCE_TYPE),
   },
   investmentRent: {
     // Rent of property if investment
@@ -197,8 +197,8 @@ export const PropertySchema = new SimpleSchema({
   style: {
     type: String,
     optional: true,
-    defaultValue: PROPERTY_STYLE.FLAT,
-    allowedValues: Object.values(PROPERTY_STYLE),
+    defaultValue: PROPERTY_TYPE.FLAT,
+    allowedValues: Object.values(PROPERTY_TYPE),
   },
   address: {
     // For condensed, google places addresses

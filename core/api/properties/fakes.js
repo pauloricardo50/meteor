@@ -1,5 +1,6 @@
 import { fakeDocument } from 'core/api/files/fakes';
 import { EXPERTISE_STATUS } from './propertyConstants';
+import { RESIDENCE_TYPE, PROPERTY_TYPE } from './propertyConstants';
 
 export const emptyProperty = {};
 
@@ -9,8 +10,8 @@ export const fakeProperty = {
   address1: 'Rue du Succès 18',
   zipCode: 1000,
   city: 'Lausanne',
-  usageType: 'PRIMARY',
-  type: 'FLAT',
+  usageType: RESIDENCE_TYPE.MAIN,
+  type: PROPERTY_TYPE.FLAT,
   futureOwner: 0,
   constructionYear: 2010,
   landArea: 300,

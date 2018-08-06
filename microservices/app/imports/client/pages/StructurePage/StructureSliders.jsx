@@ -5,7 +5,7 @@ import Slider from 'core/components/Material/Slider';
 
 import TextInput from 'core/components/TextInput';
 import { getFortune, getInsuranceFortune } from 'core/utils/borrowerFunctions';
-import { USAGE_TYPE } from 'core/api/constants';
+import { RESIDENCE_TYPE } from 'core/api/constants';
 
 import T from 'core/components/Translation';
 
@@ -48,9 +48,8 @@ const styles = {
 
 const StructureSliders = (props) => {
   const { loan, borrowers, onChange, disabled, parentState } = props;
-  const showInsurance =
-    loan.general.usageType === USAGE_TYPE.PRIMARY &&
-    getInsuranceFortune({ borrowers }) > 0;
+  const showInsurance = loan.general.usageType === RESIDENCE_TYPE.MAIN
+    && getInsuranceFortune({ borrowers }) > 0;
 
   return (
     <div style={styles.div}>

@@ -86,8 +86,8 @@
 
   "Widget1OptionSelector.ACQUISITION": "Acquisition",
   "Widget1OptionSelector.REFINANCING": "Refinancement",
-  "Widget1OptionSelector.PRIMARY": "Résidence principale",
-  "Widget1OptionSelector.SECONDARY": "Résidence secondaire",
+  "Widget1OptionSelector.MAIN_RESIDENCE": "Résidence principale",
+  "Widget1OptionSelector.SECOND_RESIDENCE": "Résidence secondaire",
   "Widget1OptionSelector.INVESTMENT": "Bien de rendement",
 
   "LoanAdder.dialogTitle": "Ajouter une hypothèque",
@@ -1001,8 +1001,8 @@
   "Forms.realEstate.INVESTMENT": "Bien d'investissement",
   "Forms.realEstate.loan": "Emprunt actuel",
   "Forms.realEstate.loan.placeholder": "CHF 300 000",
-  "Forms.realEstate.PRIMARY": "Propriété principale",
-  "Forms.realEstate.SECONDARY": "Propriété secondaire",
+  "Forms.realEstate.MAIN_RESIDENCE": "Propriété principale",
+  "Forms.realEstate.SECOND_RESIDENCE": "Propriété secondaire",
   "Forms.realEstate.value": "Valeur du bien",
   "Forms.realEstate.value.placeholder": "CHF 400 000",
   "Forms.renovationYear": "Année de rénovation",
@@ -1030,7 +1030,7 @@
   "Forms.step": "Étape",
   "Forms.style": "Type de bien immobilier",
   "Forms.style.FLAT": "Appartement",
-  "Forms.style.VILLA": "Villa",
+  "Forms.style.HOUSE": "Villa",
   "Forms.terraceArea": "Surface des terrasses en m2",
   "Forms.terraceArea.placeholder": "40",
   "Forms.toiletCount": "Nb. de WC",
@@ -1039,8 +1039,8 @@
   "Forms.updatedAt": "Modifié le",
   "Forms.usageType": "Type d'utilisation",
   "Forms.usageType.INVESTMENT": "Bien d'investissement",
-  "Forms.usageType.PRIMARY": "Résidence principale",
-  "Forms.usageType.SECONDARY": "Résidence secondaire",
+  "Forms.usageType.MAIN_RESIDENCE": "Résidence principale",
+  "Forms.usageType.SECOND_RESIDENCE": "Résidence secondaire",
   "Forms.user": "Utilisateur",
   "Forms.value": "Prix d'achat",
   "Forms.value.placeholder": "CHF 500 000",
@@ -1419,8 +1419,8 @@
   "Start2Form.usageType":
     "Quel sera le type d'utilisation de cette propriété ?",
   "Start2Form.usageTypeButtonINVESTMENT": "Je veux le louer",
-  "Start2Form.usageTypeButtonPRIMARY": "Ma résidence principale",
-  "Start2Form.usageTypeButtonSECONDARY": "Ma résidence secondaire",
+  "Start2Form.usageTypeButtonMAIN_RESIDENCE": "Ma résidence principale",
+  "Start2Form.usageTypeButtonSECOND_RESIDENCE": "Ma résidence secondaire",
   "Start2Form.useInsurance1":
     "Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?",
   "Start2Form.useInsurance1.description":

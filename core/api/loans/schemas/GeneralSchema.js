@@ -6,7 +6,7 @@ import {
   CANTONS,
   AUCTION_MOST_IMPORTANT,
   GENDER,
-  USAGE_TYPE,
+  RESIDENCE_TYPE,
 } from '../../constants';
 import { loanTranchesSchema } from './otherSchemas';
 
@@ -18,8 +18,8 @@ const GeneralSchema = new SimpleSchema({
   },
   usageType: {
     type: String,
-    defaultValue: USAGE_TYPE.PRIMARY,
-    allowedValues: Object.values(USAGE_TYPE),
+    defaultValue: RESIDENCE_TYPE.MAIN,
+    allowedValues: Object.values(RESIDENCE_TYPE),
   },
   fortuneUsed: {
     type: Number,

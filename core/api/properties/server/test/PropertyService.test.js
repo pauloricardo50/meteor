@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import PropertyService from '../../PropertyService';
-import { EXPERTISE_STATUS, PROPERTY_STYLE } from '../../propertyConstants';
+import { EXPERTISE_STATUS, PROPERTY_TYPE } from '../../propertyConstants';
 import { WUEST_ERRORS } from '../../../wuest/wuestConstants';
 
 describe('PropertyService', () => {
@@ -13,7 +13,7 @@ describe('PropertyService', () => {
   describe('evaluateProperty', () => {
     it('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_STYLE.FLAT,
+        style: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',

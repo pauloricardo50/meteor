@@ -1,4 +1,4 @@
-import { GENDER, USAGE_TYPE } from '../api/constants';
+import { GENDER, RESIDENCE_TYPE } from '../api/constants';
 import {
   NOTARY_FEES,
   MAINTENANCE_FINMA,
@@ -159,7 +159,7 @@ export const canAffordRank1 = ({ loan, borrowers, property }) => {
     return true;
   }
 
-  if (loan.general && loan.general.usageType === USAGE_TYPE.PRIMARY) {
+  if (loan.general && loan.general.usageType === RESIDENCE_TYPE.MAIN) {
     if (fortune + insuranceFortune >= fortuneRequired) {
       // ignore lppFees
       return true;

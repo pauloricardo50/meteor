@@ -1,17 +1,17 @@
 import merge from 'lodash/merge';
 import Property from './Property';
-import { HED_METHOD, AREA_TYPE } from '../wuestConstants';
+import { WUEST_HED_METHOD, WUEST_AREA_TYPE } from '../wuestConstants';
 
 class WuestFlat extends Property {
   constructor() {
     super();
-    this.method = HED_METHOD.CON;
+    this.method = WUEST_HED_METHOD.CON;
     this.flatType = '';
     this.numberOfFloors = 0;
     this.floorType = '';
     this.numberOfFlats = 0;
     this.usableArea = {
-      type: AREA_TYPE.NET,
+      type: WUEST_AREA_TYPE.NET,
       value: 0,
     };
     this.terraceArea = 0;

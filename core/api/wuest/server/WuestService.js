@@ -8,19 +8,19 @@ import WuestHouse from './WuestHouse';
 import WuestFlat from './WuestFlat';
 import { URL, TOKEN } from './API_KEY';
 import {
-  RESIDENCE_TYPE,
-  HOUSE_TYPE,
-  FLAT_TYPE,
-  MINERGIE_CERTIFICATE,
-  QUALITY,
-  FLOOR_NUMBER,
-  PROPERTY_TYPE,
-  VOLUME_TYPE,
-  AREA_TYPE,
+  WUEST_RESIDENCE_TYPE,
+  WUEST_HOUSE_TYPE,
+  WUEST_FLAT_TYPE,
+  WUEST_MINERGIE_CERTIFICATE,
+  WUEST_QUALITY,
+  WUEST_FLOOR_NUMBER,
+  WUEST_PROPERTY_TYPE,
+  WUEST_VOLUME_TYPE,
+  WUEST_AREA_TYPE,
   WUEST_ERRORS,
 } from '../wuestConstants';
 import Properties from '../../properties';
-import { PROPERTY_STYLE, USAGE_TYPE } from '../../constants';
+import { PROPERTY_TYPE, RESIDENCE_TYPE } from '../../constants';
 
 const valueIsDefined = value => (value === 0 ? true : !!value);
 class WuestService {
@@ -43,10 +43,10 @@ class WuestService {
     this.checkPropertySanity(property);
     let data;
     switch (property.type) {
-    case PROPERTY_TYPE.HOUSE:
+    case WUEST_PROPERTY_TYPE.HOUSE:
       data = this.buildHouse(property);
       break;
-    case PROPERTY_TYPE.FLAT:
+    case WUEST_PROPERTY_TYPE.FLAT:
       data = this.buildFlat(property);
       break;
     default:
@@ -99,7 +99,7 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { minergieCertificate } }) =>
-          Object.values(MINERGIE_CERTIFICATE).includes(minergieCertificate),
+          Object.values(WUEST_MINERGIE_CERTIFICATE).includes(minergieCertificate),
         error: WUEST_ERRORS.INVALID_MINERGIE_CERTIFICATE,
       },
       {
@@ -128,7 +128,7 @@ class WuestService {
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
           !!qualityProfile &&
-          Object.values(QUALITY.STANDARD).includes(qualityProfile.standard),
+          Object.values(WUEST_QUALITY.STANDARD).includes(qualityProfile.standard),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_STANDARD,
       },
       {
@@ -139,7 +139,7 @@ class WuestService {
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
           !!qualityProfile &&
-          Object.values(QUALITY.CONDITION).includes(qualityProfile.condition),
+          Object.values(WUEST_QUALITY.CONDITION).includes(qualityProfile.condition),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION,
       },
       {
@@ -148,114 +148,114 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { residenceType } }) =>
-          Object.values(RESIDENCE_TYPE).includes(residenceType),
+          Object.values(WUEST_RESIDENCE_TYPE).includes(residenceType),
         error: WUEST_ERRORS.INVALID_RESIDENCE_TYPE,
       },
       {
         sanityCheck: ({ type, data: { houseType } }) =>
-          (type === PROPERTY_TYPE.FLAT ? true : !!houseType),
+          (type === WUEST_PROPERTY_TYPE.FLAT ? true : !!houseType),
         error: WUEST_ERRORS.NO_HOUSE_TYPE_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { houseType } }) =>
-          (type === PROPERTY_TYPE.FLAT
+          (type === WUEST_PROPERTY_TYPE.FLAT
             ? true
-            : Object.values(HOUSE_TYPE).includes(houseType)),
+            : Object.values(WUEST_HOUSE_TYPE).includes(houseType)),
         error: WUEST_ERRORS.INVALID_HOUSE_TYPE,
       },
       {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
-          (type === PROPERTY_TYPE.FLAT ? true : !!buildingVolume),
+          (type === WUEST_PROPERTY_TYPE.FLAT ? true : !!buildingVolume),
         error: WUEST_ERRORS.NO_BUILDING_VOLUME_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
-          (type === PROPERTY_TYPE.FLAT
+          (type === WUEST_PROPERTY_TYPE.FLAT
             ? true
             : !!buildingVolume && !!buildingVolume.value),
         error: WUEST_ERRORS.NO_BUILDING_VOLUME_VALUE_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
-          (type === PROPERTY_TYPE.FLAT
+          (type === WUEST_PROPERTY_TYPE.FLAT
             ? true
             : !!buildingVolume && !!buildingVolume.type),
         error: WUEST_ERRORS.NO_BUILDING_VOLUME_TYPE_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
-          (type === PROPERTY_TYPE.FLAT
+          (type === WUEST_PROPERTY_TYPE.FLAT
             ? true
             : !!buildingVolume &&
-              Object.values(VOLUME_TYPE).includes(buildingVolume.type)),
+              Object.values(WUEST_VOLUME_TYPE).includes(buildingVolume.type)),
         error: WUEST_ERRORS.INVALID_BUILDING_VOLUME_TYPE,
       },
       {
         sanityCheck: ({ type, data: { landPlotArea } }) =>
-          (type === PROPERTY_TYPE.FLAT ? true : !!landPlotArea),
+          (type === WUEST_PROPERTY_TYPE.FLAT ? true : !!landPlotArea),
         error: WUEST_ERRORS.NO_LANDPLOT_AREA_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { floorType } }) =>
-          (type === PROPERTY_TYPE.HOUSE ? true : !!floorType),
+          (type === WUEST_PROPERTY_TYPE.HOUSE ? true : !!floorType),
         error: WUEST_ERRORS.NO_FLOOR_NUMBER_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { floorType } }) =>
-          (type === PROPERTY_TYPE.HOUSE
+          (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : FLOOR_NUMBER.includes(floorType)),
+            : WUEST_FLOOR_NUMBER.includes(floorType)),
         error: WUEST_ERRORS.INVALID_FLOOR_NUMBER,
       },
       {
         sanityCheck: ({ type, data: { flatType } }) =>
-          (type === PROPERTY_TYPE.HOUSE ? true : !!flatType),
+          (type === WUEST_PROPERTY_TYPE.HOUSE ? true : !!flatType),
         error: WUEST_ERRORS.NO_FLAT_TYPE_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { flatType } }) =>
-          (type === PROPERTY_TYPE.HOUSE
+          (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : Object.values(FLAT_TYPE).includes(flatType)),
+            : Object.values(WUEST_FLAT_TYPE).includes(flatType)),
         error: WUEST_ERRORS.INVALID_FLAT_TYPE,
       },
       {
         sanityCheck: ({ type, data: { numberOfFloors } }) =>
-          (type === PROPERTY_TYPE.HOUSE ? true : !!numberOfFloors),
+          (type === WUEST_PROPERTY_TYPE.HOUSE ? true : !!numberOfFloors),
         error: WUEST_ERRORS.NO_NUMBER_OF_FLOORS_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { numberOfFloors, floorType } }) =>
-          (type === PROPERTY_TYPE.HOUSE
+          (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : FLOOR_NUMBER.indexOf(floorType) <= numberOfFloors),
+            : WUEST_FLOOR_NUMBER.indexOf(floorType) <= numberOfFloors),
         error: WUEST_ERRORS.FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS,
       },
       {
         sanityCheck: ({ type, data: { usableArea } }) =>
-          (type === PROPERTY_TYPE.HOUSE ? true : !!usableArea),
+          (type === WUEST_PROPERTY_TYPE.HOUSE ? true : !!usableArea),
         error: WUEST_ERRORS.NO_USABLE_AREA_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { usableArea } }) =>
-          (type === PROPERTY_TYPE.HOUSE
+          (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
             : !!usableArea && !!usableArea.value),
         error: WUEST_ERRORS.NO_USABLE_AREA_VALUE_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { usableArea } }) =>
-          (type === PROPERTY_TYPE.HOUSE
+          (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
             : !!usableArea && !!usableArea.type),
         error: WUEST_ERRORS.NO_USABLE_AREA_TYPE_PROVIDED,
       },
       {
         sanityCheck: ({ type, data: { usableArea } }) =>
-          (type === PROPERTY_TYPE.HOUSE
+          (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
             : !!usableArea &&
-              Object.values(AREA_TYPE).includes(usableArea.type)),
+              Object.values(WUEST_AREA_TYPE).includes(usableArea.type)),
         error: WUEST_ERRORS.INVALID_USABLE_AREA_TYPE,
       },
     ];
@@ -354,10 +354,10 @@ class WuestService {
     }
 
     switch (property.style) {
-    case PROPERTY_STYLE.FLAT:
+    case PROPERTY_TYPE.FLAT:
       data = this.addProperty({
         id: propertyId,
-        type: PROPERTY_TYPE.FLAT,
+        type: WUEST_PROPERTY_TYPE.FLAT,
         data: {
           address: {
             addressLine1: property.address1,
@@ -366,15 +366,15 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-              property.usageType === USAGE_TYPE.PRIMARY
-                ? RESIDENCE_TYPE.MAIN
-                : RESIDENCE_TYPE.SECOND,
-          flatType: FLAT_TYPE.SINGLE_FLOOR,
+            property.usageType === RESIDENCE_TYPE.MAIN
+                ? WUEST_RESIDENCE_TYPE.MAIN
+                : WUEST_RESIDENCE_TYPE.SECOND,
+          flatType: WUEST_FLAT_TYPE.SINGLE_FLOOR,
           numberOfRooms: property.roomCount,
           numberOfFloors: 4,
-          floorType: FLOOR_NUMBER[property.floorNumber || 2],
+          floorType: WUEST_FLOOR_NUMBER[property.floorNumber || 2],
           usableArea: {
-            type: AREA_TYPE.NET,
+            type: WUEST_AREA_TYPE.NET,
             value: property.insideArea,
           },
           terraceArea: property.terraceArea,
@@ -384,20 +384,20 @@ class WuestService {
           },
           constructionYear: property.constructionYear,
           minergieCertificate: property.minergie
-            ? MINERGIE_CERTIFICATE.P
-            : MINERGIE_CERTIFICATE.WITHOUT,
+            ? WUEST_MINERGIE_CERTIFICATE.P
+            : WUEST_MINERGIE_CERTIFICATE.WITHOUT,
           qualityProfile: {
-            standard: QUALITY.STANDARD.AVERAGE,
-            condition: QUALITY.CONDITION.INTACT,
+            standard: WUEST_QUALITY.STANDARD.AVERAGE,
+            condition: WUEST_QUALITY.CONDITION.INTACT,
           },
         },
       });
       break;
 
-    case PROPERTY_STYLE.VILLA:
+    case PROPERTY_TYPE.HOUSE:
       data = this.addProperty({
         id: propertyId,
-        type: PROPERTY_TYPE.HOUSE,
+        type: WUEST_PROPERTY_TYPE.HOUSE,
         data: {
           address: {
             addressLine1: property.address1,
@@ -406,14 +406,14 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-              property.usageType === USAGE_TYPE.PRIMARY
-                ? RESIDENCE_TYPE.MAIN
-                : RESIDENCE_TYPE.SECOND,
-          houseType: HOUSE_TYPE.DETACHED,
+            property.usageType === RESIDENCE_TYPE.MAIN
+                ? WUEST_RESIDENCE_TYPE.MAIN
+                : WUEST_RESIDENCE_TYPE.SECOND,
+          houseType: WUEST_HOUSE_TYPE.DETACHED,
           numberOfRooms: property.roomCount,
           landPlotArea: property.landArea,
           buildingVolume: {
-            type: VOLUME_TYPE.SIA_416,
+            type: WUEST_VOLUME_TYPE.SIA_416,
             value: property.volume,
           },
           parking: {
@@ -422,11 +422,11 @@ class WuestService {
           },
           constructionYear: property.constructionYear,
           minergieCertificate: property.minergie
-            ? MINERGIE_CERTIFICATE.P
-            : MINERGIE_CERTIFICATE.WITHOUT,
+            ? WUEST_MINERGIE_CERTIFICATE.P
+            : WUEST_MINERGIE_CERTIFICATE.WITHOUT,
           qualityProfile: {
-            standard: QUALITY.STANDARD.AVERAGE,
-            condition: QUALITY.CONDITION.INTACT,
+            standard: WUEST_QUALITY.STANDARD.AVERAGE,
+            condition: WUEST_QUALITY.CONDITION.INTACT,
           },
         },
       });
@@ -498,7 +498,9 @@ class WuestService {
 
     // Get first element of 'content' because wuest API returns an array of microlocations
     const {
-      value: { content: [microlocation] },
+      value: {
+        content: [microlocation],
+      },
     } = embedded.find(({ rel }) => rel === 'microLocationProfiles');
 
     return {
