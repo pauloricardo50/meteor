@@ -27,7 +27,7 @@ const styles = {
   },
 };
 
-const AccountPage = props => (
+const AccountPage = ({ history: { push }, currentUser: { emails } }) => (
   <Page id="AccountPage">
     <div className="mask1" style={styles.section}>
       <span
@@ -37,7 +37,7 @@ const AccountPage = props => (
         <Button
           raised
           label={<T id="general.logout" />}
-          onClick={() => Meteor.logout(() => props.history.push('/home'))}
+          onClick={() => Meteor.logout(() => push('/home'))}
         />
       </span>
 
@@ -47,7 +47,7 @@ const AccountPage = props => (
             <T id="AccountPage.email" />
           </h4>
           <br />
-          <p className="secondary">{props.currentUser.emails[0].address}</p>
+          <p className="secondary">{emails[0].address}</p>
         </div>
 
         <div className="form-group">
