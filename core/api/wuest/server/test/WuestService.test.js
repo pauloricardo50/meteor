@@ -21,13 +21,13 @@ describe('WuestService', () => {
     resetDatabase();
   });
 
-  describe('createPropertyFromCollection', () => {
+  context('createPropertyFromCollection', () => {
     it('throws an error if it can not find the property', () => {
       expect(() => WuestService.createPropertyFromCollection('test')).to.throw(WUEST_ERRORS.NO_PROPERTY_FOUND);
     });
   });
 
-  describe('getErrors ', () => {
+  context('getErrors ', () => {
     it('returns an empty array if provided data is correct', () => {
       const property = {
         type: PROPERTY_TYPE.HOUSE,
@@ -55,7 +55,6 @@ describe('WuestService', () => {
           qualityProfile: {
             standard: QUALITY.STANDARD.AVERAGE,
             condition: QUALITY.CONDITION.NEEDS_RENNOVATION,
-            situation: QUALITY.SITUATION.AVERAGE,
           },
         },
       };
@@ -63,7 +62,7 @@ describe('WuestService', () => {
       expect(WuestService.getErrors(property)).to.deep.equal([]);
     });
 
-    describe('returns an error when ', () => {
+    context('returns an error when ', () => {
       it('floor number is not provided', () => {
         const property = {
           type: PROPERTY_TYPE.FLAT,
@@ -264,17 +263,6 @@ describe('WuestService', () => {
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_QUALITY_PROFILE_CONDITION_PROVIDED);
       });
 
-      it('no quality profile situation is provided', () => {
-        const property = {
-          data: {
-            qualityProfile: {
-              situation: null,
-            },
-          },
-        };
-        expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.NO_QUALITY_PROFILE_SITUATION_PROVIDED);
-      });
-
       it('quality profile standard is invalid', () => {
         const property = {
           data: {
@@ -295,17 +283,6 @@ describe('WuestService', () => {
           },
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION);
-      });
-
-      it('quality profile situation is invalid', () => {
-        const property = {
-          data: {
-            qualityProfile: {
-              situation: 'not known',
-            },
-          },
-        };
-        expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_QUALITY_PROFILE_SITUATION);
       });
 
       it('no flat type is provided', () => {
@@ -394,11 +371,10 @@ describe('WuestService', () => {
         };
         expect(WuestService.getErrors(property)).to.include(WUEST_ERRORS.INVALID_USABLE_AREA_TYPE);
       });
-    })
-    
+    });
   });
 
-  describe('formatError', () => {
+  context('formatError', () => {
     it('formats an error correctly', () => {
       const error = {
         message: 'Error {0}',
@@ -414,8 +390,26 @@ describe('WuestService', () => {
     });
   });
 
-  describe('evaluateById', () => {
-    it('returns min and max', () => {
+  context('formatMicrolocationId', () => {
+    context('formats the id correctly when', () => {
+      it('a prefix is given', () => {
+        const prefix = 'SOME_PREFIX';
+        const id = `${prefix}.SOME_ID_WITH_PREFIX`;
+
+        expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithPrefix');
+      });
+      
+      it('no prefix is given', () => {
+        const prefix = 'SOME_PREFIX';
+        const id = 'SOME_ID_WITHOUT_PREFIX';
+
+        expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithoutPrefix');
+      });
+    });
+  });
+
+  context('evaluateById', () => {
+    it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
         style: PROPERTY_STYLE.FLAT,
         address1: 'rue du four 2',
@@ -427,11 +421,29 @@ describe('WuestService', () => {
         terraceArea: 20,
       })._id;
       return WuestService.evaluateById(propertyId).then((result) => {
-        expect(result).to.deep.equal({
-          min: 580000,
-          max: 690000,
-          value: 633000,
-        });
+        expect(result.min).to.equal(610000);
+        expect(result.max).to.equal(730000);
+        expect(result.value).to.equal(668000);
+      });
+    });
+
+    it('returns micro location', () => {
+      const propertyId = Factory.create('property', {
+        style: PROPERTY_STYLE.FLAT,
+        address1: 'rue du four 2',
+        zipCode: '1400',
+        city: 'Yverdon-les-Bains',
+        roomCount: 4,
+        constructionYear: 2000,
+        insideArea: 100,
+        terraceArea: 20,
+      })._id;
+      return WuestService.evaluateById(propertyId).then((result) => {
+        expect(result).to.have.property('microlocation');
+        expect(result.microlocation).to.have.property('grade');
+        expect(result.microlocation.factors).to.have.property('terrain');
+        expect(result.microlocation.factors).to.have.property('infrastructure');
+        expect(result.microlocation.factors).to.have.property('immission');
       });
     }).timeout(10000);
   });

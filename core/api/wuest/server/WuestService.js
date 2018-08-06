@@ -1,10 +1,13 @@
 import fetch from 'node-fetch';
+import camelCase from 'lodash/camelCase';
+import omit from 'lodash/omit';
+import merge from 'lodash/merge';
+
 import { Meteor } from 'meteor/meteor';
 import WuestHouse from './WuestHouse';
 import WuestFlat from './WuestFlat';
+import { URL, TOKEN } from './API_KEY';
 import {
-  URL,
-  TOKEN,
   RESIDENCE_TYPE,
   HOUSE_TYPE,
   FLAT_TYPE,
@@ -138,17 +141,6 @@ class WuestService {
           !!qualityProfile &&
           Object.values(QUALITY.CONDITION).includes(qualityProfile.condition),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION,
-      },
-      {
-        sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile && !!qualityProfile.situation,
-        error: WUEST_ERRORS.NO_QUALITY_PROFILE_SITUATION_PROVIDED,
-      },
-      {
-        sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile &&
-          Object.values(QUALITY.SITUATION).includes(qualityProfile.situation),
-        error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_SITUATION,
       },
       {
         sanityCheck: ({ data: { residenceType } }) => !!residenceType,
@@ -397,7 +389,6 @@ class WuestService {
           qualityProfile: {
             standard: QUALITY.STANDARD.AVERAGE,
             condition: QUALITY.CONDITION.INTACT,
-            situation: QUALITY.SITUATION.AVERAGE,
           },
         },
       });
@@ -436,7 +427,6 @@ class WuestService {
           qualityProfile: {
             standard: QUALITY.STANDARD.AVERAGE,
             condition: QUALITY.CONDITION.INTACT,
-            situation: QUALITY.SITUATION.AVERAGE,
           },
         },
       });
@@ -452,15 +442,70 @@ class WuestService {
     return this.evaluate(this.properties);
   }
 
+  hasWuestPrefix = string => string.includes('.');
+
+  formatMicrolocationId(type, filter) {
+    let id = type;
+    if (this.hasWuestPrefix(id)) {
+      id = type.replace(filter, '');
+    }
+    return camelCase(id);
+  }
+
+  buildMicrolocationObject(filter, microlocationData) {
+    const factors = microlocationData
+      .filter(({ type }) => type.startsWith(filter))
+      .reduce((acc, factor) => {
+        const { grade, text, type } = factor;
+        return {
+          ...acc,
+          [this.formatMicrolocationId(type, filter)]: { grade, text },
+        };
+      }, {});
+
+    const rootFactor = microlocationData.filter(({ type }) => type === filter)[0];
+
+    return merge({ grade: rootFactor.grade }, omit(factors, filter));
+  }
+
+  formatMicrolocation(microlocationData) {
+    const terrain = this.buildMicrolocationObject(
+      'TERRAIN',
+      microlocationData.factors,
+    );
+
+    const infrastructure = this.buildMicrolocationObject(
+      'INFRASTRUCTURE',
+      microlocationData.factors,
+    );
+
+    const immission = this.buildMicrolocationObject(
+      'IMMISSION',
+      microlocationData.factors,
+    );
+
+    return {
+      grade: microlocationData.grade,
+      factors: { terrain, infrastructure, immission },
+    };
+  }
+
   formatResult({ keyFigures: { marketValueBeforeCorrection }, embedded }) {
     const {
       statisticalPriceRangeMin,
       statisticalPriceRangeMax,
     } = embedded.find(({ rel }) => rel === 'keyFigureExtension').value;
+
+    // Get first element of 'content' because wuest API returns an array of microlocations
+    const {
+      value: { content: [microlocation] },
+    } = embedded.find(({ rel }) => rel === 'microLocationProfiles');
+
     return {
       value: marketValueBeforeCorrection,
       min: statisticalPriceRangeMin,
       max: statisticalPriceRangeMax,
+      microlocation: this.formatMicrolocation(microlocation),
     };
   }
 
@@ -489,8 +534,8 @@ class WuestService {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
       return this.getData(property.property.JSONData)
-        .then((result) => this.handleResult(result))
-        .then(this.formatResult);
+        .then(result => this.handleResult(result))
+        .then(result => this.formatResult(result));
     });
     this.properties = [];
     return Promise.all(promises).then(this.cleanUpResults);

@@ -41,5 +41,6 @@ export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
     status: 1,
     error: 1,
     date: 1,
+    microlocation: 1,
   },
 });
