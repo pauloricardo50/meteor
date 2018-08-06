@@ -7,5 +7,6 @@
     { "path": "microservices/www" }
   ],
   "settings": {
+    "editor.snippetSuggestions": "top"
   }
 }
