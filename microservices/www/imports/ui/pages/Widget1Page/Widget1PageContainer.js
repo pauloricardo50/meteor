@@ -7,7 +7,7 @@ import {
   getFinmaMonthlyCost,
   validateIncomeRatio,
   validateBorrowRatio,
-} from 'core/utils/finance';
+} from './widget1Math';
 import { widget1Selectors, widget1Constants } from '../../../redux/widget1';
 
 export const hideFinmaValues = (borrowRatio, incomeRatio) =>
