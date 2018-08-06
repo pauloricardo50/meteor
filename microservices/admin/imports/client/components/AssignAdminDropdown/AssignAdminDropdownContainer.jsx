@@ -1,5 +1,5 @@
 import query from 'core/api/users/queries/admins';
-import { compose, createContainer, withQuery } from 'core/api';
+import { compose, createContainer, withSmartQuery } from 'core/api';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
@@ -26,12 +26,11 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
 };
 
 export default compose(
-  withQuery(() => query.clone(), { reactive: true }),
-  createContainer(({ isLoading, data, doc, onAdminSelectHandler }) => {
-    if (isLoading) {
-      return { options: [] };
-    }
-
+  withSmartQuery({
+    query: () => query.clone(),
+    queryoptions: { reactive: true },
+  }),
+  createContainer(({ data, doc, onAdminSelectHandler }) => {
     const options = getMenuItems({
       admins: data,
       relatedDoc: doc,
