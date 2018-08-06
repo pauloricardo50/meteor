@@ -106,7 +106,6 @@ const getRandomStructure = propertyValue =>
     {
       fortuneUsed: Math.round(0.15 * propertyValue),
       secondPillarPledged: Math.round(0.1 * propertyValue),
-      wantedLoan: Math.round(0.8 * propertyValue),
     },
     {
       fortuneUsed: Math.round(0.25 * propertyValue),
@@ -114,24 +113,20 @@ const getRandomStructure = propertyValue =>
     {
       fortuneUsed: Math.round(0.15 * propertyValue),
       secondPillarWithdrawal: Math.round(0.1 * propertyValue),
-      wantedLoan: Math.round(0.8 * propertyValue),
     },
     {
       fortuneUsed: Math.round(0.15 * propertyValue),
       secondPillarWithdrawal: Math.round(0.05 * propertyValue),
       secondPillarPledged: Math.round(0.05 * propertyValue),
-      wantedLoan: Math.round(0.8 * propertyValue),
     },
     {
       fortuneUsed: Math.round(0.15 * propertyValue),
       secondPillarWithdrawal: Math.round(0.08 * propertyValue),
       thirdPillarWithdrawal: Math.round(0.02 * propertyValue),
-      wantedLoan: Math.round(0.8 * propertyValue),
     },
     {
       fortuneUsed: Math.round(0.2 * propertyValue),
       thirdPillarWithdrawal: Math.round(0.05 * propertyValue),
-      wantedLoan: Math.round(0.8 * propertyValue),
     },
   ]);
 
@@ -156,6 +151,7 @@ export const createFakeLoan = ({
         id: 'struct1',
         propertyId,
         loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+        wantedLoan: Math.round(0.8 * value),
         ...getRandomStructure(value),
       },
     ],

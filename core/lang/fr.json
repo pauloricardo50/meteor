@@ -956,6 +956,8 @@
   "PropertyForm.value": "Prix d'achat",
   "PropertyForm.zipCode": "NPA",
   "PropertyPage.title": "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
+  "Recap.ownFundsInsuranceWithdrawal": "Retrait prévoyance",
+  "Recap.ownFundsInsurancePledged": "Nantissement prévoyance",
   "Recap.availableFunds": "Fonds propres dispo",
   "Recap.bankFortune": "Fortune bancaire",
   "Recap.borrowRatio": "Prêt / Prix d'achat",
