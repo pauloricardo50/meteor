@@ -1,9 +1,9 @@
 // @flow
-import { averageRates } from 'core/components/InterestRatesTable/interestRates';
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
 
-export const getProperty = ({ structure: { propertyId }, properties }) => properties.find(({ _id }) => _id === propertyId);
+export const getProperty = ({ structure: { propertyId }, properties }) =>
+  properties.find(({ _id }) => _id === propertyId);
 
 const argumentMappings = {
   getBorrowRatio: data => ({
@@ -22,9 +22,7 @@ const argumentMappings = {
     structure: { loanTranches, offerId },
     offers,
   }) => {
-    const interestRates = offerId
-      ? offers.find(({ _id }) => _id === offerId)
-      : averageRates;
+    const interestRates = offerId && offers.find(({ _id }) => _id === offerId);
 
     return {
       tranches: loanTranches,

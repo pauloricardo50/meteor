@@ -7,11 +7,6 @@ import { makeArgumentMapper } from '../MiddlewareManager';
 import Selector from './Selector';
 
 const argumentMappings = {
-  getBorrowRatio: data => ({
-    propertyValue: Selector.selectPropertyValue(data),
-    loan: data.loan.structure.wantedLoan,
-  }),
-
   getAmortizationRate: (data) => {
     const {
       loan: {
@@ -56,3 +51,8 @@ const argumentMappings = {
 };
 
 export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappings);
+
+export const borrowerExtractorMiddleware = () => next => params =>
+  (params.loan
+    ? next({ ...params, borrowers: params.loan.borrowers })
+    : next(params));

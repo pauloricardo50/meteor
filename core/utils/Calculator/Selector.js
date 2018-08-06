@@ -42,6 +42,12 @@ export const withSelector = (SuperClass = class {}) =>
       this.makeSelectStructureKey('thirdPillarWithdrawal'),
       (second = 0, third = 0) => second + third,
     );
+
+    getInsurancePledged = createSelector(
+      this.makeSelectStructureKey('secondPillarPledged'),
+      this.makeSelectStructureKey('thirdPillarPledged'),
+      (second = 0, third = 0) => second + third,
+    );
   };
 
 export const Selector = withSelector();

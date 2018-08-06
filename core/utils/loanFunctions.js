@@ -86,10 +86,11 @@ export const loanStrategySuccess = (loanTranches = [], loanValue) => {
   return false;
 };
 
-export const strategiesChosen = ({ loan, property }) => loanStrategySuccess(
-  loan.general.loanTranches,
-  getLoanValue({ loan, property }),
-)
+export const strategiesChosen = ({ loan, property }) =>
+  loanStrategySuccess(
+    loan.general.loanTranches,
+    getLoanValue({ loan, property }),
+  )
   && loan.logic.amortizationStrategyPreset
   && loan.logic.hasValidatedCashStrategy;
 
@@ -173,25 +174,28 @@ export const getMonthlyWithOffer = (
     : 0;
 };
 
-export const getMonthlyWithExtractedOffer = ({ loan, offer, property }) => getMonthlyWithOffer(
-  {
-    loan,
-    property,
-    offer: {
-      [offer.type === OFFER_TYPE.STANDARD
-        ? 'standardOffer'
-        : 'counterpartOffer']: offer,
+export const getMonthlyWithExtractedOffer = ({ loan, offer, property }) =>
+  getMonthlyWithOffer(
+    {
+      loan,
+      property,
+      offer: {
+        [offer.type === OFFER_TYPE.STANDARD
+          ? 'standardOffer'
+          : 'counterpartOffer']: offer,
+      },
     },
-  },
-  offer.type === OFFER_TYPE.STANDARD,
-);
+    offer.type === OFFER_TYPE.STANDARD,
+  );
 
-export const getPropAndWork = ({ loan, property }) => (property
+export const getPropAndWork = ({ loan, property }) =>
+  (property
     && property.value
       + ((loan && loan.general && loan.general.propertyWork) || 0))
   || 0;
 
-export const getTotalUsed = ({ loan }) => Math.round(loan.general.fortuneUsed + (loan.general.insuranceFortuneUsed || 0));
+export const getTotalUsed = ({ loan }) =>
+  Math.round(loan.general.fortuneUsed + (loan.general.insuranceFortuneUsed || 0));
 
 export const getBorrowRatio = ({ loan, property }) => {
   const loanValue = getLoanValue({ loan, property });
@@ -331,22 +335,25 @@ export const loanIsVerified = ({
 export const loanHasMinimalInformation = ({
   loan: {
     general,
-    structure: { property },
+    structure: { property, fortuneUsed },
   },
-}) => !!(general && general.fortuneUsed && (property && property.value));
+}) => !!(fortuneUsed && (property && property.value));
 
 export const useLppFees = ({
   loan: {
     general: { insuranceFortuneUsed, usageType },
     logic: { insuranceUsePreset },
   },
-}) => insuranceFortuneUsed > 0
+}) =>
+  insuranceFortuneUsed > 0
   && usageType === USAGE_TYPE.PRIMARY
   && insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
 
-export const getLppFees = ({ loan }) => (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
+export const getLppFees = ({ loan }) =>
+  (useLppFees({ loan }) ? APPROXIMATE_LPP_FEES : 0);
 
-export const getInsuranceFees = ({ loan }) => getLppFees({ loan }) * loan.general.insuranceFortuneUsed;
+export const getInsuranceFees = ({ loan }) =>
+  getLppFees({ loan }) * loan.general.insuranceFortuneUsed;
 
 export const getMaxBorrowRatio = (
   usageType = USAGE_TYPE.PRIMARY,
@@ -362,7 +369,8 @@ export const getMaxBorrowRatio = (
   return 0.8;
 };
 
-const closingStepsFilesAreValid = (loan, stepId) => isArray(loan.documents[stepId].files)
+const closingStepsFilesAreValid = (loan, stepId) =>
+  isArray(loan.documents[stepId].files)
   && loan.documents[stepId].files.every(file => file.status === CLOSING_STEPS_STATUS.VALID);
 
 export const closingPercent = (loan) => {
@@ -384,7 +392,7 @@ export const formatLoanWithStructure = (loan) => {
   const newLoan = { ...loan };
   if (loan.selectedStructure) {
     const structure = loan.structures.find(({ id }) => id === loan.selectedStructure);
-    
+
     if (structure) {
       newLoan.structure = structure;
 

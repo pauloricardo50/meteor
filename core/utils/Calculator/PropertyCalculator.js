@@ -22,6 +22,14 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return getPercent(a);
     };
+
+    getPropAndWork({ loan }) {
+      const propertyValue = this.getPropertyValue({ loan });
+      const propertyWork = this.makeSelectStructureKey('propertyWork')({
+        loan,
+      });
+      return super.getPropAndWork({ propertyValue, propertyWork });
+    }
   };
 
 export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);

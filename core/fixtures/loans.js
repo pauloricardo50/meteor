@@ -1,5 +1,7 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
+import faker from 'faker';
+import { fakeDocument, fakeDocumentWithLabel } from '../api/files/fakes';
 import {
   PURCHASE_TYPE,
   INSURANCE_USE_PRESET,
@@ -8,9 +10,8 @@ import {
   AMORTIZATION_TYPE,
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
-} from 'core/api/loans/loanConstants';
-import { fakeDocument, fakeDocumentWithLabel } from 'core/api/files/fakes';
-import faker from 'faker';
+  INTEREST_RATES,
+} from '../api/constants';
 import { createFakeBorrowers } from './borrowers';
 import { createFakeProperty } from './properties';
 import { Loans } from '../api';
@@ -120,6 +121,7 @@ export const createFakeLoan = ({
         fortuneUsed: 0.15 * value,
         secondPillarPledged: 0.1 * value,
         wantedLoan: 0.8 * value,
+        loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
       },
     ],
     selectedStructure: 'struct1',

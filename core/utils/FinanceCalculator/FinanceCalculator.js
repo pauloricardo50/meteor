@@ -13,10 +13,11 @@ import {
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
+import { averageRates } from '../../components/InterestRatesTable/interestRates';
 
 export class FinanceCalculator {
   constructor(settings?: Object) {
-    this.init(settings);
+    this.initFinanceCalculator(settings);
   }
 
   notaryFees: number;
@@ -25,7 +26,7 @@ export class FinanceCalculator {
 
   amortizationGoal: number;
 
-  init({
+  initFinanceCalculator({
     notaryFees = NOTARY_FEES,
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
@@ -33,6 +34,7 @@ export class FinanceCalculator {
     secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
     minCash = MIN_CASH,
+    interestRates = averageRates,
     middlewares = [],
     middlewareObject,
   }: {
@@ -43,6 +45,7 @@ export class FinanceCalculator {
     secondPillarWithdrawalTaxRate?: number,
     maxBorrowRatio?: number,
     minCash?: number,
+    interestRates: Object,
     middlewares?: Array<Function>,
     middlewareObject: Object,
   } = {}) {
@@ -53,6 +56,7 @@ export class FinanceCalculator {
     this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
     this.maxBorrowRatio = maxBorrowRatio;
     this.minCash = minCash;
+    this.interestRates = interestRates;
     this.setRoundValuesMiddleware(middlewares, middlewareObject);
   }
 
@@ -141,7 +145,7 @@ export class FinanceCalculator {
 
   getInterestsWithTranches({
     tranches = [],
-    interestRates = {},
+    interestRates = this.interestRates,
   }: {
     tranches: Array<{ type: string, value: number }>,
     interestRates: Object,

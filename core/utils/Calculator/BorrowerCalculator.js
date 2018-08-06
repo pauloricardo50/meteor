@@ -6,9 +6,22 @@ import { borrowerDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
 import { arrayify, getPercent } from '../general';
 import { getCountedArray } from '../formArrayHelpers';
+import MiddlewareManager from '../MiddlewareManager';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
+    constructor(config) {
+      super(config);
+      this.initBorrowerCalculator(config);
+    }
+
+    initBorrowerCalculator(config) {
+      if (config && config.borrowerMiddleware) {
+        const middlewareManager = new MiddlewareManager(this);
+        middlewareManager.applyToAllMethods([config.borrowerMiddleware]);
+      }
+    }
+
     sumValues = ({ borrowers, keys }) =>
       arrayify(keys).reduce(
         (total, key) =>
@@ -123,7 +136,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return sum;
     };
 
-    getTotalFortune = ({ borrowers }) =>
+    getTotalFunds = ({ borrowers }) =>
       this.sumValues({
         borrowers,
         keys: ['bankFortune', 'insuranceSecondPillar', 'insuranceThirdPillar'],

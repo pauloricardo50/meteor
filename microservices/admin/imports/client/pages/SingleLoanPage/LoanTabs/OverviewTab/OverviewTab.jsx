@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
-import { loanHasMinimalInformation } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import AdminNote from '../../../../components/AdminNote';
 import LoanValidation from './LoanValidation';
@@ -13,7 +13,7 @@ import LoanObject from './LoanObject';
 const OverviewTab = (props) => {
   const { loan, borrowers } = props;
   const { adminNote, user, _id } = loan;
-  const displayRecap = loanHasMinimalInformation({ loan });
+  const displayRecap = Calculator.loanHasMinimalInformation({ loan });
 
   return (
     <div className="overview-tab">

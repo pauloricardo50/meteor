@@ -1,6 +1,5 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
-import { averageRates } from '../../components/InterestRatesTable/interestRates';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -58,12 +57,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     };
 
     getInterests({ loan, interestRates }) {
-      let finalInterestRates = interestRates;
+      let finalInterestRates = interestRates || this.interestRates;
       const offer = this.makeSelectStructureKey('offer')({ loan });
       if (offer) {
         finalInterestRates = offer;
-      } else if (!interestRates) {
-        finalInterestRates = averageRates;
       }
 
       return (
@@ -88,6 +85,41 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         this.getInterests({ loan, interestRates })
         + this.getAmortization({ loan })
       );
+    }
+
+    getIncomeRatio({ loan }) {
+      return (
+        this.getMonthly({ loan })
+        / this.getBorrowerIncome({ borrowers: loan.borrowers })
+        / 12
+      );
+    }
+
+    getBorrowRatio({ loan }) {
+      return (
+        this.makeSelectStructureKey('wantedLoan')({ loan })
+        / this.selectPropertyValue({ loan })
+      );
+    }
+
+    getMaxBorrowRatio({
+      loan: {
+        general: { usageType },
+      },
+    }) {
+      return this.maxBorrowRatio;
+    }
+
+    getNotaryFees({ loan }) {
+      return this.selectPropertyValue({ loan }) * this.notaryFees;
+    }
+
+    loanHasMinimalInformation({
+      loan: {
+        structure: { property, fortuneUsed },
+      },
+    }) {
+      return !!(fortuneUsed && (property && property.value));
     }
   };
 
