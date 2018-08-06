@@ -6,9 +6,8 @@ import merge from 'lodash/merge';
 import { Meteor } from 'meteor/meteor';
 import WuestHouse from './WuestHouse';
 import WuestFlat from './WuestFlat';
+import { URL, TOKEN } from './API_KEY';
 import {
-  URL,
-  TOKEN,
   RESIDENCE_TYPE,
   HOUSE_TYPE,
   FLAT_TYPE,
