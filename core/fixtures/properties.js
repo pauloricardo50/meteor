@@ -1,3 +1,4 @@
+import faker from 'faker';
 import PropertyService from '../api/properties/PropertyService';
 import {
   PROPERTY_STATUS,
@@ -14,16 +15,17 @@ const styles = Object.values(PROPERTY_STYLE);
 const volumeNorms = Object.values(VOLUME_NORM);
 
 const getRandomValueInRange = (min, max) => Math.random() * (max - min) + min;
-const getRandomValueInArray = array => array[Math.floor(Math.random() * array.length)];
+const getRandomValueInArray = array =>
+  array[Math.floor(Math.random() * array.length)];
 
 export const createFakeProperty = (userId) => {
   const object = {
     status: getRandomValueInArray(statuses),
     value: Math.round(getRandomValueInRange(500000, 3000000)),
-    address1: `Rue du Succès ${Math.floor(getRandomValueInRange(1, 500))}`,
+    address1: faker.address.streetAddress(),
     propertyWork: 40000,
-    zipCode: Math.round(getRandomValueInRange(1000, 4000)),
-    city: 'Lausanne',
+    zipCode: 1201,
+    city: 'Genève',
     usageType: getRandomValueInArray(usageTypes),
     style: getRandomValueInArray(styles),
     futureOwner: 0,
@@ -64,6 +66,7 @@ export const createFakeProperty = (userId) => {
   return PropertyService.insert({ property: object, userId });
 };
 
-export const getRelatedPropertyIds = usersIds => Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-  .fetch()
-  .map(item => item._id);
+export const getRelatedPropertyIds = usersIds =>
+  Properties.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
+    .fetch()
+    .map(item => item._id);

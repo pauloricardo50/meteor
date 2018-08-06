@@ -10,6 +10,7 @@ import {
   CLOSING_STEPS_STATUS,
 } from 'core/api/loans/loanConstants';
 import { fakeDocument, fakeDocumentWithLabel } from 'core/api/files/fakes';
+import faker from 'faker';
 import { createFakeBorrowers } from './borrowers';
 import { createFakeProperty } from './properties';
 import { Loans } from '../api';
@@ -108,7 +109,7 @@ export const createFakeLoan = ({
   const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
   const propertyId = createFakeProperty(userId);
   const loan = {
-    name: `Rue du Test ${Math.floor(Math.random() * 1000)}`,
+    name: faker.address.streetAddress(),
     borrowerIds,
     propertyIds: [propertyId],
     general: fakeGeneral,
