@@ -12,8 +12,8 @@ import {
   CLOSING_STEPS_STATUS,
   INTEREST_RATES,
 } from '../api/constants';
-import { createFakeBorrowers } from './borrowers';
-import { createFakeProperty } from './properties';
+import { createFakeBorrowers } from './borrowerFixtures';
+import { createFakeProperty } from './propertyFixtures';
 import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);

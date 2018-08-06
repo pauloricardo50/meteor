@@ -10,7 +10,6 @@ import {
   Users,
   SecurityService,
 } from '../api';
-import UserService from '../api/users/UserService';
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
 import { AUCTION_STATUS } from '../api/loans/loanConstants';
@@ -21,12 +20,12 @@ import {
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
 } from './config';
-import { createFakeLoan } from './loans';
-import { createFakeTask, deleteUsersTasks } from './tasks';
-import { createFakeUsers, getFakeUsersIds, createUser } from './users';
-import { createFakeOffer } from './offers';
+import { createFakeLoan } from './loanFixtures';
+import { createFakeTask, deleteUsersTasks } from './taskFixtures';
+import { createFakeUsers, getFakeUsersIds, createUser } from './userFixtures';
+import { createFakeOffer } from './offerFixtures';
 import { ROLES } from '../api/users/userConstants';
-import { E2E_USER_EMAIL } from './constants';
+import { E2E_USER_EMAIL } from './fixtureConstants';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 

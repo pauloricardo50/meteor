@@ -1,9 +1,9 @@
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
 import { Tasks } from '../api';
-import { getRelatedBorrowerIds } from './borrowers';
-import { getRelatedPropertyIds } from './properties';
-import { getRelatedLoansIds } from './loans';
+import { getRelatedBorrowerIds } from './borrowerFixtures';
+import { getRelatedPropertyIds } from './propertyFixtures';
+import { getRelatedLoansIds } from './loanFixtures';
 
 const types = Object.values(TASK_TYPE).filter(item => item !== TASK_TYPE.ADD_ASSIGNED_TO);
 

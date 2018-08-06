@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 import capitalize from 'lodash/capitalize';
 import { ROLES } from '../api/users/userConstants';
-import { E2E_USER_EMAIL } from '../fixtures/constants';
+import { E2E_USER_EMAIL } from '../fixtures/fixtureConstants';
 
 export const DEV_EMAIL = 'dev-1@e-potek.ch';
 export const ADMIN_EMAIL = 'admin-1@e-potek.ch';
-export { USER_PASSWORD, E2E_USER_EMAIL } from '../fixtures/constants';
+export { USER_PASSWORD, E2E_USER_EMAIL } from '../fixtures/fixtureConstants';
 
 export const route = (uri, options = {}) => ({
   uri,

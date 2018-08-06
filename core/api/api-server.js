@@ -1,4 +1,4 @@
-import 'core/fixtures/methods';
+import 'core/fixtures/fixtureMethods';
 
 import './users/server/accounts-server-config';
 

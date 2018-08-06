@@ -3,7 +3,7 @@ import { Roles } from 'meteor/alanning:roles';
 import faker from 'faker';
 
 import { Users } from '../api';
-import { USER_PASSWORD } from './constants';
+import { USER_PASSWORD } from './fixtureConstants';
 import UserService from '../api/users/UserService';
 
 export const createUser = (email, role) => {
