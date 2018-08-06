@@ -36,21 +36,25 @@
 
   &-factors {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: center;
   }
 
   &-factor {
-    padding: 0 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 16px 16px;
   }
 
   &-rating {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    padding: 8px 0;
+    padding: 8px 8px;
     max-width: 240px;
   }
 

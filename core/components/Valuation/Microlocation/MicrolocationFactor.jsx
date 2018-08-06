@@ -25,12 +25,12 @@ const MicrolocationFactor = ({
   label,
   factors: { grade, ...factors },
 }: MicrolocationFactorProps) => (
-  <div className="microlocation-factor">
+  <div>
     <h3>
       <T id={`Microlocation.${label}Label`} />
       <MicrolocationFactorGrade grade={grade} />
     </h3>
-    {renderGrades(factors)}
+    <div className="microlocation-factor">{renderGrades(factors)}</div>
   </div>
 );
 
