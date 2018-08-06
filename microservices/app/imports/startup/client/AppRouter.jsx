@@ -19,7 +19,6 @@ import FinancingPage from '../../client/pages/FinancingPage';
 import PasswordResetPage from '../../client/pages/PasswordResetPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
-import VerificationPage from '../../client/pages/VerificationPage';
 
 import AppLayout from '../../client/layouts/AppLayout';
 
@@ -43,7 +42,6 @@ const AppRouter = () => (
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
-        <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
         <Route path={ROUTES.CLOSING_PAGE} component={ClosingPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
