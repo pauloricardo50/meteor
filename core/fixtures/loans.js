@@ -98,6 +98,43 @@ const fakeFiles = {
 
 const fakeFiles2 = {};
 
+const getRandomValueInArray = array =>
+  array[Math.floor(Math.random() * array.length)];
+
+const getRandomStructure = propertyValue =>
+  getRandomValueInArray([
+    {
+      fortuneUsed: Math.round(0.15 * propertyValue),
+      secondPillarPledged: Math.round(0.1 * propertyValue),
+      wantedLoan: Math.round(0.8 * propertyValue),
+    },
+    {
+      fortuneUsed: Math.round(0.25 * propertyValue),
+    },
+    {
+      fortuneUsed: Math.round(0.15 * propertyValue),
+      secondPillarWithdrawal: Math.round(0.1 * propertyValue),
+      wantedLoan: Math.round(0.8 * propertyValue),
+    },
+    {
+      fortuneUsed: Math.round(0.15 * propertyValue),
+      secondPillarWithdrawal: Math.round(0.05 * propertyValue),
+      secondPillarPledged: Math.round(0.05 * propertyValue),
+      wantedLoan: Math.round(0.8 * propertyValue),
+    },
+    {
+      fortuneUsed: Math.round(0.15 * propertyValue),
+      secondPillarWithdrawal: Math.round(0.08 * propertyValue),
+      thirdPillarWithdrawal: Math.round(0.02 * propertyValue),
+      wantedLoan: Math.round(0.8 * propertyValue),
+    },
+    {
+      fortuneUsed: Math.round(0.2 * propertyValue),
+      thirdPillarWithdrawal: Math.round(0.05 * propertyValue),
+      wantedLoan: Math.round(0.8 * propertyValue),
+    },
+  ]);
+
 export const createFakeLoan = ({
   userId,
   step,
@@ -118,10 +155,8 @@ export const createFakeLoan = ({
       {
         id: 'struct1',
         propertyId,
-        fortuneUsed: 0.15 * value,
-        secondPillarPledged: 0.1 * value,
-        wantedLoan: 0.8 * value,
         loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+        ...getRandomStructure(value),
       },
     ],
     selectedStructure: 'struct1',
