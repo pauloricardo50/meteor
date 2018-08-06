@@ -9,16 +9,13 @@ import AppStore from '../../client/components/AppStore';
 
 import AccountPage from '../../client/pages/AccountPage';
 import AppPage from '../../client/pages/AppPage';
-import AuctionPage from '../../client/pages/AuctionPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import ClosingPage from '../../client/pages/ClosingPage';
-import ContractPage from '../../client/pages/ContractPage';
 import DashboardPage from '../../client/pages/DashboardPage';
 import DevPage from 'core/components/DevPage';
 import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
 import FilesPage from '../../client/pages/FilesPage';
 import FinancingPage from '../../client/pages/FinancingPage';
-import OfferPickerPage from '../../client/pages/OfferPickerPage';
 import PasswordResetPage from '../../client/pages/PasswordResetPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
@@ -47,9 +44,6 @@ const AppRouter = () => (
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
         <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
-        <Route path={ROUTES.AUCTION_PAGE} component={AuctionPage} />
-        <Route path={ROUTES.OFFER_PICKER_PAGE} component={OfferPickerPage} />
-        <Route path={ROUTES.CONTRACT_PAGE} component={ContractPage} />
         <Route path={ROUTES.CLOSING_PAGE} component={ClosingPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
