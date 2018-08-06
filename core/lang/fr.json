@@ -1,4 +1,7 @@
 {
+  "TableFilters.noneLabels.assignedEmployee.emails.0.address": "Non assigné",
+  "TableFilters.filterLabels.roles": "Type",
+
   "FinancingStructures.propertyCost": "Charges mensuelles",
   "Forms.monthlyExpenses": "Charges mensuelles",
   "Forms.monthlyExpenses.placeholder": "0",
@@ -1123,7 +1126,7 @@
   "StructurePage.description": "Vous pouvez ajuster la structure globale de votre projet une dernière fois, nous vous aiderons à la peaufiner.",
   "Table.empty": "Rien à afficher",
   "Table.sort": "Trier",
-  "TableFilters.filterLabels.assignedEmployee.emails.0.address": "Email",
+  "TableFilters.filterLabels.assignedEmployee.emails.0.address": "Assigné à",
   "TasksStatusDropdown.ACTIVE": "Actif",
   "TasksStatusDropdown.ADD_ASSIGNED_TO": "Ajouter assigné à",
   "TasksStatusDropdown.AUCTION": "Enchères",
