@@ -54,33 +54,6 @@ const pages = {
         shouldRender: '#SinglePropertyPage',
       }),
 
-    'Loan Offerpicker': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/offerpicker`, { shouldRender: '#offerPicker' }),
-
-    'Loan Verification': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/verification`, {
-        shouldRender: '#verification',
-      }),
-
-    'Loan Auction (Auction Not Started)': ({
-      step3LoanWithNoAuction: { _id },
-    }) =>
-      route(`/loans/${_id}/auction`, {
-        shouldRender: '#auction .auction-page-start',
-      }),
-
-    'Loan Auction (Auction Started)': ({
-      step3LoanWithStartedAuction: { _id },
-    }) =>
-      route(`/loans/${_id}/auction`, {
-        shouldRender: '#auction .auction-page-auction',
-      }),
-
-    'Loan Auction (Auction Ended)': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/auction`, {
-        shouldRender: '#auction .auction-page-results',
-      }),
-
     'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/closing`, { shouldRender: '#ClosingPage' }),
 
