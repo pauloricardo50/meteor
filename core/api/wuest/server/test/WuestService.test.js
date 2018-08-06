@@ -21,13 +21,13 @@ describe('WuestService', () => {
     resetDatabase();
   });
 
-  describe('createPropertyFromCollection', () => {
+  context('createPropertyFromCollection', () => {
     it('throws an error if it can not find the property', () => {
       expect(() => WuestService.createPropertyFromCollection('test')).to.throw(WUEST_ERRORS.NO_PROPERTY_FOUND);
     });
   });
 
-  describe('getErrors ', () => {
+  context('getErrors ', () => {
     it('returns an empty array if provided data is correct', () => {
       const property = {
         type: PROPERTY_TYPE.HOUSE,
@@ -62,7 +62,7 @@ describe('WuestService', () => {
       expect(WuestService.getErrors(property)).to.deep.equal([]);
     });
 
-    describe('returns an error when ', () => {
+    context('returns an error when ', () => {
       it('floor number is not provided', () => {
         const property = {
           type: PROPERTY_TYPE.FLAT,
@@ -374,7 +374,7 @@ describe('WuestService', () => {
     });
   });
 
-  describe('formatError', () => {
+  context('formatError', () => {
     it('formats an error correctly', () => {
       const error = {
         message: 'Error {0}',
@@ -390,14 +390,15 @@ describe('WuestService', () => {
     });
   });
 
-  describe('formatMicrolocationId', () => {
-    describe('formats the id correctly when', () => {
+  context('formatMicrolocationId', () => {
+    context('formats the id correctly when', () => {
       it('a prefix is given', () => {
         const prefix = 'SOME_PREFIX';
         const id = `${prefix}.SOME_ID_WITH_PREFIX`;
 
         expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithPrefix');
       });
+      
       it('no prefix is given', () => {
         const prefix = 'SOME_PREFIX';
         const id = 'SOME_ID_WITHOUT_PREFIX';
@@ -407,7 +408,7 @@ describe('WuestService', () => {
     });
   });
 
-  describe('evaluateById', () => {
+  context('evaluateById', () => {
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
         style: PROPERTY_STYLE.FLAT,
