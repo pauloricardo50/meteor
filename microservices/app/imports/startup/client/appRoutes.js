@@ -16,5 +16,4 @@ export const OFFER_PICKER_PAGE = '/loans/:loanId/offerpicker';
 export const PASSWORD_RESET_PAGE = '/reset-password/:token';
 export const PROPERTIES_PAGE = '/loans/:loanId/properties';
 export const PROPERTY_PAGE = '/loans/:loanId/properties/:propertyId';
-export const STRUCTURE_PAGE = '/loans/:loanId/structure';
 export const VERIFICATION_PAGE = '/loans/:loanId/verification';

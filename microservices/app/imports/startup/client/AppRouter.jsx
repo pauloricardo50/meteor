@@ -22,7 +22,6 @@ import OfferPickerPage from '../../client/pages/OfferPickerPage';
 import PasswordResetPage from '../../client/pages/PasswordResetPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
-import StructurePage from '../../client/pages/StructurePage';
 import VerificationPage from '../../client/pages/VerificationPage';
 
 import AppLayout from '../../client/layouts/AppLayout';
@@ -48,7 +47,6 @@ const AppRouter = () => (
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
         <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
-        <Route path={ROUTES.STRUCTURE_PAGE} component={StructurePage} />
         <Route path={ROUTES.AUCTION_PAGE} component={AuctionPage} />
         <Route path={ROUTES.OFFER_PICKER_PAGE} component={OfferPickerPage} />
         <Route path={ROUTES.CONTRACT_PAGE} component={ContractPage} />
