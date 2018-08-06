@@ -1,5 +1,3 @@
-import { Tracker } from 'meteor/tracker';
-
 import query from 'core/api/tasks/queries/tasks';
 import { compose, withSmartQuery } from 'core/api';
 import withTableFilters from 'core/containers/withTableFilters';
@@ -18,11 +16,3 @@ export const TasksTableContainer = compose(
 );
 
 export default TasksTableContainer(TasksTable);
-
-const subscriptionHandle = query.subscribe();
-
-Tracker.autorun(() => {
-  if (subscriptionHandle.ready()) {
-    query.unsubscribe();
-  }
-});

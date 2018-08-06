@@ -1,14 +1,23 @@
 import React from 'react';
 import T from 'core/components/Translation';
-import TasksTabs from './TasksTabs';
+import { TASK_TYPE, TASK_STATUS } from 'core/api/constants';
+import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
-const TasksPage = props => (
+const tasksTableFilters = {
+  filters: { type: true, status: true },
+  options: {
+    type: Object.values(TASK_TYPE),
+    status: Object.values(TASK_STATUS),
+  },
+};
+
+const TasksPage = () => (
   <section className="mask1 tasks-page" style={{ overflow: 'initial' }}>
     <h1>
       <T id="collections.tasks" />
     </h1>
 
-    <TasksTabs {...props} />
+    <TasksTableWithData tableFilters={tasksTableFilters} />
   </section>
 );
 

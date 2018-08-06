@@ -1,6 +1,8 @@
 {
   "TableFilters.noneLabels.assignedEmployee.emails.0.address": "Non assigné",
   "TableFilters.filterLabels.roles": "Type",
+  "TableFilters.filterLabels.status": "Statut",
+  "TableFilters.filterLabels.type": "Type",
 
   "FinancingStructures.propertyCost": "Charges mensuelles",
   "Forms.monthlyExpenses": "Charges mensuelles",
