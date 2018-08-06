@@ -65,6 +65,6 @@ describe('PropertyService', () => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation).to.have.property('microlocation');
       });
-    }).timeout(10000);
-  });
+    });
+  }).timeout(10000);
 });
