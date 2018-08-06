@@ -3,7 +3,6 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
-
 import T from 'core/components/Translation';
 
 import MicrolocationFactorGrade from '../MicrolocationFactorGrade';
@@ -27,8 +26,13 @@ describe('MicrolocationFactorGrade', () => {
   });
 
   it('renders text only if it is provided', () => {
-    expect(component().contains('<p>')).to.equal(false);
+    expect(component()
+      .find('p')
+      .exists()).to.equal(false);
     props.text = 'Test text';
+    expect(component()
+      .find('p')
+      .exists()).to.equal(true);
     expect(component().contains('Test text')).to.equal(true);
   });
 });

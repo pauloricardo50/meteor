@@ -11,6 +11,7 @@ type MicrolocationFactorProps = {
 
 const renderGrades = factors =>
   Object.keys(factors)
+    // Not the global grade (key = 'grade')
     .filter(factor => factor !== 'grade')
     .map(factor => (
       <MicrolocationFactorGrade

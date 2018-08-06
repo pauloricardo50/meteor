@@ -25,7 +25,7 @@ describe('MicrolocationFactor', () => {
       .exists()).to.equal(true);
 
     expect(component()
-      .find('[className="microlocation-factor"]')
+      .find('.microlocation-factor')
       .exists()).to.equal(true);
   });
 
@@ -35,7 +35,7 @@ describe('MicrolocationFactor', () => {
       factor2: { grade: 4, text: 'text2' },
       factor3: { grade: 4, text: 'text3' },
     };
-
+    // Expect 4, not 3, because the global grade is also counted
     expect(component().find(MicrolocationFactorGrade)).to.have.length(4);
   });
 });

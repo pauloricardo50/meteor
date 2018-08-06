@@ -17,7 +17,7 @@ describe('Microlocation', () => {
 
   it('renders', () => {
     expect(component()
-      .find('[className="microlocation"]')
+      .find('.microlocation')
       .exists()).to.equal(true);
   });
 
