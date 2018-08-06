@@ -19,7 +19,7 @@ import {
   ADMIN_COUNT,
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
-} from './config';
+} from './fixtureConfig';
 import { createFakeLoan } from './loanFixtures';
 import { createFakeTask, deleteUsersTasks } from './taskFixtures';
 import { createFakeUsers, getFakeUsersIds, createUser } from './userFixtures';
