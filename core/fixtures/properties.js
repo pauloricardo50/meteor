@@ -19,7 +19,7 @@ const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
 export const createFakeProperty = (userId) => {
-  const object = {
+  const property = {
     status: getRandomValueInArray(statuses),
     value: Math.round(getRandomValueInRange(500000, 3000000)),
     address1: faker.address.streetAddress(),
@@ -63,7 +63,7 @@ export const createFakeProperty = (userId) => {
     },
   };
 
-  return PropertyService.insert({ property: object, userId });
+  return { ...property, _id: PropertyService.insert({ property, userId }) };
 };
 
 export const getRelatedPropertyIds = usersIds =>
