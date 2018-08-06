@@ -18,7 +18,6 @@ import StructurePage from '../../client/pages/StructurePage';
 import VerificationPage from '../../client/pages/VerificationPage';
 import ContractPage from '../../client/pages/ContractPage';
 import ClosingPage from '../../client/pages/ClosingPage';
-import FinancePage from '../../client/pages/FinancePage';
 import FilesPage from '../../client/pages/FilesPage';
 import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
 import PasswordResetPage from '../../client/pages/PasswordResetPage';
@@ -49,7 +48,6 @@ const AppRouter = () => (
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
-        <Route path={ROUTES.DEV_PAGE} component={FinancePage} />
         <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
         <Route path={ROUTES.STRUCTURE_PAGE} component={StructurePage} />
         <Route path={ROUTES.AUCTION_PAGE} component={AuctionPage} />
