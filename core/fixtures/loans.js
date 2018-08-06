@@ -19,8 +19,6 @@ const purchaseTypes = Object.values(PURCHASE_TYPE);
 
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
-  fortuneUsed: 250000,
-  insuranceFortuneUsed: 100000,
   wantedClosingDate: moment()
     .add(15, 'd')
     .toDate(),
@@ -107,7 +105,7 @@ export const createFakeLoan = ({
   twoBorrowers,
 }) => {
   const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
-  const propertyId = createFakeProperty(userId);
+  const { _id: propertyId, value } = createFakeProperty(userId);
   const loan = {
     name: faker.address.streetAddress(),
     borrowerIds,
@@ -115,6 +113,16 @@ export const createFakeLoan = ({
     general: fakeGeneral,
     documents: fakeFiles,
     contacts: [],
+    structures: [
+      {
+        id: 'struct1',
+        propertyId,
+        fortuneUsed: 0.15 * value,
+        secondPillarPledged: 0.1 * value,
+        wantedLoan: 0.8 * value,
+      },
+    ],
+    selectedStructure: 'struct1',
   };
 
   switch (step) {
@@ -129,13 +137,7 @@ export const createFakeLoan = ({
       loan.documents = fakeFiles2;
     }
 
-    loan.loanTranches = [
-      {
-        value: 750000,
-        type: 'interest10',
-        // TODO add tranches here
-      },
-    ];
+    loan.loanTranches = [{ value: 750000, type: 'interest10' }];
     break;
   case 2:
     loan.logic = logic2;
