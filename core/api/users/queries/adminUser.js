@@ -25,7 +25,6 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
     logic: { step: 1 },
     createdAt: 1,
     updatedAt: 1,
-    general: { insuranceFortuneUsed: 1, fortuneUsed: 1 },
     properties: {
       value: 1,
       address1: 1,

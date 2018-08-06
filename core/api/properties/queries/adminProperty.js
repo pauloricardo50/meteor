@@ -36,7 +36,6 @@ export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
   loans: {
     name: 1,
     logic: { step: 1 },
-    general: { fortuneUsed: 1, insuranceFortuneUsed: 1 },
     createdAt: 1,
     updatedAt: 1,
     borrowers: { firstName: 1, lastName: 1 },

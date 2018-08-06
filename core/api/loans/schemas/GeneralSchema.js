@@ -8,7 +8,6 @@ import {
   GENDER,
   USAGE_TYPE,
 } from '../../constants';
-import { loanTranchesSchema } from './otherSchemas';
 
 const GeneralSchema = new SimpleSchema({
   purchaseType: {
@@ -21,24 +20,6 @@ const GeneralSchema = new SimpleSchema({
     defaultValue: USAGE_TYPE.PRIMARY,
     allowedValues: Object.values(USAGE_TYPE),
   },
-  fortuneUsed: {
-    type: Number,
-    min: 0,
-    max: 100000000,
-    defaultValue: 0,
-  },
-  insuranceFortuneUsed: {
-    type: Number,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  propertyWork: {
-    type: Number,
-    min: 0,
-    max: 100000000,
-    defaultValue: 0,
-  },
   oldestAge: {
     type: SimpleSchema.Integer,
     optional: true,
@@ -50,19 +31,11 @@ const GeneralSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(GENDER),
   },
-  partnersToAvoidExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
   partnersToAvoid: {
     type: Array,
     defaultValue: [],
   },
   'partnersToAvoid.$': String,
-  selectedPartner: {
-    type: String,
-    optional: true,
-  },
   canton: {
     type: String,
     optional: true,
@@ -91,7 +64,6 @@ const GeneralSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(AUCTION_MOST_IMPORTANT),
   },
-  ...loanTranchesSchema,
 });
 
 export default GeneralSchema;

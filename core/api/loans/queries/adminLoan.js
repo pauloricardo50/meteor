@@ -6,7 +6,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
-  $postFilter(loans, params) {
+  $postFilter(loans) {
     return loans.map(formatLoanWithStructure);
   },
   userId: 1,
@@ -167,7 +167,6 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     propertyWork: 1,
     sortOffersBy: 1,
     wantedLoan: 1,
-    propertyValue: 1,
     loanTranches: {
       type: 1,
       value: 1,

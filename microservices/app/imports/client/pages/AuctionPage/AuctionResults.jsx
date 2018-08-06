@@ -36,64 +36,7 @@ const styles = {
   },
 };
 
-const getFakeOffers = (props) => {
-  const loanWanted =
-    props.loan.propertyId.value -
-    props.loan.general.fortuneUsed -
-    props.loan.general.insuranceFortuneUsed;
-  return [
-    {
-      standardOffer: {
-        maxAmount: loanWanted * 1,
-        amortization: '1',
-        interest10: '0.89',
-      },
-      expertiseRequired: false,
-    },
-    {
-      standardOffer: {
-        maxAmount: loanWanted * 0.98,
-        amortization: '1',
-        interest10: '0.99',
-      },
-      expertiseRequired: true,
-    },
-    {
-      standardOffer: {
-        maxAmount: loanWanted * 1,
-        amortization: '1',
-        interest10: '0.85',
-      },
-      expertiseRequired: true,
-    },
-    {
-      standardOffer: {
-        maxAmount: loanWanted * 1,
-        amortization: '1',
-        interest10: '0.91',
-      },
-      expertiseRequired: false,
-    },
-    {
-      standardOffer: {
-        maxAmount: loanWanted * 0.96,
-        amortization: '1',
-        interest10: '0.85',
-      },
-      expertiseRequired: false,
-    },
-    {
-      standardOffer: {
-        maxAmount: loanWanted * 1,
-        amortization: '1',
-        interest10: '0.85',
-      },
-      expertiseRequired: true,
-    },
-  ];
-};
-
-const AuctionResults = ({ intl: { formatMessage: f }, offers, loan }) => (
+const AuctionResults = ({ intl: { formatMessage: f }, offers }) => (
   <section className="mask1 animated fadeIn auction-page-results">
     <h1 className="title">
       <T id="AuctionResults.title" />
@@ -126,7 +69,6 @@ const AuctionResults = ({ intl: { formatMessage: f }, offers, loan }) => (
 );
 
 AuctionResults.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   offers: PropTypes.arrayOf(PropTypes.any),
 };
 
