@@ -6,6 +6,9 @@ import {
 import { getPercent } from '../general';
 import { getCountedArray } from '../formArrayHelpers';
 import { FinanceCalculator } from '../FinanceCalculator';
+import { filesPercent } from '../../api/files/fileHelpers';
+import { propertyDocuments } from '../../api/files/documents';
+import { FILE_STEPS } from '../../api/constants';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -30,6 +33,17 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
+
+    getPropertyCompletion = ({ loan, borrowers, property }) => {
+      const formsProgress = this.propertyPercent({ loan, borrowers, property });
+      const filesProgress = filesPercent({
+        doc: property,
+        fileArrayFunc: propertyDocuments,
+        step: FILE_STEPS.AUCTION,
+      });
+
+      return (formsProgress + filesProgress) / 2;
+    };
   };
 
 export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);

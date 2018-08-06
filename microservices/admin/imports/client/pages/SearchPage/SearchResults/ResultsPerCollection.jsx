@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import T from 'core/components/Translation';
-import { getLoanValue } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 import {
@@ -32,9 +32,8 @@ const getLoanInfo = (loan) => {
     updatedAt,
     logic: { step },
     general: { fortuneUsed, insuranceFortuneUsed },
-    property,
   } = loan;
-  const value = getLoanValue({ loan, property });
+  const value = Calculator.getEffectiveLoan({ loan });
 
   return {
     primary: name || <T id="general.loan" />,

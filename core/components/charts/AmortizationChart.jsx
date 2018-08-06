@@ -5,11 +5,7 @@ import ReactHighcharts from 'react-highcharts';
 import { injectIntl } from 'react-intl';
 
 import { getAmortization, getInterests } from 'core/utils/finance-math';
-import {
-  getLoanValue,
-  getMaintenance,
-  getPropAndWork,
-} from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import colors from 'core/config/colors';
 
 const chartColors = {
@@ -25,9 +21,11 @@ const getData = ({ loan, borrowers, totalYears, interestRates, property }) => {
     borrowers,
     property,
   });
-  const maintenance = getMaintenance({ loan, property });
-  const loanValue = getLoanValue({ loan, property });
-  const propAndWork = getPropAndWork({ loan, property });
+  const expenses = Calculator.makeSelectPropertyKey('monthlyExpenses')({
+    loan,
+  });
+  const loanValue = Calculator.getEffectiveLoan({ loan });
+  const propAndWork = Calculator.getPropAndWork({ loan });
 
   const debt = [];
   const fortune = [];
@@ -51,9 +49,9 @@ const getData = ({ loan, borrowers, totalYears, interestRates, property }) => {
 
     debt[i] = Math.round(value);
     fortune[i] = Math.round(propAndWork - value);
-    payment[i] = Math.round(amort +
-        maintenance +
-        getInterests({ loan, property }, interestRates[i], value));
+    payment[i] = Math.round(amort
+        + expenses
+        + getInterests({ loan, property }, interestRates[i], value));
     amortizationChart[i] = Math.round(amort);
   }
 
