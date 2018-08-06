@@ -212,13 +212,13 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getTotalFortune', () => {
+  describe('getTotalFunds', () => {
     it('should return 0 for an empty object', () => {
-      expect(BorrowerCalculator.getTotalFortune({})).to.equal(0);
+      expect(BorrowerCalculator.getTotalFunds({})).to.equal(0);
     });
 
     it('should sum all fortune items in a borrower', () => {
-      expect(BorrowerCalculator.getTotalFortune({
+      expect(BorrowerCalculator.getTotalFunds({
         borrowers: {
           bankFortune: 1,
           insuranceSecondPillar: 2,
