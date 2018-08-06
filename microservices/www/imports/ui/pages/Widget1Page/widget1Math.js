@@ -1,4 +1,4 @@
-import { SUCCESS, WARNING, ERROR } from '../api/constants';
+import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 
 import {
   NOTARY_FEES,
@@ -15,7 +15,7 @@ import {
   INCOME_ERROR,
   MAX_INCOME_RATIO,
   MAX_INCOME_RATIO_TIGHT,
-} from '../config/financeConstants';
+} from 'core/config/financeConstants';
 
 export const getLoanValue = (propertyValue, fortune) =>
   propertyValue * (1 + NOTARY_FEES) - fortune;
@@ -63,13 +63,10 @@ export const getIncomeRatio = (yearlySalary, monthlyCost) =>
   monthlyCost / (yearlySalary / 12);
 
 export const getFinmaMonthlyCost = (propertyValue, fortune, wantedLoan) => {
-  const maintenanceMonthly =
-    getSimpleYearlyMaintenance(propertyValue, MAINTENANCE_FINMA) / 12;
+  const maintenanceMonthly = getSimpleYearlyMaintenance(propertyValue, MAINTENANCE_FINMA) / 12;
   const loanValue = wantedLoan || getLoanValue(propertyValue, fortune);
-  const interestsMonthly =
-    getSimpleYearlyInterests(loanValue, INTERESTS_FINMA) / 12;
-  const amortizationMonthly =
-    getYearlyAmortization({ propertyValue, loanValue }) / 12;
+  const interestsMonthly = getSimpleYearlyInterests(loanValue, INTERESTS_FINMA) / 12;
+  const amortizationMonthly = getYearlyAmortization({ propertyValue, loanValue }) / 12;
 
   return {
     maintenanceMonthly,
@@ -84,7 +81,8 @@ export const validateIncomeRatio = (incomeRatio) => {
   const safeIncomeRatio = incomeRatio - 0.0001;
   if (safeIncomeRatio <= MAX_INCOME_RATIO) {
     return { status: SUCCESS, error: undefined };
-  } else if (safeIncomeRatio <= MAX_INCOME_RATIO_TIGHT) {
+  }
+  if (safeIncomeRatio <= MAX_INCOME_RATIO_TIGHT) {
     return { status: WARNING, error: INCOME_WARNING_TIGHT };
   }
 
@@ -102,7 +100,8 @@ export const validateBorrowRatio = (
 
   if (borrowRatio <= maxRatio) {
     return { status: SUCCESS, error: undefined };
-  } else if (allowInsurance && borrowRatio <= MAX_BORROW_RATIO_WITH_INSURANCE) {
+  }
+  if (allowInsurance && borrowRatio <= MAX_BORROW_RATIO_WITH_INSURANCE) {
     return { status: WARNING, error: FORTUNE_WARNING_TIGHT };
   }
 
