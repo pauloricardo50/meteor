@@ -87,6 +87,11 @@ export const withOfferCalculator = (SuperClass = class {}) =>
         }, []))
         : undefined;
     }
+
+    enhanceOffer({ offer }) {
+      // TODO: Plug this with the loan
+      return { offer, monthly: 100 };
+    }
   };
 
 export const OfferCalculator = withOfferCalculator(FinanceCalculator);
