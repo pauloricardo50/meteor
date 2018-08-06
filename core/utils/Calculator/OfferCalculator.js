@@ -2,10 +2,11 @@
 import { FinanceCalculator } from '../FinanceCalculator';
 import { OFFER_TYPE, INTEREST_RATES } from '../../api/constants';
 
+// TODO: Refactor offers
 export const withOfferCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    getRange = ({ offers }, key) =>
-      offers.reduce(
+    getRange({ offers, key }) {
+      return offers.reduce(
         (accumulator, offer) => {
           const standard = offer.standardOffer[key];
           const counterpart = offer.counterpartOffer && offer.counterpartOffer[key];
@@ -29,8 +30,9 @@ export const withOfferCalculator = (SuperClass = class {}) =>
         },
         { min: Infinity, max: 0 },
       );
+    }
 
-    extractOffers = ({ offers, loan, property }) => {
+    extractOffers({ offers, loan, property }) {
       const array = [];
       offers.forEach((offer) => {
         const meta = {
@@ -70,10 +72,10 @@ export const withOfferCalculator = (SuperClass = class {}) =>
         }
       });
       return array;
-    };
+    }
 
-    getBestRate = ({ offers = [] }, duration = INTEREST_RATES.YEARS_10) =>
-      (offers.length
+    getBestRate({ offers = [], duration = INTEREST_RATES.YEARS_10 }) {
+      return offers.length
         ? Math.min(...offers.reduce((acc, offer) => {
           if (offer.standardOffer[duration]) {
             acc.push(offer.standardOffer[duration]);
@@ -83,7 +85,8 @@ export const withOfferCalculator = (SuperClass = class {}) =>
           }
           return acc;
         }, []))
-        : undefined);
+        : undefined;
+    }
   };
 
 export const OfferCalculator = withOfferCalculator(FinanceCalculator);
