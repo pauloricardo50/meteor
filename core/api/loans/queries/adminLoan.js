@@ -27,7 +27,6 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     updatedAt: 1,
     status: 1,
     value: 1,
-    propertyWork: 1,
     usageType: 1,
     investmentRent: 1,
     style: 1,
