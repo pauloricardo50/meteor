@@ -14,6 +14,7 @@ import {
   getRemainingCash,
   getRemainingSecondPillar,
   getRemainingThirdPillar,
+  getPropertyExpenses,
 } from './financingStructuresResultHelpers';
 
 type FinancingStructuresResultProps = {};
@@ -32,15 +33,22 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
         Component: FinancingStructuresResultChart,
         getAmortization,
         getInterests,
+        getPropertyExpenses,
       },
     ]}
     detailConfig={[
+      { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
       {
         id: 'amortizationCost',
         Component: CalculatedValue,
         value: getAmortization,
       },
-      { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
+      {
+        id: 'propertyCost',
+        Component: CalculatedValue,
+        value: getPropertyExpenses,
+        // condition: data => getPropertyExpenses(data) > 0,
+      },
       {
         id: 'fiscal',
         label: (
@@ -63,7 +71,8 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       {
         id: 'totalFiscal',
         Component: CalculatedValue,
-        value: params => getSecondPillarWithdrawalTax(params)
+        value: params =>
+          getSecondPillarWithdrawalTax(params)
           + getAmortizationDeduction(params),
       },
       {

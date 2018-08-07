@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
 import { IntlNumber } from 'core/components/Translation';
-import { getLoanValue } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import LoanTasksTable from './LoanTabs/LoanTasksTable';
@@ -23,7 +23,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
       <h1>
         {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
         <IntlNumber
-          value={getLoanValue({ loan, property: loan.property })}
+          value={Calculator.getEffectiveLoan({ loan })}
           format="money"
         />
       </h1>

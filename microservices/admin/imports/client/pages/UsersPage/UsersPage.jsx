@@ -1,13 +1,38 @@
 import React from 'react';
-import T from 'core/components/Translation/';
-import UsersTabs from './UsersTabs';
 
-const UsersPage = props => (
+import T from 'core/components/Translation/';
+import { ROLES } from 'core/api/constants';
+import adminsQuery from 'core/api/users/queries/admins';
+import UsersTable from './UsersTable';
+
+const getAdminsEmails = async () => {
+  const admins = await adminsQuery.clone().fetchSync();
+  const adminsEmails = admins.map(({ emails: [{ address }] }) => address);
+  return [...adminsEmails, undefined];
+};
+
+const usersTableFilters = {
+  filters: {
+    roles: true,
+    assignedEmployee: { emails: [{ address: true }] },
+  },
+  options: {
+    roles: Object.values(ROLES),
+    address: getAdminsEmails(),
+  },
+};
+
+const UsersPage = ({ history }) => (
   <section className="mask1 users-page">
     <h1>
       <T id="collections.users" />
     </h1>
-    <UsersTabs {...props} />
+    <UsersTable
+      showAssignee
+      key="allUsers"
+      history={history}
+      tableFilters={usersTableFilters}
+    />
   </section>
 );
 

@@ -1,4 +1,5 @@
 // @flow
+export * from './properties/queries/types';
 export * from './loans/queries/types';
 export * from './loans/types';
 

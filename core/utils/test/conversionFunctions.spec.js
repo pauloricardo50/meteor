@@ -26,6 +26,14 @@ describe('Conversion functions', () => {
     it("Should return '-100 000' for -100000", () => {
       expect(toMoney(-100000)).to.equal('-100 000');
     });
+
+    it('rounds decimal numbers', () => {
+      expect(toMoney(1000.2)).to.equal('1 000');
+    });
+
+    it('rounds decimal numbers', () => {
+      expect(toMoney(1000.8)).to.equal('1 001');
+    });
   });
 
   describe('To number', () => {

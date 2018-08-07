@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import { getLoanValue } from 'core/utils/finance';
 import { NOTARY_FEES } from 'core/config/financeConstants';
 import { toMoney } from 'core/utils/conversionFunctions';
+import { getLoanValue } from '../widget1Math';
 import {
   widget1Constants,
   widget1Selectors,
@@ -67,10 +67,9 @@ const getArray = (state) => {
   const purchaseType = widget1Selectors.makeWidget1Selector('purchaseType')(state);
   const currentLoan = widget1Selectors.makeSelectValue('currentLoan')(state);
   const wantedLoan = widget1Selectors.makeSelectValue('wantedLoan')(state);
-  const showValues =
-    purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
-      ? propertyValue && fortune
-      : propertyValue && currentLoan && wantedLoan;
+  const showValues = purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
+    ? propertyValue && fortune
+    : propertyValue && currentLoan && wantedLoan;
 
   const array = (purchaseType === widget1Constants.PURCHASE_TYPE.ACQUISITION
     ? getAcquisitionArray

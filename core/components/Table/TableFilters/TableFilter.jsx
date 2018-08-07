@@ -21,7 +21,11 @@ const TableFilter = ({
       onChange={onChange}
       options={options}
       loadOptions={loadOptions}
-      placeholder={`Filter by ${filterKey}`}
+      placeholder={(
+        <span>
+          Filtrer par <T id={`TableFilters.filterLabels.${filterKey}`} />
+        </span>
+      )}
       simpleValue={false}
       value={value}
       noResultsText={null}

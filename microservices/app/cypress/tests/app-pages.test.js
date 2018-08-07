@@ -17,9 +17,10 @@ const pages = {
       shouldRender: '#password-reset-page',
     }),
 
-    'Impersonate (Valid Token)': ({ userId, adminLoginToken }) => route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
-      shouldRender: '#impersonation-success-message',
-    }),
+    'Impersonate (Valid Token)': ({ userId, adminLoginToken }) =>
+      route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
+        shouldRender: '#impersonation-success-message',
+      }),
   },
 
   user: {
@@ -30,59 +31,46 @@ const pages = {
       shouldRender: '#email-verification-page',
     }),
 
-    'Verify Email (Valid Token)': ({ emailVerificationToken }) => route(`/verify-email/${emailVerificationToken}`, {
-      shouldRender: '#email-verification-page',
-    }),
+    'Verify Email (Valid Token)': ({ emailVerificationToken }) =>
+      route(`/verify-email/${emailVerificationToken}`, {
+        shouldRender: '#email-verification-page',
+      }),
 
-    Dashboard: ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
+    Dashboard: ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
 
-    'Loan Files': ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
+    'Loan Files': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
 
-    'Loan Properties': ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}/properties`, {
-      shouldRender: '#PropertiesPage',
-    }),
+    'Loan Properties': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/properties`, {
+        shouldRender: '#PropertiesPage',
+      }),
 
     'Loan Single Property': ({
       step3LoanWithEndedAuction: { _id, properties },
-    }) => route(`/loans/${_id}/properties/${properties[0]._id}`, {
-      shouldRender: '#SinglePropertyPage',
-    }),
+    }) =>
+      route(`/loans/${_id}/properties/${properties[0]._id}`, {
+        shouldRender: '#SinglePropertyPage',
+      }),
 
-    'Loan Offerpicker': ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}/offerpicker`, { shouldRender: '#offerPicker' }),
+    'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/closing`, { shouldRender: '#ClosingPage' }),
 
-    'Loan Verification': ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}/verification`, {
-      shouldRender: '#verification',
-    }),
+    'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
+      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
+        shouldRender: '.borrower-page-info',
+      }),
 
-    'Loan Auction (Auction Not Started)': ({
-      step3LoanWithNoAuction: { _id },
-    }) => route(`/loans/${_id}/auction`, {
-      shouldRender: '#auction .auction-page-start',
-    }),
+    'Borrower Finance': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
+      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/finance`, {
+        shouldRender: '.borrower-finance-page',
+      }),
 
-    'Loan Auction (Auction Started)': ({
-      step3LoanWithStartedAuction: { _id },
-    }) => route(`/loans/${_id}/auction`, {
-      shouldRender: '#auction .auction-page-auction',
-    }),
-
-    'Loan Auction (Auction Ended)': ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}/auction`, {
-      shouldRender: '#auction .auction-page-results',
-    }),
-
-    'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) => route(`/loans/${_id}/closing`, { shouldRender: '#ClosingPage' }),
-
-    'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) => route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
-      shouldRender: '.borrower-page-info',
-    }),
-
-    'Borrower Finance': ({ step3LoanWithEndedAuction: { _id, borrowers } }) => route(`/loans/${_id}/borrowers/${borrowers[0]._id}/finance`, {
-      shouldRender: '.borrower-finance-page',
-    }),
-
-    'Borrower Files': ({ step3LoanWithEndedAuction: { _id, borrowers } }) => route(`/loans/${_id}/borrowers/${borrowers[0]._id}/files`, {
-      shouldRender: '.borrower-page-files .uploader',
-    }),
+    'Borrower Files': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
+      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/files`, {
+        shouldRender: '.borrower-page-files .uploader',
+      }),
 
     'Not Found': route('/a-page-that-does-not-exist', {
       shouldRender: '#not-found-page',

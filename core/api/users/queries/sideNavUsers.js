@@ -1,4 +1,4 @@
-import { Users } from '../../';
+import Users from '../users';
 import { USER_QUERIES } from '../userConstants';
 
 export default Users.createQuery(USER_QUERIES.SIDENAV_USERS, {

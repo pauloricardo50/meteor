@@ -400,6 +400,12 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
+  monthlyExpenses: {
+    type: Number,
+    min: 0,
+    max: 100000,
+    optional: true,
+  },
 });
 
 // Attach schema

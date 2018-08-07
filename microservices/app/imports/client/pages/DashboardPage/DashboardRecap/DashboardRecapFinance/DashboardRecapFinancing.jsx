@@ -3,43 +3,20 @@ import PropTypes from 'prop-types';
 
 import Recap from 'core/components/Recap';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { getTotalUsed, getLoanValue } from 'core/utils/loanFunctions';
+import Calculator from 'core/utils/Calculator';
 import T from 'core/components/Translation';
 
 import DashboardRecapSum from './DashboardRecapSum';
 
-const getRecapArray = (props) => {
-  const {
-    loan: {
-      general: { insuranceFortuneUsed, fortuneUsed },
-    },
-  } = props;
-  const loanValue = getLoanValue({
-    loan: props.loan,
-    property: props.loan.property,
-  });
-  const totalUsed = getTotalUsed(props);
+const getRecapArray = ({ loan }) => {
+  const loanValue = Calculator.getEffectiveLoan({ loan });
+  const fortuneUsed = Calculator.getCashUsed({ loan });
+  const insuranceWithdrawn = Calculator.getInsuranceWithdrawn({ loan });
 
   return [
-    {
-      label: 'general.ownFunds',
-      value: toMoney(totalUsed),
-      hide: insuranceFortuneUsed,
-    },
-    {
-      label: 'Recap.ownFundsCash',
-      value: toMoney(fortuneUsed),
-      hide: !insuranceFortuneUsed,
-    },
-    {
-      label: 'Recap.ownFundsInsurance',
-      value: toMoney(insuranceFortuneUsed),
-      hide: !insuranceFortuneUsed,
-    },
-    {
-      label: 'general.mortgageLoan',
-      value: toMoney(loanValue),
-    },
+    { label: 'Recap.ownFundsCash', value: toMoney(fortuneUsed) },
+    { label: 'Recap.ownFundsInsurance', value: toMoney(insuranceWithdrawn) },
+    { label: 'general.mortgageLoan', value: toMoney(loanValue) },
   ];
 };
 

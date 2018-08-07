@@ -289,7 +289,7 @@ export default class OfferForm extends Component {
                   </div>
                 ))}
               </div>
-            </div>
+            </React.Fragment>
           )}
 
           {error && (
@@ -316,9 +316,9 @@ export default class OfferForm extends Component {
 }
 
 OfferForm.propTypes = {
+  admin: PropTypes.bool,
   callback: PropTypes.func.isRequired,
   handleCancel: PropTypes.func,
-  admin: PropTypes.bool,
 };
 
 OfferForm.defaultProps = {
