@@ -21,7 +21,7 @@ const getIncomeError = status =>
 const getMessage = (worstStatus, index, borrowStatus, incomeStatus) => {
   if (worstStatus === SUCCESS) {
     return 'Widget1InputsError.success';
-  } else if (index === 0) {
+  } if (index === 0) {
     return getBorrowError(borrowStatus);
   }
   return getIncomeError(incomeStatus);

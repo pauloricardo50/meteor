@@ -4,8 +4,10 @@ import { expect } from 'chai';
 
 import MiddlewareManager from '../MiddlewareManager';
 
-const addingMiddleware = calc => next => (...args) => next(args[0] + 1, args[1]);
-const subtractingMiddleware = calc => next => (...args) => next(args[0] - 1, args[1]);
+const addingMiddleware = calc => next => (...args) =>
+  next(args[0] + 1, args[1]);
+const subtractingMiddleware = calc => next => (...args) =>
+  next(args[0] - 1, args[1]);
 
 describe('MiddlewareManager', () => {
   describe('with Classes', () => {

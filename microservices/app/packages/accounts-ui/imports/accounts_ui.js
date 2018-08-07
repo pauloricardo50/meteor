@@ -150,8 +150,7 @@ Accounts.ui.config = function (options) {
     if (typeof options.requireEmailVerification !== 'boolean') {
       throw new Error('Accounts.ui.config: "requireEmailVerification" not a boolean');
     } else {
-      Accounts.ui._options.requireEmailVerification =
-        options.requireEmailVerification;
+      Accounts.ui._options.requireEmailVerification = options.requireEmailVerification;
     }
   }
 
@@ -160,8 +159,7 @@ Accounts.ui.config = function (options) {
     if (typeof options.minimumPasswordLength !== 'number') {
       throw new Error('Accounts.ui.config: "minimumPasswordLength" not a number');
     } else {
-      Accounts.ui._options.minimumPasswordLength =
-        options.minimumPasswordLength;
+      Accounts.ui._options.minimumPasswordLength = options.minimumPasswordLength;
     }
   }
 

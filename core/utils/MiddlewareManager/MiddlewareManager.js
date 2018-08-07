@@ -84,7 +84,8 @@ class MiddlewareManager {
           this._methodMiddlewares[methodName] = [];
         }
 
-        middlewares.forEach(middleware => typeof middleware === 'function'
+        middlewares.forEach(middleware =>
+          typeof middleware === 'function'
             && this._methodMiddlewares[methodName].push(middleware(this._target)));
         this._target[methodName] = compose(...this._methodMiddlewares[methodName])(method.bind(this._target));
       }

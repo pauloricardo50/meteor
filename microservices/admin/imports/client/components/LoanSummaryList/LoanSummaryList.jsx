@@ -13,7 +13,9 @@ const LoanSummaryList = ({ loans, userId }) => {
           <T id="collections.loans" />
           <LoanAdder userId={userId} />
         </h3>
-        {loans.map(loan => <LoanSummary loan={loan} key={loan._id} />)}
+        {loans.map(loan => (
+          <LoanSummary loan={loan} key={loan._id} />
+        ))}
       </React.Fragment>
     );
   }

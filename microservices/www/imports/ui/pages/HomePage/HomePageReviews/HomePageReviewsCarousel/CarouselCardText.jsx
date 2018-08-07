@@ -11,7 +11,8 @@ const CarouselCardText = ({ name, title, text }) => {
   if (showExtraTextInDialog) {
     return (
       <p className="carousel-card-text">
-        {text.slice(0, MAX_LENGTH)}...
+        {text.slice(0, MAX_LENGTH)}
+        ...
         <DialogSimple
           label="Afficher plus"
           buttonProps={{

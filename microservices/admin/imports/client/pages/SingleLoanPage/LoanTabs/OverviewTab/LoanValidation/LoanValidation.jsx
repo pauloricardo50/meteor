@@ -39,7 +39,7 @@ const LoanValidation = ({ loan }) => {
         date={verifiedAt}
       />
     );
-  } else if (requested) {
+  } if (requested) {
     return (
       <ValidationTemplate
         className="fixed-size bold warning"

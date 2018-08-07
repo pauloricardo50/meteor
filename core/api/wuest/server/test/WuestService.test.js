@@ -398,7 +398,7 @@ describe('WuestService', () => {
 
         expect(WuestService.formatMicrolocationId(id, prefix)).to.equal('someIdWithPrefix');
       });
-      
+
       it('no prefix is given', () => {
         const prefix = 'SOME_PREFIX';
         const id = 'SOME_ID_WITHOUT_PREFIX';

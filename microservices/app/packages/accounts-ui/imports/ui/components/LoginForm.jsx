@@ -307,8 +307,8 @@ class LoginForm extends Component {
 
     if (this.showPasswordChangeForm()) {
       if (
-        Meteor.isClient &&
-        !Accounts._loginButtonsSession.get('resetPasswordToken')
+        Meteor.isClient
+        && !Accounts._loginButtonsSession.get('resetPasswordToken')
       ) {
         loginFields.push(this.getPasswordField());
       }
@@ -373,10 +373,10 @@ class LoginForm extends Component {
     }
 
     if (
-      user &&
-      !['EMAIL_ONLY_NO_PASSWORD', 'USERNAME_AND_EMAIL_NO_PASSWORD'].includes(passwordSignupFields()) &&
-      formState == STATES.PROFILE &&
-      (user.services && 'password' in user.services)
+      user
+      && !['EMAIL_ONLY_NO_PASSWORD', 'USERNAME_AND_EMAIL_NO_PASSWORD'].includes(passwordSignupFields())
+      && formState == STATES.PROFILE
+      && (user.services && 'password' in user.services)
     ) {
       loginButtons.push({
         id: 'switchToChangePassword',
@@ -451,8 +451,8 @@ class LoginForm extends Component {
     // Sort the button array so that the submit button always comes first, and
     // buttons should also come before links.
     loginButtons.sort((a, b) =>
-      (b.type == 'submit' && a.type != undefined) -
-        (a.type == 'submit' && b.type != undefined));
+      (b.type == 'submit' && a.type != undefined)
+        - (a.type == 'submit' && b.type != undefined));
 
     return indexBy(loginButtons, 'id');
   }
@@ -465,31 +465,31 @@ class LoginForm extends Component {
 
   showPasswordChangeForm() {
     return (
-      Package['accounts-password'] &&
-      this.state.formState == STATES.PASSWORD_CHANGE
+      Package['accounts-password']
+      && this.state.formState == STATES.PASSWORD_CHANGE
     );
   }
 
   showEnrollAccountForm() {
     return (
-      Package['accounts-password'] &&
-      this.state.formState == STATES.ENROLL_ACCOUNT
+      Package['accounts-password']
+      && this.state.formState == STATES.ENROLL_ACCOUNT
     );
   }
 
   showCreateAccountLink() {
     return (
-      this.state.formState == STATES.SIGN_IN &&
-      !Accounts._options.forbidClientAccountCreation &&
-      Package['accounts-password']
+      this.state.formState == STATES.SIGN_IN
+      && !Accounts._options.forbidClientAccountCreation
+      && Package['accounts-password']
     );
   }
 
   showForgotPasswordLink() {
     return (
-      !this.props.user &&
-      this.state.formState == STATES.SIGN_IN &&
-      [
+      !this.props.user
+      && this.state.formState == STATES.SIGN_IN
+      && [
         'USERNAME_AND_EMAIL',
         'USERNAME_AND_OPTIONAL_EMAIL',
         'EMAIL_ONLY',
@@ -522,8 +522,8 @@ class LoginForm extends Component {
     if (typeof localStorage !== 'undefined' && localStorage) {
       const defaultFieldValues = JSON.parse(localStorage.getItem('accounts_ui') || null);
       if (
-        defaultFieldValues &&
-        defaultFieldValues.passwordSignupFields === passwordSignupFields()
+        defaultFieldValues
+        && defaultFieldValues.passwordSignupFields === passwordSignupFields()
       ) {
         return defaultFieldValues;
       }
@@ -658,8 +658,8 @@ class LoginForm extends Component {
       }
     }
     if (
-      !['EMAIL_ONLY_NO_PASSWORD'].includes(passwordSignupFields()) &&
-      !this.validateField('password', password)
+      !['EMAIL_ONLY_NO_PASSWORD'].includes(passwordSignupFields())
+      && !this.validateField('password', password)
     ) {
       error = true;
     }
@@ -720,16 +720,13 @@ class LoginForm extends Component {
 
     const options = {}; // use default scope unless specified
     if (Accounts.ui._options.requestPermissions[serviceName]) {
-      options.requestPermissions =
-        Accounts.ui._options.requestPermissions[serviceName];
+      options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
     }
     if (Accounts.ui._options.requestOfflineToken[serviceName]) {
-      options.requestOfflineToken =
-        Accounts.ui._options.requestOfflineToken[serviceName];
+      options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
     }
     if (Accounts.ui._options.forceApprovalPrompt[serviceName]) {
-      options.forceApprovalPrompt =
-        Accounts.ui._options.forceApprovalPrompt[serviceName];
+      options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
     }
 
     this.clearMessages();
@@ -773,8 +770,8 @@ class LoginForm extends Component {
         options.username = username;
       }
     } else if (
-      ['USERNAME_AND_EMAIL', 'USERNAME_AND_EMAIL_NO_PASSWORD'].includes(passwordSignupFields()) &&
-      !this.validateField('username', username)
+      ['USERNAME_AND_EMAIL', 'USERNAME_AND_EMAIL_NO_PASSWORD'].includes(passwordSignupFields())
+      && !this.validateField('username', username)
     ) {
       if (this.state.formState == STATES.SIGN_UP) {
         this.state.onSubmitHook(

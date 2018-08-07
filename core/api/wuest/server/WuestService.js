@@ -127,8 +127,8 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile &&
-          Object.values(QUALITY.STANDARD).includes(qualityProfile.standard),
+          !!qualityProfile
+          && Object.values(QUALITY.STANDARD).includes(qualityProfile.standard),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_STANDARD,
       },
       {
@@ -138,8 +138,8 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile &&
-          Object.values(QUALITY.CONDITION).includes(qualityProfile.condition),
+          !!qualityProfile
+          && Object.values(QUALITY.CONDITION).includes(qualityProfile.condition),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION,
       },
       {
@@ -186,8 +186,8 @@ class WuestService {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
           (type === PROPERTY_TYPE.FLAT
             ? true
-            : !!buildingVolume &&
-              Object.values(VOLUME_TYPE).includes(buildingVolume.type)),
+            : !!buildingVolume
+              && Object.values(VOLUME_TYPE).includes(buildingVolume.type)),
         error: WUEST_ERRORS.INVALID_BUILDING_VOLUME_TYPE,
       },
       {
@@ -254,8 +254,8 @@ class WuestService {
         sanityCheck: ({ type, data: { usableArea } }) =>
           (type === PROPERTY_TYPE.HOUSE
             ? true
-            : !!usableArea &&
-              Object.values(AREA_TYPE).includes(usableArea.type)),
+            : !!usableArea
+              && Object.values(AREA_TYPE).includes(usableArea.type)),
         error: WUEST_ERRORS.INVALID_USABLE_AREA_TYPE,
       },
     ];
@@ -498,7 +498,9 @@ class WuestService {
 
     // Get first element of 'content' because wuest API returns an array of microlocations
     const {
-      value: { content: [microlocation] },
+      value: {
+        content: [microlocation],
+      },
     } = embedded.find(({ rel }) => rel === 'microLocationProfiles');
 
     return {

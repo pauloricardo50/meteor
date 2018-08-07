@@ -13,7 +13,7 @@ import {
   editUser,
 } from '../../methodDefinitions';
 import { ROLES } from '../../userConstants';
-import { SecurityService } from '../../../';
+import { SecurityService } from '../../..';
 import UserSecurity from '../../../security/collections/UserSecurity';
 import UserService from '../../UserService';
 

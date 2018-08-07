@@ -10,19 +10,21 @@ const renderOrderIcon = order => (
   <Icon type={order === ORDER.ASC ? 'arrowUp' : 'arrowDown'} />
 );
 
-const mapOptions = (options, currentSortOption) => options.map(({ label, value: { field } }) => ({
-  id: field,
-  label: (
-    <span style={{ display: 'flex', alignItems: 'center' }}>
-      {label}
-      {currentSortOption && currentSortOption.field === field
-        ? renderOrderIcon(currentSortOption.order)
-        : null}
-    </span>
-  ),
-}));
+const mapOptions = (options, currentSortOption) =>
+  options.map(({ label, value: { field } }) => ({
+    id: field,
+    label: (
+      <span style={{ display: 'flex', alignItems: 'center' }}>
+        {label}
+        {currentSortOption && currentSortOption.field === field
+          ? renderOrderIcon(currentSortOption.order)
+          : null}
+      </span>
+    ),
+  }));
 
-const getReversedSortOrder = order => (order === ORDER.ASC ? ORDER.DESC : ORDER.ASC);
+const getReversedSortOrder = order =>
+  (order === ORDER.ASC ? ORDER.DESC : ORDER.ASC);
 
 export default withProps(({ collectionName, sortOption, setSortOption }) => ({
   handleSort: (newOption) => {

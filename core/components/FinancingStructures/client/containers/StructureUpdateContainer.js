@@ -10,7 +10,8 @@ const mapStateToProps = (state, { id, structureId }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { id, structureId }) => ({
-  handleChange: value => dispatch(updateStructure(structureId, { [id]: value })),
+  handleChange: value =>
+    dispatch(updateStructure(structureId, { [id]: value })),
 });
 
 const StructureUpdateContainer = connect(

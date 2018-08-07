@@ -145,7 +145,6 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   'routeShouldRenderSuccessfully',
   (routeConfig, testData, options = {}) => {
-
     const pageRoute = typeof routeConfig === 'function' ? routeConfig(testData) : routeConfig;
 
     const {

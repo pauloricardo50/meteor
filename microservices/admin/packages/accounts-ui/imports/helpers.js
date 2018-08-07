@@ -59,14 +59,14 @@ export function passwordSignupFields() {
 
 export function validateEmail(email, showMessage, clearMessage) {
   if (
-    passwordSignupFields() === 'USERNAME_AND_OPTIONAL_EMAIL' &&
-    email === ''
+    passwordSignupFields() === 'USERNAME_AND_OPTIONAL_EMAIL'
+    && email === ''
   ) {
     return true;
   }
   if (Accounts.ui._options.emailPattern.test(email)) {
     return true;
-  } else if (!email || email.length === 0) {
+  } if (!email || email.length === 0) {
     showMessage('error.emailRequired', 'warning', false, 'email');
     return false;
   }
@@ -93,10 +93,9 @@ export function validateUsername(
   if (username) {
     return true;
   }
-  const fieldName =
-    passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP
-      ? 'username'
-      : 'usernameOrEmail';
+  const fieldName = passwordSignupFields() === 'USERNAME_ONLY' || formState === STATES.SIGN_UP
+    ? 'username'
+    : 'usernameOrEmail';
   showMessage('error.usernameRequired', 'warning', false, fieldName);
   return false;
 }

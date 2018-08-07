@@ -126,11 +126,7 @@ const TextInput = (props) => {
         onChange={onChangeHandler}
         type="text"
         style={{ fontSize: 'inherit' }}
-        inputComponent={
-          showMask
-            ? MaskedInput
-            : inputComponent || undefined
-        }
+        inputComponent={showMask ? MaskedInput : inputComponent || undefined}
         inputProps={{
           ...inputProps, // Backwards compatible
           ...InputProps,

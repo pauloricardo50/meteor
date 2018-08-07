@@ -34,11 +34,11 @@ const PropertyForm = ({
       formArray={formArray}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
-      button={
+      button={(
         <Button raised primary icon={<Icon type="home" />}>
           <T id={buttonLabelId} />
         </Button>
-      }
+      )}
       {...props}
     />
   </div>

@@ -42,8 +42,8 @@ const withConnect = connect(
 
 const withCorrectPropertyName = withProps(({ name, purchaseType }) => ({
   labelName:
-    name === widget1Constants.PROPERTY &&
-    purchaseType === widget1Constants.PURCHASE_TYPE.REFINANCING
+    name === widget1Constants.PROPERTY
+    && purchaseType === widget1Constants.PURCHASE_TYPE.REFINANCING
       ? 'propertyValue'
       : undefined,
 }));

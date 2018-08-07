@@ -46,7 +46,7 @@ export default class DialogSimple extends Component {
       onOpen,
       passProps,
       primary,
-      raised=true,
+      raised = true,
       rootStyle,
       secondary,
       style,
@@ -54,9 +54,8 @@ export default class DialogSimple extends Component {
       ...otherProps
     } = this.props;
 
-    const finalActions =
-      (actions && actions(this.handleClose)) ||
-      (cancelOnly
+    const finalActions = (actions && actions(this.handleClose))
+      || (cancelOnly
         ? [
           <Button
             primary

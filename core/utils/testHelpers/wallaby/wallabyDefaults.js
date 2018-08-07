@@ -63,7 +63,7 @@ function setWallabyConfig(name, overrides = {}) {
           // };
         },
       },
-      overrides
+      overrides,
     );
   };
 }

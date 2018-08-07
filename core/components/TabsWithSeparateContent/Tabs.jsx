@@ -38,7 +38,9 @@ class Tabs extends Component {
             textColor="primary"
             centered
           >
-            {tabs.map((tab, i) => <Tab label={tab.label} key={i} />)}
+            {tabs.map((tab, i) => (
+              <Tab label={tab.label} key={i} />
+            ))}
           </MuiTabs>
         </Paper>
         <div className="mask1" style={{ paddingTop: 16, marginTop: 40 }}>

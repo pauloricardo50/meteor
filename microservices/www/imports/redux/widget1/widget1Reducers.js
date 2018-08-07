@@ -32,7 +32,7 @@ export const createWidget1ValueReducers = names =>
           if (action.value === '') {
             // Allow empty string if the user edits the textfield
             return { ...state, value: '', auto: false };
-          } else if (!action.value && name !== CURRENT_LOAN) {
+          } if (!action.value && name !== CURRENT_LOAN) {
             // Set auto to true if the value is changed to 0
             // (via slider or by typing 0)
             // Exception for current_loan which is the only value that
@@ -45,8 +45,7 @@ export const createWidget1ValueReducers = names =>
           // If the value is suggested, don't change auto
           return { ...state, value: roundedValue(action.value) };
         case SET_AUTO(name): {
-          const nextAuto =
-              action.auto !== undefined ? action.auto : !state.auto;
+          const nextAuto = action.auto !== undefined ? action.auto : !state.auto;
           return { ...state, auto: nextAuto };
         }
         case INCREASE_SLIDER_MAX(name):

@@ -9,8 +9,8 @@ import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
 
 // Given a min and/or max date, it blocks unavailable dates
 const setDateRange = (minDate = new Date(), maxDate = undefined) => day =>
-  (minDate && !isInclusivelyAfterDay(day, moment(minDate))) ||
-  (maxDate && isInclusivelyAfterDay(day, moment(maxDate)));
+  (minDate && !isInclusivelyAfterDay(day, moment(minDate)))
+  || (maxDate && isInclusivelyAfterDay(day, moment(maxDate)));
 
 const DatePicker = ({ minDate, maxDate, ...props }) => {
   // To prevent prop warnings

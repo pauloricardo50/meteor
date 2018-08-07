@@ -12,8 +12,8 @@ import track from '../../utils/analytics';
 // and shifts it down or right depending on the placement
 const getPositionTop = (top, id, placement) => {
   if (
-    (placement === 'left' || placement === 'right') &&
-    document.getElementById(id)
+    (placement === 'left' || placement === 'right')
+    && document.getElementById(id)
   ) {
     return top - 0.5 * document.getElementById(id).clientHeight;
   }
@@ -23,8 +23,8 @@ const getPositionTop = (top, id, placement) => {
 
 const getPositionLeft = (left, id, placement) => {
   if (
-    (placement === 'top' || placement === 'bottom') &&
-    document.getElementById(id)
+    (placement === 'top' || placement === 'bottom')
+    && document.getElementById(id)
   ) {
     return left - 0.5 * document.getElementById(id).clientWidth;
   }

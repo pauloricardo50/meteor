@@ -1,7 +1,7 @@
-import borrowersQuery from '../../api/borrowers/queries/borrowers';
-import loansQuery from '../../api/loans/queries/adminLoans';
-import propertiesQuery from '../../api/properties/queries/properties';
-import usersQuery from '../../api/users/queries/adminUsers';
+import borrowersQuery from '../borrowers/queries/borrowers';
+import loansQuery from '../loans/queries/adminLoans';
+import propertiesQuery from '../properties/queries/properties';
+import usersQuery from '../users/queries/adminUsers';
 import searchDatabase from './searchDatabase';
 
 searchDatabase.expose();

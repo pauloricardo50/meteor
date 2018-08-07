@@ -129,8 +129,7 @@ describe('LoanService', () => {
       })._id;
 
       expect(() =>
-        LoanService.removeStructure({ loanId, structureId }),
-      ).to.throw("Can't delete");
+        LoanService.removeStructure({ loanId, structureId })).to.throw("Can't delete");
     });
 
     it('removes a duplicate structure', () => {
@@ -198,9 +197,7 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
       // This structure is correct
-      expect(
-        loan.structures.find(({ id }) => id === structureId),
-      ).to.deep.include({ id: structureId, propertyId });
+      expect(loan.structures.find(({ id }) => id === structureId)).to.deep.include({ id: structureId, propertyId });
 
       // Other structures are unaffected
       loan.structures
@@ -234,8 +231,7 @@ describe('LoanService', () => {
       const badId = 'inexistentId';
 
       expect(() =>
-        LoanService.selectStructure({ loanId, structureId: badId }),
-      ).to.throw(badId);
+        LoanService.selectStructure({ loanId, structureId: badId })).to.throw(badId);
     });
   });
 

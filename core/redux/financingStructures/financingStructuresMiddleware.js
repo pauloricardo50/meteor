@@ -58,7 +58,8 @@ export const makeSaveDataMiddleware = (saveDataFunc) => {
   };
 };
 
-export const saveDataMiddleWare = makeSaveDataMiddleware(params => updateStructure.run(params));
+export const saveDataMiddleWare = makeSaveDataMiddleware(params =>
+  updateStructure.run(params));
 
 export const financingStructuresMiddleware = [
   rehydrateMiddleware,

@@ -53,9 +53,8 @@ const makeThrottledTrackFunction = (
   }
 
   // cache the throttled function so we return only once instance of it
-  throttledTrackFunctionsCache[event] =
-    throttledTrackFunctionsCache[event] ||
-    throttle(trackFunction, timeToThrottle, { trailing: false });
+  throttledTrackFunctionsCache[event] = throttledTrackFunctionsCache[event]
+    || throttle(trackFunction, timeToThrottle, { trailing: false });
 
   return throttledTrackFunctionsCache[event];
 };

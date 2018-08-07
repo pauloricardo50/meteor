@@ -19,11 +19,11 @@ const BorrowersSummary = ({ borrowers }) => (
           <Chip
             style={{ margin: 8 }}
             key={borrower._id}
-            avatar={
+            avatar={(
               <Avatar>
                 <Icon type="face" />
               </Avatar>
-            }
+            )}
             label={getBorrowerFullName(borrower) || `Emprunteur ${index + 1}`}
           />
         ))

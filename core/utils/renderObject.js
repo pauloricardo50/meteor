@@ -12,7 +12,7 @@ const renderObject = (key, obj) => {
   case 'object':
     if (Object.keys(value).length === 0) {
       return null;
-    } else if (value.getMonth) {
+    } if (value.getMonth) {
       return (
         <li>
           <h4>{stringKey}</h4>

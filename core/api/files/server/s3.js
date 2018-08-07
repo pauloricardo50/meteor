@@ -27,11 +27,11 @@ export const isAllowed = (key) => {
   });
 
   if (
-    Roles.userIsInRole(Meteor.userId(), 'admin') ||
-    Roles.userIsInRole(Meteor.userId(), 'dev')
+    Roles.userIsInRole(Meteor.userId(), 'admin')
+    || Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     return true;
-  } else if (!(loanFound || borrowerFound)) {
+  } if (!(loanFound || borrowerFound)) {
     throw new Meteor.Error('unauthorized email');
   }
 

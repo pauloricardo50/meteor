@@ -65,11 +65,11 @@ const OfferAdder = ({ hasCounterparts, isDiscount, onSubmit }) => (
   <DialogForm
     form={FORM_NAME}
     onSubmit={onSubmit}
-    button={
+    button={(
       <Button raised primary>
         <T id="OfferAdder.buttonLabel" />
       </Button>
-    }
+    )}
     title={<T id="OfferAdder.dialogTitle" />}
     description={<T id="OfferAdder.dialogDescription" />}
     formArray={getFormArray(hasCounterparts, isDiscount)}

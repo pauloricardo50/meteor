@@ -21,8 +21,8 @@ const DashboardInfoTeam = ({
 
       <DashboardInfoTeamCompany assignedEmployee={assignedEmployee} />
 
-      {contacts &&
-        contacts.length > 0 && (
+      {contacts
+        && contacts.length > 0 && (
         <DashboardInfoTeamExternal
           removeContact={removeContact}
           editContact={editContact}

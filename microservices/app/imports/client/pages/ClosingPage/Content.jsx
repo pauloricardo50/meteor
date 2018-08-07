@@ -15,11 +15,9 @@ const Content = ({ steps, loan, disabled }) => (
       <T id="ClosingPage.description" />
     </p>
 
-    {steps
-      .sort(stepSorter)
-      .map((step, i) => (
-        <ClosingItem step={step} loan={loan} key={i} disabled={disabled} />
-      ))}
+    {steps.sort(stepSorter).map((step, i) => (
+      <ClosingItem step={step} loan={loan} key={i} disabled={disabled} />
+    ))}
   </div>
 );
 
