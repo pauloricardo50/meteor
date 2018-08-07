@@ -3,6 +3,7 @@
   "FinancingStructures.borrowRatio": "Prêt / Prix d'achat",
   "FinancingStructures.incomeRatio": "Charges / Revenus",
   "FinancingStructures.requiredOwnFunds": "Fonds propres manquants",
+  "FinancingStructures.loanTranches": "Tranches",
 
   "TableFilters.noneLabels.assignedEmployee.emails.0.address": "Non assigné",
   "TableFilters.filterLabels.roles": "Type",

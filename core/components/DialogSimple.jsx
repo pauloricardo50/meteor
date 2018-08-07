@@ -34,22 +34,23 @@ export default class DialogSimple extends Component {
     const {
       actions,
       autoFocus,
-      rootStyle,
-      label,
-      primary,
-      secondary,
-      buttonStyle,
-      title,
-      important,
-      children,
-      passProps,
-      bodyStyle,
-      contentStyle,
-      style,
       autoScroll,
-      cancelOnly,
+      bodyStyle,
       buttonProps,
+      buttonStyle,
+      cancelOnly,
+      children,
+      contentStyle,
+      important,
+      label,
       onOpen,
+      passProps,
+      primary,
+      raised=true,
+      rootStyle,
+      secondary,
+      style,
+      title,
       ...otherProps
     } = this.props;
 
@@ -91,7 +92,7 @@ export default class DialogSimple extends Component {
     return (
       <span style={rootStyle}>
         <Button
-          raised
+          raised={raised}
           label={label}
           onClick={this.handleOpen}
           primary={primary}

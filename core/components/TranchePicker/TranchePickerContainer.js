@@ -1,4 +1,5 @@
 import { withStateHandlers, compose, withProps } from 'recompose';
+import { INTEREST_RATES } from '../../api/constants';
 
 const TranchePickerContainer = compose(
   withStateHandlers(
@@ -30,7 +31,7 @@ const TranchePickerContainer = compose(
       }),
     },
   ),
-  withProps(({ types }) => ({
+  withProps(({ types = Object.values(INTEREST_RATES) }) => ({
     options: types.map(type => ({ id: type, label: `TranchePicker.${type}` })),
   })),
 );

@@ -3,14 +3,13 @@ import React from 'react';
 
 import { AMORTIZATION_TYPE } from '../../../../api/constants';
 import T from '../../../Translation';
-import { TranchePickerDialog } from '../../../TranchePicker';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
   RadioButtons,
 } from '../FinancingStructuresSection';
-
 import Calc, { getProperty } from '../FinancingStructuresCalculator';
+import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -67,7 +66,7 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       },
       {
         id: 'loanTranches',
-        Component: TranchePickerDialog,
+        Component: FinancingStructuresTranchePicker,
       },
     ]}
   />
