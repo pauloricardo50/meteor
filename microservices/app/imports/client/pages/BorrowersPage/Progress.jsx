@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import T from 'core/components/Translation';
-import { personalInfoPercent, filesPercent } from 'core/arrays/steps';
+import {  filesPercent } from 'core/arrays/steps';
+import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { borrowerDocuments } from 'core/api/files/documents';
 import { FILE_STEPS } from 'core/api/constants';
 
 const Progress = ({ tabId, borrower }) => {
   switch (tabId) {
   case 'personal': {
-    const percent = personalInfoPercent(borrower);
+    const percent = BorrowerCalculator.personalInfoPercent({
+      borrowers: borrower,
+    });
     const progressClasses = classNames('progress-block', {
       success: percent >= 1,
     });
@@ -58,8 +61,8 @@ const Progress = ({ tabId, borrower }) => {
 };
 
 Progress.propTypes = {
-  tabId: PropTypes.string.isRequired,
   borrower: PropTypes.objectOf(PropTypes.any).isRequired,
+  tabId: PropTypes.string.isRequired,
 };
 
 export default Progress;

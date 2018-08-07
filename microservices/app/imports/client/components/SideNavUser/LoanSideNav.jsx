@@ -33,6 +33,7 @@ export const LoanSideNav = ({
           ':loanId': loan._id,
           ':borrowerId': loan.borrowers[0]._id,
           ':propertyId': loan.properties[0]._id,
+          ':tabId': 'personal',
         }),
       }))
       .map(({ to, id, ...otherProps }) => (

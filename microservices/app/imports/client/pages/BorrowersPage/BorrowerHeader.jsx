@@ -42,7 +42,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
               </div>
             </div>
           </div>
-          <Progress borrower={borrower} match={tabId} />
+          <Progress borrower={borrower} tabId={tabId} />
         </div>
       ))}
       {borrowers.length === 1 && (
