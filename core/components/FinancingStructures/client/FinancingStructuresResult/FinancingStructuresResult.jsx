@@ -4,6 +4,7 @@ import React from 'react';
 import T from 'core/components/Translation';
 import FinancingStructuresSection, {
   CalculatedValue,
+  FinmaRatio,
   FORMATS,
 } from '../FinancingStructuresSection';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
@@ -62,15 +63,15 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       },
       {
         id: 'borrowRatio',
-        Component: CalculatedValue,
+        Component: FinmaRatio,
         value: getBorrowRatio,
-        format: FORMATS.PERCENT,
+        status: 'SUCCESS',
       },
       {
         id: 'incomeRatio',
-        Component: CalculatedValue,
+        Component: FinmaRatio,
         value: getIncomeRatio,
-        format: FORMATS.PERCENT,
+        status: 'SUCCESS',
       },
       {
         id: 'fiscal',

@@ -1,20 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { T, IntlNumber } from 'core/components/Translation';
-import StatusIcon from '../../../components/StatusIcon';
+import { T } from 'core/components/Translation';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 
 const Widget1FinmaLine = ({ id, value, status }) => (
   <div className="widget1-finma-line">
     <span className="label">
       <T id={`Widget1FinmaLine.${id}`} />
     </span>
-    {!!value && value > 0 ? (
-      <IntlNumber format="percentage" value={value} />
-    ) : (
-      '-'
-    )}
-    {!!value && value > 0 && <StatusIcon status={status} className="icon" />}
+    <PercentWithStatus value={value} status={status} />
   </div>
 );
 
