@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
+import omit from 'lodash/omit';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -97,10 +98,9 @@ const TextInput = (props) => {
   if (noIntl) {
     finalPlaceholder = placeholder || defaultPlaceholder;
   } else {
-    finalPlaceholder =
-      placeholder && typeof placeholder === 'string'
-        ? intl.formatMessage({ id: placeholder })
-        : defaultPlaceholder;
+    finalPlaceholder = placeholder && typeof placeholder === 'string'
+      ? intl.formatMessage({ id: placeholder })
+      : defaultPlaceholder;
   }
 
   // Ignore placeholder for money inputs, and just show the currency
@@ -127,7 +127,13 @@ const TextInput = (props) => {
         onChange={onChangeHandler}
         type="text"
         style={{ fontSize: 'inherit' }}
-        inputComponent={showMask ? MaskedInput : inputComponent || undefined}
+        inputComponent={
+          showMask
+            ? ({ inputRef, ...propsWithoutRef }) => (
+              <MaskedInput {...propsWithoutRef} />
+            )
+            : inputComponent || undefined
+        }
         inputProps={{
           ...inputProps, // Backwards compatible
           ...InputProps,
@@ -136,6 +142,7 @@ const TextInput = (props) => {
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
+          inputRef: null,
         }}
         startAdornment={
           props.type === 'money' ? (

@@ -176,23 +176,16 @@ class TextInput extends Component {
 }
 
 TextInput.propTypes = {
-  currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   autocomplete: PropTypes.string,
-  rows: PropTypes.number,
+  currentValue: PropTypes.any,
+  decimal: PropTypes.bool,
   docId: PropTypes.string.isRequired,
-  updateFunc: PropTypes.func,
+  floatingLabelFixed: PropTypes.bool,
   info: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
     PropTypes.array,
   ]),
-  number: PropTypes.bool,
-  decimal: PropTypes.bool,
-  money: PropTypes.bool,
-  inputStyle: PropTypes.objectOf(PropTypes.any),
-  floatingLabelFixed: PropTypes.bool,
-  saveOnChange: PropTypes.bool,
-  noValidator: PropTypes.bool,
   inputProps: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.node.isRequired,
@@ -201,6 +194,13 @@ TextInput.propTypes = {
     multiline: PropTypes.bool,
     disabled: PropTypes.bool,
   }).isRequired,
+  inputStyle: PropTypes.objectOf(PropTypes.any),
+  money: PropTypes.bool,
+  noValidator: PropTypes.bool,
+  number: PropTypes.bool,
+  rows: PropTypes.number,
+  saveOnChange: PropTypes.bool,
+  updateFunc: PropTypes.func,
 };
 
 TextInput.defaultProps = {
