@@ -18,8 +18,5 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTIES, {
   value: 1,
   status: 1,
   propertyType: 1,
-  houseType: 1,
-  flatType: 1,
-  numberOfFloors: 1,
   insideArea: 1,
 });

@@ -276,7 +276,12 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 20,
-    defaultValue: 1,
+  },
+  floorNumber: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 20,
   },
   roomCount: {
     type: Number,

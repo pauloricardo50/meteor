@@ -33,6 +33,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
     propertyWork: 1,
     residenceType: 1,
     numberOfFloors: 1,
+    floorNumber: 1,
     investmentRent: 1,
     propertyType: 1,
     houseType: 1,

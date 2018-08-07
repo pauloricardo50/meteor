@@ -918,6 +918,8 @@
   "Forms.flatType.PENTHOUSE_APARTMENT": "Appartement attique",
   "Forms.flatType.PENTHOUSE_MAISONETTE": "Duplex / attique",
   "Forms.flatType.TERRACE_APARTMENT": "Appartment en terrasse",
+  "Forms.floorNumber": "Étage",
+  "Forms.floorNumber.placeholder": "2",
   "Forms.fortune": "Fortune",
   "Forms.fortuneUsed": "Fortune utilisé",
   "Forms.futureOwner": "Qui sera le propriétaire du bien immobilier ?",

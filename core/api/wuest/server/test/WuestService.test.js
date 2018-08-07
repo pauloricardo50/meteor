@@ -423,11 +423,12 @@ describe('WuestService', () => {
         insideArea: 100,
         terraceArea: 20,
         numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
       return WuestService.evaluateById(propertyId).then((result) => {
         expect(result.min).to.equal(610000);
         expect(result.max).to.equal(730000);
-        expect(result.value).to.equal(668000);
+        expect(result.value).to.equal(673000);
       });
     });
 
@@ -442,6 +443,7 @@ describe('WuestService', () => {
         insideArea: 100,
         terraceArea: 20,
         numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
       return WuestService.evaluateById(propertyId).then((result) => {
         expect(result).to.have.property('microlocation');

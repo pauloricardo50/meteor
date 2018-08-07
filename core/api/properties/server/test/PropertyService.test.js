@@ -22,6 +22,7 @@ describe('PropertyService', () => {
         terraceArea: 20,
         constructionYear: 1,
         numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
@@ -44,12 +45,13 @@ describe('PropertyService', () => {
         insideArea: 100,
         terraceArea: 20,
         numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation.min).to.equal(610000);
         expect(property.valuation.max).to.equal(730000);
-        expect(property.valuation.value).to.equal(668000);
+        expect(property.valuation.value).to.equal(673000);
       });
     });
 
@@ -63,6 +65,7 @@ describe('PropertyService', () => {
         insideArea: 100,
         terraceArea: 20,
         numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);

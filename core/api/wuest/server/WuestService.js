@@ -373,7 +373,7 @@ class WuestService {
           flatType: property.flatType,
           numberOfRooms: property.roomCount,
           numberOfFloors: property.numberOfFloors,
-          floorType: WUEST_FLOOR_NUMBER[property.floorNumber || 2],
+          floorType: WUEST_FLOOR_NUMBER[property.floorNumber],
           usableArea: {
             type: WUEST_AREA_TYPE.NET,
             value: property.insideArea,

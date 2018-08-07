@@ -197,6 +197,12 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       number: true,
       condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
+    {
+      id: 'floorNumber',
+      type: 'textInput',
+      number: true,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
+    },
     { id: 'constructionYear', type: 'textInput', number: true },
     {
       id: 'renovationYear',
