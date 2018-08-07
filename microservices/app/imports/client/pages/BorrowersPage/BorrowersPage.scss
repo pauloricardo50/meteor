@@ -50,7 +50,7 @@
   &-block {
     text-align: right;
 
-    > span {
+     > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -62,7 +62,7 @@
     }
 
     &.success {
-      > span {
+       > span {
         color: $success;
       }
 
@@ -196,7 +196,7 @@
       font-size: 18px;
       font-weight: bold;
 
-      > span {
+       > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -277,7 +277,7 @@
   }
 
   &__finance {
-    > div {
+     > div {
       width: 400px;
     }
   }
@@ -344,12 +344,12 @@
     }
 
     .form-group {
-      > div {
+       > div {
         max-width: 100% !important;
       }
     }
 
-    > div {
+     > div {
       max-width: 100% !important;
     }
 
@@ -363,7 +363,7 @@
   .description {
     align-self: initial;
 
-    > p {
+     > p {
       justify-content: flex-start;
 
       max-width: 100%;
