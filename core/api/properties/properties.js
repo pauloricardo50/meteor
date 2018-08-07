@@ -261,11 +261,6 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
   },
-  balconyArea: {
-    type: Number,
-    optional: true,
-    min: 0,
-  },
   terraceArea: {
     type: Number,
     optional: true,
@@ -289,18 +284,6 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100,
   },
-  bathroomCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  toiletCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
   volume: {
     type: Number,
     optional: true,
@@ -316,23 +299,19 @@ export const PropertySchema = new SimpleSchema({
     type: Object,
     defaultValue: {},
   },
-  'parking.box': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
   'parking.inside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
+    defaultValue: 0,
   },
   'parking.outside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
+    defaultValue: 0,
   },
   minergie: {
     type: String,

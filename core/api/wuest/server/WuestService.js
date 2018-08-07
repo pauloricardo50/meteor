@@ -380,8 +380,8 @@ class WuestService {
           },
           terraceArea: property.terraceArea,
           parking: {
-            indoor: property.parking.inside || 0,
-            outdoor: property.parking.outside || 0,
+            indoor: property.parking.inside,
+            outdoor: property.parking.outside,
           },
           constructionYear: property.constructionYear,
           minergieCertificate: property.minergie,
@@ -416,8 +416,8 @@ class WuestService {
             value: property.volume,
           },
           parking: {
-            indoor: property.parking.inside || 0,
-            outdoor: property.parking.outside || 0,
+            indoor: property.parking.inside,
+            outdoor: property.parking.outside,
           },
           constructionYear: property.constructionYear,
           minergieCertificate: property.minergie,

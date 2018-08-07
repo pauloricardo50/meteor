@@ -21,7 +21,6 @@ export default Properties.createQuery(PROPERTY_QUERIES.USER_PROPERTY, {
   landArea: 1,
   constructionYear: 1,
   renovationYear: 1,
-  balconyArea: 1,
   terraceArea: 1,
   investmentRent: 1,
   createdAt: 1,

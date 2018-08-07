@@ -219,12 +219,6 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     },
     { id: 'insideArea', type: 'textInput', number: true },
     {
-      id: 'balconyArea',
-      type: 'textInput',
-      number: true,
-      required: false,
-    },
-    {
       id: 'terraceArea',
       type: 'textInput',
       number: true,
@@ -247,14 +241,6 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       decimal: true,
       info: true,
     },
-    {
-      id: 'bathroomCount',
-      type: 'textInput',
-      number: true,
-      info: true,
-    },
-    { id: 'toiletCount', type: 'textInput', number: true },
-    { id: 'parking.box', type: 'textInput', number: true },
     { id: 'parking.inside', type: 'textInput', number: true },
     { id: 'parking.outside', type: 'textInput', number: true },
     {
