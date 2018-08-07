@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
-import omit from 'lodash/omit';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
