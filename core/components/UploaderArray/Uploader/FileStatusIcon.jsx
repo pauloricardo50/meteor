@@ -33,9 +33,11 @@ const FileStatusIcon = ({ files, status }) => {
         }}
       />
     );
-  } if (statuses.indexOf(FILE_STATUS.ERROR) >= 0) {
+  }
+  if (statuses.indexOf(FILE_STATUS.ERROR) >= 0) {
     return <Icon type="warning" className="error" style={styles.icon} />;
-  } if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
+  }
+  if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
     return (
       <Icon type="waiting" color={colors.lightBorder} style={styles.icon} />
     );

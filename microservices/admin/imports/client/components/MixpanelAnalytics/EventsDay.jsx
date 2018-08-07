@@ -13,7 +13,8 @@ const getDayTitle = (day) => {
 
   if (momentDate.isSame(today, 'day')) {
     return "Aujourd'hui";
-  } if (momentDate.isSame(yesterday, 'day')) {
+  }
+  if (momentDate.isSame(yesterday, 'day')) {
     return 'Hier';
   }
   return (

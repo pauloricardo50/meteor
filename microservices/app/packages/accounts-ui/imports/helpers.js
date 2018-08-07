@@ -66,7 +66,8 @@ export function validateEmail(email, showMessage, clearMessage) {
   }
   if (Accounts.ui._options.emailPattern.test(email)) {
     return true;
-  } if (!email || email.length === 0) {
+  }
+  if (!email || email.length === 0) {
     showMessage('error.emailRequired', 'warning', false, 'email');
     return false;
   }

@@ -2,10 +2,12 @@
 export function toMoney(value) {
   if (value === 0) {
     return 0;
-  } if (Number.isNaN(value)) {
+  }
+  if (Number.isNaN(value)) {
     // Exception for isNaN which should never appear
     return 0;
-  } if (!value) {
+  }
+  if (!value) {
     // Don't format the value if it is undefined or an empty string
     return value;
   }
@@ -45,9 +47,11 @@ export function toDecimalNumber(value) {
 export const toDistanceString = (dist) => {
   if (dist <= 0) {
     return '0 m';
-  } if (dist < 1000) {
+  }
+  if (dist < 1000) {
     return `${Math.round(dist / 10) * 10} m`;
-  } if (dist < 10000) {
+  }
+  if (dist < 10000) {
     return `${(Math.round(dist / 100) / 10).toFixed(1)} km`;
   }
 

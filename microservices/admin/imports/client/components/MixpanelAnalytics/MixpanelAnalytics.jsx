@@ -46,7 +46,8 @@ export default class MixpanelAnalytics extends Component {
       return (
         <h3 className="error">Il y eu une erreur Mixpanel (status: {error})</h3>
       );
-    } if (!events) {
+    }
+    if (!events) {
       return <h4>Loading...</h4>;
     }
 

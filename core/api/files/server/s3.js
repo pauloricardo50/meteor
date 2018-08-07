@@ -31,7 +31,8 @@ export const isAllowed = (key) => {
     || Roles.userIsInRole(Meteor.userId(), 'dev')
   ) {
     return true;
-  } if (!(loanFound || borrowerFound)) {
+  }
+  if (!(loanFound || borrowerFound)) {
     throw new Meteor.Error('unauthorized email');
   }
 

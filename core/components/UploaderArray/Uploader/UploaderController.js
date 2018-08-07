@@ -7,7 +7,8 @@ import { FILE_STATUS } from '../../../api/constants';
 const checkFile = (file) => {
   if (allowedFileTypes.indexOf(file.type) < 0) {
     return 'fileType';
-  } if (file.size > maxSize) {
+  }
+  if (file.size > maxSize) {
     return 'fileSize';
   }
   return true;

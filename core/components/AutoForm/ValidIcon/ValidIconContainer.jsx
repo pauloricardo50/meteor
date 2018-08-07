@@ -30,7 +30,8 @@ const ValidIconContainer = WrappedComponent =>
 
       if (error) {
         return STATUS.ERROR;
-      } if (required === true && [undefined, '', null].includes(value)) {
+      }
+      if (required === true && [undefined, '', null].includes(value)) {
         return STATUS.TODO;
       }
 

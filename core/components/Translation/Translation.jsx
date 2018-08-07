@@ -22,9 +22,11 @@ export const T = (props) => {
 
   if (noTooltips) {
     return <FormattedMessage {...props} />;
-  } if (typeof id !== 'string') {
+  }
+  if (typeof id !== 'string') {
     return id;
-  } if (!id) {
+  }
+  if (!id) {
     throw new Error('Undefined id in Translation component');
   }
 

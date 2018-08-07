@@ -8,7 +8,8 @@ import MuiButton from '@material-ui/core/Button';
 const getColor = ({ primary, secondary, color }) => {
   if (primary) {
     return 'primary';
-  } if (secondary) {
+  }
+  if (secondary) {
     return 'secondary';
   }
 

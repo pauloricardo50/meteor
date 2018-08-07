@@ -25,7 +25,8 @@ export default class RadioInput extends Component {
     // If the options are true and false, render "yes" and "no" as labels
     if (optionId === true) {
       return <T id="general.yes" values={intlValues} />;
-    } if (optionId === false) {
+    }
+    if (optionId === false) {
       return <T id="general.no" values={intlValues} />;
     }
     return (
