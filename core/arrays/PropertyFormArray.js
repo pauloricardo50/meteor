@@ -3,13 +3,13 @@ import {
   PURCHASE_TYPE,
   OWNER,
   RESIDENCE_TYPE,
-  EXPERTISE_RATING,
   MINERGIE_CERTIFICATE,
   HOUSE_TYPE,
   FLAT_TYPE,
   VOLUME_NORM,
   AREA_NORM,
 } from 'core/api/constants';
+import { QUALITY } from '../api/constants';
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -295,38 +295,14 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       required: false,
     },
     {
-      id: 'cityPlacementQuality',
+      id: 'qualityProfile.condition',
       type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
+      options: Object.values(QUALITY.CONDITION),
     },
     {
-      id: 'buildingPlacementQuality',
+      id: 'qualityProfile.standard',
       type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
-    },
-    {
-      id: 'buildingQuality',
-      type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
-    },
-    {
-      id: 'flatQuality',
-      type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
-    },
-    {
-      id: 'materialsQuality',
-      type: 'radioInput',
-      options: Object.values(EXPERTISE_RATING),
-    },
-    {
-      id: 'otherNotes',
-      type: 'textInput',
-      multiline: true,
-      rows: 3,
-      required: false,
+      options: Object.values(QUALITY.STANDARD),
     },
   ];
 

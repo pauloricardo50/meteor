@@ -32,6 +32,10 @@ export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
   terraceArea: 1,
   investmentRent: 1,
   createdAt: 1,
+  qualityProfile: {
+    condition: 1,
+    standard: 1,
+  },
   user: {
     emails: 1,
     assignedEmployee: { emails: 1 },

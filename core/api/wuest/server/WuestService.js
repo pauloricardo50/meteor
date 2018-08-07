@@ -386,8 +386,10 @@ class WuestService {
           constructionYear: property.constructionYear,
           minergieCertificate: property.minergie,
           qualityProfile: {
-            standard: WUEST_QUALITY.STANDARD.AVERAGE,
-            condition: WUEST_QUALITY.CONDITION.INTACT,
+            standard:
+                WUEST_QUALITY.STANDARD[property.qualityProfile.standard],
+            condition:
+                WUEST_QUALITY.CONDITION[property.qualityProfile.condition],
           },
         },
       });
@@ -422,8 +424,10 @@ class WuestService {
           constructionYear: property.constructionYear,
           minergieCertificate: property.minergie,
           qualityProfile: {
-            standard: WUEST_QUALITY.STANDARD.AVERAGE,
-            condition: WUEST_QUALITY.CONDITION.INTACT,
+            standard:
+                WUEST_QUALITY.STANDARD[property.qualityProfile.standard],
+            condition:
+                WUEST_QUALITY.CONDITION[property.qualityProfile.condition],
           },
         },
       });

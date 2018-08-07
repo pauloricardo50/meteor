@@ -11,6 +11,7 @@ import {
   HOUSE_TYPE,
   FLAT_TYPE,
   AREA_NORM,
+  QUALITY,
 } from './propertyConstants';
 
 const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
@@ -339,40 +340,6 @@ export const PropertySchema = new SimpleSchema({
     max: 1000,
     optional: true,
   },
-  cityPlacementQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  buildingPlacementQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  buildingQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  flatQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  materialsQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  otherNotes: {
-    type: String,
-    optional: true,
-  },
   name: {
     type: String,
     optional: true,
@@ -389,21 +356,28 @@ export const PropertySchema = new SimpleSchema({
     min: -180,
     max: 180,
   },
-  nearestBusStation: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
-  nearestTrainStation: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
   customFields: {
     // Allows storing custom fields that aren't allowed by the default schema
     type: Object,
     blackbox: true,
     defaultValue: {},
+  },
+  qualityProfile: {
+    type: Object,
+    optional: true,
+    defaultValue: {},
+  },
+  'qualityProfile.condition': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(QUALITY.CONDITION),
+    defaultValue: QUALITY.CONDITION.INTACT,
+  },
+  'qualityProfile.standard': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(QUALITY.STANDARD),
+    defaultValue: QUALITY.STANDARD.AVERAGE,
   },
   valuation: {
     type: ValuationSchema,

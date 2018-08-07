@@ -6,6 +6,7 @@ import {
   FLAT_TYPE,
   VOLUME_NORM,
   AREA_NORM,
+  QUALITY,
 } from 'core/api/properties/propertyConstants';
 
 export const WUEST_PROPERTY_TYPE = {
@@ -83,19 +84,14 @@ export const WUEST_AREA_TYPE = {
 
 export const WUEST_QUALITY = {
   CONDITION: {
-    NEEDS_RENNOVATION: 1,
-    INTACT: 3,
-    EXCELLENT: 5,
+    [QUALITY.CONDITION.NEEDS_RENNOVATION]: 1,
+    [QUALITY.CONDITION.INTACT]: 3,
+    [QUALITY.CONDITION.EXCELLENT]: 5,
   },
   STANDARD: {
-    UNSATISFACTORY: 1,
-    AVERAGE: 3,
-    HIGH: 4.5,
-  },
-  SITUATION: {
-    BAD: 1.5,
-    AVERAGE: 2,
-    GOOD: 4,
+    [QUALITY.STANDARD.UNSATISFACTORY]: 1,
+    [QUALITY.STANDARD.AVERAGE]: 3,
+    [QUALITY.STANDARD.HIGH]: 4.5,
   },
 };
 
