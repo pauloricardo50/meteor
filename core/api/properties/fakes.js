@@ -1,6 +1,10 @@
 import { fakeDocument } from 'core/api/files/fakes';
 import { EXPERTISE_STATUS } from './propertyConstants';
-import { RESIDENCE_TYPE, PROPERTY_TYPE } from './propertyConstants';
+import {
+  RESIDENCE_TYPE,
+  PROPERTY_TYPE,
+  MINERGIE_CERTIFICATE,
+} from './propertyConstants';
 
 export const emptyProperty = {};
 
@@ -26,7 +30,7 @@ export const fakeProperty = {
     inside: 1,
     outside: 2,
   },
-  minergie: true,
+  minergie: MINERGIE_CERTIFICATE.ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
   cityPlacementQuality: 2,

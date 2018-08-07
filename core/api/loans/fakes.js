@@ -1,7 +1,11 @@
 import { fakeDocument } from 'core/api/files/fakes';
 import moment from 'moment';
 
-import { RESIDENCE_TYPE, PROPERTY_TYPE } from '../constants';
+import {
+  RESIDENCE_TYPE,
+  PROPERTY_TYPE,
+  MINERGIE_CERTIFICATE,
+} from '../constants';
 
 export const fakeGeneral = {
   purchaseType: 'ACQUISITION',
@@ -34,7 +38,7 @@ export const fakeProperty = {
     inside: 1,
     outside: 2,
   },
-  minergie: true,
+  minergie: MINERGIE_CERTIFICATE.ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
   cityPlacementQuality: 2,

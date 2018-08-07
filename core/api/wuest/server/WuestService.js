@@ -384,9 +384,7 @@ class WuestService {
             outdoor: property.parking.outside || 0,
           },
           constructionYear: property.constructionYear,
-          minergieCertificate: property.minergie
-            ? WUEST_MINERGIE_CERTIFICATE.P
-            : WUEST_MINERGIE_CERTIFICATE.WITHOUT,
+          minergieCertificate: property.minergie,
           qualityProfile: {
             standard: WUEST_QUALITY.STANDARD.AVERAGE,
             condition: WUEST_QUALITY.CONDITION.INTACT,
@@ -422,9 +420,7 @@ class WuestService {
             outdoor: property.parking.outside || 0,
           },
           constructionYear: property.constructionYear,
-          minergieCertificate: property.minergie
-            ? WUEST_MINERGIE_CERTIFICATE.P
-            : WUEST_MINERGIE_CERTIFICATE.WITHOUT,
+          minergieCertificate: property.minergie,
           qualityProfile: {
             standard: WUEST_QUALITY.STANDARD.AVERAGE,
             condition: WUEST_QUALITY.CONDITION.INTACT,

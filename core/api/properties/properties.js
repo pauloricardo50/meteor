@@ -7,6 +7,7 @@ import {
   PROPERTY_TYPE,
   VOLUME_NORM,
   EXPERTISE_STATUS,
+  MINERGIE_CERTIFICATE,
 } from './propertyConstants';
 
 const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
@@ -307,8 +308,9 @@ export const PropertySchema = new SimpleSchema({
     max: 100,
   },
   minergie: {
-    type: Boolean,
-    defaultValue: false,
+    type: String,
+    defaultValue: MINERGIE_CERTIFICATE.WITHOUT,
+    allowedValues: Object.values(MINERGIE_CERTIFICATE),
   },
   isCoproperty: {
     type: Boolean,

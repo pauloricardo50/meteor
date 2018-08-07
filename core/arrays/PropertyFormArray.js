@@ -4,6 +4,7 @@ import {
   OWNER,
   RESIDENCE_TYPE,
   EXPERTISE_RATING,
+  MINERGIE_CERTIFICATE,
 } from 'core/api/constants';
 
 const mapInput = (input) => {
@@ -230,7 +231,11 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     { id: 'parking.box', type: 'textInput', number: true },
     { id: 'parking.inside', type: 'textInput', number: true },
     { id: 'parking.outside', type: 'textInput', number: true },
-    { id: 'minergie', type: 'radioInput', options: [true, false] },
+    {
+      id: 'minergie',
+      type: 'radioInput',
+      options: Object.values(MINERGIE_CERTIFICATE),
+    },
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
