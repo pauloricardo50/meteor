@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import T from 'core/components/Translation';
-import {  filesPercent } from 'core/arrays/steps';
+import { filesPercent } from 'core/api/files/fileHelpers';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { borrowerDocuments } from 'core/api/files/documents';
 import { FILE_STEPS } from 'core/api/constants';
