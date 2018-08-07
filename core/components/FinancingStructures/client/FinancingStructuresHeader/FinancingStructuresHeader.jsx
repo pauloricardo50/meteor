@@ -6,6 +6,7 @@ import type { userLoan } from 'core/api';
 import FinancingStructuresLabels from '../FinancingStructuresLabels';
 import FinancingStructuresSingleHeader from './FinancingStructuresSingleHeader';
 import FinancingStructuresHeaderAdder from './FinancingStructuresHeaderAdder';
+import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 
 type FinancingStructuresHeaderProps = {
   loan: userLoan,
@@ -37,4 +38,4 @@ const FinancingStructuresHeader = ({
   </ScrollSyncPane>
 );
 
-export default FinancingStructuresHeader;
+export default FinancingStructuresDataContainer()(FinancingStructuresHeader);
