@@ -1,12 +1,11 @@
 import { Offers } from 'core/api';
 
-export default class {
-  static update = ({ offerId, object }) =>
-    Offers.update(offerId, { $set: object });
+export class OfferService {
+  update = ({ offerId, object }) => Offers.update(offerId, { $set: object });
 
-  static insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
+  insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
 
-  static insertAdminOffer = ({ offer, loanId, userId }) =>
+  insertAdminOffer = ({ offer, loanId, userId }) =>
     Offers.insert({
       ...offer,
       loanId,
@@ -14,5 +13,9 @@ export default class {
       canton: 'GE',
     });
 
-  static remove = ({ offerId }) => Offers.remove(offerId);
+  remove = ({ offerId }) => Offers.remove(offerId);
+
+  getOfferById = offerId => Offers.findOne(offerId);
 }
+
+export default new OfferService();

@@ -7,7 +7,7 @@ import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
 import Loans from './loans';
 
-class LoanServiceModel {
+export class LoanService {
   insert = ({ loan, userId }) => Loans.insert({ ...loan, userId });
 
   update = ({ loanId, object, operator = '$set' }) =>
@@ -182,7 +182,4 @@ class LoanServiceModel {
   };
 }
 
-const LoanService = new LoanServiceModel({});
-
-export { LoanServiceModel };
-export default LoanService;
+export default new LoanService({});
