@@ -50,15 +50,25 @@
   &-block {
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
 
-      color: #4890e2;
+      color: $primary;
 
       font-size: 14px;
       font-weight: 400;
+    }
+
+    &.success {
+      > span {
+        color: $success;
+      }
+
+      .progress-bar__wrapper {
+        background: $success;
+      }
     }
   }
 
@@ -83,7 +93,7 @@
 
       transition: width 300ms ease;
 
-      background: #4890e2;
+      background: $primary;
     }
   }
 }
@@ -186,7 +196,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -267,7 +277,7 @@
   }
 
   &__finance {
-     > div {
+    > div {
       width: 400px;
     }
   }
@@ -334,12 +344,12 @@
     }
 
     .form-group {
-       > div {
+      > div {
         max-width: 100% !important;
       }
     }
 
-     > div {
+    > div {
       max-width: 100% !important;
     }
 
@@ -353,7 +363,7 @@
   .description {
     align-self: initial;
 
-     > p {
+    > p {
       justify-content: flex-start;
 
       max-width: 100%;

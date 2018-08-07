@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 import T from 'core/components/Translation';
 import { filesPercent } from 'core/api/files/fileHelpers';
@@ -14,9 +14,7 @@ const Progress = ({ tabId, borrower }) => {
     const percent = BorrowerCalculator.personalInfoPercent({
       borrowers: borrower,
     });
-    const progressClasses = classNames('progress-block', {
-      success: percent >= 1,
-    });
+    const progressClasses = cx('progress-block', { success: percent >= 1 });
 
     return (
       <div className={progressClasses}>
@@ -47,11 +45,18 @@ const Progress = ({ tabId, borrower }) => {
       fileArrayFunc: borrowerDocuments,
       step: FILE_STEPS.AUCTION,
     });
+    const progressClasses = cx('progress-block', { success: percent >= 1 });
 
     return (
-      <small className={percent >= 1 ? 'success' : undefined}>
+      <small className={progressClasses}>
         <T id="general.progress" values={{ value: percent }} />{' '}
         {percent >= 1 && <span className="fa fa-check" />}
+        <div className="progress-bar">
+          <span
+            className="progress-bar__wrapper"
+            style={{ width: `${percent * 100}%` }}
+          />
+        </div>
       </small>
     );
   }
