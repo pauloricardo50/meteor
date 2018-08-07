@@ -292,8 +292,8 @@ export const PropertySchema = new SimpleSchema({
   },
   volumeNorm: {
     type: String,
-    defaultValue: VOLUME_NORM.SIA,
-    allowedValues: Object.keys(VOLUME_NORM),
+    defaultValue: VOLUME_NORM.SIA_416,
+    allowedValues: Object.values(VOLUME_NORM),
   },
   parking: {
     type: Object,

@@ -7,6 +7,7 @@ import {
   MINERGIE_CERTIFICATE,
   HOUSE_TYPE,
   FLAT_TYPE,
+  VOLUME_NORM,
 } from 'core/api/constants';
 
 const mapInput = (input) => {
@@ -232,7 +233,8 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     },
     {
       id: 'volumeNorm',
-      type: 'textInput',
+      type: 'radioInput',
+      options: Object.values(VOLUME_NORM),
       condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
     {

@@ -21,7 +21,7 @@ export const fakeProperty = {
   landArea: 300,
   insideArea: 140,
   volume: 1500,
-  volumeNorm: 'SIA',
+  volumeNorm: 'SIA_416',
   roomCount: 5,
   bathroomCount: 2,
   toiletCount: 0,

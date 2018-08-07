@@ -18,7 +18,9 @@ export const PROPERTY_TYPE = {
 };
 
 export const VOLUME_NORM = {
-  SIA: 'SIA',
+  SIA_416: 'SIA_416',
+  SIA_116: 'SIA_116',
+  BIC: 'BIC',
 };
 
 export const EXPERTISE_RATING = {

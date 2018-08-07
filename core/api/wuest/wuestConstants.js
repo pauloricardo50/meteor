@@ -4,6 +4,7 @@ import {
   MINERGIE_CERTIFICATE,
   HOUSE_TYPE,
   FLAT_TYPE,
+  VOLUME_NORM,
 } from 'core/api/properties/propertyConstants';
 
 export const WUEST_PROPERTY_TYPE = {
@@ -69,9 +70,9 @@ export const WUEST_FLOOR_NUMBER = [
 ];
 
 export const WUEST_VOLUME_TYPE = {
-  SIA_416: 'SIA_416',
-  SIA_116: 'SIA_116',
-  BIC: 'BIC',
+  SIA_416: VOLUME_NORM.SIA_416,
+  SIA_116: VOLUME_NORM.SIA_116,
+  BIC: VOLUME_NORM.BIC,
 };
 
 export const WUEST_AREA_TYPE = {
