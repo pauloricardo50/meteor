@@ -29,7 +29,6 @@ const Select = ({
 );
 
 Select.propTypes = {
-  classes: PropTypes.object.isRequired,
   id: PropTypes.string,
   label: PropTypes.node,
   onChange: PropTypes.func.isRequired,
