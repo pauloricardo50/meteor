@@ -31,7 +31,7 @@ describe('Loan functions', () => {
   beforeEach(() => {
     props = {
       loan: {
-        general: { propertyWork: 200000, usageType: 'MAIN_RESIDENCE' },
+        general: { propertyWork: 200000, residenceType: 'MAIN_RESIDENCE' },
         logic: {},
       },
       property: { value: 1000000 },
@@ -51,7 +51,7 @@ describe('Loan functions', () => {
     });
 
     it('Should return 1.25M with 1M property, 200k property work, and 200k insuranceFortuneUsed for a non primary residence', () => {
-      props.loan.general.usageType = RESIDENCE_TYPE.INVESTMENT;
+      props.loan.general.residenceType = RESIDENCE_TYPE.INVESTMENT;
       props.loan.general.insuranceFortuneUsed = 200000;
 
       expect(getProjectValue(props)).to.equal(1250000);
@@ -104,7 +104,7 @@ describe('Loan functions', () => {
         general: {
           fortuneUsed: 270000,
           insuranceFortuneUsed: 200000,
-          usageType: RESIDENCE_TYPE.MAIN,
+          residenceType: RESIDENCE_TYPE.MAIN,
         },
         logic: { insuranceUsePreset: INSURANCE_USE_PRESET.WITHDRAWAL },
       };
@@ -118,11 +118,11 @@ describe('Loan functions', () => {
         general: {
           fortuneUsed: 260000,
           insuranceFortuneUsed: 100000,
-          usageType: RESIDENCE_TYPE.MAIN,
+          residenceType: RESIDENCE_TYPE.MAIN,
         },
         logic: {},
       };
-      const property = { value: 1000000, usageType: RESIDENCE_TYPE.MAIN };
+      const property = { value: 1000000, residenceType: RESIDENCE_TYPE.MAIN };
 
       expect(getLoanValue({ loan, property })).to.equal(690000);
     });
@@ -324,7 +324,7 @@ describe('Loan functions', () => {
     it('returns notaryFees correctly', () => {
       expect(getFees({
         property: { value: 100 },
-        loan: { general: { usageType: 'MAIN_RESIDENCE' }, logic: {} },
+        loan: { general: { residenceType: 'MAIN_RESIDENCE' }, logic: {} },
       })).to.equal(5);
     });
 
@@ -333,7 +333,7 @@ describe('Loan functions', () => {
         property: { value: 100 },
         loan: {
           general: {
-            usageType: RESIDENCE_TYPE.MAIN,
+            residenceType: RESIDENCE_TYPE.MAIN,
             insuranceFortuneUsed: 10,
           },
           logic: { insuranceUsePreset: INSURANCE_USE_PRESET.WITHDRAWAL },
@@ -344,7 +344,7 @@ describe('Loan functions', () => {
         property: { value: 100 },
         loan: {
           general: {
-            usageType: RESIDENCE_TYPE.SECOND,
+            residenceType: RESIDENCE_TYPE.SECOND,
             insuranceFortuneUsed: 10,
           },
           logic: {},

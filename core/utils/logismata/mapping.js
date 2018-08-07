@@ -5,7 +5,7 @@ import { RESIDENCE_TYPE } from 'core/api/constants';
 
 export const getLocation = ({ loan, borrowers, property }) => {
   let search = '';
-  if (loan.general.usageType === RESIDENCE_TYPE.MAIN) {
+  if (loan.general.residenceType === RESIDENCE_TYPE.MAIN) {
     // use future property address
     search = `${property.zipCode.toString()} ${property.city}`;
   } else {

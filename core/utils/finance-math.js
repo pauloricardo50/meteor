@@ -159,7 +159,7 @@ export const canAffordRank1 = ({ loan, borrowers, property }) => {
     return true;
   }
 
-  if (loan.general && loan.general.usageType === RESIDENCE_TYPE.MAIN) {
+  if (loan.general && loan.general.residenceType === RESIDENCE_TYPE.MAIN) {
     if (fortune + insuranceFortune >= fortuneRequired) {
       // ignore lppFees
       return true;

@@ -182,7 +182,7 @@ export const PropertySchema = new SimpleSchema({
     max: 100000000,
     optional: true,
   },
-  usageType: {
+  residenceType: {
     type: String,
     defaultValue: RESIDENCE_TYPE.MAIN,
     allowedValues: Object.values(RESIDENCE_TYPE),

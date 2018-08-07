@@ -16,7 +16,7 @@ const GeneralSchema = new SimpleSchema({
     defaultValue: PURCHASE_TYPE.ACQUISITION,
     allowedValues: Object.values(PURCHASE_TYPE),
   },
-  usageType: {
+  residenceType: {
     type: String,
     defaultValue: RESIDENCE_TYPE.MAIN,
     allowedValues: Object.values(RESIDENCE_TYPE),

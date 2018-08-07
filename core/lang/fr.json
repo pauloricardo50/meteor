@@ -1037,10 +1037,10 @@
   "Forms.toiletCount.placeholder": "1",
   "Forms.unassigned": "Non assigné",
   "Forms.updatedAt": "Modifié le",
-  "Forms.usageType": "Type d'utilisation",
-  "Forms.usageType.INVESTMENT": "Bien d'investissement",
-  "Forms.usageType.MAIN_RESIDENCE": "Résidence principale",
-  "Forms.usageType.SECOND_RESIDENCE": "Résidence secondaire",
+  "Forms.residenceType": "Type d'utilisation",
+  "Forms.residenceType.INVESTMENT": "Bien d'investissement",
+  "Forms.residenceType.MAIN_RESIDENCE": "Résidence principale",
+  "Forms.residenceType.SECOND_RESIDENCE": "Résidence secondaire",
   "Forms.user": "Utilisateur",
   "Forms.value": "Prix d'achat",
   "Forms.value.placeholder": "CHF 500 000",
@@ -1416,11 +1416,11 @@
     "Souhaitez-vous rajouter à votre projet des travaux de plus-value ?",
   "Start2Form.realEstateExists":
     "Êtes-vous propriétaire d'autres biens immobiliers ?",
-  "Start2Form.usageType":
+  "Start2Form.residenceType":
     "Quel sera le type d'utilisation de cette propriété ?",
-  "Start2Form.usageTypeButtonINVESTMENT": "Je veux le louer",
-  "Start2Form.usageTypeButtonMAIN_RESIDENCE": "Ma résidence principale",
-  "Start2Form.usageTypeButtonSECOND_RESIDENCE": "Ma résidence secondaire",
+  "Start2Form.residenceTypeButtonINVESTMENT": "Je veux le louer",
+  "Start2Form.residenceTypeButtonMAIN_RESIDENCE": "Ma résidence principale",
+  "Start2Form.residenceTypeButtonSECOND_RESIDENCE": "Ma résidence secondaire",
   "Start2Form.useInsurance1":
     "Voulez-vous utiliser votre fortune de prévoyance sur ce projet ?",
   "Start2Form.useInsurance1.description":

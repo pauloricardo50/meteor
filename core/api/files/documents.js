@@ -146,7 +146,8 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'rent',
       condition:
-        !!loan.general && loan.general.usageType === RESIDENCE_TYPE.INVESTMENT,
+        !!loan.general &&
+        loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
       doubleTooltip: true,
     },
     {

@@ -152,13 +152,13 @@ describe('Finance Math', () => {
 
     it('should account for insuranceSecondPillar and insuranceThirdPillar', () => {
       expect(canAffordRank1({
-        loan: { general: { usageType: 'MAIN_RESIDENCE' } },
+        loan: { general: { residenceType: 'MAIN_RESIDENCE' } },
         property: { value: 1000000 },
         borrowers: { bankFortune: 300000, insuranceSecondPillar: 200000 },
       })).to.equal(true);
 
       expect(canAffordRank1({
-        loan: { general: { usageType: 'MAIN_RESIDENCE' } },
+        loan: { general: { residenceType: 'MAIN_RESIDENCE' } },
         property: { value: 1000000 },
         borrowers: { bankFortune: 300000, insuranceThirdPillar: 200000 },
       })).to.equal(true);

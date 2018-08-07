@@ -45,7 +45,7 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
       required: false,
     },
     {
-      id: 'general.usageType',
+      id: 'general.residenceType',
       type: 'radioInput',
       options: Object.values(RESIDENCE_TYPE),
     },

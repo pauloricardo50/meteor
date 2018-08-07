@@ -48,12 +48,12 @@ export const getLoanValue = ({ loan, property }, roundedTo10000) => {
   }
 
   const {
-    general: { usageType, fortuneUsed, insuranceFortuneUsed },
+    general: { residenceType, fortuneUsed, insuranceFortuneUsed },
   } = loan;
 
   let value = getProjectValue({ loan, property }) - (fortuneUsed || 0);
 
-  if (usageType === RESIDENCE_TYPE.MAIN) {
+  if (residenceType === RESIDENCE_TYPE.MAIN) {
     value -= insuranceFortuneUsed || 0;
   }
 
@@ -401,12 +401,12 @@ export const loanHasMinimalInformation = ({
 
 export const useLppFees = ({
   loan: {
-    general: { insuranceFortuneUsed, usageType },
+    general: { insuranceFortuneUsed, residenceType },
     logic: { insuranceUsePreset },
   },
 }) =>
   insuranceFortuneUsed > 0 &&
-  usageType === RESIDENCE_TYPE.MAIN &&
+  residenceType === RESIDENCE_TYPE.MAIN &&
   insuranceUsePreset === INSURANCE_USE_PRESET.WITHDRAWAL;
 
 export const getLppFees = ({ loan }) =>
@@ -416,13 +416,13 @@ export const getInsuranceFees = ({ loan }) =>
   getLppFees({ loan }) * loan.general.insuranceFortuneUsed;
 
 export const getMaxBorrowRatio = (
-  usageType = RESIDENCE_TYPE.MAIN,
+  residenceType = RESIDENCE_TYPE.MAIN,
   toRetirement = 15,
 ) => {
   if (toRetirement <= 0) {
     return 0.65;
   }
-  if (usageType === RESIDENCE_TYPE.SECOND) {
+  if (residenceType === RESIDENCE_TYPE.SECOND) {
     return 0.7;
   }
 

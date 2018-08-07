@@ -10,7 +10,7 @@ export const fakeProperty = {
   address1: 'Rue du Succès 18',
   zipCode: 1000,
   city: 'Lausanne',
-  usageType: RESIDENCE_TYPE.MAIN,
+  residenceType: RESIDENCE_TYPE.MAIN,
   type: PROPERTY_TYPE.FLAT,
   futureOwner: 0,
   constructionYear: 2010,

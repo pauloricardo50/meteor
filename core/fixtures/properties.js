@@ -9,7 +9,7 @@ import { fakeDocument } from '../api/files/fakes';
 import { Properties } from '../api';
 
 const statuses = Object.values(PROPERTY_STATUS);
-const usageTypes = Object.values(RESIDENCE_TYPE);
+const residenceTypes = Object.values(RESIDENCE_TYPE);
 const styles = Object.values(PROPERTY_TYPE);
 const volumeNorms = Object.values(VOLUME_NORM);
 
@@ -25,7 +25,7 @@ export const createFakeProperty = (userId) => {
     propertyWork: 40000,
     zipCode: Math.round(getRandomValueInRange(1000, 4000)),
     city: 'Lausanne',
-    usageType: getRandomValueInArray(usageTypes),
+    residenceType: getRandomValueInArray(residenceTypes),
     style: getRandomValueInArray(styles),
     futureOwner: 0,
     constructionYear: 2010,

@@ -48,7 +48,7 @@ const styles = {
 
 const StructureSliders = (props) => {
   const { loan, borrowers, onChange, disabled, parentState } = props;
-  const showInsurance = loan.general.usageType === RESIDENCE_TYPE.MAIN
+  const showInsurance = loan.general.residenceType === RESIDENCE_TYPE.MAIN
     && getInsuranceFortune({ borrowers }) > 0;
 
   return (

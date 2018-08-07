@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import camelCase from 'lodash/camelCase';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
+import invert from 'lodash/invert';
 
 import { Meteor } from 'meteor/meteor';
 import WuestHouse from './WuestHouse';
@@ -366,9 +367,9 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-            property.usageType === RESIDENCE_TYPE.MAIN
-                ? WUEST_RESIDENCE_TYPE.MAIN
-                : WUEST_RESIDENCE_TYPE.SECOND,
+              WUEST_RESIDENCE_TYPE[
+                invert(RESIDENCE_TYPE)[property.residenceType]
+              ],
           flatType: WUEST_FLAT_TYPE.SINGLE_FLOOR,
           numberOfRooms: property.roomCount,
           numberOfFloors: 4,
@@ -406,9 +407,9 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-            property.usageType === RESIDENCE_TYPE.MAIN
-                ? WUEST_RESIDENCE_TYPE.MAIN
-                : WUEST_RESIDENCE_TYPE.SECOND,
+              WUEST_RESIDENCE_TYPE[
+                invert(RESIDENCE_TYPE)[property.residenceType]
+              ],
           houseType: WUEST_HOUSE_TYPE.DETACHED,
           numberOfRooms: property.roomCount,
           landPlotArea: property.landArea,
@@ -435,6 +436,7 @@ class WuestService {
     default:
       return null;
     }
+
     return data;
   }
 
