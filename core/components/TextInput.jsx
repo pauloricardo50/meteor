@@ -64,24 +64,24 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
 
 const TextInput = (props) => {
   const {
+    classes,
     className,
-    label,
-    style,
-    labelStyle,
+    error,
+    fullWidth,
     id,
     info,
-    error,
-    placeholder,
-    fullWidth,
-    onChange,
-    intl,
     inputComponent,
-    inputProps,
     InputProps,
-    noIntl,
-    classes,
-    simpleOnChange,
+    inputProps,
     inputRef,
+    intl,
+    label,
+    labelStyle,
+    noIntl,
+    onChange,
+    placeholder,
+    simpleOnChange,
+    style,
     ...otherProps
   } = props;
 
@@ -128,9 +128,7 @@ const TextInput = (props) => {
         style={{ fontSize: 'inherit' }}
         inputComponent={
           showMask
-            ? ({ inputRef, ...propsWithoutRef }) => (
-              <MaskedInput {...propsWithoutRef} />
-            )
+            ? MaskedInput
             : inputComponent || undefined
         }
         inputProps={{
@@ -141,7 +139,6 @@ const TextInput = (props) => {
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
-          inputRef: null,
         }}
         startAdornment={
           props.type === 'money' ? (
@@ -155,33 +152,33 @@ const TextInput = (props) => {
 };
 
 TextInput.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  onChange: PropTypes.func,
-  type: PropTypes.string,
-  info: PropTypes.node,
-  placeholder: PropTypes.node,
   error: PropTypes.bool,
+  id: PropTypes.string,
+  info: PropTypes.node,
   inputComponent: PropTypes.func,
   inputProps: PropTypes.object,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   noIntl: PropTypes.bool,
+  onChange: PropTypes.func,
+  placeholder: PropTypes.node,
   simpleOnChange: PropTypes.bool, // Removes all onChange modifications
+  type: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 TextInput.defaultProps = {
-  id: undefined,
-  onChange: undefined,
-  label: '',
-  value: undefined,
-  type: undefined,
-  info: undefined,
-  placeholder: undefined,
   error: false,
+  id: undefined,
+  info: undefined,
   inputComponent: null,
   inputProps: undefined,
+  label: '',
   noIntl: false,
+  onChange: undefined,
+  placeholder: undefined,
   simpleOnChange: false,
+  type: undefined,
+  value: undefined,
 };
 
 export default injectIntl(TextInput);
