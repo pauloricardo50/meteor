@@ -1,4 +1,4 @@
-import 'core/fixtures/methods';
+import 'core/fixtures/fixtureMethods';
 
 import './users/server/accounts-server-config';
 
@@ -11,8 +11,6 @@ import './jobs/server';
 
 import './files/server/methods';
 import './files/meteor-slingshot-server';
-
-import '../utils/logismata/methods';
 
 import './email/server';
 

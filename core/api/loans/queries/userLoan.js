@@ -76,6 +76,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
       date: 1,
       microlocation: 1,
     },
+    monthlyExpenses: 1,
   },
   borrowerIds: 1,
   borrowers: {

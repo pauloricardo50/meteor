@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { extractOffers } from 'core/utils/offerFunctions';
+import Calculator from 'core/utils/Calculator';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
 import { loanUpdate } from 'core/api';
@@ -70,7 +70,7 @@ class OfferList extends Component {
     const { sort, isAscending } = this.state;
 
     const filteredOffers = sortOffers(
-      extractOffers({ offers, loan, property }),
+      offers.map(offer => Calculator.enhanceOffer({ offer })),
       sort,
       isAscending,
     );

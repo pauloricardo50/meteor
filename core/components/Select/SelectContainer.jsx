@@ -86,8 +86,14 @@ const mapOptions = (
 
 const SelectContainer = compose(
   withStyles(styles),
-  mapProps(({ options, classes, ...otherProps }) => ({
+  mapProps(({ options, classes, onChange, id, ...otherProps }) => ({
     options: mapOptions(options, classes),
+    onChange: (e) => {
+      console.log('onChange select?', e, e.target.value);
+
+      onChange(id, e.target.value);
+    },
+    id,
     ...otherProps,
   })),
 );

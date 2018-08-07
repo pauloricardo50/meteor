@@ -204,6 +204,10 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       type: 'textInput',
       number: true,
       condition: property.propertyType === PROPERTY_TYPE.FLAT,
+      id: 'monthlyExpenses',
+      type: 'textInput',
+      money: true,
+      required: false,
     },
     { id: 'constructionYear', type: 'textInput', number: true },
     {

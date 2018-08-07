@@ -1,5 +1,5 @@
 export const Meteor = {
   userId: () => 'userId',
-  users: { attachSchema: () => {} },
+  users: { attachSchema: () => {}, createQuery: () => {} },
   settings: { public: {}, private: {} },
 };

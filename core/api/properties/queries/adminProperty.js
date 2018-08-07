@@ -1,6 +1,7 @@
 import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
+import { loanSummary } from '../../loans/queries/loanFragments';
 
 export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
   $filter({ filters, params: { propertyId } }) {
@@ -40,18 +41,7 @@ export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
     emails: 1,
     assignedEmployee: { emails: 1 },
   },
-  // fields used in LoanSummary component
-  loans: {
-    name: 1,
-    logic: { step: 1 },
-    general: { fortuneUsed: 1, insuranceFortuneUsed: 1 },
-    createdAt: 1,
-    updatedAt: 1,
-    borrowers: { firstName: 1, lastName: 1 },
-    properties: { value: 1, address1: 1 },
-    structures: { propertyId: 1 },
-    selectedStructure: 1,
-  },
+  loans: loanSummary,
   valuation: {
     min: 1,
     max: 1,

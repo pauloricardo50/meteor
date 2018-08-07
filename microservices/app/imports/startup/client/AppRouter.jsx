@@ -7,24 +7,17 @@ import { getUserLocale, getFormats } from 'core/utils/localization';
 import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../client/components/AppStore';
 
-import DevPage from 'core/components/DevPage';
-import DashboardPage from '../../client/pages/DashboardPage';
-import BorrowersPage from '../../client/pages/BorrowersPage';
-import PropertiesPage from '../../client/pages/PropertiesPage';
-import AuctionPage from '../../client/pages/AuctionPage';
-import StrategyPage from '../../client/pages/StrategyPage';
-import OfferPickerPage from '../../client/pages/OfferPickerPage';
-import StructurePage from '../../client/pages/StructurePage';
-import VerificationPage from '../../client/pages/VerificationPage';
-import ContractPage from '../../client/pages/ContractPage';
-import ClosingPage from '../../client/pages/ClosingPage';
-import FinancePage from '../../client/pages/FinancePage';
-import FilesPage from '../../client/pages/FilesPage';
-import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
-import PasswordResetPage from '../../client/pages/PasswordResetPage';
-import FinancingPage from '../../client/pages/FinancingPage';
-import AppPage from '../../client/pages/AppPage';
 import AccountPage from '../../client/pages/AccountPage';
+import AppPage from '../../client/pages/AppPage';
+import BorrowersPage from '../../client/pages/BorrowersPage';
+import ClosingPage from '../../client/pages/ClosingPage';
+import DashboardPage from '../../client/pages/DashboardPage';
+import DevPage from 'core/components/DevPage';
+import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
+import FilesPage from '../../client/pages/FilesPage';
+import FinancingPage from '../../client/pages/FinancingPage';
+import PasswordResetPage from '../../client/pages/PasswordResetPage';
+import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 
 import AppLayout from '../../client/layouts/AppLayout';
@@ -49,13 +42,6 @@ const AppRouter = () => (
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
-        <Route path={ROUTES.DEV_PAGE} component={FinancePage} />
-        <Route path={ROUTES.VERIFICATION_PAGE} component={VerificationPage} />
-        <Route path={ROUTES.STRUCTURE_PAGE} component={StructurePage} />
-        <Route path={ROUTES.AUCTION_PAGE} component={AuctionPage} />
-        <Route path={ROUTES.STRATEGY_PAGE} component={StrategyPage} />
-        <Route path={ROUTES.OFFER_PICKER_PAGE} component={OfferPickerPage} />
-        <Route path={ROUTES.CONTRACT_PAGE} component={ContractPage} />
         <Route path={ROUTES.CLOSING_PAGE} component={ClosingPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />

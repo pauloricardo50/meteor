@@ -1,14 +1,35 @@
 import React from 'react';
 import T from 'core/components/Translation';
-import TasksTabs from './TasksTabs';
+import { TASK_TYPE, TASK_STATUS } from 'core/api/constants';
+import adminsQuery from 'core/api/users/queries/admins';
+import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
-const TasksPage = props => (
+const getAdminsEmails = async () => {
+  const admins = await adminsQuery.clone().fetchSync();
+  const adminsEmails = admins.map(({ emails: [{ address }] }) => address);
+  return [...adminsEmails, undefined];
+};
+
+const tasksTableFilters = {
+  filters: {
+    type: true,
+    status: true,
+    assignedEmployee: { emails: [{ address: true }] },
+  },
+  options: {
+    type: Object.values(TASK_TYPE),
+    status: Object.values(TASK_STATUS),
+    address: getAdminsEmails(),
+  },
+};
+
+const TasksPage = () => (
   <section className="mask1 tasks-page" style={{ overflow: 'initial' }}>
     <h1>
       <T id="collections.tasks" />
     </h1>
 
-    <TasksTabs {...props} />
+    <TasksTableWithData tableFilters={tasksTableFilters} />
   </section>
 );
 

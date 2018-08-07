@@ -8,14 +8,18 @@ import {
   AVERAGE_TAX_RATE,
   SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MIN_CASH,
+  INTERESTS_FINMA,
+  MAINTENANCE_FINMA,
 } from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
+import { averageRates } from '../../components/InterestRatesTable/interestRates';
 
 export class FinanceCalculator {
   constructor(settings?: Object) {
-    this.init(settings);
+    this.initFinanceCalculator(settings);
   }
 
   notaryFees: number;
@@ -24,13 +28,17 @@ export class FinanceCalculator {
 
   amortizationGoal: number;
 
-  init({
+  initFinanceCalculator({
     notaryFees = NOTARY_FEES,
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
     taxRate = AVERAGE_TAX_RATE,
     secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+    minCash = MIN_CASH,
+    interestRates = averageRates,
+    theoreticalInterestRate = INTERESTS_FINMA,
+    theoreticalMaintenanceRatio = MAINTENANCE_FINMA,
     middlewares = [],
     middlewareObject,
   }: {
@@ -40,6 +48,10 @@ export class FinanceCalculator {
     taxRate?: number,
     secondPillarWithdrawalTaxRate?: number,
     maxBorrowRatio?: number,
+    minCash?: number,
+    interestRates: Object,
+    theoreticalInterestRate?: number,
+    theoreticalMaintenanceRatio: number,
     middlewares?: Array<Function>,
     middlewareObject: Object,
   } = {}) {
@@ -49,6 +61,10 @@ export class FinanceCalculator {
     this.taxRate = taxRate;
     this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
     this.maxBorrowRatio = maxBorrowRatio;
+    this.minCash = minCash;
+    this.interestRates = interestRates;
+    this.theoreticalInterestRate = theoreticalInterestRate;
+    this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
     this.setRoundValuesMiddleware(middlewares, middlewareObject);
   }
 
@@ -63,11 +79,16 @@ export class FinanceCalculator {
   getLoanValue({
     propertyValue,
     fortune,
+    pledgedValue = 0,
   }: {
     propertyValue: number,
     fortune: number,
   }) {
-    return propertyValue * (1 + this.notaryFees) - fortune;
+    return propertyValue * (1 + this.notaryFees) - fortune + pledgedValue;
+  }
+
+  getPropAndWork({ propertyValue, propertyWork }) {
+    return propertyValue + propertyWork;
   }
 
   getBorrowRatio({
@@ -131,15 +152,12 @@ export class FinanceCalculator {
   }
 
   getInterestsWithTranches({
-    tranches,
-    interestRates,
+    tranches = [],
+    interestRates = this.interestRates,
   }: {
-      tranches: Array<{ type: string, value: number }>,
-      interestRates: Object,
-    } = {
-    tranches: [],
-    interestRates: {},
-  }) {
+    tranches: Array<{ type: string, value: number }>,
+    interestRates: Object,
+  } = {}) {
     return tranches.reduce((acc, { type, value }) => {
       const rate = interestRates[type];
 
@@ -212,6 +230,48 @@ export class FinanceCalculator {
     propertyWork,
   }: { propertyValue: number, propertyWork: number } = {}) {
     return (propertyValue + propertyWork) * this.maxBorrowRatio;
+  }
+
+  getYearsToRetirement = ({
+    age1,
+    age2,
+    gender1,
+    gender2,
+  }: {
+    age1?: number,
+    age2?: number,
+    gender1?: 'F' | 'M',
+    gender2?: 'F' | 'M',
+  } = {}) => {
+    const retirement1 = this.getRetirementForGender({ gender: gender1 });
+    let retirement2 = null;
+    if (gender2) {
+      retirement2 = this.getRetirementForGender({ gender: gender2 });
+    }
+
+    // Substract age to determine remaining time to retirement for both borrowers
+    const toRetirement1 = retirement1 - age1;
+    let toRetirement2;
+    if (retirement2 && age2) {
+      toRetirement2 = retirement2 - age2;
+    }
+
+    // Get the most limiting time to retirement for both borrowers, in years
+    let yearsToRetirement;
+    if (toRetirement2) {
+      yearsToRetirement = Math.min(toRetirement1, toRetirement2);
+    } else {
+      yearsToRetirement = toRetirement1;
+    }
+
+    return Math.max(yearsToRetirement, 0);
+  };
+
+  getTheoreticalMonthly({ propAndWork, loanValue, amortizationRate }) {
+    const maintenance = propAndWork * this.theoreticalMaintenanceRatio;
+    const interests = loanValue * this.theoreticalInterestRate;
+    const amortization = loanValue * amortizationRate;
+    return this.getLoanCostWithParts({ maintenance, interests, amortization });
   }
 }
 

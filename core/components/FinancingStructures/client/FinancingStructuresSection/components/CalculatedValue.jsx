@@ -6,33 +6,47 @@ import { compose } from 'recompose';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
+import { Percent } from '../../../../Translation';
 
 type CalculatedValueProps = {
   value: number,
-  money?: boolean,
+  format?: string,
   className: string,
+  children?: Function,
+  rightElement?: Function,
+};
+
+export const FORMATS = {
+  MONEY: 'MONEY',
+  PERCENT: 'PERCENT',
+  DEFAULT: 'DEFAULT',
+};
+
+const formatters = {
+  [FORMATS.MONEY]: value => (
+    <React.Fragment>
+      <span className="chf">CHF</span>
+      {toMoney(value)}
+    </React.Fragment>
+  ),
+  [FORMATS.PERCENT]: value => <Percent value={value} />,
+  [FORMATS.DEFAULT]: value => value,
 };
 
 const CalculatedValue = ({
   value,
-  money = true,
+  format = FORMATS.MONEY,
   className,
+  children,
+  rightElement,
   ...props
 }: CalculatedValueProps) => {
   const displayValue = typeof value === 'function' ? value(props) : value;
 
   return (
     <div className={cx('calculated-value', className)}>
-      {money ? (
-        <React.Fragment>
-          <span className="chf">
-            {'CHF'}
-          </span>
-          {toMoney(displayValue)}
-        </React.Fragment>
-      ) : (
-        displayValue
-      )}
+      {children ? children(displayValue) : formatters[format](displayValue)}
+      {rightElement ? rightElement(displayValue) : null}
     </div>
   );
 };

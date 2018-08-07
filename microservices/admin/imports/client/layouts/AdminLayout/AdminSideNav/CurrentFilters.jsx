@@ -15,7 +15,6 @@ const CurrentFilters = ({
   filters,
   ...props
 }: CurrentFiltersProps) => {
-  console.log('hey');
   if (filterArray.length > 0) {
     return (
       <div className="filter-value">

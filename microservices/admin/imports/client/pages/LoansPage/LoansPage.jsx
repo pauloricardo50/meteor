@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import AllLoansTable from './AllLoansTable';
+import AllLoansTable from '../../components/AllLoansTable';
 import LoansPageContainer from './LoansPageContainer';
 
 const LoansPage = props => (
   <section className="mask1 loans-page">
     <h1>Demandes de Prêt</h1>
 
-    <AllLoansTable {...props} loans={props.data} />
+    <AllLoansTable {...props} loans={props.loans} />
   </section>
 );
 

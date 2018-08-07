@@ -1,5 +1,3 @@
-import { getLoanValue, getPropAndWork } from 'core/utils/loanFunctions';
-
 const getRandomCondition = () => {
   const conditions = [
     'Expertise additionelle requise',
@@ -39,15 +37,11 @@ const round = v => Math.round(v * 10000) / 10000;
 
 const rand = (min, max) => round(Math.random() * (max - min) + min);
 
-export const getRandomOffer = ({ loan, property }, matchLoanWanted = false) => {
+export const getRandomOffer = ({ loan }) => {
   const rate1 = rand(0.007, 0.012);
   const rate2 = rand(0.005, 0.009);
 
-  // Randomly add rank 1 offers 25% of the time
-  const loanWanted =
-    Math.random() > 0.75 && !matchLoanWanted
-      ? 0.65 * getPropAndWork({ loan, property })
-      : getLoanValue({ loan, property });
+  const loanWanted = loan.structures[0].wantedLoan;
   const maxAmountLimited = loanWanted > 100000000 ? 100000000 : loanWanted;
   const counterpart = getRandomCounterpart();
   const condition = getRandomCondition();

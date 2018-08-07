@@ -3,7 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 
 import ServerEventService from '../events/server/ServerEventService';
 import { USER_EVENTS, ROLES } from './userConstants';
-import Users from '../users';
+import Users from '.';
 
 class UserService {
   createUser = ({ options, role }) => {

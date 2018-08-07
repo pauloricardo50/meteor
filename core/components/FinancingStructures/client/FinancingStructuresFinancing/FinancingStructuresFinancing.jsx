@@ -8,26 +8,29 @@ import FinancingStructuresSection, {
   CalculatedValue,
   RadioButtons,
 } from '../FinancingStructuresSection';
-
 import Calc, { getProperty } from '../FinancingStructuresCalculator';
+import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
 }) => secondPillarPledged + thirdPillarPledged;
 
-const calculateLoan = (params) => {
+export const calculateLoan = (params) => {
   const {
     structure: { wantedLoan },
   } = params;
   return wantedLoan + getPledgedAmount(params);
 };
 
-const calculateMaxLoan = data => Calc.getMaxLoan({
-  propertyWork: data.structure.propertyWork,
-  propertyValue: getProperty(data).value,
-});
+const calculateMaxLoan = data =>
+  Calc.getMaxLoan({
+    propertyWork: data.structure.propertyWork,
+    propertyValue: getProperty(data).value,
+  });
 
-const oneStructureHasPledge = ({ structures }) => structures.some(({ secondPillarPledged, thirdPillarPledged }) => secondPillarPledged || thirdPillarPledged);
+const oneStructureHasPledge = ({ structures }) =>
+  structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
+    secondPillarPledged || thirdPillarPledged);
 
 type FinancingStructuresFinancingProps = {};
 
@@ -60,6 +63,10 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         Component: CalculatedValue,
         value: getPledgedAmount,
         condition: oneStructureHasPledge,
+      },
+      {
+        id: 'loanTranches',
+        Component: FinancingStructuresTranchePicker,
       },
     ]}
   />

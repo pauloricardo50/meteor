@@ -1,12 +1,12 @@
 import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Loans from '../loans';
-import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
+import { LOAN_QUERIES } from '../../constants';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
-  $postFilter(loans, params) {
+  $postFilter(loans) {
     return loans.map(formatLoanWithStructure);
   },
   userId: 1,
@@ -123,46 +123,11 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     conditions: 1,
     counterparts: 1,
     canton: 1,
-    standardOffer: {
-      amortization: 1,
-      maxAmount: 1,
-      ...Object.values(INTEREST_RATES).reduce(
-        (acc, rate) => ({ ...acc, [rate]: 1 }),
-        {},
-      ),
-    },
-    counterpartOffer: {
-      amortization: 1,
-      maxAmount: 1,
-      ...Object.values(INTEREST_RATES).reduce(
-        (acc, rate) => ({ ...acc, [rate]: 1 }),
-        {},
-      ),
-    },
+    standardOffer: 1,
+    counterpartOffer: 1,
   },
   userFormsEnabled: 1,
   contacts: 1,
-  structures: {
-    id: 1,
-    amortization: 1,
-    amortizationType: 1,
-    secondPillarUsed: 1,
-    secondPillarUsageType: 1,
-    thirdPillarUsed: 1,
-    name: 1,
-    description: 1,
-    fortuneUsed: 1,
-    loanValue: 1,
-    offerId: 1,
-    propertyId: 1,
-    propertyWork: 1,
-    sortOffersBy: 1,
-    wantedLoan: 1,
-    propertyValue: 1,
-    loanTranches: {
-      type: 1,
-      value: 1,
-    },
-  },
+  structures: 1,
   selectedStructure: 1,
 });

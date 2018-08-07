@@ -10,8 +10,6 @@ import {
 
 export const fakeGeneral = {
   purchaseType: 'ACQUISITION',
-  fortuneUsed: 250000,
-  insuranceFortuneUsed: 100000,
   wantedClosingDate: moment()
     .add(15, 'd')
     .toDate(),

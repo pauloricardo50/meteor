@@ -6,6 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Loading from 'core/components/Loading';
 import Roles from 'core/components/Roles';
+import { toMoney } from 'core/utils/conversionFunctions';
 import {
   USERS_COLLECTION,
   LOANS_COLLECTION,
@@ -19,7 +20,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { emails, roles, _id, name, firstName, lastName, username },
+  { emails, roles, _id, name, firstName, lastName, username, structure },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -27,8 +28,16 @@ const getListItemDetails = (
       primary: getUserDisplayName({ firstName, lastName, username, emails }),
       secondary: <Roles roles={roles} />,
     };
-  case LOANS_COLLECTION:
-    return { primary: _id, secondary: name };
+  case LOANS_COLLECTION: {
+    const { wantedLoan } = structure;
+    return {
+      primary: name,
+      secondary:
+          wantedLoan > 0
+            ? `CHF ${toMoney(wantedLoan)}`
+            : 'Pas encore structuré',
+    };
+  }
   case BORROWERS_COLLECTION:
     return {
       primary: getBorrowerFullName({ firstName, lastName }),

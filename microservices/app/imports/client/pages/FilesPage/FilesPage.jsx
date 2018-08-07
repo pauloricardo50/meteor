@@ -14,7 +14,7 @@ const FilesPage = props => (
 
       <FileTabs
         {...props}
-        property={props.loan.property}
+        property={props.loan.structure && props.loan.structure.property}
         borrowers={props.loan.borrowers}
       />
     </div>

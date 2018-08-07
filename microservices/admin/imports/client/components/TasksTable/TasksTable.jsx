@@ -218,13 +218,13 @@ class TasksTable extends Component {
 }
 
 TasksTable.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  data: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired,
-  showAssignee: PropTypes.bool,
   children: PropTypes.node,
+  data: PropTypes.array.isRequired,
   hideIfNoData: PropTypes.bool,
   hideIfNoDataText: PropTypes.string,
+  history: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  showAssignee: PropTypes.bool,
 };
 
 TasksTable.defaultProps = {

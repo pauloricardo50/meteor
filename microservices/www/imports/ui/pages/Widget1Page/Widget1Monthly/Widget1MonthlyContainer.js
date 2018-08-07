@@ -5,7 +5,7 @@ import {
   getSimpleYearlyInterests,
   getYearlyAmortization,
   getSimpleYearlyMaintenance,
-} from 'core/utils/finance';
+} from '../widget1Math';
 import { widget1Types, widget1Constants } from '../../../../redux/widget1';
 import { commonTypes } from '../../../../redux/common';
 

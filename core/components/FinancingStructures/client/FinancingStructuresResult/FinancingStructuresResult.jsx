@@ -4,6 +4,8 @@ import React from 'react';
 import T from 'core/components/Translation';
 import FinancingStructuresSection, {
   CalculatedValue,
+  FinmaRatio,
+  FORMATS,
 } from '../FinancingStructuresSection';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import {
@@ -14,6 +16,9 @@ import {
   getRemainingCash,
   getRemainingSecondPillar,
   getRemainingThirdPillar,
+  getPropertyExpenses,
+  getBorrowRatio,
+  getIncomeRatio,
 } from './financingStructuresResultHelpers';
 
 type FinancingStructuresResultProps = {};
@@ -32,15 +37,42 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
         Component: FinancingStructuresResultChart,
         getAmortization,
         getInterests,
+        getPropertyExpenses,
       },
     ]}
     detailConfig={[
+      { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
       {
         id: 'amortizationCost',
         Component: CalculatedValue,
         value: getAmortization,
       },
-      { id: 'interestsCost', Component: CalculatedValue, value: getInterests },
+      {
+        id: 'propertyCost',
+        Component: CalculatedValue,
+        value: getPropertyExpenses,
+      },
+      {
+        id: 'finma',
+        label: (
+          <h4>
+            <T id="FinancingStructuresResult.finma" />
+          </h4>
+        ),
+        className: 'section-subtitle',
+      },
+      {
+        id: 'borrowRatio',
+        Component: FinmaRatio,
+        value: getBorrowRatio,
+        status: 'SUCCESS',
+      },
+      {
+        id: 'incomeRatio',
+        Component: FinmaRatio,
+        value: getIncomeRatio,
+        status: 'SUCCESS',
+      },
       {
         id: 'fiscal',
         label: (
@@ -63,7 +95,8 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
       {
         id: 'totalFiscal',
         Component: CalculatedValue,
-        value: params => getSecondPillarWithdrawalTax(params)
+        value: params =>
+          getSecondPillarWithdrawalTax(params)
           + getAmortizationDeduction(params),
       },
       {

@@ -6,21 +6,28 @@ import { compose } from 'recompose';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 
-type FinancingStructuresResultChartProps = {};
+type FinancingStructuresResultChartProps = {
+  getInterests: Function,
+  getAmortization: Function,
+  getPropertyExpenses: Function,
+};
 
 const FinancingStructuresResultChart = ({
-  getAmortization,
   getInterests,
+  getAmortization,
+  getPropertyExpenses,
   ...props
 }: FinancingStructuresResultChartProps) => {
   const interests = getInterests(props);
   const amortization = getAmortization(props);
+  const propertyExpenses = getPropertyExpenses(props);
   return (
     <div className="financing-structures-result-chart result">
       <DonutChart
         data={[
-          { value: amortization, id: 'amortization' },
           { value: interests, id: 'interests' },
+          { value: amortization, id: 'amortization' },
+          { value: propertyExpenses, id: 'maintenance' },
         ]}
         intlPrefix="general"
         config={{
@@ -46,10 +53,8 @@ const FinancingStructuresResultChart = ({
         title=""
       />
       <span className="total">
-        <span className="chf">
-          {'CHF '}
-        </span>
-        {toMoney(amortization + interests)}
+        <span className="chf">CHF </span>
+        {toMoney(amortization + interests + propertyExpenses)}
       </span>
     </div>
   );

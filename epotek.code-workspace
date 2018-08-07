@@ -1,25 +1,12 @@
 {
   "folders": [
-    {
-      "path": "./"
-    },
-    {
-      "path": "./core"
-    },
-    {
-      "path": "microservices/admin"
-    },
-    {
-      "path": "microservices/app"
-    },
-    {
-      "path": "microservices/www"
-    }
+    { "path": "./" },
+    { "path": "./core" },
+    { "path": "microservices/admin" },
+    { "path": "microservices/app" },
+    { "path": "microservices/www" }
   ],
   "settings": {
-    "path-autocomplete.pathMappings": {
-      "core": "${workspace}/core"
-    },
-    "prettier.tabWidth": 4
+    "editor.snippetSuggestions": "top"
   }
 }

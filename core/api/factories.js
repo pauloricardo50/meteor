@@ -50,11 +50,6 @@ Factory.define('task', Tasks, {
 
 Factory.define('loan', Loans, {
   createdAt: () => new Date(),
-  general: () => ({
-    fortuneUsed: 250000,
-    insuranceFortuneUsed: 0,
-    partnersToAvoid: ['joe', 'john'],
-  }),
   borrowerIds: [],
   status: 'ACTIVE',
   documents: () => ({}),
