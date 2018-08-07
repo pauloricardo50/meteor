@@ -53,7 +53,7 @@ describe('PropertyService', () => {
         expect(property.valuation.max).to.equal(730000);
         expect(property.valuation.value).to.equal(673000);
       });
-    });
+    }).timeout(10000);
 
     it('adds microlocation on the property', () => {
       const propertyId = Factory.create('property', {
@@ -71,6 +71,6 @@ describe('PropertyService', () => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation).to.have.property('microlocation');
       });
-    });
-  }).timeout(10000);
+    }).timeout(10000);
+  });
 });
