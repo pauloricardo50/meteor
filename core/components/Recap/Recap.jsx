@@ -10,7 +10,7 @@ import BorrowerCalculator from '../../utils/Calculator/BorrowerCalculator';
 
 const getDashboardArray = (props) => {
   const bonusIncome = Calculator.getBonusIncome(props);
-  const borrowerIncome = Calculator.getBorrowerIncome(props);
+  const borrowerIncome = Calculator.getTotalIncome(props);
   const borrowRatio = Calculator.getBorrowRatio(props);
   const expenses = Calculator.getExpenses(props);
   const fortune = Calculator.getFortune(props);
@@ -246,7 +246,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
   });
   const totalFunds = BorrowerCalculator.getTotalFunds({ borrowers });
   const salary = BorrowerCalculator.getBorrowerSalary({ borrowers });
-  const income = BorrowerCalculator.getBorrowerIncome({ borrowers });
+  const income = BorrowerCalculator.getTotalIncome({ borrowers });
 
   return [
     {

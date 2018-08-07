@@ -112,6 +112,7 @@ module.exports = {
     // Causes bugs: https://github.com/yannickcr/eslint-plugin-react/issues/1775
     // And not always practical
     'react/jsx-one-expression-per-line': 'off',
+    'react/display-name': 'off',
 
     // Session makes perfect sense sometimes and we can use it with cookies easily
     'meteor/no-session': 'off',

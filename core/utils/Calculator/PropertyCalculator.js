@@ -12,7 +12,7 @@ import { FILE_STEPS } from '../../api/constants';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    propertyPercent = ({ loan, borrowers, property }) => {
+    propertyPercent({ loan, borrowers, property }) {
       const formArray1 = getPropertyArray({ loan, borrowers, property });
       const formArray2 = getPropertyLoanArray({
         loan,
@@ -24,7 +24,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       a = [...a, getCountedArray(formArray2, loan)];
 
       return getPercent(a);
-    };
+    }
 
     getPropAndWork({ loan }) {
       const propertyValue = this.getPropertyValue({ loan });
@@ -34,7 +34,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
-    getPropertyCompletion = ({ loan, borrowers, property }) => {
+    getPropertyCompletion({ loan, borrowers, property }) {
       const formsProgress = this.propertyPercent({ loan, borrowers, property });
       const filesProgress = filesPercent({
         doc: property,
@@ -43,7 +43,13 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
 
       return (formsProgress + filesProgress) / 2;
-    };
+    }
+
+    getTheoreticalMaintenance({ loan }) {
+      return (
+        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRatio) / 12
+      );
+    }
   };
 
 export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);

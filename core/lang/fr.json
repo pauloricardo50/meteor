@@ -1,4 +1,8 @@
 {
+  "FinancingStructuresResult.finma": "Ratios FINMA",
+  "FinancingStructures.borrowRatio": "Prêt / Prix d'achat",
+  "FinancingStructures.incomeRatio": "Charges / Revenus",
+
   "TableFilters.noneLabels.assignedEmployee.emails.0.address": "Non assigné",
   "TableFilters.filterLabels.roles": "Type",
   "TableFilters.filterLabels.status": "Statut",
@@ -1267,8 +1271,7 @@
   "Microlocation.slopeInclinationLabel": "Inclinaison",
   "Microlocation.expositionLabel": "Exposition",
   "Microlocation.sunShineDurationSummerLabel": "Durée d'ensoleillement en été",
-  "Microlocation.sunShineDurationWinterLabel":
-    "Durée d'ensoleillement en hiver",
+  "Microlocation.sunShineDurationWinterLabel": "Durée d'ensoleillement en hiver",
   "Microlocation.lakeViewLabel": "Vue sur le lac",
   "Microlocation.mountainViewLabel": "Vue sur les montagnes",
   "Microlocation.infrastructureLabel": "Infrastructure",
@@ -1276,8 +1279,7 @@
   "Microlocation.distanceSchoolLabel": "École/jardin d'enfants",
   "Microlocation.distanceShoppingLabel": "Centre commercial",
   "Microlocation.distanceBusStopLabel": "Arrêt de transport public",
-  "Microlocation.publicTransportGradeLabel":
-    "Qualité de la desserte en transports publics",
+  "Microlocation.publicTransportGradeLabel": "Qualité de la desserte en transports publics",
   "Microlocation.distanceRecreationAreaLabel": "Espaces de détente, nature",
   "Microlocation.distanceLakeLabel": "Lac",
   "Microlocation.distanceRiverLabel": "Rivière",
@@ -1286,8 +1288,7 @@
   "Microlocation.immissionTrainNightLabel": "Émissions ferroviaire (nuit)",
   "Microlocation.immissionStreetDayLabel": "Émissions routières (journée)",
   "Microlocation.immissionStreetNightLabel": "Émissions routières (nuit)",
-  "Microlocation.distanceMainRoadResidentialLabel":
-    "Route principale (résidentielle)",
+  "Microlocation.distanceMainRoadResidentialLabel": "Route principale (résidentielle)",
   "Microlocation.distanceRailwayLabel": "Chemin de fer",
   "Microlocation.distanceRadioAntennaLabel": "Antenne radio mobile",
   "Microlocation.distanceNuclearPowerLabel": "Centrale nucléaire",

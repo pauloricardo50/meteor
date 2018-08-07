@@ -47,3 +47,7 @@ export const getRemainingThirdPillar = ({
   borrowers,
   structure: { thirdPillarWithdrawal },
 }) => Calculator.getThirdPillar({ borrowers }) - thirdPillarWithdrawal;
+
+export const getBorrowRatio = FinanceCalculator.getBorrowRatio;
+
+export const getIncomeRatio = FinanceCalculator.getIncomeRatio;

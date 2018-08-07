@@ -123,7 +123,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getExpenses = ({ borrowers }) =>
       this.getArrayValues({ borrowers }, 'expenses');
 
-    getBorrowerIncome = ({ borrowers }) => {
+    getTotalIncome = ({ borrowers }) => {
       const sum = arrayify(borrowers).reduce((total, borrower) => {
         let borrowerIncome = 0;
         borrowerIncome += borrower.salary || 0;

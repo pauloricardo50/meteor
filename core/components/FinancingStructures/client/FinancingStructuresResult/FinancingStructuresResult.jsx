@@ -4,6 +4,7 @@ import React from 'react';
 import T from 'core/components/Translation';
 import FinancingStructuresSection, {
   CalculatedValue,
+  FORMATS,
 } from '../FinancingStructuresSection';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import {
@@ -15,6 +16,8 @@ import {
   getRemainingSecondPillar,
   getRemainingThirdPillar,
   getPropertyExpenses,
+  getBorrowRatio,
+  getIncomeRatio,
 } from './financingStructuresResultHelpers';
 
 type FinancingStructuresResultProps = {};
@@ -47,7 +50,27 @@ const FinancingStructuresResult = (props: FinancingStructuresResultProps) => (
         id: 'propertyCost',
         Component: CalculatedValue,
         value: getPropertyExpenses,
-        // condition: data => getPropertyExpenses(data) > 0,
+      },
+      {
+        id: 'finma',
+        label: (
+          <h4>
+            <T id="FinancingStructuresResult.finma" />
+          </h4>
+        ),
+        className: 'section-subtitle',
+      },
+      {
+        id: 'borrowRatio',
+        Component: CalculatedValue,
+        value: getBorrowRatio,
+        format: FORMATS.PERCENT,
+      },
+      {
+        id: 'incomeRatio',
+        Component: CalculatedValue,
+        value: getIncomeRatio,
+        format: FORMATS.PERCENT,
       },
       {
         id: 'fiscal',

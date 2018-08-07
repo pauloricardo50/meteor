@@ -195,13 +195,13 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getBorrowerIncome', () => {
+  describe('getTotalIncome', () => {
     it('should return 0 an empty borrower', () => {
-      expect(BorrowerCalculator.getBorrowerIncome({})).to.equal(0);
+      expect(BorrowerCalculator.getTotalIncome({})).to.equal(0);
     });
 
     it('should return sum of all incomes for a borrower, and subtract expenses', () => {
-      expect(BorrowerCalculator.getBorrowerIncome({
+      expect(BorrowerCalculator.getTotalIncome({
         borrowers: {
           salary: 1,
           bonus: { value: 2 }, // returns 1

@@ -9,6 +9,8 @@ import {
   SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MIN_CASH,
+  INTERESTS_FINMA,
+  MAINTENANCE_FINMA,
 } from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
@@ -35,6 +37,8 @@ export class FinanceCalculator {
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
     minCash = MIN_CASH,
     interestRates = averageRates,
+    theoreticalInterestRate = INTERESTS_FINMA,
+    theoreticalMaintenanceRatio = MAINTENANCE_FINMA,
     middlewares = [],
     middlewareObject,
   }: {
@@ -46,6 +50,8 @@ export class FinanceCalculator {
     maxBorrowRatio?: number,
     minCash?: number,
     interestRates: Object,
+    theoreticalInterestRate?: number,
+    theoreticalMaintenanceRatio: number,
     middlewares?: Array<Function>,
     middlewareObject: Object,
   } = {}) {
@@ -57,6 +63,8 @@ export class FinanceCalculator {
     this.maxBorrowRatio = maxBorrowRatio;
     this.minCash = minCash;
     this.interestRates = interestRates;
+    this.theoreticalInterestRate = theoreticalInterestRate;
+    this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
     this.setRoundValuesMiddleware(middlewares, middlewareObject);
   }
 
@@ -258,6 +266,13 @@ export class FinanceCalculator {
 
     return Math.max(yearsToRetirement, 0);
   };
+
+  getTheoreticalMonthly({ propAndWork, loanValue, amortizationRate }) {
+    const maintenance = propAndWork * this.theoreticalMaintenanceRatio;
+    const interests = loanValue * this.theoreticalInterestRate;
+    const amortization = loanValue * amortizationRate;
+    return this.getLoanCostWithParts({ maintenance, interests, amortization });
+  }
 }
 
 export default new FinanceCalculator();

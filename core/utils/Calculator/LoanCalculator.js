@@ -73,6 +73,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getTheoreticalInterests({ loan }) {
+      return (
+        (this.getEffectiveLoan({ loan }) * this.theoreticalInterestRate) / 12
+      );
+    }
+
     getAmortization({ loan }) {
       return (
         (this.getAmortizationRate({ loan }) * this.getEffectiveLoan({ loan }))
@@ -87,10 +93,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getTheoreticalMonthly({ loan }) {
+      return this.getTheoreticalInterests({ loan }) + this.getAmortization({ loan });
+    }
+
     getIncomeRatio({ loan }) {
       return (
-        this.getMonthly({ loan })
-        / this.getBorrowerIncome({ borrowers: loan.borrowers })
+        this.getTheoreticalMonthly({ loan })
+        / this.getTotalIncome({ borrowers: loan.borrowers })
         / 12
       );
     }

@@ -1,23 +1,39 @@
 // @flow
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
+import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
 
 export const getProperty = ({ structure: { propertyId }, properties }) =>
   properties.find(({ _id }) => _id === propertyId);
 
+export const getAmortizationRateMapper = (data) => {
+  const {
+    structure: { wantedLoan, propertyWork },
+  } = data;
+  return {
+    borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
+  };
+};
+
 const argumentMappings = {
-  getBorrowRatio: data => ({
-    propertyValue: getProperty(data).value,
-    loan: data.structure.wantedLoan,
+  getIncomeRatio: data => ({
+    income: BorrowerCalculator.getTotalIncome(data),
+    payment: Calc.getTheoreticalMonthly({
+      propAndWork: getProperty(data).value + data.structure.propertyWork,
+      loanValue: data.structure.wantedLoan,
+    }),
   }),
-  getAmortizationRate: (data) => {
-    const {
-      structure: { wantedLoan, propertyWork },
-    } = data;
+
+  getBorrowRatio(data) {
     return {
-      borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
+      propertyValue: getProperty(data).value,
+      loan: data.structure.wantedLoan,
+      amortizationRate: Calc.getAmortizationRate(getAmortizationRateMapper(data)),
     };
   },
+
+  getAmortizationRate: getAmortizationRateMapper,
+
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
     offers,
@@ -29,6 +45,7 @@ const argumentMappings = {
       interestRates,
     };
   },
+
   getIndirectAmortizationDeduction: (data) => {
     const {
       structure: { wantedLoan, propertyWork },
