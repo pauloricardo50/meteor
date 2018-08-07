@@ -18,7 +18,7 @@ import Page from '../../components/Page';
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId } = props;
-  const { borrowers, properties } = loan;
+  const { borrowers, properties, general: { residenceType } } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
@@ -55,7 +55,7 @@ const SinglePropertyPage = (props) => {
           </p>
         </div>
 
-        <Valuation property={property} />
+        <Valuation property={property} loanResidenceType={residenceType} />
 
         <div className="description">
           <p>

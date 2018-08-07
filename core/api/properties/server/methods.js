@@ -36,12 +36,12 @@ popPropertyValue.setHandler((context, { propertyId, object }) => {
   return PropertyService.pushValue(object);
 });
 
-evaluateProperty.setHandler((context, { propertyId }) => {
+evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.evaluateProperty(propertyId);
+  return PropertyService.evaluateProperty(propertyId, loanResidenceType);
 });
 
-propertyDataIsInvalid.setHandler((context, { propertyId }) => {
+propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.propertyDataIsInvalid(propertyId);
+  return PropertyService.propertyDataIsInvalid(propertyId, loanResidenceType);
 });

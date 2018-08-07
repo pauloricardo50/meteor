@@ -24,8 +24,8 @@ export class PropertyService {
   popValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $pop: object });
 
-  evaluateProperty = propertyId =>
-    WuestService.evaluateById(propertyId)
+  evaluateProperty = (propertyId, loanResidenceType) =>
+    WuestService.evaluateById(propertyId, loanResidenceType)
       .then((valuation) => {
         this.update({
           propertyId,
@@ -57,9 +57,9 @@ export class PropertyService {
 
   getPropertyById = propertyId => Properties.findOne(propertyId);
 
-  propertyDataIsInvalid = (propertyId) => {
+  propertyDataIsInvalid = (propertyId, loanResidenceType) => {
     try {
-      WuestService.createPropertyFromCollection(propertyId);
+      WuestService.createPropertyFromCollection(propertyId, loanResidenceType);
     } catch (error) {
       return error.message;
     }

@@ -341,12 +341,12 @@ class WuestService {
     return { id, type, property: flat };
   }
 
-  evaluateById(propertyId) {
-    const property = this.createPropertyFromCollection(propertyId);
+  evaluateById(propertyId, loanResidenceType) {
+    const property = this.createPropertyFromCollection(propertyId, loanResidenceType);
     return this.evaluate([property]);
   }
 
-  createPropertyFromCollection(propertyId) {
+  createPropertyFromCollection(propertyId, loanResidenceType) {
     let data;
     const property = Properties.findOne(propertyId);
 
@@ -368,7 +368,7 @@ class WuestService {
           },
           residenceType:
               WUEST_RESIDENCE_TYPE[
-                invert(RESIDENCE_TYPE)[property.residenceType]
+                invert(RESIDENCE_TYPE)[loanResidenceType]
               ],
           flatType: property.flatType,
           numberOfRooms: property.roomCount,
@@ -408,7 +408,7 @@ class WuestService {
           },
           residenceType:
               WUEST_RESIDENCE_TYPE[
-                invert(RESIDENCE_TYPE)[property.residenceType]
+            invert(RESIDENCE_TYPE)[loanResidenceType]
               ],
           houseType: property.houseType,
           numberOfRooms: property.roomCount,

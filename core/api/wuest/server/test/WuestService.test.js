@@ -425,7 +425,10 @@ describe('WuestService', () => {
         numberOfFloors: 10,
         floorNumber: 3,
       })._id;
-      return WuestService.evaluateById(propertyId).then((result) => {
+
+      const residenceType = WUEST_RESIDENCE_TYPE.MAIN;
+
+      return WuestService.evaluateById(propertyId, residenceType).then((result) => {
         expect(result.min).to.equal(610000);
         expect(result.max).to.equal(730000);
         expect(result.value).to.equal(673000);
@@ -445,7 +448,10 @@ describe('WuestService', () => {
         numberOfFloors: 10,
         floorNumber: 3,
       })._id;
-      return WuestService.evaluateById(propertyId).then((result) => {
+
+      const residenceType = WUEST_RESIDENCE_TYPE.MAIN;
+
+      return WuestService.evaluateById(propertyId, residenceType).then((result) => {
         expect(result).to.have.property('microlocation');
         expect(result.microlocation).to.have.property('grade');
         expect(result.microlocation.factors).to.have.property('terrain');

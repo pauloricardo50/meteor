@@ -3,7 +3,11 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import PropertyService from '../../PropertyService';
-import { EXPERTISE_STATUS, PROPERTY_TYPE } from '../../propertyConstants';
+import {
+  EXPERTISE_STATUS,
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+} from '../../propertyConstants';
 import { WUEST_ERRORS } from '../../../wuest/wuestConstants';
 
 describe('PropertyService', () => {
@@ -24,7 +28,10 @@ describe('PropertyService', () => {
         numberOfFloors: 10,
         floorNumber: 3,
       })._id;
-      return PropertyService.evaluateProperty(propertyId).then(() => {
+
+      const residenceType = RESIDENCE_TYPE.MAIN;
+
+      return PropertyService.evaluateProperty(propertyId, residenceType).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation.status).to.equal(EXPERTISE_STATUS.ERROR);
         expect(property.valuation.error).contains('entre 1000 et 3000');
@@ -47,7 +54,10 @@ describe('PropertyService', () => {
         numberOfFloors: 10,
         floorNumber: 3,
       })._id;
-      return PropertyService.evaluateProperty(propertyId).then(() => {
+
+      const residenceType = RESIDENCE_TYPE.MAIN;
+
+      return PropertyService.evaluateProperty(propertyId, residenceType).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation.min).to.equal(610000);
         expect(property.valuation.max).to.equal(730000);
@@ -67,7 +77,10 @@ describe('PropertyService', () => {
         numberOfFloors: 10,
         floorNumber: 3,
       })._id;
-      return PropertyService.evaluateProperty(propertyId).then(() => {
+
+      const residenceType = RESIDENCE_TYPE.MAIN;
+
+      return PropertyService.evaluateProperty(propertyId, residenceType).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation).to.have.property('microlocation');
       });
