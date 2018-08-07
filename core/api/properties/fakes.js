@@ -23,6 +23,8 @@ export const fakeProperty = {
   volume: 1500,
   volumeNorm: 'SIA_416',
   roomCount: 5,
+  numberOfFloors: 5,
+  floorNumber: 3,
   parking: {
     inside: 1,
     outside: 2,
