@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,15 +14,25 @@ const styles = {
   error: { color: colors.error },
 };
 
-const StatusIcon = ({ status, ...rest }) => {
+const StatusIcon = ({ status, style = {}, ...rest }) => {
   if (!status) {
     return null;
-  } else if (status === SUCCESS) {
-    return <Icon type="checkCircle" style={styles.success} {...rest} />;
-  } else if (status === WARNING) {
-    return <Icon type="error" style={styles.warning} {...rest} />;
-  } else if (status === ERROR) {
-    return <Icon type="error" style={styles.error} {...rest} />;
+  } if (status === SUCCESS) {
+    return (
+      <Icon
+        type="checkCircle"
+        style={{ ...styles.success, ...style }}
+        {...rest}
+      />
+    );
+  } if (status === WARNING) {
+    return (
+      <Icon type="error" style={{ ...styles.warning, ...style }} {...rest} />
+    );
+  } if (status === ERROR) {
+    return (
+      <Icon type="error" style={{ ...styles.error, ...style }} {...rest} />
+    );
   }
 };
 

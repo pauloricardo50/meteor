@@ -12,7 +12,8 @@ type CalculatedValueProps = {
   value: number,
   format?: string,
   className: string,
-  children?: React.Node,
+  children?: Function,
+  rightElement?: Function,
 };
 
 export const FORMATS = {
@@ -37,6 +38,7 @@ const CalculatedValue = ({
   format = FORMATS.MONEY,
   className,
   children,
+  rightElement,
   ...props
 }: CalculatedValueProps) => {
   const displayValue = typeof value === 'function' ? value(props) : value;
@@ -44,6 +46,7 @@ const CalculatedValue = ({
   return (
     <div className={cx('calculated-value', className)}>
       {children ? children(displayValue) : formatters[format](displayValue)}
+      {rightElement ? rightElement(displayValue) : null}
     </div>
   );
 };

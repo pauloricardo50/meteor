@@ -2,11 +2,15 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+import { SUCCESS } from 'core/api/constants';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
 } from '../FinancingStructuresSection';
 import Calculator from '../../../../utils/Calculator';
+import { getProperty } from '../FinancingStructuresCalculator';
+import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
+import StatusIcon from '../../../StatusIcon';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -40,6 +44,16 @@ const calculateMaxThirdPillarWithdrawal = ({
 const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
+const calculateRequiredOwnFunds = (data) => {
+  const { propertyWork } = data.structure;
+  const propertyValue = getProperty(data).value;
+  const effectiveLoan = calculateLoan(data);
+  const fundsRequired = propertyValue + propertyWork - effectiveLoan;
+  const totalCurrentFunds = calculateOwnFunds(data);
+
+  return fundsRequired - totalCurrentFunds;
+};
+
 const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) => (
   <FinancingStructuresSection
     summaryConfig={[
@@ -55,6 +69,20 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
       },
     ]}
     detailConfig={[
+      {
+        Component: propz => (
+          <CalculatedValue
+            {...propz}
+            rightElement={value =>
+              (value === 0 ? (
+                <StatusIcon status={SUCCESS} style={{ marginLeft: 8 }} />
+              ) : null)
+            }
+          />
+        ),
+        id: 'requiredOwnFunds',
+        value: calculateRequiredOwnFunds,
+      },
       {
         Component: InputAndSlider,
         id: 'fortuneUsed',
