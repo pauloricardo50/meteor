@@ -119,6 +119,8 @@ export class FinanceCalculator {
   }
 
   getIncomeRatio({ income, payment = 0 }: { income: number, payment: number }) {
+    console.log('incomeRatio?', income, payment);
+
     return payment / income;
   }
 

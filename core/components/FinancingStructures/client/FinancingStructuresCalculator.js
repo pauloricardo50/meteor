@@ -21,16 +21,14 @@ const argumentMappings = {
     payment: Calc.getTheoreticalMonthly({
       propAndWork: getProperty(data).value + data.structure.propertyWork,
       loanValue: data.structure.wantedLoan,
-    }),
+      amortizationRate: Calc.getAmortizationRate(getAmortizationRateMapper(data)),
+    }).total,
   }),
 
-  getBorrowRatio(data) {
-    return {
-      propertyValue: getProperty(data).value,
-      loan: data.structure.wantedLoan,
-      amortizationRate: Calc.getAmortizationRate(getAmortizationRateMapper(data)),
-    };
-  },
+  getBorrowRatio: data => ({
+    propertyValue: getProperty(data).value,
+    loan: data.structure.wantedLoan,
+  }),
 
   getAmortizationRate: getAmortizationRateMapper,
 
