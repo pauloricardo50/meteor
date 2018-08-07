@@ -89,6 +89,7 @@ const config = {
     'SearchResults',
     'MissingDoc',
     'InterestsTable',
+    'Table',
   ],
 };
 
