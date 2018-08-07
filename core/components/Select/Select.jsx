@@ -22,12 +22,7 @@ const Select = ({
         {label}
       </InputLabel>
     )}
-    <MuiSelect
-      {...otherProps}
-      value={value}
-      onChange={e => onChange(id, e.target.value)}
-      id={id}
-    >
+    <MuiSelect {...otherProps} value={value} onChange={onChange} id={id}>
       {options}
     </MuiSelect>
   </FormControl>

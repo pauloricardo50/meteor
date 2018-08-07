@@ -3,6 +3,7 @@ import React from 'react';
 
 import { AMORTIZATION_TYPE } from '../../../../api/constants';
 import T from '../../../Translation';
+import { TranchePickerDialog } from '../../../TranchePicker';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
@@ -63,6 +64,10 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         Component: CalculatedValue,
         value: getPledgedAmount,
         condition: oneStructureHasPledge,
+      },
+      {
+        id: 'loanTranches',
+        Component: TranchePickerDialog,
       },
     ]}
   />
