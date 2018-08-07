@@ -3,13 +3,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount } from './enzyme';
 import { getUserLocale, getFormats } from '../localization';
-import messagesFR from '../../lang/fr.json';
+import messages from '../../lang/fr.json';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = ({ Component, props = {}, withRouter, withStore }) => {
   const intlProvider = new IntlProvider({
     locale: getUserLocale(),
-    messages: messagesFR,
+    messages,
     formats: getFormats(),
     defaultLocale: 'fr',
   });

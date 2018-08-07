@@ -138,8 +138,6 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
 
 export default lifecycle({
   componentDidCatch(error) {
-    console.log('catched!', error);
-
     this.setState({ error });
   },
   componentWillReceiveProps() {
