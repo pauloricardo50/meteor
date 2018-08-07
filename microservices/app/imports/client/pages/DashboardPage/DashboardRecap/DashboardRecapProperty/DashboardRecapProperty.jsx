@@ -8,7 +8,8 @@ import { T, MetricArea } from 'core/components/Translation';
 import { PropertyAdder, PropertyModifier } from 'core/components/PropertyForm';
 import { toMoney } from 'core/utils/conversionFunctions';
 
-const getPropertyAddressString = ({ address1, zipCode, city }) => `${address1}, ${zipCode} ${city}`;
+const getPropertyAddressString = ({ address1, zipCode, city }) =>
+  `${address1}, ${zipCode} ${city}`;
 
 export const getRecapArray = (property) => {
   const {
@@ -36,9 +37,7 @@ export const getRecapArray = (property) => {
       label: 'property.expertise',
       value:
         status === EXPERTISE_STATUS.DONE ? (
-          <p>
-            {`CHF ${toMoney(min)} - ${toMoney(max)}`}
-          </p>
+          <p>{`CHF ${toMoney(min)} - ${toMoney(max)}`}</p>
         ) : (
           <T id={`property.expertiseStatus.${status}`} />
         ),
@@ -46,7 +45,8 @@ export const getRecapArray = (property) => {
   ];
 };
 
-const shouldDisplay = ({ address1, zipCode, city }) => address1 && city && zipCode;
+const shouldDisplay = ({ address1, zipCode, city }) =>
+  address1 && city && zipCode;
 
 const getContent = (property, loanId) => {
   // if (!property) {

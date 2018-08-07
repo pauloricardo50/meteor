@@ -21,6 +21,7 @@ const FinancingStructuresResultChart = ({
   const interests = getInterests(props);
   const amortization = getAmortization(props);
   const propertyExpenses = getPropertyExpenses(props);
+
   return (
     <div className="financing-structures-result-chart result">
       <DonutChart

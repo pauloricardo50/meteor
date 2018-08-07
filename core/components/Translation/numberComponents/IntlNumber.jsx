@@ -8,7 +8,8 @@ const IntlNumber = ({ type, value, ...rest }) => {
   // Render a dash if the number is not well specified
   if (shouldRenderDash(value)) {
     return '-';
-  } else if (typeof value !== 'number') {
+  }
+  if (typeof value !== 'number') {
     // Render whatever comes if it is not a number
     return value;
   }

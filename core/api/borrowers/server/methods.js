@@ -27,10 +27,10 @@ borrowerDelete.setHandler((context, { borrowerId }) => {
 
 pushBorrowerValue.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.pushValue(object);
+  return BorrowerService.pushValue({ borrowerId, object });
 });
 
 popBorrowerValue.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.pushValue(object);
+  return BorrowerService.popValue({ borrowerId, object });
 });

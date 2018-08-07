@@ -7,7 +7,11 @@ import { getLoanSummaryColumns } from './loanSummaryHelpers';
 const LoanSummaryColumns = ({ loan }) => (
   <div className="flex admin-loan">
     {getLoanSummaryColumns(loan).map(({ translationId, content }) => (
-      <LoanSummaryColumn translationId={translationId} content={content} key={translationId} />
+      <LoanSummaryColumn
+        translationId={translationId}
+        content={content}
+        key={translationId}
+      />
     ))}
   </div>
 );

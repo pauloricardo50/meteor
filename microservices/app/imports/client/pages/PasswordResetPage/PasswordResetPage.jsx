@@ -34,8 +34,8 @@ export default class PasswordResetPage extends Component {
   handleChange = (event, key) => {
     this.setState({ [key]: event.target.value }, () => {
       if (
-        !!this.state.newPassword &&
-        this.state.newPassword === this.state.newPassword2
+        !!this.state.newPassword
+        && this.state.newPassword === this.state.newPassword2
       ) {
         this.setState({ isValid: true });
       } else {

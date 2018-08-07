@@ -25,13 +25,14 @@ export default class RadioInput extends Component {
     // If the options are true and false, render "yes" and "no" as labels
     if (optionId === true) {
       return <T id="general.yes" values={intlValues} />;
-    } else if (optionId === false) {
+    }
+    if (optionId === false) {
       return <T id="general.no" values={intlValues} />;
     }
     return (
       <T
-        id={`Forms.${this.props.inputProps.intlId ||
-          this.props.inputProps.id}.${optionId}`}
+        id={`Forms.${this.props.inputProps.intlId
+          || this.props.inputProps.id}.${optionId}`}
         values={intlValues}
       />
     );

@@ -61,7 +61,9 @@ export default class ConfirmMethod extends Component {
           disabled={disabled}
         />
         <Dialog title="Êtes-vous sûr?" actions={actions} important open={open}>
-          Tapez le mot &quot;{keyword}&quot; pour valider cette action.
+          Tapez le mot &quot;
+          {keyword}
+          &quot; pour valider cette action.
           <form onSubmit={this.handleSubmit}>
             <TextField value={text} autoFocus onChange={this.handleChange} />
           </form>

@@ -1,6 +1,6 @@
-import Borrowers from '../borrowers';
+import Borrowers from '.';
 
-class BorrowerService {
+export class BorrowerService {
   update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
@@ -10,6 +10,8 @@ class BorrowerService {
 
   pushValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $push: object });
+
+  getBorrowerById = borrowerId => Borrowers.findOne(borrowerId);
 
   popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });

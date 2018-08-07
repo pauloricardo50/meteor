@@ -64,8 +64,8 @@ Accounts.sendLoginEmail = function (userId, address) {
   }
   // make sure we have a valid address
   if (
-    !address ||
-    !(user.emails || []).map(({ address }) => address).includes(address)
+    !address
+    || !(user.emails || []).map(({ address }) => address).includes(address)
   ) {
     throw new Error('No such email address for user.');
   }
@@ -119,10 +119,9 @@ if (Accounts.emailTemplates) {
       return `Login on ${Accounts.emailTemplates.siteName}`;
     },
     text(user, url) {
-      const greeting =
-        user.profile && user.profile.name
-          ? `Hello ${user.profile.name},`
-          : 'Hello,';
+      const greeting = user.profile && user.profile.name
+        ? `Hello ${user.profile.name},`
+        : 'Hello,';
       return `${greeting}
 To login, simply click the link below.
 ${url}

@@ -9,9 +9,9 @@ import {
 const factoryPickers = [
   props => props.children && makeEnhancedChildrenComponent,
   props =>
-    props.toggleOnElement &&
-    props.toggleOffElement &&
-    makeOnOffSwitchedComponent,
+    props.toggleOnElement
+    && props.toggleOffElement
+    && makeOnOffSwitchedComponent,
 ];
 
 // returns a factory that will later

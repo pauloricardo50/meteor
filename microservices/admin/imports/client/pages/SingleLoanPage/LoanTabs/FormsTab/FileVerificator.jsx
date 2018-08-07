@@ -25,15 +25,15 @@ class FileVerificator extends Component {
           {/* If this is a custom uploadX file,
                     get title in the loan's last steps */}
           {id.indexOf('upload') >= 0 ? (
-            (closingSteps.find(s => s.id === id) &&
-              closingSteps.find(s => s.id === id).title) ||
-            id
+            (closingSteps.find(s => s.id === id)
+              && closingSteps.find(s => s.id === id).title)
+            || id
           ) : (
             <T id={`files.${id}`} />
           )}
         </h4>
-        {currentValue &&
-          currentValue
+        {currentValue
+          && currentValue
             .sort((a, b) => a.fileCount > b.fileCount)
             .map(f => (
               <ItemVerificator

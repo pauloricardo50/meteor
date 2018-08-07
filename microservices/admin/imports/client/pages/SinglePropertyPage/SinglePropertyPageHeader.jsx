@@ -54,8 +54,8 @@ const SinglePropertyHeader = ({
 
         <FullDate date={createdAt} />
 
-        {user &&
-          user.assignedEmployee && (
+        {user
+          && user.assignedEmployee && (
           <span>
             {' - '}
             <T id="SinglePropertyPageHeader.assignedTo" />{' '}

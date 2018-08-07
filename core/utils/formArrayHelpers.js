@@ -14,10 +14,10 @@ type formFieldType = {
 // shouldCountField - A boolean to determine if a field in an array
 // should be counted or not
 export const shouldCountField = (formField: formFieldType) =>
-  (formField.condition === undefined || formField.condition === true) &&
-  formField.required !== false &&
-  !formField.disabled &&
-  formField.type !== 'h3';
+  (formField.condition === undefined || formField.condition === true)
+  && formField.required !== false
+  && !formField.disabled
+  && formField.type !== 'h3';
 
 // getCountedArray - Returns an array of values that are mandatory and should
 // be counted to determine a completion percentage of a form

@@ -94,7 +94,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getTheoreticalMonthly({ loan }) {
-      return this.getTheoreticalInterests({ loan }) + this.getAmortization({ loan });
+      return (
+        this.getTheoreticalInterests({ loan }) + this.getAmortization({ loan })
+      );
     }
 
     getIncomeRatio({ loan }) {

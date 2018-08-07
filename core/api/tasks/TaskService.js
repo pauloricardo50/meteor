@@ -114,8 +114,10 @@ class TaskService {
 
   update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
 
+  getTaskById = taskId => Tasks.findOne(taskId);
+
   complete = ({ taskId }) => {
-    const task = Tasks.findOne(taskId);
+    const task = this.getTaskById(taskId);
     if (!validateTask(task)) {
       throw new Meteor.Error('incomplete-task');
     }

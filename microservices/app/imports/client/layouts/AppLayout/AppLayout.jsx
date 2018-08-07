@@ -58,9 +58,9 @@ const getRedirect = ({
   // user is on allowed routes
   const { loans } = currentUser;
   if (
-    loans &&
-    loans.length < 1 &&
-    !allowedRoutesWithoutLoan.some(route => pathname.indexOf(route) === 0)
+    loans
+    && loans.length < 1
+    && !allowedRoutesWithoutLoan.some(route => pathname.indexOf(route) === 0)
   ) {
     return '/';
   }

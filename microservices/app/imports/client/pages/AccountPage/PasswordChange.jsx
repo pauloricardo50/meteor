@@ -28,9 +28,9 @@ export default class PasswordChange extends Component {
   handleChange = (event, key) => {
     this.setState({ [key]: event.target.value }, () => {
       if (
-        !!this.state.oldPassword &&
-        !!this.state.newPassword &&
-        this.state.newPassword === this.state.newPassword2
+        !!this.state.oldPassword
+        && !!this.state.newPassword
+        && this.state.newPassword === this.state.newPassword2
       ) {
         this.setState({ isValid: true });
       } else {

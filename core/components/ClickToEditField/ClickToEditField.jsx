@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 
-import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 import Input from '@material-ui/core/Input';
+import ClickToEditFieldContainer from './ClickToEditFieldContainer';
 
 type ClickToEditFieldProps = {
   isEditing: boolean,

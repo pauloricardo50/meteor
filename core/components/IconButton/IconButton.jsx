@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MuiIconButton from '@material-ui/core/IconButton';
-import Icon from '../Icon';
 import Tooltip from '@material-ui/core/Tooltip';
+import Icon from '../Icon';
 
 // Keep this a class to avoid warnings from IconMenu which adds a ref to this
 // component

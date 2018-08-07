@@ -19,6 +19,8 @@ import {
   getPropertyExpenses,
   getBorrowRatio,
   getIncomeRatio,
+  getBorrowRatioStatus,
+  getIncomeRatioStatus,
 } from './financingStructuresResultHelpers';
 
 type FinancingStructuresResultProps = {};
@@ -72,13 +74,13 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
           id: 'borrowRatio',
           Component: FinmaRatio,
           value: getBorrowRatio,
-          status: 'SUCCESS',
+          status: getBorrowRatioStatus,
         },
         {
           id: 'incomeRatio',
           Component: FinmaRatio,
           value: getIncomeRatio,
-          status: 'SUCCESS',
+          status: getIncomeRatioStatus,
         },
         {
           id: 'fiscal',
@@ -136,8 +138,6 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
 
 export default lifecycle({
   componentDidCatch(error) {
-    console.log('catched!', error);
-
     this.setState({ error });
   },
   componentWillReceiveProps() {

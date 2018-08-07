@@ -51,8 +51,8 @@ const Title = ({
         </h5>
       </div>
 
-      {userIsAdmin &&
-        isOwnedByAdmin && (
+      {userIsAdmin
+        && isOwnedByAdmin && (
         <ConfirmMethod
           label={<T id="general.delete" />}
           keyword="SUPPRIMER"

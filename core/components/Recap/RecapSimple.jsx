@@ -26,9 +26,11 @@ const RecapSimple = ({ array, noScale, className }) => (
     }) => {
       if (hide) {
         return null;
-      } else if (space) {
+      }
+      if (space) {
         return <div style={{ height: 16 }} />;
-      } else if (title) {
+      }
+      if (title) {
         return (
           <h4
             className="text-center"

@@ -7,7 +7,8 @@ import { WARNING, ERROR, SUCCESS } from 'core/api/constants';
 const getLenderCount = (borrowStatus, incomeStatus) => {
   if (borrowStatus !== ERROR && incomeStatus === SUCCESS) {
     return 15;
-  } else if (incomeStatus === WARNING) {
+  }
+  if (incomeStatus === WARNING) {
     return 4;
   }
   return '-';

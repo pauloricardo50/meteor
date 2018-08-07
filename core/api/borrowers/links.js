@@ -1,5 +1,5 @@
 import Borrowers from './borrowers';
-import { Loans, Users } from '../';
+import { Loans, Users } from '..';
 
 Borrowers.addLinks({
   user: {

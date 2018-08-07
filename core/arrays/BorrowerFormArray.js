@@ -59,8 +59,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       },
       condition: !disableAddress,
       placeholder:
-        disableAddress &&
-        (borrowers[0].zipCode && borrowers[0].city
+        disableAddress
+        && (borrowers[0].zipCode && borrowers[0].city
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,

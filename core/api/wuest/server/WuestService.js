@@ -128,8 +128,8 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile &&
-          Object.values(WUEST_QUALITY.STANDARD).includes(qualityProfile.standard),
+          !!qualityProfile
+          && Object.values(WUEST_QUALITY.STANDARD).includes(qualityProfile.standard),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_STANDARD,
       },
       {
@@ -139,8 +139,8 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile &&
-          Object.values(WUEST_QUALITY.CONDITION).includes(qualityProfile.condition),
+          !!qualityProfile
+          && Object.values(WUEST_QUALITY.CONDITION).includes(qualityProfile.condition),
         error: WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION,
       },
       {
@@ -187,8 +187,8 @@ class WuestService {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
           (type === WUEST_PROPERTY_TYPE.FLAT
             ? true
-            : !!buildingVolume &&
-              Object.values(WUEST_VOLUME_TYPE).includes(buildingVolume.type)),
+            : !!buildingVolume
+              && Object.values(WUEST_VOLUME_TYPE).includes(buildingVolume.type)),
         error: WUEST_ERRORS.INVALID_BUILDING_VOLUME_TYPE,
       },
       {
@@ -255,8 +255,8 @@ class WuestService {
         sanityCheck: ({ type, data: { usableArea } }) =>
           (type === WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : !!usableArea &&
-              Object.values(WUEST_AREA_TYPE).includes(usableArea.type)),
+            : !!usableArea
+              && Object.values(WUEST_AREA_TYPE).includes(usableArea.type)),
         error: WUEST_ERRORS.INVALID_USABLE_AREA_TYPE,
       },
     ];
@@ -342,7 +342,10 @@ class WuestService {
   }
 
   evaluateById(propertyId, loanResidenceType) {
-    const property = this.createPropertyFromCollection(propertyId, loanResidenceType);
+    const property = this.createPropertyFromCollection(
+      propertyId,
+      loanResidenceType,
+    );
     return this.evaluate([property]);
   }
 
@@ -367,9 +370,7 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-              WUEST_RESIDENCE_TYPE[
-                invert(RESIDENCE_TYPE)[loanResidenceType]
-              ],
+              WUEST_RESIDENCE_TYPE[invert(RESIDENCE_TYPE)[loanResidenceType]],
           flatType: property.flatType,
           numberOfRooms: property.roomCount,
           numberOfFloors: property.numberOfFloors,
@@ -407,9 +408,7 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-              WUEST_RESIDENCE_TYPE[
-            invert(RESIDENCE_TYPE)[loanResidenceType]
-              ],
+              WUEST_RESIDENCE_TYPE[invert(RESIDENCE_TYPE)[loanResidenceType]],
           houseType: property.houseType,
           numberOfRooms: property.roomCount,
           landPlotArea: property.landArea,

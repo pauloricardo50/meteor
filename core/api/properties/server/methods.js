@@ -28,12 +28,12 @@ propertyDelete.setHandler((context, { propertyId }) => {
 
 pushPropertyValue.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.pushValue(object);
+  return PropertyService.pushValue({ propertyId, object });
 });
 
 popPropertyValue.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.pushValue(object);
+  return PropertyService.pushValue({ propertyId, object });
 });
 
 evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {

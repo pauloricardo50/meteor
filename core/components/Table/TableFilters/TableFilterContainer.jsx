@@ -24,10 +24,9 @@ const getValueTranslationIdForPath = (value, filterPath) => {
     return `TableFilters.noneLabels.${filterKey}`;
   }
 
-  const translationId =
-    (['type', 'status'].includes(filterKey) &&
-      `TasksStatusDropdown.${value}`) ||
-    (filterKey === 'roles' && `roles.${value}`);
+  const translationId = (['type', 'status'].includes(filterKey)
+      && `TasksStatusDropdown.${value}`)
+    || (filterKey === 'roles' && `roles.${value}`);
 
   if (!translationId) {
     return null;

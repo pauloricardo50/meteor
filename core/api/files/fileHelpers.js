@@ -34,8 +34,8 @@ export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
       if (!(f.required === false || f.condition === false)) {
         if (doc2.documents[f.id]) {
           if (checkValidity) {
-            a.push(isArray(doc2.documents[f.id].files) &&
-              doc2.documents[f.id].files.every(file => file.status === FILE_STATUS.VALID)
+            a.push(isArray(doc2.documents[f.id].files)
+              && doc2.documents[f.id].files.every(file => file.status === FILE_STATUS.VALID)
               ? true
               : undefined);
           } else {

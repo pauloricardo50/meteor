@@ -6,9 +6,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import Loading from 'core/components/Loading';
 import { TooltipProvider } from 'core/components/tooltips/TooltipContext';
+import LibraryWrappers from 'core/components/BaseRouter/LibraryWrappers';
 import messagesFR from '../../../lang/fr.json';
 
-import LibraryWrappers from 'core/components/BaseRouter/LibraryWrappers';
 import Routes from '../shared/Routes';
 
 const App = ({ store, persistor, Router }) => (

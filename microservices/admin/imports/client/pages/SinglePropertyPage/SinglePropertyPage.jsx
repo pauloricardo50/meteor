@@ -12,11 +12,7 @@ import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 export const getPropertyAddress = ({ address1, zipCode, city }) =>
   (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
-const SinglePropertyPage = ({
-  property,
-  displayLoans,
-  className,
-}) => {
+const SinglePropertyPage = ({ property, displayLoans, className }) => {
   const { loans } = property;
   const address = getPropertyAddress(property);
 
