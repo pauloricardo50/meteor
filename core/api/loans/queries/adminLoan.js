@@ -1,6 +1,7 @@
 import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Loans from '../loans';
 import { LOAN_QUERIES } from '../../constants';
+import { adminPropertyFragment } from '../../properties/queries/propertyFragments';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
@@ -21,52 +22,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   adminNote: 1,
   adminValidation: 1,
   documents: 1,
-  properties: {
-    userId: 1,
-    createdAt: 1,
-    updatedAt: 1,
-    status: 1,
-    value: 1,
-    propertyWork: 1,
-    residenceType: 1,
-    numberOfFloors: 1,
-    floorNumber: 1,
-    houseType: 1,
-    flatType: 1,
-    investmentRent: 1,
-    propertyType: 1,
-    address: 1,
-    address1: 1,
-    address2: 1,
-    zipCode: 1,
-    city: 1,
-    constructionYear: 1,
-    renovationYear: 1,
-    insideArea: 1,
-    areaNorm: 1,
-    landArea: 1,
-    terraceArea: 1,
-    roomCount: 1,
-    volume: 1,
-    volumeNorm: 1,
-    parking: 1,
-    minergie: 1,
-    isCoproperty: 1,
-    qualityProfile: {
-      condition: 1,
-      standard: 1,
-    },
-    isNew: 1,
-    copropertyPercentage: 1,
-    pictures: 1,
-    name: 1,
-    latitude: 1,
-    longitude: 1,
-    customFields: 1,
-    adminValidation: 1,
-    documents: 1,
-    valuation: 1,
-  },
+  properties: adminPropertyFragment,
   borrowerIds: 1,
   borrowers: {
     firstName: 1,

@@ -1,6 +1,6 @@
-import merge from 'lodash/merge';
+import { loanSummary } from '../../loans/queries/loanFragments';
 
-export const userValuationFragment = {
+export const userValuation = {
   min: 1,
   max: 1,
   status: 1,
@@ -9,11 +9,12 @@ export const userValuationFragment = {
   microlocation: 1,
 };
 
-export const adminValuationFragment = merge(userValuationFragment, {
+export const adminValuation = {
+  ...userValuation,
   value: 1,
-});
+};
 
-export const userPropertyFragment = {
+export const property = {
   address1: 1,
   address2: 1,
   city: 1,
@@ -53,8 +54,24 @@ export const userPropertyFragment = {
   latitude: 1,
   longitude: 1,
   customFields: 1,
+  monhtlyExpenses: 1,
+  pictures: 1,
+  documents: 1,
+  adminValidation: 1,
   user: {
     emails: 1,
     assignedEmployee: { emails: 1 },
   },
+  // fields used in LoanSummary component
+  loans: loanSummary,
+};
+
+export const userPropertyFragment = {
+  ...property,
+  valuation: userValuation,
+};
+
+export const adminPropertyFragment = {
+  ...property,
+  valuation: adminValuation,
 };
