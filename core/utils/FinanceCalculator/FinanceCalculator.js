@@ -273,6 +273,10 @@ export class FinanceCalculator {
     const amortization = loanValue * amortizationRate;
     return this.getLoanCostWithParts({ maintenance, interests, amortization });
   }
+
+  getNotaryFeesRate() {
+    return this.notaryFees;
+  }
 }
 
 export default new FinanceCalculator();
