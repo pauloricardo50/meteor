@@ -7,13 +7,18 @@ import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
 import FinancingStructuresPropertyPicker from './FinancingStructuresPropertyPicker';
-import { getProperty } from '../FinancingStructuresCalculator';
+import FinancingCalculator, {
+  getProperty,
+} from '../FinancingStructuresCalculator';
 
 type FinancingStructuresProjectProps = {};
 
-const calculateNotaryFees = data => getProperty(data).value * 0.05;
+const calculateNotaryFees = data =>
+  getProperty(data).value * FinancingCalculator.getNotaryFeesRate();
 
-const calculateProjectValue = data => getProperty(data).value * 1.05 + data.structure.propertyWork;
+const calculateProjectValue = data =>
+  getProperty(data).value * (1 + FinancingCalculator.getNotaryFeesRate())
+  + data.structure.propertyWork;
 
 const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection

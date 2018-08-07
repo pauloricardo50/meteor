@@ -48,7 +48,9 @@ const calculateRequiredOwnFunds = (data) => {
   const { propertyWork } = data.structure;
   const propertyValue = getProperty(data).value;
   const effectiveLoan = calculateLoan(data);
-  const fundsRequired = propertyValue + propertyWork - effectiveLoan;
+  const fundsRequired = propertyValue * (1 + Calculator.getNotaryFeesRate())
+    + propertyWork
+    - effectiveLoan;
   const totalCurrentFunds = calculateOwnFunds(data);
 
   return fundsRequired - totalCurrentFunds;

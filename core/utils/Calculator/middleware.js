@@ -53,6 +53,6 @@ const argumentMappings = {
 export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappings);
 
 export const borrowerExtractorMiddleware = () => next => params =>
-  (params.loan
+  (params && params.loan
     ? next({ ...params, borrowers: params.loan.borrowers })
     : next(params));
