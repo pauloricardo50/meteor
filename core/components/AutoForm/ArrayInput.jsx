@@ -53,21 +53,28 @@ class ArrayInput extends Component {
       };
 
       if (type === 'textInput') {
-        return <TextInput {...childProps} noValidator />;
-      } else if (type === 'selectInput') {
+        return <TextInput {...childProps} noValidator key={id + inputId + i} />;
+      }
+      if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
           (opt.id === undefined
             ? { id: opt, label: <T id={`Forms.${id}.${opt}`} /> }
             : { ...opt, label: <T id={`Forms.${id}.${opt.id}`} /> }));
-        return <SelectFieldInput {...childProps} noValidator />;
+        return (
+          <SelectFieldInput
+            {...childProps}
+            noValidator
+            key={id + inputId + i}
+          />
+        );
       }
     };
 
     for (let i = 0; i < this.state.count; i += 1) {
       // If there are multiple components per array item
-      array.push(<div className="mask1" style={styles.arrayItem} key={i}>
+      array.push(<div className="mask1" style={styles.arrayItem} key={`${id + i}item`}>
         {inputs.map(input => mapInput(input, i))}
       </div>);
     }
@@ -79,8 +86,8 @@ class ArrayInput extends Component {
 
   // Only remove a value if there's more than 1 left
   removeValue = () =>
-    this.state.count > 0 &&
-    this.props
+    this.state.count > 0
+    && this.props
       .popFunc({
         object: { [`${this.props.inputProps.id}`]: 1 },
         id: this.props.docId,
@@ -139,16 +146,18 @@ class ArrayInput extends Component {
 }
 
 ArrayInput.propTypes = {
-  inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
   currentValue: PropTypes.arrayOf(PropTypes.any),
-  id: PropTypes.string.isRequired,
-  label: PropTypes.node.isRequired,
-  popFunc: PropTypes.func.isRequired,
   docId: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  label: PropTypes.node,
+  popFunc: PropTypes.func.isRequired,
 };
 
 ArrayInput.defaultProps = {
   currentValue: [],
+  id: undefined,
+  label: undefined,
 };
 
 export default ArrayInput;
