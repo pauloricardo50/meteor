@@ -5,6 +5,8 @@ import {
   RESIDENCE_TYPE,
   EXPERTISE_RATING,
   MINERGIE_CERTIFICATE,
+  HOUSE_TYPE,
+  FLAT_TYPE,
 } from 'core/api/constants';
 
 const mapInput = (input) => {
@@ -176,6 +178,24 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'propertyDetails',
       ignore: true,
       required: false,
+    },
+    {
+      id: 'houseType',
+      type: 'radioInput',
+      options: Object.values(HOUSE_TYPE),
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
+    },
+    {
+      id: 'flatType',
+      type: 'radioInput',
+      options: Object.values(FLAT_TYPE),
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
+    },
+    {
+      id: 'numberOfFloors',
+      type: 'textInput',
+      number: true,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
     { id: 'constructionYear', type: 'textInput', number: true },
     {

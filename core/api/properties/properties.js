@@ -8,6 +8,8 @@ import {
   VOLUME_NORM,
   EXPERTISE_STATUS,
   MINERGIE_CERTIFICATE,
+  HOUSE_TYPE,
+  FLAT_TYPE,
 } from './propertyConstants';
 
 const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
@@ -201,6 +203,19 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: PROPERTY_TYPE.FLAT,
     allowedValues: Object.values(PROPERTY_TYPE),
   },
+  houseType: {
+    type: String,
+    optional: true,
+    defaultValue: HOUSE_TYPE.DETACHED,
+    allowedValues: Object.values(HOUSE_TYPE),
+  },
+  flatType: {
+    type: String,
+    optional: true,
+    defaultValue: FLAT_TYPE.SINGLE_FLOOR,
+    allowedValues: Object.values(FLAT_TYPE),
+  },
+
   address: {
     // For condensed, google places addresses
     type: String,
@@ -255,6 +270,13 @@ export const PropertySchema = new SimpleSchema({
     type: Number,
     optional: true,
     min: 0,
+  },
+  numberOfFloors: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 20,
+    defaultValue: 1,
   },
   roomCount: {
     type: Number,

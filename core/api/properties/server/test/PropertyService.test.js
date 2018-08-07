@@ -21,6 +21,7 @@ describe('PropertyService', () => {
         insideArea: 100,
         terraceArea: 20,
         constructionYear: 1,
+        numberOfFloors: 10,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
@@ -42,6 +43,7 @@ describe('PropertyService', () => {
         constructionYear: 2000,
         insideArea: 100,
         terraceArea: 20,
+        numberOfFloors: 10,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
@@ -60,6 +62,7 @@ describe('PropertyService', () => {
         constructionYear: 2000,
         insideArea: 100,
         terraceArea: 20,
+        numberOfFloors: 10,
       })._id;
       return PropertyService.evaluateProperty(propertyId).then(() => {
         const property = PropertyService.getPropertyById(propertyId);

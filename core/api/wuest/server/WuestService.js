@@ -370,9 +370,9 @@ class WuestService {
               WUEST_RESIDENCE_TYPE[
                 invert(RESIDENCE_TYPE)[property.residenceType]
               ],
-          flatType: WUEST_FLAT_TYPE.SINGLE_FLOOR,
+          flatType: property.flatType,
           numberOfRooms: property.roomCount,
-          numberOfFloors: 4,
+          numberOfFloors: property.numberOfFloors,
           floorType: WUEST_FLOOR_NUMBER[property.floorNumber || 2],
           usableArea: {
             type: WUEST_AREA_TYPE.NET,
@@ -408,7 +408,7 @@ class WuestService {
               WUEST_RESIDENCE_TYPE[
                 invert(RESIDENCE_TYPE)[property.residenceType]
               ],
-          houseType: WUEST_HOUSE_TYPE.DETACHED,
+          houseType: property.houseType,
           numberOfRooms: property.roomCount,
           landPlotArea: property.landArea,
           buildingVolume: {
