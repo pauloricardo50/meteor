@@ -13,7 +13,7 @@ describe('PropertyService', () => {
   describe('evaluateProperty', () => {
     it('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_TYPE.FLAT,
+        propertyType: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',

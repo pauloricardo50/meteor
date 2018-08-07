@@ -17,6 +17,6 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTIES, {
   zipCode: 1,
   value: 1,
   status: 1,
-  style: 1,
+  propertyType: 1,
   insideArea: 1,
 });

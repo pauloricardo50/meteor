@@ -354,7 +354,7 @@ class WuestService {
       throw new Meteor.Error(WUEST_ERRORS.NO_PROPERTY_FOUND);
     }
 
-    switch (property.style) {
+    switch (property.propertyType) {
     case PROPERTY_TYPE.FLAT:
       data = this.addProperty({
         id: propertyId,

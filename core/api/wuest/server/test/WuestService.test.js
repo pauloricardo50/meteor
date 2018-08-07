@@ -414,7 +414,7 @@ describe('WuestService', () => {
   context('evaluateById', () => {
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_TYPE.FLAT,
+        propertyType: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',
@@ -432,7 +432,7 @@ describe('WuestService', () => {
 
     it('returns micro location', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_TYPE.FLAT,
+        propertyType: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',

@@ -127,7 +127,7 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'cubage',
       doubleTooltip: true,
-      condition: property.style === 'villa',
+      condition: property.propertyType === 'villa',
     },
     {
       id: 'pictures',

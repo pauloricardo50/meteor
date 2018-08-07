@@ -194,7 +194,7 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  style: {
+  propertyType: {
     type: String,
     optional: true,
     defaultValue: PROPERTY_TYPE.FLAT,

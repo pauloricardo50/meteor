@@ -133,7 +133,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
   const array = [
     { id: 'value', type: 'textInput', money: true },
     {
-      id: 'style',
+      id: 'propertyType',
       type: 'radioInput',
       options: Object.values(PROPERTY_TYPE),
     },
@@ -188,7 +188,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'landArea',
       type: 'textInput',
       number: true,
-      condition: property.style === PROPERTY_TYPE.HOUSE,
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
     { id: 'insideArea', type: 'textInput', number: true },
     {
@@ -207,12 +207,12 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'volume',
       type: 'textInput',
       number: true,
-      condition: property.style === PROPERTY_TYPE.HOUSE,
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       id: 'volumeNorm',
       type: 'textInput',
-      condition: property.style === PROPERTY_TYPE.HOUSE,
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       id: 'roomCount',
@@ -234,7 +234,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
-      condition: property.style === PROPERTY_TYPE.HOUSE,
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
       inputs: [
         {
           id: 'isCoproperty',
@@ -253,7 +253,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'copropertyPercentage',
       type: 'textInput',
       number: true,
-      condition: property.style === PROPERTY_TYPE.FLAT,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
       info: true,
     },
     {
@@ -271,7 +271,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'buildingPlacementQuality',
       type: 'radioInput',
       options: Object.values(EXPERTISE_RATING),
-      condition: property.style === PROPERTY_TYPE.FLAT,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       id: 'buildingQuality',
@@ -282,7 +282,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'flatQuality',
       type: 'radioInput',
       options: Object.values(EXPERTISE_RATING),
-      condition: property.style === PROPERTY_TYPE.FLAT,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       id: 'materialsQuality',
