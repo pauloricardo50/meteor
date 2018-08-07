@@ -7,6 +7,14 @@ import TranchePickerContainer from './TranchePickerContainer';
 
 type TranchePickerDialogProps = {};
 
+const tranchesAreValid = (tranches) => {
+  const sum = tranches.reduce((total, { value }) => total + value, 0);
+  const sumIsOne = sum === 1;
+  const allTypesAreDefined = tranches.every(({ type }) => !!type);
+
+  return sumIsOne && allTypesAreDefined;
+};
+
 const TranchePickerDialog = ({
   title,
   tranches,
@@ -25,6 +33,7 @@ const TranchePickerDialog = ({
           handleSave(tranches);
           handleClose();
         }}
+        disabled={!tranchesAreValid(tranches)}
       >
         Enregistrer
       </Button>,

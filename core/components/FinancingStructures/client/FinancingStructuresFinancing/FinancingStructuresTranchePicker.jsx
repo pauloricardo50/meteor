@@ -11,11 +11,14 @@ type FinancingStructuresTranchePickerProps = {};
 const FinancingStructuresTranchePicker = ({
   structure: { loanTranches },
   handleChange,
+  className,
 }: FinancingStructuresTranchePickerProps) => (
-  <TranchePickerDialog
-    initialTranches={loanTranches}
-    handleSave={handleChange}
-  />
+  <span className={className}>
+    <TranchePickerDialog
+      initialTranches={loanTranches}
+      handleSave={handleChange}
+    />
+  </span>
 );
 
 export default compose(
