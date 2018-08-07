@@ -1,5 +1,6 @@
 {
-  "AboutPageOffice.description": "Basés à Genève, nous travaillons tous les jours pour transformer le marché de l'hypothèque.",
+  "AboutPageOffice.description":
+    "Basés à Genève, nous travaillons tous les jours pour transformer le marché de l'hypothèque.",
   "AboutPageOffice.title": "Nos bureaux",
   "AboutPagePart1.description":
     "Les conseillers d’e-Potek sont des professionnels d’expérience, en phase avec les évolutions d’un marché en permanente évolution. L'équipe est composée d’experts de confiance sur les sujets du financement hypothécaire, de la prévoyance et de la fiscalité immobilière.",
@@ -819,7 +820,7 @@
   "Forms.propertyAddress": "Adresse du bien immobilier",
   "Forms.propertyDetails": "Détails du bien",
   "Forms.propertyInfo": "Informations générales sur la propriété",
-  "Forms.propertyQuality": "Qualité et Emplacement",
+  "Forms.propertyQuality": "Profil de qualité",
   "Forms.propertyType.FLAT": "Appartement",
   "Forms.propertyType.HOUSE": "Villa",
   "Forms.propertyType": "Type de bien immobilier",
@@ -1068,7 +1069,8 @@
   "Microlocation.distanceCenterLabel": "Centre",
   "Microlocation.distanceHighVoltagePowerLineLabel": "Lignes à haute tension",
   "Microlocation.distanceLakeLabel": "Lac",
-  "Microlocation.distanceMainRoadResidentialLabel": "Route principale (résidentielle)",
+  "Microlocation.distanceMainRoadResidentialLabel":
+    "Route principale (résidentielle)",
   "Microlocation.distanceNuclearPowerLabel": "Centrale nucléaire",
   "Microlocation.distanceRadioAntennaLabel": "Antenne radio mobile",
   "Microlocation.distanceRailwayLabel": "Chemin de fer",
@@ -1085,10 +1087,12 @@
   "Microlocation.infrastructureLabel": "Infrastructure",
   "Microlocation.lakeViewLabel": "Vue sur le lac",
   "Microlocation.mountainViewLabel": "Vue sur les montagnes",
-  "Microlocation.publicTransportGradeLabel": "Qualité de la desserte en transports publics",
+  "Microlocation.publicTransportGradeLabel":
+    "Qualité de la desserte en transports publics",
   "Microlocation.slopeInclinationLabel": "Inclinaison",
   "Microlocation.sunShineDurationSummerLabel": "Durée d'ensoleillement en été",
-  "Microlocation.sunShineDurationWinterLabel": "Durée d'ensoleillement en hiver",
+  "Microlocation.sunShineDurationWinterLabel":
+    "Durée d'ensoleillement en hiver",
   "Microlocation.terrainLabel": "Terrain, vue et climat",
   "Microlocation.title": "Microsituation",
   "MissingDoc.redirectHome": "Page d'accueil",
@@ -1184,7 +1188,8 @@
   "PropertyForm.modifierLabel": "Modifier votre bien immobilier",
   "PropertyForm.value": "Prix d'achat",
   "PropertyForm.zipCode": "NPA",
-  "PropertyPage.title": "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
+  "PropertyPage.title":
+    "{count, plural, one {Mon bien immobilier} other {Notre bien immobilier}}",
   "Recap.availableFunds": "Fonds propres dispo",
   "Recap.bankFortune": "Fortune bancaire",
   "Recap.borrowRatio": "Prêt / Prix d'achat",
