@@ -5,6 +5,7 @@ import {
   RESIDENCE_TYPE,
   PROPERTY_TYPE,
   MINERGIE_CERTIFICATE,
+  FLAT_TYPE,
 } from '../constants';
 
 export const fakeGeneral = {
@@ -23,7 +24,10 @@ export const fakeProperty = {
   zipCode: 1000,
   city: 'Lausanne',
   residenceType: RESIDENCE_TYPE.MAIN,
-  type: PROPERTY_TYPE.FLAT,
+  propertyType: PROPERTY_TYPE.FLAT,
+  flatType: FLAT_TYPE.SINGLEFLOOR,
+  numberOfFloors: 5,
+  floorNumber: 2,
   futureOwner: 0,
   constructionYear: 2010,
   landArea: 300,
@@ -31,21 +35,13 @@ export const fakeProperty = {
   volume: 1500,
   volumeNorm: 'SIA_416',
   roomCount: 5,
-  bathroomCount: 2,
-  toiletCount: 0,
   parking: {
-    box: 0,
     inside: 1,
     outside: 2,
   },
   minergie: MINERGIE_CERTIFICATE.ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
-  cityPlacementQuality: 2,
-  buildingPlacementQuality: 3,
-  buildingQuality: 1,
-  flatQuality: 2,
-  materialsQuality: 2,
 };
 
 export const logic1 = {

@@ -23,22 +23,14 @@ export const fakeProperty = {
   volume: 1500,
   volumeNorm: 'SIA_416',
   roomCount: 5,
-  bathroomCount: 2,
-  toiletCount: 0,
   parking: {
-    box: 0,
     inside: 1,
     outside: 2,
   },
   minergie: MINERGIE_CERTIFICATE.ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
-  cityPlacementQuality: 2,
-  buildingPlacementQuality: 3,
-  buildingQuality: 1,
-  flatQuality: 2,
-  materialsQuality: 2,
-  expertise: {
+  valuation: {
     status: EXPERTISE_STATUS.NONE,
   },
   documents: {

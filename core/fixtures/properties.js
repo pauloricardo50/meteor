@@ -4,14 +4,19 @@ import {
   RESIDENCE_TYPE,
   PROPERTY_TYPE,
   VOLUME_NORM,
+  MINERGIE_CERTIFICATE,
+  QUALITY,
 } from '../api/properties/propertyConstants';
 import { fakeDocument } from '../api/files/fakes';
 import { Properties } from '../api';
 
 const statuses = Object.values(PROPERTY_STATUS);
 const residenceTypes = Object.values(RESIDENCE_TYPE);
-const styles = Object.values(PROPERTY_TYPE);
+const types = Object.values(PROPERTY_TYPE);
 const volumeNorms = Object.values(VOLUME_NORM);
+const minergies = Object.values(MINERGIE_CERTIFICATE);
+const conditions = Object.values(QUALITY.CONDITION);
+const standards = Object.values(QUALITY.STANDARD);
 
 const getRandomValueInRange = (min, max) => Math.random() * (max - min) + min;
 const getRandomValueInArray = array =>
@@ -26,7 +31,7 @@ export const createFakeProperty = (userId) => {
     zipCode: Math.round(getRandomValueInRange(1000, 4000)),
     city: 'Lausanne',
     residenceType: getRandomValueInArray(residenceTypes),
-    style: getRandomValueInArray(styles),
+    propertyType: getRandomValueInArray(types),
     futureOwner: 0,
     constructionYear: 2010,
     landArea: 300,
@@ -34,26 +39,21 @@ export const createFakeProperty = (userId) => {
     volume: 1500,
     volumeNorm: getRandomValueInArray(volumeNorms),
     roomCount: 5,
-    bathroomCount: 2,
-    toiletCount: 0,
     parking: {
-      box: 0,
       inside: 1,
       outside: 2,
     },
-    minergie: true,
+    qualityProfile: {
+      condition: getRandomValueInArray(conditions),
+      standard: getRandomValueInArray(standards),
+    },
+    minergie: getRandomValueInArray(minergies),
     isCoproperty: true,
     copropertyPercentage: 400,
-    cityPlacementQuality: 2,
-    buildingPlacementQuality: 3,
-    buildingQuality: 1,
-    flatQuality: 2,
-    materialsQuality: 2,
     adminValidation: {
       buildingPlacementQuality: 'No option selected',
       propertyInfo: 'Not completed',
     },
-    expertise: {},
     documents: {
       plans: fakeDocument,
       cubage: fakeDocument,
