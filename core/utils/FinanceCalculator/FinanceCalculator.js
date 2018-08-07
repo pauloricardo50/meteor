@@ -1,5 +1,5 @@
 // @flow
-import { GENDER } from '../../api/constants';
+import { GENDER, SUCCESS, ERROR, WARNING } from '../../api/constants';
 import {
   NOTARY_FEES,
   AMORTIZATION_STOP,
@@ -11,6 +11,8 @@ import {
   MIN_CASH,
   INTERESTS_FINMA,
   MAINTENANCE_FINMA,
+  MAX_INCOME_RATIO,
+  MAX_INCOME_RATIO_TIGHT,
 } from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
@@ -29,40 +31,46 @@ export class FinanceCalculator {
   amortizationGoal: number;
 
   initFinanceCalculator({
-    notaryFees = NOTARY_FEES,
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
-    taxRate = AVERAGE_TAX_RATE,
-    secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
-    maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-    minCash = MIN_CASH,
     interestRates = averageRates,
+    maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+    maxIncomeRatio = MAX_INCOME_RATIO,
+    maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
+    minCash = MIN_CASH,
+    notaryFees = NOTARY_FEES,
+    secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
+    taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
     theoreticalMaintenanceRatio = MAINTENANCE_FINMA,
     middlewares = [],
     middlewareObject,
   }: {
-    notaryFees?: number,
     amortizationBaseRate?: number,
     amortizationGoal?: number,
-    taxRate?: number,
-    secondPillarWithdrawalTaxRate?: number,
-    maxBorrowRatio?: number,
-    minCash?: number,
     interestRates: Object,
+    maxBorrowRatio?: number,
+    maxIncomeRatio?: number,
+    maxIncomeRatioTight?: number,
+    minCash?: number,
+    notaryFees?: number,
+    secondPillarWithdrawalTaxRate?: number,
+    taxRate?: number,
     theoreticalInterestRate?: number,
     theoreticalMaintenanceRatio: number,
     middlewares?: Array<Function>,
     middlewareObject: Object,
   } = {}) {
-    this.notaryFees = notaryFees;
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
-    this.taxRate = taxRate;
-    this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
-    this.maxBorrowRatio = maxBorrowRatio;
-    this.minCash = minCash;
     this.interestRates = interestRates;
+    this.maxBorrowRatio = maxBorrowRatio;
+    this.maxIncomeRatio = maxIncomeRatio;
+    this.maxIncomeRatioTight = maxIncomeRatioTight;
+    this.minCash = minCash;
+    this.notaryFees = notaryFees;
+    this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
+    this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
     this.setRoundValuesMiddleware(middlewares, middlewareObject);
@@ -114,12 +122,31 @@ export class FinanceCalculator {
     });
   }
 
+  getBorrowRatioStatus({ borrowRatio }) {
+    if (borrowRatio <= this.maxBorrowRatio) {
+      return SUCCESS;
+    }
+    return ERROR;
+  }
+
   getRetirementForGender({ gender = GENDER.M }: { gender?: string } = {}) {
     return gender === GENDER.F ? 64 : 65;
   }
 
   getIncomeRatio({ income, payment = 0 }: { income: number, payment: number }) {
     return payment / income;
+  }
+
+  getIncomeRatioStatus({ incomeRatio }) {
+    if (incomeRatio <= this.maxIncomeRatio) {
+      return SUCCESS;
+    }
+    if (this.maxIncomeRatioTight && incomeRatio <= this.maxIncomeRatioTight) {
+      // This ratio can be disabled, i.e. set to 0, and then it'll skip the warning
+      // and only display success or error
+      return WARNING;
+    }
+    return ERROR;
   }
 
   getLoanCost({

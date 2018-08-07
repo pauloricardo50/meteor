@@ -51,3 +51,8 @@ export const getRemainingThirdPillar = ({
 export const getBorrowRatio = FinanceCalculator.getBorrowRatio;
 
 export const getIncomeRatio = FinanceCalculator.getIncomeRatio;
+
+export const getBorrowRatioStatus = ({ value }) =>
+  FinanceCalculator.getBorrowRatioStatus({ borrowRatio: value });
+export const getIncomeRatioStatus = ({ value }) =>
+  FinanceCalculator.getIncomeRatioStatus({ incomeRatio: value });
