@@ -43,6 +43,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     constructionYear: 1,
     renovationYear: 1,
     insideArea: 1,
+    areaNorm: 1,
     landArea: 1,
     terraceArea: 1,
     roomCount: 1,

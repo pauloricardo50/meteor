@@ -10,6 +10,7 @@ import {
   MINERGIE_CERTIFICATE,
   HOUSE_TYPE,
   FLAT_TYPE,
+  AREA_NORM,
 } from './propertyConstants';
 
 const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
@@ -255,6 +256,12 @@ export const PropertySchema = new SimpleSchema({
     type: Number,
     optional: true,
     min: 0,
+  },
+  areaNorm: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(AREA_NORM),
+    defaultValue: AREA_NORM.NET,
   },
   landArea: {
     type: Number,

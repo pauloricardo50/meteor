@@ -939,7 +939,7 @@
   "Forms.houseType": "Type de villa",
   "Forms.houseType.DETACHED": "Individuelle",
   "Forms.houseType.ATTACHED_END_BUILDING":
-    "Mmitoyenne en extrémité de la rangée",
+    "Mitoyenne en extrémité de la rangée",
   "Forms.houseType.ATTACHED_MID_TERRACE_BUILDING":
     "Mitoyenne au centre de la rangée",
   "Forms.incomeAndExpenses": "Revenus & Charges",
@@ -1001,6 +1001,9 @@
   "Forms.otherNotes.placeholder":
     "Aménagements extérieurs, piscine, jardins, cabanons, annexes, sous-sols utiles,...",
   "Forms.otherOwner": "Autre propriétaire",
+  "Forms.areaNorm": "Type de surface",
+  "Forms.areaNorm.NIA": "Nette",
+  "Forms.areaNorm.NLS": "Brutte",
   "Forms.box": "Box de parking",
   "Forms.box.placeholder": "1",
   "Forms.inside": "Places de parc intérieur",

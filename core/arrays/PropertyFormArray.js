@@ -8,6 +8,7 @@ import {
   HOUSE_TYPE,
   FLAT_TYPE,
   VOLUME_NORM,
+  AREA_NORM,
 } from 'core/api/constants';
 
 const mapInput = (input) => {
@@ -218,12 +219,24 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       number: true,
       condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
-    { id: 'insideArea', type: 'textInput', number: true },
+    {
+      id: 'insideArea',
+      type: 'textInput',
+      number: true,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
+    },
+    {
+      id: 'areaNorm',
+      type: 'radioInput',
+      options: Object.values(AREA_NORM),
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
+    },
     {
       id: 'terraceArea',
       type: 'textInput',
       number: true,
       required: false,
+      condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       id: 'volume',

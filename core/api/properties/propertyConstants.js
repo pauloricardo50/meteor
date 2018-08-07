@@ -23,6 +23,11 @@ export const VOLUME_NORM = {
   BIC: 'BIC',
 };
 
+export const AREA_NORM = {
+  NET: 'NIA',
+  GROSS: 'NLS',
+};
+
 export const EXPERTISE_RATING = {
   0: 0,
   1: 1,

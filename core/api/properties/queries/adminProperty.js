@@ -24,6 +24,7 @@ export default Properties.createQuery(PROPERTY_QUERIES.ADMIN_PROPERTY, {
   numberOfFloors: 1,
   floorNumber: 1,
   insideArea: 1,
+  areaNorm: 1,
   roomCount: 1,
   landArea: 1,
   constructionYear: 1,

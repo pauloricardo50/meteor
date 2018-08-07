@@ -5,6 +5,7 @@ import {
   HOUSE_TYPE,
   FLAT_TYPE,
   VOLUME_NORM,
+  AREA_NORM,
 } from 'core/api/properties/propertyConstants';
 
 export const WUEST_PROPERTY_TYPE = {
@@ -76,8 +77,8 @@ export const WUEST_VOLUME_TYPE = {
 };
 
 export const WUEST_AREA_TYPE = {
-  NET: 'NIA',
-  GROSS: 'NLS',
+  NET: AREA_NORM.NET,
+  GROSS: AREA_NORM.GROSS,
 };
 
 export const WUEST_QUALITY = {

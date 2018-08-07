@@ -375,7 +375,7 @@ class WuestService {
           numberOfFloors: property.numberOfFloors,
           floorType: WUEST_FLOOR_NUMBER[property.floorNumber],
           usableArea: {
-            type: WUEST_AREA_TYPE.NET,
+            type: property.areaNorm,
             value: property.insideArea,
           },
           terraceArea: property.terraceArea,
@@ -412,7 +412,7 @@ class WuestService {
           numberOfRooms: property.roomCount,
           landPlotArea: property.landArea,
           buildingVolume: {
-            type: WUEST_VOLUME_TYPE.SIA_416,
+            type: property.volumeNorm,
             value: property.volume,
           },
           parking: {
