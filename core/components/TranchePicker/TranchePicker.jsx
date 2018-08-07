@@ -13,6 +13,17 @@ type TranchePickerProps = {
   options: Array<Object>,
 };
 
+const filterOptions = (options, tranches, currentType) => {
+  const currentSelectedTypes = tranches.map(({ type }) => type);
+  const difference = options.filter(({ id }) => !currentSelectedTypes.includes(id));
+  const currentOption = options.find(({ id }) => id === currentType);
+  const withCurrentType = currentOption
+    ? [...difference, currentOption]
+    : difference;
+  const sortedOptions = withCurrentType.sort(({ id: id1 }, { id: id2 }) => id1 > id2);
+  return sortedOptions;
+};
+
 export const TranchePicker = ({
   tranches,
   addTranche,
@@ -28,12 +39,12 @@ export const TranchePicker = ({
         value={value}
         type={type}
         removeTranche={() => removeTranche(type)}
-        setValue={event => setValue(type, event.target.value)}
+        setValue={newValue => setValue(type, newValue)}
         setType={(_, newType) => setType(type, newType)}
-        options={options}
+        options={filterOptions(options, tranches, type)}
       />
     ))}
-    <Button className="add" onClick={addTranche}>
+    <Button className="add" primary onClick={addTranche}>
       Ajouter
     </Button>
   </div>

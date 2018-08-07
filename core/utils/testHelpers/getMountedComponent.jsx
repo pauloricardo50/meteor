@@ -7,15 +7,12 @@ import messagesFR from '../../lang/fr.json';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = ({ Component, props = {}, withRouter, withStore }) => {
-  const intlProvider = new IntlProvider(
-    {
-      locale: getUserLocale(),
-      messages: messagesFR,
-      formats: getFormats(),
-      defaultLocale: 'fr',
-    },
-    {},
-  );
+  const intlProvider = new IntlProvider({
+    locale: getUserLocale(),
+    messages: messagesFR,
+    formats: getFormats(),
+    defaultLocale: 'fr',
+  });
   const { intl } = intlProvider.getChildContext();
 
   let testComponent = <Component {...props} />;

@@ -12,7 +12,11 @@ type PercentInputProps = {
 
 const PercentInput = ({ onChange, value, ...props }: PercentInputProps) => (
   <Input
-    onChange={event => onChange(percentFormatters.parse(event.target.value))}
+    onChange={(event) => {
+      console.log('percentInput?', event.target.value);
+
+      onChange(percentFormatters.parse(event.target.value));
+    }}
     value={percentFormatters.format(value)}
     inputComponent={MaskedInput}
     inputProps={{ mask: percentMask }}
