@@ -44,7 +44,7 @@ class Tabs extends Component {
     // to MuiTabs
 
     return (
-      <div className={cx('mask1 core-tabs', classes.root, className)}>
+      <div className={cx('card1 card-top core-tabs', classes.root, className)}>
         <MuiTabs
           classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
           className="core-tabs-top"

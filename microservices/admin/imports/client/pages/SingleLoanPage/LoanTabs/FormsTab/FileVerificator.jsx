@@ -20,7 +20,7 @@ class FileVerificator extends Component {
   render() {
     const { currentValue, id, closingSteps } = this.props;
     return (
-      <div className="mask1 flex-col" style={{ marginBottom: 8 }}>
+      <div className="card1 card-top flex-col" style={{ marginBottom: 8 }}>
         <h4>
           {/* If this is a custom uploadX file,
                     get title in the loan's last steps */}

@@ -4,7 +4,7 @@ import React from 'react';
 import Button from 'core/components/Button';
 
 const TodoItem = ({ name, small, subtitle, label, handleClick }) => (
-  <article className="mask1 admin-todo">
+  <article className="card1 card-top admin-todo">
     <div className="text">
       <h3 className="fixed-size">
         {name} <small>{small}</small>

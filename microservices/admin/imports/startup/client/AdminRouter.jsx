@@ -40,7 +40,7 @@ const AdminRouter = () => (
         <Route
           path="/properties/:propertyId"
           component={SinglePropertyPage}
-          className="mask1"
+          className="card1 card-top"
         />
         <Route path="/tasks" component={TasksPage} />
         <Route path="/borrowers/:borrowerId" component={SingleBorrowerPage} />

@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import TextInput from 'core/components/TextInput';
 
 const TodoStep = ({ step, onChange, handleRemove }) => (
-  <div className="mask1 flex-col" style={{ marginBottom: 16, width: '100%' }}>
+  <div className="card1 card-top flex-col" style={{ marginBottom: 16, width: '100%' }}>
     <h3>
       Todo à faire <small className="disabled">{step.id}</small>
     </h3>

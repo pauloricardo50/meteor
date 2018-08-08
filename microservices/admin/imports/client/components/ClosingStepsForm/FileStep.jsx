@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import TextInput from 'core/components/TextInput';
 
 const FileStep = ({ step, onChange, handleRemove }) => (
-  <div className="mask1 flex-col" style={{ marginBottom: 16, width: '100%' }}>
+  <div className="card1 card-top flex-col" style={{ marginBottom: 16, width: '100%' }}>
     <h3>
       Document à uploader <small className="disabled">{step.id}</small>
     </h3>

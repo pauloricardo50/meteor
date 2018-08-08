@@ -10,7 +10,9 @@ const SingleUserPage = ({ user, className }) => {
   const { loans } = user;
 
   return (
-    <section className={classnames('mask1', 'single-user-page', className)}>
+    <section
+      className={classnames('card1 card-top single-user-page', className)}
+    >
       <SingleUserPageHeader user={user} />
       {loans && <LoanSummaryList loans={loans} userId={user._id} />}
     </section>

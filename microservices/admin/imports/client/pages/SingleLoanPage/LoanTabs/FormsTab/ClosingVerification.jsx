@@ -57,7 +57,7 @@ export default class ClosingVerification extends Component {
               />
             ) : (
               <div
-                className="mask1 flex-col"
+                className="card1 card-top flex-col"
                 key={step.id}
                 style={{ marginBottom: 8 }}
               >

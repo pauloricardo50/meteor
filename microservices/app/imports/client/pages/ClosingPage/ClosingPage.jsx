@@ -10,7 +10,7 @@ const ClosingPage = (props) => {
   const { loan } = props;
   return (
     <Page id="ClosingPage">
-      <section className="mask1 closing-page">
+      <section className="card1 card-top closing-page">
         {loan.logic.closingSteps && loan.logic.closingSteps.length ? (
           <Content
             steps={loan.logic.closingSteps}

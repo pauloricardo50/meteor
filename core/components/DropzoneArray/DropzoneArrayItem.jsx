@@ -30,17 +30,17 @@ const getStyles = (props, currentValue) => ({
 
 const DropzoneArrayItem = (props) => {
   const {
-    filesObject,
-    filesObjectSelector,
-    id,
-    doubleTooltip,
-    noTooltips,
-    tooltipSuffix,
-    handleClick,
-    handleMouseEnter,
     active,
     disabled,
+    doubleTooltip,
+    filesObject,
+    filesObjectSelector,
+    handleClick,
+    handleMouseEnter,
+    id,
+    noTooltips,
     required,
+    tooltipSuffix,
   } = props;
 
   const currentValue = filesObject[props.id];
@@ -50,13 +50,12 @@ const DropzoneArrayItem = (props) => {
   const mongoId = `${filesObjectSelector}.${id}`;
   const tooltipId = `files.${id}.tooltip${tooltipSuffix}`;
 
-  console.log('mongoId:', mongoId);
 
   return (
     <article
       style={styles.article}
-      className={classnames({ 'mask1 dropzoneArrayItem': true, disabled })}
-    >
+      className={classnames('card1 card-top dropzoneArrayItem',{ disabled })}
+    >card1 card-top
       <div
         style={styles.topDiv}
         className="top"
@@ -116,20 +115,20 @@ const DropzoneArrayItem = (props) => {
 
 DropzoneArrayItem.propTypes = {
   active: PropTypes.bool,
+  filesObject: PropTypes.objectOf(PropTypes.array).isRequired,
+  filesObjectSelector: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
   handleMouseEnter: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  tooltipSuffix: PropTypes.string,
-  filesObject: PropTypes.objectOf(PropTypes.array).isRequired,
-  filesObjectSelector: PropTypes.string.isRequired,
   required: PropTypes.bool,
+  tooltipSuffix: PropTypes.string,
 };
 
 DropzoneArrayItem.defaultProps = {
   active: false,
   currentValue: undefined,
-  tooltipSuffix: '',
   required: true,
+  tooltipSuffix: '',
 };
 
 export default DropzoneArrayItem;

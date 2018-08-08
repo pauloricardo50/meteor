@@ -8,7 +8,7 @@ import PropertiesPageDetail from './PropertiesPageDetail';
 
 const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
   <Page id="PropertiesPage">
-    <section className="mask1 properties-page">
+    <section className="card1 card-top properties-page">
       <h1 className="text-center">
         <T id="PropertiesPage.title" />
       </h1>

@@ -43,7 +43,7 @@ class Tabs extends Component {
             ))}
           </MuiTabs>
         </Paper>
-        <div className="mask1" style={{ paddingTop: 16, marginTop: 40 }}>
+        <div className="card1 card-top card-top" style={{ paddingTop: 16, marginTop: 40 }}>
           {this.getContent()}
         </div>
       </React.Fragment>

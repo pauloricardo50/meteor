@@ -10,7 +10,7 @@ const LoanSummary = ({ loan }) => {
   const { _id, borrowers, name } = loan;
 
   return (
-    <div className="mask1 loan-summary">
+    <div className="card1 card-top loan-summary">
       <h4>
         <Link to={`/loans/${_id}`}>{name || <T id="general.loan" />}</Link>
       </h4>

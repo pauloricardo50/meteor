@@ -6,7 +6,7 @@ import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 import CreateUserDialogForm from './CreateUserDialogForm';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
-  <section className="mask1 admin-dashboard-page">
+  <section className="card1 card-top admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
     <CreateUserDialogForm history={history} />

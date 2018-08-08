@@ -27,7 +27,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
           format="money"
         />
       </h1>
-      <div className="mask1 single-loan-page-tasks">
+      <div className="card1 card-top single-loan-page-tasks">
         <LoanTasksTable
           showAssignee
           loanId={loan._id}

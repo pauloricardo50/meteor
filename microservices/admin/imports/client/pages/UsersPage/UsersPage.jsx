@@ -23,7 +23,7 @@ const usersTableFilters = {
 };
 
 const UsersPage = ({ history }) => (
-  <section className="mask1 users-page">
+  <section className="card1 card-top users-page">
     <h1>
       <T id="collections.users" />
     </h1>

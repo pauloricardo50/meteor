@@ -5,7 +5,7 @@ import BorrowersTable from './BorrowersTable';
 import BorrowersPageContainer from './BorrowersPageContainer';
 
 const BorrowersPage = props => (
-  <section className="mask1 borrowers-page">
+  <section className="card1 card-top borrowers-page">
     <h1>
       <T id="BorrowersPage.borrowers" />
     </h1>

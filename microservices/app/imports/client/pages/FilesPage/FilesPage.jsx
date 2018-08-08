@@ -7,7 +7,7 @@ import Page from '../../components/Page';
 
 const FilesPage = props => (
   <Page id="FilesPage">
-    <div className="mask1">
+    <div className="card1 card-top">
       <p style={{ marginBottom: 32 }}>
         <T id="FilesPage.description" />
       </p>

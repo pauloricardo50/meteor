@@ -32,7 +32,7 @@ const SinglePropertyPage = (props) => {
 
   return (
     <Page id="SinglePropertyPage" title={title}>
-      <section className="mask1 property-page">
+      <section className="card1 card-top property-page">
         <h1 className="text-center">
           {title}
           <br />

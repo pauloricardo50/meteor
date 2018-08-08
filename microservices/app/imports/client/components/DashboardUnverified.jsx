@@ -35,7 +35,7 @@ const DashboardUnverified = props => (
       display: 'flex',
       alignItems: 'center',
     }}
-    className="mask1"
+    className="card1 card-top"
   >
     <div
       style={{

@@ -60,6 +60,7 @@ hr {
   box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 }
 
+.card1.card-top,
 .card1 .card-top {
   padding: 16px;
 }
@@ -152,85 +153,6 @@ hr {
   animation-name: heartBeat;
   animation-duration: 2s;
   animation-iteration-count: infinite;
-}
-
-// Old white background masks, to be replaced with .card
-.mask1,
-.mask2,
-.mask3 {
-  padding: 16px;
-
-  border-radius: 4px;
-  background-color: #fff;
-}
-
-.mask1.primary-border,
-.mask2.primary-border,
-.mask3.primary-border,
-.mask1.hover-primary:hover,
-.mask2.hover-primary:hover,
-.mask3.hover-primary:hover {
-  border: 1px solid $primary;
-}
-
-.mask1.error-border,
-.mask2.error-border,
-.mask3.error-border {
-  border: 1px solid $error;
-}
-
-.mask1.warning-border,
-.mask2.warning-border,
-.mask3.warning-border {
-  border: 1px solid $warning;
-}
-
-.mask1.success-border,
-.mask2.success-border,
-.mask3.success-border {
-  border: 1px solid $success;
-}
-
-.mask1 {
-  box-shadow: 0 0 4px 0 rgba(33, 37, 41, 0.16);
-}
-
-.mask1 > h1:first-child {
-  margin: 0;
-}
-
-.mask1 .primary-top {
-  display: inline-block;
-
-  width: calc(100% + 32px);
-  min-height: 300px;
-  margin: 0;
-  margin-top: -16px;
-  margin-bottom: 48px;
-  margin-left: -16px;
-  padding: 16px;
-
-  color: #fff;
-  background-color: $primary;
-}
-
-.mask1 .primary-top h1,
-.mask1 .primary-top h2,
-.mask1 .primary-top h3,
-.mask1 .primary-top h4,
-.mask1 .primary-top p,
-.mask1 .primary-top div {
-  padding: 0;
-
-  color: #fff;
-}
-
-.mask2 {
-  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.08);
-}
-
-.mask3 {
-  box-shadow: 0 40px 40px 0 rgba(0, 0, 0, 0.16);
 }
 
 // A .description <p /> is a nice styled paragraph optimized for reading

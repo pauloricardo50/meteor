@@ -24,7 +24,7 @@ const tasksTableFilters = {
 };
 
 const TasksPage = () => (
-  <section className="mask1 tasks-page" style={{ overflow: 'initial' }}>
+  <section className="card1 card-top tasks-page" style={{ overflow: 'initial' }}>
     <h1>
       <T id="collections.tasks" />
     </h1>

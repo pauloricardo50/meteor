@@ -19,7 +19,7 @@ const styles = {
 
 const AppItem = ({ title, subtitle, mainText, href, onClick, history }) => (
   <a
-    className="mask1 hover-primary flex-col"
+    className="card1 card-top card-hover flex-col"
     style={styles.a}
     onClick={() => {
       if (href) {

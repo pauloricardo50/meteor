@@ -1,9 +1,6 @@
-import { Meteor } from 'meteor/meteor';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import Page from '../../components/Page';
 import PasswordChange from './PasswordChange';
@@ -20,27 +17,11 @@ const styles = {
     paddingLeft: 20,
     paddingRight: 20,
   },
-  mobileLogoutButton: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-  },
 };
 
-const AccountPage = ({ history: { push }, currentUser: { emails } }) => (
+const AccountPage = ({ currentUser: { emails } }) => (
   <Page id="AccountPage">
-    <div className="mask1" style={styles.section}>
-      <span
-        className="hidden-sm hidden-md hidden-lg"
-        style={styles.mobileLogoutButton}
-      >
-        <Button
-          raised
-          label={<T id="general.logout" />}
-          onClick={() => Meteor.logout(() => push('/home'))}
-        />
-      </span>
-
+    <div className="card1 card-top" style={styles.section}>
       <div style={styles.div}>
         <div className="form-group">
           <h4 style={styles.h}>
@@ -64,7 +45,6 @@ const AccountPage = ({ history: { push }, currentUser: { emails } }) => (
 
 AccountPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 export default AccountPage;

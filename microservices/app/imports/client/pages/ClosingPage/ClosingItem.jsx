@@ -27,7 +27,9 @@ const ClosingItem = ({ step, loan, disabled }) => {
 
   return (
     <div
-      className={classNames({ 'mask1 flex-col': true, secondary: disabled })}
+      className={classNames('card1 card-top flex-col', {
+        secondary: disabled,
+      })}
       style={{ marginBottom: 16, width: '100%', maxWidth: 600 }}
     >
       <div

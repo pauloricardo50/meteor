@@ -74,7 +74,7 @@ class ArrayInput extends Component {
 
     for (let i = 0; i < this.state.count; i += 1) {
       // If there are multiple components per array item
-      array.push(<div className="mask1" style={styles.arrayItem} key={`${id + i}item`}>
+      array.push(<div className="card1 card-top card-top" style={styles.arrayItem} key={`${id + i}item`}>
         {inputs.map(input => mapInput(input, i))}
       </div>);
     }

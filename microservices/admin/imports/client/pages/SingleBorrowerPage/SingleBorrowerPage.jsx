@@ -11,7 +11,7 @@ const SingleBorrowerPage = ({ borrower }) => {
   const { loans } = borrower;
 
   return (
-    <section className="mask1 single-borrower-page">
+    <section className="card1 card-top single-borrower-page">
       <SingleBorrowerPageHeader borrower={borrower} />
       <div className="borrower-recap">
         <Recap arrayName="borrower" borrower={borrower} />
