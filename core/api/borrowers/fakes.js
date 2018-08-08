@@ -1,4 +1,5 @@
 import { fakeDocument } from 'core/api/files/fakes';
+import { REAL_ESTATE } from './borrowerConstants';
 
 export const emptyFakeBorrower = {};
 
@@ -56,7 +57,7 @@ export const completeFakeBorrower = {
     {
       value: 433000,
       loan: 240000,
-      description: 'MAIN_RESIDENCE',
+      description: REAL_ESTATE.MAIN_RESIDENCE,
     },
   ],
   bankFortune: 300000,
