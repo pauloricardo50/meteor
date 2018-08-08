@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/pro-light-svg-icons';
 
 import T from 'core/components/Translation';
 import BorrowerAdder from '../../components/BorrowerAdder';
@@ -14,7 +16,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
           key={borrower._id}
         >
           <div className="flex--row flex--center flex--helper borrower">
-            <span className="fa fa-user-circle-o fa-5x" />
+            <FontAwesomeIcon icon={faUserCircle} className="icon" />
             <div className="borrower-header__user flex--helper flex--column">
               <h1 className="no-margin truncate">
                 <span>
