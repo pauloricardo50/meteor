@@ -1065,6 +1065,8 @@
   "LoginForm.password": "Mot de passe",
   "LoginPage.loggedIn": "Vous êtes connecté",
   "LoginPage.title": "Login / Créer un compte",
+  "Microlocation.open": "Afficher les détails",
+  "Microlocation.close": "Masquer les détails",
   "Microlocation.distanceBusStopLabel": "Arrêt de transport public",
   "Microlocation.distanceCenterLabel": "Centre",
   "Microlocation.distanceHighVoltagePowerLineLabel": "Lignes à haute tension",
@@ -1503,7 +1505,8 @@
   "Valuation.rangeLabel": "Fourchette:",
   "Valuation.title": "Expertise",
   "ValuationButton.disabled": "Il manque des informations",
-  "ValuationButton.enabled": "Evaluez votre bien",
+  "ValuationButton.evaluate": "Évaluez votre bien",
+  "ValuationButton.reevaluate": "Réévaluez votre bien",
   "VerificationPage.CTA.warning":
     "Vous ne pourrez plus modifier vos informations et vos documents",
   "VerificationPage.CTA": "Envoyer mon dossier",

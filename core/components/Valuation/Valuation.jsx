@@ -79,8 +79,10 @@ export const Valuation = ({
       >
         {disabled ? (
           <T id="ValuationButton.disabled" />
+        ) : valuation.status === VALUATION_STATUS.NONE ? (
+          <T id="ValuationButton.evaluate" />
         ) : (
-          <T id="ValuationButton.enabled" />
+          <T id="ValuationButton.reevaluate" />
         )}
       </Button>
     </div>
