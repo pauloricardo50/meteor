@@ -3,8 +3,12 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import PropertyService from '../../PropertyService';
-import { EXPERTISE_STATUS, PROPERTY_STYLE } from '../../propertyConstants';
-import { WUEST_ERRORS } from '../../../wuest/wuestConstants';
+import {
+  VALUATION_STATUS,
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+  WUEST_ERRORS,
+} from '../../../constants';
 
 describe('PropertyService', () => {
   beforeEach(() => {
@@ -13,7 +17,7 @@ describe('PropertyService', () => {
   describe('evaluateProperty', () => {
     it('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
-        style: PROPERTY_STYLE.FLAT,
+        propertyType: PROPERTY_TYPE.FLAT,
         address1: 'rue du four 2',
         zipCode: '1400',
         city: 'Yverdon-les-Bains',
@@ -21,10 +25,18 @@ describe('PropertyService', () => {
         insideArea: 100,
         terraceArea: 20,
         constructionYear: 1,
+        numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
-      return PropertyService.evaluateProperty(propertyId).then(() => {
+
+      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+
+      return PropertyService.evaluateProperty({
+        propertyId,
+        loanResidenceType,
+      }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
-        expect(property.valuation.status).to.equal(EXPERTISE_STATUS.ERROR);
+        expect(property.valuation.status).to.equal(VALUATION_STATUS.ERROR);
         expect(property.valuation.error).contains('entre 1000 et 3000');
       });
     }).timeout(10000);
@@ -42,14 +54,22 @@ describe('PropertyService', () => {
         constructionYear: 2000,
         insideArea: 100,
         terraceArea: 20,
+        numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
-      return PropertyService.evaluateProperty(propertyId).then(() => {
+
+      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+
+      return PropertyService.evaluateProperty({
+        propertyId,
+        loanResidenceType,
+      }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation.min).to.equal(610000);
         expect(property.valuation.max).to.equal(730000);
-        expect(property.valuation.value).to.equal(668000);
+        expect(property.valuation.value).to.equal(673000);
       });
-    });
+    }).timeout(10000);
 
     it('adds microlocation on the property', () => {
       const propertyId = Factory.create('property', {
@@ -60,8 +80,16 @@ describe('PropertyService', () => {
         constructionYear: 2000,
         insideArea: 100,
         terraceArea: 20,
+        numberOfFloors: 10,
+        floorNumber: 3,
       })._id;
-      return PropertyService.evaluateProperty(propertyId).then(() => {
+
+      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
+
+      return PropertyService.evaluateProperty({
+        propertyId,
+        loanResidenceType,
+      }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation).to.have.property('microlocation');
       });

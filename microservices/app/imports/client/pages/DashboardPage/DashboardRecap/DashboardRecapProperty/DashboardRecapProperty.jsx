@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { createRoute } from 'core/utils/routerUtils';
 
-import { EXPERTISE_STATUS } from 'core/api/properties/propertyConstants';
+import { VALUATION_STATUS } from 'core/api/properties/propertyConstants';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
@@ -39,7 +39,7 @@ export const getRecapArray = (property) => {
     {
       label: 'property.expertise',
       value:
-        status === EXPERTISE_STATUS.DONE ? (
+        status === VALUATION_STATUS.DONE ? (
           <p>{`CHF ${toMoney(min)} - ${toMoney(max)}`}</p>
         ) : (
           <T id={`property.expertiseStatus.${status}`} />

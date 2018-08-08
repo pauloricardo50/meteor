@@ -6,7 +6,7 @@ import {
   CANTONS,
   AUCTION_MOST_IMPORTANT,
   GENDER,
-  USAGE_TYPE,
+  RESIDENCE_TYPE,
 } from '../../constants';
 
 const GeneralSchema = new SimpleSchema({
@@ -15,10 +15,10 @@ const GeneralSchema = new SimpleSchema({
     defaultValue: PURCHASE_TYPE.ACQUISITION,
     allowedValues: Object.values(PURCHASE_TYPE),
   },
-  usageType: {
+  residenceType: {
     type: String,
-    defaultValue: USAGE_TYPE.PRIMARY,
-    allowedValues: Object.values(USAGE_TYPE),
+    defaultValue: RESIDENCE_TYPE.MAIN_RESIDENCE,
+    allowedValues: Object.values(RESIDENCE_TYPE),
   },
   oldestAge: {
     type: SimpleSchema.Integer,

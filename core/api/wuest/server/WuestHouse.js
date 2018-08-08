@@ -1,15 +1,15 @@
 import set from 'lodash/set';
 import merge from 'lodash/merge';
 import Property from './Property';
-import { HED_METHOD, VOLUME_TYPE } from '../wuestConstants';
+import { WUEST_HED_METHOD, WUEST_VOLUME_TYPE } from '../wuestConstants';
 
 class WuestHouse extends Property {
   constructor() {
     super();
-    this.method = HED_METHOD.SFH;
+    this.method = WUEST_HED_METHOD.SFH;
     this.houseType = '';
     this.buildingVolume = {
-      type: VOLUME_TYPE.SIA_416,
+      type: WUEST_VOLUME_TYPE.SIA_416,
       value: 0,
     };
     this.landPlotArea = 0;

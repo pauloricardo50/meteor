@@ -2,10 +2,11 @@ import SimpleSchema from 'simpl-schema';
 import {
   FILE_STATUS,
   PURCHASE_TYPE,
-  USAGE_TYPE,
+  RESIDENCE_TYPE,
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
+  PROPERTY_TYPE,
 } from '../constants';
 
 export const borrowerDocuments = (b = {}) => ({
@@ -127,7 +128,7 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'cubage',
       doubleTooltip: true,
-      condition: property.style === 'villa',
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       id: 'pictures',
@@ -135,9 +136,9 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'marketingBrochure',
       condition: !!(
-        loan
-        && loan.general
-        && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        loan &&
+        loan.general &&
+        loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
       ),
       required: false,
     },
@@ -146,7 +147,8 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'rent',
       condition:
-        !!loan.general && loan.general.usageType === USAGE_TYPE.INVESTMENT,
+        !!loan.general &&
+        loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
       doubleTooltip: true,
     },
     {

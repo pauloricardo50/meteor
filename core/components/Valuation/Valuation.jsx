@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { toMoney } from 'core/utils/conversionFunctions';
 
-import { EXPERTISE_STATUS } from '../../api/constants';
+import { VALUATION_STATUS } from '../../api/constants';
 import Loading from '../Loading';
 import ValuationContainer from './ValuationContainer';
 import Microlocation from './Microlocation/Microlocation';
@@ -55,10 +55,10 @@ export const Valuation = ({
   }
   let content;
   switch (valuation.status) {
-  case EXPERTISE_STATUS.DONE:
+  case VALUATION_STATUS.DONE:
     content = renderResults(valuation);
     break;
-  case EXPERTISE_STATUS.ERROR:
+  case VALUATION_STATUS.ERROR:
     content = renderError(valuation.error);
     break;
   default:
@@ -79,8 +79,10 @@ export const Valuation = ({
       >
         {disabled ? (
           <T id="ValuationButton.disabled" />
+        ) : valuation.status === VALUATION_STATUS.NONE ? (
+          <T id="ValuationButton.evaluate" />
         ) : (
-          <T id="ValuationButton.enabled" />
+          <T id="ValuationButton.reevaluate" />
         )}
       </Button>
     </div>

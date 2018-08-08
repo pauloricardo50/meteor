@@ -1,6 +1,14 @@
 import { fakeDocument } from 'core/api/files/fakes';
 import moment from 'moment';
 
+import {
+  RESIDENCE_TYPE,
+  PROPERTY_TYPE,
+  MINERGIE_CERTIFICATE,
+  FLAT_TYPE,
+  VOLUME_NORM,
+} from '../constants';
+
 export const fakeGeneral = {
   purchaseType: 'ACQUISITION',
   wantedClosingDate: moment()
@@ -14,30 +22,25 @@ export const fakeProperty = {
   address1: 'Rue du Succès 18',
   zipCode: 1000,
   city: 'Lausanne',
-  usageType: 'PRIMARY',
-  type: 'FLAT',
+  residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+  propertyType: PROPERTY_TYPE.FLAT,
+  flatType: FLAT_TYPE.SINGLEFLOOR,
+  numberOfFloors: 5,
+  floorNumber: 2,
   futureOwner: 0,
   constructionYear: 2010,
   landArea: 300,
   insideArea: 140,
   volume: 1500,
-  volumeNorm: 'SIA',
+  volumeNorm: VOLUME_NORM.SIA_416,
   roomCount: 5,
-  bathroomCount: 2,
-  toiletCount: 0,
   parking: {
-    box: 0,
     inside: 1,
     outside: 2,
   },
-  minergie: true,
+  minergie: MINERGIE_CERTIFICATE.MINERGIE_ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
-  cityPlacementQuality: 2,
-  buildingPlacementQuality: 3,
-  buildingQuality: 1,
-  flatQuality: 2,
-  materialsQuality: 2,
 };
 
 export const logic1 = {

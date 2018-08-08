@@ -1,15 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import {
-  PROPERTIES_COLLECTION,
-  PROPERTY_STATUS,
-  USAGE_TYPE,
-  PROPERTY_STYLE,
-  VOLUME_NORM,
-  EXPERTISE_STATUS,
-} from './propertyConstants';
+import * as propertyConstants from './propertyConstants';
 
-const Properties = new Mongo.Collection(PROPERTIES_COLLECTION);
+const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
 
 // Prevent all client side modifications of mongoDB
 Properties.deny({
@@ -110,8 +103,8 @@ export const MicrolocationSchema = new SimpleSchema({
 export const ValuationSchema = new SimpleSchema({
   status: {
     type: String,
-    defaultValue: EXPERTISE_STATUS.NONE,
-    allowedValues: Object.keys(EXPERTISE_STATUS),
+    defaultValue: propertyConstants.VALUATION_STATUS.NONE,
+    allowedValues: Object.keys(propertyConstants.VALUATION_STATUS),
   },
   min: {
     type: Number,
@@ -165,8 +158,8 @@ export const PropertySchema = new SimpleSchema({
   },
   status: {
     type: String,
-    defaultValue: PROPERTY_STATUS.FOR_SALE,
-    allowedValues: Object.values(PROPERTY_STATUS),
+    defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
+    allowedValues: Object.values(propertyConstants.PROPERTY_STATUS),
   },
   value: {
     // Cost of the property
@@ -182,10 +175,10 @@ export const PropertySchema = new SimpleSchema({
     max: 100000000,
     optional: true,
   },
-  usageType: {
+  residenceType: {
     type: String,
-    defaultValue: USAGE_TYPE.PRIMARY,
-    allowedValues: Object.values(USAGE_TYPE),
+    defaultValue: propertyConstants.RESIDENCE_TYPE.MAIN_RESIDENCE,
+    allowedValues: Object.values(propertyConstants.RESIDENCE_TYPE),
   },
   investmentRent: {
     // Rent of property if investment
@@ -194,12 +187,25 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  style: {
+  propertyType: {
     type: String,
     optional: true,
-    defaultValue: PROPERTY_STYLE.FLAT,
-    allowedValues: Object.values(PROPERTY_STYLE),
+    defaultValue: propertyConstants.PROPERTY_TYPE.FLAT,
+    allowedValues: Object.values(propertyConstants.PROPERTY_TYPE),
   },
+  houseType: {
+    type: String,
+    optional: true,
+    defaultValue: propertyConstants.HOUSE_TYPE.DETACHED,
+    allowedValues: Object.values(propertyConstants.HOUSE_TYPE),
+  },
+  flatType: {
+    type: String,
+    optional: true,
+    defaultValue: propertyConstants.FLAT_TYPE.SINGLE_FLOOR_APARTMENT,
+    allowedValues: Object.values(propertyConstants.FLAT_TYPE),
+  },
+
   address: {
     // For condensed, google places addresses
     type: String,
@@ -240,12 +246,13 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
   },
-  landArea: {
-    type: Number,
+  areaNorm: {
+    type: String,
     optional: true,
-    min: 0,
+    allowedValues: Object.values(propertyConstants.AREA_NORM),
+    defaultValue: propertyConstants.AREA_NORM.NIA,
   },
-  balconyArea: {
+  landArea: {
     type: Number,
     optional: true,
     min: 0,
@@ -255,19 +262,19 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
   },
+  numberOfFloors: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 20,
+  },
+  floorNumber: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 20,
+  },
   roomCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  bathroomCount: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
-  },
-  toiletCount: {
     type: Number,
     optional: true,
     min: 0,
@@ -277,38 +284,35 @@ export const PropertySchema = new SimpleSchema({
     type: Number,
     optional: true,
     min: 0,
-    max: 5000,
+    max: 100000,
   },
   volumeNorm: {
     type: String,
-    defaultValue: VOLUME_NORM.SIA,
-    allowedValues: Object.keys(VOLUME_NORM),
+    defaultValue: propertyConstants.VOLUME_NORM.SIA_416,
+    allowedValues: Object.values(propertyConstants.VOLUME_NORM),
   },
   parking: {
     type: Object,
     defaultValue: {},
-  },
-  'parking.box': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100,
   },
   'parking.inside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
+    defaultValue: 0,
   },
   'parking.outside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
+    defaultValue: 0,
   },
   minergie: {
-    type: Boolean,
-    defaultValue: false,
+    type: String,
+    defaultValue: propertyConstants.MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
+    allowedValues: Object.values(propertyConstants.MINERGIE_CERTIFICATE),
   },
   isCoproperty: {
     type: Boolean,
@@ -322,40 +326,6 @@ export const PropertySchema = new SimpleSchema({
     type: Number,
     min: 0,
     max: 1000,
-    optional: true,
-  },
-  cityPlacementQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  buildingPlacementQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  buildingQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  flatQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  materialsQuality: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  otherNotes: {
-    type: String,
     optional: true,
   },
   name: {
@@ -374,21 +344,28 @@ export const PropertySchema = new SimpleSchema({
     min: -180,
     max: 180,
   },
-  nearestBusStation: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
-  nearestTrainStation: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
   customFields: {
     // Allows storing custom fields that aren't allowed by the default schema
     type: Object,
     blackbox: true,
     defaultValue: {},
+  },
+  qualityProfile: {
+    type: Object,
+    optional: true,
+    defaultValue: {},
+  },
+  'qualityProfile.condition': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
+    defaultValue: propertyConstants.QUALITY.CONDITION.INTACT,
+  },
+  'qualityProfile.standard': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
+    defaultValue: propertyConstants.QUALITY.STANDARD.AVERAGE,
   },
   valuation: {
     type: ValuationSchema,

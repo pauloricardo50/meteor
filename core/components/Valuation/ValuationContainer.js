@@ -4,10 +4,12 @@ import { evaluateProperty, propertyDataIsInvalid } from '../../api';
 
 export default compose(
   withState('isLoading', 'setIsLoading', false),
-  withProps(({ property: { _id: propertyId }, setIsLoading }) => ({
+  withProps(({ property: { _id: propertyId }, setIsLoading, loanResidenceType }) => ({
     handleEvaluateProperty: () => {
       setIsLoading(true);
-      evaluateProperty.run({ propertyId }).finally(() => setIsLoading(false));
+      evaluateProperty
+        .run({ propertyId, loanResidenceType })
+        .finally(() => setIsLoading(false));
     },
   })),
   lifecycle({
@@ -16,13 +18,22 @@ export default compose(
     },
     componentDidMount() {
       propertyDataIsInvalid
-        .run({ propertyId: this.props.property._id })
+        .run({
+          propertyId: this.props.property._id,
+          loanResidenceType: this.props.loanResidenceType,
+        })
         .then(error => this.setState({ disabled: !!error }));
     },
-    componentWillReceiveProps({ property }) {
-      if (JSON.stringify(property) !== JSON.stringify(this.props.property)) {
+    componentWillReceiveProps({ property, loanResidenceType }) {
+      if (
+        JSON.stringify(property) !== JSON.stringify(this.props.property) ||
+        loanResidenceType !== this.props.loanResidenceType
+      ) {
         propertyDataIsInvalid
-          .run({ propertyId: property._id })
+          .run({
+            propertyId: property._id,
+            loanResidenceType,
+          })
           .then(error => this.setState({ disabled: !!error }));
       }
     },

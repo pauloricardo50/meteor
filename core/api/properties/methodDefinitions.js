@@ -45,6 +45,7 @@ export const evaluateProperty = new Method({
   name: 'evaluateProperty',
   params: {
     propertyId: String,
+    loanResidenceType: String,
   },
 });
 
@@ -52,5 +53,6 @@ export const propertyDataIsInvalid = new Method({
   name: 'propertyDataIsInvalid',
   params: {
     propertyId: String,
+    loanResidenceType: String,
   },
 });

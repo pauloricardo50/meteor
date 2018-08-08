@@ -12,14 +12,21 @@ import SinglePropertyPageHeader from './SinglePropertyPageHeader';
 export const getPropertyAddress = ({ address1, zipCode, city }) =>
   (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
-const SinglePropertyPage = ({ property, displayLoans, className }) => {
+const SinglePropertyPage = ({
+  property,
+  displayLoans,
+  className,
+  loanResidenceType,
+}) => {
   const { loans } = property;
   const address = getPropertyAddress(property);
 
   return (
     <section className={cx('single-property-page', className)}>
       <SinglePropertyPageHeader property={property} />
-      <Valuation property={property} />
+      {loanResidenceType && (
+        <Valuation property={property} loanResidenceType={loanResidenceType} />
+      )}
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>

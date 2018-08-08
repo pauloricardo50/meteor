@@ -1,6 +1,9 @@
 import set from 'lodash/set';
 import merge from 'lodash/merge';
-import { MINERGIE_CERTIFICATE, JSON_DATA_STRUCTURE } from '../wuestConstants';
+import {
+  WUEST_MINERGIE_CERTIFICATE,
+  WUEST_JSON_DATA_STRUCTURE,
+} from '../wuestConstants';
 
 class Property {
   constructor() {
@@ -18,12 +21,12 @@ class Property {
       outdoor: 0,
     };
     this.constructionYear = 0;
-    this.minergieCertificate = MINERGIE_CERTIFICATE.WITHOUT;
+    this.minergieCertificate = WUEST_MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE;
     this.qualityProfile = {
       standard: 0,
       condition: 0,
     };
-    this.JSONData = JSON_DATA_STRUCTURE;
+    this.JSONData = WUEST_JSON_DATA_STRUCTURE;
   }
 
   setValue({ path, value }) {
