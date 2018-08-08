@@ -1,7 +1,7 @@
 import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { EXPERTISE_STATUS } from '../../../../core/api/constants';
+import { VALUATION_STATUS } from '../../../../core/api/constants';
 import {
   FINANCING_PAGE,
   PROPERTIES_PAGE,
@@ -59,7 +59,7 @@ const dashboardTodos = [
   {
     id: 'doAnExpertise',
     condition: ({ structure: { property } }) =>
-      property && property.valuation.status === EXPERTISE_STATUS.NONE,
+      property && property.valuation.status === VALUATION_STATUS.NONE,
     link: createSinglePropertyLink,
   },
   {
