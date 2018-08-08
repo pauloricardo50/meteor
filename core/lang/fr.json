@@ -683,7 +683,7 @@
   "Forms.company": "Employeur",
   "Forms.condition.EXCELLENT": "Excellente",
   "Forms.condition.INTACT": "Intacte",
-  "Forms.condition.NEEDS_RENNOVATION": "Nécessite des rénovations",
+  "Forms.condition.NEEDS_RENOVATION": "Nécessite des rénovations",
   "Forms.condition": "Condition",
   "Forms.constructionYear.placeholder": "2005",
   "Forms.constructionYear": "Année de construction",

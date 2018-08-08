@@ -4,11 +4,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import PropertyService from '../../PropertyService';
 import {
-  EXPERTISE_STATUS,
+  VALUATION_STATUS,
   PROPERTY_TYPE,
   RESIDENCE_TYPE,
-} from '../../propertyConstants';
-import { WUEST_ERRORS } from '../../../wuest/wuestConstants';
+  WUEST_ERRORS,
+} from '../../../constants';
 
 describe('PropertyService', () => {
   beforeEach(() => {
@@ -29,11 +29,14 @@ describe('PropertyService', () => {
         floorNumber: 3,
       })._id;
 
-      const residenceType = RESIDENCE_TYPE.MAIN;
+      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
 
-      return PropertyService.evaluateProperty(propertyId, residenceType).then(() => {
+      return PropertyService.evaluateProperty({
+        propertyId,
+        loanResidenceType,
+      }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
-        expect(property.valuation.status).to.equal(EXPERTISE_STATUS.ERROR);
+        expect(property.valuation.status).to.equal(VALUATION_STATUS.ERROR);
         expect(property.valuation.error).contains('entre 1000 et 3000');
       });
     }).timeout(10000);
@@ -55,9 +58,12 @@ describe('PropertyService', () => {
         floorNumber: 3,
       })._id;
 
-      const residenceType = RESIDENCE_TYPE.MAIN;
+      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
 
-      return PropertyService.evaluateProperty(propertyId, residenceType).then(() => {
+      return PropertyService.evaluateProperty({
+        propertyId,
+        loanResidenceType,
+      }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation.min).to.equal(610000);
         expect(property.valuation.max).to.equal(730000);
@@ -78,9 +84,12 @@ describe('PropertyService', () => {
         floorNumber: 3,
       })._id;
 
-      const residenceType = RESIDENCE_TYPE.MAIN;
+      const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
 
-      return PropertyService.evaluateProperty(propertyId, residenceType).then(() => {
+      return PropertyService.evaluateProperty({
+        propertyId,
+        loanResidenceType,
+      }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
         expect(property.valuation).to.have.property('microlocation');
       });

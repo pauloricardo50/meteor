@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import React from 'react';
 
-import { EXPERTISE_STATUS } from 'core/api/properties/propertyConstants';
+import { VALUATION_STATUS } from 'core/api/properties/propertyConstants';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { getRecapArray } from '../DashboardRecapProperty';
 
@@ -11,7 +11,7 @@ describe('getRecapArray', () => {
     // Test code
     const min = 12345;
     const max = 123456;
-    const status = EXPERTISE_STATUS.DONE;
+    const status = VALUATION_STATUS.DONE;
     const property = {
       address1: 'Rue du test 12',
       zipCode: 1201,
@@ -29,7 +29,7 @@ describe('getRecapArray', () => {
   });
 
   it('returns expertise status if valuation is not done', () => {
-    const status = EXPERTISE_STATUS.NONE;
+    const status = VALUATION_STATUS.NONE;
     const property = {
       address1: 'Rue du test 12',
       zipCode: 1201,

@@ -16,6 +16,7 @@ const SinglePropertyPage = ({
   property,
   displayLoans,
   className,
+  loanResidenceType,
 }) => {
   const { loans } = property;
   const address = getPropertyAddress(property);
@@ -23,7 +24,9 @@ const SinglePropertyPage = ({
   return (
     <section className={cx('single-property-page', className)}>
       <SinglePropertyPageHeader property={property} />
-      <Valuation property={property} />
+      {loanResidenceType && (
+        <Valuation property={property} loanResidenceType={loanResidenceType} />
+      )}
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>

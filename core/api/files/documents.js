@@ -6,6 +6,7 @@ import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
+  PROPERTY_TYPE,
 } from '../constants';
 
 export const borrowerDocuments = (b = {}) => ({
@@ -127,7 +128,7 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'cubage',
       doubleTooltip: true,
-      condition: property.propertyType === 'villa',
+      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       id: 'pictures',

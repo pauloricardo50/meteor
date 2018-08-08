@@ -2,6 +2,7 @@ import faker from 'faker';
 import BorrowerService from '../api/borrowers/BorrowerService';
 import { fakeDocument } from '../api/files/fakes';
 import { Borrowers } from '../api';
+import { RESIDENCE_TYPE } from '../api/constants';
 
 const insertFakeBorrower = (userId) => {
   const firstName = faker.name.firstName();
@@ -58,7 +59,7 @@ const insertFakeBorrower = (userId) => {
       {
         value: 433000,
         loan: 240000,
-        description: 'MAIN_RESIDENCE',
+        description: RESIDENCE_TYPE.MAIN_RESIDENCE,
       },
     ],
     bankFortune: 300000,

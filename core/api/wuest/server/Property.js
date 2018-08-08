@@ -21,7 +21,7 @@ class Property {
       outdoor: 0,
     };
     this.constructionYear = 0;
-    this.minergieCertificate = WUEST_MINERGIE_CERTIFICATE.WITHOUT;
+    this.minergieCertificate = WUEST_MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE;
     this.qualityProfile = {
       standard: 0,
       condition: 0,

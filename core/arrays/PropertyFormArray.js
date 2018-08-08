@@ -226,12 +226,6 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       condition: property.propertyType === PROPERTY_TYPE.FLAT,
     },
     {
-      id: 'areaNorm',
-      type: 'radioInput',
-      options: Object.values(AREA_NORM),
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
-    },
-    {
       id: 'terraceArea',
       type: 'textInput',
       number: true,

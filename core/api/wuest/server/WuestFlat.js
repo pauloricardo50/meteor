@@ -11,7 +11,7 @@ class WuestFlat extends Property {
     this.floorType = '';
     this.numberOfFlats = 0;
     this.usableArea = {
-      type: WUEST_AREA_TYPE.NET,
+      type: WUEST_AREA_TYPE.NIA,
       value: 0,
     };
     this.terraceArea = 0;

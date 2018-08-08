@@ -33,20 +33,14 @@ export const property = {
   volumeNorm: 1,
   roomCount: 1,
   landArea: 1,
-  parking: {
-    inside: 1,
-    outside: 1,
-  },
+  parking: 1,
   minergie: 1,
   constructionYear: 1,
   renovationYear: 1,
   terraceArea: 1,
   investmentRent: 1,
   createdAt: 1,
-  qualityProfile: {
-    condition: 1,
-    standard: 1,
-  },
+  qualityProfile: 1,
   isCoproperty: 1,
   isNew: 1,
   copropertyPercentage: 1,
@@ -62,7 +56,6 @@ export const property = {
     emails: 1,
     assignedEmployee: { emails: 1 },
   },
-  // fields used in LoanSummary component
   loans: loanSummary,
 };
 

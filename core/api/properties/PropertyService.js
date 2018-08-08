@@ -1,7 +1,7 @@
 import LoanService from '../loans/LoanService';
 import Properties from '.';
 import WuestService from '../wuest/server/WuestService';
-import { EXPERTISE_STATUS } from './propertyConstants';
+import { VALUATION_STATUS } from './propertyConstants';
 
 export class PropertyService {
   insert = ({ property, userId, loanId }) => {
@@ -24,14 +24,14 @@ export class PropertyService {
   popValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $pop: object });
 
-  evaluateProperty = (propertyId, loanResidenceType) =>
-    WuestService.evaluateById(propertyId, loanResidenceType)
+  evaluateProperty = ({ propertyId, loanResidenceType }) =>
+    WuestService.evaluateById({ propertyId, loanResidenceType })
       .then((valuation) => {
         this.update({
           propertyId,
           object: {
             valuation: {
-              status: EXPERTISE_STATUS.DONE,
+              status: VALUATION_STATUS.DONE,
               date: new Date(),
               error: '',
               ...valuation,
@@ -44,7 +44,7 @@ export class PropertyService {
           propertyId,
           object: {
             valuation: {
-              status: EXPERTISE_STATUS.ERROR,
+              status: VALUATION_STATUS.ERROR,
               min: null,
               max: null,
               value: null,
@@ -57,9 +57,12 @@ export class PropertyService {
 
   getPropertyById = propertyId => Properties.findOne(propertyId);
 
-  propertyDataIsInvalid = (propertyId, loanResidenceType) => {
+  propertyDataIsInvalid = ({ propertyId, loanResidenceType }) => {
     try {
-      WuestService.createPropertyFromCollection(propertyId, loanResidenceType);
+      WuestService.createPropertyFromCollection({
+        propertyId,
+        loanResidenceType,
+      });
     } catch (error) {
       return error.message;
     }
