@@ -36,14 +36,13 @@ const BorrowerFinancePage = (props) => {
                   values={{ currency: financeConstants.CURRENCY }}
                 />
               </h3>
-              <Recap arrayName="borrower" borrower={borrower} />
             </div>
 
-            <div className="description">
-              <p>
-                <T id="Forms.mandatory" />
-              </p>
-            </div>
+            <Recap arrayName="borrower" borrower={borrower} />
+
+            <p className="mandatory">
+              <T id="Forms.mandatory" />
+            </p>
 
             <AutoForm
               formClasses="user-form user-form__finance"
