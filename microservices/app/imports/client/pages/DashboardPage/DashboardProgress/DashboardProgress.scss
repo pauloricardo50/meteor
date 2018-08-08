@@ -20,12 +20,18 @@ $step-circle-size: 25px;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  padding-top: 16px;
 
-  .text {
+  .todo {
     display: flex;
     align-items: center;
 
-    padding: 24px 0 16px 0;
+    margin: 8px 0;
+
+    p {
+      margin: 0;
+    }
+
     .icon {
       margin-right: 16px;
     }

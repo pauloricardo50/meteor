@@ -10,7 +10,8 @@ import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
 import { FINANCING_PAGE } from '../../../../../startup/client/appRoutes';
 
-const shouldDisplayRecap = ({ loan }) => loan.properties[0].value;
+const shouldDisplayRecap = ({ loan }) =>
+  loan.structure.property && loan.structure.property.value;
 
 const DashboardRecapFinance = (props) => {
   if (!shouldDisplayRecap(props)) {
