@@ -1,55 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Checkbox from 'core/components/Checkbox';
-
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerFinanceArray } from 'core/arrays/BorrowerFormArray';
 import Recap from 'core/components/Recap';
 import * as financeConstants from 'core/config/financeConstants';
 import T from 'core/components/Translation';
-import track from 'core/utils/analytics';
-import { borrowerUpdate } from 'core/api';
 import { BORROWERS_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
-import LoadingButton from '../../components/LoadingButton';
-
-const styles = {
-  div: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  topButton: {
-    marginBottom: 20,
-    alignSelf: 'flex-start',
-  },
-  bottomButton: {
-    marginTop: 20,
-    alignSelf: 'flex-end',
-  },
-  checkbox: {
-    textAlign: 'unset',
-  },
-};
-
-const handleCheck = (_, isInputChecked, id) => {
-  const object = { 'logic.financeEthics': isInputChecked };
-  borrowerUpdate.run({ object, borrowerId: id });
-};
-
-const handleClick = (event, id) => {
-  const object = { 'logic.hasValidatedFinances': true };
-  borrowerUpdate
-    .run({ object, id })
-    .then(() => track('validated finances', {}));
-};
 
 const BorrowerFinancePage = (props) => {
   const {
-    borrowerId,
     loan: { userFormsEnabled, borrowers },
   } = props;
-  const borrowerLogic = borrowers.find(b => b._id === borrowerId);
 
   return (
     <section className="borrower-finance-page animated fadeIn flex-justify--center">
@@ -96,25 +59,6 @@ const BorrowerFinancePage = (props) => {
             />
           </div>
         ))}
-      </div>
-
-      <div className="conditions mask2 primary-border">
-        <span>
-          <Checkbox
-            id="hasValidatedFinances"
-            value={borrowerLogic.logic.financeEthics}
-            label="Les informations entrées ci-dessus sont exhaustives et correctes"
-            style={styles.checkbox}
-            onChange={(_, isChecked) => handleCheck(_, isChecked, borrowerId)}
-            disabled={borrowerLogic.logic.hasValidatedFinances}
-          />
-        </span>
-        <LoadingButton
-          label="Valider mes finances"
-          handleClick={e => handleClick(e, borrowerId)}
-          disabled={!borrowerLogic.logic.financeEthics}
-          value={borrowerLogic.logic.hasValidatedFinances}
-        />
       </div>
     </section>
   );

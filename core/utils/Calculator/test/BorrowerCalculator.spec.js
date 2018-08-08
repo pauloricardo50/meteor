@@ -75,17 +75,6 @@ describe('BorrowerCalculator', () => {
         borrower: { files: {}, logic: {} },
       })).to.equal(0);
     });
-
-    it('returns 1/3 when logic.hasValidatedFinances is true', () => {
-      expect(BorrowerCalculator.getBorrowerCompletion({
-        borrower: {
-          files: {},
-          logic: { hasValidatedFinances: true },
-        },
-      })).to.equal(1 / 3);
-    });
-
-    it('calculates files and personal info progress properly');
   });
 
   describe('getBonusIncome', () => {

@@ -78,10 +78,7 @@ const insertFakeBorrower = (userId) => {
       pensionFundYearlyStatement: fakeDocument,
       retirementInsurancePlan: fakeDocument,
     },
-    logic: {
-      financeEthics: true,
-      hasValidatedFinances: true,
-    },
+    logic: {},
   };
 
   return BorrowerService.insert({ borrower, userId });
