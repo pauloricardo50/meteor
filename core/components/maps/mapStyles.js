@@ -1,5 +1,3 @@
-import colors from '../../config/colors';
-
 const mapStyles = [
   {
     featureType: 'administrative.land_parcel',
@@ -65,49 +63,12 @@ const mapStyles = [
     ],
   },
   {
-    featureType: 'road.arterial',
-    elementType: 'labels',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
     featureType: 'road.highway',
     stylers: [
       {
         color: '#f3af50',
       },
-      {
-        visibility: 'simplified',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'labels',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels',
-    stylers: [
-      {
-        visibility: 'off',
-      },
+      {},
     ],
   },
   {
