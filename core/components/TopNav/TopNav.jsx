@@ -53,7 +53,10 @@ const TopNav = (props) => {
           <ImpersonateWarningWithTracker />
           {children}
           {currentUser ? (
-            <TopNavDropdown {...props} />
+            <React.Fragment>
+              {currentUser.emails[0].address}
+              <TopNavDropdown {...props} />
+            </React.Fragment>
           ) : (
             <Button
               label={<T id="TopNav.login" />}
