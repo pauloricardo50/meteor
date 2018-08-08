@@ -30,7 +30,7 @@ const LoanAppItem = ({ loan }) => (
           )}
         </span>
       ) : (
-        <span className="fa fa-home fa-2x heart-beat active" />
+        <span className="fa fa-home fa-2x heart-beat primary" />
       )
     }
     href={`/loans/${loan._id}`}
