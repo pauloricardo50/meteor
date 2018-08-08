@@ -5,7 +5,7 @@ import ScrollToTop from 'core/components/ScrollToTop';
 import NotFound from 'core/components/NotFound';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
-import HomePage from '../../ui/pages/HomePage/loadable';
+import HomePage from '../../ui/pages/HomePage'; // Load this page instantly
 import AboutPage from '../../ui/pages/AboutPage/loadable';
 import FaqPage from '../../ui/pages/FaqPage/loadable';
 import ContactPage from '../../ui/pages/ContactPage/loadable';
