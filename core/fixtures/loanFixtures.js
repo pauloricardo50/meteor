@@ -52,7 +52,6 @@ const logic3 = {
     startTime: new Date(),
     endTime: new Date(),
   },
-  hasValidatedStructure: true,
   insuranceUsePreset: INSURANCE_USE_PRESET.COLLATERAL,
   loanStrategyPreset: LOAN_STRATEGY_PRESET.FIXED,
   amortizationStrategyPreset: AMORTIZATION_TYPE.INDIRECT,

@@ -30,15 +30,7 @@ const Progress = ({ tabId, borrower }) => {
     );
   }
   case 'finance':
-    return borrower.logic.hasValidatedFinances ? (
-      <small className="success">
-        <T id="Finance.validated" /> <span className="fa fa-check" />
-      </small>
-    ) : (
-      <small>
-        <T id="Finance.notValidated" />
-      </small>
-    );
+    return null;
   case 'files': {
     const percent = filesPercent({
       doc: borrower,

@@ -26,7 +26,7 @@ const getTabs = (props) => {
       </React.Fragment>
     ),
     label: <T id={`BorrowersPage.${tab.id}`} noTooltips />,
-    to: `/loans/${loan._id}/borrowers/${borrowers[0]._id}/${tab.id}`,
+    to: `/loans/${loan._id}/borrowers/${tab.id}`,
   }));
 };
 

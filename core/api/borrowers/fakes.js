@@ -77,8 +77,5 @@ export const completeFakeBorrower = {
     pensionFundYearlyStatement: fakeDocument,
     retirementInsurancePlan: fakeDocument,
   },
-  logic: {
-    financeEthics: true,
-    hasValidatedFinances: true,
-  },
+  logic: {},
 };

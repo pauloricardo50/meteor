@@ -29,7 +29,11 @@ const PropertyForm = ({
   buttonLabelId,
   ...props
 }: PropertyFormProps) => (
-  <div className="property-form">
+  <div
+    className="property-form"
+    // Prevent Link to be fired on DashboardPage
+    onClick={e => e.preventDefault()}
+  >
     <DialogForm
       formArray={formArray}
       title={<T id={formTitleId} />}

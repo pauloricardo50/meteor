@@ -1,3 +1,5 @@
+$step-circle-size: 25px;
+
 .dashboard-progress {
   box-sizing: border-box;
   width: calc(100% + 32px);
@@ -18,14 +20,28 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  padding-top: 16px;
 
-  .text {
+  .todo {
     display: flex;
     align-items: center;
 
-    padding: 24px 0 16px 0;
+    margin: 8px 0;
+
+    p {
+      margin: 0;
+    }
+
     .icon {
       margin-right: 16px;
+    }
+
+    .link {
+      margin-left: 8px;
+
+      svg {
+        color: white;
+      }
     }
   }
 }
@@ -38,13 +54,19 @@
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  justify-content: space-between;
 }
 
 .dashboard-progress-bar-step {
   display: flex;
   align-items: center;
   flex-direction: column;
+  flex-basis: 25%;
+  flex-grow: 1;
+
+  .step-name {
+    font-size: 0.8em;
+    opacity: 0.9;
+  }
 }
 
 .dashboard-progress .dashboard-progress-bar .step {
@@ -52,15 +74,20 @@
   align-items: center;
   justify-content: center;
 
-  width: 32px;
-  height: 32px;
+  width: $step-circle-size;
+  height: $step-circle-size;
   margin-bottom: 8px;
 
   border-radius: 50%;
-  background-color: #ced4da;
+  background-color: #164aae;
+  color: $primary;
+
   &.done {
     background-color: $success;
+    color: white;
   }
+
+  z-index: 1;
 }
 
 .dashboard-progress .dashboard-progress-bar .dashboard-progress-bar-step {
@@ -71,39 +98,25 @@
   }
 }
 
-.dashboard-progress
-  .dashboard-progress-bar
-  .dashboard-progress-bar-step:first-of-type {
-  align-items: flex-start;
-}
-
-.dashboard-progress
-  .dashboard-progress-bar
-  .dashboard-progress-bar-step:last-of-type {
-  align-items: flex-end;
-}
-
 .dashboard-progress .dashboard-progress-bar .absolute-lines {
   position: absolute;
+  top: 11px; // Circle height, and space for 3px height
+  left: 12.5%;
 
   display: flex;
   flex-direction: row;
 
-  width: 100%;
+  width: calc(75%);
 }
 
 .absolute-lines .line {
   flex-grow: 1;
 
-  height: 2px;
+  height: 3px;
 
-  background-color: red;
-}
+  background-color: rgba($color: #000000, $alpha: 0.21);
 
-.absolute-lines .line:nth-child(1) {
-  background-color: blue;
-}
-
-.absolute-lines .line:nth-child(2) {
-  background-color: green;
+  &.done {
+    background-color: $success;
+  }
 }

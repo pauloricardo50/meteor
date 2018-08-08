@@ -130,24 +130,6 @@ const LogicSchema = new SimpleSchema({
     min: 1,
     max: 5,
   },
-  expertiseRequired: {
-    type: Boolean,
-    defaultValue: true,
-  },
-  expertiseDone: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  expertiseValid: {
-    type: Boolean,
-    defaultValue: false,
-  },
-
-  hasValidatedStructure: {
-    type: Boolean,
-    defaultValue: false,
-    optional: true,
-  },
   insuranceUsePreset: {
     type: String,
     optional: true,

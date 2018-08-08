@@ -6,7 +6,7 @@ import DashboardRecapProperty from '../DashboardPage/DashboardRecap/DashboardRec
 type PropertiesPageDetailProps = {};
 
 const PropertiesPageDetail = ({ property }: PropertiesPageDetailProps) => (
-  <div className="card1 card-hover properties-page-detail">
+  <div className="properties-page-detail">
     <DashboardRecapProperty property={property} />
   </div>
 );
