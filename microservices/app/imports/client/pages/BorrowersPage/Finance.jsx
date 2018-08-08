@@ -16,16 +16,6 @@ const BorrowerFinancePage = (props) => {
 
   return (
     <section className="borrower-finance-page animated fadeIn flex-justify--center">
-      <h2 className="text-center">
-        <T id="Finance.title" />
-      </h2>
-
-      <div className="description">
-        <p>
-          <T id="Finance.description" />
-        </p>
-      </div>
-
       <div className="borrower-finance__wrapper flex--helper flex-justify--center">
         {borrowers.map(borrower => (
           <div className="borrower-finance__item col--50" key={borrower._id}>
