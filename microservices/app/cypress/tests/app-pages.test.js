@@ -57,18 +57,18 @@ const pages = {
     'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/closing`, { shouldRender: '#ClosingPage' }),
 
-    'Borrower Personal': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
-      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/personal`, {
+    'Borrower Personal': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/borrowers/personal`, {
         shouldRender: '.borrower-page-info',
       }),
 
-    'Borrower Finance': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
-      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/finance`, {
+    'Borrower Finance': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/borrowers/finance`, {
         shouldRender: '.borrower-finance-page',
       }),
 
-    'Borrower Files': ({ step3LoanWithEndedAuction: { _id, borrowers } }) =>
-      route(`/loans/${_id}/borrowers/${borrowers[0]._id}/files`, {
+    'Borrower Files': ({ step3LoanWithEndedAuction: { _id } }) =>
+      route(`/loans/${_id}/borrowers/files`, {
         shouldRender: '.borrower-page-files .uploader',
       }),
 
