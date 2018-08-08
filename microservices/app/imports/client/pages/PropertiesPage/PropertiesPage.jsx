@@ -18,7 +18,11 @@ const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
 
       <div className="properties">
         {properties.map(property => (
-          <PropertiesPageDetail property={property} key={property._id} />
+          <PropertiesPageDetail
+            property={property}
+            loanId={loanId}
+            key={property._id}
+          />
         ))}
       </div>
     </section>

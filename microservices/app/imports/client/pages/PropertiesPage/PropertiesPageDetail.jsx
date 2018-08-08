@@ -3,11 +3,17 @@ import React from 'react';
 
 import DashboardRecapProperty from '../DashboardPage/DashboardRecap/DashboardRecapProperty';
 
-type PropertiesPageDetailProps = {};
+type PropertiesPageDetailProps = {
+  property: Object,
+  loanId: string,
+};
 
-const PropertiesPageDetail = ({ property }: PropertiesPageDetailProps) => (
+const PropertiesPageDetail = ({
+  property,
+  loanId,
+}: PropertiesPageDetailProps) => (
   <div className="properties-page-detail">
-    <DashboardRecapProperty property={property} />
+    <DashboardRecapProperty property={property} loanId={loanId} />
   </div>
 );
 
