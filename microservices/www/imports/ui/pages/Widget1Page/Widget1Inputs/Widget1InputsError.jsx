@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
-import StatusIcon from '../../../components/StatusIcon';
+import StatusIcon from 'core/components/StatusIcon';
 import { hideFinmaValues } from '../Widget1PageContainer';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];
