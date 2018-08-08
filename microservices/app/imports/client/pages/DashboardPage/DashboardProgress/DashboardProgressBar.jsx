@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import DashboardProgressBarStep from './DashboardProgressBarStep';
 
@@ -16,11 +17,14 @@ const DashboardProgressBar = ({ steps, currentStep }) => (
         />
       ))}
     </div>
-    {/* <div className="absolute-lines">
-      {steps
-        .slice(0, -1)
-        .map((_, index) => <span className="line" key={index} />)}
-      </div> */}
+    <div className="absolute-lines">
+      {steps.slice(0, -1).map((_, index) => (
+        <span
+          className={cx('line', { done: index < currentStep - 1 })}
+          key={index}
+        />
+      ))}
+    </div>
   </div>
 );
 
