@@ -24,8 +24,7 @@ describe('BorrowersSummary />', () => {
 
   it('renders the correct number of Chips with correct props', () => {
     const expectedNbOfBorrowers = borrowers.length;
-    const expectedFirstBorrowerLabel =
-      getBorrowerFullName(borrowers[0]) || 'Emprunteur 1';
+    const expectedFirstBorrowerLabel = getBorrowerFullName(borrowers[0]) || 'Emprunteur 1';
     const props = { borrowers };
     const wrapper = shallow(<BorrowersSummary {...props} />);
     const chipsArray = wrapper.find(Chip);

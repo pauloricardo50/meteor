@@ -1,4 +1,4 @@
-import { Users } from '../../';
+import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
 import { createRegexQuery } from '../../helpers/mongoHelpers';
 

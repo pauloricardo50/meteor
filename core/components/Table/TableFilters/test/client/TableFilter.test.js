@@ -242,8 +242,7 @@ describe('TableFilter', () => {
       .first()
       .prop('options');
 
-    const translation =
-      messagesFR[`TasksStatusDropdown.${TASK_STATUS.COMPLETED}`];
+    const translation = messagesFR[`TasksStatusDropdown.${TASK_STATUS.COMPLETED}`];
     expect(renderedOptions[0].value).to.equal(translation);
   });
 

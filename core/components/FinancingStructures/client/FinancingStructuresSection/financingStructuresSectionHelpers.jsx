@@ -16,34 +16,38 @@ export const makeRenderSummary = configArray => (
   { id: structureId },
   data,
   index,
-) => configArray
-  .filter(makeFilterConfig(data))
-  .map(({ Component, id, ...props }) => (Component ? (
-    <Component
-      key={id}
-      structureId={structureId}
-      id={id}
-      className={id}
-      {...props}
-    />
-  ) : (
-    <div className={cx('empty-line', id)} key={id} />
-  )));
+) =>
+  configArray
+    .filter(makeFilterConfig(data))
+    .map(({ Component, id, ...props }) =>
+      (Component ? (
+        <Component
+          key={id}
+          structureId={structureId}
+          id={id}
+          className={id}
+          {...props}
+        />
+      ) : (
+        <div className={cx('empty-line', id)} key={id} />
+      )));
 
 export const makeRenderDetail = configArray => (
   { id: structureId },
   data,
   index,
-) => configArray
-  .filter(makeFilterConfig(data))
-  .map(({ Component, id, ...props }) => (Component ? (
-    <Component
-      key={id}
-      structureId={structureId}
-      id={id}
-      className={id}
-      {...props}
-    />
-  ) : (
-    <div className={cx('empty-line', id)} key={id} />
-  )));
+) =>
+  configArray
+    .filter(makeFilterConfig(data))
+    .map(({ Component, id, ...props }) =>
+      (Component ? (
+        <Component
+          key={id}
+          structureId={structureId}
+          id={id}
+          className={id}
+          {...props}
+        />
+      ) : (
+        <div className={cx('empty-line', id)} key={id} />
+      )));

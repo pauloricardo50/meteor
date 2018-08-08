@@ -55,10 +55,20 @@
 
       margin-bottom: 15px;
 
-      color: #4890e2;
+      color: $primary;
 
       font-size: 14px;
       font-weight: 400;
+    }
+
+    &.success {
+       > span {
+        color: $success;
+      }
+
+      .progress-bar__wrapper {
+        background: $success;
+      }
     }
   }
 
@@ -83,7 +93,7 @@
 
       transition: width 300ms ease;
 
-      background: #4890e2;
+      background: $primary;
     }
   }
 }

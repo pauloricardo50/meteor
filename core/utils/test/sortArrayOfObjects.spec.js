@@ -20,9 +20,7 @@ describe('sortArrayOfObjects', () => {
       { someValue: 1, anotherValue: 5 },
       { someValue: 3, anotherValue: 2 },
     ];
-    expect(sortArrayOfObjects(input, 'someValue', ORDER.ASC)).to.deep.equal(
-      expectedOutput,
-    );
+    expect(sortArrayOfObjects(input, 'someValue', ORDER.ASC)).to.deep.equal(expectedOutput);
   });
 
   it('sorts objects descending by root values', () => {
@@ -40,9 +38,7 @@ describe('sortArrayOfObjects', () => {
       { someValue: -2, anotherValue: 0 },
       { someValue: -2, anotherValue: 2 },
     ];
-    expect(sortArrayOfObjects(input, 'someValue', ORDER.DESC)).to.deep.equal(
-      expectedOutput,
-    );
+    expect(sortArrayOfObjects(input, 'someValue', ORDER.DESC)).to.deep.equal(expectedOutput);
   });
 
   it('sorts objects ascending by nested values', () => {
@@ -60,9 +56,7 @@ describe('sortArrayOfObjects', () => {
       { someValue: -3, anotherVal: 'val', a: { b: 'x' } },
       { someValue: 4, a: { b: 'z' } },
     ];
-    expect(sortArrayOfObjects(input, 'a.b', ORDER.ASC)).to.deep.equal(
-      expectedOutput,
-    );
+    expect(sortArrayOfObjects(input, 'a.b', ORDER.ASC)).to.deep.equal(expectedOutput);
   });
 
   it('sorts objects descending by nested values', () => {
@@ -80,17 +74,13 @@ describe('sortArrayOfObjects', () => {
       { someValue: 1, a: { b: 'cc' } },
       { someValue: 2, anotherVal: 'val', a: { b: 'a' } },
     ];
-    expect(sortArrayOfObjects(input, 'a.b', ORDER.DESC)).to.deep.equal(
-      expectedOutput,
-    );
+    expect(sortArrayOfObjects(input, 'a.b', ORDER.DESC)).to.deep.equal(expectedOutput);
   });
 
   it('sorts objects by case-insensitive string values', () => {
     const input = [{ a: 'ba' }, { a: 'aa' }, { a: 'Aa' }, { a: 'Zz' }];
     const expectedOutput = [{ a: 'aa' }, { a: 'Aa' }, { a: 'ba' }, { a: 'Zz' }];
-    expect(sortArrayOfObjects(input, 'a', ORDER.ASC)).to.deep.equal(
-      expectedOutput,
-    );
+    expect(sortArrayOfObjects(input, 'a', ORDER.ASC)).to.deep.equal(expectedOutput);
   });
 
   it('sorts objects ascending by default', () => {

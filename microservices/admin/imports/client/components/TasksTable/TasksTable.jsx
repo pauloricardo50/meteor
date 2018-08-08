@@ -144,8 +144,12 @@ class TasksTable extends Component {
     if (showAssignee) {
       if (assignedEmployee) {
         const { _id, emails, username, firstName, lastName } = assignedEmployee;
-        const cellText =
-          getUserDisplayName({ firstName, lastName, username, emails });
+        const cellText = getUserDisplayName({
+          firstName,
+          lastName,
+          username,
+          emails,
+        });
         columns.push({
           label: <Link to={`/users/${_id}`}>{cellText}</Link>,
           raw: cellText,

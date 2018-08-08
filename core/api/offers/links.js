@@ -1,5 +1,5 @@
 import Offers from './offers';
-import { Loans, Users } from '../';
+import { Loans, Users } from '..';
 
 Offers.addLinks({
   loan: {

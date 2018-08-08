@@ -65,7 +65,8 @@ export const BorrowerSchema = new SimpleSchema({
 
       if (this.isInsert) {
         return new Date();
-      } else if (this.isUpdate && doc && this.userId === doc.userId) {
+      }
+      if (this.isUpdate && doc && this.userId === doc.userId) {
         return new Date();
       }
     },

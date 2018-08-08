@@ -106,8 +106,8 @@ export default class ClosingStepsForm extends Component {
           <Button
             raised
             primary={
-              JSON.stringify(loan.logic.closingSteps) !==
-              JSON.stringify(closingSteps)
+              JSON.stringify(loan.logic.closingSteps)
+              !== JSON.stringify(closingSteps)
             }
             label="Enregistrer"
             onClick={this.handleSave}

@@ -14,8 +14,8 @@ const styles = {
 };
 
 const statusIsTodo = (files, status) =>
-  status === FILE_STATUS.UNVERIFIED ||
-  ((!files || files.length === 0) && !status);
+  status === FILE_STATUS.UNVERIFIED
+  || ((!files || files.length === 0) && !status);
 
 const FileStatusIcon = ({ files, status }) => {
   // Support providing a single status
@@ -33,9 +33,11 @@ const FileStatusIcon = ({ files, status }) => {
         }}
       />
     );
-  } else if (statuses.indexOf(FILE_STATUS.ERROR) >= 0) {
+  }
+  if (statuses.indexOf(FILE_STATUS.ERROR) >= 0) {
     return <Icon type="warning" className="error" style={styles.icon} />;
-  } else if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
+  }
+  if (statuses.indexOf(FILE_STATUS.UNVERIFIED) >= 0) {
     return (
       <Icon type="waiting" color={colors.lightBorder} style={styles.icon} />
     );

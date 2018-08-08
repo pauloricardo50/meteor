@@ -19,10 +19,13 @@ const AboutPageOffice = () => (
         <hr />
         <div className="about-page-office-description">
           <p className="description">
-            Chemin Auguste-Vilbert 14<br />
-            1218 Le Grand-Saconnex<br />
+            Chemin Auguste-Vilbert 14
             <br />
-            Lu-Ve 8h-18h<br />
+            1218 Le Grand-Saconnex
+            <br />
+            <br />
+            Lu-Ve 8h-18h
+            <br />
           </p>
           <ContactPageInformation />
         </div>

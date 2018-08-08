@@ -168,9 +168,9 @@ const reduceToPercent = (formArray, validationArray) =>
     .reduce(makeCompareToValidationArray(validationArray), 0);
 
 const getAverageOfPercentages = percentages =>
-  percentages.length > 0 &&
-  percentages.map(p => Number(p.toFixed(3))).reduce((p, c) => p + c, 0) /
-    percentages.length;
+  percentages.length > 0
+  && percentages.map(p => Number(p.toFixed(3))).reduce((p, c) => p + c, 0)
+    / percentages.length;
 
 const getPercent = (props) => {
   const percentages = [

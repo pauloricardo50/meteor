@@ -17,7 +17,8 @@ const styles = {
 const StatusIcon = ({ status, style = {}, ...rest }) => {
   if (!status) {
     return null;
-  } if (status === SUCCESS) {
+  }
+  if (status === SUCCESS) {
     return (
       <Icon
         type="checkCircle"
@@ -25,11 +26,13 @@ const StatusIcon = ({ status, style = {}, ...rest }) => {
         {...rest}
       />
     );
-  } if (status === WARNING) {
+  }
+  if (status === WARNING) {
     return (
       <Icon type="error" style={{ ...styles.warning, ...style }} {...rest} />
     );
-  } if (status === ERROR) {
+  }
+  if (status === ERROR) {
     return (
       <Icon type="error" style={{ ...styles.error, ...style }} {...rest} />
     );

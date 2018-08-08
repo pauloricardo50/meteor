@@ -8,15 +8,13 @@ export default class Chart extends Component {
     const { data: prevData } = this.props;
     // If previous data[i].value is different from next data, update chart
     if (
-      nextData.some(
-        (dataPoint, index) => dataPoint.value !== prevData[index].value,
-      )
+      nextData.some((dataPoint, index) => dataPoint.value !== prevData[index].value)
     ) {
       this.update(nextData);
     }
   }
 
-  update = data => {
+  update = (data) => {
     if (this.chart) {
       // FIXME: This should animate the chart somehow
       this.chart.getChart().series[0].setData(data);
@@ -30,7 +28,7 @@ export default class Chart extends Component {
     return (
       <ReactHighcharts
         config={config}
-        ref={c => {
+        ref={(c) => {
           this.chart = c;
         }}
       />

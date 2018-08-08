@@ -24,12 +24,12 @@ const Widget1SingleInputInput = ({
       type="tel"
       value={toMoney(value)}
       onChange={setInputValue}
-      startAdornment={
+      startAdornment={(
         <InputAdornment position="start">
           <span className="widget1-input-currency">CHF</span>
         </InputAdornment>
-      }
-      endAdornment={
+      )}
+      endAdornment={(
         <InputAdornment position="end">
           <IconButton
             type="close"
@@ -38,7 +38,7 @@ const Widget1SingleInputInput = ({
             tabIndex={-1}
           />
         </InputAdornment>
-      }
+      )}
       tabIndex={tabIndex}
     />
   </div>

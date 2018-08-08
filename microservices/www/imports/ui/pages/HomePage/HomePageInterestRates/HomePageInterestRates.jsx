@@ -6,7 +6,9 @@ import InterestRate from './InterestRate';
 
 const HomePageInterestRates = ({ rates }) => (
   <div className="interest-rates">
-    {rates.map(rate => <InterestRate {...rate} key={rate.type} />)}
+    {rates.map(rate => (
+      <InterestRate {...rate} key={rate.type} />
+    ))}
   </div>
 );
 

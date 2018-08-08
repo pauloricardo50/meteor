@@ -7,22 +7,23 @@ import { FILE_STATUS } from '../../../api/constants';
 const checkFile = (file) => {
   if (allowedFileTypes.indexOf(file.type) < 0) {
     return 'fileType';
-  } else if (file.size > maxSize) {
+  }
+  if (file.size > maxSize) {
     return 'fileSize';
   }
   return true;
 };
 
 const filesExistAndAreValid = files =>
-  files &&
-  files.length > 0 &&
-  files.every(file => file.status === FILE_STATUS.VALID);
+  files
+  && files.length > 0
+  && files.every(file => file.status === FILE_STATUS.VALID);
 
 export const propHasChanged = (oldProp, newProp) =>
   !!(
-    (!oldProp && newProp) ||
-    (oldProp && !newProp) ||
-    (oldProp && newProp && oldProp.length !== newProp.length)
+    (!oldProp && newProp)
+    || (oldProp && !newProp)
+    || (oldProp && newProp && oldProp.length !== newProp.length)
   );
 
 const displayFullState = withStateHandlers(
@@ -89,12 +90,12 @@ const props = withProps(({
     }),
   handleRemove: key => deleteFile(key),
   shouldDisableAdd: () =>
-    currentValue &&
-      currentValue.reduce(
+    currentValue
+      && currentValue.reduce(
         (acc, file) => !(file.status === FILE_STATUS.ERROR),
         true,
-      ) &&
-      disabled,
+      )
+      && disabled,
 }));
 
 const willReceiveProps = lifecycle({
@@ -111,8 +112,8 @@ const willReceiveProps = lifecycle({
         // Remove the ones that match
         nextValue.forEach(file =>
           tempFiles.forEach(temp =>
-            temp.name === file.initialName &&
-              filterTempFiles(tempFile => tempFile.name !== file.initialName)));
+            temp.name === file.initialName
+              && filterTempFiles(tempFile => tempFile.name !== file.initialName)));
       }
     }
   },

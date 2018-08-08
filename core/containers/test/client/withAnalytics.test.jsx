@@ -109,8 +109,7 @@ describe('withAnalytics', () => {
     });
 
     it('returns the return value of the original function', () => {
-      const originallyReturnedValue =
-        originalOnChange.returnValues[originalOnChange.returnValues.length - 1];
+      const originallyReturnedValue = originalOnChange.returnValues[originalOnChange.returnValues.length - 1];
 
       expect(originallyReturnedValue).to.equal('the return value');
 

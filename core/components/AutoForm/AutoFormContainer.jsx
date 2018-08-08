@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'core/api';
 
-const getParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
+const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
 const ArrayInputContainer = createContainer(({ collection }) => {
   let popFunc;
@@ -37,7 +37,7 @@ const ArrayInputContainer = createContainer(({ collection }) => {
   return {
     updateFunc: rawParams =>
       new Promise((resolve, reject) => {
-        const params = getParams(rawParams, idKey);
+        const params = createParams(rawParams, idKey);
         Meteor.call(updateFunc, params, (error, result) => {
           if (error) {
             reject(error);
@@ -48,7 +48,7 @@ const ArrayInputContainer = createContainer(({ collection }) => {
       }),
     popFunc: rawParams =>
       new Promise((resolve, reject) => {
-        const params = getParams(rawParams, idKey);
+        const params = createParams(rawParams, idKey);
         Meteor.call(popFunc, params, (error, result) => {
           if (error) {
             reject(error);
@@ -59,7 +59,7 @@ const ArrayInputContainer = createContainer(({ collection }) => {
       }),
     pushFunc: rawParams =>
       new Promise((resolve, reject) => {
-        const params = getParams(rawParams, idKey);
+        const params = createParams(rawParams, idKey);
         Meteor.call(pushFunc, params, (error, result) => {
           if (error) {
             reject(error);

@@ -6,12 +6,11 @@ import { persistStore } from 'redux-persist';
 import createRootReducer from './reducers';
 
 const isClient = typeof window === 'object';
-const composeEnhancers =
-  isClient && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      name: 'e-Potek Www',
-    })
-    : compose;
+const composeEnhancers = isClient && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    name: 'e-Potek Www',
+  })
+  : compose;
 
 // Add other store enhancers if any
 const enhancer = middlewares =>

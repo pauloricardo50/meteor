@@ -115,8 +115,8 @@ class AutoComplete extends Component {
   // Fix for async data update
   componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(prevProps.suggestions) !==
-      JSON.stringify(this.props.suggestions)
+      JSON.stringify(prevProps.suggestions)
+      !== JSON.stringify(this.props.suggestions)
     ) {
       this.handleSuggestionsFetchRequested({ value: this.props.value });
     }

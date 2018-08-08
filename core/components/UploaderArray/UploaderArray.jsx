@@ -15,8 +15,8 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
             }}
             key={doc._id + documentObject.id}
             currentValue={
-              doc.documents[documentObject.id] &&
-                  doc.documents[documentObject.id].files
+              doc.documents[documentObject.id]
+                  && doc.documents[documentObject.id].files
             }
             docId={doc._id}
             disabled={disabled}

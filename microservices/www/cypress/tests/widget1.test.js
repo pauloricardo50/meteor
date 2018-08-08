@@ -1,24 +1,26 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-const assertRecapValue = (label, value) => () => cy
-  .contains(label)
-  .parent()
-  .siblings('p')
-  .invoke('text')
-  .then((text) => {
-    expect(text).to.eq(value);
-  });
+const assertRecapValue = (label, value) => () =>
+  cy
+    .contains(label)
+    .parent()
+    .siblings('p')
+    .invoke('text')
+    .then((text) => {
+      expect(text).to.eq(value);
+    });
 
-const assertFinmaValue = () => () => cy
-  .contains("Prêt / Prix d'achat")
-  .parent()
-  .parent()
-  .siblings()
-  .invoke('text')
-  .then((text) => {
-    expect(text).to.eq('80,00%');
-  });
+const assertFinmaValue = () => () =>
+  cy
+    .contains("Prêt / Prix d'achat")
+    .parent()
+    .parent()
+    .siblings()
+    .invoke('text')
+    .then((text) => {
+      expect(text).to.eq('80,00%');
+    });
 
 describe('Widget1', () => {
   describe('On homepage', () => {

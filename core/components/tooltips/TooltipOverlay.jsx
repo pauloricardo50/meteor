@@ -29,14 +29,14 @@ const TooltipOverlay = ({
   return (
     <OverlayTrigger
       placement={placement}
-      overlay={
+      overlay={(
         <Tooltip
           placement={placement}
           trigger={trigger}
           tooltipConfig={tooltipConfig}
           match={match}
         />
-      }
+      )}
       rootClose
       animation={false}
       trigger={trigger}

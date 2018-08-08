@@ -22,15 +22,15 @@ export const arrayify = (value) => {
  * @return {number} a value between 0 and 1
  */
 export const getPercent = (array = []) => {
-  const percent =
-    array.reduce((tot, val) => {
-      if (isArray(val)) {
-        return tot + (val.length ? 1 : 0);
-      } else if (val !== undefined && val !== null) {
-        return tot + 1;
-      }
-      return tot;
-    }, 0) / array.length;
+  const percent = array.reduce((tot, val) => {
+    if (isArray(val)) {
+      return tot + (val.length ? 1 : 0);
+    }
+    if (val !== undefined && val !== null) {
+      return tot + 1;
+    }
+    return tot;
+  }, 0) / array.length;
   return Number.isFinite(percent) ? percent : 0;
 };
 
@@ -38,9 +38,9 @@ const isNonEmptyObject = variable =>
   variable.constructor === Object && Object.keys(variable).length > 0;
 
 const isArrayOfObjects = variable =>
-  isArray(variable) &&
-  variable.length > 0 &&
-  variable.every(item => item && item.constructor === Object);
+  isArray(variable)
+  && variable.length > 0
+  && variable.every(item => item && item.constructor === Object);
 
 // Converts an object to an array of objects containing
 // the path to the leaf & leaf's value:

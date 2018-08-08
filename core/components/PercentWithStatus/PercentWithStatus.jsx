@@ -12,7 +12,14 @@ type PercentWithStatusProps = {
 const PercentWithStatus = ({ value, status }: PercentWithStatusProps) => (
   <React.Fragment>
     {!!value && value > 0 ? <Percent value={value} /> : '-'}
-    {!!value && value > 0 && <StatusIcon status={status} className="icon" />}
+    {!!value
+      && value > 0 && (
+      <StatusIcon
+        status={status}
+        className="icon"
+        style={{ marginLeft: 4 }}
+      />
+    )}
   </React.Fragment>
 );
 

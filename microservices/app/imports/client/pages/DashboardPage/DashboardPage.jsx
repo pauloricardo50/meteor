@@ -16,7 +16,6 @@ const DashboardPage = (props) => {
   const showClosedModal = status === LOAN_STATUS.DONE && !logic.acceptedClosing;
 
   console.log('loan?', loan);
-  
 
   return (
     <Page id="DashboardPage" fullWidth>

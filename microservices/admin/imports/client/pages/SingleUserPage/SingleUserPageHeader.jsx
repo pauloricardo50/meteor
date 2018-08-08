@@ -28,7 +28,8 @@ const SingleUserPageHeader = ({ user }) => {
         <h1>
           {getUserDisplayName({ firstName, lastName, username, emails })}
           <small className="secondary">
-            &nbsp;-&nbsp;<Roles roles={roles} />
+            &nbsp;-&nbsp;
+            <Roles roles={roles} />
           </small>
           <RolePicker userId={_id} />
         </h1>

@@ -1,5 +1,5 @@
 import Tasks from './tasks';
-import { Users, Loans, Borrowers, Properties } from '../';
+import { Users, Loans, Borrowers, Properties } from '..';
 
 Tasks.addLinks({
   assignedEmployee: {

@@ -4,6 +4,9 @@ import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
+import DevPage from 'core/components/DevPage';
+import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
+import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../client/components/AppStore';
 
@@ -12,7 +15,6 @@ import AppPage from '../../client/pages/AppPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import ClosingPage from '../../client/pages/ClosingPage';
 import DashboardPage from '../../client/pages/DashboardPage';
-import DevPage from 'core/components/DevPage';
 import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
 import FilesPage from '../../client/pages/FilesPage';
 import FinancingPage from '../../client/pages/FinancingPage';
@@ -23,8 +25,6 @@ import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import AppLayout from '../../client/layouts/AppLayout';
 
 // Impersonation
-import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
-import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 
 import * as ROUTES from './appRoutes';
 

@@ -18,7 +18,9 @@ const AppPage = ({ currentUser: { emails, loans } }) => {
         </div>
       )}
 
-      {loans.map(loan => <LoanAppItem loan={loan} key={loan._id} />)}
+      {loans.map(loan => (
+        <LoanAppItem loan={loan} key={loan._id} />
+      ))}
 
       {loans.length === 0 && (
         <p className="description">

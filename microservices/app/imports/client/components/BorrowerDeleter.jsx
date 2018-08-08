@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import ConfirmButton from '../components/ConfirmButton';
 import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
 import { removeBorrower } from 'core/api';
+import ConfirmButton from '../components/ConfirmButton';
 
 export default class BorrowerDeleter extends Component {
   constructor(props) {
@@ -27,12 +27,12 @@ export default class BorrowerDeleter extends Component {
       <ConfirmButton
         disabled={loading}
         handleClick={this.handleClick}
-        buttonComponent={
+        buttonComponent={(
           <IconButton
             type={loading ? 'loop-spin' : 'close'}
             tooltip={<T id="general.delete" />}
           />
-        }
+        )}
       />
     );
   }

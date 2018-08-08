@@ -17,8 +17,8 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
 
     // Check for devs and admins
     if (
-      Roles.userIsInRole(this.userId, 'admin') ||
-      Roles.userIsInRole(this.userId, 'dev')
+      Roles.userIsInRole(this.userId, 'admin')
+      || Roles.userIsInRole(this.userId, 'dev')
     ) {
       return true;
     }

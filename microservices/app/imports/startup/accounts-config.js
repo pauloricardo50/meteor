@@ -7,4 +7,3 @@ AccountsUI.ui.config({
   profilePath: '/',
   minimumPasswordLength: 1,
 });
-

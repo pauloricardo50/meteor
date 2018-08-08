@@ -30,23 +30,24 @@
 
 .microlocation {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 
   &-factors {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
     justify-content: center;
   }
 
   &-factor {
     display: flex;
-    flex-direction: row;
     align-items: flex-start;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+
     padding: 16px 16px;
   }
 
@@ -54,14 +55,15 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    padding: 8px 8px;
+
     max-width: 240px;
+    padding: 8px 8px;
   }
 
   h3 {
     display: flex;
     align-items: center;
-    > :first-child {
+     > :first-child {
       margin-right: 8px;
     }
   }
