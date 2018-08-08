@@ -13,7 +13,7 @@ type MicrolocationProps = {
   setOpen: Function,
 };
 
-const Microlocation = ({
+export const Microlocation = ({
   microlocation: { grade, factors },
   open,
   setOpen,

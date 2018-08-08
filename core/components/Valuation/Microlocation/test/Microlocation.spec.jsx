@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
-import Microlocation from '../Microlocation';
+import { Microlocation } from '../Microlocation';
 import MicrolocationFactor from '../MicrolocationFactor';
 
 describe('Microlocation', () => {
@@ -12,7 +12,11 @@ describe('Microlocation', () => {
   const component = () => shallow(<Microlocation {...props} />);
 
   beforeEach(() => {
-    props = { microlocation: { grade: 5, factors: {} } };
+    props = {
+      microlocation: { grade: 5, factors: {} },
+      open: true,
+      setOpen: () => {},
+    };
   });
 
   it('renders', () => {
