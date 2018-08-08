@@ -1,30 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import T from '../Translation';
 import Uploader from './Uploader';
 
-const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
-  <div className="flex-col center">
-    {documentArray
-      ? documentArray.map(documentObject =>
-        documentObject.condition !== false && (
-          <Uploader
-            fileMeta={{
-              ...documentObject,
-              ...doc.documents[documentObject.id],
-            }}
-            key={doc._id + documentObject.id}
-            currentValue={
-              doc.documents[documentObject.id]
+const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
+  if (documentArray) {
+    return (
+      <div className="flex-col center">
+        {documentArray.map(documentObject =>
+          documentObject.condition !== false && (
+            <Uploader
+              fileMeta={{
+                ...documentObject,
+                ...doc.documents[documentObject.id],
+              }}
+              key={doc._id + documentObject.id}
+              currentValue={
+                doc.documents[documentObject.id]
                   && doc.documents[documentObject.id].files
-            }
-            docId={doc._id}
-            disabled={disabled}
-            collection={collection}
-          />
-        ))
-      : // Show all existing documents for this doc
-      Object.keys(doc.documents)
+              }
+              docId={doc._id}
+              disabled={disabled}
+              collection={collection}
+            />
+          ))}
+      </div>
+    );
+  }
+
+  const allDocuments = Object.keys(doc.documents);
+
+  if (allDocuments.length === 0) {
+    return (
+      <p className="description">
+        <T id="UploaderArray.empty" />
+      </p>
+    );
+  }
+
+  return (
+    <div className="flex-col center">
+      {Object.keys(doc.documents)
         .sort((a, b) => doc.documents[a].isAdmin - doc.documents[b].isAdmin)
         .reverse()
         .map(documentId => (
@@ -39,14 +56,15 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => (
             disabled={disabled}
           />
         ))}
-  </div>
-);
+    </div>
+  );
+};
 
 UploaderArray.propTypes = {
-  documentArray: PropTypes.arrayOf(PropTypes.object),
-  doc: PropTypes.objectOf(PropTypes.any).isRequired,
-  disabled: PropTypes.bool,
   collection: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  doc: PropTypes.objectOf(PropTypes.any).isRequired,
+  documentArray: PropTypes.arrayOf(PropTypes.object),
 };
 
 UploaderArray.defaultProps = {

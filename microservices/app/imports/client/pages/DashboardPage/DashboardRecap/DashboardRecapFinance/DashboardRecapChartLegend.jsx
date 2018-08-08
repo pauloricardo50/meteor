@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
 import colors from 'core/config/colors';
+import { toMoney } from 'core/utils/conversionFunctions';
 
 const DashboardRecapChartLegend = ({ data }) => (
   <div className="dashboard-recap-chart-legend">
@@ -15,7 +16,7 @@ const DashboardRecapChartLegend = ({ data }) => (
         <span className="id">
           <T id={id} />
         </span>
-        {value}
+        {toMoney(value)}
       </div>
     ))}
   </div>

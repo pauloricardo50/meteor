@@ -1,19 +1,33 @@
+// @flow
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Icon from 'core/components/Icon';
+import IconButton from 'core/components/IconButton';
+import T from 'core/components/Translation';
+import type { userLoan } from 'core/api/types';
+import dashboardTodos from './dashboardTodos';
 
-const DashboardProgressInfo = () => (
+type DashboardProgressInfoProps = {
+  loan: userLoan,
+};
+
+const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
-    <div className="text">
-      <Icon className="icon" type="radioButtonChecked" />
-      <p>TODO</p>
-    </div>
+    {dashboardTodos
+      .filter(({ condition }) => condition(loan))
+      .map(({ id, link }) => (
+        <div className="todo" key={id}>
+          <Icon className="icon" type="radioButtonChecked" />
+          <p>
+            <T id={`DashboardProgressInfo.${id}`} />
+          </p>
+          <Link to={link(loan)} className="link">
+            <IconButton type="right" />
+          </Link>
+        </div>
+      ))}
   </div>
 );
-
-DashboardProgressInfo.propTypes = {};
-
-DashboardProgressInfo.defaultProps = {};
 
 export default DashboardProgressInfo;

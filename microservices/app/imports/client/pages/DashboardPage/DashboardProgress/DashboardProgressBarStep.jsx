@@ -7,7 +7,9 @@ import T from 'core/components/Translation';
 const DashboardProgressBarStep = ({ id, isDone, nb }) => (
   <div key={nb} className="dashboard-progress-bar-step">
     <span className={classnames({ step: true, done: isDone })}>{nb}</span>
-    <T id={`steps.${id}`} />
+    <span className="step-name">
+      <T id={`steps.${id}`} />
+    </span>
   </div>
 );
 

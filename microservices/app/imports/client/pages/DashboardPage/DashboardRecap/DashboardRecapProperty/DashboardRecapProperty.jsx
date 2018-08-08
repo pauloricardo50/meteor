@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { createRoute } from 'core/utils/routerUtils';
 
 import { VALUATION_STATUS } from 'core/api/properties/propertyConstants';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
-import { PropertyAdder, PropertyModifier } from 'core/components/PropertyForm';
+import { PropertyModifier } from 'core/components/PropertyForm';
 import { toMoney } from 'core/utils/conversionFunctions';
+import { PROPERTY_PAGE } from '../../../../../startup/client/appRoutes';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
@@ -49,13 +52,10 @@ const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;
 
 const getContent = (property, loanId) => {
-  // if (!property) {
-  //   return <PropertyAdder loanId={loanId} />;
-  // } else
   if (!shouldDisplay(property)) {
     return <PropertyModifier property={property} />;
   }
-  console.log(getRecapArray(property));
+
   return (
     <React.Fragment>
       <MapWithMarker
@@ -73,9 +73,15 @@ const getContent = (property, loanId) => {
 };
 
 const DashboardRecapProperty = ({ property, loanId }) => (
-  <div className="dashboard-recap-property card1">
+  <Link
+    to={createRoute(PROPERTY_PAGE, {
+      ':propertyId': property._id,
+      ':loanId': loanId,
+    })}
+    className="dashboard-recap-property card1 card-hover"
+  >
     {getContent(property, loanId)}
-  </div>
+  </Link>
 );
 
 DashboardRecapProperty.propTypes = {

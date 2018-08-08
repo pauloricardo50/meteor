@@ -1,13 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import T from 'core/components/Translation';
-import { createRoute } from 'core/utils/routerUtils';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import Page from '../../components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
-import { PROPERTY_PAGE } from '../../../startup/client/appRoutes';
 
 const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
   <Page id="PropertiesPage">
@@ -21,15 +18,7 @@ const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
 
       <div className="properties">
         {properties.map(property => (
-          <Link
-            to={createRoute(PROPERTY_PAGE, {
-              ':propertyId': property._id,
-              ':loanId': loanId,
-            })}
-            key={property._id}
-          >
-            <PropertiesPageDetail property={property} />
-          </Link>
+          <PropertiesPageDetail property={property} key={property._id} />
         ))}
       </div>
     </section>

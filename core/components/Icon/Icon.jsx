@@ -141,8 +141,8 @@ const Icon = ({ type, size, ...props }) => {
 };
 
 Icon.propTypes = {
-  type: PropTypes.string.isRequired,
   size: PropTypes.number,
+  type: PropTypes.string.isRequired,
 };
 
 Icon.defaultProps = {

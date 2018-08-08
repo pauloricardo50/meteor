@@ -27,16 +27,6 @@ Borrowers.allow({
 });
 
 const LogicSchema = new SimpleSchema({
-  financeEthics: {
-    type: Boolean,
-    defaultValue: false,
-    optional: true,
-  },
-  hasValidatedFinances: {
-    type: Boolean,
-    defaultValue: false,
-    optional: true,
-  },
   adminValidated: {
     type: Boolean,
     defaultValue: false,

@@ -90,6 +90,7 @@ const config = {
     'MissingDoc',
     'InterestsTable',
     'Table',
+    'UploaderArray',
   ],
 };
 

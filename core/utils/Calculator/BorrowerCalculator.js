@@ -69,10 +69,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         doc: [borrower],
         fileArrayFunc: borrowerDocuments,
         step: FILE_STEPS.AUCTION,
-      })
-        + this.personalInfoPercent([borrower])
-        + (borrower.logic.hasValidatedFinances ? 1 : 0))
-      / 3;
+      }) + this.personalInfoPercent([borrower])) / 2;
 
     getBonusIncome = ({ borrowers }) => {
       let total = 0;
