@@ -10,7 +10,7 @@ type FinancingPageProps = {
 };
 
 const FinancingPage = ({ loan }: FinancingPageProps) => (
-  <section>
+  <section className="animated fadeIn">
     <PageHead titleId="FinancingPage.title" />
     <FinancingStructures loan={loan} />
   </section>

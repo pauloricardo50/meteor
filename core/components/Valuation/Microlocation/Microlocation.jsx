@@ -4,8 +4,8 @@ import T from 'core/components/Translation';
 import StarRating from 'core/components/OfferList/StarRating.jsx';
 import Button from 'core/components/Button';
 
-import MicrolocationFactor from './MicrolocationFactor';
 import { withState } from 'recompose';
+import MicrolocationFactor from './MicrolocationFactor';
 
 type MicrolocationProps = {
   microlocation: Object,
@@ -27,7 +27,7 @@ const Microlocation = ({
       <T id={open ? 'Microlocation.close' : 'Microlocation.open'} />
     </Button>
     {open && (
-      <div className="microlocation-factors">
+      <div className="microlocation-factors animated fadeIn">
         {Object.keys(factors).map(factor => (
           <MicrolocationFactor
             key={factor}
