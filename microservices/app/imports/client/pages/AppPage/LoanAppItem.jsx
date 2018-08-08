@@ -23,7 +23,7 @@ const LoanAppItem = ({ loan }) => (
           {!loan.name && (
             <span>
               <br />
-              <span className="active">
+              <span className="primary">
                 <T id="AppPage.begin" />
               </span>
             </span>

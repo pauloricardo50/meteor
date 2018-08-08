@@ -21,7 +21,7 @@ const ContactButtonContent = ({
       <p className="bold">
         <T id={titleId} />
       </p>
-      <a href={href} className="active">
+      <a href={href} className="primary">
         {label}
       </a>
     </div>
