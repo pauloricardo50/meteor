@@ -14,29 +14,9 @@
       "admin": "http://localhost:5000"
     }
   },
-  "AWS": {
-    "users": {
-      "accessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-      "secretAccesskey": "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"
-    },
-    "admins": {
-      "accessKeyId": "AKIAIE66YI7GPZKP2L2Q",
-      "secretAccesskey": "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"
-    },
-    "partners": {
-      "accessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-      "secretAccesskey": "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"
-    }
-  },
-  "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-  "AWSSecretAccessKey": "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",
-  "AWSRegion": "eu-central-1",
-  "S3Bucket": "e-potek-dev",
-  "AWSAdminKey": "",
-  "AWSAdminSecret": "",
-  "MANDRILL_LOGIN": "florian@e-potek.ch",
-  "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
-  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
-  "MIXPANEL_API_KEY": "47c4e11846a6cd795a275ccf9535035a",
-  "MIXPANEL_API_SECRET": "7f8e74ff4fe0f850373abb114ca9ec91"
+  "mandrill": {
+    "MANDRILL_LOGIN": "florian@e-potek.ch",
+    "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
+    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  }
 }
