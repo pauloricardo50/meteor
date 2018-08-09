@@ -10,7 +10,7 @@ import './factories';
 import './jobs/server';
 
 import './files/server/methods';
-import './files/meteor-slingshot-server';
+import './files/server/meteor-slingshot-server';
 
 import './email/server';
 

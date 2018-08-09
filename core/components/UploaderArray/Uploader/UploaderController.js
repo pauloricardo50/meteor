@@ -1,14 +1,18 @@
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
-import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 import bert from 'core/utils/bert';
-import { FILE_STATUS } from '../../../api/constants';
+import {
+  FILE_STATUS,
+  ALLOWED_FILE_TYPES,
+  MAX_FILE_SIZE,
+  EXOSCALE_PATH,
+} from '../../../api/constants';
 
 const checkFile = (file) => {
-  if (allowedFileTypes.indexOf(file.type) < 0) {
+  if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
     return 'fileType';
   }
-  if (file.size > maxSize) {
+  if (file.size > MAX_FILE_SIZE) {
     return 'fileSize';
   }
   return true;
@@ -86,7 +90,7 @@ const props = withProps(({
       size: file.size,
       type: file.type,
       url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
-      key: downloadUrl.split('amazonaws.com/')[1],
+      key: downloadUrl.split(`${EXOSCALE_PATH}/`)[1],
     }),
   handleRemove: key => deleteFile(key),
   shouldDisableAdd: () =>
