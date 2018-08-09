@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import T from 'core/components/Translation';
-import StatusIcon from '../../../../components/StatusIcon';
+import StatusIcon from 'core/components/StatusIcon';
 import Widget1InputsError from '../Widget1InputsError';
 
 describe('Widget1InputsError', () => {
