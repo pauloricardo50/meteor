@@ -3,7 +3,7 @@ import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
 import { API_KEY, SECRET_KEY } from 'core/api/files/server/uploadDirective';
 import { Loans, Borrowers } from '../..';
-import { BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
+import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
 
 // API Ref: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
 export const setupS3 = () => {
@@ -14,7 +14,15 @@ export const setupS3 = () => {
 class S3Service {
   constructor() {
     this.s3 = setupS3();
-    this.params = { Bucket: BUCKET_NAME };
+    this.setBucket();
+  }
+
+  setBucket = () => {
+    if (Meteor.isTest || Meteor.isAppTest) {
+      this.params = { Bucket: TEST_BUCKET_NAME };
+    } else {
+      this.params = { Bucket: Meteor.settings.storage.bucketName };
+    }
   }
 
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
@@ -59,6 +67,8 @@ class S3Service {
   listObjects = Prefix =>
     this.callS3Method('listObjects', { Prefix }).then(results => results.Contents);
 
+  copyObject = params => this.callS3Method('copyObject', params);
+
   callS3Method = (methodName, params) =>
     this.promisify(methodName, this.makeParams(params));
 
@@ -68,6 +78,30 @@ class S3Service {
         params,
         (err, data) => (err ? reject(err) : resolve(data)),
       ));
+
+  // You can't edit metadata of an existing object, so you have to
+  // copy the object with its new metadata
+  // you also can't copy an object onto itself, so you need an intermediary one
+  updateMetadata = (Key, newMetadata) =>
+    this.getObject(Key)
+      .then(({ Metadata = {} }) => Metadata)
+      // First copy this object to a temporary other object with the new metadata
+      .then(oldMetaData =>
+        this.copyObject({
+          CopySource: `/${this.params.Bucket}/${Key}`,
+          Key: `${Key}-temp`,
+          Metadata: { ...oldMetaData, ...newMetadata },
+          MetadataDirective: 'REPLACE',
+        }))
+      // Copy the object back to its original place with the new metadata
+      .then(() =>
+        this.copyObject({
+          CopySource: `/${this.params.Bucket}/${Key}-temp`,
+          Key,
+          MetadataDirective: 'COPY',
+        }))
+      // Finally delete the temp object
+      .then(() => this.deleteObject(`${Key}-temp`));
 }
 
 export default new S3Service();

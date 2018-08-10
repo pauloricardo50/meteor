@@ -87,6 +87,39 @@ describe('S3Service', () => {
             expect(results.map(({ Key }) => Key)).to.deep.equal([key1, key2]));
       });
     });
+
+    describe('updateMetadata', () => {
+      it('sets metadata if none existed before', () => {
+        const metadata2 = { status: 'final' };
+
+        return S3Service.putObject(binaryData, key)
+          .then(() => S3Service.updateMetadata(key, metadata2))
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata2));
+      });
+
+      it('updates metadata on an existing object', () => {
+        const metadata1 = { status: 'initial', hello: 'world' };
+        const metadata2 = { status: 'final' };
+
+        return S3Service.putObject(binaryData, key, metadata1)
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata1))
+          .then(() => S3Service.updateMetadata(key, metadata2))
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata }) =>
+            expect(Metadata).to.deep.equal({ ...metadata1, ...metadata2 }));
+      });
+
+      it('removes the temp object at the end', () => {
+        const metadata2 = { status: 'final' };
+
+        return S3Service.putObject(binaryData, key)
+          .then(() => S3Service.updateMetadata(key, metadata2))
+          .then(() => S3Service.listObjects(key))
+          .then(results => expect(results.length).to.equal(1));
+      });
+    });
   });
 
   describe('isAllowed', () => {
