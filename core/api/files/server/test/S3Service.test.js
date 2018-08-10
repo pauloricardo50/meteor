@@ -16,7 +16,7 @@ const clearBucket = () =>
     .then(S3Service.deleteObjects);
 
 describe('S3Service', () => {
-  describe.only('API', () => {
+  describe('API', () => {
     let json;
     let binaryData;
     let key;
@@ -142,30 +142,30 @@ describe('S3Service', () => {
     it('should return true if the user is dev', () => {
       Meteor.users.update(userId, { $set: { roles: ['dev'] } });
 
-      expect(S3Service.isAllowed('')).to.equal(true);
+      expect(S3Service.isAllowedToAccess('')).to.equal(true);
     });
 
     it('should return true if the user is admin', () => {
       Meteor.users.update(userId, { $set: { roles: 'admin' } });
 
-      expect(S3Service.isAllowed('')).to.equal(true);
+      expect(S3Service.isAllowedToAccess('')).to.equal(true);
     });
 
     it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowed('')).to.throw('unauthorized');
+      expect(() => S3Service.isAllowedToAccess('')).to.throw('unauthorized');
     });
 
     it('should return true if this user has a loan', () => {
       const loan = Factory.create('loan', { userId });
 
-      expect(S3Service.isAllowed(`${loan._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess(`${loan._id}/`)).to.equal(true);
       Loans.remove(loan._id);
     });
 
     it('should return true if this user has a borrower', () => {
       const borrower = Factory.create('borrower', { userId });
 
-      expect(S3Service.isAllowed(`${borrower._id}/`)).to.equal(true);
+      expect(S3Service.isAllowedToAccess(`${borrower._id}/`)).to.equal(true);
       Borrowers.remove(borrower._id);
     });
   });
