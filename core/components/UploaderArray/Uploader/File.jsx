@@ -7,6 +7,18 @@ import { FILE_STATUS } from 'core/api/constants';
 
 import Download from './Download';
 
+const isAllowedToDelete = (disabled, status) => {
+  const currentUser = Meteor.user();
+  if (
+    currentUser.roles.includes('dev')
+    || currentUser.roles.includes('admin')
+  ) {
+    return true;
+  }
+
+  return !disabled && status !== FILE_STATUS.VALID;
+};
+
 const File = ({
   file: { initialName, key, status, error },
   disabled,
@@ -19,7 +31,7 @@ const File = ({
         <span className={`${status} bold`}>
           <T id={`File.status.${status}`} />
         </span>
-        {!!(!disabled && status !== FILE_STATUS.VALID) && (
+        {isAllowedToDelete(disabled, status) && (
           <IconButton
             type="close"
             tooltip={<T id="general.delete" />}

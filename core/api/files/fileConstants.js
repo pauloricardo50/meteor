@@ -29,3 +29,5 @@ export const BUCKET_NAME = 'e-potek-dev-files';
 export const OBJECT_STORAGE_PATH = `https://${BUCKET_NAME}.${EXOSCALE_PATH}`;
 
 export const OBJECT_STORAGE_REGION = 'CH-DK-2';
+
+export const S3_ENDPOINT = 'https://sos-ch-dk-2.exo.io';

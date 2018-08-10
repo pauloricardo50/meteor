@@ -8,11 +8,17 @@ import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
 } from '../../constants';
-import { SLINGSHOT_DIRECTIVE_NAME } from '../fileConstants';
+import {
+  SLINGSHOT_DIRECTIVE_NAME,
+  MAX_FILE_SIZE,
+  ALLOWED_FILE_TYPES,
+} from '../fileConstants';
 import { getUploadCountPrefix } from '../fileHelpers';
 import uploadDirective from './uploadDirective';
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
+  maxSize: MAX_FILE_SIZE,
+  allowedFileTypes: ALLOWED_FILE_TYPES,
   authorize(file, { collection, docId }) {
     // Don't use arrow function, this is the current object here
 

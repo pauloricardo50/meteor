@@ -3,10 +3,9 @@ import {
   OBJECT_STORAGE_PATH,
   BUCKET_NAME,
 } from '../fileConstants';
-import ObjectStorageService from './ObjectStorageService';
 
-const API_KEY = 'EXOfaa01de0dd64ae217e1748c2';
-const SECRET_KEY = 'QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU';
+export const API_KEY = 'EXOfaa01de0dd64ae217e1748c2';
+export const SECRET_KEY = 'QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU';
 
 const exoscaleStorageService = {
   /**
@@ -35,11 +34,11 @@ const exoscaleStorageService = {
   upload(method, directive, file, meta) {
     const fileKey = directive.key(file, meta);
     const payload = {
-      key,
+      key: fileKey,
       bucket: BUCKET_NAME,
       'Content-Type': file.type,
     };
-    const signedPayload = ObjectStorageService.createSignedPayload(payload);
+    // const signedPayload = ObjectStorageService.createSignedPayload(payload);
 
     // Here you need to make sure that all parameters passed in the directive
     // are going to be enforced by the server receiving the file.
