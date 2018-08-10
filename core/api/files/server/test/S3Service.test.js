@@ -10,13 +10,11 @@ import Loans from 'core/api/loans/loans';
 import Borrowers from 'core/api/borrowers/borrowers';
 import S3Service from '../S3Service';
 
-const clearBucket = () =>
-  S3Service.listObjects('')
-    .then(results => results.map(result => result.Key))
-    .then(S3Service.deleteObjects);
+export const clearBucket = () =>
+  Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
 
 describe('S3Service', () => {
-  describe.only('API', () => {
+  describe('API', () => {
     let json;
     let binaryData;
     let key;
@@ -114,6 +112,16 @@ describe('S3Service', () => {
           .then(() => S3Service.getObject(key))
           .then(({ Metadata }) =>
             expect(Metadata).to.deep.equal({ ...metadata1, ...metadata2 }));
+      });
+
+      it('lowercases your metadata keys', () => {
+        const metadata = { camelCase: 'Hello world' };
+
+        return S3Service.putObject(binaryData, key)
+          .then(() => S3Service.updateMetadata(key, metadata))
+          .then(() => S3Service.getObject(key))
+          .then(({ Metadata: { camelcase } }) =>
+            expect(camelcase).to.deep.equal(metadata.camelCase));
       });
     });
 

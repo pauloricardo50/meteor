@@ -68,6 +68,11 @@ class S3Service {
       Delete: { Objects: keys.map(Key => ({ Key })) },
     });
 
+  deleteObjectsWithPrefix = prefix =>
+    this.listObjects(prefix)
+      .then(results => results.map(({ Key }) => Key))
+      .then(this.deleteObjects);
+
   getObject = Key => this.callS3Method('getObject', { Key });
 
   listObjects = Prefix =>

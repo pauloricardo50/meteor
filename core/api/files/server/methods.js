@@ -8,7 +8,7 @@ import {
   addDocument,
   removeDocument,
 } from '../methodDefinitions';
-import FileService from '../FileService';
+import FileService from './FileService';
 import S3Service from './S3Service';
 
 addFileToDoc.setHandler((context, { collection, docId, documentId, file }) => {
