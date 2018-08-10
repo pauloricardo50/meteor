@@ -110,15 +110,19 @@ describe('S3Service', () => {
           .then(({ Metadata }) =>
             expect(Metadata).to.deep.equal({ ...metadata1, ...metadata2 }));
       });
+    });
 
-      it('removes the temp object at the end', () => {
-        const metadata2 = { status: 'final' };
-
-        return S3Service.putObject(binaryData, key)
-          .then(() => S3Service.updateMetadata(key, metadata2))
-          .then(() => S3Service.listObjects(key))
-          .then(results => expect(results.length).to.equal(1));
+    describe('headObject', () => {
+      it('gets the metadata of an object if it exists', () => {
+        const metadata = { hello: 'ma dude' };
+        return S3Service.putObject(binaryData, key, metadata)
+          .then(() => S3Service.headObject(key))
+          .then(({ Metadata }) => expect(Metadata).to.deep.equal(metadata));
       });
+
+      it('returns an error if the object does not exist', () =>
+        S3Service.headObject(key).catch(err =>
+          expect(err.name).to.equal('NotFound')));
     });
   });
 

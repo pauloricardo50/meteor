@@ -70,9 +70,11 @@ class S3Service {
   getObject = Key => this.callS3Method('getObject', { Key });
 
   listObjects = Prefix =>
-    this.callS3Method('listObjects', { Prefix }).then(results => results.Contents);
+    this.callS3Method('listObjectsV2', { Prefix }).then(results => results.Contents);
 
   copyObject = params => this.callS3Method('copyObject', params);
+
+  headObject = Key => this.callS3Method('headObject', { Key });
 
   callS3Method = (methodName, params) =>
     this.promisify(methodName, this.makeParams(params));
@@ -84,29 +86,9 @@ class S3Service {
         (err, data) => (err ? reject(err) : resolve(data)),
       ));
 
-  // You can't edit metadata of an existing object, so you have to
-  // copy the object with its new metadata
-  // you also can't copy an object onto itself, so you need an intermediary one
-  updateMetadata = (Key, newMetadata) =>
-    this.getObject(Key)
-      .then(({ Metadata = {} }) => Metadata)
-      // First copy this object to a temporary other object with the new metadata
-      .then(oldMetaData =>
-        this.copyObject({
-          CopySource: `/${this.params.Bucket}/${Key}`,
-          Key: `${Key}-temp`,
-          Metadata: { ...oldMetaData, ...newMetadata },
-          MetadataDirective: 'REPLACE',
-        }))
-      // Copy the object back to its original place with the new metadata
-      .then(() =>
-        this.copyObject({
-          CopySource: `/${this.params.Bucket}/${Key}-temp`,
-          Key,
-          MetadataDirective: 'COPY',
-        }))
-      // Finally delete the temp object
-      .then(() => this.deleteObject(`${Key}-temp`));
+  updateMetadata = (key, newMetadata) =>
+    this.getObject(key).then(({ Metadata: oldMetaData }) =>
+      this.putObject(undefined, key, { ...oldMetaData, ...newMetadata }));
 }
 
 export default new S3Service();
