@@ -25,5 +25,9 @@
   },
   "storage": {
     "bucketName": "e-potek-dev-files"
+  },
+  "exoscale": {
+    "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
+    "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
   }
 }

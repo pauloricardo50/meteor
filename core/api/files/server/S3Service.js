@@ -1,21 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
-import { API_KEY, SECRET_KEY } from 'core/api/files/server/uploadDirective';
 import { Loans, Borrowers } from '../..';
 import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
 
-// API Ref: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
-export const setupS3 = () => {
-  AWS.config.update({ accessKeyId: API_KEY, secretAccessKey: SECRET_KEY });
-  return new AWS.S3({ signatureVersion: 'v4', endpoint: S3_ENDPOINT });
-};
+const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
 class S3Service {
   constructor() {
-    this.s3 = setupS3();
+    this.setupS3();
     this.setBucket();
   }
+
+  setupS3 = () => {
+    // API Ref: https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html
+    AWS.config.update({ accessKeyId: API_KEY, secretAccessKey: SECRET_KEY });
+    this.s3 = new AWS.S3({ signatureVersion: 'v4', endpoint: S3_ENDPOINT });
+  };
 
   setBucket = () => {
     if (Meteor.isTest || Meteor.isAppTest) {

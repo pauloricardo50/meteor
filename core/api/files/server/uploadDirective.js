@@ -1,11 +1,7 @@
-import {
-  MAX_FILE_SIZE,
-  OBJECT_STORAGE_PATH,
-  BUCKET_NAME,
-} from '../fileConstants';
+import { Meteor } from 'meteor/meteor';
+import { MAX_FILE_SIZE, OBJECT_STORAGE_PATH } from '../fileConstants';
 
-export const API_KEY = 'EXOfaa01de0dd64ae217e1748c2';
-export const SECRET_KEY = 'QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU';
+const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
 const exoscaleStorageService = {
   /**
@@ -33,12 +29,6 @@ const exoscaleStorageService = {
    */
   upload(method, directive, file, meta) {
     const fileKey = directive.key(file, meta);
-    const payload = {
-      key: fileKey,
-      bucket: BUCKET_NAME,
-      'Content-Type': file.type,
-    };
-    // const signedPayload = ObjectStorageService.createSignedPayload(payload);
 
     // Here you need to make sure that all parameters passed in the directive
     // are going to be enforced by the server receiving the file.
@@ -58,7 +48,7 @@ const exoscaleStorageService = {
       ],
 
       // HTTP headers to send when uploading:
-      // headers: {  },
+      // headers: {},
     };
   },
 
