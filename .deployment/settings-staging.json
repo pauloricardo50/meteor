@@ -24,9 +24,11 @@
   "mandrill": {
     "MANDRILL_LOGIN": "florian@e-potek.ch",
     "MANDRILL_API_KEY": "E7oXiP-HdFaLpNfggBUGpg",
-    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg",
-    "MIXPANEL_API_KEY": "904fedcb38c172174737132a4ea6dbe1",
-    "MIXPANEL_API_SECRET": "e760363faa39456bc5f8d679eb38cb29"
+    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  },
+  "mixpanel": {
+    "API_KEY": "904fedcb38c172174737132a4ea6dbe1",
+    "API_SECRET": "e760363faa39456bc5f8d679eb38cb29"
   },
   "Kadira": {
     "endpoint": "https://kadira.e-potek.ch:22022",
@@ -42,5 +44,8 @@
       "appId": "fqNXNjD5zbt3GjjQY", 
       "appSecret": "893ab5f2-157d-40ba-a9b9-a5b9cf8107fc" 
     }
+  },
+  "storage": {
+    "bucketName": "e-potek-staging-files"
   }
 }

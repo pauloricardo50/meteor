@@ -22,5 +22,8 @@
     "MANDRILL_LOGIN": "florian@e-potek.ch",
     "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
     "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  },
+  "storage": {
+    "bucketName": "e-potek-dev-files"
   }
 }
