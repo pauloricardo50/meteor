@@ -16,12 +16,13 @@ export default class Download extends Component {
   handleClick = () => {
     const { fileKey, fileName } = this.props;
     this.setState({ downloading: true }, () => {
-      downloadFile.run({ key: fileKey }).then((data) => {
-        this.setState({ downloading: false });
-
-        const blob = new Blob([data.Body], { type: data.ContentType });
-        fileSaver.saveAs(blob, fileName);
-      });
+      downloadFile
+        .run({ key: fileKey })
+        .then(({ Body, ContentType: type }) => {
+          const blob = new Blob([Body], { type });
+          fileSaver.saveAs(blob, fileName);
+        })
+        .finally(() => this.setState({ downloading: false }));
     });
   };
 

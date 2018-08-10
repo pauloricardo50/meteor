@@ -54,10 +54,11 @@ const exoscaleStorageService = {
         { name: 'accessKey', value: API_KEY },
         { name: 'secret_key', value: SECRET_KEY },
         { name: 'key', value: fileKey },
+        { name: 'acl', value: 'bucket-owner-full-control' },
       ],
 
       // HTTP headers to send when uploading:
-      // headers: { 'x-foo-bar': fooData },
+      // headers: {  },
     };
   },
 

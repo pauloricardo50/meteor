@@ -7,8 +7,12 @@ import {
   propertyDocuments,
 } from './documents';
 
-export const getUploadCountPrefix = lastUploadCount =>
-  (lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`);
+export const getUploadCountPrefix = (lastUploadCount) => {
+  if (lastUploadCount) {
+    return lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`;
+  }
+  return '00';
+};
 
 /**
  * filesPercent - Determines the completion rate of file upload for a given

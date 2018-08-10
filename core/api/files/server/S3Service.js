@@ -23,7 +23,7 @@ class S3Service {
     } else {
       this.params = { Bucket: Meteor.settings.storage.bucketName };
     }
-  }
+  };
 
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
@@ -53,7 +53,12 @@ class S3Service {
   };
 
   putObject = (binaryData, Key, Metadata) =>
-    this.callS3Method('putObject', { Body: binaryData, Key, Metadata });
+    this.callS3Method('putObject', {
+      Body: binaryData,
+      Key,
+      Metadata,
+      ACL: 'bucket-owner-full-control',
+    });
 
   deleteObject = Key => this.callS3Method('deleteObject', { Key });
 
