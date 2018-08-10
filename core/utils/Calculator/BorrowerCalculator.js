@@ -69,7 +69,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         doc: [borrower],
         fileArrayFunc: borrowerDocuments,
         step: FILE_STEPS.AUCTION,
-      }) + this.personalInfoPercent([borrower])) / 2;
+      })
+        + this.personalInfoPercent([borrower]))
+      / 2;
 
     getBonusIncome = ({ borrowers }) => {
       let total = 0;
@@ -115,10 +117,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     };
 
     getOtherIncome = ({ borrowers }) =>
-      this.getArrayValues({ borrowers }, 'otherIncome');
+      this.getArrayValues({ borrowers, key: 'otherIncome' });
 
     getExpenses = ({ borrowers }) =>
-      this.getArrayValues({ borrowers }, 'expenses');
+      this.getArrayValues({ borrowers, key: 'expenses' });
 
     getTotalIncome = ({ borrowers }) => {
       const sum = arrayify(borrowers).reduce((total, borrower) => {
