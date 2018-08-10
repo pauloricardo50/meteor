@@ -26,7 +26,7 @@ const argumentMappings = {
   }),
 
   getBorrowRatio: data => ({
-    propertyValue: getProperty(data).value,
+    propertyValue: getProperty(data).value + data.structure.propertyWork,
     loan: data.structure.wantedLoan,
   }),
 
