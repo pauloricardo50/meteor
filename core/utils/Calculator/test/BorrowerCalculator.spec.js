@@ -193,11 +193,11 @@ describe('BorrowerCalculator', () => {
       expect(BorrowerCalculator.getTotalIncome({
         borrowers: {
           salary: 1,
-          bonus: { value: 2 }, // returns 1
+          bonus: { value: 2 }, // Adds 1
           otherIncome: [{ value: 3 }],
-          expenses: [{ value: 5 }],
+          expenses: [{ value: 5 }], // Subtracts 5
         },
-      })).to.equal(2);
+      })).to.equal(0);
     });
   });
 
