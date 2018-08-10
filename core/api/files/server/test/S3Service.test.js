@@ -16,10 +16,15 @@ const clearBucket = () =>
     .then(S3Service.deleteObjects);
 
 describe('S3Service', () => {
-  describe('API', () => {
+  describe.only('API', () => {
     let json;
     let binaryData;
     let key;
+
+    before(() => {
+      // Safety check
+      expect(S3Service.params.Bucket).to.equal('e-potek-test-bucket');
+    });
 
     beforeEach(() => {
       json = { hello: 'world' };
@@ -40,8 +45,8 @@ describe('S3Service', () => {
         S3Service.putObject(binaryData, key)
           .then(() => S3Service.getObject(key))
           .then(result => expect(result).to.not.equal(undefined))
-          .catch(err => expect(err).to.equal(undefined))
           .then(() => S3Service.deleteObject(key))
+          .catch(err => expect(err).to.equal(undefined))
           .then(() => S3Service.getObject(key))
           .catch(err => expect(err.name).to.equal('NoSuchKey')));
 
