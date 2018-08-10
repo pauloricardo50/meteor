@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 export const FILE_STATUS = {
   UNVERIFIED: 'UNVERIFIED',
   VALID: 'VALID',
@@ -24,7 +26,8 @@ export const SLINGSHOT_DIRECTIVE_NAME = 'exoscale';
 
 export const EXOSCALE_PATH = 'sos-ch-dk-2.exo.io';
 
-export const BUCKET_NAME = 'e-potek-dev-files';
+export const BUCKET_NAME = Meteor.settings.storage.bucketName;
+export const TEST_BUCKET_NAME = 'e-potek-test-bucket';
 
 export const OBJECT_STORAGE_PATH = `https://${BUCKET_NAME}.${EXOSCALE_PATH}`;
 
