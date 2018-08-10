@@ -110,7 +110,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getBorrowRatio({ loan }) {
       return (
         this.makeSelectStructureKey('wantedLoan')({ loan })
-        / this.selectPropertyValue({ loan })
+        / (this.selectPropertyValue({ loan }),
+        this.makeSelectStructureKey('propertyWork')({ loan }))
       );
     }
 
