@@ -11,32 +11,17 @@ import {
 
 export const borrowerDocuments = (b = {}) => ({
   auction: [
-    {
-      id: 'identity',
-    },
-    {
-      id: 'residencyPermit',
-      condition: !b.isSwiss,
-    },
-    {
-      id: 'taxes',
-      // condition: true, //TODO: implement married couple logic
-    },
-    {
-      id: 'salaryCertificate',
-    },
-    {
-      id: 'bonus',
-      condition: !!b.bonus && Object.keys(b.bonus).length > 0,
-    },
+    { id: 'identity' },
+    { id: 'residencyPermit', condition: !b.isSwiss },
+    // TODO: implement married couple logic
+    { id: 'taxes' },
+    { id: 'salaryCertificate' },
+    { id: 'bonus', condition: !!b.bonus && Object.keys(b.bonus).length > 0 },
     {
       id: 'otherIncome',
       condition: b.otherIncome && !!(b.otherIncome.length > 0),
     },
-    {
-      id: 'ownCompanyFinancialStatements',
-      condition: !!b.worksForOwnCompany,
-    },
+    { id: 'ownCompanyFinancialStatements', condition: !!b.worksForOwnCompany },
     {
       id: 'divorceJudgment',
       condition: !b.civilStatus === 'divorced',
@@ -48,14 +33,8 @@ export const borrowerDocuments = (b = {}) => ({
     },
   ],
   contract: [
-    {
-      id: 'nonPursuitExtract',
-      doubleTooltip: true,
-    },
-    {
-      id: 'lastSalaries',
-      noTooltips: true,
-    },
+    { id: 'nonPursuitExtract', doubleTooltip: true },
+    { id: 'lastSalaries', noTooltips: true },
     {
       id: 'currentMortgages',
       condition: !!b.realEstate && !!b.realEstate.length > 0,
@@ -122,23 +101,19 @@ export const loanDocuments = (r = {}) => ({
 
 export const propertyDocuments = (property = {}, loan = {}) => ({
   auction: [
-    {
-      id: 'plans',
-    },
+    { id: 'plans' },
     {
       id: 'cubage',
       doubleTooltip: true,
       condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
-    {
-      id: 'pictures',
-    },
+    { id: 'pictures' },
     {
       id: 'marketingBrochure',
       condition: !!(
-        loan &&
-        loan.general &&
-        loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        loan
+        && loan.general
+        && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
       ),
       required: false,
     },
@@ -147,14 +122,11 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     {
       id: 'rent',
       condition:
-        !!loan.general &&
-        loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
+        !!loan.general
+        && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
       doubleTooltip: true,
     },
-    {
-      id: 'landRegisterExtract',
-      doubleTooltip: true,
-    },
+    { id: 'landRegisterExtract', doubleTooltip: true },
     {
       id: 'coownershipAllocationAgreement',
       condition: property.isCoproperty,
@@ -165,10 +137,7 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
       condition: property.isCoproperty,
       doubleTooltip: true,
     },
-    {
-      id: 'fireAndWaterInsurance',
-      condition: !!property.isNew,
-    },
+    { id: 'fireAndWaterInsurance', condition: !!property.isNew },
   ],
   all() {
     return [...this.auction, ...this.contract];
