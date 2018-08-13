@@ -227,3 +227,16 @@ $card1_padding: 24px;
     align-items: center;
   }
 }
+
+.expand-helper {
+  position: absolute;
+  display: none;
+  top: 4px;
+  left: 16px;
+  color: $primary;
+  animation-duration: 400ms !important;
+}
+
+.section-summary:hover .expand-helper.appear {
+  display: flex;
+}
