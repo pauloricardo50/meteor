@@ -29,11 +29,11 @@ const sideNavLinks: linksType = [
     exact: true,
     icon: faTachometer,
   },
-  { id: 'FilesPage', to: ROUTES.FILES_PAGE, icon: faFolderOpen },
-  // { id: 'ClosingPage', to: ROUTES.CLOSING_PAGE },
+  { id: 'PropertiesPage', to: ROUTES.PROPERTIES_PAGE, icon: faHome },
   { id: 'BorrowersPage', to: ROUTES.BORROWERS_PAGE, icon: faUsers },
   { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
-  { id: 'PropertiesPage', to: ROUTES.PROPERTIES_PAGE, icon: faHome },
+  { id: 'FilesPage', to: ROUTES.FILES_PAGE, icon: faFolderOpen },
+  // { id: 'ClosingPage', to: ROUTES.CLOSING_PAGE },
 ];
 
 export const LoanSideNav = ({
