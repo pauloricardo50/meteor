@@ -8,7 +8,7 @@ import { mount } from 'core/utils/testHelpers/enzyme';
 import DefaultTranchePicker, { TranchePicker } from '../../TranchePicker';
 import Tranche from '../../Tranche';
 
-describe('TranchePicker', () => {
+describe.only('TranchePicker', () => {
   let props;
   const { intl } = new IntlProvider({ defaultLocale: 'fr' }).getChildContext();
   const component = () =>
@@ -18,7 +18,7 @@ describe('TranchePicker', () => {
     });
 
   beforeEach(() => {
-    props = { types: ['interest2', 'interest5', 'interest10'] };
+    props = { types: ['interest10', 'interest2', 'interest5'] };
   });
 
   it('adds a tranche', () => {
@@ -89,8 +89,29 @@ describe('TranchePicker', () => {
     const firstTranche = wrapper.find(Tranche).first();
 
     expect(firstTranche.prop('options').map(({ id }) => id)).to.deep.equal([
+      'interest2',
+      'interest10',
+    ]);
+  });
+
+  it('sorts options properly', () => {
+    props.types = [
+      'interest20',
+      'interest15',
+      'interest5',
       'interest10',
       'interest2',
+    ];
+    props.initialTranches = [{ value: 1, type: 'interest2' }];
+    const wrapper = component();
+    const firstTranche = wrapper.find(Tranche).first();
+
+    expect(firstTranche.prop('options').map(({ id }) => id)).to.deep.equal([
+      'interest2',
+      'interest5',
+      'interest10',
+      'interest15',
+      'interest20',
     ]);
   });
 });
