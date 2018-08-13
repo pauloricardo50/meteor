@@ -207,10 +207,15 @@ $card1_padding: 24px;
   }
 }
 
-.financing-mortgageLoan > *:last-child {
-  align-self: center;
-}
+.financing-mortgageLoan {
+  > *:first-child {
+    margin-bottom: 8px;
+  }
 
+  > *:last-child {
+    align-self: center;
+  }
+}
 .calculated-value.requiredOwnFunds-component {
   display: flex;
   flex-direction: column;
