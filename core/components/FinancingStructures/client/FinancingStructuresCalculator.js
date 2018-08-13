@@ -27,7 +27,11 @@ const argumentMappings = {
 
   getBorrowRatio: data => ({
     propertyValue: getProperty(data).value,
-    loan: data.structure.wantedLoan,
+    loan: Calc.getEffectiveLoan({
+      loanValue: data.structure.wantedLoan,
+      pledgedValue:
+        data.structure.secondPillarPledged + data.structure.thirdPillarPledged,
+    }),
   }),
 
   getAmortizationRate: getAmortizationRateMapper,
