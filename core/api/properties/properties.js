@@ -168,13 +168,6 @@ export const PropertySchema = new SimpleSchema({
     max: 100000000,
     optional: true,
   },
-  propertyWork: {
-    // Additional work on property
-    type: Number,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
   residenceType: {
     type: String,
     defaultValue: propertyConstants.RESIDENCE_TYPE.MAIN_RESIDENCE,
