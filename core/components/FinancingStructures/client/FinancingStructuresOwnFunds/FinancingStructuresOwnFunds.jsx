@@ -2,7 +2,6 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import { SUCCESS } from 'core/api/constants';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
@@ -10,7 +9,8 @@ import FinancingStructuresSection, {
 import Calculator from '../../../../utils/Calculator';
 import { getProperty } from '../FinancingStructuresCalculator';
 import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
-import StatusIcon from '../../../StatusIcon';
+
+import RequiredOwnFunds from './RequiredOwnFunds';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -72,16 +72,7 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
     ]}
     detailConfig={[
       {
-        Component: propz => (
-          <CalculatedValue
-            {...propz}
-            rightElement={value =>
-              (value === 0 ? (
-                <StatusIcon status={SUCCESS} style={{ marginLeft: 8 }} />
-              ) : null)
-            }
-          />
-        ),
+        Component: RequiredOwnFunds,
         id: 'requiredOwnFunds',
         value: calculateRequiredOwnFunds,
       },

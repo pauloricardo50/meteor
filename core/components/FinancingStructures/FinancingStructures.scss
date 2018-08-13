@@ -212,3 +212,18 @@ $card1_padding: 24px;
 .financing-mortgageLoan > *:last-child {
   align-self: center;
 }
+
+.calculated-value.requiredOwnFunds-component {
+  display: flex;
+  flex-direction: column;
+
+  .text {
+    color: initial;
+    text-align: center;
+  }
+
+  .value {
+    display: flex;
+    align-items: center;
+  }
+}
