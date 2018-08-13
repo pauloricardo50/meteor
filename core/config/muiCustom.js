@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import colors from './colors';
 
@@ -102,7 +103,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Eina04-Regular',
-    fontSize: 16,
+    fontSize: Meteor.settings.public.microservice === 'www' ? 16 : 14,
     letterSpacing: '0.048em',
     fontWeightRegular: 400,
     fontWeightMedium: 600,
