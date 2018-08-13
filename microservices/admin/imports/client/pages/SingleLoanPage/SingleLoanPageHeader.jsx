@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { IntlNumber } from 'core/components/Translation';
+import T, { IntlNumber } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 
@@ -9,8 +9,18 @@ type SingleLoanPageHeaderProps = {};
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
   <h1>
-    {loan.name || 'Demande de Prêt'} - Emprunt de{' '}
-    <IntlNumber value={Calculator.getEffectiveLoan({ loan })} format="money" />
+    <T
+      id="SingleLoanPageHeader.title"
+      values={{
+        name: loan.name || 'Demande de Prêt',
+        value: (
+          <IntlNumber
+            value={Calculator.getEffectiveLoan({ loan })}
+            format="money"
+          />
+        ),
+      }}
+    />
     <small className="secondary">
       {' - '}
       {getUserDisplayName(loan.user)}
