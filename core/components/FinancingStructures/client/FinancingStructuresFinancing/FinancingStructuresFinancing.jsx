@@ -27,11 +27,12 @@ export const calculateLoan = (params) => {
   return wantedLoan + getPledgedAmount(params);
 };
 
-const calculateMaxLoan = data =>
+const calculateMaxSliderLoan = data =>
   Calc.getMaxLoan({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
-  });
+  })
+  - (data.structure.secondPillarPledged + data.structure.thirdPillarPledged);
 
 const oneStructureHasPledge = ({ structures }) =>
   structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
@@ -62,7 +63,11 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       },
     ]}
     detailConfig={[
-      { Component: InputAndSlider, id: 'wantedLoan', max: calculateMaxLoan },
+      {
+        Component: InputAndSlider,
+        id: 'wantedLoan',
+        max: calculateMaxSliderLoan,
+      },
       {
         Component: RadioButtons,
         id: 'amortizationType',
