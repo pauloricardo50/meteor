@@ -12,9 +12,6 @@ const createTheme = () =>
           '&:before': {
             transition: 'background-color 200ms ease, height 200ms ease',
           },
-          '&:hover:not($disabled):before': {
-            borderBottomColor: '#666',
-          },
         },
         input: {
           // This logic shows the placeholder when the label is fixed
@@ -74,34 +71,27 @@ const createTheme = () =>
     palette: {
       primary: {
         main: colors.primary,
-        dark: '#0048bb', // Darken 20%
-        contrastText: '#fff',
+        dark: colors.mui.darkPrimary, // Darken 20%
+        contrastText: colors.mui.contrastText,
       },
       secondary: {
         main: colors.success,
-        dark: '#1aa890', // Darken 20%
-        contrastText: '#fff',
+        dark: colors.mui.darkSuccess, // Darken 20%
+        contrastText: colors.mui.contrastText,
       },
       error: {
         main: colors.error,
-        contrastText: '#fff',
+        contrastText: colors.mui.contrastText,
       },
       warning: {
         main: colors.warning,
-        contrastText: '#fff',
+        contrastText: colors.mui.contrastText,
       },
       text: {
         primary: colors.title,
       },
-      input: {
-        bottomLine: colors.lightBorder,
-        helperText: '#888',
-        labelText: '#777',
-        inputText: colors.body,
-        disabled: '#999',
-      },
       background: {
-        default: '#fff',
+        default: colors.mui.background,
       },
     },
     typography: {

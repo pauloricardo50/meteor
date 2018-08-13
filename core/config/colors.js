@@ -12,6 +12,12 @@ const colors = {
   iconHoverColor: '#888',
   body: '#666',
   title: '#444',
+  mui: {
+    background: '#fff',
+    contrastText: '#fff',
+    darkPrimary: '#0048bb', // Darken 20%
+    darkSuccess: '#1aa890', // Darken 20%
+  },
 };
 
 export default colors;
