@@ -11,7 +11,11 @@ import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 
 const OverviewTab = (props) => {
-  const { loan, borrowers } = props;
+  const {
+    loan,
+    borrowers,
+    currentUser: { roles },
+  } = props;
   const { adminNote, user, _id } = loan;
   const displayRecap = Calculator.loanHasMinimalInformation({ loan });
 
@@ -54,7 +58,7 @@ const OverviewTab = (props) => {
         </div>
       </div>
 
-      <LoanObject loan={loan} />
+      {roles.includes('dev') ? <LoanObject loan={loan} /> : null}
     </div>
   );
 };
