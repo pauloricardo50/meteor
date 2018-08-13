@@ -13,6 +13,9 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   userId: 1,
   user: {
     roles: 1,
+    phoneNumbers: 1,
+    firstName: 1,
+    lastName: 1,
   },
   name: 1,
   logic: 1,

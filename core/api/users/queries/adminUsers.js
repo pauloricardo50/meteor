@@ -32,4 +32,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
     firstName: 1,
     lastName: 1,
   },
+  phoneNumbers: 1,
 });

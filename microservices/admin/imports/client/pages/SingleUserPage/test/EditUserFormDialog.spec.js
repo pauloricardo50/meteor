@@ -14,7 +14,7 @@ const params = {
     _id: '_id',
     firstName: 'testFirstname',
     lastName: 'lastname',
-    phone: '0123456',
+    phoneNumbers: '0123456',
   },
 };
 const component = props => shallow(<EditUserDialogForm {...props} />);

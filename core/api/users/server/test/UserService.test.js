@@ -26,7 +26,7 @@ describe('UserService', () => {
     options = {
       firstName: 'firstName',
       lastName: 'lastName',
-      phone: '12345678',
+      phoneNumbers: '12345678',
     };
     user = Factory.create('user', { firstName, lastName });
   });
