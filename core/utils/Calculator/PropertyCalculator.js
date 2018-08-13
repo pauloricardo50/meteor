@@ -9,10 +9,27 @@ import { FinanceCalculator } from '../FinanceCalculator';
 import { filesPercent } from '../../api/files/fileHelpers';
 import { propertyDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
+import MiddlewareManager from '../MiddlewareManager';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    propertyPercent({ loan, borrowers, property }) {
+    constructor(config) {
+      super(config);
+      this.initPropertyCalculator(config);
+    }
+
+    initPropertyCalculator(config) {
+      if (config && config.propertyMiddleware) {
+        const middlewareManager = new MiddlewareManager(this);
+        middlewareManager.applyToAllMethods([config.propertyMiddleware]);
+      }
+    }
+
+    propertyPercent({ loan }) {
+      const {
+        borrowers,
+        structure: { property },
+      } = loan;
       const formArray1 = getPropertyArray({ loan, borrowers, property });
       const formArray2 = getPropertyLoanArray({
         loan,
@@ -34,7 +51,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
-    getPropertyCompletion({ loan, borrowers, property }) {
+    getPropertyCompletion({ loan }) {
+      const {
+        borrowers,
+        structure: { property },
+      } = loan;
       const formsProgress = this.propertyPercent({ loan, borrowers, property });
       const filesProgress = filesPercent({
         doc: property,
