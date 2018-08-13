@@ -4,7 +4,9 @@ import { compose } from 'recompose';
 
 import { IntlNumber } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import LoanTabs from './LoanTabs';
+
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import LoanTasksTable from './LoanTabs/LoanTasksTable';
 
@@ -28,15 +30,22 @@ const SingleLoanPage = ({ loan, ...rest }) => {
         />
       </h1>
       <div className="card1 card-top single-loan-page-tasks">
+        <h3>Tâches</h3>
         <LoanTasksTable
           showAssignee
           loanId={loan._id}
           propertyId={dataToPassDown.property && dataToPassDown.property._id}
           borrowerIds={loan.borrowerIds}
           hideIfNoData
-        >
-          <h3>Tâches</h3>
-        </LoanTasksTable>
+          tableFilters={{
+            filters: {
+              status: [TASK_STATUS.ACTIVE],
+            },
+            options: {
+              status: Object.values(TASK_STATUS),
+            },
+          }}
+        />
       </div>
       <LoanTabs {...dataToPassDown} />
     </section>

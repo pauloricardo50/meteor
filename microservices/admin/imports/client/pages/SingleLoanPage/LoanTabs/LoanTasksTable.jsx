@@ -1,20 +1,14 @@
 import query from 'core/api/tasks/queries/loanTasks';
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
-import { Tracker } from 'meteor/tracker';
+import { compose } from 'recompose';
 import TasksTable from '../../../components/TasksTable/TasksTable';
+import withTableFilters from '../../../../core/containers/withTableFilters';
 
-const LoanTasksTable = withQuery(
-  ({ borrowerIds, loanId, propertyId }) =>
-    query.clone({ borrowerIds, loanId, propertyId }),
-  { reactive: true },
+export default compose(
+  withQuery(
+    ({ borrowerIds, loanId, propertyId }) =>
+      query.clone({ borrowerIds, loanId, propertyId }),
+    { reactive: true },
+  ),
+  withTableFilters,
 )(TasksTable);
-
-const subscriptionHandle = query.subscribe();
-
-Tracker.autorun(() => {
-  if (subscriptionHandle.ready()) {
-    query.unsubscribe();
-  }
-});
-
-export default LoanTasksTable;
