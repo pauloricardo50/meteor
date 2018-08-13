@@ -53,17 +53,15 @@ $card1_padding: 24px;
     justify-content: flex-start;
 
     color: $primary;
-    // Match Mui-Input font-size roughly
 
-    // font-size: 1.142rem;
+    // To match material-ui input size
+    font-size: calc((16 / 14) * 1rem);
 
     .chf {
       margin-right: 4px;
 
       opacity: 0.5;
       color: initial;
-
-      font-size: 12px;
     }
   }
 }
