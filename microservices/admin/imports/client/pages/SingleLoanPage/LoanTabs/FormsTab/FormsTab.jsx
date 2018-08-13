@@ -15,7 +15,7 @@ import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
 } from 'core/arrays/BorrowerFormArray';
-import { IntlNumber } from 'core/components/Translation';
+import { IntlNumber, T } from 'core/components/Translation';
 
 import FilesVerification from './FilesVerification';
 import ClosingVerification from './ClosingVerification';
@@ -229,7 +229,7 @@ export default class FormsTab extends Component {
           style={{ width: '100%', maxWidth: 250 }}
         />
         <Toggle
-          labelRight="Peut modifier"
+          labelRight={<T id="DisableUserFormsToggle.canEdit" />}
           toggled={modify}
           onToggle={this.handleToggle}
         />
