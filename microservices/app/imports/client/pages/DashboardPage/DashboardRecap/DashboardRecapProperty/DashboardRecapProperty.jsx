@@ -51,27 +51,26 @@ export const getRecapArray = (property) => {
 const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;
 
-const getContent = (property, loanId) => {
-  if (!shouldDisplay(property)) {
-    return <PropertyModifier property={property} />;
-  }
-
-  return (
-    <React.Fragment>
-      <MapWithMarker
-        address={getPropertyAddressString(property)}
-        className="map"
-        options={{ zoom: 10 }}
-        id={property._id}
-      />
-      <h3>
-        <T id="Recap.property" />
-      </h3>
+const getContent = (property, loanId) => (
+  <React.Fragment>
+    <MapWithMarker
+      address={getPropertyAddressString(property)}
+      className="map"
+      options={{ zoom: 10 }}
+      id={property._id}
+    />
+    <h3>
+      <T id="Recap.property" />
+    </h3>
+    {shouldDisplay(property, loanId) ? (
       <Recap array={getRecapArray(property)} className="recap" />
-    </React.Fragment>
-  );
-};
-
+    ) : (
+      <span className="dashboard-recap-property-modifier">
+        <PropertyModifier property={property} />
+      </span>
+    )}
+  </React.Fragment>
+);
 const DashboardRecapProperty = ({ property, loanId }) => (
   <Link
     to={createRoute(PROPERTY_PAGE, {
