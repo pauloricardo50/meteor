@@ -7,9 +7,14 @@ import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
   RadioButtons,
+  FinmaRatio,
 } from '../FinancingStructuresSection';
 import Calc, { getProperty } from '../FinancingStructuresCalculator';
 import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
+import {
+  getBorrowRatio,
+  getBorrowRatioStatus,
+} from '../FinancingStructuresResult/financingStructuresResultHelpers';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -44,8 +49,16 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
             <T id="FinancingStructuresFinancing.title" />
           </span>
         ),
-        Component: CalculatedValue,
-        value: calculateLoan,
+        Component: props => (
+          <div className="mortgageLoan financing-mortgageLoan">
+            <CalculatedValue value={calculateLoan} {...props} />
+            <FinmaRatio
+              value={getBorrowRatio}
+              status={getBorrowRatioStatus}
+              {...props}
+            />
+          </div>
+        ),
       },
     ]}
     detailConfig={[
