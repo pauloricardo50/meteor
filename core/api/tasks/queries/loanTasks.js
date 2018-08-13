@@ -57,4 +57,5 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
     },
   },
   userId: 1,
+  title: 1,
 });

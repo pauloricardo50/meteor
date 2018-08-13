@@ -9,6 +9,7 @@ import { validateTask } from './taskValidation';
 import Users from '../users';
 import { isUser } from '../../utils/userFunctions';
 import { getIdFieldNameFromCollection } from '../helpers';
+import formatMessage from 'core/utils/intl.js';
 
 class TaskService {
   insert = ({
@@ -21,6 +22,7 @@ class TaskService {
     userId,
     assignedTo,
     createdBy,
+    title,
   }) => {
     if (type === TASK_TYPE.ADD_ASSIGNED_TO) {
       return Tasks.insert({ type, userId });
@@ -63,6 +65,7 @@ class TaskService {
       documentId,
       fileKey,
       userId,
+      title,
     });
   };
 
@@ -84,7 +87,7 @@ class TaskService {
     this.insert({
       type,
       [relatedDocIdFieldName]: docId,
-      documentId,
+      title: `Vérifier ${formatMessage(`files.${documentId}`)}`,
       fileKey,
       userId,
     });

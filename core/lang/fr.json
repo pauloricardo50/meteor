@@ -1239,6 +1239,7 @@
   "TasksTable.status": "Statut",
   "TasksTable.type": "Type",
   "TasksTable.updatedAt": "Modifié le",
+  "TasksTable.title": "Description",
   "TasksTabs.allTasks": "Toutes les tâches",
   "TasksTabs.myTasks": "Mes tâches",
   "TasksTabs.unassignedTasks": "Tâches non assignées",

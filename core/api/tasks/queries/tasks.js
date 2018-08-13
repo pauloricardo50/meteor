@@ -98,4 +98,5 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   },
   userId: 1,
   fileKey: 1,
+  title: 1,
 });
