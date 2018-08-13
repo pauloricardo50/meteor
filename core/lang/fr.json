@@ -1013,7 +1013,7 @@
   "PasswordResetPage.confirmPassword": "Confirmer le mot de passe",
   "PasswordResetPage.CTA": "Login",
   "PasswordResetPage.password": "Votre nouveau mot de passe",
-  "PasswordResetPage.title": "Entrez votre nouveau mot de passe",
+  "PasswordResetPage.title": "Bonjour {name}, entrez votre nouveau mot de passe",
   "ProcessPageBar.next": "Suivant",
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",

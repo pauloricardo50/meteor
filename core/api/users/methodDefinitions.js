@@ -54,3 +54,17 @@ export const editUser = new Method({
     object: Object,
   },
 });
+
+export const getUserByPasswordResetToken = new Method({
+  name: 'getUserByPasswordResetToken',
+  params: {
+    token: String,
+  },
+});
+
+export const testCreateUser = new Method({
+  name: 'testCreateUser',
+  params: {
+    user: Object,
+  },
+});
