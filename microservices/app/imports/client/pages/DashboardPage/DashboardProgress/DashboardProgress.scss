@@ -26,6 +26,10 @@ $step-circle-size: 25px;
     display: flex;
     align-items: center;
 
+    &.link {
+      cursor: pointer;
+    }
+
     margin: 8px 0;
 
     p {
@@ -36,11 +40,15 @@ $step-circle-size: 25px;
       margin-right: 16px;
     }
 
-    .link {
+    .icon-arrow {
+      transition: margin-left 200ms $bezier;
       margin-left: 8px;
+      color: white;
+    }
 
-      svg {
-        color: white;
+    &:hover {
+      .icon-arrow {
+        margin-left: 16px;
       }
     }
   }

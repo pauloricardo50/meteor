@@ -7,9 +7,14 @@ import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
   RadioButtons,
+  FinmaRatio,
 } from '../FinancingStructuresSection';
 import Calc, { getProperty } from '../FinancingStructuresCalculator';
 import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
+import {
+  getBorrowRatio,
+  getBorrowRatioStatus,
+} from '../FinancingStructuresResult/financingStructuresResultHelpers';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -22,11 +27,12 @@ export const calculateLoan = (params) => {
   return wantedLoan + getPledgedAmount(params);
 };
 
-const calculateMaxLoan = data =>
+const calculateMaxSliderLoan = data =>
   Calc.getMaxLoan({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
-  });
+  })
+  - (data.structure.secondPillarPledged + data.structure.thirdPillarPledged);
 
 const oneStructureHasPledge = ({ structures }) =>
   structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
@@ -44,12 +50,24 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
             <T id="FinancingStructuresFinancing.title" />
           </span>
         ),
-        Component: CalculatedValue,
-        value: calculateLoan,
+        Component: props => (
+          <div className="mortgageLoan financing-mortgageLoan">
+            <CalculatedValue value={calculateLoan} {...props} />
+            <FinmaRatio
+              value={getBorrowRatio}
+              status={getBorrowRatioStatus}
+              {...props}
+            />
+          </div>
+        ),
       },
     ]}
     detailConfig={[
-      { Component: InputAndSlider, id: 'wantedLoan', max: calculateMaxLoan },
+      {
+        Component: InputAndSlider,
+        id: 'wantedLoan',
+        max: calculateMaxSliderLoan,
+      },
       {
         Component: RadioButtons,
         id: 'amortizationType',

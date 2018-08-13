@@ -10,7 +10,7 @@ $card1_padding: 24px;
   flex-direction: column;
 
   .input-and-slider {
-     > *:first-child {
+    > *:first-child {
       margin-bottom: 8px;
     }
   }
@@ -30,7 +30,7 @@ $card1_padding: 24px;
   border-left: solid 1px $light-grey;
 
   .card1 > *,
-   > * {
+  > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -47,22 +47,21 @@ $card1_padding: 24px;
   }
 
   .calculated-value {
+    display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
 
     color: $primary;
-    // Match Mui-Input font-size roughly
 
-    font-size: 1.142rem;
+    // To match material-ui input size
+    font-size: calc((16 / 14) * 1rem);
 
     .chf {
       margin-right: 4px;
 
       opacity: 0.5;
       color: initial;
-
-      font-size: 12px;
     }
   }
 }
@@ -206,4 +205,41 @@ $card1_padding: 24px;
       font-size: 20px;
     }
   }
+}
+
+.financing-mortgageLoan {
+  > *:first-child {
+    margin-bottom: 8px;
+  }
+
+  > *:last-child {
+    align-self: center;
+  }
+}
+.calculated-value.requiredOwnFunds-component {
+  display: flex;
+  flex-direction: column;
+
+  .text {
+    color: initial;
+    text-align: center;
+  }
+
+  .value {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.expand-helper {
+  position: absolute;
+  display: none;
+  top: 4px;
+  left: 16px;
+  color: $primary;
+  animation-duration: 400ms !important;
+}
+
+.section-summary:hover .expand-helper.appear {
+  display: flex;
 }

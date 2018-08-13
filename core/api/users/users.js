@@ -83,11 +83,11 @@ const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  phone: {
+  phoneNumbers: {
     type: Array,
     optional: true,
   },
-  'phone.$': {
+  'phoneNumbers.$': {
     type: String,
   },
 });

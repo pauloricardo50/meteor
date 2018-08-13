@@ -5,9 +5,10 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import { ScrollSyncPane } from 'react-scroll-sync';
-import { compose } from 'recompose';
+import { compose, withState } from 'recompose';
 import cx from 'classnames';
 
+import T from '../../../Translation';
 import type { structureType } from '../../../../api/types';
 import FinancingStructuresLabels from '../FinancingStructuresLabels';
 import { makeRenderDetail } from './financingStructuresSectionHelpers';
@@ -26,6 +27,8 @@ type FinancingStructuresSectionProps = {
   summaryConfig: configArray,
   detailConfig: configArray,
   className?: string,
+  expanded: boolean,
+  changeExpanded: Function,
 };
 
 const styles = {
@@ -52,7 +55,9 @@ const FinancingStructuresSection = ({
   detailConfig,
   summaryConfig,
   className,
-  classes: { container, entered, content, expanded },
+  classes: { container, entered, content, expanded: expandedClass },
+  expanded,
+  changeExpanded,
   ...data
 }: FinancingStructuresSectionProps) => {
   const { structures } = data;
@@ -63,11 +68,20 @@ const FinancingStructuresSection = ({
       <ExpansionPanel
         className={cx('financing-structures-section', className)}
         CollapseProps={{ classes: { container, entered } }}
+        expanded={expanded}
+        onChange={() => changeExpanded(!expanded)}
       >
         <ExpansionPanelSummary
           className="section-summary"
-          classes={{ content, expanded }}
+          classes={{ content, expanded: expandedClass }}
         >
+          <div
+            className={cx('expand-helper animated slideInDown', {
+              appear: !expanded,
+            })}
+          >
+            <T id="FinancingStructuresSection.expandHelper" />
+          </div>
           <FinancingStructuresLabels
             config={summaryConfig}
             className="summary-labels"
@@ -96,6 +110,7 @@ const FinancingStructuresSection = ({
 };
 
 export default compose(
+  withState('expanded', 'changeExpanded', false),
   FinancingStructuresDataContainer({ asArrays: true }),
   withStyles(styles),
 )(FinancingStructuresSection);

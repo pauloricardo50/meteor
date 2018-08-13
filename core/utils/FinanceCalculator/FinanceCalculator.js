@@ -255,6 +255,7 @@ export class FinanceCalculator {
   getMaxLoan({
     propertyValue,
     propertyWork,
+    pledgedAmount
   }: { propertyValue: number, propertyWork: number } = {}) {
     return (propertyValue + propertyWork) * this.maxBorrowRatio;
   }

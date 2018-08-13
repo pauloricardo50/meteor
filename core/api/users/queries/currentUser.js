@@ -21,4 +21,5 @@ export default Users.createQuery(USER_QUERIES.CURRENT_USER, {
   assignedEmployee: {
     emails: 1,
   },
+  phoneNumbers: 1,
 });

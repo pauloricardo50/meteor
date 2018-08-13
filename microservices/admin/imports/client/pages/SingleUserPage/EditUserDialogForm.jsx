@@ -7,20 +7,22 @@ import Button from 'core/components/Button';
 import { editUser } from 'core/api/methods';
 import { FIELD_TYPES } from 'core/components/Form/formConstants';
 
-export const editUserFormFields = ['firstName', 'lastName', 'phone'];
+export const editUserFormFields = ['firstName', 'lastName', 'phoneNumbers'];
 
 export const getEditUserFormArray = formFields =>
   formFields.map(field => ({
     id: field,
     label: <T id={`EditUserDialogForm.${field}`} />,
-    fieldType: field === 'phone' ? FIELD_TYPES.ARRAY : FIELD_TYPES.TEXT,
+    fieldType: field === 'phoneNumbers' ? FIELD_TYPES.ARRAY : FIELD_TYPES.TEXT,
   }));
 
 const formArray = getEditUserFormArray(editUserFormFields);
 
 const onSubmit = ({ data, userId }) => editUser.run({ userId, object: data });
 
-const EditUserDialogForm = ({ user: { _id, firstName, lastName, phone } }) => (
+const EditUserDialogForm = ({
+  user: { _id, firstName, lastName, phoneNumbers },
+}) => (
   <DialogForm
     form="admin-edit-user"
     onSubmit={data => onSubmit({ data, userId: _id })}
@@ -31,7 +33,7 @@ const EditUserDialogForm = ({ user: { _id, firstName, lastName, phone } }) => (
     )}
     title={<T id="EditUserDialogForm.dialogTitle" />}
     formArray={formArray}
-    initialValues={{ firstName, lastName, phone }}
+    initialValues={{ firstName, lastName, phoneNumbers }}
   />
 );
 
