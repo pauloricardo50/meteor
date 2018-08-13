@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import theme from 'core/config/muiCustom';
+import createTheme from 'core/config/muiCustom';
 
 class MaterialUiExtractor extends Component {
   // Remove the server-side injected CSS.
@@ -15,7 +15,9 @@ class MaterialUiExtractor extends Component {
 
   render() {
     return (
-      <MuiThemeProvider theme={theme}>{this.props.children}</MuiThemeProvider>
+      <MuiThemeProvider theme={createTheme()}>
+        {this.props.children}
+      </MuiThemeProvider>
     );
   }
 }
