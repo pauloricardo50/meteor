@@ -23,7 +23,7 @@
 @import '{}/imports/ui/components/Widget1/Widget1.scss';
 @import '{}/imports/ui/components/ContactUsForm/ContactUsForm.scss';
 
-body {
+html {
   @include screen(med, min) {
     @include font-size($font-size-m);
   }

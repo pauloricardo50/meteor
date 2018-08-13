@@ -116,5 +116,4 @@ const createTheme = () =>
       },
     },
   });
-
 export default createTheme;
