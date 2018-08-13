@@ -6,7 +6,7 @@ import Icon from 'core/components/Icon';
 import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
 import type { userLoan } from 'core/api/types';
-import dashboardTodos from './dashboardTodos';
+import { dashboardTodosArray } from './dashboardTodos';
 
 type DashboardProgressInfoProps = {
   loan: userLoan,
@@ -14,7 +14,7 @@ type DashboardProgressInfoProps = {
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
-    {dashboardTodos
+    {dashboardTodosArray
       .filter(({ condition }) => condition(loan))
       .map(({ id, link }) => (
         <div className="todo" key={id}>
