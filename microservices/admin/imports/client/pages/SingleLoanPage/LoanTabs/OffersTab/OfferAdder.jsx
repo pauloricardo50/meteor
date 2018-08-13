@@ -21,12 +21,12 @@ const baseForm = [
   { id: 'organization' },
   {
     id: 'maxAmount',
-    type: FIELD_TYPES.MONEY,
+    fieldType: FIELD_TYPES.MONEY,
     label: <T id="offer.maxAmount" />,
   },
   {
     id: 'amortization',
-    type: FIELD_TYPES.PERCENT,
+    fieldType: FIELD_TYPES.MONEY,
     label: <T id="offer.amortization" />,
   },
   {
