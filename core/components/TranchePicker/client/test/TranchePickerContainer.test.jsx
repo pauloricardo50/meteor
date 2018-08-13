@@ -8,7 +8,7 @@ import { mount } from 'core/utils/testHelpers/enzyme';
 import DefaultTranchePicker, { TranchePicker } from '../../TranchePicker';
 import Tranche from '../../Tranche';
 
-describe.only('TranchePicker', () => {
+describe('TranchePicker', () => {
   let props;
   const { intl } = new IntlProvider({ defaultLocale: 'fr' }).getChildContext();
   const component = () =>
