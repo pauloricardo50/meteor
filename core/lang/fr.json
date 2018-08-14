@@ -772,7 +772,7 @@
   "Forms.volumeNorm.SIA_116": "SIA 116",
   "Forms.volumeNorm.SIA_416": "SIA 416",
   "Forms.volumeNorm": "Type de cubage",
-  "Forms.worksForOwnCompany": "Êtes-vous employé de votre propre entreprise ?",
+  "Forms.worksForOwnCompany": "Êtes-vous actionnaire significatif de cette entreprise ?",
   "Forms.yourAddress": "Votre adresse",
   "Forms.zipCode.placeholder": "1201 Genève",
   "Forms.zipCode": "NPA et localité",
