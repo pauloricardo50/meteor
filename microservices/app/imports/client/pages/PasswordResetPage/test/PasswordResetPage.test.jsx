@@ -11,7 +11,7 @@ import getMountedComponent from '../../../../core/utils/testHelpers/getMountedCo
 import pollUntilReady from '../../../../core/utils/testHelpers/pollUntilReady';
 import Loading from '../../../../core/components/Loading/Loading';
 
-describe.only('PasswordResetPage', () => {
+describe('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
@@ -42,21 +42,16 @@ describe.only('PasswordResetPage', () => {
         },
       })
       .then(() =>
-        pollUntilReady(
-          () => {
-            component().update();
-            console.log(component().debug());
-            return !component().find(Loading).length;
-          },
-          200,
-          5000,
-        ))
+        pollUntilReady(() => {
+          component().update();
+          return !component().find(Loading).length;
+        }, 200))
       .then(() =>
         expect(component()
           .find('[id="PasswordResetPage.title"]')
           .first()
           .prop('values').name).to.equal('John Doe'));
-  }).timeout(5000);
+  });
 
   it('renders an error', () => {
     const message = 'Test error';
