@@ -29,10 +29,11 @@ export default compose(
   withSmartQuery({
     query: () => query.clone(),
     queryoptions: { reactive: true },
+    dataName: 'admins',
   }),
-  createContainer(({ data, doc, onAdminSelectHandler }) => {
+  createContainer(({ admins, doc, onAdminSelectHandler }) => {
     const options = getMenuItems({
-      admins: data,
+      admins,
       relatedDoc: doc,
       onAdminSelectHandler,
     });
