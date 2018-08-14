@@ -895,6 +895,7 @@
   "LenderTable.perMonth": "/mois",
   "LoanAdder.dialogTitle": "Ajouter une hypothèque",
   "LoanSelector.addLoan": "Ajouter nouvelle demande",
+  "LoansPage.title": "Hypothèques",
   "LoanStrategyPicker.description": "Il n'y a pas une seule stratégie parfaite pour structurer votre prêt, cependant, nous pouvons vous aiguiller dans la bonne direction grâce à notre savoir-faire.{verticalSpace}Sinon, utilisez notre outil interactif ci-dessous.",
   "LoanStrategyPicker.disclaimer": "* Ce choix est indicatif, et vous permet de déterminer quelle stratégie vous conviendra le mieux.",
   "LoanStrategyPicker.title": "Stratégie de taux",
