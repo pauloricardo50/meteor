@@ -15,6 +15,7 @@ import Valuation from 'core/components/Valuation';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import Page from '../../components/Page';
+import ReturnToDashboard from '../../components/ReturnToDashboard';
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId } = props;
@@ -35,9 +36,7 @@ const SinglePropertyPage = (props) => {
       title={<SinglePropertyPageTitle loan={loan} property={property} />}
     >
       <section className="card1 card-top property-page">
-        <h1 className="text-center">
-          {title}
-        </h1>
+        <h1 className="text-center">{title}</h1>
 
         <MapWithMarkerWrapper
           address1={address1}
@@ -96,6 +95,7 @@ const SinglePropertyPage = (props) => {
           />
         </div>
       </section>
+      <ReturnToDashboard />
     </Page>
   );
 };

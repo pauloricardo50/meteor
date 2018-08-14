@@ -5,6 +5,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import Page from '../../components/Page';
+import ReturnToDashboard from '../../components/ReturnToDashboard';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
@@ -46,6 +47,7 @@ const BorrowersPage = (props) => {
       <section className="borrower-page">
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
+      <ReturnToDashboard />
     </Page>
   );
 };

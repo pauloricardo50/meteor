@@ -1,4 +1,5 @@
 {
+  "ReturnToDashboard.label": "Retour au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
   "SingleLoanPageHeader.title": "{name} - Emprunt de {value}",
   "FinancingStructuresSection.expandHelper": "Afficher les détails",
