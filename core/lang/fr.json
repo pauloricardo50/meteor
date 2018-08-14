@@ -562,7 +562,7 @@
   "Forms.civilStatus.PACSED": "{gender, select, m {Pacsé} f {Pacsée} other {pacsé}}",
   "Forms.civilStatus.SINGLE": "Célibataire",
   "Forms.civilStatus": "État civil",
-  "Forms.company.placeholder": "Nestlé",
+  "Forms.company.placeholder": "e-Potek",
   "Forms.company": "Employeur",
   "Forms.condition.EXCELLENT": "Excellente",
   "Forms.condition.INTACT": "Intacte",
