@@ -7,6 +7,7 @@ import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import LoanTasksTable from './LoanTabs/LoanTasksTable';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
+import LoanTaskInserter from './LoanTaskInserter';
 
 const SingleLoanPage = ({ loan, ...rest }) => {
   const dataToPassDown = {
@@ -23,6 +24,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
       <SingleLoanPageHeader loan={loan} />
       <div className="card1 card-top single-loan-page-tasks">
         <h3>Tâches</h3>
+        <LoanTaskInserter loanId={loan._id} />
         <LoanTasksTable
           showAssignee
           loanId={loan._id}

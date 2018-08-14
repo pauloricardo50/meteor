@@ -81,10 +81,9 @@ class TasksTable extends Component {
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
       { id: '#', style: { width: 32, textAlign: 'left' } },
-      { id: 'type', label: <T id="TasksTable.type" /> },
+      { id: 'title', label: <T id="TasksTable.title" /> },
       { id: 'status', label: <T id="TasksTable.status" /> },
       { id: 'createdAt', label: <T id="TasksTable.createdAt" /> },
-      { id: 'title', label: <T id="TasksTable.title" /> },
       { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
       { id: 'completedAt', label: <T id="TasksTable.completedAt" /> },
       { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
@@ -130,13 +129,15 @@ class TasksTable extends Component {
 
     const columns = [
       index + 1,
-      { raw: type, label: <T id={`TasksStatusDropdown.${type}`} key="type" /> },
+      title || {
+        raw: type,
+        label: <T id={`TasksStatusDropdown.${type}`} key="type" />,
+      },
       {
         raw: status,
         label: <T id={`TasksStatusDropdown.${status}`} key="status" />,
       },
       formatDateTime(createdAt),
-      title,
       formatDateTime(dueAt),
       formatDateTime(completedAt),
       relatedDoc,

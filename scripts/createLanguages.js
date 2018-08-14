@@ -62,6 +62,7 @@ const config = {
         'ValuationButton',
         'Valuation',
         'Microlocation',
+        'LoanTaskInsert',
       ],
     },
   ],

@@ -9,6 +9,7 @@ import {
   setAssigneeOfTask,
   taskGetRelatedTo,
   completeAddAssignedToTask,
+  loanTaskInsert,
 } from '../methodDefinitions';
 import { TASK_STATUS, TASK_TYPE } from '../../constants';
 
@@ -59,4 +60,15 @@ completeAddAssignedToTask.setHandler((context, { userId }) => {
     taskId: addAssignToTaskId,
     newStatus: TASK_STATUS.COMPLETED,
   });
+});
+
+loanTaskInsert.setHandler((context, { loanId, title }) => {
+  SecurityService.tasks.isAllowedToInsert();
+  const task = {
+    type: TASK_TYPE.CUSTOM,
+    loanId,
+    title,
+  };
+
+  return TaskService.insert(task);
 });

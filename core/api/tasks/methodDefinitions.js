@@ -61,3 +61,11 @@ export const completeAddAssignedToTask = new Method({
     userId: String,
   },
 });
+
+export const loanTaskInsert = new Method({
+  name: 'loanTaskInsert',
+  params: {
+    loanId: String,
+    title: String,
+  },
+});
