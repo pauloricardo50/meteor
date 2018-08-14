@@ -21,4 +21,20 @@
   width: 100%;
   max-width: 400px;
   margin: 16px;
+
+  .property-adder-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+
+    .plus {
+      font-size: 4em;
+      margin-bottom: 40px;
+    }
+  }
 }
