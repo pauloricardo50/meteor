@@ -5,19 +5,21 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { testCreateUser } from 'core/api';
-import PasswordResetPage from '../PasswordResetPage';
+import { shallow } from 'core/utils/testHelpers/enzyme';
+import HOCPasswordResetPage, { PasswordResetPage } from '../PasswordResetPage';
 import getMountedComponent from '../../../../core/utils/testHelpers/getMountedComponent';
 import pollUntilReady from '../../../../core/utils/testHelpers/pollUntilReady';
 import Loading from '../../../../core/components/Loading/Loading';
 
-describe('PasswordResetPage', () => {
+describe.only('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
-      Component: PasswordResetPage,
+      Component: HOCPasswordResetPage,
       props,
       withRouter: true,
     });
+  const shallowComponent = () => shallow(<PasswordResetPage {...props} />);
 
   beforeEach(() => {
     resetDatabase();
@@ -40,13 +42,26 @@ describe('PasswordResetPage', () => {
         },
       })
       .then(() =>
-        pollUntilReady(() => {
-          component().update();
-          return !component().find(Loading).length;
-        }))
-      .then(() => expect(component()
-        .find('[id="PasswordResetPage.title"]')
-        .first()
-        .prop('values').name).to.equal('John Doe'));
+        pollUntilReady(
+          () => {
+            component().update();
+            console.log(component().debug());
+            return !component().find(Loading).length;
+          },
+          200,
+          5000,
+        ))
+      .then(() =>
+        expect(component()
+          .find('[id="PasswordResetPage.title"]')
+          .first()
+          .prop('values').name).to.equal('John Doe'));
+  }).timeout(5000);
+
+  it('renders an error', () => {
+    const message = 'Test error';
+    props.error = { message };
+
+    expect(shallowComponent().contains(message)).to.equal(true);
   });
 });

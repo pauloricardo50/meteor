@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const MetricArea = ({ value }) => {
-  if (value !== 0 && !value) {
-    <span>
-      0 m<sup>2</sup>
-    </span>;
+const MetricArea = ({ value, placeholder }) => {
+  if (!value || value === 0) {
+    return (
+      placeholder || (
+        <span>
+          0 m<sup>2</sup>
+        </span>
+      )
+    );
   }
 
   return (

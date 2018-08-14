@@ -5,6 +5,10 @@
 
   min-width: 300px;
   padding: 16px;
+
+  &-modifier {
+    padding: 32px;
+  }
 }
 
 .dashboard-recap-property .map {
@@ -30,8 +34,4 @@
   padding: 16px;
 
   white-space: normal;
-}
-
-.dashboard-recap-property-modifier {
-  padding: 32px;
 }

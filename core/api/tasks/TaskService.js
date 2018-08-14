@@ -1,15 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+
+import { isUser } from '../../utils/userFunctions';
+import formatMessage from '../../utils/intl.js';
 import { Tasks } from '..';
-import unassignedTasksQuery from './queries/unassignedTasks';
 import borrowerAssignedToQuery from '../borrowers/queries/borrowerAssignedTo';
 import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
+import Users from '../users';
+import { getIdFieldNameFromCollection } from '../helpers';
 import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
+import unassignedTasksQuery from './queries/unassignedTasks';
 import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 import { validateTask } from './taskValidation';
-import Users from '../users';
-import { isUser } from '../../utils/userFunctions';
-import { getIdFieldNameFromCollection } from '../helpers';
-import formatMessage from 'core/utils/intl.js';
 
 class TaskService {
   insert = ({

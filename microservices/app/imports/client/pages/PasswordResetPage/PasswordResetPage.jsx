@@ -7,7 +7,7 @@ import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
-import { withStateHandlers, lifecycle } from 'recompose';
+import { withStateHandlers, lifecycle, withState } from 'recompose';
 import withMatchParam from '../../../core/containers/withMatchParam';
 import { compose } from '../../../core/api/containerToolkit/index';
 import Loading from '../../../core/components/Loading/Loading';
@@ -30,20 +30,26 @@ const styles = {
   },
 };
 
-const PasswordResetPage = ({
+export const PasswordResetPage = ({
   newPassword,
   newPassword2,
   handleChange,
   handleSubmit,
   user,
+  error,
 }) => {
   const isValid = !!newPassword && newPassword === newPassword2;
+
+  if (error) {
+    return <h3 className="error">{error.message}</h3>;
+  }
+
   if (!user) {
     return <Loading />;
   }
 
   return (
-    <section id="password-reset-page" style={styles.div}>
+    <section id="password-reset-page" className="password-reset-page">
       <h1>
         <T
           id="PasswordResetPage.title"
@@ -57,7 +63,7 @@ const PasswordResetPage = ({
         type="password"
         value={newPassword}
         onChange={e => handleChange(e, 'newPassword')}
-        style={styles.input}
+        className="password-reset-page-input"
       />
       <TextField
         label={<T id="PasswordResetPage.confirmPassword" />}
@@ -65,10 +71,10 @@ const PasswordResetPage = ({
         type="password"
         value={newPassword2}
         onChange={e => handleChange(e, 'newPassword2')}
-        style={styles.input}
+        className="password-reset-page-input"
       />
 
-      <div style={styles.button}>
+      <div className="password-reset-page-button">
         <Button
           raised
           label={<T id="PasswordResetPage.CTA" />}
@@ -83,6 +89,7 @@ const PasswordResetPage = ({
 
 export default compose(
   withMatchParam('token'),
+  withState('error', 'setError', null),
   withStateHandlers(
     {
       newPassword: '',
@@ -90,11 +97,10 @@ export default compose(
     },
     {
       handleChange: () => (event, key) => ({ [key]: event.target.value }),
-      handleSubmit: ({ newPassword }, { token, history }) => () => {
+      handleSubmit: ({ newPassword }, { token, history, setError }) => () => {
         Accounts.resetPassword(token, newPassword, (err) => {
           if (err) {
-            console.log(err);
-            // TODO
+            setError(err);
           } else {
             history.push('/');
           }
@@ -107,9 +113,8 @@ export default compose(
     componentDidMount() {
       return getUserByPasswordResetToken
         .run({ token: this.props.token })
-        .then((user) => {
-          this.setState({ user });
-        });
+        .then(user => this.setState({ user }))
+        .catch(this.props.setError);
     },
   }),
 )(PasswordResetPage);

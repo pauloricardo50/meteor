@@ -38,12 +38,8 @@ const SingleLoanPage = ({ loan, ...rest }) => {
           borrowerIds={loan.borrowerIds}
           hideIfNoData
           tableFilters={{
-            filters: {
-              status: [TASK_STATUS.ACTIVE],
-            },
-            options: {
-              status: Object.values(TASK_STATUS),
-            },
+            filters: { status: [TASK_STATUS.ACTIVE] },
+            options: { status: Object.values(TASK_STATUS) },
           }}
         />
       </div>

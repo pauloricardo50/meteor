@@ -66,11 +66,11 @@ editUser.setHandler((context, { userId, object }) => {
   return UserService.update({ userId, object });
 });
 
-getUserByPasswordResetToken.setHandler((context, { token }) =>
-  UserService.getUserByPasswordResetToken({ token }));
+getUserByPasswordResetToken.setHandler((context, params) =>
+  UserService.getUserByPasswordResetToken(params));
 
 testCreateUser.setHandler((context, { user }) => {
   if (Meteor.isTest) {
-    return UserService.testCreateUser(user);
+    return UserService.testCreateUser({ user });
   }
 });

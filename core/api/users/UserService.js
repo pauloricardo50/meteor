@@ -55,9 +55,7 @@ class UserService {
       { firstName: 1, lastName: 1, emails: 1 },
     );
 
-  testCreateUser = (user) => {
-    Users.insert(user);
-  };
+  testCreateUser = ({ user }) => Users.insert({ user });
 }
 
 export default new UserService();

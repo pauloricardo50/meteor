@@ -29,11 +29,7 @@ export const getRecapArray = (property) => {
     },
     {
       label: 'Forms.insideArea',
-      value: insideArea ? (
-        <MetricArea value={insideArea} />
-      ) : (
-        <T id="Forms.insideArea.recapPlaceholder" />
-      ),
+      value: <MetricArea value={insideArea} placeholder={<T id="Forms.insideArea.recapPlaceholder" />} />,
     },
     {
       label: 'Forms.landArea',
