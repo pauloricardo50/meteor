@@ -324,7 +324,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
 
 const getPropertyArray = ({ property }) => {
   const {
-    style,
+    propertyType,
     roomCount,
     insideArea,
     landArea,
@@ -341,8 +341,8 @@ const getPropertyArray = ({ property }) => {
       label: 'Recap.details',
     },
     {
-      label: 'Forms.style',
-      value: <T id={`Forms.style.${style}`} />,
+      label: 'Forms.propertyType',
+      value: <T id={`Forms.propertyType.${propertyType}`} />,
     },
     {
       label: 'Forms.roomCount',
