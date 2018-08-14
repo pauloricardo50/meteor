@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import notification from 'core/utils/notification';
 import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
 import TextField from 'core/components/Material/TextField';
@@ -11,26 +12,31 @@ export default class NewLoanModal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: this.props.open, value: '' };
+    this.state = { open: this.props.open, name: '' };
   }
 
-  handleChange = event => this.setState({ value: event.target.value });
+  handleChange = event => this.setState({ name: event.target.value });
 
   handleSubmit = (event) => {
+    const { name } = this.state;
+    const { loanId } = this.props;
     event.preventDefault();
 
     loanUpdate
-      .run({ object: { name: this.state.value }, loanId: this.props.loanId })
-      .then(() => this.setState({ open: false }));
+      .run({ object: { name }, loanId })
+      .then(() => this.setState({ open: false }))
+      .then(() =>
+        notification.success({ message: `C'est parti pour ${name}!` }));
   };
 
   render() {
+    const { name, open } = this.state;
     const button = (
       <Button
         raised
         label="Ok"
         primary
-        disabled={!this.state.value}
+        disabled={!name}
         onClick={this.handleSubmit}
       />
     );
@@ -40,7 +46,7 @@ export default class NewLoanModal extends Component {
         title={<T id="NewLoanModal.title" />}
         actions={button}
         important
-        open={this.state.open}
+        open={open}
       >
         <p className="secondary">
           <T id="NewLoanModal.description" />
@@ -53,7 +59,7 @@ export default class NewLoanModal extends Component {
               hintText={<T id="NewLoanModal.placeholder" />}
               label={<T id="NewLoanModal.label" />}
               autoFocus
-              value={this.state.value}
+              value={name}
               onChange={this.handleChange}
             />
           </div>
@@ -64,8 +70,8 @@ export default class NewLoanModal extends Component {
 }
 
 NewLoanModal.propTypes = {
-  open: PropTypes.bool,
   loanId: PropTypes.string,
+  open: PropTypes.bool,
 };
 
 NewLoanModal.defaultProps = {
