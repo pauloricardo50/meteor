@@ -9,9 +9,10 @@ import { SUCCESS } from 'core/api/constants';
 type BorrowersPageTitleProps = {};
 
 const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
-  const value = BorrowerCalculator.personalInfoPercent({
+  const value = BorrowerCalculator.getBorrowersCompletion({
     borrowers,
   });
+
   return (
     <span className="borrowers-page-title">
       <T id="BorrowersPage.title" />

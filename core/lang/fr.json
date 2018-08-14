@@ -1026,7 +1026,7 @@
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
   "PropertiesPage.description": "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
-  "PropertiesPage.incompleteAddress": "Entrez votre adresse complet pour afficher la carte!",
+  "PropertiesPage.incompleteAddress": "Entrez votre adresse complète pour afficher la carte!",
   "PropertiesPage.progress": "Progrès: {value, number, percent}",
   "PropertiesPage.title": "Biens immobiliers",
   "property.expertise": "Expertise",
