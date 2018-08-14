@@ -33,6 +33,9 @@ const renderResults = ({ min, max, value, microlocation }) => (
           <T id="Valuation.preciseValueLabel" />
         </h3>
         <h2>{toMoney(value)}</h2>
+        <h4 className="warning">
+            <T id="Valuation.preciseValueWarning" />
+        </h4>
       </div>
     )}
     <Microlocation microlocation={microlocation} />
