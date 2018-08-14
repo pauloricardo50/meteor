@@ -39,23 +39,25 @@
 }
 
 .loan-status-check {
-  margin: 40px;
-  max-width: 1000px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-around;
   align-self: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  max-width: 1000px;
+  margin: 40px;
 
   .status-check {
     display: flex;
-    padding: 8px;
     flex-wrap: nowrap;
+
+    padding: 8px;
   }
 
   .borrowers {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
   }
 }
