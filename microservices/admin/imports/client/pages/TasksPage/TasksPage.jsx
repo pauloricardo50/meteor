@@ -13,7 +13,7 @@ const getAdminsEmails = async () => {
 const tasksTableFilters = {
   filters: {
     type: true,
-    status: true,
+    status: [TASK_STATUS.ACTIVE],
     assignedEmployee: { emails: [{ address: true }] },
   },
   options: {
@@ -24,7 +24,10 @@ const tasksTableFilters = {
 };
 
 const TasksPage = () => (
-  <section className="card1 card-top tasks-page" style={{ overflow: 'initial' }}>
+  <section
+    className="card1 card-top tasks-page"
+    style={{ overflow: 'initial' }}
+  >
     <h1>
       <T id="collections.tasks" />
     </h1>

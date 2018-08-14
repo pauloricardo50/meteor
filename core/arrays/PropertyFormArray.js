@@ -55,12 +55,6 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
       options: Object.values(RESIDENCE_TYPE),
     },
     {
-      id: 'general.propertyWork',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
-    {
       type: 'conditionalInput',
       conditionalTrueValue: OWNER.OTHER,
       condition:

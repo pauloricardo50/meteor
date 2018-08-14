@@ -48,6 +48,14 @@ class UserService {
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
   getUserById = ({ userId }) => Users.findOne(userId);
+
+  getUserByPasswordResetToken = ({ token }) =>
+    Users.findOne(
+      { 'services.password.reset.token': token },
+      { firstName: 1, lastName: 1, emails: 1 },
+    );
+
+  testCreateUser = ({ user }) => Users.insert({ user });
 }
 
 export default new UserService();

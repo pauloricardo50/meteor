@@ -11,7 +11,6 @@ export const emptyProperty = {};
 
 export const fakeProperty = {
   value: 1000000,
-  propertyWork: 40000,
   address1: 'Rue du Succès 18',
   zipCode: 1000,
   city: 'Lausanne',

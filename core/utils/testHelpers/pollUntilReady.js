@@ -5,13 +5,14 @@ const INTERVAL = 50;
 const pollUntilReady = (
   isReadyFunc: (() => boolean) | (() => Promise<boolean>),
   interval: number = INTERVAL,
+  timeout: number = TEST_TIMEOUT,
 ) =>
   new Promise((resolve, reject) => {
     let count = 0;
     let poll;
 
     const handleIsReady = (isReady) => {
-      const hasTimedOut = count > TEST_TIMEOUT / interval;
+      const hasTimedOut = count > timeout / interval;
 
       if (isReady) {
         clearInterval(poll);

@@ -9,6 +9,8 @@ import {
   setRole,
   adminCreateUser,
   editUser,
+  getUserByPasswordResetToken,
+  testCreateUser,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -62,4 +64,13 @@ editUser.setHandler((context, { userId, object }) => {
   }
 
   return UserService.update({ userId, object });
+});
+
+getUserByPasswordResetToken.setHandler((context, params) =>
+  UserService.getUserByPasswordResetToken(params));
+
+testCreateUser.setHandler((context, { user }) => {
+  if (Meteor.isTest) {
+    return UserService.testCreateUser({ user });
+  }
 });

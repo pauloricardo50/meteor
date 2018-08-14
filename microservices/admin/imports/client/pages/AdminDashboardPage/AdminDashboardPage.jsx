@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import T from 'core/components/Translation/';
+import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 import CreateUserDialogForm from './CreateUserDialogForm';
 
@@ -19,9 +20,13 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       dashboardTasks
       assignedTo={Meteor.userId()}
       tableFilters={{
-        filters: { assignedEmployee: { emails: [{ address: true }] } },
+        filters: {
+          assignedEmployee: { emails: [{ address: true }] },
+          status: [TASK_STATUS.ACTIVE],
+        },
         options: {
           address: [currentUser.emails[0].address, undefined],
+          status: Object.values(TASK_STATUS),
         },
       }}
     />

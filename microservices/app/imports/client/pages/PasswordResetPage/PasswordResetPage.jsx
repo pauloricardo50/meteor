@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
+import { getUserByPasswordResetToken } from 'core/api';
 
 import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
+import { withStateHandlers, lifecycle, withState } from 'recompose';
+import withMatchParam from '../../../core/containers/withMatchParam';
+import { compose } from '../../../core/api/containerToolkit/index';
+import Loading from '../../../core/components/Loading/Loading';
+import { getUserDisplayName } from '../../../core/utils/userFunctions';
 
 const styles = {
   div: {
@@ -24,74 +30,91 @@ const styles = {
   },
 };
 
-export default class PasswordResetPage extends Component {
-  state = {
-    newPassword: '',
-    newPassword2: '',
-    isValid: false,
-  };
+export const PasswordResetPage = ({
+  newPassword,
+  newPassword2,
+  handleChange,
+  handleSubmit,
+  user,
+  error,
+}) => {
+  const isValid = !!newPassword && newPassword === newPassword2;
 
-  handleChange = (event, key) => {
-    this.setState({ [key]: event.target.value }, () => {
-      if (
-        !!this.state.newPassword
-        && this.state.newPassword === this.state.newPassword2
-      ) {
-        this.setState({ isValid: true });
-      } else {
-        this.setState({ isValid: false });
-      }
-    });
-  };
-
-  handleSubmit = () => {
-    const token = this.props.match.params.token;
-    Accounts.resetPassword(token, this.state.newPassword, (err) => {
-      if (err) {
-        console.log(err);
-        // TODO
-      } else {
-        this.props.history.push('/');
-      }
-    });
-  };
-
-  render() {
-    const { isValid, newPassword, newPassword2 } = this.state;
-    return (
-      <section id="password-reset-page" style={styles.div}>
-        <h1>
-          <T id="PasswordResetPage.title" />
-        </h1>
-        <TextField
-          label={<T id="PasswordResetPage.password" />}
-          floatingLabelFixed
-          type="password"
-          value={newPassword}
-          onChange={e => this.handleChange(e, 'newPassword')}
-          style={styles.input}
-        />
-        <TextField
-          label={<T id="PasswordResetPage.confirmPassword" />}
-          floatingLabelFixed
-          type="password"
-          value={newPassword2}
-          onChange={e => this.handleChange(e, 'newPassword2')}
-          style={styles.input}
-        />
-
-        <div style={styles.button}>
-          <Button
-            raised
-            label={<T id="PasswordResetPage.CTA" />}
-            disabled={!isValid}
-            onClick={this.handleSubmit}
-            primary
-          />
-        </div>
-      </section>
-    );
+  if (error) {
+    return <h3 className="error">{error.message}</h3>;
   }
-}
 
-PasswordResetPage.propTypes = {};
+  if (!user) {
+    return <Loading />;
+  }
+
+  return (
+    <section id="password-reset-page" className="password-reset-page">
+      <h1>
+        <T
+          id="PasswordResetPage.title"
+          values={{ name: getUserDisplayName(user) }}
+        />
+      </h1>
+
+      <TextField
+        label={<T id="PasswordResetPage.password" />}
+        floatingLabelFixed
+        type="password"
+        value={newPassword}
+        onChange={e => handleChange(e, 'newPassword')}
+        className="password-reset-page-input"
+      />
+      <TextField
+        label={<T id="PasswordResetPage.confirmPassword" />}
+        floatingLabelFixed
+        type="password"
+        value={newPassword2}
+        onChange={e => handleChange(e, 'newPassword2')}
+        className="password-reset-page-input"
+      />
+
+      <div className="password-reset-page-button">
+        <Button
+          raised
+          label={<T id="PasswordResetPage.CTA" />}
+          disabled={!isValid}
+          onClick={handleSubmit}
+          primary
+        />
+      </div>
+    </section>
+  );
+};
+
+export default compose(
+  withMatchParam('token'),
+  withState('error', 'setError', null),
+  withStateHandlers(
+    {
+      newPassword: '',
+      newPassword2: '',
+    },
+    {
+      handleChange: () => (event, key) => ({ [key]: event.target.value }),
+      handleSubmit: ({ newPassword }, { token, history, setError }) => () => {
+        Accounts.resetPassword(token, newPassword, (err) => {
+          if (err) {
+            setError(err);
+          } else {
+            history.push('/');
+          }
+        });
+        return {};
+      },
+    },
+  ),
+  lifecycle({
+    componentDidMount() {
+      return getUserByPasswordResetToken
+        .run({ token: this.props.token })
+        .then(user => this.setState({ user }))
+        .catch(this.props.setError);
+    },
+  }),
+)(PasswordResetPage);

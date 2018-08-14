@@ -28,7 +28,6 @@ export const createFakeProperty = (userId) => {
     status: getRandomValueInArray(statuses),
     value: Math.round(getRandomValueInRange(500000, 3000000)),
     address1: faker.address.streetAddress(),
-    propertyWork: 40000,
     zipCode: 1201,
     city: 'Genève',
     residenceType: getRandomValueInArray(residenceTypes),
