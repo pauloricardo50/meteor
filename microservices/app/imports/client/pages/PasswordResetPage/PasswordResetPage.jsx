@@ -2,6 +2,7 @@
 import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import { getUserByPasswordResetToken } from 'core/api';
+import { withRouter } from 'react-router-dom';
 
 import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
@@ -12,23 +13,6 @@ import withMatchParam from '../../../core/containers/withMatchParam';
 import { compose } from '../../../core/api/containerToolkit/index';
 import Loading from '../../../core/components/Loading/Loading';
 import { getUserDisplayName } from '../../../core/utils/userFunctions';
-
-const styles = {
-  div: {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    marginTop: 40,
-  },
-  input: {
-    width: 300,
-  },
-};
 
 export const PasswordResetPage = ({
   newPassword,
@@ -90,6 +74,7 @@ export const PasswordResetPage = ({
 export default compose(
   withMatchParam('token'),
   withState('error', 'setError', null),
+  withRouter,
   withStateHandlers(
     {
       newPassword: '',
