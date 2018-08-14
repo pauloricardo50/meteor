@@ -1,4 +1,4 @@
 import message from 'antd/lib/message';
-import 'antd/lib/notification/style/index.css';
+import 'antd/lib/message/style/index.css';
 
 export default message;

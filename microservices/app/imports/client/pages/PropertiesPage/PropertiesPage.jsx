@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import T from 'core/components/Translation';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import Page from '../../components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
