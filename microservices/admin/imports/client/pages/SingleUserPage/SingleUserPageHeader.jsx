@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import T from 'core/components/Translation';
+import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { getUserDisplayName } from 'core/utils/userFunctions';
@@ -20,6 +21,7 @@ const SingleUserPageHeader = ({ user }) => {
     lastName,
     username,
     roles,
+    phoneNumbers,
   } = user;
 
   return (
@@ -38,11 +40,13 @@ const SingleUserPageHeader = ({ user }) => {
       </div>
 
       <div className="bottom">
+        <div className="phone">
+          <Icon type="phone" /> {phoneNumbers}
+        </div>
         <p className="secondary created-at">
           <T id="UsersTable.createdAt" />{' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
-
         {assignedEmployee && (
           <p>
             &nbsp; - &nbsp;

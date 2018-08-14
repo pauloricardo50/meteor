@@ -11,7 +11,7 @@ export const contactsSchema = {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
   },
-  'contacts.$.phone': String,
+  'contacts.$.phoneNumber': String,
 };
 
 export const borrowerIdsSchema = {

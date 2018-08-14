@@ -9,6 +9,7 @@ import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggl
 import AdminNote from '../../../../components/AdminNote';
 import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
+import LoanStatusCheck from './LoanStatusCheck';
 
 const OverviewTab = (props) => {
   const {
@@ -32,8 +33,8 @@ const OverviewTab = (props) => {
           <ImpersonateLink user={user} />
         </div>
       </div>
-      <LoanValidation loan={loan} />
-      <hr />
+      {/* <LoanValidation loan={loan} /> */}
+      <LoanStatusCheck loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">

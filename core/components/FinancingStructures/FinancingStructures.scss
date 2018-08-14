@@ -47,22 +47,21 @@ $card1_padding: 24px;
   }
 
   .calculated-value {
+    display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
 
     color: $primary;
-    // Match Mui-Input font-size roughly
+    // To match material-ui input size
 
-    font-size: 1.142rem;
+    font-size: calc((16 / 14) * 1rem);
 
     .chf {
       margin-right: 4px;
 
       opacity: 0.5;
       color: initial;
-
-      font-size: 12px;
     }
   }
 }
@@ -206,4 +205,45 @@ $card1_padding: 24px;
       font-size: 20px;
     }
   }
+}
+
+.financing-mortgageLoan {
+   > *:first-child {
+    margin-bottom: 8px;
+  }
+
+   > *:last-child {
+    align-self: center;
+  }
+}
+.calculated-value.requiredOwnFunds-component {
+  display: flex;
+  flex-direction: column;
+
+  .text {
+    text-align: center;
+
+    color: initial;
+  }
+
+  .value {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.expand-helper {
+  position: absolute;
+  top: 4px;
+  left: 16px;
+
+  display: none;
+
+  animation-duration: 400ms !important;
+
+  color: $primary;
+}
+
+.section-summary:hover .expand-helper.appear {
+  display: flex;
 }

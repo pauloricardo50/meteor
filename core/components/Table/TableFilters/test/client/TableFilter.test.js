@@ -155,7 +155,7 @@ describe('TableFilter', () => {
       .prop('value')).to.deep.equal([]);
   });
 
-  it(`deos not fill the 'Select' input with any values
+  it(`does not fill the 'Select' input with any values
       when the default filters are an empty array`, () => {
     expect(component({ data: [], filter: { path: ['name'], value: [] } })
       .find(Select)

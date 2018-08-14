@@ -14,4 +14,7 @@ export default Users.createQuery(USER_QUERIES.APP_USER, {
   loans: { _id: 1, name: 1, borrowers: { _id: 1 }, properties: { _id: 1 } },
   borrowers: { _id: 1 },
   properties: { _id: 1 },
+  phoneNumbers: 1,
+  firstName: 1,
+  lastName: 1,
 });

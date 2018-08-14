@@ -48,7 +48,7 @@ export const property = {
   latitude: 1,
   longitude: 1,
   customFields: 1,
-  monhtlyExpenses: 1,
+  monthlyExpenses: 1,
   pictures: 1,
   documents: 1,
   adminValidation: 1,

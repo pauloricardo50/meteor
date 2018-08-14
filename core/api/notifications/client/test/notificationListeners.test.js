@@ -31,8 +31,8 @@ describe('Notification Listeners', () => {
 
       expect(NotificationService.notifyAdmin.getCall(0).args).to.deep.equal([
         {
-          title: 'Task Completed',
-          message: 'Completed task of added file',
+          title: 'Tâche complétée',
+          message: 'Document vérifié',
         },
       ]);
 
@@ -58,8 +58,8 @@ describe('Notification Listeners', () => {
 
       expect(NotificationService.notifyAdmin.getCall(0).args).to.deep.equal([
         {
-          title: 'Task Completed',
-          message: 'Completed task of admin to user assignment',
+          title: 'Tâche complétée',
+          message: 'Assigné un admin',
         },
       ]);
 

@@ -1,7 +1,7 @@
 @include font-face('Eina04-Regular', 'fonts/Eina04_Regular');
 @include font-face('Eina04-Bold', 'fonts/Eina04_Bold');
 
-body {
+html {
   letter-spacing: 0.048em; /* 0.75px / 16px  */
 
   font-family: 'Eina04-Regular';

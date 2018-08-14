@@ -9,6 +9,7 @@ import jc from 'core/api/jobs/server';
 import 'core/api/links';
 import '../accounts-config';
 import './kadira';
+import '../shared-startup';
 
 Meteor.startup(() => {
   jc.startJobServer();

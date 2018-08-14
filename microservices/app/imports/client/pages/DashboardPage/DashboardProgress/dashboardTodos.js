@@ -18,7 +18,7 @@ const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
     ':propertyId': propertyId,
   });
 
-const dashboardTodos = [
+export const dashboardTodosArray = [
   {
     id: 'createStructure',
     condition: ({ structures }) => structures.length === 0,
@@ -88,6 +88,24 @@ const dashboardTodos = [
       offers.length > 0 && !offer,
     link: createFinancingLink,
   },
+  {
+    id: 'createSecondStructure',
+    condition: ({ structures }) => structures.length === 1,
+    link: createFinancingLink,
+  },
+  {
+    id: 'callEpotek',
+    condition: params =>
+      dashboardTodosArray
+        .filter(({ id }) => id !== 'callEpotek')
+        .every(({ condition }) => !condition(params)),
+  },
 ];
 
-export default dashboardTodos;
+export const dashboardTodosObject = dashboardTodosArray.reduce(
+  (acc, todo) => ({
+    ...acc,
+    [todo.id]: todo,
+  }),
+  {},
+);

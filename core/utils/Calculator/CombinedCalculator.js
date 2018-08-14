@@ -85,7 +85,7 @@ export const withCombinedCalculator = (SuperClass = class {}) =>
     }
 
     getMonthlyWithExtractedOffer({ loan, offer, property }) {
-      this.getMonthlyWithOffer({
+      return this.getMonthlyWithOffer({
         loan,
         property,
         offer: {
@@ -95,6 +95,10 @@ export const withCombinedCalculator = (SuperClass = class {}) =>
         },
         isStandard: offer.type === OFFER_TYPE.STANDARD,
       });
+    }
+
+    filesProgress({ loan }) {
+      return { current: 5, total: 10 };
     }
   };
 

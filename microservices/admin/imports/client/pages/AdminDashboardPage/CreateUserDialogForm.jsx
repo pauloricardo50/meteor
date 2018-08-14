@@ -6,7 +6,7 @@ import Button from 'core/components/Button';
 import { adminCreateUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
 
-export const createUserFormFields = ['firstName', 'lastName', 'email', 'phone'];
+export const createUserFormFields = ['firstName', 'lastName', 'email', 'phoneNumbers'];
 
 export const getFormArray = formFields =>
   formFields
