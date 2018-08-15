@@ -1,5 +1,6 @@
 import Offers from '..';
 import { OFFER_QUERIES } from '../offerConstants';
+import { appUser } from '../../users/queries/userFragments';
 
 export default Offers.createQuery(OFFER_QUERIES.OFFERS, {
   $filter({ filters, params: { loanId } }) {
@@ -14,4 +15,5 @@ export default Offers.createQuery(OFFER_QUERIES.OFFERS, {
   },
   standardOffer: 1,
   counterpartOffer: 1,
+  user: appUser,
 });

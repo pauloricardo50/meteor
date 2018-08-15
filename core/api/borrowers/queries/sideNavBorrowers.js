@@ -13,6 +13,6 @@ export default Borrowers.createQuery(BORROWER_QUERIES.SIDENAV_BORROWERS, {
   createdAt: 1,
   updatedAt: 1,
   user: {
-    assignedEmployee: { emails: 1 },
+    assignedEmployee: { email: 1 },
   },
 });

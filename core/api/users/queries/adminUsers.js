@@ -1,6 +1,7 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
 import { createRegexQuery } from '../../helpers/mongoHelpers';
+import { fullUser } from './userFragments';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
   $filter({ filters, params: { assignedTo, searchQuery } }) {
@@ -19,18 +20,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
       createdAt: -1,
     },
   },
-  emails: 1,
-  firstName: 1,
-  lastName: 1,
-  username: 1,
-  createdAt: 1,
-  roles: 1,
-  assignedEmployee: {
-    emails: 1,
-    roles: 1,
-    username: 1,
-    firstName: 1,
-    lastName: 1,
-  },
-  phoneNumbers: 1,
+  ...fullUser,
 });

@@ -2,6 +2,7 @@ import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
 import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import { loanSummary } from '../../loans/queries/loanFragments';
+import { appUser } from '../../users/queries/userFragments';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER, {
   $filter({ filters, params }) {
@@ -20,10 +21,7 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER, {
   address1: 1,
   firstName: 1,
   lastName: 1,
-  user: {
-    emails: 1,
-    assignedEmployee: { emails: 1 },
-  },
+  user: appUser,
   // fields used in LoanSummary component
   loans: loanSummary,
   // fields used in Recap component

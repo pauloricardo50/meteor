@@ -9,6 +9,6 @@ export default Property.createQuery(PROPERTY_QUERIES.SIDENAV_PROPERTIES, {
   createdAt: 1,
   updatedAt: 1,
   user: {
-    assignedEmployee: { emails: 1 },
+    assignedEmployee: { email: 1 },
   },
 });

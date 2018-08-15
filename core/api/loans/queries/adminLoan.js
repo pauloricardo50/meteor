@@ -2,6 +2,7 @@ import { formatLoanWithStructure } from '../../../utils/loanFunctions';
 import Loans from '../loans';
 import { LOAN_QUERIES } from '../../constants';
 import { adminPropertyFragment } from '../../properties/queries/propertyFragments';
+import { simpleUser } from '../../users/queries/userFragments';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
@@ -11,12 +12,7 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
     return loans.map(formatLoanWithStructure);
   },
   userId: 1,
-  user: {
-    roles: 1,
-    phoneNumbers: 1,
-    firstName: 1,
-    lastName: 1,
-  },
+  user: simpleUser,
   name: 1,
   logic: 1,
   general: 1,

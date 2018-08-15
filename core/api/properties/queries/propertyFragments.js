@@ -1,4 +1,5 @@
 import { loanSummary } from '../../loans/queries/loanFragments';
+import { appUser } from '../../users/queries/userFragments';
 
 export const userValuation = {
   min: 1,
@@ -52,10 +53,7 @@ export const property = {
   pictures: 1,
   documents: 1,
   adminValidation: 1,
-  user: {
-    emails: 1,
-    assignedEmployee: { emails: 1 },
-  },
+  user: appUser,
   loans: loanSummary,
 };
 

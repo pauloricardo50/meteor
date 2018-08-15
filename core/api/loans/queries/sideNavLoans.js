@@ -14,7 +14,7 @@ export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
   createdAt: 1,
   updatedAt: 1,
   user: {
-    assignedEmployee: { emails: 1 },
+    assignedEmployee: { email: 1 },
   },
   structures: {
     id: 1,

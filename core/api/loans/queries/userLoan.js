@@ -5,6 +5,7 @@ import Loans from '../loans';
 import { LOAN_QUERIES, INTEREST_RATES } from '../../constants';
 import type { structureType, loanTranchesType } from '../types';
 import { userPropertyFragment } from '../../properties/queries/propertyFragments';
+import { appUser } from '../../users/queries/userFragments';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
   $filter({ filters, params: { loanId } }) {
@@ -15,9 +16,8 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
     return loans.map(formatLoanWithStructure);
   },
   userId: 1,
-  user: {
-    roles: 1,
-  },
+  user: appUser,
+  structure2: 1,
   name: 1,
   logic: 1,
   general: 1,
