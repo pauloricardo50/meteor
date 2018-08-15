@@ -6,7 +6,6 @@ import { Link, withRouter } from 'react-router-dom';
 
 import Table from 'core/components/Table';
 import T from 'core/components/Translation';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getTaskRelatedLoan } from 'core/utils/taskFunctions';
 import IconLink from 'core/components/IconLink';
 import Loading from 'core/components/Loading';
@@ -19,7 +18,7 @@ const formatDateTime = date => moment(date).format('D MMM YY à HH:mm:ss');
 class TasksTable extends Component {
   getRelatedDoc = ({ borrower, loan, property, user }) => {
     if (borrower) {
-      const { _id, firstName, lastName } = borrower;
+      const { _id, name } = borrower;
       if (!_id) {
         return {};
       }
@@ -27,7 +26,7 @@ class TasksTable extends Component {
       return {
         link: `/borrowers/${_id}`,
         icon: 'people',
-        text: getBorrowerFullName({ firstName, lastName }),
+        text: name,
         translationId: 'borrower',
       };
     }

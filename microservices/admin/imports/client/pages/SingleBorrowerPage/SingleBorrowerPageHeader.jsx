@@ -4,18 +4,13 @@ import { Link } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 
 const SingleBorrowerHeader = ({
-  borrower: { address1, age, gender, firstName, lastName, createdAt, user },
+  borrower: { address1, age, gender, name, createdAt, user },
 }) => (
   <div className="single-borrower-page-header">
     <div className="top">
-      <h1>
-        {getBorrowerFullName({ firstName, lastName }) || (
-          <T id="general.borrower" />
-        )}
-      </h1>
+      <h1>{name || <T id="general.borrower" />}</h1>
     </div>
 
     <p className="secondary">

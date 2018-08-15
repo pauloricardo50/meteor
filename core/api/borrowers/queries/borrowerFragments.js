@@ -4,6 +4,7 @@ import { loanSummaryFragment } from '../../loans/queries/loanFragments';
 export const baseBorrowerFragment = {
   firstName: 1,
   lastName: 1,
+  name: 1,
   createdAt: 1,
   updatedAt: 1,
 };

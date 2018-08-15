@@ -7,7 +7,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -17,10 +16,8 @@ import {
 
 import ResultSecondaryText from './ResultSecondaryText';
 
-const getBorrowerInfo = ({ firstName, lastName, createdAt, updatedAt }) => ({
-  primary: getBorrowerFullName({ firstName, lastName }) || (
-    <T id="general.borrower" />
-  ),
+const getBorrowerInfo = ({ name, createdAt, updatedAt }) => ({
+  primary: name || <T id="general.borrower" />,
   secondary: <ResultSecondaryText infos={{ createdAt, updatedAt }} />,
 });
 

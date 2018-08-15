@@ -155,9 +155,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getThirdPillar = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
-
-    getBorrowerFullName = ({ firstName, lastName }) =>
-      [firstName, lastName].filter(name => name).join(' ');
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);
