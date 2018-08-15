@@ -10,33 +10,33 @@ export const TRENDS = {
 const interestRates = [
   {
     type: INTEREST_RATES.LIBOR,
-    rateLow: 0.0058,
+    rateLow: 0.0057,
     rateHigh: 0.01,
     trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_5,
-    rateLow: 0.0083,
-    rateHigh: 0.0128,
+    rateLow: 0.009,
+    rateHigh: 0.0127,
     trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_10,
     rateLow: 0.0126,
-    rateHigh: 0.0176,
+    rateHigh: 0.0174,
     trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_15,
-    rateLow: 0.0179,
-    rateHigh: 0.022,
+    rateLow: 0.0186,
+    rateHigh: 0.0213,
     trend: TRENDS.FLAT,
   },
   {
     type: INTEREST_RATES.YEARS_20,
-    rateLow: 0.0185,
-    rateHigh: 0.0215,
-    trend: TRENDS.FLAT,
+    rateLow: 0.02,
+    rateHigh: 0.0245,
+    trend: TRENDS.UP,
   },
   // {
   //   type: INTEREST_RATES.YEARS_25,
