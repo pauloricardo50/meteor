@@ -55,7 +55,11 @@ setRole.setHandler((context, params) => {
 adminCreateUser.setHandler((context, { options, role }) => {
   SecurityService.users.isAllowedToInsertByRole({ role });
 
-  return UserService.adminCreateUser({ options, role });
+  return UserService.adminCreateUser({
+    options,
+    role,
+    adminId: context.userId,
+  });
 });
 
 editUser.setHandler((context, { userId, object }) => {
