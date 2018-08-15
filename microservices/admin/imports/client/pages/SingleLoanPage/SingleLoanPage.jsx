@@ -27,7 +27,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
           showAssignee
           loanId={loan._id}
           propertyId={dataToPassDown.property && dataToPassDown.property._id}
-          borrowerIds={loan.borrowerIds}
+          borrowerIds={loan.borrowers.map(({ _id }) => _id)}
           hideIfNoData
           tableFilters={{
             filters: { status: [TASK_STATUS.ACTIVE] },

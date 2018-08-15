@@ -10,7 +10,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
     }
     if (searchQuery) {
       filters.$or = [
-        { emails: { $elemMatch: createRegexQuery('address', searchQuery) } },
+        createRegexQuery('email', searchQuery),
         createRegexQuery('profile.organization', searchQuery),
       ];
     }

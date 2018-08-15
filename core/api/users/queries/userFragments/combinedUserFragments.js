@@ -1,18 +1,12 @@
-import { loanSummaryFragment } from '../../loans/queries/loanFragments';
-
-export const simpleUserFragment = {
-  email: 1,
-  name: 1,
-  phoneNumbers: 1,
-  roles: 1,
-};
+import { loanBaseFragment } from '../../../loans/queries/loanFragments';
+import { simpleUserFragment } from './userFragments';
 
 export const fullUserFragment = {
   ...simpleUserFragment,
   emails: 1,
   createdAt: 1,
   updatedAt: 1,
-  loans: loanSummaryFragment,
+  loans: loanBaseFragment,
 };
 
 export const adminUserFragment = {

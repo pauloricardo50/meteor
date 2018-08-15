@@ -6,7 +6,7 @@ Users.addReducers({
     body: {
       emails: 1,
     },
-    reduce: ({ emails }) => emails[0].address,
+    reduce: ({ emails }) => emails && emails.length && emails[0].address,
   },
   name: {
     body: {

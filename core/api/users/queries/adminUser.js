@@ -13,6 +13,7 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
     },
   },
   $postFilter(users) {
+    console.log('query users', users);
     return users.map(({ loans, ...user }) => ({
       ...user,
       loans: loans.map(formatLoanWithStructure),

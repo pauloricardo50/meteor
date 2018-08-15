@@ -1,4 +1,4 @@
-import { loanSummaryFragment } from '../../loans/queries/loanFragments';
+import { loanBaseFragment } from '../../loans/queries/loanFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 
 export const userValuation = {
@@ -43,7 +43,7 @@ export const fullPropertyFragment = {
   isNew: 1,
   landArea: 1,
   latitude: 1,
-  loans: loanSummaryFragment,
+  loans: loanBaseFragment,
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,

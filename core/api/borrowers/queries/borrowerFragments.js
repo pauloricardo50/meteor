@@ -1,5 +1,5 @@
 import { appUserFragment } from '../../users/queries/userFragments';
-import { loanSummaryFragment } from '../../loans/queries/loanFragments';
+import { loanBaseFragment } from '../../loans/queries/loanFragments';
 
 export const baseBorrowerFragment = {
   firstName: 1,
@@ -43,7 +43,7 @@ export const loanBorrowerFragment = {
 
 export const adminBorrowerFragment = {
   ...loanBorrowerFragment,
-  loans: loanSummaryFragment,
+  loans: loanBaseFragment,
   user: appUserFragment,
 };
 
