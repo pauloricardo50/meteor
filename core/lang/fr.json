@@ -918,7 +918,7 @@
   "LoanTaskInsertForm.label": "Ajouter une nouvelle tâche personnalisée",
   "LoanTaskInsertForm.dialogTitle": "Nouvelle tâche",
   "LoanTaskInsertForm.dialogDescription": "Cette tâche sera liée à l'hypothèque en cours",
-  "LoanTaskInsert.title": "Description",
+  "LoanTaskInsertForm.title": "Description",
   "LoanValidation.comment": "Commentaire",
   "LoanValidation.field": "Champ",
   "LoanValidation.file": "Document",
