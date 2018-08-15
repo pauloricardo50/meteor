@@ -31,8 +31,7 @@ const calculateMaxSliderLoan = data =>
   Calc.getMaxLoan({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
-  })
-  - (data.structure.secondPillarPledged + data.structure.thirdPillarPledged);
+  });
 
 const oneStructureHasPledge = ({ structures }) =>
   structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
