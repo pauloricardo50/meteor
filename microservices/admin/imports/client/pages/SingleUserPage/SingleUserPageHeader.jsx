@@ -45,10 +45,14 @@ const SingleUserPageHeader = ({ user }) => {
       </div>
 
       <div className="bottom">
-        {phoneNumbers
-          && phoneNumbers.length && (
+        {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
-            <Icon type="phone" /> {phoneNumbers}
+            <Icon type="phone" />{' '}
+            {phoneNumbers.map(number => (
+              <a key={number} href={`tel:${number}`}>
+                {number}
+              </a>
+            ))}
           </div>
         )}
 
