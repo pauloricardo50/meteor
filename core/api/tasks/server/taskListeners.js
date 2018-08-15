@@ -12,6 +12,8 @@ import {
 } from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE, TASK_STATUS } from '../taskConstants';
+import UserService from '../../users/UserService';
+import { ROLES } from '../../users/userConstants';
 
 ServerEventService.addMethodListener(requestLoanVerification, ({ loanId }) => {
   const type = TASK_TYPE.VERIFY;
@@ -77,8 +79,3 @@ ServerEventService.addMethodListener(
   setFileStatus,
   completeTaskOnFileVerificationListener,
 );
-
-ServerEventService.addListener(USER_EVENTS.USER_CREATED, ({ userId }) => {
-  const type = TASK_TYPE.ADD_ASSIGNED_TO;
-  TaskService.insert({ type, userId });
-});

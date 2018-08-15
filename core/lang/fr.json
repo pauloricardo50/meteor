@@ -1,6 +1,7 @@
 {
   "ReturnToDashboard.label": "Retour au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
+  "FinancingStructures.OwnFundsLabel.available": "Disponible:",
   "SingleLoanPageHeader.title": "{name} - Emprunt de {value}",
   "FinancingStructuresSection.expandHelper": "Afficher les détails",
   "UploaderArray.empty": "Pas encore de documents dans cette catégorie. Ajoutez-en et ils apparaîtront ici.",
@@ -171,7 +172,7 @@
   "ContractPage.loading": "Vous serez notifié par e-mail lorsque votre contrat est prêt.",
   "ContractPage.progress": "Progrès: {value, number, percent}",
   "CreateUserDialogForm.buttonLabel": "Créer un compte utilisateur",
-  "CreateUserDialogForm.dialogDescription": "Entrez l'adresse email du compte. Un email sera envoyé à cette adresse pour qu'il se connecte et choisisse son mot de passe.",
+  "CreateUserDialogForm.dialogDescription": "Entrez l'adresse email du compte. Un email sera envoyé à cette adresse pour qu'il se connecte et choisisse son mot de passe.{verticalSpace}{user} sera ssigné à cet utilisateur.",
   "CreateUserDialogForm.dialogTitle": "Créer un compte",
   "CreateUserDialogForm.email": "Adresse email",
   "CreateUserDialogForm.firstName": "Prenom",

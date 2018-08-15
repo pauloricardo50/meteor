@@ -1,5 +1,6 @@
+import { compose, withProps } from 'recompose';
 import query from 'core/api/users/queries/admins';
-import { compose, createContainer, withSmartQuery } from 'core/api';
+import { withSmartQuery } from 'core/api';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
@@ -30,7 +31,7 @@ export default compose(
     query: () => query.clone(),
     queryoptions: { reactive: true },
   }),
-  createContainer(({ data, doc, onAdminSelectHandler }) => {
+  withProps(({ data, doc, onAdminSelectHandler }) => {
     const options = getMenuItems({
       admins: data,
       relatedDoc: doc,
