@@ -47,6 +47,7 @@ const FinancingStructuresResultChart = ({
                 pointFormat: 'CHF {point.y:,.0f}',
               },
               showInLegend: false,
+              animation: false,
             },
           },
           legend: { enabled: false },
