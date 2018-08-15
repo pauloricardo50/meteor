@@ -1,7 +1,7 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
 import { formatLoanWithStructure } from '../../../utils/loanFunctions';
-import { adminUser } from './userFragments';
+import { adminUserFragment } from './userFragments';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   $filter({ filters, params }) {
@@ -18,5 +18,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
       loans: loans.map(formatLoanWithStructure),
     }));
   },
-  ...adminUser,
+  ...adminUserFragment,
 });

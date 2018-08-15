@@ -1,6 +1,6 @@
 import Users from '../users';
 import { USER_QUERIES } from '../userConstants';
-import { fullUser } from './userFragments';
+import { fullUserFragment } from './userFragments';
 
 export default Users.createQuery(USER_QUERIES.SIDENAV_USERS, {
   $options: {
@@ -9,5 +9,5 @@ export default Users.createQuery(USER_QUERIES.SIDENAV_USERS, {
     },
   },
   $paginate: true,
-  ...fullUser,
+  ...fullUserFragment,
 });
