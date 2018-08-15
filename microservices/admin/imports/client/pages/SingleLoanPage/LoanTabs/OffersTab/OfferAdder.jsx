@@ -74,13 +74,15 @@ const OfferAdder = ({ hasCounterparts, isDiscount, onSubmit }) => (
     description={<T id="OfferAdder.dialogDescription" />}
     formArray={getFormArray(hasCounterparts, isDiscount)}
     destroyOnUnmount={false}
+    initialValues={{ [IS_DISCOUNT]: true }}
+    enableReinitialize
   />
 );
 
 OfferAdder.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
   hasCounterparts: PropTypes.bool,
   isDiscount: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 OfferAdder.defaultProps = {
