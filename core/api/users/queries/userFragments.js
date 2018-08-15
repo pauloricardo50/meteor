@@ -9,6 +9,7 @@ export const simpleUser = {
 
 export const fullUser = {
   ...simpleUser,
+  emails: 1,
   createdAt: 1,
   updatedAt: 1,
   loans: loanSummary,

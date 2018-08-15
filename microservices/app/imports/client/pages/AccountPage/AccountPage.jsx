@@ -19,7 +19,7 @@ const styles = {
   },
 };
 
-const AccountPage = ({ currentUser: { emails } }) => (
+const AccountPage = ({ currentUser: { email } }) => (
   <Page id="AccountPage">
     <div className="card1 card-top" style={styles.section}>
       <div style={styles.div}>
@@ -28,7 +28,7 @@ const AccountPage = ({ currentUser: { emails } }) => (
             <T id="AccountPage.email" />
           </h4>
           <br />
-          <p className="secondary">{emails[0].address}</p>
+          <p className="secondary">{email}</p>
         </div>
 
         <div className="form-group">
