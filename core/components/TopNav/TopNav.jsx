@@ -54,7 +54,7 @@ const TopNav = (props) => {
           {children}
           {currentUser ? (
             <React.Fragment>
-              {currentUser.emails[0].address}
+              {currentUser.email}
               <TopNavDropdown {...props} />
             </React.Fragment>
           ) : (
@@ -74,12 +74,12 @@ const TopNav = (props) => {
 };
 
 TopNav.propTypes = {
-  currentUser: PropTypes.objectOf(PropTypes.any),
-  loans: PropTypes.arrayOf(PropTypes.object),
-  public: PropTypes.bool,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   appChildren: PropTypes.func,
   children: PropTypes.node,
+  currentUser: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  loans: PropTypes.arrayOf(PropTypes.object),
+  public: PropTypes.bool,
 };
 
 TopNav.defaultProps = {

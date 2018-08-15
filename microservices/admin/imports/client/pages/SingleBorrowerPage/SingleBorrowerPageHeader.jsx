@@ -30,7 +30,7 @@ const SingleBorrowerHeader = ({
           <T id="SingleBorrowerPageHeader.createdBy" key="createdBy" />,
           ' ',
           <Link to={`/users/${user._id}`} key="userLink">
-            {user.emails[0].address}
+            {user.email}
           </Link>,
           ', ',
         ]}
@@ -43,7 +43,7 @@ const SingleBorrowerHeader = ({
             {' - '}
             <T id="SingleBorrowerPageHeader.assignedTo" />{' '}
             <Link to={`/users/${user.assignedEmployee._id}`}>
-              {user.assignedEmployee.emails[0].address}
+              {user.assignedEmployee.email}
             </Link>
           </span>
         )}

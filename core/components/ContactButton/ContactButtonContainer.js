@@ -22,7 +22,7 @@ const ContactButtonContainer = compose(
       return { staff: getStaffByEmail('yannis@e-potek.ch') };
     }
     return {
-      staff: getStaffByEmail(currentUser.assignedEmployee.emails[0].address),
+      staff: getStaffByEmail(currentUser.assignedEmployee.email),
     };
   }),
   withState('open', 'toggleOpen', false),

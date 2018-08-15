@@ -23,7 +23,7 @@ export default class AllUsersTable extends Component {
       id: user._id,
       columns: [
         index + 1,
-        user.emails[0].address.toString(),
+        user.email.toString(),
         moment(user.createdAt).format('D MMM YY à HH:mm:ss'),
         user.roles ? user.roles.toString() : '',
       ],
