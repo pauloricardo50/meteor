@@ -13,19 +13,18 @@ import {
   BORROWERS_COLLECTION,
 } from 'core/api/constants';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
-import { getUserDisplayName } from 'core/utils/userFunctions';
 import Calculator from 'core/utils/Calculator';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { emails, roles, _id, name, firstName, lastName, username, structure },
+  { roles, name, firstName, lastName, structure },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {
-      primary: getUserDisplayName({ firstName, lastName, username, emails }),
+      primary: name,
       secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION: {

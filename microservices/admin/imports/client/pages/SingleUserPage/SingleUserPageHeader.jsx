@@ -7,29 +7,18 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import { getUserDisplayName } from 'core/utils/userFunctions';
 import RolePicker from '../../components/RolePicker';
 import EditUserFormDialog from './EditUserDialogForm';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 
 const SingleUserPageHeader = ({ user }) => {
-  const {
-    _id,
-    assignedEmployee,
-    createdAt,
-    emails,
-    firstName,
-    lastName,
-    username,
-    roles,
-    phoneNumbers,
-  } = user;
+  const { _id, assignedEmployee, createdAt, roles, phoneNumbers, name } = user;
 
   return (
     <div className="single-user-page-header">
       <div className="top">
         <h1>
-          {getUserDisplayName({ firstName, lastName, username, emails })}
+          {name}
 
           <small className="secondary">
             &nbsp;-&nbsp;
@@ -64,13 +53,7 @@ const SingleUserPageHeader = ({ user }) => {
         {assignedEmployee ? (
           <div className="assigned-employee">
             <p>
-              <T id="UsersTable.assignedTo" />{' '}
-              {getUserDisplayName({
-                firstName: assignedEmployee.firstName,
-                lastName: assignedEmployee.lastName,
-                username: assignedEmployee.username,
-                emails: assignedEmployee.emails,
-              })}
+              <T id="UsersTable.assignedTo" /> {assignedEmployee.name}
             </p>
             <UserAssignDropdown doc={user} />
           </div>

@@ -8,7 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
-import { getUserDisplayName } from 'core/utils/userFunctions';
 import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
@@ -77,28 +76,14 @@ const getPropertyInfo = ({
   ),
 });
 
-const getUserInfo = ({
-  emails,
-  profile,
-  roles,
-  createdAt,
-  assignedEmployee,
-  firstName,
-  lastName,
-  username,
-}) => {
+const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
   const organization = profile && profile.organization;
   const assignedEmployeeName = assignedEmployee
-    ? getUserDisplayName({
-      firstName: assignedEmployee.firstName,
-      lastName: assignedEmployee.lastName,
-      username: assignedEmployee.username,
-      emails: assignedEmployee.emails,
-    })
+    ? assignedEmployee.name
     : 'unassigned';
 
   return {
-    primary: getUserDisplayName({ firstName, lastName, username, emails }),
+    primary: name,
     secondary: (
       <ResultSecondaryText
         infos={{
@@ -145,8 +130,8 @@ const ResultsPerCollection = ({ results, collection }) => (
 );
 
 ResultsPerCollection.propTypes = {
-  results: PropTypes.array.isRequired,
   collection: PropTypes.string.isRequired,
+  results: PropTypes.array.isRequired,
 };
 
 export default ResultsPerCollection;
