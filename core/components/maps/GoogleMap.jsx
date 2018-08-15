@@ -63,19 +63,20 @@ export default class GoogleMap extends Component {
   render() {
     return (
       <div
+        className="google-map"
+        id={this.props.id}
         ref={(c) => {
           this.map = c;
         }}
-        className="google-map"
       />
     );
   }
 }
 
 GoogleMap.propTypes = {
+  address: PropTypes.string,
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
-  address: PropTypes.string,
   options: PropTypes.object,
 };
 
