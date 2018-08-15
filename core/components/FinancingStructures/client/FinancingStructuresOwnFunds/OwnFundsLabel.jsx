@@ -13,7 +13,7 @@ const OwnFundsLabel = ({ id, labelValue, ...data }: OwnFundsLabelProps) => {
     <div className="own-funds-label">
       <T id={`FinancingStructures.${id}`} />
       <div className="value">
-        Dispo:
+        <T id="FinancingStructures.OwnFundsLabel.available" />
         <span className="chf">CHF</span>
         <span className="primary">{toMoney(availableAmount)}</span>
       </div>
