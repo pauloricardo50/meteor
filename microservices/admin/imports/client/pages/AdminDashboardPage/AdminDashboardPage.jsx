@@ -10,7 +10,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
   <section className="card1 card-top admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
-    <CreateUserDialogForm history={history} />
+    <CreateUserDialogForm history={history} currentUser={currentUser} />
 
     <h2 className="fixed-size text-center">
       <T id="AdminDashboardPage.tasks" />

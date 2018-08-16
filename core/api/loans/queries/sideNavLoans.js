@@ -8,9 +8,7 @@ export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
       createdAt: -1,
     },
   },
-  $postFilter(loans, params) {
-    return loans.map(formatLoanWithStructure);
-  },
+  $postFilter: (loans, params) => loans.map(formatLoanWithStructure),
   $paginate: true,
   name: 1,
   createdAt: 1,
@@ -18,6 +16,11 @@ export default Loans.createQuery(LOAN_QUERIES.SIDENAV_LOANS, {
   user: {
     assignedEmployee: { emails: 1 },
   },
-  structures: { id: 1, wantedLoan: 1 },
+  structures: {
+    id: 1,
+    wantedLoan: 1,
+    secondPillarPledged: 1,
+    thirdPillarPledged: 1,
+  },
   selectedStructure: 1,
 });

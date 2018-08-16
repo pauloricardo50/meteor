@@ -18,7 +18,9 @@ const OverviewTab = (props) => {
     currentUser: { roles },
   } = props;
   const { adminNote, user, _id } = loan;
-  const displayRecap = Calculator.loanHasMinimalInformation({ loan });
+  const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
+    loan,
+  });
 
   return (
     <div className="overview-tab">
@@ -34,13 +36,13 @@ const OverviewTab = (props) => {
         </div>
       </div>
       {/* <LoanValidation loan={loan} /> */}
-      <LoanStatusCheck loan={loan} />
+      {loanHasMinimalInformation && <LoanStatusCheck loan={loan} />}
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">
             <T id="OverviewTab.recap" />
           </h2>
-          {displayRecap ? (
+          {loanHasMinimalInformation ? (
             <Recap {...props} arrayName="dashboard" />
           ) : (
             <T id="OverviewTab.emptyRecap" />
@@ -65,8 +67,8 @@ const OverviewTab = (props) => {
 };
 
 OverviewTab.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default OverviewTab;

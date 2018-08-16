@@ -14,7 +14,7 @@ import {
 } from 'core/api/constants';
 import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import { getUserDisplayName } from 'core/utils/userFunctions';
-
+import Calculator from 'core/utils/Calculator';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
@@ -29,13 +29,12 @@ const getListItemDetails = (
       secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION: {
-    const { wantedLoan } = structure;
+    const loanValue = structure && Calculator.getEffectiveLoan({ loan: { structure } });
+
     return {
       primary: name,
       secondary:
-          wantedLoan > 0
-            ? `CHF ${toMoney(wantedLoan)}`
-            : 'Pas encore structuré',
+          loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré',
     };
   }
   case BORROWERS_COLLECTION:
@@ -81,13 +80,13 @@ const DetailSideNavList = ({
 };
 
 DetailSideNavList.propTypes = {
-  history: PropTypes.object.isRequired,
-  data: PropTypes.array,
-  isLoading: PropTypes.bool,
   collectionName: PropTypes.string.isRequired,
+  data: PropTypes.array,
   hideDetailNav: PropTypes.func.isRequired,
-  showMore: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
   isEnd: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
+  showMore: PropTypes.func.isRequired,
 };
 
 DetailSideNavList.defaultProps = {
