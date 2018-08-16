@@ -8,6 +8,7 @@ $image-height: 300px;
   flex-direction: row;
   flex-wrap: wrap-reverse;
   justify-content: space-around;
+  box-sizing: border-box;
 
   width: 100%;
   height: $step-height;
@@ -76,9 +77,9 @@ $image-height: 300px;
   pointer-events: none;
 
   background: linear-gradient(
-  to top,
-  rgba(255, 255, 255, 1) 0%,
-  rgba(255, 255, 255, 0) 80%
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 80%
   );
 }
 
