@@ -11,7 +11,7 @@ import getMountedComponent from '../../../../core/utils/testHelpers/getMountedCo
 import pollUntilReady from '../../../../core/utils/testHelpers/pollUntilReady';
 import Loading from '../../../../core/components/Loading/Loading';
 
-describe.only('PasswordResetPage', () => {
+describe('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
@@ -90,13 +90,25 @@ describe.only('PasswordResetPage', () => {
     });
   });
 
-  it('renders Loading while submitting', () => {
+  it('loads while submitting', () => {
     const password = 'password';
     props.submitting = true;
     props.newPassword = password;
     props.newPassword2 = password;
     props.user = { id: 'userId' };
 
-    expect(shallowComponent().find(Loading).length).to.equal(1);
+    expect(
+      shallowComponent()
+        .find('[type="submit"]')
+        .first()
+        .props().disabled,
+    ).to.equal(true);
+
+    expect(
+      shallowComponent()
+        .find('[type="submit"]')
+        .first()
+        .props().loading,
+    ).to.equal(true);
   });
 });

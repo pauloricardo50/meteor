@@ -29,7 +29,7 @@ export const PasswordResetPage = ({
     return <h3 className="error">{error.message}</h3>;
   }
 
-  if (!user || submitting) {
+  if (!user) {
     return <Loading />;
   }
 
@@ -69,6 +69,7 @@ export const PasswordResetPage = ({
           disabled={!isValid}
           type="submit"
           primary
+          loading={submitting}
         />
       </div>
     </form>
