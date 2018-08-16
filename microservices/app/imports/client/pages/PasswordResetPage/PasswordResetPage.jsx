@@ -8,7 +8,7 @@ import TextField from 'core/components/Material/TextField';
 import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
-import { withStateHandlers, lifecycle, withState } from 'recompose';
+import { withStateHandlers, lifecycle, withState, withProps } from 'recompose';
 import withMatchParam from '../../../core/containers/withMatchParam';
 import { compose } from '../../../core/api/containerToolkit/index';
 import Loading from '../../../core/components/Loading/Loading';
@@ -21,26 +21,30 @@ export const PasswordResetPage = ({
   handleSubmit,
   user,
   error,
+  submitting,
 }) => {
-  const isValid = !!newPassword && newPassword === newPassword2;
+  const isValid = !!newPassword && newPassword === newPassword2 && !submitting;
 
   if (error) {
     return <h3 className="error">{error.message}</h3>;
   }
 
-  if (!user) {
+  if (!user || submitting) {
     return <Loading />;
   }
 
   return (
-    <section id="password-reset-page" className="password-reset-page">
+    <form
+      onSubmit={handleSubmit}
+      id="password-reset-page"
+      className="password-reset-page"
+    >
       <h1>
         <T
           id="PasswordResetPage.title"
           values={{ name: getUserDisplayName(user) }}
         />
       </h1>
-
       <TextField
         label={<T id="PasswordResetPage.password" />}
         floatingLabelFixed
@@ -63,11 +67,11 @@ export const PasswordResetPage = ({
           raised
           label={<T id="PasswordResetPage.CTA" />}
           disabled={!isValid}
-          onClick={handleSubmit}
+          type="submit"
           primary
         />
       </div>
-    </section>
+    </form>
   );
 };
 
@@ -82,18 +86,23 @@ export default compose(
     },
     {
       handleChange: () => (event, key) => ({ [key]: event.target.value }),
-      handleSubmit: ({ newPassword }, { token, history, setError }) => () => {
-        Accounts.resetPassword(token, newPassword, (err) => {
-          if (err) {
-            setError(err);
-          } else {
-            history.push('/');
-          }
-        });
-        return {};
-      },
     },
   ),
+  withState('submitting', 'changeSubmitting', false),
+  withProps(({ newPassword, token, history, setError, changeSubmitting }) => ({
+    handleSubmit: event => {
+      event.preventDefault();
+      changeSubmitting(true);
+      Accounts.resetPassword(token, newPassword, err => {
+        if (err) {
+          setError(err);
+        } else {
+          history.push('/');
+        }
+        changeSubmitting(false);
+      });
+    },
+  })),
   lifecycle({
     componentDidMount() {
       return getUserByPasswordResetToken

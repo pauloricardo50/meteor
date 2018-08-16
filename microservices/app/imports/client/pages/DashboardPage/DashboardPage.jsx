@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 
 import { LOAN_STATUS } from 'core/api/constants';
 import Page from '../../components/Page';
-import NewLoanModal from './NewLoanModal';
 import AcceptClosingModal from './AcceptClosingModal';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
 import NewLoanForm from './NewLoanForm';
 
-const DashboardPage = (props) => {
+const DashboardPage = props => {
   const { loan } = props;
   const { name, status, logic, _id } = loan;
   const showClosedModal = status === LOAN_STATUS.DONE && !logic.acceptedClosing;
@@ -22,9 +21,7 @@ const DashboardPage = (props) => {
       <DashboardInfo {...props} />
 
       <NewLoanForm loan={loan} />
-      {/* {showNewLoanModal && <NewLoanModal open loan={loan} />}
-
-      {showClosedModal && <AcceptClosingModal open loan={loan} />} */}
+      {showClosedModal && <AcceptClosingModal open loan={loan} />}
     </Page>
   );
 };
