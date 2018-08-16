@@ -1,0 +1,21 @@
+.new-loan-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+
+  &-textfield {
+    width: 400px;
+    margin: 32px;
+    align-self: center;
+  }
+
+  &-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    > * {
+      margin-left: 16px;
+    }
+  }
+}
