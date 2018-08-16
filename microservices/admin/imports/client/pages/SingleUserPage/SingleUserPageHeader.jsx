@@ -10,6 +10,7 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { getUserDisplayName } from 'core/utils/userFunctions';
 import RolePicker from '../../components/RolePicker';
 import EditUserFormDialog from './EditUserDialogForm';
+import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 
 const SingleUserPageHeader = ({ user }) => {
   const {
@@ -29,35 +30,52 @@ const SingleUserPageHeader = ({ user }) => {
       <div className="top">
         <h1>
           {getUserDisplayName({ firstName, lastName, username, emails })}
+
           <small className="secondary">
             &nbsp;-&nbsp;
             <Roles roles={roles} />
           </small>
+
           <RolePicker userId={_id} />
         </h1>
+
         <EditUserFormDialog user={user} />
+
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
 
       <div className="bottom">
-        <div className="phone">
-          <Icon type="phone" /> {phoneNumbers}
-        </div>
+        {!!(phoneNumbers && phoneNumbers.length) && (
+          <div className="phone">
+            <Icon type="phone" />{' '}
+            {phoneNumbers.map(number => (
+              <a key={number} href={`tel:${number}`}>
+                {number}
+              </a>
+            ))}
+          </div>
+        )}
+
         <p className="secondary created-at">
           <T id="UsersTable.createdAt" />{' '}
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
-        {assignedEmployee && (
-          <p>
-            &nbsp; - &nbsp;
-            <T id="UsersTable.assignedTo" />{' '}
-            {getUserDisplayName({
-              firstName: assignedEmployee.firstName,
-              lastName: assignedEmployee.lastName,
-              username: assignedEmployee.username,
-              emails: assignedEmployee.emails,
-            })}
-          </p>
+
+        {assignedEmployee ? (
+          <div className="assigned-employee">
+            <p>
+              <T id="UsersTable.assignedTo" />{' '}
+              {getUserDisplayName({
+                firstName: assignedEmployee.firstName,
+                lastName: assignedEmployee.lastName,
+                username: assignedEmployee.username,
+                emails: assignedEmployee.emails,
+              })}
+            </p>
+            <UserAssignDropdown doc={user} />
+          </div>
+        ) : (
+          <UserAssignDropdown doc={user} />
         )}
       </div>
     </div>
