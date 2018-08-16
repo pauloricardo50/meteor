@@ -7,7 +7,7 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
     ? relatedDoc.assignedEmployee._id
     : undefined;
   const options = admins.map((admin) => {
-    const { _id, firstName, lastName, emails, username } = admin;
+    const { _id } = admin;
 
     return {
       id: _id,
@@ -29,10 +29,11 @@ export default compose(
   withSmartQuery({
     query: () => query.clone(),
     queryoptions: { reactive: true },
+    dataName: 'admins',
   }),
-  withProps(({ data, doc, onAdminSelectHandler }) => {
+  withProps(({ admins, doc, onAdminSelectHandler }) => {
     const options = getMenuItems({
-      admins: data,
+      admins,
       relatedDoc: doc,
       onAdminSelectHandler,
     });

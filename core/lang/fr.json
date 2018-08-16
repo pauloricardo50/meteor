@@ -238,7 +238,7 @@
   "DashboardInfoTeamForm.dialogTitle": "Ajoutez un contact",
   "DashboardInfoTeamForm.email": "E-mail",
   "DashboardInfoTeamForm.name": "Nom complet",
-  "DashboardInfoTeamForm.phone": "Téléphone",
+  "DashboardInfoTeamForm.phoneNumber": "Téléphone",
   "DashboardInfoTeamForm.title": "Titre",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
