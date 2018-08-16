@@ -1,4 +1,9 @@
 {
+  "FinancingStructuresResultErrors.noMortgageLoan": "Ajoutez un prêt hypothécaire",
+  "FinancingStructuresResultErrors.missingOwnFunds": "Allouez plus de fonds propres à cette structure",
+  "FinancingStructuresResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à cette structure",
+  "FinancingStructuresResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de cette structure",
+
   "ReturnToDashboard.label": "Retour au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
   "FinancingStructures.OwnFundsLabel.available": "Disponible:",

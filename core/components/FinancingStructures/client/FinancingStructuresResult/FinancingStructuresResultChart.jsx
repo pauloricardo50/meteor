@@ -5,19 +5,15 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import { compose } from 'recompose';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
-
-type FinancingStructuresResultChartProps = {
-  getInterests: Function,
-  getAmortization: Function,
-  getPropertyExpenses: Function,
-};
-
-const FinancingStructuresResultChart = ({
-  getInterests,
+import {
   getAmortization,
   getPropertyExpenses,
-  ...props
-}: FinancingStructuresResultChartProps) => {
+  getInterests,
+} from './financingStructuresResultHelpers';
+
+type FinancingStructuresResultChartProps = {};
+
+const FinancingStructuresResultChart = (props: FinancingStructuresResultChartProps) => {
   const interests = getInterests(props);
   const amortization = getAmortization(props);
   const propertyExpenses = getPropertyExpenses(props);
