@@ -35,7 +35,7 @@ export default class GoogleMap extends Component {
   }
 
   addMarker = () => {
-    const { id, latlng, address } = this.props;
+    const { id, latlng, address, withMarker } = this.props;
 
     GoogleMaps.ready(id, (map) => {
       const infowindow = new window.google.maps.InfoWindow({
@@ -44,19 +44,21 @@ export default class GoogleMap extends Component {
 
       map.instance.setCenter(latlng);
 
-      const marker = new window.google.maps.Marker({
-        draggable: false,
-        animation: window.google.maps.Animation.DROP,
-        position: latlng,
-        map: map.instance,
-        id: 'propertyMarker',
-      });
+      if (withMarker) {
+        const marker = new window.google.maps.Marker({
+          draggable: false,
+          animation: window.google.maps.Animation.DROP,
+          position: latlng,
+          map: map.instance,
+          id: 'propertyMarker',
+        });
 
-      marker.addListener('click', () => {
-        infowindow.open(map.instance, marker);
-      });
+        marker.addListener('click', () => {
+          infowindow.open(map.instance, marker);
+        });
 
-      Meteor.setTimeout(() => infowindow.open(map.instance, marker), 1000);
+        Meteor.setTimeout(() => infowindow.open(map.instance, marker), 1000);
+      }
     });
   };
 
@@ -78,10 +80,12 @@ GoogleMap.propTypes = {
   id: PropTypes.string,
   latlng: PropTypes.object.isRequired,
   options: PropTypes.object,
+  withMarker: PropTypes.bool,
 };
 
 GoogleMap.defaultProps = {
   id: 'myMap',
   address: undefined,
   options: {},
+  withMarker: true,
 };
