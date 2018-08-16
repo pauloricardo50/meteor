@@ -216,9 +216,8 @@ describe('NewLoanFormContainer', () => {
       loan: {
         _id: 'id',
         name: 'loanName',
-        borrowerIds: ['borrowerId'],
         properties: [{ _id: 'propertyId', value: 100 }],
-        borrowers: [{ salary: 10, bankFortune: 10 }],
+        borrowers: [{ _id: 'borrowerId', salary: 10, bankFortune: 10 }],
       },
     };
 

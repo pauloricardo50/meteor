@@ -61,23 +61,23 @@ export default compose(
   withProps(
     ({
       handleCloseDialog,
-      loan: { _id: loanId, borrowerIds, properties },
+      loan: { _id: loanId, borrowers, properties },
       ...props
     }) => ({
       handleSubmit: event => {
         event.preventDefault();
         return loanUpdate
           .run({ object: { name: props[STEPS.LOAN_NAME] }, loanId })
-          .then(
+          .then(() =>
             borrowerUpdate.run({
               object: {
                 salary: props[STEPS.BORROWER_SALARY],
                 bankFortune: props[STEPS.BORROWER_FORTUNE],
               },
-              borrowerId: borrowerIds[0],
+              borrowerId: borrowers[0]._id,
             }),
           )
-          .then(
+          .then(() =>
             propertyUpdate.run({
               object: { value: props[STEPS.PROPERTY_VALUE] },
               propertyId: properties[0]._id,
