@@ -11,6 +11,7 @@ import { getProperty } from '../FinancingStructuresCalculator';
 import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 import RequiredOwnFunds from './RequiredOwnFunds';
+import OwnFundsLabel from './OwnFundsLabel';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -80,30 +81,40 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         Component: InputAndSlider,
         id: 'fortuneUsed',
         max: calculateMaxFortune,
+        label: OwnFundsLabel,
+        labelValue: calculateMaxFortune,
       },
       {
         Component: InputAndSlider,
         id: 'secondPillarPledged',
         max: calculateMaxSecondPillarPledged,
         condition: makeConditionForValue('getSecondPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getSecondPillar,
       },
       {
         Component: InputAndSlider,
         id: 'secondPillarWithdrawal',
         max: calculateMaxSecondPillarWithdrawal,
         condition: makeConditionForValue('getSecondPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getSecondPillar,
       },
       {
         Component: InputAndSlider,
         id: 'thirdPillarPledged',
         max: calculateMaxThirdPillarPledged,
         condition: makeConditionForValue('getThirdPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getThirdPillar,
       },
       {
         Component: InputAndSlider,
         id: 'thirdPillarWithdrawal',
         max: calculateMaxThirdPillarWithdrawal,
         condition: makeConditionForValue('getThirdPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getThirdPillar,
       },
     ]}
   />
