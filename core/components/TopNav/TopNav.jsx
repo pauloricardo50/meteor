@@ -14,17 +14,7 @@ import TopNavDropdown from './TopNavDropdown';
 // import TopNavDrawer from './TopNavDrawer';
 
 const TopNav = (props) => {
-  const {
-    history,
-    currentUser,
-    loans,
-    appChildren,
-    public: isPublic,
-    children,
-  } = props;
-  const isApp = history && history.location.pathname.slice(0, 4) === '/';
-
-  const showDrawer = isApp && loans.length > 0;
+  const { currentUser, appChildren, public: isPublic, children } = props;
 
   return (
     // This overflowX hidden prevents any icon from having tooltips
@@ -33,7 +23,6 @@ const TopNav = (props) => {
     <Toolbar className="top-nav" style={{ overflowX: 'hidden' }}>
       <div className="top-nav-content">
         {appChildren(props)}
-        {/* {showDrawer ? <TopNavDrawer {...props} /> : null} */}
 
         <div className="logo">
           <Link

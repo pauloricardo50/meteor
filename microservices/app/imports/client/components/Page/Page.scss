@@ -24,13 +24,11 @@
 
   background-color: #f1f3f5;
 
-  @include screen(med, min) {
-    position: fixed;
+  position: fixed;
 
-    width: calc(
+  width: calc(
     100% - 200px - 32px
-    ); /* Side-nav width, careful, not updated with variable */
-  }
+  ); /* Side-nav width, careful, not updated with variable */
 }
 
 .page-title .top-bar {
