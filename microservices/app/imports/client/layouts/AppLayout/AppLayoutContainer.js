@@ -1,14 +1,11 @@
 // @flow
-import { compose, mapProps, lifecycle } from 'recompose';
+import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import userLoanQuery from 'core/api/loans/queries/userLoan';
 import loanFiles from 'core/api/loans/queries/loanFiles';
 import appUserQuery from 'core/api/users/queries/appUser';
-import ClientEventService, {
-  MODIFIED_FILES_EVENT,
-} from 'core/api/events/ClientEventService';
 import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 
 const withAppUser = withSmartQuery({
