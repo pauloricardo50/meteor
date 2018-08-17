@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 import {
   LOANS_COLLECTION,
@@ -46,3 +47,9 @@ export const getCollectionNameFromIdField = idFieldName =>
     borrowerId: BORROWERS_COLLECTION,
     propertyId: PROPERTIES_COLLECTION,
   }[idFieldName]);
+
+export const createMeteorAsyncFunction = promiseFunc =>
+  Meteor.wrapAsync((params, callback) =>
+    promiseFunc(params)
+      .then(result => callback(null, result))
+      .catch(callback));

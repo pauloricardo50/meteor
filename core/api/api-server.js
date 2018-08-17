@@ -22,13 +22,16 @@ import './events/server/registerServerListeners';
 import './links';
 
 // Exposures
-import './loans/queries/exposures';
-import './users/queries/exposures';
-import './tasks/queries/exposures';
 import './borrowers/queries/exposures';
+import './loans/queries/exposures';
+import './offers/queries/exposures';
 import './properties/queries/exposures';
 import './resolvers/exposures';
-import './offers/queries/exposures';
+import './tasks/queries/exposures';
+import './users/queries/exposures';
+
+// Server-side Reducers
+import './loans/server/serverReducers';
 
 import { Loans, Borrowers, Offers, Properties } from '.';
 
