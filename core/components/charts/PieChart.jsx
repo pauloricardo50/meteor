@@ -20,9 +20,7 @@ const getConfig = ({ data, title, subtitle, config }) =>
           borderWidth: 0,
           allowPointSelect: false,
           cursor: 'pointer',
-          dataLabels: {
-            enabled: false,
-          },
+          dataLabels: { enabled: false },
           showInLegend: true,
           animation: { duration: 400 },
         },

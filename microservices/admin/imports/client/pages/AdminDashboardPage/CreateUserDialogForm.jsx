@@ -47,9 +47,7 @@ const CreateUserDialogForm = ({ history, currentUser: { name } }) => (
     description={(
       <T
         id="CreateUserDialogForm.dialogDescription"
-        values={{
-          user: <b>{name}</b>,
-        }}
+        values={{ user: <b>{name}</b> }}
       />
     )}
     formArray={formArray}

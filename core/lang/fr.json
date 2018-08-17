@@ -1,4 +1,8 @@
 {
+  "BorrowersSummary.borrower": "Emprunteur {index}",
+
+  "GoogleMap.addressNotFound": "Cette adresse n'a pas pu être trouvée",
+
   "FinancingStructuresResultErrors.noMortgageLoan": "Ajoutez un prêt hypothécaire",
   "FinancingStructuresResultErrors.missingOwnFunds": "Allouez plus de fonds propres à cette structure",
   "FinancingStructuresResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à cette structure",

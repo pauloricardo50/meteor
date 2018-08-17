@@ -23,7 +23,14 @@ const BorrowersSummary = ({ borrowers }) => (
                 <Icon type="face" />
               </Avatar>
             )}
-            label={borrower.name || `Emprunteur ${index + 1}`}
+            label={
+              borrower.name || (
+                <T
+                  id="BorrowersSummary.borrower"
+                  values={{ index: index + 1 }}
+                />
+              )
+            }
           />
         ))
       ) : (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import T from '../Translation';
 import GoogleMapContainer from './GoogleMapContainer';
 import GoogleMap from './GoogleMap';
 import { getLatLngFromAddress } from './googleMapsHelpers';
@@ -23,7 +24,9 @@ class MapWithMarker extends Component {
     return latlng ? (
       <GoogleMap address={address} latlng={latlng} id={id} options={options} />
     ) : (
-      <p className="description">Adresse pas trouvée!</p>
+      <p className="description">
+        <T id="GoogleMap.addressNotFound" />
+      </p>
     );
   }
 }

@@ -67,8 +67,8 @@ export default class GoogleMap extends Component {
       <div
         className="google-map"
         id={this.props.id}
-        ref={(c) => {
-          this.map = c;
+        ref={(component) => {
+          this.map = component;
         }}
       />
     );
