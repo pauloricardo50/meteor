@@ -365,11 +365,6 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: {},
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
-  documents: {
-    type: Object,
-    defaultValue: {},
-    blackbox: true,
-  },
   monthlyExpenses: {
     type: Number,
     min: 0,

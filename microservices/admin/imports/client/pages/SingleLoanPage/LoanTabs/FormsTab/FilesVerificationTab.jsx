@@ -19,7 +19,7 @@ const FilesVerificationTab = ({
       shouldShowDocument(condition) && (
         <FileVerificator
           currentValue={
-            doc.documents[documentId] && doc.documents[documentId].files
+            doc.documents[documentId] && doc.documents[documentId]
           }
           docId={doc._id}
           key={documentId}
@@ -31,10 +31,10 @@ const FilesVerificationTab = ({
 );
 
 FilesVerificationTab.propTypes = {
+  doc: PropTypes.object.isRequired,
+  documentArray: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  documentArray: PropTypes.array.isRequired,
-  doc: PropTypes.object.isRequired,
 };
 
 export default FilesVerificationTab;

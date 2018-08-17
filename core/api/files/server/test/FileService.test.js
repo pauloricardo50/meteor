@@ -97,4 +97,27 @@ describe('FileService', () => {
         .then(() => FileService.listFilesForDoc(docId))
         .then(results => expect(results.length).to.equal(0)));
   });
+
+  describe('groupFilesByCategory', () => {
+    it('groups 2 files in the same category', () => {
+      const files = [
+        { Key: 'asdf/category1/whatever.pdf' },
+        { Key: 'asdf/category1/dude.pdf' },
+      ];
+      expect(FileService.groupFilesByCategory(files)).to.deep.equal({
+        category1: files,
+      });
+    });
+
+    it('groups multiple files in multiple categories', () => {
+      const files = [
+        { Key: 'asdf/category1/whatever.pdf' },
+        { Key: 'asdf/category2/dude.pdf' },
+      ];
+      expect(FileService.groupFilesByCategory(files)).to.deep.equal({
+        category1: [files[0]],
+        category2: [files[1]],
+      });
+    });
+  });
 });

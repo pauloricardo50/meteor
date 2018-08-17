@@ -4,8 +4,12 @@ import S3Service from './S3Service';
 class FileService {
   listFilesForDoc = (docId, subdocument) => {
     const prefix = subdocument ? `${docId}/${subdocument}` : docId;
-    return S3Service.listObjects(prefix);
+    return S3Service.listObjects(prefix).then(results =>
+      results.map(this.formatFile));
   };
+
+  listFilesForDocByCategory = (docId, subdocument) =>
+    this.listFilesForDoc(docId, subdocument).then(this.groupFilesByCategory);
 
   setFileStatus = (key, nextStatus) =>
     S3Service.updateMetadata(key, { status: nextStatus });
@@ -19,12 +23,25 @@ class FileService {
   setFileValid = key =>
     S3Service.updateMetadata(key, { status: FILE_STATUS.VALID, message: '' });
 
-  deleteFileFromDoc = S3Service.deleteObject;
+  deleteFile = S3Service.deleteObject;
 
   deleteAllFilesForDoc = (docId, subdocument) => {
     const prefix = subdocument ? `${docId}/${subdocument}` : docId;
     return S3Service.deleteObjectsWithPrefix(prefix);
   };
+
+  formatFile = (file) => {
+    const keyParts = file.Key.split('/');
+    const fileName = keyParts[keyParts.length - 1];
+    return { ...file, name: fileName };
+  };
+
+  groupFilesByCategory = files =>
+    files.reduce((groupedFiles, file) => {
+      const category = file.Key.split('/')[1];
+      const currentCategoryFiles = groupedFiles[category] || [];
+      return { ...groupedFiles, [category]: [...currentCategoryFiles, file] };
+    }, {});
 }
 
 export default new FileService();

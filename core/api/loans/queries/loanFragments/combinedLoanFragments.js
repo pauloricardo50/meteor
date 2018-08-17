@@ -12,7 +12,6 @@ export const userLoanFragment = {
   adminValidation: 1,
   borrowers: loanBorrowerFragment,
   contacts: 1,
-  documents: 1,
   offers: fullOfferFragment,
   properties: userPropertyFragment,
   user: appUserFragment,

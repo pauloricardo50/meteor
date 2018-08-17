@@ -40,7 +40,6 @@ const LoanSchema = new SimpleSchema({
   name: { type: String, optional: true, defaultValue: '' },
   general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
-  documents: { type: Object, defaultValue: {}, blackbox: true },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   adminNote: { type: String, defaultValue: '', optional: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },

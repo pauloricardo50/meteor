@@ -14,22 +14,12 @@ export default class TempFile extends Component {
   }
 
   componentDidMount() {
-    const {
-      currentValue,
-      collection,
-      docId,
-      id,
-      uploadCount,
-      file,
-      handleSave,
-    } = this.props;
+    const { collection, docId, id, file, handleUploadComplete } = this.props;
 
     this.uploader = new Slingshot.Upload(SLINGSHOT_DIRECTIVE_NAME, {
-      currentValue,
       collection,
       docId,
       id,
-      uploadCount,
     });
 
     const progressSetter = Tracker.autorun(() => {
@@ -41,7 +31,7 @@ export default class TempFile extends Component {
       if (error) {
         this.setState({ error: error.message });
       } else {
-        handleSave(file, downloadUrl);
+        handleUploadComplete(file, downloadUrl);
       }
     });
   }
@@ -84,9 +74,8 @@ export default class TempFile extends Component {
 
 TempFile.propTypes = {
   collection: PropTypes.string.isRequired,
-  currentValue: PropTypes.arrayOf(PropTypes.object).isRequired,
   docId: PropTypes.string.isRequired,
   file: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleSave: PropTypes.func.isRequired,
+  handleUploadComplete: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
 };

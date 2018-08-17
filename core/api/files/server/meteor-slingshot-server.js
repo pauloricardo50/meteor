@@ -13,7 +13,6 @@ import {
   MAX_FILE_SIZE,
   ALLOWED_FILE_TYPES,
 } from '../fileConstants';
-import { getUploadCountPrefix } from '../fileHelpers';
 import uploadDirective from './uploadDirective';
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
@@ -61,9 +60,5 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     return true;
   },
-  key(file, { uploadCount, docId, id }) {
-    const uploadCountPrefix = getUploadCountPrefix(uploadCount);
-
-    return `${docId}/${id}/${uploadCountPrefix}${file.name}`;
-  },
+  key: (file, { docId, id }) => `${docId}/${id}/${file.name}`,
 });

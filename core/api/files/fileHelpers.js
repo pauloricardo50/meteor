@@ -7,13 +7,6 @@ import {
   propertyDocuments,
 } from './documents';
 
-export const getUploadCountPrefix = (lastUploadCount) => {
-  if (lastUploadCount) {
-    return lastUploadCount < 10 ? `0${lastUploadCount}` : `${lastUploadCount}`;
-  }
-  return '00';
-};
-
 /**
  * filesPercent - Determines the completion rate of file upload for a given
  * step, doc and array of files
@@ -38,12 +31,12 @@ export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
       if (!(f.required === false || f.condition === false)) {
         if (doc2.documents[f.id]) {
           if (checkValidity) {
-            a.push(isArray(doc2.documents[f.id].files)
-              && doc2.documents[f.id].files.every(file => file.status === FILE_STATUS.VALID)
+            a.push(isArray(doc2.documents[f.id])
+              && doc2.documents[f.id].every(file => file.status === FILE_STATUS.VALID)
               ? true
               : undefined);
           } else {
-            a.push(...doc2.documents[f.id].files);
+            a.push(...doc2.documents[f.id]);
           }
         } else {
           // document doesn't even exist

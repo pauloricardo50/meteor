@@ -20,13 +20,13 @@ const isAllowedToDelete = (disabled, status) => {
 };
 
 const File = ({
-  file: { initialName, key, status, error },
+  file: { name, Key, status, error },
   disabled,
   handleRemove,
 }) => (
   <div className="flex-col">
     <div className="file">
-      <h5 className="secondary bold">{initialName}</h5>
+      <h5 className="secondary bold">{name}</h5>
       <div className="flex center">
         <span className={`${status} bold`}>
           <T id={`File.status.${status}`} />
@@ -35,10 +35,10 @@ const File = ({
           <IconButton
             type="close"
             tooltip={<T id="general.delete" />}
-            onClick={() => handleRemove(key)}
+            onClick={() => handleRemove(Key)}
           />
         )}
-        <Download fileKey={key} fileName={initialName} />
+        <Download fileKey={Key} fileName={name} />
       </div>
     </div>
     {error && status === FILE_STATUS.ERROR && <p className="error">{error}</p>}
@@ -46,8 +46,8 @@ const File = ({
 );
 
 File.propTypes = {
-  file: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool.isRequired,
+  file: PropTypes.objectOf(PropTypes.any).isRequired,
   handleRemove: PropTypes.func.isRequired,
 };
 

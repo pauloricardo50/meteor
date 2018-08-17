@@ -33,16 +33,10 @@ const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
   }
 
   return (
-    <nav
-      className={classnames({
-        'side-nav-user': true,
-        fixed,
-      })}
-      style={style}
-    >
+    <nav className={classnames({ 'side-nav-user': true, fixed })} style={style}>
       <DrawerHeader permanent />
       <div className="scrollable">
-        {loans.length > 0 && (
+        {!!(loans && loans.length > 0) && (
           <LoanSelector
             history={history}
             currentUser={currentUser}

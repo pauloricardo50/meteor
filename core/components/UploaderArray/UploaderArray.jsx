@@ -5,6 +5,10 @@ import T from '../Translation';
 import Uploader from './Uploader';
 
 const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
+  if (!doc.documents) {
+    return null;
+  }
+
   if (documentArray) {
     return (
       <div className="flex-col center">
@@ -13,13 +17,9 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
             <Uploader
               fileMeta={{
                 ...documentObject,
-                ...doc.documents[documentObject.id],
               }}
               key={doc._id + documentObject.id}
-              currentValue={
-                doc.documents[documentObject.id]
-                  && doc.documents[documentObject.id].files
-              }
+              currentValue={doc.documents[documentObject.id]}
               docId={doc._id}
               disabled={disabled}
               collection={collection}
@@ -46,13 +46,11 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
         .reverse()
         .map(documentId => (
           <Uploader
-            fileMeta={{ id: documentId, ...doc.documents[documentId] }}
+            fileMeta={{ id: documentId }}
             collection={collection}
             key={documentId}
             docId={doc._id}
-            currentValue={
-              doc.documents[documentId] && doc.documents[documentId].files
-            }
+            currentValue={doc.documents[documentId]}
             disabled={disabled}
           />
         ))}

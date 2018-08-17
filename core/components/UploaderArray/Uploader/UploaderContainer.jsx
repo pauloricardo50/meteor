@@ -1,13 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import { compose } from 'recompose';
 
-import {
-  createContainer,
-  addFileToDoc,
-  deleteFile,
-  removeDocument,
-  SecurityService,
-} from 'core/api';
+import { createContainer, deleteFile, SecurityService } from 'core/api';
 import UploaderController from './UploaderController';
 
 const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, isOwnedByAdmin }, disabled }) => {
@@ -22,23 +15,7 @@ const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, 
   }
 
   const additionalProps = {
-    addFileToDoc: file =>
-      addFileToDoc.run({
-        collection,
-        docId,
-        documentId: id,
-        file,
-        userId: Meteor.userId(),
-      }),
-    deleteFile: fileKey =>
-      deleteFile.run({
-        collection,
-        docId,
-        documentId: id,
-        fileKey,
-      }),
-    removeDocument: () =>
-      removeDocument.run({ documentId: id, loanId: docId }),
+    deleteFile: fileKey => deleteFile.run({ collection, docId, fileKey }),
     userIsAdmin,
     disabled: userIsAdmin ? false : disableUploader,
     isOwnedByAdmin,

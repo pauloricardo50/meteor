@@ -16,7 +16,7 @@ const ClosingItem = ({ step, loan, disabled }) => {
     return (
       <Uploader
         fileMeta={{ id, title }}
-        currentValue={loan.documents[id] && loan.documents[id].files}
+        currentValue={loan.documents[id]}
         docId={loan._id}
         disabled={disabled}
         label={title}
@@ -53,9 +53,9 @@ const ClosingItem = ({ step, loan, disabled }) => {
 };
 
 ClosingItem.propTypes = {
-  step: PropTypes.object.isRequired,
-  loan: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
+  loan: PropTypes.object.isRequired,
+  step: PropTypes.object.isRequired,
 };
 
 export default ClosingItem;

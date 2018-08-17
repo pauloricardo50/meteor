@@ -7,6 +7,9 @@ import {
   MAX_FILE_SIZE,
   EXOSCALE_PATH,
 } from '../../../api/constants';
+import ClientEventService, {
+  MODIFIED_FILES_EVENT,
+} from '../../../api/events/ClientEventService';
 
 const checkFile = (file) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
@@ -56,7 +59,6 @@ const props = withProps(({
   currentValue,
   disabled,
   deleteFile,
-  addFileToDoc,
   addTempFiles,
   intl: { formatMessage: f },
 }) => ({
@@ -84,22 +86,21 @@ const props = withProps(({
 
     addTempFiles(files);
   },
-  handleSave: (file, downloadUrl) =>
-    addFileToDoc({
-      initialName: file.name,
-      size: file.size,
-      type: file.type,
-      url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
-      key: downloadUrl.split(`${EXOSCALE_PATH}/`)[1],
-    }),
-  handleRemove: key => deleteFile(key),
-  shouldDisableAdd: () =>
-    currentValue
-      && currentValue.reduce(
-        (acc, file) => !(file.status === FILE_STATUS.ERROR),
-        true,
-      )
-      && disabled,
+  handleUploadComplete: () => ClientEventService.emit(MODIFIED_FILES_EVENT),
+  handleRemove: key =>
+    deleteFile(key).then(() => ClientEventService.emit(MODIFIED_FILES_EVENT)),
+  shouldDisableAdd: () => {
+    console.log('currentValue?', currentValue);
+
+    return (
+      currentValue
+        && currentValue.reduce(
+          (acc, file) => !(file.status === FILE_STATUS.ERROR),
+          true,
+        )
+        && disabled
+    );
+  },
 }));
 
 const willReceiveProps = lifecycle({

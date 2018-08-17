@@ -34,7 +34,6 @@ export const fullPropertyFragment = {
   copropertyPercentage: 1,
   createdAt: 1,
   customFields: 1,
-  documents: 1,
   flatType: 1,
   floorNumber: 1,
   houseType: 1,

@@ -1,15 +1,15 @@
 import FileService from '../../files/server/FileService';
-import Loans from '../loans';
+import Properties from '../properties';
 import { createMeteorAsyncFunction } from '../../helpers';
 
-Loans.addReducers({
+Properties.addReducers({
   documents: {
     body: {
       _id: 1,
     },
-    reduce({ _id: loanId }) {
+    reduce({ _id: propertyId }) {
       const asyncFunc = createMeteorAsyncFunction(FileService.listFilesForDocByCategory);
-      return asyncFunc(loanId);
+      return asyncFunc(propertyId);
     },
   },
 });
