@@ -23,11 +23,7 @@ const LoanTaskInsertForm = ({
   buttonLabelId,
   ...props
 }: LoanTaskInsertFormProps) => (
-  <div
-    className="loan-task-insert-form"
-    // Prevent Link to be fired on DashboardPage
-    onClick={e => e.preventDefault()}
-  >
+  <div className="loan-task-insert-form">
     <DialogForm
       formArray={formArray}
       title={<T id={formTitleId} />}

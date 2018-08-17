@@ -1,7 +1,7 @@
 // @flow
 import React, { Fragment } from 'react';
-import Button from '../../../../core/components/Button/Button';
-import T from '../../../../core/components/Translation/Translation';
+import Button from 'core/components/Button/Button';
+import T from 'core/components/Translation/Translation';
 import { STEPS_ARRAY } from './NewLoanFormContainer';
 
 type NewLoanFormButtonsProps = {
@@ -22,40 +22,35 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
   } = props;
   return (
     <Fragment>
-      {[
-        step === 0 ? null : (
-          <Button
-            key="previous"
-            id="previous"
-            onClick={handlePrevious}
-            label={<T id="NewLoanForm.previousButton" />}
-            raised
-          />
-        ),
-        step === numberOfSteps - 1 ? (
-          <Button
-            type="submit"
-            key="submit"
-            id="submit"
-            onClick={handleSubmit}
-            label={<T id="NewLoanForm.submitButton" />}
-            secondary
-            raised
-            disabled={!props[STEPS_ARRAY[step]]}
-          />
-        ) : (
-          <Button
-            type="submit"
-            key="next"
-            id="next"
-            onClick={handleNext}
-            label={<T id="NewLoanForm.nextButton" />}
-            primary
-            raised
-            disabled={!props[STEPS_ARRAY[step]]}
-          />
-        ),
-      ]}
+      {step === 0 ? null : (
+        <Button
+          id="previous"
+          onClick={handlePrevious}
+          label={<T id="NewLoanForm.previousButton" />}
+          raised
+        />
+      )}
+      {step === numberOfSteps - 1 ? (
+        <Button
+          type="submit"
+          id="submit"
+          onClick={handleSubmit}
+          label={<T id="NewLoanForm.submitButton" />}
+          secondary
+          raised
+          disabled={!props[STEPS_ARRAY[step]]}
+        />
+      ) : (
+        <Button
+          type="submit"
+          id="next"
+          onClick={handleNext}
+          label={<T id="NewLoanForm.nextButton" />}
+          primary
+          raised
+          disabled={!props[STEPS_ARRAY[step]]}
+        />
+      )}
     </Fragment>
   );
 };

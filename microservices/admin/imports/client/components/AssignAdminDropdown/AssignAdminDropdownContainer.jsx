@@ -32,7 +32,7 @@ export default compose(
     queryoptions: { reactive: true },
     dataName: 'admins',
   }),
-  withProps(({ data, doc, onAdminSelectHandler }) => {
+  withProps(({ admins, doc, onAdminSelectHandler }) => {
     const options = getMenuItems({
       admins,
       relatedDoc: doc,

@@ -3,9 +3,9 @@ import React from 'react';
 import NewLoanFormContainer, { STEPS_ARRAY } from './NewLoanFormContainer';
 import NewLoanTextFields from './NewLoanFormTextFields';
 import NewLoanFormButtons from './NewLoanFormButtons';
-import Button from '../../../../core/components/Button/Button';
-import Dialog from '../../../../core/components/Material/Dialog';
-import T from '../../../../core/components/Translation/Translation';
+import Button from 'core/components/Button/Button';
+import Dialog from 'core/components/Material/Dialog';
+import T from 'core/components/Translation/Translation';
 
 type NewLoanFormProps = {
   open: Boolean,

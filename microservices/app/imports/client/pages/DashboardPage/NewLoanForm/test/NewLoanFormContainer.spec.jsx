@@ -29,8 +29,6 @@ describe('NewLoanFormContainer', () => {
 
     borrowerUpdate.run = sinon.spy(
       ({ object: { salary, bankFortune }, borrowerId }) => {
-        console.log(salary, bankFortune, borrowerId);
-
         if (!!salary && !!bankFortune && !!borrowerId) {
           return Promise.resolve();
         }
@@ -54,7 +52,7 @@ describe('NewLoanFormContainer', () => {
     propertyUpdate.run = undefined;
   });
 
-  it('should open', () => {
+  it('should open if the conditions are met', () => {
     props.loan = {
       name: '',
       properties: [{}],
@@ -66,7 +64,7 @@ describe('NewLoanFormContainer', () => {
       .to.equal(true);
   });
 
-  it('should not open', () => {
+  it('should not open if all data has been provided', () => {
     props.loan = {
       name: 'test',
       properties: [{ value: 100 }],
@@ -126,13 +124,12 @@ describe('NewLoanFormContainer', () => {
     const wrapper = root();
     const child = () => wrapper.find(EmptyComponent);
 
-    for (let i = 0; i < STEPS_ARRAY.length + 10; i++) {
+    STEPS_ARRAY.forEach(() => {
       child()
         .props()
         .handleNext({ preventDefault: () => null });
-
       wrapper.update();
-    }
+    });
 
     expect(child().props().step).to.equal(STEPS_ARRAY.length - 1);
   });
@@ -147,14 +144,13 @@ describe('NewLoanFormContainer', () => {
     const wrapper = root();
     const child = () => wrapper.find(EmptyComponent);
 
-    // Go to step 2
-    for (let i = 0; i < 2; i++) {
+    // Go to last step
+    STEPS_ARRAY.forEach(() => {
       child()
         .props()
         .handleNext({ preventDefault: () => null });
-
       wrapper.update();
-    }
+    });
 
     // Decrement step
     child()
@@ -163,7 +159,7 @@ describe('NewLoanFormContainer', () => {
 
     wrapper.update();
 
-    expect(child().props().step).to.equal(1);
+    expect(child().props().step).to.equal(STEPS_ARRAY.length - 2);
   });
 
   it('does not decrement step when it is the first step', () => {
@@ -185,7 +181,7 @@ describe('NewLoanFormContainer', () => {
     expect(child().props().step).to.equal(0);
   });
 
-  context('should throw when', () => {
+  context('onSubmit should throw when', () => {
     it('no name or loan id is provided', () => {
       expect(() => loanUpdate.run({ object: { name: '' } })).to.throw(
         'No name or loanId',

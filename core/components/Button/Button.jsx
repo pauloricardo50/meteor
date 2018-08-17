@@ -58,8 +58,7 @@ Button.defaultProps = {
   link: false,
 };
 
-export default withProps(({ loading }) => {
-  if (loading) {
-    return { disabled: true, icon: <Icon type="loop-spin" /> };
-  }
-})(Button);
+const withLoadingProp = withProps(({ loading }) =>
+  (loading ? { disabled: true, icon: <Icon type="loop-spin" /> } : null));
+
+export default withLoadingProp(Button);

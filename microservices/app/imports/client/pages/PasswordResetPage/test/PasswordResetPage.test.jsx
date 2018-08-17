@@ -101,13 +101,6 @@ describe('PasswordResetPage', () => {
       shallowComponent()
         .find('[type="submit"]')
         .first()
-        .props().disabled,
-    ).to.equal(true);
-
-    expect(
-      shallowComponent()
-        .find('[type="submit"]')
-        .first()
         .props().loading,
     ).to.equal(true);
   });

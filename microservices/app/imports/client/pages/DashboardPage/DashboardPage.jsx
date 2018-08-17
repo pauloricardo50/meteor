@@ -13,7 +13,6 @@ const DashboardPage = props => {
   const { loan } = props;
   const { name, status, logic, _id } = loan;
   const showClosedModal = status === LOAN_STATUS.DONE && !logic.acceptedClosing;
-  console.log(loan);
   return (
     <Page id="DashboardPage" fullWidth>
       <DashboardProgress {...props} />

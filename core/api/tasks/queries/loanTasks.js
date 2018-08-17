@@ -16,7 +16,6 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
       createdAt: -1,
     },
   },
-  // $paginate: true,
   status: 1,
   type: 1,
   createdAt: 1,
