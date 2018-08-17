@@ -7,13 +7,10 @@ import {
   cancelAuction,
   assignAdminToNewUser,
   completeAddAssignedToTask,
-  addFileToDoc,
   setFileStatus,
 } from '../../methods';
 import TaskService from '../TaskService';
 import { TASK_TYPE, TASK_STATUS } from '../taskConstants';
-import UserService from '../../users/UserService';
-import { ROLES } from '../../users/userConstants';
 
 ServerEventService.addMethodListener(requestLoanVerification, ({ loanId }) => {
   const type = TASK_TYPE.VERIFY;
@@ -62,11 +59,6 @@ export const insertTaskWhenFileAddedListener = ({
     fileKey,
     userId,
   });
-
-ServerEventService.addMethodListener(
-  addFileToDoc,
-  insertTaskWhenFileAddedListener,
-);
 
 export const completeTaskOnFileVerificationListener = ({
   collection,
