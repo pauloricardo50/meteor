@@ -12,12 +12,10 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
       createdAt: -1,
     },
   },
-  $postFilter(users) {
-    console.log('query users', users);
-    return users.map(({ loans, ...user }) => ({
+  $postFilter: users =>
+    users.map(({ loans, ...user }) => ({
       ...user,
       loans: loans.map(formatLoanWithStructure),
-    }));
-  },
+    })),
   ...adminUserFragment,
 });
