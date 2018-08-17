@@ -112,7 +112,6 @@ export const fakeFiles = {
 export const fakeFiles2 = {};
 
 export const emptyLoan = {
-  name: 'Rue du Test 42 - empty',
   general: {},
   logic: logic1,
   documents: {},

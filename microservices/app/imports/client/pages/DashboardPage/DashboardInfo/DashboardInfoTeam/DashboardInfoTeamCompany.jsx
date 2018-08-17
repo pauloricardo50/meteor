@@ -21,7 +21,7 @@ const defaultTeam = [
 const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
   let team = defaultTeam;
   if (assignedEmployee) {
-    const email = assignedEmployee.emails[0].address;
+    const email = assignedEmployee.email;
     const employee = employees.find(item => item.email === email);
     if (employee) {
       team = [employee, ...team];

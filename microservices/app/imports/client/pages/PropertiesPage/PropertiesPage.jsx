@@ -9,9 +9,7 @@ import PropertiesPageDetail from './PropertiesPageDetail';
 const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
   <Page id="PropertiesPage">
     <section className="card1 card-top properties-page">
-      <div className="adder">
-        <PropertyAdder loanId={loanId} />
-      </div>
+      <div className="adder" />
 
       <div className="properties">
         {properties.map(property => (
@@ -21,6 +19,18 @@ const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
             key={property._id}
           />
         ))}
+        <PropertyAdder
+          loanId={loanId}
+          button={(
+            <div className="property-adder-button">
+              <span className="plus">+</span>
+              <h3>
+                <T id="PropertyForm.adderLabel" />
+              </h3>
+            </div>
+          )}
+          className="properties-page-detail card1 card1-top card-hover"
+        />
       </div>
     </section>
   </Page>

@@ -9,9 +9,9 @@ import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
 import NewLoanForm from './NewLoanForm';
 
-const DashboardPage = props => {
+const DashboardPage = (props) => {
   const { loan } = props;
-  const { name, status, logic, _id } = loan;
+  const { status, logic } = loan;
   const showClosedModal = status === LOAN_STATUS.DONE && !logic.acceptedClosing;
   return (
     <Page id="DashboardPage" fullWidth>

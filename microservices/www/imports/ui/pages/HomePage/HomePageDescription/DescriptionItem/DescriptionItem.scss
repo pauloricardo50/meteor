@@ -86,5 +86,7 @@ $image-height: 300px;
 .description-item .description-item-icon {
   width: $image-height;
   height: $image-height;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 0 32px;
 }

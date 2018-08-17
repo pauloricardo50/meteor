@@ -6,7 +6,6 @@ import Loading from 'core/components/Loading/Loading';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { getUserDisplayName } from 'core/utils/userFunctions';
-
 import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 export const PasswordResetPage = ({

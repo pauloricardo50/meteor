@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import T from 'core/components/Translation';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import FilesIssuesList from './FilesIssuesList';
 import FieldsIssuesList from './FieldsIssuesList';
 
 const BorrowerIssues = ({ borrowers }) => {
-  const borrowerAdminValidations = borrowers.map(({ firstName, lastName, adminValidation, documents }, i) => ({
+  const borrowerAdminValidations = borrowers.map(({ name, adminValidation, documents }, i) => ({
     key: i,
-    borrowerName: getBorrowerFullName({ firstName, lastName }) || (
+    borrowerName: name || (
       <T id="BorrowerIssues.itemTitle" values={{ index: i + 1 }} />
     ),
     fieldsIssues: <FieldsIssuesList adminValidation={adminValidation} />,

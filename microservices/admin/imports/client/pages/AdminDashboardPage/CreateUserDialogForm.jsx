@@ -5,7 +5,6 @@ import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { adminCreateUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
-import { getUserDisplayName } from '../../../core/utils/userFunctions';
 
 export const createUserFormFields = [
   'firstName',
@@ -34,7 +33,7 @@ const onSubmit = data =>
 const redirectToUserProfile = (newId, history) =>
   history.push(`/users/${newId}`);
 
-const CreateUserDialogForm = ({ history, currentUser }) => (
+const CreateUserDialogForm = ({ history, currentUser: { name } }) => (
   <DialogForm
     form="admin-add-user"
     onSubmit={onSubmit}
@@ -48,9 +47,7 @@ const CreateUserDialogForm = ({ history, currentUser }) => (
     description={(
       <T
         id="CreateUserDialogForm.dialogDescription"
-        values={{
-          user: <b>{getUserDisplayName(currentUser)}</b>,
-        }}
+        values={{ user: <b>{name}</b> }}
       />
     )}
     formArray={formArray}

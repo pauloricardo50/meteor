@@ -47,7 +47,7 @@ const SinglePropertyHeader = ({
           <T id="SinglePropertyPageHeader.createdBy" key="createdBy" />,
           ' ',
           <Link to={`/users/${user._id}`} key="userLink">
-            {user.emails[0].address}
+            {user.email}
           </Link>,
           ', ',
         ]}
@@ -60,7 +60,7 @@ const SinglePropertyHeader = ({
             {' - '}
             <T id="SinglePropertyPageHeader.assignedTo" />{' '}
             <Link to={`/users/${user.assignedEmployee._id}`}>
-              {user.assignedEmployee.emails[0].address}
+              {user.assignedEmployee.email}
             </Link>
           </span>
         )}

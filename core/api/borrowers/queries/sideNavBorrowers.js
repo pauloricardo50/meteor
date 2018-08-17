@@ -1,5 +1,6 @@
 import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
+import { sideNavBorrowerFragment } from './borrowerFragments';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.SIDENAV_BORROWERS, {
   $options: {
@@ -8,11 +9,5 @@ export default Borrowers.createQuery(BORROWER_QUERIES.SIDENAV_BORROWERS, {
     },
   },
   $paginate: true,
-  firstName: 1,
-  lastName: 1,
-  createdAt: 1,
-  updatedAt: 1,
-  user: {
-    assignedEmployee: { emails: 1 },
-  },
+  ...sideNavBorrowerFragment,
 });

@@ -14,7 +14,7 @@ const statusChecks = [
           <span key={borrower._id}>
             {borrower.firstName}:{' '}
             <Percent
-              value={Calculator.getBorrowerCompletion({
+              value={Calculator.getBorrowersCompletion({
                 borrowers: borrower,
               })}
             />

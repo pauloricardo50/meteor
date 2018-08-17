@@ -13,7 +13,7 @@ export const ImpersonateWarning = ({ isActive, currentUser }) => {
     return null;
   }
 
-  const currentUserEmail = currentUser.emails[0].address;
+  const currentUserEmail = currentUser.email;
 
   return (
     <div className="warning">

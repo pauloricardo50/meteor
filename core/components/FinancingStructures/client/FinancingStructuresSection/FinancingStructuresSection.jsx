@@ -110,7 +110,7 @@ const FinancingStructuresSection = ({
 };
 
 export default compose(
-  withState('expanded', 'changeExpanded', false),
+  withState('expanded', 'changeExpanded', true),
   FinancingStructuresDataContainer({ asArrays: true }),
   withStyles(styles),
 )(FinancingStructuresSection);

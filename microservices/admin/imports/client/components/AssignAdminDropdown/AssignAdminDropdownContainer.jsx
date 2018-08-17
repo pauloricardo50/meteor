@@ -1,19 +1,18 @@
 import { compose, withProps } from 'recompose';
 import query from 'core/api/users/queries/admins';
 import { withSmartQuery } from 'core/api';
-import { getUserDisplayName } from 'core/utils/userFunctions';
 
 const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
   const oldAdmin = relatedDoc.assignedEmployee
     ? relatedDoc.assignedEmployee._id
     : undefined;
   const options = admins.map((admin) => {
-    const { _id, firstName, lastName, emails, username } = admin;
+    const { _id } = admin;
 
     return {
       id: _id,
       show: _id !== oldAdmin,
-      label: getUserDisplayName({ firstName, lastName, username, emails }),
+      label: admin.name,
       link: false,
       onClick: () =>
         onAdminSelectHandler({

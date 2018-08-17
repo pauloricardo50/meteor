@@ -25,16 +25,18 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       }
     }
 
-    propertyPercent({ loan }) {
-      const {
+    propertyPercent({ loan, property }) {
+      const { borrowers, structure } = loan;
+      const propertyToCalculateWith = property || structure.property;
+      const formArray1 = getPropertyArray({
+        loan,
         borrowers,
-        structure: { property },
-      } = loan;
-      const formArray1 = getPropertyArray({ loan, borrowers, property });
+        property: propertyToCalculateWith,
+      });
       const formArray2 = getPropertyLoanArray({
         loan,
         borrowers,
-        property,
+        property: propertyToCalculateWith,
       });
 
       let a = getCountedArray(formArray1, property);
@@ -51,14 +53,17 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
-    getPropertyCompletion({ loan }) {
-      const {
+    getPropertyCompletion({ loan, property }) {
+      const { borrowers, structure } = loan;
+      const propertyToCalculateWith = property || structure.property;
+
+      const formsProgress = this.propertyPercent({
+        loan,
         borrowers,
-        structure: { property },
-      } = loan;
-      const formsProgress = this.propertyPercent({ loan, borrowers, property });
+        property: propertyToCalculateWith,
+      });
       const filesProgress = filesPercent({
-        doc: property,
+        doc: propertyToCalculateWith,
         fileArrayFunc: propertyDocuments,
         step: FILE_STEPS.AUCTION,
       });

@@ -25,7 +25,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
           status: [TASK_STATUS.ACTIVE],
         },
         options: {
-          address: [currentUser.emails[0].address, undefined],
+          address: [currentUser.email, undefined],
           status: Object.values(TASK_STATUS),
         },
       }}
