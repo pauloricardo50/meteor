@@ -34,7 +34,12 @@ export default compose(
     componentDidMount() {
       return getUserByPasswordResetToken
         .run({ token: this.props.token })
-        .then(user => this.setState({ user }))
+        .then(user => {
+          if (!user) {
+            throw new Error('user not found');
+          }
+          this.setState({ user });
+        })
         .catch(this.props.setError);
     },
   }),

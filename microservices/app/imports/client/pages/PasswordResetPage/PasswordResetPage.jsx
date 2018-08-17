@@ -21,7 +21,11 @@ export const PasswordResetPage = ({
   const isValid = !!newPassword && newPassword === newPassword2;
 
   if (error) {
-    return <h3 className="error">{error.message}</h3>;
+    return (
+      <h3 className="error" id="password-reset-page">
+        {error.message}
+      </h3>
+    );
   }
 
   if (!user) {
