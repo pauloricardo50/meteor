@@ -1,5 +1,6 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
+import { simpleUserFragment } from './userFragments';
 
 export default Users.createQuery(USER_QUERIES.ADMINS, {
   $filter({ filters, options, params }) {
@@ -10,8 +11,5 @@ export default Users.createQuery(USER_QUERIES.ADMINS, {
       createdAt: -1,
     },
   },
-  emails: 1,
-  firstName: 1,
-  lastName: 1,
-  username: 1,
+  ...simpleUserFragment,
 });

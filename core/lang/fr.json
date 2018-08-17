@@ -1,4 +1,15 @@
 {
+  "BorrowersSummary.borrower": "Emprunteur {index}",
+
+  "GoogleMap.addressNotFound": "Cette adresse n'a pas pu être trouvée",
+
+  "FinancingStructuresResultErrors.noMortgageLoan": "Ajoutez un prêt hypothécaire",
+  "FinancingStructuresResultErrors.missingOwnFunds": "Allouez plus de fonds propres à cette structure",
+  "FinancingStructuresResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à cette structure",
+  "FinancingStructuresResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de cette structure",
+
+  "ReturnToDashboard.label": "Retour au Tableau de Bord",
+  "LoanSelector.empty": "Nouveau projet",
   "FinancingStructures.OwnFundsLabel.available": "Disponible:",
   "SingleLoanPageHeader.title": "{name} - Emprunt de {value}",
   "FinancingStructuresSection.expandHelper": "Afficher les détails",
@@ -231,7 +242,7 @@
   "DashboardInfoTeamForm.dialogTitle": "Ajoutez un contact",
   "DashboardInfoTeamForm.email": "E-mail",
   "DashboardInfoTeamForm.name": "Nom complet",
-  "DashboardInfoTeamForm.phone": "Téléphone",
+  "DashboardInfoTeamForm.phoneNumber": "Téléphone",
   "DashboardInfoTeamForm.title": "Titre",
   "DashboardInfoTeamMember.emailTooltip": "Envoyer un mail",
   "DashboardInfoTeamMember.phoneTooltip": "Appeler",
@@ -1026,7 +1037,7 @@
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
   "PropertiesPage.description": "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
-  "PropertiesPage.incompleteAddress": "Entrez votre adresse complet pour afficher la carte!",
+  "PropertiesPage.incompleteAddress": "Entrez votre adresse complète pour afficher la carte!",
   "PropertiesPage.progress": "Progrès: {value, number, percent}",
   "PropertiesPage.title": "Biens immobiliers",
   "property.expertise": "Expertise",

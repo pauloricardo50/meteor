@@ -6,7 +6,7 @@ import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
 
 const getAdminsEmails = async () => {
   const admins = await adminsQuery.clone().fetchSync();
-  const adminsEmails = admins.map(({ emails: [{ address }] }) => address);
+  const adminsEmails = admins.map(({ email }) => email);
   return [...adminsEmails, undefined];
 };
 

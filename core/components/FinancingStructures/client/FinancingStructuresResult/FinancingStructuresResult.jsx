@@ -7,7 +7,7 @@ import FinancingStructuresSection, {
   CalculatedValue,
   FinmaRatio,
 } from '../FinancingStructuresSection';
-import FinancingStructuresResultChart from './FinancingStructuresResultChart';
+import FinancingStructuresResultErrors from './FinancingStructuresResultErrors';
 import {
   getInterests,
   getAmortization,
@@ -39,10 +39,7 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
               <T id="FinancingStructuresResult.title" />
             </span>
           ),
-          Component: FinancingStructuresResultChart,
-          getAmortization,
-          getInterests,
-          getPropertyExpenses,
+          Component: FinancingStructuresResultErrors,
         },
       ]}
       detailConfig={[

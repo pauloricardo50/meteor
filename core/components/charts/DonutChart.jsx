@@ -32,20 +32,23 @@ const addCenteredTitle = (chart, title) => {
 
 const DonutChart = ({ config, title, ...rest }) => (
   <PieChart
-    config={merge(config, {
-      chart: {
-        events: {
-          load() {
-            addCenteredTitle(this, title);
-          },
-          redraw() {
-            addCenteredTitle(this, title);
+    config={merge(
+      {
+        chart: {
+          events: {
+            load() {
+              addCenteredTitle(this, title);
+            },
+            redraw() {
+              addCenteredTitle(this, title);
+            },
           },
         },
+        title: { text: '' },
+        series: [{ innerSize: '60%' }],
       },
-      title: { text: '' },
-      series: [{ innerSize: '60%' }],
-    })}
+      config,
+    )}
     {...rest}
   />
 );

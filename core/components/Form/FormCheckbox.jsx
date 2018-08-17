@@ -9,6 +9,7 @@ const FormCheckbox = ({ input, meta: { touched, error }, label, required }) => (
     control={(
       <Checkbox
         {...input}
+        checked={!!input.value} // https://github.com/mui-org/material-ui/issues/12474
         onChange={(event, isChecked) => input.onChange(isChecked)}
       />
     )}

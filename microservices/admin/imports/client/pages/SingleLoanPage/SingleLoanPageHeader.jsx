@@ -3,7 +3,6 @@ import React from 'react';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import { getUserDisplayName } from 'core/utils/userFunctions';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -23,7 +22,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
     />
     <small className="secondary">
       {' - '}
-      {getUserDisplayName(loan.user)}
+      {loan.user.name}
       {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
     </small>
   </h1>

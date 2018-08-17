@@ -1,6 +1,7 @@
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import { compose, createContainer, offerInsert } from 'core/api';
+import { offerInsert } from 'core/api';
+import { withProps, compose } from 'recompose';
 import {
   FORM_NAME,
   HAS_COUNTERPARTS,
@@ -74,7 +75,7 @@ const onSubmit = (values, loanId) => {
 };
 
 export default compose(
-  createContainer(({ loanId }) => ({
+  withProps(({ loanId }) => ({
     onSubmit: values => onSubmit(values, loanId),
   })),
   connect(state => ({

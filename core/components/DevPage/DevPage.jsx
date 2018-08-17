@@ -214,7 +214,7 @@ export default class DevPage extends Component {
                 onClick={() =>
                   this.purgeAndGenerateDatabase(
                     currentUser._id,
-                    currentUser.emails[0].address,
+                    currentUser.email,
                   )
                 }
               >
@@ -230,7 +230,7 @@ export default class DevPage extends Component {
               secondary
               className="mr20"
               onClick={() =>
-                Meteor.call('generateTestData', currentUser.emails[0].address)
+                Meteor.call('generateTestData', currentUser.email)
               }
             >
               <Icon type="groupAdd" />
