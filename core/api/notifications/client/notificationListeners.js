@@ -10,8 +10,8 @@ import { FILE_STATUS } from '../../constants';
 export const fileVerifiedNotificationListener = ({ newStatus }) => {
   if ([FILE_STATUS.VALID, FILE_STATUS.ERROR].includes(newStatus)) {
     NotificationService.notifyAdmin({
-      title: 'Task Completed',
-      message: 'Completed task of added file',
+      title: 'Tâche complétée',
+      message: 'Document vérifié',
     });
   }
 };
@@ -22,8 +22,8 @@ ClientEventService.addMethodListener(
 
 export const adminAssignedToNewUserNotificationListener = ({ newStatus }) => {
   NotificationService.notifyAdmin({
-    title: 'Task Completed',
-    message: 'Completed task of admin to user assignment',
+    title: 'Tâche complétée',
+    message: 'Assigné un admin',
   });
 };
 ClientEventService.addMethodListener(

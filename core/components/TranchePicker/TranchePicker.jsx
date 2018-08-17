@@ -3,6 +3,7 @@ import React from 'react';
 import TranchePickerContainer from './TranchePickerContainer';
 import Button from '../Button';
 import Tranche from './Tranche';
+import { INTEREST_RATES } from '../../api/constants';
 
 type TranchePickerProps = {
   tranches: Array<{ value: number, type: string }>,
@@ -13,6 +14,8 @@ type TranchePickerProps = {
   options: Array<Object>,
 };
 
+const interestRatesOrder = Object.values(INTEREST_RATES);
+
 const filterOptions = (options, tranches, currentType) => {
   const currentSelectedTypes = tranches.map(({ type }) => type);
   const difference = options.filter(({ id }) => !currentSelectedTypes.includes(id));
@@ -20,7 +23,8 @@ const filterOptions = (options, tranches, currentType) => {
   const withCurrentType = currentOption
     ? [...difference, currentOption]
     : difference;
-  const sortedOptions = withCurrentType.sort(({ id: id1 }, { id: id2 }) => id1 > id2);
+  const sortedOptions = withCurrentType.sort(({ id: id1 }, { id: id2 }) =>
+    interestRatesOrder.indexOf(id1) > interestRatesOrder.indexOf(id2));
   return sortedOptions;
 };
 

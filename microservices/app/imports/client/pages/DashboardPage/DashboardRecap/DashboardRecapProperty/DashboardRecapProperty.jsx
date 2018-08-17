@@ -10,6 +10,7 @@ import { T, MetricArea } from 'core/components/Translation';
 import { PropertyModifier } from 'core/components/PropertyForm';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { PROPERTY_PAGE } from '../../../../../startup/client/appRoutes';
+import SwitzerlandMap from 'core/components/maps/SwitzerlandMap';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
@@ -29,7 +30,12 @@ export const getRecapArray = (property) => {
     },
     {
       label: 'Forms.insideArea',
-      value: <MetricArea value={insideArea} />,
+      value: (
+        <MetricArea
+          value={insideArea}
+          placeholder={<T id="Forms.insideArea.recapPlaceholder" />}
+        />
+      ),
     },
     {
       label: 'Forms.landArea',
@@ -52,22 +58,29 @@ const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;
 
 const getContent = (property, loanId) => {
-  if (!shouldDisplay(property)) {
-    return <PropertyModifier property={property} />;
-  }
-
+  const canDisplayDetails = shouldDisplay(property, loanId);
   return (
     <React.Fragment>
-      <MapWithMarker
-        address={getPropertyAddressString(property)}
-        className="map"
-        options={{ zoom: 10 }}
-        id={property._id}
-      />
+      {canDisplayDetails ? (
+        <MapWithMarker
+          address={getPropertyAddressString(property)}
+          className="map"
+          options={{ zoom: 10 }}
+          id={property._id}
+        />
+      ) : (
+          <SwitzerlandMap className="map" />
+      )}
       <h3>
         <T id="Recap.property" />
       </h3>
-      <Recap array={getRecapArray(property)} className="recap" />
+      {canDisplayDetails ? (
+        <Recap array={getRecapArray(property)} className="recap" />
+      ) : (
+        <span className="dashboard-recap-property-modifier">
+          <PropertyModifier property={property} />
+        </span>
+      )}
     </React.Fragment>
   );
 };
@@ -85,8 +98,8 @@ const DashboardRecapProperty = ({ property, loanId }) => (
 );
 
 DashboardRecapProperty.propTypes = {
-  property: PropTypes.object.isRequired,
   loanId: PropTypes.string,
+  property: PropTypes.object.isRequired,
 };
 
 export default DashboardRecapProperty;

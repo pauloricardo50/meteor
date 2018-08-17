@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import theme from 'core/config/muiCustom';
+import createTheme from 'core/config/muiCustom';
 
 const MaterialUiServer = ({ children, registry, generateClassName }) => (
   <JssProvider registry={registry} generateClassName={generateClassName}>
-    <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+    <MuiThemeProvider theme={createTheme()} sheetsManager={new Map()}>
       {children}
     </MuiThemeProvider>
   </JssProvider>

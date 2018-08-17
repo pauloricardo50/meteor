@@ -2,7 +2,6 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import { SUCCESS } from 'core/api/constants';
 import FinancingStructuresSection, {
   InputAndSlider,
   CalculatedValue,
@@ -10,7 +9,9 @@ import FinancingStructuresSection, {
 import Calculator from '../../../../utils/Calculator';
 import { getProperty } from '../FinancingStructuresCalculator';
 import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
-import StatusIcon from '../../../StatusIcon';
+
+import RequiredOwnFunds from './RequiredOwnFunds';
+import OwnFundsLabel from './OwnFundsLabel';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -44,7 +45,7 @@ const calculateMaxThirdPillarWithdrawal = ({
 const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
-const calculateRequiredOwnFunds = (data) => {
+export const calculateRequiredOwnFunds = (data) => {
   const { propertyWork } = data.structure;
   const propertyValue = getProperty(data).value;
   const effectiveLoan = calculateLoan(data);
@@ -72,16 +73,7 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
     ]}
     detailConfig={[
       {
-        Component: propz => (
-          <CalculatedValue
-            {...propz}
-            rightElement={value =>
-              (value === 0 ? (
-                <StatusIcon status={SUCCESS} style={{ marginLeft: 8 }} />
-              ) : null)
-            }
-          />
-        ),
+        Component: RequiredOwnFunds,
         id: 'requiredOwnFunds',
         value: calculateRequiredOwnFunds,
       },
@@ -89,30 +81,40 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         Component: InputAndSlider,
         id: 'fortuneUsed',
         max: calculateMaxFortune,
+        label: OwnFundsLabel,
+        labelValue: calculateMaxFortune,
       },
       {
         Component: InputAndSlider,
         id: 'secondPillarPledged',
         max: calculateMaxSecondPillarPledged,
         condition: makeConditionForValue('getSecondPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getSecondPillar,
       },
       {
         Component: InputAndSlider,
         id: 'secondPillarWithdrawal',
         max: calculateMaxSecondPillarWithdrawal,
         condition: makeConditionForValue('getSecondPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getSecondPillar,
       },
       {
         Component: InputAndSlider,
         id: 'thirdPillarPledged',
         max: calculateMaxThirdPillarPledged,
         condition: makeConditionForValue('getThirdPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getThirdPillar,
       },
       {
         Component: InputAndSlider,
         id: 'thirdPillarWithdrawal',
         max: calculateMaxThirdPillarWithdrawal,
         condition: makeConditionForValue('getThirdPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getThirdPillar,
       },
     ]}
   />

@@ -38,7 +38,6 @@ describe('TaskService', () => {
         const insertParams = {
           type: 'USER_ADDED_FILE',
           loanId,
-          documentId: 'someDocumentId',
           fileKey: 'someFileKey',
           userId,
         };
@@ -52,7 +51,6 @@ describe('TaskService', () => {
         const insertParams = {
           type: 'USER_ADDED_FILE',
           loanId,
-          documentId: 'someDocumentId',
           fileKey: 'someFileKey',
           userId,
         };
@@ -71,7 +69,6 @@ describe('TaskService', () => {
         const insertParams1 = {
           type: 'USER_ADDED_FILE',
           loanId,
-          documentId: 'someDocumentId',
           fileKey: 'someFileKey1',
           userId,
         };
@@ -114,8 +111,8 @@ describe('TaskService', () => {
           type: 'USER_ADDED_FILE',
           loanId: 'someLoanId',
           userId,
-          documentId: 'someDocumentId',
           fileKey: 'someFileKey',
+          title: 'Vérifier files.someDocumentId',
         },
       ]);
     });

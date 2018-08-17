@@ -69,10 +69,10 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getBorrowerCompletion', () => {
+  describe('getBorrowersCompletion', () => {
     it('returns 0 if given a simple borrower', () => {
-      expect(BorrowerCalculator.getBorrowerCompletion({
-        borrower: { files: {}, logic: {} },
+      expect(BorrowerCalculator.getBorrowersCompletion({
+        borrowers: { files: {}, logic: {} },
       })).to.equal(0);
     });
   });

@@ -8,7 +8,7 @@ import { localizationStartup } from 'core/utils/localization';
 import '../accounts-config';
 import './css';
 import AppRouter from './AppRouter';
-
+import '../shared-startup';
 import 'react-dates/initialize'; // Fix issue #750
 
 /**
@@ -33,4 +33,4 @@ const start = (testElement) => {
 
 export default start;
 
-Meteor.startup(() => start());
+Meteor.startup(start);

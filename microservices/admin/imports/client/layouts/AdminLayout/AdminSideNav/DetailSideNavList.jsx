@@ -12,35 +12,32 @@ import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
 } from 'core/api/constants';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
-import { getUserDisplayName } from 'core/utils/userFunctions';
-
+import Calculator from 'core/utils/Calculator';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { emails, roles, _id, name, firstName, lastName, username, structure },
+  { roles, name, structure },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {
-      primary: getUserDisplayName({ firstName, lastName, username, emails }),
+      primary: name,
       secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION: {
-    const { wantedLoan } = structure;
+    const loanValue = structure && Calculator.getEffectiveLoan({ loan: { structure } });
+
     return {
       primary: name,
       secondary:
-          wantedLoan > 0
-            ? `CHF ${toMoney(wantedLoan)}`
-            : 'Pas encore structuré',
+          loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré',
     };
   }
   case BORROWERS_COLLECTION:
     return {
-      primary: getBorrowerFullName({ firstName, lastName }),
+      primary: name,
       secondary: '',
     };
   default:
@@ -81,13 +78,13 @@ const DetailSideNavList = ({
 };
 
 DetailSideNavList.propTypes = {
-  history: PropTypes.object.isRequired,
-  data: PropTypes.array,
-  isLoading: PropTypes.bool,
   collectionName: PropTypes.string.isRequired,
+  data: PropTypes.array,
   hideDetailNav: PropTypes.func.isRequired,
-  showMore: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
   isEnd: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
+  showMore: PropTypes.func.isRequired,
 };
 
 DetailSideNavList.defaultProps = {

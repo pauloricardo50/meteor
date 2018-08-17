@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
+import cx from 'classnames';
 
 import Icon from 'core/components/Icon';
-import IconButton from 'core/components/IconButton';
 import T from 'core/components/Translation';
 import type { userLoan } from 'core/api/types';
-import dashboardTodos from './dashboardTodos';
+import { dashboardTodosArray } from './dashboardTodos';
 
 type DashboardProgressInfoProps = {
   loan: userLoan,
@@ -14,19 +14,24 @@ type DashboardProgressInfoProps = {
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
-    {dashboardTodos
+    {dashboardTodosArray
       .filter(({ condition }) => condition(loan))
-      .map(({ id, link }) => (
-        <div className="todo" key={id}>
-          <Icon className="icon" type="radioButtonChecked" />
-          <p>
-            <T id={`DashboardProgressInfo.${id}`} />
-          </p>
-          <Link to={link(loan)} className="link">
-            <IconButton type="right" />
-          </Link>
-        </div>
-      ))}
+      .map(({ id, link }) => {
+        const Component = link ? Link : 'div';
+        return (
+          <Component
+            to={link && link(loan)}
+            className={cx('todo', { link })}
+            key={id}
+          >
+            <Icon className="icon" type="radioButtonChecked" />
+            <p>
+              <T id={`DashboardProgressInfo.${id}`} />
+            </p>
+            {link && <Icon type="right" className="icon-arrow" />}
+          </Component>
+        );
+      })}
   </div>
 );
 

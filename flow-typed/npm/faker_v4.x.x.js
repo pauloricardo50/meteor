@@ -1,5 +1,5 @@
-// flow-typed signature: a988021387bcf4c70a071a10274dc085
-// flow-typed version: 36fbe45cbd/faker_v4.x.x/flow_>=v0.25.x
+// flow-typed signature: 4859902a6eba11978e8ef5cf28e38a57
+// flow-typed version: c241ab2612/faker_v4.x.x/flow_>=v0.25.x
 
 declare module "faker" {
   declare type SeedType = number | $ReadOnlyArray<number>;
@@ -249,7 +249,7 @@ declare module "faker" {
         field: Key
       ) => Value,
       uuid: () => string,
-      boolean: () => string,
+      boolean: () => boolean,
       word: (type?: string) => string,
       words: (count?: number) => string,
       image: () => string,

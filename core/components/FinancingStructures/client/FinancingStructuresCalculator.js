@@ -27,7 +27,11 @@ const argumentMappings = {
 
   getBorrowRatio: data => ({
     propertyValue: getProperty(data).value + data.structure.propertyWork,
-    loan: data.structure.wantedLoan,
+    loan: Calc.getEffectiveLoan({
+      loanValue: data.structure.wantedLoan,
+      pledgedValue:
+        data.structure.secondPillarPledged + data.structure.thirdPillarPledged,
+    }),
   }),
 
   getAmortizationRate: getAmortizationRateMapper,
@@ -38,10 +42,7 @@ const argumentMappings = {
   }) => {
     const interestRates = offerId && offers.find(({ _id }) => _id === offerId);
 
-    return {
-      tranches: loanTranches,
-      interestRates,
-    };
+    return { tranches: loanTranches, interestRates };
   },
 
   getIndirectAmortizationDeduction: (data) => {

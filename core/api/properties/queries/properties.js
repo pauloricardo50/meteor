@@ -1,6 +1,7 @@
 import Properties from '..';
 import { PROPERTY_QUERIES } from '../propertyConstants';
 import { createSearchFilters } from '../../helpers/mongoHelpers';
+import { propertySummaryFragment } from './propertyFragments';
 
 export default Properties.createQuery(PROPERTY_QUERIES.PROPERTIES, {
   $filter({ filters, params: { searchQuery } }) {
@@ -11,12 +12,5 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTIES, {
       );
     }
   },
-  address1: 1,
-  address2: 1,
-  city: 1,
-  zipCode: 1,
-  value: 1,
-  status: 1,
-  propertyType: 1,
-  insideArea: 1,
+  ...propertySummaryFragment,
 });

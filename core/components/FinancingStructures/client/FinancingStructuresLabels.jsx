@@ -3,7 +3,6 @@ import React from 'react';
 import cx from 'classnames';
 
 import T from 'core/components/Translation';
-import type { structureType } from 'core/api';
 import { makeFilterConfig } from './FinancingStructuresSection/financingStructuresSectionHelpers';
 import FinancingStructuresLabel from './FinancingStructuresLabel';
 import FinancingStructuresDataContainer from './containers/FinancingStructuresDataContainer';
@@ -14,15 +13,29 @@ type FinancingStructureLabelsProps = {
   data: Object,
 };
 
+const renderLabel = (configItem) => {
+  const { label, id } = configItem;
+  if (!label) {
+    return <T id={`FinancingStructures.${id}`} />;
+  }
+
+  if (typeof label === 'function') {
+    const Label = label;
+    return <Label {...configItem} />;
+  }
+
+  return label;
+};
+
 const FinancingStructuresLabels = ({
   config,
   className,
   ...data
 }: FinancingStructureLabelsProps) => (
   <div className={cx('financing-structures-labels', className)}>
-    {config.filter(makeFilterConfig(data)).map(({ id, label }) => (
-      <FinancingStructuresLabel id={id} key={id}>
-        {label || <T id={`FinancingStructures.${id}`} />}
+    {config.filter(makeFilterConfig(data)).map(configItem => (
+      <FinancingStructuresLabel id={configItem.id} key={configItem.id}>
+        {renderLabel(configItem)}
       </FinancingStructuresLabel>
     ))}
   </div>

@@ -1,5 +1,6 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
+import cx from 'classnames';
 
 import { DialogForm, FIELD_TYPES } from 'core/components/Form';
 import T from 'core/components/Translation';
@@ -21,16 +22,20 @@ type PropertyFormProps = {
   formTitleId: String,
   formDescriptionId: String,
   buttonLabelId: String,
+  button?: React.Node,
+  className?: string,
 };
 
 const PropertyForm = ({
   formTitleId,
   formDescriptionId,
   buttonLabelId,
+  button,
+  className = '',
   ...props
 }: PropertyFormProps) => (
   <div
-    className="property-form"
+    className={cx('property-form', className)}
     // Prevent Link to be fired on DashboardPage
     onClick={e => e.preventDefault()}
   >
@@ -38,11 +43,13 @@ const PropertyForm = ({
       formArray={formArray}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
-      button={(
-        <Button raised primary icon={<Icon type="home" />}>
-          <T id={buttonLabelId} />
-        </Button>
-      )}
+      button={
+        button || (
+          <Button raised primary icon={<Icon type="home" />}>
+            <T id={buttonLabelId} />
+          </Button>
+        )
+      }
       {...props}
     />
   </div>

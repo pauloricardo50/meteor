@@ -46,7 +46,7 @@ export const submitContactForm = new Method({
   params: {
     name: String,
     email: String,
-    phone: String,
+    phoneNumber: String,
     details: Match.Optional(String),
   },
 });

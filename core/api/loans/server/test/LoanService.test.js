@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import omit from 'lodash/omit';
 
 import '../../../factories';
 import Loans from '../../loans';
@@ -98,6 +99,29 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
       expect(loan.selectedStructure).to.equal('first');
+    });
+
+    it('duplicates the current chosen structure if it is not the first one', () => {
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: 'testId',
+            name: 'joe',
+            description: 'hello',
+            fortuneUsed: 100,
+          },
+        ],
+        selectedStructure: 'testId',
+      })._id;
+      LoanService.addStructure({ loanId });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(2);
+      const { id: id1, ...structure1 } = loan.structures[0];
+      const { id: id2, ...structure2 } = loan.structures[1];
+      expect(id1).to.not.equal(id2);
+      expect(structure1).to.deep.equal(structure2);
     });
   });
 

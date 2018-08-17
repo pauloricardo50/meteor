@@ -22,10 +22,6 @@ describe('User Functions', () => {
       expect(getUserDisplayName({ firstName })).to.equal(firstName);
     });
 
-    it('should return the username when the frstname and lastName are undefined and teh username is defined', () => {
-      expect(getUserDisplayName({ username })).to.equal(username);
-    });
-
     it('should return the email address when it is defined and the names and username are undefined', () => {
       expect(getUserDisplayName({ emails })).to.equal(emails[0].address);
     });

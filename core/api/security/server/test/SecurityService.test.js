@@ -5,14 +5,14 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
-import SecurityService, { SECURITY_ERROR } from '../index';
+import SecurityService, { SECURITY_ERROR } from '../..';
 import {
   LoanSecurity,
   OfferSecurity,
   BorrowerSecurity,
   PropertySecurity,
   TaskSecurity,
-} from '../collections';
+} from '../../collections';
 
 describe('Security service', () => {
   let userId;

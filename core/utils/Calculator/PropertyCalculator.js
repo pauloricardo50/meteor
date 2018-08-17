@@ -9,15 +9,34 @@ import { FinanceCalculator } from '../FinanceCalculator';
 import { filesPercent } from '../../api/files/fileHelpers';
 import { propertyDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
+import MiddlewareManager from '../MiddlewareManager';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    propertyPercent({ loan, borrowers, property }) {
-      const formArray1 = getPropertyArray({ loan, borrowers, property });
+    constructor(config) {
+      super(config);
+      this.initPropertyCalculator(config);
+    }
+
+    initPropertyCalculator(config) {
+      if (config && config.propertyMiddleware) {
+        const middlewareManager = new MiddlewareManager(this);
+        middlewareManager.applyToAllMethods([config.propertyMiddleware]);
+      }
+    }
+
+    propertyPercent({ loan, property }) {
+      const { borrowers, structure } = loan;
+      const propertyToCalculateWith = property || structure.property;
+      const formArray1 = getPropertyArray({
+        loan,
+        borrowers,
+        property: propertyToCalculateWith,
+      });
       const formArray2 = getPropertyLoanArray({
         loan,
         borrowers,
-        property,
+        property: propertyToCalculateWith,
       });
 
       let a = getCountedArray(formArray1, property);
@@ -34,10 +53,17 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
-    getPropertyCompletion({ loan, borrowers, property }) {
-      const formsProgress = this.propertyPercent({ loan, borrowers, property });
+    getPropertyCompletion({ loan, property }) {
+      const { borrowers, structure } = loan;
+      const propertyToCalculateWith = property || structure.property;
+
+      const formsProgress = this.propertyPercent({
+        loan,
+        borrowers,
+        property: propertyToCalculateWith,
+      });
       const filesProgress = filesPercent({
-        doc: property,
+        doc: propertyToCalculateWith,
         fileArrayFunc: propertyDocuments,
         step: FILE_STEPS.AUCTION,
       });

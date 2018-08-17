@@ -9,11 +9,18 @@ import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggl
 import AdminNote from '../../../../components/AdminNote';
 import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
+import LoanStatusCheck from './LoanStatusCheck';
 
 const OverviewTab = (props) => {
-  const { loan, borrowers } = props;
+  const {
+    loan,
+    borrowers,
+    currentUser: { roles },
+  } = props;
   const { adminNote, user, _id } = loan;
-  const displayRecap = Calculator.loanHasMinimalInformation({ loan });
+  const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
+    loan,
+  });
 
   return (
     <div className="overview-tab">
@@ -28,14 +35,14 @@ const OverviewTab = (props) => {
           <ImpersonateLink user={user} />
         </div>
       </div>
-      <LoanValidation loan={loan} />
-      <hr />
+      {/* <LoanValidation loan={loan} /> */}
+      {loanHasMinimalInformation && <LoanStatusCheck loan={loan} />}
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">
             <T id="OverviewTab.recap" />
           </h2>
-          {displayRecap ? (
+          {loanHasMinimalInformation ? (
             <Recap {...props} arrayName="dashboard" />
           ) : (
             <T id="OverviewTab.emptyRecap" />
@@ -54,14 +61,14 @@ const OverviewTab = (props) => {
         </div>
       </div>
 
-      <LoanObject loan={loan} />
+      {roles.includes('dev') ? <LoanObject loan={loan} /> : null}
     </div>
   );
 };
 
 OverviewTab.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default OverviewTab;

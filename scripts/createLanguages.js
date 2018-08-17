@@ -91,6 +91,7 @@ const config = {
     'InterestsTable',
     'Table',
     'UploaderArray',
+    'GoogleMap',
   ],
 };
 

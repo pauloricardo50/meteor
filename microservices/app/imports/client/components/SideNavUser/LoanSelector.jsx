@@ -19,14 +19,11 @@ const handleChange = (value, toggleDrawer, history) => {
 };
 
 const getOptions = (loans) => {
-  const array = [];
-
-  loans.forEach(r =>
-    array.push({
-      id: r._id,
-      label: r.name,
-      icon: 'home',
-    }));
+  const array = loans.map(({ _id: loanId, name }) => ({
+    id: loanId,
+    label: name || <T id="LoanSelector.empty" />,
+    icon: 'home',
+  }));
 
   array.push(<Divider key="divider" />);
   array.push({
@@ -56,8 +53,8 @@ const LoanSelector = ({
 );
 
 LoanSelector.propTypes = {
-  history: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   toggleDrawer: PropTypes.func.isRequired,
   value: PropTypes.string,
 };

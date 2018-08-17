@@ -19,7 +19,7 @@ Factory.define('user', Users, {
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
-  phone: TEST_PHONE,
+  phoneNumbers: [TEST_PHONE],
 });
 
 Factory.define('dev', Users, {
@@ -27,7 +27,7 @@ Factory.define('dev', Users, {
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
-  phone: TEST_PHONE,
+  phoneNumbers: [TEST_PHONE],
 });
 
 Factory.define('admin', Users, {
@@ -35,7 +35,7 @@ Factory.define('admin', Users, {
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
-  phone: TEST_PHONE,
+  phoneNumbers: [TEST_PHONE],
 });
 
 Factory.define('borrower', Borrowers);

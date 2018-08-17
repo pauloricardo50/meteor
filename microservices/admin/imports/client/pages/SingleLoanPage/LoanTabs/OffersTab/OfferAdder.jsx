@@ -21,12 +21,12 @@ const baseForm = [
   { id: 'organization' },
   {
     id: 'maxAmount',
-    type: FIELD_TYPES.MONEY,
+    fieldType: FIELD_TYPES.MONEY,
     label: <T id="offer.maxAmount" />,
   },
   {
     id: 'amortization',
-    type: FIELD_TYPES.PERCENT,
+    fieldType: FIELD_TYPES.MONEY,
     label: <T id="offer.amortization" />,
   },
   {
@@ -74,13 +74,15 @@ const OfferAdder = ({ hasCounterparts, isDiscount, onSubmit }) => (
     description={<T id="OfferAdder.dialogDescription" />}
     formArray={getFormArray(hasCounterparts, isDiscount)}
     destroyOnUnmount={false}
+    initialValues={{ [IS_DISCOUNT]: true }}
+    enableReinitialize
   />
 );
 
 OfferAdder.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
   hasCounterparts: PropTypes.bool,
   isDiscount: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 OfferAdder.defaultProps = {

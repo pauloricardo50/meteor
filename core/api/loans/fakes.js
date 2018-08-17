@@ -18,7 +18,6 @@ export const fakeGeneral = {
 
 export const fakeProperty = {
   value: 1000000,
-  propertyWork: 40000,
   address1: 'Rue du Succès 18',
   zipCode: 1000,
   city: 'Lausanne',
@@ -113,7 +112,6 @@ export const fakeFiles = {
 export const fakeFiles2 = {};
 
 export const emptyLoan = {
-  name: 'Rue du Test 42 - empty',
   general: {},
   logic: logic1,
   documents: {},

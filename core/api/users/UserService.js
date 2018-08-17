@@ -13,9 +13,19 @@ class UserService {
     return newUserId;
   };
 
-  adminCreateUser = ({ options, role }) => {
-    const newUserId = this.createUser({ options, role });
-    this.update({ userId: newUserId, object: { ...options } });
+  adminCreateUser = ({
+    options: { email, ...additionalData },
+    role,
+    adminId,
+  }) => {
+    const newUserId = this.createUser({ options: { email }, role });
+
+    this.update({ userId: newUserId, object: additionalData });
+
+    if (role === ROLES.USER && adminId) {
+      this.assignAdminToUser({ userId: newUserId, adminId });
+    }
+
     this.sendEnrollmentEmail({ userId: newUserId });
 
     return newUserId;
@@ -32,22 +42,32 @@ class UserService {
   // This is used to hook into Accounts
   onCreateUser = (options, user) => {
     ServerEventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
-
     return { ...user, roles: [ROLES.USER] };
   };
 
   remove = ({ userId }) => Users.remove(userId);
 
-  update = ({ userId, object }) => Users.update(userId, { $set: object });
+  update = ({ userId, object }) =>
+    object
+    && Object.keys(object).length !== 0
+    && Users.update(userId, { $set: object });
 
   assignAdminToUser = ({ userId, adminId }) =>
-    this.update({ userId, object: { assignedEmployeeId: adminId } });
+    adminId && this.update({ userId, object: { assignedEmployeeId: adminId } });
 
   getUsersByRole = role => Users.find({ roles: { $in: [role] } }).fetch();
 
   setRole = ({ userId, role }) => Roles.setUserRoles(userId, role);
 
   getUserById = ({ userId }) => Users.findOne(userId);
+
+  getUserByPasswordResetToken = ({ token }) =>
+    Users.findOne(
+      { 'services.password.reset.token': token },
+      { fields: { firstName: 1, lastName: 1, emails: 1 } },
+    );
+
+  testCreateUser = ({ user }) => Users.insert(user);
 }
 
 export default new UserService();

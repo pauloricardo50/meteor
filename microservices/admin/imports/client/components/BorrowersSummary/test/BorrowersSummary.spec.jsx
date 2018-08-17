@@ -5,7 +5,6 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 import Chip from '@material-ui/core/Chip';
 
 import T from 'core/components/Translation';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 import BorrowersSummary from '../BorrowersSummary';
 
 describe('BorrowersSummary />', () => {
@@ -24,7 +23,7 @@ describe('BorrowersSummary />', () => {
 
   it('renders the correct number of Chips with correct props', () => {
     const expectedNbOfBorrowers = borrowers.length;
-    const expectedFirstBorrowerLabel = getBorrowerFullName(borrowers[0]) || 'Emprunteur 1';
+    const expectedFirstBorrowerLabel = borrowers[0].name || 'Emprunteur 1';
     const props = { borrowers };
     const wrapper = shallow(<BorrowersSummary {...props} />);
     const chipsArray = wrapper.find(Chip);

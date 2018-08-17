@@ -20,8 +20,8 @@ const SingleUserPage = ({ user, className }) => {
 };
 
 SingleUserPage.propTypes = {
-  user: PropTypes.object.isRequired,
   className: PropTypes.string,
+  user: PropTypes.object.isRequired,
 };
 
 SingleUserPage.defaultProps = {

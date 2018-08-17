@@ -4,7 +4,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { IntlProvider } from 'react-intl';
 import { withProps } from 'recompose';
 
-import theme from '../../config/muiCustom';
+import createTheme from '../../config/muiCustom';
 
 const LibraryWrappers = ({
   i18n: { locale, messages, formats },
@@ -30,12 +30,12 @@ const LibraryWrappers = ({
 
 LibraryWrappers.propTypes = {
   children: PropTypes.node.isRequired,
-  WrapperComponent: PropTypes.any,
   i18n: PropTypes.shape({
     locale: PropTypes.string.isRequired,
     messages: PropTypes.objectOf(PropTypes.string).isRequired,
     formats: PropTypes.object.isRequired,
   }).isRequired,
+  WrapperComponent: PropTypes.any,
 };
 
 LibraryWrappers.defaultProps = {
@@ -44,5 +44,7 @@ LibraryWrappers.defaultProps = {
 
 // Can toggle material-ui off with the `withMui` prop
 export default withProps(({ withMui = true }) => ({
-  MuiWrapper: withMui ? withProps({ theme })(MuiThemeProvider) : React.Fragment,
+  MuiWrapper: withMui
+    ? withProps({ theme: createTheme() })(MuiThemeProvider)
+    : React.Fragment,
 }))(LibraryWrappers);

@@ -5,8 +5,8 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
-import { SECURITY_ERROR } from '..';
-import LoanSecurity from '../collections/LoanSecurity';
+import { SECURITY_ERROR } from '../..';
+import LoanSecurity from '../../collections/LoanSecurity';
 
 describe('Collection Security', () => {
   describe('LoanSecurity', () => {

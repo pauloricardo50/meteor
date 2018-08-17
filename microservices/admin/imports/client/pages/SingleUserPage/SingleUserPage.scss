@@ -40,9 +40,23 @@
 
   .bottom {
     display: flex;
+    flex-direction: column;
   }
 
   .created-at {
     margin-bottom: 32px;
+  }
+
+  .phone {
+    display: flex;
+    align-items: center;
+    svg {
+      padding: 8px;
+    }
+  }
+
+  .assigned-employee {
+    display: flex;
+    align-items: center;
   }
 }

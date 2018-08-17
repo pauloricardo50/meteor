@@ -6,7 +6,6 @@ import Chip from '@material-ui/core/Chip';
 
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import { getBorrowerFullName } from 'core/utils/borrowerFunctions';
 
 const BorrowersSummary = ({ borrowers }) => (
   <div className="borrowers-summary">
@@ -24,7 +23,14 @@ const BorrowersSummary = ({ borrowers }) => (
                 <Icon type="face" />
               </Avatar>
             )}
-            label={getBorrowerFullName(borrower) || `Emprunteur ${index + 1}`}
+            label={
+              borrower.name || (
+                <T
+                  id="BorrowersSummary.borrower"
+                  values={{ index: index + 1 }}
+                />
+              )
+            }
           />
         ))
       ) : (
