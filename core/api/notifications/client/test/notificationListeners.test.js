@@ -2,8 +2,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import ClientEventService from '../../../events/client/ClientEventService';
-import '../../../events/client/registerClientListeners';
+import ClientEventService from '../../../events/ClientEventService';
+import '../../../events/ClientEventService/registerClientListeners';
 import { setFileStatus, assignAdminToNewUser } from '../../../methods';
 import {
   fileVerifiedNotificationListener,
