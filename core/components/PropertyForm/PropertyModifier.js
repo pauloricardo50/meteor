@@ -8,10 +8,10 @@ type PropertyModifierContainerProps = {
 };
 
 const PropertyModifierContainer = withProps(({
-  property: { address1, zipCode, city, value },
+  property: { _id, address1, zipCode, city, value },
 }: PropertyModifierContainerProps) => ({
   onSubmit: formValues =>
-    propertyUpdate.run({ propertyId: property._id, object: formValues }),
+    propertyUpdate.run({ propertyId: _id, object: formValues }),
   buttonLabelId: 'PropertyForm.modifierLabel',
   form: 'modify-property',
   formTitleId: 'PropertyForm.modifierDialogTitle',
