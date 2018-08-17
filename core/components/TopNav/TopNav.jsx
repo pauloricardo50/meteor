@@ -1,20 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
-
+import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 
-import track from '../../utils/analytics';
-
-import Button from '../Button';
-import { ImpersonateWarningWithTracker } from '../Impersonate/ImpersonateWarning';
-import T from '../Translation';
-import TopNavDropdown from './TopNavDropdown';
-// import TopNavDrawer from './TopNavDrawer';
+import TopNavlogo from './TopNavlogo';
+import TopNavButtons from './TopNavButtons';
 
 const TopNav = (props) => {
-  const { currentUser, appChildren, public: isPublic, children } = props;
+  const { appChildren } = props;
 
   return (
     // This overflowX hidden prevents any icon from having tooltips
@@ -23,40 +15,8 @@ const TopNav = (props) => {
     <Toolbar className="top-nav" style={{ overflowX: 'hidden' }}>
       <div className="top-nav-content">
         {appChildren(props)}
-
-        <div className="logo">
-          <Link
-            to={isPublic ? '/home' : '/'}
-            className="link"
-            onClick={() => track('TopNav - clicked logo', {})}
-          >
-            <img
-              src="/img/logo_square_black.svg"
-              alt="e-Potek"
-              className="logo-home"
-            />
-          </Link>
-        </div>
-
-        <div className="buttons">
-          <ImpersonateWarningWithTracker />
-          {children}
-          {currentUser ? (
-            <React.Fragment>
-              {currentUser.email}
-              <TopNavDropdown {...props} />
-            </React.Fragment>
-          ) : (
-            <Button
-              label={<T id="TopNav.login" />}
-              primary
-              onClick={() => {
-                track('TopNav - clicked login', {});
-                window.location.replace(`${Meteor.settings.public.subdomains.app}/login`);
-              }}
-            />
-          )}
-        </div>
+        <TopNavlogo />
+        <TopNavButtons {...props} />
       </div>
     </Toolbar>
   );
@@ -65,16 +25,9 @@ const TopNav = (props) => {
 TopNav.propTypes = {
   appChildren: PropTypes.func,
   children: PropTypes.node,
-  currentUser: PropTypes.objectOf(PropTypes.any),
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-  loans: PropTypes.arrayOf(PropTypes.object),
-  public: PropTypes.bool,
 };
 
 TopNav.defaultProps = {
-  currentUser: undefined,
-  loans: [],
-  public: false,
   appChildren: () => {},
   children: null,
 };
