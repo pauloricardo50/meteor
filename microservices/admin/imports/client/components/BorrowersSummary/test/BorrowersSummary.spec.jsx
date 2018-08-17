@@ -23,13 +23,16 @@ describe('BorrowersSummary />', () => {
 
   it('renders the correct number of Chips with correct props', () => {
     const expectedNbOfBorrowers = borrowers.length;
-    const expectedFirstBorrowerLabel = borrowers[0].name || 'Emprunteur 1';
+    const expectedFirstBorrowerLabel = (
+      <T id="BorrowersSummary.borrower" values={{ index: 1 }} />
+    );
     const props = { borrowers };
     const wrapper = shallow(<BorrowersSummary {...props} />);
     const chipsArray = wrapper.find(Chip);
 
     expect(chipsArray).to.have.length(expectedNbOfBorrowers);
-    expect(chipsArray.first().prop('label')).to.equal(expectedFirstBorrowerLabel);
+
+    expect(chipsArray.first().prop('label').props).to.deep.equal(expectedFirstBorrowerLabel.props);
   });
 
   it('displays just the corresponding message when there are no borrowers', () => {
