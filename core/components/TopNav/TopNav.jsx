@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 
-import TopNavlogo from './TopNavlogo';
+import TopNavLogo from './TopNavLogo';
 import TopNavButtons from './TopNavButtons';
 
 const TopNav = (props) => {
@@ -15,7 +15,7 @@ const TopNav = (props) => {
     <Toolbar className="top-nav" style={{ overflowX: 'hidden' }}>
       <div className="top-nav-content">
         {appChildren(props)}
-        <TopNavlogo />
+        <TopNavLogo />
         <TopNavButtons {...props} />
       </div>
     </Toolbar>
