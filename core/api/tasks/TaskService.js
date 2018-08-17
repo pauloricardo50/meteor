@@ -29,20 +29,6 @@ class TaskService {
       return Tasks.insert({ type, userId });
     }
 
-    const existingTask = Tasks.findOne({
-      type,
-      borrowerId,
-      loanId,
-      propertyId,
-      status: TASK_STATUS.ACTIVE,
-      documentId,
-      fileKey,
-    });
-
-    if (existingTask) {
-      throw new Meteor.Error('duplicate active task');
-    }
-
     let relatedAssignedTo = assignedTo;
     if (!relatedAssignedTo) {
       // some tasks may not be related to any doc,
@@ -53,6 +39,22 @@ class TaskService {
           loanId,
           propertyId,
         });
+      }
+    }
+
+    if (type !== TASK_TYPE.CUSTOM) {
+      const existingTask = Tasks.findOne({
+        type,
+        borrowerId,
+        loanId,
+        propertyId,
+        status: TASK_STATUS.ACTIVE,
+        documentId,
+        fileKey,
+      });
+
+      if (existingTask) {
+        throw new Meteor.Error('duplicate active task');
       }
     }
 

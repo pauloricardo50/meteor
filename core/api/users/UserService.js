@@ -67,6 +67,7 @@ class UserService {
       { fields: { firstName: 1, lastName: 1, emails: 1 } },
     );
 
+
   testCreateUser = ({ user }) => Users.insert(user);
 }
 

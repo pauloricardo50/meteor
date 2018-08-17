@@ -8,16 +8,17 @@
 @import '../imports/client/layouts/AdminLayout/AdminLayout.scss';
 
 // Pages
-@import '../imports/client/pages/SingleLoanPage/SingleLoanPage.scss';
-@import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
 @import '../imports/client/pages/SearchPage/SearchPage.scss';
 @import '../imports/client/pages/SingleBorrowerPage/SingleBorrowerPage.scss';
+@import '../imports/client/pages/SingleLoanPage/LoanTaskInserter/LoanTaskInserter.scss';
+@import '../imports/client/pages/SingleLoanPage/SingleLoanPage.scss';
 @import '../imports/client/pages/SinglePropertyPage/SinglePropertyPage.scss';
+@import '../imports/client/pages/SingleUserPage/SingleUserPage.scss';
 
 // Components
 @import '../imports/client/components/AdminNote/AdminNote.scss';
-@import '../imports/client/components/MixpanelAnalytics/MixpanelAnalytics.scss';
 @import '../imports/client/components/LoanSummaryList/LoanSummaryList.scss';
+@import '../imports/client/components/MixpanelAnalytics/MixpanelAnalytics.scss';
 @import '../imports/core/components/Form/RenderFieldArray.scss';
 
 // Make sure everything expands properly to take the full size of the browser

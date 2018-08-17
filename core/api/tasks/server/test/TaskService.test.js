@@ -8,6 +8,7 @@ import { generateData } from '../../../../utils/testHelpers';
 import TaskService from '../../TaskService';
 import Tasks from '../../tasks';
 import { TASK_STATUS } from '../../taskConstants';
+import { TASK_TYPE } from 'core/api/constants';
 
 let userId;
 let adminId;
@@ -47,7 +48,7 @@ describe('TaskService', () => {
         expect(Tasks.findOne(insertParams)).to.deep.include(insertParams);
       });
 
-      it('prevents duplicate creation of 2 active task', () => {
+      it('prevents duplicate creation of 2 active task if type is not custom', () => {
         const insertParams = {
           type: 'USER_ADDED_FILE',
           loanId,
@@ -63,6 +64,23 @@ describe('TaskService', () => {
 
         expect(() => TaskService.insert(insertParams)).to.throw(/duplicate active task/);
         expect(Tasks.find(insertParams).count()).to.equal(1);
+      });
+
+      it('allows duplicate creation of 2 active tasks if type is custom', () => {
+        const insertParams = {
+          type: TASK_TYPE.CUSTOM,
+          loanId,
+          userId,
+          title: 'test',
+        };
+        expect(Tasks.find(insertParams).count()).to.equal(0);
+        TaskService.insert(insertParams);
+        expect(Tasks.find(insertParams).count()).to.equal(1);
+
+        Tasks.update(insertParams, { $set: { status: TASK_STATUS.ACTIVE } });
+
+        expect(() => TaskService.insert(insertParams)).to.not.throw();
+        expect(Tasks.find(insertParams).count()).to.equal(2);
       });
 
       it('inserts multiple active tasks that have only the file key different', () => {
