@@ -20,10 +20,12 @@ export class LoanService {
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
-    return this.insert({
+    const loanId = this.insert({
       loan: { propertyIds: [propertyId], borrowerIds: [borrowerId] },
       userId,
     });
+    this.addStructure({ loanId });
+    return loanId;
   };
 
   // TODO: make sure step is really done

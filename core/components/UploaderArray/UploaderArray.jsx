@@ -15,9 +15,7 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
         {documentArray.map(documentObject =>
           documentObject.condition !== false && (
             <Uploader
-              fileMeta={{
-                ...documentObject,
-              }}
+              fileMeta={documentObject}
               key={doc._id + documentObject.id}
               currentValue={doc.documents[documentObject.id]}
               docId={doc._id}
@@ -41,19 +39,16 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
 
   return (
     <div className="flex-col center">
-      {Object.keys(doc.documents)
-        .sort((a, b) => doc.documents[a].isAdmin - doc.documents[b].isAdmin)
-        .reverse()
-        .map(documentId => (
-          <Uploader
-            fileMeta={{ id: documentId }}
-            collection={collection}
-            key={documentId}
-            docId={doc._id}
-            currentValue={doc.documents[documentId]}
-            disabled={disabled}
-          />
-        ))}
+      {allDocuments.map(documentId => (
+        <Uploader
+          fileMeta={{ id: documentId }}
+          collection={collection}
+          key={documentId}
+          docId={doc._id}
+          currentValue={doc.documents[documentId]}
+          disabled={disabled}
+        />
+      ))}
     </div>
   );
 };

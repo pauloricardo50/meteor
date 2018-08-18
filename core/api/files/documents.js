@@ -29,7 +29,7 @@ export const borrowerDocuments = (b = {}) => ({
     },
     {
       id: 'expenses',
-      condition: !!b.otherIncome && !!(b.otherIncome.length > 0),
+      condition: !!b.expenses && !!(b.expenses.length > 0),
     },
   ],
   contract: [
@@ -143,6 +143,11 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     return [...this.auction, ...this.contract];
   },
 });
+
+export const getDocumentArrayByStep = (func, step) => [
+  ...func()[step],
+  { id: 'other' },
+];
 
 export const getDocumentIDs = (list) => {
   let documents;

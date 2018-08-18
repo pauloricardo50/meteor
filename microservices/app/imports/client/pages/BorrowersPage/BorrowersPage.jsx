@@ -8,7 +8,6 @@ import Page from '../../components/Page';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import Info from './Info';
 import Finance from './Finance';
-import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
 import BorrowersPageTitle from './BorrowersPageTitle';
 
@@ -17,7 +16,6 @@ const getTabs = (props) => {
   return [
     { id: 'personal', content: <Info {...props} /> },
     { id: 'finance', content: <Finance {...props} /> },
-    { id: 'files', content: <Files {...props} /> },
   ].map(tab => ({
     ...tab,
     content: (
