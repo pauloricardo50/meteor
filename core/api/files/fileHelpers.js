@@ -22,6 +22,10 @@ import {
 export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
   const a = [];
   const iterate = (files, doc2) => {
+    if (files.length === 0) {
+      return []; // If file array is empty, progress should be 100%
+    }
+
     if (!doc2 || !doc2.documents) {
       return;
     }

@@ -27,8 +27,8 @@ describe('general helpers', () => {
   });
 
   describe('getPercent', () => {
-    it('returns 0 for an empty array', () => {
-      expect(getPercent([])).to.equal(0);
+    it('returns 1 for an empty array', () => {
+      expect(getPercent([])).to.equal(1);
     });
 
     it('returns 1 for a simple array', () => {

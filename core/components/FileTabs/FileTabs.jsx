@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
 import UploaderArray from 'core/components/UploaderArray';
-import T from 'core/components/Translation';
+import Calculator from 'core/utils/Calculator';
 import {
   getDocumentArrayByStep,
   loanDocuments,
@@ -11,6 +11,7 @@ import {
   borrowerDocuments,
 } from 'core/api/files/documents';
 import FileTabsContainer from './FileTabsContainer';
+import FileTabLabel from './FileTabLabel';
 
 const FileTabs = ({ loan, borrowers, property, disabled }) => (
   <div className="files-tab">
@@ -18,7 +19,12 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
       id="tabs"
       tabs={[
         {
-          label: <T id="general.mortgageLoan" />,
+          label: (
+            <FileTabLabel
+              id="general.mortgageLoan"
+              progress={Calculator.getLoanFilesProgress({ loan })}
+            />
+          ),
           content: (
             <UploaderArray
               doc={loan}
@@ -32,7 +38,12 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
           ),
         },
         {
-          label: <T id="general.property" />,
+          label: (
+            <FileTabLabel
+              id="general.property"
+              progress={Calculator.getPropertyFilesProgress({ property })}
+            />
+          ),
           content: (
             <UploaderArray
               doc={property}
@@ -46,7 +57,14 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
           ),
         },
         ...borrowers.map((borrower, index) => ({
-          label: borrower.firstName || `Emprunteur ${index + 1}`,
+          label: (
+            <FileTabLabel
+              title={borrower.firstName || `Emprunteur ${index + 1}`}
+              progress={Calculator.getBorrowersFilesProgress({
+                borrowers: borrower,
+              })}
+            />
+          ),
           content: (
             <UploaderArray
               doc={borrower}
