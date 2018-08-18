@@ -1,5 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { MAX_FILE_SIZE, OBJECT_STORAGE_PATH } from '../fileConstants';
+import {
+  MAX_FILE_SIZE,
+  OBJECT_STORAGE_PATH,
+  FILE_STATUS,
+} from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -45,10 +49,13 @@ const exoscaleStorageService = {
         { name: 'secret_key', value: SECRET_KEY },
         { name: 'key', value: fileKey },
         { name: 'acl', value: 'bucket-owner-full-control' },
+        { name: 'x-amz-meta-test', value: 'true' },
       ],
 
       // HTTP headers to send when uploading:
-      // headers: {},
+      headers: {
+        // 'x-amz-meta-status': FILE_STATUS.VALID,
+      },
     };
   },
 

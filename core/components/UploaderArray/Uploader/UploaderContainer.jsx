@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { createContainer, deleteFile, SecurityService } from 'core/api';
 import UploaderController from './UploaderController';
 
-const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, isOwnedByAdmin }, disabled }) => {
+const UploaderContainer = createContainer(({ collection, docId, fileMeta: { isOwnedByAdmin }, disabled }) => {
   const userIsAdmin = SecurityService.currentUserIsAdmin();
 
   let disableUploader = true;
@@ -14,14 +14,12 @@ const UploaderContainer = createContainer(({ collection, docId, fileMeta: { id, 
     disableUploader = disabled;
   }
 
-  const additionalProps = {
+  return {
     deleteFile: fileKey => deleteFile.run({ collection, docId, fileKey }),
     userIsAdmin,
     disabled: userIsAdmin ? false : disableUploader,
     isOwnedByAdmin,
   };
-
-  return additionalProps;
 });
 
 export default compose(

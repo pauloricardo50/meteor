@@ -17,7 +17,7 @@ const Title = ({
   label,
   userIsAdmin,
   isOwnedByAdmin,
-  removeDocument,
+  handleRemove,
   displayFull,
   showFull,
   hideFull,
@@ -56,7 +56,7 @@ const Title = ({
         <ConfirmMethod
           label={<T id="general.delete" />}
           keyword="SUPPRIMER"
-          method={removeDocument}
+          method={handleRemove}
         />
       )}
       <IconButton
@@ -68,19 +68,19 @@ const Title = ({
 };
 
 Title.propTypes = {
-  fileMeta: PropTypes.object.isRequired,
+  currentValue: PropTypes.arrayOf(PropTypes.object),
+  displayFull: PropTypes.bool.isRequired,
   doubleTooltip: PropTypes.bool,
+  fileMeta: PropTypes.object.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  hideFull: PropTypes.func.isRequired,
+  isOwnedByAdmin: PropTypes.bool,
+  label: PropTypes.string,
   noTooltips: PropTypes.bool,
   required: PropTypes.bool,
-  currentValue: PropTypes.arrayOf(PropTypes.object),
-  tooltipSuffix: PropTypes.string,
-  label: PropTypes.string,
-  userIsAdmin: PropTypes.bool.isRequired,
-  isOwnedByAdmin: PropTypes.bool,
-  removeDocument: PropTypes.func.isRequired,
-  displayFull: PropTypes.bool.isRequired,
-  hideFull: PropTypes.func.isRequired,
   showFull: PropTypes.func.isRequired,
+  tooltipSuffix: PropTypes.string,
+  userIsAdmin: PropTypes.bool.isRequired,
 };
 
 Title.defaultProps = {
