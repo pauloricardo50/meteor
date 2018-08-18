@@ -9,10 +9,17 @@ import CreateUserDialogForm, {
   getFormArray,
 } from '../CreateUserDialogForm';
 
-const component = props => shallow(<CreateUserDialogForm {...props} />);
-
 describe('<CreateUserDialogForm />', () => {
+  let props;
+
+  const component = () => shallow(<CreateUserDialogForm {...props} />);
   const formArray = getFormArray(createUserFormFields);
+
+  beforeEach(() => {
+    props = {
+      currentUser: { name: '' },
+    };
+  });
 
   it('passes the correct formArray to the DialogForm component', () =>
     expect(component()

@@ -7,21 +7,19 @@ import AcceptClosingModal from './AcceptClosingModal';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
+import NewLoanForm from './NewLoanForm';
 
 const DashboardPage = (props) => {
   const { loan } = props;
-  const { name, status, logic, _id } = loan;
-  const showNewLoanModal = !name;
+  const { status, logic } = loan;
   const showClosedModal = status === LOAN_STATUS.DONE && !logic.acceptedClosing;
-
-  console.log('loan:', loan);
-
   return (
     <Page id="DashboardPage" fullWidth>
       <DashboardProgress {...props} />
       <DashboardRecap {...props} />
       <DashboardInfo {...props} />
 
+      <NewLoanForm loan={loan} />
       {showClosedModal && <AcceptClosingModal open loan={loan} />}
     </Page>
   );

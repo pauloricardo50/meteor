@@ -2,10 +2,10 @@
 import React from 'react';
 
 import TextField from 'core/components/Material/TextField';
+import Loading from 'core/components/Loading/Loading';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import Loading from '../../../core/components/Loading/Loading';
-import { getUserDisplayName } from '../../../core/utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
 import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 export const PasswordResetPage = ({
@@ -15,6 +15,7 @@ export const PasswordResetPage = ({
   handleSubmit,
   user,
   error,
+  submitting,
 }) => {
   const isValid = !!newPassword && newPassword === newPassword2;
 
@@ -31,14 +32,17 @@ export const PasswordResetPage = ({
   }
 
   return (
-    <section id="password-reset-page" className="password-reset-page">
+    <form
+      onSubmit={handleSubmit}
+      id="password-reset-page"
+      className="password-reset-page"
+    >
       <h1>
         <T
           id="PasswordResetPage.title"
           values={{ name: getUserDisplayName(user) }}
         />
       </h1>
-
       <TextField
         label={<T id="PasswordResetPage.password" />}
         floatingLabelFixed
@@ -61,11 +65,12 @@ export const PasswordResetPage = ({
           raised
           label={<T id="PasswordResetPage.CTA" />}
           disabled={!isValid}
-          onClick={handleSubmit}
+          type="submit"
           primary
+          loading={submitting}
         />
       </div>
-    </section>
+    </form>
   );
 };
 

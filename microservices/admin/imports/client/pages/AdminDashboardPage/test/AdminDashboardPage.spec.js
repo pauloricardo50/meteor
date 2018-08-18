@@ -6,18 +6,23 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import AdminDashboardPage from '../AdminDashboardPage';
-import TasksTableWithData from '../../../components/TasksTable/TasksTableWithData';
-
-const component = props => shallow(<AdminDashboardPage {...props} />);
+import TasksTable from '../../../components/TasksTable/TasksTable';
 
 describe('AdminDashboardPage', () => {
+  let props = {};
+  const component = () => shallow(<AdminDashboardPage {...props} />);
+
+  beforeEach(() => {
+    props = {};
+  });
+
   it(`enables filtering by assigned employee's email
       on the tasks table`, () => {
     const adminEmail = 'admin@email.com';
-    const currentUser = { emails: [{ address: adminEmail }] };
+    props.currentUser = { email: adminEmail };
 
-    const tableFiltersProp = component({ currentUser })
-      .find(TasksTableWithData)
+    const tableFiltersProp = component()
+      .find('[tableFilters]')
       .first()
       .prop('tableFilters');
 
