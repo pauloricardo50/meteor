@@ -11,8 +11,6 @@ import NewLoanForm from './NewLoanForm';
 const DashboardPage = (props) => {
   const { loan } = props;
 
-  console.log('loan:', loan);
-
   return (
     <Page id="DashboardPage" fullWidth>
       <DashboardProgress {...props} />

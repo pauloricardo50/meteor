@@ -21,9 +21,9 @@ const UploaderBottom = ({
 
   return (
     <React.Fragment>
-      {currentValue.map(f => (
+      {currentValue.map((f, i) => (
         <File
-          key={f.key}
+          key={f.Key + i}
           file={f}
           disabled={disabled}
           handleRemove={handleRemove}

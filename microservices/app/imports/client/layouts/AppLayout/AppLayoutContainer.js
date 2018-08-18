@@ -1,5 +1,5 @@
 // @flow
-import { compose, mapProps } from 'recompose';
+import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -22,16 +22,10 @@ const withUserLoan = withSmartQuery({
   renderMissingDoc: false,
 });
 
-const propMapper = mapProps(({ loanId, loan, files = [], ...rest }) => ({
-  ...rest,
-  loan: { ...loan, documents: files },
-}));
-
 export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
   mergeFilesWithQuery(loanFiles, 'loan'),
-  propMapper,
   withRouter,
 );

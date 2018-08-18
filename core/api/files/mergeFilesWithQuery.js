@@ -39,6 +39,7 @@ export default (query, mergeName) =>
     }),
     mapProps(({ fileData, ...props }) => ({
       ...props,
-      [mergeName]: merge(props[mergeName], fileData),
+      // Very important to merge into an empty object, or else it overrides props!
+      [mergeName]: merge({}, props[mergeName], fileData),
     })),
   );

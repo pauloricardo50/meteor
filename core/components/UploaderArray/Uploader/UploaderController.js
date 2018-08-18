@@ -5,7 +5,6 @@ import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
   MAX_FILE_SIZE,
-  EXOSCALE_PATH,
 } from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
@@ -88,19 +87,18 @@ const props = withProps(({
   },
   handleUploadComplete: () => ClientEventService.emit(MODIFIED_FILES_EVENT),
   handleRemove: key =>
-    deleteFile(key).then(() => ClientEventService.emit(MODIFIED_FILES_EVENT)),
-  shouldDisableAdd: () => {
-    console.log('currentValue?', currentValue);
-
-    return (
-      currentValue
-        && currentValue.reduce(
-          (acc, file) => !(file.status === FILE_STATUS.ERROR),
-          true,
-        )
-        && disabled
-    );
-  },
+    deleteFile(key).then(() => {
+      setTimeout(() => {
+        ClientEventService.emit(MODIFIED_FILES_EVENT);
+      }, 0);
+    }),
+  shouldDisableAdd: () =>
+    currentValue
+      && currentValue.reduce(
+        (acc, file) => !(file.status === FILE_STATUS.ERROR),
+        true,
+      )
+      && disabled,
 }));
 
 const willReceiveProps = lifecycle({
@@ -117,8 +115,8 @@ const willReceiveProps = lifecycle({
         // Remove the ones that match
         nextValue.forEach(file =>
           tempFiles.forEach(temp =>
-            temp.name === file.initialName
-              && filterTempFiles(tempFile => tempFile.name !== file.initialName)));
+            temp.name === file.name
+              && filterTempFiles(tempFile => tempFile.name !== file.name)));
       }
     }
   },
