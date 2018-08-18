@@ -44,12 +44,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(a);
     };
 
-    getBorrowersCompletion = ({ borrowers }) =>
-      (filesPercent({
+    getBorrowersFilesProgress({ borrowers }) {
+      return filesPercent({
         doc: borrowers,
         fileArrayFunc: borrowerDocuments,
         step: FILE_STEPS.AUCTION,
-      })
+      });
+    }
+
+    getBorrowersCompletion = ({ borrowers }) =>
+      (this.getBorrowersFilesProgress({  borrowers })
         + this.personalInfoPercent({ borrowers }))
       / 2;
 
