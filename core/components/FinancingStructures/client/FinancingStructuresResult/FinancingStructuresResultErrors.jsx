@@ -47,7 +47,7 @@ export const FinancingStructuresResultErrors = (props: FinancingStructuresResult
   const error = getError(props);
 
   return error ? (
-    <p className="error">
+    <p className="error result">
       <T id={`FinancingStructuresResultErrors.${error}`} />
     </p>
   ) : (
