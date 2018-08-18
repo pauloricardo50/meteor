@@ -13,7 +13,7 @@ const SinglePropertyPageTitle = ({
   loan,
 }: SinglePropertyPageTitleProps) => {
   const title = property.address1 || <T id="SinglePropertyPage.title" />;
-  const value = PropertyCalculator.getPropertyCompletion({
+  const value = PropertyCalculator.propertyPercent({
     property,
     loan,
   });
