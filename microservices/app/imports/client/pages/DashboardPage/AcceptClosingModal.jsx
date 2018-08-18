@@ -37,20 +37,21 @@ export default class AcceptClosingModal extends Component {
     const {
       loan: { _id: loanId },
     } = this.props;
-    const button = (
+    const actions = [
       <Button
         raised
         label="Fantastique"
         secondary
         onClick={this.handleConfirm}
         autoFocus
-      />
-    );
+        key="close"
+      />,
+    ];
 
     return (
       <Dialog
         title={<T id="AcceptClosingModal.title" />}
-        actions={button}
+        actions={actions}
         important
         open={open}
       >
