@@ -12,7 +12,7 @@ type FinancingPageProps = {
 
 const FinancingPage = ({ loan }: FinancingPageProps) => (
   <section className="animated fadeIn">
-    <PageHead titleId="FinancingPage.title" />
+    <PageHead titleId="FinancingPage" />
     <FinancingStructures loan={loan} />
     <ReturnToDashboard />
   </section>
