@@ -8,7 +8,6 @@ import {
   MINERGIE_CERTIFICATE,
   QUALITY,
 } from '../api/properties/propertyConstants';
-import { fakeDocument } from '../api/files/fakes';
 import { Properties } from '../api';
 
 const statuses = Object.values(PROPERTY_STATUS);
@@ -53,12 +52,6 @@ export const createFakeProperty = (userId) => {
     adminValidation: {
       buildingPlacementQuality: 'No option selected',
       propertyInfo: 'Not completed',
-    },
-    documents: {
-      plans: fakeDocument,
-      cubage: fakeDocument,
-      pictures: fakeDocument,
-      landRegisterExtract: fakeDocument,
     },
   };
 
