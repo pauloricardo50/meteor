@@ -5,33 +5,38 @@ import Button from 'core/components/Button';
 import Dialog from 'core/components/Material/Dialog';
 import T from 'core/components/Translation';
 import { loanUpdate } from 'core/api';
+import { LOAN_STATUS } from 'core/api/constants';
 
 export default class AcceptClosingModal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: this.props.open };
+    const { loan } = props;
+    const { status, logic } = loan;
+    const openClosingModal = status === LOAN_STATUS.DONE && !logic.acceptedClosing;
+
+    this.state = { open: openClosingModal };
   }
 
   handleConfirm = (event) => {
     event.preventDefault();
+    const {
+      loan: { _id: loanId },
+    } = this.props;
 
-    loanUpdate.run(
-      {
+    loanUpdate
+      .run({
         object: { 'logic.acceptedClosing': true },
-        loanId: this.props.loan._id,
-      },
-      () => this.setState({ open: false }),
-      {
-        title: 'Formidable',
-        message: `<h4 class="bert">Profitez bien de ${
-          this.props.loan.name
-        }</h4>`,
-      },
-    );
+        loanId,
+      })
+      .then(() => this.setState({ open: false }));
   };
 
   render() {
+    const { open } = this.state;
+    const {
+      loan: { _id: loanId },
+    } = this.props;
     const button = (
       <Button
         raised
@@ -47,7 +52,7 @@ export default class AcceptClosingModal extends Component {
         title={<T id="AcceptClosingModal.title" />}
         actions={button}
         important
-        open={this.state.open}
+        open={open}
       >
         <div className="text-center" style={{ marginBottom: 20 }}>
           <span className="fa fa-birthday-cake fa-5x active" />
@@ -59,15 +64,15 @@ export default class AcceptClosingModal extends Component {
         <p className="secondary">
           <T id="AcceptClosingModal.description2" />
         </p>
-        <h2 className="text-center">{this.props.loan._id}</h2>
+        <h2 className="text-center">{loanId}</h2>
       </Dialog>
     );
   }
 }
 
 AcceptClosingModal.propTypes = {
-  open: PropTypes.bool,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
+  open: PropTypes.bool,
 };
 
 AcceptClosingModal.defaultProps = {
