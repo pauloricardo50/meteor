@@ -170,23 +170,3 @@ export const getDocumentIDs = (list) => {
 
   return ids;
 };
-
-// Schema used for every file
-export const FileSchema = new SimpleSchema({
-  name: String,
-  initialName: String,
-  size: Number,
-  type: String,
-  url: { type: String, regEx: SimpleSchema.RegEx.Url },
-  key: String,
-  status: { type: String, allowedValues: Object.values(FILE_STATUS) },
-  error: { optional: true, type: String },
-});
-
-export const DocumentSchema = new SimpleSchema({
-  files: { type: Array, defaultValue: [], maxCount: 100 },
-  'files.$': FileSchema,
-  uploadCount: { type: Number, defaultValue: 0 },
-  label: { type: String, optional: true },
-  isOwnedByAdmin: { type: Boolean, optional: true, defaultValue: false },
-});
