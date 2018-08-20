@@ -9,34 +9,41 @@ import { CalculatedValue } from '../FinancingStructuresSection';
 
 type RequiredOwnFundsProps = {};
 
+export const ROUNDING_AMOUNT = 5000;
+
+const getLabel = (value) => {
+  if (value > ROUNDING_AMOUNT) {
+    return 'FinancingStructures.requiredOwnFunds.low';
+  }
+  if (value < -ROUNDING_AMOUNT) {
+    return 'FinancingStructures.requiredOwnFunds.high';
+  }
+
+  return 'FinancingStructures.requiredOwnFunds.valid';
+};
+
+export const RequiredOwnFundsBody = ({ value }) => (
+  <React.Fragment>
+    <span className="text">
+      <T id={getLabel(value)} />
+    </span>
+    <div className="value">
+      <span className="chf">CHF</span>
+      {toMoney(value)}
+      <StatusIcon
+        status={getLabel(value).endsWith('valid') ? SUCCESS : ERROR}
+        style={{ marginLeft: 8 }}
+      />
+    </div>
+  </React.Fragment>
+);
+
 const RequiredOwnFunds = (props: RequiredOwnFundsProps) => (
   <CalculatedValue
     {...props}
     className="requiredOwnFunds requiredOwnFunds-component"
   >
-    {value => (
-      <React.Fragment>
-        <span className="text">
-          <T
-            id={
-              value === 0
-                ? 'FinancingStructures.requiredOwnFunds.valid'
-                : value > 0
-                  ? 'FinancingStructures.requiredOwnFunds.low'
-                  : 'FinancingStructures.requiredOwnFunds.high'
-            }
-          />
-        </span>
-        <div className="value">
-          <span className="chf">CHF</span>
-          {toMoney(value)}
-          <StatusIcon
-            status={value === 0 ? SUCCESS : ERROR}
-            style={{ marginLeft: 8 }}
-          />
-        </div>
-      </React.Fragment>
-    )}
+    {value => <RequiredOwnFundsBody value={value} />}
   </CalculatedValue>
 );
 

@@ -9,6 +9,7 @@ import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/Financ
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import FinanceCalculator from '../FinancingStructuresCalculator';
+import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
 
 type FinancingStructuresResultErrorsProps = {};
 
@@ -21,14 +22,14 @@ const errors = [
     id: 'missingOwnFunds',
     func: (data) => {
       const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds > 0;
+      return Number.isNaN(requiredFunds) || requiredFunds >= ROUNDING_AMOUNT;
     },
   },
   {
     id: 'tooMuchOwnFunds',
     func: (data) => {
       const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds < 0;
+      return Number.isNaN(requiredFunds) || requiredFunds <= -ROUNDING_AMOUNT;
     },
   },
   {
