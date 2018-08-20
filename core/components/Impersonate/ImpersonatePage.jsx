@@ -11,9 +11,9 @@ import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 
 class ImpersonatePage extends Component {
   static propTypes = {
+    history: PropTypes.object.isRequired,
     intl: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
   };
 
   componentDidMount = () => {
@@ -40,7 +40,7 @@ class ImpersonatePage extends Component {
         style: 'fixed-top',
       });
 
-      history.push('/profile');
+      history.push('/');
     });
   };
 
