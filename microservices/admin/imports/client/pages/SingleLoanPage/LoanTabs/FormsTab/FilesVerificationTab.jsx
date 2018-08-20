@@ -15,7 +15,7 @@ const FilesVerificationTab = ({
   doc,
   ...otherProps
 }) => (
-  <div style={{ padding: '40px 0' }}>
+  <div className="files-verification-tab">
     {doc.documents ? (
       documentArray.map(({ condition, id: documentId }) =>
         shouldShowDocument(condition) && (
