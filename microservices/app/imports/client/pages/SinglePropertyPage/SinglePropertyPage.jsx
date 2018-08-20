@@ -8,39 +8,35 @@ import {
 } from 'core/arrays/PropertyFormArray';
 import UploaderArray from 'core/components/UploaderArray';
 import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import T from 'core/components/Translation';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
+import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import Page from '../../components/Page';
+import ReturnToDashboard from '../../components/ReturnToDashboard';
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId } = props;
-  const { borrowers, properties, general: { residenceType } } = loan;
+  const {
+    borrowers,
+    properties,
+    general: { residenceType },
+  } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
-  const percent = PropertyCalculator.getPropertyCompletion({
-    loan,
-    borrowers,
-    property,
-  });
 
   const title = address1 || <T id="SinglePropertyPage.title" />;
 
   return (
-    <Page id="SinglePropertyPage" title={title}>
+    <Page
+      id="SinglePropertyPage"
+      title={<SinglePropertyPageTitle loan={loan} property={property} />}
+    >
       <section className="card1 card-top property-page">
-        <h1 className="text-center">
-          {title}
-          <br />
-          <small className={percent >= 1 && 'success'}>
-            <T id="PropertiesPage.progress" values={{ value: percent }} />{' '}
-            {percent >= 1 && <span className="fa fa-check" />}
-          </small>
-        </h1>
+        <h1 className="text-center">{title}</h1>
 
         <MapWithMarkerWrapper
           address1={address1}
@@ -99,6 +95,7 @@ const SinglePropertyPage = (props) => {
           />
         </div>
       </section>
+      <ReturnToDashboard />
     </Page>
   );
 };

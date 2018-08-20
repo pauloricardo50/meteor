@@ -44,16 +44,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(a);
     };
 
-    auctionFilesPercent = ({ borrowers }) => {
-      const a = [];
-      arrayify(borrowers).forEach((b) => {
-        const fileArray = borrowerDocuments(b).auction;
-
-        fileArray.forEach(f => f.condition !== false && a.push(b.files[f.id]));
-      });
-
-      return getPercent(a);
-    };
+    getBorrowersCompletion = ({ borrowers }) =>
+      (filesPercent({
+        doc: borrowers,
+        fileArrayFunc: borrowerDocuments,
+        step: FILE_STEPS.AUCTION,
+      })
+        + this.personalInfoPercent({ borrowers }))
+      / 2;
 
     getFortune = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'bankFortune' });
@@ -63,13 +61,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowers,
         keys: ['insuranceSecondPillar', 'insuranceThirdPillar'],
       });
-
-    getBorrowerCompletion = ({ borrower }) =>
-      (filesPercent({
-        doc: [borrower],
-        fileArrayFunc: borrowerDocuments,
-        step: FILE_STEPS.AUCTION,
-      }) + this.personalInfoPercent([borrower])) / 2;
 
     getBonusIncome = ({ borrowers }) => {
       let total = 0;
@@ -164,9 +155,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getThirdPillar = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
-
-    getBorrowerFullName = ({ firstName, lastName }) =>
-      [firstName, lastName].filter(name => name).join(' ');
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);

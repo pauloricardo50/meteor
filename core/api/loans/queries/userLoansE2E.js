@@ -1,5 +1,6 @@
 import Loans from '../loans';
 import { LOAN_QUERIES, AUCTION_STATUS } from '../loanConstants';
+import { loanBaseFragment } from './loanFragments';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
   $filter({ filters, params: { userId, unowned, step, auction } }) {
@@ -22,15 +23,5 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
       createdAt: -1,
     },
   },
-  name: 1,
-  logic: 1,
-  general: 1,
-  createdAt: 1,
-  updatedAt: 1,
-  properties: {
-    value: 1,
-  },
-  borrowers: {
-    firstName: 1,
-  },
+  ...loanBaseFragment,
 });

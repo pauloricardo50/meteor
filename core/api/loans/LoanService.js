@@ -111,9 +111,17 @@ export class LoanService {
 
   pullValue = ({ loanId, object }) => Loans.update(loanId, { $pull: object });
 
-  addStructure = ({ loanId, structure = {} }) => {
+  addStructure = ({ loanId, structure }) => {
     const loan = this.getLoanById(loanId);
     const isFirstStructure = loan.structures.length === 0;
+
+    if (!isFirstStructure && !structure && loan.selectedStructure) {
+      return this.duplicateStructure({
+        loanId,
+        structureId: loan.selectedStructure,
+      });
+    }
+
     const newStructureId = Random.id();
     return Loans.update(loanId, {
       $push: {

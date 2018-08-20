@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { ROLES } from 'core/api/users/userConstants';
+import { ROLES } from 'core/api/constants';
 import { createFakeUsers } from './userFixtures';
 import { DEV_COUNT } from './fixtureConfig';
 

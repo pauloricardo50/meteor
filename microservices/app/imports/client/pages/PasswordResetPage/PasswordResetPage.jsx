@@ -1,18 +1,12 @@
 // @flow
 import React from 'react';
-import { Accounts } from 'meteor/accounts-base';
-import { getUserByPasswordResetToken } from 'core/api';
-import { withRouter } from 'react-router-dom';
 
 import TextField from 'core/components/Material/TextField';
+import Loading from 'core/components/Loading/Loading';
 import Button from 'core/components/Button';
-
 import T from 'core/components/Translation';
-import { withStateHandlers, lifecycle, withState } from 'recompose';
-import withMatchParam from '../../../core/containers/withMatchParam';
-import { compose } from '../../../core/api/containerToolkit/index';
-import Loading from '../../../core/components/Loading/Loading';
-import { getUserDisplayName } from '../../../core/utils/userFunctions';
+import { getUserDisplayName } from 'core/utils/userFunctions';
+import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 export const PasswordResetPage = ({
   newPassword,
@@ -21,11 +15,16 @@ export const PasswordResetPage = ({
   handleSubmit,
   user,
   error,
+  submitting,
 }) => {
   const isValid = !!newPassword && newPassword === newPassword2;
 
   if (error) {
-    return <h3 className="error">{error.message}</h3>;
+    return (
+      <h3 className="error" id="password-reset-page">
+        {error.message}
+      </h3>
+    );
   }
 
   if (!user) {
@@ -33,14 +32,17 @@ export const PasswordResetPage = ({
   }
 
   return (
-    <section id="password-reset-page" className="password-reset-page">
+    <form
+      onSubmit={handleSubmit}
+      id="password-reset-page"
+      className="password-reset-page"
+    >
       <h1>
         <T
           id="PasswordResetPage.title"
           values={{ name: getUserDisplayName(user) }}
         />
       </h1>
-
       <TextField
         label={<T id="PasswordResetPage.password" />}
         floatingLabelFixed
@@ -63,43 +65,13 @@ export const PasswordResetPage = ({
           raised
           label={<T id="PasswordResetPage.CTA" />}
           disabled={!isValid}
-          onClick={handleSubmit}
+          type="submit"
           primary
+          loading={submitting}
         />
       </div>
-    </section>
+    </form>
   );
 };
 
-export default compose(
-  withMatchParam('token'),
-  withState('error', 'setError', null),
-  withRouter,
-  withStateHandlers(
-    {
-      newPassword: '',
-      newPassword2: '',
-    },
-    {
-      handleChange: () => (event, key) => ({ [key]: event.target.value }),
-      handleSubmit: ({ newPassword }, { token, history, setError }) => () => {
-        Accounts.resetPassword(token, newPassword, (err) => {
-          if (err) {
-            setError(err);
-          } else {
-            history.push('/');
-          }
-        });
-        return {};
-      },
-    },
-  ),
-  lifecycle({
-    componentDidMount() {
-      return getUserByPasswordResetToken
-        .run({ token: this.props.token })
-        .then(user => this.setState({ user }))
-        .catch(this.props.setError);
-    },
-  }),
-)(PasswordResetPage);
+export default PasswordResetPageContainer(PasswordResetPage);

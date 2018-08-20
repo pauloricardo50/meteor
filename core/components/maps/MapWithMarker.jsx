@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import T from '../Translation';
 import GoogleMapContainer from './GoogleMapContainer';
 import GoogleMap from './GoogleMap';
 import { getLatLngFromAddress } from './googleMapsHelpers';
@@ -20,27 +21,20 @@ class MapWithMarker extends Component {
     const { address, options, id } = this.props;
     const { latlng } = this.state;
 
-    return (
-      <div className="map-with-marker">
-        {latlng ? (
-          <GoogleMap
-            address={address}
-            latlng={latlng}
-            id={id}
-            options={options}
-          />
-        ) : (
-          <p className="description">Adresse pas trouvée!</p>
-        )}
-      </div>
+    return latlng ? (
+      <GoogleMap address={address} latlng={latlng} id={id} options={options} />
+    ) : (
+      <p className="description">
+        <T id="GoogleMap.addressNotFound" />
+      </p>
     );
   }
 }
 
 MapWithMarker.propTypes = {
   address: PropTypes.string.isRequired,
-  options: PropTypes.object,
   id: PropTypes.string,
+  options: PropTypes.object,
 };
 
 MapWithMarker.defaultProps = {

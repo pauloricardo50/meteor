@@ -45,7 +45,7 @@ const calculateMaxThirdPillarWithdrawal = ({
 const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
-const calculateRequiredOwnFunds = (data) => {
+export const calculateRequiredOwnFunds = (data) => {
   const { propertyWork } = data.structure;
   const propertyValue = getProperty(data).value;
   const effectiveLoan = calculateLoan(data);

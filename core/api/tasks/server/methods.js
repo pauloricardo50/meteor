@@ -64,11 +64,7 @@ completeAddAssignedToTask.setHandler((context, { userId }) => {
 
 loanTaskInsert.setHandler((context, { loanId, title }) => {
   SecurityService.tasks.isAllowedToInsert();
-  const task = {
-    type: TASK_TYPE.CUSTOM,
-    loanId,
-    title,
-  };
+  const task = { type: TASK_TYPE.CUSTOM, loanId, title };
 
   return TaskService.insert(task);
 });

@@ -7,7 +7,7 @@ const formArray = [
   { id: 'name' },
   { id: 'title' },
   { id: 'email', validate: [email] },
-  { id: 'phone' },
+  { id: 'phoneNumber' },
 ].map(field => ({
   ...field,
   label: <T id={`DashboardInfoTeamForm.${field.id}`} />,

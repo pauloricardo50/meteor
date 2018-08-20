@@ -16,7 +16,6 @@ describe('NewLoanFormButtons', () => {
   });
 
   it('renders next button only', () => {
-    // Test code
     props.numberOfSteps = 3;
     props.step = 0;
     expect(component().find('#next').length).to.equal(1);

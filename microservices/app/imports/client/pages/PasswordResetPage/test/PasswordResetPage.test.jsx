@@ -45,12 +45,16 @@ describe('PasswordResetPage', () => {
         pollUntilReady(() => {
           component().update();
           return !component().find(Loading).length;
-        }, 200))
+        }, 200),
+      )
       .then(() =>
-        expect(component()
-          .find('[id="PasswordResetPage.title"]')
-          .first()
-          .prop('values').name).to.equal('John Doe'));
+        expect(
+          component()
+            .find('[id="PasswordResetPage.title"]')
+            .first()
+            .prop('values').name,
+        ).to.equal('John Doe'),
+      );
   });
 
   it('renders an error', () => {
@@ -58,5 +62,46 @@ describe('PasswordResetPage', () => {
     props.error = { message };
 
     expect(shallowComponent().contains(message)).to.equal(true);
+  });
+
+  context('disables submit button when', () => {
+    it('new password is not set', () => {
+      props.user = { id: 'userId' };
+
+      expect(
+        shallowComponent()
+          .find('[type="submit"]')
+          .first()
+          .props().disabled,
+      ).to.equal(true);
+    });
+
+    it('passwords do not match', () => {
+      props.newPassword = 'password1';
+      props.newPassword2 = 'password2';
+      props.user = { id: 'userId' };
+
+      expect(
+        shallowComponent()
+          .find('[type="submit"]')
+          .first()
+          .props().disabled,
+      ).to.equal(true);
+    });
+  });
+
+  it('loads while submitting', () => {
+    const password = 'password';
+    props.submitting = true;
+    props.newPassword = password;
+    props.newPassword2 = password;
+    props.user = { id: 'userId' };
+
+    expect(
+      shallowComponent()
+        .find('[type="submit"]')
+        .first()
+        .props().loading,
+    ).to.equal(true);
   });
 });

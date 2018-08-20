@@ -5,14 +5,15 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import Page from '../../components/Page';
+import ReturnToDashboard from '../../components/ReturnToDashboard';
 import Info from './Info';
 import Finance from './Finance';
 import Files from './Files';
 import BorrowerHeader from './BorrowerHeader';
+import BorrowersPageTitle from './BorrowersPageTitle';
 
 const getTabs = (props) => {
   const { loan } = props;
-  const { borrowers } = loan;
   return [
     { id: 'personal', content: <Info {...props} /> },
     { id: 'finance', content: <Finance {...props} /> },
@@ -31,15 +32,22 @@ const getTabs = (props) => {
 };
 
 const BorrowersPage = (props) => {
-  const { tabId } = props;
+  const {
+    tabId,
+    loan: { borrowers },
+  } = props;
   const tabs = getTabs(props);
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
   return (
-    <Page id="BorrowersPage">
+    <Page
+      id="BorrowersPage"
+      title={<BorrowersPageTitle borrowers={borrowers} />}
+    >
       <section className="borrower-page">
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
+      <ReturnToDashboard />
     </Page>
   );
 };
