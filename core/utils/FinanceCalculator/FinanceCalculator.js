@@ -255,9 +255,13 @@ export class FinanceCalculator {
   getMaxLoan({
     propertyValue,
     propertyWork,
-    pledgedAmount
-  }: { propertyValue: number, propertyWork: number } = {}) {
-    return (propertyValue + propertyWork) * this.maxBorrowRatio;
+    pledgedAmount,
+  }: {
+    propertyValue: number,
+    propertyWork: number,
+    pledgedAmount: number,
+  } = {}): number {
+    return (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount;
   }
 
   getYearsToRetirement = ({
