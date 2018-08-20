@@ -1,5 +1,5 @@
 {
-  "files.other": "Autres documents",
+  "files.OTHER": "Autres documents",
   "BorrowersSummary.borrower": "Emprunteur {index}",
 
   "GoogleMap.addressNotFound": "Cette adresse n'a pas pu être trouvée",
