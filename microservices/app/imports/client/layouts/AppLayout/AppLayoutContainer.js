@@ -10,7 +10,7 @@ import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 
 const withAppUser = withSmartQuery({
   query: () => appUserQuery.clone(),
-  queryOptions: { reactive: false, single: true },
+  queryOptions: { reactive: true, single: true },
   dataName: 'currentUser',
   renderMissingDoc: false,
 });
