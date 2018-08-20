@@ -8,6 +8,9 @@ const formatTitle = ({ titleId, title }, formatMessage) => {
     return ` | ${title}`;
   }
   if (titleId) {
+    if (titleId.includes('.title')) {
+      return ` | ${formatMessage({ id: `${titleId}` })}`;
+    }
     return ` | ${formatMessage({ id: `${titleId}.title` })}`;
   }
 
