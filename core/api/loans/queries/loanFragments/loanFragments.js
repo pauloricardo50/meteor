@@ -9,6 +9,7 @@ export const loanBaseFragment = {
   properties: { value: 1, address1: 1 },
   selectedStructure: 1,
   status: 1,
+  structure: 1,
   structures: 1,
   updatedAt: 1,
   userId: 1,

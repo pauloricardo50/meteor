@@ -11,6 +11,7 @@ export const fullUserFragment = {
 
 export const adminUserFragment = {
   ...fullUserFragment,
+  structure: 1,
   assignedEmployee: simpleUserFragment,
 };
 

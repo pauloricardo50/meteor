@@ -42,29 +42,35 @@ export const loanIsVerified = ({
   },
 }) => validated !== undefined;
 
-export const formatLoanWithStructure = (loan) => {
-  const newLoan = { ...loan };
-  if (loan.selectedStructure) {
-    const structure = loan.structures.find(({ id }) => id === loan.selectedStructure);
+export const formatLoanWithStructure = ({
+  selectedStructure,
+  structures,
+  properties,
+  offers,
+}) => {
+  let structure = {};
 
-    if (structure) {
-      newLoan.structure = structure;
+  if (selectedStructure) {
+    const foundStructure = structures.find(({ id }) => id === selectedStructure);
+
+    if (foundStructure) {
+      structure = foundStructure;
 
       if (structure.propertyId) {
-        const property = loan.properties.find(({ _id }) => _id === structure.propertyId);
-        newLoan.structure = { ...newLoan.structure, property };
+        const property = properties.find(({ _id }) => _id === structure.propertyId);
+        structure = { ...structure, property };
       }
 
       if (structure.offerId) {
-        const offer = loan.offers.find(({ _id }) => _id === structure.offerId);
-        newLoan.structure = { ...newLoan.structure, offer };
+        const offer = offers.find(({ _id }) => _id === structure.offerId);
+        structure = { ...structure, offer };
       }
     } else {
-      newLoan.structure = {};
+      structure = {};
     }
 
-    return newLoan;
+    return structure;
   }
 
-  return { ...newLoan, structure: {} };
+  return structure;
 };
