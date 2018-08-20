@@ -34,7 +34,7 @@ const renderResults = ({ min, max, value, microlocation }) => (
         </h3>
         <h2>{toMoney(value)}</h2>
         <h4 className="warning">
-            <T id="Valuation.preciseValueWarning" />
+          <T id="Valuation.preciseValueWarning" />
         </h4>
       </div>
     )}
@@ -76,7 +76,7 @@ export const Valuation = ({
       {content}
       <Button
         onClick={handleEvaluateProperty}
-        raised
+        raised={valuation.status === VALUATION_STATUS.NONE}
         primary
         disabled={disabled}
       >
