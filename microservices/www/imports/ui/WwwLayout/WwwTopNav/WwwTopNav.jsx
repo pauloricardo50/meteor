@@ -13,12 +13,7 @@ const VARIANTS = {
 };
 
 const WwwTopNav = ({ variant }) => (
-  <nav
-    className={classnames({
-      'www-top-nav': true,
-      [variant]: true,
-    })}
-  >
+  <nav className={classnames({ 'www-top-nav': true, [variant]: true })}>
     <span className="www-top-nav-content">
       <WwwTopNavLogo variant={variant} />
       <WwwTopNavLinks variant={variant} />

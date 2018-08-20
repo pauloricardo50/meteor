@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -19,6 +21,15 @@ const WwwTopNavLinksList = ({ variant }) => (
         </h5>
       </Link>
     ))}
+    <span className="divider" />
+    <a
+      href={Meteor.settings.public.subdomains.app}
+      className={`www-top-nav-link ${variant}`}
+    >
+      <h5 className="www-top-nav-link-label">
+        <T id="WwwTopNavLinks.login" />
+      </h5>
+    </a>
   </React.Fragment>
 );
 
