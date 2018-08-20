@@ -6,7 +6,6 @@ import classnames from 'classnames';
 
 import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
-import track from 'core/utils/analytics';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import Navs from './Navs';
 
@@ -81,10 +80,6 @@ const AppLayout = (props) => {
   const isLogin = path.slice(0, 6) === '/login';
 
   if (redirect && !isLogin) {
-    track('AppLayout - was redirected', {
-      from: history.location.pathname,
-      to: redirect,
-    });
     return <Redirect to={redirect} />;
   }
 
