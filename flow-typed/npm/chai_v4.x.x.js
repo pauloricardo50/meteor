@@ -1,5 +1,5 @@
-// flow-typed signature: 0a4f337896b3e3d42509a6795859f441
-// flow-typed version: ae29f8b328/chai_v4.x.x/flow_>=v0.25.0
+// flow-typed signature: 40a2b8b7dd57094411ab35f8324944e5
+// flow-typed version: 64da3eb66a/chai_v4.x.x/flow_>=v0.25.0
 
 declare module "chai" {
   declare type ExpectChain<T> = {
@@ -86,6 +86,7 @@ declare module "chai" {
     decrease: (obj: mixed, key: string, message?: string) => ExpectChain<T>,
 
     by: (delta: number, message?: string) => ExpectChain<T>,
+    ordered: ExpectChain<T>,
 
     // dirty-chai
     ok: () => ExpectChain<T>,

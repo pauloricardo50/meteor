@@ -55,13 +55,15 @@
 
 .temp-file {
   .file {
-    height: 48px;
     justify-content: flex-start;
+
+    height: 48px;
   }
 
   .uploading-progress {
-    padding-left: 16px;
     flex-grow: 1;
+
+    padding-left: 16px;
   }
 
   .waiting-loader {

@@ -2,31 +2,36 @@
 
 @font-face {
   font-family: 'anticon';
+
   font-display: fallback;
   src: url('https://at.alicdn.com/t/font_148784_v4ggb6wrjmkotj4i.eot');
   /* IE9*/
   src: url('https://at.alicdn.com/t/font_148784_v4ggb6wrjmkotj4i.woff')
-      format('woff'),
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-      url('https://at.alicdn.com/t/font_148784_v4ggb6wrjmkotj4i.ttf')
-      format('truetype'),
-    /* iOS 4.1- */
-      url('https://at.alicdn.com/t/font_148784_v4ggb6wrjmkotj4i.svg#iconfont')
-      format('svg');
+  format('woff'),
+  /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('https://at.alicdn.com/t/font_148784_v4ggb6wrjmkotj4i.ttf')
+  format('truetype'),
+  /* iOS 4.1- */
+  url('https://at.alicdn.com/t/font_148784_v4ggb6wrjmkotj4i.svg#iconfont')
+  format('svg');
 }
 .anticon {
   display: inline-block;
-  font-style: normal;
-  vertical-align: baseline;
+
   text-align: center;
+  vertical-align: baseline;
   text-transform: none;
+
+  font-style: normal;
   line-height: 1;
-  text-rendering: optimizeLegibility;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 .anticon:before {
   display: block;
+
   font-family: 'anticon' !important;
 }
 .anticon-step-forward:before {
@@ -858,8 +863,9 @@
 }
 .anticon-spin:before {
   display: inline-block;
+
   -webkit-animation: loadingCircle 1s infinite linear;
-  animation: loadingCircle 1s infinite linear;
+          animation: loadingCircle 1s infinite linear;
 }
 .anticon-weibo-square:before {
   content: '\e6f5';
@@ -974,12 +980,12 @@
 @-webkit-keyframes loadingCircle {
   100% {
     -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 @keyframes loadingCircle {
   100% {
     -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }

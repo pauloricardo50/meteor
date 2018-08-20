@@ -11,6 +11,7 @@
 .page-title .top-bar,
 .page-title .bottom-bar {
   position: relative;
+  position: fixed;
   z-index: 15;
   right: 0;
 
@@ -19,16 +20,13 @@
   justify-content: space-between;
 
   width: 100%;
+  width: calc(
+  100% - 250px - 32px
+  ); /* Side-nav width, careful, not updated with variable */
   height: 64px;
   padding: 0 16px;
 
   background-color: #f1f3f5;
-
-  position: fixed;
-
-  width: calc(
-    100% - 250px - 32px
-  ); /* Side-nav width, careful, not updated with variable */
 }
 
 .page-title .top-bar {
