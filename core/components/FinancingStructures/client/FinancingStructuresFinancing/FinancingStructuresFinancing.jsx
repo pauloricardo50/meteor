@@ -82,6 +82,7 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       {
         id: 'loanTranches',
         Component: FinancingStructuresTranchePicker,
+        condition: offersExist,
       },
     ]}
   />
