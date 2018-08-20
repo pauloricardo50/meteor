@@ -3,6 +3,7 @@
 .*/microservices/admin/.meteor/.*\.json
 .*/microservices/www/.meteor/.*\.json
 ../../.meteor/.*\.json
+../../.meteor/*
 .*/**/.npm/.*\.json
 .*/**/node_modules/**/.*\.json
 .*/node_modules/cypress/
