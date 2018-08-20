@@ -6,31 +6,27 @@ import T from 'core/components/Translation';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 
 const Progress = ({ tabId, borrower }) => {
-  switch (tabId) {
-  case 'personal': {
-    const percent = BorrowerCalculator.personalInfoPercent({
-      borrowers: borrower,
-    });
-    const progressClasses = cx('progress-block', { success: percent >= 1 });
+  if (tabId !== 'personal') {
+    return null;
+  }
 
-    return (
-      <div className={progressClasses}>
-        <T id="general.progress" values={{ value: percent }} />{' '}
-        {percent >= 1 && <span className="fa fa-check" />}
-        <div className="progress-bar">
-          <span
-            className="progress-bar__wrapper"
-            style={{ width: `${percent * 100}%` }}
-          />
-        </div>
+  const percent = BorrowerCalculator.personalInfoPercent({
+    borrowers: borrower,
+  });
+  const progressClasses = cx('progress-block', { success: percent >= 1 });
+
+  return (
+    <div className={progressClasses}>
+      <T id="general.progress" values={{ value: percent }} />{' '}
+      {percent >= 1 && <span className="fa fa-check" />}
+      <div className="progress-bar">
+        <span
+          className="progress-bar__wrapper"
+          style={{ width: `${percent * 100}%` }}
+        />
       </div>
-    );
-  }
-  case 'finance':
-    return null;
-  default:
-    return null;
-  }
+    </div>
+  );
 };
 
 Progress.propTypes = {
