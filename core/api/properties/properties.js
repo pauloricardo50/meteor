@@ -293,14 +293,12 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 100,
-    defaultValue: 0,
   },
   'parking.outside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
-    defaultValue: 0,
   },
   minergie: {
     type: String,

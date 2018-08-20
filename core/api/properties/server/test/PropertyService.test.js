@@ -65,9 +65,9 @@ describe('PropertyService', () => {
         loanResidenceType,
       }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
-        expect(property.valuation.min).to.equal(610000);
-        expect(property.valuation.max).to.equal(730000);
-        expect(property.valuation.value).to.equal(673000);
+        expect(property.valuation.min).to.equal(640000);
+        expect(property.valuation.max).to.equal(770000);
+        expect(property.valuation.value).to.equal(705000);
       });
     }).timeout(10000);
 

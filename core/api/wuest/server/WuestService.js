@@ -227,7 +227,8 @@ class WuestService {
         sanityCheck: ({ type, data: { numberOfFloors, floorType } }) =>
           (type === wuestConstants.WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : wuestConstants.WUEST_FLOOR_NUMBER.indexOf(floorType) <= numberOfFloors),
+            : wuestConstants.WUEST_FLOOR_NUMBER.indexOf(floorType) <=
+              numberOfFloors),
         error:
           wuestConstants.WUEST_ERRORS
             .FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS,
@@ -383,6 +384,19 @@ class WuestService {
     return this.evaluate([property]);
   }
 
+  getFloorNumber(flatType, numberOfFloors) {
+    switch (flatType) {
+    case wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT:
+      return numberOfFloors;
+    case wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE:
+      return numberOfFloors;
+    case wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT:
+      return 0;
+    default:
+      return null;
+    }
+  }
+
   createPropertyFromCollection({ propertyId, loanResidenceType }) {
     let data;
     const property = Properties.findOne(propertyId);
@@ -432,15 +446,22 @@ class WuestService {
           flatType,
           numberOfRooms: roomCount,
           numberOfFloors,
-          floorType: wuestConstants.WUEST_FLOOR_NUMBER[floorNumber],
+          floorType:
+              (flatType !== wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT &&
+              flatType !== wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE &&
+              flatType !== wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT)
+                ? wuestConstants.WUEST_FLOOR_NUMBER[floorNumber]
+                : wuestConstants.WUEST_FLOOR_NUMBER[
+                  this.getFloorNumber(flatType, numberOfFloors)
+                ],
           usableArea: {
             type: areaNorm,
             value: insideArea,
           },
           terraceArea,
           parking: {
-            indoor: parking.inside,
-            outdoor: parking.outside,
+            indoor: !!parking.inside ? parking.inside : 0,
+            outdoor: !!parking.outside ? parking.outside : 0,
           },
           constructionYear,
           minergieCertificate: minergie,
@@ -479,8 +500,8 @@ class WuestService {
             value: volume,
           },
           parking: {
-            indoor: parking.inside,
-            outdoor: parking.outside,
+            indoor: !!parking.inside ? parking.inside : 0,
+            outdoor: !!parking.outside ? parking.outside : 0,
           },
           constructionYear,
           minergieCertificate: minergie,
@@ -499,7 +520,7 @@ class WuestService {
     default:
       return null;
     }
-
+    
     return data;
   }
 

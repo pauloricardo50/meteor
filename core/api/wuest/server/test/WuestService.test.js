@@ -424,9 +424,9 @@ describe('WuestService', () => {
         wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
-        expect(result.min).to.equal(610000);
-        expect(result.max).to.equal(730000);
-        expect(result.value).to.equal(673000);
+        expect(result.min).to.equal(640000);
+        expect(result.max).to.equal(770000);
+        expect(result.value).to.equal(705000);
       });
     });
 
