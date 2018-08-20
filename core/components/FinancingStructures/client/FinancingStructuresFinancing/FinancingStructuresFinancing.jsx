@@ -34,7 +34,7 @@ const calculateMaxSliderLoan = data =>
     pledgedAmount: getPledgedAmount(data),
   });
 
-const oneStructureHasPledge = ({ structures }) =>
+const oneStructureHasPledged = ({ structures }) =>
   structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
     secondPillarPledged || thirdPillarPledged);
 
@@ -69,6 +69,11 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         Component: InputAndSlider,
         id: 'wantedLoan',
         max: calculateMaxSliderLoan,
+      },
+      {
+        Component: CalculatedValue,
+        id: 'pledgedAmount',
+        value: getPledgedAmount,
       },
       {
         Component: RadioButtons,

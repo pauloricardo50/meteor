@@ -484,7 +484,7 @@
   "FinancingStructures.interestsCost": "Intérêts mensuels",
   "FinancingStructures.loanTranches": "Tranches",
   "FinancingStructures.notaryFees": "Frais de notaire",
-  "FinancingStructures.pledgedIncrease": "Nantissement à couvrir",
+  "FinancingStructures.pledgedAmount": "Nantissement",
   "FinancingStructures.propertyCost": "Charges mensuelles",
   "FinancingStructures.propertyId": "Bien immobilier",
   "FinancingStructures.propertyWork": "Travaux à plus-value",
