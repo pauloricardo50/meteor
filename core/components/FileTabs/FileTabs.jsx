@@ -18,44 +18,6 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
     <Tabs
       id="tabs"
       tabs={[
-        {
-          label: (
-            <FileTabLabel
-              id="general.mortgageLoan"
-              progress={Calculator.getLoanFilesProgress({ loan })}
-            />
-          ),
-          content: (
-            <UploaderArray
-              doc={loan}
-              collection="loans"
-              disabled={disabled}
-              documentArray={getDocumentArrayByStep(
-                () => loanDocuments(loan),
-                'auction',
-              )}
-            />
-          ),
-        },
-        {
-          label: (
-            <FileTabLabel
-              id="general.property"
-              progress={Calculator.getPropertyFilesProgress({ property })}
-            />
-          ),
-          content: (
-            <UploaderArray
-              doc={property}
-              collection="properties"
-              disabled={disabled}
-              documentArray={getDocumentArrayByStep(
-                () => propertyDocuments(property, loan),
-                'auction',
-              )}
-            />
-          ),
-        },
         ...borrowers.map((borrower, index) => ({
           label: (
             <FileTabLabel
@@ -77,6 +39,44 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             />
           ),
         })),
+        {
+          label: (
+            <FileTabLabel
+              id="general.property"
+              progress={Calculator.getPropertyFilesProgress({ property })}
+            />
+          ),
+          content: (
+            <UploaderArray
+              doc={property}
+              collection="properties"
+              disabled={disabled}
+              documentArray={getDocumentArrayByStep(
+                () => propertyDocuments(property, loan),
+                'auction',
+              )}
+            />
+          ),
+        },
+        {
+          label: (
+            <FileTabLabel
+              id="FileTabs.loanDocuments"
+              progress={Calculator.getLoanFilesProgress({ loan })}
+            />
+          ),
+          content: (
+            <UploaderArray
+              doc={loan}
+              collection="loans"
+              disabled={disabled}
+              documentArray={getDocumentArrayByStep(
+                () => loanDocuments(loan),
+                'auction',
+              )}
+            />
+          ),
+        },
       ]}
     />
   </div>
