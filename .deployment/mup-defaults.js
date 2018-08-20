@@ -2,7 +2,9 @@ const createMupConfig = ({ name, path, rootUrl, domain, env }) => {
   const sshPath = 'auth.pem';
 
   return {
-    servers: { one: { host: '167.99.254.87', username: 'root', pem: sshPath } },
+    servers: {
+      one: { host: '185.19.28.39', username: 'ubuntu', pem: sshPath },
+    },
     meteor: {
       name,
       path,
@@ -16,7 +18,7 @@ const createMupConfig = ({ name, path, rootUrl, domain, env }) => {
           MONGO_URL:
             'mongodb://admin1:password@aws-eu-central-1-portal.2.dblayer.com:15723,aws-eu-central-1-portal.0.dblayer.com:15723/e-potek?ssl=true',
         },
-        env // Make sure to not have a trailing comma in this function call
+        env, // Make sure to not have a trailing comma in this function call
       ),
       docker: {
         image: 'abernix/meteord:node-8-base',
