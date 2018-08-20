@@ -56,6 +56,11 @@ const argumentMappings = {
   getSecondPillarWithdrawalTax: ({
     structure: { secondPillarWithdrawal },
   }) => ({ secondPillarWithdrawal }),
+
+  getMinCash: data => ({
+    propertyValue: getProperty(data).value,
+    propertyWork: data.structure.propertyWork,
+  }),
 };
 
 const argumentMapperMiddleware = makeArgumentMapper(argumentMappings);

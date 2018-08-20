@@ -4,13 +4,19 @@ import { AMORTIZATION_TYPE } from '../loanConstants';
 import { loanTranchesSchema } from './otherSchemas';
 
 const StructureSchema = new SimpleSchema({
-  id: String,
   amortization: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   amortizationType: {
     type: String,
     allowedValues: Object.values(AMORTIZATION_TYPE),
     optional: true,
   },
+  description: { type: String, optional: true },
+  fortuneUsed: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
+  id: String,
+  name: { type: String, optional: true },
+  offerId: { type: String, optional: true },
+  propertyId: { type: String, optional: true },
+  propertyWork: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   secondPillarPledged: {
     type: Number,
     min: 0,
@@ -18,6 +24,13 @@ const StructureSchema = new SimpleSchema({
     defaultValue: 0,
   },
   secondPillarWithdrawal: {
+    type: Number,
+    min: 0,
+    max: 100000000,
+    defaultValue: 0,
+  },
+  sortOffersBy: { type: String, optional: true },
+  thirdPartyFortuneUsed: {
     type: Number,
     min: 0,
     max: 100000000,
@@ -35,13 +48,6 @@ const StructureSchema = new SimpleSchema({
     max: 100000000,
     defaultValue: 0,
   },
-  description: { type: String, optional: true },
-  fortuneUsed: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
-  name: { type: String, optional: true },
-  offerId: { type: String, optional: true },
-  propertyId: { type: String, optional: true },
-  propertyWork: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
-  sortOffersBy: { type: String, optional: true },
   wantedLoan: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   ...loanTranchesSchema,
 });

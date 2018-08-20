@@ -9,6 +9,7 @@
   "FinancingStructuresResultErrors.missingOwnFunds": "Allouez plus de fonds propres à cette structure",
   "FinancingStructuresResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à cette structure",
   "FinancingStructuresResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de cette structure",
+  "FinancingStructuresResultErrors.missingCash": "Vous devez allouer au moins 10% de cash en plus des frais de notaire à votre projet",
 
   "ReturnToDashboard.label": "Retour au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",

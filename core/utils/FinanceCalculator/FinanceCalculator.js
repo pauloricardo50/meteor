@@ -302,6 +302,13 @@ export class FinanceCalculator {
   getNotaryFeesRate() {
     return this.notaryFees;
   }
+
+  getMinCash({ propertyValue, propertyWork }) {
+    return (
+      (propertyValue + propertyWork) * this.minCash
+      + propertyValue * this.getNotaryFeesRate()
+    );
+  }
 }
 
 export default new FinanceCalculator();

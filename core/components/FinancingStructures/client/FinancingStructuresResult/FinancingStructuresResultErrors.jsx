@@ -13,6 +13,9 @@ import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds
 
 type FinancingStructuresResultErrorsProps = {};
 
+const getCashUsed = ({ structure: { fortuneUsed, thirdPartyFortuneUsed } }) =>
+  fortuneUsed + thirdPartyFortuneUsed;
+
 const errors = [
   {
     id: 'noMortgageLoan',
@@ -35,6 +38,10 @@ const errors = [
   {
     id: 'highIncomeRatio',
     func: data => getIncomeRatio(data) > FinanceCalculator.maxIncomeRatio,
+  },
+  {
+    id: 'missingCash',
+    func: data => FinanceCalculator.getMinCash(data) > getCashUsed(data),
   },
 ];
 
