@@ -33,8 +33,6 @@ export const getPropertyExpenses = (data) => {
   return (property && property.monthlyExpenses) || 0;
 };
 
-export const getSecondPillarWithdrawalTax = FinanceCalculator.getSecondPillarWithdrawalTax;
-
 export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) =>
   Calculator.getFortune({ borrowers }) - fortuneUsed;
 

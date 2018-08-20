@@ -212,17 +212,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getSecondPillarWithdrawalTax', () => {
-    it('returns zero if nothing is provided', () => {
-      expect(calc.getSecondPillarWithdrawalTax()).to.equal(0);
-      expect(calc.getSecondPillarWithdrawalTax({})).to.equal(0);
-    });
-
-    it('multiplies by the withdrawal tax', () => {
-      expect(calc.getSecondPillarWithdrawalTax({ secondPillarWithdrawal: 100 })).to.equal(-10);
-    });
-  });
-
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
       expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(35);

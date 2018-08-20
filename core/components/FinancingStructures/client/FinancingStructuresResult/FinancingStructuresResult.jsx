@@ -11,8 +11,6 @@ import FinancingStructuresResultErrors from './FinancingStructuresResultErrors';
 import {
   getInterests,
   getAmortization,
-  getAmortizationDeduction,
-  getSecondPillarWithdrawalTax,
   getRemainingCash,
   getRemainingSecondPillar,
   getRemainingThirdPillar,
@@ -78,32 +76,6 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
           Component: FinmaRatio,
           value: getIncomeRatio,
           status: getIncomeRatioStatus,
-        },
-        {
-          id: 'fiscal',
-          label: (
-            <h4>
-              <T id="FinancingStructuresResult.fiscalTitle" />
-            </h4>
-          ),
-          className: 'section-subtitle',
-        },
-        {
-          id: 'secondPillarWithdrawalTax',
-          Component: CalculatedValue,
-          value: getSecondPillarWithdrawalTax,
-        },
-        {
-          id: 'amortizationDeduction',
-          Component: CalculatedValue,
-          value: getAmortizationDeduction,
-        },
-        {
-          id: 'totalFiscal',
-          Component: CalculatedValue,
-          value: params =>
-            getSecondPillarWithdrawalTax(params)
-            + getAmortizationDeduction(params),
         },
         {
           id: 'future',

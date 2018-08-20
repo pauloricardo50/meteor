@@ -33,12 +33,6 @@ const argumentMappings = {
       }),
     };
   },
-
-  getSecondPillarWithdrawalTax: ({
-    loan: {
-      structure: { secondPillarWithdrawal },
-    },
-  }) => ({ secondPillarWithdrawal }),
 };
 
 export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappings);

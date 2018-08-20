@@ -39,7 +39,6 @@ export class FinanceCalculator {
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
     notaryFees = NOTARY_FEES,
-    secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
     theoreticalMaintenanceRatio = MAINTENANCE_FINMA,
@@ -54,7 +53,6 @@ export class FinanceCalculator {
     maxIncomeRatioTight?: number,
     minCash?: number,
     notaryFees?: number,
-    secondPillarWithdrawalTaxRate?: number,
     taxRate?: number,
     theoreticalInterestRate?: number,
     theoreticalMaintenanceRatio: number,
@@ -69,7 +67,6 @@ export class FinanceCalculator {
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
     this.notaryFees = notaryFees;
-    this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
     this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
@@ -237,12 +234,6 @@ export class FinanceCalculator {
     );
     const deduction = this.taxRate * cappedThirdPillar;
     return deduction;
-  }
-
-  getSecondPillarWithdrawalTax({
-    secondPillarWithdrawal = 0,
-  }: { secondPillarWithdrawal: number } = {}) {
-    return -secondPillarWithdrawal * this.secondPillarWithdrawalTaxRate;
   }
 
   getMaxLoan({
