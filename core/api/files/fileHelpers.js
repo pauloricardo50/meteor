@@ -20,7 +20,7 @@ import {
  * completion, 1 is complete, 0 is not started
  */
 export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
-  const a = [];
+  const documentsToCount = [];
   const iterate = (files, doc2) => {
     if (files.length === 0) {
       return []; // If file array is empty, progress should be 100%
@@ -35,16 +35,16 @@ export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
       if (!(f.required === false || f.condition === false)) {
         if (doc2.documents[f.id]) {
           if (checkValidity) {
-            a.push(isArray(doc2.documents[f.id])
+            documentsToCount.push(isArray(doc2.documents[f.id])
               && doc2.documents[f.id].every(file => file.status === FILE_STATUS.VALID)
               ? true
               : undefined);
           } else {
-            a.push(...doc2.documents[f.id]);
+            documentsToCount.push(...doc2.documents[f.id]);
           }
         } else {
           // document doesn't even exist
-          a.push(undefined);
+          documentsToCount.push(undefined);
         }
       }
     });
@@ -60,7 +60,7 @@ export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
     iterate(fileArray, doc);
   }
 
-  return getPercent(a);
+  return getPercent(documentsToCount);
 };
 
 export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
