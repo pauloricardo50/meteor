@@ -67,7 +67,6 @@ const SinglePropertyPage = (props) => {
             doc={loan}
             docId={loan._id}
             disabled={!userFormsEnabled}
-            noPlaceholders
           />
         </div>
 
@@ -79,7 +78,6 @@ const SinglePropertyPage = (props) => {
             doc={property}
             docId={property._id}
             disabled={!userFormsEnabled}
-            noPlaceholders
           />
         </div>
       </section>

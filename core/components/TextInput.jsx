@@ -62,6 +62,34 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   }
 };
 
+const getFinalPlaceholder = ({
+  noIntl,
+  placeholder,
+  defaultPlaceholder,
+  intl,
+  type,
+}) => {
+  let finalPlaceholder;
+  if (noIntl) {
+    finalPlaceholder = placeholder || defaultPlaceholder;
+  } else {
+    finalPlaceholder =
+      placeholder && typeof placeholder === 'string'
+        ? intl.formatMessage({ id: placeholder }) !== placeholder &&
+          `${intl.formatMessage({
+            id: 'Forms.textInput.placeholderPrefix',
+          })} ${intl.formatMessage({ id: placeholder })}`
+        : defaultPlaceholder;
+  }
+
+  // Ignore placeholder for money inputs, and just show the currency
+  // Showing an amount is confusing
+  if (type === 'money') {
+    finalPlaceholder = defaultPlaceholder;
+  }
+
+  return finalPlaceholder;
+};
 const TextInput = (props) => {
   const {
     classes,
@@ -82,6 +110,7 @@ const TextInput = (props) => {
     placeholder,
     simpleOnChange,
     style,
+    type,
     ...otherProps
   } = props;
 
@@ -92,21 +121,6 @@ const TextInput = (props) => {
     placeholder: defaultPlaceholder,
     value,
   } = getDefaults(props);
-
-  let finalPlaceholder;
-  if (noIntl) {
-    finalPlaceholder = placeholder || defaultPlaceholder;
-  } else {
-    finalPlaceholder = placeholder && typeof placeholder === 'string'
-      ? intl.formatMessage({ id: placeholder })
-      : defaultPlaceholder;
-  }
-
-  // Ignore placeholder for money inputs, and just show the currency
-  // Showing an amount is confusing
-  if (props.type === 'money') {
-    finalPlaceholder = defaultPlaceholder;
-  }
 
   return (
     <FormControl
@@ -131,7 +145,13 @@ const TextInput = (props) => {
           ...inputProps, // Backwards compatible
           ...InputProps,
           value,
-          placeholder: finalPlaceholder,
+          placeholder: getFinalPlaceholder({
+            noIntl,
+            placeholder,
+            defaultPlaceholder,
+            intl,
+            type,
+          }),
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
