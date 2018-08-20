@@ -45,15 +45,12 @@ export default class TempFile extends Component {
     const fileIsUploading = !Number.isNaN(progress);
 
     return (
-      <div className="flex-col">
-        <div
-          className="file"
-          style={{ height: 48, justifyContent: 'flex-start' }}
-        >
+      <div className="temp-file flex-col">
+        <div className="file">
           <h5 className="secondary bold">{name}</h5>
           {!error
             && (fileIsUploading ? (
-              <div style={{ paddingLeft: 16, flexGrow: 1 }}>
+              <div className="uploading-progress">
                 <LinearProgress
                   color="primary"
                   variant="determinate"
@@ -61,7 +58,7 @@ export default class TempFile extends Component {
                 />
               </div>
             ) : (
-              <div style={{ paddingLeft: 16 }}>
+              <div className="waiting-loader">
                 <CircularProgress size={24} color="primary" />
               </div>
             ))}

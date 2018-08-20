@@ -52,3 +52,19 @@
   opacity: 0.6;
   color: #000;
 }
+
+.temp-file {
+  .file {
+    height: 48px;
+    justify-content: flex-start;
+  }
+
+  .uploading-progress {
+    padding-left: 16px;
+    flex-grow: 1;
+  }
+
+  .waiting-loader {
+    padding-left: 16px;
+  }
+}
