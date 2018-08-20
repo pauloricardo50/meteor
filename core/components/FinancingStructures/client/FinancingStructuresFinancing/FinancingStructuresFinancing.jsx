@@ -31,11 +31,14 @@ const calculateMaxSliderLoan = data =>
   Calc.getMaxLoan({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
+    pledgedAmount: getPledgedAmount(data),
   });
 
 const oneStructureHasPledge = ({ structures }) =>
   structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
     secondPillarPledged || thirdPillarPledged);
+
+const offersExist = ({ offers }) => offers && offers.length > 0;
 
 type FinancingStructuresFinancingProps = {};
 
@@ -74,12 +77,7 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
           id: key,
           label: `FinancingStructuresFinancing.${key}`,
         })),
-      },
-      {
-        id: 'pledgedIncrease',
-        Component: CalculatedValue,
-        value: getPledgedAmount,
-        condition: oneStructureHasPledge,
+        condition: offersExist,
       },
       {
         id: 'loanTranches',
