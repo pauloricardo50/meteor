@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps } from 'recompose';
-import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import StructureUpdateContainer from '../containers/StructureUpdateContainer';
@@ -24,9 +23,11 @@ const FinancingStructuresPropertyPickerContainer = compose(
     history: { push },
   }) => ({
     options: [
-      ...Object.values(properties).map(({ _id, address1, value }) => ({
+      ...Object.values(properties).map(({ _id, address1 }) => ({
         id: _id,
-        label: address1,
+        label: address1 || (
+          <T id="FinancingStructuresPropertyPicker.placeholder" />
+        ),
       })),
       {
         id: 'add',
