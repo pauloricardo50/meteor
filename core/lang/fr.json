@@ -741,7 +741,7 @@
   "Forms.residencyPermit.s": "Permis S",
   "Forms.residencyPermit": "Permis de résidence",
   "Forms.roles": "Roles",
-  "Forms.roomCount.info": "Chambres à coucher",
+  "Forms.roomCount.info": "Sans compter la cuisine",
   "Forms.roomCount.placeholder": "3.5",
   "Forms.roomCount": "Nb. de chambres",
   "Forms.salary.placeholder": "CHF 100 000",

@@ -45,19 +45,7 @@ const SinglePropertyPage = (props) => {
           options={{ zoom: 14 }}
         />
 
-        <div className="description">
-          <p>
-            <T id="PropertiesPage.description" />
-          </p>
-        </div>
-
         <Valuation property={property} loanResidenceType={residenceType} />
-
-        <div className="description">
-          <p>
-            <T id="Forms.mandatory" />
-          </p>
-        </div>
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
