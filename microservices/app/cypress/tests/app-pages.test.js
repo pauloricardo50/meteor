@@ -54,9 +54,6 @@ const pages = {
         shouldRender: '#SinglePropertyPage',
       }),
 
-    'Loan Closing': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/closing`, { shouldRender: '#ClosingPage' }),
-
     'Borrower Personal': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/borrowers/personal`, {
         shouldRender: '.borrower-page-info',
@@ -65,11 +62,6 @@ const pages = {
     'Borrower Finance': ({ step3LoanWithEndedAuction: { _id } }) =>
       route(`/loans/${_id}/borrowers/finance`, {
         shouldRender: '.borrower-finance-page',
-      }),
-
-    'Borrower Files': ({ step3LoanWithEndedAuction: { _id } }) =>
-      route(`/loans/${_id}/borrowers/files`, {
-        shouldRender: '.borrower-page-files .uploader',
       }),
 
     'Not Found': route('/a-page-that-does-not-exist', {
