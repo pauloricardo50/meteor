@@ -245,13 +245,6 @@ export class FinanceCalculator {
     return -secondPillarWithdrawal * this.secondPillarWithdrawalTaxRate;
   }
 
-  getEffectiveLoan({
-    loanValue = 0,
-    pledgedValue = 0,
-  }: { loanValue: number, pledgedValue: number } = {}) {
-    return loanValue + pledgedValue;
-  }
-
   getMaxLoan({
     propertyValue,
     propertyWork,

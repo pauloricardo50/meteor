@@ -14,7 +14,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
         name: loan.name || 'Demande de Prêt',
         value: (
           <IntlNumber
-            value={Calculator.getEffectiveLoan({ loan })}
+            value={Calculator.selectLoanValue({ loan })}
             format="money"
           />
         ),

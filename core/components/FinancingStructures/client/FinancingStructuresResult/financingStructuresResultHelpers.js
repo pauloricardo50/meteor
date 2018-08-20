@@ -7,11 +7,11 @@ import FinanceCalculator, {
 
 export const getInterests = params =>
   (FinanceCalculator.getInterestsWithTranches(params)
-    * FinanceCalculator.getEffectiveLoan(params))
+    * FinanceCalculator.selectLoanValue(params))
   / 12;
 export const getAmortization = params =>
   (FinanceCalculator.getAmortizationRate(params)
-    * FinanceCalculator.getEffectiveLoan(params))
+    * FinanceCalculator.selectLoanValue(params))
   / 12;
 export const getMonthly = params =>
   getInterests(params) + getAmortization(params);

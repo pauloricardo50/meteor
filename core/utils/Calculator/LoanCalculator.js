@@ -71,20 +71,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           tranches: this.makeSelectStructureKey('loanTranches')({ loan }),
           interestRates: finalInterestRates,
         })
-          * this.getEffectiveLoan({ loan }))
+          * this.selectLoanValue({ loan }))
         / 12
       );
     }
 
     getTheoreticalInterests({ loan }) {
       return (
-        (this.getEffectiveLoan({ loan }) * this.theoreticalInterestRate) / 12
+        (this.selectLoanValue({ loan }) * this.theoreticalInterestRate) / 12
       );
     }
 
     getAmortization({ loan }) {
       return (
-        (this.getAmortizationRate({ loan }) * this.getEffectiveLoan({ loan }))
+        (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
         / 12
       );
     }

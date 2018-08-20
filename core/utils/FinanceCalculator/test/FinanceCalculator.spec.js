@@ -223,17 +223,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getEffectiveLoan', () => {
-    it('returns zero if nothing is provided', () => {
-      expect(calc.getEffectiveLoan()).to.equal(0);
-      expect(calc.getEffectiveLoan({})).to.equal(0);
-    });
-
-    it('adds the 2 values', () => {
-      expect(calc.getEffectiveLoan({ loanValue: 100, pledgedValue: 50 })).to.equal(150);
-    });
-  });
-
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
       expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(35);

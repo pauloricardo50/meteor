@@ -39,15 +39,6 @@ const argumentMappings = {
       structure: { secondPillarWithdrawal },
     },
   }) => ({ secondPillarWithdrawal }),
-
-  getEffectiveLoan: ({
-    loan: {
-      structure: { wantedLoan, secondPillarPledged, thirdPillarPledged },
-    },
-  }) => ({
-    loanValue: wantedLoan,
-    pledgedValue: secondPillarPledged + thirdPillarPledged,
-  }),
 };
 
 export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappings);

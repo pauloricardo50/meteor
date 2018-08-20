@@ -24,7 +24,7 @@ export const calculateLoan = (params) => {
   const {
     structure: { wantedLoan },
   } = params;
-  return wantedLoan + getPledgedAmount(params);
+  return wantedLoan;
 };
 
 const calculateMaxSliderLoan = data =>
