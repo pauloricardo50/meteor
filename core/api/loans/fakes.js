@@ -1,4 +1,3 @@
-import { fakeDocument } from 'core/api/files/fakes';
 import moment from 'moment';
 
 import {
@@ -103,12 +102,6 @@ export const logic3 = {
   ],
 };
 
-export const fakeFiles = {
-  buyersContract: fakeDocument,
-  coownershipAllocationAgreement: fakeDocument,
-  coownershipAgreement: fakeDocument,
-};
-
 export const fakeFiles2 = {};
 
 export const emptyLoan = {
@@ -122,7 +115,6 @@ export const loanStep1 = {
   name: 'Rue du Test 42 - 1',
   general: fakeGeneral,
   logic: logic1,
-  documents: fakeFiles,
   contacts: [],
 };
 
@@ -130,11 +122,10 @@ export const loanStep2 = {
   name: 'Rue du Test 42 - 2',
   general: fakeGeneral,
   logic: logic2,
-  documents: fakeFiles,
   contacts: [],
 };
 
-export const loanStep3 = completeFiles => ({
+export const loanStep3 = () => ({
   name: 'Rue du Test 42 - 3',
   general: {
     ...fakeGeneral,
@@ -147,6 +138,5 @@ export const loanStep3 = completeFiles => ({
     ],
   },
   logic: logic3,
-  documents: completeFiles ? fakeFiles : fakeFiles2,
   contacts: [],
 });

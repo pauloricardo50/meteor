@@ -5,21 +5,19 @@ import T from '../Translation';
 import Uploader from './Uploader';
 
 const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
+  if (!doc.documents) {
+    return null;
+  }
+
   if (documentArray) {
     return (
       <div className="flex-col center">
         {documentArray.map(documentObject =>
           documentObject.condition !== false && (
             <Uploader
-              fileMeta={{
-                ...documentObject,
-                ...doc.documents[documentObject.id],
-              }}
+              fileMeta={documentObject}
               key={doc._id + documentObject.id}
-              currentValue={
-                doc.documents[documentObject.id]
-                  && doc.documents[documentObject.id].files
-              }
+              currentValue={doc.documents[documentObject.id]}
               docId={doc._id}
               disabled={disabled}
               collection={collection}
@@ -41,21 +39,16 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
 
   return (
     <div className="flex-col center">
-      {Object.keys(doc.documents)
-        .sort((a, b) => doc.documents[a].isAdmin - doc.documents[b].isAdmin)
-        .reverse()
-        .map(documentId => (
-          <Uploader
-            fileMeta={{ id: documentId, ...doc.documents[documentId] }}
-            collection={collection}
-            key={documentId}
-            docId={doc._id}
-            currentValue={
-              doc.documents[documentId] && doc.documents[documentId].files
-            }
-            disabled={disabled}
-          />
-        ))}
+      {allDocuments.map(documentId => (
+        <Uploader
+          fileMeta={{ id: documentId }}
+          collection={collection}
+          key={documentId}
+          docId={doc._id}
+          currentValue={doc.documents[documentId]}
+          disabled={disabled}
+        />
+      ))}
     </div>
   );
 };

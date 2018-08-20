@@ -16,9 +16,7 @@ import {
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
   const btoa = require('btoa');
-
-  const API_KEY = Meteor.settings.MIXPANEL_API_KEY;
-  const API_SECRET = Meteor.settings.MIXPANEL_API_SECRET;
+  const { API_KEY, API_SECRET } = Meteor.settings.mixpanel;
 
   return `Basic ${btoa(`${API_SECRET}:${API_KEY}`)}`;
 });

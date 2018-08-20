@@ -9,7 +9,7 @@ import { SUCCESS } from 'core/api/constants';
 type BorrowersPageTitleProps = {};
 
 const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
-  const value = BorrowerCalculator.getBorrowersCompletion({
+  const value = BorrowerCalculator.personalInfoPercent({
     borrowers,
   });
 

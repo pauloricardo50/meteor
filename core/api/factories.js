@@ -2,7 +2,6 @@ import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
 import { TASK_STATUS, TASK_TYPE } from './tasks/taskConstants';
-import { fakeFile } from './files/fakes';
 import Loans from './loans';
 import Borrowers from './borrowers';
 import Properties from './properties';
@@ -45,7 +44,6 @@ Factory.define('task', Tasks, {
   createdAt: () => new Date(),
   status: TASK_STATUS.ACTIVE,
   documentId: 'aDocumentId',
-  fileKey: fakeFile.key,
 });
 
 Factory.define('loan', Loans, {

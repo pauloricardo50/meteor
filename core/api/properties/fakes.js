@@ -1,4 +1,3 @@
-import { fakeDocument } from 'core/api/files/fakes';
 import {
   RESIDENCE_TYPE,
   PROPERTY_TYPE,
@@ -34,11 +33,5 @@ export const fakeProperty = {
   copropertyPercentage: 400,
   valuation: {
     status: VALUATION_STATUS.NONE,
-  },
-  documents: {
-    plans: fakeDocument,
-    cubage: fakeDocument,
-    pictures: fakeDocument,
-    landRegisterExtract: fakeDocument,
   },
 };

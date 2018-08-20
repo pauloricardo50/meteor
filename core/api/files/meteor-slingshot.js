@@ -1,6 +1,11 @@
 import { Slingshot } from 'meteor/edgee:slingshot';
+import {
+  SLINGSHOT_DIRECTIVE_NAME,
+  ALLOWED_FILE_TYPES,
+  MAX_FILE_SIZE,
+} from './fileConstants';
 
-export const allowedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
-export const maxSize = 50 * 1024 * 1024; // 50 MB (use null for unlimited).
-
-Slingshot.fileRestrictions('myFileUploads', { allowedFileTypes, maxSize });
+Slingshot.fileRestrictions(SLINGSHOT_DIRECTIVE_NAME, {
+  allowedFileTypes: ALLOWED_FILE_TYPES,
+  maxSize: MAX_FILE_SIZE,
+});

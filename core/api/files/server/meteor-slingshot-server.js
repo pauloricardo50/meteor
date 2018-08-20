@@ -2,16 +2,22 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
-import { Loans, Properties, Borrowers } from '..';
+import { Loans, Properties, Borrowers } from '../..';
 import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
-} from '../constants';
-import { getUploadCountPrefix } from './fileHelpers';
-import './meteor-slingshot';
+} from '../../constants';
+import {
+  SLINGSHOT_DIRECTIVE_NAME,
+  MAX_FILE_SIZE,
+  ALLOWED_FILE_TYPES,
+} from '../fileConstants';
+import uploadDirective from './uploadDirective';
 
-Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
+Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
+  maxSize: MAX_FILE_SIZE,
+  allowedFileTypes: ALLOWED_FILE_TYPES,
   authorize(file, { collection, docId }) {
     // Don't use arrow function, this is the current object here
 
@@ -54,9 +60,5 @@ Slingshot.createDirective('myFileUploads', Slingshot.S3Storage, {
 
     return true;
   },
-  key(file, { uploadCount, docId, id }) {
-    const uploadCountPrefix = getUploadCountPrefix(uploadCount);
-
-    return `${docId}/${id}/${uploadCountPrefix}${file.name}`;
-  },
+  key: (file, { docId, id }) => `${docId}/${id}/${file.name}`,
 });

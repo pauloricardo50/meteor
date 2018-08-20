@@ -5,6 +5,12 @@ import T from 'core/components/Translation';
 import FileTabs from 'core/components/FileTabs';
 import Page from '../../components/Page';
 
+const getStructurePropertyWithDocuments = ({
+  loan: { properties, structure },
+}) =>
+  !!(structure && structure.propertyId)
+  && properties.find(({ _id }) => structure.propertyId === _id);
+
 const FilesPage = props => (
   <Page id="FilesPage">
     <div className="card1 card-top">
@@ -14,7 +20,7 @@ const FilesPage = props => (
 
       <FileTabs
         {...props}
-        property={props.loan.structure && props.loan.structure.property}
+        property={getStructurePropertyWithDocuments(props)}
         borrowers={props.loan.borrowers}
       />
     </div>

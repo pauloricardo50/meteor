@@ -1,83 +1,58 @@
-import SimpleSchema from 'simpl-schema';
 import {
-  FILE_STATUS,
   PURCHASE_TYPE,
   RESIDENCE_TYPE,
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
   PROPERTY_TYPE,
+  CIVIL_STATUS,
 } from '../constants';
+import { DOCUMENTS } from './fileConstants';
 
 export const borrowerDocuments = (b = {}) => ({
   auction: [
+    { id: DOCUMENTS.IDENTITY },
+    { id: DOCUMENTS.RESIDENCY_PERMIT, condition: !b.isSwiss },
+    // TODO: implement married couple logic
+    { id: DOCUMENTS.TAXES },
+    { id: DOCUMENTS.SALARY_CERTIFICATE },
     {
-      id: 'identity',
-    },
-    {
-      id: 'residencyPermit',
-      condition: !b.isSwiss,
-    },
-    {
-      id: 'taxes',
-      // condition: true, //TODO: implement married couple logic
-    },
-    {
-      id: 'salaryCertificate',
-    },
-    {
-      id: 'bonus',
+      id: DOCUMENTS.BONUSES,
       condition: !!b.bonus && Object.keys(b.bonus).length > 0,
     },
     {
-      id: 'otherIncome',
+      id: DOCUMENTS.OTHER_INCOME,
       condition: b.otherIncome && !!(b.otherIncome.length > 0),
     },
     {
-      id: 'ownCompanyFinancialStatements',
+      id: DOCUMENTS.OWN_COMPANY_FINANCIAL_STATEMENTS,
       condition: !!b.worksForOwnCompany,
     },
     {
-      id: 'divorceJudgment',
-      condition: !b.civilStatus === 'divorced',
+      id: DOCUMENTS.DIVORCE_RULING,
+      condition: !b.civilStatus === CIVIL_STATUS.DIVORCED,
       noTooltips: true,
     },
     {
-      id: 'expenses',
-      condition: !!b.otherIncome && !!(b.otherIncome.length > 0),
+      id: DOCUMENTS.EXPENSES_JUSTIFICATION,
+      condition: !!b.expenses && !!(b.expenses.length > 0),
     },
   ],
   contract: [
+    { id: DOCUMENTS.DEBT_COLLECTION_REGISTER_EXTRACT, doubleTooltip: true },
+    { id: DOCUMENTS.LAST_SALARIES, noTooltips: true },
     {
-      id: 'nonPursuitExtract',
-      doubleTooltip: true,
-    },
-    {
-      id: 'lastSalaries',
-      noTooltips: true,
-    },
-    {
-      id: 'currentMortgages',
+      id: DOCUMENTS.CURRENT_MORTGAGES,
       condition: !!b.realEstate && !!b.realEstate.length > 0,
     },
     {
-      id: 'bankAssetsChange',
-      condition: b.fortuneChange,
-    },
-    {
-      id: 'pensionFundYearlyStatement',
+      id: DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT,
       condition: b.insuranceSecondPillar > 0,
       doubleTooltip: true,
     },
     {
-      id: 'retirementInsurancePlan',
+      id: DOCUMENTS.THIRD_PILLAR_ACCOUNTS,
       condition: b.insuranceThirdPillar > 0, // TODO, separate from insurance and other below
-      doubleTooltip: true,
-    },
-    {
-      id: 'retirementPlanOther',
-      // condition: true, TODO
-      condition: false,
       doubleTooltip: true,
     },
   ],
@@ -87,93 +62,83 @@ export const borrowerDocuments = (b = {}) => ({
   },
 });
 
-export const loanDocuments = (r = {}) => ({
-  auction: [],
-  contract: [
-    {
-      id: 'buyersContract',
-      tooltipSuffix:
-        !!r.general && r.general.purchaseType === 'refinancing' ? 'a' : 'b',
+export const loanDocuments = (r = {}) => {
+  const isRefinancing = !!r.general && r.general.purchaseType === PURCHASE_TYPE.REFINANCING;
+  return {
+    auction: [],
+    contract: [
+      {
+        id: DOCUMENTS.BUYERS_CONTRACT,
+        tooltipSuffix: isRefinancing ? 'a' : 'b',
+      },
+      {
+        id: DOCUMENTS.REIMBURSEMENT_STATEMENT,
+        condition: isRefinancing,
+      },
+    ],
+    closing: [],
+    admin: [{ id: DOCUMENTS.CONTRACT }, { id: DOCUMENTS.SIGNED_CONTRACT }],
+    all() {
+      return [
+        ...this.auction,
+        ...this.contract,
+        ...this.closing,
+        ...this.admin,
+        ...this.other,
+      ];
     },
-    {
-      id: 'reimbursementStatement',
-      condition: !!r.general && r.general.purchaseType === 'refinancing',
-    },
-  ],
-  closing: [],
-  other: [
-    { id: 'upload0' },
-    { id: 'upload1' },
-    { id: 'upload2' },
-    { id: 'upload3' },
-    { id: 'upload4' },
-  ],
-  admin: [{ id: 'contract' }, { id: 'signedContract' }],
-  all() {
-    return [
-      ...this.auction,
-      ...this.contract,
-      ...this.closing,
-      ...this.admin,
-      ...this.other,
-    ];
-  },
-});
+  };
+};
 
 export const propertyDocuments = (property = {}, loan = {}) => ({
   auction: [
+    { id: DOCUMENTS.PROPERTY_PLANS },
     {
-      id: 'plans',
-    },
-    {
-      id: 'cubage',
+      id: DOCUMENTS.PROPERTY_VOLUME,
       doubleTooltip: true,
       condition: property.propertyType === PROPERTY_TYPE.HOUSE,
     },
+    { id: DOCUMENTS.PROPERTY_PICTURES },
     {
-      id: 'pictures',
-    },
-    {
-      id: 'marketingBrochure',
+      id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE,
       condition: !!(
-        loan &&
-        loan.general &&
-        loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        loan
+        && loan.general
+        && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
       ),
       required: false,
     },
   ],
   contract: [
     {
-      id: 'rent',
+      id: DOCUMENTS.INVESTMENT_PROPERTY_RENT_JUSTIFICATION,
       condition:
-        !!loan.general &&
-        loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
+        !!loan.general
+        && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
       doubleTooltip: true,
     },
+    { id: DOCUMENTS.LAND_REGISTER_EXTRACT, doubleTooltip: true },
     {
-      id: 'landRegisterExtract',
-      doubleTooltip: true,
-    },
-    {
-      id: 'coownershipAllocationAgreement',
+      id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
       condition: property.isCoproperty,
       doubleTooltip: true,
     },
     {
-      id: 'coownershipAgreement',
+      id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
       condition: property.isCoproperty,
       doubleTooltip: true,
     },
-    {
-      id: 'fireAndWaterInsurance',
-      condition: !!property.isNew,
-    },
+    { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE, condition: !!property.isNew },
   ],
   all() {
     return [...this.auction, ...this.contract];
   },
 });
+
+export const getDocumentArrayByStep = (func, step) => [
+  ...func()[step],
+  { id: DOCUMENTS.OTHER },
+];
 
 export const getDocumentIDs = (list) => {
   let documents;
@@ -196,23 +161,3 @@ export const getDocumentIDs = (list) => {
 
   return ids;
 };
-
-// Schema used for every file
-export const FileSchema = new SimpleSchema({
-  name: String,
-  initialName: String,
-  size: Number,
-  type: String,
-  url: { type: String, regEx: SimpleSchema.RegEx.Url },
-  key: String,
-  status: { type: String, allowedValues: Object.values(FILE_STATUS) },
-  error: { optional: true, type: String },
-});
-
-export const DocumentSchema = new SimpleSchema({
-  files: { type: Array, defaultValue: [], maxCount: 100 },
-  'files.$': FileSchema,
-  uploadCount: { type: Number, defaultValue: 0 },
-  label: { type: String, optional: true },
-  isOwnedByAdmin: { type: Boolean, optional: true, defaultValue: false },
-});

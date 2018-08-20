@@ -8,7 +8,7 @@ const formatTitle = ({ titleId, title }, formatMessage) => {
     return ` | ${title}`;
   }
   if (titleId) {
-    return ` | ${formatMessage({ id: titleId })}`;
+    return ` | ${formatMessage({ id: `${titleId}.title` })}`;
   }
 
   return '';
@@ -32,9 +32,9 @@ export const PageHead = ({
 );
 
 PageHead.propTypes = {
-  titleId: PropTypes.string,
   descriptionId: PropTypes.string,
   intl: PropTypes.object.isRequired,
+  titleId: PropTypes.string,
 };
 
 PageHead.defaultProps = {

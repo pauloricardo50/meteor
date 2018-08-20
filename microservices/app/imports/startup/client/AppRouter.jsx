@@ -13,7 +13,6 @@ import AppStore from '../../client/components/AppStore';
 import AccountPage from '../../client/pages/AccountPage';
 import AppPage from '../../client/pages/AppPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
-import ClosingPage from '../../client/pages/ClosingPage';
 import DashboardPage from '../../client/pages/DashboardPage';
 import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
 import FilesPage from '../../client/pages/FilesPage';
@@ -42,7 +41,6 @@ const AppRouter = () => (
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
-        <Route path={ROUTES.CLOSING_PAGE} component={ClosingPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />

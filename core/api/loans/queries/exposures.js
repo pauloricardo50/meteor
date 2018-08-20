@@ -3,3 +3,4 @@ import './adminLoan.expose';
 import './loanAssignedTo.expose';
 import './sideNavLoans.expose';
 import './userLoan.expose';
+import './loanFiles.expose';

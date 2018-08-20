@@ -53,6 +53,14 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
+    getPropertyFilesProgress({ property }) {
+      return filesPercent({
+        doc: property,
+        fileArrayFunc: propertyDocuments,
+        step: FILE_STEPS.AUCTION,
+      });
+    }
+
     getPropertyCompletion({ loan, property }) {
       const { borrowers, structure } = loan;
       const propertyToCalculateWith = property || structure.property;
@@ -62,10 +70,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         borrowers,
         property: propertyToCalculateWith,
       });
-      const filesProgress = filesPercent({
-        doc: propertyToCalculateWith,
-        fileArrayFunc: propertyDocuments,
-        step: FILE_STEPS.AUCTION,
+      const filesProgress = this.getPropertyFilesProgress({
+        property: propertyToCalculateWith,
       });
 
       return (formsProgress + filesProgress) / 2;

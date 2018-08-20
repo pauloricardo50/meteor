@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FileVerificator from './FileVerificator';
+import Loading from '../../../../../core/components/Loading/Loading';
 
 // Documents are required by default, and should only be hidden if
 // the condition is explicitly false
@@ -14,27 +15,29 @@ const FilesVerificationTab = ({
   doc,
   ...otherProps
 }) => (
-  <div style={{ padding: '40px 0' }}>
-    {documentArray.map(({ condition, id: documentId }) =>
-      shouldShowDocument(condition) && (
-        <FileVerificator
-          currentValue={
-            doc.documents[documentId] && doc.documents[documentId].files
-          }
-          docId={doc._id}
-          key={documentId}
-          id={documentId}
-          {...otherProps}
-        />
-      ))}
+  <div className="files-verification-tab">
+    {doc.documents ? (
+      documentArray.map(({ condition, id: documentId }) =>
+        shouldShowDocument(condition) && (
+          <FileVerificator
+            currentValue={doc.documents[documentId]}
+            docId={doc._id}
+            key={documentId}
+            id={documentId}
+            {...otherProps}
+          />
+        ))
+    ) : (
+      <Loading />
+    )}
   </div>
 );
 
 FilesVerificationTab.propTypes = {
+  doc: PropTypes.object.isRequired,
+  documentArray: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  documentArray: PropTypes.array.isRequired,
-  doc: PropTypes.object.isRequired,
 };
 
 export default FilesVerificationTab;

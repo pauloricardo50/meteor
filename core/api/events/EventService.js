@@ -67,4 +67,8 @@ export default class EventService {
   getListenerFunctions(eventName) {
     return this.listenerFunctions[eventName] || [];
   }
+
+  removeAllListeners(eventName) {
+    this.emmitter.removeAllListeners(eventName);
+  }
 }

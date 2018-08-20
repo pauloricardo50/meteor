@@ -34,7 +34,6 @@ export const dashboardTodosArray = [
     id: 'completeProperty',
     condition: (loan) => {
       const {
-        borrowers,
         structure: { property },
       } = loan;
 
@@ -42,11 +41,7 @@ export const dashboardTodosArray = [
         return false;
       }
 
-      const percent = PropertyCalculator.getPropertyCompletion({
-        loan,
-        borrowers,
-        property,
-      });
+      const percent = PropertyCalculator.propertyPercent({ loan, property });
 
       if (percent < 1) {
         return true;
@@ -66,9 +61,7 @@ export const dashboardTodosArray = [
     id: 'completeBorrowers',
     condition: ({ borrowers }) => {
       const percentages = borrowers.map(borrower =>
-        BorrowerCalculator.personalInfoPercent({
-          borrowers: borrower,
-        }));
+        BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
 
       if (percentages.some(percent => percent < 1)) {
         return true;
@@ -77,10 +70,7 @@ export const dashboardTodosArray = [
       return false;
     },
     link: ({ _id: loanId }) =>
-      createRoute(BORROWERS_PAGE, {
-        ':loanId': loanId,
-        ':tabId': 'personal',
-      }),
+      createRoute(BORROWERS_PAGE, { ':loanId': loanId, ':tabId': 'personal' }),
   },
   {
     id: 'chooseOffer',

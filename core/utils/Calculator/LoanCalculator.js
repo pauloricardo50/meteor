@@ -1,5 +1,8 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
+import { loanDocuments } from '../../api/files/documents';
+import { FILE_STEPS } from '../../api/constants';
+import { filesPercent } from '../../api/files/fileHelpers';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -110,7 +113,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getBorrowRatio({ loan }) {
       return (
         this.makeSelectStructureKey('wantedLoan')({ loan })
-        / this.selectPropertyValue({ loan })
+        / (this.selectPropertyValue({ loan }),
+        this.makeSelectStructureKey('propertyWork')({ loan }))
       );
     }
 
@@ -150,6 +154,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return 10;
       }
       return 0;
+    }
+
+    getLoanFilesProgress({ loan }) {
+      return filesPercent({
+        doc: loan,
+        fileArrayFunc: loanDocuments,
+        step: FILE_STEPS.AUCTION,
+      });
     }
   };
 

@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 import ServerEventService from '../../../events/server/ServerEventService';
 import '../../../events/server/registerServerListeners';
-import { addFileToDoc, setFileStatus } from '../../../files/methodDefinitions';
+import { setFileStatus } from '../../../files/methodDefinitions';
 import {
   insertTaskWhenFileAddedListener,
   completeTaskOnFileVerificationListener,
@@ -13,15 +13,6 @@ import TaskService from '../../TaskService';
 
 describe('Task Listeners', () => {
   describe('insertTaskWhenFileAddedListener', () => {
-    it(`listens to '${addFileToDoc.config.name}' method`, () => {
-      const {
-        config: { name: methodName },
-      } = addFileToDoc;
-
-      const listeners = ServerEventService.getListenerFunctions(methodName);
-      expect(listeners.includes(insertTaskWhenFileAddedListener)).to.equal(true);
-    });
-
     it('calls `TaskService.insertTaskForAddedFile` function', () => {
       sinon.stub(TaskService, 'insertTaskForAddedFile');
       const listenerParams = {

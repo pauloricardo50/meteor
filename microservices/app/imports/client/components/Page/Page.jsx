@@ -39,7 +39,7 @@ Page.propTypes = {
   fullWidth: PropTypes.bool,
   id: PropTypes.string.isRequired,
   rightComponent: PropTypes.element,
-  title: PropTypes.string,
+  title: PropTypes.node,
 };
 
 Page.defaultProps = {

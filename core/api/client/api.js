@@ -1,2 +1,2 @@
 import '../methods/client';
-import '../events/client/registerClientListeners';
+import '../events/ClientEventService/registerClientListeners';

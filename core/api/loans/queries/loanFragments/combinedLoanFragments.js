@@ -12,7 +12,6 @@ export const userLoanFragment = {
   adminValidation: 1,
   borrowers: loanBorrowerFragment,
   contacts: 1,
-  documents: 1,
   offers: fullOfferFragment,
   properties: userPropertyFragment,
   user: appUserFragment,
@@ -33,6 +32,5 @@ export const adminLoanFragment = {
 export const adminLoansFragment = {
   ...loanBaseFragment,
   borrowers: { name: 1 },
-  documents: 1,
   properties: { value: 1 },
 };

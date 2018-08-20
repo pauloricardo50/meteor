@@ -59,20 +59,6 @@ const SinglePropertyPage = (props) => {
           </p>
         </div>
 
-        <UploaderArray
-          documentArray={loanDocuments(loan).auction}
-          doc={loan}
-          collection={LOANS_COLLECTION}
-          disabled={!userFormsEnabled}
-        />
-
-        <UploaderArray
-          documentArray={propertyDocuments(property, loan).auction}
-          doc={property}
-          collection={PROPERTIES_COLLECTION}
-          disabled={!userFormsEnabled}
-        />
-
         <div className="flex--helper flex-justify--center">
           <AutoForm
             formClasses="user-form"

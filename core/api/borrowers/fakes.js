@@ -1,4 +1,3 @@
-import { fakeDocument } from 'core/api/files/fakes';
 import { REAL_ESTATE } from './borrowerConstants';
 
 export const emptyFakeBorrower = {};
@@ -63,19 +62,5 @@ export const completeFakeBorrower = {
   bankFortune: 300000,
   insuranceSecondPillar: 120000,
   insuranceThirdPillar: 50000,
-  documents: {
-    identity: fakeDocument,
-    taxes: fakeDocument,
-    salaryCertificate: fakeDocument,
-    bonus: fakeDocument,
-    otherIncome: fakeDocument,
-    expenses: fakeDocument,
-    nonPursuitExtract: fakeDocument,
-    lastSalaries: fakeDocument,
-    currentMortgages: fakeDocument,
-    bankAssetsChange: fakeDocument,
-    pensionFundYearlyStatement: fakeDocument,
-    retirementInsurancePlan: fakeDocument,
-  },
   logic: {},
 };

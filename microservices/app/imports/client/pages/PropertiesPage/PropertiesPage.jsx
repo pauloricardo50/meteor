@@ -7,7 +7,7 @@ import Page from '../../components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
 
 const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
-  <Page id="PropertiesPage">
+  <Page id="PropertiesPage" titleId="PropertiesPage.title">
     <section className="card1 card-top properties-page">
       <div className="adder" />
 

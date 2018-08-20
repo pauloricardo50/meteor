@@ -1,6 +1,5 @@
 import faker from 'faker';
 import BorrowerService from '../api/borrowers/BorrowerService';
-import { fakeDocument } from '../api/files/fakes';
 import { Borrowers } from '../api';
 import { RESIDENCE_TYPE } from '../api/constants';
 
@@ -65,20 +64,6 @@ const insertFakeBorrower = (userId) => {
     bankFortune: 300000,
     insuranceSecondPillar: 120000,
     insuranceThirdPillar: 50000,
-    documents: {
-      identity: fakeDocument,
-      taxes: fakeDocument,
-      salaryCertificate: fakeDocument,
-      bonus: fakeDocument,
-      otherIncome: fakeDocument,
-      expenses: fakeDocument,
-      nonPursuitExtract: fakeDocument,
-      lastSalaries: fakeDocument,
-      currentMortgages: fakeDocument,
-      bankAssetsChange: fakeDocument,
-      pensionFundYearlyStatement: fakeDocument,
-      retirementInsurancePlan: fakeDocument,
-    },
     logic: {},
   };
 

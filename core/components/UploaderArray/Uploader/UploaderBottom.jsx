@@ -12,25 +12,23 @@ const UploaderBottom = ({
   tempFiles,
   docId,
   collection,
-  handleSave,
+  handleUploadComplete,
   handleAddFiles,
-  fileMeta: { id, uploadCount },
+  fileMeta: { id },
   shouldDisableAdd,
 }) => {
   const disableAdd = shouldDisableAdd();
 
   return (
     <React.Fragment>
-      {currentValue
-        .sort(({ fileCountA }, { fileCountB }) => fileCountA > fileCountB)
-        .map(f => (
-          <File
-            key={f.key}
-            file={f}
-            disabled={disabled}
-            handleRemove={handleRemove}
-          />
-        ))}
+      {currentValue.map((f, i) => (
+        <File
+          key={f.Key + i}
+          file={f}
+          disabled={disabled}
+          handleRemove={handleRemove}
+        />
+      ))}
 
       {tempFiles.map((f, i) => (
         <TempFile
@@ -38,10 +36,8 @@ const UploaderBottom = ({
           key={f.name + i} // if the same file is uploaded twice there's a conflict
           docId={docId}
           collection={collection}
-          handleSave={handleSave}
+          handleUploadComplete={handleUploadComplete}
           id={id}
-          currentValue={currentValue}
-          uploadCount={uploadCount}
         />
       ))}
 
@@ -53,16 +49,16 @@ const UploaderBottom = ({
 };
 
 UploaderBottom.propTypes = {
-  fileMeta: PropTypes.objectOf(PropTypes.any).isRequired,
-  docId: PropTypes.string.isRequired,
+  collection: PropTypes.string,
   currentValue: PropTypes.arrayOf(PropTypes.object),
   disabled: PropTypes.bool.isRequired,
-  collection: PropTypes.string,
-  tempFiles: PropTypes.array.isRequired,
-  shouldDisableAdd: PropTypes.func.isRequired,
+  docId: PropTypes.string.isRequired,
+  fileMeta: PropTypes.objectOf(PropTypes.any).isRequired,
   handleAddFiles: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
+  handleUploadComplete: PropTypes.func.isRequired,
+  shouldDisableAdd: PropTypes.func.isRequired,
+  tempFiles: PropTypes.array.isRequired,
 };
 
 UploaderBottom.defaultProps = {

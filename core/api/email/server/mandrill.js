@@ -6,13 +6,13 @@ import { getEmailFooter } from './emailHelpers';
 export const setupMandrill = () => {
   let key = '';
   if (Meteor.isTest) {
-    key = Meteor.settings.MANDRILL_API_KEY_TEST;
+    key = Meteor.settings.mandrill.MANDRILL_API_KEY_TEST;
   } else {
-    key = Meteor.settings.MANDRILL_API_KEY;
+    key = Meteor.settings.mandrill.MANDRILL_API_KEY;
   }
 
   Mandrill.config({
-    username: Meteor.settings.MANDRILL_LOGIN, // the email address you log into Mandrill with. Only used to set MAIL_URL.
+    username: Meteor.settings.mandrill.MANDRILL_LOGIN, // the email address you log into Mandrill with. Only used to set MAIL_URL.
     key, // get your Mandrill key from https://mandrillapp.com/settings/index
     port: 587, // defaults to 465 for SMTP over TLS
     host: 'smtps.mandrillapp.com', // the SMTP host

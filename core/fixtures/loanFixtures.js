@@ -1,7 +1,6 @@
 import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
 import faker from 'faker';
-import { fakeDocument, fakeDocumentWithLabel } from '../api/files/fakes';
 import {
   PURCHASE_TYPE,
   INSURANCE_USE_PRESET,
@@ -89,14 +88,6 @@ const logic3 = {
   ],
 };
 
-const fakeFiles = {
-  buyersContract: fakeDocumentWithLabel,
-  coownershipAllocationAgreement: fakeDocument,
-  coownershipAgreement: fakeDocument,
-};
-
-const fakeFiles2 = {};
-
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
@@ -132,7 +123,6 @@ const getRandomStructure = propertyValue =>
 export const createFakeLoan = ({
   userId,
   step,
-  completeFiles = Math.random() > 0.5,
   auctionStatus = AUCTION_STATUS.NONE,
   twoBorrowers,
 }) => {
@@ -143,7 +133,6 @@ export const createFakeLoan = ({
     borrowerIds,
     propertyIds: [propertyId],
     general: fakeGeneral,
-    documents: fakeFiles,
     contacts: [],
     structures: [
       {
@@ -164,10 +153,6 @@ export const createFakeLoan = ({
       bonus_bonus2017: 'Does not match with taxes location',
       bankFortune: 'Not enough',
     };
-
-    if (!completeFiles) {
-      loan.documents = fakeFiles2;
-    }
 
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
     break;

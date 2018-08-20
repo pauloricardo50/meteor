@@ -14,27 +14,16 @@
       "admin": "http://localhost:5000"
     }
   },
-  "AWS": {
-    "users": {
-      "accessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-      "secretAccesskey": "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"
-    },
-    "admins": {
-      "accessKeyId": "AKIAIE66YI7GPZKP2L2Q",
-      "secretAccesskey": "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"
-    },
-    "partners": {
-      "accessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-      "secretAccesskey": "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"
-    }
+  "mandrill": {
+    "MANDRILL_LOGIN": "florian@e-potek.ch",
+    "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
+    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
   },
-  "AWSAccessKeyId": "AKIAJF43A4MFAA2ZGTEA",
-  "AWSSecretAccessKey": "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",
-  "AWSRegion": "eu-central-1",
-  "S3Bucket": "e-potek-dev",
-  "AWSAdminKey": "",
-  "AWSAdminSecret": "",
-  "MANDRILL_LOGIN": "florian@e-potek.ch",
-  "MANDRILL_API_KEY": "L-_o7XAONIxbqkdWgADH5Q",
-  "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  "storage": {
+    "bucketName": "e-potek-dev-files"
+  },
+  "exoscale": {
+    "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
+    "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
+  }
 }

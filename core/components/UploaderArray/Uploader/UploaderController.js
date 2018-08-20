@@ -1,14 +1,20 @@
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
-import { allowedFileTypes, maxSize } from 'core/api/files/meteor-slingshot';
 import bert from 'core/utils/bert';
-import { FILE_STATUS } from '../../../api/constants';
+import {
+  FILE_STATUS,
+  ALLOWED_FILE_TYPES,
+  MAX_FILE_SIZE,
+} from '../../../api/constants';
+import ClientEventService, {
+  MODIFIED_FILES_EVENT,
+} from '../../../api/events/ClientEventService';
 
 const checkFile = (file) => {
-  if (allowedFileTypes.indexOf(file.type) < 0) {
+  if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
     return 'fileType';
   }
-  if (file.size > maxSize) {
+  if (file.size > MAX_FILE_SIZE) {
     return 'fileSize';
   }
   return true;
@@ -52,7 +58,6 @@ const props = withProps(({
   currentValue,
   disabled,
   deleteFile,
-  addFileToDoc,
   addTempFiles,
   intl: { formatMessage: f },
 }) => ({
@@ -80,15 +85,13 @@ const props = withProps(({
 
     addTempFiles(files);
   },
-  handleSave: (file, downloadUrl) =>
-    addFileToDoc({
-      initialName: file.name,
-      size: file.size,
-      type: file.type,
-      url: encodeURI(downloadUrl), // To avoid spaces and unallowed chars
-      key: downloadUrl.split('amazonaws.com/')[1],
+  handleUploadComplete: () => ClientEventService.emit(MODIFIED_FILES_EVENT),
+  handleRemove: key =>
+    deleteFile(key).then(() => {
+      setTimeout(() => {
+        ClientEventService.emit(MODIFIED_FILES_EVENT);
+      }, 0);
     }),
-  handleRemove: key => deleteFile(key),
   shouldDisableAdd: () =>
     currentValue
       && currentValue.reduce(
@@ -112,8 +115,8 @@ const willReceiveProps = lifecycle({
         // Remove the ones that match
         nextValue.forEach(file =>
           tempFiles.forEach(temp =>
-            temp.name === file.initialName
-              && filterTempFiles(tempFile => tempFile.name !== file.initialName)));
+            temp.name === file.name
+              && filterTempFiles(tempFile => tempFile.name !== file.name)));
       }
     }
   },

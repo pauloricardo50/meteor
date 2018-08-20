@@ -22,6 +22,11 @@ export const arrayify = (value) => {
  * @return {number} a value between 0 and 1
  */
 export const getPercent = (array = []) => {
+  if (array.length === 0) {
+    // If array is empty, return 100%
+    return 1;
+  }
+
   const percent = array.reduce((tot, val) => {
     if (isArray(val)) {
       return tot + (val.length ? 1 : 0);
