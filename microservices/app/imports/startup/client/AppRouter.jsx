@@ -39,6 +39,7 @@ const AppRouter = () => (
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={ROUTES.BORROWERS_PAGE_NO_TAB} component={BorrowersPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />

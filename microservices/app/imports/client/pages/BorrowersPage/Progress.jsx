@@ -5,7 +5,7 @@ import cx from 'classnames';
 import T from 'core/components/Translation';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 
-const Progress = ({ tabId, borrower }) => {
+const Progress = ({ tabId = 'personal', borrower }) => {
   if (tabId !== 'personal') {
     return null;
   }

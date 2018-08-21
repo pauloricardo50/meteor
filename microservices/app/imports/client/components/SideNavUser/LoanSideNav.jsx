@@ -29,8 +29,8 @@ const sideNavLinks: linksType = [
     exact: true,
     icon: faTachometer,
   },
+  { id: 'BorrowersPage', to: ROUTES.BORROWERS_PAGE_NO_TAB, icon: faUsers },
   { id: 'PropertiesPage', to: ROUTES.PROPERTIES_PAGE, icon: faHome },
-  { id: 'BorrowersPage', to: ROUTES.BORROWERS_PAGE, icon: faUsers },
   { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
   { id: 'FilesPage', to: ROUTES.FILES_PAGE, icon: faFolderOpen },
   // { id: 'ClosingPage', to: ROUTES.CLOSING_PAGE },
@@ -51,7 +51,7 @@ export const LoanSideNav = ({
           ':loanId': loan._id,
           ':borrowerId': loan.borrowers[0]._id,
           ':propertyId': loan.properties[0]._id,
-          ':tabId': 'personal',
+          // ':tabId': 'personal',
         }),
       }))
       .map(({ to, id, icon, ...otherProps }) => (
