@@ -28,7 +28,7 @@ const FinancingStructuresHeader = ({
       />
       {structures.map((structure, index) => (
         <FinancingStructuresSingleHeader
-          structure={structure}
+          structureId={structure.id}
           key={structure.id}
           index={index}
           handleEditTitle={handleEditTitle}
