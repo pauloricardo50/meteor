@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons';
 
 import T from 'core/components/Translation';
+import BorrowerRemover from 'core/components/BorrowerRemover';
 import BorrowerAdder from '../../components/BorrowerAdder';
 import Progress from './Progress';
 
@@ -24,10 +25,10 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
                     borrower.firstName
                   ) : (
                     <div className="borrower-num">
-                    <T
+                      <T
                         id="BorrowerHeader.title"
-                      values={{ index: borrowerIndex + 1 }}
-                    />
+                        values={{ index: borrowerIndex + 1 }}
+                      />
                     </div>
                   )}
                 </span>
@@ -38,6 +39,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
                 </span>
               </h1>
             </div>
+            {borrowers.length === 2 && <BorrowerRemover borrower={borrower} />}
           </div>
           <Progress borrower={borrower} tabId={tabId} />
         </div>
