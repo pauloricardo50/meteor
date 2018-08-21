@@ -9,13 +9,15 @@ import FinancingStructuresHeaderAdder from './FinancingStructuresHeaderAdder';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 
 type FinancingStructuresHeaderProps = {
+  selectedStructure: string,
   loan: userLoan,
   handleEditTitle: Function,
   handleEditDescription: Function,
 };
 
 const FinancingStructuresHeader = ({
-  loan: { structures, _id: loanId, selectedStructure },
+  selectedStructure,
+  loan: { structures, _id: loanId },
   handleEditTitle,
   handleEditDescription,
 }: FinancingStructuresHeaderProps) => (

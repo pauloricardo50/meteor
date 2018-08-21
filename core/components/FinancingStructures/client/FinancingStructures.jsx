@@ -22,7 +22,7 @@ const FinancingStructures = ({ loan }: FinancingStructuresProps) =>
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
         <FinancingStructuresRefresher loanFromDB={loan} />
-        <FinancingStructuresHeader />
+        <FinancingStructuresHeader selectedStructure={loan.selectedStructure} />
         <FinancingStructuresProject />
         <FinancingStructuresFinancing />
         <FinancingStructuresOwnFunds />
