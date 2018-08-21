@@ -128,8 +128,8 @@ export const BorrowerSchema = new SimpleSchema({
   },
   civilStatus: {
     type: String,
-    defaultValue: CIVIL_STATUS.SINGLE,
     allowedValues: Object.values(CIVIL_STATUS),
+    optional: true,
   },
   childrenCount: {
     type: Number,
