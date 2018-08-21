@@ -9,7 +9,7 @@
   "FinancingStructuresResultErrors.tooMuchOwnFunds": "Allouez moins de fonds propres à cette structure",
   "FinancingStructuresResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de cette structure",
 
-  "ReturnToDashboard.label": "Retour au Tableau de Bord",
+  "ReturnToDashboard.label": "Sauvegarder et retourner au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
   "FinancingStructures.OwnFundsLabel.available": "Disponible:",
   "SingleLoanPageHeader.title": "{name} - Emprunt de {value}",
