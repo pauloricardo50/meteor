@@ -1,9 +1,10 @@
 // @flow
 import { connect } from 'react-redux';
 import { lifecycle, compose, branch, renderNothing } from 'recompose';
-import { addStructure } from 'core/api';
+import { addNewStructure } from 'core/api';
 import { rehydrateLoan } from '../../../redux/financingStructures';
 import type { Action } from '../../../redux/financingStructures';
+import { ROLES } from '../../../api/constants';
 
 export default compose(
   connect(
@@ -16,11 +17,13 @@ export default compose(
     componentDidMount() {
       this.props.loadLoan(this.props.loan);
       if (this.props.loan.structures.length === 0) {
-        addStructure.run({ loanId: this.props.loan._id });
+        addNewStructure.run({ loanId: this.props.loan._id });
       }
     },
-    componentWillReceiveProps({ loan }) {
-      this.props.loadLoan(loan);
+    componentWillReceiveProps({ loan, currentUser }) {
+      if (loan.cantModifyStructures && currentUser.roles.includes(ROLES.USER)) {
+        this.props.loadLoan(loan);
+      }
     },
   }),
   branch(({ isLoaded }) => !isLoaded, renderNothing),

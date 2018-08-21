@@ -11,17 +11,17 @@ import FinancingStructuresOwnFunds from './FinancingStructuresOwnFunds';
 import FinancingStructuresProject from './FinancingStructuresProject';
 import FinancingStructuresResult from './FinancingStructuresResult';
 import FinancingStructuresContainer from './FinancingStructuresContainer';
+import FinancingStructuresRefresher from './FinancingStructuresRefresher';
 
 type FinancingStructuresProps = {
   loan: userLoan,
 };
 
-const FinancingStructures = ({
-  loan: { structures },
-}: FinancingStructuresProps) =>
-  (structures.length > 0 ? (
+const FinancingStructures = ({ loan }: FinancingStructuresProps) =>
+  (loan.structures.length > 0 ? (
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
+        <FinancingStructuresRefresher loanFromDB={loan} />
         <FinancingStructuresHeader />
         <FinancingStructuresProject />
         <FinancingStructuresFinancing />
