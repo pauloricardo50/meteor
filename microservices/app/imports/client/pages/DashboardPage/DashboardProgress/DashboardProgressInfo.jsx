@@ -15,20 +15,27 @@ type DashboardProgressInfoProps = {
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
     {dashboardTodosArray
-      .filter(({ condition }) => condition(loan))
-      .map(({ id, link }) => {
-        const Component = link ? Link : 'div';
+      .sort((a, b) => a.condition(loan) - b.condition(loan))
+      .map(({ id, link, condition, hide }) => {
+        if (hide && hide(loan)) {
+          return null;
+        }
+        const isDone = !condition(loan);
+        const Component = link && !isDone ? Link : 'div';
         return (
           <Component
             to={link && link(loan)}
-            className={cx('todo', { link })}
+            className={cx('todo', { link, isDone })}
             key={id}
           >
-            <Icon className="icon" type="radioButtonChecked" />
+            <Icon
+              className="icon"
+              type={isDone ? 'check' : 'radioButtonChecked'}
+            />
             <p>
               <T id={`DashboardProgressInfo.${id}`} />
             </p>
-            {link && <Icon type="right" className="icon-arrow" />}
+            {link && !isDone && <Icon type="right" className="icon-arrow" />}
           </Component>
         );
       })}

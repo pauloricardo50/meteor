@@ -29,8 +29,12 @@ $step-circle-size: 25px;
 
     margin: 8px 0;
 
-    &.link {
+    &.link:not(.isDone) {
       cursor: pointer;
+    }
+
+    &.isDone {
+      opacity: 0.5;
     }
 
     p {

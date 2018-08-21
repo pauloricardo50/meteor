@@ -76,26 +76,26 @@ export const dashboardTodosArray = [
     id: 'chooseOffer',
     condition: ({ offers, structure: { offer } }) =>
       offers.length > 0 && !offer,
+    hide: ({ offers }) => offers.length === 0,
     link: createFinancingLink,
   },
   {
     id: 'createSecondStructure',
     condition: ({ structures }) => structures.length === 1,
+    hide: ({ structures }) => structures.length === 0,
     link: createFinancingLink,
   },
   {
     id: 'callEpotek',
-    condition: params =>
+    hide: params =>
       dashboardTodosArray
         .filter(({ id }) => id !== 'callEpotek')
-        .every(({ condition }) => !condition(params)),
+        .some(({ condition }) => condition(params)),
+    condition: () => true,
   },
 ];
 
 export const dashboardTodosObject = dashboardTodosArray.reduce(
-  (acc, todo) => ({
-    ...acc,
-    [todo.id]: todo,
-  }),
+  (acc, todo) => ({ ...acc, [todo.id]: todo }),
   {},
 );
