@@ -7,6 +7,11 @@
     // border-top-right-radius: 4px;
     // width: 100%;
     // box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    align-content: stretch;
   }
 
   .tab-content {
