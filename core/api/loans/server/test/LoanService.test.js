@@ -2,7 +2,6 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import omit from 'lodash/omit';
 
 import '../../../factories';
 import Loans from '../../loans';
@@ -68,14 +67,14 @@ describe('LoanService', () => {
     });
   });
 
-  describe('addStructure', () => {
+  describe('addNewStructure', () => {
     it('adds a new structure to a loan', () => {
       loanId = Factory.create('loan')._id;
       loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures).to.deep.equal([]);
 
-      LoanService.addStructure({ loanId });
+      LoanService.addNewStructure({ loanId });
       loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures).to.have.length(1);
@@ -84,7 +83,7 @@ describe('LoanService', () => {
 
     it('selects the structure if it is the first one', () => {
       loanId = Factory.create('loan')._id;
-      LoanService.addStructure({ loanId });
+      LoanService.addNewStructure({ loanId });
 
       loan = LoanService.getLoanById(loanId);
       expect(loan.selectedStructure).to.equal(loan.structures[0].id);
@@ -95,7 +94,7 @@ describe('LoanService', () => {
         structures: [{ id: 'first' }],
         selectedStructure: 'first',
       })._id;
-      LoanService.addStructure({ loanId });
+      LoanService.addNewStructure({ loanId });
 
       loan = LoanService.getLoanById(loanId);
       expect(loan.selectedStructure).to.equal('first');
@@ -113,15 +112,26 @@ describe('LoanService', () => {
         ],
         selectedStructure: 'testId',
       })._id;
-      LoanService.addStructure({ loanId });
+      LoanService.addNewStructure({ loanId });
 
       loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures.length).to.equal(2);
-      const { id: id1, ...structure1 } = loan.structures[0];
-      const { id: id2, ...structure2 } = loan.structures[1];
+      const { id: id1, name, ...structure1 } = loan.structures[0];
+      const { id: id2, name: name2, ...structure2 } = loan.structures[1];
       expect(id1).to.not.equal(id2);
       expect(structure1).to.deep.equal(structure2);
+      expect(name2).to.equal('Structure 2');
+    });
+
+    it('returns the id of the new structure', () => {
+      loanId = Factory.create('loan')._id;
+      const structureId = LoanService.addNewStructure({ loanId });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(1)
+      expect(loan.structures[0].id).to.equal(structureId);
     });
   });
 
@@ -259,7 +269,7 @@ describe('LoanService', () => {
     });
   });
 
-  describe.only('duplicateStructure', () => {
+  describe('duplicateStructure', () => {
     it('duplicates a structure with a new id', () => {
       const structureId = 'testId';
 
@@ -279,8 +289,8 @@ describe('LoanService', () => {
       loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures.length).to.equal(2);
-      const { id: id1, ...structure1 } = loan.structures[0];
-      const { id: id2, ...structure2 } = loan.structures[1];
+      const { id: id1, name, ...structure1 } = loan.structures[0];
+      const { id: id2, name: name2, ...structure2 } = loan.structures[1];
       expect(id1).to.not.equal(id2);
       expect(structure1).to.deep.equal(structure2);
     });
@@ -307,11 +317,29 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
 
-      expect(loan.structures.length).to.equal(2);
-      const { id: id1, ...structure1 } = loan.structures[0];
-      const { id: id2, ...structure2 } = loan.structures[1];
+      const { id: id1, name, ...structure1 } = loan.structures[0];
+      const { id: id2, name: name2, ...structure2 } = loan.structures[1];
       expect(id1).to.not.equal(id2);
       expect(structure1).to.deep.equal(structure2);
+    });
+
+    it('adds "- copie" to the title', () => {
+      const structureId = 'testId';
+      const name = 'my structure';
+
+      loanId = Factory.create('loan', {
+        structures: [
+          {
+            id: structureId,
+            name,
+          },
+        ],
+      })._id;
+
+      LoanService.duplicateStructure({ loanId, structureId });
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures[1].name).to.equal(`${name} - copie`);
     });
   });
 });

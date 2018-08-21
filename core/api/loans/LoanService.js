@@ -114,23 +114,37 @@ export class LoanService {
   pullValue = ({ loanId, object }) => Loans.update(loanId, { $pull: object });
 
   addStructure = ({ loanId, structure }) => {
-    const loan = this.getLoanById(loanId);
-    const isFirstStructure = loan.structures.length === 0;
+    const newStructureId = Random.id();
+    Loans.update(loanId, {
+      $push: { structures: { ...structure, id: newStructureId } },
+    });
+    return newStructureId;
+  };
 
-    if (!isFirstStructure && !structure && loan.selectedStructure) {
-      return this.duplicateStructure({
-        loanId,
-        structureId: loan.selectedStructure,
-      });
+  addNewStructure = ({ loanId, structure }) => {
+    const { structures, selectedStructure, propertyIds } = this.getLoanById(loanId);
+    const isFirstStructure = structures.length === 0;
+
+    if (!isFirstStructure && !structure && selectedStructure) {
+      structure = structures.find(({ id }) => selectedStructure === id);
     }
 
-    const newStructureId = Random.id();
-    const propertyId = structure.propertyId
-      || (loan.propertyIds.length > 0 ? loan.propertyIds[0] : undefined);
-    return Loans.update(loanId, {
-      $push: { structures: { ...structure, id: newStructureId, propertyId } },
-      $set: isFirstStructure ? { selectedStructure: newStructureId } : {},
+    const propertyId = (structure && structure.propertyId)
+      || (propertyIds.length > 0 ? propertyIds[0] : undefined);
+    const newStructureId = this.addStructure({
+      loanId,
+      structure: {
+        ...structure,
+        name: `Structure ${structures.length + 1}`,
+        propertyId,
+      },
     });
+    this.update({
+      loanId,
+      object: isFirstStructure ? { selectedStructure: newStructureId } : {},
+    });
+
+    return newStructureId;
   };
 
   removeStructure = ({ loanId, structureId }) => {
@@ -179,7 +193,13 @@ export class LoanService {
 
     return (
       !!currentStructure
-      && this.addStructure({ loanId, structure: currentStructure })
+      && this.addStructure({
+        loanId,
+        structure: {
+          ...currentStructure,
+          name: `${currentStructure.name} - copie`,
+        },
+      })
     );
   };
 
