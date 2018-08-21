@@ -40,6 +40,10 @@ const oneStructureHasPledged = ({ structures }) =>
 
 const offersExist = ({ offers }) => offers && offers.length > 0;
 
+const oneStructureHasPledgedAmount = ({ structures }) =>
+  structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
+    secondPillarPledged || thirdPillarPledged);
+
 type FinancingStructuresFinancingProps = {};
 
 const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) => (
@@ -74,6 +78,7 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         Component: CalculatedValue,
         id: 'pledgedAmount',
         value: getPledgedAmount,
+        condition: oneStructureHasPledgedAmount,
       },
       {
         Component: RadioButtons,
