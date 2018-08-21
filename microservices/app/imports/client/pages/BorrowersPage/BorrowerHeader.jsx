@@ -37,12 +37,6 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
                     : null}
                 </span>
               </h1>
-              <div className="borrower-num">
-                <T
-                  id="BorrowerHeader.title"
-                  values={{ index: borrowerIndex + 1 }}
-                />
-              </div>
             </div>
           </div>
           <Progress borrower={borrower} tabId={tabId} />
