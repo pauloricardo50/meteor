@@ -20,20 +20,21 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
             <div className="borrower-header__user flex--helper flex--column">
               <h1 className="no-margin truncate">
                 <span>
-                  {borrower.firstName || (
+                  {borrower.firstName && borrower.lastName ? (
+                    borrower.firstName
+                  ) : (
+                    <div className="borrower-num">
                     <T
-                      id="BorrowerHeader.firstName"
+                        id="BorrowerHeader.title"
                       values={{ index: borrowerIndex + 1 }}
                     />
+                    </div>
                   )}
                 </span>
                 <span>
-                  {borrower.lastName || (
-                    <T
-                      id="BorrowerHeader.lastName"
-                      values={{ index: borrowerIndex + 1 }}
-                    />
-                  )}
+                  {borrower.firstName && borrower.lastName
+                    ? borrower.lastName
+                    : null}
                 </span>
               </h1>
               <div className="borrower-num">
