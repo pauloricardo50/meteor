@@ -15,15 +15,6 @@ const Info = (props) => {
     <section className="animated borrower-page-info flex--helper fadeIn">
       {borrowers.map(borrower => (
         <div className="borrower-page__wrapper col--50" key={borrower._id}>
-          <h2 className="">
-            <T id="Info.title" />
-          </h2>
-          <div className="description">
-            <p>
-              <T id="Forms.mandatory" />
-            </p>
-          </div>
-
           <AutoForm
             inputs={getBorrowerInfoArray({
               borrowers,
