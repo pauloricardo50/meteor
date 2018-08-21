@@ -3,6 +3,7 @@
 $labels-width: 200px;
 $item-height: 32px;
 $card1_padding: 24px;
+$result-section-negative-offset: -32px;
 
 .financing-structures {
   display: flex;
@@ -102,6 +103,7 @@ $card1_padding: 24px;
     .card1 {
       background-color: unset;
       box-shadow: unset;
+      margin-top: $result-section-negative-offset;
     }
 
     .structure {
@@ -111,6 +113,10 @@ $card1_padding: 24px;
 
     h4 {
       color: white;
+    }
+
+    .financing-structures-labels {
+      margin-top: $result-section-negative-offset;
     }
   }
 
@@ -146,14 +152,14 @@ $card1_padding: 24px;
     .structure {
       box-sizing: border-box;
       padding: 16px;
+    }
 
-      .card1 {
-        display: flex;
-        flex-direction: column;
+    .card1 {
+      display: flex;
+      flex-direction: column;
 
-        box-sizing: border-box;
-        padding: $card1_padding;
-      }
+      box-sizing: border-box;
+      padding: $card1_padding;
     }
   }
 
@@ -216,6 +222,7 @@ $card1_padding: 24px;
     align-self: center;
   }
 }
+
 .calculated-value.requiredOwnFunds-component {
   display: flex;
   flex-direction: column;
