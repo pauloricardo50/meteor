@@ -33,7 +33,7 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
         {
           id: 'result',
           label: (
-            <span className="section-title">
+            <span className="section-title result">
               <T id="FinancingStructuresResult.title" />
             </span>
           ),

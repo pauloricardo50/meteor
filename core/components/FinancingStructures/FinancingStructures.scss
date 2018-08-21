@@ -116,8 +116,16 @@ $result-section-negative-offset: -32px;
       color: white;
     }
 
-    .financing-structures-labels {
+    .financing-structures-labels:not(.summary-labels) {
       margin-top: $result-section-negative-offset;
+    }
+
+    .error {
+      background-color: $error;
+      color: white;
+      padding: 8px;
+      margin: 8px;
+      border-radius: 4px;
     }
   }
 
