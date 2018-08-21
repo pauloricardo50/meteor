@@ -16,7 +16,7 @@ const DashboardRecap = props => (
     <div className="cards">
       <DashboardRecapFinance {...props} />
       <DashboardRecapProperty
-        property={props.loan.properties[0]}
+        property={props.loan.structure.property}
         loanId={props.loan._id}
       />
     </div>

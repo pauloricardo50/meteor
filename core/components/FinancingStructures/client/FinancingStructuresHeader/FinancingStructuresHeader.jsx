@@ -21,7 +21,11 @@ const FinancingStructuresHeader = ({
 }: FinancingStructuresHeaderProps) => (
   <ScrollSyncPane>
     <div className="card1 financing-structures-section financing-structures-header">
-      <FinancingStructuresLabels config={[]} />
+      <FinancingStructuresLabels
+        config={[
+          { label: () => <FinancingStructuresHeaderAdder loanId={loanId} /> },
+        ]}
+      />
       {structures.map((structure, index) => (
         <FinancingStructuresSingleHeader
           structure={structure}
@@ -33,7 +37,6 @@ const FinancingStructuresHeader = ({
           selected={selectedStructure === structure.id}
         />
       ))}
-      <FinancingStructuresHeaderAdder loanId={loanId} />
     </div>
   </ScrollSyncPane>
 );
