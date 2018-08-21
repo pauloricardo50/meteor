@@ -8,7 +8,7 @@ import T from 'core/components/Translation';
 
 const Info = (props) => {
   const {
-    loan: { userFormsEnabled, borrowers },
+    loan: { userFormsEnabled, borrowers, _id: loanId },
   } = props;
 
   console.log('Info', borrowers);
@@ -21,6 +21,7 @@ const Info = (props) => {
             inputs={getBorrowerInfoArray({
               borrowers,
               borrowerId: borrower._id,
+              loanId,
             })}
             formClasses="user-form user-form__info"
             docId={borrower._id}

@@ -118,6 +118,7 @@
   "AuctionStart.title": "Lancez les enchères",
   "bert.emailVerificationSent": "Vérification envoyée à {email}!",
   "BorrowerAdder.label": "+ Ajouter un 2e emprunteur",
+  "BorrowerAddPartner.label": "Ajouter votre partenaire comme 2e emprunteur",
   "BorrowerHeader.age": "{value} ans",
   "BorrowerHeader.firstName": "Prénom",
   "BorrowerHeader.lastName": "Nom",

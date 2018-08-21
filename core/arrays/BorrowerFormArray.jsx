@@ -1,6 +1,9 @@
 import * as constants from 'core/api/constants';
+import React from 'react';
 
-export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
+import BorrowerAddPartner from 'core/components/BorrowerAddPartner';
+
+export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
   const b = borrowers.find(borrower => borrower._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
@@ -12,8 +15,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
 
   const disableAddress = !!b.sameAddress && !isFirst;
   const addressFieldsAreNecessary = !b.sameAddress;
-
-  console.log('isFirst', isFirst);
 
   return [
     { id: 'firstName', type: 'textInput' },
@@ -94,6 +95,16 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
         id: value,
         intlValues: { gender: b.gender },
       })),
+    },
+    {
+      id: 'test',
+      type: 'custom',
+      component: <BorrowerAddPartner loanId={loanId} />,
+      condition:
+        b.civilStatus === constants.CIVIL_STATUS.MARRIED &&
+        !multiple &&
+        isFirst,
+      required: false,
     },
     { id: 'childrenCount', type: 'textInput', number: true },
     {

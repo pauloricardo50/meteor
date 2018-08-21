@@ -23,6 +23,7 @@ export const addBorrower = new Method({
   name: 'addBorrower',
   params: {
     loanId: String,
+    borrower: Match.Optional(Object),
   },
 });
 

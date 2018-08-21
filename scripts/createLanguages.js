@@ -36,6 +36,7 @@ const config = {
         'Microlocation',
         'BorrowerRemover',
         'ConfirmMethod',
+        'BorrowerAddPartner'
       ],
     },
     {
