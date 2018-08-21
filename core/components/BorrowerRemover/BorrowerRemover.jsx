@@ -4,7 +4,8 @@ import { withProps } from 'recompose';
 
 import { borrowerDelete } from '../../api/borrowers';
 import Button from '../Button';
-import T from '../Translation/Translation';
+import T from '../Translation';
+import ConfirmMethod from '../ConfirmMethod';
 
 type BorrowerRemoverProps = {
   handleClick: Function,
@@ -12,12 +13,15 @@ type BorrowerRemoverProps = {
 
 const BorrowerRemover = ({ handleClick }: BorrowerRemoverProps) => (
   <div className="borrower-remover">
-    <Button onClick={handleClick} primary>
-      <T id="BorrowerRemover.button" />
-    </Button>
+    <ConfirmMethod
+      method={handleClick}
+      label={<T id="BorrowerRemover.button" />}
+      keyword={false}
+    />
   </div>
 );
 
 export default withProps(({ borrower: { _id: borrowerId } }) => ({
-  handleClick: event => borrowerDelete.run({ borrowerId }),
+  handleClick: () =>
+    borrowerDelete.run({ borrowerId }).then(() => location.reload()),
 }))(BorrowerRemover);

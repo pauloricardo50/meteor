@@ -34,6 +34,8 @@ const config = {
         'ValuationButton',
         'Valuation',
         'Microlocation',
+        'BorrowerRemover',
+        'ConfirmMethod',
       ],
     },
     {
