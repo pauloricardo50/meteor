@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'core/components/Material/Dialog';
 import Button from 'core/components/Button';
 import TextField from 'core/components/Material/TextField';
+import T from 'core/components/Translation';
 
 export default class ConfirmMethod extends Component {
   state = {
@@ -16,11 +17,12 @@ export default class ConfirmMethod extends Component {
   handleClose = () => this.setState({ open: false });
 
   handleSubmit = (event) => {
+    const { keyword } = this.props;
     if (event) {
       event.preventDefault();
     }
 
-    if (this.state.text === this.props.keyword) {
+    if (!keyword || this.state.text === keyword) {
       this.props
         .method()
         .then(() => this.setState({ open: false }))
@@ -37,15 +39,15 @@ export default class ConfirmMethod extends Component {
     const { open, text } = this.state;
     const actions = [
       <Button
-        label="Annuler"
+        label={<T id="ConfirmMethod.buttonCancel" />}
         primary
         onClick={this.handleClose}
         key="cancel"
       />,
       <Button
-        label="Okay"
+        label={<T id="ConfirmMethod.buttonConfirm" />}
         primary
-        disabled={text !== keyword}
+        disabled={keyword && text !== keyword}
         onClick={this.handleSubmit}
         key="ok"
       />,
@@ -54,19 +56,30 @@ export default class ConfirmMethod extends Component {
     return (
       <React.Fragment>
         <Button
-          raised
+          primary
           label={label}
           onClick={this.handleOpen}
           style={style}
           disabled={disabled}
         />
-        <Dialog title="Êtes-vous sûr?" actions={actions} important open={open}>
-          Tapez le mot &quot;
-          {keyword}
-          &quot; pour valider cette action.
-          <form onSubmit={this.handleSubmit}>
-            <TextField value={text} autoFocus onChange={this.handleChange} />
-          </form>
+        <Dialog
+          title={<T id="ConfirmMethod.dialogTitle" />}
+          actions={actions}
+          important
+          open={open}
+        >
+          {keyword && (
+            <div>
+              <T id="ConfirmMethod.dialogMessage" values={{ keyword }} />
+              <form onSubmit={this.handleSubmit}>
+                <TextField
+                  value={text}
+                  autoFocus
+                  onChange={this.handleChange}
+                />
+              </form>
+            </div>
+          )}
         </Dialog>
       </React.Fragment>
     );
