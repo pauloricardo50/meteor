@@ -82,7 +82,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       number: true,
       saveOnChange: false,
     },
-    { id: 'birthPlace', type: 'textInput', condition: !!b.isSwiss },
     { id: 'citizenship', type: 'textInput', condition: !b.isSwiss },
     { id: 'isUSPerson', type: 'radioInput', options: [true, false] },
     {
@@ -100,12 +99,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       required: false,
       autoComplete: 'organization',
     },
-    {
-      id: 'worksForOwnCompany',
-      type: 'radioInput',
-      options: [true, false],
-    },
-    { id: 'personalBank', type: 'textInput' },
   ];
 };
 
