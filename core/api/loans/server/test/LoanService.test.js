@@ -259,7 +259,7 @@ describe('LoanService', () => {
     });
   });
 
-  describe('duplicateStructure', () => {
+  describe.only('duplicateStructure', () => {
     it('duplicates a structure with a new id', () => {
       const structureId = 'testId';
 
@@ -270,6 +270,35 @@ describe('LoanService', () => {
             name: 'joe',
             description: 'hello',
             fortuneUsed: 100,
+          },
+        ],
+      })._id;
+
+      LoanService.duplicateStructure({ loanId, structureId });
+
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(2);
+      const { id: id1, ...structure1 } = loan.structures[0];
+      const { id: id2, ...structure2 } = loan.structures[1];
+      expect(id1).to.not.equal(id2);
+      expect(structure1).to.deep.equal(structure2);
+    });
+
+    it('duplicates properly when multiple properties exist', () => {
+      const structureId = 'testId';
+      const property1 = 'property1';
+      const property2 = 'property2';
+
+      loanId = Factory.create('loan', {
+        propertyIds: [property1, property2],
+        structures: [
+          {
+            id: structureId,
+            name: 'joe',
+            description: 'hello',
+            fortuneUsed: 100,
+            propertyId: property2,
           },
         ],
       })._id;

@@ -125,15 +125,10 @@ export class LoanService {
     }
 
     const newStructureId = Random.id();
+    const propertyId = structure.propertyId
+      || (loan.propertyIds.length > 0 ? loan.propertyIds[0] : undefined);
     return Loans.update(loanId, {
-      $push: {
-        structures: {
-          ...structure,
-          id: newStructureId,
-          propertyId:
-            loan.propertyIds.length > 0 ? loan.propertyIds[0] : undefined,
-        },
-      },
+      $push: { structures: { ...structure, id: newStructureId, propertyId } },
       $set: isFirstStructure ? { selectedStructure: newStructureId } : {},
     });
   };
@@ -179,7 +174,8 @@ export class LoanService {
   };
 
   duplicateStructure = ({ loanId, structureId }) => {
-    const currentStructure = this.getLoanById(loanId).structures.find(({ id }) => id === structureId);
+    const { structures } = this.getLoanById(loanId);
+    const currentStructure = structures.find(({ id }) => id === structureId);
 
     return (
       !!currentStructure
