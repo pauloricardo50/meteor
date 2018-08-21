@@ -11,6 +11,9 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
   }
 
   const disableAddress = !!b.sameAddress && !isFirst;
+  const addressFieldsAreNecessary = !b.sameAddress;
+
+  console.log('isFirst', isFirst);
 
   return [
     { id: 'firstName', type: 'textInput' },
@@ -33,7 +36,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       condition: !disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
-      required: !disableAddress,
+      required: addressFieldsAreNecessary,
     },
     {
       id: 'address2',
@@ -58,7 +61,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
-      required: !disableAddress,
+      required: addressFieldsAreNecessary,
     },
     {
       type: 'conditionalInput',
