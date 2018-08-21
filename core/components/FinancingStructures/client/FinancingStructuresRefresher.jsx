@@ -38,6 +38,9 @@ export const FinancingStructuresRefresher = ({
 const dataIsDifferent = ({ loanFromDB, structures }) =>
   JSON.stringify(loanFromDB.structures) !== JSON.stringify(structures);
 
+const structuresLengthHasChanged = ({ loanFromDB, structures }) =>
+  loanFromDB.structures.length !== structures.length;
+
 export default compose(
   connect(
     null,
@@ -53,6 +56,10 @@ export default compose(
         this.setState({ showRefresh: true });
       } else {
         this.setState({ showRefresh: false });
+      }
+
+      if (structuresLengthHasChanged(nextProps)) {
+        this.props.loadLoan(this.props.loanFromDB);
       }
     },
   }),

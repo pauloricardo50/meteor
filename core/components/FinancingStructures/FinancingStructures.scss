@@ -276,9 +276,9 @@ $result-section-negative-offset: -32px;
 $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
 .financing-structures-refresher {
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: fixed;
+  top: 100px;
+  right: 16px;
   padding: 40px;
   z-index: 500;
   box-shadow: $shadow-level-2;
