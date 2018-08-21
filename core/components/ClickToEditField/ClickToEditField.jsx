@@ -35,7 +35,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
         <Input
           defaultValue={value}
           inputRef={this.input}
-          onBlur={() => toggleEdit(false)}
+          onBlur={this.handleSubmit}
         />
       </form>
     ) : (
