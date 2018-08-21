@@ -31,6 +31,14 @@ class Tabs extends Component {
 
   handleChange = (event, value) => this.setState({ value });
 
+  componentWillReceiveProps({ initialIndex: nextIndex }) {
+    const { initialIndex } = this.props;
+
+    if (nextIndex !== initialIndex) {
+      this.setState({ value: nextIndex });
+    }
+  }
+
   render() {
     const {
       classes,
