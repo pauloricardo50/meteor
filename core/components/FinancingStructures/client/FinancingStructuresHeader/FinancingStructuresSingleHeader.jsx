@@ -25,7 +25,10 @@ const FinancingStructuresSingleHeader = ({
   selected,
 }: FinancingStructuresSingleHeaderProps) => (
   <div
-    className={cx('financing-structures-single-header structure', { selected })}
+    className={cx(
+      'financing-structures-single-header structure animated zoomIn',
+      { selected },
+    )}
   >
     <FinancingStructuresHeaderActions
       structureId={structure.id}
