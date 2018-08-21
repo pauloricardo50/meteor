@@ -21,12 +21,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       options: Object.values(constants.GENDER),
     },
     {
-      type: 'h3',
-      id: 'yourAddress',
-      ignore: true,
-      required: false,
-    },
-    {
       id: 'sameAddress',
       type: 'radioInput',
       intlValues: { name: borrowers[0].firstName || 'Emprunteur 1' },
@@ -59,8 +53,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       },
       condition: !disableAddress,
       placeholder:
-        disableAddress
-        && (borrowers[0].zipCode && borrowers[0].city
+        disableAddress &&
+        (borrowers[0].zipCode && borrowers[0].city
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
