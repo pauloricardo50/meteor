@@ -1,8 +1,8 @@
 import { withProps } from 'recompose';
-import { addStructure } from 'core/api';
+import { addNewStructure } from 'core/api';
 
 const FinancingStructuresHeaderAdderContainer = withProps(({ loanId }) => ({
-  handleAdd: () => addStructure.run({ loanId }),
+  handleAdd: () => addStruaddNewStructurecture.run({ loanId }),
 }));
 
 export default FinancingStructuresHeaderAdderContainer;
