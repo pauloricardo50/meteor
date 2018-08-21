@@ -42,6 +42,14 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
       ]}
       detailConfig={[
         {
+          id: 'cost',
+          label: (
+            <h4 className="section-subtitle">
+              <T id="FinancingStructuresResult.cost" />
+            </h4>
+          ),
+        },
+        {
           id: 'interestsCost',
           Component: CalculatedValue,
           value: getInterests,
@@ -59,11 +67,10 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
         {
           id: 'finma',
           label: (
-            <h4>
+            <h4 className="section-subtitle">
               <T id="FinancingStructuresResult.finma" />
             </h4>
           ),
-          className: 'section-subtitle',
         },
         {
           id: 'borrowRatio',
@@ -80,7 +87,7 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
         {
           id: 'future',
           label: (
-            <h4>
+            <h4 className="section-subtitle">
               <T id="FinancingStructuresResult.future" />
             </h4>
           ),
