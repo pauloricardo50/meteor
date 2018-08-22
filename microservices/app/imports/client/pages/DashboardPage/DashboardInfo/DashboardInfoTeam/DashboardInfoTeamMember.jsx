@@ -11,7 +11,7 @@ const DashboardInfoTeamMember = ({
   name,
   title,
   email,
-  phoneNumber,
+  phone,
   allowEdit,
   editContact,
   removeContact,
@@ -31,7 +31,7 @@ const DashboardInfoTeamMember = ({
             <IconButton type="edit" tooltip={<T id="general.modify" />} />
           }
           onSubmit={values => editContact(name, values)}
-          initialValues={{ name, title, email, phoneNumber }}
+          initialValues={{ name, title, email, phone }}
           form={name}
           renderAdditionalActions={({ handleClose }) => (
             <Button onClick={() => removeContact(name).then(handleClose)}>
@@ -48,8 +48,8 @@ const DashboardInfoTeamMember = ({
         />
       </a>
 
-      {phoneNumber && (
-        <a href={`tel:${phoneNumber}`}>
+      {phone && (
+        <a href={`tel:${phone}`}>
           <IconButton
             type="phone"
             tooltip={<T id="DashboardInfoTeamMember.phoneTooltip" />}
@@ -65,7 +65,7 @@ DashboardInfoTeamMember.propTypes = {
   editContact: PropTypes.func,
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  phoneNumber: PropTypes.string,
+  phone: PropTypes.string,
   removeContact: PropTypes.func,
   src: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
