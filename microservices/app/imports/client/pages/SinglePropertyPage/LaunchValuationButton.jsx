@@ -3,6 +3,7 @@ import React from 'react';
 import { scroller as scroll } from 'react-scroll';
 import Button from 'core/components/Button';
 import cx from 'classnames';
+import T from 'core/components/Translation';
 
 type LaunchValuationButtonProps = {
   enabled: boolean,
@@ -33,8 +34,8 @@ const LaunchValuationButton = ({ enabled }: LaunchValuationButtonProps) => (
       secondary
       raised
       onClick={scrollToTopAndLaunchValuation}
-      label="Lancer l'expertise"
-      className={cx('animated fadeIn', { hide: !enabled })}
+      label={<T id="ValuationButton.evaluate" />}
+      className={cx('animated fadeInRight', { hide: !enabled })}
     />
   </div>
 );
