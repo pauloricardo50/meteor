@@ -3,6 +3,7 @@
 import { expect } from 'chai';
 
 import PropertyCalculator from '..';
+import { PROPERTY_DOCUMENTS } from '../../../api/constants';
 
 describe('PropertyCalculator', () => {
   let params;
@@ -20,11 +21,19 @@ describe('PropertyCalculator', () => {
       property = {};
       expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal(0);
     });
+
+    it('returns 0.5 if one document is provided', () => {
+      params.loan.structure.property = {
+        documents: {
+          [PROPERTY_DOCUMENTS.PROPERTY_PLANS]: [{}],
+        },
+      };
+      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal(0.5);
+    });
   });
 
   describe('getMissingPropertyFields', () => {
     it('returns the list of missing data from a property', () => {
-      property = {};
       expect(PropertyCalculator.getMissingPropertyFields(params)).to.deep.equal([
         'value',
         'propertyType',
