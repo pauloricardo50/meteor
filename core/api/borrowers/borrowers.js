@@ -277,6 +277,12 @@ export const BorrowerSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
+  bank3A: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
   // business logic and admin
   logic: {
     type: LogicSchema,
