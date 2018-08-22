@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from '../../../utils/testHelpers/enzyme';
+import { mount } from '../../../../utils/testHelpers/enzyme';
 
 import { mapPropertyDocumentsIntoProperty } from '../../mergeFilesWithQuery';
 

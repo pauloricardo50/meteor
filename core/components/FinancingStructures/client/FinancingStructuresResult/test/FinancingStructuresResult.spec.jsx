@@ -47,22 +47,24 @@ describe('FinancingStructuresResult', () => {
 
   context('renders the correct results for a standard structure', () => {
     beforeEach(() => {
+      const structure = {
+        id: 'a',
+        loanTranches: [{ type: 'interest10', value: 1 }],
+        propertyId: 'house',
+        propertyWork: 0,
+        wantedLoan: 800000,
+        fortuneUsed: 250000,
+        secondPillarPledged: 0,
+        thirdPillarPledged: 0,
+        secondPillarWithdrawal: 0,
+        thirdPillarWithdrawal: 0,
+        thirdPartyFortuneUsed: 0,
+      };
       store = {
         financingStructures: {
-          loan: {},
+          loan: { selectedStructure: 'a', structure },
           structures: {
-            a: {
-              id: 'a',
-              loanTranches: [{ type: 'interest10', value: 1 }],
-              propertyId: 'house',
-              propertyWork: 0,
-              wantedLoan: 800000,
-              fortuneUsed: 250000,
-              secondPillarPledged: 0,
-              thirdPillarPledged: 0,
-              secondPillarWithdrawal: 0,
-              thirdPillarWithdrawal: 0,
-            },
+            a: structure,
           },
           borrowers: {
             john: {
@@ -119,7 +121,8 @@ describe('FinancingStructuresResult', () => {
         .find('.borrowRatio')
         .last();
 
-      expect(borrowRatio.contains('0,8')).to.equal(true);
+      // Do this because of different browsers..
+      expect(borrowRatio.contains('0,8') || borrowRatio.contains('0.8')).to.equal(true);
     });
 
     it('incomeRatio', () => {
@@ -127,7 +130,8 @@ describe('FinancingStructuresResult', () => {
         .find('.incomeRatio')
         .last();
 
-      expect(incomeRatio.contains('0,29')).to.equal(true);
+      // Do this because of different browsers..
+      expect(incomeRatio.contains('0,29') || incomeRatio.contains('0.29')).to.equal(true);
     });
 
     it('remainingCash', () => {
