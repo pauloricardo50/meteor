@@ -103,7 +103,7 @@ export const withCombinedCalculator = (SuperClass = class {}) =>
         borrowers: loan.borrowers,
       });
       const propertyProgress = this.getPropertyFilesProgress({
-        property: this.selectProperty({ loan }),
+        loan,
       });
       return (loanProgress + borrowersProgress + propertyProgress) / 3;
     }

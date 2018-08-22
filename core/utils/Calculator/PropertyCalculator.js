@@ -31,6 +31,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     propertyPercent({ loan, property }) {
       const { borrowers, structure } = loan;
       const propertyToCalculateWith = property || structure.property;
+
+      if (!propertyToCalculateWith) {
+        return 0;
+      }
+
       const formArray1 = getPropertyArray({
         loan,
         borrowers,
@@ -59,6 +64,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getPropertyFilesProgress({ loan, property }) {
       const { structure } = loan;
       const propertyToCalculateWith = property || structure.property;
+
+      if (!propertyToCalculateWith) {
+        return 0;
+      }
 
       return filesPercent({
         doc: propertyToCalculateWith,
@@ -112,7 +121,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     getMissingPropertyDocuments({ loan, property }) {
       const { structure } = loan;
-      const propertyToCalculateWith = property || structure.property;
+      const propertyToCalculateWith = property || (structure && structure.property);
 
       return getMissingDocumentIds({
         doc: propertyToCalculateWith,
