@@ -151,19 +151,6 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       ],
     },
     {
-      id: 'expenses',
-      type: 'arrayInput',
-      required: false,
-      inputs: [
-        {
-          id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.EXPENSES),
-        },
-        { id: 'value', type: 'textInput', money: true },
-      ],
-    },
-    {
       id: 'otherIncome',
       type: 'arrayInput',
       required: false,
@@ -172,6 +159,19 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
           id: 'description',
           type: 'selectInput',
           options: Object.values(constants.OTHER_INCOME),
+        },
+        { id: 'value', type: 'textInput', money: true },
+      ],
+    },
+    {
+      id: 'expenses',
+      type: 'arrayInput',
+      required: false,
+      inputs: [
+        {
+          id: 'description',
+          type: 'selectInput',
+          options: Object.values(constants.EXPENSES),
         },
         { id: 'value', type: 'textInput', money: true },
       ],
