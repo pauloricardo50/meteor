@@ -93,6 +93,7 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
+    'LoanChecklist',
   ],
 };
 

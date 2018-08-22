@@ -1,0 +1,25 @@
+.loan-checklist {
+  display: flex;
+  flex-wrap: wrap;
+
+  &-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  &-documents,
+  &-fields {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      padding: 8px 0;
+    }
+  }
+}

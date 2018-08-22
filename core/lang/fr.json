@@ -1,4 +1,7 @@
 {
+  "LoanChecklist.missingFields": "Informations manquantes",
+  "LoanChecklist.missingDocuments": "Documents manquants",
+
   "FinancingStructures.wantedLoanPercent": "Prêt hypothécaire (%)",
   "FinancingStructuresRefresher.label": "Rafraîchir",
   "FinancingStructuresResult.cost": "Charges du projet",
