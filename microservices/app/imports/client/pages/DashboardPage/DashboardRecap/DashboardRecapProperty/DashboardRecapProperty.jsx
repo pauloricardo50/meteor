@@ -72,7 +72,9 @@ const getContent = (property, loanId) => {
       ) : (
         <SwitzerlandMap className="map" />
       )}
-      <h3>{canDisplayDetails ? propertyAddress : <T id="Recap.property" />}</h3>
+      <h3 className="dashboard-recap-property-title">
+        {canDisplayDetails ? propertyAddress : <T id="Recap.property" />}
+      </h3>
       {canDisplayDetails ? (
         <Recap array={getRecapArray(property)} className="recap" />
       ) : (
