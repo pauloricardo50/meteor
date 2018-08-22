@@ -29,26 +29,6 @@ describe('dashboardTodos', () => {
     });
   });
 
-  describe('addProperty', () => {
-    it('shows when no property exists', () => {
-      expect(dashboardTodosObject.addProperty.condition({
-        properties: [],
-      })).to.equal(true);
-    });
-
-    it('hides when something is in properteis array', () => {
-      expect(dashboardTodosObject.addProperty.condition({
-        properties: [undefined],
-      })).to.equal(false);
-      expect(dashboardTodosObject.addProperty.condition({
-        properties: [{}],
-      })).to.equal(false);
-      expect(dashboardTodosObject.addProperty.condition({
-        properties: ['hello world'],
-      })).to.equal(false);
-    });
-  });
-
   describe('completeProperty', () => {
     it('shows when property is missing things', () => {
       expect(dashboardTodosObject.completeProperty.condition({
@@ -60,14 +40,14 @@ describe('dashboardTodos', () => {
 
     it('hides when property is complete', () => {
       sinon
-        .stub(PropertyCalculator, 'getPropertyCompletion')
+        .stub(PropertyCalculator, 'propertyPercent')
         .callsFake(() => 1);
       expect(dashboardTodosObject.completeProperty.condition({
         general: {},
-        structure: { property: {} },
+        structure: { property: {documents:{}} },
         borrowers: [{}],
       })).to.equal(false);
-      PropertyCalculator.getPropertyCompletion.restore();
+      PropertyCalculator.propertyPercent.restore();
     });
   });
 
