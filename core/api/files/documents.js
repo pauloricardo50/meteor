@@ -139,25 +139,3 @@ export const getDocumentArrayByStep = (func, step) => [
   ...func()[step],
   { id: DOCUMENTS.OTHER },
 ];
-
-export const getDocumentIDs = (list) => {
-  let documents;
-  const ids = [];
-  switch (list) {
-  case BORROWERS_COLLECTION:
-    documents = borrowerDocuments();
-    break;
-  case LOANS_COLLECTION:
-    documents = loanDocuments();
-    break;
-  case PROPERTIES_COLLECTION:
-    documents = propertyDocuments();
-    break;
-  default:
-    throw new Error('invalid file list');
-  }
-
-  documents.all().forEach(f => ids.push(f.id));
-
-  return ids;
-};
