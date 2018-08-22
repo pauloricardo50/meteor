@@ -21,7 +21,10 @@ export const arrayify = (value) => {
  *
  * @return {number} a value between 0 and 1
  */
-export const getPercent = (array = []) => {
+export const getPercent = (array) => {
+  if (!array) {
+    return 0;
+  }
   if (array.length === 0) {
     // If array is empty, return 100%
     return 1;

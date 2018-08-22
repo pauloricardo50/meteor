@@ -62,6 +62,11 @@ describe('general helpers', () => {
     it("returns 0 if it isn't given any argument", () => {
       expect(getPercent()).to.equal(0);
     });
+
+    it('returns 1 if it is given an empty array', () => {
+      // Empty array means that there was nothing to do, so it should be 100%
+      expect(getPercent([])).to.equal(1);
+    });
   });
 
   describe('flattenObjectTreeToArrays', () => {
