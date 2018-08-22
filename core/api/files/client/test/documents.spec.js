@@ -6,7 +6,7 @@ import {
   loanDocuments,
   propertyDocuments,
   borrowerDocuments,
-} from '../documents';
+} from '../../documents';
 
 describe('documents', () => {
   it('all document ids are defined', () => {

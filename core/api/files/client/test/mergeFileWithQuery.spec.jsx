@@ -4,11 +4,11 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from '../../../utils/testHelpers/enzyme';
 
-import { mapPropertyDocumentsIntoProperty } from '../mergeFilesWithQuery';
+import { mapPropertyDocumentsIntoProperty } from '../../mergeFilesWithQuery';
 
 const Component = props => <div {...props} />;
 
-describe.only('mergeFilesWithQuery', () => {
+describe('mergeFilesWithQuery', () => {
   describe('mapPropertyDocumentsIntoProperty', () => {
     let props;
     const propertyId = 'propertyId';

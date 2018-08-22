@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { filesPercent, getMissingDocumentIds } from '../fileHelpers';
+import { filesPercent, getMissingDocumentIds } from '../../fileHelpers';
 
 describe('fileHelpers', () => {
   let dummyFunc;
