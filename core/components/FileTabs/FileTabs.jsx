@@ -43,7 +43,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
           label: (
             <FileTabLabel
               id="general.property"
-              progress={Calculator.getPropertyFilesProgress({ property })}
+              progress={Calculator.getPropertyFilesProgress({ loan })}
             />
           ),
           content: (
