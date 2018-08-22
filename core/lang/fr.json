@@ -473,7 +473,7 @@
   "FilesPage.title": "Documents",
   "Finance.description": "Normalement, vous nous avez déjà donné tout ce dont nous avons besoin sur cette page.{verticalSpace}Vérifiez cependant que vous avez détaillé de façon exhaustive vos finances personelles. Les prêteurs vous offriront des conditions plus attractives si vos moyens dépassent le minimum nécéssaire pour votre Prêt Hypothécaire.",
   "Finance.notValidated": "Non validées",
-  "Finance.recapTitle": "Récapitulatif (en {currency})",
+  "Finance.recapTitle": "Récapitulatif",
   "Finance.title": "Mes Finances",
   "Finance.validated": "Validées",
   "FinancePage.title": "Graphiques financiers",
