@@ -277,7 +277,10 @@ class WuestService {
     const errors = this.getErrors(property);
 
     if (errors.length > 0) {
-      throw new Meteor.Error(errors[0]);
+      throw new Meteor.Error(
+        wuestConstants.WUEST_ERRORS.WUEST_SERVICE_ERROR,
+        errors[0],
+      );
     }
   }
 
@@ -447,9 +450,10 @@ class WuestService {
           numberOfRooms: roomCount,
           numberOfFloors,
           floorType:
-              (flatType !== wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT &&
-              flatType !== wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE &&
-              flatType !== wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT)
+              flatType !== wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT &&
+              flatType !==
+                wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE &&
+              flatType !== wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT
                 ? wuestConstants.WUEST_FLOOR_NUMBER[floorNumber]
                 : wuestConstants.WUEST_FLOOR_NUMBER[
                   this.getFloorNumber(flatType, numberOfFloors)
@@ -460,8 +464,8 @@ class WuestService {
           },
           terraceArea,
           parking: {
-            indoor: !!parking.inside ? parking.inside : 0,
-            outdoor: !!parking.outside ? parking.outside : 0,
+            indoor: parking.inside ? parking.inside : 0,
+            outdoor: parking.outside ? parking.outside : 0,
           },
           constructionYear,
           minergieCertificate: minergie,
@@ -500,8 +504,8 @@ class WuestService {
             value: volume,
           },
           parking: {
-            indoor: !!parking.inside ? parking.inside : 0,
-            outdoor: !!parking.outside ? parking.outside : 0,
+            indoor: parking.inside ? parking.inside : 0,
+            outdoor: parking.outside ? parking.outside : 0,
           },
           constructionYear,
           minergieCertificate: minergie,
@@ -520,7 +524,7 @@ class WuestService {
     default:
       return null;
     }
-    
+
     return data;
   }
 
@@ -612,7 +616,10 @@ class WuestService {
     return result.json().then((response) => {
       if (response.errorCode) {
         const errorMessage = this.formatError(response);
-        throw new Meteor.Error(errorMessage);
+        throw new Meteor.Error(
+          wuestConstants.WUEST_ERRORS.WUEST_ERROR,
+          errorMessage,
+        );
       }
       return response;
     });

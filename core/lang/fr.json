@@ -1321,6 +1321,7 @@
   "ValidatorItem.error.income": "Manque de revenus",
   "ValidatorItem.error.incomeTight": "Revenus limite limite",
   "ValidatorItem.isValid": "Acquisition possible!",
+  "Valuation.error.FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS": "L'étage de votre appartement ne peut pas dépasser le nombre d'étages dans l'immeuble.",
   "Valuation.preciseValueLabel": "Valeur précise",
   "Valuation.preciseValueWarning": "Attention à ne pas communiquer cette valeur au client",
   "Valuation.rangeLabel": "Valeur",

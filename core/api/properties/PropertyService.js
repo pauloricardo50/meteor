@@ -49,7 +49,7 @@ export class PropertyService {
               max: null,
               value: null,
               date: new Date(),
-              error: error.message,
+              error: error.reason,
             },
           },
         });
@@ -64,7 +64,7 @@ export class PropertyService {
         loanResidenceType,
       });
     } catch (error) {
-      return error.message;
+      return error.reason;
     }
     return false;
   };

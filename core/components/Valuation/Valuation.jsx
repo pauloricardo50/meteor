@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { toMoney } from 'core/utils/conversionFunctions';
 
-import { VALUATION_STATUS } from '../../api/constants';
+import { VALUATION_STATUS, WUEST_ERRORS } from '../../api/constants';
 import Loading from '../Loading';
 import ValuationContainer from './ValuationContainer';
 import Microlocation from './Microlocation/Microlocation';
@@ -15,6 +15,7 @@ type ValuationProps = {
   handleEvaluateProperty: Function,
   isLoading: boolean,
   disabled: boolean,
+  error: String,
 };
 
 const renderResults = ({ min, max, value, microlocation }) => (
@@ -48,6 +49,7 @@ export const Valuation = ({
   handleEvaluateProperty,
   isLoading,
   disabled,
+  error,
 }: ValuationProps) => {
   if (isLoading) {
     return (
@@ -59,13 +61,23 @@ export const Valuation = ({
   let content;
   switch (valuation.status) {
   case VALUATION_STATUS.DONE:
-    content = renderResults(valuation);
+    content = [
+      renderResults(valuation),
+      error &&
+        error === WUEST_ERRORS.FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS
+        ? renderError(<T id={`Valuation.error.${error}`} />)
+        : null,
+    ];
     break;
   case VALUATION_STATUS.ERROR:
     content = renderError(valuation.error);
     break;
   default:
-    content = null;
+    content =
+        error &&
+        error === WUEST_ERRORS.FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS
+          ? renderError(<T id={`Valuation.error.${error}`} />)
+          : null;
   }
 
   return (
