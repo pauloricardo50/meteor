@@ -2,7 +2,10 @@
 import { FinanceCalculator } from '../FinanceCalculator';
 import { loanDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
-import { filesPercent } from '../../api/files/fileHelpers';
+import {
+  filesPercent,
+  getMissingDocumentIds,
+} from '../../api/files/fileHelpers';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -158,6 +161,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getLoanFilesProgress({ loan }) {
       return filesPercent({
+        doc: loan,
+        fileArrayFunc: loanDocuments,
+        step: FILE_STEPS.AUCTION,
+      });
+    }
+
+    getMissingBorrowerDocuments({ loan }) {
+      return getMissingDocumentIds({
         doc: loan,
         fileArrayFunc: loanDocuments,
         step: FILE_STEPS.AUCTION,

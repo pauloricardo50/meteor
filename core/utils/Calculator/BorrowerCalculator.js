@@ -1,11 +1,14 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
-import { filesPercent } from '../../api/files/fileHelpers';
+import {
+  filesPercent,
+  getMissingDocumentIds,
+} from '../../api/files/fileHelpers';
 import { getBorrowerInfoArray } from '../../arrays/BorrowerFormArray';
 import { borrowerDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
 import { arrayify, getPercent } from '../general';
-import { getCountedArray } from '../formArrayHelpers';
+import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
@@ -53,7 +56,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getBorrowersCompletion = ({ borrowers }) =>
-      (this.getBorrowersFilesProgress({  borrowers })
+      (this.getBorrowersFilesProgress({ borrowers })
         + this.personalInfoPercent({ borrowers }))
       / 2;
 
@@ -159,6 +162,28 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getThirdPillar = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
+
+    getMissingBorrowerFields = ({ borrowers }) =>
+      arrayify(borrowers).reduce((missingIds, borrower) => {
+        const formArray = getBorrowerInfoArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: borrower._id,
+        });
+        return [...missingIds, getMissingFieldIds(formArray, borrower)];
+      }, []);
+
+    getMissingBorrowerDocuments = ({ borrowers }) =>
+      arrayify(borrowers).reduce(
+        (missingIds, borrower) => [
+          ...missingIds,
+          ...getMissingDocumentIds({
+            doc: borrower,
+            fileArrayFunc: borrowerDocuments,
+            step: FILE_STEPS.AUCTION,
+          }),
+        ],
+        [],
+      );
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);
