@@ -48,7 +48,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
 
       return getPercent([
-        ...getCountedArray(formArray1, property),
+        ...getCountedArray(formArray1, propertyToCalculateWith),
         ...getCountedArray(formArray2, loan),
       ]);
     }

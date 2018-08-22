@@ -39,14 +39,21 @@
 }
 
 .loan-status-check {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  flex-wrap: wrap;
-  justify-content: space-around;
-
   max-width: 1000px;
   margin: 40px;
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .card-bottom {
+    display: flex;
+    justify-content: center;
+  }
 
   .status-check {
     display: flex;

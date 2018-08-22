@@ -2,6 +2,7 @@
 import React from 'react';
 import Calculator from 'core/utils/Calculator';
 import { Percent } from 'core/components/Translation';
+import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 
 type LoanStatusCheckProps = {};
 
@@ -14,7 +15,7 @@ const statusChecks = [
           <span key={borrower._id}>
             {borrower.firstName}:{' '}
             <Percent
-              value={Calculator.getBorrowersCompletion({
+              value={Calculator.personalInfoPercent({
                 borrowers: borrower,
               })}
             />
@@ -33,23 +34,24 @@ const statusChecks = [
   },
   {
     label: 'Documents',
-    value: (loan) => {
-      const { total, current } = Calculator.filesProgress({ loan });
-
-      return `${current}/${total}`;
-    },
+    value: loan => <Percent value={Calculator.filesProgress({ loan })} />,
   },
 ];
 
 const LoanStatusCheck = ({ loan }: LoanStatusCheckProps) => (
-  <div className="loan-status-check card1 card-top">
-    {statusChecks.map(({ label, value }) => (
-      <h4 className="status-check" key={label}>
-        <span className="secondary">{label}</span>
-        :&nbsp;
-        {value(loan)}
-      </h4>
-    ))}
+  <div className="loan-status-check card1">
+    <div className="card-top">
+      {statusChecks.map(({ label, value }) => (
+        <h4 className="status-check" key={label}>
+          <span className="secondary">{label}</span>
+          :&nbsp;
+          {value(loan)}
+        </h4>
+      ))}
+    </div>
+    <div className="card-bottom">
+      <LoanChecklistDialog loan={loan} />
+    </div>
   </div>
 );
 
