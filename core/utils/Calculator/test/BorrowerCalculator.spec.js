@@ -272,4 +272,24 @@ describe('BorrowerCalculator', () => {
       ]);
     });
   });
+
+  describe('getMissingBorrowerFields', () => {
+    it('returns all missing ids for an empty borrower', () => {
+      expect(BorrowerCalculator.getMissingBorrowerFields({ borrowers: {} })).to.deep.equal([
+        'firstName',
+        'lastName',
+        'gender',
+        'address1',
+        'zipCode',
+        'isSwiss',
+        'age',
+        'citizenship',
+        'isUSPerson',
+        'civilStatus',
+        'childrenCount',
+        'worksForOwnCompany',
+        'personalBank'
+      ]);
+    });
+  });
 });

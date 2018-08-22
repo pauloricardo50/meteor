@@ -169,7 +169,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           borrowers: arrayify(borrowers),
           borrowerId: borrower._id,
         });
-        return [...missingIds, getMissingFieldIds(formArray, borrower)];
+
+        return [...missingIds, ...getMissingFieldIds(formArray, borrower)];
       }, []);
 
     getMissingBorrowerDocuments = ({ borrowers }) =>

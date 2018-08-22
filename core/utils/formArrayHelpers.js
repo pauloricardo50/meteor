@@ -70,9 +70,12 @@ export const getMissingFieldIds = (formArray, doc) =>
           ),
         ];
       }
+
       if (!fieldIsValid(conditionalField, doc)) {
         return [...missingFieldIds, conditionalField.id];
       }
+
+      return missingFieldIds;
     }
 
     if (!fieldIsValid(field, doc)) {

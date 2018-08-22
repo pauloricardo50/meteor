@@ -3,8 +3,7 @@ import React from 'react';
 
 import Calculator from '../../utils/Calculator';
 import T from '../Translation';
-import LoanChecklistDocuments from './LoanChecklistDocuments';
-import LoanChecklistFields from './LoanChecklistFields';
+import LoanChecklistList from './LoanChecklistList';
 
 type LoanChecklistProps = {};
 
@@ -14,19 +13,18 @@ const LoanChecklist = ({ loan }: LoanChecklistProps) => (
       <h3>
         <T id="LoanChecklist.missingFields" />
       </h3>
-      <span className="loan-checklist-list">
-        <h4>{loan.structure.property.address1}</h4>
-        <LoanChecklistFields
-          ids={Calculator.getMissingPropertyFields({ loan })}
-        />
-      </span>
+      <LoanChecklistList
+        title={loan.structure.property.address1}
+        ids={Calculator.getMissingPropertyFields({ loan })}
+        intlPrefix="Forms"
+      />
       {loan.borrowers.map(borrower => (
-        <span className="loan-checklist-list" key={borrower._id}>
-          <h4>{borrower.name}</h4>
-          <LoanChecklistFields
-            ids={Calculator.getMissingBorrowerFields({ borrowers: borrower })}
-          />
-        </span>
+        <LoanChecklistList
+          key={borrower._id}
+          title={borrower.name}
+          ids={Calculator.getMissingBorrowerFields({ borrowers: borrower })}
+          intlPrefix="Forms"
+        />
       ))}
     </div>
 
@@ -34,21 +32,18 @@ const LoanChecklist = ({ loan }: LoanChecklistProps) => (
       <h3>
         <T id="LoanChecklist.missingDocuments" />
       </h3>
-      <span className="loan-checklist-list">
-        <h4>{loan.structure.property.address1}</h4>
-        <LoanChecklistDocuments
-          ids={Calculator.getMissingPropertyDocuments({ loan })}
-        />
-      </span>
+      <LoanChecklistList
+        title={loan.structure.property.address1}
+        ids={Calculator.getMissingPropertyDocuments({ loan })}
+        intlPrefix="files"
+      />
       {loan.borrowers.map(borrower => (
-        <span className="loan-checklist-list" key={borrower._id}>
-          <h4>{borrower.name}</h4>
-          <LoanChecklistDocuments
-            ids={Calculator.getMissingBorrowerDocuments({
-              borrowers: borrower,
-            })}
-          />
-        </span>
+        <LoanChecklistList
+          key={borrower._id}
+          title={borrower.name}
+          ids={Calculator.getMissingBorrowerDocuments({ borrowers: borrower })}
+          intlPrefix="files"
+        />
       ))}
     </div>
   </div>

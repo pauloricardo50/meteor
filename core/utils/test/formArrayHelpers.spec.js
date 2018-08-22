@@ -113,7 +113,7 @@ describe('formArrayHelpers', () => {
       expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
     });
 
-    it('properly counts conditional false values', () => {
+    it('properly counts conditional undefined values', () => {
       const trueValue = 'something';
       array = [
         {
@@ -124,6 +124,20 @@ describe('formArrayHelpers', () => {
         },
       ];
       expect(getMissingFieldIds(array, doc)).to.deep.equal(['conditional']);
+    });
+
+    it('properly counts conditional false values', () => {
+      const trueValue = false;
+      array = [
+        {
+          type: 'conditionalInput',
+          id: 'id1',
+          conditionalTrueValue: trueValue,
+          inputs: [{ id: 'conditional' }, { id: 'test' }],
+        },
+      ];
+      doc.conditional = true;
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
     });
 
     it('properly counts conditional true values', () => {
@@ -152,6 +166,12 @@ describe('formArrayHelpers', () => {
       ];
       doc.conditional = trueValue;
       doc.test = 'stuff';
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+
+    it('deals with custom fields', () => {
+      array = [{ id: 'test.value' }];
+      doc.test = { value: 'stuff' };
       expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
     });
   });

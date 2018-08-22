@@ -11,15 +11,18 @@
     display: flex;
     flex-direction: column;
     padding: 16px;
-  }
-
-  &-documents,
-  &-fields {
-    display: flex;
-    flex-direction: column;
 
     > * {
-      padding: 8px 0;
+      padding-bottom: 8px;
+    }
+  }
+
+  .secondary {
+    display: flex;
+    align-items: center;
+
+    > :first-child {
+      margin-right: 4px;
     }
   }
 }

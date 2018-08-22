@@ -21,8 +21,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       options: Object.values(constants.GENDER),
     },
     {
-      type: 'h3',
       id: 'yourAddress',
+      type: 'h3',
       ignore: true,
       required: false,
     },
