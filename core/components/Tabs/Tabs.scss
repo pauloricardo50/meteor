@@ -1,5 +1,8 @@
 .core-tabs {
-  .core-tabs-top {
+  &-tab {
+    padding: 8px;
+  }
+  &-top {
     margin: -16px;
     margin-bottom: 0;
   }
