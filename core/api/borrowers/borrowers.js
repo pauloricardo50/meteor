@@ -5,7 +5,6 @@ import {
   RESIDENCY_PERMIT,
   GENDER,
   CIVIL_STATUS,
-  OTHER_FORTUNE,
   OTHER_INCOME,
   EXPENSES,
   REAL_ESTATE,
@@ -209,7 +208,6 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'otherFortune.$.description': {
     type: String,
-    allowedValues: Object.values(OTHER_FORTUNE),
   },
   expenses: {
     type: Array,

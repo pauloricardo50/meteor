@@ -193,6 +193,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
     {
       id: 'realEstate',
       type: 'arrayInput',
+      required: false,
       inputs: [
         {
           id: 'description',
@@ -218,8 +219,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       inputs: [
         {
           id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.OTHER_FORTUNE),
+          type: 'textInput',
         },
         {
           id: 'value',

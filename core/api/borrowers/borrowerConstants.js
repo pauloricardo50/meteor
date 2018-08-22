@@ -26,14 +26,6 @@ export const CIVIL_STATUS = {
   DIVORCED: 'DIVORCED',
 };
 
-export const OTHER_FORTUNE = {
-  ART: 'ART',
-  CARS: 'CARS',
-  BOATS: 'BOATS',
-  AIRPLANES: 'AIRPLANES',
-  JEWELRY: 'JEWELRY',
-};
-
 export const OTHER_INCOME = {
   WELFARE: 'WELFARE',
   PENSIONS: 'PENSIONS',
