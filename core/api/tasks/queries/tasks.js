@@ -48,11 +48,6 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
       filters.userId = user;
     }
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   $paginate: true,
   ...taskFragment,
 });

@@ -24,6 +24,7 @@ export const propertySummaryFragment = {
   status: 1,
   value: 1,
   zipCode: 1,
+  // $options: { sort: { createdAt: 1 } },
 };
 
 export const fullPropertyFragment = {

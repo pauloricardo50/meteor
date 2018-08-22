@@ -8,10 +8,6 @@ export default Offers.createQuery(OFFER_QUERIES.OFFERS, {
       filters.loanId = loanId;
     }
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...fullOfferFragment,
+  $options: { sort: { createdAt: -1 } },
 });

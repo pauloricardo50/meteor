@@ -12,6 +12,5 @@ export default Tasks.createQuery(TASK_QUERIES.LOAN_TASKS, {
 
     filters.$or = relatedToLoanOrBorrowersOrProperty;
   },
-  $options: { sort: { createdAt: -1 } },
   ...taskFragment,
 });

@@ -7,10 +7,5 @@ export default Users.createQuery(USER_QUERIES.CURRENT_USER, {
   $filter({ filters, options, params }) {
     filters._id = Meteor.userId();
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...fullUserFragment,
 });
