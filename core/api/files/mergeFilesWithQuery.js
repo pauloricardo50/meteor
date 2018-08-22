@@ -14,7 +14,7 @@ const getFiles = (query, loanId, setFiles) => {
   });
 };
 
-export default (query, mergeName) =>
+const mergeFilesWithQuery = (query, mergeName) =>
   compose(
     lifecycle({
       componentDidMount() {
@@ -42,4 +42,33 @@ export default (query, mergeName) =>
       // Very important to merge into an empty object, or else it overrides props!
       [mergeName]: merge({}, props[mergeName], fileData),
     })),
+  );
+
+export default mergeFilesWithQuery;
+
+export const mapPropertyDocumentsIntoProperty = mapProps(({ loan, ...props }) => {
+  const { structure, properties } = loan;
+  const { property, propertyId } = structure;
+  const structureProperty = properties.find(({ _id }) => _id === propertyId);
+  const propertyDocuments = structureProperty && structureProperty.documents;
+
+  return {
+    ...props,
+    loan: {
+      ...loan,
+      structure: {
+        ...structure,
+        property: {
+          ...property,
+          documents: propertyDocuments,
+        },
+      },
+    },
+  };
+});
+
+export const mergeFilesIntoLoanStructure = (...params) =>
+  compose(
+    mergeFilesWithQuery(...params),
+    mapPropertyDocumentsIntoProperty,
   );
