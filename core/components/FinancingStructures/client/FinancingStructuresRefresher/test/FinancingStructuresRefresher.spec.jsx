@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 
-import T from '../../../Translation';
+import T from '../../../../Translation';
 import DefaultFinancingStructuresRefresher, {
   FinancingStructuresRefresher,
 } from '../FinancingStructuresRefresher';
@@ -20,11 +20,19 @@ describe('FinancingStructuresRefresher', () => {
       Component: DefaultFinancingStructuresRefresher,
       props,
       withStore: store,
+      withIntl: true,
     });
 
   beforeEach(() => {
     props = { loanFromDB: {} };
-    store = { financingStructures: {} };
+    store = {
+      financingStructures: {
+        loan: {},
+        properties: {},
+        structures: {},
+        borrowers: {},
+      },
+    };
   });
 
   afterEach(() => {
@@ -43,6 +51,8 @@ describe('FinancingStructuresRefresher', () => {
     store.financingStructures = {
       loan: { hello: 'world' },
     };
+
+    console.log(component());
 
     component().setProps({
       loanFromDB: { hello: 'world' },

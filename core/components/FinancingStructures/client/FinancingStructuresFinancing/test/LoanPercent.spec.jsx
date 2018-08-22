@@ -4,11 +4,10 @@ import React from 'react';
 import { expect } from 'chai';
 import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 
-import Input from '@material-ui/core/Input';
 import LoanPercent from '../LoanPercent';
 import { UPDATE_STRUCTURE } from '../../../../../redux/financingStructures/index';
 
-describe.only('LoanPercent', () => {
+describe('LoanPercent', () => {
   let props;
   let store;
   const structureId = 'structureId';
