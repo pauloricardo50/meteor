@@ -350,13 +350,11 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
-    defaultValue: propertyConstants.QUALITY.CONDITION.INTACT,
   },
   'qualityProfile.standard': {
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
-    defaultValue: propertyConstants.QUALITY.STANDARD.AVERAGE,
   },
   valuation: {
     type: ValuationSchema,

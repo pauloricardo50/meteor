@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Element } from 'react-scroll';
 
 import AutoForm from 'core/components/AutoForm';
 import {
@@ -13,9 +14,12 @@ import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
+import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import Page from '../../components/Page';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
+import LaunchValuationButton from './LaunchValuationButton';
+import { VALUATION_STATUS } from '../../../core/api/constants';
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId } = props;
@@ -27,6 +31,10 @@ const SinglePropertyPage = (props) => {
   const property = properties.find(({ _id }) => _id === propertyId);
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
+  const progress = PropertyCalculator.propertyPercent({
+    property,
+    loan,
+  });
 
   const title = address1 || <T id="SinglePropertyPage.title" />;
 
@@ -44,8 +52,9 @@ const SinglePropertyPage = (props) => {
           zipCode={zipCode}
           options={{ zoom: 14 }}
         />
-
-        <Valuation property={property} loanResidenceType={residenceType} />
+        <Element name="valuation">
+          <Valuation property={property} loanResidenceType={residenceType} />
+        </Element>
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
@@ -69,7 +78,10 @@ const SinglePropertyPage = (props) => {
           />
         </div>
       </section>
-      <ReturnToDashboard />
+      <div className="single-property-page-buttons">
+        <ReturnToDashboard />
+        <LaunchValuationButton enabled={progress >= 1 && property.valuation.status !== VALUATION_STATUS.DONE} />
+      </div>
     </Page>
   );
 };
