@@ -106,6 +106,16 @@ export class FinanceCalculator {
     return loan / propertyValue;
   }
 
+  getLoanFromBorrowRatio({
+    propertyValue,
+    borrowRatio,
+  }: {
+    propertyValue: number,
+    borrowRatio: number,
+  }) {
+    return borrowRatio * propertyValue;
+  }
+
   getBorrowRatioWithoutLoan({
     propertyValue,
     fortune,

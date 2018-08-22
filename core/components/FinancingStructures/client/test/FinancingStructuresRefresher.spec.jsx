@@ -12,7 +12,7 @@ import DefaultFinancingStructuresRefresher, {
 const wait = (duration = 100) =>
   new Promise(resolve => setTimeout(resolve, duration));
 
-describe.only('FinancingStructuresRefresher', () => {
+describe('FinancingStructuresRefresher', () => {
   let props;
   let store;
   const component = () =>

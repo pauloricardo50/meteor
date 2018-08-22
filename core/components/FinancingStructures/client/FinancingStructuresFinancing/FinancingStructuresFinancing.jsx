@@ -15,6 +15,7 @@ import {
   getBorrowRatio,
   getBorrowRatioStatus,
 } from '../FinancingStructuresResult/financingStructuresResultHelpers';
+import LoanPercent from './LoanPercent';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -73,6 +74,11 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         Component: InputAndSlider,
         id: 'wantedLoan',
         max: calculateMaxSliderLoan,
+      },
+      {
+        Component: LoanPercent,
+        id: 'wantedLoanPercent',
+        // max: calculateMaxSliderLoan,
       },
       {
         Component: CalculatedValue,

@@ -30,6 +30,11 @@ const argumentMappings = {
     loan: data.structure.wantedLoan,
   }),
 
+  getLoanFromBorrowRatio: (borrowRatio, data) => ({
+    propertyValue: getProperty(data).value + data.structure.propertyWork,
+    borrowRatio,
+  }),
+
   getAmortizationRate: getAmortizationRateMapper,
 
   getInterestsWithTranches: ({
