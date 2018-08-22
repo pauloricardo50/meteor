@@ -97,7 +97,7 @@ export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
 const documentExists = (doc, id) =>
   doc && doc.documents && doc.documents[id] && doc.documents[id].length > 0;
 
-export const getMissingDocumentIDs = ({ doc, fileArrayFunc, step }) => {
+export const getMissingDocumentIds = ({ doc, fileArrayFunc, step }) => {
   const fileArray = fileArrayFunc(doc)[step];
   const ids = fileArray
     .filter(({ required, condition, id }) =>

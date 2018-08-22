@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { filesPercent, getMissingDocumentIDs } from '../fileHelpers';
+import { filesPercent, getMissingDocumentIds } from '../fileHelpers';
 
 describe('fileHelpers', () => {
   let dummyFunc;
@@ -93,9 +93,9 @@ describe('fileHelpers', () => {
     });
   });
 
-  describe.only('getMissingDocumentIDs', () => {
+  describe('getMissingDocumentIds', () => {
     it('returns the array of missing docs', () => {
-      expect(getMissingDocumentIDs({
+      expect(getMissingDocumentIds({
         doc: dummyDoc,
         fileArrayFunc: dummyFunc,
         step: 0,
@@ -104,7 +104,7 @@ describe('fileHelpers', () => {
 
     it('returns an empty array if all documents have been uploaded', () => {
       dummyDoc.documents[fileId] = [{}];
-      expect(getMissingDocumentIDs({
+      expect(getMissingDocumentIds({
         doc: dummyDoc,
         fileArrayFunc: dummyFunc,
         step: 0,
