@@ -22,6 +22,8 @@
   transition: color 200ms $bezier, background-color 200ms $bezier;
   text-align: center;
 
+  animation-duration: 200ms;
+
   .financing-structures-header-actions {
     position: absolute;
     top: 0;
