@@ -19,6 +19,7 @@ const withRefreshChecker = lifecycle({
     this.setState({ showRefresh: false });
   },
   componentWillReceiveProps(nextProps) {
+
     if (dataIsDifferent(nextProps)) {
       // First set the state back to false, so that the animation-delay resets
       // When data is being modified continuously
