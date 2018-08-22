@@ -17,7 +17,7 @@ const getDocumentsToCount = (
   checkDocumentStatus?: boolean,
 ): Array<Object> => {
   if (!doc || !doc.documents) {
-    return [];
+    return [undefined];
   }
   const { documents } = doc;
 

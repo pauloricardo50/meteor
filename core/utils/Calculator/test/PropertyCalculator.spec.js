@@ -15,6 +15,13 @@ describe('PropertyCalculator', () => {
     };
   });
 
+  describe('getPropertyFilesProgress', () => {
+    it('returns 0 if no documents are provided', () => {
+      property = {};
+      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal(0);
+    });
+  });
+
   describe('getMissingPropertyFields', () => {
     it('returns the list of missing data from a property', () => {
       property = {};

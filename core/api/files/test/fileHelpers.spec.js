@@ -16,7 +16,11 @@ describe('fileHelpers', () => {
 
   describe('filesPercent', () => {
     it('returns 0 if an empty doc is given', () => {
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+      expect(filesPercent({ doc: {}, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+    });
+
+    it('returns 0 if no doc is given', () => {
+      expect(filesPercent({ fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
     it('returns 1 if a file exists', () => {
