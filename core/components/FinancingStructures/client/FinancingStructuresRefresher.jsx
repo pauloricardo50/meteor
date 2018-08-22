@@ -53,7 +53,10 @@ export default compose(
     },
     componentWillReceiveProps(nextProps) {
       if (dataIsDifferent(nextProps)) {
-        this.setState({ showRefresh: true });
+        // First set the state back to false, so that the animation-delay resets
+        // When data is being modified continuously
+        this.setState({ showRefresh: false }, () =>
+          this.setState({ showRefresh: true }));
       } else {
         this.setState({ showRefresh: false });
       }
