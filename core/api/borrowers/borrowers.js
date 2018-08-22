@@ -208,6 +208,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'otherFortune.$.description': {
     type: String,
+    optional: true,
   },
   expenses: {
     type: Array,
