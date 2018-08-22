@@ -16,7 +16,7 @@ const DashboardProgress = props => (
     </p>
     <DashboardProgressBar {...props} />
     <DashboardProgressInfo {...props} />
-    {/* <LoanChecklistDialog {...props} /> */}
+    <LoanChecklistDialog {...props} />
   </div>
 );
 

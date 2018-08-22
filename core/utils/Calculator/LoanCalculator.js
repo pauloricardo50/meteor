@@ -167,7 +167,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getMissingBorrowerDocuments({ loan }) {
+    getMissingLoanDocuments({ loan }) {
       return getMissingDocumentIds({
         doc: loan,
         fileArrayFunc: loanDocuments,

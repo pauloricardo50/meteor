@@ -44,7 +44,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return getPercent([
         ...getCountedArray(formArray1, property),
-        getCountedArray(formArray2, loan),
+        ...getCountedArray(formArray2, loan),
       ]);
     }
 
@@ -92,6 +92,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getMissingPropertyFields({ loan, property }) {
       const { borrowers, structure } = loan;
       const propertyToCalculateWith = property || structure.property;
+
       const formArray1 = getPropertyArray({
         loan,
         borrowers,
@@ -104,8 +105,8 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
 
       return [
-        ...getMissingFieldIds(formArray1, property),
-        getMissingFieldIds(formArray2, loan),
+        ...getMissingFieldIds(formArray1, propertyToCalculateWith),
+        ...getMissingFieldIds(formArray2, loan),
       ];
     }
 

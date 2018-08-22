@@ -3,6 +3,7 @@
 import { expect } from 'chai';
 
 import BorrowerCalculator from '..';
+import { BORROWER_DOCUMENTS } from 'core/api/constants';
 
 describe('BorrowerCalculator', () => {
   describe('sumValues', () => {
@@ -257,6 +258,18 @@ describe('BorrowerCalculator', () => {
       expect(BorrowerCalculator.getBorrowerSalary({
         borrowers: [{ salary: 1 }, { salary: 2 }],
       })).to.equal(3);
+    });
+  });
+
+  describe('getMissingBorrowerDocuments', () => {
+    it('returns all missing ids for an empty borrower', () => {
+      expect(BorrowerCalculator.getMissingBorrowerDocuments({ borrowers: {} })).to.deep.equal([
+        BORROWER_DOCUMENTS.IDENTITY,
+        BORROWER_DOCUMENTS.RESIDENCY_PERMIT,
+        BORROWER_DOCUMENTS.TAXES,
+        BORROWER_DOCUMENTS.SALARY_CERTIFICATE,
+        BORROWER_DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
+      ]);
     });
   });
 });
