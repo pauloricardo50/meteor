@@ -6,7 +6,7 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import userLoanQuery from 'core/api/loans/queries/userLoan';
 import loanFiles from 'core/api/loans/queries/loanFiles';
 import appUserQuery from 'core/api/users/queries/appUser';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
+import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
 
 const withAppUser = withSmartQuery({
   query: () => appUserQuery.clone(),
@@ -26,6 +26,6 @@ export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
-  mergeFilesWithQuery(loanFiles, 'loan'),
+  mergeFilesIntoLoanStructure(loanFiles, 'loan'),
   withRouter,
 );
