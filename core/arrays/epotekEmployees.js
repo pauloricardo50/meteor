@@ -4,28 +4,28 @@ const employees = [
     src: '/img/team/lydia.jpg',
     name: 'Lydia Abraha',
     title: 'Conseillère en financement',
-    phone: '+41 22 566 82 92',
+    phoneNumber: '+41 22 566 82 92',
   },
   {
     email: 'joel@e-potek.ch',
     src: '/img/team/joel.jpg',
     name: 'Joel Xavier Santos',
     title: 'Conseiller en financement',
-    phone: '+41 22 566 82 95',
+    phoneNumber: '+41 22 566 82 95',
   },
   {
     email: 'florian@e-potek.ch',
     src: '/img/team/florian.jpg',
     name: 'Florian Bienefelt',
     title: 'CTO',
-    phone: '+41 22 566 82 91',
+    phoneNumber: '+41 22 566 82 91',
   },
   {
     email: 'quentin@e-potek.ch',
     src: '/img/team/quentin.jpg',
     name: 'Quentin Herzig',
     title: 'Software Engineer',
-    phone: '+41 22 566 01 10',
+    phoneNumber: '+41 22 566 01 10',
   },
   {
     email: '',
@@ -38,7 +38,7 @@ const employees = [
     src: '/img/team/yannis.jpg',
     name: 'Yannis Eggert',
     title: 'Conseiller en financement',
-    phone: '+41 22 566 82 90',
+    phoneNumber: '+41 22 566 82 90',
   },
   // Attendre début emploiement de Jean-Luc pour éviter problèmes avec chomage
   // {
@@ -71,7 +71,7 @@ export const placeholderEmployee = email => ({
     return emailPrefix[0].toUpperCase() + emailPrefix.slice(1);
   })(),
   title: undefined,
-  phone: undefined,
+  phoneNumber: undefined,
 });
 
 export default employees;
