@@ -29,7 +29,14 @@ class Tabs extends Component {
 
   getContent = () => this.props.tabs[this.state.value].content;
 
-  handleChange = (event, value) => this.setState({ value });
+  handleChange = (event, value) => {
+    const { onChangeCallback } = this.props;
+    this.setState({ value });
+
+    if (typeof onChange === 'function') {
+      onChangeCallback();
+    }
+  };
 
   componentWillReceiveProps({ initialIndex: nextIndex }) {
     const { initialIndex } = this.props;

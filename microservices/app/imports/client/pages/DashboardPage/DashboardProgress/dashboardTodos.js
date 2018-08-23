@@ -53,12 +53,14 @@ export const dashboardTodosArray = [
 
       return false;
     },
+    hide: ({ structure: { property } }) => !property,
     link: createSinglePropertyLink,
   },
   {
     id: 'doAnExpertise',
     condition: ({ structure: { property } }) =>
       property && property.valuation.status === VALUATION_STATUS.NONE,
+    hide: ({ structure: { property } }) => !property,
     link: createSinglePropertyLink,
   },
   {

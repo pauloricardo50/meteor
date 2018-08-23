@@ -41,8 +41,6 @@ describe('PropertyCalculator', () => {
         'zipCode',
         'constructionYear',
         'roomCount',
-        'parking.inside',
-        'parking.outside',
         'minergie',
         'qualityProfile.condition',
         'qualityProfile.standard',

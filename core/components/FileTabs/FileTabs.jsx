@@ -10,6 +10,9 @@ import {
   propertyDocuments,
   borrowerDocuments,
 } from 'core/api/files/documents';
+import ClientEventService, {
+  MODIFIED_FILES_EVENT,
+} from 'core/api/events/ClientEventService';
 import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 
@@ -17,6 +20,8 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
   <div className="files-tab">
     <Tabs
       id="tabs"
+      // Fetch new files every time you change tabs
+      onChangeCallback={() => ClientEventService.emit(MODIFIED_FILES_EVENT)}
       tabs={[
         ...borrowers.map((borrower, index) => ({
           label: (

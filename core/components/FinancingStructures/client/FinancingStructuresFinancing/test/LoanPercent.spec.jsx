@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
+import getMountedComponent from '../../../../../utils/testHelpers/getMountedComponent';
 
 import LoanPercent from '../LoanPercent';
 import { UPDATE_STRUCTURE } from '../../../../../redux/financingStructures/index';
