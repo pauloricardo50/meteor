@@ -21,7 +21,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
     <Tabs
       id="tabs"
       // Fetch new files every time you change tabs
-      onChange={() => ClientEventService.emit(MODIFIED_FILES_EVENT)}
+      onChangeCallback={() => ClientEventService.emit(MODIFIED_FILES_EVENT)}
       tabs={[
         ...borrowers.map((borrower, index) => ({
           label: (

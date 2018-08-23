@@ -30,13 +30,11 @@ class Tabs extends Component {
   getContent = () => this.props.tabs[this.state.value].content;
 
   handleChange = (event, value) => {
-    console.log('value', value);
-
-    const { onChange } = this.props;
+    const { onChangeCallback } = this.props;
     this.setState({ value });
 
     if (typeof onChange === 'function') {
-      onChange();
+      onChangeCallback();
     }
   };
 
@@ -79,7 +77,6 @@ class Tabs extends Component {
               to={to}
               key={id || i}
               className="core-tabs-tab"
-              onClick={() => console.log('yo')}
             />
           ))}
         </MuiTabs>
