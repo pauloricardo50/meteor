@@ -1,6 +1,6 @@
 {
   "name": "epotek",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "scripts": {
     "clean-css": "cd scripts/ && ./clean-css.sh",
     "clean-run": "npm run setup-clean && npm run run",
