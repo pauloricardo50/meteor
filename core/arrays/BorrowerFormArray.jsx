@@ -57,8 +57,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       },
       condition: !disableAddress,
       placeholder:
-        disableAddress
-        && (borrowers[0].zipCode && borrowers[0].city
+        disableAddress &&
+        (borrowers[0].zipCode && borrowers[0].city
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
@@ -101,9 +101,9 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       type: 'custom',
       component: <BorrowerAddPartner loanId={loanId} />,
       condition:
-        b.civilStatus === constants.CIVIL_STATUS.MARRIED
-        && !multiple
-        && isFirst,
+        b.civilStatus === constants.CIVIL_STATUS.MARRIED &&
+        !multiple &&
+        isFirst,
       required: false,
     },
     { id: 'childrenCount', type: 'textInput', number: true },
@@ -243,12 +243,12 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       money: true,
       required: false,
     },
-    {
-      id: 'bank3A',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
+    // {
+    //   id: 'bank3A',
+    //   type: 'textInput',
+    //   money: true,
+    //   required: false,
+    // },
     {
       id: 'insuranceThirdPillar',
       type: 'textInput',
