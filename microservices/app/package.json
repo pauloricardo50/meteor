@@ -26,11 +26,6 @@
     "test": "meteor test --driver-package cultofcoders:mocha --settings settings-dev.json --port 4005",
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010"
   },
-  "version": "0.1.0",
-  "description": "e-Potek main",
-  "main": "index.js",
-  "author": "florianbienefelt",
-  "license": "ISC",
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.54",
     "@fortawesome/fontawesome-svg-core": "^1.2.0",

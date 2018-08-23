@@ -1,5 +1,5 @@
 {
-  "name": "www",
+  "name": "epotek-www",
   "private": true,
   "scripts": {
     "cypress-open": "../../node_modules/cypress/bin/cypress open",
