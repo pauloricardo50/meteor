@@ -49,18 +49,13 @@ function setWallabyConfig(name, overrides = {}) {
           // Do this to prevent some weird issues
           global.window = { navigator: { userAgent: 'node.js' } };
 
-          // Activate JSDOM only if needed, it crashes production servers
-
           // Configure jsdom for react mount tests
           const jsdom = require('jsdom');
           const { JSDOM } = jsdom;
           const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
           global.document = document;
           global.window = document.defaultView;
-          global.navigator = {
-            userAgent: 'node.js',
-            platform: 'Win32',
-          };
+          global.navigator = { userAgent: 'node.js', platform: 'Win32' };
         },
       },
       overrides,

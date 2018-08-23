@@ -287,8 +287,6 @@ describe('BorrowerCalculator', () => {
         'isUSPerson',
         'civilStatus',
         'childrenCount',
-        'worksForOwnCompany',
-        'personalBank',
       ]);
     });
   });
