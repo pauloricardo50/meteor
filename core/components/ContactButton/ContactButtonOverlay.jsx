@@ -10,14 +10,14 @@ type ContactButtonOverlayProps = {
   staff: {
     name: string,
     email: string,
-    phone: string,
+    phoneNumber: string,
     src: string,
   },
   open: boolean,
 };
 
 const ContactButtonOverlay = ({
-  staff: { src, name, phone, email },
+  staff: { src, name, phoneNumber, email },
   open,
 }: ContactButtonOverlayProps) => (
   <div
@@ -36,8 +36,8 @@ const ContactButtonOverlay = ({
     <ContactButtonContent
       titleId="ContactButton.byPhone"
       icon={<Icon type="phone" className="icon" />}
-      href={`tel:${phone}`}
-      label={phone}
+      href={`tel:${phoneNumber}`}
+      label={phoneNumber}
     />
     <ContactButtonContent
       titleId="ContactButton.byEmail"
