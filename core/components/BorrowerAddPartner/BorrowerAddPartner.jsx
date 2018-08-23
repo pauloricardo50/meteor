@@ -39,7 +39,7 @@ export default compose(
           loanId,
           borrower: { sameAddress: true, civilStatus: CIVIL_STATUS.MARRIED },
         })
-        .then(() => setLoading(false));
+        .finally(() => setLoading(false));
     },
   })),
 )(BorrowerAddPartner);
