@@ -52,7 +52,7 @@ const SinglePropertyPage = (props) => {
           zipCode={zipCode}
           options={{ zoom: 14 }}
         />
-        <Element name="valuation">
+        <Element name="valuation" className="valuation">
           <Valuation property={property} loanResidenceType={residenceType} />
         </Element>
 
@@ -80,7 +80,11 @@ const SinglePropertyPage = (props) => {
       </section>
       <div className="single-property-page-buttons">
         <ReturnToDashboard />
-        <LaunchValuationButton enabled={progress >= 1 && property.valuation.status !== VALUATION_STATUS.DONE} />
+        <LaunchValuationButton
+          enabled={
+            progress >= 1 && property.valuation.status !== VALUATION_STATUS.DONE
+          }
+        />
       </div>
     </Page>
   );
