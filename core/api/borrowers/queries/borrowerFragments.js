@@ -27,6 +27,8 @@ export const loanBorrowerFragment = {
   gender: 1,
   insuranceSecondPillar: 1,
   insuranceThirdPillar: 1,
+  bank3A: 1,
+  insurance3B: 1,
   isSwiss: 1,
   isUSPerson: 1,
   logic: 1,

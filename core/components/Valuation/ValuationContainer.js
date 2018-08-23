@@ -22,7 +22,7 @@ export default compose(
           propertyId: this.props.property._id,
           loanResidenceType: this.props.loanResidenceType,
         })
-        .then(error => this.setState({ disabled: !!error }));
+        .then(error => this.setState({ disabled: !!error, error }));
     },
     componentWillReceiveProps({ property, loanResidenceType }) {
       if (
@@ -34,7 +34,7 @@ export default compose(
             propertyId: property._id,
             loanResidenceType,
           })
-          .then(error => this.setState({ disabled: !!error }));
+          .then(error => this.setState({ disabled: !!error, error }));
       }
     },
   }),

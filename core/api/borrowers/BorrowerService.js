@@ -4,7 +4,8 @@ export class BorrowerService {
   update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 
-  insert = ({ borrower, userId }) => Borrowers.insert({ ...borrower, userId });
+  insert = ({ borrower = {}, userId }) =>
+    Borrowers.insert({ ...borrower, userId });
 
   remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
 

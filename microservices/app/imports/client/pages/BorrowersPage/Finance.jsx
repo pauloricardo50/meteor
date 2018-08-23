@@ -30,10 +30,6 @@ const BorrowerFinancePage = (props) => {
 
             <Recap arrayName="borrower" borrower={borrower} />
 
-            <p className="mandatory">
-              <T id="Forms.mandatory" />
-            </p>
-
             <AutoForm
               formClasses="user-form user-form__finance"
               inputs={getBorrowerFinanceArray({

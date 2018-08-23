@@ -27,7 +27,7 @@ downloadPDF.setHandler(() => {
   // TODO
 });
 
-addBorrower.setHandler((context, { loanId }) => {
+addBorrower.setHandler((context, { loanId, borrower }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   const loan = LoanService.getLoanById(loanId);
 
@@ -37,7 +37,7 @@ addBorrower.setHandler((context, { loanId }) => {
   }
 
   const newBorrowerId = BorrowerService.insert({
-    borrower: {},
+    borrower,
     userId: Meteor.userId(),
   });
 

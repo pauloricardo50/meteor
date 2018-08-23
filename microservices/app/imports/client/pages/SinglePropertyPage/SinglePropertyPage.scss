@@ -10,3 +10,15 @@
     height: 400px;
   }
 }
+.single-property-page-buttons {
+  display: flex;
+  justify-content: flex-start;
+  margin: 32px;
+  margin-bottom: 16px;
+  align-items: center;
+
+  .return-to-dashboard {
+    margin: 0;
+    margin-right: 16px;
+  }
+}

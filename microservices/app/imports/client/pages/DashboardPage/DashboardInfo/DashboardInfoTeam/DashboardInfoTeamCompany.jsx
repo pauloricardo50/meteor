@@ -14,7 +14,7 @@ const defaultTeam = [
     name: 'Yannis Eggert',
     title: 'Directeur',
     email: 'yannis@e-potek.ch',
-    phone: '022 566 82 90',
+    phoneNumber: '022 566 82 90',
   },
 ];
 

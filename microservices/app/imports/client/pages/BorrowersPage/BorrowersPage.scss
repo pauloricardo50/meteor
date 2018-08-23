@@ -7,6 +7,11 @@
     // border-top-right-radius: 4px;
     // width: 100%;
     // box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    align-content: stretch;
   }
 
   .tab-content {
@@ -50,7 +55,7 @@
   &-block {
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -62,7 +67,7 @@
     }
 
     &.success {
-       > span {
+      > span {
         color: $success;
       }
 
@@ -196,7 +201,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -206,8 +211,6 @@
     }
 
     .borrower-num {
-      color: #9cb2cb;
-
       font-weight: 400;
     }
 
@@ -278,7 +281,7 @@
   }
 
   &__finance {
-     > div {
+    > div {
       width: 400px;
     }
   }
@@ -349,12 +352,12 @@
     }
 
     .form-group {
-       > div {
+      > div {
         max-width: 100% !important;
       }
     }
 
-     > div {
+    > div {
       max-width: 100% !important;
     }
 
@@ -368,7 +371,7 @@
   .description {
     align-self: initial;
 
-     > p {
+    > p {
       justify-content: flex-start;
 
       max-width: 100%;

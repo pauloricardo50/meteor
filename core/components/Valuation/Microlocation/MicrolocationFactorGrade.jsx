@@ -21,8 +21,8 @@ const MiocrolocationFactorGrade = ({
         <T id={`Microlocation.${label}Label`} />
       </h4>
     )}
-    <StarRating value={grade} />
     {text && <p>{text}</p>}
+    <StarRating value={grade} />
   </div>
 );
 

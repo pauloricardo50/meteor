@@ -293,14 +293,12 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
     max: 100,
-    defaultValue: 0,
   },
   'parking.outside': {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
-    defaultValue: 0,
   },
   minergie: {
     type: String,
@@ -352,13 +350,11 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
-    defaultValue: propertyConstants.QUALITY.CONDITION.INTACT,
   },
   'qualityProfile.standard': {
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
-    defaultValue: propertyConstants.QUALITY.STANDARD.AVERAGE,
   },
   valuation: {
     type: ValuationSchema,
