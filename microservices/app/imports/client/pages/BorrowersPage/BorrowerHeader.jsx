@@ -4,29 +4,26 @@ import PropTypes from 'prop-types';
 import BorrowerAdder from '../../components/BorrowerAdder';
 import BorrowerHeaderDetails from './BorrowerHeaderDetails';
 
-const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => {
-  console.log('BorrowerHeader', borrowers);
-  return (
-    <header className="borrower-header borrower-header--fixed p-d--16">
-      <div className="borrower-header__row flex p-d--16">
-        {borrowers.map((borrower, borrowerIndex) => (
-          <BorrowerHeaderDetails
-            key={borrower._id}
-            borrower={borrower}
-            borrowerCount={borrowers.length}
-            tabId={tabId}
-            index={borrowerIndex}
-          />
-        ))}
-        {borrowers.length === 1 && (
-          <div className="borrower-adder col--50">
-            <BorrowerAdder loanId={loanId} />
-          </div>
-        )}
-      </div>
-    </header>
-  );
-};
+const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
+  <header className="borrower-header borrower-header--fixed p-d--16">
+    <div className="borrower-header__row flex p-d--16">
+      {borrowers.map((borrower, borrowerIndex) => (
+        <BorrowerHeaderDetails
+          key={borrower._id}
+          borrower={borrower}
+          borrowerCount={borrowers.length}
+          tabId={tabId}
+          index={borrowerIndex}
+        />
+      ))}
+      {borrowers.length === 1 && (
+        <div className="borrower-adder col--50">
+          <BorrowerAdder loanId={loanId} />
+        </div>
+      )}
+    </div>
+  </header>
+);
 
 BorrowerHeader.propTypes = {
   loan: PropTypes.object.isRequired,

@@ -290,4 +290,37 @@ describe('BorrowerCalculator', () => {
       ]);
     });
   });
+
+  describe.only('personalInfoPercent', () => {
+    it('works', () => {
+      expect(BorrowerCalculator.personalInfoPercent({
+        borrowers: {
+          _id: 'aBcNvYnq34rnb29nh',
+          adminValidation: {},
+          age: 45,
+          bonus: {},
+          bonusExists: false,
+          childrenCount: 0,
+          citizenship: 'hello',
+          civilStatus: 'MARRIED',
+          corporateBankExists: false,
+          createdAt: '2018-08-23T10:18:18.139Z',
+          expenses: [],
+          firstName: 'dfadf',
+          gender: 'M',
+          isSwiss: false,
+          isUSPerson: false,
+          lastName: 'asdfasd',
+          logic: { adminValidated: false },
+          otherFortune: [],
+          otherIncome: [],
+          realEstate: [],
+          residencyPermit: 'b',
+          sameAddress: true,
+          updatedAt: '2018-08-23T10:20:22.234Z',
+          userId: 'fAksm7pJveZybme5F',
+        },
+      })).to.equal(1);
+    });
+  });
 });

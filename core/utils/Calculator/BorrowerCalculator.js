@@ -56,9 +56,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getBorrowersCompletion = ({ borrowers }) =>
-      (this.getBorrowersFilesProgress({ borrowers }) +
-        this.personalInfoPercent({ borrowers })) /
-      2;
+      (this.getBorrowersFilesProgress({ borrowers })
+        + this.personalInfoPercent({ borrowers }))
+      / 2;
 
     getFortune = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'bankFortune' });
