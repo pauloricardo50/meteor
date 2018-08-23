@@ -47,10 +47,10 @@ class UserService {
 
   remove = ({ userId }) => Users.remove(userId);
 
+  allowUpdate = ({ object }) => object && Object.keys(object).length !== 0;
+
   update = ({ userId, object }) =>
-    object &&
-    Object.keys(object).length !== 0 &&
-    Users.update(userId, { $set: object });
+    this.allowUpdate({ object }) && Users.update(userId, { $set: object });
 
   assignAdminToUser = ({ userId, adminId }) =>
     adminId && this.update({ userId, object: { assignedEmployeeId: adminId } });
@@ -64,7 +64,7 @@ class UserService {
   getUserByPasswordResetToken = ({ token }) =>
     Users.findOne(
       { 'services.password.reset.token': token },
-      { firstName: 1, lastName: 1, emails: 1 },
+      { fields: { firstName: 1, lastName: 1, emails: 1 } },
     );
 
   testCreateUser = ({ user }) => Users.insert(user);
