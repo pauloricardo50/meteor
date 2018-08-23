@@ -12,10 +12,11 @@
 }
 .single-property-page-buttons {
   display: flex;
+  align-items: center;
   justify-content: flex-start;
+
   margin: 32px;
   margin-bottom: 16px;
-  align-items: center;
 
   .return-to-dashboard {
     margin: 0;

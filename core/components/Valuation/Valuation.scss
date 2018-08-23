@@ -29,6 +29,7 @@
 
   .error {
     max-width: 600px;
+
     text-align: center;
   }
 }
@@ -77,7 +78,7 @@
   h3 {
     display: flex;
     align-items: center;
-    > :first-child {
+     > :first-child {
       margin-right: 8px;
     }
   }

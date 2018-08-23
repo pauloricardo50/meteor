@@ -6,13 +6,14 @@ $card1_padding: 24px;
 $result-section-negative-offset: -32px;
 
 .financing-structures {
+  position: relative;
+
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  position: relative;
 
   .input-and-slider {
-    > *:first-child {
+     > *:first-child {
       margin-bottom: 8px;
     }
   }
@@ -32,7 +33,7 @@ $result-section-negative-offset: -32px;
   border-left: solid 1px $light-grey;
 
   .card1 > *,
-  > * {
+   > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -102,9 +103,10 @@ $result-section-negative-offset: -32px;
     }
 
     .card1 {
+      margin-top: $result-section-negative-offset;
+
       background-color: unset;
       box-shadow: unset;
-      margin-top: $result-section-negative-offset;
     }
 
     .structure {
@@ -121,11 +123,12 @@ $result-section-negative-offset: -32px;
     }
 
     .error {
-      background-color: $error;
-      color: white;
-      padding: 8px;
       margin: 8px;
+      padding: 8px;
+
+      color: white;
       border-radius: 4px;
+      background-color: $error;
     }
   }
 
@@ -185,6 +188,7 @@ $result-section-negative-offset: -32px;
 
 .financing-structures-labels {
   position: relative;
+
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -224,11 +228,11 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-  > *:first-child {
+   > *:first-child {
     margin-bottom: 8px;
   }
 
-  > *:last-child {
+   > *:last-child {
     align-self: center;
   }
 }
@@ -285,10 +289,12 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
 .financing-structures-refresher {
   position: fixed;
+  z-index: 500;
   top: 100px;
   right: 16px;
+
   padding: 40px;
-  z-index: 500;
-  box-shadow: $shadow-level-2;
+
   border-radius: 4px;
+  box-shadow: $shadow-level-2;
 }

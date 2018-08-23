@@ -51,6 +51,7 @@ const config = {
         'ArrayInput',
         'collections',
         'ConditionsButton',
+        'ConfirmMethod',
         'FileAdder',
         'files',
         'FinancingStructures',

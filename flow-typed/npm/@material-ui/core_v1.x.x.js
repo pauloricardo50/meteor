@@ -1,5 +1,5 @@
-// flow-typed signature: dd43fd57004ff82287d3f458851a09c5
-// flow-typed version: 50a6909c02/@material-ui/core_v1.x.x/flow_>=v0.58.x
+// flow-typed signature: 415c1f3a5bc41a38ac7b86d478e576fb
+// flow-typed version: 8583d87cce/@material-ui/core_v1.x.x/flow_>=v0.58.x
 
 declare module "@material-ui/core/AppBar/AppBar" {
   declare type Color = "inherit" | "primary" | "secondary" | "default";
@@ -1847,15 +1847,20 @@ declare module "@material-ui/core/styles/withStyles" {
     generateClassName?: Function
   };
 
+  declare export type InjectedProps = {
+    classes: void | { +[string]: string },
+    innerRef: void | React$Ref<React$ElementType>
+  }
+
   declare module.exports: (
     stylesOrCreator: Object,
     options?: Options
-  ) => <Props: {}>(
-    Component: React$ComponentType<Props>
-  ) => React$ComponentType<$Diff<Props, {
-    classes?: Object,
-    innerRef?: React$Ref<React$ElementType>
-  }>>;
+  ) => <
+    Props: {},
+    WrappedComponent: React$ComponentType<Props>
+    >(
+    Component: WrappedComponent
+  ) => React$ComponentType<$Diff<React$ElementConfig<WrappedComponent>, InjectedProps>>;
 }
 
 declare module "@material-ui/core/styles/withTheme" {

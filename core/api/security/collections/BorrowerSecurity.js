@@ -6,17 +6,17 @@ class BorrowerSecurity {
     Security.checkLoggedIn();
   }
 
-  static isAllowedToUpdate(loanId) {
+  static isAllowedToUpdate(borrowerId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
-    const loan = Borrowers.findOne(loanId);
-    Security.checkOwnership(loan);
+    const borrower = Borrowers.findOne(borrowerId);
+    Security.checkOwnership(borrower);
   }
 
-  static isAllowedToDelete() {
-    Security.checkCurrentUserIsAdmin();
+  static isAllowedToDelete(borrowerId) {
+    this.isAllowedToUpdate(borrowerId);
   }
 }
 
