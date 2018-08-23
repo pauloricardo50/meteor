@@ -78,7 +78,7 @@ export const BorrowerSchema = new SimpleSchema({
   age: {
     type: SimpleSchema.Integer,
     optional: true,
-    min: 18,
+    min: 1,
     max: 120,
   },
   address1: {
