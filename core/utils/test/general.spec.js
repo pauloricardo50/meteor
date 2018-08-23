@@ -59,8 +59,8 @@ describe('general helpers', () => {
       expect(() => getPercent('hello')).to.throw();
     });
 
-    it("returns 0 if it isn't given any argument", () => {
-      expect(getPercent()).to.equal(0);
+    it("returns 1 if it isn't given any argument", () => {
+      expect(getPercent()).to.equal(1);
     });
 
     it('returns 1 if it is given an empty array', () => {

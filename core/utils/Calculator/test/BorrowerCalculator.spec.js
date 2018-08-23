@@ -71,7 +71,7 @@ describe('BorrowerCalculator', () => {
   });
 
   describe('getBorrowersCompletion', () => {
-    it('returns 0 if given a simple borrower', () => {
+    it('should be 0% for a new borrower', () => {
       expect(BorrowerCalculator.getBorrowersCompletion({
         borrowers: { documents: {}, logic: {} },
       })).to.equal(0);
@@ -288,7 +288,7 @@ describe('BorrowerCalculator', () => {
         'civilStatus',
         'childrenCount',
         'worksForOwnCompany',
-        'personalBank'
+        'personalBank',
       ]);
     });
   });

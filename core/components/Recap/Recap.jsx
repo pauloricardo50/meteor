@@ -233,6 +233,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
   const expenses = BorrowerCalculator.getExpenses({ borrowers });
   const bonusIncome = BorrowerCalculator.getBonusIncome({ borrowers });
   const otherIncome = BorrowerCalculator.getOtherIncome({ borrowers });
+  const otherFortune = BorrowerCalculator.getOtherFortune({ borrowers });
   const realEstateFortune = BorrowerCalculator.getRealEstateFortune({
     borrowers,
   });
@@ -267,15 +268,15 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     {
       label: 'Recap.availableFunds',
       value: <span className="sum">{toMoney(totalFunds)}</span>,
-      hide: !realEstateFortune,
+      // hide: !realEstateFortune,
       spacingTop: true,
       bold: true,
+      spacing: true,
     },
     {
       label: 'Recap.realEstate',
       value: toMoney(realEstateValue),
       hide: !realEstateFortune,
-      spacingTop: true,
     },
     {
       label: 'Recap.realEstateLoans',
@@ -283,16 +284,26 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
       hide: !realEstateFortune,
     },
     {
+      label: 'Recap.otherFortune',
+      value: `${toMoney(otherFortune)}`,
+      hide: !otherFortune,
+    },
+    {
       label: 'Recap.netFortune',
       value: (
-        <span className="sum">{toMoney(totalFunds + realEstateFortune)}</span>
+        <span className="sum">
+          {toMoney(totalFunds + realEstateFortune + otherFortune)}
+        </span>
       ),
       spacingTop: true,
-      hide: !realEstateFortune,
+      spacing: true,
+      bold: true,
+      hide: !realEstateFortune && !otherFortune,
     },
     {
       title: true,
       label: 'general.income',
+      spacingTop: true,
     },
     {
       label: 'general.salary',
@@ -301,7 +312,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     {
       label: 'Recap.consideredBonus',
       value: toMoney(bonusIncome),
-      hide: !bonusIncome,
+      hide: !borrowers.bonusExists,
     },
     {
       label: 'Recap.otherIncome',

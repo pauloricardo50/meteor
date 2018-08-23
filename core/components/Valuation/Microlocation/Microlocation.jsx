@@ -18,12 +18,13 @@ export const Microlocation = ({
   open,
   setOpen,
 }: MicrolocationProps) => (
-  <div className="microlocation">
+  <div className="microlocation animated fadeIn">
     <h3>
       <T id="Microlocation.title" />
     </h3>
     <StarRating value={grade} />
-    <Button onClick={() => setOpen(!open)} primary>
+    &nbsp;
+    <Button onClick={() => setOpen(!open)} primary raised={!open}>
       <T id={open ? 'Microlocation.close' : 'Microlocation.open'} />
     </Button>
     {open && (

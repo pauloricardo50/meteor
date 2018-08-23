@@ -197,7 +197,11 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'floorNumber',
       type: 'textInput',
       number: true,
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
+      condition:
+        property.propertyType === PROPERTY_TYPE.FLAT &&
+        property.flatType !== FLAT_TYPE.PENTHOUSE_APARTMENT &&
+        property.flatType !== FLAT_TYPE.PENTHOUSE_MAISONETTE &&
+        property.flatType !== FLAT_TYPE.TERRACE_APARTMENT,
     },
     { id: 'constructionYear', type: 'textInput', number: true },
     {
@@ -223,8 +227,10 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'terraceArea',
       type: 'textInput',
       number: true,
-      required: false,
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
+      required: true,
+      condition:
+        property.propertyType === PROPERTY_TYPE.FLAT &&
+        property.flatType === FLAT_TYPE.TERRACE_APARTMENT,
     },
     {
       id: 'volume',
@@ -244,8 +250,8 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       decimal: true,
       info: true,
     },
-    { id: 'parking.inside', type: 'textInput', number: true },
-    { id: 'parking.outside', type: 'textInput', number: true },
+    { id: 'parking.inside', type: 'textInput', number: true, required: false },
+    { id: 'parking.outside', type: 'textInput', number: true, required: false },
     {
       id: 'minergie',
       type: 'radioInput',
@@ -256,31 +262,6 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       type: 'textInput',
       money: true,
       required: false,
-    },
-    {
-      type: 'conditionalInput',
-      conditionalTrueValue: true,
-      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
-      inputs: [
-        {
-          id: 'isCoproperty',
-          type: 'radioInput',
-          options: [true, false],
-        },
-        {
-          id: 'copropertyPercentage',
-          type: 'textInput',
-          number: true,
-          info: true,
-        },
-      ],
-    },
-    {
-      id: 'copropertyPercentage',
-      type: 'textInput',
-      number: true,
-      condition: property.propertyType === PROPERTY_TYPE.FLAT,
-      info: true,
     },
     {
       type: 'h3',

@@ -26,6 +26,11 @@
     flex-direction: column;
     justify-content: center;
   }
+
+  .error {
+    max-width: 600px;
+    text-align: center;
+  }
 }
 
 .microlocation {
@@ -44,7 +49,7 @@
   &-factor {
     display: flex;
     align-items: flex-start;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-start;
 
@@ -53,21 +58,26 @@
 
   &-rating {
     display: flex;
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
 
-    max-width: 240px;
-    padding: 8px 8px;
+    // padding: 4px 16px;
 
     h4 {
-      height: 2em;
+      // height: 2em;
+      width: 240px;
+    }
+
+    p {
+      width: 240px;
+      margin-right: 8px;
     }
   }
 
   h3 {
     display: flex;
     align-items: center;
-     > :first-child {
+    > :first-child {
       margin-right: 8px;
     }
   }

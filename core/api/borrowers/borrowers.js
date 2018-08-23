@@ -5,7 +5,6 @@ import {
   RESIDENCY_PERMIT,
   GENDER,
   CIVIL_STATUS,
-  OTHER_FORTUNE,
   OTHER_INCOME,
   EXPENSES,
   REAL_ESTATE,
@@ -118,10 +117,6 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
     regEx: '/^d{4}[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
   },
-  birthPlace: {
-    type: String,
-    optional: true,
-  },
   citizenship: {
     type: String,
     optional: true,
@@ -132,8 +127,8 @@ export const BorrowerSchema = new SimpleSchema({
   },
   civilStatus: {
     type: String,
-    defaultValue: CIVIL_STATUS.SINGLE,
     allowedValues: Object.values(CIVIL_STATUS),
+    optional: true,
   },
   childrenCount: {
     type: Number,
@@ -143,10 +138,6 @@ export const BorrowerSchema = new SimpleSchema({
   },
   company: {
     type: String,
-    optional: true,
-  },
-  worksForOwnCompany: {
-    type: Boolean,
     optional: true,
   },
   salary: {
@@ -217,7 +208,7 @@ export const BorrowerSchema = new SimpleSchema({
   },
   'otherFortune.$.description': {
     type: String,
-    allowedValues: Object.values(OTHER_FORTUNE),
+    optional: true,
   },
   expenses: {
     type: Array,
@@ -260,10 +251,6 @@ export const BorrowerSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(REAL_ESTATE),
   },
-  personalBank: {
-    type: String,
-    optional: true,
-  },
   corporateBankExists: {
     type: Boolean,
     defaultValue: false,
@@ -285,6 +272,12 @@ export const BorrowerSchema = new SimpleSchema({
     max: 100000000,
   },
   insurance3B: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
+  },
+  bank3A: {
     type: Number,
     optional: true,
     min: 0,

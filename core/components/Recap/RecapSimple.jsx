@@ -49,8 +49,8 @@ const RecapSimple = ({ array, noScale, className }) => (
             bold,
           })}
           style={{
-            marginBottom: spacing && 16,
-            marginTop: spacingTop && 16,
+            marginBottom: spacing && 32,
+            marginTop: spacingTop && 8,
           }}
           key={label}
         >

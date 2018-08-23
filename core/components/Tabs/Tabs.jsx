@@ -69,6 +69,7 @@ class Tabs extends Component {
               component={to ? Link : undefined}
               to={to}
               key={id || i}
+              className="core-tabs-tab"
             />
           ))}
         </MuiTabs>

@@ -1,6 +1,9 @@
 import * as constants from 'core/api/constants';
+import React from 'react';
 
-export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
+import BorrowerAddPartner from 'core/components/BorrowerAddPartner';
+
+export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
   const b = borrowers.find(borrower => borrower._id === id);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
@@ -11,6 +14,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
   }
 
   const disableAddress = !!b.sameAddress && !isFirst;
+  const addressFieldsAreNecessary = !b.sameAddress;
 
   return [
     { id: 'firstName', type: 'textInput' },
@@ -19,12 +23,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       id: 'gender',
       type: 'radioInput',
       options: Object.values(constants.GENDER),
-    },
-    {
-      id: 'yourAddress',
-      type: 'h3',
-      ignore: true,
-      required: false,
     },
     {
       id: 'sameAddress',
@@ -39,7 +37,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       condition: !disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
-      required: !disableAddress,
+      required: addressFieldsAreNecessary,
     },
     {
       id: 'address2',
@@ -64,7 +62,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
-      required: !disableAddress,
+      required: addressFieldsAreNecessary,
     },
     {
       type: 'conditionalInput',
@@ -88,7 +86,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       number: true,
       saveOnChange: false,
     },
-    { id: 'birthPlace', type: 'textInput', condition: !!b.isSwiss },
     { id: 'citizenship', type: 'textInput', condition: !b.isSwiss },
     { id: 'isUSPerson', type: 'radioInput', options: [true, false] },
     {
@@ -99,6 +96,16 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
         intlValues: { gender: b.gender },
       })),
     },
+    {
+      id: 'test',
+      type: 'custom',
+      component: <BorrowerAddPartner loanId={loanId} />,
+      condition:
+        b.civilStatus === constants.CIVIL_STATUS.MARRIED
+        && !multiple
+        && isFirst,
+      required: false,
+    },
     { id: 'childrenCount', type: 'textInput', number: true },
     {
       id: 'company',
@@ -106,12 +113,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id }) => {
       required: false,
       autoComplete: 'organization',
     },
-    {
-      id: 'worksForOwnCompany',
-      type: 'radioInput',
-      options: [true, false],
-    },
-    { id: 'personalBank', type: 'textInput' },
   ];
 };
 
@@ -150,19 +151,6 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       ],
     },
     {
-      id: 'expenses',
-      type: 'arrayInput',
-      required: false,
-      inputs: [
-        {
-          id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.EXPENSES),
-        },
-        { id: 'value', type: 'textInput', money: true },
-      ],
-    },
-    {
       id: 'otherIncome',
       type: 'arrayInput',
       required: false,
@@ -171,6 +159,19 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
           id: 'description',
           type: 'selectInput',
           options: Object.values(constants.OTHER_INCOME),
+        },
+        { id: 'value', type: 'textInput', money: true },
+      ],
+    },
+    {
+      id: 'expenses',
+      type: 'arrayInput',
+      required: false,
+      inputs: [
+        {
+          id: 'description',
+          type: 'selectInput',
+          options: Object.values(constants.EXPENSES),
         },
         { id: 'value', type: 'textInput', money: true },
       ],
@@ -192,6 +193,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
     {
       id: 'realEstate',
       type: 'arrayInput',
+      required: false,
       inputs: [
         {
           id: 'description',
@@ -217,8 +219,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       inputs: [
         {
           id: 'description',
-          type: 'selectInput',
-          options: Object.values(constants.OTHER_FORTUNE),
+          type: 'textInput',
         },
         {
           id: 'value',
@@ -243,6 +244,12 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       required: false,
     },
     {
+      id: 'bank3A',
+      type: 'textInput',
+      money: true,
+      required: false,
+    },
+    {
       id: 'insuranceThirdPillar',
       type: 'textInput',
       money: true,
@@ -250,12 +257,6 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
     },
     {
       id: 'insurance3B',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
-    {
-      id: 'insurancePureRisk',
       type: 'textInput',
       money: true,
       required: false,

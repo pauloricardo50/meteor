@@ -38,6 +38,8 @@ const BorrowersPage = (props) => {
   const tabs = getTabs(props);
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
+  console.log('BorrowersPage', borrowers);
+
   return (
     <Page
       id="BorrowersPage"

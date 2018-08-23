@@ -1,8 +1,7 @@
 // @flow
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'core/utils/testHelpers/enzyme';
+import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 import Button from 'core/components/Button';
@@ -10,13 +9,26 @@ import Loading from '../../Loading';
 
 import { Valuation } from '../Valuation';
 import { VALUATION_STATUS } from '../../../api/constants';
+import ValuationResult from '../ValuationResult';
 
 describe('Valuation', () => {
   let props;
-  const component = () => shallow(<Valuation {...props} />);
+  const component = () =>
+    getMountedComponent({
+      Component: Valuation,
+      props,
+    });
 
   beforeEach(() => {
-    props = { property: { valuation: { status: VALUATION_STATUS.NONE } } };
+    props = {
+      property: {
+        valuation: { status: VALUATION_STATUS.NONE, microlocation: {} },
+      },
+    };
+  });
+
+  afterEach(() => {
+    getMountedComponent.reset();
   });
 
   it('renders the valuation button when the valuation does not exist', () => {
@@ -28,21 +40,39 @@ describe('Valuation', () => {
   it('renders the results when the valuation exists', () => {
     const min = 100000;
     const max = 500000;
-    props.property.valuation = { status: VALUATION_STATUS.DONE, min, max };
+    props.property.valuation = {
+      ...props.property.valuation,
+      status: VALUATION_STATUS.DONE,
+      min,
+      max,
+    };
 
-    expect(component().contains(toMoney(min))).to.equal(true);
-    expect(component().contains(toMoney(max))).to.equal(true);
+    expect(component()
+      .find(ValuationResult)
+      .contains(toMoney(min))).to.equal(true);
+    expect(component()
+      .find(ValuationResult)
+      .contains(toMoney(max))).to.equal(true);
   });
 
   it('renders the value when it exists', () => {
     const value = 1000000;
-    props.property.valuation = { status: VALUATION_STATUS.DONE, value };
+    props.property.valuation = {
+      ...props.property.valuation,
+      status: VALUATION_STATUS.DONE,
+      value,
+    };
 
-    expect(component().contains(toMoney(value))).to.equal(true);
+    expect(component()
+      .find(ValuationResult)
+      .contains(toMoney(value))).to.equal(true);
   });
 
   it('renders the button when the valuation exists', () => {
-    props.property.valuation = { status: VALUATION_STATUS.DONE };
+    props.property.valuation = {
+      ...props.property.valuation,
+      status: VALUATION_STATUS.DONE,
+    };
     expect(component()
       .find(Button)
       .exists()).to.equal(true);
@@ -57,7 +87,11 @@ describe('Valuation', () => {
 
   it('renders the error when error exists', () => {
     const error = 'testError';
-    props.property.valuation = { status: VALUATION_STATUS.ERROR, error };
+    props.property.valuation = {
+      ...props.property.valuation,
+      status: VALUATION_STATUS.ERROR,
+      error,
+    };
     expect(component().contains(error)).to.equal(true);
   });
 
