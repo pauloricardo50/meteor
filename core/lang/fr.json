@@ -767,7 +767,7 @@
   "Forms.step": "Étape",
   "Forms.terraceArea.placeholder": "40",
   "Forms.terraceArea": "Surface des terrasses en m2",
-  "Forms.textInput.placeholderPrefix": "p.ex",
+  "Forms.textInput.placeholderPrefix": "p.ex:",
   "Forms.toiletCount.placeholder": "1",
   "Forms.toiletCount": "Nb. de WC",
   "Forms.unassigned": "Non assigné",
