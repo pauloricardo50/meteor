@@ -1,6 +1,7 @@
 import React from 'react';
 import { Accounts, STATES } from 'meteor/std:accounts-ui'; // TODO: back to normal once std:accounts-ui is fixed
 import { TextField, Snackbar } from '@material-ui/core';
+import cx from 'classnames';
 
 import MuiButton from '../Button';
 
@@ -96,11 +97,10 @@ class Fields extends Accounts.ui.Fields {
   render() {
     const { fields = {}, className = '' } = this.props;
     return (
-      <div className={[className].join(' ')}>
-        {Object.keys(fields).map((id, i) => (
-          <div key={i}>
+      <div className={cx(className, 'login-fields')}>
+        {Object.keys(fields).map(id => (
+          <div className="login-field" key={id}>
             <Accounts.ui.Field {...fields[id]} />
-            <br />
           </div>
         ))}
       </div>
@@ -123,7 +123,7 @@ class Field extends Accounts.ui.Field {
     const { mount = true } = this.state;
 
     return mount ? (
-      <span>
+      <span className="login-field">
         <TextField
           label={label}
           placeholder={hint}

@@ -6,10 +6,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USER, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...adminUserFragment,
 });

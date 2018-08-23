@@ -5,4 +5,5 @@ export const fullOfferFragment = {
   canton: 1,
   standardOffer: 1,
   counterpartOffer: 1,
+  // $options: { sort: { createdAt: 1 } },
 };

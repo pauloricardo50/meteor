@@ -9,22 +9,28 @@ import FinancingStructuresHeaderAdder from './FinancingStructuresHeaderAdder';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 
 type FinancingStructuresHeaderProps = {
+  selectedStructure: string,
   loan: userLoan,
   handleEditTitle: Function,
   handleEditDescription: Function,
 };
 
 const FinancingStructuresHeader = ({
-  loan: { structures, _id: loanId, selectedStructure },
+  selectedStructure,
+  loan: { structures, _id: loanId },
   handleEditTitle,
   handleEditDescription,
 }: FinancingStructuresHeaderProps) => (
   <ScrollSyncPane>
     <div className="card1 financing-structures-section financing-structures-header">
-      <FinancingStructuresLabels config={[]} />
+      <FinancingStructuresLabels
+        config={[
+          { label: () => <FinancingStructuresHeaderAdder loanId={loanId} /> },
+        ]}
+      />
       {structures.map((structure, index) => (
         <FinancingStructuresSingleHeader
-          structure={structure}
+          structureId={structure.id}
           key={structure.id}
           index={index}
           handleEditTitle={handleEditTitle}
@@ -33,7 +39,6 @@ const FinancingStructuresHeader = ({
           selected={selectedStructure === structure.id}
         />
       ))}
-      <FinancingStructuresHeaderAdder loanId={loanId} />
     </div>
   </ScrollSyncPane>
 );

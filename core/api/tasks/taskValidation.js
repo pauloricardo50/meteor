@@ -38,7 +38,7 @@ const userAddedFileTaskValidation = ({
     [`documents.${documentId}.files`]: { $elemMatch: { key: fileKey } },
   });
 
-  const relatedFile = taskRelatedDoc.documents[documentId].files.find(({ key }) => key === fileKey);
+  const relatedFile = taskRelatedDoc.documents[documentId].find(({ key }) => key === fileKey);
   return [FILE_STATUS.ERROR, FILE_STATUS.VALID].includes(relatedFile.status);
 };
 

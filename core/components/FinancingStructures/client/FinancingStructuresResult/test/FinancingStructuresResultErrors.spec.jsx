@@ -17,9 +17,9 @@ describe('FinancingStructuresResultErrors', () => {
 
   beforeEach(() => {
     propertyId = 'property';
-    property = { _id: propertyId, value: 100 };
+    property = { _id: propertyId, value: 100000 };
     props = {
-      structure: { propertyId, wantedLoan: 80, property },
+      structure: { propertyId, wantedLoan: 80000, property },
       properties: [property],
       loan: {},
     };
@@ -29,14 +29,12 @@ describe('FinancingStructuresResultErrors', () => {
     props.structure = { ...props.structure, wantedLoan: 0 };
     expect(component()
       .find(T)
-      .props()
-      .id.includes('noMortgageLoan')).to.equal(true);
+      .props().id).to.contain('noMortgageLoan');
 
     props.structure = { ...props.structure, wantedLoan: undefined };
     expect(component()
       .find(T)
-      .props()
-      .id.includes('noMortgageLoan')).to.equal(true);
+      .props().id).to.contain('noMortgageLoan');
   });
 
   it('warns of missing own funds', () => {
@@ -51,22 +49,20 @@ describe('FinancingStructuresResultErrors', () => {
     };
     expect(component()
       .find(T)
-      .props()
-      .id.includes('missingOwnFunds')).to.equal(true);
+      .props().id).to.contain('missingOwnFunds');
   });
 
   it('warns of missing own funds if the value is NaN', () => {
     expect(component()
       .find(T)
-      .props()
-      .id.includes('missingOwnFunds')).to.equal(true);
+      .props().id).to.contain('missingOwnFunds');
   });
 
   it('warns of too much own funds', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 50,
+      fortuneUsed: 50000,
       secondPillarWithdrawal: 0,
       secondPillarPledged: 0,
       thirdPillarWithdrawal: 0,
@@ -74,15 +70,14 @@ describe('FinancingStructuresResultErrors', () => {
     };
     expect(component()
       .find(T)
-      .props()
-      .id.includes('tooMuchOwnFunds')).to.equal(true);
+      .props().id).to.contain('tooMuchOwnFunds');
   });
 
   it('warns of a high income ratio', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 25,
+      fortuneUsed: 25000,
       secondPillarWithdrawal: 0,
       secondPillarPledged: 0,
       thirdPillarWithdrawal: 0,
@@ -91,21 +86,40 @@ describe('FinancingStructuresResultErrors', () => {
 
     expect(component()
       .find(T)
-      .props()
-      .id.includes('highIncomeRatio')).to.equal(true);
+      .props().id).to.contain('highIncomeRatio');
+  });
+
+  it('warns of missing cash', () => {
+    props.structure = {
+      ...props.structure,
+      propertyWork: 0,
+      fortuneUsed: 12000,
+      thirdPartyFortuneUsed: 0,
+      secondPillarWithdrawal: 13000,
+      secondPillarPledged: 0,
+      thirdPillarWithdrawal: 0,
+      thirdPillarPledged: 0,
+    };
+    props.borrowers = [{ salary: 100000 }];
+
+    expect(component()
+      .find(T)
+      .props().id).to.contain('missingCash');
   });
 
   it('returns null if no error exists in the structure', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 25,
+      fortuneUsed: 25000,
       secondPillarWithdrawal: 0,
       secondPillarPledged: 0,
       thirdPillarWithdrawal: 0,
       thirdPillarPledged: 0,
     };
-    props.borrowers = [{ salary: 1000 }];
-    expect(component().find(FinancingStructuresResultChart).exists()).to.equal(true);
+    props.borrowers = [{ salary: 100000 }];
+    expect(component()
+      .find(FinancingStructuresResultChart)
+      .exists()).to.equal(true);
   });
 });

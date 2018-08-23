@@ -15,10 +15,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
       ];
     }
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...fullUserFragment,
 });

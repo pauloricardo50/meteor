@@ -9,8 +9,8 @@ Loans.addReducers({
     body: {
       selectedStructure: 1,
       structures: 1,
-      properties: omit(userPropertyFragment, 'loans'),
-      offers: omit(fullOfferFragment, 'loans'),
+      properties: omit(userPropertyFragment, ['loans', '$options']),
+      offers: omit(fullOfferFragment, ['loans', '$options']),
     },
     reduce: formatLoanWithStructure,
   },

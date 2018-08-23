@@ -1,7 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { shouldCountField, getCountedArray } from '../formArrayHelpers';
+import {
+  shouldCountField,
+  getCountedArray,
+  getMissingFieldIds,
+} from '../formArrayHelpers';
 
 describe('formArrayHelpers', () => {
   describe('shouldCountField', () => {
@@ -82,6 +86,93 @@ describe('formArrayHelpers', () => {
       it('should count the conditional value and the following if it is true', () => {
         expect(getCountedArray(array, { conditional: trueValue })).to.deep.equal([trueValue, undefined]);
       });
+    });
+  });
+
+  describe('getMissingFieldIds', () => {
+    let array;
+    let doc;
+
+    beforeEach(() => {
+      array = [{ id: 'test' }];
+      doc = {};
+    });
+
+    it('returns the list of missing fields', () => {
+      expect(getMissingFieldIds(array, doc)).to.deep.equal(['test']);
+    });
+
+    it('returns an empty array if all fields are valid', () => {
+      doc.test = 'stuff';
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+
+    it('works with nested data', () => {
+      array = [{ id: 'test.value' }];
+      doc.test = { value: 'stuff' };
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+
+    it('properly counts conditional undefined values', () => {
+      const trueValue = 'something';
+      array = [
+        {
+          type: 'conditionalInput',
+          id: 'id1',
+          conditionalTrueValue: trueValue,
+          inputs: [{ id: 'conditional' }, { id: 'test' }],
+        },
+      ];
+      expect(getMissingFieldIds(array, doc)).to.deep.equal(['conditional']);
+    });
+
+    it('properly counts conditional false values', () => {
+      const trueValue = false;
+      array = [
+        {
+          type: 'conditionalInput',
+          id: 'id1',
+          conditionalTrueValue: trueValue,
+          inputs: [{ id: 'conditional' }, { id: 'test' }],
+        },
+      ];
+      doc.conditional = true;
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+
+    it('properly counts conditional true values', () => {
+      const trueValue = 'something';
+      array = [
+        {
+          type: 'conditionalInput',
+          id: 'id1',
+          conditionalTrueValue: trueValue,
+          inputs: [{ id: 'conditional' }, { id: 'test' }],
+        },
+      ];
+      doc.conditional = trueValue;
+      expect(getMissingFieldIds(array, doc)).to.deep.equal(['test']);
+    });
+
+    it('properly counts conditional true values and its children', () => {
+      const trueValue = 'something';
+      array = [
+        {
+          type: 'conditionalInput',
+          id: 'id1',
+          conditionalTrueValue: trueValue,
+          inputs: [{ id: 'conditional' }, { id: 'test' }],
+        },
+      ];
+      doc.conditional = trueValue;
+      doc.test = 'stuff';
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+
+    it('deals with custom fields', () => {
+      array = [{ id: 'test.value' }];
+      doc.test = { value: 'stuff' };
+      expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
     });
   });
 });

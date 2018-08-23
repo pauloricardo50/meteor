@@ -1,43 +1,54 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { filesPercent } from '../fileHelpers';
+import { filesPercent, getMissingDocumentIds } from '../../fileHelpers';
 
 describe('fileHelpers', () => {
-  describe('filesPercent', () => {
-    let dummyFunc;
-    let dummyDoc;
+  let dummyFunc;
+  let dummyDoc;
+  let fileId;
 
-    beforeEach(() => {
-      dummyFunc = () => [[{ id: 'myFile' }]];
-      dummyDoc = { documents: {} };
+  beforeEach(() => {
+    fileId = 'myFile';
+    dummyFunc = () => [[{ id: fileId }]];
+    dummyDoc = { documents: {} };
+  });
+
+  describe('filesPercent', () => {
+    it('returns 0 if an empty doc is given', () => {
+      expect(filesPercent({ doc: {}, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
-    it('returns 0 if an empty doc is given', () => {
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+    it('returns 0 if no doc is given', () => {
+      expect(filesPercent({ fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
     it('returns 1 if a file exists', () => {
       // file exists
-      dummyDoc.documents.myFile = { files: [{}] };
+      dummyDoc.documents.myFile = [{}];
       expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
+    });
+
+    it('returns 0 if an empty array is given', () => {
+      dummyDoc.documents.myFile = [];
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
     });
 
     it("doesn't count files which aren't required", () => {
       dummyFunc = () => [[{ id: 'myFile', required: false }]];
-      dummyDoc.documents.myFile = { files: [] };
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+      dummyDoc.documents.myFile = [];
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
     });
 
     it("doesn't count files whose condition is explicitly false", () => {
       dummyFunc = () => [[{ id: 'myFile', condition: false }]];
-      dummyDoc.documents.myFile = { files: [] };
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+      dummyDoc.documents.myFile = [];
+      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
     });
 
     it('counts files whose condition is undefined', () => {
       dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
-      dummyDoc.documents.myFile = { files: [{}] };
+      dummyDoc.documents.myFile = [{}];
       expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
     });
 
@@ -45,7 +56,7 @@ describe('fileHelpers', () => {
       it('sums percentages if given an array of docs', () => {
         // deep copy of initial doc
         const initialDoc = JSON.parse(JSON.stringify(dummyDoc));
-        dummyDoc.documents.myFile = { files: [{}] };
+        dummyDoc.documents.myFile = [{}];
 
         expect(filesPercent({
           doc: [initialDoc, dummyDoc],
@@ -58,7 +69,7 @@ describe('fileHelpers', () => {
     describe('status verification', () => {
       it('returns 0 if no files are valid', () => {
         dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
-        dummyDoc.documents.myFile = { files: [{ status: 'INVALID' }] };
+        dummyDoc.documents.myFile = [{ status: 'INVALID' }];
         expect(filesPercent({
           doc: dummyDoc,
           fileArrayFunc: dummyFunc,
@@ -74,8 +85,8 @@ describe('fileHelpers', () => {
             { id: 'myFile2', condition: undefined },
           ],
         ];
-        dummyDoc.documents.myFile = { files: [{ status: 'INVALID' }] };
-        dummyDoc.documents.myFile2 = { files: [{ status: 'VALID' }] };
+        dummyDoc.documents.myFile = [{ status: 'INVALID' }];
+        dummyDoc.documents.myFile2 = [{ status: 'VALID' }];
         expect(filesPercent({
           doc: dummyDoc,
           fileArrayFunc: dummyFunc,
@@ -83,6 +94,25 @@ describe('fileHelpers', () => {
           checkValidity: true,
         })).to.equal(0.5);
       });
+    });
+  });
+
+  describe('getMissingDocumentIds', () => {
+    it('returns the array of missing docs', () => {
+      expect(getMissingDocumentIds({
+        doc: dummyDoc,
+        fileArrayFunc: dummyFunc,
+        step: 0,
+      })).to.deep.equal([fileId]);
+    });
+
+    it('returns an empty array if all documents have been uploaded', () => {
+      dummyDoc.documents[fileId] = [{}];
+      expect(getMissingDocumentIds({
+        doc: dummyDoc,
+        fileArrayFunc: dummyFunc,
+        step: 0,
+      })).to.deep.equal([]);
     });
   });
 });

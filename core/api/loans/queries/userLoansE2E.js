@@ -18,10 +18,6 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
       filters['logic.auction.status'] = auction;
     }
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...loanBaseFragment,
+  $options: { sort: { createdAt: -1 } },
 });

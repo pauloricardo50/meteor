@@ -20,7 +20,7 @@ const isAllowedToDelete = (disabled, status) => {
 };
 
 const File = ({
-  file: { name, Key, status, error },
+  file: { name, Key, status = FILE_STATUS.VALID, error },
   disabled,
   handleRemove,
 }) => (

@@ -11,10 +11,10 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
     <T
       id="SingleLoanPageHeader.title"
       values={{
-        name: loan.name || 'Demande de Prêt',
+        name: loan.name || <T id="general.mortgageLoan" />,
         value: (
           <IntlNumber
-            value={Calculator.getEffectiveLoan({ loan })}
+            value={Calculator.selectLoanValue({ loan })}
             format="money"
           />
         ),

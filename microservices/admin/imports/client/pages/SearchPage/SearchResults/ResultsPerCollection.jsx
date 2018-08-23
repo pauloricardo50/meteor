@@ -29,7 +29,7 @@ const getLoanInfo = (loan) => {
     logic: { step },
     general: { fortuneUsed, insuranceFortuneUsed },
   } = loan;
-  const value = Calculator.getEffectiveLoan({ loan });
+  const value = Calculator.selectLoanValue({ loan });
 
   return {
     primary: name || <T id="general.loan" />,

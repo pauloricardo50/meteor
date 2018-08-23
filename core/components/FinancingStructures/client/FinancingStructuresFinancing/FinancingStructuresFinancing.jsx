@@ -15,6 +15,7 @@ import {
   getBorrowRatio,
   getBorrowRatioStatus,
 } from '../FinancingStructuresResult/financingStructuresResultHelpers';
+import LoanPercent from './LoanPercent';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },
@@ -24,16 +25,23 @@ export const calculateLoan = (params) => {
   const {
     structure: { wantedLoan },
   } = params;
-  return wantedLoan + getPledgedAmount(params);
+  return wantedLoan;
 };
 
 const calculateMaxSliderLoan = data =>
   Calc.getMaxLoan({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
+    pledgedAmount: getPledgedAmount(data),
   });
 
-const oneStructureHasPledge = ({ structures }) =>
+const oneStructureHasPledged = ({ structures }) =>
+  structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
+    secondPillarPledged || thirdPillarPledged);
+
+const offersExist = ({ offers }) => offers && offers.length > 0;
+
+const oneStructureHasPledgedAmount = ({ structures }) =>
   structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
     secondPillarPledged || thirdPillarPledged);
 
@@ -68,22 +76,29 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
         max: calculateMaxSliderLoan,
       },
       {
+        Component: LoanPercent,
+        id: 'wantedLoanPercent',
+        // max: calculateMaxSliderLoan,
+      },
+      {
+        Component: CalculatedValue,
+        id: 'pledgedAmount',
+        value: getPledgedAmount,
+        condition: oneStructureHasPledgedAmount,
+      },
+      {
         Component: RadioButtons,
         id: 'amortizationType',
         options: Object.values(AMORTIZATION_TYPE).map(key => ({
           id: key,
           label: `FinancingStructuresFinancing.${key}`,
         })),
-      },
-      {
-        id: 'pledgedIncrease',
-        Component: CalculatedValue,
-        value: getPledgedAmount,
-        condition: oneStructureHasPledge,
+        condition: offersExist,
       },
       {
         id: 'loanTranches',
         Component: FinancingStructuresTranchePicker,
+        condition: offersExist,
       },
     ]}
   />

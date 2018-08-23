@@ -1,9 +1,6 @@
 import {
   PURCHASE_TYPE,
   RESIDENCE_TYPE,
-  LOANS_COLLECTION,
-  BORROWERS_COLLECTION,
-  PROPERTIES_COLLECTION,
   PROPERTY_TYPE,
   CIVIL_STATUS,
 } from '../constants';
@@ -21,7 +18,7 @@ export const borrowerDocuments = (b = {}) => ({
       condition: !!b.bonus && Object.keys(b.bonus).length > 0,
     },
     {
-      id: DOCUMENTS.OTHER_INCOME,
+      id: DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
       condition: b.otherIncome && !!(b.otherIncome.length > 0),
     },
     {
@@ -84,7 +81,6 @@ export const loanDocuments = (r = {}) => {
         ...this.contract,
         ...this.closing,
         ...this.admin,
-        ...this.other,
       ];
     },
   };
@@ -137,27 +133,5 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
 
 export const getDocumentArrayByStep = (func, step) => [
   ...func()[step],
-  { id: DOCUMENTS.OTHER },
+  { id: DOCUMENTS.OTHER, required: false },
 ];
-
-export const getDocumentIDs = (list) => {
-  let documents;
-  const ids = [];
-  switch (list) {
-  case BORROWERS_COLLECTION:
-    documents = borrowerDocuments();
-    break;
-  case LOANS_COLLECTION:
-    documents = loanDocuments();
-    break;
-  case PROPERTIES_COLLECTION:
-    documents = propertyDocuments();
-    break;
-  default:
-    throw new Error('invalid file list');
-  }
-
-  documents.all().forEach(f => ids.push(f.id));
-
-  return ids;
-};

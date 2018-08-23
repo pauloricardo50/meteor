@@ -7,11 +7,11 @@ import FinanceCalculator, {
 
 export const getInterests = params =>
   (FinanceCalculator.getInterestsWithTranches(params)
-    * FinanceCalculator.getEffectiveLoan(params))
+    * Calculator.selectLoanValue(params))
   / 12;
 export const getAmortization = params =>
   (FinanceCalculator.getAmortizationRate(params)
-    * FinanceCalculator.getEffectiveLoan(params))
+    * Calculator.selectLoanValue(params))
   / 12;
 export const getMonthly = params =>
   getInterests(params) + getAmortization(params);
@@ -32,8 +32,6 @@ export const getPropertyExpenses = (data) => {
   const property = getProperty(data);
   return (property && property.monthlyExpenses) || 0;
 };
-
-export const getSecondPillarWithdrawalTax = FinanceCalculator.getSecondPillarWithdrawalTax;
 
 export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) =>
   Calculator.getFortune({ borrowers }) - fortuneUsed;

@@ -4,9 +4,7 @@ import { createMeteorAsyncFunction } from '../../helpers';
 
 Loans.addReducers({
   documents: {
-    body: {
-      _id: 1,
-    },
+    body: { _id: 1 },
     reduce({ _id: loanId }) {
       const asyncFunc = createMeteorAsyncFunction(FileService.listFilesForDocByCategory);
       return asyncFunc(loanId);

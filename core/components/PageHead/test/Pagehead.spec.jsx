@@ -33,6 +33,15 @@ describe('PageHead', () => {
     expect(component().find('title').length).to.equal(1);
     expect(component()
       .find('title')
+      .text()).to.equal(`e-Potek | ${titleId}.title`);
+  });
+
+  it.skip('does not add .title at the end of the i18n id if it is already provided', () => {
+    const titleId = 'yo.title';
+    props.titleId = titleId;
+    expect(component().find('title').length).to.equal(1);
+    expect(component()
+      .find('title')
       .text()).to.equal(`e-Potek | ${titleId}`);
   });
 

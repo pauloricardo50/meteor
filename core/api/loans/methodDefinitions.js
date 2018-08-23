@@ -113,8 +113,8 @@ export const adminLoanInsert = new Method({
   },
 });
 
-export const addStructure = new Method({
-  name: 'addStructure',
+export const addNewStructure = new Method({
+  name: 'addNewStructure',
   params: {
     loanId: String,
   },

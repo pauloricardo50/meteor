@@ -38,7 +38,7 @@ export const getLoanSummaryColumns = ({
       translationId: 'general.mortgageLoan',
       content: (
         <IntlNumber
-          value={Calculator.getEffectiveLoan({ loan })}
+          value={Calculator.selectLoanValue({ loan })}
           format="money"
         />
       ),

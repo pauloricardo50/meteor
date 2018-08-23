@@ -7,6 +7,7 @@ import messages from '../../lang/fr.json';
 
 // Mounts a component for testing, and wraps it around everything it needs
 const customMount = ({ Component, props = {}, withRouter, withStore }) => {
+  const customMountData = {};
   const intlProvider = new IntlProvider({
     locale: getUserLocale(),
     messages,
@@ -34,12 +35,16 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
     const initialState = withStore;
     const store = mockStore(initialState);
     testComponent = <Provider store={store}>{testComponent}</Provider>;
+    customMountData.store = store;
   }
 
-  return mount(testComponent, {
-    context: { intl },
-    childContextTypes: { intl: intlShape },
-  });
+  return {
+    mountedComponent: mount(testComponent, {
+      context: { intl },
+      childContextTypes: { intl: intlShape },
+    }),
+    customMountData,
+  };
 };
 
 /**
@@ -55,12 +60,14 @@ const customMount = ({ Component, props = {}, withRouter, withStore }) => {
  */
 const getMountedComponent = ({ Component, props, withRouter, withStore }) => {
   if (!getMountedComponent.mountedComponent) {
-    getMountedComponent.mountedComponent = customMount({
+    const { mountedComponent, customMountData } = customMount({
       Component,
       props,
       withRouter,
       withStore,
     });
+    getMountedComponent.getData = () => customMountData;
+    getMountedComponent.mountedComponent = mountedComponent;
   }
   return getMountedComponent.mountedComponent;
 };

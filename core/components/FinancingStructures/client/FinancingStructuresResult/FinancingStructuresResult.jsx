@@ -11,8 +11,6 @@ import FinancingStructuresResultErrors from './FinancingStructuresResultErrors';
 import {
   getInterests,
   getAmortization,
-  getAmortizationDeduction,
-  getSecondPillarWithdrawalTax,
   getRemainingCash,
   getRemainingSecondPillar,
   getRemainingThirdPillar,
@@ -35,7 +33,7 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
         {
           id: 'result',
           label: (
-            <span className="section-title">
+            <span className="section-title result">
               <T id="FinancingStructuresResult.title" />
             </span>
           ),
@@ -43,6 +41,14 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
         },
       ]}
       detailConfig={[
+        {
+          id: 'cost',
+          label: (
+            <h4 className="section-subtitle">
+              <T id="FinancingStructuresResult.cost" />
+            </h4>
+          ),
+        },
         {
           id: 'interestsCost',
           Component: CalculatedValue,
@@ -61,11 +67,10 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
         {
           id: 'finma',
           label: (
-            <h4>
+            <h4 className="section-subtitle">
               <T id="FinancingStructuresResult.finma" />
             </h4>
           ),
-          className: 'section-subtitle',
         },
         {
           id: 'borrowRatio',
@@ -80,35 +85,9 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
           status: getIncomeRatioStatus,
         },
         {
-          id: 'fiscal',
-          label: (
-            <h4>
-              <T id="FinancingStructuresResult.fiscalTitle" />
-            </h4>
-          ),
-          className: 'section-subtitle',
-        },
-        {
-          id: 'secondPillarWithdrawalTax',
-          Component: CalculatedValue,
-          value: getSecondPillarWithdrawalTax,
-        },
-        {
-          id: 'amortizationDeduction',
-          Component: CalculatedValue,
-          value: getAmortizationDeduction,
-        },
-        {
-          id: 'totalFiscal',
-          Component: CalculatedValue,
-          value: params =>
-            getSecondPillarWithdrawalTax(params)
-            + getAmortizationDeduction(params),
-        },
-        {
           id: 'future',
           label: (
-            <h4>
+            <h4 className="section-subtitle">
               <T id="FinancingStructuresResult.future" />
             </h4>
           ),

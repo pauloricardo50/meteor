@@ -9,7 +9,7 @@ import T from 'core/components/Translation';
 import DashboardRecapSum from './DashboardRecapSum';
 
 const getRecapArray = ({ loan }) => {
-  const loanValue = Calculator.getEffectiveLoan({ loan });
+  const loanValue = Calculator.selectLoanValue({ loan });
   const fortuneUsed = Calculator.getCashUsed({ loan });
   const insuranceWithdrawn = Calculator.getInsuranceWithdrawn({ loan });
 

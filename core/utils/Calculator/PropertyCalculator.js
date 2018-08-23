@@ -4,9 +4,12 @@ import {
   getPropertyLoanArray,
 } from '../../arrays/PropertyFormArray';
 import { getPercent } from '../general';
-import { getCountedArray } from '../formArrayHelpers';
+import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import { FinanceCalculator } from '../FinanceCalculator';
-import { filesPercent } from '../../api/files/fileHelpers';
+import {
+  filesPercent,
+  getMissingDocumentIds,
+} from '../../api/files/fileHelpers';
 import { propertyDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
 import MiddlewareManager from '../MiddlewareManager';
@@ -28,6 +31,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     propertyPercent({ loan, property }) {
       const { borrowers, structure } = loan;
       const propertyToCalculateWith = property || structure.property;
+
+      if (!propertyToCalculateWith) {
+        return 0;
+      }
+
       const formArray1 = getPropertyArray({
         loan,
         borrowers,
@@ -39,10 +47,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         property: propertyToCalculateWith,
       });
 
-      let a = getCountedArray(formArray1, property);
-      a = [...a, getCountedArray(formArray2, loan)];
-
-      return getPercent(a);
+      return getPercent([
+        ...getCountedArray(formArray1, propertyToCalculateWith),
+        ...getCountedArray(formArray2, loan),
+      ]);
     }
 
     getPropAndWork({ loan }) {
@@ -53,9 +61,16 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
-    getPropertyFilesProgress({ property }) {
+    getPropertyFilesProgress({ loan, property }) {
+      const { structure } = loan;
+      const propertyToCalculateWith = property || structure.property;
+
+      if (!propertyToCalculateWith) {
+        return 0;
+      }
+
       return filesPercent({
-        doc: property,
+        doc: propertyToCalculateWith,
         fileArrayFunc: propertyDocuments,
         step: FILE_STEPS.AUCTION,
       });
@@ -81,6 +96,38 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return (
         (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRatio) / 12
       );
+    }
+
+    getMissingPropertyFields({ loan, property }) {
+      const { borrowers, structure } = loan;
+      const propertyToCalculateWith = property || structure.property;
+
+      const formArray1 = getPropertyArray({
+        loan,
+        borrowers,
+        property: propertyToCalculateWith,
+      });
+      const formArray2 = getPropertyLoanArray({
+        loan,
+        borrowers,
+        property: propertyToCalculateWith,
+      });
+
+      return [
+        ...getMissingFieldIds(formArray1, propertyToCalculateWith),
+        ...getMissingFieldIds(formArray2, loan),
+      ];
+    }
+
+    getMissingPropertyDocuments({ loan, property }) {
+      const { structure } = loan;
+      const propertyToCalculateWith = property || (structure && structure.property);
+
+      return getMissingDocumentIds({
+        doc: propertyToCalculateWith,
+        fileArrayFunc: propertyDocuments,
+        step: FILE_STEPS.AUCTION,
+      });
     }
   };
 

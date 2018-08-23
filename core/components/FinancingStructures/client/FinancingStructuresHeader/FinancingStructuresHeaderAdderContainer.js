@@ -1,8 +1,14 @@
-import { withProps } from 'recompose';
-import { addStructure } from 'core/api';
+import { withProps, compose, withState } from 'recompose';
+import { addNewStructure } from 'core/api';
 
-const FinancingStructuresHeaderAdderContainer = withProps(({ loanId }) => ({
-  handleAdd: () => addStructure.run({ loanId }),
-}));
+const FinancingStructuresHeaderAdderContainer = compose(
+  withState('isAdding', 'setIsAdding', false),
+  withProps(({ loanId, setIsAdding }) => ({
+    handleAdd: () => {
+      setIsAdding(true);
+      return addNewStructure.run({ loanId }).finally(() => setIsAdding(false));
+    },
+  })),
+);
 
 export default FinancingStructuresHeaderAdderContainer;

@@ -3,6 +3,7 @@
 import { expect } from 'chai';
 
 import BorrowerCalculator from '..';
+import { BORROWER_DOCUMENTS } from 'core/api/constants';
 
 describe('BorrowerCalculator', () => {
   describe('sumValues', () => {
@@ -70,10 +71,10 @@ describe('BorrowerCalculator', () => {
   });
 
   describe('getBorrowersCompletion', () => {
-    it('returns 0.5 if given a simple borrower', () => {
+    it('should be 0% for a new borrower', () => {
       expect(BorrowerCalculator.getBorrowersCompletion({
-        borrowers: { files: {}, logic: {} },
-      })).to.equal(0.5);
+        borrowers: { documents: {}, logic: {} },
+      })).to.equal(0);
     });
   });
 
@@ -257,6 +258,38 @@ describe('BorrowerCalculator', () => {
       expect(BorrowerCalculator.getBorrowerSalary({
         borrowers: [{ salary: 1 }, { salary: 2 }],
       })).to.equal(3);
+    });
+  });
+
+  describe('getMissingBorrowerDocuments', () => {
+    it('returns all missing ids for an empty borrower', () => {
+      expect(BorrowerCalculator.getMissingBorrowerDocuments({ borrowers: {} })).to.deep.equal([
+        BORROWER_DOCUMENTS.IDENTITY,
+        BORROWER_DOCUMENTS.RESIDENCY_PERMIT,
+        BORROWER_DOCUMENTS.TAXES,
+        BORROWER_DOCUMENTS.SALARY_CERTIFICATE,
+        BORROWER_DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
+      ]);
+    });
+  });
+
+  describe('getMissingBorrowerFields', () => {
+    it('returns all missing ids for an empty borrower', () => {
+      expect(BorrowerCalculator.getMissingBorrowerFields({ borrowers: {} })).to.deep.equal([
+        'firstName',
+        'lastName',
+        'gender',
+        'address1',
+        'zipCode',
+        'isSwiss',
+        'age',
+        'citizenship',
+        'isUSPerson',
+        'civilStatus',
+        'childrenCount',
+        'worksForOwnCompany',
+        'personalBank',
+      ]);
     });
   });
 });

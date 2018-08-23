@@ -31,10 +31,6 @@ export default Borrowers.createQuery(BORROWER_QUERIES.ADMIN_BORROWERS, {
       }
     }
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...baseBorrowerFragment,
+  $options: { sort: { createdAt: -1 } },
 });

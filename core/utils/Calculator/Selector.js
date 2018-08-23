@@ -12,6 +12,13 @@ export const withSelector = (SuperClass = class {}) =>
       return loan.structure;
     }
 
+    selectLoanValue({ loan }) {
+      return createSelector(
+        this.selectStructure,
+        structure => structure && structure.wantedLoan,
+      );
+    }
+
     makeSelectPropertyKey(key: string): Function {
       return createSelector(
         this.selectProperty,

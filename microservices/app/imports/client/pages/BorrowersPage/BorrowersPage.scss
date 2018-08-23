@@ -388,3 +388,15 @@
   display: flex;
   align-items: center;
 }
+
+.borrowers-page-buttons {
+  display: flex;
+  justify-content: flex-start;
+  margin: 32px;
+  margin-bottom: 16px;
+
+  .return-to-dashboard {
+    margin: 0;
+    margin-right: 16px;
+  }
+}

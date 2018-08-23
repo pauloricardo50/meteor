@@ -2,7 +2,10 @@
 import { FinanceCalculator } from '../FinanceCalculator';
 import { loanDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
-import { filesPercent } from '../../api/files/fileHelpers';
+import {
+  filesPercent,
+  getMissingDocumentIds,
+} from '../../api/files/fileHelpers';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -71,20 +74,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           tranches: this.makeSelectStructureKey('loanTranches')({ loan }),
           interestRates: finalInterestRates,
         })
-          * this.getEffectiveLoan({ loan }))
+          * this.selectLoanValue({ loan }))
         / 12
       );
     }
 
     getTheoreticalInterests({ loan }) {
       return (
-        (this.getEffectiveLoan({ loan }) * this.theoreticalInterestRate) / 12
+        (this.selectLoanValue({ loan }) * this.theoreticalInterestRate) / 12
       );
     }
 
     getAmortization({ loan }) {
       return (
-        (this.getAmortizationRate({ loan }) * this.getEffectiveLoan({ loan }))
+        (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
         / 12
       );
     }
@@ -158,6 +161,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getLoanFilesProgress({ loan }) {
       return filesPercent({
+        doc: loan,
+        fileArrayFunc: loanDocuments,
+        step: FILE_STEPS.AUCTION,
+      });
+    }
+
+    getMissingLoanDocuments({ loan }) {
+      return getMissingDocumentIds({
         doc: loan,
         fileArrayFunc: loanDocuments,
         step: FILE_STEPS.AUCTION,

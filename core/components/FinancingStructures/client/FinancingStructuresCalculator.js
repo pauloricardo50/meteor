@@ -27,11 +27,12 @@ const argumentMappings = {
 
   getBorrowRatio: data => ({
     propertyValue: getProperty(data).value + data.structure.propertyWork,
-    loan: Calc.getEffectiveLoan({
-      loanValue: data.structure.wantedLoan,
-      pledgedValue:
-        data.structure.secondPillarPledged + data.structure.thirdPillarPledged,
-    }),
+    loan: data.structure.wantedLoan,
+  }),
+
+  getLoanFromBorrowRatio: (borrowRatio, data) => ({
+    propertyValue: getProperty(data).value + data.structure.propertyWork,
+    borrowRatio,
   }),
 
   getAmortizationRate: getAmortizationRateMapper,
@@ -57,15 +58,9 @@ const argumentMappings = {
     };
   },
 
-  getSecondPillarWithdrawalTax: ({
-    structure: { secondPillarWithdrawal },
-  }) => ({ secondPillarWithdrawal }),
-
-  getEffectiveLoan: ({
-    structure: { wantedLoan, secondPillarPledged, thirdPillarPledged },
-  }) => ({
-    loanValue: wantedLoan,
-    pledgedValue: secondPillarPledged + thirdPillarPledged,
+  getMinCash: data => ({
+    propertyValue: getProperty(data).value,
+    propertyWork: data.structure.propertyWork,
   }),
 };
 

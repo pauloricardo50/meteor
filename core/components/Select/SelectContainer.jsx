@@ -10,7 +10,7 @@ import Icon from '../Icon';
 
 const styles = theme => ({
   menuItem: {
-    '&:hover, &:focus': {
+    '&:hover': {
       backgroundColor: theme.palette.primary.main,
       '& $colorClass': { color: theme.palette.common.white },
     },

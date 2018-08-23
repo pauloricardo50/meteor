@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -6,6 +8,7 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 import { withState, compose } from 'recompose';
 
 import T from 'core/components/Translation';
@@ -40,6 +43,15 @@ const WwwTopNavLinksSmall = ({ open, toggleDrawer, classes: { fullList } }) => (
               </ListItem>
             </Link>
           ))}
+          <Divider />
+          <a
+            href={Meteor.settings.public.subdomains.app}
+            className="www-top-nav-link"
+          >
+            <ListItem button>
+              <ListItemText primary={<T id="WwwTopNavLinks.login" />} />
+            </ListItem>
+          </a>
         </List>
       </div>
     </Drawer>
@@ -47,9 +59,9 @@ const WwwTopNavLinksSmall = ({ open, toggleDrawer, classes: { fullList } }) => (
 );
 
 WwwTopNavLinksSmall.propTypes = {
+  classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   toggleDrawer: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired,
 };
 
 export default compose(

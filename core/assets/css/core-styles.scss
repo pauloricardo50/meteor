@@ -57,7 +57,7 @@ hr {
 
   border-radius: 16px;
   background: #fff;
-  box-shadow: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: $shadow-level-1;
 }
 
 .card1.card-top,
@@ -77,7 +77,7 @@ hr {
 }
 
 .card1.card-hover:hover {
-  box-shadow: 0 2px 30px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: $shadow-level-2;
 }
 
 // Pretty text effect for tooltips, shows a gradient underline on the text

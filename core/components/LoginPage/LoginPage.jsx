@@ -1,30 +1,17 @@
-import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
 
-import { sendVerificationLink } from 'core/api/methods';
-
-import T from '../Translation';
-import Accounts from './Accounts';
+import LoginPageLeft from './LoginPageLeft';
+import LoginPageRight from './LoginPageRight';
 
 const LoginPage = ({ location: { search }, history: { push } }) => {
   const { path } = queryString.parse(search);
 
   return (
     <section className="login-page">
-      <React.Fragment>
-        <h1>
-          <T id="LoginPage.title" />
-        </h1>
-        <Accounts.ui.LoginForm
-          onSignedInHook={() => push(path || '/')}
-          onPostSignUpHook={() => {
-            push(path || '/');
-            sendVerificationLink.run({});
-          }}
-        />
-      </React.Fragment>
+      <LoginPageLeft />
+      <LoginPageRight path={path} push={push} />
     </section>
   );
 };

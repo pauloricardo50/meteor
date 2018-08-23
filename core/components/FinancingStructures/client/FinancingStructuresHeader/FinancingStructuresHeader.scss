@@ -1,4 +1,5 @@
 .financing-structures-header {
+  position: relative;
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
@@ -21,6 +22,8 @@
   transition: color 200ms $bezier, background-color 200ms $bezier;
   text-align: center;
 
+  animation-duration: 200ms;
+
   .financing-structures-header-actions {
     position: absolute;
     top: 0;
@@ -29,7 +32,7 @@
     padding: 0;
   }
 
-   > * {
+  > * {
     padding: 0;
   }
 
@@ -58,6 +61,12 @@
   }
 
   &.structure-adder {
+    position: absolute;
     justify-content: center;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    border: unset;
   }
 }

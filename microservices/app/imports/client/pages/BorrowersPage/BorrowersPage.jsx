@@ -10,6 +10,7 @@ import Info from './Info';
 import Finance from './Finance';
 import BorrowerHeader from './BorrowerHeader';
 import BorrowersPageTitle from './BorrowersPageTitle';
+import BorrowersPageNextTab from './BorrowersPageNextTab';
 
 const getTabs = (props) => {
   const { loan } = props;
@@ -47,7 +48,13 @@ const BorrowersPage = (props) => {
       <section className="borrower-page">
         <Tabs tabs={tabs} initialIndex={initialIndex} />
       </section>
-      <ReturnToDashboard />
+      <span className="borrowers-page-buttons">
+        <ReturnToDashboard />
+        <BorrowersPageNextTab
+          tabId={tabId}
+          makeLink={tab => `/loans/${props.loan._id}/borrowers/${tab}`}
+        />
+      </span>
     </Page>
   );
 };

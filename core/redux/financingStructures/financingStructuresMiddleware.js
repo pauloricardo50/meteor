@@ -11,7 +11,8 @@ import {
   selectLoan,
 } from './financingStructuresSelectors';
 
-export const DEBOUNCE_TIMEOUT_MS = 500;
+// Just for sliders
+export const DEBOUNCE_TIMEOUT_MS = 50;
 
 export const saveStructures = debounce((saveDataFunc, ids, getState) => {
   const idsToUse = [...ids];
@@ -32,9 +33,7 @@ export const rehydrateMiddleware = ({ dispatch, getState }) => next => (action: 
     } = getState();
     const { loan } = action.payload;
     dispatch(rehydrateData(loan, 'loan'));
-    // if (!isLoaded) {
     dispatch(rehydrateData(normalize(loan.structures), 'structures'));
-    // }
     dispatch(rehydrateData(normalize(loan.borrowers), 'borrowers'));
     dispatch(rehydrateData(normalize(loan.properties), 'properties'));
     return;

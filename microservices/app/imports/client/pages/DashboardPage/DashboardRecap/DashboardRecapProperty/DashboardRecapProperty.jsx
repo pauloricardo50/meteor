@@ -9,8 +9,8 @@ import Recap from 'core/components/Recap';
 import { T, MetricArea } from 'core/components/Translation';
 import { PropertyModifier } from 'core/components/PropertyForm';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { PROPERTY_PAGE } from '../../../../../startup/client/appRoutes';
 import SwitzerlandMap from 'core/components/maps/SwitzerlandMap';
+import { PROPERTY_PAGE } from '../../../../../startup/client/appRoutes';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
@@ -19,14 +19,14 @@ export const getRecapArray = (property) => {
   const {
     landArea,
     insideArea,
+    value,
     valuation: { status, min, max },
   } = property;
   return [
     {
-      subtitle: true,
-      label: getPropertyAddressString(property),
-      labelStyle: { marginTop: 0, marginBottom: 16, textAlign: 'left' },
-      noIntl: true,
+      label: 'Forms.value',
+      value: toMoney(value),
+      hide: !value,
     },
     {
       label: 'Forms.insideArea',
@@ -59,6 +59,7 @@ const shouldDisplay = ({ address1, zipCode, city }) =>
 
 const getContent = (property, loanId) => {
   const canDisplayDetails = shouldDisplay(property, loanId);
+  const propertyAddress = getPropertyAddressString(property);
   return (
     <React.Fragment>
       {canDisplayDetails ? (
@@ -69,10 +70,10 @@ const getContent = (property, loanId) => {
           id={property._id}
         />
       ) : (
-          <SwitzerlandMap className="map" />
+        <SwitzerlandMap className="map" />
       )}
-      <h3>
-        <T id="Recap.property" />
+      <h3 className="dashboard-recap-property-title">
+        {canDisplayDetails ? propertyAddress : <T id="Recap.property" />}
       </h3>
       {canDisplayDetails ? (
         <Recap array={getRecapArray(property)} className="recap" />

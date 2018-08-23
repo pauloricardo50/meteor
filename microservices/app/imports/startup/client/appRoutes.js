@@ -2,7 +2,8 @@
 export const ACCOUNT_PAGE = '/account';
 export const ADD_LOAN_PAGE = '/add-loan/:loanId';
 export const APP_PAGE = '/';
-export const BORROWERS_PAGE = '/loans/:loanId/borrowers/:tabId';
+export const BORROWERS_PAGE_NO_TAB = '/loans/:loanId/borrowers';
+export const BORROWERS_PAGE = `${BORROWERS_PAGE_NO_TAB}/:tabId`;
 export const DASHBOARD_PAGE = '/loans/:loanId';
 export const DEV_PAGE = '/dev';
 export const EMAIL_VERIFICATION_PAGE = '/verify-email/:token';

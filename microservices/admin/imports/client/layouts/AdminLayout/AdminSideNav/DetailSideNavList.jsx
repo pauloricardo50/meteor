@@ -27,7 +27,7 @@ const getListItemDetails = (
       secondary: <Roles roles={roles} />,
     };
   case LOANS_COLLECTION: {
-    const loanValue = structure && Calculator.getEffectiveLoan({ loan: { structure } });
+    const loanValue = structure && Calculator.selectLoanValue({ loan: { structure } });
 
     return {
       primary: name,

@@ -17,10 +17,6 @@ export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
       filters.userId = { $exists: true };
     }
   },
-  $options: {
-    sort: {
-      createdAt: -1,
-    },
-  },
   ...adminLoansFragment,
+  $options: { sort: { createdAt: -1 } },
 });

@@ -9,8 +9,12 @@ import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/Financ
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import FinanceCalculator from '../FinancingStructuresCalculator';
+import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
 
 type FinancingStructuresResultErrorsProps = {};
+
+const getCashUsed = ({ structure: { fortuneUsed, thirdPartyFortuneUsed } }) =>
+  fortuneUsed + thirdPartyFortuneUsed;
 
 const errors = [
   {
@@ -21,19 +25,23 @@ const errors = [
     id: 'missingOwnFunds',
     func: (data) => {
       const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds > 0;
+      return Number.isNaN(requiredFunds) || requiredFunds >= ROUNDING_AMOUNT;
     },
   },
   {
     id: 'tooMuchOwnFunds',
     func: (data) => {
       const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds < 0;
+      return Number.isNaN(requiredFunds) || requiredFunds <= -ROUNDING_AMOUNT;
     },
   },
   {
     id: 'highIncomeRatio',
     func: data => getIncomeRatio(data) > FinanceCalculator.maxIncomeRatio,
+  },
+  {
+    id: 'missingCash',
+    func: data => FinanceCalculator.getMinCash(data) > getCashUsed(data),
   },
 ];
 

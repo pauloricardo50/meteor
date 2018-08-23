@@ -7,6 +7,7 @@ export const baseBorrowerFragment = {
   name: 1,
   createdAt: 1,
   updatedAt: 1,
+  // $options: { sort: { createdAt: 1 } },
 };
 
 export const loanBorrowerFragment = {

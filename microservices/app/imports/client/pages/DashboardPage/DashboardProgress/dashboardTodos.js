@@ -20,15 +20,19 @@ const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
 
 export const dashboardTodosArray = [
   {
-    id: 'createStructure',
-    condition: ({ structures }) => structures.length === 0,
-    link: createFinancingLink,
-  },
-  {
-    id: 'addProperty',
-    condition: ({ properties }) => properties.length === 0,
+    id: 'completeBorrowers',
+    condition: ({ borrowers }) => {
+      const percentages = borrowers.map(borrower =>
+        BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
+
+      if (percentages.some(percent => percent < 1)) {
+        return true;
+      }
+
+      return false;
+    },
     link: ({ _id: loanId }) =>
-      createRoute(PROPERTIES_PAGE, { ':loanId': loanId }),
+      createRoute(BORROWERS_PAGE, { ':loanId': loanId, ':tabId': 'personal' }),
   },
   {
     id: 'completeProperty',
@@ -58,44 +62,34 @@ export const dashboardTodosArray = [
     link: createSinglePropertyLink,
   },
   {
-    id: 'completeBorrowers',
-    condition: ({ borrowers }) => {
-      const percentages = borrowers.map(borrower =>
-        BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
-
-      if (percentages.some(percent => percent < 1)) {
-        return true;
-      }
-
-      return false;
-    },
-    link: ({ _id: loanId }) =>
-      createRoute(BORROWERS_PAGE, { ':loanId': loanId, ':tabId': 'personal' }),
-  },
-  {
-    id: 'chooseOffer',
-    condition: ({ offers, structure: { offer } }) =>
-      offers.length > 0 && !offer,
+    id: 'createStructure',
+    condition: ({ structures }) => structures.length === 0,
     link: createFinancingLink,
   },
   {
     id: 'createSecondStructure',
     condition: ({ structures }) => structures.length === 1,
+    hide: ({ structures }) => structures.length === 0,
+    link: createFinancingLink,
+  },
+  {
+    id: 'chooseOffer',
+    condition: ({ offers, structure: { offer } }) =>
+      offers.length > 0 && !offer,
+    hide: ({ offers }) => offers.length === 0,
     link: createFinancingLink,
   },
   {
     id: 'callEpotek',
-    condition: params =>
+    hide: params =>
       dashboardTodosArray
         .filter(({ id }) => id !== 'callEpotek')
-        .every(({ condition }) => !condition(params)),
+        .some(({ condition }) => condition(params)),
+    condition: () => true,
   },
 ];
 
 export const dashboardTodosObject = dashboardTodosArray.reduce(
-  (acc, todo) => ({
-    ...acc,
-    [todo.id]: todo,
-  }),
+  (acc, todo) => ({ ...acc, [todo.id]: todo }),
   {},
 );

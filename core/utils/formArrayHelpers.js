@@ -19,13 +19,16 @@ export const shouldCountField = (formField: formFieldType) =>
   && !formField.disabled
   && formField.type !== 'h3';
 
+const conditionalInputIsTriggered = (rootField, doc) =>
+  getCurrentValue(rootField.inputs[0], doc) === rootField.conditionalTrueValue;
+
 // getCountedArray - Returns an array of values that are mandatory and should
 // be counted to determine a completion percentage of a form
 export const getCountedArray = (formArray, doc, arr = []) => {
   formArray.forEach((i) => {
     if (shouldCountField(i)) {
       if (i.type === 'conditionalInput') {
-        if (getCurrentValue(i.inputs[0], doc) === i.conditionalTrueValue) {
+        if (conditionalInputIsTriggered(i, doc)) {
           // If the conditional input is triggering the next input, add all values
           i.inputs.forEach(input => arr.push(getCurrentValue(input, doc)));
         } else {
@@ -40,3 +43,44 @@ export const getCountedArray = (formArray, doc, arr = []) => {
 
   return arr;
 };
+
+const fieldIsValid = (field, doc) => {
+  const currentValue = getCurrentValue(field, doc);
+  return currentValue !== undefined;
+};
+
+export const getMissingFieldIds = (formArray, doc) =>
+  formArray.reduce((missingFieldIds, field) => {
+    const { type, id, inputs } = field;
+    if (!shouldCountField(field)) {
+      return missingFieldIds;
+    }
+
+    if (type === 'conditionalInput') {
+      const [conditionalField, ...additionalFields] = inputs;
+      if (conditionalInputIsTriggered(field, doc)) {
+        return [
+          ...missingFieldIds,
+          ...additionalFields.reduce(
+            (missingConditionalFields, additionalField) =>
+              (fieldIsValid(additionalField, doc)
+                ? missingConditionalFields
+                : [...missingConditionalFields, additionalField.id]),
+            [],
+          ),
+        ];
+      }
+
+      if (!fieldIsValid(conditionalField, doc)) {
+        return [...missingFieldIds, conditionalField.id];
+      }
+
+      return missingFieldIds;
+    }
+
+    if (!fieldIsValid(field, doc)) {
+      return [...missingFieldIds, id];
+    }
+
+    return missingFieldIds;
+  }, []);

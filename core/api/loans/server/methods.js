@@ -16,7 +16,7 @@ import {
   disableUserForms,
   enableUserForms,
   adminLoanInsert,
-  addStructure,
+  addNewStructure,
   removeStructure,
   updateStructure,
   selectStructure,
@@ -104,9 +104,9 @@ adminLoanInsert.setHandler(adminLoanInsertHandler);
 
 export const addStructureHandler = ({ userId }, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.addStructure({ loanId });
+  return LoanService.addNewStructure({ loanId });
 };
-addStructure.setHandler(addStructureHandler);
+addNewStructure.setHandler(addStructureHandler);
 
 export const removeStructureHandler = ({ userId }, { loanId, structureId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);

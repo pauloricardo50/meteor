@@ -4,12 +4,8 @@
     "module": "es6",
     "baseUrl": ".",
     "paths": {
-      "core/*": [
-        "../../core/*"
-      ]
+      "core/*": ["../../core/*"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules", ".meteor"]
 }

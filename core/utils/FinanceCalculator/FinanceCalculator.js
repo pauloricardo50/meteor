@@ -39,7 +39,6 @@ export class FinanceCalculator {
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
     notaryFees = NOTARY_FEES,
-    secondPillarWithdrawalTaxRate = SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
     theoreticalMaintenanceRatio = MAINTENANCE_FINMA,
@@ -54,7 +53,6 @@ export class FinanceCalculator {
     maxIncomeRatioTight?: number,
     minCash?: number,
     notaryFees?: number,
-    secondPillarWithdrawalTaxRate?: number,
     taxRate?: number,
     theoreticalInterestRate?: number,
     theoreticalMaintenanceRatio: number,
@@ -69,7 +67,6 @@ export class FinanceCalculator {
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
     this.notaryFees = notaryFees;
-    this.secondPillarWithdrawalTaxRate = secondPillarWithdrawalTaxRate;
     this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
@@ -107,6 +104,16 @@ export class FinanceCalculator {
     loan: number,
   }) {
     return loan / propertyValue;
+  }
+
+  getLoanFromBorrowRatio({
+    propertyValue,
+    borrowRatio,
+  }: {
+    propertyValue: number,
+    borrowRatio: number,
+  }) {
+    return borrowRatio * propertyValue;
   }
 
   getBorrowRatioWithoutLoan({
@@ -239,25 +246,16 @@ export class FinanceCalculator {
     return deduction;
   }
 
-  getSecondPillarWithdrawalTax({
-    secondPillarWithdrawal = 0,
-  }: { secondPillarWithdrawal: number } = {}) {
-    return -secondPillarWithdrawal * this.secondPillarWithdrawalTaxRate;
-  }
-
-  getEffectiveLoan({
-    loanValue = 0,
-    pledgedValue = 0,
-  }: { loanValue: number, pledgedValue: number } = {}) {
-    return loanValue + pledgedValue;
-  }
-
   getMaxLoan({
     propertyValue,
     propertyWork,
-    pledgedAmount
-  }: { propertyValue: number, propertyWork: number } = {}) {
-    return (propertyValue + propertyWork) * this.maxBorrowRatio;
+    pledgedAmount,
+  }: {
+    propertyValue: number,
+    propertyWork: number,
+    pledgedAmount: number,
+  } = {}): number {
+    return (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount;
   }
 
   getYearsToRetirement = ({
@@ -304,6 +302,13 @@ export class FinanceCalculator {
 
   getNotaryFeesRate() {
     return this.notaryFees;
+  }
+
+  getMinCash({ propertyValue, propertyWork }) {
+    return (
+      (propertyValue + propertyWork) * this.minCash
+      + propertyValue * this.getNotaryFeesRate()
+    );
   }
 }
 
