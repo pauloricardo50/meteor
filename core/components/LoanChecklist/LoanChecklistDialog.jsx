@@ -1,13 +1,14 @@
 // @flow
 import React from 'react';
 
+import T from '../Translation';
 import DialogSimple from '../DialogSimple';
 import LoanChecklist from '.';
 
 type LoanChecklistDialogProps = {};
 
 const LoanChecklistDialog = ({ loan }: LoanChecklistDialogProps) => (
-  <DialogSimple cancelOnly label="Voir la checklist">
+  <DialogSimple cancelOnly label={<T id="LoanChecklist.dialogButton" />}>
     <LoanChecklist loan={loan} />
   </DialogSimple>
 );

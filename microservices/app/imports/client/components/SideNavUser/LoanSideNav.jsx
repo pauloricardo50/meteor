@@ -33,7 +33,6 @@ const sideNavLinks: linksType = [
   { id: 'PropertiesPage', to: ROUTES.PROPERTIES_PAGE, icon: faHome },
   { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
   { id: 'FilesPage', to: ROUTES.FILES_PAGE, icon: faFolderOpen },
-  // { id: 'ClosingPage', to: ROUTES.CLOSING_PAGE },
 ];
 
 export const LoanSideNav = ({
@@ -51,7 +50,6 @@ export const LoanSideNav = ({
           ':loanId': loan._id,
           ':borrowerId': loan.borrowers[0]._id,
           ':propertyId': loan.properties[0]._id,
-          // ':tabId': 'personal',
         }),
       }))
       .map(({ to, id, icon, ...otherProps }) => (

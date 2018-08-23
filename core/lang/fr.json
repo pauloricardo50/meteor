@@ -2,6 +2,7 @@
   "LoanChecklist.missingFields": "Informations manquantes",
   "LoanChecklist.missingDocuments": "Documents manquants",
   "LoanChecklist.done": "Nous avons tout ce qu'il faut",
+  "LoanChecklist.dialogButton": "Voir la checklist",
 
   "FinancingStructures.wantedLoanPercent": "Prêt hypothécaire (%)",
   "FinancingStructuresRefresher.label": "Rafraîchir",
