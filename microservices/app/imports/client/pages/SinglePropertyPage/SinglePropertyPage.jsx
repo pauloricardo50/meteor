@@ -7,8 +7,6 @@ import {
   getPropertyArray,
   getPropertyLoanArray,
 } from 'core/arrays/PropertyFormArray';
-import UploaderArray from 'core/components/UploaderArray';
-import { loanDocuments, propertyDocuments } from 'core/api/files/documents';
 import T from 'core/components/Translation';
 import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -50,7 +48,7 @@ const SinglePropertyPage = (props) => {
           address1={address1}
           city={city}
           zipCode={zipCode}
-          options={{ zoom: 14 }}
+          options={{ zoom: 15 }}
         />
         <Element name="valuation" className="valuation">
           <Valuation property={property} loanResidenceType={residenceType} />

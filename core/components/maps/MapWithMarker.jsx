@@ -1,35 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import { compose, withState, lifecycle, withProps } from 'recompose';
 import T from '../Translation';
+import { withLoading } from '../Loading';
 import GoogleMapContainer from './GoogleMapContainer';
 import GoogleMap from './GoogleMap';
 import { getLatLngFromAddress } from './googleMapsHelpers';
 
-class MapWithMarker extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const MapWithMarker = (props) => {
+  const { address, options, id, latlng } = props;
 
-  componentDidMount() {
-    const { address } = this.props;
-    getLatLngFromAddress(address).then(latlng => this.setState({ latlng }));
-  }
-
-  render() {
-    const { address, options, id } = this.props;
-    const { latlng } = this.state;
-
-    return latlng ? (
-      <GoogleMap address={address} latlng={latlng} id={id} options={options} />
-    ) : (
-      <p className="description">
-        <T id="GoogleMap.addressNotFound" />
-      </p>
-    );
-  }
-}
+  return latlng ? (
+    <GoogleMap address={address} latlng={latlng} id={id} options={options} />
+  ) : (
+    <p className="description">
+      <T id="GoogleMap.addressNotFound" />
+    </p>
+  );
+};
 
 MapWithMarker.propTypes = {
   address: PropTypes.string.isRequired,
@@ -42,4 +31,27 @@ MapWithMarker.defaultProps = {
   id: undefined,
 };
 
-export default GoogleMapContainer(MapWithMarker);
+export default compose(
+  GoogleMapContainer,
+  withState('loading', 'setLoading', false),
+  withState('latlng', 'setLatlng', undefined),
+  withProps(({ address, setLoading, setLatlng }) => ({
+    getLatlngFromGoogle: () => {
+      setLoading(true);
+      getLatLngFromAddress(address)
+        .then(setLatlng)
+        .finally(() => setLoading(false));
+    },
+  })),
+  lifecycle({
+    componentDidMount() {
+      this.props.getLatlngFromGoogle();
+    },
+    componentWillReceiveProps({ address }) {
+      if (address !== this.props.address) {
+        this.props.getLatlngFromGoogle();
+      }
+    },
+  }),
+  withLoading,
+)(MapWithMarker);
