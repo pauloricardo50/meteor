@@ -291,7 +291,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe.only('personalInfoPercent', () => {
+  describe('personalInfoPercent', () => {
     it('works', () => {
       expect(BorrowerCalculator.personalInfoPercent({
         borrowers: {

@@ -405,6 +405,52 @@ describe('WuestService', () => {
     });
   });
 
+  context('getFloorType', () => {
+    it('should return GROUND_FLOOR if flat type is TERRACE_APARTMENT', () => {
+      const terraceAppartment = {
+        flatType: wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT,
+        numberOfFloors: 8,
+      };
+      expect(WuestService.getFloorType(terraceAppartment)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[0]);
+    });
+
+    it('should return last floor if flat type is PENTHOUSE_APARTMENT', () => {
+      const penthouseAppartment = {
+        flatType: wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT,
+        numberOfFloors: 4,
+      };
+
+      expect(WuestService.getFloorType(penthouseAppartment)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[penthouseAppartment.numberOfFloors]);
+    });
+
+    it('should return last floor if flat type is PENTHOUSE_MAISONETTE', () => {
+      const penthouseMaisonette = {
+        flatType: wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE,
+        numberOfFloors: 2,
+      };
+
+      expect(WuestService.getFloorType(penthouseMaisonette)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[penthouseMaisonette.numberOfFloors]);
+    });
+
+    it('should return the floor number if flat type is not TERRACE_APARTMENT, PENTHOUSE_APARTMENT nor PENTHOUSE_MAISONETTE', () => {
+      const typesToNotInclude = [
+        wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT,
+        wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT,
+        wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE,
+      ];
+      const appartments = Object.values(wuestConstants.WUEST_FLAT_TYPE)
+        .filter(flatType => !typesToNotInclude.includes(flatType))
+        .map(flatType => ({
+          flatType,
+          numberOfFloors: 10,
+          floorNumber: 5,
+        }));
+
+      appartments.forEach(appartment =>
+        expect(WuestService.getFloorType(appartment)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[appartment.floorNumber]));
+    });
+  });
+
   context('evaluateById', () => {
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {

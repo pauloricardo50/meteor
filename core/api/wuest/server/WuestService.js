@@ -387,16 +387,16 @@ class WuestService {
     return this.evaluate([property]);
   }
 
-  getFloorNumber(flatType, numberOfFloors) {
+  getFloorType({ flatType, numberOfFloors, floorNumber }) {
     switch (flatType) {
     case wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT:
-      return numberOfFloors;
+      return wuestConstants.WUEST_FLOOR_NUMBER[numberOfFloors];
     case wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE:
-      return numberOfFloors;
+      return wuestConstants.WUEST_FLOOR_NUMBER[numberOfFloors];
     case wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT:
-      return 0;
+      return wuestConstants.WUEST_FLOOR_NUMBER[0];
     default:
-      return null;
+      return wuestConstants.WUEST_FLOOR_NUMBER[floorNumber];
     }
   }
 
@@ -449,15 +449,11 @@ class WuestService {
           flatType,
           numberOfRooms: roomCount,
           numberOfFloors,
-          floorType:
-              flatType !== wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT &&
-              flatType !==
-                wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE &&
-              flatType !== wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT
-                ? wuestConstants.WUEST_FLOOR_NUMBER[floorNumber]
-                : wuestConstants.WUEST_FLOOR_NUMBER[
-                  this.getFloorNumber(flatType, numberOfFloors)
-                ],
+          floorType: this.getFloorType({
+            flatType,
+            numberOfFloors,
+            floorNumber,
+          }),
           usableArea: {
             type: areaNorm,
             value: insideArea,
