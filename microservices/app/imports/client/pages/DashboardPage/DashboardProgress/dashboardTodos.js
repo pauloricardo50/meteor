@@ -1,12 +1,13 @@
 import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
+import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 import { VALUATION_STATUS } from '../../../../core/api/constants';
 import {
   FINANCING_PAGE,
-  PROPERTIES_PAGE,
   PROPERTY_PAGE,
   BORROWERS_PAGE,
+  FILES_PAGE,
 } from '../../../../startup/client/appRoutes';
 
 const createFinancingLink = ({ _id: loanId }) =>
@@ -21,11 +22,11 @@ const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
 export const dashboardTodosArray = [
   {
     id: 'completeBorrowers',
-    condition: ({ borrowers }) => {
+    isDone: ({ borrowers }) => {
       const percentages = borrowers.map(borrower =>
         BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
 
-      if (percentages.some(percent => percent < 1)) {
+      if (percentages.some(percent => percent >= 1)) {
         return true;
       }
 
@@ -36,7 +37,7 @@ export const dashboardTodosArray = [
   },
   {
     id: 'completeProperty',
-    condition: (loan) => {
+    isDone: (loan) => {
       const {
         structure: { property },
       } = loan;
@@ -47,7 +48,7 @@ export const dashboardTodosArray = [
 
       const percent = PropertyCalculator.propertyPercent({ loan, property });
 
-      if (percent < 1) {
+      if (percent >= 1) {
         return true;
       }
 
@@ -58,26 +59,31 @@ export const dashboardTodosArray = [
   },
   {
     id: 'doAnExpertise',
-    condition: ({ structure: { property } }) =>
-      property && property.valuation.status === VALUATION_STATUS.NONE,
+    isDone: ({ structure: { property } }) =>
+      property && property.valuation.status !== VALUATION_STATUS.NONE,
     hide: ({ structure: { property } }) => !property,
     link: createSinglePropertyLink,
   },
   {
     id: 'createStructure',
-    condition: ({ structures }) => structures.length === 0,
+    isDone: ({ structures }) => structures.length > 0,
     link: createFinancingLink,
   },
   {
     id: 'createSecondStructure',
-    condition: ({ structures }) => structures.length === 1,
+    isDone: ({ structures }) => structures.length > 1,
     hide: ({ structures }) => structures.length === 0,
     link: createFinancingLink,
   },
   {
+    id: 'uploadDocuments',
+    isDone: loan => Calculator.filesProgress({ loan }) >= 1,
+    hide: loan => !loan.documents,
+    link: createRoute(FILES_PAGE),
+  },
+  {
     id: 'chooseOffer',
-    condition: ({ offers, structure: { offer } }) =>
-      offers.length > 0 && !offer,
+    isDone: ({ offers, structure: { offer } }) => offers.length > 0 && !!offer,
     hide: ({ offers }) => offers.length === 0,
     link: createFinancingLink,
   },
@@ -87,7 +93,7 @@ export const dashboardTodosArray = [
       dashboardTodosArray
         .filter(({ id }) => id !== 'callEpotek')
         .some(({ condition }) => condition(params)),
-    condition: () => true,
+    isDone: () => false,
   },
 ];
 
