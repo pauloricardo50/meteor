@@ -249,6 +249,8 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
   const salary = BorrowerCalculator.getBorrowerSalary({ borrowers });
   const income = BorrowerCalculator.getTotalIncome({ borrowers });
 
+  const netFortune = totalFunds + realEstateFortune + otherFortune;
+
   return [
     {
       title: true,
@@ -268,7 +270,6 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     {
       label: 'Recap.availableFunds',
       value: <span className="sum">{toMoney(totalFunds)}</span>,
-      // hide: !realEstateFortune,
       spacingTop: true,
       bold: true,
       spacing: true,
@@ -290,11 +291,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     },
     {
       label: 'Recap.netFortune',
-      value: (
-        <span className="sum">
-          {toMoney(totalFunds + realEstateFortune + otherFortune)}
-        </span>
-      ),
+      value: <span className="sum">{toMoney(netFortune)}</span>,
       spacingTop: true,
       spacing: true,
       bold: true,
