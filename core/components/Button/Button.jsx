@@ -18,6 +18,16 @@ const getColor = ({ primary, secondary, color }) => {
   return color;
 };
 
+const getVariant = ({ raised, outlined }) => {
+  if (raised) {
+    return 'raised';
+  }
+  if (outlined) {
+    return 'outlined';
+  }
+  return undefined;
+};
+
 const Button = (props) => {
   const childProps = omit(props, [
     'primary',
@@ -26,15 +36,14 @@ const Button = (props) => {
     'icon',
     'link',
     'raised',
+    'outlined',
   ]);
 
   return (
     <MuiButton
       {...childProps}
       color={props.color || getColor(props)}
-      variant={
-        props.variant || (props.raised ? 'raised' : undefined) || undefined
-      }
+      variant={props.variant || getVariant(props)}
       component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
     >

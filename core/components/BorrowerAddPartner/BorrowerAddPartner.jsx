@@ -22,7 +22,7 @@ const BorrowerAddPartner = ({
     <Button
       onClick={handleClick}
       primary
-      variant="outlined"
+      outlined
       label={<T id="BorrowerAddPartner.label" />}
       loading={isLoading}
     />
