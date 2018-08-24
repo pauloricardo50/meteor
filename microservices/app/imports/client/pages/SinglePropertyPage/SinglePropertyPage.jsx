@@ -21,6 +21,10 @@ import ReturnToDashboard from '../../components/ReturnToDashboard';
 import LaunchValuationButton from './LaunchValuationButton';
 import { VALUATION_STATUS } from '../../../core/api/constants';
 
+
+const shouldDisplayLaunchValuationButton = ({ progress, status }) => progress >= 1 && status !== VALUATION_STATUS.DONE;
+
+
 const SinglePropertyPage = (props) => {
   const { loan, propertyId } = props;
   const {
@@ -81,9 +85,7 @@ const SinglePropertyPage = (props) => {
       <div className="single-property-page-buttons">
         <ReturnToDashboard />
         <LaunchValuationButton
-          enabled={
-            progress >= 1 && property.valuation.status !== VALUATION_STATUS.DONE
-          }
+          enabled={shouldDisplayLaunchValuationButton({progress, status: property.valuation.status})}
         />
       </div>
     </Page>
