@@ -63,6 +63,11 @@ const employees = [
   },
 ];
 
+export const employeesByEmail = employees.reduce(
+  (acc, employee) => ({ ...acc, [employee.email]: employee }),
+  {},
+);
+
 // If an assignee isn't currently in the list above
 export const placeholderEmployee = email => ({
   email,

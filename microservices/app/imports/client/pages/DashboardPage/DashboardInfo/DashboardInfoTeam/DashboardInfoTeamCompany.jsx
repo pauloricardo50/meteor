@@ -2,33 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uniqBy from 'lodash/uniqBy';
 
-import employees, { placeholderEmployee } from 'core/arrays/epotekEmployees';
+import {
+  employeesByEmail,
+  placeholderEmployee,
+} from 'core/arrays/epotekEmployees';
 import DashboardInfoTeamMember from './DashboardInfoTeamMember';
 
 // Removes duplicates from an array of objects, by a key in the objects
 const removeDuplicates = (array, keyToFilter) => uniqBy(array, keyToFilter);
 
-const defaultTeam = [
-  {
-    src: '/img/team/yannis.jpg',
-    name: 'Yannis Eggert',
-    title: 'Directeur',
-    email: 'yannis@e-potek.ch',
-    phoneNumber: '022 566 82 90',
-  },
-];
-
-const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
-  let team = defaultTeam;
+const getTeam = (assignedEmployee) => {
+  let assignee = employeesByEmail['lydia@e-potek.ch'];
   if (assignedEmployee) {
-    const email = assignedEmployee.email;
-    const employee = employees.find(item => item.email === email);
+    const { email } = assignedEmployee;
+    const employee = employeesByEmail[email];
     if (employee) {
-      team = [employee, ...team];
+      assignee = employee;
     } else {
-      team = [placeholderEmployee(email), ...team];
+      assignee = placeholderEmployee;
     }
   }
+
+  return [
+    assignee,
+    {
+      ...employeesByEmail['yannis@e-potek.ch'],
+      title: 'Spécialiste hypothécaire',
+    },
+    {
+      ...employeesByEmail['jeanluc@e-potek.ch'],
+      title: 'Spécialiste assurance',
+    },
+  ];
+};
+
+const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
+  const team = getTeam(assignedEmployee);
+
   return (
     <React.Fragment>
       {/* Remove duplicates from array if they exist */}
