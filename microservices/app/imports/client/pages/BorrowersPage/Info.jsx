@@ -11,8 +11,6 @@ const Info = (props) => {
     loan: { userFormsEnabled, borrowers, _id: loanId },
   } = props;
 
-  console.log('Info', borrowers);
-
   return (
     <section className="animated borrower-page-info flex--helper fadeIn">
       {borrowers.map(borrower => (
