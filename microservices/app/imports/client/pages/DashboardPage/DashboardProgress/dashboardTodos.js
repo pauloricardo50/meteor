@@ -60,7 +60,9 @@ export const dashboardTodosArray = [
   {
     id: 'doAnExpertise',
     isDone: ({ structure: { property } }) =>
-      property && property.valuation.status !== VALUATION_STATUS.NONE,
+      property
+      && property.valuation
+      && property.valuation.status !== VALUATION_STATUS.NONE,
     hide: ({ structure: { property } }) => !property,
     link: createSinglePropertyLink,
   },
@@ -79,7 +81,7 @@ export const dashboardTodosArray = [
     id: 'uploadDocuments',
     isDone: loan => Calculator.filesProgress({ loan }) >= 1,
     hide: loan => !loan.documents,
-    link: createRoute(FILES_PAGE),
+    link: ({ _id: loanId }) => createRoute(FILES_PAGE, { ':loanId': loanId }),
   },
   {
     id: 'chooseOffer',
@@ -92,7 +94,7 @@ export const dashboardTodosArray = [
     hide: params =>
       dashboardTodosArray
         .filter(({ id }) => id !== 'callEpotek')
-        .some(({ condition }) => condition(params)),
+        .every(({ isDone }) => isDone(params)),
     isDone: () => false,
   },
 ];

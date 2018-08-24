@@ -1,4 +1,6 @@
 {
+  "DashboardProgressInfo.uploadDocuments": "Ajoutez vos documents",
+
   "LoanChecklist.missingFields": "Informations manquantes",
   "LoanChecklist.missingDocuments": "Documents manquants",
   "LoanChecklist.done": "Nous avons tout ce qu'il faut",
