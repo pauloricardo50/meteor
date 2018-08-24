@@ -37,6 +37,21 @@ describe('BorrowerCalculator', () => {
     });
   });
 
+  describe('getOtherFortune', () => {
+    it('Should return 0 if given an empty object', () => {
+      expect(BorrowerCalculator.getOtherFortune({})).to.equal(0);
+    });
+
+    it('sums otherFortune if given multiple borrowers', () => {
+      expect(BorrowerCalculator.getOtherFortune({
+        borrowers: [
+          { otherFortune: [{ value: 3 }, { value: 4 }] },
+          { otherFortune: [{ value: 5 }, { value: 6 }] },
+        ],
+      })).to.equal(18);
+    });
+  });
+
   describe('getInsuranceFortune', () => {
     it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
       expect(BorrowerCalculator.getInsuranceFortune({

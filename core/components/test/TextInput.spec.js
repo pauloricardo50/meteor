@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { getFinalPlaceholder } from '../TextInput.jsx';
 
-describe.only('getFinalPlaceholder', () => {
+describe('getFinalPlaceholder', () => {
   context('when noIntl is false', () => {
     it('should return a placeholder with a prefix', () => {
       const intl = {
