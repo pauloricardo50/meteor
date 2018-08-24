@@ -41,13 +41,14 @@ const employees = [
     phoneNumber: '+41 22 566 82 90',
   },
   // Attendre début emploiement de Jean-Luc pour éviter problèmes avec chomage
-  // {
-  //   email: 'jeanluc@e-potek.ch',
-  //   src: '/img/team/jeanluc.jpg',
-  //   name: 'Jean-Luc Kringel',
-  //   title: 'Responsable Assurances',
-  //   phone: '+41 22 566 82 94',
-  // },
+  {
+    email: 'jeanluc@e-potek.ch',
+    src: '/img/team/jeanluc.jpg',
+    name: 'Jean-Luc Kringel',
+    title: 'Responsable Assurances',
+    phone: '+41 22 566 82 94',
+    hideFromHomePage: true,
+  },
   {
     email: '',
     src: '/img/team/tarik.jpg',
