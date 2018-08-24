@@ -1,7 +1,7 @@
 import faker from 'faker';
 import BorrowerService from '../api/borrowers/BorrowerService';
 import { Borrowers } from '../api';
-import { RESIDENCE_TYPE } from '../api/constants';
+import { RESIDENCE_TYPE, OTHER_INCOME, EXPENSES } from '../api/constants';
 
 const insertFakeBorrower = (userId) => {
   const firstName = faker.name.firstName();
@@ -37,21 +37,21 @@ const insertFakeBorrower = (userId) => {
     otherIncome: [
       {
         value: 10000,
-        description: 'PENSION',
+        description: OTHER_INCOME.PENSIONS,
       },
       {
         value: 15000,
-        description: 'RENT',
+        description: OTHER_INCOME.WELFARE,
       },
     ],
     expenses: [
       {
         value: 3000,
-        description: 'LEASING',
+        description: EXPENSES.LEASING,
       },
       {
         value: 4000,
-        description: 'PERSONAL_LOAN',
+        description: EXPENSES.PERSONAL_LOAN,
       },
     ],
     realEstate: [
