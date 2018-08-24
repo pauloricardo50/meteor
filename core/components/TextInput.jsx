@@ -73,13 +73,11 @@ export const getFinalPlaceholder = ({
   if (noIntl) {
     finalPlaceholder = placeholder || defaultPlaceholder;
   } else {
-    console.log();
-    finalPlaceholder =
-      placeholder && typeof placeholder === 'string'
-        ? `${intl.formatMessage({
-          id: 'Forms.textInput.placeholderPrefix',
-        })} ${intl.formatMessage({ id: placeholder })}`
-        : defaultPlaceholder;
+    finalPlaceholder = placeholder && typeof placeholder === 'string'
+      ? `${intl.formatMessage({
+        id: 'Forms.textInput.placeholderPrefix',
+      })} ${intl.formatMessage({ id: placeholder })}`
+      : defaultPlaceholder;
   }
 
   // Ignore placeholder for money inputs, and just show the currency
