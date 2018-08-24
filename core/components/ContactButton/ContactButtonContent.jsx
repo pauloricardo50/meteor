@@ -15,17 +15,15 @@ const ContactButtonContent = ({
   href,
   label,
 }: ContactButtonContentProps) => (
-  <div className="contact-button-content">
+  <a href={href} className="contact-button-content primary">
     <div className="iconDiv">{icon}</div>
     <div className="text">
       <p className="bold">
         <T id={titleId} />
       </p>
-      <a href={href} className="primary">
-        {label}
-      </a>
+      {label}
     </div>
-  </div>
+  </a>
 );
 
 export default ContactButtonContent;

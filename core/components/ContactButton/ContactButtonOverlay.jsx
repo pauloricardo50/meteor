@@ -42,7 +42,7 @@ const ContactButtonOverlay = ({
     <ContactButtonContent
       titleId="ContactButton.byEmail"
       icon={<Icon type="mail" className="icon" />}
-      href={`tel:${email}`}
+      href={`mailto:${email}`}
       label={email}
     />
   </div>
