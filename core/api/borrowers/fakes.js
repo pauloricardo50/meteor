@@ -1,4 +1,4 @@
-import { REAL_ESTATE } from './borrowerConstants';
+import { REAL_ESTATE, OTHER_INCOME, EXPENSES } from './borrowerConstants';
 
 export const emptyFakeBorrower = {};
 
@@ -35,17 +35,17 @@ export const completeFakeBorrower = {
   otherIncome: [
     {
       value: 10000,
-      description: 'PENSIONS',
+      description: OTHER_INCOME.PENSIONS,
     },
   ],
   expenses: [
     {
       value: 3000,
-      description: 'LEASING',
+      description: EXPENSES.LEASING,
     },
     {
       value: 4000,
-      description: 'PERSONAL_LOAN',
+      description: EXPENSES.PERSONAL_LOAN,
     },
   ],
   realEstate: [
