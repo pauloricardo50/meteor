@@ -51,19 +51,19 @@ const Widget1SingleInput = ({
 );
 
 Widget1SingleInput.propTypes = {
-  value: PropTypes.number,
-  auto: PropTypes.bool.isRequired,
-  name: PropTypes.string.isRequired,
-  setValue: PropTypes.func.isRequired,
-  setInputValue: PropTypes.func.isRequired,
-  unsetValue: PropTypes.func.isRequired,
-  sliderMax: PropTypes.number.isRequired,
-  increaseSliderMax: PropTypes.func.isRequired,
-  setAuto: PropTypes.func.isRequired,
-  isLoanValue: PropTypes.bool.isRequired,
   allowExtremeLoan: PropTypes.bool,
+  auto: PropTypes.bool.isRequired,
+  increaseSliderMax: PropTypes.func.isRequired,
+  isLoanValue: PropTypes.bool.isRequired,
   labelName: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  setAuto: PropTypes.func.isRequired,
+  setInputValue: PropTypes.func.isRequired,
+  setValue: PropTypes.func.isRequired,
+  sliderMax: PropTypes.number.isRequired,
   tabIndex: PropTypes.number,
+  unsetValue: PropTypes.func.isRequired,
+  value: PropTypes.number,
 };
 
 Widget1SingleInput.defaultProps = {

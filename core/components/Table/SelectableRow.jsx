@@ -40,10 +40,10 @@ const SelectableRow = ({ row, columnOptions, isSelected, onSelect }) => (
 );
 
 SelectableRow.propTypes = {
-  row: PropTypes.objectOf(PropTypes.any).isRequired,
   columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSelected: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
+  row: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default SelectableRow;

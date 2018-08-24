@@ -47,7 +47,7 @@ const mergeFilesWithQuery = (query, mergeName) =>
 export default mergeFilesWithQuery;
 
 export const mapPropertyDocumentsIntoProperty = mapProps(({ loan, ...props }) => {
-  if (!loan.structure || !loan.properties) {
+  if (!loan || !loan.structure || !loan.properties) {
     return props;
   }
   const { structure, properties } = loan;

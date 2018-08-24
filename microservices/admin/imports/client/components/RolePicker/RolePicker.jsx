@@ -19,8 +19,8 @@ const RolePicker = ({ onChooseRole, shouldDisplay }) =>
   ) : null);
 
 RolePicker.propTypes = {
-  shouldDisplay: PropTypes.bool.isRequired,
   onChooseRole: PropTypes.func.isRequired,
+  shouldDisplay: PropTypes.bool.isRequired,
 };
 
 export default RolePickerContainer(RolePicker);

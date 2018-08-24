@@ -22,8 +22,8 @@ const FileIssueTemplate = ({ files, fileNameKey, label }) => (
 );
 
 FileIssueTemplate.propTypes = {
-  files: PropTypes.array.isRequired,
   fileNameKey: PropTypes.string.isRequired,
+  files: PropTypes.array.isRequired,
   label: PropTypes.string,
 };
 

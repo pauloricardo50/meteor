@@ -53,13 +53,13 @@ const TooltipOverlay = ({
 };
 
 TooltipOverlay.propTypes = {
-  placement: PropTypes.string,
-  tooltipList: PropTypes.string.isRequired,
-  match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
-  trigger: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
     .isRequired,
   delayShow: PropTypes.number,
+  match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
+  placement: PropTypes.string,
+  tooltipList: PropTypes.string.isRequired,
+  trigger: PropTypes.arrayOf(PropTypes.string),
 };
 
 TooltipOverlay.defaultProps = {

@@ -19,8 +19,8 @@ const Widget1Part1 = ({ step, fields }) => (
 );
 
 Widget1Part1.propTypes = {
-  step: PropTypes.number.isRequired,
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  step: PropTypes.number.isRequired,
 };
 
 export default Widget1Part1;

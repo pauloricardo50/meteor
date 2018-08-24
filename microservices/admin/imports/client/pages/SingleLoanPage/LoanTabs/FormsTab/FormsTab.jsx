@@ -249,6 +249,6 @@ export default class FormsTab extends Component {
 }
 
 FormsTab.propTypes = {
-  loan: PropTypes.objectOf(PropTypes.any).isRequired,
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };

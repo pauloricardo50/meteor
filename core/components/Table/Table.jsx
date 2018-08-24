@@ -180,18 +180,18 @@ export default class Table extends Component {
 }
 
 Table.propTypes = {
+  className: PropTypes.string,
+  clickable: PropTypes.bool,
   columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  multiSelectable: PropTypes.bool,
+  noIntl: PropTypes.bool,
+  onRowSelect: PropTypes.func,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectable: PropTypes.bool,
-  multiSelectable: PropTypes.bool,
   selectAll: PropTypes.bool,
-  onRowSelect: PropTypes.func,
   selected: PropTypes.string,
-  sortable: PropTypes.bool,
+  sortable: PropTypes.bool, // sets rows to change color on hover
   style: PropTypes.object,
-  noIntl: PropTypes.bool,
-  clickable: PropTypes.bool, // sets rows to change color on hover
-  className: PropTypes.string,
 };
 
 Table.defaultProps = {

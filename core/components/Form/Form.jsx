@@ -45,19 +45,19 @@ const Form = ({
 );
 
 Form.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  error: PropTypes.string,
   form: PropTypes.string.isRequired,
   formArray: PropTypes.array.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  FormWrapper: PropTypes.any,
+  handleSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
-  showButton: PropTypes.bool,
   onSubmitSuccess: PropTypes.func,
   renderActions: PropTypes.func,
-  FormWrapper: PropTypes.any,
-  error: PropTypes.string,
-  className: PropTypes.string,
-  children: PropTypes.node,
+  showButton: PropTypes.bool,
   submitButtonProps: PropTypes.object,
+  submitting: PropTypes.bool.isRequired,
 };
 
 Form.defaultProps = {

@@ -68,7 +68,7 @@ export default class ConditionalInput extends Component {
 }
 
 ConditionalInput.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
   conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
     .isRequired,
-  children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
 };

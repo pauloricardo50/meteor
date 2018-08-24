@@ -21,8 +21,8 @@ export const TooltipContainer = Component => props => (
 );
 
 TooltipProvider.propTypes = {
-  tooltipList: PropTypes.string,
   children: PropTypes.node.isRequired,
+  tooltipList: PropTypes.string,
 };
 
 TooltipProvider.defaultProps = {

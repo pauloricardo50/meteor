@@ -35,8 +35,8 @@ const TogglePoint = (props) => {
 };
 
 TogglePoint.propTypes = {
-  id: PropTypes.string.isRequired,
   children: PropTypes.node,
+  id: PropTypes.string.isRequired,
   toggleOffElement: PropTypes.element,
   toggleOnElement: PropTypes.element,
 };

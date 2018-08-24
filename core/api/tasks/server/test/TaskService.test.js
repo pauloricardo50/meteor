@@ -4,11 +4,11 @@ import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { TASK_TYPE } from 'core/api/constants';
 import { generateData } from '../../../../utils/testHelpers';
 import TaskService from '../../TaskService';
 import Tasks from '../../tasks';
 import { TASK_STATUS } from '../../taskConstants';
-import { TASK_TYPE } from 'core/api/constants';
 
 let userId;
 let adminId;

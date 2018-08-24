@@ -53,7 +53,7 @@ export default class Countdown extends React.Component {
 }
 
 Countdown.propTypes = {
+  className: PropTypes.string,
   endTime: PropTypes.objectOf(PropTypes.any).isRequired,
   style: PropTypes.objectOf(PropTypes.any),
-  className: PropTypes.string,
 };

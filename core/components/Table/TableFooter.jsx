@@ -30,11 +30,11 @@ const TableFooter = ({
 );
 
 TableFooter.propTypes = {
-  rowCount: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-  page: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
   onChangeRowsPerPage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowCount: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
 };
 
 export default TableFooter;

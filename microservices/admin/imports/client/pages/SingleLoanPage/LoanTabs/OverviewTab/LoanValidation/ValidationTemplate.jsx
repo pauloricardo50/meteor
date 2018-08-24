@@ -12,8 +12,8 @@ const ValidationTemplate = ({ className, labelId, date }) => (
 
 ValidationTemplate.propTypes = {
   className: PropTypes.string,
-  labelId: PropTypes.string.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,
+  labelId: PropTypes.string.isRequired,
 };
 
 ValidationTemplate.defaultProps = {

@@ -30,9 +30,9 @@ export const SearchModal = ({ isOpen, handleOpen, handleClose }) => (
 );
 
 SearchModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleOpen: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleOpen: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 };
 
 export default withStateHandlers(

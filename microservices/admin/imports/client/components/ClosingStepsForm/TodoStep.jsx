@@ -5,7 +5,10 @@ import Button from 'core/components/Button';
 import TextInput from 'core/components/TextInput';
 
 const TodoStep = ({ step, onChange, handleRemove }) => (
-  <div className="card1 card-top flex-col" style={{ marginBottom: 16, width: '100%' }}>
+  <div
+    className="card1 card-top flex-col"
+    style={{ marginBottom: 16, width: '100%' }}
+  >
     <h3>
       Todo à faire <small className="disabled">{step.id}</small>
     </h3>
@@ -33,9 +36,9 @@ const TodoStep = ({ step, onChange, handleRemove }) => (
 );
 
 TodoStep.propTypes = {
-  step: PropTypes.objectOf(PropTypes.any).isRequired,
-  onChange: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  step: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default TodoStep;

@@ -21,9 +21,9 @@ const AssignAdminDropdown = (props) => {
 };
 
 AssignAdminDropdown.propTypes = {
-  styles: PropTypes.object,
-  options: PropTypes.array.isRequired,
   error: PropTypes.object,
+  options: PropTypes.array.isRequired,
+  styles: PropTypes.object,
 };
 
 AssignAdminDropdown.defaultProps = {

@@ -14,7 +14,7 @@ const MaterialUiServer = ({ children, registry, generateClassName }) => (
 
 MaterialUiServer.propTypes = {
   children: PropTypes.node.isRequired,
-  registry: PropTypes.object.isRequired,
   generateClassName: PropTypes.func.isRequired,
+  registry: PropTypes.object.isRequired,
 };
 export default MaterialUiServer;

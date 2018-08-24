@@ -108,11 +108,11 @@ class OfferList extends Component {
 }
 
 OfferList.propTypes = {
+  allowDelete: PropTypes.bool,
+  disabled: PropTypes.bool,
   loan: PropTypes.object.isRequired,
   offers: PropTypes.array,
   property: PropTypes.object.isRequired,
-  disabled: PropTypes.bool,
-  allowDelete: PropTypes.bool,
 };
 
 OfferList.defaultProps = {

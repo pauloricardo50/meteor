@@ -17,8 +17,8 @@ const Widget1MonthlyMaintenance = ({ onChange, value }) => (
 );
 
 Widget1MonthlyMaintenance.propTypes = {
-  value: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
+  value: PropTypes.bool.isRequired,
 };
 
 export default Widget1MonthlyMaintenance;

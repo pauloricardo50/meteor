@@ -12,8 +12,8 @@ const DescriptionItem = ({ step: { id }, nb }) => (
 );
 
 DescriptionItem.propTypes = {
-  step: PropTypes.object.isRequired,
   nb: PropTypes.number.isRequired,
+  step: PropTypes.object.isRequired,
 };
 
 export default DescriptionItem;

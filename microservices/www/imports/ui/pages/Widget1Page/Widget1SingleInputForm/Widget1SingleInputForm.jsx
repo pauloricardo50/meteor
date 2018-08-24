@@ -35,11 +35,11 @@ const Widget1SingleInputForm = ({
 );
 
 Widget1SingleInputForm.propTypes = {
-  name: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  onDoNotKnow: PropTypes.func.isRequired,
-  isCurrentStep: PropTypes.bool,
   disableSubmit: PropTypes.bool.isRequired,
+  isCurrentStep: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  onDoNotKnow: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 Widget1SingleInputForm.defaultProps = {

@@ -29,8 +29,8 @@ export const TooltipSynonyms = ({ tooltipId, match, tooltips }) => {
 };
 
 TooltipSynonyms.propTypes = {
-  tooltipId: PropTypes.string.isRequired,
   match: PropTypes.string.isRequired,
+  tooltipId: PropTypes.string.isRequired,
   tooltips: PropTypes.object.isRequired,
 };
 

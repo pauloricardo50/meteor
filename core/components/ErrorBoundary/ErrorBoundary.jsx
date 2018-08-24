@@ -58,9 +58,9 @@ export default class ErrorBoundary extends Component {
 }
 
 ErrorBoundary.propTypes = {
+  children: PropTypes.node.isRequired,
   helper: PropTypes.string.isRequired,
   pathname: PropTypes.string,
-  children: PropTypes.node.isRequired,
 };
 
 ErrorBoundary.defaultProps = {

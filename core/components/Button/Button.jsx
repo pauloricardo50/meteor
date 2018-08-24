@@ -55,11 +55,11 @@ const Button = (props) => {
 };
 
 Button.propTypes = {
-  raised: PropTypes.bool,
-  link: PropTypes.bool,
+  children: PropTypes.node,
   icon: PropTypes.node,
   label: PropTypes.node,
-  children: PropTypes.node,
+  link: PropTypes.bool,
+  raised: PropTypes.bool,
 };
 
 Button.defaultProps = {

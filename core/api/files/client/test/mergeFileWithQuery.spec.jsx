@@ -48,5 +48,12 @@ describe('mergeFilesWithQuery', () => {
         .find('div')
         .props().loan.structure.property.documents).to.deep.equal(undefined);
     });
+
+    it('does not crash if loan is not provided', () => {
+      // The container is still run when you log out or when you don't have a loan
+      props.loan = undefined;
+
+      expect(component().find('div').length).to.equal(1);
+    });
   });
 });

@@ -27,15 +27,13 @@ describe('NewLoanFormContainer', () => {
       throw new Error('No name or loanId');
     });
 
-    borrowerUpdate.run = sinon.spy(
-      ({ object: { salary, bankFortune }, borrowerId }) => {
-        if (!!salary && !!bankFortune && !!borrowerId) {
-          return Promise.resolve();
-        }
+    borrowerUpdate.run = sinon.spy(({ object: { salary, bankFortune }, borrowerId }) => {
+      if (!!salary && !!bankFortune && !!borrowerId) {
+        return Promise.resolve();
+      }
 
-        throw new Error('No salary, bankFortune or borrowerId');
-      },
-    );
+      throw new Error('No salary, bankFortune or borrowerId');
+    });
 
     propertyUpdate.run = sinon.spy(({ object: { value }, propertyId }) => {
       if (!!value && !!propertyId) {
@@ -183,9 +181,7 @@ describe('NewLoanFormContainer', () => {
 
   context('onSubmit should throw when', () => {
     it('no name or loan id is provided', () => {
-      expect(() => loanUpdate.run({ object: { name: '' } })).to.throw(
-        'No name or loanId',
-      );
+      expect(() => loanUpdate.run({ object: { name: '' } })).to.throw('No name or loanId');
     });
 
     it('no salary, bank fortune or borrower id is provided', () => {
@@ -193,8 +189,7 @@ describe('NewLoanFormContainer', () => {
         borrowerUpdate.run({
           object: { salary: null, bankFortune: null },
           borrowerId: '',
-        }),
-      ).to.throw('No salary, bankFortune or borrowerId');
+        })).to.throw('No salary, bankFortune or borrowerId');
     });
 
     it('no value or property id is provided', () => {
@@ -202,8 +197,7 @@ describe('NewLoanFormContainer', () => {
         propertyUpdate.run({
           object: { value: null },
           propertyId: '',
-        }),
-      ).to.throw('No value or propertyId');
+        })).to.throw('No value or propertyId');
     });
   });
 

@@ -49,12 +49,12 @@ const BaseRouter = ({
 );
 
 BaseRouter.propTypes = {
+  children: PropTypes.node.isRequired,
+  formats: PropTypes.object.isRequired,
+  hasLogin: PropTypes.bool,
   locale: PropTypes.string.isRequired,
   messages: PropTypes.object.isRequired,
-  formats: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired,
   WrapperComponent: PropTypes.any,
-  hasLogin: PropTypes.bool,
 };
 
 BaseRouter.defaultProps = {

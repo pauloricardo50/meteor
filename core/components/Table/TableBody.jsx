@@ -38,12 +38,12 @@ const TableBody = ({
 );
 
 TableBody.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  clickable: PropTypes.bool,
   columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   selectable: PropTypes.bool,
-  clickable: PropTypes.bool,
 };
 
 TableBody.defaultProps = {

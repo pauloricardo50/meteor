@@ -78,7 +78,6 @@ mongo@1.5.1
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
 mongo-livedata@1.0.12
-mrt:later@1.6.1
 npm-bcrypt@0.9.3
 npm-mongo@3.0.7
 observe-sequence@1.0.16
@@ -121,7 +120,6 @@ tmeasday:test-reporter-helpers@0.2.1
 tracker@1.2.0
 underscore@1.0.10
 url@1.2.0
-vsivsi:job-collection@1.4.0
 webapp@1.7.0-beta171.19
 webapp-hashing@1.0.9
 wylio:mandrill@1.0.1

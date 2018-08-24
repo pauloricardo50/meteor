@@ -54,14 +54,14 @@ const RadioButtons = ({
 );
 
 RadioButtons.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.node,
-  intlPrefix: PropTypes.string,
-  options: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.any,
-  style: PropTypes.object,
   disabled: PropTypes.bool,
+  id: PropTypes.string,
+  intlPrefix: PropTypes.string,
+  label: PropTypes.node,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  style: PropTypes.object,
+  value: PropTypes.any,
 };
 
 RadioButtons.defaultProps = {

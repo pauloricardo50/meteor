@@ -50,12 +50,12 @@ const DropzoneArrayItem = (props) => {
   const mongoId = `${filesObjectSelector}.${id}`;
   const tooltipId = `files.${id}.tooltip${tooltipSuffix}`;
 
-
   return (
     <article
       style={styles.article}
-      className={classnames('card1 card-top dropzoneArrayItem',{ disabled })}
-    >card1 card-top
+      className={classnames('card1 card-top dropzoneArrayItem', { disabled })}
+    >
+      card1 card-top
       <div
         style={styles.topDiv}
         className="top"
@@ -98,7 +98,6 @@ const DropzoneArrayItem = (props) => {
           />
         </div>
       </div>
-
       {active && (
         <div className="dropzoneDiv">
           <DropzoneInput

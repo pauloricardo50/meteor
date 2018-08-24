@@ -23,8 +23,8 @@ const DetailSideNavPagination = ({ showMore, isEnd }) => {
 };
 
 DetailSideNavPagination.propTypes = {
-  showMore: PropTypes.func.isRequired,
   isEnd: PropTypes.bool.isRequired,
+  showMore: PropTypes.func.isRequired,
 };
 
 export default DetailSideNavPagination;

@@ -102,8 +102,8 @@ const mapInputs = (singleInput, index, parentProps) => {
     inputProps: {
       ...singleInput,
       placeholder:
-        singleInput.placeholder ||
-        `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
+        singleInput.placeholder
+        || `Forms.${singleInput.intlId || singleInput.id}.placeholder`,
       disabled: parentProps.disabled || singleInput.disabled,
       currentValue: get(parentProps.doc, singleInput.id),
       style: parentProps.fullWidth ? styles.fullWidth : styles.smallWidth,
@@ -124,8 +124,8 @@ const mapInputs = (singleInput, index, parentProps) => {
     childProps.inputProps.label = (
       <span>
         <T
-          id={`Forms.${childProps.inputProps.intlId ||
-            childProps.inputProps.id}`}
+          id={`Forms.${childProps.inputProps.intlId
+            || childProps.inputProps.id}`}
           values={childProps.inputProps.intlValues}
         />
         <span style={{ color: 'red' }}> *</span>
@@ -143,8 +143,8 @@ const mapInputs = (singleInput, index, parentProps) => {
   // Support options that are only string/boolean ids instead of objects
   // check for undefined because of boolean false ids
   if (
-    childProps.inputProps.type === 'radioInput' ||
-    childProps.inputProps.type === 'selectFieldInput'
+    childProps.inputProps.type === 'radioInput'
+    || childProps.inputProps.type === 'selectFieldInput'
   ) {
     childProps.inputProps.options = childProps.inputProps.options.map(o => (o.id === undefined ? { id: o } : o));
   }
@@ -153,8 +153,8 @@ const mapInputs = (singleInput, index, parentProps) => {
   if (childProps.inputProps.info) {
     childProps.inputProps.info = (
       <T
-        id={`Forms.${childProps.inputProps.intlId ||
-          childProps.inputProps.id}.info`}
+        id={`Forms.${childProps.inputProps.intlId
+          || childProps.inputProps.id}.info`}
       />
     );
   }
@@ -169,15 +169,15 @@ const AutoForm = props => (
 );
 
 AutoForm.propTypes = {
-  inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
-  formClasses: PropTypes.string,
-  loan: PropTypes.objectOf(PropTypes.any),
   borrowers: PropTypes.arrayOf(PropTypes.object),
-  fullWidth: PropTypes.bool,
-  docId: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
-  noPlaceholders: PropTypes.bool,
   collection: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  docId: PropTypes.string.isRequired,
+  formClasses: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loan: PropTypes.objectOf(PropTypes.any),
+  noPlaceholders: PropTypes.bool,
 };
 
 AutoForm.defaultProps = {

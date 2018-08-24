@@ -28,8 +28,8 @@ const MotionCarousel = ({ reviews, currentIndex }) => (
 );
 
 MotionCarousel.propTypes = {
-  reviews: PropTypes.array.isRequired,
   currentIndex: PropTypes.number.isRequired,
+  reviews: PropTypes.array.isRequired,
 };
 
 export default MotionCarousel;

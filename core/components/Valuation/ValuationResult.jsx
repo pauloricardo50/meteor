@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
+import { toMoney } from 'core/utils/conversionFunctions';
+import T from 'core/components/Translation';
 import { VALUATION_STATUS } from '../../api/constants';
 import ValuationError from './ValuationError';
 import Microlocation from './Microlocation/Microlocation';
-import { toMoney } from 'core/utils/conversionFunctions';
-import T from 'core/components/Translation';
 
 type ValuationResultProps = {
   min?: number,

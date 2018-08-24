@@ -8,8 +8,8 @@ const WwwContent = ({ className, children }) => {
 };
 
 WwwContent.propTypes = {
-  className: PropTypes.string,
   children: PropTypes.any.isRequired,
+  className: PropTypes.string,
 };
 
 WwwContent.defaultProps = {

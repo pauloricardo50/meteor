@@ -31,10 +31,10 @@ const Widget1OptionSelector = ({ options, value, onChange, className }) => (
 );
 
 Widget1OptionSelector.propTypes = {
+  className: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  className: PropTypes.string.isRequired,
 };
 
 export default Widget1OptionSelector;

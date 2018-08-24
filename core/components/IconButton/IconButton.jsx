@@ -52,14 +52,14 @@ export default class IconButton extends Component {
 }
 
 IconButton.propTypes = {
+  disabled: PropTypes.bool,
+  iconProps: PropTypes.object,
+  iconStyle: PropTypes.object,
   onClick: PropTypes.func,
-  type: PropTypes.string.isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
   tooltip: PropTypes.node,
   tooltipPlacement: PropTypes.string,
-  style: PropTypes.objectOf(PropTypes.any),
-  iconStyle: PropTypes.object,
-  iconProps: PropTypes.object,
-  disabled: PropTypes.bool,
+  type: PropTypes.string.isRequired,
 };
 
 IconButton.defaultProps = {

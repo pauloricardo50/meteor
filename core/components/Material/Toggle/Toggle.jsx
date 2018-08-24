@@ -24,11 +24,11 @@ const Toggle = ({ toggled, onToggle, labelTop, labelLeft, labelRight }) => (
 );
 
 Toggle.propTypes = {
-  toggled: PropTypes.bool.isRequired,
-  onToggle: PropTypes.func.isRequired,
-  labelTop: PropTypes.node,
   labelLeft: PropTypes.node,
   labelRight: PropTypes.node,
+  labelTop: PropTypes.node,
+  onToggle: PropTypes.func.isRequired,
+  toggled: PropTypes.bool.isRequired,
 };
 
 Toggle.defaultProps = {

@@ -15,12 +15,12 @@ type DashboardProgressInfoProps = {
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
     {dashboardTodosArray
-      .sort((a, b) => a.condition(loan) - b.condition(loan))
-      .map(({ id, link, condition, hide }) => {
+      .sort((a, b) => b.isDone(loan) - a.isDone(loan))
+      .map(({ id, link, isDone: isDoneFunc, hide }) => {
         if (hide && hide(loan)) {
           return null;
         }
-        const isDone = !condition(loan);
+        const isDone = isDoneFunc(loan);
         const Component = link && !isDone ? Link : 'div';
         return (
           <Component

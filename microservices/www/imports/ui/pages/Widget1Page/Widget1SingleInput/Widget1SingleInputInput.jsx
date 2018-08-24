@@ -45,12 +45,12 @@ const Widget1SingleInputInput = ({
 );
 
 Widget1SingleInputInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.any,
-  setInputValue: PropTypes.func.isRequired,
   auto: PropTypes.bool.isRequired,
-  unsetValue: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  setInputValue: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
+  unsetValue: PropTypes.func.isRequired,
+  value: PropTypes.any,
 };
 
 Widget1SingleInputInput.defaultProps = {

@@ -43,7 +43,10 @@ class Tabs extends Component {
             ))}
           </MuiTabs>
         </Paper>
-        <div className="card1 card-top card-top" style={{ paddingTop: 16, marginTop: 40 }}>
+        <div
+          className="card1 card-top card-top"
+          style={{ paddingTop: 16, marginTop: 40 }}
+        >
           {this.getContent()}
         </div>
       </React.Fragment>
@@ -53,8 +56,8 @@ class Tabs extends Component {
 
 Tabs.propTypes = {
   // Array of objects with 'label' and 'content'
-  tabs: PropTypes.arrayOf(PropTypes.object).isRequired,
   initialIndex: PropTypes.number,
+  tabs: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 Tabs.defaultProps = {

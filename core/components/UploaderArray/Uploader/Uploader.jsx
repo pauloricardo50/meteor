@@ -23,9 +23,9 @@ const Uploader = (props) => {
 };
 
 Uploader.propTypes = {
+  displayFull: PropTypes.bool.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
   shouldDisableAdd: PropTypes.func.isRequired,
-  displayFull: PropTypes.bool.isRequired,
   showFull: PropTypes.func.isRequired,
 };
 

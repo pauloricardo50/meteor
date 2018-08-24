@@ -67,12 +67,12 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
-  value: PropTypes.object,
-  onChange: PropTypes.func.isRequired,
   id: PropTypes.string,
-  minDate: PropTypes.object,
   maxDate: PropTypes.object,
+  minDate: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
   openDirection: PropTypes.string,
+  value: PropTypes.object,
 };
 
 DateInput.defaultProps = {

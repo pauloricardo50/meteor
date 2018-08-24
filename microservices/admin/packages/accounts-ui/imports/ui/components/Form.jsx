@@ -53,12 +53,12 @@ export class Form extends React.Component {
 }
 
 Form.propTypes = {
-  oauthServices: PropTypes.object,
-  fields: PropTypes.object.isRequired,
   buttons: PropTypes.object.isRequired,
-  translate: PropTypes.func.isRequired,
   error: PropTypes.string,
+  fields: PropTypes.object.isRequired,
+  oauthServices: PropTypes.object,
   ready: PropTypes.bool,
+  translate: PropTypes.func.isRequired,
 };
 
 Accounts.ui.Form = Form;

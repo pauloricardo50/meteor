@@ -23,9 +23,9 @@ const LoanObject = ({ showObject, setShowObject, loan }) => (
 );
 
 LoanObject.propTypes = {
-  showObject: PropTypes.bool.isRequired,
-  setShowObject: PropTypes.func.isRequired,
   loan: PropTypes.object.isRequired,
+  setShowObject: PropTypes.func.isRequired,
+  showObject: PropTypes.bool.isRequired,
 };
 
 export default withState('showObject', 'setShowObject', false)(LoanObject);

@@ -48,13 +48,13 @@ const MainSideNavListItem = ({
 );
 
 MainSideNavListItem.propTypes = {
-  label: PropTypes.string,
-  icon: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,
-  detail: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
   collection: PropTypes.string,
   collectionName: PropTypes.string,
+  detail: PropTypes.bool,
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
   to: PropTypes.string,
 };
 

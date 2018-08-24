@@ -17,8 +17,8 @@ const FormSubmitButton = ({ submitting, showButton, ...otherProps }) => (
 );
 
 FormSubmitButton.propTypes = {
-  submitting: PropTypes.bool.isRequired,
   showButton: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 export default FormSubmitButton;

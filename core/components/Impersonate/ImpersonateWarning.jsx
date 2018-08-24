@@ -27,8 +27,8 @@ export const ImpersonateWarning = ({ isActive, currentUser }) => {
 };
 
 ImpersonateWarning.propTypes = {
-  isActive: PropTypes.bool,
   currentUser: PropTypes.object,
+  isActive: PropTypes.bool,
 };
 
 ImpersonateWarning.defaultProps = {

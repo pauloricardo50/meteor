@@ -31,8 +31,8 @@ const DashboardRecapFinancing = props => (
 );
 
 DashboardRecapFinancing.propTypes = {
-  total: PropTypes.number.isRequired,
   loan: PropTypes.object.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default DashboardRecapFinancing;

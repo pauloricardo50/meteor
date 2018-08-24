@@ -86,8 +86,8 @@ export default class Accordion extends Component {
 }
 
 Accordion.propTypes = {
-  isActive: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+  isActive: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   style: PropTypes.objectOf(PropTypes.any),
 };
 
