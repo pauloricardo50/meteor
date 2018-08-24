@@ -53,16 +53,6 @@ const pages = {
         shouldRender: '.offers-tab',
       }),
 
-    'Loan Communication Tab': ({ step3Loan: { _id } }) =>
-      route(`/loans/${_id}/communication`, {
-        shouldRender: '.communication-tab',
-      }),
-
-    'Loan Analytics Tab': ({ step3Loan: { _id } }) =>
-      route(`/loans/${_id}/analytics`, {
-        shouldRender: '.mixpanel-analytics',
-      }),
-
     'Loan Forms Tab': ({ step3Loan: { _id, borrowers } }) =>
       route(`/loans/${_id}/forms`, {
         shouldRender: '.forms-tab',
