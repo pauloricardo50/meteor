@@ -531,7 +531,7 @@
   "FinancingStructuresResult.title": "RÉSULTAT",
   "Forms.address1.placeholder": "Rue des Champs 7",
   "Forms.address1": "Adresse 1",
-  "Forms.address2.placeholder": "",
+  "Forms.address2.placeholder": " ",
   "Forms.address2": "Adresse 2",
   "Forms.age.placeholder": "50",
   "Forms.age": "Âge",
