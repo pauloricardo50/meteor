@@ -78,15 +78,15 @@ const TableHeader = ({
 
 TableHeader.propTypes = {
   columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  sortable: PropTypes.bool.isRequired,
-  onSort: PropTypes.func,
-  selectAll: PropTypes.bool.isRequired,
-  onSelectAll: PropTypes.func,
+  noIntl: PropTypes.bool,
   numSelected: PropTypes.number,
-  rowCount: PropTypes.number.isRequired,
+  onSelectAll: PropTypes.func,
+  onSort: PropTypes.func,
   order: PropTypes.string,
   orderBy: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  noIntl: PropTypes.bool,
+  rowCount: PropTypes.number.isRequired,
+  selectAll: PropTypes.bool.isRequired,
+  sortable: PropTypes.bool.isRequired,
 };
 
 TableHeader.defaultProps = {

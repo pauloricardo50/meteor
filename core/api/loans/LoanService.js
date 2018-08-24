@@ -129,9 +129,8 @@ export class LoanService {
       structure = structures.find(({ id }) => selectedStructure === id);
     }
 
-    const propertyId =
-      (structure && structure.propertyId) ||
-      (propertyIds.length > 0 ? propertyIds[0] : undefined);
+    const propertyId = (structure && structure.propertyId)
+      || (propertyIds.length > 0 ? propertyIds[0] : undefined);
     const newStructureId = this.addStructure({
       loanId,
       structure: {
@@ -193,8 +192,8 @@ export class LoanService {
     const currentStructure = structures.find(({ id }) => id === structureId);
 
     return (
-      !!currentStructure &&
-      this.addStructure({
+      !!currentStructure
+      && this.addStructure({
         loanId,
         structure: {
           ...currentStructure,

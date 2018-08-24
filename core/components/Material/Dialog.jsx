@@ -27,11 +27,11 @@ const Dialog = (props) => {
 
 Dialog.propTypes = {
   // A dialog can only be closed using the buttons if this boolean is set
-  important: PropTypes.bool,
-  title: PropTypes.node,
-  text: PropTypes.node,
   actions: PropTypes.array,
   children: PropTypes.node,
+  important: PropTypes.bool,
+  text: PropTypes.node,
+  title: PropTypes.node,
 };
 
 Dialog.defaultProps = {

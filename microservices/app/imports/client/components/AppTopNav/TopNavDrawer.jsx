@@ -33,8 +33,8 @@ const TopNavDrawer = (props) => {
 
 TopNavDrawer.propTypes = {
   drawerState: PropTypes.bool.isRequired,
-  toggleDrawer: PropTypes.func.isRequired,
   handleClickLink: PropTypes.func.isRequired,
+  toggleDrawer: PropTypes.func.isRequired,
 };
 
 export default TopNavDrawer;

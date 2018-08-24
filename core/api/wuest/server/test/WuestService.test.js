@@ -420,8 +420,7 @@ describe('WuestService', () => {
         floorNumber: 3,
       })._id;
 
-      const loanResidenceType =
-        wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
+      const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
         expect(result.min).to.equal(640000);
@@ -444,8 +443,7 @@ describe('WuestService', () => {
         floorNumber: 3,
       })._id;
 
-      const loanResidenceType =
-        wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
+      const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
         expect(result).to.have.property('microlocation');

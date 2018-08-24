@@ -46,9 +46,9 @@ const FileAdder = ({ docId, id, handleAddFiles }) => (
 );
 
 FileAdder.propTypes = {
+  docId: PropTypes.string.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  docId: PropTypes.string.isRequired,
 };
 
 export default FileAdder;

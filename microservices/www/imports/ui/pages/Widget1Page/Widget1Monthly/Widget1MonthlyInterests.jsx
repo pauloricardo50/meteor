@@ -46,8 +46,8 @@ const Widget1MonthlyInterests = ({ value, onChange }) => (
 );
 
 Widget1MonthlyInterests.propTypes = {
-  value: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 // Set the initial value of the dropdown, do this here to allow custom interest

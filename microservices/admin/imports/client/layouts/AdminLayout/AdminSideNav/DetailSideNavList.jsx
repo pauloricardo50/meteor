@@ -16,10 +16,7 @@ import Calculator from 'core/utils/Calculator';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
-const getListItemDetails = (
-  collectionName,
-  { roles, name, structure },
-) => {
+const getListItemDetails = (collectionName, { roles, name, structure }) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {

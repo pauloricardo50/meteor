@@ -42,8 +42,8 @@ const HomePageDescriptionSeo = ({ showText, setShowText }) => {
 };
 
 HomePageDescriptionSeo.propTypes = {
-  showText: PropTypes.bool.isRequired,
   setShowText: PropTypes.func.isRequired,
+  showText: PropTypes.bool.isRequired,
 };
 
 export default withState('showText', 'setShowText', false)(HomePageDescriptionSeo);

@@ -75,12 +75,12 @@ const Offer = ({
 );
 
 Offer.propTypes = {
-  offerValues: PropTypes.arrayOf(PropTypes.any).isRequired,
-  offer: PropTypes.objectOf(PropTypes.any).isRequired,
-  chosen: PropTypes.bool.isRequired,
-  handleSave: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
   allowDelete: PropTypes.bool.isRequired,
+  chosen: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  handleSave: PropTypes.func.isRequired,
+  offer: PropTypes.objectOf(PropTypes.any).isRequired,
+  offerValues: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default Offer;

@@ -52,6 +52,6 @@ export default class BorrowersTable extends Component {
 }
 
 BorrowersTable.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };

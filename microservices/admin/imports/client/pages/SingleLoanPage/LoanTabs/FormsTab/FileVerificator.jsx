@@ -50,11 +50,11 @@ class FileVerificator extends Component {
 }
 
 FileVerificator.propTypes = {
-  currentValue: PropTypes.arrayOf(PropTypes.object),
   closingSteps: PropTypes.arrayOf(PropTypes.object),
+  currentValue: PropTypes.arrayOf(PropTypes.object),
   id: PropTypes.string.isRequired,
-  setFileStatus: PropTypes.func.isRequired,
   setFileError: PropTypes.func.isRequired,
+  setFileStatus: PropTypes.func.isRequired,
 };
 
 FileVerificator.defaultProps = {

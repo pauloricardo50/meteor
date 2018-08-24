@@ -28,11 +28,11 @@ const OfferListSorting = ({
 );
 
 OfferListSorting.propTypes = {
-  sort: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleChangeOrder: PropTypes.func.isRequired,
   isAscending: PropTypes.bool.isRequired,
+  options: PropTypes.array.isRequired,
+  sort: PropTypes.string.isRequired,
 };
 
 export default OfferListSorting;

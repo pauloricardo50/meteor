@@ -22,8 +22,8 @@ export const Widget1Inputs = ({ finma, fields }) => (
 );
 
 Widget1Inputs.propTypes = {
-  finma: PropTypes.object.isRequired,
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  finma: PropTypes.object.isRequired,
 };
 
 export default Widget1InputsContainer(Widget1Inputs);

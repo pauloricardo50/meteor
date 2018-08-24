@@ -106,20 +106,20 @@ export default class RadioInput extends Component {
 }
 
 RadioInput.propTypes = {
-  onConditionalChange: PropTypes.func,
   currentValue: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string,
     PropTypes.number,
   ]),
   docId: PropTypes.string.isRequired,
-  updateFunc: PropTypes.func.isRequired,
   inputProps: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     options: PropTypes.arrayOf(PropTypes.object).isRequired,
     disabled: PropTypes.bool,
   }).isRequired,
+  onConditionalChange: PropTypes.func,
+  updateFunc: PropTypes.func.isRequired,
 };
 
 RadioInput.defaultProps = {

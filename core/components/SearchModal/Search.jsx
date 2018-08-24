@@ -23,8 +23,8 @@ export const Search = ({ search, changeSearch }) => (
 );
 
 Search.propTypes = {
-  search: PropTypes.string.isRequired,
   changeSearch: PropTypes.func.isRequired,
+  search: PropTypes.string.isRequired,
 };
 
 export default compose(

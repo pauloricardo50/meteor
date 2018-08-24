@@ -59,11 +59,11 @@ const Widget1Monthly = ({
 
 Widget1Monthly.propTypes = {
   data: PropTypes.array.isRequired,
-  total: PropTypes.number.isRequired,
   interestRate: PropTypes.number.isRequired,
   setInterestRate: PropTypes.func.isRequired,
-  useMaintenance: PropTypes.bool.isRequired,
   setMaintenance: PropTypes.func.isRequired,
+  total: PropTypes.number.isRequired,
+  useMaintenance: PropTypes.bool.isRequired,
 };
 
 export default Widget1MonthlyContainer(Widget1Monthly);

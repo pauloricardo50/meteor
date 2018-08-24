@@ -74,16 +74,16 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
-  label: PropTypes.node.isRequired,
-  id: PropTypes.string.isRequired,
   currentValue: PropTypes.object,
+  disabled: PropTypes.bool,
+  docId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   maxDate: PropTypes.objectOf(PropTypes.any),
   minDate: PropTypes.objectOf(PropTypes.any),
-  docId: PropTypes.string.isRequired,
+  openDirection: PropTypes.string,
   style: PropTypes.objectOf(PropTypes.any),
   updateFunc: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
-  openDirection: PropTypes.string,
 };
 
 DateInput.defaultProps = {

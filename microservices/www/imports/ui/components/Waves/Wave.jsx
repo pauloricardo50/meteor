@@ -34,12 +34,12 @@ class Wave extends Component {
 }
 
 Wave.propTypes = {
-  height: PropTypes.number.isRequired,
-  setPathRef: PropTypes.func.isRequired,
   color: PropTypes.string,
-  gradient: PropTypes.bool,
   color1: PropTypes.string,
   color2: PropTypes.string,
+  gradient: PropTypes.bool,
+  height: PropTypes.number.isRequired,
+  setPathRef: PropTypes.func.isRequired,
 };
 
 Wave.defaultProps = {

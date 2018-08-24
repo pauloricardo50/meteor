@@ -38,10 +38,10 @@ const DashboardInfoTeam = ({
 );
 
 DashboardInfoTeam.propTypes = {
-  loan: PropTypes.object.isRequired,
   addContact: PropTypes.func.isRequired,
-  removeContact: PropTypes.func.isRequired,
   editContact: PropTypes.func.isRequired,
+  loan: PropTypes.object.isRequired,
+  removeContact: PropTypes.func.isRequired,
 };
 
 export default DashboardInfoTeamContainer(DashboardInfoTeam);

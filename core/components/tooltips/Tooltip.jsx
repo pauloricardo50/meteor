@@ -65,8 +65,8 @@ const Tooltip = ({
 };
 
 Tooltip.propTypes = {
-  tooltipConfig: PropTypes.object.isRequired,
   match: PropTypes.string.isRequired,
+  tooltipConfig: PropTypes.object.isRequired,
 };
 
 export default Tooltip;

@@ -64,10 +64,10 @@ const Widget1Page = ({ step, finishedTutorial, finma, fields, ...rest }) => {
 };
 
 Widget1Page.propTypes = {
-  step: PropTypes.number.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
   finishedTutorial: PropTypes.bool.isRequired,
   finma: PropTypes.object.isRequired,
-  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  step: PropTypes.number.isRequired,
 };
 
 export default compose(

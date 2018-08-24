@@ -39,12 +39,10 @@ describe('dashboardTodos', () => {
     });
 
     it('hides when property is complete', () => {
-      sinon
-        .stub(PropertyCalculator, 'propertyPercent')
-        .callsFake(() => 1);
+      sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
       expect(dashboardTodosObject.completeProperty.condition({
         general: {},
-        structure: { property: {documents:{}} },
+        structure: { property: { documents: {} } },
         borrowers: [{}],
       })).to.equal(false);
       PropertyCalculator.propertyPercent.restore();

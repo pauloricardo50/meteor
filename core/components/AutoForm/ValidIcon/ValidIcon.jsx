@@ -63,8 +63,8 @@ const ValidIcon = ({ status, style, fade, hide }) => {
 };
 
 ValidIcon.propTypes = {
-  style: PropTypes.objectOf(PropTypes.any),
   hide: PropTypes.bool,
+  style: PropTypes.objectOf(PropTypes.any),
 };
 
 ValidIcon.defaultProps = {

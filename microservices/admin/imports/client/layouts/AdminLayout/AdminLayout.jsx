@@ -60,9 +60,9 @@ AdminLayout.defaultProps = {
 };
 
 AdminLayout.propTypes = {
+  children: PropTypes.any.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  children: PropTypes.any.isRequired,
 };
 
 export default AdminLayoutContainer(AdminLayout);

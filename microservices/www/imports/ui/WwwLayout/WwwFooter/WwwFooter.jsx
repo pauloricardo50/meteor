@@ -21,8 +21,8 @@ const WwwFooter = ({ transparent, children }) => (
 );
 
 WwwFooter.propTypes = {
-  transparent: PropTypes.bool,
   children: PropTypes.node,
+  transparent: PropTypes.bool,
 };
 
 WwwFooter.defaultProps = {

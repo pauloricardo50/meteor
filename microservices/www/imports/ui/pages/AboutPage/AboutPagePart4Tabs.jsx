@@ -27,8 +27,8 @@ const AboutPagePart4Tabs = ({ setIndex, index: activeIndex }) => (
 );
 
 AboutPagePart4Tabs.propTypes = {
-  setIndex: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
+  setIndex: PropTypes.func.isRequired,
 };
 
 export default AboutPagePart4Tabs;

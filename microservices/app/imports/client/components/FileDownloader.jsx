@@ -53,6 +53,6 @@ export default class FileDownloader extends Component {
 
 FileDownloader.propTypes = {
   buttonLabel: PropTypes.element.isRequired,
-  fileName: PropTypes.string.isRequired,
   fileKey: PropTypes.string.isRequired,
+  fileName: PropTypes.string.isRequired,
 };

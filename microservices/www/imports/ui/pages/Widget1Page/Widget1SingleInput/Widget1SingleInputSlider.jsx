@@ -64,12 +64,12 @@ const Widget1SingleInputSlider = ({
 );
 
 Widget1SingleInputSlider.propTypes = {
-  value: PropTypes.number,
-  setValue: PropTypes.func.isRequired,
-  sliderMax: PropTypes.number.isRequired,
+  allowExtremeLoan: PropTypes.bool,
   increaseSliderMax: PropTypes.func.isRequired,
   isLoanValue: PropTypes.bool.isRequired,
-  allowExtremeLoan: PropTypes.bool,
+  setValue: PropTypes.func.isRequired,
+  sliderMax: PropTypes.number.isRequired,
+  value: PropTypes.number,
 };
 
 Widget1SingleInputSlider.defaultProps = {

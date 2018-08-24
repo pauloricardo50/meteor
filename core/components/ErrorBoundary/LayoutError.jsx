@@ -30,8 +30,8 @@ const LayoutError = ({ style, error }) => (
 );
 
 LayoutError.propTypes = {
-  style: PropTypes.object,
   error: PropTypes.object.isRequired,
+  style: PropTypes.object,
 };
 
 LayoutError.defaultProps = {

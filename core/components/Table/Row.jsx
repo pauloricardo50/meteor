@@ -42,12 +42,12 @@ const Row = ({
 );
 
 Row.propTypes = {
+  clickable: PropTypes.bool.isRequired,
+  columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
   row: PropTypes.shape({
     handleClick: PropTypes.func,
     columns: PropTypes.array.isRequired,
   }).isRequired,
-  columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  clickable: PropTypes.bool.isRequired,
 };
 
 export default Row;

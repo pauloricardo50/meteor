@@ -140,8 +140,8 @@ class SearchResults extends Component {
 }
 
 SearchResults.propTypes = {
-  search: PropTypes.string.isRequired,
   intl: PropTypes.object.isRequired,
+  search: PropTypes.string.isRequired,
 };
 
 export default injectIntl(SearchResults);

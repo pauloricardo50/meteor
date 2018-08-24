@@ -40,15 +40,15 @@ const DropdownSelect = ({
 );
 
 DropdownSelect.propTypes = {
+  anchorEl: PropTypes.any,
+  handleChange: PropTypes.func.isRequired,
   handleClick: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  optionsIncludeOption: PropTypes.func.isRequired,
   iconType: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  tooltip: PropTypes.node,
-  anchorEl: PropTypes.any,
+  optionsIncludeOption: PropTypes.func.isRequired,
   selected: PropTypes.array,
+  tooltip: PropTypes.node,
 };
 
 DropdownSelect.defaultProps = {

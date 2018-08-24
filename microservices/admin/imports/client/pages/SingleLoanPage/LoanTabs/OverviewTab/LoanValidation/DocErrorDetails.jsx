@@ -15,9 +15,9 @@ const DocErrorsDetails = ({ translationId, adminValidation, documents }) => (
 );
 
 DocErrorsDetails.propTypes = {
-  translationId: PropTypes.string.isRequired,
   adminValidation: PropTypes.object.isRequired,
   documents: PropTypes.object.isRequired,
+  translationId: PropTypes.string.isRequired,
 };
 
 export default DocErrorsDetails;

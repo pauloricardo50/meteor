@@ -26,8 +26,8 @@ export default compose(
     },
     componentWillReceiveProps({ property, loanResidenceType }) {
       if (
-        JSON.stringify(property) !== JSON.stringify(this.props.property) ||
-        loanResidenceType !== this.props.loanResidenceType
+        JSON.stringify(property) !== JSON.stringify(this.props.property)
+        || loanResidenceType !== this.props.loanResidenceType
       ) {
         propertyDataIsInvalid
           .run({

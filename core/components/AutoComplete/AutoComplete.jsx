@@ -176,14 +176,14 @@ class AutoComplete extends Component {
 }
 
 AutoComplete.propTypes = {
+  classes: PropTypes.object.isRequired,
+  filter: PropTypes.func,
+  label: PropTypes.node,
+  maxCount: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
   suggestions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  classes: PropTypes.object.isRequired,
-  label: PropTypes.node,
-  filter: PropTypes.func,
-  maxCount: PropTypes.number,
+  value: PropTypes.string.isRequired,
 };
 
 AutoComplete.defaultProps = {

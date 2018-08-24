@@ -35,8 +35,8 @@ const CarouselCardText = ({ name, title, text }) => {
 
 CarouselCardText.propTypes = {
   name: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default CarouselCardText;

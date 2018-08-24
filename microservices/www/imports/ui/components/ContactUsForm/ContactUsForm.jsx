@@ -36,9 +36,9 @@ const ContactUsForm = ({ onSubmit, onSubmitSuccess, className }) => (
 );
 
 ContactUsForm.propTypes = {
+  className: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   onSubmitSuccess: PropTypes.func.isRequired,
-  className: PropTypes.string,
 };
 
 ContactUsForm.defaultProps = {

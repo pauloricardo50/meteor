@@ -37,6 +37,6 @@ export default class AllUsersTable extends Component {
 }
 
 AllUsersTable.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  users: PropTypes.arrayOf(PropTypes.any).isRequired,
 };

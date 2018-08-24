@@ -66,17 +66,17 @@ const Slider = ({
 };
 
 Slider.propTypes = {
-  label: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
-  labelMin: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   labelMax: PropTypes.string.isRequired,
-  min: PropTypes.number.isRequired,
+  labelMin: PropTypes.string.isRequired,
   max: PropTypes.number.isRequired,
-  step: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.number.isRequired,
-  style: PropTypes.objectOf(PropTypes.any),
   sliderStyle: PropTypes.objectOf(PropTypes.any),
+  step: PropTypes.number.isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
+  value: PropTypes.number.isRequired,
 };
 
 Slider.defaultProps = {

@@ -57,9 +57,9 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
 };
 
 SearchResults.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.object,
   data: PropTypes.any.isRequired,
+  error: PropTypes.object,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 SearchResults.defaultProps = {

@@ -82,13 +82,13 @@ export default class DialogForm extends Component {
 
 DialogForm.propTypes = {
   button: PropTypes.node.isRequired,
-  title: PropTypes.node,
   description: PropTypes.node,
   form: PropTypes.string.isRequired,
   formArray: PropTypes.array.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
+  onSubmit: PropTypes.func.isRequired,
   renderAdditionalActions: PropTypes.func,
+  title: PropTypes.node,
 };
 
 DialogForm.defaultProps = {

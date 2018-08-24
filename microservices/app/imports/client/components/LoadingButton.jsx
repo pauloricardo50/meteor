@@ -57,11 +57,11 @@ export default class LoadingButton extends Component {
 }
 
 LoadingButton.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-  value: PropTypes.bool.isRequired,
-  link: PropTypes.string,
-  handleClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  handleClick: PropTypes.func.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  link: PropTypes.string,
+  value: PropTypes.bool.isRequired,
 };
 
 LoadingButton.defaultProps = {

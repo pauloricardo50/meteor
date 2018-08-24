@@ -32,15 +32,15 @@ const FormInput = ({
 };
 
 FormInput.propTypes = {
+  className: PropTypes.string,
+  id: PropTypes.string.isRequired,
   input: PropTypes.object.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   meta: PropTypes.shape({
     touched: PropTypes.bool.isRequired,
     error: PropTypes.any,
   }).isRequired,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   required: PropTypes.bool,
-  className: PropTypes.string,
-  id: PropTypes.string.isRequired,
 };
 
 FormInput.defaultProps = {

@@ -130,7 +130,7 @@ describe('LoanService', () => {
 
       loan = LoanService.getLoanById(loanId);
 
-      expect(loan.structures.length).to.equal(1)
+      expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.equal(structureId);
     });
   });

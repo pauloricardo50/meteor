@@ -64,8 +64,8 @@ const RecapSimple = ({ array, noScale, className }) => (
 
 RecapSimple.propTypes = {
   array: PropTypes.arrayOf(PropTypes.object).isRequired,
-  noScale: PropTypes.bool,
   className: PropTypes.string,
+  noScale: PropTypes.bool,
 };
 
 RecapSimple.defaultProps = {

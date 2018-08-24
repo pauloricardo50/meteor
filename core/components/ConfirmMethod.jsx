@@ -87,10 +87,10 @@ export default class ConfirmMethod extends Component {
 }
 
 ConfirmMethod.propTypes = {
-  label: PropTypes.string.isRequired,
-  keyword: PropTypes.string.isRequired,
-  method: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
+  keyword: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  method: PropTypes.func.isRequired,
   style: PropTypes.object,
 };
 

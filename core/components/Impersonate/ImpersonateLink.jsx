@@ -25,8 +25,8 @@ const ImpersonateLink = ({ user, className }) => {
 };
 
 ImpersonateLink.propTypes = {
-  user: PropTypes.object,
   className: PropTypes.string,
+  user: PropTypes.object,
 };
 
 ImpersonateLink.defaultProps = {

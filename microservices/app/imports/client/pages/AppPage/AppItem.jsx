@@ -44,10 +44,10 @@ const AppItem = ({ title, subtitle, mainText, href, onClick, history }) => (
 );
 
 AppItem.propTypes = {
-  title: PropTypes.node.isRequired,
-  subtitle: PropTypes.node,
-  mainText: PropTypes.node.isRequired,
   href: PropTypes.string,
+  mainText: PropTypes.node.isRequired,
+  subtitle: PropTypes.node,
+  title: PropTypes.node.isRequired,
 };
 
 AppItem.defaultProps = {

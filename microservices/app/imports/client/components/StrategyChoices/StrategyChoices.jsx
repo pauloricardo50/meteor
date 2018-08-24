@@ -70,9 +70,9 @@ export default class StrategyChoices extends Component {
 
 StrategyChoices.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.object).isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
   handleChoose: PropTypes.func,
   name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
 };
 
 StrategyChoices.defaultProps = {

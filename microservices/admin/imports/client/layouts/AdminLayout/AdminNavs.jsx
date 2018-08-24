@@ -13,9 +13,9 @@ const AdminNavs = props => (
 );
 
 AdminNavs.propTypes = {
-  showSideNav: PropTypes.bool.isRequired,
-  isApp: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  isApp: PropTypes.bool.isRequired,
+  showSideNav: PropTypes.bool.isRequired,
 };
 
 export default AdminNavs;

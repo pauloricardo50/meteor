@@ -92,13 +92,13 @@ export default class WaveController extends Component {
 }
 
 WaveController.propTypes = {
-  initialOffset: PropTypes.number.isRequired,
-  frequency: PropTypes.number.isRequired,
   amplitude: PropTypes.number.isRequired,
+  frequency: PropTypes.number.isRequired,
+  height: PropTypes.number,
+  initialOffset: PropTypes.number.isRequired,
+  noSlope: PropTypes.bool,
   speed: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
-  noSlope: PropTypes.bool,
-  height: PropTypes.number,
 };
 
 WaveController.defaultProps = {

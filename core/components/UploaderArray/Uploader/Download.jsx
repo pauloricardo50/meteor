@@ -41,6 +41,6 @@ export default class Download extends Component {
 }
 
 Download.propTypes = {
-  fileName: PropTypes.string.isRequired,
   fileKey: PropTypes.string.isRequired,
+  fileName: PropTypes.string.isRequired,
 };

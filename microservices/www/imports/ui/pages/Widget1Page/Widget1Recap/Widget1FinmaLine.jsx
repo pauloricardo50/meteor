@@ -15,8 +15,8 @@ const Widget1FinmaLine = ({ id, value, status }) => (
 
 Widget1FinmaLine.propTypes = {
   id: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
   status: PropTypes.string,
+  value: PropTypes.number.isRequired,
 };
 
 export default Widget1FinmaLine;
