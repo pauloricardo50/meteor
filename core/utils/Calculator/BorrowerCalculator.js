@@ -36,7 +36,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     // personal information forms
     personalInfoPercent = ({ borrowers }) => {
       const a = [];
-      arrayify(borrowers).forEach((b) => {
+      arrayify(borrowers).forEach(b => {
         const formArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
@@ -56,9 +56,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getBorrowersCompletion = ({ borrowers }) =>
-      (this.getBorrowersFilesProgress({ borrowers })
-        + this.personalInfoPercent({ borrowers }))
-      / 2;
+      (this.getBorrowersFilesProgress({ borrowers }) +
+        this.personalInfoPercent({ borrowers })) /
+      2;
 
     getFortune = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'bankFortune' });
@@ -76,7 +76,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getBonusIncome = ({ borrowers }) => {
       let total = 0;
-      arrayify(borrowers).forEach((borrower) => {
+      arrayify(borrowers).forEach(borrower => {
         if (borrower.bonus) {
           let arr = Object.keys(borrower.bonus).map(key => borrower.bonus[key]);
           if (arr.length < 1) {
@@ -103,7 +103,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getArrayValues = ({ borrowers, key, mapFunc }) => {
       let sum = 0;
 
-      arrayify(borrowers).forEach((borrower) => {
+      arrayify(borrowers).forEach(borrower => {
         if (!borrower[key]) {
           return 0;
         }
