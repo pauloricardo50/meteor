@@ -1,7 +1,10 @@
 import * as constants from 'core/api/constants';
 import React from 'react';
 
-import BorrowerAddPartner from 'core/components/BorrowerAddPartner';
+import BorrowerAddPartner from '../components/BorrowerAddPartner';
+
+const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
+  civilStatus === constants.CIVIL_STATUS.MARRIED && !multiple && isFirst;
 
 export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
   const b = borrowers.find(borrower => borrower._id === id);
@@ -100,10 +103,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       id: 'test',
       type: 'custom',
       component: <BorrowerAddPartner loanId={loanId} />,
-      condition:
-        b.civilStatus === constants.CIVIL_STATUS.MARRIED &&
-        !multiple &&
-        isFirst,
+      condition: shouldDisplayAddPartner({ b, multiple, isFirst }),
       required: false,
     },
     { id: 'childrenCount', type: 'textInput', number: true },
