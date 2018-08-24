@@ -6,6 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import WuestService from '../WuestService';
 
 import * as wuestConstants from '../../wuestConstants';
+import { QUALITY } from '../../../constants';
 import { PROPERTY_TYPE } from '../../../properties/propertyConstants';
 
 describe('WuestService', () => {
@@ -464,6 +465,10 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType =
@@ -474,7 +479,7 @@ describe('WuestService', () => {
         expect(result.max).to.equal(770000);
         expect(result.value).to.equal(705000);
       });
-    });
+    }).timeout(10000);
 
     it('returns micro location', () => {
       const propertyId = Factory.create('property', {
@@ -488,6 +493,10 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType =

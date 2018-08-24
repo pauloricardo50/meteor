@@ -613,7 +613,7 @@ class WuestService {
       if (response.errorCode) {
         const errorMessage = this.formatError(response);
         throw new Meteor.Error(
-          wuestConstants.WUEST_ERRORS.WUEST_ERROR,
+          wuestConstants.WUEST_ERRORS.WUEST_API_ERROR,
           errorMessage,
         );
       }
