@@ -320,7 +320,7 @@
   "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr ?",
   "DropzoneInput.invalidFileType": "Vous ne pouvez uploader que des fichiers PDF, JPG et PNG.",
   "DropzoneInput.message": "Déposez un ou plusieurs fichiers ici, ou cliquez pour choisir",
-  "DropzoneInput.removeFile": "- Supprimer",
+  "DropzoneInput.removeFile": "Supprimer",
   "e-Potek": "e-Potek",
   "EditUserDialogForm.buttonLabel": "Modifier l'utilisateur",
   "EditUserDialogForm.dialogTitle": "Modifier l'utilisateur",
