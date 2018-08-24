@@ -1,13 +1,8 @@
 // @flow
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
 import { mapProps, compose, branch, renderComponent } from 'recompose';
-import Loading from '../../components/Loading';
+import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
-
-const renderSpinnerWhileLoading = branch(
-  ({ isLoading }) => isLoading,
-  renderComponent(Loading),
-);
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render: boolean = false) =>
@@ -34,6 +29,7 @@ type withSmartQueryArgs = {
   queryOptions?: { single: boolean },
   dataName?: string,
   renderMissingDoc?: boolean,
+  smallLoader?: boolean,
 };
 
 const withSmartQuery = ({
@@ -42,10 +38,11 @@ const withSmartQuery = ({
   dataName = 'data',
   // used to bypass the missing doc component
   renderMissingDoc = true,
+  smallLoader = false,
 }: withSmartQueryArgs) =>
   compose(
     withQuery(query, queryOptions),
-    renderSpinnerWhileLoading,
+    withLoading(smallLoader),
     makeRenderMissingDocIfNoData(renderMissingDoc && queryOptions.single),
     makeMapProps(dataName),
   );

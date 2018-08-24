@@ -1,0 +1,3 @@
+const withTracker = () => () => {};
+
+export { withTracker };

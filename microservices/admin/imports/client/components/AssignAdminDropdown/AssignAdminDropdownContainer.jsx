@@ -30,6 +30,7 @@ export default compose(
     query: () => query.clone(),
     queryoptions: { reactive: true },
     dataName: 'admins',
+    smallLoader: true,
   }),
   withProps(({ admins, doc, onAdminSelectHandler }) => {
     const options = getMenuItems({

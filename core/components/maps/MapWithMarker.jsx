@@ -53,5 +53,5 @@ export default compose(
       }
     },
   }),
-  withLoading,
+  withLoading(),
 )(MapWithMarker);

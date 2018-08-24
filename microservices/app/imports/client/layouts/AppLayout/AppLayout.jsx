@@ -11,15 +11,14 @@ import Navs from './Navs';
 
 import AppLayoutContainer from './AppLayoutContainer';
 
-const allowedRoutesWithoutLoan = [
-  '/',
+const WITHOUT_LOAN = [
   '/profile',
   '/add-loan',
   '/enroll-account',
   '/reset-password',
 ];
 
-const allowedRoutesWithoutLogin = [
+const WITHOUT_LOGIN = [
   '/login',
   '/enroll-account',
   '/reset-password',
@@ -28,39 +27,31 @@ const allowedRoutesWithoutLogin = [
 
 const routesWithoutSidenav = ['/'];
 
-const getRedirect = ({
-  currentUser,
-  history: {
-    location: { pathname },
-  },
-}) => {
-  const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
-  const userIsDev = Roles.userIsInRole(currentUser, 'dev');
+const isOnAllowedRoute = (path, routes) =>
+  routes.some(allowedRoute => path.startsWith(allowedRoute));
 
+const isOnAllowedRouteWithoutLoan = (loans, path) =>
+  (!loans || loans.length < 1)
+  && path !== '/'
+  && !isOnAllowedRoute(path, WITHOUT_LOAN);
+
+export const getRedirect = (currentUser, pathname) => {
   if (!currentUser) {
-    if (
-      allowedRoutesWithoutLogin.some(route => pathname.indexOf(route) === 0)
-    ) {
-      return false;
-    }
-    return `/login?path=${pathname}`;
+    return isOnAllowedRoute(pathname, WITHOUT_LOGIN)
+      ? false
+      : `/login?path=${pathname}`;
   }
+
+  const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (userIsDev) {
     return false;
   }
 
-  if (userIsAdmin) {
-    return '/admin';
-  }
   // If there is no active loan, force route to app page, except if
   // user is on allowed routes
   const { loans } = currentUser;
-  if (
-    loans
-    && loans.length < 1
-    && !allowedRoutesWithoutLoan.some(route => pathname.indexOf(route) === 0)
-  ) {
+  if (isOnAllowedRouteWithoutLoan(loans, pathname)) {
     return '/';
   }
 
@@ -72,8 +63,8 @@ const getShowSideNav = ({ location }) =>
 
 const AppLayout = (props) => {
   // console.log('Applayout props:', props);
-  const { history, children } = props;
-  const redirect = getRedirect(props);
+  const { history, children, currentUser } = props;
+  const redirect = getRedirect(currentUser, history.location.pathname);
   const showSideNav = getShowSideNav(history);
   const classes = classnames({ 'app-layout': true, 'no-nav': !showSideNav });
   const path = history.location.pathname;
