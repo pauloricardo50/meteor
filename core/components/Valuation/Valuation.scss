@@ -62,10 +62,7 @@
     align-items: center;
     flex-direction: row;
 
-    // padding: 4px 16px;
-
     h4 {
-      // height: 2em;
       width: 240px;
     }
 
@@ -78,7 +75,7 @@
   h3 {
     display: flex;
     align-items: center;
-     > :first-child {
+    > :first-child {
       margin-right: 8px;
     }
   }

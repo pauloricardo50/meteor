@@ -12,6 +12,8 @@ export default class ConfirmMethod extends Component {
     text: '',
   };
 
+  shouldAllowSubmit = keyword => !keyword || this.state.text === keyword;
+
   handleOpen = () => this.setState({ open: true });
 
   handleClose = () => this.setState({ open: false });
@@ -22,20 +24,15 @@ export default class ConfirmMethod extends Component {
       event.preventDefault();
     }
 
-    if (!keyword || this.state.text === keyword) {
-      this.props
-        .method()
-        .then(() => this.setState({ open: false }))
-        .catch((error) => {
-          console.log('ConfirmMethod error:', error);
-        });
+    if (this.shouldAllowSubmit(keyword)) {
+      this.props.method().then(() => this.setState({ open: false }));
     }
   };
 
   handleChange = event => this.setState({ text: event.target.value });
 
   render() {
-    const { label, style, disabled, keyword } = this.props;
+    const { label, style, disabled, keyword, buttonProps } = this.props;
     const { open, text } = this.state;
     const actions = [
       <Button
@@ -56,11 +53,11 @@ export default class ConfirmMethod extends Component {
     return (
       <React.Fragment>
         <Button
-          primary
           label={label}
           onClick={this.handleOpen}
           style={style}
           disabled={disabled}
+          {...buttonProps}
         />
         <Dialog
           title={<T id="ConfirmMethod.dialogTitle" />}

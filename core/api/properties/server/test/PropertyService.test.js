@@ -8,6 +8,7 @@ import {
   PROPERTY_TYPE,
   RESIDENCE_TYPE,
   WUEST_ERRORS,
+  QUALITY,
 } from '../../../constants';
 
 describe('PropertyService', () => {
@@ -27,6 +28,10 @@ describe('PropertyService', () => {
         constructionYear: 1,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -56,6 +61,10 @@ describe('PropertyService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -82,6 +91,10 @@ describe('PropertyService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;

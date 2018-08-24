@@ -6,6 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import WuestService from '../WuestService';
 
 import * as wuestConstants from '../../wuestConstants';
+import { QUALITY } from '../../../constants';
 import { PROPERTY_TYPE } from '../../../properties/propertyConstants';
 
 describe('WuestService', () => {
@@ -405,6 +406,52 @@ describe('WuestService', () => {
     });
   });
 
+  context('getFloorType', () => {
+    it('should return GROUND_FLOOR if flat type is TERRACE_APARTMENT', () => {
+      const terraceAppartment = {
+        flatType: wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT,
+        numberOfFloors: 8,
+      };
+      expect(WuestService.getFloorType(terraceAppartment)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[0]);
+    });
+
+    it('should return last floor if flat type is PENTHOUSE_APARTMENT', () => {
+      const penthouseAppartment = {
+        flatType: wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT,
+        numberOfFloors: 4,
+      };
+
+      expect(WuestService.getFloorType(penthouseAppartment)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[penthouseAppartment.numberOfFloors]);
+    });
+
+    it('should return last floor if flat type is PENTHOUSE_MAISONETTE', () => {
+      const penthouseMaisonette = {
+        flatType: wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE,
+        numberOfFloors: 2,
+      };
+
+      expect(WuestService.getFloorType(penthouseMaisonette)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[penthouseMaisonette.numberOfFloors]);
+    });
+
+    it('should return the floor number if flat type is not TERRACE_APARTMENT, PENTHOUSE_APARTMENT nor PENTHOUSE_MAISONETTE', () => {
+      const typesToNotInclude = [
+        wuestConstants.WUEST_FLAT_TYPE.TERRACE_APARTMENT,
+        wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_APARTMENT,
+        wuestConstants.WUEST_FLAT_TYPE.PENTHOUSE_MAISONETTE,
+      ];
+      const appartments = Object.values(wuestConstants.WUEST_FLAT_TYPE)
+        .filter(flatType => !typesToNotInclude.includes(flatType))
+        .map(flatType => ({
+          flatType,
+          numberOfFloors: 10,
+          floorNumber: 5,
+        }));
+
+      appartments.forEach(appartment =>
+        expect(WuestService.getFloorType(appartment)).to.equal(wuestConstants.WUEST_FLOOR_NUMBER[appartment.floorNumber]));
+    });
+  });
+
   context('evaluateById', () => {
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
@@ -418,6 +465,10 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -427,7 +478,7 @@ describe('WuestService', () => {
         expect(result.max).to.equal(770000);
         expect(result.value).to.equal(705000);
       });
-    });
+    }).timeout(10000);
 
     it('returns micro location', () => {
       const propertyId = Factory.create('property', {
@@ -441,6 +492,10 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
+        qualityProfile: {
+          condition: QUALITY.CONDITION.INTACT,
+          standard: QUALITY.STANDARD.AVERAGE,
+        },
       })._id;
 
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
