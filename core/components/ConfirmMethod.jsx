@@ -12,6 +12,8 @@ export default class ConfirmMethod extends Component {
     text: '',
   };
 
+  shouldAllowSubmit = keyword => !keyword || this.state.text === keyword;
+
   handleOpen = () => this.setState({ open: true });
 
   handleClose = () => this.setState({ open: false });
@@ -22,7 +24,7 @@ export default class ConfirmMethod extends Component {
       event.preventDefault();
     }
 
-    if (!keyword || this.state.text === keyword) {
+    if (this.shouldAllowSubmit(keyword)) {
       this.props
         .method()
         .then(() => this.setState({ open: false }))
