@@ -2,7 +2,6 @@
 import React from 'react';
 import { toMoney } from 'core/utils/conversionFunctions';
 import T from 'core/components/Translation';
-import CountUp from 'core/components/CountUp';
 import { VALUATION_STATUS } from '../../api/constants';
 import ValuationError from './ValuationError';
 import Microlocation from './Microlocation/Microlocation';
@@ -37,7 +36,7 @@ const ValuationResult = ({
             <T id="Valuation.rangeLabel" />
           </h3>
           <h2>
-            <CountUp value={min} money /> - <CountUp value={max} money />
+            {toMoney(min)} - {toMoney(max)}
           </h2>
         </div>
         {value && (

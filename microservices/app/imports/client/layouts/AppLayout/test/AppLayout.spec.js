@@ -29,7 +29,7 @@ describe('AppLayout', () => {
     });
 
     context('when user is logged in', () => {
-      it.only('does not redirect if user is dev', () => {
+      it('does not redirect if user is dev', () => {
         sinon.stub(Roles, 'userIsInRole').callsFake(() => true);
         expect(getRedirect({}, 'path')).to.equal(false);
         Roles.userIsInRole.restore();
