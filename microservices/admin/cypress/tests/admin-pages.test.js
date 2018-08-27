@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import {
   ADMIN_EMAIL,
   route,
@@ -45,7 +46,7 @@ const pages = {
 
     'Loan Properties Tab': ({ step3Loan: { _id } }) =>
       route(`/loans/${_id}/properties`, {
-        shouldRender: '.single-property-page .map-with-marker',
+        shouldRender: '.single-property-page .google-map',
       }),
 
     'Loan Offers Tab': ({ step3Loan: { _id } }) =>
@@ -104,7 +105,7 @@ const pages = {
 
     Property: ({ property: { _id } }) =>
       route(`/properties/${_id}`, {
-        shouldRender: '.single-property-page .map-with-marker',
+        shouldRender: '.single-property-page .google-map',
       }),
 
     Tasks: route('/tasks', { shouldRender: '.tasks-page .tasks-table' }),
