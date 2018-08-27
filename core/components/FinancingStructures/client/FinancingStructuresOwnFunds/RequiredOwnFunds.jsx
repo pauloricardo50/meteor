@@ -9,7 +9,8 @@ import { CalculatedValue } from '../FinancingStructuresSection';
 
 type RequiredOwnFundsProps = {};
 
-export const ROUNDING_AMOUNT = 1000;
+// Add extra 1 so that rounding errors don't break the comparison
+export const ROUNDING_AMOUNT = 1001;
 
 const getLabel = (value) => {
   if (value > ROUNDING_AMOUNT) {
