@@ -1,0 +1,14 @@
+{
+  "name": "e-potek-www",
+  "private": true,
+  "scripts": {
+    "start": "node launcher.js",
+    "postinstall": "tar -xf www.tar.gz && (cd bundle/programs/server && npm install)"
+  },
+  "engines": {
+    "node": "8.11.3"
+  },
+  "dependencies": {
+    "cfenv": "1.0.4"
+  }
+}
