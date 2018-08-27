@@ -1,30 +1,13 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import { Users } from '../api';
 import UserService from '../api/users/UserService';
 import LoanService from '../api/loans/LoanService';
 import { ROLES, GENDER } from '../api/constants';
 import BorrowerService from '../api/borrowers/BorrowerService';
 import PropertyService from '../api/properties/PropertyService';
 
-export const createYannisUser = () => {
-  console.log('creating yannis...');
-  const userId = Accounts.createUser({
-    email: 'y@nnis.ch',
-    password: 'Yannis1977',
-  });
-
-  Roles.setUserRoles(userId, ROLES.DEV);
-
-  UserService.update({
-    userId,
-    object: {
-      firstName: 'Yannis',
-      lastName: 'Eggert',
-    },
-  });
-
+export const createYannisData = (userId) => {
   const loanId = LoanService.adminLoanInsert({ userId });
   LoanService.update({
     loanId,
@@ -58,14 +41,23 @@ export const createYannisUser = () => {
       value: 2000000,
     },
   });
-  console.log('Yannis created !');
 };
 
-// export const getFakeUsersIds = () => {
-//     const regex = /^(admin|dev|user)-[1-9]|10@e-potek.ch/;
-//     const allUsers = Users.find().fetch();
-//     const fakeUserIds = allUsers
-//         .filter(user => regex.test(user.emails[0].address))
-//         .map(fakeUser => fakeUser._id);
-//     return fakeUserIds;
-// };
+export const createYannisUser = () => {
+  console.log('creating yannis...');
+  const userId = Accounts.createUser({
+    email: 'y@nnis.ch',
+    password: 'Yannis1977',
+  });
+
+  Roles.setUserRoles(userId, ROLES.DEV);
+
+  UserService.update({
+    userId,
+    object: { firstName: 'Yannis', lastName: 'Eggert' },
+  });
+
+  createYannisData(userId);
+
+  console.log('Yannis created !');
+};

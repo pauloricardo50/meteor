@@ -4,6 +4,7 @@ import React from 'react';
 import T from 'core/components/Translation';
 import Page from '../../components/Page';
 import PasswordChange from './PasswordChange';
+import AccountResetter from '../../../core/components/AccountResetter/AccountResetter';
 
 const styles = {
   section: {
@@ -19,7 +20,7 @@ const styles = {
   },
 };
 
-const AccountPage = ({ currentUser: { email } }) => (
+const AccountPage = ({ currentUser: { email, _id: userId } }) => (
   <Page id="AccountPage">
     <div className="card1 card-top" style={styles.section}>
       <div style={styles.div}>
@@ -38,6 +39,8 @@ const AccountPage = ({ currentUser: { email } }) => (
           <br />
           <PasswordChange />
         </div>
+
+        {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
       </div>
     </div>
   </Page>
