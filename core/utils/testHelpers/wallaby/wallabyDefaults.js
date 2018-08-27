@@ -46,8 +46,6 @@ function setWallabyConfig(name, overrides = {}) {
         setup() {
           global.IS_WALLABY = true;
           global.fetch = require('node-fetch');
-          // Do this to prevent some weird issues
-          global.window = { navigator: { userAgent: 'node.js' } };
 
           // Configure jsdom for react mount tests
           const jsdom = require('jsdom');
@@ -55,7 +53,7 @@ function setWallabyConfig(name, overrides = {}) {
           const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
           global.document = document;
           global.window = document.defaultView;
-          global.navigator = { userAgent: 'node.js', platform: 'Win32' };
+          global.navigator = { userAgent: 'node.js', platform: 'MacIntel' };
         },
       },
       overrides,

@@ -43,8 +43,8 @@ describe('ContactButton', () => {
         .text()).to.equal(employees[0].name);
     });
 
-    it('phone', () => {
-      expect(component(props).contains(employees[0].phone)).to.equal(true);
+    it('phoneNumber', () => {
+      expect(component(props).contains(employees[0].phoneNumber)).to.equal(true);
     });
 
     it('mail', () => {

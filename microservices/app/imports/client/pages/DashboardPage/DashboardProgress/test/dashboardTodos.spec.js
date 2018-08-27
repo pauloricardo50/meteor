@@ -9,7 +9,7 @@ import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { dashboardTodosObject, checkArrayIsDone } from '../dashboardTodos';
 import { VALUATION_STATUS } from '../../../../../core/api/constants';
 
-describe.only('dashboardTodos', () => {
+describe('dashboardTodos', () => {
   beforeEach(() => {
     sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
     sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
@@ -44,6 +44,8 @@ describe.only('dashboardTodos', () => {
 
   describe('completeProperty', () => {
     it('shows when property is missing things', () => {
+      PropertyCalculator.propertyPercent.restore();
+      sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 0.9);
       expect(dashboardTodosObject.completeProperty.isDone({
         general: {},
         structure: { property: {} },
@@ -80,6 +82,8 @@ describe.only('dashboardTodos', () => {
 
   describe('completeBorrowers', () => {
     it('shows when borrowers are missing things', () => {
+      BorrowerCalculator.personalInfoPercent.restore();
+      sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 0.5);
       expect(dashboardTodosObject.completeBorrowers.isDone({
         borrowers: [{}],
       })).to.equal(false);
@@ -100,7 +104,7 @@ describe.only('dashboardTodos', () => {
       })).to.equal(true);
     });
 
-    it('does not hide when documents is an ampty object', () => {
+    it('does not hide when documents is an empty object', () => {
       expect(dashboardTodosObject.uploadDocuments.hide({
         documents: {},
       })).to.equal(false);
@@ -111,6 +115,8 @@ describe.only('dashboardTodos', () => {
     });
 
     it('should not be done when not all files are uploaded', () => {
+      Calculator.filesProgress.restore();
+      sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.5);
       expect(dashboardTodosObject.uploadDocuments.isDone({})).to.equal(false);
     });
   });
@@ -150,7 +156,7 @@ describe.only('dashboardTodos', () => {
       })).to.equal(false);
     });
 
-    it.only('hides if one thing is not done', () => {
+    it('hides if one thing is not done', () => {
       Calculator.filesProgress.restore();
       sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
       expect(dashboardTodosObject.callEpotek.hide({
