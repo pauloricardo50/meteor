@@ -9,7 +9,7 @@ import { CalculatedValue } from '../FinancingStructuresSection';
 
 type RequiredOwnFundsProps = {};
 
-export const ROUNDING_AMOUNT = 5000;
+export const ROUNDING_AMOUNT = 1000;
 
 const getLabel = (value) => {
   if (value > ROUNDING_AMOUNT) {
