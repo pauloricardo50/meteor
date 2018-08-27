@@ -6,10 +6,22 @@ import sinon from 'sinon';
 import Calculator from 'core/utils/Calculator';
 import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
-import { dashboardTodosObject } from '../dashboardTodos';
+import { dashboardTodosObject, checkArrayIsDone } from '../dashboardTodos';
 import { VALUATION_STATUS } from '../../../../../core/api/constants';
 
-describe('dashboardTodos', () => {
+describe.only('dashboardTodos', () => {
+  beforeEach(() => {
+    sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
+    sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
+    sinon.stub(Calculator, 'filesProgress').callsFake(() => 1);
+  });
+
+  afterEach(() => {
+    BorrowerCalculator.personalInfoPercent.restore();
+    PropertyCalculator.propertyPercent.restore();
+    Calculator.filesProgress.restore();
+  });
+
   describe('createStructure', () => {
     it('shows when no structure exists', () => {
       expect(dashboardTodosObject.createStructure.isDone({
@@ -40,13 +52,11 @@ describe('dashboardTodos', () => {
     });
 
     it('hides when property is complete', () => {
-      sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
       expect(dashboardTodosObject.completeProperty.isDone({
         general: {},
         structure: { property: { documents: {} } },
         borrowers: [{}],
       })).to.equal(true);
-      PropertyCalculator.propertyPercent.restore();
     });
   });
 
@@ -76,11 +86,9 @@ describe('dashboardTodos', () => {
     });
 
     it('hides when property is complete', () => {
-      sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
       expect(dashboardTodosObject.completeBorrowers.isDone({
         borrowers: [{}],
       })).to.equal(true);
-      BorrowerCalculator.personalInfoPercent.restore();
     });
   });
 
@@ -99,15 +107,11 @@ describe('dashboardTodos', () => {
     });
 
     it('should be done when all files are uploaded', () => {
-      sinon.stub(Calculator, 'filesProgress').callsFake(() => 1);
       expect(dashboardTodosObject.uploadDocuments.isDone({})).to.equal(true);
-      Calculator.filesProgress.restore();
     });
 
     it('should not be done when not all files are uploaded', () => {
-      sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
       expect(dashboardTodosObject.uploadDocuments.isDone({})).to.equal(false);
-      Calculator.filesProgress.restore();
     });
   });
 
@@ -136,21 +140,71 @@ describe('dashboardTodos', () => {
   });
 
   describe('callEpotek', () => {
-    it('shows when all other conditions are false', () => {
-      sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
-      sinon
-        .stub(PropertyCalculator, 'getPropertyCompletion')
-        .callsFake(() => 1);
-      expect(dashboardTodosObject.callEpotek.isDone({
+    it('shows when all other todos are done', () => {
+      expect(dashboardTodosObject.callEpotek.hide({
+        general: {},
+        structure: { property: { valuation: {} }, offer: {} },
+        structures: [{}, {}],
+        borrowers: [{}],
+        properties: [{}],
+      })).to.equal(false);
+    });
+
+    it.only('hides if one thing is not done', () => {
+      Calculator.filesProgress.restore();
+      sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
+      expect(dashboardTodosObject.callEpotek.hide({
         general: {},
         structure: { property: { valuation: {} }, offer: {} },
         structures: [{}, {}],
         borrowers: [{}],
         offers: [{}],
         properties: [{}],
-      })).to.equal(false);
-      BorrowerCalculator.personalInfoPercent.restore();
-      PropertyCalculator.getPropertyCompletion.restore();
+        documents: {},
+      })).to.equal(true);
+    });
+  });
+
+  describe('checkArrayIsDone', () => {
+    it('returns false if one item is false', () => {
+      expect(checkArrayIsDone([{ isDone: () => false }])).to.equal(false);
+    });
+
+    it('returns true if one item is hidden', () => {
+      expect(checkArrayIsDone([{ hide: () => true }])).to.equal(true);
+    });
+
+    it('returns false if an item is not hidden and not done', () => {
+      expect(checkArrayIsDone([{ hide: () => false, isDone: () => false }])).to.equal(false);
+    });
+
+    it('returns true if one item is true', () => {
+      expect(checkArrayIsDone([{ isDone: () => true }])).to.equal(true);
+    });
+
+    it('returns true if one item is hidden', () => {
+      expect(checkArrayIsDone([{ hide: () => true, isDone: () => true }])).to.equal(true);
+    });
+
+    it('returns true if an item is not hidden and not done', () => {
+      expect(checkArrayIsDone([{ hide: () => false, isDone: () => true }])).to.equal(true);
+    });
+
+    it('combines all cases', () => {
+      expect(checkArrayIsDone([
+        { hide: () => false, isDone: () => true },
+        { isDone: () => true },
+        { hide: () => true },
+      ])).to.equal(true);
+    });
+
+    it('filters out callEpotek', () => {
+      expect(checkArrayIsDone([
+        { hide: () => false, isDone: () => true },
+        { isDone: () => true },
+        { hide: () => true },
+        { isDone: () => false, id: 'callEpotek' },
+      ])).to.equal(true);
     });
   });
 });

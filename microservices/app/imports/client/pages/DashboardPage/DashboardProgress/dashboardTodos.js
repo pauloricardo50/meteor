@@ -19,6 +19,12 @@ const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
     ':propertyId': propertyId,
   });
 
+export const checkArrayIsDone = (array = [], params) =>
+  array
+    .filter(({ id }) => id !== 'callEpotek')
+    .every(({ isDone, hide }) =>
+      (hide ? hide(params) || isDone(params) : isDone(params)));
+
 export const dashboardTodosArray = [
   {
     id: 'completeBorrowers',
@@ -86,15 +92,12 @@ export const dashboardTodosArray = [
   {
     id: 'chooseOffer',
     isDone: ({ offers, structure: { offer } }) => offers.length > 0 && !!offer,
-    hide: ({ offers }) => offers.length === 0,
+    hide: ({ offers }) => !offers || offers.length === 0,
     link: createFinancingLink,
   },
   {
     id: 'callEpotek',
-    hide: params =>
-      dashboardTodosArray
-        .filter(({ id }) => id !== 'callEpotek')
-        .every(({ isDone }) => isDone(params)),
+    hide: params => !checkArrayIsDone(dashboardTodosArray, params),
     isDone: () => false,
   },
 ];
