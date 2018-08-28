@@ -6,90 +6,50 @@ import BorrowerCalculator from '..';
 import { BORROWER_DOCUMENTS } from 'core/api/constants';
 
 describe('BorrowerCalculator', () => {
-  describe('sumValues', () => {
-    it('sums values with a single key', () => {
-      expect(BorrowerCalculator.sumValues({
-        borrowers: [{ a: 1 }, { a: 2 }],
-        keys: 'a',
+  describe('getArrayValues', () => {
+    it("returns 0 if the key doesn't exist", () => {
+      expect(BorrowerCalculator.getArrayValues({}, 'key')).to.equal(0);
+    });
+
+    it("returns the sum of all value keys in an object's array", () => {
+      expect(BorrowerCalculator.getArrayValues({
+        borrowers: {
+          array: [{ value: 1 }, { value: 2 }],
+        },
+        key: 'array',
       })).to.equal(3);
     });
 
-    it('sums values with multiple keys', () => {
-      expect(BorrowerCalculator.sumValues({
-        borrowers: [{ a: 1, b: 4 }, { a: 2, b: 3 }],
-        keys: ['a', 'b'],
+    it('works with arrays', () => {
+      expect(BorrowerCalculator.getArrayValues({
+        borrowers: [
+          {
+            array: [{ value: 1 }, { value: 2 }],
+          },
+          {
+            array: [{ value: 3 }, { value: 4 }],
+          },
+        ],
+        key: 'array',
       })).to.equal(10);
     });
-    it('omits keys if they are not provided', () => {
-      expect(BorrowerCalculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
-    });
-  });
 
-  describe('Get Fortune', () => {
-    it('Should return 0 if given an empty object', () => {
-      expect(BorrowerCalculator.getFortune({})).to.equal(0);
-    });
-
-    it('sums bankFortunes if given multiple borrowers', () => {
-      expect(BorrowerCalculator.getFortune({
-        borrowers: [{ bankFortune: 1 }, { bankFortune: 2 }],
-      })).to.equal(3);
-    });
-  });
-
-  describe('getOtherFortune', () => {
-    it('Should return 0 if given an empty object', () => {
-      expect(BorrowerCalculator.getOtherFortune({})).to.equal(0);
-    });
-
-    it('sums otherFortune if given multiple borrowers', () => {
-      expect(BorrowerCalculator.getOtherFortune({
-        borrowers: [
-          { otherFortune: [{ value: 3 }, { value: 4 }] },
-          { otherFortune: [{ value: 5 }, { value: 6 }] },
-        ],
-      })).to.equal(18);
-    });
-  });
-
-  describe('getInsuranceFortune', () => {
-    it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
-      expect(BorrowerCalculator.getInsuranceFortune({
-        borrowers: {
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: 3,
+    it('works with a provided mapFunc', () => {
+      expect(BorrowerCalculator.getArrayValues(
+        {
+          borrowers: [
+            {
+              array: [{ yo: 1 }, { value: 2 }],
+            },
+            {
+              array: [{ value: 3 }, { yo: 4 }],
+            },
+          ],
+          key: 'array',
         },
-      })).to.equal(5);
 
-      expect(BorrowerCalculator.getInsuranceFortune({
-        borrowers: {
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: undefined,
-        },
-      })).to.equal(2);
-    });
-
-    it('works with multiple borrowers', () => {
-      expect(BorrowerCalculator.getInsuranceFortune({
-        borrowers: [
-          {
-            insuranceSecondPillar: 2,
-            insuranceThirdPillar: 3,
-          },
-          {
-            insuranceSecondPillar: 4,
-            insuranceThirdPillar: 5,
-          },
-        ],
-      })).to.equal(14);
-    });
-  });
-
-  describe('getBorrowersCompletion', () => {
-    it('should be 0% for a new borrower', () => {
-      expect(BorrowerCalculator.getBorrowersCompletion({
-        borrowers: { documents: {}, logic: {} },
-      })).to.equal(0);
+        item => item.yo,
+      )).to.equal(5);
     });
   });
 
@@ -153,50 +113,144 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getArrayValues', () => {
-    it("returns 0 if the key doesn't exist", () => {
-      expect(BorrowerCalculator.getArrayValues({}, 'key')).to.equal(0);
+  describe('getBorrowerSalary', () => {
+    it('returns 0 for an empty object', () => {
+      expect(BorrowerCalculator.getBorrowerSalary({})).to.equal(0);
     });
 
-    it("returns the sum of all value keys in an object's array", () => {
-      expect(BorrowerCalculator.getArrayValues({
-        borrowers: {
-          array: [{ value: 1 }, { value: 2 }],
-        },
-        key: 'array',
+    it("returns sum of borrowers' salary", () => {
+      expect(BorrowerCalculator.getBorrowerSalary({ borrowers: { salary: 1 } })).to.equal(1);
+      expect(BorrowerCalculator.getBorrowerSalary({
+        borrowers: [{ salary: 1 }, { salary: 2 }],
       })).to.equal(3);
     });
+  });
 
-    it('works with arrays', () => {
-      expect(BorrowerCalculator.getArrayValues({
-        borrowers: [
-          {
-            array: [{ value: 1 }, { value: 2 }],
-          },
-          {
-            array: [{ value: 3 }, { value: 4 }],
-          },
-        ],
-        key: 'array',
-      })).to.equal(10);
+  describe('getBorrowerCompletion', () => {
+    it('should be 0% for a new borrower', () => {
+      expect(BorrowerCalculator.getBorrowerCompletion({
+        borrowers: { documents: {}, logic: {} },
+      })).to.equal(0);
+    });
+  });
+
+  describe('Get Fortune', () => {
+    it('Should return 0 if given an empty object', () => {
+      expect(BorrowerCalculator.getFortune({})).to.equal(0);
     });
 
-    it('works with a provided mapFunc', () => {
-      expect(BorrowerCalculator.getArrayValues(
-        {
-          borrowers: [
-            {
-              array: [{ yo: 1 }, { value: 2 }],
-            },
-            {
-              array: [{ value: 3 }, { yo: 4 }],
-            },
-          ],
-          key: 'array',
-        },
+    it('sums bankFortunes if given multiple borrowers', () => {
+      expect(BorrowerCalculator.getFortune({
+        borrowers: [{ bankFortune: 1 }, { bankFortune: 2 }],
+      })).to.equal(3);
+    });
+  });
 
-        item => item.yo,
-      )).to.equal(5);
+  describe('getInsuranceFortune', () => {
+    it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
+      expect(BorrowerCalculator.getInsuranceFortune({
+        borrowers: {
+          insuranceSecondPillar: 2,
+          insuranceThirdPillar: 3,
+        },
+      })).to.equal(5);
+
+      expect(BorrowerCalculator.getInsuranceFortune({
+        borrowers: {
+          insuranceSecondPillar: 2,
+          insuranceThirdPillar: undefined,
+        },
+      })).to.equal(2);
+    });
+
+    it('works with multiple borrowers', () => {
+      expect(BorrowerCalculator.getInsuranceFortune({
+        borrowers: [
+          {
+            insuranceSecondPillar: 2,
+            insuranceThirdPillar: 3,
+          },
+          {
+            insuranceSecondPillar: 4,
+            insuranceThirdPillar: 5,
+          },
+        ],
+      })).to.equal(14);
+    });
+  });
+
+  describe('getMissingBorrowerDocuments', () => {
+    it('returns all missing ids for an empty borrower', () => {
+      expect(BorrowerCalculator.getMissingBorrowerDocuments({ borrowers: {} })).to.deep.equal([
+        BORROWER_DOCUMENTS.IDENTITY,
+        BORROWER_DOCUMENTS.RESIDENCY_PERMIT,
+        BORROWER_DOCUMENTS.TAXES,
+        BORROWER_DOCUMENTS.SALARY_CERTIFICATE,
+        BORROWER_DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
+      ]);
+    });
+  });
+
+  describe('getMissingBorrowerFields', () => {
+    it('returns all missing ids for an empty borrower', () => {
+      expect(BorrowerCalculator.getMissingBorrowerFields({ borrowers: {} })).to.deep.equal([
+        'firstName',
+        'lastName',
+        'gender',
+        'address1',
+        'zipCode',
+        'isSwiss',
+        'age',
+        'citizenship',
+        'isUSPerson',
+        'civilStatus',
+        'childrenCount',
+      ]);
+    });
+  });
+
+  describe('getOtherFortune', () => {
+    it('Should return 0 if given an empty object', () => {
+      expect(BorrowerCalculator.getOtherFortune({})).to.equal(0);
+    });
+
+    it('sums otherFortune if given multiple borrowers', () => {
+      expect(BorrowerCalculator.getOtherFortune({
+        borrowers: [
+          { otherFortune: [{ value: 3 }, { value: 4 }] },
+          { otherFortune: [{ value: 5 }, { value: 6 }] },
+        ],
+      })).to.equal(18);
+    });
+  });
+
+  describe('getRealEstateFortune', () => {
+    it('returns the difference between property values and loans', () => {
+      expect(BorrowerCalculator.getRealEstateFortune({
+        borrowers: {
+          realEstate: [{ value: 2, loan: 1 }],
+        },
+      })).to.equal(1);
+    });
+  });
+
+  describe('getRealEstateValue', () => {
+    it('returns value of all realEstate', () => {
+      expect(BorrowerCalculator.getRealEstateValue({
+        borrowers: {
+          realEstate: [{ value: 2, loan: 1 }],
+        },
+      })).to.equal(2);
+    });
+  });
+
+  describe('getRealEstateValue', () => {
+    it('returns loans of all realEstate', () => {
+      expect(BorrowerCalculator.getRealEstateDebt({
+        borrowers: {
+          realEstate: [{ value: 2, loan: 1 }],
+        },
+      })).to.equal(1);
     });
   });
 
@@ -233,79 +287,6 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getRealEstateFortune', () => {
-    it('returns the difference between property values and loans', () => {
-      expect(BorrowerCalculator.getRealEstateFortune({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
-      })).to.equal(1);
-    });
-  });
-
-  describe('getRealEstateValue', () => {
-    it('returns value of all realEstate', () => {
-      expect(BorrowerCalculator.getRealEstateValue({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
-      })).to.equal(2);
-    });
-  });
-
-  describe('getRealEstateValue', () => {
-    it('returns loans of all realEstate', () => {
-      expect(BorrowerCalculator.getRealEstateDebt({
-        borrowers: {
-          realEstate: [{ value: 2, loan: 1 }],
-        },
-      })).to.equal(1);
-    });
-  });
-
-  describe('getBorrowerSalary', () => {
-    it('returns 0 for an empty object', () => {
-      expect(BorrowerCalculator.getBorrowerSalary({})).to.equal(0);
-    });
-
-    it("returns sum of borrowers' salary", () => {
-      expect(BorrowerCalculator.getBorrowerSalary({ borrowers: { salary: 1 } })).to.equal(1);
-      expect(BorrowerCalculator.getBorrowerSalary({
-        borrowers: [{ salary: 1 }, { salary: 2 }],
-      })).to.equal(3);
-    });
-  });
-
-  describe('getMissingBorrowerDocuments', () => {
-    it('returns all missing ids for an empty borrower', () => {
-      expect(BorrowerCalculator.getMissingBorrowerDocuments({ borrowers: {} })).to.deep.equal([
-        BORROWER_DOCUMENTS.IDENTITY,
-        BORROWER_DOCUMENTS.RESIDENCY_PERMIT,
-        BORROWER_DOCUMENTS.TAXES,
-        BORROWER_DOCUMENTS.SALARY_CERTIFICATE,
-        BORROWER_DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
-      ]);
-    });
-  });
-
-  describe('getMissingBorrowerFields', () => {
-    it('returns all missing ids for an empty borrower', () => {
-      expect(BorrowerCalculator.getMissingBorrowerFields({ borrowers: {} })).to.deep.equal([
-        'firstName',
-        'lastName',
-        'gender',
-        'address1',
-        'zipCode',
-        'isSwiss',
-        'age',
-        'citizenship',
-        'isUSPerson',
-        'civilStatus',
-        'childrenCount',
-      ]);
-    });
-  });
-
   describe('personalInfoPercent', () => {
     it('works', () => {
       expect(BorrowerCalculator.personalInfoPercent({
@@ -336,6 +317,25 @@ describe('BorrowerCalculator', () => {
           userId: 'fAksm7pJveZybme5F',
         },
       })).to.equal(1);
+    });
+  });
+
+  describe('sumValues', () => {
+    it('sums values with a single key', () => {
+      expect(BorrowerCalculator.sumValues({
+        borrowers: [{ a: 1 }, { a: 2 }],
+        keys: 'a',
+      })).to.equal(3);
+    });
+
+    it('sums values with multiple keys', () => {
+      expect(BorrowerCalculator.sumValues({
+        borrowers: [{ a: 1, b: 4 }, { a: 2, b: 3 }],
+        keys: ['a', 'b'],
+      })).to.equal(10);
+    });
+    it('omits keys if they are not provided', () => {
+      expect(BorrowerCalculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
     });
   });
 });

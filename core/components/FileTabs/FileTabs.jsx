@@ -27,7 +27,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
           label: (
             <FileTabLabel
               title={borrower.firstName || `Emprunteur ${index + 1}`}
-              progress={Calculator.getBorrowersFilesProgress({
+              progress={Calculator.getBorrowerFilesProgress({
                 borrowers: borrower,
               })}
             />
