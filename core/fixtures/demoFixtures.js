@@ -28,7 +28,7 @@ export const createYannisData = (userId) => {
       city: 'Genève',
       bankFortune: 300000,
       salary: 200000,
-      insuranceSecondPillar: 250000,
+      insurance2: 250000,
     },
   });
   const property = PropertyService.getPropertyById(loan.propertyIds[0]);

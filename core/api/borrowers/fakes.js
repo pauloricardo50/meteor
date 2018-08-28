@@ -56,7 +56,7 @@ export const completeFakeBorrower = {
     },
   ],
   bankFortune: 300000,
-  insuranceSecondPillar: 120000,
+  insurance2: 120000,
   insuranceThirdPillar: 50000,
   logic: {},
 };

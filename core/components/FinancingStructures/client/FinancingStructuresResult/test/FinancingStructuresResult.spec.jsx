@@ -71,7 +71,7 @@ describe('FinancingStructuresResult', () => {
               _id: 'john',
               bankFortune: 250000,
               salary: 200000,
-              insuranceSecondPillar: 50,
+              insurance2: 50,
               insuranceThirdPillar: 60,
             },
           },

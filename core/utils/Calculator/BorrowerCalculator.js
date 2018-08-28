@@ -67,7 +67,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       this.sumValues({
         borrowers,
         keys: [
-          'insuranceSecondPillar',
+          'insurance2',
           'insuranceThirdPillar',
           // 'bank3A',
           'insurance3B',
@@ -145,7 +145,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getTotalFunds = ({ borrowers }) =>
       this.sumValues({
         borrowers,
-        keys: ['bankFortune', 'insuranceSecondPillar', 'insuranceThirdPillar'],
+        keys: ['bankFortune', 'insurance2', 'insuranceThirdPillar'],
       });
 
     getRealEstateFortune = ({ borrowers }) =>
@@ -169,7 +169,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       this.sumValues({ borrowers, keys: 'salary' });
 
     getSecondPillar = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'insuranceSecondPillar' });
+      this.sumValues({ borrowers, keys: 'insurance2' });
 
     getThirdPillar = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
