@@ -8,6 +8,14 @@ const prepareStaging = ({ argv: { s: settings, a: filter = [] } }) => {
   prepare({ root, applications, filter });
 };
 
+const prepareProduction = ({ argv: { s: settings, a: filter = [] } }) => {
+  const {
+    production: { root, applications },
+  } = require(settings);
+
+  prepare({ root, applications, filter });
+};
+
 const buildPane = ({ root, buildDirectory, name }) => {
   return {
     [buildDirectory]: [
@@ -59,6 +67,11 @@ var argv = require('yargs')
     'Prepares the tmuxinator staging deployment script for www and app',
   )
   .command('staging', 'Prepares the staging deployment script', prepareStaging)
+  .command(
+    'production',
+    'Prepares the production deployment script',
+    prepareProduction,
+  )
   .array('a')
   .alias('a', 'applications')
   .describe('a', 'Applications to deploy')

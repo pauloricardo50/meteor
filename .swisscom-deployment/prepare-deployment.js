@@ -75,6 +75,30 @@ const prepareStaging = ({ argv: { s: deploySettings, a: filter = [] } }) => {
   });
 };
 
+const prepareProduction = ({ argv: { s: deploySettings, a: filter = [] } }) => {
+  const {
+    production: {
+      root,
+      service: { name: serviceName },
+      launcher,
+      settings,
+      applications,
+    },
+  } = require(deploySettings);
+
+  return prepare({
+    root,
+    serviceName,
+    launcher,
+    settings,
+    applications,
+    filter,
+  }).catch(err => {
+    console.log('Error:', err);
+    process.exit(1);
+  });
+};
+
 const prepare = ({
   root,
   serviceName,
@@ -105,10 +129,15 @@ argv
     'Prepares the staging deployment using settings.json settings for app and www',
   )
   .example(
-    '$0 staging -s settings.json',
-    'Prepares the staging deployment using settings.json for all microservices',
+    '$0 production -s settings.json',
+    'Prepares the production deployment using settings.json for all microservices',
   )
   .command('staging', 'Prepares the staging deployment', prepareStaging)
+  .command(
+    'production',
+    'Prepares the production deployment',
+    prepareProduction,
+  )
   .array('a')
   .alias('a', 'applications')
   .describe('a', 'Applications to deploy')

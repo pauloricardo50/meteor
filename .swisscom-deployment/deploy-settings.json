@@ -29,5 +29,37 @@
       "instances": 1,
       "file": "manifest.yml"
     }]
-  }
+  },
+    "production": {
+      "service": {
+        "name": "mongo-production",
+        "size": "small"
+      },
+      "root": "./production",
+      "launcher": "launcher.js",
+      "settings": "settings-production.json",
+      "applications": [
+        {
+          "buildDirectory": "app",
+          "name": "e-potek-app-production",
+          "memory": "512M",
+          "instances": 1,
+          "file": "manifest.yml"
+        },
+        {
+          "buildDirectory": "admin",
+          "name": "e-potek-admin-production",
+          "memory": "512M",
+          "instances": 1,
+          "file": "manifest.yml"
+        },
+        {
+          "buildDirectory": "www",
+          "name": "e-potek-www-production",
+          "memory": "512M",
+          "instances": 1,
+          "file": "manifest.yml"
+        }
+      ]
+    }
 }
