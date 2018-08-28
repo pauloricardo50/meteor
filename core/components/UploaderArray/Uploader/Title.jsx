@@ -16,7 +16,6 @@ const Title = ({
   tooltipSuffix,
   label,
   userIsAdmin,
-  isOwnedByAdmin,
   handleRemove,
   displayFull,
   showFull,
@@ -51,8 +50,7 @@ const Title = ({
         </h5>
       </div>
 
-      {userIsAdmin
-        && isOwnedByAdmin && (
+      {userIsAdmin && (
         <ConfirmMethod
           label={<T id="general.delete" />}
           keyword="SUPPRIMER"
@@ -74,7 +72,6 @@ Title.propTypes = {
   fileMeta: PropTypes.object.isRequired,
   handleRemove: PropTypes.func.isRequired,
   hideFull: PropTypes.func.isRequired,
-  isOwnedByAdmin: PropTypes.bool,
   label: PropTypes.string,
   noTooltips: PropTypes.bool,
   required: PropTypes.bool,
@@ -89,7 +86,6 @@ Title.defaultProps = {
   required: false,
   tooltipSuffix: undefined,
   label: undefined,
-  isOwnedByAdmin: false,
   currentValue: [],
 };
 
