@@ -586,6 +586,7 @@
   "Forms.civilStatus.MARRIED": "{gender, select, m {Marié} f {Mariée} other {Marié}}",
   "Forms.civilStatus.PACSED": "{gender, select, m {Pacsé} f {Pacsée} other {Pacsé}}",
   "Forms.civilStatus.SINGLE": "Célibataire",
+  "Forms.civilStatus.WIDOW": "Veuf",
   "Forms.civilStatus": "État civil",
   "Forms.company.placeholder": "e-Potek SA",
   "Forms.company": "Employeur",
