@@ -7,20 +7,25 @@ import UploaderTop from './UploaderTop.jsx';
 import UploaderBottom from './UploaderBottom.jsx';
 
 const Uploader = (props) => {
-  const { handleAddFiles, shouldDisableAdd, displayFull, showFull } = props;
+  const {
+    handleAddFiles,
+    shouldDisableAdd,
+    displayFull,
+    showFull,
+    fileMeta: { id },
+  } = props;
   const disableAdd = shouldDisableAdd();
 
   return (
-    <label htmlFor={props.fileMeta.id}>
-      <FileDropper
-        handleAddFiles={handleAddFiles}
-        disabled={disableAdd}
-        showFull={showFull}
-      >
-        <UploaderTop {...props} />
-        {displayFull && <UploaderBottom {...props} />}
-      </FileDropper>
-    </label>
+    <FileDropper
+      handleAddFiles={handleAddFiles}
+      disabled={disableAdd}
+      showFull={showFull}
+      id={id}
+    >
+      <UploaderTop {...props} />
+      {displayFull && <UploaderBottom {...props} />}
+    </FileDropper>
   );
 };
 
