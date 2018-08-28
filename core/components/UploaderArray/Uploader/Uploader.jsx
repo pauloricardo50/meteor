@@ -11,14 +11,16 @@ const Uploader = (props) => {
   const disableAdd = shouldDisableAdd();
 
   return (
-    <FileDropper
-      handleAddFiles={handleAddFiles}
-      disabled={disableAdd}
-      showFull={showFull}
-    >
-      <UploaderTop {...props} />
-      {displayFull && <UploaderBottom {...props} />}
-    </FileDropper>
+    <label htmlFor={props.fileMeta.id}>
+      <FileDropper
+        handleAddFiles={handleAddFiles}
+        disabled={disableAdd}
+        showFull={showFull}
+      >
+        <UploaderTop {...props} />
+        {displayFull && <UploaderBottom {...props} />}
+      </FileDropper>
+    </label>
   );
 };
 
