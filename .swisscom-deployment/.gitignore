@@ -1,1 +1,3 @@
-*.tar.gz
+staging/admin
+staging/app
+staging/www

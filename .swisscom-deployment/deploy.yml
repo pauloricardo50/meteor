@@ -1,0 +1,11 @@
+name: deploy
+root: ./
+on_project_start: root=$(pwd)
+on_project_exit: rm ../deploy.yml && tmux kill-session deploy
+windows:
+  - deploy:
+      layout: tiled
+      panes:
+        - www:
+            - echo $root
+            - cd "$root"/../microservices/www

@@ -1,0 +1,33 @@
+{
+  "staging": {
+    "service": {
+      "name": "mongo-staging",
+      "size": "small"
+    },
+    "root": "./staging",
+    "launcher": "launcher.js",
+    "settings": "settings-staging.json",
+    "applications":
+    [{
+      "buildDirectory": "app",
+      "name": "e-potek-app-staging",
+      "memory": "512M",
+      "instances": 1,
+      "file": "manifest.yml"
+    },
+    {
+      "buildDirectory": "admin",
+      "name": "e-potek-admin-staging",
+      "memory": "512M",
+      "instances": 1,
+      "file": "manifest.yml"
+    },
+    {
+      "buildDirectory": "www",
+      "name": "e-potek-www-staging",
+      "memory": "512M",
+      "instances": 1,
+      "file": "manifest.yml"
+    }]
+  }
+}

@@ -1,7 +1,0 @@
-applications:
-  - name: e-potek-app
-    memory: 512M
-    instances: 1
-    buildpack: https://github.com/cloudfoundry/nodejs-buildpack
-    services:
-      - meteor-mongo
