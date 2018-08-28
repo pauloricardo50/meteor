@@ -60,8 +60,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       },
       condition: !disableAddress,
       placeholder:
-        disableAddress &&
-        (borrowers[0].zipCode && borrowers[0].city
+        disableAddress
+        && (borrowers[0].zipCode && borrowers[0].city
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
@@ -243,14 +243,14 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       money: true,
       required: false,
     },
-    // {
-    //   id: 'bank3A',
-    //   type: 'textInput',
-    //   money: true,
-    //   required: false,
-    // },
     {
-      id: 'insuranceThirdPillar',
+      id: 'bank3A',
+      type: 'textInput',
+      money: true,
+      required: false,
+    },
+    {
+      id: 'insurance3A',
       type: 'textInput',
       money: true,
       required: false,
