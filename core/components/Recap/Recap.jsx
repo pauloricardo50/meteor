@@ -246,7 +246,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     borrowers,
   });
   const totalFunds = BorrowerCalculator.getTotalFunds({ borrowers });
-  const salary = BorrowerCalculator.getBorrowerSalary({ borrowers });
+  const salary = BorrowerCalculator.getSalary({ borrowers });
   const income = BorrowerCalculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;

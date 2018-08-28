@@ -81,9 +81,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getBorrowerSalary = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'salary' });
-
     getExpenses = ({ borrowers }) =>
       this.getArrayValues({ borrowers, key: 'expenses' });
 
@@ -149,6 +146,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         key: 'realEstate',
         mapFunc: i => i.loan,
       });
+
+    getSalary = ({ borrowers }) =>
+      this.sumValues({ borrowers, keys: 'salary' });
 
     getSecondPillar = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'insuranceSecondPillar' });
