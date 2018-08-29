@@ -80,7 +80,10 @@ class MiddlewareManager {
       if (typeof method === 'function') {
         this._methods[methodName] = method;
 
-        if (this._methodMiddlewares[methodName] === undefined) {
+        if (
+          this._methodMiddlewares[methodName] === undefined
+          || !isArray(this._methodMiddlewares[methodName])
+        ) {
           this._methodMiddlewares[methodName] = [];
         }
 
