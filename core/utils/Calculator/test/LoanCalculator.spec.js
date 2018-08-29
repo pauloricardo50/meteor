@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import Calculator, { Calculator as CalculatorClass } from '..';
 import { INTEREST_RATES } from 'core/api/constants';
 
-describe.only('LoanCalculator', () => {
+describe('LoanCalculator', () => {
   describe('getProjectValue', () => {
     it('returns 0 if the property value is 0 or does not exist', () => {
       expect(Calculator.getProjectValue({ loan: { structure: {} } })).to.equal(0);
