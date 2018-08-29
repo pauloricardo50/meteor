@@ -276,4 +276,67 @@ describe.only('LoanCalculator', () => {
       expect(Calculator.getMaxBorrowRatio({ loan: { general: {} } })).to.equal(0.8);
     });
   });
+
+  describe('loanHasMinimalInformation', () => {
+    it('returns true if fortune property value and wantedLoan are defined', () => {
+      expect(Calculator.loanHasMinimalInformation({
+        loan: {
+          structure: {
+            wantedLoan: 1,
+            fortuneUsed: 1,
+            property: { value: 1 },
+          },
+        },
+      })).to.equal(true);
+    });
+
+    it('returns false if one of these fields is undefined', () => {
+      expect(Calculator.loanHasMinimalInformation({
+        loan: {
+          structure: {
+            fortuneUsed: 1,
+            property: { value: 1 },
+          },
+        },
+      })).to.equal(false);
+      expect(Calculator.loanHasMinimalInformation({
+        loan: {
+          structure: {
+            wantedLoan: 1,
+            property: { value: 1 },
+          },
+        },
+      })).to.equal(false);
+      expect(Calculator.loanHasMinimalInformation({
+        loan: {
+          structure: {
+            wantedLoan: 1,
+            fortuneUsed: 1,
+          },
+        },
+      })).to.equal(false);
+    });
+  });
+
+  describe('getLoanFilesProgress', () => {
+    it('returns 0 for an empty loan', () => {
+      expect(Calculator.getLoanFilesProgress({})).to.equal(0);
+      expect(Calculator.getLoanFilesProgress({ loan: {} })).to.equal(0);
+    });
+
+    it('returns 100% for a loan initially, when documents have arrived', () => {
+      expect(Calculator.getLoanFilesProgress({ loan: { documents: {} } })).to.equal(1);
+    });
+  });
+
+  describe('getMissingLoanDocuments', () => {
+    it('shows nothing is required initially', () => {
+      expect(Calculator.getMissingLoanDocuments({})).to.deep.equal([]);
+      expect(Calculator.getMissingLoanDocuments({ loan: {} })).to.deep.equal([]);
+      expect(Calculator.getMissingLoanDocuments({ loan: { documents: {} } })).to.deep.equal([]);
+      expect(Calculator.getMissingLoanDocuments({
+        loan: { documents: { other: [{ key: 'hello' }] } },
+      })).to.deep.equal([]);
+    });
+  });
 });

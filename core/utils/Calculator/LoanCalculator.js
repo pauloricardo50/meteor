@@ -126,34 +126,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return this.maxBorrowRatio;
     }
 
-    getNotaryFees({ loan }) {
-      return this.selectPropertyValue({ loan }) * this.notaryFees;
-    }
-
     loanHasMinimalInformation({
       loan: {
-        structure: { property, fortuneUsed },
+        structure: { property, fortuneUsed, wantedLoan },
       },
     }) {
-      return !!(fortuneUsed && (property && property.value));
-    }
-
-    getLenderCount({ loan }) {
-      const incomeRatio = this.getIncomeRatio({ loan });
-      const borrowRatio = this.getBorrowRatio({ loan });
-      if (incomeRatio > 0.38) {
-        return 0;
-      }
-      if (incomeRatio > 1 / 3) {
-        return 4;
-      }
-      if (borrowRatio <= 0.65) {
-        return 20;
-      }
-      if (borrowRatio > 0.65 && borrowRatio <= 0.9) {
-        return 10;
-      }
-      return 0;
+      return !!(fortuneUsed && (property && property.value) && wantedLoan);
     }
 
     getLoanFilesProgress({ loan }) {
