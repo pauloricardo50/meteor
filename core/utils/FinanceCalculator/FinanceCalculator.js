@@ -203,7 +203,7 @@ export class FinanceCalculator {
     }, 0);
   }
 
-  getAmortizationRate({
+  _getAmortizationRate({
     borrowRatio,
     amortizationYears = 15,
   }: { borrowRatio: number, amortizationRate?: number } = {}) {
@@ -227,9 +227,10 @@ export class FinanceCalculator {
     return amortizationRate;
   }
 
-  getAmortizationRateRelativeToLoan({ borrowRatio, amortizationYears }) {
+  _getAmortizationRateRelativeToLoan({ borrowRatio, amortizationYears }) {
     return (
-      this.getAmortizationRate({ borrowRatio, amortizationYears }) / borrowRatio
+      this._getAmortizationRate({ borrowRatio, amortizationYears })
+      / borrowRatio
     );
   }
 

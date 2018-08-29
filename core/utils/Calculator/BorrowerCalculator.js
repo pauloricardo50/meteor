@@ -175,6 +175,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return sum;
     };
 
+    getYearsToRetirement() {
+      // TODO
+    }
+
     // personalInfoPercent - Determines the completion rate of the borrower's
     // personal information forms
     personalInfoPercent = ({ borrowers }) => {

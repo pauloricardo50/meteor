@@ -7,24 +7,18 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 
+const FinanceCalc = new FinanceCalculator();
+
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    getPropertyValue({ loan }) {
-      return loan.structure.property && loan.structure.property.value;
-    }
-
-    getStructureValue({ loan, key }) {
-      return loan.structure[key];
-    }
-
     getProjectValue({ loan }) {
-      const propertyValue = this.getPropertyValue({ loan });
+      const propertyValue = this.selectPropertyValue({ loan });
       if (!propertyValue) {
         return 0;
       }
 
       const value = propertyValue * (1 + this.notaryFees)
-        + (this.getStructureValue({ loan, key: 'propertyWork' }) || 0);
+        + (this.selectStructureKey({ loan, key: 'propertyWork' }) || 0);
 
       return value;
     }
@@ -38,29 +32,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getFees({ loan }): number {
-      const notaryFees = this.selectPropertyValue({ loan }) * this.notaryFees;
+      const notaryFees = this.selectStructureKey({ loan, key: 'notaryFees' });
+      const defaultNotaryFees = this.selectPropertyValue({ loan }) * this.notaryFees;
 
-      return notaryFees;
+      return notaryFees === 0 ? 0 : notaryFees || defaultNotaryFees;
     }
-
-    isLoanValid = ({ loan, borrowers, property }) => {
-      const incomeRatio = this.getIncomeRatio({ loan, borrowers, property });
-      const borrowRatio = this.getBorrowRatio({ loan, borrowers, property });
-      const fees = this.getFees({ loan, property });
-      const propAndWork = this.getPropAndWork({ loan, property });
-
-      const cashRequired = this.minCash * propAndWork + fees;
-
-      if (incomeRatio > 0.38) {
-        throw new Error('income');
-      } else if (loan.general.fortuneUsed < cashRequired) {
-        throw new Error('cash');
-      } else if (borrowRatio > 0.8) {
-        throw new Error('ownFunds');
-      }
-
-      return true;
-    };
 
     getInterests({ loan, interestRates }) {
       let finalInterestRates = interestRates || this.interestRates;
@@ -87,9 +63,30 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getAmortization({ loan }) {
       return (
-        (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
+        (this.getAmortizationRateRelativeToLoan({ loan })
+          * this.selectLoanValue({ loan }))
         / 12
       );
+    }
+
+    getAmortizationRate({ loan }) {
+      const {
+        structure: { wantedLoan, propertyWork },
+      } = loan;
+      return this._getAmortizationRate({
+        borrowRatio:
+          wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
+      });
+    }
+
+    getAmortizationRateRelativeToLoan({ loan }) {
+      const {
+        structure: { wantedLoan, propertyWork },
+      } = loan;
+      return this._getAmortizationRateRelativeToLoan({
+        borrowRatio:
+          wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
+      });
     }
 
     getMonthly({ loan, interestRates }) {
@@ -115,9 +112,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getBorrowRatio({ loan }) {
       return (
-        this.makeSelectStructureKey('wantedLoan')({ loan })
-        / (this.selectPropertyValue({ loan }),
-        this.makeSelectStructureKey('propertyWork')({ loan }))
+        this.selectStructureKey({ loan, key: 'wantedLoan' })
+        / (this.selectPropertyValue({ loan })
+          + this.selectStructureKey({ loan, key: 'propertyWork' }))
       );
     }
 

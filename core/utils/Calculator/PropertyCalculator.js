@@ -54,7 +54,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     getPropAndWork({ loan }) {
-      const propertyValue = this.getPropertyValue({ loan });
+      const propertyValue = this.selectPropertyValue({ loan });
       const propertyWork = this.makeSelectStructureKey('propertyWork')({
         loan,
       });

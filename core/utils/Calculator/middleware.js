@@ -7,18 +7,6 @@ import { makeArgumentMapper } from '../MiddlewareManager';
 import Selector from './Selector';
 
 const argumentMappings = {
-  getAmortizationRate: (data) => {
-    const {
-      loan: {
-        structure: { wantedLoan, propertyWork },
-      },
-    } = data;
-    return {
-      borrowRatio:
-        wantedLoan / (Selector.selectPropertyValue(data) + propertyWork),
-    };
-  },
-
   getIndirectAmortizationDeduction: (data) => {
     const {
       loan: {
@@ -27,7 +15,7 @@ const argumentMappings = {
     } = data;
     return {
       loanValue: wantedLoan,
-      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoan({
+      amortizationRateRelativeToLoan: Calc._getAmortizationRateRelativeToLoan({
         borrowRatio:
           wantedLoan / (Selector.selectPropertyValue(data) + propertyWork),
       }),
