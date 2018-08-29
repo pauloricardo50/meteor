@@ -1,21 +1,16 @@
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
 import { Method } from '../methods';
 import ClientEventService from '../../events/ClientEventService';
+import message from '../../../utils/message';
+
+const shouldLogErrorsToConsole = (Meteor.isDevelopment || Meteor.isStaging) && !Meteor.isTest;
 
 const handleError = (error) => {
-  if (Meteor.isClient) {
-    Bert.defaults.hideDelay = 7500;
-    Bert.alert({
-      title: 'Misère, une erreur!',
-      message: `<h3 class="bert">${error.message}</h3>`,
-      type: 'danger',
-      style: 'fixed-top',
-    });
-  }
-  if ((Meteor.isDevelopment || Meteor.isStaging) && !Meteor.isTest) {
+  if (shouldLogErrorsToConsole) {
     console.error('Meteor Method error:', error);
   }
+
+  message.error(error.message, 7500);
 };
 
 Method.addAfterCall(({ config, params, result, error }) => {
