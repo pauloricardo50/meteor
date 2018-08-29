@@ -6,7 +6,7 @@ import SideNavUser from '../../components/SideNavUser';
 
 const PermanentSideNav = props => (
   <Drawer variant="permanent">
-    <div style={{ width: 200 }}>
+    <div style={{ width: 250 }}>
       <SideNavUser {...props} fixed />
     </div>
   </Drawer>
