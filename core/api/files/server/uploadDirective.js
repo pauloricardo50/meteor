@@ -78,10 +78,11 @@ const exoscaleStorageService = merge({}, Slingshot.S3Storage, {
     bucket: BUCKET_NAME,
     bucketUrl: OBJECT_STORAGE_PATH,
     region: OBJECT_STORAGE_REGION,
-    // expire: 5 * 60 * 1000, // in 5 minutes
+    expire: 4 * 60 * 60 * 1000,
     AWSAccessKeyId: API_KEY,
     AWSSecretAccessKey: SECRET_KEY,
     acl: 'private',
+    maxSize: 0,
   },
 });
 
