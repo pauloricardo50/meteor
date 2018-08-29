@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import PropertyCalculator from '..';
 import { PROPERTY_DOCUMENTS, DOCUMENTS } from '../../../api/constants';
 
-describe.only('PropertyCalculator', () => {
+describe('PropertyCalculator', () => {
   let params;
   let property;
 

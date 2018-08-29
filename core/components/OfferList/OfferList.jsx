@@ -70,7 +70,7 @@ class OfferList extends Component {
     const { sort, isAscending } = this.state;
 
     const filteredOffers = sortOffers(
-      offers.map(offer => Calculator.enhanceOffer({ offer })),
+      offers.map(offer => Calculator.addMetadataToOffer({ offer, loan })),
       sort,
       isAscending,
     );
