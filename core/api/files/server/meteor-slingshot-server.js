@@ -12,11 +12,9 @@ import {
   SLINGSHOT_DIRECTIVE_NAME,
   MAX_FILE_SIZE,
   ALLOWED_FILE_TYPES,
-  OBJECT_STORAGE_REGION,
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
 
-const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   maxSize: MAX_FILE_SIZE,
