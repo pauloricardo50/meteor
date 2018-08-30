@@ -2,6 +2,8 @@
   "name": "swisscom-deployment",
   "scripts": {
     "deploy": "./deploy.sh",
+    "deploy-staging": "./deploy.sh -e staging",
+    "deploy-production": "./deploy.sh -e production",
     "scaleApplication": "./scaleApplication.sh"
   },
   "devDependencies": {
