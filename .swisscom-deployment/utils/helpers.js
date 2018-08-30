@@ -18,7 +18,7 @@ export const executeCommand = command =>
 export const mkdir = path => {
   return checkIfDirectoryOrFileExists(path).then(
     directoryExists =>
-      directoryExists ? Promise.resolve() : executeCommand(`mkdir ${path}`),
+      directoryExists ? true : executeCommand(`mkdir ${path}`),
   );
 };
 
@@ -40,8 +40,8 @@ export const moveFile = ({ sourcePath, destinationPath }) => {
 
 export const checkIfDirectoryOrFileExists = path => {
   return executeCommand(`ls ${path}`)
-    .then(() => Promise.resolve(true))
-    .catch(() => Promise.resolve(false));
+    .then(() => true)
+    .catch(() => false);
 };
 
 export const writeYAML = ({ file, data }) => {
