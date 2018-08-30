@@ -10,6 +10,8 @@ export const cloudFoundryCommands = {
     const memoryScale = !!memory ? `-m ${memory}` : '';
     return `cf scale ${appName} ${instancesScale} ${diskScale} ${memoryScale}`;
   },
+  updateService: ({ serviceInstance, plan }) =>
+    `cf update-service ${serviceInstance} -p ${plan}`,
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {

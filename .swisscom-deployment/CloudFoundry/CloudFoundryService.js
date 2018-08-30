@@ -32,6 +32,14 @@ class CloudFoundryService {
           : Promise.resolve(false),
     );
   };
+
+  getScaleApplicationCommand = ({ space, applicationName, config }) => {
+    return this.selectSpace(space).then(() =>
+      Promise.resolve(
+        cloudFoundryCommands.scale({ appName: applicationName, ...config }),
+      ),
+    );
+  };
 }
 
 export default new CloudFoundryService();

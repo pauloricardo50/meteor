@@ -1,5 +1,9 @@
 {
   "name": "swisscom-deployment",
+  "scripts": {
+    "deploy": "./deploy.sh",
+    "scaleApplication": "./scaleApplication.sh"
+  },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.54",
     "@babel/node": "7.0.0-beta.54",

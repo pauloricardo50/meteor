@@ -4,12 +4,15 @@ import fs from 'fs';
 
 export const executeCommand = command =>
   new Promise((resolve, reject) => {
-    cmd.get(command, (err, data, stderr) => {
-      if (err || stderr) {
-        reject(err || stderr);
-      }
-      resolve(data);
-    });
+    console.log(`${command}...`);
+    cmd
+      .get(command, (err, data, stderr) => {
+        if (stderr || err) {
+          reject(stderr || err);
+        }
+        resolve(data);
+      })
+      .stdout.on('data', console.log);
   });
 
 export const mkdir = path => {
@@ -53,3 +56,11 @@ export const writeJSON = ({ file, data }) => {
   fs.writeFileSync(file, JSON.stringify(data));
   return Promise.resolve();
 };
+
+export const writeBash = ({ file, data }) => {
+  fs.writeFileSync(file, `#!/bin/bash\n${data}`);
+  return executeCommand(`chmod +x ${file}`);
+};
+
+export const formatOptionsArray = array =>
+  `[${array.map(el => `'${el}'`).join(', ')}]`;

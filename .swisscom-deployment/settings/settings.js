@@ -3,7 +3,7 @@ import {
   CLOUDFOUNDRY_MEMORY_LIMIT,
 } from '../CloudFoundry/cloudFoundryConstants';
 
-const ENVIRONMENT = {
+export const ENVIRONMENT = {
   STAGING: 'staging',
   PRODUCTION: 'production',
 };
@@ -19,7 +19,7 @@ export const APPLICATIONS = {
   WWW: 'www',
 };
 
-const APP_CONFIGS = {
+export const APP_CONFIGS = {
   MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
   MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
   MB1024_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 1 },
@@ -35,9 +35,9 @@ const ENVIRONMENT_CONFIG = {
   },
   [ENVIRONMENT.PRODUCTION]: {
     serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium,
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_2i },
-    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_2i },
+    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_2i },
+    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_2i },
+    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_2i },
   },
 };
 
@@ -69,7 +69,7 @@ export const createDeploySettingsForEnv = environment => ({
 });
 
 const appScripts = applicationImage => ({
-  start: `node ${APP_LAUNCHER} 2>&1`,
+  start: `node ${APP_LAUNCHER}`,
   postinstall: `tar -xf ${applicationImage} && (cd bundle/programs/server && npm install)`,
 });
 
