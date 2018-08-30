@@ -10,7 +10,7 @@ export const getInterests = params =>
     * Calculator.selectLoanValue(params))
   / 12;
 export const getAmortization = params =>
-  (FinanceCalculator._getAmortizationRate(params)
+  (FinanceCalculator.getAmortizationRateBase(params)
     * Calculator.selectLoanValue(params))
   / 12;
 export const getMonthly = params =>

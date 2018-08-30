@@ -7,8 +7,6 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 
-const FinanceCalc = new FinanceCalculator();
-
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     getProjectValue({ loan }) {
@@ -17,8 +15,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return 0;
       }
 
-      const value = propertyValue * (1 + this.notaryFees)
-        + (this.selectStructureKey({ loan, key: 'propertyWork' }) || 0);
+      const value = propertyValue
+        + (this.selectStructureKey({ loan, key: 'propertyWork' }) || 0)
+        + this.getFees({ loan });
 
       return value;
     }
@@ -73,7 +72,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const {
         structure: { wantedLoan, propertyWork },
       } = loan;
-      return this._getAmortizationRate({
+      return this.getAmortizationRateBase({
         borrowRatio:
           wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
       });
@@ -83,7 +82,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const {
         structure: { wantedLoan, propertyWork },
       } = loan;
-      return this._getAmortizationRateRelativeToLoan({
+      return this.getAmortizationRateRelativeToLoanBase({
         borrowRatio:
           wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
       });

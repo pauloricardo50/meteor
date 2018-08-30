@@ -6,7 +6,6 @@ import {
   DEFAULT_AMORTIZATION,
   MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
   AVERAGE_TAX_RATE,
-  SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MIN_CASH,
   INTERESTS_FINMA,
@@ -85,11 +84,14 @@ export class FinanceCalculator {
     propertyValue,
     fortune,
     pledgedValue = 0,
+    fees = propertyValue * this.notaryFees,
   }: {
     propertyValue: number,
     fortune: number,
+    pledgedValue?: number,
+    fees?: number,
   }) {
-    return propertyValue * (1 + this.notaryFees) - fortune + pledgedValue;
+    return propertyValue + fees + pledgedValue - fortune;
   }
 
   getPropAndWork({ propertyValue, propertyWork }) {
@@ -203,7 +205,7 @@ export class FinanceCalculator {
     }, 0);
   }
 
-  _getAmortizationRate({
+  getAmortizationRateBase({
     borrowRatio,
     amortizationYears = 15,
   }: { borrowRatio: number, amortizationRate?: number } = {}) {
@@ -227,9 +229,9 @@ export class FinanceCalculator {
     return amortizationRate;
   }
 
-  _getAmortizationRateRelativeToLoan({ borrowRatio, amortizationYears }) {
+  getAmortizationRateRelativeToLoanBase({ borrowRatio, amortizationYears }) {
     return (
-      this._getAmortizationRate({ borrowRatio, amortizationYears })
+      this.getAmortizationRateBase({ borrowRatio, amortizationYears })
       / borrowRatio
     );
   }
@@ -305,11 +307,12 @@ export class FinanceCalculator {
     return this.notaryFees;
   }
 
-  getMinCash({ propertyValue, propertyWork }) {
-    return (
-      (propertyValue + propertyWork) * this.minCash
-      + propertyValue * this.getNotaryFeesRate()
-    );
+  getMinCash({
+    propertyValue,
+    propertyWork,
+    fees = propertyValue * this.getNotaryFeesRate(),
+  }) {
+    return (propertyValue + propertyWork) * this.minCash + fees;
   }
 }
 

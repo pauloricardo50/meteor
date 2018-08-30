@@ -5,7 +5,7 @@ import { DOCUMENTS } from 'core/api/constants';
 
 import CombinedCalculator from '..';
 
-describe.only('CombinedCalculator', () => {
+describe('CombinedCalculator', () => {
   describe('filesProgress', () => {
     it('sums file progress across the loan', () => {
       expect(CombinedCalculator.filesProgress({
