@@ -64,6 +64,12 @@ const argumentMappings = {
     propertyWork: data.structure.propertyWork,
     fees: data.structure.notaryFees,
   }),
+
+  getFeesBase: data => ({
+    propertyValue: getProperty(data).value,
+    propertyWork: data.structure.propertyWork,
+    fees: data.structure.notaryFees,
+  }),
 };
 
 const argumentMapperMiddleware = makeArgumentMapper(argumentMappings);

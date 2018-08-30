@@ -25,7 +25,6 @@ const errors = [
     id: 'missingOwnFunds',
     func: (data) => {
       const requiredFunds = calculateRequiredOwnFunds(data);
-      console.log('requiredFunds', requiredFunds);
       return Number.isNaN(requiredFunds) || requiredFunds >= ROUNDING_AMOUNT;
     },
   },

@@ -23,8 +23,9 @@ const calculateMaxNotaryFees = data =>
   * MAX_NOTARY_FEES_RATE;
 
 const calculateProjectValue = data =>
-  getProperty(data).value * (1 + FinancingCalculator.getNotaryFeesRate())
-  + data.structure.propertyWork;
+  getProperty(data).value
+  + data.structure.propertyWork
+  + FinancingCalculator.getFeesBase(data);
 
 const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection

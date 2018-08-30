@@ -69,13 +69,10 @@ export class FinanceCalculator {
     this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
-    this.setRoundValuesMiddleware(middlewares, middlewareObject);
+    this.setMiddleware(middlewares, middlewareObject);
   }
 
-  setRoundValuesMiddleware = (
-    middlewares?: Array<Function>,
-    middlewareObject,
-  ) => {
+  setMiddleware = (middlewares?: Array<Function>, middlewareObject) => {
     const middlewareManager = new MiddlewareManager(this, middlewareObject);
     middlewareManager.applyToAllMethods([precisionMiddleware, ...middlewares]);
   };
