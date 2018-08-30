@@ -15,6 +15,7 @@ import {
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
 
+
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   maxSize: MAX_FILE_SIZE,
   allowedFileTypes: ALLOWED_FILE_TYPES,

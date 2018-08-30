@@ -29,7 +29,7 @@ export default class TempFile extends Component {
     this.uploader.send(file, (error, downloadUrl) => {
       progressSetter.stop();
       if (error) {
-        this.setState({ error: error.message });
+        this.setState({ error: error.reason });
       } else {
         handleUploadComplete(file, downloadUrl);
       }
