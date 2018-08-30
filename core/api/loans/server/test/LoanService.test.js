@@ -11,7 +11,7 @@ import LoanService from '../../LoanService';
 let loanId;
 let loan;
 
-describe('LoanService', () => {
+describe.only('LoanService', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -328,18 +328,32 @@ describe('LoanService', () => {
       const name = 'my structure';
 
       loanId = Factory.create('loan', {
-        structures: [
-          {
-            id: structureId,
-            name,
-          },
-        ],
+        structures: [{ id: structureId, name }],
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId });
       loan = LoanService.getLoanById(loanId);
 
       expect(loan.structures[1].name).to.equal(`${name} - copie`);
+    });
+
+    it('inserts the duplicated structure right next to the duplicating one', () => {
+      const structureId = 'testId';
+      const name = 'structure';
+      loanId = Factory.create('loan', {
+        structures: [
+          { id: structureId + 0, name: name + 0 },
+          { id: structureId + 1, name: name + 1 },
+        ],
+      })._id;
+
+      LoanService.duplicateStructure({ loanId, structureId: structureId + 0 });
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures.length).to.equal(3);
+      expect(loan.structures[0].name).to.equal(name + 0);
+      expect(loan.structures[1].name).to.equal(`${name + 0} - copie`);
+      expect(loan.structures[2].name).to.equal(name + 1);
     });
   });
 });

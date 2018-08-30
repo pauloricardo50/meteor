@@ -113,10 +113,15 @@ export class LoanService {
 
   pullValue = ({ loanId, object }) => Loans.update(loanId, { $pull: object });
 
-  addStructure = ({ loanId, structure }) => {
+  addStructure = ({ loanId, structure, atIndex }) => {
     const newStructureId = Random.id();
     Loans.update(loanId, {
-      $push: { structures: { ...structure, id: newStructureId } },
+      $push: {
+        structures: {
+          $each: [{ ...structure, id: newStructureId }],
+          $position: atIndex,
+        },
+      },
     });
     return newStructureId;
   };
@@ -124,8 +129,9 @@ export class LoanService {
   addNewStructure = ({ loanId, structure }) => {
     const { structures, selectedStructure, propertyIds } = this.getLoanById(loanId);
     const isFirstStructure = structures.length === 0;
+    const shouldCopyExistingStructure = !isFirstStructure && !structure && selectedStructure;
 
-    if (!isFirstStructure && !structure && selectedStructure) {
+    if (shouldCopyExistingStructure) {
       structure = structures.find(({ id }) => selectedStructure === id);
     }
 
@@ -190,6 +196,7 @@ export class LoanService {
   duplicateStructure = ({ loanId, structureId }) => {
     const { structures } = this.getLoanById(loanId);
     const currentStructure = structures.find(({ id }) => id === structureId);
+    const currentStructureIndex = structures.findIndex(({ id }) => id === structureId);
 
     return (
       !!currentStructure
@@ -199,6 +206,7 @@ export class LoanService {
           ...currentStructure,
           name: `${currentStructure.name} - copie`,
         },
+        atIndex: currentStructureIndex + 1,
       })
     );
   };
