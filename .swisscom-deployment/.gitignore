@@ -1,9 +1,9 @@
 staging/*
 !staging/launcher.js
-!staging/settings-staging.js
+!staging/settings-staging.json
 
 production/*
 !production/launcher.js
-!production/settings-production.js
+!production/settings-production.json
 
-./deploy.yml
+deploy.yml
