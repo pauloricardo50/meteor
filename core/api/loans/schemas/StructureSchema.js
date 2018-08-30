@@ -14,6 +14,12 @@ const StructureSchema = new SimpleSchema({
   fortuneUsed: { type: Number, min: 0, max: 100000000, defaultValue: 0 },
   id: String,
   name: { type: String, optional: true },
+  notaryFees: {
+    type: Number,
+    optional: true,
+    max: 100000000,
+    defaultValue: null,
+  },
   offerId: { type: String, optional: true },
   propertyId: { type: String, optional: true },
   propertyWork: { type: Number, min: 0, max: 100000000, defaultValue: 0 },

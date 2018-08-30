@@ -34,6 +34,14 @@ describe('Conversion functions', () => {
     it('rounds decimal numbers', () => {
       expect(toMoney(1000.8)).to.equal('1 001');
     });
+
+    it('returns undefined for undefined', () => {
+      expect(toMoney(undefined)).to.equal(undefined);
+    });
+
+    it('returns an empty string for an empty string', () => {
+      expect(toMoney('')).to.equal('');
+    });
   });
 
   describe('To number', () => {
@@ -71,6 +79,14 @@ describe('Conversion functions', () => {
     it('should return number types', () => {
       expect(toNumber('1 000 000')).to.equal(1000000);
       expect(typeof toNumber('1 000 000')).to.equal('number');
+    });
+
+    it('returns undefined for undefined', () => {
+      expect(toNumber(undefined)).to.equal(undefined);
+    });
+
+    it('returns an empty string for an empty string', () => {
+      expect(toNumber('')).to.equal('');
     });
   });
 
