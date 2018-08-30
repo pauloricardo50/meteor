@@ -39,6 +39,7 @@ accounts-password@1.5.1
 
 
 # Production
+force-ssl@1.1.0                      # Automatically route users to https
 wylio:mandrill
 edgee:slingshot
 dburles:google-maps

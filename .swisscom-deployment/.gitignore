@@ -1,0 +1,9 @@
+staging/*
+!staging/launcher.js
+!staging/settings-staging.json
+
+production/*
+!production/launcher.js
+!production/settings-production.json
+
+deploy.yml

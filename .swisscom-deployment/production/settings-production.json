@@ -1,0 +1,55 @@
+{
+  "public": {
+    "environment": "production",
+    "features": {
+      "LITE_VERSION": true,
+      "NOT_PRODUCTION_READY": true
+    },
+    "analyticsSettings": {
+      "Google Analytics": {
+        "trackingId": "UA-84358947-1"
+      },
+      "Mixpanel": {
+        "token": "8116491227515ad527768eecaef5d5ce",
+        "people": true
+      }
+    },
+    "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
+    "subdomains": {
+      "www": "https://www.e-potek.ch",
+      "app": "https://app.e-potek.ch",
+      "admin": "https://admin.e-potek.ch"
+    }
+  },
+  "mandrill": {
+    "MANDRILL_LOGIN": "florian@e-potek.ch",
+    "MANDRILL_API_KEY": "Bn4sTZ-Q9JqK-PyXACgJ_w",
+    "MANDRILL_API_KEY_TEST": "pV16e1Ez1JD7CPqnZdkgZg"
+  },
+  "mixpanel": {
+    "API_KEY": "032982c31f75296d6b55dd1fc320d010",
+    "API_SECRET": "588391016d523645337c6c6e7e4d8506"
+  },
+  "Kadira": {
+    "endpoint": "https://kadira.e-potek.ch:22022",
+    "www": {
+      "appId": "iEqmwkKW68eRZ4TEK",
+      "appSecret": "f5a23e8b-5eff-4129-a7d6-4b8252bdcd00"
+    },
+    "admin": {
+      "appId": "EttBsgJMuDpB5FrF8",
+      "appSecret": "0025e191-4f03-4e0d-bafa-5e2352bb2824"
+    },
+    "app": {
+      "appId": "nLHew76MfTdrky7ve",
+      "appSecret": "6792a282-fc64-4195-85ad-c7fab6bfcb5f"
+    }
+  },
+  "storage": {
+    "bucketName": "e-potek-production-files"
+  },
+  "exoscale": {
+    "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
+    "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
+  }
+}
