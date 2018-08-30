@@ -13,7 +13,7 @@ class CloudFoundryService {
     return this.checkIfServiceInstanceExists(serviceInstance).then(
       serviceExists =>
         serviceExists
-          ? Promise.resolve()
+          ? true
           : executeCommand(
               cloudFoundryCommands.createService({
                 plan,
@@ -26,10 +26,7 @@ class CloudFoundryService {
 
   checkIfServiceInstanceExists = serviceInstance => {
     return executeCommand(cloudFoundryCommands.listServices()).then(
-      servicesList =>
-        servicesList.includes(serviceInstance)
-          ? Promise.resolve(true)
-          : Promise.resolve(false),
+      servicesList => servicesList.includes(serviceInstance),
     );
   };
 
