@@ -1,13 +1,5 @@
 {
   "name": "swisscom-deployment",
-  "version": "1.0.0",
-  "description": "",
-  "main": "babel.config.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "7.0.0-beta.54",
     "@babel/node": "7.0.0-beta.54",
