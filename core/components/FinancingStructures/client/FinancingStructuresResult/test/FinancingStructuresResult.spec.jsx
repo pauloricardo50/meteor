@@ -105,7 +105,7 @@ describe('FinancingStructuresResult', () => {
         .find('.amortizationCost')
         .last();
 
-      expect(amortizationCost.contains('667')).to.equal(true);
+      expect(amortizationCost.contains('833')).to.equal(true);
     });
 
     it('propertyCost', () => {
