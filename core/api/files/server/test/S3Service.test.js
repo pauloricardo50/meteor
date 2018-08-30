@@ -137,6 +137,25 @@ describe('S3Service', () => {
         S3Service.headObject(key).catch(err =>
           expect(err.name).to.equal('NotFound')));
     });
+
+    describe('listObjectsWithMetadata', () => {
+      it('returns a list of objects with their metadata ', () => {
+        const key1 = 'asdf/root1.json';
+        const key2 = 'asdf/root2.json';
+        const statuses = ['hello', 'dude'];
+
+        return Promise.all([
+          S3Service.putObject(binaryData, key1, { status: statuses[0] }),
+          S3Service.putObject(binaryData, key2, { status: statuses[1] }),
+        ])
+          .then(() => S3Service.listObjectsWithMetadata('asdf'))
+          .then((results) => {
+            results.forEach(({ status }, index) => {
+              expect(status).to.equal(statuses[index]);
+            });
+          });
+      });
+    });
   });
 
   describe('isAllowed', () => {

@@ -78,6 +78,14 @@ class S3Service {
   listObjects = Prefix =>
     this.callS3Method('listObjectsV2', { Prefix }).then(results => results.Contents);
 
+  listObjectsWithMetadata = Prefix =>
+    this.listObjects(Prefix).then(results =>
+      Promise.all(results.map(object =>
+        this.headObject(object.Key).then(({ Metadata }) => ({
+          ...object,
+          ...Metadata,
+        })))));
+
   copyObject = params => this.callS3Method('copyObject', params);
 
   headObject = Key => this.callS3Method('headObject', { Key });

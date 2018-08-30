@@ -11,7 +11,7 @@ import LoanService from '../../LoanService';
 let loanId;
 let loan;
 
-describe.only('LoanService', () => {
+describe('LoanService', () => {
   beforeEach(() => {
     resetDatabase();
   });

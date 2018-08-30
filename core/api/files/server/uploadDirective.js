@@ -6,15 +6,28 @@ import crypto from 'crypto';
 import {
   MAX_FILE_SIZE,
   OBJECT_STORAGE_PATH,
-  FILE_STATUS,
   BUCKET_NAME,
   OBJECT_STORAGE_REGION,
+  FILE_STATUS,
 } from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const ONE_KB = 1024;
+
+const hmac256 = (key, data, encoding) =>
+  crypto
+    .createHmac('sha256', key)
+    .update(Buffer.from(data).toString('utf-8'))
+    .digest(encoding);
+
+const formatNumber = (num, digits) => {
+  const string = String(num);
+  return Array(digits - string.length + 1)
+    .join('0')
+    .concat(string);
+};
 
 const exoscaleStorageService = {
   accessId: 'AWSAccessKeyId',
@@ -56,7 +69,7 @@ const exoscaleStorageService = {
     cacheControl: Match.Optional(String),
     contentDisposition: Match.Optional(Match.OneOf(String, Function, null)),
 
-    // 'x-amz-expires': Match.Optional(String),
+    'x-amz-meta-status': Match.Optional(String),
   },
 
   directiveDefault: {
@@ -98,8 +111,6 @@ const exoscaleStorageService = {
    */
 
   upload(method, directive, file, meta) {
-    console.log('filesize?', file.size, directive.maxSize);
-
     const policy = new Slingshot.StoragePolicy()
       .expireIn(directive.expire)
       .contentLength(0, Math.min(file.size, directive.maxSize || Infinity));
@@ -121,7 +132,7 @@ const exoscaleStorageService = {
         file,
         meta,
       ),
-      'content-length-range': `${ONE_KB}, ${MAX_FILE_SIZE}`,
+      'x-amz-meta-status': FILE_STATUS.VALID,
     };
 
     const bucketUrl = _.isFunction(directive.bucketUrl)
@@ -214,19 +225,6 @@ const exoscaleStorageService = {
 
     return hmac256(signingKey, policy, 'hex');
   },
-};
-
-const hmac256 = (key, data, encoding) =>
-  crypto
-    .createHmac('sha256', key)
-    .update(Buffer.from(data).toString('utf-8'))
-    .digest(encoding);
-
-const formatNumber = (num, digits) => {
-  const string = String(num);
-  return Array(digits - string.length + 1)
-    .join('0')
-    .concat(string);
 };
 
 export default exoscaleStorageService;
