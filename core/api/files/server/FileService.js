@@ -9,7 +9,7 @@ class FileService {
   };
 
   listFilesForDocByCategory = (docId, subdocument) =>
-    this.listObjectsWithMetadata(docId, subdocument).then(this.groupFilesByCategory);
+    this.listFilesForDoc(docId, subdocument).then(this.groupFilesByCategory);
 
   setFileStatus = (key, nextStatus) =>
     S3Service.updateMetadata(key, { status: nextStatus });

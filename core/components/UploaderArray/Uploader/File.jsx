@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -20,7 +21,7 @@ const isAllowedToDelete = (disabled, status) => {
 };
 
 const File = ({
-  file: { name, Key, status = FILE_STATUS.VALID, error },
+  file: { name, Key, status = FILE_STATUS.VALID, message },
   disabled,
   handleRemove,
 }) => (
@@ -35,13 +36,17 @@ const File = ({
           <IconButton
             type="close"
             tooltip={<T id="general.delete" />}
-            onClick={() => handleRemove(Key)}
+            onClick={(event) => {
+              event.preventDefault();
+              handleRemove(Key);
+            }}
           />
         )}
         <Download fileKey={Key} fileName={name} />
       </div>
     </div>
-    {error && status === FILE_STATUS.ERROR && <p className="error">{error}</p>}
+    {message
+      && status === FILE_STATUS.ERROR && <p className="error">{message}</p>}
   </div>
 );
 
@@ -52,7 +57,7 @@ File.propTypes = {
 };
 
 File.defaultProps = {
-  error: '',
+  message: '',
 };
 
 export default File;

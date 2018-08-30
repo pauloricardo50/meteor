@@ -37,7 +37,7 @@ FilesVerificationTab.propTypes = {
   doc: PropTypes.object.isRequired,
   documentArray: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default FilesVerificationTab;
