@@ -114,9 +114,11 @@ export const tmuxinatorPane = ({
   ],
 });
 
+const TMUXINATOR_SESSION_NAME = 'deploy';
+
 export const tmuxinatorScript = panes => ({
-  name: 'deploy',
+  name: TMUXINATOR_SESSION_NAME,
   root: './',
-  on_project_exit: 'tmux kill-session -t deploy',
+  on_project_exit: `tmux kill-session -t ${TMUXINATOR_SESSION_NAME}`,
   windows: [{ deploy: { layout: 'tiled', panes } }],
 });
