@@ -46,12 +46,15 @@ const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
 export const calculateRequiredOwnFunds = (data) => {
-  const { propertyWork } = data.structure;
+  const { propertyWork, notaryFees } = data.structure;
   const propertyValue = getProperty(data).value;
   const effectiveLoan = calculateLoan(data);
-  const fundsRequired = propertyValue * (1 + Calculator.getNotaryFeesRate())
-    + propertyWork
-    - effectiveLoan;
+  const fees = Calculator.getFeesBase({
+    fees: notaryFees,
+    propertyValue,
+    propertyWork,
+  });
+  const fundsRequired = propertyValue + propertyWork + fees - effectiveLoan;
   const totalCurrentFunds = calculateOwnFunds(data);
 
   return fundsRequired - totalCurrentFunds;

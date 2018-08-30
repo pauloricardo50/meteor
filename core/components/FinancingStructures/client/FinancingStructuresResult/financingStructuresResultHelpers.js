@@ -3,6 +3,7 @@ import { AMORTIZATION_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import FinanceCalculator, {
   getProperty,
+  getAmortizationRateMapper,
 } from '../FinancingStructuresCalculator';
 
 export const getInterests = params =>
@@ -10,7 +11,7 @@ export const getInterests = params =>
     * Calculator.selectLoanValue(params))
   / 12;
 export const getAmortization = params =>
-  (FinanceCalculator.getAmortizationRateBase(params)
+  (Calculator.getAmortizationRateRelativeToLoanBase(getAmortizationRateMapper(params))
     * Calculator.selectLoanValue(params))
   / 12;
 export const getMonthly = params =>

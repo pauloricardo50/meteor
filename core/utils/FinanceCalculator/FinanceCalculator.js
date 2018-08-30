@@ -82,16 +82,17 @@ export class FinanceCalculator {
 
   getLoanValue({
     propertyValue,
+    propertyWork = 0,
     fortune,
     pledgedValue = 0,
-    fees = propertyValue * this.notaryFees,
+    fees = this.getFeesBase({ propertyValue, propertyWork }),
   }: {
     propertyValue: number,
     fortune: number,
     pledgedValue?: number,
     fees?: number,
   }) {
-    return propertyValue + fees + pledgedValue - fortune;
+    return propertyValue + propertyWork + fees + pledgedValue - fortune;
   }
 
   getPropAndWork({ propertyValue, propertyWork }) {
@@ -310,9 +311,17 @@ export class FinanceCalculator {
   getMinCash({
     propertyValue,
     propertyWork,
-    fees = propertyValue * this.getNotaryFeesRate(),
+    fees = this.getFeesBase({ propertyValue, propertyWork }),
   }) {
     return (propertyValue + propertyWork) * this.minCash + fees;
+  }
+
+  getFeesBase({ fees, propertyValue = 0, propertyWork = 0 }) {
+    if (fees === 0 || fees > 0) {
+      return fees;
+    }
+
+    return (propertyValue + propertyWork) * this.notaryFees;
   }
 }
 

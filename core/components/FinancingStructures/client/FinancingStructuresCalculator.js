@@ -36,6 +36,7 @@ const argumentMappings = {
   }),
 
   getAmortizationRateBase: getAmortizationRateMapper,
+  getAmortizationRateRelativeToLoanBase: getAmortizationRateMapper,
 
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
@@ -61,6 +62,7 @@ const argumentMappings = {
   getMinCash: data => ({
     propertyValue: getProperty(data).value,
     propertyWork: data.structure.propertyWork,
+    fees: data.structure.notaryFees,
   }),
 };
 
