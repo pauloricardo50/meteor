@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import TopNavDropdown from './TopNavDropdown';
-import { ImpersonateWarningWithTracker } from '../Impersonate/ImpersonateWarning';
 import Button from '../Button';
 import T from '../Translation';
 
@@ -14,7 +13,6 @@ const TopNavButtons = (props: TopNavButtonsProps) => {
   const { children, currentUser } = props;
   return (
     <div className="buttons">
-      <ImpersonateWarningWithTracker />
       {children}
       {currentUser ? (
         <React.Fragment>
