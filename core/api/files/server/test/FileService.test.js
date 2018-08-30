@@ -92,7 +92,7 @@ describe('FileService', () => {
         });
     });
 
-    it('deletes all files at for a document', () =>
+    it('deletes all files for a mongoDB document', () =>
       FileService.deleteAllFilesForDoc(docId)
         .then(() => FileService.listFilesForDoc(docId))
         .then(results => expect(results.length).to.equal(0)));
@@ -120,4 +120,4 @@ describe('FileService', () => {
       });
     });
   });
-});
+}).timeout(10000);
