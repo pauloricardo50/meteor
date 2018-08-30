@@ -1,3 +1,9 @@
-staging/admin
-staging/app
-staging/www
+staging/*
+!staging/launcher.js
+!staging/settings-staging.js
+
+production/*
+!production/launcher.js
+!production/settings-production.js
+
+./deploy.yml

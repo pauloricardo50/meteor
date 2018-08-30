@@ -2,7 +2,8 @@
 
 set -e
 
-./predeploy.sh
+./installDependencies.sh
+meteor npm i
 
 cd ..
 meteor npm run setup

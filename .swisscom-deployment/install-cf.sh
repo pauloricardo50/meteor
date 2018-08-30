@@ -19,7 +19,7 @@ echo "Installing package cf for $machine..."
 # If LINUX, install with apt-get
 case "${machine}"  in 
     "${MAC}")
-    # If brew is not installed, tell user and exit script
+        # If brew is not installed, tell user and exit script
         if ! type "brew" > /dev/null; then
             echo "Please install homebrew"
             exit 1
@@ -35,7 +35,7 @@ case "${machine}"  in
         sudo apt-get install cf-cli
         ;;
     *)
-    # If OS not supported, tell user and exit script
-    echo "Unknown OS (supported: Mac or Linux)"
-    exit 1
+        # If OS not supported, tell user and exit script
+        echo "Unknown OS (supported: Mac or Linux)"
+        exit 1
 esac
