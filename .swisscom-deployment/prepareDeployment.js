@@ -144,7 +144,4 @@ export const prepareDeployment = ({
         applicationsExpectedFilesList: `${getCurrentPath()}/${root}/${EXPECTED_FILES_LIST}`,
       }),
     );
-  // .catch(error => {
-  //   throw new Error(error);
-  // });
 };
