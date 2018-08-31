@@ -5,8 +5,8 @@ import {
   APPLICATION_SANITY_CHECK_ERROR,
 } from './settings/settings';
 
-const checkIfDirectoryIncludesAllFiles = ({ directoryFiles, files }) => {
-  return new Promise((resolve, reject) => {
+const checkIfDirectoryIncludesAllFiles = ({ directoryFiles, files }) =>
+  new Promise((resolve, reject) => {
     files.forEach(file => {
       if (!directoryFiles.includes(file)) {
         reject(file);
@@ -14,7 +14,6 @@ const checkIfDirectoryIncludesAllFiles = ({ directoryFiles, files }) => {
     });
     resolve();
   });
-};
 
 const main = () => {
   const { directory, files } = argv
@@ -33,7 +32,7 @@ const main = () => {
     .help('h')
     .alias('h', 'help').argv;
 
-  getDirectoryFilesList(directory)
+  return getDirectoryFilesList(directory)
     .then(directoryFiles =>
       checkIfDirectoryIncludesAllFiles({ directoryFiles, files }),
     )

@@ -21,18 +21,18 @@ export const APPLICATIONS = {
   WWW: 'www',
 };
 
-const MICROSERVICES_DIR_PATH = '../microservices';
-const APP_ENGINES = { node: '8.11.3' };
-const APP_DEPENDENCIES = { cfenv: '1.0.4' };
-const TMUXINATOR_SESSION_NAME = 'deploy';
+export const APP_DEPENDENCIES = { cfenv: '1.0.4' };
+export const APP_ENGINES = { node: '8.11.3' };
 export const APP_LAUNCHER = 'launcher.js';
-export const APP_PACKAGE_JSON_FILE = 'package.json';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
-export const EXPECTED_FILES_LIST = 'applicationsExpectedFilesList.json';
-export const TMUXINATOR_YML = 'deploy.yml';
+export const APP_PACKAGE_JSON_FILE = 'package.json';
 export const APPLICATION_SANITY_CHECK_DONE = 'done';
 export const APPLICATION_SANITY_CHECK_ERROR = 'error';
 export const APPLICATION_SANITY_CHECK_PENDING = 'pending';
+export const EXPECTED_FILES_LIST = 'applicationsExpectedFilesList.json';
+export const MICROSERVICES_DIR_PATH = '../microservices';
+export const TMUXINATOR_SESSION_NAME = 'deploy';
+export const TMUXINATOR_YML = 'deploy.yml';
 
 export const APP_CONFIGS = {
   MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
@@ -153,3 +153,8 @@ const getExpectedFilesListForApplication = ({
     ' ',
   );
 };
+
+export const checkApplicationsCommand = ({ directory, files }) =>
+  `babel-node -- checkApplicationFolderSanity.js -d ${directory} -f ${files.join(
+    ' ',
+  )}`;

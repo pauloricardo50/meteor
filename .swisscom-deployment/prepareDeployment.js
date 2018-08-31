@@ -102,12 +102,11 @@ const copyLauncherScript = ({ applications, root }) => {
   return Promise.all(promises);
 };
 
-const writeApplicationsExpectedFilesList = ({ applications, root }) => {
-  return writeApplicationsExpectedFilesListJSON({
+const writeApplicationsExpectedFilesList = ({ applications, root }) =>
+  writeApplicationsExpectedFilesListJSON({
     filePath: `${getCurrentPath()}/${root}/${EXPECTED_FILES_LIST}`,
     data: { applicationsExpectedFilesList },
   });
-};
 
 export const prepareDeployment = ({
   environment,

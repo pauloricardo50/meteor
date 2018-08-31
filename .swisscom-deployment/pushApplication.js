@@ -10,6 +10,7 @@ import {
   APPLICATION_SANITY_CHECK_DONE,
   APPLICATION_SANITY_CHECK_ERROR,
   APPLICATION_SANITY_CHECK_PENDING,
+  checkApplicationsCommand,
 } from './settings/settings';
 
 import CloudFoundryService from './CloudFoundry/CloudFoundryService';
@@ -33,19 +34,20 @@ const pollDirectoriesSanityStatus = ({ directories = [], root }) => {
     return Promise.resolve();
   }
 
-  const directoriesSanityStatus = directories.map(directory => {
-    return isFilePresentInDirectory({
-      path: `${root}/../${directory}`,
-      file: APPLICATION_SANITY_CHECK_DONE,
-    })
-      ? APPLICATION_SANITY_CHECK_DONE
-      : isFilePresentInDirectory({
-          path: `${root}/../${directory}`,
-          file: APPLICATION_SANITY_CHECK_ERROR,
-        })
-        ? APPLICATION_SANITY_CHECK_ERROR
-        : APPLICATION_SANITY_CHECK_PENDING;
-  });
+  const directoriesSanityStatus = directories.map(
+    directory =>
+      isFilePresentInDirectory({
+        path: `${root}/../${directory}`,
+        file: APPLICATION_SANITY_CHECK_DONE,
+      })
+        ? APPLICATION_SANITY_CHECK_DONE
+        : isFilePresentInDirectory({
+            path: `${root}/../${directory}`,
+            file: APPLICATION_SANITY_CHECK_ERROR,
+          })
+          ? APPLICATION_SANITY_CHECK_ERROR
+          : APPLICATION_SANITY_CHECK_PENDING,
+  );
 
   if (directoriesSanityStatus.includes(APPLICATION_SANITY_CHECK_ERROR)) {
     clearInterval(interval);
@@ -81,11 +83,7 @@ const main = () => {
     .help('h')
     .alias('h', 'help').argv;
 
-  executeCommand(
-    `babel-node -- checkApplicationFolderSanity.js -d ${directory} -f ${files.join(
-      ' ',
-    )}`,
-  ).then(() => {
+  executeCommand(checkApplicationsCommand({ directory, files })).then(() => {
     process.stdout.write('Polling other applications sanity status...');
     interval = setInterval(
       () =>
@@ -94,7 +92,7 @@ const main = () => {
           root: directory,
         })
           .then(() => CloudFoundryService.pushApplication(directory))
-          .catch(() => displayLoadingDots()),
+          .catch(displayLoadingDots),
       POLLING_INTERVAL,
     );
   });
