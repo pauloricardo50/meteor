@@ -75,4 +75,22 @@ describe('RequiredOwnFunds', () => {
       .first()
       .props().status).to.equal(ERROR);
   });
+
+  it('shows valid when value is -rounding plus a sub-1 amount', () => {
+    props.value = -ROUNDING_AMOUNT + 0.5;
+    expect(component()
+      .find('.text')
+      .children()
+      .first()
+      .props().id).to.include('valid');
+  });
+
+  it('shows valid when value is rounding minus a sub-1 amount', () => {
+    props.value = ROUNDING_AMOUNT - 0.5;
+    expect(component()
+      .find('.text')
+      .children()
+      .first()
+      .props().id).to.include('valid');
+  });
 });

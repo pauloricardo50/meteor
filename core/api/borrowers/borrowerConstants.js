@@ -24,6 +24,7 @@ export const CIVIL_STATUS = {
   SINGLE: 'SINGLE',
   PACSED: 'PACSED',
   DIVORCED: 'DIVORCED',
+  WIDOW: 'WIDOW',
 };
 
 export const OTHER_INCOME = {

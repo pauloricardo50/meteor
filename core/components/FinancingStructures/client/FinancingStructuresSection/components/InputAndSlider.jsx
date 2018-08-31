@@ -8,6 +8,7 @@ import MoneyInput from '../../../../MoneyInput';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
+import { toMoney } from '../../../../../utils/conversionFunctions';
 
 type InputAndSliderProps = {
   value: number,
@@ -16,19 +17,42 @@ type InputAndSliderProps = {
   className: string,
 };
 
-const makeHandleTextChange = ({ handleChange, max }) => (value) => {
-  if (max && value) {
-    handleChange(Math.min(value, max));
-  } else {
-    handleChange(value || 0);
+const valueIsNotDefined = value =>
+  value === '' || value === undefined || value === null;
+
+const makeHandleTextChange = ({
+  handleChange,
+  max,
+  allowUndefined,
+}) => (value) => {
+  if (allowUndefined && valueIsNotDefined(value)) {
+    return handleChange(null);
   }
+  if (max && value) {
+    return handleChange(Math.min(value, max));
+  }
+  return handleChange(value || 0);
 };
 
-const InputAndSlider = (props: InputAndSliderProps) => {
-  const { value, handleChange, max = 1000000, className } = props;
+const setValue = (value, allowUndefined) =>
+  (allowUndefined ? value : value || 0);
+
+export const InputAndSlider = (props: InputAndSliderProps) => {
+  const {
+    value,
+    handleChange,
+    max = 1000000,
+    className,
+    allowUndefined,
+    placeholder,
+  } = props;
   return (
     <div className={cx('input-and-slider', className)}>
-      <MoneyInput value={value || 0} onChange={makeHandleTextChange(props)} />
+      <MoneyInput
+        value={setValue(value, allowUndefined)}
+        onChange={makeHandleTextChange(props)}
+        placeholder={placeholder}
+      />
       <Slider
         min={0}
         max={max}
@@ -45,7 +69,10 @@ export default compose(
   FinancingStructuresDataContainer({ asArrays: true }),
   SingleStructureContainer,
   StructureUpdateContainer,
-  withProps(({ max: _max, ...props }) => ({
+  withProps(({ max: _max, calculatePlaceholder, placeholder, ...props }) => ({
     max: typeof _max === 'function' ? _max(props) : _max,
+    placeholder: calculatePlaceholder
+      ? toMoney(calculatePlaceholder(props))
+      : placeholder,
   })),
 )(InputAndSlider);

@@ -5,7 +5,7 @@ import Icon from 'core/components/Icon';
 import { Link } from 'react-router-dom';
 import omit from 'lodash/omit';
 import MuiButton from '@material-ui/core/Button';
-import { withProps } from 'recompose';
+import { mapProps } from 'recompose';
 
 const getColor = ({ primary, secondary, color }) => {
   if (primary) {
@@ -67,7 +67,9 @@ Button.defaultProps = {
   link: false,
 };
 
-const withLoadingProp = withProps(({ loading }) =>
-  (loading ? { disabled: true, icon: <Icon type="loop-spin" /> } : null));
+const withLoadingProp = mapProps(({ loading, ...props }) =>
+  (loading
+    ? { ...props, disabled: true, icon: <Icon type="loop-spin" /> }
+    : props));
 
 export default withLoadingProp(Button);

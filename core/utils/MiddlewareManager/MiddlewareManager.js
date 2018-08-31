@@ -20,6 +20,8 @@ const CLASS_METHODS_TO_EXCLUDE = [
 type MiddlewareType = Array<Function> | Function;
 type MiddlewareObjectType = Array<Object> | Object;
 
+// Careful, methods starting with "_" will not be wrapped by middleware,
+// except if you use a middlewareObject
 class MiddlewareManager {
   constructor(target: Object, middlewareObjects?: MiddlewareObjectType) {
     let instance = middlewareManagerHash.find(key => key._target === target);
@@ -80,7 +82,10 @@ class MiddlewareManager {
       if (typeof method === 'function') {
         this._methods[methodName] = method;
 
-        if (this._methodMiddlewares[methodName] === undefined) {
+        if (
+          this._methodMiddlewares[methodName] === undefined
+          || !isArray(this._methodMiddlewares[methodName])
+        ) {
           this._methodMiddlewares[methodName] = [];
         }
 

@@ -26,6 +26,7 @@ import { createFakeUsers, getFakeUsersIds, createUser } from './userFixtures';
 import { createFakeOffer } from './offerFixtures';
 import { ROLES } from '../api/users/userConstants';
 import { E2E_USER_EMAIL } from './fixtureConstants';
+import { createYannisData } from './demoFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -178,5 +179,13 @@ Meteor.methods({
     if (propertyId) {
       TaskService.insert({ type, propertyId });
     }
+  },
+
+  resetYannisAccount({ userId }) {
+    SecurityService.currentUserHasRole(ROLES.DEV);
+    Loans.remove({ userId });
+    Borrowers.remove({ userId });
+    Properties.remove({ userId });
+    createYannisData(userId);
   },
 });

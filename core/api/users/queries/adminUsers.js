@@ -1,7 +1,7 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
 import { createRegexQuery } from '../../helpers/mongoHelpers';
-import { fullUserFragment } from './userFragments';
+import { adminUserFragment } from './userFragments';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
   $filter({ filters, params: { assignedTo, searchQuery } }) {
@@ -15,5 +15,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
       ];
     }
   },
-  ...fullUserFragment,
+  ...adminUserFragment,
 });

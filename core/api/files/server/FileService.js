@@ -4,7 +4,7 @@ import S3Service from './S3Service';
 class FileService {
   listFilesForDoc = (docId, subdocument) => {
     const prefix = subdocument ? `${docId}/${subdocument}` : docId;
-    return S3Service.listObjects(prefix).then(results =>
+    return S3Service.listObjectsWithMetadata(prefix).then(results =>
       results.map(this.formatFile));
   };
 
@@ -12,7 +12,10 @@ class FileService {
     this.listFilesForDoc(docId, subdocument).then(this.groupFilesByCategory);
 
   setFileStatus = (key, nextStatus) =>
-    S3Service.updateMetadata(key, { status: nextStatus });
+    S3Service.updateMetadata(key, {
+      status: nextStatus,
+      message: nextStatus === FILE_STATUS.VALID ? '' : undefined,
+    });
 
   setFileError = (key, errorMessage) =>
     S3Service.updateMetadata(key, {

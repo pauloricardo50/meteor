@@ -56,12 +56,12 @@ export default class FileDropper extends Component {
   pD = e => e.preventDefault();
 
   render() {
-    const { children } = this.props;
+    const { children, id } = this.props;
     const { dragging } = this.state;
 
     return (
-      <div
-        className={classnames({ uploader: true, dragging })}
+      <label
+        className={classnames('uploader', { dragging })}
         onDragEnd={this.pD}
         onDragEnter={this.handleDragEnter}
         onDragLeave={this.handleDragLeave}
@@ -69,9 +69,10 @@ export default class FileDropper extends Component {
         onDrag={this.pD}
         onDragExit={this.pD}
         onDragOver={this.pD}
+        htmlFor={id}
       >
         {children}
-      </div>
+      </label>
     );
   }
 }

@@ -3,13 +3,17 @@ import React from 'react';
 import { compose } from 'recompose';
 
 import T from '../../../Translation';
+import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/FinancingStructuresOwnFunds';
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
-import FinanceCalculator from '../FinancingStructuresCalculator';
+import FinanceCalculator, {
+  getProperty,
+} from '../FinancingStructuresCalculator';
 import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
+import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 type FinancingStructuresResultErrorsProps = {};
 
@@ -41,7 +45,18 @@ const errors = [
   },
   {
     id: 'missingCash',
-    func: data => FinanceCalculator.getMinCash(data) > getCashUsed(data),
+    func: (data) => {
+      const { propertyWork, notaryFees } = data.structure;
+      const propertyValue = getProperty(data).value;
+      const effectiveLoan = calculateLoan(data);
+      return (
+        Calculator.getMinCash({
+          fees: notaryFees,
+          propertyValue,
+          propertyWork,
+        }) > getCashUsed(data)
+      );
+    },
   },
 ];
 

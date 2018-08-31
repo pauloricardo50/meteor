@@ -1,6 +1,8 @@
 // @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
+import sinon from 'sinon';
+import { Roles } from 'meteor/alanning:roles';
 
 import { getRedirect } from '../AppLayout';
 
@@ -28,7 +30,9 @@ describe('AppLayout', () => {
 
     context('when user is logged in', () => {
       it('does not redirect if user is dev', () => {
-        expect(getRedirect({ roles: 'dev' }, 'path')).to.equal(false);
+        sinon.stub(Roles, 'userIsInRole').callsFake(() => true);
+        expect(getRedirect({}, 'path')).to.equal(false);
+        Roles.userIsInRole.restore();
       });
 
       it('redirects the user to / if no loans exist', () => {

@@ -46,12 +46,15 @@ const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
 export const calculateRequiredOwnFunds = (data) => {
-  const { propertyWork } = data.structure;
+  const { propertyWork, notaryFees } = data.structure;
   const propertyValue = getProperty(data).value;
   const effectiveLoan = calculateLoan(data);
-  const fundsRequired = propertyValue * (1 + Calculator.getNotaryFeesRate())
-    + propertyWork
-    - effectiveLoan;
+  const fees = Calculator.getFeesBase({
+    fees: notaryFees,
+    propertyValue,
+    propertyWork,
+  });
+  const fundsRequired = propertyValue + propertyWork + fees - effectiveLoan;
   const totalCurrentFunds = calculateOwnFunds(data);
 
   return fundsRequired - totalCurrentFunds;
@@ -86,14 +89,6 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
       },
       {
         Component: InputAndSlider,
-        id: 'secondPillarPledged',
-        max: calculateMaxSecondPillarPledged,
-        condition: makeConditionForValue('getSecondPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getSecondPillar,
-      },
-      {
-        Component: InputAndSlider,
         id: 'secondPillarWithdrawal',
         max: calculateMaxSecondPillarWithdrawal,
         condition: makeConditionForValue('getSecondPillar'),
@@ -102,16 +97,24 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
       },
       {
         Component: InputAndSlider,
-        id: 'thirdPillarPledged',
-        max: calculateMaxThirdPillarPledged,
+        id: 'secondPillarPledged',
+        max: calculateMaxSecondPillarPledged,
+        condition: makeConditionForValue('getSecondPillar'),
+        label: OwnFundsLabel,
+        labelValue: Calculator.getSecondPillar,
+      },
+      {
+        Component: InputAndSlider,
+        id: 'thirdPillarWithdrawal',
+        max: calculateMaxThirdPillarWithdrawal,
         condition: makeConditionForValue('getThirdPillar'),
         label: OwnFundsLabel,
         labelValue: Calculator.getThirdPillar,
       },
       {
         Component: InputAndSlider,
-        id: 'thirdPillarWithdrawal',
-        max: calculateMaxThirdPillarWithdrawal,
+        id: 'thirdPillarPledged',
+        max: calculateMaxThirdPillarPledged,
         condition: makeConditionForValue('getThirdPillar'),
         label: OwnFundsLabel,
         labelValue: Calculator.getThirdPillar,

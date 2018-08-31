@@ -25,54 +25,22 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }
     }
 
-    sumValues = ({ borrowers, keys }) =>
-      arrayify(keys).reduce(
-        (total, key) =>
-          total + arrayify(borrowers).reduce((t, b) => t + (b[key] || 0), 0),
-        0,
-      );
+    getArrayValues = ({ borrowers, key, mapFunc }) => {
+      let sum = 0;
 
-    // personalInfoPercent - Determines the completion rate of the borrower's
-    // personal information forms
-    personalInfoPercent = ({ borrowers }) => {
-      const a = [];
-      arrayify(borrowers).forEach((b) => {
-        const formArray = getBorrowerInfoArray({
-          borrowers: arrayify(borrowers),
-          borrowerId: b._id,
-        });
-        getCountedArray(formArray, b, a);
+      arrayify(borrowers).forEach((borrower) => {
+        if (!borrower[key]) {
+          return 0;
+        }
+        sum += [
+          ...(borrower[key]
+            ? borrower[key].map(mapFunc || (i => i.value))
+            : []),
+        ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
       });
 
-      return getPercent(a);
+      return Math.max(0, Math.round(sum));
     };
-
-    getBorrowersFilesProgress({ borrowers }) {
-      return filesPercent({
-        doc: borrowers,
-        fileArrayFunc: borrowerDocuments,
-        step: FILE_STEPS.AUCTION,
-      });
-    }
-
-    getBorrowersCompletion = ({ borrowers }) =>
-      (this.getBorrowersFilesProgress({ borrowers })
-        + this.personalInfoPercent({ borrowers }))
-      / 2;
-
-    getFortune = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'bankFortune' });
-
-    getInsuranceFortune = ({ borrowers }) =>
-      this.sumValues({
-        borrowers,
-        keys: [
-          'insuranceSecondPillar',
-          'insuranceThirdPillar',
-          // 'bank3A',
-          'insurance3B',
-        ],
-      });
 
     getBonusIncome = ({ borrowers }) => {
       let total = 0;
@@ -100,79 +68,35 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return Math.max(0, Math.round(total));
     };
 
-    getArrayValues = ({ borrowers, key, mapFunc }) => {
-      let sum = 0;
+    getBorrowerCompletion = ({ borrowers }) =>
+      (this.getBorrowerFilesProgress({ borrowers })
+        + this.personalInfoPercent({ borrowers }))
+      / 2;
 
-      arrayify(borrowers).forEach((borrower) => {
-        if (!borrower[key]) {
-          return 0;
-        }
-        sum += [
-          ...(borrower[key]
-            ? borrower[key].map(mapFunc || (i => i.value))
-            : []),
-        ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
+    getBorrowerFilesProgress({ borrowers }) {
+      return filesPercent({
+        doc: borrowers,
+        fileArrayFunc: borrowerDocuments,
+        step: FILE_STEPS.AUCTION,
       });
-
-      return Math.max(0, Math.round(sum));
-    };
-
-    getOtherIncome = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'otherIncome' });
+    }
 
     getExpenses = ({ borrowers }) =>
       this.getArrayValues({ borrowers, key: 'expenses' });
 
-    getTotalIncome = ({ borrowers }) => {
-      const sum = arrayify(borrowers).reduce((total, borrower) => {
-        let borrowerIncome = 0;
-        borrowerIncome += borrower.salary || 0;
-        borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
-        borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
-        borrowerIncome -= this.getExpenses({ borrowers: borrower }) || 0;
-        return total + borrowerIncome;
-      }, 0);
+    getFortune = ({ borrowers }) =>
+      this.sumValues({ borrowers, keys: 'bankFortune' });
 
-      return sum;
-    };
-
-    getOtherFortune = ({ borrowers }) =>
-      this.getArrayValues({
-        borrowers,
-        key: 'otherFortune',
-      });
-
-    getTotalFunds = ({ borrowers }) =>
+    getInsuranceFortune = ({ borrowers }) =>
       this.sumValues({
         borrowers,
-        keys: ['bankFortune', 'insuranceSecondPillar', 'insuranceThirdPillar'],
+        keys: [
+          'insuranceSecondPillar',
+          'insuranceThirdPillar',
+          // 'bank3A',
+          'insurance3B',
+        ],
       });
-
-    getRealEstateFortune = ({ borrowers }) =>
-      this.getArrayValues({
-        borrowers,
-        key: 'realEstate',
-        mapFunc: i => i.value - i.loan,
-      });
-
-    getRealEstateValue = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'realEstate' });
-
-    getRealEstateDebt = ({ borrowers }) =>
-      this.getArrayValues({
-        borrowers,
-        key: 'realEstate',
-        mapFunc: i => i.loan,
-      });
-
-    getBorrowerSalary = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'salary' });
-
-    getSecondPillar = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'insuranceSecondPillar' });
-
-    getThirdPillar = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
 
     getMissingBorrowerFields = ({ borrowers }) =>
       arrayify(borrowers).reduce((missingIds, borrower) => {
@@ -195,6 +119,86 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           }),
         ],
         [],
+      );
+
+    getOtherFortune = ({ borrowers }) =>
+      this.getArrayValues({
+        borrowers,
+        key: 'otherFortune',
+      });
+
+    getOtherIncome = ({ borrowers }) =>
+      this.getArrayValues({ borrowers, key: 'otherIncome' });
+
+    getRealEstateFortune = ({ borrowers }) =>
+      this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: i => i.value - i.loan,
+      });
+
+    getRealEstateValue = ({ borrowers }) =>
+      this.getArrayValues({ borrowers, key: 'realEstate' });
+
+    getRealEstateDebt = ({ borrowers }) =>
+      this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: i => i.loan,
+      });
+
+    getSalary = ({ borrowers }) =>
+      this.sumValues({ borrowers, keys: 'salary' });
+
+    getSecondPillar = ({ borrowers }) =>
+      this.sumValues({ borrowers, keys: 'insuranceSecondPillar' });
+
+    getThirdPillar = ({ borrowers }) =>
+      this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
+
+    getTotalFunds = ({ borrowers }) =>
+      this.sumValues({
+        borrowers,
+        keys: ['bankFortune', 'insuranceSecondPillar', 'insuranceThirdPillar'],
+      });
+
+    getTotalIncome = ({ borrowers }) => {
+      const sum = arrayify(borrowers).reduce((total, borrower) => {
+        let borrowerIncome = 0;
+        borrowerIncome += borrower.salary || 0;
+        borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
+        borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
+        borrowerIncome -= this.getExpenses({ borrowers: borrower }) || 0;
+        return total + borrowerIncome;
+      }, 0);
+
+      return sum;
+    };
+
+    getYearsToRetirement() {
+      // TODO
+    }
+
+    // personalInfoPercent - Determines the completion rate of the borrower's
+    // personal information forms
+    personalInfoPercent = ({ borrowers }) => {
+      const a = [];
+      arrayify(borrowers).forEach((b) => {
+        const formArray = getBorrowerInfoArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(formArray, b, a);
+      });
+
+      return getPercent(a);
+    };
+
+    sumValues = ({ borrowers, keys }) =>
+      arrayify(keys).reduce(
+        (total, key) =>
+          total + arrayify(borrowers).reduce((t, b) => t + (b[key] || 0), 0),
+        0,
       );
   };
 

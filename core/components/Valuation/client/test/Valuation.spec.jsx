@@ -5,11 +5,11 @@ import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
 import { toMoney } from 'core/utils/conversionFunctions';
 
 import Button from 'core/components/Button';
-import Loading from '../../Loading';
+import Loading from 'core/components/Loading';
+import { VALUATION_STATUS } from 'core/api/constants';
 
-import { Valuation } from '../Valuation';
-import { VALUATION_STATUS } from '../../../api/constants';
-import ValuationResult from '../ValuationResult';
+import { Valuation } from '../../Valuation';
+import ValuationResult from '../../ValuationResult';
 
 describe('Valuation', () => {
   let props;

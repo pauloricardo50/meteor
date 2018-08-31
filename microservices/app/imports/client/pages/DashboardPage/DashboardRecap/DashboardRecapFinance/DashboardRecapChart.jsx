@@ -7,14 +7,8 @@ import Calculator from 'core/utils/Calculator';
 import DashboardRecapChartInfo from './DashboardRecapChartInfo';
 import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
-const getChartData = ({ loan, offer }) => {
-  let interests = 0;
-
-  if (offer) {
-    interests = Calculator.getInterestsWithOffer({ loan }, false);
-  } else {
-    interests = Calculator.getInterests({ loan });
-  }
+const getChartData = ({ loan }) => {
+  const interests = Calculator.getInterests({ loan });
 
   const data = [
     {

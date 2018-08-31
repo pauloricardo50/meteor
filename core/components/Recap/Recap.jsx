@@ -22,7 +22,7 @@ const getDashboardArray = (props) => {
   const loanValue = Calculator.selectLoanValue(props);
   const maxBorrowRatio = Calculator.getMaxBorrowRatio(props);
   const monthly = Calculator.getMonthly(props);
-  const notaryFees = Calculator.getNotaryFees(props);
+  const notaryFees = Calculator.getFees(props);
   const otherIncome = Calculator.getOtherIncome(props);
   const project = Calculator.getProjectValue(props);
   const propAndWork = Calculator.getPropAndWork(props);
@@ -246,7 +246,7 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     borrowers,
   });
   const totalFunds = BorrowerCalculator.getTotalFunds({ borrowers });
-  const salary = BorrowerCalculator.getBorrowerSalary({ borrowers });
+  const salary = BorrowerCalculator.getSalary({ borrowers });
   const income = BorrowerCalculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;

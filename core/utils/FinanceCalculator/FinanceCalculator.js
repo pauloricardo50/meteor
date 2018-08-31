@@ -6,7 +6,6 @@ import {
   DEFAULT_AMORTIZATION,
   MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
   AVERAGE_TAX_RATE,
-  SECOND_PILLAR_WITHDRAWAL_TAX_RATE,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MIN_CASH,
   INTERESTS_FINMA,
@@ -70,26 +69,27 @@ export class FinanceCalculator {
     this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
-    this.setRoundValuesMiddleware(middlewares, middlewareObject);
+    this.setMiddleware(middlewares, middlewareObject);
   }
 
-  setRoundValuesMiddleware = (
-    middlewares?: Array<Function>,
-    middlewareObject,
-  ) => {
+  setMiddleware = (middlewares?: Array<Function>, middlewareObject) => {
     const middlewareManager = new MiddlewareManager(this, middlewareObject);
     middlewareManager.applyToAllMethods([precisionMiddleware, ...middlewares]);
   };
 
   getLoanValue({
     propertyValue,
+    propertyWork = 0,
     fortune,
     pledgedValue = 0,
+    fees = this.getFeesBase({ propertyValue, propertyWork }),
   }: {
     propertyValue: number,
     fortune: number,
+    pledgedValue?: number,
+    fees?: number,
   }) {
-    return propertyValue * (1 + this.notaryFees) - fortune + pledgedValue;
+    return propertyValue + propertyWork + fees + pledgedValue - fortune;
   }
 
   getPropAndWork({ propertyValue, propertyWork }) {
@@ -203,7 +203,7 @@ export class FinanceCalculator {
     }, 0);
   }
 
-  getAmortizationRate({
+  getAmortizationRateBase({
     borrowRatio,
     amortizationYears = 15,
   }: { borrowRatio: number, amortizationRate?: number } = {}) {
@@ -227,9 +227,10 @@ export class FinanceCalculator {
     return amortizationRate;
   }
 
-  getAmortizationRateRelativeToLoan({ borrowRatio, amortizationYears }) {
+  getAmortizationRateRelativeToLoanBase({ borrowRatio, amortizationYears }) {
     return (
-      this.getAmortizationRate({ borrowRatio, amortizationYears }) / borrowRatio
+      this.getAmortizationRateBase({ borrowRatio, amortizationYears })
+      / borrowRatio
     );
   }
 
@@ -304,11 +305,20 @@ export class FinanceCalculator {
     return this.notaryFees;
   }
 
-  getMinCash({ propertyValue, propertyWork }) {
-    return (
-      (propertyValue + propertyWork) * this.minCash
-      + propertyValue * this.getNotaryFeesRate()
-    );
+  getMinCash({
+    propertyValue,
+    propertyWork,
+    fees = this.getFeesBase({ propertyValue, propertyWork }),
+  }) {
+    return (propertyValue + propertyWork) * this.minCash + fees;
+  }
+
+  getFeesBase({ fees, propertyValue = 0, propertyWork = 0 }) {
+    if (fees === 0 || fees > 0) {
+      return fees;
+    }
+
+    return (propertyValue + propertyWork) * this.notaryFees;
   }
 }
 

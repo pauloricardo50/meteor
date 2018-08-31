@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation/';
-import { getUserDisplayName, isUser } from 'core/utils/userFunctions';
+import { isUser } from 'core/utils/userFunctions';
 import Roles from 'core/components/Roles';
 
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
@@ -31,31 +31,18 @@ export const getColumnOptions = ({ showAssignee }) => {
 };
 
 const getColumns = ({ showAssignee, index, user }) => {
-  const {
-    emails,
-    createdAt,
-    roles,
-    assignedEmployee,
-    firstName,
-    lastName,
-    username,
-  } = user;
+  const { emails, createdAt, roles, assignedEmployee, name } = user;
 
   const columns = [
     index + 1,
-    getUserDisplayName({ firstName, lastName, username, emails }),
+    name,
     emails[0].address.toString(),
     moment(createdAt).format('D MMM YY à HH:mm:ss'),
     { label: <Roles roles={roles} />, raw: roles && roles.toString() },
   ];
   if (showAssignee) {
     if (assignedEmployee) {
-      const text = getUserDisplayName({
-        firstName: assignedEmployee.firstName,
-        lastName: assignedEmployee.lastName,
-        username: assignedEmployee.username,
-        emails: assignedEmployee.emails,
-      });
+      const text = assignedEmployee.name;
       columns.push({
         label: <Link to={`/users/${assignedEmployee._id}`}>{text}</Link>,
         raw: text,

@@ -102,13 +102,13 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getAmortizationRate', () => {
+  describe('getAmortizationRateBase', () => {
     it('returns the amortization base rate for an 80% loan with proper precision', () => {
       calc = new FinanceCalculator({
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRate({ borrowRatio: 0.8 })).to.equal(0.01);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.01);
     });
 
     it('returns zero if already below the amortizationGoal', () => {
@@ -116,7 +116,7 @@ describe('FinanceCalculator', () => {
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRate({ borrowRatio: 0.64 })).to.equal(0);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.64 })).to.equal(0);
     });
 
     it('returns zero if already exactly at the amortizationGoal', () => {
@@ -124,7 +124,7 @@ describe('FinanceCalculator', () => {
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRate({ borrowRatio: 0.65 })).to.equal(0);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.65 })).to.equal(0);
     });
 
     it('returns zero if nothing is provided', () => {
@@ -132,18 +132,18 @@ describe('FinanceCalculator', () => {
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRate()).to.equal(0);
-      expect(calc.getAmortizationRate({})).to.equal(0);
+      expect(calc.getAmortizationRateBase()).to.equal(0);
+      expect(calc.getAmortizationRateBase({})).to.equal(0);
     });
   });
 
-  describe('getAmortizationRateRelativeToLoan', () => {
+  describe('getAmortizationRateRelativeToLoanBase', () => {
     it('returns amortization, but relative to the borrowRatio', () => {
       calc = new FinanceCalculator({
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 })).to.equal(0.0125);
+      expect(calc.getAmortizationRateRelativeToLoanBase({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
   });
 
@@ -154,8 +154,8 @@ describe('FinanceCalculator', () => {
 
     it('has default initialization settings', () => {
       expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(80);
-      expect(calc.getAmortizationRate({ borrowRatio: 0.8 })).to.equal(0.01);
-      expect(calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 })).to.equal(0.0125);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.01);
+      expect(calc.getAmortizationRateRelativeToLoanBase({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
   });
 
@@ -197,7 +197,9 @@ describe('FinanceCalculator', () => {
     it('uses the taxRate to calculate deduction', () => {
       const taxRate = 0.5;
       calc = new FinanceCalculator({ taxRate });
-      const rate = calc.getAmortizationRateRelativeToLoan({ borrowRatio: 0.8 });
+      const rate = calc.getAmortizationRateRelativeToLoanBase({
+        borrowRatio: 0.8,
+      });
       expect(calc.getIndirectAmortizationDeduction({
         loanValue: 800000,
         amortizationRateRelativeToLoan: rate,
@@ -240,6 +242,23 @@ describe('FinanceCalculator', () => {
         gender1: 'F',
         gender2: 'M',
       })).to.equal(10);
+    });
+  });
+
+  describe('getFeesBase', () => {
+    it('returns fees if its above 0 or 0', () => {
+      expect(calc.getFeesBase({ fees: 0 })).to.equal(0);
+      expect(calc.getFeesBase({ fees: 123 })).to.equal(123);
+    });
+
+    it('returns 0 if nothing is passed', () => {
+      expect(calc.getFeesBase({})).to.equal(0);
+    });
+
+    it('returns calculated fees if no fees are provided', () => {
+      expect(calc.getFeesBase({ propertyValue: 100 })).to.equal(5);
+      expect(calc.getFeesBase({ propertyWork: 100 })).to.equal(5);
+      expect(calc.getFeesBase({ propertyValue: 100, propertyWork: 100 })).to.equal(10);
     });
   });
 });

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from 'core/components/Tabs';
 
+import Tabs from 'core/components/Tabs';
+import T from 'core/components/Translation';
 import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
@@ -18,25 +19,26 @@ const FilesVerification = ({ loan, borrowers, property }) => (
   <Tabs
     id="file-verification-tabs"
     tabs={[
+      ...borrowers.map((borrower, index) => ({
+        label: borrower.firstName || `Emprunteur ${index + 1}`,
+        doc: borrower,
+        documentArray: borrowerDocuments(borrower).all(),
+        collection: BORROWERS_COLLECTION,
+      })),
+
       {
-        label: 'Prêt Hypothécaire',
+        label: <T id="general.property" />,
+        doc: property,
+        documentArray: propertyDocuments(property).all(),
+        collection: PROPERTIES_COLLECTION,
+      },
+      {
+        label: <T id="FileTabs.loanDocuments" />,
         doc: loan,
         documentArray: loanDocuments(loan).all(),
         collection: LOANS_COLLECTION,
         closingSteps: loan.logic.closingSteps,
       },
-      {
-        label: 'Bien Immobilier',
-        doc: property,
-        documentArray: propertyDocuments(property).all(),
-        collection: PROPERTIES_COLLECTION,
-      },
-      ...borrowers.map(borrower => ({
-        label: borrower.firstName,
-        doc: borrower,
-        documentArray: borrowerDocuments(borrower).all(),
-        collection: BORROWERS_COLLECTION,
-      })),
     ].map(({ label, doc, ...rest }, index) => ({
       label,
       content: (

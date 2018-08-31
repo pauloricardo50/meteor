@@ -21,7 +21,7 @@ const argumentMappings = {
     payment: Calc.getTheoreticalMonthly({
       propAndWork: getProperty(data).value + data.structure.propertyWork,
       loanValue: data.structure.wantedLoan,
-      amortizationRate: Calc.getAmortizationRate(getAmortizationRateMapper(data)),
+      amortizationRate: Calc.getAmortizationRateBase(getAmortizationRateMapper(data)),
     }).total,
   }),
 
@@ -35,7 +35,8 @@ const argumentMappings = {
     borrowRatio,
   }),
 
-  getAmortizationRate: getAmortizationRateMapper,
+  getAmortizationRateBase: getAmortizationRateMapper,
+  getAmortizationRateRelativeToLoanBase: getAmortizationRateMapper,
 
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
@@ -52,7 +53,7 @@ const argumentMappings = {
     } = data;
     return {
       loanValue: wantedLoan,
-      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoan({
+      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoanBase({
         borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
       }),
     };
@@ -61,6 +62,13 @@ const argumentMappings = {
   getMinCash: data => ({
     propertyValue: getProperty(data).value,
     propertyWork: data.structure.propertyWork,
+    fees: data.structure.notaryFees,
+  }),
+
+  getFeesBase: data => ({
+    propertyValue: getProperty(data).value,
+    propertyWork: data.structure.propertyWork,
+    fees: data.structure.notaryFees,
   }),
 };
 

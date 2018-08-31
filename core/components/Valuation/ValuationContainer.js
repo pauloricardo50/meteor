@@ -11,11 +11,9 @@ export default compose(
         .run({ propertyId, loanResidenceType })
         .finally(() => setIsLoading(false));
     },
+    disabled: true, // Initialize it, and modify it with setState below
   })),
   lifecycle({
-    constructor() {
-      this.state = { disabled: true };
-    },
     componentDidMount() {
       propertyDataIsInvalid
         .run({

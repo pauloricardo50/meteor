@@ -24,6 +24,7 @@ export const APPLICATIONS = {
 const MICROSERVICES_DIR_PATH = '../microservices';
 const APP_ENGINES = { node: '8.11.3' };
 const APP_DEPENDENCIES = { cfenv: '1.0.4' };
+const TMUXINATOR_SESSION_NAME = 'deploy';
 export const APP_LAUNCHER = 'launcher.js';
 export const APP_PACKAGE_JSON_FILE = 'package.json';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
@@ -59,9 +60,9 @@ const ENVIRONMENT_CONFIG = {
   },
   [ENVIRONMENT.PRODUCTION]: {
     serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium,
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_2i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_2i },
-    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_2i },
+    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
   },
 };
 
@@ -135,9 +136,9 @@ export const tmuxinatorPane = ({
 });
 
 export const tmuxinatorScript = ({ panes, applicationsExpectedFilesList }) => ({
-  name: 'deploy',
+  name: TMUXINATOR_SESSION_NAME,
   root: './',
-  on_project_exit: `rm ${applicationsExpectedFilesList} && tmux kill-session -t deploy`,
+  on_project_exit: `rm ${applicationsExpectedFilesList} && tmux kill-session -t ${TMUXINATOR_SESSION_NAME}`,
   windows: [{ deploy: { layout: 'tiled', panes } }],
 });
 

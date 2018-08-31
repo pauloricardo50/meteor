@@ -7,7 +7,13 @@ import UploaderTop from './UploaderTop.jsx';
 import UploaderBottom from './UploaderBottom.jsx';
 
 const Uploader = (props) => {
-  const { handleAddFiles, shouldDisableAdd, displayFull, showFull } = props;
+  const {
+    handleAddFiles,
+    shouldDisableAdd,
+    displayFull,
+    showFull,
+    fileMeta: { id },
+  } = props;
   const disableAdd = shouldDisableAdd();
 
   return (
@@ -15,6 +21,7 @@ const Uploader = (props) => {
       handleAddFiles={handleAddFiles}
       disabled={disableAdd}
       showFull={showFull}
+      id={id}
     >
       <UploaderTop {...props} />
       {displayFull && <UploaderBottom {...props} />}

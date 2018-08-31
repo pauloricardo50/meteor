@@ -60,6 +60,7 @@ const config = {
         'LoginPage',
         'Microlocation',
         'offer',
+        'PropertyForm',
         'steps',
         'Table',
         'Uploader',
