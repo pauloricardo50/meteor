@@ -1,7 +1,7 @@
 @import './client/FinancingStructuresHeader/FinancingStructuresHeader.scss';
 @import './client/FinancingStructuresProject/FinancingStructuresProject.scss';
 $labels-width: 200px;
-$item-height: 32px;
+$item-height: 24px;
 $card1_padding: 24px;
 $result-section-negative-offset: -32px;
 
@@ -13,7 +13,7 @@ $result-section-negative-offset: -32px;
   flex-direction: column;
 
   .input-and-slider {
-     > *:first-child {
+    > *:first-child {
       margin-bottom: 8px;
     }
   }
@@ -33,7 +33,7 @@ $result-section-negative-offset: -32px;
   border-left: solid 1px $light-grey;
 
   .card1 > *,
-   > * {
+  > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -228,11 +228,11 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-   > *:first-child {
+  > *:first-child {
     margin-bottom: 8px;
   }
 
-   > *:last-child {
+  > *:last-child {
     align-self: center;
   }
 }
@@ -297,4 +297,51 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
   border-radius: 4px;
   box-shadow: $shadow-level-2;
+}
+
+.own-funds-completer {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  position: relative;
+  flex-wrap: nowrap;
+
+  .input-and-slider {
+    flex-basis: 0;
+    flex-shrink: 1;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 24px);
+  }
+}
+
+.top-off-icon {
+  position: relative;
+  display: flex;
+  width: 16px;
+  height: 16px;
+  margin: 8px;
+  margin-left: 0;
+  background-color: $light-grey;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border-radius: 4px;
+  overflow: hidden;
+
+  &.active {
+    background-color: grey;
+  }
+
+  .appear {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: $primary;
+    border-radius: 4px;
+    animation-duration: 300ms;
+  }
 }

@@ -12,6 +12,7 @@ import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructur
 
 import RequiredOwnFunds from './RequiredOwnFunds';
 import OwnFundsLabel from './OwnFundsLabel';
+import OwnFundsCompleter from './OwnFundsCompleter';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -55,7 +56,9 @@ export const calculateRequiredOwnFunds = (data) => {
     propertyWork,
   });
   const fundsRequired = propertyValue + propertyWork + fees - effectiveLoan;
+  console.log('fundsRequired', fundsRequired);
   const totalCurrentFunds = calculateOwnFunds(data);
+  console.log('totalCurrentFunds', totalCurrentFunds);
 
   return fundsRequired - totalCurrentFunds;
 };
@@ -81,14 +84,14 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         value: calculateRequiredOwnFunds,
       },
       {
-        Component: InputAndSlider,
+        Component: OwnFundsCompleter,
         id: 'fortuneUsed',
         max: calculateMaxFortune,
         label: OwnFundsLabel,
         labelValue: calculateMaxFortune,
       },
       {
-        Component: InputAndSlider,
+        Component: OwnFundsCompleter,
         id: 'secondPillarWithdrawal',
         max: calculateMaxSecondPillarWithdrawal,
         condition: makeConditionForValue('getSecondPillar'),
@@ -96,7 +99,7 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         labelValue: Calculator.getSecondPillar,
       },
       {
-        Component: InputAndSlider,
+        Component: OwnFundsCompleter,
         id: 'secondPillarPledged',
         max: calculateMaxSecondPillarPledged,
         condition: makeConditionForValue('getSecondPillar'),
@@ -104,7 +107,7 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         labelValue: Calculator.getSecondPillar,
       },
       {
-        Component: InputAndSlider,
+        Component: OwnFundsCompleter,
         id: 'thirdPillarWithdrawal',
         max: calculateMaxThirdPillarWithdrawal,
         condition: makeConditionForValue('getThirdPillar'),
@@ -112,7 +115,7 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         labelValue: Calculator.getThirdPillar,
       },
       {
-        Component: InputAndSlider,
+        Component: OwnFundsCompleter,
         id: 'thirdPillarPledged',
         max: calculateMaxThirdPillarPledged,
         condition: makeConditionForValue('getThirdPillar'),
