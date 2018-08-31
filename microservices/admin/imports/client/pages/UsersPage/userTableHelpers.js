@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation/';
-import { getUserDisplayName, isUser } from 'core/utils/userFunctions';
+import { isUser } from 'core/utils/userFunctions';
 import Roles from 'core/components/Roles';
 
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
