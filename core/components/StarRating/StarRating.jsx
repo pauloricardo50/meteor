@@ -11,7 +11,7 @@ const styles = {
 
 const StarRating = ({ value }) => (
   <StarRatingComponent
-    className="star-rating-flex"
+    className="star-rating-flex star-rating"
     name="rating"
     value={value}
     editing={false}
