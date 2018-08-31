@@ -330,8 +330,11 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   border-radius: 4px;
   overflow: hidden;
 
+  cursor: not-allowed;
+
   &.active {
-    background-color: grey;
+    cursor: pointer;
+    background-color: $grey1;
   }
 
   .appear {

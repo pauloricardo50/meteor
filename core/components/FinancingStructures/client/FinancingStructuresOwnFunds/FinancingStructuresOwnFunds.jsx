@@ -56,9 +56,7 @@ export const calculateRequiredOwnFunds = (data) => {
     propertyWork,
   });
   const fundsRequired = propertyValue + propertyWork + fees - effectiveLoan;
-  console.log('fundsRequired', fundsRequired);
   const totalCurrentFunds = calculateOwnFunds(data);
-  console.log('totalCurrentFunds', totalCurrentFunds);
 
   return fundsRequired - totalCurrentFunds;
 };
