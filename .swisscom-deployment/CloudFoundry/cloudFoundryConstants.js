@@ -3,7 +3,7 @@ export const cloudFoundryCommands = {
   createService: ({ service, plan, serviceInstance }) =>
     `cf create-service ${service} ${plan} ${serviceInstance}`,
   listServices: () => 'cf services',
-  push: () => 'cf push',
+  push: buildDirectory => `cd ${buildDirectory} && cf push`,
   scale: ({ appName, instances, disk, memory }) => {
     const instancesScale = !!instances ? `-i ${instances}` : '';
     const diskScale = !!disk ? `-k ${disk}` : '';

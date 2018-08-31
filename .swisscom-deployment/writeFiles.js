@@ -30,6 +30,11 @@ export const writeApplicationPackageJSON = options => {
   });
 };
 
+export const writeApplicationsExpectedFilesListJSON = options => {
+  const { filePath, data } = options;
+  return writeJSON({ file: filePath, data });
+};
+
 const checkWriteApplicationManifestYAMLArguments = options => {
   const { applicationName, memory, instances, filePath } = options;
   if (!applicationName) {
@@ -96,10 +101,20 @@ const checkWriteTmuxinatorScriptArguments = options => {
 };
 
 export const writeTmuxinatorScript = options => {
-  const { tmuxinatorConfigs, filePath } = options;
+  const {
+    tmuxinatorConfigs,
+    filePath,
+    applicationsExpectedFilesList,
+  } = options;
   checkWriteTmuxinatorScriptArguments(options);
   const tmuxinatorPanes = tmuxinatorConfigs.map(config =>
     tmuxinatorPane(config),
   );
-  writeYAML({ file: filePath, data: tmuxinatorScript(tmuxinatorPanes) });
+  writeYAML({
+    file: filePath,
+    data: tmuxinatorScript({
+      panes: tmuxinatorPanes,
+      applicationsExpectedFilesList,
+    }),
+  });
 };

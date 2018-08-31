@@ -1,6 +1,7 @@
 import cmd from 'node-cmd';
 import yaml from 'write-yaml';
 import fs from 'fs';
+import { join } from 'path';
 
 export const executeCommand = command =>
   new Promise((resolve, reject) => {
@@ -15,34 +16,26 @@ export const executeCommand = command =>
       .stdout.on('data', console.log);
   });
 
-export const mkdir = path => {
-  return checkIfDirectoryOrFileExists(path).then(
+export const mkdir = path =>
+  checkIfDirectoryOrFileExists(path).then(
     directoryExists =>
       directoryExists ? true : executeCommand(`mkdir ${path}`),
   );
-};
 
-export const rmDir = path => {
-  return executeCommand(`rm -rf ${path}`);
-};
+export const rmDir = path => executeCommand(`rm -rf ${path}`);
 
-export const rmFile = path => {
-  return executeCommand(`rm ${path}`);
-};
+export const rmFile = path => executeCommand(`rm ${path}`);
 
-export const copyFile = ({ sourcePath, destinationPath }) => {
-  return executeCommand(`cp ${sourcePath} ${destinationPath}`);
-};
+export const copyFile = ({ sourcePath, destinationPath }) =>
+  executeCommand(`cp ${sourcePath} ${destinationPath}`);
 
-export const moveFile = ({ sourcePath, destinationPath }) => {
-  return executeCommand(`mv ${sourcePath} ${destinationPath}`);
-};
+export const moveFile = ({ sourcePath, destinationPath }) =>
+  executeCommand(`mv ${sourcePath} ${destinationPath}`);
 
-export const checkIfDirectoryOrFileExists = path => {
-  return executeCommand(`ls ${path}`)
+export const checkIfDirectoryOrFileExists = path =>
+  executeCommand(`ls ${path}`)
     .then(() => true)
     .catch(() => false);
-};
 
 export const writeYAML = ({ file, data }) => {
   return new Promise((resolve, reject) => {
@@ -64,3 +57,20 @@ export const writeBash = ({ file, data }) => {
 
 export const formatOptionsArray = array =>
   `[${array.map(el => `'${el}'`).join(', ')}]`;
+
+export const getDirectoryFilesList = path => {
+  const files = fs.readdirSync(path);
+  return Promise.resolve(files);
+};
+
+export const touchFile = file => executeCommand(`touch ${file}`);
+
+export const readJSONFile = file => JSON.parse(fs.readFileSync(file));
+
+export const getDirectoriesList = path =>
+  fs
+    .readdirSync(path)
+    .filter(file => fs.statSync(join(path, file)).isDirectory());
+
+export const isFilePresentInDirectory = ({ path, file }) =>
+  fs.readdirSync(path).includes(file);

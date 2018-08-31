@@ -37,6 +37,9 @@ class CloudFoundryService {
       ),
     );
   };
+
+  pushApplication = buildDirectory =>
+    executeCommand(cloudFoundryCommands.push(buildDirectory));
 }
 
 export default new CloudFoundryService();

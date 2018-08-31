@@ -3,6 +3,8 @@ import {
   CLOUDFOUNDRY_MEMORY_LIMIT,
 } from '../CloudFoundry/cloudFoundryConstants';
 
+import { readJSONFile } from '../utils/helpers';
+
 export const ENVIRONMENT = {
   STAGING: 'staging',
   PRODUCTION: 'production',
@@ -18,6 +20,14 @@ export const APPLICATIONS = {
   ADMIN: 'admin',
   WWW: 'www',
 };
+
+export const APP_PACKAGE_JSON_FILE = 'package.json';
+export const APP_MANIFEST_YML_FILE = 'manifest.yml';
+export const EXPECTED_FILES_LIST = 'applicationsExpectedFilesList.json';
+export const TMUXINATOR_YML = 'deploy.yml';
+export const APPLICATION_SANITY_CHECK_DONE = 'done';
+export const APPLICATION_SANITY_CHECK_ERROR = 'error';
+export const APPLICATION_SANITY_CHECK_PENDING = 'pending';
 
 export const APP_CONFIGS = {
   MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
@@ -102,21 +112,37 @@ export const tmuxinatorPane = ({
   applicationName,
   buildDirectoryPath,
   applicationImage,
+  applicationsToCheck,
 }) => ({
   [applicationName]: [
     `cd ${microservicePath}`,
     `meteor build ${buildDirectoryPath}/. --server-only --architecture os.linux.x86_64`,
     `cd ${buildDirectoryPath}`,
     `mv ./*.tar.gz ./${applicationImage}`,
-    `cf push`,
+    `cd ../../`,
+    `babel-node -- pushApplication.js -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
+      { applicationName, buildDirectoryPath },
+    )}`,
     `cd ..`,
     `rm -rf ${buildDirectoryPath}`,
   ],
 });
 
-export const tmuxinatorScript = panes => ({
+export const tmuxinatorScript = ({ panes, applicationsExpectedFilesList }) => ({
   name: 'deploy',
   root: './',
-  on_project_exit: 'tmux kill-session -t deploy',
+  on_project_exit: `rm ${applicationsExpectedFilesList} && tmux kill-session -t deploy`,
   windows: [{ deploy: { layout: 'tiled', panes } }],
 });
+
+const getExpectedFilesListForApplication = ({
+  applicationName,
+  buildDirectoryPath,
+}) => {
+  const { applicationsExpectedFilesList } = readJSONFile(
+    `${buildDirectoryPath}/../${EXPECTED_FILES_LIST}`,
+  );
+  return Object.values(applicationsExpectedFilesList[applicationName]).join(
+    ' ',
+  );
+};
