@@ -1,9 +1,15 @@
+import { simpleUserFragment } from '../../users/queries/userFragments';
+import { INTEREST_RATES } from '../../constants';
+
 export const fullOfferFragment = {
-  organization: 1,
+  loanId: 1,
+  user: simpleUserFragment,
+  amortization: 1,
+  maxAmount: 1,
   conditions: 1,
-  counterparts: 1,
-  canton: 1,
-  standardOffer: 1,
-  counterpartOffer: 1,
+  ...Object.values(INTEREST_RATES).reduce(
+    (rates, rate) => ({ ...rates, [rate]: 1 }),
+    {},
+  ),
   // $options: { sort: { createdAt: 1 } },
 };

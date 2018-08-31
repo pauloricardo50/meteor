@@ -7,7 +7,7 @@ export const withOfferCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     addMetadataToOffer({ offer, loan }) {
       // TODO: Plug this with the loan
-      return { offer, monthly: 100 };
+      return { ...offer, monthly: 100 };
     }
   };
 
