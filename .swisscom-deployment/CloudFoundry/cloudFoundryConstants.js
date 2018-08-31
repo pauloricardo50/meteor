@@ -5,9 +5,9 @@ export const cloudFoundryCommands = {
   listServices: () => 'cf services',
   push: buildDirectory => `cd ${buildDirectory} && cf push`,
   scale: ({ appName, instances, disk, memory }) => {
-    const instancesScale = !!instances ? `-i ${instances}` : '';
-    const diskScale = !!disk ? `-k ${disk}` : '';
-    const memoryScale = !!memory ? `-m ${memory}` : '';
+    const instancesScale = instances ? `-i ${instances}` : '';
+    const diskScale = disk ? `-k ${disk}` : '';
+    const memoryScale = memory ? `-m ${memory}` : '';
     return `cf scale ${appName} ${instancesScale} ${diskScale} ${memoryScale}`;
   },
   updateService: ({ serviceInstance, plan }) =>

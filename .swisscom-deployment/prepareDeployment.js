@@ -17,9 +17,7 @@ import {
 
 import { mkdir, rmDir, copyFile } from './utils/helpers';
 
-export const getCurrentPath = () => {
-  return __dirname;
-};
+export const getCurrentPath = () => __dirname;
 
 // To keep track of each file that is supposed to be created
 let applicationsExpectedFilesList = {};
@@ -145,8 +143,8 @@ export const prepareDeployment = ({
         filePath: `${getCurrentPath()}/${TMUXINATOR_YML}`,
         applicationsExpectedFilesList: `${getCurrentPath()}/${root}/${EXPECTED_FILES_LIST}`,
       }),
-    )
-    .catch(error => {
-      throw new Error(error);
-    });
+    );
+  // .catch(error => {
+  //   throw new Error(error);
+  // });
 };

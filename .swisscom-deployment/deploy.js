@@ -1,11 +1,11 @@
 import { prepareDeployment } from './prepareDeployment';
 import CloudFoundryService from './CloudFoundry/CloudFoundryService';
-import { SPACES, ENVIRONMENT, APPLICATIONS } from './settings/settings';
-import { formatOptionsArray } from './utils/helpers';
+import {
+  SPACES,
+  FORMATTED_ENVIRONMENTS,
+  FORMATTED_APPLICATIONS,
+} from './settings/settings';
 import argv from 'yargs';
-
-const formattedEnvironments = formatOptionsArray(Object.values(ENVIRONMENT));
-const formattedApplications = formatOptionsArray(Object.values(APPLICATIONS));
 
 const main = () => {
   const { environment, applications } = argv
@@ -16,17 +16,18 @@ const main = () => {
     )
     .alias('e', 'environment')
     .nargs('e', 1)
-    .describe('e', `Environment ${formattedEnvironments}`)
+    .describe('e', `Environment ${FORMATTED_ENVIRONMENTS}`)
     .array('a')
     .alias('a', 'applications')
-    .describe('a', `Applications to deploy ${formattedApplications}`)
+    .describe('a', `Applications to deploy ${FORMATTED_APPLICATIONS}`)
     .demandOption(['e'])
     .help('h')
     .alias('h', 'help').argv;
 
-  prepareDeployment({ environment, applicationFilter: applications }).then(() =>
-    CloudFoundryService.selectSpace(SPACES[environment]),
-  );
+  return prepareDeployment({
+    environment,
+    applicationFilter: applications,
+  }).then(() => CloudFoundryService.selectSpace(SPACES[environment]));
 };
 
 main();

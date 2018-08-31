@@ -110,7 +110,7 @@ export const writeTmuxinatorScript = options => {
   const tmuxinatorPanes = tmuxinatorConfigs.map(config =>
     tmuxinatorPane(config),
   );
-  writeYAML({
+  return writeYAML({
     file: filePath,
     data: tmuxinatorScript({
       panes: tmuxinatorPanes,

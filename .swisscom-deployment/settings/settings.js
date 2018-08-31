@@ -3,7 +3,7 @@ import {
   CLOUDFOUNDRY_MEMORY_LIMIT,
 } from '../CloudFoundry/cloudFoundryConstants';
 
-import { readJSONFile } from '../utils/helpers';
+import { readJSONFile, formatOptionsArray } from '../utils/helpers';
 
 export const ENVIRONMENT = {
   STAGING: 'staging',
@@ -21,6 +21,10 @@ export const APPLICATIONS = {
   WWW: 'www',
 };
 
+const MICROSERVICES_DIR_PATH = '../microservices';
+const APP_ENGINES = { node: '8.11.3' };
+const APP_DEPENDENCIES = { cfenv: '1.0.4' };
+export const APP_LAUNCHER = 'launcher.js';
 export const APP_PACKAGE_JSON_FILE = 'package.json';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
 export const EXPECTED_FILES_LIST = 'applicationsExpectedFilesList.json';
@@ -36,6 +40,16 @@ export const APP_CONFIGS = {
   MB1024_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 2 },
 };
 
+export const FORMATTED_ENVIRONMENTS = formatOptionsArray(
+  Object.values(ENVIRONMENT),
+);
+export const FORMATTED_APPLICATIONS = formatOptionsArray(
+  Object.values(APPLICATIONS),
+);
+export const FORMATTED_APP_CONFIGS = formatOptionsArray(
+  Object.keys(APP_CONFIGS),
+);
+
 const ENVIRONMENT_CONFIG = {
   [ENVIRONMENT.STAGING]: {
     serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.small,
@@ -50,14 +64,6 @@ const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_2i },
   },
 };
-
-const MICROSERVICES_DIR_PATH = '../microservices';
-
-const APP_ENGINES = { node: '8.11.3' };
-
-const APP_DEPENDENCIES = { cfenv: '1.0.4' };
-
-export const APP_LAUNCHER = 'launcher.js';
 
 const applicationSettings = ({ applicationName, environment }) => ({
   applicationName,
