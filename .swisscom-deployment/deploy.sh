@@ -12,4 +12,6 @@ cd .swisscom-deployment
 echo "Preparing deployment..."
 babel-node -- deploy.js "$@"
 tmuxinator start deploy -p ./deploy.yml
+rm ./deploy.yml
+
 

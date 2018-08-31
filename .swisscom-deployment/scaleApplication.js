@@ -2,17 +2,14 @@ import CloudFoundryService from './CloudFoundry/CloudFoundryService';
 import {
   SPACES,
   APP_CONFIGS,
-  ENVIRONMENT,
-  APPLICATIONS,
+  FORMATTED_APP_CONFIGS,
+  FORMATTED_ENVIRONMENTS,
+  FORMATTED_APPLICATIONS,
   createDeploySettingsForEnv,
 } from './settings/settings';
 
-import { formatOptionsArray, writeBash } from './utils/helpers';
+import { writeBash } from './utils/helpers';
 import argv from 'yargs';
-
-const formattedEnvironments = formatOptionsArray(Object.values(ENVIRONMENT));
-const formattedApplications = formatOptionsArray(Object.values(APPLICATIONS));
-const formattedAppConfigs = formatOptionsArray(Object.keys(APP_CONFIGS));
 
 const createScaleApplicationScript = command =>
   writeBash({ file: 'scale.sh', data: command });
@@ -26,13 +23,13 @@ const main = () => {
     )
     .alias('e', 'environment')
     .nargs('e', 1)
-    .describe('e', `Environment ${formattedEnvironments}`)
+    .describe('e', `Environment ${FORMATTED_ENVIRONMENTS}`)
     .alias('a', 'application')
     .nargs('a', 1)
-    .describe('a', `Application to scale ${formattedApplications}`)
+    .describe('a', `Application to scale ${FORMATTED_APPLICATIONS}`)
     .alias('c', 'config')
     .nargs('c', 1)
-    .describe('c', `Config to use ${formattedAppConfigs}`)
+    .describe('c', `Config to use ${FORMATTED_APP_CONFIGS}`)
     .demandOption(['e', 'a', 'c'])
     .help('h')
     .alias('h', 'help').argv;

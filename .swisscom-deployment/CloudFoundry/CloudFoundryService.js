@@ -12,15 +12,14 @@ class CloudFoundryService {
   createMongoDBService = ({ plan, serviceInstance }) => {
     return this.checkIfServiceInstanceExists(serviceInstance).then(
       serviceExists =>
-        serviceExists
-          ? true
-          : executeCommand(
-              cloudFoundryCommands.createService({
-                plan,
-                serviceInstance,
-                service: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.service,
-              }),
-            ),
+        !serviceExists &&
+        executeCommand(
+          cloudFoundryCommands.createService({
+            plan,
+            serviceInstance,
+            service: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.service,
+          }),
+        ),
     );
   };
 
@@ -32,11 +31,12 @@ class CloudFoundryService {
 
   getScaleApplicationCommand = ({ space, applicationName, config }) => {
     return this.selectSpace(space).then(() =>
-      Promise.resolve(
-        cloudFoundryCommands.scale({ appName: applicationName, ...config }),
-      ),
+      cloudFoundryCommands.scale({ appName: applicationName, ...config }),
     );
   };
+
+  pushApplication = buildDirectory =>
+    executeCommand(cloudFoundryCommands.push(buildDirectory));
 }
 
 export default new CloudFoundryService();
