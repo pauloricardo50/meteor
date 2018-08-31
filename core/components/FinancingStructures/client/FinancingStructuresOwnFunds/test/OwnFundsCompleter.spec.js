@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 import { completeValue } from '../OwnFundsCompleter';
 
-describe.only('OwnFundsCompleter', () => {
+describe('OwnFundsCompleter', () => {
   describe('completeValue', () => {
     it('completes nothing if there are no funds to add', () => {
       const props = {
