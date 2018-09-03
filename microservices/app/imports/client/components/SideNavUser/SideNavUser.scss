@@ -94,6 +94,25 @@
       font-family: 'Eina04-Bold';
     }
   }
+
+  .divider {
+    margin: 8px 0;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+
+    .progress {
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
+
+      .icon {
+        padding: 0;
+      }
+    }
+  }
 }
 
 .loan-selector {
@@ -102,7 +121,7 @@
   margin: 16px 0;
   padding: 0 16px;
 
-   > * {
+  > * {
     width: 100%;
   }
 }

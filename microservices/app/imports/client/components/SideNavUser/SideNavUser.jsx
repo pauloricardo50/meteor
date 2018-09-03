@@ -7,7 +7,14 @@ import LoanSelector from './LoanSelector';
 import DrawerHeader from '../AppTopNav/DrawerHeader';
 import LoanSideNav from './LoanSideNav';
 
-const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
+const SideNavUser = ({
+  currentUser,
+  style,
+  fixed,
+  toggleDrawer,
+  history,
+  loan,
+}) => {
   // Return an empty side nav if there is no loan
   if (!currentUser) {
     return (
@@ -44,7 +51,7 @@ const SideNavUser = ({ currentUser, style, fixed, toggleDrawer, history }) => {
             toggleDrawer={toggleDrawer}
           />
         )}
-        {loanId && currentLoan && <LoanSideNav loan={currentLoan} />}
+        {loanId && currentLoan && <LoanSideNav loan={loan} />}
       </div>
     </nav>
   );

@@ -7,7 +7,7 @@ import { SUCCESS, ERROR } from '../../api/constants';
 
 type PercentWithStatusProps = {
   value: number,
-  status: string,
+  status?: string,
 };
 
 const PercentWithStatus = ({
@@ -15,14 +15,9 @@ const PercentWithStatus = ({
   status = value >= 1 ? SUCCESS : ERROR,
 }: PercentWithStatusProps) => (
   <React.Fragment>
-    {!!value && value > 0 ? <Percent value={value} /> : '-'}
-    {!!value
-      && value > 0 && (
-      <StatusIcon
-        status={status}
-        className="icon"
-        style={{ marginLeft: 4 }}
-      />
+    {Number.isNaN(value) ? '-' : <Percent value={value} />}
+    {!Number.isNaN(value) && (
+      <StatusIcon status={status} className="icon" style={{ marginLeft: 4 }} />
     )}
   </React.Fragment>
 );
