@@ -10,147 +10,103 @@ import {
   loanStep3,
   emptyLoan,
 } from '../../api/loans/fakes';
-import { getRandomOffer } from '../../api/offers/fakes';
 import { fakeProperty, emptyProperty } from '../../api/properties/fakes';
 import {
   borrowerInsert,
-  propertyInsert,
-  loanInsert,
-  offerInsert,
   loanUpdate,
+  adminLoanInsert,
+  borrowerUpdate,
+  propertyUpdate,
+  pushLoanValue,
 } from '../../api';
+import adminLoan from '../../api/loans/queries/adminLoan';
 
-const addEmptyStep1Loan = (twoBorrowers) => {
-  const borrowerIds = [];
-  borrowerInsert
-    .run({ borrower: emptyFakeBorrower })
-    .then((id1) => {
-      borrowerIds.push(id1);
-      return twoBorrowers
-        ? borrowerInsert.run({ borrower: emptyFakeBorrower })
-        : false;
-    })
-    .then((id2) => {
-      if (id2) {
-        borrowerIds.push(id2);
-      }
-
-      return propertyInsert.run({ property: emptyProperty });
-    })
-    .then((propertyId) => {
-      const loan = emptyLoan;
-      loan.borrowerIds = borrowerIds;
-      loan.propertyIds = [propertyId];
-      loanInsert.run({ loan });
-    })
-    .catch(console.log);
-};
-
-const addStep1Loan = (twoBorrowers) => {
-  const borrowerIds = [];
-  borrowerInsert
-    .run({ borrower: completeFakeBorrower })
-    .then((id1) => {
-      borrowerIds.push(id1);
-      return twoBorrowers
-        ? borrowerInsert.run({ borrower: completeFakeBorrower })
-        : false;
-    })
-    .then((id2) => {
-      if (id2) {
-        borrowerIds.push(id2);
-      }
-
-      return propertyInsert.run({ property: fakeProperty });
-    })
-    .then((propertyId) => {
-      const loan = loanStep1;
-      loan.borrowerIds = borrowerIds;
-      loan.propertyIds = [propertyId];
-      loanInsert.run({ loan });
-    })
-    .catch(console.log);
-};
-
-const addStep2Loan = (twoBorrowers) => {
-  const borrowerIds = [];
-
-  borrowerInsert
-    .run({ borrower: completeFakeBorrower })
-    .then((id1) => {
-      borrowerIds.push(id1);
-      return twoBorrowers
-        ? borrowerInsert.run({ borrower: completeFakeBorrower })
-        : false;
-    })
-    .then((id2) => {
-      if (id2) {
-        borrowerIds.push(id2);
-      }
-
-      return propertyInsert.run({ property: fakeProperty });
-    })
-    .then((propertyId) => {
-      const loan = loanStep2;
-      loan.borrowerIds = borrowerIds;
-      loan.propertyIds = [propertyId];
-      loanInsert.run({ loan });
-    })
-    .catch(console.log);
-};
-
-const addStep3Loan = (twoBorrowers, completeFiles = true) => {
-  const borrowerIds = [];
-  const loan = loanStep3(completeFiles);
+const addLoanWithData = ({ borrowers, properties, loan: loanData, userId }) => {
   let loanId;
-  borrowerInsert
-    .run({ borrower: completeFakeBorrower })
-    .then((id1) => {
-      borrowerIds.push(id1);
-      return twoBorrowers
-        ? borrowerInsert.run({ borrower: completeFakeBorrower })
-        : false;
-    })
-    .then((id2) => {
-      if (id2) {
-        borrowerIds.push(id2);
-      }
-
-      return propertyInsert.run({ property: fakeProperty });
-    })
-    .then((propertyId) => {
-      loan.borrowerIds = borrowerIds;
-      loan.propertyIds = [propertyId];
-    })
-    .then(() => loanInsert.run({ loan }))
+  let loan;
+  return adminLoanInsert
+    .run({ userId })
     .then((id) => {
       loanId = id;
-      const object = getRandomOffer(
-        { loan: { ...loan, _id: id }, property: fakeProperty },
-        true,
-      );
-      return offerInsert.run({ offer: object, loanId });
+      return new Promise((resolve, reject) => {
+        adminLoan.clone({ _id: loanId }).fetchOne((err, data) => {
+          if (err) {
+            reject(err);
+          }
+          loan = data;
+          resolve(data);
+        });
+      });
     })
-    .then(offerId =>
-      loanUpdate.run({
-        object: {
-          'logic.lender.offerId': offerId,
-          'logic.lender.chosenTime': new Date(),
-        },
-        loanId,
-      }))
+    .then(() => loanUpdate.run({ loanId, object: loanData }))
     .then(() => {
-      // Weird bug with offers publications that forces me to reload TODO: fix it
-      location.reload();
+      const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
+      return borrowerUpdate.run({
+        borrowerId: borrowerId1,
+        object: borrowers[0],
+      });
     })
-    .catch(console.log);
+    .then(() => {
+      if (borrowers.length > 1) {
+        return borrowerInsert.run({ borrower: borrowers[1] }).then(borrowerId =>
+          pushLoanValue.run({
+            loanId,
+            object: { borrowerIds: borrowerId },
+          }));
+      }
+    })
+    .then(() =>
+      propertyUpdate.run({
+        propertyId: loan.properties[0]._id,
+        object: properties[0],
+      }));
 };
 
-const DevPageContainer = withProps({
-  addEmptyStep1Loan,
-  addStep1Loan,
-  addStep2Loan,
-  addStep3Loan,
-});
+const addEmptyStep1Loan = userId => twoBorrowers =>
+  addLoanWithData({
+    borrowers: twoBorrowers
+      ? [emptyFakeBorrower, emptyFakeBorrower]
+      : [emptyFakeBorrower],
+    properties: [emptyProperty],
+    loan: emptyLoan,
+    userId,
+  });
+
+const addStep1Loan = userId => twoBorrowers =>
+  addLoanWithData({
+    borrowers: twoBorrowers
+      ? [completeFakeBorrower, completeFakeBorrower]
+      : [completeFakeBorrower],
+    properties: [fakeProperty],
+    loan: loanStep1,
+    userId,
+  });
+
+const addStep2Loan = userId => twoBorrowers =>
+  addLoanWithData({
+    borrowers: twoBorrowers
+      ? [completeFakeBorrower, completeFakeBorrower]
+      : [completeFakeBorrower],
+    properties: [fakeProperty],
+    loan: loanStep2,
+    userId,
+  });
+
+const addStep3Loan = userId => (twoBorrowers, completeFiles = true) =>
+  addLoanWithData({
+    borrowers: twoBorrowers
+      ? [completeFakeBorrower, completeFakeBorrower]
+      : [completeFakeBorrower],
+    properties: [fakeProperty],
+    loan: loanStep3(completeFiles),
+    userId,
+  });
+
+const DevPageContainer = withProps(({ currentUser: { _id: userId } }) => ({
+  addEmptyStep1Loan: addEmptyStep1Loan(userId),
+  addStep1Loan: addStep1Loan(userId),
+  addStep2Loan: addStep2Loan(userId),
+  addStep3Loan: addStep3Loan(userId),
+}));
 
 export default DevPageContainer;
