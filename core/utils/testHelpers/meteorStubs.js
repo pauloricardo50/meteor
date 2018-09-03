@@ -89,7 +89,6 @@ const meteorStubs = {
   'meteor/underscore': stubs.meteorUnderscore,
   'meteor/okgrow:analytics': stubs.analytics,
   'meteor/softwarerero:accounts-t9n': stubs.accountsT9n,
-  'meteor/didericis:callpromise-mixin': stubs.callpromiseMixin,
 };
 
 export default meteorStubs;
