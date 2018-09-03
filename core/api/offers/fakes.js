@@ -47,30 +47,14 @@ export const getRandomOffer = ({ loan }) => {
   const condition = getRandomCondition();
   return {
     organization: 'fake',
-    canton: 'GE',
     loanId: loan._id,
-    auctionEndTime: new Date(),
-    isSwiss: true,
-    worksForOwnCompany: true,
-    standardOffer: {
-      maxAmount: maxAmountLimited,
-      amortization: 0.01,
-      interestLibor: rate1,
-      interest1: round(rate1 + rand(0.0004, 0.0016)),
-      interest2: round(rate1 + rand(0.0016, 0.004)),
-      interest5: round(rate1 + rand(0.004, 0.006)),
-      interest10: round(rate1 + rand(0.006, 0.01)),
-    },
-    counterpartOffer: {
-      maxAmount: maxAmountLimited,
-      amortization: 0.01,
-      interestLibor: rate2,
-      interest1: round(rate2 + rand(0.0004, 0.0016)),
-      interest2: round(rate2 + rand(0.0016, 0.004)),
-      interest5: round(rate2 + rand(0.004, 0.006)),
-      interest10: round(rate2 + rand(0.006, 0.01)),
-    },
-    counterparts: counterpart,
-    conditions: condition,
+    maxAmount: maxAmountLimited,
+    amortization: loanWanted * 0.0125,
+    interestLibor: rate1,
+    interest1: round(rate1 + rand(0.0004, 0.0016)),
+    interest2: round(rate1 + rand(0.0016, 0.004)),
+    interest5: round(rate1 + rand(0.004, 0.006)),
+    interest10: round(rate1 + rand(0.006, 0.01)),
+    conditions: [condition, counterpart].filter(x => x),
   };
 };
