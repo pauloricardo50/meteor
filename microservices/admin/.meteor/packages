@@ -22,7 +22,6 @@ fourseven:scss@4.5.0
 # Testing
 cultofcoders:mocha
 dburles:factory
-hwillson:stub-collections
 meteortesting:mocha
 
 

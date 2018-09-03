@@ -24,7 +24,6 @@ aldeed:collection2-core
 # Testing
 cultofcoders:mocha
 xolvio:cleaner
-hwillson:stub-collections
 meteortesting:mocha
 
 
