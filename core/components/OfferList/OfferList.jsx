@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import Calculator from 'core/utils/Calculator';
 import ConditionsButton from 'core/components/ConditionsButton';
 import { T, IntlNumber } from 'core/components/Translation';
-import { loanUpdate } from 'core/api';
 import Offer from './Offer';
-import StarRating from './StarRating';
 import OfferListSorting from './OfferListSorting';
 
-const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
+const getOfferValues = ({ monthly, conditions }) => [
   {
     id: 'monthly',
     value: (
@@ -22,10 +20,6 @@ const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
       </span>
     ),
   },
-  {
-    id: 'rating',
-    value: <StarRating value={rating || 5} />,
-  },
   { key: 'maxAmount', format: 'money' },
   { key: 'amortization', format: 'money' },
   { key: 'interestLibor', format: 'percentage' },
@@ -34,24 +28,12 @@ const getOfferValues = ({ monthly, rating, conditions, counterparts }) => [
   { key: 'interest5', format: 'percentage' },
   { key: 'interest10', format: 'percentage' },
   {
-    component: (
-      <ConditionsButton conditions={conditions} counterparts={counterparts} />
-    ),
+    component: <ConditionsButton conditions={conditions} />,
   },
 ];
 
 const sortOffers = (offers, sort, isAscending) =>
   offers.sort((a, b) => (isAscending ? a[sort] - b[sort] : b[sort] - a[sort]));
-
-const handleSave = (id, type, loan) => {
-  loanUpdate.run({
-    object: {
-      'logic.lender.offerId': id,
-      'logic.lender.type': id ? type : undefined,
-    },
-    loanId: loan._id,
-  });
-};
 
 class OfferList extends Component {
   constructor(props) {
@@ -66,7 +48,7 @@ class OfferList extends Component {
     this.setState(prev => ({ isAscending: !prev.isAscending }));
 
   render() {
-    const { loan, offers, disabled, property, allowDelete } = this.props;
+    const { loan, offers } = this.props;
     const { sort, isAscending } = this.state;
 
     const filteredOffers = sortOffers(
@@ -74,7 +56,6 @@ class OfferList extends Component {
       sort,
       isAscending,
     );
-    const { lender } = loan.logic;
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>
@@ -95,11 +76,7 @@ class OfferList extends Component {
           <Offer
             offerValues={getOfferValues(offer)}
             offer={offer}
-            key={offer.uid}
-            handleSave={(id, type) => handleSave(id, type, loan)}
-            chosen={lender.offerId === offer.id && lender.type === offer.type}
-            disabled={disabled}
-            allowDelete={allowDelete}
+            key={offer._id}
           />
         ))}
       </div>

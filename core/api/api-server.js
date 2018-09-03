@@ -48,8 +48,8 @@ Meteor.startup(() => {
     if (Meteor.isDevelopment) {
       if (message) {
         console.log('===== message =====', message);
-        console.log('===== stack =====');
-        console.log(util.inspect(stack, false, null));
+        // console.log('===== stack =====');
+        // console.log(util.inspect(stack, false, null));
       }
     }
     return originalMeteorDebug.apply(this, arguments);

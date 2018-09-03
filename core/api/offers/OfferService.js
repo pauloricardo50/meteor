@@ -5,14 +5,6 @@ export class OfferService {
 
   insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
 
-  insertAdminOffer = ({ offer, loanId, userId }) =>
-    Offers.insert({
-      ...offer,
-      loanId,
-      userId,
-      canton: 'GE',
-    });
-
   remove = ({ offerId }) => Offers.remove(offerId);
 
   getOfferById = offerId => Offers.findOne(offerId);

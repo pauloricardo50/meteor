@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import T from 'core/components/Translation';
-import StarRating from 'core/components/OfferList/StarRating.jsx';
+import StarRating from 'core/components/StarRating';
 import Button from 'core/components/Button';
 
 import { withState } from 'recompose';

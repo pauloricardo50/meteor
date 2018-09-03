@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { DialogForm, FIELD_TYPES } from 'core/components/Form';
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
-import { INTEREST_RATES } from 'core/api/constants';
+import { DialogForm, FIELD_TYPES } from '../Form';
+import T from '../Translation';
+import Button from '../Button';
+import { INTEREST_RATES } from '../../api/constants';
 import OfferAdderContainer from './OfferAdderContainer';
 import { FORM_NAME, HAS_COUNTERPARTS, IS_DISCOUNT } from './constants';
 
-const interestRatesFormArray = index =>
+export const interestRatesFormArray = index =>
   Object.values(INTEREST_RATES).map(rate => ({
-    id: `${rate}-${index}`,
+    id: index ? `${rate}-${index}` : rate,
     fieldType: FIELD_TYPES.PERCENT,
     label: <T id={`offer.${rate}`} />,
     required: false,
     defaultValue: 0,
   }));
 
-const baseForm = [
+export const baseForm = [
   { id: 'organization' },
   {
     id: 'maxAmount',
@@ -34,6 +34,10 @@ const baseForm = [
     label: <T id="offer.conditions" />,
     required: false,
   },
+];
+
+export const standardForm = [
+  ...baseForm,
   ...interestRatesFormArray(1),
   { id: HAS_COUNTERPARTS, fieldType: FIELD_TYPES.CHECKBOX },
 ];
@@ -53,8 +57,8 @@ const counterpartsForm = isDiscount => [
 
 const getFormArray = (hasCounterparts, isDiscount) =>
   (hasCounterparts
-    ? [...baseForm, ...counterpartsForm(isDiscount)]
-    : baseForm
+    ? [...standardForm, ...counterpartsForm(isDiscount)]
+    : standardForm
   ).map(field => ({
     ...field,
     required: field.required !== undefined ? field.required : true,

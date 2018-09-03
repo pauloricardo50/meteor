@@ -8,10 +8,11 @@ import Loans from '../../loans';
 import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
 
-let loanId;
-let loan;
 
 describe('LoanService', () => {
+  let loanId;
+  let loan;
+  
   beforeEach(() => {
     resetDatabase();
   });

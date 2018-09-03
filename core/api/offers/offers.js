@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { INTEREST_RATES, CANTONS, OFFERS_COLLECTION } from '../constants';
+import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 
@@ -16,7 +16,31 @@ Offers.allow({
   remove: () => false,
 });
 
-const singleOffer = new SimpleSchema({
+export const OfferSchema = new SimpleSchema({
+  loanId: {
+    type: String,
+  },
+  userId: {
+    type: String,
+    optional: true,
+  },
+  createdAt: {
+    type: Date,
+    autoValue() {
+      if (this.isInsert) {
+        return new Date();
+      }
+    },
+  },
+  updatedAt: {
+    type: Date,
+    autoValue() {
+      if (this.isInsert || this.isUpdate) {
+        return new Date();
+      }
+    },
+  },
+  organization: String,
   maxAmount: {
     type: Number,
     min: 0,
@@ -40,51 +64,11 @@ const singleOffer = new SimpleSchema({
     }),
     {},
   ),
-});
-
-export const OfferSchema = new SimpleSchema({
-  loanId: {
-    type: String,
-  },
-  userId: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-    },
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert || this.isUpdate) {
-        return new Date();
-      }
-    },
-  },
-  organization: String,
-  canton: {
-    type: String,
-    allowedValues: Object.keys(CANTONS),
-  },
-  standardOffer: {
-    type: singleOffer,
-  },
-  counterpartOffer: {
-    type: singleOffer,
-    optional: true,
-  },
-  counterparts: {
-    type: String,
-    optional: true,
-  },
   conditions: {
-    type: String,
+    type: Array,
     optional: true,
   },
+  'conditions.$': String,
 });
 
 // Attach schema

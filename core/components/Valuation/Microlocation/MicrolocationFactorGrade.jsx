@@ -2,7 +2,7 @@
 import React from 'react';
 import T from 'core/components/Translation';
 
-import StarRating from 'core/components/OfferList/StarRating.jsx';
+import StarRating from 'core/components/StarRating';
 
 type MiocrolocationFactorGradeProps = {
   label?: String,

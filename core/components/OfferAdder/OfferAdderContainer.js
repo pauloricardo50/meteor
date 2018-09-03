@@ -59,19 +59,25 @@ const mapValuesToOffer = ({
     }
     : undefined;
 
-  return {
-    loanId,
-    organization,
-    conditions,
-    counterparts,
-    standardOffer,
-    counterpartOffer,
-  };
+  return [
+    {
+      loanId,
+      organization,
+      conditions: [conditions],
+      ...standardOffer,
+    },
+    hasCounterparts && {
+      loanId,
+      organization,
+      conditions: [conditions, counterparts],
+      ...counterpartOffer,
+    },
+  ].filter(offer => !!offer);
 };
 
 const onSubmit = (values, loanId) => {
-  const offer = mapValuesToOffer({ ...values, loanId });
-  return offerInsert.run({ offer, loanId });
+  const offers = mapValuesToOffer({ ...values, loanId });
+  return Promise.all(offers.map(offer => offerInsert.run({ offer, loanId })));
 };
 
 export default compose(
