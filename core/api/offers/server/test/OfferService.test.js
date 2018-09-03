@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 
 import OfferService from '../../OfferService';
 
-describe.only('OfferService', () => {
+describe('OfferService', () => {
   let offer;
   let offerId;
 
