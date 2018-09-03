@@ -56,7 +56,6 @@ class OfferList extends Component {
       sort,
       isAscending,
     );
-    console.log('filteredOffers', filteredOffers);
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>
