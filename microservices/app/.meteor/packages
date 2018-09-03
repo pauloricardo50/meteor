@@ -46,7 +46,6 @@ dburles:mongo-collection-instances
 
 
 # UI tricks
-kadira:dochead                  # Set custom page titles easily
 themeteorchef:bert
 fortawesome:fontawesome
 meteorhacks:inject-initial
