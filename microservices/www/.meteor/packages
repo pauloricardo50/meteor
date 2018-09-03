@@ -18,6 +18,9 @@ fourseven:scss@4.5.0
 themeteorchef:bert
 juliancwirko:postcss
 
+# Put this before factory
+aldeed:collection2-core
+
 # Testing
 cultofcoders:mocha
 dburles:factory
@@ -26,7 +29,6 @@ meteortesting:mocha
 
 
 # Data
-aldeed:collection2@3.0.0
 cultofcoders:mutations
 cultofcoders:grapher-react
 ddp-rate-limiter@1.0.7
