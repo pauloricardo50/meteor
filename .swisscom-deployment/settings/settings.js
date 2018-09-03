@@ -21,6 +21,7 @@ export const APPLICATIONS = {
   WWW: 'www',
 };
 
+export const APP_BUILDPACK = 'https://github.com/cloudfoundry/nodejs-buildpack';
 export const APP_DEPENDENCIES = { cfenv: '1.0.4' };
 export const APP_ENGINES = { node: '8.11.3' };
 export const APP_LAUNCHER = 'launcher.js';
@@ -109,6 +110,7 @@ export const appManifestYAMLData = ({
       name: applicationName,
       memory,
       instances,
+      buildpack: APP_BUILDPACK,
       services: [service],
     },
   ],
@@ -117,6 +119,7 @@ export const appManifestYAMLData = ({
 export const tmuxinatorPane = ({
   microservicePath,
   applicationName,
+  name,
   buildDirectoryPath,
   applicationImage,
   applicationsToCheck,
@@ -127,7 +130,7 @@ export const tmuxinatorPane = ({
     `cd ${buildDirectoryPath}`,
     `mv ./*.tar.gz ./${applicationImage}`,
     `cd ../../`,
-    `babel-node -- pushApplication.js -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
+    `babel-node -- pushApplication.js -a ${name} -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
       { applicationName, buildDirectoryPath },
     )}`,
     `cd ..`,

@@ -37,6 +37,16 @@ class CloudFoundryService {
 
   pushApplication = buildDirectory =>
     executeCommand(cloudFoundryCommands.push(buildDirectory));
+
+  pushApplicationZeroDownTime = ({ directory, manifest, name }) =>
+    executeCommand(
+      cloudFoundryCommands.zeroDownTimePush({ directory, manifest, name }),
+    );
+
+  blueGreenDeploy = ({ buildDirectory, name, manifest }) =>
+    executeCommand(
+      cloudFoundryCommands.blueGreenDeploy({ buildDirectory, name, manifest }),
+    ).then(() => executeCommand(cloudFoundryCommands.deleteApp(`${name}-old`)));
 }
 
 export default new CloudFoundryService();

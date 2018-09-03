@@ -12,6 +12,11 @@ export const cloudFoundryCommands = {
   },
   updateService: ({ serviceInstance, plan }) =>
     `cf update-service ${serviceInstance} -p ${plan}`,
+  zeroDownTimePush: ({ directory, manifest, name }) =>
+    `cf zero-downtime-push ${name} -f ${manifest} -p ${directory}`,
+  blueGreenDeploy: ({ buildDirectory, name, manifest }) =>
+    `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest}`,
+  deleteApp: name => `cf delete ${name} -f`,
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {

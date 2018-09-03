@@ -10,3 +10,6 @@ if [ "$cf" = '0' ]; then
     ./install-cf.sh
 fi
 
+# Install blue-green-deploy
+cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
+cf install-plugin blue-green-deploy -r CF-Community -f

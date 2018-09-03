@@ -71,6 +71,7 @@ const generateTmuxinatorConfigForApplication = root => ({
   microservicePath,
 }) => ({
   applicationName,
+  name,
   microservicePath: `${getCurrentPath()}/${microservicePath}`,
   buildDirectoryPath: `${getCurrentPath()}/${root}/${name}`,
   applicationImage: `${name}.tar.gz`,
