@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { offerDelete } from '../../api';
 import ConfirmMethod from '../ConfirmMethod';
 import OfferField from './OfferField';
+import OfferModifier from './OfferModifier';
 
 const Offer = ({ offer, offerValues }) => (
   <div className="offer-list-item">
@@ -12,6 +13,7 @@ const Offer = ({ offer, offerValues }) => (
       {offerValues.map(offerValue => (
         <OfferField key={offer._id} offerValue={offerValue} offer={offer} />
       ))}
+      <OfferModifier offer={offer} />
       <ConfirmMethod
         label="Supprimer"
         keyword="Supprimer"
