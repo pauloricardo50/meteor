@@ -21,7 +21,9 @@ const ContactButtonOverlay = ({
   open,
 }: ContactButtonOverlayProps) => (
   <div
-    className={cx('card1 card-top contact-button-overlay', { closed: !open })}
+    className={cx('card1 shadow-2 card-top contact-button-overlay', {
+      closed: !open,
+    })}
   >
     <div className="top">
       <img src={src} alt={name} />

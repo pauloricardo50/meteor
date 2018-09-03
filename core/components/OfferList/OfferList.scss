@@ -1,10 +1,12 @@
 .offer-list-item {
   display: flex;
   flex-wrap: nowrap;
-  padding: 0;
-  border: 1px solid $border-grey;
-  padding: 16px;
+
   margin-bottom: 16px;
+  padding: 0;
+  padding: 16px;
+
+  border: 1px solid $border-grey;
 
   h3 {
     margin: 0;
@@ -18,9 +20,10 @@
 
   &-value {
     flex-basis: 25%;
+
+    box-sizing: border-box;
     min-width: 140px;
     padding: 8px;
-    box-sizing: border-box;
   }
 
   .value {
@@ -28,10 +31,13 @@
     flex-direction: column;
 
     label {
-      margin: 0;
-      text-overflow: ellipsis;
       overflow: hidden;
+
+      margin: 0;
+
       white-space: nowrap;
+      text-overflow: ellipsis;
+
       font-size: 80%;
     }
 

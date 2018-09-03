@@ -106,6 +106,7 @@
     .progress {
       display: flex;
       align-items: center;
+
       opacity: 0.5;
 
       .icon {
@@ -121,7 +122,7 @@
   margin: 16px 0;
   padding: 0 16px;
 
-  > * {
+   > * {
     width: 100%;
   }
 }
