@@ -9,8 +9,6 @@ import PropertiesPageDetail from './PropertiesPageDetail';
 const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
   <Page id="PropertiesPage" titleId="PropertiesPage.title">
     <section className="card1 card-top properties-page">
-      <div className="adder" />
-
       <div className="properties">
         {properties.map(property => (
           <PropertiesPageDetail
@@ -19,6 +17,7 @@ const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
             key={property._id}
           />
         ))}
+        
         <PropertyAdder
           loanId={loanId}
           button={(
