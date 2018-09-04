@@ -53,20 +53,20 @@ describe('BorrowerCalculator', () => {
 
     it('returns half of 1 bonus', () => {
       expect(Calculator.getBonusIncome({
-        borrowers: { bonus: { bonus2014: 100 } },
+        borrowers: { bonus: { bonus2018: 100 } },
       })).to.equal(50);
     });
 
     it('returns half of average 2 bonuses', () => {
       expect(Calculator.getBonusIncome({
-        borrowers: { bonus: { bonus2014: 100, bonus2015: 0 } },
+        borrowers: { bonus: { bonus2018: 100, bonus2015: 0 } },
       })).to.equal(25);
     });
 
     it('returns half of average 3 bonuses', () => {
       expect(Calculator.getBonusIncome({
         borrowers: {
-          bonus: { bonus2014: 100, bonus2015: 0, bonus2016: 200 },
+          bonus: { bonus2018: 100, bonus2017: 0, bonus2016: 200 },
         },
       })).to.equal(50);
     });
@@ -75,10 +75,10 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getBonusIncome({
         borrowers: {
           bonus: {
-            bonus2014: 100,
             bonus2015: 50,
             bonus2016: 150,
             bonus2017: 40,
+            bonus2018: 100,
           },
         },
       })).to.equal(50);
@@ -86,7 +86,7 @@ describe('BorrowerCalculator', () => {
 
     it('returns 0 if an invalid bonus is given', () => {
       expect(Calculator.getBonusIncome({
-        borrowers: { bonus: { bonus2014: 'hi' } },
+        borrowers: { bonus: { bonus2018: 'hi' } },
       })).to.equal(0);
     });
 

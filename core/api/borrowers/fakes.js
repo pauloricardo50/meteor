@@ -27,10 +27,10 @@ export const completeFakeBorrower = {
   salary: 300000,
   bonusExists: true,
   bonus: {
-    bonus2014: 12300,
     bonus2015: 15490,
     bonus2016: 11140,
     bonus2017: 13780,
+    bonus2018: 12300,
   },
   otherIncome: [
     {

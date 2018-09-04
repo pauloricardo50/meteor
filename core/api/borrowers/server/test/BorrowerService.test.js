@@ -10,8 +10,6 @@ import Borrowers from '../../borrowers';
 describe('BorrowerService', () => {
   let borrower;
   let user;
-  const firstName = 'testFirstName';
-  const lastName = 'testLastName';
 
   beforeEach(() => {
     resetDatabase();
