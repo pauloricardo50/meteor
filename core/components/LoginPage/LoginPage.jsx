@@ -1,12 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
+import { Redirect } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 
 import LoginPageLeft from './LoginPageLeft';
 import LoginPageRight from './LoginPageRight';
 
 const LoginPage = ({ location: { search }, history: { push } }) => {
   const { path } = queryString.parse(search);
+
+  if (Meteor.userId()) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <section className="login-page">
