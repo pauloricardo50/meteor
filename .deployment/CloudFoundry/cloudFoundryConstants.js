@@ -13,8 +13,9 @@ export const cloudFoundryCommands = {
   },
   updateService: ({ serviceInstance, plan }) =>
     `cf update-service ${serviceInstance} -p ${plan}`,
-  zeroDownTimePush: ({ directory, manifest, name }) =>
-    `cf zero-downtime-push ${name} -f ${manifest} -p ${directory}`,
+  zeroDownTimePush: (
+    { directory, manifest, name }, // For plugin autopilot
+  ) => `cf zero-downtime-push ${name} -f ${manifest} -p ${directory}`,
   blueGreenDeploy: ({ buildDirectory, name, manifest }) =>
     `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest} --smoke-test ./test.sh`,
   deleteApp: name => `cf delete ${name} -f`,
