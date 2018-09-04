@@ -12,7 +12,7 @@ getOS () {
     esac
 }
 
-machine=$(getOs)
+machine=$(getOS)
 
 echo "Installing package cf for $machine..."
 # If MAC, install with brew

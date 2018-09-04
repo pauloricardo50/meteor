@@ -46,7 +46,7 @@ export const writeYAML = ({ file, data }) => {
 };
 
 export const writeJSON = ({ file, data }) => {
-  fs.writeFileSync(file, JSON.stringify(data));
+  fs.writeFileSync(file, JSON.stringify(data, null, 2));
   return Promise.resolve();
 };
 
@@ -74,3 +74,8 @@ export const getDirectoriesList = path =>
 
 export const isFilePresentInDirectory = ({ path, file }) =>
   fs.readdirSync(path).includes(file);
+
+export const getLastSegmentOfPath = path => {
+  const segments = path.split('/');
+  return segments.pop() || segments.pop();
+};

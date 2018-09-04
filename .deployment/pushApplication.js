@@ -6,12 +6,13 @@ import {
   isFilePresentInDirectory,
 } from './utils/helpers';
 
+import { checkApplicationsCommand } from './settings/settings';
+
 import {
   APPLICATION_SANITY_CHECK_DONE,
   APPLICATION_SANITY_CHECK_ERROR,
   APPLICATION_SANITY_CHECK_PENDING,
-  checkApplicationsCommand,
-} from './settings/settings';
+} from './settings/config';
 
 import CloudFoundryService from './CloudFoundry/CloudFoundryService';
 
@@ -67,12 +68,15 @@ const pollDirectoriesSanityStatus = ({ directories = [], root }) => {
 };
 
 const main = () => {
-  const { directory, files } = argv
+  const { directory, files, application } = argv
     .usage('Usage : $0 [options]')
     .example(
-      '$0 -d ./staging/app -f package.json manifest.yml',
+      '$0 -a e-potek-app-staging -d ./staging/app -f package.json manifest.yml',
       'Push application present inside ./staging/app and check that given files are present',
     )
+    .alias('a', 'application')
+    .nargs('a', 1)
+    .describe('a', 'Application to push')
     .alias('d', 'directory')
     .nargs('d', 1)
     .describe('d', 'Directory to push')
@@ -83,7 +87,9 @@ const main = () => {
     .help('h')
     .alias('h', 'help').argv;
 
-  executeCommand(checkApplicationsCommand({ directory, files })).then(() => {
+  executeCommand(
+    checkApplicationsCommand({ directory, files, application }),
+  ).then(() => {
     process.stdout.write('Polling other applications sanity status...');
     interval = setInterval(
       () =>
@@ -91,7 +97,15 @@ const main = () => {
           directories: getDirectoriesList(`${directory}/../`),
           root: directory,
         })
-          .then(() => CloudFoundryService.pushApplication(directory))
+          .then(() => {
+            console.log('OK');
+            const [manifest] = files.filter(file => file.includes('.yml'));
+            CloudFoundryService.blueGreenDeploy({
+              buildDirectory: directory,
+              name: application,
+              manifest: `${directory}/${manifest}`,
+            });
+          })
           .catch(displayLoadingDots),
       POLLING_INTERVAL,
     );

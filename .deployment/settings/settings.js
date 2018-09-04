@@ -1,45 +1,29 @@
 import {
-  CLOUDFOUNDRY_MARKETPLACE,
-  CLOUDFOUNDRY_MEMORY_LIMIT,
-} from '../CloudFoundry/cloudFoundryConstants';
+  ENVIRONMENT_CONFIG,
+  APP_CONFIGS,
+  APP_SMOKE_TEST_FILES,
+  ENVIRONMENT,
+  APPLICATIONS,
+  SPACES,
+  APP_BUILDPACK,
+  APP_DEPENDENCIES,
+  APP_ENGINES,
+  APP_LAUNCHER,
+  APP_MANIFEST_YML_FILE,
+  APP_PACKAGE_JSON_FILE,
+  APPLICATION_SANITY_CHECK_DONE,
+  APPLICATION_SANITY_CHECK_ERROR,
+  APPLICATION_SANITY_CHECK_PENDING,
+  EXPECTED_FILES_LIST,
+  MICROSERVICES_DIR_PATH,
+  SMOKE_TESTS_BABEL_CONF,
+  SMOKE_TESTS_FOLDER,
+  SMOKE_TESTS_MAIN_SCRIPT,
+  TMUXINATOR_SESSION_NAME,
+  TMUXINATOR_YML,
+} from './config.js';
 
 import { readJSONFile, formatOptionsArray } from '../utils/helpers';
-
-export const ENVIRONMENT = {
-  STAGING: 'staging',
-  PRODUCTION: 'production',
-};
-
-export const SPACES = {
-  [ENVIRONMENT.STAGING]: 'Staging',
-  [ENVIRONMENT.PRODUCTION]: 'Production',
-};
-
-export const APPLICATIONS = {
-  APP: 'app',
-  ADMIN: 'admin',
-  WWW: 'www',
-};
-
-export const APP_DEPENDENCIES = { cfenv: '1.0.4' };
-export const APP_ENGINES = { node: '8.11.3' };
-export const APP_LAUNCHER = 'launcher.js';
-export const APP_MANIFEST_YML_FILE = 'manifest.yml';
-export const APP_PACKAGE_JSON_FILE = 'package.json';
-export const APPLICATION_SANITY_CHECK_DONE = 'done';
-export const APPLICATION_SANITY_CHECK_ERROR = 'error';
-export const APPLICATION_SANITY_CHECK_PENDING = 'pending';
-export const EXPECTED_FILES_LIST = 'applicationsExpectedFilesList.json';
-export const MICROSERVICES_DIR_PATH = '../microservices';
-export const TMUXINATOR_SESSION_NAME = 'deploy';
-export const TMUXINATOR_YML = 'deploy.yml';
-
-export const APP_CONFIGS = {
-  MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
-  MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
-  MB1024_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 1 },
-  MB1024_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 2 },
-};
 
 export const FORMATTED_ENVIRONMENTS = formatOptionsArray(
   Object.values(ENVIRONMENT),
@@ -51,25 +35,16 @@ export const FORMATTED_APP_CONFIGS = formatOptionsArray(
   Object.keys(APP_CONFIGS),
 );
 
-const ENVIRONMENT_CONFIG = {
-  [ENVIRONMENT.STAGING]: {
-    serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.small,
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
-  },
-  [ENVIRONMENT.PRODUCTION]: {
-    serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium,
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
-  },
-};
+const generateSmokeTestFilesList = ({ applicationName }) =>
+  APP_SMOKE_TEST_FILES[applicationName].map(
+    file => `${SMOKE_TESTS_FOLDER}/${applicationName}/${file}`,
+  );
 
 const applicationSettings = ({ applicationName, environment }) => ({
   applicationName,
   name: `e-potek-${applicationName}-${environment}`, //Name on the server
   microservicePath: `${MICROSERVICES_DIR_PATH}/${applicationName}`,
+  smokeTests: generateSmokeTestFilesList({ environment, applicationName }),
   ...ENVIRONMENT_CONFIG[environment][applicationName].appConfig,
 });
 
@@ -109,6 +84,7 @@ export const appManifestYAMLData = ({
       name: applicationName,
       memory,
       instances,
+      buildpack: APP_BUILDPACK,
       services: [service],
     },
   ],
@@ -117,6 +93,7 @@ export const appManifestYAMLData = ({
 export const tmuxinatorPane = ({
   microservicePath,
   applicationName,
+  name,
   buildDirectoryPath,
   applicationImage,
   applicationsToCheck,
@@ -127,7 +104,7 @@ export const tmuxinatorPane = ({
     `cd ${buildDirectoryPath}`,
     `mv ./*.tar.gz ./${applicationImage}`,
     `cd ../../`,
-    `babel-node -- pushApplication.js -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
+    `babel-node -- pushApplication.js -a ${name} -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
       { applicationName, buildDirectoryPath },
     )}`,
     `cd ..`,

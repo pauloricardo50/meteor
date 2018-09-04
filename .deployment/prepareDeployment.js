@@ -5,30 +5,39 @@ import {
   writeApplicationsExpectedFilesListJSON,
 } from './writeFiles';
 
+import { createDeploySettingsForEnv } from './settings/settings';
+
 import {
-  createDeploySettingsForEnv,
   APPLICATIONS,
   APP_LAUNCHER,
   APP_PACKAGE_JSON_FILE,
   APP_MANIFEST_YML_FILE,
   EXPECTED_FILES_LIST,
   TMUXINATOR_YML,
-} from './settings/settings';
+  SMOKE_TESTS_BABEL_CONF,
+  SMOKE_TESTS_FOLDER,
+} from './settings/config';
 
-import { mkdir, rmDir, copyFile } from './utils/helpers';
+import { mkdir, rmDir, copyFile, getLastSegmentOfPath } from './utils/helpers';
 
 export const getCurrentPath = () => __dirname;
 
 // To keep track of each file that is supposed to be created
 let applicationsExpectedFilesList = {};
 
+const addFileToApplicationsExpectedFilesList = ({ applicationName, file }) =>
+  (applicationsExpectedFilesList[applicationName][
+    getLastSegmentOfPath(file)
+  ] = getLastSegmentOfPath(file));
+
 const writeApplicationPackageFiles = ({ applications, root }) => {
   const promises = applications.map(({ name, applicationName }) => {
     const image = `${name}.tar.gz`;
-    applicationsExpectedFilesList[applicationName].applicationImage = image;
-    applicationsExpectedFilesList[
-      applicationName
-    ].packageJSON = APP_PACKAGE_JSON_FILE;
+    addFileToApplicationsExpectedFilesList({ applicationName, file: image });
+    addFileToApplicationsExpectedFilesList({
+      applicationName,
+      file: APP_PACKAGE_JSON_FILE,
+    });
     return mkdir(`${getCurrentPath()}/${root}/${name}`).then(() =>
       writeApplicationPackageJSON({
         applicationName: name,
@@ -44,9 +53,10 @@ const writeApplicationPackageFiles = ({ applications, root }) => {
 const writeApplicationManifestFiles = ({ applications, service, root }) => {
   const promises = applications.map(
     ({ applicationName, name, memory, instances }) => {
-      applicationsExpectedFilesList[
-        applicationName
-      ].manifestYML = APP_MANIFEST_YML_FILE;
+      addFileToApplicationsExpectedFilesList({
+        applicationName,
+        file: APP_MANIFEST_YML_FILE,
+      });
       return writeApplicationManifestYAML({
         applicationName: name,
         memory,
@@ -71,6 +81,7 @@ const generateTmuxinatorConfigForApplication = root => ({
   microservicePath,
 }) => ({
   applicationName,
+  name,
   microservicePath: `${getCurrentPath()}/${microservicePath}`,
   buildDirectoryPath: `${getCurrentPath()}/${root}/${name}`,
   applicationImage: `${name}.tar.gz`,
@@ -78,9 +89,11 @@ const generateTmuxinatorConfigForApplication = root => ({
 
 const copyMeteorSettingsFile = ({ applications, meteorSettings, root }) => {
   const promises = applications.map(({ name, applicationName }) => {
-    applicationsExpectedFilesList[
-      applicationName
-    ].meteorSettings = meteorSettings;
+    addFileToApplicationsExpectedFilesList({
+      applicationName,
+      file: meteorSettings,
+    });
+
     return copyFile({
       sourcePath: `${getCurrentPath()}/${root}/${meteorSettings}`,
       destinationPath: `${getCurrentPath()}/${root}/${name}/${meteorSettings}`,
@@ -92,7 +105,10 @@ const copyMeteorSettingsFile = ({ applications, meteorSettings, root }) => {
 
 const copyLauncherScript = ({ applications, root }) => {
   const promises = applications.map(({ name, applicationName }) => {
-    applicationsExpectedFilesList[applicationName].launcher = APP_LAUNCHER;
+    addFileToApplicationsExpectedFilesList({
+      applicationName,
+      file: APP_LAUNCHER,
+    });
     return copyFile({
       sourcePath: `${getCurrentPath()}/${root}/${APP_LAUNCHER}`,
       destinationPath: `${getCurrentPath()}/${root}/${name}/${APP_LAUNCHER}`,
@@ -100,6 +116,41 @@ const copyLauncherScript = ({ applications, root }) => {
   });
 
   return Promise.all(promises);
+};
+
+const copySmokeTestBabelConfig = ({ applications, root }) => {
+  const promises = applications.map(({ name, applicationName, smokeTests }) => {
+    addFileToApplicationsExpectedFilesList({
+      applicationName,
+      file: SMOKE_TESTS_BABEL_CONF,
+    });
+    return copyFile({
+      sourcePath: `${getCurrentPath()}/${SMOKE_TESTS_FOLDER}/${SMOKE_TESTS_BABEL_CONF}`,
+      destinationPath: `${getCurrentPath()}/${root}/${name}/${SMOKE_TESTS_BABEL_CONF}`,
+    });
+  });
+  return Promise.all(promises);
+};
+
+const copySmokeTestFiles = ({ applications, root }) => {
+  const promises = applications.map(({ name, applicationName, smokeTests }) => {
+    const appPromises = smokeTests.map(file => {
+      addFileToApplicationsExpectedFilesList({
+        applicationName,
+        file,
+      });
+      return copyFile({
+        sourcePath: `${getCurrentPath()}/${file}`,
+        destinationPath: `${getCurrentPath()}/${root}/${name}/${getLastSegmentOfPath(
+          file,
+        )}`,
+      });
+    });
+    return Promise.all(appPromises);
+  });
+  return Promise.all(promises).then(() =>
+    copySmokeTestBabelConfig({ applications, root }),
+  );
 };
 
 const writeApplicationsExpectedFilesList = ({ applications, root }) =>
@@ -116,6 +167,7 @@ export const prepareDeployment = ({
     service,
     root,
     meteorSettings,
+    smokeTest,
     applications: allApplications,
   } = createDeploySettingsForEnv(environment);
 
@@ -133,6 +185,7 @@ export const prepareDeployment = ({
     .then(() => writeApplicationManifestFiles({ applications, service, root }))
     .then(() => copyMeteorSettingsFile({ applications, meteorSettings, root }))
     .then(() => copyLauncherScript({ applications, root }))
+    .then(() => copySmokeTestFiles({ applications, root }))
     .then(() => writeApplicationsExpectedFilesList({ applications, root }))
     .then(() =>
       writeTmuxinatorScript({

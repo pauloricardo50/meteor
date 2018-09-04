@@ -1,12 +1,13 @@
 import CloudFoundryService from './CloudFoundry/CloudFoundryService';
+import { createDeploySettingsForEnv } from './settings/settings';
+
 import {
   SPACES,
   APP_CONFIGS,
   FORMATTED_APP_CONFIGS,
   FORMATTED_ENVIRONMENTS,
   FORMATTED_APPLICATIONS,
-  createDeploySettingsForEnv,
-} from './settings/settings';
+} from './settings/config';
 
 import { writeBash } from './utils/helpers';
 import argv from 'yargs';

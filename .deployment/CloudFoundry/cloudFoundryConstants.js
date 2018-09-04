@@ -3,6 +3,7 @@ export const cloudFoundryCommands = {
   createService: ({ service, plan, serviceInstance }) =>
     `cf create-service ${service} ${plan} ${serviceInstance}`,
   listServices: () => 'cf services',
+  listApps: () => 'cf apps',
   push: buildDirectory => `cd ${buildDirectory} && cf push`,
   scale: ({ appName, instances, disk, memory }) => {
     const instancesScale = instances ? `-i ${instances}` : '';
@@ -12,6 +13,12 @@ export const cloudFoundryCommands = {
   },
   updateService: ({ serviceInstance, plan }) =>
     `cf update-service ${serviceInstance} -p ${plan}`,
+  zeroDownTimePush: (
+    { directory, manifest, name }, // For plugin autopilot
+  ) => `cf zero-downtime-push ${name} -f ${manifest} -p ${directory}`,
+  blueGreenDeploy: ({ buildDirectory, name, manifest }) =>
+    `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest} --smoke-test ./test.sh`,
+  deleteApp: name => `cf delete ${name} -f`,
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {

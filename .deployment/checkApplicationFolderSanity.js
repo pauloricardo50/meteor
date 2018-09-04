@@ -3,7 +3,7 @@ import { getDirectoryFilesList, touchFile } from './utils/helpers';
 import {
   APPLICATION_SANITY_CHECK_DONE,
   APPLICATION_SANITY_CHECK_ERROR,
-} from './settings/settings';
+} from './settings/config';
 
 const checkIfDirectoryIncludesAllFiles = ({ directoryFiles, files }) =>
   new Promise((resolve, reject) => {
