@@ -97,12 +97,8 @@ const main = () => {
           root: directory,
         })
           .then(() => {
+            console.log('OK');
             const [manifest] = files.filter(file => file.includes('.yml'));
-            // CloudFoundryService.pushApplicationZeroDownTime({
-            //   directory,
-            //   name: application,
-            //   manifest: `${directory}/${manifest}`,
-            // });
             CloudFoundryService.blueGreenDeploy({
               buildDirectory: directory,
               name: application,
