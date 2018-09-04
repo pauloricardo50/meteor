@@ -5,8 +5,9 @@ import {
   writeApplicationsExpectedFilesListJSON,
 } from './writeFiles';
 
+import { createDeploySettingsForEnv } from './settings/settings';
+
 import {
-  createDeploySettingsForEnv,
   APPLICATIONS,
   APP_LAUNCHER,
   APP_PACKAGE_JSON_FILE,
@@ -15,7 +16,7 @@ import {
   TMUXINATOR_YML,
   SMOKE_TESTS_BABEL_CONF,
   SMOKE_TESTS_FOLDER,
-} from './settings/settings';
+} from './settings/config';
 
 import { mkdir, rmDir, copyFile, getLastSegmentOfPath } from './utils/helpers';
 

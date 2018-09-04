@@ -40,10 +40,12 @@ Two scripts are available on root package.json:
 
 ### Tmux environment
 
-The script will always run in a `tmux` environment (executed using [tmuxinator](https://github.com/tmuxinator/tmuxinator))
+The script will always run in a `tmux` environment (executed using [tmuxinator](https://github.com/tmuxinator/tmuxinator)). Once the deployment is done, you can detach from tmux (Ctrl-b + d) and it will automatically kill the tmux session and remove the temp files.
+
+If an error occurs, the script will throw the error and stop.
 
 ## Configuration
-The main configuration file is located in `.deployment/settings/settings.js`
+The main configuration file is located in `.deployment/settings/config.js`
 
 ### Changing applications container config
 The constant called `ENVIRONMENT_CONFIG` contains each application container config:

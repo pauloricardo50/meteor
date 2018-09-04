@@ -6,12 +6,13 @@ import {
   isFilePresentInDirectory,
 } from './utils/helpers';
 
+import { checkApplicationsCommand } from './settings/settings';
+
 import {
   APPLICATION_SANITY_CHECK_DONE,
   APPLICATION_SANITY_CHECK_ERROR,
   APPLICATION_SANITY_CHECK_PENDING,
-  checkApplicationsCommand,
-} from './settings/settings';
+} from './settings/config';
 
 import CloudFoundryService from './CloudFoundry/CloudFoundryService';
 
