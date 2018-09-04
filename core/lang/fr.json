@@ -1058,6 +1058,7 @@
   "PasswordResetPage.CTA": "Login",
   "PasswordResetPage.password": "Votre nouveau mot de passe",
   "PasswordResetPage.title": "Bonjour {name}, choisissez un mot de passe",
+  "PasswordResetPage.description": "Choisissez votre nouveau mot de passe",
   "ProcessPageBar.next": "Suivant",
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
