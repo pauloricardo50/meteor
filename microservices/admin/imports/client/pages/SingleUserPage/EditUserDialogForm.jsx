@@ -21,11 +21,11 @@ const formArray = getEditUserFormArray(editUserFormFields);
 const onSubmit = ({ data, userId }) => editUser.run({ userId, object: data });
 
 const EditUserDialogForm = ({
-  user: { _id, firstName, lastName, phoneNumbers },
+  user,
 }) => (
   <DialogForm
     form="admin-edit-user"
-    onSubmit={data => onSubmit({ data, userId: _id })}
+    onSubmit={data => onSubmit({ data, userId: user._id })}
     button={(
       <Button raised primary>
         <T id="EditUserDialogForm.buttonLabel" />
@@ -33,7 +33,7 @@ const EditUserDialogForm = ({
     )}
     title={<T id="EditUserDialogForm.dialogTitle" />}
     formArray={formArray}
-    initialValues={{ firstName, lastName, phoneNumbers }}
+    initialValues={user}
   />
 );
 
