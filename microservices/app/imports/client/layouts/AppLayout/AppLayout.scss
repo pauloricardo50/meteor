@@ -32,13 +32,16 @@
 }
 
 .app-layout .wrapper {
-  height: 100%;
-  min-height: 100%;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: stretch;
 }
 
 .app-layout .wrapper .page {
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 

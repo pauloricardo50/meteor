@@ -13,17 +13,11 @@ const getStructurePropertyWithDocuments = ({
 
 const FilesPage = props => (
   <Page id="FilesPage">
-    <div className="card1 card-top">
-      <p style={{ marginBottom: 32 }}>
-        <T id="FilesPage.description" />
-      </p>
-
-      <FileTabs
-        {...props}
-        property={getStructurePropertyWithDocuments(props)}
-        borrowers={props.loan.borrowers}
-      />
-    </div>
+    <FileTabs
+      {...props}
+      property={getStructurePropertyWithDocuments(props)}
+      borrowers={props.loan.borrowers}
+    />
   </Page>
 );
 
