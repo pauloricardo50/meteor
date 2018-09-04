@@ -74,7 +74,7 @@ Each environment needs a `serviceConfig` object. This object describes the plan 
 - `CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.large`
 
 
-**/!\ You can't change the service config without destroying the existing mongodb service, so you need to migrate data, etc. /!\**
+**WARNING: You can't change the service config without destroying the existing mongodb service, so you need to migrate data, etc.**
 
 Each application in environment can have a different `appConfig` (i.e. application container config). The available (but still editable) configs are defined in constant `APP_CONFIGS`:
 
