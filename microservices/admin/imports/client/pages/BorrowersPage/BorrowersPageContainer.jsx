@@ -1,4 +1,4 @@
-import query from 'core/api/borrowers/queries/borrowers';
+import query from 'core/api/borrowers/queries/adminBorrowers';
 import { withSmartQuery } from 'core/api';
 
 const BorrowersPageContainer = withSmartQuery({
