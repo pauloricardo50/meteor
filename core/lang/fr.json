@@ -800,6 +800,7 @@
   "general.amortization": "Amortissement",
   "general.areYouSure": "Êtes-vous sûr ?",
   "general.borrower": "Emprunteur",
+  "general.borrowerWithIndex": "Emprunteur {index}",
   "general.buildingMaintenance": "Frais d'entretien",
   "general.cancel": "Annuler",
   "general.close": "Fermer",

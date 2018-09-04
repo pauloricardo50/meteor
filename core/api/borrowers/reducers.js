@@ -6,6 +6,7 @@ Borrowers.addReducers({
       firstName: 1,
       lastName: 1,
     },
-    reduce: ({ firstName, lastName }) => `${firstName} ${lastName}`,
+    reduce: ({ firstName, lastName }) =>
+      [firstName, lastName].filter(x => x).join(' '),
   },
 });

@@ -14,14 +14,18 @@ const LoanChecklist = ({ loan }: LoanChecklistProps) => (
         <T id="LoanChecklist.missingFields" />
       </h3>
       <LoanChecklistList
-        title={loan.structure.property.address1}
+        title={loan.structure.property.address1 || <T id="general.property" />}
         ids={Calculator.getMissingPropertyFields({ loan })}
         intlPrefix="Forms"
       />
-      {loan.borrowers.map(borrower => (
+      {loan.borrowers.map((borrower, index) => (
         <LoanChecklistList
           key={borrower._id}
-          title={borrower.name}
+          title={
+            borrower.name || (
+              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+            )
+          }
           ids={Calculator.getMissingBorrowerFields({ borrowers: borrower })}
           intlPrefix="Forms"
         />
@@ -33,14 +37,18 @@ const LoanChecklist = ({ loan }: LoanChecklistProps) => (
         <T id="LoanChecklist.missingDocuments" />
       </h3>
       <LoanChecklistList
-        title={loan.structure.property.address1}
+        title={loan.structure.property.address1 || <T id="general.property" />}
         ids={Calculator.getMissingPropertyDocuments({ loan })}
         intlPrefix="files"
       />
-      {loan.borrowers.map(borrower => (
+      {loan.borrowers.map((borrower, index) => (
         <LoanChecklistList
           key={borrower._id}
-          title={borrower.name}
+          title={
+            borrower.name || (
+              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+            )
+          }
           ids={Calculator.getMissingBorrowerDocuments({ borrowers: borrower })}
           intlPrefix="files"
         />
