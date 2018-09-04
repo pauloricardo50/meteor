@@ -16,7 +16,7 @@ const TopNavButtons = (props: TopNavButtonsProps) => {
       {children}
       {currentUser ? (
         <React.Fragment>
-          {currentUser.email}
+          {currentUser.name}
           <TopNavDropdown {...props} />
         </React.Fragment>
       ) : (
