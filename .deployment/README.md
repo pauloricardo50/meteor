@@ -2,15 +2,15 @@
 
 **Automatically deploys apps with zero downtime**
 
-This script builds the desired applications and push them in parallel on the desired application containers, for both **staging** and **production** environment, with zero downtime. Each application container can be configured (memory and instances) as desired through configuration files.
-Smoke tests can also be run on the server once a new application is uploaded to test its viability before replacing the old one.
+This script builds the chosen applications and pushes them in parallel on their respective application containers, for both **staging** and **production** environment, with zero downtime ;). Each application container can be configured (memory and instances) as wanted through configuration files (see below).
+Smoke tests can also be run on the server once a new application is uploaded to test its stability before replacing the old one.
 
 ## Requirements
 
-The scripts installs every dependency required to run. However, you first need to:
+The script installs every dependency required to run. However, you first need to:
 
 - Have [CF client](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) installed
-- Be logged in on e-potek cf org `e-potek-engineering` with **org managers** rights, and **space developper + space manager** rights on spaces `Production` and `Staging`
+- Be logged in on e-potek cf org `e-potek-engineering` with **org managers** rights, and **space developer + space manager** rights on spaces `Production` and `Staging`
 
 This will probably be changed in the future, thus no dependency will be required.
 
@@ -47,7 +47,7 @@ If an error occurs, the script will throw the error and stop.
 ## Configuration
 The main configuration file is located in `.deployment/settings/config.js`
 
-### Changing applications container config
+### Changing applications' container config
 The constant called `ENVIRONMENT_CONFIG` contains each application container config:
 
 ```javascript
@@ -73,9 +73,8 @@ Each environment needs a `serviceConfig` object. This object describes the plan 
 - `CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium`
 - `CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.large`
 
-<Warning>
-You can't change the service config without destroying the existing mongodb service
-</Warning>
+
+**/!\ You can't change the service config without destroying the existing mongodb service, so you need to migrate data, etc. /!\**
 
 Each application in environment can have a different `appConfig` (i.e. application container config). The available (but still editable) configs are defined in constant `APP_CONFIGS`:
 
@@ -102,7 +101,7 @@ export const CLOUDFOUNDRY_MEMORY_LIMIT = {
 ```
 
 ### Smoke tests files
-When deploying a new application, some smoke tests are run on the server side before killing the old application and switching to the new one. These tests files must be included in the corresponding application directory: `.deployment/smokeTests/$applicationName`. They can be either `.js` or `.sh` scripts. Remember to make `.sh` scripts executable (`chmod +x $yourScript.sh`). All scripts **must be executed** in the `test.sh` script present in each application smoke test folder **AND must be included** in the `APP_SMOKE_TEST_FILES` constant:
+When deploying a new application, some smoke tests are run on the server side before killing the old application and switching to the new one. These test files must be included in the corresponding application directory: `.deployment/smokeTests/$applicationName`. They can be either `.js` or `.sh` scripts. Remember to make `.sh` scripts executable (`chmod +x $yourScript.sh`). All scripts **must be executed** in the `test.sh` script present in each application smoke test folder **AND must be included** in the `APP_SMOKE_TEST_FILES` constant:
 
 ```javascript
 export const APP_SMOKE_TEST_FILES = {
