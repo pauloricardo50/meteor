@@ -6,7 +6,43 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { lifecycle, renderComponent } from 'recompose';
 import Loading from '../Loading';
+import { compose, branch } from '../../api';
+
+const container = compose(
+  lifecycle({
+    constructor(props) {
+      // super(props);
+      this.state = { isLoaded: false };
+    },
+    componentDidMount() {
+      GoogleMaps.load({
+        v: '3',
+        key: Meteor.settings.public.google_maps_key,
+        libraries: 'places',
+      });
+
+      // Fuck this, it works for an obscure reason
+      // https://github.com/meteor/react-packages/issues/99#issuecomment-168772806
+      setTimeout(this.trackIsLoading, 0);
+    },
+    componentWillUnmount() {
+      this.tracker.stop();
+    },
+    trackIsLoading() {
+      this.tracker = Tracker.autorun(() => {
+        const isLoaded = GoogleMaps.loaded();
+
+        this.setState({ isLoaded });
+      });
+    },
+  }),
+  branch(
+    ({ isLoaded }) => !(isLoaded && !!window.google && !!window.google.maps),
+    renderComponent(Loading),
+  ),
+);
 
 const googleMapContainer = (WrappedComponent) => {
   class GoogleMapContainer extends Component {
