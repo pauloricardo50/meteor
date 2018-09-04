@@ -60,8 +60,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       },
       condition: !disableAddress,
       placeholder:
-        disableAddress &&
-        (borrowers[0].zipCode && borrowers[0].city
+        disableAddress
+        && (borrowers[0].zipCode && borrowers[0].city
           ? `${borrowers[0].zipCode} ${borrowers[0].city}`
           : ''),
       noIntl: disableAddress,
@@ -143,8 +143,8 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
           type: 'radioInput',
           options: [true, false],
         },
-        ...[2017, 2016, 2015, 2014].map(year => ({
-          id: `bonus.bonus${year}`,
+        ...[2018, 2017, 2016, 2015].map(year => ({
+          id: `bonus${year}`,
           type: 'textInput',
           money: true,
         })),

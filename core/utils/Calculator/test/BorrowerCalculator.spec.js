@@ -6,7 +6,7 @@ import Calculator from '..';
 import { BORROWER_DOCUMENTS } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 
-describe('BorrowerCalculator', () => {
+describe.only('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
     it("returns 0 if the key doesn't exist", () => {
       expect(Calculator.getArrayValues({}, 'key')).to.equal(0);
@@ -47,26 +47,25 @@ describe('BorrowerCalculator', () => {
   });
 
   describe('getBonusIncome', () => {
-    it('returns 0 if bonus is not defined', () => {
-      expect(Calculator.getBonusIncome({})).to.equal(0);
-    });
-
     it('returns half of 1 bonus', () => {
       expect(Calculator.getBonusIncome({
-        borrowers: { bonus: { bonus2018: 100 } },
+        borrowers: { bonusExists: true, bonus2018: 100 },
       })).to.equal(50);
     });
 
     it('returns half of average 2 bonuses', () => {
       expect(Calculator.getBonusIncome({
-        borrowers: { bonus: { bonus2018: 100, bonus2015: 0 } },
+        borrowers: { bonusExists: true, bonus2018: 100, bonus2015: 0 },
       })).to.equal(25);
     });
 
     it('returns half of average 3 bonuses', () => {
       expect(Calculator.getBonusIncome({
         borrowers: {
-          bonus: { bonus2018: 100, bonus2017: 0, bonus2016: 200 },
+          bonusExists: true,
+          bonus2018: 100,
+          bonus2017: 0,
+          bonus2016: 200,
         },
       })).to.equal(50);
     });
@@ -74,35 +73,25 @@ describe('BorrowerCalculator', () => {
     it('discounts the lowest of 4 bonuses', () => {
       expect(Calculator.getBonusIncome({
         borrowers: {
-          bonus: {
-            bonus2015: 50,
-            bonus2016: 150,
-            bonus2017: 40,
-            bonus2018: 100,
-          },
+          bonusExists: true,
+          bonus2015: 50,
+          bonus2016: 150,
+          bonus2017: 40,
+          bonus2018: 100,
         },
       })).to.equal(50);
     });
 
-    it('returns 0 if an invalid bonus is given', () => {
+    it('returns 0 if bonusExists is false', () => {
       expect(Calculator.getBonusIncome({
-        borrowers: { bonus: { bonus2018: 'hi' } },
+        borrowers: {
+          bonusExists: false,
+          bonus2015: 50,
+          bonus2016: 150,
+          bonus2017: 40,
+          bonus2018: 100,
+        },
       })).to.equal(0);
-    });
-
-    it('throws and error if more than 4 bonuses are provided', () => {
-      expect(() =>
-        Calculator.getBonusIncome({
-          borrowers: {
-            bonus: {
-              bonus2014: 100,
-              bonus2015: 50,
-              bonus2016: 150,
-              bonus2017: 40,
-              bonus2018: 30,
-            },
-          },
-        })).to.throw('too many');
     });
   });
 
@@ -345,7 +334,8 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getTotalIncome({
         borrowers: {
           salary: 1,
-          bonus: { value: 2 }, // Adds 1
+          bonusExists: true,
+          bonus2018: 2, // Adds 1
           otherIncome: [{ value: 3 }],
           expenses: [{ value: 5 }], // Subtracts 5
         },
@@ -360,7 +350,6 @@ describe('BorrowerCalculator', () => {
           _id: 'aBcNvYnq34rnb29nh',
           adminValidation: {},
           age: 45,
-          bonus: {},
           bonusExists: false,
           childrenCount: 0,
           citizenship: 'hello',

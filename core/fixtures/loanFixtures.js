@@ -150,7 +150,7 @@ export const createFakeLoan = ({
   case 3:
     loan.logic = logic3;
     loan.adminValidation = {
-      bonus_bonus2017: 'Does not match with taxes location',
+      bonus2017: 'Does not match with taxes location',
       bankFortune: 'Not enough',
     };
 

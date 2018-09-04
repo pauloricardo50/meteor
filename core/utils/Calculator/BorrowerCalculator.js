@@ -43,27 +43,23 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     };
 
     getBonusIncome = ({ borrowers }) => {
-      let total = 0;
-      arrayify(borrowers).forEach((borrower) => {
-        if (borrower.bonus) {
-          let arr = Object.keys(borrower.bonus).map(key => borrower.bonus[key]);
-          if (arr.length < 1) {
-            return;
-          }
-          if (arr.length > 4) {
-            throw new Error('too many bonuses provided');
-          }
-
-          arr = arr.map(v => v || 0);
-          // Sum all values, remove the lowest one, and return 50% of their average
-          let sum = arr.reduce((tot, val) => tot + val, 0);
-
-          if (arr.length > 3) {
-            sum -= Math.min(...arr);
-          }
-          total = 0.5 * (sum / Math.min(3, arr.length)) || 0;
+      const bonusKeys = ['bonus2015', 'bonus2016', 'bonus2017', 'bonus2018'];
+      const total = arrayify(borrowers).reduce((acc, borrower) => {
+        if (!borrower.bonusExists) {
+          return 0;
         }
-      });
+
+        const arr = bonusKeys.map(key => borrower[key]);
+        const cleanedUpArray = arr.filter(v => v !== undefined);
+
+        // Sum all values, remove the lowest one, and return 50% of their average
+        let sum = cleanedUpArray.reduce((tot, val) => tot + val, 0);
+
+        if (cleanedUpArray.length > 3) {
+          sum -= Math.min(...arr);
+        }
+        return acc + (0.5 * (sum / Math.min(3, cleanedUpArray.length)) || 0);
+      }, 0);
 
       return Math.max(0, Math.round(total));
     };
