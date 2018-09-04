@@ -4,8 +4,8 @@
   "scripts": {
     "clean-css": "cd scripts/ && ./clean-css.sh",
     "clean-run": "npm run setup-clean && npm run run",
-    "deploy-production": "cd .swisscom-deployment/ && npm run deploy-production",
-    "deploy-staging": "cd .swisscom-deployment/ && npm run deploy-staging",
+    "deploy-production": "cd .deployment/ && npm run deploy-production",
+    "deploy-staging": "cd .deployment/ && npm run deploy-staging",
     "flow-typed": "flow-typed install",
     "flow": "flow",
     "format": "prettier-eslint \"**/*.js*\" --ignore \"flow-typed/**\" --write --eslint-config-path .eslintrc.js",
