@@ -5,8 +5,8 @@ import BorrowerAdder from '../../components/BorrowerAdder';
 import BorrowerHeaderDetails from './BorrowerHeaderDetails';
 
 const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
-  <header className="borrower-header borrower-header--fixed p-d--16">
-    <div className="borrower-header__row flex p-d--16">
+  <header className="borrower-header borrower-header">
+    <div className="borrower-header__row flex">
       {borrowers.map((borrower, borrowerIndex) => (
         <BorrowerHeaderDetails
           key={borrower._id}

@@ -48,7 +48,7 @@
   &-block {
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -60,7 +60,7 @@
     }
 
     &.success {
-       > span {
+      > span {
         color: $success;
       }
 
@@ -151,28 +151,18 @@
 }
 
 .borrower-header {
-  &--fixed {
-    // position: fixed;
-    z-index: 15;
-    // right: 0;
-    // width: calc(100% - 332px);
-    // width: 100%;
-
-    height: 108px;
-  }
-
   &__row {
     align-items: flex-start;
 
     box-sizing: border-box;
     width: 100%;
-    padding: 25px 32px 0;
 
     background: #fff;
   }
 
   &__info {
     box-sizing: border-box;
+    padding-bottom: 40px;
 
     border-left: 1px #e4e4e4 solid;
 
@@ -194,7 +184,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -274,7 +264,7 @@
   }
 
   &__finance {
-     > div {
+    > div {
       width: 400px;
     }
   }
@@ -345,12 +335,12 @@
     }
 
     .form-group {
-       > div {
+      > div {
         max-width: 100% !important;
       }
     }
 
-     > div {
+    > div {
       max-width: 100% !important;
     }
 
@@ -364,7 +354,7 @@
   .description {
     align-self: initial;
 
-     > p {
+    > p {
       justify-content: flex-start;
 
       max-width: 100%;
