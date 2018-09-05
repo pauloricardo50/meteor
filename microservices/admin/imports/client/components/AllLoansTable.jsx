@@ -6,8 +6,7 @@ import Table from 'core/components/Table';
 import { IntlNumber } from 'core/components/Translation';
 
 const columnOptions = [
-  { id: '#' },
-  { id: 'Nom' },
+  { id: 'No.' },
   { id: 'Créé le' },
   { id: 'Updaté le' },
   { id: 'Étape', numeric: true },
@@ -35,7 +34,6 @@ export default class AllLoansTable extends Component {
     this.rows = loans.map((loan, index) => ({
       id: loan._id,
       columns: [
-        index + 1,
         loan.name,
         moment(loan.createdAt).format('D MMM YY à HH:mm:ss'),
         moment(loan.updatedAt).format('D MMM YY à HH:mm:ss'),
