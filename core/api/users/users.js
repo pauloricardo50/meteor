@@ -34,7 +34,21 @@ const UserSchema = new SimpleSchema({
       if (this.isInsert) {
         return new Date();
       }
+      if (this.isUpsert) {
+        return { $setOnInsert: new Date() };
+      }
+      this.unset();
     },
+  },
+  updatedAt: {
+    type: Date,
+    autoValue() {
+      if (this.isUpdate) {
+        return new Date();
+      }
+    },
+    denyInsert: true,
+    optional: true,
   },
   // Make sure this services field is in your schema if you're using any of the accounts packages
   services: {

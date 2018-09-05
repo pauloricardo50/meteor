@@ -30,15 +30,21 @@ export const OfferSchema = new SimpleSchema({
       if (this.isInsert) {
         return new Date();
       }
+      if (this.isUpsert) {
+        return { $setOnInsert: new Date() };
+      }
+      this.unset();
     },
   },
   updatedAt: {
     type: Date,
     autoValue() {
-      if (this.isInsert || this.isUpdate) {
+      if (this.isUpdate) {
         return new Date();
       }
     },
+    denyInsert: true,
+    optional: true,
   },
   organization: String,
   maxAmount: {

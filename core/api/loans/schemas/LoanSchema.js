@@ -22,22 +22,28 @@ const LoanSchema = new SimpleSchema({
       if (this.isInsert) {
         return new Date();
       }
+      if (this.isUpsert) {
+        return { $setOnInsert: new Date() };
+      }
+      this.unset();
     },
   },
   updatedAt: {
     type: Date,
     autoValue() {
-      if (this.isInsert || this.isUpdate) {
+      if (this.isUpdate) {
         return new Date();
       }
     },
+    denyInsert: true,
+    optional: true,
   },
   status: {
     type: String,
     defaultValue: LOAN_STATUS.ACTIVE,
     allowedValues: Object.values(LOAN_STATUS),
   },
-  name: { type: String, optional: true, defaultValue: '' },
+  name: { type: String, defaultValue: '', unique: true },
   general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },

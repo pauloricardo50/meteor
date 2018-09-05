@@ -45,23 +45,22 @@ export const BorrowerSchema = new SimpleSchema(
         if (this.isInsert) {
           return new Date();
         }
+        if (this.isUpsert) {
+          return { $setOnInsert: new Date() };
+        }
+        this.unset();
       },
     },
     updatedAt: {
       type: Date,
       autoValue() {
-        // Verify the update is from the user owning this doc, ignoring admin/partner updates
-        const doc = Borrowers.findOne(this.docId, { fields: { userId: 1 } });
-
-        if (this.isInsert) {
-          return new Date();
-        }
-        if (this.isUpdate && doc && this.userId === doc.userId) {
+        if (this.isUpdate) {
           return new Date();
         }
       },
+      denyInsert: true,
+      optional: true,
     },
-
     // Personal Information
     firstName: {
       type: String,
