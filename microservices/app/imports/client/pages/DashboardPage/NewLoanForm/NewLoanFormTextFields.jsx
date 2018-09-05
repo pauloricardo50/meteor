@@ -7,7 +7,6 @@ import { STEPS_ARRAY, STEPS } from './NewLoanFormContainer';
 // const TextFieldValueTypes = ['text', 'money', 'money', 'money'];
 
 const TextFieldValueTypes = {
-  [STEPS.LOAN_NAME]: 'text',
   [STEPS.PROPERTY_VALUE]: 'money',
   [STEPS.BORROWER_SALARY]: 'money',
   [STEPS.BORROWER_FORTUNE]: 'money',

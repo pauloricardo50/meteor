@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import Button from 'core/components/Button/Button';
 import Dialog from 'core/components/Material/Dialog';
 import T from 'core/components/Translation/Translation';
 import NewLoanFormContainer, { STEPS_ARRAY } from './NewLoanFormContainer';

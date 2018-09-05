@@ -1,39 +1,33 @@
 import { compose, withStateHandlers, withProps } from 'recompose';
-import { loanUpdate, borrowerUpdate, propertyUpdate } from 'core/api';
+import { borrowerUpdate, propertyUpdate } from 'core/api';
 
 export const STEPS = {
-  LOAN_NAME: 'loanName',
   PROPERTY_VALUE: 'propertyValue',
   BORROWER_SALARY: 'borrowerSalary',
   BORROWER_FORTUNE: 'borrowerFortune',
 };
 
 export const STEPS_ARRAY = [
-  STEPS.LOAN_NAME,
   STEPS.PROPERTY_VALUE,
   STEPS.BORROWER_SALARY,
   STEPS.BORROWER_FORTUNE,
 ];
 
-const shouldOpenDialog = ({ name, properties, borrowers }) => {
+const shouldOpenDialog = ({ properties, borrowers }) => {
   const hasNoPropertyValue = properties.length === 1 && !properties[0].value;
   return (
-    hasNoPropertyValue
-    || !name
-    || !borrowers[0].salary
-    || !borrowers[0].bankFortune
+    hasNoPropertyValue || !borrowers[0].salary || !borrowers[0].bankFortune
   );
 };
 
 const stateHandlers = withStateHandlers(
-  ({ loan: { name, properties, borrowers } }) => ({
+  ({ loan: { properties, borrowers } }) => ({
     step: 0,
     numberOfSteps: Object.keys(STEPS).length,
-    loanName: name,
     propertyValue: properties[0].value,
     borrowerSalary: borrowers[0].salary,
     borrowerFortune: borrowers[0].bankFortune,
-    open: shouldOpenDialog({ name, properties, borrowers }),
+    open: shouldOpenDialog({ properties, borrowers }),
   }),
   {
     handleChange: () => (id, value) => ({ [id]: value }),
@@ -56,23 +50,17 @@ const stateHandlers = withStateHandlers(
   },
 );
 
-const props = withProps(({
-  handleCloseDialog,
-  loan: { _id: loanId, borrowers, properties },
-  ...props
-}) => ({
+const props = withProps(({ handleCloseDialog, loan: { borrowers, properties }, ...props }) => ({
   handleSubmit: (event) => {
     event.preventDefault();
-    return loanUpdate
-      .run({ object: { name: props[STEPS.LOAN_NAME] }, loanId })
-      .then(() =>
-        borrowerUpdate.run({
-          object: {
-            salary: props[STEPS.BORROWER_SALARY],
-            bankFortune: props[STEPS.BORROWER_FORTUNE],
-          },
-          borrowerId: borrowers[0]._id,
-        }))
+    return borrowerUpdate
+      .run({
+        object: {
+          salary: props[STEPS.BORROWER_SALARY],
+          bankFortune: props[STEPS.BORROWER_FORTUNE],
+        },
+        borrowerId: borrowers[0]._id,
+      })
       .then(() =>
         propertyUpdate.run({
           object: { value: props[STEPS.PROPERTY_VALUE] },
