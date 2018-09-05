@@ -11,6 +11,7 @@ import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../client/components/AppStore';
 
 import AccountPage from '../../client/pages/AccountPage';
+import AppWidget1Page from '../../client/pages/AppWidget1Page';
 import AppPage from '../../client/pages/AppPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import DashboardPage from '../../client/pages/DashboardPage';
@@ -36,14 +37,16 @@ const AppRouter = () => (
   >
     <AppLayout type="app">
       <Switch>
-        <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
-        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />
         <Route path={ROUTES.BORROWERS_PAGE_NO_TAB} component={BorrowersPage} />
-        <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
-        <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
+        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
+        <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
+        <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
+
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
 
         <Route

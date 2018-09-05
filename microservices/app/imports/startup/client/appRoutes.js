@@ -1,5 +1,6 @@
 // @flow
 export const ACCOUNT_PAGE = '/account';
+export const APP_WIDGET1_PAGE = '/loans/:loanId/widget1';
 export const ADD_LOAN_PAGE = '/add-loan/:loanId';
 export const APP_PAGE = '/';
 export const BORROWERS_PAGE_NO_TAB = '/loans/:loanId/borrowers';

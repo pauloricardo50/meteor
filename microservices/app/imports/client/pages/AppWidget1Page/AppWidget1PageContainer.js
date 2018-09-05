@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
-
 import { widget1Selectors } from 'core/redux/widget1';
 import { getFinmaValues } from 'core/components/widget1/widget1Helpers';
 
-export const mapStateToProps = (state) => {
+const AppWidget1PageContainer = connect((state) => {
   const {
     widget1: {
       step,
@@ -31,6 +30,6 @@ export const mapStateToProps = (state) => {
     propertyValue,
     fields: widget1Selectors.selectFields(state),
   };
-};
+});
 
-export default connect(mapStateToProps);
+export default AppWidget1PageContainer;

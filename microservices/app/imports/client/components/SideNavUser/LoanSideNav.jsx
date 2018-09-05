@@ -10,6 +10,7 @@ import {
   faHome,
   faChartBar,
   faUsers,
+  faCalculator,
 } from '@fortawesome/pro-light-svg-icons';
 import Divider from '@material-ui/core/Divider';
 
@@ -36,6 +37,7 @@ const sideNavLinks: linksType = [
     icon: faTachometer,
   },
   { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
+  { id: 'AppWidget1Page', to: ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
   { id: 'divider', Component: () => <Divider className="divider" /> },
   {
     id: 'BorrowersPage',
