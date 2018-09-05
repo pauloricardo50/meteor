@@ -5,7 +5,7 @@ import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import StatusIcon from 'core/components/StatusIcon';
-import { hideFinmaValues } from '../Widget1PageContainer';
+import { hideFinmaValues } from '../widget1Helpers';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];
 

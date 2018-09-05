@@ -7,7 +7,7 @@ import {
   widget1Constants,
   widget1Selectors,
   Widget1Suggester,
-} from '../../../../redux/widget1';
+} from '../../../redux/widget1';
 
 const getAcquisitionArray = (state) => {
   const propertyValue = widget1Selectors.makeSelectValue('property')(state);

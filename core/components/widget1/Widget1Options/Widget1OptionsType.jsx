@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Widget1OptionSelector from './Widget1OptionSelector';
-import { widget1Constants } from '../../../../redux/widget1';
+import { widget1Constants } from '../../../redux/widget1';
 
 const Widget1OptionsType = props => (
   <Widget1OptionSelector

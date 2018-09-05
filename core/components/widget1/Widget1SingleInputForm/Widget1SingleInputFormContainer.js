@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { widget1Selectors, widget1Actions } from '../../../../redux/widget1';
+import { widget1Selectors, widget1Actions } from '../../../redux/widget1';
 
 const mapStateToProps = ({ widget1 }, { name }) => ({
   ...widget1[name],

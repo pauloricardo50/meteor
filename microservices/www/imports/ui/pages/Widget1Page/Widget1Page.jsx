@@ -11,11 +11,11 @@ import {
   TooltipProviderContainer,
   TOOLTIP_LISTS,
 } from 'core/components/tooltips/TooltipContext';
-import Widget1PageContainer from './Widget1PageContainer';
-import Widget1Part1 from './Widget1Part1';
-import Widget1Part2 from './Widget1Part2';
+import Widget1Part1 from 'core/components/widget1/Widget1Part1';
+import Widget1Part2 from 'core/components/widget1/Widget1Part2';
+import Widget1Options from 'core/components/widget1/Widget1Options';
 import Widget1PageDisclaimer from './Widget1PageDisclaimer';
-import Widget1Options from './Widget1Options';
+import Widget1PageContainer from './Widget1PageContainer';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 

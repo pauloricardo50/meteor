@@ -36,12 +36,13 @@ const config = {
         'steps',
         'Uploader',
         'Valuation',
+        'Widget1',
       ],
     },
     {
       id: 'www',
       path: '../microservices/www',
-      exceptions: ['Start2Form', 'Forms', 'offer'],
+      exceptions: ['Start2Form', 'Forms', 'offer', 'Widget1'],
     },
     {
       id: 'admin',

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { widget1Constants, widget1Types } from '../../../../redux/widget1';
-import { commonTypes } from '../../../../redux/common';
+import { widget1Constants, widget1Types } from '../../../redux/widget1';
+import { commonTypes } from '../../../redux/common';
 
 const mapStateToProps = ({ widget1: { purchaseType } }) => ({
   purchaseType,

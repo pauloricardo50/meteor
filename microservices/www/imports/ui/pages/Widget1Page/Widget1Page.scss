@@ -1,15 +1,3 @@
-// Keep these 2 SCSS files outside, as they're also used on the home page
-@import './Widget1SingleInputForm/Widget1SingleInputForm.scss';
-@import './Widget1SingleInput/Widget1SingleInput.scss';
-
-.widget1-page {
-  @import './Widget1Nav/Widget1Nav.scss';
-  @import './Widget1Recap/Widget1Recap.scss';
-  @import './Widget1Monthly/Widget1Monthly.scss';
-  @import './Widget1Inputs/Widget1Inputs.scss';
-  @import './Widget1Options/Widget1Options.scss';
-}
-
 .widget1-page {
   display: flex;
   flex-direction: column;

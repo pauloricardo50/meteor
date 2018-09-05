@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
+import { widget1Constants } from 'core/redux/widget1';
 import { mapStateToProps } from '../Widget1PageContainer';
-import { widget1Constants } from '../../../../redux/widget1';
 
 describe('Widget1PageContainer', () => {
   let state;

@@ -7,9 +7,9 @@ import {
   TooltipProvider,
   TOOLTIP_LISTS,
 } from 'core/components/tooltips/TooltipContext';
-import { widget1Constants } from '../../../../redux/widget1';
+import { widget1Constants } from 'core/redux/widget1';
+import Widget1SingleInputForm from 'core/components/widget1/Widget1SingleInputForm';
 import Waves from '../../../components/Waves';
-import Widget1SingleInputForm from '../../Widget1Page/Widget1SingleInputForm';
 
 const HomePageHeader = ({ history }) => (
   <header>

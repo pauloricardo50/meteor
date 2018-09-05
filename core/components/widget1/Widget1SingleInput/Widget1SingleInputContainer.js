@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withProps, compose } from 'recompose';
 import { toNumber } from 'core/utils/conversionFunctions';
-import { widget1Constants, widget1Actions } from '../../../../redux/widget1';
+import { widget1Constants, widget1Actions } from '../../../redux/widget1';
 
 const isLoanValue = name => widget1Constants.CAPPED_FIELDS.includes(name);
 

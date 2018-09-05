@@ -11,7 +11,7 @@ import FaqPage from '../../ui/pages/FaqPage/loadable';
 import ContactPage from '../../ui/pages/ContactPage/loadable';
 import CareersPage from '../../ui/pages/CareersPage/loadable';
 import ConditionsPage from '../../ui/pages/ConditionsPage/loadable';
-import Widget1Page from '../../ui/pages/Widget1Page/loadable';
+import Widget1Page from '../../ui/pages/Widget1Page';
 import CheckMailboxPage from '../../ui/pages/CheckMailboxPage/loadable';
 import InterestsPage from '../../ui/pages/InterestsPage/loadable';
 

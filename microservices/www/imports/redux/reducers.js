@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import { reducer as formReducer } from 'redux-form';
 
-import widget1Reducer from './widget1';
+import widget1Reducer from 'core/redux/widget1';
 
 const PERSIST_STORE = true;
 
