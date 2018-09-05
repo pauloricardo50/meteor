@@ -68,3 +68,16 @@ export const APP_SMOKE_TEST_FILES = {
   [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
 };
+
+export const APP_ROUTES = {
+  [ENVIRONMENT.STAGING]: {
+    [APPLICATIONS.APP]: [{ route: 'app.staging.e-potek.ch' }],
+    [APPLICATIONS.ADMIN]: [{ route: 'admin.staging.e-potek.ch' }],
+    [APPLICATIONS.WWW]: [{ route: 'www.staging.e-potek.ch' }],
+  },
+  [ENVIRONMENT.PRODUCTION]: {
+    [APPLICATIONS.APP]: [{ route: 'app.e-potek.ch' }],
+    [APPLICATIONS.ADMIN]: [{ route: 'admin.e-potek.ch' }],
+    [APPLICATIONS.WWW]: [{ route: 'www.e-potek.ch' }],
+  },
+};

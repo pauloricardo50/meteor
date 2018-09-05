@@ -1,24 +1,25 @@
 import {
-  ENVIRONMENT_CONFIG,
-  APP_CONFIGS,
-  APP_SMOKE_TEST_FILES,
-  ENVIRONMENT,
-  APPLICATIONS,
-  SPACES,
   APP_BUILDPACK,
+  APP_CONFIGS,
   APP_DEPENDENCIES,
   APP_ENGINES,
   APP_LAUNCHER,
   APP_MANIFEST_YML_FILE,
   APP_PACKAGE_JSON_FILE,
+  APP_ROUTES,
+  APP_SMOKE_TEST_FILES,
   APPLICATION_SANITY_CHECK_DONE,
   APPLICATION_SANITY_CHECK_ERROR,
   APPLICATION_SANITY_CHECK_PENDING,
+  APPLICATIONS,
+  ENVIRONMENT_CONFIG,
+  ENVIRONMENT,
   EXPECTED_FILES_LIST,
   MICROSERVICES_DIR_PATH,
   SMOKE_TESTS_BABEL_CONF,
   SMOKE_TESTS_FOLDER,
   SMOKE_TESTS_MAIN_SCRIPT,
+  SPACES,
   TMUXINATOR_SESSION_NAME,
   TMUXINATOR_YML,
 } from './config.js';
@@ -34,6 +35,9 @@ export const FORMATTED_APPLICATIONS = formatOptionsArray(
 export const FORMATTED_APP_CONFIGS = formatOptionsArray(
   Object.keys(APP_CONFIGS),
 );
+
+const generateServerApplicationName = ({ applicationName, environment }) =>
+  `e-potek-${applicationName}-${environment}`;
 
 const generateSmokeTestFilesList = ({ applicationName }) =>
   APP_SMOKE_TEST_FILES[applicationName].map(
@@ -74,18 +78,22 @@ export const appPackageJSONData = ({ applicationName, applicationImage }) => ({
 });
 
 export const appManifestYAMLData = ({
+  environment,
   applicationName,
+  name,
   memory,
   instances,
   service,
 }) => ({
   applications: [
     {
-      name: applicationName,
+      name,
       memory,
       instances,
       buildpack: APP_BUILDPACK,
       services: [service],
+      // routes: APP_ROUTES[environment][applicationName],
+      env: { FORCE_HTTPS: true },
     },
   ],
 });

@@ -50,7 +50,12 @@ const writeApplicationPackageFiles = ({ applications, root }) => {
   return Promise.all(promises);
 };
 
-const writeApplicationManifestFiles = ({ applications, service, root }) => {
+const writeApplicationManifestFiles = ({
+  environment,
+  applications,
+  service,
+  root,
+}) => {
   const promises = applications.map(
     ({ applicationName, name, memory, instances }) => {
       addFileToApplicationsExpectedFilesList({
@@ -58,7 +63,9 @@ const writeApplicationManifestFiles = ({ applications, service, root }) => {
         file: APP_MANIFEST_YML_FILE,
       });
       return writeApplicationManifestYAML({
-        applicationName: name,
+        environment,
+        name,
+        applicationName,
         memory,
         instances,
         service: service.name,
@@ -182,7 +189,14 @@ export const prepareDeployment = ({
 
   return deleteBuildDirectories({ applications: allApplications, root })
     .then(() => writeApplicationPackageFiles({ applications, root }))
-    .then(() => writeApplicationManifestFiles({ applications, service, root }))
+    .then(() =>
+      writeApplicationManifestFiles({
+        environment,
+        applications,
+        service,
+        root,
+      }),
+    )
     .then(() => copyMeteorSettingsFile({ applications, meteorSettings, root }))
     .then(() => copyLauncherScript({ applications, root }))
     .then(() => copySmokeTestFiles({ applications, root }))
