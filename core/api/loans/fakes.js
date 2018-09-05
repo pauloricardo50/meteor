@@ -112,21 +112,18 @@ export const emptyLoan = {
 };
 
 export const loanStep1 = {
-  name: 'Rue du Test 42 - 1',
   general: fakeGeneral,
   logic: logic1,
   contacts: [],
 };
 
 export const loanStep2 = {
-  name: 'Rue du Test 42 - 2',
   general: fakeGeneral,
   logic: logic2,
   contacts: [],
 };
 
 export const loanStep3 = () => ({
-  name: 'Rue du Test 42 - 3',
   general: {
     ...fakeGeneral,
     loanTranches: [
