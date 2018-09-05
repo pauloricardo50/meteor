@@ -13,6 +13,8 @@ const styles = {
   },
 };
 
+const NOT_FOUND_VALUE = '-';
+
 class ZipAutoComplete extends Component {
   constructor(props) {
     super();
@@ -50,7 +52,7 @@ class ZipAutoComplete extends Component {
             });
           } else {
             this.setState({
-              data: [{ label: '-', value: '-' }],
+              data: [{ label: NOT_FOUND_VALUE, value: NOT_FOUND_VALUE }],
             });
           }
         })
@@ -65,7 +67,7 @@ class ZipAutoComplete extends Component {
   };
 
   handleSelect = ({ value }) => {
-    if (value !== '-') {
+    if (value !== NOT_FOUND_VALUE) {
       const zipCode = parseInt(value, 10);
       const city = value.slice(5);
       // Set the text input
