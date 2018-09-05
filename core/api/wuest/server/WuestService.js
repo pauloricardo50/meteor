@@ -609,6 +609,13 @@ class WuestService {
   }
 
   handleResult(result) {
+    if (!result.ok) {
+      throw new Meteor.Error(
+        wuestConstants.WUEST_ERRORS.WUEST_API_ERROR,
+        result.statusText,
+      );
+    }
+
     return result.json().then((response) => {
       if (response.errorCode) {
         const errorMessage = this.formatError(response);
@@ -617,6 +624,7 @@ class WuestService {
           errorMessage,
         );
       }
+
       return response;
     });
   }

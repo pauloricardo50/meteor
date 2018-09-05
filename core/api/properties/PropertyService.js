@@ -49,7 +49,7 @@ export class PropertyService {
               max: null,
               value: null,
               date: new Date(),
-              error: error.reason,
+              error: error.reason || error.message,
             },
           },
         });
