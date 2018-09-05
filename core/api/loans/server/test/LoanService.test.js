@@ -8,11 +8,10 @@ import Loans from '../../loans';
 import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
 
-
 describe('LoanService', () => {
   let loanId;
   let loan;
-  
+
   beforeEach(() => {
     resetDatabase();
   });
@@ -355,6 +354,41 @@ describe('LoanService', () => {
       expect(loan.structures[0].name).to.equal(name + 0);
       expect(loan.structures[1].name).to.equal(`${name + 0} - copie`);
       expect(loan.structures[2].name).to.equal(name + 1);
+    });
+  });
+
+  describe('getNewLoanName', () => {
+    it('returns 18-0001 for the very first loan', () => {
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-0001');
+    });
+
+    it('returns 18-0002 for the second loan', () => {
+      loanId = LoanService.insert({ loan: {} });
+      loan = LoanService.getLoanById(loanId);
+      expect(loan.name).to.equal('18-0001');
+
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-0002');
+    });
+
+    it('returns 18-1234 for the nth loan', () => {
+      Factory.create('loan', { name: '18-1233' });
+
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-1234');
+    });
+
+    it('does not break if a 10000th loan is added', () => {
+      Factory.create('loan', { name: '18-9999' });
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-10000');
+    });
+
+    it('handles new year properly', () => {
+      Factory.create('loan', { name: '18-0003' });
+      const name = LoanService.getNewLoanName(new Date(2019, 1, 1));
+      expect(name).to.equal('19-0001');
     });
   });
 });

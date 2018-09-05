@@ -7,8 +7,34 @@ import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
 import Loans from './loans';
 
+const zeroPadding = (num, places) => {
+  const zero = places - num.toString().length + 1;
+  return Array(+(zero > 0 && zero)).join('0') + num;
+};
+
 export class LoanService {
-  insert = ({ loan, userId }) => Loans.insert({ ...loan, userId });
+  insert = ({ loan = {}, userId }) =>
+    Loans.insert({ ...loan, name: this.getNewLoanName(), userId });
+
+  getNewLoanName = (now = new Date()) => {
+    const year = now.getYear();
+    const yearPrefix = year - 100;
+    const lastLoan = Loans.findOne({}, { sort: { createdAt: -1 } });
+    if (!lastLoan) {
+      return `${yearPrefix}-0001`;
+    }
+    const [lastPrefix, count] = lastLoan.name
+      .split('-')
+      .map(numb => parseInt(numb, 10));
+
+    if (lastPrefix !== yearPrefix) {
+      return `${yearPrefix}-0001`;
+    }
+
+    const nextCountString = zeroPadding(count + 1, 4);
+
+    return `${yearPrefix}-${nextCountString}`;
+  };
 
   update = ({ loanId, object, operator = '$set' }) =>
     Loans.update(loanId, { [operator]: object });
