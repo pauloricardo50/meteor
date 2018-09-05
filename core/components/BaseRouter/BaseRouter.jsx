@@ -7,6 +7,7 @@ import history from 'core/utils/history';
 import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage';
+import DisconnectModal from '../DisconnectModal';
 
 import Switch from './Switch';
 import Route from './Route';
@@ -29,6 +30,7 @@ const BaseRouter = ({
         can't put it higher up, because it needs
         react-intl to display messages */}
       <ErrorBoundary helper="app">
+        <DisconnectModal />
         <Router history={history}>
           {/* Every route change should scroll to top,
               which isn't automatic */}
