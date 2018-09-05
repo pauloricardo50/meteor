@@ -6,7 +6,7 @@ import Calculator from '..';
 import { BORROWER_DOCUMENTS } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 
-describe.only('BorrowerCalculator', () => {
+describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
     it("returns 0 if the key doesn't exist", () => {
       expect(Calculator.getArrayValues({}, 'key')).to.equal(0);
