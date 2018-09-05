@@ -16,6 +16,7 @@ shell-server@0.3.1           # Server-side component of the `meteor shell` comma
 
 
 # Dev, place this on top to allow meteor toys to work
+meteortoys:allthings
 fourseven:scss@4.5.0
 
 # Put this before factory
@@ -24,6 +25,7 @@ aldeed:collection2-core
 # Testing
 cultofcoders:mocha
 dburles:factory
+xolvio:cleaner
 meteortesting:mocha
 
 
@@ -63,4 +65,4 @@ std:accounts-ui
 msavin:mongol
 okgrow:analytics
 underscore@1.0.10
-xolvio:cleaner
+aldeed:schema-index
