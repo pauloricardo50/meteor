@@ -66,3 +66,4 @@ msavin:mongol
 okgrow:analytics
 underscore@1.0.10
 aldeed:schema-index
+aldeed:schema-deny
