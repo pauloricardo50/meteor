@@ -46,7 +46,8 @@
 }
 
 .app-layout .wrapper .page.full-width {
-  max-width: unset;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .app-layout .transition-wrapper {
