@@ -1,5 +1,6 @@
 #!/bin/bash
 
+START=`date +%s`
 set -e
 
 ./installDependencies.sh
@@ -14,4 +15,7 @@ babel-node -- deploy.js "$@"
 tmuxinator start deploy -p ./deploy.yml
 rm ./deploy.yml
 
+END=`date +%s`
+runtime=$((END-START))
 
+echo "e-Potek deployed! It took $runtime seconds"
