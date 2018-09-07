@@ -30,7 +30,7 @@ export const loanBorrowerFragment = {
   corporateBankExists: 1,
   expenses: 1,
   gender: 1,
-  insuranceSecondPillar: 1,
+  insurance2: 1,
   insuranceThirdPillar: 1,
   bank3A: 1,
   insurance3B: 1,

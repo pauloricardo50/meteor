@@ -44,7 +44,7 @@ export const borrowerDocuments = (b = {}) => ({
     },
     {
       id: DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT,
-      condition: b.insuranceSecondPillar > 0,
+      condition: b.insurance2 > 0,
       doubleTooltip: true,
     },
     {

@@ -253,13 +253,13 @@ export const BorrowerSchema = new SimpleSchema(
       type: String,
       optional: true,
     },
-    insuranceSecondPillar: {
+    insurance2: {
       type: Number,
       optional: true,
       min: 0,
       max: 100000000,
     },
-    insuranceThirdPillar: {
+    insurance3A: {
       type: Number,
       optional: true,
       min: 0,
