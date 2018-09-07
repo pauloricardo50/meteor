@@ -31,10 +31,10 @@
     "API_SECRET": "e760363faa39456bc5f8d679eb38cb29"
   },
   "Kadira": {
-    "endpoint": "https://kadira.e-potek.ch:22022",
+    "endpoint": "https://kadira-engine.e-potek.ch:22022",
     "www": {
       "appId": "57ah6JnZRywQTp7y2", 
-      "appSecret": "f9ce91f5-a6bb-4a7b-b36d-78b6f28517fc" 
+      "appSecret": "34ca2045-d2cd-4a99-a15d-bebbabdf1926" 
     },
     "admin": {
       "appId": "qPxhPAXimwqmKWHQ8", 
