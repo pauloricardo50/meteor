@@ -192,21 +192,21 @@ describe('BorrowerCalculator', () => {
     it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insuranceSecondPillar: 2,
+          insurance2: 2,
           insuranceThirdPillar: 3,
         },
       })).to.equal(5);
 
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insuranceSecondPillar: 2,
+          insurance2: 2,
           insuranceThirdPillar: undefined,
         },
       })).to.equal(2);
     });
 
     it('works with multiple borrowers', () => {
-      expect(BorrowerCalculator.getInsuranceFortune({
+      expect(Calculator.getInsuranceFortune({
         borrowers: [
           {
             insurance2: 2,
@@ -218,9 +218,8 @@ describe('BorrowerCalculator', () => {
           },
         ],
       })).to.equal(14);
-    })
+    });
   });
-
 
   describe('getMissingBorrowerDocuments', () => {
     it('returns all missing ids for an empty borrower', () => {
@@ -264,7 +263,6 @@ describe('BorrowerCalculator', () => {
           { otherFortune: [{ value: 5 }, { value: 6 }] },
         ],
       })).to.equal(18);
-
     });
   });
 
@@ -316,16 +314,15 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getTotalFunds({})).to.equal(0);
     });
 
-
     it('should sum all fortune items in a borrower', () => {
-      expect(BorrowerCalculator.getTotalFunds({
+      expect(Calculator.getTotalFunds({
         borrowers: {
           bankFortune: 1,
           insurance2: 2,
           insuranceThirdPillar: 3,
         },
       })).to.equal(6);
-    })
+    });
   });
 
   describe('getTotalIncome', () => {

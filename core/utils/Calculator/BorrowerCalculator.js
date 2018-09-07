@@ -161,7 +161,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getTotalFunds = ({ borrowers }) =>
       this.sumValues({
         borrowers,
-        keys: ['bankFortune', 'insuranceSecondPillar', 'insuranceThirdPillar'],
+        keys: ['bankFortune', 'insurance2', 'insuranceThirdPillar'],
       });
 
     getTotalIncome = ({ borrowers }) => {
