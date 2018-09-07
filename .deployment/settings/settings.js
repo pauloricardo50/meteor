@@ -6,7 +6,6 @@ import {
   APP_LAUNCHER,
   APP_MANIFEST_YML_FILE,
   APP_PACKAGE_JSON_FILE,
-  APP_ROUTES,
   APP_SMOKE_TEST_FILES,
   APPLICATION_SANITY_CHECK_DONE,
   APPLICATION_SANITY_CHECK_ERROR,
@@ -46,7 +45,7 @@ const generateSmokeTestFilesList = ({ applicationName }) =>
 
 const applicationSettings = ({ applicationName, environment }) => ({
   applicationName,
-  name: `e-potek-${applicationName}-${environment}`, //Name on the server
+  name: generateServerApplicationName({ applicationName, environment }), //Name on the server
   microservicePath: `${MICROSERVICES_DIR_PATH}/${applicationName}`,
   smokeTests: generateSmokeTestFilesList({ environment, applicationName }),
   ...ENVIRONMENT_CONFIG[environment][applicationName].appConfig,
@@ -92,8 +91,6 @@ export const appManifestYAMLData = ({
       instances,
       buildpack: APP_BUILDPACK,
       services: [service],
-      // routes: APP_ROUTES[environment][applicationName],
-      env: { FORCE_HTTPS: true },
     },
   ],
 });
