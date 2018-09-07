@@ -1,0 +1,26 @@
+.own-funds-picker-form {
+  display: flex;
+  flex-direction: column;
+
+  .form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .mui-select,
+  .money-input {
+    flex-basis: 140px;
+    flex-shrink: 0;
+  }
+}
+
+.own-funds-completer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  > :last-child {
+    margin-left: 16px;
+  }
+}

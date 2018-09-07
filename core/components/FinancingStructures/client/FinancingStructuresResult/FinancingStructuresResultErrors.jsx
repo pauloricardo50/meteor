@@ -6,7 +6,7 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
-import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/FinancingStructuresOwnFunds';
+import { calculateMissingOwnFunds } from '../FinancingStructuresOwnFunds/FinancingStructuresOwnFunds';
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import FinanceCalculator, {
@@ -28,15 +28,15 @@ const errors = [
   {
     id: 'missingOwnFunds',
     func: (data) => {
-      const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds >= ROUNDING_AMOUNT;
+      const missingFunds = calculateMissingOwnFunds(data);
+      return Number.isNaN(missingFunds) || missingFunds >= ROUNDING_AMOUNT;
     },
   },
   {
     id: 'tooMuchOwnFunds',
     func: (data) => {
-      const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds <= -ROUNDING_AMOUNT;
+      const missingFunds = calculateMissingOwnFunds(data);
+      return Number.isNaN(missingFunds) || missingFunds <= -ROUNDING_AMOUNT;
     },
   },
   {

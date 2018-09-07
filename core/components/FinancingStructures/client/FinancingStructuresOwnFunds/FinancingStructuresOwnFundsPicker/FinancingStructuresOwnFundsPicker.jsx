@@ -8,9 +8,11 @@ import OwnFundsAdder from './OwnFundsAdder';
 
 type FinancingStructuresOwnFundsPickerProps = {};
 
-const FinancingStructuresOwnFundsPicker = (props: FinancingStructuresOwnFundsPickerProps) => (
+const FinancingStructuresOwnFundsPicker = ({
+  structureId,
+}: FinancingStructuresOwnFundsPickerProps) => (
   <div className="ownFundsPicker">
-    <OwnFundsAdder />
+    <OwnFundsAdder structureId={structureId} />
   </div>
 );
 

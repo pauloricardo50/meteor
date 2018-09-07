@@ -7,22 +7,33 @@ import T from '../../../../Translation';
 type FinancingStructuresOwnFundsActionsProps = {};
 
 const FinancingStructuresOwnFundsActions = ({
-  shouldUpdateBorrowers,
+  displayWarning,
   loading,
   handleClose,
   handleDelete,
   handleSubmit,
   handleUpdateBorrower,
   handleCancelUpdateBorrower,
+  disableSubmit,
+  disableDelete,
 }: FinancingStructuresOwnFundsActionsProps) => {
   const defaultActions = [
     <Button disabled={loading} key="cancel" onClick={handleClose}>
       <T id="general.cancel" />
     </Button>,
-    <Button disabled={loading} key="delete" onClick={handleDelete}>
-      <T id="general.delete" />
-    </Button>,
-    <Button primary raised key="ok" onClick={handleSubmit} loading={loading}>
+    !disableDelete && (
+      <Button disabled={loading} key="delete" onClick={handleDelete}>
+        <T id="general.delete" />
+      </Button>
+    ),
+    <Button
+      primary
+      raised
+      key="ok"
+      onClick={handleSubmit}
+      loading={loading}
+      disabled={disableSubmit}
+    >
       <T id="general.ok" />
     </Button>,
   ];
@@ -38,13 +49,13 @@ const FinancingStructuresOwnFundsActions = ({
       key="yes"
       onClick={handleUpdateBorrower}
     >
-      <T id="general.yes" />
+      <T id="FinancingStructuresOwnFundsActions.modify" />
     </Button>,
   ];
 
   return (
     <DialogActions>
-      {shouldUpdateBorrowers ? borrowerUpdateActions : defaultActions}
+      {displayWarning ? borrowerUpdateActions : defaultActions}
     </DialogActions>
   );
 };

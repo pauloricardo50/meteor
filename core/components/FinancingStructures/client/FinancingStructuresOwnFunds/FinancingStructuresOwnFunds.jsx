@@ -14,37 +14,49 @@ import FinancingStructuresOwnFundsPicker from './FinancingStructuresOwnFundsPick
 
 type FinancingStructuresOwnFundsProps = {};
 
-const calculateOwnFunds = ({
+export const calculateOwnFunds = ({
   structure: { fortuneUsed, secondPillarWithdrawal, thirdPillarWithdrawal },
 }) => fortuneUsed + secondPillarWithdrawal + thirdPillarWithdrawal;
 
-const calculateMaxFortune = ({ borrowers }) =>
+export const calculateMaxFortune = ({ borrowers }) =>
   Calculator.getFortune({ borrowers });
 
-const calculateMaxSecondPillarPledged = ({
+export const calculateMaxSecondPillarPledged = ({
   borrowers,
   structure: { secondPillarWithdrawal },
 }) => Calculator.getSecondPillar({ borrowers }) - secondPillarWithdrawal;
 
-const calculateMaxSecondPillarWithdrawal = ({
+export const calculateMaxSecondPillarWithdrawal = ({
   borrowers,
   structure: { secondPillarPledged },
 }) => Calculator.getSecondPillar({ borrowers }) - secondPillarPledged;
 
-const calculateMaxThirdPillarPledged = ({
+export const calculateMaxThirdPillarPledged = ({
   borrowers,
   structure: { thirdPillarWithdrawal },
 }) => Calculator.getThirdPillar({ borrowers }) - thirdPillarWithdrawal;
 
-const calculateMaxThirdPillarWithdrawal = ({
+export const calculateMaxThirdPillarWithdrawal = ({
   borrowers,
   structure: { thirdPillarPledged },
 }) => Calculator.getThirdPillar({ borrowers }) - thirdPillarPledged;
 
-const makeConditionForValue = funcName => ({ borrowers }) =>
+export const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
 export const calculateRequiredOwnFunds = (data) => {
+  const { propertyWork, notaryFees } = data.structure;
+  const propertyValue = getProperty(data).value;
+  const effectiveLoan = calculateLoan(data);
+  const fees = Calculator.getFeesBase({
+    fees: notaryFees,
+    propertyValue,
+    propertyWork,
+  });
+  return propertyValue + propertyWork + fees - effectiveLoan;
+};
+
+export const calculateMissingOwnFunds = (data) => {
   const { propertyWork, notaryFees } = data.structure;
   const propertyValue = getProperty(data).value;
   const effectiveLoan = calculateLoan(data);

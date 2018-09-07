@@ -1,5 +1,7 @@
 @import './client/FinancingStructuresHeader/FinancingStructuresHeader.scss';
+@import './client/FinancingStructuresOwnFunds/FinancingStructuresOwnFundsPicker/FinancingStructuresOwnFundsPicker.scss';
 @import './client/FinancingStructuresProject/FinancingStructuresProject.scss';
+
 $labels-width: 200px;
 $item-height: 24px;
 $card1_padding: 24px;
@@ -13,7 +15,7 @@ $result-section-negative-offset: -32px;
   flex-direction: column;
 
   .input-and-slider {
-     > *:first-child {
+    > *:first-child {
       margin-bottom: 8px;
     }
   }
@@ -33,7 +35,7 @@ $result-section-negative-offset: -32px;
   border-left: solid 1px $light-grey;
 
   .card1 > *,
-   > * {
+  > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -228,11 +230,11 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-   > *:first-child {
+  > *:first-child {
     margin-bottom: 8px;
   }
 
-   > *:last-child {
+  > *:last-child {
     align-self: center;
   }
 }

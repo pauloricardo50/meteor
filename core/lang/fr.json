@@ -1,4 +1,13 @@
 {
+  "FinancingStructures.ownFundsCompleter": "{current} / {required} alloués",
+  "FinancingStructures.ownFundsCompleterButton": "Ajuster",
+  "FinancingStructures.thirdPartyFortuneUsed": "Prêt de tiers",
+  "FinancingStructuresOwnFundsActions.modify": "Oui, modifier",
+  "FinancingStructuresOwnFundsPickerForm.warning": "Êtes-vous certain de disposer de CHF {value} en {type} sur {name}?",
+  "FinancingStructuresOwnFundsPickerForm.type": "Source",
+  "FinancingStructuresOwnFundsPickerForm.borrower": "Emprunteur",
+  "FinancingStructuresOwnFundsPickerForm.value": "Montant",
+
   "FinancingStructuresOwnFundsDialog.title": "Allouer des fonds propres",
   "FinancingStructures.ownFundsAdder": "Ajouter fonds propres",
   "FinancingStructures.ownFundsPicker": "Fonds propres alloués",
@@ -533,7 +542,7 @@
   "FinancingStructuresPropertyPicker.addProperty": "Ajouter bien immobilier",
   "FinancingStructuresResult.finma": "Ratios FINMA",
   "FinancingStructuresResult.fiscalTitle": "Incidences fiscales",
-  "FinancingStructuresResult.future": "Situation après décaissement",
+  "FinancingStructuresResult.future": "Post décaissement",
   "FinancingStructuresResult.title": "RÉSULTAT",
   "Forms.address1.placeholder": "Rue des Champs 7",
   "Forms.address1": "Adresse 1",
