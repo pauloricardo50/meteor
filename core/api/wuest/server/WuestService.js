@@ -117,8 +117,8 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile
-          && Object.values(wuestConstants.WUEST_QUALITY.STANDARD).includes(qualityProfile.standard),
+          !!qualityProfile &&
+          Object.values(wuestConstants.WUEST_QUALITY.STANDARD).includes(qualityProfile.standard),
         error: wuestConstants.WUEST_ERRORS.INVALID_QUALITY_PROFILE_STANDARD,
       },
       {
@@ -129,8 +129,8 @@ class WuestService {
       },
       {
         sanityCheck: ({ data: { qualityProfile } }) =>
-          !!qualityProfile
-          && Object.values(wuestConstants.WUEST_QUALITY.CONDITION).includes(qualityProfile.condition),
+          !!qualityProfile &&
+          Object.values(wuestConstants.WUEST_QUALITY.CONDITION).includes(qualityProfile.condition),
         error: wuestConstants.WUEST_ERRORS.INVALID_QUALITY_PROFILE_CONDITION,
       },
       {
@@ -179,8 +179,8 @@ class WuestService {
         sanityCheck: ({ type, data: { buildingVolume } }) =>
           (type === wuestConstants.WUEST_PROPERTY_TYPE.FLAT
             ? true
-            : !!buildingVolume
-              && Object.values(wuestConstants.WUEST_VOLUME_TYPE).includes(buildingVolume.type)),
+            : !!buildingVolume &&
+              Object.values(wuestConstants.WUEST_VOLUME_TYPE).includes(buildingVolume.type)),
         error: wuestConstants.WUEST_ERRORS.INVALID_BUILDING_VOLUME_TYPE,
       },
       {
@@ -227,8 +227,8 @@ class WuestService {
         sanityCheck: ({ type, data: { numberOfFloors, floorType } }) =>
           (type === wuestConstants.WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : wuestConstants.WUEST_FLOOR_NUMBER.indexOf(floorType)
-              <= numberOfFloors),
+            : wuestConstants.WUEST_FLOOR_NUMBER.indexOf(floorType) <=
+              numberOfFloors),
         error:
           wuestConstants.WUEST_ERRORS
             .FLOOR_NUMBER_EXCEEDS_TOTAL_NUMBER_OF_FLOORS,
@@ -258,8 +258,8 @@ class WuestService {
         sanityCheck: ({ type, data: { usableArea } }) =>
           (type === wuestConstants.WUEST_PROPERTY_TYPE.HOUSE
             ? true
-            : !!usableArea
-              && Object.values(wuestConstants.WUEST_AREA_TYPE).includes(usableArea.type)),
+            : !!usableArea &&
+              Object.values(wuestConstants.WUEST_AREA_TYPE).includes(usableArea.type)),
         error: wuestConstants.WUEST_ERRORS.INVALID_USABLE_AREA_TYPE,
       },
     ];
@@ -458,7 +458,7 @@ class WuestService {
             type: areaNorm,
             value: insideArea,
           },
-          terraceArea,
+          terraceArea: terraceArea || 0,
           parking: {
             indoor: parking.inside ? parking.inside : 0,
             outdoor: parking.outside ? parking.outside : 0,
@@ -632,6 +632,7 @@ class WuestService {
   evaluate(properties) {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
+      console.log(property.property.JSONData);
       return this.getData(property.property.JSONData)
         .then(result => this.handleResult(result))
         .then(result => this.formatResult(result));
