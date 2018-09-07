@@ -1,4 +1,8 @@
 {
+  "FinancingStructuresOwnFundsDialog.title": "Allouer des fonds propres",
+  "FinancingStructures.ownFundsAdder": "Ajouter fonds propres",
+  "FinancingStructures.ownFundsPicker": "Fonds propres alloués",
+
   "AppWidget1Page.title": "Calculateur",
 
   "DashboardProgressInfo.uploadDocuments": "Ajoutez vos documents",

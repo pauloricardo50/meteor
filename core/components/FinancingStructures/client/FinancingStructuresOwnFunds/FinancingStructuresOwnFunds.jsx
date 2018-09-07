@@ -3,7 +3,6 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import FinancingStructuresSection, {
-  InputAndSlider,
   CalculatedValue,
 } from '../FinancingStructuresSection';
 import Calculator from '../../../../utils/Calculator';
@@ -11,8 +10,7 @@ import { getProperty } from '../FinancingStructuresCalculator';
 import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 import RequiredOwnFunds from './RequiredOwnFunds';
-import OwnFundsLabel from './OwnFundsLabel';
-import OwnFundsCompleter from './OwnFundsCompleter';
+import FinancingStructuresOwnFundsPicker from './FinancingStructuresOwnFundsPicker';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -82,43 +80,8 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
         value: calculateRequiredOwnFunds,
       },
       {
-        Component: OwnFundsCompleter,
-        id: 'fortuneUsed',
-        max: calculateMaxFortune,
-        label: OwnFundsLabel,
-        labelValue: calculateMaxFortune,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'secondPillarWithdrawal',
-        max: calculateMaxSecondPillarWithdrawal,
-        condition: makeConditionForValue('getSecondPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getSecondPillar,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'secondPillarPledged',
-        max: calculateMaxSecondPillarPledged,
-        condition: makeConditionForValue('getSecondPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getSecondPillar,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'thirdPillarWithdrawal',
-        max: calculateMaxThirdPillarWithdrawal,
-        condition: makeConditionForValue('getThirdPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getThirdPillar,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'thirdPillarPledged',
-        max: calculateMaxThirdPillarPledged,
-        condition: makeConditionForValue('getThirdPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getThirdPillar,
+        Component: FinancingStructuresOwnFundsPicker,
+        id: 'ownFundsPicker',
       },
     ]}
   />
