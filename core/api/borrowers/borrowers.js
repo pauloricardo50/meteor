@@ -127,6 +127,10 @@ export const BorrowerSchema = new SimpleSchema(
       min: 0,
       max: 100000000,
     },
+    bonusExists: {
+      type: Boolean,
+      defaultValue: false,
+    },
     bonus2015: {
       type: Number,
       min: 0,
@@ -150,10 +154,6 @@ export const BorrowerSchema = new SimpleSchema(
       min: 0,
       max: 100000000,
       optional: true,
-    },
-    bonusExists: {
-      type: Boolean,
-      defaultValue: false,
     },
     otherIncome: {
       type: Array,
