@@ -55,13 +55,23 @@ const checkWriteApplicationManifestYAMLArguments = options => {
 };
 
 export const writeApplicationManifestYAML = options => {
-  const { applicationName, memory, instances, service, filePath } = options;
+  const {
+    environment,
+    applicationName,
+    name,
+    memory,
+    instances,
+    service,
+    filePath,
+  } = options;
   checkWriteApplicationManifestYAMLArguments(options);
 
   return writeYAML({
     file: filePath,
     data: appManifestYAMLData({
+      environment,
       applicationName,
+      name,
       memory,
       instances,
       service,
