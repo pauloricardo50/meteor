@@ -34,3 +34,27 @@ export const createSearchFilters = (searchFieldsArray, searchQuery) => {
   const fieldName = searchFieldsArray[0];
   return createRegexQuery(fieldName, searchQuery);
 };
+
+export const createdAt = {
+  type: Date,
+  autoValue() {
+    if (this.isInsert) {
+      return new Date();
+    }
+    if (this.isUpsert) {
+      return { $setOnInsert: new Date() };
+    }
+    this.unset();
+  },
+};
+
+export const updatedAt = {
+  type: Date,
+  autoValue() {
+    if (this.isUpdate) {
+      return new Date();
+    }
+  },
+  denyInsert: true,
+  optional: true,
+};

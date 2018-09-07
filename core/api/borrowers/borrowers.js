@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { createdAt, updatedAt } from '../helpers';
 import {
   BORROWERS_COLLECTION,
   RESIDENCY_PERMIT,
@@ -39,28 +40,8 @@ export const BorrowerSchema = new SimpleSchema(
       type: String,
       optional: true,
     },
-    createdAt: {
-      type: Date,
-      autoValue() {
-        if (this.isInsert) {
-          return new Date();
-        }
-        if (this.isUpsert) {
-          return { $setOnInsert: new Date() };
-        }
-        this.unset();
-      },
-    },
-    updatedAt: {
-      type: Date,
-      autoValue() {
-        if (this.isUpdate) {
-          return new Date();
-        }
-      },
-      denyInsert: true,
-      optional: true,
-    },
+    createdAt,
+    updatedAt,
     // Personal Information
     firstName: {
       type: String,
@@ -272,6 +253,12 @@ export const BorrowerSchema = new SimpleSchema(
       max: 100000000,
     },
     bank3A: {
+      type: Number,
+      optional: true,
+      min: 0,
+      max: 100000000,
+    },
+    thirdPartyFortune: {
       type: Number,
       optional: true,
       min: 0,

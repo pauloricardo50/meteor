@@ -1,6 +1,7 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
 
+import { createdAt, updatedAt } from '../../helpers';
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
@@ -16,28 +17,8 @@ const LoanSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   status: {
     type: String,
     defaultValue: LOAN_STATUS.ACTIVE,

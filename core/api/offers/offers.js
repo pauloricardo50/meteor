@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
+import { createdAt, updatedAt } from '../helpers';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 
@@ -24,28 +25,8 @@ export const OfferSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   organization: String,
   maxAmount: {
     type: Number,
