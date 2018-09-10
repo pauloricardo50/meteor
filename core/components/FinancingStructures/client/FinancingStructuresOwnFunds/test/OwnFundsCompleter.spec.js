@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { completeValue } from '../OwnFundsCompleter';
+import { completeValue } from '../OwnFundsCompleterContainer';
 
 describe('OwnFundsCompleter', () => {
   describe('completeValue', () => {
