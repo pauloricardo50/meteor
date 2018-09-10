@@ -17,7 +17,7 @@ export const cloudFoundryCommands = {
     { directory, manifest, name }, // For plugin autopilot
   ) => `cf zero-downtime-push ${name} -f ${manifest} -p ${directory}`,
   blueGreenDeploy: ({ buildDirectory, name, manifest }) =>
-    `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest} --smoke-test ./test.sh`,
+    `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest} --smoke-test ./test.sh --delete-old-apps`,
   deleteApp: name => `cf delete ${name} -f`,
 };
 
