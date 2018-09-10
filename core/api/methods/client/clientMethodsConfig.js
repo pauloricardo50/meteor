@@ -10,7 +10,7 @@ const handleError = (error) => {
     console.error('Meteor Method error:', error);
   }
 
-  message.error(error.message, 7500);
+  message.error(error.message, 8);
 };
 
 Method.addAfterCall(({ config, params, result, error }) => {
