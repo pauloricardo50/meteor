@@ -8,6 +8,7 @@ import {
   LOANS_COLLECTION,
   TASKS_COLLECTION,
   USERS_COLLECTION,
+  PROPERTIES_COLLECTION,
 } from 'core/api/constants';
 
 import MainSideNavListItem from './MainSideNavListItem';
@@ -28,6 +29,11 @@ const items = [
     icon: 'people',
     detail: true,
     collection: BORROWERS_COLLECTION,
+  },
+  {
+    icon: 'domain',
+    detail: true,
+    collection: PROPERTIES_COLLECTION,
   },
   {
     label: 'Tâches',
