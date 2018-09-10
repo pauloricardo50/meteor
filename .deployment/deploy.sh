@@ -19,5 +19,5 @@ rm ./deploy.yml
 END=`date +%s`
 runtime=$((END-START))
 
-echo "e-Potek deployed! It took $runtime seconds"
+../scripts/box_out.sh  "e-Potek deployed! It took $runtime seconds"
 
