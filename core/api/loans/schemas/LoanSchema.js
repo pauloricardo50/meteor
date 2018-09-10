@@ -45,7 +45,7 @@ const LoanSchema = new SimpleSchema({
     defaultValue: LOAN_STATUS.ACTIVE,
     allowedValues: Object.values(LOAN_STATUS),
   },
-  name: { type: String, unique: true, denyUpdate: true },
+  name: { type: String, unique: true },
   general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
