@@ -53,8 +53,8 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-start;
-
-    padding: 16px 16px;
+    margin-bottom: 32px;
+    padding: 16px 0px;
   }
 
   &-rating {
@@ -73,9 +73,10 @@
   }
 
   h3 {
+    margin-bottom: 0px;
     display: flex;
     align-items: center;
-     > :first-child {
+    > :first-child {
       margin-right: 8px;
     }
   }
