@@ -62,8 +62,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getAmortization({ loan }) {
       return (
-        (this.getAmortizationRateRelativeToLoan({ loan })
-          * this.selectLoanValue({ loan }))
+        (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
         / 12
       );
     }
@@ -73,16 +72,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         structure: { wantedLoan, propertyWork },
       } = loan;
       return this.getAmortizationRateBase({
-        borrowRatio:
-          wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
-      });
-    }
-
-    getAmortizationRateRelativeToLoan({ loan }) {
-      const {
-        structure: { wantedLoan, propertyWork },
-      } = loan;
-      return this.getAmortizationRateRelativeToLoanBase({
         borrowRatio:
           wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
       });

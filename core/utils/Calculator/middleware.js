@@ -15,7 +15,7 @@ const argumentMappings = {
     } = data;
     return {
       loanValue: wantedLoan,
-      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoanBase({
+      amortizationRate: Calc.getAmortizationRateBase({
         borrowRatio:
           wantedLoan / (Selector.selectPropertyValue(data) + propertyWork),
       }),
