@@ -10,15 +10,16 @@ const LoanSummary = ({ loan }) => {
   const { _id, borrowers, name } = loan;
 
   return (
-    <div className="card1 card-top loan-summary">
-      <h4>
-        <Link to={`/loans/${_id}`}>{name || <T id="general.loan" />}</Link>
-      </h4>
+    <Link
+      to={`/loans/${_id}`}
+      className="card1 card-top card-hover loan-summary"
+    >
+      <h4>{name || <T id="general.loan" />}</h4>
 
       <LoanSummaryColumns loan={loan} />
 
       <BorrowersSummary borrowers={borrowers} />
-    </div>
+    </Link>
   );
 };
 
