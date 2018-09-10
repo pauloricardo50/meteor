@@ -12,7 +12,6 @@ applications:
       - route: 'www.e-potek.ch'
       - route: 'kadira.e-potek.ch'
       - route: '*.e-potek.ch'
-      - route: 'e-potek.ch'
       - route: '*.staging.e-potek.ch'
     env:
       FORCE_HTTPS: true
