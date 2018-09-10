@@ -36,7 +36,6 @@ const argumentMappings = {
   }),
 
   getAmortizationRateBase: getAmortizationRateMapper,
-  getAmortizationRateRelativeToLoanBase: getAmortizationRateMapper,
 
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
@@ -53,7 +52,7 @@ const argumentMappings = {
     } = data;
     return {
       loanValue: wantedLoan,
-      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoanBase({
+      amortizationRate: Calc.amortizationRateBase({
         borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
       }),
     };

@@ -108,7 +108,7 @@ describe('FinanceCalculator', () => {
         amortizationBaseRate: 0.01,
         amortizationGoal: 0.65,
       });
-      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.01);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
 
     it('returns zero if already below the amortizationGoal', () => {
@@ -137,16 +137,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getAmortizationRateRelativeToLoanBase', () => {
-    it('returns amortization, but relative to the borrowRatio', () => {
-      calc = new FinanceCalculator({
-        amortizationBaseRate: 0.01,
-        amortizationGoal: 0.65,
-      });
-      expect(calc.getAmortizationRateRelativeToLoanBase({ borrowRatio: 0.8 })).to.equal(0.0125);
-    });
-  });
-
   describe('DefaultFinanceCalculator', () => {
     beforeEach(() => {
       calc = DefaultFinanceCalculator;
@@ -154,8 +144,7 @@ describe('FinanceCalculator', () => {
 
     it('has default initialization settings', () => {
       expect(calc.getLoanValue({ propertyValue: 100, fortune: 25 })).to.equal(80);
-      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.01);
-      expect(calc.getAmortizationRateRelativeToLoanBase({ borrowRatio: 0.8 })).to.equal(0.0125);
+      expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
   });
 
@@ -197,19 +186,17 @@ describe('FinanceCalculator', () => {
     it('uses the taxRate to calculate deduction', () => {
       const taxRate = 0.5;
       calc = new FinanceCalculator({ taxRate });
-      const rate = calc.getAmortizationRateRelativeToLoanBase({
-        borrowRatio: 0.8,
-      });
+      const rate = calc.getAmortizationRateBase({ borrowRatio: 0.8 });
       expect(calc.getIndirectAmortizationDeduction({
         loanValue: 800000,
-        amortizationRateRelativeToLoan: rate,
+        amortizationRate: rate,
       })).to.equal(MAX_YEARLY_THIRD_PILLAR_PAYMENTS * taxRate);
     });
 
     it('deduces less if there is less to amortize', () => {
       expect(calc.getIndirectAmortizationDeduction({
         loanValue: 250000,
-        amortizationRateRelativeToLoan: 0.01,
+        amortizationRate: 0.01,
       })).to.equal(625);
     });
   });
@@ -259,6 +246,23 @@ describe('FinanceCalculator', () => {
       expect(calc.getFeesBase({ propertyValue: 100 })).to.equal(5);
       expect(calc.getFeesBase({ propertyWork: 100 })).to.equal(5);
       expect(calc.getFeesBase({ propertyValue: 100, propertyWork: 100 })).to.equal(10);
+    });
+  });
+
+  describe('getTheoreticalMonthly', () => {
+    it('returns a correct value', () => {
+      const expected = {
+        maintenance: 1000,
+        interests: 4000,
+        amortization: 1000,
+        total: 6000,
+      };
+
+      expect(calc.getTheoreticalMonthly({
+        propAndWork: 1200000,
+        loanValue: 960000,
+        amortizationRate: calc.getAmortizationRateBase({ borrowRatio: 0.8 }),
+      })).to.deep.equal(expected);
     });
   });
 });

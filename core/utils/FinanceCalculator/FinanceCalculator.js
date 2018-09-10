@@ -144,9 +144,11 @@ export class FinanceCalculator {
     monthlyIncome,
     monthlyPayment = 0,
   }: {
-    income: number,
-    payment: number,
+    monthlyIncome: number,
+    monthlyPayment: number,
   }) {
+    console.log('monthlyPayment', monthlyPayment);
+    console.log('monthlyIncome', monthlyIncome);
     return monthlyPayment / monthlyIncome;
   }
 
@@ -210,7 +212,7 @@ export class FinanceCalculator {
   }
 
   getAmortizationRateBase({
-    borrowRatio,
+    borrowRatio = 0,
     amortizationYears = 15,
   }: { borrowRatio: number, amortizationRate?: number } = {}) {
     let amortizationRate = 0;
@@ -230,21 +232,14 @@ export class FinanceCalculator {
       // yearlyAmortization = propAndWork * constants.amortization;
     }
 
-    return amortizationRate;
-  }
-
-  getAmortizationRateRelativeToLoanBase({ borrowRatio, amortizationYears }) {
-    return (
-      this.getAmortizationRateBase({ borrowRatio, amortizationYears })
-      / borrowRatio
-    );
+    return amortizationRate / borrowRatio || 0;
   }
 
   getIndirectAmortizationDeduction({
-    amortizationRateRelativeToLoan = 0,
+    amortizationRate = 0,
     loanValue = 0,
-  }: { amortizationRateRelativeToLoan: number, loanValue: 0 } = {}) {
-    const yearlyAmortization = amortizationRateRelativeToLoan * loanValue;
+  }: { amortizationRate: number, loanValue: 0 } = {}) {
+    const yearlyAmortization = amortizationRate * loanValue;
     const cappedThirdPillar = Math.min(
       yearlyAmortization,
       MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
@@ -301,9 +296,9 @@ export class FinanceCalculator {
   };
 
   getTheoreticalMonthly({ propAndWork, loanValue, amortizationRate }) {
-    const maintenance = propAndWork * this.theoreticalMaintenanceRatio;
-    const interests = loanValue * this.theoreticalInterestRate;
-    const amortization = loanValue * amortizationRate;
+    const maintenance = (propAndWork * this.theoreticalMaintenanceRatio) / 12;
+    const interests = (loanValue * this.theoreticalInterestRate) / 12;
+    const amortization = (loanValue * amortizationRate) / 12;
     return this.getLoanCostWithParts({ maintenance, interests, amortization });
   }
 
