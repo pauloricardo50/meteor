@@ -50,6 +50,7 @@ export const BorrowerSchema = new SimpleSchema(
         }
         this.unset();
       },
+      optional: true,
     },
     updatedAt: {
       type: Date,

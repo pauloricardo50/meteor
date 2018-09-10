@@ -151,6 +151,7 @@ export const PropertySchema = new SimpleSchema({
       }
       this.unset();
     },
+    optional: true,
   },
   updatedAt: {
     type: Date,

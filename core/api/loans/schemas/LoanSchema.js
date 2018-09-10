@@ -1,5 +1,6 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
+import uniforms from 'uniforms-material';
 
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
@@ -27,6 +28,7 @@ const LoanSchema = new SimpleSchema({
       }
       this.unset();
     },
+    optional: true,
   },
   updatedAt: {
     type: Date,
