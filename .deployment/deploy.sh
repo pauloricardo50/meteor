@@ -1,7 +1,8 @@
 #!/bin/bash
-
 START=`date +%s`
 set -e
+
+../scripts/box_out.sh "Deploying with args:" "$*"
 
 ./installDependencies.sh
 meteor npm i
@@ -19,3 +20,4 @@ END=`date +%s`
 runtime=$((END-START))
 
 echo "e-Potek deployed! It took $runtime seconds"
+
