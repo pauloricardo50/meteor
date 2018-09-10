@@ -1,5 +1,5 @@
 {
-  "LoanTabs.dev":"Dev",
+  "LoanTabs.dev": "Dev",
   "AppWidget1Page.title": "Calculateur",
 
   "DashboardProgressInfo.uploadDocuments": "Ajoutez vos documents",
@@ -351,8 +351,8 @@
   "emails.ENROLL_ACCOUNT.from": "Yannis d'e-Potek",
   "emails.ENROLL_ACCOUNT.SUBJECT": "Votre nouveau compte e-Potek",
   "emails.ENROLL_ACCOUNT.TITLE": "Bienvenue chez e-Potek",
-  "emails.footerUser": "{copyright}Vous recevez cet email car vous avez créé un compte sur {url}{unsubscribe}",
-  "emails.footerVisitor": "www.e-potek.ch<br /><br />{copyright}",
+  "emails.footerUser": "Vous recevez cet email car vous avez un compte sur {url}{unsubscribe}",
+  "emails.footerVisitor": " ",
   "emails.RESET_PASSWORD.BODY": "Il vous regarde avec un air exaspéré, visiblement déçu que vous ayiez pu oublier un mot de passe aussi simple. Il essaie d'attirer votre attention sur le gros bouton en bas.",
   "emails.RESET_PASSWORD.CTA": "Le gros bouton",
   "emails.RESET_PASSWORD.from": "Gardien des clés d'e-Potek",
