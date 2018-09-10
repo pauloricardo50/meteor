@@ -57,11 +57,11 @@ describe('FinanceCalculator', () => {
 
   describe('getIncomeRatio', () => {
     it('returns the ratio between payment and income', () => {
-      expect(calc.getIncomeRatio({ income: 1, payment: 0.5 })).to.equal(0.5);
+      expect(calc.getIncomeRatio({ monthlyIncome: 1, monthlyPayment: 0.5 })).to.equal(0.5);
     });
 
     it('returns zero if no payment is provided', () => {
-      expect(calc.getIncomeRatio({ income: 1, payment: 0 })).to.equal(0);
+      expect(calc.getIncomeRatio({ monthlyIncome: 1, monthlyPayment: 0 })).to.equal(0);
     });
   });
 

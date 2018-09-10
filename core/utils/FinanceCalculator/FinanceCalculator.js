@@ -140,8 +140,14 @@ export class FinanceCalculator {
     return gender === GENDER.F ? 64 : 65;
   }
 
-  getIncomeRatio({ income, payment = 0 }: { income: number, payment: number }) {
-    return payment / income;
+  getIncomeRatio({
+    monthlyIncome,
+    monthlyPayment = 0,
+  }: {
+    income: number,
+    payment: number,
+  }) {
+    return monthlyPayment / monthlyIncome;
   }
 
   getIncomeRatioStatus({ incomeRatio }) {

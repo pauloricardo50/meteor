@@ -3,7 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
 import { toMoney } from '../../utils/conversionFunctions';
-import { T, IntlNumber, MetricArea } from '../Translation';
+import { T, Percent, MetricArea } from '../Translation';
 import RecapSimple from './RecapSimple';
 import Calculator from '../../utils/Calculator';
 import BorrowerCalculator from '../../utils/Calculator/BorrowerCalculator';
@@ -125,7 +125,7 @@ const getDashboardArray = (props) => {
       label: propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
-          <IntlNumber value={borrowRatio} format="percentage" />{' '}
+          <Percent value={borrowRatio} />{' '}
           <span
             className={
               borrowRatio <= maxBorrowRatio + 0.001 // add 0.1% to avoid rounding errors
@@ -140,7 +140,7 @@ const getDashboardArray = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          <IntlNumber value={incomeRatio} format="percentage" />{' '}
+          <Percent value={incomeRatio} />{' '}
           <span
             className={
               incomeRatio <= 1 / 3
@@ -458,7 +458,7 @@ const getStructureArray = (props) => {
       label: propertyWork ? 'Recap.borrowRatio2' : 'Recap.borrowRatio1',
       value: (
         <span>
-          <IntlNumber value={borrowRatio} format="percentage" />{' '}
+          <Percent value={borrowRatio} />{' '}
           <span
             className={
               borrowRatio <= maxBorrowRatio + 0.001 // add 0.1% to avoid rounding errors
@@ -473,7 +473,7 @@ const getStructureArray = (props) => {
       label: 'Recap.incomeRatio',
       value: (
         <span>
-          <IntlNumber value={incomeRatio} format="percentage" />{' '}
+          <Percent value={incomeRatio} />{' '}
           <span
             className={
               incomeRatio <= 1 / 3
