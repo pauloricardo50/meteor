@@ -632,7 +632,6 @@ class WuestService {
   evaluate(properties) {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
-      console.log(property.property.JSONData);
       return this.getData(property.property.JSONData)
         .then(result => this.handleResult(result))
         .then(result => this.formatResult(result));

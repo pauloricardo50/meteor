@@ -26,7 +26,6 @@ const styles = {
 
 class DateInput extends Component {
   handleChange = (date) => {
-    console.log('autoform changing', date);
     if (date === undefined) {
       this.saveValue(null);
     } else {
