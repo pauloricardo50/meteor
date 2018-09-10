@@ -24,13 +24,6 @@ export const FOOTER_TYPES = {
 };
 
 export const EMAIL_TEMPLATES = {
-  WELCOME: {
-    name: 'WELCOME',
-    mandrillId: 'welcome',
-    variables: {
-      VERIFICATION_URL: 'VERIFICATION_URL',
-    },
-  },
   NOTIFICATION: {
     name: 'NOTIFICATION',
     mandrillId: 'notification',
