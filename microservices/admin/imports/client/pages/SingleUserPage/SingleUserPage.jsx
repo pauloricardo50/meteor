@@ -6,14 +6,14 @@ import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 
-const SingleUserPage = ({ user, className }) => {
+const SingleUserPage = ({ user, className, currentUser }) => {
   const { loans } = user;
 
   return (
     <section
       className={classnames('card1 card-top single-user-page', className)}
     >
-      <SingleUserPageHeader user={user} />
+      <SingleUserPageHeader user={user} currentUser={currentUser} />
       {loans && <LoanSummaryList loans={loans} userId={user._id} />}
     </section>
   );

@@ -68,3 +68,10 @@ export const testCreateUser = new Method({
     user: Object,
   },
 });
+
+export const removeUser = new Method({
+  name: 'removeUser',
+  params: {
+    userId: String,
+  },
+});
