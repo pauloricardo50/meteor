@@ -57,4 +57,5 @@ export const adminBorrowerFragment = {
 export const sideNavBorrowerFragment = {
   ...baseBorrowerFragment,
   user: { assignedEmployee: { email: 1 } },
+  loans: { name: 1 },
 };
