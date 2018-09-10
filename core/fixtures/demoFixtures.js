@@ -54,7 +54,7 @@ export const createYannisUser = () => {
 
   UserService.update({
     userId,
-    object: { firstName: 'Yannis', lastName: 'Eggert' },
+    object: { firstName: 'Yannis', lastName: 'Demo' },
   });
 
   createYannisData(userId);
