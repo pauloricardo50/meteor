@@ -790,6 +790,7 @@
   "Forms.user": "Utilisateur",
   "Forms.value.placeholder": "CHF 500 000",
   "Forms.value": "Prix d'achat",
+  "Forms.value.info": "Arrondi à CHF 1000.- près",
   "Forms.volume.placeholder": "1000",
   "Forms.volume": "Volume/Cubage en m3",
   "Forms.volumeNorm.BIC": "BIC",
