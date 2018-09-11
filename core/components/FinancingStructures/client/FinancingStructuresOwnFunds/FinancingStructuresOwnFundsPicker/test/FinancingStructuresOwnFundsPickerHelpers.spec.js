@@ -6,6 +6,7 @@ import {
   chooseOwnFundsTypes,
   shouldAskForUsageType,
   calculateRemainingFunds,
+  makeNewOwnFundsArray,
 } from '../FinancingStructuresOwnFundsPickerHelpers';
 import {
   RESIDENCE_TYPE,
@@ -67,77 +68,145 @@ describe('FinancingStructuresOwnFundsPickerHelpers', () => {
         borrowerId: 'id',
       })).to.equal(0);
     });
+
+    it('should return the remaining left over if any is', () => {
+      const structure = {
+        ownFunds: [
+          { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
+        ],
+      };
+      const borrowers = [{ insurance2: [{ value: 10 }], _id: 'id' }];
+      expect(calculateRemainingFunds({
+        type: OWN_FUNDS_TYPES.INSURANCE_2,
+        structure,
+        ownFundsIndex: -1,
+        borrowers,
+        borrowerId: 'id',
+      })).to.equal(5);
+    });
+
+    it('should not count the currently editing ownFunds object', () => {
+      const structure = {
+        ownFunds: [
+          { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
+          { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' }, // Being edited
+        ],
+      };
+      const borrowers = [{ insurance2: [{ value: 10 }], _id: 'id' }];
+      expect(calculateRemainingFunds({
+        type: OWN_FUNDS_TYPES.INSURANCE_2,
+        structure,
+        ownFundsIndex: 1,
+        borrowers,
+        borrowerId: 'id',
+      })).to.equal(5);
+    });
+
+    it('should ignore all other ownFunds of different types', () => {
+      const structure = {
+        ownFunds: [
+          { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 5, borrowerId: 'id' },
+          { type: OWN_FUNDS_TYPES.BANK_3A, value: 5, borrowerId: 'id' },
+          {
+            type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+            value: 5,
+            borrowerId: 'id',
+          },
+          { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
+        ],
+      };
+      const borrowers = [{ thirdPartyFortune: 10, _id: 'id' }];
+      expect(calculateRemainingFunds({
+        type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        structure,
+        ownFundsIndex: 1,
+        borrowers,
+        borrowerId: 'id',
+      })).to.equal(5);
+    });
+
+    it('ignores ownFunds from other borrowers', () => {
+      const structure = {
+        ownFunds: [
+          { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 5, borrowerId: 'id2' },
+        ],
+      };
+      const borrowers = [{ bankFortune: 10, _id: 'id' }];
+      expect(calculateRemainingFunds({
+        type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+        structure,
+        ownFundsIndex: -1,
+        borrowers,
+        borrowerId: 'id',
+      })).to.equal(10);
+    });
   });
 
-  it('should return the remaining left over if any is', () => {
-    const structure = {
-      ownFunds: [
-        { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
-      ],
-    };
-    const borrowers = [{ insurance2: [{ value: 10 }], _id: 'id' }];
-    expect(calculateRemainingFunds({
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      structure,
-      ownFundsIndex: -1,
-      borrowers,
-      borrowerId: 'id',
-    })).to.equal(5);
-  });
+  describe.only('makeNewOwnFundsArray', () => {
+    it('adds the new object in the array if it is empty', () => {
+      const expected = [
+        { type: 1, borrowerId: 3, value: 4, usageType: undefined },
+      ];
 
-  it('should not count the currently editing ownFunds object', () => {
-    const structure = {
-      ownFunds: [
-        { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
-        { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' }, // Being edited
-      ],
-    };
-    const borrowers = [{ insurance2: [{ value: 10 }], _id: 'id' }];
-    expect(calculateRemainingFunds({
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      structure,
-      ownFundsIndex: 1,
-      borrowers,
-      borrowerId: 'id',
-    })).to.equal(5);
-  });
+      expect(makeNewOwnFundsArray({
+        structure: { ownFunds: [] },
+        ownFundsIndex: -1,
+        ...expected[0],
+      })).to.deep.equal(expected);
+    });
 
-  it('should ignore all other ownFunds of different types', () => {
-    const structure = {
-      ownFunds: [
-        { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 5, borrowerId: 'id' },
-        { type: OWN_FUNDS_TYPES.BANK_3A, value: 5, borrowerId: 'id' },
-        {
-          type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
-          value: 5,
-          borrowerId: 'id',
+    it('replaces the current object at index', () => {
+      const expected = [
+        { type: 1, borrowerId: 3, value: 4, usageType: undefined },
+      ];
+
+      expect(makeNewOwnFundsArray({
+        structure: {
+          ownFunds: [{ type: 5, borrowerId: 6, value: 7, usageType: 8 }],
         },
-        { type: OWN_FUNDS_TYPES.INSURANCE_2, value: 5, borrowerId: 'id' },
-      ],
-    };
-    const borrowers = [{ thirdPartyFortune: 10, _id: 'id' }];
-    expect(calculateRemainingFunds({
-      type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
-      structure,
-      ownFundsIndex: 1,
-      borrowers,
-      borrowerId: 'id',
-    })).to.equal(5);
-  });
+        ownFundsIndex: 0,
+        ...expected[0],
+      })).to.deep.equal(expected);
+    });
 
-  it('ignores ownFunds from other borrowers', () => {
-    const structure = {
-      ownFunds: [
-        { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 5, borrowerId: 'id2' },
-      ],
-    };
-    const borrowers = [{ bankFortune: 10, _id: 'id' }];
-    expect(calculateRemainingFunds({
-      type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-      structure,
-      ownFundsIndex: -1,
-      borrowers,
-      borrowerId: 'id',
-    })).to.equal(10);
+    it('replaces the current object at larger index', () => {
+      const expected = [
+        { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+        { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+        { type: 1, borrowerId: 3, value: 4, usageType: undefined },
+      ];
+
+      expect(makeNewOwnFundsArray({
+        structure: {
+          ownFunds: [
+            { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+            { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+            { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+          ],
+        },
+        ownFundsIndex: 2,
+        ...expected[2],
+      })).to.deep.equal(expected);
+    });
+
+    it('deletes object at index', () => {
+      const expected = [
+        { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+        { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+      ];
+
+      expect(makeNewOwnFundsArray({
+        structure: {
+          ownFunds: [
+            { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+            { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+            { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+          ],
+        },
+        ownFundsIndex: 1,
+        shouldDelete: true,
+        ...expected[2],
+      })).to.deep.equal(expected);
+    });
   });
 });

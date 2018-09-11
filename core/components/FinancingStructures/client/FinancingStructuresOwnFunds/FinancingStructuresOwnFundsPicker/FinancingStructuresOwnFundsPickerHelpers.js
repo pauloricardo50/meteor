@@ -33,9 +33,9 @@ export const calculateRemainingFunds = ({
     return undefined;
   }
   const otherOwnFunds = structure.ownFunds.filter((_, index) => index !== ownFundsIndex);
-  const ownFundsWithSameTypeAndSameBorrower = otherOwnFunds.filter(({ type: otherType, borrowerId: bId }) =>
+  const ownFundsWithSameTypeAndBorrower = otherOwnFunds.filter(({ type: otherType, borrowerId: bId }) =>
     otherType === type && bId === borrowerId);
-  const usedValue = ownFundsWithSameTypeAndSameBorrower.reduce(
+  const usedValue = ownFundsWithSameTypeAndBorrower.reduce(
     (sum, { value }) => sum + value,
     0,
   );
@@ -45,4 +45,38 @@ export const calculateRemainingFunds = ({
   });
 
   return available - usedValue;
+};
+
+export const makeNewOwnFundsArray = ({
+  type,
+  usageType,
+  borrowerId,
+  value,
+  structure,
+  ownFundsIndex,
+  shouldDelete,
+}) => {
+  if (shouldDelete) {
+    return [
+      ...structure.ownFunds.slice(0, ownFundsIndex),
+      ...structure.ownFunds.slice(ownFundsIndex + 1),
+    ];
+  }
+
+  const newObject = {
+    type,
+    usageType: shouldAskForUsageType(type) ? usageType : undefined,
+    borrowerId,
+    value,
+  };
+
+  if (ownFundsIndex < 0) {
+    return [...structure.ownFunds, newObject];
+  }
+
+  return [
+    ...structure.ownFunds.slice(0, ownFundsIndex),
+    newObject,
+    ...structure.ownFunds.slice(ownFundsIndex + 1),
+  ];
 };

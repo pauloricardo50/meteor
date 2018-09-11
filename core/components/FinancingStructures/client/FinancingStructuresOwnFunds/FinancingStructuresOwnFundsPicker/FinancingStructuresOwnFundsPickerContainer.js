@@ -1,10 +1,13 @@
 import { compose, withProps, withStateHandlers } from 'recompose';
+import { connect } from 'react-redux';
 
+import { updateStructure } from '../../../../../redux/financingStructures';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
 import {
   chooseOwnFundsTypes,
   shouldAskForUsageType,
+  makeNewOwnFundsArray,
 } from './FinancingStructuresOwnFundsPickerHelpers';
 
 export const FIELDS = {
@@ -15,12 +18,22 @@ export const FIELDS = {
 };
 
 const addState = withStateHandlers(
-  ({ structure: { ownFunds }, borrowers }) => ({
-    [FIELDS.TYPE]: undefined,
-    [FIELDS.USAGE_TYPE]: undefined,
-    [FIELDS.BORROWER_ID]: borrowers[0]._id,
-    [FIELDS.VALUE]: undefined,
-  }),
+  ({ structure, borrowers, ownFundsIndex }) => {
+    if (!structure) {
+      return {};
+    }
+
+    if (ownFundsIndex < 0) {
+      return {
+        [FIELDS.TYPE]: undefined,
+        [FIELDS.USAGE_TYPE]: undefined,
+        [FIELDS.BORROWER_ID]: borrowers[0]._id,
+        [FIELDS.VALUE]: undefined,
+      };
+    }
+
+    return structure.ownFunds[ownFundsIndex];
+  },
   { handleChange: () => (value, id) => ({ [id]: value }) },
 );
 
@@ -33,12 +46,28 @@ const withDisableSubmit = withProps(({ type, borrowerId, value, usageType }) => 
   ),
 }));
 
-const withAdditionalProps = withProps(({ disableSubmit, ...props }) => ({
-  handleDelete: () => {},
-  handleSubmit: () => {
+const withStructureUpdate = connect(
+  null,
+  (dispatch, { structureId }) => ({
+    updateOwnFunds: ownFunds =>
+      dispatch(updateStructure(structureId, { ownFunds })),
+  }),
+);
+
+const withAdditionalProps = withProps(({ disableSubmit, updateOwnFunds, handleClose, ...props }) => ({
+  handleDelete: () => {
+    updateOwnFunds(makeNewOwnFundsArray({ ...props, shouldDelete: true }));
+    handleClose();
+  },
+  handleSubmit: (event) => {
+    event.preventDefault();
     if (disableSubmit) {
       return false;
     }
+
+    console.log('handleSubmit', props);
+    updateOwnFunds(makeNewOwnFundsArray(props));
+    handleClose();
   },
   handleUpdateBorrower: () => {},
   types: chooseOwnFundsTypes(props),
@@ -49,6 +78,7 @@ const FinancingStructuresOwnFundsPickerContainer = compose(
   FinancingStructuresDataContainer({ asArrays: true }),
   addState,
   withDisableSubmit,
+  withStructureUpdate,
   withAdditionalProps,
 );
 

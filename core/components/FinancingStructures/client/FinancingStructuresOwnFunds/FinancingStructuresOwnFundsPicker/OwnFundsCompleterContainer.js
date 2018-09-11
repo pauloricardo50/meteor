@@ -11,6 +11,7 @@ const OwnFundsCompleterContainer = compose(
   SingleStructureContainer,
   FinancingStructuresDataContainer({ asArrays: true }),
   withProps((props) => {
+    console.log('completer props', props);
     const fundsToAdd = calculateMissingOwnFunds(props);
     const required = calculateRequiredOwnFunds(props);
 
