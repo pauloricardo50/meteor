@@ -23,7 +23,7 @@ const FinancingStructuresOwnFundsActions = ({
       <T id="general.cancel" />
     </Button>,
     !disableDelete && (
-      <Button disabled={loading} key="delete" onClick={handleDelete}>
+      <Button disabled={loading} key="delete" onClick={handleDelete} error>
         <T id="general.delete" />
       </Button>
     ),

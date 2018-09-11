@@ -56,7 +56,7 @@ export const makeNewOwnFundsArray = ({
   ownFundsIndex,
   shouldDelete,
 }) => {
-  if (shouldDelete) {
+  if (shouldDelete || value === 0) {
     return [
       ...structure.ownFunds.slice(0, ownFundsIndex),
       ...structure.ownFunds.slice(ownFundsIndex + 1),

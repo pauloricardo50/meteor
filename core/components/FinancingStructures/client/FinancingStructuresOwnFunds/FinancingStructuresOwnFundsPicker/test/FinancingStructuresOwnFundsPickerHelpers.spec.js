@@ -208,5 +208,24 @@ describe('FinancingStructuresOwnFundsPickerHelpers', () => {
         ...expected[2],
       })).to.deep.equal(expected);
     });
+
+    it('deletes object if value is 0', () => {
+      const expected = [
+        { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+        { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+      ];
+
+      expect(makeNewOwnFundsArray({
+        structure: {
+          ownFunds: [
+            { type: 5, borrowerId: 6, value: 7, usageType: 8 },
+            { type: 9, borrowerId: 10, value: 11, usageType: 12 },
+            { type: 14, borrowerId: 15, value: 16, usageType: 17 },
+          ],
+        },
+        ownFundsIndex: 1,
+        value: 0,
+      })).to.deep.equal(expected);
+    });
   });
 });

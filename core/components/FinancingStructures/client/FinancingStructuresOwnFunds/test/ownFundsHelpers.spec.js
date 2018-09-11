@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { calculateMissingOwnFunds } from '../ownFundsHelpers';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 
-describe.only('ownFundsHelpers', () => {
+describe('ownFundsHelpers', () => {
   describe('calculateMissingOwnFunds', () => {
     it('returns a standard amount', () => {
       expect(calculateMissingOwnFunds({

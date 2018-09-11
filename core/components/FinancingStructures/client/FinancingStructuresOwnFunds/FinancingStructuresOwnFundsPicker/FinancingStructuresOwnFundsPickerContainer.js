@@ -65,7 +65,6 @@ const withAdditionalProps = withProps(({ disableSubmit, updateOwnFunds, handleCl
       return false;
     }
 
-    console.log('handleSubmit', props);
     updateOwnFunds(makeNewOwnFundsArray(props));
     handleClose();
   },

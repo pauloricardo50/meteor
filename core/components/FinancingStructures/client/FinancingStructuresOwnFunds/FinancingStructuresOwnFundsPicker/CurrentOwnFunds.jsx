@@ -17,23 +17,24 @@ const CurrentOwnFunds = ({
   structureId,
   ownFundsIndex,
 }: CurrentOwnFundsProps) => (
-  <div className="current-own-funds" onClick={handleOpen}>
-    <h5>
-      <T id={`Forms.${type}`} />
-      {usageType && ` - ${<T id={`Forms.ownFundsUsageType.${usageType}`} />}`}
-    </h5>
-    <h5 className="secondary">
-      {borrowers.find(({ _id }) => _id === borrowerId).firstName}
-    </h5>
-    <h4>CHF {toMoney(value)}</h4>
+  <React.Fragment>
+    <div className="current-own-funds" onClick={handleOpen}>
+      <h5>
+        <T id={`Forms.${type}`} />
+        {usageType && ` - ${<T id={`Forms.ownFundsUsageType.${usageType}`} />}`}
+      </h5>
+      <h5 className="secondary">
+        {borrowers.find(({ _id }) => _id === borrowerId).firstName}
+      </h5>
+      <h4>CHF {toMoney(value)}</h4>
+    </div>
     <FinancingStructuresOwnFundsDialog
       open={open}
       handleClose={handleClose}
       structureId={structureId}
-      disableDelete
       ownFundsIndex={ownFundsIndex}
     />
-  </div>
+  </React.Fragment>
 );
 
 export default FinancingStructuresOwnFundsDialogContainer(CurrentOwnFunds);

@@ -21,6 +21,7 @@ const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDia
     open,
     handleChange,
     handleSubmit,
+    handleDelete,
     type,
     value,
     borrowerId,
@@ -66,6 +67,7 @@ const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDia
       <FinancingStructuresOwnFundsActions
         handleClose={handleClose}
         handleSubmit={handleSubmit}
+        handleDelete={handleDelete}
         displayWarning={displayWarning}
         disableSubmit={disableSubmit}
         disableDelete={disableDelete}
