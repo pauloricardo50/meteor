@@ -52,9 +52,11 @@ const applicationSettings = ({ applicationName, environment }) => ({
   ...ENVIRONMENT_CONFIG[environment][applicationName].appConfig,
 });
 
+export const generateMongoServiceName = environment => `mongo-${environment}`;
+
 export const createDeploySettingsForEnv = environment => ({
   service: {
-    name: `mongo-${environment}`,
+    name: generateMongoServiceName(environment),
     size: ENVIRONMENT_CONFIG[environment].serviceConfig,
   },
   root: `./${environment}`,

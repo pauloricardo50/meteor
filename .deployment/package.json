@@ -4,6 +4,8 @@
     "deploy": "./deploy.sh",
     "deploy-staging": "./deploy.sh -e staging",
     "deploy-production": "./deploy.sh -e production",
+    "mongo-ssh-staging": "./ssh-tunnel.sh -e staging",
+    "mongo-ssh-production": "./ssh-tunnel.sh -e production",
     "scaleApplication": "./scaleApplication.sh"
   },
   "devDependencies": {

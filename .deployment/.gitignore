@@ -7,3 +7,6 @@ production/*
 !production/settings-production.json
 
 deploy.yml
+
+ssh-tunnel/*
+!ssh-tunnel/createSSHTunnel.js
