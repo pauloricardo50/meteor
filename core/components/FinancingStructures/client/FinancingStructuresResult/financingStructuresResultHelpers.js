@@ -47,15 +47,25 @@ export const getPropertyExpenses = (data) => {
 export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) =>
   Calculator.getFortune({ borrowers }) - fortuneUsed;
 
-export const getRemainingSecondPillar = ({
+export const getRemainingInsurance2 = ({
   borrowers,
   structure: { secondPillarWithdrawal },
-}) => Calculator.getSecondPillar({ borrowers }) - secondPillarWithdrawal;
+}) => Calculator.getInsurance2({ borrowers }) - secondPillarWithdrawal;
 
-export const getRemainingThirdPillar = ({
+export const getRemainingInsurance3A = ({
   borrowers,
   structure: { thirdPillarWithdrawal },
-}) => Calculator.getThirdPillar({ borrowers }) - thirdPillarWithdrawal;
+}) => Calculator.getInsurance3A({ borrowers }) - thirdPillarWithdrawal;
+
+export const getRemainingInsurance3B = ({
+  borrowers,
+  structure: { thirdPillarWithdrawal },
+}) => Calculator.getInsurance3B({ borrowers }) - thirdPillarWithdrawal;
+
+export const getRemainingBank3A = ({
+  borrowers,
+  structure: { thirdPillarWithdrawal },
+}) => Calculator.getBank3A({ borrowers }) - thirdPillarWithdrawal;
 
 export const getBorrowRatio = FinanceCalculator.getBorrowRatio;
 
