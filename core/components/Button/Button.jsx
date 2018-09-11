@@ -54,20 +54,22 @@ const Button = (props) => {
     'raised',
     'outlined',
     'error',
+    'classes',
   ]);
 
   const variant = props.variant || getVariant(props);
+  const color = props.color || getColor(props);
 
   return (
     <MuiButton
       {...childProps}
-      color={props.color || getColor(props)}
+      color={color}
       variant={variant}
       component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
       className={cx(props.className, {
-        [props.classes.root]: props.error,
-        [props.classes.raised]: props.error && variant === 'raised',
+        [props.classes.root]: color === 'error',
+        [props.classes.raised]: !!(color === 'error' && variant === 'raised'),
       })}
     >
       {props.icon}
