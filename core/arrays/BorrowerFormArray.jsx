@@ -6,6 +6,23 @@ import BorrowerAddPartner from '../components/BorrowerAddPartner';
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
   civilStatus === constants.CIVIL_STATUS.MARRIED && !multiple && isFirst;
 
+const makeArrayOfObjectsInput = id => ({
+  id,
+  type: 'arrayInput',
+  required: false,
+  inputs: [
+    {
+      id: 'description',
+      type: 'textInput',
+    },
+    {
+      id: 'value',
+      type: 'textInput',
+      money: true,
+    },
+  ],
+});
+
 export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
   const b = borrowers.find(borrower => borrower._id === id);
   const multiple = borrowers.length > 1;
@@ -118,9 +135,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
 
 export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
   const b = borrowers.find(borr => borr._id === id);
-  const multiple = borrowers.length > 1;
-  // If this is the first borrower in the array of borrowers, don't ask for same address
-  const isFirst = borrowers[0]._id === id;
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -212,22 +226,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
         },
       ],
     },
-    {
-      id: 'otherFortune',
-      type: 'arrayInput',
-      required: false,
-      inputs: [
-        {
-          id: 'description',
-          type: 'textInput',
-        },
-        {
-          id: 'value',
-          type: 'textInput',
-          money: true,
-        },
-      ],
-    },
+    makeArrayOfObjectsInput('otherFortune'),
   ];
 
   const insuranceArray = [
@@ -237,30 +236,10 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       required: false,
       ignore: true,
     },
-    {
-      id: 'insurance2',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
-    {
-      id: 'bank3A',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
-    {
-      id: 'insurance3A',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
-    {
-      id: 'insurance3B',
-      type: 'textInput',
-      money: true,
-      required: false,
-    },
+    makeArrayOfObjectsInput('insurance2'),
+    makeArrayOfObjectsInput('bank3A'),
+    makeArrayOfObjectsInput('insurance3A'),
+    makeArrayOfObjectsInput('insurance3B'),
   ];
 
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
