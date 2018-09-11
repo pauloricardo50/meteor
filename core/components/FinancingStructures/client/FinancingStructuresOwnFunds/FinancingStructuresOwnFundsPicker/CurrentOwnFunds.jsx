@@ -13,18 +13,19 @@ const CurrentOwnFunds = ({
   borrowers,
   open,
   handleClose,
+  handleOpen,
   structureId,
   ownFundsIndex,
 }: CurrentOwnFundsProps) => (
-  <div className="current-own-funds">
+  <div className="current-own-funds" onClick={handleOpen}>
     <h5>
-      <T id={`Forms.${type}`} /> -{' '}
-      {usageType && <T id={`Forms.ownFundsUsageType.${usageType}`} />}
+      <T id={`Forms.${type}`} />
+      {usageType && ` - ${<T id={`Forms.ownFundsUsageType.${usageType}`} />}`}
     </h5>
-    <h6 className="secondary">
-      {borrowers.find(({ _id }) => _id === borrowerId.firstName)}
-    </h6>
-    <h3>CHF {toMoney(value)}</h3>
+    <h5 className="secondary">
+      {borrowers.find(({ _id }) => _id === borrowerId).firstName}
+    </h5>
+    <h4>CHF {toMoney(value)}</h4>
     <FinancingStructuresOwnFundsDialog
       open={open}
       handleClose={handleClose}

@@ -5,13 +5,12 @@ import SingleStructureContainer from '../../containers/SingleStructureContainer'
 import {
   calculateMissingOwnFunds,
   calculateRequiredOwnFunds,
-} from '../FinancingStructuresOwnFunds';
+} from '../ownFundsHelpers';
 
 const OwnFundsCompleterContainer = compose(
   SingleStructureContainer,
   FinancingStructuresDataContainer({ asArrays: true }),
   withProps((props) => {
-    console.log('completer props', props);
     const fundsToAdd = calculateMissingOwnFunds(props);
     const required = calculateRequiredOwnFunds(props);
 
