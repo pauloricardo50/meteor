@@ -27,14 +27,22 @@ export const calculateRemainingFunds = ({
   ownFundsIndex,
   structure,
   borrowers,
+  borrowerId,
 }) => {
+  if (!type) {
+    return undefined;
+  }
   const otherOwnFunds = structure.ownFunds.filter((_, index) => index !== ownFundsIndex);
-  const ownFundsWithSameType = otherOwnFunds.filter(({ type: otherType }) => otherType === type);
-  const usedValue = ownFundsWithSameType.reduce(
+  const ownFundsWithSameTypeAndSameBorrower = otherOwnFunds.filter(({ type: otherType, borrowerId: bId }) =>
+    otherType === type && bId === borrowerId);
+  const usedValue = ownFundsWithSameTypeAndSameBorrower.reduce(
     (sum, { value }) => sum + value,
     0,
   );
-  const available = Calculator.getFunds({ borrowers, type });
+  const available = Calculator.getFunds({
+    borrowers: borrowers.find(({ _id }) => _id === borrowerId),
+    type,
+  });
 
   return available - usedValue;
 };

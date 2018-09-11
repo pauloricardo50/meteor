@@ -11,25 +11,27 @@ import FinancingStructuresOwnFundsPickerContainer, {
 import FinancingStructuresOwnFundsActions from './FinancingStructuresOwnFundsActions';
 import FinancingStructuresOwnFundsPickerForm from './FinancingStructuresOwnFundsPickerForm';
 import OwnFundsCompleter from './OwnFundsCompleter';
+import { calculateRemainingFunds } from './FinancingStructuresOwnFundsPickerHelpers';
 
 type FinancingStructuresOwnFundsDialogProps = {};
 
-const FinancingStructuresOwnFundsDialog = ({
-  handleClose,
-  open,
-  handleChange,
-  handleSubmit,
-  type,
-  value,
-  borrowerId,
-  types,
-  disableSubmit,
-  disableDelete,
-  structureId,
-  usageType
-}: FinancingStructuresOwnFundsDialogProps) => {
-  const available = 0;
-  const displayWarning = type && borrowerId && available < value;
+const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDialogProps) => {
+  const {
+    handleClose,
+    open,
+    handleChange,
+    handleSubmit,
+    type,
+    value,
+    borrowerId,
+    types,
+    disableSubmit,
+    disableDelete,
+    structureId,
+    usageType,
+  } = props;
+  const remaining = calculateRemainingFunds(props);
+  const displayWarning = type && borrowerId && remaining < value;
   return (
     <Dialog
       open={open}
@@ -58,6 +60,7 @@ const FinancingStructuresOwnFundsDialog = ({
           value={value}
           displayWarning={displayWarning}
           usageType={usageType}
+          remaining={remaining}
         />
       </DialogContent>
       <FinancingStructuresOwnFundsActions

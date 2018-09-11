@@ -23,6 +23,7 @@ const OwnFundsAdder = ({
       handleClose={handleClose}
       structureId={structureId}
       disableDelete
+      ownFundsIndex={-1}
     />
   </React.Fragment>
 );

@@ -22,6 +22,7 @@ const FinancingStructuresOwnFundsPickerForm = ({
   types,
   displayWarning,
   usageType,
+  remaining,
 }: FinancingStructuresOwnFundsPickerFormProps) => (
   <form
     onSubmit={displayWarning ? () => {} : handleSubmit}
@@ -62,7 +63,20 @@ const FinancingStructuresOwnFundsPickerForm = ({
       <MoneyInput
         value={value}
         onChange={val => handleChange(val, FIELDS.VALUE)}
-        helperText="Hello my dude"
+        helperText={
+          remaining >= 0 && (
+            <T
+              id="FinancingStructuresOwnFundsPickerForm.remaining"
+              values={{
+                value: (
+                  <b className={remaining < value ? 'error' : 'primary'}>
+                    {toMoney(remaining)}
+                  </b>
+                ),
+              }}
+            />
+          )
+        }
         label={<T id="FinancingStructuresOwnFundsPickerForm.value" />}
       />
     </div>
