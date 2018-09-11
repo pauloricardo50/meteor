@@ -6,14 +6,13 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
-import { calculateMissingOwnFunds } from '../FinancingStructuresOwnFunds/FinancingStructuresOwnFunds';
+import { calculateMissingOwnFunds } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import FinanceCalculator, {
   getProperty,
 } from '../FinancingStructuresCalculator';
 import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
-import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 type FinancingStructuresResultErrorsProps = {};
 
@@ -48,7 +47,6 @@ const errors = [
     func: (data) => {
       const { propertyWork, notaryFees } = data.structure;
       const propertyValue = getProperty(data).value;
-      const effectiveLoan = calculateLoan(data);
       return (
         Calculator.getMinCash({
           fees: notaryFees,

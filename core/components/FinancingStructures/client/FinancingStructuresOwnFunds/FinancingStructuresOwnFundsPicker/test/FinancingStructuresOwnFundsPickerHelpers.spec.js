@@ -142,7 +142,7 @@ describe('FinancingStructuresOwnFundsPickerHelpers', () => {
     });
   });
 
-  describe.only('makeNewOwnFundsArray', () => {
+  describe('makeNewOwnFundsArray', () => {
     it('adds the new object in the array if it is empty', () => {
       const expected = [
         { type: 1, borrowerId: 3, value: 4, usageType: undefined },
