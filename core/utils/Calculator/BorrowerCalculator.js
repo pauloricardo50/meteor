@@ -1,4 +1,5 @@
 // @flow
+import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
 import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
@@ -77,23 +78,39 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
     }
 
+    isTypeWithArrayValues = type =>
+      [
+        OWN_FUNDS_TYPES.INSURANCE_2,
+        OWN_FUNDS_TYPES.INSURANCE_3A,
+        OWN_FUNDS_TYPES.BANK_3A,
+        OWN_FUNDS_TYPES.INSURANCE_3B,
+      ].includes(type);
+
+    getFunds = ({ borrowers, type }) => {
+      if (this.isTypeWithArrayValues(type)) {
+        return this.getArrayValues({ borrowers, key: type });
+      }
+
+      return this.sumValues({ borrowers, keys: type });
+    };
+
+    getFortune = ({ borrowers }) =>
+      this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
+
     getExpenses = ({ borrowers }) =>
       this.getArrayValues({ borrowers, key: 'expenses' });
 
-    getFortune = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'bankFortune' });
-
     getInsurance2 = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'insurance2' });
+      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.INSURANCE_2 });
 
     getInsurance3A = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'insurance3A' });
+      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.INSURANCE_3A });
 
     getBank3A = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'bank3A' });
+      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.BANK_3A });
 
     getInsurance3B = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'insurance3B' });
+      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.INSURANCE_3B });
 
     getInsuranceFortune = ({ borrowers }) =>
       [

@@ -7,20 +7,10 @@ import Select from '../../../../Select';
 import T from '../../../../Translation';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
 import { FIELDS } from './FinancingStructuresOwnFundsPickerContainer';
-import {
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../../api/constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
+import { shouldAskForUsageType } from './FinancingStructuresOwnFundsPickerHelpers';
 
 type FinancingStructuresOwnFundsPickerFormProps = {};
-
-const shouldAskForUsageType = type =>
-  [
-    OWN_FUNDS_TYPES.INSURANCE_2,
-    OWN_FUNDS_TYPES.INSURANCE_3A,
-    OWN_FUNDS_TYPES.INSURANCE_3B,
-    OWN_FUNDS_TYPES.BANK_3A,
-  ].includes(type);
 
 const FinancingStructuresOwnFundsPickerForm = ({
   handleSubmit,

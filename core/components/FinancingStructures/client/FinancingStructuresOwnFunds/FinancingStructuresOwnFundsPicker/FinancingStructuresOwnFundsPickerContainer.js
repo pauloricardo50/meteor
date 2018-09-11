@@ -3,6 +3,7 @@ import { compose, withProps, withStateHandlers } from 'recompose';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
 import { OWN_FUNDS_TYPES } from '../../../../../api/constants';
+import { chooseOwnFundsTypes } from './FinancingStructuresOwnFundsPickerHelpers';
 
 export const FIELDS = {
   TYPE: 'type',
@@ -10,8 +11,6 @@ export const FIELDS = {
   BORROWER_ID: 'borrowerId',
   VALUE: 'value',
 };
-
-const chooseOwnFundsTypes = ({ loan }) => Object.values(OWN_FUNDS_TYPES);
 
 const FinancingStructuresOwnFundsPickerContainer = compose(
   SingleStructureContainer,
