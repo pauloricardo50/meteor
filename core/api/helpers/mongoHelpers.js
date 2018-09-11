@@ -46,6 +46,7 @@ export const createdAt = {
     }
     this.unset();
   },
+  optional: true,
 };
 
 export const updatedAt = {
