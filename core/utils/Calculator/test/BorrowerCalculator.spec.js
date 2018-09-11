@@ -192,15 +192,15 @@ describe('BorrowerCalculator', () => {
     it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insurance2: 2,
-          insuranceThirdPillar: 3,
+          insurance2: [{ value: 2 }],
+          insurance3A: [{ value: 3 }],
         },
       })).to.equal(5);
 
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insurance2: 2,
-          insuranceThirdPillar: undefined,
+          insurance2: [{ value: 2 }],
+          insuranceThirdPillar: [{ value: undefined }],
         },
       })).to.equal(2);
     });
@@ -209,12 +209,12 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: [
           {
-            insurance2: 2,
-            insuranceThirdPillar: 3,
+            insurance2: [{ value: 2 }],
+            insurance3A: [{ value: 3 }],
           },
           {
-            insurance2: 4,
-            insuranceThirdPillar: 5,
+            bank3A: [{ value: 4 }],
+            insurance3B: [{ value: 5 }],
           },
         ],
       })).to.equal(14);
@@ -389,6 +389,7 @@ describe('BorrowerCalculator', () => {
         keys: ['a', 'b'],
       })).to.equal(10);
     });
+
     it('omits keys if they are not provided', () => {
       expect(Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
     });

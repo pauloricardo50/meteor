@@ -33,6 +33,13 @@ const LogicSchema = new SimpleSchema({
   },
 });
 
+const makeArrayOfObjectsSchema = (name, allowedValues) => ({
+  [name]: { type: Array, defaultValue: [], optional: true },
+  [`${name}.$`]: Object,
+  [`${name}.$.value`]: { type: Number, min: 0, max: 100000000 },
+  [`${name}.$.description`]: { type: String, optional: true, allowedValues },
+});
+
 // Documentation is in the google drive dev/MongoDB Schemas
 export const BorrowerSchema = new SimpleSchema(
   {
@@ -155,76 +162,20 @@ export const BorrowerSchema = new SimpleSchema(
       max: 100000000,
       optional: true,
     },
-    otherIncome: {
-      type: Array,
-      optional: true,
-      defaultValue: [],
-    },
-    'otherIncome.$': Object,
-    'otherIncome.$.value': {
-      type: Number,
-      min: 0,
-      max: 100000000,
-    },
-    'otherIncome.$.description': {
-      type: String,
-      allowedValues: Object.values(OTHER_INCOME),
-    },
-    otherFortune: {
-      type: Array,
-      optional: true,
-      defaultValue: [],
-    },
-    'otherFortune.$': Object,
-    'otherFortune.$.value': {
-      type: Number,
-      min: 0,
-      max: 100000000,
-    },
-    'otherFortune.$.description': {
-      type: String,
-      optional: true,
-    },
-    expenses: {
-      type: Array,
-      optional: true,
-      defaultValue: [],
-    },
-    'expenses.$': Object,
-    'expenses.$.value': {
-      type: Number,
-      min: 0,
-      max: 100000000,
-    },
-    'expenses.$.description': {
-      type: String,
-      allowedValues: Object.values(EXPENSES),
-    },
     bankFortune: {
       type: Number,
       min: 0,
       max: 100000000,
       optional: true,
     },
-    realEstate: {
-      type: Array,
-      optional: true,
-      defaultValue: [],
-    },
-    'realEstate.$': Object,
-    'realEstate.$.value': {
-      type: Number,
-      min: 0,
-      max: 100000000,
-    },
+    ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
+    ...makeArrayOfObjectsSchema('otherFortune'),
+    ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
+    ...makeArrayOfObjectsSchema('realEstate', Object.values(REAL_ESTATE)),
     'realEstate.$.loan': {
       type: Number,
       min: 0,
       max: 100000000,
-    },
-    'realEstate.$.description': {
-      type: String,
-      allowedValues: Object.values(REAL_ESTATE),
     },
     corporateBankExists: {
       type: Boolean,
@@ -234,30 +185,10 @@ export const BorrowerSchema = new SimpleSchema(
       type: String,
       optional: true,
     },
-    insurance2: {
-      type: Number,
-      optional: true,
-      min: 0,
-      max: 100000000,
-    },
-    insurance3A: {
-      type: Number,
-      optional: true,
-      min: 0,
-      max: 100000000,
-    },
-    insurance3B: {
-      type: Number,
-      optional: true,
-      min: 0,
-      max: 100000000,
-    },
-    bank3A: {
-      type: Number,
-      optional: true,
-      min: 0,
-      max: 100000000,
-    },
+    ...makeArrayOfObjectsSchema('insurance2'),
+    ...makeArrayOfObjectsSchema('insurance3A'),
+    ...makeArrayOfObjectsSchema('bank3A'),
+    ...makeArrayOfObjectsSchema('insurance3B'),
     thirdPartyFortune: {
       type: Number,
       optional: true,

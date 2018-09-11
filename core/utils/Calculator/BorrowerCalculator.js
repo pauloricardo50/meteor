@@ -83,16 +83,25 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getFortune = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'bankFortune' });
 
+    getInsurance2 = ({ borrowers }) =>
+      this.getArrayValues({ borrowers, key: 'insurance2' });
+
+    getInsurance3A = ({ borrowers }) =>
+      this.getArrayValues({ borrowers, key: 'insurance3A' });
+
+    getBank3A = ({ borrowers }) =>
+      this.getArrayValues({ borrowers, key: 'bank3A' });
+
+    getInsurance3B = ({ borrowers }) =>
+      this.getArrayValues({ borrowers, key: 'insurance3B' });
+
     getInsuranceFortune = ({ borrowers }) =>
-      this.sumValues({
-        borrowers,
-        keys: [
-          'insurance2',
-          'insuranceThirdPillar',
-          // 'bank3A',
-          'insurance3B',
-        ],
-      });
+      [
+        this.getInsurance2,
+        this.getInsurance3A,
+        this.getInsurance3B,
+        this.getBank3A,
+      ].reduce((sum, func) => sum + func({ borrowers }), 0);
 
     getMissingBorrowerFields = ({ borrowers }) =>
       arrayify(borrowers).reduce((missingIds, borrower) => {
