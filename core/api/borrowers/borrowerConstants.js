@@ -56,3 +56,12 @@ export const BORROWER_QUERIES = {
   SIDENAV_BORROWERS: 'SIDENAV_BORROWERS',
   BORROWER_SEARCH: 'BORROWER_SEARCH',
 };
+
+export const OWN_FUNDS_SOURCES = {
+  BANK_FORTUNE: 'bankFortune',
+  INSURANCE_2: 'insurance2',
+  INSURANCE_3A: 'insurance3A',
+  BANK_3A: 'bank3A',
+  INSURANCE_3B: 'insurance3B',
+  THIRD_PARTY_FORTUNE: 'thirdPartyFortune',
+};
