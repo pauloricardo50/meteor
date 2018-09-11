@@ -1,7 +1,9 @@
-import { compose, withProps, withStateHandlers } from 'recompose';
+import { compose, withProps, withStateHandlers, withState } from 'recompose';
 import { connect } from 'react-redux';
 
 import { updateStructure } from '../../../../../redux/financingStructures';
+import { borrowerUpdate, pushBorrowerValue } from '../../../../../api';
+import Calculator from '../../../../../utils/Calculator';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
 import {
@@ -9,6 +11,10 @@ import {
   shouldAskForUsageType,
   makeNewOwnFundsArray,
 } from './FinancingStructuresOwnFundsPickerHelpers';
+import ClientEventService, {
+  LOAD_LOAN,
+} from '../../../../../api/events/ClientEventService/index';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 
 export const FIELDS = {
   TYPE: 'type',
@@ -26,7 +32,7 @@ const addState = withStateHandlers(
     if (ownFundsIndex < 0) {
       return {
         [FIELDS.TYPE]: undefined,
-        [FIELDS.USAGE_TYPE]: undefined,
+        [FIELDS.USAGE_TYPE]: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
         [FIELDS.BORROWER_ID]: borrowers[0]._id,
         [FIELDS.VALUE]: undefined,
       };
@@ -54,23 +60,59 @@ const withStructureUpdate = connect(
   }),
 );
 
-const withAdditionalProps = withProps(({ disableSubmit, updateOwnFunds, handleClose, ...props }) => ({
-  handleDelete: () => {
-    updateOwnFunds(makeNewOwnFundsArray({ ...props, shouldDelete: true }));
-    handleClose();
-  },
-  handleSubmit: (event) => {
-    event.preventDefault();
-    if (disableSubmit) {
-      return false;
-    }
+const withAdditionalProps = withProps((props) => {
+  const {
+    disableSubmit,
+    updateOwnFunds,
+    handleClose,
+    setLoading,
+    borrowerId,
+    type,
+    value,
+    handleChange,
+  } = props;
 
-    updateOwnFunds(makeNewOwnFundsArray(props));
-    handleClose();
-  },
-  handleUpdateBorrower: () => {},
-  types: chooseOwnFundsTypes(props),
-}));
+  const updateCleanup = () => {
+    ClientEventService.emit(LOAD_LOAN);
+    setLoading(false);
+  };
+
+  return {
+    handleDelete: () => {
+      updateOwnFunds(makeNewOwnFundsArray({ ...props, shouldDelete: true }));
+      handleClose();
+    },
+    handleSubmit: (event) => {
+      event.preventDefault();
+      if (disableSubmit) {
+        return false;
+      }
+
+      updateOwnFunds(makeNewOwnFundsArray(props));
+      handleClose();
+    },
+    handleUpdateBorrower: () => {
+      setLoading(true);
+
+      if (Calculator.isTypeWithArrayValues(type)) {
+        return pushBorrowerValue
+          .run({
+            borrowerId,
+            object: { [type]: { value, description: 'Ajout automatique' } },
+          })
+          .finally(updateCleanup);
+      }
+
+      return borrowerUpdate
+        .run({ borrowerId, object: { [type]: value } })
+        .finally(updateCleanup);
+    },
+    handleCancelUpdateBorrower: remaining => () => {
+      handleChange(remaining, FIELDS.VALUE);
+    },
+    types: chooseOwnFundsTypes(props),
+  };
+});
 
 const FinancingStructuresOwnFundsPickerContainer = compose(
   SingleStructureContainer,
@@ -78,6 +120,7 @@ const FinancingStructuresOwnFundsPickerContainer = compose(
   addState,
   withDisableSubmit,
   withStructureUpdate,
+  withState('loading', 'setLoading', false),
   withAdditionalProps,
 );
 

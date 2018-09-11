@@ -46,6 +46,7 @@ export const loanBorrowerFragment = {
   sameAddress: 1,
   worksForOwnCompany: 1,
   zipCode: 1,
+  thirdPartyFortune: 1,
 };
 
 export const adminBorrowerFragment = {

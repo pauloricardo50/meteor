@@ -6,12 +6,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    flex-wrap: wrap;
   }
 
   .mui-select,
   .money-input {
     flex-basis: 140px;
     flex-shrink: 0;
+    margin-bottom: 4px;
   }
 }
 

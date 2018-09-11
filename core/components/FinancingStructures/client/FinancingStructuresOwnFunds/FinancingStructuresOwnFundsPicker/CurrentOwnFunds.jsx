@@ -21,7 +21,8 @@ const CurrentOwnFunds = ({
     <div className="current-own-funds" onClick={handleOpen}>
       <h5>
         <T id={`Forms.${type}`} />
-        {usageType && ` - ${<T id={`Forms.ownFundsUsageType.${usageType}`} />}`}
+        {usageType && ' - '}
+        {usageType && <T id={`Forms.ownFundsUsageType.${usageType}`} />}
       </h5>
       <h5 className="secondary">
         {borrowers.find(({ _id }) => _id === borrowerId).firstName}
