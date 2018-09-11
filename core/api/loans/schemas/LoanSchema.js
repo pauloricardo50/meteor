@@ -1,7 +1,7 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../../helpers';
+import { createdAt, updatedAt } from '../../helpers/mongoHelpers';
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';

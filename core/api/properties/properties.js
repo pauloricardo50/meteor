@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../helpers';
+import { createdAt, updatedAt } from '../helpers/mongoHelpers';
 import * as propertyConstants from './propertyConstants';
 
 const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);

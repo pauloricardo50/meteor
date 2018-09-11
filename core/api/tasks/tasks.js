@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../helpers';
+import { createdAt, updatedAt } from '../helpers/mongoHelpers';
 import { TASK_STATUS, TASK_TYPE, TASKS_COLLECTION } from './taskConstants';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
