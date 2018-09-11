@@ -21,6 +21,7 @@ import {
   SPACES,
   TMUXINATOR_SESSION_NAME,
   TMUXINATOR_YML,
+  APP_ENV_VARIABLES,
 } from './config.js';
 
 import { readJSONFile, formatOptionsArray } from '../utils/helpers';
@@ -91,6 +92,9 @@ export const appManifestYAMLData = ({
       instances,
       buildpack: APP_BUILDPACK,
       services: [service],
+      ...(APP_ENV_VARIABLES[environment][applicationName] !== {}
+        ? { env: APP_ENV_VARIABLES[environment][applicationName] }
+        : null),
     },
   ],
 });
