@@ -53,9 +53,11 @@ const FinancingStructuresOwnFundsPickerForm = ({
         <Select
           value={borrowerId}
           onChange={(_, val) => handleChange(val, FIELDS.BORROWER_ID)}
-          options={borrowers.map(({ _id: id, firstName: label }) => ({
+          options={borrowers.map(({ _id: id, firstName }, index) => ({
             id,
-            label,
+            label: firstName || (
+              <T id="BorrowerHeader.title" values={{ index: index + 1 }} />
+            ),
           }))}
           label={<T id="FinancingStructuresOwnFundsPickerForm.borrower" />}
         />
