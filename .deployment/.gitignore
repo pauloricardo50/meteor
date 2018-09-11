@@ -9,4 +9,4 @@ production/*
 deploy.yml
 
 ssh-tunnel/*
-!ssh-tunnel/createSSHTunnel.js
+!ssh-tunnel/prepareSSHTunnel.js
