@@ -1,18 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'core/components/Icon';
-
 import { Link } from 'react-router-dom';
 import omit from 'lodash/omit';
 import MuiButton from '@material-ui/core/Button';
-import { mapProps } from 'recompose';
+import { withStyles } from '@material-ui/core/styles';
+import { mapProps, compose } from 'recompose';
+import cx from 'classnames';
 
-const getColor = ({ primary, secondary, color }) => {
+import Icon from 'core/components/Icon';
+
+const styles = theme => ({
+  errorRoot: {
+    color: theme.palette.error.main,
+    '&$raised': {
+      color: theme.palette.error.contrastText,
+      backgroundColor: theme.palette.error.main,
+    },
+  },
+  raised: {},
+});
+
+const getColor = ({ primary, secondary, color, error }) => {
   if (primary) {
     return 'primary';
   }
   if (secondary) {
     return 'secondary';
+  }
+  if (error) {
+    return 'error';
   }
 
   return color;
@@ -37,15 +53,22 @@ const Button = (props) => {
     'link',
     'raised',
     'outlined',
+    'error',
   ]);
+
+  const variant = props.variant || getVariant(props);
 
   return (
     <MuiButton
       {...childProps}
       color={props.color || getColor(props)}
-      variant={props.variant || getVariant(props)}
+      variant={variant}
       component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
+      className={cx(props.className, {
+        [props.classes.errorRoot]: props.error,
+        [props.classes.raised]: props.error && variant === 'raised',
+      })}
     >
       {props.icon}
       {props.icon && <span style={{ height: '100%', width: 8 }} />}
@@ -72,4 +95,7 @@ const withLoadingProp = mapProps(({ loading, ...props }) =>
     ? { ...props, disabled: true, icon: <Icon type="loop-spin" /> }
     : props));
 
-export default withLoadingProp(Button);
+export default compose(
+  withLoadingProp,
+  withStyles(styles),
+)(Button);
