@@ -1,8 +1,9 @@
 // @flow
 import React, { Fragment } from 'react';
+import findKey from 'lodash/findKey';
 import Button from 'core/components/Button/Button';
 import T from 'core/components/Translation/Translation';
-import { STEPS_ARRAY } from './NewLoanFormContainer';
+import { STEPS_ARRAY, STEPS } from './NewLoanFormContainer';
 
 type NewLoanFormButtonsProps = {
   step: Number,
@@ -10,6 +11,14 @@ type NewLoanFormButtonsProps = {
   handleNext: Function,
   handlePrevious: Function,
   handleSubmit: Function,
+};
+
+const shouldDisableButton = ({ step, props }) => {
+  const currentStepKey = findKey(
+    STEPS,
+    stepKey => stepKey.name === STEPS_ARRAY[step],
+  );
+  return STEPS[currentStepKey].optional === false && !props[STEPS_ARRAY[step]];
 };
 
 const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
@@ -38,7 +47,7 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
           label={<T id="NewLoanForm.submitButton" />}
           secondary
           raised
-          disabled={!props[STEPS_ARRAY[step]]}
+          disabled={shouldDisableButton({ step, props })}
         />
       ) : (
         <Button
@@ -48,7 +57,7 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
           label={<T id="NewLoanForm.nextButton" />}
           primary
           raised
-          disabled={!props[STEPS_ARRAY[step]]}
+          disabled={shouldDisableButton({ step, props })}
         />
       )}
     </Fragment>
