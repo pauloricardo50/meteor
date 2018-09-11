@@ -12,6 +12,10 @@ const TextFieldValueTypes = {
   [STEPS.BORROWER_FORTUNE.name]: 'money',
 };
 
+const stepInfo = {
+  [STEPS.PROPERTY_VALUE.name]: <T id="NewLoanForm.propertyValueInfo" />,
+};
+
 type NewLoanFormTextFieldsProps = {
   step: Number,
   handleChange: Function,
@@ -31,6 +35,7 @@ const NewLoanFormTextFields = (props: NewLoanFormTextFieldsProps) => {
       autoFocus
       onChange={handleChange}
       className="new-loan-form-textfield"
+      info={stepInfo[stepName] || null}
     />
   );
 };

@@ -1003,6 +1003,7 @@
   "NewLoanForm.loanNameLabel": "Nom du projet",
   "NewLoanForm.propertyValueText": "Quel est le prix d'achat de votre bien immobilier ?",
   "NewLoanForm.propertyValueLabel": "Prix d'achat",
+  "NewLoanForm.propertyValueInfo": "Arrondi à CHF 1000.- près",
   "NewLoanForm.borrowerSalaryText": "Quel est votre salaire annuel brut ?",
   "NewLoanForm.borrowerSalaryLabel": "Salaire annuel",
   "NewLoanForm.borrowerFortuneText": "Quels sont vos fonds propres ?",
