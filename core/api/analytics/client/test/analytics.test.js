@@ -6,40 +6,43 @@ import { analytics as okgrowAnalyticsModule } from 'meteor/okgrow:analytics';
 
 import { makeClientAnalytics } from '../../factories';
 import analytics from '../analytics';
-import EVENTS, { addEvent } from '../../events';
+import EVENTS from '../../events';
+import { addEvent } from '../../eventsHelpers';
 
 let okgrowAnalytics;
 let clientAnalytics;
 
-addEvent('SUBMITTED_USER_FORM', {
-  config: ({ name }) => ({
-    eventName: 'Submitted form',
-    metadata: { name, staticMeta: 'info' },
-  }),
-});
-
-addEvent('SCROLLED_PAGE', {
-  throttle: 250,
-  config: ({ yCoordinate }) => ({
-    eventName: 'Scrolled Page',
-    metadata: { yCoordinate },
-  }),
-});
-
-addEvent('CLICKED_LOGIN_BUTTON', {
-  config: {
-    eventName: 'Clicked Login Button',
-  },
-});
-
-addEvent('TRACKED_ONLY_ONCE', {
-  trackOncePerSession: true,
-  config: {
-    eventName: 'Some event name',
-  },
-});
-
 describe('Client analytics', () => {
+  before(() => {
+    addEvent('SUBMITTED_USER_FORM', {
+      config: ({ name }) => ({
+        eventName: 'Submitted form',
+        metadata: { name, staticMeta: 'info' },
+      }),
+    });
+
+    addEvent('SCROLLED_PAGE', {
+      throttle: 250,
+      config: ({ yCoordinate }) => ({
+        eventName: 'Scrolled Page',
+        metadata: { yCoordinate },
+      }),
+    });
+
+    addEvent('CLICKED_LOGIN_BUTTON', {
+      config: {
+        eventName: 'Clicked Login Button',
+      },
+    });
+
+    addEvent('TRACKED_ONLY_ONCE', {
+      trackOncePerSession: true,
+      config: {
+        eventName: 'Some event name',
+      },
+    });
+  });
+
   beforeEach(() => {
     okgrowAnalytics = {
       identify: sinon.spy(),

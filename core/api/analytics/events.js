@@ -1,21 +1,24 @@
+import { addEvent } from './eventsHelpers';
+
 const EVENTS = {
-  CLICKED_LOGIN_BUTTON: 'CLICKED_LOGIN_BUTTON',
-  SUBMITTED_SURVEY_FORM: 'SUBMITTED_SURVEY_FORM',
+  WITH_FUNC_EXAMPLE: 'WITH_FUNC_EXAMPLE',
+  WITH_LIFECYCLE_EXAMPLE: 'WITH_LIFECYCLE_EXAMPLE',
 };
 
-const EVENT_OPTIONS = {};
+addEvent(EVENTS.WITH_FUNC_EXAMPLE, {
+  func: 'handleSubmit',
+  config: (handleSubmitArgument1, handleSubmitArgument2) => ({
+    eventName: 'Submitted something',
+    metadata: { hello: 'world' },
+  }),
+});
 
-// this is useful in tests
-export const addEvent = (eventName, options) => {
-  EVENTS[eventName] = eventName;
-  EVENT_OPTIONS[eventName] = options;
-};
-
-export const getEvent = eventName => EVENT_OPTIONS[eventName] || {};
-
-export const getEventConfig = (eventName, params) => {
-  const { config } = getEvent(eventName);
-  return typeof config === 'function' ? config(params) : config;
-};
+addEvent(EVENTS.WITH_LIFECYCLE_EXAMPLE, {
+  lifecycleMethod: 'componentDidMount',
+  config: {
+    eventName: 'Loaded this awesome component',
+    metadata: { hello: 'world' },
+  },
+});
 
 export default EVENTS;
