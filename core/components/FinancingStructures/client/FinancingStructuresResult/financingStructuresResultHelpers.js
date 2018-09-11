@@ -18,7 +18,7 @@ export const getAmortization = (params) => {
     structure: { wantedLoan },
   } = params;
   return (
-    (Calculator.getAmortizationRateRelativeToLoanBase(getAmortizationRateMapper(params))
+    (Calculator.getAmortizationRateBase(getAmortizationRateMapper(params))
       * wantedLoan)
     / 12
   );

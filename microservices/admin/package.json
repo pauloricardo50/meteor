@@ -71,9 +71,12 @@
     "redux-form": "^7.3.0",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.1",
+    "redux-thunk": "^2.3.0",
     "sift": "^6.0.0",
     "simpl-schema": "^1.5.0",
-    "text-mask-addons": "^3.7.2"
+    "text-mask-addons": "^3.7.2",
+    "uniforms": "^1.25.0",
+    "uniforms-material": "^1.25.0"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.54",

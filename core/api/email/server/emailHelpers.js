@@ -20,10 +20,9 @@ const APP_URL = Meteor.settings.public.subdomains.app;
  */
 export const getEmailFooter = (footerType, allowUnsubscribe) =>
   formatMessage(`emails.${footerType}`, {
-    copyright: '<em>&copy; *|CURRENT_YEAR|* e-Potek</em><br /><br />',
-    url: `<a href="${WWW_URL}" target="_blank">e-potek.ch</a><br />`,
+    url: `<a href="${WWW_URL}" target="_blank" style="color:white;">e-potek.ch</a><br />`,
     unsubscribe: allowUnsubscribe
-      ? `<a href="*|UNSUB|*">${formatMessage('emails.unsubscribe')}</a>`
+      ? `<a href="*|UNSUB|*" style="color:white;">${formatMessage('emails.unsubscribe')}</a>`
       : '',
   });
 

@@ -17,8 +17,8 @@ export const getAmortizationRateMapper = (data) => {
 
 const argumentMappings = {
   getIncomeRatio: data => ({
-    income: BorrowerCalculator.getTotalIncome(data),
-    payment: Calc.getTheoreticalMonthly({
+    monthlyIncome: BorrowerCalculator.getTotalIncome(data) / 12,
+    monthlyPayment: Calc.getTheoreticalMonthly({
       propAndWork: getProperty(data).value + data.structure.propertyWork,
       loanValue: data.structure.wantedLoan,
       amortizationRate: Calc.getAmortizationRateBase(getAmortizationRateMapper(data)),
@@ -36,7 +36,6 @@ const argumentMappings = {
   }),
 
   getAmortizationRateBase: getAmortizationRateMapper,
-  getAmortizationRateRelativeToLoanBase: getAmortizationRateMapper,
 
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
@@ -53,7 +52,7 @@ const argumentMappings = {
     } = data;
     return {
       loanValue: wantedLoan,
-      amortizationRateRelativeToLoan: Calc.getAmortizationRateRelativeToLoanBase({
+      amortizationRate: Calc.amortizationRateBase({
         borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
       }),
     };

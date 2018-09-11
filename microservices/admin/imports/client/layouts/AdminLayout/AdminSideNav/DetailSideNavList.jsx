@@ -11,12 +11,16 @@ import {
   USERS_COLLECTION,
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
 } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
-const getListItemDetails = (collectionName, { roles, name, structure }) => {
+const getListItemDetails = (
+  collectionName,
+  { roles, name, structure, loans, address1, value },
+) => {
   switch (collectionName) {
   case USERS_COLLECTION:
     return {
@@ -34,8 +38,14 @@ const getListItemDetails = (collectionName, { roles, name, structure }) => {
   }
   case BORROWERS_COLLECTION:
     return {
-      primary: name,
-      secondary: '',
+      primary: name || 'Emprunteur sans nom',
+      secondary: loans && loans.map(({ name }) => name).join(', '),
+    };
+
+  case PROPERTIES_COLLECTION:
+    return {
+      primary: address1 || 'Bien sans adresse',
+      secondary: value && `CHF ${toMoney(value)}`,
     };
   default:
     throw new Error('invalid collection name');

@@ -43,25 +43,21 @@ class CloudFoundryService {
       cloudFoundryCommands.zeroDownTimePush({ directory, manifest, name }),
     );
 
-  deleteOldApp = name =>
-    executeCommand(cloudFoundryCommands.deleteApp(`${name}-old`));
-
   deleteFailedApp = name =>
     executeCommand(cloudFoundryCommands.deleteApp(`${name}-failed`));
 
-  deleteOldAndFailedApps = name =>
-    this.deleteOldApp(name).then(() => this.deleteFailedApp(name));
+  restartApp = name => executeCommand(cloudFoundryCommands.restartApp(name));
 
   blueGreenDeploy = ({ buildDirectory, name, manifest }) =>
     executeCommand(
       cloudFoundryCommands.blueGreenDeploy({ buildDirectory, name, manifest }),
     )
-      .then(() => this.deleteOldApp(name))
       .catch(() =>
         this.deleteFailedApp(name).then(() => {
-          throw new Error('Smoke tests failed');
+          console.log('Smoke tests failed');
         }),
-      );
+      )
+      .finally(() => this.restartApp(name));
 }
 
 export default new CloudFoundryService();

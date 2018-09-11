@@ -6,6 +6,7 @@ import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
   USERS_COLLECTION,
+  PROPERTIES_COLLECTION,
 } from 'core/api/constants';
 
 const getAssignedToMeFilter = ({
@@ -53,10 +54,13 @@ const getFilterOptions = (props) => {
 
   const userFilters = [getAssignedToMeFilter(props)];
 
+  const propertyFilters = [getAssignedToMeFilter(props)];
+
   return {
     [LOANS_COLLECTION]: loanFilters,
     [BORROWERS_COLLECTION]: borrowerFilters,
     [USERS_COLLECTION]: userFilters,
+    [PROPERTIES_COLLECTION]: propertyFilters,
   }[collectionName];
 };
 

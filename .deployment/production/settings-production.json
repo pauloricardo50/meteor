@@ -31,18 +31,18 @@
     "API_SECRET": "588391016d523645337c6c6e7e4d8506"
   },
   "Kadira": {
-    "endpoint": "https://kadira.e-potek.ch:22022",
+    "endpoint": "https://kadira-engine.e-potek.ch:22022",
     "www": {
-      "appId": "iEqmwkKW68eRZ4TEK",
-      "appSecret": "f5a23e8b-5eff-4129-a7d6-4b8252bdcd00"
+      "appId": "J2rSpANXrjL3eWfYD",
+      "appSecret": "b4a25b62-dead-44e9-b81b-a4ab5fd28f8e"
     },
     "admin": {
-      "appId": "EttBsgJMuDpB5FrF8",
-      "appSecret": "0025e191-4f03-4e0d-bafa-5e2352bb2824"
+      "appId": "5mTrCA79uHz4TL2Pg",
+      "appSecret": "1b52448f-04df-4b5d-9565-0c2824cbda77"
     },
     "app": {
-      "appId": "nLHew76MfTdrky7ve",
-      "appSecret": "6792a282-fc64-4195-85ad-c7fab6bfcb5f"
+      "appId": "KLociQZYhg92Xr2kt",
+      "appSecret": "ade6d05b-e3cb-40ad-8b3b-7e4e81605ba7"
     }
   },
   "storage": {

@@ -458,7 +458,7 @@ class WuestService {
             type: areaNorm,
             value: insideArea,
           },
-          terraceArea,
+          terraceArea: terraceArea || 0,
           parking: {
             indoor: parking.inside ? parking.inside : 0,
             outdoor: parking.outside ? parking.outside : 0,
@@ -609,10 +609,10 @@ class WuestService {
   }
 
   handleResult(result) {
-    if (!result.ok) {
+    if (result.status === 503) {
       throw new Meteor.Error(
         wuestConstants.WUEST_ERRORS.WUEST_API_ERROR,
-        result.statusText,
+        'En maintenance, réessayez plus tard',
       );
     }
 

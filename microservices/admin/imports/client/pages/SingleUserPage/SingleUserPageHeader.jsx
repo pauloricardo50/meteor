@@ -8,10 +8,11 @@ import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import RolePicker from '../../components/RolePicker';
-import EditUserDialogForm from './EditUserDialogForm';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
+import EditUserDialogForm from './EditUserDialogForm';
+import UserDeleter from './UserDeleter';
 
-const SingleUserPageHeader = ({ user }) => {
+const SingleUserPageHeader = ({ user, currentUser }) => {
   const { _id, assignedEmployee, createdAt, roles, phoneNumbers, name } = user;
 
   return (
@@ -27,9 +28,8 @@ const SingleUserPageHeader = ({ user }) => {
 
           <RolePicker userId={_id} />
         </h1>
-
         <EditUserDialogForm user={user} />
-
+        <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
 

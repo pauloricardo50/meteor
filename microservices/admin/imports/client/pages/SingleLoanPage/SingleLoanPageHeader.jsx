@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
@@ -20,11 +21,13 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
         ),
       }}
     />
-    <small className="secondary">
-      {' - '}
-      {loan.user.name}
-      {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
-    </small>
+    <Link to={`/users/${loan.user._id}`}>
+      <small className="secondary">
+        {' - '}
+        {loan.user.name}
+        {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+      </small>
+    </Link>
   </h1>
 );
 

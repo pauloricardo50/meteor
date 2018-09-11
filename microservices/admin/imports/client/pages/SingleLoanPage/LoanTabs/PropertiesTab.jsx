@@ -20,9 +20,9 @@ const PropertiesTab = ({
   <div className="properties-tab">
     <PropertyAdder loanId={loanId} />
     <Tabs
-      tabs={properties.map(property => ({
+      tabs={properties.map((property, index) => ({
         id: property._id,
-        label: property.address1,
+        label: property.address1 || `Bien immo ${index + 1}`,
         content: (
           <SinglePropertyPage
             propertyId={property._id}

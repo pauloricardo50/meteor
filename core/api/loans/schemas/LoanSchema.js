@@ -1,5 +1,6 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
+import uniforms from 'uniforms-material';
 
 import { createdAt, updatedAt } from '../../helpers/mongoHelpers';
 import { LOAN_STATUS } from '../loanConstants';
@@ -24,7 +25,7 @@ const LoanSchema = new SimpleSchema({
     defaultValue: LOAN_STATUS.ACTIVE,
     allowedValues: Object.values(LOAN_STATUS),
   },
-  name: { type: String, unique: true, denyUpdate: true },
+  name: { type: String, unique: true },
   general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },

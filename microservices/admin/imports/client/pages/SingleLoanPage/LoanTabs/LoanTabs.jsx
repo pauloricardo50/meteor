@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
+import { ROLES } from 'core/api/constants';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
 import PropertiesTab from './PropertiesTab';
@@ -14,6 +15,7 @@ import ActionsTab from './ActionsTab';
 import FilesTab from './FilesTab';
 import FormsTab from './FormsTab';
 import StructuresTab from './StructuresTab';
+import DevTab from './DevTab/loadable';
 
 const getTabs = props =>
   [
@@ -27,12 +29,18 @@ const getTabs = props =>
     { id: 'forms', Component: FormsTab },
     { id: 'files', Component: FilesTab },
     { id: 'actions', Component: ActionsTab },
-  ].map(({ id, Component }) => ({
-    id,
-    content: <Component {...props} />,
-    label: <T id={`LoanTabs.${id}`} noTooltips />,
-    to: `/loans/${props.loan._id}/${id}`,
-  }));
+    props.currentUser.roles.includes(ROLES.DEV) && {
+      id: 'dev',
+      Component: DevTab,
+    },
+  ]
+    .filter(x => x)
+    .map(({ id, Component }) => ({
+      id,
+      content: <Component {...props} />,
+      label: <T id={`LoanTabs.${id}`} noTooltips />,
+      to: `/loans/${props.loan._id}/${id}`,
+    }));
 
 const LoanTabs = ({ tabId, ...props }) => {
   const tabs = getTabs(props);

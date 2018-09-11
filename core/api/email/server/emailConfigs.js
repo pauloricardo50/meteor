@@ -52,14 +52,17 @@ const addEmailConfig = (emailId, config) => {
 };
 
 addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
-  template: EMAIL_TEMPLATES.WELCOME,
-  createOverrides({ user, url }) {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ url }, { title, body, cta }) {
     const { variables } = this.template;
     const urlWithoutHash = url.replace('#/', '');
 
     return {
       variables: [
-        { name: variables.VERIFICATION_URL, content: urlWithoutHash },
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: urlWithoutHash },
       ],
     };
   },
@@ -67,7 +70,7 @@ addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
 
 addEmailConfig(EMAIL_IDS.RESET_PASSWORD, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ user, url }, { title, body, cta }) {
+  createOverrides({ url }, { title, body, cta }) {
     const { variables } = this.template;
     const urlWithoutHash = url.replace('#/', '');
 

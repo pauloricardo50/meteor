@@ -11,6 +11,7 @@ import {
   editUser,
   getUserByPasswordResetToken,
   testCreateUser,
+  removeUser,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -77,4 +78,9 @@ testCreateUser.setHandler((context, { user }) => {
   if (Meteor.isTest) {
     return UserService.testCreateUser({ user });
   }
+});
+
+removeUser.setHandler((context, { userId }) => {
+  SecurityService.checkCurrentUserIsDev();
+  UserService.remove({ userId });
 });
