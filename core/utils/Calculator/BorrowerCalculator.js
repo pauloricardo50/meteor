@@ -136,10 +136,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       this.getArrayValues({ borrowers, key: 'otherIncome' });
 
     getTotalFunds = ({ borrowers }) =>
-      this.sumValues({
-        borrowers,
-        keys: ['bankFortune', 'insurance2', 'insuranceThirdPillar'],
-      });
+      this.getFortune({ borrowers }) + this.getInsuranceFortune({ borrowers });
 
     getRealEstateFortune = ({ borrowers }) =>
       this.getArrayValues({
@@ -160,18 +157,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getSalary = ({ borrowers }) =>
       this.sumValues({ borrowers, keys: 'salary' });
-
-    getSecondPillar = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'insurance2' });
-
-    getThirdPillar = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'insuranceThirdPillar' });
-
-    getTotalFunds = ({ borrowers }) =>
-      this.sumValues({
-        borrowers,
-        keys: ['bankFortune', 'insurance2', 'insuranceThirdPillar'],
-      });
 
     getTotalIncome = ({ borrowers }) => {
       const sum = arrayify(borrowers).reduce((total, borrower) => {
