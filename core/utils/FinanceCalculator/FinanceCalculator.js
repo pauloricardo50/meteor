@@ -147,8 +147,6 @@ export class FinanceCalculator {
     monthlyIncome: number,
     monthlyPayment: number,
   }) {
-    console.log('monthlyPayment', monthlyPayment);
-    console.log('monthlyIncome', monthlyIncome);
     return monthlyPayment / monthlyIncome;
   }
 
