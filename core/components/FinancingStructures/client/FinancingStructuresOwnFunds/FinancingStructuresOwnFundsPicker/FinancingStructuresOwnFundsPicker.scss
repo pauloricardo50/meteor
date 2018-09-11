@@ -24,3 +24,23 @@
     margin-left: 16px;
   }
 }
+
+.current-own-funds {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid $border-grey;
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  h3 {
+    align-self: center;
+  }
+}
