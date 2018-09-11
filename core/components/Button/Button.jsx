@@ -10,7 +10,7 @@ import cx from 'classnames';
 import Icon from 'core/components/Icon';
 
 const styles = theme => ({
-  errorRoot: {
+  root: {
     color: theme.palette.error.main,
     '&$raised': {
       color: theme.palette.error.contrastText,
@@ -66,7 +66,7 @@ const Button = (props) => {
       component={props.component || (props.link ? Link : 'button')}
       to={props.to || undefined}
       className={cx(props.className, {
-        [props.classes.errorRoot]: props.error,
+        [props.classes.root]: props.error,
         [props.classes.raised]: props.error && variant === 'raised',
       })}
     >
