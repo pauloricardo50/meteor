@@ -15,7 +15,7 @@ const MONGO_SERVICES = {
 //Shouldn't change
 const MONGO_PORTS = {
   [ENVIRONMENT.STAGING]: 38842,
-  [ENVIRONMENT.PRODUCTION]: 49918,
+  [ENVIRONMENT.PRODUCTION]: 53615,
 };
 
 const HOST = 'kubernetes-service-node.service.consul';
