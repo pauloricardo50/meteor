@@ -1,7 +1,7 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
 import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
-import { OWN_FUNDS_SOURCES } from '../../constants';
+import { OWN_FUNDS_TYPES } from '../../constants';
 import { loanTranchesSchema } from './otherSchemas';
 
 const StructureSchema = new SimpleSchema({
@@ -27,9 +27,9 @@ const StructureSchema = new SimpleSchema({
   ownFunds: { type: Array, defaultValue: [] },
   'ownFunds.$': Object,
   'ownFunds.$.borrowerId': String,
-  'ownFunds.$.source': {
+  'ownFunds.$.type': {
     type: String,
-    allowedValues: Object.values(OWN_FUNDS_SOURCES),
+    allowedValues: Object.values(OWN_FUNDS_TYPES),
   },
   'ownFunds.$.value': { type: Number, min: 0, max: 1000000000 },
   'ownFunds.$.usageType': {

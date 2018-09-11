@@ -1,12 +1,17 @@
 {
   "FinancingStructures.ownFundsCompleter": "{current} / {required} alloués",
   "FinancingStructures.ownFundsCompleterButton": "Ajuster",
-  "FinancingStructures.thirdPartyFortuneUsed": "Prêt de tiers",
   "FinancingStructuresOwnFundsActions.modify": "Oui, modifier",
   "FinancingStructuresOwnFundsPickerForm.warning": "Êtes-vous certain de disposer de CHF {value} en {type} sur {name}?",
   "FinancingStructuresOwnFundsPickerForm.type": "Source",
   "FinancingStructuresOwnFundsPickerForm.borrower": "Emprunteur",
   "FinancingStructuresOwnFundsPickerForm.value": "Montant",
+  "FinancingStructuresOwnFundsPickerForm.usageType": "Type d'utilisation",
+
+  "Forms.ownFundsUsageType.WITHDRAW": "Retrait",
+  "Forms.ownFundsUsageType.PLEDGE": "Nantissement",
+
+  "Forms.thirdPartyFortune": "Prêt de tiers",
 
   "FinancingStructuresOwnFundsDialog.title": "Allouer des fonds propres",
   "FinancingStructures.ownFundsAdder": "Ajouter fonds propres",

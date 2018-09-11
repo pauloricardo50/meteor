@@ -1,14 +1,26 @@
 // @flow
 import React from 'react';
 
+import { toMoney } from '../../../../../utils/conversionFunctions';
 import MoneyInput from '../../../../MoneyInput';
 import Select from '../../../../Select';
 import T from '../../../../Translation';
-import { FIELDS } from './FinancingStructuresOwnFundsPickerContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
-import { toMoney } from '../../../../../utils/conversionFunctions';
+import { FIELDS } from './FinancingStructuresOwnFundsPickerContainer';
+import {
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../../api/constants';
 
 type FinancingStructuresOwnFundsPickerFormProps = {};
+
+const shouldAskForUsageType = type =>
+  [
+    OWN_FUNDS_TYPES.INSURANCE_2,
+    OWN_FUNDS_TYPES.INSURANCE_3A,
+    OWN_FUNDS_TYPES.INSURANCE_3B,
+    OWN_FUNDS_TYPES.BANK_3A,
+  ].includes(type);
 
 const FinancingStructuresOwnFundsPickerForm = ({
   handleSubmit,
@@ -19,6 +31,7 @@ const FinancingStructuresOwnFundsPickerForm = ({
   borrowers,
   types,
   displayWarning,
+  usageType,
 }: FinancingStructuresOwnFundsPickerFormProps) => (
   <form
     onSubmit={displayWarning ? () => {} : handleSubmit}
@@ -30,10 +43,21 @@ const FinancingStructuresOwnFundsPickerForm = ({
         onChange={(_, val) => handleChange(val, FIELDS.TYPE)}
         options={types.map(t => ({
           id: t,
-          label: <T id={`FinancingStructures.${t}`} />,
+          label: <T id={`Forms.${t}`} />,
         }))}
         label={<T id="FinancingStructuresOwnFundsPickerForm.type" />}
       />
+      {shouldAskForUsageType(type) && (
+        <Select
+          value={usageType}
+          onChange={(_, val) => handleChange(val, FIELDS.USAGE_TYPE)}
+          options={Object.values(OWN_FUNDS_USAGE_TYPES).map(usage => ({
+            id: usage,
+            label: <T id={`Forms.ownFundsUsageType.${usage}`} />,
+          }))}
+          label={<T id="FinancingStructuresOwnFundsPickerForm.usageType" />}
+        />
+      )}
       {borrowers.length > 1 && (
         <Select
           value={borrowerId}
@@ -58,14 +82,12 @@ const FinancingStructuresOwnFundsPickerForm = ({
           id="FinancingStructuresOwnFundsPickerForm.warning"
           values={{
             name: (
-              <b>
-                {borrowers.find(({ _id }) => _id === borrowerId).firstName}
-              </b>
+              <b>{borrowers.find(({ _id }) => _id === borrowerId).firstName}</b>
             ),
             value: <b className="primary">{toMoney(value)}</b>,
             type: (
               <b>
-                <T id={`FinancingStructures.${type}`} />
+                <T id={`Forms.${type}`} />
               </b>
             ),
           }}

@@ -26,6 +26,7 @@ const FinancingStructuresOwnFundsDialog = ({
   disableSubmit,
   disableDelete,
   structureId,
+  usageType
 }: FinancingStructuresOwnFundsDialogProps) => {
   const available = 0;
   const displayWarning = type && borrowerId && available < value;
@@ -56,6 +57,7 @@ const FinancingStructuresOwnFundsDialog = ({
           borrowerId={borrowerId}
           value={value}
           displayWarning={displayWarning}
+          usageType={usageType}
         />
       </DialogContent>
       <FinancingStructuresOwnFundsActions

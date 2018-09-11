@@ -1,12 +1,17 @@
 import { compose, withProps, withStateHandlers } from 'recompose';
+
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../../containers/FinancingStructuresDataContainer';
+import { OWN_FUNDS_TYPES } from '../../../../../api/constants';
 
 export const FIELDS = {
   TYPE: 'type',
+  USAGE_TYPE: 'usageType',
   BORROWER_ID: 'borrowerId',
   VALUE: 'value',
 };
+
+const chooseOwnFundsTypes = ({ loan }) => Object.values(OWN_FUNDS_TYPES);
 
 const FinancingStructuresOwnFundsPickerContainer = compose(
   SingleStructureContainer,
@@ -22,7 +27,7 @@ const FinancingStructuresOwnFundsPickerContainer = compose(
   withProps((type, borrowerId, value) => ({
     disableSubmit: !(type && borrowerId && value),
   })),
-  withProps(({ disableSubmit }) => ({
+  withProps(({ disableSubmit, ...props }) => ({
     handleDelete: () => {},
     handleSubmit: () => {
       if (disableSubmit) {
@@ -30,14 +35,7 @@ const FinancingStructuresOwnFundsPickerContainer = compose(
       }
     },
     handleUpdateBorrower: () => {},
-    types: [
-      'fortuneUsed',
-      'secondPillarPledged',
-      'secondPillarWithdrawal',
-      'thirdPillarPledged',
-      'thirdPillarWithdrawal',
-      'thirdPartyFortuneUsed',
-    ],
+    types: chooseOwnFundsTypes(props),
   })),
 );
 

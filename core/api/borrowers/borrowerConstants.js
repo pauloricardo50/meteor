@@ -57,7 +57,7 @@ export const BORROWER_QUERIES = {
   BORROWER_SEARCH: 'BORROWER_SEARCH',
 };
 
-export const OWN_FUNDS_SOURCES = {
+export const OWN_FUNDS_TYPES = {
   BANK_FORTUNE: 'bankFortune',
   INSURANCE_2: 'insurance2',
   INSURANCE_3A: 'insurance3A',

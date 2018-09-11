@@ -9,7 +9,7 @@ import {
   OTHER_INCOME,
   EXPENSES,
   REAL_ESTATE,
-  OWN_FUNDS_SOURCES,
+  OWN_FUNDS_TYPES,
 } from './borrowerConstants';
 
 const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
@@ -163,17 +163,17 @@ export const BorrowerSchema = new SimpleSchema(
       max: 100000000,
       optional: true,
     },
-    [OWN_FUNDS_SOURCES.BANK_FORTUNE]: {
+    [OWN_FUNDS_TYPES.BANK_FORTUNE]: {
       type: Number,
       min: 0,
       max: 100000000,
       optional: true,
     },
-    ...makeArrayOfObjectsSchema(OWN_FUNDS_SOURCES.INSURANCE_2),
-    ...makeArrayOfObjectsSchema(OWN_FUNDS_SOURCES.INSURANCE_3A),
-    ...makeArrayOfObjectsSchema(OWN_FUNDS_SOURCES.BANK_3A),
-    ...makeArrayOfObjectsSchema(OWN_FUNDS_SOURCES.INSURANCE_3B),
-    [OWN_FUNDS_SOURCES.THIRD_PARTY_FORTUNE]: {
+    ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
+    ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
+    ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_3A),
+    ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
+    [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: {
       type: Number,
       optional: true,
       min: 0,
