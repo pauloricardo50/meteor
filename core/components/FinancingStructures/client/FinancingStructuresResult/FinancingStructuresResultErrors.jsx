@@ -13,11 +13,19 @@ import FinanceCalculator, {
   getProperty,
 } from '../FinancingStructuresCalculator';
 import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
+import {
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../api/constants';
 
 type FinancingStructuresResultErrorsProps = {};
 
-const getCashUsed = ({ structure: { fortuneUsed, thirdPartyFortuneUsed } }) =>
-  fortuneUsed + thirdPartyFortuneUsed;
+const getCashUsed = ({ structure: { ownFunds } }) =>
+  ownFunds
+    .filter(({ type, usageType }) =>
+      type !== OWN_FUNDS_TYPES.INSURANCE_2
+        && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+    .reduce((sum, { value }) => sum + value, 0);
 
 const errors = [
   {
