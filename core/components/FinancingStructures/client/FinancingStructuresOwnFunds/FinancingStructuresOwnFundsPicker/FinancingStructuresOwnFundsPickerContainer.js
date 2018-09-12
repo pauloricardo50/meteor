@@ -26,6 +26,13 @@ export const FIELDS = {
   VALUE: 'value',
 };
 
+const makeInitialState = borrowers => ({
+  [FIELDS.TYPE]: undefined,
+  [FIELDS.USAGE_TYPE]: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  [FIELDS.BORROWER_ID]: borrowers[0]._id,
+  [FIELDS.VALUE]: undefined,
+});
+
 const addState = withStateHandlers(
   ({ structure, borrowers, ownFundsIndex }) => {
     // On load, the redux store has not loaded yet, causing this to crash
@@ -36,18 +43,16 @@ const addState = withStateHandlers(
 
     // New ownFunds object
     if (ownFundsIndex < 0) {
-      return {
-        [FIELDS.TYPE]: undefined,
-        [FIELDS.USAGE_TYPE]: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-        [FIELDS.BORROWER_ID]: borrowers[0]._id,
-        [FIELDS.VALUE]: undefined,
-      };
+      return makeInitialState(borrowers);
     }
 
     // Editing existing ownFunds object
     return structure.ownFunds[ownFundsIndex];
   },
-  { handleChange: () => (value, id) => ({ [id]: value }) },
+  {
+    handleChange: () => (value, id) => ({ [id]: value }),
+    reset: (_, { borrowers }) => () => makeInitialState(borrowers),
+  },
 );
 
 const withDisableSubmit = withProps(({ type, borrowerId, value, usageType }) => ({
@@ -81,6 +86,8 @@ const withAdditionalProps = withProps((props) => {
     value,
     usageType,
     handleChange,
+    reset,
+    ownFundsIndex,
   } = props;
   const otherValueOfTypeAndBorrower = getOwnFundsOfTypeAndBorrower(props);
 
@@ -109,6 +116,11 @@ const withAdditionalProps = withProps((props) => {
 
       updateOwnFunds(makeNewOwnFundsArray(props));
       handleClose();
+
+      if (ownFundsIndex === -1) {
+        // Cleanup
+        reset();
+      }
     },
     handleUpdateBorrower: () => {
       setLoading(true);
