@@ -9,6 +9,7 @@ import FinancingStructuresDataContainer from '../../containers/FinancingStructur
 import { FIELDS } from './FinancingStructuresOwnFundsPickerContainer';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 import { shouldAskForUsageType } from './FinancingStructuresOwnFundsPickerHelpers';
+import FinancingStructuresOwnFundsWarning from './FinancingStructuresOwnFundsWarning';
 
 type FinancingStructuresOwnFundsPickerFormProps = {};
 
@@ -83,22 +84,12 @@ const FinancingStructuresOwnFundsPickerForm = ({
       />
     </div>
     {displayWarning && (
-      <p>
-        <T
-          id="FinancingStructuresOwnFundsPickerForm.warning"
-          values={{
-            name: (
-              <b>{borrowers.find(({ _id }) => _id === borrowerId).firstName}</b>
-            ),
-            value: <b className="primary">{toMoney(value)}</b>,
-            type: (
-              <b>
-                <T id={`Forms.${type}`} />
-              </b>
-            ),
-          }}
-        />
-      </p>
+      <FinancingStructuresOwnFundsWarning
+        borrowers={borrowers}
+        type={type}
+        borrowerId={borrowerId}
+        value={value}
+      />
     )}
   </form>
 );

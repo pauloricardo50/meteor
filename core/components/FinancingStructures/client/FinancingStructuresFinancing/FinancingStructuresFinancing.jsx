@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
 
-import { AMORTIZATION_TYPE } from '../../../../api/constants';
+import {
+  AMORTIZATION_TYPE,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../api/constants';
 import T from '../../../Translation';
 import FinancingStructuresSection, {
   InputAndSlider,
@@ -17,9 +20,10 @@ import {
 } from '../FinancingStructuresResult/financingStructuresResultHelpers';
 import LoanPercent from './LoanPercent';
 
-const getPledgedAmount = ({
-  structure: { secondPillarPledged, thirdPillarPledged },
-}) => secondPillarPledged + thirdPillarPledged;
+const getPledgedAmount = ({ structure: { ownFunds } }) =>
+  ownFunds
+    .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+    .reduce((sum, { value }) => sum + value, 0);
 
 export const calculateLoan = (params) => {
   const {
