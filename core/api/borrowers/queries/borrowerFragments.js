@@ -27,7 +27,6 @@ export const loanBorrowerFragment = {
   civilStatus: 1,
   citizenship: 1,
   company: 1,
-  corporateBankExists: 1,
   expenses: 1,
   gender: 1,
   insuranceSecondPillar: 1,
