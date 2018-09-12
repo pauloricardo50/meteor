@@ -22,6 +22,25 @@ export const shouldAskForUsageType = type =>
     OWN_FUNDS_TYPES.BANK_3A,
   ].includes(type);
 
+export const getOwnFundsOfTypeAndBorrower = ({
+  structure,
+  ownFundsIndex,
+  type,
+  borrowerId,
+}) =>
+  structure
+  && structure.ownFunds
+    .filter((_, index) => index !== ownFundsIndex)
+    .filter(({ type: otherType, borrowerId: bId }) =>
+      otherType === type && bId === borrowerId)
+    .reduce((sum, { value }) => sum + value, 0);
+
+export const getAvailableFundsOfTypeAndBorrower = ({ type, borrowerId, borrowers }) =>
+  Calculator.getFunds({
+    borrowers: borrowers.find(({ _id }) => _id === borrowerId),
+    type,
+  });
+
 export const calculateRemainingFunds = ({
   type,
   ownFundsIndex,
@@ -32,16 +51,16 @@ export const calculateRemainingFunds = ({
   if (!type) {
     return undefined;
   }
-  const otherOwnFunds = structure.ownFunds.filter((_, index) => index !== ownFundsIndex);
-  const ownFundsWithSameTypeAndBorrower = otherOwnFunds.filter(({ type: otherType, borrowerId: bId }) =>
-    otherType === type && bId === borrowerId);
-  const usedValue = ownFundsWithSameTypeAndBorrower.reduce(
-    (sum, { value }) => sum + value,
-    0,
-  );
-  const available = Calculator.getFunds({
-    borrowers: borrowers.find(({ _id }) => _id === borrowerId),
+  const usedValue = getOwnFundsOfTypeAndBorrower({
+    structure,
+    ownFundsIndex,
     type,
+    borrowerId,
+  });
+  const available = getAvailableFundsOfTypeAndBorrower({
+    borrowerId,
+    type,
+    borrowers,
   });
 
   return available - usedValue;

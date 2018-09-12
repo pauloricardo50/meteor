@@ -32,6 +32,7 @@ const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDia
     usageType,
     handleUpdateBorrower,
     handleCancelUpdateBorrower,
+    otherValueOfTypeAndBorrower,
   } = props;
   const remaining = calculateRemainingFunds(props);
   const displayWarning = type && borrowerId && remaining < value;
@@ -64,6 +65,7 @@ const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDia
           displayWarning={displayWarning}
           usageType={usageType}
           remaining={remaining}
+          otherValueOfTypeAndBorrower={otherValueOfTypeAndBorrower}
         />
       </DialogContent>
       <FinancingStructuresOwnFundsActions

@@ -11,6 +11,7 @@ const FinancingStructuresOwnFundsWarning = ({
   type,
   borrowerId,
   value,
+  otherValueOfTypeAndBorrower,
 }: FinancingStructuresOwnFundsWarningProps) => (
   <p>
     <T
@@ -19,7 +20,11 @@ const FinancingStructuresOwnFundsWarning = ({
         name: (
           <b>{borrowers.find(({ _id }) => _id === borrowerId).firstName}</b>
         ),
-        value: <b className="primary">{toMoney(value)}</b>,
+        value: (
+          <b className="primary">
+            {toMoney(otherValueOfTypeAndBorrower + value)}
+          </b>
+        ),
         type: (
           <b>
             <T id={`Forms.${type}`} />

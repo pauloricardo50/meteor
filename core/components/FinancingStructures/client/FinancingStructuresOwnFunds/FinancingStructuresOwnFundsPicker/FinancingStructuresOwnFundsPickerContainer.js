@@ -10,6 +10,8 @@ import {
   chooseOwnFundsTypes,
   shouldAskForUsageType,
   makeNewOwnFundsArray,
+  getOwnFundsOfTypeAndBorrower,
+  getAvailableFundsOfTypeAndBorrower,
 } from './FinancingStructuresOwnFundsPickerHelpers';
 import ClientEventService, {
   LOAD_LOAN,
@@ -25,10 +27,13 @@ export const FIELDS = {
 
 const addState = withStateHandlers(
   ({ structure, borrowers, ownFundsIndex }) => {
+    // On load, the redux store has not loaded yet, causing this to crash
+    // if we don't add this simple check
     if (!structure) {
       return {};
     }
 
+    // New ownFunds object
     if (ownFundsIndex < 0) {
       return {
         [FIELDS.TYPE]: undefined,
@@ -38,6 +43,7 @@ const addState = withStateHandlers(
       };
     }
 
+    // Editing existing ownFunds object
     return structure.ownFunds[ownFundsIndex];
   },
   { handleChange: () => (value, id) => ({ [id]: value }) },
@@ -71,6 +77,7 @@ const withAdditionalProps = withProps((props) => {
     value,
     handleChange,
   } = props;
+  const otherValueOfTypeAndBorrower = getOwnFundsOfTypeAndBorrower(props);
 
   const updateCleanup = () => {
     ClientEventService.emit(LOAD_LOAN);
@@ -95,22 +102,30 @@ const withAdditionalProps = withProps((props) => {
       setLoading(true);
 
       if (Calculator.isTypeWithArrayValues(type)) {
+        const currentlyAvailable = getAvailableFundsOfTypeAndBorrower(props);
+        const deltaNeeded = otherValueOfTypeAndBorrower + value - currentlyAvailable;
         return pushBorrowerValue
           .run({
             borrowerId,
-            object: { [type]: { value, description: 'Ajout automatique' } },
+            object: {
+              [type]: { value: deltaNeeded, description: 'Ajout automatique' },
+            },
           })
           .finally(updateCleanup);
       }
 
       return borrowerUpdate
-        .run({ borrowerId, object: { [type]: value } })
+        .run({
+          borrowerId,
+          object: { [type]: otherValueOfTypeAndBorrower + value },
+        })
         .finally(updateCleanup);
     },
     handleCancelUpdateBorrower: remaining => () => {
       handleChange(remaining, FIELDS.VALUE);
     },
     types: chooseOwnFundsTypes(props),
+    otherValueOfTypeAndBorrower,
   };
 });
 

@@ -24,6 +24,7 @@ const FinancingStructuresOwnFundsPickerForm = ({
   displayWarning,
   usageType,
   remaining,
+  otherValueOfTypeAndBorrower,
 }: FinancingStructuresOwnFundsPickerFormProps) => (
   <form
     onSubmit={displayWarning ? () => {} : handleSubmit}
@@ -89,6 +90,7 @@ const FinancingStructuresOwnFundsPickerForm = ({
         type={type}
         borrowerId={borrowerId}
         value={value}
+        otherValueOfTypeAndBorrower={otherValueOfTypeAndBorrower}
       />
     )}
   </form>
