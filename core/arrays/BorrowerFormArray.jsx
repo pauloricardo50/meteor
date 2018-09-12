@@ -11,15 +11,8 @@ const makeArrayOfObjectsInput = id => ({
   type: 'arrayInput',
   required: false,
   inputs: [
-    {
-      id: 'description',
-      type: 'textInput',
-    },
-    {
-      id: 'value',
-      type: 'textInput',
-      money: true,
-    },
+    { id: 'description', type: 'textInput' },
+    { id: 'value', type: 'textInput', money: true },
   ],
 });
 
@@ -88,11 +81,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       type: 'conditionalInput',
       conditionalTrueValue: false,
       inputs: [
-        {
-          id: 'isSwiss',
-          type: 'radioInput',
-          options: [true, false],
-        },
+        { id: 'isSwiss', type: 'radioInput', options: [true, false] },
         {
           id: 'residencyPermit',
           type: 'selectFieldInput',
@@ -199,16 +188,8 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       ignore: true,
       required: false,
     },
-    {
-      id: 'bankFortune',
-      type: 'textInput',
-      money: true,
-    },
-    {
-      id: 'thirdPartyFortune',
-      type: 'textInput',
-      money: true,
-    },
+    { id: 'bankFortune', type: 'textInput', money: true },
+    { id: 'thirdPartyFortune', type: 'textInput', money: true },
     {
       id: 'realEstate',
       type: 'arrayInput',
@@ -219,16 +200,8 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
           type: 'selectInput',
           options: Object.values(constants.REAL_ESTATE),
         },
-        {
-          id: 'value',
-          type: 'textInput',
-          money: true,
-        },
-        {
-          id: 'loan',
-          type: 'textInput',
-          money: true,
-        },
+        { id: 'value', type: 'textInput', money: true },
+        { id: 'loan', type: 'textInput', money: true },
       ],
     },
     makeArrayOfObjectsInput('otherFortune'),
