@@ -8,7 +8,7 @@ import {
   INTERESTS_FINMA,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_OTHER,
-  MAX_BORROW_RATIO_WITH_INSURANCE,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
   FORTUNE_WARNING_TIGHT,
   INCOME_WARNING_TIGHT,
   FORTUNE_ERROR,
@@ -101,7 +101,7 @@ export const validateBorrowRatio = (
   if (borrowRatio <= maxRatio) {
     return { status: SUCCESS, error: undefined };
   }
-  if (allowInsurance && borrowRatio <= MAX_BORROW_RATIO_WITH_INSURANCE) {
+  if (allowInsurance && borrowRatio <= MAX_BORROW_RATIO_WITH_PLEDGE) {
     return { status: WARNING, error: FORTUNE_WARNING_TIGHT };
   }
 

@@ -7,6 +7,7 @@ import DefaultFinanceCalculator, {
   FinanceCalculator,
 } from '../FinanceCalculator';
 import { NO_INTEREST_RATE_ERROR } from '../financeCalculatorConstants';
+import { RESIDENCE_TYPE } from '../../../api/constants';
 
 describe('FinanceCalculator', () => {
   let calc;
@@ -263,6 +264,42 @@ describe('FinanceCalculator', () => {
         loanValue: 960000,
         amortizationRate: calc.getAmortizationRateBase({ borrowRatio: 0.8 }),
       })).to.deep.equal(expected);
+    });
+  });
+
+  describe('getMaxLoanBase', () => {
+    it('returns 80% of the property by default', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        pledgedAmount: 1000,
+      })).to.equal(80);
+    });
+
+    it('returns 80% of the property for a main residence if nothing is pledged', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      })).to.equal(80);
+    });
+
+    it('returns between 80 and 90% of the property for a main residence if a little is pledged', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        pledgedAmount: 5,
+      })).to.equal(85);
+    });
+
+    it('caps at 90% of the property', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        pledgedAmount: 20,
+      })).to.equal(90);
     });
   });
 });

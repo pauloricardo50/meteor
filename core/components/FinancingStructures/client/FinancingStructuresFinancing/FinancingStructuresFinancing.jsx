@@ -33,10 +33,11 @@ export const calculateLoan = (params) => {
 };
 
 const calculateMaxSliderLoan = data =>
-  Calc.getMaxLoan({
+  Calc.getMaxLoanBase({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
     pledgedAmount: getPledgedAmount(data),
+    residenceType: data.loan.general.residenceType,
   });
 
 const oneStructureHasPledged = ({ structures }) =>

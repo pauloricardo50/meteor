@@ -4,7 +4,7 @@ import {
   INTERESTS_FINMA,
   MAX_INCOME_RATIO,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-  MAX_BORROW_RATIO_WITH_INSURANCE,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
   AMORTIZATION_STOP,
   MAX_AMORTIZATION_DURATION,
 } from 'core/config/financeConstants';
@@ -135,7 +135,7 @@ export class Widget1SuggesterClass {
     this.notaryFees = currentNotaryFees;
 
     const maxLoan = property - fortune;
-    const hardCap = Math.floor(property * MAX_BORROW_RATIO_WITH_INSURANCE);
+    const hardCap = Math.floor(property * MAX_BORROW_RATIO_WITH_PLEDGE);
     return roundTo(Math.min(maxLoan, hardCap), 3);
   };
 }
