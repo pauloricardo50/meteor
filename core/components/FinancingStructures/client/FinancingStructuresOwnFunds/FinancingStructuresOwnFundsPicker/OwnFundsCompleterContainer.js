@@ -17,7 +17,7 @@ export const getRequiredAndCurrentFunds = (props) => {
     ownFundsIndex,
     usageType,
   } = props;
-  let pledgeAjustedValue = value || 0;
+  let pledgeAjustedValue = value || 0; // Avoid initialization issues
   let newPledgeCoveredValue = 0;
   const maxLoanWithNewPledge = getNewWantedLoanAfterPledge(props);
   let initialDiscountedValue = ownFundsIndex < 0 ? 0 : ownFunds[ownFundsIndex].value;
@@ -27,7 +27,7 @@ export const getRequiredAndCurrentFunds = (props) => {
   if (usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE) {
     initialDiscountedValue = 0;
     pledgeAjustedValue = 0;
-    newPledgeCoveredValue = value || 0;
+    newPledgeCoveredValue = value || 0; // Avoid initialization issues
   }
 
   return {
