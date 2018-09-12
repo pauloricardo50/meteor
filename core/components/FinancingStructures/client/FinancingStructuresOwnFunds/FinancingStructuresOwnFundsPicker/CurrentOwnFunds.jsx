@@ -27,7 +27,10 @@ const CurrentOwnFunds = ({
       <h5 className="secondary">
         {borrowers.find(({ _id }) => _id === borrowerId).firstName}
       </h5>
-      <h4>CHF {toMoney(value)}</h4>
+      <p className="calculated-value">
+        <span className="chf">CHF</span>{' '}
+        <span className="primary">{toMoney(value)}</span>
+      </p>
     </div>
     <FinancingStructuresOwnFundsDialog
       open={open}
