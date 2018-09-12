@@ -1,4 +1,5 @@
 // @flow
+import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
 import { FinanceCalculator } from '../FinanceCalculator';
 import { loanDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
@@ -136,6 +137,19 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         fileArrayFunc: loanDocuments,
         step: FILE_STEPS.AUCTION,
       });
+    }
+
+    getTotalFinancing({ loan }) {
+      return (
+        this.selectStructureKey({ loan, key: 'wantedLoan' })
+        + this.getNonPledgedOwnFunds({ loan })
+      );
+    }
+
+    getNonPledgedOwnFunds({ loan }) {
+      return this.selectStructureKey({ loan, key: 'ownFunds' })
+        .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
     }
   };
 
