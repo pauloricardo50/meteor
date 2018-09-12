@@ -3,7 +3,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Installs dependencies
 $SCRIPTPATH/../scripts/installTmuxinator.sh
-$SCRIPTPATH/checkPackage.sh mongodb install
+$SCRIPTPATH/../scripts/checkPackage.sh mongodb install
 
 ../scripts/box_out.sh "Establishing a SSH tunnel with args:" "$*"
 babel-node -- ./ssh-tunnel/prepareSSHTunnel.js "$@" 
