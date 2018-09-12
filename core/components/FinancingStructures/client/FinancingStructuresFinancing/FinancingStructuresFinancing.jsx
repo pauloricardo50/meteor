@@ -32,17 +32,14 @@ export const calculateLoan = (params) => {
   return wantedLoan;
 };
 
-const calculateMaxSliderLoan = data =>
+export const calculateMaxLoan = (data, pledgeOverride) =>
   Calc.getMaxLoanBase({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
-    pledgedAmount: getPledgedAmount(data),
+    pledgedAmount:
+      pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
     residenceType: data.loan.general.residenceType,
   });
-
-const oneStructureHasPledged = ({ structures }) =>
-  structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
-    secondPillarPledged || thirdPillarPledged);
 
 const offersExist = ({ offers }) => offers && offers.length > 0;
 
@@ -78,12 +75,11 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       {
         Component: InputAndSlider,
         id: 'wantedLoan',
-        max: calculateMaxSliderLoan,
+        max: calculateMaxLoan,
       },
       {
         Component: LoanPercent,
         id: 'wantedLoanPercent',
-        // max: calculateMaxSliderLoan,
       },
       {
         Component: CalculatedValue,

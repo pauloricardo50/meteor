@@ -7,10 +7,7 @@ import FinancingStructuresSection, {
 } from '../FinancingStructuresSection';
 import RequiredOwnFunds from './RequiredOwnFunds';
 import FinancingStructuresOwnFundsPicker from './FinancingStructuresOwnFundsPicker';
-import {
-  calculateOwnFunds,
-  calculateRequiredOwnFunds,
-} from './ownFundsHelpers';
+import { calculateOwnFunds, calculateMissingOwnFunds } from './ownFundsHelpers';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -32,7 +29,7 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
       {
         Component: RequiredOwnFunds,
         id: 'requiredOwnFunds',
-        value: calculateRequiredOwnFunds,
+        value: calculateMissingOwnFunds,
       },
       {
         Component: FinancingStructuresOwnFundsPicker,

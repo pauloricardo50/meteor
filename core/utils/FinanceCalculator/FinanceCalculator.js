@@ -267,7 +267,6 @@ export class FinanceCalculator {
     pledgedAmount: number,
     residenceType: string,
   } = {}): number {
-    console.log('residenceType', residenceType);
     if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
       return Math.min(
         (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount,

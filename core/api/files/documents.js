@@ -5,7 +5,7 @@ import {
   CIVIL_STATUS,
 } from '../constants';
 import { DOCUMENTS } from './fileConstants';
-import Calculator from '../../utils/Calculator';
+import Calculator from '../../utils/Calculator/index';
 
 export const borrowerDocuments = (b = {}) => ({
   auction: [

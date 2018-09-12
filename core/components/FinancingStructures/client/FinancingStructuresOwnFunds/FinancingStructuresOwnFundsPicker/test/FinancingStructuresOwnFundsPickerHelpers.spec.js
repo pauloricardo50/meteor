@@ -7,10 +7,12 @@ import {
   shouldAskForUsageType,
   calculateRemainingFunds,
   makeNewOwnFundsArray,
+  getNewWantedLoanAfterPledge,
 } from '../FinancingStructuresOwnFundsPickerHelpers';
 import {
   RESIDENCE_TYPE,
   OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
 } from '../../../../../../api/constants';
 
 describe('FinancingStructuresOwnFundsPickerHelpers', () => {
@@ -226,6 +228,114 @@ describe('FinancingStructuresOwnFundsPickerHelpers', () => {
         ownFundsIndex: 1,
         value: 0,
       })).to.deep.equal(expected);
+    });
+  });
+
+  describe('getNewWantedLoanAfterPledge', () => {
+    it('returns the current wantedLoan if this is not a pledged value', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: { wantedLoan: 100 },
+        usageType: 'something else',
+      })).to.equal(100);
+    });
+
+    it('returns wantedLoan plus a small pledge', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: {
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          ownFunds: [],
+          propertyWork: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        value: 50000,
+      })).to.equal(850000);
+    });
+
+    it('does not exceed maxBorrowRatioWithPledge', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: {
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          ownFunds: [],
+          propertyWork: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        value: 150000,
+      })).to.equal(900000);
+    });
+
+    it('does not exceed maxBorrowRatio if not a main residence', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: {
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          ownFunds: [],
+          propertyWork: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: { general: { residenceType: RESIDENCE_TYPE.INVESTMENT } },
+        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        value: 150000,
+      })).to.equal(800000);
+    });
+
+    it('counts other pledged own funds', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: {
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          ownFunds: [
+            { value: 10000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          ],
+          propertyWork: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        value: 50000,
+        ownFundsIndex: -1,
+      })).to.equal(860000);
+    });
+
+    it('reduces loan if pledge is reduced', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: {
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          ownFunds: [
+            { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          ],
+          propertyWork: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        value: 40000,
+        ownFundsIndex: 0,
+      })).to.equal(840000);
+    });
+
+    it('increases loan if usageType is changed to pledge', () => {
+      expect(getNewWantedLoanAfterPledge({
+        structure: {
+          wantedLoan: 800000,
+          propertyId: 'propertyId',
+          ownFunds: [
+            { value: 80000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+          ],
+          propertyWork: 0,
+        },
+        properties: [{ _id: 'propertyId', value: 1000000 }],
+        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+        value: 40000,
+        ownFundsIndex: 0,
+      })).to.equal(840000);
     });
   });
 });

@@ -15,11 +15,19 @@ const OwnFundsCompleter = ({ required, current }: OwnFundsCompleterProps) => (
         id="FinancingStructures.ownFundsCompleter"
         values={{
           current: (
-            <span className={current === required ? 'success' : 'error'}>
+            <span
+              className={
+                current === required
+                  ? 'success'
+                  : current > required
+                    ? 'error'
+                    : 'primary'
+              }
+            >
               {toMoney(current)}
             </span>
           ),
-          required: toMoney(required),
+          required: <span className="secondary">{toMoney(required)}</span>,
         }}
       />
     </h4>

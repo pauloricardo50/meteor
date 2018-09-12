@@ -1,5 +1,10 @@
-import { RESIDENCE_TYPE, OWN_FUNDS_TYPES } from '../../../../../api/constants';
+import {
+  RESIDENCE_TYPE,
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
+import { calculateMaxLoan } from '../../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 export const chooseOwnFundsTypes = ({
   loan: {
@@ -35,7 +40,11 @@ export const getOwnFundsOfTypeAndBorrower = ({
       otherType === type && bId === borrowerId)
     .reduce((sum, { value }) => sum + value, 0);
 
-export const getAvailableFundsOfTypeAndBorrower = ({ type, borrowerId, borrowers }) =>
+export const getAvailableFundsOfTypeAndBorrower = ({
+  type,
+  borrowerId,
+  borrowers,
+}) =>
   Calculator.getFunds({
     borrowers: borrowers.find(({ _id }) => _id === borrowerId),
     type,
@@ -98,4 +107,32 @@ export const makeNewOwnFundsArray = ({
     newObject,
     ...structure.ownFunds.slice(ownFundsIndex + 1),
   ];
+};
+
+const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
+  ownFunds
+    .filter((_, index) => index !== ownFundsIndex)
+    .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+    .reduce((sum, { value }) => sum + value, 0);
+
+export const getNewWantedLoanAfterPledge = (props) => {
+  const {
+    structure: { wantedLoan, ownFunds },
+    usageType,
+    value,
+    ownFundsIndex,
+  } = props;
+  if (usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE) {
+    return wantedLoan;
+  }
+  const currentPledgedFunds = getCurrentPledgedFunds({
+    ownFunds,
+    ownFundsIndex,
+  });
+  const maxLoanWithNewPledge = calculateMaxLoan(
+    props,
+    currentPledgedFunds + value,
+  );
+
+  return maxLoanWithNewPledge;
 };

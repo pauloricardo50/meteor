@@ -12,6 +12,7 @@ import {
   makeNewOwnFundsArray,
   getOwnFundsOfTypeAndBorrower,
   getAvailableFundsOfTypeAndBorrower,
+  getNewWantedLoanAfterPledge,
 } from './FinancingStructuresOwnFundsPickerHelpers';
 import ClientEventService, {
   LOAD_LOAN,
@@ -61,6 +62,8 @@ const withDisableSubmit = withProps(({ type, borrowerId, value, usageType }) => 
 const withStructureUpdate = connect(
   null,
   (dispatch, { structureId }) => ({
+    updateLoan: wantedLoan =>
+      dispatch(updateStructure(structureId, { wantedLoan })),
     updateOwnFunds: ownFunds =>
       dispatch(updateStructure(structureId, { ownFunds })),
   }),
@@ -70,11 +73,13 @@ const withAdditionalProps = withProps((props) => {
   const {
     disableSubmit,
     updateOwnFunds,
+    updateLoan,
     handleClose,
     setLoading,
     borrowerId,
     type,
     value,
+    usageType,
     handleChange,
   } = props;
   const otherValueOfTypeAndBorrower = getOwnFundsOfTypeAndBorrower(props);
@@ -93,6 +98,13 @@ const withAdditionalProps = withProps((props) => {
       event.preventDefault();
       if (disableSubmit) {
         return false;
+      }
+
+      if (
+        shouldAskForUsageType(type)
+        && usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE
+      ) {
+        updateLoan(getNewWantedLoanAfterPledge(props));
       }
 
       updateOwnFunds(makeNewOwnFundsArray(props));
