@@ -7,7 +7,7 @@ import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
 import Calculator from '../../../../utils/Calculator';
-import { getProperty } from '../FinancingStructuresCalculator';
+import { getPropertyValue } from '../FinancingStructuresCalculator';
 import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 import RequiredOwnFunds from './RequiredOwnFunds';
@@ -48,7 +48,7 @@ const makeConditionForValue = funcName => ({ borrowers }) =>
 
 export const calculateRequiredOwnFunds = (data) => {
   const { propertyWork, notaryFees } = data.structure;
-  const propertyValue = getProperty(data).value;
+  const propertyValue = getPropertyValue(data);
   const effectiveLoan = calculateLoan(data);
   const fees = Calculator.getFeesBase({
     fees: notaryFees,

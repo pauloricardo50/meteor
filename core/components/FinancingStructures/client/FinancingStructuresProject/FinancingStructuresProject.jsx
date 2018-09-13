@@ -9,6 +9,7 @@ import FinancingStructuresSection, {
 import FinancingStructuresPropertyPicker from './FinancingStructuresPropertyPicker';
 import FinancingCalculator, {
   getProperty,
+  getPropertyValue,
 } from '../FinancingStructuresCalculator';
 
 type FinancingStructuresProjectProps = {};
@@ -19,13 +20,14 @@ const calculateDefaultNotaryFees = data =>
   FinancingCalculator.getFeesBase(data);
 
 const calculateMaxNotaryFees = data =>
-  (getProperty(data).value + data.structure.propertyWork)
-  * MAX_NOTARY_FEES_RATE;
+  (getPropertyValue(data) + data.structure.propertyWork) * MAX_NOTARY_FEES_RATE;
+
+const calculateDefaultPropertyValue = data => getProperty(data).value;
 
 const calculateProjectValue = data =>
-  getProperty(data).value
-  + data.structure.propertyWork
-  + FinancingCalculator.getFeesBase(data);
+  getPropertyValue(data) +
+  data.structure.propertyWork +
+  FinancingCalculator.getFeesBase(data);
 
 const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
   <FinancingStructuresSection
@@ -43,6 +45,14 @@ const FinancingStructuresProject = (props: FinancingStructuresProjectProps) => (
     ]}
     detailConfig={[
       { Component: FinancingStructuresPropertyPicker, id: 'propertyId' },
+      {
+        Component: InputAndSlider,
+        id: 'propertyValue',
+        calculatePlaceholder: calculateDefaultPropertyValue,
+        max: 5000000,
+        allowUndefined: true,
+        forceUndefined: true,
+      },
       {
         Component: InputAndSlider,
         id: 'notaryFees',

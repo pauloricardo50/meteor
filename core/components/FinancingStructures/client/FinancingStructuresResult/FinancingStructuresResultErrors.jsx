@@ -10,7 +10,7 @@ import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/Financ
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import FinanceCalculator, {
-  getProperty,
+  getPropertyValue,
 } from '../FinancingStructuresCalculator';
 import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
 import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
@@ -47,7 +47,7 @@ const errors = [
     id: 'missingCash',
     func: (data) => {
       const { propertyWork, notaryFees } = data.structure;
-      const propertyValue = getProperty(data).value;
+      const propertyValue = getPropertyValue(data);
       const effectiveLoan = calculateLoan(data);
       return (
         Calculator.getMinCash({

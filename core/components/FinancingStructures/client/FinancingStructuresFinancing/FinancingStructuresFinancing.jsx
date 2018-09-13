@@ -9,7 +9,7 @@ import FinancingStructuresSection, {
   RadioButtons,
   FinmaRatio,
 } from '../FinancingStructuresSection';
-import Calc, { getProperty } from '../FinancingStructuresCalculator';
+import Calc, { getPropertyValue } from '../FinancingStructuresCalculator';
 import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
 import {
   getBorrowRatio,
@@ -31,7 +31,7 @@ export const calculateLoan = (params) => {
 const calculateMaxSliderLoan = data =>
   Calc.getMaxLoan({
     propertyWork: data.structure.propertyWork,
-    propertyValue: getProperty(data).value,
+    propertyValue: getPropertyValue(data),
     pledgedAmount: getPledgedAmount(data),
   });
 
