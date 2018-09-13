@@ -32,12 +32,15 @@ class CloudFoundryService {
     executeCommand(
       cloudFoundryCommands.blueGreenDeploy({ buildDirectory, name, manifest }),
     )
-      .catch(() =>
-        this.deleteFailedApp(name).then(() => {
-          console.log('Smoke tests failed');
-        }),
-      )
-      .finally(() => this.restartApp(name));
+      .then(() => this.restartApp(name))
+      .catch(error => {
+        //Logs the error in red
+        console.error(
+          '\x1b[31m%s\x1b[0m',
+          `Deployment failed ! Reason: ${error}`,
+        );
+        throw new Error(error);
+      });
 }
 
 export default new CloudFoundryService();

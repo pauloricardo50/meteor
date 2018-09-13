@@ -9,6 +9,9 @@ export const executeCommand = (command, printCommand = true) =>
     cmd
       .get(command, (err, data, stderr) => {
         if (stderr || err) {
+          console.error(
+            `Error while executing command ${command}: ${stderr || err}`,
+          );
           reject(stderr || err);
         }
         resolve(data);
