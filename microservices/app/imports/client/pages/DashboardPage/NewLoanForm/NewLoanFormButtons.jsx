@@ -13,12 +13,9 @@ type NewLoanFormButtonsProps = {
   handleSubmit: Function,
 };
 
-const shouldDisableButton = ({ step, props }) => {
-  const currentStepKey = findKey(
-    STEPS,
-    stepKey => stepKey.name === STEPS_ARRAY[step],
-  );
-  return STEPS[currentStepKey].optional === false && !props[STEPS_ARRAY[step]];
+const shouldDisableButton = ({ stepName, stepValue }) => {
+  const currentStepKey = findKey(STEPS, stepKey => stepKey.name === stepName);
+  return STEPS[currentStepKey].optional === false && !stepValue;
 };
 
 const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
@@ -47,7 +44,10 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
           label={<T id="NewLoanForm.submitButton" />}
           secondary
           raised
-          disabled={shouldDisableButton({ step, props })}
+          disabled={shouldDisableButton({
+            stepName: STEPS_ARRAY[step],
+            stepValue: props[STEPS_ARRAY[step]],
+          })}
         />
       ) : (
         <Button
@@ -57,7 +57,10 @@ const NewLoanFormButtons = (props: NewLoanFormButtonsProps) => {
           label={<T id="NewLoanForm.nextButton" />}
           primary
           raised
-          disabled={shouldDisableButton({ step, props })}
+          disabled={shouldDisableButton({
+            stepName: STEPS_ARRAY[step],
+            stepValue: props[STEPS_ARRAY[step]],
+          })}
         />
       )}
     </Fragment>
