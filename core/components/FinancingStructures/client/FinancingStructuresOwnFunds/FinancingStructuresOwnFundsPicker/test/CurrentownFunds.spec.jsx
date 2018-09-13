@@ -9,22 +9,25 @@ import T from '../../../../../Translation';
 import { CurrentOwnFunds } from '../CurrentOwnFunds';
 import { OWN_FUNDS_TYPES } from '../../../../../../api/constants';
 
-describe.only('CurrentOwnFunds', () => {
+describe('CurrentOwnFunds', () => {
   let props;
   const component = () => shallow(<CurrentOwnFunds {...props} />);
 
   beforeEach(() => {
     props = {
-      ownFunds: {},
-      borrowers: [{}],
+      ownFunds: {
+        value: 10,
+        type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+        borrowerId: 'id',
+      },
+      borrowers: [{ bankFortune: 100, _id: 'id' }],
+      structure: { ownFunds: [] },
     };
   });
 
   it('displays usageType only if it is defined', () => {
     const usageType = 'some type';
-    expect(component()
-      .find(T)
-      .at(1).length).to.equal(0);
+    expect(component().find(T).length).to.equal(1);
 
     props.ownFunds = { usageType };
 
