@@ -58,8 +58,8 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
       type: 'conditionalInput',
       conditionalTrueValue: OWNER.OTHER,
       condition:
-        borrowers.length > 1
-        && r.general.purchaseType === PURCHASE_TYPE.REFINANCING,
+        borrowers.length > 1 &&
+        r.general.purchaseType === PURCHASE_TYPE.REFINANCING,
       inputs: [
         {
           id: 'general.currentOwner',
@@ -74,8 +74,8 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
                   id: isFirst ? 0 : 1,
                   intlValues: {
                     name:
-                        borrowers[isFirst ? 0 : 1].firstName
-                        || `Emprunteur ${isFirst ? 1 : 2}`,
+                        borrowers[isFirst ? 0 : 1].firstName ||
+                        `Emprunteur ${isFirst ? 1 : 2}`,
                   },
                 }
                 : value;
@@ -88,8 +88,8 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
       type: 'conditionalInput',
       conditionalTrueValue: OWNER.OTHER,
       condition:
-        borrowers.length > 1
-        && r.general.purchaseType !== PURCHASE_TYPE.REFINANCING,
+        borrowers.length > 1 &&
+        r.general.purchaseType !== PURCHASE_TYPE.REFINANCING,
       inputs: [
         {
           id: 'general.futureOwner',
@@ -104,8 +104,8 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
                   id: isFirst ? 0 : 1,
                   intlValues: {
                     name:
-                        borrowers[isFirst ? 0 : 1].firstName
-                        || `Emprunteur ${isFirst ? 1 : 2}`,
+                        borrowers[isFirst ? 0 : 1].firstName ||
+                        `Emprunteur ${isFirst ? 1 : 2}`,
                   },
                 }
                 : value;
@@ -123,14 +123,14 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
 };
 
 const shouldDisplayFloorNumber = ({ propertyType, flatType }) =>
-  propertyType === PROPERTY_TYPE.FLAT
-  && flatType !== FLAT_TYPE.PENTHOUSE_APARTMENT
-  && flatType !== FLAT_TYPE.PENTHOUSE_MAISONETTE
-  && flatType !== FLAT_TYPE.TERRACE_APARTMENT;
+  propertyType === PROPERTY_TYPE.FLAT &&
+  flatType !== FLAT_TYPE.PENTHOUSE_APARTMENT &&
+  flatType !== FLAT_TYPE.PENTHOUSE_MAISONETTE &&
+  flatType !== FLAT_TYPE.TERRACE_APARTMENT;
 
 const shouldDisplayTerraceArea = ({ propertyType, flatType }) =>
-  propertyType === PROPERTY_TYPE.FLAT
-  && flatType === FLAT_TYPE.TERRACE_APARTMENT;
+  propertyType === PROPERTY_TYPE.FLAT &&
+  flatType === FLAT_TYPE.TERRACE_APARTMENT;
 
 export const getPropertyArray = ({ loan, borrowers, property }) => {
   const r = loan;
@@ -140,7 +140,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
   }
 
   const array = [
-    { id: 'value', type: 'textInput', money: true },
+    { id: 'value', type: 'textInput', money: true, info: true },
     {
       id: 'propertyType',
       type: 'radioInput',
@@ -254,8 +254,8 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       decimal: true,
       info: true,
     },
-    { id: 'parking.inside', type: 'textInput', number: true, required: false },
-    { id: 'parking.outside', type: 'textInput', number: true, required: false },
+    { id: 'parkingInside', type: 'textInput', number: true, required: false },
+    { id: 'parkingOutside', type: 'textInput', number: true, required: false },
     {
       id: 'minergie',
       type: 'radioInput',
@@ -275,12 +275,12 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       required: false,
     },
     {
-      id: 'qualityProfile.condition',
+      id: 'qualityProfileCondition',
       type: 'radioInput',
       options: Object.values(QUALITY.CONDITION),
     },
     {
-      id: 'qualityProfile.standard',
+      id: 'qualityProfileStandard',
       type: 'radioInput',
       options: Object.values(QUALITY.STANDARD),
     },

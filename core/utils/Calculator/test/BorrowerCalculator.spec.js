@@ -356,7 +356,6 @@ describe('BorrowerCalculator', () => {
           childrenCount: 0,
           citizenship: 'hello',
           civilStatus: 'MARRIED',
-          corporateBankExists: false,
           createdAt: '2018-08-23T10:18:18.139Z',
           expenses: [],
           firstName: 'dfadf',

@@ -10,7 +10,7 @@ import Divider from 'core/components/Material/Divider';
 const handleChange = (value, toggleDrawer, history) => {
   if (value === 0) {
     track('LoanSelector - clicked on new loan', {});
-    window.location.replace(`${Meteor.settings.public.subdomains.www}/start1`);
+    window.location.replace(`${Meteor.settings.public.subdomains.www}/start/1`);
   } else {
     track('LoanSelector - switched to loan', { loanId: value });
     toggleDrawer();

@@ -3,9 +3,9 @@ import yaml from 'write-yaml';
 import fs from 'fs';
 import { join } from 'path';
 
-export const executeCommand = command =>
+export const executeCommand = (command, printCommand = true) =>
   new Promise((resolve, reject) => {
-    console.log(`${command}...`);
+    printCommand && console.log(`${command}...`);
     cmd
       .get(command, (err, data, stderr) => {
         if (stderr || err) {
@@ -79,3 +79,6 @@ export const getLastSegmentOfPath = path => {
   const segments = path.split('/');
   return segments.pop() || segments.pop();
 };
+
+export const boxOut = string =>
+  executeCommand(`${__dirname}/../../scripts/box_out.sh ${string}`, false);

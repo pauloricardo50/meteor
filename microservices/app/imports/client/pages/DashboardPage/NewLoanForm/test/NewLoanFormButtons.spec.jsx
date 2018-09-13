@@ -41,7 +41,7 @@ describe('NewLoanFormButtons', () => {
 
   it('does not enable next button when prop is not set', () => {
     props.numberOfSteps = 3;
-    props.step = 1;
+    props.step = 0;
     props[STEPS_ARRAY[props.step]] = '';
     expect(component()
       .find('#next')

@@ -18,4 +18,4 @@ function box_out()
   tput sgr 0
 }
 
-box_out "$*";
+box_out "$@";

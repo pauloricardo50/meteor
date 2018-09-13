@@ -2,23 +2,19 @@ import { compose, withStateHandlers, withProps } from 'recompose';
 import { borrowerUpdate, propertyUpdate } from 'core/api';
 
 export const STEPS = {
-  PROPERTY_VALUE: 'propertyValue',
-  BORROWER_SALARY: 'borrowerSalary',
-  BORROWER_FORTUNE: 'borrowerFortune',
+  PROPERTY_VALUE: { name: 'propertyValue', optional: false },
+  BORROWER_SALARY: { name: 'borrowerSalary', optional: true },
+  BORROWER_FORTUNE: { name: 'borrowerFortune', optional: true },
 };
 
 export const STEPS_ARRAY = [
-  STEPS.PROPERTY_VALUE,
-  STEPS.BORROWER_SALARY,
-  STEPS.BORROWER_FORTUNE,
+  STEPS.PROPERTY_VALUE.name,
+  STEPS.BORROWER_SALARY.name,
+  STEPS.BORROWER_FORTUNE.name,
 ];
 
-const shouldOpenDialog = ({ properties, borrowers }) => {
-  const hasNoPropertyValue = properties.length === 1 && !properties[0].value;
-  return (
-    hasNoPropertyValue || !borrowers[0].salary || !borrowers[0].bankFortune
-  );
-};
+const shouldOpenDialog = properties =>
+  properties.length === 1 && !properties[0].value;
 
 const stateHandlers = withStateHandlers(
   ({ loan: { properties, borrowers } }) => ({
@@ -27,7 +23,7 @@ const stateHandlers = withStateHandlers(
     propertyValue: properties[0].value,
     borrowerSalary: borrowers[0].salary,
     borrowerFortune: borrowers[0].bankFortune,
-    open: shouldOpenDialog({ properties, borrowers }),
+    open: shouldOpenDialog(properties),
   }),
   {
     handleChange: () => (id, value) => ({ [id]: value }),
@@ -56,14 +52,16 @@ const props = withProps(({ handleCloseDialog, loan: { borrowers, properties }, .
     return borrowerUpdate
       .run({
         object: {
-          salary: props[STEPS.BORROWER_SALARY],
-          bankFortune: props[STEPS.BORROWER_FORTUNE],
+          salary: props[STEPS.BORROWER_SALARY.name],
+          bankFortune: props[STEPS.BORROWER_FORTUNE.name],
         },
         borrowerId: borrowers[0]._id,
       })
       .then(() =>
         propertyUpdate.run({
-          object: { value: props[STEPS.PROPERTY_VALUE] },
+          object: {
+            value: props[STEPS.PROPERTY_VALUE.name],
+          },
           propertyId: properties[0]._id,
         }))
       .then(handleCloseDialog);

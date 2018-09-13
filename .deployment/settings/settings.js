@@ -21,6 +21,7 @@ import {
   SPACES,
   TMUXINATOR_SESSION_NAME,
   TMUXINATOR_YML,
+  APP_ENV_VARIABLES,
 } from './config.js';
 
 import { readJSONFile, formatOptionsArray } from '../utils/helpers';
@@ -51,9 +52,11 @@ const applicationSettings = ({ applicationName, environment }) => ({
   ...ENVIRONMENT_CONFIG[environment][applicationName].appConfig,
 });
 
+export const generateMongoServiceName = environment => `mongo-${environment}`;
+
 export const createDeploySettingsForEnv = environment => ({
   service: {
-    name: `mongo-${environment}`,
+    name: generateMongoServiceName(environment),
     size: ENVIRONMENT_CONFIG[environment].serviceConfig,
   },
   root: `./${environment}`,
@@ -91,6 +94,9 @@ export const appManifestYAMLData = ({
       instances,
       buildpack: APP_BUILDPACK,
       services: [service],
+      ...(APP_ENV_VARIABLES[environment][applicationName] !== {}
+        ? { env: APP_ENV_VARIABLES[environment][applicationName] }
+        : null),
     },
   ],
 });

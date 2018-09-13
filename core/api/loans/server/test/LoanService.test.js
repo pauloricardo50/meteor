@@ -393,7 +393,7 @@ describe('LoanService', () => {
     });
   });
 
-  describe.only('cleanupRemovedBorrower', () => {
+  describe('cleanupRemovedBorrower', () => {
     it('removes all occurences of a borrower in structures', () => {
       const borrowerId = 'dude';
       const borrowerId2 = 'dude2';

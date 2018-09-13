@@ -24,10 +24,8 @@ export const fakeProperty = {
   roomCount: 5,
   numberOfFloors: 5,
   floorNumber: 3,
-  parking: {
-    inside: 1,
-    outside: 2,
-  },
+  parkingInside: 1,
+  parkingOutside: 2,
   minergie: MINERGIE_CERTIFICATE.MINERGIE_ECO,
   isCoproperty: true,
   copropertyPercentage: 400,

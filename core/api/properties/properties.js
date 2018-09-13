@@ -144,29 +144,22 @@ export const PropertySchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  status: {
-    type: String,
-    defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
-    allowedValues: Object.values(propertyConstants.PROPERTY_STATUS),
-  },
   value: {
     // Cost of the property
     type: Number,
     min: 0,
     max: 100000000,
+    autoValue() {
+      if (this.isSet) {
+        return Math.round(this.value / 1000) * 1000;
+      }
+    },
     optional: true,
   },
-  residenceType: {
+  status: {
     type: String,
-    defaultValue: propertyConstants.RESIDENCE_TYPE.MAIN_RESIDENCE,
-    allowedValues: Object.values(propertyConstants.RESIDENCE_TYPE),
-  },
-  investmentRent: {
-    // Rent of property if investment
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
+    defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
+    allowedValues: Object.values(propertyConstants.PROPERTY_STATUS),
   },
   propertyType: {
     type: String,
@@ -185,6 +178,13 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     defaultValue: propertyConstants.FLAT_TYPE.SINGLE_FLOOR_APARTMENT,
     allowedValues: Object.values(propertyConstants.FLAT_TYPE),
+  },
+  investmentRent: {
+    // Rent of property if investment
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000000,
   },
 
   address: {
@@ -272,17 +272,13 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.VOLUME_NORM.SIA_416,
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
   },
-  parking: {
-    type: Object,
-    defaultValue: {},
-  },
-  'parking.inside': {
+  parkingInside: {
     type: Number,
     optional: true,
     min: 0,
     max: 100,
   },
-  'parking.outside': {
+  parkingOutside: {
     type: Number,
     optional: true,
     min: 0,
@@ -297,19 +293,15 @@ export const PropertySchema = new SimpleSchema({
     type: Boolean,
     defaultValue: false,
   },
-  isNew: {
-    type: Boolean,
-    defaultValue: false,
-  },
   copropertyPercentage: {
     type: Number,
     min: 0,
     max: 1000,
     optional: true,
   },
-  name: {
-    type: String,
-    optional: true,
+  isNew: {
+    type: Boolean,
+    defaultValue: false,
   },
   latitude: {
     type: Number,
@@ -329,17 +321,12 @@ export const PropertySchema = new SimpleSchema({
     blackbox: true,
     defaultValue: {},
   },
-  qualityProfile: {
-    type: Object,
-    optional: true,
-    defaultValue: {},
-  },
-  'qualityProfile.condition': {
+  qualityProfileCondition: {
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
   },
-  'qualityProfile.standard': {
+  qualityProfileStandard: {
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
@@ -356,6 +343,19 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
 });
+
+const protectedKeys = [
+  'userId',
+  'createdAt',
+  'updatedAt',
+  'latitude',
+  'longitude',
+  'address',
+  'valuation',
+  'adminValidation',
+  'customFields',
+];
+export const PropertySchemaAdmin = PropertySchema.omit(...protectedKeys);
 
 // Attach schema
 Properties.attachSchema(PropertySchema);

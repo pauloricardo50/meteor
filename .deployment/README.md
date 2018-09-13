@@ -100,6 +100,24 @@ export const CLOUDFOUNDRY_MEMORY_LIMIT = {
 };
 ```
 
+### Environment variables
+Environment variables can be set for each application and environment in the constant `APP_ENV_VARIABLES`:
+
+```javascript
+export const APP_ENV_VARIABLES = {
+  [ENVIRONMENT.STAGING]: {
+    [APPLICATIONS.APP]: {},
+    [APPLICATIONS.ADMIN]: {},
+    [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
+  },
+  [ENVIRONMENT.PRODUCTION]: {
+    [APPLICATIONS.APP]: {},
+    [APPLICATIONS.ADMIN]: {},
+    [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
+  },
+};
+```
+
 ### Smoke tests files
 When deploying a new application, some smoke tests are run on the server side before killing the old application and switching to the new one. These test files must be included in the corresponding application directory: `.deployment/smokeTests/$applicationName`. They can be either `.js` or `.sh` scripts. Remember to make `.sh` scripts executable (`chmod +x $yourScript.sh`). All scripts **must be executed** in the `test.sh` script present in each application smoke test folder **AND must be included** in the `APP_SMOKE_TEST_FILES` constant:
 

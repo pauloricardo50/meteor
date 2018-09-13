@@ -32,10 +32,8 @@ export const fakeProperty = {
   volume: 1500,
   volumeNorm: VOLUME_NORM.SIA_416,
   roomCount: 5,
-  parking: {
-    inside: 1,
-    outside: 2,
-  },
+  parkingInside: 1,
+  parkingOutside: 2,
   minergie: MINERGIE_CERTIFICATE.MINERGIE_ECO,
   isCoproperty: true,
   copropertyPercentage: 400,
@@ -62,13 +60,11 @@ export const logic3 = {
     validated: true,
     comments: [],
   },
-  // auctionStarted: true,
   auction: {
     status: 'ENDED',
     startTime: new Date(),
     endTime: new Date(),
   },
-  // auctionEndTime: new Date(),
   insuranceUsePreset: 'COLLATERAL',
   loanStrategyPreset: 'FIXED',
   amortizationStrategyPreset: 'INDIRECT',
@@ -124,16 +120,7 @@ export const loanStep2 = {
 };
 
 export const loanStep3 = () => ({
-  general: {
-    ...fakeGeneral,
-    loanTranches: [
-      {
-        value: 750000,
-        type: 'interest10',
-        // TODO add tranches here
-      },
-    ],
-  },
+  general: fakeGeneral,
   logic: logic3,
   contacts: [],
 });
