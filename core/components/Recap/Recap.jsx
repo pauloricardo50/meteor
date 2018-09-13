@@ -31,7 +31,6 @@ const getDashboardArray = (props) => {
   const realEstateFortune = Calculator.getRealEstateFortune(props);
   const realEstateValue = Calculator.getRealEstateValue(props);
   const totalFunds = Calculator.getTotalFunds(props);
-  const totalUsed = Calculator.getTotalUsed(props);
 
   return [
     {
@@ -77,12 +76,6 @@ const getDashboardArray = (props) => {
     {
       label: 'Recap.ownFundsPledged',
       value: toMoney(ownFundsPledged),
-    },
-    {
-      label: 'Recap.ownFundsTotal',
-      value: <span className="sum">{toMoney(totalUsed)}</span>,
-      spacingTop: true,
-      bold: true,
     },
     {
       label: 'general.mortgageLoan',
