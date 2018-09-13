@@ -66,7 +66,7 @@ const props = withProps(({ handleCloseDialog, loan: { borrowers, properties }, .
       .then(() =>
         propertyUpdate.run({
           object: {
-            value: Math.round(props[STEPS.PROPERTY_VALUE.name] / 1000) * 1000,
+            value: props[STEPS.PROPERTY_VALUE.name],
           },
           propertyId: properties[0]._id,
         }))

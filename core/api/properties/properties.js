@@ -173,6 +173,11 @@ export const PropertySchema = new SimpleSchema({
     type: Number,
     min: 0,
     max: 100000000,
+    autoValue() {
+      if (this.isSet){
+        return Math.round(this.value / 1000) * 1000;
+      }
+    },
     optional: true,
   },
   residenceType: {
