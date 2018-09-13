@@ -20,7 +20,9 @@ const setupBucket = () =>
     .then(() => S3Service.putObject(binaryData, key2))
     .then(() => S3Service.putObject(binaryData, key3));
 
-describe('FileService', () => {
+describe('FileService', function () {
+  this.timeout(10000);
+
   beforeEach(() => clearBucket().then(setupBucket));
 
   describe('getFilesForDoc', () => {

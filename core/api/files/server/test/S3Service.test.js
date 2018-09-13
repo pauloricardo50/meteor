@@ -13,7 +13,9 @@ import S3Service from '../S3Service';
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
 
-describe('S3Service', () => {
+describe('S3Service', function () {
+  this.timeout(10000);
+
   describe('API', () => {
     let json;
     let binaryData;

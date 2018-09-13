@@ -63,6 +63,8 @@ module.exports = {
     'no-mixed-operators': ['error', { allowSamePrecedence: false }],
     'function-paren-newline': ['error', 'multiline'],
     'implicit-arrow-linebreak': 'off',
+    'func-names': 'off',
+
     // eslint-plugin-import rules
 
     // Good rule, but requires too many exceptions:
