@@ -10,11 +10,12 @@ import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
 import { FINANCING_PAGE } from '../../../../../startup/client/appRoutes';
 
-const shouldDisplayRecap = ({ loan }) =>
+const shouldDisplayRecap = loan =>
   loan.structure.property && loan.structure.property.value;
 
 const DashboardRecapFinance = (props) => {
-  if (!shouldDisplayRecap(props)) {
+  const { loan } = props;
+  if (!shouldDisplayRecap(loan)) {
     return (
       <div className="dashboard-recap-finance card1">
         <p className="dashboard-recap-finance-empty description">
@@ -24,12 +25,13 @@ const DashboardRecapFinance = (props) => {
     );
   }
 
-  const totalCost = Calculator.getProjectValue({ loan: props.loan });
+  const totalCost = Calculator.getProjectValue({ loan });
+  const totalFinancing = Calculator.getNonPledgedOwnFunds({ loan });
 
   return (
     <Link
       className="dashboard-recap-finance card1 card-hover"
-      to={createRoute(FINANCING_PAGE, { ':loanId': props.loan._id })}
+      to={createRoute(FINANCING_PAGE, { ':loanId': loan._id })}
     >
       <div className="card-top">
         <h3>
@@ -38,7 +40,7 @@ const DashboardRecapFinance = (props) => {
         <div className="accounting">
           <DashboardRecapCost {...props} total={totalCost} />
           <span className="divider" />
-          <DashboardRecapFinancing {...props} total={totalCost} />
+          <DashboardRecapFinancing {...props} total={totalFinancing} />
         </div>
       </div>
       <DashboardRecapChart {...props} />
