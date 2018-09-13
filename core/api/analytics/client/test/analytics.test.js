@@ -6,7 +6,6 @@ import { analytics as okgrowAnalyticsModule } from 'meteor/okgrow:analytics';
 
 import { makeClientAnalytics } from '../../factories';
 import analytics from '../analytics';
-import EVENTS from '../../events';
 import { addEvent } from '../../eventsHelpers';
 
 let okgrowAnalytics;

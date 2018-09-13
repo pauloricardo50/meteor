@@ -8,7 +8,6 @@ import { getMountedComponent } from '../../../utils/testHelpers';
 
 import withAnalytics from '../../withAnalytics';
 import analytics from '../../../api/analytics/client/analytics';
-import EVENTS from '../../../api/analytics/events';
 import { addEvent } from '../../../api/analytics/eventsHelpers';
 
 const trackedComponent = (trackerHoc, props) => {
@@ -77,7 +76,7 @@ describe('withAnalytics', () => {
     let returnValueOfTrackedFunction;
 
     beforeEach(() => {
-      const trackerHoc = withAnalytics(EVENTS.SUBMITTED_USER_SURVEY);
+      const trackerHoc = withAnalytics('SUBMITTED_USER_SURVEY');
 
       originalOnChange = sinon.stub().callsFake(() => 'the return value');
       component = trackedComponent(trackerHoc, {
@@ -88,7 +87,7 @@ describe('withAnalytics', () => {
     });
 
     it('calls `analytics.track` with the event name only', () => {
-      const trackerHoc = withAnalytics(EVENTS.CLICKED_LOGO);
+      const trackerHoc = withAnalytics('CLICKED_LOGO');
 
       component = trackedComponent(trackerHoc, {
         onClick: () => {},
@@ -96,13 +95,13 @@ describe('withAnalytics', () => {
       component.prop('onClick')();
 
       expect(analytics.track.lastCall.args).to.deep.equal([
-        EVENTS.CLICKED_LOGO,
+        'CLICKED_LOGO',
       ]);
     });
 
     it('calls `analytics.track` with the event name and metadata', () => {
       expect(analytics.track.lastCall.args).to.deep.equal([
-        EVENTS.SUBMITTED_USER_SURVEY,
+        'SUBMITTED_USER_SURVEY',
         'my name is John',
       ]);
     });
@@ -127,7 +126,7 @@ describe('withAnalytics', () => {
     beforeEach(() => {
       getMountedComponent.reset();
 
-      const trackerHoc = withAnalytics(EVENTS.OPENED_USER_PREFS);
+      const trackerHoc = withAnalytics('OPENED_USER_PREFS');
 
       user = { email: 'user@test.com' };
 
@@ -138,7 +137,7 @@ describe('withAnalytics', () => {
 
     it('tracks a lifecycle method by event name and props', () => {
       expect(analytics.track.lastCall.args).to.deep.equal([
-        EVENTS.OPENED_USER_PREFS,
+        'OPENED_USER_PREFS',
         { user },
       ]);
     });
