@@ -7,9 +7,13 @@ import { STEPS_ARRAY, STEPS } from './NewLoanFormContainer';
 // const TextFieldValueTypes = ['text', 'money', 'money', 'money'];
 
 const TextFieldValueTypes = {
-  [STEPS.PROPERTY_VALUE]: 'money',
-  [STEPS.BORROWER_SALARY]: 'money',
-  [STEPS.BORROWER_FORTUNE]: 'money',
+  [STEPS.PROPERTY_VALUE.name]: 'money',
+  [STEPS.BORROWER_SALARY.name]: 'money',
+  [STEPS.BORROWER_FORTUNE.name]: 'money',
+};
+
+const stepInfo = {
+  [STEPS.PROPERTY_VALUE.name]: <T id="NewLoanForm.propertyValueInfo" />,
 };
 
 type NewLoanFormTextFieldsProps = {
@@ -27,10 +31,11 @@ const NewLoanFormTextFields = (props: NewLoanFormTextFieldsProps) => {
       label={<T id={`NewLoanForm.${stepName}Label`} />}
       value={props[stepName]}
       type={TextFieldValueTypes[stepName]}
-      id={Object.values(STEPS)[step]}
+      id={Object.values(STEPS)[step].name}
       autoFocus
       onChange={handleChange}
       className="new-loan-form-textfield"
+      info={stepInfo[stepName] || null}
     />
   );
 };
