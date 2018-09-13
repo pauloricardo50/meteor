@@ -137,13 +137,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         step: FILE_STEPS.AUCTION,
       });
     }
-
-    getTotalFinancing({ loan }) {
-      return (
-        this.selectStructureKey({ loan, key: 'wantedLoan' })
-        + this.getNonPledgedOwnFunds({ loan })
-      );
-    }
   };
 
 export const LoanCalculator = withLoanCalculator(FinanceCalculator);
