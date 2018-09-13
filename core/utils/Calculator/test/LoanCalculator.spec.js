@@ -34,7 +34,7 @@ describe('LoanCalculator', () => {
             ],
           },
         },
-      })).to.equal(4);
+      })).to.equal(6);
     });
   });
 

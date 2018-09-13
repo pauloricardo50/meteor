@@ -1,4 +1,6 @@
 {
+  "FinancingStructuresCurrentOwnFunds.error": "Pas assez de {type}",
+
   "FinancingStructuresOwnFundsPickerForm.remaining": "Restant: CHF {value}",
   "FinancingStructures.ownFundsCompleter": "{current} / {required} alloués",
   "FinancingStructures.ownFundsCompleterButton": "Ajuster",

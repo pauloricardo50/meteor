@@ -30,7 +30,7 @@ export const shouldAskForUsageType = type =>
 
 export const getOwnFundsOfTypeAndBorrower = ({
   structure,
-  ownFundsIndex,
+  ownFundsIndex = -1,
   type,
   borrowerId,
 }) =>
