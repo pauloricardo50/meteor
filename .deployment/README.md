@@ -51,15 +51,15 @@ The main configuration file is located in `.deployment/settings/config.js`
 The constant called `ENVIRONMENT_CONFIG` contains each application container config:
 
 ```javascript
-const ENVIRONMENT_CONFIG = {
+export const ENVIRONMENT_CONFIG = {
   [ENVIRONMENT.STAGING]: {
-    serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.small,
+    services: [SERVICES.MONGODB, SERVICES.REDIS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
-    serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium,
+    services: [SERVICES.MONGODB, SERVICES.REDIS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
@@ -67,14 +67,7 @@ const ENVIRONMENT_CONFIG = {
 };
 ```
 
-Each environment needs a `serviceConfig` object. This object describes the plan to use with `mongodb-2` config. The available configs are:
-
-- `CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.small`
-- `CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium`
-- `CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.large`
-
-
-**WARNING: You can't change the service config without destroying the existing mongodb service, so you need to migrate data, etc.**
+**NOTE: The 'services' key is used to link an existing service to the applications. Services creation/update is not yet supported. They must be created manually in the admin console beforehand for the moment.**
 
 Each application in environment can have a different `appConfig` (i.e. application container config). The available (but still editable) configs are defined in constant `APP_CONFIGS`:
 
