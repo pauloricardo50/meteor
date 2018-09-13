@@ -5,6 +5,7 @@ import cx from 'classnames';
 import Recap from 'core/components/Recap';
 import Valuation from 'core/components/Valuation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
+import { PropertyForm } from 'core/components/forms';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
@@ -36,6 +37,8 @@ const SinglePropertyPage = ({
           <MapWithMarker address={address} className="map" id={address} />
         </div>
       )}
+
+      <PropertyForm property={property} />
     </section>
   );
 };

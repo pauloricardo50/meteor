@@ -1,7 +1,9 @@
-.borrower-form {
+.borrower-admin-form,
+.property-admin-form {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  align-self: stretch;
 
   > * {
     display: flex;

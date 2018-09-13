@@ -54,7 +54,7 @@ const otherSchema = BorrowerSchemaAdmin.omit(
 );
 
 const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
-  <div className="borrower-form">
+  <div className="borrower-admin-form">
     <div>
       <h3>Informations personelles</h3>
       <AutoForm
