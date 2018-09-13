@@ -11,36 +11,6 @@ import analytics from '../../../api/analytics/client/analytics';
 import EVENTS from '../../../api/analytics/events';
 import { addEvent } from '../../../api/analytics/eventsHelpers';
 
-addEvent('SUBMITTED_USER_SURVEY', {
-  func: 'onChange',
-  config: submittedText => ({
-    eventName: 'Submitted Text',
-    metadata: { text: submittedText },
-  }),
-});
-
-addEvent('OPENED_USER_PREFS', {
-  lifecycleMethod: 'componentDidMount',
-  config: ({ user: { email } }) => ({
-    eventName: 'Opened User Preferences',
-    metadata: { email },
-  }),
-});
-
-addEvent('CLICKED_LOGO', {
-  func: 'onClick',
-  config: {
-    eventName: 'Clicked Logo',
-  },
-});
-
-addEvent('SOME_LIFECYCLE_EVENT', {
-  lifecycleMethod: 'componentDidMount',
-  config: {
-    eventName: 'Some Lyfecicle Event',
-  },
-});
-
 const trackedComponent = (trackerHoc, props) => {
   const WrappedWithTrackedFunction = () => null;
   const Component = trackerHoc(WrappedWithTrackedFunction);
@@ -61,6 +31,38 @@ const mountedComponent = (trackerHoc, props) => {
 };
 
 describe('withAnalytics', () => {
+  before(() => {
+    addEvent('SUBMITTED_USER_SURVEY', {
+      func: 'onChange',
+      config: submittedText => ({
+        eventName: 'Submitted Text',
+        metadata: { text: submittedText },
+      }),
+    });
+
+    addEvent('OPENED_USER_PREFS', {
+      lifecycleMethod: 'componentDidMount',
+      config: ({ user: { email } }) => ({
+        eventName: 'Opened User Preferences',
+        metadata: { email },
+      }),
+    });
+
+    addEvent('CLICKED_LOGO', {
+      func: 'onClick',
+      config: {
+        eventName: 'Clicked Logo',
+      },
+    });
+
+    addEvent('SOME_LIFECYCLE_EVENT', {
+      lifecycleMethod: 'componentDidMount',
+      config: {
+        eventName: 'Some Lyfecicle Event',
+      },
+    });
+  });
+
   beforeEach(() => {
     sinon.stub(analytics, 'track');
   });

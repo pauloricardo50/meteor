@@ -64,7 +64,7 @@ describe('Client analytics', () => {
       };
       const analyticsModule = makeClientAnalytics(analyticsLibraryStub);
 
-      analyticsModule.track(EVENTS.SUBMITTED_USER_FORM, { name: 'Alex' });
+      analyticsModule.track('SUBMITTED_USER_FORM', { name: 'Alex' });
 
       expect(analyticsLibraryStub.track.called).to.equal(false);
     });
@@ -79,7 +79,7 @@ describe('Client analytics', () => {
       };
       const analyticsModule = makeClientAnalytics(analyticsLibraryStub);
 
-      analyticsModule.track(EVENTS.SUBMITTED_USER_FORM, { name: 'Alex' });
+      analyticsModule.track('SUBMITTED_USER_FORM', { name: 'Alex' });
 
       expect(analyticsLibraryStub.track.called).to.equal(false);
 
@@ -95,7 +95,7 @@ describe('Client analytics', () => {
       });
 
       const throwMessageRegEx = /the tracking eventName was not provided/;
-      expect(() => clientAnalytics.track(EVENTS.TEST_EVENT)).to.throw(throwMessageRegEx);
+      expect(() => clientAnalytics.track('TEST_EVENT')).to.throw(throwMessageRegEx);
     });
 
     it('calls `analytics.track` with the event name only', () => {
@@ -105,7 +105,7 @@ describe('Client analytics', () => {
         },
       });
 
-      clientAnalytics.track(EVENTS.TEST_EVENT);
+      clientAnalytics.track('TEST_EVENT');
       expect(okgrowAnalytics.track.lastCall.args).to.deep.equal([
         'Test Event',
         undefined,
@@ -114,7 +114,7 @@ describe('Client analytics', () => {
 
     it('calls `analytics.track` with both event name and metadata', () => {
       const user = { name: 'Alex Lawson' };
-      clientAnalytics.track(EVENTS.SUBMITTED_USER_FORM, user);
+      clientAnalytics.track('SUBMITTED_USER_FORM', user);
 
       expect(okgrowAnalytics.track.lastCall.args).to.deep.equal([
         'Submitted form',
@@ -125,7 +125,7 @@ describe('Client analytics', () => {
     it(`throttles the tracking by event
         for the given amount of time`, (done) => {
       const callerFunction = () =>
-        clientAnalytics.track(EVENTS.SCROLLED_PAGE, { yCoordinate: 123 });
+        clientAnalytics.track('SCROLLED_PAGE', { yCoordinate: 123 });
 
       callerFunction();
       callerFunction();
@@ -140,9 +140,9 @@ describe('Client analytics', () => {
     });
 
     it('does not throttle an event different than the throttled one', () => {
-      clientAnalytics.track(EVENTS.SCROLLED_PAGE, { yCoordinate: 123 });
-      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
-      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
+      clientAnalytics.track('SCROLLED_PAGE', { yCoordinate: 123 });
+      clientAnalytics.track('CLICKED_LOGIN_BUTTON');
+      clientAnalytics.track('CLICKED_LOGIN_BUTTON');
 
       expect(okgrowAnalytics.track.callCount).to.equal(3);
     });
@@ -150,8 +150,8 @@ describe('Client analytics', () => {
     it('tracks by event name once per session', () => {
       sessionStorage.clear();
 
-      clientAnalytics.track(EVENTS.TRACKED_ONLY_ONCE);
-      clientAnalytics.track(EVENTS.TRACKED_ONLY_ONCE);
+      clientAnalytics.track('TRACKED_ONLY_ONCE');
+      clientAnalytics.track('TRACKED_ONLY_ONCE');
 
       expect(okgrowAnalytics.track.callCount).to.equal(1);
     });
@@ -160,9 +160,9 @@ describe('Client analytics', () => {
         when another event was limited like that`, () => {
       sessionStorage.clear();
 
-      clientAnalytics.track(EVENTS.TRACKED_ONLY_ONCE);
-      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
-      clientAnalytics.track(EVENTS.CLICKED_LOGIN_BUTTON);
+      clientAnalytics.track('TRACKED_ONLY_ONCE');
+      clientAnalytics.track('CLICKED_LOGIN_BUTTON');
+      clientAnalytics.track('CLICKED_LOGIN_BUTTON');
 
       expect(okgrowAnalytics.track.callCount).to.equal(3);
     });
