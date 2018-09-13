@@ -13,14 +13,8 @@ export const STEPS_ARRAY = [
   STEPS.BORROWER_FORTUNE.name,
 ];
 
-const shouldOpenDialog = ({ properties, borrowers }) => {
-  const hasNoPropertyValue = properties.length === 1 && !properties[0].value;
-  return (
-    hasNoPropertyValue
-    || borrowers[0].salary === undefined
-    || borrowers[0].bankFortune === undefined
-  );
-};
+const shouldOpenDialog = properties =>
+  properties.length === 1 && !properties[0].value;
 
 const stateHandlers = withStateHandlers(
   ({ loan: { properties, borrowers } }) => ({
@@ -29,7 +23,7 @@ const stateHandlers = withStateHandlers(
     propertyValue: properties[0].value,
     borrowerSalary: borrowers[0].salary,
     borrowerFortune: borrowers[0].bankFortune,
-    open: shouldOpenDialog({ properties, borrowers }),
+    open: shouldOpenDialog(properties),
   }),
   {
     handleChange: () => (id, value) => ({ [id]: value }),
@@ -58,8 +52,8 @@ const props = withProps(({ handleCloseDialog, loan: { borrowers, properties }, .
     return borrowerUpdate
       .run({
         object: {
-          salary: props[STEPS.BORROWER_SALARY.name] || 0,
-          bankFortune: props[STEPS.BORROWER_FORTUNE.name] || 0,
+          salary: props[STEPS.BORROWER_SALARY.name],
+          bankFortune: props[STEPS.BORROWER_FORTUNE.name],
         },
         borrowerId: borrowers[0]._id,
       })
