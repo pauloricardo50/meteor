@@ -80,6 +80,7 @@ describe.only('OwnFundsCompleter', () => {
       });
 
       it('adjusts the required ownFunds amount if you pledge a value', () => {
+        props.ownFundsIndex = -1;
         props.value = 100000;
         props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
@@ -96,6 +97,7 @@ describe.only('OwnFundsCompleter', () => {
         // Except if he's planning to modify another ownfunds afterwards
 
         props.structure.ownFunds = [{ value: 150000 }];
+        props.ownFundsIndex = -1;
         props.value = 150000;
         props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
@@ -104,13 +106,55 @@ describe.only('OwnFundsCompleter', () => {
         });
       });
 
-      it('increases the wantedLoan significantly if needed', () => {
+      it('takes into account previously pledged values', () => {
+        props.structure.ownFunds = [
+          { value: 40000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          { value: 150000 },
+        ];
+        props.ownFundsIndex = -1;
+        props.value = 40000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 170000,
+          current: 150000,
+        });
+      });
+
+      it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge', () => {
+        props.structure.ownFunds = [
+          { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          { value: 150000 },
+        ];
+        props.ownFundsIndex = -1;
+        props.value = 40000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 150000,
+          current: 150000,
+        });
+      });
+
+      it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge', () => {
+        props.structure.ownFunds = [
+          { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          { value: 150000 },
+        ];
+        props.ownFundsIndex = -1;
+        props.value = 40000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 150000,
+          current: 150000,
+        });
+      });
+
+      it('increases the wantedLoan only by the amount possible', () => {
         props.structure.wantedLoan = 600000;
         props.structure.ownFunds = [{ value: 150000 }];
         props.value = 300000;
         props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
-          required: 150000,
+          required: 350000,
           current: 150000,
         });
       });

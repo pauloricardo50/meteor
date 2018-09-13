@@ -5,6 +5,7 @@ import {
 } from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
 import { calculateMaxLoan } from '../../FinancingStructuresFinancing/FinancingStructuresFinancing';
+import { getProperty } from '../../FinancingStructuresCalculator';
 
 export const chooseOwnFundsTypes = ({
   loan: {
@@ -109,7 +110,7 @@ export const makeNewOwnFundsArray = ({
   ];
 };
 
-const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
+export const getCurrentPledgedFunds = ({ ownFundsIndex, ownFunds }) =>
   ownFunds
     .filter((_, index) => index !== ownFundsIndex)
     .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
@@ -135,4 +136,14 @@ export const getNewWantedLoanAfterPledge = (props) => {
   );
 
   return maxLoanWithNewPledge;
+};
+
+export const getMaxPledge = (props) => {
+  const {
+    structure: { propertyWork },
+  } = props;
+  const propertyValue = getProperty(props).value;
+
+  return Math.round((Calculator.maxBorrowRatioWithPledge - Calculator.maxBorrowRatio)
+      * (propertyValue + propertyWork));
 };

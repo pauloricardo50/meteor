@@ -28,12 +28,10 @@ const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDia
     types,
     disableSubmit,
     disableDelete,
-    structureId,
     usageType,
     handleUpdateBorrower,
     handleCancelUpdateBorrower,
     otherValueOfTypeAndBorrower,
-    ownFundsIndex,
   } = props;
   const remaining = calculateRemainingFunds(props);
   const displayWarning = type && borrowerId && remaining < value;
@@ -50,12 +48,8 @@ const FinancingStructuresOwnFundsDialog = (props: FinancingStructuresOwnFundsDia
       </DialogTitle>
       <DialogContent>
         <OwnFundsCompleter
-          structureId={structureId}
-          type={type}
-          borrowerId={borrowerId}
-          value={value}
+          {...props}
           handleChangeValue={val => handleChange(val, FIELDS.VALUE)}
-          ownFundsIndex={ownFundsIndex}
         />
         <FinancingStructuresOwnFundsPickerForm
           handleChange={handleChange}
