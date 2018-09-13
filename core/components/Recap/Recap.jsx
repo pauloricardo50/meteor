@@ -14,11 +14,10 @@ const getDashboardArray = (props) => {
   const borrowRatio = Calculator.getBorrowRatio(props);
   const expenses = Calculator.getExpenses(props);
   const fortune = Calculator.getFortune(props);
-  const fortuneUsed = Calculator.makeSelectStructureKey('fortuneUsed')(props);
+  const ownFundsNonPledged = Calculator.getNonPledgedOwnFunds(props);
+  const ownFundsPledged = Calculator.getTotalPledged(props);
   const incomeRatio = Calculator.getIncomeRatio(props);
   const insuranceFortune = Calculator.getInsuranceFortune(props);
-  const insurancePledged = Calculator.getInsuranceWithdrawn(props);
-  const insuranceWithdrawn = Calculator.getInsuranceWithdrawn(props);
   const loanValue = Calculator.selectLoanValue(props);
   const maxBorrowRatio = Calculator.getMaxBorrowRatio(props);
   const monthly = Calculator.getMonthly(props);
@@ -73,29 +72,16 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'general.ownFunds',
-      value: toMoney(totalUsed),
-      hide: insuranceWithdrawn,
+      value: toMoney(ownFundsNonPledged),
     },
     {
-      label: 'Recap.ownFundsCash',
-      value: toMoney(fortuneUsed),
-      hide: !insuranceWithdrawn,
-    },
-    {
-      label: 'Recap.ownFundsInsuranceWithdrawal',
-      value: toMoney(insuranceWithdrawn),
-      hide: !insuranceWithdrawn,
-    },
-    {
-      label: 'Recap.ownFundsInsurancePledged',
-      value: toMoney(insurancePledged),
-      hide: !insurancePledged,
+      label: 'Recap.ownFundsPledged',
+      value: toMoney(ownFundsPledged),
     },
     {
       label: 'Recap.ownFundsTotal',
       value: <span className="sum">{toMoney(totalUsed)}</span>,
       spacingTop: true,
-      hide: !insuranceWithdrawn,
       bold: true,
     },
     {

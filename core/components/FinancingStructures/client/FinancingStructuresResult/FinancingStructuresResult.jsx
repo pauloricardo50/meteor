@@ -12,14 +12,18 @@ import {
   getInterests,
   getAmortization,
   getRemainingCash,
-  getRemainingSecondPillar,
-  getRemainingThirdPillar,
+  getRemainingInsurance2,
+  getRemainingInsurance3A,
+  getRemainingBank3A,
+  getRemainingInsurance3B,
   getPropertyExpenses,
   getBorrowRatio,
   getIncomeRatio,
   getBorrowRatioStatus,
   getIncomeRatioStatus,
+  makeHasOwnFundsOfType,
 } from './financingStructuresResultHelpers';
+import { OWN_FUNDS_TYPES } from '../../../../api/constants';
 
 type FinancingStructuresResultProps = {};
 
@@ -99,14 +103,28 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
           value: getRemainingCash,
         },
         {
-          id: 'remainingSecondPillar',
+          id: 'remainingInsurance2',
           Component: CalculatedValue,
-          value: getRemainingSecondPillar,
+          value: getRemainingInsurance2,
+          condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.INSURANCE_2),
         },
         {
-          id: 'remainingThirdPillar',
+          id: 'remainingInsurance3A',
           Component: CalculatedValue,
-          value: getRemainingThirdPillar,
+          value: getRemainingInsurance3A,
+          condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.INSURANCE_3A),
+        },
+        {
+          id: 'remainingBank3A',
+          Component: CalculatedValue,
+          value: getRemainingBank3A,
+          condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.BANK_3A),
+        },
+        {
+          id: 'remainingInsurance3B',
+          Component: CalculatedValue,
+          value: getRemainingInsurance3B,
+          condition: makeHasOwnFundsOfType(OWN_FUNDS_TYPES.INSURANCE_3B),
         },
       ]}
     />

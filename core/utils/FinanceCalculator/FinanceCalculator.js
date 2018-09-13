@@ -243,19 +243,6 @@ export class FinanceCalculator {
     return amortizationRate / borrowRatio || 0;
   }
 
-  getIndirectAmortizationDeduction({
-    amortizationRate = 0,
-    loanValue = 0,
-  }: { amortizationRate: number, loanValue: 0 } = {}) {
-    const yearlyAmortization = amortizationRate * loanValue;
-    const cappedThirdPillar = Math.min(
-      yearlyAmortization,
-      MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
-    );
-    const deduction = this.taxRate * cappedThirdPillar;
-    return deduction;
-  }
-
   getMaxLoanBase({
     propertyValue,
     propertyWork,

@@ -53,12 +53,7 @@ describe('FinancingStructuresResult', () => {
         propertyId: 'house',
         propertyWork: 0,
         wantedLoan: 800000,
-        fortuneUsed: 250000,
-        secondPillarPledged: 0,
-        thirdPillarPledged: 0,
-        secondPillarWithdrawal: 0,
-        thirdPillarWithdrawal: 0,
-        thirdPartyFortuneUsed: 0,
+        ownFunds: [{ type: 'bankFortune', value: 250000 }],
       };
       store = {
         financingStructures: {
@@ -131,7 +126,7 @@ describe('FinancingStructuresResult', () => {
         .last();
 
       // Do this because of different browsers..
-      expect(incomeRatio.contains('0,29') || incomeRatio.contains('0.29')).to.equal(true);
+      expect(incomeRatio.contains('0,3') || incomeRatio.contains('0.3')).to.equal(true);
     });
 
     it('remainingCash', () => {
@@ -142,20 +137,20 @@ describe('FinancingStructuresResult', () => {
       expect(remainingCash.contains('0')).to.equal(true);
     });
 
-    it('remainingSecondPillar', () => {
-      const remainingSecondPillar = component()
-        .find('.remainingSecondPillar')
+    it('remainingInsurance2', () => {
+      const remainingInsurance2 = component()
+        .find('.remainingInsurance2')
         .last();
 
-      expect(remainingSecondPillar.contains('50')).to.equal(true);
+      expect(remainingInsurance2.contains('50')).to.equal(true);
     });
 
-    it('remainingThirdPillar', () => {
-      const remainingThirdPillar = component()
-        .find('.remainingThirdPillar')
+    it('remainingInsurance3A', () => {
+      const remainingInsurance3A = component()
+        .find('.remainingInsurance3A')
         .last();
 
-      expect(remainingThirdPillar.contains('60')).to.equal(true);
+      expect(remainingInsurance3A.contains('60')).to.equal(true);
     });
   });
 

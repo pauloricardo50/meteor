@@ -149,58 +149,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getIndirectAmortizationDeduction', () => {
-    it('returns zero if nothing is provided', () => {
-      expect(calc.getIndirectAmortizationDeduction()).to.equal(0);
-    });
-
-    it('returns zero if the loan is zero', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 0,
-        amortizationRateRelativeToLoan: 2,
-      })).to.equal(0);
-      expect(calc.getIndirectAmortizationDeduction({
-        amortizationRateRelativeToLoan: 2,
-      })).to.equal(0);
-    });
-
-    it('returns zero if the rate is zero', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 2,
-        amortizationRateRelativeToLoan: 0,
-      })).to.equal(0);
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 2,
-      })).to.equal(0);
-    });
-
-    it('caps deduction at the swiss national level', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 1000000,
-        amortizationRateRelativeToLoan: 0.01,
-      })).to.equal(calc.getIndirectAmortizationDeduction({
-        loanValue: 2000000,
-        amortizationRateRelativeToLoan: 0.01,
-      }));
-    });
-
-    it('uses the taxRate to calculate deduction', () => {
-      const taxRate = 0.5;
-      calc = new FinanceCalculator({ taxRate });
-      const rate = calc.getAmortizationRateBase({ borrowRatio: 0.8 });
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 800000,
-        amortizationRate: rate,
-      })).to.equal(MAX_YEARLY_THIRD_PILLAR_PAYMENTS * taxRate);
-    });
-
-    it('deduces less if there is less to amortize', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 250000,
-        amortizationRate: 0.01,
-      })).to.equal(625);
-    });
-  });
 
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {

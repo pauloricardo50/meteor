@@ -10,26 +10,6 @@ export const calculateOwnFunds = ({ structure: { ownFunds = [] } }) =>
 export const calculateMaxFortune = ({ borrowers }) =>
   Calculator.getFortune({ borrowers });
 
-export const calculateMaxSecondPillarPledged = ({
-  borrowers,
-  structure: { secondPillarWithdrawal },
-}) => Calculator.getSecondPillar({ borrowers }) - secondPillarWithdrawal;
-
-export const calculateMaxSecondPillarWithdrawal = ({
-  borrowers,
-  structure: { secondPillarPledged },
-}) => Calculator.getSecondPillar({ borrowers }) - secondPillarPledged;
-
-export const calculateMaxThirdPillarPledged = ({
-  borrowers,
-  structure: { thirdPillarWithdrawal },
-}) => Calculator.getThirdPillar({ borrowers }) - thirdPillarWithdrawal;
-
-export const calculateMaxThirdPillarWithdrawal = ({
-  borrowers,
-  structure: { thirdPillarPledged },
-}) => Calculator.getThirdPillar({ borrowers }) - thirdPillarPledged;
-
 export const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 

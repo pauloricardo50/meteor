@@ -24,10 +24,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getTotalUsed({
       loan: {
-        structure: { secondPillarPledged, thirdPillarPledged, fortuneUsed },
+        structure: { ownFunds },
       },
     }) {
-      return secondPillarPledged + thirdPillarPledged + fortuneUsed;
+      return ownFunds.reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getTotalPledged({
+      loan: {
+        structure: { ownFunds },
+      },
+    }) {
+      return ownFunds
+        .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
     }
 
     getFees({ loan }): number {

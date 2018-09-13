@@ -10,6 +10,8 @@ import {
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
   INTEREST_RATES,
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
@@ -91,32 +93,103 @@ const logic3 = {
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
 
-const getRandomStructure = propertyValue =>
+const getRandomStructure = (propertyValue, borrowerId) =>
   getRandomValueInArray([
     {
-      fortuneUsed: Math.round(0.15 * propertyValue),
-      secondPillarPledged: Math.round(0.1 * propertyValue),
+      ownFunds: [
+        {
+          value: Math.round(0.15 * propertyValue),
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.1 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          borrowerId,
+        },
+      ],
     },
     {
-      fortuneUsed: Math.round(0.25 * propertyValue),
+      ownFunds: [
+        {
+          value: Math.round(0.25 * propertyValue),
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          borrowerId,
+        },
+      ],
     },
     {
-      fortuneUsed: Math.round(0.15 * propertyValue),
-      secondPillarWithdrawal: Math.round(0.1 * propertyValue),
+      ownFunds: [
+        {
+          value: Math.round(0.15 * propertyValue),
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.1 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+          borrowerId,
+        },
+      ],
     },
     {
-      fortuneUsed: Math.round(0.15 * propertyValue),
-      secondPillarWithdrawal: Math.round(0.05 * propertyValue),
-      secondPillarPledged: Math.round(0.05 * propertyValue),
+      ownFunds: [
+        {
+          value: Math.round(0.15 * propertyValue),
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.05 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.05 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          borrowerId,
+        },
+      ],
     },
     {
-      fortuneUsed: Math.round(0.15 * propertyValue),
-      secondPillarWithdrawal: Math.round(0.08 * propertyValue),
-      thirdPillarWithdrawal: Math.round(0.02 * propertyValue),
+      ownFunds: [
+        {
+          value: Math.round(0.15 * propertyValue),
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.08 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.02 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_3A,
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+          borrowerId,
+        },
+      ],
     },
     {
-      fortuneUsed: Math.round(0.2 * propertyValue),
-      thirdPillarWithdrawal: Math.round(0.05 * propertyValue),
+      ownFunds: [
+        {
+          value: Math.round(0.2 * propertyValue),
+          type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+          borrowerId,
+        },
+        {
+          value: Math.round(0.05 * propertyValue),
+          type: OWN_FUNDS_TYPES.INSURANCE_3B,
+          usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+          borrowerId,
+        },
+      ],
     },
   ]);
 
@@ -140,7 +213,7 @@ export const createFakeLoan = ({
         propertyId,
         loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
         wantedLoan: Math.round(0.8 * value),
-        ...getRandomStructure(value),
+        ...getRandomStructure(value, borrowerIds[0]),
       },
     ],
     selectedStructure: 'struct1',

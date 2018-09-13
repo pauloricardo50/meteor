@@ -6,7 +6,7 @@ import { RESIDENCE_TYPE } from 'core/api/constants';
 import { getRequiredAndCurrentFunds } from '../OwnFundsCompleterContainer';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../../../api/constants';
 
-describe.only('OwnFundsCompleter', () => {
+describe('OwnFundsCompleter', () => {
   describe('getRequiredAndCurrentFunds', () => {
     let props;
 

@@ -45,18 +45,14 @@ export type structureType = {
   id: string,
   amortization: number,
   amortizationType: string,
-  secondPillarPledged: number,
-  secondPillarWithdrawal: string,
-  thirdPillarPledged: string,
-  thirdPillarWithdrawal: string,
   description: string,
-  fortuneUsed: number,
   name: string,
   offerId: string,
   propertyId: string,
   propertyWork: number,
   sortOffersBy: string,
   wantedLoan: number,
+  ownFunds: Array<Object>,
 };
 
 export default StructureSchema;

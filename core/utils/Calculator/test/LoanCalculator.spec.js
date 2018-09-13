@@ -4,6 +4,7 @@ import { expect } from 'chai';
 
 import Calculator, { Calculator as CalculatorClass } from '..';
 import { INTEREST_RATES } from 'core/api/constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../api/constants';
 
 describe('LoanCalculator', () => {
   describe('getProjectValue', () => {
@@ -22,16 +23,18 @@ describe('LoanCalculator', () => {
   });
 
   describe('getTotalUsed', () => {
-    it('it gets the sum of all used own funds', () => {
+    it('it gets the sum of all used own funds, without pledged funds', () => {
       expect(Calculator.getTotalUsed({
         loan: {
           structure: {
-            secondPillarPledged: 1,
-            thirdPillarPledged: 2,
-            fortuneUsed: 3,
+            ownFunds: [
+              { value: 3, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+              { value: 2, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+              { value: 1 },
+            ],
           },
         },
-      })).to.equal(6);
+      })).to.equal(4);
     });
   });
 

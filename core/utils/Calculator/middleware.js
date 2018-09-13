@@ -2,26 +2,9 @@
 
 // Map loan onto FinanceCalculator
 
-import Calc from '../FinanceCalculator';
 import { makeArgumentMapper } from '../MiddlewareManager';
-import Selector from './Selector';
 
-const argumentMappings = {
-  getIndirectAmortizationDeduction: (data) => {
-    const {
-      loan: {
-        structure: { wantedLoan, propertyWork },
-      },
-    } = data;
-    return {
-      loanValue: wantedLoan,
-      amortizationRate: Calc.getAmortizationRateBase({
-        borrowRatio:
-          wantedLoan / (Selector.selectPropertyValue(data) + propertyWork),
-      }),
-    };
-  },
-};
+const argumentMappings = {};
 
 export const financeCalculatorArgumentMapper = makeArgumentMapper(argumentMappings);
 
