@@ -50,3 +50,5 @@ okgrow:analytics
 aldeed:schema-index
 aldeed:schema-deny
 dynamic-import
+cultofcoders:redis-oplog
+disable-oplog
