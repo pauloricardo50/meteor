@@ -34,8 +34,10 @@ describe('WuestService', () => {
           residenceType: wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE,
           houseType: wuestConstants.WUEST_HOUSE_TYPE.DETACHED,
           numberOfRooms: 4,
-          parkingInside: 1,
-          parkingOutside: 1,
+          parking: {
+            indoor: 1,
+            outdoor: 1,
+          },
           constructionYear: 2000,
           minergieCertificate:
             wuestConstants.WUEST_MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
@@ -44,9 +46,10 @@ describe('WuestService', () => {
             value: 1000,
           },
           landPlotArea: 1000,
-          qualityProfileStandard: wuestConstants.WUEST_QUALITY.STANDARD.AVERAGE,
-          qualityProfileCondition:
-            wuestConstants.WUEST_QUALITY.CONDITION.NEEDS_RENOVATION,
+          qualityProfile: {
+            standard: wuestConstants.WUEST_QUALITY.STANDARD.AVERAGE,
+            condition: wuestConstants.WUEST_QUALITY.CONDITION.NEEDS_RENOVATION,
+          },
         },
       };
 
@@ -462,10 +465,8 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -489,10 +490,8 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
