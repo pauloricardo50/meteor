@@ -46,11 +46,7 @@ describe('PasswordResetPage', () => {
           component().update();
           return !component().find(Loading).length;
         }, 200))
-      .then(() =>
-        expect(component()
-          .find('[id="PasswordResetPage.title"]')
-          .first()
-          .prop('values').name).to.equal('John Doe'));
+      .then(() => expect(component().contains('John Doe')).to.equal(true));
   });
 
   it('renders an error', () => {
