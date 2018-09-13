@@ -17,7 +17,10 @@ import {
 import ClientEventService, {
   LOAD_LOAN,
 } from '../../../../../api/events/ClientEventService/index';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  RESIDENCE_TYPE,
+} from '../../../../../api/constants';
 
 export const FIELDS = {
   TYPE: 'type',
@@ -88,6 +91,7 @@ const withAdditionalProps = withProps((props) => {
     handleChange,
     reset,
     ownFundsIndex,
+    loan,
   } = props;
   const otherValueOfTypeAndBorrower = getOwnFundsOfTypeAndBorrower(props);
 
@@ -150,6 +154,7 @@ const withAdditionalProps = withProps((props) => {
     },
     types: chooseOwnFundsTypes(props),
     otherValueOfTypeAndBorrower,
+    allowPledge: loan.general.residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE,
   };
 });
 

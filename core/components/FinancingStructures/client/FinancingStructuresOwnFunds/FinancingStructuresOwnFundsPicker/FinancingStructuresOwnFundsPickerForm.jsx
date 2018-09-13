@@ -25,6 +25,7 @@ const FinancingStructuresOwnFundsPickerForm = ({
   usageType,
   remaining,
   otherValueOfTypeAndBorrower,
+  allowPledge,
 }: FinancingStructuresOwnFundsPickerFormProps) => (
   <form
     onSubmit={displayWarning ? () => {} : handleSubmit}
@@ -40,7 +41,8 @@ const FinancingStructuresOwnFundsPickerForm = ({
         }))}
         label={<T id="FinancingStructuresOwnFundsPickerForm.type" />}
       />
-      {shouldAskForUsageType(type) && (
+      {allowPledge
+        && shouldAskForUsageType(type) && (
         <Select
           value={usageType}
           onChange={(_, val) => handleChange(val, FIELDS.USAGE_TYPE)}
