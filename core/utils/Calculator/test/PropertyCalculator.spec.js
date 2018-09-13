@@ -30,7 +30,8 @@ describe('PropertyCalculator', () => {
         constructionYear: 2000,
         roomCount: 2,
         minergie: '',
-        qualityProfile: { condition: 1, standard: 2 },
+        qualityProfileCondition: 1,
+        qualityProfileStandard: 2,
       };
       params.loan.general.residenceType = ' ';
       expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(1);
@@ -71,8 +72,8 @@ describe('PropertyCalculator', () => {
         'constructionYear',
         'roomCount',
         'minergie',
-        'qualityProfile.condition',
-        'qualityProfile.standard',
+        'qualityProfileCondition',
+        'qualityProfileStandard',
         'general.residenceType',
       ]);
     });

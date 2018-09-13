@@ -34,10 +34,8 @@ describe('WuestService', () => {
           residenceType: wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE,
           houseType: wuestConstants.WUEST_HOUSE_TYPE.DETACHED,
           numberOfRooms: 4,
-          parking: {
-            indoor: 1,
-            outdoor: 1,
-          },
+          parkingInside: 1,
+          parkingOutside: 1,
           constructionYear: 2000,
           minergieCertificate:
             wuestConstants.WUEST_MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
@@ -46,10 +44,9 @@ describe('WuestService', () => {
             value: 1000,
           },
           landPlotArea: 1000,
-          qualityProfile: {
-            standard: wuestConstants.WUEST_QUALITY.STANDARD.AVERAGE,
-            condition: wuestConstants.WUEST_QUALITY.CONDITION.NEEDS_RENOVATION,
-          },
+          qualityProfileStandard: wuestConstants.WUEST_QUALITY.STANDARD.AVERAGE,
+          qualityProfileCondition:
+            wuestConstants.WUEST_QUALITY.CONDITION.NEEDS_RENOVATION,
         },
       };
 

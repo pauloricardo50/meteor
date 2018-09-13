@@ -28,10 +28,8 @@ describe('PropertyService', () => {
         constructionYear: 1,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -61,10 +59,8 @@ describe('PropertyService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -91,10 +87,8 @@ describe('PropertyService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = RESIDENCE_TYPE.MAIN_RESIDENCE;

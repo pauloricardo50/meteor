@@ -103,11 +103,11 @@ class Property {
         entries: [
           {
             type: 'residential.object.standard',
-            grade: { manualValue: this.qualityProfile.standard },
+            grade: { manualValue: this.qualityProfileStandard },
           },
           {
             type: 'residential.object.condition',
-            grade: { manualValue: this.qualityProfile.condition },
+            grade: { manualValue: this.qualityProfileCondition },
           },
           {
             type: 'residential.location.microlocation',
