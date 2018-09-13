@@ -26,7 +26,6 @@ const DashboardRecapFinance = (props) => {
   }
 
   const totalCost = Calculator.getProjectValue({ loan });
-  const totalFinancing = Calculator.getTotalFinancing({ loan });
 
   return (
     <Link
@@ -40,7 +39,7 @@ const DashboardRecapFinance = (props) => {
         <div className="accounting">
           <DashboardRecapCost {...props} total={totalCost} />
           <span className="divider" />
-          <DashboardRecapFinancing {...props} total={totalFinancing} />
+          <DashboardRecapFinancing {...props} total={totalCost} />
         </div>
       </div>
       <DashboardRecapChart {...props} />
