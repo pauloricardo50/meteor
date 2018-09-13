@@ -1,15 +1,21 @@
 import {
-  generateMongoServiceName,
+  generateServiceName,
   FORMATTED_ENVIRONMENTS,
 } from '../settings/settings';
-import { ENVIRONMENT } from '../settings/config';
+import { ENVIRONMENT, SERVICES } from '../settings/config';
 import { writeYAML, touchFile, mkdir, executeCommand } from '../utils/helpers';
 import CloudFoundryService from '../CloudFoundry/CloudFoundryService';
 import argv from 'yargs';
 
 const MONGO_SERVICES = {
-  [ENVIRONMENT.STAGING]: generateMongoServiceName(ENVIRONMENT.STAGING),
-  [ENVIRONMENT.PRODUCTION]: generateMongoServiceName(ENVIRONMENT.PRODUCTION),
+  [ENVIRONMENT.STAGING]: generateServiceName({
+    environment: ENVIRONMENT.STAGING,
+    service: SERVICES.MONGODB,
+  }),
+  [ENVIRONMENT.PRODUCTION]: generateServiceName({
+    environment: ENVIRONMENT.PRODUCTION,
+    service: SERVICES.MONGODB,
+  }),
 };
 
 //Shouldn't change
