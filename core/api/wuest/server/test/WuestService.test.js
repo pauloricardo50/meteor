@@ -465,10 +465,8 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
@@ -492,10 +490,8 @@ describe('WuestService', () => {
         terraceArea: 20,
         numberOfFloors: 10,
         floorNumber: 3,
-        qualityProfile: {
-          condition: QUALITY.CONDITION.INTACT,
-          standard: QUALITY.STANDARD.AVERAGE,
-        },
+        qualityProfileCondition: QUALITY.CONDITION.INTACT,
+        qualityProfileStandard: QUALITY.STANDARD.AVERAGE,
       })._id;
 
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;

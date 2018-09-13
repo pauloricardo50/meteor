@@ -424,10 +424,12 @@ class WuestService {
       areaNorm,
       insideArea,
       terraceArea,
-      parking,
+      parkingInside,
+      parkingOutside,
       constructionYear,
       minergie,
-      qualityProfile,
+      qualityProfileStandard,
+      qualityProfileCondition,
     } = property;
 
     switch (propertyType) {
@@ -460,18 +462,16 @@ class WuestService {
           },
           terraceArea: terraceArea || 0,
           parking: {
-            indoor: parking.inside ? parking.inside : 0,
-            outdoor: parking.outside ? parking.outside : 0,
+            indoor: parkingInside || 0,
+            outdoor: parkingOutside || 0,
           },
           constructionYear,
           minergieCertificate: minergie,
           qualityProfile: {
             standard:
-                wuestConstants.WUEST_QUALITY.STANDARD[qualityProfile.standard],
+                wuestConstants.WUEST_QUALITY.STANDARD[qualityProfileStandard],
             condition:
-                wuestConstants.WUEST_QUALITY.CONDITION[
-                  qualityProfile.condition
-                ],
+                wuestConstants.WUEST_QUALITY.CONDITION[qualityProfileCondition],
           },
         },
       });
@@ -500,18 +500,16 @@ class WuestService {
             value: volume,
           },
           parking: {
-            indoor: parking.inside ? parking.inside : 0,
-            outdoor: parking.outside ? parking.outside : 0,
+            indoor: parkingInside || 0,
+            outdoor: parkingOutside || 0,
           },
           constructionYear,
           minergieCertificate: minergie,
           qualityProfile: {
             standard:
-                wuestConstants.WUEST_QUALITY.STANDARD[qualityProfile.standard],
+                wuestConstants.WUEST_QUALITY.STANDARD[qualityProfileStandard],
             condition:
-                wuestConstants.WUEST_QUALITY.CONDITION[
-                  qualityProfile.condition
-                ],
+                wuestConstants.WUEST_QUALITY.CONDITION[qualityProfileCondition],
           },
         },
       });
@@ -632,6 +630,7 @@ class WuestService {
   evaluate(properties) {
     const promises = properties.map((property) => {
       property.property.generateJSONData();
+
       return this.getData(property.property.JSONData)
         .then(result => this.handleResult(result))
         .then(result => this.formatResult(result));

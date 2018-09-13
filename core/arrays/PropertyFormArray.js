@@ -254,8 +254,8 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       decimal: true,
       info: true,
     },
-    { id: 'parking.inside', type: 'textInput', number: true, required: false },
-    { id: 'parking.outside', type: 'textInput', number: true, required: false },
+    { id: 'parkingInside', type: 'textInput', number: true, required: false },
+    { id: 'parkingOutside', type: 'textInput', number: true, required: false },
     {
       id: 'minergie',
       type: 'radioInput',
@@ -275,12 +275,12 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       required: false,
     },
     {
-      id: 'qualityProfile.condition',
+      id: 'qualityProfileCondition',
       type: 'radioInput',
       options: Object.values(QUALITY.CONDITION),
     },
     {
-      id: 'qualityProfile.standard',
+      id: 'qualityProfileStandard',
       type: 'radioInput',
       options: Object.values(QUALITY.STANDARD),
     },

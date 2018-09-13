@@ -38,14 +38,10 @@ export const createFakeProperty = (userId) => {
     volume: 1500,
     volumeNorm: getRandomValueInArray(volumeNorms),
     roomCount: 5,
-    parking: {
-      inside: 1,
-      outside: 2,
-    },
-    qualityProfile: {
-      condition: getRandomValueInArray(conditions),
-      standard: getRandomValueInArray(standards),
-    },
+    parkingInside: 1,
+    parkingOutside: 2,
+    qualityProfileCondition: getRandomValueInArray(conditions),
+    qualityProfileStandard: getRandomValueInArray(standards),
     minergie: getRandomValueInArray(minergies),
     isCoproperty: true,
     copropertyPercentage: 400,
