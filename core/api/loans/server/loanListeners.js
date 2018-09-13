@@ -1,6 +1,6 @@
 import ServerEventService from '../../events/server/ServerEventService';
 import LoanService from '../LoanService';
-import { requestLoanVerification, borrowerDelete } from '../..';
+import { requestLoanVerification } from '../..';
 
 export const disableUserFormsListener = ({ loanId }) => {
   LoanService.disableUserForms({ loanId });
@@ -10,7 +10,3 @@ ServerEventService.addMethodListener(
   requestLoanVerification,
   disableUserFormsListener,
 );
-
-ServerEventService.addMethodListener(borrowerDelete, ({ borrowerId }) => {
-  LoanService.cleanupRemovedBorrower({ borrowerId });
-});

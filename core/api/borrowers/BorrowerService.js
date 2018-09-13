@@ -1,4 +1,5 @@
 import Borrowers from '.';
+import { LoanService } from '../loans/LoanService';
 
 export class BorrowerService {
   update = ({ borrowerId, object }) =>
@@ -8,6 +9,7 @@ export class BorrowerService {
     Borrowers.insert({ ...borrower, userId });
 
   remove = ({ borrowerId }) => {
+    LoanService.cleanupRemovedBorrower({ borrowerId });
     Borrowers.remove(borrowerId);
   };
 
