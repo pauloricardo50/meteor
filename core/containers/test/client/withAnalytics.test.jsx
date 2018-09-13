@@ -8,7 +8,8 @@ import { getMountedComponent } from '../../../utils/testHelpers';
 
 import withAnalytics from '../../withAnalytics';
 import analytics from '../../../api/analytics/client/analytics';
-import EVENTS, { addEvent } from '../../../api/analytics/events';
+import EVENTS from '../../../api/analytics/events';
+import { addEvent } from '../../../api/analytics/eventsHelpers';
 
 addEvent('SUBMITTED_USER_SURVEY', {
   func: 'onChange',
