@@ -16,7 +16,7 @@
     "start-e2e": "meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 4015",
     "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor --settings settings-dev.json --port 4000",
     "start": "meteor --settings settings-dev.json --port 4000",
-    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
+    "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit.xml TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package dispatch:mocha --settings settings-dev.json",
     "test-console-once": "meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json  --port 4006",
     "test-console": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json  --port 4006",
     "test-debug": "meteor test --driver-package cultofcoders:mocha --settings settings-dev.json --port 5000 --debug-port 5858",
@@ -27,7 +27,6 @@
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4010"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.54",
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
     "@fortawesome/pro-light-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "^0.1.1",
@@ -105,14 +104,11 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-meteor": "^5.0.0",
     "eslint-plugin-react": "^7.8.2",
-    "flow-bin": "^0.76.0",
-    "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.17.0",
     "mocha-multi-reporters": "^1.1.7",
     "redux-mock-store": "^1.5.3",
-    "sinon": "^6.0.1",
-    "start-server-and-test": "^1.7.0"
+    "sinon": "^6.0.1"
   },
   "meteor": {
     "mainModule": {
