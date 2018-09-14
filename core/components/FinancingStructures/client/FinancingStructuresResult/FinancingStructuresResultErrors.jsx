@@ -6,7 +6,7 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
-import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/FinancingStructuresOwnFunds';
+import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
 import FinanceCalculator, {

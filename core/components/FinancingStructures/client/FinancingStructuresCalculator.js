@@ -2,12 +2,10 @@
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
+import { getPropertyValue } from './FinancingStructuresOwnFunds/ownFundsHelpers.js';
 
 export const getProperty = ({ structure: { propertyId }, properties }) =>
   properties.find(({ _id }) => _id === propertyId);
-
-export const getPropertyValue = data =>
-  data.structure.propertyValue || getProperty(data).value;
 
 export const getAmortizationRateMapper = (data) => {
   const {

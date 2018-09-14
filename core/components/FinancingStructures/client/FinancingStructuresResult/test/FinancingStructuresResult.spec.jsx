@@ -131,7 +131,7 @@ describe('FinancingStructuresResult', () => {
         .last();
 
       // Do this because of different browsers..
-      expect(incomeRatio.contains('0,29') || incomeRatio.contains('0.29')).to.equal(true);
+      expect(incomeRatio.contains('0,3') || incomeRatio.contains('0.3')).to.equal(true);
     });
 
     it('remainingCash', () => {

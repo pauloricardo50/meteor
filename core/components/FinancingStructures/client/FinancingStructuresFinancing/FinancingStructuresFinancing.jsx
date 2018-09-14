@@ -9,13 +9,14 @@ import FinancingStructuresSection, {
   RadioButtons,
   FinmaRatio,
 } from '../FinancingStructuresSection';
-import Calc, { getPropertyValue } from '../FinancingStructuresCalculator';
+import Calc from '../FinancingStructuresCalculator';
 import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
 import {
   getBorrowRatio,
   getBorrowRatioStatus,
 } from '../FinancingStructuresResult/financingStructuresResultHelpers';
 import LoanPercent from './LoanPercent';
+import { getPropertyValue } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 
 const getPledgedAmount = ({
   structure: { secondPillarPledged, thirdPillarPledged },

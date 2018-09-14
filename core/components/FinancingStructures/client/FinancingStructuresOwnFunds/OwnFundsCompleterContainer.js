@@ -5,7 +5,7 @@ import { updateStructure } from '../../../../redux/financingStructures';
 import StructureUpdateContainer from '../containers/StructureUpdateContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
-import { calculateRequiredOwnFunds } from './FinancingStructuresOwnFunds';
+import { calculateRequiredOwnFunds } from './ownFundsHelpers';
 
 export const completeValue = (data, fundsToAdd) => {
   const { value, max } = data;
