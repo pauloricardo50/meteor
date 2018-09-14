@@ -65,7 +65,7 @@ export const InputAndSlider = (props: InputAndSliderProps) => {
         min={0}
         max={max}
         step={1000}
-        value={value}
+        value={setValue(value, allowUndefined, forceUndefined)}
         onChange={handleChange}
         className="slider"
       />
