@@ -61,7 +61,7 @@ export const writeApplicationManifestYAML = options => {
     name,
     memory,
     instances,
-    service,
+    services,
     filePath,
   } = options;
   checkWriteApplicationManifestYAMLArguments(options);
@@ -74,7 +74,7 @@ export const writeApplicationManifestYAML = options => {
       name,
       memory,
       instances,
-      service,
+      services,
     }),
   });
 };

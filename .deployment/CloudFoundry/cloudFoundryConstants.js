@@ -31,6 +31,15 @@ export const CLOUDFOUNDRY_MARKETPLACE = {
       large: 'large',
     },
   },
+  REDIS: {
+    service: 'redis-2',
+    plans: {
+      small: 'small',
+      medium: 'medium',
+      large: 'large',
+      xlarge: 'xlarge',
+    },
+  },
 };
 
 export const CLOUDFOUNDRY_MEMORY_LIMIT = {
