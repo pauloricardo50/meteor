@@ -69,6 +69,4 @@ export const getIncomeRatioStatus = ({ value }) =>
   FinanceCalculator.getIncomeRatioStatus({ incomeRatio: value });
 
 export const makeHasOwnFundsOfType = type => ({ borrowers }) =>
-  Calculator[`get${type.charAt(0).toUpperCase()}${type.slice(1)}`]({
-    borrowers,
-  }) > 0;
+  Calculator.getFunds({ borrowers, type }) > 0;

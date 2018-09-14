@@ -96,6 +96,8 @@ describe('OwnFundsCompleter', () => {
         // But probably not what the user wants
         // Except if he's planning to modify another ownfunds afterwards
 
+        // We chose Nb. 2, which is the simpler and more intuitive way to go
+
         props.structure.ownFunds = [{ value: 150000 }];
         props.ownFundsIndex = -1;
         props.value = 150000;

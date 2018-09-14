@@ -961,7 +961,7 @@
   "LoanStrategyPicker.title": "Stratégie de taux",
   "LoanSummaryColumn.createdAt": "Créé le",
   "LoanSummaryColumn.ownFunds": "Fonds propres",
-  "LoanSummaryColumn.ownFundsPledged": "Fonds nantis",
+  "LoanSummaryColumn.ownFundsPledged": "Fonds propres nantis",
   "LoanSummaryColumn.propertyValue": "Valeur du bien",
   "LoanSummaryColumn.status": "Statut",
   "LoanSummaryColumn.updatedAt": "Updaté le",

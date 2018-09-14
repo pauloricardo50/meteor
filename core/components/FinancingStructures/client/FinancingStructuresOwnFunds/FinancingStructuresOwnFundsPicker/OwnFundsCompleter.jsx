@@ -19,9 +19,9 @@ const OwnFundsCompleter = ({ required, current }: OwnFundsCompleterProps) => (
               className={
                 current === required
                   ? 'success'
-                  : current > required
-                    ? 'error'
-                    : 'primary'
+                  : current < required
+                    ? 'primary'
+                    : 'error'
               }
             >
               {toMoney(current)}
