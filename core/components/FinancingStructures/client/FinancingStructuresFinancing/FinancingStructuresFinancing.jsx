@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
 
-import { AMORTIZATION_TYPE } from '../../../../api/constants';
+import {
+  AMORTIZATION_TYPE,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../api/constants';
 import T from '../../../Translation';
 import FinancingStructuresSection, {
   InputAndSlider,
@@ -17,9 +20,10 @@ import {
 } from '../FinancingStructuresResult/financingStructuresResultHelpers';
 import LoanPercent from './LoanPercent';
 
-const getPledgedAmount = ({
-  structure: { secondPillarPledged, thirdPillarPledged },
-}) => secondPillarPledged + thirdPillarPledged;
+const getPledgedAmount = ({ structure: { ownFunds } }) =>
+  ownFunds
+    .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+    .reduce((sum, { value }) => sum + value, 0);
 
 export const calculateLoan = (params) => {
   const {
@@ -28,22 +32,16 @@ export const calculateLoan = (params) => {
   return wantedLoan;
 };
 
-const calculateMaxSliderLoan = data =>
-  Calc.getMaxLoan({
+export const calculateMaxLoan = (data, pledgeOverride) =>
+  Calc.getMaxLoanBase({
     propertyWork: data.structure.propertyWork,
     propertyValue: getProperty(data).value,
-    pledgedAmount: getPledgedAmount(data),
+    pledgedAmount:
+      pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
+    residenceType: data.loan.general.residenceType,
   });
 
-const oneStructureHasPledged = ({ structures }) =>
-  structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
-    secondPillarPledged || thirdPillarPledged);
-
 const offersExist = ({ offers }) => offers && offers.length > 0;
-
-const oneStructureHasPledgedAmount = ({ structures }) =>
-  structures.some(({ secondPillarPledged, thirdPillarPledged }) =>
-    secondPillarPledged || thirdPillarPledged);
 
 type FinancingStructuresFinancingProps = {};
 
@@ -73,18 +71,11 @@ const FinancingStructuresFinancing = (props: FinancingStructuresFinancingProps) 
       {
         Component: InputAndSlider,
         id: 'wantedLoan',
-        max: calculateMaxSliderLoan,
+        max: calculateMaxLoan,
       },
       {
         Component: LoanPercent,
         id: 'wantedLoanPercent',
-        // max: calculateMaxSliderLoan,
-      },
-      {
-        Component: CalculatedValue,
-        id: 'pledgedAmount',
-        value: getPledgedAmount,
-        condition: oneStructureHasPledgedAmount,
       },
       {
         Component: RadioButtons,

@@ -1,5 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+
+import { createdAt, updatedAt } from '../helpers/mongoHelpers';
 import * as propertyConstants from './propertyConstants';
 
 const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
@@ -140,36 +142,15 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-    optional: true,
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   value: {
     // Cost of the property
     type: Number,
     min: 0,
     max: 100000000,
     autoValue() {
-      if (this.isSet){
+      if (this.isSet) {
         return Math.round(this.value / 1000) * 1000;
       }
     },
@@ -180,7 +161,6 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
     allowedValues: Object.values(propertyConstants.PROPERTY_STATUS),
   },
-
   propertyType: {
     type: String,
     optional: true,

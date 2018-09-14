@@ -7,6 +7,7 @@ import DefaultFinanceCalculator, {
   FinanceCalculator,
 } from '../FinanceCalculator';
 import { NO_INTEREST_RATE_ERROR } from '../financeCalculatorConstants';
+import { RESIDENCE_TYPE } from '../../../api/constants';
 
 describe('FinanceCalculator', () => {
   let calc;
@@ -148,58 +149,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe('getIndirectAmortizationDeduction', () => {
-    it('returns zero if nothing is provided', () => {
-      expect(calc.getIndirectAmortizationDeduction()).to.equal(0);
-    });
-
-    it('returns zero if the loan is zero', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 0,
-        amortizationRateRelativeToLoan: 2,
-      })).to.equal(0);
-      expect(calc.getIndirectAmortizationDeduction({
-        amortizationRateRelativeToLoan: 2,
-      })).to.equal(0);
-    });
-
-    it('returns zero if the rate is zero', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 2,
-        amortizationRateRelativeToLoan: 0,
-      })).to.equal(0);
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 2,
-      })).to.equal(0);
-    });
-
-    it('caps deduction at the swiss national level', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 1000000,
-        amortizationRateRelativeToLoan: 0.01,
-      })).to.equal(calc.getIndirectAmortizationDeduction({
-        loanValue: 2000000,
-        amortizationRateRelativeToLoan: 0.01,
-      }));
-    });
-
-    it('uses the taxRate to calculate deduction', () => {
-      const taxRate = 0.5;
-      calc = new FinanceCalculator({ taxRate });
-      const rate = calc.getAmortizationRateBase({ borrowRatio: 0.8 });
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 800000,
-        amortizationRate: rate,
-      })).to.equal(MAX_YEARLY_THIRD_PILLAR_PAYMENTS * taxRate);
-    });
-
-    it('deduces less if there is less to amortize', () => {
-      expect(calc.getIndirectAmortizationDeduction({
-        loanValue: 250000,
-        amortizationRate: 0.01,
-      })).to.equal(625);
-    });
-  });
 
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
@@ -263,6 +212,42 @@ describe('FinanceCalculator', () => {
         loanValue: 960000,
         amortizationRate: calc.getAmortizationRateBase({ borrowRatio: 0.8 }),
       })).to.deep.equal(expected);
+    });
+  });
+
+  describe('getMaxLoanBase', () => {
+    it('returns 80% of the property by default', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        pledgedAmount: 1000,
+      })).to.equal(80);
+    });
+
+    it('returns 80% of the property for a main residence if nothing is pledged', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      })).to.equal(80);
+    });
+
+    it('returns between 80 and 90% of the property for a main residence if a little is pledged', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        pledgedAmount: 5,
+      })).to.equal(85);
+    });
+
+    it('caps at 90% of the property', () => {
+      expect(calc.getMaxLoanBase({
+        propertyValue: 90,
+        propertyWork: 10,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        pledgedAmount: 20,
+      })).to.equal(90);
     });
   });
 });

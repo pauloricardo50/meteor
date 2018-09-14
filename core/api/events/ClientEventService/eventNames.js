@@ -1,1 +1,2 @@
 export const MODIFIED_FILES_EVENT = 'MODIFIED_FILES_EVENT';
+export const LOAD_LOAN = 'LOAD_LOAN';

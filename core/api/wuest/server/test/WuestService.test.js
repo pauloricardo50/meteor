@@ -9,7 +9,9 @@ import * as wuestConstants from '../../wuestConstants';
 import { QUALITY } from '../../../constants';
 import { PROPERTY_TYPE } from '../../../properties/propertyConstants';
 
-describe('WuestService', () => {
+describe('WuestService', function () {
+  this.timeout(10000);
+
   beforeEach(() => {
     resetDatabase();
   });
@@ -476,7 +478,7 @@ describe('WuestService', () => {
         expect(result.max).to.equal(770000);
         expect(result.value).to.equal(705000);
       });
-    }).timeout(10000);
+    });
 
     it('returns micro location', () => {
       const propertyId = Factory.create('property', {
@@ -503,6 +505,6 @@ describe('WuestService', () => {
         expect(result.microlocation.factors).to.have.property('infrastructure');
         expect(result.microlocation.factors).to.have.property('immission');
       });
-    }).timeout(10000);
+    });
   });
 });

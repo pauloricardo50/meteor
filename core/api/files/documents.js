@@ -5,6 +5,7 @@ import {
   CIVIL_STATUS,
 } from '../constants';
 import { DOCUMENTS } from './fileConstants';
+import Calculator from '../../utils/Calculator/index';
 
 export const borrowerDocuments = (b = {}) => ({
   auction: [
@@ -44,12 +45,15 @@ export const borrowerDocuments = (b = {}) => ({
     },
     {
       id: DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT,
-      condition: b.insuranceSecondPillar > 0,
+      condition: Calculator.getInsurance2({ borrowers: b }) > 0,
       doubleTooltip: true,
     },
     {
       id: DOCUMENTS.THIRD_PILLAR_ACCOUNTS,
-      condition: b.insuranceThirdPillar > 0, // TODO, separate from insurance and other below
+      condition:
+        Calculator.getInsurance3A({ borrowers: b }) > 0
+        || Calculator.getInsurance3B({ borrowers: b }) > 0
+        || Calculator.getBank3A({ borrowers: b }) > 0,
       doubleTooltip: true,
     },
   ],

@@ -36,6 +36,8 @@ function setWallabyConfig(name, overrides = {}) {
                   alias: {
                     core: './imports/core',
                     meteor: './imports/core/utils/testHelpers/meteorStubs',
+                    'simpl-schema':
+                      './imports/core/utils/testHelpers/packageStubs/simpl-schema',
                   },
                 },
               ],

@@ -1,6 +1,6 @@
 import {
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-  MAX_BORROW_RATIO_WITH_INSURANCE,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
 } from 'core/config/financeConstants';
 import * as types from './widget1Types';
 import {
@@ -39,7 +39,7 @@ export const getPropertyCappedValue = (name, state) => {
   const propertyValue = makeSelectValue(PROPERTY)(state);
   const { allowExtremeLoan } = makeWidget1Selector(name)(state);
   const maxValue = allowExtremeLoan
-    ? propertyValue * MAX_BORROW_RATIO_WITH_INSURANCE
+    ? propertyValue * MAX_BORROW_RATIO_WITH_PLEDGE
     : propertyValue * MAX_BORROW_RATIO_PRIMARY_PROPERTY;
 
   return Math.floor(maxValue);

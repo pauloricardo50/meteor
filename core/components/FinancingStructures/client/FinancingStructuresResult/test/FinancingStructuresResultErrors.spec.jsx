@@ -5,8 +5,10 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import T from 'core/components/Translation';
+import { OWN_FUNDS_TYPES } from 'core/api/constants';
 import { FinancingStructuresResultErrors } from '../FinancingStructuresResultErrors';
 import FinancingStructuresResultChart from '../FinancingStructuresResultChart';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../../api/constants';
 
 describe('FinancingStructuresResultErrors', () => {
   let props;
@@ -41,11 +43,7 @@ describe('FinancingStructuresResultErrors', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 0,
-      secondPillarWithdrawal: 0,
-      secondPillarPledged: 0,
-      thirdPillarWithdrawal: 0,
-      thirdPillarPledged: 0,
+      ownFunds: [],
     };
     expect(component()
       .find(T)
@@ -62,11 +60,7 @@ describe('FinancingStructuresResultErrors', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 50000,
-      secondPillarWithdrawal: 0,
-      secondPillarPledged: 0,
-      thirdPillarWithdrawal: 0,
-      thirdPillarPledged: 0,
+      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 50000 }],
     };
     expect(component()
       .find(T)
@@ -77,11 +71,7 @@ describe('FinancingStructuresResultErrors', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 25000,
-      secondPillarWithdrawal: 0,
-      secondPillarPledged: 0,
-      thirdPillarWithdrawal: 0,
-      thirdPillarPledged: 0,
+      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }],
     };
 
     expect(component()
@@ -93,12 +83,14 @@ describe('FinancingStructuresResultErrors', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 12000,
-      thirdPartyFortuneUsed: 0,
-      secondPillarWithdrawal: 13000,
-      secondPillarPledged: 0,
-      thirdPillarWithdrawal: 0,
-      thirdPillarPledged: 0,
+      ownFunds: [
+        { type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 12000 },
+        {
+          type: OWN_FUNDS_TYPES.INSURANCE_2,
+          value: 12000,
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+        },
+      ],
     };
     props.borrowers = [{ salary: 100000 }];
 
@@ -111,11 +103,7 @@ describe('FinancingStructuresResultErrors', () => {
     props.structure = {
       ...props.structure,
       propertyWork: 0,
-      fortuneUsed: 25000,
-      secondPillarWithdrawal: 0,
-      secondPillarPledged: 0,
-      thirdPillarWithdrawal: 0,
-      thirdPillarPledged: 0,
+      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }],
     };
     props.borrowers = [{ salary: 100000 }];
     expect(component()

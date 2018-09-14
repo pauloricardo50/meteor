@@ -113,3 +113,8 @@ export const LOAN_QUERIES = {
   LOAN_FILES: 'LOAN_FILES',
   LOAN_SEARCH: 'LOAN_SEARCH',
 };
+
+export const OWN_FUNDS_USAGE_TYPES = {
+  WITHDRAW: 'WITHDRAW',
+  PLEDGE: 'PLEDGE',
+};
