@@ -1,4 +1,4 @@
-import { executeCommand } from '../utils/helpers';
+import { executeCommand, logError } from '../utils/helpers';
 import {
   CLOUDFOUNDRY_MARKETPLACE,
   cloudFoundryCommands,
@@ -34,11 +34,7 @@ class CloudFoundryService {
     )
       .then(() => this.restartApp(name))
       .catch(error => {
-        //Logs the error in red
-        console.error(
-          '\x1b[31m%s\x1b[0m',
-          `Deployment failed ! Reason: ${error}`,
-        );
+        logError(`Deployment failed ! Reason: ${error}`);
         throw new Error(error);
       });
 }
