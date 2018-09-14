@@ -26,6 +26,7 @@ cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
 meteortesting:mocha
+dispatch:mocha
 
 
 # User Accounts
