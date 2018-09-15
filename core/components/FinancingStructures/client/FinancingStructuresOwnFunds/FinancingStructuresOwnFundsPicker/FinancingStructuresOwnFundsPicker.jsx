@@ -21,6 +21,7 @@ const FinancingStructuresOwnFundsPicker = ({
         ownFundsIndex={index}
         ownFunds={ownFunds}
         structureId={structureId}
+        structure={structure}
         {...data}
       />
     ))}
