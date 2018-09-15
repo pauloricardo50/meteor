@@ -25,9 +25,12 @@ jobs:
             curl https://install.meteor.com?release=$METEOR_VERSION | /bin/sh
             meteor update --release 1.7.1-beta.19
       - run:
+          name: check file system
+          command: df -hT
+      - run:
           name: run tests for App
           command: |
-            cd microservices/app
+            cd microservices/www
             # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
             # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
             # meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
