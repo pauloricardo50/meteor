@@ -40,7 +40,7 @@ const AppRouter = () => (
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />
         {/* Keep BORROWERS_PAGE above BORROWERS_PAGE_NO_TAB */}
-        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />{' '}
+        <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
         <Route path={ROUTES.BORROWERS_PAGE_NO_TAB} component={BorrowersPage} />
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
