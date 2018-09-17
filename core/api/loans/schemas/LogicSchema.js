@@ -1,13 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 import {
   AUCTION_STATUS,
-  OFFER_TYPE,
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
-  INSURANCE_USE_PRESET,
-  LOAN_STRATEGY_PRESET,
-  AMORTIZATION_TYPE,
-  PAYMENT_SCHEDULES,
 } from '../../constants';
 
 const closingStepsSchema = {
@@ -59,48 +54,6 @@ const verificationSchema = {
   },
 };
 
-const lenderSchema = {
-  lender: {
-    type: Object,
-    defaultValue: {},
-  },
-  'lender.type': {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(OFFER_TYPE),
-  },
-  'lender.offerId': {
-    type: String,
-    optional: true,
-  },
-  'lender.chosenTime': {
-    type: Date,
-    optional: true,
-  },
-  'lender.contacted': {
-    type: Boolean,
-    defaultValue: false,
-  },
-  'lender.nextSteps': {
-    type: Array,
-    defaultValue: [],
-  },
-  'lender.nextSteps.$': String,
-  'lender.contractRequested': {
-    type: Boolean,
-    defaultValue: false,
-  },
-  'lender.contractLoanSent': {
-    type: Boolean,
-    defaultValue: false,
-  },
-  'lender.contract': {
-    type: String,
-    defaultValue: '',
-    optional: true,
-  },
-};
-
 const auctionSchema = {
   auction: {
     type: Object,
@@ -130,42 +83,8 @@ const LogicSchema = new SimpleSchema({
     min: 1,
     max: 5,
   },
-  insuranceUsePreset: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(INSURANCE_USE_PRESET),
-  },
-  loanStrategyPreset: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(LOAN_STRATEGY_PRESET),
-  },
-  amortizationStrategyPreset: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(AMORTIZATION_TYPE),
-  },
-  acceptedClosing: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  recommendationCode: {
-    type: String,
-    defaultValue: '',
-    optional: true,
-  },
-  firstPaymentDate: {
-    type: Date,
-    optional: true,
-  },
-  paymentSchedule: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(PAYMENT_SCHEDULES),
-  },
   ...verificationSchema,
   ...closingStepsSchema,
-  ...lenderSchema,
   ...auctionSchema,
 });
 

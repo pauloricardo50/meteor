@@ -65,10 +65,6 @@ export const logic3 = {
     startTime: new Date(),
     endTime: new Date(),
   },
-  insuranceUsePreset: 'COLLATERAL',
-  loanStrategyPreset: 'FIXED',
-  amortizationStrategyPreset: 'INDIRECT',
-  lender: {},
   closingSteps: [
     { id: 'upload0', title: 'Contrat de prêt signé', type: 'UPLOAD' },
     {

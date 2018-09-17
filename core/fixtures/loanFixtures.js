@@ -53,10 +53,6 @@ const logic3 = {
     startTime: new Date(),
     endTime: new Date(),
   },
-  insuranceUsePreset: INSURANCE_USE_PRESET.COLLATERAL,
-  loanStrategyPreset: LOAN_STRATEGY_PRESET.FIXED,
-  amortizationStrategyPreset: AMORTIZATION_TYPE.INDIRECT,
-  lender: {},
   closingSteps: [
     {
       id: 'upload0',

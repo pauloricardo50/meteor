@@ -7,7 +7,6 @@ import { AUCTION_STATUS } from 'core/api/constants';
 import DialogSimple from 'core/components/DialogSimple';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { cancelAuction, endAuction, loanDelete, downloadPDF } from 'core/api';
-import ClosingForm from '../../../../components/ClosingForm';
 import ClosingStepsForm from '../../../../components/ClosingStepsForm';
 
 const styles = {
@@ -63,14 +62,6 @@ const ActionsTab = (props) => {
         style={styles.button}
         disabled={!(l.auction.status === AUCTION_STATUS.STARTED)}
       />
-      <DialogSimple
-        title="Confirmer le décaissement"
-        label="Confirmer décaissement"
-        buttonStyle={styles.button}
-        passProps
-      >
-        <ClosingForm loan={loan} />
-      </DialogSimple>
       <ConfirmMethod
         label="Supprimer la demande"
         keyword="SUPPRIMER"

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Page from '../../components/Page';
-import AcceptClosingModal from './AcceptClosingModal';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
@@ -18,7 +17,6 @@ const DashboardPage = (props) => {
       <DashboardInfo {...props} />
 
       {/* <NewLoanForm loan={loan} /> */}
-      <AcceptClosingModal loan={loan} />
     </Page>
   );
 };
