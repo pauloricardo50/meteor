@@ -156,7 +156,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getNonPledgedOwnFunds({ loan }) {
-      return this.selectStructureKey({ loan, key: 'ownFunds' })
+      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+      return ownFunds
         .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
     }
