@@ -20,6 +20,12 @@ const StructureSchema = new SimpleSchema({
     max: 100000000,
     defaultValue: null,
   },
+  propertyValue: {
+    type: Number,
+    optional: true,
+    max: 1000000000,
+    defaultValue: null,
+  },
   offerId: { type: String, optional: true },
   propertyId: { type: String, optional: true },
   propertyWork: { type: Number, min: 0, max: 100000000, defaultValue: 0 },

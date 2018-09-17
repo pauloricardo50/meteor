@@ -9,6 +9,8 @@ type FinancingStructuresPropertyPickerProps = {
   options: Array<{}>,
   value: string,
   property: Object,
+  handleChange: Function,
+  updatePropertyValue: Function,
 };
 
 const FinancingStructuresPropertyPicker = ({
@@ -16,10 +18,10 @@ const FinancingStructuresPropertyPicker = ({
   value,
   property,
   handleChange,
+  updatePropertyValue,
 }: FinancingStructuresPropertyPickerProps) => (
   <div className="financing-structures-property-picker propertyId">
     <Select value={value} options={options} onChange={handleChange} />
-    <CalculatedValue value={property.value} money />
   </div>
 );
 

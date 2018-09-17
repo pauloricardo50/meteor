@@ -2,6 +2,7 @@
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
+import { getPropertyValue } from './FinancingStructuresOwnFunds/ownFundsHelpers.js';
 
 export const getProperty = ({ structure: { propertyId }, properties }) =>
   properties.find(({ _id }) => _id === propertyId);
@@ -11,7 +12,7 @@ export const getAmortizationRateMapper = (data) => {
     structure: { wantedLoan, propertyWork },
   } = data;
   return {
-    borrowRatio: wantedLoan / (getProperty(data).value + propertyWork),
+    borrowRatio: wantedLoan / (getPropertyValue(data) + propertyWork),
   };
 };
 
@@ -19,19 +20,19 @@ const argumentMappings = {
   getIncomeRatio: data => ({
     monthlyIncome: BorrowerCalculator.getTotalIncome(data) / 12,
     monthlyPayment: Calc.getTheoreticalMonthly({
-      propAndWork: getProperty(data).value + data.structure.propertyWork,
+      propAndWork: getPropertyValue(data) + data.structure.propertyWork,
       loanValue: data.structure.wantedLoan,
       amortizationRate: Calc.getAmortizationRateBase(getAmortizationRateMapper(data)),
     }).total,
   }),
 
   getBorrowRatio: data => ({
-    propertyValue: getProperty(data).value + data.structure.propertyWork,
+    propertyValue: getPropertyValue(data) + data.structure.propertyWork,
     loan: data.structure.wantedLoan,
   }),
 
   getLoanFromBorrowRatio: (borrowRatio, data) => ({
-    propertyValue: getProperty(data).value + data.structure.propertyWork,
+    propertyValue: getPropertyValue(data) + data.structure.propertyWork,
     borrowRatio,
   }),
 
@@ -47,13 +48,13 @@ const argumentMappings = {
   },
 
   getMinCash: data => ({
-    propertyValue: getProperty(data).value,
+    propertyValue: getPropertyValue(data),
     propertyWork: data.structure.propertyWork,
     fees: data.structure.notaryFees,
   }),
 
   getFeesBase: data => ({
-    propertyValue: getProperty(data).value,
+    propertyValue: getPropertyValue(data),
     propertyWork: data.structure.propertyWork,
     fees: data.structure.notaryFees,
   }),

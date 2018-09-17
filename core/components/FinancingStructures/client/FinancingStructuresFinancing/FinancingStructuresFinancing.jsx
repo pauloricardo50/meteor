@@ -12,13 +12,14 @@ import FinancingStructuresSection, {
   RadioButtons,
   FinmaRatio,
 } from '../FinancingStructuresSection';
-import Calc, { getProperty } from '../FinancingStructuresCalculator';
+import Calc from '../FinancingStructuresCalculator';
 import FinancingStructuresTranchePicker from './FinancingStructuresTranchePicker';
 import {
   getBorrowRatio,
   getBorrowRatioStatus,
 } from '../FinancingStructuresResult/financingStructuresResultHelpers';
 import LoanPercent from './LoanPercent';
+import { getPropertyValue } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 
 const getPledgedAmount = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -35,7 +36,7 @@ export const calculateLoan = (params) => {
 export const calculateMaxLoan = (data, pledgeOverride) =>
   Calc.getMaxLoanBase({
     propertyWork: data.structure.propertyWork,
-    propertyValue: getProperty(data).value,
+    propertyValue: getPropertyValue(data),
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
     residenceType: data.loan.general.residenceType,
