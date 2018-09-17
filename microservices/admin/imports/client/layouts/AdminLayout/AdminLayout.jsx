@@ -1,5 +1,7 @@
-import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 
@@ -14,7 +16,7 @@ const getRedirect = ({ currentUser }) => {
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!(userIsAdmin || userIsDev)) {
-    // TODO: Redirect to app subdomain
+    window.location.replace(`${Meteor.settings.public.subdomains.app}`);
   }
 
   return false;
