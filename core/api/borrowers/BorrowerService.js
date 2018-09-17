@@ -1,5 +1,5 @@
 import Borrowers from '.';
-import { LoanService } from '../loans/LoanService';
+import LoanService from '../loans/LoanService';
 
 export class BorrowerService {
   update = ({ borrowerId, object }) =>
