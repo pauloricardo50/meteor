@@ -28,7 +28,7 @@ const FinancingStructuresOwnFundsPickerForm = ({
   allowPledge,
 }: FinancingStructuresOwnFundsPickerFormProps) => (
   <form
-    onSubmit={displayWarning ? () => {} : handleSubmit}
+    onSubmit={displayWarning ? e => e.preventDefault() : handleSubmit}
     className="own-funds-picker-form"
   >
     <div className="form">
