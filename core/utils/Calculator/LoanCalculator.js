@@ -22,19 +22,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return value;
     }
 
-    getTotalUsed({
-      loan: {
-        structure: { ownFunds },
-      },
-    }) {
+    getTotalUsed({ loan: { structure: { ownFunds = [] } = {} } }) {
       return ownFunds.reduce((sum, { value }) => sum + value, 0);
     }
 
-    getTotalPledged({
-      loan: {
-        structure: { ownFunds },
-      },
-    }) {
+    getTotalPledged({ loan: { structure: { ownFunds = [] } = {} } }) {
       return ownFunds
         .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
