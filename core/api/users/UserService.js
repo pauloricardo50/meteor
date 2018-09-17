@@ -22,7 +22,7 @@ class UserService {
 
     this.update({ userId: newUserId, object: additionalData });
 
-    if (role === ROLES.USER && adminId) {
+    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
       this.assignAdminToUser({ userId: newUserId, adminId });
     }
 

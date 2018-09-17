@@ -1,4 +1,5 @@
 {
+  "CreateUserDialogForm.assignedEmployeeId": "Assigner à",
   "AdminLayout.title": "Admin",
   "DashboardRecapFinance.emptyButton": "Essayer le calculateur",
   "FinancingStructuresCurrentOwnFunds.error": "Pas assez de {type}",
@@ -228,7 +229,7 @@
   "ContractPage.loading": "Vous serez notifié par e-mail lorsque votre contrat est prêt.",
   "ContractPage.progress": "Progrès: {value, number, percent}",
   "CreateUserDialogForm.buttonLabel": "Créer un compte utilisateur",
-  "CreateUserDialogForm.dialogDescription": "Entrez l'adresse email du compte. Un email sera envoyé à cette adresse pour qu'il se connecte et choisisse son mot de passe.{verticalSpace}{user} sera assigné à cet utilisateur.",
+  "CreateUserDialogForm.dialogDescription": "Entrez l'adresse email du compte. Un email sera envoyé à cette adresse pour qu'il se connecte et choisisse son mot de passe.",
   "CreateUserDialogForm.dialogTitle": "Créer un compte",
   "CreateUserDialogForm.email": "Adresse email",
   "CreateUserDialogForm.firstName": "Prenom",
