@@ -67,3 +67,4 @@ aldeed:schema-index@3.0.0
 aldeed:schema-deny
 cultofcoders:redis-oplog
 disable-oplog
+service-configuration

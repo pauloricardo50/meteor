@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import DownloadIcon from '@material-ui/icons/FileDownload';
 import LoopIcon from '@material-ui/icons/Loop';
 import WarningIcon from '@material-ui/icons/Warning';
 import ForumIcon from '@material-ui/icons/Forum';
@@ -68,7 +67,6 @@ const iconMap = {
   check: CheckIcon,
   add: AddIcon,
   warning: WarningIcon,
-  download: DownloadIcon,
   menu: MenuIcon,
   forum: ForumIcon,
   mail: MailIcon,
