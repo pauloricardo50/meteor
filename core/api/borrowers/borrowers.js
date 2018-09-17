@@ -37,7 +37,7 @@ const LogicSchema = new SimpleSchema({
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
   [`${name}.$`]: Object,
-  [`${name}.$.value`]: { type: Number, min: 0, max: 100000000 },
+  [`${name}.$.value`]: { type: SimpleSchema.Integer, min: 0, max: 100000000 },
   [`${name}.$.description`]: { type: String, optional: true, allowedValues },
 });
 
@@ -78,7 +78,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   zipCode: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 9999,
@@ -119,7 +119,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   childrenCount: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 20,
@@ -129,7 +129,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   salary: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000000,
@@ -139,31 +139,31 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: false,
   },
   bonus2015: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2016: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2017: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2018: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   [OWN_FUNDS_TYPES.BANK_FORTUNE]: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
@@ -173,7 +173,7 @@ export const BorrowerSchema = new SimpleSchema({
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_3A),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
   [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000000,
@@ -183,7 +183,7 @@ export const BorrowerSchema = new SimpleSchema({
   ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
   ...makeArrayOfObjectsSchema('realEstate', Object.values(REAL_ESTATE)),
   'realEstate.$.loan': {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
   },

@@ -29,12 +29,12 @@ export const OfferSchema = new SimpleSchema({
   updatedAt,
   organization: String,
   maxAmount: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
   },
   amortization: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 1000000,
   },

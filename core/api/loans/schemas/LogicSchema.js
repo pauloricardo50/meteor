@@ -125,7 +125,7 @@ const auctionSchema = {
 // All logic fields required by the app to trigger the right things at the right time
 const LogicSchema = new SimpleSchema({
   step: {
-    type: Number,
+    type: SimpleSchema.Integer,
     defaultValue: 1,
     min: 1,
     max: 5,
