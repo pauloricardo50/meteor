@@ -19,8 +19,8 @@ const config = {
         'AdminFilesTab',
         'AmortizationChart',
         'ArrayInput',
-        'BorrowerRemover',
         'BorrowerAddPartner',
+        'BorrowerRemover',
         'ConditionsButton',
         'ConfirmMethod',
         'ContactButton',
@@ -62,6 +62,7 @@ const config = {
         'LoginPage',
         'Microlocation',
         'offer',
+        'OfferAdder',
         'PropertyForm',
         'StatusIconTooltip',
         'steps',
@@ -85,6 +86,7 @@ const config = {
     'GoogleMap',
     'InterestsTable',
     'LayoutError',
+    'LoanChecklist',
     'MissingDoc',
     'NotFound',
     'property',
@@ -99,7 +101,6 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
-    'LoanChecklist',
   ],
 };
 

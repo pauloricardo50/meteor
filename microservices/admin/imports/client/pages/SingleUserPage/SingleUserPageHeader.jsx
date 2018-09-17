@@ -13,7 +13,15 @@ import EditUserDialogForm from './EditUserDialogForm';
 import UserDeleter from './UserDeleter';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
-  const { _id, assignedEmployee, createdAt, roles, phoneNumbers, name } = user;
+  const {
+    _id,
+    assignedEmployee,
+    createdAt,
+    roles,
+    phoneNumbers,
+    name,
+    email,
+  } = user;
 
   return (
     <div className="single-user-page-header">
@@ -34,6 +42,9 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       </div>
 
       <div className="bottom">
+        <div className="email">
+          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
+        </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
             <Icon type="phone" />{' '}
