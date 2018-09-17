@@ -2,6 +2,9 @@ import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import Calculator from '../../../../utils/Calculator';
 import { getProperty } from '../FinancingStructuresCalculator';
 
+export const getPropertyValue = data =>
+  data.structure.propertyValue || getProperty(data).value;
+
 export const calculateOwnFunds = ({ structure: { ownFunds = [] } }) =>
   ownFunds
     .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
@@ -15,7 +18,7 @@ export const makeConditionForValue = funcName => ({ borrowers }) =>
 
 export const calculateRequiredOwnFunds = (data) => {
   const { propertyWork, notaryFees, wantedLoan } = data.structure;
-  const propertyValue = getProperty(data).value;
+  const propertyValue = getPropertyValue(data);
   const fees = Calculator.getFeesBase({
     fees: notaryFees,
     propertyValue,

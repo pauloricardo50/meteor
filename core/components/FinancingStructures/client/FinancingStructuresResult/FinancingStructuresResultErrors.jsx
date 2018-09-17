@@ -6,12 +6,14 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
-import { calculateMissingOwnFunds } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
+import {
+  calculateMissingOwnFunds,
+  getPropertyValue,
+} from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
-import FinanceCalculator, {
-  getProperty,
-} from '../FinancingStructuresCalculator';
+import FinanceCalculator from '../FinancingStructuresCalculator';
+
 import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
 import {
   OWN_FUNDS_TYPES,
@@ -23,8 +25,8 @@ type FinancingStructuresResultErrorsProps = {};
 const getCashUsed = ({ structure: { ownFunds } }) =>
   ownFunds
     .filter(({ type, usageType }) =>
-      type !== OWN_FUNDS_TYPES.INSURANCE_2
-        && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+      type !== OWN_FUNDS_TYPES.INSURANCE_2 &&
+        usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
 const errors = [
@@ -54,7 +56,7 @@ const errors = [
     id: 'missingCash',
     func: (data) => {
       const { propertyWork, notaryFees } = data.structure;
-      const propertyValue = getProperty(data).value;
+      const propertyValue = getPropertyValue(data);
       return (
         Calculator.getMinCash({
           fees: notaryFees,

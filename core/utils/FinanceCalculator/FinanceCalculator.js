@@ -142,6 +142,8 @@ export class FinanceCalculator {
   getBorrowRatioStatus({ borrowRatio }) {
     if (borrowRatio <= this.maxBorrowRatio) {
       return SUCCESS;
+    } else if (borrowRatio <= this.maxBorrowRatioWithPledge) {
+      return WARNING;
     }
     return ERROR;
   }

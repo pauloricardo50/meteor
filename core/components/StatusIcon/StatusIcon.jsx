@@ -2,41 +2,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 import Icon from 'core/components/Icon';
 import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import colors from 'core/config/colors';
+import T from '../Translation';
 
 const STATUSES = [SUCCESS, WARNING, ERROR];
 
 const styles = {
-  success: { color: colors.success },
-  warning: { color: colors.warning },
-  error: { color: colors.error },
+  [SUCCESS]: { color: colors.success },
+  [WARNING]: { color: colors.warning },
+  [ERROR]: { color: colors.error },
 };
 
-const StatusIcon = ({ status, style = {}, ...rest }) => {
+const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
   if (!status) {
     return null;
   }
-  if (status === SUCCESS) {
+
+  const icon = (
+    <Icon
+      type={status === SUCCESS ? 'checkCircle' : 'error'}
+      style={{ ...styles[status], ...style }}
+      {...rest}
+    />
+  );
+
+  if (tooltip) {
     return (
-      <Icon
-        type="checkCircle"
-        style={{ ...styles.success, ...style }}
-        {...rest}
-      />
+      <Tooltip
+        title={<T id={`StatusIconTooltip.${id}.${status}`} />}
+        placement="right"
+      >
+        {icon}
+      </Tooltip>
     );
   }
-  if (status === WARNING) {
-    return (
-      <Icon type="error" style={{ ...styles.warning, ...style }} {...rest} />
-    );
-  }
-  if (status === ERROR) {
-    return (
-      <Icon type="error" style={{ ...styles.error, ...style }} {...rest} />
-    );
-  }
+
+  return icon;
 };
 
 StatusIcon.propTypes = {

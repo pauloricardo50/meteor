@@ -24,18 +24,25 @@ const makeHandleTextChange = ({
   handleChange,
   max,
   allowUndefined,
+  forceUndefined,
 }) => (value) => {
   if (allowUndefined && valueIsNotDefined(value)) {
-    return handleChange(null);
+    return handleChange('');
   }
   if (max && value) {
     return handleChange(Math.min(value, max));
   }
-  return handleChange(value || 0);
+  return handleChange(value || (forceUndefined && allowUndefined ? '' : 0));
 };
 
-const setValue = (value, allowUndefined) =>
-  (allowUndefined ? value : value || 0);
+const setValue = (value, allowUndefined, forceUndefined) => {
+  if (allowUndefined) {
+    return forceUndefined && value === 0
+      ? ''
+      : (valueIsNotDefined(value) && '') || value;
+  }
+  return value || 0;
+};
 
 export const InputAndSlider = (props: InputAndSliderProps) => {
   const {
@@ -44,12 +51,13 @@ export const InputAndSlider = (props: InputAndSliderProps) => {
     max = 1000000,
     className,
     allowUndefined,
+    forceUndefined,
     placeholder,
   } = props;
   return (
     <div className={cx('input-and-slider', className)}>
       <MoneyInput
-        value={setValue(value, allowUndefined)}
+        value={setValue(value, allowUndefined, forceUndefined)}
         onChange={makeHandleTextChange(props)}
         placeholder={placeholder}
       />
@@ -57,7 +65,7 @@ export const InputAndSlider = (props: InputAndSliderProps) => {
         min={0}
         max={max}
         step={1000}
-        value={value}
+        value={setValue(value, allowUndefined, forceUndefined)}
         onChange={handleChange}
         className="slider"
       />

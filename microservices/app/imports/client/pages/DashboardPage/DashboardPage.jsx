@@ -17,7 +17,7 @@ const DashboardPage = (props) => {
       <DashboardRecap {...props} />
       <DashboardInfo {...props} />
 
-      <NewLoanForm loan={loan} />
+      {/* <NewLoanForm loan={loan} /> */}
       <AcceptClosingModal loan={loan} />
     </Page>
   );

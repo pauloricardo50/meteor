@@ -5,6 +5,7 @@ import T from 'core/components/Translation';
 import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
+
 import RequiredOwnFunds from './RequiredOwnFunds';
 import FinancingStructuresOwnFundsPicker from './FinancingStructuresOwnFundsPicker';
 import { calculateOwnFunds, calculateMissingOwnFunds } from './ownFundsHelpers';
