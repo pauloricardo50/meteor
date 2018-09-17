@@ -187,14 +187,6 @@ export const BorrowerSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  corporateBankExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  corporateBank: {
-    type: String,
-    optional: true,
-  },
   // business logic and admin
   logic: {
     type: LogicSchema,
