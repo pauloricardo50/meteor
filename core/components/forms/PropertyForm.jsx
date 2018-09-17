@@ -57,7 +57,7 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
         model={property}
         onSubmit={doc =>
           propertyUpdate.run({
-            borrowerId: property._id,
+            propertyId: property._id,
             object: omit(doc, grapherLinks),
           })
         }
@@ -72,7 +72,7 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
         model={property}
         onSubmit={doc =>
           propertyUpdate.run({
-            borrowerId: property._id,
+            propertyId: property._id,
             object: omit(doc, grapherLinks),
           })
         }
@@ -88,7 +88,7 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
           model={property}
           onSubmit={doc =>
             propertyUpdate.run({
-              borrowerId: property._id,
+              propertyId: property._id,
               object: omit(doc, grapherLinks),
             })
           }
