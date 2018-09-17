@@ -53,7 +53,7 @@ const writeApplicationPackageFiles = ({ applications, root }) => {
 const writeApplicationManifestFiles = ({
   environment,
   applications,
-  service,
+  services,
   root,
 }) => {
   const promises = applications.map(
@@ -68,7 +68,7 @@ const writeApplicationManifestFiles = ({
         applicationName,
         memory,
         instances,
-        service: service.name,
+        services,
         filePath: `${root}/${name}/${APP_MANIFEST_YML_FILE}`,
       });
     },
@@ -171,7 +171,7 @@ export const prepareDeployment = ({
   applicationFilter = Object.values(APPLICATIONS),
 }) => {
   const {
-    service,
+    services,
     root,
     meteorSettings,
     smokeTest,
@@ -193,7 +193,7 @@ export const prepareDeployment = ({
       writeApplicationManifestFiles({
         environment,
         applications,
-        service,
+        services,
         root,
       }),
     )

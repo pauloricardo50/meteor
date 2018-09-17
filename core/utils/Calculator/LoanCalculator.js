@@ -1,7 +1,7 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
 import { loanDocuments } from '../../api/files/documents';
-import { FILE_STEPS } from '../../api/constants';
+import { FILE_STEPS, OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -24,10 +24,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getTotalUsed({
       loan: {
-        structure: { secondPillarPledged, thirdPillarPledged, fortuneUsed },
+        structure: { ownFunds },
       },
     }) {
-      return secondPillarPledged + thirdPillarPledged + fortuneUsed;
+      return ownFunds.reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getTotalPledged({
+      loan: {
+        structure: { ownFunds },
+      },
+    }) {
+      return ownFunds
+        .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
     }
 
     getFees({ loan }): number {
@@ -136,6 +146,19 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         fileArrayFunc: loanDocuments,
         step: FILE_STEPS.AUCTION,
       });
+    }
+
+    getTotalFinancing({ loan }) {
+      return (
+        this.selectStructureKey({ loan, key: 'wantedLoan' })
+        + this.getNonPledgedOwnFunds({ loan })
+      );
+    }
+
+    getNonPledgedOwnFunds({ loan }) {
+      return this.selectStructureKey({ loan, key: 'ownFunds' })
+        .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
     }
   };
 

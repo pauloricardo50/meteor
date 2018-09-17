@@ -47,18 +47,6 @@ const argumentMappings = {
     return { tranches: loanTranches, interestRates };
   },
 
-  getIndirectAmortizationDeduction: (data) => {
-    const {
-      structure: { wantedLoan, propertyWork },
-    } = data;
-    return {
-      loanValue: wantedLoan,
-      amortizationRate: Calc.amortizationRateBase({
-        borrowRatio: wantedLoan / (getPropertyValue(data).value + propertyWork),
-      }),
-    };
-  },
-
   getMinCash: data => ({
     propertyValue: getPropertyValue(data),
     propertyWork: data.structure.propertyWork,

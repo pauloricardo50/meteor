@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { IntlNumber } from 'core/components/Translation';
+import { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
 export const getLoanSummaryColumns = ({
@@ -10,8 +10,10 @@ export const getLoanSummaryColumns = ({
   updatedAt,
   ...loan
 }) => {
-  const insuranceWithdrawn = Calculator.getInsuranceWithdrawn({ loan });
-  const insurancePledged = Calculator.getInsurancePledged({ loan });
+  const ownFunds = Calculator.getNonPledgedOwnFunds({ loan });
+  const ownFundsPledged = Calculator.getTotalPledged({ loan });
+  const loanValue = Calculator.selectLoanValue({ loan });
+  const propertyValue = Calculator.selectPropertyValue({ loan });
   return [
     {
       translationId: 'LoanSummaryColumn.status',
@@ -27,46 +29,19 @@ export const getLoanSummaryColumns = ({
     },
     {
       translationId: 'LoanSummaryColumn.propertyValue',
-      content: (
-        <IntlNumber
-          value={Calculator.selectPropertyValue({ loan })}
-          format="money"
-        />
-      ),
+      content: <Money value={propertyValue} />,
     },
     {
       translationId: 'general.mortgageLoan',
-      content: (
-        <IntlNumber
-          value={Calculator.selectLoanValue({ loan })}
-          format="money"
-        />
-      ),
+      content: <Money value={loanValue} />,
     },
     {
-      translationId: 'LoanSummaryColumn.fortuneUsed',
-      content: (
-        <IntlNumber
-          value={Calculator.makeSelectStructureKey('fortuneUsed')({ loan })}
-          format="money"
-        />
-      ),
+      translationId: 'LoanSummaryColumn.ownFunds',
+      content: <Money value={ownFunds} />,
     },
     {
-      translationId: 'LoanSummaryColumn.insuranceWithdrawn',
-      content: insuranceWithdrawn ? (
-        <IntlNumber value={insuranceWithdrawn} format="money" />
-      ) : (
-        '-'
-      ),
-    },
-    {
-      translationId: 'LoanSummaryColumn.insurancePledged',
-      content: insurancePledged ? (
-        <IntlNumber value={insurancePledged} format="money" />
-      ) : (
-        '-'
-      ),
+      translationId: 'LoanSummaryColumn.ownFundsPledged',
+      content: <Money value={ownFundsPledged} />,
     },
   ];
 };

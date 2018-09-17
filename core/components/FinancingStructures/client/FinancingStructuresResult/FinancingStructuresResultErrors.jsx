@@ -6,19 +6,28 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingStructuresDataContainer from '../containers/FinancingStructuresDataContainer';
-import { calculateRequiredOwnFunds } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
+import {
+  calculateMissingOwnFunds,
+  getPropertyValue,
+} from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingStructuresResultHelpers';
 import FinancingStructuresResultChart from './FinancingStructuresResultChart';
-import FinanceCalculator, {
-  getPropertyValue,
-} from '../FinancingStructuresCalculator';
+import FinanceCalculator from '../FinancingStructuresCalculator';
+
 import { ROUNDING_AMOUNT } from '../FinancingStructuresOwnFunds/RequiredOwnFunds';
-import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
+import {
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../../../api/constants';
 
 type FinancingStructuresResultErrorsProps = {};
 
-const getCashUsed = ({ structure: { fortuneUsed, thirdPartyFortuneUsed } }) =>
-  fortuneUsed + thirdPartyFortuneUsed;
+const getCashUsed = ({ structure: { ownFunds } }) =>
+  ownFunds
+    .filter(({ type, usageType }) =>
+      type !== OWN_FUNDS_TYPES.INSURANCE_2 &&
+        usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+    .reduce((sum, { value }) => sum + value, 0);
 
 const errors = [
   {
@@ -28,15 +37,15 @@ const errors = [
   {
     id: 'missingOwnFunds',
     func: (data) => {
-      const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds >= ROUNDING_AMOUNT;
+      const missingFunds = calculateMissingOwnFunds(data);
+      return Number.isNaN(missingFunds) || missingFunds >= ROUNDING_AMOUNT;
     },
   },
   {
     id: 'tooMuchOwnFunds',
     func: (data) => {
-      const requiredFunds = calculateRequiredOwnFunds(data);
-      return Number.isNaN(requiredFunds) || requiredFunds <= -ROUNDING_AMOUNT;
+      const missingFunds = calculateMissingOwnFunds(data);
+      return Number.isNaN(missingFunds) || missingFunds <= -ROUNDING_AMOUNT;
     },
   },
   {
@@ -48,7 +57,6 @@ const errors = [
     func: (data) => {
       const { propertyWork, notaryFees } = data.structure;
       const propertyValue = getPropertyValue(data);
-      const effectiveLoan = calculateLoan(data);
       return (
         Calculator.getMinCash({
           fees: notaryFees,

@@ -1,5 +1,11 @@
 // @flow
-import { GENDER, SUCCESS, ERROR, WARNING } from '../../api/constants';
+import {
+  GENDER,
+  SUCCESS,
+  ERROR,
+  WARNING,
+  RESIDENCE_TYPE,
+} from '../../api/constants';
 import {
   NOTARY_FEES,
   AMORTIZATION_STOP,
@@ -12,6 +18,7 @@ import {
   MAINTENANCE_FINMA,
   MAX_INCOME_RATIO,
   MAX_INCOME_RATIO_TIGHT,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
 } from '../../config/financeConstants';
 import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
@@ -34,6 +41,7 @@ export class FinanceCalculator {
     amortizationGoal = AMORTIZATION_STOP,
     interestRates = averageRates,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+    maxBorrowRatioWithPledge = MAX_BORROW_RATIO_WITH_PLEDGE,
     maxIncomeRatio = MAX_INCOME_RATIO,
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
@@ -48,6 +56,7 @@ export class FinanceCalculator {
     amortizationGoal?: number,
     interestRates: Object,
     maxBorrowRatio?: number,
+    maxBorrowRatioWithPledge?: number,
     maxIncomeRatio?: number,
     maxIncomeRatioTight?: number,
     minCash?: number,
@@ -62,6 +71,7 @@ export class FinanceCalculator {
     this.amortizationGoal = amortizationGoal;
     this.interestRates = interestRates;
     this.maxBorrowRatio = maxBorrowRatio;
+    this.maxBorrowRatioWithPledge = maxBorrowRatioWithPledge;
     this.maxIncomeRatio = maxIncomeRatio;
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
@@ -147,8 +157,6 @@ export class FinanceCalculator {
     monthlyIncome: number,
     monthlyPayment: number,
   }) {
-    console.log('monthlyPayment', monthlyPayment);
-    console.log('monthlyIncome', monthlyIncome);
     return monthlyPayment / monthlyIncome;
   }
 
@@ -235,29 +243,24 @@ export class FinanceCalculator {
     return amortizationRate / borrowRatio || 0;
   }
 
-  getIndirectAmortizationDeduction({
-    amortizationRate = 0,
-    loanValue = 0,
-  }: { amortizationRate: number, loanValue: 0 } = {}) {
-    const yearlyAmortization = amortizationRate * loanValue;
-    const cappedThirdPillar = Math.min(
-      yearlyAmortization,
-      MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
-    );
-    const deduction = this.taxRate * cappedThirdPillar;
-    return deduction;
-  }
-
-  getMaxLoan({
+  getMaxLoanBase({
     propertyValue,
     propertyWork,
-    pledgedAmount,
+    pledgedAmount = 0,
+    residenceType,
   }: {
     propertyValue: number,
     propertyWork: number,
     pledgedAmount: number,
+    residenceType: string,
   } = {}): number {
-    return (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount;
+    if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
+      return Math.min(
+        (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount,
+        (propertyValue + propertyWork) * this.maxBorrowRatioWithPledge,
+      );
+    }
+    return (propertyValue + propertyWork) * this.maxBorrowRatio;
   }
 
   getYearsToRetirement = ({

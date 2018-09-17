@@ -60,8 +60,8 @@ const insertFakeBorrower = (userId) => {
       },
     ],
     bankFortune: 300000,
-    insuranceSecondPillar: 120000,
-    insuranceThirdPillar: 50000,
+    insurance2: [{ value: 120000, description: 'Allianz' }],
+    insurance3B: [{ value: 50000, description: 'Zurich' }],
     logic: {},
   };
 

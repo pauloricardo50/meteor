@@ -29,8 +29,8 @@ export const loanBorrowerFragment = {
   company: 1,
   expenses: 1,
   gender: 1,
-  insuranceSecondPillar: 1,
-  insuranceThirdPillar: 1,
+  insurance2: 1,
+  insurance3A: 1,
   bank3A: 1,
   insurance3B: 1,
   isSwiss: 1,
@@ -45,6 +45,7 @@ export const loanBorrowerFragment = {
   sameAddress: 1,
   worksForOwnCompany: 1,
   zipCode: 1,
+  thirdPartyFortune: 1,
 };
 
 export const adminBorrowerFragment = {

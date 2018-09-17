@@ -57,7 +57,7 @@ Factory.define('loan', Loans, {
     verification: {},
     step: 1,
   }),
-  name: () => 'loan name',
+  name: () => faker.random.uuid(),
   emails: () => [],
   propertyIds: [],
 });

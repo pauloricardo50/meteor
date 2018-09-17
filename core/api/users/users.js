@@ -1,6 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
+import { createdAt, updatedAt } from '../helpers/mongoHelpers';
 import { ROLES } from './userConstants';
 
 const UserSchema = new SimpleSchema({
@@ -28,28 +29,8 @@ const UserSchema = new SimpleSchema({
   'emails.$.verified': {
     type: Boolean,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   // Make sure this services field is in your schema if you're using any of the accounts packages
   services: {
     type: Object,

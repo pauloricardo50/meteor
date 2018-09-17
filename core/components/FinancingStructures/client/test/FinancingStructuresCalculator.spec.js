@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { getPropertyValue } from '../FinancingStructuresCalculator';
+import { getPropertyValue } from '../FinancingStructuresOwnFunds/ownFundsHelpers';
 
 describe('getPropertyValue', () => {
   it('should return the actual property value when the structure property value is undefined', () => {

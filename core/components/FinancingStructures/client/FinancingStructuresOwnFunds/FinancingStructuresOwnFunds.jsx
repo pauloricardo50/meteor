@@ -5,23 +5,10 @@ import T from 'core/components/Translation';
 import FinancingStructuresSection, {
   CalculatedValue,
 } from '../FinancingStructuresSection';
-import Calculator from '../../../../utils/Calculator';
-import { getPropertyValue } from '../FinancingStructuresCalculator';
-import { calculateLoan } from '../FinancingStructuresFinancing/FinancingStructuresFinancing';
 
 import RequiredOwnFunds from './RequiredOwnFunds';
-import OwnFundsLabel from './OwnFundsLabel';
-import OwnFundsCompleter from './OwnFundsCompleter';
-import {
-  calculateOwnFunds,
-  calculateRequiredOwnFunds,
-  calculateMaxFortune,
-  calculateMaxSecondPillarWithdrawal,
-  makeConditionForValue,
-  calculateMaxSecondPillarPledged,
-  calculateMaxThirdPillarWithdrawal,
-  calculateMaxThirdPillarPledged,
-} from './ownFundsHelpers';
+import FinancingStructuresOwnFundsPicker from './FinancingStructuresOwnFundsPicker';
+import { calculateOwnFunds, calculateMissingOwnFunds } from './ownFundsHelpers';
 
 type FinancingStructuresOwnFundsProps = {};
 
@@ -43,46 +30,11 @@ const FinancingStructuresOwnFunds = (props: FinancingStructuresOwnFundsProps) =>
       {
         Component: RequiredOwnFunds,
         id: 'requiredOwnFunds',
-        value: calculateRequiredOwnFunds,
+        value: calculateMissingOwnFunds,
       },
       {
-        Component: OwnFundsCompleter,
-        id: 'fortuneUsed',
-        max: calculateMaxFortune,
-        label: OwnFundsLabel,
-        labelValue: calculateMaxFortune,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'secondPillarWithdrawal',
-        max: calculateMaxSecondPillarWithdrawal,
-        condition: makeConditionForValue('getSecondPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getSecondPillar,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'secondPillarPledged',
-        max: calculateMaxSecondPillarPledged,
-        condition: makeConditionForValue('getSecondPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getSecondPillar,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'thirdPillarWithdrawal',
-        max: calculateMaxThirdPillarWithdrawal,
-        condition: makeConditionForValue('getThirdPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getThirdPillar,
-      },
-      {
-        Component: OwnFundsCompleter,
-        id: 'thirdPillarPledged',
-        max: calculateMaxThirdPillarPledged,
-        condition: makeConditionForValue('getThirdPillar'),
-        label: OwnFundsLabel,
-        labelValue: Calculator.getThirdPillar,
+        Component: FinancingStructuresOwnFundsPicker,
+        id: 'ownFundsPicker',
       },
     ]}
   />

@@ -1,4 +1,4 @@
-import { executeCommand } from '../utils/helpers';
+import { executeCommand, logError } from '../utils/helpers';
 import {
   CLOUDFOUNDRY_MARKETPLACE,
   cloudFoundryCommands,
@@ -7,26 +7,6 @@ import {
 class CloudFoundryService {
   selectSpace = space => {
     return executeCommand(cloudFoundryCommands.selectSpace(space));
-  };
-
-  createMongoDBService = ({ plan, serviceInstance }) => {
-    return this.checkIfServiceInstanceExists(serviceInstance).then(
-      serviceExists =>
-        !serviceExists &&
-        executeCommand(
-          cloudFoundryCommands.createService({
-            plan,
-            serviceInstance,
-            service: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.service,
-          }),
-        ),
-    );
-  };
-
-  checkIfServiceInstanceExists = serviceInstance => {
-    return executeCommand(cloudFoundryCommands.listServices()).then(
-      servicesList => servicesList.includes(serviceInstance),
-    );
   };
 
   getScaleApplicationCommand = ({ space, applicationName, config }) => {
@@ -52,12 +32,11 @@ class CloudFoundryService {
     executeCommand(
       cloudFoundryCommands.blueGreenDeploy({ buildDirectory, name, manifest }),
     )
-      .catch(() =>
-        this.deleteFailedApp(name).then(() => {
-          console.log('Smoke tests failed');
-        }),
-      )
-      .finally(() => this.restartApp(name));
+      .then(() => this.restartApp(name))
+      .catch(error => {
+        logError(`Deployment failed ! Reason: ${error}`);
+        throw new Error(error);
+      });
 }
 
 export default new CloudFoundryService();

@@ -1,5 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+
+import { createdAt, updatedAt } from '../helpers/mongoHelpers';
 import { TASK_STATUS, TASK_TYPE, TASKS_COLLECTION } from './taskConstants';
 
 const Tasks = new Mongo.Collection(TASKS_COLLECTION);
@@ -18,28 +20,8 @@ Tasks.allow({
 });
 
 const TasksSchema = new SimpleSchema({
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   status: {
     type: String,
     defaultValue: TASK_STATUS.ACTIVE,

@@ -240,6 +240,22 @@ export class LoanService {
   addPropertyToLoan = ({ loanId, propertyId }) => {
     this.pushValue({ loanId, object: { propertyIds: propertyId } });
   };
+
+  cleanupRemovedBorrower = ({ borrowerId }) => {
+    // Remove all references to this borrower on the loan
+    const loans = Loans.find({ borrowerIds: borrowerId }).fetch();
+    loans.forEach((loan) => {
+      this.update({
+        loanId: loan._id,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            ownFunds: structure.ownFunds.filter(({ borrowerId: bId }) => bId !== borrowerId),
+          })),
+        },
+      });
+    });
+  };
 }
 
 export default new LoanService({});

@@ -189,18 +189,20 @@ describe('BorrowerCalculator', () => {
   });
 
   describe('getInsuranceFortune', () => {
-    it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
+    it('properly sums insurance2, insurance3A, insurance3B and bank3A', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: 3,
+          insurance2: [{ value: 2 }],
+          insurance3A: [{ value: 3 }],
+          insurance3B: [{ value: 4 }],
+          bank3A: [{ value: 5 }],
         },
-      })).to.equal(5);
+      })).to.equal(14);
 
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: undefined,
+          insurance3B: [{ value: 2 }],
+          bank3A: [{ value: undefined }],
         },
       })).to.equal(2);
     });
@@ -209,12 +211,12 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: [
           {
-            insuranceSecondPillar: 2,
-            insuranceThirdPillar: 3,
+            insurance2: [{ value: 2 }],
+            insurance3A: [{ value: 3 }],
           },
           {
-            insuranceSecondPillar: 4,
-            insuranceThirdPillar: 5,
+            bank3A: [{ value: 4 }],
+            insurance3B: [{ value: 5 }],
           },
         ],
       })).to.equal(14);
@@ -318,8 +320,8 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getTotalFunds({
         borrowers: {
           bankFortune: 1,
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: 3,
+          insurance2: [{ value: 2 }],
+          insurance3A: [{ value: 3 }],
         },
       })).to.equal(6);
     });
@@ -388,6 +390,7 @@ describe('BorrowerCalculator', () => {
         keys: ['a', 'b'],
       })).to.equal(10);
     });
+
     it('omits keys if they are not provided', () => {
       expect(Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
     });

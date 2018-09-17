@@ -2,6 +2,7 @@
 import SimpleSchema from 'simpl-schema';
 import uniforms from 'uniforms-material';
 
+import { createdAt, updatedAt } from '../../helpers/mongoHelpers';
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
@@ -17,29 +18,8 @@ const LoanSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-    optional: true,
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   status: {
     type: String,
     defaultValue: LOAN_STATUS.ACTIVE,

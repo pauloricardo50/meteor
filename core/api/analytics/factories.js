@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import throttle from 'lodash/throttle';
 import { storageAvailable } from '../../utils/browserFunctions';
-import { getEvent, getEventConfig } from './events';
+import { getEvent, getEventConfig } from './eventsHelpers';
 
 // having this as a function enables us to test the `allowTracking`
 // param of `makeClientAnalytics`

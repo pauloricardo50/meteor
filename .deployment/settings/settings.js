@@ -52,13 +52,13 @@ const applicationSettings = ({ applicationName, environment }) => ({
   ...ENVIRONMENT_CONFIG[environment][applicationName].appConfig,
 });
 
-export const generateMongoServiceName = environment => `mongo-${environment}`;
+export const generateServiceName = ({ service, environment }) =>
+  `${service}-${environment}`;
 
 export const createDeploySettingsForEnv = environment => ({
-  service: {
-    name: generateMongoServiceName(environment),
-    size: ENVIRONMENT_CONFIG[environment].serviceConfig,
-  },
+  services: ENVIRONMENT_CONFIG[environment].services.map(service =>
+    generateServiceName({ service, environment }),
+  ),
   root: `./${environment}`,
   meteorSettings: `settings-${environment}.json`,
   applications: Object.values(APPLICATIONS).map(applicationName =>
@@ -85,7 +85,7 @@ export const appManifestYAMLData = ({
   name,
   memory,
   instances,
-  service,
+  services,
 }) => ({
   applications: [
     {
@@ -93,7 +93,7 @@ export const appManifestYAMLData = ({
       memory,
       instances,
       buildpack: APP_BUILDPACK,
-      services: [service],
+      services,
       ...(APP_ENV_VARIABLES[environment][applicationName] !== {}
         ? { env: APP_ENV_VARIABLES[environment][applicationName] }
         : null),
