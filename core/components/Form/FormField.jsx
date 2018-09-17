@@ -17,12 +17,14 @@ import {
   phoneFormatters,
 } from './formHelpers';
 import { required as requiredFunc } from './validators';
+import SelectField from './SelectField';
 
 const defaultField = props => <Field {...props} />;
 
 const arrayField = props => (
   <FieldArray {...props} component={RenderFieldArray} />
 );
+
 const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   switch (fieldType) {
   case FIELD_TYPES.TEXT:
@@ -41,17 +43,16 @@ const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
   case FIELD_TYPES.MONEY:
     return withProps({
       inputComponent: MaskedInput,
-      inputProps: {
-        mask: swissFrancMask,
-      },
+      inputProps: { mask: swissFrancMask },
       startAdornment: <InputAdornment position="start">CHF</InputAdornment>,
       ...moneyFormatters,
     })(defaultField)({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.NUMBER:
-    return withProps({
-      ...numberFormatters,
-    })(defaultField)({ ...defaultFieldProps, ...rest });
+    return withProps({ ...numberFormatters })(defaultField)({
+      ...defaultFieldProps,
+      ...rest,
+    });
 
   case FIELD_TYPES.PHONE:
     return withProps({
@@ -66,6 +67,12 @@ const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
 
   case FIELD_TYPES.ARRAY:
     return arrayField({ ...defaultFieldProps, ...rest });
+
+  case FIELD_TYPES.SELECT: {
+    return withProps({
+      component: SelectField,
+    })(defaultField)({ ...defaultFieldProps, ...rest });
+  }
 
   default:
     return defaultField;
