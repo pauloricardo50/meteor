@@ -126,7 +126,10 @@ const withAdditionalProps = withProps((props) => {
         reset();
       }
     },
-    handleUpdateBorrower: () => {
+    handleUpdateBorrower: (event) => {
+      if (event && event.preventDefault) {
+        event.preventDefault();
+      }
       setLoading(true);
 
       if (Calculator.isTypeWithArrayValues(type)) {
