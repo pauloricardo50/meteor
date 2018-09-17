@@ -3,6 +3,7 @@ import { simpleUserFragment } from './userFragments';
 
 export const fullUserFragment = {
   ...simpleUserFragment,
+  assignedEmployee: simpleUserFragment,
   emails: 1,
   createdAt: 1,
   updatedAt: 1,

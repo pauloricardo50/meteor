@@ -4,7 +4,7 @@ import { USER_QUERIES } from '../userConstants';
 import { fullUserFragment } from './userFragments';
 
 export default Users.createQuery(USER_QUERIES.CURRENT_USER, {
-  $filter({ filters, options, params }) {
+  $filter({ filters }) {
     filters._id = Meteor.userId();
   },
   ...fullUserFragment,
