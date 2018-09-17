@@ -14,15 +14,19 @@ import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
 import { AUCTION_STATUS } from '../api/loans/loanConstants';
 import {
-  DEV_COUNT,
   USER_COUNT,
-  ADMIN_COUNT,
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
 } from './fixtureConfig';
 import { createFakeLoan } from './loanFixtures';
 import { createFakeTask, deleteUsersTasks } from './taskFixtures';
-import { createFakeUsers, getFakeUsersIds, createUser } from './userFixtures';
+import {
+  createDevs,
+  createAdmins,
+  getFakeUsersIds,
+  createUser,
+  createFakeUsers,
+} from './userFixtures';
 import { createFakeOffer } from './offerFixtures';
 import { ROLES } from '../api/users/userConstants';
 import { E2E_USER_EMAIL } from './fixtureConstants';
@@ -30,14 +34,10 @@ import { createYannisData } from './demoFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
-const getAdmins = (currentUserEmail) => {
+const getAdmins = () => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
   if (admins.length <= 1) {
-    const newAdmins = createFakeUsers(
-      ADMIN_COUNT,
-      ROLES.ADMIN,
-      currentUserEmail,
-    );
+    const newAdmins = createAdmins();
     return newAdmins;
   }
   return admins.map(admin => admin._id);
@@ -95,13 +95,9 @@ const createTestUserWithData = () => {
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
-      createFakeUsers(DEV_COUNT, ROLES.DEV, currentUserEmail);
-      const admins = getAdmins(currentUserEmail);
-      const newUsers = createFakeUsers(
-        USER_COUNT,
-        ROLES.USER,
-        currentUserEmail,
-      );
+      createDevs(currentUserEmail);
+      const admins = getAdmins();
+      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
 
       // for each regular fixture user, create a loan with a certain step
       newUsers.forEach((userId, index) => {

@@ -4,7 +4,10 @@ import { expect } from 'chai';
 
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import { getRequiredAndCurrentFunds } from '../OwnFundsCompleterContainer';
-import { OWN_FUNDS_USAGE_TYPES } from '../../../../../../api/constants';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  OWN_FUNDS_TYPES,
+} from '../../../../../../api/constants';
 
 describe('OwnFundsCompleter', () => {
   describe('getRequiredAndCurrentFunds', () => {
@@ -157,6 +160,37 @@ describe('OwnFundsCompleter', () => {
         props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
           required: 350000,
+          current: 150000,
+        });
+      });
+
+      it('works when editing a pledge funds with high loan', () => {
+        props.structure.wantedLoan = 900000;
+        props.structure.ownFunds = [
+          {
+            value: 120000,
+            type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+            borrowerId: 'bId',
+          },
+          {
+            value: 100000,
+            type: OWN_FUNDS_TYPES.INSURANCE_2,
+            usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+            borrowerId: 'bId',
+          },
+          {
+            value: 30000,
+            type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+            borrowerId: 'bId',
+          },
+        ];
+        props.ownFundsIndex = 1;
+        props.value = 100000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        props.borrowers = [{ _id: 'bId' }];
+
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 150000,
           current: 150000,
         });
       });

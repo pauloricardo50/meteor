@@ -6,10 +6,10 @@ import { Users } from '../api';
 import { USER_PASSWORD } from './fixtureConstants';
 import UserService from '../api/users/UserService';
 
-export const createUser = (email, role) => {
+export const createUser = (email, role, password) => {
   const userId = Accounts.createUser({
     email,
-    password: USER_PASSWORD,
+    password: password || USER_PASSWORD,
   });
   Roles.setUserRoles(userId, [role]);
 
@@ -34,6 +34,60 @@ export const createFakeUsers = (count, role, currentUserEmail = '') => {
     }
   }
   return insertedUsers;
+};
+
+export const addUser = ({ email, role, password, ...data }) => {
+  const newUserId = createUser(email, role, password);
+  UserService.update({ userId: newUserId, object: data });
+  return newUserId;
+};
+
+export const createDevs = (currentEmail) => {
+  const devs = [
+    {
+      email: 'florian@e-potek.ch',
+      firstName: 'Florian',
+      lastName: 'Bienefelt',
+      role: 'dev',
+    },
+    {
+      email: 'quentin@e-potek.ch',
+      firstName: 'Quentin',
+      lastName: 'Herzig',
+      role: 'dev',
+    },
+  ];
+  return devs.filter(({ email }) => email !== currentEmail).map(addUser);
+};
+
+export const createAdmins = () => {
+  const devs = [
+    {
+      email: 'lydia@e-potek.ch',
+      firstName: 'Lydia',
+      lastName: 'Abraha',
+      role: 'admin',
+    },
+    {
+      email: 'joel@e-potek.ch',
+      firstName: 'Joel',
+      lastName: 'Santos',
+      role: 'admin',
+    },
+    {
+      email: 'yannis@e-potek.ch',
+      firstName: 'Yannis',
+      lastName: 'Eggert',
+      role: 'admin',
+    },
+    {
+      email: 'jeanluc@e-potek.ch',
+      firstName: 'Jean-luc',
+      lastName: 'Kringel',
+      role: 'admin',
+    },
+  ];
+  return devs.map(addUser);
 };
 
 export const getFakeUsersIds = () => {
