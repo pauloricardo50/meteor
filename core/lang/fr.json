@@ -1,4 +1,5 @@
 {
+  "CreateUserDialogForm.sendEnrollmentEmail": "Envoyer email d'invitation immédiatement",
   "CreateUserDialogForm.assignedEmployeeId": "Assigner à",
   "AdminLayout.title": "Admin",
   "DashboardRecapFinance.emptyButton": "Essayer le calculateur",

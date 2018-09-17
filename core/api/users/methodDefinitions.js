@@ -75,3 +75,10 @@ export const removeUser = new Method({
     userId: String,
   },
 });
+
+export const sendEnrollmentEmail = new Method({
+  name: 'sendEnrollmentEmail',
+  params: {
+    userId: String,
+  },
+});

@@ -7,6 +7,8 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import { sendEnrollmentEmail } from 'core/api';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import EditUserDialogForm from './EditUserDialogForm';
@@ -37,6 +39,11 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           <RolePicker userId={_id} />
         </h1>
         <EditUserDialogForm user={user} />
+        <ConfirmMethod
+          method={() => sendEnrollmentEmail.run({ userId: _id })}
+          label="Envoyer email d'invitation"
+          keyword="ENVOYER"
+        />
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>

@@ -12,6 +12,7 @@ import {
   getUserByPasswordResetToken,
   testCreateUser,
   removeUser,
+  sendEnrollmentEmail,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -82,4 +83,9 @@ testCreateUser.setHandler((context, { user }) => {
 removeUser.setHandler((context, { userId }) => {
   SecurityService.checkCurrentUserIsDev();
   UserService.remove({ userId });
+});
+
+sendEnrollmentEmail.setHandler((context, { userId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.sendEnrollmentEmail({ userId });
 });

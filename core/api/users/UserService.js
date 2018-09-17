@@ -14,7 +14,7 @@ class UserService {
   };
 
   adminCreateUser = ({
-    options: { email, ...additionalData },
+    options: { email, sendEnrollmentEmail, ...additionalData },
     role,
     adminId,
   }) => {
@@ -26,7 +26,9 @@ class UserService {
       this.assignAdminToUser({ userId: newUserId, adminId });
     }
 
-    this.sendEnrollmentEmail({ userId: newUserId });
+    if (sendEnrollmentEmail) {
+      this.sendEnrollmentEmail({ userId: newUserId });
+    }
 
     return newUserId;
   };

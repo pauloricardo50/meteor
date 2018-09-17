@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { adminCreateUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
-import adminUsers from 'core/api/users/queries/adminUsers';
+import admins from 'core/api/users/queries/admins';
 
 export const createUserFormFields = [
   { id: 'firstName' },
@@ -17,13 +17,14 @@ export const createUserFormFields = [
     fieldType: FIELD_TYPES.SELECT,
     fetchOptions: () =>
       new Promise((resolve, reject) =>
-        adminUsers
+        admins
           .clone()
           .fetch((err, res) =>
             (err
               ? reject(err)
               : resolve(res.map(({ name, _id }) => ({ label: name, id: _id })))))),
   },
+  { id: 'sendEnrollmentEmail', fieldType: FIELD_TYPES.CHECKBOX },
 ];
 
 export const getFormArray = formFields =>
@@ -54,7 +55,7 @@ const CreateUserDialogForm = ({ history, currentUser: { _id: adminId } }) => (
     title={<T id="CreateUserDialogForm.dialogTitle" />}
     description={<T id="CreateUserDialogForm.dialogDescription" />}
     formArray={formArray}
-    initialValues={{ assignedEmployeeId: adminId }}
+    initialValues={{ assignedEmployeeId: adminId, sendEnrollmentEmail: true }}
   />
 );
 
