@@ -1,4 +1,5 @@
 {
+  "DashboardRecapFinance.emptyButton": "Essayer le calculateur",
   "FinancingStructuresCurrentOwnFunds.error": "Pas assez de {type}",
 
   "FinancingStructuresOwnFundsPickerForm.remaining": "Restant: CHF {value}",

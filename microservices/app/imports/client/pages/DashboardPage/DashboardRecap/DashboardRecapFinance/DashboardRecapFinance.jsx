@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 
 import { createRoute } from 'core/utils/routerUtils';
 import Calculator from 'core/utils/Calculator';
+import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
-import { FINANCING_PAGE } from '../../../../../startup/client/appRoutes';
+import {
+  FINANCING_PAGE,
+  APP_WIDGET1_PAGE,
+} from '../../../../../startup/client/appRoutes';
 
 const shouldDisplayRecap = loan =>
   loan.structure.property && loan.structure.property.value;
@@ -17,10 +21,15 @@ const DashboardRecapFinance = (props) => {
   const { loan } = props;
   if (!shouldDisplayRecap(loan)) {
     return (
-      <div className="dashboard-recap-finance card1">
-        <p className="dashboard-recap-finance-empty description">
+      <div className="dashboard-recap-finance card1 dashboard-recap-finance-empty">
+        <p className="description">
           <T id="DashboardRecapFinance.empty" />
         </p>
+        <Link to={createRoute(APP_WIDGET1_PAGE, { ':loanId': loan._id })}>
+          <Button outlined primary>
+            <T id="DashboardRecapFinance.emptyButton" />
+          </Button>
+        </Link>
       </div>
     );
   }
