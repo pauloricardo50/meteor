@@ -8,10 +8,6 @@ import withLoading from '../Loading/withLoading';
 type SelectFieldProps = {};
 
 const SelectField = (props: SelectFieldProps) => {
-  const { input, meta } = props;
-  const { touched, error } = meta || {};
-  const displayError = !!(touched && error);
-  return (
     <Select
       {...input}
       {...props}
