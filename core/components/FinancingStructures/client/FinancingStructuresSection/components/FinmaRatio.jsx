@@ -7,12 +7,19 @@ import FinancingStructuresDataContainer from '../../containers/FinancingStructur
 
 type FinmaRatioProps = {
   status: Function,
+  tooltip?: String,
+  id: String,
 };
 
-const FinmaRatio = ({ status, ...props }: FinmaRatioProps) => (
+const FinmaRatio = ({ status, tooltip, id, ...props }: FinmaRatioProps) => (
   <CalculatedValue {...props}>
     {value => (
-      <PercentWithStatus value={value} status={status({ ...props, value })} />
+      <PercentWithStatus
+        value={value}
+        status={status({ ...props, value })}
+        tooltip={tooltip}
+        id={id}
+      />
     )}
   </CalculatedValue>
 );

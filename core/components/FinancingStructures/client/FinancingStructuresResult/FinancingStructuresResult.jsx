@@ -81,12 +81,14 @@ const FinancingStructuresResult = ({ error }: FinancingStructuresResultProps) =>
           Component: FinmaRatio,
           value: getBorrowRatio,
           status: getBorrowRatioStatus,
+          tooltip: true,
         },
         {
           id: 'incomeRatio',
           Component: FinmaRatio,
           value: getIncomeRatio,
           status: getIncomeRatioStatus,
+          tooltip: true,
         },
         {
           id: 'future',
