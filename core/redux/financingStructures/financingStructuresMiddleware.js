@@ -3,7 +3,12 @@ import debounce from 'lodash/debounce';
 
 import { normalize } from '../../utils/general';
 import { updateStructure } from '../../api';
-import { REHYDRATE_LOAN, UPDATE_STRUCTURE } from './financingStructuresTypes';
+import {
+  REHYDRATE_LOAN,
+  UPDATE_STRUCTURE,
+  REHYDRATE_PROPERTIES,
+  REHYDRATE_BORROWERS,
+} from './financingStructuresTypes';
 import { rehydrateData } from './financingStructuresActions';
 import type { Action } from './financingStructuresActions';
 import {
@@ -28,9 +33,6 @@ export const saveStructures = debounce((saveDataFunc, ids, getState) => {
 
 export const rehydrateMiddleware = ({ dispatch, getState }) => next => (action: Action) => {
   if (action.type === REHYDRATE_LOAN) {
-    const {
-      financingStructures: { isLoaded },
-    } = getState();
     const { loan } = action.payload;
     dispatch(rehydrateData(loan, 'loan'));
     dispatch(rehydrateData(normalize(loan.structures), 'structures'));
@@ -38,6 +40,19 @@ export const rehydrateMiddleware = ({ dispatch, getState }) => next => (action: 
     dispatch(rehydrateData(normalize(loan.properties), 'properties'));
     return;
   }
+
+  if (action.type === REHYDRATE_PROPERTIES) {
+    const { properties } = action.payload;
+    dispatch(rehydrateData(normalize(properties), 'properties'));
+    return;
+  }
+
+  if (action.type === REHYDRATE_BORROWERS) {
+    const { borrowers } = action.payload;
+    dispatch(rehydrateData(normalize(borrowers), 'borrowers'));
+    return;
+  }
+
   return next(action);
 };
 

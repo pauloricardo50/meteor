@@ -3,12 +3,22 @@ import type { userLoan } from '../../api/types';
 import {
   REHYDRATE_DATA,
   REHYDRATE_LOAN,
+  REHYDRATE_PROPERTIES,
+  REHYDRATE_BORROWERS,
   UPDATE_STRUCTURE,
 } from './financingStructuresTypes';
 
 export const rehydrateLoan = (loan: userLoan) => ({
   type: REHYDRATE_LOAN,
   payload: { loan },
+});
+export const rehydrateProperties = (properties: userLoan) => ({
+  type: REHYDRATE_PROPERTIES,
+  payload: { properties },
+});
+export const rehydrateBorrowers = (borrowers: userLoan) => ({
+  type: REHYDRATE_BORROWERS,
+  payload: { borrowers },
 });
 
 export const rehydrateData = (data, dataName): Action => ({

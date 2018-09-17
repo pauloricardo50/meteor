@@ -8,7 +8,11 @@ import {
   withState,
 } from 'recompose';
 import { addNewStructure } from 'core/api';
-import { rehydrateLoan } from '../../../redux/financingStructures';
+import {
+  rehydrateLoan,
+  rehydrateProperties,
+  rehydrateBorrowers,
+} from '../../../redux/financingStructures';
 import type { Action } from '../../../redux/financingStructures';
 import { ROLES } from '../../../api/constants';
 import ClientEventService, {
@@ -20,6 +24,8 @@ export default compose(
     state => ({ isLoaded: state.financingStructures.isLoaded }),
     (dispatch: Action => any) => ({
       loadLoan: loan => dispatch(rehydrateLoan(loan)),
+      loadProperties: loan => dispatch(rehydrateProperties(loan.properties)),
+      loadBorrowers: loan => dispatch(rehydrateBorrowers(loan.borrowers)),
     }),
   ),
   withState('loadLoanOnce', 'setLoadLoanOnce', false),
@@ -42,6 +48,21 @@ export default compose(
     componentWillReceiveProps({ loan, currentUser }) {
       if (loan.cantModifyStructures && currentUser.roles.includes(ROLES.USER)) {
         this.props.loadLoan(loan);
+      }
+
+      console.log('received new props');
+
+      if (
+        JSON.stringify(loan.borrowers)
+        !== JSON.stringify(this.props.loan.borrowers)
+      ) {
+        this.props.loadBorrowers(loan);
+      }
+      if (
+        JSON.stringify(loan.properties)
+        !== JSON.stringify(this.props.loan.properties)
+      ) {
+        this.props.loadProperties(loan);
       }
 
       if (this.props.loadLoanOnce) {

@@ -8,7 +8,7 @@ import FinancingStructuresRefresherContainer from './FinancingStructuresRefreshe
 
 type FinancingStructuresRefresherProps = {};
 
-const APPEAR_DELAY = 1000;
+const APPEAR_DELAY = 5000;
 
 export const FinancingStructuresRefresher = ({
   showRefresh,
