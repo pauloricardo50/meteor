@@ -119,7 +119,7 @@ describe('InputAndSlider', () => {
       expect(handleChange.firstCall.args).to.deep.equal([50]);
     });
 
-    it('does not let the user type an empty string', () => {
+    it('does not let the user type an empty string when undefined values are not allowed', () => {
       const handleChange = sinon.spy();
       props = {
         value: 12,
@@ -134,7 +134,7 @@ describe('InputAndSlider', () => {
       expect(handleChange.firstCall.args).to.deep.equal([0]);
     });
 
-    it('let the user type empty strings', () => {
+    it('let the user type empty strings when undefined values are allowed', () => {
       const handleChange = sinon.spy();
       props = {
         value: 12,
@@ -150,7 +150,7 @@ describe('InputAndSlider', () => {
       expect(handleChange.firstCall.args).to.deep.equal(['']);
     });
 
-    it('forces 0 values to empty strings', () => {
+    it('forces 0 values to empty strings when forceUndefined and allowUndefined are true', () => {
       const handleChange = sinon.spy();
       props = {
         value: 12,
@@ -166,15 +166,16 @@ describe('InputAndSlider', () => {
       expect(handleChange.firstCall.args).to.deep.equal(['']);
     });
 
-    it('does not let the user enter an empty string', () => {
+    it('does not force 0 values to empty strings when forceUndefined is true but undefined values are not allowed', () => {
       const handleChange = sinon.spy();
       props = {
         value: 12,
         handleChange,
+        forceUndefined: true,
       };
       const wrapper = component();
 
-      wrapper.find('input').simulate('change', { target: { value: '' } });
+      wrapper.find('input').simulate('change', { target: { value: 0 } });
 
       expect(handleChange.calledOnce).to.equal(true);
       expect(handleChange.firstCall.args).to.deep.equal([0]);

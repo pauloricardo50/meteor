@@ -32,7 +32,7 @@ const makeHandleTextChange = ({
   if (max && value) {
     return handleChange(Math.min(value, max));
   }
-  return handleChange(value || (forceUndefined ? '' : 0));
+  return handleChange(value || (forceUndefined && allowUndefined ? '' : 0));
 };
 
 const setValue = (value, allowUndefined, forceUndefined) => {
