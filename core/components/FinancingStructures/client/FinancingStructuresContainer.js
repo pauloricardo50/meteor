@@ -50,8 +50,8 @@ export default compose(
         this.props.loadLoan(loan);
       }
 
-      console.log('received new props');
-
+      // Properties and borrowers being modified should be reflected always
+      // no exception is possible
       if (
         JSON.stringify(loan.borrowers)
         !== JSON.stringify(this.props.loan.borrowers)
