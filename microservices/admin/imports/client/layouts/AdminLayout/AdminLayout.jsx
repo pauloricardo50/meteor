@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
+import PageHead from 'core/components/PageHead';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
@@ -42,6 +43,7 @@ const AdminLayout = (props) => {
 
   return (
     <div className="admin-layout">
+      <PageHead titleId="AdminLayout" />
       <AdminTopNav {...props} />
 
       <div className="main-row">
