@@ -1,0 +1,18 @@
+{
+  "name": "pdf",
+  "private": true,
+  "scripts": {
+    "start": "meteor run --port 6000",
+    "test-console": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.0.0-beta.55",
+    "chai": "^4.1.2",
+    "meteor-node-stubs": "^0.4.1"
+  },
+  "meteor": {
+    "mainModule": {
+      "server": "server/main.js"
+    }
+  }
+}

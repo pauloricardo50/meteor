@@ -1,0 +1,15 @@
+import { Meteor } from 'meteor/meteor';
+import { check, Match } from 'meteor/check';
+import { PDF_TYPES, PDF_ERRORS } from './constants';
+
+Meteor.methods({
+  generatePDF({ data, type, options }) {
+    check(data, Object);
+    check(type, String);
+    check(options, Match.Optional(Object));
+    if (!Object.values(PDF_TYPES).includes(type)) {
+      throw new Meteor.Error(PDF_ERRORS.WRONG_TYPE);
+    }
+    return {};
+  },
+});
