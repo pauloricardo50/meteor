@@ -55,7 +55,7 @@ const CreateUserDialogForm = ({ history, currentUser: { _id: adminId } }) => (
     title={<T id="CreateUserDialogForm.dialogTitle" />}
     description={<T id="CreateUserDialogForm.dialogDescription" />}
     formArray={formArray}
-    initialValues={{ assignedEmployeeId: adminId, sendEnrollmentEmail: true }}
+    initialValues={{ assignedEmployeeId: adminId, sendEnrollmentEmail: false }}
   />
 );
 
