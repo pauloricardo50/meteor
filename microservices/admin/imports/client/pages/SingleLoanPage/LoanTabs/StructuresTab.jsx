@@ -1,12 +1,12 @@
 // @flow
 import React from 'react';
 
-import FinancingStructures from 'core/components/FinancingStructures';
+import Financing from 'core/components/Financing';
 
 type StructuresTabProps = {};
 
 const StructuresTab = ({ loan }: StructuresTabProps) => (
-  <FinancingStructures loan={loan} />
+  <Financing loan={loan} />
 );
 
 export default StructuresTab;

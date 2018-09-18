@@ -2,7 +2,7 @@
 import React from 'react';
 
 import PageHead from 'core/components/PageHead';
-import FinancingStructures from 'core/components/FinancingStructures';
+import Financing from 'core/components/Financing';
 import type { userLoan } from 'core/api';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import Page from '../../components/Page';
@@ -14,7 +14,7 @@ type FinancingPageProps = {
 const FinancingPage = ({ loan }: FinancingPageProps) => (
   <Page id="FinancingPage" fullWidth>
     <PageHead titleId="FinancingPage" />
-    <FinancingStructures loan={loan} />
+    <Financing loan={loan} />
     <ReturnToDashboard />
   </Page>
 );
