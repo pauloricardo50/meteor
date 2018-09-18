@@ -14,7 +14,6 @@ import {
   rehydrateBorrowers,
 } from '../../../redux/financing';
 import type { Action } from '../../../redux/financing';
-import { ROLES } from '../../../api/constants';
 import ClientEventService, {
   LOAD_LOAN,
 } from '../../../api/events/ClientEventService/index';
@@ -46,10 +45,6 @@ export default compose(
       ClientEventService.removeAllListeners(LOAD_LOAN);
     },
     componentWillReceiveProps({ loan, currentUser }) {
-      if (loan.cantModifyStructures && currentUser.roles.includes(ROLES.USER)) {
-        this.props.loadLoan(loan);
-      }
-
       // Properties and borrowers being modified should be reflected always
       // no exception is possible
       if (
