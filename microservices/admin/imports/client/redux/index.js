@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
-import { financingStructuresMiddleware } from 'core/redux/financingStructures';
+import { financingMiddleware } from 'core/redux/financing';
 import createRootReducer from './reducers';
 
 const createCustomStore = () => {
   const initialState = {};
-  const middlewares = [createLogger(), ...financingStructuresMiddleware];
+  const middlewares = [createLogger(), ...financingMiddleware];
   const rootReducer = createRootReducer();
 
   const composeEnhancers = typeof window === 'object'
