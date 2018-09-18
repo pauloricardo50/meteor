@@ -52,3 +52,13 @@
     margin-top: 0px;
   }
 }
+
+.financing-pledge-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    padding: 8px;
+  }
+}

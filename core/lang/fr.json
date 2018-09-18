@@ -1,4 +1,5 @@
 {
+  "FinancingOwnFundsPledgeWarning.description": "Attention, vous pouvez nantir CHF {maxPledge} au maximum.",
   "CreateUserDialogForm.sendEnrollmentEmail": "Envoyer email d'invitation immédiatement",
   "CreateUserDialogForm.assignedEmployeeId": "Assigner à",
   "AdminLayout.title": "Admin",

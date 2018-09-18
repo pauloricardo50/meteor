@@ -61,6 +61,7 @@ import FilterList from '@material-ui/icons/FilterList';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Domain from '@material-ui/icons/Domain';
+import Info from '@material-ui/icons/Info';
 
 const iconMap = {
   close: CloseIcon,
@@ -124,6 +125,7 @@ const iconMap = {
   arrowUp: ArrowUpward,
   arrowDown: ArrowDownward,
   domain: Domain,
+  info: Info
 };
 
 const Icon = ({ type, size, ...props }) => {
