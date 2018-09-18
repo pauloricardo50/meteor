@@ -3,14 +3,41 @@ import { compose, withProps } from 'recompose';
 import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
-import {
-  calculateMissingOwnFunds,
-  calculateRequiredOwnFunds,
-} from '../ownFundsHelpers';
+import { calculateRequiredOwnFunds } from '../ownFundsHelpers';
 import {
   getCurrentPledgedFunds,
   getMaxPledge,
 } from './FinancingOwnFundsPickerHelpers';
+
+const removePreviousValueEffect = ({ props, ownFundsIndex, ownFunds }) => {
+  let requiredChange = 0;
+  let currentChange = 0;
+  // Editing existing value, cancel its effect
+  const previousIsPledged = ownFunds[ownFundsIndex].usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE;
+
+  if (previousIsPledged) {
+    const maxPledge = getMaxPledge(props);
+    const previousPledgedValue = ownFunds[ownFundsIndex].value;
+    requiredChange = Math.min(previousPledgedValue, maxPledge);
+  } else {
+    currentChange = -ownFunds[ownFundsIndex].value;
+  }
+
+  return { requiredChange, currentChange };
+};
+
+const removePledgingEffect = ({ props, ownFunds, ownFundsIndex, value }) => {
+  const maxPledge = getMaxPledge(props);
+  const currentPledgedFunds = getCurrentPledgedFunds({
+    ownFunds,
+    ownFundsIndex,
+  });
+
+  return {
+    requiredChange: -Math.min(currentPledgedFunds + (value || 0), maxPledge),
+    currentChange: -value || 0,
+  };
+};
 
 export const getRequiredAndCurrentFunds = (props) => {
   const {
@@ -19,31 +46,35 @@ export const getRequiredAndCurrentFunds = (props) => {
     ownFundsIndex,
     usageType,
   } = props;
-  let pledgeAjustedValue = value || 0; // Avoid initialization issues
-  let newPledgeCoveredValue = 0;
-  let initialDiscountedValue = ownFundsIndex < 0 ? 0 : ownFunds[ownFundsIndex].value;
-  const fundsToAdd = calculateMissingOwnFunds(props);
-  const required = calculateRequiredOwnFunds(props);
+  let required = calculateRequiredOwnFunds(props);
+  const previousNonPledgedFunds = ownFunds
+    .filter(({ usageType: uT }) => uT !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+    .reduce((sum, { value: v }) => sum + v, 0);
+  let current = previousNonPledgedFunds + (value || 0);
+  const isEditing = ownFundsIndex >= 0;
 
-  if (usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE) {
-    const currentPledgedFunds = getCurrentPledgedFunds({
-      ownFunds,
+  if (isEditing) {
+    const { requiredChange, currentChange } = removePreviousValueEffect({
+      props,
       ownFundsIndex,
+      ownFunds,
     });
-    const maxPledge = getMaxPledge(props);
-    initialDiscountedValue = 0;
-    pledgeAjustedValue = 0;
-    newPledgeCoveredValue = Math.min(
-      currentPledgedFunds + value || 0,
-      maxPledge,
-    ); // Avoid initialization issues
+    required += requiredChange;
+    current += currentChange;
   }
 
-  return {
-    required: required - newPledgeCoveredValue,
-    current:
-      required - fundsToAdd - initialDiscountedValue + pledgeAjustedValue,
-  };
+  if (usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE) {
+    const { requiredChange, currentChange } = removePledgingEffect({
+      props,
+      ownFunds,
+      ownFundsIndex,
+      value,
+    });
+    required += requiredChange;
+    current += currentChange;
+  }
+
+  return { required, current };
 };
 
 const OwnFundsCompleterContainer = compose(

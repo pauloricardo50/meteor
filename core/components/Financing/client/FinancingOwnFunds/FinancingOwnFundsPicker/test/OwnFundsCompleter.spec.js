@@ -9,7 +9,7 @@ import {
   OWN_FUNDS_TYPES,
 } from '../../../../../../api/constants';
 
-describe('OwnFundsCompleter', () => {
+describe.only('OwnFundsCompleter', () => {
   describe('getRequiredAndCurrentFunds', () => {
     let props;
 
@@ -70,6 +70,18 @@ describe('OwnFundsCompleter', () => {
         });
       });
 
+      it('counts other values, even if value is undefined', () => {
+        props.structure.ownFunds = [
+          { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+        ];
+        props.ownFundsIndex = -1;
+        props.value = undefined;
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 250000,
+          current: 150000,
+        });
+      });
+
       it('does not count other pledged values', () => {
         props.structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
@@ -125,7 +137,36 @@ describe('OwnFundsCompleter', () => {
         });
       });
 
-      it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge', () => {
+      it('works if changing a wrong pledged amount', () => {
+        props.structure.wantedLoan = 900000;
+        props.structure.ownFunds = [
+          { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+        ];
+        props.ownFundsIndex = 0;
+        props.value = 100000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 150000,
+          current: 0,
+        });
+      });
+
+      // Show warning instead
+      it.skip('works if adding a wrong pledged amount twice', () => {
+        props.structure.wantedLoan = 900000;
+        props.structure.ownFunds = [
+          { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+        ];
+        props.ownFundsIndex = -1;
+        props.value = 200000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 150000,
+          current: 0,
+        });
+      });
+
+      it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge 1', () => {
         props.structure.ownFunds = [
           { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
           { value: 150000 },
@@ -139,7 +180,7 @@ describe('OwnFundsCompleter', () => {
         });
       });
 
-      it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge', () => {
+      it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge 2', () => {
         props.structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
           { value: 150000 },
@@ -192,6 +233,61 @@ describe('OwnFundsCompleter', () => {
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
           required: 150000,
           current: 150000,
+        });
+      });
+
+      it('works when changing withdraw to pledge', () => {
+        props.properties[0].value = 500000;
+        props.structure.wantedLoan = 400000;
+        props.structure.ownFunds = [
+          {
+            value: 75000,
+            type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+            borrowerId: 'bId',
+          },
+          {
+            value: 50000,
+            type: OWN_FUNDS_TYPES.INSURANCE_2,
+            usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+            borrowerId: 'bId',
+          },
+        ];
+        props.ownFundsIndex = 1;
+        props.value = 50000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
+        props.borrowers = [{ _id: 'bId' }];
+
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 75000,
+          current: 75000,
+        });
+      });
+
+      it('works when changing pledge to withdraw', () => {
+        props.properties[0].value = 500000;
+        props.structure.wantedLoan = 450000;
+        props.structure.ownFunds = [
+          {
+            value: 75000,
+            type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+            borrowerId: 'bId',
+          },
+          {
+            value: 50000,
+            type: OWN_FUNDS_TYPES.INSURANCE_2,
+            usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+            borrowerId: 'bId',
+          },
+        ];
+        props.ownFundsIndex = 1;
+        props.type = OWN_FUNDS_TYPES.INSURANCE_2;
+        props.value = 50000;
+        props.usageType = OWN_FUNDS_USAGE_TYPES.WITHDRAW;
+        props.borrowers = [{ _id: 'bId' }];
+
+        expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
+          required: 125000,
+          current: 125000,
         });
       });
     });
