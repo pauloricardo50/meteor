@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'core/components/Material/Dialog';
-import Button from 'core/components/Button';
-import TextField from 'core/components/Material/TextField';
-import T from 'core/components/Translation';
+import message from '../utils/message';
+import Dialog from './Material/Dialog';
+import Button from './Button';
+import TextField from './Material/TextField';
+import T from './Translation';
 
 export default class ConfirmMethod extends Component {
   state = {
@@ -19,13 +20,15 @@ export default class ConfirmMethod extends Component {
   handleClose = () => this.setState({ open: false });
 
   handleSubmit = (event) => {
-    const { keyword } = this.props;
+    const { keyword, method } = this.props;
     if (event) {
       event.preventDefault();
     }
 
     if (this.shouldAllowSubmit(keyword)) {
-      this.props.method().then(() => this.setState({ open: false }));
+      method()
+        .then(() => this.setState({ open: false }))
+        .then(() => message.success('Succès !', 2));
     }
   };
 
