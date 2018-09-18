@@ -5,6 +5,7 @@ import omit from 'lodash/omit';
 
 import { BorrowerSchemaAdmin } from 'core/api/borrowers/borrowers';
 import { borrowerUpdate } from 'core/api';
+import message from 'core/utils/message';
 import AutoField from './AutoField';
 
 type BorrowerFormProps = {};
@@ -53,6 +54,14 @@ const otherSchema = BorrowerSchemaAdmin.omit(
   ...financeFields,
 );
 
+const handleSubmit = borrowerId => (doc) => {
+  const hideLoader = message.loading('...', 0);
+  return borrowerUpdate
+    .run({ borrowerId, object: omit(doc, grapherLinks) })
+    .finally(hideLoader)
+    .then(() => message.success('Enregistré', 2));
+};
+
 const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
   <div className="borrower-admin-form">
     <div>
@@ -60,12 +69,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
       <AutoForm
         schema={BorrowerSchemaAdmin.pick(...personalFields)}
         model={borrower}
-        onSubmit={doc =>
-          borrowerUpdate.run({
-            borrowerId: borrower._id,
-            object: omit(doc, grapherLinks),
-          })
-        }
+        onSubmit={handleSubmit(borrower._id)}
         className="form"
         autoField={AutoField}
       />
@@ -75,12 +79,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
       <AutoForm
         schema={BorrowerSchemaAdmin.pick(...financeFields)}
         model={borrower}
-        onSubmit={doc =>
-          borrowerUpdate.run({
-            borrowerId: borrower._id,
-            object: omit(doc, grapherLinks),
-          })
-        }
+        onSubmit={handleSubmit(borrower._id)}
         className="form"
         autoField={AutoField}
       />
@@ -91,12 +90,7 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
         <AutoForm
           schema={otherSchema}
           model={borrower}
-          onSubmit={doc =>
-            borrowerUpdate.run({
-              borrowerId: borrower._id,
-              object: omit(doc, grapherLinks),
-            })
-          }
+          onSubmit={handleSubmit(borrower._id)}
           className="form"
           autoField={AutoField}
         />

@@ -5,6 +5,7 @@ import omit from 'lodash/omit';
 
 import { PropertySchemaAdmin } from 'core/api/properties/properties';
 import { propertyUpdate } from 'core/api';
+import message from 'core/utils/message';
 import AutoField from './AutoField';
 
 type BorrowerFormProps = {};
@@ -48,6 +49,14 @@ const grapherLinks = ['loans', 'user', 'documents'];
 
 const otherSchema = PropertySchemaAdmin.omit(...baseFields, ...detailFields);
 
+const handleSubmit = propertyId => (doc) => {
+  const hideLoader = message.loading('...', 0);
+  return propertyUpdate
+    .run({ propertyId, object: omit(doc, grapherLinks) })
+    .finally(hideLoader)
+    .then(() => message.success('Enregistré', 2));
+};
+
 const BorrowerForm = ({ property }: BorrowerFormProps) => (
   <div className="property-admin-form">
     <div>
@@ -55,12 +64,7 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
       <AutoForm
         schema={PropertySchemaAdmin.pick(...baseFields)}
         model={property}
-        onSubmit={doc =>
-          propertyUpdate.run({
-            propertyId: property._id,
-            object: omit(doc, grapherLinks),
-          })
-        }
+        onSubmit={handleSubmit(property._id)}
         className="form"
         autoField={AutoField}
       />
@@ -70,12 +74,7 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
       <AutoForm
         schema={PropertySchemaAdmin.pick(...detailFields)}
         model={property}
-        onSubmit={doc =>
-          propertyUpdate.run({
-            propertyId: property._id,
-            object: omit(doc, grapherLinks),
-          })
-        }
+        onSubmit={handleSubmit(property._id)}
         className="form"
         autoField={AutoField}
       />
@@ -86,12 +85,7 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
         <AutoForm
           schema={otherSchema}
           model={property}
-          onSubmit={doc =>
-            propertyUpdate.run({
-              propertyId: property._id,
-              object: omit(doc, grapherLinks),
-            })
-          }
+          onSubmit={handleSubmit(property._id)}
           className="form"
           autoField={AutoField}
         />
