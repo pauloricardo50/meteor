@@ -4,6 +4,7 @@ import AutoForm from 'uniforms-material/AutoForm';
 import omit from 'lodash/omit';
 
 import Tabs from 'core/components/Tabs';
+import message from 'core/utils/message';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
 import { loanUpdate } from 'core/api/loans/index';
 import { BorrowerSchema } from 'core/api/borrowers/borrowers';
@@ -24,17 +25,19 @@ const DevTab = ({ loan }: DevTabProps) => (
             schema={LoanSchema}
             model={loan}
             onSubmit={doc =>
-              loanUpdate.run({
-                loanId: loan._id,
-                object: omit(doc, [
-                  'borrowers',
-                  'properties',
-                  'structure',
-                  'offers',
-                  'user',
-                  'documents',
-                ]),
-              })
+              loanUpdate
+                .run({
+                  loanId: loan._id,
+                  object: omit(doc, [
+                    'borrowers',
+                    'properties',
+                    'structure',
+                    'offers',
+                    'user',
+                    'documents',
+                  ]),
+                })
+                .then(() => message('Done', 2))
             }
           />
         ),
@@ -47,10 +50,12 @@ const DevTab = ({ loan }: DevTabProps) => (
             schema={PropertySchema}
             model={property}
             onSubmit={doc =>
-              propertyUpdate.run({
-                propertyId: property._id,
-                object: omit(doc, ['loans', 'user', 'documents']),
-              })
+              propertyUpdate
+                .run({
+                  propertyId: property._id,
+                  object: omit(doc, ['loans', 'user', 'documents']),
+                })
+                .then(() => message('Done', 2))
             }
           />
         ),
@@ -63,10 +68,12 @@ const DevTab = ({ loan }: DevTabProps) => (
             schema={BorrowerSchema}
             model={borrower}
             onSubmit={doc =>
-              borrowerUpdate.run({
-                borrowerId: borrower._id,
-                object: omit(doc, ['loans', 'user', 'documents']),
-              })
+              borrowerUpdate
+                .run({
+                  borrowerId: borrower._id,
+                  object: omit(doc, ['loans', 'user', 'documents']),
+                })
+                .then(() => message('Done', 2))
             }
           />
         ),
@@ -79,10 +86,12 @@ const DevTab = ({ loan }: DevTabProps) => (
             schema={OfferSchema}
             model={offer}
             onSubmit={doc =>
-              offerUpdate.run({
-                offerId: offer._id,
-                object: omit(doc, ['loan', 'user', 'documents']),
-              })
+              offerUpdate
+                .run({
+                  offerId: offer._id,
+                  object: omit(doc, ['loan', 'user', 'documents']),
+                })
+                .then(() => message('Done', 2))
             }
           />
         ),

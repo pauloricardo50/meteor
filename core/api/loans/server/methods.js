@@ -69,11 +69,6 @@ confirmClosing.setHandler((context, { loanId, object }) => {
   return LoanService.confirmClosing({ loanId, object });
 });
 
-loanChangeAdminNote.setHandler((context, { loanId, adminNote }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.update({ loanId, object: { adminNote } });
-});
-
 pushLoanValue.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.pushValue({ loanId, object });

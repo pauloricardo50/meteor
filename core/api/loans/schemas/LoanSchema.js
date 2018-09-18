@@ -29,7 +29,6 @@ const LoanSchema = new SimpleSchema({
   general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
-  adminNote: { type: String, defaultValue: '', optional: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,

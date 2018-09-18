@@ -68,14 +68,6 @@ export const confirmClosing = new Method({
   },
 });
 
-export const loanChangeAdminNote = new Method({
-  name: 'loanChangeAdminNote',
-  params: {
-    loanId: String,
-    adminNote: String,
-  },
-});
-
 export const pushLoanValue = new Method({
   name: 'pushLoanValue',
   params: {

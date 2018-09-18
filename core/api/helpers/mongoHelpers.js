@@ -41,10 +41,7 @@ export const createdAt = {
     if (this.isInsert) {
       return new Date();
     }
-    if (this.isUpsert) {
-      return { $setOnInsert: new Date() };
-    }
-    this.unset();
+    // this.unset();
   },
   optional: true,
 };

@@ -25,7 +25,6 @@ export const sideNavLoanFragment = {
 
 export const adminLoanFragment = {
   ...userLoanFragment,
-  adminNote: 1,
   properties: adminPropertyFragment,
 };
 
