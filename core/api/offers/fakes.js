@@ -49,7 +49,7 @@ export const getRandomOffer = ({ loan }) => {
     organization: 'fake',
     loanId: loan._id,
     maxAmount: maxAmountLimited,
-    amortization: loanWanted * 0.0125,
+    amortization: Math.round(loanWanted * 0.0125),
     interestLibor: rate1,
     interest1: round(rate1 + rand(0.0004, 0.0016)),
     interest2: round(rate1 + rand(0.0016, 0.004)),
