@@ -4,7 +4,7 @@ export const createdAt = {
     if (this.isInsert) {
       return new Date();
     }
-    // this.unset();
+    this.unset();
   },
   optional: true,
 };

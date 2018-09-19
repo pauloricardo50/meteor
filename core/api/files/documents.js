@@ -165,7 +165,7 @@ const flattenDocumentsByStep = (documentsObject, step) => {
   );
 };
 
-const makeGetDocumentsList = collection => ({ loan, id }) => {
+const makeGetDocuments = collection => ({ loan, id }) => {
   let documents;
   const isLoans = collection === LOANS_COLLECTION;
   if (!id && !isLoans) {
@@ -201,6 +201,6 @@ const makeGetDocumentsList = collection => ({ loan, id }) => {
   ];
 };
 
-export const getPropertyDocuments = makeGetDocumentsList(PROPERTIES_COLLECTION);
-export const getBorrowerDocuments = makeGetDocumentsList(BORROWERS_COLLECTION);
-export const getLoanDocuments = makeGetDocumentsList(LOANS_COLLECTION);
+export const getPropertyDocuments = makeGetDocuments(PROPERTIES_COLLECTION);
+export const getBorrowerDocuments = makeGetDocuments(BORROWERS_COLLECTION);
+export const getLoanDocuments = makeGetDocuments(LOANS_COLLECTION);
