@@ -1,5 +1,6 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
+import { getBorrowerDocuments } from 'imports/core/api/files/documents';
 import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
@@ -71,11 +72,19 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       / 2;
 
     getBorrowerFilesProgress({ borrowers }) {
-      return filesPercent({
-        doc: borrowers,
-        fileArrayFunc: borrowerDocuments,
-        step: FILE_STEPS.AUCTION,
-      });
+      return arrayify(borrowers).reduce(
+        (total, borrower, index, array) =>
+          total
+          + filesPercent({
+            fileArray:
+              getBorrowerDocuments({
+                loan: { borrowers },
+                id: borrower._id,
+              }) / array.length,
+            doc: borrower,
+          }),
+        0,
+      );
     }
 
     isTypeWithArrayValues = type =>
@@ -136,8 +145,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           ...missingIds,
           ...getMissingDocumentIds({
             doc: borrower,
-            fileArrayFunc: borrowerDocuments,
-            step: FILE_STEPS.AUCTION,
+            fileArray: getBorrowerDocuments({
+              loan: { borrowers },
+              id: borrower._id,
+            }),
           }),
         ],
         [],

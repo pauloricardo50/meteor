@@ -1,4 +1,5 @@
 // @flow
+import { getPropertyDocuments } from 'imports/core/api/files/documents';
 import {
   getPropertyArray,
   getPropertyLoanArray,
@@ -71,8 +72,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return filesPercent({
         doc: propertyToCalculateWith,
-        fileArrayFunc: propertyDocuments,
-        step: FILE_STEPS.AUCTION,
+        fileArray: getPropertyDocuments({
+          loan,
+          id: propertyToCalculateWith._id,
+        }),
       });
     }
 
@@ -86,6 +89,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         property: propertyToCalculateWith,
       });
       const filesProgress = this.getPropertyFilesProgress({
+        loan,
         property: propertyToCalculateWith,
       });
 
@@ -125,8 +129,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return getMissingDocumentIds({
         doc: propertyToCalculateWith,
-        fileArrayFunc: propertyDocuments,
-        step: FILE_STEPS.AUCTION,
+        fileArray: getPropertyArray({
+          loan,
+          docId: propertyToCalculateWith._id,
+        }),
       });
     }
   };
