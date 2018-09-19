@@ -5,7 +5,7 @@ import { MIGRATIONS } from './migrationConstants';
 import { STEP_ORDER } from '../loans/loanConstants';
 
 Migrations.add({
-  version: MIGRATIONS['1.2.1'],
+  version: MIGRATIONS['1.3'],
   name: 'Change loan.logic.step from number to a string',
   up: () => {
     Loans.find({}).forEach((loan) => {
@@ -14,13 +14,17 @@ Migrations.add({
       });
     });
 
-    Borrowers.find({}).forEach((borrower) => {
-      Borrowers.update(borrower._id, { $set: { additionalDocuments: [] } });
-    });
+    Borrowers.update(
+      {},
+      { $set: { additionalDocuments: [] } },
+      { multi: true },
+    );
 
-    Properties.find({}).forEach((property) => {
-      Properties.update(property._id, { $set: { additionalDocuments: [] } });
-    });
+    Properties.update(
+      {},
+      { $set: { additionalDocuments: [] } },
+      { multi: true },
+    );
   },
   down: () => {
     Loans.find({}).forEach((loan) => {
@@ -29,14 +33,18 @@ Migrations.add({
       });
     });
 
-    Borrowers.find({}).forEach((borrower) => {
-      Borrowers.update(borrower._id, { $unset: { additionalDocuments: true } });
-    });
+    Borrowers.update(
+      {},
+      { $unset: { additionalDocuments: true } },
+      { multi: true },
+    );
 
-    Properties.find({}).forEach((property) => {
-      Properties.update(property._id, {
+    Properties.update(
+      {},
+      {
         $unset: { additionalDocuments: true },
-      });
-    });
+      },
+      { multi: true },
+    );
   },
 });
