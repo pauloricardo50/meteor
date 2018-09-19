@@ -166,6 +166,7 @@ const flattenDocumentsByStep = (documentsObject, step) => {
 };
 
 const makeGetDocumentsList = collection => ({ loan, id }) => {
+  console.log('collection', collection);
   let documents;
   const isLoans = collection === LOANS_COLLECTION;
   if (!id && !isLoans) {
@@ -182,6 +183,7 @@ const makeGetDocumentsList = collection => ({ loan, id }) => {
   if (collection === BORROWERS_COLLECTION) {
     const allBorrowerDocuments = borrowerDocuments(doc);
     documents = flattenDocumentsByStep(allBorrowerDocuments, step);
+    console.log('documents', documents);
   }
   if (collection === LOANS_COLLECTION) {
     const allLoanDocuments = loanDocuments(loan);

@@ -7,8 +7,6 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import { getBorrowerInfoArray } from '../../arrays/BorrowerFormArray';
-import { borrowerDocuments } from '../../api/files/documents';
-import { FILE_STEPS } from '../../api/constants';
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
@@ -27,7 +25,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }
     }
 
-    getArrayValues = ({ borrowers, key, mapFunc }) => {
+    getArrayValues({ borrowers, key, mapFunc }) {
       let sum = 0;
 
       arrayify(borrowers).forEach((borrower) => {
@@ -42,9 +40,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
 
       return Math.max(0, Math.round(sum));
-    };
+    }
 
-    getBonusIncome = ({ borrowers }) => {
+    getBonusIncome({ borrowers }) {
       const bonusKeys = ['bonus2015', 'bonus2016', 'bonus2017', 'bonus2018'];
       const total = arrayify(borrowers).reduce((acc, borrower) => {
         if (!borrower.bonusExists) {
@@ -64,27 +62,25 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }, 0);
 
       return Math.max(0, Math.round(total));
-    };
+    }
 
-    getBorrowerCompletion = ({ borrowers }) =>
-      (this.getBorrowerFilesProgress({ borrowers })
-        + this.personalInfoPercent({ borrowers }))
-      / 2;
-
-    getBorrowerFilesProgress({ borrowers }) {
-      return arrayify(borrowers).reduce(
-        (total, borrower, index, array) =>
-          total
-          + filesPercent({
-            fileArray:
-              getBorrowerDocuments({
-                loan: { borrowers },
-                id: borrower._id,
-              }) / array.length,
-            doc: borrower,
-          }),
-        0,
+    getBorrowerCompletion({ loan, borrowers }) {
+      return (
+        (this.getBorrowerFilesProgress({ loan, borrowers })
+          + this.personalInfoPercent({ borrowers }))
+        / 2
       );
+    }
+
+    getBorrowerFilesProgress({ loan, borrowers }) {
+      return arrayify(borrowers).reduce((total, borrower, index, array) => (
+        total
+          + filesPercent({
+            fileArray: getBorrowerDocuments({ loan, id: borrower._id }),
+            doc: borrower,
+          })
+            / array.length
+      ), 0);
     }
 
     isTypeWithArrayValues = type =>
@@ -95,42 +91,58 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         OWN_FUNDS_TYPES.INSURANCE_3B,
       ].includes(type);
 
-    getFunds = ({ borrowers, type }) => {
+    getFunds({ borrowers, type }) {
       if (this.isTypeWithArrayValues(type)) {
         return this.getArrayValues({ borrowers, key: type });
       }
 
       return this.sumValues({ borrowers, keys: type });
-    };
+    }
 
-    getFortune = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
+    getFortune({ borrowers }) {
+      return this.sumValues({ borrowers, keys: OWN_FUNDS_TYPES.BANK_FORTUNE });
+    }
 
-    getExpenses = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'expenses' });
+    getExpenses({ borrowers }) {
+      return this.getArrayValues({ borrowers, key: 'expenses' });
+    }
 
-    getInsurance2 = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.INSURANCE_2 });
+    getInsurance2({ borrowers }) {
+      return this.getArrayValues({
+        borrowers,
+        key: OWN_FUNDS_TYPES.INSURANCE_2,
+      });
+    }
 
-    getInsurance3A = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.INSURANCE_3A });
+    getInsurance3A({ borrowers }) {
+      return this.getArrayValues({
+        borrowers,
+        key: OWN_FUNDS_TYPES.INSURANCE_3A,
+      });
+    }
 
-    getBank3A = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.BANK_3A });
+    getBank3A({ borrowers }) {
+      return this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.BANK_3A });
+    }
 
-    getInsurance3B = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: OWN_FUNDS_TYPES.INSURANCE_3B });
+    getInsurance3B({ borrowers }) {
+      return this.getArrayValues({
+        borrowers,
+        key: OWN_FUNDS_TYPES.INSURANCE_3B,
+      });
+    }
 
-    getInsuranceFortune = ({ borrowers }) =>
-      [
+    getInsuranceFortune({ borrowers }) {
+      return [
         this.getInsurance2,
         this.getInsurance3A,
         this.getInsurance3B,
         this.getBank3A,
       ].reduce((sum, func) => sum + func({ borrowers }), 0);
+    }
 
-    getMissingBorrowerFields = ({ borrowers }) =>
-      arrayify(borrowers).reduce((missingIds, borrower) => {
+    getMissingBorrowerFields({ borrowers }) {
+      return arrayify(borrowers).reduce((missingIds, borrower) => {
         const formArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: borrower._id,
@@ -138,55 +150,63 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
         return [...missingIds, ...getMissingFieldIds(formArray, borrower)];
       }, []);
+    }
 
-    getMissingBorrowerDocuments = ({ borrowers }) =>
-      arrayify(borrowers).reduce(
+    getMissingBorrowerDocuments({ loan, borrowers }) {
+      return arrayify(borrowers).reduce(
         (missingIds, borrower) => [
           ...missingIds,
           ...getMissingDocumentIds({
             doc: borrower,
             fileArray: getBorrowerDocuments({
-              loan: { borrowers },
+              loan,
               id: borrower._id,
             }),
           }),
         ],
         [],
       );
+    }
 
-    getOtherFortune = ({ borrowers }) =>
-      this.getArrayValues({
-        borrowers,
-        key: 'otherFortune',
-      });
+    getOtherFortune({ borrowers }) {
+      return this.getArrayValues({ borrowers, key: 'otherFortune' });
+    }
 
-    getOtherIncome = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'otherIncome' });
+    getOtherIncome({ borrowers }) {
+      return this.getArrayValues({ borrowers, key: 'otherIncome' });
+    }
 
-    getTotalFunds = ({ borrowers }) =>
-      this.getFortune({ borrowers }) + this.getInsuranceFortune({ borrowers });
+    getTotalFunds({ borrowers }) {
+      return (
+        this.getFortune({ borrowers }) + this.getInsuranceFortune({ borrowers })
+      );
+    }
 
-    getRealEstateFortune = ({ borrowers }) =>
-      this.getArrayValues({
+    getRealEstateFortune({ borrowers }) {
+      return this.getArrayValues({
         borrowers,
         key: 'realEstate',
         mapFunc: i => i.value - i.loan,
       });
+    }
 
-    getRealEstateValue = ({ borrowers }) =>
-      this.getArrayValues({ borrowers, key: 'realEstate' });
+    getRealEstateValue({ borrowers }) {
+      return this.getArrayValues({ borrowers, key: 'realEstate' });
+    }
 
-    getRealEstateDebt = ({ borrowers }) =>
-      this.getArrayValues({
+    getRealEstateDebt({ borrowers }) {
+      return this.getArrayValues({
         borrowers,
         key: 'realEstate',
         mapFunc: i => i.loan,
       });
+    }
 
-    getSalary = ({ borrowers }) =>
-      this.sumValues({ borrowers, keys: 'salary' });
+    getSalary({ borrowers }) {
+      return this.sumValues({ borrowers, keys: 'salary' });
+    }
 
-    getTotalIncome = ({ borrowers }) => {
+    getTotalIncome({ borrowers }) {
       const sum = arrayify(borrowers).reduce((total, borrower) => {
         let borrowerIncome = 0;
         borrowerIncome += borrower.salary || 0;
@@ -197,7 +217,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }, 0);
 
       return sum;
-    };
+    }
 
     getYearsToRetirement() {
       // TODO
@@ -205,7 +225,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     // personalInfoPercent - Determines the completion rate of the borrower's
     // personal information forms
-    personalInfoPercent = ({ borrowers }) => {
+    personalInfoPercent({ borrowers }) {
       const a = [];
       arrayify(borrowers).forEach((b) => {
         const formArray = getBorrowerInfoArray({
@@ -216,14 +236,15 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
 
       return getPercent(a);
-    };
+    }
 
-    sumValues = ({ borrowers, keys }) =>
-      arrayify(keys).reduce(
+    sumValues({ borrowers, keys }) {
+      return arrayify(keys).reduce(
         (total, key) =>
           total + arrayify(borrowers).reduce((t, b) => t + (b[key] || 0), 0),
         0,
       );
+    }
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);

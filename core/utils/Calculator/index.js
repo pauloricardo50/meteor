@@ -1,5 +1,6 @@
 import { compose } from 'recompose';
 
+import MiddlewareManager from '../MiddlewareManager';
 import { FinanceCalculator } from '../FinanceCalculator';
 import { withLoanCalculator } from './LoanCalculator';
 import { withBorrowerCalculator } from './BorrowerCalculator';
@@ -28,6 +29,14 @@ export const Calculator = compose(
   withSelector,
 )(MappedFinanceCalculator);
 
-export default new Calculator({
-  borrowerMiddleware: borrowerExtractorMiddleware,
+class CalculatorWithMiddleWare extends Calculator {
+  constructor() {
+    super();
+    const middlewareManager = new MiddlewareManager(this);
+    middlewareManager.applyToAllMethods(borrowerExtractorMiddleware);
+  }
+}
+
+export default new CalculatorWithMiddleWare({
+  // borrowerMiddleware: borrowerExtractorMiddleware,
 });

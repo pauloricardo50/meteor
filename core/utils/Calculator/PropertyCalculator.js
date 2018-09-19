@@ -1,5 +1,4 @@
 // @flow
-import { getPropertyDocuments } from 'imports/core/api/files/documents';
 import {
   getPropertyArray,
   getPropertyLoanArray,
@@ -11,7 +10,7 @@ import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
-import { propertyDocuments } from '../../api/files/documents';
+import { getPropertyDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
 import MiddlewareManager from '../MiddlewareManager';
 
@@ -129,9 +128,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return getMissingDocumentIds({
         doc: propertyToCalculateWith,
-        fileArray: getPropertyArray({
+        fileArray: getPropertyDocuments({
           loan,
-          docId: propertyToCalculateWith._id,
+          id: propertyToCalculateWith._id,
         }),
       });
     }

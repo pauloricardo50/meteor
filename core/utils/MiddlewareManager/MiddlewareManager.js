@@ -44,6 +44,8 @@ class MiddlewareManager {
   applyToAllMethods(_middlewares: MiddlewareType) {
     const middlewares = this.arrayify(_middlewares);
     const methods = this.getAllMethodNames(this._target);
+    console.log('middlewares', middlewares);
+    console.log('methods', methods);
 
     methods.forEach(method => this.applyToMethod(method, middlewares));
 
