@@ -11,9 +11,9 @@ const LoanBankLoanInfo = ({
   assignedEmployee,
 }: LoanBankLoanInfoProps) => (
   <div className="loan-bank-pdf-info">
-    <h5>
+    <h3>
       {name} - Conseiller : {assignedEmployee}
-    </h5>
+    </h3>
   </div>
 );
 

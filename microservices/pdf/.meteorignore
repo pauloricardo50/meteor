@@ -1,0 +1,2 @@
+cypress/*/*/**
+!/cypress/server/server.app-tests.js

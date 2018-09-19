@@ -1,3 +1,1 @@
-import '../imports/startup/server/index';
-
-console.log('main');
+import '/imports/startup/server';

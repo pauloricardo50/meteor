@@ -1,3 +1,6 @@
-import '../../api/generatePDF/index';
+import 'core/api/api-server';
 
-console.log('startup');
+import '../shared-startup';
+import './kadira';
+
+import '../../api/generatePDF';

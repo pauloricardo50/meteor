@@ -1,18 +1,47 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-
 import base64 from 'base64topdf';
 
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 import PDFService from '../PDFService';
 import { PDF_TYPES } from '../constants';
 
+import {
+  getSingleBorrowerLoan,
+  getTwoBorrowersLoan,
+  getFullLoan,
+} from './testFactories';
+import { GENDER } from '../../../core/api/constants';
+import { FAKE_USER } from './testFactories/fakes';
+
 describe.only('GeneratePDFService', () => {
-  it('returns a base64 encoded PDF', () =>
-    PDFService.generateDataAsPDF({
+  beforeEach(() => {
+    resetDatabase();
+  });
+
+  it('returns a base64 encoded PDF', () => {
+    const loanId = getTwoBorrowersLoan([
+      {
+        borrowerInfos: { firstName: 'John', lastName: 'Doe', gender: GENDER.M },
+        withSalary: true,
+      },
+      {
+        borrowerInfos: {
+          firstName: 'Maria',
+          lastName: 'Doe',
+          gender: GENDER.F,
+        },
+        withBankFortune: true,
+      },
+    ]);
+
+    const loan = getFullLoan(loanId);
+
+    return PDFService.generateDataAsPDF({
       data: {
         loan: {
-          name: '18-0151',
-          user: { assignedEmployee: { name: 'Joel Santos' } },
+          ...loan,
+          ...FAKE_USER,
         },
       },
       type: PDF_TYPES.LOAN_BANK,
@@ -24,5 +53,6 @@ describe.only('GeneratePDFService', () => {
         );
         expect(base64.base64ToStr(response.base64)).to.include('PDF');
       })
-      .catch(console.log));
+      .catch(console.log);
+  });
 });

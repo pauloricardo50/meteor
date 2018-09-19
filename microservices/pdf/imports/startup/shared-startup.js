@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
-  Meteor.microservice = 'admin';
+  Meteor.microservice = 'pdf';
 });
