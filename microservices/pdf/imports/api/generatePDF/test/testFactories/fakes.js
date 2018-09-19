@@ -8,7 +8,7 @@ export const FAKE_INSURANCE_3A = { insurance3A: [{ value: 150000 }] };
 export const FAKE_BANK_3A = { bank3A: [{ value: 250000 }] };
 export const FAKE_INSURANCE_3B = { insurance3B: [{ value: 50000 }] };
 export const FAKE_THIRD_PARTY_FORTUNE = {
-  thirdPartyFortune: [{ value: 25000 }],
+  thirdPartyFortune: 5000,
 };
 export const FAKE_OTHER_INCOME = {
   otherIncome: [{ value: 150000 }, { value: 25000 }],
@@ -44,7 +44,7 @@ export const fakeBorrower = ({
   withInsurance3A,
   withBank3A,
   withInsurance3B,
-  withThirdPArtyFortune,
+  withThirdPartyFortune,
   withOtherIncome,
   withOtherFortune,
   withExpenses,
@@ -58,7 +58,7 @@ export const fakeBorrower = ({
   ...(withInsurance3A ? FAKE_INSURANCE_3A : {}),
   ...(withBank3A ? FAKE_BANK_3A : {}),
   ...(withInsurance3B ? FAKE_INSURANCE_3B : {}),
-  ...(withThirdPArtyFortune ? FAKE_THIRD_PARTY_FORTUNE : {}),
+  ...(withThirdPartyFortune ? FAKE_THIRD_PARTY_FORTUNE : {}),
   ...(withOtherIncome ? FAKE_OTHER_INCOME : {}),
   ...(withOtherFortune ? FAKE_OTHER_FORTUNE : {}),
   ...(withExpenses ? FAKE_EXPENSES : {}),

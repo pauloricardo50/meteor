@@ -24,6 +24,17 @@ describe.only('GeneratePDFService', () => {
       {
         borrowerInfos: { firstName: 'John', lastName: 'Doe', gender: GENDER.M },
         withSalary: true,
+        withBonus: true,
+        withBankFortune: true,
+        withInsurance2: true,
+        withInsurance3A: true,
+        withBank3A: true,
+        withInsurance3B: true,
+        withThirdPartyFortune: true,
+        withOtherIncome: true,
+        withOtherFortune: true,
+        withExpenses: true,
+        withRealEstate: true,
       },
       {
         borrowerInfos: {
@@ -31,9 +42,18 @@ describe.only('GeneratePDFService', () => {
           lastName: 'Doe',
           gender: GENDER.F,
         },
-        withBankFortune: true,
+        withSalary: true,
+        withInsurance2: true,
       },
     ]);
+
+    // const loanId = getSingleBorrowerLoan({
+    //   borrowerInfos: { firstName: 'John', lastName: 'Doe', gender: GENDER.M },
+    //   withSalary: true,
+    //   withBankFortune: true,
+    //   withOtherIncome: true,
+    //   withBonus: true,
+    // });
 
     const loan = getFullLoan(loanId);
 

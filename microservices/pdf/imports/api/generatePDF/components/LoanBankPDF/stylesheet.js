@@ -149,7 +149,7 @@ const RecapStyleSheet = `
 
 const stylesheet = `
     html {
-        font-size: 12px;
+        font-size: 10px;
     }
     .loan-bank-pdf {
         width: 500px;
@@ -173,7 +173,6 @@ const stylesheet = `
     .loan-bank-pdf-recaps {
         width:100%;
         ${flexRow}
-        ${alignItemsCenter}
         ${justifyContentFlexStart}
     }
     .loan-bank-pdf-borrowers {
@@ -184,8 +183,17 @@ const stylesheet = `
     .loan-bank-pdf-borrowers-recap {
         width: 100%;
         ${flexRow}
-        ${alignItemsCenter}
         ${justifyContentSpaceBetween}
+    }
+    .loan-bank-pdf-recap-single {
+        width: 50%;
+    }
+    .loan-bank-pdf-section-title {
+        width: 100%;
+        text-transform: uppercase;
+        background-color: #fafafa;
+        padding: 8px;
+        padding-left: 4px;
     }
     ${RecapStyleSheet}
 `;
