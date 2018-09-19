@@ -1,6 +1,10 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { createdAt, updatedAt } from '../helpers/mongoHelpers';
+import {
+  createdAt,
+  updatedAt,
+  additionalDocuments,
+} from '../helpers/sharedSchemas';
 import {
   BORROWERS_COLLECTION,
   RESIDENCY_PERMIT,
@@ -202,6 +206,7 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
+  ...additionalDocuments,
 });
 
 const protectedKeys = [

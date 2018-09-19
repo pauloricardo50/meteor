@@ -1,0 +1,9 @@
+.single-file-tab {
+  display: flex;
+  flex-direction: column;
+
+  .additional-doc-adder {
+    align-self: center;
+    margin: 16px;
+  }
+}

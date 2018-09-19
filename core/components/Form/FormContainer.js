@@ -7,9 +7,10 @@ export default compose(
   withProps(({ formArray, intl: { formatMessage }, intlPrefix, onSubmit }) => ({
     formArray: formArray.map(field => ({
       ...field,
-      placeholder: field.placeholder
-        ? formatMessage({ id: `${intlPrefix}.${field.id}.placeholder` })
-        : undefined,
+      placeholder:
+        field.placeholder === true
+          ? formatMessage({ id: `${intlPrefix}.${field.id}.placeholder` })
+          : field.placeholder,
     })),
     onSubmit: (...args) =>
       onSubmit(...args).catch((submitError) => {

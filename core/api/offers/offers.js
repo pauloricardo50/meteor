@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
-import { createdAt, updatedAt } from '../helpers/mongoHelpers';
+import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 

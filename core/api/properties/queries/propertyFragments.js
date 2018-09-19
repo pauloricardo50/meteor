@@ -29,6 +29,7 @@ export const propertySummaryFragment = {
 
 export const fullPropertyFragment = {
   ...propertySummaryFragment,
+  additionalDocuments: 1,
   adminValidation: 1,
   areaNorm: 1,
   constructionYear: 1,

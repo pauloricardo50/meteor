@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
-import UploaderArray from 'core/components/UploaderArray';
 import Calculator from 'core/utils/Calculator';
 import {
   getDocumentArrayByStep,
@@ -15,6 +14,7 @@ import ClientEventService, {
 } from 'core/api/events/ClientEventService';
 import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
+import SingleFileTab from './SingleFileTab';
 
 const FileTabs = ({ loan, borrowers, property, disabled }) => (
   <div className="files-tab">
@@ -33,7 +33,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             />
           ),
           content: (
-            <UploaderArray
+            <SingleFileTab
               doc={borrower}
               collection="borrowers"
               disabled={disabled}
@@ -52,7 +52,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             />
           ),
           content: (
-            <UploaderArray
+            <SingleFileTab
               doc={property}
               collection="properties"
               disabled={disabled}
@@ -71,7 +71,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             />
           ),
           content: (
-            <UploaderArray
+            <SingleFileTab
               doc={loan}
               collection="loans"
               disabled={disabled}
