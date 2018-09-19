@@ -12,8 +12,8 @@ const DashboardProgressBar = ({ currentStep }) => (
         <DashboardProgressBarStep
           isDone={currentStep > index}
           step={step}
-          key={step.id}
-          id={step.id}
+          key={step}
+          id={step}
           nb={index + 1}
         />
       ))}

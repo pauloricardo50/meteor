@@ -7,3 +7,10 @@
     margin: 16px;
   }
 }
+
+.file-tab-label {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}

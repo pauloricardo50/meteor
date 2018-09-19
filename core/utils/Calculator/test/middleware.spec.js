@@ -20,12 +20,21 @@ describe('Calculator middleware', () => {
       paramz2 = params => params;
     }
 
-    it('changes arguments', () => {
+    it('extracts borrower', () => {
       const calc = new Calc();
 
       expect(calc.paramz({ loan: { borrowers: 1 } })).to.deep.equal({
         loan: { borrowers: 1 },
         borrowers: 1,
+      });
+    });
+
+    it('does not overwrite existing borrowers', () => {
+      const calc = new Calc();
+
+      expect(calc.paramz({ loan: { borrowers: 1 }, borrowers: 2 })).to.deep.equal({
+        loan: { borrowers: 1 },
+        borrowers: 2,
       });
     });
 
