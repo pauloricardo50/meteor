@@ -13,7 +13,7 @@ import {
 } from '../../documents';
 import { DOCUMENTS } from '../../fileConstants';
 
-describe.only('documents', () => {
+describe('documents', () => {
   describe('document integrity', () => {
     it('all document ids are defined', () => {
       loanDocuments({ general: {} })

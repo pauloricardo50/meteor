@@ -4,13 +4,11 @@ import {
   loanInsert,
   loanUpdate,
   loanDelete,
-  incrementLoanStep,
   requestLoanVerification,
   startAuction,
   endAuction,
   cancelAuction,
   confirmClosing,
-  loanChangeAdminNote,
   pushLoanValue,
   popLoanValue,
   disableUserForms,
@@ -37,11 +35,6 @@ loanUpdate.setHandler((context, { loanId, object }) => {
 loanDelete.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToDelete(loanId);
   return LoanService.remove({ loanId });
-});
-
-incrementLoanStep.setHandler((context, { loanId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.incrementStep({ loanId });
 });
 
 requestLoanVerification.setHandler((context, { loanId }) => {

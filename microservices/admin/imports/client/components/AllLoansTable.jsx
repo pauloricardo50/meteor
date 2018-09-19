@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import Table from 'core/components/Table';
-import { IntlNumber } from 'core/components/Translation';
+import T, { IntlNumber } from 'core/components/Translation';
 
 const columnOptions = [
   { id: 'No.' },
@@ -37,7 +37,7 @@ export default class AllLoansTable extends Component {
         loan.name,
         moment(loan.createdAt).format('D MMM YY à HH:mm:ss'),
         moment(loan.updatedAt).format('D MMM YY à HH:mm:ss'),
-        loan.logic.step + 1,
+        <T id={`Forms.steps.${loan.logic.step}`} key="step" />,
         loan.structure.property ? loan.structure.property.value : 0,
         loan.structure.wantedLoan,
       ],

@@ -1,6 +1,7 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
+import { STEPS } from 'core/api/loans/loanConstants';
 import { TASK_STATUS, TASK_TYPE } from './tasks/taskConstants';
 import Loans from './loans';
 import Borrowers from './borrowers';
@@ -54,7 +55,7 @@ Factory.define('loan', Loans, {
   logic: () => ({
     auction: { status: '' },
     verification: {},
-    step: 1,
+    step: STEPS.PREPARATION,
   }),
   name: () => faker.random.uuid(),
   emails: () => [],

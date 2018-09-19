@@ -54,10 +54,6 @@ export class LoanService {
     return loanId;
   };
 
-  // TODO: make sure step is really done
-  incrementStep = ({ loanId }) =>
-    this.update({ loanId, operator: '$inc', object: { 'logic.step': 1 } });
-
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
 
