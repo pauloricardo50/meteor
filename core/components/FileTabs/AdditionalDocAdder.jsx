@@ -9,7 +9,7 @@ type AdditionalDocAdderProps = {};
 
 const formArray = [
   {
-    id: 'name',
+    id: 'label',
     label: 'Nom du document supplémentaire',
     placeholder: "p.ex. Annexes déclaration d'impôts",
   },

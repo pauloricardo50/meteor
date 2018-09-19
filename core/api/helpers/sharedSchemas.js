@@ -24,5 +24,5 @@ export const additionalDocuments = {
   additionalDocuments: { type: Array, defaultValue: [] },
   'additionalDocuments.$': Object,
   'additionalDocuments.$.id': String,
-  'additionalDocuments.$.name': String,
+  'additionalDocuments.$.label': String,
 };

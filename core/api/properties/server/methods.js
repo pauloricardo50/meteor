@@ -6,6 +6,7 @@ import {
   propertyDelete,
   pushPropertyValue,
   popPropertyValue,
+  pullPropertyValue,
   evaluateProperty,
   propertyDataIsInvalid,
 } from '../methodDefinitions';
@@ -33,7 +34,12 @@ pushPropertyValue.setHandler((context, { propertyId, object }) => {
 
 popPropertyValue.setHandler((context, { propertyId, object }) => {
   SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.pushValue({ propertyId, object });
+  return PropertyService.popValue({ propertyId, object });
+});
+
+pullPropertyValue.setHandler((context, { propertyId, object }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId);
+  return PropertyService.pullValue({ propertyId, object });
 });
 
 evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {

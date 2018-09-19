@@ -5,8 +5,8 @@ import { pushPropertyValue, pushBorrowerValue } from '../../api/methods/index';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
 
 export default withProps(({ docId, collection }) => ({
-  onSubmit: ({ name }) => {
-    const object = { additionalDocuments: { id: Random.id(), name } };
+  onSubmit: ({ label }) => {
+    const object = { additionalDocuments: { id: Random.id(), label } };
     if (collection === PROPERTIES_COLLECTION) {
       return pushPropertyValue.run({ propertyId: docId, object });
     }

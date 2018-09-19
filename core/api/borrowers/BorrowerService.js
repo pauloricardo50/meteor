@@ -20,6 +20,9 @@ export class BorrowerService {
 
   popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });
+
+  pullValue = ({ borrowerId, object }) =>
+    Borrowers.update(borrowerId, { $pull: object });
 }
 
 export default new BorrowerService();

@@ -194,6 +194,7 @@ const makeGetDocumentsList = collection => ({ loan, id }) => {
       ? doc.additionalDocuments.map(additionalDoc => ({
         ...additionalDoc,
         required: true,
+        isAdditionalDoc: true,
       }))
       : []),
     { id: DOCUMENTS.OTHER, required: false },
