@@ -209,29 +209,53 @@ const stylesheet = `
         width: 50%;
     }
     .loan-bank-pdf-section-title {
-        width: 100%;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
         text-transform: uppercase;
         background-color: #fafafa;
         padding: 8px;
         padding-left: 4px;
     }
     .loan-bank-pdf-project {
-        width: 100%;
+         -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
         margin-bottom: 16px;
         ${flexColumn}
         ${justifyContentFlexStart}
     }
     .loan-bank-pdf-project-recap {
-        width: 100%;
+         -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
         ${flexRow}
         ${justifyContentSpaceBetween}
     }
     .loan-bank-pdf-property {
-        width: 100%;
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        -ms-flex-negative:0;
+         flex-shrink:0;
         ${flexColumn}
         ${justifyContentFlexStart}
     }
     .loan-bank-pdf-property-table {
+        font-size: 10px;
+    }
+    .loan-bank-pdf-project-details {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        -ms-flex-negative:0;
+         flex-shrink:0;
+        ${flexColumn}
+        ${justifyContentFlexStart}
+    }
+    .loan-bank-pdf-project-table {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        -ms-flex-negative:0;
+        flex-shrink:0;
         font-size: 10px;
     }
     .loan-bank-pdf-footer {

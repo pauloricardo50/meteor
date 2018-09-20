@@ -11,11 +11,11 @@ type LoanBankProjectProps = {
 
 const projectTable = ({ array, className }) => (
   <table className={className} cellSpacing="5">
-    {array.map(({ label, data, condition, units }) =>
+    {array.map(({ label, data, condition, style }) =>
       (condition === undefined || condition) && (
         <tr key={label}>
           <td>{label}</td>
-          <td>{data}</td>
+          <td style={style}>{data}</td>
         </tr>
       ))}
   </table>
@@ -51,6 +51,7 @@ const houseRecap = ({
         {
           label: <T id="Forms.propertyAddress" />,
           data: `${address1}, ${zipCode} ${city}`,
+          style: { maxWidth: '80px' },
         },
         {
           label: <T id="Forms.constructionYear" />,
@@ -91,10 +92,30 @@ const houseRecap = ({
 );
 const flatRecap = property => 'THIS IS A FLAT !';
 
+const projectRecap = property => (
+  <div className="loan-bank-pdf-project-details">
+    <h3>Détails du projet</h3>
+    {projectTable({
+      className: 'loan-bank-pdf-project-table',
+      array: [
+        {
+          label: <T id="Recap.propertyValue" />,
+          data: property.value,
+        },
+        {
+          label: <T id="Valuation.title" />,
+          data: `CHF ${property.valuation.value} - ${property.valuation.max}`,
+        },
+      ],
+    })}
+  </div>
+);
+
 const LoanBankProject = ({ property }: LoanBankProjectProps) => (
   <div className="loan-bank-pdf-project">
     <h3 className="loan-bank-pdf-section-title">Projet</h3>
     <div className="loan-bank-pdf-project-recap">
+      {projectRecap(property)}
       {property.propertyType === PROPERTY_TYPE.HOUSE
         ? houseRecap(property)
         : flatRecap(property)}
