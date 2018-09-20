@@ -30,6 +30,10 @@ const justifyContentFlexEnd = `    -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end`;
 
+const justifyContentCenter = `-webkit-box-pack: center;
+    -ms-flex-pack: center;
+        justify-content: center;`;
+
 const RecapStyleSheet = `
 .validator {
   display: -webkit-box;
@@ -153,9 +157,21 @@ const stylesheet = `
     }
     .loan-bank-pdf {
         width: 500px;
+        height: auto;
         ${flexColumn}
         ${alignItemsCenter}
         ${justifyContentFlexStart}
+    }
+    .loan-bank-pdf-page {
+        ${flexColumn}
+        ${justifyContentFlexStart}
+        height: 720px;
+        width: 100%;
+    }
+    .loan-bank-pdf-page-content {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1
     }
     .loan-bank-pdf-header {
         width: 100%;
@@ -172,13 +188,17 @@ const stylesheet = `
     }
     .loan-bank-pdf-recaps {
         width:100%;
-        ${flexRow}
+        ${flexColumn}
         ${justifyContentFlexStart}
     }
     .loan-bank-pdf-borrowers {
         width: 100%;
+        margin-bottom: 16px;
         ${flexColumn}
         ${justifyContentFlexStart}
+        -webkit-column-break-after: always;
+        break-after: always;
+        page-break-after: always;
     }
     .loan-bank-pdf-borrowers-recap {
         width: 100%;
@@ -195,6 +215,33 @@ const stylesheet = `
         padding: 8px;
         padding-left: 4px;
     }
+    .loan-bank-pdf-project {
+        width: 100%;
+        margin-bottom: 16px;
+        ${flexColumn}
+        ${justifyContentFlexStart}
+    }
+    .loan-bank-pdf-project-recap {
+        width: 100%;
+        ${flexRow}
+        ${justifyContentSpaceBetween}
+    }
+    .loan-bank-pdf-property {
+        width: 100%;
+        ${flexColumn}
+        ${justifyContentFlexStart}
+    }
+    .loan-bank-pdf-property-table {
+        font-size: 10px;
+    }
+    .loan-bank-pdf-footer {
+        ${flexRow}
+        ${alignItemsCenter}
+        ${justifyContentCenter}
+        -ms-flex-item-align: end;
+            align-self: flex-end;
+    }
+
     ${RecapStyleSheet}
 `;
 

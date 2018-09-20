@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import base64 from 'base64topdf';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { PROPERTY_TYPE } from 'core/api/constants';
 import PDFService from '../PDFService';
 import { PDF_TYPES } from '../constants';
 
@@ -20,40 +21,39 @@ describe.only('GeneratePDFService', () => {
   });
 
   it('returns a base64 encoded PDF', () => {
-    const loanId = getTwoBorrowersLoan([
-      {
-        borrowerInfos: { firstName: 'John', lastName: 'Doe', gender: GENDER.M },
-        withSalary: true,
-        withBonus: true,
-        withBankFortune: true,
-        withInsurance2: true,
-        withInsurance3A: true,
-        withBank3A: true,
-        withInsurance3B: true,
-        withThirdPartyFortune: true,
-        withOtherIncome: true,
-        withOtherFortune: true,
-        withExpenses: true,
-        withRealEstate: true,
-      },
-      {
-        borrowerInfos: {
-          firstName: 'Maria',
-          lastName: 'Doe',
-          gender: GENDER.F,
+    const loanId = getTwoBorrowersLoan({
+      borrowers: [
+        {
+          borrowerInfos: {
+            firstName: 'John',
+            lastName: 'Doe',
+            gender: GENDER.M,
+          },
+          withSalary: true,
+          withBonus: true,
+          withBankFortune: true,
+          withInsurance2: true,
+          withInsurance3A: true,
+          withBank3A: true,
+          withInsurance3B: true,
+          withThirdPartyFortune: true,
+          withOtherIncome: true,
+          withOtherFortune: true,
+          withExpenses: true,
+          withRealEstate: true,
         },
-        withSalary: true,
-        withInsurance2: true,
-      },
-    ]);
-
-    // const loanId = getSingleBorrowerLoan({
-    //   borrowerInfos: { firstName: 'John', lastName: 'Doe', gender: GENDER.M },
-    //   withSalary: true,
-    //   withBankFortune: true,
-    //   withOtherIncome: true,
-    //   withBonus: true,
-    // });
+        {
+          borrowerInfos: {
+            firstName: 'Maria',
+            lastName: 'Doe',
+            gender: GENDER.F,
+          },
+          withSalary: true,
+          withInsurance2: true,
+        },
+      ],
+      propertyType: PROPERTY_TYPE.HOUSE,
+    });
 
     const loan = getFullLoan(loanId);
 

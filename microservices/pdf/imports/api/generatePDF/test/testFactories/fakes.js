@@ -1,5 +1,9 @@
-import { GENDER } from 'core/api/constants';
-import { CIVIL_STATUS } from '../../../../core/api/constants';
+import { GENDER, MINERGIE_CERTIFICATE, FLAT_TYPE } from 'core/api/constants';
+import {
+  CIVIL_STATUS,
+  PROPERTY_TYPE,
+  HOUSE_TYPE,
+} from '../../../../core/api/constants';
 
 export const FAKE_SALARY = 150000;
 export const FAKE_BANK_FORTUNE = 1000000;
@@ -64,3 +68,36 @@ export const fakeBorrower = ({
   ...(withExpenses ? FAKE_EXPENSES : {}),
   ...(withRealEstate ? FAKE_REAL_ESTATE : {}),
 });
+
+export const FAKE_HOUSE = {
+  propertyType: PROPERTY_TYPE.HOUSE,
+  houseType: HOUSE_TYPE.DETACHED,
+  address1: 'Rue du Succès 18',
+  zipCode: 1000,
+  city: 'Lausanne',
+  constructionYear: 1987,
+  renovationYear: 2010,
+  landArea: 300,
+  volume: 1500,
+  roomCount: 5,
+  parkingInside: 1,
+  parkingOutside: 2,
+  minergie: MINERGIE_CERTIFICATE.MINERGIE_P,
+  monthlyExpenses: 1200,
+};
+
+export const FAKE_APPARTMENT = {
+  propertyType: PROPERTY_TYPE.FLAT,
+  flatType: FLAT_TYPE.SINGLE_FLOOR_APARTMENT,
+  address1: 'Rue du Succès 18',
+  zipCode: 1000,
+  city: 'Lausanne',
+  constructionYear: 1987,
+  renovationYear: 2010,
+  insideArea: 140,
+  roomCount: 5,
+  parkingInside: 1,
+  parkingOutside: 2,
+  minergie: MINERGIE_CERTIFICATE.MINERGIE_P,
+  monthlyExpenses: 1200,
+};

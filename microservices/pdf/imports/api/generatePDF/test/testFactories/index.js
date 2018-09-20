@@ -3,11 +3,15 @@ import { Factory } from 'meteor/dburles:factory';
 import Loans from 'core/api/loans/loans';
 import { adminLoanFragment } from 'core/api/loans/queries/loanFragments/index';
 
-import { fakeBorrower } from './fakes';
+import { fakeBorrower, FAKE_HOUSE, FAKE_APPARTMENT } from './fakes';
+import { PROPERTY_TYPE } from '../../../../core/api/constants';
 
-export const getSingleBorrowerLoan = (options) => {
-  const borrowerId = Factory.create('testBorrower', fakeBorrower(options))._id;
-  const propertyId = Factory.create('testProperty')._id;
+export const getSingleBorrowerLoan = ({ borrowers, propertyType }) => {
+  const borrowerId = Factory.create('testBorrower', fakeBorrower(borrowers))
+    ._id;
+  const propertyId = Factory.create('testProperty', {
+    ...(propertyType === PROPERTY_TYPE.FLAT ? FAKE_APPARTMENT : FAKE_HOUSE),
+  })._id;
 
   return Factory.create('testLoan', {
     borrowerIds: [borrowerId],
@@ -15,16 +19,18 @@ export const getSingleBorrowerLoan = (options) => {
   })._id;
 };
 
-export const getTwoBorrowersLoan = (options) => {
+export const getTwoBorrowersLoan = ({ borrowers, propertyType }) => {
   const borrower1Id = Factory.create(
     'testBorrower',
-    fakeBorrower({ ...options[0] }),
+    fakeBorrower({ ...borrowers[0] }),
   )._id;
   const borrower2Id = Factory.create(
     'testBorrower',
-    fakeBorrower({ ...options[1] }),
+    fakeBorrower({ ...borrowers[1] }),
   )._id;
-  const propertyId = Factory.create('testProperty')._id;
+  const propertyId = Factory.create('testProperty', {
+    ...(propertyType === PROPERTY_TYPE.FLAT ? FAKE_APPARTMENT : FAKE_HOUSE),
+  })._id;
 
   return Factory.create('testLoan', {
     borrowerIds: [borrower1Id, borrower2Id],
