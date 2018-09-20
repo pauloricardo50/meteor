@@ -50,7 +50,7 @@ const writeApplicationManifest = environment =>
 
 const writeTmuxinator = environment => {
   return executeCommand(
-    `cf env e-potek-ssh-tunnel-${environment} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\"`,
+    `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\"`,
   )
     .then(res => JSON.parse(`{${res}}`))
     .then(auth =>
@@ -70,7 +70,7 @@ const writeTmuxinator = environment => {
                       `${__dirname}/../../scripts/box_out.sh "SSH tunnel. Don't kill this pane."`,
                       `cf ssh -L ${MONGO_PORTS[environment]}:${HOST}:${
                         MONGO_PORTS[environment]
-                      } e-potek-ssh-tunnel-${environment}`,
+                      } e-potek-ssh-tunnel-${environment}-${SSH_ID}`,
                     ],
                   },
                   {
