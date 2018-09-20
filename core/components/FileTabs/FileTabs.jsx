@@ -15,7 +15,7 @@ import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
 
-const FileTabs = ({ loan, borrowers, property, disabled }) => (
+const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => (
   <div className="files-tab">
     <Tabs
       id="tabs"
@@ -38,6 +38,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
               collection="borrowers"
               disabled={disabled}
               documentArray={getBorrowerDocuments({ loan, id: borrower._id })}
+              currentUser={currentUser}
             />
           ),
         })),
@@ -54,6 +55,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
               collection="properties"
               disabled={disabled}
               documentArray={getPropertyDocuments({ loan, id: property._id })}
+              currentUser={currentUser}
             />
           ),
         },
@@ -70,6 +72,7 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
               collection="loans"
               disabled={disabled}
               documentArray={getLoanDocuments({ loan })}
+              currentUser={currentUser}
             />
           ),
         },

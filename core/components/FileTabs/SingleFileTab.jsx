@@ -15,6 +15,7 @@ const SingleFileTab = ({
   doc,
   disabled,
   documentArray,
+  currentUser,
 }: SingleFileTabProps) => {
   const userIsAdmin = Roles.userIsInRole(Meteor.user(), ROLES.DEV)
     || Roles.userIsInRole(Meteor.user(), ROLES.ADMIN);
@@ -28,6 +29,7 @@ const SingleFileTab = ({
         collection={collection}
         disabled={disabled}
         documentArray={documentArray}
+        currentUser={currentUser}
       />
     </div>
   );

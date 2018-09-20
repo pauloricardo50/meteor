@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
 
 import colors from 'core/config/colors';
+import { ROLES } from '../users/userConstants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isTest || Meteor.isAppTest;
@@ -75,6 +76,41 @@ class SlackService {
           : []),
       ],
     });
+
+  notifyAssignee = (currentUser, message) => {
+    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+    if (isUser) {
+      const admin = currentUser.assignedEmployee;
+      if (admin) {
+        const channel = `#clients_${admin.email.split('@')[0]}`;
+        const { name, loans } = currentUser;
+
+        const loanNameEnd = loans.length === 1 ? ` pour ${loans[0].name}.` : '.';
+        const text = `${name} a uploadé un nouveau document${loanNameEnd}`;
+
+        const slackPayload = {
+          channel,
+          attachments: [
+            {
+              title: text,
+              title_link: `${Meteor.settings.public.subdomains.admin}/users/${
+                currentUser._id
+              }`,
+              text: message,
+            },
+          ],
+        };
+
+        if (Meteor.isStaging || Meteor.isDevelopment) {
+          console.log('Slack dev/staging notification');
+          console.log('Payload:', slackPayload);
+          return false;
+        }
+
+        return this.sendAttachments(slackPayload);
+      }
+    }
+  };
 }
 
 export default new SlackService();
