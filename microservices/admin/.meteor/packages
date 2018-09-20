@@ -18,6 +18,7 @@ shell-server@0.3.1           # Server-side component of the `meteor shell` comma
 # Dev, place this on top to allow meteor toys to work
 meteortoys:allthings
 fourseven:scss@4.5.0
+msavin:mongol
 
 # Put this before factory
 aldeed:collection2-core
@@ -27,10 +28,12 @@ cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
 meteortesting:mocha
+tmeasday:acceptance-test-driver
 
 
 # User Accounts
 alanning:roles                  # Easy role management
+accounts-password@1.5.1
 
 email@1.2.3
 
@@ -43,7 +46,11 @@ cultofcoders:grapher
 cultofcoders:grapher-react
 cultofcoders:mutations
 dburles:mongo-collection-instances
-
+percolate:migrations
+aldeed:schema-index
+aldeed:schema-deny
+cultofcoders:redis-oplog
+disable-oplog
 
 # UI tricks
 themeteorchef:bert
@@ -54,18 +61,13 @@ meteorhacks:inject-initial
 # Production
 force-ssl@1.1.0                      # Automatically route users to https
 dynamic-import@0.5.0-beta171.19
-accounts-password@1.5.1
-wylio:mandrill
 dburles:google-maps
 meteorhacks:kadira
 softwarerero:accounts-t9n
-tmeasday:acceptance-test-driver
 std:accounts-ui
-msavin:mongol
 okgrow:analytics
+
+
+# Other
+wylio:mandrill
 underscore@1.0.10
-aldeed:schema-index
-aldeed:schema-deny
-cultofcoders:redis-oplog
-disable-oplog
-percolate:migrations
