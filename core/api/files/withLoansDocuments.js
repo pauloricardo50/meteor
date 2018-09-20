@@ -23,6 +23,18 @@ const mergeLoanWithDocuments = fileData => (loan) => {
 
 const withLoansDocuments = compose(
   lifecycle({
+    componentDidMount() {
+      const { loans } = this.props;
+      const loanIds = ids(loans);
+
+      loanFiles.clone({ loanIds }).fetch((err, fileData) => {
+        if (err) {
+          throw err;
+        }
+
+        this.setState({ fileData: normalizeArray(fileData) });
+      });
+    },
     componentWillReceiveProps({ loans }) {
       const { loans: oldLoans } = this.props;
       const loanIds = ids(loans);
@@ -30,14 +42,11 @@ const withLoansDocuments = compose(
 
       if (JSON.stringify(loanIds) !== JSON.stringify(oldLoanIds)) {
         loanFiles.clone({ loanIds }).fetch((err, fileData) => {
-          console.log('fileData', fileData);
           if (err) {
             throw err;
           }
 
-          this.setState({
-            fileData: normalizeArray(fileData),
-          });
+          this.setState({ fileData: normalizeArray(fileData) });
         });
       }
     },
