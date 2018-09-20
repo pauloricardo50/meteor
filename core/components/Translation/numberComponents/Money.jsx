@@ -15,7 +15,7 @@ const Money = ({ value }) => {
 };
 
 Money.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
 };
 
 export default Money;

@@ -17,7 +17,7 @@ export default class DialogSimple extends Component {
     }
   }
 
-  handleOpen = () =>
+  handleOpen = event =>
     this.setState(
       { open: true },
       () => this.props.onOpen && this.props.onOpen(),
@@ -89,7 +89,8 @@ export default class DialogSimple extends Component {
     };
 
     return (
-      <span style={rootStyle}>
+      // Prevent triggering background clicks
+      <span style={rootStyle} onClick={e => e.stopPropagation()}>
         <Button
           raised={raised}
           label={label}

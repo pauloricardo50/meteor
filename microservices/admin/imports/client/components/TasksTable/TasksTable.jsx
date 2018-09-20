@@ -13,7 +13,7 @@ import { TASK_TYPE } from 'core/api/tasks/taskConstants';
 import TaskAssignDropdown from '../../components/AssignAdminDropdown/TaskAssignDropdown';
 import TasksStatusDropdown from './TasksStatusDropdown';
 
-const formatDateTime = date => moment(date).format('D MMM YY à HH:mm:ss');
+const formatDateTime = (date, toNow) => (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
 
 class TasksTable extends Component {
   getRelatedDoc = ({ borrower, loan, property, user }) => {
@@ -78,13 +78,12 @@ class TasksTable extends Component {
 
   getColumnOptions = ({ showAssignee }) => {
     const columnOptions = [
-      { id: '#', style: { width: 32, textAlign: 'left' } },
+      { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
       { id: 'title', label: <T id="TasksTable.title" /> },
       { id: 'status', label: <T id="TasksTable.status" /> },
       { id: 'createdAt', label: <T id="TasksTable.createdAt" /> },
       { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
       { id: 'completedAt', label: <T id="TasksTable.completedAt" /> },
-      { id: 'relatedTo', label: <T id="TasksTable.relatedTo" /> },
     ];
     if (showAssignee) {
       columnOptions.push({
@@ -126,7 +125,7 @@ class TasksTable extends Component {
     };
 
     const columns = [
-      index + 1,
+      relatedDoc,
       title || {
         raw: type,
         label: <T id={`TasksStatusDropdown.${type}`} key="type" />,
@@ -136,9 +135,8 @@ class TasksTable extends Component {
         label: <T id={`TasksStatusDropdown.${status}`} key="status" />,
       },
       formatDateTime(createdAt),
-      formatDateTime(dueAt),
+      formatDateTime(dueAt, true),
       formatDateTime(completedAt),
-      relatedDoc,
     ];
     if (showAssignee) {
       if (assignedEmployee) {
@@ -221,7 +219,7 @@ TasksTable.propTypes = {
   hideIfNoData: PropTypes.bool,
   hideIfNoDataText: PropTypes.string,
   history: PropTypes.object.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
   showAssignee: PropTypes.bool,
 };
 

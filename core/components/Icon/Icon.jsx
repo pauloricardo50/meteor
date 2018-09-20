@@ -62,6 +62,7 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Domain from '@material-ui/icons/Domain';
 import Info from '@material-ui/icons/Info';
+import AttachFile from '@material-ui/icons/AttachFile';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 
 const iconMap = {
@@ -127,6 +128,7 @@ const iconMap = {
   arrowDown: ArrowDownward,
   domain: Domain,
   info: Info,
+  attachFile: AttachFile,
   download: CloudDownload,
 };
 

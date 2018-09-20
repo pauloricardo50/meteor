@@ -35,10 +35,10 @@ const TableFilter = ({
 
 TableFilter.propTypes = {
   filterKey: PropTypes.string.isRequired,
-  loadOptions: PropTypes.func.isRequired,
+  loadOptions: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
-  SelectComponent: PropTypes.instanceOf(React.Component).isRequired,
+  SelectComponent: PropTypes.any.isRequired,
   value: PropTypes.array.isRequired,
 };
 
