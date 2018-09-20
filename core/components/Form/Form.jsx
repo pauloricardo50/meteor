@@ -23,12 +23,13 @@ const Form = ({
   <div className={className}>
     <FormWrapper>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        {formArray.map(({ id, ...otherProps }) => (
+        {formArray.map(({ id, ...otherProps }, index) => (
           <FormField
             key={id}
             name={id}
             id={id}
             className="form-field"
+            autoFocus={index === 0}
             {...otherProps}
           />
         ))}

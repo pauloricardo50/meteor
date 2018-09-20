@@ -49,7 +49,10 @@ const LoanChecklist = ({ loan }: LoanChecklistProps) => (
               <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
             )
           }
-          ids={Calculator.getMissingBorrowerDocuments({ borrowers: borrower })}
+          ids={Calculator.getMissingBorrowerDocuments({
+            loan,
+            borrowers: borrower,
+          })}
           intlPrefix="files"
         />
       ))}

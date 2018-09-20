@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Link } from 'react-router-dom';
 
+import { STEPS } from 'core/api/constants';
 import LoanSummary from '../LoanSummary';
 import LoanSummaryColumns from '../LoanSummaryColumns';
 import BorrowersSummary from '../../BorrowersSummary';
@@ -13,7 +14,7 @@ const updatedAt = new Date();
 const loan = {
   _id: 'id',
   name: 'loanName',
-  logic: { step: 10 },
+  logic: { step: STEPS.PREPARATION },
   general: { fortuneUsed: 25000, insuranceFortuneUsed: 20000 },
   createdAt,
   updatedAt,

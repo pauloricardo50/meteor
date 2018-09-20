@@ -2,7 +2,7 @@
 import SimpleSchema from 'simpl-schema';
 import uniforms from 'uniforms-material';
 
-import { createdAt, updatedAt } from '../../helpers/mongoHelpers';
+import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';

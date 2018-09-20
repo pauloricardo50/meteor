@@ -68,3 +68,4 @@ aldeed:schema-index
 aldeed:schema-deny
 cultofcoders:redis-oplog
 disable-oplog
+percolate:migrations
