@@ -19,7 +19,7 @@ export class LoanService {
   getNewLoanName = (now = new Date()) => {
     const year = now.getYear();
     const yearPrefix = year - 100;
-    const lastLoan = Loans.findOne({}, { sort: { createdAt: -1 } });
+    const lastLoan = Loans.findOne({}, { sort: { name: -1 } });
     if (!lastLoan) {
       return `${yearPrefix}-0001`;
     }

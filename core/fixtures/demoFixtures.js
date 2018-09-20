@@ -11,7 +11,7 @@ export const createYannisData = (userId) => {
   const loanId = LoanService.adminLoanInsert({ userId });
   LoanService.update({
     loanId,
-    object: { name: '18-000X' },
+    object: { name: '18-0000' },
   });
   const loan = LoanService.getLoanById(loanId);
   const borrower = BorrowerService.getBorrowerById(loan.borrowerIds[0]);
