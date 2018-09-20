@@ -13,6 +13,7 @@ const FileTabLabel = ({ id, title, progress }: FileTabLabelProps) => (
     <PercentWithStatus
       value={progress}
       status={progress < 1 ? null : undefined}
+      rounded
     />
   </span>
 );
