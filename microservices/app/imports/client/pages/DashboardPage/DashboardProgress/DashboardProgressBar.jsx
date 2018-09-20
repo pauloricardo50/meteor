@@ -10,7 +10,7 @@ const DashboardProgressBar = ({ currentStep }) => (
     <div className="steps">
       {STEP_ORDER.map((step, index) => (
         <DashboardProgressBarStep
-          isDone={currentStep > index}
+          isDone={STEP_ORDER.indexOf(currentStep) >= index}
           step={step}
           key={step}
           id={step}
@@ -21,7 +21,9 @@ const DashboardProgressBar = ({ currentStep }) => (
     <div className="absolute-lines">
       {STEP_ORDER.slice(0, -1).map((_, index) => (
         <span
-          className={cx('line', { done: index < currentStep - 1 })}
+          className={cx('line', {
+            done: STEP_ORDER.indexOf(currentStep) > index,
+          })}
           key={index}
         />
       ))}
@@ -31,7 +33,6 @@ const DashboardProgressBar = ({ currentStep }) => (
 
 DashboardProgressBar.propTypes = {
   currentStep: PropTypes.number.isRequired,
-  steps: PropTypes.array.isRequired,
 };
 
 export default DashboardProgressBar;
