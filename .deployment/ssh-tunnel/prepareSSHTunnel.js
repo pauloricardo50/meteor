@@ -7,6 +7,10 @@ import { writeYAML, touchFile, mkdir, executeCommand } from '../utils/helpers';
 import CloudFoundryService from '../CloudFoundry/CloudFoundryService';
 import argv from 'yargs';
 
+const SSH_ID = Math.random()
+  .toString(36)
+  .substring(7);
+
 const MONGO_SERVICES = {
   [ENVIRONMENT.STAGING]: generateServiceName({
     environment: ENVIRONMENT.STAGING,
@@ -29,7 +33,7 @@ const HOST = 'kubernetes-service-node.service.consul';
 const applicationManifestData = environment => ({
   applications: [
     {
-      name: `e-potek-ssh-tunnel-${environment}`,
+      name: `e-potek-ssh-tunnel-${environment}-${SSH_ID}`,
       memory: '128M',
       instances: 1,
       buildpacks: ['https://github.com/cloudfoundry/staticfile-buildpack.git'],
@@ -55,7 +59,7 @@ const writeTmuxinator = environment => {
         data: {
           name: 'ssh-tunnel',
           root: '~/',
-          on_project_exit: `cf delete e-potek-ssh-tunnel-${environment} -f && rm -rf ${__dirname}/${environment} && tmux kill-session -t ssh-tunnel`,
+          on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${SSH_ID} -f && rm -rf ${__dirname}/${environment} && tmux kill-session -t ssh-tunnel`,
           windows: [
             {
               sshTunnel: {
