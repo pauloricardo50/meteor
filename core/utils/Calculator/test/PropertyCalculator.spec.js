@@ -3,6 +3,7 @@
 import { expect } from 'chai';
 
 import PropertyCalculator from '..';
+import { STEPS } from 'core/api/constants';
 import { PROPERTY_DOCUMENTS, DOCUMENTS } from '../../../api/constants';
 
 describe('PropertyCalculator', () => {
@@ -10,9 +11,15 @@ describe('PropertyCalculator', () => {
   let property;
 
   beforeEach(() => {
-    property = {};
+    property = { _id: 'propertyId' };
     params = {
-      loan: { general: {}, structure: { property }, borrowers: [{}] },
+      loan: {
+        general: {},
+        structure: { property },
+        borrowers: [{}],
+        properties: [property],
+        logic: { step: STEPS.PREPARATION },
+      },
     };
   });
 
@@ -57,6 +64,7 @@ describe('PropertyCalculator', () => {
         documents: {
           [PROPERTY_DOCUMENTS.PROPERTY_PLANS]: [{}],
         },
+        _id: 'propertyId',
       };
       expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal(0.5);
     });
@@ -80,11 +88,11 @@ describe('PropertyCalculator', () => {
   });
 
   describe('getMissingPropertyDocuments', () => {
-    it('returns the list of missing documents from a property', () => {
+    it('returns the list of missing documents from a property 1', () => {
       expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal([DOCUMENTS.PROPERTY_PLANS, DOCUMENTS.PROPERTY_PICTURES]);
     });
 
-    it('returns the list of missing documents from a property', () => {
+    it('returns the list of missing documents from a property 2', () => {
       params.loan.structure.property.documents = {
         [DOCUMENTS.PROPERTY_PLANS]: [{}],
         [DOCUMENTS.PROPERTY_PICTURES]: [{}],

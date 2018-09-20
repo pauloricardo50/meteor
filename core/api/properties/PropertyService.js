@@ -23,6 +23,9 @@ export class PropertyService {
 
   popValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $pop: object });
+    
+  pullValue = ({ propertyId, object }) =>
+    Properties.update(propertyId, { $pull: object });
 
   evaluateProperty = ({ propertyId, loanResidenceType }) =>
     WuestService.evaluateById({ propertyId, loanResidenceType })

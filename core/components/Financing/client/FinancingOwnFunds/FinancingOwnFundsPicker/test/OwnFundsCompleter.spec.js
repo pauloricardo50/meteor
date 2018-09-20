@@ -9,7 +9,7 @@ import {
   OWN_FUNDS_TYPES,
 } from '../../../../../../api/constants';
 
-describe.only('OwnFundsCompleter', () => {
+describe('OwnFundsCompleter', () => {
   describe('getRequiredAndCurrentFunds', () => {
     let props;
 

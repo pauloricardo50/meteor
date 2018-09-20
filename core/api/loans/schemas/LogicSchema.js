@@ -3,6 +3,7 @@ import {
   AUCTION_STATUS,
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
+  STEPS,
 } from '../../constants';
 
 const closingStepsSchema = {
@@ -78,10 +79,9 @@ const auctionSchema = {
 // All logic fields required by the app to trigger the right things at the right time
 const LogicSchema = new SimpleSchema({
   step: {
-    type: SimpleSchema.Integer,
-    defaultValue: 1,
-    min: 1,
-    max: 5,
+    type: String,
+    defaultValue: STEPS.PREPARATION,
+    allowedValues: Object.values(STEPS),
   },
   ...verificationSchema,
   ...closingStepsSchema,

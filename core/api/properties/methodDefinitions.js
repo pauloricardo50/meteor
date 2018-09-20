@@ -41,6 +41,14 @@ export const popPropertyValue = new Method({
   },
 });
 
+export const pullPropertyValue = new Method({
+  name: 'pullPropertyValue',
+  params: {
+    propertyId: String,
+    object: Object,
+  },
+});
+
 export const evaluateProperty = new Method({
   name: 'evaluateProperty',
   params: {

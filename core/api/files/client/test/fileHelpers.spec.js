@@ -4,93 +4,76 @@ import { expect } from 'chai';
 import { filesPercent, getMissingDocumentIds } from '../../fileHelpers';
 
 describe('fileHelpers', () => {
-  let dummyFunc;
+  let fileArray;
   let dummyDoc;
   let fileId;
 
   beforeEach(() => {
     fileId = 'myFile';
-    dummyFunc = () => [[{ id: fileId }]];
+    fileArray = [{ id: fileId }];
     dummyDoc = { documents: {} };
   });
 
   describe('filesPercent', () => {
     it('returns 0 if an empty doc is given', () => {
-      expect(filesPercent({ doc: {}, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+      expect(filesPercent({ doc: {}, fileArray })).to.equal(0);
     });
 
     it('returns 0 if no doc is given', () => {
-      expect(filesPercent({ fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+      expect(filesPercent({ fileArray })).to.equal(0);
     });
 
     it('returns 1 if a file exists', () => {
       // file exists
       dummyDoc.documents.myFile = [{}];
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
     });
 
     it('returns 0 if an empty array is given', () => {
       dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(0);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(0);
     });
 
     it("doesn't count files which aren't required", () => {
-      dummyFunc = () => [[{ id: 'myFile', required: false }]];
+      fileArray = [{ id: 'myFile', required: false }];
       dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
     });
 
     it("doesn't count files whose condition is explicitly false", () => {
-      dummyFunc = () => [[{ id: 'myFile', condition: false }]];
+      fileArray = [{ id: 'myFile', condition: false }];
       dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
     });
 
     it('counts files whose condition is undefined', () => {
-      dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
+      fileArray = [{ id: 'myFile', condition: undefined }];
       dummyDoc.documents.myFile = [{}];
-      expect(filesPercent({ doc: dummyDoc, fileArrayFunc: dummyFunc, step: 0 })).to.equal(1);
-    });
-
-    describe('array of docs', () => {
-      it('sums percentages if given an array of docs', () => {
-        // deep copy of initial doc
-        const initialDoc = JSON.parse(JSON.stringify(dummyDoc));
-        dummyDoc.documents.myFile = [{}];
-
-        expect(filesPercent({
-          doc: [initialDoc, dummyDoc],
-          fileArrayFunc: dummyFunc,
-          step: 0,
-        })).to.equal(0.5);
-      });
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
     });
 
     describe('status verification', () => {
       it('returns 0 if no files are valid', () => {
-        dummyFunc = () => [[{ id: 'myFile', condition: undefined }]];
+        fileArray = [{ id: 'myFile', condition: undefined }];
         dummyDoc.documents.myFile = [{ status: 'INVALID' }];
         expect(filesPercent({
           doc: dummyDoc,
-          fileArrayFunc: dummyFunc,
-          step: 0,
+          fileArray,
           checkValidity: true,
         })).to.equal(0);
       });
 
       it('returns 0.5 if one file is valid', () => {
-        dummyFunc = () => [
-          [
-            { id: 'myFile', condition: undefined },
-            { id: 'myFile2', condition: undefined },
-          ],
+        fileArray = [
+          { id: 'myFile', condition: undefined },
+          { id: 'myFile2', condition: undefined },
         ];
+
         dummyDoc.documents.myFile = [{ status: 'INVALID' }];
         dummyDoc.documents.myFile2 = [{ status: 'VALID' }];
         expect(filesPercent({
           doc: dummyDoc,
-          fileArrayFunc: dummyFunc,
-          step: 0,
+          fileArray,
           checkValidity: true,
         })).to.equal(0.5);
       });
@@ -101,8 +84,7 @@ describe('fileHelpers', () => {
     it('returns the array of missing docs', () => {
       expect(getMissingDocumentIds({
         doc: dummyDoc,
-        fileArrayFunc: dummyFunc,
-        step: 0,
+        fileArray,
       })).to.deep.equal([fileId]);
     });
 
@@ -110,8 +92,7 @@ describe('fileHelpers', () => {
       dummyDoc.documents[fileId] = [{}];
       expect(getMissingDocumentIds({
         doc: dummyDoc,
-        fileArrayFunc: dummyFunc,
-        step: 0,
+        fileArray,
       })).to.deep.equal([]);
     });
   });

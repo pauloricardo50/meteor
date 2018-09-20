@@ -7,6 +7,7 @@ import { withSmartQuery } from 'core/api/containerToolkit/index';
 import loansAssignedToAdmin from 'core/api/loans/queries/loansAssignedToAdmin';
 import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
+import withLoansDocuments from 'core/api/files/withLoansDocuments';
 import ProgressCell from './ProgressCell';
 
 const columnOptions = [
@@ -58,6 +59,7 @@ const MyLoansTableContainer = compose(
     dataName: 'loans',
     renderMissingDoc: false,
   }),
+  withLoansDocuments,
   withRouter,
   withProps(({ loans, history }) => ({
     columnOptions,

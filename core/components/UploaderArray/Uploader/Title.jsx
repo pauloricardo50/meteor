@@ -2,24 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
-import ConfirmMethod from 'core/components/ConfirmMethod';
 import IconButton from 'core/components/IconButton';
 
 import FileStatusIcon from './FileStatusIcon';
+import AdditionalDocDeleter from './AdditionalDocDeleter';
 
 const Title = ({
-  fileMeta: { id },
+  fileMeta: { id, label, isAdditionalDoc },
   doubleTooltip,
   noTooltips,
   required,
   currentValue,
   tooltipSuffix,
-  label,
-  userIsAdmin,
-  handleRemove,
   displayFull,
   showFull,
   hideFull,
+  collection,
+  docId,
 }) => {
   // Construct the custom tooltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
@@ -48,6 +47,13 @@ const Title = ({
             values={{ count: (currentValue && currentValue.length) || 0 }}
           />
         </h5>
+        <AdditionalDocDeleter
+          id={id}
+          isAdditionalDoc={isAdditionalDoc}
+          label={label}
+          collection={collection}
+          docId={docId}
+        />
       </div>
 
       <IconButton

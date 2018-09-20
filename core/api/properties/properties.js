@@ -1,7 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
-import { createdAt, updatedAt } from '../helpers/mongoHelpers';
+import {
+  createdAt,
+  updatedAt,
+  additionalDocuments,
+} from '../helpers/sharedSchemas';
 import * as propertyConstants from './propertyConstants';
 
 const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
@@ -342,6 +346,7 @@ export const PropertySchema = new SimpleSchema({
     max: 1000000,
     optional: true,
   },
+  ...additionalDocuments,
 });
 
 const protectedKeys = [
