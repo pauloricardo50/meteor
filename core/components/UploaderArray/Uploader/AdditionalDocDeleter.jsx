@@ -13,7 +13,7 @@ type AdditionalDocDeleterProps = {};
 const AdditionalDocDeleter = ({
   isAdditionalDoc,
   id,
-  label,
+  label: keyword,
   collection,
   docId,
 }: AdditionalDocDeleterProps) => {
@@ -23,7 +23,7 @@ const AdditionalDocDeleter = ({
   if (isAdditionalDoc && userIsAdmin) {
     return (
       <ConfirmMethod
-        keyword={label}
+        keyword={keyword}
         label="[ADMIN] Supprimer"
         method={() => {
           const object = { additionalDocuments: { id } };
