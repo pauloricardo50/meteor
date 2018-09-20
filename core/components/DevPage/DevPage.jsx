@@ -6,6 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from '../Button';
 import Icon from '../Icon';
 import DevPageContainer from './DevPageContainer';
+import ErrorThrower from './ErrorThrower';
 
 class DevPage extends Component {
   constructor(props) {
@@ -22,16 +23,6 @@ class DevPage extends Component {
   handleChange = () =>
     this.setState(prev => ({ twoBorrowers: !prev.twoBorrowers }));
 
-  purgeAndGenerateDatabase = (currentUserId, currentUserEmail) => {
-    Meteor.call('purgeDatabase', currentUserId, (err, res) => {
-      if (err) {
-        alert(err.reason);
-      } else {
-        Meteor.call('generateTestData', currentUserEmail);
-      }
-    });
-  };
-
   render() {
     const { twoBorrowers } = this.state;
     const {
@@ -40,9 +31,11 @@ class DevPage extends Component {
       addStep1Loan,
       addStep2Loan,
       addStep3Loan,
+      purgeAndGenerateDatabase,
     } = this.props;
+    const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
 
-    if (!Meteor.isProduction || Meteor.isStaging) {
+    if (showDevStuff) {
       return (
         <section id="dev-page">
           <React.Fragment>
@@ -61,7 +54,8 @@ class DevPage extends Component {
             <Tooltip title="Use with extra care!!! You will be deleting EVERYTHING in the database except your personal account!">
               <Button
                 raised
-                className="error mr20"
+                error
+                className="mr20"
                 onClick={() => Meteor.call('purgeDatabase', currentUser._id)}
               >
                 <Icon type="flash" />
@@ -72,12 +66,9 @@ class DevPage extends Component {
             <Tooltip title="Use with extra care!!! You will be deleting EVERYTHING in the database and generate new fake data!">
               <Button
                 raised
-                className="error mr20"
+                error
                 onClick={() =>
-                  this.purgeAndGenerateDatabase(
-                    currentUser._id,
-                    currentUser.email,
-                  )
+                  purgeAndGenerateDatabase(currentUser._id, currentUser.email)
                 }
               >
                 <Icon type="report" />
@@ -197,10 +188,17 @@ class DevPage extends Component {
               Property Task
             </Button>
           </Tooltip>
+          <hr className="mbt20" />
+          <ErrorThrower />
         </section>
       );
     }
-    return null;
+
+    return (
+      <section id="dev-page">
+        <ErrorThrower />
+      </section>
+    );
   }
 }
 
