@@ -22,6 +22,7 @@ export const propertySummaryFragment = {
   insideArea: 1,
   propertyType: 1,
   status: 1,
+  userId: 1,
   value: 1,
   zipCode: 1,
   $options: { sort: { createdAt: 1 } },

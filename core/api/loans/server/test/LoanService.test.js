@@ -358,7 +358,7 @@ describe('LoanService', () => {
     });
   });
 
-  describe.only('getNewLoanName', () => {
+  describe('getNewLoanName', () => {
     it('returns 18-0001 for the very first loan', () => {
       const name = LoanService.getNewLoanName();
       expect(name).to.equal('18-0001');
