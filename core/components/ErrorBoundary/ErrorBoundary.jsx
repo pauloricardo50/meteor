@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import SlackService from 'core/api/slack';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
 
@@ -18,11 +19,6 @@ export default class ErrorBoundary extends Component {
     }
   }
 
-  componentDidCatch(error) {
-    this.setState({ hasError: true, error });
-    this.sendToKadira(error);
-  }
-
   sendToKadira = (error) => {
     // Error should also log to kadira
     const { Kadira } = window;
@@ -30,6 +26,12 @@ export default class ErrorBoundary extends Component {
       Kadira.trackError('react', error.stack.toString());
     }
   };
+
+  componentDidCatch(error) {
+    this.setState({ hasError: true, error });
+    this.sendToKadira(error);
+    SlackService.sendError(error);
+  }
 
   render() {
     const { children, helper } = this.props;
