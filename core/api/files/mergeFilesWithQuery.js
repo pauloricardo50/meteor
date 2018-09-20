@@ -4,7 +4,7 @@ import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../events/ClientEventService';
 
-export const getFiles = (query, loanId, setFiles) => {
+const getFiles = (query, loanId, setFiles) => {
   query.clone({ loanId }).fetchOne((error, fileData) => {
     if (error) {
       throw error;

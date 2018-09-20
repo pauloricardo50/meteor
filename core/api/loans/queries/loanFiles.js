@@ -14,7 +14,7 @@ export default Loans.createQuery(LOAN_QUERIES.LOAN_FILES, {
     if (loanId && loanIds) {
       throw new Error(
         'invalid query params',
-        `Can't ask for loanId "${loanId}" and loanIds "${loanIds}" in loanFiles query`,
+        `Can't ask for both loanId "${loanId}" and loanIds "${loanIds}" in loanFiles query`,
       );
     }
   },
