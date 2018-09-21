@@ -1,4 +1,11 @@
 meteor_system_cache_key: &meteor_system_cache_key build-epotek-v6-meteor-system-{{ checksum "./.circleci/config.yml" }}
+www_meteor_cache_key: &www_meteor_cache_key build-epotek-v6-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}-{{ checksum "./microservices/www/.meteor/versions" }}
+
+restore_meteor_system_cache: &restore_meteor_system_cache
+  restore_cache:
+    name: restore system's meteor cached build
+    keys:
+      - *meteor_system_cache_key
 
 version: 2
 jobs:
