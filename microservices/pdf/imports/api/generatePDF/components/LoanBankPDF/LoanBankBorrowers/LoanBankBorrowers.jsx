@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { GENDER } from 'core/api/constants';
-import Recap from 'core/components/Recap/Recap';
+import Recap from 'core/components/Recap';
 
 type LoanBankBorrowersProps = {
   borrowers: Array<Object>,
