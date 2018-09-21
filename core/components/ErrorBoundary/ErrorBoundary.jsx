@@ -27,10 +27,10 @@ export default class ErrorBoundary extends Component {
     }
   };
 
-  componentDidCatch(error) {
+  componentDidCatch(error, info) {
     this.setState({ hasError: true, error });
     this.sendToKadira(error);
-    SlackService.sendError(error);
+    SlackService.sendError(error, info);
   }
 
   render() {
