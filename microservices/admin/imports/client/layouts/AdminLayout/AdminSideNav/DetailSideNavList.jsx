@@ -39,13 +39,21 @@ const getListItemDetails = (
   case BORROWERS_COLLECTION:
     return {
       primary: name || 'Emprunteur sans nom',
-      secondary: loans && loans.map(({ name }) => name).join(', '),
+      secondary:
+          loans && loans.map(({ name: loanName }) => loanName).join(', '),
     };
 
   case PROPERTIES_COLLECTION:
     return {
       primary: address1 || 'Bien sans adresse',
-      secondary: value && `CHF ${toMoney(value)}`,
+      secondary: (
+        <span className="flex-col">
+          <span>{value && `CHF ${toMoney(value)}`}</span>
+          <span>
+            {loans && loans.map(({ name: loanName }) => loanName).join(', ')}
+          </span>
+        </span>
+      ),
     };
   default:
     throw new Error('invalid collection name');

@@ -83,4 +83,5 @@ export const sideNavPropertyFragment = {
   user: { assignedEmployee: { email: 1 } },
   value: 1,
   zipCode: 1,
+  loans: { name: 1 },
 };
