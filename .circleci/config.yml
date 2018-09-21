@@ -40,10 +40,9 @@ jobs:
             - build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
             - build-epotek-v6-node_modules-
       - run:
-          name: install meteor
+          name: install Meteor
           command: |
-            curl https://install.meteor.com?release=$METEOR_VERSION | /bin/sh
-            meteor update --release 1.7.1-beta.19
+            ./scripts/circleci/install_meteor.sh
       - run:
           name: check file system
           command: df -hT
