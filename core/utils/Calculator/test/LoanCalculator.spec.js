@@ -281,12 +281,12 @@ describe('LoanCalculator', () => {
   });
 
   describe('loanHasMinimalInformation', () => {
-    it('returns true if fortune property value and wantedLoan are defined', () => {
+    it('returns true if ownFunds, property value and wantedLoan are defined', () => {
       expect(Calculator.loanHasMinimalInformation({
         loan: {
           structure: {
             wantedLoan: 1,
-            fortuneUsed: 1,
+            ownFunds: [{ value: 100000 }],
             property: { value: 1 },
           },
         },

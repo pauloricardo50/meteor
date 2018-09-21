@@ -1,7 +1,7 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
 import { getLoanDocuments } from '../../api/files/documents';
-import { FILE_STEPS, OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
   filesPercent,
   getMissingDocumentIds,
