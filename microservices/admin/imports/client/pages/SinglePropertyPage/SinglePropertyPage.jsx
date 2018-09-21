@@ -21,12 +21,24 @@ const SinglePropertyPage = ({
 }) => {
   const { loans } = property;
   const address = getPropertyAddress(property);
+  let residenceType = loanResidenceType;
+
+  if (!loanResidenceType) {
+    // On the SinglePropertyPage accessed through the sidenav, the loan
+    // is not specifically defined, so use the residenceType of the first
+    // loan instead
+    // Warning: this might be false if multiple loans point to this property
+    residenceType = loans
+      && loans.length > 0
+      && loans[0].general
+      && loans[0].general.residenceType;
+  }
 
   return (
     <section className={cx('single-property-page', className)}>
       <SinglePropertyPageHeader property={property} />
-      {loanResidenceType && (
-        <Valuation property={property} loanResidenceType={loanResidenceType} />
+      {residenceType && (
+        <Valuation property={property} loanResidenceType={residenceType} />
       )}
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
