@@ -52,10 +52,10 @@ jobs:
           keys:
             - build-epotek-v6-node_modules-{{ checksum "./package.json" }}
             - build-epotek-v6-node_modules-
-      - restore_cache:
-          name: restore cypress binary cache
-          keys:
-            - *cypress_binary_cache
+      # - restore_cache:
+      #     name: restore cypress binary cache
+      #     keys:
+      #       - *cypress_binary_cache
       - restore_cache:
           name: restore app's meteor cached build
           keys:
@@ -108,6 +108,38 @@ jobs:
             cd scripts
             ./setup.sh
           no_output_timeout: 20m
+
+      # Cache this stuff early, since it will not change
+      - run:
+          name: copy meteor bin to build cache
+          command: |
+            mkdir -p ~/build-temp
+            cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      - save_cache:
+          name: cache system's meteor build
+          key: *meteor_system_cache_key
+          paths:
+            - ~/.meteor
+      - save_cache:
+          name: cache root node_modules
+          key: build-epotek-v6-node_modules-{{ checksum "./package.json" }}
+          paths:
+            - ./node_modules
+      - save_cache:
+          name: cache app's node_modules
+          key: build-epotek-v6-node_modules-{{ checksum "./microservices/app/package.json" }}
+          paths:
+            - ./microservices/app/node_modules
+      - save_cache:
+          name: cache admin's node_modules
+          key: build-epotek-v6-node_modules-{{ checksum "./microservices/admin/package.json" }}
+          paths:
+            - ./microservices/admin/node_modules
+      - save_cache:
+          name: cache www's node_modules
+          key: build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
+          paths:
+            - ./microservices/www/node_modules
       # TODO: To be added back later
       # - run:
       #     name: Check flow types
@@ -167,46 +199,29 @@ jobs:
           key: *meteor_system_cache_key
           paths:
             - ~/.meteor
-      - save_cache:
-          name: cache root node_modules
-          key: build-epotek-v6-node_modules-{{ checksum "./package.json" }}
-          paths:
-            - ./node_modules
-      - save_cache:
-          name: cache cypress binary
-          key: *cypress_binary_cache
-          paths:
-            - ~/.cache/Cypress
+
+      # - save_cache:
+      #     name: cache cypress binary
+      #     key: *cypress_binary_cache
+      #     paths:
+      #       - ~/.cache/Cypress
       - save_cache:
           name: cache app's meteor build
           key: *app_meteor_cache_key
           paths:
             - ./microservices/app/.meteor/local
-      - save_cache:
-          name: cache app's node_modules
-          key: build-epotek-v6-node_modules-{{ checksum "./microservices/app/package.json" }}
-          paths:
-            - ./microservices/app/node_modules
+
       - save_cache:
           name: cache admin's meteor build
           key: *admin_meteor_cache_key
           paths:
             - ./microservices/admin/.meteor/local
-      - save_cache:
-          name: cache admin's node_modules
-          key: build-epotek-v6-node_modules-{{ checksum "./microservices/admin/package.json" }}
-          paths:
-            - ./microservices/admin/node_modules
+
       - save_cache:
           name: cache www's meteor build
           key: *www_meteor_cache_key
           paths:
             - ./microservices/www/.meteor/local
-      - save_cache:
-          name: cache www's node_modules
-          key: build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
-          paths:
-            - ./microservices/www/node_modules
 
       - store_test_results:
           path: ./results
