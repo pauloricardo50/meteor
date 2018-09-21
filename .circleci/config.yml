@@ -57,7 +57,7 @@ jobs:
           paths:
             - ~/.meteor
       - run:
-          name: run tests for App
+          name: Install packages
           command: |
             cd microservices/www
             # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
