@@ -350,15 +350,17 @@ export const PropertySchema = new SimpleSchema({
 });
 
 const protectedKeys = [
-  'userId',
+  '_id',
+  'additionalDocuments',
+  'address',
+  'adminValidation',
   'createdAt',
-  'updatedAt',
+  'customFields',
   'latitude',
   'longitude',
-  'address',
+  'updatedAt',
+  'userId',
   'valuation',
-  'adminValidation',
-  'customFields',
 ];
 export const PropertySchemaAdmin = PropertySchema.omit(...protectedKeys);
 

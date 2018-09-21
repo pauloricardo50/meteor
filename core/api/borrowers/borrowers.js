@@ -211,11 +211,12 @@ export const BorrowerSchema = new SimpleSchema({
 
 const protectedKeys = [
   '_id',
-  'updatedAt',
-  'createdAt',
+  'additionalDocuments',
   'admin',
   'adminValidation',
+  'createdAt',
   'logic',
+  'updatedAt',
   'userId',
 ];
 
