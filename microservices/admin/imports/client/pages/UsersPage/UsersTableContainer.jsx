@@ -15,8 +15,8 @@ export default compose(
   withTableFilters,
   createContainer(({ data, history, showAssignee }) => ({
     options: {
-      getColumnOptions: getColumnOptions({ showAssignee }),
-      getRows: getRows({ data, history, showAssignee }),
+      columnOptions: getColumnOptions({ showAssignee }),
+      rows: getRows({ data, history, showAssignee }),
     },
   })),
 );
