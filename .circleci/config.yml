@@ -110,16 +110,6 @@ jobs:
           no_output_timeout: 20m
 
       # Cache this stuff early, since it will not change
-      - run:
-          name: copy meteor bin to build cache
-          command: |
-            mkdir -p ~/build-temp
-            cp /usr/local/bin/meteor ~/build-temp/meteor-bin
-      - save_cache:
-          name: cache system's meteor build
-          key: *meteor_system_cache_key
-          paths:
-            - ~/.meteor
       - save_cache:
           name: cache root node_modules
           key: build-epotek-v6-node_modules-{{ checksum "./package.json" }}
