@@ -34,6 +34,13 @@ const justifyContentCenter = `-webkit-box-pack: center;
     -ms-flex-pack: center;
         justify-content: center;`;
 
+const justifyContentSpaceEvenly = `-webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;`;
+
+const justifyContentSpaceAround = `    -ms-flex-pack: distribute;
+        justify-content: space-around;`;
+
 const RecapStyleSheet = `
 .validator {
   display: -webkit-box;
@@ -156,11 +163,11 @@ const stylesheet = `
         font-size: 10px;
     }
     .loan-bank-pdf {
-        width: 500px;
-        height: auto;
         ${flexColumn}
         ${alignItemsCenter}
         ${justifyContentFlexStart}
+        width: 500px;
+        height: auto;
     }
     .loan-bank-pdf-page {
         ${flexColumn}
@@ -174,36 +181,36 @@ const stylesheet = `
         flex-grow: 1
     }
     .loan-bank-pdf-header {
-        width: 100%;
         ${flexRow}
         ${alignItemsCenter}
         ${justifyContentSpaceBetween}
+        width: 100%;
     }
     .loan-bank-pdf-info {
-        width: 100%;
         ${flexRow}
         ${alignItemsCenter}
         ${justifyContentFlexEnd}
+        width: 100%;
         text-transform: uppercase;
     }
     .loan-bank-pdf-recaps {
-        width:100%;
         ${flexColumn}
         ${justifyContentFlexStart}
+        width:100%;
     }
     .loan-bank-pdf-borrowers {
-        width: 100%;
-        margin-bottom: 16px;
         ${flexColumn}
         ${justifyContentFlexStart}
+        width: 100%;
+        margin-bottom: 16px;
         -webkit-column-break-after: always;
         break-after: always;
         page-break-after: always;
     }
     .loan-bank-pdf-borrowers-recap {
-        width: 100%;
         ${flexRow}
         ${justifyContentSpaceBetween}
+        width: 100%;
     }
     .loan-bank-pdf-recap-single {
         width: 50%;
@@ -218,44 +225,46 @@ const stylesheet = `
         padding-left: 4px;
     }
     .loan-bank-pdf-project {
+        ${flexColumn}
+        ${justifyContentCenter}
          -webkit-box-flex: 1;
         -ms-flex-positive: 1;
         flex-grow: 1
         margin-bottom: 16px;
-        ${flexColumn}
-        ${justifyContentFlexStart}
     }
     .loan-bank-pdf-project-recap {
+        ${flexRow}
+        ${justifyContentSpaceAround}
          -webkit-box-flex: 1;
         -ms-flex-positive: 1;
         flex-grow: 1
-        ${flexRow}
-        ${justifyContentSpaceBetween}
     }
     .loan-bank-pdf-property {
-        -ms-flex-preferred-size: 50%;
-        flex-basis: 50%;
-        -ms-flex-negative:0;
-         flex-shrink:0;
         ${flexColumn}
         ${justifyContentFlexStart}
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
     }
     .loan-bank-pdf-property-table {
         font-size: 10px;
     }
     .loan-bank-pdf-project-details {
-        -ms-flex-preferred-size: 50%;
-        flex-basis: 50%;
-        -ms-flex-negative:0;
-         flex-shrink:0;
         ${flexColumn}
         ${justifyContentFlexStart}
-    }
-    .loan-bank-pdf-project-table {
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
         -ms-flex-preferred-size: 50%;
         flex-basis: 50%;
-        -ms-flex-negative:0;
-        flex-shrink:0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+    }
+    .loan-bank-pdf-project-table {
         font-size: 10px;
     }
     .loan-bank-pdf-footer {
@@ -263,7 +272,7 @@ const stylesheet = `
         ${alignItemsCenter}
         ${justifyContentCenter}
         -ms-flex-item-align: end;
-            align-self: flex-end;
+        align-self: flex-end;
     }
 
     ${RecapStyleSheet}
