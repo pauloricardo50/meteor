@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { HOUSE_TYPE, FLAT_TYPE } from 'core/api/constants';
-import { PROPERTY_TYPE } from '../../../../core/api/constants';
-import { T } from '../../../../core/components/Translation/Translation';
+import { HOUSE_TYPE, FLAT_TYPE, PROPERTY_TYPE } from 'core/api/constants';
+import { T } from 'core/components/Translation/Translation';
 
 type LoanBankProjectProps = {
   property: Object,

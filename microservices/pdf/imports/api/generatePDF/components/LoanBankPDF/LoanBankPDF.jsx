@@ -8,6 +8,7 @@ import LoanBankBorrowers from './LoanBankBorrowers';
 import messagesFR from '../../../../../lang/fr.json';
 import LoanBankProject from './LoanBankProject';
 import LoanBankPage from './LoanBankPage';
+import LoanBankFinancing from './LoanBankFinancing';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -17,6 +18,7 @@ type LoanBankPDFProps = {
 const pages = loan => [
   <LoanBankBorrowers borrowers={loan.borrowers} key="1" />,
   <LoanBankProject property={loan.properties[0]} key="2" />,
+  <LoanBankFinancing structures={loan.structures} key="3" />,
 ];
 
 const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
@@ -30,7 +32,7 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
       <div className="loan-bank-pdf">
         {pages(loan).map((page, index) => (
           <LoanBankPage loan={loan} pageNumber={index + 1} key={index}>
-            <div className="loan-bank-pdf-recaps">{page}</div>
+            {page}
           </LoanBankPage>
         ))}
       </div>

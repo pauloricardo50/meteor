@@ -55,10 +55,10 @@ class PDFService {
     }
   };
 
-  handleGeneratePDF = ({ component, props, fileName }, promise) => {
+  handleGeneratePDF = ({ component, props, fileName }, promise, testing) => {
     this.module = promise;
     const html = this.getComponentAsHTML(component, props);
-    fs.writeFileSync('/Users/quentinherzig/Desktop/main.html', html);
+    testing && fs.writeFileSync('/tmp/pdf_output.html', html);
 
     if (html && fileName) this.generatePDF(html, fileName);
   };
@@ -78,10 +78,10 @@ class PDFService {
     }
   };
 
-  generateDataAsPDF = ({ data, type, options }) => {
+  generateDataAsPDF = ({ data, type, options }, testing = false) => {
     const content = this.generateContentObject({ data, type, options });
     return new Promise((resolve, reject) =>
-      this.handleGeneratePDF(content, { resolve, reject }));
+      this.handleGeneratePDF(content, { resolve, reject }, testing));
   };
 }
 

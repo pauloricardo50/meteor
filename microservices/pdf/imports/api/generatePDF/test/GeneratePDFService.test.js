@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import base64 from 'base64topdf';
+import fs from 'fs';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { PROPERTY_TYPE } from 'core/api/constants';
@@ -57,21 +58,23 @@ describe.only('GeneratePDFService', () => {
 
     const loan = getFullLoan(loanId);
 
-    return PDFService.generateDataAsPDF({
-      data: {
-        loan: {
-          ...loan,
-          ...FAKE_USER,
+    return PDFService.generateDataAsPDF(
+      {
+        data: {
+          loan: {
+            ...loan,
+            ...FAKE_USER,
+          },
         },
+        type: PDF_TYPES.LOAN_BANK,
       },
-      type: PDF_TYPES.LOAN_BANK,
-    })
+      true,
+    )
       .then((response) => {
-        base64.base64Decode(
-          response.base64,
-          '/Users/quentinherzig/Desktop/main.pdf',
-        );
-        expect(base64.base64ToStr(response.base64)).to.include('PDF');
+        const file = fs.readFileSync('/tmp/pdf_output.html', 'utf8');
+        base64.base64Decode(response.base64, '/tmp/pdf_output.pdf');
+        expect(file).to.contain('Expertise');
+        // expect(base64.base64ToStr(response.base64)).to.include('PDF');
       })
       .catch(console.log);
   });
