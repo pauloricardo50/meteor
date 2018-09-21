@@ -60,11 +60,27 @@ class SlackService {
           text: error.message || error.reason,
           color: colors.error,
           footer: 'c la merde',
+          ts: new Date().getTime(),
         },
         {
           title: 'Stack',
           text: `\`\`\`${error.stack.toString()}\`\`\``,
           color: colors.error,
+        },
+        {
+          title: 'User',
+          text: `\`\`\`${Meteor.user().toString()}\`\`\``,
+          color: colors.primary,
+        },
+        {
+          title: 'URL',
+          text: window.location && window.location.href,
+          color: colors.primary,
+        },
+        {
+          title: 'User agent',
+          text: window.navigator && window.navigator.userAgent,
+          color: colors.primary,
         },
         ...(additionalData
           ? [
