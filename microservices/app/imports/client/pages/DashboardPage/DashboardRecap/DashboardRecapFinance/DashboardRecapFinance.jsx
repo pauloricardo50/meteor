@@ -35,7 +35,7 @@ const DashboardRecapFinance = (props) => {
   }
 
   const totalCost = Calculator.getProjectValue({ loan });
-  const totalFinancing = Calculator.getNonPledgedOwnFunds({ loan });
+  const totalFinancing = Calculator.getTotalFinancing({ loan });
 
   return (
     <Link
