@@ -1,14 +1,15 @@
 .borrower-admin-form,
 .property-admin-form {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
   align-self: stretch;
+  flex-wrap: wrap;
+  justify-content: space-around;
 
-  > * {
+   > * {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+
     max-width: 400px;
     margin: 0 16px;
   }

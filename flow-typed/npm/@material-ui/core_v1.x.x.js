@@ -1,11 +1,11 @@
-// flow-typed signature: 7f135b444a21f89c888cbd1ab794ae5e
-// flow-typed version: 1fc4934cab/@material-ui/core_v1.x.x/flow_>=v0.58.x
+// flow-typed signature: 6af704afba2a67567fb4f5cd047039fd
+// flow-typed version: 7deafd3517/@material-ui/core_v1.x.x/flow_>=v0.58.x
 
 declare module "@material-ui/core/AppBar/AppBar" {
   import type {ComponentType, Node} from "react";
 
   declare type Color = "inherit" | "primary" | "secondary" | "default";
-  declare type Position = "fixed" | "absolute" | "sticky" | "static";
+  declare type Position = "fixed" | "absolute" | "sticky" | "static" | "relative";
 
   declare module.exports: ComponentType<{
     children?: Node,
@@ -2018,7 +2018,7 @@ declare module "@material-ui/core/styles/createMuiTheme" {
     zIndex: ZIndex
   };
 
-  declare module.exports: (options: ThemeOptions) => Theme;
+  declare module.exports: (options?: ThemeOptions) => Theme;
 }
 
 declare module "@material-ui/core/styles/createPalette" {
