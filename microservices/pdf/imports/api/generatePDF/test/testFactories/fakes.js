@@ -100,4 +100,6 @@ export const FAKE_APPARTMENT = {
   parkingOutside: 2,
   minergie: MINERGIE_CERTIFICATE.MINERGIE_P,
   monthlyExpenses: 1200,
+  numberOfFloors: 8,
+  floorNumber: 4,
 };

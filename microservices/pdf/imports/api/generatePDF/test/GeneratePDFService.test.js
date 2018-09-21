@@ -52,7 +52,7 @@ describe.only('GeneratePDFService', () => {
           withInsurance2: true,
         },
       ],
-      propertyType: PROPERTY_TYPE.HOUSE,
+      propertyType: PROPERTY_TYPE.FLAT,
     });
 
     const loan = getFullLoan(loanId);
