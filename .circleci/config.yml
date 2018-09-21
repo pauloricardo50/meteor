@@ -19,7 +19,7 @@ jobs:
       LC_ALL: C.UTF-8
       LC_NUMERIC: en_US.UTF-8
       METEOR_VERSION: 1.7
-      NODE_ENV: test
+      NODE_ENV: development
       TOOL_NODE_FLAGS: '--max_old_space_size=8192 --optimize_for_size --gc-interval=100' # if builds run out of memory
       METEOR_PROFILE: 1000 # If you need to debug meteor, turn this on
       # Used to to know in our scripts if we're on CircleCI environment or not
