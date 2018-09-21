@@ -35,7 +35,7 @@ jobs:
           NODE_ENV: development
           TOOL_NODE_FLAGS: '--max_old_space_size=4096 --optimize_for_size --gc-interval=100' # if builds run out of memory
            METEOR_PROFILE: 1000 # If you need to debug meteor, turn this on
-          # Used to to know in our scripts if we're on CircleCI environment or not
+          # Used to to know in our scripts if we're on CircleCI  environment or not
           CIRCLE_CI: 1
           DOCKER_DRIVER: overlay2
       # - image: cypress/browsers:chrome65-ff57
