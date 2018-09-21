@@ -1,3 +1,5 @@
+meteor_system_cache_key: &meteor_system_cache_key build-epotek-v6-meteor-system-{{ checksum "./.circleci/config.yml" }}
+
 version: 2
 jobs:
   build:
@@ -17,8 +19,19 @@ jobs:
           # Used to to know in our scripts if we're on CircleCI environment or not
           CIRCLE_CI: 1
           DEBUG: true
+          DOCKER_DRIVER: overlay2
     steps:
       - checkout
+      - *restore_meteor_system_cache
+      - restore_cache:
+          name: restore www's meteor cached build
+          keys:
+            - *www_meteor_cache_key
+      - restore_cache:
+          name: restore www's cached node_modules
+          keys:
+            - build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
+            - build-epotek-v6-node_modules-
       - run:
           name: install meteor
           command: |
@@ -28,6 +41,16 @@ jobs:
           name: check file system
           command: df -hT
       - run:
+          name: copy meteor bin to build cache
+          command: |
+            mkdir -p ~/build-temp
+            cp /usr/local/bin/meteor ~/build-temp/meteor-bin
+      - save_cache:
+          name: cache system's meteor build
+          key: *meteor_system_cache_key
+          paths:
+            - ~/.meteor
+      - run:
           name: run tests for App
           command: |
             cd microservices/www
@@ -36,7 +59,19 @@ jobs:
             # meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
             # meteor npm i nightmare --no-save
             meteor npm i
-            meteor npm run test-CI
+      - save_cache:
+          name: cache www's node_modules
+          key: build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
+          paths:
+            - ./microservices/www/node_modules
+      - run:
+          name: run tests
+          command: meteor npm run test-CI
+      - save_cache:
+          name: cache www's meteor build
+          key: *www_meteor_cache_key
+          paths:
+            - ./microservices/www/.meteor/local
 
 workflows:
   version: 2
