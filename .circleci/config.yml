@@ -73,7 +73,9 @@ jobs:
             - ./microservices/www/node_modules
       - run:
           name: run tests
-          command: meteor npm run test-CI
+          command: |
+            cd microservices/www
+            meteor npm run test-CI
       - save_cache:
           name: cache www's meteor build
           key: *www_meteor_cache_key
