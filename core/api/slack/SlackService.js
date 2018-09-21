@@ -69,7 +69,7 @@ class SlackService {
         },
         {
           title: 'User',
-          text: `\`\`\`${Meteor.user().toString()}\`\`\``,
+          text: `\`\`\`${JSON.stringify(Meteor.user(), null, 2)}\`\`\``,
           color: colors.primary,
         },
         {
