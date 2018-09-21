@@ -118,10 +118,15 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     loanHasMinimalInformation({
       loan: {
-        structure: { property, fortuneUsed, wantedLoan },
+        structure: { property, ownFunds, wantedLoan },
       },
     }) {
-      return !!(fortuneUsed && (property && property.value) && wantedLoan);
+      return !!(
+        ownFunds
+        && ownFunds.length > 0
+        && (property && property.value)
+        && wantedLoan
+      );
     }
 
     getLoanFilesProgress({ loan }) {
