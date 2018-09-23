@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { compose } from 'core/api';
+import { compose } from 'recompose';
 import withTableFilters from 'core/containers/withTableFilters';
 
 import { withTasksQuery } from '../TasksTableWithData';

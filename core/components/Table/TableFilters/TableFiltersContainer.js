@@ -1,9 +1,7 @@
-import { withStateHandlers, withProps, lifecycle } from 'recompose';
+import { withStateHandlers, withProps, lifecycle, compose } from 'recompose';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
 import isEqual from 'lodash/isEqual';
-
-import { compose } from 'core/api';
 
 const withState = withStateHandlers(({ filters = {} }) => ({ filters }), {
   handleOptionsSelect: ({ filters }) => (filterPath, newFilterValue) => {

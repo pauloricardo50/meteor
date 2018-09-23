@@ -121,6 +121,7 @@ Meteor.methods({
         createFakeLoan({});
       });
 
+      console.log('creating E2E user? 2');
       createTestUserWithData();
     }
   },

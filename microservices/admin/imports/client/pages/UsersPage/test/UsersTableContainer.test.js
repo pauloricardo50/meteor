@@ -1,10 +1,8 @@
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
+import { compose } from 'recompose';
 
-import { compose } from 'core/api';
 import withTableFilters from 'core/containers/withTableFilters';
-
 import { withUsersQuery } from '../UsersTableContainer';
 
 describe('UsersTableContainer', () => {

@@ -6,6 +6,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 import uniq from 'lodash/uniq';
 import Select from 'react-select';
+import AsyncSelect from 'react-select/lib/Async';
 
 import formatMessage from '../../../utils/intl';
 import T from '../../Translation';
@@ -118,7 +119,7 @@ export default withProps((props) => {
     loadOptions: isPromise(filterOptions)
       ? makeAsyncOptionsLoader(filterOptions, filterPath)
       : undefined,
-    SelectComponent: isPromise(filterOptions) ? Select.Async : Select,
+    SelectComponent: isPromise(filterOptions) ? AsyncSelect : Select,
     onChange: (selectedOptions) => {
       const selectedOptionValues = selectedOptions.map(({ value }) => value);
       getUntranslatedValues(

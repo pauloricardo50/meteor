@@ -1,11 +1,15 @@
 import { Meteor } from 'meteor/meteor';
-import { withStateHandlers, lifecycle, withState, withProps } from 'recompose';
+import {
+  withStateHandlers,
+  lifecycle,
+  withState,
+  withProps,
+  compose,
+} from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 
-import { compose } from 'core/api/containerToolkit/index';
 import withMatchParam from 'core/containers/withMatchParam';
-
 import { getUserByPasswordResetToken } from 'core/api';
 
 const stateHandlers = withStateHandlers(

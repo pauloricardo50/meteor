@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
-import { compose } from 'core/api';
 import withDataFilterAndSort from 'core/api/containerToolkit/withDataFilterAndSort';
 
 import {
