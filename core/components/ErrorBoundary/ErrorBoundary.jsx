@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import SlackService from 'core/api/slack';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
+import withErrorCatcher from '../../utils/withErrorCatcher';
 
-export default class ErrorBoundary extends Component {
+class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -68,3 +69,5 @@ ErrorBoundary.propTypes = {
 ErrorBoundary.defaultProps = {
   pathname: undefined,
 };
+
+export default withErrorCatcher(ErrorBoundary)
