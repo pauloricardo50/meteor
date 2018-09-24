@@ -119,7 +119,7 @@ export default withProps((props) => {
     loadOptions: isPromise(filterOptions)
       ? makeAsyncOptionsLoader(filterOptions, filterPath)
       : undefined,
-    SelectComponent: isPromise(filterOptions) ? AsyncSelect : Select,
+    SelectComponent: isPromise(filterOptions) ? Select.Async : Select,
     onChange: (selectedOptions) => {
       const selectedOptionValues = selectedOptions.map(({ value }) => value);
       getUntranslatedValues(
