@@ -5,14 +5,15 @@
   .form {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
     flex-wrap: wrap;
+    justify-content: space-around;
   }
 
   .mui-select,
   .money-input {
     flex-basis: 140px;
     flex-shrink: 0;
+
     margin-bottom: 4px;
   }
 }
@@ -20,25 +21,29 @@
 .own-funds-completer {
   display: flex;
   align-items: center;
+
   margin-bottom: 8px;
 
-  > :last-child {
+   > :last-child {
     margin-left: 16px;
   }
 }
 
 .current-own-funds {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  border: 2px solid $border-grey;
-  padding: 8px;
+  flex-direction: column;
+
   margin-bottom: 8px;
+  padding: 8px;
+
+  border: 2px solid $border-grey;
   border-radius: 4px;
 
   &:hover {
-    border-color: $primary;
     cursor: pointer;
+
+    border-color: $primary;
   }
 
   h5,
@@ -48,8 +53,9 @@
 
   p {
     align-self: center;
+
     margin: 0;
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
 

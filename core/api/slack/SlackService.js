@@ -48,7 +48,7 @@ class SlackService {
     ...rest,
   });
 
-  sendError = (error, additionalData) =>
+  sendError = (error, ...additionalData) =>
     this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
       attachments: [
@@ -69,7 +69,7 @@ class SlackService {
         },
         {
           title: 'User',
-          text: `\`\`\`${Meteor.user().toString()}\`\`\``,
+          text: `\`\`\`${JSON.stringify(Meteor.user(), null, 2)}\`\`\``,
           color: colors.primary,
         },
         {
@@ -82,13 +82,11 @@ class SlackService {
           text: window.navigator && window.navigator.userAgent,
           color: colors.primary,
         },
-        ...(additionalData
-          ? [
-            {
-              title: 'Additional data',
-              text: JSON.stringify(additionalData),
-            },
-          ]
+        ...(additionalData && additionalData.length > 0
+          ? additionalData.map((data, index) => ({
+            title: `Additional data ${index + 1}`,
+            text: JSON.stringify(data),
+          }))
           : []),
       ],
     });

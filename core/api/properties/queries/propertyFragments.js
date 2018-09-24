@@ -1,3 +1,4 @@
+import merge from 'lodash/merge';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 
@@ -45,7 +46,8 @@ export const fullPropertyFragment = {
   isNew: 1,
   landArea: 1,
   latitude: 1,
-  loans: loanBaseFragment,
+  // residenceType is required for the valuation
+  loans: merge({}, loanBaseFragment, { general: { residenceType: 1 } }),
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
