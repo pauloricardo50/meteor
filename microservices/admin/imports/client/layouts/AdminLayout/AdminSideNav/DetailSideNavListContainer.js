@@ -69,7 +69,7 @@ export const withSideNavQuery = withSmartQuery({
       limit: getQueryLimit(showMoreCount),
       skip: 0,
     }),
-  queryOptions: { reactive: true },
+  queryOptions: { reactive: false },
 });
 
 export const withIsEndProp = withProps(({ showMoreCount, totalCount }) => ({

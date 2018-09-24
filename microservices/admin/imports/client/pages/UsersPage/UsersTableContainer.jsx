@@ -7,7 +7,7 @@ import { getColumnOptions, getRows } from './userTableHelpers';
 
 export const withUsersQuery = withSmartQuery({
   query: ({ assignedTo }) => adminUsersQuery.clone({ assignedTo }),
-  queryOptions: { reactive: true },
+  queryOptions: { reactive: false },
 });
 
 export default compose(

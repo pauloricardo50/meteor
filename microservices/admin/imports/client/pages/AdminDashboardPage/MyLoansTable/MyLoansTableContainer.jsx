@@ -55,7 +55,7 @@ const MyLoansTableContainer = compose(
   withSmartQuery({
     query: ({ currentUser: { _id: adminId } }) =>
       loansAssignedToAdmin.clone({ adminId }),
-    queryOptions: { reactive: true },
+    queryOptions: { reactive: false },
     dataName: 'loans',
     renderMissingDoc: false,
   }),
