@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import {
   RESIDENCE_TYPE,
   PROPERTY_TYPE,
@@ -11,9 +9,6 @@ import {
 
 export const fakeGeneral = {
   purchaseType: 'ACQUISITION',
-  wantedClosingDate: moment()
-    .add(15, 'd')
-    .toDate(),
 };
 
 export const fakeProperty = {

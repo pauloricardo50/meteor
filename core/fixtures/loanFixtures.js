@@ -1,12 +1,8 @@
-import moment from 'moment';
 import LoanService from 'core/api/loans/LoanService';
 import faker from 'faker';
 import {
   PURCHASE_TYPE,
-  INSURANCE_USE_PRESET,
   AUCTION_STATUS,
-  LOAN_STRATEGY_PRESET,
-  AMORTIZATION_TYPE,
   CLOSING_STEPS_TYPE,
   CLOSING_STEPS_STATUS,
   INTEREST_RATES,
@@ -21,9 +17,6 @@ const purchaseTypes = Object.values(PURCHASE_TYPE);
 
 const fakeGeneral = {
   purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
-  wantedClosingDate: moment()
-    .add(15, 'd')
-    .toDate(),
 };
 
 const logic1 = {};

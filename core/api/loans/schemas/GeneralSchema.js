@@ -1,13 +1,6 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import {
-  PURCHASE_TYPE,
-  OWNER,
-  CANTONS,
-  AUCTION_MOST_IMPORTANT,
-  GENDER,
-  RESIDENCE_TYPE,
-} from '../../constants';
+import { PURCHASE_TYPE, OWNER, CANTONS, RESIDENCE_TYPE } from '../../constants';
 
 const GeneralSchema = new SimpleSchema({
   purchaseType: {
@@ -20,22 +13,6 @@ const GeneralSchema = new SimpleSchema({
     defaultValue: RESIDENCE_TYPE.MAIN_RESIDENCE,
     allowedValues: Object.values(RESIDENCE_TYPE),
   },
-  oldestAge: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 18,
-    max: 120,
-  },
-  oldestGender: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(GENDER),
-  },
-  partnersToAvoid: {
-    type: Array,
-    defaultValue: [],
-  },
-  'partnersToAvoid.$': String,
   canton: {
     type: String,
     optional: true,
@@ -54,15 +31,6 @@ const GeneralSchema = new SimpleSchema({
   otherOwner: {
     type: String,
     optional: true,
-  },
-  wantedClosingDate: {
-    type: Date,
-    optional: true,
-  },
-  auctionMostImportant: {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(AUCTION_MOST_IMPORTANT),
   },
 });
 
