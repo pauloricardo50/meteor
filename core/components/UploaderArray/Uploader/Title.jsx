@@ -8,12 +8,9 @@ import FileStatusIcon from './FileStatusIcon';
 import AdditionalDocDeleter from './AdditionalDocDeleter';
 
 const Title = ({
-  fileMeta: { id, label, isAdditionalDoc },
+  fileMeta: { id, label, isAdditionalDoc, required, noTooltips, tooltipSuffix },
   doubleTooltip,
-  noTooltips,
-  required,
   currentValue,
-  tooltipSuffix,
   displayFull,
   showFull,
   hideFull,
@@ -38,7 +35,7 @@ const Title = ({
               tooltipPlacement="top"
             />
           )}
-          {required === false ? '' : ' *'}
+          {required === false ? null : <span className="error">&nbsp;*</span>}
         </h4>
         <h5 className="secondary">
           <span style={{ padding: '0 4px' }}>&bull;</span>

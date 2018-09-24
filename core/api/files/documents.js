@@ -75,7 +75,7 @@ export const borrowerDocuments = (b = {}) => ({
 export const loanDocuments = ({ general: { purchaseType } }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   return {
-    [STEPS.PREPARATION]: [{ id: DOCUMENTS.SIGNED_MANDATE }],
+    [STEPS.PREPARATION]: [{ id: DOCUMENTS.SIGNED_MANDATE, noTooltips: true }],
     [STEPS.GET_CONTRACT]: [
       {
         id: DOCUMENTS.BUYERS_CONTRACT,
@@ -97,59 +97,63 @@ export const loanDocuments = ({ general: { purchaseType } }) => {
   };
 };
 
-export const propertyDocuments = (property = {}, loan = {}) => ({
-  [STEPS.PREPARATION]: [
-    { id: DOCUMENTS.PROPERTY_PLANS },
-    {
-      id: DOCUMENTS.PROPERTY_VOLUME,
-      doubleTooltip: true,
-      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
+export const propertyDocuments = (property = {}, loan = {}) => {
+  console.log('propertyDocuments', loan);
+
+  return {
+    [STEPS.PREPARATION]: [
+      { id: DOCUMENTS.PROPERTY_PLANS },
+      {
+        id: DOCUMENTS.PROPERTY_VOLUME,
+        doubleTooltip: true,
+        condition: property.propertyType === PROPERTY_TYPE.HOUSE,
+      },
+      { id: DOCUMENTS.PROPERTY_PICTURES },
+      {
+        id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE,
+        condition: !!(
+          loan
+          && loan.general
+          && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        ),
+        required: false,
+      },
+    ],
+    [STEPS.GET_CONTRACT]: [
+      {
+        id: DOCUMENTS.INVESTMENT_PROPERTY_RENT_JUSTIFICATION,
+        condition:
+          !!loan.general
+          && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
+        doubleTooltip: true,
+      },
+      { id: DOCUMENTS.LAND_REGISTER_EXTRACT, doubleTooltip: true },
+      {
+        id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
+        condition: property.isCoproperty,
+        doubleTooltip: true,
+      },
+      {
+        id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
+        condition: property.isCoproperty,
+        doubleTooltip: true,
+      },
+      { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE, condition: !!property.isNew },
+    ],
+    [STEPS.CLOSING]: [],
+    all() {
+      return [
+        ...this[STEPS.PREPARATION],
+        ...this[STEPS.GET_CONTRACT],
+        ...this[STEPS.CLOSING],
+      ];
     },
-    { id: DOCUMENTS.PROPERTY_PICTURES },
-    {
-      id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE,
-      condition: !!(
-        loan
-        && loan.general
-        && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
-      ),
-      required: false,
-    },
-  ],
-  [STEPS.GET_CONTRACT]: [
-    {
-      id: DOCUMENTS.INVESTMENT_PROPERTY_RENT_JUSTIFICATION,
-      condition:
-        !!loan.general
-        && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
-      doubleTooltip: true,
-    },
-    { id: DOCUMENTS.LAND_REGISTER_EXTRACT, doubleTooltip: true },
-    {
-      id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
-      condition: property.isCoproperty,
-      doubleTooltip: true,
-    },
-    {
-      id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
-      condition: property.isCoproperty,
-      doubleTooltip: true,
-    },
-    { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE, condition: !!property.isNew },
-  ],
-  [STEPS.CLOSING]: [],
-  all() {
-    return [
-      ...this[STEPS.PREPARATION],
-      ...this[STEPS.GET_CONTRACT],
-      ...this[STEPS.CLOSING],
-    ];
-  },
-});
+  };
+};
 
 export const getDocumentArrayByStep = (func, step) => [
   ...func()[step],
-  { id: DOCUMENTS.OTHER, required: false },
+  { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
 ];
 
 const getKeysFromArray = (order, key) => order.slice(0, order.indexOf(key) + 1);
@@ -197,7 +201,7 @@ const makeGetDocuments = collection => ({ loan, id }) => {
         isAdditionalDoc: true,
       }))
       : []),
-    { id: DOCUMENTS.OTHER, required: false },
+    { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
   ];
 };
 

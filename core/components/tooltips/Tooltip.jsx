@@ -11,8 +11,8 @@ import defaultIntlValues from '../Translation/defaultIntlValues';
 import T from '../Translation';
 import TooltipSynonyms from './TooltipSynonyms';
 
-const getTooltip1Id = id => `tooltip.${id}`;
-const getTooltip2Id = id => `tooltip2.${id}`;
+const getTooltip1Id = id => (id.includes('tooltip') ? id : `tooltip.${id}`);
+const getTooltip2Id = id => (id.includes('tooltip') ? id : `tooltip2.${id}`);
 
 const Tooltip = ({
   tooltipConfig: { id, double: isDoubleTooltip },

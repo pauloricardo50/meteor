@@ -26,14 +26,20 @@ const parseTextForTooltips = props =>
   );
 
 export const AutoTooltip = (props) => {
-  if (!props.children) {
+  const { children, tooltipId } = props;
+  if (!children) {
     return null;
   }
 
-  if (typeof props.children !== 'string') {
+  if (typeof children !== 'string') {
     // If no id is given and children is not a string, return
-    return props.children;
+    return children;
   }
+
+  if (tooltipId) {
+    return <TooltipOverlay {...props}>{children}</TooltipOverlay>;
+  }
+
   // If no id is given and children is a string,
   // automatically replace all matching strings with tooltips
   const content = parseTextForTooltips(props);
