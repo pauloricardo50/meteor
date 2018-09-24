@@ -36,7 +36,7 @@ const getListItemDetails = (
       primary: `${name} - ${user && user.name}`,
       secondary: (
         <span>
-          <T id={`Forms.adminStatus.${adminStatus}`} /> {loanValueText}
+          <T id={`Forms.adminStatus.${adminStatus}`} /> - {loanValueText}
         </span>
       ),
     };

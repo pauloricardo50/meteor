@@ -35,4 +35,5 @@ export const adminLoansFragment = {
   adminStatus: 1,
   borrowers: { name: 1 },
   properties: { value: 1, address1: 1 },
+  user: { assignedEmployee: { email: 1 }, name: 1 },
 };
