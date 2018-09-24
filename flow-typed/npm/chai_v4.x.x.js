@@ -1,5 +1,5 @@
-// flow-typed signature: 40a2b8b7dd57094411ab35f8324944e5
-// flow-typed version: 64da3eb66a/chai_v4.x.x/flow_>=v0.25.0
+// flow-typed signature: 5cfeddfc9de4ef171e6b11554add9b1c
+// flow-typed version: 30784ea04e/chai_v4.x.x/flow_>=v0.25.0
 
 declare module "chai" {
   declare type ExpectChain<T> = {
@@ -113,9 +113,15 @@ declare module "chai" {
     calledThrice: () => ExpectChain<T>,
     calledBefore: (spy: mixed) => ExpectChain<T>,
     calledAfter: (spy: mixed) => ExpectChain<T>,
+    calledImmediatelyBefore: (spy: mixed) => ExpectChain<T>,
+    calledImmediatelyAfter: (spy: mixed) => ExpectChain<T>,
     calledWith: (...args: Array<mixed>) => ExpectChain<T>,
+    calledOnceWith: (...args: Array<mixed>) => ExpectChain<T>,
     calledWithMatch: (...args: Array<mixed>) => ExpectChain<T>,
     calledWithExactly: (...args: Array<mixed>) => ExpectChain<T>,
+    calledOnceWithExactly: (...args: Array<mixed>) => ExpectChain<T>,
+    returned: (returnVal: mixed) => ExpectChain<T>,
+    alwaysReturned: (returnVal: mixed) => ExpectChain<T>,
 
     // chai-as-promised
     eventually: ExpectChain<T>,
