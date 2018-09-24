@@ -6,7 +6,12 @@ import { adminLoanFragment } from 'core/api/loans/queries/loanFragments/index';
 import { fakeBorrower, FAKE_HOUSE, FAKE_APPARTMENT } from './fakes';
 import { PROPERTY_TYPE } from '../../../../core/api/constants';
 
-export const getSingleBorrowerLoan = ({ borrowers, propertyType }) => {
+export const getSingleBorrowerLoan = ({
+  purchaseType,
+  residenceType,
+  borrowers,
+  propertyType,
+}) => {
   const borrowerId = Factory.create('testBorrower', fakeBorrower(borrowers))
     ._id;
   const propertyId = Factory.create('testProperty', {
@@ -14,12 +19,19 @@ export const getSingleBorrowerLoan = ({ borrowers, propertyType }) => {
   })._id;
 
   return Factory.create('testLoan', {
+    purchaseType,
+    residenceType,
     borrowerIds: [borrowerId],
     propertyIds: [propertyId],
   })._id;
 };
 
-export const getTwoBorrowersLoan = ({ borrowers, propertyType }) => {
+export const getTwoBorrowersLoan = ({
+  purchaseType,
+  residenceType,
+  borrowers,
+  propertyType,
+}) => {
   const borrower1Id = Factory.create(
     'testBorrower',
     fakeBorrower({ ...borrowers[0] }),
@@ -33,6 +45,8 @@ export const getTwoBorrowersLoan = ({ borrowers, propertyType }) => {
   })._id;
 
   return Factory.create('testLoan', {
+    purchaseType,
+    residenceType,
     borrowerIds: [borrower1Id, borrower2Id],
     propertyIds: [propertyId],
   })._id;

@@ -4,7 +4,11 @@ import base64 from 'base64topdf';
 import fs from 'fs';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { PROPERTY_TYPE } from 'core/api/constants';
+import {
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+  PURCHASE_TYPE,
+} from 'core/api/constants';
 import PDFService from '../PDFService';
 import { PDF_TYPES } from '../constants';
 
@@ -23,6 +27,8 @@ describe.only('GeneratePDFService', () => {
 
   it('returns a base64 encoded PDF', () => {
     const loanId = getTwoBorrowersLoan({
+      purchaseType: PURCHASE_TYPE.ACQUISITION,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       borrowers: [
         {
           borrowerInfos: {

@@ -15,6 +15,8 @@ const LoanBankPage = ({ loan, pageNumber, children }: LoanBankPageProps) => (
     <LoanBankLoanInfo
       name={loan.name}
       assignedEmployee={loan.user.assignedEmployee.name}
+      purchaseType={loan.general.purchaseType}
+      residenceType={loan.general.residenceType}
     />
     <div className="loan-bank-pdf-page-content">{children}</div>
     <LoanBankFooter pageNumber={pageNumber} />

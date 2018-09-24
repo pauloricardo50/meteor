@@ -87,6 +87,7 @@ const config = {
         'LoginPage',
         'Microlocation',
         'offer',
+        'PDF',
         'PropertyForm',
         'StatusIconTooltip',
         'steps',

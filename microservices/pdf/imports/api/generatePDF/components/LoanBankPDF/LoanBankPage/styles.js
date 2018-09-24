@@ -17,13 +17,14 @@ const stylesheet = `
     }
 
     .loan-bank-pdf-info {
-        ${styles.flex([
-    'FLEX_ROW',
-    'ALIGN_ITEMS_CENTER',
-    'JUSTIFY_CONTENT_FLEX_END',
-  ])}
+        ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_END'])}
         width: 100%;
         text-transform: uppercase;
+    }
+
+    .loan-bank-pdf-info h3 {
+        text-align: right;
+        margin: 4px 0px;
     }
 
     .loan-bank-pdf-page-content {
