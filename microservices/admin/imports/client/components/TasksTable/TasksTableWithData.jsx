@@ -8,7 +8,7 @@ import TasksTable from './TasksTable';
 export const withTasksQuery = withSmartQuery({
   query: ({ assignedTo, unassigned, dashboardTasks }) =>
     query.clone({ assignedTo, unassigned, dashboardTasks }),
-  queryOptions: { reactive: true },
+  queryOptions: { reactive: false },
 });
 
 export const TasksTableContainer = compose(
