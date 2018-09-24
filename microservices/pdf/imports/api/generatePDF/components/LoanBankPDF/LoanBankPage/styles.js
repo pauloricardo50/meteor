@@ -16,6 +16,25 @@ const stylesheet = `
         width: 100%;
     }
 
+    .loan-bank-pdf-title {
+        ${styles.flex([
+    'FLEX_COLUMN',
+    'ALIGN_CENTER',
+    'JUSTIFY_CONTENT_CENTER',
+  ])}
+        width: 100%;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .loan-bank-pdf-title h1 {
+        margin: 4px 0px;
+    }
+
+    .loan-bank-pdf-title h2 {
+        color: #888;
+    }
+
     .loan-bank-pdf-info {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_END'])}
         width: 100%;
