@@ -3,12 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import T, { IntlNumber } from 'core/components/Translation';
+import UpdateField from 'core/components/UpdateField';
 import Calculator from 'core/utils/Calculator';
 
 type SingleLoanPageHeaderProps = {};
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
-  <h1>
+  <h1 className="single-loan-page-header">
     <T
       id="SingleLoanPageHeader.title"
       values={{
@@ -28,6 +29,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
         {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
       </small>
     </Link>
+    <UpdateField doc={loan} fields={['adminStatus']} />
   </h1>
 );
 

@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Loading from 'core/components/Loading';
+import T from 'core/components/Translation';
 import Roles from 'core/components/Roles';
 import { toMoney } from 'core/utils/conversionFunctions';
 import {
@@ -19,7 +20,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { roles, name, structure, loans, address1, value, user },
+  { roles, name, structure, loans, address1, value, user, adminStatus },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -29,11 +30,15 @@ const getListItemDetails = (
     };
   case LOANS_COLLECTION: {
     const loanValue = structure && Calculator.selectLoanValue({ loan: { structure } });
+    const loanValueText = loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
 
     return {
       primary: `${name} - ${user && user.name}`,
-      secondary:
-          loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré',
+      secondary: (
+        <span>
+          <T id={`Forms.adminStatus.${adminStatus}`} /> {loanValueText}
+        </span>
+      ),
     };
   }
   case BORROWERS_COLLECTION:

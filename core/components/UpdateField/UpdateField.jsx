@@ -1,0 +1,28 @@
+// @flow
+import React from 'react';
+import AutoForm from 'uniforms-material/AutoForm';
+import AutoField from 'uniforms-material/AutoField';
+import pick from 'lodash/pick';
+
+import { loanUpdate } from '../../api';
+import LoanSchema from '../../api/loans/schemas/LoanSchema';
+
+type UpdateFieldProps = {};
+
+const UpdateField = ({ fields, doc }: UpdateFieldProps) => (
+  <AutoForm
+    autosave
+    schema={LoanSchema.pick(...fields)}
+    model={doc}
+    onSubmit={values =>
+      loanUpdate.run({ loanId: doc._id, object: pick(values, fields) })
+    }
+    className="update-field"
+  >
+    {fields.map(field => (
+      <AutoField name={field} key={field} fullWidth />
+    ))}
+  </AutoForm>
+);
+
+export default UpdateField;
