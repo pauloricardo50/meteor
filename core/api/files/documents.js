@@ -62,7 +62,7 @@ export const borrowerDocuments = (b = {}) => ({
       doubleTooltip: true,
     },
   ],
-  [STEPS.CLOSING]: [],
+  [STEPS.CLOSING]: [{ id: DOCUMENTS.SIGNED_MANDATE }],
   all() {
     return [
       ...this[STEPS.PREPARATION],
