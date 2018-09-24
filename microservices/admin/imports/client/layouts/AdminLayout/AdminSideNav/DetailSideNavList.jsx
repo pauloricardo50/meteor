@@ -31,7 +31,7 @@ const getListItemDetails = (
     const loanValue = structure && Calculator.selectLoanValue({ loan: { structure } });
 
     return {
-      primary: `${name} - ${user.name}`,
+      primary: `${name} - ${user && user.name}`,
       secondary:
           loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré',
     };
