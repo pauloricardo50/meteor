@@ -19,7 +19,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { roles, name, structure, loans, address1, value },
+  { roles, name, structure, loans, address1, value, user },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -31,7 +31,7 @@ const getListItemDetails = (
     const loanValue = structure && Calculator.selectLoanValue({ loan: { structure } });
 
     return {
-      primary: name,
+      primary: `${name} - ${user.name}`,
       secondary:
           loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré',
     };

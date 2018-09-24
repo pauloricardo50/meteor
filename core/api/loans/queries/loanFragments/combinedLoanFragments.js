@@ -20,7 +20,7 @@ export const userLoanFragment = {
 
 export const sideNavLoanFragment = {
   ...loanBaseFragment,
-  user: { assignedEmployee: { email: 1 } },
+  user: { assignedEmployee: { email: 1 }, name: 1 },
 };
 
 export const adminLoanFragment = {
