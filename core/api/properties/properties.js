@@ -260,7 +260,7 @@ export const PropertySchema = new SimpleSchema({
     max: 20,
   },
   roomCount: {
-    type: SimpleSchema.Integer,
+    type: Number,
     optional: true,
     min: 0,
     max: 100,
