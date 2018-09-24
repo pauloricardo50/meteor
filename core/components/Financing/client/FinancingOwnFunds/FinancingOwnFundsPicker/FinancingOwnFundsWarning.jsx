@@ -7,9 +7,9 @@ import T from '../../../../Translation';
 type FinancingOwnFundsWarningProps = {};
 
 const FinancingOwnFundsWarning = ({
-  borrowers,
+  borrower: { firstName },
+  borrowerIndex,
   type,
-  borrowerId,
   value,
   otherValueOfTypeAndBorrower,
 }: FinancingOwnFundsWarningProps) => (
@@ -18,7 +18,14 @@ const FinancingOwnFundsWarning = ({
       id="FinancingOwnFundsPickerForm.warning"
       values={{
         name: (
-          <b>{borrowers.find(({ _id }) => _id === borrowerId).firstName}</b>
+          <b>
+            {firstName || (
+              <T
+                id="general.borrowerWithIndex"
+                values={{ index: borrowerIndex + 1 }}
+              />
+            )}
+          </b>
         ),
         value: (
           <b className="primary">

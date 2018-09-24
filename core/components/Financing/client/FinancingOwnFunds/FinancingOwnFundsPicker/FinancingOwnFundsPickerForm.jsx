@@ -89,9 +89,9 @@ const FinancingOwnFundsPickerForm = ({
     </div>
     {displayWarning && (
       <FinancingOwnFundsWarning
-        borrowers={borrowers}
         type={type}
-        borrowerId={borrowerId}
+        borrower={borrowers.find(({ _id }) => _id === borrowerId)}
+        borrowerIndex={borrowers.findIndex(({ _id }) => _id === borrowerId)}
         value={value}
         otherValueOfTypeAndBorrower={otherValueOfTypeAndBorrower}
       />
