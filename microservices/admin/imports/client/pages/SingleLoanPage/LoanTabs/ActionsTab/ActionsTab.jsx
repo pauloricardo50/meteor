@@ -21,7 +21,7 @@ const ActionsTab = ({ loan }) => (
           .fetchOneSync()
           .then(result =>
             (result
-              ? message.error('Ce nom de dossier existe déjà')
+              ? message.error('Ce numéro de dossier existe déjà')
               : loanUpdate.run({
                 loanId: loan._id,
                 object: pick(doc, ['name']),
