@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router-dom';
-import { createContainer, compose } from 'core/api/containerToolkit';
+import { withProps, compose } from 'recompose';
 
 export default compose(
   withRouter,
-  createContainer(({ loan }) => ({ currentStep: loan.logic.step })),
+  withProps(({ loan }) => ({ currentStep: loan.logic.step })),
 );

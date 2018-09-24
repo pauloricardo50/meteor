@@ -6,7 +6,7 @@ import LoanSummary from './LoanSummary';
 import LoanAdder from './LoanAdder';
 
 const LoanSummaryList = ({ loans, userId, withAdder }) => {
-  if (loans.length > 0) {
+  if (loans && loans.length > 0) {
     return (
       <React.Fragment>
         <h3>

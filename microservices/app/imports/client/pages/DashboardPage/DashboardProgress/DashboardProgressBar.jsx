@@ -32,7 +32,7 @@ const DashboardProgressBar = ({ currentStep }) => (
 );
 
 DashboardProgressBar.propTypes = {
-  currentStep: PropTypes.number.isRequired,
+  currentStep: PropTypes.string.isRequired,
 };
 
 export default DashboardProgressBar;

@@ -13,10 +13,11 @@ const TableFilter = ({
   SelectComponent,
 }) => (
   <div className="table-filter">
-    <div className="table-filter-label">
+    <label htmlFor="filterKey" className="table-filter-label">
       <T id={`TableFilters.filterLabels.${filterKey}`} />
-    </div>
+    </label>
     <SelectComponent
+      id={filterKey}
       multi
       onChange={onChange}
       options={options}

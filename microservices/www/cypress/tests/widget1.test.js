@@ -63,7 +63,6 @@ describe('Widget1', () => {
         .click()
         .location('pathname')
         .should('eq', '/start/1');
-      // cy.location('pathname').should('eq', '/start/1');
     });
   });
 

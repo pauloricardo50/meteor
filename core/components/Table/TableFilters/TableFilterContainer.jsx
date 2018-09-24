@@ -6,6 +6,7 @@ import React from 'react';
 import { withProps } from 'recompose';
 import uniq from 'lodash/uniq';
 import Select from 'react-select';
+import AsyncSelect from 'react-select/lib/Async';
 
 import formatMessage from '../../../utils/intl';
 import T from '../../Translation';

@@ -80,8 +80,8 @@ const DetailSideNavList = ({
           button
           key={doc._id}
           onClick={() => {
-            push(`/${collectionName}/${doc._id}`);
             hideDetailNav();
+            push(`/${collectionName}/${doc._id}`);
           }}
         >
           <ListItemText {...getListItemDetails(collectionName, doc)} />
