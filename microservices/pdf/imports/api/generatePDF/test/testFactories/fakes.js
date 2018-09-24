@@ -1,4 +1,12 @@
-import { GENDER, MINERGIE_CERTIFICATE, FLAT_TYPE } from 'core/api/constants';
+import { Random } from 'meteor/random';
+
+import {
+  GENDER,
+  MINERGIE_CERTIFICATE,
+  FLAT_TYPE,
+  OWN_FUNDS_TYPES,
+  OWN_FUNDS_USAGE_TYPES,
+} from 'core/api/constants';
 import {
   CIVIL_STATUS,
   PROPERTY_TYPE,
@@ -38,6 +46,138 @@ export const FAKE_BONUS = {
 
 export const FAKE_LOAN_NAME = '18-0001';
 export const FAKE_USER = { user: { assignedEmployee: { name: 'Bob Dylan' } } };
+
+export const fakeOwnFunds = ({ borrowerId, type, value, usageType }) => ({
+  borrowerId,
+  type,
+  value,
+  usageType,
+});
+
+export const fakeBankFortuneWithdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+    value: 200000,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  });
+export const fakeInsurance2Withdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.INSURANCE_2,
+    value: 150000,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  });
+export const fakeInsurance2Pledge = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.INSURANCE_2,
+    value: 25000,
+    usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+  });
+export const fakeInsurance3AWithdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.INSURANCE_3A,
+    value: 85000,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  });
+export const fakeInsurance3APledge = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.INSURANCE_3A,
+    value: 125000,
+    usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+  });
+export const fakeInsurance3BWithdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.INSURANCE_3B,
+    value: 80000,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  });
+export const fakeInsurance3BPledge = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.INSURANCE_3B,
+    value: 15000,
+    usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+  });
+export const fakeBank3AWithdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.BANK_3A,
+    value: 75000,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  });
+export const fakeBank3APledge = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.BANK_3A,
+    value: 50000,
+    usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+  });
+export const fakeBank3BWithdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.BANK_3B,
+    value: 75000,
+    usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+  });
+export const fakeBank3BPledge = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.BANK_3B,
+    value: 18000,
+    usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+  });
+export const fakeThirdPartyFortuneWithdraw = borrowerId =>
+  fakeOwnFunds({
+    borrowerId,
+    type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+    value: 3000,
+    usageType: OWN_FUNDS_TYPES.WITHDRAW,
+  });
+
+export const FAKE_WANTED_LOAN = 800000;
+export const FAKE_NOTARY_FEES = 14500;
+
+export const fakeStructure = ({
+  borrowerId,
+  withCustomNotaryFees,
+  withBankWithdraw,
+  withInsurance2Withdraw,
+  withInsurance2Pledge,
+  withInsurance3AWithdraw,
+  withInsurance3APledge,
+  withBank3AWithdraw,
+  withBank3APledge,
+  withInsurance3BWithdraw,
+  withInsurance3BPledge,
+  withBank3BWithdraw,
+  withBank3BPledge,
+  withThirdPartyFortuneWithdraw,
+}) => ({
+  id: Random.id(),
+  wantedLoan: FAKE_WANTED_LOAN,
+  notaryFees: withCustomNotaryFees ? FAKE_NOTARY_FEES : 0.05 * FAKE_WANTED_LOAN,
+  ownFunds: [
+    withBankWithdraw ? fakeBankFortuneWithdraw(borrowerId) : null,
+    withInsurance2Withdraw ? fakeInsurance2Withdraw(borrowerId) : null,
+    withInsurance2Pledge ? fakeInsurance2Pledge(borrowerId) : null,
+    withInsurance3AWithdraw ? fakeInsurance3AWithdraw(borrowerId) : null,
+    withInsurance3APledge ? fakeInsurance3APledge(borrowerId) : null,
+    withBank3AWithdraw ? fakeBank3AWithdraw(borrowerId) : null,
+    withBank3APledge ? fakeBank3APledge(borrowerId) : null,
+    withInsurance3BWithdraw ? fakeInsurance3BWithdraw(borrowerId) : null,
+    withInsurance3BPledge ? fakeInsurance3BPledge(borrowerId) : null,
+    withBank3BWithdraw ? fakeBank3BWithdraw(borrowerId) : null,
+    withBank3BPledge ? fakeBank3BPledge(borrowerId) : null,
+    withThirdPartyFortuneWithdraw
+      ? fakeThirdPartyFortuneWithdraw(borrowerId)
+      : null,
+  ].filter(x => x),
+});
 
 export const fakeBorrower = ({
   borrowerInfos,

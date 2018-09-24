@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { T } from '../../../../../core/components/Translation/Translation';
+import { T } from 'core/components/Translation/Translation';
 
 type LoanBankLoanInfoProps = {
   name: String,

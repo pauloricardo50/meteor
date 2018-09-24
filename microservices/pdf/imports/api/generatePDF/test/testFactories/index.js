@@ -3,7 +3,12 @@ import { Factory } from 'meteor/dburles:factory';
 import Loans from 'core/api/loans/loans';
 import { adminLoanFragment } from 'core/api/loans/queries/loanFragments/index';
 
-import { fakeBorrower, FAKE_HOUSE, FAKE_APPARTMENT } from './fakes';
+import {
+  fakeBorrower,
+  FAKE_HOUSE,
+  FAKE_APPARTMENT,
+  fakeStructure,
+} from './fakes';
 import { PROPERTY_TYPE } from '../../../../core/api/constants';
 
 export const getSingleBorrowerLoan = ({
@@ -11,6 +16,7 @@ export const getSingleBorrowerLoan = ({
   residenceType,
   borrowers,
   propertyType,
+  structures,
 }) => {
   const borrowerId = Factory.create('testBorrower', fakeBorrower(borrowers))
     ._id;
@@ -23,6 +29,8 @@ export const getSingleBorrowerLoan = ({
     residenceType,
     borrowerIds: [borrowerId],
     propertyIds: [propertyId],
+    structures: structures.map(structure =>
+      fakeStructure({ borrowerId, ...structure })),
   })._id;
 };
 
@@ -31,6 +39,7 @@ export const getTwoBorrowersLoan = ({
   residenceType,
   borrowers,
   propertyType,
+  structures,
 }) => {
   const borrower1Id = Factory.create(
     'testBorrower',
@@ -49,6 +58,11 @@ export const getTwoBorrowersLoan = ({
     residenceType,
     borrowerIds: [borrower1Id, borrower2Id],
     propertyIds: [propertyId],
+    structures: structures.map(structure =>
+      fakeStructure({
+        borrowerId: Math.random() % 2 === 1 ? borrower1Id : borrower2Id,
+        ...structure,
+      })),
   })._id;
 };
 

@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import base64 from 'base64topdf';
 import fs from 'fs';
+import cheerio from 'cheerio';
 
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import {
@@ -59,6 +60,17 @@ describe.only('GeneratePDFService', () => {
           withInsurance2: true,
         },
       ],
+      structures: [
+        {
+          withBankWithdraw: true,
+          withInsurance3APledge: true,
+        },
+        {
+          withCustomNotaryFees: true,
+          withBankWithdraw: true,
+          withInsurance3AWithdraw: true,
+        },
+      ],
       propertyType: PROPERTY_TYPE.FLAT,
     });
 
@@ -78,9 +90,10 @@ describe.only('GeneratePDFService', () => {
     )
       .then((response) => {
         const file = fs.readFileSync('/tmp/pdf_output.html', 'utf8');
+        const $ = cheerio.load(file);
+
         base64.base64Decode(response.base64, '/tmp/pdf_output.pdf');
-        expect(file).to.contain('Expertise');
-        // expect(base64.base64ToStr(response.base64)).to.include('PDF');
+        expect(base64.base64ToStr(response.base64)).to.include('PDF');
       })
       .catch(console.log);
   });

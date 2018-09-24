@@ -119,7 +119,9 @@ const projectTable = ({ array, className }) => (
 
 const projectRecap = property => (
   <div className="loan-bank-pdf-project-details">
-    <h3>Détails du projet</h3>
+    <h3>
+      <T id="PDF.sectionSubTitle.projectDetails" />
+    </h3>
     {projectTable({
       className: 'loan-bank-pdf-project-table',
       array: [
@@ -142,7 +144,9 @@ const projectRecap = property => (
 
 const propertyRecap = property => (
   <div className="loan-bank-pdf-property">
-    <h3>Détails de la propriété</h3>
+    <h3>
+      <T id="PDF.sectionSubTitle.propertyDetails" />
+    </h3>
     {projectTable({
       className: 'loan-bank-pdf-property-table',
       array: [
@@ -157,7 +161,9 @@ const propertyRecap = property => (
 
 const LoanBankProject = ({ property }: LoanBankProjectProps) => (
   <div className="loan-bank-pdf-project">
-    <h3 className="loan-bank-pdf-section-title">Projet</h3>
+    <h3 className="loan-bank-pdf-section-title">
+      <T id="PDF.sectionTitle.project" />
+    </h3>
     <div className="loan-bank-pdf-project-recap">
       {projectRecap(property)}
       {propertyRecap(property)}
