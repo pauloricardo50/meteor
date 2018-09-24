@@ -62,7 +62,7 @@ export const borrowerDocuments = (b = {}) => ({
       doubleTooltip: true,
     },
   ],
-  [STEPS.CLOSING]: [{ id: DOCUMENTS.SIGNED_MANDATE }],
+  [STEPS.CLOSING]: [],
   all() {
     return [
       ...this[STEPS.PREPARATION],
@@ -75,7 +75,7 @@ export const borrowerDocuments = (b = {}) => ({
 export const loanDocuments = ({ general: { purchaseType } }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   return {
-    [STEPS.PREPARATION]: [],
+    [STEPS.PREPARATION]: [{ id: DOCUMENTS.SIGNED_MANDATE }],
     [STEPS.GET_CONTRACT]: [
       {
         id: DOCUMENTS.BUYERS_CONTRACT,
