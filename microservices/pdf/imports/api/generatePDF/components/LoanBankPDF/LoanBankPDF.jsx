@@ -18,7 +18,11 @@ type LoanBankPDFProps = {
 const pages = loan => [
   <LoanBankBorrowers borrowers={loan.borrowers} key="1" />,
   <LoanBankProject property={loan.properties[0]} key="2" />,
-  <LoanBankFinancing structures={loan.structures} key="3" />,
+  <LoanBankFinancing
+    structures={loan.structures}
+    property={loan.properties[0]}
+    key="3"
+  />,
 ];
 
 const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (

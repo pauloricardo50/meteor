@@ -30,7 +30,7 @@ export const getSingleBorrowerLoan = ({
     borrowerIds: [borrowerId],
     propertyIds: [propertyId],
     structures: structures.map(structure =>
-      fakeStructure({ borrowerId, ...structure })),
+      fakeStructure({ borrowerIds: [borrowerId], ...structure })),
   })._id;
 };
 
@@ -60,7 +60,7 @@ export const getTwoBorrowersLoan = ({
     propertyIds: [propertyId],
     structures: structures.map(structure =>
       fakeStructure({
-        borrowerId: Math.random() % 2 === 1 ? borrower1Id : borrower2Id,
+        borrowerIds: [borrower1Id, borrower2Id],
         ...structure,
       })),
   })._id;

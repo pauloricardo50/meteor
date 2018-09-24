@@ -64,6 +64,7 @@ describe.only('GeneratePDFService', () => {
         {
           withBankWithdraw: true,
           withInsurance3APledge: true,
+          withThirdPartyFortuneWithdraw: true,
         },
         {
           withCustomNotaryFees: true,

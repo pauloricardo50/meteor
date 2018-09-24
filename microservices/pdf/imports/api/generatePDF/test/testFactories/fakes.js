@@ -1,4 +1,5 @@
 import { Random } from 'meteor/random';
+import sample from 'lodash/sample';
 
 import {
   GENDER,
@@ -143,7 +144,7 @@ export const FAKE_WANTED_LOAN = 800000;
 export const FAKE_NOTARY_FEES = 14500;
 
 export const fakeStructure = ({
-  borrowerId,
+  borrowerIds,
   withCustomNotaryFees,
   withBankWithdraw,
   withInsurance2Withdraw,
@@ -162,19 +163,23 @@ export const fakeStructure = ({
   wantedLoan: FAKE_WANTED_LOAN,
   notaryFees: withCustomNotaryFees ? FAKE_NOTARY_FEES : 0.05 * FAKE_WANTED_LOAN,
   ownFunds: [
-    withBankWithdraw ? fakeBankFortuneWithdraw(borrowerId) : null,
-    withInsurance2Withdraw ? fakeInsurance2Withdraw(borrowerId) : null,
-    withInsurance2Pledge ? fakeInsurance2Pledge(borrowerId) : null,
-    withInsurance3AWithdraw ? fakeInsurance3AWithdraw(borrowerId) : null,
-    withInsurance3APledge ? fakeInsurance3APledge(borrowerId) : null,
-    withBank3AWithdraw ? fakeBank3AWithdraw(borrowerId) : null,
-    withBank3APledge ? fakeBank3APledge(borrowerId) : null,
-    withInsurance3BWithdraw ? fakeInsurance3BWithdraw(borrowerId) : null,
-    withInsurance3BPledge ? fakeInsurance3BPledge(borrowerId) : null,
-    withBank3BWithdraw ? fakeBank3BWithdraw(borrowerId) : null,
-    withBank3BPledge ? fakeBank3BPledge(borrowerId) : null,
+    withBankWithdraw ? fakeBankFortuneWithdraw(sample(borrowerIds)) : null,
+    withInsurance2Withdraw ? fakeInsurance2Withdraw(sample(borrowerIds)) : null,
+    withInsurance2Pledge ? fakeInsurance2Pledge(sample(borrowerIds)) : null,
+    withInsurance3AWithdraw
+      ? fakeInsurance3AWithdraw(sample(borrowerIds))
+      : null,
+    withInsurance3APledge ? fakeInsurance3APledge(sample(borrowerIds)) : null,
+    withBank3AWithdraw ? fakeBank3AWithdraw(sample(borrowerIds)) : null,
+    withBank3APledge ? fakeBank3APledge(sample(borrowerIds)) : null,
+    withInsurance3BWithdraw
+      ? fakeInsurance3BWithdraw(sample(borrowerIds))
+      : null,
+    withInsurance3BPledge ? fakeInsurance3BPledge(sample(borrowerIds)) : null,
+    withBank3BWithdraw ? fakeBank3BWithdraw(sample(borrowerIds)) : null,
+    withBank3BPledge ? fakeBank3BPledge(sample(borrowerIds)) : null,
     withThirdPartyFortuneWithdraw
-      ? fakeThirdPartyFortuneWithdraw(borrowerId)
+      ? fakeThirdPartyFortuneWithdraw(sample(borrowerIds))
       : null,
   ].filter(x => x),
 });

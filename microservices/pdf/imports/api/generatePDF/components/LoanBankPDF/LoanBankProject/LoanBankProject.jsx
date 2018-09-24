@@ -3,6 +3,7 @@ import React from 'react';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { HOUSE_TYPE, FLAT_TYPE, PROPERTY_TYPE } from 'core/api/constants';
 import { T } from 'core/components/Translation/Translation';
+import PDFTable from '../utils/PDFTable';
 
 type LoanBankProjectProps = {
   property: Object,
@@ -105,26 +106,14 @@ const getPropertyRecapArray = ({
   },
 ];
 
-const projectTable = ({ array, className }) => (
-  <table className={className} cellSpacing="5">
-    {array.map(({ label, data, condition, style }) =>
-      (condition === undefined || condition) && (
-        <tr key={label}>
-          <td>{label}</td>
-          <td style={style}>{data}</td>
-        </tr>
-      ))}
-  </table>
-);
-
 const projectRecap = property => (
   <div className="loan-bank-pdf-project-details">
     <h3>
       <T id="PDF.sectionSubTitle.projectDetails" />
     </h3>
-    {projectTable({
-      className: 'loan-bank-pdf-project-table',
-      array: [
+    <PDFTable
+      className="loan-bank-pdf-project-table"
+      array={[
         {
           label: <T id="Recap.propertyValue" />,
           data: `CHF ${toMoney(property.value)}`,
@@ -137,8 +126,8 @@ const projectRecap = property => (
           label: 'Microsituation',
           data: `${property.valuation.microlocation.grade} / 5`,
         },
-      ],
-    })}
+      ]}
+    />
   </div>
 );
 
@@ -147,15 +136,15 @@ const propertyRecap = property => (
     <h3>
       <T id="PDF.sectionSubTitle.propertyDetails" />
     </h3>
-    {projectTable({
-      className: 'loan-bank-pdf-property-table',
-      array: [
+    <PDFTable
+      className="loan-bank-pdf-property-table"
+      array={[
         ...(property.propertyType === PROPERTY_TYPE.HOUSE
           ? getHouseRecapArray(property)
           : getFlatRecapArray(property)),
         ...getPropertyRecapArray(property),
-      ],
-    })}
+      ]}
+    />
   </div>
 );
 
