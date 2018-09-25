@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import omit from 'lodash/omit';
 import MuiButton from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import Tooltip from '@material-ui/core/Tooltip';
 import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
 
@@ -12,9 +14,16 @@ import Icon from 'core/components/Icon';
 const styles = theme => ({
   root: {
     color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
     '&$raised': {
       color: theme.palette.error.contrastText,
       backgroundColor: theme.palette.error.main,
+    },
+    '&:hover': {
+      backgroundColor: fade(
+        theme.palette.text.primary,
+        theme.palette.action.hoverOpacity,
+      ),
     },
   },
   raised: {},
@@ -60,7 +69,7 @@ const Button = (props) => {
   const variant = props.variant || getVariant(props);
   const color = props.color || getColor(props);
 
-  return (
+  const button = (
     <MuiButton
       {...childProps}
       color={color}
@@ -77,6 +86,12 @@ const Button = (props) => {
       {props.label || props.children}
     </MuiButton>
   );
+
+  if (props.tooltip) {
+    return <Tooltip title={props.tooltip}>{button}</Tooltip>;
+  }
+
+  return button;
 };
 
 Button.propTypes = {

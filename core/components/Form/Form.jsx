@@ -18,11 +18,10 @@ const Form = ({
   FormWrapper,
   className,
   submitButtonProps,
-  onSubmit,
 }) => (
   <div className={className}>
     <FormWrapper>
-      <form onSubmit={handleSubmit(onSubmit)} className="form">
+      <form onSubmit={handleSubmit} className="form">
         {formArray.map(({ id, ...otherProps }, index) => (
           <FormField
             key={id}

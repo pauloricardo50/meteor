@@ -10,7 +10,7 @@ export class BorrowerService {
 
   remove = ({ borrowerId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    Borrowers.remove(borrowerId);
+    return Borrowers.remove(borrowerId);
   };
 
   pushValue = ({ borrowerId, object }) =>

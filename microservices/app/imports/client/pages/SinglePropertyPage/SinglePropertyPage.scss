@@ -1,6 +1,7 @@
 .property-page {
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .description {
     align-self: center;
@@ -8,6 +9,12 @@
 
   .map-container {
     height: 400px;
+  }
+
+  .property-deleter {
+    position: absolute;
+    top: 16px;
+    right: 16px;
   }
 }
 .single-property-page-buttons {

@@ -252,6 +252,23 @@ export class LoanService {
       });
     });
   };
+
+  cleanupRemovedProperty = ({ propertyId }) => {
+    // Remove all references to this property on the loan
+    const loans = Loans.find({ propertyIds: propertyId }).fetch();
+    loans.forEach((loan) => {
+      this.update({
+        loanId: loan._id,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            propertyId:
+              structure.propertyId === propertyId ? null : structure.propertyId,
+          })),
+        },
+      });
+    });
+  };
 }
 
 export default new LoanService({});

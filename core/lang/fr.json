@@ -1,4 +1,5 @@
 {
+  "SinglePropertyPage.noDelete": "Vous ne pouvez pas supprimer votre dernier bien immobilier",
   "Forms.status": "Statut du dossier",
   "Forms.status.TEST": "Test",
   "Forms.status.LEAD": "Prospect",
