@@ -104,11 +104,6 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
   },
-  birthDate: {
-    type: String,
-    optional: true,
-    regEx: '/^d{4}[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
-  },
   citizenship: {
     type: String,
     optional: true,
