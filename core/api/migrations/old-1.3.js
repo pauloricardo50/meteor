@@ -4,6 +4,9 @@ import { Loans, Borrowers, Properties } from '..';
 import { MIGRATIONS } from './migrationConstants';
 import { STEP_ORDER } from '../loans/loanConstants';
 
+// This is an example of a migration we did
+// WARNING: Don't use dot-versions, only integers
+
 Migrations.add({
   version: MIGRATIONS['1.3'],
   name: 'Change loan.logic.step from number to a string',
