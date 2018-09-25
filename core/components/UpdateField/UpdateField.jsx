@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
-import AutoForm from 'uniforms-material/AutoForm';
-import AutoField from 'uniforms-material/AutoField';
 import pick from 'lodash/pick';
 
+import AutoForm, { AutoField } from '../AutoForm2';
 import { loanUpdate } from '../../api';
 import LoanSchema from '../../api/loans/schemas/LoanSchema';
 

@@ -1,4 +1,5 @@
 {
+  "Forms.adminStatus": "Statut du dossier",
   "Forms.adminStatus.TEST": "Test",
   "Forms.adminStatus.LEAD": "Prospect",
   "Forms.adminStatus.ONGOING": "En cours",

@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
-import AutoForm from 'uniforms-material/AutoForm';
 import omit from 'lodash/omit';
 
 import { BorrowerSchemaAdmin } from 'core/api/borrowers/borrowers';
 import { borrowerUpdate } from 'core/api';
 import message from 'core/utils/message';
-import AutoField from './AutoField';
+import AutoForm from '../AutoForm2';
 
 type BorrowerFormProps = {};
 
@@ -22,7 +21,6 @@ const personalFields = [
   'city',
   'isSwiss',
   'residencyPermit',
-  'birthDate',
   'citizenship',
   'isUSPerson',
   'civilStatus',
@@ -71,7 +69,6 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
         model={borrower}
         onSubmit={handleSubmit(borrower._id)}
         className="form"
-        autoField={AutoField}
       />
     </div>
     <div>
@@ -81,7 +78,6 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
         model={borrower}
         onSubmit={handleSubmit(borrower._id)}
         className="form"
-        autoField={AutoField}
       />
     </div>
     {otherSchema._schemaKeys.length > 0 && (
@@ -92,7 +88,6 @@ const BorrowerForm = ({ borrower }: BorrowerFormProps) => (
           model={borrower}
           onSubmit={handleSubmit(borrower._id)}
           className="form"
-          autoField={AutoField}
         />
       </div>
     )}

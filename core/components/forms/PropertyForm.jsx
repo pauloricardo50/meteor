@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
-import AutoForm from 'uniforms-material/AutoForm';
 import omit from 'lodash/omit';
 
 import { PropertySchemaAdmin } from 'core/api/properties/properties';
 import { propertyUpdate } from 'core/api';
 import message from 'core/utils/message';
-import AutoField from './AutoField';
+import AutoForm from '../AutoForm2';
 
 type BorrowerFormProps = {};
 
@@ -66,7 +65,6 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
         model={property}
         onSubmit={handleSubmit(property._id)}
         className="form"
-        autoField={AutoField}
       />
     </div>
     <div>
@@ -76,7 +74,6 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
         model={property}
         onSubmit={handleSubmit(property._id)}
         className="form"
-        autoField={AutoField}
       />
     </div>
     {otherSchema._schemaKeys.length > 0 && (
@@ -87,7 +84,6 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
           model={property}
           onSubmit={handleSubmit(property._id)}
           className="form"
-          autoField={AutoField}
         />
       </div>
     )}

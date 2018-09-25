@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import AutoForm from 'uniforms-material/AutoForm';
+import AutoForm from 'core/components/AutoForm2';
 import omit from 'lodash/omit';
 
 import Tabs from 'core/components/Tabs';
