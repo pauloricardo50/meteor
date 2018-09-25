@@ -2,11 +2,6 @@
 export const LOANS_COLLECTION = 'loans';
 
 export const LOAN_STATUS = {
-  ACTIVE: 'ACTIVE',
-  DONE: 'DONE',
-};
-
-export const LOAN_ADMIN_STATUS = {
   TEST: 'TEST',
   LEAD: 'LEAD',
   ONGOING: 'ONGOING',

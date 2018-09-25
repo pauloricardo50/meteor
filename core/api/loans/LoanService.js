@@ -120,7 +120,7 @@ export class LoanService {
   confirmClosing = ({ loanId, object }) =>
     this.update({
       loanId,
-      object: { status: LOAN_STATUS.DONE, ...object },
+      object: { status: LOAN_STATUS.BILLING, ...object },
     });
 
   disableUserForms = ({ loanId }) =>

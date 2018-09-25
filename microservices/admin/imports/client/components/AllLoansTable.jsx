@@ -40,7 +40,7 @@ export default class AllLoansTable extends Component {
         loan.user && loan.user.name,
         moment(loan.createdAt).format('D.M.YY à H:mm'),
         moment(loan.updatedAt).fromNow(),
-        <T id={`Forms.adminStatus.${loan.adminStatus}`} key="adminStatus" />,
+        <T id={`Forms.status.${loan.status}`} key="status" />,
         <T id={`Forms.steps.${loan.logic.step}`} key="step" />,
         loan.structure.property ? loan.structure.property.value : 0,
         loan.structure.wantedLoan,

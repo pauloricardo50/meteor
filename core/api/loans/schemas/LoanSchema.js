@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import uniforms from 'uniforms-material';
 
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
-import { LOAN_STATUS, LOAN_ADMIN_STATUS } from '../loanConstants';
+import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
@@ -22,13 +22,8 @@ const LoanSchema = new SimpleSchema({
   updatedAt,
   status: {
     type: String,
-    defaultValue: LOAN_STATUS.ACTIVE,
+    defaultValue: LOAN_STATUS.LEAD,
     allowedValues: Object.values(LOAN_STATUS),
-  },
-  adminStatus: {
-    type: String,
-    defaultValue: LOAN_ADMIN_STATUS.LEAD,
-    allowedValues: Object.values(LOAN_ADMIN_STATUS),
   },
   name: { type: String, unique: true },
   general: { type: GeneralSchema, defaultValue: {} },

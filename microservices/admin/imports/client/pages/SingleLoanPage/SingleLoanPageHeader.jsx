@@ -29,7 +29,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
         {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
       </small>
     </Link>
-    <UpdateField doc={loan} fields={['adminStatus']} />
+    <UpdateField doc={loan} fields={['status']} />
   </h1>
 );
 

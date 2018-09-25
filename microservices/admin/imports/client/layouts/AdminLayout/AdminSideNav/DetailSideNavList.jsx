@@ -20,7 +20,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { roles, name, structure, loans, address1, value, user, adminStatus },
+  { roles, name, structure, loans, address1, value, user, status },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -36,7 +36,7 @@ const getListItemDetails = (
       primary: `${name} - ${user && user.name}`,
       secondary: (
         <span>
-          <T id={`Forms.adminStatus.${adminStatus}`} /> - {loanValueText}
+          <T id={`Forms.status.${status}`} /> - {loanValueText}
         </span>
       ),
     };
