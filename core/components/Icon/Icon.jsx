@@ -64,6 +64,7 @@ import Domain from '@material-ui/icons/Domain';
 import Info from '@material-ui/icons/Info';
 import AttachFile from '@material-ui/icons/AttachFile';
 import CloudDownload from '@material-ui/icons/CloudDownload';
+import LocalHospital from '@material-ui/icons/LocalHospital';
 
 const iconMap = {
   close: CloseIcon,
@@ -130,6 +131,7 @@ const iconMap = {
   info: Info,
   attachFile: AttachFile,
   download: CloudDownload,
+  health: LocalHospital,
 };
 
 const Icon = ({ type, size, ...props }) => {
