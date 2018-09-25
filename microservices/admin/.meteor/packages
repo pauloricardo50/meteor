@@ -53,8 +53,6 @@ dburles:mongo-collection-instances
 percolate:migrations
 aldeed:schema-index
 aldeed:schema-deny
-cultofcoders:redis-oplog
-disable-oplog@1.0.7
 
 # UI tricks
 themeteorchef:bert
