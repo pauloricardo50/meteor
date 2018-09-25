@@ -9,6 +9,7 @@ import messagesFR from '../../../../../lang/fr.json';
 import LoanBankProject from './LoanBankProject';
 import LoanBankPage from './LoanBankPage';
 import LoanBankFinancing from './LoanBankFinancing';
+import { T } from '../../../../core/components/Translation/Translation';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -16,13 +17,24 @@ type LoanBankPDFProps = {
 };
 
 const pages = loan => [
-  <LoanBankBorrowers borrowers={loan.borrowers} key="1" />,
-  <LoanBankProject property={loan.properties[0]} key="2" />,
-  <LoanBankFinancing
-    structures={loan.structures}
-    property={loan.properties[0]}
-    key="3"
-  />,
+  {
+    content: <LoanBankProject property={loan.properties[0]} key="1" />,
+    title: <T id="PDF.title.project" />,
+  },
+  {
+    content: <LoanBankBorrowers borrowers={loan.borrowers} key="2" />,
+    title: <T id="PDF.title.borrowers" />,
+  },
+  {
+    content: (
+      <LoanBankFinancing
+        structures={loan.structures}
+        property={loan.properties[0]}
+        key="3"
+      />
+    ),
+    title: <T id="PDF.title.project" />,
+  },
 ];
 
 const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
@@ -35,8 +47,13 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
     <InlineCss stylesheet={stylesheet}>
       <div className="loan-bank-pdf">
         {pages(loan).map((page, index) => (
-          <LoanBankPage loan={loan} pageNumber={index + 1} key={index}>
-            {page}
+          <LoanBankPage
+            loan={loan}
+            pageNumber={index + 1}
+            title={page.title}
+            key={index}
+          >
+            {page.content}
           </LoanBankPage>
         ))}
       </div>

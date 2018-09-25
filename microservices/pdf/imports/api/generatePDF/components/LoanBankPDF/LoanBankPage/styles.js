@@ -16,6 +16,10 @@ const stylesheet = `
         width: 100%;
     }
 
+    .loan-bank-pdf-header-address {
+        ${styles.flex(['FLEX_COLUMN'])}
+    }
+
     .loan-bank-pdf-title {
         ${styles.flex([
     'FLEX_COLUMN',
@@ -52,8 +56,13 @@ const stylesheet = `
     }
 
     .loan-bank-pdf-footer {
-    ${styles.flex(['FLEX_ROW', 'ALIGN_ITEMS_CENTER', 'JUSTIFY_CONTENT_CENTER'])}
+    ${styles.flex([
+    'FLEX_ROW',
+    'ALIGN_ITEMS_CENTER',
+    'JUSTIFY_CONTENT_SPACE_BETWEEN',
+  ])}
     ${styles.ALIGN_SELF_FLEX_END}
+    width: 100%;
     }
 `;
 
