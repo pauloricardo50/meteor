@@ -8,9 +8,9 @@ import T, { IntlNumber } from 'core/components/Translation';
 const columnOptions = [
   { id: 'No.' },
   { id: 'Utilisateur' },
+  { id: 'Statut' },
   { id: 'Créé le' },
   { id: 'Modifié' },
-  { id: 'Statut' },
   { id: 'Étape' },
   {
     id: 'Valeur du bien',
@@ -38,9 +38,9 @@ export default class AllLoansTable extends Component {
       columns: [
         loan.name,
         loan.user && loan.user.name,
+        <T id={`Forms.status.${loan.status}`} key="status" />,
         moment(loan.createdAt).format('D.M.YY à H:mm'),
         moment(loan.updatedAt).fromNow(),
-        <T id={`Forms.status.${loan.status}`} key="status" />,
         <T id={`Forms.steps.${loan.logic.step}`} key="step" />,
         loan.structure.property ? loan.structure.property.value : 0,
         loan.structure.wantedLoan,
