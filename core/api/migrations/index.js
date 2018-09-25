@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Migrations } from 'meteor/percolate:migrations';
 
 import { MIGRATIONS } from './migrationConstants';
-import './1.3';
+import './1';
 
 // This is imported in admin server, so it's the only one that migrates data
 Meteor.startup(() => {
-  // Migrations.migrateTo('latest');
+  Migrations.migrateTo('latest');
 });
 
 // To migrate to a specific version
