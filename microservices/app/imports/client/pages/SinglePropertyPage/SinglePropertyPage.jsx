@@ -68,7 +68,7 @@ const SinglePropertyPage = (props) => {
               propertyDelete
                 .run({ propertyId })
                 .then(() =>
-                  history.push(createRoute(PROPERTIES_PAGE, { loanId: loan._id })))
+                  history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
             }
             label={<T id="general.delete" />}
           />

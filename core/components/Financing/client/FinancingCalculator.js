@@ -5,7 +5,7 @@ import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
 import { getPropertyValue } from './FinancingOwnFunds/ownFundsHelpers.js';
 
 export const getProperty = ({ structure: { propertyId }, properties }) =>
-  properties.find(({ _id }) => _id === propertyId);
+  properties.find(({ _id }) => _id === propertyId) || {};
 
 export const getAmortizationRateMapper = (data) => {
   const {
