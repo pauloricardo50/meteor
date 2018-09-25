@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import Icon from 'core/components/Icon';
 
-const IconLink = ({ link, icon, text }) => (
-  <Link to={link} className="icon-link">
+const IconLink = ({ link, icon, text, children, ...rest }) => (
+  <Link to={link} className="icon-link" {...rest}>
     <Icon type={icon} className="icon-link-icon" />
-    {text}
+    {children || text}
   </Link>
 );
 

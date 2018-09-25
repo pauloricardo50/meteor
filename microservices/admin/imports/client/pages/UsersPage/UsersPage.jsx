@@ -22,17 +22,12 @@ const usersTableFilters = {
   },
 };
 
-const UsersPage = ({ history }) => (
+const UsersPage = () => (
   <section className="card1 card-top users-page">
     <h1>
       <T id="collections.users" />
     </h1>
-    <UsersTable
-      showAssignee
-      key="allUsers"
-      history={history}
-      tableFilters={usersTableFilters}
-    />
+    <UsersTable showAssignee key="allUsers" tableFilters={usersTableFilters} />
   </section>
 );
 
