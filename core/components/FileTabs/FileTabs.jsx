@@ -42,23 +42,30 @@ const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => (
             />
           ),
         })),
-        {
-          label: (
-            <FileTabLabel
-              id="general.property"
-              progress={Calculator.getPropertyFilesProgress({ loan })}
-            />
-          ),
-          content: (
-            <SingleFileTab
-              doc={property}
-              collection="properties"
-              disabled={disabled}
-              documentArray={getPropertyDocuments({ loan, id: property._id })}
-              currentUser={currentUser}
-            />
-          ),
-        },
+        ...(property
+          ? [
+            {
+              label: (
+                <FileTabLabel
+                  id="general.property"
+                  progress={Calculator.getPropertyFilesProgress({ loan })}
+                />
+              ),
+              content: (
+                <SingleFileTab
+                  doc={property}
+                  collection="properties"
+                  disabled={disabled}
+                  documentArray={getPropertyDocuments({
+                    loan,
+                    id: property._id,
+                  })}
+                  currentUser={currentUser}
+                />
+              ),
+            },
+          ]
+          : []),
         {
           label: (
             <FileTabLabel
