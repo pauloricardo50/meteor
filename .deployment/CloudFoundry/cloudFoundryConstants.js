@@ -20,6 +20,7 @@ export const cloudFoundryCommands = {
     `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest} --smoke-test ./test.sh --delete-old-apps`,
   deleteApp: name => `cf delete ${name} -f`,
   restartApp: name => `cf restart ${name}`,
+  deleteOprhanedRoutes: () => 'cf delete-orphaned-routes -f',
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {
