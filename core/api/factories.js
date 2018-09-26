@@ -53,7 +53,6 @@ Factory.define('loan', Loans, {
   status: 'ACTIVE',
   documents: () => ({}),
   logic: () => ({
-    auction: { status: '' },
     verification: {},
     step: STEPS.PREPARATION,
   }),

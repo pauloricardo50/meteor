@@ -15,10 +15,10 @@ export const DashboardInfoInterestsTableContainer = compose(
     // queryOptions: { reactive: true }, // FIXME: Crashes E2E tests
     dataName: 'offers',
   }),
-  withProps(({ auctionHasEnded, offers }) => ({
+  withProps(({ offers }) => ({
     columnOptions,
     rows:
-      auctionHasEnded && offers && offers.length > 0
+      offers && offers.length > 0
         ? rows({ interestRates: getInterestRatesFromOffers(offers) })
         : rows({ interestRates: generalInterestRates }),
   })),
