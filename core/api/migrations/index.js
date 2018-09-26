@@ -6,7 +6,8 @@ import './1';
 
 // This is imported in admin server, so it's the only one that migrates data
 Meteor.startup(() => {
-  Migrations.migrateTo('latest');
+  // Warning dangerous!
+  // Migrations.migrateTo('latest');
 });
 
 // To migrate to a specific version
