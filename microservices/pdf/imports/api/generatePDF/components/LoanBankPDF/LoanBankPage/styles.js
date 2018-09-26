@@ -1,13 +1,13 @@
 import * as styles from '../utils/styleHelpers';
 
 const stylesheet = `
-    .loan-bank-pdf-page {
+    .page {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         height: 722px;
         width: 100%;
     }
 
-    .loan-bank-pdf-header {
+    .header {
         ${styles.flex([
     'FLEX_ROW',
     'ALIGN_ITEMS_CENTER',
@@ -16,26 +16,27 @@ const stylesheet = `
         width: 100%;
     }
 
-    .loan-bank-pdf-header-address {
+    .header .address {
         ${styles.flex(['FLEX_COLUMN'])}
     }
 
-    .loan-bank-pdf-title {
-        ${styles.flex([
-    'FLEX_COLUMN',
-    'ALIGN_CENTER',
-    'JUSTIFY_CONTENT_CENTER',
-  ])}
+    .address .company-name {
+        font-weight: bold;
+    }
+
+    .page .title {
+        ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         width: 100%;
         text-transform: uppercase;
-        text-align: center;
+        padding: 4px;
     }
 
-    .loan-bank-pdf-title h1 {
-        margin: 4px 0px;
+    .page .title h1 {
+        margin: 2px 0;
     }
 
-    .loan-bank-pdf-title h2 {
+    .page .title h2 {
+        margin: 2px 0;
         color: #888;
     }
 
@@ -50,16 +51,16 @@ const stylesheet = `
         margin: 4px 0px;
     }
 
-    .loan-bank-pdf-page-content {
+    .page .content {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         ${styles.flexGrow(1)}
     }
 
-    .loan-bank-pdf-footer {
+    .page .footer {
     ${styles.flex([
     'FLEX_ROW',
     'ALIGN_ITEMS_CENTER',
-    'JUSTIFY_CONTENT_SPACE_BETWEEN',
+    'JUSTIFY_CONTENT_FLEX_END',
   ])}
     ${styles.ALIGN_SELF_FLEX_END}
     width: 100%;

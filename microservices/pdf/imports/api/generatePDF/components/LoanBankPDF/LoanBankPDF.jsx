@@ -18,15 +18,19 @@ type LoanBankPDFProps = {
 
 const pages = loan => [
   {
-    content: <LoanBankProject property={loan.properties[0]} key="1" />,
-    title: <T id="PDF.title.project" />,
+    content: <p key="1">Hello</p>,
   },
   {
-    content: <LoanBankBorrowers borrowers={loan.borrowers} key="2" />,
+    content: <LoanBankProject property={loan.properties[0]} key="2" />,
+    title: <T id="PDF.title.project" />,
+    subtitle: <T id="PDF.subtitle.project" />,
+  },
+  {
+    content: <LoanBankBorrowers borrowers={loan.borrowers} key="3" />,
     title: <T id="PDF.title.borrowers" />,
   },
   {
-    content: <LoanBankFinancing key="3" />,
+    content: <LoanBankFinancing key="4" />,
     title: <T id="PDF.title.financing" />,
   },
 ];
@@ -42,9 +46,9 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
       <div className="loan-bank-pdf">
         {pages(loan).map((page, index) => (
           <LoanBankPage
-            loan={loan}
             pageNumber={index + 1}
             title={page.title}
+            subtitle={page.subtitle}
             key={index}
           >
             {page.content}

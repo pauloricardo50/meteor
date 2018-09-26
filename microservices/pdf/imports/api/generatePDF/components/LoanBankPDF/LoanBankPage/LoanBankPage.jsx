@@ -11,20 +11,16 @@ type LoanBankPageProps = {
 };
 
 const LoanBankPage = ({
-  loan,
   pageNumber,
   title,
+  subtitle,
   children,
 }: LoanBankPageProps) => (
-  <div className="loan-bank-pdf-page">
+  <div className="page">
     <LoanBankHeader />
-    <LoanBankTitle
-      title={title}
-      purchaseType={loan.general.purchaseType}
-      residenceType={loan.general.residenceType}
-    />
-    <div className="loan-bank-pdf-page-content">{children}</div>
-    <LoanBankFooter pageNumber={pageNumber} loan={loan} />
+    <LoanBankTitle title={title} subtitle={subtitle} />
+    <div className="content">{children}</div>
+    <LoanBankFooter pageNumber={pageNumber} />
   </div>
 );
 
