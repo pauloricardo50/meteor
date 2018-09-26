@@ -1,0 +1,22 @@
+.app-page {
+  .app-item {
+    &.card1 {
+      margin-bottom: 32px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .title {
+      margin-top: 0;
+    }
+
+    .subtitle {
+      margin-top: 0;
+    }
+
+    .main-text {
+      align-self: center;
+      margin: 40px 0;
+    }
+  }
+}

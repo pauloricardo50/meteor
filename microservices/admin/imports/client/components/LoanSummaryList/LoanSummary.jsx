@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import T from 'core/components/Translation';
+import BorrowersSummary from 'core/components/BorrowersSummary';
 import LoanSummaryColumns from './LoanSummaryColumns';
-import BorrowersSummary from '../BorrowersSummary';
 
 const LoanSummary = ({ loan }) => {
   const { _id, borrowers, name } = loan;

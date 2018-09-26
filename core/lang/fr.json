@@ -1,4 +1,9 @@
 {
+  "Forms.purchaseType.ACQUISITION": "Acquisition",
+  "Forms.purchaseType.REFINANCING": "Refinancement",
+  "AppItem.title": "Hypothèque - {purchaseType}",
+  "AppItem.name": "Dossier no. {name}",
+  "LoanSelector.name": "Dossier {name}",
   "SinglePropertyPage.noDelete": "Vous ne pouvez pas supprimer votre dernier bien immobilier",
   "Forms.status": "Statut du dossier",
   "Forms.status.TEST": "Test",

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 
-import Icon from 'core/components/Icon';
-import T from 'core/components/Translation';
+import Icon from '../Icon';
+import T from '../Translation';
 
 const BorrowersSummary = ({ borrowers }) => (
   <div className="borrowers-summary">
