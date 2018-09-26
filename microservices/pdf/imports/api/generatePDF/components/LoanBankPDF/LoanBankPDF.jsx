@@ -26,14 +26,8 @@ const pages = loan => [
     title: <T id="PDF.title.borrowers" />,
   },
   {
-    content: (
-      <LoanBankFinancing
-        structures={loan.structures}
-        property={loan.properties[0]}
-        key="3"
-      />
-    ),
-    title: <T id="PDF.title.project" />,
+    content: <LoanBankFinancing key="3" />,
+    title: <T id="PDF.title.financing" />,
   },
 ];
 

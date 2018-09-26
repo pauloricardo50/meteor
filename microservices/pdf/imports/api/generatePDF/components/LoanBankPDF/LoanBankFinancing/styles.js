@@ -47,6 +47,28 @@ const stylesheet = `
         font-size: 10px;
     }
 
+    .loan-bank-pdf-financing-form {
+        empty-cells: show;
+        width: 100%;
+    }
+
+    .loan-bank-pdf-financing-form tr {
+        vertical-align: bottom;
+        height: 30px;
+        margin-bottom: 12px;
+    }
+
+    .loan-bank-pdf-financing-form-loan-rates {
+        empty-cells: show;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .loan-bank-pdf-financing-form-loan-rates tr {
+        vertical-align: bottom;
+        height: 30px;
+    }
+
 `;
 
 export default stylesheet;

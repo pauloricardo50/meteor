@@ -3,10 +3,11 @@ import React from 'react';
 import LoanBankLoanInfo from './LoanBankLoanInfo';
 
 type LoanBankFooterProps = {
+  pageNumber: Number,
   loan: Object,
 };
 
-const LoanBankFooter = ({ loan }: LoanBankFooterProps) => (
+const LoanBankFooter = ({ pageNumber, loan }: LoanBankFooterProps) => (
   <div className="loan-bank-pdf-footer">
     <LoanBankLoanInfo
       name={loan.name}

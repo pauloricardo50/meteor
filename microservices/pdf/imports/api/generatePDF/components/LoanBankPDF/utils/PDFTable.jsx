@@ -12,7 +12,11 @@ const PDFTable = ({ array, className }: PDFTableProps) => (
       (condition === undefined || condition) && (
         <tr key={label}>
           {label && <td>{label}</td>}
-          <td style={style}>{data}</td>
+          {Array.isArray(data) ? (
+            data.map(x => <td style={style}>{x}</td>)
+          ) : (
+            <td style={style}>{data}</td>
+          )}
         </tr>
       ))}
   </table>
