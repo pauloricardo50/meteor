@@ -1,58 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import { Link, withRouter } from 'react-router-dom';
+import T from 'core/components/Translation';
+import BorrowersSummary from 'core/components/BorrowersSummary';
 
-const styles = {
-  a: {
-    marginBottom: 32,
-    width: '100%',
-    maxWidth: 600,
-  },
-  title: {
-    marginTop: 0,
-  },
-  subtitle: {
-    marginTop: 0,
-  },
-};
-
-const AppItem = ({ title, subtitle, mainText, href, onClick, history }) => (
-  <a
-    className="card1 card-top card-hover flex-col"
-    style={styles.a}
-    onClick={() => {
-      if (href) {
-        history.push(href);
-      } else {
-        onClick();
-      }
-    }}
+const AppItem = ({ loan }) => (
+  <Link
+    className="card1 card-top card-hover flex-col app-item"
+    to={`/loans/${loan._id}`}
   >
-    <h3 style={styles.title}>{title}</h3>
-    <h4 className="secondary" style={styles.subtitle}>
-      {subtitle}
+    <h3 className="title">
+      <T
+        id="AppItem.title"
+        values={{
+          purchaseType: (
+            <T id={`Forms.purchaseType.${loan.general.purchaseType}`} />
+          ),
+        }}
+      />
+    </h3>
+    <h4 className="subtitle secondary">
+      <T id="AppItem.name" values={{ name: loan.name }} />
     </h4>
-
-    <h1
-      style={{ alignSelf: 'center', margin: '40px 0' }}
-      className="text-center"
-    >
-      {mainText}
+    <BorrowersSummary borrowers={loan.borrowers} />
+    <h1 className="main-text text-center">
+      <T id={`steps.${loan.logic.step}`} />
     </h1>
-  </a>
+  </Link>
 );
 
-AppItem.propTypes = {
-  href: PropTypes.string,
-  mainText: PropTypes.node.isRequired,
-  subtitle: PropTypes.node,
-  title: PropTypes.node.isRequired,
-};
+AppItem.propTypes = {};
 
-AppItem.defaultProps = {
-  subtitle: '',
-  href: '',
-};
+AppItem.defaultProps = {};
 
-export default withRouter(AppItem);
+export default AppItem;

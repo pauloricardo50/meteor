@@ -21,6 +21,7 @@ const config = {
         'ArrayInput',
         'BorrowerAddPartner',
         'BorrowerRemover',
+        'collections',
         'ConditionsButton',
         'ConfirmMethod',
         'ContactButton',
@@ -101,6 +102,7 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
+    'BorrowersSummary',
   ],
 };
 
