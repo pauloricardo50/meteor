@@ -6,6 +6,8 @@
     "deploy-production": "./deploy.sh -e production",
     "mongo-ssh-staging": "./ssh-tunnel.sh -e staging",
     "mongo-ssh-production": "./ssh-tunnel.sh -e production",
+    "restore-staging": "./restore-db.sh -e staging",
+    "restore-production": "./restore-db.sh -e production",
     "scaleApplication": "./scaleApplication.sh"
   },
   "devDependencies": {

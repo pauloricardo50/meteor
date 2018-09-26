@@ -12,6 +12,8 @@
     "lang": "cd scripts/ && meteor babel-node createLanguages.js",
     "mongo-ssh-staging": "cd .deployment/ && npm run mongo-ssh-staging",
     "mongo-ssh-production": "cd .deployment/ && npm run mongo-ssh-production",
+    "restore-staging": "cd .deployment/ && npm run restore-staging",
+    "restore-production": "cd .deployment/ && npm run restore-production",
     "remove-core": "cd scripts/ && ./remove-core.sh",
     "run": "cd scripts/ && ./run.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
