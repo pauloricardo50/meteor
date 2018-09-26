@@ -38,6 +38,7 @@ const applicationManifestData = environment => ({
       instances: 1,
       buildpacks: ['https://github.com/cloudfoundry/staticfile-buildpack.git'],
       services: [MONGO_SERVICES[environment]],
+      'random-route': true,
     },
   ],
 });
@@ -59,7 +60,7 @@ const writeTmuxinator = environment => {
         data: {
           name: 'ssh-tunnel',
           root: '~/',
-          on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${SSH_ID} -f && rm -rf ${__dirname}/${environment} && tmux kill-session -t ssh-tunnel`,
+          on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${SSH_ID} -r -f && rm -rf ${__dirname}/${environment} && tmux kill-session -t ssh-tunnel`,
           windows: [
             {
               sshTunnel: {
