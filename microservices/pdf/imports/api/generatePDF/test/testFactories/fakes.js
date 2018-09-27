@@ -46,7 +46,15 @@ export const FAKE_BONUS = {
 };
 
 export const FAKE_LOAN_NAME = '18-0001';
-export const FAKE_USER = { user: { assignedEmployee: { name: 'Bob Dylan' } } };
+export const FAKE_USER = {
+  user: {
+    assignedEmployee: {
+      name: 'Bob Dylan',
+      email: 'bob.dylan@gmail.com',
+      phoneNumber: '+41 22 577 45 23',
+    },
+  },
+};
 
 export const fakeOwnFunds = ({ borrowerId, type, value, usageType }) => ({
   borrowerId,

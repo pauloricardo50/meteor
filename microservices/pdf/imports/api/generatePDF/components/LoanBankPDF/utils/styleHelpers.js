@@ -24,6 +24,12 @@ export const ALIGN_ITEMS_CENTER = `
     align-items: center;
 `;
 
+export const ALIGN_ITEMS_FLEX_END = `
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+`;
+
 export const JUSTIFY_CONTENT_FLEX_START = `
     -webkit-box-pack: start;
     -ms-flex-pack: start;
@@ -39,7 +45,7 @@ export const JUSTIFY_CONTENT_SPACE_BETWEEN = `
 export const JUSTIFY_CONTENT_FLEX_END = `
     -webkit-box-pack: end;
     -ms-flex-pack: end;
-    justify-content: flex-end
+    justify-content: flex-end;
 `;
 
 export const JUSTIFY_CONTENT_CENTER = `
@@ -67,7 +73,7 @@ export const ALIGN_SELF_FLEX_END = `
 export const flexGrow = size => `
     -webkit-box-flex: ${size};
     -ms-flex-positive: ${size};
-    flex-grow: ${size}
+    flex-grow: ${size};
 `;
 
 export const flexBasis = basis => `
@@ -84,6 +90,7 @@ export const FLEXBOX = {
   FLEX_ROW,
   FLEX_COLUMN,
   ALIGN_ITEMS_CENTER,
+  ALIGN_ITEMS_FLEX_END,
   JUSTIFY_CONTENT_FLEX_START,
   JUSTIFY_CONTENT_SPACE_BETWEEN,
   JUSTIFY_CONTENT_FLEX_END,

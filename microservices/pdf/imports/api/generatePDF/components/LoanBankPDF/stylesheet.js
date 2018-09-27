@@ -3,6 +3,7 @@ import { LoanBankPageStyles } from './LoanBankPage';
 import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankFinancingStyles } from './LoanBankFinancing';
+import { LoanBankCoverStyles } from './LoanBankCover';
 
 const stylesheet = `
     html {
@@ -17,18 +18,12 @@ const stylesheet = `
     'JUSTIFY_CONTENT_FLEX_START',
   ])}
     }
-    .loan-bank-pdf-section-title {
-        ${styles.flexGrow(1)}
-        text-transform: uppercase;
-        background-color: #fafafa;
-        padding: 8px;
-        padding-left: 4px;
-    }
-
+    
     ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}
     ${LoanBankFinancingStyles}
+    ${LoanBankCoverStyles}
 `;
 
 export default stylesheet;

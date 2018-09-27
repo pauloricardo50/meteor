@@ -10,6 +10,7 @@ import LoanBankProject from './LoanBankProject';
 import LoanBankPage from './LoanBankPage';
 import LoanBankFinancing from './LoanBankFinancing';
 import { T } from '../../../../core/components/Translation/Translation';
+import LoanBankCover from './LoanBankCover';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -18,7 +19,7 @@ type LoanBankPDFProps = {
 
 const pages = loan => [
   {
-    content: <p key="1">Hello</p>,
+    content: <LoanBankCover loan={loan} key="1" />,
   },
   {
     content: <LoanBankProject property={loan.properties[0]} key="2" />,
