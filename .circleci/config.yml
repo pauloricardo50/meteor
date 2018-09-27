@@ -26,6 +26,7 @@ jobs:
       CIRCLE_CI: 1
       DEBUG: true
       DOCKER_DRIVER: overlay2
+      QUALIA_PROFILE_FOLDER: ~/profiles
     steps:
       - checkout
       - *restore_meteor_system_cache
@@ -79,6 +80,8 @@ jobs:
           key: *www_meteor_cache_key
           paths:
             - ./microservices/www/.meteor/local
+      - store_artifacts:
+          path: ~/profiles
 
 workflows:
   version: 2
