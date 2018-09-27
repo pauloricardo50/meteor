@@ -40,6 +40,9 @@ jobs:
             - build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
             - build-epotek-v6-node_modules-
       - run:
+          name: make profiles dir
+          command: mkdir ~/profiles
+      - run:
           name: install Meteor
           command: |
             ./scripts/circleci/install_meteor.sh
