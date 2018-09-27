@@ -21,16 +21,20 @@ const handleChange = (value, toggleDrawer, history) => {
 const getOptions = (loans) => {
   const array = loans.map(({ _id: loanId, name }) => ({
     id: loanId,
-    label: name || <T id="LoanSelector.empty" />,
+    label: name ? (
+      <T id="LoanSelector.name" values={{ name }} />
+    ) : (
+      <T id="LoanSelector.empty" />
+    ),
     icon: 'home',
   }));
 
-  array.push(<Divider key="divider" />);
-  array.push({
-    id: 0,
-    label: <T id="LoanSelector.addLoan" />,
-    dividerTop: true,
-  });
+  // array.push(<Divider key="divider" />);
+  // array.push({
+  //   id: 0,
+  //   label: <T id="LoanSelector.addLoan" />,
+  //   dividerTop: true,
+  // });
 
   return array;
 };

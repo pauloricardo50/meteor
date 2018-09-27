@@ -1,5 +1,4 @@
 // @flow
-import isArray from 'lodash/isArray';
 import { getPercent } from '../../utils/general';
 import { FILE_STATUS } from './fileConstants';
 import {
@@ -50,29 +49,14 @@ const getDocumentsToCount = (
  * step, doc and array of files
  *
  * @param {object} doc           The mongoDB document where files are saved
- * @param {function} fileArrayFunc A function that returns an array of files
- * @param {number} step          The step that determines which files are
- * required at this moment
+ * @param {function} fileArray   Array of files
+
  *
  * @return {number} a value between 0 and 1 indicating the percentage of
  * completion, 1 is complete, 0 is not started
  */
-export const filesPercent = ({ doc, fileArrayFunc, step, checkValidity }) => {
-  let documentsToCount = [];
-
-  if (isArray(doc)) {
-    doc.forEach((item) => {
-      const fileArray = fileArrayFunc(item)[step];
-      documentsToCount = [
-        ...documentsToCount,
-        ...getDocumentsToCount(fileArray, item, checkValidity),
-      ];
-    });
-  } else {
-    const fileArray = fileArrayFunc(doc)[step];
-    documentsToCount = getDocumentsToCount(fileArray, doc, checkValidity);
-  }
-
+export const filesPercent = ({ fileArray, doc, checkValidity }) => {
+  const documentsToCount = getDocumentsToCount(fileArray, doc, checkValidity);
   return getPercent(documentsToCount);
 };
 
@@ -97,8 +81,7 @@ export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
 const documentExists = (doc, id) =>
   doc && doc.documents && doc.documents[id] && doc.documents[id].length > 0;
 
-export const getMissingDocumentIds = ({ doc, fileArrayFunc, step }) => {
-  const fileArray = fileArrayFunc(doc)[step];
+export const getMissingDocumentIds = ({ fileArray, doc }) => {
   const ids = fileArray
     .filter(({ required, condition, id }) =>
       documentIsRequired(required, condition) && !documentExists(doc, id))

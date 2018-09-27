@@ -33,10 +33,10 @@
 
 .app-layout .wrapper {
   display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-self: stretch;
   align-items: stretch;
+  align-self: stretch;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .app-layout .wrapper .page {
@@ -46,8 +46,8 @@
 }
 
 .app-layout .wrapper .page.full-width {
-  max-width: 100%;
   box-sizing: border-box;
+  max-width: 100%;
 }
 
 .app-layout .transition-wrapper {

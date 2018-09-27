@@ -1,4 +1,5 @@
 import Borrowers from '.';
+import LoanService from '../loans/LoanService';
 
 export class BorrowerService {
   update = ({ borrowerId, object }) =>
@@ -7,7 +8,10 @@ export class BorrowerService {
   insert = ({ borrower = {}, userId }) =>
     Borrowers.insert({ ...borrower, userId });
 
-  remove = ({ borrowerId }) => Borrowers.remove(borrowerId);
+  remove = ({ borrowerId }) => {
+    LoanService.cleanupRemovedBorrower({ borrowerId });
+    return Borrowers.remove(borrowerId);
+  };
 
   pushValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $push: object });
@@ -16,6 +20,9 @@ export class BorrowerService {
 
   popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });
+
+  pullValue = ({ borrowerId, object }) =>
+    Borrowers.update(borrowerId, { $pull: object });
 }
 
 export default new BorrowerService();

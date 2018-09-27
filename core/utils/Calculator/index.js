@@ -22,7 +22,7 @@ const MappedFinanceCalculator = withConfig({
 export const Calculator = compose(
   withCombinedCalculator,
   withLoanCalculator,
-  withBorrowerCalculator,
+  withBorrowerCalculator || (x => x), // Avoid obscure wallaby circular dependency
   withPropertyCalculator,
   withOfferCalculator,
   withSelector,

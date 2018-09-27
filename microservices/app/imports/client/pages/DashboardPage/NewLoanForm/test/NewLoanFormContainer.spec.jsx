@@ -20,34 +20,38 @@ describe('NewLoanFormContainer', () => {
   beforeEach(() => {
     props = {};
 
-    loanUpdate.run = sinon.spy(({ object: { name }, loanId }) => {
+    sinon.stub(loanUpdate, 'run').callsFake(({ object: { name }, loanId }) => {
       if (!!loanId && !!name) {
         return Promise.resolve();
       }
       throw new Error('No name or loanId');
     });
 
-    borrowerUpdate.run = sinon.spy(({ object: { salary, bankFortune }, borrowerId }) => {
-      if (!!salary && !!bankFortune && !!borrowerId) {
-        return Promise.resolve();
-      }
+    sinon
+      .stub(borrowerUpdate, 'run')
+      .callsFake(({ object: { salary, bankFortune }, borrowerId }) => {
+        if (!!salary && !!bankFortune && !!borrowerId) {
+          return Promise.resolve();
+        }
 
-      throw new Error('No salary, bankFortune or borrowerId');
-    });
+        throw new Error('No salary, bankFortune or borrowerId');
+      });
 
-    propertyUpdate.run = sinon.spy(({ object: { value }, propertyId }) => {
-      if (!!value && !!propertyId) {
-        return Promise.resolve();
-      }
+    sinon
+      .stub(propertyUpdate, 'run')
+      .callsFake(({ object: { value }, propertyId }) => {
+        if (!!value && !!propertyId) {
+          return Promise.resolve();
+        }
 
-      throw new Error('No value or propertyId');
-    });
+        throw new Error('No value or propertyId');
+      });
   });
 
   afterEach(() => {
-    loanUpdate.run = undefined;
-    borrowerUpdate.run = undefined;
-    propertyUpdate.run = undefined;
+    loanUpdate.run.restore();
+    borrowerUpdate.run.restore();
+    propertyUpdate.run.restore();
   });
 
   it('should open if the conditions are met', () => {

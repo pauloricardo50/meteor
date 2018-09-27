@@ -8,7 +8,8 @@
 @import '{}/imports/core/components/DevPage/DevPage.scss';
 @import '{}/imports/core/components/DisconnectModal/DisconnectModal.scss';
 @import '{}/imports/core/components/ErrorBoundary/ErrorBoundary.scss';
-@import '{}/imports/core/components/FinancingStructures/FinancingStructures.scss';
+@import '{}/imports/core/components/FileTabs/FileTabs.scss';
+@import '{}/imports/core/components/Financing/Financing.scss';
 @import '{}/imports/core/components/Form/Form.scss';
 @import '{}/imports/core/components/forms/forms.scss';
 @import '{}/imports/core/components/GoogleMapsAutocomplete/GoogleMapsAutocomplete.scss';
@@ -38,4 +39,4 @@
 
 // External components SCSS
 @import './external-styles/rc-slider.scss';
-@import './external-styles/antd-icons.scss';
+@import './external-styles/antd.scss';

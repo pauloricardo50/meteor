@@ -14,6 +14,11 @@ export const APPLICATIONS = {
   WWW: 'www',
 };
 
+export const SERVICES = {
+  MONGODB: 'mongo',
+  REDIS: 'redis',
+};
+
 export const APP_CONFIGS = {
   MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
   MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
@@ -23,13 +28,13 @@ export const APP_CONFIGS = {
 
 export const ENVIRONMENT_CONFIG = {
   [ENVIRONMENT.STAGING]: {
-    serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.small,
+    services: [SERVICES.MONGODB, SERVICES.REDIS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
-    serviceConfig: CLOUDFOUNDRY_MARKETPLACE.MONGO_DB.plans.medium,
+    services: [SERVICES.MONGODB, SERVICES.REDIS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },

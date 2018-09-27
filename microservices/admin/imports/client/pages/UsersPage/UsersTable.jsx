@@ -6,10 +6,10 @@ import Table from 'core/components/Table';
 
 import UsersTableContainer from './UsersTableContainer';
 
-const UsersTable = ({ options: { getColumnOptions, getRows } }) => (
+const UsersTable = ({ options: { columnOptions, rows } }) => (
   <Table
-    columnOptions={getColumnOptions}
-    rows={getRows}
+    columnOptions={columnOptions}
+    rows={rows}
     noIntl
     className="users-table"
   />

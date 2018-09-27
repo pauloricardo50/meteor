@@ -11,7 +11,6 @@ import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignD
 
 export const getColumnOptions = ({ showAssignee }) => {
   const columnOptions = [
-    { id: '#', style: { width: 32, textAlign: 'left' } },
     { id: 'name', label: <T id="UsersTable.name" /> },
     { id: 'email', label: <T id="UsersTable.email" /> },
     { id: 'createdAt', label: <T id="UsersTable.createdAt" /> },
@@ -31,13 +30,12 @@ export const getColumnOptions = ({ showAssignee }) => {
 };
 
 const getColumns = ({ showAssignee, index, user }) => {
-  const { emails, createdAt, roles, assignedEmployee, name } = user;
+  const { email, createdAt, roles, assignedEmployee, name } = user;
 
   const columns = [
-    index + 1,
     name,
-    emails[0].address.toString(),
-    moment(createdAt).format('D MMM YY à HH:mm:ss'),
+    email,
+    moment(createdAt).format('D MMM YY à HH:mm'),
     { label: <Roles roles={roles} />, raw: roles && roles.toString() },
   ];
   if (showAssignee) {

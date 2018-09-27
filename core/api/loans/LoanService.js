@@ -19,7 +19,7 @@ export class LoanService {
   getNewLoanName = (now = new Date()) => {
     const year = now.getYear();
     const yearPrefix = year - 100;
-    const lastLoan = Loans.findOne({}, { sort: { createdAt: -1 } });
+    const lastLoan = Loans.findOne({}, { sort: { name: -1 } });
     if (!lastLoan) {
       return `${yearPrefix}-0001`;
     }
@@ -53,10 +53,6 @@ export class LoanService {
     this.addNewStructure({ loanId });
     return loanId;
   };
-
-  // TODO: make sure step is really done
-  incrementStep = ({ loanId }) =>
-    this.update({ loanId, operator: '$inc', object: { 'logic.step': 1 } });
 
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
@@ -124,7 +120,7 @@ export class LoanService {
   confirmClosing = ({ loanId, object }) =>
     this.update({
       loanId,
-      object: { status: LOAN_STATUS.DONE, ...object },
+      object: { status: LOAN_STATUS.BILLING, ...object },
     });
 
   disableUserForms = ({ loanId }) =>
@@ -239,6 +235,39 @@ export class LoanService {
 
   addPropertyToLoan = ({ loanId, propertyId }) => {
     this.pushValue({ loanId, object: { propertyIds: propertyId } });
+  };
+
+  cleanupRemovedBorrower = ({ borrowerId }) => {
+    // Remove all references to this borrower on the loan
+    const loans = Loans.find({ borrowerIds: borrowerId }).fetch();
+    loans.forEach((loan) => {
+      this.update({
+        loanId: loan._id,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            ownFunds: structure.ownFunds.filter(({ borrowerId: bId }) => bId !== borrowerId),
+          })),
+        },
+      });
+    });
+  };
+
+  cleanupRemovedProperty = ({ propertyId }) => {
+    // Remove all references to this property on the loan
+    const loans = Loans.find({ propertyIds: propertyId }).fetch();
+    loans.forEach((loan) => {
+      this.update({
+        loanId: loan._id,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            propertyId:
+              structure.propertyId === propertyId ? null : structure.propertyId,
+          })),
+        },
+      });
+    });
   };
 }
 

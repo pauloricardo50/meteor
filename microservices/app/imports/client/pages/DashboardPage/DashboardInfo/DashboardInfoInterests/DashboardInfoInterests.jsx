@@ -1,18 +1,10 @@
 import React from 'react';
 
 import T from 'core/components/Translation/';
-import { AUCTION_STATUS } from 'core/api/constants';
 import DashboardInfoInterestsTable from './DashboardInfoInterestsTable';
 
 const DashboardInfoInterests = ({ loan }) => {
-  const {
-    _id,
-    logic: {
-      auction: { status },
-    },
-  } = loan;
-
-  const auctionHasEnded = status === AUCTION_STATUS.ENDED;
+  const { _id } = loan;
 
   return (
     <div className="dashboard-info-team card1">
@@ -21,10 +13,7 @@ const DashboardInfoInterests = ({ loan }) => {
           <T id="DashboardInfoInterests.title" />
         </h3>
 
-        <DashboardInfoInterestsTable
-          loanId={_id}
-          auctionHasEnded={auctionHasEnded}
-        />
+        <DashboardInfoInterestsTable loanId={_id} />
       </div>
     </div>
   );

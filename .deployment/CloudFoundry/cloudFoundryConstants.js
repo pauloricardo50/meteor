@@ -20,6 +20,7 @@ export const cloudFoundryCommands = {
     `cd ${buildDirectory} && cf blue-green-deploy ${name} -f ${manifest} --smoke-test ./test.sh --delete-old-apps`,
   deleteApp: name => `cf delete ${name} -f`,
   restartApp: name => `cf restart ${name}`,
+  deleteOprhanedRoutes: () => 'cf delete-orphaned-routes -f',
 };
 
 export const CLOUDFOUNDRY_MARKETPLACE = {
@@ -29,6 +30,15 @@ export const CLOUDFOUNDRY_MARKETPLACE = {
       small: 'small',
       medium: 'medium',
       large: 'large',
+    },
+  },
+  REDIS: {
+    service: 'redis-2',
+    plans: {
+      small: 'small',
+      medium: 'medium',
+      large: 'large',
+      xlarge: 'xlarge',
     },
   },
 };

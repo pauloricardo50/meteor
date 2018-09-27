@@ -11,17 +11,15 @@ Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
   getEndToEndTestData() {
-    const step3Loan = adminLoansQuery
-      .clone({ step: 3, owned: true })
-      .fetchOne();
+    const loan = adminLoansQuery.clone({ owned: true }).fetchOne();
 
     const {
       properties,
       borrowers: [borrower],
-    } = step3Loan;
+    } = loan;
 
-    const user = Users.findOne(step3Loan.userId);
+    const user = Users.findOne(loan.userId);
 
-    return { step3Loan, user, property: properties[0], borrower };
+    return { loan, user, property: properties[0], borrower };
   },
 });

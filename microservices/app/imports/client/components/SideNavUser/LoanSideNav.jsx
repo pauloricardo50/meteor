@@ -102,6 +102,7 @@ export const LoanSideNav = ({
                   <PercentWithStatus
                     value={progress}
                     status={progress >= 1 ? SUCCESS : null}
+                    rounded
                   />
                 </span>
               )}

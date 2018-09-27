@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import T from '../Translation';
 import Uploader from './Uploader';
 
-const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
+const UploaderArray = ({
+  documentArray,
+  doc,
+  disabled,
+  collection,
+  currentUser,
+}) => {
   if (!doc.documents) {
     return null;
   }
@@ -21,6 +27,7 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
               docId={doc._id}
               disabled={disabled}
               collection={collection}
+              currentUser={currentUser}
             />
           ))}
       </div>
@@ -47,6 +54,7 @@ const UploaderArray = ({ documentArray, doc, disabled, collection }) => {
           docId={doc._id}
           currentValue={doc.documents[documentId]}
           disabled={disabled}
+          currentUser={currentUser}
         />
       ))}
     </div>

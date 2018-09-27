@@ -4,6 +4,7 @@ import { expect } from 'chai';
 
 import Calculator, { Calculator as CalculatorClass } from '..';
 import { INTEREST_RATES } from 'core/api/constants';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../api/constants';
 
 describe('LoanCalculator', () => {
   describe('getProjectValue', () => {
@@ -22,13 +23,15 @@ describe('LoanCalculator', () => {
   });
 
   describe('getTotalUsed', () => {
-    it('it gets the sum of all used own funds', () => {
+    it('it gets the sum of all used own funds, without pledged funds', () => {
       expect(Calculator.getTotalUsed({
         loan: {
           structure: {
-            secondPillarPledged: 1,
-            thirdPillarPledged: 2,
-            fortuneUsed: 3,
+            ownFunds: [
+              { value: 3, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
+              { value: 2, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+              { value: 1 },
+            ],
           },
         },
       })).to.equal(6);
@@ -278,12 +281,12 @@ describe('LoanCalculator', () => {
   });
 
   describe('loanHasMinimalInformation', () => {
-    it('returns true if fortune property value and wantedLoan are defined', () => {
+    it('returns true if ownFunds, property value and wantedLoan are defined', () => {
       expect(Calculator.loanHasMinimalInformation({
         loan: {
           structure: {
             wantedLoan: 1,
-            fortuneUsed: 1,
+            ownFunds: [{ value: 100000 }],
             property: { value: 1 },
           },
         },
@@ -320,22 +323,34 @@ describe('LoanCalculator', () => {
 
   describe('getLoanFilesProgress', () => {
     it('returns 0 for an empty loan', () => {
-      expect(Calculator.getLoanFilesProgress({})).to.equal(0);
-      expect(Calculator.getLoanFilesProgress({ loan: {} })).to.equal(0);
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.equal(0);
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.equal(0);
     });
 
     it('returns 100% for a loan initially, when documents have arrived', () => {
-      expect(Calculator.getLoanFilesProgress({ loan: { documents: {} } })).to.equal(1);
+      expect(Calculator.getLoanFilesProgress({
+        loan: { documents: {}, logic: {}, general: {} },
+      })).to.equal(1);
     });
   });
 
   describe('getMissingLoanDocuments', () => {
     it('shows nothing is required initially', () => {
-      expect(Calculator.getMissingLoanDocuments({})).to.deep.equal([]);
-      expect(Calculator.getMissingLoanDocuments({ loan: {} })).to.deep.equal([]);
-      expect(Calculator.getMissingLoanDocuments({ loan: { documents: {} } })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { documents: { other: [{ key: 'hello' }] } },
+        loan: { logic: {}, general: {} },
+      })).to.deep.equal([]);
+      expect(Calculator.getMissingLoanDocuments({
+        loan: { logic: {}, general: {} },
+      })).to.deep.equal([]);
+      expect(Calculator.getMissingLoanDocuments({
+        loan: { documents: {}, logic: {}, general: {} },
+      })).to.deep.equal([]);
+      expect(Calculator.getMissingLoanDocuments({
+        loan: {
+          documents: { other: [{ key: 'hello' }] },
+          logic: {},
+          general: {},
+        },
       })).to.deep.equal([]);
     });
   });

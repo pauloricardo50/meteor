@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import T from 'core/components/Translation';
 import DashboardUnverified from '../../components/DashboardUnverified';
-import LoanAppItem from './LoanAppItem';
+import AppItem from './AppItem';
 
 const AppPage = ({ currentUser: { emails, loans } }) => {
   if (loans.length === 1) {
@@ -11,7 +11,7 @@ const AppPage = ({ currentUser: { emails, loans } }) => {
   }
 
   return (
-    <section id="app-page" className="flex-col center">
+    <section id="app-page" className="app-page flex-col center">
       {!emails[0].verified && (
         <div style={{ marginBottom: 16 }}>
           <DashboardUnverified />
@@ -19,7 +19,7 @@ const AppPage = ({ currentUser: { emails, loans } }) => {
       )}
 
       {loans.map(loan => (
-        <LoanAppItem loan={loan} key={loan._id} />
+        <AppItem loan={loan} key={loan._id} />
       ))}
 
       {loans.length === 0 && (

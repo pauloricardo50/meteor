@@ -10,12 +10,12 @@ import DashboardRecapSum from './DashboardRecapSum';
 
 const getRecapArray = ({ loan }) => {
   const loanValue = Calculator.selectLoanValue({ loan });
-  const fortuneUsed = Calculator.getCashUsed({ loan });
-  const insuranceWithdrawn = Calculator.getInsuranceWithdrawn({ loan });
+  const ownFunds = Calculator.getNonPledgedOwnFunds({ loan });
+  const ownFundsPledged = Calculator.getTotalPledged({ loan });
 
   return [
-    { label: 'Recap.ownFundsCash', value: toMoney(fortuneUsed) },
-    { label: 'Recap.ownFundsInsurance', value: toMoney(insuranceWithdrawn) },
+    { label: 'Recap.ownFunds', value: toMoney(ownFunds) },
+    { label: 'Recap.ownFundsPledged', value: toMoney(ownFundsPledged) },
     { label: 'general.mortgageLoan', value: toMoney(loanValue) },
   ];
 };

@@ -1,3 +1,4 @@
+@import './LoanTabs/ActionsTab/ActionsTab.scss';
 @import './LoanTabs/FilesTab/FilesTab.scss';
 @import './LoanTabs/FormsTab/FormsTab.scss';
 @import './LoanTabs/OffersTab/OffersTab.scss';
@@ -19,6 +20,16 @@
 
     .map {
       flex: 1;
+    }
+  }
+
+  .single-loan-page-header {
+    display: inline;
+
+    .update-field {
+      display: inline-block;
+      margin-left: 8px;
+      min-width: 170px;
     }
   }
 }

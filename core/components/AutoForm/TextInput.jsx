@@ -58,7 +58,7 @@ class TextInput extends Component {
     this.setState({ showInfo: false });
     // If the value has changed, save it
     // state is initialized as '', but currentValue is initially undefined, so check that too
-    this.saveValue();
+    this.saveValue(true);
   };
 
   handleChange = (_, value) => {
@@ -80,7 +80,7 @@ class TextInput extends Component {
     this.setState({ showInfo: true });
   };
 
-  saveValue = (showSaving = true) => {
+  saveValue = (showSaving) => {
     const {
       updateFunc,
       docId,

@@ -46,11 +46,9 @@ Meteor.startup(() => {
   const originalMeteorDebug = Meteor._debug;
   Meteor._debug = (message, stack) => {
     if (Meteor.isDevelopment) {
-      if (message) {
-        console.log('===== message =====', message);
-        // console.log('===== stack =====');
-        // console.log(util.inspect(stack, false, null));
-      }
+      console.log('===== message =====', message);
+      console.log('===== stack =====', stack);
+      console.log(util.inspect(stack, false, null));
     }
     return originalMeteorDebug.apply(this, arguments);
   };

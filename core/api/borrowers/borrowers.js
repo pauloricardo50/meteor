@@ -1,6 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import {
+  createdAt,
+  updatedAt,
+  additionalDocuments,
+} from '../helpers/sharedSchemas';
+import {
   BORROWERS_COLLECTION,
   RESIDENCY_PERMIT,
   GENDER,
@@ -8,6 +13,7 @@ import {
   OTHER_INCOME,
   EXPENSES,
   REAL_ESTATE,
+  OWN_FUNDS_TYPES,
 } from './borrowerConstants';
 
 const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
@@ -32,35 +38,21 @@ const LogicSchema = new SimpleSchema({
   },
 });
 
+const makeArrayOfObjectsSchema = (name, allowedValues) => ({
+  [name]: { type: Array, defaultValue: [], optional: true },
+  [`${name}.$`]: Object,
+  [`${name}.$.value`]: { type: SimpleSchema.Integer, min: 0, max: 100000000 },
+  [`${name}.$.description`]: { type: String, optional: true, allowedValues },
+});
+
 // Documentation is in the google drive dev/MongoDB Schemas
 export const BorrowerSchema = new SimpleSchema({
   userId: {
     type: String,
     optional: true,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-    optional: true,
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   // Personal Information
   firstName: {
     type: String,
@@ -90,7 +82,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   zipCode: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 9999,
@@ -112,11 +104,6 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
   },
-  birthDate: {
-    type: String,
-    optional: true,
-    regEx: '/^d{4}[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
-  },
   citizenship: {
     type: String,
     optional: true,
@@ -131,7 +118,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   childrenCount: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 20,
@@ -141,7 +128,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   salary: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000000,
@@ -151,121 +138,51 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: false,
   },
   bonus2015: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2016: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2017: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2018: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
-  otherIncome: {
-    type: Array,
-    optional: true,
-    defaultValue: [],
-  },
-  'otherIncome.$': Object,
-  'otherIncome.$.value': {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  'otherIncome.$.description': {
-    type: String,
-    allowedValues: Object.values(OTHER_INCOME),
-  },
-  otherFortune: {
-    type: Array,
-    optional: true,
-    defaultValue: [],
-  },
-  'otherFortune.$': Object,
-  'otherFortune.$.value': {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  'otherFortune.$.description': {
-    type: String,
-    optional: true,
-  },
-  expenses: {
-    type: Array,
-    optional: true,
-    defaultValue: [],
-  },
-  'expenses.$': Object,
-  'expenses.$.value': {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  'expenses.$.description': {
-    type: String,
-    allowedValues: Object.values(EXPENSES),
-  },
-  bankFortune: {
-    type: Number,
+  [OWN_FUNDS_TYPES.BANK_FORTUNE]: {
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
-  realEstate: {
-    type: Array,
+  ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
+  ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
+  ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_3A),
+  ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
+  [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: {
+    type: SimpleSchema.Integer,
     optional: true,
-    defaultValue: [],
-  },
-  'realEstate.$': Object,
-  'realEstate.$.value': {
-    type: Number,
     min: 0,
     max: 100000000,
   },
+  ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
+  ...makeArrayOfObjectsSchema('otherFortune'),
+  ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
+  ...makeArrayOfObjectsSchema('realEstate', Object.values(REAL_ESTATE)),
   'realEstate.$.loan': {
-    type: Number,
-    min: 0,
-    max: 100000000,
-  },
-  'realEstate.$.description': {
-    type: String,
-    allowedValues: Object.values(REAL_ESTATE),
-  },
-  insuranceSecondPillar: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insuranceThirdPillar: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  insurance3B: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
-  bank3A: {
-    type: Number,
-    optional: true,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
   },
@@ -284,15 +201,17 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
+  ...additionalDocuments,
 });
 
 const protectedKeys = [
   '_id',
-  'updatedAt',
-  'createdAt',
+  'additionalDocuments',
   'admin',
   'adminValidation',
+  'createdAt',
   'logic',
+  'updatedAt',
   'userId',
 ];
 

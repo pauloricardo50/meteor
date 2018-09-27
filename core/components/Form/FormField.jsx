@@ -17,58 +17,59 @@ import {
   phoneFormatters,
 } from './formHelpers';
 import { required as requiredFunc } from './validators';
+import SelectField from './SelectField';
 
-const defaultField = props => <Field {...props} />;
+const field = props => <Field {...props} />;
 
 const arrayField = props => (
   <FieldArray {...props} component={RenderFieldArray} />
 );
-const FormField = ({ fieldType, validate, defaultFieldProps, ...rest }) => {
+
+const FormField = ({ fieldType, defaultFieldProps, ...rest }) => {
   switch (fieldType) {
   case FIELD_TYPES.TEXT:
-    return defaultField({ ...defaultFieldProps, ...rest });
+    return field({ ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.CHECKBOX:
-    return <Field component={FormCheckbox} validate={validate} {...rest} />;
+    return field({ ...defaultFieldProps, ...rest, component: FormCheckbox });
 
   case FIELD_TYPES.PERCENT:
-    return withProps({
+    return field({
       inputComponent: MaskedInput,
       inputProps: { mask: percentMask },
       ...percentFormatters,
-    })(defaultField)({ ...defaultFieldProps, ...rest });
+      ...defaultFieldProps,
+      ...rest,
+    });
 
   case FIELD_TYPES.MONEY:
-    return withProps({
+    return field({
       inputComponent: MaskedInput,
-      inputProps: {
-        mask: swissFrancMask,
-      },
+      inputProps: { mask: swissFrancMask },
       startAdornment: <InputAdornment position="start">CHF</InputAdornment>,
       ...moneyFormatters,
-    })(defaultField)({ ...defaultFieldProps, ...rest });
+      ...defaultFieldProps,
+      ...rest,
+    });
 
   case FIELD_TYPES.NUMBER:
-    return withProps({
-      ...numberFormatters,
-    })(defaultField)({ ...defaultFieldProps, ...rest });
+    return field({ ...numberFormatters, ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.PHONE:
-    return withProps({
-      ...phoneFormatters,
-    })(defaultField)({ ...defaultFieldProps, ...rest });
+    return field({ ...phoneFormatters, ...defaultFieldProps, ...rest });
 
   case FIELD_TYPES.TEXT_AREA:
-    return withProps({ multiline: true, rows: 3 })(defaultField)({
-      ...rest,
-      ...defaultFieldProps,
-    });
+    return field({ ...rest, ...defaultFieldProps, multiline: true, rows: 3 });
 
   case FIELD_TYPES.ARRAY:
     return arrayField({ ...defaultFieldProps, ...rest });
 
+  case FIELD_TYPES.SELECT: {
+    return field({ ...defaultFieldProps, ...rest, component: SelectField });
+  }
+
   default:
-    return defaultField;
+    return field;
   }
 };
 

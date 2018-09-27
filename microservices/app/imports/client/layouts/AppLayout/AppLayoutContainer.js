@@ -1,5 +1,5 @@
 // @flow
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';

@@ -1,0 +1,15 @@
+.actions-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .name-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .delete-button {
+    margin: 8px;
+  }
+}

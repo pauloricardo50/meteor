@@ -1,5 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+
+import {
+  createdAt,
+  updatedAt,
+  additionalDocuments,
+} from '../helpers/sharedSchemas';
 import * as propertyConstants from './propertyConstants';
 
 const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
@@ -140,36 +146,15 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  createdAt: {
-    type: Date,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      }
-      if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    },
-    optional: true,
-  },
-  updatedAt: {
-    type: Date,
-    autoValue() {
-      if (this.isUpdate) {
-        return new Date();
-      }
-    },
-    denyInsert: true,
-    optional: true,
-  },
+  createdAt,
+  updatedAt,
   value: {
     // Cost of the property
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     autoValue() {
-      if (this.isSet){
+      if (this.isSet) {
         return Math.round(this.value / 1000) * 1000;
       }
     },
@@ -180,7 +165,6 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
     allowedValues: Object.values(propertyConstants.PROPERTY_STATUS),
   },
-
   propertyType: {
     type: String,
     optional: true,
@@ -201,7 +185,7 @@ export const PropertySchema = new SimpleSchema({
   },
   investmentRent: {
     // Rent of property if investment
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000000,
@@ -221,7 +205,7 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
   zipCode: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 9999,
@@ -231,19 +215,19 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
   constructionYear: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 2030,
     optional: true,
   },
   renovationYear: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 2030,
     optional: true,
   },
   insideArea: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
   },
@@ -254,23 +238,23 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.AREA_NORM.NIA,
   },
   landArea: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
   },
   terraceArea: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
   },
   numberOfFloors: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 20,
   },
   floorNumber: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 20,
@@ -282,7 +266,7 @@ export const PropertySchema = new SimpleSchema({
     max: 100,
   },
   volume: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000,
@@ -293,13 +277,13 @@ export const PropertySchema = new SimpleSchema({
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
   },
   parkingInside: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100,
   },
   parkingOutside: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100,
@@ -314,7 +298,7 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: false,
   },
   copropertyPercentage: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 1000,
     optional: true,
@@ -357,23 +341,26 @@ export const PropertySchema = new SimpleSchema({
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   monthlyExpenses: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
-    max: 100000,
+    max: 1000000,
     optional: true,
   },
+  ...additionalDocuments,
 });
 
 const protectedKeys = [
-  'userId',
+  '_id',
+  'additionalDocuments',
+  'address',
+  'adminValidation',
   'createdAt',
-  'updatedAt',
+  'customFields',
   'latitude',
   'longitude',
-  'address',
+  'updatedAt',
+  'userId',
   'valuation',
-  'adminValidation',
-  'customFields',
 ];
 export const PropertySchemaAdmin = PropertySchema.omit(...protectedKeys);
 

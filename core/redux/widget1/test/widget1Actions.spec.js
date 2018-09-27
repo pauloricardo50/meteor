@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 
 import {
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-  MAX_BORROW_RATIO_WITH_INSURANCE,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
 } from 'core/config/financeConstants';
 import * as widget1Actions from '../widget1Actions';
 import * as widget1Types from '../widget1Types';
@@ -116,7 +116,7 @@ describe('widget1Actions', () => {
       const expectedActions = [
         {
           type: widget1Types.SET_VALUE(widget1Constants.WANTED_LOAN),
-          value: MAX_BORROW_RATIO_WITH_INSURANCE * propertyValue,
+          value: MAX_BORROW_RATIO_WITH_PLEDGE * propertyValue,
         },
       ];
 

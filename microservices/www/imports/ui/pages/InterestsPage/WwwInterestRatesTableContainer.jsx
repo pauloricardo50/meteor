@@ -1,8 +1,8 @@
-import { createContainer } from 'core/api';
+import { withProps } from 'recompose';
 
 import { columnOptions, rows } from './wwwInterestsTableHelpers';
 
-export const WwwInterestsTableContainer = createContainer(props => ({
+export const WwwInterestsTableContainer = withProps(props => ({
   ...props,
   columnOptions,
   rows,

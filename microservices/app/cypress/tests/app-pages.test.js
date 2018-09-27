@@ -36,30 +36,28 @@ const pages = {
         shouldRender: '#email-verification-page',
       }),
 
-    Dashboard: ({ step3LoanWithEndedAuction: { _id } }) =>
+    Dashboard: ({ preparationLoan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
 
-    'Loan Files': ({ step3LoanWithEndedAuction: { _id } }) =>
+    'Loan Files': ({ preparationLoan: { _id } }) =>
       route(`/loans/${_id}/files`, { shouldRender: '#FilesPage .files-tab' }),
 
-    'Loan Properties': ({ step3LoanWithEndedAuction: { _id } }) =>
+    'Loan Properties': ({ preparationLoan: { _id } }) =>
       route(`/loans/${_id}/properties`, {
         shouldRender: '#PropertiesPage',
       }),
 
-    'Loan Single Property': ({
-      step3LoanWithEndedAuction: { _id, properties },
-    }) =>
+    'Loan Single Property': ({ preparationLoan: { _id, properties } }) =>
       route(`/loans/${_id}/properties/${properties[0]._id}`, {
         shouldRender: '#SinglePropertyPage',
       }),
 
-    'Borrower Personal': ({ step3LoanWithEndedAuction: { _id } }) =>
+    'Borrower Personal': ({ preparationLoan: { _id } }) =>
       route(`/loans/${_id}/borrowers/personal`, {
         shouldRender: '.borrower-page-info',
       }),
 
-    'Borrower Finance': ({ step3LoanWithEndedAuction: { _id } }) =>
+    'Borrower Finance': ({ preparationLoan: { _id } }) =>
       route(`/loans/${_id}/borrowers/finance`, {
         shouldRender: '.borrower-finance-page',
       }),

@@ -13,11 +13,15 @@ const SingleBorrowerHeader = ({
       <h1>{name || <T id="general.borrower" />}</h1>
     </div>
 
-    <p className="secondary">
-      {`${gender}, `}
-      <T id="SingleBorrowerPageHeader.age" values={{ value: age }} />
-      {`, ${address1}`}
-    </p>
+    {gender
+      && age
+      && address1 && (
+      <p className="secondary">
+        {`${gender}, `}
+        <T id="SingleBorrowerPageHeader.age" values={{ value: age }} />
+        {`, ${address1}`}
+      </p>
+    )}
 
     <div className="bottom">
       <p className="created-at">

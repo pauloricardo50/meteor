@@ -7,6 +7,7 @@ import '../../../factories';
 import Loans from '../../loans';
 import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
+import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 
 describe('LoanService', () => {
   let loanId;
@@ -372,6 +373,23 @@ describe('LoanService', () => {
       expect(name).to.equal('18-0002');
     });
 
+    it('sorts loans properly 1', () => {
+      Factory.create('loan', { name: '18-0009' });
+      Factory.create('loan', { name: '18-0010' });
+
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-0011');
+    });
+
+    it('sorts loans properly even if created in different order', () => {
+      Factory.create('loan', { name: '18-0955' });
+      Factory.create('loan', { name: '18-0153' });
+      Factory.create('loan', { name: '18-0001' });
+
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-0956');
+    });
+
     it('returns 18-1234 for the nth loan', () => {
       Factory.create('loan', { name: '18-1233' });
 
@@ -389,6 +407,35 @@ describe('LoanService', () => {
       Factory.create('loan', { name: '18-0003' });
       const name = LoanService.getNewLoanName(new Date(2019, 1, 1));
       expect(name).to.equal('19-0001');
+    });
+  });
+
+  describe('cleanupRemovedBorrower', () => {
+    it('removes all occurences of a borrower in structures', () => {
+      const borrowerId = 'dude';
+      const borrowerId2 = 'dude2';
+      loanId = Factory.create('loan', {
+        borrowerIds: [borrowerId, borrowerId2],
+        structures: [
+          {
+            id: 'structId',
+            ownFunds: [
+              { borrowerId, value: 100, type: OWN_FUNDS_TYPES.BANK_3A },
+              {
+                borrowerId: borrowerId2,
+                value: 300,
+                type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+              },
+            ],
+          },
+        ],
+      })._id;
+
+      LoanService.cleanupRemovedBorrower({ borrowerId });
+      loan = LoanService.getLoanById(loanId);
+
+      expect(loan.structures[0].ownFunds.length).to.equal(1);
+      expect(loan.structures[0].ownFunds[0].borrowerId).to.equal(borrowerId2);
     });
   });
 });

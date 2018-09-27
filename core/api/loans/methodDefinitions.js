@@ -25,13 +25,6 @@ export const loanDelete = new Method({
   },
 });
 
-export const incrementLoanStep = new Method({
-  name: 'incrementLoanStep',
-  params: {
-    loanId: String,
-  },
-});
-
 export const requestLoanVerification = new Method({
   name: 'requestLoanVerification',
   params: {
@@ -65,14 +58,6 @@ export const confirmClosing = new Method({
   params: {
     loanId: String,
     object: Object,
-  },
-});
-
-export const loanChangeAdminNote = new Method({
-  name: 'loanChangeAdminNote',
-  params: {
-    loanId: String,
-    adminNote: String,
   },
 });
 

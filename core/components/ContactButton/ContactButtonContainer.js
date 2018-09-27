@@ -2,28 +2,27 @@ import employees from 'core/arrays/epotekEmployees';
 
 import { compose, withProps, withState } from 'recompose';
 import { withSmartQuery } from '../../api';
-import currentUserQuery from '../../api/users/queries/currentUser';
+import appUserQuery from '../../api/users/queries/appUser';
 
 const getStaffByEmail = email =>
   employees.find(employee => employee.email === email);
 
 const ContactButtonContainer = compose(
   withSmartQuery({
-    query: () => currentUserQuery.clone(),
+    query: () => appUserQuery.clone(),
     dataName: 'currentUser',
-    queryOptions: {
-      single: true,
-      reactive: true,
-    },
+    queryOptions: { single: true, reactive: true },
     renderMissingDoc: false,
   }),
   withProps(({ currentUser }) => {
-    if (!currentUser || !currentUser.assignedEmployee) {
-      return { staff: getStaffByEmail('yannis@e-potek.ch') };
+    let staff;
+    if (currentUser && currentUser.assignedEmployee) {
+      staff = getStaffByEmail(currentUser.assignedEmployee.email);
     }
-    return {
-      staff: getStaffByEmail(currentUser.assignedEmployee.email),
-    };
+    if (!staff) {
+      staff = getStaffByEmail('yannis@e-potek.ch');
+    }
+    return { staff };
   }),
   withState('open', 'toggleOpen', false),
 );

@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator from '..';
-import { BORROWER_DOCUMENTS } from 'core/api/constants';
+import { BORROWER_DOCUMENTS, STEPS } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 
 describe('BorrowerCalculator', () => {
@@ -98,17 +98,26 @@ describe('BorrowerCalculator', () => {
   describe('getBorrowerCompletion', () => {
     it('should be 0% for a new borrower', () => {
       expect(Calculator.getBorrowerCompletion({
-        borrowers: { documents: {}, logic: {} },
+        loan: {
+          borrowers: [{ documents: {}, _id: 'docId' }],
+          logic: { step: STEPS.PREPARATION },
+        },
       })).to.equal(0);
     });
 
     it('should not be 0% when adding data', () => {
       expect(Calculator.getBorrowerCompletion({
-        borrowers: {
-          firstName: 'joe',
-          lastName: 'johnson',
-          documents: {},
-          logic: {},
+        loan: {
+          borrowers: [
+            {
+              firstName: 'joe',
+              lastName: 'johnson',
+              documents: {},
+              logic: {},
+              _id: 'docId',
+            },
+          ],
+          logic: { step: STEPS.PREPARATION },
         },
       }))
         .to.be.above(0.09)
@@ -117,20 +126,32 @@ describe('BorrowerCalculator', () => {
 
     it('should not be 0% when adding a document', () => {
       expect(Calculator.getBorrowerCompletion({
-        borrowers: {
-          documents: { [DOCUMENTS.IDENTITY]: [{}] },
-          logic: {},
+        loan: {
+          borrowers: [
+            {
+              documents: { [DOCUMENTS.IDENTITY]: [{}] },
+              logic: {},
+              _id: 'docId',
+            },
+          ],
+          logic: { step: STEPS.PREPARATION },
         },
       })).to.equal(0.1);
     });
 
     it('should count files and info', () => {
       expect(Calculator.getBorrowerCompletion({
-        borrowers: {
-          firstName: 'joe',
-          lastName: 'johnson',
-          documents: { [DOCUMENTS.IDENTITY]: [{}] },
-          logic: {},
+        loan: {
+          borrowers: [
+            {
+              firstName: 'joe',
+              lastName: 'johnson',
+              documents: { [DOCUMENTS.IDENTITY]: [{}] },
+              logic: {},
+              _id: 'borrowerId',
+            },
+          ],
+          logic: { step: STEPS.PREPARATION },
         },
       }))
         .to.be.above(0.19)
@@ -141,24 +162,32 @@ describe('BorrowerCalculator', () => {
   describe('getBorrowerFilesProgress', () => {
     it('returns 0 when no file is present', () => {
       expect(Calculator.getBorrowerFilesProgress({
-        borrowers: {
-          documents: {},
-          logic: {},
+        loan: {
+          borrowers: [{ documents: {}, _id: 'borrowerId' }],
+          logic: { step: STEPS.PREPARATION },
         },
       })).to.equal(0);
     });
 
     it('returns 0 when no documents are present', () => {
       expect(Calculator.getBorrowerFilesProgress({
-        borrowers: {},
+        loan: {
+          borrowers: [{}],
+          logic: { step: STEPS.PREPARATION },
+        },
       })).to.equal(0);
     });
 
     it('returns more than 0 when a file is present', () => {
       expect(Calculator.getBorrowerFilesProgress({
-        borrowers: {
-          documents: { [DOCUMENTS.IDENTITY]: [{}] },
-          logic: {},
+        loan: {
+          borrowers: [
+            {
+              documents: { [DOCUMENTS.IDENTITY]: [{}] },
+              _id: 'borrowerId',
+            },
+          ],
+          logic: { step: STEPS.PREPARATION },
         },
       })).to.equal(0.2);
     });
@@ -189,18 +218,20 @@ describe('BorrowerCalculator', () => {
   });
 
   describe('getInsuranceFortune', () => {
-    it('properly sums insuranceSecondPillar and insuranceThirdPillar', () => {
+    it('properly sums insurance2, insurance3A, insurance3B and bank3A', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: 3,
+          insurance2: [{ value: 2 }],
+          insurance3A: [{ value: 3 }],
+          insurance3B: [{ value: 4 }],
+          bank3A: [{ value: 5 }],
         },
-      })).to.equal(5);
+      })).to.equal(14);
 
       expect(Calculator.getInsuranceFortune({
         borrowers: {
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: undefined,
+          insurance3B: [{ value: 2 }],
+          bank3A: [{ value: undefined }],
         },
       })).to.equal(2);
     });
@@ -209,12 +240,12 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getInsuranceFortune({
         borrowers: [
           {
-            insuranceSecondPillar: 2,
-            insuranceThirdPillar: 3,
+            insurance2: [{ value: 2 }],
+            insurance3A: [{ value: 3 }],
           },
           {
-            insuranceSecondPillar: 4,
-            insuranceThirdPillar: 5,
+            bank3A: [{ value: 4 }],
+            insurance3B: [{ value: 5 }],
           },
         ],
       })).to.equal(14);
@@ -223,7 +254,12 @@ describe('BorrowerCalculator', () => {
 
   describe('getMissingBorrowerDocuments', () => {
     it('returns all missing ids for an empty borrower', () => {
-      expect(Calculator.getMissingBorrowerDocuments({ borrowers: {} })).to.deep.equal([
+      expect(Calculator.getMissingBorrowerDocuments({
+        loan: {
+          borrowers: [{ _id: 'borrowerId' }],
+          logic: { step: STEPS.PREPARATION },
+        },
+      })).to.deep.equal([
         BORROWER_DOCUMENTS.IDENTITY,
         BORROWER_DOCUMENTS.RESIDENCY_PERMIT,
         BORROWER_DOCUMENTS.TAXES,
@@ -318,8 +354,8 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getTotalFunds({
         borrowers: {
           bankFortune: 1,
-          insuranceSecondPillar: 2,
-          insuranceThirdPillar: 3,
+          insurance2: [{ value: 2 }],
+          insurance3A: [{ value: 3 }],
         },
       })).to.equal(6);
     });
@@ -388,6 +424,7 @@ describe('BorrowerCalculator', () => {
         keys: ['a', 'b'],
       })).to.equal(10);
     });
+
     it('omits keys if they are not provided', () => {
       expect(Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
     });

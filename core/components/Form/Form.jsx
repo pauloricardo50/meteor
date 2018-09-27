@@ -22,13 +22,13 @@ const Form = ({
   <div className={className}>
     <FormWrapper>
       <form onSubmit={handleSubmit} className="form">
-        {error && <span className="error">{error}</span>}
-        {formArray.map(({ id, ...otherProps }) => (
+        {formArray.map(({ id, ...otherProps }, index) => (
           <FormField
             key={id}
             name={id}
             id={id}
             className="form-field"
+            autoFocus={index === 0}
             {...otherProps}
           />
         ))}
@@ -38,6 +38,7 @@ const Form = ({
           {...submitButtonProps}
         />
       </form>
+      {error && <span className="error text-center">{error}</span>}
     </FormWrapper>
 
     {renderActions && renderActions({ handleSubmit, submitting })}

@@ -13,10 +13,11 @@ const TableFilter = ({
   SelectComponent,
 }) => (
   <div className="table-filter">
-    <div className="table-filter-label">
+    <label htmlFor="filterKey" className="table-filter-label">
       <T id={`TableFilters.filterLabels.${filterKey}`} />
-    </div>
+    </label>
     <SelectComponent
+      id={filterKey}
       multi
       onChange={onChange}
       options={options}
@@ -35,10 +36,10 @@ const TableFilter = ({
 
 TableFilter.propTypes = {
   filterKey: PropTypes.string.isRequired,
-  loadOptions: PropTypes.func.isRequired,
+  loadOptions: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
-  SelectComponent: PropTypes.instanceOf(React.Component).isRequired,
+  SelectComponent: PropTypes.any.isRequired,
   value: PropTypes.array.isRequired,
 };
 

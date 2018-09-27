@@ -14,7 +14,7 @@ class UserService {
   };
 
   adminCreateUser = ({
-    options: { email, ...additionalData },
+    options: { email, sendEnrollmentEmail, ...additionalData },
     role,
     adminId,
   }) => {
@@ -22,11 +22,13 @@ class UserService {
 
     this.update({ userId: newUserId, object: additionalData });
 
-    if (role === ROLES.USER && adminId) {
+    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
       this.assignAdminToUser({ userId: newUserId, adminId });
     }
 
-    this.sendEnrollmentEmail({ userId: newUserId });
+    if (sendEnrollmentEmail) {
+      this.sendEnrollmentEmail({ userId: newUserId });
+    }
 
     return newUserId;
   };
@@ -37,7 +39,9 @@ class UserService {
   sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
 
-  sendEnrollmentEmail = ({ userId }) => Accounts.sendEnrollmentEmail(userId);
+  sendEnrollmentEmail = ({ userId }) => {
+    Accounts.sendEnrollmentEmail(userId);
+  };
 
   // This is used to hook into Accounts
   onCreateUser = (options, user) => {

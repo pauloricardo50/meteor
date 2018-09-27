@@ -9,6 +9,9 @@ export const executeCommand = (command, printCommand = true) =>
     cmd
       .get(command, (err, data, stderr) => {
         if (stderr || err) {
+          logError(
+            `Error while executing command ${command}: ${stderr || err}`,
+          );
           reject(stderr || err);
         }
         resolve(data);
@@ -82,3 +85,5 @@ export const getLastSegmentOfPath = path => {
 
 export const boxOut = string =>
   executeCommand(`${__dirname}/../../scripts/box_out.sh ${string}`, false);
+
+export const logError = error => console.error('\x1b[31m%s\x1b[0m', error);

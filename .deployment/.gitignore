@@ -9,4 +9,6 @@ production/*
 deploy.yml
 
 ssh-tunnel/*
-!ssh-tunnel/prepareSSHTunnel.js
+!ssh-tunnel/openSSHTunnel.js
+!ssh-tunnel/connectToDB.js
+!ssh-tunnel/restoreDB.js

@@ -1,6 +1,7 @@
-import { createContainer, SecurityService } from '../../api';
+import { withProps } from 'recompose';
+import { SecurityService } from '../../api';
 
-export default createContainer({
+export default withProps({
   disabled: !SecurityService.currentUserIsAdmin(),
   isAdmin: SecurityService.currentUserIsAdmin(),
 });

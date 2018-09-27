@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import DownloadIcon from '@material-ui/icons/FileDownload';
 import LoopIcon from '@material-ui/icons/Loop';
 import WarningIcon from '@material-ui/icons/Warning';
 import ForumIcon from '@material-ui/icons/Forum';
@@ -62,13 +61,16 @@ import FilterList from '@material-ui/icons/FilterList';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Domain from '@material-ui/icons/Domain';
+import Info from '@material-ui/icons/Info';
+import AttachFile from '@material-ui/icons/AttachFile';
+import CloudDownload from '@material-ui/icons/CloudDownload';
+import LocalHospital from '@material-ui/icons/LocalHospital';
 
 const iconMap = {
   close: CloseIcon,
   check: CheckIcon,
   add: AddIcon,
   warning: WarningIcon,
-  download: DownloadIcon,
   menu: MenuIcon,
   forum: ForumIcon,
   mail: MailIcon,
@@ -126,6 +128,10 @@ const iconMap = {
   arrowUp: ArrowUpward,
   arrowDown: ArrowDownward,
   domain: Domain,
+  info: Info,
+  attachFile: AttachFile,
+  download: CloudDownload,
+  health: LocalHospital,
 };
 
 const Icon = ({ type, size, ...props }) => {

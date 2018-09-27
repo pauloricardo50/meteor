@@ -5,13 +5,13 @@ import T from 'core/components/Translation';
 import LoanSummary from './LoanSummary';
 import LoanAdder from './LoanAdder';
 
-const LoanSummaryList = ({ loans, userId }) => {
-  if (loans.length > 0) {
+const LoanSummaryList = ({ loans, userId, withAdder }) => {
+  if (loans && loans.length > 0) {
     return (
       <React.Fragment>
         <h3>
           <T id="collections.loans" />
-          <LoanAdder userId={userId} />
+          {withAdder && <LoanAdder userId={userId} />}
         </h3>
         {loans.map(loan => (
           <LoanSummary loan={loan} key={loan._id} />
@@ -23,7 +23,7 @@ const LoanSummaryList = ({ loans, userId }) => {
   return (
     <h3>
       <T id="LoanSummaryList.noLoans" />
-      <LoanAdder userId={userId} />
+      {withAdder && <LoanAdder userId={userId} />}
     </h3>
   );
 };

@@ -2,25 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
+import { STEP_ORDER } from 'core/api/constants';
 import DashboardProgressBarStep from './DashboardProgressBarStep';
 
-const DashboardProgressBar = ({ steps, currentStep }) => (
+const DashboardProgressBar = ({ currentStep }) => (
   <div className="dashboard-progress-bar">
     <div className="steps">
-      {steps.map((step, index) => (
+      {STEP_ORDER.map((step, index) => (
         <DashboardProgressBarStep
-          isDone={currentStep > index}
+          isDone={STEP_ORDER.indexOf(currentStep) >= index}
           step={step}
-          key={step.id}
-          id={step.id}
+          key={step}
+          id={step}
           nb={index + 1}
         />
       ))}
     </div>
     <div className="absolute-lines">
-      {steps.slice(0, -1).map((_, index) => (
+      {STEP_ORDER.slice(0, -1).map((_, index) => (
         <span
-          className={cx('line', { done: index < currentStep - 1 })}
+          className={cx('line', {
+            done: STEP_ORDER.indexOf(currentStep) > index,
+          })}
           key={index}
         />
       ))}
@@ -29,8 +32,7 @@ const DashboardProgressBar = ({ steps, currentStep }) => (
 );
 
 DashboardProgressBar.propTypes = {
-  currentStep: PropTypes.number.isRequired,
-  steps: PropTypes.array.isRequired,
+  currentStep: PropTypes.string.isRequired,
 };
 
 export default DashboardProgressBar;

@@ -66,9 +66,23 @@ describe('UserService', () => {
       expect(user.firstName).to.equal(options.firstName);
     });
 
-    it('sends enrollment email', () => {
+    it('does not send enrollment email by default', () => {
       const options = { email: 'test@test.com' };
-      const userId = UserService.adminCreateUser({ options, role: ROLES.USER });
+      const userId = UserService.adminCreateUser({
+        options,
+        role: ROLES.USER,
+      });
+
+      expect(UserService.sendEnrollmentEmail.getCall(0)).to.equal(null);
+    });
+
+    it('sends enrollment email when asked to', () => {
+      const options = { email: 'test@test.com', sendEnrollmentEmail: true };
+      const userId = UserService.adminCreateUser({
+        options,
+        role: ROLES.USER,
+      });
+
       expect(UserService.sendEnrollmentEmail.getCall(0).args[0]).to.deep.equal({
         userId,
       });

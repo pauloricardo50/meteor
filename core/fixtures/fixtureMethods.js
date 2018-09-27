@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import range from 'lodash/range';
+import { STEPS, STEP_ORDER } from 'imports/core/api/constants';
 import {
   Borrowers,
   Loans,
@@ -14,15 +15,19 @@ import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
 import { AUCTION_STATUS } from '../api/loans/loanConstants';
 import {
-  DEV_COUNT,
   USER_COUNT,
-  ADMIN_COUNT,
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
 } from './fixtureConfig';
 import { createFakeLoan } from './loanFixtures';
 import { createFakeTask, deleteUsersTasks } from './taskFixtures';
-import { createFakeUsers, getFakeUsersIds, createUser } from './userFixtures';
+import {
+  createDevs,
+  createAdmins,
+  getFakeUsersIds,
+  createUser,
+  createFakeUsers,
+} from './userFixtures';
 import { createFakeOffer } from './offerFixtures';
 import { ROLES } from '../api/users/userConstants';
 import { E2E_USER_EMAIL } from './fixtureConstants';
@@ -30,14 +35,10 @@ import { createYannisData } from './demoFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
-const getAdmins = (currentUserEmail) => {
+const getAdmins = () => {
   const admins = Users.find({ roles: { $in: [ROLES.ADMIN] } }).fetch();
   if (admins.length <= 1) {
-    const newAdmins = createFakeUsers(
-      ADMIN_COUNT,
-      ROLES.ADMIN,
-      currentUserEmail,
-    );
+    const newAdmins = createAdmins();
     return newAdmins;
   }
   return admins.map(admin => admin._id);
@@ -82,7 +83,7 @@ const createTestUserWithData = () => {
   // Create step 3 loans with all types of auction statuses for the app's test user
   Object.keys(AUCTION_STATUS).forEach((statusKey) => {
     createFakeLoanFixture({
-      step: 3,
+      step: STEPS.CLOSING,
       userId: testUserId,
       adminId: admins[0]._id,
       completeFiles: true,
@@ -95,24 +96,20 @@ const createTestUserWithData = () => {
 Meteor.methods({
   generateTestData(currentUserEmail) {
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
-      createFakeUsers(DEV_COUNT, ROLES.DEV, currentUserEmail);
-      const admins = getAdmins(currentUserEmail);
-      const newUsers = createFakeUsers(
-        USER_COUNT,
-        ROLES.USER,
-        currentUserEmail,
-      );
+      createDevs(currentUserEmail);
+      const admins = getAdmins();
+      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
 
       // for each regular fixture user, create a loan with a certain step
       newUsers.forEach((userId, index) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
 
-        // based on index, always generate 1, 2 and 3 numbers
-        const loanStep = (index % 3) + 1;
+        // based on index, always generate 0, 1 and 2 numbers
+        const loanStep = index % 3;
 
         range(LOANS_PER_USER).forEach(() => {
           createFakeLoanFixture({
-            step: loanStep,
+            step: STEP_ORDER[loanStep],
             userId,
             adminId,
             twoBorrowers: true,
@@ -124,6 +121,7 @@ Meteor.methods({
         createFakeLoan({});
       });
 
+      console.log('creating E2E user? 2');
       createTestUserWithData();
     }
   },

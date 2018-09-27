@@ -1,4 +1,4 @@
-import { createContainer } from 'core/api';
+import { withProps } from 'recompose';
 import {
   assignAdminToNewUser,
   setAssigneeOfTask,
@@ -41,7 +41,7 @@ const onAdminSelectHandler = ({ newAdmin, relatedDoc, oldAdmin }) => {
   });
 };
 
-const TaskAssignDropdownContainer = createContainer(() => ({
+const TaskAssignDropdownContainer = withProps(() => ({
   onAdminSelectHandler,
 }));
 

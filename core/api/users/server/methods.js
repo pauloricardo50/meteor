@@ -12,6 +12,7 @@ import {
   getUserByPasswordResetToken,
   testCreateUser,
   removeUser,
+  sendEnrollmentEmail,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -55,7 +56,6 @@ setRole.setHandler((context, params) => {
 
 adminCreateUser.setHandler((context, { options, role }) => {
   SecurityService.users.isAllowedToInsertByRole({ role });
-
   return UserService.adminCreateUser({
     options,
     role,
@@ -83,4 +83,9 @@ testCreateUser.setHandler((context, { user }) => {
 removeUser.setHandler((context, { userId }) => {
   SecurityService.checkCurrentUserIsDev();
   UserService.remove({ userId });
+});
+
+sendEnrollmentEmail.setHandler((context, { userId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.sendEnrollmentEmail({ userId });
 });

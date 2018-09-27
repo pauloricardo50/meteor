@@ -8,20 +8,23 @@ import DevPage from 'core/components/DevPage';
 
 import messagesFR from '../../../lang/fr.json';
 
-import AdminLayout from '../../client/layouts/AdminLayout';
-import AdminDashboardPage from '../../client/pages/AdminDashboardPage';
-import LoansPage from '../../client/pages/LoansPage';
-import SingleLoanPage from '../../client/pages/SingleLoanPage';
-import UsersPage from '../../client/pages/UsersPage/UsersPage';
-import SingleUserPage from '../../client/pages/SingleUserPage';
-import TasksPage from '../../client/pages/TasksPage/TasksPage';
-import BorrowersPage from '../../client/pages/BorrowersPage';
-import SearchPage from '../../client/pages/SearchPage/SearchPage';
 import AdminAccountPage from '../../client/pages/AdminAccountPage';
-import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
+import AdminDashboardPage from '../../client/pages/AdminDashboardPage';
+import AdminLayout from '../../client/layouts/AdminLayout';
+import BorrowersPage from '../../client/pages/BorrowersPage';
+import LoansPage from '../../client/pages/LoansPage';
+import PropertiesPage from '../../client/pages/PropertiesPage';
+import SearchPage from '../../client/pages/SearchPage';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage';
+import SingleLoanPage from '../../client/pages/SingleLoanPage';
+import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
+import SingleUserPage from '../../client/pages/SingleUserPage';
+import TasksPage from '../../client/pages/TasksPage';
+import UsersPage from '../../client/pages/UsersPage';
 
 import AdminStore from '../../client/components/AdminStore';
+
+import * as adminRoutes from './adminRoutes';
 
 const AdminRouter = () => (
   <BaseRouter
@@ -32,22 +35,30 @@ const AdminRouter = () => (
   >
     <AdminLayout type="admin">
       <Switch>
-        <Route exact path="/" component={AdminDashboardPage} />
-        <Route exact path="/users" component={UsersPage} />
-        <Route exact path="/loans" component={LoansPage} />
-        <Route path="/loans/:loanId/:tabId?" component={SingleLoanPage} />
-        <Route path="/users/:userId" component={SingleUserPage} />
         <Route
-          path="/properties/:propertyId"
+          exact
+          path={adminRoutes.DASHBOARD_PAGE}
+          component={AdminDashboardPage}
+        />
+        <Route exact path={adminRoutes.USERS_PAGE} component={UsersPage} />
+        <Route exact path={adminRoutes.LOANS_PAGE} component={LoansPage} />
+        <Route path={adminRoutes.SINGLE_LOAN_PAGE} component={SingleLoanPage} />
+        <Route path={adminRoutes.SINGLE_USER_PAGE} component={SingleUserPage} />
+        <Route
+          path={adminRoutes.SINGLE_PROPERTY_PAGE}
           component={SinglePropertyPage}
           className="card1 card-top"
         />
-        <Route path="/tasks" component={TasksPage} />
-        <Route path="/borrowers/:borrowerId" component={SingleBorrowerPage} />
-        <Route path="/borrowers" component={BorrowersPage} />
-        <Route path="/search" component={SearchPage} />
-        <Route path="/account" component={AdminAccountPage} />
-        <Route path="/dev" component={DevPage} />
+        <Route path={adminRoutes.PROPERTIES_PAGE} component={PropertiesPage} />
+        <Route path={adminRoutes.TASKS_PAGE} component={TasksPage} />
+        <Route
+          path={adminRoutes.SINGLE_BORROWER_PAGE}
+          component={SingleBorrowerPage}
+        />
+        <Route path={adminRoutes.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={adminRoutes.SEARCH_PAGE} component={SearchPage} />
+        <Route path={adminRoutes.ACCOUNT_PAGE} component={AdminAccountPage} />
+        <Route path={adminRoutes.DEV_PAGE} component={DevPage} />
         <Route component={NotFound} />
       </Switch>
     </AdminLayout>

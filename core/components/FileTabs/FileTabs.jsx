@@ -2,21 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
-import UploaderArray from 'core/components/UploaderArray';
 import Calculator from 'core/utils/Calculator';
 import {
-  getDocumentArrayByStep,
-  loanDocuments,
-  propertyDocuments,
-  borrowerDocuments,
+  getPropertyDocuments,
+  getBorrowerDocuments,
+  getLoanDocuments,
 } from 'core/api/files/documents';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
 import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
+import SingleFileTab from './SingleFileTab';
 
-const FileTabs = ({ loan, borrowers, property, disabled }) => (
+const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => (
   <div className="files-tab">
     <Tabs
       id="tabs"
@@ -28,41 +27,45 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             <FileTabLabel
               title={borrower.firstName || `Emprunteur ${index + 1}`}
               progress={Calculator.getBorrowerFilesProgress({
+                loan,
                 borrowers: borrower,
               })}
             />
           ),
           content: (
-            <UploaderArray
+            <SingleFileTab
               doc={borrower}
               collection="borrowers"
               disabled={disabled}
-              documentArray={getDocumentArrayByStep(
-                () => borrowerDocuments(borrower),
-                'auction',
-              )}
+              documentArray={getBorrowerDocuments({ loan, id: borrower._id })}
+              currentUser={currentUser}
             />
           ),
         })),
-        {
-          label: (
-            <FileTabLabel
-              id="general.property"
-              progress={Calculator.getPropertyFilesProgress({ loan })}
-            />
-          ),
-          content: (
-            <UploaderArray
-              doc={property}
-              collection="properties"
-              disabled={disabled}
-              documentArray={getDocumentArrayByStep(
-                () => propertyDocuments(property, loan),
-                'auction',
-              )}
-            />
-          ),
-        },
+        ...(property
+          ? [
+            {
+              label: (
+                <FileTabLabel
+                  id="general.property"
+                  progress={Calculator.getPropertyFilesProgress({ loan })}
+                />
+              ),
+              content: (
+                <SingleFileTab
+                  doc={property}
+                  collection="properties"
+                  disabled={disabled}
+                  documentArray={getPropertyDocuments({
+                    loan,
+                    id: property._id,
+                  })}
+                  currentUser={currentUser}
+                />
+              ),
+            },
+          ]
+          : []),
         {
           label: (
             <FileTabLabel
@@ -71,14 +74,12 @@ const FileTabs = ({ loan, borrowers, property, disabled }) => (
             />
           ),
           content: (
-            <UploaderArray
+            <SingleFileTab
               doc={loan}
               collection="loans"
               disabled={disabled}
-              documentArray={getDocumentArrayByStep(
-                () => loanDocuments(loan),
-                'auction',
-              )}
+              documentArray={getLoanDocuments({ loan })}
+              currentUser={currentUser}
             />
           ),
         },

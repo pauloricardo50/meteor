@@ -1,18 +1,14 @@
-import moment from 'moment';
-
 import {
   RESIDENCE_TYPE,
   PROPERTY_TYPE,
   MINERGIE_CERTIFICATE,
   FLAT_TYPE,
   VOLUME_NORM,
+  STEPS,
 } from '../constants';
 
 export const fakeGeneral = {
   purchaseType: 'ACQUISITION',
-  wantedClosingDate: moment()
-    .add(15, 'd')
-    .toDate(),
 };
 
 export const fakeProperty = {
@@ -40,11 +36,11 @@ export const fakeProperty = {
 };
 
 export const logic1 = {
-  step: 1,
+  step: STEPS.PREPARATION,
 };
 
 export const logic2 = {
-  step: 2,
+  step: STEPS.GET_CONTRACT,
   verification: {
     requested: false,
     validated: true,
@@ -54,7 +50,7 @@ export const logic2 = {
 };
 
 export const logic3 = {
-  step: 3,
+  step: STEPS.FIND_LENDER,
   verification: {
     requested: false,
     validated: true,
@@ -65,10 +61,6 @@ export const logic3 = {
     startTime: new Date(),
     endTime: new Date(),
   },
-  insuranceUsePreset: 'COLLATERAL',
-  loanStrategyPreset: 'FIXED',
-  amortizationStrategyPreset: 'INDIRECT',
-  lender: {},
   closingSteps: [
     { id: 'upload0', title: 'Contrat de prêt signé', type: 'UPLOAD' },
     {
