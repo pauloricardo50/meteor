@@ -40,6 +40,9 @@ jobs:
             - build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
             - build-epotek-v6-node_modules-
       - run:
+          name: create results directories
+          command: mkdir ./results
+      - run:
           name: make profiles dir
           command: mkdir ./microservices/www/profiles
       - run:
@@ -83,6 +86,10 @@ jobs:
           key: *www_meteor_cache_key
           paths:
             - ./microservices/www/.meteor/local
+      - store_test_results:
+          path: ./results
+      - store_artifacts:
+          path: ./results
       - store_artifacts:
           path: ./microservices/www/profiles
 
