@@ -26,7 +26,7 @@ jobs:
       CIRCLE_CI: 1
       DEBUG: true
       DOCKER_DRIVER: overlay2
-      QUALIA_PROFILE_FOLDER: ~/profiles
+      QUALIA_PROFILE_FOLDER: ./profiles
     steps:
       - checkout
       - *restore_meteor_system_cache
@@ -41,7 +41,7 @@ jobs:
             - build-epotek-v6-node_modules-
       - run:
           name: make profiles dir
-          command: mkdir ~/profiles
+          command: mkdir ./microservices/www/profiles
       - run:
           name: install Meteor
           command: |
@@ -84,7 +84,7 @@ jobs:
           paths:
             - ./microservices/www/.meteor/local
       - store_artifacts:
-          path: ~/profiles
+          path: ./microservices/www/profiles
 
 workflows:
   version: 2
