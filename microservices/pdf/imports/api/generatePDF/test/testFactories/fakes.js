@@ -7,6 +7,8 @@ import {
   FLAT_TYPE,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
+  OTHER_INCOME,
+  EXPENSES,
 } from 'core/api/constants';
 import {
   CIVIL_STATUS,
@@ -24,13 +26,19 @@ export const FAKE_THIRD_PARTY_FORTUNE = {
   thirdPartyFortune: 5000,
 };
 export const FAKE_OTHER_INCOME = {
-  otherIncome: [{ value: 150000 }, { value: 25000 }],
+  otherIncome: [
+    { description: OTHER_INCOME.PENSIONS, value: 150000 },
+    { description: OTHER_INCOME.WELFARE, value: 25000 },
+  ],
 };
 export const FAKE_OTHER_FORTUNE = {
-  otherIncome: [{ value: 10000 }],
+  otherFortune: [{ value: 10000 }],
 };
 export const FAKE_EXPENSES = {
-  expenses: [{ value: 12000 }, { value: 3000 }],
+  expenses: [
+    { description: EXPENSES.PENSIONS, value: 12000 },
+    { description: EXPENSES.PERSONAL_LOAN, value: 3000 },
+  ],
 };
 
 export const FAKE_REAL_ESTATE = {

@@ -14,6 +14,11 @@ const stylesheet = `
         width: 50%;
     }
 
+.borrowers-recap {
+    width: 100%;
+    font-size: 10px;
+}    
+
 ${recapStyleSheet}
 `;
 
