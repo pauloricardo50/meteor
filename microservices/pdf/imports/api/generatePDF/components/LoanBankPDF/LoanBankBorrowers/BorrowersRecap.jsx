@@ -16,7 +16,7 @@ type BorrowersRecapProps = {
 };
 
 const getBorrowersSingleInfo = (borrowers, info) =>
-  borrowers.map(borrower => borrower[info]);
+  borrowers.map(borrower => borrower[info] || 0);
 
 const getBorrowersSingleInfos = (borrowers, infos) =>
   infos.reduce(
@@ -115,7 +115,7 @@ const getBorrowersInfos = borrowers => ({
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
 const getFormatedMoneyArray = (array, negative = false) => [
-  ...array.map(x => `CHF ${negative && x ? '-' : ''}${toMoney(x)}`),
+  ...array.map(x => `CHF ${negative && x ? '-' : ''}${toMoney(x || 0)}`),
   `CHF ${negative ? '-' : ''}${toMoney(getArraySum(array))}`,
 ];
 
@@ -123,7 +123,6 @@ const shouldRenderArray = array => array.filter(x => x).length > 0;
 
 const getBorrowersInfosArray = (borrowers) => {
   const borrowersInfos = getBorrowersInfos(borrowers);
-  console.log(borrowersInfos);
   return [
     {
       label: '\u00A0',
@@ -153,7 +152,14 @@ const getBorrowersInfosArray = (borrowers) => {
       condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
     },
     {
-      label: <p style={{ fontWeight: 'bold',  textTransform:'uppercase'}}>Revenus</p>,
+      label: '\u00A0',
+    },
+    {
+      label: (
+        <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+          Revenus
+        </p>
+      ),
     },
     {
       label: 'Salaire annuel brut',
@@ -233,12 +239,85 @@ const getBorrowersInfosArray = (borrowers) => {
       label: '\u00A0',
     },
     {
-      label: <p style={{fontWeight: 'bold'}}>Total des revenus considérés</p>,
-      data: getFormatedMoneyArray(borrowersInfos.otherIncome.totalIncome.map((totalIncome, index) =>
-        totalIncome
+      label: <p style={{ fontWeight: 'bold' }}>Total des revenus considérés</p>,
+      data: getFormatedMoneyArray(borrowers.map((_, index) =>
+        borrowersInfos.otherIncome.totalIncome[index]
             + borrowersInfos.salary[index]
             + borrowersInfos.bonus[index]
             - borrowersInfos.expenses.totalExpenses[index])),
+      style: { fontWeight: 'bold' },
+    },
+    {
+      label: '\u00A0',
+    },
+    {
+      label: (
+        <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+          Patrimoine
+        </p>
+      ),
+    },
+    {
+      label: 'Cash et titres',
+      data: getFormatedMoneyArray(borrowersInfos.bankFortune),
+    },
+    {
+      label: 'LPP disponible',
+      data: getFormatedMoneyArray(borrowersInfos.insurance2),
+    },
+    {
+      label: '3A bancaire',
+      data: getFormatedMoneyArray(borrowersInfos.bank3A),
+      condition: shouldRenderArray(borrowersInfos.bank3A),
+    },
+    {
+      label: '3A assurance',
+      data: getFormatedMoneyArray(borrowersInfos.insurance3A),
+      condition: shouldRenderArray(borrowersInfos.insurance3A),
+    },
+    {
+      label: '3B assurance',
+      data: getFormatedMoneyArray(borrowersInfos.insurance3B),
+      condition: shouldRenderArray(borrowersInfos.insurance3B),
+    },
+    {
+      label: 'Immobilier',
+      data: getFormatedMoneyArray(borrowersInfos.realEstateValue),
+      condition: shouldRenderArray(borrowersInfos.realEstateValue),
+    },
+    {
+      label: 'Dette y relative',
+      data: getFormatedMoneyArray(borrowersInfos.realEstateDebt, true),
+      condition: shouldRenderArray(borrowersInfos.realEstateValue),
+    },
+    {
+      label: 'Prêt de tiers',
+      data: getFormatedMoneyArray(borrowersInfos.thirdPartyFortune),
+      condition: shouldRenderArray(borrowersInfos.thirdPartyFortune),
+    },
+    {
+      label: 'Autre fortune',
+      data: getFormatedMoneyArray(borrowersInfos.otherFortune),
+      condition: shouldRenderArray(borrowersInfos.otherFortune),
+    },
+    {
+      label: '\u00A0',
+    },
+    {
+      label: <p style={{ fontWeight: 'bold' }}>Fonds propres disponibles</p>,
+      data: getFormatedMoneyArray(borrowers.map((_, index) => (
+          borrowersInfos.bankFortune[index]
+            + borrowersInfos.insurance2[index]
+            + borrowersInfos.bank3A[index]
+            + borrowersInfos.insurance3A[index]
+            + borrowersInfos.insurance3B[index]
+            + borrowersInfos.realEstateValue[index]
+            - borrowersInfos.realEstateDebt[index]
+            + borrowersInfos.thirdPartyFortune[index]
+            + borrowersInfos.otherFortune[index]
+        )
+      )),
+      style: { fontWeight: 'bold' },
     },
   ];
 };
