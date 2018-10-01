@@ -121,6 +121,22 @@ const getFormatedMoneyArray = (array, negative = false) => [
 
 const shouldRenderArray = array => array.filter(x => x).length > 0;
 
+const addTableMoneyLine = ({ label, field, negative, condition }) => ({
+  label,
+  data: getFormatedMoneyArray(field, negative || false),
+  condition: condition || shouldRenderArray(field),
+});
+
+const addTableEmptyLine = () => ({
+  label: '\u00A0',
+});
+
+const addTableCategoryTitle = title => ({
+  label: (
+    <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{title}</p>
+  ),
+});
+
 const getBorrowersInfosArray = (borrowers) => {
   const borrowersInfos = getBorrowersInfos(borrowers);
   return [
@@ -129,117 +145,58 @@ const getBorrowersInfosArray = (borrowers) => {
       data: [
         ...borrowersInfos.gender.map((gender, index) => (
           <span>
-            <T id={`PDF.gender.${gender}`} />
-            {` ${borrowersInfos.age[index]} ans`}
+            <T id={`PDF.borrowersInfos.gender.${gender}`} />
+            {` ${borrowersInfos.age[index]} `}
+            <T id="PDF.borrowersInfos.age" />
           </span>
         )),
-        'Total considéré',
+        <T id="PDF.borrowersInfos.total" />,
       ],
     },
     {
-      label: 'Enfants',
+      label: <T id="PDF.borrowersInfos.children" />,
       data: borrowersInfos.childrenCount.map(children => children || '-'),
       condition: shouldRenderArray(borrowersInfos.childrenCount),
     },
     {
-      label: 'Employeur',
+      label: <T id="PDF.borrowersInfos.company" />,
       data: borrowersInfos.company.map(company => company || '-'),
       condition: shouldRenderArray(borrowersInfos.company),
     },
     {
-      label: 'Status matrimonial',
+      label: <T id="PDF.borrowersInfos.civilStatus" />,
       data: borrowersInfos.civilStatus.map(status => status || '-'),
       condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
     },
-    {
-      label: '\u00A0',
-    },
+    addTableEmptyLine(),
+    addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
+    addTableMoneyLine({
+      label: <T id="PDF.borrowersInfos.salary" />,
+      field: borrowersInfos.salary,
+      condition: true,
+    }),
+    addTableMoneyLine({
+      label: <T id="PDF.borrowersInfos.bonus" />,
+      field: borrowersInfos.bonus,
+    }),
+    ...Object.values(OTHER_INCOME).map(income =>
+      addTableMoneyLine({
+        label: <T id={`PDF.borrowersInfos.otherIncome.${income}`} />,
+        field: borrowersInfos.otherIncome[income],
+      })),
+    ...Object.values(EXPENSES).map(expense =>
+      addTableMoneyLine({
+        label: <T id={`PDF.borrowersInfos.expenses.${expense}`} />,
+        field: borrowersInfos.expenses[expense],
+        negative: true,
+      })),
+    addTableEmptyLine(),
     {
       label: (
-        <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-          Revenus
+        <p style={{ fontWeight: 'bold' }}>
+          <T id="PDF.borrowersInfos.totalIncome" />
         </p>
       ),
-    },
-    {
-      label: 'Salaire annuel brut',
-      data: getFormatedMoneyArray(borrowersInfos.salary),
-    },
-    {
-      label: 'Bonus considéré',
-      data: getFormatedMoneyArray(borrowersInfos.bonus),
-      condition: shouldRenderArray(borrowersInfos.bonus),
-    },
-    {
-      label: 'Allocations familiales',
-      data: getFormatedMoneyArray(borrowersInfos.otherIncome[OTHER_INCOME.WELFARE]),
-      condition: shouldRenderArray(borrowersInfos.otherIncome[OTHER_INCOME.WELFARE]),
-    },
-    {
-      label: 'Rentes reçues',
-      data: getFormatedMoneyArray(borrowersInfos.otherIncome[OTHER_INCOME.PENSIONS]),
-      condition: shouldRenderArray(borrowersInfos.otherIncome[OTHER_INCOME.PENSIONS]),
-    },
-    {
-      label: 'Revenus immobiliers',
-      data: getFormatedMoneyArray(borrowersInfos.otherIncome[OTHER_INCOME.REAL_ESTATE]),
-      condition: shouldRenderArray(borrowersInfos.otherIncome[OTHER_INCOME.REAL_ESTATE]),
-    },
-    {
-      label: 'Revenus de titres',
-      data: getFormatedMoneyArray(borrowersInfos.otherIncome[OTHER_INCOME.INVESTMENT]),
-      condition: shouldRenderArray(borrowersInfos.otherIncome[OTHER_INCOME.INVESTMENT]),
-    },
-    {
-      label: 'Autres revenus',
-      data: getFormatedMoneyArray(borrowersInfos.otherIncome[OTHER_INCOME.OTHER]),
-      condition: shouldRenderArray(borrowersInfos.otherIncome[OTHER_INCOME.OTHER]),
-    },
-    {
-      label: 'Pensions perçues',
-      data: getFormatedMoneyArray(
-        borrowersInfos.expenses[EXPENSES.PENSIONS],
-        true,
-      ),
-      condition: shouldRenderArray(borrowersInfos.expenses[EXPENSES.PENSIONS]),
-    },
-    {
-      label: 'Leasings',
-      data: getFormatedMoneyArray(
-        borrowersInfos.expenses[EXPENSES.LEASING],
-        true,
-      ),
-      condition: shouldRenderArray(borrowersInfos.expenses[EXPENSES.LEASING]),
-    },
-    {
-      label: 'Crédits personnels',
-      data: getFormatedMoneyArray(
-        borrowersInfos.expenses[EXPENSES.PERSONAL_LOAN],
-        true,
-      ),
-      condition: shouldRenderArray(borrowersInfos.expenses[EXPENSES.PERSONAL_LOAN]),
-    },
-    {
-      label: 'Prêts hypothécaires',
-      data: getFormatedMoneyArray(
-        borrowersInfos.expenses[EXPENSES.MORTGAGE_LOAN],
-        true,
-      ),
-      condition: shouldRenderArray(borrowersInfos.expenses[EXPENSES.MORTGAGE_LOAN]),
-    },
-    {
-      label: 'Autres dépenses',
-      data: getFormatedMoneyArray(
-        borrowersInfos.expenses[EXPENSES.OTHER],
-        true,
-      ),
-      condition: shouldRenderArray(borrowersInfos.expenses[EXPENSES.OTHER]),
-    },
-    {
-      label: '\u00A0',
-    },
-    {
-      label: <p style={{ fontWeight: 'bold' }}>Total des revenus considérés</p>,
       data: getFormatedMoneyArray(borrowers.map((_, index) =>
         borrowersInfos.otherIncome.totalIncome[index]
             + borrowersInfos.salary[index]
@@ -247,66 +204,42 @@ const getBorrowersInfosArray = (borrowers) => {
             - borrowersInfos.expenses.totalExpenses[index])),
       style: { fontWeight: 'bold' },
     },
-    {
-      label: '\u00A0',
-    },
+    addTableEmptyLine(),
+    addTableCategoryTitle(<T id="PDF.borrowersInfos.category.fortune" />),
+    ...Object.values(OWN_FUNDS_TYPES).map(ownFund =>
+      addTableMoneyLine({
+        label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
+        field: borrowersInfos[ownFund],
+      })),
+    // ...['bank3A', 'insurance3A', 'insurance3B', 'realEstateValue'].map(fortune =>
+    //   addTableMoneyLine({
+    //     label: <T id={`PDF.borrowersInfos.fortune.${fortune}`} />,
+    //     field: borrowersInfos[fortune],
+    //   })),
+    addTableMoneyLine({
+      label: <T id="PDF.borrowersInfos.realEstateValue" />,
+      field: borrowersInfos.realEstateValue,
+    }),
+    addTableMoneyLine({
+      label: <T id="PDF.borrowersInfos.realEstateDebt" />,
+      field: borrowersInfos.realEstateDebt,
+      condition: shouldRenderArray(borrowersInfos.realEstateValue),
+      negative: true,
+    }),
+    // ...['thirdPartyFortune', 'otherFortune'].map(fortune =>
+    //   addTableMoneyLine({
+    //     label: <T id={`PDF.borrowersInfos.fortune.${fortune}`} />,
+    //     field: borrowersInfos[fortune],
+    //   })),
+    addTableEmptyLine(),
     {
       label: (
-        <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-          Patrimoine
+        <p style={{ fontWeight: 'bold' }}>
+          <T id="PDF.borrowersInfos.totalFortune" />
         </p>
       ),
-    },
-    {
-      label: 'Cash et titres',
-      data: getFormatedMoneyArray(borrowersInfos.bankFortune),
-    },
-    {
-      label: 'LPP disponible',
-      data: getFormatedMoneyArray(borrowersInfos.insurance2),
-    },
-    {
-      label: '3A bancaire',
-      data: getFormatedMoneyArray(borrowersInfos.bank3A),
-      condition: shouldRenderArray(borrowersInfos.bank3A),
-    },
-    {
-      label: '3A assurance',
-      data: getFormatedMoneyArray(borrowersInfos.insurance3A),
-      condition: shouldRenderArray(borrowersInfos.insurance3A),
-    },
-    {
-      label: '3B assurance',
-      data: getFormatedMoneyArray(borrowersInfos.insurance3B),
-      condition: shouldRenderArray(borrowersInfos.insurance3B),
-    },
-    {
-      label: 'Immobilier',
-      data: getFormatedMoneyArray(borrowersInfos.realEstateValue),
-      condition: shouldRenderArray(borrowersInfos.realEstateValue),
-    },
-    {
-      label: 'Dette y relative',
-      data: getFormatedMoneyArray(borrowersInfos.realEstateDebt, true),
-      condition: shouldRenderArray(borrowersInfos.realEstateValue),
-    },
-    {
-      label: 'Prêt de tiers',
-      data: getFormatedMoneyArray(borrowersInfos.thirdPartyFortune),
-      condition: shouldRenderArray(borrowersInfos.thirdPartyFortune),
-    },
-    {
-      label: 'Autre fortune',
-      data: getFormatedMoneyArray(borrowersInfos.otherFortune),
-      condition: shouldRenderArray(borrowersInfos.otherFortune),
-    },
-    {
-      label: '\u00A0',
-    },
-    {
-      label: <p style={{ fontWeight: 'bold' }}>Fonds propres disponibles</p>,
-      data: getFormatedMoneyArray(borrowers.map((_, index) => (
-          borrowersInfos.bankFortune[index]
+      data: getFormatedMoneyArray(borrowers.map((_, index) =>
+        borrowersInfos.bankFortune[index]
             + borrowersInfos.insurance2[index]
             + borrowersInfos.bank3A[index]
             + borrowersInfos.insurance3A[index]
@@ -314,9 +247,7 @@ const getBorrowersInfosArray = (borrowers) => {
             + borrowersInfos.realEstateValue[index]
             - borrowersInfos.realEstateDebt[index]
             + borrowersInfos.thirdPartyFortune[index]
-            + borrowersInfos.otherFortune[index]
-        )
-      )),
+            + borrowersInfos.otherFortune[index])),
       style: { fontWeight: 'bold' },
     },
   ];
