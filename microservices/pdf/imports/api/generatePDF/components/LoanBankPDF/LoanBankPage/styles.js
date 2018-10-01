@@ -14,6 +14,8 @@ const stylesheet = `
     'JUSTIFY_CONTENT_SPACE_BETWEEN',
   ])}
         width: 100%;
+        height: 80px;
+        margin-bottom: 24px;
     }
 
     .header .address {

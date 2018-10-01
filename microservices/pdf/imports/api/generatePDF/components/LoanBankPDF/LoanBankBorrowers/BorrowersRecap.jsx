@@ -115,8 +115,14 @@ const getBorrowersInfos = borrowers => ({
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
 const getFormatedMoneyArray = (array, negative = false) => [
-  ...array.map(x => `CHF ${negative && x ? '-' : ''}${toMoney(x || 0)}`),
-  `CHF ${negative ? '-' : ''}${toMoney(getArraySum(array))}`,
+  ...array.map(x => (
+    <div className="money-amount">
+      {`${negative && x ? '-' : ''}${toMoney(x || 0)}`}
+    </div>
+  )),
+  <div className="money-amount">
+    {`${negative ? '-' : ''}${toMoney(getArraySum(array))}`}
+  </div>,
 ];
 
 const shouldRenderArray = array => array.filter(x => x).length > 0;
@@ -143,30 +149,42 @@ const getBorrowersInfosArray = (borrowers) => {
     {
       label: '\u00A0',
       data: [
-        ...borrowersInfos.gender.map((gender, index) => (
-          <span>
-            <T id={`PDF.borrowersInfos.gender.${gender}`} />
-            {` ${borrowersInfos.age[index]} `}
-            <T id="PDF.borrowersInfos.age" />
-          </span>
+        ...borrowersInfos.gender.map(gender => (
+          <T id={`PDF.borrowersInfos.gender.${gender}`} />
         )),
         <T id="PDF.borrowersInfos.total" />,
       ],
+      style: { fontWeight: 'bold', textAlign: 'center' },
+    },
+    {
+      label: <T id="PDF.borrowersInfos.age" />,
+      data: borrowersInfos.age,
+      style: { textAlign: 'center' },
     },
     {
       label: <T id="PDF.borrowersInfos.children" />,
-      data: borrowersInfos.childrenCount.map(children => children || '-'),
+      data: [
+        ...borrowersInfos.childrenCount.map(children => children || '-'),
+        '-',
+      ],
       condition: shouldRenderArray(borrowersInfos.childrenCount),
+      style: { textAlign: 'center' },
     },
     {
       label: <T id="PDF.borrowersInfos.company" />,
-      data: borrowersInfos.company.map(company => company || '-'),
+      data: [...borrowersInfos.company.map(company => company || '-'), '-'],
       condition: shouldRenderArray(borrowersInfos.company),
+      style: { textAlign: 'center' },
     },
     {
       label: <T id="PDF.borrowersInfos.civilStatus" />,
-      data: borrowersInfos.civilStatus.map(status => status || '-'),
+      data: [
+        ...borrowersInfos.civilStatus.map(status =>
+          <T id={`PDF.borrowersInfos.civilStatus.${status}`} /> || '-'),
+        '-',
+      ],
       condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
+      style: { textAlign: 'center' },
     },
     addTableEmptyLine(),
     addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
@@ -211,11 +229,6 @@ const getBorrowersInfosArray = (borrowers) => {
         label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
         field: borrowersInfos[ownFund],
       })),
-    // ...['bank3A', 'insurance3A', 'insurance3B', 'realEstateValue'].map(fortune =>
-    //   addTableMoneyLine({
-    //     label: <T id={`PDF.borrowersInfos.fortune.${fortune}`} />,
-    //     field: borrowersInfos[fortune],
-    //   })),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.realEstateValue" />,
       field: borrowersInfos.realEstateValue,
@@ -226,11 +239,10 @@ const getBorrowersInfosArray = (borrowers) => {
       condition: shouldRenderArray(borrowersInfos.realEstateValue),
       negative: true,
     }),
-    // ...['thirdPartyFortune', 'otherFortune'].map(fortune =>
-    //   addTableMoneyLine({
-    //     label: <T id={`PDF.borrowersInfos.fortune.${fortune}`} />,
-    //     field: borrowersInfos[fortune],
-    //   })),
+    addTableMoneyLine({
+      label: <T id="PDF.borrowersInfos.otherFortune" />,
+      field: borrowersInfos.otherFortune,
+    }),
     addTableEmptyLine(),
     {
       label: (

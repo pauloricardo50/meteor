@@ -9,6 +9,7 @@ import {
   PROPERTY_TYPE,
   RESIDENCE_TYPE,
   PURCHASE_TYPE,
+  CIVIL_STATUS,
 } from 'core/api/constants';
 import PDFService from '../PDFService';
 import { PDF_TYPES } from '../constants';
@@ -27,6 +28,43 @@ describe.only('GeneratePDFService', () => {
   });
 
   it('returns a base64 encoded PDF', () => {
+    // const loanId = getSingleBorrowerLoan({
+    //   borrowers: {
+    //     borrowerInfos: {
+    //       firstName: 'John',
+    //       lastName: 'Doe',
+    //       gender: GENDER.M,
+    //       age: 51,
+    //       childrenCount: 2,
+    //       civilStatus: CIVIL_STATUS.MARRIED,
+    //     },
+    //     withSalary: true,
+    //     withBonus: true,
+    //     withBankFortune: true,
+    //     withInsurance2: true,
+    //     withInsurance3A: true,
+    //     withBank3A: true,
+    //     withInsurance3B: true,
+    //     withThirdPartyFortune: true,
+    //     withOtherIncome: true,
+    //     withOtherFortune: true,
+    //     withExpenses: true,
+    //     withRealEstate: true,
+    //   },
+    //   structures: [
+    //     {
+    //       withBankWithdraw: true,
+    //       withInsurance3APledge: true,
+    //       withThirdPartyFortuneWithdraw: true,
+    //     },
+    //     {
+    //       withCustomNotaryFees: true,
+    //       withBankWithdraw: true,
+    //       withInsurance3AWithdraw: true,
+    //     },
+    //   ],
+    //   propertyType: PROPERTY_TYPE.FLAT,
+    // });
     const loanId = getTwoBorrowersLoan({
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
@@ -38,6 +76,7 @@ describe.only('GeneratePDFService', () => {
             gender: GENDER.M,
             age: 51,
             childrenCount: 2,
+            civilStatus: CIVIL_STATUS.MARRIED,
           },
           withSalary: true,
           withBonus: true,
@@ -58,6 +97,8 @@ describe.only('GeneratePDFService', () => {
             lastName: 'Doe',
             gender: GENDER.F,
             age: 49,
+            company: "McDonald's",
+            civilStatus: CIVIL_STATUS.MARRIED,
           },
           withSalary: true,
           withInsurance2: true,

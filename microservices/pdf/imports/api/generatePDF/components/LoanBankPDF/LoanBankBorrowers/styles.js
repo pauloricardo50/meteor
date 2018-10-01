@@ -17,7 +17,13 @@ const stylesheet = `
 .borrowers-recap {
     width: 100%;
     font-size: 10px;
-}    
+}  
+
+.money-amount {
+    text-align: right;  
+    width: 60%;
+    align-self: center;
+}
 
 ${recapStyleSheet}
 `;
