@@ -8,6 +8,7 @@ import SingleLoanPageContainer from './SingleLoanPageContainer';
 import LoanTasksTable from './LoanTabs/LoanTasksTable';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
 import LoanTaskInserter from './LoanTaskInserter';
+import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 
 const SingleLoanPage = ({ loan, ...rest }) => {
   const dataToPassDown = {
@@ -38,6 +39,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
         />
       </div>
       <LoanTabs {...dataToPassDown} />
+      <GetLoanPDF loan={loan} />
     </section>
   );
 };
