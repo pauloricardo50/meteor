@@ -8,5 +8,6 @@ export * from '../tasks/methodDefinitions';
 export * from '../impersonation/defs';
 export * from '../files/methodDefinitions';
 export * from '../email/methodDefinitions';
+export * from '../PDFGenerator/methodDefinitions';
 
 export * from './methodDefinitions';

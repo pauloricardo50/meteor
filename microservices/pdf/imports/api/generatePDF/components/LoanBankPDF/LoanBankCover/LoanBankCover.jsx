@@ -29,8 +29,7 @@ const loanInfo = (loan) => {
       <h1>Financement hypothécaire</h1>
       <h2>{name}</h2>
       <h2>
-        <T id={`PDF.purchaseType.${purchaseType}`} />
-        {' '}
+        <T id={`PDF.purchaseType.${purchaseType}`} />{' '}
         <T id={`PDF.residenceType.${residenceType}`} />
       </h2>
       <h3>{`${address1}, ${zipCode} ${city}`}</h3>

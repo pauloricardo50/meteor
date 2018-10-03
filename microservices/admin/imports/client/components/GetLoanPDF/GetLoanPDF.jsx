@@ -1,37 +1,35 @@
 // @flow
 import React from 'react';
-import { DDP } from 'meteor/ddp-client';
 import fileSaver from 'file-saver';
-import { base64ToBlob } from './base64-to-blob';
+import { compose, withState, withProps } from 'recompose';
 import Button from '../../../core/components/Button/Button';
+import { base64ToBlob } from './base64-to-blob';
+import { generateLoanBankPDF } from '../../../core/api/PDFGenerator/methodDefinitions';
 
 type GetLoanPDFProps = {
   loan: Object,
+  loading: boolean,
+  handleClick: Function,
 };
 
-const handleClick = (loan) => {
-  console.log('loan', loan);
-
-  const remote = DDP.connect('http://localhost:5500');
-  remote.call(
-    'generatePDF',
-    {
-      type: 'LOAN_BANK',
-      data: { loan },
-    },
-    (err, res) => {
-      if (err) {
-        console.log('Error', err);
-      } else {
-        const blob = base64ToBlob(res.base64);
-        fileSaver.saveAs(blob, res.fileName);
-      }
-    },
-  );
-};
-
-const GetLoanPDF = ({ loan }: GetLoanPDFProps) => (
-  <Button onClick={() => handleClick(loan)}>Generate PDF</Button>
+const GetLoanPDF = ({ loan, loading, handleClick }: GetLoanPDFProps) => (
+  <Button onClick={() => handleClick(loan._id)} loading={loading}>
+    Generate PDF
+  </Button>
 );
 
-export default GetLoanPDF;
+export default compose(
+  withState('loading', 'setLoading', false),
+  withProps(({ setLoading }) => ({
+    handleClick: (loanId) => {
+      setLoading(true);
+      generateLoanBankPDF
+        .run({ loanId })
+        .then(base64 => fileSaver.saveAs(base64ToBlob(base64), 'filename.pdf'))
+        .catch((error) => {
+          throw new Meteor.error(error);
+        })
+        .finally(() => setLoading(false));
+    },
+  })),
+)(GetLoanPDF);

@@ -1,4 +1,7 @@
+// import atob from 'atob';
+
 const decodeBase64 = string => atob(string);
+// const decodeBase64 = string => Buffer.from(string, 'base64').toString();
 
 const getLength = value => value.length;
 
