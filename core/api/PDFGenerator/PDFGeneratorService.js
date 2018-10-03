@@ -35,7 +35,7 @@ class PDFGeneratorService {
         .then(() =>
           this.remote.call(
             'generatePDF',
-            { type: 'LOAN_BAkjhgNK', data: { loan } },
+            { type: 'LOAN_BANK', data: { loan } },
             (error, result) => {
               this.remote.disconnect();
               error ? reject(error) : resolve(result.base64);
