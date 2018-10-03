@@ -4,7 +4,9 @@ import adminLoan from '../loans/queries/adminLoan';
 const REMOTE_CONNECTION_TIMEOUT = 100;
 
 class PDFGeneratorService {
-  init = () => (this.remote = DDP.connect('http://localhost:5500'));
+  init = () => {
+    this.remote = DDP.connect(Meteor.settings.public.subdomains.pdf);
+  };
 
   connect = () => {
     this.init();
