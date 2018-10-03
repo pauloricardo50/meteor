@@ -20,7 +20,6 @@ server-render@0.3.1
 # Styles
 fourseven:scss@4.5.0
 themeteorchef:bert
-juliancwirko:postcss
 
 # Put this before factory
 aldeed:collection2-core
