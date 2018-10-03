@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { Money } from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 
 export const getLoanSummaryColumns = ({
@@ -17,7 +17,7 @@ export const getLoanSummaryColumns = ({
   return [
     {
       translationId: 'LoanSummaryColumn.status',
-      content: status,
+      content: <T id={`Forms.status.${status}`} />,
     },
     {
       translationId: 'LoanSummaryColumn.createdAt',
