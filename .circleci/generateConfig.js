@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -101,7 +101,7 @@ const testMicroserviceJob = name => ({
     saveCache('Cache meteor system', cacheKeys.meteorSystem(name), '~/.meteor'),
     saveCache(
       'Cache meteor microservice',
-      cacheKeys.meteorSystem(name),
+      cacheKeys.meteorMicroservice(name),
       './microservices/' + name + '/.meteor/local',
     ),
     storeTestResults('./results'),
