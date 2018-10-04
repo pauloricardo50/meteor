@@ -31,7 +31,7 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     this.setState({ hasError: true, error });
     this.sendToKadira(error);
-    SlackService.sendError(error, info);
+    SlackService.sendError(error, 'Render error', info);
   }
 
   render() {
@@ -70,4 +70,4 @@ ErrorBoundary.defaultProps = {
   pathname: undefined,
 };
 
-export default withErrorCatcher(ErrorBoundary)
+export default withErrorCatcher(ErrorBoundary);
