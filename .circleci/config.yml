@@ -1,5 +1,6 @@
 meteor_system_cache_key: &meteor_system_cache_key build-epotek-v6-meteor-system-{{ checksum "./.circleci/config.yml" }}
 www_meteor_cache_key: &www_meteor_cache_key build-epotek-v6-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}-{{ checksum "./microservices/www/.meteor/versions" }}
+admin_meteor_cache_key: &admin_meteor_cache_key build-epotek-v6-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}-{{ checksum "./microservices/admin/.meteor/versions" }}
 
 restore_meteor_system_cache: &restore_meteor_system_cache
   restore_cache:
@@ -20,7 +21,7 @@ jobs:
       LC_NUMERIC: en_US.UTF-8
       METEOR_VERSION: 1.7
       NODE_ENV: development
-      TOOL_NODE_FLAGS: '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --expose-gc --trace-gc --log-gc --min_semi_space_size=8 --max_semi_space_size=256' # if builds run out of memory
+      TOOL_NODE_FLAGS: '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256' # if builds run out of memory
       METEOR_PROFILE: 1000 # If you need to debug meteor, turn this on
       # Used to to know in our scripts if we're on CircleCI environment or not
       CIRCLE_CI: 1
@@ -31,20 +32,20 @@ jobs:
       - checkout
       - *restore_meteor_system_cache
       - restore_cache:
-          name: restore www's meteor cached build
+          name: restore admin's meteor cached build
           keys:
-            - *www_meteor_cache_key
+            - *admin_meteor_cache_key
       - restore_cache:
-          name: restore www's cached node_modules
+          name: restore admin's cached node_modules
           keys:
-            - build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
+            - build-epotek-v6-node_modules-{{ checksum "./microservices/admin/package.json" }}
             - build-epotek-v6-node_modules-
       - run:
           name: create results directories
           command: mkdir ./results
       - run:
           name: make profiles dir
-          command: mkdir ./microservices/www/profiles
+          command: mkdir ./microservices/admin/profiles
       - run:
           name: install Meteor
           command: |
@@ -65,33 +66,33 @@ jobs:
       - run:
           name: Install packages
           command: |
-            cd microservices/www
+            cd microservices/admin
             # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
             # Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
             # meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save
             # meteor npm i nightmare --no-save
             meteor npm i
       - save_cache:
-          name: cache www's node_modules
-          key: build-epotek-v6-node_modules-{{ checksum "./microservices/www/package.json" }}
+          name: cache admin's node_modules
+          key: build-epotek-v6-node_modules-{{ checksum "./microservices/admin/package.json" }}
           paths:
-            - ./microservices/www/node_modules
+            - ./microservices/admin/node_modules
       - run:
           name: run tests
           command: |
-            cd microservices/www
+            cd microservices/admin
             meteor npm run test-CI
       - save_cache:
           name: cache www's meteor build
-          key: *www_meteor_cache_key
+          key: *admin_meteor_cache_key
           paths:
-            - ./microservices/www/.meteor/local
+            - ./microservices/admin/.meteor/local
       - store_test_results:
           path: ./results
       - store_artifacts:
           path: ./results
       - store_artifacts:
-          path: ./microservices/www/profiles
+          path: ./microservices/admin/profiles
 
 workflows:
   version: 2
