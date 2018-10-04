@@ -2,4 +2,4 @@
 
 cd ./nginx
 cf target -s Nginx
-cf push
+cf blue-green-deploy e-potek-nginx -f manifest.yml --delete-old-apps  
