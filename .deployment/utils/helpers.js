@@ -40,13 +40,10 @@ export const checkIfDirectoryOrFileExists = path =>
     .then(() => true)
     .catch(() => false);
 
-export const writeYAML = ({ file, data }) => {
-  return new Promise((resolve, reject) => {
-    yaml(file, data, error => {
-      error ? reject() : resolve();
-    });
-  });
-};
+export const writeYAML = ({ file, data }) =>
+  new Promise((resolve, reject) =>
+    yaml(file, data, error => (error ? reject(error) : resolve())),
+  );
 
 export const writeJSON = ({ file, data }) => {
   fs.writeFileSync(file, JSON.stringify(data, null, 2));
