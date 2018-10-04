@@ -2,8 +2,9 @@ import ReactDOMServer from 'react-dom/server';
 import pdf from 'html-pdf';
 import fs from 'fs';
 import { Random } from 'meteor/random';
+import { checkObjectStructure } from 'core/utils/checkObjectStructure';
 import LoanBankPDF from './components/LoanBankPDF';
-import { PDF_TYPES } from './constants';
+import { PDF_TYPES, LOAN_BANK_TEMPLATE } from './constants';
 
 class PDFService {
   constructor() {
@@ -67,6 +68,14 @@ class PDFService {
     const fileName = Random.id();
     switch (type) {
     case PDF_TYPES.LOAN_BANK:
+      try {
+        checkObjectStructure({
+          obj: data.loan,
+          template: LOAN_BANK_TEMPLATE,
+        });
+      } catch (error) {
+        throw new Meteor.Error(error);
+      }
       return {
         component: LoanBankPDF,
         props: { loan: data.loan, options },
