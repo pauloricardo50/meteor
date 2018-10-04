@@ -137,6 +137,7 @@ describe('documents', () => {
       expect(getLoanDocuments({
         loan: { logic: { step: STEPS.GET_CONTRACT }, general: {} },
       }).map(({ id }) => id)).to.deep.equal([
+        DOCUMENTS.SIGNED_MANDATE,
         DOCUMENTS.BUYERS_CONTRACT,
         DOCUMENTS.REIMBURSEMENT_STATEMENT,
         DOCUMENTS.OTHER,
