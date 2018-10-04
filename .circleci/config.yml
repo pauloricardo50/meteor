@@ -60,7 +60,7 @@ jobs:
           name: Install chromedriver and selenium
           command: >-
             cd microservices/www && meteor npm i selenium-webdriver@3.6.0
-            chromedriver@2.37.0 --no-save
+            chromedriver@2.37.0 --no-save --chromedriver_version=LATEST
       - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
@@ -129,7 +129,7 @@ jobs:
           name: Install chromedriver and selenium
           command: >-
             cd microservices/app && meteor npm i selenium-webdriver@3.6.0
-            chromedriver@2.37.0 --no-save
+            chromedriver@2.37.0 --no-save --chromedriver_version=LATEST
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -200,7 +200,7 @@ jobs:
           name: Install chromedriver and selenium
           command: >-
             cd microservices/admin && meteor npm i selenium-webdriver@3.6.0
-            chromedriver@2.37.0 --no-save
+            chromedriver@2.37.0 --no-save --chromedriver_version=LATEST
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI
