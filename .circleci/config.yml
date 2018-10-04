@@ -57,6 +57,11 @@ jobs:
           paths:
             - ./microservices/www/node_modules
       - run:
+          name: Install chromedriver and selenium
+          command: >-
+            cd microservices/www && meteor npm i selenium-webdriver@3.6.0
+            chromedriver@2.37.0 --no-save
+      - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
       - save_cache:
@@ -120,6 +125,11 @@ jobs:
           key: 'node_modules-app-3-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - ./microservices/app/node_modules
+      - run:
+          name: Install chromedriver and selenium
+          command: >-
+            cd microservices/app && meteor npm i selenium-webdriver@3.6.0
+            chromedriver@2.37.0 --no-save
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -186,6 +196,11 @@ jobs:
             "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
+      - run:
+          name: Install chromedriver and selenium
+          command: >-
+            cd microservices/admin && meteor npm i selenium-webdriver@3.6.0
+            chromedriver@2.37.0 --no-save
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI

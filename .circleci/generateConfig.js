@@ -101,6 +101,12 @@ const testMicroserviceJob = name => ({
       cachePaths.nodeModules(name),
     ),
     runCommand(
+      'Install chromedriver and selenium',
+      'cd microservices/' +
+        name +
+        ' && meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save',
+    ),
+    runCommand(
       'Run tests',
       'cd microservices/' + name + ' && meteor npm run test-CI',
     ),
