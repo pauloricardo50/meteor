@@ -21,7 +21,11 @@ describe('S3Service', function () {
     let binaryData;
     let key;
 
-    before(() => {
+    before(function () {
+      if (Meteor.settings.public.microservice !== 'admin') {
+        // When running these tests in parallel, it breaks tests
+        this.skip();
+      }
       // Safety check
       expect(S3Service.params.Bucket).to.equal('e-potek-test-bucket');
     });
