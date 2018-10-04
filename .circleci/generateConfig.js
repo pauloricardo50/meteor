@@ -55,7 +55,7 @@ const cacheKeys = {
 const cachePaths = {
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => './microservices/' + name + '/.meteor/local',
-  nodeModules: name => '.microservices/' + name + '/node_modules',
+  nodeModules: name => './microservices/' + name + '/node_modules',
 };
 
 // Circle CI Commands

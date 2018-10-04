@@ -55,7 +55,7 @@ jobs:
           name: Cache node_modules
           key: 'node_modules-www-2-{{ checksum "./microservices/www/package.json" }}'
           paths:
-            - .microservices/www/node_modules
+            - ./microservices/www/node_modules
       - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
@@ -119,7 +119,7 @@ jobs:
           name: Cache node_modules
           key: 'node_modules-app-2-{{ checksum "./microservices/app/package.json" }}'
           paths:
-            - .microservices/app/node_modules
+            - ./microservices/app/node_modules
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -185,7 +185,7 @@ jobs:
             node_modules-admin-2-{{ checksum
             "./microservices/admin/package.json" }}
           paths:
-            - .microservices/admin/node_modules
+            - ./microservices/admin/node_modules
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI
