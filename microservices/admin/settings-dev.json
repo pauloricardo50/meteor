@@ -1,5 +1,6 @@
 {
   "public": {
+    "microservice": "admin",
     "environment": "dev",
     "analyticsSettings": {
       "Mixpanel": {
