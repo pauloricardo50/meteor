@@ -5,22 +5,26 @@ const CACHE_VERSION = 3;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
-  machine: true,
-  environment: {
-    LANG: 'C.UTF-8',
-    LANGUAGE: 'C.UTF-8',
-    LC_ALL: 'C.UTF-8',
-    LC_NUMERIC: 'en_US.UTF-8',
-    METEOR_VERSION: '1.7',
-    NODE_ENV: 'development',
-    TOOL_NODE_FLAGS:
-      '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // if builds run out of memory
-    METEOR_PROFILE: 1000, // If you need to debug meteor, turn this on
-    CIRCLE_CI: 1,
-    DEBUG: true,
-    DOCKER_DRIVER: 'overlay2',
-    // QUALIA_PROFILE_FOLDER: './profiles',
-  },
+  docker: [
+    {
+      image: 'circleci/openjdk:10-jdk-node-browsers',
+      environment: {
+        LANG: 'C.UTF-8',
+        LANGUAGE: 'C.UTF-8',
+        LC_ALL: 'C.UTF-8',
+        LC_NUMERIC: 'en_US.UTF-8',
+        METEOR_VERSION: '1.7',
+        NODE_ENV: 'development',
+        TOOL_NODE_FLAGS:
+          '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // if builds run out of memory
+        METEOR_PROFILE: 1000, // If you need to debug meteor, turn this on
+        CIRCLE_CI: 1,
+        DEBUG: true,
+        DOCKER_DRIVER: 'overlay2',
+        // QUALIA_PROFILE_FOLDER: './profiles',
+      },
+    },
+  ],
 };
 
 const cacheKeys = {

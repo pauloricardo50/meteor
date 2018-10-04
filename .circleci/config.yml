@@ -2,21 +2,22 @@ version: 2
 jobs:
   test-www:
     working_directory: ~/app
-    machine: true
-    environment: &ref_0
-      LANG: C.UTF-8
-      LANGUAGE: C.UTF-8
-      LC_ALL: C.UTF-8
-      LC_NUMERIC: en_US.UTF-8
-      METEOR_VERSION: '1.7'
-      NODE_ENV: development
-      TOOL_NODE_FLAGS: >-
-        --max_old_space_size=8192 --optimize_for_size --gc_interval=100
-        --min_semi_space_size=8 --max_semi_space_size=256
-      METEOR_PROFILE: 1000
-      CIRCLE_CI: 1
-      DEBUG: true
-      DOCKER_DRIVER: overlay2
+    docker: &ref_0
+      - image: 'cypress/browsers:chrome67'
+        environment:
+          LANG: C.UTF-8
+          LANGUAGE: C.UTF-8
+          LC_ALL: C.UTF-8
+          LC_NUMERIC: en_US.UTF-8
+          METEOR_VERSION: '1.7'
+          NODE_ENV: development
+          TOOL_NODE_FLAGS: >-
+            --max_old_space_size=8192 --optimize_for_size --gc_interval=100
+            --min_semi_space_size=8 --max_semi_space_size=256
+          METEOR_PROFILE: 1000
+          CIRCLE_CI: 1
+          DEBUG: true
+          DOCKER_DRIVER: overlay2
     steps:
       - checkout
       - restore_cache:
@@ -84,8 +85,7 @@ jobs:
           path: ./results
   test-app:
     working_directory: ~/app
-    machine: true
-    environment: *ref_0
+    docker: *ref_0
     steps:
       - checkout
       - restore_cache:
@@ -153,8 +153,7 @@ jobs:
           path: ./results
   test-admin:
     working_directory: ~/app
-    machine: true
-    environment: *ref_0
+    docker: *ref_0
     steps:
       - checkout
       - restore_cache:
