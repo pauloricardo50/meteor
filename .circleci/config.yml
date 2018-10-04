@@ -1,6 +1,6 @@
-meteor_system_cache_key: &meteor_system_cache_key build-epotek-v6-meteor-system-{{ checksum "./.circleci/config.yml" }}
-www_meteor_cache_key: &www_meteor_cache_key build-epotek-v6-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}-{{ checksum "./microservices/www/.meteor/versions" }}
-admin_meteor_cache_key: &admin_meteor_cache_key build-epotek-v6-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}-{{ checksum "./microservices/admin/.meteor/versions" }}
+meteor_system_cache_key: &meteor_system_cache_key build-epotek-v7-meteor-system-{{ checksum "./.circleci/config.yml" }}
+www_meteor_cache_key: &www_meteor_cache_key build-epotek-v7-meteor-{{ checksum "./microservices/www/.meteor/release" }}-{{ checksum "./microservices/www/.meteor/packages" }}-{{ checksum "./microservices/www/.meteor/versions" }}
+admin_meteor_cache_key: &admin_meteor_cache_key build-epotek-v7-meteor-{{ checksum "./microservices/admin/.meteor/release" }}-{{ checksum "./microservices/admin/.meteor/packages" }}-{{ checksum "./microservices/admin/.meteor/versions" }}
 
 restore_meteor_system_cache: &restore_meteor_system_cache
   restore_cache:
@@ -38,8 +38,8 @@ jobs:
       - restore_cache:
           name: restore admin's cached node_modules
           keys:
-            - build-epotek-v6-node_modules-{{ checksum "./microservices/admin/package.json" }}
-            - build-epotek-v6-node_modules-
+            - build-epotek-v7-node_modules-{{ checksum "./microservices/admin/package.json" }}
+            - build-epotek-v7-node_modules-
       - run:
           name: create results directories
           command: mkdir ./results
@@ -58,13 +58,8 @@ jobs:
           command: |
             mkdir -p ~/build-temp
             cp /usr/local/bin/meteor ~/build-temp/meteor-bin
-      - save_cache:
-          name: cache system's meteor build
-          key: *meteor_system_cache_key
-          paths:
-            - ~/.meteor
       - run:
-          name: Install packages
+          name: Install admin node_modules
           command: |
             cd microservices/admin
             # Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
@@ -74,7 +69,7 @@ jobs:
             meteor npm i
       - save_cache:
           name: cache admin's node_modules
-          key: build-epotek-v6-node_modules-{{ checksum "./microservices/admin/package.json" }}
+          key: build-epotek-v7-node_modules-{{ checksum "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
       - run:
@@ -82,6 +77,11 @@ jobs:
           command: |
             cd microservices/admin
             meteor npm run test-CI
+      - save_cache:
+          name: cache system's meteor build
+          key: *meteor_system_cache_key
+          paths:
+            - ~/.meteor
       - save_cache:
           name: cache www's meteor build
           key: *admin_meteor_cache_key
