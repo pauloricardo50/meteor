@@ -9,14 +9,5 @@ else
   curl "https://install.meteor.com?release=$METEOR_VERSION" | /bin/sh
 fi
 
-cd ~
-git checkout https://github.com/meteor/meteor.git --recursive
-cd meteor
-git checkout $METEOR_VERSION
-./meteor --version
-
-echo "alias meteor=~/meteor/meteor" >> ~/.bashrc
-source ~/.bashrc
-
 # FIXME: Do this temporarily while 1.7.1 can't be installed via curl
 meteor update --release 1.8-rc.16
