@@ -20,7 +20,7 @@ const defaultJobValues = {
         METEOR_PROFILE: 1000, // If you need to debug meteor, turn this on
         CIRCLE_CI: 1,
         DEBUG: true,
-        DOCKER_DRIVER: 'overlay2',
+        METEOR_ALLOW_SUPERUSER: true,
         // QUALIA_PROFILE_FOLDER: './profiles',
       },
     },

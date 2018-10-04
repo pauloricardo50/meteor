@@ -3,7 +3,7 @@ jobs:
   test-www:
     working_directory: ~/app
     docker: &ref_0
-      - image: 'cypress/browsers:chrome67'
+      - image: 'circleci/openjdk:10-jdk-node-browsers'
         environment:
           LANG: C.UTF-8
           LANGUAGE: C.UTF-8
@@ -17,7 +17,7 @@ jobs:
           METEOR_PROFILE: 1000
           CIRCLE_CI: 1
           DEBUG: true
-          DOCKER_DRIVER: overlay2
+          METEOR_ALLOW_SUPERUSER: true
     steps:
       - checkout
       - restore_cache:
