@@ -49,21 +49,22 @@ const cacheKeys = {
     CACHE_VERSION +
     '-{{ checksum "./microservices/' +
     name +
-    '/package.json" }}',
+    '/package-lock.json" }}',
 };
 
-const runCommand = (name, command) => ({ run: { name, command } });
+// Circle CI Commands
 
+const runCommand = (name, command) => ({ run: { name, command } });
 const restoreCache = (name, key) => ({
   restore_cache: { name, keys: [key] },
 });
 const saveCache = (name, key, path) => ({
   save_cache: { name, key, paths: [path] },
 });
-
 const storeTestResults = path => ({ store_test_results: { path } });
 const storeArtifacts = path => ({ store_artifacts: { path } });
 
+// Create test job for a given microservice
 const testMicroserviceJob = name => ({
   ...defaultJobValues,
   steps: [
@@ -109,6 +110,7 @@ const testMicroserviceJob = name => ({
   ],
 });
 
+// Final config
 const makeConfig = () => ({
   version: 2,
   jobs: {
