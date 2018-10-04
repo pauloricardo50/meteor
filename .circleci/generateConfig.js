@@ -49,7 +49,7 @@ const cacheKeys = {
     CACHE_VERSION +
     '-{{ checksum "./microservices/' +
     name +
-    '/package-lock.json" }}',
+    '/package.json" }}',
 };
 
 const cachePaths = {

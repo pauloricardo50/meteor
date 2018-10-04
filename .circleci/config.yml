@@ -35,8 +35,8 @@ jobs:
           name: Restore node_modules
           keys:
             - >-
-              node_modules-www-2-{{ checksum
-              "./microservices/www/package-lock.json" }}
+              node_modules-www-2-{{ checksum "./microservices/www/package.json"
+              }}
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -53,9 +53,7 @@ jobs:
           command: cd microservices/www && meteor npm i
       - save_cache:
           name: Cache node_modules
-          key: >-
-            node_modules-www-2-{{ checksum
-            "./microservices/www/package-lock.json" }}
+          key: 'node_modules-www-2-{{ checksum "./microservices/www/package.json" }}'
           paths:
             - .microservices/www/node_modules
       - run:
@@ -101,8 +99,8 @@ jobs:
           name: Restore node_modules
           keys:
             - >-
-              node_modules-app-2-{{ checksum
-              "./microservices/app/package-lock.json" }}
+              node_modules-app-2-{{ checksum "./microservices/app/package.json"
+              }}
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -119,9 +117,7 @@ jobs:
           command: cd microservices/app && meteor npm i
       - save_cache:
           name: Cache node_modules
-          key: >-
-            node_modules-app-2-{{ checksum
-            "./microservices/app/package-lock.json" }}
+          key: 'node_modules-app-2-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - .microservices/app/node_modules
       - run:
@@ -168,7 +164,7 @@ jobs:
           keys:
             - >-
               node_modules-admin-2-{{ checksum
-              "./microservices/admin/package-lock.json" }}
+              "./microservices/admin/package.json" }}
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -187,7 +183,7 @@ jobs:
           name: Cache node_modules
           key: >-
             node_modules-admin-2-{{ checksum
-            "./microservices/admin/package-lock.json" }}
+            "./microservices/admin/package.json" }}
           paths:
             - .microservices/admin/node_modules
       - run:
