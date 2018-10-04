@@ -24,10 +24,12 @@ const setupBucket = () =>
 describe('FileService', function () {
   this.timeout(10000);
 
-  if (Meteor.settings.public.microservice !== 'admin') {
-    // When running these tests in parallel, it breaks tests
-    this.skip();
-  }
+  before(() => {
+    if (Meteor.settings.public.microservice !== 'admin') {
+      // When running these tests in parallel, it breaks tests
+      this.skip();
+    }
+  });
 
   beforeEach(() => clearBucket().then(setupBucket));
 
