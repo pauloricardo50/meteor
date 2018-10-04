@@ -52,6 +52,12 @@ const cacheKeys = {
     '/package-lock.json" }}',
 };
 
+const cachePaths = {
+  meteorSystem: () => '~/.meteor',
+  meteorMicroservice: name => './microservices/' + name + '/.meteor/local',
+  nodeModules: name => '.microservices/' + name + '/node_modules',
+};
+
 // Circle CI Commands
 
 const runCommand = (name, command) => ({ run: { name, command } });
@@ -92,17 +98,21 @@ const testMicroserviceJob = name => ({
     saveCache(
       'Cache node_modules',
       cacheKeys.nodeModules(name),
-      '.microservices/' + name + '/node_modules',
+      cachePaths.nodeModules(name),
     ),
     runCommand(
       'Run tests',
       'cd microservices/' + name + ' && meteor npm run test-CI',
     ),
-    saveCache('Cache meteor system', cacheKeys.meteorSystem(name), '~/.meteor'),
+    saveCache(
+      'Cache meteor system',
+      cacheKeys.meteorSystem(name),
+      cachePaths.meteorSystem(name),
+    ),
     saveCache(
       'Cache meteor microservice',
       cacheKeys.meteorMicroservice(name),
-      './microservices/' + name + '/.meteor/local',
+      cachePaths.meteorMicroservice(name),
     ),
     storeTestResults('./results'),
     storeArtifacts('./results'),
