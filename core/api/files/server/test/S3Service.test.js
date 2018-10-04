@@ -13,20 +13,23 @@ import S3Service from '../S3Service';
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
 
-describe('S3Service', function () {
+describe.skip('S3Service', function () {
   this.timeout(10000);
+
+  before(function () {
+    if (Meteor.settings.public.microservice !== 'admin') {
+      // When running these tests in parallel, it breaks tests
+      this.parent.pending = true;
+      this.skip();
+    }
+  });
 
   describe('API', () => {
     let json;
     let binaryData;
     let key;
 
-    before(function () {
-      if (Meteor.settings.public.microservice !== 'admin') {
-        // When running these tests in parallel, it breaks tests
-        this.parent.pending = true;
-        this.skip();
-      }
+    before(() => {
       // Safety check
       expect(S3Service.params.Bucket).to.equal('e-potek-test-bucket');
     });
