@@ -20,12 +20,12 @@ const GetLoanPDF = ({ loan, loading, handleClick }: GetLoanPDFProps) => (
 
 export default compose(
   withState('loading', 'setLoading', false),
-  withProps(({ setLoading }) => ({
+  withProps(({ setLoading, loan: { name } }) => ({
     handleClick: (loanId) => {
       setLoading(true);
       generateLoanBankPDF
         .run({ loanId })
-        .then(base64 => fileSaver.saveAs(base64ToBlob(base64), 'filename.pdf'))
+        .then(base64 => fileSaver.saveAs(base64ToBlob(base64), `${name}.pdf`))
         .catch((error) => {
           throw new Meteor.error(error);
         })
