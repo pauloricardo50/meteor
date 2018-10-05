@@ -80,11 +80,10 @@ jobs:
           name: Install node_modules
           command: cd microservices/www && meteor npm i
       - run:
-          name: Install nightmare
-          command: cd microservices/www && meteor npm i nightmare@2.10.0 --no-save
-      - run:
-          name: Install @babel/node
-          command: cd microservices/www && npm i @babel/node --no-save
+          name: Install nightmare and @babel/node
+          command: >-
+            cd microservices/www && meteor npm i nightmare@2.10.0 @babel/node
+            --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules-www-4-{{ checksum "./microservices/www/package.json" }}'
@@ -184,11 +183,10 @@ jobs:
           name: Install node_modules
           command: cd microservices/app && meteor npm i
       - run:
-          name: Install nightmare
-          command: cd microservices/app && meteor npm i nightmare@2.10.0 --no-save
-      - run:
-          name: Install @babel/node
-          command: cd microservices/app && npm i @babel/node --no-save
+          name: Install nightmare and @babel/node
+          command: >-
+            cd microservices/app && meteor npm i nightmare@2.10.0 @babel/node
+            --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules-app-4-{{ checksum "./microservices/app/package.json" }}'
@@ -288,11 +286,10 @@ jobs:
           name: Install node_modules
           command: cd microservices/admin && meteor npm i
       - run:
-          name: Install nightmare
-          command: cd microservices/admin && meteor npm i nightmare@2.10.0 --no-save
-      - run:
-          name: Install @babel/node
-          command: cd microservices/admin && npm i @babel/node --no-save
+          name: Install nightmare and @babel/node
+          command: >-
+            cd microservices/admin && meteor npm i nightmare@2.10.0 @babel/node
+            --no-save
       - save_cache:
           name: Cache node_modules
           key: >-
