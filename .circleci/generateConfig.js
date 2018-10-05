@@ -7,21 +7,22 @@ const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
   docker: [
     {
-      image: 'circleci/openjdk:10-jdk-node-browsers',
+      image: 'circleci/openjdk:10-jdk-node-browsers', // Has browsers, like chrome, necessary to run client-side tests
       environment: {
+        // LANG variables are necessary for meteor to work well
         LANG: 'C.UTF-8',
         LANGUAGE: 'C.UTF-8',
         LC_ALL: 'C.UTF-8',
         LC_NUMERIC: 'en_US.UTF-8',
         METEOR_VERSION: '1.7',
-        NODE_ENV: 'development',
+        NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
-          '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // if builds run out of memory
+          '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
         METEOR_PROFILE: 1000, // If you need to debug meteor, turn this on
-        CIRCLE_CI: 1,
-        DEBUG: true,
-        METEOR_ALLOW_SUPERUSER: true,
-        // QUALIA_PROFILE_FOLDER: './profiles',
+        CIRCLE_CI: 1, // Helpful in your tests, to know whether you're in circle CI or not
+        DEBUG: true, // Helps
+        METEOR_ALLOW_SUPERUSER: true, // Required when running meteor in docker
+        // QUALIA_PROFILE_FOLDER: './profiles', // If you want to store qualia profiles
       },
     },
   ],
@@ -29,24 +30,39 @@ const defaultJobValues = {
 
 const cacheKeys = {
   meteorSystem: name =>
-    `meteor-system-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/release" }}`,
+    `meteor-system-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor-microservice-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>
     `node_modules-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/package.json" }}`,
+  source: () => `source-${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
   nodeModules: name => `./microservices/${name}/node_modules`,
+  source: () => './.git',
 };
 
 // Circle CI Commands
-
 const runCommand = (name, command) => ({ run: { name, command } });
 const restoreCache = (name, key) => ({
-  restore_cache: { name, keys: [key] },
+  restore_cache: {
+    name,
+    // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
+    // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
+    keys: key
+      .split('-')
+      .reduce(
+        (keys, part, index, array) => [
+          ...keys,
+          array.slice(0, array.length - index).join('-') +
+            (index === 0 ? '' : '-'),
+        ],
+        [],
+      ),
+  },
 });
 const saveCache = (name, key, path) => ({
   save_cache: { name, key, paths: [path] },
@@ -58,7 +74,9 @@ const storeArtifacts = path => ({ store_artifacts: { path } });
 const testMicroserviceJob = name => ({
   ...defaultJobValues,
   steps: [
+    restoreCache('Restore source', cacheKeys.source()),
     'checkout',
+    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
@@ -95,7 +113,7 @@ const testMicroserviceJob = name => ({
     saveCache(
       'Cache meteor system',
       cacheKeys.meteorSystem(name),
-      cachePaths.meteorSystem(name),
+      cachePaths.meteorSystem(),
     ),
     saveCache(
       'Cache meteor microservice',

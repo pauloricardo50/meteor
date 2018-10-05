@@ -19,13 +19,29 @@ jobs:
           DEBUG: true
           METEOR_ALLOW_SUPERUSER: true
     steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source-4-{{ .Branch }}-{{ .Revision }}'
+            - 'source-4-{{ .Branch }}-'
+            - source-4-
+            - source-
       - checkout
+      - save_cache:
+          name: Cache source
+          key: 'source-4-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - ./.git
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor-system-www-4-{{ checksum
-              "./microservices/www/.meteor/release" }}
+              "./microservices/www/.meteor/versions" }}
+            - meteor-system-www-4-
+            - meteor-system-www-
+            - meteor-system-
+            - meteor-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -34,12 +50,26 @@ jobs:
               "./microservices/www/.meteor/release" }}-{{ checksum
               "./microservices/www/.meteor/packages" }}-{{ checksum
               "./microservices/www/.meteor/versions" }}
+            - >-
+              meteor-microservice-www-4-{{ checksum
+              "./microservices/www/.meteor/release" }}-{{ checksum
+              "./microservices/www/.meteor/packages" }}-
+            - >-
+              meteor-microservice-www-4-{{ checksum
+              "./microservices/www/.meteor/release" }}-
+            - meteor-microservice-www-4-
+            - meteor-microservice-www-
+            - meteor-microservice-
+            - meteor-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
               node_modules-www-4-{{ checksum "./microservices/www/package.json"
               }}
+            - node_modules-www-4-
+            - node_modules-www-
+            - node_modules-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -64,7 +94,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor-system-www-4-{{ checksum
-            "./microservices/www/.meteor/release" }}
+            "./microservices/www/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
@@ -84,13 +114,29 @@ jobs:
     working_directory: ~/app
     docker: *ref_0
     steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source-4-{{ .Branch }}-{{ .Revision }}'
+            - 'source-4-{{ .Branch }}-'
+            - source-4-
+            - source-
       - checkout
+      - save_cache:
+          name: Cache source
+          key: 'source-4-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - ./.git
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor-system-app-4-{{ checksum
-              "./microservices/app/.meteor/release" }}
+              "./microservices/app/.meteor/versions" }}
+            - meteor-system-app-4-
+            - meteor-system-app-
+            - meteor-system-
+            - meteor-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -99,12 +145,26 @@ jobs:
               "./microservices/app/.meteor/release" }}-{{ checksum
               "./microservices/app/.meteor/packages" }}-{{ checksum
               "./microservices/app/.meteor/versions" }}
+            - >-
+              meteor-microservice-app-4-{{ checksum
+              "./microservices/app/.meteor/release" }}-{{ checksum
+              "./microservices/app/.meteor/packages" }}-
+            - >-
+              meteor-microservice-app-4-{{ checksum
+              "./microservices/app/.meteor/release" }}-
+            - meteor-microservice-app-4-
+            - meteor-microservice-app-
+            - meteor-microservice-
+            - meteor-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
               node_modules-app-4-{{ checksum "./microservices/app/package.json"
               }}
+            - node_modules-app-4-
+            - node_modules-app-
+            - node_modules-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -129,7 +189,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor-system-app-4-{{ checksum
-            "./microservices/app/.meteor/release" }}
+            "./microservices/app/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
@@ -149,13 +209,29 @@ jobs:
     working_directory: ~/app
     docker: *ref_0
     steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source-4-{{ .Branch }}-{{ .Revision }}'
+            - 'source-4-{{ .Branch }}-'
+            - source-4-
+            - source-
       - checkout
+      - save_cache:
+          name: Cache source
+          key: 'source-4-{{ .Branch }}-{{ .Revision }}'
+          paths:
+            - ./.git
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
               meteor-system-admin-4-{{ checksum
-              "./microservices/admin/.meteor/release" }}
+              "./microservices/admin/.meteor/versions" }}
+            - meteor-system-admin-4-
+            - meteor-system-admin-
+            - meteor-system-
+            - meteor-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -164,12 +240,26 @@ jobs:
               "./microservices/admin/.meteor/release" }}-{{ checksum
               "./microservices/admin/.meteor/packages" }}-{{ checksum
               "./microservices/admin/.meteor/versions" }}
+            - >-
+              meteor-microservice-admin-4-{{ checksum
+              "./microservices/admin/.meteor/release" }}-{{ checksum
+              "./microservices/admin/.meteor/packages" }}-
+            - >-
+              meteor-microservice-admin-4-{{ checksum
+              "./microservices/admin/.meteor/release" }}-
+            - meteor-microservice-admin-4-
+            - meteor-microservice-admin-
+            - meteor-microservice-
+            - meteor-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
               node_modules-admin-4-{{ checksum
               "./microservices/admin/package.json" }}
+            - node_modules-admin-4-
+            - node_modules-admin-
+            - node_modules-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -196,7 +286,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor-system-admin-4-{{ checksum
-            "./microservices/admin/.meteor/release" }}
+            "./microservices/admin/.meteor/versions" }}
           paths:
             - ~/.meteor
       - save_cache:
