@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 4;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -71,10 +71,10 @@ const testMicroserviceJob = name => ({
     //   'mkdir ./microservices/' + name + '/profiles',
     // ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    runCommand(
-      'Copy meteor bin to build cache',
-      'mkdir -p ~/build-temp && cp /usr/local/bin/meteor ~/build-temp/meteor-bin',
-    ),
+    // runCommand(
+    //   'Copy meteor bin to build cache',
+    //   'mkdir -p ~/build-temp && cp /usr/local/bin/meteor ~/build-temp/meteor-bin',
+    // ),
     runCommand(
       'Install node_modules',
       `cd microservices/${name} && meteor npm i`,
