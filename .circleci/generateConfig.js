@@ -55,9 +55,9 @@ const restoreCache = (name, key) => ({
     keys: key
       .split('-')
       .reduce(
-        (keys, part, index, array) => [
+        (keys, _, index, parts) => [
           ...keys,
-          array.slice(0, array.length - index).join('-') +
+          parts.slice(0, parts.length - index).join('-') +
             (index === 0 ? '' : '-'),
         ],
         [],
