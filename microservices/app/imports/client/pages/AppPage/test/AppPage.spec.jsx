@@ -5,7 +5,6 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Redirect } from 'react-router-dom';
 
 import AppPage from '../AppPage';
-import LoanAppItem from '../LoanAppItem';
 
 describe('AppPage', () => {
   let props;
@@ -32,10 +31,5 @@ describe('AppPage', () => {
       .find(Redirect)
       .first()
       .props().to).to.equal(`/loans/${id}`);
-  });
-
-  it('renders one LoanAppitem per loan', () => {
-    props.currentUser.loans = [{}, {}];
-    expect(component().find(LoanAppItem).length).to.equal(props.currentUser.loans.length);
   });
 });
