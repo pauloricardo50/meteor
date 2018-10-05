@@ -66,7 +66,12 @@ const getPropertyRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.property.address" />,
-    data: `${address1}, ${zipCode} ${city}`,
+    data: (
+      <span>
+        {address1},<br />
+        {zipCode} {city}
+      </span>
+    ),
   },
   {
     label: <T id="PDF.projectInfos.property.residenceType" />,
@@ -80,11 +85,13 @@ const getPropertyRecapArray = ({
     label: <T id="PDF.projectInfos.property.houseType" />,
     data: <T id={`PDF.projectInfos.property.houseType.${houseType}`} />,
     condition: propertyType === PROPERTY_TYPE.HOUSE,
+    style: { maxWidth: '100px' },
   },
   {
     label: <T id="PDF.projectInfos.property.flatType" />,
     data: <T id={`PDF.projectInfos.property.flatType.${flatType}`} />,
     condition: propertyType === PROPERTY_TYPE.FLAT,
+    style: { maxWidth: '100px' },
   },
   {
     label: <T id="PDF.projectInfos.property.roomCount" />,
@@ -181,15 +188,18 @@ const getStructureRecapArray = ({
   {
     label: <T id="PDF.projectInfos.structure.propertyValue" />,
     data: 1000000,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.notaryFees" />,
     data: 50000,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.propertyWork" />,
     data: 10000,
     condition: !!propertyWork,
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -198,7 +208,7 @@ const getStructureRecapArray = ({
       </p>
     ),
     data: 1060000,
-    style: { fontWeight: 'bold' },
+    style: { fontWeight: 'bold', textAlign: 'right' },
   },
   {
     label: '\u00A0',
@@ -206,36 +216,44 @@ const getStructureRecapArray = ({
   {
     label: <T id="PDF.projectInfos.structure.wantedLoanRate" />,
     data: '80%',
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.wantedLoan" />,
     data: toMoney(wantedLoan),
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
     data: 200000,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
     data: 150000,
     condition:
       ownFunds.filter(ownFund => ownFund.usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE).length > 0,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.interests" />,
     data: 44000,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.amortization" />,
     data: 11000,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.maintenance" />,
     data: 12000,
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.solvency" />,
     data: '33%',
+    style: { textAlign: 'right' },
   },
   {
     label: '\u00A0',
@@ -254,6 +272,7 @@ const getStructureRecapArray = ({
       ownFunds,
       type: OWN_FUNDS_TYPES.BANK_FORTUNE,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -265,6 +284,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_2,
       usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -276,6 +296,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_3A,
       usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -287,6 +308,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_3B,
       usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.withdraw" />,
@@ -296,6 +318,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.BANK_3A,
       usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.thirdPartyFortune" />,
@@ -304,6 +327,7 @@ const getStructureRecapArray = ({
       ownFunds,
       type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.pledge" />,
@@ -313,6 +337,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_2,
       usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -324,6 +349,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_3A,
       usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -335,6 +361,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_3B,
       usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.pledge" />,
@@ -344,6 +371,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.BANK_3A,
       usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -352,14 +380,20 @@ const getStructureRecapArray = ({
       </p>
     ),
     data: 250000,
-    style: { fontWeight: 'bold' },
+    style: { fontWeight: 'bold', textAlign: 'right' },
   },
   {
     label: '\u00A0',
   },
   {
     label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+      <p
+        style={{
+          fontWeight: 'bold',
+          textTransform: 'uppercase',
+          maxWidth: '150px',
+        }}
+      >
         <T id="PDF.projectInfos.structure.postDisbursementSituation.title" />
       </p>
     ),
@@ -369,6 +403,7 @@ const getStructureRecapArray = ({
       <T id="PDF.projectInfos.structure.postDisbursementSituation.bankFortune" />
     ),
     data: 487834,
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -379,6 +414,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_2,
       borrowers,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -389,6 +425,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_3A,
       borrowers,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -399,6 +436,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.INSURANCE_3B,
       borrowers,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -409,6 +447,7 @@ const getStructureRecapArray = ({
       type: OWN_FUNDS_TYPES.BANK_3A,
       borrowers,
     }),
+    style: { textAlign: 'right' },
   },
   {
     label: (
@@ -417,7 +456,7 @@ const getStructureRecapArray = ({
       </p>
     ),
     data: 487834,
-    style: {fontWeight: 'bold'}
+    style: { fontWeight: 'bold', textAlign: 'right' },
   },
 ];
 
