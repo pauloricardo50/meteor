@@ -28,16 +28,18 @@ const defaultJobValues = {
   ],
 };
 
-// Cache keys should have 2 identifier strings at the start, followed by the microservice name
-// like "my" and "cache": "my-cache-microserviceName-{{whatever}}"
+// Cache keys should have an identifier string at the start, using only _ to separate words
+// and it should include the CACHE_VERSION, so all cache can be flushed at once by incrementing CACHE_VERSION
+// like: "my_cache_name_${CACHE_VERSION}"
+// Then follow the unique identifiers
 const cacheKeys = {
   meteorSystem: name =>
-    `meteor-system-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_system_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
-    `meteor-microservice-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>
-    `node-modules-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/package.json" }}`,
-  source: () => `source-${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
+    `node_modules_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/package.json" }}`,
+  source: () => `source_code_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
@@ -55,10 +57,10 @@ const restoreCache = (name, key) => ({
     // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
     // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
     keys: key.split('-').reduce((keys, _, index, parts) => {
-      if (index > parts.length - 3) {
-        // Don't cascade all the way down to avoid cash clashes
-        return keys;
-      }
+      // if (index > parts.length - 3) {
+      //   // Don't cascade all the way down to avoid cash clashes
+      //   return keys;
+      // }
       return [
         ...keys,
         parts.slice(0, parts.length - index).join('-') +
