@@ -28,7 +28,8 @@ const defaultJobValues = {
   ],
 };
 
-// Cache keys should have 2 identifier strings at the start like "my" and "cache": "my-cache-{{whatever}}"
+// Cache keys should have 2 identifier strings at the start, followed by the microservice name
+// like "my" and "cache": "my-cache-microserviceName-{{whatever}}"
 const cacheKeys = {
   meteorSystem: name =>
     `meteor-system-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
@@ -54,7 +55,7 @@ const restoreCache = (name, key) => ({
     // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
     // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
     keys: key.split('-').reduce((keys, _, index, parts) => {
-      if (index > parts.length - 2) {
+      if (index > parts.length - 3) {
         // Don't cascade all the way down to avoid cash clashes
         return keys;
       }
