@@ -1,10 +1,15 @@
-import { withStateHandlers, lifecycle, withState, withProps } from 'recompose';
+import { Meteor } from 'meteor/meteor';
+import {
+  withStateHandlers,
+  lifecycle,
+  withState,
+  withProps,
+  compose,
+} from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 
-import { compose } from 'core/api/containerToolkit/index';
 import withMatchParam from 'core/containers/withMatchParam';
-
 import { getUserByPasswordResetToken } from 'core/api';
 
 const stateHandlers = withStateHandlers(
@@ -29,6 +34,10 @@ const props = withProps(({ newPassword, token, history, setError, changeSubmitti
 
 const lifeCycle = lifecycle({
   componentDidMount() {
+    if (Meteor.user()) {
+      // Avoid multi user issues
+      Meteor.logout();
+    }
     return getUserByPasswordResetToken
       .run({ token: this.props.token })
       .then((user) => {

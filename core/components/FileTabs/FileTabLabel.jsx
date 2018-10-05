@@ -2,14 +2,19 @@
 import React from 'react';
 
 import T, { Percent } from 'core/components/Translation';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 
 type FileTabLabelProps = {};
 
 const FileTabLabel = ({ id, title, progress }: FileTabLabelProps) => (
-  <span>
+  <span className="file-tab-label">
     {title || <T id={id} />}
     &nbsp; &bull; &nbsp;
-    <Percent value={progress} />
+    <PercentWithStatus
+      value={progress}
+      status={progress < 1 ? null : undefined}
+      rounded
+    />
   </span>
 );
 

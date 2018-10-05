@@ -1,9 +1,10 @@
-import { createContainer, setFileStatus, setFileError } from 'core/api';
+import { withProps } from 'recompose';
+import { setFileStatus, setFileError } from 'core/api';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
 
-const FileVerificatorContainer = createContainer(({ collection, docId }) => ({
+const FileVerificatorContainer = withProps(({ collection, docId }) => ({
   setFileStatus: (fileKey, newStatus) =>
     setFileStatus
       .run({ collection, docId, fileKey, newStatus })

@@ -25,11 +25,11 @@ const items = [
     detail: true,
     collection: LOANS_COLLECTION,
   },
-  {
-    icon: 'people',
-    detail: true,
-    collection: BORROWERS_COLLECTION,
-  },
+  // {
+  //   icon: 'people',
+  //   detail: true,
+  //   collection: BORROWERS_COLLECTION,
+  // },
   {
     icon: 'domain',
     detail: true,

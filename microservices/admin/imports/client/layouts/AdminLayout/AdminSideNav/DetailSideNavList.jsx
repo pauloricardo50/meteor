@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Loading from 'core/components/Loading';
+import T from 'core/components/Translation';
 import Roles from 'core/components/Roles';
 import { toMoney } from 'core/utils/conversionFunctions';
 import {
@@ -19,7 +20,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { roles, name, structure, loans, address1, value },
+  { roles, name, structure, loans, address1, value, user, status },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -29,23 +30,35 @@ const getListItemDetails = (
     };
   case LOANS_COLLECTION: {
     const loanValue = structure && Calculator.selectLoanValue({ loan: { structure } });
+    const loanValueText = loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
 
     return {
-      primary: name,
-      secondary:
-          loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré',
+      primary: `${name} - ${user && user.name}`,
+      secondary: (
+        <span>
+          <T id={`Forms.status.${status}`} /> - {loanValueText}
+        </span>
+      ),
     };
   }
   case BORROWERS_COLLECTION:
     return {
       primary: name || 'Emprunteur sans nom',
-      secondary: loans && loans.map(({ name }) => name).join(', '),
+      secondary:
+          loans && loans.map(({ name: loanName }) => loanName).join(', '),
     };
 
   case PROPERTIES_COLLECTION:
     return {
       primary: address1 || 'Bien sans adresse',
-      secondary: value && `CHF ${toMoney(value)}`,
+      secondary: (
+        <span className="flex-col">
+          <span>{value && `CHF ${toMoney(value)}`}</span>
+          <span>
+            {loans && loans.map(({ name: loanName }) => loanName).join(', ')}
+          </span>
+        </span>
+      ),
     };
   default:
     throw new Error('invalid collection name');
@@ -72,8 +85,8 @@ const DetailSideNavList = ({
           button
           key={doc._id}
           onClick={() => {
-            push(`/${collectionName}/${doc._id}`);
             hideDetailNav();
+            push(`/${collectionName}/${doc._id}`);
           }}
         >
           <ListItemText {...getListItemDetails(collectionName, doc)} />

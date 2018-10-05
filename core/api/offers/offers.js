@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
-import { createdAt, updatedAt } from '../helpers/mongoHelpers';
+import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 
@@ -29,12 +29,12 @@ export const OfferSchema = new SimpleSchema({
   updatedAt,
   organization: String,
   maxAmount: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
   },
   amortization: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 1000000,
   },

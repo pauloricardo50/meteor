@@ -14,7 +14,7 @@ const SingleUserPage = ({ user, className, currentUser }) => {
       className={classnames('card1 card-top single-user-page', className)}
     >
       <SingleUserPageHeader user={user} currentUser={currentUser} />
-      {loans && <LoanSummaryList loans={loans} userId={user._id} />}
+      <LoanSummaryList loans={loans} userId={user._id} withAdder />
     </section>
   );
 };

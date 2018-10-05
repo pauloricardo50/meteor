@@ -17,21 +17,30 @@ const formatTitle = ({ titleId, title }, formatMessage) => {
   return '';
 };
 
+// Use Helmet in a weird way because of this bug
+// https://github.com/nfl/react-helmet/issues/373
 export const PageHead = ({
   descriptionId,
   intl: { formatMessage },
   ...props
 }) => (
-  <Helmet defaultTitle="e-Potek">
-    <meta charSet="UTF-8" />
-    <title>
-      e-Potek
-      {formatTitle(props, formatMessage)}
-    </title>
-    {descriptionId && (
-      <meta name="description" content={formatMessage({ id: descriptionId })} />
-    )}
-  </Helmet>
+  <Helmet
+    defaultTitle="e-Potek"
+    title={`e-Potek${formatTitle(props, formatMessage)}`}
+    meta={[
+      ...(descriptionId
+        ? [
+          {
+            name: 'description',
+            content: formatMessage({ id: descriptionId }),
+          },
+        ]
+        : []),
+      {
+        charSet: 'UTF-8',
+      },
+    ]}
+  />
 );
 
 PageHead.propTypes = {

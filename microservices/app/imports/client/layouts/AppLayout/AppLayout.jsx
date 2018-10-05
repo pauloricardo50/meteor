@@ -7,8 +7,8 @@ import classnames from 'classnames';
 import ContactButton from 'core/components/ContactButton';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
+import { ROLES } from 'core/api/constants';
 import Navs from './Navs';
-
 import AppLayoutContainer from './AppLayoutContainer';
 
 const WITHOUT_LOAN = [
@@ -42,7 +42,7 @@ export const getRedirect = (currentUser, pathname) => {
       : `/login?path=${pathname}`;
   }
 
-  const userIsDev = Roles.userIsInRole(currentUser, 'dev');
+  const userIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
 
   if (userIsDev) {
     return false;

@@ -14,7 +14,7 @@ class UserService {
   };
 
   adminCreateUser = ({
-    options: { email, ...additionalData },
+    options: { email, sendEnrollmentEmail, ...additionalData },
     role,
     adminId,
   }) => {
@@ -22,11 +22,13 @@ class UserService {
 
     this.update({ userId: newUserId, object: additionalData });
 
-    if (role === ROLES.USER && adminId) {
+    if (role === ROLES.USER && adminId && !additionalData.assignedEmployeeId) {
       this.assignAdminToUser({ userId: newUserId, adminId });
     }
 
-    this.sendEnrollmentEmail({ userId: newUserId });
+    if (sendEnrollmentEmail) {
+      this.sendEnrollmentEmail({ userId: newUserId });
+    }
 
     return newUserId;
   };

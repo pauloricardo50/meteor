@@ -373,6 +373,23 @@ describe('LoanService', () => {
       expect(name).to.equal('18-0002');
     });
 
+    it('sorts loans properly 1', () => {
+      Factory.create('loan', { name: '18-0009' });
+      Factory.create('loan', { name: '18-0010' });
+
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-0011');
+    });
+
+    it('sorts loans properly even if created in different order', () => {
+      Factory.create('loan', { name: '18-0955' });
+      Factory.create('loan', { name: '18-0153' });
+      Factory.create('loan', { name: '18-0001' });
+
+      const name = LoanService.getNewLoanName();
+      expect(name).to.equal('18-0956');
+    });
+
     it('returns 18-1234 for the nth loan', () => {
       Factory.create('loan', { name: '18-1233' });
 

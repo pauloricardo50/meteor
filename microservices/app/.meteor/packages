@@ -1,17 +1,21 @@
 # Basic meteor packages, not to be changes
 
+# Put this at the very top
+cultofcoders:redis-oplog
+disable-oplog
+
 meteor-base@1.4.0              # Packages every Meteor app needs to have
-mongo@1.5.1                   # The database Meteor supports right now
+mongo@1.6.0-rc18.16                   # The database Meteor supports right now
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.2.0                  # Meteor's client-side reactive programming library
 static-html                     # Allows rendering HTML for initial files (main.html)
 
-standard-minifier-css@1.4.1     # CSS minifier run for production mode
-standard-minifier-js@2.4.0-beta171.19    # JS minifier run for production mode
+standard-minifier-css@1.5.0-rc18.16     # CSS minifier run for production mode
+standard-minifier-js@2.4.0-rc18.16    # JS minifier run for production mode
 
 es5-shim@4.8.0              # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.12.0-beta171.19             # Enable ECMAScript2015+ syntax in app code
-shell-server@0.3.1           # Server-side component of the `meteor shell` command
+ecmascript@0.12.0-rc18.16             # Enable ECMAScript2015+ syntax in app code
+shell-server@0.4.0-rc18.16           # Server-side component of the `meteor shell` command
 
 
 # Dev, place this on top to allow meteor toys to work
@@ -36,7 +40,7 @@ email@1.2.3
 
 # Data
 check@1.3.1                    # variable type verification for server side validation
-session@1.1.7                  # Lets you use Session variables
+session@1.1.8                  # Lets you use Session variables
 edgee:slingshot
 cultofcoders:grapher
 cultofcoders:grapher-react
@@ -52,7 +56,7 @@ meteorhacks:inject-initial
 
 # Production
 force-ssl@1.1.0                      # Automatically route users to https
-dynamic-import@0.5.0-beta171.19
+dynamic-import@0.5.0-rc18.16
 accounts-password@1.5.1
 wylio:mandrill
 dburles:google-maps
@@ -65,5 +69,4 @@ okgrow:analytics
 underscore@1.0.10
 aldeed:schema-index@3.0.0
 aldeed:schema-deny
-cultofcoders:redis-oplog
-disable-oplog
+service-configuration@1.0.11

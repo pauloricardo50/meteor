@@ -10,7 +10,7 @@ import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
-import { propertyDocuments } from '../../api/files/documents';
+import { getPropertyDocuments } from '../../api/files/documents';
 import { FILE_STEPS } from '../../api/constants';
 import MiddlewareManager from '../MiddlewareManager';
 
@@ -75,8 +75,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return filesPercent({
         doc: propertyToCalculateWith,
-        fileArrayFunc: propertyDocuments,
-        step: FILE_STEPS.AUCTION,
+        fileArray: getPropertyDocuments({
+          loan,
+          id: propertyToCalculateWith._id,
+        }),
       });
     }
 
@@ -90,6 +92,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         property: propertyToCalculateWith,
       });
       const filesProgress = this.getPropertyFilesProgress({
+        loan,
         property: propertyToCalculateWith,
       });
 
@@ -129,8 +132,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return getMissingDocumentIds({
         doc: propertyToCalculateWith,
-        fileArrayFunc: propertyDocuments,
-        step: FILE_STEPS.AUCTION,
+        fileArray: getPropertyDocuments({
+          loan,
+          id: propertyToCalculateWith._id,
+        }),
       });
     }
 

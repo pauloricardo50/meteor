@@ -9,11 +9,7 @@ Users.addReducers({
     reduce: ({ emails }) => emails && emails.length && emails[0].address,
   },
   name: {
-    body: {
-      firstName: 1,
-      lastName: 1,
-      emails: 1,
-    },
+    body: { firstName: 1, lastName: 1, emails: 1 },
     reduce: getUserDisplayName,
   },
 });

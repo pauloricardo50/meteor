@@ -12,11 +12,17 @@
     "lang": "cd scripts/ && meteor babel-node createLanguages.js",
     "mongo-ssh-staging": "cd .deployment/ && npm run mongo-ssh-staging",
     "mongo-ssh-production": "cd .deployment/ && npm run mongo-ssh-production",
+    "restore-staging": "cd .deployment/ && npm run restore-staging",
+    "restore-production": "cd .deployment/ && npm run restore-production",
     "remove-core": "cd scripts/ && ./remove-core.sh",
     "run": "cd scripts/ && ./run.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
     "setup": "cd scripts/ && ./setup.sh",
-    "test-all": "cd scripts/ && ./test-all.sh"
+    "start-maintenance-production": "cd .deployment/ && npm run start-maintenance-production",
+    "start-maintenance-staging": "cd .deployment/ && npm run start-maintenance-staging",
+    "stop-maintenance": "cd .deployment/ && npm run stop-maintenance",
+    "test-all": "cd scripts/ && ./test-all.sh",
+    "update-nginx": "cd .deployment/ && npm run update-nginx"
   },
   "repository": {
     "type": "git",
@@ -28,9 +34,10 @@
   "homepage": "https://github.com/e-Potek/epotek#readme",
   "devDependencies": {
     "@babel/preset-env": "7.0.0-beta.54",
+    "@cypress/browserify-preprocessor": "^1.1.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
-    "cypress": "3.0.2",
+    "cypress": "3.1.0",
     "eslint": "^5.1.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-prettier": "^2.9.0",

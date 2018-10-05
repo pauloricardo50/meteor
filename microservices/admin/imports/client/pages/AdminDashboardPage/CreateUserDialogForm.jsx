@@ -1,29 +1,38 @@
 import React from 'react';
 
-import { DialogForm, email } from 'core/components/Form';
+import { DialogForm, email, FIELD_TYPES } from 'core/components/Form';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { adminCreateUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
+import admins from 'core/api/users/queries/admins';
 
 export const createUserFormFields = [
-  'firstName',
-  'lastName',
-  'email',
-  'phoneNumbers',
+  { id: 'firstName' },
+  { id: 'lastName' },
+  { id: 'email', validate: [email] },
+  { id: 'phoneNumbers' },
+  {
+    id: 'assignedEmployeeId',
+    fieldType: FIELD_TYPES.SELECT,
+    fetchOptions: () =>
+      new Promise((resolve, reject) =>
+        admins
+          .clone()
+          .fetch((err, res) =>
+            (err
+              ? reject(err)
+              : resolve(res.map(({ name, _id }) => ({ label: name, id: _id })))))),
+  },
+  { id: 'sendEnrollmentEmail', fieldType: FIELD_TYPES.CHECKBOX },
 ];
 
 export const getFormArray = formFields =>
-  formFields
-    .map(fieldName =>
-      (fieldName !== 'email'
-        ? { id: fieldName }
-        : { id: 'email', validate: [email] }))
-    .map(field => ({
-      ...field,
-      label: <T id={`CreateUserDialogForm.${field.id}`} />,
-      required: field.id === 'email',
-    }));
+  formFields.map(field => ({
+    ...field,
+    label: <T id={`CreateUserDialogForm.${field.id}`} />,
+    required: field.id === 'email',
+  }));
 
 const formArray = getFormArray(createUserFormFields);
 
@@ -33,7 +42,7 @@ const onSubmit = data =>
 const redirectToUserProfile = (newId, history) =>
   history.push(`/users/${newId}`);
 
-const CreateUserDialogForm = ({ history, currentUser: { name } }) => (
+const CreateUserDialogForm = ({ history, currentUser: { _id: adminId } }) => (
   <DialogForm
     form="admin-add-user"
     onSubmit={onSubmit}
@@ -44,13 +53,9 @@ const CreateUserDialogForm = ({ history, currentUser: { name } }) => (
       </Button>
     )}
     title={<T id="CreateUserDialogForm.dialogTitle" />}
-    description={(
-      <T
-        id="CreateUserDialogForm.dialogDescription"
-        values={{ user: <b>{name}</b> }}
-      />
-    )}
+    description={<T id="CreateUserDialogForm.dialogDescription" />}
     formArray={formArray}
+    initialValues={{ assignedEmployeeId: adminId, sendEnrollmentEmail: false }}
   />
 );
 

@@ -17,7 +17,7 @@ type ContactButtonOverlayProps = {
 };
 
 const ContactButtonOverlay = ({
-  staff: { src, name, phoneNumber, email },
+  staff: { src, name, phoneNumber, email } = {},
   open,
 }: ContactButtonOverlayProps) => (
   <div

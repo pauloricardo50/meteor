@@ -6,7 +6,6 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
-import AdminNote from '../../../../components/AdminNote';
 import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
@@ -17,7 +16,7 @@ const OverviewTab = (props) => {
     borrowers,
     currentUser: { roles },
   } = props;
-  const { adminNote, user, _id } = loan;
+  const { user } = loan;
   const loanHasMinimalInformation = Calculator.loanHasMinimalInformation({
     loan,
   });
@@ -27,11 +26,6 @@ const OverviewTab = (props) => {
       <div className="admin-section">
         <DisableUserFormsToggle loan={loan} />
         <div className="admin-note-wrapper">
-          <AdminNote
-            loanId={_id}
-            adminNoteText={adminNote}
-            className="admin-note"
-          />
           <ImpersonateLink user={user} />
         </div>
       </div>

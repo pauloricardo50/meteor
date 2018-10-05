@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import getSteps from 'core/arrays/steps';
 import Icon from 'core/components/Icon';
 
 import T from 'core/components/Translation';
+import { STEP_ORDER } from 'core/api/constants';
 
 const StepStatus = (props) => {
-  const steps = getSteps(props).slice(0, -1);
-  const currentStep = props.loan.logic.step;
+  const currentStep = STEP_ORDER.indexOf(props.loan.logic.step);
   return (
     <ul
       style={{
@@ -18,7 +17,7 @@ const StepStatus = (props) => {
         margin: 20,
       }}
     >
-      {steps.map((step, i) => (
+      {STEP_ORDER.map((step, i) => (
         <li key={step.nb} style={{ display: 'flex', flexDirection: 'column' }}>
           <React.Fragment>
             <T id={`steps.${step.nb}.title`} />{' '}

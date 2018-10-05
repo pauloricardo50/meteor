@@ -7,13 +7,23 @@ import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
 import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import { sendEnrollmentEmail } from 'core/api';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import EditUserDialogForm from './EditUserDialogForm';
 import UserDeleter from './UserDeleter';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
-  const { _id, assignedEmployee, createdAt, roles, phoneNumbers, name } = user;
+  const {
+    _id,
+    assignedEmployee,
+    createdAt,
+    roles,
+    phoneNumbers,
+    name,
+    email,
+  } = user;
 
   return (
     <div className="single-user-page-header">
@@ -29,11 +39,19 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           <RolePicker userId={_id} />
         </h1>
         <EditUserDialogForm user={user} />
+        <ConfirmMethod
+          method={() => sendEnrollmentEmail.run({ userId: _id })}
+          label="Envoyer email d'invitation"
+          keyword="ENVOYER"
+        />
         <UserDeleter user={user} currentUser={currentUser} />
         <ImpersonateLink user={user} className="impersonate-link" />
       </div>
 
       <div className="bottom">
+        <div className="email">
+          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
+        </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
             <Icon type="phone" />{' '}

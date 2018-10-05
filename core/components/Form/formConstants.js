@@ -7,4 +7,5 @@ export const FIELD_TYPES = {
   TEXT_AREA: 'TEXT_AREA',
   PHONE: 'PHONE',
   ARRAY: 'ARRAY',
+  SELECT: 'SELECT',
 };

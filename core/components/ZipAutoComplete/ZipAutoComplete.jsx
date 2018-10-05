@@ -79,7 +79,15 @@ class ZipAutoComplete extends Component {
     }
   };
 
-  saveValue = (zipCode = null, city = '') => {
+  saveValue = (zipCode, city) => {
+    // Avoid MS Edge issue: https://github.com/babel/babel/issues/8759#issuecomment-423995454
+    if (!zipCode) {
+      zipCode = null;
+    }
+    if (!city) {
+      city = '';
+    }
+
     const {
       updateFunc,
       docId,

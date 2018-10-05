@@ -1,5 +1,10 @@
 import React from 'react';
 
+// Add this to prevent .finally errors on MS Edge
+// 
+import 'babel-polyfill';
+import 'core-js/modules/es7.promise.finally';
+
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
 
@@ -39,16 +44,15 @@ const AppRouter = () => (
       <Switch>
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />
-        <Route path={ROUTES.BORROWERS_PAGE_NO_TAB} component={BorrowersPage} />
+        {/* Keep BORROWERS_PAGE above BORROWERS_PAGE_NO_TAB */}
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={ROUTES.BORROWERS_PAGE_NO_TAB} component={BorrowersPage} />
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route path={ROUTES.FILES_PAGE} component={FilesPage} />
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
-
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
-
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
           component={PasswordResetPage}

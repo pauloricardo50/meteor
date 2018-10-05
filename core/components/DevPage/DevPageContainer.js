@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { withProps } from 'recompose';
 
 import {
@@ -107,6 +108,15 @@ const DevPageContainer = withProps(({ currentUser: { _id: userId } }) => ({
   addStep1Loan: addStep1Loan(userId),
   addStep2Loan: addStep2Loan(userId),
   addStep3Loan: addStep3Loan(userId),
+  purgeAndGenerateDatabase: (currentUserId, currentUserEmail) => {
+    Meteor.call('purgeDatabase', currentUserId, (err) => {
+      if (err) {
+        alert(err.reason);
+      } else {
+        Meteor.call('generateTestData', currentUserEmail);
+      }
+    });
+  },
 }));
 
 export default DevPageContainer;

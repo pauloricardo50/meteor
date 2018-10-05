@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
+import PageHead from 'core/components/PageHead';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
@@ -14,7 +17,7 @@ const getRedirect = ({ currentUser }) => {
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!(userIsAdmin || userIsDev)) {
-    // TODO: Redirect to app subdomain
+    window.location.replace(`${Meteor.settings.public.subdomains.app}`);
   }
 
   return false;
@@ -40,6 +43,7 @@ const AdminLayout = (props) => {
 
   return (
     <div className="admin-layout">
+      <PageHead titleId="AdminLayout" />
       <AdminTopNav {...props} />
 
       <div className="main-row">

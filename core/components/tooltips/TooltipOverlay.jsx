@@ -6,6 +6,7 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import { tooltips } from 'core/arrays/tooltips';
 import track from 'core/utils/analytics';
 
+import { isArray } from 'util';
 import Tooltip from './Tooltip';
 
 const onEntered = id => track('Tooltip - tooltip clicked', { id });
@@ -23,8 +24,11 @@ const TooltipOverlay = ({
   trigger,
   delayShow,
   children,
+  tooltipId,
 }) => {
-  const tooltipConfig = tooltips(tooltipList)[match.toLowerCase()];
+  const tooltipConfig = tooltipId
+    ? { id: tooltipId, double: isArray(tooltipId) }
+    : tooltips(tooltipList)[match.toLowerCase()];
 
   return (
     <OverlayTrigger
@@ -41,7 +45,7 @@ const TooltipOverlay = ({
       animation={false}
       trigger={trigger}
       delayShow={delayShow}
-      onEntered={() => onEntered(id)}
+      onEntered={() => onEntered()}
       container={global.document !== undefined ? document.body : undefined}
       onClick={handleClick}
     >

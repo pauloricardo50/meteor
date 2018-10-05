@@ -1,11 +1,13 @@
 // Separate these fragments into separate files to avoid cyclic dependencies
 
 export const loanBaseFragment = {
+  borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   createdAt: 1,
   logic: 1,
   general: 1,
   name: 1,
+  propertyIds: 1,
   properties: { value: 1, address1: 1 },
   selectedStructure: 1,
   status: 1,

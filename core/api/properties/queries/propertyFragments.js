@@ -1,3 +1,4 @@
+import merge from 'lodash/merge';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 
@@ -22,6 +23,7 @@ export const propertySummaryFragment = {
   insideArea: 1,
   propertyType: 1,
   status: 1,
+  userId: 1,
   value: 1,
   zipCode: 1,
   $options: { sort: { createdAt: 1 } },
@@ -29,6 +31,7 @@ export const propertySummaryFragment = {
 
 export const fullPropertyFragment = {
   ...propertySummaryFragment,
+  additionalDocuments: 1,
   adminValidation: 1,
   areaNorm: 1,
   constructionYear: 1,
@@ -43,7 +46,8 @@ export const fullPropertyFragment = {
   isNew: 1,
   landArea: 1,
   latitude: 1,
-  loans: loanBaseFragment,
+  // residenceType is required for the valuation
+  loans: merge({}, loanBaseFragment, { general: 1 }),
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
@@ -81,4 +85,5 @@ export const sideNavPropertyFragment = {
   user: { assignedEmployee: { email: 1 } },
   value: 1,
   zipCode: 1,
+  loans: { name: 1 },
 };

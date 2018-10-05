@@ -10,6 +10,7 @@ type PercentWithStatusProps = {
   status?: String,
   tooltip?: String,
   id?: String,
+  rounded?: boolean,
 };
 
 const PercentWithStatus = ({
@@ -17,9 +18,10 @@ const PercentWithStatus = ({
   status = value >= 1 ? SUCCESS : ERROR,
   id,
   tooltip,
+  rounded,
 }: PercentWithStatusProps) => (
   <React.Fragment>
-    {Number.isNaN(value) ? '-' : <Percent value={value} />}
+    {Number.isNaN(value) ? '-' : <Percent value={value} rounded={rounded} />}
     {!Number.isNaN(value) && (
       <StatusIcon
         status={status}

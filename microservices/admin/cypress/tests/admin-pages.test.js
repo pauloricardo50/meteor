@@ -33,28 +33,28 @@ const pages = {
 
     Loans: route('/loans', { shouldRender: '.loans-page' }),
 
-    Loan: ({ step3Loan: { _id } }) =>
+    Loan: ({ loan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '.overview-tab' }),
 
-    'Loan Overview Tab': ({ step3Loan: { _id } }) =>
+    'Loan Overview Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/overview`, { shouldRender: '.overview-tab' }),
 
-    'Loan Borrowers Tab': ({ step3Loan: { _id } }) =>
+    'Loan Borrowers Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/borrowers`, {
         shouldRender: '.single-borrower-tab',
       }),
 
-    'Loan Properties Tab': ({ step3Loan: { _id } }) =>
+    'Loan Properties Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/properties`, {
         shouldRender: '.single-property-page .google-map',
       }),
 
-    'Loan Offers Tab': ({ step3Loan: { _id } }) =>
+    'Loan Offers Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/offers`, {
         shouldRender: '.offers-tab',
       }),
 
-    'Loan Forms Tab': ({ step3Loan: { _id, borrowers } }) =>
+    'Loan Forms Tab': ({ loan: { _id, borrowers } }) =>
       route(`/loans/${_id}/forms`, {
         shouldRender: '.forms-tab',
         dropdownShouldRender: {
@@ -93,12 +93,12 @@ const pages = {
         },
       }),
 
-    'Loan Documents Tab': ({ step3Loan: { _id } }) =>
+    'Loan Documents Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/files`, {
         shouldRender: '.files-tab, .new-document-form',
       }),
 
-    'Loan Actions Tab': ({ step3Loan: { _id } }) =>
+    'Loan Actions Tab': ({ loan: { _id } }) =>
       route(`/loans/${_id}/actions`, {
         shouldRender: '.actions-tab',
       }),

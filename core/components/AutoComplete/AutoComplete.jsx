@@ -31,6 +31,9 @@ const renderInput = (inputProps) => {
       onBlur={onBlur}
       classes={{ input: classes.input }}
       placeholder={placeholder}
+      // Do this to prevent ref bug
+      // https://github.com/moroshko/react-autosuggest/issues/469
+      inputRef={null}
       {...other}
     />
   );

@@ -3,7 +3,6 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import { borrowerDelete } from '../../api/borrowers';
-import Button from '../Button';
 import T from '../Translation';
 import ConfirmMethod from '../ConfirmMethod';
 

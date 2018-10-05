@@ -10,7 +10,7 @@ const renderObject = (key, obj) => {
 
   switch (typeof value) {
   case 'object':
-    if (Object.keys(value).length === 0) {
+    if (!value || Object.keys(value).length === 0) {
       return null;
     }
     if (value.getMonth) {
@@ -25,7 +25,9 @@ const renderObject = (key, obj) => {
     return (
       <div key={key}>
         <h3>{stringKey}</h3>
-        <ul>{Object.keys(value).map(k => renderObject(k, value))}</ul>
+        <ul>
+          {value && Object.keys(value).map(k => renderObject(k, value))}
+        </ul>
       </div>
     );
   case 'number':

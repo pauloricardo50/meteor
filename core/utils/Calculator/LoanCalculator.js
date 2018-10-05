@@ -1,7 +1,7 @@
 // @flow
 import { FinanceCalculator } from '../FinanceCalculator';
-import { loanDocuments } from '../../api/files/documents';
-import { FILE_STEPS, OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
+import { getLoanDocuments } from '../../api/files/documents';
+import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -22,19 +22,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return value;
     }
 
-    getTotalUsed({
-      loan: {
-        structure: { ownFunds },
-      },
-    }) {
+    getTotalUsed({ loan: { structure: { ownFunds = [] } = {} } }) {
       return ownFunds.reduce((sum, { value }) => sum + value, 0);
     }
 
-    getTotalPledged({
-      loan: {
-        structure: { ownFunds },
-      },
-    }) {
+    getTotalPledged({ loan: { structure: { ownFunds = [] } = {} } }) {
       return ownFunds
         .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
@@ -132,25 +124,25 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     loanHasMinimalInformation({
       loan: {
-        structure: { property, fortuneUsed, wantedLoan },
+        structure: { property, ownFunds, wantedLoan },
       },
     }) {
-      return !!(fortuneUsed && (property && property.value) && wantedLoan);
+      return !!(
+        ownFunds
+        && ownFunds.length > 0
+        && (property && property.value)
+        && wantedLoan
+      );
     }
 
     getLoanFilesProgress({ loan }) {
-      return filesPercent({
-        doc: loan,
-        fileArrayFunc: loanDocuments,
-        step: FILE_STEPS.AUCTION,
-      });
+      return filesPercent({ fileArray: getLoanDocuments({ loan }), doc: loan });
     }
 
     getMissingLoanDocuments({ loan }) {
       return getMissingDocumentIds({
+        fileArray: getLoanDocuments({ loan }),
         doc: loan,
-        fileArrayFunc: loanDocuments,
-        step: FILE_STEPS.AUCTION,
       });
     }
 

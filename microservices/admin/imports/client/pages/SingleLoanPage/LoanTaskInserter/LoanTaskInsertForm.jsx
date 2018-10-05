@@ -7,7 +7,7 @@ import Button from 'core/components/Button';
 
 const formArray = [{ id: 'title', fieldType: FIELD_TYPES.TEXT }].map(field => ({
   ...field,
-  label: <T id={`LoanTaskInsert.${field.id}`} />,
+  label: <T id={`LoanTaskInsertForm.${field.id}`} />,
   required: true,
 }));
 

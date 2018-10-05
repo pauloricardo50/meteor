@@ -5,3 +5,10 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.error-thrower {
+  margin-top: 16px;
+   > * {
+    margin-right: 16px;
+  }
+}

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Element } from 'react-scroll';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
 
 import AutoForm from 'core/components/AutoForm';
 import {
@@ -8,22 +10,29 @@ import {
   getPropertyLoanArray,
 } from 'core/arrays/PropertyFormArray';
 import T from 'core/components/Translation';
-import { LOANS_COLLECTION, PROPERTIES_COLLECTION } from 'core/api/constants';
+import {
+  LOANS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  VALUATION_STATUS,
+} from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
-import SinglePropertyPageTitle from './SinglePropertyPageTitle';
+import { propertyDelete } from 'core/api/methods/index';
+import { createRoute } from 'core/utils/routerUtils';
+import { PROPERTIES_PAGE } from '../../../startup/client/appRoutes';
 import Page from '../../components/Page';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
+import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import LaunchValuationButton from './LaunchValuationButton';
-import { VALUATION_STATUS } from '../../../core/api/constants';
 
 const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
 
 const SinglePropertyPage = (props) => {
-  const { loan, propertyId } = props;
+  const { loan, propertyId, history } = props;
   const {
     borrowers,
     properties,
@@ -36,6 +45,7 @@ const SinglePropertyPage = (props) => {
     property,
     loan,
   });
+  const hasMultipleProperties = properties.length > 1;
 
   const title = address1 || <T id="SinglePropertyPage.title" />;
 
@@ -46,6 +56,23 @@ const SinglePropertyPage = (props) => {
     >
       <section className="card1 card-top property-page">
         <h1 className="text-center">{title}</h1>
+
+        {hasMultipleProperties && (
+          <ConfirmMethod
+            buttonProps={{
+              error: true,
+              outlined: true,
+              className: 'property-deleter',
+            }}
+            method={() =>
+              propertyDelete
+                .run({ propertyId })
+                .then(() =>
+                  history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
+            }
+            label={<T id="general.delete" />}
+          />
+        )}
 
         <MapWithMarkerWrapper
           address1={address1}
@@ -96,4 +123,7 @@ SinglePropertyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default withMatchParam('propertyId')(SinglePropertyPage);
+export default compose(
+  withMatchParam('propertyId'),
+  withRouter,
+)(SinglePropertyPage);

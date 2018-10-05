@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { createContainer } from 'core/api';
+import { withProps } from 'recompose';
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
-const ArrayInputContainer = createContainer(({ collection }) => {
+const ArrayInputContainer = withProps(({ collection }) => {
   let popFunc;
   let pushFunc;
   let updateFunc;

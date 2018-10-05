@@ -106,7 +106,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       })),
     },
     {
-      id: 'test',
+      id: 'addPartner',
       type: 'custom',
       component: <BorrowerAddPartner loanId={loanId} />,
       condition: shouldDisplayAddPartner({ b, multiple, isFirst }),

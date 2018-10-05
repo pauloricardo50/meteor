@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
-import LoanTasksTable from './LoanTabs/LoanTasksTable';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
-import LoanTaskInserter from './LoanTaskInserter';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
+import SingleLoanPageTasks from './SingleLoanPageTasks';
 
 const SingleLoanPage = ({ loan, ...rest }) => {
   const dataToPassDown = {
@@ -23,21 +21,7 @@ const SingleLoanPage = ({ loan, ...rest }) => {
   return (
     <section className="single-loan-page">
       <SingleLoanPageHeader loan={loan} />
-      <div className="card1 card-top single-loan-page-tasks">
-        <h3>Tâches</h3>
-        <LoanTaskInserter loanId={loan._id} />
-        <LoanTasksTable
-          showAssignee
-          loanId={loan._id}
-          propertyIds={loan.properties.map(({ _id }) => _id)}
-          borrowerIds={loan.borrowers.map(({ _id }) => _id)}
-          hideIfNoData
-          tableFilters={{
-            filters: { status: [TASK_STATUS.ACTIVE] },
-            options: { status: Object.values(TASK_STATUS) },
-          }}
-        />
-      </div>
+      <SingleLoanPageTasks loan={loan} />
       <LoanTabs {...dataToPassDown} />
       <GetLoanPDF loan={loan} />
     </section>

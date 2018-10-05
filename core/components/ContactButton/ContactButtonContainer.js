@@ -15,12 +15,14 @@ const ContactButtonContainer = compose(
     renderMissingDoc: false,
   }),
   withProps(({ currentUser }) => {
-    if (!currentUser || !currentUser.assignedEmployee) {
-      return { staff: getStaffByEmail('yannis@e-potek.ch') };
+    let staff;
+    if (currentUser && currentUser.assignedEmployee) {
+      staff = getStaffByEmail(currentUser.assignedEmployee.email);
     }
-    return {
-      staff: getStaffByEmail(currentUser.assignedEmployee.email),
-    };
+    if (!staff) {
+      staff = getStaffByEmail('yannis@e-potek.ch');
+    }
+    return { staff };
   }),
   withState('open', 'toggleOpen', false),
 );

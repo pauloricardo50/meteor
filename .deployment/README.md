@@ -28,6 +28,7 @@ Two scripts are available on root package.json:
 `npm run deploy -- [options]`
 
 #### Options:
+
 | Name | Alias            | Description            | Type     | Values                    |
 | ---- | ---------------- | ---------------------- | -------- | ------------------------- |
 | `-a` | `--applications` | Applications to deploy | array    | ['app' , 'admin', 'www']  |
@@ -35,7 +36,7 @@ Two scripts are available on root package.json:
 
 #### Examples:
 
-- Deploy *app* and *admin* on **staging**: `npm run deploy -- -e staging -a app admin`
+- Deploy _app_ and _admin_ on **staging**: `npm run deploy -- -e staging -a app admin`
 - Deploy all applications on **production**: `npm run deploy -- -e production`
 
 ### Tmux environment
@@ -45,9 +46,11 @@ The script will always run in a `tmux` environment (executed using [tmuxinator](
 If an error occurs, the script will throw the error and stop.
 
 ## Configuration
+
 The main configuration file is located in `.deployment/settings/config.js`
 
 ### Changing applications' container config
+
 The constant called `ENVIRONMENT_CONFIG` contains each application container config:
 
 ```javascript
@@ -94,6 +97,7 @@ export const CLOUDFOUNDRY_MEMORY_LIMIT = {
 ```
 
 ### Environment variables
+
 Environment variables can be set for each application and environment in the constant `APP_ENV_VARIABLES`:
 
 ```javascript
@@ -112,18 +116,59 @@ export const APP_ENV_VARIABLES = {
 ```
 
 ### Smoke tests files
+
 When deploying a new application, some smoke tests are run on the server side before killing the old application and switching to the new one. These test files must be included in the corresponding application directory: `.deployment/smokeTests/$applicationName`. They can be either `.js` or `.sh` scripts. Remember to make `.sh` scripts executable (`chmod +x $yourScript.sh`). All scripts **must be executed** in the `test.sh` script present in each application smoke test folder **AND must be included** in the `APP_SMOKE_TEST_FILES` constant:
 
 ```javascript
 export const APP_SMOKE_TEST_FILES = {
-  [APPLICATIONS.APP]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js', 'someOtherTest.js', 'someTest.sh'],
-  [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js', 'someOtherTest2.js'],
+  [APPLICATIONS.APP]: [
+    SMOKE_TESTS_MAIN_SCRIPT,
+    'test.js',
+    'someOtherTest.js',
+    'someTest.sh',
+  ],
+  [APPLICATIONS.ADMIN]: [
+    SMOKE_TESTS_MAIN_SCRIPT,
+    'test.js',
+    'someOtherTest2.js',
+  ],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js', 'someOtherTest.sh'],
 };
 ```
 
 ### Meteor settings for environment
 
-The meteor settings for both **staging** and **production** environment are located in their corresponding directories: 
+The meteor settings for both **staging** and **production** environment are located in their corresponding directories:
+
 - `.deployment/staging/settings-staging.json`
 - `.deployment/production/settings-production.json`
+
+# Put applications in maintenance
+
+A script was written to modify the `nginx.conf` config file to proxy pass requested urls to a maintenance page for each application that needs to be in maintenance state. This script also uses `blue-green-deployment` so that there's zero down-time for the `nginx` application.
+
+_Note: the `nginx.conf` located in `.deployment/nginx/nginx/nginx.conf` config file can manually be modified to add new routes if needed. You will also need to update the `.deployment/nginx/writeNginxManifest.js` script to include the new routes in the `generateNginxManifestData` function. Further documentation on `nginx` setup is about to come soon._
+
+## Usage
+
+### From root folder
+
+Four scripts are available on root package.json:
+
+- Put given staging applications in maintenance: `npm run start-maintenance-staging -- -- [options]`
+- Put given production applications in maintenance: `npm run start-maintenance-production -- -- [options]`
+- Stop the maintenance for all applications in staging and production: `npm run stop-maintenance`
+- Push the manually updated `nginx.conf` file: `npm run update-nginx`
+
+**Warning: don't forget the `-- --` if you want to specify options !**
+
+#### Options:
+
+| Name | Alias            | Description                        | Type  | Values                   |
+| ---- | ---------------- | ---------------------------------- | ----- | ------------------------ |
+| `-a` | `--applications` | Applications to put to maintenance | array | ['app' , 'admin', 'www'] |
+
+#### Examples:
+
+- Put _app_ and _admin_ to maintenance on **staging**: `npm run start-maintenance-staging -- -- -a app admin`
+- Put all applications to maintenance on **production**: `npm run start-maintenance-production`

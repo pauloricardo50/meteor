@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import range from 'lodash/range';
+import { STEPS, STEP_ORDER } from 'imports/core/api/constants';
 import {
   Borrowers,
   Loans,
@@ -82,7 +83,7 @@ const createTestUserWithData = () => {
   // Create step 3 loans with all types of auction statuses for the app's test user
   Object.keys(AUCTION_STATUS).forEach((statusKey) => {
     createFakeLoanFixture({
-      step: 3,
+      step: STEPS.CLOSING,
       userId: testUserId,
       adminId: admins[0]._id,
       completeFiles: true,
@@ -103,12 +104,12 @@ Meteor.methods({
       newUsers.forEach((userId, index) => {
         const adminId = admins[Math.floor(Math.random() * admins.length)];
 
-        // based on index, always generate 1, 2 and 3 numbers
-        const loanStep = (index % 3) + 1;
+        // based on index, always generate 0, 1 and 2 numbers
+        const loanStep = index % 3;
 
         range(LOANS_PER_USER).forEach(() => {
           createFakeLoanFixture({
-            step: loanStep,
+            step: STEP_ORDER[loanStep],
             userId,
             adminId,
             twoBorrowers: true,
@@ -120,6 +121,7 @@ Meteor.methods({
         createFakeLoan({});
       });
 
+      console.log('creating E2E user? 2');
       createTestUserWithData();
     }
   },

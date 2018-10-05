@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
 
-import { createdAt, updatedAt } from '../helpers/mongoHelpers';
+import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
 
 const UserSchema = new SimpleSchema({

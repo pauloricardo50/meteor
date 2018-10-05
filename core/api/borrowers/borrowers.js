@@ -1,6 +1,10 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
-import { createdAt, updatedAt } from '../helpers/mongoHelpers';
+import {
+  createdAt,
+  updatedAt,
+  additionalDocuments,
+} from '../helpers/sharedSchemas';
 import {
   BORROWERS_COLLECTION,
   RESIDENCY_PERMIT,
@@ -37,7 +41,7 @@ const LogicSchema = new SimpleSchema({
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
   [`${name}.$`]: Object,
-  [`${name}.$.value`]: { type: Number, min: 0, max: 100000000 },
+  [`${name}.$.value`]: { type: SimpleSchema.Integer, min: 0, max: 100000000 },
   [`${name}.$.description`]: { type: String, optional: true, allowedValues },
 });
 
@@ -78,7 +82,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   zipCode: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 9999,
@@ -100,11 +104,6 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
   },
-  birthDate: {
-    type: String,
-    optional: true,
-    regEx: '/^d{4}[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])$/', // YYYY-MM-DD
-  },
   citizenship: {
     type: String,
     optional: true,
@@ -119,7 +118,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   childrenCount: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 20,
@@ -129,7 +128,7 @@ export const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   salary: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000000,
@@ -139,31 +138,31 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: false,
   },
   bonus2015: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2016: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2017: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   bonus2018: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
   },
   [OWN_FUNDS_TYPES.BANK_FORTUNE]: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
     optional: true,
@@ -173,7 +172,7 @@ export const BorrowerSchema = new SimpleSchema({
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_3A),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
   [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: {
-    type: Number,
+    type: SimpleSchema.Integer,
     optional: true,
     min: 0,
     max: 100000000,
@@ -183,17 +182,9 @@ export const BorrowerSchema = new SimpleSchema({
   ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
   ...makeArrayOfObjectsSchema('realEstate', Object.values(REAL_ESTATE)),
   'realEstate.$.loan': {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
-  },
-  corporateBankExists: {
-    type: Boolean,
-    defaultValue: false,
-  },
-  corporateBank: {
-    type: String,
-    optional: true,
   },
   // business logic and admin
   logic: {
@@ -210,15 +201,17 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
+  ...additionalDocuments,
 });
 
 const protectedKeys = [
   '_id',
-  'updatedAt',
-  'createdAt',
+  'additionalDocuments',
   'admin',
   'adminValidation',
+  'createdAt',
   'logic',
+  'updatedAt',
   'userId',
 ];
 

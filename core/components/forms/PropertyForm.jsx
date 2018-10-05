@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
-import AutoForm from 'uniforms-material/AutoForm';
 import omit from 'lodash/omit';
 
 import { PropertySchemaAdmin } from 'core/api/properties/properties';
 import { propertyUpdate } from 'core/api';
-import AutoField from './AutoField';
+import message from 'core/utils/message';
+import AutoForm from '../AutoForm2';
 
 type BorrowerFormProps = {};
 
@@ -48,6 +48,14 @@ const grapherLinks = ['loans', 'user', 'documents'];
 
 const otherSchema = PropertySchemaAdmin.omit(...baseFields, ...detailFields);
 
+const handleSubmit = propertyId => (doc) => {
+  const hideLoader = message.loading('...', 0);
+  return propertyUpdate
+    .run({ propertyId, object: omit(doc, grapherLinks) })
+    .finally(hideLoader)
+    .then(() => message.success('Enregistré', 2));
+};
+
 const BorrowerForm = ({ property }: BorrowerFormProps) => (
   <div className="property-admin-form">
     <div>
@@ -55,14 +63,8 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
       <AutoForm
         schema={PropertySchemaAdmin.pick(...baseFields)}
         model={property}
-        onSubmit={doc =>
-          propertyUpdate.run({
-            borrowerId: property._id,
-            object: omit(doc, grapherLinks),
-          })
-        }
+        onSubmit={handleSubmit(property._id)}
         className="form"
-        autoField={AutoField}
       />
     </div>
     <div>
@@ -70,14 +72,8 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
       <AutoForm
         schema={PropertySchemaAdmin.pick(...detailFields)}
         model={property}
-        onSubmit={doc =>
-          propertyUpdate.run({
-            borrowerId: property._id,
-            object: omit(doc, grapherLinks),
-          })
-        }
+        onSubmit={handleSubmit(property._id)}
         className="form"
-        autoField={AutoField}
       />
     </div>
     {otherSchema._schemaKeys.length > 0 && (
@@ -86,14 +82,8 @@ const BorrowerForm = ({ property }: BorrowerFormProps) => (
         <AutoForm
           schema={otherSchema}
           model={property}
-          onSubmit={doc =>
-            propertyUpdate.run({
-              borrowerId: property._id,
-              object: omit(doc, grapherLinks),
-            })
-          }
+          onSubmit={handleSubmit(property._id)}
           className="form"
-          autoField={AutoField}
         />
       </div>
     )}

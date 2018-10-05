@@ -108,11 +108,7 @@
   }
 }
 
-.dashboard-recap-finance-empty.dashboard-recap-finance-empty {
-  align-self: center;
-
-  max-width: 300px;
-  padding: 16px;
-
-  white-space: normal;
+.dashboard-recap-finance-empty {
+  align-items: center;
+  justify-content: center;
 }

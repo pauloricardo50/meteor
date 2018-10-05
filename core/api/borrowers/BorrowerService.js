@@ -10,7 +10,7 @@ export class BorrowerService {
 
   remove = ({ borrowerId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    Borrowers.remove(borrowerId);
+    return Borrowers.remove(borrowerId);
   };
 
   pushValue = ({ borrowerId, object }) =>
@@ -20,6 +20,9 @@ export class BorrowerService {
 
   popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });
+
+  pullValue = ({ borrowerId, object }) =>
+    Borrowers.update(borrowerId, { $pull: object });
 }
 
 export default new BorrowerService();
