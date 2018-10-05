@@ -16,7 +16,7 @@
     "test-e2e-CI": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run-CI",
     "test-e2e-once": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-run",
     "test-e2e": "meteor start-server-and-test start-e2e http://localhost:3015 cypress-open",
-    "test": "meteor test --driver-package cultofcoders:mocha --settings settings-dev.json --port 3005",
+    "test": "meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 3005",
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {

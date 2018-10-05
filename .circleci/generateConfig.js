@@ -29,37 +29,17 @@ const defaultJobValues = {
 
 const cacheKeys = {
   meteorSystem: name =>
-    'meteor-system-' +
-    name +
-    '-' +
-    CACHE_VERSION +
-    '-{{ checksum "./.circleci/config.yml" }}',
+    `meteor-system-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/release" }}`,
   meteorMicroservice: name =>
-    'meteor-microservice-' +
-    name +
-    '-' +
-    CACHE_VERSION +
-    '-{{ checksum "./microservices/' +
-    name +
-    '/.meteor/release" }}-{{ checksum "./microservices/' +
-    name +
-    '/.meteor/packages" }}-{{ checksum "./microservices/' +
-    name +
-    '/.meteor/versions" }}',
+    `meteor-microservice-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>
-    'node_modules-' +
-    name +
-    '-' +
-    CACHE_VERSION +
-    '-{{ checksum "./microservices/' +
-    name +
-    '/package.json" }}',
+    `node_modules-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/package.json" }}`,
 };
 
 const cachePaths = {
   meteorSystem: () => '~/.meteor',
-  meteorMicroservice: name => './microservices/' + name + '/.meteor/local',
-  nodeModules: name => './microservices/' + name + '/node_modules',
+  meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
+  nodeModules: name => `./microservices/${name}/node_modules`,
 };
 
 // Circle CI Commands
@@ -97,11 +77,11 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Install node_modules',
-      'cd microservices/' + name + ' && meteor npm i',
+      `cd microservices/${name} && meteor npm i`,
     ),
     runCommand(
       'Install nightmare',
-      'cd microservices/' + name + ' && meteor npm i nightmare --no-save',
+      `cd microservices/${name} && meteor npm i nightmare --no-save`,
     ),
     saveCache(
       'Cache node_modules',
@@ -110,7 +90,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Run tests',
-      'cd microservices/' + name + ' && meteor npm run test-CI',
+      `cd microservices/${name} && meteor npm run test-CI`,
     ),
     saveCache(
       'Cache meteor system',
@@ -132,14 +112,14 @@ const testMicroserviceJob = name => ({
 const makeConfig = () => ({
   version: 2,
   jobs: {
-    'test-www': testMicroserviceJob('www'),
-    'test-app': testMicroserviceJob('app'),
-    'test-admin': testMicroserviceJob('admin'),
+    'Www - unit tests': testMicroserviceJob('www'),
+    'App - unit tests': testMicroserviceJob('app'),
+    'Admin - unit tests': testMicroserviceJob('admin'),
   },
   workflows: {
     version: 2,
     'Build and test': {
-      jobs: ['test-www', 'test-app', 'test-admin'],
+      jobs: ['Www - unit tests', 'App - unit tests', 'Admin - unit tests'],
     },
   },
 });

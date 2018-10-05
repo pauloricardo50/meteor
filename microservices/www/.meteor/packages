@@ -25,7 +25,6 @@ themeteorchef:bert
 aldeed:collection2-core
 
 # Testing
-cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
 meteortesting:mocha
