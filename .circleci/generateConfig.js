@@ -106,11 +106,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Install chromedriver and selenium',
-      // Using 3.6.0 because of this: https://github.com/meteortesting/meteor-mocha/issues/54
-      // Using chromedriver 2.37 because 2.38 is incompatible with selenium >3.6.0
-      'cd microservices/' +
-        name +
-        ' && meteor npm i selenium-webdriver@3.6.0 chromedriver@2.37.0 --no-save --chromedriver_version=LATEST',
+      'cd microservices/' + name + ' && meteor npm i nightmare --no-save',
     ),
     runCommand(
       'Run tests',
