@@ -31,7 +31,7 @@ const defaultJobValues = {
 // Cache keys should have an identifier string at the start, using only _ to separate words
 // and it should include the CACHE_VERSION, so all cache can be flushed at once by incrementing CACHE_VERSION
 // like: "my_cache_name_${CACHE_VERSION}"
-// Then follow the unique identifiers
+// Then follow with the variable identifiers
 const cacheKeys = {
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
@@ -56,17 +56,16 @@ const restoreCache = (name, key) => ({
     name,
     // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
     // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
-    keys: key.split('-').reduce((keys, _, index, parts) => {
-      // if (index > parts.length - 3) {
-      //   // Don't cascade all the way down to avoid cash clashes
-      //   return keys;
-      // }
-      return [
-        ...keys,
-        parts.slice(0, parts.length - index).join('-') +
-          (index === 0 ? '' : '-'),
-      ];
-    }, []),
+    keys: key
+      .split('-')
+      .reduce(
+        (keys, _, index, parts) => [
+          ...keys,
+          parts.slice(0, parts.length - index).join('-') +
+            (index === 0 ? '' : '-'),
+        ],
+        [],
+      ),
   },
 });
 const saveCache = (name, key, path) => ({
