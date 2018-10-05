@@ -9,7 +9,9 @@ import {
   OWN_FUNDS_TYPES,
 } from 'core/api/constants';
 import { T } from 'core/components/Translation/Translation';
+import Calculator from 'core/utils/Calculator';
 import PDFTable from '../utils/PDFTable';
+import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
 
 type LoanBankProjectProps = {
   loan: Object,
@@ -177,6 +179,7 @@ const getStructureRecapArray = ({
   ownFunds,
   wantedLoan,
   borrowers,
+  loan,
 }) => [
   {
     label: (
@@ -187,17 +190,17 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.propertyValue" />,
-    data: 1000000,
+    data: toMoney(Calculator.getPropertyValue({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.notaryFees" />,
-    data: 50000,
+    data: toMoney(Calculator.getFees({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.propertyWork" />,
-    data: 10000,
+    data: toMoney(Calculator.getPropertyWork({ loan })),
     condition: !!propertyWork,
     style: { textAlign: 'right' },
   },
@@ -207,7 +210,7 @@ const getStructureRecapArray = ({
         <T id="PDF.projectInfos.structure.totalCost" />
       </p>
     ),
-    data: 1060000,
+    data: toMoney(Calculator.getProjectValue({ loan })),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
   {
@@ -215,44 +218,43 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.wantedLoanRate" />,
-    data: '80%',
+    data: <Percent value={Calculator.getBorrowRatio({ loan })} rounded />,
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.wantedLoan" />,
-    data: toMoney(wantedLoan),
+    data: toMoney(Calculator.selectLoanValue({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
-    data: 200000,
+    data: toMoney(Calculator.getTotalUsed({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
-    data: 150000,
-    condition:
-      ownFunds.filter(ownFund => ownFund.usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE).length > 0,
+    data: toMoney(Calculator.getTotalPledged({ loan })),
+    condition: Calculator.getTotalPledged({ loan }) > 0,
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.interests" />,
-    data: 44000,
+    data: toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.amortization" />,
-    data: 11000,
+    data: toMoney(12 * Calculator.getAmortization({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.maintenance" />,
-    data: 12000,
+    data: toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
     style: { textAlign: 'right' },
   },
   {
     label: <T id="PDF.projectInfos.structure.solvency" />,
-    data: '33%',
+    data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
     style: { textAlign: 'right' },
   },
   {
@@ -267,7 +269,10 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.bankFortune" />,
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.BANK_FORTUNE,
@@ -278,7 +283,11 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.withdraw" />
     ),
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_2,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.INSURANCE_2,
@@ -290,7 +299,11 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3A.withdraw" />
     ),
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.INSURANCE_3A,
@@ -302,7 +315,11 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3B.withdraw" />
     ),
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_3B,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.INSURANCE_3B,
@@ -312,7 +329,11 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.withdraw" />,
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.BANK_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.BANK_3A,
@@ -322,7 +343,10 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.thirdPartyFortune" />,
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
@@ -331,7 +355,11 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.pledge" />,
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_2,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.INSURANCE_2,
@@ -343,7 +371,11 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3A.pledge" />
     ),
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.INSURANCE_3A,
@@ -355,7 +387,11 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3B.pledge" />
     ),
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_3B,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.INSURANCE_3B,
@@ -365,7 +401,11 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.pledge" />,
-    data: 150000,
+    data: toMoney(Calculator.getUsedFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.BANK_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    })),
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.BANK_3A,
@@ -379,7 +419,7 @@ const getStructureRecapArray = ({
         <T id="PDF.projectInfos.structure.usedOwnFunds.total" />
       </p>
     ),
-    data: 250000,
+    data: toMoney(Calculator.getTotalUsed({ loan })),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
   {
@@ -402,14 +442,20 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.postDisbursementSituation.bankFortune" />
     ),
-    data: 487834,
+    data: toMoney(Calculator.getRemainingFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+    })),
     style: { textAlign: 'right' },
   },
   {
     label: (
       <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance2" />
     ),
-    data: 487834,
+    data: toMoney(Calculator.getRemainingFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_2,
+    })),
     condition: shouldDisplayPostDisbursementSituation({
       type: OWN_FUNDS_TYPES.INSURANCE_2,
       borrowers,
@@ -420,7 +466,10 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance3A" />
     ),
-    data: 487834,
+    data: toMoney(Calculator.getRemainingFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_3A,
+    })),
     condition: shouldDisplayPostDisbursementSituation({
       type: OWN_FUNDS_TYPES.INSURANCE_3A,
       borrowers,
@@ -431,7 +480,10 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance3B" />
     ),
-    data: 487834,
+    data: toMoney(Calculator.getRemainingFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.INSURANCE_3B,
+    })),
     condition: shouldDisplayPostDisbursementSituation({
       type: OWN_FUNDS_TYPES.INSURANCE_3B,
       borrowers,
@@ -442,7 +494,10 @@ const getStructureRecapArray = ({
     label: (
       <T id="PDF.projectInfos.structure.postDisbursementSituation.bank3A" />
     ),
-    data: 487834,
+    data: toMoney(Calculator.getRemainingFundsOfType({
+      loan,
+      type: OWN_FUNDS_TYPES.BANK_3A,
+    })),
     condition: shouldDisplayPostDisbursementSituation({
       type: OWN_FUNDS_TYPES.BANK_3A,
       borrowers,
@@ -455,7 +510,7 @@ const getStructureRecapArray = ({
         <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
       </p>
     ),
-    data: 487834,
+    data: toMoney(Calculator.getRemainingFundsOfType({loan})),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
 ];
@@ -481,7 +536,7 @@ const propertyRecap = property => (
 const LoanBankProject = ({ loan }: LoanBankProjectProps) => (
   <div className="loan-bank-pdf-project">
     <div className="loan-bank-pdf-project-recap">
-      {structureRecap({ borrowers: loan.borrowers, ...loan.structure })}
+      {structureRecap({ loan, borrowers: loan.borrowers, ...loan.structure })}
       {propertyRecap({
         residenceType: loan.general.residenceType,
         ...loan.structure.property,

@@ -10,7 +10,7 @@ import {
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     getProjectValue({ loan }) {
-      const propertyValue = this.selectPropertyValue({ loan });
+      const propertyValue = this.getPropertyValue({ loan });
       if (!propertyValue) {
         return 0;
       }
@@ -42,7 +42,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getFees({ loan }): number {
       const notaryFees = this.selectStructureKey({ loan, key: 'notaryFees' });
-      const defaultNotaryFees = this.selectPropertyValue({ loan }) * this.notaryFees;
+      const defaultNotaryFees = this.getPropertyValue({ loan }) * this.notaryFees;
 
       return notaryFees === 0 ? 0 : notaryFees || defaultNotaryFees;
     }
@@ -70,6 +70,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getTheoreticalMaintenance({ loan }) {
+      return (
+        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRate) / 12
+      );
+    }
+
     getAmortization({ loan }) {
       return (
         (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
@@ -83,7 +89,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       } = loan;
       return this.getAmortizationRateBase({
         borrowRatio:
-          wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
+          wantedLoan / (this.getPropertyValue({ loan }) + propertyWork),
       });
     }
 
@@ -111,7 +117,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getBorrowRatio({ loan }) {
       return (
         this.selectStructureKey({ loan, key: 'wantedLoan' })
-        / (this.selectPropertyValue({ loan })
+        / (this.getPropertyValue({ loan })
           + this.selectStructureKey({ loan, key: 'propertyWork' }))
       );
     }
@@ -160,6 +166,27 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return ownFunds
         .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getUsedFundsOfType({ loan, type, usageType }) {
+      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+      return ownFunds
+        .filter(({ type: ownFundType }) => (type ? ownFundType === type : true))
+        .filter(({ usageType: ownFundUsageType }) =>
+          (usageType ? ownFundUsageType === usageType : true))
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getRemainingFundsOfType({ loan, type }) {
+      const ownFunds = this.getFunds({ loan, type });
+      return (
+        ownFunds
+        - this.getUsedFundsOfType({
+          loan,
+          type,
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+        })
+      );
     }
   };
 
