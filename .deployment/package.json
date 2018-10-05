@@ -8,7 +8,11 @@
     "mongo-ssh-production": "./ssh-tunnel.sh -e production",
     "restore-staging": "./restore-db.sh -e staging",
     "restore-production": "./restore-db.sh -e production",
-    "scaleApplication": "./scaleApplication.sh"
+    "scaleApplication": "./scaleApplication.sh",
+    "start-maintenance-production": "./start-maintenance.sh -e production",
+    "start-maintenance-staging": "./start-maintenance.sh -e staging",
+    "stop-maintenance": "./stop-maintenance.sh",
+    "update-nginx": "./update-nginx.sh"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.54",

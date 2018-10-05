@@ -18,7 +18,11 @@
     "run": "cd scripts/ && ./run.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
     "setup": "cd scripts/ && ./setup.sh",
-    "test-all": "cd scripts/ && ./test-all.sh"
+    "start-maintenance-production": "cd .deployment/ && npm run start-maintenance-production",
+    "start-maintenance-staging": "cd .deployment/ && npm run start-maintenance-staging",
+    "stop-maintenance": "cd .deployment/ && npm run stop-maintenance",
+    "test-all": "cd scripts/ && ./test-all.sh",
+    "update-nginx": "cd .deployment/ && npm run update-nginx"
   },
   "repository": {
     "type": "git",
