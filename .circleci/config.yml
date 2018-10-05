@@ -88,6 +88,9 @@ jobs:
           paths:
             - ./microservices/www/node_modules
       - run:
+          name: Generate language files
+          command: cd microservices/www && meteor npm run prestart
+      - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
       - save_cache:
@@ -182,6 +185,9 @@ jobs:
           key: 'node_modules-app-4-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - ./microservices/app/node_modules
+      - run:
+          name: Generate language files
+          command: cd microservices/app && meteor npm run prestart
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -279,6 +285,9 @@ jobs:
             "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
+      - run:
+          name: Generate language files
+          command: cd microservices/admin && meteor npm run prestart
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI

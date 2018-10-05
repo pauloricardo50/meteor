@@ -89,10 +89,6 @@ const testMicroserviceJob = name => ({
     //   'mkdir ./microservices/' + name + '/profiles',
     // ),
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
-    // runCommand(
-    //   'Copy meteor bin to build cache',
-    //   'mkdir -p ~/build-temp && cp /usr/local/bin/meteor ~/build-temp/meteor-bin',
-    // ),
     runCommand(
       'Install node_modules',
       `cd microservices/${name} && meteor npm i`,
@@ -105,6 +101,10 @@ const testMicroserviceJob = name => ({
       'Cache node_modules',
       cacheKeys.nodeModules(name),
       cachePaths.nodeModules(name),
+    ),
+    runCommand(
+      'Generate language files',
+      `cd microservices/${name} && meteor npm run prestart`,
     ),
     runCommand(
       'Run tests',
