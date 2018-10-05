@@ -1,7 +1,6 @@
 accounts-base@1.4.3-rc18.16
 accounts-password@1.5.1
 alanning:roles@1.2.16
-aldeed:browser-tests@0.1.1
 aldeed:collection2@3.0.0
 aldeed:collection2-core@2.1.2
 aldeed:schema-deny@3.0.0
@@ -36,7 +35,6 @@ ddp-server@2.2.0
 deps@1.0.12
 diff-sequence@1.1.0
 disable-oplog@1.0.7
-dispatch:mocha@0.4.1
 dynamic-import@0.5.0-rc18.16
 ecmascript@0.12.0-rc18.16
 ecmascript-runtime@0.7.0
