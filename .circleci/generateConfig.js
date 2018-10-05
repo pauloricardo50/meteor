@@ -99,7 +99,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Install nightmare',
-      `cd microservices/${name} && meteor npm i nightmare --no-save`,
+      `cd microservices/${name} && meteor npm i nightmare@2.10.0 --no-save`, // Nightmare v3 doesn't show errors properly
     ),
     saveCache(
       'Cache node_modules',

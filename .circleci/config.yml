@@ -81,7 +81,7 @@ jobs:
           command: cd microservices/www && meteor npm i
       - run:
           name: Install nightmare
-          command: cd microservices/www && meteor npm i nightmare --no-save
+          command: cd microservices/www && meteor npm i nightmare@2.10.0 --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules-www-4-{{ checksum "./microservices/www/package.json" }}'
@@ -176,7 +176,7 @@ jobs:
           command: cd microservices/app && meteor npm i
       - run:
           name: Install nightmare
-          command: cd microservices/app && meteor npm i nightmare --no-save
+          command: cd microservices/app && meteor npm i nightmare@2.10.0 --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules-app-4-{{ checksum "./microservices/app/package.json" }}'
@@ -271,7 +271,7 @@ jobs:
           command: cd microservices/admin && meteor npm i
       - run:
           name: Install nightmare
-          command: cd microservices/admin && meteor npm i nightmare --no-save
+          command: cd microservices/admin && meteor npm i nightmare@2.10.0 --no-save
       - save_cache:
           name: Cache node_modules
           key: >-
