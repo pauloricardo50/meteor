@@ -52,14 +52,14 @@ jobs:
       - run:
           name: Install node_modules
           command: cd microservices/www && meteor npm i
+      - run:
+          name: Install nightmare
+          command: cd microservices/www && meteor npm i nightmare --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules-www-3-{{ checksum "./microservices/www/package.json" }}'
           paths:
             - ./microservices/www/node_modules
-      - run:
-          name: Install chromedriver and selenium
-          command: cd microservices/www && meteor npm i nightmare --no-save
       - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
@@ -118,14 +118,14 @@ jobs:
       - run:
           name: Install node_modules
           command: cd microservices/app && meteor npm i
+      - run:
+          name: Install nightmare
+          command: cd microservices/app && meteor npm i nightmare --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules-app-3-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - ./microservices/app/node_modules
-      - run:
-          name: Install chromedriver and selenium
-          command: cd microservices/app && meteor npm i nightmare --no-save
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -184,6 +184,9 @@ jobs:
       - run:
           name: Install node_modules
           command: cd microservices/admin && meteor npm i
+      - run:
+          name: Install nightmare
+          command: cd microservices/admin && meteor npm i nightmare --no-save
       - save_cache:
           name: Cache node_modules
           key: >-
@@ -191,9 +194,6 @@ jobs:
             "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
-      - run:
-          name: Install chromedriver and selenium
-          command: cd microservices/admin && meteor npm i nightmare --no-save
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI

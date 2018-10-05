@@ -99,14 +99,14 @@ const testMicroserviceJob = name => ({
       'Install node_modules',
       'cd microservices/' + name + ' && meteor npm i',
     ),
+    runCommand(
+      'Install nightmare',
+      'cd microservices/' + name + ' && meteor npm i nightmare --no-save',
+    ),
     saveCache(
       'Cache node_modules',
       cacheKeys.nodeModules(name),
       cachePaths.nodeModules(name),
-    ),
-    runCommand(
-      'Install chromedriver and selenium',
-      'cd microservices/' + name + ' && meteor npm i nightmare --no-save',
     ),
     runCommand(
       'Run tests',
