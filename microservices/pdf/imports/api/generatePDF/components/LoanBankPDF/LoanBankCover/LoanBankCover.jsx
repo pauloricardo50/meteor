@@ -12,7 +12,7 @@ const footer = assignedEmployee => (
     <div className="assigned-employee">
       <div>{assignedEmployee.name}</div>
       <div>{assignedEmployee.email}</div>
-      <div>{assignedEmployee.phoneNumber}</div>
+      <div>{assignedEmployee.phoneNumbers[0]}</div>
     </div>
     <div>Le Grand-Saconnex, le {moment(new Date()).format('DD.MM.YYYY')}</div>
   </div>

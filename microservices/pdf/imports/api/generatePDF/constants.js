@@ -19,6 +19,7 @@ export const LOAN_BANK_TEMPLATE = {
   structure: {
     ownFunds: [1],
     property: {
+      propertyType: 1,
       address1: 1,
       zipCode: 1,
       city: 1,

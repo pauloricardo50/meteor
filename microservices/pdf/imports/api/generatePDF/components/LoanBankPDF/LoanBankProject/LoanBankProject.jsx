@@ -1,65 +1,19 @@
 // @flow
 import React from 'react';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { HOUSE_TYPE, FLAT_TYPE, PROPERTY_TYPE } from 'core/api/constants';
+import {
+  HOUSE_TYPE,
+  FLAT_TYPE,
+  PROPERTY_TYPE,
+  OWN_FUNDS_USAGE_TYPES,
+  OWN_FUNDS_TYPES,
+} from 'core/api/constants';
 import { T } from 'core/components/Translation/Translation';
 import PDFTable from '../utils/PDFTable';
 
 type LoanBankProjectProps = {
-  property: Object,
+  loan: Object,
 };
-
-const getHouseRecapArray = ({ houseType, landArea, volume, volumeNorm }) => [
-  {
-    label: <T id="Forms.houseType" />,
-    data: <T id={`Forms.houseType.${houseType}`} />,
-  },
-  {
-    label: <T id="Forms.landArea" />,
-    data: landArea,
-  },
-  {
-    label: <T id="Forms.volume" />,
-    data: (
-      <span>
-        {volume} (<T id={`Forms.volumeNorm.${volumeNorm}`} />)
-      </span>
-    ),
-  },
-];
-
-const getFlatRecapArray = ({
-  flatType,
-  insideArea,
-  floorNumber,
-  numberOfFloors,
-  terraceArea,
-}) => [
-  {
-    label: <T id="Forms.flatType" />,
-    data: <T id={`Forms.flatType.${flatType}`} />,
-  },
-  {
-    label: <T id="Forms.insideArea" />,
-    data: insideArea,
-  },
-  {
-    label: <T id="Forms.numberOfFloors" />,
-    data: `${numberOfFloors}`,
-  },
-  {
-    label: <T id="Forms.floorNumber" />,
-    data: `${floorNumber}`,
-    condition:
-      flatType === FLAT_TYPE.SINGLE_FLOOR_APARTMENT
-      || flatType === FLAT_TYPE.DUPLEX_APARTMENT,
-  },
-  {
-    label: <T id="Forms.terraceArea" />,
-    data: terraceArea,
-    condition: flatType === FLAT_TYPE.TERRACE_APARTMENT,
-  },
-];
 
 const getPropertyRecapArray = ({
   address1,
@@ -72,90 +26,427 @@ const getPropertyRecapArray = ({
   parkingOutside,
   minergie,
   monthlyExpenses,
+  flatType,
+  insideArea,
+  floorNumber,
+  numberOfFloors,
+  terraceArea,
+  houseType,
+  landArea,
+  volume,
+  volumeNorm,
+  valuation,
+  residenceType,
+  propertyType,
 }) => [
   {
-    label: <T id="Forms.roomCount" />,
+    label: (
+      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+        <T id="PDF.projectInfos.valuation.title" />
+      </p>
+    ),
+  },
+  {
+    label: <T id="PDF.projectInfos.valuation.value" />,
+    data: `${toMoney(valuation.value)} - ${toMoney(valuation.max)}`,
+  },
+  {
+    label: <T id="PDF.projectInfos.valuation.microlocation" />,
+    data: `${valuation.microlocation.grade}/5`,
+  },
+  {
+    label: '\u00A0',
+  },
+  {
+    label: (
+      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+        <T id="PDF.projectInfos.property.title" />
+      </p>
+    ),
+  },
+  {
+    label: <T id="PDF.projectInfos.property.address" />,
+    data: `${address1}, ${zipCode} ${city}`,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.residenceType" />,
+    data: <T id={`PDF.residenceType.${residenceType}`} />,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.propertyType" />,
+    data: <T id={`PDF.projectInfos.property.propertyType.${propertyType}`} />,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.houseType" />,
+    data: <T id={`PDF.projectInfos.property.houseType.${houseType}`} />,
+    condition: propertyType === PROPERTY_TYPE.HOUSE,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.flatType" />,
+    data: <T id={`PDF.projectInfos.property.flatType.${flatType}`} />,
+    condition: propertyType === PROPERTY_TYPE.FLAT,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.roomCount" />,
     data: roomCount,
   },
   {
-    label: <T id="Forms.propertyAddress" />,
-    data: `${address1}, ${zipCode} ${city}`,
-    style: { maxWidth: '100px' },
+    label: <T id="PDF.projectInfos.property.insideArea" />,
+    data: `${insideArea} m2`,
+    condition: propertyType === PROPERTY_TYPE.FLAT,
   },
   {
-    label: <T id="Forms.constructionYear" />,
+    label: <T id="PDF.projectInfos.property.landArea" />,
+    data: `${landArea} m2`,
+    condition: propertyType === PROPERTY_TYPE.HOUSE,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.volume" />,
+    data: (
+      <span>
+        {volume} m3 (
+        <T id={`PDF.projectInfos.property.volumeNorm.${volumeNorm}`} />)
+      </span>
+    ),
+    condition: propertyType === PROPERTY_TYPE.HOUSE,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.terraceArea" />,
+    data: `${terraceArea} m2`,
+    condition:
+      propertyType === PROPERTY_TYPE.FLAT
+      && flatType === FLAT_TYPE.TERRACE_APARTMENT,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.numberOfFloors" />,
+    data: `${numberOfFloors}`,
+    condition: propertyType === PROPERTY_TYPE.FLAT,
+  },
+  {
+    label: <T id="PDF.projectInfos.property.floorNumber" />,
+    data: `${floorNumber}`,
+    condition:
+      propertyType === PROPERTY_TYPE.FLAT
+      && (flatType === FLAT_TYPE.SINGLE_FLOOR_APARTMENT
+        || flatType === FLAT_TYPE.DUPLEX_APARTMENT),
+  },
+  {
+    label: <T id="PDF.projectInfos.property.constructionYear" />,
     data: constructionYear,
   },
   {
-    label: <T id="Forms.renovationYear" />,
+    label: <T id="PDF.projectInfos.property.renovationYear" />,
     data: renovationYear,
     condition: !!renovationYear,
   },
   {
-    label: 'Places de parc',
+    label: <T id="PDF.projectInfos.property.parking" />,
     data: `${parkingInside} int, ${parkingOutside} ext`,
   },
   {
-    label: <T id="Forms.minergie" />,
-    data: <T id={`Forms.minergie.${minergie}`} />,
+    label: <T id="PDF.projectInfos.property.minergie" />,
+    data: <T id={`PDF.projectInfos.property.minergie.${minergie}`} />,
   },
   {
-    label: <T id="general.maintenance" />,
-    data: `CHF ${toMoney(monthlyExpenses)}`,
+    label: <T id="PDF.projectInfos.property.maintenance" />,
+    data: toMoney(monthlyExpenses),
     condition: !!monthlyExpenses,
   },
 ];
 
-const projectRecap = property => (
+const shouldDisplayOwnFund = ({ ownFunds, type, usageType }) =>
+  ownFunds.filter((ownFund) => {
+    if (usageType) {
+      return ownFund.type === type && ownFund.usageType === usageType;
+    }
+    return ownFund.type === type;
+  }).length > 0;
+
+const shouldDisplayPostDisbursementSituation = ({ type, borrowers }) =>
+  borrowers.filter(borrower => borrower[type].length > 0).length > 0;
+
+const getStructureRecapArray = ({
+  propertyWork,
+  ownFunds,
+  wantedLoan,
+  borrowers,
+}) => [
+  {
+    label: (
+      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+        <T id="PDF.projectInfos.structure.title" />
+      </p>
+    ),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.propertyValue" />,
+    data: 1000000,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.notaryFees" />,
+    data: 50000,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.propertyWork" />,
+    data: 10000,
+    condition: !!propertyWork,
+  },
+  {
+    label: (
+      <p style={{ fontWeight: 'bold' }}>
+        <T id="PDF.projectInfos.structure.totalCost" />
+      </p>
+    ),
+    data: 1060000,
+    style: { fontWeight: 'bold' },
+  },
+  {
+    label: '\u00A0',
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.wantedLoanRate" />,
+    data: '80%',
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.wantedLoan" />,
+    data: toMoney(wantedLoan),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
+    data: 200000,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
+    data: 150000,
+    condition:
+      ownFunds.filter(ownFund => ownFund.usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE).length > 0,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.interests" />,
+    data: 44000,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.amortization" />,
+    data: 11000,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.maintenance" />,
+    data: 12000,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.solvency" />,
+    data: '33%',
+  },
+  {
+    label: '\u00A0',
+  },
+  {
+    label: (
+      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+        <T id="PDF.projectInfos.structure.usedOwnFunds.title" />
+      </p>
+    ),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.bankFortune" />,
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.withdraw" />
+    ),
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.INSURANCE_2,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3A.withdraw" />
+    ),
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.INSURANCE_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3B.withdraw" />
+    ),
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.INSURANCE_3B,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    }),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.withdraw" />,
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.BANK_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+    }),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.thirdPartyFortune" />,
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+    }),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.pledge" />,
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.INSURANCE_2,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3A.pledge" />
+    ),
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.INSURANCE_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3B.pledge" />
+    ),
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.INSURANCE_3B,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    }),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.pledge" />,
+    data: 150000,
+    condition: shouldDisplayOwnFund({
+      ownFunds,
+      type: OWN_FUNDS_TYPES.BANK_3A,
+      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+    }),
+  },
+  {
+    label: (
+      <p style={{ fontWeight: 'bold' }}>
+        <T id="PDF.projectInfos.structure.usedOwnFunds.total" />
+      </p>
+    ),
+    data: 250000,
+    style: { fontWeight: 'bold' },
+  },
+  {
+    label: '\u00A0',
+  },
+  {
+    label: (
+      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+        <T id="PDF.projectInfos.structure.postDisbursementSituation.title" />
+      </p>
+    ),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.bankFortune" />
+    ),
+    data: 487834,
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance2" />
+    ),
+    data: 487834,
+    condition: shouldDisplayPostDisbursementSituation({
+      type: OWN_FUNDS_TYPES.INSURANCE_2,
+      borrowers,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance3A" />
+    ),
+    data: 487834,
+    condition: shouldDisplayPostDisbursementSituation({
+      type: OWN_FUNDS_TYPES.INSURANCE_3A,
+      borrowers,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance3B" />
+    ),
+    data: 487834,
+    condition: shouldDisplayPostDisbursementSituation({
+      type: OWN_FUNDS_TYPES.INSURANCE_3B,
+      borrowers,
+    }),
+  },
+  {
+    label: (
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.bank3A" />
+    ),
+    data: 487834,
+    condition: shouldDisplayPostDisbursementSituation({
+      type: OWN_FUNDS_TYPES.BANK_3A,
+      borrowers,
+    }),
+  },
+  {
+    label: (
+      <p style={{ fontWeight: 'bold' }}>
+        <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
+      </p>
+    ),
+    data: 487834,
+    style: {fontWeight: 'bold'}
+  },
+];
+
+const structureRecap = structure => (
   <div className="loan-bank-pdf-project-details">
-    <h3>
-      <T id="PDF.sectionSubTitle.projectDetails" />
-    </h3>
     <PDFTable
       className="loan-bank-pdf-project-table"
-      array={[
-        {
-          label: <T id="Recap.propertyValue" />,
-          data: `CHF ${toMoney(property.value)}`,
-        },
-        {
-          label: <T id="Valuation.title" />,
-          data: `CHF ${toMoney(property.valuation.value)} - ${toMoney(property.valuation.max)}`,
-        },
-        {
-          label: 'Microsituation',
-          data: `${property.valuation.microlocation.grade} / 5`,
-        },
-      ]}
+      array={getStructureRecapArray(structure)}
     />
   </div>
 );
 
 const propertyRecap = property => (
   <div className="loan-bank-pdf-property">
-    <h3>
-      <T id="PDF.sectionSubTitle.propertyDetails" />
-    </h3>
     <PDFTable
       className="loan-bank-pdf-property-table"
-      array={[
-        ...(property.propertyType === PROPERTY_TYPE.HOUSE
-          ? getHouseRecapArray(property)
-          : getFlatRecapArray(property)),
-        ...getPropertyRecapArray(property),
-      ]}
+      array={getPropertyRecapArray(property)}
     />
   </div>
 );
 
-const LoanBankProject = ({ property }: LoanBankProjectProps) => (
+const LoanBankProject = ({ loan }: LoanBankProjectProps) => (
   <div className="loan-bank-pdf-project">
-    <h3 className="loan-bank-pdf-section-title">
-      <T id="PDF.sectionTitle.project" />
-    </h3>
     <div className="loan-bank-pdf-project-recap">
-      {projectRecap(property)}
-      {propertyRecap(property)}
+      {structureRecap({ borrowers: loan.borrowers, ...loan.structure })}
+      {propertyRecap({
+        residenceType: loan.general.residenceType,
+        ...loan.structure.property,
+      })}
     </div>
   </div>
 );

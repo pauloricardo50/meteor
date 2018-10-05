@@ -22,7 +22,7 @@ const pages = loan => [
     content: <LoanBankCover loan={loan} key="1" />,
   },
   {
-    content: <LoanBankProject property={loan.structure.property} key="2" />,
+    content: <LoanBankProject loan={loan} key="2" />,
     title: <T id="PDF.title.project" />,
     subtitle: <T id="PDF.subtitle.project" />,
   },
