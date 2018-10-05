@@ -13,6 +13,8 @@ import Calculator from 'core/utils/Calculator';
 import PDFTable from '../utils/PDFTable';
 import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
 
+console.log('Calculator', Calculator);
+
 type LoanBankProjectProps = {
   loan: Object,
 };
@@ -177,7 +179,6 @@ const shouldDisplayPostDisbursementSituation = ({ type, borrowers }) =>
 const getStructureRecapArray = ({
   propertyWork,
   ownFunds,
-  wantedLoan,
   borrowers,
   loan,
 }) => [
@@ -254,7 +255,7 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.solvency" />,
-    data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
+    data: <Percent value={100*Calculator.getIncomeRatio({ loan })} rounded/>,
     style: { textAlign: 'right' },
   },
   {
@@ -510,7 +511,7 @@ const getStructureRecapArray = ({
         <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
       </p>
     ),
-    data: toMoney(Calculator.getRemainingFundsOfType({loan})),
+    data: toMoney(Calculator.getTotalRemainingFunds({loan})),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
 ];

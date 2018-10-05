@@ -1,4 +1,5 @@
 // @flow
+import { OWN_FUNDS_TYPES } from 'core/api/constants';
 import { FinanceCalculator } from '../FinanceCalculator';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
@@ -176,8 +177,18 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         - this.getUsedFundsOfType({
           loan,
           type,
-          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+          usageType:
+            type !== OWN_FUNDS_TYPES.BANK_FORTUNE
+              ? OWN_FUNDS_USAGE_TYPES.WITHDRAW
+              : undefined,
         })
+      );
+    }
+
+    getTotalRemainingFunds({ loan }) {
+      return Object.values(OWN_FUNDS_TYPES).reduce(
+        (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
+        0,
       );
     }
   };
