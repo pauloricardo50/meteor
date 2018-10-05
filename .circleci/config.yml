@@ -25,7 +25,6 @@ jobs:
             - 'source-4-{{ .Branch }}-{{ .Revision }}'
             - 'source-4-{{ .Branch }}-'
             - source-4-
-            - source-
       - checkout
       - save_cache:
           name: Cache source
@@ -41,7 +40,6 @@ jobs:
             - meteor-system-www-4-
             - meteor-system-www-
             - meteor-system-
-            - meteor-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -60,16 +58,15 @@ jobs:
             - meteor-microservice-www-4-
             - meteor-microservice-www-
             - meteor-microservice-
-            - meteor-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
-              node_modules-www-4-{{ checksum "./microservices/www/package.json"
+              node-modules-www-4-{{ checksum "./microservices/www/package.json"
               }}
-            - node_modules-www-4-
-            - node_modules-www-
-            - node_modules-
+            - node-modules-www-4-
+            - node-modules-www-
+            - node-modules-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -86,7 +83,7 @@ jobs:
             --no-save
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules-www-4-{{ checksum "./microservices/www/package.json" }}'
+          key: 'node-modules-www-4-{{ checksum "./microservices/www/package.json" }}'
           paths:
             - ./microservices/www/node_modules
       - run:
@@ -128,7 +125,6 @@ jobs:
             - 'source-4-{{ .Branch }}-{{ .Revision }}'
             - 'source-4-{{ .Branch }}-'
             - source-4-
-            - source-
       - checkout
       - save_cache:
           name: Cache source
@@ -144,7 +140,6 @@ jobs:
             - meteor-system-app-4-
             - meteor-system-app-
             - meteor-system-
-            - meteor-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -163,16 +158,15 @@ jobs:
             - meteor-microservice-app-4-
             - meteor-microservice-app-
             - meteor-microservice-
-            - meteor-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
-              node_modules-app-4-{{ checksum "./microservices/app/package.json"
+              node-modules-app-4-{{ checksum "./microservices/app/package.json"
               }}
-            - node_modules-app-4-
-            - node_modules-app-
-            - node_modules-
+            - node-modules-app-4-
+            - node-modules-app-
+            - node-modules-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -189,7 +183,7 @@ jobs:
             --no-save
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules-app-4-{{ checksum "./microservices/app/package.json" }}'
+          key: 'node-modules-app-4-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - ./microservices/app/node_modules
       - run:
@@ -231,7 +225,6 @@ jobs:
             - 'source-4-{{ .Branch }}-{{ .Revision }}'
             - 'source-4-{{ .Branch }}-'
             - source-4-
-            - source-
       - checkout
       - save_cache:
           name: Cache source
@@ -247,7 +240,6 @@ jobs:
             - meteor-system-admin-4-
             - meteor-system-admin-
             - meteor-system-
-            - meteor-
       - restore_cache:
           name: Restore meteor microservice
           keys:
@@ -266,16 +258,15 @@ jobs:
             - meteor-microservice-admin-4-
             - meteor-microservice-admin-
             - meteor-microservice-
-            - meteor-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
-              node_modules-admin-4-{{ checksum
+              node-modules-admin-4-{{ checksum
               "./microservices/admin/package.json" }}
-            - node_modules-admin-4-
-            - node_modules-admin-
-            - node_modules-
+            - node-modules-admin-4-
+            - node-modules-admin-
+            - node-modules-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -293,7 +284,7 @@ jobs:
       - save_cache:
           name: Cache node_modules
           key: >-
-            node_modules-admin-4-{{ checksum
+            node-modules-admin-4-{{ checksum
             "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules

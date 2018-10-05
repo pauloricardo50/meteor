@@ -28,13 +28,14 @@ const defaultJobValues = {
   ],
 };
 
+// Cache keys should have 2 identifier strings at the start like "my" and "cache": "my-cache-{{whatever}}"
 const cacheKeys = {
   meteorSystem: name =>
     `meteor-system-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor-microservice-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>
-    `node_modules-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/package.json" }}`,
+    `node-modules-${name}-${CACHE_VERSION}-{{ checksum "./microservices/${name}/package.json" }}`,
   source: () => `source-${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
@@ -52,16 +53,17 @@ const restoreCache = (name, key) => ({
     name,
     // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
     // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
-    keys: key
-      .split('-')
-      .reduce(
-        (keys, _, index, parts) => [
-          ...keys,
-          parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
-        ],
-        [],
-      ),
+    keys: key.split('-').reduce((keys, _, index, parts) => {
+      if (index > parts.length - 2) {
+        // Don't cascade all the way down to avoid cash clashes
+        return keys;
+      }
+      return [
+        ...keys,
+        parts.slice(0, parts.length - index).join('-') +
+          (index === 0 ? '' : '-'),
+      ];
+    }, []),
   },
 });
 const saveCache = (name, key, path) => ({
