@@ -97,6 +97,10 @@ const testMicroserviceJob = name => ({
       'Install nightmare',
       `cd microservices/${name} && meteor npm i nightmare@2.10.0 --no-save`, // Nightmare v3 doesn't show errors properly
     ),
+    runCommand(
+      'Install @babel/node',
+      `cd microservices/${name} && meteor npm i @babel/node --no-save`,
+    ),
     saveCache(
       'Cache node_modules',
       cacheKeys.nodeModules(name),
@@ -104,7 +108,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Generate language files',
-      `cd microservices/${name} && meteor npm run prestart`,
+      `cd microservices/${name} && meteor babel-node ../../scripts/createLanguages.js ${name}`,
     ),
     runCommand(
       'Run tests',
