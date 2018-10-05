@@ -99,7 +99,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Install @babel/node',
-      `cd microservices/${name} && meteor npm i @babel/node --no-save`,
+      `cd microservices/${name} && npm i @babel/node --no-save`,
     ),
     saveCache(
       'Cache node_modules',
@@ -108,7 +108,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Generate language files',
-      `cd microservices/${name} && meteor babel-node ../../scripts/createLanguages.js ${name}`,
+      `cd microservices/${name} && function npm-do { (PATH=$(npm bin):$PATH; eval $@;) } && npm-do babel-node ../../scripts/createLanguages.js ${name}`, // http://2ality.com/2016/01/locally-installed-npm-executables.html
     ),
     runCommand(
       'Run tests',
