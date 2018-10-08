@@ -34,7 +34,7 @@ const defaultJobValues = {
 // Then follow with the variable identifiers
 const cacheKeys = {
   meteorSystem: name =>
-    `meteor_system_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>
