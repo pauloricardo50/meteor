@@ -13,7 +13,6 @@ import Calculator from 'core/utils/Calculator';
 import PDFTable from '../utils/PDFTable';
 import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
 
-console.log('Calculator', Calculator);
 
 type LoanBankProjectProps = {
   loan: Object,
