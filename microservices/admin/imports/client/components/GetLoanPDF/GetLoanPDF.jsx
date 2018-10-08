@@ -2,9 +2,9 @@
 import React from 'react';
 import fileSaver from 'file-saver';
 import { compose, withState, withProps } from 'recompose';
-import Button from '../../../core/components/Button/Button';
+import Button from 'core/components/Button/Button';
+import { generateLoanBankPDF } from 'core/api/PDFGenerator/methodDefinitions';
 import { base64ToBlob } from './base64-to-blob';
-import { generateLoanBankPDF } from '../../../core/api/PDFGenerator/methodDefinitions';
 
 type GetLoanPDFProps = {
   loan: Object,
