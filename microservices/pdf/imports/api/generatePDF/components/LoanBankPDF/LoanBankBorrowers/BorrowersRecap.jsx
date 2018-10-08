@@ -114,7 +114,7 @@ const getBorrowersInfos = borrowers => ({
 
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
-const getFormatedMoneyArray = (array, negative = false) => [
+const getFormattedMoneyArray = (array, negative = false) => [
   ...array.map(x => (
     <div className="money-amount">
       {toMoney(negative ? -x : x || 0)}
@@ -129,7 +129,7 @@ const shouldRenderArray = array => array.filter(x => x).length > 0;
 
 const addTableMoneyLine = ({ label, field, negative, condition }) => ({
   label,
-  data: getFormatedMoneyArray(field, negative || false),
+  data: getFormattedMoneyArray(field, negative || false),
   condition: condition || shouldRenderArray(field),
 });
 
@@ -215,7 +215,7 @@ const getBorrowersInfosArray = (borrowers) => {
           <T id="PDF.borrowersInfos.totalIncome" />
         </p>
       ),
-      data: getFormatedMoneyArray(borrowers.map((_, index) =>
+      data: getFormattedMoneyArray(borrowers.map((_, index) =>
         borrowersInfos.otherIncome.totalIncome[index]
             + borrowersInfos.salary[index]
             + borrowersInfos.bonus[index]
@@ -250,7 +250,7 @@ const getBorrowersInfosArray = (borrowers) => {
           <T id="PDF.borrowersInfos.totalFortune" />
         </p>
       ),
-      data: getFormatedMoneyArray(borrowers.map((_, index) =>
+      data: getFormattedMoneyArray(borrowers.map((_, index) =>
         borrowersInfos.bankFortune[index]
             + borrowersInfos.insurance2[index]
             + borrowersInfos.bank3A[index]
