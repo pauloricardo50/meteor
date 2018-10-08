@@ -2,7 +2,8 @@
   "name": "pro",
   "private": true,
   "scripts": {
-    "start": "meteor --settings settings-dev.json --port 4100"
+    "start": "meteor --settings settings-dev.json --port 4100",
+    "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4110"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0",
