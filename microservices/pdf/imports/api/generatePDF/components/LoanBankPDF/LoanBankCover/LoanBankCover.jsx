@@ -7,12 +7,12 @@ type LoanBankCoverProps = {
   loan: Object,
 };
 
-const footer = assignedEmployee => (
+const footer = ({ name, email, phoneNumbers }) => (
   <div className="cover-footer">
     <div className="assigned-employee">
-      <div>{assignedEmployee.name}</div>
-      <div>{assignedEmployee.email}</div>
-      <div>{assignedEmployee.phoneNumbers[0]}</div>
+      <div>{name}</div>
+      <div>{email}</div>
+      <div>{phoneNumbers[0]}</div>
     </div>
     <div>Le Grand-Saconnex, le {moment(new Date()).format('DD.MM.YYYY')}</div>
   </div>
