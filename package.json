@@ -9,7 +9,7 @@
     "flow-typed": "flow-typed install",
     "flow": "flow",
     "format": "prettier-eslint \"**/*.js*\" --ignore \"flow-typed/**\" --write --eslint-config-path .eslintrc.js",
-    "generate-circle-configs":"npx babel-node .circleci/generateConfig.js",
+    "generate-circleci-configs":"npx babel-node .circleci/generateConfig.js",
     "lang": "cd scripts/ && meteor babel-node createLanguages.js",
     "mongo-ssh-production": "cd .deployment/ && npm run mongo-ssh-production",
     "mongo-ssh-staging": "cd .deployment/ && npm run mongo-ssh-staging",
