@@ -45,14 +45,14 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
   >
     <InlineCss stylesheet={stylesheet}>
       <div className="loan-bank-pdf">
-        {pages(loan).map((page, index) => (
+        {pages(loan).map(({ title, subtitle, content }, index) => (
           <LoanBankPage
             pageNumber={index + 1}
-            title={page.title}
-            subtitle={page.subtitle}
+            title={title}
+            subtitle={subtitle}
             key={index}
           >
-            {page.content}
+            {content}
           </LoanBankPage>
         ))}
       </div>
