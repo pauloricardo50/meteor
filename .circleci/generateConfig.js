@@ -14,7 +14,7 @@ const defaultJobValues = {
         LANGUAGE: 'C.UTF-8',
         LC_ALL: 'C.UTF-8',
         LC_NUMERIC: 'en_US.UTF-8',
-        METEOR_VERSION: '1.7',
+        METEOR_VERSION: '1.8',
         NODE_ENV: 'development', // Some packages require this during tests
         TOOL_NODE_FLAGS:
           '--max_old_space_size=8192 --optimize_for_size --gc_interval=100 --min_semi_space_size=8 --max_semi_space_size=256', // NodeJS kung-fu to make your builds run faster, without running out of memory
@@ -34,7 +34,7 @@ const defaultJobValues = {
 // Then follow with the variable identifiers
 const cacheKeys = {
   meteorSystem: name =>
-    `meteor_system_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_system_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>

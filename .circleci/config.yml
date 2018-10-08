@@ -9,7 +9,7 @@ jobs:
           LANGUAGE: C.UTF-8
           LC_ALL: C.UTF-8
           LC_NUMERIC: en_US.UTF-8
-          METEOR_VERSION: '1.7'
+          METEOR_VERSION: '1.8'
           NODE_ENV: development
           TOOL_NODE_FLAGS: >-
             --max_old_space_size=8192 --optimize_for_size --gc_interval=100
@@ -36,7 +36,11 @@ jobs:
           keys:
             - >-
               meteor_system_5_www-{{ checksum
+              "./microservices/www/.meteor/release" }}-{{ checksum
               "./microservices/www/.meteor/versions" }}
+            - >-
+              meteor_system_5_www-{{ checksum
+              "./microservices/www/.meteor/release" }}-
             - meteor_system_5_www-
       - restore_cache:
           name: Restore meteor microservice
@@ -93,6 +97,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_5_www-{{ checksum
+            "./microservices/www/.meteor/release" }}-{{ checksum
             "./microservices/www/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -130,7 +135,11 @@ jobs:
           keys:
             - >-
               meteor_system_5_app-{{ checksum
+              "./microservices/app/.meteor/release" }}-{{ checksum
               "./microservices/app/.meteor/versions" }}
+            - >-
+              meteor_system_5_app-{{ checksum
+              "./microservices/app/.meteor/release" }}-
             - meteor_system_5_app-
       - restore_cache:
           name: Restore meteor microservice
@@ -187,6 +196,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_5_app-{{ checksum
+            "./microservices/app/.meteor/release" }}-{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
             - ~/.meteor
@@ -224,7 +234,11 @@ jobs:
           keys:
             - >-
               meteor_system_5_admin-{{ checksum
+              "./microservices/admin/.meteor/release" }}-{{ checksum
               "./microservices/admin/.meteor/versions" }}
+            - >-
+              meteor_system_5_admin-{{ checksum
+              "./microservices/admin/.meteor/release" }}-
             - meteor_system_5_admin-
       - restore_cache:
           name: Restore meteor microservice
@@ -283,6 +297,7 @@ jobs:
           name: Cache meteor system
           key: >-
             meteor_system_5_admin-{{ checksum
+            "./microservices/admin/.meteor/release" }}-{{ checksum
             "./microservices/admin/.meteor/versions" }}
           paths:
             - ~/.meteor

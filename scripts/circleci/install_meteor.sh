@@ -8,6 +8,3 @@ else
   echo "Meteor directory not found. Installing Meteor $METEOR_VERSION..."
   curl "https://install.meteor.com?release=$METEOR_VERSION" | /bin/sh
 fi
-
-# FIXME: Do this temporarily while 1.7.1 can't be installed via curl
-meteor update --release 1.8-rc.16
