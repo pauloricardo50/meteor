@@ -2,7 +2,7 @@ import * as styles from './utils/styleHelpers';
 import { LoanBankPageStyles } from './LoanBankPage';
 import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
-import { LoanBankFinancingStyles } from './LoanBankFinancing';
+import { LoanBankOfferStyles } from './LoanBankOffer';
 import { LoanBankCoverStyles } from './LoanBankCover';
 
 const stylesheet = `
@@ -22,7 +22,7 @@ const stylesheet = `
     ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}
-    ${LoanBankFinancingStyles}
+    ${LoanBankOfferStyles}
     ${LoanBankCoverStyles}
 `;
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import PDFTable from '../utils/PDFTable';
 
-type LoanBankFinancingProps = {};
+type LoanBankOfferProps = {};
 
 const loanRatesTable = () => (
   <PDFTable
@@ -41,7 +41,7 @@ const loanRatesTable = () => (
   />
 );
 
-const LoanBankFinancing = (props: LoanBankFinancingProps) => (
+const LoanBankOffer = (props: LoanBankOfferProps) => (
   <div className="loan-bank-pdf-financing">
     <PDFTable
       className="loan-bank-pdf-financing-form"
@@ -93,4 +93,4 @@ const LoanBankFinancing = (props: LoanBankFinancingProps) => (
   </div>
 );
 
-export default LoanBankFinancing;
+export default LoanBankOffer;

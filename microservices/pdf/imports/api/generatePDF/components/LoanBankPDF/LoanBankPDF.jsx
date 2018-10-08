@@ -8,7 +8,7 @@ import LoanBankBorrowers from './LoanBankBorrowers';
 import messagesFR from '../../../../../lang/fr.json';
 import LoanBankProject from './LoanBankProject';
 import LoanBankPage from './LoanBankPage';
-import LoanBankFinancing from './LoanBankFinancing';
+import LoanBankOffer from './LoanBankOffer';
 import { T } from '../../../../core/components/Translation/Translation';
 import LoanBankCover from './LoanBankCover';
 
@@ -31,8 +31,8 @@ const pages = loan => [
     title: <T id="PDF.title.borrowers" />,
   },
   {
-    content: <LoanBankFinancing key="4" />,
-    title: <T id="PDF.title.financing" />,
+    content: <LoanBankOffer key="4" />,
+    title: <T id="PDF.title.offer" />,
   },
 ];
 
