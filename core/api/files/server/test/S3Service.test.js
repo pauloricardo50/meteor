@@ -16,6 +16,14 @@ export const clearBucket = () =>
 describe('S3Service', function () {
   this.timeout(10000);
 
+  before(function () {
+    if (Meteor.settings.public.microservice !== 'admin') {
+      // When running these tests in parallel, it breaks tests
+      this.parent.pending = true;
+      this.skip();
+    }
+  });
+
   describe('API', () => {
     let json;
     let binaryData;

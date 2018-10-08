@@ -21,7 +21,6 @@ check@1.3.1
 coffeescript@1.0.17
 cultofcoders:grapher@1.3.7_4
 cultofcoders:grapher-react@0.1.3
-cultofcoders:mocha@2.4.6
 cultofcoders:mutations@0.1.1
 cultofcoders:redis-oplog@1.2.8
 dburles:factory@1.1.0
@@ -107,10 +106,7 @@ observe-sequence@1.0.16
 okgrow:analytics@3.0.5
 ordered-dict@1.1.0
 percolate:migrations@1.0.2
-practicalmeteor:chai@2.1.0_1
-practicalmeteor:loglevel@1.2.0_2
 practicalmeteor:mocha-core@1.0.1
-practicalmeteor:sinon@1.14.1_2
 promise@0.11.1
 raix:eventemitter@0.1.3
 random@1.1.0
@@ -142,7 +138,6 @@ templating-tools@1.1.2
 themeteorchef:bert@2.1.3
 tmeasday:acceptance-test-driver@0.1.0
 tmeasday:check-npm-versions@0.3.2
-tmeasday:test-reporter-helpers@0.2.1
 tracker@1.2.0
 underscore@1.0.10
 url@1.2.0

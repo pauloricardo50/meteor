@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 
 import FileService from '../FileService';
@@ -22,6 +23,14 @@ const setupBucket = () =>
 
 describe('FileService', function () {
   this.timeout(10000);
+
+  before(function () {
+    if (Meteor.settings.public.microservice !== 'admin') {
+      // When running these tests in parallel, it breaks tests
+      this.parent.pending = true;
+      this.skip();
+    }
+  });
 
   beforeEach(() => clearBucket().then(setupBucket));
 

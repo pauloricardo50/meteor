@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import Select from 'react-select';
-import AsyncSelect from 'react-select/lib/Async';
 import { shallow } from 'enzyme';
 
 import { getMountedComponent } from '../../../../../utils/testHelpers';
@@ -176,21 +175,21 @@ describe('TableFilter', () => {
       .prop('id')).to.equal('TableFilters.filterLabels.preferences.0.food');
   });
 
-  it(`renders the AsyncSelect component
+  it(`renders the Select.Async component
       when passed 'options' of type Promise`, () => {
     const filter = { path: ['name'], value: 1 };
     const wrapper = component({ data: [], options: Promise.resolve(), filter });
-    expect(wrapper.find(AsyncSelect).length).to.equal(1);
+    expect(wrapper.find(Select.Async).length).to.equal(1);
   });
 
-  it(`passes 'loadOptions' prop to AsyncSelect
+  it(`passes 'loadOptions' prop to Select.Async
       when passed 'options' of type Promise`, () => {
     const filter = { path: ['name'], value: 1 };
     const selectAsyncComponent = component({
       data: [],
       options: Promise.resolve(),
       filter,
-    }).find(AsyncSelect);
+    }).find(Select.Async);
     expect(selectAsyncComponent.prop('loadOptions')).to.be.a('function');
   });
 
@@ -202,7 +201,7 @@ describe('TableFilter', () => {
       filter: { path: ['name'], value: 1 },
     };
 
-    const asyncSelectComponent = component(props).find(AsyncSelect);
+    const asyncSelectComponent = component(props).find(Select.Async);
     const loadOptionsProp = asyncSelectComponent.prop('loadOptions');
 
     loadOptionsProp().then((result) => {

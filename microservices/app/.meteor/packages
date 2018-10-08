@@ -26,10 +26,9 @@ fourseven:scss@4.5.4
 aldeed:collection2-core
 
 # Testing
-cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
-meteortesting:mocha
+meteortesting:mocha@1.0.1
 
 
 # User Accounts
