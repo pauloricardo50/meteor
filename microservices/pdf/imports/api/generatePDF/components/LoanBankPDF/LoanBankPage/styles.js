@@ -3,7 +3,7 @@ import * as styles from '../utils/styleHelpers';
 const stylesheet = `
     .page {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
-        height: 726px;
+        height: 724px;
         width: 100%;
     }
 

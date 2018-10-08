@@ -24,7 +24,6 @@ const pages = loan => [
   {
     content: <LoanBankProject loan={loan} key="2" />,
     title: <T id="PDF.title.project" />,
-    subtitle: <T id="PDF.subtitle.project" />,
   },
   {
     content: <LoanBankBorrowers borrowers={loan.borrowers} key="3" />,
