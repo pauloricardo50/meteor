@@ -13,7 +13,6 @@ import Calculator from 'core/utils/Calculator';
 import PDFTable from '../utils/PDFTable';
 import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
 
-
 type LoanBankProjectProps = {
   loan: Object,
 };
@@ -172,8 +171,46 @@ const shouldDisplayOwnFund = ({ ownFunds, type, usageType }) =>
     return ownFund.type === type;
   }).length > 0;
 
-const shouldDisplayPostDisbursementSituation = ({ type, borrowers }) =>
-  borrowers.filter(borrower => borrower[type].length > 0).length > 0;
+const usedOwnFundsTableData = loan =>
+  Object.values(OWN_FUNDS_USAGE_TYPES).reduce(
+    (usedOwnFunds, usageType) => [
+      ...usedOwnFunds,
+      ...Object.values(OWN_FUNDS_TYPES)
+        .filter(type =>
+          ![
+            OWN_FUNDS_TYPES.BANK_FORTUNE,
+            OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+          ].includes(type))
+        .map(type => ({
+          label: (
+            <T
+              id={`PDF.projectInfos.structure.usedOwnFunds.${type}.${usageType}`}
+            />
+          ),
+          data: toMoney(Calculator.getUsedFundsOfType({ loan, type, usageType })),
+          condition:
+            Calculator.getUsedFundsOfType({ loan, type, usageType }) > 0,
+          style: {
+            textAlign: 'right',
+          },
+        })),
+    ],
+    [],
+  );
+
+const remainingFundsTableData = loan =>
+  Object.values(OWN_FUNDS_TYPES).filter(type =>
+    ![
+      OWN_FUNDS_TYPES.BANK_FORTUNE,
+      OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+    ].includes(type)).map(type => ({
+    label: (
+      <T id={`PDF.projectInfos.structure.postDisbursementSituation.${type}`} />
+    ),
+    data: toMoney(Calculator.getRemainingFundsOfType({ loan, type })),
+    condition: loan.borrowers.filter(borrower => borrower[type].length > 0).length > 0,
+    style: { textAlign: 'right' },
+  }));
 
 const getStructureRecapArray = ({
   propertyWork,
@@ -254,7 +291,7 @@ const getStructureRecapArray = ({
   },
   {
     label: <T id="PDF.projectInfos.structure.solvency" />,
-    data: <Percent value={100*Calculator.getIncomeRatio({ loan })} rounded/>,
+    data: <Percent value={100 * Calculator.getIncomeRatio({ loan })} rounded />,
     style: { textAlign: 'right' },
   },
   {
@@ -273,74 +310,14 @@ const getStructureRecapArray = ({
       loan,
       type: OWN_FUNDS_TYPES.BANK_FORTUNE,
     })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-    }),
+    condition:
+      Calculator.getUsedFundsOfType({
+        loan,
+        type: OWN_FUNDS_TYPES.BANK_FORTUNE,
+      }) !== 0,
     style: { textAlign: 'right' },
   },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.withdraw" />
-    ),
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3A.withdraw" />
-    ),
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.INSURANCE_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3B.withdraw" />
-    ),
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_3B,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.INSURANCE_3B,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.withdraw" />,
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.BANK_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.BANK_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
-    }),
-    style: { textAlign: 'right' },
-  },
+  ...usedOwnFundsTableData(loan),
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.thirdPartyFortune" />,
     data: toMoney(Calculator.getUsedFundsOfType({
@@ -350,66 +327,6 @@ const getStructureRecapArray = ({
     condition: shouldDisplayOwnFund({
       ownFunds,
       type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.usedOwnFunds.insurance2.pledge" />,
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3A.pledge" />
-    ),
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.INSURANCE_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.usedOwnFunds.insurance3B.pledge" />
-    ),
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_3B,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.INSURANCE_3B,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.usedOwnFunds.bank3A.pledge" />,
-    data: toMoney(Calculator.getUsedFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.BANK_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
-    })),
-    condition: shouldDisplayOwnFund({
-      ownFunds,
-      type: OWN_FUNDS_TYPES.BANK_3A,
-      usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
     }),
     style: { textAlign: 'right' },
   },
@@ -448,69 +365,14 @@ const getStructureRecapArray = ({
     })),
     style: { textAlign: 'right' },
   },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance2" />
-    ),
-    data: toMoney(Calculator.getRemainingFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-    })),
-    condition: shouldDisplayPostDisbursementSituation({
-      type: OWN_FUNDS_TYPES.INSURANCE_2,
-      borrowers,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance3A" />
-    ),
-    data: toMoney(Calculator.getRemainingFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_3A,
-    })),
-    condition: shouldDisplayPostDisbursementSituation({
-      type: OWN_FUNDS_TYPES.INSURANCE_3A,
-      borrowers,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.postDisbursementSituation.insurance3B" />
-    ),
-    data: toMoney(Calculator.getRemainingFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.INSURANCE_3B,
-    })),
-    condition: shouldDisplayPostDisbursementSituation({
-      type: OWN_FUNDS_TYPES.INSURANCE_3B,
-      borrowers,
-    }),
-    style: { textAlign: 'right' },
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.postDisbursementSituation.bank3A" />
-    ),
-    data: toMoney(Calculator.getRemainingFundsOfType({
-      loan,
-      type: OWN_FUNDS_TYPES.BANK_3A,
-    })),
-    condition: shouldDisplayPostDisbursementSituation({
-      type: OWN_FUNDS_TYPES.BANK_3A,
-      borrowers,
-    }),
-    style: { textAlign: 'right' },
-  },
+    ...remainingFundsTableData(loan),
   {
     label: (
       <p style={{ fontWeight: 'bold' }}>
         <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
       </p>
     ),
-    data: toMoney(Calculator.getTotalRemainingFunds({loan})),
+    data: toMoney(Calculator.getTotalRemainingFunds({ loan })),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
 ];
