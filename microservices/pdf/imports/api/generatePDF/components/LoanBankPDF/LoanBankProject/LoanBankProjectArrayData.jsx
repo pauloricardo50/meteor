@@ -10,6 +10,8 @@ import {
 } from 'core/api/constants';
 import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
 
+export const NBSP = '\u00A0';
+
 export const shouldDisplayOwnFund = ({ ownFunds, type, usageType }) =>
   ownFunds.filter((ownFund) => {
     if (usageType) {
@@ -100,6 +102,10 @@ export const structureArrayKeysData = {
   ),
 };
 
+export const EMPTY_LINE = {
+  label: NBSP,
+};
+
 export const structureArrayKeysCondition = {
   propertyWork: ({ propertyWork }) => !!propertyWork,
   pledgedOwnFunds: loan => Calculator.getTotalPledged({ loan }) > 0,
@@ -112,7 +118,7 @@ export const structureArrayKeysLabelStyle = {
 export const structureArrayData = loan =>
   structureArrayKeys.map(key =>
     (key === 'emptyLine'
-      ? { label: '\u00A0' }
+      ? EMPTY_LINE
       : {
         label: structureArrayKeysLabelStyle[key] ? (
           structureArrayKeysLabelStyle[key](<T id={`PDF.projectInfos.structure.${key}`} />)
@@ -120,7 +126,9 @@ export const structureArrayData = loan =>
           <T id={`PDF.projectInfos.structure.${key}`} />
         ),
         data: structureArrayKeysData[key](loan),
-        condition: structureArrayKeysCondition[key] ? structureArrayKeysCondition[key](loan) : true,
+        condition: structureArrayKeysCondition[key]
+          ? structureArrayKeysCondition[key](loan)
+          : true,
         style: { textAlign: 'right' },
       }));
 
@@ -155,10 +163,9 @@ export const propertyArrayKeysData = {
       {zipCode} {city}
     </span>
   ),
-  residenceType: ({
-      general: { residenceType },
-    },
-  ) => <T id={`PDF.residenceType.${residenceType}`} />,
+  residenceType: ({ general: { residenceType } }) => (
+    <T id={`PDF.residenceType.${residenceType}`} />
+  ),
   propertyType: ({
     structure: {
       property: { propertyType },
@@ -267,10 +274,12 @@ export const propertyArrayKeysStyles = {
 export const propertyArrayData = loan =>
   propertyArrayKeys.map(key =>
     (key === 'emptyLine'
-      ? { label: '\u00A0' }
+      ? EMPTY_LINE
       : {
         label: <T id={`PDF.projectInfos.property.${key}`} />,
         data: propertyArrayKeysData[key](loan),
-        condition: propertyArrayKeysCondition[key] ? propertyArrayKeysCondition[key](loan.structure.property) : true,
+        condition: propertyArrayKeysCondition[key]
+          ? propertyArrayKeysCondition[key](loan.structure.property)
+          : true,
         style: propertyArrayKeysStyles[key] || {},
       }));
