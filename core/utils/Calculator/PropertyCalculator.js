@@ -99,12 +99,6 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return (formsProgress + filesProgress) / 2;
     }
 
-    getTheoreticalMaintenance({ loan }) {
-      return (
-        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRate) / 12
-      );
-    }
-
     getMissingPropertyFields({ loan, property }) {
       const { borrowers, structure } = loan;
       const propertyToCalculateWith = property || structure.property;
