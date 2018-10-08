@@ -6,10 +6,12 @@ type PDFTableProps = {
   className: String,
 };
 
+const shouldRenderRow = condition => condition === undefined || condition;
+
 const PDFTable = ({ array, className }: PDFTableProps) => (
   <table className={className} cellSpacing="5">
     {array.map(({ label, data, condition, style }) =>
-      (condition === undefined || condition) && (
+      shouldRenderRow(condition) && (
         <tr key={label}>
           {label && <td>{label}</td>}
           {Array.isArray(data) ? (
