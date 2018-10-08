@@ -117,11 +117,11 @@ const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 const getFormatedMoneyArray = (array, negative = false) => [
   ...array.map(x => (
     <div className="money-amount">
-      {`${negative && x ? '-' : ''}${toMoney(x || 0)}`}
+      {toMoney(negative ? -x : x || 0)}
     </div>
   )),
   <div className="money-amount">
-    {`${negative ? '-' : ''}${toMoney(getArraySum(array))}`}
+    {toMoney(negative ? -getArraySum(array) : getArraySum(array))}
   </div>,
 ];
 
