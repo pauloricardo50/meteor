@@ -32,19 +32,17 @@ class PDFGeneratorService {
   generateLoanBankPDF = (loanId) => {
     const loan = adminLoan.clone({ _id: loanId }).fetchOne();
 
-    return new Promise((resolve, reject) => {
-      this.connect()
-        .then(() =>
-          this.remote.call(
-            'generatePDF',
-            { type: 'LOAN_BANK', data: { loan } },
-            (error, result) => {
-              this.remote.disconnect();
-              error ? reject(error) : resolve(result.base64);
-            },
-          ))
-        .catch(reject);
-    });
+    return this.connect().then(() =>
+      new Promise((resolve, reject) => {
+        this.remote.call(
+          'generatePDF',
+          { type: 'LOAN_BANK', data: { loan } },
+          (error, result) => {
+            this.remote.disconnect();
+            error ? reject(error) : resolve(result.base64);
+          },
+        );
+      }));
   };
 }
 
