@@ -50,23 +50,24 @@ const stylesheet = `
     .loan-bank-pdf-financing-form {
         empty-cells: show;
         width: 100%;
+        font-size: 12px
     }
 
     .loan-bank-pdf-financing-form tr {
         vertical-align: bottom;
-        height: 30px;
+        height: 24px;
         margin-bottom: 12px;
     }
 
     .loan-bank-pdf-financing-form-loan-rates {
         empty-cells: show;
         width: 100%;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .loan-bank-pdf-financing-form-loan-rates tr {
         vertical-align: bottom;
-        height: 30px;
+        height: 24px;
     }
 
 `;
