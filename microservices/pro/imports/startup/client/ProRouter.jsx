@@ -18,6 +18,7 @@ import AccountPage from 'core/components/AccountPage';
 import ProLayout from '../../client/layout';
 import messagesFR from '../../../lang/fr.json';
 import * as ROUTES from './proRoutes';
+import ProDashboardPage from '../../client/pages/ProDashboardPage';
 
 type ProRouterProps = {};
 
@@ -30,7 +31,7 @@ const ProRouter = (props: ProRouterProps) => (
     <ProLayout>
       <Switch>
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
-
+        <Route path={ROUTES.PRO_DASHBOARD_PAGE} component={ProDashboardPage} />
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
