@@ -1,12 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
-import { Loans, Borrowers } from '../..';
+import { Loans, Borrowers, Properties, Promotions } from '../..';
 import {
   TEST_BUCKET_NAME,
   S3_ENDPOINT,
   OBJECT_STORAGE_PATH,
 } from '../fileConstants';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -33,28 +34,50 @@ class S3Service {
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
   isAllowedToAccess = (key) => {
-    // Check if this user is the owner of the document
-    const keyId = key.split('/')[0];
-    const loanFound = !!Loans.findOne({
-      _id: keyId,
-      userId: Meteor.userId(),
-    });
-    const borrowerFound = !!Borrowers.findOne({
-      _id: keyId,
-      userId: Meteor.userId(),
-    });
-
     if (
       Roles.userIsInRole(Meteor.userId(), 'admin')
       || Roles.userIsInRole(Meteor.userId(), 'dev')
     ) {
       return true;
     }
-    if (!(loanFound || borrowerFound)) {
-      throw new Meteor.Error('unauthorized email');
+
+    // Check if this user is the owner of the document
+    const keyId = key.split('/')[0];
+    const loanFound = !!Loans.findOne({
+      _id: keyId,
+      userId: Meteor.userId(),
+    });
+
+    if (loanFound) {
+      return true;
     }
 
-    return true;
+    const borrowerFound = !!Borrowers.findOne({
+      _id: keyId,
+      userId: Meteor.userId(),
+    });
+
+    if (borrowerFound) {
+      return true;
+    }
+
+    const property = Properties.findOne({ _id: keyId });
+
+    if (property) {
+      if (property.category === PROPERTY_CATEGORY.USER) {
+        return property.userId === Meteor.userId();
+      }
+
+      return true;
+    }
+
+    const promotionFound = !!Promotions.findOne({ _id: keyId });
+
+    if (promotionFound) {
+      return true;
+    }
+
+    throw new Meteor.Error('unauthorized download');
   };
 
   putObject = (binaryData, Key, Metadata) =>

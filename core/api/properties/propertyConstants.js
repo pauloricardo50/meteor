@@ -77,3 +77,9 @@ export const QUALITY = {
     HIGH: 'HIGH',
   },
 };
+
+export const PROPERTY_CATEGORY = {
+  USER: 'USER',
+  PRO: 'PRO',
+  PROMOTION: 'PROMOTION',
+};

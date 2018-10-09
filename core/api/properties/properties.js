@@ -152,6 +152,12 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  category: {
+    type: String,
+    optional: true,
+    defaultValue: propertyConstants.PROPERTY_CATEGORY.USER,
+    allowedValues: Object.values(propertyConstants.PROPERTY_CATEGORY),
+  },
   value: {
     // Cost of the property
     type: SimpleSchema.Integer,
