@@ -11,3 +11,5 @@ const LotSchema = new SimpleSchema({
     max: 1000000000,
   },
 });
+
+export default LotSchema;

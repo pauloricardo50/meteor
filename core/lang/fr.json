@@ -1,4 +1,12 @@
 {
+  "PromotionPage.lots.name": "Nom",
+  "PromotionPage.lots.status": "Statut",
+  "PromotionPage.lots.lots": "Lots supplémentaires",
+  "PromotionPage.lots.loans": "Intéressés",
+
+  "PromotionPage.addCustomer": "Ajouter un client",
+  "PromotionPage.subtitle": "Promotion immobilière - {promotionLotCount} lots",
+  "Forms.status.PREPARATION": "Préparation",
   "ProDashboardPage.title": "Dashboard",
   "ProDashboardPage.promotions": "Promotions",
   "NewPromotionPage.title": "Nouvelle promotion",

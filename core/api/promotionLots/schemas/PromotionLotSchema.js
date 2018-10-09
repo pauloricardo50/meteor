@@ -6,7 +6,7 @@ const PromotionLotSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(PROMOTION_LOT_STATUS),
   },
-  propertyLinks: { type: Array, defaultValue: [] },
+  propertyLinks: { type: Array, minCount: 1, maxCount: 1 },
   'propertyLinks.$': Object,
   'propertyLinks.$._id': String,
   lotLinks: { type: Array, defaultValue: [] },

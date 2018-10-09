@@ -148,6 +148,10 @@ export const PropertySchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
+  name: {
+    type: String,
+    optional: true,
+  },
   value: {
     // Cost of the property
     type: SimpleSchema.Integer,
