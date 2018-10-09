@@ -1,4 +1,4 @@
-import { Meteor } from 'imports/core/utils/testHelpers/meteorStubs/meteor';
+import { Meteor } from 'meteor/meteor';
 import Promotions from './promotions';
 import { PROMOTION_USER_PERMISSIONS } from './promotionConstants';
 import UserService from '../users/UserService';
