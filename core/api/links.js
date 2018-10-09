@@ -7,6 +7,7 @@ import './users/reducers';
 import './tasks/links';
 
 import './properties/links';
+import './properties/reducers';
 
 import './borrowers/links';
 import './borrowers/reducers';
