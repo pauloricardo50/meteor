@@ -1,5 +1,5 @@
 export const proPromotionLotFragment = {
   status: 1,
-  properties: 1,
-  lots: 1,
+  properties: { address: 1 },
+  lots: { name: 1 },
 };
