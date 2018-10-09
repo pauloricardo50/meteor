@@ -1,4 +1,12 @@
 {
+  "PromotionsTable.name": "Nom",
+  "PromotionsTable.status": "Statut",
+  "PromotionsTable.lots": "Lots",
+  "PromotionsTable.available": "Disponible",
+  "PromotionsTable.booked": "Réservé",
+  "PromotionsTable.sold": "Vendu",
+  "PromotionsTable.loans": "Intéressés",
+
   "ProDashboardPage.addProperty": "Ajouter bien immobilier",
   "ProDashboardPage.addPromotion": "Ajouter promotion immobilière",
 

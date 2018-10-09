@@ -8,7 +8,11 @@ import {
 const PromotionSchema = new SimpleSchema({
   name: { type: String },
   type: { type: String, allowedValues: Object.values(PROMOTION_TYPES) },
-  status: { type: String, allowedValues: Object.values(PROMOTION_STATUS) },
+  status: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_STATUS),
+    defaultValue: PROMOTION_STATUS.PREPARATION,
+  },
   address1: { type: String, optional: true },
   address2: { type: String, optional: true },
   zipCode: {
