@@ -6,6 +6,7 @@ import Button from '../../Button';
 import PromotionPageHeader from './PromotionPageHeader';
 import PromotionLotsTable from './PromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
+import PromotionPageDocuments from './PromotionPageDocuments';
 
 type PromotionPageProps = {};
 
@@ -25,6 +26,7 @@ const PromotionPage = (props: PromotionPageProps) => {
           />
         )}
       </div>
+      <PromotionPageDocuments promotion={promotion} />
       <PromotionLotsTable promotion={promotion} />
     </div>
   );

@@ -74,6 +74,10 @@ hr {
   background-color: #fafafa;
 }
 
+.card1.card-hover {
+  transition: box-shadow 200ms $bezier;
+}
+
 .card1.shadow-2,
 .card1.card-hover:hover {
   box-shadow: $shadow-level-2;

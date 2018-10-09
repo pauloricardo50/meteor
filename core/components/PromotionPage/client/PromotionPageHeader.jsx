@@ -10,22 +10,19 @@ type PromotionPageHeaderProps = {};
 const PromotionPageHeader = ({
   promotion: { name, promotionLots, status, documents },
 }: PromotionPageHeaderProps) => {
-  const {
-    logos = [{ url: '/img/placeholder.png' }],
-    promotionImage = [{ url: '/img/placeholder.png' }],
-  } = documents || {};
+  const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
 
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
         <div>
-          <h2>
+          <h1>
             {name}
             &nbsp;
             {status && (
               <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
             )}
-          </h2>
+          </h1>
           <h3 className="secondary">
             <T
               id="PromotionPage.subtitle"
