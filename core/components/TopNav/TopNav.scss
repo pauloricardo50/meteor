@@ -23,17 +23,17 @@
   display: flex;
 }
 
-.top-nav .top-nav-content .logo {
+.top-nav-logo {
   display: flex;
 
   height: 64px;
-}
 
-.top-nav .top-nav-content .logo img,
-.top-nav .top-nav-content .logo .link {
-  display: flex;
+  img,
+  .link {
+    display: flex;
 
-  height: 100%;
+    height: 100%;
+  }
 }
 
 .top-nav .top-nav-content .buttons {

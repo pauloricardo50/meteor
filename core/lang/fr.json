@@ -1,4 +1,7 @@
 {
+  "ProTopNav.dashboard": "Dashboard",
+  "ProTopNav.account": "Mon compte",
+
   "Forms.purchaseType.ACQUISITION": "Acquisition",
   "Forms.purchaseType.REFINANCING": "Refinancement",
   "AppItem.title": "Hypothèque - {purchaseType}",
