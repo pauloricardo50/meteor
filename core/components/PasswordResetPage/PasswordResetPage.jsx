@@ -3,11 +3,11 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons';
 
-import TextField from 'core/components/Material/TextField';
-import Loading from 'core/components/Loading/Loading';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
-import { getUserDisplayName } from 'core/utils/userFunctions';
+import TextField from '../Material/TextField';
+import Loading from '../Loading/Loading';
+import Button from '../Button';
+import T from '../Translation';
+import { getUserDisplayName } from '../../utils/userFunctions';
 import PasswordResetPageContainer from './PasswordResetPageContainer';
 
 export const PasswordResetPage = ({

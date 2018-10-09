@@ -9,8 +9,8 @@ import {
 import { withRouter } from 'react-router-dom';
 import { Accounts } from 'meteor/accounts-base';
 
-import withMatchParam from 'core/containers/withMatchParam';
-import { getUserByPasswordResetToken } from 'core/api';
+import withMatchParam from '../../containers/withMatchParam';
+import { getUserByPasswordResetToken } from '../../api';
 
 const stateHandlers = withStateHandlers(
   { newPassword: '', newPassword2: '' },
