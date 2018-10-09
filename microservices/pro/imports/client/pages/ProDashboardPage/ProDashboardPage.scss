@@ -2,4 +2,11 @@
   padding: 16px;
   display: flex;
   flex-direction: column;
+
+  .buttons {
+    display: flex;
+    > * {
+      margin-right: 8px;
+    }
+  }
 }
