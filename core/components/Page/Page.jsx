@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
-import PageHead from 'core/components/PageHead';
 import { injectIntl } from 'react-intl';
-import T from 'core/components/Translation';
+
+import PageHead from '../PageHead';
+import T from '../Translation';
 
 const Page = ({
   id,

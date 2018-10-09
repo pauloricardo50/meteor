@@ -3,7 +3,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import { PropertyAdder } from 'core/components/PropertyForm';
-import Page from '../../components/Page';
+import Page from 'core/components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
 
 const PropertiesPage = ({ loan: { _id: loanId, properties } }) => (
