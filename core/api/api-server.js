@@ -27,6 +27,7 @@ import './properties/queries/exposures';
 import './resolvers/exposures';
 import './tasks/queries/exposures';
 import './users/queries/exposures';
+import './promotions/queries/exposures';
 
 // Server-side Reducers
 import './borrowers/server/serverReducers';
