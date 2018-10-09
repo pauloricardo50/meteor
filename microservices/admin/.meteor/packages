@@ -30,7 +30,7 @@ aldeed:collection2-core
 # Testing
 dburles:factory
 xolvio:cleaner
-meteortesting:mocha
+meteortesting:mocha@1.0.1
 tmeasday:acceptance-test-driver
 
 
