@@ -22,7 +22,7 @@ import {
 import { GENDER } from '../../../core/api/constants';
 import { FAKE_USER } from './testFactories/fakes';
 
-describe.only('GeneratePDFService', () => {
+describe('GeneratePDFService', () => {
   beforeEach(() => {
     resetDatabase();
   });

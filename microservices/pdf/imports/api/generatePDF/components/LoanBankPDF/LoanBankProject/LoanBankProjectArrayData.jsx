@@ -98,7 +98,7 @@ export const structureArrayKeysData = {
   maintenance: loan =>
     toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
   solvency: loan => (
-    <Percent value={100 * Calculator.getIncomeRatio({ loan })} rounded />
+    <Percent value={Calculator.getIncomeRatio({ loan })} rounded />
   ),
 };
 

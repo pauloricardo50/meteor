@@ -248,15 +248,15 @@ describe('LoanCalculator', () => {
       expect(Calculator.getIncomeRatio({
         loan: {
           structure: {
-            wantedLoan: 1920000,
-            property: { value: 2400000 },
+            wantedLoan: 800000,
+            property: { value: 1000000 },
             propertyWork: 0,
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
-          borrowers: [{ salary: 1 / 12 }], // Use 1/12 salary to cancel monthly division and get a round number for this test
+          borrowers: [{ salary: 180000 }],
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
-      })).to.equal(10000);
+      })).to.be.within(0.33, 0.34);
     });
   });
 
