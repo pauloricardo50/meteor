@@ -1,0 +1,7 @@
+export const LOTS_COLLECTION = 'lots';
+
+export const LOT_TYPES = {
+  PARKING_CAR: 'PARKING_CAR',
+  PARKING_MOTORBIKE: 'PARKING_MOTORBIKE',
+  BASEMENT: 'BASEMENT',
+};

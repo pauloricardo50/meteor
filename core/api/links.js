@@ -15,3 +15,6 @@ import './offers/links';
 
 import './promotions/reducers';
 import './promotions/links';
+
+import './promotionLots/reducers';
+import './promotionLots/links';
