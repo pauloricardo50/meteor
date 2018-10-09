@@ -1,5 +1,6 @@
 {
   "public": {
+    "microservice": "www",
     "environment": "dev",
     "features": {
       "LITE_VERSION": true,

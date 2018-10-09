@@ -2,31 +2,29 @@
 
 # Put this at the very top
 cultofcoders:redis-oplog
-disable-oplog
+disable-oplog@1.0.7
 
 meteor-base@1.4.0             # Packages every Meteor app needs to have
 mobile-experience@1.0.5       # Packages for a great mobile UX
-mongo@1.6.0-rc18.16                   # The database Meteor supports right now
+mongo@1.6.0                   # The database Meteor supports right now
 static-html             # Define static page content in .html files
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.2.0                 # Meteor's client-side reactive programming library
-standard-minifier-js@2.4.0-rc18.16    # JS minifier run for production mode
+standard-minifier-js@2.4.0    # JS minifier run for production mode
 es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
-ecmascript@0.12.0-rc18.16              # Enable ECMAScript2015+ syntax in app code
-shell-server@0.4.0-rc18.16            # Server-side component of the `meteor shell` command
+ecmascript@0.12.0              # Enable ECMAScript2015+ syntax in app code
+shell-server@0.4.0            # Server-side component of the `meteor shell` command
 server-render@0.3.1
 
 
 # Styles
 fourseven:scss@4.5.0
 themeteorchef:bert
-juliancwirko:postcss
 
 # Put this before factory
 aldeed:collection2-core
 
 # Testing
-cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
 meteortesting:mocha
@@ -53,4 +51,5 @@ meteorhacks:kadira
 okgrow:analytics
 aldeed:schema-index
 aldeed:schema-deny
-dynamic-import@0.5.0-rc18.16
+dynamic-import@0.5.0
+qualia:profile

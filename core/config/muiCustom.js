@@ -95,7 +95,7 @@ const createTheme = () =>
       },
     },
     typography: {
-      fontFamily: 'Eina04-Regular',
+      fontFamily: 'Eina04-Regular, Helvetica',
       htmlFontSize: fontSize(),
       letterSpacing: '0.048em',
       fontWeightRegular: 400,

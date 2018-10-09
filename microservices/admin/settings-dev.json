@@ -1,5 +1,6 @@
 {
   "public": {
+    "microservice": "admin",
     "environment": "dev",
     "analyticsSettings": {
       "Mixpanel": {
@@ -26,8 +27,5 @@
   "exoscale": {
     "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
     "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
-  },
-  "redisOplog": {
-    "debug": false
   }
 }

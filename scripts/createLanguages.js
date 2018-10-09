@@ -7,14 +7,14 @@ const fs = require('fs');
 const config = {
   // Where the lang directory is stored with the complete list of strings
   // for each language
-  pathToLangDir: '../core',
+  pathToLangDir: __dirname + '/../core',
   // An array of languages to look for
   languages: ['fr'],
   // The list of directories to scan and create language files for
   directories: [
     {
       id: 'app',
-      path: '../microservices/app',
+      path: __dirname + '/../microservices/app',
       exceptions: [
         'AdminFilesTab',
         'AmortizationChart',
@@ -43,12 +43,12 @@ const config = {
     },
     {
       id: 'www',
-      path: '../microservices/www',
+      path: __dirname + '/../microservices/www',
       exceptions: ['Start2Form', 'Forms', 'offer', 'Widget1'],
     },
     {
       id: 'admin',
-      path: '../microservices/admin',
+      path: __dirname + '/../microservices/admin',
       exceptions: [
         'AdminFilesTab',
         'ArrayInput',

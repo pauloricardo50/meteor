@@ -5,9 +5,9 @@ import { shallow } from 'core/utils/testHelpers/enzyme';
 import { Link } from 'react-router-dom';
 
 import { STEPS } from 'core/api/constants';
+import BorrowersSummary from 'core/components/BorrowersSummary';
 import LoanSummary from '../LoanSummary';
 import LoanSummaryColumns from '../LoanSummaryColumns';
-import BorrowersSummary from '../../BorrowersSummary';
 
 const createdAt = new Date();
 const updatedAt = new Date();

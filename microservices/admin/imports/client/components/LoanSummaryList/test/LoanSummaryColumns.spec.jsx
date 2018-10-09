@@ -22,7 +22,7 @@ const loan = {
   },
 };
 
-describe('LoanSummaryColumns />', () => {
+describe('<LoanSummaryColumns />', () => {
   const loanSummaryColumnsDetails = getLoanSummaryColumns(loan);
 
   it('renders the correct number of LoanSummaryColumn with correct props', () => {
@@ -36,6 +36,5 @@ describe('LoanSummaryColumns />', () => {
 
     expect(loanSummaryColumnsArray).to.have.length(expectedNbOfColumns);
     expect(firstLoanSummaryColumn.prop('translationId')).to.equal(loanSummaryColumnsDetails[0].translationId);
-    expect(firstLoanSummaryColumn.prop('content')).to.equal(loanSummaryColumnsDetails[0].content);
   });
 });
