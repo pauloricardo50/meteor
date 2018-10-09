@@ -1,6 +1,6 @@
 import PromotionOptions from '.';
 
-import { PromotionLots, Lots } from '..';
+import { PromotionLots, Lots, Loans } from '..';
 
 PromotionOptions.addLinks({
   promotionLots: {
@@ -14,5 +14,9 @@ PromotionOptions.addLinks({
     collection: Lots,
     type: 'many',
     metadata: true,
+  },
+  loans: {
+    collection: Loans,
+    inversedBy: 'promotionOptions',
   },
 });
