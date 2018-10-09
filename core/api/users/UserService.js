@@ -4,6 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import ServerEventService from '../events/server/ServerEventService';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '.';
+import Loans from '../loans';
 
 class UserService {
   createUser = ({ options, role }) => {
@@ -72,6 +73,14 @@ class UserService {
     );
 
   testCreateUser = ({ user }) => Users.insert(user);
+
+  hasPromotion = ({ userId, promotionId }) => {
+    const loans = Loans.find({ userId }).fetch();
+    return (
+      loans.filter(({ promotionLinks: { _id } }) => _id === promotionId)
+        .length > 0
+    );
+  };
 }
 
 export default new UserService();

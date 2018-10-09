@@ -22,3 +22,11 @@ export const promotionRemove = new Method({
     promotionId: String,
   },
 });
+
+export const inviteUserToPromotion = new Method({
+  name: 'inviteUserToPromotion',
+  params: {
+    promotionId: String,
+    userId: String,
+  },
+});

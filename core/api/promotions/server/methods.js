@@ -5,6 +5,7 @@ import {
   promotionInsert,
   promotionUpdate,
   promotionRemove,
+  inviteUserToPromotion,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -20,4 +21,9 @@ promotionUpdate.setHandler(({ userId }, { promotionId, object }) => {
 promotionRemove.setHandler(({ userId }, { promotionId }) => {
   SecurityService.checkUserIsPro(userId);
   return PromotionService.remove(promotionId);
+});
+
+inviteUserToPromotion.setHandler(({ userId }, { userId: invitedUserId, promotionId }) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionService.inviteUser({ promotionId, userId: invitedUserId });
 });
