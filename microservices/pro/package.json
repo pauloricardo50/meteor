@@ -2,6 +2,7 @@
   "name": "pro",
   "private": true,
   "scripts": {
+    "prestart": "cd ../.. && npm run lang -- pro",
     "start": "meteor --settings settings-dev.json --port 4100",
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 4110"
   },
