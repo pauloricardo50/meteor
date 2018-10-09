@@ -2,14 +2,17 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
+import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { testCreateUser } from 'core/api';
-import { shallow } from 'core/utils/testHelpers/enzyme';
+import { testCreateUser } from '../../../api';
+import {
+  shallow,
+  getMountedComponent,
+  pollUntilReady,
+} from '../../../utils/testHelpers';
+import Loading from '../../Loading/Loading';
 import HOCPasswordResetPage, { PasswordResetPage } from '../PasswordResetPage';
-import getMountedComponent from '../../../../core/utils/testHelpers/getMountedComponent';
-import pollUntilReady from '../../../../core/utils/testHelpers/pollUntilReady';
-import Loading from '../../../../core/components/Loading/Loading';
 
 describe('PasswordResetPage', () => {
   let props;
@@ -20,6 +23,12 @@ describe('PasswordResetPage', () => {
       withRouter: true,
     });
   const shallowComponent = () => shallow(<PasswordResetPage {...props} />);
+
+  before(function () {
+    if (!Meteor.isClient) {
+      this.skip();
+    }
+  });
 
   beforeEach(() => {
     resetDatabase();
