@@ -5,3 +5,7 @@ export const PROMOTION_LOT_STATUS = {
   BOOKED: 'BOOKED',
   SOLD: 'SOLD',
 };
+
+export const PROMOTION_LOT_QUERIES = {
+  PRO_PROMOTION_LOT: 'PRO_PROMOTION_LOT',
+};
