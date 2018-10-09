@@ -12,3 +12,6 @@ import './borrowers/links';
 import './borrowers/reducers';
 
 import './offers/links';
+
+import './promotions/reducers';
+import './promotions/links';
