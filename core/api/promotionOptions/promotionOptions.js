@@ -1,9 +1,9 @@
 import { Mongo } from 'meteor/mongo';
 
 import PromotionOptionSchema from './schemas/PromotionOptionSchema';
-import { PROMOTION_OPTION_COLLECTION } from './promotionOptionConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptionConstants';
 
-const PromotionOptions = new Mongo.Collection(PROMOTION_OPTION_COLLECTION);
+const PromotionOptions = new Mongo.Collection(PROMOTION_OPTIONS_COLLECTION);
 
 PromotionOptions.deny({
   insert: () => true,

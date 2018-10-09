@@ -1,9 +1,9 @@
 import { Mongo } from 'meteor/mongo';
 
 import PromotionLotSchema from './schemas/PromotionLotSchema';
-import { PROMOTION_LOT_COLLECTION } from './promotionLotConstants';
+import { PROMOTION_LOTS_COLLECTION } from './promotionLotConstants';
 
-const PromotionLots = new Mongo.Collection(PROMOTION_LOT_COLLECTION);
+const PromotionLots = new Mongo.Collection(PROMOTION_LOTS_COLLECTION);
 
 PromotionLots.deny({
   insert: () => true,
