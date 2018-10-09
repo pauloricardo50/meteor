@@ -1,14 +1,18 @@
 import Lots from '.';
 
-import { Promotions, PromotionLots } from '..';
+import { Promotions, PromotionLots, PromotionOptions } from '..';
 
 Lots.addLinks({
   promotions: {
     collection: Promotions,
     inversedBy: 'lots',
   },
-  PromotionLots: {
+  promotionLots: {
     collection: PromotionLots,
     inversedBy: 'lots',
+  },
+  promotionOptions: {
+    collection: PromotionOptions,
+    inversedBy: 'lotsOverride',
   },
 });
