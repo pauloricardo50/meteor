@@ -86,7 +86,14 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
 // This method needs to exist as its being listened to in EmailListeners
 submitContactForm.setHandler(() => null);
 
-addUserToDoc.setHandler((context, { docId, collection, options, userId }) =>
+addUserToDoc.setHandler(({ userId }, { docId, collection, options, userId: newUserId }) => {
+  const doc = Mongo.Collection.get(collection).findOne(docId);
+  try {
+    SecurityService.checkUserIsAdmin(userId);
+  } catch (error) {
+    SecurityService.checkOwnership(doc);
+  }
   Mongo.Collection.get(collection).update(docId, {
-    userLinks: { $push: { _id: userId, ...options } },
-  }));
+    userLinks: { $push: { _id: newUserId, ...options } },
+  });
+});
