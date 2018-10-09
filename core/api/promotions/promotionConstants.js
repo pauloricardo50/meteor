@@ -1,0 +1,18 @@
+export const PROMOTIONS_COLLECTION = 'promotions';
+
+export const PROMOTION_TYPES = {
+  CREDIT: 'CREDIT',
+  SHARE: 'SHARE',
+};
+
+export const PROMOTION_STATUS = {
+  CANCELLED: 'CANCELLED',
+  FINISHED: 'FINISHED',
+  OPEN: 'OPEN',
+  PREPARATION: 'PREPARATION',
+};
+
+export const PROMOTION_USER_PERMISSIONS = {
+  MODIFY: 'MODIFY',
+  READ: 'READ',
+};

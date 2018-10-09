@@ -1,3 +1,4 @@
+import { addressReducer } from '../reducers';
 import Borrowers from './borrowers';
 
 Borrowers.addReducers({
@@ -9,4 +10,5 @@ Borrowers.addReducers({
     reduce: ({ firstName, lastName }) =>
       [firstName, lastName].filter(x => x).join(' '),
   },
+  ...addressReducer,
 });

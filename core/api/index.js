@@ -10,6 +10,10 @@ export { default as Offers } from './offers';
 export { default as Properties } from './properties';
 export { default as Users } from './users';
 export { default as Tasks } from './tasks';
+export { default as Promotions } from './promotions';
+export { default as PromotionOptions } from './promotionOptions';
+export { default as PromotionLots } from './promotionLots';
+export { default as Lots } from './lots';
 
 export { default as SecurityService } from './security';
 export * from './methods';

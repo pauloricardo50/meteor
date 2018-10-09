@@ -7,6 +7,7 @@ import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
+import promotionSchema from './promotionSchema';
 import {
   contactsSchema,
   borrowerIdsSchema,
@@ -33,6 +34,7 @@ const LoanSchema = new SimpleSchema({
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
+  ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,
