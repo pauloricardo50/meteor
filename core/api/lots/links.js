@@ -13,6 +13,6 @@ Lots.addLinks({
   },
   promotionOptions: {
     collection: PromotionOptions,
-    inversedBy: 'lotsOverride',
+    inversedBy: 'lots',
   },
 });

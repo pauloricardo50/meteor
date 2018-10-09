@@ -1,3 +1,2 @@
-// export * from './methodDefinitions';
-// export * from './queries/types';
+export * from './methodDefinitions';
 export { default } from './promotions';
