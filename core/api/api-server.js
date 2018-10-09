@@ -28,6 +28,7 @@ import './resolvers/exposures';
 import './tasks/queries/exposures';
 import './users/queries/exposures';
 import './promotions/queries/exposures';
+import './promotionLots/queries/exposures';
 
 // Server-side Reducers
 import './borrowers/server/serverReducers';
