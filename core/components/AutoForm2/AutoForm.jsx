@@ -22,16 +22,27 @@ const determineComponentFromProps = (props) => {
   return false;
 };
 
-export const CustomAutoField = connectField(
-  (props) => {
-    const Component = determineComponentFromProps(props) || AutoField;
-    return <Component {...props} label={<T id={`Forms.${props.name}`} />} />;
-  },
-  { includeInChain: false },
-);
+export const CustomAutoField = ({ labels } = {}) =>
+  connectField(
+    (props) => {
+      const Component = determineComponentFromProps(props) || AutoField;
+      const label = labels && labels[props.name];
+      return (
+        <Component
+          {...props}
+          label={label || <T id={`Forms.${props.name}`} />}
+        />
+      );
+    },
+    { includeInChain: false },
+  );
 
-const CustomAutoForm = props => (
-  <AutoForm {...props} autoField={CustomAutoField} />
+const CustomAutoForm = ({ autoFieldProps, ...props }) => (
+  <AutoForm
+    {...props}
+    autoField={CustomAutoField(autoFieldProps)}
+    custom="yooo"
+  />
 );
 
 export default CustomAutoForm;

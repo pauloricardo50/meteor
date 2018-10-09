@@ -12,9 +12,9 @@ const makeMapPromotion = history => ({
   _id,
   name,
   status,
-  soldLots,
-  bookedLots,
-  availableLots,
+  soldPromotionLots,
+  bookedPromotionLots,
+  availablePromotionLots,
   promotionLots,
   loans,
 }) => ({
@@ -23,12 +23,13 @@ const makeMapPromotion = history => ({
     name,
     status,
     promotionLots.length,
-    availableLots.length,
-    bookedLots.length,
-    soldLots.length,
+    availablePromotionLots.length,
+    bookedPromotionLots.length,
+    soldPromotionLots.length,
     loans.length,
   ],
-  handleClick: history.push(createRoute(PRO_PROMOTION_PAGE, { promotionId: _id })),
+  handleClick: () =>
+    history.push(createRoute(PRO_PROMOTION_PAGE, { promotionId: _id })),
 });
 
 const columnOptions = [
