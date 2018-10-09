@@ -6,22 +6,18 @@ import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import ProLayoutContainer from './ProLayoutContainer';
 import ProTopNav from './ProTopNav';
 
-const getRedirect = () => {};
-
 type ProLayoutProps = {
   children: React.Node,
 };
 
-const ProLayout = ({ children, ...props }: ProLayoutProps) => {
-  const redirect = getRedirect();
-
+const ProLayout = ({ children, redirect, ...props }: ProLayoutProps) => {
   if (redirect) {
     return <Redirect to={redirect} />;
   }
 
   return (
     <div className="pro-layout">
-      <ProTopNav />
+      <ProTopNav currentUser={props.currentUser} />
       <LayoutErrorBoundary>
         <div className="pro-layout-content">
           {React.cloneElement(children, props)}

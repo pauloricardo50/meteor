@@ -31,7 +31,6 @@ const ProRouter = (props: ProRouterProps) => (
     <ProLayout>
       <Switch>
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
-        <Route path={ROUTES.PRO_DASHBOARD_PAGE} component={ProDashboardPage} />
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}
@@ -45,6 +44,7 @@ const ProRouter = (props: ProRouterProps) => (
           path={ROUTES.EMAIL_VERIFICATION_PAGE}
           component={EmailVerificationPage}
         />
+        <Route path={ROUTES.PRO_DASHBOARD_PAGE} component={ProDashboardPage} />
         <Route exact path={IMPERSONATE_ROUTE} component={ImpersonatePage} />
         <Route component={NotFound} />
       </Switch>
