@@ -37,7 +37,7 @@ tmeasday:acceptance-test-driver
 # User Accounts
 alanning:roles                  # Easy role management
 accounts-password@1.5.1
-
+epotek:accounts-ui
 email@1.2.3
 
 
@@ -65,7 +65,6 @@ dynamic-import@0.5.0
 dburles:google-maps
 meteorhacks:kadira
 softwarerero:accounts-t9n
-std:accounts-ui
 okgrow:analytics
 
 

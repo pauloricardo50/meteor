@@ -1,4 +1,4 @@
-import { Accounts as AccountsUI } from 'meteor/std:accounts-ui';
+import { Accounts as AccountsUI } from 'meteor/epotek:accounts-ui';
 
 AccountsUI.ui.config({
   passwordSignupFields: 'EMAIL_ONLY',
