@@ -3,10 +3,10 @@ export const proPromotionFragment = {
   type: 1,
   status: 1,
   address: 1,
-  properties: 1,
-  lots: 1,
-  promotionLots: 1,
-  users: 1,
+  properties: { address: 1 },
+  lots: { name: 1 },
+  promotionLots: { _id: 1 },
+  users: { name: 1 },
 };
 
 export const proPromotionsFragment = {
