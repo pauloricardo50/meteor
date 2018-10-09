@@ -75,12 +75,21 @@ const config = {
     {
       id: 'pro',
       path: __dirname + '/../microservices/pro',
-      exceptions: [],
+      exceptions: [
+        'collections',
+        'ConfirmMethod',
+        'ContactButton',
+        'files',
+        'Forms',
+        'Impersonation',
+        'LoginPage',
+        'Uploader',
+      ],
     },
     {
       id: 'www',
       path: __dirname + '/../microservices/www',
-      exceptions: ['Start2Form', 'Forms', 'offer', 'Widget1'],
+      exceptions: ['Forms', 'offer', 'Start2Form', 'Widget1'],
     },
   ],
   // List of strings that don't have a component file associated to them, so
