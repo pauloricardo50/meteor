@@ -11,5 +11,6 @@ export * from '../email/methodDefinitions';
 export * from '../PDFGenerator/methodDefinitions';
 export * from '../promotions/methodDefinitions';
 export * from '../lots/methodDefinitions';
+export * from '../promotionLots/methodDefinitions';
 
 export * from './methodDefinitions';
