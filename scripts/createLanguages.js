@@ -42,6 +42,7 @@ const config = {
       id: 'app',
       path: __dirname + '/../microservices/app',
       exceptions: [
+        'AccountPage',
         'AdminFilesTab',
         'AmortizationChart',
         'ArrayInput',
@@ -59,6 +60,7 @@ const config = {
         'LoginPage',
         'Microlocation',
         'offer',
+        'PasswordChange',
         'PasswordResetpage',
         'PropertyForm',
         'StatusIconTooltip',
@@ -77,6 +79,7 @@ const config = {
       id: 'pro',
       path: __dirname + '/../microservices/pro',
       exceptions: [
+        'AccountPage',
         'collections',
         'ConfirmMethod',
         'ContactButton',
@@ -84,6 +87,7 @@ const config = {
         'Forms',
         'Impersonation',
         'LoginPage',
+        'PasswordChange',
         'PasswordResetpage',
         'Uploader',
       ],
