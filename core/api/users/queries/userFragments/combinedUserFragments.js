@@ -32,4 +32,6 @@ export const appUserFragment = {
 export const proUserFragment = {
   ...fullUserFragment,
   assignedEmployee: simpleUserFragment,
+  promotions: { name: 1 },
+  properties: { address: 1 },
 };

@@ -1,4 +1,4 @@
-import query from './appUser';
+import query from './proUser';
 
 query.expose({
   firewall() {
