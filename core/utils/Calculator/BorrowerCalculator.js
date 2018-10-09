@@ -73,14 +73,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getBorrowerFilesProgress({ loan, borrowers }) {
-      return arrayify(borrowers).reduce((total, borrower, index, array) => (
-        total
+      return arrayify(borrowers).reduce(
+        (total, borrower, index, array) =>
+          total
           + filesPercent({
-            fileArray: getBorrowerDocuments({ loan, id: borrower._id }),
+            fileArray: getBorrowerDocuments({ loan, id: borrower._id }, this),
             doc: borrower,
           })
-            / array.length
-      ), 0);
+            / array.length,
+        0,
+      );
     }
 
     isTypeWithArrayValues = type =>
@@ -158,10 +160,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           ...missingIds,
           ...getMissingDocumentIds({
             doc: borrower,
-            fileArray: getBorrowerDocuments({
-              loan,
-              id: borrower._id,
-            }),
+            fileArray: getBorrowerDocuments({ loan, id: borrower._id }, this),
           }),
         ],
         [],

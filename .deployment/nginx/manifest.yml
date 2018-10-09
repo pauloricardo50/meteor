@@ -1,0 +1,19 @@
+applications:
+  - name: e-potek-nginx
+    memory: 512M
+    instances: 1
+    buildpack: 'https://github.com/cloudfoundry/staticfile-buildpack.git'
+    routes:
+      - route: 'app.staging.e-potek.ch'
+      - route: 'admin.staging.e-potek.ch'
+      - route: 'www.staging.e-potek.ch'
+      - route: 'pdf.staging.e-potek.ch'
+      - route: 'app.e-potek.ch'
+      - route: 'admin.e-potek.ch'
+      - route: 'www.e-potek.ch'
+      - route: 'pdf.e-potek.ch'
+      - route: 'kadira.e-potek.ch'
+      - route: '*.e-potek.ch'
+      - route: '*.staging.e-potek.ch'
+    env:
+      FORCE_HTTPS: true

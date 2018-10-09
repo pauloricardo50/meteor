@@ -12,6 +12,7 @@ export const APPLICATIONS = {
   APP: 'app',
   ADMIN: 'admin',
   WWW: 'www',
+  PDF: 'pdf',
 };
 
 export const SERVICES = {
@@ -20,6 +21,7 @@ export const SERVICES = {
 };
 
 export const APP_CONFIGS = {
+  MB64_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB64, instances: 1 },
   MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
   MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
   MB1024_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 1 },
@@ -32,12 +34,14 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
     services: [SERVICES.MONGODB, SERVICES.REDIS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
+    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
   },
 };
 
@@ -72,6 +76,7 @@ export const APP_SMOKE_TEST_FILES = {
   [APPLICATIONS.APP]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
+  [APPLICATIONS.PDF]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
 };
 
 export const APP_ENV_VARIABLES = {
@@ -79,10 +84,12 @@ export const APP_ENV_VARIABLES = {
     [APPLICATIONS.APP]: {},
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
+    [APPLICATIONS.PDF]: {},
   },
   [ENVIRONMENT.PRODUCTION]: {
     [APPLICATIONS.APP]: {},
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
+    [APPLICATIONS.PDF]: {},
   },
 };

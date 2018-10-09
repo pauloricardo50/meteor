@@ -18,7 +18,8 @@
     "subdomains": {
       "www": "https://www.e-potek.ch",
       "app": "https://app.e-potek.ch",
-      "admin": "https://admin.e-potek.ch"
+      "admin": "https://admin.e-potek.ch",
+      "pdf": "https://pdf.staging.e-potek.ch"
     }
   },
   "mandrill": {

@@ -234,7 +234,6 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
     {
       title: true,
       label: 'Recap.fortune',
-      hide: !(realEstateFortune && insuranceFortune),
     },
     {
       label: 'Recap.bankFortune',

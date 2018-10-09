@@ -54,11 +54,15 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     }
 
     getPropAndWork({ loan }) {
-      const propertyValue = this.selectPropertyValue({ loan });
+      const propertyValue = this.getPropertyValue({ loan });
       const propertyWork = this.makeSelectStructureKey('propertyWork')({
         loan,
       });
       return super.getPropAndWork({ propertyValue, propertyWork });
+    }
+
+    getPropertyWork({ loan }) {
+      return this.selectPropertyWork({ loan });
     }
 
     getPropertyFilesProgress({ loan, property }) {
@@ -95,12 +99,6 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return (formsProgress + filesProgress) / 2;
     }
 
-    getTheoreticalMaintenance({ loan }) {
-      return (
-        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRatio) / 12
-      );
-    }
-
     getMissingPropertyFields({ loan, property }) {
       const { borrowers, structure } = loan;
       const propertyToCalculateWith = property || structure.property;
@@ -133,6 +131,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
           id: propertyToCalculateWith._id,
         }),
       });
+    }
+
+    getPropertyValue({ loan }) {
+      return loan.structure.propertyValue || this.selectPropertyValue({ loan });
     }
   };
 
