@@ -1,6 +1,6 @@
 import Promotions from '.';
 
-import { Properties, Lots, PromotionLots } from '..';
+import { Properties, Lots, PromotionLots, Users } from '..';
 
 Promotions.addLinks({
   properties: {
@@ -18,6 +18,12 @@ Promotions.addLinks({
   promotionLots: {
     field: 'promotionLotLinks',
     collection: PromotionLots,
+    type: 'many',
+    metadata: true,
+  },
+  users: {
+    field: 'userLinks',
+    collection: Users,
     type: 'many',
     metadata: true,
   },

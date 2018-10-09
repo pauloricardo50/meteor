@@ -1,5 +1,9 @@
 import SimpleSchema from 'simpl-schema';
-import { PROMOTION_TYPES, PROMOTION_STATUS } from '../promotionConstants';
+import {
+  PROMOTION_TYPES,
+  PROMOTION_STATUS,
+  PROMOTION_USER_PERMISSIONS,
+} from '../promotionConstants';
 
 const PromotionSchema = new SimpleSchema({
   name: { type: String },
@@ -25,6 +29,12 @@ const PromotionSchema = new SimpleSchema({
   promotionLotLinks: [Object],
   'promotionLotLinks.$._id': String,
   'promotionLotLinks.$.attributedTo': { type: String, optional: true },
+  userLinks: [Object],
+  'userLinks.$._id': String,
+  'userLinks.$.permissions': {
+    type: String,
+    allowedValues: Object.values(PROMOTION_USER_PERMISSIONS),
+  },
 });
 
 export default PromotionSchema;
