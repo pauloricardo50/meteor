@@ -222,7 +222,7 @@ describe('LoanCalculator', () => {
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
         },
-      })).to.equal(5000);
+      })).to.equal(6000);
     });
 
     it('uses the provided theoretical rate', () => {
@@ -239,7 +239,7 @@ describe('LoanCalculator', () => {
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
         },
-      })).to.equal(1800);
+      })).to.equal(2800);
     });
   });
 
