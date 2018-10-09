@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 
 import PromotionLotSchema from './schemas/PromotionLotSchema';
-import { PROMOTION_LOT_COLLECTION } from './promotionConstants';
+import { PROMOTION_LOT_COLLECTION } from './promotionLotConstants';
 
 const PromotionLots = new Mongo.Collection(PROMOTION_LOT_COLLECTION);
 

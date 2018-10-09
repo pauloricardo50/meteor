@@ -18,3 +18,6 @@ import './promotions/links';
 
 import './promotionLots/reducers';
 import './promotionLots/links';
+
+import './promotionOptions/reducers';
+import './promotionOptions/links';
