@@ -12,6 +12,11 @@ export class PromotionService {
         },
       ],
     });
+
+  update = ({ promotionId, object, operator = '$set' }) =>
+    Promotions.update(promotionId, { [operator]: object });
+
+  remove = ({ promotionId }) => Promotions.remove(promotionId);
 }
 
 export default new PromotionService();

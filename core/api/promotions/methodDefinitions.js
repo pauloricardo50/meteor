@@ -7,3 +7,18 @@ export const promotionInsert = new Method({
     promotion: Object,
   },
 });
+
+export const promotionUpdate = new Method({
+  name: 'promotionUpdate',
+  params: {
+    promotionId: String,
+    object: Object,
+  },
+});
+
+export const promotionRemove = new Method({
+  name: 'promotionRemove',
+  params: {
+    promotionId: String,
+  },
+});

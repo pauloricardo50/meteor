@@ -45,5 +45,6 @@ Loans.addLinks({
     collection: PromotionOptions,
     type: 'many',
     metadata: true,
+    autoremove: true,
   },
 });

@@ -8,18 +8,21 @@ Promotions.addLinks({
     collection: Properties,
     type: 'many',
     metadata: true,
+    autoremove: true,
   },
   lots: {
     field: 'lotLinks',
     collection: Lots,
     type: 'many',
     metadata: true,
+    autoremove: true,
   },
   promotionLots: {
     field: 'promotionLotLinks',
     collection: PromotionLots,
     type: 'many',
     metadata: true,
+    autoremove: true,
   },
   users: {
     field: 'userLinks',
