@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import T from 'core/components/Translation';
-import Page from '../../components/Page';
+import T from '../Translation';
+import Page from '../Page';
 import PasswordChange from './PasswordChange';
-import AccountResetter from '../../../core/components/AccountResetter/AccountResetter';
+import AccountResetter from '../AccountResetter/AccountResetter';
 
 const styles = {
   section: {

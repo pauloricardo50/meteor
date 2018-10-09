@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 
-import TextField from 'core/components/Material/TextField';
-import Button from 'core/components/Button';
-
-import T from 'core/components/Translation';
-import DialogSimple from 'core/components/DialogSimple';
+import TextField from '../Material/TextField';
+import Button from '../Button';
+import T from '../Translation';
+import DialogSimple from '../DialogSimple';
 
 const styles = {
   div: {
