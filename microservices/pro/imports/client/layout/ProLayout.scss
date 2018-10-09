@@ -1,0 +1,50 @@
+.pro-layout {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    margin-top: $top-nav-height;
+  }
+}
+
+.pro-top-nav {
+  position: fixed;
+  background-color: #fff;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  padding-left: 8px;
+  padding-right: 4px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+
+  .left,
+  .right {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  &-link {
+    border-radius: 4px;
+    align-self: stretch;
+    margin: 8px 4px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $body-text;
+    transition: background-color 200ms $bezier, color 200ms $bezier,
+      box-shadow 200ms $bezier;
+
+    &:hover {
+      background-color: $primary;
+      color: white;
+      box-shadow: $shadow-level-2;
+    }
+  }
+}

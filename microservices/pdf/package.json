@@ -11,6 +11,7 @@
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.54",
     "@fortawesome/fontawesome-svg-core": "^1.2.0",
+    "@fortawesome/pro-light-svg-icons": "^5.3.1",
     "@material-ui/core": "^1.2.0",
     "@material-ui/icons": "^1.1.0",
     "antd": "^3.8.1",
@@ -79,6 +80,7 @@
     "babel-eslint": "^8.2.3",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-preset-meteor": "^7.1.2",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -94,6 +96,7 @@
     "eslint-plugin-react": "^7.8.2",
     "flow-bin": "^0.76.0",
     "jsdom": "^11.12.0",
+    "meteor-babel": "^7.1.2",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.17.0",
     "mocha-multi-reporters": "^1.1.7",

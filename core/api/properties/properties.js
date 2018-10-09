@@ -190,12 +190,6 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-
-  address: {
-    // For condensed, google places addresses
-    type: String,
-    optional: true,
-  },
   address1: {
     type: String,
     optional: true,

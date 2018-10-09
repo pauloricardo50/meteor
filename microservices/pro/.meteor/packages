@@ -63,9 +63,9 @@ meteorhacks:kadira
 softwarerero:accounts-t9n
 cultofcoders:persistent-session
 tmeasday:acceptance-test-driver
-std:accounts-ui
 okgrow:analytics
 underscore@1.0.10
 aldeed:schema-index@3.0.0
 aldeed:schema-deny
 service-configuration@1.0.11
+epotek:accounts-ui

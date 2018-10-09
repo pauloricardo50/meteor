@@ -1,36 +1,30 @@
 import React from 'react';
 
 // Add this to prevent .finally errors on MS Edge
-// 
+//
 import 'babel-polyfill';
 import 'core-js/modules/es7.promise.finally';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
-
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import DevPage from 'core/components/DevPage';
 import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
+import PasswordResetPage from 'core/components/PasswordResetPage';
+import EmailVerificationPage from 'core/components/EmailVerificationPage';
+import AccountPage from 'core/components/AccountPage';
 import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../client/components/AppStore';
-
-import AccountPage from '../../client/pages/AccountPage';
 import AppWidget1Page from '../../client/pages/AppWidget1Page';
 import AppPage from '../../client/pages/AppPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import DashboardPage from '../../client/pages/DashboardPage';
-import EmailVerificationPage from '../../client/pages/EmailVerificationPage';
 import FilesPage from '../../client/pages/FilesPage';
 import FinancingPage from '../../client/pages/FinancingPage';
-import PasswordResetPage from '../../client/pages/PasswordResetPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
-
 import AppLayout from '../../client/layouts/AppLayout';
-
-// Impersonation
-
 import * as ROUTES from './appRoutes';
 
 const AppRouter = () => (

@@ -3,18 +3,20 @@
 export const USERS_COLLECTION = 'users';
 
 export const ROLES = {
-  USER: 'user',
   ADMIN: 'admin',
   DEV: 'dev',
+  USER: 'user',
+  PRO: 'pro',
 };
 
 export const USER_QUERIES = {
-  ADMIN_USERS: 'ADMIN_USERS',
   ADMIN_USER: 'ADMIN_USER',
+  ADMIN_USERS: 'ADMIN_USERS',
   ADMINS: 'ADMINS',
-  SIDENAV_USERS: 'SIDENAV_USERS',
-  CURRENT_USER: 'CURRENT_USER',
   APP_USER: 'APP_USER',
+  CURRENT_USER: 'CURRENT_USER',
+  PRO_USER: 'PRO_USER',
+  SIDENAV_USERS: 'SIDENAV_USERS',
   USER_SEARCH: 'USER_SEARCH',
 };
 

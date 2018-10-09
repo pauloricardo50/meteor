@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Page from '../../components/Page';
+import Page from 'core/components/Page';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';

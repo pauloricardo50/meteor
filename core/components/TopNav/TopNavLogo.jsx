@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const TopNavlogo = () => (
-  <div className="logo">
+  <div className="top-nav-logo">
     <Link to="/" className="link">
       <img
         src="/img/logo_square_black.svg"

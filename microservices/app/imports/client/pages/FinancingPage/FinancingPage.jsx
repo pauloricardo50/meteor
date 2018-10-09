@@ -4,8 +4,8 @@ import React from 'react';
 import PageHead from 'core/components/PageHead';
 import Financing from 'core/components/Financing';
 import type { userLoan } from 'core/api';
+import Page from 'core/components/Page';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
-import Page from '../../components/Page';
 
 type FinancingPageProps = {
   loan: userLoan,

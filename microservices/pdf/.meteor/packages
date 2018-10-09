@@ -26,7 +26,7 @@ aldeed:collection2-core
 cultofcoders:mocha
 dburles:factory
 xolvio:cleaner
-meteortesting:mocha
+meteortesting:mocha@1.0.1
 
 
 # User Accounts
@@ -60,7 +60,7 @@ dburles:google-maps
 meteorhacks:kadira
 softwarerero:accounts-t9n
 tmeasday:acceptance-test-driver
-std:accounts-ui
+epotek:accounts-ui
 msavin:mongol
 okgrow:analytics
 underscore@1.0.10
