@@ -2,9 +2,7 @@ import SimpleSchema from 'simpl-schema';
 import { PROMOTION_TYPES, PROMOTION_STATUS } from '../promotionConstants';
 
 const PromotionSchema = new SimpleSchema({
-  name: {
-    type: String,
-  },
+  name: { type: String },
   type: {
     type: String,
     allowedValues: Object.values(PROMOTION_TYPES),
@@ -13,24 +11,22 @@ const PromotionSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(PROMOTION_STATUS),
   },
-  address1: {
-    type: String,
-    optional: true,
-  },
-  address2: {
-    type: String,
-    optional: true,
-  },
+  address1: { type: String, optional: true },
+  address2: { type: String, optional: true },
   zipCode: {
     type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 9999,
   },
-  city: {
-    type: String,
-    optional: true,
-  },
+  city: { type: String, optional: true },
+  propertyLinks: [Object],
+  'propertyLinks.$._id': String,
+  lotLinks: [Object],
+  'lotLinks.$._id': String,
+  promotionLotLinks: [Object],
+  'promotionLotLinks.$._id': String,
+  'promotionLotLinks.$.attributedTo': { type: String, optional: true },
 });
 
 export default PromotionSchema;
