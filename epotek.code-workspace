@@ -5,7 +5,8 @@
     { "path": "microservices/admin" },
     { "path": "microservices/app" },
     { "path": "microservices/www" },
-    { "path": "microservices/pro" }
+    { "path": "microservices/pro" },
+    { "path": "microservices/pdf" }
   ],
   "settings": {
     "editor.snippetSuggestions": "top"

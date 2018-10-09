@@ -72,6 +72,11 @@ const config = {
         'Valuation',
       ],
     },
+    {
+      id: 'pdf',
+      path: '../microservices/pdf',
+      exceptions: ['PDF'],
+    },
   ],
   // List of strings that don't have a component file associated to them, so
   // this algorithm would miss them, provide the first part of those strings

@@ -1,4 +1,5 @@
 // @flow
+import { OWN_FUNDS_TYPES } from 'core/api/constants';
 import { FinanceCalculator } from '../FinanceCalculator';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
@@ -10,7 +11,7 @@ import {
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     getProjectValue({ loan }) {
-      const propertyValue = this.selectPropertyValue({ loan });
+      const propertyValue = this.getPropertyValue({ loan });
       if (!propertyValue) {
         return 0;
       }
@@ -34,7 +35,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getFees({ loan }): number {
       const notaryFees = this.selectStructureKey({ loan, key: 'notaryFees' });
-      const defaultNotaryFees = this.selectPropertyValue({ loan }) * this.notaryFees;
+      const defaultNotaryFees = this.getPropertyValue({ loan }) * this.notaryFees;
 
       return notaryFees === 0 ? 0 : notaryFees || defaultNotaryFees;
     }
@@ -62,6 +63,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getTheoreticalMaintenance({ loan }) {
+      return (
+        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRate) / 12
+      );
+    }
+
     getAmortization({ loan }) {
       return (
         (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
@@ -75,7 +82,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       } = loan;
       return this.getAmortizationRateBase({
         borrowRatio:
-          wantedLoan / (this.selectPropertyValue({ loan }) + propertyWork),
+          wantedLoan / (this.getPropertyValue({ loan }) + propertyWork),
       });
     }
 
@@ -88,22 +95,26 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getTheoreticalMonthly({ loan }) {
       return (
-        this.getTheoreticalInterests({ loan }) + this.getAmortization({ loan })
+        this.getTheoreticalInterests({ loan })
+        + this.getAmortization({ loan })
+        + this.getTheoreticalMaintenance({ loan })
       );
     }
 
     getIncomeRatio({ loan }) {
+      console.log('monthly', this.getTheoreticalMonthly({ loan }));
+      console.log('totalincome', this.getTotalIncome({ loan }));
+
       return (
         this.getTheoreticalMonthly({ loan })
-        / this.getTotalIncome({ borrowers: loan.borrowers })
-        / 12
+        / (this.getTotalIncome({ borrowers: loan.borrowers }) / 12)
       );
     }
 
     getBorrowRatio({ loan }) {
       return (
         this.selectStructureKey({ loan, key: 'wantedLoan' })
-        / (this.selectPropertyValue({ loan })
+        / (this.getPropertyValue({ loan })
           + this.selectStructureKey({ loan, key: 'propertyWork' }))
       );
     }
@@ -152,6 +163,37 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return ownFunds
         .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getUsedFundsOfType({ loan, type, usageType }) {
+      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+      return ownFunds
+        .filter(({ type: ownFundType }) => (type ? ownFundType === type : true))
+        .filter(({ usageType: ownFundUsageType }) =>
+          (usageType ? ownFundUsageType === usageType : true))
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getRemainingFundsOfType({ loan, type }) {
+      const ownFunds = this.getFunds({ loan, type });
+      return (
+        ownFunds
+        - this.getUsedFundsOfType({
+          loan,
+          type,
+          usageType:
+            type !== OWN_FUNDS_TYPES.BANK_FORTUNE
+              ? OWN_FUNDS_USAGE_TYPES.WITHDRAW
+              : undefined,
+        })
+      );
+    }
+
+    getTotalRemainingFunds({ loan }) {
+      return Object.values(OWN_FUNDS_TYPES).reduce(
+        (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
+        0,
+      );
     }
   };
 

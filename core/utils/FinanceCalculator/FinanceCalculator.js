@@ -48,7 +48,7 @@ export class FinanceCalculator {
     notaryFees = NOTARY_FEES,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
-    theoreticalMaintenanceRatio = MAINTENANCE_FINMA,
+    theoreticalMaintenanceRate = MAINTENANCE_FINMA,
     middlewares = [],
     middlewareObject,
   }: {
@@ -63,7 +63,7 @@ export class FinanceCalculator {
     notaryFees?: number,
     taxRate?: number,
     theoreticalInterestRate?: number,
-    theoreticalMaintenanceRatio: number,
+    theoreticalMaintenanceRate: number,
     middlewares?: Array<Function>,
     middlewareObject: Object,
   } = {}) {
@@ -78,7 +78,7 @@ export class FinanceCalculator {
     this.notaryFees = notaryFees;
     this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
-    this.theoreticalMaintenanceRatio = theoreticalMaintenanceRatio;
+    this.theoreticalMaintenanceRate = theoreticalMaintenanceRate;
     this.setMiddleware(middlewares, middlewareObject);
   }
 
@@ -142,7 +142,7 @@ export class FinanceCalculator {
   getBorrowRatioStatus({ borrowRatio }) {
     if (borrowRatio <= this.maxBorrowRatio) {
       return SUCCESS;
-    } else if (borrowRatio <= this.maxBorrowRatioWithPledge) {
+    } if (borrowRatio <= this.maxBorrowRatioWithPledge) {
       return WARNING;
     }
     return ERROR;
@@ -301,7 +301,7 @@ export class FinanceCalculator {
   };
 
   getTheoreticalMonthly({ propAndWork, loanValue, amortizationRate }) {
-    const maintenance = (propAndWork * this.theoreticalMaintenanceRatio) / 12;
+    const maintenance = (propAndWork * this.theoreticalMaintenanceRate) / 12;
     const interests = (loanValue * this.theoreticalInterestRate) / 12;
     const amortization = (loanValue * amortizationRate) / 12;
     return this.getLoanCostWithParts({ maintenance, interests, amortization });
