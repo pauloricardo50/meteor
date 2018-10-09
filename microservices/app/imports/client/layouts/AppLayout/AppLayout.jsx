@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
 import ContactButton from 'core/components/ContactButton';
-import ErrorBoundary from 'core/components/ErrorBoundary';
+import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import { ROLES } from 'core/api/constants';
 import Navs from './Navs';
@@ -81,9 +81,9 @@ const AppLayout = (props) => {
       <Navs {...props} showSideNav={showSideNav} />
 
       <div className={classes}>
-        <ErrorBoundary helper="layout" pathname={history.location.pathname}>
+        <LayoutErrorBoundary>
           <div className="wrapper">{React.cloneElement(children, props)}</div>
-        </ErrorBoundary>
+        </LayoutErrorBoundary>
       </div>
 
       <ContactButton history={history} />
