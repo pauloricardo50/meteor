@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 import { SecurityService } from '../..';
 import LoanService from '../../loans/LoanService';
 import BorrowerService from '../../borrowers/BorrowerService';
@@ -11,6 +12,7 @@ import {
   setUserToLoan,
   removeBorrower,
   submitContactForm,
+  addUserToDoc,
 } from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -83,3 +85,8 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
 
 // This method needs to exist as its being listened to in EmailListeners
 submitContactForm.setHandler(() => null);
+
+addUserToDoc.setHandler((context, { docId, collection, options, userId }) =>
+  Mongo.Collection.get(collection).update(docId, {
+    userLinks: { $push: { _id: userId, ...options } },
+  }));
