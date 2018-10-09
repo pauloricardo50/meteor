@@ -9,8 +9,8 @@ PromotionOptions.addLinks({
     type: 'many',
     metadata: true,
   },
-  lotsOverride: {
-    field: 'lotsOverrideLinks',
+  lots: {
+    field: 'lotLinks',
     collection: Lots,
     type: 'many',
     metadata: true,
