@@ -6,8 +6,16 @@ import ProPromotionPageContainer from './ProPromotionPageContainer';
 
 type ProPromotionPageProps = {};
 
-const ProPromotionPage = ({ promotion }: ProPromotionPageProps) => (
-  <PromotionPage promotion={promotion} canModify isPro />
+const ProPromotionPage = ({
+  promotion,
+  currentUser,
+}: ProPromotionPageProps) => (
+  <PromotionPage
+    promotion={promotion}
+    currentUser={currentUser}
+    canModify
+    isPro
+  />
 );
 
 export default ProPromotionPageContainer(ProPromotionPage);

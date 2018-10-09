@@ -53,7 +53,10 @@
     }
   }
 
-  .add-customer {
+  .buttons {
     margin: 40px 0;
+    > * {
+      margin-right: 16px;
+    }
   }
 }

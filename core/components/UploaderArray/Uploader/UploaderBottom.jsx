@@ -14,7 +14,7 @@ const UploaderBottom = ({
   collection,
   handleUploadComplete,
   handleAddFiles,
-  fileMeta: { id },
+  fileMeta: { id, acl },
   shouldDisableAdd,
 }) => {
   const disableAdd = shouldDisableAdd();
@@ -38,6 +38,7 @@ const UploaderBottom = ({
           collection={collection}
           handleUploadComplete={handleUploadComplete}
           id={id}
+          acl={acl}
         />
       ))}
 

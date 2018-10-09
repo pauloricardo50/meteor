@@ -1,7 +1,9 @@
 import { compose } from 'recompose';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
+import promotionFiles from 'core/api/promotions/queries/promotionFiles';
 import { withSmartQuery } from 'core/api';
-import withMatchParam from 'imports/core/containers/withMatchParam';
+import withMatchParam from 'core/containers/withMatchParam';
+import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 
 export default compose(
   withMatchParam('promotionId'),
@@ -10,4 +12,9 @@ export default compose(
     queryOptions: { reactive: true, single: true },
     dataName: 'promotion',
   }),
+  mergeFilesWithQuery(
+    promotionFiles,
+    ({ promotion: { _id: promotionId } }) => ({ promotionId }),
+    'promotion',
+  ),
 );

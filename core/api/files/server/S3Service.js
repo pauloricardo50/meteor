@@ -2,7 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
 import { Loans, Borrowers } from '../..';
-import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
+import {
+  TEST_BUCKET_NAME,
+  S3_ENDPOINT,
+  OBJECT_STORAGE_PATH,
+} from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -84,6 +88,7 @@ class S3Service {
         this.headObject(object.Key).then(({ Metadata }) => ({
           ...object,
           ...Metadata,
+          url: this.buildFileUrl(object),
         })))));
 
   copyObject = params => this.callS3Method('copyObject', params);
@@ -103,6 +108,8 @@ class S3Service {
   updateMetadata = (key, newMetadata) =>
     this.getObject(key).then(({ Metadata: oldMetaData }) =>
       this.putObject(undefined, key, { ...oldMetaData, ...newMetadata }));
+
+  buildFileUrl = file => `${OBJECT_STORAGE_PATH}/${file.Key}`;
 }
 
 export default new S3Service();

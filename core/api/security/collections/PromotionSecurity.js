@@ -1,18 +1,18 @@
 import Security from '../Security';
-import { Offers } from '../..';
+import { Promotions } from '../..';
 
-class OfferSecurity {
+class PromotionSecurity {
   static isAllowedToInsert() {
     Security.checkLoggedIn();
   }
 
-  static isAllowedToUpdate(offerId) {
+  static isAllowedToUpdate(promotionId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
-    const offer = Offers.findOne(offerId);
-    Security.checkOwnership(offer);
+    const promotion = Promotions.findOne(promotionId);
+    Security.checkOwnership(promotion);
   }
 
   static isAllowedToDelete() {
@@ -20,4 +20,4 @@ class OfferSecurity {
   }
 }
 
-export default OfferSecurity;
+export default PromotionSecurity;

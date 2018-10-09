@@ -1,4 +1,8 @@
 {
+  "files.promotionDocuments": "Documents de la promotion",
+  "files.promotionImage": "Photo de couverture",
+  "files.logos": "Logos",
+  "PromotionPage.manageDocuments": "Gérer documents",
   "PromotionPage.lots.name": "Nom",
   "PromotionPage.lots.status": "Statut",
   "PromotionPage.lots.lots": "Lots supplémentaires",
