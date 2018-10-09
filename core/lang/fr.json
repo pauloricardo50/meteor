@@ -1,4 +1,8 @@
 {
+  "ProDashboardPage.title": "Dashboard",
+  "ProDashboardPage.promotions": "Promotions",
+  "NewPromotionPage.title": "Nouvelle promotion",
+
   "PromotionsTable.name": "Nom",
   "PromotionsTable.status": "Statut",
   "PromotionsTable.lots": "Lots",
