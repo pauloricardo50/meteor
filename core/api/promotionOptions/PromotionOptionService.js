@@ -1,9 +1,14 @@
 import PromotionOptions from './promotionOptions';
 import LoanService from '../loans/LoanService';
+import CollectionService from '../helpers/CollectionService';
 
-export class PromotionOptionService {
+export class PromotionOptionService extends CollectionService {
+  constructor() {
+    super(PromotionOptions);
+  }
+
   insert = ({ promotionOption, loanId }) => {
-    const promotionOptionId = PromotionOptions.insert(promotionOption);
+    const promotionOptionId = super.insert(promotionOption);
     LoanService.update({
       loanId,
       object: { promotionOptionLinks: [{ _id: promotionOptionId }] },
@@ -12,8 +17,8 @@ export class PromotionOptionService {
     return promotionOptionId;
   };
 
-  update = ({ promotionOptionId, object, operator = '$set' }) =>
-    PromotionOptions.update(promotionOptionId, { [operator]: object });
+  update = ({ promotionOptionId, ...rest }) =>
+    super.update({ id: promotionOptionId, ...rest });
 }
 
 export default new PromotionOptionService();

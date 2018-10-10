@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Kadira } from 'meteor/meteorhacks:kadira';
+// import { Kadira } from 'meteor/meteorhacks:kadira';
 
 if (Meteor.settings.Kadira) {
   const { endpoint, app } = Meteor.settings.Kadira;
 
-  Kadira.connect(
-    app.appId,
-    app.appSecret,
-    { endpoint },
-  );
+  // Kadira.connect(
+  //   app.appId,
+  //   app.appSecret,
+  //   { endpoint },
+  // );
 }

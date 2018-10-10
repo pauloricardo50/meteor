@@ -6,8 +6,6 @@ export class LotService extends CollectionService {
     super(Lots);
   }
 
-  insert = ({ lot = {} }) => super.insert(lot);
-
   update = ({ lotId, ...rest }) => super.update({ id: lotId, ...rest });
 }
 

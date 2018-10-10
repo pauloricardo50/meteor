@@ -56,10 +56,12 @@ export class PromotionService extends CollectionService {
       throw new Meteor.Error('This user was already invited to this promotion');
     }
     const loanId = LoanService.adminLoanInsert({ userId });
-    return LoanService.update({
+    LoanService.update({
       loanId,
       object: { promotionLinks: [{ _id: promotionId }] },
     });
+
+    return loanId;
   }
 }
 

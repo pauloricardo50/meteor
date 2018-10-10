@@ -188,6 +188,14 @@ class DevPage extends Component {
               Property Task
             </Button>
           </Tooltip>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() => Meteor.call('createDemoPromotion')}
+          >
+            Créer promotion
+          </Button>
           <hr className="mbt20" />
           <ErrorThrower />
         </section>
