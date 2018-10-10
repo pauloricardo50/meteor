@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import AutoForm from 'core/components/AutoForm2';
-import PromotionSchema from 'core/api/promotions/schemas/PromotionSchema';
+import { BasePromotionSchema } from 'core/api/promotions/schemas/PromotionSchema';
 import { promotionInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import { PRO_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
@@ -17,14 +17,7 @@ const NewPromotionPage = ({ history }: NewPromotionPageProps) => (
       <T id="NewPromotionPage.title" />
     </h1>
     <AutoForm
-      schema={PromotionSchema.pick(
-        'name',
-        'type',
-        'address1',
-        'address2',
-        'zipCode',
-        'city',
-      )}
+      schema={BasePromotionSchema}
       onSubmit={promotion =>
         promotionInsert
           .run({ promotion })

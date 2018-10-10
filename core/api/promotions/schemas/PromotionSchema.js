@@ -44,4 +44,13 @@ const PromotionSchema = new SimpleSchema({
   },
 });
 
+export const BasePromotionSchema = PromotionSchema.pick(
+  'name',
+  'type',
+  'address1',
+  'address2',
+  'zipCode',
+  'city',
+);
+
 export default PromotionSchema;

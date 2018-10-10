@@ -6,6 +6,7 @@ import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
 
 import T from '../Translation';
+import Button from '../Button';
 
 const CustomSelectField = props => (
   <SelectField
@@ -21,6 +22,8 @@ const determineComponentFromProps = (props) => {
 
   return false;
 };
+
+export const SubmitField = props => <Button type="submit" {...props} />;
 
 export const CustomAutoField = ({ labels } = {}) =>
   connectField(
@@ -41,7 +44,7 @@ const CustomAutoForm = ({ autoFieldProps, ...props }) => (
   <AutoForm
     {...props}
     autoField={CustomAutoField(autoFieldProps)}
-    custom="yooo"
+    submitField={SubmitField}
   />
 );
 

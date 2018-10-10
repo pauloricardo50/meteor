@@ -4,12 +4,15 @@ import React from 'react';
 import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
+import PromotionModifier from './PromotionModifier';
 
 type PromotionPageHeaderProps = {};
 
 const PromotionPageHeader = ({
-  promotion: { name, promotionLots, status, documents },
+  promotion,
+  canModify,
 }: PromotionPageHeaderProps) => {
+  const { name, promotionLots, status, documents } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
 
   return (
@@ -22,6 +25,7 @@ const PromotionPageHeader = ({
             {status && (
               <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
             )}
+            {canModify && <PromotionModifier promotion={promotion} />}
           </h1>
           <h3 className="secondary">
             <T

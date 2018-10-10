@@ -6,6 +6,16 @@ import UploaderArray from '../../UploaderArray';
 import T from '../../Translation';
 import { PROMOTIONS_COLLECTION, S3_ACLS } from '../../../api/constants';
 
+const promotionDocuments = [
+  { id: 'promotionImage', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  {
+    id: 'promotionDocuments',
+    acl: S3_ACLS.PUBLIC_READ,
+    noTooltips: true,
+  },
+  { id: 'logos', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+];
+
 type PromotionDocumentsManagerProps = {};
 
 const PromotionDocumentsManager = ({
@@ -22,11 +32,7 @@ const PromotionDocumentsManager = ({
       <UploaderArray
         doc={promotion}
         collection={PROMOTIONS_COLLECTION}
-        documentArray={[
-          { id: 'promotionImage', acl: S3_ACLS.PUBLIC_READ },
-          { id: 'promotionDocuments', acl: S3_ACLS.PUBLIC_READ },
-          { id: 'logos', acl: S3_ACLS.PUBLIC_READ },
-        ]}
+        documentArray={promotionDocuments}
         currentUser={currentUser}
       />
     </DialogSimple>
