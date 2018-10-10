@@ -12,7 +12,7 @@ export const basePromotionFragment = {
     name: 1,
     type: 1,
     description: 1,
-    promotionLot: { name: 1 },
+    promotionLots: { name: 1 },
   },
   promotionLots: {
     _id: 1,

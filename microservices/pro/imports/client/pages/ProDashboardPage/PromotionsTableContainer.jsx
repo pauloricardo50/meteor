@@ -46,7 +46,7 @@ export default compose(
   withSmartQuery({
     query: ({ currentUser: { _id: userId } }) =>
       proPromotions.clone({ userId }),
-    queryOptions: { reactive: true },
+    queryOptions: { reactive: false },
     dataName: 'promotions',
     renderMissingDoc: false,
   }),

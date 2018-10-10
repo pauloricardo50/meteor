@@ -14,7 +14,7 @@ const PromotionLotsManager = ({
   allLots,
 }: PromotionLotsManagerProps) => {
   let options;
-  const unassignedLots = allLots.filter(lot => !lot.promotionLot);
+  const unassignedLots = allLots.filter(lot => lot.promotionLots.length === 0);
   if (unassignedLots.length === 0) {
     options = [{ id: 'empty', label: <T id="PromotionLotsManager.empty" /> }];
   } else {

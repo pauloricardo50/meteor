@@ -7,7 +7,7 @@ const LotSchema = new SimpleSchema({
   description: { type: String, optional: true },
   value: {
     type: Number,
-    min: 1,
+    min: 0,
     max: 1000000000,
   },
 });

@@ -19,13 +19,18 @@ const makeMapPromotionLot = (history, promotionId, allLots) => ({
   columns: [
     name,
     status,
-    toMoney(value),
-    <PromotionLotsManager
-      key="lots"
-      lots={lots}
-      promotionLotId={promotionLotId}
-      allLots={allLots}
-    />,
+    { raw: value, label: toMoney(value) },
+    {
+      raw: lots.length,
+      label: (
+        <PromotionLotsManager
+          key="lots"
+          lots={lots}
+          promotionLotId={promotionLotId}
+          allLots={allLots}
+        />
+      ),
+    },
     promotionOptions.length,
   ],
   // handleClick: () =>

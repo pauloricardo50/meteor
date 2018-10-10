@@ -7,11 +7,9 @@ Lots.addLinks({
     collection: Promotions,
     inversedBy: 'lots',
   },
-  promotionLot: {
+  promotionLots: {
     collection: PromotionLots,
     inversedBy: 'lots',
-    unique: true,
-    type: 'one',
   },
   promotionOptions: {
     collection: PromotionOptions,
