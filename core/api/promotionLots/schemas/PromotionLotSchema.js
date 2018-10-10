@@ -5,6 +5,7 @@ const PromotionLotSchema = new SimpleSchema({
   status: {
     type: String,
     allowedValues: Object.values(PROMOTION_LOT_STATUS),
+    defaultValue: PROMOTION_LOT_STATUS.AVAILABLE,
   },
   propertyLinks: { type: Array, minCount: 1, maxCount: 1 },
   'propertyLinks.$': Object,

@@ -22,6 +22,14 @@ export const promotionRemove = new Method({
   },
 });
 
+export const insertPromotionProperty = new Method({
+  name: 'insertPromotionProperty',
+  params: {
+    promotionId: String,
+    property: Object,
+  },
+});
+
 export const inviteUserToPromotion = new Method({
   name: 'inviteUserToPromotion',
   params: {

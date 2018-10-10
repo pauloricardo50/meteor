@@ -5,7 +5,7 @@ import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
 import T from '../../Translation';
 import Button from '../../Button';
 import PromotionPageHeader from './PromotionPageHeader';
-import PromotionLotsTable from './PromotionLotsTable';
+import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
 
@@ -13,6 +13,7 @@ type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
   const { promotion, currentUser, canModify, isPro } = props;
+  console.log('promotion', promotion);
   return (
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
@@ -38,7 +39,7 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      <PromotionLotsTable promotion={promotion} />
+      <ProPromotionLotsTable promotion={promotion} />
     </div>
   );
 };

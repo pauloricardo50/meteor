@@ -6,7 +6,7 @@ import {
 } from '../promotionConstants';
 
 const PromotionSchema = new SimpleSchema({
-  name: { type: String, uniforms: { custom: 'dude' } },
+  name: { type: String },
   type: { type: String, allowedValues: Object.values(PROMOTION_TYPES) },
   status: {
     type: String,
