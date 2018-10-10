@@ -23,7 +23,15 @@ const determineComponentFromProps = (props) => {
   return false;
 };
 
-export const SubmitField = props => <Button type="submit" {...props} />;
+export const SubmitField = props => (
+  <Button
+    type="submit"
+    children={<T id="general.save" />}
+    raised
+    primary
+    {...props}
+  />
+);
 
 export const CustomAutoField = ({ labels } = {}) =>
   connectField(
