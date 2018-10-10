@@ -7,7 +7,13 @@ export const basePromotionFragment = {
   zipCode: 1,
   city: 1,
   properties: { address: 1 },
-  lots: { name: 1, type: 1, description: 1, promotionLot: { name: 1 } },
+  lots: {
+    value: 1,
+    name: 1,
+    type: 1,
+    description: 1,
+    promotionLot: { name: 1 },
+  },
   promotionLots: {
     _id: 1,
     status: 1,

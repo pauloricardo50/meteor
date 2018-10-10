@@ -14,6 +14,9 @@ import './borrowers/reducers';
 
 import './offers/links';
 
+import './lots/reducers';
+import './lots/links';
+
 import './promotions/reducers';
 import './promotions/links';
 
