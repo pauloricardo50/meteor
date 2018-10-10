@@ -45,7 +45,7 @@ const getColor = ({ primary, secondary, color, error }) => {
 
 const getVariant = ({ raised, outlined }) => {
   if (raised) {
-    return 'raised';
+    return 'contained';
   }
   if (outlined) {
     return 'outlined';
