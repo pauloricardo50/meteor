@@ -1,10 +1,14 @@
 import Lots from './lots';
+import CollectionService from '../helpers/CollectionService';
 
-export class LotService {
-  insert = ({ lot = {} }) => Lots.insert(lot);
+export class LotService extends CollectionService {
+  constructor() {
+    super(Lots);
+  }
 
-  update = ({ lotId, object, operator = '$set' }) =>
-    Lots.update(lotId, { [operator]: object });
+  insert = ({ lot = {} }) => super.insert(lot);
+
+  update = ({ lotId, ...rest }) => super.update({ id: lotId, ...rest });
 }
 
 export default new LotService();

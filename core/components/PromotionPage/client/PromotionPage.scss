@@ -95,4 +95,18 @@
     align-self: stretch;
     margin-top: 40px;
   }
+
+  .promotion-table-actions {
+    display: flex;
+    align-self: flex-start;
+
+    > * {
+      margin-right: 8px;
+    }
+  }
+
+  .promotion-lots-manager {
+    display: flex;
+    align-items: center;
+  }
 }

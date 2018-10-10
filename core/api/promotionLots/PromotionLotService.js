@@ -1,6 +1,4 @@
 import PromotionLots from './promotionLots';
-import PromotionService from '../promotions/PromotionService';
-import PropertyService from '../properties/PropertyService';
 import CollectionService from '../helpers/CollectionService';
 
 export class PromotionLotService extends CollectionService {
@@ -19,6 +17,22 @@ export class PromotionLotService extends CollectionService {
 
   update({ promotionLotId, ...rest }) {
     return super.update({ id: promotionLotId, ...rest });
+  }
+
+  addLotToPromotionLot({ promotionLotId, lotId }) {
+    return this.addLink({
+      id: promotionLotId,
+      linkName: 'lotLinks',
+      linkId: lotId,
+    });
+  }
+
+  removeLotLink({ promotionLotId, lotId }) {
+    return this.removeLink({
+      id: promotionLotId,
+      linkName: 'lotLinks',
+      linkId: lotId,
+    });
   }
 }
 

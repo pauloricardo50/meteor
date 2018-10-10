@@ -36,6 +36,23 @@ class CollectionService {
       operator: multi ? '$push' : '$set',
     });
   }
+
+  removeLink({ id, linkName, linkId }) {
+    const doc = this.get(id);
+    const link = doc[linkName];
+
+    if (Array.isArray(link)) {
+      return this.update({
+        id,
+        object: {
+          [linkName]: link.filter(linkItem =>
+            (linkItem._id ? linkItem._id !== linkId : linkItem !== linkId)),
+        },
+      });
+    }
+
+    return this.update({ id, object: { [linkName]: 1 }, operator: '$unset' });
+  }
 }
 
 export default CollectionService;
