@@ -18,7 +18,7 @@ const makeMapPromotionLot = (history, promotionId, allLots) => ({
   id: promotionLotId,
   columns: [
     name,
-    status,
+    { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,

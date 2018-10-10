@@ -1,4 +1,6 @@
 {
+  "Forms.status.AVAILABLE": "Disponible",
+  "Forms.status.BOOKED": "Réservé",
   "PromotionLotsManager.empty": "Pas de lots annexes",
   "Forms.type": "Type",
   "Forms.description": "Déscription",
