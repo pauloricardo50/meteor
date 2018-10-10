@@ -1,4 +1,8 @@
 {
+  "PromotionPage.managePropertyDocuments.description": "Donnez des noms clairs à vos documents avant de les uploader",
+  "PromotionPage.managePropertyDocuments": "Gérer documents du lot {name}",
+  "files.promotionPropertyDocuments": "Documents du lot",
+  "PromotionPage.lots.documents": "Documents",
   "Forms.status.AVAILABLE": "Disponible",
   "Forms.status.BOOKED": "Réservé",
   "PromotionLotsManager.empty": "Pas de lots annexes",
