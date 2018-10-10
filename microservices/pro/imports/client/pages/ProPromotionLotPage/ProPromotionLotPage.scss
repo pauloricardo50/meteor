@@ -1,0 +1,15 @@
+.pro-promotion-lot-page {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  margin-top: 16px;
+
+  .promotion-lots-manager {
+    display: flex;
+    align-items: center;
+
+    > * {
+      margin-right: 4px;
+    }
+  }
+}

@@ -3,9 +3,11 @@ import PromotionLots from '.';
 import { Promotions, Properties, Lots, PromotionOptions } from '..';
 
 PromotionLots.addLinks({
-  promotions: {
+  promotion: {
     collection: Promotions,
     inversedBy: 'promotionLots',
+    unique: true,
+    type: 'one',
   },
   properties: {
     field: 'propertyLinks',

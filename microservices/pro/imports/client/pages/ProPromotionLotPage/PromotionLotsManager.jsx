@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
 
-import { removeLotLink, addLotToPromotionLot } from '../../../../api';
-import Chip from '../../../Material/Chip';
-import Tooltip from '../../../Material/Tooltip';
-import DropdownMenu from '../../../DropdownMenu';
-import T from '../../../Translation';
+import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
+import { addLotToPromotionLot } from 'core/api';
+import DropdownMenu from 'core/components/DropdownMenu';
+import T from 'core/components/Translation';
 
 type PromotionLotsManagerProps = {};
 
@@ -28,13 +27,13 @@ const PromotionLotsManager = ({
 
   return (
     <div className="promotion-lots-manager">
-      {lots.map(({ _id, name, type }) => (
-        <Tooltip title={<T id={`Forms.type.${type}`} />} key={_id}>
-          <Chip
-            onDelete={() => removeLotLink.run({ promotionLotId, lotId: _id })}
-            label={name}
-          />
-        </Tooltip>
+      {lots.map(lot => (
+        <LotChip
+          key={lot._id}
+          lot={lot}
+          allowDelete
+          promotionLotId={promotionLotId}
+        />
       ))}
       <DropdownMenu iconType="add" options={options} />
     </div>

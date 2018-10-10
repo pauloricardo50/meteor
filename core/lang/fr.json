@@ -1,4 +1,6 @@
 {
+  "ProPromotionLotPage.manageLot": "Gérer les lots",
+  "general.back": "Retour",
   "PromotionPage.managePropertyDocuments.description": "Donnez des noms clairs à vos documents avant de les uploader",
   "PromotionPage.managePropertyDocuments": "Gérer documents du lot {name}",
   "files.promotionPropertyDocuments": "Documents du lot",

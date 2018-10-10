@@ -2,20 +2,19 @@ import React from 'react';
 import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
+import { createRoute } from '../../../../utils/routerUtils';
 import { insertPromotionProperty, lotInsert } from '../../../../api';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
-import PromotionLotsManager from './PromotionLotsManager';
-import LotDocumentsManager from './LotDocumentsManager';
+import LotChip from './LotChip';
 
-const makeMapPromotionLot = ({ history, promotionId, allLots }) => ({
+const makeMapPromotionLot = ({ history, promotionId }) => ({
   _id: promotionLotId,
   name,
   status,
   lots,
   promotionOptions,
   value,
-  properties,
 }) => ({
   id: promotionLotId,
   columns: [
@@ -24,27 +23,16 @@ const makeMapPromotionLot = ({ history, promotionId, allLots }) => ({
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,
-      label: (
-        <PromotionLotsManager
-          key="lots"
-          lots={lots}
-          promotionLotId={promotionLotId}
-          allLots={allLots}
-        />
-      ),
+      label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
-    <LotDocumentsManager
-      property={properties && properties[0]}
-      key="documents"
-    />,
     promotionOptions.length,
   ],
 
-  // handleClick: () =>
-  //   history.push(createRoute('/promotions/:promotionId/:promotionLotId', {
-  //     promotionId,
-  //     promotionLotId,
-  //   })),
+  handleClick: () =>
+    history.push(createRoute('/promotions/:promotionId/:promotionLotId', {
+      promotionId,
+      promotionLotId,
+    })),
 });
 
 const columnOptions = [
@@ -52,14 +40,13 @@ const columnOptions = [
   { id: 'status' },
   { id: 'totalValue' },
   { id: 'lots' },
-  { id: 'documents' },
   { id: 'loans' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(
   withRouter,
-  mapProps(({ promotion: { promotionLots, _id: promotionId, lots }, history }) => ({
-    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId, allLots: lots })),
+  mapProps(({ promotion: { promotionLots, _id: promotionId }, history }) => ({
+    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId })),
     columnOptions,
     addProperty: property =>
       insertPromotionProperty.run({ promotionId, property }),
