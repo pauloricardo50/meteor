@@ -1,4 +1,12 @@
 {
+  "Forms.status.TRIAL": "Intérêt test",
+  "Forms.status.WANT_TO_BUY": "Intérêt sérieux",
+  "PromotionLotLoansTable.name": "Nom",
+  "PromotionLotLoansTable.phone": "Téléphone",
+  "PromotionLotLoansTable.status": "Niveau d'intérêt",
+  "PromotionLotLoansTable.lots": "Lots souhaités",
+  "PromotionLotLoansTable.solvency": "Solvabilité",
+  "PromotionLotLoansTable.title": "Dossiers",
   "ProPromotionLotPage.manageLot": "Gérer les lots",
   "general.back": "Retour",
   "PromotionPage.managePropertyDocuments.description": "Donnez des noms clairs à vos documents avant de les uploader",

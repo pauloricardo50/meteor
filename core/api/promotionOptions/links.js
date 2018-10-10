@@ -15,7 +15,7 @@ PromotionOptions.addLinks({
     type: 'many',
     metadata: true,
   },
-  loans: {
+  loan: {
     collection: Loans,
     inversedBy: 'promotionOptions',
   },

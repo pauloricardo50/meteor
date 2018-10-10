@@ -21,7 +21,7 @@ const makeMapPromotion = history => ({
   id: _id,
   columns: [
     name,
-    status,
+    <T id={`Forms.status.${status}`} key="status" />,
     promotionLots.length,
     availablePromotionLots.length,
     bookedPromotionLots.length,

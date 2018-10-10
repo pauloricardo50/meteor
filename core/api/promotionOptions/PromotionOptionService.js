@@ -11,7 +11,7 @@ export class PromotionOptionService extends CollectionService {
     const promotionOptionId = super.insert(promotionOption);
     LoanService.update({
       loanId,
-      object: { promotionOptionLinks: [{ _id: promotionOptionId }] },
+      object: { promotionOptionLinks: { _id: promotionOptionId } },
       operator: '$push',
     });
     return promotionOptionId;

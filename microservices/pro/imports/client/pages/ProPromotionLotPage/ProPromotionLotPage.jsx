@@ -8,6 +8,7 @@ import { PRO_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
 import ProPromotionLotPageContainer from './ProPromotionLotPageContainer';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotsManager from './PromotionLotsManager';
+import PromotionLotLoansTable from './PromotionLotLoansTable';
 
 type ProPromotionLotPageProps = {};
 
@@ -22,7 +23,9 @@ const ProPromotionLotPage = ({
     _id: promotionLotId,
     lots,
     promotion,
+    promotionOptions,
   } = promotionLot;
+  console.log('promotionLot', promotionLot);
   const { lots: allLots } = promotion[0];
 
   return (
@@ -50,6 +53,8 @@ const ProPromotionLotPage = ({
           lots={lots}
           allLots={allLots}
         />
+
+        <PromotionLotLoansTable promotionOptions={promotionOptions} />
       </div>
     </div>
   );
