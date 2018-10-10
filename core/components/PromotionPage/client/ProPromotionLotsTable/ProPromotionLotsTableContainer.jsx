@@ -2,7 +2,6 @@ import React from 'react';
 import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import { createRoute } from '../../../../utils/routerUtils';
 import { insertPromotionProperty, lotInsert } from '../../../../api';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
@@ -29,11 +28,11 @@ const makeMapPromotionLot = (history, promotionId, allLots) => ({
     />,
     promotionOptions.length,
   ],
-  handleClick: () =>
-    history.push(createRoute('/promotions/:promotionId/:promotionLotId', {
-      promotionId,
-      promotionLotId,
-    })),
+  // handleClick: () =>
+  //   history.push(createRoute('/promotions/:promotionId/:promotionLotId', {
+  //     promotionId,
+  //     promotionLotId,
+  //   })),
 });
 
 const columnOptions = [

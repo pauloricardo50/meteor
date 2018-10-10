@@ -42,7 +42,7 @@ const ProPromotionLotsTable = ({
         onSubmit={addLot}
       />
     </div>
-    <Table rows={rows} columnOptions={columnOptions} />
+    <Table rows={rows} columnOptions={columnOptions} clickable={false} />
   </>
 );
 
