@@ -64,7 +64,11 @@ export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
   withUserLoan,
-  mergeFilesIntoLoanStructure(loanFiles, 'loan'),
+  mergeFilesIntoLoanStructure(
+    loanFiles,
+    ({ loan: { _id: loanId } }) => ({ loanId }),
+    'loan',
+  ),
   withRouter,
   withRedirect,
 );

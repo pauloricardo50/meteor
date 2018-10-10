@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import fileSaver from 'file-saver';
 
-import IconButton from 'core/components/IconButton';
-import T from 'core/components/Translation';
-import { downloadFile } from 'core/api';
+import IconButton from './IconButton';
+import T from './Translation';
+import { downloadFile } from '../api';
 
 export default class Download extends Component {
   constructor(props) {
@@ -29,6 +29,11 @@ export default class Download extends Component {
 
   render() {
     const { downloading } = this.state;
+    const { children } = this.props;
+
+    if (children) {
+      return children({ downloading, handleDownload: this.handleClick });
+    }
 
     return (
       <IconButton

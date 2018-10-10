@@ -16,3 +16,19 @@ export const promotionLotUpdate = new Method({
     object: Object,
   },
 });
+
+export const addLotToPromotionLot = new Method({
+  name: 'addLotToPromotionLot',
+  params: {
+    promotionLotId: String,
+    lotId: String,
+  },
+});
+
+export const removeLotLink = new Method({
+  name: 'removeLotLink',
+  params: {
+    promotionLotId: String,
+    lotId: String,
+  },
+});

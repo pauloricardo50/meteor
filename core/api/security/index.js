@@ -6,6 +6,7 @@ import {
   PropertySecurity,
   TaskSecurity,
   UserSecurity,
+  PromotionSecurity,
 } from './collections';
 
 class SecurityService extends Security {
@@ -31,6 +32,10 @@ class SecurityService extends Security {
 
   static get tasks() {
     return TaskSecurity;
+  }
+
+  static get promotions() {
+    return PromotionSecurity;
   }
 }
 

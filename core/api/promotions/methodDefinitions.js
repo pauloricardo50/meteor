@@ -1,4 +1,3 @@
-import { Match } from 'meteor/check';
 import { Method } from '../methods/methods';
 
 export const promotionInsert = new Method({
@@ -20,6 +19,14 @@ export const promotionRemove = new Method({
   name: 'promotionRemove',
   params: {
     promotionId: String,
+  },
+});
+
+export const insertPromotionProperty = new Method({
+  name: 'insertPromotionProperty',
+  params: {
+    promotionId: String,
+    property: Object,
   },
 });
 

@@ -7,10 +7,10 @@ import { lotInsert, lotUpdate } from '../methodDefinitions';
 lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
   SecurityService.checkUserIsPro(userId);
   const lotId = LotService.insert({ lot });
-  PromotionService.update({
-    promotionId,
-    object: { lotLinks: [{ _id: lotId }] },
-    operator: '$push',
+  PromotionService.addLink({
+    id: promotionId,
+    linkName: 'lotLinks',
+    linkId: lotId,
   });
   return lotId;
 });

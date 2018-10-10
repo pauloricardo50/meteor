@@ -30,6 +30,7 @@ const config = {
         'Microlocation',
         'offer',
         'OfferAdder',
+        'Promotion',
         'PropertyForm',
         'StatusIconTooltip',
         'steps',
@@ -62,6 +63,7 @@ const config = {
         'offer',
         'PasswordChange',
         'PasswordResetpage',
+        'Promotion',
         'PropertyForm',
         'StatusIconTooltip',
         'steps',
@@ -89,6 +91,7 @@ const config = {
         'LoginPage',
         'PasswordChange',
         'PasswordResetpage',
+        'Promotion',
         'Uploader',
       ],
     },
@@ -102,6 +105,7 @@ const config = {
   // this algorithm would miss them, provide the first part of those strings
   // here
   generalExceptions: [
+    'BorrowersSummary',
     'e-Potek',
     'ExpensesChart',
     'ExpensesChartInterests',
@@ -113,6 +117,7 @@ const config = {
     'InterestsTable',
     'LayoutError',
     'LoanChecklist',
+    'Maps',
     'MissingDoc',
     'NotFound',
     'property',
@@ -127,7 +132,6 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
-    'BorrowersSummary',
   ],
 };
 

@@ -1,14 +1,17 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { STEPS } from 'core/api/loans/loanConstants';
-import { TASK_STATUS, TASK_TYPE } from './tasks/taskConstants';
-import Loans from './loans';
-import Borrowers from './borrowers';
-import Properties from './properties';
-import Offers from './offers';
-import Tasks from './tasks';
-import Users from './users';
+import { STEPS, TASK_STATUS, TASK_TYPE } from './constants';
+import {
+  Borrowers,
+  Loans,
+  Offers,
+  Promotions,
+  Properties,
+  Tasks,
+  Users,
+} from '.';
+import { PROMOTION_TYPES } from './promotions/promotionConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -72,4 +75,9 @@ Factory.define('offer', Offers, {
   conditions: ['Do something'],
   maxAmount: 800000,
   amortization: 10000,
+});
+
+Factory.define('promotion', Promotions, {
+  name: 'Test promotion',
+  type: PROMOTION_TYPES.CREDIT,
 });

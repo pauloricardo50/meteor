@@ -6,7 +6,7 @@ import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 import { FILE_STATUS } from 'core/api/constants';
 
-import Download from './Download';
+import Downloader from '../../Downloader';
 
 const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();
@@ -42,7 +42,7 @@ const File = ({
             }}
           />
         )}
-        <Download fileKey={Key} fileName={name} />
+        <Downloader fileKey={Key} fileName={name} />
       </div>
     </div>
     {message

@@ -9,7 +9,7 @@ const MapWithMarkerWrapper = ({ address1, zipCode, city, options }) => {
   if (isIncompleteAddress({ address1, zipCode, city })) {
     return (
       <p className="description incomplete-address">
-        <T id="PropertiesPage.incompleteAddress" />
+        <T id="Maps.incompleteAddress" />
       </p>
     );
   }

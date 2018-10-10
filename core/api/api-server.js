@@ -23,16 +23,17 @@ import './links';
 import './borrowers/queries/exposures';
 import './loans/queries/exposures';
 import './offers/queries/exposures';
+import './promotionLots/queries/exposures';
+import './promotions/queries/exposures';
 import './properties/queries/exposures';
 import './resolvers/exposures';
 import './tasks/queries/exposures';
 import './users/queries/exposures';
-import './promotions/queries/exposures';
-import './promotionLots/queries/exposures';
 
 // Server-side Reducers
 import './borrowers/server/serverReducers';
 import './loans/server/serverReducers';
+import './promotions/server/serverReducers';
 import './properties/server/serverReducers';
 
 import { Loans, Borrowers, Offers, Properties } from '.';

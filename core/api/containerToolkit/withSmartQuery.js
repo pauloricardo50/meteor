@@ -1,8 +1,18 @@
 // @flow
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
-import { mapProps, compose, branch, renderComponent } from 'recompose';
+import {
+  mapProps,
+  compose,
+  branch,
+  renderComponent,
+  lifecycle,
+  withState,
+} from 'recompose';
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
+import ClientEventService, {
+  CALLED_METHOD,
+} from '../events/ClientEventService';
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render: boolean = false) =>
@@ -39,12 +49,39 @@ const withSmartQuery = ({
   // used to bypass the missing doc component
   renderMissingDoc = true,
   smallLoader = false,
-}: withSmartQueryArgs) =>
-  compose(
-    withQuery(query, queryOptions),
-    withLoading(smallLoader),
-    makeRenderMissingDocIfNoData(renderMissingDoc && queryOptions.single),
-    makeMapProps(dataName),
-  );
+  updateWithMethods,
+}: withSmartQueryArgs) => {
+  const shoundRenderMissingDoc = renderMissingDoc && queryOptions.single;
+  const shouldUpdateWithMethod = !queryOptions.reactive && updateWithMethods;
 
+  return compose(
+    withState('hasLoadedOnce', 'setHasLoadedOnce', false),
+    withQuery(query, queryOptions),
+    withLoading(smallLoader, shouldUpdateWithMethod && 'hasLoadedOnce'),
+    makeRenderMissingDocIfNoData(shoundRenderMissingDoc),
+    makeMapProps(dataName),
+    updateWithMethods
+      ? lifecycle({
+        componentDidMount() {
+          if (shouldUpdateWithMethod) {
+            // For every method that is called on the client, refetch this query
+            ClientEventService.addListener(CALLED_METHOD, () => {
+              // Disable loading for subsequent refetch calls
+              this.props.setHasLoadedOnce(true);
+              this.props.refetch();
+            });
+          }
+        },
+        componentWillUnmount() {
+          if (shouldUpdateWithMethod) {
+            ClientEventService.removeListener(CALLED_METHOD, () => {
+              this.props.setHasLoadedOnce(true);
+              this.props.refetch();
+            });
+          }
+        },
+      })
+      : x => x,
+  );
+};
 export default withSmartQuery;

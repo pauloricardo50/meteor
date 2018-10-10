@@ -6,6 +6,7 @@ import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
 
 import T from '../Translation';
+import Button from '../Button';
 
 const CustomSelectField = props => (
   <SelectField
@@ -22,16 +23,37 @@ const determineComponentFromProps = (props) => {
   return false;
 };
 
-export const CustomAutoField = connectField(
-  (props) => {
-    const Component = determineComponentFromProps(props) || AutoField;
-    return <Component {...props} label={<T id={`Forms.${props.name}`} />} />;
-  },
-  { includeInChain: false },
+export const SubmitField = props => (
+  <Button
+    type="submit"
+    children={<T id="general.save" />}
+    raised
+    primary
+    {...props}
+  />
 );
 
-const CustomAutoForm = props => (
-  <AutoForm {...props} autoField={CustomAutoField} />
+export const CustomAutoField = ({ labels } = {}) =>
+  connectField(
+    (props) => {
+      const Component = determineComponentFromProps(props) || AutoField;
+      const label = labels && labels[props.name];
+      return (
+        <Component
+          {...props}
+          label={label || <T id={`Forms.${props.name}`} />}
+        />
+      );
+    },
+    { includeInChain: false },
+  );
+
+const CustomAutoForm = ({ autoFieldProps, ...props }) => (
+  <AutoForm
+    {...props}
+    autoField={CustomAutoField(autoFieldProps)}
+    submitField={SubmitField}
+  />
 );
 
 export default CustomAutoForm;

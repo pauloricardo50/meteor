@@ -10,5 +10,9 @@ export default compose(
     queryOptions: { reactive: true, single: true },
     dataName: 'loan',
   }),
-  mergeFilesIntoLoanStructure(loanFiles, 'loan'),
+  mergeFilesIntoLoanStructure(
+    loanFiles,
+    ({ loan: { _id: loanId } }) => ({ loanId }),
+    'loan',
+  ),
 );
