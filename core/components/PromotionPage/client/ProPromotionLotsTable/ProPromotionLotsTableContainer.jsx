@@ -21,7 +21,7 @@ const makeMapPromotionLot = (history, promotionId, allLots) => ({
     status,
     { raw: value, label: toMoney(value) },
     {
-      raw: lots.length,
+      raw: lots && lots.length,
       label: (
         <PromotionLotsManager
           key="lots"

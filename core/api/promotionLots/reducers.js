@@ -8,7 +8,8 @@ PromotionLots.addReducers({
   value: {
     body: { properties: { value: 1 }, lots: { value: 1 } },
     reduce: ({ properties, lots }) =>
-      properties.reduce((total, { value }) => total + value, 0)
-      + lots.reduce((total, { value }) => total + value, 0),
+      (properties.reduce((total, { value }) => total + value, 0) + lots
+        ? lots.reduce((total, { value }) => total + value, 0)
+        : 0),
   },
 });

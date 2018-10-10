@@ -3,6 +3,7 @@ import React from 'react';
 
 import { removeLotLink, addLotToPromotionLot } from '../../../../api';
 import Chip from '../../../Material/Chip';
+import Tooltip from '../../../Material/Tooltip';
 import DropdownMenu from '../../../DropdownMenu';
 import T from '../../../Translation';
 
@@ -27,12 +28,13 @@ const PromotionLotsManager = ({
 
   return (
     <div className="promotion-lots-manager">
-      {lots.map(({ _id, name }) => (
-        <Chip
-          key={_id}
-          onDelete={() => removeLotLink.run({ promotionLotId, lotId: _id })}
-          label={name}
-        />
+      {lots.map(({ _id, name, type }) => (
+        <Tooltip title={<T id={`Forms.type.${type}`} />} key={_id}>
+          <Chip
+            onDelete={() => removeLotLink.run({ promotionLotId, lotId: _id })}
+            label={name}
+          />
+        </Tooltip>
       ))}
       <DropdownMenu iconType="add" options={options} />
     </div>

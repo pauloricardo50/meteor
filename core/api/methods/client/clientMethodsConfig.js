@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Method } from '../methods';
-import ClientEventService from '../../events/ClientEventService';
+import ClientEventService, {
+  CALLED_METHOD,
+} from '../../events/ClientEventService';
 import message from '../../../utils/message';
 
 const shouldLogErrorsToConsole = (Meteor.isDevelopment || Meteor.isStaging) && !Meteor.isTest;
@@ -17,6 +19,7 @@ Method.addAfterCall(({ config, params, result, error }) => {
   if (error) {
     handleError(error);
   } else {
+    ClientEventService.emit(CALLED_METHOD);
     ClientEventService.emitMethod(config, params);
   }
   // Do something on the client

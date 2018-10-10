@@ -1,2 +1,3 @@
 export const MODIFIED_FILES_EVENT = 'MODIFIED_FILES_EVENT';
 export const LOAD_LOAN = 'LOAD_LOAN';
+export const CALLED_METHOD = 'CALLED_METHOD';
