@@ -3,6 +3,9 @@ export const proPromotionFragment = {
   type: 1,
   status: 1,
   address: 1,
+  address1: 1,
+  zipCode: 1,
+  city: 1,
   properties: { address: 1 },
   lots: { name: 1 },
   promotionLots: {

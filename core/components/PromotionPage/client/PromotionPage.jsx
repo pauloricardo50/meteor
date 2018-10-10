@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
 import T from '../../Translation';
 import Button from '../../Button';
 import PromotionPageHeader from './PromotionPageHeader';
@@ -26,6 +27,14 @@ const PromotionPage = (props: PromotionPageProps) => {
           />
         )}
       </div>
+
+      <MapWithMarkerWrapper
+        address1={promotion.address1}
+        city={promotion.city}
+        zipCode={promotion.zipCode}
+        options={{ zoom: 12 }}
+      />
+
       <PromotionPageDocuments promotion={promotion} />
       <PromotionLotsTable promotion={promotion} />
     </div>

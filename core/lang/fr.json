@@ -94,7 +94,7 @@
   "files.OTHER": "Autres documents",
   "BorrowersSummary.borrower": "Emprunteur {index}",
 
-  "GoogleMap.addressNotFound": "Cette adresse n'a pas pu être trouvée",
+  "Maps.addressNotFound": "Cette adresse n'a pas pu être trouvée",
 
   "FinancingResultErrors.noMortgageLoan": "Ajoutez un prêt hypothécaire",
   "FinancingResultErrors.missingOwnFunds": "Allouez plus de fonds propres à cette structure",
@@ -1269,7 +1269,7 @@
   "ProcessPageBar.nextStep": "Prochaine étape",
   "ProcessPageBar.previous": "Précédent",
   "PropertiesPage.description": "Il nous faut des informations supplémentaires sur votre bien immobilier, nous pourrons alors mieux comprendre vos besoins, et vous indiquer si le prix du bien est conforme au marché.",
-  "PropertiesPage.incompleteAddress": "Entrez votre adresse complète pour afficher la carte!",
+  "Maps.incompleteAddress": "Entrez votre adresse complète pour afficher la carte!",
   "PropertiesPage.progress": "Progrès: {value, number, percent}",
   "PropertiesPage.title": "Biens immobiliers",
   "property.expertise": "Expertise",

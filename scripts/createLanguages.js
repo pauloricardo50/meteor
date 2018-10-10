@@ -104,6 +104,7 @@ const config = {
   // this algorithm would miss them, provide the first part of those strings
   // here
   generalExceptions: [
+    'BorrowersSummary',
     'e-Potek',
     'ExpensesChart',
     'ExpensesChartInterests',
@@ -115,6 +116,7 @@ const config = {
     'InterestsTable',
     'LayoutError',
     'LoanChecklist',
+    'Maps',
     'MissingDoc',
     'NotFound',
     'property',
@@ -129,7 +131,6 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
-    'BorrowersSummary',
   ],
 };
 
