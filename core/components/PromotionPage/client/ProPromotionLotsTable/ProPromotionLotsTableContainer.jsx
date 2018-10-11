@@ -15,6 +15,7 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
   lots,
   promotionOptions,
   value,
+  attributedTo,
 }) => ({
   id: promotionLotId,
   columns: [
@@ -26,6 +27,7 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
       label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
     promotionOptions.length,
+    attributedTo && attributedTo.user.name,
   ],
 
   handleClick: () =>
@@ -41,6 +43,7 @@ const columnOptions = [
   { id: 'totalValue' },
   { id: 'lots' },
   { id: 'loans' },
+  { id: 'attributedTo' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(

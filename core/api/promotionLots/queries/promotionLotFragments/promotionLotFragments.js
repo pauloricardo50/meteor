@@ -21,4 +21,7 @@ export const proPromotionLotFragment = {
     },
   },
   name: 1,
+  attributedTo: {
+    user: { name: 1 },
+  },
 };
