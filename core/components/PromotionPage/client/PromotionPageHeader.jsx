@@ -18,7 +18,7 @@ const PromotionPageHeader = ({
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
-        <div>
+        <div className="promotion-title">
           <h1>
             {name}
             &nbsp;
