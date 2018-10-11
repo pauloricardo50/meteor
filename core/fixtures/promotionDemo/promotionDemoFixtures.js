@@ -2,8 +2,10 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import range from 'lodash/range';
 import random from 'lodash/random';
+import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
+import LoanService from '../../api/loans/LoanService';
 import PromotionService from '../../api/promotions/PromotionService';
 import {
   PROMOTION_TYPES,
@@ -11,11 +13,11 @@ import {
 } from '../../api/promotions/promotionConstants';
 import UserService from '../../api/users/UserService';
 import { ROLES } from '../../api/users/userConstants';
-import { properties } from './data';
 import PromotionOptionService from '../../api/promotionOptions/PromotionOptionService';
 import PromotionLotService from '../../api/promotionLots/PromotionLotService';
 import LotService from '../../api/lots/LotService';
 import { LOT_TYPES, PROMOTION_OPTION_STATUS } from '../../api/constants';
+import { properties } from './data';
 
 const DEMO_PROMOTION = {
   name: 'Pré Polly',
@@ -107,6 +109,24 @@ const createLots = (promotionId) => {
   });
 };
 
+const getDistinctRandomValues = (arr, amount) => shuffle(arr).slice(0, amount);
+
+const addPromotionOptions = (loanId, promotion) => {
+  const amount = random(1, 3);
+  console.log('amount', amount);
+  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) =>
+    PromotionOptionService.insert({
+      loanId,
+      promotionOption: {
+        promotionLotLinks: [{ _id: promotionLotId }],
+        status:
+            Math.random() > 0.66
+              ? PROMOTION_OPTION_STATUS.WANT_TO_BUY
+              : PROMOTION_OPTION_STATUS.TRIAL,
+      },
+    }));
+};
+
 export const createPromotionDemo = (userId) => {
   console.log('Creating promotion demo...');
   const promotionId = PromotionService.insert({
@@ -142,15 +162,12 @@ export const createPromotionDemo = (userId) => {
       promotionId,
       userId: promotionCustomerId,
     });
-    PromotionOptionService.insert({
+    const promotionOptionIds = addPromotionOptions(loanId, promotion);
+    console.log('promotionOptionIds', promotionOptionIds);
+    LoanService.setPromotionPriorityOrder({
       loanId,
-      promotionOption: {
-        promotionLotLinks: [{ _id: rand(promotion.promotionLotLinks)._id }],
-        status:
-          Math.random() > 0.66
-            ? PROMOTION_OPTION_STATUS.WANT_TO_BUY
-            : PROMOTION_OPTION_STATUS.TRIAL,
-      },
+      promotionId,
+      priorityOrder: promotionOptionIds,
     });
   });
 };

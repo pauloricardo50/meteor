@@ -269,6 +269,13 @@ export class LoanService {
       });
     });
   };
+
+  setPromotionPriorityOrder({ loanId, promotionId, priorityOrder }) {
+    return Loans.update(
+      { _id: loanId, 'promotionLinks._id': promotionId },
+      { $set: { 'promotionLinks.$.priorityOrder': priorityOrder } },
+    );
+  }
 }
 
 export default new LoanService({});
