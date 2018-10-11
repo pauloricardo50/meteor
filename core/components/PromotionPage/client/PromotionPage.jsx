@@ -9,6 +9,7 @@ import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
 import UserPromotionLotsTable from './UserPromotionLotsTable';
+import CustomerAdder from './CustomerAdder';
 
 type PromotionPageProps = {};
 
@@ -19,11 +20,7 @@ const PromotionPage = (props: PromotionPageProps) => {
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
       <div className="buttons flex center animated fadeIn delay-600">
-        {canModify && (
-          <Button raised primary>
-            <T id="PromotionPage.addCustomer" />
-          </Button>
-        )}
+        {canModify && <CustomerAdder />}
         {canModify && (
           <PromotionDocumentsManager
             promotion={promotion}
