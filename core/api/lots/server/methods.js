@@ -6,7 +6,7 @@ import { lotInsert, lotUpdate } from '../methodDefinitions';
 
 lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
   SecurityService.checkUserIsPro(userId);
-  const lotId = LotService.insert({ lot });
+  const lotId = LotService.insert(lot);
   PromotionService.addLink({
     id: promotionId,
     linkName: 'lotLinks',

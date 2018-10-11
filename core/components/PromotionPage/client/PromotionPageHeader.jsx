@@ -12,7 +12,7 @@ const PromotionPageHeader = ({
   promotion,
   canModify,
 }: PromotionPageHeaderProps) => {
-  const { name, promotionLots, status, documents } = promotion;
+  const { name, promotionLots = [], status, documents } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
 
   return (

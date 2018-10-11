@@ -24,7 +24,7 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,
-      label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
+      label: lots && lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
     promotionOptions.length,
     attributedTo && attributedTo.user.name,
@@ -48,7 +48,7 @@ const columnOptions = [
 
 export default compose(
   withRouter,
-  mapProps(({ promotion: { promotionLots, _id: promotionId }, history }) => ({
+  mapProps(({ promotion: { promotionLots = [], _id: promotionId }, history }) => ({
     rows: promotionLots.map(makeMapPromotionLot({ history, promotionId })),
     columnOptions,
     addProperty: property =>
