@@ -66,7 +66,7 @@ export default compose(
   withUserLoan,
   mergeFilesIntoLoanStructure(
     loanFiles,
-    ({ loan: { _id: loanId } }) => ({ loanId }),
+    ({ loan }) => ({ loanId: loan && loan._id }),
     'loan',
   ),
   withRouter,
