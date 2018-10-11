@@ -52,12 +52,19 @@ const mapOption = ({
         currentId={promotionOptionId}
         key="priorityOrder"
       />,
-      <span
-        className={getSolvency(loan && loan[0] && loan[0].user.email).className}
-        key="solvency"
-      >
-        {getSolvency(loan && loan[0] && loan[0].user.email).text}
-      </span>,
+      {
+        raw: getSolvency(loan && loan[0] && loan[0].user.email).className,
+        label: (
+          <span
+            className={
+              getSolvency(loan && loan[0] && loan[0].user.email).className
+            }
+            key="solvency"
+          >
+            {getSolvency(loan && loan[0] && loan[0].user.email).text}
+          </span>
+        ),
+      },
       <PromotionLotAttributer
         promotionLotId={promotionLotId}
         loanId={loan && loan[0] && loan[0]._id}
