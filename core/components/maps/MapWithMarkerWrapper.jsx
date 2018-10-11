@@ -5,7 +5,13 @@ import MapWithMarker from './MapWithMarker';
 import T from '../Translation';
 import { getAddressString, isIncompleteAddress } from './googleMapsHelpers';
 
-const MapWithMarkerWrapper = ({ address1, zipCode, city, options }) => {
+const MapWithMarkerWrapper = ({
+  address1,
+  zipCode,
+  city,
+  options,
+  className,
+}) => {
   if (isIncompleteAddress({ address1, zipCode, city })) {
     return (
       <p className="description incomplete-address">
@@ -17,7 +23,7 @@ const MapWithMarkerWrapper = ({ address1, zipCode, city, options }) => {
   return (
     <MapWithMarker
       address={getAddressString({ address1, zipCode, city })}
-      className="map"
+      className={`map ${className}`}
       options={options}
     />
   );
