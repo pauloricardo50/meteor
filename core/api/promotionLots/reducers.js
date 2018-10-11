@@ -3,7 +3,8 @@ import PromotionLots from './promotionLots';
 PromotionLots.addReducers({
   name: {
     body: { properties: { name: 1 } },
-    reduce: ({ properties }) => properties[0].name,
+    reduce: ({ properties }) =>
+      properties && properties[0] && properties[0].name,
   },
   value: {
     body: { properties: { value: 1 }, lots: { value: 1 } },
