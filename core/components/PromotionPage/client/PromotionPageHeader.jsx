@@ -37,7 +37,10 @@ const PromotionPageHeader = ({
 
         <div className="logos">
           {logos.map(logo => (
-            <img src={logo.url} alt="" key={logo.Key} />
+            <div className="logo">
+              <img src={logo.url} alt="" key={logo.Key} />
+              <p className="text-center bold">{logo.name.split('.')[0]}</p>
+            </div>
           ))}
         </div>
       </div>
