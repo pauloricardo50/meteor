@@ -6,8 +6,16 @@ import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionO
 import T from 'core/components/Translation';
 import PromotionLotAttributer from './PromotionLotAttributer';
 
-const getSolvency = email =>
-  Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2')) % 3 === 0;
+const getSolvency = (email) => {
+  const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
+  if (nb % 3 === 0) {
+    return { className: 'success', text: 'Solvable' };
+  }
+  if (nb % 3 === 1) {
+    return { className: 'warning', text: 'Non solvable' };
+  }
+  return { className: 'primary', text: 'En cours' };
+};
 
 const mapOption = ({
   status: promotionLotStatus,
@@ -27,16 +35,10 @@ const mapOption = ({
       <T id={`Forms.status.${status}`} key="status" />,
       lots,
       <span
-        className={
-          getSolvency(loan && loan[0] && loan[0].user.email)
-            ? 'solvent'
-            : 'non-solvent'
-        }
+        className={getSolvency(loan && loan[0] && loan[0].user.email).className}
         key="solvency"
       >
-        {getSolvency(loan && loan[0] && loan[0].user.email)
-          ? 'Solvable'
-          : 'Non solvable'}
+        {getSolvency(loan && loan[0] && loan[0].user.email).text}
       </span>,
       <PromotionLotAttributer
         promotionLotId={promotionLotId}
