@@ -3,6 +3,6 @@ import query from './proPromotion';
 
 query.expose({
   firewall(userId) {
-    SecurityService.checkUserIsPro(userId);
+    // SecurityService.checkUserIsPro(userId);
   },
 });
