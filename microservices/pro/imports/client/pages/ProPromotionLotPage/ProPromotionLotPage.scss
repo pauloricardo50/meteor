@@ -45,4 +45,16 @@
     border-radius: 4px;
     padding: 4px;
   }
+
+  .priority-order {
+    display: flex;
+    > * {
+      margin-right: 4px;
+    }
+
+    .primary {
+      color: white;
+      background-color: $primary;
+    }
+  }
 }

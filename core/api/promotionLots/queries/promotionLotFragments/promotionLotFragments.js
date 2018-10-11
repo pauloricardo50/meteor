@@ -12,6 +12,7 @@ export const proPromotionLotFragment = {
   promotionOptions: { _id: 1 },
   promotion: {
     name: 1,
+    promotionLots: { name: 1 },
     lots: {
       name: 1,
       value: 1,
