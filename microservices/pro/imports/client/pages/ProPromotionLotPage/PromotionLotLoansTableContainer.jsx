@@ -23,6 +23,7 @@ const mapOption = ({
   _id: promotionLotId,
   promotion: lotPromotion,
   attributedTo,
+  name,
 }) => (promotionOption) => {
   const {
     _id: promotionOptionId,
@@ -70,6 +71,13 @@ const mapOption = ({
         loanId={loan && loan[0] && loan[0]._id}
         promotionLotStatus={promotionLotStatus}
         attributedToId={attributedTo && attributedTo._id}
+        userName={loan && loan[0] && loan[0].user.name}
+        lots={lots}
+        solvency={getSolvency(loan && loan[0] && loan[0].user.email).text}
+        solvencyClassName={
+          getSolvency(loan && loan[0] && loan[0].user.email).className
+        }
+        promotionLotName={name}
         key="promotionLotAttributer"
       />,
     ],

@@ -27,13 +27,33 @@
         align-items: center;
       }
 
+      .promotion-title {
+        align-self: center;
+        width: 100%;
+        max-width: 600px;
+      }
+
       .logos {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        > * {
-          max-height: 100px;
-          max-width: 150px;
+
+        .logo {
+          width: 150px;
+          height: 150px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+
+          p {
+            max-width: 150px;
+          }
+          img {
+            max-height: 100px;
+            max-width: 150px;
+            margin-bottom: 8px;
+          }
         }
       }
     }

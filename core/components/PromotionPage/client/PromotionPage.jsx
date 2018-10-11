@@ -18,7 +18,7 @@ const PromotionPage = (props: PromotionPageProps) => {
   return (
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
-      <div className="buttons flex center">
+      <div className="buttons flex center animated fadeIn delay-600">
         {canModify && (
           <Button raised primary>
             <T id="PromotionPage.addCustomer" />
@@ -37,6 +37,7 @@ const PromotionPage = (props: PromotionPageProps) => {
         city={promotion.city}
         zipCode={promotion.zipCode}
         options={{ zoom: 12 }}
+        className="animated fadeIn delay-800"
       />
 
       <PromotionPageDocuments promotion={promotion} />

@@ -42,6 +42,7 @@ export default class ConfirmMethod extends Component {
       keyword,
       buttonProps,
       children,
+      dialogTitle,
     } = this.props;
     const { open, text } = this.state;
     const actions = [
@@ -68,15 +69,14 @@ export default class ConfirmMethod extends Component {
           style={style}
           disabled={disabled}
           {...buttonProps}
-        >
-          {children}
-        </Button>
+        />
         <Dialog
-          title={<T id="ConfirmMethod.dialogTitle" />}
+          title={dialogTitle || <T id="ConfirmMethod.dialogTitle" />}
           actions={actions}
           important
           open={open}
         >
+          {children}
           {keyword && (
             <div>
               <T id="ConfirmMethod.dialogMessage" values={{ keyword }} />
