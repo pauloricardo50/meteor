@@ -63,8 +63,7 @@ const ProPromotionLotPage = ({
 
         <PromotionLotLoansTable
           promotionOptions={promotionOptions}
-          promotionLotStatus={status}
-          promotionLotId={promotionLotId}
+          promotionLot={promotionLot}
         />
       </div>
     </div>

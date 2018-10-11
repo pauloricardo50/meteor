@@ -38,6 +38,7 @@ export const proPromotionFragment = {
     properties: { name: 1, value: 1 },
     promotionOptions: { _id: 1 },
     name: 1,
+    attributedTo: { user: { name: 1 } },
   },
 };
 

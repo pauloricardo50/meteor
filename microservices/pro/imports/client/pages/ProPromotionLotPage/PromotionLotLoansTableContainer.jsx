@@ -9,15 +9,12 @@ import PromotionLotAttributer from './PromotionLotAttributer';
 const getSolvency = email =>
   Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2')) % 3 === 0;
 
-const mapOption = ({ promotionLotStatus, promotionLotId }) => ({
-  _id: promotionOptionId,
-  loan,
-  status,
-  lots,
-  solvency,
+const mapOption = ({
+  status: promotionLotStatus,
+  _id: promotionLotId,
   attributedTo,
-}) => {
-  console.log('loan', loan);
+}) => ({ _id: promotionOptionId, loan, status, lots, solvency }) => {
+  console.log('attributedTo', attributedTo);
 
   return {
     id: promotionOptionId,
@@ -62,10 +59,9 @@ const columnOptions = [
 ].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
 
 export default compose(
-  mapProps(({ promotionOptions, promotionLotStatus, promotionLotId }) => ({
+  mapProps(({ promotionOptions, promotionLot }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
-    promotionLotStatus,
-    promotionLotId,
+    promotionLot,
   })),
   withSmartQuery({
     query: ({ promotionOptionIds }) =>
@@ -73,8 +69,8 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'promotionOptions',
   }),
-  withProps(({ promotionOptions, promotionLotStatus, promotionLotId }) => ({
-    rows: promotionOptions.map(mapOption({ promotionLotStatus, promotionLotId })),
+  withProps(({ promotionOptions, promotionLot }) => ({
+    rows: promotionOptions.map(mapOption(promotionLot)),
     columnOptions,
   })),
 );
