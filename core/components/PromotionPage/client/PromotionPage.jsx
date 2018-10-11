@@ -8,6 +8,7 @@ import PromotionPageHeader from './PromotionPageHeader';
 import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
+import UserPromotionLotsTable from './UserPromotionLotsTable';
 
 type PromotionPageProps = {};
 
