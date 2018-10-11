@@ -14,3 +14,4 @@ export const FINANCING_PAGE = '/loans/:loanId/financing';
 export const PASSWORD_RESET_PAGE = '/reset-password/:token';
 export const PROPERTIES_PAGE = '/loans/:loanId/properties';
 export const PROPERTY_PAGE = '/loans/:loanId/properties/:propertyId';
+export const APP_PROMOTION_PAGE = '/loans/:loanId/promotions/:promotionId';
