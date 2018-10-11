@@ -1,7 +1,9 @@
 .status-label {
-  padding: 2px 4px;
+  padding: 4px 4px;
   border-radius: 4px;
   color: white;
   font-size: 12px;
   line-height: initial;
+  flex-grow: 0;
+  display: inline;
 }

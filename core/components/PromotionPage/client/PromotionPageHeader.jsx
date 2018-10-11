@@ -15,6 +15,8 @@ const PromotionPageHeader = ({
   const { name, promotionLots = [], status, documents } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
 
+  console.log('img url', promotionImage && promotionImage[0].url);
+
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
@@ -38,8 +40,8 @@ const PromotionPageHeader = ({
         {logos.length > 0 ? (
           <div className="logos animated fadeIn delay-200">
             {logos.map(logo => (
-              <div className="logo ">
-                <img src={logo.url} alt="" key={logo.Key} />
+              <div className="logo" key={logo.Key}>
+                <img src={logo.url} alt="" />
                 <p className="text-center bold">{logo.name.split('.')[0]}</p>
               </div>
             ))}
@@ -51,7 +53,7 @@ const PromotionPageHeader = ({
       <div className="promotion-page-header-right">
         <span
           style={{ backgroundImage: `url(${promotionImage[0].url})` }}
-          className="promotion-image animated fadeIn delay-400"
+          className="promotion-image animated fadeIn" // delay-400"
         />
       </div>
     </div>

@@ -34,6 +34,7 @@ import './users/queries/exposures';
 // Server-side Reducers
 import './borrowers/server/serverReducers';
 import './loans/server/serverReducers';
+import './promotionLots/server/serverReducers';
 import './promotions/server/serverReducers';
 import './properties/server/serverReducers';
 

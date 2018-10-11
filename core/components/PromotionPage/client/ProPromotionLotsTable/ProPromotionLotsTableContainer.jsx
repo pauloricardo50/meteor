@@ -3,9 +3,11 @@ import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { createRoute } from '../../../../utils/routerUtils';
-import { insertPromotionProperty, lotInsert } from '../../../../api';
 import { toMoney } from '../../../../utils/conversionFunctions';
+import { insertPromotionProperty, lotInsert } from '../../../../api';
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
 import T from '../../../Translation';
+import StatusLabel from '../../../StatusLabel';
 import LotChip from './LotChip';
 
 const makeMapPromotionLot = ({ history, promotionId }) => ({
@@ -20,7 +22,16 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
   id: promotionLotId,
   columns: [
     name,
-    { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
+    {
+      raw: status,
+      label: (
+        <StatusLabel
+          status={status}
+          collection={PROMOTION_LOTS_COLLECTION}
+          key="status"
+        />
+      ),
+    },
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,

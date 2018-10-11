@@ -4,7 +4,6 @@ import React from 'react';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import T from 'core/components/Translation';
 import { PROMOTION_LOT_STATUS } from 'imports/core/api/constants';
-import { spawn } from 'child_process';
 import PromotionLotAttributerContainer from './PromotionLotAttributerContainer';
 
 type PromotionLotAttributerProps = {};
@@ -55,16 +54,14 @@ const PromotionLotAttributer = ({
             buttonProps={{ outlined: true, secondary: true }}
             key="sell"
             method={sellPromotionLot}
-          >
-            <T id="PromotionLotAttributer.sell" />
-          </ConfirmMethod>
+            label={<T id="PromotionLotAttributer.sell" />}
+          />
           <ConfirmMethod
             buttonProps={{ outlined: true, error: true }}
             key="cancel"
             method={cancelPromotionLotBooking}
-          >
-            <T id="PromotionLotAttributer.cancelBooking" />
-          </ConfirmMethod>
+            label={<T id="PromotionLotAttributer.cancelBooking" />}
+          />
         </>
     )}
     {promotionLotStatus === PROMOTION_LOT_STATUS.SOLD

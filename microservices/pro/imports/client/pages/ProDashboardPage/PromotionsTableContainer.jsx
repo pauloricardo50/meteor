@@ -6,6 +6,8 @@ import T from 'core/components/Translation';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import { createRoute } from 'core/utils/routerUtils';
 import proPromotions from 'core/api/promotions/queries/proPromotions';
+import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import StatusLabel from 'core/components/StatusLabel';
 import { PRO_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
 
 const makeMapPromotion = history => ({
@@ -21,7 +23,11 @@ const makeMapPromotion = history => ({
   id: _id,
   columns: [
     name,
-    <T id={`Forms.status.${status}`} key="status" />,
+    <StatusLabel
+      status={status}
+      collection={PROMOTIONS_COLLECTION}
+      key="status"
+    />,
     promotionLots.length,
     availablePromotionLots.length,
     bookedPromotionLots.length,
