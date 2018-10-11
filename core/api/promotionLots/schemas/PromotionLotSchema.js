@@ -13,6 +13,8 @@ const PromotionLotSchema = new SimpleSchema({
   lotLinks: { type: Array, defaultValue: [] },
   'lotLinks.$': Object,
   'lotLinks.$._id': String,
+  attributedToLink: { type: Object, optional: true },
+  'attributedToLink._id': String,
 });
 
 export default PromotionLotSchema;

@@ -123,7 +123,7 @@ export const createPromotionDemo = (userId) => {
     const promotionCustomerId = UserService.createUser({
       role: ROLES.USER,
       options: {
-        email: `user-${i}@epotek.ch`,
+        email: `user-${i}@e-potek.ch`,
         password: '12345',
       },
     });

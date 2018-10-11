@@ -35,7 +35,6 @@ const PromotionSchema = new SimpleSchema({
   promotionLotLinks: { type: Array, defaultValue: [] },
   'promotionLotLinks.$': Object,
   'promotionLotLinks.$._id': String,
-  'promotionLotLinks.$.attributedTo': { type: String, optional: true },
   userLinks: [Object],
   'userLinks.$._id': String,
   'userLinks.$.permissions': {

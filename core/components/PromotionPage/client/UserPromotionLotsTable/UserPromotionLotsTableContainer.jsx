@@ -3,19 +3,17 @@ import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { createRoute } from '../../../../utils/routerUtils';
-import { insertPromotionProperty, lotInsert } from '../../../../api';
+import withMatchParam from '../../../../containers/withMatchParam';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import LotChip from './LotChip';
 
-const makeMapPromotionLot = ({ history, promotionId }) => ({
+const makeMapPromotionLot = ({ history, promotionId, loanId }) => ({
   _id: promotionLotId,
   name,
   status,
   lots,
-  promotionOptions,
   value,
-  attributedTo,
 }) => ({
   id: promotionLotId,
   columns: [
@@ -26,12 +24,11 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
       raw: lots && lots.length,
       label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
-    promotionOptions.length,
-    attributedTo && attributedTo.user.name,
   ],
 
   handleClick: () =>
-    history.push(createRoute('/promotions/:promotionId/:promotionLotId', {
+    history.push(createRoute('/loans/:loanId/promotions/:promotionId/:promotionLotId', {
+      loanId,
       promotionId,
       promotionLotId,
     })),
@@ -42,17 +39,13 @@ const columnOptions = [
   { id: 'status' },
   { id: 'totalValue' },
   { id: 'lots' },
-  { id: 'loans' },
-  { id: 'attributedTo' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(
+  withMatchParam('loanId'),
   withRouter,
-  mapProps(({ promotion: { promotionLots, _id: promotionId }, history }) => ({
-    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId })),
+  mapProps(({ promotion: { promotionLots, _id: promotionId }, history, loanId }) => ({
+    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId, loanId })),
     columnOptions,
-    addProperty: property =>
-      insertPromotionProperty.run({ promotionId, property }),
-    addLot: lot => lotInsert.run({ promotionId, lot }),
   })),
 );

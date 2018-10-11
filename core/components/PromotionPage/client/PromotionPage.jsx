@@ -39,7 +39,8 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      <ProPromotionLotsTable promotion={promotion} />
+      {isPro && <ProPromotionLotsTable promotion={promotion} />}
+      {!isPro && <UserPromotionLotsTable promotion={promotion} />}
     </div>
   );
 };
