@@ -6,7 +6,7 @@ import { createRoute } from '../../../../utils/routerUtils';
 import withMatchParam from '../../../../containers/withMatchParam';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
-import LotChip from './LotChip';
+import LotChip from '../ProPromotionLotsTable/LotChip';
 
 const makeMapPromotionLot = ({ history, promotionId, loanId }) => ({
   _id: promotionLotId,
