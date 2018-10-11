@@ -3,8 +3,10 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
+import StatusLabel from 'core/components/StatusLabel';
 import { createRoute } from 'core/utils/routerUtils';
 import { PRO_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
+import { PROMOTION_LOTS_COLLECTION } from 'imports/core/api/constants';
 import ProPromotionLotPageContainer from './ProPromotionLotPageContainer';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotsManager from './PromotionLotsManager';
@@ -24,6 +26,7 @@ const ProPromotionLotPage = ({
     lots,
     promotion,
     promotionOptions,
+    status,
   } = promotionLot;
   console.log('promotionLot', promotionLot);
   const { lots: allLots } = promotion[0];
@@ -39,7 +42,11 @@ const ProPromotionLotPage = ({
         <T id="general.back" />
       </Button>
       <div className="pro-promotion-lot-page card1">
-        <h1>{name}</h1>
+        <h1>
+          {name}
+          &nbsp;
+          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+        </h1>
         <LotDocumentsManager
           property={properties[0]}
           currentUser={currentUser}
@@ -54,7 +61,11 @@ const ProPromotionLotPage = ({
           allLots={allLots}
         />
 
-        <PromotionLotLoansTable promotionOptions={promotionOptions} />
+        <PromotionLotLoansTable
+          promotionOptions={promotionOptions}
+          promotionLotStatus={status}
+          promotionLotId={promotionLotId}
+        />
       </div>
     </div>
   );

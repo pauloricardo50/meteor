@@ -35,7 +35,14 @@ export default class ConfirmMethod extends Component {
   handleChange = event => this.setState({ text: event.target.value });
 
   render() {
-    const { label, style, disabled, keyword, buttonProps } = this.props;
+    const {
+      label,
+      style,
+      disabled,
+      keyword,
+      buttonProps,
+      children,
+    } = this.props;
     const { open, text } = this.state;
     const actions = [
       <Button
@@ -61,7 +68,9 @@ export default class ConfirmMethod extends Component {
           style={style}
           disabled={disabled}
           {...buttonProps}
-        />
+        >
+          {children}
+        </Button>
         <Dialog
           title={<T id="ConfirmMethod.dialogTitle" />}
           actions={actions}

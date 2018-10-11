@@ -4,6 +4,11 @@
   padding: 16px;
   margin-top: 16px;
 
+  h1 {
+    display: flex;
+    align-items: center;
+  }
+
   .promotion-lots-manager {
     display: flex;
     align-items: center;
@@ -23,5 +28,14 @@
 
   .non-solvent {
     background-color: $warning;
+  }
+
+  .promotion-lot-attributer {
+    display: flex;
+    align-items: center;
+
+    > * {
+      margin-right: 4px;
+    }
   }
 }

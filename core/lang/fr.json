@@ -1,4 +1,8 @@
 {
+  "PromotionLotAttributer.book": "Réserver",
+  "PromotionLotAttributer.sell": "Confirmer vente",
+  "PromotionLotAttributer.cancelBooking": "Annuler réservation",
+  "PromotionLotLoansTable.attribute": "Attribution",
   "PromotionPage.lots.attributedTo": "Attribué à",
   "Forms.status.TRIAL": "Intérêt test",
   "Forms.status.WANT_TO_BUY": "Intérêt sérieux",

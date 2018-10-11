@@ -5,6 +5,9 @@ import {
   promotionLotUpdate,
   addLotToPromotionLot,
   removeLotLink,
+  bookPromotionLot,
+  cancelPromotionLotBooking,
+  sellPromotionLot,
 } from '../methodDefinitions';
 
 promotionLotInsert.setHandler(({ userId }, { promotionLot, promotionId }) => {
@@ -25,4 +28,19 @@ addLotToPromotionLot.setHandler(({ userId }, params) => {
 removeLotLink.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
   return PromotionLotService.removeLotLink(params);
+});
+
+bookPromotionLot.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionLotService.bookPromotionLot(params);
+});
+
+cancelPromotionLotBooking.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionLotService.cancelPromotionLotBooking(params);
+});
+
+sellPromotionLot.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionLotService.sellPromotionLot(params);
 });
