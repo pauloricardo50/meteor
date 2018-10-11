@@ -6,7 +6,7 @@ const promotionLotStatusReducer = status => ({
   body: {
     promotionLots: { status: 1 },
   },
-  reduce: ({ promotionLots }) =>
+  reduce: ({ promotionLots = [] }) =>
     promotionLots.filter(({ status: promotionLotStatus }) => status === promotionLotStatus),
 });
 
