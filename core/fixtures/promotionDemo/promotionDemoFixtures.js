@@ -2,6 +2,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import range from 'lodash/range';
 import random from 'lodash/random';
+import faker from 'faker/locale/fr';
 
 import PromotionService from '../../api/promotions/PromotionService';
 import {
@@ -125,6 +126,15 @@ export const createPromotionDemo = (userId) => {
       options: {
         email: `user-${i}@e-potek.ch`,
         password: '12345',
+      },
+    });
+
+    UserService.update({
+      userId: promotionCustomerId,
+      object: {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        phoneNumbers: [faker.phone.phoneNumber()],
       },
     });
 
