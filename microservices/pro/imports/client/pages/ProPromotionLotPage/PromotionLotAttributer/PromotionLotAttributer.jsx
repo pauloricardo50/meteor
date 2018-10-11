@@ -21,6 +21,7 @@ const PromotionLotAttributer = ({
   lots,
   solvency,
   solvencyClassName,
+  promotionLotName,
 }: PromotionLotAttributerProps) => (
   <div className="promotion-lot-attributer">
     {promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE && (
@@ -33,7 +34,7 @@ const PromotionLotAttributer = ({
         method={bookPromotionLot}
       >
         <div className="book-client-infos">
-          <p className="bold">Attribuer à</p>
+          <p className="bold">Attribuer {promotionLotName} à</p>
           <table className="book-client-infos-table">
             <tr>
               <td>Nom</td>
