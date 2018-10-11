@@ -46,3 +46,12 @@
     padding: 4px;
   }
 }
+
+.book-client-infos {
+  display: flex;
+  flex-direction: column;
+
+  &-table {
+    border-spacing: 16px;
+  }
+}

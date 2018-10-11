@@ -17,14 +17,34 @@ const PromotionLotAttributer = ({
   promotionLotStatus,
   loanId,
   attributedToId,
+  userName,
+  lots,
+  solvency,
+  solvencyClassName,
 }: PromotionLotAttributerProps) => (
   <div className="promotion-lot-attributer">
     {promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE && (
       <ConfirmMethod
-        buttonProps={{ outlined: true, primary: true }}
+        buttonProps={{
+          outlined: true,
+          primary: true,
+          label: <T id="PromotionLotAttributer.book" />,
+        }}
         method={bookPromotionLot}
       >
-        <T id="PromotionLotAttributer.book" />
+        <div className="book-client-infos">
+          <p className="bold">Attribuer à</p>
+          <table className="book-client-infos-table">
+            <tr>
+              <td>Nom</td>
+              <td>{userName}</td>
+            </tr>
+            <tr>
+              <td>Solvabilité</td>
+              <td className={solvencyClassName}>{solvency}</td>
+            </tr>
+          </table>
+        </div>
       </ConfirmMethod>
     )}
     {promotionLotStatus === PROMOTION_LOT_STATUS.BOOKED

@@ -68,15 +68,14 @@ export default class ConfirmMethod extends Component {
           style={style}
           disabled={disabled}
           {...buttonProps}
-        >
-          {children}
-        </Button>
+        />
         <Dialog
           title={<T id="ConfirmMethod.dialogTitle" />}
           actions={actions}
           important
           open={open}
         >
+          {children}
           {keyword && (
             <div>
               <T id="ConfirmMethod.dialogMessage" values={{ keyword }} />
