@@ -1,17 +1,26 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { STEPS, TASK_STATUS, TASK_TYPE } from './constants';
+import {
+  STEPS,
+  TASK_STATUS,
+  TASK_TYPE,
+  PROMOTION_USER_PERMISSIONS,
+  PROMOTION_TYPES,
+  PROMOTION_OPTION_STATUS,
+} from './constants';
 import {
   Borrowers,
   Loans,
   Offers,
+  PromotionLots,
+  PromotionOptions,
   Promotions,
   Properties,
   Tasks,
   Users,
 } from '.';
-import { PROMOTION_TYPES } from './promotions/promotionConstants';
+import { PROMOTION_LOT_STATUS } from './promotionLots/promotionLotConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -80,4 +89,16 @@ Factory.define('offer', Offers, {
 Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
+  userLinks: [
+    { _id: 'userId', permissions: PROMOTION_USER_PERMISSIONS.MODIFY },
+  ],
+  promotionLotLinks: [{ _id: 'lotId' }],
+});
+
+Factory.define('promotionOption', PromotionOptions, {
+  status: PROMOTION_OPTION_STATUS.TRIAL,
+  promotionLotLinks: [{ _id: 'lotId' }],
+});
+Factory.define('promotionLot', PromotionLots, {
+  propertyLinks: [{ _id: 'propertyId' }],
 });

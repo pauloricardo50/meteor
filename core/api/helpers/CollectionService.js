@@ -10,7 +10,7 @@ class CollectionService {
     return this.collection.insert(object);
   }
 
-  update({ id, object, operator = '$set' }) {
+  _update({ id, object, operator = '$set' }) {
     return this.collection.update(id, { [operator]: object });
   }
 
@@ -30,7 +30,7 @@ class CollectionService {
     hasMeta = true,
     metadata = {},
   }) {
-    return this.update({
+    return this._update({
       id,
       object: { [linkName]: hasMeta ? { _id: linkId, ...metadata } : linkId },
       operator: multi ? '$push' : '$set',
@@ -42,7 +42,7 @@ class CollectionService {
     const link = doc[linkName];
 
     if (Array.isArray(link)) {
-      return this.update({
+      return this._update({
         id,
         object: {
           [linkName]: link.filter(linkItem =>
@@ -51,7 +51,7 @@ class CollectionService {
       });
     }
 
-    return this.update({ id, object: { [linkName]: 1 }, operator: '$unset' });
+    return this._update({ id, object: { [linkName]: 1 }, operator: '$unset' });
   }
 }
 

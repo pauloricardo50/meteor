@@ -2,6 +2,7 @@ import PromotionOptions from './promotionOptions';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
 import { fullPromotionOptionFragment } from './queries/promotionOptionFragments';
+import { PROMOTION_OPTION_STATUS } from './promotionOptionConstants';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
@@ -17,29 +18,71 @@ export class PromotionOptionService extends CollectionService {
       .fetchOne();
   }
 
+  getPromotion(promotionOptionId) {
+    const promotionOption = this.collection
+      .createQuery({
+        $filter: { _id: promotionOptionId },
+        promotionLots: { promotion: { _id: 1 } },
+      })
+      .fetchOne();
+    return (
+      promotionOption.promotionLots
+      && promotionOption.promotionLots[0].promotion[0]
+    );
+  }
+
   remove({ promotionOptionId }) {
-    // TODO: Test me, this might not work at all
     const promotionOption = this.get(promotionOptionId);
-    LoanService.update({
-      loanId: promotionOption.loan._id,
-      object: { 'promotionLinks.priorityOrder': { $eq: promotionOptionId } },
-      operator: '$pull',
+    const loan = promotionOption.loan[0];
+    const loanId = loan._id;
+    LoanService.removeLink({
+      id: loanId,
+      linkName: 'promotionOptionLinks',
+      linkId: promotionOptionId,
     });
+    const promotionId = this.getPromotion(promotionOptionId)._id;
+    const newPriorityOrder = LoanService.getPromotionPriorityOrder({
+      loanId,
+      promotionId,
+    }).filter(id => id !== promotionOptionId);
+    LoanService.collection.update(
+      { _id: loanId, 'promotionLinks._id': promotionId },
+      { $set: { 'promotionLinks.$.priorityOrder': newPriorityOrder } },
+    );
     return super.remove(promotionOptionId);
   }
 
-  insert = ({ promotionOption, loanId }) => {
-    const promotionOptionId = super.insert(promotionOption);
+  insert = ({ promotionLotId, loanId }) => {
+    const promotionOptionId = super.insert({
+      promotionLotLinks: [{ _id: promotionLotId }],
+      status: PROMOTION_OPTION_STATUS.TRIAL,
+    });
     LoanService.update({
       loanId,
       object: { promotionOptionLinks: { _id: promotionOptionId } },
       operator: '$push',
     });
+    const promotionId = this.getPromotion(promotionOptionId)._id;
+    const priorityOrder = LoanService.getPromotionPriorityOrder({
+      loanId,
+      promotionId,
+    });
+    LoanService.collection.update(
+      { _id: loanId, 'promotionLinks._id': promotionId },
+      {
+        $set: {
+          'promotionLinks.$.priorityOrder': [
+            ...priorityOrder,
+            promotionOptionId,
+          ],
+        },
+      },
+    );
     return promotionOptionId;
   };
 
   update = ({ promotionOptionId, ...rest }) =>
-    super.update({ id: promotionOptionId, ...rest });
+    this._update({ id: promotionOptionId, ...rest });
 }
 
 export default new PromotionOptionService();

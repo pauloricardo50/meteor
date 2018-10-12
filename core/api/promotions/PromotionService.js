@@ -44,7 +44,7 @@ export class PromotionService extends CollectionService {
   }
 
   update({ promotionId, ...rest }) {
-    return super.update({ id: promotionId, ...rest });
+    return this._update({ id: promotionId, ...rest });
   }
 
   remove({ promotionId }) {

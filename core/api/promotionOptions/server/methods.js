@@ -4,14 +4,20 @@ import LoanService from '../../loans/LoanService';
 import {
   promotionOptionInsert,
   promotionOptionUpdate,
+  promotionOptionRemove,
 } from '../methodDefinitions';
 
-promotionOptionInsert.setHandler(({ userId }, { promotionOption, loanId }) => {
-  const loan = LoanService.getLoanById(loanId);
+promotionOptionInsert.setHandler(({ userId }, params) => {
+  const loan = LoanService.getLoanById(params.loanId);
   SecurityService.checkOwnership(loan);
-  return PromotionOptionService.insert({ promotionOption, loanId });
+  return PromotionOptionService.insert(params);
 });
 
-promotionOptionUpdate.setHandler(({ userId }, { promotionOptionId, object }) =>
+promotionOptionUpdate.setHandler(({ userId }, params) =>
   // TODO: Security check
-  PromotionOptionService.update({ promotionOptionId, object }));
+  PromotionOptionService.update(params));
+
+promotionOptionRemove.setHandler(({ userId }, params) =>
+// TODO: Security check
+
+  PromotionOptionService.remove(params));

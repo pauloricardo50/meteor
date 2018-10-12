@@ -17,7 +17,7 @@ export class PromotionLotService extends CollectionService {
   // };
 
   update({ promotionLotId, ...rest }) {
-    return super.update({ id: promotionLotId, ...rest });
+    return this._update({ id: promotionLotId, ...rest });
   }
 
   addLotToPromotionLot({ promotionLotId, lotId }) {

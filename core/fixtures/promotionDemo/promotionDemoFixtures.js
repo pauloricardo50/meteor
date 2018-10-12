@@ -114,17 +114,22 @@ const getDistinctRandomValues = (arr, amount) => shuffle(arr).slice(0, amount);
 const addPromotionOptions = (loanId, promotion) => {
   const amount = random(1, 3);
   console.log('amount', amount);
-  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) =>
-    PromotionOptionService.insert({
+  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) => {
+    const promotionOptionId = PromotionOptionService.insert({
       loanId,
-      promotionOption: {
-        promotionLotLinks: [{ _id: promotionLotId }],
+      promotionLotId,
+    });
+    PromotionOptionService.update({
+      promotionOptionId,
+      object: {
         status:
             Math.random() > 0.66
               ? PROMOTION_OPTION_STATUS.WANT_TO_BUY
               : PROMOTION_OPTION_STATUS.TRIAL,
       },
-    }));
+    });
+    return promotionOptionId;
+  });
 };
 
 export const createPromotionDemo = (

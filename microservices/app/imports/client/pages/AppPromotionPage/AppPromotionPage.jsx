@@ -9,10 +9,17 @@ type AppPromotionPageProps = {};
 const AppPromotionPage = ({
   promotion,
   currentUser,
+  loan,
 }: AppPromotionPageProps) => {
   console.log('promotion', promotion);
 
-  return <PromotionPage promotion={promotion} currentUser={currentUser} />;
+  return (
+    <PromotionPage
+      promotion={promotion}
+      currentUser={currentUser}
+      loan={loan}
+    />
+  );
 };
 
 export default AppPromotionPageContainer(AppPromotionPage);

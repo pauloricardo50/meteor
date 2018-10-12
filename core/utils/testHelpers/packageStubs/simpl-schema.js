@@ -4,6 +4,8 @@ class SimpleSchema {
   static RegEx = { Email: undefined };
 
   omit = () => {};
+
+  pick = () => {};
 }
 
 export default SimpleSchema;

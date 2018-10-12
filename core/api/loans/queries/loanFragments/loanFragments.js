@@ -16,6 +16,6 @@ export const loanBaseFragment = {
   updatedAt: 1,
   userId: 1,
   promotions: { name: 1, address: 1 },
-  promotionOptions: { status: 1 },
+  promotionOptions: { status: 1, promotionLots: { name: 1 } },
   // $options: { sort: { createdAt: 1 } },
 };
