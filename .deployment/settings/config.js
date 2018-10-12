@@ -13,6 +13,7 @@ export const APPLICATIONS = {
   ADMIN: 'admin',
   WWW: 'www',
   PDF: 'pdf',
+  PRO: 'pro',
 };
 
 export const SERVICES = {
@@ -35,6 +36,7 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
+    [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
     services: [SERVICES.MONGODB, SERVICES.REDIS],
@@ -42,6 +44,7 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
+    [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
 };
 
@@ -77,6 +80,7 @@ export const APP_SMOKE_TEST_FILES = {
   [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.PDF]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
+  [APPLICATIONS.PRO]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
 };
 
 export const APP_ENV_VARIABLES = {
@@ -85,11 +89,13 @@ export const APP_ENV_VARIABLES = {
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
     [APPLICATIONS.PDF]: {},
+    [APPLICATIONS.PRO]: {},
   },
   [ENVIRONMENT.PRODUCTION]: {
     [APPLICATIONS.APP]: {},
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
     [APPLICATIONS.PDF]: {},
+    [APPLICATIONS.PRO]: {},
   },
 };
