@@ -58,29 +58,22 @@ export class PromotionService extends CollectionService {
     user: { email, firstName, lastName, phoneNumber },
   }) {
     let userId;
+    let isNewUser = false;
 
     if (!UserService.doesUserExist({ email })) {
-      const newUserId = UserService.createUser({
-        options: { email },
-        role: ROLES.USER,
-      });
-
-      UserService.update({
-        userId: newUserId,
-        object: { firstName, lastName, phoneNumbers: [phoneNumber] },
-      });
-
+      isNewUser = true;
       const yannisUser = Accounts.findUserByEmail('yannis@e-potek.ch');
-
-      yannisUser
-        && UserService.assignAdminToUser({
-          userId: newUserId,
-          adminId: yannisUser._id,
-        });
-
-      UserService.sendEnrollmentEmail({ userId: newUserId });
-
-      userId = newUserId;
+      userId = UserService.adminCreateUser({
+        options: {
+          email,
+          sendEnrollmentEmail: false,
+          firstName,
+          lastName,
+          phoneNumbers: [phoneNumber],
+        },
+        role: ROLES.USER,
+        adminId: yannisUser && yannisUser._id,
+      });
     } else {
       userId = Accounts.findUserByEmail(email)._id;
     }
@@ -88,13 +81,17 @@ export class PromotionService extends CollectionService {
     if (UserService.hasPromotion({ userId, promotionId })) {
       throw new Meteor.Error('This user was already invited to this promotion');
     }
-    const loanId = LoanService.adminLoanInsert({ userId });
-    LoanService.update({
-      loanId,
-      object: { promotionLinks: [{ _id: promotionId }] },
-    });
-
+    const loanId = LoanService.insertPromotionLoan({ userId, promotionId });
+    this.sendPromotionInvitationEmail({ email, isNewUser, promotionId });
     return loanId;
+  }
+
+  sendPromotionInvitationEmail({ email, isNewUser, promotionId }) {
+    if (isNewUser) {
+      // Envoyer invitation avec enrollment link
+    } else {
+      // Envoyer invitation sans enrollment link
+    }
   }
 }
 
