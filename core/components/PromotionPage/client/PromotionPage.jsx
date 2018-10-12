@@ -7,6 +7,7 @@ import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
 import UserPromotionLotsTable from './UserPromotionLotsTable';
+import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import CustomerAdder from './CustomerAdder';
 
 type PromotionPageProps = {};
@@ -37,6 +38,9 @@ const PromotionPage = (props: PromotionPageProps) => {
 
       <PromotionPageDocuments promotion={promotion} />
       {isPro && <ProPromotionLotsTable promotion={promotion} />}
+      {!isPro && (
+        <UserPromotionOptionsTable promotion={promotion} loan={loan} />
+      )}
       {!isPro && <UserPromotionLotsTable promotion={promotion} loan={loan} />}
     </div>
   );
