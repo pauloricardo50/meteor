@@ -26,14 +26,6 @@ const CustomerAdder = ({ promotionId }: CustomerAdderProps) => (
       label: <T id="PromotionPage.addCustomer" />,
     }}
     schema={CustomerAdderUserSchema}
-    autoFieldProps={{
-      labels: {
-        email: 'Email',
-        fisrtName: 'Prénom',
-        lastName: 'Nom',
-        phoneNumber: 'Téléphone',
-      },
-    }}
     onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}
     title="Inviter un client"
     description="Invitez un utilisateur à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
