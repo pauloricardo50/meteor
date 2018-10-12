@@ -49,7 +49,11 @@
   "PromotionPage.lots.lots": "Lots annexes",
   "PromotionPage.lots.loans": "Intéressés",
   "PromotionPage.lots.totalValue": "Prix",
-
+  "PromotionPage.unassignedAdditionalLots": "Lots annexes non alloués",
+  "PromotionPage.unassignedAdditionalLots.name": "Nom",
+  "PromotionPage.unassignedAdditionalLots.type": "Type",
+  "PromotionPage.unassignedAdditionalLots.value": "Prix",
+  "PromotionPage.unassignedAdditionalLots.description": "Description",
   "PromotionPage.addCustomer": "Ajouter un client",
   "PromotionPage.subtitle": "Promotion immobilière - {promotionLotCount} lots",
   "Forms.status.PREPARATION": "Préparation",
