@@ -188,6 +188,7 @@ class DevPage extends Component {
               Property Task
             </Button>
           </Tooltip>
+          <hr className="mbt20" />
           <Button
             raised
             secondary
@@ -195,6 +196,31 @@ class DevPage extends Component {
             onClick={() => Meteor.call('createDemoPromotion')}
           >
             Créer promotion
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              Meteor.call('createDemoPromotion', {
+                addCurrentUser: true,
+                withPromotionOptions: true,
+              })
+            }
+          >
+            Créer promotion avec moi dedans
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              Meteor.call('createDemoPromotion', {
+                addCurrentUser: true,
+              })
+            }
+          >
+            Créer promotion avec moi dedans, sans promotionOptions
           </Button>
           <hr className="mbt20" />
           <ErrorThrower />

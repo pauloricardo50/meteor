@@ -127,7 +127,11 @@ const addPromotionOptions = (loanId, promotion) => {
     }));
 };
 
-export const createPromotionDemo = (userId) => {
+export const createPromotionDemo = (
+  userId,
+  addCurrentUser,
+  withPromotionOptions,
+) => {
   console.log('Creating promotion demo...');
   const promotionId = PromotionService.insert({
     promotion: DEMO_PROMOTION,
@@ -138,6 +142,23 @@ export const createPromotionDemo = (userId) => {
   createLots(promotionId);
 
   const promotion = PromotionService.get(promotionId);
+
+  if (addCurrentUser) {
+    console.log('Adding current user');
+
+    const loanId = PromotionService.inviteUser({
+      promotionId,
+      userId,
+    });
+    if (withPromotionOptions) {
+      const promotionOptionIds = addPromotionOptions(loanId, promotion);
+      LoanService.setPromotionPriorityOrder({
+        loanId,
+        promotionId,
+        priorityOrder: promotionOptionIds,
+      });
+    }
+  }
 
   console.log('creating users');
   range(50).forEach((i) => {
