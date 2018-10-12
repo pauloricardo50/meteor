@@ -71,6 +71,19 @@ export class LoanService {
     });
   };
 
+  insertPromotionLoan = ({ userId, promotionId }) => {
+    const borrowerId = BorrowerService.insert({ userId });
+    const loanId = this.insert({
+      loan: {
+        borrowerIds: [borrowerId],
+        promotionLinks: [{ _id: promotionId }],
+      },
+      userId,
+    });
+    this.addNewStructure({ loanId });
+    return loanId;
+  };
+
   startAuction = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
 
