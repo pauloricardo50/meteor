@@ -9,6 +9,43 @@
     justify-content: center;
   }
 
+  .promotions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .promotion-detail {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 400px;
+      height: 500px;
+      margin: 16px;
+
+      .promotion-image {
+        margin: -16px;
+        margin-bottom: 0;
+        flex-grow: 1;
+        border-radius: 16px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        transition: background-image 1s $bezier;
+      }
+
+      .promotion-card {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        min-width: 300px;
+        padding: 16px;
+      }
+    }
+  }
+
   .adder {
     padding: 32px;
   }

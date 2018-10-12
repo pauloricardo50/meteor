@@ -8,7 +8,7 @@ export const addressReducer = {
     },
     reduce(object) {
       const { address1, address2, zipCode, city } = object;
-      return `${address1} ${address2}, ${zipCode} ${city}`;
+      return `${address1} ${address2 || ''}, ${zipCode} ${city}`;
     },
   },
 };
