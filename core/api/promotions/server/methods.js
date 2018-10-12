@@ -29,7 +29,7 @@ insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
   return PromotionService.insertPromotionProperty({ promotionId, property });
 });
 
-inviteUserToPromotion.setHandler(({ userId }, { userId: invitedUserId, promotionId }) => {
+inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
   SecurityService.checkUserIsPro(userId);
-  return PromotionService.inviteUser({ promotionId, userId: invitedUserId });
+  return PromotionService.inviteUser({ promotionId, user });
 });
