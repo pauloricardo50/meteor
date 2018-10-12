@@ -59,7 +59,7 @@ dynamic-import@0.5.0
 accounts-password@1.5.1
 wylio:mandrill
 dburles:google-maps
-meteorhacks:kadira
+lmachens:kadira
 softwarerero:accounts-t9n
 cultofcoders:persistent-session
 tmeasday:acceptance-test-driver

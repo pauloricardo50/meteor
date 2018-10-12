@@ -62,6 +62,7 @@ inter-process-messaging@0.1.0
 jquery@1.11.11
 lai:collection-extensions@0.2.1_1
 livedata@1.0.18
+lmachens:kadira@2.30.8
 lmieulet:meteor-coverage@2.0.2
 localstorage@1.2.0
 logging@1.1.20
@@ -69,6 +70,7 @@ matb33:collection-hooks@0.8.4
 meteor@1.9.2
 meteor-base@1.4.0
 meteorhacks:inject-initial@1.0.4
+meteorhacks:meteorx@1.4.1
 meteortesting:browser-tests@1.1.0
 meteortesting:mocha@1.0.1
 meteortesting:mocha-core@5.2.0_2
@@ -99,6 +101,7 @@ mongo@1.6.0
 mongo-decimal@0.1.0
 mongo-dev-server@1.1.0
 mongo-id@1.0.7
+mongo-livedata@1.0.12
 msavin:jetsetter@4.0.0
 msavin:mongol@7.0.1
 npm-bcrypt@0.9.3

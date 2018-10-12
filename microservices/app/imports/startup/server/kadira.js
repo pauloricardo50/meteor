@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Kadira } from 'meteor/meteorhacks:kadira';
+import { Kadira } from 'meteor/lmachens:kadira';
 
 if (Meteor.settings.Kadira) {
   const { endpoint, app } = Meteor.settings.Kadira;

@@ -57,7 +57,7 @@ dynamic-import@0.5.0-beta171.19
 accounts-password@1.5.1
 wylio:mandrill
 dburles:google-maps
-meteorhacks:kadira
+lmachens:kadira
 softwarerero:accounts-t9n
 tmeasday:acceptance-test-driver
 epotek:accounts-ui
