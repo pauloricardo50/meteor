@@ -9,11 +9,11 @@ export const ENVIRONMENT = {
 };
 
 export const APPLICATIONS = {
-  APP: 'app',
   ADMIN: 'admin',
-  WWW: 'www',
+  APP: 'app',
   PDF: 'pdf',
   PRO: 'pro',
+  WWW: 'www',
 };
 
 export const SERVICES = {
