@@ -28,6 +28,8 @@
   "Forms.type.BASEMENT": "Cave",
   "Forms.type.PARKING_MOTORBIKE": "Parking moto",
   "Forms.type.PARKING_CAR": "Parking",
+  "Forms.type.PARKING_IN_A_ROW": "Parking en enfilade",
+  "Forms.type.PARKING_DISABLED": "Parking handicapé",
   "PromotionPage.addProperty": "Ajouter lot principal",
   "PromotionPage.addLot": "Ajouter lot annexe",
   "Forms.name": "Nom",
