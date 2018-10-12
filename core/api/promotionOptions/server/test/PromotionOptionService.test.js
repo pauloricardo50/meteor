@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import PromotionOptionService from '../PromotionOptionService';
+import PromotionOptionService from '../../PromotionOptionService';
 
 describe('PromotionOptionService', () => {
   describe('remove', () => {
