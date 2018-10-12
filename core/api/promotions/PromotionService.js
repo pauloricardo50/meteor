@@ -70,12 +70,13 @@ export class PromotionService extends CollectionService {
         object: { firstName, lastName, phoneNumbers: [phoneNumber] },
       });
 
-      const yannisUserId = Accounts.findUserByEmail('yannis@e-potek.ch')._id;
+      const yannisUser = Accounts.findUserByEmail('yannis@e-potek.ch');
 
-      UserService.assignAdminToUser({
-        userId: newUserId,
-        adminId: yannisUserId,
-      });
+      yannisUser
+        && UserService.assignAdminToUser({
+          userId: newUserId,
+          adminId: yannisUser._id,
+        });
 
       UserService.sendEnrollmentEmail({ userId: newUserId });
 
