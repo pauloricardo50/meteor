@@ -1,33 +1,32 @@
 // @flow
 import React from 'react';
 
+import SimpleSchema from 'simpl-schema';
+import { inviteUserToPromotion } from 'core/api/promotions/methodDefinitions';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import message from '../../../../utils/message';
-import LotSchema from '../../../../api/lots/schemas/LotSchema';
 
-type CustomerAdderProps = {};
+type CustomerAdderProps = {
+  promotionId: String,
+};
 
-const CustomerAdder = (props: CustomerAdderProps) => (
+const CustomerAdderUserSchema = new SimpleSchema({
+  email: String,
+  firstName: String,
+  lastName: String,
+  phoneNumber: String,
+});
+
+const CustomerAdder = ({ promotionId }: CustomerAdderProps) => (
   <AutoFormDialog
     buttonProps={{
       raised: true,
       primary: true,
       label: <T id="PromotionPage.addCustomer" />,
     }}
-    schema={LotSchema.pick('name')}
-    autoFieldProps={{
-      labels: {
-        name: 'Email',
-      },
-    }}
-    onSubmit={() =>
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 400);
-      })
-    }
+    schema={CustomerAdderUserSchema}
+    onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}
     title="Inviter un client"
     description="Invitez un utilisateur à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
   />

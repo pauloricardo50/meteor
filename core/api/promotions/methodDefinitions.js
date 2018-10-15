@@ -34,6 +34,6 @@ export const inviteUserToPromotion = new Method({
   name: 'inviteUserToPromotion',
   params: {
     promotionId: String,
-    userId: String,
+    user: Object,
   },
 });
