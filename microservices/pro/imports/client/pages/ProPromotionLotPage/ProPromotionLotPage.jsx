@@ -7,7 +7,9 @@ import StatusLabel from 'core/components/StatusLabel';
 import { createRoute } from 'core/utils/routerUtils';
 import { PRO_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
 import { PROMOTION_LOTS_COLLECTION } from 'imports/core/api/constants';
+import { toMoney } from 'imports/core/utils/conversionFunctions';
 import ProPromotionLotPageContainer from './ProPromotionLotPageContainer';
+import ProPromotionLotModifier from './ProPromotionLotModifier';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
@@ -43,14 +45,17 @@ const ProPromotionLotPage = ({
       </Button>
       <div className="pro-promotion-lot-page card1">
         <h1>
-          {name}
+          {name} - CHF {toMoney(promotionLot.value)}
           &nbsp;
           <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>
-        <LotDocumentsManager
-          property={properties[0]}
-          currentUser={currentUser}
-        />
+        <div className="pro-promotion-buttons">
+          <LotDocumentsManager
+            property={properties[0]}
+            currentUser={currentUser}
+          />
+          <ProPromotionLotModifier promotionLot={promotionLot} />
+        </div>
 
         <h3>
           <T id="ProPromotionLotPage.manageLot" />
