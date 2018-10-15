@@ -15,7 +15,7 @@ export const loanBaseFragment = {
   structures: 1,
   updatedAt: 1,
   userId: 1,
-  promotions: { name: 1, address: 1 },
+  promotions: { name: 1, address: 1, $metadata: { priorityOrder: 1 } },
   promotionOptions: {
     status: 1,
     promotionLots: { name: 1, status: 1, value: 1 },

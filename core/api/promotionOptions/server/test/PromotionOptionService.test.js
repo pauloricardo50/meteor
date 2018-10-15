@@ -50,4 +50,48 @@ describe('PromotionOptionService', () => {
       ]);
     });
   });
+
+  describe('insert', () => {
+    let promotionOptionId;
+    let loanId;
+    let promotionId;
+    let promotionLotId;
+
+    beforeEach(() => {
+      promotionLotId = Factory.create('promotionLot', { _id: 'lotId' })._id;
+      promotionId = Factory.create('promotion', { _id: 'promotion' })._id;
+      loanId = Factory.create('loan', {
+        promotionLinks: [{ _id: 'promotion', priorityOrder: [] }],
+      })._id;
+    });
+
+    it('inserts a new promotionOption', () => {
+      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      expect(PromotionOptionService.get(id)).to.not.equal(undefined);
+    });
+
+    it('adds a link on the loan', () => {
+      PromotionOptionService.insert({ promotionLotId, loanId });
+      const loan = LoanService.get(loanId);
+      expect(loan.promotionOptionLinks.length).to.equal(1);
+    });
+
+    it('inserts the promotionOptionId in the priorityOrder', () => {
+      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      const loan = LoanService.get(loanId);
+      expect(loan.promotionLinks[0].priorityOrder[0]).to.equal(id);
+    });
+
+    it('inserts the promotionOptionId at the end of the priorityOrder', () => {
+      loanId = Factory.create('loan', {
+        promotionLinks: [{ _id: 'promotion', priorityOrder: ['test'] }],
+      })._id;
+      let loan = LoanService.get(loanId);
+      expect(loan.promotionLinks[0].priorityOrder.length).to.equal(1);
+      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      loan = LoanService.get(loanId);
+      expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);
+      expect(loan.promotionLinks[0].priorityOrder[1]).to.equal(id);
+    });
+  });
 });

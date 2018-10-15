@@ -57,10 +57,10 @@ export class PromotionOptionService extends CollectionService {
       promotionLotLinks: [{ _id: promotionLotId }],
       status: PROMOTION_OPTION_STATUS.TRIAL,
     });
-    LoanService.update({
-      loanId,
-      object: { promotionOptionLinks: { _id: promotionOptionId } },
-      operator: '$push',
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'promotionOptionLinks',
+      linkId: promotionOptionId,
     });
     const promotionId = this.getPromotion(promotionOptionId)._id;
     const priorityOrder = LoanService.getPromotionPriorityOrder({
