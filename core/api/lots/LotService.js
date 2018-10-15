@@ -6,7 +6,7 @@ export class LotService extends CollectionService {
     super(Lots);
   }
 
-  update = ({ lotId, ...rest }) => super.update({ id: lotId, ...rest });
+  update = ({ lotId, ...rest }) => this._update({ id: lotId, ...rest });
 }
 
 export default new LotService();

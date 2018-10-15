@@ -44,7 +44,7 @@ export class PromotionService extends CollectionService {
   }
 
   update({ promotionId, ...rest }) {
-    return super.update({ id: promotionId, ...rest });
+    return this._update({ id: promotionId, ...rest });
   }
 
   remove({ promotionId }) {
@@ -53,7 +53,7 @@ export class PromotionService extends CollectionService {
 
   inviteUser({ promotionId, userId }) {
     if (UserService.hasPromotion({ userId, promotionId })) {
-      throw new Meteor.Error('This user was already invited to this promotion');
+      throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
     }
     const loanId = LoanService.adminLoanInsert({ userId });
     LoanService.update({

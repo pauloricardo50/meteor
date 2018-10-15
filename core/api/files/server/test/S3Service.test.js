@@ -169,7 +169,7 @@ describe('S3Service', function () {
     });
   });
 
-  describe.only('isAllowed', () => {
+  describe('isAllowed', () => {
     let userId;
     let user;
 

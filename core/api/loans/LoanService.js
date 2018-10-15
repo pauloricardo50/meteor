@@ -2,6 +2,7 @@ import { Random } from 'meteor/random';
 import moment from 'moment';
 
 import { getAuctionEndTime } from '../../utils/loanFunctions';
+import CollectionService from '../helpers/CollectionService';
 import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
@@ -12,7 +13,11 @@ const zeroPadding = (num, places) => {
   return Array(+(zero > 0 && zero)).join('0') + num;
 };
 
-export class LoanService {
+export class LoanService extends CollectionService {
+  constructor() {
+    super(Loans);
+  }
+
   insert = ({ loan = {}, userId }) =>
     Loans.insert({ ...loan, name: this.getNewLoanName(), userId });
 
@@ -275,6 +280,11 @@ export class LoanService {
       { _id: loanId, 'promotionLinks._id': promotionId },
       { $set: { 'promotionLinks.$.priorityOrder': priorityOrder } },
     );
+  }
+
+  getPromotionPriorityOrder({ loanId, promotionId }) {
+    const promotionLink = this.get(loanId).promotionLinks.find(({ _id }) => _id === promotionId);
+    return promotionLink ? promotionLink.priorityOrder : [];
   }
 }
 

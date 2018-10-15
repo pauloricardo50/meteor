@@ -3,18 +3,16 @@ import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { createRoute } from '../../../../utils/routerUtils';
-import withMatchParam from '../../../../containers/withMatchParam';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import LotChip from '../ProPromotionLotsTable/LotChip';
+import PromotionLotSelector from './PromotionLotSelector';
 
-const makeMapPromotionLot = ({ history, promotionId, loanId }) => ({
-  _id: promotionLotId,
-  name,
-  status,
-  lots,
-  value,
-}) => ({
+const makeMapPromotionLot = ({
+  history,
+  promotionId,
+  loan: { _id: loanId, promotionOptions },
+}) => ({ _id: promotionLotId, name, status, lots, value }) => ({
   id: promotionLotId,
   columns: [
     name,
@@ -24,6 +22,12 @@ const makeMapPromotionLot = ({ history, promotionId, loanId }) => ({
       raw: lots && lots.length,
       label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
+    <PromotionLotSelector
+      promotionLotId={promotionLotId}
+      promotionOptions={promotionOptions}
+      loanId={loanId}
+      key="PromotionLotSelector"
+    />,
   ],
 
   handleClick: () =>
@@ -39,13 +43,13 @@ const columnOptions = [
   { id: 'status' },
   { id: 'totalValue' },
   { id: 'lots' },
+  { id: 'interested' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(
-  withMatchParam('loanId'),
   withRouter,
-  mapProps(({ promotion: { promotionLots, _id: promotionId }, history, loanId }) => ({
-    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId, loanId })),
+  mapProps(({ promotion: { promotionLots, _id: promotionId }, history, loan }) => ({
+    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId, loan })),
     columnOptions,
   })),
 );

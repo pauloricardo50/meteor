@@ -114,20 +114,29 @@ const getDistinctRandomValues = (arr, amount) => shuffle(arr).slice(0, amount);
 const addPromotionOptions = (loanId, promotion) => {
   const amount = random(1, 3);
   console.log('amount', amount);
-  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) =>
-    PromotionOptionService.insert({
+  return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) => {
+    const promotionOptionId = PromotionOptionService.insert({
       loanId,
-      promotionOption: {
-        promotionLotLinks: [{ _id: promotionLotId }],
+      promotionLotId,
+    });
+    PromotionOptionService.update({
+      promotionOptionId,
+      object: {
         status:
             Math.random() > 0.66
               ? PROMOTION_OPTION_STATUS.WANT_TO_BUY
               : PROMOTION_OPTION_STATUS.TRIAL,
       },
-    }));
+    });
+    return promotionOptionId;
+  });
 };
 
-export const createPromotionDemo = (userId) => {
+export const createPromotionDemo = (
+  userId,
+  addCurrentUser,
+  withPromotionOptions,
+) => {
   console.log('Creating promotion demo...');
   const promotionId = PromotionService.insert({
     promotion: DEMO_PROMOTION,
@@ -138,6 +147,23 @@ export const createPromotionDemo = (userId) => {
   createLots(promotionId);
 
   const promotion = PromotionService.get(promotionId);
+
+  if (addCurrentUser) {
+    console.log('Adding current user');
+
+    const loanId = PromotionService.inviteUser({
+      promotionId,
+      userId,
+    });
+    if (withPromotionOptions) {
+      const promotionOptionIds = addPromotionOptions(loanId, promotion);
+      LoanService.setPromotionPriorityOrder({
+        loanId,
+        promotionId,
+        priorityOrder: promotionOptionIds,
+      });
+    }
+  }
 
   console.log('creating users');
   range(50).forEach((i) => {

@@ -4,8 +4,15 @@ import { Method } from '../methods/methods';
 export const promotionOptionInsert = new Method({
   name: 'promotionOptionInsert',
   params: {
-    promotionOption: Object,
+    promotionLotId: String,
     loanId: String,
+  },
+});
+
+export const promotionOptionRemove = new Method({
+  name: 'promotionOptionRemove',
+  params: {
+    promotionOptionId: String,
   },
 });
 
