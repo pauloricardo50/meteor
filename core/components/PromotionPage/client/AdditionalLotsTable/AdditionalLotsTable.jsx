@@ -1,17 +1,22 @@
 // @flow
 import React from 'react';
 import Chip from 'core/components/Material/Chip';
-import { withState } from 'recompose';
+import { withState, compose } from 'recompose';
 import { scroller as scroll, Element } from 'react-scroll';
 import T from '../../../Translation';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import Table from '../../../Table';
 import Button from '../../../Button';
+import AdditionalLotModifier from './AdditionalLotModifier';
 
 type AdditionalLotsTableProps = {
   promotion: Object,
   showTable: boolean,
   setShowTable: Function,
+  additionalLotToModify: Object,
+  setAdditionalLotToModify: Function,
+  showDialog: boolean,
+  setShowDialog: Function,
 };
 
 const columnOptions = [
@@ -34,34 +39,41 @@ const scrollToAdditionalLotsTable = () => {
   });
 };
 
-const makeMapAdditionalLot = () => ({
-  _id,
-  name,
-  type,
-  value,
-  description,
-  promotionLots,
-}) => ({
-  id: _id,
-  columns: [
-    name,
-    { raw: type, label: <T id={`Forms.type.${type}`} /> },
-    { raw: value, label: toMoney(value) },
-    description,
-    promotionLots && promotionLots.length > 0 ? (
-      promotionLots.map(({ name: promotionLotName, _id: promotionLotId }) => (
-        <Chip label={promotionLotName} key={promotionLotId} />
-      ))
-    ) : (
-      <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
-    ),
-  ],
-});
+const makeMapAdditionalLot = ({
+  setAdditionalLotToModify,
+  setShowDialog,
+}) => (lot) => {
+  const { _id, name, type, value, description, promotionLots } = lot;
+  return {
+    id: _id,
+    columns: [
+      name,
+      { raw: type, label: <T id={`Forms.type.${type}`} /> },
+      { raw: value, label: toMoney(value) },
+      description,
+      promotionLots && promotionLots.length > 0 ? (
+        promotionLots.map(({ name: promotionLotName, _id: promotionLotId }) => (
+          <Chip label={promotionLotName} key={promotionLotId} />
+        ))
+      ) : (
+        <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
+      ),
+    ],
+    handleClick: () => {
+      setAdditionalLotToModify(lot);
+      setShowDialog(true);
+    },
+  };
+};
 
 const AdditionalLotsTable = ({
   promotion,
   showTable,
   setShowTable,
+  additionalLotToModify,
+  setAdditionalLotToModify,
+  showDialog,
+  setShowDialog,
 }: AdditionalLotsTableProps) =>
   promotion.lots.length > 0 && (
     <div className="additional-lots">
@@ -79,23 +91,35 @@ const AdditionalLotsTable = ({
           <T id="PromotionPage.AdditionalLotsTable.showTable" />
         )}
       </Button>
-      <Element
-        name="additional-lots-table"
-        className="additional-lots-table animated"
-      >
+      <Element name="additional-lots-table" className="additional-lots-table">
         {showTable && (
           <>
             <h3 className="text-center">
               <T id="PromotionPage.AdditionalLotsTable" />
             </h3>
             <Table
-              rows={promotion.lots.map(makeMapAdditionalLot())}
+              rows={promotion.lots.map(makeMapAdditionalLot({
+                setAdditionalLotToModify,
+                setShowDialog,
+              }))}
               columnOptions={columnOptions}
             />
+            {additionalLotToModify && (
+              <AdditionalLotModifier
+                lot={additionalLotToModify}
+                promotionLots={promotion.promotionLots}
+                open={showDialog}
+                setOpen={setShowDialog}
+              />
+            )}
           </>
         )}
       </Element>
     </div>
   );
 
-export default withState('showTable', 'setShowTable', false)(AdditionalLotsTable);
+export default compose(
+  withState('showTable', 'setShowTable', false),
+  withState('additionalLotToModify', 'setAdditionalLotToModify', null),
+  withState('showDialog', 'setShowDialog', false),
+)(AdditionalLotsTable);

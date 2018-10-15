@@ -14,7 +14,7 @@ import AutoForm, { CustomAutoField, SubmitField } from './AutoForm';
 
 type AutoFormDialogProps = {};
 
-const AutoFormDialog = ({
+export const AutoFormDialog = ({
   schema,
   model,
   onSubmit,
@@ -25,6 +25,7 @@ const AutoFormDialog = ({
   important,
   autoFieldProps,
   submitting,
+  opened,
   ...otherProps
 }: AutoFormDialogProps) => {
   const AutoField = CustomAutoField(autoFieldProps);
@@ -63,7 +64,7 @@ const AutoFormDialog = ({
 };
 
 export default compose(
-  withState('open', 'setOpen', false),
+  withState('open', 'setOpen', ({ open }) => !!open),
   withState('submitting', 'setSubmitting', false),
   withProps(({ onSubmit, setOpen, setSubmitting }) => ({
     onSubmit: (...args) => {

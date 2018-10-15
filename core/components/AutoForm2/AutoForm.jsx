@@ -11,7 +11,10 @@ import Button from '../Button';
 const CustomSelectField = props => (
   <SelectField
     {...props}
-    transform={option => <T id={`Forms.${props.name}.${option}`} />}
+    transform={
+      props.transform || (option => <T id={`Forms.${props.name}.${option}`} />)
+    }
+    displayEmpty
   />
 );
 
