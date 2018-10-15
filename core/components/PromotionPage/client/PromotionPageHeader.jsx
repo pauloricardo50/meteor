@@ -15,8 +15,6 @@ const PromotionPageHeader = ({
   const { name, promotionLots = [], status, documents } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
 
-  console.log('img url', promotionImage && promotionImage[0].url);
-
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
