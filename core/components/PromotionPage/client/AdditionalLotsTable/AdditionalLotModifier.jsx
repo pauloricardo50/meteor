@@ -74,9 +74,9 @@ export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ lot }) => ({
     currentPromotionLotId:
-      lot.promotionLots.length > 0 && lot.promotionLots[0]._id,
+      lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
   })),
-  withProps(({ setOpen, setSubmitting, currentPromotionLotId }) => ({
+  withProps(({ setOpen, setSubmitting }) => ({
     updateAdditionalLot: ({
       _id: lotId,
       name,
@@ -86,15 +86,10 @@ export default compose(
     }) => {
       setSubmitting(true);
       return lotUpdate
-        .run({ lotId, object: { name, description, value } })
-        .then(() =>
-          currentPromotionLotId
-            && currentPromotionLotId !== promotionLotId
-            && removeLotLink.run({ promotionLotId: currentPromotionLotId, lotId }))
-        .then(() =>
-          promotionLotId
-            && currentPromotionLotId !== promotionLotId
-            && addLotToPromotionLot.run({ promotionLotId, lotId }))
+        .run({
+          lotId,
+          object: { promotionLotId, name, description, value },
+        })
         .then(() => {
           setOpen(false);
           message.success("C'est dans la boite !", 2);

@@ -8,11 +8,11 @@ import connectField from 'uniforms/connectField';
 import T from '../Translation';
 import Button from '../Button';
 
-const CustomSelectField = props => (
+const CustomSelectField = ({ transform, ...props }) => (
   <SelectField
     {...props}
     transform={
-      props.transform || (option => <T id={`Forms.${props.name}.${option}`} />)
+      transform || (option => <T id={`Forms.${props.name}.${option}`} />)
     }
     displayEmpty
   />

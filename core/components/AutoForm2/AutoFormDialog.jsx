@@ -64,7 +64,7 @@ export const AutoFormDialog = ({
 };
 
 export default compose(
-  withState('open', 'setOpen', ({ open }) => !!open),
+  withState('open', 'setOpen', false),
   withState('submitting', 'setSubmitting', false),
   withProps(({ onSubmit, setOpen, setSubmitting }) => ({
     onSubmit: (...args) => {

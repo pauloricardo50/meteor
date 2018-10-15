@@ -22,6 +22,10 @@ class CollectionService {
     return this.collection.findOne(id);
   }
 
+  find(...args) {
+    return this.collection.find(...args);
+  }
+
   addLink({
     id,
     linkName,
