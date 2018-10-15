@@ -20,6 +20,7 @@
   "PromotionLotLoansTable.solvency": "Solvabilité",
   "PromotionLotLoansTable.title": "Acheteurs intéressés",
   "ProPromotionLotPage.manageLot": "Lots annexes",
+  "ProPromotionLotPage.modifyPromotionLot": "Modifier le lot",
   "general.back": "Retour",
   "PromotionPage.managePropertyDocuments.description": "Donnez des noms clairs à vos documents avant de les uploader",
   "PromotionPage.managePropertyDocuments": "Gérer documents du lot {name}",

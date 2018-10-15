@@ -57,6 +57,18 @@
       background-color: $primary;
     }
   }
+
+  .pro-promotion-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+
+    > * {
+      margin-right: 4px;
+    }
+  }
 }
 
 .book-client-infos {
