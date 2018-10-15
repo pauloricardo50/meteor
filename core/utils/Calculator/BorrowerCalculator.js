@@ -1,5 +1,9 @@
 // @flow
-import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
+import {
+  OWN_FUNDS_TYPES,
+  GENDER,
+  RETIREMENT_AGE,
+} from 'imports/core/api/constants';
 import { getBorrowerDocuments } from 'imports/core/api/files/documents';
 import { FinanceCalculator } from '../FinanceCalculator';
 import {
@@ -143,6 +147,15 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       ].reduce((sum, func) => sum + func({ borrowers }), 0);
     }
 
+    getCashFortune({ borrowers }) {
+      return [
+        this.getFortune,
+        this.getInsurance3A,
+        this.getInsurance3B,
+        this.getBank3A,
+      ].reduce((sum, func) => sum + func({ borrowers }), 0);
+    }
+
     getMissingBorrowerFields({ borrowers }) {
       return arrayify(borrowers).reduce((missingIds, borrower) => {
         const formArray = getBorrowerInfoArray({
@@ -218,8 +231,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return sum;
     }
 
-    getYearsToRetirement() {
-      // TODO
+    getRetirement({ borrowers }) {
+      const argMap = borrowers.reduce(
+        (obj, { age, gender }, index) => ({
+          ...obj,
+          [`${`age${index + 1}`}`]: age,
+          [`${`gender${index + 1}`}`]: gender,
+        }),
+        {},
+      );
+      return this.getYearsToRetirement(argMap);
+    }
+
+    getAmortizationDuration({ borrowers }) {
+      const retirement = this.getRetirement({ borrowers });
+      return Math.min(15, retirement);
     }
 
     // personalInfoPercent - Determines the completion rate of the borrower's

@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator from '..';
-import { BORROWER_DOCUMENTS, STEPS } from 'core/api/constants';
+import { BORROWER_DOCUMENTS, STEPS, GENDER } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 
 describe('BorrowerCalculator', () => {
@@ -427,6 +427,20 @@ describe('BorrowerCalculator', () => {
 
     it('omits keys if they are not provided', () => {
       expect(Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
+    });
+  });
+
+  describe('getYearsToRetiement', () => {
+    it('returns the proper difference for a male', () => {
+      expect(Calculator.getRetirement({
+        borrowers: [{ age: 25, gender: GENDER.M }],
+      })).to.equal(40);
+    });
+
+    it('returns 0 for a retired person', () => {
+      expect(Calculator.getRetirement({
+        borrowers: [{ age: 70, gender: GENDER.M }],
+      })).to.equal(0);
     });
   });
 });
