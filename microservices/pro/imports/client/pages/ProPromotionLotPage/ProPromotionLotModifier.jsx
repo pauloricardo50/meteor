@@ -2,10 +2,9 @@
 import SimpleSchema from 'simpl-schema';
 import React from 'react';
 import { withProps } from 'recompose';
-import { AutoFormDialog } from '../../../core/components/AutoForm2';
-import T from '../../../core/components/Translation';
-import { PropertySchema } from '../../../core/api/properties/properties';
-import { propertyUpdate } from '../../../core/api/methods';
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import T from 'core/components/Translation';
+import { propertyUpdate } from 'core/api/methods';
 
 type ProPromotionLotModifierProps = {
   promotionLot: Object,
@@ -38,8 +37,9 @@ const ProPromotionLotModifier = ({
 );
 
 export default withProps(({ promotionLot }) => ({
-  updateProperty: property => propertyUpdate.run({
-    propertyId: promotionLot.properties[0]._id,
-    object: property,
-  }),
+  updateProperty: property =>
+    propertyUpdate.run({
+      propertyId: promotionLot.properties[0]._id,
+      object: property,
+    }),
 }))(ProPromotionLotModifier);
