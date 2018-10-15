@@ -1,5 +1,6 @@
 {
   "collections.promotionOptions": "Mes lots",
+  "PromotionPage.lots.changePriority": "Changer priorité",
   "PromotionPage.lots.interested": "Intéressé",
   "PromotionPage.lots.priorityOrder": "Ordre de priorité",
   "PromotionLotLoansTable.priorityOrder": "Ordre de priorité",

@@ -127,4 +127,13 @@
   .unassignedAdditionalLots {
     margin: 32px;
   }
+
+  .priority-setter {
+    display: flex;
+    align-items: center;
+
+    > * {
+      margin-left: 4px;
+    }
+  }
 }

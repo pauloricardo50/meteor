@@ -12,7 +12,7 @@ export class PromotionOptionService extends CollectionService {
   get(promotionOptionId) {
     return this.collection
       .createQuery({
-        $filter: { _id: promotionOptionId },
+        $filters: { _id: promotionOptionId },
         ...fullPromotionOptionFragment,
       })
       .fetchOne();
@@ -21,7 +21,7 @@ export class PromotionOptionService extends CollectionService {
   getPromotion(promotionOptionId) {
     const promotionOption = this.collection
       .createQuery({
-        $filter: { _id: promotionOptionId },
+        $filters: { _id: promotionOptionId },
         promotionLots: { promotion: { _id: 1 } },
       })
       .fetchOne();
@@ -45,10 +45,11 @@ export class PromotionOptionService extends CollectionService {
       loanId,
       promotionId,
     }).filter(id => id !== promotionOptionId);
-    LoanService.collection.update(
-      { _id: loanId, 'promotionLinks._id': promotionId },
-      { $set: { 'promotionLinks.$.priorityOrder': newPriorityOrder } },
-    );
+    LoanService.setPromotionPriorityOrder({
+      loanId,
+      promotionId,
+      priorityOrder: newPriorityOrder,
+    });
     return super.remove(promotionOptionId);
   }
 
@@ -67,22 +68,53 @@ export class PromotionOptionService extends CollectionService {
       loanId,
       promotionId,
     });
-    LoanService.collection.update(
-      { _id: loanId, 'promotionLinks._id': promotionId },
-      {
-        $set: {
-          'promotionLinks.$.priorityOrder': [
-            ...priorityOrder,
-            promotionOptionId,
-          ],
-        },
-      },
-    );
+    LoanService.setPromotionPriorityOrder({
+      loanId,
+      promotionId,
+      priorityOrder: [...priorityOrder, promotionOptionId],
+    });
     return promotionOptionId;
   };
 
   update = ({ promotionOptionId, ...rest }) =>
     this._update({ id: promotionOptionId, ...rest });
+
+  changePriorityOrder({ promotionOptionId, change }) {
+    const promotionOption = this.get(promotionOptionId);
+    const loan = promotionOption.loan[0];
+    const { _id: promotionId } = this.getPromotion(promotionOptionId);
+    const priorityOrder = LoanService.getPromotionPriorityOrder({
+      loanId: loan._id,
+      promotionId,
+    });
+    const optionIndex = priorityOrder.indexOf(promotionOptionId);
+
+    if (change < 0 && optionIndex === 0) {
+      return false;
+    }
+
+    if (change > 0 && optionIndex === priorityOrder.length - 1) {
+      return false;
+    }
+
+    const newPriorityOrder = priorityOrder.slice();
+    newPriorityOrder[optionIndex] = priorityOrder[optionIndex + change];
+    newPriorityOrder[optionIndex + change] = promotionOptionId;
+
+    return LoanService.setPromotionPriorityOrder({
+      loanId: loan._id,
+      promotionId,
+      priorityOrder: newPriorityOrder,
+    });
+  }
+
+  increasePriorityOrder({ promotionOptionId }) {
+    return this.changePriorityOrder({ promotionOptionId, change: -1 });
+  }
+
+  reducePriorityOrder({ promotionOptionId }) {
+    return this.changePriorityOrder({ promotionOptionId, change: 1 });
+  }
 }
 
 export default new PromotionOptionService();

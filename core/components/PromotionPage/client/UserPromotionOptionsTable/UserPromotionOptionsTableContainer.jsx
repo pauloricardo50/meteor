@@ -1,25 +1,39 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, withState } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
+import PrioritySetter from './PrioritySetter';
 
-const makeMapPromotionOption = ({}) => (
+const makeMapPromotionOption = ({ isLoading, setLoading }) => (
   { _id: promotionOptionId, promotionLots },
   index,
+  arr,
 ) => {
   const { name, status, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
     columns: [
-      index + 1,
+      <PrioritySetter
+        index={index}
+        length={arr.length}
+        promotionOptionId={promotionOptionId}
+        isLoading={isLoading}
+        setLoading={setLoading}
+        key="priorityOrder"
+      />,
       name,
       { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
       { raw: value, label: toMoney(value) },
     ],
   };
 };
+
+const makeSortByPriority = priorityOrder => (
+  { _id: optionId1 },
+  { _id: optionId2 },
+) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
 const columnOptions = [
   { id: 'priorityOrder' },
@@ -30,10 +44,15 @@ const columnOptions = [
 
 export default compose(
   withRouter,
-  mapProps(({ promotion, loan }) => {
+  withState('isLoading', 'setLoading', false),
+  mapProps(({ promotion, loan, isLoading, setLoading }) => {
     const { promotionOptions } = loan;
+    // This metadata should come from the loan, but grapher bugs..
+    const { priorityOrder } = promotion.loans[0].$metadata;
     return {
-      rows: promotionOptions.map(makeMapPromotionOption({})),
+      rows: promotionOptions
+        .sort(makeSortByPriority(priorityOrder))
+        .map(makeMapPromotionOption({ isLoading, setLoading })),
       columnOptions,
     };
   }),
