@@ -5,19 +5,24 @@ import { withRouter } from 'react-router-dom';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 
-const makeMapPromotionOption = ({}) => ({
-  _id: promotionOptionId,
-  promotionLots: { name, status, value },
-}) => ({
-  id: promotionOptionId,
-  columns: [
-    name,
-    { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
-    { raw: value, label: toMoney(value) },
-  ],
-});
+const makeMapPromotionOption = ({}) => (
+  { _id: promotionOptionId, promotionLots },
+  index,
+) => {
+  const { name, status, value } = (promotionLots && promotionLots[0]) || {};
+  return {
+    id: promotionOptionId,
+    columns: [
+      index + 1,
+      name,
+      { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
+      { raw: value, label: toMoney(value) },
+    ],
+  };
+};
 
 const columnOptions = [
+  { id: 'priorityOrder' },
   { id: 'name' },
   { id: 'status' },
   { id: 'totalValue' },
