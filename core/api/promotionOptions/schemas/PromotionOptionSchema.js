@@ -12,6 +12,10 @@ const PromotionOptionSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_STATUS),
   },
+  custom: {
+    type: String,
+    optional: true,
+  },
 });
 
 export default PromotionOptionSchema;

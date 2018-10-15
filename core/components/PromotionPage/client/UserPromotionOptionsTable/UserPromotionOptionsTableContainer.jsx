@@ -1,16 +1,18 @@
 import React from 'react';
-import { compose, mapProps, withState } from 'recompose';
+import { compose, mapProps, withState, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { toMoney } from '../../../../utils/conversionFunctions';
+import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
 import PrioritySetter from './PrioritySetter';
+import ClickToEditField from '../../../ClickToEditField';
 
-const makeMapPromotionOption = ({ isLoading, setLoading }) => (
-  { _id: promotionOptionId, promotionLots },
-  index,
-  arr,
-) => {
+const makeMapPromotionOption = ({
+  isLoading,
+  setLoading,
+  makeChangeCustom,
+}) => ({ _id: promotionOptionId, promotionLots, custom }, index, arr) => {
   const { name, status, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
@@ -26,6 +28,13 @@ const makeMapPromotionOption = ({ isLoading, setLoading }) => (
       name,
       { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
       { raw: value, label: toMoney(value) },
+      <ClickToEditField
+        placeholder="Souhaits particuliers"
+        value={custom}
+        onSubmit={makeChangeCustom(promotionOptionId)}
+        inputProps={{ style: { width: '100%' } }}
+        key="custom"
+      />,
     ],
   };
 };
@@ -40,19 +49,27 @@ const columnOptions = [
   { id: 'name' },
   { id: 'status' },
   { id: 'totalValue' },
+  { id: 'custom' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(
   withRouter,
   withState('isLoading', 'setLoading', false),
-  mapProps(({ promotion, loan, isLoading, setLoading }) => {
+  withProps({
+    makeChangeCustom: promotionOptionId => value =>
+      promotionOptionUpdate.run({
+        promotionOptionId,
+        object: { custom: value },
+      }),
+  }),
+  mapProps(({ promotion, loan, isLoading, setLoading, makeChangeCustom }) => {
     const { promotionOptions } = loan;
     // This metadata should come from the loan, but grapher bugs..
     const { priorityOrder } = promotion.loans[0].$metadata;
     return {
       rows: promotionOptions
         .sort(makeSortByPriority(priorityOrder))
-        .map(makeMapPromotionOption({ isLoading, setLoading })),
+        .map(makeMapPromotionOption({ isLoading, setLoading, makeChangeCustom })),
       columnOptions,
     };
   }),
