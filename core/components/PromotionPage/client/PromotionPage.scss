@@ -134,4 +134,13 @@
       align-self: center;
     }
   }
+
+  .priority-setter {
+    display: flex;
+    align-items: center;
+
+    > * {
+      margin-left: 4px;
+    }
+  }
 }

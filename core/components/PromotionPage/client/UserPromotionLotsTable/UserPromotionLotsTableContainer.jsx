@@ -30,12 +30,12 @@ const makeMapPromotionLot = ({
     />,
   ],
 
-  handleClick: () =>
-    history.push(createRoute('/loans/:loanId/promotions/:promotionId/:promotionLotId', {
-      loanId,
-      promotionId,
-      promotionLotId,
-    })),
+  // handleClick: () =>
+  //   history.push(createRoute('/loans/:loanId/promotions/:promotionId/:promotionLotId', {
+  //     loanId,
+  //     promotionId,
+  //     promotionLotId,
+  //   })),
 });
 
 const columnOptions = [

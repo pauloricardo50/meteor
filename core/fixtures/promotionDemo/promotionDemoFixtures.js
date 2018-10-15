@@ -167,10 +167,17 @@ export const createPromotionDemo = (
 
   console.log('creating users');
   range(50).forEach((i) => {
+    const user = {
+      email: `user-${i}@e-potek.ch`,
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      phoneNumber: faker.phone.phoneNumber(),
+    };
+
     const promotionCustomerId = UserService.createUser({
       role: ROLES.USER,
       options: {
-        email: `user-${i}@e-potek.ch`,
+        email: user.email,
         password: '12345',
       },
     });
@@ -178,16 +185,17 @@ export const createPromotionDemo = (
     UserService.update({
       userId: promotionCustomerId,
       object: {
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        phoneNumbers: [faker.phone.phoneNumber()],
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumbers: [user.phoneNumber],
       },
     });
 
     const loanId = PromotionService.inviteUser({
       promotionId,
-      userId: promotionCustomerId,
+      user,
     });
+
     const promotionOptionIds = addPromotionOptions(loanId, promotion);
     console.log('promotionOptionIds', promotionOptionIds);
     LoanService.setPromotionPriorityOrder({

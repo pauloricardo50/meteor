@@ -13,17 +13,16 @@ export const PromotionLotSelector = ({
   isLoading,
   onChange,
 }: PromotionLotSelectorProps) => (
-  <div>
-    <Checkbox
-      onChange={(event) => {
-        event.stopPropagation();
-        onChange();
-      }}
-      value={promotionLotIsSelected}
-      id={promotionLotId}
-      disabled={isLoading}
-    />
-  </div>
+  <Checkbox
+    onChange={(event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onChange();
+    }}
+    value={promotionLotIsSelected}
+    id={promotionLotId}
+    disabled={isLoading}
+  />
 );
 
 export default compose(

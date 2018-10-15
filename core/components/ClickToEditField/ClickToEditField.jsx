@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import cx from 'classnames';
 
 import Input from '@material-ui/core/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
@@ -25,7 +26,13 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
   };
 
   render() {
-    const { isEditing, toggleEdit, value, placeholder } = this.props;
+    const {
+      isEditing,
+      toggleEdit,
+      value,
+      placeholder,
+      inputProps,
+    } = this.props;
 
     return isEditing ? (
       <form
@@ -36,11 +43,14 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           defaultValue={value}
           inputRef={this.input}
           onBlur={this.handleSubmit}
+          {...inputProps}
         />
       </form>
     ) : (
       <div
-        className="click-to-edit-field not-editing"
+        className={cx('click-to-edit-field not-editing', {
+          'is-placeholder': placeholder && !value,
+        })}
         onClick={() => toggleEdit(true, () => this.input.current.focus())}
       >
         {value || placeholder}

@@ -23,3 +23,13 @@ export const promotionOptionUpdate = new Method({
     object: Object,
   },
 });
+
+export const increaseOptionPriority = new Method({
+  name: 'increaseOptionPriority',
+  params: { promotionOptionId: String },
+});
+
+export const reducePriorityOrder = new Method({
+  name: 'reducePriorityOrder',
+  params: { promotionOptionId: String },
+});

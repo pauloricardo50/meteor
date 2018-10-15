@@ -5,6 +5,8 @@ import {
   promotionOptionInsert,
   promotionOptionUpdate,
   promotionOptionRemove,
+  increaseOptionPriority,
+  reducePriorityOrder,
 } from '../methodDefinitions';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
@@ -21,3 +23,9 @@ promotionOptionRemove.setHandler(({ userId }, params) =>
 // TODO: Security check
 
   PromotionOptionService.remove(params));
+
+increaseOptionPriority.setHandler((context, params) =>
+  PromotionOptionService.increasePriorityOrder(params));
+
+reducePriorityOrder.setHandler((context, params) =>
+  PromotionOptionService.reducePriorityOrder(params));

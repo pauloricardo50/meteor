@@ -15,7 +15,7 @@ const UserPromotionOptionsTable = ({
     <h3 className="text-center">
       <T id="collections.promotionOptions" />
     </h3>
-    <Table rows={rows} columnOptions={columnOptions} />
+    <Table rows={rows} columnOptions={columnOptions} sortable={false} />
   </>
 );
 

@@ -20,7 +20,7 @@ const PromotionPage = (props: PromotionPageProps) => {
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
       <div className="buttons flex center animated fadeIn delay-600">
-        {canModify && <CustomerAdder />}
+        {canModify && <CustomerAdder promotionId={promotion._id} />}
         {canModify && (
           <PromotionDocumentsManager
             promotion={promotion}
