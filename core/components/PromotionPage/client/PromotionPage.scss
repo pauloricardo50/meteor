@@ -124,7 +124,14 @@
     }
   }
 
-  .unassignedAdditionalLots {
+  .additional-lots {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     margin: 32px;
+
+    &-button {
+      align-self: center;
+    }
   }
 }
