@@ -4,6 +4,7 @@ import AutoForm from 'uniforms-material/AutoForm';
 import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
+import message from '../../utils/message';
 
 import T from '../Translation';
 
@@ -31,7 +32,12 @@ export const CustomAutoField = connectField(
 );
 
 const CustomAutoForm = props => (
-  <AutoForm {...props} autoField={CustomAutoField} />
+  <AutoForm
+    {...props}
+    autoField={CustomAutoField}
+    showInlineError
+    onSubmitSuccess={() => message('Enregistré!', 2)}
+  />
 );
 
 export default CustomAutoForm;
