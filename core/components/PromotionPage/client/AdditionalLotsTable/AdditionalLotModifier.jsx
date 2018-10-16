@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
 
 import { compose, withState, withProps } from 'recompose';
-import { lotUpdate, lotRemove } from 'core/api/methods';
+import { lotUpdate } from 'core/api/methods';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import { LOT_TYPES } from '../../../../api/constants';
@@ -104,7 +104,6 @@ export default compose(
         })
         .finally(() => setSubmitting(false));
     },
-    deleteAdditionalLot: ({ closeDialog }) =>
-      lotRemove.run({ lotId: lot._id }).then(() => closeDialog),
+    deleteAdditionalLot: ({ closeDialog }) => console.log('lotId', lot._id),
   })),
 )(AdditionalLotModifier);

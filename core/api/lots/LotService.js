@@ -33,23 +33,6 @@ export class LotService extends CollectionService {
     }
     return this._update({ id: lotId, object: rest });
   };
-
-  removeLot = (lotId) => {
-    const promotionLot = PromotionLotService.findOne({
-      'lotLinks._id': lotId,
-    });
-
-    const promotionLotId = promotionLot ? promotionLot._id : null;
-
-    if (promotionLotId) {
-      PromotionLotService.removeLotLink({
-        promotionLotId,
-        lotId,
-      });
-    }
-
-    return this.remove(lotId);
-  };
 }
 
 export default new LotService();
