@@ -31,15 +31,15 @@ export const APP_CONFIGS = {
 export const ENVIRONMENT_CONFIG = {
   [ENVIRONMENT.STAGING]: {
     services: [SERVICES.MONGODB, SERVICES.REDIS],
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
+    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
     services: [SERVICES.MONGODB, SERVICES.REDIS],
-    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
+    [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
+    [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
   },
@@ -53,11 +53,11 @@ export const SPACES = {
 export const APP_BUILDPACK = 'https://github.com/cloudfoundry/nodejs-buildpack';
 export const APP_DEPENDENCIES = {
   cfenv: '1.0.4',
-  '@babel/core': '7.0.0-beta.54',
-  '@babel/node': '7.0.0-beta.54',
-  '@babel/preset-env': '7.0.0-beta.54',
+  '@babel/core': '7.1.2',
+  '@babel/node': '7.0.0',
+  '@babel/preset-env': '7.1.0',
 };
-export const APP_ENGINES = { node: '8.11.3' };
+export const APP_ENGINES = { node: '8.11.4' };
 export const APP_LAUNCHER = 'launcher.js';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
 export const APP_PACKAGE_JSON_FILE = 'package.json';

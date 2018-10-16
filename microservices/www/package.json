@@ -20,8 +20,7 @@
     "visualize": "meteor --extra-packages bundle-visualizer --production --settings settings-dev.json --port 3010"
   },
   "dependencies": {
-    "@babel/node": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "7.0.0",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
