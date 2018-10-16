@@ -112,7 +112,6 @@ const getDistinctRandomValues = (arr, amount) => shuffle(arr).slice(0, amount);
 
 const addPromotionOptions = (loanId, promotion) => {
   const amount = random(1, 3);
-  console.log('amount', amount);
   return getDistinctRandomValues(promotion.promotionLotLinks, amount).map(({ _id: promotionLotId }) => {
     const promotionOptionId = PromotionOptionService.insert({
       loanId,
@@ -135,6 +134,7 @@ export const createPromotionDemo = (
   userId,
   addCurrentUser,
   withPromotionOptions,
+  users,
 ) => {
   console.log('Creating promotion demo...');
   const promotionId = PromotionService.insert({
@@ -165,7 +165,9 @@ export const createPromotionDemo = (
   }
 
   console.log('creating users');
-  range(50).forEach((i) => {
+  range(users).forEach((i) => {
+    console.log(`creating user ${i + 1}`);
+
     const user = {
       email: `user-${i}@e-potek.ch`,
       firstName: faker.name.firstName(),
@@ -196,11 +198,11 @@ export const createPromotionDemo = (
     });
 
     const promotionOptionIds = addPromotionOptions(loanId, promotion);
-    console.log('promotionOptionIds', promotionOptionIds);
     LoanService.setPromotionPriorityOrder({
       loanId,
       promotionId,
       priorityOrder: promotionOptionIds,
     });
   });
+  console.log('Done creating promotion');
 };
