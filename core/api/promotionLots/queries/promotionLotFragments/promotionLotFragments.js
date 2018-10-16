@@ -42,4 +42,5 @@ export const appPromotionLotFragment = {
   attributedTo: {
     user: { _id: 1 },
   },
+  promotion: { name: 1 },
 };

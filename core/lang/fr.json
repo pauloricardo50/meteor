@@ -1,4 +1,7 @@
 {
+  "Forms.promotionOptions.custom": "Souhaits particuliers",
+  "Forms.promotionOptions.custom.placeholder": "Parkings supplémentaires, lots adjacents, etc.",
+  "AppPromotionLotPage.subtitle": "Promotion {promotionName} - {value}",
   "collections.promotionOptions": "Mes lots",
   "PromotionPage.lots.custom": "Souhaits particuliers",
   "PromotionPage.lots.changePriority": "Changer priorité",

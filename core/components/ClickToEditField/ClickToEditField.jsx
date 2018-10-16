@@ -38,11 +38,12 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       value,
       placeholder,
       inputProps,
+      className,
     } = this.props;
 
     return isEditing ? (
       <form
-        className="click-to-edit-field editing"
+        className={cx('click-to-edit-field editing', className)}
         onSubmit={this.handleSubmit}
       >
         <Input
@@ -54,7 +55,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       </form>
     ) : (
       <div
-        className={cx('click-to-edit-field not-editing', {
+        className={cx('click-to-edit-field not-editing', className, {
           'is-placeholder': placeholder && !value,
         })}
         onClick={() => toggleEdit(true, () => this.input.current.focus())}

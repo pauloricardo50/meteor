@@ -1,0 +1,28 @@
+.app-promotion-option-page {
+  padding: 16px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  h4 {
+    margin-top: 40px;
+  }
+
+  .lots {
+    display: flex;
+
+    > * {
+      margin-right: 4px;
+    }
+  }
+
+  .custom-edit {
+    align-self: flex-start;
+  }
+}

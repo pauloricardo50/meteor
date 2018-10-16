@@ -33,7 +33,7 @@ const makeMapPromotionOption = ({
       { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
       { raw: value, label: toMoney(value) },
       <ClickToEditField
-        placeholder="Souhaits particuliers"
+        placeholder={<T id={"Forms.promotionOptions.custom"} />}
         value={custom}
         onSubmit={makeChangeCustom(promotionOptionId)}
         inputProps={{ style: { width: '100%' } }}

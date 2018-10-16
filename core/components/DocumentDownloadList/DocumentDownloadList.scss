@@ -1,0 +1,28 @@
+.document-download-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 40px 0;
+
+  .document {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    padding: 32px;
+
+    svg {
+      width: 64px;
+      height: 64px;
+    }
+
+    p {
+      white-space: normal;
+      text-align: center;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
