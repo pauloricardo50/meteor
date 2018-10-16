@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import range from 'lodash/range';
@@ -153,7 +154,7 @@ export const createPromotionDemo = (
 
     const loanId = PromotionService.inviteUser({
       promotionId,
-      userId,
+      user: { ...Meteor.user(), email: Meteor.user().emails[0].address },
     });
     if (withPromotionOptions) {
       const promotionOptionIds = addPromotionOptions(loanId, promotion);

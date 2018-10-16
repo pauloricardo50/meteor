@@ -142,7 +142,8 @@ export class FinanceCalculator {
   getBorrowRatioStatus({ borrowRatio }) {
     if (borrowRatio <= this.maxBorrowRatio) {
       return SUCCESS;
-    } if (borrowRatio <= this.maxBorrowRatioWithPledge) {
+    }
+    if (borrowRatio <= this.maxBorrowRatioWithPledge) {
       return WARNING;
     }
     return ERROR;
@@ -326,6 +327,22 @@ export class FinanceCalculator {
 
     return (propertyValue + propertyWork) * this.notaryFees;
   }
+
+  getIncomeLimitedPropertyValue = ({ nF, r, i, mR, m }) => ({
+    income,
+    fortune,
+  }) => {
+    // The first one is with 0 amortization
+    const incomeLimited1 = (mR * income + fortune * i) / (m + (1 + nF) * i);
+
+    // The second is with amortization factored in (and it could be negative due to math)
+    const incomeLimited2 = ((1 + r * i) * fortune + mR * r * income)
+      / (r * (m + i) + nF * (1 + r * i) + 0.35);
+
+    // Therefore, take the minimum value of both, which is the most limiting one
+    // Because of the ratios, round this value down
+    return Math.floor(Math.min(incomeLimited1, incomeLimited2));
+  };
 }
 
 export default new FinanceCalculator();
