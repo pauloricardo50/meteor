@@ -20,9 +20,15 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
   }
 
   handleSubmit = (event) => {
-    const { onSubmit, toggleEdit } = this.props;
     event.preventDefault();
-    onSubmit(this.input.current.value).then(() => toggleEdit(false));
+    const { onSubmit, toggleEdit, value } = this.props;
+    const nextValue = this.input.current.value;
+
+    if (nextValue !== value) {
+      onSubmit().then(() => toggleEdit(false));
+    } else {
+      toggleEdit(false);
+    }
   };
 
   render() {
