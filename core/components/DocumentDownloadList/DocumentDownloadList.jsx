@@ -6,10 +6,10 @@ import Downloader from '../Downloader';
 
 type DocumentDownloadListProps = {};
 
-const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => (
-  <div className="document-download-list">
-    {files
-      && files.map(({ Key, name }) => (
+const DocumentDownloadList = ({ files }: DocumentDownloadListProps) =>
+  (files ? (
+    <div className="document-download-list">
+      {files.map(({ Key, name }) => (
         <Downloader key={Key} fileKey={Key} fileName={name}>
           {({ downloading, handleDownload }) => (
             <div
@@ -22,7 +22,7 @@ const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => (
           )}
         </Downloader>
       ))}
-  </div>
-);
+    </div>
+  ) : null);
 
 export default DocumentDownloadList;
