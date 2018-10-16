@@ -25,7 +25,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
     const nextValue = this.input.current.value;
 
     if (nextValue !== value) {
-      onSubmit().then(() => toggleEdit(false));
+      onSubmit(nextValue).then(() => toggleEdit(false));
     } else {
       toggleEdit(false);
     }
