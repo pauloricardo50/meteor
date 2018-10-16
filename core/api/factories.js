@@ -19,8 +19,10 @@ import {
   Properties,
   Tasks,
   Users,
+  Lots,
 } from '.';
 import { PROMOTION_LOT_STATUS } from './promotionLots/promotionLotConstants';
+import { LOT_TYPES } from './lots/lotConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -101,4 +103,10 @@ Factory.define('promotionOption', PromotionOptions, {
 });
 Factory.define('promotionLot', PromotionLots, {
   propertyLinks: [{ _id: 'propertyId' }],
+});
+
+Factory.define('lot', Lots, {
+  name: 'test',
+  type: LOT_TYPES.PARKING_CAR,
+  value: 1000,
 });

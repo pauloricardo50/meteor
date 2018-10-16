@@ -7,25 +7,48 @@ export class LotService extends CollectionService {
     super(Lots);
   }
 
-  update = ({ lotId, promotionLotId, ...rest }) => {
-    const currentPromotionLotId = PromotionLotService.find({
+  update = ({ lotId, object: { promotionLotId, ...rest } }) => {
+    const currentPromotionLot = PromotionLotService.findOne({
       'lotLinks._id': lotId,
     });
+
+    const currentPromotionLotId = currentPromotionLot
+      ? currentPromotionLot._id
+      : null;
+
     if (currentPromotionLotId !== promotionLotId) {
-      if (currentPromotionLotId) {
+      if (currentPromotionLotId !== null && promotionLotId !== undefined) {
         PromotionLotService.removeLotLink({
           promotionLotId: currentPromotionLotId,
           lotId,
         });
-        if (promotionLotId) {
-          PromotionLotService.addLotToPromotionLot({
-            promotionLotId,
-            lotId,
-          });
-        }
+      }
+
+      if (promotionLotId) {
+        PromotionLotService.addLotToPromotionLot({
+          promotionLotId,
+          lotId,
+        });
       }
     }
-    return this._update({ id: lotId, ...rest });
+    return this._update({ id: lotId, object: rest });
+  };
+
+  removeLot = (lotId) => {
+    const promotionLot = PromotionLotService.findOne({
+      'lotLinks._id': lotId,
+    });
+
+    const promotionLotId = promotionLot ? promotionLot._id : null;
+
+    if (promotionLotId) {
+      PromotionLotService.removeLotLink({
+        promotionLotId,
+        lotId,
+      });
+    }
+
+    return this.remove(lotId);
   };
 }
 

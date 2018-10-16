@@ -16,3 +16,8 @@ export const lotUpdate = new Method({
     object: Object,
   },
 });
+
+export const lotRemove = new Method({
+  name: 'lotRemove',
+  params: { lotId: String },
+});

@@ -4,15 +4,12 @@ import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
 
 import { compose, withState, withProps } from 'recompose';
-import {
-  lotUpdate,
-  addLotToPromotionLot,
-  removeLotLink,
-} from 'core/api/methods';
+import { lotUpdate, lotRemove } from 'core/api/methods';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
 import { LOT_TYPES } from '../../../../api/constants';
 import message from '../../../../utils/message';
+import Button from '../../../Button';
 
 type AdditionalLotModifierProps = {
   lot: Object,
@@ -22,6 +19,7 @@ type AdditionalLotModifierProps = {
   updateAdditionalLot: Function,
   submitting: boolean,
   currentPromotionLotId: String,
+  deleteAdditionalLot: Function,
 };
 
 const AdditionalLotModifierSchema = promotionLots =>
@@ -56,17 +54,27 @@ const AdditionalLotModifier = ({
   submitting,
   currentPromotionLotId,
   updateAdditionalLot,
+  deleteAdditionalLot,
 }: AdditionalLotModifierProps) => (
   <AutoFormDialog
     schema={AdditionalLotModifierSchema(promotionLots)}
     model={{
-      ...omit(lot, 'promotionLots'),
+      ...lot,
       promotionLot: currentPromotionLotId,
     }}
     onSubmit={updateAdditionalLot}
     open={open}
     setOpen={setOpen}
     submitting={submitting}
+    renderAdditionalActions={({ closeDialog, submitting }) => (
+      <Button
+        onClick={() => deleteAdditionalLot({ closeDialog, submitting })}
+        error
+        disabled={submitting}
+      >
+        <T id="general.delete" />
+      </Button>
+    )}
   />
 );
 
@@ -76,7 +84,7 @@ export default compose(
     currentPromotionLotId:
       lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
   })),
-  withProps(({ setOpen, setSubmitting }) => ({
+  withProps(({ setOpen, setSubmitting, lot }) => ({
     updateAdditionalLot: ({
       _id: lotId,
       name,
@@ -96,5 +104,7 @@ export default compose(
         })
         .finally(() => setSubmitting(false));
     },
+    deleteAdditionalLot: ({ closeDialog }) =>
+      lotRemove.run({ lotId: lot._id }).then(() => closeDialog),
   })),
 )(AdditionalLotModifier);

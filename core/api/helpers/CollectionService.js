@@ -11,7 +11,10 @@ class CollectionService {
   }
 
   _update({ id, object, operator = '$set' }) {
-    return this.collection.update(id, { [operator]: object });
+    if (Object.keys(object).length > 0) {
+      return this.collection.update(id, { [operator]: object });
+    }
+    return null;
   }
 
   remove(id) {
@@ -23,7 +26,11 @@ class CollectionService {
   }
 
   find(...args) {
-    return this.collection.find(...args);
+    return this.collection.find(...args).fetch();
+  }
+
+  findOne(...args) {
+    return this.collection.findOne(...args);
   }
 
   addLink({

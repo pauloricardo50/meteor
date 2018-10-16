@@ -7,7 +7,7 @@ import { Factory } from 'meteor/dburles:factory';
 import PromotionOptionService from '../../PromotionOptionService';
 import LoanService from '../../../loans/LoanService';
 
-describe.only('PromotionOptionService', () => {
+describe('PromotionOptionService', () => {
   beforeEach(() => {
     resetDatabase();
   });
