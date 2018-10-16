@@ -26,6 +26,8 @@ import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import AppLayout from '../../client/layouts/AppLayout';
 import AppPromotionPage from '../../client/pages/AppPromotionPage';
+import AppPromotionOptionPage from '../../client/pages/AppPromotionOptionPage';
+import AppPromotionLotPage from '../../client/pages/AppPromotionLotPage';
 
 import * as ROUTES from './appRoutes';
 
@@ -48,6 +50,14 @@ const AppRouter = () => (
         <Route path={ROUTES.FINANCING_PAGE} component={FinancingPage} />
         <Route path={ROUTES.PROPERTY_PAGE} component={SinglePropertyPage} />
         <Route path={ROUTES.PROPERTIES_PAGE} component={PropertiesPage} />
+        <Route
+          path={ROUTES.APP_PROMOTION_LOT_PAGE}
+          component={AppPromotionLotPage}
+        />
+        <Route
+          path={ROUTES.APP_PROMOTION_OPTION_PAGE}
+          component={AppPromotionOptionPage}
+        />
         <Route path={ROUTES.APP_PROMOTION_PAGE} component={AppPromotionPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
         <Route

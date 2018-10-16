@@ -2,6 +2,7 @@ import React from 'react';
 import { compose, mapProps, withState, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
+import { createRoute } from '../../../../utils/routerUtils';
 import { toMoney } from '../../../../utils/conversionFunctions';
 import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
@@ -12,6 +13,9 @@ const makeMapPromotionOption = ({
   isLoading,
   setLoading,
   makeChangeCustom,
+  promotionId,
+  loanId,
+  history,
 }) => ({ _id: promotionOptionId, promotionLots, custom }, index, arr) => {
   const { name, status, value } = (promotionLots && promotionLots[0]) || {};
   return {
@@ -36,6 +40,16 @@ const makeMapPromotionOption = ({
         key="custom"
       />,
     ],
+
+    handleClick: () =>
+      history.push(createRoute(
+        '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId',
+        {
+          loanId,
+          promotionId,
+          promotionOptionId,
+        },
+      )),
   };
 };
 
@@ -62,14 +76,19 @@ export default compose(
         object: { custom: value },
       }),
   }),
-  mapProps(({ promotion, loan, isLoading, setLoading, makeChangeCustom }) => {
+  mapProps(({ promotion, loan, isLoading, setLoading, makeChangeCustom, history }) => {
     const { promotionOptions } = loan;
     // This metadata should come from the loan, but grapher bugs..
     const { priorityOrder } = promotion.loans[0].$metadata;
     return {
-      rows: promotionOptions
-        .sort(makeSortByPriority(priorityOrder))
-        .map(makeMapPromotionOption({ isLoading, setLoading, makeChangeCustom })),
+      rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
+        isLoading,
+        setLoading,
+        makeChangeCustom,
+        promotionId: promotion._id,
+        loanId: loan._id,
+        history,
+      })),
       columnOptions,
     };
   }),

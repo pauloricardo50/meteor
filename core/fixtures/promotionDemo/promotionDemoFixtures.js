@@ -29,8 +29,6 @@ const DEMO_PROMOTION = {
   city: 'Bernex',
 };
 
-const rand = arr => arr[random(0, arr.length - 1)];
-
 export const createPromotionDemoUser = () => {
   console.log('Creating promotion demo user...');
   const userId = Accounts.createUser({
