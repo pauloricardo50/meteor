@@ -6,15 +6,6 @@ export class PromotionLotService extends CollectionService {
   constructor() {
     super(PromotionLots);
   }
-  // insert = ({ promotionLot = {}, promotionId }) => {
-  //   const promotionLotId = PromotionLots.insert(promotionLot);
-  //   PromotionService.update({
-  //     promotionId,
-  //     object: { promotionLotLinks: [{ _id: promotionLotId }] },
-  //     operator: '$push',
-  //   });
-  //   return promotionLotId;
-  // };
 
   update({ promotionLotId, ...rest }) {
     return this._update({ id: promotionLotId, ...rest });

@@ -14,7 +14,7 @@ import AutoForm, { CustomAutoField, SubmitField } from './AutoForm';
 
 type AutoFormDialogProps = {};
 
-const AutoFormDialog = ({
+export const AutoFormDialog = ({
   schema,
   model,
   onSubmit,
@@ -25,6 +25,9 @@ const AutoFormDialog = ({
   important,
   autoFieldProps,
   submitting,
+  opened,
+  renderAdditionalActions,
+  children,
   ...otherProps
 }: AutoFormDialogProps) => {
   const AutoField = CustomAutoField(autoFieldProps);
@@ -47,11 +50,23 @@ const AutoFormDialog = ({
             {schema._schemaKeys.map(key => (
               <AutoField name={key} key={key} />
             ))}
+            {children
+              && children({
+                closeDialog: () => setOpen(false),
+                submitting,
+                onSubmit,
+              })}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setOpen(false)} disabled={submitting}>
               <T id="general.cancel" />
             </Button>
+            {renderAdditionalActions
+              && renderAdditionalActions({
+                closeDialog: () => setOpen(false),
+                submitting,
+                onSubmit,
+              })}
             <SubmitField loading={submitting} raised primary>
               <T id="general.ok" />
             </SubmitField>

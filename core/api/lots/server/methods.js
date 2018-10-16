@@ -15,7 +15,7 @@ lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
   return lotId;
 });
 
-lotUpdate.setHandler(({ userId }, { lotId, object }) => {
+lotUpdate.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
-  return LotService.update({ lotId, object });
+  return LotService.update(params);
 });

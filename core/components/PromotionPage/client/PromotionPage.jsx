@@ -6,7 +6,7 @@ import PromotionPageHeader from './PromotionPageHeader';
 import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
-import UnassignedAdditionalLots from './UnassignedAdditionalLots';
+import AdditionalLotsTable from './AdditionalLotsTable';
 import UserPromotionLotsTable from './UserPromotionLotsTable';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import CustomerAdder from './CustomerAdder';
@@ -41,7 +41,7 @@ const PromotionPage = (props: PromotionPageProps) => {
       {isPro && (
         <>
           <ProPromotionLotsTable promotion={promotion} />
-          <UnassignedAdditionalLots promotion={promotion} />
+          <AdditionalLotsTable promotion={promotion} />
         </>
       )}
       {!isPro && (
