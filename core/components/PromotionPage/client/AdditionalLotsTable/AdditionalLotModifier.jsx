@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import omit from 'lodash/omit';
 
 import { compose, withState, withProps } from 'recompose';
 import { lotUpdate } from 'core/api/methods';
