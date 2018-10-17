@@ -270,6 +270,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         0,
       );
     }
+
+    getNetFortune(borrowers) {
+      return (
+        this.getTotalFunds({ borrowers })
+        + this.getRealEstateFortune({ borrowers })
+        + this.getOtherFortune({ borrowers })
+      );
+    }
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);

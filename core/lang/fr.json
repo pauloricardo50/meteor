@@ -1,4 +1,7 @@
 {
+  "DashboardProgressInfo.completeBorrowersFinance": "Complétez vos informations financières",
+  "DashboardProgressInfo.chooseLots": "Choisissez vos lots dans la promotion",
+  "DashboardProgressInfo.verification": "Obtenez votre confirmation de financement hypothécaire",
   "emails.INVITE_USER_TO_PROMOTION.BODY": "Vasy cousin, achete moi un appart'",
   "emails.INVITE_USER_TO_PROMOTION.CTA": "J'ai plein de pognon",
   "emails.INVITE_USER_TO_PROMOTION.from": "Promoteur XYZ",
