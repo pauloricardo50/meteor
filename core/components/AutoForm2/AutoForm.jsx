@@ -53,9 +53,10 @@ export const CustomAutoField = ({ labels } = {}) =>
 
 const CustomAutoForm = ({ autoFieldProps, ...props }) => (
   <AutoForm
-    {...props}
+    showInlineError
     autoField={CustomAutoField(autoFieldProps)}
     submitField={SubmitField}
+    {...props}
   />
 );
 

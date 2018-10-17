@@ -1,7 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import Promotions from './promotions';
-import { PROMOTION_USER_PERMISSIONS } from './promotionConstants';
+import {
+  PROMOTION_USER_PERMISSIONS,
+  PROMOTION_STATUS,
+} from './promotionConstants';
 import UserService from '../users/UserService';
 import LoanService from '../loans/LoanService';
 import FileService from '../files/server/FileService';
@@ -60,6 +63,12 @@ export class PromotionService extends CollectionService {
     promotionId,
     user: { email, firstName, lastName, phoneNumber },
   }) {
+    const promotion = this.get(promotionId);
+
+    if (promotion.status !== PROMOTION_STATUS.OPEN) {
+      throw new Meteor.Error("Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.");
+    }
+
     let userId;
     let isNewUser = false;
 
