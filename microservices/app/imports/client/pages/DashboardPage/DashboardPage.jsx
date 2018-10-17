@@ -12,7 +12,6 @@ const DashboardPage = props => (
     <DashboardProgress {...props} />
     <DashboardRecap {...props} />
     <DashboardInfo {...props} />
-
     {/* <NewLoanForm loan={loan} /> */}
   </Page>
 );
