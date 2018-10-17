@@ -9,7 +9,7 @@ import {
 } from './mandrill';
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
-const shouldSendEmails = !Meteor.isTest; // !(Meteor.isDevelopment || Meteor.isTest);
+const shouldSendEmails = !(Meteor.isDevelopment || Meteor.isTest);
 
 class EmailService {
   sendEmail = (emailId, address, params) => {
