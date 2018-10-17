@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withState } from 'recompose';
@@ -8,13 +10,14 @@ import IconButton from 'core/components/IconButton';
 import { FILE_STATUS } from 'core/api/constants';
 
 import Downloader from '../../Downloader';
+import { ROLES } from '../../../api/constants';
 
 const isAllowedToDelete = (disabled, status) => {
   const currentUser = Meteor.user();
-  if (
-    currentUser.roles.includes('dev')
-    || currentUser.roles.includes('admin')
-  ) {
+  const userIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
+  const userIsAdmin = Roles.userIsInRole(currentUser, ROLES.ADMIN);
+  const userIsPro = Roles.userIsInRole(currentUser, ROLES.PRO);
+  if (userIsDev || userIsAdmin || userIsPro) {
     return true;
   }
 
