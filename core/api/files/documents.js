@@ -80,10 +80,12 @@ export const borrowerDocuments = (b = {}, calc) => {
   };
 };
 
-export const loanDocuments = ({ general: { purchaseType } }) => {
+export const loanDocuments = ({ general: { purchaseType }, hasPromotion }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   return {
-    [STEPS.PREPARATION]: [{ id: DOCUMENTS.SIGNED_MANDATE, noTooltips: true }],
+    [STEPS.PREPARATION]: hasPromotion
+      ? []
+      : [{ id: DOCUMENTS.SIGNED_MANDATE, noTooltips: true }],
     [STEPS.GET_CONTRACT]: [
       {
         id: DOCUMENTS.BUYERS_CONTRACT,
