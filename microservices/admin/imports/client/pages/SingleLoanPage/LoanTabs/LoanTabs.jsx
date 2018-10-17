@@ -5,6 +5,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import { ROLES } from 'core/api/constants';
+import FileTabs from 'core/components/FilesTab';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
 import PropertiesTab from './PropertiesTab';
@@ -12,7 +13,6 @@ import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
-import FilesTab from './FilesTab';
 import FormsTab from './FormsTab';
 import StructuresTab from './StructuresTab';
 import DevTab from './DevTab/loadable';
@@ -27,7 +27,7 @@ const getTabs = props =>
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },
     { id: 'forms', Component: FormsTab },
-    { id: 'files', Component: FilesTab },
+    { id: 'files', Component: FileTabs },
     { id: 'actions', Component: ActionsTab },
     props.currentUser.roles.includes(ROLES.DEV) && {
       id: 'dev',
