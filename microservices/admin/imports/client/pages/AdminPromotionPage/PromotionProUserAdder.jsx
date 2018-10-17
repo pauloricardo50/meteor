@@ -18,6 +18,7 @@ const PromotionProUserAdder = ({
   search,
   searchResults,
   addUser,
+  promotion,
 }: PromotionProUserAdderProps) => (
   <DialogSimple
     primary
@@ -38,7 +39,11 @@ const PromotionProUserAdder = ({
       {searchResults.map(user => (
         <div key={user._id} className="user">
           <span>{user.name}</span>
-          <Button onClick={() => addUser({ userId: user._id })} primary>
+          <Button
+            onClick={() => addUser({ userId: user._id })}
+            primary
+            disabled={promotion.users.map(({ _id }) => _id).includes(user._id)}
+          >
             <T id="AdminPromotionPage.addUser" />
           </Button>
         </div>
