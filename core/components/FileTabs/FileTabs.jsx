@@ -42,7 +42,7 @@ const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => (
             />
           ),
         })),
-        ...(property
+        ...(!loan.hasPromotion && property
           ? [
             {
               label: (
