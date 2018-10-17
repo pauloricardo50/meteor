@@ -2,19 +2,20 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
-import { Loans, Properties, Borrowers } from '../..';
+import { Loans, Properties, Borrowers, Promotions } from '../..';
 import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
 } from '../../constants';
+import SecurityService from '../../security';
 import {
   SLINGSHOT_DIRECTIVE_NAME,
   MAX_FILE_SIZE,
   ALLOWED_FILE_TYPES,
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
-
+import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   maxSize: MAX_FILE_SIZE,
@@ -41,20 +42,16 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
     // Make sure this user is the owner of the document
     if (collection === BORROWERS_COLLECTION) {
       const doc = Borrowers.findOne(docId);
-
-      if (doc.userId !== this.userId) {
-        throw new Meteor.Error('Invalid user', "You're not allowed to do this");
-      }
+      SecurityService.borrowers.isAllowedToUpdate(doc);
     } else if (collection === LOANS_COLLECTION) {
       const doc = Loans.findOne(docId);
-      if (doc.userId !== this.userId) {
-        throw new Meteor.Error('Invalid user', "You're not allowed to do this");
-      }
+      SecurityService.loans.isAllowedToUpdate(doc);
     } else if (collection === PROPERTIES_COLLECTION) {
       const doc = Properties.findOne(docId);
-      if (doc.userId !== this.userId) {
-        throw new Meteor.Error('Invalid user', "You're not allowed to do this");
-      }
+      SecurityService.properties.isAllowedToUpdate(doc);
+    } else if (collection === PROMOTIONS_COLLECTION) {
+      const doc = Promotions.findOne(docId);
+      SecurityService.promotions.isAllowedToUpdate(doc);
     } else {
       throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }
