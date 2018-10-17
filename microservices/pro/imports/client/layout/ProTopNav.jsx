@@ -27,13 +27,15 @@ const ProTopNav = ({ currentUser }: ProTopNavProps) => (
     <div className="right">
       <TopNavLogo />
     </div>
-    <div className="left">
-      {links(currentUser).map(({ id, link }) => (
-        <Link to={link} className="pro-top-nav-link" key={id} role="button">
-          <T id={`ProTopNav.${id}`} />
-        </Link>
-      ))}
-    </div>
+    {currentUser && (
+      <div className="left">
+        {links(currentUser).map(({ id, link }) => (
+          <Link to={link} className="pro-top-nav-link" key={id} role="button">
+            <T id={`ProTopNav.${id}`} />
+          </Link>
+        ))}
+      </div>
+    )}
   </Toolbar>
 );
 

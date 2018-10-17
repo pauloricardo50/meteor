@@ -75,7 +75,7 @@ const AdditionalLotsTable = ({
   showDialog,
   setShowDialog,
 }: AdditionalLotsTableProps) =>
-  promotion.lots.length > 0 && (
+  (promotion.lots && promotion.lots.length > 0 ? (
     <div className="additional-lots">
       <Button
         onClick={() => {
@@ -98,10 +98,13 @@ const AdditionalLotsTable = ({
               <T id="PromotionPage.AdditionalLotsTable" />
             </h3>
             <Table
-              rows={promotion.lots.map(makeMapAdditionalLot({
-                setAdditionalLotToModify,
-                setShowDialog,
-              }))}
+              rows={
+                promotion.lots
+                && promotion.lots.map(makeMapAdditionalLot({
+                  setAdditionalLotToModify,
+                  setShowDialog,
+                }))
+              }
               columnOptions={columnOptions}
             />
             {additionalLotToModify && (
@@ -116,7 +119,7 @@ const AdditionalLotsTable = ({
         )}
       </Element>
     </div>
-  );
+  ) : null);
 
 export default compose(
   withState('showTable', 'setShowTable', false),
