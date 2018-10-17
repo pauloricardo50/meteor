@@ -93,6 +93,13 @@ export class PromotionService extends CollectionService {
       // Envoyer invitation sans enrollment link
     }
   }
+
+  setUserPermissions({ promotionId, userId, permissions }) {
+    return Promotions.update(
+      { _id: promotionId, 'userLinks._id': userId },
+      { $set: { 'userLinks.$.permissions': permissions } },
+    );
+  }
 }
 
 export default new PromotionService();

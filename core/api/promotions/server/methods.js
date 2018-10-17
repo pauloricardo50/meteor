@@ -7,6 +7,7 @@ import {
   promotionRemove,
   insertPromotionProperty,
   inviteUserToPromotion,
+  setPromotionUserPermissions,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -32,4 +33,13 @@ insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
 inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
   SecurityService.checkUserIsPro(userId);
   return PromotionService.inviteUser({ promotionId, user });
+});
+
+setPromotionUserPermissions.setHandler(({ userId: currentUserId }, { promotionId, userId, permissions }) => {
+  SecurityService.checkUserIsAdmin(currentUserId);
+  return PromotionService.setUserPermissions({
+    promotionId,
+    userId,
+    permissions,
+  });
 });
