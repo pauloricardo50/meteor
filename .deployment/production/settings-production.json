@@ -16,11 +16,11 @@
     },
     "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
     "subdomains": {
-      "www": "https://www.e-potek.ch",
-      "app": "https://app.e-potek.ch",
       "admin": "https://admin.e-potek.ch",
+      "app": "https://app.e-potek.ch",
       "pdf": "https://pdf.e-potek.ch",
-      "pro": "https://pro.e-potek.ch"
+      "pro": "https://pro.e-potek.ch",
+      "www": "https://www.e-potek.ch"
     }
   },
   "mandrill": {
