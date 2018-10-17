@@ -46,3 +46,11 @@ export const setPromotionUserPermissions = new Method({
     permissions: String,
   },
 });
+
+export const addProUserToPromotion = new Method({
+  name: 'addProUserToPromotion',
+  params: {
+    promotionId: String,
+    userId: String,
+  },
+});

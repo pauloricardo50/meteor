@@ -94,10 +94,17 @@ export class PromotionService extends CollectionService {
     }
   }
 
-  setUserPermissions({ promotionId, userId, permissions }) {
+  addProUser({ promotionId, userId, permissions }) {
+    return PromotionLotService.update(
+      { _id: promotionId },
+      { $push: { userLinks: { _id: userId, permissions } } },
+    );
+  }
+
+  setUserPermissions({ promotionId, userId }) {
     return Promotions.update(
       { _id: promotionId, 'userLinks._id': userId },
-      { $set: { 'userLinks.$.permissions': permissions } },
+      { $set: { 'userLinks.$.permissions': PROMOTION_USER_PERMISSIONS.READ } },
     );
   }
 }
