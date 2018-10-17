@@ -21,7 +21,7 @@ import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import SingleUserPage from '../../client/pages/SingleUserPage';
 import TasksPage from '../../client/pages/TasksPage';
 import UsersPage from '../../client/pages/UsersPage';
-
+import AdminPromotionPage from '../../client/pages/AdminPromotionPage';
 import AdminStore from '../../client/components/AdminStore';
 
 import * as adminRoutes from './adminRoutes';
@@ -48,6 +48,10 @@ const AdminRouter = () => (
           path={adminRoutes.SINGLE_PROPERTY_PAGE}
           component={SinglePropertyPage}
           className="card1 card-top"
+        />
+        <Route
+          path={adminRoutes.PROMOTION_PAGE}
+          component={AdminPromotionPage}
         />
         <Route path={adminRoutes.PROPERTIES_PAGE} component={PropertiesPage} />
         <Route path={adminRoutes.TASKS_PAGE} component={TasksPage} />

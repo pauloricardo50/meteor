@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCity } from '@fortawesome/pro-light-svg-icons';
 
 import {
   BORROWERS_COLLECTION,
@@ -9,6 +11,7 @@ import {
   TASKS_COLLECTION,
   USERS_COLLECTION,
   PROPERTIES_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 
 import MainSideNavListItem from './MainSideNavListItem';
@@ -24,6 +27,11 @@ const items = [
     icon: 'dollarSign',
     detail: true,
     collection: LOANS_COLLECTION,
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCity} className="admin-side-nav-icon" />,
+    collection: PROMOTIONS_COLLECTION,
+    detail: true,
   },
   // {
   //   icon: 'people',

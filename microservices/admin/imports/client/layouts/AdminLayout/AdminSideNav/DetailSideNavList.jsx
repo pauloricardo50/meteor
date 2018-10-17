@@ -13,6 +13,7 @@ import {
   LOANS_COLLECTION,
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
@@ -46,6 +47,12 @@ const getListItemDetails = (
       primary: name || 'Emprunteur sans nom',
       secondary:
           loans && loans.map(({ name: loanName }) => loanName).join(', '),
+    };
+
+  case PROMOTIONS_COLLECTION:
+    return {
+      primary: name || 'Promotion sans nom',
+      secondary: 'test',
     };
 
   case PROPERTIES_COLLECTION:

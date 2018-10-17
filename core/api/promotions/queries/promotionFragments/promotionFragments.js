@@ -45,3 +45,7 @@ export const proPromotionFragment = {
 export const proPromotionsFragment = {
   ...basePromotionFragment,
 };
+
+export const adminPromotionsFragment = {
+  ...proPromotionFragment,
+};

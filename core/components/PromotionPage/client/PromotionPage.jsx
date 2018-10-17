@@ -14,7 +14,7 @@ import CustomerAdder from './CustomerAdder';
 type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
-  const { promotion, currentUser, canModify, isPro, loan } = props;
+  const { promotion, currentUser, canModify, isPro, isAdmin, loan } = props;
   console.log('promotion', promotion);
   return (
     <div className="card1 promotion-page">
@@ -38,16 +38,20 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      {isPro && (
+      {(isPro || isAdmin) && (
         <>
           <ProPromotionLotsTable promotion={promotion} />
           <AdditionalLotsTable promotion={promotion} />
         </>
       )}
-      {!isPro && (
+      {!isPro
+        && !isAdmin && (
         <UserPromotionOptionsTable promotion={promotion} loan={loan} />
       )}
-      {!isPro && <UserPromotionLotsTable promotion={promotion} loan={loan} />}
+      {!isPro
+        && !isAdmin && (
+        <UserPromotionLotsTable promotion={promotion} loan={loan} />
+      )}
     </div>
   );
 };
