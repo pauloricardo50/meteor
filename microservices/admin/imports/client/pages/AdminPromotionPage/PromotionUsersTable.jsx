@@ -5,7 +5,10 @@ import T from 'core/components/Translation';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { withRouter } from 'react-router-dom';
 import { createRoute } from 'core/utils/routerUtils';
+import { removeUserFromPromotion } from 'core/api';
+import IconButton from 'core/components/IconButton/IconButton';
 import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
+import PromotionProUserAdder from './PromotionProUserAdder';
 
 type PromotionUsersTableProps = {
   promotion: Object,
@@ -15,7 +18,7 @@ const columnOptions = [
   { id: 'name' },
   { id: 'email' },
   { id: 'permissions' },
-  { id: 'impersonate' },
+  { id: 'actions' },
 ].map(({ id }) => ({
   id,
   label: <T id={`AdminPromotionPage.PromotionUsers.${id}`} />,
@@ -50,6 +53,13 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
           key="impersonate"
           className="impersonate-link"
         />
+        <IconButton
+          onClick={() =>
+            removeUserFromPromotion.run({ promotionId, userId: _id })
+          }
+          type="close"
+          tooltip={<T id="general.delete" />}
+        />
       </div>,
     ],
     handleClick: () =>
@@ -64,6 +74,7 @@ const PromotionUsersTable = ({
   const { users, _id: promotionId } = promotion;
   return (
     <div className="card1 promotion-users-table">
+      <PromotionProUserAdder promotion={promotion} />
       <h1>Utilisateurs</h1>
       <Table
         rows={users.map(makeMapPromotionUser({ promotionId, history }))}

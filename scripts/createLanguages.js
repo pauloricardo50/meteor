@@ -17,6 +17,7 @@ const config = {
       path: __dirname + '/../microservices/admin',
       exceptions: [
         'AdminFilesTab',
+        'AdminPromotionPage',
         'ArrayInput',
         'collections',
         'ConditionsButton',

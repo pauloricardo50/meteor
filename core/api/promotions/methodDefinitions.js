@@ -54,3 +54,11 @@ export const addProUserToPromotion = new Method({
     userId: String,
   },
 });
+
+export const removeUserFromPromotion = new Method({
+  name: 'removeUserFromPromotion',
+  params: {
+    promotionId: String,
+    userId: String,
+  },
+});
