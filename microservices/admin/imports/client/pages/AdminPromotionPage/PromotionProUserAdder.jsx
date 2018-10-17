@@ -23,7 +23,7 @@ const PromotionProUserAdder = ({
     primary
     raised
     label={<T id="AdminPromotionPage.addUser.label" />}
-            title={<T id="AdminPromotionPage.addUser.title" />}
+    title={<T id="AdminPromotionPage.addUser.title" />}
   >
     <div className="search-pro-users">
       <form onSubmit={search}>
@@ -39,13 +39,13 @@ const PromotionProUserAdder = ({
         <div key={user._id} className="user">
           <span>{user.name}</span>
           <Button onClick={() => addUser({ userId: user._id })} primary>
-                            <T id="AdminPromotionPage.addUser" />
+            <T id="AdminPromotionPage.addUser" />
           </Button>
         </div>
       ))}
       {searchResults.length === 0 && (
         <p>
-                        <T id="AdminPromotionPage.noUserFound" />
+          <T id="AdminPromotionPage.noUserFound" />
         </p>
       )}
     </div>
