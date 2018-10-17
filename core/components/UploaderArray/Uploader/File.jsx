@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withState } from 'recompose';
 
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
@@ -24,6 +25,8 @@ const File = ({
   file: { name, Key, status = FILE_STATUS.VALID, message },
   disabled,
   handleRemove,
+  deleting,
+  setDeleting,
 }) => (
   <div className="flex-col">
     <div className="file">
@@ -34,11 +37,18 @@ const File = ({
         </span>
         {isAllowedToDelete(disabled, status) && (
           <IconButton
-            type="close"
+            disabled={deleting}
+            type={deleting ? 'loop-spin' : 'close'}
             tooltip={<T id="general.delete" />}
             onClick={(event) => {
               event.preventDefault();
-              handleRemove(Key);
+              setDeleting(true);
+              return handleRemove(Key).catch((error) => {
+                // Only stop the loader if deleting fails
+                // This component will be deleted anyways when the deletion worked
+                setDeleting(false);
+                throw error;
+              });
             }}
           />
         )}
@@ -60,4 +70,4 @@ File.defaultProps = {
   message: '',
 };
 
-export default File;
+export default withState('deleting', 'setDeleting', false)(File);
