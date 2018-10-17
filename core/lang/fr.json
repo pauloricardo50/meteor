@@ -102,9 +102,12 @@
   "Forms.status.LEAD": "Prospect",
   "Forms.status.ONGOING": "En cours",
   "Forms.status.PENDING": "Pending",
+  "Forms.status.CANCELLED": "Annulé",
   "Forms.status.CLOSING": "Closing",
   "Forms.status.BILLING": "Facturation",
   "Forms.status.FINALIZED": "Finalisé",
+  "Forms.status.FINISHED": "Terminé",
+  "Forms.status.OPEN": "Ouvert",
   "Forms.status.UNSUCCESSFUL": "Sans suite",
 
   "FinancingOwnFundsPledgeWarning.description": "Attention, vous pouvez nantir CHF {maxPledge} au maximum.",
