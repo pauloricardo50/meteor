@@ -76,10 +76,13 @@ const PromotionUsersTable = ({
     <div className="card1 promotion-users-table">
       <PromotionProUserAdder promotion={promotion} />
       <h1>Utilisateurs</h1>
-      <Table
-        rows={users.map(makeMapPromotionUser({ promotionId, history }))}
-        columnOptions={columnOptions}
-      />
+      {users
+        && users.length > 0 && (
+        <Table
+          rows={users.map(makeMapPromotionUser({ promotionId, history }))}
+          columnOptions={columnOptions}
+        />
+      )}
     </div>
   );
 };

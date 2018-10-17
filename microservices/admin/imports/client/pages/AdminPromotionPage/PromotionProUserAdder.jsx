@@ -36,18 +36,22 @@ const PromotionProUserAdder = ({
           style={{ width: '100%', marginBottom: '16px' }}
         />
       </form>
-      {searchResults.map(user => (
-        <div key={user._id} className="user">
-          <span>{user.name}</span>
-          <Button
-            onClick={() => addUser({ userId: user._id })}
-            primary
-            disabled={promotion.users.map(({ _id }) => _id).includes(user._id)}
-          >
-            <T id="AdminPromotionPage.addUser" />
-          </Button>
-        </div>
-      ))}
+      {searchResults
+        && searchResults.map(user => (
+          <div key={user._id} className="user">
+            <span>{user.name}</span>
+            <Button
+              onClick={() => addUser({ userId: user._id })}
+              primary
+              disabled={
+                promotion.users
+                && promotion.users.map(({ _id }) => _id).includes(user._id)
+              }
+            >
+              <T id="AdminPromotionPage.addUser" />
+            </Button>
+          </div>
+        ))}
       {searchResults.length === 0 && (
         <p>
           <T id="AdminPromotionPage.noUserFound" />
@@ -69,7 +73,10 @@ export default compose(
           if (err) {
             throw err;
           }
-          setSearchResults(users.filter(user => !promotion.users.map(({ _id }) => _id).includes(user._id)));
+          setSearchResults(promotion.users
+            ? users.filter(user =>
+              !promotion.users.map(({ _id }) => _id).includes(user._id))
+            : users);
         });
     },
     addUser: ({ userId }) =>
