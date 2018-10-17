@@ -44,7 +44,9 @@ export const makeCustomAutoField = ({ labels } = {}) =>
       return (
         <Component
           {...props}
-          label={label || <T id={`Forms.${props.name}`} />}
+          label={
+            label === null ? null : label || <T id={`Forms.${props.name}`} />
+          }
         />
       );
     },
