@@ -22,12 +22,13 @@ const makeMapPromotionLot = ({
       raw: lots && lots.length,
       label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
-    <PromotionLotSelector
-      promotionLotId={promotionLotId}
-      promotionOptions={promotionOptions}
-      loanId={loanId}
-      key="PromotionLotSelector"
-    />,
+    <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
+      <PromotionLotSelector
+        promotionLotId={promotionLotId}
+        promotionOptions={promotionOptions}
+        loanId={loanId}
+      />
+    </div>,
   ],
 
   handleClick: () =>

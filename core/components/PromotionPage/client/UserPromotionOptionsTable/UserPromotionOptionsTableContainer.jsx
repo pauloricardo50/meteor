@@ -21,24 +21,26 @@ const makeMapPromotionOption = ({
   return {
     id: promotionOptionId,
     columns: [
-      <PrioritySetter
-        index={index}
-        length={arr.length}
-        promotionOptionId={promotionOptionId}
-        isLoading={isLoading}
-        setLoading={setLoading}
-        key="priorityOrder"
-      />,
+      <div key="priorityOrder" onClick={e => e.stopPropagation()}>
+        <PrioritySetter
+          index={index}
+          length={arr.length}
+          promotionOptionId={promotionOptionId}
+          isLoading={isLoading}
+          setLoading={setLoading}
+        />
+      </div>,
       name,
       { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
       { raw: value, label: toMoney(value) },
-      <ClickToEditField
-        placeholder={<T id={"Forms.promotionOptions.custom"} />}
-        value={custom}
-        onSubmit={makeChangeCustom(promotionOptionId)}
-        inputProps={{ style: { width: '100%' } }}
-        key="custom"
-      />,
+      <div key="custom" onClick={e => e.stopPropagation()}>
+        <ClickToEditField
+          placeholder={<T id="Forms.promotionOptions.custom" />}
+          value={custom}
+          onSubmit={makeChangeCustom(promotionOptionId)}
+          inputProps={{ style: { width: '100%' } }}
+        />
+      </div>,
     ],
 
     handleClick: () =>
