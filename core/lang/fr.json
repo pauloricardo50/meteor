@@ -1,4 +1,6 @@
 {
+  "Forms.city.placeholder": "Genève",
+  "Forms.isForeignAddress": "Addresse à l'étranger",
   "DashboardProgressInfo.completeBorrowersFinance": "Complétez vos informations financières",
   "DashboardProgressInfo.chooseLots": "Choisissez vos lots dans la promotion",
   "DashboardProgressInfo.verification": "Obtenez votre confirmation de financement hypothécaire",
@@ -952,8 +954,8 @@
   "Forms.volumeNorm": "Type de cubage",
   "Forms.worksForOwnCompany": "Êtes-vous actionnaire significatif de cette entreprise ?",
   "Forms.yourAddress": "Votre adresse",
-  "Forms.zipCode.placeholder": "1201 Genève",
-  "Forms.zipCode": "NPA et localité",
+  "Forms.zipCode.placeholder": "1201",
+  "Forms.zipCode": "Code postal",
   "general.1": "Un",
   "general.2": "Deux",
   "general.add": "Ajouter",

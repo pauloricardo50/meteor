@@ -168,17 +168,25 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       required: false,
     },
     {
-      id: 'zipCode',
-      type: 'custom',
-      component: 'ZipAutoComplete',
-      componentProps: {
-        savePath: '',
-        initialValue:
-          property.zipCode && property.city
-            ? `${property.zipCode} ${property.city}`
-            : '',
-      },
+      id: 'city',
+      type: 'textInput',
     },
+    {
+      id: 'zipCode',
+      type: 'textInput',
+    },
+    // {
+    //   id: 'zipCode',
+    //   type: 'custom',
+    //   component: 'ZipAutoComplete',
+    //   componentProps: {
+    //     savePath: '',
+    //     initialValue:
+    //       property.zipCode && property.city
+    //         ? `${property.zipCode} ${property.city}`
+    //         : '',
+    //   },
+    // },
     {
       type: 'h3',
       id: 'propertyDetails',

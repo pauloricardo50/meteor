@@ -4,6 +4,7 @@ import {
   PROMOTION_STATUS,
   PROMOTION_USER_PERMISSIONS,
 } from '../promotionConstants';
+import { address } from '../../helpers/sharedSchemas';
 
 const PromotionSchema = new SimpleSchema({
   name: { type: String },
@@ -13,15 +14,7 @@ const PromotionSchema = new SimpleSchema({
     allowedValues: Object.values(PROMOTION_STATUS),
     defaultValue: PROMOTION_STATUS.PREPARATION,
   },
-  address1: { type: String, optional: true },
-  address2: { type: String, optional: true },
-  zipCode: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 1000,
-    max: 9999,
-  },
-  city: { type: String, optional: true },
+  ...address,
   propertyLinks: { type: Array, defaultValue: [] },
   'propertyLinks.$': Object,
   'propertyLinks.$._id': String,

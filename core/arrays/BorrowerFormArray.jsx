@@ -44,6 +44,13 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       options: [true, false],
       condition: multiple && !isFirst,
     },
+    // {
+    //   id: 'isForeignAddress',
+    //   type: 'radioInput',
+    //   options: [true, false],
+    //   condition: !disableAddress,
+    //   required: addressFieldsAreNecessary,
+    // },
     {
       id: 'address1',
       type: 'textInput',
@@ -61,22 +68,38 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       noIntl: disableAddress,
     },
     {
-      id: 'zipCode',
-      type: 'custom',
-      component: 'ZipAutoComplete',
-      componentProps: {
-        savePath: '',
-        initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
-      },
+      id: 'city',
+      type: 'textInput',
       condition: !disableAddress,
-      placeholder:
-        disableAddress
-        && (borrowers[0].zipCode && borrowers[0].city
-          ? `${borrowers[0].zipCode} ${borrowers[0].city}`
-          : ''),
+      placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
       required: addressFieldsAreNecessary,
     },
+    {
+      id: 'zipCode',
+      type: 'textInput',
+      condition: !disableAddress,
+      placeholder: disableAddress && borrowers[0].address1,
+      noIntl: disableAddress,
+      required: addressFieldsAreNecessary,
+    },
+    // {
+    //   id: 'zipCode',
+    //   type: 'custom',
+    //   component: 'ZipAutoComplete',
+    //   componentProps: {
+    //     savePath: '',
+    //     initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
+    //   },
+    //   condition: !disableAddress,
+    //   placeholder:
+    //     disableAddress
+    //     && (borrowers[0].zipCode && borrowers[0].city
+    //       ? `${borrowers[0].zipCode} ${borrowers[0].city}`
+    //       : ''),
+    //   noIntl: disableAddress,
+    //   required: addressFieldsAreNecessary,
+    // },
     {
       type: 'conditionalInput',
       conditionalTrueValue: false,
