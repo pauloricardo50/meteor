@@ -36,7 +36,7 @@ export const SubmitField = props => (
   />
 );
 
-export const CustomAutoField = ({ labels } = {}) =>
+export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
     (props) => {
       const Component = determineComponentFromProps(props) || AutoField;
@@ -51,10 +51,12 @@ export const CustomAutoField = ({ labels } = {}) =>
     { includeInChain: false },
   );
 
+export const CustomAutoField = makeCustomAutoField({});
+
 const CustomAutoForm = ({ autoFieldProps, ...props }) => (
   <AutoForm
     {...props}
-    autoField={CustomAutoField(autoFieldProps)}
+    autoField={makeCustomAutoField(autoFieldProps)}
     submitField={SubmitField}
   />
 );

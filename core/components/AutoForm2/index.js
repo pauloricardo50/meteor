@@ -1,2 +1,3 @@
-export { default, CustomAutoField as AutoField } from './AutoForm';
+export { default } from './AutoForm';
+export * from './AutoForm';
 export { default as AutoFormDialog } from './AutoFormDialog';
