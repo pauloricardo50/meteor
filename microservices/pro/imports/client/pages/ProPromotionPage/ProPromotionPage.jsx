@@ -9,17 +9,13 @@ type ProPromotionPageProps = {};
 const ProPromotionPage = ({
   promotion,
   currentUser,
-}: ProPromotionPageProps) => {
-  console.log('promotion', promotion);
-
-  return (
-    <PromotionPage
-      promotion={promotion}
-      currentUser={currentUser}
-      canModify
-      isPro
-    />
-  );
-};
+}: ProPromotionPageProps) => (
+  <PromotionPage
+    promotion={promotion}
+    currentUser={currentUser}
+    canModify
+    isPro
+  />
+);
 
 export default ProPromotionPageContainer(ProPromotionPage);

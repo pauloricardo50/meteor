@@ -59,7 +59,9 @@ const CustomAutoForm = ({ autoFieldProps, ...props }) => (
   <AutoForm
     {...props}
     autoField={makeCustomAutoField(autoFieldProps)}
+    showInlineError
     submitField={SubmitField}
+    {...props}
   />
 );
 

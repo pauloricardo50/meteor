@@ -7,7 +7,9 @@ import Page from 'core/components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
 import PromotionDetail from './Promotions/PromotionDetail';
 
-const PropertiesPage = ({ loan: { _id: loanId, properties, promotions } }) => {
+const PropertiesPage = ({
+  loan: { _id: loanId, properties, promotions, hasPromotion },
+}) => {
   console.log('promotions', promotions);
 
   return (
@@ -33,18 +35,20 @@ const PropertiesPage = ({ loan: { _id: loanId, properties, promotions } }) => {
             />
           ))}
 
-          <PropertyAdder
-            loanId={loanId}
-            button={(
-              <div className="property-adder-button">
-                <span className="plus">+</span>
-                <h3>
-                  <T id="PropertyForm.adderLabel" />
-                </h3>
-              </div>
-            )}
-            className="properties-page-detail card1 card1-top card-hover"
-          />
+          {!hasPromotion && (
+            <PropertyAdder
+              loanId={loanId}
+              button={(
+                <div className="property-adder-button">
+                  <span className="plus">+</span>
+                  <h3>
+                    <T id="PropertyForm.adderLabel" />
+                  </h3>
+                </div>
+              )}
+              className="properties-page-detail card1 card1-top card-hover"
+            />
+          )}
         </div>
       </section>
     </Page>

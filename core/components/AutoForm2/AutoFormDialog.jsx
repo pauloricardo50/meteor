@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ErrorsField from 'uniforms-material/ErrorsField';
 
 import message from '../../utils/message';
 import T from '../Translation';
@@ -42,7 +43,12 @@ export const AutoFormDialog = ({
         {...otherProps}
       >
         {title && <DialogTitle>{title}</DialogTitle>}
-        <AutoForm schema={schema} model={model} onSubmit={onSubmit}>
+        <AutoForm
+          schema={schema}
+          model={model}
+          onSubmit={onSubmit}
+          showInlineError
+        >
           <DialogContent>
             {description && (
               <DialogContentText>{description}</DialogContentText>
@@ -50,6 +56,7 @@ export const AutoFormDialog = ({
             {schema._schemaKeys.map(key => (
               <AutoField name={key} key={key} />
             ))}
+            <ErrorsField />
             {children
               && children({
                 closeDialog: () => setOpen(false),

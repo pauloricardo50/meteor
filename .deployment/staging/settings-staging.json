@@ -16,11 +16,11 @@
     },
     "google_maps_key": "AIzaSyCsdThaRqcTSjvzz4IeeZnn4zkXSinehzo",
     "subdomains": {
-      "www": "https://www.staging.e-potek.ch",
-      "app": "https://app.staging.e-potek.ch",
       "admin": "https://admin.staging.e-potek.ch",
+      "app": "https://app.staging.e-potek.ch",
       "pdf": "https://pdf.staging.e-potek.ch",
-      "pro": "https://pro.staging.e-potek.ch"
+      "pro": "https://pro.staging.e-potek.ch",
+      "www": "https://www.staging.e-potek.ch"
     }
   },
   "mandrill": {

@@ -5,7 +5,6 @@ import { IMPERSONATE_ROUTE } from '../api/impersonation/impersonation';
 
 export const isLogin = path => path.slice(0, 6) === '/login';
 
-
 const WITHOUT_LOGIN = [
   '/login',
   '/enroll-account',

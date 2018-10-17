@@ -62,3 +62,14 @@ export const removeUserFromPromotion = new Method({
     userId: String,
   },
 });
+
+export const sendPromotionInvitationEmail = new Method({
+  name: 'sendPromotionInvitationEmail',
+  params: {
+    userId: String,
+    email: String,
+    isNewUser: Boolean,
+    promotionId: String,
+    firstName: String,
+  },
+});

@@ -80,14 +80,13 @@ export default class Security {
   }
 
   static checkOwnership(doc) {
-    if (
-      doc
-      && !(
-        Meteor.userId() === doc.userId
-        || (doc.userLinks
-          && doc.userLinks.filter(({ _id }) => Meteor.userId() === _id).length > 0)
-      )
-    ) {
+    const userId = Meteor.userId();
+    const userIdIsValid = doc && doc.userId === userId;
+    const userLinksIsValid = doc
+      && doc.userLinks
+      && doc.userLinks.filter(({ _id }) => userId === _id).length > 0;
+      
+    if (!(userIdIsValid || userLinksIsValid)) {
       this.handleUnauthorized('Checking ownership');
     }
   }

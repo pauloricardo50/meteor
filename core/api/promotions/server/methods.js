@@ -10,6 +10,7 @@ import {
   setPromotionUserPermissions,
   addProUserToPromotion,
   removeUserFromPromotion,
+  sendPromotionInvitationEmail,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -54,4 +55,9 @@ addProUserToPromotion.setHandler(({ userId: currentUserId }, { promotionId, user
 removeUserFromPromotion.setHandler(({ userId: currentUserId }, { promotionId, userId }) => {
   SecurityService.checkUserIsAdmin(currentUserId);
   return PromotionService.removeProUser({ promotionId, userId });
+});
+
+sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionService.sendPromotionInvitationEmail(params);
 });

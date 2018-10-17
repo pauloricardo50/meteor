@@ -16,6 +16,9 @@ const PromotionPageHeader = ({
 }: PromotionPageHeaderProps) => {
   const { name, promotionLots = [], status, documents } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
+
+  console.log('url?', promotionImage[0].url);
+
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
@@ -52,7 +55,7 @@ const PromotionPageHeader = ({
       </div>
       <div className="promotion-page-header-right">
         <span
-          style={{ backgroundImage: `url(${promotionImage[0].url})` }}
+          style={{ backgroundImage: `url("${promotionImage[0].url}")` }}
           className="promotion-image animated fadeIn" // delay-400"
         />
       </div>
