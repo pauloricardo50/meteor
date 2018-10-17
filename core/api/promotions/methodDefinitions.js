@@ -37,3 +37,14 @@ export const inviteUserToPromotion = new Method({
     user: Object,
   },
 });
+
+export const sendPromotionInvitationEmail = new Method({
+  name: 'sendPromotionInvitationEmail',
+  params: {
+    userId: String,
+    email: String,
+    isNewUser: Boolean,
+    promotionId: String,
+    firstName: String,
+  },
+});

@@ -7,6 +7,7 @@ import {
   promotionRemove,
   insertPromotionProperty,
   inviteUserToPromotion,
+  sendPromotionInvitationEmail,
 } from '../methodDefinitions';
 
 promotionInsert.setHandler(({ userId }, { promotion }) => {
@@ -32,4 +33,9 @@ insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
 inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
   SecurityService.checkUserIsPro(userId);
   return PromotionService.inviteUser({ promotionId, user });
+});
+
+sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionService.sendPromotionInvitationEmail(params);
 });

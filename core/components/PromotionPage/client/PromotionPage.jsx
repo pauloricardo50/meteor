@@ -10,6 +10,7 @@ import AdditionalLotsTable from './AdditionalLotsTable';
 import UserPromotionLotsTable from './UserPromotionLotsTable';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import CustomerAdder from './CustomerAdder';
+import EmailTester from './EmailTester';
 
 type PromotionPageProps = {};
 
@@ -27,6 +28,7 @@ const PromotionPage = (props: PromotionPageProps) => {
             currentUser={currentUser}
           />
         )}
+        {isPro && <EmailTester promotionId={promotion._id} />}
       </div>
 
       <MapWithMarkerWrapper

@@ -76,8 +76,18 @@ class UserService {
 
   hasPromotion = ({ userId, promotionId }) => {
     const loans = Loans.find({ userId }).fetch();
+
+    if (!promotionId) {
+      // Return true if any promotion exists
+      return (
+        loans
+        && loans.some(({ promotionLinks }) => promotionLinks && promotionLinks.length > 0)
+      );
+    }
+
     return (
-      loans.filter(({ promotionLinks = [] }) =>
+      loans
+      && loans.filter(({ promotionLinks = [] }) =>
         promotionLinks.filter(({ _id }) => _id === promotionId)).length > 0
     );
   };
