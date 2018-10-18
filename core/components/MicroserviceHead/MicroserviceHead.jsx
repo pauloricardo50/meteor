@@ -138,23 +138,6 @@ const MicroserviceHead = (props: MicroserviceHeadProps) => {
         />,
         <meta property="fb:app_id" content="1868218996582233" key="6" />,
       ]}
-
-      <noscript>
-        {`
-        <style>
-          body {
-            font - size: 32px;
-            text-align: center;
-          }
-
-          body:before {
-            content: "e-Potek ne fonctionne malheureusement pas sans JavaScript! Téléchargez un navigateur plus récent ici: https://updatemybrowser.org/";
-            line-height: 100px;
-            z-index: 1;
-          }
-        </style>
-          `}
-      </noscript>
     </Helmet>
   );
 };
