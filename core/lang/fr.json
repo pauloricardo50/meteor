@@ -1,4 +1,7 @@
 {
+  "VerificationRequester.NONE": "Demander",
+  "VerificationRequester.ERROR": "Problème, redemander",
+  "VerificationRequester.REQUESTED": "En cours...",
   "Forms.contacts": "Personnes de contact pour les clients",
   "Forms.city.placeholder": "Genève",
   "Forms.isForeignAddress": "Addresse à l'étranger",

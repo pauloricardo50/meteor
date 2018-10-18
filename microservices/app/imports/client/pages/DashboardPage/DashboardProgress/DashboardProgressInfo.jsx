@@ -22,7 +22,7 @@ const getTodos = (loan) => {
   if (loan.hasPromotion) {
     list = promotionTodoList;
   }
-  
+
   return getDashboardTodosArray(list)
     .filter(({ hide }) => !hide || !hide(loan))
     .sort((a, b) => b.isDone(loan) - a.isDone(loan));
@@ -30,11 +30,12 @@ const getTodos = (loan) => {
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
-    {getTodos(loan).map(({ id, link, isDone: isDoneFunc }) => {
+    {getTodos(loan).map((todo) => {
+      const { id, link, isDone: isDoneFunc, Component } = todo;
       const isDone = isDoneFunc(loan);
-      const Component = link && !isDone ? Link : 'div';
+      const WrapperComponent = link && !isDone ? Link : 'div';
       return (
-        <Component
+        <WrapperComponent
           to={link && link(loan)}
           className={cx('todo', { link, isDone })}
           key={id}
@@ -46,8 +47,11 @@ const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
           <p>
             <T id={`DashboardProgressInfo.${id}`} />
           </p>
-          {link && !isDone && <Icon type="right" className="icon-arrow" />}
-        </Component>
+          {link
+            && !Component
+            && !isDone && <Icon type="right" className="icon-arrow" />}
+          {Component && <Component {...todo} isDone={isDone} loan={loan} />}
+        </WrapperComponent>
       );
     })}
   </div>
