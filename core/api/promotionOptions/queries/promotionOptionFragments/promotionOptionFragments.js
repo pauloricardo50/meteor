@@ -12,6 +12,7 @@ export const proPromotionOptionFragment = {
     user: { phoneNumbers: 1, name: 1, email: 1 },
     promotions: { _id: 1 },
     promotionOptions: { name: 1 },
+    promotionProgress: 1,
   },
   lots: {
     name: 1,
