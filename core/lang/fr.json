@@ -235,6 +235,7 @@
   "AdminPromotionPage.addUser.label": "Ajouter un utilisateur",
   "AdminPromotionPage.addUser.title": "Ajouter un utilisateur",
   "AdminPromotionPage.noUserFound": "Aucun utilisateur trouvé",
+  "AdminPromotionPage.PromotionUsers": "Utilisateurs",
   "AdminPromotionPage.PromotionUsers.name": "Nom",
   "AdminPromotionPage.PromotionUsers.email": "Email",
   "AdminPromotionPage.PromotionUsers.permissions": "Permissions",

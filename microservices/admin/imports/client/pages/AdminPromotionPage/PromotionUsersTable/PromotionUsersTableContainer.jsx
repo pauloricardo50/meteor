@@ -1,18 +1,12 @@
-// @flow
 import React from 'react';
-import Table from 'core/components/Table';
-import T from 'core/components/Translation';
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import { withRouter } from 'react-router-dom';
-import { createRoute } from 'core/utils/routerUtils';
-import { removeUserFromPromotion } from 'core/api';
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import IconButton from 'core/components/IconButton/IconButton';
-import PromotionUserPermissionsModifier from './PromotionUserPermissionsModifier';
-import PromotionProUserAdder from './PromotionProUserAdder';
-
-type PromotionUsersTableProps = {
-  promotion: Object,
-};
+import { removeUserFromPromotion } from 'core/api';
+import { createRoute } from 'core/utils/routerUtils';
+import T from 'core/components/Translation';
+import { compose, withProps } from 'recompose';
+import PromotionUserPermissionsModifier from '../PromotionUserPermissionsModifier';
 
 const columnOptions = [
   { id: 'name' },
@@ -67,24 +61,12 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
   };
 };
 
-const PromotionUsersTable = ({
-  promotion,
-  history,
-}: PromotionUsersTableProps) => {
-  const { users, _id: promotionId } = promotion;
-  return (
-    <div className="card1 promotion-users-table">
-      <PromotionProUserAdder promotion={promotion} />
-      <h1>Utilisateurs</h1>
-      {users
-        && users.length > 0 && (
-        <Table
-          rows={users.map(makeMapPromotionUser({ promotionId, history }))}
-          columnOptions={columnOptions}
-        />
-      )}
-    </div>
-  );
-};
-
-export default withRouter(PromotionUsersTable);
+export default compose(
+  withRouter,
+  withProps(({ promotion: { _id: promotionId, users }, history }) => ({
+    columnOptions,
+    rows: users
+      ? users.map(makeMapPromotionUser({ history, promotionId }))
+      : [],
+  })),
+);
