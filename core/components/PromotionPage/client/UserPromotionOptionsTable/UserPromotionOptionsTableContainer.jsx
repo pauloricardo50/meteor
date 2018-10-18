@@ -8,6 +8,8 @@ import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
 import PrioritySetter from './PrioritySetter';
 import ClickToEditField from '../../../ClickToEditField';
+import StatusLabel from '../../../StatusLabel';
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -16,6 +18,7 @@ const makeMapPromotionOption = ({
   promotionId,
   loanId,
   history,
+  isDashboardTable = false,
 }) => ({ _id: promotionOptionId, promotionLots, custom }, index, arr) => {
   const { name, status, value } = (promotionLots && promotionLots[0]) || {};
   return {
@@ -28,22 +31,32 @@ const makeMapPromotionOption = ({
           promotionOptionId={promotionOptionId}
           isLoading={isLoading}
           setLoading={setLoading}
+          allowChange={!isDashboardTable}
         />
       </div>,
       name,
-      { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
+      {
+        raw: status,
+        label: (
+          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+        ),
+      },
       { raw: value, label: toMoney(value) },
-      <div key="custom" onClick={e => e.stopPropagation()}>
-        <ClickToEditField
-          placeholder={<T id="Forms.promotionOptions.custom" />}
-          value={custom}
-          onSubmit={makeChangeCustom(promotionOptionId)}
-          inputProps={{ style: { width: '100%' } }}
-        />
-      </div>,
-    ],
+      !isDashboardTable && (
+        <div key="custom" onClick={e => e.stopPropagation()}>
+          <ClickToEditField
+            placeholder={<T id="Forms.promotionOptions.custom" />}
+            value={custom}
+            onSubmit={makeChangeCustom(promotionOptionId)}
+            inputProps={{ style: { width: '100%' } }}
+          />
+        </div>
+      ),
+    ].filter(x => x !== false),
 
-    handleClick: () =>
+    handleClick: (event) => {
+      event.stopPropagation();
+      event.preventDefault();
       history.push(createRoute(
         '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId',
         {
@@ -51,7 +64,8 @@ const makeMapPromotionOption = ({
           promotionId,
           promotionOptionId,
         },
-      )),
+      ));
+    },
   };
 };
 
@@ -60,13 +74,20 @@ const makeSortByPriority = priorityOrder => (
   { _id: optionId2 },
 ) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
-const columnOptions = [
-  { id: 'priorityOrder' },
-  { id: 'name' },
-  { id: 'status' },
-  { id: 'totalValue' },
-  { id: 'custom' },
-].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
+const columnOptions = (isDashboardTable = false) =>
+  [
+    { id: 'priorityOrder' },
+    { id: 'name' },
+    { id: 'status' },
+    { id: 'totalValue' },
+    !isDashboardTable && { id: 'custom', style: { maxWidth: '400px' } },
+  ]
+    .filter(x => x !== false)
+    .map(({ id, ...rest }) => ({
+      ...rest,
+      id,
+      label: <T id={`PromotionPage.lots.${id}`} />,
+    }));
 
 export default compose(
   withRouter,
@@ -78,7 +99,15 @@ export default compose(
         object: { custom: value },
       }),
   }),
-  mapProps(({ promotion, loan, isLoading, setLoading, makeChangeCustom, history }) => {
+  mapProps(({
+    promotion,
+    loan,
+    isLoading,
+    setLoading,
+    makeChangeCustom,
+    history,
+    isDashboardTable,
+  }) => {
     const { promotionOptions } = loan;
     // This metadata should come from the loan, but grapher bugs..
     const { priorityOrder } = promotion.loans[0].$metadata;
@@ -90,8 +119,9 @@ export default compose(
         promotionId: promotion._id,
         loanId: loan._id,
         history,
+        isDashboardTable,
       })),
-      columnOptions,
+      columnOptions: columnOptions(isDashboardTable),
     };
   }),
 );

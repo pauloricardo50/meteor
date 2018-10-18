@@ -4,9 +4,14 @@ import T from 'core/components/Translation';
 
 import DashboardRecapFinance from './DashboardRecapFinance';
 import DashboardRecapProperty from './DashboardRecapProperty';
+import DashboardRecapPromotion from './DashboardRecapPromotion';
 
 const DashboardRecap = (props) => {
   const propertyToDisplay = props.loan.structure.property || props.loan.properties[0];
+  const {
+    loan: { hasPromotion },
+  } = props;
+
   return (
     <div className="dashboard-recap">
       <h2 className="secondary">
@@ -17,10 +22,14 @@ const DashboardRecap = (props) => {
 
       <div className="cards">
         <DashboardRecapFinance {...props} />
-        <DashboardRecapProperty
-          property={propertyToDisplay}
-          loanId={props.loan._id}
-        />
+        {hasPromotion ? (
+          <DashboardRecapPromotion {...props} />
+        ) : (
+          <DashboardRecapProperty
+            property={propertyToDisplay}
+            loanId={props.loan._id}
+          />
+        )}
       </div>
     </div>
   );

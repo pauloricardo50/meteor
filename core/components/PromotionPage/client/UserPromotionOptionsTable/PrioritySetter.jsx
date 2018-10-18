@@ -13,20 +13,25 @@ const PrioritySetter = ({
   onIncrease,
   onReduce,
   isLoading,
+  allowChange,
 }: PrioritySetterProps) => (
   <div className="priority-setter">
     {index + 1}
-    <IconButton
-      type="up"
-      onClick={onIncrease}
-      disabled={isLoading || index === 0}
-    />
+    {allowChange && (
+      <>
+        <IconButton
+          type="up"
+          onClick={onIncrease}
+          disabled={isLoading || index === 0}
+        />
 
-    <IconButton
-      type="down"
-      onClick={onReduce}
-      disabled={isLoading || index === length - 1}
-    />
+        <IconButton
+          type="down"
+          onClick={onReduce}
+          disabled={isLoading || index === length - 1}
+        />
+      </>
+    )}
   </div>
 );
 
