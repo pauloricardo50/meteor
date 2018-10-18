@@ -1,15 +1,17 @@
 // @flow
 import React from 'react';
 import DialogSimple from 'core/components/DialogSimple';
-import userSearch from 'core/api/users/queries/userSearch';
-import { withState, compose, withProps } from 'recompose';
 import Button from 'core/components/Button/Button';
-import { ROLES } from 'core/api/constants';
-import { addProUserToPromotion } from 'core/api';
 import T from 'core/components/Translation';
+import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 
 type PromotionProUserAdderProps = {
   promotion: Object,
+  searchQuery: String,
+  search: Function,
+  setSearchQuery: Function,
+  searchResults: Array<Object>,
+  addUser: Function,
 };
 
 const PromotionProUserAdder = ({
@@ -61,28 +63,4 @@ const PromotionProUserAdder = ({
   </DialogSimple>
 );
 
-export default compose(
-  withState('searchQuery', 'setSearchQuery', ''),
-  withState('searchResults', 'setSearchResults', []),
-  withProps(({ searchQuery, setSearchResults, promotion }) => ({
-    search: (event) => {
-      event.preventDefault();
-      userSearch
-        .clone({ searchQuery, roles: [ROLES.PRO] })
-        .fetch((err, users) => {
-          if (err) {
-            throw err;
-          }
-          setSearchResults(promotion.users
-            ? users.filter(user =>
-              !promotion.users.map(({ _id }) => _id).includes(user._id))
-            : users);
-        });
-    },
-    addUser: ({ userId }) =>
-      addProUserToPromotion.run({
-        promotionId: promotion._id,
-        userId,
-      }),
-  })),
-)(PromotionProUserAdder);
+export default PromotionProUserAdderContainer(PromotionProUserAdder);
