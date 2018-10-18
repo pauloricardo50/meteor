@@ -5,7 +5,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import { ROLES } from 'core/api/constants';
-import FileTabs from 'core/components/FilesTab';
+import FileTabs from 'core/components/FileTabs';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
 import PropertiesTab from './PropertiesTab';
