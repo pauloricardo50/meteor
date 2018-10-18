@@ -64,8 +64,11 @@ export class PromotionService extends CollectionService {
     user: { email, firstName, lastName, phoneNumber },
   }) {
     const promotion = this.get(promotionId);
+    const allowAddingUsers = Meteor.isDevelopment
+      || Meteor.isStaging
+      || promotion.status === PROMOTION_STATUS.OPEN;
 
-    if (promotion.status !== PROMOTION_STATUS.OPEN) {
+    if (!allowAddingUsers) {
       throw new Meteor.Error("Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.");
     }
 
@@ -111,7 +114,9 @@ export class PromotionService extends CollectionService {
     promotionId,
     firstName,
   }) {
+    console.log('isNewUser', isNewUser);
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
+      console.log('logos', logos);
       const coverImageUrl = promotionImage && promotionImage[0] && promotionImage[0].url;
       const logoUrls = logos && logos.map(({ url }) => url);
 
@@ -129,6 +134,8 @@ export class PromotionService extends CollectionService {
           Meteor.settings.public.subdomains.app
         }/enroll-account/${token}`;
       }
+
+      console.log('sending email');
 
       // Envoyer invitation sans enrollment link
       return sendEmail.run({
