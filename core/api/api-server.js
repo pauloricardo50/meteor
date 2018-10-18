@@ -18,6 +18,7 @@ import './email/server';
 import './events/server/registerServerListeners';
 
 import './links';
+import './reducers';
 
 // Exposures
 import './borrowers/queries/exposures';

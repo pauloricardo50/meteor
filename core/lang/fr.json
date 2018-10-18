@@ -78,6 +78,7 @@
   "PromotionPage.AdditionalLotsTable.name": "Nom",
   "PromotionPage.AdditionalLotsTable.nonAllocated": "Non alloué",
   "PromotionPage.AdditionalLotsTable.showTable": "Afficher les lots annexes",
+  "PromotionPage.AdditionalLotsTable.status": "Status",
   "PromotionPage.AdditionalLotsTable.type": "Type",
   "PromotionPage.AdditionalLotsTable.value": "Prix",
   "PromotionPage.AdditionalLotsTable.description": "Description",
