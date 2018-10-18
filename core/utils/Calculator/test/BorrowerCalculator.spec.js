@@ -119,9 +119,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      }))
-        .to.be.above(0.09)
-        .and.to.be.below(0.1);
+      })).to.be.within(0.01, 0.1);
     });
 
     it('should not be 0% when adding a document', () => {
@@ -153,9 +151,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      }))
-        .to.be.above(0.19)
-        .and.to.be.below(0.2);
+      })).to.be.within(0.18, 0.185);
     });
   });
 
@@ -276,6 +272,7 @@ describe('BorrowerCalculator', () => {
         'lastName',
         'gender',
         'address1',
+        'city',
         'zipCode',
         'isSwiss',
         'age',

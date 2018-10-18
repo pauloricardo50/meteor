@@ -7,7 +7,7 @@ import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import type { userLoan } from 'core/api/types';
 import {
-  dashboardTodosArray,
+  getDashboardTodosArray,
   promotionTodoList,
   defaultTodoList,
 } from './dashboardTodos';
@@ -16,17 +16,17 @@ type DashboardProgressInfoProps = {
   loan: userLoan,
 };
 
-const getTodos = loan =>
-  dashboardTodosArray
-    .filter(({ id }) => {
-      if (loan.hasPromotion) {
-        return promotionTodoList[id];
-      }
+const getTodos = (loan) => {
+  let list = defaultTodoList;
 
-      return defaultTodoList[id];
-    })
+  if (loan.hasPromotion) {
+    list = promotionTodoList;
+  }
+  
+  return getDashboardTodosArray(list)
     .filter(({ hide }) => !hide || !hide(loan))
     .sort((a, b) => b.isDone(loan) - a.isDone(loan));
+};
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
   <div className="dashboard-progress-info">
