@@ -61,7 +61,7 @@ export const APP_DEPENDENCIES = {
   '@babel/node': '7.0.0-beta.54',
   '@babel/preset-env': '7.0.0-beta.54',
 };
-export const APP_ENGINES = { node: '8.11.3' };
+export const APP_ENGINES = { node: '8.11.4' };
 export const APP_LAUNCHER = 'launcher.js';
 export const APP_MANIFEST_YML_FILE = 'manifest.yml';
 export const APP_PACKAGE_JSON_FILE = 'package.json';
