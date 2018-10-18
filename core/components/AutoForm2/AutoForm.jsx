@@ -1,14 +1,13 @@
 // @flow
 import React from 'react';
 import AutoForm from 'uniforms-material/AutoForm';
-import { CustomAutoField, SubmitField } from './AutoFormComponents';
-
-console.log('CustomAutoField', CustomAutoField);
+import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
 
 const CustomAutoForm = ({ autoFieldProps, ...props }) => (
   <AutoForm
+    {...props}
+    autoField={makeCustomAutoField(autoFieldProps)}
     showInlineError
-    autoField={CustomAutoField(autoFieldProps)}
     submitField={SubmitField}
     {...props}
   />

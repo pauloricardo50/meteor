@@ -3,7 +3,6 @@ import React from 'react';
 import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
-import DefaultListAddField from 'uniforms-material/ListAddField';
 
 import T from '../Translation';
 import Button from '../Button';
@@ -36,17 +35,17 @@ export const SubmitField = props => (
   />
 );
 
-export const CustomAutoField = ({ labels } = {}) =>
+const selectLabel = ({ label, props: { name } }) =>
+  (label === null ? null : label || <T id={`Forms.${name}`} />);
+
+export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
     (props) => {
       const Component = determineComponentFromProps(props) || AutoField;
       const label = labels && labels[props.name];
-      return (
-        <Component
-          {...props}
-          label={label || <T id={`Forms.${props.name}`} />}
-        />
-      );
+      return <Component {...props} label={selectLabel({ label, props })} />;
     },
     { includeInChain: false },
   );
+
+export const CustomAutoField = makeCustomAutoField({});

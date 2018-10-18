@@ -9,9 +9,11 @@ import { adminUserFragment } from './userFragments';
 const queryHasSpace = query => query.indexOf(' ') > -1;
 
 export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
-  $filter({ filters, params: { searchQuery } }) {
+  $filter({ filters, params: { searchQuery, roles } }) {
     const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
-
+    if (roles) {
+      filters.roles = { $in: roles };
+    }
     filters.$or = [
       createRegexQuery('email', searchQuery),
       createRegexQuery('organization', searchQuery),

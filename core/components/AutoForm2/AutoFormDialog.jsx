@@ -12,7 +12,7 @@ import message from '../../utils/message';
 import T from '../Translation';
 import Button from '../Button';
 import AutoForm from './AutoForm';
-import { CustomAutoField, SubmitField } from './AutoFormComponents';
+import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
 
 type AutoFormDialogProps = {};
 
@@ -32,7 +32,7 @@ export const AutoFormDialog = ({
   children,
   ...otherProps
 }: AutoFormDialogProps) => {
-  const AutoField = CustomAutoField(autoFieldProps);
+  const AutoField = makeCustomAutoField(autoFieldProps);
 
   return (
     <>

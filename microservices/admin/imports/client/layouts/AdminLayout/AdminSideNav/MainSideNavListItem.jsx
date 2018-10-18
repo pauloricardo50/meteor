@@ -39,7 +39,7 @@ const MainSideNavListItem = ({
         primary: collection && collection === collectionName,
       })}
     >
-      <Icon type={icon} size={32} />
+      {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
       <h5 className="label">
         {label || <T id={`collections.${collection}`} noTooltips />}
       </h5>
