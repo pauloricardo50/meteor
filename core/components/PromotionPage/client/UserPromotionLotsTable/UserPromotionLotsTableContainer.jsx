@@ -7,6 +7,8 @@ import { toMoney } from '../../../../utils/conversionFunctions';
 import T from '../../../Translation';
 import LotChip from '../ProPromotionLotsTable/LotChip';
 import PromotionLotSelector from './PromotionLotSelector';
+import StatusLabel from '../../../StatusLabel';
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
 
 const makeMapPromotionLot = ({
   history,
@@ -16,7 +18,12 @@ const makeMapPromotionLot = ({
   id: promotionLotId,
   columns: [
     name,
-    { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
+    {
+      raw: status,
+      label: (
+        <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+      ),
+    },
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,
