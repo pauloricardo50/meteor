@@ -54,3 +54,15 @@ export const address = {
     defaultValue: false,
   },
 };
+
+export const contactsSchema = {
+  contacts: { type: Array, defaultValue: [] },
+  'contacts.$': Object,
+  'contacts.$.name': String,
+  'contacts.$.title': String,
+  'contacts.$.email': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Email,
+  },
+  'contacts.$.phoneNumber': String,
+};

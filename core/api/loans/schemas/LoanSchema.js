@@ -2,17 +2,17 @@
 import SimpleSchema from 'simpl-schema';
 import uniforms from 'uniforms-material';
 
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import {
+  createdAt,
+  updatedAt,
+  contactsSchema,
+} from '../../helpers/sharedSchemas';
 import { LOAN_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
-import {
-  contactsSchema,
-  borrowerIdsSchema,
-  propertyIdsSchema,
-} from './otherSchemas';
+import { borrowerIdsSchema, propertyIdsSchema } from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
   userId: {

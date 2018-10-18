@@ -11,7 +11,8 @@ import ErrorsField from 'uniforms-material/ErrorsField';
 import message from '../../utils/message';
 import T from '../Translation';
 import Button from '../Button';
-import AutoForm, { CustomAutoField, SubmitField } from './AutoForm';
+import AutoForm from './AutoForm';
+import { CustomAutoField, SubmitField } from './AutoFormComponents';
 
 type AutoFormDialogProps = {};
 

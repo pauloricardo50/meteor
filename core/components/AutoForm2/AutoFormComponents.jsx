@@ -1,0 +1,52 @@
+// @flow
+import React from 'react';
+import SelectField from 'uniforms-material/SelectField';
+import AutoField from 'uniforms-material/AutoField';
+import connectField from 'uniforms/connectField';
+import DefaultListAddField from 'uniforms-material/ListAddField';
+
+import T from '../Translation';
+import Button from '../Button';
+
+const CustomSelectField = ({ transform, ...props }) => (
+  <SelectField
+    {...props}
+    transform={
+      transform || (option => <T id={`Forms.${props.name}.${option}`} />)
+    }
+    displayEmpty
+  />
+);
+
+const determineComponentFromProps = (props) => {
+  if (props.allowedValues) {
+    return CustomSelectField;
+  }
+
+  return false;
+};
+
+export const SubmitField = props => (
+  <Button
+    type="submit"
+    children={<T id="general.save" />}
+    raised
+    primary
+    {...props}
+  />
+);
+
+export const CustomAutoField = ({ labels } = {}) =>
+  connectField(
+    (props) => {
+      const Component = determineComponentFromProps(props) || AutoField;
+      const label = labels && labels[props.name];
+      return (
+        <Component
+          {...props}
+          label={label || <T id={`Forms.${props.name}`} />}
+        />
+      );
+    },
+    { includeInChain: false },
+  );

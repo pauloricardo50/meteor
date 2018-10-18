@@ -1,4 +1,5 @@
 {
+  "Forms.contacts": "Personnes de contact",
   "Forms.city.placeholder": "Genève",
   "Forms.isForeignAddress": "Addresse à l'étranger",
   "DashboardProgressInfo.completeBorrowersFinance": "Complétez vos informations financières",
