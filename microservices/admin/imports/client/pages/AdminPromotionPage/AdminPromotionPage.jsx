@@ -21,6 +21,7 @@ const AdminPromotionPage = ({
         currentUser={currentUser}
         canModify
         isAdmin
+        isPro
       />
     </>
   );

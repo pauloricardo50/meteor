@@ -15,7 +15,7 @@ import EmailTester from './EmailTester';
 type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
-  const { promotion, currentUser, canModify, isPro, isAdmin, loan } = props;
+  const { promotion, currentUser, canModify, isPro, loan } = props;
   console.log('promotion', promotion);
   return (
     <div className="card1 promotion-page">
@@ -40,20 +40,16 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      {(isPro || isAdmin) && (
+      {isPro && (
         <>
           <ProPromotionLotsTable promotion={promotion} />
           <AdditionalLotsTable promotion={promotion} />
         </>
       )}
-      {!isPro
-        && !isAdmin && (
+      {!isPro && (
         <UserPromotionOptionsTable promotion={promotion} loan={loan} />
       )}
-      {!isPro
-        && !isAdmin && (
-        <UserPromotionLotsTable promotion={promotion} loan={loan} />
-      )}
+      {!isPro && <UserPromotionLotsTable promotion={promotion} loan={loan} />}
     </div>
   );
 };
