@@ -1,0 +1,24 @@
+.dashboard-recap-promotion {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  min-width: 300px;
+  padding: 16px;
+
+  &-modifier {
+    padding: 32px;
+  }
+}
+
+.dashboard-recap-promotion .map {
+  overflow: hidden;
+
+  width: calc(100% + 32px);
+  height: 40%;
+  min-height: 200px;
+  margin: -16px -16px 16px -16px;
+
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}

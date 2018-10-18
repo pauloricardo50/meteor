@@ -47,7 +47,9 @@ const makeMapPromotionOption = ({
       ),
     ].filter(x => x !== false),
 
-    handleClick: () =>
+    handleClick: (event) => {
+      event.stopPropagation();
+      event.preventDefault();
       history.push(createRoute(
         '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId',
         {
@@ -55,7 +57,8 @@ const makeMapPromotionOption = ({
           promotionId,
           promotionOptionId,
         },
-      )),
+      ));
+    },
   };
 };
 
