@@ -8,6 +8,8 @@ import { promotionOptionUpdate } from '../../../../api';
 import T from '../../../Translation';
 import PrioritySetter from './PrioritySetter';
 import ClickToEditField from '../../../ClickToEditField';
+import StatusLabel from '../../../StatusLabel';
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -33,7 +35,12 @@ const makeMapPromotionOption = ({
         />
       </div>,
       name,
-      { raw: status, label: <T id={`Forms.status.${status}`} key="status" /> },
+      {
+        raw: status,
+        label: (
+          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+        ),
+      },
       { raw: value, label: toMoney(value) },
       !isDashboardTable && (
         <div key="custom" onClick={e => e.stopPropagation()}>
