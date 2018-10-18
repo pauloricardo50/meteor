@@ -6,6 +6,7 @@ import {
   LOANS_COLLECTION,
   USERS_COLLECTION,
   PROPERTIES_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
 
@@ -33,11 +34,14 @@ const userSortOptions = [createdAtSortOption, updateAtSortOption];
 
 const propertySortOptions = [createdAtSortOption, updateAtSortOption];
 
+const promotionSortOptions = [createdAtSortOption, updateAtSortOption];
+
 const sortOptions = {
   [LOANS_COLLECTION]: loanSortOptions,
   [BORROWERS_COLLECTION]: borrowerSortOptions,
   [USERS_COLLECTION]: userSortOptions,
   [PROPERTIES_COLLECTION]: propertySortOptions,
+  [PROMOTIONS_COLLECTION]: promotionSortOptions,
 };
 
 export const defaultSortOption = {
@@ -45,6 +49,7 @@ export const defaultSortOption = {
   [BORROWERS_COLLECTION]: createdAtSortOption.value,
   [USERS_COLLECTION]: createdAtSortOption.value,
   [PROPERTIES_COLLECTION]: createdAtSortOption.value,
+  [PROMOTIONS_COLLECTION]: createdAtSortOption.value,
 };
 
 export const getSortOptionFromField = (options, fieldName) =>

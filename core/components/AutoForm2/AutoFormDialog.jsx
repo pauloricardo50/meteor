@@ -11,7 +11,7 @@ import ErrorsField from 'uniforms-material/ErrorsField';
 import message from '../../utils/message';
 import T from '../Translation';
 import Button from '../Button';
-import AutoForm, { CustomAutoField, SubmitField } from './AutoForm';
+import AutoForm, { makeCustomAutoField, SubmitField } from './AutoForm';
 
 type AutoFormDialogProps = {};
 
@@ -31,7 +31,7 @@ export const AutoFormDialog = ({
   children,
   ...otherProps
 }: AutoFormDialogProps) => {
-  const AutoField = CustomAutoField(autoFieldProps);
+  const AutoField = makeCustomAutoField(autoFieldProps);
 
   return (
     <>

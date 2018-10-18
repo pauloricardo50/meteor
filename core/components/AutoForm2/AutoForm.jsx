@@ -36,25 +36,26 @@ export const SubmitField = props => (
   />
 );
 
-export const CustomAutoField = ({ labels } = {}) =>
+const selectLabel = ({ label, props: { name } }) =>
+  (label === null ? null : label || <T id={`Forms.${name}`} />);
+
+export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
     (props) => {
       const Component = determineComponentFromProps(props) || AutoField;
       const label = labels && labels[props.name];
-      return (
-        <Component
-          {...props}
-          label={label || <T id={`Forms.${props.name}`} />}
-        />
-      );
+      return <Component {...props} label={selectLabel({ label, props })} />;
     },
     { includeInChain: false },
   );
 
+export const CustomAutoField = makeCustomAutoField({});
+
 const CustomAutoForm = ({ autoFieldProps, ...props }) => (
   <AutoForm
+    {...props}
+    autoField={makeCustomAutoField(autoFieldProps)}
     showInlineError
-    autoField={CustomAutoField(autoFieldProps)}
     submitField={SubmitField}
     {...props}
   />

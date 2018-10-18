@@ -38,6 +38,31 @@ export const inviteUserToPromotion = new Method({
   },
 });
 
+export const setPromotionUserPermissions = new Method({
+  name: 'setPromotionUserPermissions',
+  params: {
+    promotionId: String,
+    userId: String,
+    permissions: String,
+  },
+});
+
+export const addProUserToPromotion = new Method({
+  name: 'addProUserToPromotion',
+  params: {
+    promotionId: String,
+    userId: String,
+  },
+});
+
+export const removeUserFromPromotion = new Method({
+  name: 'removeUserFromPromotion',
+  params: {
+    promotionId: String,
+    userId: String,
+  },
+});
+
 export const sendPromotionInvitationEmail = new Method({
   name: 'sendPromotionInvitationEmail',
   params: {

@@ -5,12 +5,14 @@ import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionModifier from './PromotionModifier';
+import PromotionStatusModifier from './PromotionStatusModifier';
 
 type PromotionPageHeaderProps = {};
 
 const PromotionPageHeader = ({
   promotion,
   canModify,
+  isAdmin,
 }: PromotionPageHeaderProps) => {
   const { name, promotionLots = [], status, documents } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
@@ -35,6 +37,7 @@ const PromotionPageHeader = ({
               values={{ promotionLotCount: promotionLots.length }}
             />
           </h3>
+          {isAdmin && <PromotionStatusModifier promotion={promotion} />}
         </div>
 
         {logos.length > 0 ? (

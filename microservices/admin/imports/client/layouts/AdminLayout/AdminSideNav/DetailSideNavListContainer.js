@@ -12,7 +12,9 @@ import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   USERS_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
+import adminPromotions from 'core/api/promotions/queries/adminPromotions';
 
 const PAGINATION_AMOUNT = 10;
 
@@ -26,6 +28,8 @@ const getQuery = ({ collectionName }) => {
     return sideNavProperties;
   case USERS_COLLECTION:
     return sideNavUsers;
+  case PROMOTIONS_COLLECTION:
+    return adminPromotions;
   default:
     return null;
   }

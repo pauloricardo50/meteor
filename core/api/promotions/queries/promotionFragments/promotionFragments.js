@@ -21,7 +21,7 @@ export const basePromotionFragment = {
     promotionOptions: { _id: 1 },
     name: 1,
   },
-  users: { name: 1 },
+  users: { _id: 1, name: 1, email: 1, roles: 1 },
   loans: { _id: 1 },
   soldPromotionLots: 1,
   bookedPromotionLots: 1,
@@ -44,4 +44,8 @@ export const proPromotionFragment = {
 
 export const proPromotionsFragment = {
   ...basePromotionFragment,
+};
+
+export const adminPromotionsFragment = {
+  ...proPromotionFragment,
 };

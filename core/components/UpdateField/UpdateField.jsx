@@ -2,7 +2,7 @@
 import React from 'react';
 import pick from 'lodash/pick';
 
-import AutoForm, { AutoField } from '../AutoForm2';
+import AutoForm, { CustomAutoField } from '../AutoForm2';
 import { loanUpdate } from '../../api';
 import LoanSchema from '../../api/loans/schemas/LoanSchema';
 
@@ -19,7 +19,7 @@ const UpdateField = ({ fields, doc }: UpdateFieldProps) => (
     className="update-field"
   >
     {fields.map(field => (
-      <AutoField name={field} key={field} fullWidth />
+      <CustomAutoField name={field} key={field} fullWidth />
     ))}
   </AutoForm>
 );
