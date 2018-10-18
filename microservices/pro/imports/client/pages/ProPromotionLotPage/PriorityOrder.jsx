@@ -37,30 +37,34 @@ const PriorityOrder = ({
   const { priorityOrder } = promotion.$metadata;
   const options = priorityOrder.map(promotionOptionId =>
     promotionOptions.find(({ _id }) => _id === promotionOptionId));
-  console.log('promotion', promotion);
   return (
     <div className="priority-order">
-      {options.map(({ _id, name, solvency, promotionLots }) => (
-        <Link
-          to={createRoute(PRO_PROMOTION_LOT_PAGE, {
-            ':promotionId': promotion._id,
-            ':promotionLotId': promotionLots[0]._id,
-          })}
-          key={`${_id}${promotionLots[0]._id}`}
-        >
-          <Chip
-            label={name}
-            key={_id}
-            className={getChipColor({
-              currentId,
-              promotionOptionId: _id,
-              userId,
-              promotionLots,
+      {options.map(({ _id, name, solvency: solvencyTODO, promotionLots }) => {
+        const solvency = Math.random() > 0.3;
+        return (
+          <Link
+            to={createRoute(PRO_PROMOTION_LOT_PAGE, {
+              ':promotionId': promotion._id,
+              ':promotionLotId': promotionLots[0]._id,
             })}
-            icon={<Icon type={solvency ? 'check' : 'close'} className="icon" />}
-          />
-        </Link>
-      ))}
+            key={`${_id}${promotionLots[0]._id}`}
+          >
+            <Chip
+              label={name}
+              key={_id}
+              className={getChipColor({
+                currentId,
+                promotionOptionId: _id,
+                userId,
+                promotionLots,
+              })}
+              icon={
+                <Icon type={solvency ? 'check' : 'close'} className="icon" />
+              }
+            />
+          </Link>
+        );
+      })}
     </div>
   );
 };

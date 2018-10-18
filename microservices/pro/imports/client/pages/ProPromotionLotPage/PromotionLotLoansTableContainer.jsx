@@ -6,6 +6,7 @@ import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionO
 import T from 'core/components/Translation';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
+import PromotionProgress from './PromotionProgress';
 
 const getSolvency = (email) => {
   const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
@@ -25,14 +26,9 @@ const mapOption = ({
   attributedTo,
   name,
 }) => (promotionOption) => {
-  const {
-    _id: promotionOptionId,
-    loan: loans,
-    lots,
-    solvency,
-  } = promotionOption;
+  const { _id: promotionOptionId, loan: loans, lots, custom } = promotionOption;
 
-  const { user, promotions, promotionOptions, _id: loanId } = (loans && loans[0]) || {};
+  const { user, promotions, promotionOptions, _id: loanId, promotionProgress } = (loans && loans[0]) || {};
   const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion[0]._id);
 
   return {
@@ -40,7 +36,11 @@ const mapOption = ({
     columns: [
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
-      lots,
+      <PromotionProgress
+        promotionProgress={promotionProgress}
+        key="promotionProgress"
+      />,
+      custom,
       <PriorityOrder
         promotion={promotion}
         promotionOptions={promotionOptions}
@@ -48,17 +48,6 @@ const mapOption = ({
         userId={user && user._id}
         key="priorityOrder"
       />,
-      {
-        raw: getSolvency(user && user.email).className,
-        label: (
-          <span
-            className={getSolvency(user && user.email).className}
-            key="solvency"
-          >
-            {getSolvency(user && user.email).text}
-          </span>
-        ),
-      },
       <PromotionLotAttributer
         promotionLotId={promotionLotId}
         loanId={loanId}
@@ -78,9 +67,9 @@ const mapOption = ({
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
-  { id: 'lots' },
+  { id: 'promotionProgress' },
+  { id: 'custom' },
   { id: 'priorityOrder' },
-  { id: 'solvency' },
   { id: 'attribute' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
 

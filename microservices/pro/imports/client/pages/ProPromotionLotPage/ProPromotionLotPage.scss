@@ -93,3 +93,12 @@
     border-spacing: 16px;
   }
 }
+
+.promotion-progress {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 4px;
+  }
+}

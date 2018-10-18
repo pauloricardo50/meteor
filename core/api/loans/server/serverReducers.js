@@ -4,7 +4,11 @@ import filesReducer from '../../reducers/filesReducer';
 Loans.addReducers({
   ...filesReducer,
   promotionProgress: {
-    body: {},
-    reduce: () => ({ info: 0, documents: 0, verified: false }),
+    body: { verificationStatus: 1 },
+    reduce: ({ verificationStatus }) => ({
+      info: 0,
+      documents: 0,
+      verificationStatus,
+    }),
   },
 });
