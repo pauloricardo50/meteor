@@ -36,19 +36,15 @@ export const SubmitField = props => (
   />
 );
 
+const selectLabel = ({ label, props: { name } }) =>
+  (label === null ? null : label || <T id={`Forms.${name}`} />);
+
 export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
     (props) => {
       const Component = determineComponentFromProps(props) || AutoField;
       const label = labels && labels[props.name];
-      return (
-        <Component
-          {...props}
-          label={
-            label === null ? null : label || <T id={`Forms.${props.name}`} />
-          }
-        />
-      );
+      return <Component {...props} label={selectLabel({ label, props })} />;
     },
     { includeInChain: false },
   );
