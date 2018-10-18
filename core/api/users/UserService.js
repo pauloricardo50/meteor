@@ -2,11 +2,26 @@ import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
 import ServerEventService from '../events/server/ServerEventService';
+import Loans from '../loans';
+import CollectionService from '../helpers/CollectionService';
+import { fullUserFragment } from './queries/userFragments/index';
 import { USER_EVENTS, ROLES } from './userConstants';
 import Users from '.';
-import Loans from '../loans';
 
-class UserService {
+class UserService extends CollectionService {
+  constructor() {
+    super(Users);
+  }
+
+  get(userId) {
+    return this.collection
+      .createQuery({
+        $filters: { _id: userId },
+        ...fullUserFragment,
+      })
+      .fetchOne();
+  }
+
   createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);

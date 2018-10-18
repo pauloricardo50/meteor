@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import moment from 'moment';
 
@@ -7,6 +8,7 @@ import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
 import Loans from './loans';
+import { LOAN_VERIFICATION_STATUS } from './loanConstants';
 
 const zeroPadding = (num, places) => {
   const zero = places - num.toString().length + 1;
@@ -62,17 +64,17 @@ export class LoanService extends CollectionService {
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
 
-    if (loan.logic.verification.requested) {
+    if (
+      loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED
+      || loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
+    ) {
       // Don't do anything if this loan is already in requested mode
-      return false;
+      throw new Meteor.Error('La demande est déjà en cours, ou effectuée.');
     }
 
     return this.update({
       loanId,
-      object: {
-        'logic.verification.requested': true,
-        'logic.verification.requestedAt': new Date(),
-      },
+      object: { verificationStatus: LOAN_VERIFICATION_STATUS.REQUESTED },
     });
   };
 

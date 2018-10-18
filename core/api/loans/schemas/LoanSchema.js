@@ -7,7 +7,7 @@ import {
   updatedAt,
   contactsSchema,
 } from '../../helpers/sharedSchemas';
-import { LOAN_STATUS } from '../loanConstants';
+import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
@@ -34,6 +34,12 @@ const LoanSchema = new SimpleSchema({
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
+  verificationStatus: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
+    defaultValue: LOAN_VERIFICATION_STATUS.NONE,
+  },
   ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,

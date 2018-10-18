@@ -6,6 +6,7 @@ export const loanBaseFragment = {
   createdAt: 1,
   logic: 1,
   general: 1,
+  verificationStatus: 1,
   name: 1,
   propertyIds: 1,
   properties: { value: 1, address1: 1 },

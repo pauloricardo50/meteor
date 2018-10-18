@@ -24,7 +24,6 @@ import {
   LOANS_PER_USER,
 } from './fixtureConfig';
 import { createFakeLoan } from './loanFixtures';
-import { createFakeTask, deleteUsersTasks } from './taskFixtures';
 import {
   createDevs,
   createAdmins,
@@ -49,7 +48,6 @@ const getAdmins = () => {
 };
 
 const deleteUsersRelatedData = (usersToDelete) => {
-  deleteUsersTasks(usersToDelete);
   Borrowers.remove({ userId: { $in: usersToDelete } });
   Properties.remove({ userId: { $in: usersToDelete } });
   Offers.remove({ userId: { $in: usersToDelete } });
@@ -74,7 +72,6 @@ const createFakeLoanFixture = ({
     auctionStatus,
     twoBorrowers,
   });
-  createFakeTask(loanId, adminId);
   createFakeOffer(loanId, userId);
 };
 
