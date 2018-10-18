@@ -12,7 +12,11 @@ import message from '../../utils/message';
 import T from '../Translation';
 import Button from '../Button';
 import AutoForm from './AutoForm';
-import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
+import {
+  makeCustomAutoField,
+  SubmitField,
+  CustomAutoFields,
+} from './AutoFormComponents';
 
 type AutoFormDialogProps = {};
 
@@ -54,9 +58,7 @@ export const AutoFormDialog = ({
             {description && (
               <DialogContentText>{description}</DialogContentText>
             )}
-            {schema._schemaKeys.map(key => (
-              <AutoField name={key} key={key} />
-            ))}
+            <CustomAutoFields autoField={AutoField} />
             <ErrorsField />
             {children
               && children({

@@ -58,11 +58,16 @@ export const address = {
 export const contactsSchema = {
   contacts: { type: Array, defaultValue: [] },
   'contacts.$': Object,
-  'contacts.$.name': String,
-  'contacts.$.title': String,
+  'contacts.$.name': { type: String, uniforms: { label: 'Prénom Nom' } },
+  'contacts.$.title': { type: String, uniforms: { label: 'Fonction/Titre' } },
   'contacts.$.email': {
     type: String,
     regEx: SimpleSchema.RegEx.Email,
+    optional: true,
   },
-  'contacts.$.phoneNumber': String,
+  'contacts.$.phoneNumber': {
+    type: String,
+    uniforms: { label: 'No. de Téléphone' },
+    optional: true,
+  },
 };

@@ -26,6 +26,7 @@ export const basePromotionFragment = {
   soldPromotionLots: 1,
   bookedPromotionLots: 1,
   availablePromotionLots: 1,
+  contacts: 1,
 };
 
 export const proPromotionFragment = {

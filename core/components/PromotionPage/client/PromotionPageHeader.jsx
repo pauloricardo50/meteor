@@ -14,10 +14,14 @@ const PromotionPageHeader = ({
   canModify,
   isAdmin,
 }: PromotionPageHeaderProps) => {
-  const { name, promotionLots = [], status, documents } = promotion;
+  const {
+    name,
+    promotionLots = [],
+    status,
+    documents,
+    contacts = [],
+  } = promotion;
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
-
-  console.log('url?', promotionImage[0].url);
 
   return (
     <div className="promotion-page-header">
@@ -42,12 +46,36 @@ const PromotionPageHeader = ({
 
         {logos.length > 0 ? (
           <div className="logos animated fadeIn delay-200">
-            {logos.map(logo => (
-              <div className="logo" key={logo.Key}>
-                <img src={logo.url} alt="" />
-                <p className="text-center bold">{logo.name.split('.')[0]}</p>
-              </div>
-            ))}
+            <h3>Partenaires</h3>
+
+            <div className="list">
+              {logos.map(logo => (
+                <div className="logo" key={logo.Key}>
+                  <img src={logo.url} alt="" />
+                  <p className="text-center bold">{logo.name.split('.')[0]}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div style={{ height: '150px' }} />
+        )}
+        {contacts.length > 0 ? (
+          <div className="contacts animated fadeIn delay-400">
+            <h3>Contacts</h3>
+
+            <div className="list">
+              {contacts.map(({ name: contactName, phoneNumber, title, email }) => (
+                <div className="contact" key={email}>
+                  <h4 className="name">{contactName}</h4>
+                  <span className="title secondary">{title}</span>
+                  {phoneNumber && (
+                    <span className="phone-number">{phoneNumber}</span>
+                  )}
+                  {email && <span className="email">{email}</span>}
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <div style={{ height: '150px' }} />

@@ -2,6 +2,7 @@
 import React from 'react';
 import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
+import AutoFields from 'uniforms-material/AutoFields';
 import connectField from 'uniforms/connectField';
 
 import T from '../Translation';
@@ -49,3 +50,5 @@ export const makeCustomAutoField = ({ labels } = {}) =>
   );
 
 export const CustomAutoField = makeCustomAutoField({});
+
+export const CustomAutoFields = props => <AutoFields {...props} />;
