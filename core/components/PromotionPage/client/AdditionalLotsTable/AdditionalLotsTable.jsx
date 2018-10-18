@@ -53,7 +53,7 @@ const makeMapAdditionalLot = ({
       name,
       {
         raw: status,
-        label: (
+        label: status && (
           <StatusLabel collection={PROMOTION_LOTS_COLLECTION} status={status} />
         ),
       },
