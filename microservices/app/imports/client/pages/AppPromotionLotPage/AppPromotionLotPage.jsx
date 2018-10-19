@@ -24,7 +24,7 @@ export const AppPromotionLotPage = ({
 }: AppPromotionLotPageProps) => {
   const { name, status, promotion, value, lots, documents } = promotionLot;
   const { name: promotionName } = promotion[0];
-  const { custom } = promotionOption || {};
+  const { custom, attributedToMe } = promotionOption || {};
   console.log('promotionLot', promotionLot);
   console.log('loanPromotions', loanPromotions); // Should have $metadata
 
@@ -74,6 +74,7 @@ export const AppPromotionLotPage = ({
               value={custom}
               onSubmit={setCustom}
               className="custom-edit"
+              allowEditing={!attributedToMe}
             />
           </>
         )}

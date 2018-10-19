@@ -50,6 +50,7 @@
     "query-string": "5.1.1",
     "rc-slider": "^8.6.3",
     "react": "^16.5.2",
+    "react-ace": "^6.2.0",
     "react-autosuggest": "^9.4.2",
     "react-bootstrap": "^0.32.4",
     "react-countup": "^4.0.0-alpha.6",

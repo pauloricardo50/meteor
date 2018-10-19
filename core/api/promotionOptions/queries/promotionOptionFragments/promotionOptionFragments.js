@@ -29,4 +29,5 @@ export const appPromotionOptionFragment = {
     value: 1,
   },
   promotionLots: appPromotionLotFragment,
+  attributedToMe: 1,
 };
