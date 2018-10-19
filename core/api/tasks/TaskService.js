@@ -33,6 +33,8 @@ class TaskService extends CollectionService {
 
   getTaskById = taskId => Tasks.findOne(taskId);
 
+  getTasksForDoc = docId => Tasks.find({ docId }).fetch();
+
   complete = ({ taskId }) => {
     const task = this.getTaskById(taskId);
     if (!validateTask(task)) {

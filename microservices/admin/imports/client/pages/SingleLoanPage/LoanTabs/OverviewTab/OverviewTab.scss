@@ -1,13 +1,14 @@
 .overview-tab .admin-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
 
-  .admin-note-wrapper {
-    display: flex;
+  .update-field {
+    min-width: 200px;
+  }
 
-    .admin-note {
-      flex-grow: 1;
-    }
+  > * {
+    margin-right: 8px;
   }
 }
 

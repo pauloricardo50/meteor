@@ -74,7 +74,10 @@ export class LoanService extends CollectionService {
 
     return this.update({
       loanId,
-      object: { verificationStatus: LOAN_VERIFICATION_STATUS.REQUESTED },
+      object: {
+        verificationStatus: LOAN_VERIFICATION_STATUS.REQUESTED,
+        userFormsEnabled: false,
+      },
     });
   };
 

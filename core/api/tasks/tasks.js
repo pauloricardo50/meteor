@@ -56,9 +56,10 @@ const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  userId: {
+  docId: {
     type: String,
     optional: true,
+    index: true,
   },
 });
 
