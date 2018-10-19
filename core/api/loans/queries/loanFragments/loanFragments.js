@@ -21,8 +21,13 @@ export const loanBaseFragment = {
     $metadata: { priorityOrder: 1 },
   },
   promotionOptions: {
-    promotionLots: { name: 1, status: 1, value: 1 },
+    promotionLots: {
+      name: 1,
+      status: 1,
+      value: 1,
+    },
     custom: 1,
+    attributedToMe: 1,
   },
   hasPromotion: 1,
   // $options: { sort: { createdAt: 1 } },
