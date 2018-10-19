@@ -10,6 +10,7 @@ import PrioritySetter from './PrioritySetter';
 import ClickToEditField from '../../../ClickToEditField';
 import StatusLabel from '../../../StatusLabel';
 import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
+import { getLabelSuffix } from '../utils';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -19,7 +20,11 @@ const makeMapPromotionOption = ({
   loanId,
   history,
   isDashboardTable = false,
-}) => ({ _id: promotionOptionId, promotionLots, custom }, index, arr) => {
+}) => (
+  { _id: promotionOptionId, promotionLots, custom, attributedToMe },
+  index,
+  arr,
+) => {
   const { name, status, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
@@ -38,7 +43,11 @@ const makeMapPromotionOption = ({
       {
         raw: status,
         label: (
-          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+          <StatusLabel
+            suffix={getLabelSuffix({ attributedToMe, status })}
+            status={status}
+            collection={PROMOTION_LOTS_COLLECTION}
+          />
         ),
       },
       { raw: value, label: toMoney(value) },
