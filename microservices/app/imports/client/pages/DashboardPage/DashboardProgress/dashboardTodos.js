@@ -39,6 +39,7 @@ export const promotionTodoList = {
   uploadDocuments: true,
   chooseLots: true,
   verification: true,
+  callEpotek: true,
 };
 
 export const defaultTodoList = {
@@ -149,7 +150,7 @@ export const getDashboardTodosArray = list =>
     },
     {
       id: 'verification',
-      isDone: loan => (loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK),
+      isDone: loan => loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK,
       Component: VerificationRequester,
     },
     {

@@ -4,10 +4,19 @@ import { withSelector } from './Selector';
 export const withCombinedCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     filesProgress({ loan }) {
-      const loanProgress = this.getLoanFilesProgress({ loan });
-      const borrowersProgress = this.getBorrowerFilesProgress({ loan });
-      const propertyProgress = this.getPropertyFilesProgress({ loan });
-      return (loanProgress + borrowersProgress + propertyProgress) / 3;
+      const progress = [
+        this.getLoanFilesProgress,
+        this.getBorrowerFilesProgress,
+        !loan.hasPromotion && this.getPropertyFilesProgress,
+      ];
+
+      return progress
+        .filter(x => x !== false)
+        .reduce(
+          (total, percent, i, array) =>
+            total + percent({ loan }) / array.length,
+          0,
+        );
     }
   };
 

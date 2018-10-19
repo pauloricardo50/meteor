@@ -9,9 +9,26 @@ import { requestLoanVerification } from 'core/api';
 type VerificationRequesterProps = {};
 
 const VerificationRequester = ({
-  loan: { verificationStatus = LOAN_VERIFICATION_STATUS.NONE, _id: loanId },
+  loan,
+  todos,
+  isDone,
 }: VerificationRequesterProps) => {
+  const {
+    verificationStatus = LOAN_VERIFICATION_STATUS.NONE,
+    _id: loanId,
+  } = loan;
+
   if (verificationStatus === LOAN_VERIFICATION_STATUS.OK) {
+    return null;
+  }
+
+  if (isDone) {
+    return null;
+  }
+
+  const previousTodos = todos.filter(({ id }) => id !== 'verification');
+
+  if (previousTodos.some(({ isDone }) => !isDone(loan))) {
     return null;
   }
 
