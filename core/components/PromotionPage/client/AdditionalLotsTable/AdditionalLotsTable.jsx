@@ -8,6 +8,8 @@ import { toMoney } from '../../../../utils/conversionFunctions';
 import Table from '../../../Table';
 import Button from '../../../Button';
 import AdditionalLotModifier from './AdditionalLotModifier';
+import StatusLabel from '../../../StatusLabel';
+import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
 
 type AdditionalLotsTableProps = {
   promotion: Object,
@@ -21,6 +23,7 @@ type AdditionalLotsTableProps = {
 
 const columnOptions = [
   { id: 'name' },
+  { id: 'status' },
   { id: 'type' },
   { id: 'value' },
   { id: 'description' },
@@ -43,11 +46,17 @@ const makeMapAdditionalLot = ({
   setAdditionalLotToModify,
   setShowDialog,
 }) => (lot) => {
-  const { _id, name, type, value, description, promotionLots } = lot;
+  const { _id, name, type, value, description, promotionLots, status } = lot;
   return {
     id: _id,
     columns: [
       name,
+      {
+        raw: status,
+        label: status && (
+          <StatusLabel collection={PROMOTION_LOTS_COLLECTION} status={status} />
+        ),
+      },
       { raw: type, label: <T id={`Forms.type.${type}`} /> },
       { raw: value, label: toMoney(value) },
       description,
@@ -97,6 +106,7 @@ const AdditionalLotsTable = ({
             <h3 className="text-center">
               <T id="PromotionPage.AdditionalLotsTable" />
             </h3>
+
             <Table
               rows={
                 promotion.lots

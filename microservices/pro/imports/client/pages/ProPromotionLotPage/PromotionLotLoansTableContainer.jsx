@@ -6,6 +6,7 @@ import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionO
 import T from 'core/components/Translation';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
+import PromotionProgress from './PromotionProgress';
 
 const getSolvency = (email) => {
   const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
@@ -25,58 +26,37 @@ const mapOption = ({
   attributedTo,
   name,
 }) => (promotionOption) => {
-  const {
-    _id: promotionOptionId,
-    loan,
-    status,
-    lots,
-    solvency,
-  } = promotionOption;
+  const { _id: promotionOptionId, loan: loans, lots, custom } = promotionOption;
 
-  const promotion = loan
-    && loan[0].promotions
-    && loan[0].promotions.find(({ _id }) => _id === lotPromotion[0]._id);
+  const { user, promotions, promotionOptions, _id: loanId, promotionProgress } = (loans && loans[0]) || {};
+  const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion[0]._id);
 
   return {
     id: promotionOptionId,
     columns: [
-      loan && loan[0] && loan[0].user.name,
-      loan
-        && loan[0]
-        && loan[0].user.phoneNumbers
-        && loan[0].user.phoneNumbers[0],
-      <T id={`Forms.status.${status}`} key="status" />,
-      lots,
+      user && user.name,
+      user && user.phoneNumbers && user.phoneNumbers[0],
+      <PromotionProgress
+        promotionProgress={promotionProgress}
+        key="promotionProgress"
+      />,
+      custom,
       <PriorityOrder
         promotion={promotion}
-        promotionOptions={loan[0].promotionOptions}
+        promotionOptions={promotionOptions}
         currentId={promotionOptionId}
+        userId={user && user._id}
         key="priorityOrder"
       />,
-      {
-        raw: getSolvency(loan && loan[0] && loan[0].user.email).className,
-        label: (
-          <span
-            className={
-              getSolvency(loan && loan[0] && loan[0].user.email).className
-            }
-            key="solvency"
-          >
-            {getSolvency(loan && loan[0] && loan[0].user.email).text}
-          </span>
-        ),
-      },
       <PromotionLotAttributer
         promotionLotId={promotionLotId}
-        loanId={loan && loan[0] && loan[0]._id}
+        loanId={loanId}
         promotionLotStatus={promotionLotStatus}
         attributedToId={attributedTo && attributedTo._id}
-        userName={loan && loan[0] && loan[0].user.name}
+        userName={user && user.name}
         lots={lots}
-        solvency={getSolvency(loan && loan[0] && loan[0].user.email).text}
-        solvencyClassName={
-          getSolvency(loan && loan[0] && loan[0].user.email).className
-        }
+        solvency={getSolvency(user && user.email).text}
+        solvencyClassName={getSolvency(user && user.email).className}
         promotionLotName={name}
         key="promotionLotAttributer"
       />,
@@ -87,10 +67,9 @@ const mapOption = ({
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
-  { id: 'status' },
-  { id: 'lots' },
+  { id: 'promotionProgress' },
+  { id: 'custom' },
   { id: 'priorityOrder' },
-  { id: 'solvency' },
   { id: 'attribute' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
 

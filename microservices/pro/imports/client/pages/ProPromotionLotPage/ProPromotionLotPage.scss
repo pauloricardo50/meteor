@@ -57,6 +57,16 @@
       background-color: $primary;
     }
 
+    .success {
+      color: white;
+      background-color: $success;
+    }
+
+    .error {
+      color: white;
+      background-color: $error;
+    }
+
     .icon {
       color: white;
     }
@@ -81,5 +91,14 @@
 
   &-table {
     border-spacing: 16px;
+  }
+}
+
+.promotion-progress {
+  display: flex;
+  align-items: center;
+
+  > * {
+    margin-right: 4px;
   }
 }
