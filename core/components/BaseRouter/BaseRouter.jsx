@@ -13,6 +13,9 @@ import MicroserviceHead from '../MicroserviceHead';
 import Switch from './Switch';
 import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
+import GrapherPage from './GrapherPageLoadable';
+
+const isDev = process.env.NODE_ENV === 'env';
 
 const BaseRouter = ({
   locale,
@@ -42,6 +45,7 @@ const BaseRouter = ({
             <Switch>
               {/* LoginPage has to be above / path */}
               {hasLogin && <Route exact path="/login" component={LoginPage} />}
+              {isDev && <Route exact path="/grapher" component={GrapherPage} />}
               <Route
                 path="/"
                 render={childProps => React.cloneElement(children, childProps)}
