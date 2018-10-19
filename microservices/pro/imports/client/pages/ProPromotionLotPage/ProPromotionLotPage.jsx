@@ -64,6 +64,7 @@ const ProPromotionLotPage = ({
           promotionLotId={promotionLotId}
           lots={lots}
           allLots={allLots}
+          status={promotionLot.status}
         />
 
         <PromotionLotLoansTable
