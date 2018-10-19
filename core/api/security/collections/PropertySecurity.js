@@ -16,7 +16,12 @@ class PropertySecurity {
   }
 
   static isAllowedToDelete() {
-    Security.checkCurrentUserIsAdmin();
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const property = Properties.findOne(propertyId);
+    Security.checkOwnership(property);
   }
 }
 
