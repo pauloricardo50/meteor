@@ -5,7 +5,7 @@ import { withProps } from 'recompose';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import { propertyUpdate } from 'core/api/methods';
-import { PROMOTION_LOT_STATUS } from 'imports/core/api/constants';
+import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 
 type ProPromotionLotModifierProps = {
   promotionLot: Object,
