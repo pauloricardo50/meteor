@@ -9,8 +9,8 @@ export const getLabelOtherProps = ({ attributedToMe, status }) => {
     return attributedToMe
       ? { suffix: <T id="Forms.status.suffix.forMe" /> }
       : {
-        labelOverride: <T id="Forms.status.NOT_AVAILABLE" />,
-        colorOverride: colors.warning,
+        label: <T id="Forms.status.NOT_AVAILABLE" />,
+        color: colors.warning,
       };
   case PROMOTION_LOT_STATUS.AVAILABLE:
     return {};
@@ -18,7 +18,7 @@ export const getLabelOtherProps = ({ attributedToMe, status }) => {
     return attributedToMe
       ? {
         suffix: <T id="Forms.status.suffix.toMe" />,
-        colorOverride: colors.success,
+        color: colors.success,
       }
       : {};
   default:

@@ -38,17 +38,17 @@ const StatusLabel = ({
   status,
   collection,
   suffix = '',
-  labelOverride = null,
-  colorOverride = null,
+  label = null,
+  color = null,
 }: StatusLabelProps) => (
   <div
     className="status-label"
     style={{
-      backgroundColor: colorOverride || getStatusColor(status, collection),
+      backgroundColor: color || getStatusColor(status, collection),
     }}
   >
     <span>
-      {labelOverride || <T id={`Forms.status.${status}`} />}
+      {label || <T id={`Forms.status.${status}`} />}
       {suffix}
     </span>
   </div>

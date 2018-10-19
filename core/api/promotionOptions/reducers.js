@@ -11,9 +11,11 @@ PromotionOptions.addReducers({
   },
   attributedToMe: {
     body: { promotionLots: { attributedTo: { userId: 1 } } },
-    reduce: ({ promotionLots = [] }) => (
-      promotionLots[0].attributedTo !== undefined
+    reduce: ({ promotionLots = [] }) =>
+      !!(
+        promotionLots[0]
+        && promotionLots[0].attributedTo
         && promotionLots[0].attributedTo.userId === Meteor.userId()
-    ),
+      ),
   },
 });

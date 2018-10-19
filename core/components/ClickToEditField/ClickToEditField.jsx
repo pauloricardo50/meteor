@@ -61,11 +61,11 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           'not-editing': allowEditing,
           'not-allowed-to-edit': !allowEditing,
         })}
-        {...(allowEditing
-          ? {
-            onClick: () => toggleEdit(true, () => this.input.current.focus()),
-          }
-          : {})}
+        onClick={
+          allowEditing
+            ? () => toggleEdit(true, () => this.input.current.focus())
+            : null
+        }
       >
         {value || placeholder}
       </div>
