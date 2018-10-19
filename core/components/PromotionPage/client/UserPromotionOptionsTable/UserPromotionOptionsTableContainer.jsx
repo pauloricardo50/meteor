@@ -9,8 +9,11 @@ import T from '../../../Translation';
 import PrioritySetter from './PrioritySetter';
 import ClickToEditField from '../../../ClickToEditField';
 import StatusLabel from '../../../StatusLabel';
-import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
-import { getLabelSuffix } from '../utils';
+import {
+  PROMOTION_LOTS_COLLECTION,
+  PROMOTION_LOT_STATUS,
+} from '../../../../api/constants';
+import { getLabelOtherProps } from '../utils';
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -44,7 +47,7 @@ const makeMapPromotionOption = ({
         raw: status,
         label: (
           <StatusLabel
-            suffix={getLabelSuffix({ attributedToMe, status })}
+            {...getLabelOtherProps({ attributedToMe, status })}
             status={status}
             collection={PROMOTION_LOTS_COLLECTION}
           />
@@ -58,6 +61,9 @@ const makeMapPromotionOption = ({
             value={custom}
             onSubmit={makeChangeCustom(promotionOptionId)}
             inputProps={{ style: { width: '100%' } }}
+            allowEditing={
+              !attributedToMe && status === PROMOTION_LOT_STATUS.AVAILABLE
+            }
           />
         </div>
       ),

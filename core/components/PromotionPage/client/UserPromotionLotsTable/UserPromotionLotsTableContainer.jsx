@@ -8,8 +8,11 @@ import T from '../../../Translation';
 import LotChip from '../ProPromotionLotsTable/LotChip';
 import PromotionLotSelector from './PromotionLotSelector';
 import StatusLabel from '../../../StatusLabel';
-import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
-import { getLabelSuffix } from '../utils';
+import {
+  PROMOTION_LOTS_COLLECTION,
+  PROMOTION_LOT_STATUS,
+} from '../../../../api/constants';
+import { getLabelOtherProps } from '../utils';
 
 const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
   const promotionLots = promotionOptions.filter(option => option.promotionLots[0]._id === promotionLotId);
@@ -28,7 +31,7 @@ const makeMapPromotionLot = ({
       raw: status,
       label: (
         <StatusLabel
-          suffix={getLabelSuffix({
+          {...getLabelOtherProps({
             attributedToMe: isLotAttributedToMe({
               promotionOptions,
               promotionLotId,
@@ -50,7 +53,10 @@ const makeMapPromotionLot = ({
         promotionLotId={promotionLotId}
         promotionOptions={promotionOptions}
         loanId={loanId}
-        disabled={isLotAttributedToMe({ promotionOptions, promotionLotId })}
+        disabled={
+          isLotAttributedToMe({ promotionOptions, promotionLotId })
+          || status !== PROMOTION_LOT_STATUS.AVAILABLE
+        }
       />
     </div>,
   ],
