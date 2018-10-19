@@ -34,12 +34,15 @@ const getStatusColor = (status, collection) => {
   }
 };
 
-const StatusLabel = ({ status, collection }: StatusLabelProps) => (
+const StatusLabel = ({ status, collection, suffix = '' }: StatusLabelProps) => (
   <div
     className="status-label"
     style={{ backgroundColor: getStatusColor(status, collection) }}
   >
-    <T id={`Forms.status.${status}`} />
+    <span>
+      <T id={`Forms.status.${status}`} />
+      {suffix}
+    </span>
   </div>
 );
 
