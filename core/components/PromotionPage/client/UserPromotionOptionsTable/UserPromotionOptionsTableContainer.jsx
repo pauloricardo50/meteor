@@ -15,6 +15,12 @@ import {
 } from '../../../../api/constants';
 import { getLabelOtherProps } from '../utils';
 
+const getLotsAttributedToMe = promotionOptions =>
+  promotionOptions.filter(({ attributedToMe }) => attributedToMe);
+
+const isAnyLotAttributedToMe = promotionOptions =>
+  getLotsAttributedToMe(promotionOptions).length > 0;
+
 const makeMapPromotionOption = ({
   isLoading,
   setLoading,
@@ -32,16 +38,18 @@ const makeMapPromotionOption = ({
   return {
     id: promotionOptionId,
     columns: [
-      <div key="priorityOrder" onClick={e => e.stopPropagation()}>
-        <PrioritySetter
-          index={index}
-          length={arr.length}
-          promotionOptionId={promotionOptionId}
-          isLoading={isLoading}
-          setLoading={setLoading}
-          allowChange={!isDashboardTable}
-        />
-      </div>,
+      !attributedToMe && (
+        <div key="priorityOrder" onClick={e => e.stopPropagation()}>
+          <PrioritySetter
+            index={index}
+            length={arr.length}
+            promotionOptionId={promotionOptionId}
+            isLoading={isLoading}
+            setLoading={setLoading}
+            allowChange={!isDashboardTable}
+          />
+        </div>
+      ),
       name,
       {
         raw: status,
@@ -89,9 +97,9 @@ const makeSortByPriority = priorityOrder => (
   { _id: optionId2 },
 ) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
-const columnOptions = (isDashboardTable = false) =>
+const columnOptions = ({ isDashboardTable = false, isLotAttributedToMe }) =>
   [
-    { id: 'priorityOrder' },
+    !isLotAttributedToMe && { id: 'priorityOrder' },
     { id: 'name' },
     { id: 'status' },
     { id: 'totalValue' },
@@ -126,8 +134,12 @@ export default compose(
     const { promotionOptions } = loan;
     // This metadata should come from the loan, but grapher bugs..
     const { priorityOrder } = promotion.loans[0].$metadata;
+    const options = isAnyLotAttributedToMe(promotionOptions)
+      ? getLotsAttributedToMe(promotionOptions)
+      : promotionOptions;
+
     return {
-      rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
+      rows: options.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
         isLoading,
         setLoading,
         makeChangeCustom,
@@ -136,7 +148,10 @@ export default compose(
         history,
         isDashboardTable,
       })),
-      columnOptions: columnOptions(isDashboardTable),
+      columnOptions: columnOptions({
+        isDashboardTable,
+        isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
+      }),
     };
   }),
 );
