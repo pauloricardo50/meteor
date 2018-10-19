@@ -95,7 +95,7 @@ const testMicroserviceJob = name => ({
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand(
       'Install node_modules',
-      `cd microservices/${name} && meteor npm i`,
+      `cd microservices/${name} && meteor npm ci`,
     ),
     runCommand(
       'Install nightmare and @babel/node',

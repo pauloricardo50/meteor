@@ -72,7 +72,7 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: cd microservices/www && meteor npm i
+          command: cd microservices/www && meteor npm ci
       - run:
           name: Install nightmare and @babel/node
           command: >-
@@ -170,7 +170,7 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: cd microservices/app && meteor npm i
+          command: cd microservices/app && meteor npm ci
       - run:
           name: Install nightmare and @babel/node
           command: >-
@@ -268,7 +268,7 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: cd microservices/admin && meteor npm i
+          command: cd microservices/admin && meteor npm ci
       - run:
           name: Install nightmare and @babel/node
           command: >-
