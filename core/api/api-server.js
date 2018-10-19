@@ -47,6 +47,6 @@ Borrowers._ensureIndex({ userId: 1 });
 Offers._ensureIndex({ loanId: 1 });
 Properties._ensureIndex({ userId: 1 });
 
-if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'development') {
   initialize(); // exposes a method "grapher_live", used by the React Component
 }

@@ -21,7 +21,6 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
         filters._id = loanId;
       },
     },
-    $metadata: { priorityOrder: 1 },
   },
 });
 

@@ -15,7 +15,7 @@ import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
 
-const isDev = process.env.NODE_ENV === 'env';
+const isDev = process.env.NODE_ENV === 'development';
 
 const BaseRouter = ({
   locale,
