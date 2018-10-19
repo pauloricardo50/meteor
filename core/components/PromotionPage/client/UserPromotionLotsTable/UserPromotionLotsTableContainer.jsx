@@ -19,10 +19,15 @@ const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
   return !!(promotionLots[0] && promotionLots[0].attributedToMe);
 };
 
+const isAnyLotAttributedToMe = promotionLots =>
+  promotionLots.filter(({ attributedTo }) =>
+    attributedTo && attributedTo.user._id === Meteor.userId()).length > 0;
+
 const makeMapPromotionLot = ({
   history,
   promotionId,
   loan: { _id: loanId, promotionOptions },
+  isALotAttributedToMe,
 }) => ({ _id: promotionLotId, name, status, lots, value }) => ({
   id: promotionLotId,
   columns: [
@@ -48,18 +53,20 @@ const makeMapPromotionLot = ({
       raw: lots && lots.length,
       label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
     },
-    <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
-      <PromotionLotSelector
-        promotionLotId={promotionLotId}
-        promotionOptions={promotionOptions}
-        loanId={loanId}
-        disabled={
-          isLotAttributedToMe({ promotionOptions, promotionLotId })
-          || status !== PROMOTION_LOT_STATUS.AVAILABLE
-        }
-      />
-    </div>,
-  ],
+    !isALotAttributedToMe && (
+      <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
+        <PromotionLotSelector
+          promotionLotId={promotionLotId}
+          promotionOptions={promotionOptions}
+          loanId={loanId}
+          disabled={
+            isLotAttributedToMe({ promotionOptions, promotionLotId })
+            || status !== PROMOTION_LOT_STATUS.AVAILABLE
+          }
+        />
+      </div>
+    ),
+  ].filter(x => x),
 
   handleClick: () =>
     history.push(createRoute(
@@ -72,18 +79,26 @@ const makeMapPromotionLot = ({
     )),
 });
 
-const columnOptions = [
-  { id: 'name' },
-  { id: 'status' },
-  { id: 'totalValue' },
-  { id: 'lots' },
-  { id: 'interested' },
-].map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
+const columnOptions = isALotAttributedToMe =>
+  [
+    { id: 'name' },
+    { id: 'status' },
+    { id: 'totalValue' },
+    { id: 'lots' },
+    !isALotAttributedToMe && { id: 'interested' },
+  ]
+    .filter(x => x)
+    .map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(
   withRouter,
   mapProps(({ promotion: { promotionLots, _id: promotionId }, history, loan }) => ({
-    rows: promotionLots.map(makeMapPromotionLot({ history, promotionId, loan })),
-    columnOptions,
+    rows: promotionLots.map(makeMapPromotionLot({
+      history,
+      promotionId,
+      loan,
+      isALotAttributedToMe: isAnyLotAttributedToMe(promotionLots),
+    })),
+    columnOptions: columnOptions(isAnyLotAttributedToMe(promotionLots)),
   })),
 );
