@@ -13,9 +13,8 @@ type PromotionCardProps = {
 
 const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
   const { name, documents } = promotion;
-  console.log('promotion', JSON.stringify(promotion, null, 2));
-
   const { promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
+  
   return (
     <Link
       to={createRoute(APP_PROMOTION_PAGE, {
