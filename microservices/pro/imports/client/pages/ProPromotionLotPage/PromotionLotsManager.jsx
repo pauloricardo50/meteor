@@ -5,6 +5,7 @@ import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/
 import { addLotToPromotionLot } from 'core/api';
 import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
+import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 
 type PromotionLotsManagerProps = {};
 
@@ -12,6 +13,7 @@ const PromotionLotsManager = ({
   lots = [],
   promotionLotId,
   allLots,
+  status,
 }: PromotionLotsManagerProps) => {
   let options;
   const unassignedLots = allLots.filter(lot => lot.promotionLots.length === 0);
@@ -31,11 +33,13 @@ const PromotionLotsManager = ({
         <LotChip
           key={lot._id}
           lot={lot}
-          allowDelete
+          allowDelete={status === PROMOTION_LOT_STATUS.AVAILABLE}
           promotionLotId={promotionLotId}
         />
       ))}
-      <DropdownMenu iconType="add" options={options} />
+      {status === PROMOTION_LOT_STATUS.AVAILABLE && (
+        <DropdownMenu iconType="add" options={options} />
+      )}
     </div>
   );
 };
