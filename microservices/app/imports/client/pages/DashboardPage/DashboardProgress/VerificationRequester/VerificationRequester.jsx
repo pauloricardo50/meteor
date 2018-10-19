@@ -9,7 +9,7 @@ import { requestLoanVerification } from 'core/api';
 type VerificationRequesterProps = {};
 
 const VerificationRequester = ({
-  loan: { verificationStatus = LOAN_VERIFICATION_STATUS.NONE },
+  loan: { verificationStatus = LOAN_VERIFICATION_STATUS.NONE, _id: loanId },
 }: VerificationRequesterProps) => {
   if (verificationStatus === LOAN_VERIFICATION_STATUS.OK) {
     return null;
@@ -20,7 +20,7 @@ const VerificationRequester = ({
       raised
       className="verification-requester"
       disabled={verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED}
-      onClick={() => requestLoanVerification.run({ loanId: loan_id })}
+      onClick={() => requestLoanVerification.run({ loanId })}
     >
       <T id={`VerificationRequester.${verificationStatus}`} />
     </Button>
