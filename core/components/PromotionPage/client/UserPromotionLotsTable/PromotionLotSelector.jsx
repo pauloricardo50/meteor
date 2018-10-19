@@ -22,7 +22,7 @@ export const PromotionLotSelector = ({
     }}
     value={promotionLotIsSelected}
     id={promotionLotId}
-    disabled={isLoading || disabled}
+    disabled={isLoading || (!promotionLotIsSelected && disabled)}
   />
 );
 

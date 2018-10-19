@@ -61,6 +61,7 @@ const PriorityOrder = ({
               icon={
                 <Icon type={solvency ? 'check' : 'close'} className="icon" />
               }
+              style={{ cursor: 'pointer' }}
             />
           </Link>
         );
