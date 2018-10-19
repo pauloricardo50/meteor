@@ -9,7 +9,17 @@ import T from '../../../Translation';
 import PrioritySetter from './PrioritySetter';
 import ClickToEditField from '../../../ClickToEditField';
 import StatusLabel from '../../../StatusLabel';
-import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
+import {
+  PROMOTION_LOTS_COLLECTION,
+  PROMOTION_LOT_STATUS,
+} from '../../../../api/constants';
+import { getLabelOtherProps } from '../utils';
+
+const getLotsAttributedToMe = promotionOptions =>
+  promotionOptions.filter(({ attributedToMe }) => attributedToMe);
+
+const isAnyLotAttributedToMe = promotionOptions =>
+  getLotsAttributedToMe(promotionOptions).length > 0;
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -19,26 +29,36 @@ const makeMapPromotionOption = ({
   loanId,
   history,
   isDashboardTable = false,
-}) => ({ _id: promotionOptionId, promotionLots, custom }, index, arr) => {
+}) => (
+  { _id: promotionOptionId, promotionLots, custom, attributedToMe },
+  index,
+  arr,
+) => {
   const { name, status, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
     columns: [
-      <div key="priorityOrder" onClick={e => e.stopPropagation()}>
-        <PrioritySetter
-          index={index}
-          length={arr.length}
-          promotionOptionId={promotionOptionId}
-          isLoading={isLoading}
-          setLoading={setLoading}
-          allowChange={!isDashboardTable}
-        />
-      </div>,
+      !attributedToMe && (
+        <div key="priorityOrder" onClick={e => e.stopPropagation()}>
+          <PrioritySetter
+            index={index}
+            length={arr.length}
+            promotionOptionId={promotionOptionId}
+            isLoading={isLoading}
+            setLoading={setLoading}
+            allowChange={!isDashboardTable}
+          />
+        </div>
+      ),
       name,
       {
         raw: status,
         label: (
-          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+          <StatusLabel
+            {...getLabelOtherProps({ attributedToMe, status })}
+            status={status}
+            collection={PROMOTION_LOTS_COLLECTION}
+          />
         ),
       },
       { raw: value, label: toMoney(value) },
@@ -49,6 +69,9 @@ const makeMapPromotionOption = ({
             value={custom}
             onSubmit={makeChangeCustom(promotionOptionId)}
             inputProps={{ style: { width: '100%' } }}
+            allowEditing={
+              !attributedToMe && status === PROMOTION_LOT_STATUS.AVAILABLE
+            }
           />
         </div>
       ),
@@ -74,9 +97,9 @@ const makeSortByPriority = priorityOrder => (
   { _id: optionId2 },
 ) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
-const columnOptions = (isDashboardTable = false) =>
+const columnOptions = ({ isDashboardTable = false, isLotAttributedToMe }) =>
   [
-    { id: 'priorityOrder' },
+    !isLotAttributedToMe && { id: 'priorityOrder' },
     { id: 'name' },
     { id: 'status' },
     { id: 'totalValue' },
@@ -111,8 +134,12 @@ export default compose(
     const { promotionOptions } = loan;
     // This metadata should come from the loan, but grapher bugs..
     const { priorityOrder } = promotion.loans[0].$metadata;
+    const options = isAnyLotAttributedToMe(promotionOptions)
+      ? getLotsAttributedToMe(promotionOptions)
+      : promotionOptions;
+
     return {
-      rows: promotionOptions.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
+      rows: options.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({
         isLoading,
         setLoading,
         makeChangeCustom,
@@ -121,7 +148,10 @@ export default compose(
         history,
         isDashboardTable,
       })),
-      columnOptions: columnOptions(isDashboardTable),
+      columnOptions: columnOptions({
+        isDashboardTable,
+        isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
+      }),
     };
   }),
 );

@@ -9,4 +9,13 @@ PromotionOptions.addReducers({
     body: { promotionLots: { name: 1 } },
     reduce: ({ promotionLots = [] }) => promotionLots[0].name,
   },
+  attributedToMe: {
+    body: { promotionLots: { attributedTo: { userId: 1 } } },
+    reduce: ({ promotionLots = [] }) =>
+      !!(
+        promotionLots[0]
+        && promotionLots[0].attributedTo
+        && promotionLots[0].attributedTo.userId === Meteor.userId()
+      ),
+  },
 });
