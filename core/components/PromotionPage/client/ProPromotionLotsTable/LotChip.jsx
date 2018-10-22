@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 
+import ClientEventService from 'core/api/events/ClientEventService';
+import { PROMOTION_LOT_QUERIES } from 'core/api/constants';
 import { removeLotLink } from '../../../../api';
 import T from '../../../Translation';
 import Chip from '../../../Material/Chip';
@@ -18,7 +20,11 @@ const LotChip = ({
       style={{ marginRight: 8 }}
       onDelete={
         allowDelete
-          ? () => removeLotLink.run({ promotionLotId, lotId: _id })
+          ? () =>
+            removeLotLink
+              .run({ promotionLotId, lotId: _id })
+              .then(() =>
+                ClientEventService.emit(PROMOTION_LOT_QUERIES.PRO_PROMOTION_LOT))
           : null
       }
       label={name}

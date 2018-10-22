@@ -9,7 +9,7 @@ export default compose(
   withSmartQuery({
     query: proPromotionLot,
     params: ({ promotionLotId }) => ({ promotionLotId }),
-    queryOptions: { reactive: true, single: true },
+    queryOptions: { reactive: false, single: true },
     dataName: 'promotionLot',
   }),
 );
