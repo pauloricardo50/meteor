@@ -17,8 +17,8 @@ const makeMapPromotion = history => ({
   soldPromotionLots,
   bookedPromotionLots,
   availablePromotionLots,
-  promotionLots,
-  loans,
+  promotionLots = [],
+  loans = [],
 }) => ({
   id: _id,
   columns: [
@@ -57,7 +57,7 @@ export default compose(
     renderMissingDoc: false,
   }),
   withRouter,
-  mapProps(({ promotions, history }) => ({
+  mapProps(({ promotions = [], history }) => ({
     rows: promotions.map(makeMapPromotion(history)),
     columnOptions,
   })),
