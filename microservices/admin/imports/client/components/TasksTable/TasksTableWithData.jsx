@@ -6,8 +6,12 @@ import withTableFilters from 'core/containers/withTableFilters';
 import TasksTable from './TasksTable';
 
 export const withTasksQuery = withSmartQuery({
-  query: ({ assignedTo, unassigned, dashboardTasks }) =>
-    query.clone({ assignedTo, unassigned, dashboardTasks }),
+  query,
+  params: ({ assignedTo, unassigned, dashboardTasks }) => ({
+    assignedTo,
+    unassigned,
+    dashboardTasks,
+  }),
   queryOptions: { reactive: false },
 });
 

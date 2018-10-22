@@ -42,14 +42,15 @@ export const getRedirect = (currentUser, pathname) => {
 };
 
 const withAppUser = withSmartQuery({
-  query: () => appUserQuery.clone(),
+  query: appUserQuery,
   queryOptions: { reactive: true, single: true },
   dataName: 'currentUser',
   renderMissingDoc: false,
 });
 
 const withUserLoan = withSmartQuery({
-  query: ({ loanId }) => userLoanQuery.clone({ loanId }),
+  query: userLoanQuery,
+  params: ({ loanId }) => ({ loanId }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
   renderMissingDoc: false,

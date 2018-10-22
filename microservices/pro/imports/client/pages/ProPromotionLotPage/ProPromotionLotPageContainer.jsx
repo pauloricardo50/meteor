@@ -7,7 +7,8 @@ import withMatchParam from 'core/containers/withMatchParam';
 export default compose(
   withMatchParam(['promotionLotId', 'promotionId']),
   withSmartQuery({
-    query: ({ promotionLotId }) => proPromotionLot.clone({ promotionLotId }),
+    query: proPromotionLot,
+    params: ({ promotionLotId }) => ({ promotionLotId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'promotionLot',
   }),

@@ -80,8 +80,8 @@ export default compose(
     promotionLot,
   })),
   withSmartQuery({
-    query: ({ promotionOptionIds }) =>
-      proPromotionOptions.clone({ promotionOptionIds }),
+    query: proPromotionOptions,
+    params: ({ promotionOptionIds }) => ({ promotionOptionIds }),
     queryOptions: { reactive: false },
     dataName: 'promotionOptions',
   }),

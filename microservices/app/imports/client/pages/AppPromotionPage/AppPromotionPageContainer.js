@@ -8,8 +8,11 @@ import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
-    query: ({ promotionId, loan: { _id: loanId } }) =>
-      appPromotion.clone({ promotionId, loanId }),
+    query: appPromotion,
+    params: ({ promotionId, loan: { _id: loanId } }) => ({
+      promotionId,
+      loanId,
+    }),
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
   }),

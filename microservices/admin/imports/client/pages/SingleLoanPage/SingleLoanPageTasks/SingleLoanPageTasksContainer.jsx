@@ -5,8 +5,12 @@ import withTableFilters from 'core/containers/withTableFilters';
 
 export default compose(
   withSmartQuery({
-    query: ({ loan: { _id: loanId, propertyIds, borrowerIds } }) =>
-      loanTasks.clone({ borrowerIds, loanId, propertyIds }),
+    query: loanTasks,
+    params: ({ loan: { _id: loanId, propertyIds, borrowerIds } }) => ({
+      borrowerIds,
+      loanId,
+      propertyIds,
+    }),
     queryOptions: { reactive: false },
   }),
   withTableFilters,

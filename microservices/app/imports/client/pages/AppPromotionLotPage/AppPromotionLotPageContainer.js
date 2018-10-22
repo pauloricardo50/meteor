@@ -9,7 +9,8 @@ import propertyFiles from 'core/api/properties/queries/propertyFiles';
 export default compose(
   withMatchParam(['promotionLotId', 'promotionId']),
   withSmartQuery({
-    query: ({ promotionLotId }) => appPromotionLot.clone({ promotionLotId }),
+    query: appPromotionLot,
+    params: ({ promotionLotId }) => ({ promotionLotId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'promotionLot',
   }),

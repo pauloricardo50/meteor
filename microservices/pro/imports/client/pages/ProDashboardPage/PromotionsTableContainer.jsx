@@ -50,8 +50,8 @@ const columnOptions = [
 
 export default compose(
   withSmartQuery({
-    query: ({ currentUser: { _id: userId } }) =>
-      proPromotions.clone({ userId }),
+    query: proPromotions,
+    params: ({ currentUser: { _id: userId } }) => ({ userId }),
     queryOptions: { reactive: false },
     dataName: 'promotions',
     renderMissingDoc: false,

@@ -35,7 +35,8 @@ const makeMapProps = dataName =>
     ({ [dataName]: data, ...rest }));
 
 type withSmartQueryArgs = {
-  query: (params: Object) => mixed,
+  query: () => mixed,
+  params: (props: Object) => Object,
   queryOptions?: { single: boolean },
   dataName?: string,
   renderMissingDoc?: boolean,
@@ -44,6 +45,7 @@ type withSmartQueryArgs = {
 
 const withSmartQuery = ({
   query,
+  params = () => {},
   queryOptions = { single: false },
   dataName = 'data',
   // used to bypass the missing doc component
@@ -54,9 +56,17 @@ const withSmartQuery = ({
   const shoundRenderMissingDoc = renderMissingDoc && queryOptions.single;
   const shouldUpdateWithMethod = !queryOptions.reactive && updateWithMethods;
 
+  let completeQuery;
+
+  if (typeof query === 'function') {
+    completeQuery = props => query(props).clone(params(props));
+  } else {
+    completeQuery = props => query.clone(params(props));
+  }
+
   return compose(
     withState('hasLoadedOnce', 'setHasLoadedOnce', false),
-    withQuery(query, queryOptions),
+    withQuery(completeQuery, queryOptions),
     withLoading(smallLoader, shouldUpdateWithMethod && 'hasLoadedOnce'),
     makeRenderMissingDocIfNoData(shoundRenderMissingDoc),
     makeMapProps(dataName),

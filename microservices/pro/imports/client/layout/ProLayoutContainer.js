@@ -16,7 +16,7 @@ const getRedirect = (currentUser, pathname) => {
 };
 
 const withProUser = withSmartQuery({
-  query: () => proUser.clone(),
+  query: proUser,
   queryOptions: { reactive: true, single: true },
   dataName: 'currentUser',
   renderMissingDoc: false,

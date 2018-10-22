@@ -68,11 +68,11 @@ export const withSetTotalCountLifecycle = lifecycle({
 });
 
 export const withSideNavQuery = withSmartQuery({
-  query: ({ collectionName, showMoreCount }) =>
-    getQuery({ collectionName }).clone({
-      limit: getQueryLimit(showMoreCount),
-      skip: 0,
-    }),
+  query: ({ collectionName }) => getQuery({ collectionName }),
+  params: ({ showMoreCount }) => ({
+    limit: getQueryLimit(showMoreCount),
+    skip: 0,
+  }),
   queryOptions: { reactive: false },
 });
 

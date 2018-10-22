@@ -10,12 +10,12 @@ import { AppPromotionLotPage } from '../AppPromotionLotPage/AppPromotionLotPage'
 export default compose(
   withMatchParam(['promotionOptionId', 'promotionId']),
   withSmartQuery({
-    query: ({ promotionOptionId }) =>
-      appPromotionOption.clone({ promotionOptionId }),
+    query: appPromotionOption,
+    params: ({ promotionOptionId }) => ({ promotionOptionId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'promotionOption',
   }),
-  withProps(({ promotionOption: {_id: promotionOptionId, promotionLots } }) => ({
+  withProps(({ promotionOption: { _id: promotionOptionId, promotionLots } }) => ({
     promotionLot: promotionLots[0],
     setCustom: value =>
       promotionOptionUpdate.run({
