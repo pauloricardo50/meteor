@@ -12,6 +12,7 @@ export const PromotionLotSelector = ({
   promotionLotId,
   isLoading,
   onChange,
+  disabled,
 }: PromotionLotSelectorProps) => (
   <Checkbox
     onChange={(event) => {
@@ -21,7 +22,7 @@ export const PromotionLotSelector = ({
     }}
     value={promotionLotIsSelected}
     id={promotionLotId}
-    disabled={isLoading}
+    disabled={isLoading || (!promotionLotIsSelected && disabled)}
   />
 );
 

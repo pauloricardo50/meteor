@@ -9,7 +9,10 @@ import Table from '../../../Table';
 import Button from '../../../Button';
 import AdditionalLotModifier from './AdditionalLotModifier';
 import StatusLabel from '../../../StatusLabel';
-import { PROMOTION_LOTS_COLLECTION } from '../../../../api/constants';
+import {
+  PROMOTION_LOTS_COLLECTION,
+  PROMOTION_LOT_STATUS,
+} from '../../../../api/constants';
 
 type AdditionalLotsTableProps = {
   promotion: Object,
@@ -69,8 +72,10 @@ const makeMapAdditionalLot = ({
       ),
     ],
     handleClick: () => {
-      setAdditionalLotToModify(lot);
-      setShowDialog(true);
+      if (status === PROMOTION_LOT_STATUS.AVAILABLE) {
+        setAdditionalLotToModify(lot);
+        setShowDialog(true);
+      }
     },
   };
 };
