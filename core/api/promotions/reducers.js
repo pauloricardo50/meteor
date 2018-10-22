@@ -1,5 +1,5 @@
 import { PROMOTION_LOT_STATUS } from '../constants';
-import { addressReducer } from '../reducers';
+import addressReducer from '../reducers/addressReducer';
 import Promotions from '.';
 
 const promotionLotStatusReducer = status => ({

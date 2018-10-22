@@ -56,25 +56,10 @@ const TasksSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  loanId: {
+  docId: {
     type: String,
     optional: true,
-  },
-  propertyId: {
-    type: String,
-    optional: true,
-  },
-  borrowerId: {
-    type: String,
-    optional: true,
-  },
-  fileKey: {
-    type: String,
-    optional: true,
-  },
-  userId: {
-    type: String,
-    optional: true,
+    index: true,
   },
 });
 

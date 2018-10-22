@@ -48,20 +48,6 @@ export const setAssigneeOfTask = new Method({
   },
 });
 
-export const taskGetRelatedTo = new Method({
-  name: 'taskGetRelatedTo',
-  params: {
-    task: Object,
-  },
-});
-
-export const completeAddAssignedToTask = new Method({
-  name: 'completeAddAssignedToTask',
-  params: {
-    userId: String,
-  },
-});
-
 export const loanTaskInsert = new Method({
   name: 'loanTaskInsert',
   params: {

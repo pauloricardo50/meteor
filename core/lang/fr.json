@@ -1,4 +1,12 @@
 {
+  "Forms.verificationStatus": "Vérification e-Potek",
+  "Forms.verificationStatus.NONE": "Pas demandée",
+  "Forms.verificationStatus.REQUESTED": "Vérification demandée",
+  "Forms.verificationStatus.OK": "Validé",
+  "Forms.verificationStatus.ERROR": "Non valide",
+  "VerificationRequester.NONE": "Demander",
+  "VerificationRequester.ERROR": "Problème, redemander",
+  "VerificationRequester.REQUESTED": "En cours...",
   "Forms.contacts": "Personnes de contact pour les clients",
   "Forms.city.placeholder": "Genève",
   "Forms.isForeignAddress": "Addresse à l'étranger",

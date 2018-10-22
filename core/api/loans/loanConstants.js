@@ -140,3 +140,10 @@ export const STEP_ORDER = [
   STEPS.GET_CONTRACT,
   STEPS.CLOSING,
 ];
+
+export const LOAN_VERIFICATION_STATUS = {
+  NONE: 'NONE',
+  REQUESTED: 'REQUESTED',
+  OK: 'OK',
+  ERROR: 'ERROR',
+};

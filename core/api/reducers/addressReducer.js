@@ -1,4 +1,4 @@
-export const addressReducer = {
+const addressReducer = {
   address: {
     body: {
       address1: 1,
@@ -11,3 +11,5 @@ export const addressReducer = {
     },
   },
 };
+
+export default addressReducer;

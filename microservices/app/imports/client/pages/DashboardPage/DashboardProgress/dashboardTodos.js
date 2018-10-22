@@ -2,6 +2,7 @@ import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
+import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
 import { VALUATION_STATUS } from '../../../../core/api/constants';
 import {
   FINANCING_PAGE,
@@ -10,6 +11,7 @@ import {
   FILES_PAGE,
   PROPERTIES_PAGE,
 } from '../../../../startup/client/appRoutes';
+import VerificationRequester from './VerificationRequester/VerificationRequester';
 
 const createFinancingLink = ({ _id: loanId }) =>
   createRoute(FINANCING_PAGE, { ':loanId': loanId });
@@ -25,10 +27,11 @@ const createPropertiesLink = ({ _id: loanId }) =>
     ':loanId': loanId,
   });
 
-export const checkArrayIsDone = (array = [], params) => array
-  .filter(({ id }) => id !== 'callEpotek')
-  .every(({ isDone, hide }) =>
-    (hide ? hide(params) || isDone(params) : isDone(params)));
+export const checkArrayIsDone = (array = [], params) =>
+  array
+    .filter(({ id }) => id !== 'callEpotek')
+    .every(({ isDone, hide }) =>
+      (hide ? hide(params) || isDone(params) : isDone(params)));
 
 export const promotionTodoList = {
   completeBorrowers: true,
@@ -36,6 +39,7 @@ export const promotionTodoList = {
   uploadDocuments: true,
   chooseLots: true,
   verification: true,
+  callEpotek: true,
 };
 
 export const defaultTodoList = {
@@ -146,7 +150,8 @@ export const getDashboardTodosArray = list =>
     },
     {
       id: 'verification',
-      isDone: loan => false,
+      isDone: loan => loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK,
+      Component: VerificationRequester,
     },
     {
       id: 'chooseOffer',

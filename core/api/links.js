@@ -1,19 +1,10 @@
-import './loans/links';
-
-import './users/links';
-
-import './tasks/links';
-
-import './properties/links';
-
 import './borrowers/links';
-
-import './offers/links';
-
+import './loans/links';
 import './lots/links';
-
-import './promotions/links';
-
+import './offers/links';
 import './promotionLots/links';
-
 import './promotionOptions/links';
+import './promotions/links';
+import './properties/links';
+import './tasks/links';
+import './users/links';

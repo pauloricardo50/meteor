@@ -8,13 +8,15 @@ import LoanSchema from '../../api/loans/schemas/LoanSchema';
 
 type UpdateFieldProps = {};
 
-const UpdateField = ({ fields, doc }: UpdateFieldProps) => (
+const UpdateField = ({ fields, doc, onSuccess }: UpdateFieldProps) => (
   <AutoForm
     autosave
     schema={LoanSchema.pick(...fields)}
     model={doc}
     onSubmit={values =>
-      loanUpdate.run({ loanId: doc._id, object: pick(values, fields) })
+      loanUpdate
+        .run({ loanId: doc._id, object: pick(values, fields) })
+        .then(() => (onSuccess ? onSuccess(values) : null))
     }
     className="update-field"
   >

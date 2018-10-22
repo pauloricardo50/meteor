@@ -34,7 +34,7 @@ const PriorityOrder = ({
   currentId,
   userId,
 }: PriorityOrderProps) => {
-  const { priorityOrder } = promotion.$metadata;
+  const { priorityOrder = [] } = promotion.$metadata;
   const options = priorityOrder.map(promotionOptionId =>
     promotionOptions.find(({ _id }) => _id === promotionOptionId));
   return (

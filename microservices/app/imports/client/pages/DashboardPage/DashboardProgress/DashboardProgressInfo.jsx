@@ -22,35 +22,44 @@ const getTodos = (loan) => {
   if (loan.hasPromotion) {
     list = promotionTodoList;
   }
-  
+
   return getDashboardTodosArray(list)
     .filter(({ hide }) => !hide || !hide(loan))
     .sort((a, b) => b.isDone(loan) - a.isDone(loan));
 };
 
-const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
-  <div className="dashboard-progress-info">
-    {getTodos(loan).map(({ id, link, isDone: isDoneFunc }) => {
-      const isDone = isDoneFunc(loan);
-      const Component = link && !isDone ? Link : 'div';
-      return (
-        <Component
-          to={link && link(loan)}
-          className={cx('todo', { link, isDone })}
-          key={id}
-        >
-          <Icon
-            className="icon"
-            type={isDone ? 'check' : 'radioButtonChecked'}
-          />
-          <p>
-            <T id={`DashboardProgressInfo.${id}`} />
-          </p>
-          {link && !isDone && <Icon type="right" className="icon-arrow" />}
-        </Component>
-      );
-    })}
-  </div>
-);
+const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
+  const todos = getTodos(loan);
+  return (
+    <div className="dashboard-progress-info">
+      {todos.map((todo) => {
+        const { id, link, isDone: isDoneFunc, Component } = todo;
+        const isDone = isDoneFunc(loan);
+        const WrapperComponent = link && !isDone ? Link : 'div';
+        return (
+          <WrapperComponent
+            to={link && link(loan)}
+            className={cx('todo', { link, isDone })}
+            key={id}
+          >
+            <Icon
+              className="icon"
+              type={isDone ? 'check' : 'radioButtonChecked'}
+            />
+            <p>
+              <T id={`DashboardProgressInfo.${id}`} />
+            </p>
+            {link
+              && !Component
+              && !isDone && <Icon type="right" className="icon-arrow" />}
+            {Component && (
+              <Component {...todo} todos={todos} isDone={isDone} loan={loan} />
+            )}
+          </WrapperComponent>
+        );
+      })}
+    </div>
+  );
+};
 
 export default DashboardProgressInfo;

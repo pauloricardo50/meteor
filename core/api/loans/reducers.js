@@ -4,6 +4,8 @@ import { userPropertyFragment } from '../properties/queries/propertyFragments';
 import { fullOfferFragment } from '../offers/queries/offerFragments';
 import { formatLoanWithStructure } from '../../utils/loanFunctions';
 
+console.log('adding client reducers');
+
 Loans.addReducers({
   structure: {
     body: {
