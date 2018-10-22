@@ -35,7 +35,7 @@ const PromotionLotsManager = ({
   </div>
 );
 
-export default withProps(({ allLots, promotionLotId }) => {
+export default withProps(({ allLots = [], promotionLotId }) => {
   let options;
   const unassignedLots = allLots.filter(lot => lot.promotionLots.length === 0);
   if (unassignedLots.length === 0) {
