@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import pick from 'lodash/pick';
 
 import AutoForm, { CustomAutoField } from '../../AutoForm2';
 import { promotionUpdate } from '../../../api';
@@ -25,7 +24,7 @@ const PromotionStatusModifier = ({
     }
     className="update-field"
   >
-    <CustomAutoField name="status" />
+    <CustomAutoField name="status" label="Statut de la promotion" />
   </AutoForm>
 );
 
