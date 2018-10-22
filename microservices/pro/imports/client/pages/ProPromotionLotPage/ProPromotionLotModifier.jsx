@@ -9,6 +9,8 @@ import Button from 'core/components/Button';
 import { propertyUpdate } from 'core/api/methods';
 import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { promotionLotRemove } from 'core/api';
+import ClientEventService from 'imports/core/api/events/ClientEventService/index';
+import { PROMOTION_LOT_QUERIES } from 'imports/core/api/constants';
 
 type ProPromotionLotModifierProps = {
   promotionLot: Object,
@@ -57,17 +59,24 @@ const ProPromotionLotModifier = ({
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ promotionLot, setSubmitting }) => ({
-    updateProperty: property =>
-      propertyUpdate.run({
-        propertyId: promotionLot.properties[0]._id,
-        object: property,
-      }),
-    deletePromotionLot: () => {
-      setSubmitting(true);
-      return promotionLotRemove
-        .run({ promotionLotId: promotionLot._id })
-        .then(() => setSubmitting(false));
-    },
-  })),
+  withProps(({ promotionLot, setSubmitting }) => {
+    const refresh = () =>
+      ClientEventService.emit(PROMOTION_LOT_QUERIES.PRO_PROMOTION_LOT);
+    return {
+      updateProperty: property =>
+        propertyUpdate
+          .run({
+            propertyId: promotionLot.properties[0]._id,
+            object: property,
+          })
+          .then(refresh),
+      deletePromotionLot: () => {
+        setSubmitting(true);
+        return promotionLotRemove
+          .run({ promotionLotId: promotionLot._id })
+          .then(() => setSubmitting(false))
+          .then(refresh);
+      },
+    };
+  }),
 )(ProPromotionLotModifier);
