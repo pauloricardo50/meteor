@@ -60,10 +60,15 @@ rateLimit({
 
 export const addUserToDoc = new Method({
   name: 'addUserToDoc',
-  paramas: {
+  params: {
     docId: String,
     collection: String,
     options: Object,
     userId: String,
   },
+});
+
+export const throwDevError = new Method({
+  name: 'throwDevError',
+  params: { promise: Match.Maybe(Boolean) },
 });

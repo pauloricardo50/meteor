@@ -13,6 +13,7 @@ import {
   removeBorrower,
   submitContactForm,
   addUserToDoc,
+  throwDevError,
 } from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -96,4 +97,16 @@ addUserToDoc.setHandler(({ userId }, { docId, collection, options, userId: newUs
   Mongo.Collection.get(collection).update(docId, {
     userLinks: { $push: { _id: newUserId, ...options } },
   });
+});
+
+throwDevError.setHandler((_, { promise }) => {
+  console.log('Throwing dev error..');
+
+  if (promise) {
+    return new Promise((resolve, reject) => {
+      reject(new Meteor.Error(404, 'Dev promise error!'));
+    });
+  }
+
+  throw new Meteor.Error(404, 'Dev error!');
 });
