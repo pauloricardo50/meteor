@@ -3,6 +3,7 @@ import PromotionLotService from '../PromotionLotService';
 import {
   promotionLotInsert,
   promotionLotUpdate,
+  promotionLotRemove,
   addLotToPromotionLot,
   removeLotLink,
   bookPromotionLot,
@@ -18,6 +19,11 @@ promotionLotInsert.setHandler(({ userId }, { promotionLot, promotionId }) => {
 promotionLotUpdate.setHandler(({ userId }, { promotionLotId, object }) => {
   SecurityService.checkUserIsPro(userId);
   return PromotionLotService.update({ promotionLotId, object });
+});
+
+promotionLotRemove.setHandler(({ userId }, { promotionLotId }) => {
+  SecurityService.checkUserIsPro(userId);
+  return PromotionLotService.remove(promotionLotId);
 });
 
 addLotToPromotionLot.setHandler(({ userId }, params) => {

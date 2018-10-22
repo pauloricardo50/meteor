@@ -17,6 +17,13 @@ export const promotionLotUpdate = new Method({
   },
 });
 
+export const promotionLotRemove = new Method({
+  name: 'promotionLotRemove',
+  params: {
+    promotionLotId: String,
+  },
+});
+
 export const addLotToPromotionLot = new Method({
   name: 'addLotToPromotionLot',
   params: {

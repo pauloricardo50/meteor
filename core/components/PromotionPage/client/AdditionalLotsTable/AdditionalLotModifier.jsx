@@ -6,9 +6,11 @@ import { compose, withState, withProps } from 'recompose';
 import { lotUpdate } from 'core/api/methods';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
-import { LOT_TYPES } from '../../../../api/constants';
+import { LOT_TYPES, PROMOTION_QUERIES } from '../../../../api/constants';
 import message from '../../../../utils/message';
 import Button from '../../../Button';
+import { lotRemove } from '../../../../api';
+import ClientEventService from '../../../../api/events/ClientEventService';
 
 type AdditionalLotModifierProps = {
   lot: Object,
@@ -65,9 +67,9 @@ const AdditionalLotModifier = ({
     open={open}
     setOpen={setOpen}
     submitting={submitting}
-    renderAdditionalActions={({ closeDialog, submitting }) => (
+    renderAdditionalActions={({ closeDialog }) => (
       <Button
-        onClick={() => deleteAdditionalLot({ closeDialog, submitting })}
+        onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
         error
         disabled={submitting}
       >
@@ -82,8 +84,9 @@ export default compose(
   withProps(({ lot }) => ({
     currentPromotionLotId:
       lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
+    refresh: () => ClientEventService.emit(PROMOTION_QUERIES.PRO_PROMOTION),
   })),
-  withProps(({ setOpen, setSubmitting, lot }) => ({
+  withProps(({ setOpen, setSubmitting, refresh }) => ({
     updateAdditionalLot: ({
       _id: lotId,
       name,
@@ -98,11 +101,20 @@ export default compose(
           object: { promotionLotId, name, description, value },
         })
         .then(() => {
+          refresh();
           setOpen(false);
           message.success("C'est dans la boite !", 2);
         })
         .finally(() => setSubmitting(false));
     },
-    deleteAdditionalLot: ({ closeDialog }) => console.log('lotId', lot._id),
+    deleteAdditionalLot: (lotId, closeDialog) => {
+      setSubmitting(true);
+
+      return lotRemove
+        .run({ lotId })
+        .then(refresh)
+        .then(closeDialog)
+        .then(() => setSubmitting(false));
+    },
   })),
 )(AdditionalLotModifier);
