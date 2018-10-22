@@ -24,6 +24,7 @@ PromotionLots.addLinks({
   promotionOptions: {
     collection: PromotionOptions,
     inversedBy: 'promotionLots',
+    autoremove: true,
   },
   attributedTo: {
     collection: Loans,
