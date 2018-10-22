@@ -14,7 +14,6 @@ const body = merge({}, userLoanFragment, {
   properties: {
     documents: 1,
   },
-  hasPromotion: 1,
 });
 
 // Do this because the fragments come with $options objects, which causes
