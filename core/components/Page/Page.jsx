@@ -12,20 +12,24 @@ const Page = ({
   rightComponent,
   children,
   fullWidth,
+  topFullWidth,
   title,
 }) => (
   <section id={id} className="page-title">
     <PageHead titleId={id} title={title} />
-    <div className={`top-bar ${className}`}>
+    <div
+      className={classnames('top-bar', className, {
+        'full-width': topFullWidth,
+      })}
+    >
       <h3 className="title fixed-size bold secondary">
         {title || <T id={`${id}.title`} />}
       </h3>
       {rightComponent}
     </div>
     <div
-      className={classnames({
-        'children animated fadeIn page': true,
-        'full-width': !!fullWidth,
+      className={classnames('children animated fadeIn page', {
+        'full-width': fullWidth,
       })}
     >
       {children}

@@ -38,7 +38,7 @@ const AppRouter = () => (
     formats={getFormats()}
     WrapperComponent={AppStore}
   >
-    <AppLayout type="app">
+    <AppLayout>
       <Switch>
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />

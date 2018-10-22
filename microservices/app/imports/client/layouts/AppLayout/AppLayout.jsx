@@ -16,7 +16,7 @@ const getShowSideNav = ({ location }) =>
 const AppLayout = (props) => {
   const { history, children, redirect } = props;
   const showSideNav = getShowSideNav(history);
-  const classes = classnames({ 'app-layout': true, 'no-nav': !showSideNav });
+  const classes = classnames('app-layout', { 'no-nav': !showSideNav });
 
   if (redirect) {
     return <Redirect to={redirect} />;

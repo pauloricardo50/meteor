@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -21,7 +23,7 @@ const styles = {
 };
 
 const AccountPage = ({ currentUser: { email, _id: userId } }) => (
-  <Page id="AccountPage">
+  <Page id="AccountPage" topFullWidth={Meteor.microservice === 'pro'}>
     <div className="card1 card-top" style={styles.section}>
       <div style={styles.div}>
         <div className="form-group">
