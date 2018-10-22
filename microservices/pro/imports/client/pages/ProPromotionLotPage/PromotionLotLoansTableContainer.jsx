@@ -26,6 +26,7 @@ const mapOption = ({
   attributedTo,
   name,
 }) => (promotionOption) => {
+  console.log('promotionOption', promotionOption);
   const { _id: promotionOptionId, loan: loans, lots, custom } = promotionOption;
 
   const { user, promotions, promotionOptions, _id: loanId, promotionProgress } = (loans && loans[0]) || {};
