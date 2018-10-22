@@ -11,12 +11,13 @@ PromotionOptions.addReducers({
     reduce: ({ promotionLots = [] }) => promotionLots[0].name,
   },
   priority: {
-    body: { loan: { promotionLinks: 1 } },
+    // Don't request promotionLinks here: https://github.com/cult-of-coders/grapher/issues/301
+    body: { loan: { promotions: { _id: 1 } } },
     reduce: ({ loan, _id: promotionOptionId }) => {
-      const { promotionLinks } = loan;
+      const { promotionLinks } = (loan && loan.length > 0 && loan[0]) || {};
 
-      if (promotionLinks && promotionLinks.length > 1) {
-        return promotionLinks.$metadata.priorityOrder.findIndex(id => id === promotionOptionId);
+      if (promotionLinks && promotionLinks.length > 0) {
+        return promotionLinks[0].priorityOrder.findIndex(id => id === promotionOptionId);
       }
 
       return null;
