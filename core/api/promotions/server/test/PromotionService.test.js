@@ -9,7 +9,7 @@ import PromotionLotService from '../../../promotionLots/PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/PromotionOptionService';
 import LotService from '../../../lots/LotService';
 
-describe.only('PromotionService', () => {
+describe('PromotionService', () => {
   beforeEach(() => {
     resetDatabase();
   });

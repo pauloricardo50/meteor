@@ -4,8 +4,6 @@ import { userPropertyFragment } from '../properties/queries/propertyFragments';
 import { fullOfferFragment } from '../offers/queries/offerFragments';
 import { formatLoanWithStructure } from '../../utils/loanFunctions';
 
-console.log('adding client reducers');
-
 Loans.addReducers({
   structure: {
     body: {
@@ -18,8 +16,8 @@ Loans.addReducers({
   },
   hasPromotion: {
     body: {
-      promotionLinks: 1,
+      promotions: { _id: 1 },
     },
-    reduce: ({ promotionLinks }) => promotionLinks && promotionLinks.length > 0,
+    reduce: ({ promotions }) => promotions && promotions.length > 0,
   },
 });

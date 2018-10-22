@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import Lots from './lots';
 import CollectionService from '../helpers/CollectionService';
 import PromotionLotService from '../promotionLots/PromotionLotService';
@@ -47,6 +49,7 @@ export class LotService extends CollectionService {
         });
       }
     }
+
     return this._update({ id: lotId, object: rest });
   };
 }
