@@ -85,7 +85,7 @@ export default class Security {
     const userLinksIsValid = doc
       && doc.userLinks
       && doc.userLinks.filter(({ _id }) => userId === _id).length > 0;
-      
+
     if (!(userIdIsValid || userLinksIsValid)) {
       this.handleUnauthorized('Checking ownership');
     }
@@ -95,5 +95,35 @@ export default class Security {
     if (!this.currentUserHasRole(ROLES.DEV)) {
       this.handleUnauthorized('unauthorized developer');
     }
+  }
+
+  static minimumRole(role) {
+    let allowedRoles;
+
+    switch (role) {
+    case ROLES.DEV:
+      allowedRoles = [ROLES.DEV];
+      break;
+    case ROLES.ADMIN:
+      allowedRoles = [ROLES.DEV, ROLES.ADMIN];
+      break;
+    case ROLES.USER:
+      allowedRoles = [ROLES.DEV, ROLES.ADMIN, ROLES.USER];
+      break;
+    case ROLES.PRO:
+      allowedRoles = [ROLES.DEV, ROLES.ADMIN, ROLES.PRO];
+      break;
+
+    default:
+      throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
+    }
+
+    return (userId) => {
+      const isAllowed = allowedRoles.some(allowedRole => this.hasRole(userId, allowedRole));
+
+      if (!isAllowed) {
+        this.handleUnauthorized('Unauthorized role');
+      }
+    };
   }
 }

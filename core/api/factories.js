@@ -21,15 +21,15 @@ import {
   Users,
   Lots,
 } from '.';
-import { PROMOTION_LOT_STATUS } from './promotionLots/promotionLotConstants';
 import { LOT_TYPES } from './lots/lotConstants';
+import { ROLES } from './users/userConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
 Factory.define('user', Users, {
-  roles: () => 'user',
+  roles: [ROLES.USER],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -37,7 +37,7 @@ Factory.define('user', Users, {
 });
 
 Factory.define('dev', Users, {
-  roles: () => 'dev',
+  roles: [ROLES.DEV],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -45,7 +45,15 @@ Factory.define('dev', Users, {
 });
 
 Factory.define('admin', Users, {
-  roles: () => 'admin',
+  roles: [ROLES.ADMIN],
+  emails: () => [{ address: faker.internet.email(), verified: false }],
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phoneNumbers: [TEST_PHONE],
+});
+
+Factory.define('pro', Users, {
+  roles: [ROLES.PRO],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,

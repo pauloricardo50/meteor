@@ -13,15 +13,20 @@ import {
   PropertySecurity,
   TaskSecurity,
 } from '../../collections';
+import { ROLES } from '../../../users/userConstants';
 
-describe('Security service', () => {
+describe.only('Security service', () => {
   let userId;
   let devId;
+  let proId;
+  let adminId;
 
   beforeEach(() => {
     resetDatabase();
     userId = Factory.create('user')._id;
+    proId = Factory.create('pro')._id;
     devId = Factory.create('dev')._id;
+    adminId = Factory.create('admin')._id;
     sinon.stub(Meteor, 'userId').callsFake(() => userId);
   });
 
@@ -103,6 +108,28 @@ describe('Security service', () => {
 
     it('tasks should return TaskSecurity', () => {
       expect(SecurityService.tasks).to.equal(TaskSecurity);
+    });
+  });
+
+  describe('minimumRole', () => {
+    it('throws if an unknown role is used', () => {
+      expect(() => SecurityService.minimumRole('wut')).to.throw('Invalid');
+    });
+
+    it('does not let admins do dev-only stuff', () => {
+      const devOnly = SecurityService.minimumRole(ROLES.DEV);
+      expect(() => devOnly(devId)).to.not.throw('Unauthorized role');
+      expect(() => devOnly(adminId)).to.throw('Unauthorized role');
+      expect(() => devOnly(userId)).to.throw('Unauthorized role');
+      expect(() => devOnly(proId)).to.throw('Unauthorized role');
+    });
+
+    it('does not let users do admin-only stuff', () => {
+      const adminOnly = SecurityService.minimumRole(ROLES.ADMIN);
+      expect(() => adminOnly(devId)).to.not.throw('Unauthorized role');
+      expect(() => adminOnly(adminId)).to.not.throw('Unauthorized role');
+      expect(() => adminOnly(userId)).to.throw('Unauthorized role');
+      expect(() => adminOnly(proId)).to.throw('Unauthorized role');
     });
   });
 });
