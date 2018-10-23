@@ -1,3 +1,5 @@
+import '../shared-startup';
+
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 import 'url-search-params-polyfill';
@@ -9,7 +11,6 @@ import { localizationStartup } from 'core/utils/localization';
 import '../accounts-config';
 import './css';
 import AppRouter from './AppRouter';
-import '../shared-startup';
 
 /**
  * start - sets the app up
