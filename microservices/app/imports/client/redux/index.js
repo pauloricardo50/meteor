@@ -2,12 +2,11 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import { financingMiddleware } from 'core/redux/financing';
 import createRootReducer from './reducers';
 
 const createCustomStore = () => {
   const initialState = {};
-  const middlewares = [thunk, createLogger(), ...financingMiddleware];
+  const middlewares = [thunk, createLogger()];
   const rootReducer = createRootReducer();
 
   const composeEnhancers = typeof window === 'object'
