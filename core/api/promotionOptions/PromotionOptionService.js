@@ -35,11 +35,11 @@ export class PromotionOptionService extends CollectionService {
     const promotionOption = this.get(promotionOptionId);
     const loan = promotionOption.loan[0];
     const loanId = loan._id;
-    LoanService.removeLink({
-      id: loanId,
-      linkName: 'promotionOptionLinks',
-      linkId: promotionOptionId,
-    });
+    // LoanService.removeLink({
+    //   id: loanId,
+    //   linkName: 'promotionOptionLinks',
+    //   linkId: promotionOptionId,
+    // });
     const promotionId = this.getPromotion(promotionOptionId)._id;
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({
       loanId,

@@ -12,9 +12,9 @@ PromotionOptions.addReducers({
   },
   priority: {
     // Don't request promotionLinks here: https://github.com/cult-of-coders/grapher/issues/301
-    body: { loan: { promotions: { _id: 1 } } },
+    body: { loan: { promotionLinks: 1 } },
     reduce: ({ loan, _id: promotionOptionId }) => {
-      const { promotionLinks } = (loan && loan.length > 0 && loan[0]) || {};
+      const { promotionLinks } = (loan && loan[0]) || {};
 
       if (promotionLinks && promotionLinks.length > 0) {
         return promotionLinks[0].priorityOrder.findIndex(id => id === promotionOptionId);

@@ -104,9 +104,9 @@ throwDevError.setHandler((_, { promise }) => {
 
   if (promise) {
     return new Promise((resolve, reject) => {
-      reject(new Meteor.Error(404, 'Dev promise error!'));
+      reject(new Meteor.Error(400, 'Dev promise error!'));
     });
   }
 
-  throw new Meteor.Error(404, 'Dev error!');
+  throw new Meteor.Error(400, 'Dev error!');
 });
