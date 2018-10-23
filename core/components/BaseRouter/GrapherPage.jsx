@@ -5,6 +5,6 @@ import React from 'react';
 
 type GrapherPageProps = {};
 
-const GrapherPage = (props: GrapherPageProps) => <GrapherLive />;
+const GrapherPage = (props: GrapherPageProps) => <div />;
 
 export default GrapherPage;
