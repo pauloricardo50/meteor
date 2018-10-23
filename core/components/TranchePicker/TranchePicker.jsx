@@ -23,8 +23,9 @@ const filterOptions = (options, tranches, currentType) => {
   const withCurrentType = currentOption
     ? [...difference, currentOption]
     : difference;
+
   const sortedOptions = withCurrentType.sort(({ id: id1 }, { id: id2 }) =>
-    interestRatesOrder.indexOf(id1) > interestRatesOrder.indexOf(id2));
+    interestRatesOrder.indexOf(id1) - interestRatesOrder.indexOf(id2));
   return sortedOptions;
 };
 
