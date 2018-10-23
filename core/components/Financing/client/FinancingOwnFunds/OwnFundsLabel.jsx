@@ -21,4 +21,4 @@ const OwnFundsLabel = ({ id, labelValue, ...data }: OwnFundsLabelProps) => {
   );
 };
 
-export default FinancingDataContainer({ asArrays: true })(OwnFundsLabel);
+export default FinancingDataContainer(OwnFundsLabel);

@@ -9,7 +9,7 @@ import { updateStructure } from '../../../../api';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
 const FinancingPropertyPickerContainer = compose(
-  FinancingDataContainer(),
+  FinancingDataContainer,
   SingleStructureContainer,
   withRouter,
   mapProps(({

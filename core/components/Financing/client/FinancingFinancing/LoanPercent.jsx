@@ -19,7 +19,7 @@ const LoanPercent = ({ handleChange, ...props }: LoanPercentProps) => (
 );
 
 export default compose(
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   SingleStructureContainer,
   connect(
     null,

@@ -160,7 +160,7 @@ const withAdditionalProps = withProps((props) => {
 
 const FinancingOwnFundsPickerContainer = compose(
   SingleStructureContainer,
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   addState,
   withDisableSubmit,
   // StructureUpdateContainer,

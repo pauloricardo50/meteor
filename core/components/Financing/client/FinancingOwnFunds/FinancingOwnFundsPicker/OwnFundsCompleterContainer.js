@@ -79,7 +79,7 @@ export const getRequiredAndCurrentFunds = (props) => {
 
 const OwnFundsCompleterContainer = compose(
   SingleStructureContainer,
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   withProps(getRequiredAndCurrentFunds),
 );
 

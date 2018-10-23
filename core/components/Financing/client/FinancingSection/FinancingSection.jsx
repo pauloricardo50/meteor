@@ -82,10 +82,7 @@ const FinancingSection = ({
           >
             <T id="FinancingSection.expandHelper" />
           </div>
-          <FinancingLabels
-            config={summaryConfig}
-            className="summary-labels"
-          />
+          <FinancingLabels config={summaryConfig} className="summary-labels" />
 
           {structures.map((structure, index) => (
             <div className="structure" key={structure.id}>
@@ -111,6 +108,6 @@ const FinancingSection = ({
 
 export default compose(
   withState('expanded', 'changeExpanded', true),
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   withStyles(styles),
 )(FinancingSection);

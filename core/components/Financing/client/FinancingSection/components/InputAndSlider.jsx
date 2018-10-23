@@ -40,7 +40,7 @@ export const InputAndSlider = ({
 );
 
 export default compose(
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   StructureUpdateContainer,
   withProps(({
     max: _max,

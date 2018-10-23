@@ -25,8 +25,8 @@ type FinancingResultErrorsProps = {};
 const getCashUsed = ({ structure: { ownFunds } }) =>
   ownFunds
     .filter(({ type, usageType }) =>
-      type !== OWN_FUNDS_TYPES.INSURANCE_2 &&
-        usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+      type !== OWN_FUNDS_TYPES.INSURANCE_2
+        && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
 const errors = [
@@ -87,6 +87,6 @@ export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
 };
 
 export default compose(
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   SingleStructureContainer,
 )(FinancingResultErrors);

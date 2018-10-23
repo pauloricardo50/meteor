@@ -41,4 +41,4 @@ const FinancingLabels = ({
   </div>
 );
 
-export default FinancingDataContainer({ asArrays: true })(FinancingLabels);
+export default FinancingDataContainer(FinancingLabels);
