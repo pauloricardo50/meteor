@@ -5,7 +5,6 @@ import SimpleSchema from 'simpl-schema';
 import { inviteUserToPromotion } from 'core/api/promotions/methodDefinitions';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
-import message from '../../../../utils/message';
 
 type CustomerAdderProps = {
   promotionId: String,
