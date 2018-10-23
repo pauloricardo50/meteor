@@ -6,6 +6,8 @@ import { T } from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { editUser } from 'core/api/methods';
 import { FIELD_TYPES } from 'core/components/Form/formConstants';
+import ClientEventService from 'core/api/events/ClientEventService/index';
+import { USER_QUERIES } from 'core/api/constants';
 
 export const editUserFormFields = ['firstName', 'lastName', 'phoneNumbers'];
 
@@ -18,7 +20,7 @@ export const getEditUserFormArray = formFields =>
 
 const formArray = getEditUserFormArray(editUserFormFields);
 
-const onSubmit = ({ data, userId }) => editUser.run({ userId, object: data });
+const onSubmit = ({ data, userId }) => editUser.run({ userId, object: data }).then(() => ClientEventService.emit(USER_QUERIES.ADMIN_USER));
 
 const EditUserDialogForm = ({
   user,
