@@ -17,8 +17,10 @@ import type { Action } from '../../../redux/financing';
 import ClientEventService, {
   LOAD_LOAN,
 } from '../../../api/events/ClientEventService/index';
+import injectLoanContext from './containers/injectLoanContext';
 
 export default compose(
+  injectLoanContext,
   connect(
     state => ({ isLoaded: state.financing.isLoaded }),
     (dispatch: Action => any) => ({
