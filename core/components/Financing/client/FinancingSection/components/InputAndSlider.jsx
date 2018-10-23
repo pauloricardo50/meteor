@@ -13,7 +13,7 @@ import InputAndSliderField from './InputAndSliderField';
 
 type InputAndSliderProps = {
   value: number,
-  handleChange: Function,
+  updateStructure: Function,
   max?: number,
   className: string,
 };
@@ -23,12 +23,12 @@ export const InputAndSlider = ({
   id,
   schema,
   value,
-  handleChange,
+  updateStructure,
   ...props
 }: InputAndSliderProps) => (
   <div className={cx('input-and-slider', className)}>
     <AutoForm
-      onSubmit={handleChange}
+      onSubmit={updateStructure}
       schema={schema}
       model={{ [id]: value }}
       autosave

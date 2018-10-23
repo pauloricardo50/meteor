@@ -10,7 +10,7 @@ export default compose(
   SingleStructureContainer,
   withProps(({ structure, id, loan }) => ({
     value: structure[id],
-    handleChange: value =>
+    updateStructure: value =>
       updateStructure.run({
         loanId: loan._id,
         structureId: structure.id,
