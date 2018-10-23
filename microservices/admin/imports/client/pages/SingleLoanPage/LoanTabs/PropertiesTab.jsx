@@ -13,12 +13,13 @@ type PropertiesTabProps = {
 const PropertiesTab = ({
   properties,
   loan: {
+    userId,
     _id: loanId,
     general: { residenceType: loanResidenceType },
   },
 }: PropertiesTabProps) => (
   <div className="properties-tab">
-    <PropertyAdder loanId={loanId} />
+    <PropertyAdder loanId={loanId} propertyUserId={userId} />
     <Tabs
       tabs={properties.map((property, index) => ({
         id: property._id,
