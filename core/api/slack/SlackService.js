@@ -6,6 +6,7 @@ import { ROLES } from '../users/userConstants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isTest || Meteor.isAppTest;
+const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
 class SlackService {
   send = ({ channel, username = 'e-Potek Bot', text, ...rest }) => {
@@ -48,8 +49,12 @@ class SlackService {
     ...rest,
   });
 
-  sendError = (error, ...additionalData) =>
-    this.sendAttachments({
+  sendError = (error, ...additionalData) => {
+    if (ERRORS_TO_IGNORE.includes(error.message || error.reason)) {
+      return false;
+    }
+
+    return this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
       attachments: [
         {
@@ -60,7 +65,7 @@ class SlackService {
           text: error.message || error.reason,
           color: colors.error,
           footer: 'c la merde',
-          ts: new Date().getTime(),
+          ts: new Date(),
         },
         {
           title: 'Stack',
@@ -90,6 +95,7 @@ class SlackService {
           : []),
       ],
     });
+  };
 
   getChannelForAdmin = admin =>
     (admin ? `#clients_${admin.email.split('@')[0]}` : '#clients_general');
