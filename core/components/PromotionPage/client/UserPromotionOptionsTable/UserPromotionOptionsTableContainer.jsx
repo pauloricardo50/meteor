@@ -132,6 +132,7 @@ export default compose(
     isDashboardTable,
   }) => {
     const { promotionOptions } = loan;
+    console.log('loan metadata to simplify', loan);
     // This metadata should come from the loan, but grapher bugs..
     const { priorityOrder } = promotion.loans[0].$metadata;
     const options = isAnyLotAttributedToMe(promotionOptions)
