@@ -15,7 +15,7 @@ import {
 } from '../../collections';
 import { ROLES } from '../../../users/userConstants';
 
-describe.only('Security service', () => {
+describe('Security service', () => {
   let userId;
   let devId;
   let proId;

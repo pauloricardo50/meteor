@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import Lots from './lots';
 import CollectionService from '../helpers/CollectionService';
 import PromotionLotService from '../promotionLots/PromotionLotService';
-import { LOT_UPDATE_ERRORS, ERROR_CODES } from '../errors';
+import { LOT_ERRORS, ERROR_CODES } from '../errors';
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export class LotService extends CollectionService {
@@ -30,7 +30,7 @@ export class LotService extends CollectionService {
     ) {
       throw new Meteor.Error(
         ERROR_CODES.FORBIDDEN,
-        LOT_UPDATE_ERRORS.PROMOTION_LOT_BOOKED_OR_SOLD,
+        LOT_ERRORS.PROMOTION_LOT_BOOKED_OR_SOLD,
       );
     }
 
