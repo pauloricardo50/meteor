@@ -142,7 +142,8 @@ export class FinanceCalculator {
   getBorrowRatioStatus({ borrowRatio }) {
     if (borrowRatio <= this.maxBorrowRatio) {
       return SUCCESS;
-    } if (borrowRatio <= this.maxBorrowRatioWithPledge) {
+    }
+    if (borrowRatio <= this.maxBorrowRatioWithPledge) {
       return WARNING;
     }
     return ERROR;
@@ -259,6 +260,7 @@ export class FinanceCalculator {
     if (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE) {
       return Math.min(
         (propertyValue + propertyWork) * this.maxBorrowRatio + pledgedAmount,
+
         (propertyValue + propertyWork) * this.maxBorrowRatioWithPledge,
       );
     }

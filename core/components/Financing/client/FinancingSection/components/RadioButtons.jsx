@@ -10,21 +10,21 @@ import StructureUpdateContainer from '../../containers/StructureUpdateContainer'
 
 type RadioButtonsProps = {
   value: string,
-  handleChange: Function,
+  updateStructure: Function,
   options: Array<{ id: string, label: string }>,
   className: string,
 };
 
 const RadioButtons = ({
   value,
-  handleChange,
+  updateStructure,
   options,
   className,
 }: RadioButtonsProps) => (
   <RadioGroup
     aria-label="Gender"
     value={value}
-    onChange={event => handleChange(event.target.value)}
+    onChange={event => updateStructure(event.target.value)}
     className={cx('radio-buttons', className)}
   >
     {options.map(({ id, label }) => (

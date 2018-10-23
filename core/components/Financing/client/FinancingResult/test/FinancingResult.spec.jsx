@@ -3,19 +3,16 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'core/utils/testHelpers/enzyme';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
 import { IntlProvider, intlShape } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 import messages from 'core/lang/fr.json';
 
 import FinancingResult from '../FinancingResult';
-
-const mockStore = configureStore();
+import { Provider } from '../../containers/loan-context';
 
 describe('FinancingResult', () => {
   let props;
-  let store;
+  let loan;
   const { intl } = new IntlProvider({
     defaultLocale: 'fr',
     messages,
@@ -23,7 +20,7 @@ describe('FinancingResult', () => {
   const component = () =>
     mount(
       <ScrollSync>
-        <Provider store={mockStore(store)}>
+        <Provider value={loan}>
           <FinancingResult {...props} />
         </Provider>
       </ScrollSync>,
@@ -35,13 +32,10 @@ describe('FinancingResult', () => {
 
   beforeEach(() => {
     props = {};
-    store = {
-      financing: {
-        loan: {},
-        structures: [],
-        borrowers: [],
-        properties: [],
-      },
+    loan = {
+      structures: [],
+      borrowers: [],
+      properties: [],
     };
   });
 
@@ -55,25 +49,26 @@ describe('FinancingResult', () => {
         wantedLoan: 800000,
         ownFunds: [{ type: 'bankFortune', value: 250000 }],
       };
-      store = {
-        financing: {
-          loan: { selectedStructure: 'a', structure },
-          structures: {
-            a: structure,
+      loan = {
+        selectedStructure: 'a',
+        structure,
+        structures: [structure],
+        borrowers: [
+          {
+            _id: 'john',
+            bankFortune: 250000,
+            salary: 200000,
+            insurance2: [{ value: 50 }],
+            insurance3A: [{ value: 60 }],
           },
-          borrowers: {
-            john: {
-              _id: 'john',
-              bankFortune: 250000,
-              salary: 200000,
-              insurance2: [{ value: 50 }],
-              insurance3A: [{ value: 60 }],
-            },
+        ],
+        properties: [
+          {
+            _id: 'house',
+            value: 1000000,
+            monthlyExpenses: 100,
           },
-          properties: {
-            house: { _id: 'house', value: 1000000, monthlyExpenses: 100 },
-          },
-        },
+        ],
       };
     });
 
@@ -157,18 +152,15 @@ describe('FinancingResult', () => {
   it.skip('renders an error if an interest rate is not defined', () => {
     // FIXME: Enzyme does not support componentDidCatch yet
     // https://github.com/airbnb/enzyme/issues/1553
-    store = {
-      financing: {
-        loan: {},
-        structures: {
-          a: {
-            id: 'a',
-            loanTranches: [{ type: 'unknown_rate' }],
-          },
+    loan = {
+      structures: [
+        {
+          id: 'a',
+          loanTranches: [{ type: 'unknown_rate' }],
         },
-        borrowers: {},
-        properties: {},
-      },
+      ],
+      borrowers: [{}],
+      properties: [{}],
     };
     expect(component()
       .find('.error')
