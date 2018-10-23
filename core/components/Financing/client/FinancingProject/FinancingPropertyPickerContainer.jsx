@@ -14,7 +14,7 @@ const FinancingPropertyPickerContainer = compose(
   withRouter,
   mapProps(({
     properties,
-    loanId,
+    loan: { _id: loanId },
     structure: { id: structureId, propertyId },
     history: { push },
   }) => ({
