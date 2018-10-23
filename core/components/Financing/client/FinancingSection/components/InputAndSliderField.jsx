@@ -34,7 +34,7 @@ const setValue = (value, allowUndefined, forceUndefined) => {
   return value || 0;
 };
 
-const InputAndSliderField = (props: InputAndSliderFieldProps) => {
+export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
   const {
     value,
     onChange,
@@ -43,7 +43,6 @@ const InputAndSliderField = (props: InputAndSliderFieldProps) => {
     allowUndefined,
     max = 1000000,
   } = props;
-  console.log('max', max);
   return (
     <>
       <MoneyInput
