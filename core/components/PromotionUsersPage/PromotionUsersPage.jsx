@@ -6,15 +6,15 @@ import PromotionUsersTable from './PromotionUsersTable';
 
 type PromotionUsersPageProps = {};
 
-const PromotionUsersPage = ({ loans }: PromotionUsersPageProps) => {
-  console.log('loans', loans);
+const PromotionUsersPage = (props: PromotionUsersPageProps) => {
+  console.log('loans', props.loans);
 
   return (
     <div className="promotion-users-page card1">
       <h1>
         <T id="PromotionUsersPage.title" />
       </h1>
-      <PromotionUsersTable loans={loans} />
+      <PromotionUsersTable {...props} />
     </div>
   );
 };

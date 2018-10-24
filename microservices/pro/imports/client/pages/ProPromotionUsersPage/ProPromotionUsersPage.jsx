@@ -13,23 +13,22 @@ import { PRO_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
 
 type ProPromotionUsersPageProps = {};
 
-const ProPromotionUsersPage = ({
-  promotionId,
-  ...props
-}: ProPromotionUsersPageProps) => (
-  <div>
-    <Button
-      raised
-      primary
-      link
-      to={createRoute(PRO_PROMOTION_PAGE, { promotionId })}
-    >
-      <T id="general.back" />
-    </Button>
-    <PromotionUsersPage {...props} />
-  </div>
-);
-
+const ProPromotionUsersPage = (props: ProPromotionUsersPageProps) => {
+  const { promotionId } = props;
+  return (
+    <div>
+      <Button
+        raised
+        primary
+        link
+        to={createRoute(PRO_PROMOTION_PAGE, { promotionId })}
+      >
+        <T id="general.back" />
+      </Button>
+      <PromotionUsersPage {...props} />
+    </div>
+  );
+};
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({

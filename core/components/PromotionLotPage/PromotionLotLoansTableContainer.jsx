@@ -32,7 +32,7 @@ const mapOption = ({
     loan: {
       user,
       promotions,
-      promotionOptions,
+      promotionOptions = [],
       _id: loanId,
       promotionProgress,
     },
@@ -46,18 +46,23 @@ const mapOption = ({
     columns: [
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
-      <PromotionProgress
-        promotionProgress={promotionProgress}
-        key="promotionProgress"
-      />,
+      {
+        raw: promotionProgress.verificationStatus,
+        label: <PromotionProgress promotionProgress={promotionProgress} />,
+      },
       custom,
-      <PriorityOrder
-        promotion={promotion}
-        promotionOptions={promotionOptions}
-        currentId={promotionOptionId}
-        userId={user && user._id}
-        key="priorityOrder"
-      />,
+      {
+        raw: promotionOptions.length,
+        label: (
+          <PriorityOrder
+            promotion={promotion}
+            promotionOptions={promotionOptions}
+            currentId={promotionOptionId}
+            userId={user && user._id}
+            key="priorityOrder"
+          />
+        ),
+      },
       <PromotionLotAttributer
         promotionLotId={promotionLotId}
         loanId={loanId}
