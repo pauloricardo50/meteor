@@ -35,8 +35,6 @@
   "PromotionLotAttributer.cancelBooking": "Annuler réservation",
   "PromotionLotLoansTable.attribute": "Attribution",
   "PromotionPage.lots.attributedTo": "Attribué à",
-  "Forms.status.TRIAL": "Prospect",
-  "Forms.status.WANT_TO_BUY": "Acheteur",
   "PromotionLotLoansTable.name": "Nom",
   "PromotionLotLoansTable.phone": "Téléphone",
   "PromotionLotLoansTable.status": "Niveau d'intérêt",

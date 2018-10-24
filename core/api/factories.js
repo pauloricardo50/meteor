@@ -106,7 +106,6 @@ Factory.define('promotion', Promotions, {
 });
 
 Factory.define('promotionOption', PromotionOptions, {
-  status: PROMOTION_OPTION_STATUS.TRIAL,
   promotionLotLinks: [{ _id: 'lotId' }],
 });
 Factory.define('promotionLot', PromotionLots, {

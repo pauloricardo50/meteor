@@ -117,15 +117,6 @@ const addPromotionOptions = (loanId, promotion) => {
       loanId,
       promotionLotId,
     });
-    PromotionOptionService.update({
-      promotionOptionId,
-      object: {
-        status:
-            Math.random() > 0.66
-              ? PROMOTION_OPTION_STATUS.WANT_TO_BUY
-              : PROMOTION_OPTION_STATUS.TRIAL,
-      },
-    });
     return promotionOptionId;
   });
 };

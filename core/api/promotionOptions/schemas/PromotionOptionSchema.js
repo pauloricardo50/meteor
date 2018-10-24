@@ -1,5 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-import { PROMOTION_OPTION_STATUS } from '../promotionOptionConstants';
 
 const PromotionOptionSchema = new SimpleSchema({
   promotionLotLinks: { type: Array, defaultValue: [] },
@@ -8,10 +7,6 @@ const PromotionOptionSchema = new SimpleSchema({
   lotLinks: { type: Array, optional: true },
   'lotLinks.$': Object,
   'lotLinks.$._id': String,
-  status: {
-    type: String,
-    allowedValues: Object.values(PROMOTION_OPTION_STATUS),
-  },
   custom: {
     type: String,
     optional: true,

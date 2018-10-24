@@ -56,7 +56,6 @@ export class PromotionOptionService extends CollectionService {
   insert = ({ promotionLotId, loanId }) => {
     const promotionOptionId = super.insert({
       promotionLotLinks: [{ _id: promotionLotId }],
-      status: PROMOTION_OPTION_STATUS.TRIAL,
     });
     LoanService.addLink({
       id: loanId,
