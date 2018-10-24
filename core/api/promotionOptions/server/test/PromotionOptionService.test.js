@@ -83,11 +83,13 @@ describe('PromotionOptionService', () => {
     });
 
     it('inserts the promotionOptionId at the end of the priorityOrder', () => {
+      LoanService.remove(loanId);
       loanId = Factory.create('loan', {
         promotionLinks: [{ _id: 'promotion', priorityOrder: ['test'] }],
       })._id;
       let loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(1);
+
       const id = PromotionOptionService.insert({ promotionLotId, loanId });
       loan = LoanService.get(loanId);
       expect(loan.promotionLinks[0].priorityOrder.length).to.equal(2);

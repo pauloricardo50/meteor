@@ -27,20 +27,16 @@ export class PromotionOptionService extends CollectionService {
       .fetchOne();
     return (
       promotionOption.promotionLots
-      && promotionOption.promotionLots[0].promotion[0]
+      && promotionOption.promotionLots[0].promotion
     );
   }
 
   remove({ promotionOptionId }) {
-    const promotionOption = this.get(promotionOptionId);
-    const loan = promotionOption.loan[0];
-    const loanId = loan._id;
-    // LoanService.removeLink({
-    //   id: loanId,
-    //   linkName: 'promotionOptionLinks',
-    //   linkId: promotionOptionId,
-    // });
+    const {
+      loan: { _id: loanId },
+    } = this.get(promotionOptionId);
     const promotionId = this.getPromotion(promotionOptionId)._id;
+
     const newPriorityOrder = LoanService.getPromotionPriorityOrder({
       loanId,
       promotionId,
@@ -50,6 +46,7 @@ export class PromotionOptionService extends CollectionService {
       promotionId,
       priorityOrder: newPriorityOrder,
     });
+
     return super.remove(promotionOptionId);
   }
 
@@ -80,7 +77,7 @@ export class PromotionOptionService extends CollectionService {
 
   changePriorityOrder({ promotionOptionId, change }) {
     const promotionOption = this.get(promotionOptionId);
-    const loan = promotionOption.loan[0];
+    const loan = promotionOption.loan;
     const { _id: promotionId } = this.getPromotion(promotionOptionId);
     const priorityOrder = LoanService.getPromotionPriorityOrder({
       loanId: loan._id,

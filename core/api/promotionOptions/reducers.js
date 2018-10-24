@@ -14,7 +14,7 @@ PromotionOptions.addReducers({
     // Don't request promotionLinks here: https://github.com/cult-of-coders/grapher/issues/301
     body: { loan: { promotionLinks: 1 } },
     reduce: ({ loan, _id: promotionOptionId }) => {
-      const { promotionLinks } = (loan && loan[0]) || {};
+      const { promotionLinks } = loan;
 
       if (promotionLinks && promotionLinks.length > 0) {
         return promotionLinks[0].priorityOrder.findIndex(id => id === promotionOptionId);
