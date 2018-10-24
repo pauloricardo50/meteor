@@ -51,7 +51,11 @@ const makeMapPromotionLot = ({
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,
-      label: lots.map(lot => <LotChip key={lot._id} lot={lot} />),
+      label: (
+        <div className="lot-chips">
+          {lots && lots.map(lot => <LotChip lot={lot} key={lot._id} />)}
+        </div>
+      ),
     },
     !isALotAttributedToMe && (
       <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>

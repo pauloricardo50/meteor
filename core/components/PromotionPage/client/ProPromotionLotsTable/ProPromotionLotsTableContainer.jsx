@@ -39,7 +39,11 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
     { raw: value, label: toMoney(value) },
     {
       raw: lots && lots.length,
-      label: lots && lots.map(lot => <LotChip key={lot._id} lot={lot} />),
+      label: (
+        <div className="lot-chips">
+          {lots && lots.map(lot => <LotChip lot={lot} key={lot._id} />)}
+        </div>
+      ),
     },
     promotionOptions.length,
     attributedTo && attributedTo.user.name,
