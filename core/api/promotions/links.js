@@ -9,6 +9,7 @@ Promotions.addLinks({
     type: 'many',
     metadata: true,
     autoremove: true,
+    unique: true,
   },
   lots: {
     field: 'lotLinks',
@@ -16,6 +17,7 @@ Promotions.addLinks({
     type: 'many',
     metadata: true,
     autoremove: true,
+    unique: true,
   },
   promotionLots: {
     field: 'promotionLotLinks',
@@ -23,6 +25,7 @@ Promotions.addLinks({
     type: 'many',
     metadata: true,
     autoremove: true,
+    unique: true,
   },
   users: {
     field: 'userLinks',
