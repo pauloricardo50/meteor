@@ -73,3 +73,15 @@ export const sendMandrillTemplate = mandrillTemplate =>
       resolve(content);
     });
   });
+
+export const getEmailsForAddress = email =>
+  new Promise((resolve, reject) =>
+    Mandrill.messages.search({ query: `email:${email}` }, (error, result) => {
+      if (error) {
+        console.log('error', error);
+        resolve(error);
+      } else if (result.statusCode !== 200) {
+        resolve(result);
+      }
+      resolve(result.data);
+    }));

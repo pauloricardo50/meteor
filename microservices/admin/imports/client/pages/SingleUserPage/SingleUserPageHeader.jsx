@@ -9,6 +9,7 @@ import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { sendEnrollmentEmail } from 'core/api';
+import { ROLES } from 'imports/core/api/constants';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import EditUserDialogForm from './EditUserDialogForm';
@@ -24,6 +25,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     name,
     email,
   } = user;
+
+  const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
 
   return (
     <div className="single-user-page-header">
@@ -68,15 +71,15 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
           {moment(createdAt).format('D MMM YY à HH:mm:ss')}
         </p>
 
-        {assignedEmployee ? (
+        {allowAssign && (
           <div className="assigned-employee">
-            <p>
-              <T id="UsersTable.assignedTo" /> {assignedEmployee.name}
-            </p>
+            {assignedEmployee && (
+              <p>
+                <T id="UsersTable.assignedTo" /> {assignedEmployee.name}
+              </p>
+            )}
             <UserAssignDropdown doc={user} />
           </div>
-        ) : (
-          <UserAssignDropdown doc={user} />
         )}
       </div>
     </div>

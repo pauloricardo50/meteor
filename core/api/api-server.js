@@ -32,6 +32,7 @@ import './users/queries/exposures';
 import './borrowers/server/serverReducers';
 import './loans/server/serverReducers';
 import './properties/server/serverReducers';
+import './users/server/serverReducers';
 
 import { Loans, Borrowers, Offers, Properties } from '.';
 
