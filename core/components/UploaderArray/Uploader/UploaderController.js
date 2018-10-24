@@ -97,13 +97,6 @@ const props = withProps(({
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
     }),
-  shouldDisableAdd: () =>
-    currentValue
-      && currentValue.reduce(
-        (acc, file) => !(file.status === FILE_STATUS.ERROR),
-        true,
-      )
-      && disabled,
 }));
 
 const willReceiveProps = lifecycle({

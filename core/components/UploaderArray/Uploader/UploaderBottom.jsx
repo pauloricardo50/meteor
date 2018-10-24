@@ -15,38 +15,31 @@ const UploaderBottom = ({
   handleUploadComplete,
   handleAddFiles,
   fileMeta: { id },
-  shouldDisableAdd,
-}) => {
-  const disableAdd = shouldDisableAdd();
+}) => (
+  <React.Fragment>
+    {currentValue.map((f, i) => (
+      <File
+        key={f.Key + i}
+        file={f}
+        disabled={disabled}
+        handleRemove={handleRemove}
+      />
+    ))}
 
-  return (
-    <React.Fragment>
-      {currentValue.map((f, i) => (
-        <File
-          key={f.Key + i}
-          file={f}
-          disabled={disabled}
-          handleRemove={handleRemove}
-        />
-      ))}
+    {tempFiles.map((f, i) => (
+      <TempFile
+        file={f}
+        key={f.name + i} // if the same file is uploaded twice there's a conflict
+        docId={docId}
+        collection={collection}
+        handleUploadComplete={handleUploadComplete}
+        id={id}
+      />
+    ))}
 
-      {tempFiles.map((f, i) => (
-        <TempFile
-          file={f}
-          key={f.name + i} // if the same file is uploaded twice there's a conflict
-          docId={docId}
-          collection={collection}
-          handleUploadComplete={handleUploadComplete}
-          id={id}
-        />
-      ))}
-
-      {!disableAdd && (
-        <FileAdder id={id} handleAddFiles={handleAddFiles} docId={docId} />
-      )}
-    </React.Fragment>
-  );
-};
+    <FileAdder id={id} handleAddFiles={handleAddFiles} docId={docId} />
+  </React.Fragment>
+);
 
 UploaderBottom.propTypes = {
   collection: PropTypes.string,
@@ -57,7 +50,6 @@ UploaderBottom.propTypes = {
   handleAddFiles: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
   handleUploadComplete: PropTypes.func.isRequired,
-  shouldDisableAdd: PropTypes.func.isRequired,
   tempFiles: PropTypes.array.isRequired,
 };
 
