@@ -16,14 +16,14 @@ const body = merge({}, userLoanFragment, {
   },
 });
 
-// Do this because the fragments come with $options objects, which causes
-// problems with reducers: https://github.com/cult-of-coders/grapher/issues/304
-const bodyWithoutOptions = deepOmit(body, ['$options']);
+// // Do this because the fragments come with $options objects, which causes
+// // problems with reducers: https://github.com/cult-of-coders/grapher/issues/304
+// const bodyWithoutOptions = deepOmit(body, ['$options']);
 
 Loans.addReducers({
   ...filesReducer,
   promotionProgress: {
-    body: bodyWithoutOptions,
+    body,
     reduce: loan => ({
       info: Calculator.personalInfoPercent({ loan }),
       documents: Calculator.filesProgress({ loan }),
