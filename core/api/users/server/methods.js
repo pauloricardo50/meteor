@@ -13,6 +13,7 @@ import {
   testCreateUser,
   removeUser,
   sendEnrollmentEmail,
+  changeEmail,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -74,18 +75,23 @@ editUser.setHandler((context, { userId, object }) => {
 getUserByPasswordResetToken.setHandler((context, params) =>
   UserService.getUserByPasswordResetToken(params));
 
-testCreateUser.setHandler((context, { user }) => {
+testCreateUser.setHandler((context, params) => {
   if (Meteor.isTest) {
-    return UserService.testCreateUser({ user });
+    return UserService.testCreateUser(params);
   }
 });
 
-removeUser.setHandler((context, { userId }) => {
+removeUser.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsDev();
-  UserService.remove({ userId });
+  UserService.remove(params);
 });
 
-sendEnrollmentEmail.setHandler((context, { userId }) => {
+sendEnrollmentEmail.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return UserService.sendEnrollmentEmail({ userId });
+  return UserService.sendEnrollmentEmail(params);
+});
+
+changeEmail.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.changeEmail(params);
 });

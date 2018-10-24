@@ -19,7 +19,7 @@ class EmailService {
       params,
     });
     const template = this.getTemplate(templateOptions);
-    if (!skipEmails) {
+    if (skipEmails) {
       this.emailLogger({ emailId, address, template });
     } else {
       sendMandrillTemplate(template);

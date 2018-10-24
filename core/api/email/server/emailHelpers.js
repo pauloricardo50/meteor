@@ -83,11 +83,11 @@ export const getEmailContent = (emailId, intlValues) => {
   };
 };
 
-export const getEnrollmentUrl = (user, url) => {
+export const getAccountsUrl = path => (user, url) => {
   if (user.roles === 'user' || user.roles.indexOf('user') >= 0) {
-    const enrollToken = url.split('/enroll-account/')[1];
+    const enrollToken = url.split(`/${path}/`)[1];
 
-    return `${APP_URL}/enroll-account/${enrollToken}`;
+    return `${APP_URL}/${path}/${enrollToken}`;
   }
 
   return url;

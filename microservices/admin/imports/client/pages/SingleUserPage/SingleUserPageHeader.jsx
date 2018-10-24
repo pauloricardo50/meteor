@@ -14,10 +14,11 @@ import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import EditUserDialogForm from './EditUserDialogForm';
 import UserDeleter from './UserDeleter';
+import EmailModifier from './EmailModifier';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
-    _id,
+    _id: userId,
     assignedEmployee,
     createdAt,
     roles,
@@ -39,11 +40,11 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             <Roles roles={roles} />
           </small>
 
-          <RolePicker userId={_id} />
+          <RolePicker userId={userId} />
         </h1>
         <EditUserDialogForm user={user} />
         <ConfirmMethod
-          method={() => sendEnrollmentEmail.run({ userId: _id })}
+          method={() => sendEnrollmentEmail.run({ userId })}
           label="Envoyer email d'invitation"
           keyword="ENVOYER"
         />
@@ -53,7 +54,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
       <div className="bottom">
         <div className="email">
-          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>
+          <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>{' '}
+          <EmailModifier userId={userId} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">

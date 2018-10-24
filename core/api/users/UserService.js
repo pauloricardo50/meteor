@@ -72,6 +72,13 @@ class UserService {
     );
 
   testCreateUser = ({ user }) => Users.insert(user);
+
+  changeEmail = ({ userId, newEmail }) => {
+    const { emails } = Users.findOne(userId);
+    Accounts.addEmail(userId, newEmail);
+    Accounts.removeEmail(userId, emails[0].address);
+    Accounts.sendVerificationEmail(userId);
+  };
 }
 
 export default new UserService();
