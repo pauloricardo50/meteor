@@ -10,7 +10,12 @@ const PromotionUsersTable = ({
   rows,
   columnOptions,
 }: PromotionUsersTableProps) => (
-  <Table rows={rows} columnOptions={columnOptions} clickable={false} />
+  <Table
+    rows={rows}
+    columnOptions={columnOptions}
+    clickable={false}
+    className="promotion-users-table"
+  />
 );
 
 export default PromotionUsersTableContainer(PromotionUsersTable);
