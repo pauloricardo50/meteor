@@ -46,7 +46,7 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
   ],
 
   handleClick: () =>
-    history.push(createRoute('/promotions/:promotionId/:promotionLotId', {
+    history.push(createRoute('/promotions/:promotionId/promotionLots/:promotionLotId', {
       promotionId,
       promotionLotId,
     })),

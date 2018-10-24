@@ -37,3 +37,11 @@ export const adminLoansFragment = {
   properties: { value: 1, address1: 1 },
   user: { assignedEmployee: { email: 1 }, name: 1 },
 };
+
+export const proLoansFragment = {
+  name: 1,
+  user: { name: 1, phoneNumbers: 1, email: 1 },
+  promotionProgress: 1,
+  promotionLinks: 1,
+  promotionOptions: { name: 1, status: 1 },
+};

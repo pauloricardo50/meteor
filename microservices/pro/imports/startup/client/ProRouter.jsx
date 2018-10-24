@@ -22,6 +22,7 @@ import ProDashboardPage from '../../client/pages/ProDashboardPage';
 import ProPromotionPage from '../../client/pages/ProPromotionPage';
 import ProPropertyPage from '../../client/pages/ProPropertyPage';
 import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage';
+import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage';
 import NewPromotionPage from '../../client/pages/NewPromotionPage';
 import NewPropertyPage from '../../client/pages/NewPropertyPage';
 
@@ -41,6 +42,10 @@ const ProRouter = (props: ProRouterProps) => (
         <Route
           path={ROUTES.PRO_PROMOTION_LOT_PAGE}
           component={ProPromotionLotPage}
+        />
+        <Route
+          path={ROUTES.PRO_PROMOTION_USERS_PAGE}
+          component={ProPromotionUsersPage}
         />
         <Route path={ROUTES.PRO_PROMOTION_PAGE} component={ProPromotionPage} />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />

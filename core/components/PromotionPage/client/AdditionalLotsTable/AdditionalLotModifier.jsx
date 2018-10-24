@@ -23,7 +23,7 @@ type AdditionalLotModifierProps = {
   deleteAdditionalLot: Function,
 };
 
-const AdditionalLotModifierSchema = promotionLots =>
+const AdditionalLotModifierSchema = (promotionLots = []) =>
   new SimpleSchema({
     name: String,
     type: {

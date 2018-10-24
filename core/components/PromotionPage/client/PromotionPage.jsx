@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
+import Button from '../../Button';
+import T from '../../Translation';
 import PromotionPageHeader from './PromotionPageHeader';
 import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
@@ -29,6 +32,13 @@ const PromotionPage = (props: PromotionPageProps) => {
           />
         )}
         {isPro && <EmailTester promotionId={promotion._id} />}
+        {isPro && (
+          <Link to={`/promotions/${promotion._id}/users`}>
+            <Button raised primary>
+              <T id="PromotionPage.users" />
+            </Button>
+          </Link>
+        )}
       </div>
 
       <MapWithMarkerWrapper
