@@ -198,7 +198,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
         {
           id: 'description',
           type: 'selectInput',
-          options: Object.values(constants.REAL_ESTATE),
+          options: Object.values(constants.RESIDENCE_TYPE),
         },
         { id: 'value', type: 'textInput', money: true },
         { id: 'loan', type: 'textInput', money: true },
