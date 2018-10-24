@@ -26,8 +26,9 @@ export default class ConfirmMethod extends Component {
     }
 
     if (this.shouldAllowSubmit(keyword)) {
+      this.setState({ loading: true });
       method()
-        .then(() => this.setState({ open: false }))
+        .then(() => this.setState({ open: false, loading: false }))
         .then(() => message.success('Succès !', 2));
     }
   };
@@ -44,13 +45,14 @@ export default class ConfirmMethod extends Component {
       children,
       dialogTitle,
     } = this.props;
-    const { open, text } = this.state;
+    const { open, text, loading } = this.state;
     const actions = [
       <Button
         label={<T id="ConfirmMethod.buttonCancel" />}
         primary
         onClick={this.handleClose}
         key="cancel"
+        disabled={loading}
       />,
       <Button
         label={<T id="ConfirmMethod.buttonConfirm" />}
@@ -58,6 +60,7 @@ export default class ConfirmMethod extends Component {
         disabled={keyword && text !== keyword}
         onClick={this.handleSubmit}
         key="ok"
+        loading={loading}
       />,
     ];
 
