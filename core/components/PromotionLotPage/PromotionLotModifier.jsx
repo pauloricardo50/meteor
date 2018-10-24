@@ -32,7 +32,7 @@ const ProPromotionLotModifier = ({
 }: ProPromotionLotModifierProps) => (
   <AutoFormDialog
     buttonProps={{
-      label: <T id="ProPromotionLotPage.modifyPromotionLot" />,
+      label: <T id="PromotionLotPage.modifyPromotionLot" />,
       raised: true,
       primary: true,
       disabled: promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE,
