@@ -5,7 +5,6 @@ import { createRoute } from 'core/utils/routerUtils';
 
 import Chip from 'core/components/Material/Chip';
 import Icon from 'core/components/Icon';
-import { PRO_PROMOTION_LOT_PAGE } from 'imports/startup/client/proRoutes';
 
 type PriorityOrderProps = {};
 
@@ -43,10 +42,13 @@ const PriorityOrder = ({
         const solvency = Math.random() > 0.3;
         return (
           <Link
-            to={createRoute(PRO_PROMOTION_LOT_PAGE, {
-              ':promotionId': promotion._id,
-              ':promotionLotId': promotionLots[0]._id,
-            })}
+            to={createRoute(
+              '/promotions/:promotionId/promotionLots/:promotionLotId',
+              {
+                ':promotionId': promotion._id,
+                ':promotionLotId': promotionLots[0]._id,
+              },
+            )}
             key={`${_id}${promotionLots[0]._id}`}
           >
             <Chip
