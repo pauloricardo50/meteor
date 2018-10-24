@@ -36,8 +36,8 @@ export const SubmitField = props => (
   />
 );
 
-const selectLabel = ({ label, props: { name, label: directLabel } }) =>
-  (label === null ? null : directLabel || label || <T id={`Forms.${name}`} />);
+const selectLabel = ({ label, props: { name, overrideLabel } }) =>
+  (label === null ? null : overrideLabel || label || <T id={`Forms.${name}`} />);
 
 export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(

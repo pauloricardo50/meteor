@@ -24,7 +24,7 @@ const PromotionStatusModifier = ({
     }
     className="update-field"
   >
-    <CustomAutoField name="status" label="Statut de la promotion" />
+    <CustomAutoField name="status" overrideLabel="Statut de la promotion" />
   </AutoForm>
 );
 
