@@ -76,12 +76,15 @@ export const sendMandrillTemplate = mandrillTemplate =>
 
 export const getEmailsForAddress = email =>
   new Promise((resolve, reject) =>
-    Mandrill.messages.search({ query: `email:${email}` }, (error, result) => {
-      if (error) {
-        console.log('error', error);
-        resolve(error);
-      } else if (result.statusCode !== 200) {
-        resolve(result);
-      }
-      resolve(result.data);
-    }));
+    Mandrill.messages.search(
+      { query: `email:${email}`, date_from: '2018-09-01' },
+      (error, result) => {
+        if (error) {
+          console.log('error', error);
+          resolve(error);
+        } else if (result.statusCode !== 200) {
+          resolve(result);
+        }
+        resolve(result.data);
+      },
+    ));

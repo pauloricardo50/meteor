@@ -2,9 +2,11 @@
 import React from 'react';
 import moment from 'moment';
 
+import withHider from 'core/containers/withHider';
 import query from 'core/api/users/queries/userEmails';
 import Table from 'core/components/Table';
 import { withSmartQuery } from 'imports/core/api/containerToolkit/index';
+import { compose } from 'recompose';
 
 type EmailListProps = {};
 
@@ -40,8 +42,11 @@ const EmailList = ({ user: { sentEmails } }: EmailListProps) => (
   </div>
 );
 
-export default withSmartQuery({
-  query: ({ userId }) => query.clone({ userId }),
-  queryOptions: { single: true },
-  dataName: 'user',
-})(EmailList);
+export default compose(
+  withHider({ raised: true, primary: true, label: 'Afficher emails' }),
+  withSmartQuery({
+    query: ({ userId }) => query.clone({ userId }),
+    queryOptions: { single: true },
+    dataName: 'user',
+  }),
+)(EmailList);

@@ -21,7 +21,9 @@ const SingleUserPage = ({ user, className, currentUser }) => {
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}
-      <EmailList userId={userId} />
+
+      {/* Make sure this component reloads when the userId changes */}
+      <EmailList userId={userId} key={userId} />
     </section>
   );
 };
