@@ -22,6 +22,7 @@ export const SERVICES = {
 
 export const APP_CONFIGS = {
   MB64_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB64, instances: 1 },
+  MB256_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB256, instances: 1 },
   MB512_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 1 },
   MB512_2i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB512, instances: 2 },
   MB1024_1i: { memory: CLOUDFOUNDRY_MEMORY_LIMIT.MB1024, instances: 1 },
@@ -34,14 +35,14 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
+    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB256_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
     services: [SERVICES.MONGODB, SERVICES.REDIS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
-    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB64_1i },
+    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB256_1i },
   },
 };
 
