@@ -52,7 +52,7 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
             removeUserFromPromotion.run({ promotionId, userId: _id })
           }
           type="close"
-          tooltip={<T id="general.delete" />}
+          tooltip="Enlever de la promotion"
         />
       </div>,
     ],
