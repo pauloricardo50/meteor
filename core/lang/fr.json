@@ -1310,7 +1310,7 @@
   "SingleBorrowerPageHeader.createdBy": "Créé par",
   "SinglePropertyPage.title": "Bien immobilier",
   "SinglePropertyPageHeader.assignedTo": "Assigné à",
-  "SinglePropertyPageHeader.createdBy": "Créé par",
+  "SinglePropertyPageHeader.metadata": "Appartient à {user}, {date}",
   "SinglePropertyPageHeader.roomCount": "{value} pièces",
   "StatusIconTooltip.borrowRatio.ERROR": "Attention: vous ne pouvez pas emprunter autant (max. 90%)",
   "StatusIconTooltip.borrowRatio.SUCCESS": "Tout est bon !",
