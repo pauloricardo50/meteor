@@ -19,7 +19,6 @@ export const loanBaseFragment = {
   promotions: {
     name: 1,
     address: 1,
-    // $metadata: { priorityOrder: 1 },
   },
   promotionOptions: {
     promotionLots: {

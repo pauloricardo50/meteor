@@ -39,7 +39,7 @@ const mapOption = ({
     lots,
     custom,
   } = promotionOption;
-  const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion[0]._id);
+  const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
 
   return {
     id: promotionOptionId,
