@@ -11,7 +11,10 @@ type EmailListProps = {};
 const EmailList = ({ user: { sentEmails } }: EmailListProps) => (
   <div style={{ marginTop: 40 }}>
     <h3>Emails automatiques envoyés</h3>
-    <p>Attention, pas toujours à jour si envoyé il y a longtemps</p>
+    <p>
+      Attention, pas toujours à jour si envoyé il y a longtemps. Et attendre 1-2
+      minutes parfois avant de voir les nouveaux emails apparaître.
+    </p>
 
     {Array.isArray(sentEmails) ? (
       <Table
