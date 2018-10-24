@@ -17,6 +17,7 @@ const FilesPage = props => (
       {...props}
       property={getStructurePropertyWithDocuments(props)}
       borrowers={props.loan.borrowers}
+      disabled={!props.loan.userFormsEnabled}
     />
   </Page>
 );

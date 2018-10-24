@@ -55,14 +55,7 @@ const tempFileState = withStateHandlers(
   },
 );
 
-const props = withProps(({
-  currentValue,
-  disabled,
-  deleteFile,
-  addTempFiles,
-  intl: { formatMessage: f },
-  currentUser,
-}) => ({
+const props = withProps(({ deleteFile, addTempFiles, intl: { formatMessage: f }, currentUser }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
     let showError = false;
