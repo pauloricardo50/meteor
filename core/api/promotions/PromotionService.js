@@ -64,9 +64,7 @@ export class PromotionService extends CollectionService {
     user: { email, firstName, lastName, phoneNumber },
   }) {
     const promotion = this.get(promotionId);
-    const allowAddingUsers = Meteor.isDevelopment
-      || Meteor.isStaging
-      || promotion.status === PROMOTION_STATUS.OPEN;
+    const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
       throw new Meteor.Error("Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.");

@@ -17,13 +17,13 @@ import { ROLES } from '../../api/users/userConstants';
 import PromotionOptionService from '../../api/promotionOptions/PromotionOptionService';
 import PromotionLotService from '../../api/promotionLots/PromotionLotService';
 import LotService from '../../api/lots/LotService';
-import { LOT_TYPES, PROMOTION_OPTION_STATUS } from '../../api/constants';
+import { LOT_TYPES } from '../../api/constants';
 import { properties } from './data';
 
 const DEMO_PROMOTION = {
   name: 'Pré Polly',
   type: PROMOTION_TYPES.SHARE,
-  status: PROMOTION_STATUS.PREPARATION,
+  status: PROMOTION_STATUS.OPEN,
   address1: 'Chemin de Pré-Polly 1',
   zipCode: 1233,
   city: 'Bernex',
