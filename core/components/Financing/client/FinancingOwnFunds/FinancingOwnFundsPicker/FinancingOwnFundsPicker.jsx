@@ -30,6 +30,6 @@ const FinancingOwnFundsPicker = ({
 );
 
 export default compose(
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   SingleStructureContainer,
 )(FinancingOwnFundsPicker);

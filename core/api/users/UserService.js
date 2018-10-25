@@ -106,6 +106,13 @@ class UserService extends CollectionService {
         promotionLinks.filter(({ _id }) => _id === promotionId)).length > 0
     );
   };
+
+  changeEmail = ({ userId, newEmail }) => {
+    const { emails } = Users.findOne(userId);
+    Accounts.addEmail(userId, newEmail);
+    Accounts.removeEmail(userId, emails[0].address);
+    Accounts.sendVerificationEmail(userId);
+  };
 }
 
 export default new UserService();

@@ -27,6 +27,7 @@ const Widget1Monthly = ({
         config={{
           chart: {
             width: 300,
+            height: 'initial',
             spacingBottom: 0,
             spacingTop: 0,
             marginTop: 0,

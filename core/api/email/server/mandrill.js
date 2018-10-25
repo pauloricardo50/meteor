@@ -73,3 +73,25 @@ export const sendMandrillTemplate = mandrillTemplate =>
       resolve(content);
     });
   });
+
+const getDate30DaysAgo = () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 30);
+  const dateString = date.toISOString().split('T')[0];
+  return dateString;
+};
+
+export const getEmailsForAddress = email =>
+  new Promise((resolve, reject) =>
+    Mandrill.messages.search(
+      { query: `email:${email}`, date_from: getDate30DaysAgo() },
+      (error, result) => {
+        if (error) {
+          console.log('error', error);
+          resolve(error);
+        } else if (result.statusCode !== 200) {
+          resolve(result);
+        }
+        resolve(result.data);
+      },
+    ));

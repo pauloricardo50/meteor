@@ -82,3 +82,11 @@ export const sendEnrollmentEmail = new Method({
     userId: String,
   },
 });
+
+export const changeEmail = new Method({
+  name: 'changeEmail',
+  params: {
+    userId: String,
+    newEmail: String,
+  },
+});

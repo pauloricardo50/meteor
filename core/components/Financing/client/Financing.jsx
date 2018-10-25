@@ -11,7 +11,6 @@ import FinancingOwnFunds from './FinancingOwnFunds';
 import FinancingProject from './FinancingProject';
 import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
-import FinancingRefresher from './FinancingRefresher';
 
 type FinancingProps = {
   loan: userLoan,
@@ -21,7 +20,6 @@ const Financing = ({ loan }: FinancingProps) =>
   (loan.structures.length > 0 ? (
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
-        <FinancingRefresher loanFromDB={loan} />
         <FinancingHeader selectedStructure={loan.selectedStructure} />
         <FinancingProject />
         <FinancingFinancing />

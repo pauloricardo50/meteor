@@ -9,17 +9,14 @@ import UploaderBottom from './UploaderBottom.jsx';
 const Uploader = (props) => {
   const {
     handleAddFiles,
-    shouldDisableAdd,
     displayFull,
     showFull,
     fileMeta: { id },
   } = props;
-  const disableAdd = shouldDisableAdd();
 
   return (
     <FileDropper
       handleAddFiles={handleAddFiles}
-      disabled={disableAdd}
       showFull={showFull}
       id={id}
     >
@@ -32,7 +29,6 @@ const Uploader = (props) => {
 Uploader.propTypes = {
   displayFull: PropTypes.bool.isRequired,
   handleAddFiles: PropTypes.func.isRequired,
-  shouldDisableAdd: PropTypes.func.isRequired,
   showFull: PropTypes.func.isRequired,
 };
 

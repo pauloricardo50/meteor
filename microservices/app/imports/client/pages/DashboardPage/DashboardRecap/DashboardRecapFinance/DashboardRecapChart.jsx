@@ -50,7 +50,7 @@ const DashboardRecapChart = (props) => {
         <DonutChart
           data={data}
           config={{
-            chart: { margin: 0, width: 120, height: 120 },
+            chart: { margin: 0, width: 120, height: 120, spacing: 0 },
             legend: { enabled: false },
             plotOptions: {
               pie: {

@@ -5,13 +5,13 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { mount } from 'core/utils/testHelpers/enzyme';
 
-import { InputAndSlider } from '../InputAndSlider';
+import { InputAndSliderField } from '../InputAndSliderField';
 import MoneyInput from '../../../../../MoneyInput/MoneyInput';
 import Slider from '../../../../../Material/Slider';
 
-describe('InputAndSlider', () => {
+describe('InputAndSliderField', () => {
   let props;
-  const component = () => mount(<InputAndSlider {...props} />);
+  const component = () => mount(<InputAndSliderField {...props} />);
 
   const inputValue = wrapper => wrapper.find(MoneyInput).props().value;
   const sliderValue = wrapper => wrapper.find(Slider).props().value;
@@ -88,57 +88,57 @@ describe('InputAndSlider', () => {
     expect(sliderValue(wrapper)).to.equal(0);
   });
 
-  describe('handleChange', () => {
+  describe('onChange', () => {
     it('let the user type his value when it is less than max', () => {
-      const handleChange = sinon.spy();
+      const onChange = sinon.spy();
       props = {
         value: 12,
-        handleChange,
+        onChange,
         max: 50,
       };
       const wrapper = component();
 
       wrapper.find('input').simulate('change', { target: { value: 15 } });
 
-      expect(handleChange.calledOnce).to.equal(true);
-      expect(handleChange.firstCall.args).to.deep.equal([15]);
+      expect(onChange.calledOnce).to.equal(true);
+      expect(onChange.firstCall.args).to.deep.equal([15]);
     });
 
     it('does not let the user type more than max', () => {
-      const handleChange = sinon.spy();
+      const onChange = sinon.spy();
       props = {
         value: 12,
-        handleChange,
+        onChange,
         max: 50,
       };
       const wrapper = component();
 
       wrapper.find('input').simulate('change', { target: { value: 60 } });
 
-      expect(handleChange.calledOnce).to.equal(true);
-      expect(handleChange.firstCall.args).to.deep.equal([50]);
+      expect(onChange.calledOnce).to.equal(true);
+      expect(onChange.firstCall.args).to.deep.equal([50]);
     });
 
     it('does not let the user type an empty string when undefined values are not allowed', () => {
-      const handleChange = sinon.spy();
+      const onChange = sinon.spy();
       props = {
         value: 12,
-        handleChange,
+        onChange,
         max: 50,
       };
       const wrapper = component();
 
       wrapper.find('input').simulate('change', { target: { value: '' } });
 
-      expect(handleChange.calledOnce).to.equal(true);
-      expect(handleChange.firstCall.args).to.deep.equal([0]);
+      expect(onChange.calledOnce).to.equal(true);
+      expect(onChange.firstCall.args).to.deep.equal([0]);
     });
 
     it('let the user type empty strings when undefined values are allowed', () => {
-      const handleChange = sinon.spy();
+      const onChange = sinon.spy();
       props = {
         value: 12,
-        handleChange,
+        onChange,
         allowUndefined: true,
         max: 50,
       };
@@ -146,15 +146,15 @@ describe('InputAndSlider', () => {
 
       wrapper.find('input').simulate('change', { target: { value: '' } });
 
-      expect(handleChange.calledOnce).to.equal(true);
-      expect(handleChange.firstCall.args).to.deep.equal(['']);
+      expect(onChange.calledOnce).to.equal(true);
+      expect(onChange.firstCall.args).to.deep.equal(['']);
     });
 
     it('forces 0 values to empty strings when forceUndefined and allowUndefined are true', () => {
-      const handleChange = sinon.spy();
+      const onChange = sinon.spy();
       props = {
         value: 12,
-        handleChange,
+        onChange,
         allowUndefined: true,
         forceUndefined: true,
       };
@@ -162,23 +162,23 @@ describe('InputAndSlider', () => {
 
       wrapper.find('input').simulate('change', { target: { value: '' } });
 
-      expect(handleChange.calledOnce).to.equal(true);
-      expect(handleChange.firstCall.args).to.deep.equal(['']);
+      expect(onChange.calledOnce).to.equal(true);
+      expect(onChange.firstCall.args).to.deep.equal(['']);
     });
 
     it('does not force 0 values to empty strings when forceUndefined is true but undefined values are not allowed', () => {
-      const handleChange = sinon.spy();
+      const onChange = sinon.spy();
       props = {
         value: 12,
-        handleChange,
+        onChange,
         forceUndefined: true,
       };
       const wrapper = component();
 
       wrapper.find('input').simulate('change', { target: { value: 0 } });
 
-      expect(handleChange.calledOnce).to.equal(true);
-      expect(handleChange.firstCall.args).to.deep.equal([0]);
+      expect(onChange.calledOnce).to.equal(true);
+      expect(onChange.firstCall.args).to.deep.equal([0]);
     });
   });
 });

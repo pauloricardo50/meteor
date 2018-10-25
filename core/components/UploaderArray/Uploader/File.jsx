@@ -12,7 +12,7 @@ import { FILE_STATUS } from 'core/api/constants';
 import Downloader from '../../Downloader';
 import { ROLES } from '../../../api/constants';
 
-const isAllowedToDelete = (disabled, status) => {
+const isAllowedToDelete = (disabled) => {
   const currentUser = Meteor.user();
   const userIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
   const userIsAdmin = Roles.userIsInRole(currentUser, ROLES.ADMIN);
@@ -21,7 +21,7 @@ const isAllowedToDelete = (disabled, status) => {
     return true;
   }
 
-  return !disabled && status !== FILE_STATUS.VALID;
+  return !disabled;
 };
 
 const File = ({
@@ -38,7 +38,7 @@ const File = ({
         <span className={`${status} bold`}>
           <T id={`File.status.${status}`} />
         </span>
-        {isAllowedToDelete(disabled, status) && (
+        {isAllowedToDelete(disabled) && (
           <IconButton
             disabled={deleting}
             type={deleting ? 'loop-spin' : 'close'}

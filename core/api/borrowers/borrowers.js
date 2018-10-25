@@ -13,9 +13,9 @@ import {
   CIVIL_STATUS,
   OTHER_INCOME,
   EXPENSES,
-  REAL_ESTATE,
   OWN_FUNDS_TYPES,
 } from './borrowerConstants';
+import { RESIDENCE_TYPE } from '../constants';
 
 const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
 
@@ -164,7 +164,7 @@ export const BorrowerSchema = new SimpleSchema({
   ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
   ...makeArrayOfObjectsSchema('otherFortune'),
   ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
-  ...makeArrayOfObjectsSchema('realEstate', Object.values(REAL_ESTATE)),
+  ...makeArrayOfObjectsSchema('realEstate', Object.values(RESIDENCE_TYPE)),
   'realEstate.$.loan': {
     type: SimpleSchema.Integer,
     min: 0,

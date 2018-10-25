@@ -9,7 +9,7 @@ import {
 } from './mandrill';
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
-const shouldSendEmails = !(Meteor.isDevelopment || Meteor.isTest);
+const skipEmails = Meteor.isDevelopment || Meteor.isTest;
 
 class EmailService {
   sendEmail = (emailId, address, params) => {
@@ -19,7 +19,7 @@ class EmailService {
       params,
     });
     const template = this.getTemplate(templateOptions);
-    if (!shouldSendEmails) {
+    if (skipEmails) {
       this.emailLogger({ emailId, address, template });
     } else {
       sendMandrillTemplate(template);
