@@ -7,8 +7,9 @@ import fs from 'fs';
 
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
 import formatMessage from 'core/utils/intl';
+import { PDF_TYPES } from 'core/api/constants';
+import { TEMPLATES } from './constants';
 import LoanBankPDF from './components/LoanBankPDF';
-import { PDF_TYPES, LOAN_BANK_TEMPLATE } from './constants';
 
 const formatKey = (key) => {
   const i18nKey = `Forms.${key}`;
@@ -34,6 +35,21 @@ class PDFService {
   constructor() {
     this.module = null;
   }
+
+  makeConfigForPDF = ({ type, data, options }) => {
+    const fileName = Random.id();
+
+    switch (type) {
+    case PDF_TYPES.ANONYMOUS_LOAN:
+      return {
+        component: LoanBankPDF,
+        props: { loan: data, options },
+        fileName,
+      };
+    default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
+    }
+  };
 
   getBase64String = (path) => {
     try {
@@ -93,27 +109,16 @@ class PDFService {
   };
 
   generateContentObject = ({ data, type, options }) => {
-    const fileName = Random.id();
-    switch (type) {
-    case PDF_TYPES.LOAN_BANK:
-      try {
-        const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
-        checkObjectStructure({
-          obj: data.loan,
-          template: LOAN_BANK_TEMPLATE,
-        });
-      } catch (error) {
-        throw new Meteor.Error(error);
-      }
-      return {
-        component: LoanBankPDF,
-        props: { loan: data.loan, options },
-        fileName,
-      };
-
-    default:
-      return {};
+    try {
+      const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
+      checkObjectStructure({
+        obj: data,
+        template: TEMPLATES[type],
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
     }
+    return this.makeConfigForPDF({ data, type, options });
   };
 
   generateDataAsPDF = ({ data, type, options }, testing = false) => {

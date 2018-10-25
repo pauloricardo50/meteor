@@ -1,10 +1,14 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import fileSaver from 'file-saver';
 import { compose, withState, withProps } from 'recompose';
+
 import Button from 'core/components/Button/Button';
-import { generateLoanBankPDF } from 'core/api/PDFGenerator/methodDefinitions';
+import { generatePDF } from 'core/api/PDFGenerator/methodDefinitions';
 import message from 'core/utils/message';
+import { ROLES, PDF_TYPES } from 'core/api/constants';
 import { base64ToBlob } from './base64-to-blob';
 
 type GetLoanPDFProps = {
@@ -14,15 +18,28 @@ type GetLoanPDFProps = {
 };
 
 const GetLoanPDF = ({ loan, loading, handleClick }: GetLoanPDFProps) => (
-  <Button
-    raised
-    primary
-    onClick={() => handleClick(loan._id)}
-    loading={loading}
-    style={{ marginTop: 16 }}
-  >
-    Générer PDF anonyme
-  </Button>
+  <>
+    <Button
+      raised
+      primary
+      onClick={() => handleClick(loan._id)}
+      loading={loading}
+      style={{ marginTop: 16 }}
+    >
+      Générer PDF anonyme
+    </Button>
+    {Meteor.user().roles.includes(ROLES.DEV) && (
+      <Button
+        raised
+        primary
+        onClick={() => handleClick(loan._id)}
+        loading={loading}
+        style={{ marginTop: 16 }}
+      >
+        Générer PDF HTML
+      </Button>
+    )}
+  </>
 );
 
 export default compose(
@@ -30,8 +47,8 @@ export default compose(
   withProps(({ setLoading, loan: { name } }) => ({
     handleClick: (loanId) => {
       setLoading(true);
-      generateLoanBankPDF
-        .run({ loanId })
+      generatePDF
+        .run({ type: PDF_TYPES.ANONYMOUS_LOAN, params: { loanId } })
         .then((base64) => {
           if (!base64) {
             return false;
