@@ -55,11 +55,6 @@ const stubs = {
     '@noCallThru': true,
     '@global': true,
   },
-  accountsT9n: {
-    T9n: {},
-    '@noCallThru': true,
-    '@global': true,
-  },
   session: {
     Session: {},
     '@noCallThru': true,
@@ -88,7 +83,6 @@ const meteorStubs = {
   'meteor/ddp-rate-limiter': stubs.ddpRateLimiter,
   'meteor/underscore': stubs.meteorUnderscore,
   'meteor/okgrow:analytics': stubs.analytics,
-  'meteor/softwarerero:accounts-t9n': stubs.accountsT9n,
 };
 
 export default meteorStubs;
