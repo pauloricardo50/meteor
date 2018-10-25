@@ -52,13 +52,20 @@ class PDFGeneratorService {
 
     return this.connect().then(() =>
       new Promise((resolve, reject) => {
-        this.remote.call('_generatePDF', { type, data }, (error, result) => {
-          this.remote.disconnect();
-          if (error) {
-            reject(error);
-          }
-          resolve(result && result.base64);
-        });
+        this.remote.call(
+          '_generatePDF',
+          { type, data, options: { HTML: params.HTML } },
+          (error, result) => {
+            this.remote.disconnect();
+            if (error) {
+              reject(error);
+            }
+            if (params.HTML) {
+              resolve(result);
+            }
+            resolve(result && result.base64);
+          },
+        );
       }));
   };
 }

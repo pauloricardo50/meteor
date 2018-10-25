@@ -122,7 +122,14 @@ class PDFService {
   };
 
   generateDataAsPDF = ({ data, type, options }, testing = false) => {
+    const { HTML } = options;
     const content = this.generateContentObject({ data, type, options });
+
+    if (HTML) {
+      const html = this.getComponentAsHTML(content.component, content.props);
+      return Promise.resolve(html);
+    }
+
     return new Promise((resolve, reject) =>
       this.handleGeneratePDF(content, { resolve, reject }, testing));
   };

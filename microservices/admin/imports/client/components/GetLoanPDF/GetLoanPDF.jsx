@@ -17,12 +17,12 @@ type GetLoanPDFProps = {
   handleClick: Function,
 };
 
-const GetLoanPDF = ({ loan, loading, handleClick }: GetLoanPDFProps) => (
+const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
   <>
     <Button
       raised
       primary
-      onClick={() => handleClick(loan._id)}
+      onClick={handlePDF}
       loading={loading}
       style={{ marginTop: 16 }}
     >
@@ -32,9 +32,9 @@ const GetLoanPDF = ({ loan, loading, handleClick }: GetLoanPDFProps) => (
       <Button
         raised
         primary
-        onClick={() => handleClick(loan._id)}
+        onClick={handleHTML}
         loading={loading}
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 16, marginLeft: 16 }}
       >
         Générer PDF HTML
       </Button>
@@ -44,8 +44,8 @@ const GetLoanPDF = ({ loan, loading, handleClick }: GetLoanPDFProps) => (
 
 export default compose(
   withState('loading', 'setLoading', false),
-  withProps(({ setLoading, loan: { name } }) => ({
-    handleClick: (loanId) => {
+  withProps(({ setLoading, loan: { name, _id: loanId } }) => ({
+    handlePDF: () => {
       setLoading(true);
       generatePDF
         .run({ type: PDF_TYPES.ANONYMOUS_LOAN, params: { loanId } })
@@ -56,6 +56,19 @@ export default compose(
 
           try {
             return fileSaver.saveAs(base64ToBlob(base64), `${name}.pdf`);
+          } catch (error) {
+            message.error(error.message, 5);
+          }
+        })
+        .finally(() => setLoading(false));
+    },
+    handleHTML: () => {
+      setLoading(true);
+      generatePDF
+        .run({ type: PDF_TYPES.ANONYMOUS_LOAN, params: { loanId, HTML: true } })
+        .then((html) => {
+          try {
+            return fileSaver.saveAs(new Blob([html]), `${name}.html`);
           } catch (error) {
             message.error(error.message, 5);
           }
