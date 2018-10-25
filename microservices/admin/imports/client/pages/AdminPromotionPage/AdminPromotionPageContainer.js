@@ -12,7 +12,6 @@ export default compose(
     params: ({ promotionId }) => ({ promotionId }),
     queryOptions: { reactive: false, single: true },
     dataName: 'promotion',
-    updateWithMethods: true,
   }),
   mergeFilesWithQuery(
     promotionFiles,
