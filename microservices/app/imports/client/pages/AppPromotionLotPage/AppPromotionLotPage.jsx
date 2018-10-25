@@ -22,11 +22,11 @@ export const AppPromotionLotPage = ({
   promotionId,
   setCustom,
 }: AppPromotionLotPageProps) => {
-  const { name, status, promotion, value, lots, documents } = promotionLot;
-  const { name: promotionName } = promotion[0];
-  const { custom, attributedToMe } = promotionOption || {};
   console.log('promotionLot', promotionLot);
   console.log('loanPromotions', loanPromotions); // Should have $metadata
+  const { name, status, promotion, value, lots, documents } = promotionLot;
+  const { name: promotionName } = promotion;
+  const { custom, attributedToMe } = promotionOption || {};
 
   return (
     <div>

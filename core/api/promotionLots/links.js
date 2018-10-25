@@ -6,7 +6,6 @@ PromotionLots.addLinks({
   promotion: {
     collection: Promotions,
     inversedBy: 'promotionLots',
-    type: 'one',
   },
   properties: {
     collection: Properties,
