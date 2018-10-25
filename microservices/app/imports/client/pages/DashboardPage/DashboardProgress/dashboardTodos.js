@@ -128,13 +128,13 @@ export const getDashboardTodosArray = list =>
     },
     {
       id: 'createStructure',
-      isDone: ({ structures }) => structures.length > 0,
+      isDone: ({ structures }) => structures && structures.length > 0,
       link: createFinancingLink,
     },
     {
       id: 'createSecondStructure',
-      isDone: ({ structures }) => structures.length > 1,
-      hide: ({ structures }) => structures.length === 0,
+      isDone: ({ structures }) => structures && structures.length > 1,
+      hide: ({ structures }) => structures && structures.length === 0,
       link: createFinancingLink,
     },
     {
