@@ -9,7 +9,7 @@ export const makeCheckObjectStructure = (errors) => {
   const checkObjectStructure = ({ obj, template, parentKey }) =>
     Object.keys(template).forEach((key) => {
       if (obj[key] === undefined) {
-        throw errors.missingKey(key, parentKey);
+        throw errors.missingKey(key, parentKey || '');
       }
 
       if (Array.isArray(template[key])) {

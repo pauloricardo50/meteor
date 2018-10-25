@@ -2,7 +2,6 @@ import { Random } from 'meteor/random';
 import sample from 'lodash/sample';
 
 import {
-  GENDER,
   MINERGIE_CERTIFICATE,
   FLAT_TYPE,
   OWN_FUNDS_TYPES,
@@ -10,11 +9,7 @@ import {
   OTHER_INCOME,
   EXPENSES,
 } from 'core/api/constants';
-import {
-  CIVIL_STATUS,
-  PROPERTY_TYPE,
-  HOUSE_TYPE,
-} from '../../../../core/api/constants';
+import { PROPERTY_TYPE, HOUSE_TYPE } from '../../../../core/api/constants';
 
 export const FAKE_SALARY = 150000;
 export const FAKE_BANK_FORTUNE = 1000000;
@@ -161,6 +156,7 @@ export const FAKE_NOTARY_FEES = 14500;
 
 export const fakeStructure = ({
   borrowerIds,
+  propertyId,
   withCustomNotaryFees,
   withBankWithdraw,
   withInsurance2Withdraw,
@@ -176,6 +172,7 @@ export const fakeStructure = ({
   withThirdPartyFortuneWithdraw,
 }) => ({
   id: Random.id(),
+  propertyId,
   wantedLoan: FAKE_WANTED_LOAN,
   notaryFees: withCustomNotaryFees ? FAKE_NOTARY_FEES : 0.05 * FAKE_WANTED_LOAN,
   ownFunds: [

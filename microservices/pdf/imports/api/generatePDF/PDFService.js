@@ -25,7 +25,9 @@ const formatKey = (key) => {
 
 const frenchErrors = {
   missingKey: (key, parentKey) =>
-    `Il manque ${formatKey(key)} dans ${formatKey(parentKey)}`,
+    (parentKey
+      ? `Il manque ${formatKey(key)} dans ${formatKey(parentKey)}`
+      : `Il manque ${formatKey(key)}`),
   shouldBeArray: key => `${formatKey(key)} doit être une liste`,
   shouldBeObject: key => `${formatKey(key)} doit être un objet`,
   emptyArray: key => `${formatKey(key)} ne doit pas être vide`,
@@ -121,7 +123,7 @@ class PDFService {
     return this.makeConfigForPDF({ data, type, options });
   };
 
-  generateDataAsPDF = ({ data, type, options }, testing = false) => {
+  generateDataAsPDF = ({ data, type, options = {} }, testing = false) => {
     const { HTML } = options;
     const content = this.generateContentObject({ data, type, options });
 

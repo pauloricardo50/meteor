@@ -1,6 +1,6 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import uniforms from 'uniforms-material';
+import uniforms from 'uniforms-material'; // Leave this imported here for autoforms to work
 
 import {
   createdAt,
