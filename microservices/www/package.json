@@ -37,6 +37,7 @@
     "faker": "^4.1.0",
     "indexof": "0.0.1",
     "js-search": "^1.4.2",
+    "meteor-accounts-t9n": "^2.3.1",
     "meteor-node-stubs": "^0.4.1",
     "moment": "^2.22.2",
     "normalize-scss": "^7.0.1",
