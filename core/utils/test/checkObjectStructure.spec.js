@@ -1,9 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { checkObjectStructure } from '../checkObjectStructure';
+import { makeCheckObjectStructure, testErrors } from '../checkObjectStructure';
 
-describe('checkObjectStructure', () => {
+const checkObjectStructure = makeCheckObjectStructure(testErrors);
+
+describe.only('checkObjectStructure', () => {
   describe('does not throw when object matches the template', () => {
     it('with a single key string', () => {
       const template = { a: 1 };
@@ -90,28 +92,28 @@ describe('checkObjectStructure', () => {
       const template = { abc: 1 };
       const obj = {};
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key abc from object.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key abc from object');
     });
 
     it('with a key that is undefined', () => {
       const template = { abc: 1 };
       const obj = { abc: undefined };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key abc from object.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key abc from object');
     });
 
     it('with a key that is expected to be an array but is not', () => {
       const template = { abc: [] };
       const obj = { abc: 2 };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Object key abc must be an array.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Object key abc must be an array');
     });
 
     it('with a key that is expected to be a non-empty array but is empty', () => {
       const template = { abc: [1] };
       const obj = { abc: [] };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Array at object key abc should not be empty.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Array at object key abc should not be empty');
     });
 
     it('with a non matching object in array', () => {
@@ -130,21 +132,21 @@ describe('checkObjectStructure', () => {
         ],
       };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key c from object.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key c from object');
     });
 
     it('with a key that is expected to be an object but is not', () => {
       const template = { abc: {} };
       const obj = { abc: [] };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Object key abc must be an object.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Object key abc must be an object');
     });
 
-    it('with a key missing from a nested object', () => {
+    it('says which parent object a key should be in', () => {
       const template = { abc: { efg: 1 } };
       const obj = { abc: {} };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key efg from object.');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Missing key efg from object abc');
     });
   });
 });

@@ -67,7 +67,11 @@ TableFilters.propTypes = {
   filters: PropTypes.object.isRequired,
   handleOptionsSelect: PropTypes.func.isRequired,
   pickOptionsForFilter: PropTypes.func.isRequired,
-  renderFilters: PropTypes.bool.isRequired,
+  renderFilters: PropTypes.bool,
+};
+
+TableFilters.defaultProps = {
+  renderFilters: false,
 };
 
 export default TableFiltersContainer(TableFilters);

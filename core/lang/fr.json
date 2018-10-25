@@ -1,4 +1,8 @@
 {
+  "Forms.phoneNumbers": "Numéros de téléphone",
+  "Forms.assignedEmployee": "Conseiller e-Potek",
+  "Forms.valuation": "Expertise",
+  "Forms.investmentRent": "Loyer de rendement",
   "PromotionLotLoansTable.createdAt": "Ajouté",
   "PromotionUsersPage.title": "Utilisateurs de la promotion",
   "PromotionPage.users": "Voir tous les utilisateurs",

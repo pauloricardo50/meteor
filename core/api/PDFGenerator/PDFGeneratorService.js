@@ -1,7 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import { DDP } from 'meteor/ddp-client';
 import adminLoan from '../loans/queries/adminLoan';
 
-const REMOTE_CONNECTION_TIMEOUT = 100;
+const REMOTE_CONNECTION_INTERVAL = 50;
+const REMOTE_CONNECTION_TIMEOUT = 1000;
+const MAX_COUNT = REMOTE_CONNECTION_TIMEOUT / REMOTE_CONNECTION_INTERVAL;
 
 class PDFGeneratorService {
   init = () => {
@@ -19,13 +22,16 @@ class PDFGeneratorService {
         resolve();
       } else {
         this.remote.reconnect();
-        setTimeout(() => {
+
+        let counter = 0;
+        const interval = setInterval(() => {
           if (!this.remote.status().connected) {
-            this.remote.disconnect();
-            reject(new Meteor.Error("Can't connect to remote"));
+            counter += 1;
+            return;
           }
+          if (counter > MAX_COUNT) clearInterval(interval);
           resolve();
-        }, REMOTE_CONNECTION_TIMEOUT);
+        }, REMOTE_CONNECTION_INTERVAL);
       }
     });
 
@@ -39,7 +45,10 @@ class PDFGeneratorService {
           { type: 'LOAN_BANK', data: { loan } },
           (error, result) => {
             this.remote.disconnect();
-            error ? reject(error) : resolve(result.base64);
+            if (error) {
+              reject(error);
+            }
+            resolve(result && result.base64);
           },
         );
       }));

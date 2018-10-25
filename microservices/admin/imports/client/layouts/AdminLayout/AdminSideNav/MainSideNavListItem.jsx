@@ -52,7 +52,7 @@ MainSideNavListItem.propTypes = {
   collection: PropTypes.string,
   collectionName: PropTypes.string,
   detail: PropTypes.bool,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   label: PropTypes.string,
   onClick: PropTypes.func.isRequired,
   to: PropTypes.string,

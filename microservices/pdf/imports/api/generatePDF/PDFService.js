@@ -1,10 +1,34 @@
+import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
+
 import ReactDOMServer from 'react-dom/server';
 import pdf from 'html-pdf';
 import fs from 'fs';
-import { Random } from 'meteor/random';
-import { checkObjectStructure } from 'core/utils/checkObjectStructure';
+
+import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
+import formatMessage from 'core/utils/intl';
 import LoanBankPDF from './components/LoanBankPDF';
 import { PDF_TYPES, LOAN_BANK_TEMPLATE } from './constants';
+
+const formatKey = (key) => {
+  const i18nKey = `Forms.${key}`;
+  const translated = formatMessage(`Forms.${key}`);
+
+  if (i18nKey === translated) {
+    // Translation does not exist
+    return key;
+  }
+
+  return translated;
+};
+
+const frenchErrors = {
+  missingKey: (key, parentKey) =>
+    `Il manque ${formatKey(key)} dans ${formatKey(parentKey)}`,
+  shouldBeArray: key => `${formatKey(key)} doit être une liste`,
+  shouldBeObject: key => `${formatKey(key)} doit être un objet`,
+  emptyArray: key => `${formatKey(key)} ne doit pas être vide`,
+};
 
 class PDFService {
   constructor() {
@@ -59,9 +83,13 @@ class PDFService {
   handleGeneratePDF = ({ component, props, fileName }, promise, testing) => {
     this.module = promise;
     const html = this.getComponentAsHTML(component, props);
-    testing && fs.writeFileSync('/tmp/pdf_output.html', html);
+    if (testing) {
+      fs.writeFileSync('/tmp/pdf_output.html', html);
+    }
 
-    if (html && fileName) this.generatePDF(html, fileName);
+    if (html && fileName) {
+      this.generatePDF(html, fileName);
+    }
   };
 
   generateContentObject = ({ data, type, options }) => {
@@ -69,6 +97,7 @@ class PDFService {
     switch (type) {
     case PDF_TYPES.LOAN_BANK:
       try {
+        const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
         checkObjectStructure({
           obj: data.loan,
           template: LOAN_BANK_TEMPLATE,

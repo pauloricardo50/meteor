@@ -30,5 +30,11 @@ export const LOAN_BANK_TEMPLATE = {
       },
     },
   },
-  user: { assignedEmployee: 1 },
+  user: {
+    assignedEmployee: {
+      name: 1,
+      email: 1,
+      phoneNumbers: [1],
+    },
+  },
 };

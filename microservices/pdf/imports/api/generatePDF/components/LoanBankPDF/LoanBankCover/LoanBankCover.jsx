@@ -23,7 +23,7 @@ const loanInfo = (loan) => {
     name,
     general: { residenceType, purchaseType },
   } = loan;
-  const { address1, zipCode, city } = loan.properties[0];
+  const { address1, zipCode, city } = loan.structure.property;
   return (
     <div className="loan-info">
       <h1>Financement hypothécaire</h1>
