@@ -15,7 +15,8 @@ import {
 } from '../../../../../startup/client/appRoutes';
 
 const shouldDisplayRecap = loan =>
-  loan.structure.property && loan.structure.property.value;
+  (loan.structure.property && loan.structure.property.value)
+  || loan.structure.propertyValue;
 
 const DashboardRecapFinance = (props) => {
   const { loan } = props;
