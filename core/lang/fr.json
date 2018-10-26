@@ -382,7 +382,7 @@
   "emails.AUCTION_STARTED.BODY": "Nous avons appelé tous les prêteurs de la place à se lancer et vous faire une offre incroyable. Vous pourrez accéder aux résultats le {date, date, full} à minuit.{verticalSpace}Vous recevrez une nouvelle notification quand les enchères seront terminées, donc en attendant, reposez vous!",
   "emails.AUCTION_STARTED.SUBJECT": "[e-Potek] Les enchères ont commencé",
   "emails.AUCTION_STARTED.TITLE": "La bataille se prépare",
-  "emails.CONTACT_US_ADMIN.BODY": "Nom: {name}<br />Email: {email}<br />Tel: {phone}<br />Message: {details}",
+  "emails.CONTACT_US_ADMIN.BODY": "Nom: {name}<br />Email: {email}<br />Tel: {phoneNumber}<br />Message: {details}",
   "emails.CONTACT_US_ADMIN.SUBJECT": "Nouveau contact: {name}",
   "emails.CONTACT_US_ADMIN.TITLE": "Quelqu'un a rempli notre formulaire! :)",
   "emails.CONTACT_US.BODY": "Bonjour {name},{verticalSpace}Nous avons bien reçu votre message, et vous serez contacté, dès que possible, par un de nos experts en hypothèque.{verticalSpace}Yannis<br />Directeur d'e-Potek",
