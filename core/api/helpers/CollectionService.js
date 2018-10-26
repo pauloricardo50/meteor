@@ -26,7 +26,7 @@ class CollectionService {
   }
 
   find(...args) {
-    return this.collection.find(...args).fetch();
+    return this.collection.find(...args);
   }
 
   findOne(...args) {

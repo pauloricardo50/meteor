@@ -1,0 +1,1 @@
+import '../promotionOptions/server/hooks';

@@ -2,7 +2,6 @@ import PromotionOptions from './promotionOptions';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
 import { fullPromotionOptionFragment } from './queries/promotionOptionFragments';
-import { PROMOTION_OPTION_STATUS } from './promotionOptionConstants';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
@@ -77,7 +76,7 @@ export class PromotionOptionService extends CollectionService {
 
   changePriorityOrder({ promotionOptionId, change }) {
     const promotionOption = this.get(promotionOptionId);
-    const loan = promotionOption.loan;
+    const { loan } = promotionOption;
     const { _id: promotionId } = this.getPromotion(promotionOptionId);
     const priorityOrder = LoanService.getPromotionPriorityOrder({
       loanId: loan._id,

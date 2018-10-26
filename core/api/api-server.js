@@ -17,9 +17,10 @@ import './events/server/registerServerListeners';
 import './links';
 import './reducers';
 
+import './server/grapher-live';
+import './server/hooks';
 import './server/queries';
 import './server/reducers';
-import './server/grapher-live';
 
 import { Loans, Borrowers, Offers, Properties } from '.';
 
