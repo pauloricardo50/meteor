@@ -25,12 +25,17 @@ class PDFGeneratorService {
         this.remote.reconnect();
 
         let counter = 0;
-        const interval = setInterval(() => {
+        const interval = Meteor.setInterval(() => {
           if (!this.remote.status().connected) {
             counter += 1;
+            if (counter > MAX_COUNT) {
+              Meteor.clearInterval(interval);
+              this.remote.disconnect();
+              reject(new Meteor.Error('Pas pu se connecter au serveur PDF'));
+            }
             return;
           }
-          if (counter > MAX_COUNT) clearInterval(interval);
+
           resolve();
         }, REMOTE_CONNECTION_INTERVAL);
       }
