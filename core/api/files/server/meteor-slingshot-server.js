@@ -41,17 +41,13 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     // Make sure this user is the owner of the document
     if (collection === BORROWERS_COLLECTION) {
-      const doc = Borrowers.findOne(docId);
-      SecurityService.borrowers.isAllowedToUpdate(doc);
+      SecurityService.borrowers.isAllowedToUpdate(docId);
     } else if (collection === LOANS_COLLECTION) {
-      const doc = Loans.findOne(docId);
-      SecurityService.loans.isAllowedToUpdate(doc);
+      SecurityService.loans.isAllowedToUpdate(docId);
     } else if (collection === PROPERTIES_COLLECTION) {
-      const doc = Properties.findOne(docId);
-      SecurityService.properties.isAllowedToUpdate(doc);
+      SecurityService.properties.isAllowedToUpdate(docId);
     } else if (collection === PROMOTIONS_COLLECTION) {
-      const doc = Promotions.findOne(docId);
-      SecurityService.promotions.isAllowedToUpdate(doc);
+      SecurityService.promotions.isAllowedToUpdate(docId);
     } else {
       throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }

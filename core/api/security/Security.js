@@ -119,7 +119,8 @@ export default class Security {
     }
 
     return (userId) => {
-      const isAllowed = allowedRoles.some(allowedRole => this.hasRole(userId, allowedRole));
+      const isAllowed = allowedRoles.some(allowedRole =>
+        this.hasRole(userId, allowedRole));
 
       if (!isAllowed) {
         this.handleUnauthorized('Unauthorized role');
