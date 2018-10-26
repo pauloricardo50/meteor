@@ -23,12 +23,14 @@ const PrioritySetter = ({
           type="up"
           onClick={onIncrease}
           disabled={isLoading || index === 0}
+          tooltip="Augmenter priorité"
         />
 
         <IconButton
           type="down"
           onClick={onReduce}
           disabled={isLoading || index === length - 1}
+          tooltip="Réduire priorité"
         />
       </>
     )}
