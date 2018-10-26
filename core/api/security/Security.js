@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import { ROLES } from '../constants';
+import { PROMOTION_USER_PERMISSIONS } from '../promotions/promotionConstants';
 
 export const SECURITY_ERROR = 'NOT_AUTHORIZED';
 
@@ -127,4 +128,11 @@ export default class Security {
       }
     };
   }
+
+  static canModifyDoc = (doc) => {
+    // Only for client side docs that replace userLinks with users
+    const userId = Meteor.userId();
+    const me = doc.users.find(({ _id }) => _id === userId);
+    return me.$metadata.permissions === PROMOTION_USER_PERMISSIONS.MODIFY;
+  };
 }

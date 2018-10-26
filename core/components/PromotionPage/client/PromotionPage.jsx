@@ -52,8 +52,8 @@ const PromotionPage = (props: PromotionPageProps) => {
       <PromotionPageDocuments promotion={promotion} />
       {isPro && (
         <>
-          <ProPromotionLotsTable promotion={promotion} />
-          <AdditionalLotsTable promotion={promotion} />
+          <ProPromotionLotsTable promotion={promotion} canModify={canModify} />
+          <AdditionalLotsTable promotion={promotion} canModify={canModify} />
         </>
       )}
       {!isPro && (

@@ -19,21 +19,23 @@ const PromotionLotsManager = ({
   promotionLotId,
   status,
   options,
-}: PromotionLotsManagerProps) => (
-  <div className="promotion-lots-manager">
-    {lots.map(lot => (
-      <LotChip
-        key={lot._id}
-        lot={lot}
-        allowDelete={status === PROMOTION_LOT_STATUS.AVAILABLE}
-        promotionLotId={promotionLotId}
-      />
-    ))}
-    {status === PROMOTION_LOT_STATUS.AVAILABLE && (
-      <DropdownMenu iconType="add" options={options} />
-    )}
-  </div>
-);
+  canModify,
+}: PromotionLotsManagerProps) => {
+  const allowEdit = canModify && status === PROMOTION_LOT_STATUS.AVAILABLE;
+  return (
+    <div className="promotion-lots-manager">
+      {lots.map(lot => (
+        <LotChip
+          key={lot._id}
+          lot={lot}
+          allowDelete={allowEdit}
+          promotionLotId={promotionLotId}
+        />
+      ))}
+      {allowEdit && <DropdownMenu iconType="add" options={options} />}
+    </div>
+  );
+};
 
 export default withProps(({ allLots = [], promotionLotId }) => {
   let options;

@@ -21,6 +21,7 @@ const PromotionLotAttributer = ({
   solvency,
   solvencyClassName,
   promotionLotName,
+  canModify,
 }: PromotionLotAttributerProps) => (
   <div className="promotion-lot-attributer">
     {promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE && (
@@ -31,6 +32,7 @@ const PromotionLotAttributer = ({
           label: <T id="PromotionLotAttributer.book" />,
         }}
         method={bookPromotionLot}
+        disabled={!canModify}
       >
         <div className="book-client-infos">
           <p className="bold">Attribuer {promotionLotName} à</p>
@@ -55,12 +57,14 @@ const PromotionLotAttributer = ({
             key="sell"
             method={sellPromotionLot}
             label={<T id="PromotionLotAttributer.sell" />}
+            disabled={!canModify}
           />
           <ConfirmMethod
             buttonProps={{ outlined: true, error: true }}
             key="cancel"
             method={cancelPromotionLotBooking}
             label={<T id="PromotionLotAttributer.cancelBooking" />}
+            disabled={!canModify}
           />
         </>
     )}

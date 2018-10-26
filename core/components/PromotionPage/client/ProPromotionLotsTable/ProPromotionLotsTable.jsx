@@ -15,33 +15,36 @@ const ProPromotionLotsTable = ({
   columnOptions,
   addProperty,
   addLot,
+  canModify,
 }: ProPromotionLotsTableProps) => (
   <>
     <h3 className="text-center">
       <T id="collections.lots" />
     </h3>
-    <div className="promotion-table-actions">
-      <AutoFormDialog
-        buttonProps={{
-          label: <T id="PromotionPage.addProperty" />,
-          raised: true,
-          primary: true,
-          style: { alignSelf: 'flex-start' },
-        }}
-        schema={PropertySchema.pick('name', 'value')}
-        onSubmit={addProperty}
-      />
-      <AutoFormDialog
-        buttonProps={{
-          label: <T id="PromotionPage.addLot" />,
-          raised: true,
-          primary: true,
-          style: { alignSelf: 'flex-start' },
-        }}
-        schema={LotSchema.pick('name', 'type', 'description', 'value')}
-        onSubmit={addLot}
-      />
-    </div>
+    {canModify && (
+      <div className="promotion-table-actions">
+        <AutoFormDialog
+          buttonProps={{
+            label: <T id="PromotionPage.addProperty" />,
+            raised: true,
+            primary: true,
+            style: { alignSelf: 'flex-start' },
+          }}
+          schema={PropertySchema.pick('name', 'value')}
+          onSubmit={addProperty}
+        />
+        <AutoFormDialog
+          buttonProps={{
+            label: <T id="PromotionPage.addLot" />,
+            raised: true,
+            primary: true,
+            style: { alignSelf: 'flex-start' },
+          }}
+          schema={LotSchema.pick('name', 'type', 'description', 'value')}
+          onSubmit={addLot}
+        />
+      </div>
+    )}
     <Table rows={rows} columnOptions={columnOptions} />
   </>
 );

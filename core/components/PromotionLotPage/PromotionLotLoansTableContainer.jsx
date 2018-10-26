@@ -19,13 +19,16 @@ const getSolvency = (email) => {
   return { className: 'primary', text: 'En cours' };
 };
 
-const mapOption = ({
-  status: promotionLotStatus,
-  _id: promotionLotId,
-  promotion: lotPromotion,
-  attributedTo,
-  name,
-}) => (promotionOption) => {
+const mapOption = (
+  {
+    status: promotionLotStatus,
+    _id: promotionLotId,
+    promotion: lotPromotion,
+    attributedTo,
+    name,
+  },
+  canModify,
+) => (promotionOption) => {
   console.log('promotionOption', promotionOption);
   const {
     _id: promotionOptionId,
@@ -73,6 +76,7 @@ const mapOption = ({
         solvency={getSolvency(user && user.email).text}
         solvencyClassName={getSolvency(user && user.email).className}
         promotionLotName={name}
+        canModify={canModify}
         key="promotionLotAttributer"
       />,
     ],
@@ -89,9 +93,10 @@ const columnOptions = [
 ].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
 
 export default compose(
-  mapProps(({ promotionOptions, promotionLot }) => ({
+  mapProps(({ promotionOptions, promotionLot, canModify }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
+    canModify,
   })),
   withSmartQuery({
     query: proPromotionOptions,
@@ -99,8 +104,8 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'promotionOptions',
   }),
-  withProps(({ promotionOptions, promotionLot }) => ({
-    rows: promotionOptions.map(mapOption(promotionLot)),
+  withProps(({ promotionOptions, promotionLot, canModify }) => ({
+    rows: promotionOptions.map(mapOption(promotionLot, canModify)),
     columnOptions,
   })),
 );

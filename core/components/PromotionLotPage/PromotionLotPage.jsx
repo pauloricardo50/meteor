@@ -18,6 +18,7 @@ const ProPromotionLotPage = ({
   promotionLot,
   currentUser,
   promotionId,
+  canModify,
 }: ProPromotionLotPageProps) => {
   const {
     name,
@@ -47,13 +48,15 @@ const ProPromotionLotPage = ({
           &nbsp;
           <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>
-        <div className="promotion-buttons">
-          <LotDocumentsManager
-            property={properties[0]}
-            currentUser={currentUser}
-          />
-          <PromotionLotModifier promotionLot={promotionLot} />
-        </div>
+        {canModify && (
+          <div className="promotion-buttons">
+            <LotDocumentsManager
+              property={properties[0]}
+              currentUser={currentUser}
+            />
+            <PromotionLotModifier promotionLot={promotionLot} />
+          </div>
+        )}
 
         <h3>
           <T id="PromotionLotPage.manageLot" />
@@ -63,11 +66,13 @@ const ProPromotionLotPage = ({
           lots={lots}
           allLots={allLots}
           status={promotionLot.status}
+          canModify={canModify}
         />
 
         <PromotionLotLoansTable
           promotionOptions={promotionOptions}
           promotionLot={promotionLot}
+          canModify={canModify}
         />
       </div>
     </div>

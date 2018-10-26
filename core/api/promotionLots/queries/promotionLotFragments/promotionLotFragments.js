@@ -13,6 +13,7 @@ export const proPromotionLotFragment = {
   promotion: {
     name: 1,
     promotionLots: { name: 1 },
+    users: { _id: 1 },
     lots: {
       name: 1,
       value: 1,
@@ -42,5 +43,5 @@ export const appPromotionLotFragment = {
   attributedTo: {
     user: { _id: 1 },
   },
-  promotion: { name: 1 }, // This place makes it go bad
+  promotion: { name: 1 },
 };
