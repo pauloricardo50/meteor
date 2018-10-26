@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { createRoute } from 'core/utils/routerUtils';
 
 import Chip from 'core/components/Material/Chip';
+import Tooltip from 'core/components/Material/Tooltip';
 import Icon from 'core/components/Icon';
 
 type PriorityOrderProps = {};
@@ -61,7 +62,14 @@ const PriorityOrder = ({
                 promotionLots,
               })}
               icon={
-                <Icon type={solvency ? 'check' : 'close'} className="icon" />
+                (solvency === false || solvency === true) && (
+                  <Tooltip title={solvency ? 'Solvable' : 'Non solvable'}>
+                    <Icon
+                      type={solvency ? 'check' : 'close'}
+                      className="icon"
+                    />
+                  </Tooltip>
+                )
               }
               style={{ cursor: 'pointer' }}
             />
