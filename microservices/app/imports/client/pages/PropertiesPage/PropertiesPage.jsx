@@ -5,27 +5,15 @@ import T from 'core/components/Translation';
 import { PropertyAdder } from 'core/components/PropertyForm';
 import Page from 'core/components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
-import PromotionDetail from './Promotions/PromotionDetail';
+import PropertiesPagePromotions from './PropertiesPagePromotions';
 
-const PropertiesPage = ({
-  loan: { _id: loanId, properties, promotions, hasPromotion },
-}) => {
-  console.log('promotions', promotions);
-
+const PropertiesPage = ({ loan }) => {
+  const { _id: loanId, properties, hasPromotion } = loan;
   return (
     <Page id="PropertiesPage" titleId="PropertiesPage.title">
       <section className="card1 card-top properties-page">
-        <div className="promotions">
-          {promotions
-            && promotions.map(promotion => (
-              <PromotionDetail
-                promotion={promotion}
-                loanId={loanId}
-                key={promotion._id}
-              />
-            ))}
-        </div>
-        <hr />
+        {hasPromotion && <PropertiesPagePromotions loan={loan} />}
+
         <div className="properties">
           {properties.map(property => (
             <PropertiesPageDetail

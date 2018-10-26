@@ -1,10 +1,13 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { createRoute } from 'core/utils/routerUtils';
-import { APP_PROMOTION_PAGE } from 'imports/startup/client/appRoutes';
+import StatusLabel from 'core/components/StatusLabel';
 import promotionFiles from 'core/api/promotions/queries/promotionFiles';
 import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
+import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { APP_PROMOTION_PAGE } from '../../../../startup/client/appRoutes';
 
 type PromotionCardProps = {
   promotion: Object,
@@ -12,9 +15,9 @@ type PromotionCardProps = {
 };
 
 const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
-  const { name, documents } = promotion;
+  const { name, documents, status } = promotion;
   const { promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
-  
+
   return (
     <Link
       to={createRoute(APP_PROMOTION_PAGE, {
@@ -28,7 +31,10 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
           style={{ backgroundImage: `url(${promotionImage[0].url})` }}
           className="promotion-image"
         />
-        <h2>{name}</h2>
+        <h2>
+          <span>{name}</span>
+          <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+        </h2>
         <h3 className="secondary">{promotion.address}</h3>
       </React.Fragment>
     </Link>
