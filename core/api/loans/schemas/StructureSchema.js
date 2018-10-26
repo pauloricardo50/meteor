@@ -33,6 +33,7 @@ const StructureSchema = new SimpleSchema({
   },
   offerId: { type: String, optional: true },
   propertyId: { type: String, optional: true },
+  promotionOptionId: { type: String, optional: true },
   propertyWork: {
     type: SimpleSchema.Integer,
     min: 0,

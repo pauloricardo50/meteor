@@ -12,6 +12,11 @@ PromotionOptions.addReducers({
     reduce: ({ promotionLots = [] }) =>
       (promotionLots.length > 0 ? promotionLots[0].name : ''),
   },
+  value: {
+    body: { promotionLots: { value: 1 } },
+    reduce: ({ promotionLots = [] }) =>
+      (promotionLots.length > 0 ? promotionLots[0].value : 0),
+  },
   priority: {
     body: { loan: { promotionLinks: 1 } },
     reduce: ({ loan, _id: promotionOptionId }) => {

@@ -31,6 +31,7 @@ export const loanBaseFragment = {
     attributedToMe: 1,
     priority: 1,
     promotion: 1,
+    value: 1,
   },
   hasPromotion: 1,
   // $options: { sort: { createdAt: 1 } },

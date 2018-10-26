@@ -47,6 +47,7 @@ export const formatLoanWithStructure = ({
   structures,
   properties,
   offers,
+  promotionOptions,
 }) => {
   let structure = {};
 
@@ -58,6 +59,11 @@ export const formatLoanWithStructure = ({
 
       if (structure.propertyId) {
         const property = properties.find(({ _id }) => _id === structure.propertyId);
+        structure = { ...structure, property };
+      }
+
+      if (structure.promotionOptionId) {
+        const property = promotionOptions.find(({ _id }) => _id === structure.promotionOptionId);
         structure = { ...structure, property };
       }
 
