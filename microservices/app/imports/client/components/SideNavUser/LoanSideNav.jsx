@@ -44,13 +44,13 @@ const sideNavLinks: linksType = [
     to: ROUTES.BORROWERS_PAGE_NO_TAB,
     icon: faUsers,
     percent: loan =>
-      Calculator.personalInfoPercent({ borrowers: loan.borrowers }),
+      Calculator.personalInfoPercent({ loan }),
   },
   {
     id: 'PropertiesPage',
     to: ROUTES.PROPERTIES_PAGE,
     icon: faHome,
-    percent: loan => Calculator.propertyPercent({ loan }),
+    percent: loan => !loan.hasPromotion && Calculator.propertyPercent({ loan }),
   },
   {
     id: 'FilesPage',
@@ -96,7 +96,8 @@ export const LoanSideNav = ({
             <FontAwesomeIcon icon={icon} className="icon" />
             <span className="text">
               <T id={`${id}.title`} />
-              {percent && (
+              {percent
+                && progress !== false && (
                 <span className="progress">
                   <PercentWithStatus
                     value={progress}
