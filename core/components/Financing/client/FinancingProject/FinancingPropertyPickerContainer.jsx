@@ -38,7 +38,12 @@ const FinancingPropertyPickerContainer = compose(
         updateStructure.run({
           loanId,
           structureId,
-          structure: { propertyId: value },
+          structure: {
+            // Also reset propertyValue and notaryFees since it should not be the same
+            propertyId: value,
+            propertyValue: null,
+            notaryFees: null,
+          },
         });
       }
     },
