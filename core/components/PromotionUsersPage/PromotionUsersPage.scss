@@ -1,9 +1,10 @@
 .promotion-users-page {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  padding: 16px;
+  flex-direction: column;
+
   margin-top: 16px;
+  padding: 16px;
 
   .promotion-users-table {
     align-self: stretch;

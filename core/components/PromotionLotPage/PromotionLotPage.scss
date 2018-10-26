@@ -1,8 +1,9 @@
 .promotion-lot-page {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+
   margin-top: 16px;
+  padding: 16px;
 
   h1 {
     display: flex;
@@ -13,17 +14,18 @@
     display: flex;
     align-items: center;
 
-    > * {
+     > * {
       margin-right: 4px;
     }
   }
 
   .solvent,
   .non-solvent {
-    background-color: $success;
+    padding: 4px;
+
     color: white;
     border-radius: 4px;
-    padding: 4px;
+    background-color: $success;
   }
 
   .non-solvent {
@@ -34,26 +36,28 @@
     display: flex;
     align-items: center;
 
-    > * {
+     > * {
       margin-right: 4px;
     }
   }
 
   .sold {
-    background-color: $success;
+    padding: 4px;
+
     color: white;
     border-radius: 4px;
-    padding: 4px;
+    background-color: $success;
   }
 
   .promotion-buttons {
     display: flex;
-    flex-direction: row;
-    width: 100%;
     align-items: center;
+    flex-direction: row;
     justify-content: flex-start;
 
-    > * {
+    width: 100%;
+
+     > * {
       margin-right: 4px;
     }
   }
@@ -62,7 +66,7 @@
 .priority-order {
   display: flex;
 
-  > * {
+   > * {
     margin-right: 4px;
   }
 
@@ -99,7 +103,7 @@
   display: flex;
   align-items: center;
 
-  > * {
+   > * {
     margin-right: 4px;
   }
 }

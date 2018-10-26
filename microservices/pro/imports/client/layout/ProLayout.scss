@@ -1,28 +1,33 @@
 .pro-layout {
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  position: relative;
 
   &-content {
     display: flex;
     flex-direction: column;
-    padding: 16px;
+
     margin-top: $top-nav-height;
+    padding: 16px;
   }
 }
 
 .pro-top-nav {
   position: fixed;
-  background-color: #fff;
-  width: 100%;
+  z-index: $z-nav;
+
   display: flex;
-  box-sizing: border-box;
-  padding-left: 8px;
-  padding-right: 4px;
+  align-items: stretch;
   flex-direction: row;
   justify-content: space-between;
-  align-items: stretch;
-  z-index: $z-nav;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding-right: 4px;
+  padding-left: 8px;
+
+  background-color: #fff;
 
   .left,
   .right {
@@ -31,20 +36,23 @@
   }
 
   &-link {
-    border-radius: 4px;
-    align-self: stretch;
-    margin: 8px 4px;
-    padding: 0 16px;
     display: flex;
     align-items: center;
+    align-self: stretch;
     justify-content: center;
-    color: $body-text;
+
+    margin: 8px 4px;
+    padding: 0 16px;
+
     transition: background-color 200ms $bezier, color 200ms $bezier,
-      box-shadow 200ms $bezier;
+    box-shadow 200ms $bezier;
+
+    color: $body-text;
+    border-radius: 4px;
 
     &:hover {
-      background-color: $primary;
       color: white;
+      background-color: $primary;
       box-shadow: $shadow-level-2;
     }
   }

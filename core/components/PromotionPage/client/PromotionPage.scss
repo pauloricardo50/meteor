@@ -1,7 +1,8 @@
 .promotion-page {
-  padding: 16px;
   display: flex;
   flex-direction: column;
+
+  padding: 16px;
 
   &-header {
     display: flex;
@@ -16,10 +17,11 @@
     }
 
     &-left {
-      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
+
+      box-sizing: border-box;
       padding-right: 16px;
 
       h1 {
@@ -30,6 +32,7 @@
 
       .promotion-title {
         align-self: center;
+
         width: 100%;
         max-width: 600px;
       }
@@ -37,36 +40,37 @@
       .logos,
       .contacts {
         display: flex;
-        justify-content: flex-start;
-        flex-direction: column;
         align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
 
         .list {
-          align-self: stretch;
           display: flex;
-          justify-content: space-around;
           align-items: flex-start;
+          align-self: stretch;
           flex-wrap: wrap;
+          justify-content: space-around;
         }
       }
 
       .logos {
         .logo {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: flex-start;
+
           width: 150px;
           min-height: 100px;
           max-height: 150px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
 
           p {
             max-width: 150px;
           }
 
           img {
-            max-height: 100px;
             max-width: 150px;
+            max-height: 100px;
             margin-bottom: 8px;
           }
         }
@@ -75,8 +79,8 @@
       .contacts {
         .contact {
           display: flex;
-          flex-direction: column;
           align-items: flex-start;
+          flex-direction: column;
 
           h4 {
             margin: 0;
@@ -90,12 +94,14 @@
     }
 
     &-right {
+      display: flex;
+
       min-width: 300px;
       min-height: 500px;
-      display: flex;
 
       .promotion-image {
         flex-grow: 1;
+
         border-radius: 32px;
         background-repeat: no-repeat;
         background-position: center center;
@@ -106,15 +112,16 @@
 
   .buttons {
     margin: 40px 0;
-    > * {
+     > * {
       margin-right: 16px;
       margin-bottom: 8px;
     }
   }
 
   .map {
-    height: 500px;
     align-self: stretch;
+
+    height: 500px;
     margin-top: 40px;
   }
 
@@ -122,7 +129,7 @@
     display: flex;
     align-self: flex-start;
 
-    > * {
+     > * {
       margin-right: 8px;
     }
   }
@@ -130,6 +137,7 @@
   .additional-lots {
     display: flex;
     flex-direction: column;
+
     width: 100%;
     margin: 32px 0;
 
@@ -142,7 +150,7 @@
     display: flex;
     align-items: center;
 
-    > * {
+     > * {
       margin-left: 4px;
     }
   }

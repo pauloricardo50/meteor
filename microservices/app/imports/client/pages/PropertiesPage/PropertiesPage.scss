@@ -18,6 +18,7 @@
     .promotion-detail {
       display: flex;
       flex-direction: column;
+
       box-sizing: border-box;
       width: 100%;
       max-width: 400px;
@@ -25,14 +26,17 @@
       margin: 16px;
 
       .promotion-image {
+        flex-grow: 1;
+
         margin: -16px;
         margin-bottom: 0;
-        flex-grow: 1;
+
+        transition: background-image 1s $bezier;
+
         border-radius: 16px;
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;
-        transition: background-image 1s $bezier;
       }
 
       .promotion-card {

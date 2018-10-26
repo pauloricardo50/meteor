@@ -19,11 +19,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-sizing: border-box;
 
+  box-sizing: border-box;
   width: 100%;
   width: calc(
-    100% - 250px
+  100% - 250px
   ); /* Side-nav width, careful, not updated with variable */
   height: 64px;
   padding: 0 16px;

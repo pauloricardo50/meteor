@@ -1,20 +1,22 @@
 .promotion-users-table {
-  padding: 50px;
   margin-bottom: 16px;
+  padding: 50px;
 }
 
 .search-pro-users {
   display: flex;
   flex-direction: column;
+
   padding: 16px;
 
   .user {
     display: flex;
-    width: 100%;
+    align-items: center;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    > * {
+
+    width: 100%;
+     > * {
       padding: 8px;
     }
   }
