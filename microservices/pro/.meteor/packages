@@ -68,3 +68,4 @@ aldeed:schema-deny
 service-configuration@1.0.11
 epotek:accounts-ui
 lmachens:kadira
+matb33:collection-hooks
