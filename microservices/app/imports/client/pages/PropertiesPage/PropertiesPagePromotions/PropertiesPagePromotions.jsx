@@ -32,13 +32,16 @@ const PropertiesPagePromotions = ({
     )}
 
     <div className="promotion-options">
-      {promotionOptions.map(promotionOption => (
-        <PromotionOptionDetail
-          promotionOption={promotionOption}
-          loanId={loanId}
-          key={promotionOption._id}
-        />
-      ))}
+      {promotionOptions
+        .sort(({ priority: priority1 }, { priority: priority2 }) =>
+          priority1 - priority2)
+        .map(promotionOption => (
+          <PromotionOptionDetail
+            promotionOption={promotionOption}
+            loanId={loanId}
+            key={promotionOption._id}
+          />
+        ))}
     </div>
   </div>
 );
