@@ -25,7 +25,7 @@ const getValueTranslationIdForPath = (value, filterPath) => {
   }
 
   const translationId = (['type', 'status'].includes(filterKey)
-      && `TasksStatusDropdown.${value}`)
+      && `TaskStatusSetter.${value}`)
     || (filterKey === 'roles' && `roles.${value}`);
 
   if (!translationId) {

@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 
 import query from 'core/api/tasks/queries/tasks';
 import { withSmartQuery } from 'core/api';
-import withTableFilters from 'core/containers/withTableFilters';
+import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
 import TasksTable from './TasksTable';
 
 export const withTasksQuery = withSmartQuery({
@@ -13,11 +13,10 @@ export const withTasksQuery = withSmartQuery({
     dashboardTasks,
   }),
   queryOptions: { reactive: false },
+  dataName: 'tasks',
 });
 
-export const TasksTableContainer = compose(
+export default compose(
   withTasksQuery,
-  withTableFilters,
-);
-
-export default TasksTableContainer(TasksTable);
+  makeTableFiltersContainer(undefined, 'tasks'),
+)(TasksTable);

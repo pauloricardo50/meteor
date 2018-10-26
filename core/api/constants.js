@@ -1,4 +1,14 @@
 // @flow
+import { LOANS_COLLECTION } from './loans/loanConstants';
+import { BORROWERS_COLLECTION } from './borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from './properties/propertyConstants';
+import { PROMOTIONS_COLLECTION } from './promotions/promotionConstants';
+import { LOTS_COLLECTION } from './lots/lotConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptions/promotionOptionConstants';
+import { PROMOTION_LOTS_COLLECTION } from './promotionLots/promotionLotConstants';
+import { TASKS_COLLECTION } from './tasks/taskConstants';
+import { OFFERS_COLLECTION } from './offers/offerConstants';
+
 export * from './borrowers/borrowerConstants';
 export * from './files/fileConstants';
 export * from './interestRates/interestRatesConstants';
@@ -17,3 +27,14 @@ export * from './wuest/wuestConstants';
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
 export const ERROR = 'ERROR';
+export const COLLECTIONS = {
+  LOANS_COLLECTION,
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  PROMOTIONS_COLLECTION,
+  LOTS_COLLECTION,
+  PROMOTION_OPTIONS_COLLECTION,
+  PROMOTION_LOTS_COLLECTION,
+  TASKS_COLLECTION,
+  OFFERS_COLLECTION,
+};

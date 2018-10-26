@@ -1,15 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import T from 'core/components/Translation/';
 import DropdownMenu from 'core/components/DropdownMenu/';
 import { taskChangeStatus } from 'core/api/methods';
+import { TASK_QUERIES } from 'imports/core/api/constants';
+import ClientEventService from 'core/api/events/ClientEventService';
 
 const changeStatus = (status, taskId) => {
-  taskChangeStatus.run({
-    taskId,
-    newStatus: status,
+  taskChangeStatus.run({ taskId, newStatus: status }).then(() => {
+    ClientEventService.emit(TASK_QUERIES.TASKS);
+    ClientEventService.emit(TASK_QUERIES.TASKS_FOR_DOC);
   });
 };
 
@@ -22,13 +23,13 @@ const getMenuItems = (taskId, taskStatus) => {
     onClick: () => {
       changeStatus(status, taskId);
     },
-    label: <T id={`TasksStatusDropdown.${status}`} />,
+    label: <T id={`TaskStatusSetter.${status}`} />,
   }));
 
   return options;
 };
 
-const TasksDropdown = (props) => {
+const TaskStatusSetter = (props) => {
   const { taskId, taskStatus, styles } = props;
 
   return (
@@ -36,11 +37,11 @@ const TasksDropdown = (props) => {
       iconType="offlinePin"
       options={getMenuItems(taskId, taskStatus)}
       style={styles}
-      tooltip={<T id="TasksStatusDropdown.changeTaskStatus" />}
+      tooltip={<T id="TaskStatusSetter.changeTaskStatus" />}
     />
   );
 };
 
-TasksDropdown.propTypes = {};
+TaskStatusSetter.propTypes = {};
 
-export default TasksDropdown;
+export default TaskStatusSetter;

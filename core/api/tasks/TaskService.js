@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import UserService from '../users/UserService';
 import SlackService from '../slack/SlackService';
 import CollectionService from '../helpers/CollectionService';
-import { TASK_STATUS } from './taskConstants';
+import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 import { validateTask } from './taskValidation';
 import Tasks from '.';
 
@@ -12,7 +12,15 @@ class TaskService extends CollectionService {
     super(Tasks);
   }
 
-  insert = ({ type, fileKey, userId, assignedTo, createdBy, title }) => {
+  insert = ({
+    type = TASK_TYPE.CUSTOM,
+    fileKey,
+    userId,
+    assignedTo,
+    createdBy,
+    title,
+    docId,
+  }) => {
     const taskId = Tasks.insert({
       type,
       assignedEmployeeId: assignedTo,
@@ -20,6 +28,7 @@ class TaskService extends CollectionService {
       fileKey,
       userId,
       title,
+      docId,
     });
 
     const user = UserService.get(Meteor.userId());
@@ -77,8 +86,8 @@ class TaskService extends CollectionService {
   changeStatus = ({ taskId, newStatus }) =>
     this.update({ taskId, object: { status: newStatus } });
 
-  changeAssignedTo = ({ taskId, newAssignee }) =>
-    this.update({ taskId, object: { assignedEmployeeId: newAssignee } });
+  changeAssignedTo = ({ taskId, newAssigneeId }) =>
+    this.update({ taskId, object: { assignedEmployeeId: newAssigneeId } });
 }
 
 export default new TaskService();

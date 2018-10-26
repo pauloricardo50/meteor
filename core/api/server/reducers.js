@@ -3,4 +3,5 @@ import '../loans/server/serverReducers';
 import '../promotionLots/server/serverReducers';
 import '../promotions/server/serverReducers';
 import '../properties/server/serverReducers';
+import '../tasks/server/serverReducers';
 import '../users/server/serverReducers';

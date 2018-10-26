@@ -7,43 +7,34 @@ import {
   taskCompleteByType,
   taskChangeStatus,
   setAssigneeOfTask,
-  loanTaskInsert,
 } from '../methodDefinitions';
-import { TASK_TYPE } from '../taskConstants';
 
-taskInsert.setHandler((context, { type }) => {
+taskInsert.setHandler((context, params) => {
   SecurityService.tasks.isAllowedToInsert();
-  return TaskService.insert({ type });
+  return TaskService.insert(params);
 });
 
-taskUpdate.setHandler((context, { taskId, object }) => {
+taskUpdate.setHandler((context, params) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.insert({ taskId, object });
+  return TaskService.insert(params);
 });
 
-taskComplete.setHandler((context, { taskId }) => {
-  SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.complete({ taskId });
-});
-
-taskCompleteByType.setHandler((context, { type, loanId, newStatus }) => {
+taskComplete.setHandler((context, params) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.completeByType({ type, loanId, newStatus });
+  return TaskService.complete(params);
 });
 
-taskChangeStatus.setHandler((context, { taskId, newStatus }) => {
-  SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.changeStatus({ taskId, newStatus });
+taskCompleteByType.setHandler((context, params) => {
+  SecurityService.tasks.isAllowedToUpdate();
+  return TaskService.completeByType(params);
 });
 
-setAssigneeOfTask.setHandler((context, { taskId, newAssigneeId }) => {
-  SecurityService.tasks.isAllowedToUpdate(taskId);
-  return TaskService.changeAssignedTo({ taskId, newAssigneeId });
+taskChangeStatus.setHandler((context, params) => {
+  SecurityService.tasks.isAllowedToUpdate();
+  return TaskService.changeStatus(params);
 });
 
-loanTaskInsert.setHandler((context, { loanId, title }) => {
-  SecurityService.tasks.isAllowedToInsert();
-  const task = { type: TASK_TYPE.CUSTOM, loanId, title };
-
-  return TaskService.insert(task);
+setAssigneeOfTask.setHandler((context, params) => {
+  SecurityService.tasks.isAllowedToUpdate();
+  return TaskService.changeAssignedTo(params);
 });
