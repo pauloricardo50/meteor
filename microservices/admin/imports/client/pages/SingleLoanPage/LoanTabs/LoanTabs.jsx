@@ -42,7 +42,7 @@ const getTabs = props =>
       to: `/loans/${props.loan._id}/${id}`,
     }));
 
-const LoanTabs = ({ tabId, ...props }) => {
+const LoanTabs = ({ tabId = 'overview', ...props }) => {
   const tabs = getTabs(props);
   const initialIndex = tabs.map(tab => tab.id).indexOf(tabId);
 
