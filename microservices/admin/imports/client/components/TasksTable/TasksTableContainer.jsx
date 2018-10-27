@@ -92,7 +92,7 @@ const makeMapTask = ({ history }) => (task) => {
 export default compose(
   withRouter,
   withProps(({ tasks = [], history }) => ({
-    rows: tasks.map(makeMapTask(history)),
+    rows: tasks.map(makeMapTask({ history })),
     columnOptions: getColumnOptions(),
   })),
 );

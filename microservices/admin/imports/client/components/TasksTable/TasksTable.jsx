@@ -29,15 +29,11 @@ const TasksTable = ({
 
 TasksTable.propTypes = {
   children: PropTypes.node,
-  data: PropTypes.array.isRequired,
   hideIfNoData: PropTypes.bool,
   hideIfNoDataText: PropTypes.string,
-  history: PropTypes.object.isRequired,
-  showAssignee: PropTypes.bool,
 };
 
 TasksTable.defaultProps = {
-  showAssignee: false,
   children: null,
   hideIfNoData: false,
   hideIfNoDataText: "Pas de taches pour l'instant",

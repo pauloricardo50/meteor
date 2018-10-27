@@ -1,4 +1,4 @@
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import query from 'core/api/tasks/queries/tasks';
 import { withSmartQuery } from 'core/api';
@@ -18,5 +18,10 @@ export const withTasksQuery = withSmartQuery({
 
 export default compose(
   withTasksQuery,
+  withProps(({ tasks }) => {
+    console.log('tasks', tasks);
+
+    return {};
+  }),
   makeTableFiltersContainer(undefined, 'tasks'),
 )(TasksTable);
