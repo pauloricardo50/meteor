@@ -12,7 +12,14 @@ import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 type ProPromotionLotsTableProps = {};
 
 const promotionLotSchema = new SimpleSchema({
-  name: { type: String },
+  name: { type: String, uniforms: { autoFocus: true } },
+  value: { type: Number },
+});
+
+const lotSchema = new SimpleSchema({
+  name: { type: String, uniforms: { autoFocus: true } },
+  type: { type: String },
+  description: { type: String, optional: true },
   value: { type: Number },
 });
 
@@ -46,7 +53,7 @@ const ProPromotionLotsTable = ({
             primary: true,
             style: { alignSelf: 'flex-start' },
           }}
-          schema={LotSchema.pick('name', 'type', 'description', 'value')}
+          schema={lotSchema}
           onSubmit={addLot}
         />
       </div>
