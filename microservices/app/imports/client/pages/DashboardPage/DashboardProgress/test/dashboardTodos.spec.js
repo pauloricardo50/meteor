@@ -18,7 +18,7 @@ describe('dashboardTodos', () => {
   beforeEach(() => {
     sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
     sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
-    sinon.stub(Calculator, 'filesProgress').callsFake(() => 1);
+    sinon.stub(Calculator, 'filesProgress').callsFake(() => ({ percent: 1 }));
   });
 
   afterEach(() => {
