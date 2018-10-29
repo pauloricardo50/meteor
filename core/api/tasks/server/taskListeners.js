@@ -5,5 +5,5 @@ import { TASK_TYPE } from '../taskConstants';
 
 ServerEventService.addMethodListener(requestLoanVerification, ({ loanId }) => {
   const type = TASK_TYPE.VERIFY;
-  TaskService.insert({ type, loanId });
+  TaskService.insert({ type, docId: loanId });
 });

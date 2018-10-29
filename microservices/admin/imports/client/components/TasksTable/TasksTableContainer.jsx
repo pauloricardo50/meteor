@@ -47,7 +47,7 @@ const makeMapTask = ({ history }) => (task) => {
     columns: [
       {
         raw: collection,
-        label: <CollectionIconLink relatedDoc={relatedDoc} />,
+        label: collection && <CollectionIconLink relatedDoc={relatedDoc} />,
       },
       title || {
         raw: type,
