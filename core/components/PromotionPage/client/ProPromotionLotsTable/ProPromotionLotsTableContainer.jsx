@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { createRoute } from '../../../../utils/routerUtils';
@@ -67,7 +67,7 @@ const columnOptions = [
 
 export default compose(
   withRouter,
-  mapProps(({ promotion: { promotionLots = [], _id: promotionId }, history }) => {
+  withProps(({ promotion: { promotionLots = [], _id: promotionId }, history }) => {
     const refresh = () =>
       ClientEventService.emit(PROMOTION_QUERIES.PRO_PROMOTION);
     return {

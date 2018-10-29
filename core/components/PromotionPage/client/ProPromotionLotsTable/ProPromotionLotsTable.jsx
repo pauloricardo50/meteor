@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import SimpleSchema from 'simpl-schema';
 
 import { PropertySchema } from '../../../../api/properties/properties';
 import LotSchema from '../../../../api/lots/schemas/LotSchema';
@@ -9,6 +10,11 @@ import { AutoFormDialog } from '../../../AutoForm2';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 
 type ProPromotionLotsTableProps = {};
+
+const promotionLotSchema = new SimpleSchema({
+  name: { type: String },
+  value: { type: Number },
+});
 
 const ProPromotionLotsTable = ({
   rows,
@@ -30,7 +36,7 @@ const ProPromotionLotsTable = ({
             primary: true,
             style: { alignSelf: 'flex-start' },
           }}
-          schema={PropertySchema.pick('name', 'value')}
+          schema={promotionLotSchema}
           onSubmit={addProperty}
         />
         <AutoFormDialog
