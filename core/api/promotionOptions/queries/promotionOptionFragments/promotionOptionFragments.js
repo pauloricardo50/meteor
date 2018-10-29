@@ -15,7 +15,10 @@ export const proPromotionOptionFragment = {
     promotions: { _id: 1 },
     promotionOptions: {
       name: 1,
-      promotionLots: { _id: 1, attributedTo: { user: { _id: 1 } } },
+      promotionLots: {
+        _id: 1,
+        attributedTo: { user: { _id: 1 } },
+      },
     },
     promotionProgress: 1,
   },

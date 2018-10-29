@@ -13,7 +13,6 @@ import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
 } from '../../../../api/constants';
-import { getLabelOtherProps } from '../utils';
 
 const getLotsAttributedToMe = promotionOptions =>
   promotionOptions.filter(({ attributedToMe }) => attributedToMe);
@@ -34,7 +33,7 @@ const makeMapPromotionOption = ({
   index,
   arr,
 ) => {
-  const { name, status, value } = (promotionLots && promotionLots[0]) || {};
+  const { name, status, reducedStatus, value } = (promotionLots && promotionLots[0]) || {};
   return {
     id: promotionOptionId,
     columns: [
@@ -52,11 +51,10 @@ const makeMapPromotionOption = ({
       ),
       name,
       {
-        raw: status,
+        raw: reducedStatus,
         label: (
           <StatusLabel
-            {...getLabelOtherProps({ attributedToMe, status })}
-            status={status}
+            status={reducedStatus}
             collection={PROMOTION_LOTS_COLLECTION}
           />
         ),

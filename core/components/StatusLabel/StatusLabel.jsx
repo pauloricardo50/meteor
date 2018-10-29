@@ -7,6 +7,7 @@ import {
   PROMOTIONS_COLLECTION,
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
+  PROMOTION_LOT_REDUCED_STATUS,
   TASKS_COLLECTION,
   TASK_STATUS,
 } from '../../api/constants';
@@ -29,6 +30,8 @@ const getStatusColor = (status, collection) => {
       [PROMOTION_LOT_STATUS.AVAILABLE]: colors.success,
       [PROMOTION_LOT_STATUS.BOOKED]: colors.primary,
       [PROMOTION_LOT_STATUS.SOLD]: colors.error,
+      [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.success,
+      [PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME]: colors.success,
     }[status];
 
   case TASKS_COLLECTION:

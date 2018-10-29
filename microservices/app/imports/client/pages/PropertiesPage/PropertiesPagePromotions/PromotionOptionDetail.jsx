@@ -7,7 +7,6 @@ import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { toMoney } from 'core/utils/conversionFunctions';
 import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
-import { getLabelOtherProps } from 'core/components/PromotionPage/client/utils';
 import { APP_PROMOTION_OPTION_PAGE } from '../../../../startup/client/appRoutes';
 
 type PromotionOptionDetailProps = {};
@@ -22,9 +21,8 @@ const PromotionOptionDetail = ({
     promotionLots,
     promotion,
     priority,
-    attributedToMe,
   } = promotionOption;
-  const { value, status } = promotionLots[0];
+  const { value, reducedStatus } = promotionLots[0];
 
   return (
     <Link
@@ -38,8 +36,7 @@ const PromotionOptionDetail = ({
       <h2>
         <span>{name}</span>
         <StatusLabel
-          {...getLabelOtherProps({ attributedToMe, status })}
-          status={status}
+          status={reducedStatus}
           collection={PROMOTION_LOTS_COLLECTION}
         />
       </h2>

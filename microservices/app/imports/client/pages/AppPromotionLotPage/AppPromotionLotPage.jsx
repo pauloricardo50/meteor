@@ -10,7 +10,6 @@ import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import { toMoney } from 'core/utils/conversionFunctions';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
-import { getLabelOtherProps } from 'core/components/PromotionPage/client/utils';
 import { APP_PROMOTION_PAGE } from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
 
@@ -25,7 +24,14 @@ export const AppPromotionLotPage = ({
 }: AppPromotionLotPageProps) => {
   console.log('promotionLot', promotionLot);
   console.log('loanPromotions', loanPromotions); // Should have $metadata
-  const { name, status, promotion, value, lots, documents } = promotionLot;
+  const {
+    name,
+    reducedStatus,
+    promotion,
+    value,
+    lots,
+    documents,
+  } = promotionLot;
   const { name: promotionName } = promotion;
   const { custom, attributedToMe } = promotionOption || {};
 
@@ -48,8 +54,7 @@ export const AppPromotionLotPage = ({
           {name}
           &nbsp;
           <StatusLabel
-            {...getLabelOtherProps({ attributedToMe, status })}
-            status={status}
+            status={reducedStatus}
             collection={PROMOTION_LOTS_COLLECTION}
           />
         </h1>
