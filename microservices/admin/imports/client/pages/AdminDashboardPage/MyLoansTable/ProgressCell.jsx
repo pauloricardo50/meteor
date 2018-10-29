@@ -10,7 +10,7 @@ type ProgressCellProps = {};
 const ProgressCell = ({ loan }: ProgressCellProps) => (
   <div className="flex-row center">
     <Icon type="people" />
-    <Percent value={Calculator.personalInfoPercent({ loan }).} rounded />
+    <Percent value={Calculator.personalInfoPercent({ loan })} rounded />
     &nbsp;
     <Icon type="domain" />
     <Percent value={Calculator.propertyPercent({ loan })} rounded />
