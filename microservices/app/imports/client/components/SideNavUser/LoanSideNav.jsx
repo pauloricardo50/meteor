@@ -56,7 +56,7 @@ const sideNavLinks: linksType = [
     id: 'FilesPage',
     to: ROUTES.FILES_PAGE,
     icon: faFolderOpen,
-    percent: loan => Calculator.filesProgress({ loan }),
+    percent: loan => Calculator.filesProgress({ loan }).percent,
   },
 ];
 

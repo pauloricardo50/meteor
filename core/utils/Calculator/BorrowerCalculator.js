@@ -1,16 +1,15 @@
 // @flow
-import {
-  OWN_FUNDS_TYPES,
-  GENDER,
-  RETIREMENT_AGE,
-} from 'imports/core/api/constants';
+import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
 import { getBorrowerDocuments } from 'imports/core/api/files/documents';
 import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
-import { getBorrowerInfoArray } from '../../arrays/BorrowerFormArray';
+import {
+  getBorrowerInfoArray,
+  getBorrowerFinanceArray,
+} from '../../arrays/BorrowerFormArray';
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
@@ -261,11 +260,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     personalInfoPercent({ borrowers }) {
       const a = [];
       arrayify(borrowers).forEach((b) => {
-        const formArray = getBorrowerInfoArray({
+        const personalFormArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
         });
-        getCountedArray(formArray, b, a);
+        const financeFormArray = getBorrowerFinanceArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(personalFormArray, b, a);
+        getCountedArray(financeFormArray, b, a);
       });
 
       return getPercent(a);

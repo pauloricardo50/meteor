@@ -75,27 +75,6 @@ export const getDashboardTodosArray = list =>
         }),
     },
     {
-      id: 'completeBorrowersFinance',
-      isDone: ({ borrowers }) => {
-        const income = borrowers
-          .map(borrower =>
-            BorrowerCalculator.getTotalIncome({ borrowers: borrower }))
-          .reduce((t, v) => t + v, 0);
-        const fortune = borrowers
-          .map(borrower =>
-            BorrowerCalculator.getCashFortune({ borrowers: borrower }))
-          .reduce((t, v) => t + v, 0);
-
-        if (income <= 1000 || fortune <= 1000) {
-          return false;
-        }
-
-        return true;
-      },
-      link: ({ _id: loanId }) =>
-        createRoute(BORROWERS_PAGE, { ':loanId': loanId, ':tabId': 'finance' }),
-    },
-    {
       id: 'completeProperty',
       isDone: (loan) => {
         const {

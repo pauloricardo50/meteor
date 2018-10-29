@@ -151,7 +151,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.be.within(0.18, 0.185);
+      })).to.be.within(0.165, 0.167);
     });
   });
 
@@ -402,6 +402,8 @@ describe('BorrowerCalculator', () => {
           sameAddress: true,
           updatedAt: '2018-08-23T10:20:22.234Z',
           userId: 'fAksm7pJveZybme5F',
+          salary: 100,
+          bankFortune: 1000,
         },
       })).to.equal(1);
     });
