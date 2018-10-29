@@ -26,7 +26,7 @@ Loans.addReducers({
     body,
     reduce: loan => ({
       info: Calculator.personalInfoPercent({ loan }),
-      documents: Calculator.filesProgress({ loan }),
+      documents: Calculator.filesProgress({ loan }).percent,
       verificationStatus: loan.verificationStatus,
     }),
   },
