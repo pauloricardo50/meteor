@@ -32,6 +32,7 @@ export const appPromotionLotFragment = {
   _id: 1,
   value: 1,
   status: 1,
+  reducedStatus: 1,
   lots: {
     name: 1,
     value: 1,

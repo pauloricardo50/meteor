@@ -24,6 +24,7 @@ export const loanBaseFragment = {
     promotionLots: {
       name: 1,
       status: 1,
+      reducedStatus: 1,
       value: 1,
     },
     name: 1,

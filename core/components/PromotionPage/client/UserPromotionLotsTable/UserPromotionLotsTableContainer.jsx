@@ -12,7 +12,6 @@ import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
 } from '../../../../api/constants';
-import { getLabelOtherProps } from '../utils';
 
 const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
   const promotionLots = promotionOptions.filter(option => option.promotionLots[0]._id === promotionLotId);
@@ -28,7 +27,7 @@ const makeMapPromotionLot = ({
   promotionId,
   loan: { _id: loanId, promotionOptions },
   isALotAttributedToMe,
-}) => ({ _id: promotionLotId, name, status, lots, value }) => ({
+}) => ({ _id: promotionLotId, name, status, reducedStatus, lots, value }) => ({
   id: promotionLotId,
   columns: [
     name,
@@ -36,14 +35,7 @@ const makeMapPromotionLot = ({
       raw: status,
       label: (
         <StatusLabel
-          {...getLabelOtherProps({
-            attributedToMe: isLotAttributedToMe({
-              promotionOptions,
-              promotionLotId,
-            }),
-            status,
-          })}
-          status={status}
+          status={reducedStatus}
           collection={PROMOTION_LOTS_COLLECTION}
         />
       ),

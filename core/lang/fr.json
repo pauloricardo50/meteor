@@ -1,4 +1,6 @@
 {
+  "Forms.status.SOLD_TO_ME": "Vendu à moi",
+  "Forms.status.BOOKED_FOR_ME": "Réservé pour moi",
   "FinancingPropertyPicker.promotionOption": "Lot {name}",
   "PromotionOptionDetail.priority": "{priority, plural, =0 {0} one {1er} other {#ème}} Choix",
   "Forms.phoneNumbers": "Numéros de téléphone",
@@ -552,8 +554,8 @@
   "emails.VERIFICATION_REQUESTED.BODY": "Nous avons bien reçu votre demande de vérification, et nous vous reviendrons dans les plus brefs délais possibles.",
   "emails.VERIFICATION_REQUESTED.SUBJECT": "[e-Potek] Vérification demandée",
   "emails.VERIFICATION_REQUESTED.TITLE": "Vous avez demandé la vérification de votre dossier",
-  "emails.VERIFY_EMAIL.BODY": "Pour que nous soyions sûrs que vous n'êtes pas un robot, on doit procéder à une petite vérification.",
-  "emails.VERIFY_EMAIL.CTA": "Vérifier",
+  "emails.VERIFY_EMAIL.BODY": "Merci de confirmer votre nouvelle adresse email en cliquant ici.",
+  "emails.VERIFY_EMAIL.CTA": "Confirmer",
   "emails.VERIFY_EMAIL.SUBJECT": "Vérifiez votre adresse email",
   "emails.VERIFY_EMAIL.TITLE": "Vérifiez votre adresse email",
   "error.fileSize.description": "On ne peut prendre que des fichiers en dessous de 50MB",

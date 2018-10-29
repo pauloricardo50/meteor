@@ -24,7 +24,14 @@ export const AppPromotionLotPage = ({
 }: AppPromotionLotPageProps) => {
   console.log('promotionLot', promotionLot);
   console.log('loanPromotions', loanPromotions); // Should have $metadata
-  const { name, status, promotion, value, lots, documents } = promotionLot;
+  const {
+    name,
+    reducedStatus,
+    promotion,
+    value,
+    lots,
+    documents,
+  } = promotionLot;
   const { name: promotionName } = promotion;
   const { custom, attributedToMe } = promotionOption || {};
 
@@ -46,7 +53,10 @@ export const AppPromotionLotPage = ({
         <h1>
           {name}
           &nbsp;
-          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+          <StatusLabel
+            status={reducedStatus}
+            collection={PROMOTION_LOTS_COLLECTION}
+          />
         </h1>
         <h3 className="secondary">
           <T

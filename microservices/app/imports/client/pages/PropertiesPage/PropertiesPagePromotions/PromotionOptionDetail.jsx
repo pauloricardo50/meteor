@@ -22,7 +22,7 @@ const PromotionOptionDetail = ({
     promotion,
     priority,
   } = promotionOption;
-  const { value, status } = promotionLots[0];
+  const { value, reducedStatus } = promotionLots[0];
 
   return (
     <Link
@@ -35,7 +35,10 @@ const PromotionOptionDetail = ({
     >
       <h2>
         <span>{name}</span>
-        <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+        <StatusLabel
+          status={reducedStatus}
+          collection={PROMOTION_LOTS_COLLECTION}
+        />
       </h2>
       <h3 className="secondary">CHF {toMoney(value)}</h3>
 
