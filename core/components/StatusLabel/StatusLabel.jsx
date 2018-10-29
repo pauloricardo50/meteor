@@ -30,8 +30,9 @@ const getStatusColor = (status, collection) => {
       [PROMOTION_LOT_STATUS.AVAILABLE]: colors.success,
       [PROMOTION_LOT_STATUS.BOOKED]: colors.primary,
       [PROMOTION_LOT_STATUS.SOLD]: colors.error,
-      [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.success,
-      [PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME]: colors.success,
+      [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.tertiary,
+      [PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME]: colors.primary,
+      [PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE]: colors.warning,
     }[status];
 
   case TASKS_COLLECTION:
