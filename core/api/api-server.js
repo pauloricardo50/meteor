@@ -21,10 +21,4 @@ import './server/grapher-live';
 import './server/hooks';
 import './server/queries';
 import './server/reducers';
-
-import { Loans, Borrowers, Offers, Properties } from '.';
-
-Loans._ensureIndex({ userId: 1 });
-Borrowers._ensureIndex({ userId: 1 });
-Offers._ensureIndex({ loanId: 1 });
-Properties._ensureIndex({ userId: 1 });
+import './server/mongoIndexes';
