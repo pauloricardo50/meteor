@@ -21,12 +21,6 @@ export const MONGO_SERVICES = {
   }),
 };
 
-//Shouldn't change
-export const MONGO_PORTS = {
-  [ENVIRONMENT.STAGING]: 38842,
-  [ENVIRONMENT.PRODUCTION]: 53615,
-};
-
 export const HOST = 'kubernetes-service-node.service.consul';
 
 const applicationManifestData = environment => ({
