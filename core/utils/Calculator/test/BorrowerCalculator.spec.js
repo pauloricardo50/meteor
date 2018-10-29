@@ -162,7 +162,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [{ documents: {}, _id: 'borrowerId' }],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0);
+      })).to.deep.equal({ percent: 0, count: 5 });
     });
 
     it('returns 0 when no documents are present', () => {
@@ -171,7 +171,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [{}],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0);
+      })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns more than 0 when a file is present', () => {
@@ -185,7 +185,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0.2);
+      })).to.deep.equal({ percent: 0.2, count: 5 });
     });
   });
 

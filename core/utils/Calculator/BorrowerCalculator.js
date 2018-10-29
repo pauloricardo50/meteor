@@ -70,23 +70,31 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getBorrowerCompletion({ loan, borrowers }) {
       return (
-        (this.getBorrowerFilesProgress({ loan, borrowers })
+        (this.getBorrowerFilesProgress({ loan, borrowers }).percent
           + this.personalInfoPercent({ borrowers }))
         / 2
       );
     }
 
     getBorrowerFilesProgress({ loan, borrowers }) {
-      return arrayify(borrowers).reduce(
-        (total, borrower, index, array) =>
-          total
-          + filesPercent({
+      const percentages = arrayify(borrowers).reduce(
+        (total, borrower) => {
+          const { percent, count } = filesPercent({
             fileArray: getBorrowerDocuments({ loan, id: borrower._id }, this),
             doc: borrower,
-          })
-            / array.length,
-        0,
+          });
+          return {
+            percent: total.percent + percent * count,
+            count: total.count + count,
+          };
+        },
+        { percent: 0, count: 0 },
       );
+
+      return {
+        ...percentages,
+        percent: percentages.percent / percentages.count,
+      };
     }
 
     isTypeWithArrayValues = type =>

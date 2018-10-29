@@ -5,7 +5,7 @@ import { makeCheckObjectStructure, testErrors } from '../checkObjectStructure';
 
 const checkObjectStructure = makeCheckObjectStructure(testErrors);
 
-describe.only('checkObjectStructure', () => {
+describe('checkObjectStructure', () => {
   describe('does not throw when object matches the template', () => {
     it('with a single key string', () => {
       const template = { a: 1 };
