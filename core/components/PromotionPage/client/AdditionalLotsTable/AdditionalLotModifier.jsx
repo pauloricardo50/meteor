@@ -3,14 +3,14 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
 import { compose, withState, withProps } from 'recompose';
-import { lotUpdate } from 'core/api/methods';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
-import { LOT_TYPES, PROMOTION_QUERIES } from '../../../../api/constants';
+import { PROMOTION_QUERIES } from '../../../../api/constants';
 import message from '../../../../utils/message';
 import Button from '../../../Button';
-import { lotRemove } from '../../../../api';
+import { lotRemove, lotUpdate } from '../../../../api';
 import ClientEventService from '../../../../api/events/ClientEventService';
+import { lotSchema } from '../ProPromotionLotsTable/ProPromotionLotsTable';
 
 type AdditionalLotModifierProps = {
   lot: Object,
@@ -24,14 +24,7 @@ type AdditionalLotModifierProps = {
 };
 
 const AdditionalLotModifierSchema = (promotionLots = []) =>
-  new SimpleSchema({
-    name: String,
-    type: {
-      type: String,
-      allowedValues: Object.values(LOT_TYPES),
-    },
-    value: { type: Number, defaultValue: 0, optional: true },
-    description: { type: String, optional: true },
+  lotSchema.extend(new SimpleSchema({
     promotionLot: {
       type: String,
       allowedValues: [...promotionLots.map(({ _id }) => _id), null],
@@ -45,7 +38,7 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
           )),
       },
     },
-  });
+  }));
 
 const AdditionalLotModifier = ({
   lot,
