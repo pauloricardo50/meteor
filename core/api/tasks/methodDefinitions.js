@@ -8,6 +8,7 @@ export const taskInsert = new Method({
     title: Match.Optional(String),
     description: Match.Optional(String),
     docId: Match.Optional(String),
+    assignedTo: Match.Optional(String),
   },
 });
 

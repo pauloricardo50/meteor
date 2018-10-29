@@ -39,7 +39,6 @@ const makeMapTask = ({ history }) => (task) => {
     completedAt,
     assignedEmployee,
   } = task;
-  console.log('task', task);
   const { collection, _id: relatedDocId } = relatedDoc;
 
   return {
