@@ -12,6 +12,7 @@ import { toMoney } from 'core/utils/conversionFunctions';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
 import { APP_PROMOTION_PAGE } from '../../../startup/client/appRoutes';
 import AppPromotionLotPageContainer from './AppPromotionLotPageContainer';
+import { getLabelOtherProps } from 'imports/core/components/PromotionPage/client/utils';
 
 type AppPromotionLotPageProps = {};
 
@@ -46,7 +47,7 @@ export const AppPromotionLotPage = ({
         <h1>
           {name}
           &nbsp;
-          <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
+          <StatusLabel {...getLabelOtherProps({attributedToMe, status})} status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>
         <h3 className="secondary">
           <T
