@@ -35,6 +35,9 @@ PromotionLots.addReducers({
           return status;
         }
       }
+      if (status === PROMOTION_LOT_STATUS.BOOKED) {
+        return PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE;
+      }
       return status;
     },
   },
