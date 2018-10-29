@@ -7,9 +7,13 @@ Tasks.addReducers({
   relatedDoc: {
     body: { docId: 1 },
     reduce: ({ docId }) => {
+      if (!docId) {
+        return {};
+      }
+
       let doc;
       let collection;
-      Object.keys(COLLECTIONS).some((key) => {
+      const foundRelatedDoc = Object.keys(COLLECTIONS).some((key) => {
         collection = COLLECTIONS[key];
         doc = Mongo.Collection.get(collection).findOne(docId, {
           fields: {
@@ -26,7 +30,9 @@ Tasks.addReducers({
         return false;
       });
 
-      return { ...doc, collection };
+      return foundRelatedDoc
+        ? { ...doc, collection }
+        : { collection: 'NOT_FOUND' };
     },
   },
 });

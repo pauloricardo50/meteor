@@ -7,11 +7,12 @@ import {
   USERS_COLLECTION,
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
+  OFFERS_COLLECTION,
 } from '../../api/constants';
 
 type CollectionIconLinkProps = {};
 
-const getIconConfig = ({ collection, _id: docId, ...data }) => {
+const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   switch (collection) {
   case LOANS_COLLECTION:
     return {
@@ -37,8 +38,23 @@ const getIconConfig = ({ collection, _id: docId, ...data }) => {
       icon: 'building',
       text: data.address1,
     };
+  case OFFERS_COLLECTION:
+    return {
+      link: `/offers/${docId}`,
+      icon: 'monetizationOn',
+      text: data.organization,
+    };
+  case 'NOT_FOUND':
+    return {
+      link: null,
+      icon: 'help',
+      text: "N'existe plus",
+    };
+
   default:
-    break;
+    return {
+      text: 'Unknown collection',
+    };
   }
 };
 
