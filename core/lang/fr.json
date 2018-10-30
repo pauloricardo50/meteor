@@ -152,7 +152,7 @@
   "CreateUserDialogForm.sendEnrollmentEmail": "Envoyer email d'invitation immédiatement",
   "CreateUserDialogForm.assignedEmployeeId": "Assigner à",
   "AdminLayout.title": "Admin",
-  "DashboardRecapFinance.emptyButton": "Essayer le calculateur",
+  "DashboardRecapFinance.emptyButton": "Plans financiers",
   "FinancingCurrentOwnFunds.error": "Pas assez de {type}",
 
   "FinancingOwnFundsPickerForm.remaining": "Restant: CHF {value}",
@@ -475,7 +475,8 @@
   "DashboardRecap.title": "EN RÉSUMÉ",
   "DashboardRecapChart.title": "Charges mensuelles",
   "DashboardRecapCost.sumTitle": "Coût total",
-  "DashboardRecapFinance.empty": "Ajoutez la valeur du bien et vos finances pour afficher ce récapitulatif",
+  "DashboardRecapFinance.emptyTitle": "Pas encore de plan financier",
+  "DashboardRecapFinance.emptyDescription": "Ajoutez-en un et il apparaîtra ici",
   "DashboardRecapFinance.title": "Plan financier",
   "DashboardRecapFinancing.sumTitle": "Financement total",
   "DashboardRecapProperty.empty": "Ajoutez l'adresse complète de votre bien pour afficher ce récapitulatif",
