@@ -56,8 +56,11 @@ export const generateServiceName = ({ service, environment }) =>
   `${service}-${environment}`;
 
 export const createDeploySettingsForEnv = environment => ({
-  services: ENVIRONMENT_CONFIG[environment].services.map(service =>
-    generateServiceName({ service, environment }),
+  services: ENVIRONMENT_CONFIG[environment].services.map(
+    service =>
+      typeof service === 'string'
+        ? generateServiceName({ service, environment })
+        : service,
   ),
   root: `./${environment}`,
   meteorSettings: `settings-${environment}.json`,
@@ -93,7 +96,12 @@ export const appManifestYAMLData = ({
       memory,
       instances,
       buildpack: APP_BUILDPACK,
-      services,
+      services: services.map(
+        service =>
+          typeof service === 'string'
+            ? service
+            : service({ name, applicationName, environment }),
+      ),
       ...(APP_ENV_VARIABLES[environment][applicationName] !== {}
         ? { env: APP_ENV_VARIABLES[environment][applicationName] }
         : null),
