@@ -113,7 +113,14 @@ describe('checkObjectStructure', () => {
       const template = { abc: [1] };
       const obj = { abc: [] };
 
-      expect(() => checkObjectStructure({ obj, template })).to.throw('Array at object key abc should not be empty');
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Array at object key abc in undefined should not be empty');
+    });
+
+    it('with a key that is expected to be a non-empty array but is empty and parent object', () => {
+      const template = { abc: { def: [1] } };
+      const obj = { abc: { def: [] } };
+
+      expect(() => checkObjectStructure({ obj, template })).to.throw('Array at object key def in abc should not be empty');
     });
 
     it('with a non matching object in array', () => {
