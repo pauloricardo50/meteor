@@ -43,8 +43,7 @@ const sideNavLinks: linksType = [
     id: 'BorrowersPage',
     to: ROUTES.BORROWERS_PAGE_NO_TAB,
     icon: faUsers,
-    percent: loan =>
-      Calculator.personalInfoPercent({ loan }),
+    percent: loan => Calculator.personalInfoPercent({ loan }),
   },
   {
     id: 'PropertiesPage',
@@ -56,7 +55,8 @@ const sideNavLinks: linksType = [
     id: 'FilesPage',
     to: ROUTES.FILES_PAGE,
     icon: faFolderOpen,
-    percent: loan => Calculator.filesProgress({ loan }).percent,
+    percent: loan =>
+      loan.documentsLoaded && Calculator.filesProgress({ loan }).percent,
   },
 ];
 
