@@ -1,11 +1,10 @@
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
-import ServerEventService from '../events/server/ServerEventService';
 import Loans from '../loans';
 import CollectionService from '../helpers/CollectionService';
 import { fullUserFragment } from './queries/userFragments/index';
-import { USER_EVENTS, ROLES } from './userConstants';
+import { ROLES } from './userConstants';
 import Users from '.';
 
 class UserService extends CollectionService {
@@ -60,10 +59,7 @@ class UserService extends CollectionService {
   };
 
   // This is used to hook into Accounts
-  onCreateUser = (options, user) => {
-    ServerEventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
-    return { ...user, roles: [ROLES.USER] };
-  };
+  onCreateUser = (options, user) => ({ ...user, roles: [ROLES.USER] });
 
   remove = ({ userId }) => Users.remove(userId);
 
