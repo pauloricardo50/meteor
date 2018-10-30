@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 
 type MicroserviceHeadProps = {};
 
-const formatTitle = name =>
+const formatTitle = (name = '') =>
   `e-Potek | ${name.charAt(0).toUpperCase() + name.slice(1)}`;
 
 const MicroserviceHead = (props: MicroserviceHeadProps) => {
