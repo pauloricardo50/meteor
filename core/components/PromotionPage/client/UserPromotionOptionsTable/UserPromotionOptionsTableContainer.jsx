@@ -12,6 +12,7 @@ import StatusLabel from '../../../StatusLabel';
 import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
+  PROMOTION_STATUS,
 } from '../../../../api/constants';
 
 const getLotsAttributedToMe = promotionOptions =>
@@ -19,6 +20,11 @@ const getLotsAttributedToMe = promotionOptions =>
 
 const isAnyLotAttributedToMe = promotionOptions =>
   getLotsAttributedToMe(promotionOptions).length > 0;
+
+const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>
+  !attributedToMe
+  && status === PROMOTION_LOT_STATUS.AVAILABLE
+  && promotionStatus === PROMOTION_STATUS.OPEN;
 
 const makeMapPromotionOption = ({
   isLoading,
@@ -28,6 +34,7 @@ const makeMapPromotionOption = ({
   loanId,
   history,
   isDashboardTable = false,
+  promotionStatus,
 }) => (
   { _id: promotionOptionId, promotionLots, custom, attributedToMe },
   index,
@@ -37,7 +44,8 @@ const makeMapPromotionOption = ({
   return {
     id: promotionOptionId,
     columns: [
-      !attributedToMe && (
+      !attributedToMe
+        && promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
           <PrioritySetter
             index={index}
@@ -67,9 +75,11 @@ const makeMapPromotionOption = ({
             value={custom}
             onSubmit={makeChangeCustom(promotionOptionId)}
             inputProps={{ style: { width: '100%' } }}
-            allowEditing={
-              !attributedToMe && status === PROMOTION_LOT_STATUS.AVAILABLE
-            }
+            allowEditing={allowEditingCustom({
+              attributedToMe,
+              status,
+              promotionStatus,
+            })}
           />
         </div>
       ),
@@ -95,9 +105,14 @@ const makeSortByPriority = priorityOrder => (
   { _id: optionId2 },
 ) => priorityOrder.indexOf(optionId1) - priorityOrder.indexOf(optionId2);
 
-const columnOptions = ({ isDashboardTable = false, isLotAttributedToMe }) =>
+const columnOptions = ({
+  isDashboardTable = false,
+  isLotAttributedToMe,
+  promotionStatus,
+}) =>
   [
-    !isLotAttributedToMe && { id: 'priorityOrder' },
+    !isLotAttributedToMe
+      && promotionStatus === PROMOTION_STATUS.OPEN && { id: 'priorityOrder' },
     { id: 'name' },
     { id: 'status' },
     { id: 'totalValue' },
@@ -144,10 +159,12 @@ export default compose(
         loanId: loan._id,
         history,
         isDashboardTable,
+        promotionStatus: promotion.status,
       })),
       columnOptions: columnOptions({
         isDashboardTable,
         isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
+        promotionStatus: promotion.status,
       }),
     };
   }),

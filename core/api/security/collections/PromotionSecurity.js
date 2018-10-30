@@ -1,3 +1,4 @@
+import { PROMOTION_STATUS } from 'core/api/constants';
 import Security from '../Security';
 import { Promotions } from '../..';
 
@@ -17,6 +18,12 @@ class PromotionSecurity {
 
   static isAllowedToDelete() {
     Security.checkCurrentUserIsAdmin();
+  }
+
+  static isAllowedToModify(promotion) {
+    return (
+      [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.PREPARATION].includes(promotion.status) && Security.canModifyDoc(promotion)
+    );
   }
 }
 

@@ -6,7 +6,10 @@ import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
 import ClickToEditField from 'core/components/ClickToEditField';
-import { PROMOTION_LOTS_COLLECTION } from 'core/api/constants';
+import {
+  PROMOTION_LOTS_COLLECTION,
+  PROMOTION_STATUS,
+} from 'core/api/constants';
 import { createRoute } from 'core/utils/routerUtils';
 import { toMoney } from 'core/utils/conversionFunctions';
 import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/LotChip';
@@ -84,7 +87,9 @@ export const AppPromotionLotPage = ({
               value={custom}
               onSubmit={setCustom}
               className="custom-edit"
-              allowEditing={!attributedToMe}
+              allowEditing={
+                !attributedToMe && promotion.status === PROMOTION_STATUS.OPEN
+              }
             />
           </>
         )}

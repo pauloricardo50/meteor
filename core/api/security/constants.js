@@ -1,0 +1,4 @@
+export const DOCUMENT_USER_PERMISSIONS = {
+  MODIFY: 'MODIFY',
+  READ: 'READ',
+};
