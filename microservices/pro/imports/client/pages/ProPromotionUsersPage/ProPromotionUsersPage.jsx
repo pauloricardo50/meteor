@@ -6,9 +6,10 @@ import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { withSmartQuery } from 'core/api';
 import proLoans from 'core/api/loans/queries/proLoans';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
+import SecurityService from 'core/api/security/index';
 import { PRO_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
 
 type ProPromotionUsersPageProps = {};
@@ -36,5 +37,11 @@ export default compose(
     params: ({ promotionId }) => ({ promotionId }),
     queryOptions: { reactive: false },
     dataName: 'loans',
+  }),
+  withProps(({ loans }) => {
+    const promotion = loans[0] && loans[0].promotions && loans[0].promotions[0];
+    return {
+      canModify: SecurityService.canModifyDoc(promotion),
+    };
   }),
 )(ProPromotionUsersPage);
