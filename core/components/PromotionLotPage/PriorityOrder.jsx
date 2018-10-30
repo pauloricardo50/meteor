@@ -51,6 +51,7 @@ const PriorityOrder = ({
               },
             )}
             key={`${_id}${promotionLots[0]._id}`}
+            onClick={event => event.stopPropagation()}
           >
             <Chip
               label={name}
