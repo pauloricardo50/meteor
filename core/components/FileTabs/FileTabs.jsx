@@ -14,79 +14,86 @@ import ClientEventService, {
 import FileTabsContainer from './FileTabsContainer';
 import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
+import Loading from '../Loading';
 
-const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => (
-  <div className="files-tab">
-    <Tabs
-      id="tabs"
-      // Fetch new files every time you change tabs
-      onChangeCallback={() => ClientEventService.emit(MODIFIED_FILES_EVENT)}
-      tabs={[
-        ...borrowers.map((borrower, index) => ({
-          label: (
-            <FileTabLabel
-              title={borrower.firstName || `Emprunteur ${index + 1}`}
-              progress={Calculator.getBorrowerFilesProgress({
-                loan,
-                borrowers: borrower,
-              })}
-            />
-          ),
-          content: (
-            <SingleFileTab
-              doc={borrower}
-              collection="borrowers"
-              disabled={disabled}
-              documentArray={getBorrowerDocuments({ loan, id: borrower._id })}
-              currentUser={currentUser}
-            />
-          ),
-        })),
-        ...(!loan.hasPromotion && property
-          ? [
-            {
-              label: (
-                <FileTabLabel
-                  id="general.property"
-                  progress={Calculator.getPropertyFilesProgress({ loan })}
-                />
-              ),
-              content: (
-                <SingleFileTab
-                  doc={property}
-                  collection="properties"
-                  disabled={disabled}
-                  documentArray={getPropertyDocuments({
-                    loan,
-                    id: property._id,
-                  })}
-                  currentUser={currentUser}
-                />
-              ),
-            },
-          ]
-          : []),
-        {
-          label: (
-            <FileTabLabel
-              id="FileTabs.loanDocuments"
-              progress={Calculator.getLoanFilesProgress({ loan })}
-            />
-          ),
-          content: (
-            <SingleFileTab
-              doc={loan}
-              collection="loans"
-              disabled={disabled}
-              documentArray={getLoanDocuments({ loan })}
-              currentUser={currentUser}
-            />
-          ),
-        },
-      ]}
-    />
-  </div>
-);
+const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => {
+  if (!loan.documentsLoaded) {
+    return <Loading />;
+  }
+
+  return (
+    <div className="files-tab">
+      <Tabs
+        id="tabs"
+        // Fetch new files every time you change tabs
+        onChangeCallback={() => ClientEventService.emit(MODIFIED_FILES_EVENT)}
+        tabs={[
+          ...borrowers.map((borrower, index) => ({
+            label: (
+              <FileTabLabel
+                title={borrower.firstName || `Emprunteur ${index + 1}`}
+                progress={Calculator.getBorrowerFilesProgress({
+                  loan,
+                  borrowers: borrower,
+                })}
+              />
+            ),
+            content: (
+              <SingleFileTab
+                doc={borrower}
+                collection="borrowers"
+                disabled={disabled}
+                documentArray={getBorrowerDocuments({ loan, id: borrower._id })}
+                currentUser={currentUser}
+              />
+            ),
+          })),
+          ...(!loan.hasPromotion && property
+            ? [
+              {
+                label: (
+                  <FileTabLabel
+                    id="general.property"
+                    progress={Calculator.getPropertyFilesProgress({ loan })}
+                  />
+                ),
+                content: (
+                  <SingleFileTab
+                    doc={property}
+                    collection="properties"
+                    disabled={disabled}
+                    documentArray={getPropertyDocuments({
+                      loan,
+                      id: property._id,
+                    })}
+                    currentUser={currentUser}
+                  />
+                ),
+              },
+            ]
+            : []),
+          {
+            label: (
+              <FileTabLabel
+                id="FileTabs.loanDocuments"
+                progress={Calculator.getLoanFilesProgress({ loan })}
+              />
+            ),
+            content: (
+              <SingleFileTab
+                doc={loan}
+                collection="loans"
+                disabled={disabled}
+                documentArray={getLoanDocuments({ loan })}
+                currentUser={currentUser}
+              />
+            ),
+          },
+        ]}
+      />
+    </div>
+  );
+};
 
 FileTabs.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,

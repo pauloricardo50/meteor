@@ -6,6 +6,7 @@ import cx from 'classnames';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import type { userLoan } from 'core/api/types';
+import Loading from 'core/components/Loading';
 import {
   getDashboardTodosArray,
   promotionTodoList,
@@ -30,6 +31,11 @@ const getTodos = (loan) => {
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
   const todos = getTodos(loan);
+
+  if (!loan.documentsLoaded) {
+    return <Loading />;
+  }
+
   return (
     <div className="dashboard-progress-info">
       {todos.map((todo) => {

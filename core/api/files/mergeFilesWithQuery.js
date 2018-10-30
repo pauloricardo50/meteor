@@ -1,5 +1,5 @@
 import merge from 'lodash/merge';
-import { compose, mapProps, withProps, lifecycle } from 'recompose';
+import { compose, mapProps, withProps, lifecycle, withState } from 'recompose';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../events/ClientEventService';
@@ -17,13 +17,17 @@ const getFiles = (query, queryParams, setFiles) => {
 const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
   compose(
     withProps(props => ({ queryParams: queryParamsFunc(props) })),
+    withState('documentsLoaded', 'setDocumentsLoaded', false),
     lifecycle({
       componentDidMount() {
         const { queryParams } = this.props;
         const queryParamsAreDefined = queryParams && Object.values(queryParams).some(x => x);
 
         if (queryParamsAreDefined) {
-          const setFiles = fileData => this.setState({ fileData });
+          const setFiles = (fileData) => {
+            this.props.setDocumentsLoaded(true);
+            this.setState({ fileData });
+          };
 
           // Get files for the first time on load
           getFiles(query, queryParams, setFiles);
@@ -37,10 +41,10 @@ const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
         ClientEventService.removeAllListeners(MODIFIED_FILES_EVENT);
       },
     }),
-    mapProps(({ fileData, ...props }) => ({
+    mapProps(({ fileData, documentsLoaded, ...props }) => ({
       ...props,
       // Very important to merge into an empty object, or else it overrides props!
-      [mergeName]: merge({}, props[mergeName], fileData),
+      [mergeName]: merge({ documentsLoaded }, props[mergeName], fileData),
     })),
   );
 
