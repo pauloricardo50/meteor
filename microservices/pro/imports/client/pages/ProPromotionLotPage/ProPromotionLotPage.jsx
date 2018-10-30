@@ -2,7 +2,7 @@
 import React from 'react';
 
 import PromotionLotPage from 'core/components/PromotionLotPage';
-import SecurityService from 'core/api/security';
+import PromotionSecurity from 'core/api/security/collections/PromotionSecurity';
 import ProPromotionLotPageContainer from './ProPromotionLotPageContainer';
 
 type ProPromotionLotPageProps = {};
@@ -10,7 +10,7 @@ type ProPromotionLotPageProps = {};
 const ProPromotionLotPage = (props: ProPromotionLotPageProps) => (
   <PromotionLotPage
     {...props}
-    canModify={SecurityService.canModifyDoc(props.promotionLot.promotion)}
+    canModify={PromotionSecurity.isAllowedToModify(props.promotionLot.promotion)}
   />
 );
 

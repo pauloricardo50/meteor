@@ -21,6 +21,11 @@ const getLotsAttributedToMe = promotionOptions =>
 const isAnyLotAttributedToMe = promotionOptions =>
   getLotsAttributedToMe(promotionOptions).length > 0;
 
+const allowEditingCustom = ({ attributedToMe, status, promotionStatus }) =>
+  !attributedToMe
+  && status === PROMOTION_LOT_STATUS.AVAILABLE
+  && promotionStatus === PROMOTION_STATUS.OPEN;
+
 const makeMapPromotionOption = ({
   isLoading,
   setLoading,
@@ -70,11 +75,11 @@ const makeMapPromotionOption = ({
             value={custom}
             onSubmit={makeChangeCustom(promotionOptionId)}
             inputProps={{ style: { width: '100%' } }}
-            allowEditing={
-              !attributedToMe
-              && status === PROMOTION_LOT_STATUS.AVAILABLE
-              && promotionStatus === PROMOTION_STATUS.OPEN
-            }
+            allowEditing={allowEditingCustom({
+              attributedToMe,
+              status,
+              promotionStatus,
+            })}
           />
         </div>
       ),

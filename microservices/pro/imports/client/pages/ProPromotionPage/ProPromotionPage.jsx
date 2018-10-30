@@ -3,6 +3,7 @@ import React from 'react';
 
 import PromotionPage from 'core/components/PromotionPage/client';
 import { SecurityService } from 'core/api';
+import PromotionSecurity from 'core/api/security/collections/PromotionSecurity';
 import ProPromotionPageContainer from './ProPromotionPageContainer';
 
 type ProPromotionPageProps = {};
@@ -14,7 +15,7 @@ const ProPromotionPage = ({
   <PromotionPage
     promotion={promotion}
     currentUser={currentUser}
-    canModify={SecurityService.canModifyDoc(promotion)}
+    canModify={PromotionSecurity.isAllowedToModify(promotion)}
     isPro
   />
 );
