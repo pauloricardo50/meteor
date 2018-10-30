@@ -133,7 +133,7 @@ class SlackService {
   notifyOfTask = (currentUser) => {
     this.notifyAssignee({
       currentUser,
-      title: `Nouvelle tâche créée par ${currentUser.name}`,
+      title: `Nouvelle tâche créée par ${currentUser && currentUser.name}`,
       link: Meteor.settings.public.subdomains.admin,
     });
   };
