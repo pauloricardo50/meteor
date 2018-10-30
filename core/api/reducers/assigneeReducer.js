@@ -22,7 +22,7 @@ const assigneeReducer = (body = {}, getUserId) => ({
       let users = userLinks;
 
       if (assignedEmployeeId) {
-        return UserService.findOne({ userId: assignedEmployeeId });
+        return UserService.findOne({ _id: assignedEmployeeId });
       }
 
       if (promotion && promotion.userLinks) {
@@ -42,8 +42,10 @@ const assigneeReducer = (body = {}, getUserId) => ({
       }
 
       if (userToFind) {
-        const user = UserService.findOne({ userId: userToFind });
-        return UserService.findOne({ userId: user.assignedEmployeeId });
+        const user = UserService.findOne({ _id: userToFind });
+        if (user) {
+          return UserService.findOne({ _id: user.assignedEmployeeId });
+        }
       }
 
       return null;

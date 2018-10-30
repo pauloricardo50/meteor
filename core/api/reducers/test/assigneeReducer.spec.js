@@ -8,11 +8,11 @@ import assigneeReducer from '../assigneeReducer';
 
 const defaultReducer = assigneeReducer().assignee.reduce;
 
-describe.only('assigneeReducer', () => {
+describe('assigneeReducer', () => {
   beforeEach(() => {
     sinon
       .stub(UserService, 'findOne')
-      .callsFake(({ userId }) => ({ userId, assignedEmployeeId: 'adminId' }));
+      .callsFake(({ _id }) => ({ userId: _id, assignedEmployeeId: 'adminId' }));
   });
 
   afterEach(() => {
@@ -24,7 +24,7 @@ describe.only('assigneeReducer', () => {
 
     expect(result).to.deep.include({ userId: 'adminId' });
     expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      userId: 'myUserId',
+      _id: 'myUserId',
     });
   });
 
@@ -33,7 +33,7 @@ describe.only('assigneeReducer', () => {
 
     expect(result).to.deep.include({ userId: 'assignee' });
     expect(UserService.findOne.lastCall.args[0]).to.deep.equal({
-      userId: 'assignee',
+      _id: 'assignee',
     });
   });
 
@@ -43,7 +43,7 @@ describe.only('assigneeReducer', () => {
     });
 
     expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      userId: 'test2',
+      _id: 'test2',
     });
     expect(result).to.deep.include({ userId: 'adminId' });
   });
@@ -54,7 +54,7 @@ describe.only('assigneeReducer', () => {
     });
 
     expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      userId: 'test2',
+      _id: 'test2',
     });
     expect(result).to.deep.include({ userId: 'adminId' });
   });
@@ -68,7 +68,7 @@ describe.only('assigneeReducer', () => {
     });
 
     expect(UserService.findOne.firstCall.args[0]).to.deep.equal({
-      userId: 'dude',
+      _id: 'dude',
     });
     expect(result).to.deep.include({ userId: 'adminId' });
   });

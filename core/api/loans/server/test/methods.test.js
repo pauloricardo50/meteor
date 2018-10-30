@@ -1,10 +1,14 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
+import TaskService from 'imports/core/api/tasks/TaskService';
+import SecurityService from 'imports/core/api/security/index';
 import { generateData } from '../../../../utils/testHelpers';
 import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
+import { requestLoanVerification } from '../../methodDefinitions';
 import LoanService from '../../LoanService';
 
 let userId;
@@ -78,6 +82,30 @@ describe('Loan methods', () => {
       expect(LoanService.enableUserForms.called).to.equal(false);
       expect(() => enableUserFormsHandler({ userId }, { loanId })).to.throw();
       expect(LoanService.enableUserForms.called).to.equal(false);
+    });
+  });
+
+  describe('requestLoanVerification', () => {
+    beforeEach(() => {
+      resetDatabase();
+      sinon
+        .stub(SecurityService.loans, 'isAllowedToUpdate')
+        .callsFake(() => {});
+    });
+
+    afterEach(() => {
+      SecurityService.loans.isAllowedToUpdate.restore();
+    });
+
+    it('inserts a task with the proper assignee', () => {
+      const admin = Factory.create('admin');
+      const user = Factory.create('user', { assignedEmployeeId: admin._id });
+      const loan = Factory.create('loan', { userId: user._id });
+
+      return requestLoanVerification.run({ loanId: loan._id }).then(() => {
+        const task = TaskService.findOne({ docId: loan.id });
+        expect(task.assignedEmployeeId).to.equal(admin._id);
+      });
     });
   });
 });
