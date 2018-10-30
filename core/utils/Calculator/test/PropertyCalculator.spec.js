@@ -57,7 +57,7 @@ describe('PropertyCalculator', () => {
   describe('getPropertyFilesProgress', () => {
     it('returns 0 if no documents are provided', () => {
       property = {};
-      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal(0);
+      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns 0.5 if one document is provided', () => {
@@ -67,7 +67,7 @@ describe('PropertyCalculator', () => {
         },
         _id: 'propertyId',
       };
-      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal(0.5);
+      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 0.5, count: 2 });
     });
   });
 

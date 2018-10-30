@@ -11,7 +11,6 @@ import {
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
 import { getPropertyDocuments } from '../../api/files/documents';
-import { FILE_STEPS } from '../../api/constants';
 import MiddlewareManager from '../MiddlewareManager';
 
 export const withPropertyCalculator = (SuperClass = class {}) =>

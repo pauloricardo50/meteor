@@ -20,12 +20,14 @@ describe('NewLoanFormContainer', () => {
   beforeEach(() => {
     props = {};
 
-    sinon.stub(loanUpdate, 'run').callsFake(({ object: { name }, loanId }) => {
-      if (!!loanId && !!name) {
-        return Promise.resolve();
-      }
-      throw new Error('No name or loanId');
-    });
+    sinon
+      .stub(loanUpdate, 'run')
+      .callsFake(({ object: { name }, loanId }) => {
+        if (!!loanId && !!name) {
+          return Promise.resolve();
+        }
+        throw new Error('No name or loanId');
+      });
 
     sinon
       .stub(borrowerUpdate, 'run')
