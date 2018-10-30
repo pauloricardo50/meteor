@@ -30,7 +30,8 @@ const frenchErrors = {
       : `Il manque ${formatKey(key)}`),
   shouldBeArray: key => `${formatKey(key)} doit être une liste`,
   shouldBeObject: key => `${formatKey(key)} doit être un objet`,
-  emptyArray: key => `${formatKey(key)} ne doit pas être vide`,
+  emptyArray: (key, parentKey) =>
+    `${formatKey(key)} ne doit pas être vide dans ${formatKey(parentKey)}`,
 };
 
 class PDFService {

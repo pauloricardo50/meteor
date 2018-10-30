@@ -1,4 +1,6 @@
 {
+  "Forms.ownFunds": "Fonds propres",
+  "Forms.structure": "Plan financier",
   "Forms.status.SOLD_TO_ME": "Vendu à moi",
   "Forms.status.BOOKED_FOR_ME": "Réservé pour moi",
   "FinancingPropertyPicker.promotionOption": "Lot {name}",

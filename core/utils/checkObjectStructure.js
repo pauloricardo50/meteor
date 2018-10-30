@@ -2,7 +2,8 @@ export const testErrors = {
   missingKey: (key, parentKey) => `Missing key ${key} from object ${parentKey}`,
   shouldBeArray: key => `Object key ${key} must be an array.`,
   shouldBeObject: key => `Object key ${key} must be an object.`,
-  emptyArray: key => `Array at object key ${key} should not be empty`,
+  emptyArray: (key, parentKey) =>
+    `Array at object key ${key} in ${parentKey} should not be empty`,
 };
 
 export const makeCheckObjectStructure = (errors) => {
@@ -17,7 +18,7 @@ export const makeCheckObjectStructure = (errors) => {
           throw errors.shouldBeArray(key);
         }
         if (template[key].length > 0 && obj[key].length === 0) {
-          throw errors.emptyArray(key);
+          throw errors.emptyArray(key, parentKey);
         }
 
         if (
