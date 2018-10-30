@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
 import Button from '../../Button';
@@ -33,11 +32,9 @@ const PromotionPage = (props: PromotionPageProps) => {
         )}
         {isPro && <EmailTester promotionId={promotion._id} />}
         {isPro && (
-          <Link to={`/promotions/${promotion._id}/users`}>
-            <Button raised primary>
-              <T id="PromotionPage.users" />
-            </Button>
-          </Link>
+          <Button link to={`/promotions/${promotion._id}/users`} raised primary>
+            <T id="PromotionPage.users" />
+          </Button>
         )}
       </div>
 

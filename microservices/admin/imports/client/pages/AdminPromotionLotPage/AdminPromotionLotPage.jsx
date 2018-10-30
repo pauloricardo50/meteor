@@ -7,7 +7,7 @@ import AdminPromotionLotPageContainer from './AdminPromotionLotPageContainer';
 type AdminPromotionLotPageProps = {};
 
 const AdminPromotionLotPage = (props: AdminPromotionLotPageProps) => (
-  <PromotionLotPage {...props} />
+  <PromotionLotPage {...props} canModify />
 );
 
 export default AdminPromotionLotPageContainer(AdminPromotionLotPage);

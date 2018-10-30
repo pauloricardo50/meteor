@@ -2,25 +2,24 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 
-import { PropertySchema } from '../../../../api/properties/properties';
-import LotSchema from '../../../../api/lots/schemas/LotSchema';
 import Table from '../../../Table';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
+import { LOT_TYPES } from '../../../../api/constants';
 
 type ProPromotionLotsTableProps = {};
 
-const promotionLotSchema = new SimpleSchema({
+export const promotionLotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true } },
   value: { type: Number },
 });
 
-const lotSchema = new SimpleSchema({
+export const lotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true } },
-  type: { type: String },
+  type: { type: String, allowedValues: Object.values(LOT_TYPES) },
   description: { type: String, optional: true },
-  value: { type: Number },
+  value: { type: Number, defaultValue: 0 },
 });
 
 const ProPromotionLotsTable = ({

@@ -1,5 +1,4 @@
 // @flow
-import SimpleSchema from 'simpl-schema';
 import React from 'react';
 import { withProps, compose, withState } from 'recompose';
 
@@ -7,10 +6,13 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { propertyUpdate } from 'core/api/methods';
-import { PROMOTION_LOT_STATUS } from 'core/api/constants';
+import {
+  PROMOTION_LOT_STATUS,
+  PROMOTION_LOT_QUERIES,
+} from 'core/api/constants';
 import { promotionLotRemove } from 'core/api';
-import ClientEventService from 'imports/core/api/events/ClientEventService/index';
-import { PROMOTION_LOT_QUERIES } from 'imports/core/api/constants';
+import ClientEventService from 'core/api/events/ClientEventService/index';
+import { promotionLotSchema } from '../PromotionPage/client/ProPromotionLotsTable/ProPromotionLotsTable';
 
 type ProPromotionLotModifierProps = {
   promotionLot: Object,
@@ -18,11 +20,6 @@ type ProPromotionLotModifierProps = {
   submitting: boolean,
   deletePromotionLot: Function,
 };
-
-const schema = new SimpleSchema({
-  name: String,
-  value: { type: Number, optional: true },
-});
 
 const ProPromotionLotModifier = ({
   promotionLot,
@@ -37,7 +34,7 @@ const ProPromotionLotModifier = ({
       primary: true,
       disabled: promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE,
     }}
-    schema={schema}
+    schema={promotionLotSchema}
     onSubmit={updateProperty}
     submitting={submitting}
     model={

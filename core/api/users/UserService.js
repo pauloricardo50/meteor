@@ -102,8 +102,8 @@ class UserService extends CollectionService {
 
     return (
       loans
-      && loans.filter(({ promotionLinks = [] }) =>
-        promotionLinks.filter(({ _id }) => _id === promotionId)).length > 0
+      && loans.some(({ promotionLinks = [] }) =>
+        promotionLinks.some(({ _id }) => _id === promotionId))
     );
   };
 

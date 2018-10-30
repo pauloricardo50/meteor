@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import T, { Percent } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 
 type FileTabLabelProps = {};
@@ -11,8 +11,8 @@ const FileTabLabel = ({ id, title, progress }: FileTabLabelProps) => (
     {title || <T id={id} />}
     &nbsp; &bull; &nbsp;
     <PercentWithStatus
-      value={progress}
-      status={progress < 1 ? null : undefined}
+      value={progress.percent}
+      status={progress.percent < 1 ? null : undefined}
       rounded
     />
   </span>
