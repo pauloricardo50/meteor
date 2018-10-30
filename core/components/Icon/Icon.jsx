@@ -139,6 +139,11 @@ const iconMap = {
 };
 
 const Icon = ({ type, size, ...props }) => {
+
+  if (type !== null && typeof type === 'object') {
+    return type;
+  }
+  
   const MyIcon = iconMap[type];
 
   if (!MyIcon) {

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCity } from '@fortawesome/pro-light-svg-icons';
 
 import T from 'core/components/Translation';
 import IconLink from 'core/components/IconLink';
@@ -8,6 +10,7 @@ import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   USERS_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 
 const getCollectionIcon = (collection) => {
@@ -20,6 +23,8 @@ const getCollectionIcon = (collection) => {
     return 'building';
   case USERS_COLLECTION:
     return 'contactMail';
+  case PROMOTIONS_COLLECTION:
+    return <FontAwesomeIcon icon={faCity} className="icon-link-icon" />;
   default:
     return null;
   }

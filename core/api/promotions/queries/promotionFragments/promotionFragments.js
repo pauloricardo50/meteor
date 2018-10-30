@@ -53,3 +53,8 @@ export const proPromotionsFragment = {
 export const adminPromotionsFragment = {
   ...proPromotionFragment,
 };
+
+export const searchPromotionsFragment = {
+  name: 1,
+  promotionLotLinks: 1,
+};
