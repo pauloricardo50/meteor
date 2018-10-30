@@ -11,6 +11,7 @@ import StatusLabel from '../../../StatusLabel';
 import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
+  PROMOTION_STATUS,
 } from '../../../../api/constants';
 
 const isLotAttributedToMe = ({ promotionOptions, promotionLotId }) => {
@@ -27,6 +28,7 @@ const makeMapPromotionLot = ({
   promotionId,
   loan: { _id: loanId, promotionOptions },
   isALotAttributedToMe,
+  promotionStatus,
 }) => ({ _id: promotionLotId, name, status, reducedStatus, lots, value }) => ({
   id: promotionLotId,
   columns: [
@@ -49,7 +51,8 @@ const makeMapPromotionLot = ({
         </div>
       ),
     },
-    !isALotAttributedToMe && (
+    !isALotAttributedToMe
+      && promotionStatus === PROMOTION_STATUS.OPEN && (
       <div key="PromotionLotSelector" onClick={e => e.stopPropagation()}>
         <PromotionLotSelector
           promotionLotId={promotionLotId}
@@ -57,7 +60,7 @@ const makeMapPromotionLot = ({
           loanId={loanId}
           disabled={
             isLotAttributedToMe({ promotionOptions, promotionLotId })
-            || status !== PROMOTION_LOT_STATUS.AVAILABLE
+              || status !== PROMOTION_LOT_STATUS.AVAILABLE
           }
         />
       </div>
@@ -75,26 +78,35 @@ const makeMapPromotionLot = ({
     )),
 });
 
-const columnOptions = isALotAttributedToMe =>
+const columnOptions = ({ isALotAttributedToMe, promotionStatus }) =>
   [
     { id: 'name' },
     { id: 'status' },
     { id: 'totalValue' },
     { id: 'lots' },
-    !isALotAttributedToMe && { id: 'interested' },
+    !isALotAttributedToMe
+      && promotionStatus === PROMOTION_STATUS.OPEN && { id: 'interested' },
   ]
     .filter(x => x)
     .map(({ id }) => ({ id, label: <T id={`PromotionPage.lots.${id}`} /> }));
 
 export default compose(
   withRouter,
-  mapProps(({ promotion: { promotionLots, _id: promotionId }, history, loan }) => ({
+  mapProps(({
+    promotion: { promotionLots, _id: promotionId, status: promotionStatus },
+    history,
+    loan,
+  }) => ({
     rows: promotionLots.map(makeMapPromotionLot({
       history,
       promotionId,
       loan,
       isALotAttributedToMe: isAnyLotAttributedToMe(promotionLots),
+      promotionStatus,
     })),
-    columnOptions: columnOptions(isAnyLotAttributedToMe(promotionLots)),
+    columnOptions: columnOptions({
+      isALotAttributedToMe: isAnyLotAttributedToMe(promotionLots),
+      promotionStatus,
+    }),
   })),
 );
