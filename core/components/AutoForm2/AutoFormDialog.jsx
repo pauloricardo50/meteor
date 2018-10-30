@@ -48,12 +48,7 @@ export const AutoFormDialog = ({
         {...otherProps}
       >
         {title && <DialogTitle>{title}</DialogTitle>}
-        <AutoForm
-          schema={schema}
-          model={model}
-          onSubmit={onSubmit}
-          showInlineError
-        >
+        <AutoForm schema={schema} model={model} onSubmit={onSubmit}>
           <DialogContent>
             {description && (
               <DialogContentText>{description}</DialogContentText>

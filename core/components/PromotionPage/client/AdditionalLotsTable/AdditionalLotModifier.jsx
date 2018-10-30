@@ -49,28 +49,32 @@ const AdditionalLotModifier = ({
   currentPromotionLotId,
   updateAdditionalLot,
   deleteAdditionalLot,
-}: AdditionalLotModifierProps) => (
-  <AutoFormDialog
-    schema={AdditionalLotModifierSchema(promotionLots)}
-    model={{
-      ...lot,
-      promotionLot: currentPromotionLotId,
-    }}
-    onSubmit={updateAdditionalLot}
-    open={open}
-    setOpen={setOpen}
-    submitting={submitting}
-    renderAdditionalActions={({ closeDialog }) => (
-      <Button
-        onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
-        error
-        disabled={submitting}
-      >
-        <T id="general.delete" />
-      </Button>
-    )}
-  />
-);
+}: AdditionalLotModifierProps) => {
+  const schema = AdditionalLotModifierSchema(promotionLots);
+  const model = {
+    ...lot,
+    promotionLot: currentPromotionLotId,
+  };
+  return (
+    <AutoFormDialog
+      schema={schema}
+      model={model}
+      onSubmit={updateAdditionalLot}
+      open={open}
+      setOpen={setOpen}
+      submitting={submitting}
+      renderAdditionalActions={({ closeDialog }) => (
+        <Button
+          onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
+          error
+          disabled={submitting}
+        >
+          <T id="general.delete" />
+        </Button>
+      )}
+    />
+  );
+};
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
@@ -80,13 +84,15 @@ export default compose(
     refresh: () => ClientEventService.emit(PROMOTION_QUERIES.PRO_PROMOTION),
   })),
   withProps(({ setOpen, setSubmitting, refresh }) => ({
-    updateAdditionalLot: ({
-      _id: lotId,
-      name,
-      description,
-      value,
-      promotionLot: promotionLotId,
-    }) => {
+    updateAdditionalLot: (values) => {
+      console.log('additional lot values', values);
+      const {
+        _id: lotId,
+        name,
+        description,
+        value,
+        promotionLot: promotionLotId,
+      } = values;
       setSubmitting(true);
       return lotUpdate
         .run({

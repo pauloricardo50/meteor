@@ -12,14 +12,22 @@ type ProPromotionLotsTableProps = {};
 
 export const promotionLotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true } },
-  value: { type: Number },
+  value: {
+    type: Number,
+    defaultValue: 0,
+    min: 0,
+  },
 });
 
 export const lotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true } },
   type: { type: String, allowedValues: Object.values(LOT_TYPES) },
   description: { type: String, optional: true },
-  value: { type: Number, defaultValue: 0 },
+  value: {
+    type: Number,
+    defaultValue: 0,
+    min: 0,
+  },
 });
 
 const ProPromotionLotsTable = ({

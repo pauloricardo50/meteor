@@ -26,33 +26,34 @@ const ProPromotionLotModifier = ({
   updateProperty,
   submitting,
   deletePromotionLot,
-}: ProPromotionLotModifierProps) => (
-  <AutoFormDialog
-    buttonProps={{
-      label: <T id="PromotionLotPage.modifyPromotionLot" />,
-      raised: true,
-      primary: true,
-      disabled: promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE,
-    }}
-    schema={promotionLotSchema}
-    onSubmit={updateProperty}
-    submitting={submitting}
-    model={
-      promotionLot.properties
-      && promotionLot.properties.length > 0
-      && promotionLot.properties[0]
-    }
-    renderAdditionalActions={({ closeDialog }) => (
-      <Button
-        onClick={() => deletePromotionLot().then(closeDialog)}
-        error
-        disabled={submitting}
-      >
-        <T id="general.delete" />
-      </Button>
-    )}
-  />
-);
+}: ProPromotionLotModifierProps) => {
+  const model = promotionLot.properties
+    && promotionLot.properties.length > 0
+    && promotionLot.properties[0];
+  return (
+    <AutoFormDialog
+      buttonProps={{
+        label: <T id="PromotionLotPage.modifyPromotionLot" />,
+        raised: true,
+        primary: true,
+        disabled: promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE,
+      }}
+      schema={promotionLotSchema}
+      onSubmit={updateProperty}
+      submitting={submitting}
+      model={model}
+      renderAdditionalActions={({ closeDialog }) => (
+        <Button
+          onClick={() => deletePromotionLot().then(closeDialog)}
+          error
+          disabled={submitting}
+        >
+          <T id="general.delete" />
+        </Button>
+      )}
+    />
+  );
+};
 
 export default compose(
   withState('submitting', 'setSubmitting', false),

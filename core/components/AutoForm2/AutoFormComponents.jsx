@@ -4,6 +4,7 @@ import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
 import AutoFields from 'uniforms-material/AutoFields';
 import connectField from 'uniforms/connectField';
+import DefaultSubmitField from 'uniforms-material/SubmitField';
 
 import T from '../Translation';
 import Button from '../Button';
@@ -27,11 +28,10 @@ const determineComponentFromProps = (props) => {
 };
 
 export const SubmitField = props => (
-  <Button
-    type="submit"
-    children={<T id="general.save" />}
-    raised
-    primary
+  <DefaultSubmitField
+    label={<T id="general.save" />}
+    variant="raised"
+    color="primary"
     {...props}
   />
 );
@@ -51,4 +51,4 @@ export const makeCustomAutoField = ({ labels } = {}) =>
 
 export const CustomAutoField = makeCustomAutoField({});
 
-export const CustomAutoFields = props => <AutoFields {...props} />;
+export const CustomAutoFields = AutoFields;
