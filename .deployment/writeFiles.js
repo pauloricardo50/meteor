@@ -64,6 +64,7 @@ export const writeApplicationManifestYAML = options => {
     services,
     filePath,
   } = options;
+
   checkWriteApplicationManifestYAMLArguments(options);
 
   return writeYAML({

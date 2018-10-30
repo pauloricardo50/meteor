@@ -19,6 +19,7 @@ export const APPLICATIONS = {
 export const SERVICES = {
   MONGODB: 'mongo',
   REDIS: 'redis',
+  LOGS: 'logs',
 };
 
 export const APP_CONFIGS = {
@@ -32,7 +33,7 @@ export const APP_CONFIGS = {
 
 export const ENVIRONMENT_CONFIG = {
   [ENVIRONMENT.STAGING]: {
-    services: [SERVICES.MONGODB, SERVICES.REDIS],
+    services: [SERVICES.MONGODB, SERVICES.REDIS, SERVICES.LOGS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
@@ -40,7 +41,7 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
-    services: [SERVICES.MONGODB, SERVICES.REDIS],
+    services: [SERVICES.MONGODB, SERVICES.REDIS, SERVICES.LOGS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
