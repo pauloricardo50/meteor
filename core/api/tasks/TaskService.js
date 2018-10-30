@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 
 import UserService from '../users/UserService';
 import SlackService from '../slack/SlackService';
@@ -20,10 +21,16 @@ class TaskService extends CollectionService {
     createdBy,
     title,
     docId,
+    collection,
   }) => {
+    let assignee = assignedTo;
+    if (!assignedTo && docId && collection) {
+      assignee = this.getAssigneeForDoc(docId, collection);
+    }
+
     const taskId = Tasks.insert({
       type,
-      assignedEmployeeId: assignedTo,
+      assignedEmployeeId: assignee,
       createdBy,
       fileKey,
       userId,
@@ -88,6 +95,14 @@ class TaskService extends CollectionService {
 
   changeAssignedTo = ({ taskId, newAssigneeId }) =>
     this.update({ taskId, object: { assignedEmployeeId: newAssigneeId } });
+
+  getAssigneeForDoc = (docId, collection) => {
+    const doc = Mongo.Collection.get(collection)
+      .createQuery({ $filters: { _id: docId }, assignee: 1 })
+      .fetchOne();
+
+    return doc && doc.assignee ? doc.assignee._id : null;
+  };
 }
 
 export default new TaskService();

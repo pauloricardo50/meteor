@@ -64,6 +64,14 @@ class CollectionService {
 
     return this._update({ id, object: { [linkName]: 1 }, operator: '$unset' });
   }
+
+  getAssignedEmployee({ id }) {
+    const { assignee } = this.collection
+      .createQuery({ $filters: { _id: id }, assignee: 1 })
+      .fetchOne();
+
+    return assignee;
+  }
 }
 
 export default CollectionService;

@@ -1,6 +1,9 @@
 import '../borrowers/server/serverReducers';
 import '../loans/server/serverReducers';
+import '../lots/server/serverReducers';
+import '../offers/server/serverReducers';
 import '../promotionLots/server/serverReducers';
+import '../promotionOptions/server/serverReducers';
 import '../promotions/server/serverReducers';
 import '../properties/server/serverReducers';
 import '../tasks/server/serverReducers';

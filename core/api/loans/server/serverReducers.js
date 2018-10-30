@@ -2,9 +2,9 @@ import merge from 'lodash/merge';
 
 import filesReducer from '../../reducers/filesReducer';
 import Calculator from '../../../utils/Calculator';
-import deepOmit from '../../../utils/deepOmit';
 import { userLoanFragment } from '../queries/loanFragments';
 import Loans from '../loans';
+import assigneeReducer from '../../reducers/assigneeReducer';
 
 const body = merge({}, userLoanFragment, {
   documents: 1,
@@ -16,12 +16,9 @@ const body = merge({}, userLoanFragment, {
   },
 });
 
-// // Do this because the fragments come with $options objects, which causes
-// // problems with reducers: https://github.com/cult-of-coders/grapher/issues/304
-// const bodyWithoutOptions = deepOmit(body, ['$options']);
-
 Loans.addReducers({
   ...filesReducer,
+  ...assigneeReducer(),
   promotionProgress: {
     body,
     reduce: loan => ({

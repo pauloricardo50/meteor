@@ -1,8 +1,10 @@
 import Users from '..';
 import { getEmailsForAddress } from '../../email/server/mandrill';
 import { createMeteorAsyncFunction } from '../../helpers';
+import assigneeReducer from '../../reducers/assigneeReducer';
 
 Users.addReducers({
+  ...assigneeReducer(),
   sentEmails: {
     body: { emails: 1 },
     reduce: user =>
