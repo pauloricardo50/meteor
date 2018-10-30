@@ -22,11 +22,15 @@ const AppLayout = (props) => {
     return <Redirect to={redirect} />;
   }
 
-  console.log('loan:', props.loan);
+  console.log('loan', props.loan);
 
   return (
     <div className="app-root">
-      <Navs {...props} showSideNav={showSideNav} />
+      <Navs
+        {...props}
+        showSideNav={showSideNav}
+        key={props.loan && props.loan._id}
+      />
 
       <div className={classes}>
         <LayoutErrorBoundary>

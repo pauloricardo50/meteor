@@ -1,6 +1,8 @@
 // @flow
+import React from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+
 import withMatchParam from 'core/containers/withMatchParam';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import userLoanQuery from 'core/api/loans/queries/userLoan';
@@ -64,12 +66,15 @@ const withRedirect = withProps(({ currentUser, history }) => {
 export default compose(
   withAppUser,
   withMatchParam('loanId', '/loans/:loanId'),
-  withUserLoan,
-  mergeFilesIntoLoanStructure(
-    loanFiles,
-    ({ loan }) => ({ loanId: loan && loan._id }),
-    'loan',
+  // Reset the layout on loanId change, this avoids weird desync issues
+  // because of mergeFilesIntoLoanStructure
+  Component => props => (
+    <React.Fragment key={props.loanId}>
+      <Component {...props} />
+    </React.Fragment>
   ),
+  withUserLoan,
+  mergeFilesIntoLoanStructure(loanFiles, ({ loanId }) => ({ loanId }), 'loan'),
   withRouter,
   withRedirect,
 );

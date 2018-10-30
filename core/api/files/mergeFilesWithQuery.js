@@ -44,17 +44,17 @@ const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
     mapProps(({ fileData, documentsLoaded, ...props }) => ({
       ...props,
       // Very important to merge into an empty object, or else it overrides props!
-      [mergeName]: merge({ documentsLoaded }, props[mergeName], fileData),
+      [mergeName]: merge({}, { documentsLoaded }, props[mergeName], fileData),
     })),
   );
 
 export default mergeFilesWithQuery;
 
 export const mapPropertyDocumentsIntoProperty = mapProps(({ loan, ...props }) => {
-  if (!loan || !loan.structure || !loan.properties) {
+  if (!loan || !loan.structure) {
     return props;
   }
-  const { structure, properties } = loan;
+  const { structure, properties = [] } = loan;
   const { property, propertyId } = structure;
   const structureProperty = properties.find(({ _id }) => _id === propertyId);
   const propertyDocuments = structureProperty && structureProperty.documents;
