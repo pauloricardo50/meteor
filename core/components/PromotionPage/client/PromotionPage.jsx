@@ -30,7 +30,7 @@ const PromotionPage = (props: PromotionPageProps) => {
             currentUser={currentUser}
           />
         )}
-        {isPro && <EmailTester promotionId={promotion._id} />}
+        {isPro && canModify && <EmailTester promotionId={promotion._id} />}
         {isPro && (
           <Button link to={`/promotions/${promotion._id}/users`} raised primary>
             <T id="PromotionPage.users" />

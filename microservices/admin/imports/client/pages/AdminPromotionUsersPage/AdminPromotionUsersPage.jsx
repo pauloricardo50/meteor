@@ -25,7 +25,7 @@ const AdminPromotionUsersPage = (props: AdminPromotionUsersPageProps) => {
       >
         <T id="general.back" />
       </Button>
-      <PromotionUsersPage {...props} />
+      <PromotionUsersPage canModify isAdmin {...props} />
     </div>
   );
 };
