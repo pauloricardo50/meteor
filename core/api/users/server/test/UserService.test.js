@@ -281,7 +281,7 @@ describe('UserService', () => {
     });
   });
 
-  describe.only('hasPromotion', () => {
+  describe('hasPromotion', () => {
     it('returns false if the user does not have the promotion', () => {
       const userId = Factory.create('user')._id;
       const loanId = Factory.create('loan', {
