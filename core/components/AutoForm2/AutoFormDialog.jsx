@@ -72,9 +72,12 @@ export const AutoFormDialog = ({
                 submitting,
                 onSubmit,
               })}
-            <SubmitField loading={submitting} raised primary>
-              <T id="general.ok" />
-            </SubmitField>
+            <SubmitField
+              loading={submitting}
+              raised
+              primary
+              label={<T id="general.ok" />}
+            />
           </DialogActions>
         </AutoForm>
       </MuiDialog>
@@ -85,13 +88,20 @@ export const AutoFormDialog = ({
 export default compose(
   withState('open', 'setOpen', false),
   withState('submitting', 'setSubmitting', false),
-  withProps(({ onSubmit, setOpen, setSubmitting }) => ({
+  withProps(({ onSubmit, setOpen, setSubmitting, onSuccessMessage }) => ({
     onSubmit: (...args) => {
       setSubmitting(true);
       return onSubmit(...args)
         .then(() => {
           setOpen(false);
-          message.success("C'est dans la boite !", 2);
+          message.success(
+            onSuccessMessage
+              ? typeof onSuccessMessage === 'function'
+                ? onSuccessMessage(...args)
+                : onSuccessMessage
+              : "C'est dans la boite !",
+            5,
+          );
         })
         .finally(() => setSubmitting(false));
     },

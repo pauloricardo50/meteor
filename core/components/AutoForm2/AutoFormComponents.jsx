@@ -7,7 +7,6 @@ import connectField from 'uniforms/connectField';
 import DefaultSubmitField from 'uniforms-material/SubmitField';
 
 import T from '../Translation';
-import Button from '../Button';
 
 const CustomSelectField = ({ transform, ...props }) => (
   <SelectField
