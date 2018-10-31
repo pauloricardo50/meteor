@@ -263,6 +263,16 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
       hide: !realEstateFortune,
     },
     {
+      label: 'Recap.netRealEstate',
+      value: (
+        <span className="sum">{toMoney(realEstateValue - realEstateDebt)}</span>
+      ),
+      spacingTop: true,
+      spacing: true,
+      bold: true,
+      hide: !realEstateFortune,
+    },
+    {
       label: 'Recap.otherFortune',
       value: `${toMoney(otherFortune)}`,
       hide: !otherFortune,

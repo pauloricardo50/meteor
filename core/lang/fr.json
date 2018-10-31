@@ -1,4 +1,5 @@
 {
+  "Recap.netRealEstate": "Fortune immobilière nette",
   "Forms.purchaseType.ACQUISITION": "Acquisition",
   "Forms.purchaseType.REFINANCING": "Refinancement",
   "AppItem.title": "Hypothèque - {purchaseType}",
