@@ -2,12 +2,14 @@
 import React from 'react';
 
 import SimpleSchema from 'simpl-schema';
-import { inviteUserToPromotion } from 'core/api/promotions/methodDefinitions';
+import { inviteUserToPromotion } from '../../../../api/promotions/methodDefinitions';
+import { PROMOTION_STATUS } from '../../../../api/constants';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 
 type CustomerAdderProps = {
   promotionId: String,
+  promotionStatus: String,
 };
 
 const CustomerAdderUserSchema = new SimpleSchema({
@@ -17,12 +19,18 @@ const CustomerAdderUserSchema = new SimpleSchema({
   phoneNumber: String,
 });
 
-const CustomerAdder = ({ promotionId }: CustomerAdderProps) => (
+const CustomerAdder = ({
+  promotionId,
+  promotionStatus,
+}: CustomerAdderProps) => (
   <AutoFormDialog
     buttonProps={{
       raised: true,
       primary: true,
       label: <T id="PromotionPage.addCustomer" />,
+      disabled: promotionStatus !== PROMOTION_STATUS.OPEN,
+      tooltip:
+        'Vous ne pouvez pas ajouter de clients tant que la promotion est en préparation',
     }}
     schema={CustomerAdderUserSchema}
     onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}

@@ -88,6 +88,17 @@ const Button = (props) => {
   );
 
   if (props.tooltip) {
+    if (props.disabled) {
+      // When the button is disabled, it does not trigger pointer-events,
+      // so a tooltip will not appear
+      // Careful with styling here, as the additional span might break layouts
+      return (
+        <Tooltip title={props.tooltip}>
+          <span>{button}</span>
+        </Tooltip>
+      );
+    }
+
     return <Tooltip title={props.tooltip}>{button}</Tooltip>;
   }
 
