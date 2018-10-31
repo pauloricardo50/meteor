@@ -145,7 +145,7 @@
   "Forms.status.BILLING": "Facturation",
   "Forms.status.FINALIZED": "Finalisé",
   "Forms.status.FINISHED": "Terminé",
-  "Forms.status.OPEN": "Ouvert",
+  "Forms.status.OPEN": "En cours",
   "Forms.status.UNSUCCESSFUL": "Sans suite",
 
   "FinancingOwnFundsPledgeWarning.description": "Attention, vous pouvez nantir CHF {maxPledge} au maximum.",
@@ -1502,7 +1502,6 @@
   "TaskStatusSetter.ADD_ASSIGNED_TO": "Ajouter assigné à",
   "TaskStatusSetter.AUCTION": "Enchères",
   "TaskStatusSetter.CANCELLED": "Annulé",
-  "Forms.status.CANCELLED": "Annulé",
   "TaskStatusSetter.changeTaskStatus": "Changer le statut de la tâche",
   "TaskStatusSetter.COMPLETED": "Terminé",
   "Forms.status.COMPLETED": "Terminé",
