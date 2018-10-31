@@ -1,6 +1,10 @@
 .overview-tab .admin-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  padding: 16px;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
 
   .admin-note-wrapper {
     display: flex;

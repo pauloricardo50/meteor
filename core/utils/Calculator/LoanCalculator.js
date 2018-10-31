@@ -102,9 +102,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getIncomeRatio({ loan }) {
-      console.log('monthly', this.getTheoreticalMonthly({ loan }));
-      console.log('totalincome', this.getTotalIncome({ loan }));
-
       return (
         this.getTheoreticalMonthly({ loan })
         / (this.getTotalIncome({ borrowers: loan.borrowers }) / 12)

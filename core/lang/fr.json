@@ -361,7 +361,7 @@
   "DetailSideNavHeader.sortOrder.desc": "Décroissant",
   "DetailSideNavPagination.end": "Fin des résultats",
   "DetailSideNavPagination.showMore": "Afficher plus",
-  "DisableUserFormsToggle.canEdit": "Autoriser le client à modifier les champs",
+  "DisableUserFormsToggle.canEdit": "Autoriser modifications",
   "DropzoneArrayItem.fileCount": "{count, plural, =0 {Pas de fichiers} one {Un fichier} other {# fichiers}}",
   "DropzoneInput.cancelUpload": "Annuler l'upload",
   "DropzoneInput.cancelUploadConfirmation": "Êtes-vous sûr ?",

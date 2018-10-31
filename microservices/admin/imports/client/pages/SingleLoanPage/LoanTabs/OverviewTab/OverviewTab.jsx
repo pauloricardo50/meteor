@@ -23,14 +23,12 @@ const OverviewTab = (props) => {
 
   return (
     <div className="overview-tab">
-      <div className="admin-section">
+      <div className="admin-section card1">
         <DisableUserFormsToggle loan={loan} />
-        <div className="admin-note-wrapper">
-          <ImpersonateLink user={user} />
-        </div>
+        <ImpersonateLink user={user} />
       </div>
       {/* <LoanValidation loan={loan} /> */}
-      {loanHasMinimalInformation && <LoanStatusCheck loan={loan} />}
+      <LoanStatusCheck loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">
