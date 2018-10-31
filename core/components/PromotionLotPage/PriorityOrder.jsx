@@ -54,6 +54,7 @@ const PriorityOrder = ({
             onClick={event => event.stopPropagation()}
           >
             <Chip
+              clickable
               label={name}
               key={_id}
               className={getChipColor({
@@ -64,11 +65,11 @@ const PriorityOrder = ({
               })}
               icon={
                 (solvency === false || solvency === true) && (
-                  <Tooltip title={solvency ? 'Solvable' : 'Non solvable'}>
-                    <Icon
-                      type={solvency ? 'check' : 'close'}
-                      className="icon"
-                    />
+                  <Tooltip
+                    title={solvency ? 'Solvable' : 'Non solvable'}
+                    className="icon"
+                  >
+                    <Icon type={solvency ? 'check' : 'close'} />
                   </Tooltip>
                 )
               }
