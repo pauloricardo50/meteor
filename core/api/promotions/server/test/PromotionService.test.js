@@ -3,14 +3,14 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import sinon from 'sinon';
-import { PROMOTION_STATUS } from 'core/api/constants';
-
-import { EMAIL_IDS } from 'imports/core/api/email/emailConstants';
-import UserService from 'imports/core/api/users/UserService';
 import { Accounts } from 'meteor/accounts-base';
-import { ROLES } from 'imports/core/api/users/userConstants';
-import LoanService from 'imports/core/api/loans/LoanService';
+import sinon from 'sinon';
+
+import { PROMOTION_STATUS } from 'core/api/constants';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import UserService from 'core/api/users/UserService';
+import { ROLES } from 'core/api/users/userConstants';
+import LoanService from 'core/api/loans/LoanService';
 import PromotionService, {
   PromotionService as PromotionServiceClass,
 } from '../../PromotionService';
@@ -176,14 +176,11 @@ describe('PromotionService', () => {
 
       LoanService.insertPromotionLoan({ userId, promotionId });
 
-      try {
+      expect(() =>
         FakePromotionService.inviteUser({
           promotionId,
           user: newUser,
-        });
-      } catch (error) {
-        expect(error.message).to.equal('[Cet utilisateur est déjà invité à cette promotion]');
-      }
+        })).to.throw('déjà invité');
     });
 
     it('throws an error if promotion status is not OPEN', () => {
@@ -202,14 +199,11 @@ describe('PromotionService', () => {
             object: { status },
           });
 
-          try {
+          expect(() =>
             FakePromotionService.inviteUser({
               promotionId,
               user: newUser,
-            });
-          } catch (error) {
-            expect(error.message).to.equal("[Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.]");
-          }
+            })).to.throw('Vous ne pouvez pas inviter');
         });
     });
   });
