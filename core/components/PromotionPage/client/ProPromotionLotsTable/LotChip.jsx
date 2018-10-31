@@ -22,6 +22,7 @@ const LotChip = ({
           : null
       }
       label={name}
+      clickable
     />
   </Tooltip>
 );
