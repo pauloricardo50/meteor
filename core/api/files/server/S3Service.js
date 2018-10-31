@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
-import { Loans, Borrowers } from '../..';
+import { Loans, Borrowers, Properties } from '../..';
 import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
@@ -29,28 +29,44 @@ class S3Service {
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
   isAllowedToAccess = (key) => {
+    const loggedInUser = Meteor.userId();
+    if (
+      Roles.userIsInRole(loggedInUser, 'admin')
+      || Roles.userIsInRole(loggedInUser, 'dev')
+    ) {
+      return true;
+    }
+
     // Check if this user is the owner of the document
     const keyId = key.split('/')[0];
     const loanFound = !!Loans.findOne({
       _id: keyId,
-      userId: Meteor.userId(),
-    });
-    const borrowerFound = !!Borrowers.findOne({
-      _id: keyId,
-      userId: Meteor.userId(),
+      userId: loggedInUser,
     });
 
-    if (
-      Roles.userIsInRole(Meteor.userId(), 'admin')
-      || Roles.userIsInRole(Meteor.userId(), 'dev')
-    ) {
+    if (loanFound) {
       return true;
     }
-    if (!(loanFound || borrowerFound)) {
-      throw new Meteor.Error('unauthorized email');
+
+    const borrowerFound = !!Borrowers.findOne({
+      _id: keyId,
+      userId: loggedInUser,
+    });
+
+    if (borrowerFound) {
+      return true;
     }
 
-    return true;
+    const propertyFound = !!Properties.findOne({
+      _id: keyId,
+      userId: loggedInUser,
+    });
+
+    if (propertyFound) {
+      return true;
+    }
+
+    throw new Meteor.Error('unauthorized download');
   };
 
   putObject = (binaryData, Key, Metadata) =>
