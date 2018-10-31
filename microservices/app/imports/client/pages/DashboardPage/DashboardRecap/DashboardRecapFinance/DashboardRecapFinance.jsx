@@ -27,7 +27,7 @@ const DashboardRecapFinance = (props) => {
   return (
     <Link
       className="dashboard-recap-finance card1 card-hover"
-      to={createRoute(FINANCING_PAGE, { ':loanId': loan._id })}
+      to={createRoute(FINANCING_PAGE, { loanId: loan._id })}
     >
       <div className="card-top">
         <h3>

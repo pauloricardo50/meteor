@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartBar } from '@fortawesome/pro-light-svg-icons';
 
 import Button from 'core/components/Button';
-import Icon from 'core/components/Icon';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
 import { FINANCING_PAGE } from '../../../../../startup/client/appRoutes';
@@ -13,7 +14,7 @@ const DashboardRecapFinanceEmpty = ({
   loan,
 }: DashboardRecapFinanceEmptyProps) => (
   <div className="dashboard-recap-finance card1 dashboard-recap-finance-empty">
-    <Icon type="chart" className="icon" />
+    <FontAwesomeIcon icon={faChartBar} className="icon" />
     <h3>
       <T id="DashboardRecapFinance.emptyTitle" />
     </h3>
@@ -22,7 +23,7 @@ const DashboardRecapFinanceEmpty = ({
     </p>
     <Button
       link
-      to={createRoute(FINANCING_PAGE, { ':loanId': loan._id })}
+      to={createRoute(FINANCING_PAGE, { loanId: loan._id })}
       // outlined
       primary
     >
