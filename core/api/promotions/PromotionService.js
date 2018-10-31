@@ -12,12 +12,13 @@ import CollectionService from '../helpers/CollectionService';
 import PropertyService from '../properties/PropertyService';
 import PromotionLotService from '../promotionLots/PromotionLotService';
 import { ROLES } from '../users/userConstants';
-import { sendEmail } from '..';
+import { sendEmail } from '../email/methodDefinitions';
 import { EMAIL_IDS } from '../email/emailConstants';
 
 export class PromotionService extends CollectionService {
-  constructor() {
+  constructor({ sendEmail: injectedSendEmail }) {
     super(Promotions);
+    this.sendEmail = injectedSendEmail;
   }
 
   insert({ promotion = {}, userId }) {
@@ -89,20 +90,19 @@ export class PromotionService extends CollectionService {
       });
     } else {
       userId = Accounts.findUserByEmail(email)._id;
+      if (UserService.hasPromotion({ userId, promotionId })) {
+        throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
+      }
     }
 
-    if (UserService.hasPromotion({ userId, promotionId })) {
-      throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
-    }
     const loanId = LoanService.insertPromotionLoan({ userId, promotionId });
-    this.sendPromotionInvitationEmail({
+    return this.sendPromotionInvitationEmail({
       userId,
       email,
       isNewUser,
       promotionId,
       firstName,
-    });
-    return loanId;
+    }).then(() => loanId);
   }
 
   sendPromotionInvitationEmail({
@@ -115,7 +115,7 @@ export class PromotionService extends CollectionService {
     console.log('isNewUser', isNewUser);
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
       console.log('logos', logos);
-      const coverImageUrl = promotionImage && promotionImage[0] && promotionImage[0].url;
+      const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
       const logoUrls = logos && logos.map(({ url }) => url);
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
@@ -136,7 +136,7 @@ export class PromotionService extends CollectionService {
       console.log('sending email');
 
       // Envoyer invitation sans enrollment link
-      return sendEmail.run({
+      return this.sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
@@ -175,4 +175,4 @@ export class PromotionService extends CollectionService {
   }
 }
 
-export default new PromotionService();
+export default new PromotionService({ sendEmail });
