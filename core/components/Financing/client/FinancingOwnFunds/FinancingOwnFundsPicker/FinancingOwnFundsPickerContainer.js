@@ -1,6 +1,14 @@
 import { compose, withProps, withStateHandlers, withState } from 'recompose';
 
-import { borrowerUpdate, pushBorrowerValue } from '../../../../../api';
+import {
+  borrowerUpdate,
+  pushBorrowerValue,
+  updateStructure,
+} from '../../../../../api';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  RESIDENCE_TYPE,
+} from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
@@ -12,15 +20,6 @@ import {
   getAvailableFundsOfTypeAndBorrower,
   getNewWantedLoanAfterPledge,
 } from './FinancingOwnFundsPickerHelpers';
-import ClientEventService, {
-  LOAD_LOAN,
-} from '../../../../../api/events/ClientEventService';
-import {
-  OWN_FUNDS_USAGE_TYPES,
-  RESIDENCE_TYPE,
-} from '../../../../../api/constants';
-import { updateStructure } from '../../../../../api';
-import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
 
 export const FIELDS = {
   TYPE: 'type',
@@ -93,7 +92,6 @@ const withAdditionalProps = withProps((props) => {
   const otherValueOfTypeAndBorrower = getOwnFundsOfTypeAndBorrower(props);
 
   const updateCleanup = () => {
-    ClientEventService.emit(LOAD_LOAN);
     setLoading(false);
   };
 

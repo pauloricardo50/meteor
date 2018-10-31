@@ -5,11 +5,9 @@ import SimpleSchema from 'simpl-schema';
 import { compose, withState, withProps } from 'recompose';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2/AutoFormDialog';
-import { PROMOTION_QUERIES } from '../../../../api/constants';
 import message from '../../../../utils/message';
 import Button from '../../../Button';
 import { lotRemove, lotUpdate } from '../../../../api';
-import ClientEventService from '../../../../api/events/ClientEventService';
 import { lotSchema } from '../ProPromotionLotsTable/ProPromotionLotsTable';
 
 type AdditionalLotModifierProps = {
@@ -81,9 +79,8 @@ export default compose(
   withProps(({ lot }) => ({
     currentPromotionLotId:
       lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
-    refresh: () => ClientEventService.emit(PROMOTION_QUERIES.PRO_PROMOTION),
   })),
-  withProps(({ setOpen, setSubmitting, refresh }) => ({
+  withProps(({ setOpen, setSubmitting }) => ({
     updateAdditionalLot: (values) => {
       console.log('additional lot values', values);
       const {
@@ -100,7 +97,6 @@ export default compose(
           object: { promotionLotId, name, description, value },
         })
         .then(() => {
-          refresh();
           setOpen(false);
           message.success("C'est dans la boite !", 2);
         })
@@ -111,7 +107,6 @@ export default compose(
 
       return lotRemove
         .run({ lotId })
-        .then(refresh)
         .then(closeDialog)
         .then(() => setSubmitting(false));
     },

@@ -5,8 +5,6 @@ import SimpleSchema from 'simpl-schema';
 import { inviteUserToPromotion } from 'core/api/promotions/methodDefinitions';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
-import ClientEventService from '../../../../api/events/ClientEventService';
-import { LOAN_QUERIES } from '../../../../api/constants';
 
 type CustomerAdderProps = {
   promotionId: String,
@@ -27,11 +25,7 @@ const CustomerAdder = ({ promotionId }: CustomerAdderProps) => (
       label: <T id="PromotionPage.addCustomer" />,
     }}
     schema={CustomerAdderUserSchema}
-    onSubmit={user =>
-      inviteUserToPromotion
-        .run({ user, promotionId })
-        .then(() => ClientEventService.emit(LOAN_QUERIES.PRO_LOANS))
-    }
+    onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}
     title="Inviter un client"
     description="Invitez un utilisateur à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
   />

@@ -21,6 +21,13 @@ Method.addAfterCall(({ config, params, result, error }) => {
   } else {
     ClientEventService.emit(CALLED_METHOD);
     ClientEventService.emitMethod(config, params);
+
+    // Refresh all non-reactive queries
+    if (!config.noRefreshAfterCall && window) {
+      (window.activeQueries || []).forEach((query) => {
+        ClientEventService.emit(query);
+      });
+    }
   }
   // Do something on the client
 });

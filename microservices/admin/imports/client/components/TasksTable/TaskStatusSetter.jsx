@@ -4,14 +4,9 @@ import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import T from 'core/components/Translation/';
 import DropdownMenu from 'core/components/DropdownMenu/';
 import { taskChangeStatus } from 'core/api/methods';
-import { TASK_QUERIES } from 'imports/core/api/constants';
-import ClientEventService from 'core/api/events/ClientEventService';
 
 const changeStatus = (status, taskId) => {
-  taskChangeStatus.run({ taskId, newStatus: status }).then(() => {
-    ClientEventService.emit(TASK_QUERIES.TASKS);
-    ClientEventService.emit(TASK_QUERIES.TASKS_FOR_DOC);
-  });
+  taskChangeStatus.run({ taskId, newStatus: status });
 };
 
 const getMenuItems = (taskId, taskStatus) => {

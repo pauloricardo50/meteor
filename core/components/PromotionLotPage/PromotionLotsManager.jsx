@@ -5,12 +5,8 @@ import LotChip from 'core/components/PromotionPage/client/ProPromotionLotsTable/
 import { addLotToPromotionLot } from 'core/api';
 import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
-import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_LOT_QUERIES,
-} from 'core/api/constants';
+import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { withProps } from 'recompose';
-import ClientEventService from 'core/api/events/ClientEventService';
 
 type PromotionLotsManagerProps = {};
 
@@ -46,11 +42,7 @@ export default withProps(({ allLots = [], promotionLotId }) => {
     options = unassignedLots.map(({ _id: lotId, name }) => ({
       id: lotId,
       label: name,
-      onClick: () =>
-        addLotToPromotionLot
-          .run({ promotionLotId, lotId })
-          .then(() =>
-            ClientEventService.emit(PROMOTION_LOT_QUERIES.PRO_PROMOTION_LOT)),
+      onClick: () => addLotToPromotionLot.run({ promotionLotId, lotId }),
     }));
   }
 

@@ -57,24 +57,17 @@ const ProPromotionLotModifier = ({
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ promotionLot, setSubmitting }) => {
-    const refresh = () =>
-      ClientEventService.emit(PROMOTION_LOT_QUERIES.PRO_PROMOTION_LOT);
-    return {
-      updateProperty: property =>
-        propertyUpdate
-          .run({
-            propertyId: promotionLot.properties[0]._id,
-            object: property,
-          })
-          .then(refresh),
-      deletePromotionLot: () => {
-        setSubmitting(true);
-        return promotionLotRemove
-          .run({ promotionLotId: promotionLot._id })
-          .then(() => setSubmitting(false))
-          .then(refresh);
-      },
-    };
-  }),
+  withProps(({ promotionLot, setSubmitting }) => ({
+    updateProperty: property =>
+      propertyUpdate.run({
+        propertyId: promotionLot.properties[0]._id,
+        object: property,
+      }),
+    deletePromotionLot: () => {
+      setSubmitting(true);
+      return promotionLotRemove
+        .run({ promotionLotId: promotionLot._id })
+        .then(() => setSubmitting(false));
+    },
+  })),
 )(ProPromotionLotModifier);

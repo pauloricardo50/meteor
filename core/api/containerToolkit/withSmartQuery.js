@@ -48,6 +48,28 @@ const withQueryRefetcher = ({ queryName }) =>
     },
   });
 
+// This adds all non-reactive queries on the window object, and removes them
+// when the query disappears
+// These queries can then all be refreshed from `clientMethodsConfig`
+// every time a method is called
+const withGlobalQueryManager = ({ queryName }, { reactive }) =>
+  lifecycle({
+    componentDidMount() {
+      if (!reactive && window) {
+        if (!window.activeQueries) {
+          window.activeQueries = [queryName];
+        } else {
+          window.activeQueries = [...window.activeQueries, queryName];
+        }
+      }
+    },
+    componentWillUnmount() {
+      if (!reactive && window) {
+        window.activeQueries = window.activeQueries.filter(query => query !== queryName);
+      }
+    },
+  });
+
 type withSmartQueryArgs = {
   query: () => mixed,
   params: (props: Object) => Object,
@@ -78,6 +100,7 @@ const withSmartQuery = ({
 
   return compose(
     withState('initialLoaded', 'setInitialLoaded', false),
+    withGlobalQueryManager(query, queryOptions),
     withQuery(completeQuery, queryOptions),
     withLoading(smallLoader, 'initialLoaded'),
     makeRenderMissingDocIfNoData(shoundRenderMissingDoc),
