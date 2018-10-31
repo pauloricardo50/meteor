@@ -121,7 +121,7 @@ const addPromotionOptions = (loanId, promotion) => {
   });
 };
 
-export const createPromotionDemo = (
+export const createPromotionDemo = async (
   userId,
   addCurrentUser,
   withPromotionOptions,
@@ -141,7 +141,7 @@ export const createPromotionDemo = (
   if (addCurrentUser) {
     console.log('Adding current user');
 
-    const loanId = PromotionService.inviteUser({
+    const loanId = await PromotionService.inviteUser({
       promotionId,
       user: { ...Meteor.user(), email: Meteor.user().emails[0].address },
     });
@@ -156,7 +156,7 @@ export const createPromotionDemo = (
   }
 
   console.log('creating users');
-  range(users).forEach((i) => {
+  range(users).forEach(async (i) => {
     console.log(`creating user ${i + 1}`);
 
     const user = {
@@ -183,7 +183,7 @@ export const createPromotionDemo = (
       },
     });
 
-    const loanId = PromotionService.inviteUser({
+    const loanId = await PromotionService.inviteUser({
       promotionId,
       user,
     });
