@@ -5,6 +5,8 @@ const filesReducer = {
   documents: {
     body: { _id: 1 },
     reduce({ _id }) {
+      console.log('getting files for id', _id);
+
       const asyncFunc = createMeteorAsyncFunction(FileService.listFilesForDocByCategory);
       return asyncFunc(_id);
     },
