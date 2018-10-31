@@ -11,15 +11,17 @@ import PromotionLotModifier from './PromotionLotModifier';
 import LotDocumentsManager from './LotDocumentsManager';
 import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
+import PromotionLotPageContainer from './PromotionLotPageContainer';
+import DocumentDownloadList from '../DocumentDownloadList';
 
-type ProPromotionLotPageProps = {};
+type PromotionLotPageProps = {};
 
-const ProPromotionLotPage = ({
+const PromotionLotPage = ({
   promotionLot,
   currentUser,
   promotionId,
   canModify,
-}: ProPromotionLotPageProps) => {
+}: PromotionLotPageProps) => {
   const {
     name,
     properties,
@@ -28,6 +30,7 @@ const ProPromotionLotPage = ({
     promotion,
     promotionOptions,
     status,
+    documents,
   } = promotionLot;
   console.log('promotionLot', promotionLot);
   const { lots: allLots } = promotion;
@@ -51,6 +54,7 @@ const ProPromotionLotPage = ({
         {canModify && (
           <div className="promotion-buttons">
             <LotDocumentsManager
+              documents={documents}
               property={properties[0]}
               currentUser={currentUser}
             />
@@ -69,6 +73,10 @@ const ProPromotionLotPage = ({
           canModify={canModify}
         />
 
+        <DocumentDownloadList
+          files={documents && documents.promotionPropertyDocuments}
+        />
+
         <PromotionLotLoansTable
           promotionOptions={promotionOptions}
           promotionLot={promotionLot}
@@ -78,4 +86,4 @@ const ProPromotionLotPage = ({
     </div>
   );
 };
-export default ProPromotionLotPage;
+export default PromotionLotPageContainer(PromotionLotPage);

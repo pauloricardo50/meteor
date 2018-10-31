@@ -46,7 +46,9 @@ const PromotionPageHeader = ({
 
         {logos.length > 0 ? (
           <div className="logos animated fadeIn delay-200">
-            <h3>Partenaires</h3>
+            <h3>
+              <T id="PromotionPageHeader.partners" />
+            </h3>
 
             <div className="list">
               {logos.map(logo => (
@@ -62,7 +64,9 @@ const PromotionPageHeader = ({
         )}
         {contacts.length > 0 ? (
           <div className="contacts animated fadeIn delay-400">
-            <h3>Contacts</h3>
+            <h3>
+              <T id="PromotionPageHeader.contacts" />
+            </h3>
 
             <div className="list">
               {contacts.map(({ name: contactName, phoneNumber, title, email }) => (

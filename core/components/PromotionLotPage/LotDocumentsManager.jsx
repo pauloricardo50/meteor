@@ -4,12 +4,7 @@ import React from 'react';
 import DialogSimple from 'core/components/DialogSimple';
 import UploaderArray from 'core/components/UploaderArray';
 import T from 'core/components/Translation';
-import {
-  S3_ACLS,
-  PROPERTIES_COLLECTION,
-} from 'core/api/constants';
-import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
-import propertyFiles from 'core/api/properties/queries/propertyFiles';
+import { S3_ACLS, PROPERTIES_COLLECTION } from 'core/api/constants';
 
 const promotionPropertyDocuments = [
   {
@@ -24,6 +19,7 @@ type LotDocumentsManagerProps = {};
 const LotDocumentsManager = ({
   property,
   currentUser,
+  documents,
 }: LotDocumentsManagerProps) => (
   <>
     <DialogSimple
@@ -39,7 +35,7 @@ const LotDocumentsManager = ({
       text={<T id="PromotionPage.managePropertyDocuments.description" />}
     >
       <UploaderArray
-        doc={property}
+        doc={{ ...property, documents }}
         collection={PROPERTIES_COLLECTION}
         documentArray={promotionPropertyDocuments}
         currentUser={currentUser}
@@ -48,8 +44,4 @@ const LotDocumentsManager = ({
   </>
 );
 
-export default mergeFilesWithQuery(
-  propertyFiles,
-  ({ property: { _id: propertyId } }) => ({ propertyId }),
-  'property',
-)(LotDocumentsManager);
+export default LotDocumentsManager;

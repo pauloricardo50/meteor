@@ -94,9 +94,6 @@ export const AppPromotionLotPage = ({
           </>
         )}
 
-        <DocumentDownloadList
-          files={documents && documents.promotionPropertyDocuments}
-        />
       </div>
     </div>
   );
