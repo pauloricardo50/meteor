@@ -3,22 +3,16 @@ import React from 'react';
 
 import T from '../Translation';
 import PromotionUsersTable from './PromotionUsersTable';
-import CustomerAdder from '../PromotionPage/client/CustomerAdder';
 
 type PromotionUsersPageProps = {};
 
-const PromotionUsersPage = (props: PromotionUsersPageProps) => {
-  const { promotionId, canModify } = props;
-
-  return (
-    <div className="promotion-users-page card1">
-      <h1>
-        <T id="PromotionUsersPage.title" />
-      </h1>
-      {canModify && <CustomerAdder promotionId={promotionId} />}
-      <PromotionUsersTable {...props} />
-    </div>
-  );
-};
+const PromotionUsersPage = (props: PromotionUsersPageProps) => (
+  <div className="promotion-users-page card1">
+    <h1>
+      <T id="PromotionUsersPage.title" />
+    </h1>
+    <PromotionUsersTable {...props} />
+  </div>
+);
 
 export default PromotionUsersPage;
