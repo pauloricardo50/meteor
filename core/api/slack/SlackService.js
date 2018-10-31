@@ -69,7 +69,7 @@ class SlackService {
         },
         {
           title: 'Stack',
-          text: `\`\`\`${error.stack.toString()}\`\`\``,
+          text: `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
           color: colors.error,
         },
         {
