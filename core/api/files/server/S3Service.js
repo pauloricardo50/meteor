@@ -2,7 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
 import { Loans, Borrowers, Properties, Promotions } from '../..';
-import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
+import {
+  TEST_BUCKET_NAME,
+  S3_ENDPOINT,
+  OBJECT_STORAGE_PATH,
+} from '../fileConstants';
 import { PROPERTY_CATEGORY } from '../../constants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;

@@ -199,7 +199,7 @@ describe('S3Service', function () {
     });
 
     it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowedToAccess('')).to.throw('unauthorized download');
+      expect(() => S3Service.isAllowedToAccess('')).to.throw('Unauthorized download');
     });
 
     it('should return true if this user has the loan', () => {
