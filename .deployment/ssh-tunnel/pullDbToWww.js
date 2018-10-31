@@ -8,7 +8,7 @@ import openSSHTunnel, {
 
 let SSH_ID;
 
-const writeRestoreDBTmuxinator = environment => {
+const writePullDBTmuxinator = environment => {
   return executeCommand(
     `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\"`,
   )
@@ -69,7 +69,7 @@ const writeRestoreDBTmuxinator = environment => {
 const main = () => {
   return openSSHTunnel().then(({ environment, ssh_id }) => {
     SSH_ID = ssh_id;
-    return writeRestoreDBTmuxinator(environment);
+    return writePullDBTmuxinator(environment);
   });
 };
 
