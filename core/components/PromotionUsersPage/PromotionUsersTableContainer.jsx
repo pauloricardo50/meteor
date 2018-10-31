@@ -11,6 +11,7 @@ import { createRoute } from '../../utils/routerUtils';
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
+  { id: 'email' },
   { id: 'createdAt' },
   { id: 'promotionProgress' },
   { id: 'priorityOrder' },
@@ -32,6 +33,7 @@ const makeMapLoan = ({ promotionId, history, isAdmin }) => (loan) => {
     columns: [
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
+      user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       {
         raw: promotionProgress.verificationStatus,

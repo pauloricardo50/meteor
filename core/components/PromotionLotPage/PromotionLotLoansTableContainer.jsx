@@ -49,6 +49,7 @@ const mapOption = (
     columns: [
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
+      user && user.email,
       {
         raw: promotionProgress.verificationStatus,
         label: <PromotionProgress promotionProgress={promotionProgress} />,
@@ -86,6 +87,7 @@ const mapOption = (
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
+  { id: 'email' },
   { id: 'promotionProgress' },
   { id: 'custom' },
   { id: 'priorityOrder' },
