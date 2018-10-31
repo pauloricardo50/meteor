@@ -2,12 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
 import { Loans, Borrowers, Properties, Promotions } from '../..';
-import {
-  TEST_BUCKET_NAME,
-  S3_ENDPOINT,
-  OBJECT_STORAGE_PATH,
-} from '../fileConstants';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
+import { PROPERTY_CATEGORY } from '../../constants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -34,9 +30,10 @@ class S3Service {
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
   isAllowedToAccess = (key) => {
+    const loggedInUser = Meteor.userId();
     if (
-      Roles.userIsInRole(Meteor.userId(), 'admin')
-      || Roles.userIsInRole(Meteor.userId(), 'dev')
+      Roles.userIsInRole(loggedInUser, 'admin')
+      || Roles.userIsInRole(loggedInUser, 'dev')
     ) {
       return true;
     }
@@ -45,7 +42,7 @@ class S3Service {
     const keyId = key.split('/')[0];
     const loanFound = !!Loans.findOne({
       _id: keyId,
-      userId: Meteor.userId(),
+      userId: loggedInUser,
     });
 
     if (loanFound) {
@@ -54,7 +51,7 @@ class S3Service {
 
     const borrowerFound = !!Borrowers.findOne({
       _id: keyId,
-      userId: Meteor.userId(),
+      userId: loggedInUser,
     });
 
     if (borrowerFound) {
@@ -64,8 +61,11 @@ class S3Service {
     const property = Properties.findOne({ _id: keyId });
 
     if (property) {
-      if (property.category === PROPERTY_CATEGORY.USER) {
-        return property.userId === Meteor.userId();
+      if (!property.category || property.category === PROPERTY_CATEGORY.USER) {
+        if (property.userId === loggedInUser) {
+          return true;
+        }
+        throw new Meteor.Error('Unauthorized download');
       }
 
       return true;
@@ -77,7 +77,7 @@ class S3Service {
       return true;
     }
 
-    throw new Meteor.Error('unauthorized download');
+    throw new Meteor.Error('Unauthorized download');
   };
 
   putObject = (binaryData, Key, Metadata) =>

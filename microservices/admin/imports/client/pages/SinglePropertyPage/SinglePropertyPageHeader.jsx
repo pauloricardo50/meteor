@@ -41,7 +41,8 @@ const SinglePropertyHeader = ({
       {insideArea && [', ', <MetricArea value={insideArea} key="insideArea" />]}
     </p>
 
-    <div className="bottom">
+    {/* TODO: This can be uncommented once PDFs can be generated */}
+    {/* <div className="bottom">
       <p className="created-at">
         {user && (
           <T
@@ -68,7 +69,7 @@ const SinglePropertyHeader = ({
           </span>
         )}
       </p>
-    </div>
+    </div> */}
   </div>
 );
 
