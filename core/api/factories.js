@@ -1,21 +1,35 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { STEPS } from 'core/api/loans/loanConstants';
-import { TASK_STATUS, TASK_TYPE } from './tasks/taskConstants';
-import Loans from './loans';
-import Borrowers from './borrowers';
-import Properties from './properties';
-import Offers from './offers';
-import Tasks from './tasks';
-import Users from './users';
+import {
+  STEPS,
+  TASK_STATUS,
+  TASK_TYPE,
+  PROMOTION_USER_PERMISSIONS,
+  PROMOTION_TYPES,
+  PROMOTION_OPTION_STATUS,
+} from './constants';
+import {
+  Borrowers,
+  Loans,
+  Offers,
+  PromotionLots,
+  PromotionOptions,
+  Promotions,
+  Properties,
+  Tasks,
+  Users,
+  Lots,
+} from '.';
+import { LOT_TYPES } from './lots/lotConstants';
+import { ROLES } from './users/userConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
 Factory.define('user', Users, {
-  roles: () => 'user',
+  roles: [ROLES.USER],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -23,7 +37,7 @@ Factory.define('user', Users, {
 });
 
 Factory.define('dev', Users, {
-  roles: () => 'dev',
+  roles: [ROLES.DEV],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -31,7 +45,15 @@ Factory.define('dev', Users, {
 });
 
 Factory.define('admin', Users, {
-  roles: () => 'admin',
+  roles: [ROLES.ADMIN],
+  emails: () => [{ address: faker.internet.email(), verified: false }],
+  lastName: TEST_LASTNAME,
+  firstName: TEST_FIRSTNAME,
+  phoneNumbers: [TEST_PHONE],
+});
+
+Factory.define('pro', Users, {
+  roles: [ROLES.PRO],
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
@@ -72,4 +94,26 @@ Factory.define('offer', Offers, {
   conditions: ['Do something'],
   maxAmount: 800000,
   amortization: 10000,
+});
+
+Factory.define('promotion', Promotions, {
+  name: 'Test promotion',
+  type: PROMOTION_TYPES.CREDIT,
+  userLinks: [
+    { _id: 'userId', permissions: PROMOTION_USER_PERMISSIONS.MODIFY },
+  ],
+  promotionLotLinks: [{ _id: 'lotId' }],
+});
+
+Factory.define('promotionOption', PromotionOptions, {
+  promotionLotLinks: [{ _id: 'lotId' }],
+});
+Factory.define('promotionLot', PromotionLots, {
+  propertyLinks: [{ _id: 'propertyId' }],
+});
+
+Factory.define('lot', Lots, {
+  name: 'test',
+  type: LOT_TYPES.PARKING_CAR,
+  value: 1000,
 });

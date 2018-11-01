@@ -1,3 +1,4 @@
+@import './VerificationRequester/VerificationRequester.scss';
 $step-circle-size: 25px;
 
 .dashboard-progress {
@@ -13,6 +14,10 @@ $step-circle-size: 25px;
 
   .title {
     margin-bottom: 16px;
+  }
+
+  .loan-checklist-dialog {
+    margin-top: 16px;
   }
 }
 

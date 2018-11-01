@@ -57,3 +57,18 @@ rateLimit({
   limit: 1,
   timeRange: 5000,
 });
+
+export const addUserToDoc = new Method({
+  name: 'addUserToDoc',
+  params: {
+    docId: String,
+    collection: String,
+    options: Object,
+    userId: String,
+  },
+});
+
+export const throwDevError = new Method({
+  name: 'throwDevError',
+  params: { promise: Match.Maybe(Boolean) },
+});

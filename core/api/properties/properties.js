@@ -5,6 +5,7 @@ import {
   createdAt,
   updatedAt,
   additionalDocuments,
+  address,
 } from '../helpers/sharedSchemas';
 import * as propertyConstants from './propertyConstants';
 
@@ -148,6 +149,16 @@ export const PropertySchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
+  name: {
+    type: String,
+    optional: true,
+  },
+  category: {
+    type: String,
+    optional: true,
+    defaultValue: propertyConstants.PROPERTY_CATEGORY.USER,
+    allowedValues: Object.values(propertyConstants.PROPERTY_CATEGORY),
+  },
   value: {
     // Cost of the property
     type: SimpleSchema.Integer,
@@ -190,30 +201,7 @@ export const PropertySchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-
-  address: {
-    // For condensed, google places addresses
-    type: String,
-    optional: true,
-  },
-  address1: {
-    type: String,
-    optional: true,
-  },
-  address2: {
-    type: String,
-    optional: true,
-  },
-  zipCode: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 1000,
-    max: 9999,
-  },
-  city: {
-    type: String,
-    optional: true,
-  },
+  ...address,
   constructionYear: {
     type: SimpleSchema.Integer,
     min: 0,

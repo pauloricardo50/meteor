@@ -4,34 +4,21 @@ import { Link } from 'react-router-dom';
 
 import { createRoute } from 'core/utils/routerUtils';
 import Calculator from 'core/utils/Calculator';
-import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import DashboardRecapCost from './DashboardRecapCost';
 import DashboardRecapFinancing from './DashboardRecapFinancing';
 import DashboardRecapChart from './DashboardRecapChart';
-import {
-  FINANCING_PAGE,
-  APP_WIDGET1_PAGE,
-} from '../../../../../startup/client/appRoutes';
+import { FINANCING_PAGE } from '../../../../../startup/client/appRoutes';
+import DashboardRecapFinanceEmpty from './DashboardRecapFinanceEmpty';
 
 const shouldDisplayRecap = loan =>
-  loan.structure.property && loan.structure.property.value;
+  (loan.structure.property && loan.structure.property.value)
+  || loan.structure.propertyValue;
 
 const DashboardRecapFinance = (props) => {
   const { loan } = props;
   if (!shouldDisplayRecap(loan)) {
-    return (
-      <div className="dashboard-recap-finance card1 dashboard-recap-finance-empty">
-        <p className="description">
-          <T id="DashboardRecapFinance.empty" />
-        </p>
-        <Link to={createRoute(APP_WIDGET1_PAGE, { ':loanId': loan._id })}>
-          <Button outlined primary>
-            <T id="DashboardRecapFinance.emptyButton" />
-          </Button>
-        </Link>
-      </div>
-    );
+    return <DashboardRecapFinanceEmpty loan={loan} />;
   }
 
   const totalCost = Calculator.getProjectValue({ loan });
@@ -40,7 +27,7 @@ const DashboardRecapFinance = (props) => {
   return (
     <Link
       className="dashboard-recap-finance card1 card-hover"
-      to={createRoute(FINANCING_PAGE, { ':loanId': loan._id })}
+      to={createRoute(FINANCING_PAGE, { loanId: loan._id })}
     >
       <div className="card-top">
         <h3>

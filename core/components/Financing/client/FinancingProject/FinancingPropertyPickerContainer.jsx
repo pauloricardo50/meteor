@@ -1,32 +1,33 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose, mapProps } from 'recompose';
+
 import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
-import StructureUpdateContainer from '../containers/StructureUpdateContainer';
+import { updateStructure } from '../../../../api';
+import FinancingDataContainer from '../containers/FinancingDataContainer';
 
 const FinancingPropertyPickerContainer = compose(
-  StructureUpdateContainer,
+  FinancingDataContainer,
   SingleStructureContainer,
-  connect(({ financing: { properties, loan: { _id: loanId } } }) => ({
-    properties,
-    loanId,
-  })),
   withRouter,
   mapProps(({
     properties,
-    loanId,
-    structure: { propertyId },
-    handleChange,
+    promotionOptions,
+    loan: { _id: loanId },
+    structure: { id: structureId, propertyId, promotionOptionId },
     history: { push },
   }) => ({
     options: [
-      ...Object.values(properties).map(({ _id, address1 }) => ({
+      ...properties.map(({ _id, address1 }) => ({
         id: _id,
-        label: address1 || (
-          <T id="FinancingPropertyPicker.placeholder" />
+        label: address1 || <T id="FinancingPropertyPicker.placeholder" />,
+      })),
+      ...promotionOptions.map(({ _id, name }) => ({
+        id: _id,
+        label: (
+          <T id="FinancingPropertyPicker.promotionOption" values={{ name }} />
         ),
       })),
       {
@@ -35,13 +36,25 @@ const FinancingPropertyPickerContainer = compose(
         label: <T id="FinancingPropertyPicker.addProperty" />,
       },
     ],
-    value: propertyId,
-    property: properties[propertyId],
+    value: propertyId || promotionOptionId,
     handleChange: (_, value) => {
       if (value === 'add') {
         push(`/loans/${loanId}/properties`);
       } else {
-        handleChange(value);
+        const isPromotionOption = promotionOptions
+          .map(({ _id }) => _id)
+          .includes(value);
+        updateStructure.run({
+          loanId,
+          structureId,
+          structure: {
+            // Also reset propertyValue and notaryFees since it should not be the same
+            propertyId: isPromotionOption ? null : value,
+            promotionOptionId: isPromotionOption ? value : null,
+            propertyValue: null,
+            notaryFees: null,
+          },
+        });
       }
     },
   })),

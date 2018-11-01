@@ -43,12 +43,6 @@ export const EXPENSES = {
   OTHER: 'OTHER',
 };
 
-export const REAL_ESTATE = {
-  MAIN_RESIDENCE: 'MAIN_RESIDENCE',
-  SECOND_RESIDENCE: 'SECOND_RESIDENCE',
-  INVESTMENT: 'INVESTMENT',
-};
-
 export const BORROWER_QUERIES = {
   BORROWER: 'BORROWER',
   ADMIN_BORROWERS: 'ADMIN_BORROWERS',
@@ -64,4 +58,9 @@ export const OWN_FUNDS_TYPES = {
   BANK_3A: 'bank3A',
   INSURANCE_3B: 'insurance3B',
   THIRD_PARTY_FORTUNE: 'thirdPartyFortune',
+};
+
+export const RETIREMENT_AGE = {
+  [GENDER.M]: 65,
+  [GENDER.F]: 64,
 };

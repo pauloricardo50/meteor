@@ -5,6 +5,7 @@ import { withLoanCalculator } from './LoanCalculator';
 import { withBorrowerCalculator } from './BorrowerCalculator';
 import { withOfferCalculator } from './OfferCalculator';
 import { withPropertyCalculator } from './PropertyCalculator';
+import { withPromotionCalculator } from './PromotionCalculator';
 import { withCombinedCalculator } from './CombinedCalculator';
 import { withSelector } from './Selector';
 import { withConfig } from './classUtils';
@@ -21,8 +22,9 @@ const MappedFinanceCalculator = withConfig({
 // with middleware
 export const Calculator = compose(
   withCombinedCalculator,
+  withPromotionCalculator,
   withLoanCalculator,
-  withBorrowerCalculator || (x => x), // Avoid obscure wallaby circular dependency
+  withBorrowerCalculator,
   withPropertyCalculator,
   withOfferCalculator,
   withSelector,

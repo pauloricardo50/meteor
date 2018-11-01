@@ -36,7 +36,7 @@ describe('DisableUserFormsToggle', () => {
   it('renders the top label', () => {
     expect(component(completeProps)
       .find(Toggle)
-      .prop('labelTop')).to.deep.equal(<T id="DisableUserFormsToggle.canEdit" />);
+      .prop('labelTop')).to.deep.equal(<T id="Forms.userFormsEnabled" />);
   });
 
   it('renders the left label', () => {

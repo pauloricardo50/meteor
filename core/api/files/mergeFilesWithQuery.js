@@ -1,11 +1,14 @@
 import merge from 'lodash/merge';
-import { compose, mapProps, lifecycle } from 'recompose';
+import { compose, mapProps, withProps, lifecycle, withState } from 'recompose';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../events/ClientEventService';
 
-const getFiles = (query, loanId, setFiles) => {
-  query.clone({ loanId }).fetchOne((error, fileData) => {
+const getFiles = (query, queryParams, setFiles) => {
+  console.log('getFiles');
+  query.clone(queryParams).fetchOne((error, fileData) => {
+    console.log('getfiles error', error);
+    console.log('fileData', fileData);
     if (error) {
       throw error;
     }
@@ -14,43 +17,47 @@ const getFiles = (query, loanId, setFiles) => {
   });
 };
 
-const mergeFilesWithQuery = (query, mergeName) =>
+const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
   compose(
+    withProps(props => ({ queryParams: queryParamsFunc(props) })),
+    withState('documentsLoaded', 'setDocumentsLoaded', false),
     lifecycle({
       componentDidMount() {
-        let loanId;
+        const { queryParams } = this.props;
+        const queryParamsAreDefined = queryParams && Object.values(queryParams).some(x => x);
 
-        if (this.props.loan) {
-          loanId = this.props.loan._id;
-
-          const setFiles = fileData => this.setState({ fileData });
+        if (queryParamsAreDefined) {
+          const setFiles = (fileData) => {
+            this.props.setDocumentsLoaded(true);
+            this.setState({ fileData });
+          };
 
           // Get files for the first time on load
-          getFiles(query, loanId, setFiles);
+          getFiles(query, queryParams, setFiles);
 
           // Get them again everytime this event is fired
           ClientEventService.addListener(MODIFIED_FILES_EVENT, () =>
-            getFiles(query, loanId, setFiles));
+            getFiles(query, queryParams, setFiles));
         }
       },
       componentWillUnmount() {
         ClientEventService.removeAllListeners(MODIFIED_FILES_EVENT);
       },
     }),
-    mapProps(({ fileData, ...props }) => ({
+    mapProps(({ fileData, documentsLoaded, ...props }) => ({
       ...props,
       // Very important to merge into an empty object, or else it overrides props!
-      [mergeName]: merge({}, props[mergeName], fileData),
+      [mergeName]: merge({}, { documentsLoaded }, props[mergeName], fileData),
     })),
   );
 
 export default mergeFilesWithQuery;
 
 export const mapPropertyDocumentsIntoProperty = mapProps(({ loan, ...props }) => {
-  if (!loan || !loan.structure || !loan.properties) {
+  if (!loan || !loan.structure) {
     return props;
   }
-  const { structure, properties } = loan;
+  const { structure, properties = [] } = loan;
   const { property, propertyId } = structure;
   const structureProperty = properties.find(({ _id }) => _id === propertyId);
   const propertyDocuments = structureProperty && structureProperty.documents;

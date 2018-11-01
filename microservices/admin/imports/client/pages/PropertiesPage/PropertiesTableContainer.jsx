@@ -61,7 +61,7 @@ const columnOptions = [
 
 const PropertiesTableContainer = compose(
   withSmartQuery({
-    query: () => adminProperties.clone(),
+    query: adminProperties,
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',

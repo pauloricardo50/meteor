@@ -6,7 +6,8 @@ import withTableFilters from 'core/containers/withTableFilters';
 import { getColumnOptions, getRows } from './userTableHelpers';
 
 export const withUsersQuery = withSmartQuery({
-  query: ({ assignedTo }) => adminUsersQuery.clone({ assignedTo }),
+  query: adminUsersQuery,
+  params: ({ assignedTo }) => ({ assignedTo }),
   queryOptions: { reactive: false },
 });
 

@@ -4,8 +4,7 @@
 html {
   letter-spacing: 0.048em; /* 0.75px / 16px  */
 
-  font-family: 'Eina04-Regular';
-  // font-family: 'Calibri';
+  font-family: 'Eina04-Regular', 'Helvetica';
   line-height: 1.4em;
 
   @include font-size($font-size-xs);
@@ -21,7 +20,7 @@ h6 {
 
   letter-spacing: 0.048em; /* 0.75px / 16px  */
 
-  font-family: 'Eina04-Bold';
+  font-family: 'Eina04-Bold', 'Helvetica';
   font-weight: normal;
   line-height: 1.3em;
 }
@@ -51,5 +50,5 @@ h6 {
 }
 
 .bold {
-  font-family: 'Eina04-Bold';
+  font-family: 'Eina04-Bold', 'Helvetica';
 }

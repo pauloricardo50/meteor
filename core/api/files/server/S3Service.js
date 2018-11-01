@@ -1,8 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import AWS from 'aws-sdk';
 import { Roles } from 'meteor/alanning:roles';
-import { Loans, Borrowers } from '../..';
-import { TEST_BUCKET_NAME, S3_ENDPOINT } from '../fileConstants';
+import { Loans, Borrowers, Properties, Promotions } from '../..';
+import {
+  TEST_BUCKET_NAME,
+  S3_ENDPOINT,
+  OBJECT_STORAGE_PATH,
+} from '../fileConstants';
+import { PROPERTY_CATEGORY } from '../../constants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
 
@@ -29,28 +34,54 @@ class S3Service {
   makeParams = (extraParams = {}) => ({ ...this.params, ...extraParams });
 
   isAllowedToAccess = (key) => {
+    const loggedInUser = Meteor.userId();
+    if (
+      Roles.userIsInRole(loggedInUser, 'admin')
+      || Roles.userIsInRole(loggedInUser, 'dev')
+    ) {
+      return true;
+    }
+
     // Check if this user is the owner of the document
     const keyId = key.split('/')[0];
     const loanFound = !!Loans.findOne({
       _id: keyId,
-      userId: Meteor.userId(),
-    });
-    const borrowerFound = !!Borrowers.findOne({
-      _id: keyId,
-      userId: Meteor.userId(),
+      userId: loggedInUser,
     });
 
-    if (
-      Roles.userIsInRole(Meteor.userId(), 'admin')
-      || Roles.userIsInRole(Meteor.userId(), 'dev')
-    ) {
+    if (loanFound) {
       return true;
     }
-    if (!(loanFound || borrowerFound)) {
-      throw new Meteor.Error('unauthorized email');
+
+    const borrowerFound = !!Borrowers.findOne({
+      _id: keyId,
+      userId: loggedInUser,
+    });
+
+    if (borrowerFound) {
+      return true;
     }
 
-    return true;
+    const property = Properties.findOne({ _id: keyId });
+
+    if (property) {
+      if (!property.category || property.category === PROPERTY_CATEGORY.USER) {
+        if (property.userId === loggedInUser) {
+          return true;
+        }
+        throw new Meteor.Error('Unauthorized download');
+      }
+
+      return true;
+    }
+
+    const promotionFound = !!Promotions.findOne({ _id: keyId });
+
+    if (promotionFound) {
+      return true;
+    }
+
+    throw new Meteor.Error('Unauthorized download');
   };
 
   putObject = (binaryData, Key, Metadata) =>
@@ -84,6 +115,7 @@ class S3Service {
         this.headObject(object.Key).then(({ Metadata }) => ({
           ...object,
           ...Metadata,
+          url: this.buildFileUrl(object),
         })))));
 
   copyObject = params => this.callS3Method('copyObject', params);
@@ -103,6 +135,8 @@ class S3Service {
   updateMetadata = (key, newMetadata) =>
     this.getObject(key).then(({ Metadata: oldMetaData }) =>
       this.putObject(undefined, key, { ...oldMetaData, ...newMetadata }));
+
+  buildFileUrl = file => `${OBJECT_STORAGE_PATH}/${file.Key}`;
 }
 
 export default new S3Service();

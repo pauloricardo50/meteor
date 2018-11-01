@@ -1,5 +1,7 @@
+import { Mongo } from './mongo';
+
 export const Meteor = {
   userId: () => 'userId',
-  users: { attachSchema: () => {}, createQuery: () => {} },
+  users: { ...Mongo.Collection() },
   settings: { public: { subdomains: {} }, private: {} },
 };

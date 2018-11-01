@@ -7,9 +7,7 @@ import FinancingSection, {
   CalculatedValue,
 } from '../FinancingSection';
 import FinancingPropertyPicker from './FinancingPropertyPicker';
-import FinancingCalculator, {
-  getProperty,
-} from '../FinancingCalculator';
+import FinancingCalculator, { getProperty } from '../FinancingCalculator';
 
 import { getPropertyValue } from '../FinancingOwnFunds/ownFundsHelpers';
 
@@ -24,9 +22,9 @@ const calculateMaxNotaryFees = data =>
   (getPropertyValue(data) + data.structure.propertyWork) * MAX_NOTARY_FEES_RATE;
 
 const calculateProjectValue = data =>
-  getPropertyValue(data) +
-  data.structure.propertyWork +
-  FinancingCalculator.getFeesBase(data);
+  getPropertyValue(data)
+  + data.structure.propertyWork
+  + FinancingCalculator.getFeesBase(data);
 
 const FinancingProject = (props: FinancingProjectProps) => (
   <FinancingSection
@@ -47,7 +45,12 @@ const FinancingProject = (props: FinancingProjectProps) => (
       {
         Component: InputAndSlider,
         id: 'propertyValue',
-        calculatePlaceholder: data => getProperty(data).value,
+        calculatePlaceholder: (data) => {
+          console.log('calculatePlaceholder');
+          console.log('property', getProperty(data));
+
+          return getProperty(data).value;
+        },
         max: 5000000,
         allowUndefined: true,
         forceUndefined: true,

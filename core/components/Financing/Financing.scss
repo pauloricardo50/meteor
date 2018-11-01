@@ -14,8 +14,8 @@ $result-section-negative-offset: -32px;
   flex-direction: column;
 
   .input-and-slider {
-     > *:first-child {
-      margin-bottom: 8px;
+    .money-input {
+      margin-bottom: 4px;
     }
   }
 }
@@ -87,7 +87,7 @@ $result-section-negative-offset: -32px;
     color: white;
     background-color: $primary;
 
-    font-family: 'Eina04-Bold';
+    font-family: 'Eina04-Bold', 'Helvetica';
 
     .label {
       color: rgba(255, 255, 255, 0.78);

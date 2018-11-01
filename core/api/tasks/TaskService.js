@@ -1,119 +1,46 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 
-import { isUser } from '../../utils/userFunctions';
-import formatMessage from '../../utils/intl.js';
-import { Tasks } from '..';
-import borrowerAssignedToQuery from '../borrowers/queries/borrowerAssignedTo';
-import loanAssignedToQuery from '../loans/queries/loanAssignedTo';
-import Users from '../users';
-import { getIdFieldNameFromCollection } from '../helpers';
-import propertyAssignedToQuery from '../properties/queries/propertyAssignedTo';
-import unassignedTasksQuery from './queries/unassignedTasks';
+import UserService from '../users/UserService';
+import SlackService from '../slack/SlackService';
+import CollectionService from '../helpers/CollectionService';
 import { TASK_STATUS, TASK_TYPE } from './taskConstants';
 import { validateTask } from './taskValidation';
+import Tasks from '.';
 
-class TaskService {
+class TaskService extends CollectionService {
+  constructor() {
+    super(Tasks);
+  }
+
   insert = ({
-    type,
-    borrowerId,
-    loanId,
-    propertyId,
-    documentId,
+    type = TASK_TYPE.CUSTOM,
     fileKey,
     userId,
     assignedTo,
     createdBy,
     title,
+    docId,
+    collection,
   }) => {
-    if (type === TASK_TYPE.ADD_ASSIGNED_TO) {
-      return Tasks.insert({ type, userId });
+    let assignee = assignedTo;
+    if (!assignedTo && docId && collection) {
+      assignee = this.getAssigneeForDoc(docId, collection);
     }
 
-    let relatedAssignedTo = assignedTo;
-    if (!relatedAssignedTo) {
-      // some tasks may not be related to any doc,
-      // in that case no need for assignedTo field
-      if (borrowerId || loanId || propertyId) {
-        relatedAssignedTo = this.getRelatedDocAssignedTo({
-          borrowerId,
-          loanId,
-          propertyId,
-        });
-      }
-    }
-
-    if (type !== TASK_TYPE.CUSTOM) {
-      const existingTask = Tasks.findOne({
-        type,
-        borrowerId,
-        loanId,
-        propertyId,
-        status: TASK_STATUS.ACTIVE,
-        documentId,
-        fileKey,
-      });
-
-      if (existingTask) {
-        throw new Meteor.Error('duplicate active task');
-      }
-    }
-
-    return Tasks.insert({
+    const taskId = Tasks.insert({
       type,
-      assignedEmployeeId: relatedAssignedTo,
+      assignedEmployeeId: assignee,
       createdBy,
-      borrowerId,
-      loanId,
-      propertyId,
-      documentId,
       fileKey,
       userId,
       title,
+      docId,
     });
-  };
 
-  insertTaskForAddedFile = ({
-    collection,
-    docId,
-    documentId,
-    fileKey,
-    userId,
-  }) => {
-    const userWhoAddedTheFile = Users.findOne(userId);
-    if (!isUser(userWhoAddedTheFile)) {
-      return;
-    }
-
-    const type = TASK_TYPE.USER_ADDED_FILE;
-    const relatedDocIdFieldName = getIdFieldNameFromCollection(collection);
-
-    this.insert({
-      type,
-      [relatedDocIdFieldName]: docId,
-      title: `Vérifier ${formatMessage(`files.${documentId}`)}`,
-      fileKey,
-      userId,
-    });
-  };
-
-  getRelatedDocAssignedTo = ({ borrowerId, loanId, propertyId }) => {
-    if (loanId) {
-      const loan = loanAssignedToQuery.clone({ loanId }).fetchOne();
-      return loan.user.assignedEmployeeId;
-    }
-    if (borrowerId) {
-      const borrowers = borrowerAssignedToQuery
-        .clone({ borrowerId })
-        .fetchOne();
-      return borrowers.user.assignedEmployeeId;
-    }
-    if (propertyId) {
-      const properties = propertyAssignedToQuery
-        .clone({ propertyId })
-        .fetchOne();
-      return properties.user.assignedEmployeeId;
-    }
-    return undefined;
+    const user = UserService.get(Meteor.userId());
+    SlackService.notifyOfTask(user);
+    return taskId;
   };
 
   remove = ({ taskId }) => Tasks.remove(taskId);
@@ -121,6 +48,8 @@ class TaskService {
   update = ({ taskId, object }) => Tasks.update(taskId, { $set: object });
 
   getTaskById = taskId => Tasks.findOne(taskId);
+
+  getTasksForDoc = docId => Tasks.find({ docId }).fetch();
 
   complete = ({ taskId }) => {
     const task = this.getTaskById(taskId);
@@ -161,71 +90,18 @@ class TaskService {
     });
   };
 
-  completeFileTask = ({ collection, docId, documentId, fileKey }) => {
-    const type = TASK_TYPE.USER_ADDED_FILE;
-    const relatedDocIdFieldName = getIdFieldNameFromCollection(collection);
-
-    const activeFileTask = Tasks.findOne({
-      type,
-      [relatedDocIdFieldName]: docId,
-      documentId,
-      fileKey,
-      status: TASK_STATUS.ACTIVE,
-    });
-
-    if (activeFileTask) {
-      return this.complete({ taskId: activeFileTask._id });
-    }
-  };
-
   changeStatus = ({ taskId, newStatus }) =>
     this.update({ taskId, object: { status: newStatus } });
 
-  changeAssignedTo = ({ taskId, newAssignee }) =>
-    this.update({ taskId, object: { assignedEmployeeId: newAssignee } });
+  changeAssignedTo = ({ taskId, newAssigneeId }) =>
+    this.update({ taskId, object: { assignedEmployeeId: newAssigneeId } });
 
-  isRelatedToUser = ({ task, userId }) => {
-    if (task.userId === userId) {
-      return true;
-    }
-    if (task.borrower && task.borrower.borrowerAssignee === userId) {
-      return true;
-    }
-    if (task.loan && task.loan.user._id === userId) {
-      return true;
-    }
-    if (task.property && task.property.propertyAssignee === userId) {
-      return true;
-    }
-    return false;
-  };
+  getAssigneeForDoc = (docId, collection) => {
+    const doc = Mongo.Collection.get(collection)
+      .createQuery({ $filters: { _id: docId }, assignee: 1 })
+      .fetchOne();
 
-  getRelatedTo = ({ task }) => {
-    if (task.borrower) {
-      return task.borrower.user._id;
-    }
-    if (task.loan) {
-      return task.loan.user._id;
-    }
-    if (task.property) {
-      return task.property.user._id;
-    }
-    return undefined;
-  };
-
-  assignAllTasksToAdmin = ({ userId, newAssignee }) => {
-    const unassignedTasks = unassignedTasksQuery.fetch();
-    unassignedTasks.map((task) => {
-      const isRelatedToUser = this.isRelatedToUser({ task, userId });
-      if (isRelatedToUser) {
-        this.update({
-          taskId: task._id,
-          object: { assignedEmployeeId: newAssignee },
-        });
-      }
-
-      return task;
-    });
+    return doc && doc.assignee ? doc.assignee._id : null;
   };
 }
 

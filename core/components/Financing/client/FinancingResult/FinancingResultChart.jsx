@@ -59,6 +59,6 @@ const FinancingResultChart = (props: FinancingResultChartProps) => {
 };
 
 export default compose(
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   SingleStructureContainer,
 )(FinancingResultChart);

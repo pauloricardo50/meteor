@@ -10,6 +10,7 @@ export const baseTaskFragment = {
   updatedAt: 1,
   userId: 1,
   fileKey: 1,
+  relatedDoc: 1,
   $options: { sort: { createdAt: -1 } },
 };
 

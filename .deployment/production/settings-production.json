@@ -16,9 +16,11 @@
     },
     "google_maps_key": "AIzaSyCST4zOC76R4fBa2NazYDP3Nzv1xuottw4",
     "subdomains": {
-      "www": "https://www.e-potek.ch",
+      "admin": "https://admin.e-potek.ch",
       "app": "https://app.e-potek.ch",
-      "admin": "https://admin.e-potek.ch"
+      "pdf": "https://pdf.e-potek.ch",
+      "pro": "https://pro.e-potek.ch",
+      "www": "https://www.e-potek.ch"
     }
   },
   "mandrill": {
@@ -43,6 +45,14 @@
     "app": {
       "appId": "KLociQZYhg92Xr2kt",
       "appSecret": "ade6d05b-e3cb-40ad-8b3b-7e4e81605ba7"
+    },
+    "pdf": {
+      "appId": "y5Aoh6N3f2rh5Z7A4",
+      "appSecret": "4a290460-acd2-4a69-b54e-85ade77564f0"
+    },
+    "pro": {
+      "appId": "LahXKo9AFBp8pnQ2f",
+      "appSecret": "404c2df5-178c-4404-b43f-724ce97abf3f"
     }
   },
   "storage": {

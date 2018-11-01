@@ -24,9 +24,7 @@ const FinancingHeader = ({
   <ScrollSyncPane>
     <div className="card1 financing-structures-section financing-structures-header">
       <FinancingLabels
-        config={[
-          { label: () => <FinancingHeaderAdder loanId={loanId} /> },
-        ]}
+        config={[{ label: () => <FinancingHeaderAdder loanId={loanId} /> }]}
       />
       {structures.map((structure, index) => (
         <FinancingSingleHeader
@@ -43,4 +41,4 @@ const FinancingHeader = ({
   </ScrollSyncPane>
 );
 
-export default FinancingDataContainer()(FinancingHeader);
+export default FinancingDataContainer(FinancingHeader);

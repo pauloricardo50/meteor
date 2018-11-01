@@ -5,7 +5,7 @@ import {
   FOOTER_TYPES,
 } from '../emailConstants';
 import {
-  getEnrollmentUrl,
+  getAccountsUrl,
   notificationTemplateDefaultOverride,
   notificationAndCtaTemplateDefaultOverride,
 } from './emailHelpers';
@@ -53,16 +53,16 @@ const addEmailConfig = (emailId, config) => {
 
 addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ url }, { title, body, cta }) {
+  createOverrides({ user, url }, { title, body, cta }) {
     const { variables } = this.template;
-    const urlWithoutHash = url.replace('#/', '');
+    const verifyUrl = getAccountsUrl('verify-email')(user, url);
 
     return {
       variables: [
         { name: variables.TITLE, content: title },
         { name: variables.BODY, content: body },
         { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: urlWithoutHash },
+        { name: variables.CTA_URL, content: verifyUrl },
       ],
     };
   },
@@ -70,16 +70,19 @@ addEmailConfig(EMAIL_IDS.VERIFY_EMAIL, {
 
 addEmailConfig(EMAIL_IDS.RESET_PASSWORD, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ url }, { title, body, cta }) {
+  createOverrides({ user, url }, { title, body, cta }) {
     const { variables } = this.template;
-    const urlWithoutHash = url.replace('#/', '');
+    const resetPasswordUrl = getAccountsUrl('reset-password')(user, url);
 
     return {
       variables: [
         { name: variables.TITLE, content: title },
         { name: variables.BODY, content: body },
         { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: urlWithoutHash || CTA_URL_DEFAULT },
+        {
+          name: variables.CTA_URL,
+          content: resetPasswordUrl || CTA_URL_DEFAULT,
+        },
       ],
     };
   },
@@ -89,7 +92,7 @@ addEmailConfig(EMAIL_IDS.ENROLL_ACCOUNT, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
   createOverrides({ user, url }, { title, body, cta }) {
     const { variables } = this.template;
-    const enrollUrl = getEnrollmentUrl(user, url);
+    const enrollUrl = getAccountsUrl('enroll-account')(user, url);
 
     return {
       variables: [
@@ -154,6 +157,31 @@ addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
     ...params,
     details: params.details || 'Pas de message',
   }),
+});
+
+addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
+  template: EMAIL_TEMPLATES.PROMOTION_INVITATION,
+  createOverrides(
+    { coverImageUrl, logoUrls = [], ctaUrl, firstName, promotionName },
+    { title, body, cta },
+  ) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: ctaUrl || CTA_URL_DEFAULT },
+        { name: variables.COVER_IMAGE_URL, content: coverImageUrl },
+        ...logoUrls.map((url, index) => ({
+          name: variables[`LOGO_URL_${index + 1}`],
+          content: url,
+        })),
+      ],
+    };
+  },
+  createIntlValues: params => params,
 });
 
 export default emailConfigs;

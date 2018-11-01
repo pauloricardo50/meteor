@@ -8,7 +8,11 @@ import LoanChecklist from '.';
 type LoanChecklistDialogProps = {};
 
 const LoanChecklistDialog = ({ loan }: LoanChecklistDialogProps) => (
-  <DialogSimple cancelOnly label={<T id="LoanChecklist.dialogButton" />}>
+  <DialogSimple
+    cancelOnly
+    label={<T id="LoanChecklist.dialogButton" />}
+    buttonProps={{ className: 'loan-checklist-dialog' }}
+  >
     <LoanChecklist loan={loan} />
   </DialogSimple>
 );

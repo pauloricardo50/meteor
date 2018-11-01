@@ -222,7 +222,7 @@ describe('LoanCalculator', () => {
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
         },
-      })).to.equal(5000);
+      })).to.equal(6000);
     });
 
     it('uses the provided theoretical rate', () => {
@@ -239,7 +239,7 @@ describe('LoanCalculator', () => {
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
         },
-      })).to.equal(1800);
+      })).to.equal(2800);
     });
   });
 
@@ -248,15 +248,15 @@ describe('LoanCalculator', () => {
       expect(Calculator.getIncomeRatio({
         loan: {
           structure: {
-            wantedLoan: 1920000,
-            property: { value: 2400000 },
+            wantedLoan: 800000,
+            property: { value: 1000000 },
             propertyWork: 0,
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
-          borrowers: [{ salary: 1 / 12 }], // Use 1/12 salary to cancel monthly division and get a round number for this test
+          borrowers: [{ salary: 180000 }],
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
-      })).to.equal(10000);
+      })).to.be.within(0.33, 0.34);
     });
   });
 
@@ -323,14 +323,13 @@ describe('LoanCalculator', () => {
 
   describe('getLoanFilesProgress', () => {
     it('returns 0 for an empty loan', () => {
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.equal(0);
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.equal(0);
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns 100% for a loan initially, when documents have arrived', () => {
       expect(Calculator.getLoanFilesProgress({
         loan: { documents: {}, logic: {}, general: {} },
-      })).to.equal(1);
+      })).to.deep.equal({ percent: 1, count: 0 });
     });
   });
 

@@ -9,6 +9,96 @@
     justify-content: center;
   }
 
+  .promotions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    .promotion-cards,
+    .promotion-options {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    hr {
+      width: 60%;
+      align-self: center;
+      margin: 64px 0;
+    }
+
+    .promotion-detail {
+      display: flex;
+      flex-direction: column;
+
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 400px;
+      height: 500px;
+      margin: 16px;
+
+      .promotion-image {
+        flex-grow: 1;
+
+        margin: -16px;
+        margin-bottom: 0;
+
+        transition: background-image 1s $bezier;
+
+        border-radius: 16px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+
+      .promotion-card {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        min-width: 300px;
+        padding: 16px;
+
+        h2 {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0;
+
+          > * {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+
+    .promotion-option-detail {
+      display: flex;
+      flex-direction: column;
+
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 400px;
+      height: 200px;
+      margin: 16px;
+      padding: 16px;
+
+      h2 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+
+        > * {
+          margin-right: 8px;
+        }
+      }
+
+      h1 {
+        align-self: center;
+      }
+    }
+  }
+
   .adder {
     padding: 32px;
   }

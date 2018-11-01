@@ -28,3 +28,8 @@ export const appUserFragment = {
   borrowers: { _id: 1, name: 1 },
   properties: { _id: 1 },
 };
+
+export const proUserFragment = {
+  ...fullUserFragment,
+  assignedEmployee: simpleUserFragment,
+};

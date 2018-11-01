@@ -55,14 +55,7 @@ const tempFileState = withStateHandlers(
   },
 );
 
-const props = withProps(({
-  currentValue,
-  disabled,
-  deleteFile,
-  addTempFiles,
-  intl: { formatMessage: f },
-  currentUser,
-}) => ({
+const props = withProps(({ deleteFile, addTempFiles, intl: { formatMessage: f }, currentUser }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
     let showError = false;
@@ -89,7 +82,7 @@ const props = withProps(({
   },
   handleUploadComplete: (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    SlackService.notifyAssignee(currentUser, file.name);
+    SlackService.notifyOfUpload(currentUser, file.name);
   },
   handleRemove: key =>
     deleteFile(key).then(() => {
@@ -97,13 +90,6 @@ const props = withProps(({
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
     }),
-  shouldDisableAdd: () =>
-    currentValue
-      && currentValue.reduce(
-        (acc, file) => !(file.status === FILE_STATUS.ERROR),
-        true,
-      )
-      && disabled,
 }));
 
 const willReceiveProps = lifecycle({

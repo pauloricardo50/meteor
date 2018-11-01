@@ -8,9 +8,17 @@
   &.not-editing {
     cursor: pointer;
 
+    &.is-placeholder {
+      opacity: 0.5;
+    }
+
     &:hover {
+      opacity: 1;
       color: white;
       background-color: $primary;
     }
+  }
+  &.not-allowed-to-edit.is-placeholder {
+    opacity: 0.5;
   }
 }

@@ -1,37 +1,19 @@
 // @flow
 import React from 'react';
 import AutoForm from 'uniforms-material/AutoForm';
-import SelectField from 'uniforms-material/SelectField';
-import AutoField from 'uniforms-material/AutoField';
-import connectField from 'uniforms/connectField';
+import pickBy from 'lodash/pickBy';
 
-import T from '../Translation';
+import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
 
-const CustomSelectField = props => (
-  <SelectField
+const CustomAutoForm = ({ autoFieldProps = {}, model, ...props }) => (
+  <AutoForm
+    autoField={makeCustomAutoField(autoFieldProps)}
+    showInlineError
+    submitField={SubmitField}
+    // https://github.com/aldeed/simple-schema-js/issues/310
+    model={pickBy(model, (_, key) => !key.startsWith('$'))}
     {...props}
-    transform={option => <T id={`Forms.${props.name}.${option}`} />}
   />
-);
-
-const determineComponentFromProps = (props) => {
-  if (props.allowedValues) {
-    return CustomSelectField;
-  }
-
-  return false;
-};
-
-export const CustomAutoField = connectField(
-  (props) => {
-    const Component = determineComponentFromProps(props) || AutoField;
-    return <Component {...props} label={<T id={`Forms.${props.name}`} />} />;
-  },
-  { includeInChain: false },
-);
-
-const CustomAutoForm = props => (
-  <AutoForm {...props} autoField={CustomAutoField} />
 );
 
 export default CustomAutoForm;

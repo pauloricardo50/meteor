@@ -42,6 +42,24 @@ export const getPercent = (array) => {
   return Number.isFinite(percent) ? percent : 0;
 };
 
+export const getAggregatePercent = (percentageObjects) => {
+  const {
+    percent: aggregatePercent,
+    count: aggregateCount,
+  } = percentageObjects.reduce(
+    (obj, { percent, count }) => ({
+      percent: obj.percent + percent * count,
+      count: obj.count + count,
+    }),
+    { percent: 0, count: 0 },
+  );
+
+  return {
+    count: aggregateCount,
+    percent: aggregateCount === 0 ? 0 : aggregatePercent / aggregateCount,
+  };
+};
+
 const isNonEmptyObject = variable =>
   variable.constructor === Object && Object.keys(variable).length > 0;
 

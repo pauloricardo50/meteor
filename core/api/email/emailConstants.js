@@ -42,6 +42,21 @@ export const EMAIL_TEMPLATES = {
       CTA_URL: 'CTA_URL',
     },
   },
+  PROMOTION_INVITATION: {
+    name: 'PROMOTION_INVITATION',
+    mandrillId: 'promotion-invitation',
+    variables: {
+      TITLE: 'TITLE',
+      MARKETING_BLURB: 'MARKETING_BLURB',
+      BODY: 'BODY',
+      CTA: 'CTA',
+      CTA_URL: 'CTA_URL',
+      COVER_IMAGE_URL: 'COVER_IMAGE_URL',
+      LOGO_URL_1: 'LOGO_URL_1',
+      LOGO_URL_2: 'LOGO_URL_2',
+      LOGO_URL_3: 'LOGO_URL_3',
+    },
+  },
 };
 
 export const EMAIL_IDS = {
@@ -56,4 +71,5 @@ export const EMAIL_IDS = {
   AUCTION_STARTED: 'AUCTION_STARTED',
   AUCTION_ENDED: 'AUCTION_ENDED',
   AUCTION_CANCELLED: 'AUCTION_CANCELLED',
+  INVITE_USER_TO_PROMOTION: 'INVITE_USER_TO_PROMOTION',
 };

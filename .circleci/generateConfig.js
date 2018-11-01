@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 5;
+const CACHE_VERSION = 7;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -95,7 +95,7 @@ const testMicroserviceJob = name => ({
     runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand(
       'Install node_modules',
-      `cd microservices/${name} && meteor npm i`,
+      `cd microservices/${name} && meteor npm ci`,
     ),
     runCommand(
       'Install nightmare and @babel/node',

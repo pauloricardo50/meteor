@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Widget1Part2 from 'core/components/widget1/Widget1Part2';
 import { widget1Actions } from 'core/redux/widget1';
-import Page from '../../components/Page';
+import Page from 'core/components/Page';
 import AppWidget1PageContainer from './AppWidget1PageContainer';
 
 type AppWidget1PageProps = {};

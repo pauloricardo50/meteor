@@ -7,6 +7,7 @@
 @import '{}/imports/core/components/DateInput/DateInput.scss';
 @import '{}/imports/core/components/DevPage/DevPage.scss';
 @import '{}/imports/core/components/DisconnectModal/DisconnectModal.scss';
+@import '{}/imports/core/components/DocumentDownloadList/DocumentDownloadList.scss';
 @import '{}/imports/core/components/ErrorBoundary/ErrorBoundary.scss';
 @import '{}/imports/core/components/FileTabs/FileTabs.scss';
 @import '{}/imports/core/components/Financing/Financing.scss';
@@ -20,11 +21,17 @@
 @import '{}/imports/core/components/maps/GoogleMap.scss';
 @import '{}/imports/core/components/MissingDoc/MissingDoc.scss';
 @import '{}/imports/core/components/OfferList/OfferList.scss';
+@import '{}/imports/core/components/Page/Page.scss';
+@import '{}/imports/core/components/PasswordResetPage/PasswordResetPage.scss';
+@import '{}/imports/core/components/PromotionLotPage/PromotionLotPage.scss';
+@import '{}/imports/core/components/PromotionPage/client/PromotionPage.scss';
+@import '{}/imports/core/components/PromotionUsersPage/PromotionUsersPage.scss';
 @import '{}/imports/core/components/PropertyForm/PropertyForm.scss';
 @import '{}/imports/core/components/Recap/Recap.scss';
 @import '{}/imports/core/components/SearchModal/SearchModal.scss';
 @import '{}/imports/core/components/Select/Select.scss';
 @import '{}/imports/core/components/StarRating/StarRating.scss';
+@import '{}/imports/core/components/StatusLabel/StatusLabel.scss';
 @import '{}/imports/core/components/Table/Table.scss';
 @import '{}/imports/core/components/Tabs/Tabs.scss';
 @import '{}/imports/core/components/tooltips/Tooltip.scss';

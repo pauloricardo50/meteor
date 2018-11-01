@@ -1,8 +1,14 @@
 import { compose, withProps, withStateHandlers, withState } from 'recompose';
-import { connect } from 'react-redux';
 
-import { updateStructure } from '../../../../../redux/financing';
-import { borrowerUpdate, pushBorrowerValue } from '../../../../../api';
+import {
+  borrowerUpdate,
+  pushBorrowerValue,
+  updateStructure,
+} from '../../../../../api';
+import {
+  OWN_FUNDS_USAGE_TYPES,
+  RESIDENCE_TYPE,
+} from '../../../../../api/constants';
 import Calculator from '../../../../../utils/Calculator';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
@@ -14,13 +20,6 @@ import {
   getAvailableFundsOfTypeAndBorrower,
   getNewWantedLoanAfterPledge,
 } from './FinancingOwnFundsPickerHelpers';
-import ClientEventService, {
-  LOAD_LOAN,
-} from '../../../../../api/events/ClientEventService/index';
-import {
-  OWN_FUNDS_USAGE_TYPES,
-  RESIDENCE_TYPE,
-} from '../../../../../api/constants';
 
 export const FIELDS = {
   TYPE: 'type',
@@ -67,15 +66,12 @@ const withDisableSubmit = withProps(({ type, borrowerId, value, usageType }) => 
   ),
 }));
 
-const withStructureUpdate = connect(
-  null,
-  (dispatch, { structureId }) => ({
-    updateLoan: wantedLoan =>
-      dispatch(updateStructure(structureId, { wantedLoan })),
-    updateOwnFunds: ownFunds =>
-      dispatch(updateStructure(structureId, { ownFunds })),
-  }),
-);
+const withStructureUpdate = withProps(({ loan: { _id: loanId }, structureId }) => ({
+  updateLoan: wantedLoan =>
+    updateStructure.run({ loanId, structureId, structure: { wantedLoan } }),
+  updateOwnFunds: ownFunds =>
+    updateStructure.run({ loanId, structureId, structure: { ownFunds } }),
+}));
 
 const withAdditionalProps = withProps((props) => {
   const {
@@ -96,7 +92,6 @@ const withAdditionalProps = withProps((props) => {
   const otherValueOfTypeAndBorrower = getOwnFundsOfTypeAndBorrower(props);
 
   const updateCleanup = () => {
-    ClientEventService.emit(LOAD_LOAN);
     setLoading(false);
   };
 
@@ -163,9 +158,10 @@ const withAdditionalProps = withProps((props) => {
 
 const FinancingOwnFundsPickerContainer = compose(
   SingleStructureContainer,
-  FinancingDataContainer({ asArrays: true }),
+  FinancingDataContainer,
   addState,
   withDisableSubmit,
+  // StructureUpdateContainer,
   withStructureUpdate,
   withState('loading', 'setLoading', false),
   withAdditionalProps,

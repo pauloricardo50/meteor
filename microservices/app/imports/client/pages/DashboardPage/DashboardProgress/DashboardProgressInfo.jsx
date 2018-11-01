@@ -6,22 +6,44 @@ import cx from 'classnames';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import type { userLoan } from 'core/api/types';
-import { dashboardTodosArray } from './dashboardTodos';
+import Loading from 'core/components/Loading';
+import {
+  getDashboardTodosArray,
+  promotionTodoList,
+  defaultTodoList,
+} from './dashboardTodos';
 
 type DashboardProgressInfoProps = {
   loan: userLoan,
 };
 
-const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
-  <div className="dashboard-progress-info">
-    {dashboardTodosArray
-      .filter(({ hide }) => !hide || !hide(loan))
-      .sort((a, b) => b.isDone(loan) - a.isDone(loan))
-      .map(({ id, link, isDone: isDoneFunc }) => {
+const getTodos = (loan) => {
+  let list = defaultTodoList;
+
+  if (loan.hasPromotion) {
+    list = promotionTodoList;
+  }
+
+  return getDashboardTodosArray(list)
+    .filter(({ hide }) => !hide || !hide(loan))
+    .sort((a, b) => b.isDone(loan) - a.isDone(loan));
+};
+
+const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
+  const todos = getTodos(loan);
+
+  if (!loan.documentsLoaded) {
+    return <Loading />;
+  }
+
+  return (
+    <div className="dashboard-progress-info">
+      {todos.map((todo) => {
+        const { id, link, isDone: isDoneFunc, Component } = todo;
         const isDone = isDoneFunc(loan);
-        const Component = link && !isDone ? Link : 'div';
+        const WrapperComponent = link && !isDone ? Link : 'div';
         return (
-          <Component
+          <WrapperComponent
             to={link && link(loan)}
             className={cx('todo', { link, isDone })}
             key={id}
@@ -33,11 +55,17 @@ const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => (
             <p>
               <T id={`DashboardProgressInfo.${id}`} />
             </p>
-            {link && !isDone && <Icon type="right" className="icon-arrow" />}
-          </Component>
+            {link
+              && !Component
+              && !isDone && <Icon type="right" className="icon-arrow" />}
+            {Component && (
+              <Component {...todo} todos={todos} isDone={isDone} loan={loan} />
+            )}
+          </WrapperComponent>
         );
       })}
-  </div>
-);
+    </div>
+  );
+};
 
 export default DashboardProgressInfo;

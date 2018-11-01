@@ -18,7 +18,7 @@ const DisableUserFormsToggle = ({ loan }) => {
 
   return (
     <Toggle
-      labelTop={<T id="DisableUserFormsToggle.canEdit" />}
+      labelTop={<T id="Forms.userFormsEnabled" />}
       labelLeft={<T id="general.no" />}
       labelRight={<T id="general.yes" />}
       toggled={userFormsEnabled}

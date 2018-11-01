@@ -24,4 +24,4 @@ const FinmaRatio = ({ status, tooltip, id, ...props }: FinmaRatioProps) => (
   </CalculatedValue>
 );
 
-export default FinancingDataContainer({ asArrays: false })(FinmaRatio);
+export default FinancingDataContainer(FinmaRatio);

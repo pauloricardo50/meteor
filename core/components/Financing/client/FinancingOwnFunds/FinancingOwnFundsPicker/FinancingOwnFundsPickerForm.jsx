@@ -99,4 +99,4 @@ const FinancingOwnFundsPickerForm = ({
   </form>
 );
 
-export default FinancingDataContainer({ asArrays: true })(FinancingOwnFundsPickerForm);
+export default FinancingDataContainer(FinancingOwnFundsPickerForm);

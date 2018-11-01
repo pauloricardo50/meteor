@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import T from 'core/components/Translation';
 import FileTabs from 'core/components/FileTabs';
-import Page from '../../components/Page';
+import Page from 'core/components/Page';
 
 const getStructurePropertyWithDocuments = ({
   loan: { properties, structure },
@@ -17,6 +16,7 @@ const FilesPage = props => (
       {...props}
       property={getStructurePropertyWithDocuments(props)}
       borrowers={props.loan.borrowers}
+      disabled={!props.loan.userFormsEnabled}
     />
   </Page>
 );

@@ -39,7 +39,7 @@ const MainSideNavListItem = ({
         primary: collection && collection === collectionName,
       })}
     >
-      <Icon type={icon} size={32} />
+      {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}
       <h5 className="label">
         {label || <T id={`collections.${collection}`} noTooltips />}
       </h5>
@@ -52,7 +52,7 @@ MainSideNavListItem.propTypes = {
   collection: PropTypes.string,
   collectionName: PropTypes.string,
   detail: PropTypes.bool,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   label: PropTypes.string,
   onClick: PropTypes.func.isRequired,
   to: PropTypes.string,

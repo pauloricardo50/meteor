@@ -26,8 +26,9 @@ export default class ConfirmMethod extends Component {
     }
 
     if (this.shouldAllowSubmit(keyword)) {
+      this.setState({ loading: true });
       method()
-        .then(() => this.setState({ open: false }))
+        .then(() => this.setState({ open: false, loading: false }))
         .then(() => message.success('Succès !', 2));
     }
   };
@@ -35,14 +36,23 @@ export default class ConfirmMethod extends Component {
   handleChange = event => this.setState({ text: event.target.value });
 
   render() {
-    const { label, style, disabled, keyword, buttonProps } = this.props;
-    const { open, text } = this.state;
+    const {
+      label,
+      style,
+      disabled,
+      keyword,
+      buttonProps,
+      children,
+      dialogTitle,
+    } = this.props;
+    const { open, text, loading } = this.state;
     const actions = [
       <Button
         label={<T id="ConfirmMethod.buttonCancel" />}
         primary
         onClick={this.handleClose}
         key="cancel"
+        disabled={loading}
       />,
       <Button
         label={<T id="ConfirmMethod.buttonConfirm" />}
@@ -50,6 +60,7 @@ export default class ConfirmMethod extends Component {
         disabled={keyword && text !== keyword}
         onClick={this.handleSubmit}
         key="ok"
+        loading={loading}
       />,
     ];
 
@@ -63,11 +74,12 @@ export default class ConfirmMethod extends Component {
           {...buttonProps}
         />
         <Dialog
-          title={<T id="ConfirmMethod.dialogTitle" />}
+          title={dialogTitle || <T id="ConfirmMethod.dialogTitle" />}
           actions={actions}
           important
           open={open}
         >
+          {children}
           {keyword && (
             <div>
               <T id="ConfirmMethod.dialogMessage" values={{ keyword }} />
@@ -88,7 +100,7 @@ export default class ConfirmMethod extends Component {
 
 ConfirmMethod.propTypes = {
   disabled: PropTypes.bool,
-  keyword: PropTypes.string.isRequired,
+  keyword: PropTypes.string,
   label: PropTypes.string.isRequired,
   method: PropTypes.func.isRequired,
   style: PropTypes.object,

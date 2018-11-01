@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 import Icon from 'core/components/Icon';
 
 const IconLink = ({ link, icon, text, children, ...rest }) => (
-  <Link to={link} className="icon-link" {...rest}>
+  <Link
+    to={link}
+    className="icon-link"
+    onClick={e => e.stopPropagation()}
+    {...rest}
+  >
     <Icon type={icon} className="icon-link-icon" />
     {children || text}
   </Link>

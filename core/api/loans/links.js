@@ -1,6 +1,14 @@
 // @flow
 import Loans from './loans';
-import { Properties, Borrowers, Users, Tasks, Offers } from '..';
+import {
+  Properties,
+  Borrowers,
+  Users,
+  Tasks,
+  Offers,
+  Promotions,
+  PromotionOptions,
+} from '..';
 
 Loans.addLinks({
   properties: {
@@ -25,5 +33,19 @@ Loans.addLinks({
   offers: {
     collection: Offers,
     inversedBy: 'loan',
+  },
+  promotions: {
+    field: 'promotionLinks',
+    collection: Promotions,
+    type: 'many',
+    metadata: true,
+  },
+  promotionOptions: {
+    field: 'promotionOptionLinks',
+    collection: PromotionOptions,
+    type: 'many',
+    unique: true,
+    metadata: true,
+    autoremove: true,
   },
 });

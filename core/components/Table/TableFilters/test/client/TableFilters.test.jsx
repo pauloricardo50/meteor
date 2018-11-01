@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import sinon from 'sinon';
 
 import { shallow } from '../../../../../utils/testHelpers/enzyme';
 import { getMountedComponent } from '../../../../../utils/testHelpers';
@@ -25,7 +24,7 @@ const component = (props) => {
   return wrapper
     .dive()
     .dive()
-    .dive();
+    // .dive();
 };
 
 const mountedComponent = props =>

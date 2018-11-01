@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 import { SecurityService } from '../..';
 import LoanService from '../../loans/LoanService';
 import BorrowerService from '../../borrowers/BorrowerService';
@@ -11,6 +12,8 @@ import {
   setUserToLoan,
   removeBorrower,
   submitContactForm,
+  addUserToDoc,
+  throwDevError,
 } from '../methodDefinitions';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -83,3 +86,27 @@ removeBorrower.setHandler((context, { loanId, borrowerId }) => {
 
 // This method needs to exist as its being listened to in EmailListeners
 submitContactForm.setHandler(() => null);
+
+addUserToDoc.setHandler(({ userId }, { docId, collection, options, userId: newUserId }) => {
+  const doc = Mongo.Collection.get(collection).findOne(docId);
+  try {
+    SecurityService.checkUserIsAdmin(userId);
+  } catch (error) {
+    SecurityService.checkOwnership(doc);
+  }
+  Mongo.Collection.get(collection).update(docId, {
+    userLinks: { $push: { _id: newUserId, ...options } },
+  });
+});
+
+throwDevError.setHandler((_, { promise }) => {
+  console.log('Throwing dev error..');
+
+  if (promise) {
+    return new Promise((resolve, reject) => {
+      reject(new Meteor.Error(400, 'Dev promise error!'));
+    });
+  }
+
+  throw new Meteor.Error(400, 'Dev error!');
+});

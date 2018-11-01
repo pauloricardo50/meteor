@@ -1,3 +1,4 @@
+import argv from 'yargs';
 import {
   generateServiceName,
   FORMATTED_ENVIRONMENTS,
@@ -5,7 +6,6 @@ import {
 import { ENVIRONMENT, SERVICES } from '../settings/config';
 import { writeYAML, touchFile, mkdir, executeCommand } from '../utils/helpers';
 import CloudFoundryService from '../CloudFoundry/CloudFoundryService';
-import argv from 'yargs';
 
 let SSH_ID;
 export const PORT_OFFSET = Math.round(Math.random() * 100);
@@ -19,12 +19,6 @@ export const MONGO_SERVICES = {
     environment: ENVIRONMENT.PRODUCTION,
     service: SERVICES.MONGODB,
   }),
-};
-
-//Shouldn't change
-export const MONGO_PORTS = {
-  [ENVIRONMENT.STAGING]: 38842,
-  [ENVIRONMENT.PRODUCTION]: 53615,
 };
 
 export const HOST = 'kubernetes-service-node.service.consul';
@@ -48,8 +42,9 @@ const writeApplicationManifest = environment =>
     data: applicationManifestData(environment),
   });
 
-const openSSHTunnel = () => {
-  const { environment, ssh_id } = argv
+const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
+  let environment;
+  const args = argv
     .usage('Usage: $0 [options]]')
     .example(
       '$0 -e staging',
@@ -59,13 +54,19 @@ const openSSHTunnel = () => {
     .nargs('e', 1)
     .describe('e', `Environment ${FORMATTED_ENVIRONMENTS}`)
     .alias('i', 'ssh_id')
-    .nargs('i', 1)
-    .describe('i', `Random id for the application`)
+    .array('i')
+    .describe('i', 'Random id for the application')
     .demandOption(['e', 'i'])
     .help('h')
     .alias('h', 'help').argv;
 
-  SSH_ID = ssh_id;
+  if (environmentOverride) {
+    environment = environmentOverride;
+  } else {
+    environment = args.environment;
+  }
+
+  SSH_ID = args.ssh_id[sshIdNumber];
 
   return mkdir(`${__dirname}/${environment}-${SSH_ID}/`)
     .then(() => writeApplicationManifest(environment))
@@ -76,10 +77,20 @@ const openSSHTunnel = () => {
         `${__dirname}/${environment}-${SSH_ID}/`,
       ),
     )
-    .then(() => ({
-      environment,
-      ssh_id,
-    }));
+    .then(() =>
+      executeCommand(
+        `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\" -e \\"ports\\"`,
+      ),
+    )
+    .then(credentials => {
+      const parsedCredentials = JSON.parse(`{${credentials}}`);
+      return {
+        ...parsedCredentials,
+        mongoPort: Number(parsedCredentials.ports.split(',')[0]),
+        sshId: SSH_ID,
+        environment,
+      };
+    });
 };
 
 export default openSSHTunnel;

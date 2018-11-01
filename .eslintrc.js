@@ -64,6 +64,7 @@ module.exports = {
     'function-paren-newline': ['error', 'multiline'],
     'implicit-arrow-linebreak': 'off',
     'func-names': 'off',
+    curly: 'error',
 
     // eslint-plugin-import rules
 

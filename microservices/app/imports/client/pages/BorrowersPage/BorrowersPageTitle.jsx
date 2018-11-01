@@ -18,7 +18,11 @@ const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
       <T id="BorrowersPage.title" />
       <small>
         &nbsp; - &nbsp;
-        <PercentWithStatus value={value} status={value >= 1 && SUCCESS} />
+        <PercentWithStatus
+          value={value}
+          status={value >= 1 && SUCCESS}
+          rounded
+        />
       </small>
     </span>
   );

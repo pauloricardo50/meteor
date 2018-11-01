@@ -6,14 +6,19 @@ import sinon from 'sinon';
 import Calculator from 'core/utils/Calculator';
 import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
-import { dashboardTodosObject, checkArrayIsDone } from '../dashboardTodos';
+import {
+  dashboardTodosObject,
+  checkArrayIsDone,
+  getDashboardTodosArray,
+  defaultTodoList,
+} from '../dashboardTodos';
 import { VALUATION_STATUS } from '../../../../../core/api/constants';
 
 describe('dashboardTodos', () => {
   beforeEach(() => {
     sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
     sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
-    sinon.stub(Calculator, 'filesProgress').callsFake(() => 1);
+    sinon.stub(Calculator, 'filesProgress').callsFake(() => ({ percent: 1 }));
   });
 
   afterEach(() => {
@@ -83,7 +88,9 @@ describe('dashboardTodos', () => {
   describe('completeBorrowers', () => {
     it('shows when borrowers are missing things', () => {
       BorrowerCalculator.personalInfoPercent.restore();
-      sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 0.5);
+      sinon
+        .stub(BorrowerCalculator, 'personalInfoPercent')
+        .callsFake(() => 0.5);
       expect(dashboardTodosObject.completeBorrowers.isDone({
         borrowers: [{}],
       })).to.equal(false);
@@ -147,19 +154,25 @@ describe('dashboardTodos', () => {
 
   describe('callEpotek', () => {
     it('shows when all other todos are done', () => {
-      expect(dashboardTodosObject.callEpotek.hide({
+      const defaultTodos = getDashboardTodosArray(defaultTodoList);
+      const callEpotek = defaultTodos.find(({ id }) => id === 'callEpotek');
+
+      expect(callEpotek.hide({
         general: {},
         structure: { property: { valuation: {} }, offer: {} },
         structures: [{}, {}],
-        borrowers: [{}],
+        borrowers: [{ salary: 2000, bankFortune: 3000 }],
         properties: [{}],
       })).to.equal(false);
     });
 
     it('hides if one thing is not done', () => {
+      const defaultTodos = getDashboardTodosArray(defaultTodoList);
+      const callEpotek = defaultTodos.find(({ id }) => id === 'callEpotek');
+
       Calculator.filesProgress.restore();
       sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
-      expect(dashboardTodosObject.callEpotek.hide({
+      expect(callEpotek.hide({
         general: {},
         structure: { property: { valuation: {} }, offer: {} },
         structures: [{}, {}],

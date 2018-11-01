@@ -169,7 +169,7 @@ export default class Table extends Component {
         {data.length === 0 && (
           <h3
             className="secondary flex center"
-            style={{ width: '100%', padding: 32 }}
+            style={{ width: '100%', padding: 32, boxSizing: 'border-box' }}
           >
             <T id="Table.empty" />
           </h3>

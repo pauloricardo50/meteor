@@ -41,18 +41,22 @@ const SinglePropertyHeader = ({
       {insideArea && [', ', <MetricArea value={insideArea} key="insideArea" />]}
     </p>
 
-    <div className="bottom">
+    {/* TODO: This can be uncommented once PDFs can be generated */}
+    {/* <div className="bottom">
       <p className="created-at">
-        {user && [
-          <T id="SinglePropertyPageHeader.createdBy" key="createdBy" />,
-          ' ',
-          <Link to={`/users/${user._id}`} key="userLink">
-            {user.email}
-          </Link>,
-          ', ',
-        ]}
-
-        <FullDate date={createdAt} />
+        {user && (
+          <T
+            id="SinglePropertyPageHeader.metadata"
+            values={{
+              user: (
+                <Link to={`/users/${user._id}`} key="userLink">
+                  <b>{user.name}</b>
+                </Link>
+              ),
+              date: <FullDate date={createdAt} />,
+            }}
+          />
+        )}
 
         {user
           && user.assignedEmployee && (
@@ -65,7 +69,7 @@ const SinglePropertyHeader = ({
           </span>
         )}
       </p>
-    </div>
+    </div> */}
   </div>
 );
 

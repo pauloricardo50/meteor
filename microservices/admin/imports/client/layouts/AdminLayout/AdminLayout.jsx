@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Roles } from 'meteor/alanning:roles';
 import { Redirect } from 'react-router-dom';
+import { HotKeys } from 'react-hotkeys';
 
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
@@ -43,6 +44,11 @@ const AdminLayout = (props) => {
 
   return (
     <div className="admin-layout">
+      <HotKeys
+        handlers={{ space: () => history.push('/search') }}
+        focused
+        attach={window}
+      />
       <PageHead titleId="AdminLayout" />
       <AdminTopNav {...props} />
 
