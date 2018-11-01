@@ -9,7 +9,10 @@ const PERSIST_STORE = true;
 const createPersistedReducer = (reducer, isClient) => {
   if (PERSIST_STORE && isClient) {
     const { default: storage } = require('redux-persist/lib/storage');
-    const persistConfig = { key: 'root', storage };
+    // Weird SSR issues with redux-persist
+    // To try using it, remove the whitelist, and refresh from the
+    // widget1 page for example, server and client-side store are not the same
+    const persistConfig = { key: 'root', storage, whitelist: [] };
     return persistReducer(persistConfig, reducer);
   }
   return reducer;

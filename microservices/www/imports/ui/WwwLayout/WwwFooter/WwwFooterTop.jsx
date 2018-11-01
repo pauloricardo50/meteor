@@ -18,7 +18,7 @@ const WwwFooterTop = ({ children }) => {
           <T id="HomePageHeader.title" />
         </h3>
       </b>
-      <Button className="cta" variant="raised" link to="/start/1">
+      <Button className="cta" raised link to="/start/1">
         <T id="general.start" />
       </Button>
     </div>
