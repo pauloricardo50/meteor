@@ -1,3 +1,4 @@
+import argv from 'yargs';
 import {
   generateServiceName,
   FORMATTED_ENVIRONMENTS,
@@ -5,7 +6,6 @@ import {
 import { ENVIRONMENT, SERVICES } from '../settings/config';
 import { writeYAML, touchFile, mkdir, executeCommand } from '../utils/helpers';
 import CloudFoundryService from '../CloudFoundry/CloudFoundryService';
-import argv from 'yargs';
 
 let SSH_ID;
 export const PORT_OFFSET = Math.round(Math.random() * 100);
@@ -55,7 +55,7 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
     .describe('e', `Environment ${FORMATTED_ENVIRONMENTS}`)
     .alias('i', 'ssh_id')
     .array('i')
-    .describe('i', `Random id for the application`)
+    .describe('i', 'Random id for the application')
     .demandOption(['e', 'i'])
     .help('h')
     .alias('h', 'help').argv;
@@ -77,10 +77,20 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
         `${__dirname}/${environment}-${SSH_ID}/`,
       ),
     )
-    .then(() => ({
-      environment,
-      ssh_id: SSH_ID,
-    }));
+    .then(() =>
+      executeCommand(
+        `cf env e-potek-ssh-tunnel-${environment}-${SSH_ID} | grep -e \\"database\\" -e \\"username\\" -e \\"password\\" -e \\"ports\\"`,
+      ),
+    )
+    .then(credentials => {
+      const parsedCredentials = JSON.parse(`{${credentials}}`);
+      return {
+        ...parsedCredentials,
+        mongoPort: Number(parsedCredentials.ports.split(',')[0]),
+        sshId: SSH_ID,
+        environment,
+      };
+    });
 };
 
 export default openSSHTunnel;
