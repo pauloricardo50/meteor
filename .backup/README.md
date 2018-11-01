@@ -49,7 +49,7 @@ Once you have all the required credentials, simply execute `setupVPS.sh`.
 Two CRON jobs are set on the VPS:
 
 - Every hour: dump **production** database and save it on S3 bucket `s3://production-backups`
-- At 12:30: delete 14 days old backups
+- At 12:30 UTC: delete 14 days old backups
 
 Each CRON job is monitored on https://cronitor.io
 
