@@ -91,6 +91,7 @@ okgrow:analytics@3.0.5
 ordered-dict@1.1.0
 peerlibrary:extend-publish@0.5.0
 peerlibrary:subscription-scope@0.4.0
+percolate:migrations@1.0.2
 promise@0.11.1
 qualia:profile@0.0.12
 raix:eventemitter@0.1.3
