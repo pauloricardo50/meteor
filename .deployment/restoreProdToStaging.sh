@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # Installs dependencies
@@ -7,9 +9,10 @@ $SCRIPTPATH/../scripts/checkPackage.sh mongodb install
 
 # Generate random ID for the application
 RANDOM_ID=$(cat /dev/random | LC_CTYPE=C tr -dc "[:alpha:]" | head -c 8)
+RANDOM_ID2=$(cat /dev/random | LC_CTYPE=C tr -dc "[:alpha:]" | head -c 8)
 
 ../scripts/box_out.sh "Establishing a SSH tunnel with args:" "$*"
-babel-node -- ./ssh-tunnel/pullDbToWww.js "$@" -i $RANDOM_ID
+babel-node -- ./ssh-tunnel/productionDbToStaging.js -e production-and-staging -i $RANDOM_ID $RANDOM_ID2
 tmuxinator start -p ./ssh-tunnel/ssh-tunnel-$RANDOM_ID.yml
 rm ./ssh-tunnel/ssh-tunnel-$RANDOM_ID.yml
  
