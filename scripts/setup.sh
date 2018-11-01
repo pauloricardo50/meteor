@@ -88,7 +88,7 @@ echo "Installing npm packages in .deployment"
 ( cd ../.deployment && meteor npm i -q );
 
 echo "Installing babel-node"
-meteor npm i -g @babel/node@7.0.0-beta.54
+meteor npm i -g @babel/node
 
 echo "Creating language files"
 meteor babel-node ./createLanguages.js
