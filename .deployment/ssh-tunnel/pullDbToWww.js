@@ -50,7 +50,7 @@ const writePullDBTmuxinator = environment => {
                       ) +
                         PORT_OFFSET} -d ${database} -u ${username} -p ${password} -o /tmp`,
 
-                      `mongorestore -h localhost:5001 -d meteor /tmp/${database}`,
+                      `mongorestore --drop -h localhost:5001 -d meteor /tmp/${database}`,
 
                       `rm -rf /tmp/${database}`,
 
