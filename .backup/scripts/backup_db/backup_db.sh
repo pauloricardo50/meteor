@@ -1,4 +1,5 @@
 #!/bin/bash
+curl https://cronitor.link/aOsIJY/run -m 10 
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
@@ -22,6 +23,7 @@ do
         echo "SSH tunnel cannot be established"
         tmux kill-session -t ssh-tunnel
         cf delete e-potek-ssh-tunnel-backup-manager -r -f
+        curl https://cronitor.link/aOsIJY/fail?msg=SSH_TUNNEL_ERROR -m 10
         exit;
     fi
 done
@@ -35,3 +37,5 @@ echo "SSH tunnel closed."
 
 echo "Deleting app..."
 cf delete e-potek-ssh-tunnel-backup-manager -r -f
+
+curl https://cronitor.link/aOsIJY/complete -m 10
