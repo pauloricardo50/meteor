@@ -4,7 +4,9 @@ import { ROLES, USER_QUERIES } from 'core/api/constants';
 import ClientEventService from 'core/api/events/ClientEventService/index';
 
 export default withProps(({ userId }) => ({
-  shouldDisplay: SecurityService.currentUserHasRole(ROLES.DEV),
+  roles: SecurityService.currentUserHasRole(ROLES.DEV)
+    ? Object.values(ROLES)
+    : Object.values(ROLES).filter(role => role === ROLES.USER || role === ROLES.PRO),
   onChooseRole: newRole =>
     setRole
       .run({ userId, role: newRole })

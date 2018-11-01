@@ -51,7 +51,7 @@ assignAdminToNewUser.setHandler((context, { userId, adminId }) => {
 });
 
 setRole.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsDev();
+  SecurityService.checkCurrentUserIsAdmin();
   return UserService.setRole(params);
 });
 
