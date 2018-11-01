@@ -1,6 +1,7 @@
 {
   "folders": [
     { "path": "./" },
+    { "path": "./.deployment" },
     { "path": "./core" },
     { "path": "microservices/admin" },
     { "path": "microservices/app" },
