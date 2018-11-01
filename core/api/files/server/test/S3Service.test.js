@@ -6,9 +6,10 @@ import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import Loans from 'core/api/loans/loans';
-import Borrowers from 'core/api/borrowers/borrowers';
+import { Loans, Borrowers, Properties, Promotions } from '../../..';
 import S3Service from '../S3Service';
+import { PROMOTION_USER_PERMISSIONS } from '../../../promotions/promotionConstants';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
@@ -198,21 +199,44 @@ describe('S3Service', function () {
     });
 
     it('should throw if no loan or borrower is associated to this account', () => {
-      expect(() => S3Service.isAllowedToAccess('')).to.throw('unauthorized');
+      expect(() => S3Service.isAllowedToAccess('')).to.throw('Unauthorized download');
     });
 
-    it('should return true if this user has a loan', () => {
+    it('should return true if this user has the loan', () => {
       const loan = Factory.create('loan', { userId });
 
       expect(S3Service.isAllowedToAccess(`${loan._id}/`)).to.equal(true);
       Loans.remove(loan._id);
     });
 
-    it('should return true if this user has a borrower', () => {
+    it('should return true if this user has the borrower', () => {
       const borrower = Factory.create('borrower', { userId });
 
       expect(S3Service.isAllowedToAccess(`${borrower._id}/`)).to.equal(true);
       Borrowers.remove(borrower._id);
+    });
+
+    it('should return true if this user has the property', () => {
+      const property = Factory.create('property', { userId });
+
+      expect(S3Service.isAllowedToAccess(`${property._id}/`)).to.equal(true);
+      Properties.remove(property._id);
+    });
+
+    it('should return true if the property is pro and the user exists', () => {
+      const property = Factory.create('property', { category: PROPERTY_CATEGORY.PRO });
+
+      expect(S3Service.isAllowedToAccess(`${property._id}/`)).to.equal(true);
+      Properties.remove(property._id);
+    });
+
+    it('should return true for a promotion and the user exists', () => {
+      const promotion = Factory.create('promotion', {
+        userLinks: [{ _id: userId, permissions: PROMOTION_USER_PERMISSIONS.MODIFY }],
+      });
+
+      expect(S3Service.isAllowedToAccess(`${promotion._id}/`)).to.equal(true);
+      Promotions.remove(promotion._id);
     });
   });
 });

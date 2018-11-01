@@ -16,10 +16,7 @@ export class PropertyService {
   update = ({ propertyId, object }) =>
     Properties.update(propertyId, { $set: object });
 
-  remove = ({ propertyId }) => {
-    LoanService.cleanupRemovedProperty({ propertyId });
-    return Properties.remove(propertyId);
-  };
+  remove = ({ propertyId }) => Properties.remove(propertyId);
 
   pushValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $push: object });

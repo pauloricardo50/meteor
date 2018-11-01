@@ -53,16 +53,20 @@ export const getTwoBorrowersLoan = ({
     ...(propertyType === PROPERTY_TYPE.FLAT ? FAKE_APPARTMENT : FAKE_HOUSE),
   })._id;
 
+  const finalStructures = structures.map(structure =>
+    fakeStructure({
+      borrowerIds: [borrower1Id, borrower2Id],
+      propertyId,
+      ...structure,
+    }));
+
   return Factory.create('testLoan', {
     purchaseType,
     residenceType,
     borrowerIds: [borrower1Id, borrower2Id],
     propertyIds: [propertyId],
-    structures: structures.map(structure =>
-      fakeStructure({
-        borrowerIds: [borrower1Id, borrower2Id],
-        ...structure,
-      })),
+    structures: finalStructures,
+    selectedStructure: finalStructures[0].id,
   })._id;
 };
 

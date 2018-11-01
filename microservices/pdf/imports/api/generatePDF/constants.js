@@ -1,34 +1,36 @@
-export const PDF_TYPES = {
-  LOAN_BANK: 'LOAN_BANK',
-};
+import { PDF_TYPES } from 'core/api/constants';
 
-export const PDF_ERRORS = {
-  WRONG_TYPE: 'WRONG_TYPE',
-};
-
-export const LOAN_BANK_TEMPLATE = {
-  name: 1,
-  general: { purchaseType: 1, residenceType: 1 },
-  borrowers: [
-    {
-      gender: 1,
-      zipCode: 1,
-      city: 1,
+export const TEMPLATES = {
+  [PDF_TYPES.ANONYMOUS_LOAN]: {
+    name: 1,
+    general: { purchaseType: 1, residenceType: 1 },
+    borrowers: [
+      {
+        gender: 1,
+        zipCode: 1,
+        city: 1,
+      },
+    ],
+    structure: {
+      ownFunds: [1],
+      property: {
+        propertyType: 1,
+        address1: 1,
+        zipCode: 1,
+        city: 1,
+        valuation: {
+          value: 1,
+          max: 1,
+          microlocation: { grade: 1 },
+        },
+      },
     },
-  ],
-  structure: {
-    ownFunds: [1],
-    property: {
-      propertyType: 1,
-      address1: 1,
-      zipCode: 1,
-      city: 1,
-      valuation: {
-        value: 1,
-        max: 1,
-        microlocation: { grade: 1 },
+    user: {
+      assignedEmployee: {
+        name: 1,
+        email: 1,
+        phoneNumbers: [1],
       },
     },
   },
-  user: { assignedEmployee: 1 },
 };

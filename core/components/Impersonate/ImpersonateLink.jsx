@@ -13,7 +13,7 @@ const ImpersonateLink = ({ user, className }) => {
   return (
     <a
       target="_blank"
-      href={generateImpersonateLink(user._id)}
+      href={generateImpersonateLink(user)}
       className={className}
     >
       <IconButton

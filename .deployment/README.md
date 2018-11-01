@@ -155,20 +155,20 @@ _Note: the `nginx.conf` located in `.deployment/nginx/nginx/nginx.conf` config f
 
 Four scripts are available on root package.json:
 
-- Put given staging applications in maintenance: `npm run start-maintenance-staging -- -- [options]`
-- Put given production applications in maintenance: `npm run start-maintenance-production -- -- [options]`
-- Stop the maintenance for all applications in staging and production: `npm run stop-maintenance`
-- Push the manually updated `nginx.conf` file: `npm run update-nginx`
+- Put given staging applications in maintenance: `meteor npm run start-maintenance-staging -- -- [options]`
+- Put given production applications in maintenance: `meteor npm run start-maintenance-production -- -- [options]`
+- Stop the maintenance for all applications in staging and production: `meteor npm run stop-maintenance`
+- Push the manually updated `nginx.conf` file: `meteor npm run update-nginx`
 
 **Warning: don't forget the `-- --` if you want to specify options !**
 
 #### Options:
 
-| Name | Alias            | Description                        | Type  | Values                   |
-| ---- | ---------------- | ---------------------------------- | ----- | ------------------------ |
-| `-a` | `--applications` | Applications to put to maintenance | array | ['app' , 'admin', 'www'] |
+| Name | Alias            | Description                        | Type  | Values                          |
+| ---- | ---------------- | ---------------------------------- | ----- | ------------------------------- |
+| `-a` | `--applications` | Applications to put to maintenance | array | ['app' , 'admin', 'www', 'pro'] |
 
 #### Examples:
 
-- Put _app_ and _admin_ to maintenance on **staging**: `npm run start-maintenance-staging -- -- -a app admin`
-- Put all applications to maintenance on **production**: `npm run start-maintenance-production`
+- Put _app_ and _admin_ to maintenance on **staging**: `meteor npm run start-maintenance-staging -- -- -a app admin`
+- Put all applications to maintenance on **production**: `meteor npm run start-maintenance-production`

@@ -1,17 +1,18 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import uniforms from 'uniforms-material';
+import uniforms from 'uniforms-material'; // Leave this imported here for autoforms to work
 
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
-import { LOAN_STATUS } from '../loanConstants';
+import {
+  createdAt,
+  updatedAt,
+  contactsSchema,
+} from '../../helpers/sharedSchemas';
+import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
-import {
-  contactsSchema,
-  borrowerIdsSchema,
-  propertyIdsSchema,
-} from './otherSchemas';
+import promotionSchema from './promotionSchema';
+import { borrowerIdsSchema, propertyIdsSchema } from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -33,6 +34,13 @@ const LoanSchema = new SimpleSchema({
   structures: { type: Array, defaultValue: [] },
   'structures.$': StructureSchema,
   selectedStructure: { type: String, optional: true },
+  verificationStatus: {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
+    defaultValue: LOAN_VERIFICATION_STATUS.NONE,
+  },
+  ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,

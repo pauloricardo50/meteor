@@ -1,3 +1,5 @@
+import argv from 'yargs';
+
 import { prepareDeployment } from './prepareDeployment';
 import CloudFoundryService from './CloudFoundry/CloudFoundryService';
 import {
@@ -5,7 +7,6 @@ import {
   FORMATTED_APPLICATIONS,
 } from './settings/settings';
 import { SPACES } from './settings/config';
-import argv from 'yargs';
 
 const main = () => {
   const { environment, applications } = argv

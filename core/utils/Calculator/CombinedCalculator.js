@@ -1,13 +1,20 @@
 // @flow
 import { withSelector } from './Selector';
+import { getAggregatePercent } from '../general';
 
 export const withCombinedCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     filesProgress({ loan }) {
-      const loanProgress = this.getLoanFilesProgress({ loan });
-      const borrowersProgress = this.getBorrowerFilesProgress({ loan });
-      const propertyProgress = this.getPropertyFilesProgress({ loan });
-      return (loanProgress + borrowersProgress + propertyProgress) / 3;
+      const hasPromotion = loan.promotions && loan.promotions.length > 0;
+      const progress = [
+        this.getLoanFilesProgress,
+        this.getBorrowerFilesProgress,
+        !hasPromotion && this.getPropertyFilesProgress,
+      ]
+        .filter(x => x !== false)
+        .map(f => f({ loan }));
+
+      return getAggregatePercent(progress);
     }
   };
 

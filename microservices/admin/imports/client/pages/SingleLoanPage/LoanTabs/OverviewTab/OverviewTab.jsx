@@ -9,6 +9,7 @@ import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggl
 import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
+import VerificationSetter from './VerificationSetter';
 
 const OverviewTab = (props) => {
   const {
@@ -25,6 +26,7 @@ const OverviewTab = (props) => {
     <div className="overview-tab">
       <div className="admin-section card1">
         <DisableUserFormsToggle loan={loan} />
+        <VerificationSetter loan={loan} />
         <ImpersonateLink user={user} />
       </div>
       {/* <LoanValidation loan={loan} /> */}

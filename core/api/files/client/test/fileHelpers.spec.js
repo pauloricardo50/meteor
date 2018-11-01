@@ -16,40 +16,61 @@ describe('fileHelpers', () => {
 
   describe('filesPercent', () => {
     it('returns 0 if an empty doc is given', () => {
-      expect(filesPercent({ doc: {}, fileArray })).to.equal(0);
+      expect(filesPercent({ doc: {}, fileArray })).to.deep.equal({
+        percent: 0,
+        count: 1,
+      });
     });
 
     it('returns 0 if no doc is given', () => {
-      expect(filesPercent({ fileArray })).to.equal(0);
+      expect(filesPercent({ fileArray })).to.deep.equal({
+        percent: 0,
+        count: 1,
+      });
     });
 
     it('returns 1 if a file exists', () => {
       // file exists
       dummyDoc.documents.myFile = [{}];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
+        percent: 1,
+        count: 1,
+      });
     });
 
     it('returns 0 if an empty array is given', () => {
       dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(0);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
+        percent: 0,
+        count: 1,
+      });
     });
 
     it("doesn't count files which aren't required", () => {
       fileArray = [{ id: 'myFile', required: false }];
       dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
+        percent: 1,
+        count: 0,
+      });
     });
 
     it("doesn't count files whose condition is explicitly false", () => {
       fileArray = [{ id: 'myFile', condition: false }];
       dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
+        percent: 1,
+        count: 0,
+      });
     });
 
     it('counts files whose condition is undefined', () => {
       fileArray = [{ id: 'myFile', condition: undefined }];
       dummyDoc.documents.myFile = [{}];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.equal(1);
+      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
+        percent: 1,
+        count: 1,
+      });
     });
 
     describe('status verification', () => {
@@ -60,7 +81,10 @@ describe('fileHelpers', () => {
           doc: dummyDoc,
           fileArray,
           checkValidity: true,
-        })).to.equal(0);
+        })).to.deep.equal({
+          percent: 0,
+          count: 1,
+        });
       });
 
       it('returns 0.5 if one file is valid', () => {
@@ -75,7 +99,10 @@ describe('fileHelpers', () => {
           doc: dummyDoc,
           fileArray,
           checkValidity: true,
-        })).to.equal(0.5);
+        })).to.deep.equal({
+          percent: 0.5,
+          count: 2,
+        });
       });
     });
   });

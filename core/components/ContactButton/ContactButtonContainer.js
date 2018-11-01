@@ -9,7 +9,7 @@ const getStaffByEmail = email =>
 
 const ContactButtonContainer = compose(
   withSmartQuery({
-    query: () => appUserQuery.clone(),
+    query: appUserQuery,
     dataName: 'currentUser',
     queryOptions: { single: true, reactive: true },
     renderMissingDoc: false,

@@ -4,9 +4,20 @@ import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
 import { getPropertyValue } from './FinancingOwnFunds/ownFundsHelpers.js';
 
-export const getProperty = ({ structure: { propertyId }, properties }) =>
-  properties.find(({ _id }) => _id === propertyId) || {};
+export const getProperty = ({
+  structure: { propertyId, promotionOptionId },
+  properties,
+  promotionOptions,
+}) => {
+  if (propertyId) {
+    return properties.find(({ _id }) => _id === propertyId);
+  }
+  if (promotionOptionId) {
+    return promotionOptions.find(({ _id }) => _id === promotionOptionId);
+  }
 
+  return {};
+};
 export const getAmortizationRateMapper = (data) => {
   const {
     structure: { wantedLoan, propertyWork },

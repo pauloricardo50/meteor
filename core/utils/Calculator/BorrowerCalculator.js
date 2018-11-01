@@ -6,7 +6,10 @@ import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
-import { getBorrowerInfoArray } from '../../arrays/BorrowerFormArray';
+import {
+  getBorrowerInfoArray,
+  getBorrowerFinanceArray,
+} from '../../arrays/BorrowerFormArray';
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
@@ -66,23 +69,31 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getBorrowerCompletion({ loan, borrowers }) {
       return (
-        (this.getBorrowerFilesProgress({ loan, borrowers })
+        (this.getBorrowerFilesProgress({ loan, borrowers }).percent
           + this.personalInfoPercent({ borrowers }))
         / 2
       );
     }
 
     getBorrowerFilesProgress({ loan, borrowers }) {
-      return arrayify(borrowers).reduce(
-        (total, borrower, index, array) =>
-          total
-          + filesPercent({
+      const percentages = arrayify(borrowers).reduce(
+        (total, borrower) => {
+          const { percent, count } = filesPercent({
             fileArray: getBorrowerDocuments({ loan, id: borrower._id }, this),
             doc: borrower,
-          })
-            / array.length,
-        0,
+          });
+          return {
+            percent: total.percent + percent * count,
+            count: total.count + count,
+          };
+        },
+        { percent: 0, count: 0 },
       );
+
+      return {
+        ...percentages,
+        percent: percentages.percent / percentages.count,
+      };
     }
 
     isTypeWithArrayValues = type =>
@@ -137,6 +148,15 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getInsuranceFortune({ borrowers }) {
       return [
         this.getInsurance2,
+        this.getInsurance3A,
+        this.getInsurance3B,
+        this.getBank3A,
+      ].reduce((sum, func) => sum + func({ borrowers }), 0);
+    }
+
+    getCashFortune({ borrowers }) {
+      return [
+        this.getFortune,
         this.getInsurance3A,
         this.getInsurance3B,
         this.getBank3A,
@@ -218,8 +238,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return sum;
     }
 
-    getYearsToRetirement() {
-      // TODO
+    getRetirement({ borrowers }) {
+      const argMap = borrowers.reduce(
+        (obj, { age, gender }, index) => ({
+          ...obj,
+          [`${`age${index + 1}`}`]: age,
+          [`${`gender${index + 1}`}`]: gender,
+        }),
+        {},
+      );
+      return this.getYearsToRetirement(argMap);
+    }
+
+    getAmortizationDuration({ borrowers }) {
+      const retirement = this.getRetirement({ borrowers });
+      return Math.min(15, retirement);
     }
 
     // personalInfoPercent - Determines the completion rate of the borrower's
@@ -227,11 +260,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     personalInfoPercent({ borrowers }) {
       const a = [];
       arrayify(borrowers).forEach((b) => {
-        const formArray = getBorrowerInfoArray({
+        const personalFormArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: b._id,
         });
-        getCountedArray(formArray, b, a);
+        const financeFormArray = getBorrowerFinanceArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(personalFormArray, b, a);
+        getCountedArray(financeFormArray, b, a);
       });
 
       return getPercent(a);
@@ -242,6 +280,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         (total, key) =>
           total + arrayify(borrowers).reduce((t, b) => t + (b[key] || 0), 0),
         0,
+      );
+    }
+
+    getNetFortune(borrowers) {
+      return (
+        this.getTotalFunds({ borrowers })
+        + this.getRealEstateFortune({ borrowers })
+        + this.getOtherFortune({ borrowers })
       );
     }
   };

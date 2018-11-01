@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator from '..';
-import { BORROWER_DOCUMENTS, STEPS } from 'core/api/constants';
+import { BORROWER_DOCUMENTS, STEPS, GENDER } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 
 describe('BorrowerCalculator', () => {
@@ -119,9 +119,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      }))
-        .to.be.above(0.09)
-        .and.to.be.below(0.1);
+      })).to.be.within(0.01, 0.1);
     });
 
     it('should not be 0% when adding a document', () => {
@@ -153,9 +151,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      }))
-        .to.be.above(0.19)
-        .and.to.be.below(0.2);
+      })).to.be.within(0.165, 0.167);
     });
   });
 
@@ -166,7 +162,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [{ documents: {}, _id: 'borrowerId' }],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0);
+      })).to.deep.equal({ percent: 0, count: 5 });
     });
 
     it('returns 0 when no documents are present', () => {
@@ -175,7 +171,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [{}],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0);
+      })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns more than 0 when a file is present', () => {
@@ -189,7 +185,7 @@ describe('BorrowerCalculator', () => {
           ],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0.2);
+      })).to.deep.equal({ percent: 0.2, count: 5 });
     });
   });
 
@@ -276,6 +272,7 @@ describe('BorrowerCalculator', () => {
         'lastName',
         'gender',
         'address1',
+        'city',
         'zipCode',
         'isSwiss',
         'age',
@@ -405,6 +402,8 @@ describe('BorrowerCalculator', () => {
           sameAddress: true,
           updatedAt: '2018-08-23T10:20:22.234Z',
           userId: 'fAksm7pJveZybme5F',
+          salary: 100,
+          bankFortune: 1000,
         },
       })).to.equal(1);
     });
@@ -427,6 +426,20 @@ describe('BorrowerCalculator', () => {
 
     it('omits keys if they are not provided', () => {
       expect(Calculator.sumValues({ borrowers: [{ a: 1 }, {}], keys: 'a' })).to.equal(1);
+    });
+  });
+
+  describe('getYearsToRetiement', () => {
+    it('returns the proper difference for a male', () => {
+      expect(Calculator.getRetirement({
+        borrowers: [{ age: 25, gender: GENDER.M }],
+      })).to.equal(40);
+    });
+
+    it('returns 0 for a retired person', () => {
+      expect(Calculator.getRetirement({
+        borrowers: [{ age: 70, gender: GENDER.M }],
+      })).to.equal(0);
     });
   });
 });

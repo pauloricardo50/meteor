@@ -80,10 +80,12 @@ export const borrowerDocuments = (b = {}, calc) => {
   };
 };
 
-export const loanDocuments = ({ general: { purchaseType } }) => {
+export const loanDocuments = ({ general: { purchaseType }, hasPromotion }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   return {
-    [STEPS.PREPARATION]: [{ id: DOCUMENTS.SIGNED_MANDATE, noTooltips: true }],
+    [STEPS.PREPARATION]: hasPromotion
+      ? []
+      : [{ id: DOCUMENTS.SIGNED_MANDATE, noTooltips: true }],
     [STEPS.GET_CONTRACT]: [
       {
         id: DOCUMENTS.BUYERS_CONTRACT,
@@ -106,45 +108,49 @@ export const loanDocuments = ({ general: { purchaseType } }) => {
 };
 
 export const propertyDocuments = (property = {}, loan = {}) => ({
-  [STEPS.PREPARATION]: [
-    { id: DOCUMENTS.PROPERTY_PLANS },
-    {
-      id: DOCUMENTS.PROPERTY_VOLUME,
-      doubleTooltip: true,
-      condition: property.propertyType === PROPERTY_TYPE.HOUSE,
-    },
-    { id: DOCUMENTS.PROPERTY_PICTURES },
-    {
-      id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE,
-      condition: !!(
-        loan
-        && loan.general
-        && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
-      ),
-      required: false,
-    },
-  ],
-  [STEPS.GET_CONTRACT]: [
-    {
-      id: DOCUMENTS.INVESTMENT_PROPERTY_RENT_JUSTIFICATION,
-      condition:
-        !!loan.general
-        && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
-      doubleTooltip: true,
-    },
-    { id: DOCUMENTS.LAND_REGISTER_EXTRACT, doubleTooltip: true },
-    {
-      id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
-      condition: property.isCoproperty,
-      doubleTooltip: true,
-    },
-    {
-      id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
-      condition: property.isCoproperty,
-      doubleTooltip: true,
-    },
-    { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE, condition: !!property.isNew },
-  ],
+  [STEPS.PREPARATION]: loan.hasPromotion
+    ? []
+    : [
+      { id: DOCUMENTS.PROPERTY_PLANS },
+      {
+        id: DOCUMENTS.PROPERTY_VOLUME,
+        doubleTooltip: true,
+        condition: property.propertyType === PROPERTY_TYPE.HOUSE,
+      },
+      { id: DOCUMENTS.PROPERTY_PICTURES },
+      {
+        id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE,
+        condition: !!(
+          loan
+            && loan.general
+            && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+        ),
+        required: false,
+      },
+    ],
+  [STEPS.GET_CONTRACT]: loan.hasPromotion
+    ? []
+    : [
+      {
+        id: DOCUMENTS.INVESTMENT_PROPERTY_RENT_JUSTIFICATION,
+        condition:
+            !!loan.general
+            && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
+        doubleTooltip: true,
+      },
+      { id: DOCUMENTS.LAND_REGISTER_EXTRACT, doubleTooltip: true },
+      {
+        id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
+        condition: property.isCoproperty,
+        doubleTooltip: true,
+      },
+      {
+        id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
+        condition: property.isCoproperty,
+        doubleTooltip: true,
+      },
+      { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE, condition: !!property.isNew },
+    ],
   [STEPS.CLOSING]: [],
   all() {
     return [

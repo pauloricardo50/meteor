@@ -4,11 +4,11 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import crypto from 'crypto';
 
 import {
-  MAX_FILE_SIZE,
   OBJECT_STORAGE_PATH,
   BUCKET_NAME,
   OBJECT_STORAGE_REGION,
   FILE_STATUS,
+  S3_ACLS,
 } from '../fileConstants';
 
 const { API_KEY, SECRET_KEY } = Meteor.settings.exoscale;
@@ -45,17 +45,7 @@ const exoscaleStorageService = {
     acl: Match.Optional(Match.Where((acl) => {
       check(acl, String);
 
-      return (
-        [
-          'private',
-          'public-read',
-          'public-read-write',
-          'authenticated-read',
-          'bucket-owner-read',
-          'bucket-owner-full-control',
-          'log-delivery-write',
-        ].indexOf(acl) >= 0
-      );
+      return Object.values(S3_ACLS).indexOf(acl) >= 0;
     })),
 
     key: Match.OneOf(String, Function),
@@ -123,7 +113,7 @@ const exoscaleStorageService = {
       bucket: directive.bucket,
 
       'Content-Type': file.type,
-      acl: directive.acl,
+      acl: meta.acl || directive.acl,
 
       'Cache-Control': directive.cacheControl,
       'Content-Disposition': this.getContentDisposition(

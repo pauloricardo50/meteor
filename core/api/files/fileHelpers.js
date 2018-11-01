@@ -57,25 +57,10 @@ const getDocumentsToCount = (
  */
 export const filesPercent = ({ fileArray, doc, checkValidity }) => {
   const documentsToCount = getDocumentsToCount(fileArray, doc, checkValidity);
-  return getPercent(documentsToCount);
-};
-
-export const getAllFilesPercent = ({ loan, borrowers, property }, step) => {
-  const array = [];
-  if (loan) {
-    array.push(filesPercent({ doc: loan, fileArrayFunc: loanDocuments, step }));
-  }
-
-  if (borrowers) {
-    array.push(filesPercent({ doc: borrowers, fileArrayFunc: borrowerDocuments, step }));
-  }
-
-  if (property) {
-    array.push(filesPercent({ doc: property, fileArrayFunc: propertyDocuments, step }));
-  }
-
-  // Sum and divide by amount of them
-  return array.reduce((a, b) => a + b, 0) / array.length;
+  return {
+    percent: getPercent(documentsToCount),
+    count: documentsToCount.length,
+  };
 };
 
 const documentExists = (doc, id) =>

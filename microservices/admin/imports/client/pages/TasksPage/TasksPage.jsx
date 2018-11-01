@@ -2,7 +2,7 @@ import React from 'react';
 import T from 'core/components/Translation';
 import { TASK_TYPE, TASK_STATUS } from 'core/api/constants';
 import adminsQuery from 'core/api/users/queries/admins';
-import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
+import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 
 const getAdminsEmails = async () => {
   const admins = await adminsQuery.clone().fetchSync();
@@ -32,7 +32,7 @@ const TasksPage = () => (
       <T id="collections.tasks" />
     </h1>
 
-    <TasksTableWithData tableFilters={tasksTableFilters} />
+    <AllTasksTable tableFilters={tasksTableFilters} />
   </section>
 );
 

@@ -6,13 +6,13 @@ class OfferSecurity {
     Security.checkLoggedIn();
   }
 
-  static isAllowedToUpdate(loanId) {
+  static isAllowedToUpdate(offerId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
-    const loan = Offers.findOne(loanId);
-    Security.checkOwnership(loan);
+    const offer = Offers.findOne(offerId);
+    Security.checkOwnership(offer);
   }
 
   static isAllowedToDelete() {

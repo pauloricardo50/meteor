@@ -6,11 +6,13 @@ const MAINTENANCE_ENV_VARIABLES = {
     [APPLICATIONS.APP]: 'MAINTENANCE_STAGING_APP',
     [APPLICATIONS.ADMIN]: 'MAINTENANCE_STAGING_ADMIN',
     [APPLICATIONS.WWW]: 'MAINTENANCE_STAGING_WWW',
+    [APPLICATIONS.PRO]: 'MAINTENANCE_STAGING_PRO',
   },
   [ENVIRONMENT.PRODUCTION]: {
     [APPLICATIONS.APP]: 'MAINTENANCE_PRODUCTION_APP',
     [APPLICATIONS.ADMIN]: 'MAINTENANCE_PRODUCTION_ADMIN',
     [APPLICATIONS.WWW]: 'MAINTENANCE_PRODUCTION_WWW',
+    [APPLICATIONS.PRO]: 'MAINTENANCE_PRODUCTION_PRO',
   },
 };
 
@@ -51,10 +53,12 @@ const generateNginxManifestData = ({
         { route: 'admin.staging.e-potek.ch' },
         { route: 'www.staging.e-potek.ch' },
         { route: 'pdf.staging.e-potek.ch' },
+        { route: 'pro.staging.e-potek.ch' },
         { route: 'app.e-potek.ch' },
         { route: 'admin.e-potek.ch' },
         { route: 'www.e-potek.ch' },
         { route: 'pdf.e-potek.ch' },
+        { route: 'pro.e-potek.ch' },
         { route: 'kadira.e-potek.ch' },
         { route: '*.e-potek.ch' },
         { route: '*.staging.e-potek.ch' },

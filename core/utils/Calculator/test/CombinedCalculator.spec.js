@@ -12,7 +12,7 @@ describe('CombinedCalculator', () => {
         documents: { [DOCUMENTS.PROPERTY_PLANS]: [{}] },
         _id: 'jo',
       };
-      expect(CombinedCalculator.filesProgress({
+      const progress = CombinedCalculator.filesProgress({
         loan: {
           structure: {
             property,
@@ -25,7 +25,9 @@ describe('CombinedCalculator', () => {
           general: {},
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.be.within(0.23, 0.24);
+      });
+      expect(progress.percent).to.be.within(0.23, 0.24);
+      expect(progress.count).to.equal(13);
     });
   });
 });

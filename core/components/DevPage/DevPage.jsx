@@ -11,7 +11,7 @@ import ErrorThrower from './ErrorThrower';
 class DevPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { twoBorrowers: false };
+    this.state = { twoBorrowers: false, users: 5 };
   }
 
   componentDidMount() {
@@ -20,11 +20,11 @@ class DevPage extends Component {
     }
   }
 
-  handleChange = () =>
-    this.setState(prev => ({ twoBorrowers: !prev.twoBorrowers }));
+  makeHandleChange = stateName => value =>
+    this.setState(prev => ({ [stateName]: value }));
 
   render() {
-    const { twoBorrowers } = this.state;
+    const { twoBorrowers, users } = this.state;
     const {
       currentUser,
       addEmptyStep1Loan,
@@ -113,7 +113,9 @@ class DevPage extends Component {
             type="checkbox"
             name="vehicle"
             value={twoBorrowers}
-            onChange={this.handleChange}
+            onChange={() =>
+              this.makeHandleChange('twoBorrowers')(!twoBorrowers)
+            }
           />
           2 borrowers
           <br />
@@ -188,6 +190,52 @@ class DevPage extends Component {
               Property Task
             </Button>
           </Tooltip>
+          <hr className="mbt20" />
+          Nb. d'utilisateurs
+          <input
+            type="number"
+            value={users}
+            onChange={e => this.makeHandleChange('users')(e.target.value)}
+          />
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              Meteor.call('createDemoPromotion', {
+                users,
+              })
+            }
+          >
+            Créer promotion
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              Meteor.call('createDemoPromotion', {
+                users,
+                addCurrentUser: true,
+                withPromotionOptions: true,
+              })
+            }
+          >
+            Créer promotion avec moi dedans
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              Meteor.call('createDemoPromotion', {
+                users,
+                addCurrentUser: true,
+              })
+            }
+          >
+            Créer promotion avec moi dedans, sans promotionOptions
+          </Button>
           <hr className="mbt20" />
           <ErrorThrower />
         </section>

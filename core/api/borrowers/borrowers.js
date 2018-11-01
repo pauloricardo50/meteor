@@ -4,6 +4,7 @@ import {
   createdAt,
   updatedAt,
   additionalDocuments,
+  address,
 } from '../helpers/sharedSchemas';
 import {
   BORROWERS_COLLECTION,
@@ -73,24 +74,7 @@ export const BorrowerSchema = new SimpleSchema({
     min: 1,
     max: 120,
   },
-  address1: {
-    type: String,
-    optional: true,
-  },
-  address2: {
-    type: String,
-    optional: true,
-  },
-  zipCode: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 1000,
-    max: 9999,
-  },
-  city: {
-    type: String,
-    optional: true,
-  },
+  ...address,
   sameAddress: {
     type: Boolean,
     optional: true,

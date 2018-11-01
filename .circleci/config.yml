@@ -22,48 +22,48 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_code_5-{{ .Branch }}-{{ .Revision }}'
-            - 'source_code_5-{{ .Branch }}-'
-            - source_code_5-
+            - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
+            - 'source_code_7-{{ .Branch }}-'
+            - source_code_7-
       - checkout
       - save_cache:
           name: Cache source
-          key: 'source_code_5-{{ .Branch }}-{{ .Revision }}'
+          key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./.git
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_5_www_{{ checksum
+              meteor_system_7_www_{{ checksum
               "./microservices/www/.meteor/release" }}-{{ checksum
               "./microservices/www/.meteor/versions" }}
             - >-
-              meteor_system_5_www_{{ checksum
+              meteor_system_7_www_{{ checksum
               "./microservices/www/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
             - >-
-              meteor_microservice_5_www-{{ checksum
+              meteor_microservice_7_www-{{ checksum
               "./microservices/www/.meteor/release" }}-{{ checksum
               "./microservices/www/.meteor/packages" }}-{{ checksum
               "./microservices/www/.meteor/versions" }}
             - >-
-              meteor_microservice_5_www-{{ checksum
+              meteor_microservice_7_www-{{ checksum
               "./microservices/www/.meteor/release" }}-{{ checksum
               "./microservices/www/.meteor/packages" }}-
             - >-
-              meteor_microservice_5_www-{{ checksum
+              meteor_microservice_7_www-{{ checksum
               "./microservices/www/.meteor/release" }}-
-            - meteor_microservice_5_www-
+            - meteor_microservice_7_www-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
-              node_modules_5_www-{{ checksum "./microservices/www/package.json"
+              node_modules_7_www-{{ checksum "./microservices/www/package.json"
               }}
-            - node_modules_5_www-
+            - node_modules_7_www-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -72,7 +72,7 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: cd microservices/www && meteor npm i
+          command: cd microservices/www && meteor npm ci
       - run:
           name: Install nightmare and @babel/node
           command: >-
@@ -80,7 +80,7 @@ jobs:
             --no-save
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules_5_www-{{ checksum "./microservices/www/package.json" }}'
+          key: 'node_modules_7_www-{{ checksum "./microservices/www/package.json" }}'
           paths:
             - ./microservices/www/node_modules
       - run:
@@ -95,7 +95,7 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_5_www_{{ checksum
+            meteor_system_7_www_{{ checksum
             "./microservices/www/.meteor/release" }}-{{ checksum
             "./microservices/www/.meteor/versions" }}
           paths:
@@ -103,7 +103,7 @@ jobs:
       - save_cache:
           name: Cache meteor microservice
           key: >-
-            meteor_microservice_5_www-{{ checksum
+            meteor_microservice_7_www-{{ checksum
             "./microservices/www/.meteor/release" }}-{{ checksum
             "./microservices/www/.meteor/packages" }}-{{ checksum
             "./microservices/www/.meteor/versions" }}
@@ -120,48 +120,48 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_code_5-{{ .Branch }}-{{ .Revision }}'
-            - 'source_code_5-{{ .Branch }}-'
-            - source_code_5-
+            - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
+            - 'source_code_7-{{ .Branch }}-'
+            - source_code_7-
       - checkout
       - save_cache:
           name: Cache source
-          key: 'source_code_5-{{ .Branch }}-{{ .Revision }}'
+          key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./.git
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_5_app_{{ checksum
+              meteor_system_7_app_{{ checksum
               "./microservices/app/.meteor/release" }}-{{ checksum
               "./microservices/app/.meteor/versions" }}
             - >-
-              meteor_system_5_app_{{ checksum
+              meteor_system_7_app_{{ checksum
               "./microservices/app/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
             - >-
-              meteor_microservice_5_app-{{ checksum
+              meteor_microservice_7_app-{{ checksum
               "./microservices/app/.meteor/release" }}-{{ checksum
               "./microservices/app/.meteor/packages" }}-{{ checksum
               "./microservices/app/.meteor/versions" }}
             - >-
-              meteor_microservice_5_app-{{ checksum
+              meteor_microservice_7_app-{{ checksum
               "./microservices/app/.meteor/release" }}-{{ checksum
               "./microservices/app/.meteor/packages" }}-
             - >-
-              meteor_microservice_5_app-{{ checksum
+              meteor_microservice_7_app-{{ checksum
               "./microservices/app/.meteor/release" }}-
-            - meteor_microservice_5_app-
+            - meteor_microservice_7_app-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
-              node_modules_5_app-{{ checksum "./microservices/app/package.json"
+              node_modules_7_app-{{ checksum "./microservices/app/package.json"
               }}
-            - node_modules_5_app-
+            - node_modules_7_app-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -170,7 +170,7 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: cd microservices/app && meteor npm i
+          command: cd microservices/app && meteor npm ci
       - run:
           name: Install nightmare and @babel/node
           command: >-
@@ -178,7 +178,7 @@ jobs:
             --no-save
       - save_cache:
           name: Cache node_modules
-          key: 'node_modules_5_app-{{ checksum "./microservices/app/package.json" }}'
+          key: 'node_modules_7_app-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - ./microservices/app/node_modules
       - run:
@@ -193,7 +193,7 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_5_app_{{ checksum
+            meteor_system_7_app_{{ checksum
             "./microservices/app/.meteor/release" }}-{{ checksum
             "./microservices/app/.meteor/versions" }}
           paths:
@@ -201,7 +201,7 @@ jobs:
       - save_cache:
           name: Cache meteor microservice
           key: >-
-            meteor_microservice_5_app-{{ checksum
+            meteor_microservice_7_app-{{ checksum
             "./microservices/app/.meteor/release" }}-{{ checksum
             "./microservices/app/.meteor/packages" }}-{{ checksum
             "./microservices/app/.meteor/versions" }}
@@ -218,48 +218,48 @@ jobs:
       - restore_cache:
           name: Restore source
           keys:
-            - 'source_code_5-{{ .Branch }}-{{ .Revision }}'
-            - 'source_code_5-{{ .Branch }}-'
-            - source_code_5-
+            - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
+            - 'source_code_7-{{ .Branch }}-'
+            - source_code_7-
       - checkout
       - save_cache:
           name: Cache source
-          key: 'source_code_5-{{ .Branch }}-{{ .Revision }}'
+          key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./.git
       - restore_cache:
           name: Restore meteor system
           keys:
             - >-
-              meteor_system_5_admin_{{ checksum
+              meteor_system_7_admin_{{ checksum
               "./microservices/admin/.meteor/release" }}-{{ checksum
               "./microservices/admin/.meteor/versions" }}
             - >-
-              meteor_system_5_admin_{{ checksum
+              meteor_system_7_admin_{{ checksum
               "./microservices/admin/.meteor/release" }}-
       - restore_cache:
           name: Restore meteor microservice
           keys:
             - >-
-              meteor_microservice_5_admin-{{ checksum
+              meteor_microservice_7_admin-{{ checksum
               "./microservices/admin/.meteor/release" }}-{{ checksum
               "./microservices/admin/.meteor/packages" }}-{{ checksum
               "./microservices/admin/.meteor/versions" }}
             - >-
-              meteor_microservice_5_admin-{{ checksum
+              meteor_microservice_7_admin-{{ checksum
               "./microservices/admin/.meteor/release" }}-{{ checksum
               "./microservices/admin/.meteor/packages" }}-
             - >-
-              meteor_microservice_5_admin-{{ checksum
+              meteor_microservice_7_admin-{{ checksum
               "./microservices/admin/.meteor/release" }}-
-            - meteor_microservice_5_admin-
+            - meteor_microservice_7_admin-
       - restore_cache:
           name: Restore node_modules
           keys:
             - >-
-              node_modules_5_admin-{{ checksum
+              node_modules_7_admin-{{ checksum
               "./microservices/admin/package.json" }}
-            - node_modules_5_admin-
+            - node_modules_7_admin-
       - run:
           name: Create results directory
           command: mkdir ./results
@@ -268,7 +268,7 @@ jobs:
           command: ./scripts/circleci/install_meteor.sh
       - run:
           name: Install node_modules
-          command: cd microservices/admin && meteor npm i
+          command: cd microservices/admin && meteor npm ci
       - run:
           name: Install nightmare and @babel/node
           command: >-
@@ -277,7 +277,7 @@ jobs:
       - save_cache:
           name: Cache node_modules
           key: >-
-            node_modules_5_admin-{{ checksum
+            node_modules_7_admin-{{ checksum
             "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
@@ -293,7 +293,7 @@ jobs:
       - save_cache:
           name: Cache meteor system
           key: >-
-            meteor_system_5_admin_{{ checksum
+            meteor_system_7_admin_{{ checksum
             "./microservices/admin/.meteor/release" }}-{{ checksum
             "./microservices/admin/.meteor/versions" }}
           paths:
@@ -301,7 +301,7 @@ jobs:
       - save_cache:
           name: Cache meteor microservice
           key: >-
-            meteor_microservice_5_admin-{{ checksum
+            meteor_microservice_7_admin-{{ checksum
             "./microservices/admin/.meteor/release" }}-{{ checksum
             "./microservices/admin/.meteor/packages" }}-{{ checksum
             "./microservices/admin/.meteor/versions" }}

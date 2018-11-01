@@ -28,7 +28,9 @@ const googleMapContainer = (WrappedComponent) => {
     }
 
     componentWillUnmount() {
-      this.tracker.stop();
+      if (this.tracker) {
+        this.tracker.stop();
+      }
     }
 
     trackIsLoading = () => {

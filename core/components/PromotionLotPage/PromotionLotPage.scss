@@ -1,0 +1,109 @@
+.promotion-lot-page {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 16px;
+  padding: 16px;
+
+  h1 {
+    display: flex;
+    align-items: center;
+  }
+
+  .promotion-lots-manager {
+    display: flex;
+    align-items: center;
+
+     > * {
+      margin-right: 4px;
+    }
+  }
+
+  .solvent,
+  .non-solvent {
+    padding: 4px;
+
+    color: white;
+    border-radius: 4px;
+    background-color: $success;
+  }
+
+  .non-solvent {
+    background-color: $warning;
+  }
+
+  .promotion-lot-attributer {
+    display: flex;
+    align-items: center;
+
+     > * {
+      margin-right: 4px;
+    }
+  }
+
+  .sold {
+    padding: 4px;
+
+    color: white;
+    border-radius: 4px;
+    background-color: $success;
+  }
+
+  .promotion-buttons {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    width: 100%;
+
+     > * {
+      margin-right: 4px;
+    }
+  }
+}
+
+.priority-order {
+  display: flex;
+
+   > * {
+    margin-right: 4px;
+  }
+
+  .primary {
+    color: white;
+    background-color: $primary;
+  }
+
+  .success {
+    color: white;
+    background-color: $success;
+  }
+
+  .error {
+    color: white;
+    background-color: $error;
+  }
+
+  .icon {
+    color: white;
+  }
+}
+
+.book-client-infos {
+  display: flex;
+  flex-direction: column;
+
+  &-table {
+    border-spacing: 16px;
+  }
+}
+
+.promotion-progress {
+  display: flex;
+  align-items: center;
+
+   > * {
+    margin-right: 4px;
+  }
+}

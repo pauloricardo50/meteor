@@ -11,6 +11,9 @@ import messagesFR from '../../../lang/fr.json';
 import AdminAccountPage from '../../client/pages/AdminAccountPage';
 import AdminDashboardPage from '../../client/pages/AdminDashboardPage';
 import AdminLayout from '../../client/layouts/AdminLayout';
+import AdminPromotionLotPage from '../../client/pages/AdminPromotionLotPage';
+import AdminPromotionPage from '../../client/pages/AdminPromotionPage';
+import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import LoansPage from '../../client/pages/LoansPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
@@ -48,6 +51,18 @@ const AdminRouter = () => (
           path={adminRoutes.SINGLE_PROPERTY_PAGE}
           component={SinglePropertyPage}
           className="card1 card-top"
+        />
+        <Route
+          path={adminRoutes.ADMIN_PROMOTION_USERS_PAGE}
+          component={AdminPromotionUsersPage}
+        />
+        <Route
+          path={adminRoutes.ADMIN_PROMOTION_LOT_PAGE}
+          component={AdminPromotionLotPage}
+        />
+        <Route
+          path={adminRoutes.ADMIN_PROMOTION_PAGE}
+          component={AdminPromotionPage}
         />
         <Route path={adminRoutes.PROPERTIES_PAGE} component={PropertiesPage} />
         <Route path={adminRoutes.TASKS_PAGE} component={TasksPage} />

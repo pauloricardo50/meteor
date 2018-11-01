@@ -85,7 +85,11 @@ const withState = withStateHandlers(
       isOpen: true,
       anchorEl: currentTarget,
     }),
-    handleClose: () => () => ({ isOpen: false }),
+    handleClose: () => (event) => {
+      console.log('event', event);
+
+      return { isOpen: false };
+    },
   },
 );
 

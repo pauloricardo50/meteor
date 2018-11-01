@@ -34,7 +34,9 @@ const statusChecks = [
   },
   {
     label: 'Documents',
-    value: loan => <Percent value={Calculator.filesProgress({ loan })} />,
+    value: loan => (
+      <Percent value={Calculator.filesProgress({ loan }).percent} />
+    ),
   },
 ];
 

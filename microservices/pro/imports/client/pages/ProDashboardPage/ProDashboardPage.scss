@@ -1,0 +1,17 @@
+.pro-dashboard-page {
+  display: flex;
+  flex-direction: column;
+
+  padding: 16px;
+
+  h3 {
+    margin-top: 40px;
+  }
+
+  .buttons {
+    display: flex;
+     > * {
+      margin-right: 8px;
+    }
+  }
+}

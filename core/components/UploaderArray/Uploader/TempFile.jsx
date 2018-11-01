@@ -14,12 +14,20 @@ export default class TempFile extends Component {
   }
 
   componentDidMount() {
-    const { collection, docId, id, file, handleUploadComplete } = this.props;
+    const {
+      collection,
+      docId,
+      id,
+      file,
+      handleUploadComplete,
+      acl,
+    } = this.props;
 
     this.uploader = new Slingshot.Upload(SLINGSHOT_DIRECTIVE_NAME, {
       collection,
       docId,
       id,
+      acl,
     });
 
     const progressSetter = Tracker.autorun(() => {
@@ -75,4 +83,5 @@ TempFile.propTypes = {
   file: PropTypes.objectOf(PropTypes.any).isRequired,
   handleUploadComplete: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
+  acl: PropTypes.string,
 };

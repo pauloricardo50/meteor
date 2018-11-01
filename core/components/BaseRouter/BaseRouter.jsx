@@ -8,10 +8,14 @@ import ErrorBoundary from '../ErrorBoundary';
 import ScrollToTop from '../ScrollToTop';
 import LoginPage from '../LoginPage';
 import DisconnectModal from '../DisconnectModal';
+import MicroserviceHead from '../MicroserviceHead';
 
 import Switch from './Switch';
 import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
+import GrapherPage from './GrapherPageLoadable';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 const BaseRouter = ({
   locale,
@@ -22,6 +26,8 @@ const BaseRouter = ({
   hasLogin,
 }) => (
   <ErrorBoundary helper="root">
+    <MicroserviceHead />
+
     <LibraryWrappers
       i18n={{ locale, messages, formats }}
       WrapperComponent={WrapperComponent}
@@ -31,6 +37,7 @@ const BaseRouter = ({
         react-intl to display messages */}
       <ErrorBoundary helper="app">
         <DisconnectModal />
+
         <Router history={history}>
           {/* Every route change should scroll to top,
               which isn't automatic */}
@@ -38,6 +45,7 @@ const BaseRouter = ({
             <Switch>
               {/* LoginPage has to be above / path */}
               {hasLogin && <Route exact path="/login" component={LoginPage} />}
+              {isDev && <Route exact path="/grapher" component={GrapherPage} />}
               <Route
                 path="/"
                 render={childProps => React.cloneElement(children, childProps)}

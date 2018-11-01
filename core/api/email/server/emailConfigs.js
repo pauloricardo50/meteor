@@ -159,4 +159,29 @@ addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
   }),
 });
 
+addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
+  template: EMAIL_TEMPLATES.PROMOTION_INVITATION,
+  createOverrides(
+    { coverImageUrl, logoUrls = [], ctaUrl, firstName, promotionName },
+    { title, body, cta },
+  ) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: ctaUrl || CTA_URL_DEFAULT },
+        { name: variables.COVER_IMAGE_URL, content: coverImageUrl },
+        ...logoUrls.map((url, index) => ({
+          name: variables[`LOGO_URL_${index + 1}`],
+          content: url,
+        })),
+      ],
+    };
+  },
+  createIntlValues: params => params,
+});
+
 export default emailConfigs;

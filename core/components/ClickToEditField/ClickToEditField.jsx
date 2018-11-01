@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import cx from 'classnames';
 
 import Input from '@material-ui/core/Input';
 import ClickToEditFieldContainer from './ClickToEditFieldContainer';
@@ -19,29 +20,52 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
   }
 
   handleSubmit = (event) => {
-    const { onSubmit, toggleEdit } = this.props;
     event.preventDefault();
-    onSubmit(this.input.current.value).then(() => toggleEdit(false));
+    const { onSubmit, toggleEdit, value } = this.props;
+    const nextValue = this.input.current.value;
+
+    if (nextValue !== value) {
+      onSubmit(nextValue).then(() => toggleEdit(false));
+    } else {
+      toggleEdit(false);
+    }
   };
 
   render() {
-    const { isEditing, toggleEdit, value, placeholder } = this.props;
+    const {
+      isEditing,
+      toggleEdit,
+      value,
+      placeholder,
+      inputProps,
+      className,
+      allowEditing = true,
+    } = this.props;
 
     return isEditing ? (
       <form
-        className="click-to-edit-field editing"
+        className={cx('click-to-edit-field editing', className)}
         onSubmit={this.handleSubmit}
       >
         <Input
           defaultValue={value}
           inputRef={this.input}
           onBlur={this.handleSubmit}
+          {...inputProps}
         />
       </form>
     ) : (
       <div
-        className="click-to-edit-field not-editing"
-        onClick={() => toggleEdit(true, () => this.input.current.focus())}
+        className={cx('click-to-edit-field', className, {
+          'is-placeholder': placeholder && !value,
+          'not-editing': allowEditing,
+          'not-allowed-to-edit': !allowEditing,
+        })}
+        onClick={
+          allowEditing
+            ? () => toggleEdit(true, () => this.input.current.focus())
+            : null
+        }
       >
         {value || placeholder}
       </div>

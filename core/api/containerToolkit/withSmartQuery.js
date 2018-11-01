@@ -1,8 +1,15 @@
 // @flow
 import { withQuery } from 'meteor/cultofcoders:grapher-react';
-import { mapProps, compose, branch, renderComponent } from 'recompose';
+import {
+  mapProps,
+  compose,
+  branch,
+  renderComponent,
+  lifecycle,
+} from 'recompose';
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
+import ClientEventService from '../events/ClientEventService';
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render: boolean = false) =>
@@ -15,17 +22,53 @@ const makeRenderMissingDocIfNoData = (render: boolean = false) =>
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
 const makeMapProps = dataName =>
-  mapProps(({ data, isLoading, error, ...rest }) =>
-    // Theodor
-    // FIXME: This creates tons of bugs with queries not running in the
-    // right order: https://github.com/cult-of-coders/grapher-react/issues/24
-    // if (error) {
-    //   throw error;
-    // }
-    ({ [dataName]: data, ...rest }));
+  mapProps(({ data, isLoading, error, ...rest }) => ({
+    [dataName]: data,
+    ...rest,
+  }));
+
+const withQueryRefetcher = ({ queryName }) =>
+  lifecycle({
+    componentDidMount() {
+      const { refetch } = this.props;
+
+      if (refetch) {
+        ClientEventService.addListener(queryName, refetch);
+      }
+    },
+    componentWillUnmount() {
+      const { refetch } = this.props;
+      if (refetch) {
+        ClientEventService.removeListener(queryName, refetch);
+      }
+    },
+  });
+
+// This adds all non-reactive queries on the window object, and removes them
+// when the query disappears
+// These queries can then all be refreshed from `clientMethodsConfig`
+// every time a method is called
+const withGlobalQueryManager = ({ queryName }, { reactive }) =>
+  lifecycle({
+    componentDidMount() {
+      if (!reactive && window) {
+        if (!window.activeQueries) {
+          window.activeQueries = [queryName];
+        } else {
+          window.activeQueries = [...window.activeQueries, queryName];
+        }
+      }
+    },
+    componentWillUnmount() {
+      if (!reactive && window) {
+        window.activeQueries = window.activeQueries.filter(query => query !== queryName);
+      }
+    },
+  });
 
 type withSmartQueryArgs = {
-  query: (params: Object) => mixed,
+  query: () => mixed,
+  params: (props: Object) => Object,
   queryOptions?: { single: boolean },
   dataName?: string,
   renderMissingDoc?: boolean,
@@ -34,17 +77,30 @@ type withSmartQueryArgs = {
 
 const withSmartQuery = ({
   query,
+  params = () => {},
   queryOptions = { single: false },
   dataName = 'data',
   // used to bypass the missing doc component
   renderMissingDoc = true,
   smallLoader = false,
-}: withSmartQueryArgs) =>
-  compose(
-    withQuery(query, queryOptions),
-    withLoading(smallLoader),
-    makeRenderMissingDocIfNoData(renderMissingDoc && queryOptions.single),
-    makeMapProps(dataName),
-  );
+}: withSmartQueryArgs) => {
+  const shoundRenderMissingDoc = renderMissingDoc && queryOptions.single;
 
+  let completeQuery;
+
+  if (typeof query === 'function') {
+    completeQuery = props => query(props).clone(params(props));
+  } else {
+    completeQuery = props => query.clone(params(props));
+  }
+
+  return compose(
+    withGlobalQueryManager(query, queryOptions),
+    withQuery(completeQuery, { ...queryOptions, loadOnRefetch: false }),
+    withLoading(smallLoader),
+    makeRenderMissingDocIfNoData(shoundRenderMissingDoc),
+    makeMapProps(dataName),
+    withQueryRefetcher(query),
+  );
+};
 export default withSmartQuery;

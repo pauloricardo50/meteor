@@ -239,7 +239,6 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
       label: 'Recap.bankFortune',
       value: toMoney(fortune),
     },
-
     {
       label: 'Recap.insuranceFortune',
       value: toMoney(insuranceFortune),

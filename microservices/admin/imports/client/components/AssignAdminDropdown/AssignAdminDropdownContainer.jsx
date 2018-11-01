@@ -27,7 +27,7 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
 
 export default compose(
   withSmartQuery({
-    query: () => query.clone(),
+    query,
     queryoptions: { reactive: true },
     dataName: 'admins',
     smallLoader: true,

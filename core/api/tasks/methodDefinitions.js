@@ -4,7 +4,11 @@ import { Method } from '../methods/methods';
 export const taskInsert = new Method({
   name: 'taskInsert',
   params: {
-    type: String,
+    type: Match.Optional(String),
+    title: Match.Optional(String),
+    description: Match.Optional(String),
+    docId: Match.Optional(String),
+    assignedTo: Match.Optional(String),
   },
 });
 
@@ -45,27 +49,5 @@ export const setAssigneeOfTask = new Method({
   params: {
     taskId: String,
     newAssigneeId: String,
-  },
-});
-
-export const taskGetRelatedTo = new Method({
-  name: 'taskGetRelatedTo',
-  params: {
-    task: Object,
-  },
-});
-
-export const completeAddAssignedToTask = new Method({
-  name: 'completeAddAssignedToTask',
-  params: {
-    userId: String,
-  },
-});
-
-export const loanTaskInsert = new Method({
-  name: 'loanTaskInsert',
-  params: {
-    loanId: String,
-    title: String,
   },
 });

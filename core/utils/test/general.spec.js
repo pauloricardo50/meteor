@@ -2,6 +2,7 @@
 import { expect } from 'chai';
 import { _ } from 'lodash';
 
+import { getAggregatePercent } from 'core/utils/general';
 import {
   arrayify,
   getPercent,
@@ -66,6 +67,29 @@ describe('general helpers', () => {
     it('returns 1 if it is given an empty array', () => {
       // Empty array means that there was nothing to do, so it should be 100%
       expect(getPercent([])).to.equal(1);
+    });
+  });
+
+  describe('getAggregatePercent', () => {
+    it('calculates the true progress based on count', () => {
+      expect(getAggregatePercent([
+        { percent: 0.1, count: 10 },
+        { percent: 0.4, count: 20 },
+      ])).to.deep.equal({ count: 30, percent: 0.3 });
+    });
+
+    it('returns 0 for empty arrays', () => {
+      expect(getAggregatePercent([])).to.deep.equal({
+        count: 0,
+        percent: 0,
+      });
+    });
+
+    it('returns the same value for a single object', () => {
+      expect(getAggregatePercent([{ percent: 0.1, count: 10 }])).to.deep.equal({
+        count: 10,
+        percent: 0.1,
+      });
     });
   });
 

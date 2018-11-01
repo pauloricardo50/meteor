@@ -82,7 +82,7 @@ const props = withProps(({ deleteFile, addTempFiles, intl: { formatMessage: f },
   },
   handleUploadComplete: (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    SlackService.notifyAssignee(currentUser, file.name);
+    SlackService.notifyOfUpload(currentUser, file.name);
   },
   handleRemove: key =>
     deleteFile(key).then(() => {

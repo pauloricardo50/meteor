@@ -1,1 +1,2 @@
-export { default } from './IconLink.jsx';
+export { default } from './IconLink';
+export { default as CollectionIconLink } from './CollectionIconLink';

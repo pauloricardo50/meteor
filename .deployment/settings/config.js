@@ -9,15 +9,17 @@ export const ENVIRONMENT = {
 };
 
 export const APPLICATIONS = {
-  APP: 'app',
   ADMIN: 'admin',
-  WWW: 'www',
+  APP: 'app',
   PDF: 'pdf',
+  PRO: 'pro',
+  WWW: 'www',
 };
 
 export const SERVICES = {
   MONGODB: 'mongo',
   REDIS: 'redis',
+  LOGS: 'logs',
 };
 
 export const APP_CONFIGS = {
@@ -31,18 +33,20 @@ export const APP_CONFIGS = {
 
 export const ENVIRONMENT_CONFIG = {
   [ENVIRONMENT.STAGING]: {
-    services: [SERVICES.MONGODB, SERVICES.REDIS],
+    services: [SERVICES.MONGODB, SERVICES.REDIS, SERVICES.LOGS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB256_1i },
+    [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
-    services: [SERVICES.MONGODB, SERVICES.REDIS],
+    services: [SERVICES.MONGODB, SERVICES.REDIS, SERVICES.LOGS],
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB256_1i },
+    [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
 };
 
@@ -78,6 +82,7 @@ export const APP_SMOKE_TEST_FILES = {
   [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.PDF]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
+  [APPLICATIONS.PRO]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
 };
 
 export const APP_ENV_VARIABLES = {
@@ -86,11 +91,13 @@ export const APP_ENV_VARIABLES = {
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
     [APPLICATIONS.PDF]: {},
+    [APPLICATIONS.PRO]: {},
   },
   [ENVIRONMENT.PRODUCTION]: {
     [APPLICATIONS.APP]: {},
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
     [APPLICATIONS.PDF]: {},
+    [APPLICATIONS.PRO]: {},
   },
 };

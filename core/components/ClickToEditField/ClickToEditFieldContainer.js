@@ -1,3 +1,3 @@
-import { withState, compose } from 'recompose';
+import { withState } from 'recompose';
 
-export default compose(withState('isEditing', 'toggleEdit', false));
+export default withState('isEditing', 'toggleEdit', false);

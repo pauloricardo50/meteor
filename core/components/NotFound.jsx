@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'core/components/Button';
 import { Link } from 'react-router-dom';
 
+import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import track from 'core/utils/analytics';
+import SlackService from 'core/api/slack/SlackService';
 
 const styles = {
   section: {
@@ -25,7 +25,7 @@ const styles = {
 
 export default class NotFound extends Component {
   componentDidMount() {
-    track('NotFound - 404');
+    SlackService.sendError({ name: 'NotFound page triggered' });
   }
 
   render() {

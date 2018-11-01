@@ -1,5 +1,4 @@
 import { Factory } from 'meteor/dburles:factory';
-import faker from 'faker';
 
 import Loans from '../../../../core/api/loans';
 import Borrowers from '../../../../core/api/borrowers';
@@ -11,13 +10,11 @@ Factory.define('testBorrower', Borrowers);
 Factory.define('testLoan', Loans, {
   createdAt: () => new Date(),
   borrowerIds: [],
-  status: 'ACTIVE',
   documents: () => ({}),
   logic: () => ({
     auction: { status: '' },
     lender: {},
     verification: {},
-    step: 1,
   }),
   emails: () => [],
   propertyIds: [],

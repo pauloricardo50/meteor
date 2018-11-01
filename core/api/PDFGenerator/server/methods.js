@@ -1,5 +1,8 @@
-import { generateLoanBankPDF } from '../methodDefinitions';
+import { SecurityService } from '../..';
+import { generatePDF } from '../methodDefinitions';
 import PDFGeneratorService from '../PDFGeneratorService';
 
-generateLoanBankPDF.setHandler((context, { loanId }) =>
-  PDFGeneratorService.generateLoanBankPDF(loanId));
+generatePDF.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return PDFGeneratorService.generatePDF(params);
+});
