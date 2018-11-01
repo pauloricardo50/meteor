@@ -2,7 +2,7 @@
 
 **Sets up the VPS to automatically backup production database**
 
-This script sets up a VPS to automatically dump the **production** database every hour and save it on S3. The VPS will deploy an application on Cloudfoundry that is used to open an SSH tunnel in order to have access to the database.
+This script sets up a VPS to automatically dump the **production** database every hour and save it on S3. The VPS will deploy an application on Cloudfoundry that is used to open an SSH tunnel in order to have access to the database. Additionally, the VPS creates backups of the `e-potek-production-files` S3 bucket every day.
 
 ## Credentials
 
@@ -49,11 +49,15 @@ Once you have all the required credentials, simply execute `setupVPS.sh`.
 Two CRON jobs are set on the VPS:
 
 - Every hour: dump **production** database and save it on S3 bucket `s3://production-backups`
-- At 12:30 UTC: delete 14 days old backups
+- At 12:30 UTC: delete 14 days old DB backups
+- At 16:30 UTC: create copy of `e-potek-production-files` S3 bucket into a new bucket
+- At 10:30 UTC: delete 30 days old `e-potek-production-files` S3 backups
 
 Each CRON job is monitored on https://cronitor.io
 
 ```
-0 */1 * * * curl https://cronitor.link/aOsIJY/run -m 10 ; ~/scripts/backup_db/backup_db.sh && curl https://cronitor.link/aOsIJY/complete -m 10
-30 12 * * * curl https://cronitor.link/qDOCtx/run -m 10 ; s3cmd ls s3://production-backups | sort | awk -F' ' '{print $NF}' | grep -E  `date +%Y-%m-%d -d "14 day ago"` | xargs -n 1 s3cmd del -r && curl https://cronitor.link/qDOCtx/complete -m 10
+0 */1 * * * ~/scripts/backup_db/backup_db.sh 2>&1 | /usr/bin/logger -t backup_db
+30 12 * * * ~/scripts/backup_db/remove_old_db_backups.sh 2>&1 | /usr/bin/logger -t remove_old_db_backups
+30 16 * * * ~/scripts/backup_s3/backup_s3.sh 2>&1 | /usr/bin/logger -t backup_s3
+30 10 * * * ~/scripts/backup_s3/remove_old_s3_backups.sh 2>&1 | /usr/bin/logger -t remove_old_s3_backups
 ```
