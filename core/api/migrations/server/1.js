@@ -1,7 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
-import { Properties } from '..';
-import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import { Properties } from '../..';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 
 export const up = () => {
   Properties.update(

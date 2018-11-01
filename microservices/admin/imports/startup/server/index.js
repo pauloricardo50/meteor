@@ -5,7 +5,7 @@ import { Inject } from 'meteor/meteorhacks:inject-initial';
 import 'core/fixtures';
 import 'core/api/api';
 import 'core/api/api-server';
-import 'core/api/migrations';
+import 'core/api/migrations/server';
 
 import '../accounts-config';
 import './kadira';

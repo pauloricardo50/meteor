@@ -46,7 +46,6 @@ check@1.3.1                    # variable type verification for server side vali
 session@1.1.8                  # Lets you use Session variables
 edgee:slingshot
 cultofcoders:grapher
-cultofcoders:grapher-react
 cultofcoders:mutations
 dburles:mongo-collection-instances
 percolate:migrations
@@ -71,3 +70,4 @@ okgrow:analytics
 wylio:mandrill
 underscore@1.0.10
 matb33:collection-hooks
+cultofcoders:grapher-react

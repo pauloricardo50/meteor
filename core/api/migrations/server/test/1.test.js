@@ -3,11 +3,11 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { Properties } from '../..';
+import { Properties } from '../../..';
 import { up, down } from '../1';
-import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 
-describe.only('Migration 1', () => {
+describe('Migration 1', () => {
   beforeEach(() => {
     resetDatabase();
   });
