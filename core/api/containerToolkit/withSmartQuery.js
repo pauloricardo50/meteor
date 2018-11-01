@@ -6,7 +6,6 @@ import {
   branch,
   renderComponent,
   lifecycle,
-  withState,
 } from 'recompose';
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
@@ -31,11 +30,8 @@ const makeMapProps = dataName =>
 const withQueryRefetcher = ({ queryName }) =>
   lifecycle({
     componentDidMount() {
-      const { refetch, setInitialLoaded } = this.props;
+      const { refetch } = this.props;
 
-      // Only display the loader once, afterwards, when the query is refetched,
-      // Don't show the loader anymore
-      setInitialLoaded(true);
       if (refetch) {
         ClientEventService.addListener(queryName, refetch);
       }
@@ -99,10 +95,9 @@ const withSmartQuery = ({
   }
 
   return compose(
-    withState('initialLoaded', 'setInitialLoaded', false),
     withGlobalQueryManager(query, queryOptions),
-    withQuery(completeQuery, queryOptions),
-    withLoading(smallLoader, 'initialLoaded'),
+    withQuery(completeQuery, { ...queryOptions, loadOnRefetch: false }),
+    withLoading(smallLoader),
     makeRenderMissingDocIfNoData(shoundRenderMissingDoc),
     makeMapProps(dataName),
     withQueryRefetcher(query),
