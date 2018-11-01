@@ -10,6 +10,13 @@
     { "path": "microservices/pdf" }
   ],
   "settings": {
-    "editor.snippetSuggestions": "top"
+    "editor.snippetSuggestions": "top",
+    "files.exclude": {
+      "**/.git": false,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true
+    }
   }
 }
