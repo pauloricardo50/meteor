@@ -48,8 +48,9 @@ const writeApplicationManifest = environment =>
     data: applicationManifestData(environment),
   });
 
-const openSSHTunnel = () => {
-  const { environment, ssh_id } = argv
+const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
+  let environment;
+  const args = argv
     .usage('Usage: $0 [options]]')
     .example(
       '$0 -e staging',
@@ -59,13 +60,19 @@ const openSSHTunnel = () => {
     .nargs('e', 1)
     .describe('e', `Environment ${FORMATTED_ENVIRONMENTS}`)
     .alias('i', 'ssh_id')
-    .nargs('i', 1)
+    .array('i')
     .describe('i', `Random id for the application`)
     .demandOption(['e', 'i'])
     .help('h')
     .alias('h', 'help').argv;
 
-  SSH_ID = ssh_id;
+  if (environmentOverride) {
+    environment = environmentOverride;
+  } else {
+    environment = args.environment;
+  }
+
+  SSH_ID = args.ssh_id[sshIdNumber];
 
   return mkdir(`${__dirname}/${environment}-${SSH_ID}/`)
     .then(() => writeApplicationManifest(environment))
@@ -78,7 +85,7 @@ const openSSHTunnel = () => {
     )
     .then(() => ({
       environment,
-      ssh_id,
+      ssh_id: SSH_ID,
     }));
 };
 

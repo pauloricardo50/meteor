@@ -19,7 +19,7 @@ const writePullDBTmuxinator = environment => {
         data: {
           name: `restore-db-${SSH_ID}`,
           root: '~/',
-          on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${SSH_ID} -r -f && rm -rf ${__dirname}/${environment}-${SSH_ID} && tmux kill-session -t restore-db-${SSH_ID}`,
+          on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${SSH_ID} -r -f && rm -rf ${__dirname}/${environment}-${SSH_ID}`,
           windows: [
             {
               sshTunnel: {

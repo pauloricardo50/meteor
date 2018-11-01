@@ -16,6 +16,7 @@
     "remove-core": "cd scripts/ && ./remove-core.sh",
     "pull-production-db": "cd .deployment/ && npm run pull-production-db",
     "pull-staging-db": "cd .deployment/ && npm run pull-staging-db",
+    "restore-production-to-staging": "cd .deployment/ && npm run restore-production-to-staging",
     "run": "cd scripts/ && ./run.sh",
     "setup-clean": "cd scripts/ && ./setup.sh -c",
     "setup": "cd scripts/ && ./setup.sh",

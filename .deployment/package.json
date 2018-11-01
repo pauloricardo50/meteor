@@ -1,13 +1,14 @@
 {
   "name": "swisscom-deployment",
   "scripts": {
-    "deploy": "./deploy.sh",
-    "deploy-staging": "./deploy.sh -e staging",
     "deploy-production": "./deploy.sh -e production",
-    "mongo-ssh-staging": "./ssh-tunnel.sh -e staging",
+    "deploy-staging": "./deploy.sh -e staging",
+    "deploy": "./deploy.sh",
     "mongo-ssh-production": "./ssh-tunnel.sh -e production",
-    "pull-staging-db": "./restore-db.sh -e staging",
+    "mongo-ssh-staging": "./ssh-tunnel.sh -e staging",
     "pull-production-db": "./restore-db.sh -e production",
+    "pull-staging-db": "./restore-db.sh -e staging",
+    "restore-production-to-staging": "./restoreProdToStaging.sh",
     "scaleApplication": "./scaleApplication.sh",
     "start-maintenance-production": "./start-maintenance.sh -e production",
     "start-maintenance-staging": "./start-maintenance.sh -e staging",
