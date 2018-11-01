@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import TaskService from 'imports/core/api/tasks/TaskService';
-import SecurityService from 'imports/core/api/security/index';
+import TaskService from '../../../tasks/TaskService';
+import SecurityService from '../../../security/index';
 import { generateData } from '../../../../utils/testHelpers';
 import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
 import { requestLoanVerification } from '../../methodDefinitions';
