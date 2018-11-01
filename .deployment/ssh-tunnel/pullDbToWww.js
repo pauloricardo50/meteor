@@ -39,7 +39,11 @@ const writePullDBTmuxinator = ({
                   `mongodump -h localhost:${mongoPort +
                     PORT_OFFSET} -d ${database} -u ${username} -p ${password} -o /tmp`,
 
+<<<<<<< HEAD
+                      `mongorestore --drop -h localhost:5001 -d meteor /tmp/${database}`,
+=======
                   `mongorestore --drop -h localhost:5001 -d meteor /tmp/${database}`,
+>>>>>>> 5508ebcd5ced316a8e4b31ba9705041bc21ad246
 
                   `rm -rf /tmp/${database}`,
 
