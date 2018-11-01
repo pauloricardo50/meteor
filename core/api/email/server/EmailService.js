@@ -93,7 +93,10 @@ class EmailService {
   };
 
   emailLogger = ({ emailId, address, template }) => {
-    if (Meteor.isDevelopment || Meteor.isTest) {
+    if (Meteor.isTest) {
+      return;
+    }
+    if (skipEmails) {
       if (address) {
         console.log(`EmailService dev: Would've sent ${emailId} to ${address} with this template:`);
       } else {

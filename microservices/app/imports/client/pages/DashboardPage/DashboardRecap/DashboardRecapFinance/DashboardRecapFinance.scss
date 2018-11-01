@@ -95,22 +95,42 @@
     align-items: center;
 
     .color {
+      flex-shrink: 0;
+
       width: 16px;
       height: 16px;
       margin-right: 8px;
-      flex-shrink: 0;
 
       background-color: white;
     }
 
     .id {
       flex-grow: 1;
+
       white-space: normal;
     }
   }
 }
 
 .dashboard-recap-finance-empty {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 32px;
+
+  .icon {
+    color: $primary;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 32px;
+  }
+
+  h3 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: 0;
+  }
 }

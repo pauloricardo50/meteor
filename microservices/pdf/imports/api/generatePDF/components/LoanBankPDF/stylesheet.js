@@ -8,6 +8,7 @@ import { LoanBankCoverStyles } from './LoanBankCover';
 const stylesheet = `
     html {
         font-size: 10px;
+        font-family: Helvetica;
     }
     .loan-bank-pdf {
         width: 500px;

@@ -10,9 +10,9 @@ import {
   RESIDENCE_TYPE,
   PURCHASE_TYPE,
   CIVIL_STATUS,
+  PDF_TYPES,
 } from 'core/api/constants';
 import PDFService from '../PDFService';
-import { PDF_TYPES } from '../constants';
 
 import {
   getSingleBorrowerLoan,
@@ -77,6 +77,8 @@ describe('GeneratePDFService', () => {
             age: 51,
             childrenCount: 2,
             civilStatus: CIVIL_STATUS.MARRIED,
+            zipCode: 1400,
+            city: 'Yverdon-les-Bains',
           },
           withSalary: true,
           withBonus: true,
@@ -99,6 +101,8 @@ describe('GeneratePDFService', () => {
             age: 49,
             company: "McDonald's",
             civilStatus: CIVIL_STATUS.MARRIED,
+            zipCode: 1400,
+            city: 'Yverdon-les-Bains',
           },
           withSalary: true,
           withInsurance2: true,
@@ -124,12 +128,10 @@ describe('GeneratePDFService', () => {
     return PDFService.generateDataAsPDF(
       {
         data: {
-          loan: {
-            ...loan,
-            ...FAKE_USER,
-          },
+          ...loan,
+          ...FAKE_USER,
         },
-        type: PDF_TYPES.LOAN_BANK,
+        type: PDF_TYPES.ANONYMOUS_LOAN,
       },
       true,
     )

@@ -12,6 +12,7 @@ import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   USERS_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 
 import ResultSecondaryText from './ResultSecondaryText';
@@ -94,6 +95,11 @@ const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
   };
 };
 
+const getPromotionInfo = ({ name, promotionLotLinks }) => ({
+  primary: name,
+  secondary: `${promotionLotLinks.length} lots`,
+});
+
 const getInfoToDisplay = (result, collection) => {
   switch (collection) {
   case BORROWERS_COLLECTION:
@@ -104,6 +110,8 @@ const getInfoToDisplay = (result, collection) => {
     return getPropertyInfo(result);
   case USERS_COLLECTION:
     return getUserInfo(result);
+  case PROMOTIONS_COLLECTION:
+    return getPromotionInfo(result);
   default:
     return null;
   }

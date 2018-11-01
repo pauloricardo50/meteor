@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Users } from '../..';
+import Users from '..';
 import { USER_QUERIES } from '../userConstants';
 import { appUserFragment } from './userFragments';
 

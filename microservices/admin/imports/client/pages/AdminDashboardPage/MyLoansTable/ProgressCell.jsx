@@ -16,7 +16,7 @@ const ProgressCell = ({ loan }: ProgressCellProps) => (
     <Percent value={Calculator.propertyPercent({ loan })} rounded />
     &nbsp;
     <Icon type="attachFile" />
-    <Percent value={Calculator.filesProgress({ loan })} rounded />
+    <Percent value={Calculator.filesProgress({ loan }).percent} rounded />
   </div>
 );
 

@@ -16,5 +16,10 @@ describe('routerUtils', () => {
     it('returns the initial path if no params are passed', () => {
       expect(createRoute('yo')).to.equal('yo');
     });
+
+    it('prefixes replacers with a colon if none is provided', () => {
+      expect(createRoute(':hello', { hello: 'yo' })).to.equal('yo');
+      expect(createRoute(':hello/:yo', { hello: 'yo', yo: 'dude' })).to.equal('yo/dude');
+    });
   });
 });

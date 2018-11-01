@@ -1,9 +1,9 @@
 .app-page {
   .app-item {
     &.card1 {
-      margin-bottom: 32px;
       width: 100%;
       max-width: 600px;
+      margin-bottom: 32px;
     }
 
     .title {
@@ -16,6 +16,7 @@
 
     .main-text {
       align-self: center;
+
       margin: 40px 0;
     }
   }

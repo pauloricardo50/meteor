@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
-import Page from '../../components/Page';
+import Page from 'core/components/Page';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import Info from './Info';
 import Finance from './Finance';

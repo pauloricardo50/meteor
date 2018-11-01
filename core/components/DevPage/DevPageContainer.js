@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { withProps } from 'recompose';
+import { withProps, compose } from 'recompose';
 
 import {
   completeFakeBorrower,
@@ -103,7 +103,7 @@ const addStep3Loan = userId => (twoBorrowers, completeFiles = true) =>
     userId,
   });
 
-const DevPageContainer = withProps(({ currentUser: { _id: userId } }) => ({
+const DevPageContainer = compose(withProps(({ currentUser: { _id: userId } }) => ({
   addEmptyStep1Loan: addEmptyStep1Loan(userId),
   addStep1Loan: addStep1Loan(userId),
   addStep2Loan: addStep2Loan(userId),
@@ -117,6 +117,6 @@ const DevPageContainer = withProps(({ currentUser: { _id: userId } }) => ({
       }
     });
   },
-}));
+})));
 
 export default DevPageContainer;

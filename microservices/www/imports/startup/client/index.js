@@ -1,2 +1,3 @@
-import './ssr-client';
 import '../shared/setup';
+
+import './ssr-client';

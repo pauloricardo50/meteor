@@ -2,18 +2,6 @@
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES } from '../../constants';
 
-export const contactsSchema = {
-  contacts: { type: Array, defaultValue: [] },
-  'contacts.$': Object,
-  'contacts.$.name': String,
-  'contacts.$.title': String,
-  'contacts.$.email': {
-    type: String,
-    regEx: SimpleSchema.RegEx.Email,
-  },
-  'contacts.$.phoneNumber': String,
-};
-
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
   'borrowerIds.$': String,

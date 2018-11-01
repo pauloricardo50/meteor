@@ -14,8 +14,9 @@ const FinancingPropertyPickerContainer = compose(
   withRouter,
   mapProps(({
     properties,
+    promotionOptions,
     loan: { _id: loanId },
-    structure: { id: structureId, propertyId },
+    structure: { id: structureId, propertyId, promotionOptionId },
     history: { push },
   }) => ({
     options: [
@@ -23,24 +24,33 @@ const FinancingPropertyPickerContainer = compose(
         id: _id,
         label: address1 || <T id="FinancingPropertyPicker.placeholder" />,
       })),
+      ...promotionOptions.map(({ _id, name }) => ({
+        id: _id,
+        label: (
+          <T id="FinancingPropertyPicker.promotionOption" values={{ name }} />
+        ),
+      })),
       {
         id: 'add',
         dividerTop: true,
         label: <T id="FinancingPropertyPicker.addProperty" />,
       },
     ],
-    value: propertyId,
-    property: properties[propertyId],
+    value: propertyId || promotionOptionId,
     handleChange: (_, value) => {
       if (value === 'add') {
         push(`/loans/${loanId}/properties`);
       } else {
+        const isPromotionOption = promotionOptions
+          .map(({ _id }) => _id)
+          .includes(value);
         updateStructure.run({
           loanId,
           structureId,
           structure: {
             // Also reset propertyValue and notaryFees since it should not be the same
-            propertyId: value,
+            propertyId: isPromotionOption ? null : value,
+            promotionOptionId: isPromotionOption ? value : null,
             propertyValue: null,
             notaryFees: null,
           },

@@ -1,8 +1,9 @@
 import { Method } from '../methods/methods';
 
-export const generateLoanBankPDF = new Method({
-  name: 'generateLoanBankPDF',
+export const generatePDF = new Method({
+  name: 'generatePDF',
   params: {
-    loanId: String,
+    params: Object,
+    type: String,
   },
 });

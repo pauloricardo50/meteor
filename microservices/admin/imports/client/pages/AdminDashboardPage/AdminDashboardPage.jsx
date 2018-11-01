@@ -1,9 +1,8 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
 import T from 'core/components/Translation/';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import TasksTableWithData from '../../components/TasksTable/TasksTableWithData';
+import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 import CreateUserDialogForm from './CreateUserDialogForm';
 import MyLoansTable from './MyLoansTable';
 
@@ -19,10 +18,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
     <h2 className="text-center">
       <T id="AdminDashboardPage.tasks" />
     </h2>
-    <TasksTableWithData
-      showAssignee
-      dashboardTasks
-      assignedTo={Meteor.userId()}
+    <AllTasksTable
       tableFilters={{
         filters: {
           assignedEmployee: { emails: [{ address: true }] },

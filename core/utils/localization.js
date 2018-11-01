@@ -40,7 +40,9 @@ export const localizationStartup = ({ setupAccounts = true } = {}) => {
   moment.locale('fr');
 
   if (setupAccounts) {
-    const { T9n } = require('meteor/softwarerero:accounts-t9n');
+    const { T9n } = require('meteor-accounts-t9n');
+    const { fr: accountsFr } = require('meteor-accounts-t9n/build/fr');
+    T9n.map('fr', accountsFr);
     T9n.setLanguage('fr');
   }
 };

@@ -43,20 +43,20 @@ const sideNavLinks: linksType = [
     id: 'BorrowersPage',
     to: ROUTES.BORROWERS_PAGE_NO_TAB,
     icon: faUsers,
-    percent: loan =>
-      Calculator.personalInfoPercent({ borrowers: loan.borrowers }),
+    percent: loan => Calculator.personalInfoPercent({ loan }),
   },
   {
     id: 'PropertiesPage',
     to: ROUTES.PROPERTIES_PAGE,
     icon: faHome,
-    percent: loan => Calculator.propertyPercent({ loan }),
+    percent: loan => !loan.hasPromotion && Calculator.propertyPercent({ loan }),
   },
   {
     id: 'FilesPage',
     to: ROUTES.FILES_PAGE,
     icon: faFolderOpen,
-    percent: loan => Calculator.filesProgress({ loan }),
+    percent: loan =>
+      loan.documentsLoaded && Calculator.filesProgress({ loan }).percent,
   },
 ];
 
@@ -75,9 +75,8 @@ export const LoanSideNav = ({
           : {
             ...link,
             to: createRoute(link.to, {
-              ':loanId': loan._id,
-              ':borrowerId': loan.borrowers[0]._id,
-              ':propertyId': loan.properties[0]._id,
+              loanId: loan._id,
+              borrowerId: loan.borrowers[0]._id,
             }),
           }))
       .map(({ Component, to, id, icon, percent, ...otherProps }) => {
@@ -97,7 +96,8 @@ export const LoanSideNav = ({
             <FontAwesomeIcon icon={icon} className="icon" />
             <span className="text">
               <T id={`${id}.title`} />
-              {percent && (
+              {percent
+                && progress !== false && (
                 <span className="progress">
                   <PercentWithStatus
                     value={progress}

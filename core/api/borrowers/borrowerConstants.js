@@ -59,3 +59,8 @@ export const OWN_FUNDS_TYPES = {
   INSURANCE_3B: 'insurance3B',
   THIRD_PARTY_FORTUNE: 'thirdPartyFortune',
 };
+
+export const RETIREMENT_AGE = {
+  [GENDER.M]: 65,
+  [GENDER.F]: 64,
+};

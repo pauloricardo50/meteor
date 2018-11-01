@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts as AccountsUI } from 'meteor/std:accounts-ui';
+import { Accounts as AccountsUI } from 'meteor/epotek:accounts-ui';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 

@@ -56,8 +56,8 @@ const mapLoan = history => (loan) => {
 
 const MyLoansTableContainer = compose(
   withSmartQuery({
-    query: ({ currentUser: { _id: adminId } }) =>
-      loansAssignedToAdmin.clone({ adminId }),
+    query: loansAssignedToAdmin,
+    params: ({ currentUser: { _id: adminId } }) => ({ adminId }),
     queryOptions: { reactive: false },
     dataName: 'loans',
     renderMissingDoc: false,

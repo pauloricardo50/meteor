@@ -23,11 +23,11 @@ const displayValue = (columnValue, columnOptions) => {
 };
 
 const Row = ({
-  row: { handleClick = null, columns },
+  row: { handleClick = null, columns, rowProps = {} },
   columnOptions,
   clickable,
 }) => (
-  <TableRow hover={clickable} onClick={handleClick}>
+  <TableRow hover={clickable} onClick={handleClick} {...rowProps}>
     {columns.map((column, j) => (
       <TableCell
         key={j}

@@ -1,0 +1,4 @@
+[submodule "microservices/admin/packages/grapher-react"]
+	path = microservices/admin/packages/grapher-react
+	url = https://github.com/Floriferous/grapher-react.git
+	branch = loadOnRefetch-version-inc

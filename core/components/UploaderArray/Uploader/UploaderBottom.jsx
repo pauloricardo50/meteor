@@ -14,7 +14,7 @@ const UploaderBottom = ({
   collection,
   handleUploadComplete,
   handleAddFiles,
-  fileMeta: { id },
+  fileMeta: { id, acl },
 }) => (
   <React.Fragment>
     {currentValue.map((f, i) => (
@@ -34,6 +34,7 @@ const UploaderBottom = ({
         collection={collection}
         handleUploadComplete={handleUploadComplete}
         id={id}
+        acl={acl}
       />
     ))}
 

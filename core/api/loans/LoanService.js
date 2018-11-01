@@ -1,18 +1,25 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import moment from 'moment';
 
 import { getAuctionEndTime } from '../../utils/loanFunctions';
+import CollectionService from '../helpers/CollectionService';
 import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
 import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
 import Loans from './loans';
+import { LOAN_VERIFICATION_STATUS } from './loanConstants';
 
 const zeroPadding = (num, places) => {
   const zero = places - num.toString().length + 1;
   return Array(+(zero > 0 && zero)).join('0') + num;
 };
 
-export class LoanService {
+export class LoanService extends CollectionService {
+  constructor() {
+    super(Loans);
+  }
+
   insert = ({ loan = {}, userId }) =>
     Loans.insert({ ...loan, name: this.getNewLoanName(), userId });
 
@@ -57,18 +64,34 @@ export class LoanService {
   askVerification = ({ loanId }) => {
     const loan = this.getLoanById(loanId);
 
-    if (loan.logic.verification.requested) {
+    if (
+      loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED
+      || loan.verificationStatus === LOAN_VERIFICATION_STATUS.OK
+    ) {
       // Don't do anything if this loan is already in requested mode
-      return false;
+      throw new Meteor.Error('La demande est déjà en cours, ou effectuée.');
     }
 
     return this.update({
       loanId,
       object: {
-        'logic.verification.requested': true,
-        'logic.verification.requestedAt': new Date(),
+        verificationStatus: LOAN_VERIFICATION_STATUS.REQUESTED,
+        userFormsEnabled: false,
       },
     });
+  };
+
+  insertPromotionLoan = ({ userId, promotionId }) => {
+    const borrowerId = BorrowerService.insert({ userId });
+    const loanId = this.insert({
+      loan: {
+        borrowerIds: [borrowerId],
+        promotionLinks: [{ _id: promotionId }],
+      },
+      userId,
+    });
+    this.addNewStructure({ loanId });
+    return loanId;
   };
 
   startAuction = ({ loanId }) => {
@@ -253,22 +276,18 @@ export class LoanService {
     });
   };
 
-  cleanupRemovedProperty = ({ propertyId }) => {
-    // Remove all references to this property on the loan
-    const loans = Loans.find({ propertyIds: propertyId }).fetch();
-    loans.forEach((loan) => {
-      this.update({
-        loanId: loan._id,
-        object: {
-          structures: loan.structures.map(structure => ({
-            ...structure,
-            propertyId:
-              structure.propertyId === propertyId ? null : structure.propertyId,
-          })),
-        },
-      });
-    });
-  };
+
+  setPromotionPriorityOrder({ loanId, promotionId, priorityOrder }) {
+    return Loans.update(
+      { _id: loanId, 'promotionLinks._id': promotionId },
+      { $set: { 'promotionLinks.$.priorityOrder': priorityOrder } },
+    );
+  }
+
+  getPromotionPriorityOrder({ loanId, promotionId }) {
+    const promotionLink = this.get(loanId).promotionLinks.find(({ _id }) => _id === promotionId);
+    return promotionLink ? promotionLink.priorityOrder : [];
+  }
 }
 
 export default new LoanService({});

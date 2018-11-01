@@ -8,5 +8,9 @@ import '../../impersonation/server/methods';
 import '../../files/server/methods';
 import '../../email/server/methods';
 import '../../PDFGenerator/server/methods';
+import '../../promotions/server/methods';
+import '../../lots/server/methods';
+import '../../promotionLots/server/methods';
+import '../../promotionOptions/server/methods';
 
 import './methods';

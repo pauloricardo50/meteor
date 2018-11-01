@@ -11,6 +11,7 @@ export default Component => props => (
         structures={loan.structures}
         borrowers={loan.borrowers}
         properties={loan.properties}
+        promotionOptions={loan.promotionOptions}
       />
     )}
   </Consumer>

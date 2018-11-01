@@ -1,63 +1,25 @@
 // @flow
 import React from 'react';
 
-import Calculator from '../../utils/Calculator';
-import T from '../Translation';
-import LoanChecklistList from './LoanChecklistList';
+import LoanChecklistFields from './LoanChecklistFields';
+import LoanChecklistDocuments from './LoanChecklistDocuments';
 
 type LoanChecklistProps = {};
 
-const LoanChecklist = ({ loan }: LoanChecklistProps) => (
-  <div className="loan-checklist">
-    <div className="loan-checklist-section">
-      <h3>
-        <T id="LoanChecklist.missingFields" />
-      </h3>
-      <LoanChecklistList
-        title={loan.structure.property.address1 || <T id="general.property" />}
-        ids={Calculator.getMissingPropertyFields({ loan })}
-        intlPrefix="Forms"
+const LoanChecklist = ({ loan }: LoanChecklistProps) => {
+  const displayPropertyChecklist = !loan.hasPromotion;
+  return (
+    <div className="loan-checklist">
+      <LoanChecklistFields
+        loan={loan}
+        displayPropertyChecklist={displayPropertyChecklist}
       />
-      {loan.borrowers.map((borrower, index) => (
-        <LoanChecklistList
-          key={borrower._id}
-          title={
-            borrower.name || (
-              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
-            )
-          }
-          ids={Calculator.getMissingBorrowerFields({ borrowers: borrower })}
-          intlPrefix="Forms"
-        />
-      ))}
-    </div>
-
-    <div className="loan-checklist-section">
-      <h3>
-        <T id="LoanChecklist.missingDocuments" />
-      </h3>
-      <LoanChecklistList
-        title={loan.structure.property.address1 || <T id="general.property" />}
-        ids={Calculator.getMissingPropertyDocuments({ loan })}
-        intlPrefix="files"
+      <LoanChecklistDocuments
+        loan={loan}
+        displayPropertyChecklist={displayPropertyChecklist}
       />
-      {loan.borrowers.map((borrower, index) => (
-        <LoanChecklistList
-          key={borrower._id}
-          title={
-            borrower.name || (
-              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
-            )
-          }
-          ids={Calculator.getMissingBorrowerDocuments({
-            loan,
-            borrowers: borrower,
-          })}
-          intlPrefix="files"
-        />
-      ))}
     </div>
-  </div>
-);
+  );
+};
 
 export default LoanChecklist;

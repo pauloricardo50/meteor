@@ -1,0 +1,210 @@
+// @flow
+/* eslint-env mocha */
+import { expect } from 'chai';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { Factory } from 'meteor/dburles:factory';
+import { Accounts } from 'meteor/accounts-base';
+import sinon from 'sinon';
+
+import { PROMOTION_STATUS } from 'core/api/constants';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import UserService from 'core/api/users/UserService';
+import { ROLES } from 'core/api/users/userConstants';
+import LoanService from 'core/api/loans/LoanService';
+import PromotionService, {
+  PromotionService as PromotionServiceClass,
+} from '../../PromotionService';
+import PromotionLotService from '../../../promotionLots/PromotionLotService';
+import PromotionOptionService from '../../../promotionOptions/PromotionOptionService';
+import LotService from '../../../lots/LotService';
+
+describe('PromotionService', () => {
+  beforeEach(() => {
+    resetDatabase();
+  });
+
+  describe('remove', () => {
+    let promotionOptionId;
+    let loanId;
+    let promotionId;
+    let promotionLotId;
+    let lotId;
+
+    beforeEach(() => {
+      lotId = Factory.create('lot')._id;
+      promotionLotId = Factory.create('promotionLot')._id;
+      promotionId = Factory.create('promotion', {
+        _id: 'promotion',
+        lotLinks: [{ _id: lotId }],
+        promotionLotLinks: [{ _id: promotionLotId }],
+      })._id;
+      promotionOptionId = Factory.create('promotionOption', {
+        promotionLotLinks: [{ _id: promotionLotId }],
+      })._id;
+      loanId = Factory.create('loan', {
+        promotionOptionLinks: [{ _id: promotionOptionId }],
+        promotionLinks: [
+          { _id: 'promotion', priorityOrder: [promotionOptionId] },
+        ],
+      })._id;
+    });
+
+    it('deletes the promotion', () => {
+      expect(PromotionService.collection.find({}).count()).to.equal(1);
+      PromotionService.remove({ promotionId });
+      expect(PromotionService.collection.find({}).count()).to.equal(0);
+    });
+
+    it('deletes all promotionLots', () => {
+      expect(PromotionLotService.collection.find({}).count()).to.equal(1);
+      PromotionService.remove({ promotionId });
+      expect(PromotionLotService.collection.find({}).count()).to.equal(0);
+    });
+
+    it('deletes all promotionOptions', () => {
+      expect(PromotionOptionService.collection.find({}).count()).to.equal(1);
+      PromotionService.remove({ promotionId });
+      expect(PromotionOptionService.collection.find({}).count()).to.equal(0);
+    });
+
+    it('deletes all lots', () => {
+      expect(LotService.collection.find({}).count()).to.equal(1);
+      PromotionService.remove({ promotionId });
+      expect(LotService.collection.find({}).count()).to.equal(0);
+    });
+  });
+
+  describe('inviteUser', () => {
+    let promotionId;
+    let sendEmail;
+    let FakePromotionService;
+
+    beforeEach(() => {
+      resetDatabase();
+      sendEmail = { run: sinon.spy() };
+      FakePromotionService = new PromotionServiceClass({
+        sendEmail,
+      });
+      promotionId = Factory.create('promotion', {
+        _id: 'promotion',
+        status: PROMOTION_STATUS.OPEN,
+      })._id;
+    });
+
+    it('creates user and sends the invitation email if user does not exist', () => {
+      const newUser = {
+        email: 'new@user.com',
+        firstName: 'New',
+        lastName: 'User',
+        phoneNumber: '1234',
+      };
+
+      return FakePromotionService.inviteUser({
+        promotionId,
+        user: newUser,
+      }).then((loanId) => {
+        const user = Accounts.findUserByEmail(newUser.email);
+        const {
+          _id: userId,
+          services: {
+            password: {
+              reset: { token },
+            },
+          },
+        } = user;
+        const {
+          emailId,
+          params: { ctaUrl },
+        } = sendEmail.run.args[0][0];
+        expect(!!loanId).to.equal(true);
+        expect(!!userId).to.equal(true);
+        expect(ctaUrl.split('/').slice(-1)[0]).to.equal(token);
+        expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
+        expect(sendEmail.run.called).to.equal(true);
+        expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
+      });
+    });
+
+    it('sends the invitation email if user exists', () => {
+      const newUser = {
+        email: 'new@user.com',
+        firstName: 'New',
+        lastName: 'User',
+        phoneNumber: '1234',
+      };
+
+      const userId = UserService.adminCreateUser({
+        options: {
+          email: newUser.email,
+          sendEnrollmentEmail: false,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          phoneNumbers: [newUser.phoneNumber],
+        },
+        role: ROLES.USER,
+      });
+
+      return FakePromotionService.inviteUser({
+        promotionId,
+        user: newUser,
+      }).then((loanId) => {
+        expect(!!loanId).to.equal(true);
+        expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
+        expect(sendEmail.run.called).to.equal(true);
+        expect(sendEmail.run.args[0][0].emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
+      });
+    });
+
+    it('throws an error if user is already invited to the promotion', () => {
+      const newUser = {
+        email: 'new@user.com',
+        firstName: 'New',
+        lastName: 'User',
+        phoneNumber: '1234',
+      };
+
+      const userId = UserService.adminCreateUser({
+        options: {
+          email: newUser.email,
+          sendEnrollmentEmail: false,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          phoneNumbers: [newUser.phoneNumber],
+        },
+        role: ROLES.USER,
+      });
+
+      LoanService.insertPromotionLoan({ userId, promotionId });
+
+      expect(() =>
+        FakePromotionService.inviteUser({
+          promotionId,
+          user: newUser,
+        })).to.throw('déjà invité');
+    });
+
+    it('throws an error if promotion status is not OPEN', () => {
+      const newUser = {
+        email: 'new@user.com',
+        firstName: 'New',
+        lastName: 'User',
+        phoneNumber: '1234',
+      };
+
+      Object.values(PROMOTION_STATUS)
+        .filter(status => status !== PROMOTION_STATUS.OPEN)
+        .forEach((status) => {
+          PromotionService.update({
+            promotionId,
+            object: { status },
+          });
+
+          expect(() =>
+            FakePromotionService.inviteUser({
+              promotionId,
+              user: newUser,
+            })).to.throw('Vous ne pouvez pas inviter');
+        });
+    });
+  });
+});

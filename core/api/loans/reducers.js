@@ -14,4 +14,10 @@ Loans.addReducers({
     },
     reduce: formatLoanWithStructure,
   },
+  hasPromotion: {
+    body: {
+      promotions: { _id: 1 },
+    },
+    reduce: ({ promotions }) => promotions && promotions.length > 0,
+  },
 });

@@ -323,14 +323,13 @@ describe('LoanCalculator', () => {
 
   describe('getLoanFilesProgress', () => {
     it('returns 0 for an empty loan', () => {
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.equal(0);
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.equal(0);
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns 100% for a loan initially, when documents have arrived', () => {
       expect(Calculator.getLoanFilesProgress({
         loan: { documents: {}, logic: {}, general: {} },
-      })).to.equal(1);
+      })).to.deep.equal({ percent: 1, count: 0 });
     });
   });
 

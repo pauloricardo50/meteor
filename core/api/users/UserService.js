@@ -1,11 +1,26 @@
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
-import ServerEventService from '../events/server/ServerEventService';
-import { USER_EVENTS, ROLES } from './userConstants';
+import Loans from '../loans';
+import CollectionService from '../helpers/CollectionService';
+import { fullUserFragment } from './queries/userFragments/index';
+import { ROLES } from './userConstants';
 import Users from '.';
 
-class UserService {
+class UserService extends CollectionService {
+  constructor() {
+    super(Users);
+  }
+
+  get(userId) {
+    return this.collection
+      .createQuery({
+        $filters: { _id: userId },
+        ...fullUserFragment,
+      })
+      .fetchOne();
+  }
+
   createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
@@ -44,10 +59,7 @@ class UserService {
   };
 
   // This is used to hook into Accounts
-  onCreateUser = (options, user) => {
-    ServerEventService.emit(USER_EVENTS.USER_CREATED, { userId: user._id });
-    return { ...user, roles: [ROLES.USER] };
-  };
+  onCreateUser = (options, user) => ({ ...user, roles: [ROLES.USER] });
 
   remove = ({ userId }) => Users.remove(userId);
 
@@ -72,6 +84,24 @@ class UserService {
     );
 
   testCreateUser = ({ user }) => Users.insert(user);
+
+  hasPromotion = ({ userId, promotionId }) => {
+    const loans = Loans.find({ userId }).fetch();
+
+    if (!promotionId) {
+      // Return true if any promotion exists
+      return (
+        loans
+        && loans.some(({ promotionLinks }) => promotionLinks && promotionLinks.length > 0)
+      );
+    }
+
+    return (
+      loans
+      && loans.some(({ promotionLinks = [] }) =>
+        promotionLinks.some(({ _id }) => _id === promotionId))
+    );
+  };
 
   changeEmail = ({ userId, newEmail }) => {
     const { emails } = Users.findOne(userId);

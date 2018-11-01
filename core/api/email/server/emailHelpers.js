@@ -1,15 +1,19 @@
 import { Meteor } from 'meteor/meteor';
-import formatMessage from 'core/utils/intl';
+import { Roles } from 'meteor/alanning:roles';
 
+import formatMessage from 'core/utils/intl';
 import {
   FROM_DEFAULT,
   CTA_URL_DEFAULT,
   EMAIL_I18N_NAMESPACE,
   EMAIL_PARTS,
 } from '../emailConstants';
+import { ROLES } from '../../constants';
 
 const WWW_URL = Meteor.settings.public.subdomains.www;
 const APP_URL = Meteor.settings.public.subdomains.app;
+const ADMIN_URL = Meteor.settings.public.subdomains.admin;
+const PRO_URL = Meteor.settings.public.subdomains.pro;
 
 /**
  * emailFooter - Returns the default email footer for all emails
@@ -84,10 +88,20 @@ export const getEmailContent = (emailId, intlValues) => {
 };
 
 export const getAccountsUrl = path => (user, url) => {
-  if (user.roles === 'user' || user.roles.indexOf('user') >= 0) {
-    const enrollToken = url.split(`/${path}/`)[1];
+  const userIsUser = Roles.userIsInRole(user, ROLES.USER);
+  const userIsPro = Roles.userIsInRole(user, ROLES.PRO);
+  const userIsAdmin = Roles.userIsInRole(user, ROLES.ADMIN)
+    || Roles.userIsInRole(user, ROLES.DEV);
+  const enrollToken = url.split(`/${path}/`)[1];
 
+  if (userIsUser) {
     return `${APP_URL}/${path}/${enrollToken}`;
+  }
+  if (userIsPro) {
+    return `${PRO_URL}/${path}/${enrollToken}`;
+  }
+  if (userIsAdmin) {
+    return `${ADMIN_URL}/${path}/${enrollToken}`;
   }
 
   return url;
