@@ -1,11 +1,6 @@
 // @flow
 import { getPercent } from '../../utils/general';
 import { FILE_STATUS } from './fileConstants';
-import {
-  borrowerDocuments,
-  loanDocuments,
-  propertyDocuments,
-} from './documents';
 
 const documentIsRequired = (required, condition) =>
   required !== false && condition !== false;

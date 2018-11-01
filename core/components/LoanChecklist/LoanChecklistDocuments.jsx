@@ -7,6 +7,16 @@ import LoanChecklistList from './LoanChecklistList';
 
 type LoanChecklistDocumentsProps = {};
 
+const makeLabelOverrider = doc => (id) => {
+  const additionalDocument = doc.additionalDocuments.find(({ id: documentId }) => documentId === id);
+
+  if (additionalDocument) {
+    return additionalDocument.label;
+  }
+
+  return false;
+};
+
 const LoanChecklistDocuments = ({
   loan,
   displayPropertyChecklist,
@@ -20,6 +30,7 @@ const LoanChecklistDocuments = ({
         title={loan.structure.property.address1 || <T id="general.property" />}
         ids={Calculator.getMissingPropertyDocuments({ loan })}
         intlPrefix="files"
+        labelOverrider={makeLabelOverrider(loan.structure.property)}
       />
     )}
     {loan.borrowers.map((borrower, index) => (
@@ -35,6 +46,7 @@ const LoanChecklistDocuments = ({
           borrowers: borrower,
         })}
         intlPrefix="files"
+        labelOverrider={makeLabelOverrider(borrower)}
       />
     ))}
   </div>

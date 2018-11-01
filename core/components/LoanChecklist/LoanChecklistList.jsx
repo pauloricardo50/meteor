@@ -11,6 +11,7 @@ const LoanChecklistList = ({
   ids,
   title,
   intlPrefix,
+  labelOverrider,
 }: LoanChecklistListProps) => (
   <span className="loan-checklist-list">
     <h4>{title}</h4>
@@ -20,9 +21,10 @@ const LoanChecklistList = ({
         <StatusIcon status={SUCCESS} />
       </span>
     )}
-    {ids.map(id => (
-      <T id={`${intlPrefix}.${id}`} key={id} />
-    ))}
+    {ids.map((id) => {
+      const label = labelOverrider && labelOverrider(id);
+      return label || <T id={`${intlPrefix}.${id}`} key={id} />;
+    })}
   </span>
 );
 
