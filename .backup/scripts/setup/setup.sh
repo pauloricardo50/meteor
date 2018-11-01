@@ -11,8 +11,10 @@ sudo ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 # ADD BACKUP SCRIPT TO CRONTAB
 cat > backupCron << EOL 
-0 */1 * * * curl https://cronitor.link/aOsIJY/run -m 10 ; ~/scripts/backup_db/backup_db.sh 2>&1 | /usr/bin/logger -t backup_db && curl https://cronitor.link/aOsIJY/complete -m 10
-30 12 * * * curl https://cronitor.link/qDOCtx/run -m 10 ; s3cmd ls s3://production-backups | sort | awk -F' ' '{print $NF}' | grep -E  `date +%Y-%m-%d -d "14 day ago"` | xargs -I {} s3cmd del -r "{} 2>&1 | /usr/bin/logger -t delete_old_backups " && curl https://cronitor.link/qDOCtx/complete -m 10
+0 */1 * * * ~/scripts/backup_db/backup_db.sh 2>&1 | /usr/bin/logger -t backup_db
+30 12 * * * ~/scripts/backup_db/remove_old_db_backups.sh 2>&1 | /usr/bin/logger -t remove_old_db_backups
+30 18 * * * ~/scripts/backup_s3/backup_s3.sh 2>&1 | /usr/bin/logger -t backup_s3
+0 20 * * * ~/scripts/backup_s3/remove_old_s3_backups.sh 2>&1 | /usr/bin/logger -t remove_old_s3_backups
 EOL
 crontab backupCron
 rm backupCron
