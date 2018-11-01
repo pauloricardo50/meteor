@@ -3,24 +3,26 @@ import PropTypes from 'prop-types';
 
 import DropdownMenu from 'core/components/DropdownMenu';
 import T from 'core/components/Translation';
-import { ROLES } from 'core/api/constants';
 import RolePickerContainer from './RolePickerContainer';
 
-const RolePicker = ({ onChooseRole, shouldDisplay }) =>
-  (shouldDisplay ? (
+const RolePicker = ({ onChooseRole, roles }) => {
+  console.log('roles', roles);
+
+  return (
     <DropdownMenu
       iconType="edit"
-      options={Object.values(ROLES).map(role => ({
+      options={roles.map(role => ({
         id: role,
         label: <T id={`roles.${role}`} />,
         onClick: () => onChooseRole(role),
       }))}
     />
-  ) : null);
+  );
+};
 
 RolePicker.propTypes = {
   onChooseRole: PropTypes.func.isRequired,
-  shouldDisplay: PropTypes.bool.isRequired,
+  roles: PropTypes.array.isRequired,
 };
 
 export default RolePickerContainer(RolePicker);
