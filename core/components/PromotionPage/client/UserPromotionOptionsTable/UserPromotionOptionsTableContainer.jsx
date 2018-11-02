@@ -112,7 +112,10 @@ const columnOptions = ({
 }) =>
   [
     !isLotAttributedToMe
-      && promotionStatus === PROMOTION_STATUS.OPEN && { id: 'priorityOrder' },
+      && promotionStatus === PROMOTION_STATUS.OPEN && {
+      id: 'priorityOrder',
+      ...(isDashboardTable && { style: { width: '10%' } }),
+    },
     { id: 'name' },
     { id: 'status' },
     { id: 'totalValue' },
@@ -122,7 +125,14 @@ const columnOptions = ({
     .map(({ id, ...rest }) => ({
       ...rest,
       id,
-      label: <T id={`PromotionPage.lots.${id}`} />,
+      label:
+        isDashboardTable && id === 'priorityOrder' ? (
+          '#'
+        ) : (
+          <T id={`PromotionPage.lots.${id}`} />
+        ),
+      ...(isDashboardTable
+        && id !== 'priorityOrder' && { style: { width: '30%' }, padding: 'none' }),
     }));
 
 export default compose(
@@ -166,6 +176,7 @@ export default compose(
         isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
         promotionStatus: promotion.status,
       }),
+      isDashboardTable,
     };
   }),
 );

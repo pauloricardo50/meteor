@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
+import cx from 'classnames';
 
 import { createRoute } from 'core/utils/routerUtils';
 import StatusLabel from 'core/components/StatusLabel';
@@ -16,7 +17,7 @@ type PromotionCardProps = {
 
 const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
   const { name, documents, status } = promotion;
-  const { promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
+  const { promotionImage = [] } = documents || {};
 
   return (
     <Link
@@ -28,8 +29,14 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
     >
       <React.Fragment>
         <span
-          style={{ backgroundImage: `url(${promotionImage[0].url})` }}
-          className="promotion-image"
+          style={
+            promotionImage.length > 0
+              ? { backgroundImage: `url("${promotionImage[0].url}")` }
+              : { background: 'transparent' }
+          }
+          className={cx('promotion-image', {
+            'animated fadeIn': promotionImage.length > 0,
+          })}
         />
         <h2>
           <span>{name}</span>
