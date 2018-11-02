@@ -10,14 +10,18 @@ const stylesheet = `
         font-size: 10px;
         font-family: Helvetica;
     }
+
     .loan-bank-pdf {
-        width: 500px;
-        height: auto;
         ${styles.flex([
     'FLEX_COLUMN',
     'ALIGN_ITEMS_CENTER',
     'JUSTIFY_CONTENT_FLEX_START',
   ])}
+    }
+
+    @page { 
+        size: A4;
+        margin: 2cm 1.5cm;
     }
     
     ${LoanBankPageStyles}

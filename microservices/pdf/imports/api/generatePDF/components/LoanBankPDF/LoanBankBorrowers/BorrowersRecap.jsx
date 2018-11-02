@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import {
-  GENDER,
   OTHER_INCOME,
   EXPENSES,
   OWN_FUNDS_TYPES,
@@ -115,12 +114,12 @@ const getBorrowersInfos = borrowers => ({
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
 const getFormattedMoneyArray = (array, negative = false) => [
-  ...array.map(x => (
-    <div className="money-amount">
+  ...array.map((x, index) => (
+    <div className="money-amount" key={index}>
       {toMoney(negative ? -x : x || 0)}
     </div>
   )),
-  <div className="money-amount">
+  <div className="money-amount" key="last">
     {toMoney(negative ? -getArraySum(array) : getArraySum(array))}
   </div>,
 ];

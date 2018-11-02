@@ -16,11 +16,13 @@ const LoanBankPage = ({
   subtitle,
   children,
 }: LoanBankPageProps) => (
-  <div className="page">
-    <LoanBankHeader />
-    <LoanBankTitle title={title} subtitle={subtitle} />
-    <div className="content">{children}</div>
-    <LoanBankFooter pageNumber={pageNumber} />
+  <div style={{ pageBreakBefore: 'always', width: '100%' }}>
+    <div className="page">
+      <LoanBankHeader />
+      <LoanBankTitle title={title} subtitle={subtitle} />
+      <div className="content">{children}</div>
+      <LoanBankFooter pageNumber={pageNumber} />
+    </div>
   </div>
 );
 

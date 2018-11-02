@@ -52,6 +52,7 @@ class PDFService {
         component: LoanBankPDF,
         props: { loan: data, options },
         fileName,
+        pdfName: `${data.name} - ${type}`,
       };
     default:
       throw new Meteor.Error(`Invalid pdf type: ${type}`);
@@ -82,60 +83,94 @@ class PDFService {
     });
   };
 
-  fetchPDF = (html, fileName) => {
-    const API_KEY = '66e0248f5aec81111eaca537eee6d6df';
-    const params = {
-      access_key: API_KEY,
-      document_html: '<html><body><h1>Hello_my_dude</h1></body></html>',
-      // document_html: '<h1>Hello_my_dude</h1>',
-      // document_url: 'https://pdflayer.com/downloads/invoice.html',
-      test: 1,
+  fetchPDF = (html, fileName, pdfName) => {
+    const API_KEY = 'GkjsAcqhD34P070MOF4I';
+    const body = {
+      user_credentials: API_KEY,
+      doc: {
+        document_content: html,
+        name: pdfName,
+        type: 'pdf',
+        test: true,
+        // help: true,
+        prince_options: {
+          media: 'screen',
+        },
+      },
     };
-    const url = `https://api.pdflayer.com/api/convert?${queryString.stringify(
-      params,
-      { encode: false, sort: false },
-    )}`;
-    let fetchResult;
-    console.log('fetchResult', fetchResult);
 
-    return fetch(url, { method: 'POST' })
-      .then((result) => {
-        fetchResult = result;
-        return result;
+    return fetch('https://docraptor.com/docs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
+        const stream = res.body.pipe(dest);
+        return new Promise((resolve) => {
+          stream.on('finish', resolve);
+        });
       })
-      .then(result => result.json())
-      .catch((error) => {
-        // When pdfs are valid, .json() fails
-        // so skip this error
-        console.log('wut?');
-      })
-      .then((json) => {
-        console.log('json', json);
-        
-        if (!json.success) {
-          new Meteor.Error(json.error.code, json.error.info);
-        }
-      })
-      .then(() => this.streamToBase64(fetchResult.body))
-      .then((base64) => {
-        console.log('base64', base64);
-        return base64;
-      });
-    // .then((res) => {
-    //   const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
-    //   const stream = res.body.pipe(dest);
-    //   return new Promise((resolve) => {
-    //     stream.on('finish', resolve);
-    //   });
-    // })
-    // .then(() => this.getBase64String(`/tmp/${fileName}.pdf`))
-    // .catch((error) => {
-    //   console.log('pdflayer error', error);
-    //   throw error
-    // });
+      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`));
   };
 
-  generatePDF = (html, fileName) => this.fetchPDF(html, fileName);
+  // fetchPDF = (html, fileName) => {
+  //   const API_KEY = '66e0248f5aec81111eaca537eee6d6df';
+  //   const params = {
+  //     access_key: API_KEY,
+  //     document_html: '<html><body><h1>Hello_my_dude</h1></body></html>',
+  //     // document_html: '<h1>Hello_my_dude</h1>',
+  //     // document_url: 'https://pdflayer.com/downloads/invoice.html',
+  //     test: 1,
+  //   };
+  //   const url = `https://api.pdflayer.com/api/convert?${queryString.stringify(
+  //     params,
+  //     { encode: false, sort: false },
+  //   )}`;
+  //   let fetchResult;
+  //   console.log('fetchResult', fetchResult);
+
+  //   return fetch(url, { method: 'POST' })
+  //     .then((result) => {
+  //       fetchResult = result;
+  //       return result;
+  //     })
+  //     .then(result => result.json())
+  //     .catch((error) => {
+  //       // When pdfs are valid, .json() fails
+  //       // so skip this error
+  //       console.log('wut?');
+  //     })
+  //     .then((json) => {
+  //       console.log('json', json);
+
+  //       if (!json.success) {
+  //         new Meteor.Error(json.error.code, json.error.info);
+  //       }
+  //     })
+  //     .then(() => this.streamToBase64(fetchResult.body))
+  //     .then((base64) => {
+  //       console.log('base64', base64);
+  //       return base64;
+  //     });
+  // .then((res) => {
+  //   const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
+  //   const stream = res.body.pipe(dest);
+  //   return new Promise((resolve) => {
+  //     stream.on('finish', resolve);
+  //   });
+  // })
+  // .then(() => this.getBase64String(`/tmp/${fileName}.pdf`))
+  // .catch((error) => {
+  //   console.log('pdflayer error', error);
+  //   throw error
+  // });
+  // };
+
+  generatePDF = (html, fileName, pdfName) =>
+    this.fetchPDF(html, fileName, pdfName);
   // pdf
   //   .create(html, {
   //     format: 'a4',
@@ -158,7 +193,7 @@ class PDFService {
   //     }
   //   });
 
-  handleGeneratePDF = ({ component, props, fileName }, testing) => {
+  handleGeneratePDF = ({ component, props, fileName, pdfName }, testing) => {
     const html = this.getComponentAsHTML(component, props);
     if (testing) {
       fs.writeFileSync('/tmp/pdf_output.html', html);
@@ -167,7 +202,7 @@ class PDFService {
     if (html && fileName) {
       console.log('generating pdf...');
 
-      return this.generatePDF(html, fileName);
+      return this.generatePDF(html, fileName, pdfName);
     }
   };
 
@@ -193,7 +228,6 @@ class PDFService {
       return Promise.resolve(html);
     }
 
-    console.log('content', content);
     return this.handleGeneratePDF(content, testing);
   };
 }

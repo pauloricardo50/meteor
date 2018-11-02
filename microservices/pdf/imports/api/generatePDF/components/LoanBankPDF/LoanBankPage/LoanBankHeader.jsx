@@ -13,7 +13,10 @@ const address = () => (
 
 const LoanBankHeader = () => (
   <div className="header">
-    <img src="https://www.e-potek.ch/img/logo_square_black.svg" width="50px" />
+    <img
+      src="https://www.e-potek.ch/img/logo_square_black.svg"
+      style={{ width: 50, height: 50 }}
+    />
     {address()}
   </div>
 );
