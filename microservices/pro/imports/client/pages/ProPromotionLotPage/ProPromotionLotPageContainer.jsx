@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -6,6 +7,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 
 export default compose(
   withMatchParam(['promotionLotId', 'promotionId']),
+  Component => props => <Component {...props} key={props.promotionLotId} />,
   withSmartQuery({
     query: proPromotionLot,
     params: ({ promotionLotId }) => ({ promotionLotId }),
