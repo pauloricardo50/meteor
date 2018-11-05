@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 type PDFTableProps = {
   array: Array,
@@ -9,7 +10,7 @@ type PDFTableProps = {
 const shouldRenderRow = condition => condition === undefined || condition;
 
 const PDFTable = ({ array, className }: PDFTableProps) => (
-  <table className={className} cellSpacing="5">
+  <table className={cx('pdf-table', className)} cellSpacing="5">
     {array.map(({ label, data, condition, style }) =>
       shouldRenderRow(condition) && (
         <tr key={label}>

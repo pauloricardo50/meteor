@@ -38,6 +38,13 @@ const stylesheet = `
         padding: 0;
         page-break-before: always;
     }
+
+    .pdf-table tr {
+        width: 100%;
+    }
+    .pdf-table td {
+        width: 50%;
+    }
     
     ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
