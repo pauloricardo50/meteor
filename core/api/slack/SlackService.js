@@ -50,8 +50,21 @@ class SlackService {
   });
 
   sendError = (error, ...additionalData) => {
-    if (ERRORS_TO_IGNORE.includes(error.message || error.reason)) {
+    if (ERRORS_TO_IGNORE.includes(error.name)) {
       return false;
+    }
+
+    let user;
+    let windowObj;
+
+    try {
+      // Can't use Meteor.user() outside of client or server-methods-body
+      user = Meteor.user();
+      // Can't access window on server
+      windowObj = window;
+    } catch (err) {
+      user = null;
+      windowObj = null;
     }
 
     return this.sendAttachments({
@@ -74,17 +87,18 @@ class SlackService {
         },
         {
           title: 'User',
-          text: `\`\`\`${JSON.stringify(Meteor.user(), null, 2)}\`\`\``,
+          text: `\`\`\`${JSON.stringify(user, null, 2)}\`\`\``,
           color: colors.primary,
         },
         {
           title: 'URL',
-          text: window.location && window.location.href,
+          text: windowObj && windowObj.location && windowObj.location.href,
           color: colors.primary,
         },
         {
           title: 'User agent',
-          text: window.navigator && window.navigator.userAgent,
+          text:
+            windowObj && windowObj.navigator && windowObj.navigator.userAgent,
           color: colors.primary,
         },
         ...(additionalData && additionalData.length > 0

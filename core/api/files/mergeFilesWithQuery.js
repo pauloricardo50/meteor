@@ -5,10 +5,7 @@ import ClientEventService, {
 } from '../events/ClientEventService';
 
 const getFiles = (query, queryParams, setFiles) => {
-  console.log('getFiles');
   query.clone(queryParams).fetchOne((error, fileData) => {
-    console.log('getfiles error', error);
-    console.log('fileData', fileData);
     if (error) {
       throw error;
     }
