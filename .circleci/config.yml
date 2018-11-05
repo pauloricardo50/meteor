@@ -33,7 +33,7 @@ jobs:
           name: Cache source
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./.git
+            - .
       - run:
           name: Install project node_modules
           command: npm ci
