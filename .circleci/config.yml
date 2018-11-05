@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  Www - unit tests:
+  Prepare:
     working_directory: ~/app
     docker: &ref_0
       - image: 'circleci/openjdk:10-jdk-node-browsers'
@@ -34,6 +34,29 @@ jobs:
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
             - ./.git
+      - run:
+          name: Install project node_modules
+          command: npm ci
+      - save_cache:
+          name: Cache project node_modules
+          key: node_modules_7-$CIRCLE_SHA1
+          paths:
+            - ./node_modules
+  Www - unit tests:
+    working_directory: ~/app
+    docker: *ref_0
+    steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
+            - 'source_code_7-{{ .Branch }}-'
+            - source_code_7-
+      - restore_cache:
+          name: Restore project node_modules
+          keys:
+            - node_modules_7-$CIRCLE_SHA1
+            - node_modules_7-
       - restore_cache:
           name: Restore meteor system
           keys:
@@ -60,43 +83,18 @@ jobs:
               meteor_microservice_7_www-{{ checksum
               "./microservices/www/.meteor/release" }}-
             - meteor_microservice_7_www-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - >-
-              node_modules_7_www-{{ checksum "./microservices/www/package.json"
-              }}
-            - node_modules_7_www-
-      - run:
-          name: Create results directory
-          command: mkdir ./results
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Create results directory
+          command: mkdir ./results
       - run:
           name: Install node_modules
           command: cd microservices/www && meteor npm ci
       - run:
           name: Install nightmare
           command: cd microservices/www && meteor npm i nightmare@2.10.0 --no-save
-      - save_cache:
-          name: Cache node_modules
-          key: 'node_modules_7_www-{{ checksum "./microservices/www/package.json" }}'
-          paths:
-            - ./microservices/www/node_modules
-      - restore_cache:
-          name: Restore project node_modules
-          keys:
-            - 'node_modules_7-{{ checksum "./package.json" }}'
-            - node_modules_7-
-      - run:
-          name: Install project node_modules
-          command: npm ci
-      - save_cache:
-          name: Cache project node_modules
-          key: 'node_modules_7-{{ checksum "./package.json" }}'
-          paths:
-            - ./node_modules
       - run:
           name: Generate language files
           command: npm run lang www
@@ -134,15 +132,11 @@ jobs:
             - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
-      - checkout
-      - run:
-          name: Init submodules
-          command: git submodule sync && git submodule update --init --recursive
-      - save_cache:
-          name: Cache source
-          key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./.git
+      - restore_cache:
+          name: Restore project node_modules
+          keys:
+            - node_modules_7-$CIRCLE_SHA1
+            - node_modules_7-
       - restore_cache:
           name: Restore meteor system
           keys:
@@ -169,43 +163,18 @@ jobs:
               meteor_microservice_7_app-{{ checksum
               "./microservices/app/.meteor/release" }}-
             - meteor_microservice_7_app-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - >-
-              node_modules_7_app-{{ checksum "./microservices/app/package.json"
-              }}
-            - node_modules_7_app-
-      - run:
-          name: Create results directory
-          command: mkdir ./results
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Create results directory
+          command: mkdir ./results
       - run:
           name: Install node_modules
           command: cd microservices/app && meteor npm ci
       - run:
           name: Install nightmare
           command: cd microservices/app && meteor npm i nightmare@2.10.0 --no-save
-      - save_cache:
-          name: Cache node_modules
-          key: 'node_modules_7_app-{{ checksum "./microservices/app/package.json" }}'
-          paths:
-            - ./microservices/app/node_modules
-      - restore_cache:
-          name: Restore project node_modules
-          keys:
-            - 'node_modules_7-{{ checksum "./package.json" }}'
-            - node_modules_7-
-      - run:
-          name: Install project node_modules
-          command: npm ci
-      - save_cache:
-          name: Cache project node_modules
-          key: 'node_modules_7-{{ checksum "./package.json" }}'
-          paths:
-            - ./node_modules
       - run:
           name: Generate language files
           command: npm run lang app
@@ -243,15 +212,11 @@ jobs:
             - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
-      - checkout
-      - run:
-          name: Init submodules
-          command: git submodule sync && git submodule update --init --recursive
-      - save_cache:
-          name: Cache source
-          key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
-          paths:
-            - ./.git
+      - restore_cache:
+          name: Restore project node_modules
+          keys:
+            - node_modules_7-$CIRCLE_SHA1
+            - node_modules_7-
       - restore_cache:
           name: Restore meteor system
           keys:
@@ -278,45 +243,18 @@ jobs:
               meteor_microservice_7_admin-{{ checksum
               "./microservices/admin/.meteor/release" }}-
             - meteor_microservice_7_admin-
-      - restore_cache:
-          name: Restore node_modules
-          keys:
-            - >-
-              node_modules_7_admin-{{ checksum
-              "./microservices/admin/package.json" }}
-            - node_modules_7_admin-
-      - run:
-          name: Create results directory
-          command: mkdir ./results
       - run:
           name: Install meteor
           command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Create results directory
+          command: mkdir ./results
       - run:
           name: Install node_modules
           command: cd microservices/admin && meteor npm ci
       - run:
           name: Install nightmare
           command: cd microservices/admin && meteor npm i nightmare@2.10.0 --no-save
-      - save_cache:
-          name: Cache node_modules
-          key: >-
-            node_modules_7_admin-{{ checksum
-            "./microservices/admin/package.json" }}
-          paths:
-            - ./microservices/admin/node_modules
-      - restore_cache:
-          name: Restore project node_modules
-          keys:
-            - 'node_modules_7-{{ checksum "./package.json" }}'
-            - node_modules_7-
-      - run:
-          name: Install project node_modules
-          command: npm ci
-      - save_cache:
-          name: Cache project node_modules
-          key: 'node_modules_7-{{ checksum "./package.json" }}'
-          paths:
-            - ./node_modules
       - run:
           name: Generate language files
           command: npm run lang admin
@@ -348,6 +286,13 @@ workflows:
   version: 2
   Build and test:
     jobs:
-      - Www - unit tests
-      - App - unit tests
-      - Admin - unit tests
+      - Prepare
+      - Www - unit tests:
+          requires:
+            - Prepare
+      - App - unit tests:
+          requires:
+            - Prepare
+      - Admin - unit tests:
+          requires:
+            - Prepare

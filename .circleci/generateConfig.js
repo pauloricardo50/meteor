@@ -37,20 +37,14 @@ const cacheKeys = {
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
-  nodeModules: name =>
-    name
-      ? `node_modules_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/package.json" }}`
-      : `node_modules_${CACHE_VERSION}-{{ checksum "./package.json" }}`,
+  nodeModules: () => `node_modules_${CACHE_VERSION}-$CIRCLE_SHA1`,
   source: () => `source_code_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
-  nodeModules: name =>
-    name
-      ? `./microservices/${name}/node_modules`
-      : './node_modules',
+  nodeModules: () => './node_modules',
   source: () => './.git',
 };
 
@@ -79,29 +73,46 @@ const saveCache = (name, key, path) => ({
 const storeTestResults = path => ({ store_test_results: { path } });
 const storeArtifacts = path => ({ store_artifacts: { path } });
 
+// Create preparation job with shared work
+const makePrepareJob = () => ({
+  ...defaultJobValues,
+  steps: [
+    // Update source cache with latest code (including submodules)
+    restoreCache('Restore source', cacheKeys.source()),
+    'checkout',
+    runCommand(
+      'Init submodules',
+      'git submodule sync && git submodule update --init --recursive',
+    ),
+    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
+
+    // Install project dependencies and store them for the following jobs
+    runCommand('Install project node_modules', 'npm ci'),
+    saveCache(
+      'Cache project node_modules',
+      cacheKeys.nodeModules(),
+      cachePaths.nodeModules(),
+    ),
+  ]
+});
+
 // Create test job for a given microservice
 const testMicroserviceJob = name => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    'checkout',
-    runCommand('Init submodules', [
-      'git submodule sync',
-      'git submodule update --init --recursive',
-    ].join(' && ')),
-    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
+    restoreCache('Restore project node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
     ),
-    restoreCache('Restore node_modules', cacheKeys.nodeModules(name)),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
     //   'Create profiles directory',
-    //   'mkdir ./microservices/' + name + '/profiles',
+    //   `mkdir ./microservices/${name}/profiles`,
     // ),
-    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand(
       'Install node_modules',
       `cd microservices/${name} && meteor npm ci`,
@@ -109,18 +120,6 @@ const testMicroserviceJob = name => ({
     runCommand(
       'Install nightmare',
       `cd microservices/${name} && meteor npm i nightmare@2.10.0 --no-save`, // Nightmare v3 doesn't show errors properly
-    ),
-    saveCache(
-      'Cache node_modules',
-      cacheKeys.nodeModules(name),
-      cachePaths.nodeModules(name),
-    ),
-    restoreCache('Restore project node_modules', cacheKeys.nodeModules()),
-    runCommand('Install project node_modules', 'npm ci'),
-    saveCache(
-      'Cache project node_modules',
-      cacheKeys.nodeModules(),
-      cachePaths.nodeModules(),
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
@@ -139,7 +138,7 @@ const testMicroserviceJob = name => ({
     ),
     storeTestResults('./results'),
     storeArtifacts('./results'),
-    // storeArtifacts('./microservices/' + name + '/profiles'),
+    // storeArtifacts(`./microservices/${name}/profiles`),
   ],
 });
 
@@ -147,6 +146,7 @@ const testMicroserviceJob = name => ({
 const makeConfig = () => ({
   version: 2,
   jobs: {
+    Prepare: makePrepareJob(),
     'Www - unit tests': testMicroserviceJob('www'),
     'App - unit tests': testMicroserviceJob('app'),
     'Admin - unit tests': testMicroserviceJob('admin'),
@@ -154,7 +154,12 @@ const makeConfig = () => ({
   workflows: {
     version: 2,
     'Build and test': {
-      jobs: ['Www - unit tests', 'App - unit tests', 'Admin - unit tests'],
+      jobs: [
+        'Prepare',
+        {'Www - unit tests': {requires: ['Prepare']}},
+        {'App - unit tests': {requires: ['Prepare']}},
+        {'Admin - unit tests': {requires: ['Prepare']}},
+      ],
     },
   },
 });
