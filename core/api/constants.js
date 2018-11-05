@@ -23,6 +23,7 @@ export * from './properties/propertyConstants';
 export * from './tasks/taskConstants';
 export * from './users/userConstants';
 export * from './wuest/wuestConstants';
+export * from './security/constants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';

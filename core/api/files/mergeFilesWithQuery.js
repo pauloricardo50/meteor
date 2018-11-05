@@ -1,5 +1,7 @@
 import merge from 'lodash/merge';
 import { compose, mapProps, withProps, lifecycle, withState } from 'recompose';
+
+import deepOmit from '../../utils/deepOmit';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../events/ClientEventService';
@@ -44,7 +46,12 @@ const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
     mapProps(({ fileData, documentsLoaded, ...props }) => ({
       ...props,
       // Very important to merge into an empty object, or else it overrides props!
-      [mergeName]: merge({}, { documentsLoaded }, props[mergeName], fileData),
+      [mergeName]: merge(
+        {},
+        { documentsLoaded },
+        props[mergeName],
+        deepOmit(fileData, ['_id']), // Don't merge unnecessary ids, which sometimes are different, like in promotionLot/property
+      ),
     })),
   );
 

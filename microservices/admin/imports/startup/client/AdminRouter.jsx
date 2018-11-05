@@ -16,6 +16,7 @@ import AdminPromotionPage from '../../client/pages/AdminPromotionPage';
 import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import LoansPage from '../../client/pages/LoansPage';
+import PromotionsPage from '../../client/pages/PromotionsPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SearchPage from '../../client/pages/SearchPage';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage';
@@ -71,6 +72,7 @@ const AdminRouter = () => (
           component={SingleBorrowerPage}
         />
         <Route path={adminRoutes.BORROWERS_PAGE} component={BorrowersPage} />
+        <Route path={adminRoutes.PROMOTIONS_PAGE} component={PromotionsPage} />
         <Route path={adminRoutes.SEARCH_PAGE} component={SearchPage} />
         <Route path={adminRoutes.ACCOUNT_PAGE} component={AdminAccountPage} />
         <Route path={adminRoutes.DEV_PAGE} component={DevPage} />

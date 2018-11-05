@@ -21,6 +21,13 @@ const ErrorThrower = ({ fuckedUp, fuckShitUp }: ErrorThrowerProps) => (
     <Button
       raised
       error
+      onClick={() => throwDevError.run({ promiseNoReturn: true })}
+    >
+      Throw server error in promise and don't return
+    </Button>
+    <Button
+      raised
+      error
       onClick={() => {
         throw new Error('DevPage onClick error thrown');
       }}

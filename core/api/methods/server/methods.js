@@ -99,13 +99,20 @@ addUserToDoc.setHandler(({ userId }, { docId, collection, options, userId: newUs
   });
 });
 
-throwDevError.setHandler((_, { promise }) => {
+throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   console.log('Throwing dev error..');
 
   if (promise) {
     return new Promise((resolve, reject) => {
       reject(new Meteor.Error(400, 'Dev promise error!'));
     });
+  }
+  if (promiseNoReturn) {
+    new Promise((resolve, reject) => {
+      reject(new Meteor.Error(400, 'Dev promise error!'));
+    });
+
+    return;
   }
 
   throw new Meteor.Error(400, 'Dev error!');

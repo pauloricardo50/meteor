@@ -16,6 +16,7 @@ import {
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
+import StatusLabel from 'imports/core/components/StatusLabel/StatusLabel';
 import DetailSideNavListContainer from './DetailSideNavListContainer';
 import DetailSideNavPagination from './DetailSideNavPagination';
 
@@ -37,7 +38,8 @@ const getListItemDetails = (
       primary: `${name} - ${user && user.name}`,
       secondary: (
         <span>
-          <T id={`Forms.status.${status}`} /> - {loanValueText}
+          <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
+          {loanValueText}
         </span>
       ),
     };
@@ -52,7 +54,9 @@ const getListItemDetails = (
   case PROMOTIONS_COLLECTION:
     return {
       primary: name || 'Promotion sans nom',
-      secondary: 'test',
+      secondary: (
+        <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+      ),
     };
 
   case PROPERTIES_COLLECTION:

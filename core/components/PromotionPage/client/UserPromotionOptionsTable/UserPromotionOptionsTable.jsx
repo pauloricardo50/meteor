@@ -10,12 +10,20 @@ type UserPromotionOptionsTableProps = {};
 const UserPromotionOptionsTable = ({
   rows,
   columnOptions,
+  isDashboardTable,
 }: UserPromotionOptionsTableProps) => (
   <>
     <h3 className="text-center">
       <T id="collections.promotionOptions" />
     </h3>
-    <Table rows={rows} columnOptions={columnOptions} sortable={false} />
+    <Table
+      rows={rows}
+      columnOptions={columnOptions}
+      sortable={false}
+      {...isDashboardTable && {
+        style: { overflowY: 'scroll', maxHeight: '220px' },
+      }}
+    />
   </>
 );
 

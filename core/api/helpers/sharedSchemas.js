@@ -1,4 +1,5 @@
 import SimpleSchema from 'simpl-schema';
+import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 
 export const createdAt = {
   type: Date,
@@ -69,5 +70,15 @@ export const contactsSchema = {
     type: String,
     uniforms: { label: 'No. de Téléphone' },
     optional: true,
+  },
+};
+
+export const userLinksSchema = {
+  userLinks: { type: Array, defaultValue: [] },
+  'userLinks.$': Object,
+  'userLinks.$._id': String,
+  'userLinks.$.permissions': {
+    type: String,
+    allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
   },
 };

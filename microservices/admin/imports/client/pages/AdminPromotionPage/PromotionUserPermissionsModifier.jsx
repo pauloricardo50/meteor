@@ -2,7 +2,7 @@
 import React from 'react';
 
 import SimpleSchema from 'simpl-schema';
-import { PROMOTION_USER_PERMISSIONS } from 'core/api/constants';
+import { DOCUMENT_USER_PERMISSIONS } from 'core/api/constants';
 import AutoForm, { makeCustomAutoField } from 'core/components/AutoForm2';
 import { setPromotionUserPermissions } from 'core/api';
 
@@ -14,7 +14,7 @@ type PromotionUserModifierProps = {
 const userPermissionsSchema = new SimpleSchema({
   permissions: {
     type: String,
-    allowedValues: Object.values(PROMOTION_USER_PERMISSIONS),
+    allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
   },
 });
 
