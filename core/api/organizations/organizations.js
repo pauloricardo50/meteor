@@ -20,7 +20,7 @@ Organizations.allow({
   remove: () => false,
 });
 
-const OrganizationSchema = new SimpleSchema({
+export const OrganizationSchema = new SimpleSchema({
   name: { type: String },
   type: {
     type: String,

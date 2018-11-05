@@ -16,6 +16,7 @@ import AdminPromotionPage from '../../client/pages/AdminPromotionPage';
 import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import LoansPage from '../../client/pages/LoansPage';
+import OrganizationsPage from '../../client/pages/OrganizationsPage';
 import PromotionsPage from '../../client/pages/PromotionsPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SearchPage from '../../client/pages/SearchPage';
@@ -75,6 +76,10 @@ const AdminRouter = () => (
         <Route path={adminRoutes.PROMOTIONS_PAGE} component={PromotionsPage} />
         <Route path={adminRoutes.SEARCH_PAGE} component={SearchPage} />
         <Route path={adminRoutes.ACCOUNT_PAGE} component={AdminAccountPage} />
+        <Route
+          path={adminRoutes.ORGANIZATIONS_PAGE}
+          component={OrganizationsPage}
+        />
         <Route path={adminRoutes.DEV_PAGE} component={DevPage} />
         <Route component={NotFound} />
       </Switch>
