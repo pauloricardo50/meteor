@@ -23,6 +23,13 @@ const stylesheet = `
         size: A4;
         margin: 2cm 1.5cm;
     }
+
+    .page-break-new {
+        border: none;
+        margin: 0;
+        padding: 0;
+        page-break-before: always;
+    }
     
     ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}

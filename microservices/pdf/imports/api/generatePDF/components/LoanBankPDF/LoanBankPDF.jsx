@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import InlineCss from 'react-inline-css';
 import { IntlProvider } from 'react-intl';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import stylesheet from './stylesheet';
@@ -42,20 +41,19 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
     formats={getFormats()}
     defaultLocale="fr"
   >
-    <InlineCss stylesheet={stylesheet}>
-      <div className="loan-bank-pdf">
-        {pages(loan).map(({ title, subtitle, content }, index) => (
-          <LoanBankPage
-            pageNumber={index + 1}
-            title={title}
-            subtitle={subtitle}
-            key={index}
-          >
-            {content}
-          </LoanBankPage>
-        ))}
-      </div>
-    </InlineCss>
+    <div className="loan-bank-pdf">
+      <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
+      {pages(loan).map(({ title, subtitle, content }, index) => (
+        <LoanBankPage
+          pageNumber={index + 1}
+          title={title}
+          subtitle={subtitle}
+          key={index}
+        >
+          {content}
+        </LoanBankPage>
+      ))}
+    </div>
   </IntlProvider>
 );
 
