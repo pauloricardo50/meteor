@@ -84,6 +84,19 @@ jobs:
           key: 'node_modules_7_www-{{ checksum "./microservices/www/package.json" }}'
           paths:
             - ./microservices/www/node_modules
+      - restore_cache:
+          name: Restore project node_modules
+          keys:
+            - 'node_modules_7-{{ checksum "./package.json" }}'
+            - node_modules_7-
+      - run:
+          name: Install project node_modules
+          command: npm ci
+      - save_cache:
+          name: Cache project node_modules
+          key: 'node_modules_7-{{ checksum "./package.json" }}'
+          paths:
+            - ./node_modules
       - run:
           name: Generate language files
           command: npm run lang www
@@ -180,6 +193,19 @@ jobs:
           key: 'node_modules_7_app-{{ checksum "./microservices/app/package.json" }}'
           paths:
             - ./microservices/app/node_modules
+      - restore_cache:
+          name: Restore project node_modules
+          keys:
+            - 'node_modules_7-{{ checksum "./package.json" }}'
+            - node_modules_7-
+      - run:
+          name: Install project node_modules
+          command: npm ci
+      - save_cache:
+          name: Cache project node_modules
+          key: 'node_modules_7-{{ checksum "./package.json" }}'
+          paths:
+            - ./node_modules
       - run:
           name: Generate language files
           command: npm run lang app
@@ -278,6 +304,19 @@ jobs:
             "./microservices/admin/package.json" }}
           paths:
             - ./microservices/admin/node_modules
+      - restore_cache:
+          name: Restore project node_modules
+          keys:
+            - 'node_modules_7-{{ checksum "./package.json" }}'
+            - node_modules_7-
+      - run:
+          name: Install project node_modules
+          command: npm ci
+      - save_cache:
+          name: Cache project node_modules
+          key: 'node_modules_7-{{ checksum "./package.json" }}'
+          paths:
+            - ./node_modules
       - run:
           name: Generate language files
           command: npm run lang admin

@@ -38,14 +38,19 @@ const cacheKeys = {
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   nodeModules: name =>
-    `node_modules_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/package.json" }}`,
+    name
+      ? `node_modules_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/package.json" }}`
+      : `node_modules_${CACHE_VERSION}-{{ checksum "./package.json" }}`,
   source: () => `source_code_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
-  nodeModules: name => `./microservices/${name}/node_modules`,
+  nodeModules: name =>
+    name
+      ? `./microservices/${name}/node_modules`
+      : './node_modules',
   source: () => './.git',
 };
 
@@ -109,6 +114,13 @@ const testMicroserviceJob = name => ({
       'Cache node_modules',
       cacheKeys.nodeModules(name),
       cachePaths.nodeModules(name),
+    ),
+    restoreCache('Restore project node_modules', cacheKeys.nodeModules()),
+    runCommand('Install project node_modules', 'npm ci'),
+    saveCache(
+      'Cache project node_modules',
+      cacheKeys.nodeModules(),
+      cachePaths.nodeModules(),
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
