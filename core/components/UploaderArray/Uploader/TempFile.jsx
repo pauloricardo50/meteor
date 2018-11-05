@@ -31,10 +31,13 @@ export default class TempFile extends Component {
     });
 
     const progressSetter = Tracker.autorun(() => {
-      this.setState({ progress: this.uploader.progress() });
+      const progress = this.uploader.progress();
+      this.setState({ progress });
     });
 
     this.uploader.send(file, (error, downloadUrl) => {
+      console.log('downloadUrl', downloadUrl);
+      console.log('error', error);
       progressSetter.stop();
       if (error) {
         this.setState({ error: error.reason });
@@ -78,10 +81,10 @@ export default class TempFile extends Component {
 }
 
 TempFile.propTypes = {
+  acl: PropTypes.string,
   collection: PropTypes.string.isRequired,
   docId: PropTypes.string.isRequired,
   file: PropTypes.objectOf(PropTypes.any).isRequired,
   handleUploadComplete: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  acl: PropTypes.string,
 };

@@ -4,14 +4,18 @@ import React from 'react';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { OrganizationSchema } from 'core/api/organizations/organizations';
 import OrganisationsPageContainer from './OrganisationsPageContainer';
+import Organization from './Organization';
 
 type OrganizationsPageProps = {};
 
-const OrganizationsPage = ({ insertOrganization }: OrganizationsPageProps) => (
+const OrganizationsPage = ({
+  insertOrganization,
+  organizations,
+}: OrganizationsPageProps) => (
   <div className="card1 card-top organizations-page">
     <h1>Organisations</h1>
     <AutoFormDialog
-      schema={OrganizationSchema}
+      schema={OrganizationSchema.omit('logo')}
       buttonProps={{
         label: 'Ajouter Organisation',
         raised: true,
@@ -19,6 +23,12 @@ const OrganizationsPage = ({ insertOrganization }: OrganizationsPageProps) => (
       }}
       onSubmit={insertOrganization}
     />
+
+    <div className="organizations">
+      {organizations.map(org => (
+        <Organization organization={org} key={org._id} />
+      ))}
+    </div>
   </div>
 );
 

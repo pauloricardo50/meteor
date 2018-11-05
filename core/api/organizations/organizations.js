@@ -30,7 +30,6 @@ export const OrganizationSchema = new SimpleSchema({
   logo: {
     type: String,
     optional: true,
-    regEx: SimpleSchema.RegEx.Url,
   },
 });
 

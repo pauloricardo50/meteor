@@ -8,12 +8,12 @@ import {
 
 organizationInsert.setHandler((context, { organization }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return OrganizationService.insert({ object: organization });
+  return OrganizationService.insert(organization);
 });
 
 organizationUpdate.setHandler((context, { organizationId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return OrganizationService.update({ id: organizationId, object });
+  return OrganizationService._update({ id: organizationId, object });
 });
 
 organizationRemove.setHandler((context, { organizationId }) => {
