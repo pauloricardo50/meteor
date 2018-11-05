@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import Table from 'core/components/Table';
 import T, { IntlNumber } from 'core/components/Translation';
+import { LOANS_COLLECTION } from 'core/api/constants';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 const columnOptions = [
   { id: 'No.' },
@@ -33,19 +35,32 @@ export default class AllLoansTable extends Component {
 
   setupRows = () => {
     const { loans, history } = this.props;
-    this.rows = loans.map((loan, index) => ({
-      id: loan._id,
+    this.rows = loans.map(({
+      _id: loanId,
+      name,
+      user,
+      status,
+      createdAt,
+      updatedAt,
+      structure,
+      logic,
+    }) => ({
+      id: loanId,
       columns: [
-        loan.name,
-        loan.user && loan.user.name,
-        <T id={`Forms.status.${loan.status}`} key="status" />,
-        moment(loan.createdAt).format('D.M.YY à H:mm'),
-        moment(loan.updatedAt).fromNow(),
-        <T id={`Forms.steps.${loan.logic.step}`} key="step" />,
-        loan.structure.property ? loan.structure.property.value : 0,
-        loan.structure.wantedLoan,
+        name,
+        user && user.name,
+        <StatusLabel
+          status={status}
+          key="status"
+          collection={LOANS_COLLECTION}
+        />,
+        moment(createdAt).format('D.M.YY à H:mm'),
+        moment(updatedAt).fromNow(),
+        <T id={`Forms.steps.${logic.step}`} key="step" />,
+        structure.property ? structure.property.value : 0,
+        structure.wantedLoan,
       ],
-      handleClick: () => history.push(`/loans/${loan._id}`),
+      handleClick: () => history.push(`/loans/${loanId}`),
     }));
   };
 

@@ -2,13 +2,12 @@ import React from 'react';
 import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import T from 'core/components/Translation';
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import { createRoute } from 'core/utils/routerUtils';
-import proPromotions from 'core/api/promotions/queries/proPromotions';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
-import StatusLabel from 'core/components/StatusLabel';
-import { PRO_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
+import { createRoute } from '../../utils/routerUtils';
+import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
+import proPromotions from '../../api/promotions/queries/proPromotions';
+import { PROMOTIONS_COLLECTION } from '../../api/constants';
+import T from '../Translation';
+import StatusLabel from '../StatusLabel';
 
 const makeMapPromotion = history => ({
   _id,
@@ -35,7 +34,7 @@ const makeMapPromotion = history => ({
     loans.length,
   ],
   handleClick: () =>
-    history.push(createRoute(PRO_PROMOTION_PAGE, { promotionId: _id })),
+    history.push(createRoute('/promotions/:promotionId', { promotionId: _id })),
 });
 
 const columnOptions = [
@@ -48,6 +47,14 @@ const columnOptions = [
   { id: 'loans' },
 ].map(({ id }) => ({ id, label: <T id={`PromotionsTable.${id}`} /> }));
 
+export const BasePromotionsTableContainer = compose(
+  withRouter,
+  mapProps(({ promotions = [], history }) => ({
+    rows: promotions.map(makeMapPromotion(history)),
+    columnOptions,
+  })),
+);
+
 export default compose(
   withSmartQuery({
     query: proPromotions,
@@ -56,9 +63,5 @@ export default compose(
     dataName: 'promotions',
     renderMissingDoc: false,
   }),
-  withRouter,
-  mapProps(({ promotions = [], history }) => ({
-    rows: promotions.map(makeMapPromotion(history)),
-    columnOptions,
-  })),
+  BasePromotionsTableContainer,
 );

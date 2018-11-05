@@ -5,9 +5,11 @@ import moment from 'moment';
 
 import { withSmartQuery } from 'core/api/containerToolkit/index';
 import loansAssignedToAdmin from 'core/api/loans/queries/loansAssignedToAdmin';
-import T, { Money } from 'core/components/Translation';
+import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import withLoansDocuments from 'core/api/files/withLoansDocuments';
+import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import { LOANS_COLLECTION } from 'core/api/constants';
 import ProgressCell from './ProgressCell';
 
 const columnOptions = [
@@ -43,7 +45,11 @@ const mapLoan = history => (loan) => {
     columns: [
       name,
       userName,
-      <T id={`Forms.status.${status}`} key="status" />,
+      <StatusLabel
+        status={status}
+        key="status"
+        collection={LOANS_COLLECTION}
+      />,
       moment(updatedAt).fromNow(),
       property ? property.value : 'Pas choisi',
       wantedLoan,

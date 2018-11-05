@@ -1,17 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import Promotions from './promotions';
-import {
-  PROMOTION_USER_PERMISSIONS,
-  PROMOTION_STATUS,
-} from './promotionConstants';
+import { PROMOTION_STATUS } from './promotionConstants';
 import UserService from '../users/UserService';
 import LoanService from '../loans/LoanService';
 import FileService from '../files/server/FileService';
 import CollectionService from '../helpers/CollectionService';
 import PropertyService from '../properties/PropertyService';
 import PromotionLotService from '../promotionLots/PromotionLotService';
-import { ROLES } from '../users/userConstants';
+import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { sendEmail } from '../email/methodDefinitions';
 import { EMAIL_IDS } from '../email/emailConstants';
 
@@ -22,12 +19,17 @@ export class PromotionService extends CollectionService {
   }
 
   insert({ promotion = {}, userId }) {
+    if (Meteor.microservice === 'admin') {
+      // Don't add any users on a promotion created in admin
+      return super.insert(promotion);
+    }
+
     return super.insert({
       ...promotion,
       userLinks: [
         {
           _id: userId,
-          permissions: PROMOTION_USER_PERMISSIONS.MODIFY,
+          permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
         },
       ],
     });
@@ -112,9 +114,7 @@ export class PromotionService extends CollectionService {
     promotionId,
     firstName,
   }) {
-    console.log('isNewUser', isNewUser);
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
-      console.log('logos', logos);
       const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
       const logoUrls = logos && logos.map(({ url }) => url);
 
@@ -132,8 +132,6 @@ export class PromotionService extends CollectionService {
           Meteor.settings.public.subdomains.app
         }/enroll-account/${token}`;
       }
-
-      console.log('sending email');
 
       // Envoyer invitation sans enrollment link
       return this.sendEmail.run({
@@ -155,7 +153,7 @@ export class PromotionService extends CollectionService {
       id: promotionId,
       linkName: 'userLinks',
       linkId: userId,
-      metadata: { permissions: PROMOTION_USER_PERMISSIONS.READ },
+      metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
     });
   }
 

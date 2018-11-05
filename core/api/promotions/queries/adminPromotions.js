@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import Promotions from '../promotions';
 import { PROMOTION_QUERIES } from '../promotionConstants';
 import { adminPromotionsFragment } from './promotionFragments';

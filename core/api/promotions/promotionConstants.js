@@ -1,5 +1,3 @@
-import { DOCUMENT_USER_PERMISSIONS } from '../security/constants';
-
 export const PROMOTIONS_COLLECTION = 'promotions';
 
 export const PROMOTION_TYPES = {
@@ -13,8 +11,6 @@ export const PROMOTION_STATUS = {
   OPEN: 'OPEN',
   PREPARATION: 'PREPARATION',
 };
-
-export const PROMOTION_USER_PERMISSIONS = DOCUMENT_USER_PERMISSIONS;
 
 export const PROMOTION_QUERIES = {
   ADMIN_PROMOTIONS: 'ADMIN_PROMORIONS',

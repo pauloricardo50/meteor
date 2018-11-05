@@ -4,17 +4,11 @@ import PropTypes from 'prop-types';
 import FileTabs from 'core/components/FileTabs';
 import Page from 'core/components/Page';
 
-const getStructurePropertyWithDocuments = ({
-  loan: { properties, structure },
-}) =>
-  !!(structure && structure.propertyId)
-  && properties.find(({ _id }) => structure.propertyId === _id);
-
 const FilesPage = props => (
   <Page id="FilesPage">
     <FileTabs
       {...props}
-      property={getStructurePropertyWithDocuments(props)}
+      properties={props.loan.properties}
       borrowers={props.loan.borrowers}
       disabled={!props.loan.userFormsEnabled}
     />

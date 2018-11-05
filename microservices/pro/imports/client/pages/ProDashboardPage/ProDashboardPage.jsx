@@ -3,8 +3,8 @@ import React from 'react';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import { NEW_PROMOTION_PAGE } from 'imports/startup/client/proRoutes';
-import PromotionsTable from './PromotionsTable';
+import PromotionsTable from 'core/components/PromotionsTable';
+import { NEW_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
 
 type ProDashboardPageProps = {};
 

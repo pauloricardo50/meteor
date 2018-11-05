@@ -10,6 +10,8 @@ import {
   PROMOTION_LOT_REDUCED_STATUS,
   TASKS_COLLECTION,
   TASK_STATUS,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 
@@ -17,6 +19,18 @@ type StatusLabelProps = {};
 
 const getStatusColor = (status, collection) => {
   switch (collection) {
+  case LOANS_COLLECTION:
+    return {
+      [LOAN_STATUS.TEST]: colors.warning,
+      [LOAN_STATUS.LEAD]: colors.secondary,
+      [LOAN_STATUS.ONGOING]: colors.primary,
+      [LOAN_STATUS.PENDING]: colors.warning,
+      [LOAN_STATUS.CLOSING]: colors.tertiary,
+      [LOAN_STATUS.BILLING]: colors.success,
+      [LOAN_STATUS.FINALIZED]: colors.success,
+      [LOAN_STATUS.UNSUCCESSFUL]: colors.error,
+    }[status];
+
   case PROMOTIONS_COLLECTION:
     return {
       [PROMOTION_STATUS.CANCELLED]: colors.error,
