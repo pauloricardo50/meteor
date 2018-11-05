@@ -29,19 +29,17 @@ jobs:
       - run:
           name: Init submodules
           command: git submodule sync && git submodule update --init --recursive
+      - run:
+          name: Install project node_modules
+          command: npm ci
+      - run:
+          name: Bootstrap Lerna
+          command: npx lerna bootstrap
       - save_cache:
           name: Cache source
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
             - .
-      - run:
-          name: Install project node_modules
-          command: npm ci
-      - save_cache:
-          name: Cache project node_modules
-          key: node_modules_7-$CIRCLE_SHA1
-          paths:
-            - ./node_modules
   Www - unit tests:
     working_directory: ~/app
     docker: *ref_0
@@ -52,11 +50,6 @@ jobs:
             - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
-      - restore_cache:
-          name: Restore project node_modules
-          keys:
-            - node_modules_7-$CIRCLE_SHA1
-            - node_modules_7-
       - restore_cache:
           name: Restore meteor system
           keys:
@@ -89,9 +82,6 @@ jobs:
       - run:
           name: Create results directory
           command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: cd microservices/www && meteor npm ci
       - run:
           name: Generate language files
           command: npm run lang www
@@ -130,11 +120,6 @@ jobs:
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
       - restore_cache:
-          name: Restore project node_modules
-          keys:
-            - node_modules_7-$CIRCLE_SHA1
-            - node_modules_7-
-      - restore_cache:
           name: Restore meteor system
           keys:
             - >-
@@ -166,9 +151,6 @@ jobs:
       - run:
           name: Create results directory
           command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: cd microservices/app && meteor npm ci
       - run:
           name: Generate language files
           command: npm run lang app
@@ -207,11 +189,6 @@ jobs:
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
       - restore_cache:
-          name: Restore project node_modules
-          keys:
-            - node_modules_7-$CIRCLE_SHA1
-            - node_modules_7-
-      - restore_cache:
           name: Restore meteor system
           keys:
             - >-
@@ -243,9 +220,6 @@ jobs:
       - run:
           name: Create results directory
           command: mkdir ./results
-      - run:
-          name: Install node_modules
-          command: cd microservices/admin && meteor npm ci
       - run:
           name: Generate language files
           command: npm run lang admin

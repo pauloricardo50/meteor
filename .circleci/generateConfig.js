@@ -37,14 +37,12 @@ const cacheKeys = {
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
-  nodeModules: () => `node_modules_${CACHE_VERSION}-$CIRCLE_SHA1`,
   source: () => `source_code_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
-  nodeModules: () => './node_modules',
   source: () => '.',
 };
 
@@ -77,22 +75,16 @@ const storeArtifacts = path => ({ store_artifacts: { path } });
 const makePrepareJob = () => ({
   ...defaultJobValues,
   steps: [
-    // Update source cache with latest code (including submodules)
+    // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
     runCommand(
       'Init submodules',
       'git submodule sync && git submodule update --init --recursive',
     ),
-    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
-
-    // Install project dependencies and store them for the following jobs
     runCommand('Install project node_modules', 'npm ci'),
-    saveCache(
-      'Cache project node_modules',
-      cacheKeys.nodeModules(),
-      cachePaths.nodeModules(),
-    ),
+    runCommand('Bootstrap Lerna', 'npx lerna bootstrap'),
+    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
   ]
 });
 
@@ -101,7 +93,6 @@ const testMicroserviceJob = name => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    restoreCache('Restore project node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
@@ -113,10 +104,6 @@ const testMicroserviceJob = name => ({
     //   'Create profiles directory',
     //   `mkdir ./microservices/${name}/profiles`,
     // ),
-    runCommand(
-      'Install node_modules',
-      `cd microservices/${name} && meteor npm ci`,
-    ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
       'Run tests',
