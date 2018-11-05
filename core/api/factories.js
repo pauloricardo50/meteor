@@ -5,7 +5,7 @@ import {
   STEPS,
   TASK_STATUS,
   TASK_TYPE,
-  PROMOTION_USER_PERMISSIONS,
+  DOCUMENT_USER_PERMISSIONS,
   PROMOTION_TYPES,
   PROMOTION_OPTION_STATUS,
 } from './constants';
@@ -99,9 +99,7 @@ Factory.define('offer', Offers, {
 Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
-  userLinks: [
-    { _id: 'userId', permissions: PROMOTION_USER_PERMISSIONS.MODIFY },
-  ],
+  userLinks: [{ _id: 'userId', permissions: DOCUMENT_USER_PERMISSIONS.MODIFY }],
   promotionLotLinks: [{ _id: 'lotId' }],
 });
 

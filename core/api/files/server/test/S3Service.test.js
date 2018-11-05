@@ -8,8 +8,10 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Loans, Borrowers, Properties, Promotions } from '../../..';
 import S3Service from '../S3Service';
-import { PROMOTION_USER_PERMISSIONS } from '../../../promotions/promotionConstants';
-import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import {
+  DOCUMENT_USER_PERMISSIONS,
+  PROPERTY_CATEGORY,
+} from '../../../constants';
 
 export const clearBucket = () =>
   Meteor.isTest && S3Service.deleteObjectsWithPrefix('');
@@ -224,7 +226,9 @@ describe('S3Service', function () {
     });
 
     it('should return true if the property is pro and the user exists', () => {
-      const property = Factory.create('property', { category: PROPERTY_CATEGORY.PRO });
+      const property = Factory.create('property', {
+        category: PROPERTY_CATEGORY.PRO,
+      });
 
       expect(S3Service.isAllowedToAccess(`${property._id}/`)).to.equal(true);
       Properties.remove(property._id);
@@ -232,7 +236,9 @@ describe('S3Service', function () {
 
     it('should return true for a promotion and the user exists', () => {
       const promotion = Factory.create('promotion', {
-        userLinks: [{ _id: userId, permissions: PROMOTION_USER_PERMISSIONS.MODIFY }],
+        userLinks: [
+          { _id: userId, permissions: DOCUMENT_USER_PERMISSIONS.MODIFY },
+        ],
       });
 
       expect(S3Service.isAllowedToAccess(`${promotion._id}/`)).to.equal(true);
