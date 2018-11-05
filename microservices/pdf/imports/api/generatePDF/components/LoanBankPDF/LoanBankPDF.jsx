@@ -41,19 +41,20 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
     formats={getFormats()}
     defaultLocale="fr"
   >
-    <div className="loan-bank-pdf">
+    <>
       <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
-      {pages(loan).map(({ title, subtitle, content }, index) => (
+      {pages(loan).map(({ title, subtitle, content }, index, arr) => (
         <LoanBankPage
           pageNumber={index + 1}
           title={title}
           subtitle={subtitle}
           key={index}
+          isLast={index === arr.length - 1}
         >
           {content}
         </LoanBankPage>
       ))}
-    </div>
+    </>
   </IntlProvider>
 );
 

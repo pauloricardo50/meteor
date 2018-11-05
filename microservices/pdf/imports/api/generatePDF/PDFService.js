@@ -86,8 +86,8 @@ class PDFService {
   };
 
   fetchPDF = (html, fileName, pdfName) =>
-    this.pdfLayerFetch(html, fileName, pdfName);
-  // return this.pdfRaptorFetch(html, fileName, pdfName);
+    // this.pdfLayerFetch(html, fileName, pdfName);
+    this.pdfRaptorFetch(html, fileName, pdfName);
 
   pdfRaptorFetch = (html, fileName, pdfName) => {
     const API_KEY = 'GkjsAcqhD34P070MOF4I';

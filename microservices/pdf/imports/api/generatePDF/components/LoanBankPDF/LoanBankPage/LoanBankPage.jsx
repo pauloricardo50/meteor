@@ -15,16 +15,14 @@ const LoanBankPage = ({
   title,
   subtitle,
   children,
+  isLast,
 }: LoanBankPageProps) => (
-  // <div style={{ pageBreakBefore: 'always', width: '100%' }}>
   <>
-    <hr className="page-break-new" />
-    {/* <div className="page"> */}
     <LoanBankHeader />
     <LoanBankTitle title={title} subtitle={subtitle} />
-    <div className="content">{children}</div>
+    <div className="page content">{children}</div>
     <LoanBankFooter pageNumber={pageNumber} />
-    {/* </div> */}
+    {!isLast && <hr className="page-break-new" />}
   </>
 );
 

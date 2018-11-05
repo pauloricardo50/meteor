@@ -4,7 +4,6 @@ const stylesheet = `
     .page {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         width: 100%;
-        page-break-before: always;
     }
 
     .header {
@@ -53,12 +52,12 @@ const stylesheet = `
         margin: 4px 0px;
     }
 
-    .page .content {
+    .page.content {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         ${styles.flexGrow(1)}
     }
 
-    .page .footer {
+    .footer {
     ${styles.flex([
     'FLEX_ROW',
     'ALIGN_ITEMS_CENTER',

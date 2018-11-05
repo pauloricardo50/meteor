@@ -6,7 +6,7 @@ type LoanBankFooterProps = {
 };
 
 const LoanBankFooter = ({ pageNumber }: LoanBankFooterProps) => (
-  <div className="footer">
+  <div className="footer pdf-footer">
     <p>{pageNumber}</p>
   </div>
 );

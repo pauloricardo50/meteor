@@ -11,17 +11,25 @@ const stylesheet = `
         font-family: Helvetica;
     }
 
-    .loan-bank-pdf {
-        ${styles.flex([
-    'FLEX_COLUMN',
-    'ALIGN_ITEMS_CENTER',
-    'JUSTIFY_CONTENT_FLEX_START',
-  ])}
-    }
-
     @page { 
         size: A4;
         margin: 2cm 1.5cm;
+
+        @top {
+          content: flow(header);
+        }
+
+        @bottom {
+          content: flow(footer);
+        }
+    }
+
+    .pdf-header {
+        flow: static(header);
+    }
+
+    .pdf-footer {
+        flow: static(footer);
     }
 
     .page-break-new {
