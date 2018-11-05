@@ -98,8 +98,8 @@ const testMicroserviceJob = name => ({
       `cd microservices/${name} && meteor npm ci`,
     ),
     runCommand(
-      'Install nightmare and @babel/node',
-      `cd microservices/${name} && meteor npm i nightmare@2.10.0 @babel/node --no-save`, // Nightmare v3 doesn't show errors properly
+      'Install nightmare',
+      `cd microservices/${name} && meteor npm i nightmare@2.10.0 --no-save`, // Nightmare v3 doesn't show errors properly
     ),
     saveCache(
       'Cache node_modules',
@@ -108,7 +108,7 @@ const testMicroserviceJob = name => ({
     ),
     runCommand(
       'Generate language files',
-      `cd microservices/${name} && function npm-do { (PATH=$(npm bin):$PATH; eval $@;) } && npm-do babel-node ../../scripts/createLanguages.js ${name}`, // http://2ality.com/2016/01/locally-installed-npm-executables.html
+      `cd microservices/${name} && npx babel-node ../../scripts/createLanguages.js ${name}`,
     ),
     runCommand(
       'Run tests',

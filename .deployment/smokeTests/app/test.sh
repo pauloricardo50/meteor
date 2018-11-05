@@ -1,4 +1,4 @@
 #!/bin/bash
  echo "Running smoke tests..."
 
- babel-node -- test.js
+ npx babel-node -- test.js

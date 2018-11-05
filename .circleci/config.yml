@@ -74,10 +74,8 @@ jobs:
           name: Install node_modules
           command: cd microservices/www && meteor npm ci
       - run:
-          name: Install nightmare and @babel/node
-          command: >-
-            cd microservices/www && meteor npm i nightmare@2.10.0 @babel/node
-            --no-save
+          name: Install nightmare
+          command: cd microservices/www && meteor npm i nightmare@2.10.0 --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules_7_www-{{ checksum "./microservices/www/package.json" }}'
@@ -86,9 +84,8 @@ jobs:
       - run:
           name: Generate language files
           command: >-
-            cd microservices/www && function npm-do { (PATH=$(npm bin):$PATH;
-            eval $@;) } && npm-do babel-node ../../scripts/createLanguages.js
-            www
+            cd microservices/www && npx babel-node
+            ../../scripts/createLanguages.js www
       - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
@@ -172,10 +169,8 @@ jobs:
           name: Install node_modules
           command: cd microservices/app && meteor npm ci
       - run:
-          name: Install nightmare and @babel/node
-          command: >-
-            cd microservices/app && meteor npm i nightmare@2.10.0 @babel/node
-            --no-save
+          name: Install nightmare
+          command: cd microservices/app && meteor npm i nightmare@2.10.0 --no-save
       - save_cache:
           name: Cache node_modules
           key: 'node_modules_7_app-{{ checksum "./microservices/app/package.json" }}'
@@ -184,9 +179,8 @@ jobs:
       - run:
           name: Generate language files
           command: >-
-            cd microservices/app && function npm-do { (PATH=$(npm bin):$PATH;
-            eval $@;) } && npm-do babel-node ../../scripts/createLanguages.js
-            app
+            cd microservices/app && npx babel-node
+            ../../scripts/createLanguages.js app
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -270,10 +264,8 @@ jobs:
           name: Install node_modules
           command: cd microservices/admin && meteor npm ci
       - run:
-          name: Install nightmare and @babel/node
-          command: >-
-            cd microservices/admin && meteor npm i nightmare@2.10.0 @babel/node
-            --no-save
+          name: Install nightmare
+          command: cd microservices/admin && meteor npm i nightmare@2.10.0 --no-save
       - save_cache:
           name: Cache node_modules
           key: >-
@@ -284,9 +276,8 @@ jobs:
       - run:
           name: Generate language files
           command: >-
-            cd microservices/admin && function npm-do { (PATH=$(npm bin):$PATH;
-            eval $@;) } && npm-do babel-node ../../scripts/createLanguages.js
-            admin
+            cd microservices/admin && npx babel-node
+            ../../scripts/createLanguages.js admin
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI

@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-babel-node -- ./nginx/maintenance.js stop
+npx babel-node -- ./nginx/maintenance.js stop
 ./deploy-nginx.sh

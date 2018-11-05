@@ -123,7 +123,7 @@ export const tmuxinatorPane = ({
     `cd ${buildDirectoryPath}`,
     `mv ./*.tar.gz ./${applicationImage}`,
     `cd ../../`,
-    `babel-node -- pushApplication.js -a ${name} -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
+    `npx babel-node -- pushApplication.js -a ${name} -d ${buildDirectoryPath} -f ${getExpectedFilesListForApplication(
       { applicationName, buildDirectoryPath },
     )}`,
     `cd ..`,
@@ -151,6 +151,6 @@ const getExpectedFilesListForApplication = ({
 };
 
 export const checkApplicationsCommand = ({ directory, files }) =>
-  `babel-node -- checkApplicationFolderSanity.js -d ${directory} -f ${files.join(
+  `npx babel-node -- checkApplicationFolderSanity.js -d ${directory} -f ${files.join(
     ' ',
   )}`;
