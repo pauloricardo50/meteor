@@ -1,13 +1,14 @@
 // @flow
-import { LOANS_COLLECTION } from './loans/loanConstants';
 import { BORROWERS_COLLECTION } from './borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from './properties/propertyConstants';
-import { PROMOTIONS_COLLECTION } from './promotions/promotionConstants';
+import { LOANS_COLLECTION } from './loans/loanConstants';
 import { LOTS_COLLECTION } from './lots/lotConstants';
-import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptions/promotionOptionConstants';
-import { PROMOTION_LOTS_COLLECTION } from './promotionLots/promotionLotConstants';
-import { TASKS_COLLECTION } from './tasks/taskConstants';
 import { OFFERS_COLLECTION } from './offers/offerConstants';
+import { ORGANIZATIONS_COLLECTION } from './organizations/organizationConstants';
+import { PROMOTION_LOTS_COLLECTION } from './promotionLots/promotionLotConstants';
+import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptions/promotionOptionConstants';
+import { PROMOTIONS_COLLECTION } from './promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from './properties/propertyConstants';
+import { TASKS_COLLECTION } from './tasks/taskConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './files/fileConstants';
@@ -15,6 +16,7 @@ export * from './interestRates/interestRatesConstants';
 export * from './loans/loanConstants';
 export * from './lots/lotConstants';
 export * from './offers/offerConstants';
+export * from './organizations/organizationConstants';
 export * from './PDFGenerator/pdfGeneratorConstants';
 export * from './promotionLots/promotionLotConstants';
 export * from './promotionOptions/promotionOptionConstants';
@@ -37,4 +39,5 @@ export const COLLECTIONS = {
   PROMOTION_LOTS_COLLECTION,
   TASKS_COLLECTION,
   OFFERS_COLLECTION,
+  ORGANIZATIONS_COLLECTION,
 };

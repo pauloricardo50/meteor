@@ -1,0 +1,6 @@
+export const ORGANIZATIONS_COLLECTION = 'organizations';
+export const ORGANIZATION_TYPES = {
+  BANK: 'BANK',
+  INSURANCE: 'INSURANCE',
+  PRIVATE_BANK: 'PRIVATE_BANK',
+};
