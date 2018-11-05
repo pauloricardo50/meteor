@@ -86,9 +86,7 @@ jobs:
             - ./microservices/www/node_modules
       - run:
           name: Generate language files
-          command: >-
-            cd microservices/www && npx babel-node
-            ../../scripts/createLanguages.js www
+          command: npm run lang www
       - run:
           name: Run tests
           command: cd microservices/www && meteor npm run test-CI
@@ -184,9 +182,7 @@ jobs:
             - ./microservices/app/node_modules
       - run:
           name: Generate language files
-          command: >-
-            cd microservices/app && npx babel-node
-            ../../scripts/createLanguages.js app
+          command: npm run lang app
       - run:
           name: Run tests
           command: cd microservices/app && meteor npm run test-CI
@@ -284,9 +280,7 @@ jobs:
             - ./microservices/admin/node_modules
       - run:
           name: Generate language files
-          command: >-
-            cd microservices/admin && npx babel-node
-            ../../scripts/createLanguages.js admin
+          command: npm run lang admin
       - run:
           name: Run tests
           command: cd microservices/admin && meteor npm run test-CI

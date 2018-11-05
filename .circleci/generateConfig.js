@@ -110,10 +110,7 @@ const testMicroserviceJob = name => ({
       cacheKeys.nodeModules(name),
       cachePaths.nodeModules(name),
     ),
-    runCommand(
-      'Generate language files',
-      `cd microservices/${name} && npx babel-node ../../scripts/createLanguages.js ${name}`,
-    ),
+    runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
       'Run tests',
       `cd microservices/${name} && meteor npm run test-CI`,
