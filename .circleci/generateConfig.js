@@ -117,10 +117,6 @@ const testMicroserviceJob = name => ({
       'Install node_modules',
       `cd microservices/${name} && meteor npm ci`,
     ),
-    runCommand(
-      'Install nightmare',
-      `cd microservices/${name} && meteor npm i nightmare@2.10.0 --no-save`, // Nightmare v3 doesn't show errors properly
-    ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
       'Run tests',

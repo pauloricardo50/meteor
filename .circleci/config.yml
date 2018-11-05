@@ -93,9 +93,6 @@ jobs:
           name: Install node_modules
           command: cd microservices/www && meteor npm ci
       - run:
-          name: Install nightmare
-          command: cd microservices/www && meteor npm i nightmare@2.10.0 --no-save
-      - run:
           name: Generate language files
           command: npm run lang www
       - run:
@@ -173,9 +170,6 @@ jobs:
           name: Install node_modules
           command: cd microservices/app && meteor npm ci
       - run:
-          name: Install nightmare
-          command: cd microservices/app && meteor npm i nightmare@2.10.0 --no-save
-      - run:
           name: Generate language files
           command: npm run lang app
       - run:
@@ -252,9 +246,6 @@ jobs:
       - run:
           name: Install node_modules
           command: cd microservices/admin && meteor npm ci
-      - run:
-          name: Install nightmare
-          command: cd microservices/admin && meteor npm i nightmare@2.10.0 --no-save
       - run:
           name: Generate language files
           command: npm run lang admin
