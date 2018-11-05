@@ -20,16 +20,17 @@ jobs:
           METEOR_ALLOW_SUPERUSER: true
     steps:
       - restore_cache:
-          name: Restore Cypress cache
-          keys:
-            - 'cypress_7_{{ checksum "./package-lock.json" }}'
-      - restore_cache:
           name: Restore source
           keys:
             - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
       - checkout
+      - restore_cache:
+          name: Restore Cypress cache
+          keys:
+            - 'cypress_7_{{ checksum "./package-lock.json" }}'
+            - 'cypress_7_{{ checksum "./package-'
       - run:
           name: Init submodules
           command: git submodule sync && git submodule update --init --recursive

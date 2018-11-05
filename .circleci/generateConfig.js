@@ -79,9 +79,9 @@ const makePrepareJob = () => ({
   ...defaultJobValues,
   steps: [
     // Update source cache with latest code
-    restoreCache('Restore Cypress cache', cacheKeys.cypress()),
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
+    restoreCache('Restore Cypress cache', cacheKeys.cypress()),
     runCommand(
       'Init submodules',
       'git submodule sync && git submodule update --init --recursive',
