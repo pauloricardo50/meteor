@@ -16,7 +16,7 @@ import FileTabLabel from './FileTabLabel';
 import SingleFileTab from './SingleFileTab';
 import Loading from '../Loading';
 
-const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => {
+const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
   if (!loan.documentsLoaded) {
     return <Loading />;
   }
@@ -48,29 +48,31 @@ const FileTabs = ({ loan, borrowers, property, disabled, currentUser }) => {
               />
             ),
           })),
-          ...(!loan.hasPromotion && property
-            ? [
-              {
-                label: (
-                  <FileTabLabel
-                    id="general.property"
-                    progress={Calculator.getPropertyFilesProgress({ loan })}
-                  />
-                ),
-                content: (
-                  <SingleFileTab
-                    doc={property}
-                    collection="properties"
-                    disabled={disabled}
-                    documentArray={getPropertyDocuments({
-                      loan,
-                      id: property._id,
-                    })}
-                    currentUser={currentUser}
-                  />
-                ),
-              },
-            ]
+          ...(!loan.hasPromotion && properties.length > 0
+            ? properties.map(property => ({
+              label: (
+                <FileTabLabel
+                  id="general.property"
+                  title={property.address1}
+                  progress={Calculator.getPropertyFilesProgress({
+                    property,
+                    loan,
+                  })}
+                />
+              ),
+              content: (
+                <SingleFileTab
+                  doc={property}
+                  collection="properties"
+                  disabled={disabled}
+                  documentArray={getPropertyDocuments({
+                    loan,
+                    id: property._id,
+                  })}
+                  currentUser={currentUser}
+                />
+              ),
+            }))
             : []),
           {
             label: (
@@ -99,7 +101,7 @@ FileTabs.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
   disabled: PropTypes.bool.isRequired,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  property: PropTypes.objectOf(PropTypes.any).isRequired,
+  properties: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default FileTabsContainer(FileTabs);
