@@ -33,6 +33,8 @@ const defaultJobValues = {
 // like: "my_cache_name_${CACHE_VERSION}"
 // Then follow with the variable identifiers
 const cacheKeys = {
+  cypress: () =>
+    `cypress_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
@@ -41,6 +43,7 @@ const cacheKeys = {
 };
 
 const cachePaths = {
+  cypress: () => '~/.cache/Cypress',
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
   source: () => '.',
@@ -76,6 +79,7 @@ const makePrepareJob = () => ({
   ...defaultJobValues,
   steps: [
     // Update source cache with latest code
+    restoreCache('Restore Cypress cache', cacheKeys.cypress()),
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
     runCommand(
@@ -85,6 +89,7 @@ const makePrepareJob = () => ({
     runCommand('Install project node_modules', 'npm ci'),
     runCommand('Bootstrap Lerna', 'npx lerna bootstrap'),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
+    saveCache('Cache Cypress', cacheKeys.cypress(), cachePaths.cypress()),
   ]
 });
 

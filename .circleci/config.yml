@@ -20,6 +20,10 @@ jobs:
           METEOR_ALLOW_SUPERUSER: true
     steps:
       - restore_cache:
+          name: Restore Cypress cache
+          keys:
+            - 'cypress_7_{{ checksum "./package-lock.json" }}'
+      - restore_cache:
           name: Restore source
           keys:
             - 'source_code_7-{{ .Branch }}-{{ .Revision }}'
@@ -40,6 +44,11 @@ jobs:
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
           paths:
             - .
+      - save_cache:
+          name: Cache Cypress
+          key: 'cypress_7_{{ checksum "./package-lock.json" }}'
+          paths:
+            - ~/.cache/Cypress
   Www - unit tests:
     working_directory: ~/app
     docker: *ref_0
