@@ -22,3 +22,29 @@ rm backupCron
 # SETUP PAPERTRAIL
 wget -qO - --header="X-Papertrail-Token: xkqkznVzfJBjb6w5Ww" \
 https://papertrailapp.com/destinations/11226352/setup.sh | sudo bash
+
+# SETUP FAIL2BAN
+sudo cat > /etc/fail2ban/jail.d/custom.conf << EOL
+[DEFAULT]
+ignoreip = 127.0.0.1 213.3.47.70
+findtime = 3600
+bantime = -1
+maxretry = 3
+
+[sshd]
+enabled = true
+EOL
+
+sudo systemctl restart fail2ban
+
+sudo bash -c 'cat << EOF >> /etc/rsyslog.conf
+\$ModLoad imfile
+\$InputFileName /var/log/fail2ban.log
+\$InputFileTag fail2ban
+\$InputFileStateFile stat-fail2ban
+\$InputFileSeverity info
+\$InputFileFacility local3
+\$InputRunFileMonitor
+EOF'
+
+sudo service rsyslog restart
