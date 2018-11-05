@@ -80,6 +80,10 @@ const testMicroserviceJob = name => ({
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
+    runCommand('Init submodules', [
+      'git submodule sync',
+      'git submodule update --init --recursive',
+    ].join(' && ')),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(

@@ -26,6 +26,9 @@ jobs:
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
       - checkout
+      - run:
+          name: Init submodules
+          command: git submodule sync && git submodule update --init --recursive
       - save_cache:
           name: Cache source
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
@@ -121,6 +124,9 @@ jobs:
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
       - checkout
+      - run:
+          name: Init submodules
+          command: git submodule sync && git submodule update --init --recursive
       - save_cache:
           name: Cache source
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
@@ -216,6 +222,9 @@ jobs:
             - 'source_code_7-{{ .Branch }}-'
             - source_code_7-
       - checkout
+      - run:
+          name: Init submodules
+          command: git submodule sync && git submodule update --init --recursive
       - save_cache:
           name: Cache source
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
