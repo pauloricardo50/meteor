@@ -29,7 +29,6 @@ const mapOption = (
   },
   canModify,
 ) => (promotionOption) => {
-  console.log('promotionOption', promotionOption);
   const {
     _id: promotionOptionId,
     loan: {
