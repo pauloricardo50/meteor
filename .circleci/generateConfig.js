@@ -87,7 +87,6 @@ const makePrepareJob = () => ({
       'git submodule sync && git submodule update --init --recursive',
     ),
     runCommand('Install project node_modules', 'npm ci'),
-    runCommand('Bootstrap Lerna', 'npx lerna bootstrap'),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
     saveCache('Cache Cypress', cacheKeys.cypress(), cachePaths.cypress()),
   ]
@@ -109,10 +108,14 @@ const testMicroserviceJob = name => ({
     //   'Create profiles directory',
     //   `mkdir ./microservices/${name}/profiles`,
     // ),
+    runCommand(
+      'Install node_modules',
+      `meteor npm --prefix microservices/${name} ci`,
+    ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
       'Run tests',
-      `cd microservices/${name} && meteor npm run test-CI`,
+      `meteor npm --prefix microservices/${name} run test-CI`,
     ),
     saveCache(
       'Cache meteor system',

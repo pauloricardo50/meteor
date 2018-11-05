@@ -37,9 +37,6 @@ jobs:
       - run:
           name: Install project node_modules
           command: npm ci
-      - run:
-          name: Bootstrap Lerna
-          command: npx lerna bootstrap
       - save_cache:
           name: Cache source
           key: 'source_code_7-{{ .Branch }}-{{ .Revision }}'
@@ -93,11 +90,14 @@ jobs:
           name: Create results directory
           command: mkdir ./results
       - run:
+          name: Install node_modules
+          command: meteor npm --prefix microservices/www ci
+      - run:
           name: Generate language files
           command: npm run lang www
       - run:
           name: Run tests
-          command: cd microservices/www && meteor npm run test-CI
+          command: meteor npm --prefix microservices/www run test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -162,11 +162,14 @@ jobs:
           name: Create results directory
           command: mkdir ./results
       - run:
+          name: Install node_modules
+          command: meteor npm --prefix microservices/app ci
+      - run:
           name: Generate language files
           command: npm run lang app
       - run:
           name: Run tests
-          command: cd microservices/app && meteor npm run test-CI
+          command: meteor npm --prefix microservices/app run test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
@@ -231,11 +234,14 @@ jobs:
           name: Create results directory
           command: mkdir ./results
       - run:
+          name: Install node_modules
+          command: meteor npm --prefix microservices/admin ci
+      - run:
           name: Generate language files
           command: npm run lang admin
       - run:
           name: Run tests
-          command: cd microservices/admin && meteor npm run test-CI
+          command: meteor npm --prefix microservices/admin run test-CI
       - save_cache:
           name: Cache meteor system
           key: >-
