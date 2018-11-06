@@ -11,21 +11,19 @@ import {
   shouldDisplayOwnFund,
   remainingFundsTableData,
   propertyArrayData,
-  EMPTY_LINE,
 } from './LoanBankProjectArrayData';
 
 type LoanBankProjectProps = {
   loan: Object,
 };
 
+const titleLine = label => ({
+  label: <h5 className="title-line">{label}</h5>,
+  colspan: 2,
+});
+
 const getPropertyRecapArray = loan => [
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.valuation.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.valuation.title" />),
   {
     label: <T id="PDF.projectInfos.valuation.value" />,
     data: `${toMoney(loan.structure.property.valuation.value)} - ${toMoney(loan.structure.property.valuation.max)}`,
@@ -34,34 +32,15 @@ const getPropertyRecapArray = loan => [
     label: <T id="PDF.projectInfos.valuation.microlocation" />,
     data: `${loan.structure.property.valuation.microlocation.grade}/5`,
   },
-  // EMPTY_LINE,
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.property.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.property.title" />),
   ...propertyArrayData(loan),
 ];
 
 const getStructureRecapArray = loan => [
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.structure.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.structure.title" />),
   ...structureArrayData(loan),
   // EMPTY_LINE,
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.structure.usedOwnFunds.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.structure.usedOwnFunds.title" />),
   {
     label: <T id="PDF.projectInfos.structure.usedOwnFunds.bankFortune" />,
     data: toMoney(Calculator.getUsedFundsOfType({
@@ -97,20 +76,7 @@ const getStructureRecapArray = loan => [
     data: toMoney(Calculator.getTotalUsed({ loan })),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
-  // EMPTY_LINE,
-  {
-    label: (
-      <p
-        style={{
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
-          maxWidth: '150px',
-        }}
-      >
-        <T id="PDF.projectInfos.structure.postDisbursementSituation.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.structure.postDisbursementSituation.title" />),
   {
     label: (
       <T id="PDF.projectInfos.structure.postDisbursementSituation.bankFortune" />

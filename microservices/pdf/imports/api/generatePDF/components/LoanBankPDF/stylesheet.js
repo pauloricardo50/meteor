@@ -4,6 +4,7 @@ import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankOfferStyles } from './LoanBankOffer';
 import { LoanBankCoverStyles } from './LoanBankCover';
+import PDFTableStyles from './utils/PDFTableStyles';
 
 const stylesheet = `
     html {
@@ -12,7 +13,7 @@ const stylesheet = `
     }
 
     * {
-        border: 1px solid red;
+        // border: 1px solid red;
     }
 
     @page { 
@@ -62,23 +63,8 @@ const stylesheet = `
         padding: 0;
         page-break-before: always;
     }
-
-    .pdf-table tr {
-        width: 100%;
-    }
-
-    .pdf-table td {
-        width: 50%;
-    }
-
-    table td {
-        padding: 4px 16px;
-    }
-
-    tr td:first-of-type {
-        opacity: 0.8;
-    }
     
+    ${PDFTableStyles}
     ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}

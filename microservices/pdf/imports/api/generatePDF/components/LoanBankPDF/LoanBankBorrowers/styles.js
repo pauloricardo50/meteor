@@ -7,12 +7,12 @@ const stylesheet = `
     width: 100%;
 }
 
-.borrowers-recap td {
+.borrowers-recap {
     width: 50%;
 }
 
 .borrowers-recap.twoBorrowers {
-    width: 25%;
+    width: 100%;
 }
 
 .borrowers-recap .info td {

@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
 import { T } from 'core/components/Translation/Translation';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
+import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
 import PDFTable from '../utils/PDFTable';
 
@@ -95,12 +95,12 @@ const getBorrowersInfos = borrowers => ({
     totalExpenses: getBorrowersExpense(borrowers, Object.values(EXPENSES)),
   },
   bonus: borrowers.map(borrower =>
-    BorrowerCalculator.getBonusIncome({ borrowers: borrower })),
+    Calculator.getBonusIncome({ borrowers: borrower })),
   otherFortune: getBorrowersOtherFortune(borrowers),
   realEstateValue: borrowers.map(borrower =>
-    BorrowerCalculator.getRealEstateValue({ borrowers: borrower })),
+    Calculator.getRealEstateValue({ borrowers: borrower })),
   realEstateDebt: borrowers.map(borrower =>
-    BorrowerCalculator.getRealEstateDebt({ borrowers: borrower })),
+    Calculator.getRealEstateDebt({ borrowers: borrower })),
   ...getBorrowersOwnFunds(borrowers, [
     OWN_FUNDS_TYPES.INSURANCE_2,
     OWN_FUNDS_TYPES.INSURANCE_3A,
@@ -199,43 +199,54 @@ const getBorrowersFinanceArray = (borrowers) => {
   const multipleBorrowers = borrowers.length > 1;
   const addTableMoneyLine = makeTableMoneyLine(multipleBorrowers);
   const borrowersInfos = getBorrowersInfos(borrowers);
+  const {
+    gender: genders,
+    salary,
+    bonus,
+    otherIncome,
+    expenses,
+    realEstateValue,
+    realEstateDebt,
+    otherFortune,
+    bankFortune,
+  } = borrowersInfos;
 
   return [
     {
       label: '\u00A0',
       data: multipleBorrowers
         ? [
-          ...borrowersInfos.gender.map(gender => (
+          ...genders.map(gender => (
             <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
           )),
           <T id="PDF.borrowersInfos.total" key="total" />,
         ]
         : [
-          ...borrowersInfos.gender.map(gender => (
+          ...genders.map(gender => (
             <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
           )),
         ],
-      style: { fontWeight: 'bold', textAlign: 'center' },
+      style: { fontWeight: 'bold' },
     },
     addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.salary" />,
-      field: borrowersInfos.salary,
+      field: salary,
       condition: true,
     }),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.bonus" />,
-      field: borrowersInfos.bonus,
+      field: bonus,
     }),
     ...Object.values(OTHER_INCOME).map(income =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.otherIncome.${income}`} />,
-        field: borrowersInfos.otherIncome[income],
+        field: otherIncome[income],
       })),
     ...Object.values(EXPENSES).map(expense =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.expenses.${expense}`} />,
-        field: borrowersInfos.expenses[expense],
+        field: expenses[expense],
         negative: true,
       })),
     addTableEmptyLine(),
@@ -245,12 +256,10 @@ const getBorrowersFinanceArray = (borrowers) => {
           <T id="PDF.borrowersInfos.totalIncome" />
         </p>
       ),
-      data: getFormattedMoneyArray(borrowers.map((_, index) =>
-        borrowersInfos.otherIncome.totalIncome[index]
-            + borrowersInfos.salary[index]
-            + borrowersInfos.bonus[index]
-            - borrowersInfos.expenses.totalExpenses[index])),
+      data: getFormattedMoneyArray(borrowers.map(borrower =>
+        Calculator.getTotalIncome({ borrowers: borrower }))),
       style: { fontWeight: 'bold' },
+      condition: false,
     },
     addTableEmptyLine(),
     addTableCategoryTitle(<T id="PDF.borrowersInfos.category.fortune" />),
@@ -261,17 +270,17 @@ const getBorrowersFinanceArray = (borrowers) => {
       })),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.realEstateValue" />,
-      field: borrowersInfos.realEstateValue,
+      field: realEstateValue,
     }),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.realEstateDebt" />,
-      field: borrowersInfos.realEstateDebt,
-      condition: shouldRenderArray(borrowersInfos.realEstateValue),
+      field: realEstateDebt,
+      condition: shouldRenderArray(realEstateValue),
       negative: true,
     }),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.otherFortune" />,
-      field: borrowersInfos.otherFortune,
+      field: otherFortune,
     }),
     addTableEmptyLine(),
     {
@@ -280,16 +289,8 @@ const getBorrowersFinanceArray = (borrowers) => {
           <T id="PDF.borrowersInfos.totalFortune" />
         </p>
       ),
-      data: getFormattedMoneyArray(borrowers.map((_, index) =>
-        borrowersInfos.bankFortune[index]
-            + borrowersInfos.insurance2[index]
-            + borrowersInfos.bank3A[index]
-            + borrowersInfos.insurance3A[index]
-            + borrowersInfos.insurance3B[index]
-            + borrowersInfos.realEstateValue[index]
-            - borrowersInfos.realEstateDebt[index]
-            + borrowersInfos.thirdPartyFortune[index]
-            + borrowersInfos.otherFortune[index])),
+      data: getFormattedMoneyArray(borrowers.map(borrower =>
+        Calculator.getTotalFunds({ borrowers: borrower }))),
       style: { fontWeight: 'bold' },
     },
   ];

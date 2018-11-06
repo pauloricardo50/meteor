@@ -18,16 +18,25 @@ const multiColumn = (data, style) =>
 
 const singleColumn = (data, style) => <td style={style}>{data}</td>;
 
-const row = ({ label, data, condition, style, colspan = 1 }) => (
-  <tr key={label} colSpan={colspan}>
-    {label && <td>{label}</td>}
-    {Array.isArray(data) ? multiColumn(data, style) : singleColumn(data, style)}
-  </tr>
-);
+const row = ({ label, data, condition, style, colspan = 1 }, index) => {
+  if (colspan > 1) {
+    return <tr key={index}>{label && <td colSpan={colspan}>{label}</td>}</tr>;
+  }
+
+  return (
+    <tr key={index}>
+      {label && <td>{label}</td>}
+      {Array.isArray(data)
+        ? multiColumn(data, style)
+        : singleColumn(data, style)}
+    </tr>
+  );
+};
 
 const PDFTable = ({ rows, className }: PDFTableProps) => (
   <table className={cx('pdf-table', className)}>
-    {rows.map(rowData => shouldRenderRow(rowData.condition) && row(rowData))}
+    {rows.map((rowData, index) =>
+      shouldRenderRow(rowData.condition) && row(rowData, index))}
   </table>
 );
 

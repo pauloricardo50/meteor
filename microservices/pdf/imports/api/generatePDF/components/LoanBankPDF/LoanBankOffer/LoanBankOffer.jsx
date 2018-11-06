@@ -40,7 +40,7 @@ const offerForm = [
   formLine('Nom du conseiller'),
   formLine('Prêt hypothécaire max'),
   formLine('Amortissement'),
-  { label: 'Taux hypothécaire' },
+  { label: <h4 className="title-line">Taux hypothécaires</h4>, colspan: 2 },
   { label: nbsp, data: loanRatesTable() },
   formLine('Contrepartie'),
   formLine(nbsp),
