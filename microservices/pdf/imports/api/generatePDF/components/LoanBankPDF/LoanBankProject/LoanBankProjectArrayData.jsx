@@ -233,9 +233,9 @@ export const propertyArrayKeysData = {
   }) => renovationYear,
   parking: ({
     structure: {
-      property: { parkingInside, parkingOutside },
+      property: { parkingInside = 0, parkingOutside = 0 },
     },
-  }) => `${parkingInside} int, ${parkingOutside} ext`,
+  }) => `${parkingInside} int., ${parkingOutside} ext.`,
   minergie: ({
     structure: {
       property: { minergie },

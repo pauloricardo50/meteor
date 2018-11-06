@@ -21,7 +21,6 @@ const LoanBankPage = ({
     <LoanBankHeader />
     <LoanBankTitle title={title} subtitle={subtitle} />
     <div className="page content">{children}</div>
-    <LoanBankFooter pageNumber={pageNumber} />
     {!isLast && <hr className="page-break-new" />}
   </>
 );

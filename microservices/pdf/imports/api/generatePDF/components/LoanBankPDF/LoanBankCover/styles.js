@@ -30,6 +30,7 @@ const stylesheet = `
   ])}
         ${styles.ALIGN_SELF_FLEX_END}
         width: 100%;
+        ${styles.flexGrow(1)}
     }
 
     .cover-footer .assigned-employee {

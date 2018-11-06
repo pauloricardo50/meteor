@@ -1356,7 +1356,7 @@
   "PDF.projectInfos.structure.postDisbursementSituation.insurance2": "LPP",
   "PDF.projectInfos.structure.postDisbursementSituation.insurance3A": "Assurance 3A",
   "PDF.projectInfos.structure.postDisbursementSituation.insurance3B": "Assurance 3B",
-  "PDF.projectInfos.structure.postDisbursementSituation.title": "Situation patrimoniale post décaissement",
+  "PDF.projectInfos.structure.postDisbursementSituation.title": "Situation post décaissement",
   "PDF.projectInfos.structure.postDisbursementSituation.total": "Toal restant",
   "PDF.projectInfos.structure.propertyValue": "Prix d'achat",
   "PDF.projectInfos.structure.propertyWork": "Travaux à plus-value",

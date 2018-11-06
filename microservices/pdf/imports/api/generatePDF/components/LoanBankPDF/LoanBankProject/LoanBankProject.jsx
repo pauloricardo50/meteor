@@ -134,29 +134,23 @@ const getStructureRecapArray = loan => [
 ];
 
 const structureRecap = loan => (
-  <div className="loan-bank-pdf-project-details">
-    <PDFTable
-      className="loan-bank-pdf-project-table"
-      array={getStructureRecapArray(loan)}
-    />
-  </div>
+  <PDFTable
+    className="structure-table"
+    array={getStructureRecapArray(loan)}
+  />
 );
 
 const propertyRecap = loan => (
-  <div className="loan-bank-pdf-property">
-    <PDFTable
-      className="loan-bank-pdf-property-table"
-      array={getPropertyRecapArray(loan)}
-    />
-  </div>
+  <PDFTable
+    className="property-table"
+    array={getPropertyRecapArray(loan)}
+  />
 );
 
 const LoanBankProject = ({ loan }: LoanBankProjectProps) => (
-  <div className="loan-bank-pdf-project">
-    <div className="loan-bank-pdf-project-recap">
-      {structureRecap(loan)}
-      {propertyRecap(loan)}
-    </div>
+  <div className="project-table">
+    {structureRecap(loan)}
+    {propertyRecap(loan)}
   </div>
 );
 

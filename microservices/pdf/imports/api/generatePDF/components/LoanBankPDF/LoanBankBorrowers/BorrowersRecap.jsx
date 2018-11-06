@@ -1,10 +1,6 @@
 // @flow
 import React from 'react';
-import {
-  OTHER_INCOME,
-  EXPENSES,
-  OWN_FUNDS_TYPES,
-} from 'core/api/constants';
+import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
 import { T } from 'core/components/Translation/Translation';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import { toMoney } from 'core/utils/conversionFunctions';
@@ -151,14 +147,12 @@ const getBorrowersInfosArray = (borrowers) => {
         ...borrowersInfos.gender.map(gender => (
           <T id={`PDF.borrowersInfos.gender.${gender}`} />
         )),
-        <T id="PDF.borrowersInfos.total" />,
       ],
-      style: { fontWeight: 'bold', textAlign: 'center' },
+      style: { fontWeight: 'bold' },
     },
     {
       label: <T id="PDF.borrowersInfos.age" />,
       data: borrowersInfos.age,
-      style: { textAlign: 'center' },
     },
     {
       label: <T id="PDF.borrowersInfos.children" />,
@@ -167,13 +161,11 @@ const getBorrowersInfosArray = (borrowers) => {
         '-',
       ],
       condition: shouldRenderArray(borrowersInfos.childrenCount),
-      style: { textAlign: 'center' },
     },
     {
       label: <T id="PDF.borrowersInfos.company" />,
       data: [...borrowersInfos.company.map(company => company || '-'), '-'],
       condition: shouldRenderArray(borrowersInfos.company),
-      style: { textAlign: 'center' },
     },
     {
       label: <T id="PDF.borrowersInfos.civilStatus" />,
@@ -183,9 +175,24 @@ const getBorrowersInfosArray = (borrowers) => {
         '-',
       ],
       condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
-      style: { textAlign: 'center' },
     },
-    addTableEmptyLine(),
+  ];
+};
+
+const getBorrowersFinanceArray = (borrowers) => {
+  const borrowersInfos = getBorrowersInfos(borrowers);
+
+  return [
+    {
+      label: '\u00A0',
+      data: [
+        ...borrowersInfos.gender.map(gender => (
+          <T id={`PDF.borrowersInfos.gender.${gender}`} />
+        )),
+        <T id="PDF.borrowersInfos.total" />,
+      ],
+      style: { fontWeight: 'bold', textAlign: 'center' },
+    },
     addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.salary" />,
@@ -265,10 +272,18 @@ const getBorrowersInfosArray = (borrowers) => {
 };
 
 const BorrowersRecap = ({ borrowers }: BorrowersRecapProps) => (
-  <PDFTable
-    className="borrowers-recap"
-    array={getBorrowersInfosArray(borrowers)}
-  />
+  <>
+    <h2>Informations générales</h2>
+    <PDFTable
+      className="borrowers-recap info"
+      array={getBorrowersInfosArray(borrowers)}
+    />
+    <h2>Situation financière</h2>
+    <PDFTable
+      className="borrowers-recap finance"
+      array={getBorrowersFinanceArray(borrowers)}
+    />
+  </>
 );
 
 export default BorrowersRecap;

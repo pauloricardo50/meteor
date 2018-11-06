@@ -7,13 +7,25 @@ import { LoanBankCoverStyles } from './LoanBankCover';
 
 const stylesheet = `
     html {
-        font-size: 10px;
+        font-size: 12px;
         font-family: Helvetica;
+    }
+
+    * {
+        border: 1px solid red;
     }
 
     @page { 
         size: A4;
-        margin: 2cm 1.5cm;
+        margin: 3cm 1.5cm 2cm 1.5cm;
+
+        @top-left {
+            content: flow(top-left);
+        }
+
+        @top-right {
+            content: flow(top-right);
+        }
 
         @top {
           content: flow(header);
@@ -22,6 +34,18 @@ const stylesheet = `
         @bottom {
           content: flow(footer);
         }
+
+        @bottom-right {
+           content: counter(page);
+        }
+    }
+
+    .top-left {
+        flow: static(top-left);
+    }
+
+    .top-right {
+        flow: static(top-right);
     }
 
     .pdf-header {
