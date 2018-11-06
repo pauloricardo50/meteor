@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import LoanBankHeader from './LoanBankHeader';
-import LoanBankFooter from './LoanBankFooter';
 import LoanBankTitle from './LoanBankTitle';
 
 type LoanBankPageProps = {

@@ -34,7 +34,7 @@ const getPropertyRecapArray = loan => [
     label: <T id="PDF.projectInfos.valuation.microlocation" />,
     data: `${loan.structure.property.valuation.microlocation.grade}/5`,
   },
-  EMPTY_LINE,
+  // EMPTY_LINE,
   {
     label: (
       <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
@@ -54,7 +54,7 @@ const getStructureRecapArray = loan => [
     ),
   },
   ...structureArrayData(loan),
-  EMPTY_LINE,
+  // EMPTY_LINE,
   {
     label: (
       <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
@@ -97,7 +97,7 @@ const getStructureRecapArray = loan => [
     data: toMoney(Calculator.getTotalUsed({ loan })),
     style: { fontWeight: 'bold', textAlign: 'right' },
   },
-  EMPTY_LINE,
+  // EMPTY_LINE,
   {
     label: (
       <p
@@ -134,17 +134,11 @@ const getStructureRecapArray = loan => [
 ];
 
 const structureRecap = loan => (
-  <PDFTable
-    className="structure-table"
-    array={getStructureRecapArray(loan)}
-  />
+  <PDFTable className="structure-table" rows={getStructureRecapArray(loan)} />
 );
 
 const propertyRecap = loan => (
-  <PDFTable
-    className="property-table"
-    array={getPropertyRecapArray(loan)}
-  />
+  <PDFTable className="property-table" rows={getPropertyRecapArray(loan)} />
 );
 
 const LoanBankProject = ({ loan }: LoanBankProjectProps) => (

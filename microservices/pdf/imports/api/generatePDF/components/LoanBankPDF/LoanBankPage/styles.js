@@ -25,19 +25,18 @@ const stylesheet = `
         font-weight: bold;
     }
 
-    .page .title {
+    .page-title {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
-        width: 100%;
         text-transform: uppercase;
         padding: 4px;
     }
 
-    .page .title h1 {
-        margin: 2px 0;
+    .page-title h1 {
+        margin-top: 0;
     }
 
-    .page .title h2 {
-        margin: 2px 0;
+    .page-title h2 {
+        margin-top: 0;
         color: #888;
     }
 
@@ -55,16 +54,6 @@ const stylesheet = `
     .page.content {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         ${styles.flexGrow(1)}
-    }
-
-    .footer {
-    ${styles.flex([
-    'FLEX_ROW',
-    'ALIGN_ITEMS_CENTER',
-    'JUSTIFY_CONTENT_FLEX_END',
-  ])}
-    ${styles.ALIGN_SELF_FLEX_END}
-    width: 100%;
     }
 `;
 

@@ -66,8 +66,17 @@ const stylesheet = `
     .pdf-table tr {
         width: 100%;
     }
+
     .pdf-table td {
         width: 50%;
+    }
+
+    table td {
+        padding: 4px 16px;
+    }
+
+    tr td:first-of-type {
+        opacity: 0.8;
     }
     
     ${LoanBankPageStyles}

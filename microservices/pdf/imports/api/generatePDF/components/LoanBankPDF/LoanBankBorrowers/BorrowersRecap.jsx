@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
+
 import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
 import { T } from 'core/components/Translation/Translation';
 import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
@@ -109,22 +111,40 @@ const getBorrowersInfos = borrowers => ({
 
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
-const getFormattedMoneyArray = (array, negative = false) => [
-  ...array.map((x, index) => (
-    <div className="money-amount" key={index}>
-      {toMoney(negative ? -x : x || 0)}
-    </div>
-  )),
-  <div className="money-amount" key="last">
-    {toMoney(negative ? -getArraySum(array) : getArraySum(array))}
-  </div>,
-];
+const getFormattedMoneyArray = (array, negative = false, twoBorrowers) => {
+  if (!twoBorrowers) {
+    return [
+      ...array.map((x, index) => (
+        <div className="money-amount" key={index}>
+          {toMoney(negative ? -x : x || 0)}
+        </div>
+      )),
+    ];
+  }
+
+  return [
+    ...array.map((x, index) => (
+      <div className="money-amount" key={index}>
+        {toMoney(negative ? -x : x || 0)}
+      </div>
+    )),
+
+    <div className="money-amount" key="last">
+      {toMoney(negative ? -getArraySum(array) : getArraySum(array))}
+    </div>,
+  ];
+};
 
 const shouldRenderArray = array => array.filter(x => x).length > 0;
 
-const addTableMoneyLine = ({ label, field, negative, condition }) => ({
+const makeTableMoneyLine = twoBorrowers => ({
   label,
-  data: getFormattedMoneyArray(field, negative || false),
+  field,
+  negative,
+  condition,
+}) => ({
+  label,
+  data: getFormattedMoneyArray(field, negative || false, twoBorrowers),
   condition: condition || shouldRenderArray(field),
 });
 
@@ -156,15 +176,12 @@ const getBorrowersInfosArray = (borrowers) => {
     },
     {
       label: <T id="PDF.borrowersInfos.children" />,
-      data: [
-        ...borrowersInfos.childrenCount.map(children => children || '-'),
-        '-',
-      ],
+      data: [...borrowersInfos.childrenCount.map(children => children || '-')],
       condition: shouldRenderArray(borrowersInfos.childrenCount),
     },
     {
       label: <T id="PDF.borrowersInfos.company" />,
-      data: [...borrowersInfos.company.map(company => company || '-'), '-'],
+      data: [...borrowersInfos.company.map(company => company || '-')],
       condition: shouldRenderArray(borrowersInfos.company),
     },
     {
@@ -172,7 +189,6 @@ const getBorrowersInfosArray = (borrowers) => {
       data: [
         ...borrowersInfos.civilStatus.map(status =>
           <T id={`PDF.borrowersInfos.civilStatus.${status}`} /> || '-'),
-        '-',
       ],
       condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
     },
@@ -180,17 +196,25 @@ const getBorrowersInfosArray = (borrowers) => {
 };
 
 const getBorrowersFinanceArray = (borrowers) => {
+  const multipleBorrowers = borrowers.length > 1;
+  const addTableMoneyLine = makeTableMoneyLine(multipleBorrowers);
   const borrowersInfos = getBorrowersInfos(borrowers);
 
   return [
     {
       label: '\u00A0',
-      data: [
-        ...borrowersInfos.gender.map(gender => (
-          <T id={`PDF.borrowersInfos.gender.${gender}`} />
-        )),
-        <T id="PDF.borrowersInfos.total" />,
-      ],
+      data: multipleBorrowers
+        ? [
+          ...borrowersInfos.gender.map(gender => (
+            <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
+          )),
+          <T id="PDF.borrowersInfos.total" key="total" />,
+        ]
+        : [
+          ...borrowersInfos.gender.map(gender => (
+            <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
+          )),
+        ],
       style: { fontWeight: 'bold', textAlign: 'center' },
     },
     addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
@@ -271,17 +295,17 @@ const getBorrowersFinanceArray = (borrowers) => {
   ];
 };
 
-const BorrowersRecap = ({ borrowers }: BorrowersRecapProps) => (
+const BorrowersRecap = ({ borrowers, twoBorrowers }: BorrowersRecapProps) => (
   <>
     <h2>Informations générales</h2>
     <PDFTable
-      className="borrowers-recap info"
-      array={getBorrowersInfosArray(borrowers)}
+      className={cx('borrowers-recap info', { twoBorrowers })}
+      rows={getBorrowersInfosArray(borrowers)}
     />
     <h2>Situation financière</h2>
     <PDFTable
-      className="borrowers-recap finance"
-      array={getBorrowersFinanceArray(borrowers)}
+      className={cx('borrowers-recap finance', { twoBorrowers })}
+      rows={getBorrowersFinanceArray(borrowers)}
     />
   </>
 );
