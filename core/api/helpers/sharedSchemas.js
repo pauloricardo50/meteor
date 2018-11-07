@@ -1,5 +1,8 @@
 import SimpleSchema from 'simpl-schema';
+import { Mongo } from 'meteor/mongo';
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
+
+// import Properties from '../properties';
 
 export const createdAt = {
   type: Date,
@@ -23,12 +26,85 @@ export const updatedAt = {
   optional: true,
 };
 
-export const additionalDocuments = {
-  additionalDocuments: { type: Array, defaultValue: [] },
+export const additionalDocumentsAutovalue = ({
+  doc,
+  conditionalDocuments,
+  initialDocuments,
+  context,
+}) => {
+  const currentDocuments = doc.additionalDocuments;
+  console.log('currentDocuments', currentDocuments);
+
+  const documentsModifications = conditionalDocuments.reduce(
+    (modifications, { id, condition }) => {
+      const conditionIsMet = condition({ doc, context });
+      const documentExists = currentDocuments.some(({ id: documentId }) => id === documentId);
+
+      if (conditionIsMet && !documentExists) {
+        return {
+          documentsToAdd: [...modifications.documentsToAdd, id],
+          documentsToRemove: modifications.documentsToRemove,
+        };
+      }
+
+      if (conditionIsMet && documentExists) {
+        return modifications;
+      }
+
+      if (!conditionIsMet && !documentExists) {
+        return modifications;
+      }
+
+      if (!conditionIsMet && documentExists) {
+        return {
+          documentsToAdd: modifications.documentsToAdd,
+          documentsToRemove: [...modifications.documentsToRemove, id],
+        };
+      }
+
+      return modifications;
+    },
+    {
+      documentsToAdd: [],
+      documentsToRemove: [],
+    },
+  );
+  console.log('documentsModifications', documentsModifications);
+
+  const documents = [
+    ...currentDocuments,
+    ...documentsModifications.documentsToAdd.map(id => ({ id })),
+  ].filter(({ id }) =>
+    !documentsModifications.documentsToRemove.some(idToRemove => idToRemove === id));
+
+  console.log('documents', documents);
+  return context.isInsert ? [...initialDocuments, ...documents] : documents;
+};
+
+export const additionalDocuments = ({
+  collection,
+  initialDocuments,
+  conditionalDocuments,
+}) => ({
+  additionalDocuments: {
+    type: Array,
+    autoValue() {
+      const doc = Mongo.Collection.get(collection).findOne(this.docId) || {
+        additionalDocuments: [],
+      };
+
+      return additionalDocumentsAutovalue({
+        doc,
+        initialDocuments,
+        conditionalDocuments,
+        context: this,
+      });
+    },
+  },
   'additionalDocuments.$': Object,
   'additionalDocuments.$.id': String,
-  'additionalDocuments.$.label': String,
-};
+  'additionalDocuments.$.label': { type: String, optional: true },
+});
 
 export const address = {
   address1: {
