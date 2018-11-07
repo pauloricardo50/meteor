@@ -6,6 +6,7 @@ import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
 import ClickToEditField from 'core/components/ClickToEditField';
+import PromotionLotRecapTable from 'core/components/PromotionLotPage/PromotionLotRecapTable';
 import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_STATUS,
@@ -67,7 +68,7 @@ export const AppPromotionLotPage = ({
             values={{ promotionName, value: `CHF ${toMoney(value)}` }}
           />
         </h3>
-
+        <PromotionLotRecapTable promotionLot={promotionLot} />
         <h4>
           <T id="PromotionLotPage.manageLot" />
         </h4>
