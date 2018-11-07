@@ -53,6 +53,22 @@ const cachePaths = {
 
 // Circle CI Commands
 const runCommand = (name, command) => ({ run: { name, command } });
+const runTestsCommand = (name, testsType) => {
+  switch (testsType) {
+  case 'e2e':
+    return runCommand(
+      'Run e2e tests',
+      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+    );
+  case 'unit':
+    return runCommand(
+      'Run unit tests',
+      `meteor npm --prefix microservices/${name} run test-CI`,
+    );
+  default:
+    throw new Error(`Unknown tests type: ${testsType}`);
+  }
+};
 const restoreCache = (name, key) => ({
   restore_cache: {
     name,
@@ -102,7 +118,7 @@ const makePrepareJob = () => ({
 });
 
 // Create test job for a given microservice
-const testMicroserviceJob = name => ({
+const testMicroserviceJob = (name, testsType) => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
@@ -124,14 +140,7 @@ const testMicroserviceJob = name => ({
       `meteor npm --prefix microservices/${name} ci`,
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
-    runCommand(
-      'Run unit tests',
-      `meteor npm --prefix microservices/${name} run test-CI`,
-    ),
-    runCommand(
-      'Run e2e tests',
-      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
-    ),
+    runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
       cacheKeys.meteorSystem(name),
@@ -153,9 +162,12 @@ const makeConfig = () => ({
   version: 2,
   jobs: {
     Prepare: makePrepareJob(),
-    'Www - unit tests': testMicroserviceJob('www'),
-    'App - unit tests': testMicroserviceJob('app'),
-    'Admin - unit tests': testMicroserviceJob('admin'),
+    'Www - unit tests': testMicroserviceJob('www', 'unit'),
+    'App - unit tests': testMicroserviceJob('app', 'unit'),
+    'Admin - unit tests': testMicroserviceJob('admin', 'unit'),
+    'Www - e2e tests': testMicroserviceJob('www', 'e2e'),
+    'App - e2e tests': testMicroserviceJob('app', 'e2e'),
+    'Admin - e2e tests': testMicroserviceJob('admin', 'e2e'),
   },
   workflows: {
     version: 2,
@@ -165,6 +177,9 @@ const makeConfig = () => ({
         { 'Www - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
+        { 'Www - e2e tests': { requires: ['Www - unit tests'] } },
+        { 'App - e2e tests': { requires: ['App - unit tests'] } },
+        { 'Admin - e2e tests': { requires: ['Admin - unit tests'] } },
       ],
     },
   },
