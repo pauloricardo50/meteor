@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-export const FROM_NAME = "Yannis d'e-Potek";
+export const FROM_NAME = 'e-Potek';
 export const FROM_EMAIL = 'info@e-potek.ch';
 export const FROM_DEFAULT = `${FROM_NAME} <${FROM_EMAIL}>`;
 export const CTA_URL_DEFAULT = Meteor.settings.public.subdomains.app;

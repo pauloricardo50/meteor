@@ -179,6 +179,7 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
           content: url,
         })),
       ],
+      senderName: 'e-Potek',
     };
   },
   createIntlValues: params => params,
