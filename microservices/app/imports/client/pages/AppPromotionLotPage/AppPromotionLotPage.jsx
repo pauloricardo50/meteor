@@ -25,8 +25,6 @@ export const AppPromotionLotPage = ({
   promotionId,
   setCustom,
 }: AppPromotionLotPageProps) => {
-  console.log('promotionLot', promotionLot);
-  console.log('loanPromotions', loanPromotions); // Should have $metadata
   const {
     name,
     reducedStatus,
@@ -94,6 +92,9 @@ export const AppPromotionLotPage = ({
           </>
         )}
 
+        <DocumentDownloadList
+          files={documents && documents.promotionPropertyDocuments}
+        />
       </div>
     </div>
   );
