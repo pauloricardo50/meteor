@@ -35,9 +35,13 @@ export const AppPromotionLotPage = ({
     value,
     lots,
     documents,
+    properties,
   } = promotionLot;
   const { name: promotionName } = promotion;
   const { custom, attributedToMe } = promotionOption || {};
+  const property = properties.length > 0 && properties[0];
+  const { description } = property;
+  console.log('property', property);
 
   return (
     <div>
@@ -54,21 +58,15 @@ export const AppPromotionLotPage = ({
       </Button>
 
       <div className="card1 app-promotion-option-page">
-        <h1>
-          {name}
+        <h1 style={{ marginBottom: '4px' }}>
+          {name} - CHF {toMoney(promotionLot.value)}
           &nbsp;
           <StatusLabel
             status={reducedStatus}
             collection={PROMOTION_LOTS_COLLECTION}
           />
         </h1>
-        <h3 className="secondary">
-          <T
-            id="AppPromotionLotPage.subtitle"
-            values={{ promotionName, value: `CHF ${toMoney(value)}` }}
-          />
-        </h3>
-        <PromotionLotRecapTable promotionLot={promotionLot} />
+        {description && <h3 className="secondary">{description}</h3>}
         <h4>
           <T id="PromotionLotPage.manageLot" />
         </h4>
@@ -77,6 +75,7 @@ export const AppPromotionLotPage = ({
             <LotChip lot={lot} key={lot._id} />
           ))}
         </div>
+        <PromotionLotRecapTable promotionLot={promotionLot} />
 
         {setCustom && (
           <>

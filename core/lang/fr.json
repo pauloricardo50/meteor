@@ -93,6 +93,7 @@
   "files.promotionDocuments": "Documents de la promotion",
   "files.promotionImage": "Photo de couverture",
   "files.logos": "Logos",
+  "Forms.gardenArea": "Surface du jardin en m2",
 
   "PromotionPage.manageDocuments": "Gérer documents",
   "PromotionPage.lots.name": "Nom",
@@ -151,6 +152,9 @@
   "Forms.status.FINISHED": "Terminé",
   "Forms.status.OPEN": "En cours",
   "Forms.status.UNSUCCESSFUL": "Sans suite",
+  "Recap.promotionLot": "Détails du lot",
+  "Recap.promotionLot.value": "Valeur",
+  "Recap.promotionLot.totalValue": "Total",
 
   "FinancingOwnFundsPledgeWarning.description": "Attention, vous pouvez nantir CHF {maxPledge} au maximum.",
   "CreateUserDialogForm.sendEnrollmentEmail": "Envoyer email d'invitation immédiatement",
