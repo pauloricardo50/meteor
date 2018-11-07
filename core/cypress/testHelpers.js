@@ -43,8 +43,11 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
 
                 // logout the impersonated user
                 const { IMPERSONATE_SESSION_KEY } = testData;
-                cy.window().then(({ Session }) =>
-                  Session && Session.clear(IMPERSONATE_SESSION_KEY));
+                cy.window().then((context) => {
+                  if (context && context.Session) {
+                    context.Session.clear(IMPERSONATE_SESSION_KEY);
+                  }
+                });
                 cy.printTestNameOnServer(testName);
                 cy.setAuthentication(pageAuthentication);
                 cy.routeShouldRenderSuccessfully(
