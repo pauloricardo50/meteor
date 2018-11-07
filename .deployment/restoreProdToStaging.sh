@@ -12,7 +12,7 @@ RANDOM_ID=$(cat /dev/random | LC_CTYPE=C tr -dc "[:alpha:]" | head -c 8)
 RANDOM_ID2=$(cat /dev/random | LC_CTYPE=C tr -dc "[:alpha:]" | head -c 8)
 
 ../scripts/box_out.sh "Establishing a SSH tunnel with args:" "$*"
-babel-node -- ./ssh-tunnel/productionDbToStaging.js -e production-and-staging -i $RANDOM_ID $RANDOM_ID2
+npx babel-node -- ./ssh-tunnel/productionDbToStaging.js -e production-and-staging -i $RANDOM_ID $RANDOM_ID2
 tmuxinator start -p ./ssh-tunnel/ssh-tunnel-$RANDOM_ID.yml
 rm ./ssh-tunnel/ssh-tunnel-$RANDOM_ID.yml
- 
+

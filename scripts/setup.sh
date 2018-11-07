@@ -46,7 +46,7 @@ for i in 'www' 'app' 'admin' 'pro' 'pdf'
     ln -s ../../../core ../microservices/$i/imports/core
     ./link.sh ../core/assets/public ../microservices/$i/public
     ln -s ../../core/assets/private ../microservices/$i/private
-    
+
     echo "Storing current commit message to public assets"
     git rev-parse --short HEAD > "../core/assets/public/commit.txt"
 
@@ -87,11 +87,8 @@ echo "Installing npm packages in root"
 echo "Installing npm packages in .deployment"
 ( cd ../.deployment && meteor npm i -q );
 
-echo "Installing babel-node"
-meteor npm i -g @babel/node
-
 echo "Creating language files"
-meteor babel-node ./createLanguages.js
+meteor npx babel-node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))
