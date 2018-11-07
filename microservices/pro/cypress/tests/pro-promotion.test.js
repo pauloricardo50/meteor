@@ -1,135 +1,27 @@
 /* eslint-env mocha */
+import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
 describe('Pro', () => {
   before(() => {
-    cy.window().then((window) => {
-      console.log('window', window);
-    });
     cy.visit('/');
+    cy.callMethod('resetDatabase');
+    cy.callMethod('generateProFixtures');
   });
 
-  it('should work', () => {
+  it('should login', () => {
+    cy.url().should('include', 'login');
+    cy.get('input[name=email]').type(PRO_EMAIL);
+    cy.get('input[name=password]').type(`${PRO_PASSWORD}{enter}`);
     cy.location('pathname').should('eq', '/');
   });
-  // describe('On homepage', () => {
-  //   before(() => {
-  //     cy.visit('/');
-  //   });
 
-  //   it('opens with 0 CHF value', () => {
-  //     cy.get('input#property')
-  //       .then(($input) => {
-  //         expect($input.val()).to.equal('0');
-  //       })
-  //       .should('have.value', '0');
-  //   });
-
-  //   it('opens with disabled Enter button', () => {
-  //     cy.get('#widget1-property button[type="submit"]').should('be.disabled');
-  //   });
-
-  //   it('changes the CHF value to "1 000 000"', () => {
-  //     cy.get('input#property')
-  //       .type(1000000)
-  //       .should('have.value', '1 000 000');
-  //   });
-
-  //   it('enables the Enter button when a value is typed', () => {
-  //     cy.get('#widget1-property button[type="submit"]').should('be.not.disabled');
-  //   });
-
-  //   it('sets the slider to 1M value', () => {
-  //     cy.get('#widget1-property [role="slider"]').should(
-  //       'have.attr',
-  //       'aria-valuenow',
-  //       '1000000',
-  //     );
-  //   });
-
-  //   it('navigates to `/start/1` when Enter button is pressed', () => {
-  //     cy.contains('Entrer')
-  //       .click()
-  //       .location('pathname')
-  //       .should('eq', '/start/1');
-  //   });
+  // TODO: Uncomment this to see the test runner go back to login page
+  // it('should start with an empty dashboard', () => {
+  //   cy.get('.pro-dashboard-page').contains('Rien à afficher');
   // });
 
-  // describe('On homepage with keyboard', () => {
-  //   before(() => {
-  //     cy.visit('/');
-  //   });
-
-  //   it('navigates to `/start/1` when Enter key is pressed', () => {
-  //     cy.get('input#property')
-  //       .type(1000000)
-  //       .type('{enter}')
-  //       .location('pathname')
-  //       .should('eq', '/start/1');
-  //   });
-  // });
-
-  // describe('full calculator', () => {
-  //   before(() => {
-  //     cy.visit('/start/1')
-  //       .get('input#property')
-  //       .type(1000000)
-  //       .type('{enter}')
-  //       .get('input#salary')
-  //       .type(180000)
-  //       .type('{enter}')
-  //       .get('input#fortune')
-  //       .type(250000)
-  //       .type('{enter}');
-  //   });
-
-  //   it('displays the full calculator when matching recap values', () => {
-  //     cy.then(assertRecapValue('Coût total du projet', '1 050 000')).then(assertRecapValue('Financement total', '1 050 000'));
-  //   });
-
-  //   it('resets the calculator when clicking reset', () => {
-  //     cy.get('.widget1-inputs-reset')
-  //       .click()
-  //       .get('input#property')
-  //       .should('have.value', '0')
-  //       .get('input#salary')
-  //       .should('have.value', '0')
-  //       .get('input#fortune')
-  //       .should('have.value', '0');
-  //   });
-
-  //   it('suggests values at perfect percentages', () => {
-  //     cy.get('input#property')
-  //       .type(500000)
-  //       .get('input#salary')
-  //       .should('have.value', '90 000')
-  //       .get('input#fortune')
-  //       .should('have.value', '125 000')
-  //       .then(assertFinmaValue("Prêt / Prix d'achat", '80,00%'))
-  //       .then(assertFinmaValue('Charges / Revenus', '33,33%'));
-  //   });
-  // });
-
-  // describe('refinancing', () => {
-  //   before(() => {
-  //     cy.visit('/start/1')
-  //       .get('#REFINANCING')
-  //       .click()
-  //       .get('input#property')
-  //       .type(1000000)
-  //       .type('{enter}')
-  //       .get('input#salary')
-  //       .type(180000)
-  //       .type('{enter}')
-  //       .get('input#currentLoan')
-  //       .type(500000)
-  //       .type('{enter}')
-  //       .get('input#wantedLoan')
-  //       .type(800000)
-  //       .type('{enter}');
-  //   });
-
-  //   it('shows the proper recap fields', () => {
-  //     cy.then(assertRecapValue('Prêt max possible', '800 000')).then(assertRecapValue('Augmentation du prêt', '300 000'));
-  //   });
+  // it('should add a promotion', () => {
+  //   cy.get('.buttons > a').click();
+  //   cy.location('pathname').should('eq', '/promotions/new');
   // });
 });
