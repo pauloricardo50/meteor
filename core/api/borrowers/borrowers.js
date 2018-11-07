@@ -185,7 +185,7 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
-  ...additionalDocuments,
+  // ...additionalDocuments(BORROWERS_COLLECTION),
 });
 
 const protectedKeys = [
