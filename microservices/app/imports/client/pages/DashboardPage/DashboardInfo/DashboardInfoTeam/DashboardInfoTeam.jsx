@@ -12,9 +12,9 @@ const DashboardInfoTeam = ({
   removeContact,
   editContact,
   loan: {
-    contacts,
     user: { assignedEmployee },
   },
+  contacts,
 }) => (
   <div className="dashboard-info-team card1">
     <div className="card-top">
