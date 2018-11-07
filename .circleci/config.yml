@@ -64,6 +64,12 @@ jobs:
             - 'source_7-{{ .Branch }}-'
             - source_7-
       - restore_cache:
+          name: Restore global cache
+          keys:
+            - 'global_7-{{ .Branch }}-{{ .Revision }}'
+            - 'global_7-{{ .Branch }}-'
+            - global_7-
+      - restore_cache:
           name: Restore node_modules
           keys:
             - 'node_modules_7-{{ checksum "./package-lock.json" }}'
@@ -144,6 +150,12 @@ jobs:
             - 'source_7-{{ .Branch }}-'
             - source_7-
       - restore_cache:
+          name: Restore global cache
+          keys:
+            - 'global_7-{{ .Branch }}-{{ .Revision }}'
+            - 'global_7-{{ .Branch }}-'
+            - global_7-
+      - restore_cache:
           name: Restore node_modules
           keys:
             - 'node_modules_7-{{ checksum "./package-lock.json" }}'
@@ -223,6 +235,12 @@ jobs:
             - 'source_7-{{ .Branch }}-{{ .Revision }}'
             - 'source_7-{{ .Branch }}-'
             - source_7-
+      - restore_cache:
+          name: Restore global cache
+          keys:
+            - 'global_7-{{ .Branch }}-{{ .Revision }}'
+            - 'global_7-{{ .Branch }}-'
+            - global_7-
       - restore_cache:
           name: Restore node_modules
           keys:
