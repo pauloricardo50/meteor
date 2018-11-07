@@ -1,3 +1,5 @@
+import ReactDOMServer from 'react-dom/server';
+
 import {
   EMAIL_TEMPLATES,
   EMAIL_IDS,
@@ -10,6 +12,7 @@ import {
   notificationTemplateDefaultOverride,
   notificationAndCtaTemplateDefaultOverride,
 } from './emailHelpers';
+import PromotionLogos from './components/PromotionLogos';
 
 const emailConfigs = {};
 
@@ -175,12 +178,14 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
         { name: variables.CTA, content: cta },
         { name: variables.CTA_URL, content: ctaUrl || CTA_URL_DEFAULT },
         { name: variables.COVER_IMAGE_URL, content: coverImageUrl },
-        ...logoUrls.map((url, index) => ({
-          name: variables[`LOGO_URL_${index + 1}`],
-          content: url,
-        })),
       ],
       senderName: 'e-Potek',
+      templateContent: [
+        {
+          name: 'logos',
+          content: ReactDOMServer.renderToStaticMarkup(PromotionLogos({ logoUrls })),
+        },
+      ],
     };
   },
   createIntlValues: params => ({

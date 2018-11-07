@@ -45,10 +45,12 @@ export const getMandrillTemplate = ({
   senderName,
   subject,
   sendAt,
+  templateContent = [],
 }) => ({
   template_name: templateName,
   template_content: [
     { name: 'footer', content: getEmailFooter(footerType, allowUnsubscribe) },
+    ...templateContent,
   ],
   message: {
     from_email: senderAddress,
