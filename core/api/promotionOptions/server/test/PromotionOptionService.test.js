@@ -51,7 +51,7 @@ describe('PromotionOptionService', () => {
     });
   });
 
-  describe.only('insert', () => {
+  describe('insert', () => {
     let promotionOptionId;
     let loanId;
     let promotionId;
