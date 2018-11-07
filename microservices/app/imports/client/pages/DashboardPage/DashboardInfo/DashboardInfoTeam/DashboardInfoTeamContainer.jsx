@@ -1,4 +1,6 @@
+import React from 'react';
 import { withProps } from 'recompose';
+
 import { loanUpdate } from 'core/api';
 
 export default withProps(({ loan: { _id: loanId, contacts = [], promotions, hasPromotion } }) => ({
@@ -28,6 +30,12 @@ export default withProps(({ loan: { _id: loanId, contacts = [], promotions, hasP
     ? [
       ...promotions[0].contacts.map(contact => ({
         ...contact,
+        title: (
+          <span>
+            {contact.title}
+            <span className="secondary"> &bull; {promotions[0].name}</span>
+          </span>
+        ),
         disableEdit: true,
       })),
       ...contacts,
