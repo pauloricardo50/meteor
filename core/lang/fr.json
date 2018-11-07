@@ -1340,7 +1340,7 @@
   "PDF.projectInfos.property.propertyType.HOUSE": "Villa",
   "PDF.projectInfos.property.renovationYear": "Année de rénovation",
   "PDF.projectInfos.property.residenceType": "Type de résidence",
-  "PDF.projectInfos.property.roomCount": "Nombre de pièces",
+  "PDF.projectInfos.property.roomCount": "Nombre de pièces (sans cuisine)",
   "PDF.projectInfos.property.terraceArea": "Surface des terrasses",
   "PDF.projectInfos.property.title": "Bien immobilier",
   "PDF.projectInfos.property.volume": "Volume du bâtiment",

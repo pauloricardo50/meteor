@@ -1,14 +1,14 @@
 // @flow
 import React from 'react';
 import { IntlProvider } from 'react-intl';
+
 import { getUserLocale, getFormats } from 'core/utils/localization';
+import { T } from 'core/components/Translation/Translation';
+import messagesFR from '../../../../../lang/fr.json';
 import stylesheet from './stylesheet';
 import LoanBankBorrowers from './LoanBankBorrowers';
-import messagesFR from '../../../../../lang/fr.json';
 import LoanBankProject from './LoanBankProject';
 import LoanBankPage from './LoanBankPage';
-import LoanBankOffer from './LoanBankOffer';
-import { T } from '../../../../core/components/Translation/Translation';
 import LoanBankCover from './LoanBankCover';
 
 type LoanBankPDFProps = {
@@ -27,10 +27,6 @@ const pages = loan => [
   {
     content: <LoanBankBorrowers borrowers={loan.borrowers} key="3" />,
     title: <T id="PDF.title.borrowers" />,
-  },
-  {
-    content: <LoanBankOffer key="4" />,
-    title: <T id="PDF.title.offer" />,
   },
 ];
 
