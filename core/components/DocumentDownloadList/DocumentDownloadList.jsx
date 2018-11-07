@@ -38,7 +38,12 @@ const DocumentDownloadList = ({ files }: DocumentDownloadListProps) => {
               <Icon
                 type={downloading ? 'loop-spin' : getIconForFileType(Key)}
               />
-              <p>{name.split('.')[0]}</p>
+              <p>
+                {name
+                  .split('.')
+                  .slice(0, -1)
+                  .join('.')}
+              </p>
             </div>
           )}
         </Downloader>
