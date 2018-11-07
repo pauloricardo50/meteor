@@ -70,5 +70,8 @@ export const addUserToDoc = new Method({
 
 export const throwDevError = new Method({
   name: 'throwDevError',
-  params: { promise: Match.Maybe(Boolean) },
+  params: {
+    promise: Match.Maybe(Boolean),
+    promiseNoReturn: Match.Maybe(Boolean),
+  },
 });
