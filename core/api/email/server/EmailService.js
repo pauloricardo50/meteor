@@ -9,7 +9,7 @@ import {
 } from './mandrill';
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
-const skipEmails = Meteor.isDevelopment || Meteor.isTest;
+const skipEmails = false; // Meteor.isDevelopment || Meteor.isTest;
 
 class EmailService {
   sendEmail = (emailId, address, params) => {

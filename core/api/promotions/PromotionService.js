@@ -122,7 +122,7 @@ export class PromotionService extends CollectionService {
       const logoUrls = logos && logos.map(({ url }) => url);
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
-      const { name } = this.get(promotionId);
+      const promotion = this.get(promotionId);
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
@@ -141,7 +141,7 @@ export class PromotionService extends CollectionService {
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
-          promotionName: name,
+          promotion,
           coverImageUrl,
           logoUrls,
           ctaUrl,

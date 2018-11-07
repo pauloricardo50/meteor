@@ -15,6 +15,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOAN, {
     name: 1,
     address: 1,
     status: 1,
+    contacts: 1,
     loans: {
       _id: 1,
       $filter({ filters, params: { loanId } }) {
