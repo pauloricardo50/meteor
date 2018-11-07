@@ -302,6 +302,89 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
+  Pro - unit tests:
+    working_directory: ~/app
+    docker: *ref_0
+    steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_7-{{ .Branch }}-{{ .Revision }}'
+            - 'source_7-{{ .Branch }}-'
+            - source_7-
+      - restore_cache:
+          name: Restore global cache
+          keys:
+            - 'global_7-{{ .Branch }}-{{ .Revision }}'
+            - 'global_7-{{ .Branch }}-'
+            - global_7-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_7-{{ checksum "./package-lock.json" }}'
+            - node_modules_7-
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_7_pro_{{ checksum
+              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/versions" }}
+            - >-
+              meteor_system_7_pro_{{ checksum
+              "./microservices/pro/.meteor/release" }}-
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - >-
+              meteor_microservice_7_pro-{{ checksum
+              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/packages" }}-{{ checksum
+              "./microservices/pro/.meteor/versions" }}
+            - >-
+              meteor_microservice_7_pro-{{ checksum
+              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/packages" }}-
+            - >-
+              meteor_microservice_7_pro-{{ checksum
+              "./microservices/pro/.meteor/release" }}-
+            - meteor_microservice_7_pro-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Create results directory
+          command: mkdir ./results
+      - run:
+          name: Install node_modules
+          command: meteor npm --prefix microservices/pro ci
+      - run:
+          name: Generate language files
+          command: npm run lang pro
+      - run:
+          name: Run unit tests
+          command: meteor npm --prefix microservices/pro run test-CI
+      - save_cache:
+          name: Cache meteor system
+          key: >-
+            meteor_system_7_pro_{{ checksum
+            "./microservices/pro/.meteor/release" }}-{{ checksum
+            "./microservices/pro/.meteor/versions" }}
+          paths:
+            - ~/.meteor
+      - save_cache:
+          name: Cache meteor microservice
+          key: >-
+            meteor_microservice_7_pro-{{ checksum
+            "./microservices/pro/.meteor/release" }}-{{ checksum
+            "./microservices/pro/.meteor/packages" }}-{{ checksum
+            "./microservices/pro/.meteor/versions" }}
+          paths:
+            - ./microservices/pro/.meteor/local
+      - store_test_results:
+          path: ./results
+      - store_artifacts:
+          path: ./results
   Www - e2e tests:
     working_directory: ~/app
     docker: *ref_0
@@ -551,6 +634,89 @@ jobs:
           path: ./results
       - store_artifacts:
           path: ./results
+  Pro - e2e tests:
+    working_directory: ~/app
+    docker: *ref_0
+    steps:
+      - restore_cache:
+          name: Restore source
+          keys:
+            - 'source_7-{{ .Branch }}-{{ .Revision }}'
+            - 'source_7-{{ .Branch }}-'
+            - source_7-
+      - restore_cache:
+          name: Restore global cache
+          keys:
+            - 'global_7-{{ .Branch }}-{{ .Revision }}'
+            - 'global_7-{{ .Branch }}-'
+            - global_7-
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - 'node_modules_7-{{ checksum "./package-lock.json" }}'
+            - node_modules_7-
+      - restore_cache:
+          name: Restore meteor system
+          keys:
+            - >-
+              meteor_system_7_pro_{{ checksum
+              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/versions" }}
+            - >-
+              meteor_system_7_pro_{{ checksum
+              "./microservices/pro/.meteor/release" }}-
+      - restore_cache:
+          name: Restore meteor microservice
+          keys:
+            - >-
+              meteor_microservice_7_pro-{{ checksum
+              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/packages" }}-{{ checksum
+              "./microservices/pro/.meteor/versions" }}
+            - >-
+              meteor_microservice_7_pro-{{ checksum
+              "./microservices/pro/.meteor/release" }}-{{ checksum
+              "./microservices/pro/.meteor/packages" }}-
+            - >-
+              meteor_microservice_7_pro-{{ checksum
+              "./microservices/pro/.meteor/release" }}-
+            - meteor_microservice_7_pro-
+      - run:
+          name: Install meteor
+          command: ./scripts/circleci/install_meteor.sh
+      - run:
+          name: Create results directory
+          command: mkdir ./results
+      - run:
+          name: Install node_modules
+          command: meteor npm --prefix microservices/pro ci
+      - run:
+          name: Generate language files
+          command: npm run lang pro
+      - run:
+          name: Run e2e tests
+          command: meteor npm --prefix microservices/pro run test-e2e-CI
+      - save_cache:
+          name: Cache meteor system
+          key: >-
+            meteor_system_7_pro_{{ checksum
+            "./microservices/pro/.meteor/release" }}-{{ checksum
+            "./microservices/pro/.meteor/versions" }}
+          paths:
+            - ~/.meteor
+      - save_cache:
+          name: Cache meteor microservice
+          key: >-
+            meteor_microservice_7_pro-{{ checksum
+            "./microservices/pro/.meteor/release" }}-{{ checksum
+            "./microservices/pro/.meteor/packages" }}-{{ checksum
+            "./microservices/pro/.meteor/versions" }}
+          paths:
+            - ./microservices/pro/.meteor/local
+      - store_test_results:
+          path: ./results
+      - store_artifacts:
+          path: ./results
 workflows:
   version: 2
   Build and test:
@@ -565,6 +731,9 @@ workflows:
       - Admin - unit tests:
           requires:
             - Prepare
+      - Pro - unit tests:
+          requires:
+            - Prepare
       - Www - e2e tests:
           requires:
             - Www - unit tests
@@ -574,3 +743,6 @@ workflows:
       - Admin - e2e tests:
           requires:
             - Admin - unit tests
+      - Pro - e2e tests:
+          requires:
+            - Pro - unit tests
