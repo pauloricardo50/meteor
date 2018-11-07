@@ -51,7 +51,7 @@ describe('PromotionOptionService', () => {
     });
   });
 
-  describe('insert', () => {
+  describe.only('insert', () => {
     let promotionOptionId;
     let loanId;
     let promotionId;
@@ -70,12 +70,12 @@ describe('PromotionOptionService', () => {
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
     });
 
-    it('does not insert a new promotionOption if the promotionLotId exists in another promotionOption in the loan', () => {
+    it('throws if promotion lot exists in another promotionOption in the loan', () => {
       const id = PromotionOptionService.insert({ promotionLotId, loanId });
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
 
-      const id2 = PromotionOptionService.insert({ promotionLotId, loanId });
-      expect(PromotionOptionService.get(id2)).to.equal(undefined);
+      expect(() =>
+        PromotionOptionService.insert({ promotionLotId, loanId })).to.throw('Vous avez déjà');
     });
 
     it('adds a link on the loan', () => {

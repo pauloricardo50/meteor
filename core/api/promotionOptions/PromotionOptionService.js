@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import PromotionOptions from './promotionOptions';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
@@ -62,7 +63,7 @@ export class PromotionOptionService extends CollectionService {
           && promotionLots.some(lot => lot._id === promotionLotId));
 
     if (existingPromotionOption) {
-      return undefined;
+      throw new Meteor.Error('Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.');
     }
 
     const promotionOptionId = super.insert({
