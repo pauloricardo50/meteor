@@ -3,6 +3,7 @@ import {
   EMAIL_IDS,
   CTA_URL_DEFAULT,
   FOOTER_TYPES,
+  EPOTEK_PHONE,
 } from '../emailConstants';
 import {
   getAccountsUrl,
@@ -182,7 +183,14 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
       senderName: 'e-Potek',
     };
   },
-  createIntlValues: params => params,
+  createIntlValues: params => ({
+    ...params,
+    promotionName: params.promotion.name,
+    phoneNumber:
+      params.promotion.contacts.length > 0
+        ? params.promotion.contacts[0].phoneNumber
+        : EPOTEK_PHONE,
+  }),
 });
 
 export default emailConfigs;
