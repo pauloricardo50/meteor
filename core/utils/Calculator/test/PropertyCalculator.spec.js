@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import PropertyCalculator from '..';
-import { STEPS } from 'core/api/constants';
+import { STEPS, PROPERTY_TYPE } from 'core/api/constants';
 import { PROPERTY_DOCUMENTS, DOCUMENTS } from '../../../api/constants';
 
 describe('PropertyCalculator', () => {
@@ -40,6 +40,8 @@ describe('PropertyCalculator', () => {
         minergie: '',
         qualityProfileCondition: 1,
         qualityProfileStandard: 2,
+        copropertyPercentage: 100,
+        isCoproperty: false,
       };
       params.loan.general.residenceType = ' ';
       expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(1);
@@ -76,6 +78,8 @@ describe('PropertyCalculator', () => {
       expect(PropertyCalculator.getMissingPropertyFields(params)).to.deep.equal([
         'value',
         'propertyType',
+        'isCoproperty',
+        'copropertyPercentage',
         'address1',
         'city',
         'zipCode',
