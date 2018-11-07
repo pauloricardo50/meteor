@@ -13,6 +13,7 @@ const DashboardInfoTeam = ({
   editContact,
   loan: {
     user: { assignedEmployee },
+    hasPromotion,
   },
   contacts,
 }) => (
@@ -22,7 +23,10 @@ const DashboardInfoTeam = ({
         <T id="DashboardInfoTeam.title" />
       </h3>
 
-      <DashboardInfoTeamCompany assignedEmployee={assignedEmployee} />
+      <DashboardInfoTeamCompany
+        assignedEmployee={assignedEmployee}
+        hasPromotion={hasPromotion}
+      />
 
       {contacts
         && contacts.length > 0 && (
