@@ -2,7 +2,6 @@ import * as styles from './utils/styleHelpers';
 import { LoanBankPageStyles } from './LoanBankPage';
 import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
-import { LoanBankOfferStyles } from './LoanBankOffer';
 import { LoanBankCoverStyles } from './LoanBankCover';
 import PDFTableStyles from './utils/PDFTableStyles';
 
@@ -68,7 +67,6 @@ const stylesheet = `
     ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}
-    ${LoanBankOfferStyles}
     ${LoanBankCoverStyles}
 `;
 
