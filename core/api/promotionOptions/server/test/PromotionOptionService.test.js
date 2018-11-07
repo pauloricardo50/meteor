@@ -70,6 +70,14 @@ describe('PromotionOptionService', () => {
       expect(PromotionOptionService.get(id)).to.not.equal(undefined);
     });
 
+    it('does not insert a new promotionOption if the promotionLotId exists in another promotionOption in the loan', () => {
+      const id = PromotionOptionService.insert({ promotionLotId, loanId });
+      expect(PromotionOptionService.get(id)).to.not.equal(undefined);
+
+      const id2 = PromotionOptionService.insert({ promotionLotId, loanId });
+      expect(PromotionOptionService.get(id2)).to.equal(undefined);
+    });
+
     it('adds a link on the loan', () => {
       PromotionOptionService.insert({ promotionLotId, loanId });
       const loan = LoanService.get(loanId);
