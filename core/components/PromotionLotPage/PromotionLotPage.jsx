@@ -13,6 +13,7 @@ import PromotionLotsManager from './PromotionLotsManager';
 import PromotionLotLoansTable from './PromotionLotLoansTable';
 import PromotionLotPageContainer from './PromotionLotPageContainer';
 import DocumentDownloadList from '../DocumentDownloadList';
+import PromotionLotRecapTable from './PromotionLotRecapTable';
 
 type PromotionLotPageProps = {};
 
@@ -34,6 +35,8 @@ const PromotionLotPage = ({
   } = promotionLot;
   console.log('promotionLot', promotionLot);
   const { lots: allLots } = promotion;
+  const property = properties.length > 0 && properties[0];
+  const { description } = property;
 
   return (
     <div>
@@ -46,11 +49,12 @@ const PromotionLotPage = ({
         <T id="general.back" />
       </Button>
       <div className="promotion-lot-page card1">
-        <h1>
+        <h1 style={{ marginBottom: '4px' }}>
           {name} - CHF {toMoney(promotionLot.value)}
           &nbsp;
           <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>
+        {description && <h3 className="secondary">{description}</h3>}
         {canModify && (
           <div className="promotion-buttons">
             <LotDocumentsManager
@@ -72,6 +76,7 @@ const PromotionLotPage = ({
           status={promotionLot.status}
           canModify={canModify}
         />
+        <PromotionLotRecapTable promotionLot={promotionLot} />
 
         <DocumentDownloadList
           files={documents && documents.promotionPropertyDocuments}

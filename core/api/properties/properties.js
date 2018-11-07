@@ -153,6 +153,10 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  description: {
+    type: String,
+    optional: true,
+  },
   category: {
     type: String,
     optional: true,
@@ -235,6 +239,11 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     min: 0,
   },
+  gardenArea: {
+    type: SimpleSchema.Integer,
+    optional: true,
+    min: 0,
+  },
   numberOfFloors: {
     type: SimpleSchema.Integer,
     optional: true,
@@ -248,6 +257,12 @@ export const PropertySchema = new SimpleSchema({
     max: 20,
   },
   roomCount: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100,
+  },
+  bathroomCount: {
     type: Number,
     optional: true,
     min: 0,
