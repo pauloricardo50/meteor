@@ -46,6 +46,7 @@ export const fullPropertyFragment = {
   additionalDocuments: 1,
   adminValidation: 1,
   areaNorm: 1,
+  category: 1,
   constructionYear: 1,
   copropertyPercentage: 1,
   createdAt: 1,
