@@ -69,7 +69,7 @@ export const AppPromotionLotPage = ({
         </h3>
 
         <h4>
-          <T id="collections.lots" />
+          <T id="PromotionLotPage.manageLot" />
         </h4>
         <div className="lots">
           {lots.map(lot => (
@@ -93,7 +93,6 @@ export const AppPromotionLotPage = ({
             />
           </>
         )}
-
       </div>
     </div>
   );
