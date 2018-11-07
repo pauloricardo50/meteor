@@ -15,13 +15,15 @@ describe('Pro', () => {
     cy.location('pathname').should('eq', '/');
   });
 
-  // TODO: Uncomment this to see the test runner go back to login page
-  // it('should start with an empty dashboard', () => {
-  //   cy.get('.pro-dashboard-page').contains('Rien à afficher');
-  // });
+  it('should start with an empty dashboard', () => {
+    cy.get('.pro-dashboard-page').contains('Rien à afficher');
+  });
 
-  // it('should add a promotion', () => {
-  //   cy.get('.buttons > a').click();
-  //   cy.location('pathname').should('eq', '/promotions/new');
-  // });
+  it('should add a promotion', () => {
+    cy.get('.buttons > a').click();
+    cy.location('pathname').should('eq', '/promotions/new');
+
+    cy.wait(1000);
+    cy.location('pathname').should('eq', '/promotions/new');
+  });
 });
