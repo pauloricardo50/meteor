@@ -68,6 +68,7 @@ import LocalHospital from '@material-ui/icons/LocalHospital';
 import Help from '@material-ui/icons/Help';
 import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import InsertChart from '@material-ui/icons/InsertChart';
+import Image from '@material-ui/icons/Image';
 
 const iconMap = {
   close: CloseIcon,
@@ -138,6 +139,7 @@ const iconMap = {
   help: Help,
   monetizationOn: MonetizationOn,
   chart: InsertChart,
+  image: Image,
 };
 
 const Icon = ({ type, size, ...props }) => {
