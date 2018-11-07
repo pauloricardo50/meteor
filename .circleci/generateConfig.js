@@ -124,8 +124,12 @@ const testMicroserviceJob = name => ({
     ),
     runCommand('Generate language files', `npm run lang ${name}`),
     runCommand(
-      'Run tests',
+      'Run unit tests',
       `meteor npm --prefix microservices/${name} run test-CI`,
+    ),
+    runCommand(
+      'Run e2e tests',
+      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
     ),
     saveCache(
       'Cache meteor system',
