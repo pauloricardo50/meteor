@@ -33,19 +33,21 @@ const defaultJobValues = {
 // like: "my_cache_name_${CACHE_VERSION}"
 // Then follow with the variable identifiers
 const cacheKeys = {
-  cypress: () =>
-    `cypress_${CACHE_VERSION}_{{ checksum "./package-lock.json" }}`,
+  global: () => `global_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
-  source: () => `source_code_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
+  nodeModules: () =>
+    `node_modules_${CACHE_VERSION}-{{ checksum "./package-lock.json" }}`,
+  source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
-  cypress: () => '~/.cache/Cypress',
+  global: () => '~/.cache',
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
+  nodeModules: () => './node_modules',
   source: () => '.',
 };
 
@@ -57,7 +59,7 @@ const restoreCache = (name, key) => ({
     // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
     // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
     keys: key
-      .split('-')
+      .split(/(?!package)-(?!lock)/)
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
@@ -81,15 +83,22 @@ const makePrepareJob = () => ({
     // Update source cache with latest code
     restoreCache('Restore source', cacheKeys.source()),
     'checkout',
-    restoreCache('Restore Cypress cache', cacheKeys.cypress()),
     runCommand(
       'Init submodules',
       'git submodule sync && git submodule update --init --recursive',
     ),
-    runCommand('Install project node_modules', 'npm ci'),
     saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
-    saveCache('Cache Cypress', cacheKeys.cypress(), cachePaths.cypress()),
-  ]
+
+    // Prepare node_modules cache
+    restoreCache('Restore global cache', cacheKeys.global()),
+    runCommand('Install project node_modules', 'npm ci'),
+    saveCache('Cache globals', cacheKeys.global(), cachePaths.global()),
+    saveCache(
+      'Cache node_modules',
+      cacheKeys.nodeModules(),
+      cachePaths.nodeModules(),
+    ),
+  ],
 });
 
 // Create test job for a given microservice
@@ -97,6 +106,7 @@ const testMicroserviceJob = name => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
+    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
@@ -147,9 +157,9 @@ const makeConfig = () => ({
     'Build and test': {
       jobs: [
         'Prepare',
-        {'Www - unit tests': {requires: ['Prepare']}},
-        {'App - unit tests': {requires: ['Prepare']}},
-        {'Admin - unit tests': {requires: ['Prepare']}},
+        { 'Www - unit tests': { requires: ['Prepare'] } },
+        { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Admin - unit tests': { requires: ['Prepare'] } },
       ],
     },
   },
