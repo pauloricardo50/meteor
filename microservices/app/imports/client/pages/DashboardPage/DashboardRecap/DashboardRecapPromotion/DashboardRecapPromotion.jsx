@@ -9,6 +9,7 @@ import { APP_PROMOTION_PAGE } from 'imports/startup/client/appRoutes';
 import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 import promotionFiles from 'core/api/promotions/queries/promotionFiles';
 import cx from 'classnames';
+import { PROMOTION_STATUS } from 'core/api/constants';
 
 type DashboardRecapPromotionProps = {
   loan: Object,
@@ -19,6 +20,7 @@ const DashboardRecapPromotion = ({
   loan,
   promotion,
 }: DashboardRecapPromotionProps) => {
+  const { status } = promotion;
   const { promotionImage = [] } = promotion.documents || {};
 
   return (
@@ -28,6 +30,7 @@ const DashboardRecapPromotion = ({
         ':promotionId': promotion._id,
       })}
       className="dashboard-recap-promotion card1 card-hover"
+      disabled={status !== PROMOTION_STATUS.OPEN}
     >
       <span
         style={
