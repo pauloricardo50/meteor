@@ -54,6 +54,7 @@ const getPromotionLotRecapArray = (promotionLot) => {
     gardenArea,
     roomCount,
     bathroomCount,
+    monthlyExpenses,
   } = property;
 
   return [
@@ -87,6 +88,15 @@ const getPromotionLotRecapArray = (promotionLot) => {
       value: bathroomCount,
       hide: !bathroomCount,
     },
+    {
+      label: 'Forms.monthlyExpenses',
+      value: (
+        <span>
+          {toMoney(monthlyExpenses)} <small>/mois</small>
+        </span>
+      ),
+      hide: !monthlyExpenses,
+    },
     ...getPromotionLotValueRecapArray({ lots, propertyValue, promotionLot }),
   ];
 };
@@ -94,11 +104,8 @@ const getPromotionLotRecapArray = (promotionLot) => {
 const PromotionLotRecapTable = ({
   promotionLot,
 }: PromotionLotRecapTableProps) => (
-  <div className="promotion-lot-recap">
-    <RecapSimple
-      className="promotion-lot-recap-table"
-      array={getPromotionLotRecapArray(promotionLot)}
-    />
+  <div className="promotion-lot-recap validator recap">
+    <RecapSimple array={getPromotionLotRecapArray(promotionLot)} />
   </div>
 );
 

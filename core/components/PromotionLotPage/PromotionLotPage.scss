@@ -109,26 +109,15 @@
 }
 
 .promotion-lot-recap {
-  width: 100%;
-  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-self: center;
 
-  .promotion-lot-recap-table {
+  .recap-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    max-width: 400px;
-    // align-self: center;
-
-    .recap-item {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      height: 25px;
-    }
+    height: 25px;
   }
 }

@@ -39,6 +39,7 @@ export const propertyPromotionFragment = {
   roomCount: 1,
   bathroomCount: 1,
   description: 1,
+  monthlyExpenses: 1,
 };
 
 export const fullPropertyFragment = {
