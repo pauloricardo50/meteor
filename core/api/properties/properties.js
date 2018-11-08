@@ -8,7 +8,10 @@ import {
   address,
 } from '../helpers/sharedSchemas';
 import * as propertyConstants from './propertyConstants';
-import { DOCUMENTS } from '../files/fileConstants';
+import {
+  initialDocuments,
+  conditionalDocuments,
+} from './propertiesAdditionalDocuments';
 
 const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
 
@@ -23,39 +26,6 @@ Properties.allow({
   update: () => false,
   remove: () => false,
 });
-
-const initialDocuments = [
-  { id: DOCUMENTS.PURCHASE_CONTRACT },
-  { id: DOCUMENTS.LAND_REGISTER_EXTRACT },
-  { id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE },
-  { id: DOCUMENTS.PROPERTY_PICTURES },
-  { id: DOCUMENTS.PROPERTY_PLANS },
-  { id: DOCUMENTS.FIRE_AND_WATER_INSURANCE },
-];
-
-const conditionalDocuments = [
-  {
-    id: DOCUMENTS.PROPERTY_VOLUME,
-    condition: ({ doc: property, context }) =>
-      property.propertyType !== propertyConstants.PROPERTY_TYPE.HOUSE
-      && context.field('propertyType').value
-        === propertyConstants.PROPERTY_TYPE.HOUSE,
-  },
-  {
-    id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
-    condition: ({ doc: property, context }) =>
-      property.propertyType !== propertyConstants.PROPERTY_TYPE.FLAT
-      && context.field('propertyType').value
-        === propertyConstants.PROPERTY_TYPE.FLAT,
-  },
-  {
-    id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
-    condition: ({ doc: property, context }) =>
-      property.propertyType !== propertyConstants.PROPERTY_TYPE.FLAT
-      && context.field('propertyType').value
-        === propertyConstants.PROPERTY_TYPE.FLAT,
-  },
-];
 
 export const MicrolocationFactorSchema = new SimpleSchema({
   grade: {
