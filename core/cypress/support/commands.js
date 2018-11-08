@@ -113,6 +113,10 @@ Cypress.Commands.add(
   (email = E2E_USER_EMAIL, password = USER_PASSWORD) => {
     cy.window().then(({ Meteor }) =>
       new Cypress.Promise((resolve, reject) => {
+        if (!Meteor.userId()) {
+          return resolve();
+        }
+
         Meteor.logout((err) => {
           if (err) {
             return reject(err);
