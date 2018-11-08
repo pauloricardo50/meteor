@@ -29,6 +29,10 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
     // .filter(page => page === 'admin')
     .forEach((pageAuthentication) => {
       describe(capitalize(pageAuthentication), () => {
+        before(() => {
+          cy.setAuthentication(pageAuthentication);
+        });
+
         Object.keys(pages[pageAuthentication])
           // .filter(page => page === 'Property')
           .forEach((pageName) => {
@@ -49,7 +53,6 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
                   }
                 });
                 cy.printTestNameOnServer(testName);
-                cy.setAuthentication(pageAuthentication);
                 cy.routeShouldRenderSuccessfully(
                   pages[pageAuthentication][pageName],
                   testData,
