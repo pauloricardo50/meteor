@@ -27,7 +27,7 @@
     "test-all": "cd scripts/ && ./test-all.sh",
     "update-nginx": "cd .deployment/ && npm run update-nginx"
   },
-  "husky": {
+  "disabled-husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
