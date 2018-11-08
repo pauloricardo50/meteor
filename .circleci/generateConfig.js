@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 7;
+const CACHE_VERSION = 8;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -55,18 +55,18 @@ const cachePaths = {
 const runCommand = (name, command) => ({ run: { name, command } });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-  case 'e2e':
-    return runCommand(
-      'Run e2e tests',
-      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
-    );
-  case 'unit':
-    return runCommand(
-      'Run unit tests',
-      `meteor npm --prefix microservices/${name} run test-CI`,
-    );
-  default:
-    throw new Error(`Unknown tests type: ${testsType}`);
+    case 'e2e':
+      return runCommand(
+        'Run e2e tests',
+        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+      );
+    case 'unit':
+      return runCommand(
+        'Run unit tests',
+        `meteor npm --prefix microservices/${name} run test-CI`,
+      );
+    default:
+      throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
