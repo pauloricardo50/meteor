@@ -122,7 +122,7 @@ describe.only('additionalDocumentsAutovalue', () => {
     ]);
   });
 
-  it('should remove old additional documents and add new ones if condition result has changed', () => {
+  it('should keep additional documents if fields have not changed', () => {
     autovalueContext.isInsert = false;
     autovalueContext.fields = {
       [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
@@ -131,11 +131,11 @@ describe.only('additionalDocumentsAutovalue', () => {
 
     const doc = {
       additionalDocuments: [
-        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1 },
-        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3 },
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_4 },
       ],
-      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[0],
-      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[0],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
     };
 
     expect(additionalDocumentsAutovalue({
@@ -149,7 +149,7 @@ describe.only('additionalDocumentsAutovalue', () => {
     ]);
   });
 
-  it('should keep additional documents if condition result has not changed', () => {
+  it('should remove old additional documents and add new ones if fields have changed and condition is met', () => {
     autovalueContext.isInsert = false;
     autovalueContext.fields = {
       [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
@@ -158,27 +158,63 @@ describe.only('additionalDocumentsAutovalue', () => {
 
     const doc = {
       additionalDocuments: [
-        // { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1 },
         { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_4 },
       ],
-      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[0],
       [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
     };
 
-    console.log(additionalDocumentsAutovalue({
-      doc,
-      conditionalDocuments,
-      initialDocuments,
-      context: autovalueContext,
-    }));
     expect(additionalDocumentsAutovalue({
       doc,
       conditionalDocuments,
       initialDocuments,
       context: autovalueContext,
     })).to.deep.equal([
-      // { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
       { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_4 },
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
     ]);
+  });
+
+  it('should not add additional documents if fields have not changed', () => {
+    autovalueContext.isInsert = false;
+    autovalueContext.fields = {
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
+    };
+
+    const doc = {
+      additionalDocuments: [{ id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 }],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
+    };
+
+    expect(additionalDocumentsAutovalue({
+      doc,
+      conditionalDocuments,
+      initialDocuments,
+      context: autovalueContext,
+    })).to.deep.equal([{ id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 }]);
+  });
+
+  it('should not add additional documents if fields have changed but condition is not met', () => {
+    autovalueContext.isInsert = false;
+    autovalueContext.fields = {
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: 'abc',
+    };
+
+    const doc = {
+      additionalDocuments: [{ id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 }],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
+    };
+
+    expect(additionalDocumentsAutovalue({
+      doc,
+      conditionalDocuments,
+      initialDocuments,
+      context: autovalueContext,
+    })).to.deep.equal([{ id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 }]);
   });
 });
