@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { additionalDocumentsAutovalue } from '../sharedSchemas';
 
-describe.only('additionalDocumentsAutovalue', () => {
+describe('additionalDocumentsAutovalue', () => {
   let autovalueContext;
 
   const INITIAL_DOCUMENTS = {
@@ -108,6 +108,34 @@ describe.only('additionalDocumentsAutovalue', () => {
 
     const doc = {
       additionalDocuments: [],
+    };
+
+    expect(additionalDocumentsAutovalue({
+      doc,
+      conditionalDocuments,
+      initialDocuments,
+      context: autovalueContext,
+    })).to.deep.equal([
+      ...initialDocuments,
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1 },
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3 },
+    ]);
+  });
+
+  it('should not add additional documents again if condition is met', () => {
+    autovalueContext.isInsert = true;
+    autovalueContext.fields = {
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[0],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[0],
+    };
+
+    const doc = {
+      additionalDocuments: [
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1 },
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3 },
+      ],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
     };
 
     expect(additionalDocumentsAutovalue({
