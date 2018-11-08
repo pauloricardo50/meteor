@@ -2,6 +2,8 @@ import { propertyPromotionFragment } from '../../../properties/queries/propertyF
 
 export const proPromotionLotFragment = {
   _id: 1,
+  createdAt: 1,
+  updatedAt: 1,
   value: 1,
   status: 1,
   lots: {
@@ -33,6 +35,8 @@ export const proPromotionLotFragment = {
 
 export const appPromotionLotFragment = {
   _id: 1,
+  createdAt: 1,
+  updatedAt: 1,
   value: 1,
   status: 1,
   reducedStatus: 1,

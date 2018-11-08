@@ -1,5 +1,6 @@
 import React from 'react';
 import { compose, withProps, mapProps } from 'recompose';
+import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
@@ -40,6 +41,7 @@ const mapOption = (
     },
     lots,
     custom,
+    createdAt,
   } = promotionOption;
   const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
 
@@ -47,6 +49,7 @@ const mapOption = (
     id: promotionOptionId,
     columns: [
       user && user.name,
+      { raw: moment(createdAt).valueOf(), label: moment(createdAt).fromNow() },
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       {
@@ -85,6 +88,7 @@ const mapOption = (
 
 const columnOptions = [
   { id: 'name' },
+  { id: 'date' },
   { id: 'phone' },
   { id: 'email' },
   { id: 'promotionProgress' },

@@ -15,7 +15,12 @@ const PromotionLotLoansTable = ({
     <h3 className="text-center">
       <T id="PromotionLotLoansTable.title" />
     </h3>
-    <Table rows={rows} columnOptions={columnOptions} clickable={false} />
+    <Table
+      rows={rows}
+      columnOptions={columnOptions}
+      clickable={false}
+      initialOrderBy={1} // By date
+    />
   </>
 );
 

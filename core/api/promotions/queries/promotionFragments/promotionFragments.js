@@ -1,6 +1,8 @@
 import { propertyPromotionFragment } from '../../../properties/queries/propertyFragments';
 
 export const basePromotionFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   name: 1,
   type: 1,
   status: 1,
@@ -57,6 +59,8 @@ export const adminPromotionsFragment = {
 };
 
 export const searchPromotionsFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   name: 1,
   promotionLotLinks: 1,
 };

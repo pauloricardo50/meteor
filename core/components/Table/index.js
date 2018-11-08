@@ -1,1 +1,2 @@
-export { default } from './Table.jsx';
+export { default } from './Table';
+export { ORDER } from './tableHelpers';
