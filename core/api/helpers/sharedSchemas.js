@@ -33,12 +33,15 @@ export const additionalDocumentsAutovalue = ({
   context,
 }) => {
   const currentDocuments = doc.additionalDocuments;
-  console.log('currentDocuments', currentDocuments);
-
   const documentsModifications = conditionalDocuments.reduce(
-    (modifications, { id, condition }) => {
+    (modifications, { id, condition, relatedFields }) => {
+      const fieldsHaveChanged = relatedFields.every(field => context.field(field).value !== doc[field]);
       const conditionIsMet = condition({ doc, context });
       const documentExists = currentDocuments.some(({ id: documentId }) => id === documentId);
+
+      if (!fieldsHaveChanged) {
+        return modifications;
+      }
 
       if (conditionIsMet && !documentExists) {
         return {

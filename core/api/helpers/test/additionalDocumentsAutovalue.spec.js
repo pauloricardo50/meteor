@@ -37,28 +37,26 @@ describe.only('additionalDocumentsAutovalue', () => {
   const conditionalDocuments = [
     {
       id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1,
-      condition: ({ doc, context }) =>
-        doc[DOC_KEYS.KEY1.name] !== DOC_KEYS.KEY1.values[0]
-        && context.field(DOC_KEYS.KEY1.name).value === DOC_KEYS.KEY1.values[0],
+      relatedFields: [DOC_KEYS.KEY1.name],
+      condition: ({ context }) =>
+        context.field(DOC_KEYS.KEY1.name).value === DOC_KEYS.KEY1.values[0],
     },
     {
       id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2,
-      condition: ({ doc, context }) =>
-        doc[DOC_KEYS.KEY1.name] !== DOC_KEYS.KEY1.values[1]
-        && context.field(DOC_KEYS.KEY1.name).value === DOC_KEYS.KEY1.values[1],
+      relatedFields: [DOC_KEYS.KEY1.name],
+      condition: ({ context }) =>
+        context.field(DOC_KEYS.KEY1.name).value === DOC_KEYS.KEY1.values[1],
     },
     {
       id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3,
-      condition: ({ doc, context }) =>
-        // doc[DOC_KEYS.KEY2.name] !== DOC_KEYS.KEY2.values[0]
-        // &&
+      relatedFields: [DOC_KEYS.KEY2.name],
+      condition: ({ context }) =>
         context.field(DOC_KEYS.KEY2.name).value === DOC_KEYS.KEY2.values[0],
     },
     {
       id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_4,
-      condition: ({ doc, context }) =>
-        // doc[DOC_KEYS.KEY2.name] !== DOC_KEYS.KEY2.values[1]
-        // &&
+      relatedFields: [DOC_KEYS.KEY2.name],
+      condition: ({ context }) =>
         context.field(DOC_KEYS.KEY2.name).value === DOC_KEYS.KEY2.values[1],
     },
   ];
@@ -160,7 +158,7 @@ describe.only('additionalDocumentsAutovalue', () => {
 
     const doc = {
       additionalDocuments: [
-        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
+        // { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
         { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_4 },
       ],
       [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
@@ -179,7 +177,7 @@ describe.only('additionalDocumentsAutovalue', () => {
       initialDocuments,
       context: autovalueContext,
     })).to.deep.equal([
-      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
+      // { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
       { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_4 },
     ]);
   });
