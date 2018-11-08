@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 import cx from 'classnames';
 
 import { createRoute } from 'core/utils/routerUtils';
