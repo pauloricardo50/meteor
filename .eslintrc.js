@@ -28,7 +28,10 @@ module.exports = {
     // eslint default rules
     'class-methods-use-this': 'off',
     indent: [1, 2],
-    'max-len': ['error', 80],
+    'max-len': [
+      'error',
+      { code: 80, ignoreStrings: true, ignoreUrls: true, ignoreComments: true },
+    ],
     'no-underscore-dangle': [
       'error',
       {
@@ -65,6 +68,7 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'func-names': 'off',
     curly: 'error',
+    'global-require': 'off',
 
     // eslint-plugin-import rules
 

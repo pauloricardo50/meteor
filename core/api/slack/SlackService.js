@@ -9,12 +9,20 @@ const shouldNotLog = Meteor.isDevelopment || Meteor.isTest || Meteor.isAppTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
 class SlackService {
+  constructor() {
+    if (Meteor.isServer) {
+      this.fetch = require('node-fetch');
+    } else {
+      this.fetch = global.fetch;
+    }
+  }
+
   send = ({ channel, username = 'e-Potek Bot', text, ...rest }) => {
     if (shouldNotLog) {
       return false;
     }
 
-    return fetch(
+    return this.fetch(
       'https://hooks.slack.com/services/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',
       {
         method: 'POST',
