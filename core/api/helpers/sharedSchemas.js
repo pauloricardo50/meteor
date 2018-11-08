@@ -26,6 +26,33 @@ export const updatedAt = {
   optional: true,
 };
 
+const getDocumentModification = ({
+  id,
+  requiredByAdmin,
+  modifications,
+  shouldAddDoc = false,
+  shouldRemoveDoc = false,
+}) => {
+  if (requiredByAdmin !== undefined) {
+    return modifications;
+  }
+
+  if (shouldAddDoc) {
+    return {
+      documentsToAdd: [...modifications.documentsToAdd, id],
+      documentsToRemove: modifications.documentsToRemove,
+    };
+  }
+
+  if (shouldRemoveDoc) {
+    return {
+      documentsToAdd: modifications.documentsToAdd,
+      documentsToRemove: [...modifications.documentsToRemove, id],
+    };
+  }
+  return modifications;
+};
+
 export const additionalDocumentsAutovalue = ({
   doc,
   conditionalDocuments,
@@ -39,32 +66,37 @@ export const additionalDocumentsAutovalue = ({
         && relatedFields.length > 0
         && relatedFields.every(field => context.field(field).value !== doc[field]);
       const conditionIsMet = condition({ doc, context });
-      const documentExists = currentDocuments.some(({ id: documentId }) => id === documentId);
+      const document = currentDocuments.find(({ id: documentId }) => id === documentId);
+      const { requiredByAdmin } = !!document && document;
 
       if (relatedFields && relatedFields.length > 0 && !fieldsHaveChanged) {
-        return modifications;
+        return getDocumentModification({ id, requiredByAdmin, modifications });
       }
 
-      if (conditionIsMet && !documentExists) {
-        return {
-          documentsToAdd: [...modifications.documentsToAdd, id],
-          documentsToRemove: modifications.documentsToRemove,
-        };
+      if (conditionIsMet && !document) {
+        return getDocumentModification({
+          id,
+          requiredByAdmin,
+          modifications,
+          shouldAddDoc: true,
+        });
       }
 
-      if (conditionIsMet && documentExists) {
-        return modifications;
+      if (conditionIsMet && !!document) {
+        return getDocumentModification({ id, requiredByAdmin, modifications });
       }
 
-      if (!conditionIsMet && !documentExists) {
-        return modifications;
+      if (!conditionIsMet && !document) {
+        return getDocumentModification({ id, requiredByAdmin, modifications });
       }
 
-      if (!conditionIsMet && documentExists) {
-        return {
-          documentsToAdd: modifications.documentsToAdd,
-          documentsToRemove: [...modifications.documentsToRemove, id],
-        };
+      if (!conditionIsMet && !!document) {
+        return getDocumentModification({
+          id,
+          requiredByAdmin,
+          modifications,
+          shouldRemoveDoc: true,
+        });
       }
 
       return modifications;
@@ -74,7 +106,6 @@ export const additionalDocumentsAutovalue = ({
       documentsToRemove: [],
     },
   );
-  console.log('documentsModifications', documentsModifications);
 
   const documents = [
     ...currentDocuments,
@@ -82,7 +113,6 @@ export const additionalDocumentsAutovalue = ({
   ].filter(({ id }) =>
     !documentsModifications.documentsToRemove.some(idToRemove => idToRemove === id));
 
-  console.log('documents', documents);
   return context.isInsert ? [...initialDocuments, ...documents] : documents;
 };
 

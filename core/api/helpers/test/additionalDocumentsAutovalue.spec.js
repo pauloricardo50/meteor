@@ -245,4 +245,58 @@ describe('additionalDocumentsAutovalue', () => {
       context: autovalueContext,
     })).to.deep.equal([{ id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 }]);
   });
+
+  it('should not remove additional doc if it is required by admin', () => {
+    autovalueContext.isInsert = false;
+    autovalueContext.fields = {
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[0],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[0],
+    };
+
+    const doc = {
+      additionalDocuments: [
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3, requiredByAdmin: true },
+      ],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
+    };
+
+    expect(additionalDocumentsAutovalue({
+      doc,
+      conditionalDocuments,
+      initialDocuments,
+      context: autovalueContext,
+    })).to.deep.equal([
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3, requiredByAdmin: true },
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1 },
+    ]);
+  });
+
+  it('should not add additional doc if it is not required by admin', () => {
+    autovalueContext.isInsert = false;
+    autovalueContext.fields = {
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[0],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[0],
+    };
+
+    const doc = {
+      additionalDocuments: [
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_2 },
+        { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3, requiredByAdmin: false },
+      ],
+      [DOC_KEYS.KEY1.name]: DOC_KEYS.KEY1.values[1],
+      [DOC_KEYS.KEY2.name]: DOC_KEYS.KEY2.values[1],
+    };
+
+    expect(additionalDocumentsAutovalue({
+      doc,
+      conditionalDocuments,
+      initialDocuments,
+      context: autovalueContext,
+    })).to.deep.equal([
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_3, requiredByAdmin: false },
+      { id: CONDITIONAL_DOCUMENTS.CONDITIONAL_DOC_1 },
+    ]);
+  });
 });
