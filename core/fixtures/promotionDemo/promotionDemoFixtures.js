@@ -27,6 +27,20 @@ const DEMO_PROMOTION = {
   address1: 'Chemin de Pré-Polly 1',
   zipCode: 1233,
   city: 'Bernex',
+  contacts: [
+    {
+      name: 'Marc Steiner',
+      title: 'Commercialisation',
+      email: 'marc@test.com',
+      phoneNumber: '+41 21 800 90 70',
+    },
+    {
+      name: 'Léo Dind',
+      title: 'Architecte',
+      email: 'leo@test.com',
+      phoneNumber: '+41 58 999 21 21',
+    },
+  ],
 };
 
 export const createPromotionDemoUser = () => {

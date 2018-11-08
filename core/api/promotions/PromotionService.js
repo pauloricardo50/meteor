@@ -11,6 +11,7 @@ import PromotionLotService from '../promotionLots/PromotionLotService';
 import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { sendEmail } from '../email/methodDefinitions';
 import { EMAIL_IDS } from '../email/emailConstants';
+import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
 
 export class PromotionService extends CollectionService {
   constructor({ sendEmail: injectedSendEmail }) {
@@ -36,7 +37,9 @@ export class PromotionService extends CollectionService {
   }
 
   insertPromotionProperty({ promotionId, property }) {
-    const propertyId = PropertyService.insert({ property });
+    const propertyId = PropertyService.insert({
+      property: { ...property, category: PROPERTY_CATEGORY.PROMOTION },
+    });
     const promotionLotId = PromotionLotService.insert({
       propertyLinks: [{ _id: propertyId }],
     });
@@ -119,7 +122,7 @@ export class PromotionService extends CollectionService {
       const logoUrls = logos && logos.map(({ url }) => url);
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
-      const { name } = this.get(promotionId);
+      const promotion = this.get(promotionId);
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
@@ -138,7 +141,7 @@ export class PromotionService extends CollectionService {
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
-          promotionName: name,
+          promotion,
           coverImageUrl,
           logoUrls,
           ctaUrl,

@@ -6,6 +6,7 @@ import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import DocumentDownloadList from 'core/components/DocumentDownloadList';
 import ClickToEditField from 'core/components/ClickToEditField';
+import PromotionLotRecapTable from 'core/components/PromotionLotPage/PromotionLotRecapTable';
 import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_STATUS,
@@ -25,8 +26,6 @@ export const AppPromotionLotPage = ({
   promotionId,
   setCustom,
 }: AppPromotionLotPageProps) => {
-  console.log('promotionLot', promotionLot);
-  console.log('loanPromotions', loanPromotions); // Should have $metadata
   const {
     name,
     reducedStatus,
@@ -34,9 +33,13 @@ export const AppPromotionLotPage = ({
     value,
     lots,
     documents,
+    properties,
   } = promotionLot;
   const { name: promotionName } = promotion;
   const { custom, attributedToMe } = promotionOption || {};
+  const property = properties.length > 0 && properties[0];
+  const { description } = property;
+  console.log('property', property);
 
   return (
     <div>
@@ -53,29 +56,24 @@ export const AppPromotionLotPage = ({
       </Button>
 
       <div className="card1 app-promotion-option-page">
-        <h1>
-          {name}
+        <h1 style={{ marginBottom: '4px' }}>
+          {name} - CHF {toMoney(promotionLot.value)}
           &nbsp;
           <StatusLabel
             status={reducedStatus}
             collection={PROMOTION_LOTS_COLLECTION}
           />
         </h1>
-        <h3 className="secondary">
-          <T
-            id="AppPromotionLotPage.subtitle"
-            values={{ promotionName, value: `CHF ${toMoney(value)}` }}
-          />
-        </h3>
-
+        {description && <h3 className="secondary">{description}</h3>}
         <h4>
-          <T id="collections.lots" />
+          <T id="PromotionLotPage.manageLot" />
         </h4>
         <div className="lots">
           {lots.map(lot => (
             <LotChip lot={lot} key={lot._id} />
           ))}
         </div>
+        <PromotionLotRecapTable promotionLot={promotionLot} />
 
         {setCustom && (
           <>
@@ -94,6 +92,9 @@ export const AppPromotionLotPage = ({
           </>
         )}
 
+        <DocumentDownloadList
+          files={documents && documents.promotionPropertyDocuments}
+        />
       </div>
     </div>
   );

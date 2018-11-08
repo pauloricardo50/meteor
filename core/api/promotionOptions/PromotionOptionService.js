@@ -1,7 +1,9 @@
+import { Meteor } from 'meteor/meteor';
 import PromotionOptions from './promotionOptions';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
 import { fullPromotionOptionFragment } from './queries/promotionOptionFragments';
+import Loans from '../loans';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
@@ -50,6 +52,20 @@ export class PromotionOptionService extends CollectionService {
   }
 
   insert = ({ promotionLotId, loanId }) => {
+    const { promotionOptions } = Loans.createQuery({
+      $filters: { _id: loanId },
+      promotionOptions: { _id: 1, promotionLots: { _id: 1 } },
+    }).fetchOne();
+
+    const existingPromotionOption = promotionOptions
+      && promotionOptions.find(({ promotionLots }) =>
+        promotionLots
+          && promotionLots.some(lot => lot._id === promotionLotId));
+
+    if (existingPromotionOption) {
+      throw new Meteor.Error('Vous avez déjà choisi ce lot. Essayez de rafraîchir la page.');
+    }
+
     const promotionOptionId = super.insert({
       promotionLotLinks: [{ _id: promotionLotId }],
     });

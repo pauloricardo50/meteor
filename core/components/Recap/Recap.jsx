@@ -6,7 +6,6 @@ import { toMoney } from '../../utils/conversionFunctions';
 import { T, Percent, MetricArea } from '../Translation';
 import RecapSimple from './RecapSimple';
 import Calculator from '../../utils/Calculator';
-import BorrowerCalculator from '../../utils/Calculator/BorrowerCalculator';
 
 const getDashboardArray = (props) => {
   const bonusIncome = Calculator.getBonusIncome(props);
@@ -209,24 +208,25 @@ const getDashboardArray = (props) => {
 };
 
 const getBorrowerArray = ({ borrower: borrowers }) => {
-  const expenses = BorrowerCalculator.getExpenses({ borrowers });
-  const bonusIncome = BorrowerCalculator.getBonusIncome({ borrowers });
-  const otherIncome = BorrowerCalculator.getOtherIncome({ borrowers });
-  const otherFortune = BorrowerCalculator.getOtherFortune({ borrowers });
-  const realEstateFortune = BorrowerCalculator.getRealEstateFortune({
+  const expenses = Calculator.getExpenses({ borrowers });
+  const bonusIncome = Calculator.getBonusIncome({ borrowers });
+  const otherIncome = Calculator.getOtherIncome({ borrowers });
+  const otherFortune = Calculator.getOtherFortune({ borrowers });
+  const realEstateFortune = Calculator.getRealEstateFortune({
     borrowers,
   });
-  const realEstateValue = BorrowerCalculator.getRealEstateValue({
+  const realEstateValue = Calculator.getRealEstateValue({
     borrowers,
   });
-  const realEstateDebt = BorrowerCalculator.getRealEstateDebt({ borrowers });
-  const fortune = BorrowerCalculator.getFortune({ borrowers });
-  const insuranceFortune = BorrowerCalculator.getInsuranceFortune({
+  const realEstateDebt = Calculator.getRealEstateDebt({ borrowers });
+  const fortune = Calculator.getFortune({ borrowers });
+  const thirdPartyFortune = Calculator.getThirdPartyFortune({ borrowers });
+  const insuranceFortune = Calculator.getInsuranceFortune({
     borrowers,
   });
-  const totalFunds = BorrowerCalculator.getTotalFunds({ borrowers });
-  const salary = BorrowerCalculator.getSalary({ borrowers });
-  const income = BorrowerCalculator.getTotalIncome({ borrowers });
+  const totalFunds = Calculator.getTotalFunds({ borrowers });
+  const salary = Calculator.getSalary({ borrowers });
+  const income = Calculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;
 
@@ -243,6 +243,11 @@ const getBorrowerArray = ({ borrower: borrowers }) => {
       label: 'Recap.insuranceFortune',
       value: toMoney(insuranceFortune),
       hide: !insuranceFortune,
+    },
+    {
+      label: 'Recap.thirdPartyFortune',
+      value: toMoney(thirdPartyFortune),
+      hide: !thirdPartyFortune,
     },
     {
       label: 'Recap.availableFunds',

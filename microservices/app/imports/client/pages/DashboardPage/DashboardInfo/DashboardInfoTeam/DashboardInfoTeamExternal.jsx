@@ -20,7 +20,7 @@ const DashboardInfoTeamExternal = ({
       <DashboardInfoTeamMember
         {...contact}
         key={contact.name}
-        allowEdit
+        allowEdit={!contact.disableEdit}
         removeContact={removeContact}
         editContact={editContact}
       />
