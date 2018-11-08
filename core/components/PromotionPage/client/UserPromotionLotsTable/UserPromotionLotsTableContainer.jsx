@@ -42,7 +42,11 @@ const makeMapPromotionLot = ({
         />
       ),
     },
-    { raw: value, label: toMoney(value) },
+    {
+      raw: reducedStatus === PROMOTION_LOT_STATUS.SOLD ? 0 : value,
+      label:
+        reducedStatus === PROMOTION_LOT_STATUS.SOLD ? null : toMoney(value),
+    },
     {
       raw: lots && lots.length,
       label: (
