@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -142,7 +143,7 @@ const iconMap = {
   image: Image,
 };
 
-const Icon = ({ type, size, ...props }) => {
+const Icon = ({ type, size, tooltip, tooltipPlacement, ...props }) => {
   if (type !== null && typeof type === 'object') {
     return type;
   }
@@ -155,9 +156,19 @@ const Icon = ({ type, size, ...props }) => {
     return <MyIcon.component {...MyIcon.props} {...props} />;
   }
 
-  return (
+  const icon = (
     <MyIcon style={size ? { width: size, height: size } : {}} {...props} />
   );
+
+  if (tooltip) {
+    return (
+      <Tooltip placement={tooltipPlacement} title={tooltip}>
+        {icon}
+      </Tooltip>
+    );
+  }
+
+  return icon;
 };
 
 Icon.propTypes = {

@@ -8,6 +8,7 @@ import T from 'core/components/Translation';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
+import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 
 const getSolvency = (email) => {
   const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
@@ -91,11 +92,14 @@ const columnOptions = [
   { id: 'date' },
   { id: 'phone' },
   { id: 'email' },
-  { id: 'promotionProgress' },
+  { id: 'promotionProgress', label: <PromotionProgressHeader /> },
   { id: 'custom' },
   { id: 'priorityOrder' },
   { id: 'attribute' },
-].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
+].map(({ id, label }) => ({
+  id,
+  label: label || <T id={`PromotionLotLoansTable.${id}`} />,
+}));
 
 export default compose(
   mapProps(({ promotionOptions, promotionLot, canModify }) => ({

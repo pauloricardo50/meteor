@@ -7,15 +7,19 @@ import T from '../Translation';
 import PromotionProgress from '../PromotionLotPage/PromotionProgress';
 import PriorityOrder from '../PromotionLotPage/PriorityOrder';
 import { createRoute } from '../../utils/routerUtils';
+import PromotionProgressHeader from './PromotionProgressHeader';
 
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
-  { id: 'promotionProgress' },
+  { id: 'promotionProgress', label: <PromotionProgressHeader /> },
   { id: 'priorityOrder' },
-].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
+].map(({ id, label }) => ({
+  id,
+  label: label || <T id={`PromotionLotLoansTable.${id}`} />,
+}));
 
 const makeMapLoan = ({ promotionId, history, isAdmin }) => (loan) => {
   const {
@@ -26,7 +30,6 @@ const makeMapLoan = ({ promotionId, history, isAdmin }) => (loan) => {
     promotions,
     createdAt,
   } = loan;
-  console.log('loan', loan);
   const promotion = promotions.find(({ _id }) => _id === promotionId);
   return {
     id: loanId,
