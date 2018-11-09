@@ -25,7 +25,7 @@ const styles = {
 
 export default class NotFound extends Component {
   componentDidMount() {
-    SlackService.sendError({ name: 'NotFound page triggered' });
+    SlackService.sendError({ error: { name: 'NotFound page triggered' } });
   }
 
   render() {
