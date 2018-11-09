@@ -26,9 +26,7 @@ import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage';
 import NewPromotionPage from '../../client/pages/NewPromotionPage';
 import NewPropertyPage from '../../client/pages/NewPropertyPage';
 
-type ProRouterProps = {};
-
-const ProRouter = (props: ProRouterProps) => (
+const ProRouter = () => (
   <BaseRouter
     locale={getUserLocale()}
     messages={messagesFR}
@@ -62,7 +60,11 @@ const ProRouter = (props: ProRouterProps) => (
           path={ROUTES.EMAIL_VERIFICATION_PAGE}
           component={EmailVerificationPage}
         />
-        <Route path={ROUTES.PRO_DASHBOARD_PAGE} component={ProDashboardPage} />
+        <Route
+          exact
+          path={ROUTES.PRO_DASHBOARD_PAGE}
+          component={ProDashboardPage}
+        />
         <Route exact path={IMPERSONATE_ROUTE} component={ImpersonatePage} />
         <Route component={NotFound} />
       </Switch>

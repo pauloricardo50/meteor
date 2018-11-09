@@ -8,9 +8,10 @@
     "deploy-staging": "cd .deployment/ && npm run deploy-staging",
     "flow-typed": "flow-typed install",
     "flow": "flow",
-    "format": "prettier-eslint \"**/*.js*\" --ignore \"flow-typed/**\" --write --eslint-config-path .eslintrc.js",
+    "format": "eslint --fix .",
     "generate-circleci-configs": "babel-node .circleci/generateConfig.js",
     "lang": "babel-node scripts/createLanguages.js",
+    "lint": "eslint .",
     "mongo-ssh-production": "cd .deployment/ && npm run mongo-ssh-production",
     "mongo-ssh-staging": "cd .deployment/ && npm run mongo-ssh-staging",
     "remove-core": "cd scripts/ && ./remove-core.sh",
@@ -25,6 +26,16 @@
     "stop-maintenance": "cd .deployment/ && npm run stop-maintenance",
     "test-all": "cd scripts/ && ./test-all.sh",
     "update-nginx": "cd .deployment/ && npm run update-nginx"
+  },
+  "disabled-husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint"
+    ]
   },
   "repository": {
     "type": "git",
@@ -54,12 +65,9 @@
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.82.0",
     "flow-typed": "^2.4.0",
+    "global": "^4.3.2",
     "husky": "^1.1.0",
     "lint-staged": "^7.1.2",
-    "prettier-eslint-cli": "^4.7.1"
-  },
-  "dependencies": {
-    "global": "^4.3.2",
     "prettier": "^1.13.5"
   }
 }

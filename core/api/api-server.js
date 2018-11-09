@@ -1,3 +1,5 @@
+import SlackService from './slack/SlackService';
+
 import 'core/fixtures/fixtureMethods';
 
 import './users/server/accounts-server-config';
@@ -22,3 +24,10 @@ import './server/hooks';
 import './server/queries';
 import './server/reducers';
 import './server/mongoIndexes';
+
+process.on('uncaughtException', (error) => {
+  SlackService.sendError(error, 'Server uncaughtException');
+});
+process.on('unhandledRejection', (error) => {
+  SlackService.sendError(error, 'Server uncaughtException');
+});

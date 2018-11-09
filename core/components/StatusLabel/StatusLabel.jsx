@@ -33,8 +33,8 @@ const getStatusColor = (status, collection) => {
 
   case PROMOTIONS_COLLECTION:
     return {
-      [PROMOTION_STATUS.CANCELLED]: colors.error,
-      [PROMOTION_STATUS.FINISHED]: colors.success,
+      [PROMOTION_STATUS.CANCELLED]: colors.warning,
+      [PROMOTION_STATUS.FINISHED]: colors.error,
       [PROMOTION_STATUS.OPEN]: colors.success,
       [PROMOTION_STATUS.PREPARATION]: colors.primary,
     }[status];

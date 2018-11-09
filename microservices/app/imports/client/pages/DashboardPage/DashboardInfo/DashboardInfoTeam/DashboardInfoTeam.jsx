@@ -12,9 +12,10 @@ const DashboardInfoTeam = ({
   removeContact,
   editContact,
   loan: {
-    contacts,
     user: { assignedEmployee },
+    hasPromotion,
   },
+  contacts,
 }) => (
   <div className="dashboard-info-team card1">
     <div className="card-top">
@@ -22,7 +23,10 @@ const DashboardInfoTeam = ({
         <T id="DashboardInfoTeam.title" />
       </h3>
 
-      <DashboardInfoTeamCompany assignedEmployee={assignedEmployee} />
+      <DashboardInfoTeamCompany
+        assignedEmployee={assignedEmployee}
+        hasPromotion={hasPromotion}
+      />
 
       {contacts
         && contacts.length > 0 && (

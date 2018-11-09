@@ -1,3 +1,4 @@
 !/.*
 **/*.json
+**/flow-typed
 **/node_modules

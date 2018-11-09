@@ -29,34 +29,28 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
     // .filter(page => page === 'admin')
     .forEach((pageAuthentication) => {
       describe(capitalize(pageAuthentication), () => {
-        Object.keys(pages[pageAuthentication])
-          // .filter(page => page === 'Property')
-          .forEach((pageName) => {
-            const testName = `${pageName} Page`;
-            describe(testName, () => {
-              it('should render', () => {
-                console.log('-------------------------');
-                console.log('-------------------------');
-                console.log('starting test: ', testName);
-                console.log('-------------------------');
-                console.log('-------------------------');
+        before(() => {
+          cy.setAuthentication(pageAuthentication);
 
-                // logout the impersonated user
-                const { IMPERSONATE_SESSION_KEY } = testData;
-                cy.window().then((context) => {
-                  if (context && context.Session) {
-                    context.Session.clear(IMPERSONATE_SESSION_KEY);
-                  }
-                });
-                cy.printTestNameOnServer(testName);
-                cy.setAuthentication(pageAuthentication);
-                cy.routeShouldRenderSuccessfully(
-                  pages[pageAuthentication][pageName],
-                  testData,
-                );
-              });
-            });
+          // logout the impersonated user
+          const { IMPERSONATE_SESSION_KEY } = testData;
+          cy.window().then((context) => {
+            if (context && context.Session) {
+              context.Session.clear(IMPERSONATE_SESSION_KEY);
+            }
           });
+        });
+
+        it('Pages should render without errors', () => {
+          Object.keys(pages[pageAuthentication]).forEach((pageName) => {
+            const testName = `${pageName} Page`;
+
+            cy.routeShouldRenderSuccessfully(
+              pages[pageAuthentication][pageName],
+              testData,
+            );
+          });
+        });
       });
     });
 };

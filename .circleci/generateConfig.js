@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 7;
+const CACHE_VERSION = 8;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -79,8 +79,8 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-')
+            + (index === 0 ? '' : '-'),
         ],
         [],
       ),

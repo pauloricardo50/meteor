@@ -28,7 +28,10 @@ module.exports = {
     // eslint default rules
     'class-methods-use-this': 'off',
     indent: [1, 2],
-    'max-len': ['error', 80],
+    'max-len': [
+      'error',
+      { code: 80, ignoreStrings: true, ignoreUrls: true, ignoreComments: true },
+    ],
     'no-underscore-dangle': [
       'error',
       {
@@ -59,12 +62,18 @@ module.exports = {
     // and then remove these comments
     // Use "functions"  instead of "all" to avoid this issue:
     // https://github.com/prettier/prettier-eslint/issues/180
-    'no-extra-parens': ['error', 'functions'],
+    // 'no-extra-parens': [
+    //   'error',
+    //   'functions',
+    //   { nestedBinaryExpressions: false },
+    // ],
     'no-mixed-operators': ['error', { allowSamePrecedence: false }],
     'function-paren-newline': ['error', 'multiline'],
     'implicit-arrow-linebreak': 'off',
     'func-names': 'off',
     curly: 'error',
+    'global-require': 'off',
+    'consistent-return': 'off',
 
     // eslint-plugin-import rules
 

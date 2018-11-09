@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 import T from 'core/components/Translation';
 
 const AboutPageTeamRecruiting = () => (

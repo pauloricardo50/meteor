@@ -4,7 +4,7 @@ import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 
 import { ROLES } from 'core/api/constants';
 import TopNavLogo from 'core/components/TopNav/TopNavLogo';
