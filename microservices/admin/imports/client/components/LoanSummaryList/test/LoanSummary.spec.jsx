@@ -2,7 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 
 import { STEPS } from 'core/api/constants';
 import BorrowersSummary from 'core/components/BorrowersSummary';

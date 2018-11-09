@@ -13,7 +13,7 @@ const withErrorCatcher = lifecycle({
       if (Kadira && Kadira.trackError) {
         Kadira.trackError('react', error.stack.toString());
       }
-      SlackService.sendError(error, 'JS error');
+      SlackService.sendError({ error, additionalData: ['JS error'] });
     };
   },
 });

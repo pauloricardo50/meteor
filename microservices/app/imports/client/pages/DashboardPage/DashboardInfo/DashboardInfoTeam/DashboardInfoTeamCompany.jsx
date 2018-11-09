@@ -11,7 +11,7 @@ import DashboardInfoTeamMember from './DashboardInfoTeamMember';
 // Removes duplicates from an array of objects, by a key in the objects
 const removeDuplicates = (array, keyToFilter) => uniqBy(array, keyToFilter);
 
-const getTeam = (assignedEmployee) => {
+const getTeam = (assignedEmployee, hasPromotion) => {
   let assignee = employeesByEmail['lydia@e-potek.ch'];
   if (assignedEmployee) {
     const { email } = assignedEmployee;
@@ -21,6 +21,10 @@ const getTeam = (assignedEmployee) => {
     } else {
       assignee = placeholderEmployee;
     }
+  }
+
+  if (hasPromotion) {
+    return [assignee];
   }
 
   return [
@@ -36,8 +40,8 @@ const getTeam = (assignedEmployee) => {
   ];
 };
 
-const DashboardInfoTeamCompany = ({ assignedEmployee }) => {
-  const team = getTeam(assignedEmployee);
+const DashboardInfoTeamCompany = ({ assignedEmployee, hasPromotion }) => {
+  const team = getTeam(assignedEmployee, hasPromotion);
 
   return (
     <React.Fragment>

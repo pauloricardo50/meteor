@@ -18,7 +18,7 @@ server-render@0.3.1
 
 
 # Styles
-fourseven:scss@4.5.0
+fourseven:scss
 themeteorchef:bert
 
 # Put this before factory
@@ -33,16 +33,16 @@ meteortesting:mocha@1.0.1
 # Data
 cultofcoders:mutations
 cultofcoders:grapher-react
-ddp-rate-limiter@1.0.7
+ddp-rate-limiter
 
 
 # Accounts
 alanning:roles
-accounts-password@1.5.1
+accounts-password
 
 
 # Production
-force-ssl@1.1.0                      # Automatically route users to https
+force-ssl                      # Automatically route users to https
 wylio:mandrill
 edgee:slingshot
 dburles:google-maps
@@ -51,7 +51,7 @@ lmachens:kadira
 okgrow:analytics
 aldeed:schema-index
 aldeed:schema-deny
-dynamic-import@0.5.0
+dynamic-import
 qualia:profile
 matb33:collection-hooks
 percolate:migrations

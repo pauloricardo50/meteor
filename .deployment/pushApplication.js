@@ -35,20 +35,18 @@ const pollDirectoriesSanityStatus = ({ directories = [], root }) => {
     return Promise.resolve();
   }
 
-  const directoriesSanityStatus = directories.map(
-    directory =>
-      isFilePresentInDirectory({
+  const directoriesSanityStatus = directories.map(directory =>
+    (isFilePresentInDirectory({
+      path: `${root}/../${directory}`,
+      file: APPLICATION_SANITY_CHECK_DONE,
+    })
+      ? APPLICATION_SANITY_CHECK_DONE
+      : isFilePresentInDirectory({
         path: `${root}/../${directory}`,
-        file: APPLICATION_SANITY_CHECK_DONE,
+        file: APPLICATION_SANITY_CHECK_ERROR,
       })
-        ? APPLICATION_SANITY_CHECK_DONE
-        : isFilePresentInDirectory({
-            path: `${root}/../${directory}`,
-            file: APPLICATION_SANITY_CHECK_ERROR,
-          })
-          ? APPLICATION_SANITY_CHECK_ERROR
-          : APPLICATION_SANITY_CHECK_PENDING,
-  );
+        ? APPLICATION_SANITY_CHECK_ERROR
+        : APPLICATION_SANITY_CHECK_PENDING));
 
   if (directoriesSanityStatus.includes(APPLICATION_SANITY_CHECK_ERROR)) {
     clearInterval(interval);
@@ -56,9 +54,7 @@ const pollDirectoriesSanityStatus = ({ directories = [], root }) => {
   }
 
   if (
-    directoriesSanityStatus.every(
-      status => status === APPLICATION_SANITY_CHECK_DONE,
-    )
+    directoriesSanityStatus.every(status => status === APPLICATION_SANITY_CHECK_DONE)
   ) {
     clearInterval(interval);
     return Promise.resolve();
@@ -87,9 +83,7 @@ const main = () => {
     .help('h')
     .alias('h', 'help').argv;
 
-  executeCommand(
-    checkApplicationsCommand({ directory, files, application }),
-  ).then(() => {
+  executeCommand(checkApplicationsCommand({ directory, files, application })).then(() => {
     process.stdout.write('Polling other applications sanity status...');
     interval = setInterval(
       () =>

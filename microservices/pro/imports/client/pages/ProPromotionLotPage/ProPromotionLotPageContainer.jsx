@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose } from 'recompose';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';

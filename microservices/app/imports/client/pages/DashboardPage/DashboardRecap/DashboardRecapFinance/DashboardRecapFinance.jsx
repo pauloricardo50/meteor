@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 
 import { createRoute } from 'core/utils/routerUtils';
 import Calculator from 'core/utils/Calculator';

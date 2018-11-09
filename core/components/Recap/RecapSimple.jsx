@@ -23,6 +23,7 @@ const RecapSimple = ({ array, noScale, className }) => (
       spacing,
       spacingTop,
       value,
+      key,
     }) => {
       if (hide) {
         return null;
@@ -35,7 +36,7 @@ const RecapSimple = ({ array, noScale, className }) => (
           <h4
             className="text-center"
             {...props}
-            key={label}
+            key={key || label}
             style={labelStyle}
           >
             {noIntl ? label : <T id={label} />}
@@ -52,7 +53,7 @@ const RecapSimple = ({ array, noScale, className }) => (
             marginBottom: spacing && 32,
             marginTop: spacingTop && 8,
           }}
-          key={label}
+          key={key || label}
         >
           <p>{noIntl ? label : <T id={label} tooltipPlacement="bottom" />}</p>
           <p {...props}>{value}</p>

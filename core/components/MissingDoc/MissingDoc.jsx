@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
+import Link from '../Link';
+import T from '../Translation';
+import Button from '../Button';
 
 const MisisngDoc = () => (
   <div className="flex-col center animated jackInTheBox">

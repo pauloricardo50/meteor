@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 
 import { T, MetricArea, Money } from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';

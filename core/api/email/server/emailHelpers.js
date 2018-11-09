@@ -24,9 +24,9 @@ const PRO_URL = Meteor.settings.public.subdomains.pro;
  */
 export const getEmailFooter = (footerType, allowUnsubscribe) =>
   formatMessage(`emails.${footerType}`, {
-    url: `<a href="${WWW_URL}" target="_blank" style="color:white;">e-potek.ch</a><br />`,
+    url: `<a href="${WWW_URL}" target="_blank" style="color:inherit;">e-potek.ch</a><br />`,
     unsubscribe: allowUnsubscribe
-      ? `<a href="*|UNSUB|*" style="color:white;">${formatMessage('emails.unsubscribe')}</a>`
+      ? `<a href="*|UNSUB|*" style="color:inherit;">${formatMessage('emails.unsubscribe')}</a>`
       : '',
   });
 

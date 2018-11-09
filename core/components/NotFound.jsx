@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import SlackService from 'core/api/slack/SlackService';
+import Link from './Link';
 
 const styles = {
   section: {
@@ -25,7 +25,7 @@ const styles = {
 
 export default class NotFound extends Component {
   componentDidMount() {
-    SlackService.sendError({ name: 'NotFound page triggered' });
+    SlackService.sendError({ error: { name: 'NotFound page triggered' } });
   }
 
   render() {

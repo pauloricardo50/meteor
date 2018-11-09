@@ -29,11 +29,25 @@ export const propertySummaryFragment = {
   $options: { sort: { createdAt: 1 } },
 };
 
+export const propertyPromotionFragment = {
+  name: 1,
+  value: 1,
+  address: 1,
+  insideArea: 1,
+  terraceArea: 1,
+  gardenArea: 1,
+  roomCount: 1,
+  bathroomCount: 1,
+  description: 1,
+  monthlyExpenses: 1,
+};
+
 export const fullPropertyFragment = {
   ...propertySummaryFragment,
   additionalDocuments: 1,
   adminValidation: 1,
   areaNorm: 1,
+  category: 1,
   constructionYear: 1,
   copropertyPercentage: 1,
   createdAt: 1,
@@ -61,10 +75,13 @@ export const fullPropertyFragment = {
   renovationYear: 1,
   residenceType: 1,
   roomCount: 1,
+  bathroomCount: 1,
+  gardenArea: 1,
   terraceArea: 1,
   user: appUserFragment,
   volume: 1,
   volumeNorm: 1,
+  description: 1,
 };
 
 export const userPropertyFragment = {

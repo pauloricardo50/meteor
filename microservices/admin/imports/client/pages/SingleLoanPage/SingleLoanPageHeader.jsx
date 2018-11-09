@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
