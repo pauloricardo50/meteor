@@ -9,6 +9,11 @@ class NotaryFeesCalculator {
     const config = cantonConfigs[canton];
     Object.assign(this, config);
   }
+
+  getNotaryFeesForLoan(loan) {
+    // TODO
+    return 0;
+  }
 }
 
 export default NotaryFeesCalculator;
