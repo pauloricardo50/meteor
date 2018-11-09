@@ -31,35 +31,26 @@ export const generateTestsFromPagesConfig = (pages, getTestData) => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
           cy.setAuthentication(pageAuthentication);
+
+          // logout the impersonated user
+          const { IMPERSONATE_SESSION_KEY } = testData;
+          cy.window().then((context) => {
+            if (context && context.Session) {
+              context.Session.clear(IMPERSONATE_SESSION_KEY);
+            }
+          });
         });
 
-        Object.keys(pages[pageAuthentication])
-          // .filter(page => page === 'Property')
-          .forEach((pageName) => {
+        it('Pages should render without errors', () => {
+          Object.keys(pages[pageAuthentication]).forEach((pageName) => {
             const testName = `${pageName} Page`;
-            describe(testName, () => {
-              it('should render', () => {
-                console.log('-------------------------');
-                console.log('-------------------------');
-                console.log('starting test: ', testName);
-                console.log('-------------------------');
-                console.log('-------------------------');
 
-                // logout the impersonated user
-                const { IMPERSONATE_SESSION_KEY } = testData;
-                cy.window().then((context) => {
-                  if (context && context.Session) {
-                    context.Session.clear(IMPERSONATE_SESSION_KEY);
-                  }
-                });
-                cy.printTestNameOnServer(testName);
-                cy.routeShouldRenderSuccessfully(
-                  pages[pageAuthentication][pageName],
-                  testData,
-                );
-              });
-            });
+            cy.routeShouldRenderSuccessfully(
+              pages[pageAuthentication][pageName],
+              testData,
+            );
           });
+        });
       });
     });
 };
