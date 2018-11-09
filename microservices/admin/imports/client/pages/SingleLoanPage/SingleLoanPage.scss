@@ -37,3 +37,13 @@
 .properties-tab .property-form {
   margin: 32px;
 }
+
+.single-borrower-tab {
+  display: flex;
+  flex-direction: column;
+
+  .recap {
+    align-self: center;
+    margin: 40px 0;
+  }
+}
