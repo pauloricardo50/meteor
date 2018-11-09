@@ -55,18 +55,18 @@ const cachePaths = {
 const runCommand = (name, command) => ({ run: { name, command } });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-  case 'e2e':
-    return runCommand(
-      'Run e2e tests',
-      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
-    );
-  case 'unit':
-    return runCommand(
-      'Run unit tests',
-      `meteor npm --prefix microservices/${name} run test-CI`,
-    );
-  default:
-    throw new Error(`Unknown tests type: ${testsType}`);
+    case 'e2e':
+      return runCommand(
+        'Run e2e tests',
+        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+      );
+    case 'unit':
+      return runCommand(
+        'Run unit tests',
+        `meteor npm --prefix microservices/${name} run test-CI`,
+      );
+    default:
+      throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
@@ -165,9 +165,11 @@ const makeConfig = () => ({
     'Www - unit tests': testMicroserviceJob('www', 'unit'),
     'App - unit tests': testMicroserviceJob('app', 'unit'),
     'Admin - unit tests': testMicroserviceJob('admin', 'unit'),
+    'Pro - unit tests': testMicroserviceJob('pro', 'unit'),
     'Www - e2e tests': testMicroserviceJob('www', 'e2e'),
     'App - e2e tests': testMicroserviceJob('app', 'e2e'),
     'Admin - e2e tests': testMicroserviceJob('admin', 'e2e'),
+    'Pro - e2e tests': testMicroserviceJob('pro', 'e2e'),
   },
   workflows: {
     version: 2,
@@ -177,9 +179,11 @@ const makeConfig = () => ({
         { 'Www - unit tests': { requires: ['Prepare'] } },
         { 'App - unit tests': { requires: ['Prepare'] } },
         { 'Admin - unit tests': { requires: ['Prepare'] } },
+        { 'Pro - unit tests': { requires: ['Prepare'] } },
         { 'Www - e2e tests': { requires: ['Www - unit tests'] } },
         { 'App - e2e tests': { requires: ['App - unit tests'] } },
         { 'Admin - e2e tests': { requires: ['Admin - unit tests'] } },
+        { 'Pro - e2e tests': { requires: ['Pro - unit tests'] } },
       ],
     },
   },
