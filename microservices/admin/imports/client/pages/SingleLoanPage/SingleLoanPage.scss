@@ -23,13 +23,28 @@
   }
 
   .single-loan-page-header {
-    display: inline;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    > * {
+      display: inline;
+    }
 
     .update-field {
       display: inline-block;
 
       min-width: 170px;
       margin-left: 8px;
+    }
+
+    form > * {
+      margin-top: 0;
+    }
+
+    .icon-link {
+      transform: scale(1.5);
+      transform-origin: 0%;
     }
   }
 }
