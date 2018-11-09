@@ -208,7 +208,6 @@ const getBorrowersFinanceArray = (borrowers) => {
     realEstateValue,
     realEstateDebt,
     otherFortune,
-    bankFortune,
   } = borrowersInfos;
 
   return [
