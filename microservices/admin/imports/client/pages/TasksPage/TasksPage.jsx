@@ -5,9 +5,13 @@ import adminsQuery from 'core/api/users/queries/admins';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 
 const getAdminsEmails = async () => {
-  const admins = await adminsQuery.clone().fetchSync();
-  const adminsEmails = admins.map(({ email }) => email);
-  return [...adminsEmails, undefined];
+  try {
+    const admins = await adminsQuery.clone().fetchSync();
+    const adminsEmails = admins.map(({ email }) => email);
+    return [...adminsEmails, undefined];
+  } catch (error) {
+    return [undefined];
+  }
 };
 
 const tasksTableFilters = {

@@ -29,8 +29,8 @@ find .. -type l -not -path "**/node_modules/**" -exec unlink {} \;
 if [[ $DO_CLEAN == true ]];
 then
   echo "Installing flow and flow-typed"
-  meteor npm i -gq flow-typed
-  npm i -g flow-bin
+  # meteor npm i -gq flow-typed
+  # npm i -g flow-bin
 
   echo "Remove current flow typed libdefs"
   ( cd .. && rm -rf flow-typed );
@@ -46,7 +46,7 @@ for i in 'www' 'app' 'admin' 'pro' 'pdf'
     ln -s ../../../core ../microservices/$i/imports/core
     ./link.sh ../core/assets/public ../microservices/$i/public
     ln -s ../../core/assets/private ../microservices/$i/private
-    
+
     echo "Storing current commit message to public assets"
     git rev-parse --short HEAD > "../core/assets/public/commit.txt"
 
@@ -68,7 +68,7 @@ for i in 'www' 'app' 'admin' 'pro' 'pdf'
     then
       # Use --skip to ignore missing libdefs
       echo "Fetching types for installed node_modules"
-      ( cd ../microservices/$i && meteor flow-typed install --skip );
+      ( cd ../microservices/$i && meteor npx flow-typed install --skip -p ../.. );
     fi
   done
 
@@ -87,11 +87,8 @@ echo "Installing npm packages in root"
 echo "Installing npm packages in .deployment"
 ( cd ../.deployment && meteor npm i -q );
 
-echo "Installing babel-node"
-meteor npm i -g @babel/node
-
 echo "Creating language files"
-meteor babel-node ./createLanguages.js
+meteor npx babel-node ./createLanguages.js
 
 end=`date +%s`
 runtime=$((end-start))

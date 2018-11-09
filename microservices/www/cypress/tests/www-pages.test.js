@@ -29,11 +29,9 @@ const pages = {
 
 describe('Www Pages', () => {
   Object.keys(pages).forEach((pageName) => {
-    describe(`${pageName} Page`, () => {
-      it('should render', () => {
-        cy.routeShouldRenderSuccessfully(pages[pageName], null, {
-          reloadWindowOnNavigation: true,
-        });
+    it(`${pageName} Page should render`, () => {
+      cy.routeShouldRenderSuccessfully(pages[pageName], null, {
+        reloadWindowOnNavigation: true,
       });
     });
   });

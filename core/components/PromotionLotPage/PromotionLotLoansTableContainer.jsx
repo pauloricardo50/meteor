@@ -1,5 +1,6 @@
 import React from 'react';
 import { compose, withProps, mapProps } from 'recompose';
+import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
@@ -7,6 +8,7 @@ import T from 'core/components/Translation';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
+import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 
 const getSolvency = (email) => {
   const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
@@ -40,6 +42,7 @@ const mapOption = (
     },
     lots,
     custom,
+    createdAt,
   } = promotionOption;
   const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
 
@@ -47,6 +50,7 @@ const mapOption = (
     id: promotionOptionId,
     columns: [
       user && user.name,
+      { raw: moment(createdAt).valueOf(), label: moment(createdAt).fromNow() },
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       {
@@ -85,13 +89,17 @@ const mapOption = (
 
 const columnOptions = [
   { id: 'name' },
+  { id: 'date' },
   { id: 'phone' },
   { id: 'email' },
-  { id: 'promotionProgress' },
+  { id: 'promotionProgress', label: <PromotionProgressHeader /> },
   { id: 'custom' },
   { id: 'priorityOrder' },
   { id: 'attribute' },
-].map(({ id }) => ({ id, label: <T id={`PromotionLotLoansTable.${id}`} /> }));
+].map(({ id, label }) => ({
+  id,
+  label: label || <T id={`PromotionLotLoansTable.${id}`} />,
+}));
 
 export default compose(
   mapProps(({ promotionOptions, promotionLot, canModify }) => ({

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import omit from 'lodash/omit';
 import MuiButton from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +9,7 @@ import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
 
 import Icon from 'core/components/Icon';
+import Link from '../Link';
 
 const styles = theme => ({
   root: {

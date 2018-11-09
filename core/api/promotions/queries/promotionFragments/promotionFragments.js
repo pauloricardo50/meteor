@@ -1,4 +1,8 @@
+import { propertyPromotionFragment } from '../../../properties/queries/propertyFragments';
+
 export const basePromotionFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   name: 1,
   type: 1,
   status: 1,
@@ -6,7 +10,7 @@ export const basePromotionFragment = {
   address1: 1,
   zipCode: 1,
   city: 1,
-  properties: { address: 1 },
+  properties: propertyPromotionFragment,
   lots: {
     value: 1,
     name: 1,
@@ -39,7 +43,7 @@ export const proPromotionFragment = {
     status: 1,
     reducedStatus: 1,
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
-    properties: { name: 1, value: 1 },
+    properties: propertyPromotionFragment,
     promotionOptions: { _id: 1 },
     name: 1,
     attributedTo: { user: { name: 1 } },
@@ -55,6 +59,8 @@ export const adminPromotionsFragment = {
 };
 
 export const searchPromotionsFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   name: 1,
   promotionLotLinks: 1,
 };

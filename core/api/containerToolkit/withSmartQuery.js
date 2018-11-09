@@ -12,12 +12,18 @@ import MissingDoc from '../../components/MissingDoc';
 import ClientEventService from '../events/ClientEventService';
 
 // render the missing doc component only when we want to
-const makeRenderMissingDocIfNoData = (render: boolean = false) =>
-  branch(
-    ({ isLoading, data }) => render && (!isLoading && !data),
-    renderComponent(MissingDoc),
-  );
+const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
+  let renderFunc;
+  if (typeof render === 'function') {
+    renderFunc = props =>
+      render(props) && single && (!props.isLoading && !props.data);
+  } else {
+    renderFunc = ({ isLoading, data }) =>
+      render && single && (!isLoading && !data);
+  }
 
+  return branch(renderFunc, renderComponent(MissingDoc));
+};
 // Use proper name for data, and remove unnecessary props from children
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
@@ -71,7 +77,7 @@ type withSmartQueryArgs = {
   params: (props: Object) => Object,
   queryOptions?: { single: boolean },
   dataName?: string,
-  renderMissingDoc?: boolean,
+  renderMissingDoc?: boolean | Function,
   smallLoader?: boolean,
 };
 
@@ -84,8 +90,6 @@ const withSmartQuery = ({
   renderMissingDoc = true,
   smallLoader = false,
 }: withSmartQueryArgs) => {
-  const shoundRenderMissingDoc = renderMissingDoc && queryOptions.single;
-
   let completeQuery;
 
   if (typeof query === 'function') {
@@ -98,7 +102,7 @@ const withSmartQuery = ({
     withGlobalQueryManager(query, queryOptions),
     withQuery(completeQuery, { ...queryOptions, loadOnRefetch: false }),
     withLoading(smallLoader),
-    makeRenderMissingDocIfNoData(shoundRenderMissingDoc),
+    makeRenderMissingDocIfNoData(renderMissingDoc, queryOptions),
     makeMapProps(dataName),
     withQueryRefetcher(query),
   );

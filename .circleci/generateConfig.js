@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 7;
+const CACHE_VERSION = 9;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -33,36 +33,54 @@ const defaultJobValues = {
 // like: "my_cache_name_${CACHE_VERSION}"
 // Then follow with the variable identifiers
 const cacheKeys = {
+  global: () => `global_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
     `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
-  nodeModules: name =>
-    `node_modules_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/package.json" }}`,
-  source: () => `source_code_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
+  nodeModules: () =>
+    `node_modules_${CACHE_VERSION}-{{ checksum "./package-lock.json" }}`,
+  source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
 };
 
 const cachePaths = {
+  global: () => '~/.cache',
   meteorSystem: () => '~/.meteor',
   meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
-  nodeModules: name => `./microservices/${name}/node_modules`,
-  source: () => './.git',
+  nodeModules: () => './node_modules',
+  source: () => '.',
 };
 
 // Circle CI Commands
 const runCommand = (name, command) => ({ run: { name, command } });
+const runTestsCommand = (name, testsType) => {
+  switch (testsType) {
+  case 'e2e':
+    return runCommand(
+      'Run e2e tests',
+      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+    );
+  case 'unit':
+    return runCommand(
+      'Run unit tests',
+      `meteor npm --prefix microservices/${name} run test-CI`,
+    );
+  default:
+    throw new Error(`Unknown tests type: ${testsType}`);
+  }
+};
 const restoreCache = (name, key) => ({
   restore_cache: {
     name,
     // Provide multiple, less accurate, cascading, keys for caching in case checksums fail
     // See circleCI docs: https://circleci.com/docs/2.0/caching/#restoring-cache
     keys: key
-      .split('-')
+      .split(/(?!package)-(?!lock)/)
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-')
+            + (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -74,46 +92,55 @@ const saveCache = (name, key, path) => ({
 const storeTestResults = path => ({ store_test_results: { path } });
 const storeArtifacts = path => ({ store_artifacts: { path } });
 
+// Create preparation job with shared work
+const makePrepareJob = () => ({
+  ...defaultJobValues,
+  steps: [
+    // Update source cache with latest code
+    restoreCache('Restore source', cacheKeys.source()),
+    'checkout',
+    runCommand(
+      'Init submodules',
+      'git submodule sync && git submodule update --init --recursive',
+    ),
+    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
+
+    // Prepare node_modules cache
+    restoreCache('Restore global cache', cacheKeys.global()),
+    runCommand('Install project node_modules', 'npm ci'),
+    saveCache('Cache globals', cacheKeys.global(), cachePaths.global()),
+    saveCache(
+      'Cache node_modules',
+      cacheKeys.nodeModules(),
+      cachePaths.nodeModules(),
+    ),
+  ],
+});
+
 // Create test job for a given microservice
-const testMicroserviceJob = name => ({
+const testMicroserviceJob = (name, testsType) => ({
   ...defaultJobValues,
   steps: [
     restoreCache('Restore source', cacheKeys.source()),
-    'checkout',
-    saveCache('Cache source', cacheKeys.source(), cachePaths.source()),
+    restoreCache('Restore global cache', cacheKeys.global()),
+    restoreCache('Restore node_modules', cacheKeys.nodeModules()),
     restoreCache('Restore meteor system', cacheKeys.meteorSystem(name)),
     restoreCache(
       'Restore meteor microservice',
       cacheKeys.meteorMicroservice(name),
     ),
-    restoreCache('Restore node_modules', cacheKeys.nodeModules(name)),
+    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand('Create results directory', 'mkdir ./results'),
     // runCommand(
     //   'Create profiles directory',
-    //   'mkdir ./microservices/' + name + '/profiles',
+    //   `mkdir ./microservices/${name}/profiles`,
     // ),
-    runCommand('Install meteor', './scripts/circleci/install_meteor.sh'),
     runCommand(
       'Install node_modules',
-      `cd microservices/${name} && meteor npm ci`,
+      `meteor npm --prefix microservices/${name} ci`,
     ),
-    runCommand(
-      'Install nightmare and @babel/node',
-      `cd microservices/${name} && meteor npm i nightmare@2.10.0 @babel/node --no-save`, // Nightmare v3 doesn't show errors properly
-    ),
-    saveCache(
-      'Cache node_modules',
-      cacheKeys.nodeModules(name),
-      cachePaths.nodeModules(name),
-    ),
-    runCommand(
-      'Generate language files',
-      `cd microservices/${name} && function npm-do { (PATH=$(npm bin):$PATH; eval $@;) } && npm-do babel-node ../../scripts/createLanguages.js ${name}`, // http://2ality.com/2016/01/locally-installed-npm-executables.html
-    ),
-    runCommand(
-      'Run tests',
-      `cd microservices/${name} && meteor npm run test-CI`,
-    ),
+    runCommand('Generate language files', `npm run lang ${name}`),
+    runTestsCommand(name, testsType),
     saveCache(
       'Cache meteor system',
       cacheKeys.meteorSystem(name),
@@ -126,7 +153,7 @@ const testMicroserviceJob = name => ({
     ),
     storeTestResults('./results'),
     storeArtifacts('./results'),
-    // storeArtifacts('./microservices/' + name + '/profiles'),
+    // storeArtifacts(`./microservices/${name}/profiles`),
   ],
 });
 
@@ -134,14 +161,30 @@ const testMicroserviceJob = name => ({
 const makeConfig = () => ({
   version: 2,
   jobs: {
-    'Www - unit tests': testMicroserviceJob('www'),
-    'App - unit tests': testMicroserviceJob('app'),
-    'Admin - unit tests': testMicroserviceJob('admin'),
+    Prepare: makePrepareJob(),
+    'Www - unit tests': testMicroserviceJob('www', 'unit'),
+    'App - unit tests': testMicroserviceJob('app', 'unit'),
+    'Admin - unit tests': testMicroserviceJob('admin', 'unit'),
+    'Pro - unit tests': testMicroserviceJob('pro', 'unit'),
+    'Www - e2e tests': testMicroserviceJob('www', 'e2e'),
+    'App - e2e tests': testMicroserviceJob('app', 'e2e'),
+    'Admin - e2e tests': testMicroserviceJob('admin', 'e2e'),
+    'Pro - e2e tests': testMicroserviceJob('pro', 'e2e'),
   },
   workflows: {
     version: 2,
     'Build and test': {
-      jobs: ['Www - unit tests', 'App - unit tests', 'Admin - unit tests'],
+      jobs: [
+        'Prepare',
+        { 'Www - unit tests': { requires: ['Prepare'] } },
+        { 'App - unit tests': { requires: ['Prepare'] } },
+        { 'Admin - unit tests': { requires: ['Prepare'] } },
+        { 'Pro - unit tests': { requires: ['Prepare'] } },
+        { 'Www - e2e tests': { requires: ['Www - unit tests'] } },
+        { 'App - e2e tests': { requires: ['App - unit tests'] } },
+        { 'Admin - e2e tests': { requires: ['Admin - unit tests'] } },
+        { 'Pro - e2e tests': { requires: ['Pro - unit tests'] } },
+      ],
     },
   },
 });

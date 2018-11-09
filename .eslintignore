@@ -1,5 +1,4 @@
-node_modules/*
-**/node_modules/*
-**/lang/*
-**/package-lock.json
+!/.*
 **/*.json
+**/flow-typed
+**/node_modules

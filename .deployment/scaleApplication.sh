@@ -2,6 +2,6 @@
 
 set -e
 
-babel-node -- scaleApplication.js "$@"
+npx babel-node -- scaleApplication.js "$@"
 ./scale.sh
 rm scale.sh

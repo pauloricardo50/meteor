@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-babel-node -- ./nginx/updateNginx.js 
+npx babel-node -- ./nginx/updateNginx.js
 ./deploy-nginx.sh

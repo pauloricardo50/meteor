@@ -17,8 +17,8 @@ export default class Table extends Component {
     this.state = {
       data: [],
       selected: [],
-      order: ORDER.ASC,
-      orderBy: 0,
+      order: props.initialOrder,
+      orderBy: props.initialOrderBy,
       rowsPerPage: 40,
       page: 0,
     };
@@ -29,16 +29,17 @@ export default class Table extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const currentLength = this.state.data.length;
+    const { data } = this.state;
+    const currentLength = data.length;
     const nextLength = nextProps.rows.length;
     // Lazy check to see if data has different length
     // FIXME should also check if all the data is the same, careful with sorting
     if (nextLength !== currentLength) {
       this.handleNewData(nextProps);
-    } else if (this.state.data && nextProps.rows) {
+    } else if (data && nextProps.rows) {
       let differentProps = false;
       nextProps.rows.every((row) => {
-        if (!this.state.data.includes(row)) {
+        if (!data.includes(row)) {
           differentProps = true;
         }
       });
@@ -56,13 +57,13 @@ export default class Table extends Component {
 
   handleNewData = (props) => {
     const { rows, columnOptions } = props;
+    const { orderBy } = this.state;
     // Make sure columns and rows are the same length
     if (rows.length && columnOptions.length !== rows[0].columns.length) {
       throw new Error('column length has to be correct in Table');
     }
 
-    this.setState({ data: rows }, () =>
-      this.handleSort(this.state.orderBy, false));
+    this.setState({ data: rows }, () => this.handleSort(orderBy, false));
   };
 
   handleSort = (newOrderBy, changeOrder) => {
@@ -77,6 +78,7 @@ export default class Table extends Component {
   };
 
   handleSelect = (rowId) => {
+    const { onRowSelect } = this.props;
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(rowId);
     let newSelected = [];
@@ -95,12 +97,13 @@ export default class Table extends Component {
     }
 
     this.setState({ selected: newSelected }, () =>
-      this.props.onRowSelect(this.state.selected));
+      onRowSelect(this.state.selected));
   };
 
   handleSelectAllClick = (event, checked) => {
+    const { data } = this.state;
     if (checked) {
-      this.setState({ selected: this.state.data.map(n => n.id) });
+      this.setState({ selected: data.map(n => n.id) });
       return;
     }
     this.setState({ selected: [] });
@@ -183,26 +186,30 @@ Table.propTypes = {
   className: PropTypes.string,
   clickable: PropTypes.bool,
   columnOptions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  initialOrder: PropTypes.string,
+  initialOrderBy: PropTypes.number,
   multiSelectable: PropTypes.bool,
   noIntl: PropTypes.bool,
   onRowSelect: PropTypes.func,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectable: PropTypes.bool,
   selectAll: PropTypes.bool,
-  selected: PropTypes.string,
-  sortable: PropTypes.bool, // sets rows to change color on hover
+  selected: PropTypes.string, // sets rows to change color on hover
+  sortable: PropTypes.bool,
   style: PropTypes.object,
 };
 
 Table.defaultProps = {
-  selectable: false,
+  className: '',
+  clickable: true,
+  initialOrderBy: 0,
+  initialOrder: ORDER.ASC,
   multiSelectable: false,
-  selectAll: false,
+  noIntl: false,
   onRowSelect: () => {},
+  selectable: false,
+  selectAll: false,
   selected: undefined,
   sortable: true,
   style: {},
-  noIntl: false,
-  clickable: true,
-  className: '',
 };

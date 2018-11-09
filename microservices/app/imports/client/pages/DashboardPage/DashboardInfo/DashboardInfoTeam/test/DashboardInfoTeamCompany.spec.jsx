@@ -37,4 +37,14 @@ describe('DashboardInfoTeamCompany', () => {
 
     expect(emails).to.deep.equal(expectedEmails);
   });
+
+  it('displays the assignee alone if the loan has a promotion', () => {
+    props.hasPromotion = true;
+    const expectedEmails = ['lydia@e-potek.ch'];
+    const emails = component()
+      .find(DashboardInfoTeamMember)
+      .map(node => node.key());
+
+    expect(emails).to.deep.equal(expectedEmails);
+  });
 });

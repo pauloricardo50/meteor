@@ -17,6 +17,13 @@ export const promotionLotSchema = new SimpleSchema({
     defaultValue: 0,
     min: 0,
   },
+  insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+  terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+  gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
+  roomCount: { type: Number, optional: true, min: 0, max: 100 },
+  bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
+  monthlyExpenses: { type: Number, optional: true, min: 0, max: 100000 },
+  description: { type: String, optional: true },
 });
 
 export const lotSchema = new SimpleSchema({

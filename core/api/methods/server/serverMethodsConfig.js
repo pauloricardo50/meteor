@@ -6,7 +6,11 @@ import ServerEventService from '../../events/server/ServerEventService';
 
 Method.addAfterExecution(({ context, config, params, result, error }) => {
   if (error) {
-    SlackService.sendError(error, 'Server method error');
+    SlackService.sendError({
+      error,
+      additionalData: ['Server method error'],
+      userId: context.userId,
+    });
   }
 
   if (!error) {
