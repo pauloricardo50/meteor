@@ -149,7 +149,7 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
   }
 
   return [
-    ...documents,
+    // ...documents,
     ...(doc && doc.additionalDocuments
       ? doc.additionalDocuments.map(additionalDoc => ({
         ...additionalDoc,

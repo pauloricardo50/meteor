@@ -13,11 +13,7 @@ export const initialDocuments = [
 ];
 
 const getLoanResidenceType = ({ propertyId, userId }) => {
-  console.log('userId', userId);
-  console.log('propertyId', propertyId);
   const loan = Loans.findOne({ userId, propertyIds: { $in: [propertyId] } });
-  console.log('loan', loan);
-
   return loan && loan.general.residenceType;
 };
 

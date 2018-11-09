@@ -16,6 +16,10 @@ import {
   OWN_FUNDS_TYPES,
 } from './borrowerConstants';
 import { RESIDENCE_TYPE } from '../constants';
+import {
+  initialDocuments,
+  conditionalDocuments,
+} from './borrowersAdditionalDocuments';
 
 const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
 
@@ -185,7 +189,11 @@ export const BorrowerSchema = new SimpleSchema({
     defaultValue: {},
     blackbox: true,
   },
-  // ...additionalDocuments(BORROWERS_COLLECTION),
+  ...additionalDocuments({
+    collection: BORROWERS_COLLECTION,
+    initialDocuments,
+    conditionalDocuments,
+  }),
 });
 
 const protectedKeys = [

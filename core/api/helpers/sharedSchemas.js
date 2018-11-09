@@ -59,14 +59,20 @@ export const additionalDocumentsAutovalue = ({
   initialDocuments,
   context,
 }) => {
-  const currentDocuments = doc.additionalDocuments;
+  const currentDocuments = doc.additionalDocuments || [];
   const documentsModifications = conditionalDocuments.reduce(
     (modifications, { id, condition, relatedFields }) => {
       const fieldsHaveChanged = relatedFields
         && relatedFields.length > 0
-        && relatedFields.every(field => context.field(field).value !== doc[field]);
+        && relatedFields.some(field => (
+          context.field(field).isSet
+            && context.field(field).operator === '$set'
+            && context.field(field).value !== doc[field]
+        ));
+
       const conditionIsMet = condition({ doc, context });
-      const document = currentDocuments.find(({ id: documentId }) => id === documentId);
+      const document = currentDocuments
+        && currentDocuments.find(({ id: documentId }) => id === documentId);
       const { requiredByAdmin } = !!document && document;
 
       if (relatedFields && relatedFields.length > 0 && !fieldsHaveChanged) {
