@@ -26,8 +26,14 @@ import './server/reducers';
 import './server/mongoIndexes';
 
 process.on('uncaughtException', (error) => {
-  SlackService.sendError(error, 'Server uncaughtException');
+  SlackService.sendError({
+    error,
+    additionalData: ['Server uncaughtException'],
+  });
 });
 process.on('unhandledRejection', (error) => {
-  SlackService.sendError(error, 'Server uncaughtException');
+  SlackService.sendError({
+    error,
+    additionalData: ['Server uncaughtException'],
+  });
 });

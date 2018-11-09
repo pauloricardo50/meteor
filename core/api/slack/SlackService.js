@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
 
 import colors from 'core/config/colors';
-import { ROLES } from '../users/userConstants';
+import UserService from '../users/UserService';
+import { ROLES } from '../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isTest || Meteor.isAppTest;
@@ -40,8 +41,10 @@ class SlackService {
   };
 
   catchError = text => error =>
-    this.sendError(error, `Tried to send text: ${text}`).catch(err2 =>
-      console.log(('Slack error:', err2)));
+    this.sendError({
+      error,
+      additionalData: [`Tried to send text: ${text}`],
+    }).catch(err2 => console.log(('Slack error:', err2)));
 
   formatText = text => (isArray(text) ? text.join('\n') : text);
 
@@ -57,7 +60,7 @@ class SlackService {
     ...rest,
   });
 
-  sendError = (error, ...additionalData) => {
+  sendError = ({ error, additionalData = [], userId }) => {
     if (ERRORS_TO_IGNORE.includes(error.name)) {
       return false;
     }
@@ -73,6 +76,10 @@ class SlackService {
     } catch (err) {
       user = null;
       windowObj = null;
+    }
+
+    if (!user && userId && Meteor.isServer) {
+      user = UserService.findOne(userId);
     }
 
     return this.sendAttachments({
