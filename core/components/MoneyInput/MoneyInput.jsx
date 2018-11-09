@@ -5,8 +5,10 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import MaskedInput from 'react-text-mask';
 
-import { toNumber, toMoney } from '../../utils/conversionFunctions';
+import { swissFrancMask } from '../../utils/textMasks';
+import { toNumber } from '../../utils/conversionFunctions';
 
 type MoneyInputProps = {
   onChange: Function,
@@ -25,8 +27,10 @@ const MoneyInput = ({
     <Input
       startAdornment={<InputAdornment position="start">CHF</InputAdornment>}
       onChange={event => onChange(toNumber(event.target.value))}
-      value={toMoney(value)}
+      value={value}
       type="tel"
+      inputComponent={MaskedInput}
+      inputProps={{ mask: swissFrancMask }}
       {...props}
     />
     {helperText && <FormHelperText>{helperText}</FormHelperText>}
