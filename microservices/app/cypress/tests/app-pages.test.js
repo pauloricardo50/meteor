@@ -21,12 +21,7 @@ const pages = {
       route(`/impersonate?userId=${userId}&authToken=${adminLoginToken}`, {
         shouldRender: '#impersonation-success-message',
       }),
-  },
 
-  user: {
-    App: route('/', { shouldRender: '#app-page' }),
-
-    Account: route('/account', { shouldRender: '#AccountPage' }),
     'Verify Email (Invalid Token)': route('/verify-email/invalidToken', {
       shouldRender: '#email-verification-page',
     }),
@@ -35,6 +30,12 @@ const pages = {
       route(`/verify-email/${emailVerificationToken}`, {
         shouldRender: '#email-verification-page',
       }),
+  },
+
+  user: {
+    App: route('/', { shouldRender: '#app-page' }),
+
+    Account: route('/account', { shouldRender: '#AccountPage' }),
 
     Dashboard: ({ preparationLoan: { _id } }) =>
       route(`/loans/${_id}`, { shouldRender: '#DashboardPage' }),
