@@ -55,7 +55,7 @@ const withUserLoan = withSmartQuery({
   params: ({ loanId }) => ({ loanId }),
   queryOptions: { reactive: true, single: true },
   dataName: 'loan',
-  renderMissingDoc: false,
+  renderMissingDoc: ({ loanId }) => !!loanId,
 });
 
 const withRedirect = withProps(({ currentUser, history }) => {

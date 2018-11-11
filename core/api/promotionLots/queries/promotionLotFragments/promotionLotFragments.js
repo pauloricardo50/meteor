@@ -1,5 +1,9 @@
+import { propertyPromotionFragment } from '../../../properties/queries/propertyFragments';
+
 export const proPromotionLotFragment = {
   _id: 1,
+  createdAt: 1,
+  updatedAt: 1,
   value: 1,
   status: 1,
   lots: {
@@ -8,7 +12,7 @@ export const proPromotionLotFragment = {
     type: 1,
     description: 1,
   },
-  properties: { name: 1, value: 1 },
+  properties: propertyPromotionFragment,
   promotionOptions: { _id: 1 },
   promotion: {
     status: 1,
@@ -31,6 +35,8 @@ export const proPromotionLotFragment = {
 
 export const appPromotionLotFragment = {
   _id: 1,
+  createdAt: 1,
+  updatedAt: 1,
   value: 1,
   status: 1,
   reducedStatus: 1,
@@ -40,7 +46,7 @@ export const appPromotionLotFragment = {
     type: 1,
     description: 1,
   },
-  properties: { name: 1, value: 1 },
+  properties: propertyPromotionFragment,
   name: 1,
   attributedTo: {
     user: { _id: 1 },

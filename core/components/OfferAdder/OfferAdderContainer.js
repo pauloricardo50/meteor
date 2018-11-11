@@ -29,7 +29,7 @@ const reformatInterestRatesObject = (rates, suffix, valueEnhancer = x => x) =>
 
 const mapValuesToOffer = ({
   loanId,
-  organization,
+  organisation,
   maxAmount,
   amortization,
   conditions,
@@ -62,14 +62,14 @@ const mapValuesToOffer = ({
   return [
     {
       loanId,
-      organization,
-      conditions: [conditions],
+      organisationLink: { _id: organisation },
+      conditions: [conditions].filter(x => x),
       ...standardOffer,
     },
     hasCounterparts && {
       loanId,
-      organization,
-      conditions: [conditions, counterparts],
+      organisationLink: { _id: organisation },
+      conditions: [conditions, counterparts].filter(x => x),
       ...counterpartOffer,
     },
   ].filter(offer => !!offer);

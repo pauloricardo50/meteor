@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import MuiTabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import cx from 'classnames';
+
+import Link from '../Link';
 
 const styles = theme => ({
   root: {

@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { createRoute } from 'core/utils/routerUtils';
 
-import Chip from 'core/components/Material/Chip';
-import Tooltip from 'core/components/Material/Tooltip';
-import Icon from 'core/components/Icon';
+import { createRoute } from '../../utils/routerUtils';
+import Chip from '../Material/Chip';
+import Tooltip from '../Material/Tooltip';
+import Link from '../Link';
+import Icon from '../Icon';
 
 type PriorityOrderProps = {};
 

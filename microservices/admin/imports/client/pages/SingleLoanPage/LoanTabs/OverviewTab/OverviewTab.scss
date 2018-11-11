@@ -1,16 +1,17 @@
 .overview-tab .admin-section {
   display: flex;
-  flex-direction: row;
-  padding: 16px;
   align-items: center;
-  justify-content: space-around;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-around;
+
+  padding: 16px;
 
   .update-field {
     min-width: 200px;
   }
 
-  > * {
+   > * {
     margin-right: 8px;
   }
 }

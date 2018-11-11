@@ -15,7 +15,6 @@ type OfferModifierProps = {};
 const OfferModifier = ({ onSubmit, offer }: OfferModifierProps) => (
   <DialogForm
     title={<T id="OfferModifier.dialogTitle" />}
-    description={<T id="OfferModifier.dialogDescription" />}
     form={FORM_NAME}
     onSubmit={onSubmit}
     initialValues={offer}

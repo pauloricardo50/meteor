@@ -27,7 +27,8 @@ export const OfferSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  organization: String,
+  organisationLink: { type: Object, optional: true },
+  'organisationLink._id': String,
   maxAmount: {
     type: SimpleSchema.Integer,
     min: 0,
@@ -54,8 +55,9 @@ export const OfferSchema = new SimpleSchema({
   conditions: {
     type: Array,
     optional: true,
+    defaultValue: [],
   },
-  'conditions.$': String,
+  'conditions.$': { type: String, optional: true },
 });
 
 // Attach schema

@@ -1,7 +1,10 @@
 import SimpleSchema from 'simpl-schema';
 import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
+import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 
 const PromotionLotSchema = new SimpleSchema({
+  createdAt,
+  updatedAt,
   status: {
     type: String,
     allowedValues: Object.values(PROMOTION_LOT_STATUS),

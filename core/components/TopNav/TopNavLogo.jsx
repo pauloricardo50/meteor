@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
+
+import Link from '../Link';
 
 const TopNavlogo = () => (
   <div className="top-nav-logo">

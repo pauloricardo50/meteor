@@ -4,9 +4,13 @@ import {
   address,
   contactsSchema,
   userLinksSchema,
+  createdAt,
+  updatedAt,
 } from '../../helpers/sharedSchemas';
 
 const PromotionSchema = new SimpleSchema({
+  createdAt,
+  updatedAt,
   name: { type: String },
   type: { type: String, allowedValues: Object.values(PROMOTION_TYPES) },
   status: {

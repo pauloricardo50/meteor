@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose } from 'recompose';
 import proPromotion from 'core/api/promotions/queries/proPromotion';
 import promotionFiles from 'core/api/promotions/queries/promotionFiles';
@@ -7,6 +8,7 @@ import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 
 export default compose(
   withMatchParam('promotionId'),
+  Component => props => <Component {...props} key={props.promotionId} />,
   withSmartQuery({
     query: proPromotion,
     params: ({ promotionId }) => ({ promotionId }),

@@ -1,6 +1,8 @@
 import { appPromotionLotFragment } from '../../../promotionLots/queries/promotionLotFragments';
 
 export const fullPromotionOptionFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   promotionLots: { name: 1, promotion: { name: 1 } },
   lots: { name: 1, type: 1, status: 1, description: 1 },
   loan: { name: 1 },
@@ -9,6 +11,8 @@ export const fullPromotionOptionFragment = {
 };
 
 export const proPromotionOptionFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   loan: {
     solvency: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
@@ -28,6 +32,8 @@ export const proPromotionOptionFragment = {
 };
 
 export const appPromotionOptionFragment = {
+  createdAt: 1,
+  updatedAt: 1,
   custom: 1,
   lots: {
     name: 1,

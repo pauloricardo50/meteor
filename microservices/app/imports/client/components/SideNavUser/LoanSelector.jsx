@@ -29,13 +29,6 @@ const getOptions = (loans) => {
     icon: 'home',
   }));
 
-  // array.push(<Divider key="divider" />);
-  // array.push({
-  //   id: 0,
-  //   label: <T id="LoanSelector.addLoan" />,
-  //   dividerTop: true,
-  // });
-
   return array;
 };
 

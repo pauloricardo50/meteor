@@ -29,8 +29,8 @@ find .. -type l -not -path "**/node_modules/**" -exec unlink {} \;
 if [[ $DO_CLEAN == true ]];
 then
   echo "Installing flow and flow-typed"
-  meteor npm i -gq flow-typed
-  npm i -g flow-bin
+  # meteor npm i -gq flow-typed
+  # npm i -g flow-bin
 
   echo "Remove current flow typed libdefs"
   ( cd .. && rm -rf flow-typed );
@@ -68,7 +68,7 @@ for i in 'www' 'app' 'admin' 'pro' 'pdf'
     then
       # Use --skip to ignore missing libdefs
       echo "Fetching types for installed node_modules"
-      ( cd ../microservices/$i && meteor flow-typed install --skip );
+      ( cd ../microservices/$i && meteor npx flow-typed install --skip -p ../.. );
     fi
   done
 
