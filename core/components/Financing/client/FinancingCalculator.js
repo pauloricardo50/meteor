@@ -18,6 +18,15 @@ export const getProperty = ({
 
   return {};
 };
+
+export const getOffer = ({ structure: { offerId }, offers }) => {
+  if (offerId) {
+    return offers.find(({ _id }) => _id === offerId);
+  }
+
+  return {};
+};
+
 export const getAmortizationRateMapper = (data) => {
   const {
     structure: { wantedLoan, propertyWork },
