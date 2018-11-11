@@ -1,36 +1,48 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 
 import T, { IntlNumber } from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
+import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
+import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 
 type SingleLoanPageHeaderProps = {};
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
-  <h1 className="single-loan-page-header">
-    <T
-      id="SingleLoanPageHeader.title"
-      values={{
-        name: loan.name || <T id="general.mortgageLoan" />,
-        value: (
-          <IntlNumber
-            value={Calculator.selectLoanValue({ loan })}
-            format="money"
-          />
-        ),
-      }}
-    />
-    <Link to={`/users/${loan.user._id}`}>
-      <small className="secondary">
-        {' - '}
-        {loan.user.name}
-        {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
-      </small>
-    </Link>
-    <UpdateField doc={loan} fields={['status']} />
-  </h1>
+  <div className="single-loan-page-header">
+    <h1>
+      <T
+        id="SingleLoanPageHeader.title"
+        values={{
+          name: loan.name || <T id="general.mortgageLoan" />,
+          value: (
+            <IntlNumber
+              value={Calculator.selectLoanValue({ loan })}
+              format="money"
+            />
+          ),
+        }}
+      />
+      <Link to={`/users/${loan.user._id}`}>
+        <small className="secondary">
+          {' - '}
+          {loan.user.name}
+          {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+        </small>
+      </Link>
+      <UpdateField doc={loan} fields={['status']} />
+    </h1>
+    {loan.hasPromotion && (
+      <CollectionIconLink
+        relatedDoc={{
+          ...loan.promotions[0],
+          collection: PROMOTIONS_COLLECTION,
+        }}
+      />
+    )}
+  </div>
 );
 
 export default SingleLoanPageHeader;

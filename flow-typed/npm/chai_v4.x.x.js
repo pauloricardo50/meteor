@@ -1,5 +1,5 @@
-// flow-typed signature: 5cfeddfc9de4ef171e6b11554add9b1c
-// flow-typed version: 30784ea04e/chai_v4.x.x/flow_>=v0.25.0
+// flow-typed signature: 0dd4bb1e813d16799c0a1fce94b24b4a
+// flow-typed version: 0ab98275d2/chai_v4.x.x/flow_>=v0.25.0
 
 declare module "chai" {
   declare type ExpectChain<T> = {
@@ -127,7 +127,11 @@ declare module "chai" {
     eventually: ExpectChain<T>,
     resolvedWith: (value: mixed) => Promise<mixed> & ExpectChain<T>,
     resolved: () => Promise<mixed> & ExpectChain<T>,
-    rejectedWith: (value: mixed) => Promise<mixed> & ExpectChain<T>,
+    rejectedWith: (
+      value: mixed,
+      errMsgMatcher?: RegExp | string,
+      msg?: string
+    ) => Promise<mixed> & ExpectChain<T>,
     rejected: () => Promise<mixed> & ExpectChain<T>,
     notify: (callback: () => mixed) => ExpectChain<T>,
     fulfilled: () => Promise<mixed> & ExpectChain<T>,

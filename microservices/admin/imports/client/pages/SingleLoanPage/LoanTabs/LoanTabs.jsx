@@ -16,10 +16,12 @@ import ActionsTab from './ActionsTab';
 import FormsTab from './FormsTab';
 import StructuresTab from './StructuresTab';
 import DevTab from './DevTab/loadable';
+import PromotionsTab from './PromotionsTab';
 
 const getTabs = props =>
   [
     { id: 'overview', Component: OverviewTab },
+    props.loan.hasPromotion && { id: 'promotion', Component: PromotionsTab },
     { id: 'structures', Component: StructuresTab },
     { id: 'borrowers', Component: BorrowersTab },
     { id: 'properties', Component: PropertiesTab },

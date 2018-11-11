@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Icon from 'core/components/Icon';
+import Icon from '../Icon';
+import Link from '../Link';
 
 const IconLink = ({ link, icon, text, children, ...rest }) => (
   <Link

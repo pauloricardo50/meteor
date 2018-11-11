@@ -107,3 +107,18 @@
     margin-right: 4px;
   }
 }
+
+.promotion-lot-recap {
+  align-self: center;
+  flex-direction: column;
+
+  .recap-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 25px;
+  }
+}

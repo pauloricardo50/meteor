@@ -23,7 +23,7 @@ import { mkdir, rmDir, copyFile, getLastSegmentOfPath } from './utils/helpers';
 export const getCurrentPath = () => __dirname;
 
 // To keep track of each file that is supposed to be created
-let applicationsExpectedFilesList = {};
+const applicationsExpectedFilesList = {};
 
 const addFileToApplicationsExpectedFilesList = ({ applicationName, file }) =>
   (applicationsExpectedFilesList[applicationName][
@@ -43,8 +43,7 @@ const writeApplicationPackageFiles = ({ applications, root }) => {
         applicationName: name,
         applicationImage: image,
         filePath: `${root}/${name}/${APP_PACKAGE_JSON_FILE}`,
-      }),
-    );
+      }));
   });
 
   return Promise.all(promises);
@@ -56,23 +55,21 @@ const writeApplicationManifestFiles = ({
   services,
   root,
 }) => {
-  const promises = applications.map(
-    ({ applicationName, name, memory, instances }) => {
-      addFileToApplicationsExpectedFilesList({
-        applicationName,
-        file: APP_MANIFEST_YML_FILE,
-      });
-      return writeApplicationManifestYAML({
-        environment,
-        name,
-        applicationName,
-        memory,
-        instances,
-        services,
-        filePath: `${root}/${name}/${APP_MANIFEST_YML_FILE}`,
-      });
-    },
-  );
+  const promises = applications.map(({ applicationName, name, memory, instances }) => {
+    addFileToApplicationsExpectedFilesList({
+      applicationName,
+      file: APP_MANIFEST_YML_FILE,
+    });
+    return writeApplicationManifestYAML({
+      environment,
+      name,
+      applicationName,
+      memory,
+      instances,
+      services,
+      filePath: `${root}/${name}/${APP_MANIFEST_YML_FILE}`,
+    });
+  });
 
   return Promise.all(promises);
 };
@@ -141,23 +138,20 @@ const copySmokeTestBabelConfig = ({ applications, root }) => {
 
 const copySmokeTestFiles = ({ applications, root }) => {
   const promises = applications.map(({ name, applicationName, smokeTests }) => {
-    const appPromises = smokeTests.map(file => {
+    const appPromises = smokeTests.map((file) => {
       addFileToApplicationsExpectedFilesList({
         applicationName,
         file,
       });
       return copyFile({
         sourcePath: `${getCurrentPath()}/${file}`,
-        destinationPath: `${getCurrentPath()}/${root}/${name}/${getLastSegmentOfPath(
-          file,
-        )}`,
+        destinationPath: `${getCurrentPath()}/${root}/${name}/${getLastSegmentOfPath(file)}`,
       });
     });
     return Promise.all(appPromises);
   });
   return Promise.all(promises).then(() =>
-    copySmokeTestBabelConfig({ applications, root }),
-  );
+    copySmokeTestBabelConfig({ applications, root }));
 };
 
 const writeApplicationsExpectedFilesList = ({ applications, root }) =>
@@ -179,13 +173,10 @@ export const prepareDeployment = ({
   } = createDeploySettingsForEnv(environment);
 
   const applications = allApplications.filter(({ applicationName }) =>
-    applicationFilter.includes(applicationName),
-  );
+    applicationFilter.includes(applicationName));
 
-  applications.forEach(
-    ({ applicationName }) =>
-      (applicationsExpectedFilesList[applicationName] = {}),
-  );
+  applications.forEach(({ applicationName }) =>
+    (applicationsExpectedFilesList[applicationName] = {}));
 
   return deleteBuildDirectories({ applications: allApplications, root })
     .then(() => writeApplicationPackageFiles({ applications, root }))
@@ -195,19 +186,15 @@ export const prepareDeployment = ({
         applications,
         services,
         root,
-      }),
-    )
+      }))
     .then(() => copyMeteorSettingsFile({ applications, meteorSettings, root }))
     .then(() => copyLauncherScript({ applications, root }))
     .then(() => copySmokeTestFiles({ applications, root }))
     .then(() => writeApplicationsExpectedFilesList({ applications, root }))
     .then(() =>
       writeTmuxinatorScript({
-        tmuxinatorConfigs: applications.map(
-          generateTmuxinatorConfigForApplication(root),
-        ),
+        tmuxinatorConfigs: applications.map(generateTmuxinatorConfigForApplication(root)),
         filePath: `${getCurrentPath()}/${TMUXINATOR_YML}`,
         applicationsExpectedFilesList: `${getCurrentPath()}/${root}/${EXPECTED_FILES_LIST}`,
-      }),
-    );
+      }));
 };

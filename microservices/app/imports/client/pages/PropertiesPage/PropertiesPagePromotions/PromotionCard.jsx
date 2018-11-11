@@ -1,13 +1,13 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 import cx from 'classnames';
 
 import { createRoute } from 'core/utils/routerUtils';
 import StatusLabel from 'core/components/StatusLabel';
 import promotionFiles from 'core/api/promotions/queries/promotionFiles';
 import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { PROMOTIONS_COLLECTION, PROMOTION_STATUS } from 'core/api/constants';
 import { APP_PROMOTION_PAGE } from '../../../../startup/client/appRoutes';
 
 type PromotionCardProps = {
@@ -26,6 +26,7 @@ const PromotionCard = ({ promotion, loanId }: PromotionCardProps) => {
         ':loanId': loanId,
       })}
       className="card1 card-hover promotion-card"
+      disabled={status !== PROMOTION_STATUS.OPEN}
     >
       <React.Fragment>
         <span

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'core/components/Link';
 import Overdrive from 'react-overdrive';
 
 import Button from 'core/components/Button';
