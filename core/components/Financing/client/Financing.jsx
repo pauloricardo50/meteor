@@ -24,7 +24,7 @@ const Financing = ({ loan }: FinancingProps) =>
         <FinancingProject />
         <FinancingFinancing />
         <FinancingOwnFunds />
-        {/* <FinancingOffers /> */}
+        <FinancingOffers />
         <FinancingResult />
       </div>
     </ScrollSync>
