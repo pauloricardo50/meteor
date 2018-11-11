@@ -7,7 +7,7 @@ export const fullOfferFragment = {
   amortization: 1,
   maxAmount: 1,
   conditions: 1,
-  organisation: 1,
+  organisation: { name: 1, logo: 1 },
   ...Object.values(INTEREST_RATES).reduce(
     (rates, rate) => ({ ...rates, [rate]: 1 }),
     {},

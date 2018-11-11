@@ -62,14 +62,14 @@ const mapValuesToOffer = ({
   return [
     {
       loanId,
-      organisation,
-      conditions: [conditions],
+      organisationLink: { _id: organisation },
+      conditions: [conditions].filter(x => x),
       ...standardOffer,
     },
     hasCounterparts && {
       loanId,
-      organisation,
-      conditions: [conditions, counterparts],
+      organisationLink: { _id: organisation },
+      conditions: [conditions, counterparts].filter(x => x),
       ...counterpartOffer,
     },
   ].filter(offer => !!offer);
