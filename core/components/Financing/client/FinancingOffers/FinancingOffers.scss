@@ -14,6 +14,7 @@
   > div {
     display: flex;
     flex-direction: column;
+    padding: 8px;
 
     border: 2px solid $border-grey;
     border-radius: 4px;
@@ -26,6 +27,21 @@
       cursor: pointer;
 
       border-color: $primary;
+    }
+
+    img {
+      width: 100px;
+      align-self: center;
+      margin-bottom: 8px;
+    }
+
+    p,
+    h5 {
+      margin: 0;
+    }
+
+    h5 {
+      margin-bottom: 8px;
     }
   }
 }

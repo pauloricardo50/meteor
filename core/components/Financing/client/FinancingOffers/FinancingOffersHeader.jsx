@@ -1,17 +1,20 @@
 // @flow
 import React from 'react';
 
+import { compose } from 'recompose';
 import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
+import FinancingDataContainer from '../containers/FinancingDataContainer';
 
 type FinancingOffersHeaderProps = {};
 
 const FinancingOffersHeader = (props: FinancingOffersHeaderProps) => {
   const {
-    structure: { offer },
+    structure: { offerId },
+    offers,
   } = props;
-  console.log('FinancingOffersHeader props', props);
-  if (offer && offer.organisation) {
+  if (offerId) {
+    const offer = offers.find(({ _id }) => _id === offerId);
     return (
       <div className="financing-offers-header-image offer">
         <img src={offer.organisation.logo} alt={offer.organisation.name} />
@@ -24,4 +27,7 @@ const FinancingOffersHeader = (props: FinancingOffersHeaderProps) => {
     </p>
   );
 };
-export default SingleStructureContainer(FinancingOffersHeader);
+export default compose(
+  FinancingDataContainer,
+  SingleStructureContainer,
+)(FinancingOffersHeader);
