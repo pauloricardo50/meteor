@@ -1,23 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import range from 'lodash/range';
-import { STEPS, STEP_ORDER } from 'imports/core/api/constants';
+import {
+  STEPS,
+  STEP_ORDER,
+  AUCTION_STATUS,
+  ROLES,
+  TASK_TYPE,
+} from 'core/api/constants';
 import {
   Borrowers,
   Loans,
+  Lots,
   Offers,
+  Organisations,
+  PromotionLots,
+  PromotionOptions,
+  Promotions,
   Properties,
+  SecurityService,
   Tasks,
   Users,
-  Promotions,
-  PromotionLots,
-  Lots,
-  PromotionOptions,
-  SecurityService,
 } from '../api';
 import TaskService from '../api/tasks/TaskService';
-import { TASK_TYPE } from '../api/tasks/taskConstants';
-import { AUCTION_STATUS } from '../api/loans/loanConstants';
 import {
   USER_COUNT,
   UNOWNED_LOANS_COUNT,
@@ -32,9 +37,9 @@ import {
   createFakeUsers,
 } from './userFixtures';
 import { createFakeOffer } from './offerFixtures';
-import { ROLES } from '../api/users/userConstants';
 import { E2E_USER_EMAIL } from './fixtureConstants';
 import { createYannisData } from './demoFixtures';
+import { createOrganisations } from './organisationFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -100,6 +105,7 @@ Meteor.methods({
       createDevs(currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
+      createOrganisations();
 
       // for each regular fixture user, create a loan with a certain step
       newUsers.forEach((userId, index) => {
@@ -135,6 +141,7 @@ Meteor.methods({
         Loans.rawCollection().remove({}),
         Lots.remove({}),
         Offers.rawCollection().remove({}),
+        Organisations.rawCollection().remove({}),
         PromotionLots.rawCollection().remove({}),
         PromotionOptions.rawCollection().remove({}),
         Promotions.rawCollection().remove({}),
