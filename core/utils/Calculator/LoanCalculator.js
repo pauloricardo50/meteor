@@ -70,6 +70,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getAmortization({ loan }) {
+      const {
+        structure: { offer },
+      } = loan;
+
+      if (offer) {
+        return offer.amortization / 12;
+      }
+
       return (
         (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
         / 12

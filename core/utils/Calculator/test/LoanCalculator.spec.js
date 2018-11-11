@@ -163,6 +163,16 @@ describe('LoanCalculator', () => {
     });
 
     it('should amortize faster if borrowers are old');
+
+    it('gets amortization from the offer if it is defined', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            offer: { amortization: 12 },
+          },
+        },
+      })).to.equal(1);
+    });
   });
 
   describe('getMonthly', () => {
