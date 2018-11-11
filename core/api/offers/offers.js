@@ -27,7 +27,7 @@ export const OfferSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  organisationLink: { type: Object },
+  organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
   maxAmount: {
     type: SimpleSchema.Integer,
