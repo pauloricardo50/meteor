@@ -1,5 +1,5 @@
 import { SecurityService } from '../..';
-import query from './adminOrganizations';
+import query from './adminOrganisations';
 
 query.expose({
   firewall: () => {

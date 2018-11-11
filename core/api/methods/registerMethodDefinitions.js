@@ -6,7 +6,7 @@ export * from '../impersonation/defs';
 export * from '../loans/methodDefinitions';
 export * from '../lots/methodDefinitions';
 export * from '../offers/methodDefinitions';
-export * from '../organizations/methodDefinitions';
+export * from '../organisations/methodDefinitions';
 export * from '../PDFGenerator/methodDefinitions';
 export * from '../promotionLots/methodDefinitions';
 export * from '../promotionOptions/methodDefinitions';

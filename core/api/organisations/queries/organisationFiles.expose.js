@@ -1,5 +1,5 @@
 import { SecurityService } from '../..';
-import query from './organizationFiles';
+import query from './organisationFiles';
 
 query.expose({
   firewall: () => SecurityService.checkCurrentUserIsAdmin(),

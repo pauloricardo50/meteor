@@ -27,7 +27,7 @@ export const OfferSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  organization: String,
+  organisation: String,
   maxAmount: {
     type: SimpleSchema.Integer,
     min: 0,

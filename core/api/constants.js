@@ -3,7 +3,7 @@ import { BORROWERS_COLLECTION } from './borrowers/borrowerConstants';
 import { LOANS_COLLECTION } from './loans/loanConstants';
 import { LOTS_COLLECTION } from './lots/lotConstants';
 import { OFFERS_COLLECTION } from './offers/offerConstants';
-import { ORGANIZATIONS_COLLECTION } from './organizations/organizationConstants';
+import { ORGANISATIONS_COLLECTION } from './organisations/organisationConstants';
 import { PROMOTION_LOTS_COLLECTION } from './promotionLots/promotionLotConstants';
 import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptions/promotionOptionConstants';
 import { PROMOTIONS_COLLECTION } from './promotions/promotionConstants';
@@ -16,7 +16,7 @@ export * from './interestRates/interestRatesConstants';
 export * from './loans/loanConstants';
 export * from './lots/lotConstants';
 export * from './offers/offerConstants';
-export * from './organizations/organizationConstants';
+export * from './organisations/organisationConstants';
 export * from './PDFGenerator/pdfGeneratorConstants';
 export * from './promotionLots/promotionLotConstants';
 export * from './promotionOptions/promotionOptionConstants';
@@ -40,5 +40,5 @@ export const COLLECTIONS = {
   PROMOTION_LOTS_COLLECTION,
   TASKS_COLLECTION,
   OFFERS_COLLECTION,
-  ORGANIZATIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
 };

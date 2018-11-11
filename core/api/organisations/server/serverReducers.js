@@ -1,6 +1,6 @@
-import Organizations from '..';
+import Organisations from '..';
 import filesReducer from '../../reducers/filesReducer';
 
-Organizations.addReducers({
+Organisations.addReducers({
   ...filesReducer,
 });

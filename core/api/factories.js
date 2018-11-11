@@ -89,7 +89,7 @@ Factory.define('property', Properties, {
 Factory.define('offer', Offers, {
   userId: () => faker.random.uuid(),
   createdAt: () => new Date(),
-  organization: 'bankName',
+  organisation: 'bankName',
   canton: 'GE',
   conditions: ['Do something'],
   maxAmount: 800000,

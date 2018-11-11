@@ -18,7 +18,7 @@ export const interestRatesFormArray = index =>
   }));
 
 export const baseForm = [
-  { id: 'organization' },
+  { id: 'organisation' },
   {
     id: 'maxAmount',
     fieldType: FIELD_TYPES.MONEY,

@@ -12,7 +12,7 @@ import {
   USERS_COLLECTION,
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
-  ORGANIZATIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 
 import MainSideNavListItem from './MainSideNavListItem';
@@ -55,8 +55,8 @@ const items = [
     icon: (
       <FontAwesomeIcon icon={faBriefcase} className="admin-side-nav-icon" />
     ),
-    to: '/organizations',
-    collection: ORGANIZATIONS_COLLECTION,
+    to: '/organisations',
+    collection: ORGANISATIONS_COLLECTION,
   },
   { label: 'Dev', icon: 'developerMode', to: '/dev' },
 ];

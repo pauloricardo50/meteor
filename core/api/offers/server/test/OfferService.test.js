@@ -32,7 +32,7 @@ describe('OfferService', () => {
       offerId = OfferService.insert({
         offer: {
           loanId: 'loanId',
-          organization: 'UBS',
+          organisation: 'UBS',
           maxAmount: 800000,
           amortization: 10000,
         },

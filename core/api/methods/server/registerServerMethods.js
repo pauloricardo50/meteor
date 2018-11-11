@@ -5,7 +5,7 @@ import '../../impersonation/server/methods';
 import '../../loans/server/methods';
 import '../../lots/server/methods';
 import '../../offers/server/methods';
-import '../../organizations/server/methods';
+import '../../organisations/server/methods';
 import '../../PDFGenerator/server/methods';
 import '../../promotionLots/server/methods';
 import '../../promotionOptions/server/methods';

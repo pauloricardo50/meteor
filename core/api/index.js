@@ -8,7 +8,7 @@ export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';
 export { default as Lots } from './lots';
 export { default as Offers } from './offers';
-export { default as Organizations } from './organizations';
+export { default as Organisations } from './organisations';
 export { default as PromotionLots } from './promotionLots';
 export { default as PromotionOptions } from './promotionOptions';
 export { default as Promotions } from './promotions';

@@ -3,23 +3,23 @@ import React from 'react';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import { Uploader } from 'core/components/UploaderArray';
-import { OrganizationSchema } from 'core/api/organizations/organizations';
-import { ORGANIZATIONS_COLLECTION, S3_ACLS } from 'core/api/constants';
-import OrganizationContainer from './OrganizationContainer';
+import { OrganisationSchema } from 'core/api/organisations/organisations';
+import { ORGANISATIONS_COLLECTION, S3_ACLS } from 'core/api/constants';
+import OrganisationContainer from './OrganisationContainer';
 
-type OrganizationProps = {};
+type OrganisationProps = {};
 
-const Organization = ({
-  organization,
-  updateOrganization,
-}: OrganizationProps) => {
-  const { _id, name, logo = '/img/placeholder.png', documents } = organization;
-  console.log('organization', organization);
+const Organisation = ({
+  organisation,
+  updateOrganisation,
+}: OrganisationProps) => {
+  const { _id, name, logo = '/img/placeholder.png', documents } = organisation;
+  console.log('organisation', organisation);
   return (
     <AutoFormDialog
       triggerComponent={handleOpen => (
         <div
-          className="organization card1 card-hover"
+          className="organisation card1 card-hover"
           key={_id}
           onClick={handleOpen}
         >
@@ -32,13 +32,13 @@ const Organization = ({
           </div>
         </div>
       )}
-      schema={OrganizationSchema.omit('logo')}
-      model={organization}
-      onSubmit={updateOrganization}
+      schema={OrganisationSchema.omit('logo')}
+      model={organisation}
+      onSubmit={updateOrganisation}
     >
       {() => (
         <Uploader
-          collection={ORGANIZATIONS_COLLECTION}
+          collection={ORGANISATIONS_COLLECTION}
           docId={_id}
           currentValue={documents && documents.logo}
           fileMeta={{
@@ -47,11 +47,11 @@ const Organization = ({
             acl: S3_ACLS.PUBLIC_READ,
             noTooltips: true,
           }}
-          handleSuccess={(file, url) => updateOrganization({ logo: url })}
+          handleSuccess={(file, url) => updateOrganisation({ logo: url })}
         />
       )}
     </AutoFormDialog>
   );
 };
 
-export default OrganizationContainer(Organization);
+export default OrganisationContainer(Organisation);

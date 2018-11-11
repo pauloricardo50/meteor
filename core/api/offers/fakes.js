@@ -46,7 +46,7 @@ export const getRandomOffer = ({ loan }) => {
   const counterpart = getRandomCounterpart();
   const condition = getRandomCondition();
   return {
-    organization: 'fake',
+    organisation: 'fake',
     loanId: loan._id,
     maxAmount: maxAmountLimited,
     amortization: Math.round(loanWanted * 0.0125),
