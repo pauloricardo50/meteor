@@ -12,7 +12,10 @@ const OfferPickerListItem = ({
   selected,
   updateStructure,
 }: OfferPickerListItemProps) => (
-  <div className={cx({ selected })} onClick={() => updateStructure(_id)}>
+  <div
+    className={cx({ selected })}
+    onClick={() => updateStructure(selected ? '' : _id)}
+  >
     <img src={logo} alt={name} />
   </div>
 );
