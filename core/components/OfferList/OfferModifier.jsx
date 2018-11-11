@@ -17,7 +17,10 @@ const OfferModifier = ({ onSubmit, offer }: OfferModifierProps) => (
     title={<T id="OfferModifier.dialogTitle" />}
     form={FORM_NAME}
     onSubmit={onSubmit}
-    initialValues={offer}
+    initialValues={{
+      ...offer,
+      organisation: offer.organisation ? offer.organisation._id : undefined,
+    }}
     formArray={formArray}
     destroyOnUnmount
     button={(
