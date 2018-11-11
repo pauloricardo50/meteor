@@ -18,7 +18,11 @@ const Organization = ({
   return (
     <AutoFormDialog
       triggerComponent={handleOpen => (
-        <div className="organization card1" key={_id} onClick={handleOpen}>
+        <div
+          className="organization card1 card-hover"
+          key={_id}
+          onClick={handleOpen}
+        >
           <div
             className="card-top"
             style={{ backgroundImage: `url("${logo}")` }}

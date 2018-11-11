@@ -25,9 +25,11 @@ const OrganizationsPage = ({
     />
 
     <div className="organizations">
-      {organizations.map(org => (
-        <Organization organization={org} key={org._id} />
-      ))}
+      {organizations
+        .sort(({ name: nameA }, { name: nameB }) => nameA.localeCompare(nameB))
+        .map(org => (
+          <Organization organization={org} key={org._id} />
+        ))}
     </div>
   </div>
 );
