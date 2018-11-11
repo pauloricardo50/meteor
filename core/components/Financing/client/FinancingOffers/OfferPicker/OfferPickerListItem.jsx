@@ -24,7 +24,7 @@ const OfferPickerListItem = ({
     <img src={logo} alt={name} />
 
     <p className="secondary">
-      <T id="offer.amortization" />
+      <T id="FinancingOffers.amortization" />
     </p>
     <h5>{toMoney(amortization / 12)} /mois</h5>
 
