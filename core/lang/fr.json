@@ -1,4 +1,7 @@
 {
+  "Forms.type.BANK": "Banque",
+  "Forms.type.INSURANCE": "Assurance",
+  "Forms.type.PRIVATE_BANK": "Banque privée",
   "LoanTabs.promotion": "Promotions",
   "PromotionLotLoansTable.date": "Date du choix",
   "Recap.thirdPartyFortune": "Prêt de tiers",
