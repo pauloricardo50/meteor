@@ -198,4 +198,8 @@ Meteor.methods({
     Properties.remove({ userId });
     createYannisData(userId);
   },
+
+  createFakeOffer({ loanId, userId }) {
+    createFakeOffer(loanId, userId);
+  },
 });
