@@ -12,7 +12,7 @@ import FinancingSection, {
   RadioButtons,
   FinmaRatio,
 } from '../FinancingSection';
-import Calc from '../FinancingCalculator';
+import Calc, { getOffer } from '../FinancingCalculator';
 import FinancingTranchePicker from './FinancingTranchePicker';
 import {
   getBorrowRatio,
@@ -33,14 +33,20 @@ export const calculateLoan = (params) => {
   return wantedLoan;
 };
 
-export const calculateMaxLoan = (data, pledgeOverride) =>
-  Calc.getMaxLoanBase({
+export const calculateMaxLoan = (data, pledgeOverride) => {
+  if (data.structure.offerId) {
+    const { maxAmount } = getOffer(data);
+    return maxAmount;
+  }
+
+  return Calc.getMaxLoanBase({
     propertyWork: data.structure.propertyWork,
     propertyValue: getPropertyValue(data),
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
     residenceType: data.loan.general.residenceType,
   });
+};
 
 const enableOffers = ({ loan }) => loan.enableOffers;
 
