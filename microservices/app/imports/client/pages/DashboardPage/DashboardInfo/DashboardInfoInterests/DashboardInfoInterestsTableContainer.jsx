@@ -12,7 +12,7 @@ import {
 export const DashboardInfoInterestsTableContainer = compose(
   withSmartQuery({
     query: offersQuery,
-    params: ({ loanId }) => ({ loanId }),
+    params: ({ loan: { _id: loanId } }) => ({ loanId }),
     dataName: 'offers',
   }),
   withProps(({ loan: { enableOffers }, offers }) => ({
