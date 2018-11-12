@@ -22,12 +22,7 @@ const FinancingOffers = (props: FinancingOffersProps) => (
         Component: FinancingOffersHeader,
       },
     ]}
-    detailConfig={[
-      {
-        id: 'offerId',
-        Component: OfferPicker,
-      },
-    ]}
+    detailConfig={[{ id: 'offerId', Component: OfferPicker }]}
   />
 );
 

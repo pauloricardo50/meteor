@@ -27,6 +27,9 @@ const getOfferValues = ({ monthly, conditions }) => [
   { key: 'interest2', format: 'percentage' },
   { key: 'interest5', format: 'percentage' },
   { key: 'interest10', format: 'percentage' },
+  { key: 'interest15', format: 'percentage' },
+  { key: 'interest20', format: 'percentage' },
+  { key: 'interest25', format: 'percentage' },
   {
     component: <ConditionsButton conditions={conditions} />,
   },

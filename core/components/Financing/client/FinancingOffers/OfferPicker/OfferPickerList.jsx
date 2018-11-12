@@ -29,7 +29,11 @@ const OfferPickerList = ({
     <OfferPickerDialog
       open={!!dialogOffer}
       handleClose={() => setDialogOffer('')}
-      handleSelect={() => updateStructure(dialogOffer)}
+      handleSelect={() =>
+        updateStructure(dialogOffer).then(() => setDialogOffer(''))
+      }
+      offer={offers.find(({ _id }) => _id === dialogOffer)}
+      structure={structure}
     />
   </div>
 );
