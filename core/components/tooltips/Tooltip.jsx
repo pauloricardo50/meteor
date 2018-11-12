@@ -65,7 +65,7 @@ const Tooltip = ({
 };
 
 Tooltip.propTypes = {
-  match: PropTypes.string.isRequired,
+  match: PropTypes.string,
   tooltipConfig: PropTypes.object.isRequired,
 };
 
