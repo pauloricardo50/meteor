@@ -2,7 +2,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { MAX_YEARLY_THIRD_PILLAR_PAYMENTS } from '../../../config/financeConstants';
 import DefaultFinanceCalculator, {
   FinanceCalculator,
 } from '../FinanceCalculator';
