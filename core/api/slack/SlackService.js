@@ -14,17 +14,13 @@ class SlackService {
     if (Meteor.isServer) {
       this.fetch = require('node-fetch');
     } else {
-      this.fetch = global.fetch;
+      // Fetch needs window context to function, or else you get this
+      // https://stackoverflow.com/questions/9677985/uncaught-typeerror-illegal-invocation-in-chrome
+      this.fetch = fetch.bind(window);
     }
   }
 
   send = ({ channel, username = 'e-Potek Bot', text, ...rest }) => {
-    console.log('SLACK');
-    console.log('SLACK');
-
-    console.log('text', text);
-    console.log('username', username);
-    console.log('channel', channel);
     if (shouldNotLog) {
       return false;
     }
@@ -43,14 +39,11 @@ class SlackService {
           ...rest,
         }),
       },
-    ).catch(this.catchError(text));
+    ).catch((err) => {
+      // Somehow, this error is catched somewhere if we don't do this
+      throw err;
+    });
   };
-
-  catchError = text => error =>
-    this.sendError({
-      error,
-      additionalData: [`Tried to send text: ${text}`],
-    }).catch(err2 => console.log(('Slack error:', err2)));
 
   formatText = text => (isArray(text) ? text.join('\n') : text);
 
@@ -155,8 +148,6 @@ class SlackService {
         },
       ],
     };
-
-    console.log('Logging to slack', Meteor);
 
     if (Meteor.isStaging || Meteor.isDevelopment) {
       console.log('Slack dev/staging notification');
