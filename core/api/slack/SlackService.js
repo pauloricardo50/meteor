@@ -19,6 +19,12 @@ class SlackService {
   }
 
   send = ({ channel, username = 'e-Potek Bot', text, ...rest }) => {
+    console.log('SLACK');
+    console.log('SLACK');
+
+    console.log('text', text);
+    console.log('username', username);
+    console.log('channel', channel);
     if (shouldNotLog) {
       return false;
     }
@@ -149,6 +155,8 @@ class SlackService {
         },
       ],
     };
+
+    console.log('Logging to slack', Meteor);
 
     if (Meteor.isStaging || Meteor.isDevelopment) {
       console.log('Slack dev/staging notification');
