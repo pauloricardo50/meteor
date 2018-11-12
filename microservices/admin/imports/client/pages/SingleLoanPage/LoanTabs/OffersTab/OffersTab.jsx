@@ -29,8 +29,8 @@ const OffersTab = (props) => {
         />
         <p className="description" style={{ marginLeft: 16 }}>
           Affiche les offres dans les plans financiers, switch des taux publics
-          aux taux des offres reçues, et active le choix des tranches taux et du
-          type d'amortissement.
+          aux taux des offres reçues sur le dashboard, et active le choix des
+          tranches de taux et du type d'amortissement.
         </p>
       </div>
       <div className="offer-adder">
