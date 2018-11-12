@@ -210,6 +210,7 @@ describe('LoanCalculator', () => {
             wantedLoan: 960000,
             property: { value: 1200000 },
             offer: {
+              amortization: 24000,
               [INTEREST_RATES.YEARS_10]: 0.02,
             },
             propertyWork: 0,
@@ -217,7 +218,7 @@ describe('LoanCalculator', () => {
           },
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
-      })).to.equal(2600);
+      })).to.equal(3600);
     });
   });
 
