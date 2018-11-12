@@ -2,8 +2,8 @@
 @import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
 @import './client/FinancingOffers/FinancingOffers.scss';
 @import './client/FinancingProject/FinancingProject.scss';
-$labels-width: 200px;
-$labels-width-first: 180px;
+$labels-width: 180px;
+$structure-width: 320px;
 $item-height: 24px;
 $card1_padding: 24px;
 $result-section-negative-offset: -32px;
@@ -18,6 +18,7 @@ $result-section-negative-offset: -32px;
   .input-and-slider {
     .money-input {
       margin-bottom: 4px;
+      width: 100%;
     }
   }
 }
@@ -30,7 +31,7 @@ $result-section-negative-offset: -32px;
   justify-content: center;
 
   box-sizing: border-box;
-  width: 300px;
+  width: $structure-width;
 
   border-right: solid 1px $light-grey;
   border-left: solid 1px $light-grey;
@@ -200,10 +201,6 @@ $result-section-negative-offset: -32px;
   padding: 16px;
   padding-top: calc(16px + #{$card1_padding});
 
-  &:first-of-type {
-    width: $labels-width-first;
-  }
-
   &.summary-labels {
     padding-top: 16px;
   }
@@ -214,10 +211,6 @@ $result-section-negative-offset: -32px;
 
     color: rgba(0, 0, 0, 0.68);
   }
-}
-
-.section-summary .financing-structures-labels {
-  width: $labels-width-first;
 }
 
 .financing-structures-result-chart {

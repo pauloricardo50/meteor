@@ -343,6 +343,15 @@ export class FinanceCalculator {
     // Because of the ratios, round this value down
     return Math.floor(Math.min(incomeLimited1, incomeLimited2));
   };
+
+  getAveragedInterestRate({ tranches = [], rates = {} }) {
+    return (
+      tranches.reduce(
+        (totalRate, { type, value }) => totalRate + rates[type] * value,
+        0,
+      ) / tranches.length
+    );
+  }
 }
 
 export default new FinanceCalculator();

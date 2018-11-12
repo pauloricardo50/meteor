@@ -1,4 +1,6 @@
 {
+  "general.choose": "Choisir",
+  "offer.interests": "Taux",
   "Forms.enableOffers": "Activer offres",
   "FinancingOffers.amortization": "Amortissement",
   "FinancingOffersHeader.empty": "Choisissez..",

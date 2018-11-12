@@ -148,7 +148,6 @@ describe('FinanceCalculator', () => {
     });
   });
 
-
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
       expect(calc.getYearsToRetirement({ age1: 30, gender1: 'M' })).to.equal(35);
@@ -247,6 +246,25 @@ describe('FinanceCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         pledgedAmount: 20,
       })).to.equal(90);
+    });
+  });
+
+  describe.only('getAveragedInterestRate', () => {
+    it('returns the same value if only one rate at 100%', () => {
+      expect(calc.getAveragedInterestRate({
+        tranches: [{ type: 'rateType', value: 1 }],
+        rates: { rateType: 0.01 },
+      })).to.equal(0.01);
+    });
+
+    it('averages 2 rates out', () => {
+      expect(calc.getAveragedInterestRate({
+        tranches: [
+          { type: 'rateType1', value: 0.5 },
+          { type: 'rateType2', value: 0.5 },
+        ],
+        rates: { rateType1: 0.01, rateType2: 0.01 },
+      })).to.equal(0.005);
     });
   });
 });
