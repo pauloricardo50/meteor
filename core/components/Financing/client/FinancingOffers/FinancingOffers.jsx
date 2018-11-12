@@ -2,6 +2,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+
 import FinancingSection from '../FinancingSection';
 import FinancingOffersHeader from './FinancingOffersHeader';
 import OfferPicker from './OfferPicker';

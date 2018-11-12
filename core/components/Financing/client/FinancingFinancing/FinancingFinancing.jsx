@@ -42,7 +42,7 @@ export const calculateMaxLoan = (data, pledgeOverride) =>
     residenceType: data.loan.general.residenceType,
   });
 
-const offersExist = ({ offers }) => offers && offers.length > 0;
+const enableOffers = ({ loan }) => loan.enableOffers;
 
 type FinancingFinancingProps = {};
 
@@ -85,12 +85,12 @@ const FinancingFinancing = (props: FinancingFinancingProps) => (
           id: key,
           label: `FinancingFinancing.${key}`,
         })),
-        condition: offersExist,
+        condition: enableOffers,
       },
       {
         id: 'loanTranches',
         Component: FinancingTranchePicker,
-        condition: offersExist,
+        condition: enableOffers,
       },
     ]}
   />
