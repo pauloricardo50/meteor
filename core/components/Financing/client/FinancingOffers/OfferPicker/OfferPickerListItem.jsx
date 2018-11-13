@@ -64,13 +64,13 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
 
       {displayDetail ? (
         <OfferPickerListItemDetail offer={offer} structure={structure} />
+      ) : loanTranches.length > 1 ? (
+        <OfferPickerListItemValue
+          label={<T id="offer.averagedInterestRate" />}
+          value={<Percent value={averagedRate} />}
+        />
       ) : (
-        loanTranches.length > 1 && (
-          <OfferPickerListItemValue
-            label={<T id="offer.averagedInterestRate" />}
-            value={<Percent value={averagedRate} />}
-          />
-        )
+        <OfferPickerListItemDetail offer={offer} structure={structure} />
       )}
     </div>
   );
