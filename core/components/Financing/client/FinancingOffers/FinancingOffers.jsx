@@ -6,6 +6,8 @@ import T from 'core/components/Translation';
 import FinancingSection from '../FinancingSection';
 import FinancingOffersHeader from './FinancingOffersHeader';
 import OfferPicker from './OfferPicker';
+import FinancingOffersSorter from './FinancingOffersSorter';
+import FinancingOffersContainer from './FinancingOffersContainer';
 
 type FinancingOffersProps = {};
 
@@ -22,9 +24,15 @@ const FinancingOffers = (props: FinancingOffersProps) => (
         Component: FinancingOffersHeader,
       },
     ]}
-    detailConfig={[{ id: 'offerId', Component: OfferPicker }]}
+    detailConfig={[
+      {
+        id: 'offerId',
+        label: <FinancingOffersSorter />,
+        Component: OfferPicker,
+      },
+    ]}
     noWrapper
   />
 );
 
-export default FinancingOffers;
+export default FinancingOffersContainer(FinancingOffers);
