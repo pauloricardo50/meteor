@@ -5,7 +5,6 @@ import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
 import FileStatusIcon from './FileStatusIcon';
-import AdditionalDocDeleter from './AdditionalDocDeleter';
 
 const Title = ({
   fileMeta: { id, label, isAdditionalDoc, required, noTooltips, tooltipSuffix },
@@ -44,13 +43,6 @@ const Title = ({
             values={{ count: (currentValue && currentValue.length) || 0 }}
           />
         </h5>
-        <AdditionalDocDeleter
-          id={id}
-          isAdditionalDoc={isAdditionalDoc}
-          label={label}
-          collection={collection}
-          docId={docId}
-        />
       </div>
 
       <IconButton

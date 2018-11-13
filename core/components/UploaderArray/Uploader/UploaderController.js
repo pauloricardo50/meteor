@@ -1,3 +1,4 @@
+import {Meteor} from 'meteor/meteor'
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
 import bert from 'core/utils/bert';
@@ -35,7 +36,7 @@ export const propHasChanged = (oldProp, newProp) =>
 
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
-    displayFull: !filesExistAndAreValid(currentValue),
+    displayFull: Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
   }),
   {
     showFull: () => () => ({ displayFull: true }),

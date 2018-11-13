@@ -39,7 +39,6 @@ const UploaderArray = ({
             disabled={disabled}
             collection={collection}
             currentUser={currentUser}
-            isDocumentToHide={false}
           />
         ))}
         <h3>Autres documents</h3>
