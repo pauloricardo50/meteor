@@ -74,3 +74,13 @@
 .additional-doc-deleter {
   margin-left: 8px;
 }
+
+.uploader-admin {
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+
+  .uploader {
+    flex-grow: 1;
+  }
+}

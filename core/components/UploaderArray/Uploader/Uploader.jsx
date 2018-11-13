@@ -16,17 +16,16 @@ const Uploader = (props) => {
     showFull,
     collection,
     docId,
-    fileMeta: { id },
+    fileMeta: { id, requiredByAdmin },
+    isDocumentToHide,
   } = props;
-  console.log('props', props);
 
   return (
-    <>
+    <div className="uploader-admin">
       {Meteor.microservice === 'admin' && (
         <Checkbox
-          checked={false}
+          value={requiredByAdmin !== false && !isDocumentToHide}
           onChange={(event) => {
-            console.log('event', event);
             setAdditionalDoc.run({
               collection,
               id: docId,
@@ -41,7 +40,7 @@ const Uploader = (props) => {
         <UploaderTop {...props} />
         {displayFull && <UploaderBottom {...props} />}
       </FileDropper>
-    </>
+    </div>
   );
 };
 

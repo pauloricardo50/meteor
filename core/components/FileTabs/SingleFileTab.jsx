@@ -28,7 +28,6 @@ const SingleFileTab = ({
         doc={doc}
         collection={collection}
         disabled={disabled}
-        documentArray={documentArray}
         currentUser={currentUser}
       />
     </div>

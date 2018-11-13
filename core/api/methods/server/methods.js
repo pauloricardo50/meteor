@@ -132,7 +132,12 @@ setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, require
       label,
     });
   case PROPERTIES_COLLECTION:
-    return null;
+    return PropertyService.setAdditionalDoc({
+      id,
+      additionalDocId,
+      requiredByAdmin,
+      label,
+    });
   default:
     throw new Meteor.Error('Unsupported collection');
   }

@@ -2,8 +2,13 @@ import LoanService from '../loans/LoanService';
 import Properties from '.';
 import WuestService from '../wuest/server/WuestService';
 import { VALUATION_STATUS } from './propertyConstants';
+import CollectionService from '../helpers/CollectionService';
 
-export class PropertyService {
+export class PropertyService extends CollectionService {
+  constructor() {
+    super(Properties);
+  }
+
   insert = ({ property, userId, loanId }) => {
     const propertyId = Properties.insert({ ...property, userId });
     if (loanId) {
