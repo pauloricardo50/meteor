@@ -5,6 +5,7 @@ import uniq from 'lodash/uniq';
 import pickBy from 'lodash/pickBy';
 
 import { INTEREST_RATES } from '../../../../api/constants';
+import T from '../../../Translation';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { Consumer } from './FinancingOffersContainer';
 
@@ -40,7 +41,7 @@ const withOptions = withProps(({ offers, loan }) => ({
     ...getAvailableRates(offers, loan).map(rate => ({ id: rate })),
   ].map(({ id }) => ({
     id,
-    label: id,
+    label: <T id={`offer.${id}`} />,
   })),
 }));
 

@@ -38,8 +38,15 @@ const withOfferSortContext = Component => props => (
   </Consumer>
 );
 
-const makeOfferSorter = sortBy => (offerA, offerB) =>
-  offerA[sortBy] - offerB[sortBy];
+const descendingSort = ['maxAmount', 'amortization'];
+
+const makeOfferSorter = sortBy => (offerA, offerB) => {
+  if (descendingSort.includes(sortBy)) {
+    return offerB[sortBy] - offerA[sortBy];
+  }
+
+  return offerA[sortBy] - offerB[sortBy];
+};
 
 const withSortedOffers = withProps(({ offers, sortBy }) => ({
   offers: offers.sort(makeOfferSorter(sortBy)),
