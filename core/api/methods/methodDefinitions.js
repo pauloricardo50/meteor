@@ -75,3 +75,14 @@ export const throwDevError = new Method({
     promiseNoReturn: Match.Maybe(Boolean),
   },
 });
+
+export const setAdditionalDoc = new Method({
+  name: 'setAdditionalDoc',
+  params: {
+    collection: String,
+    id: String,
+    additionalDocId: String,
+    requiredByAdmin: Boolean,
+    label: Match.Optional(String),
+  },
+});

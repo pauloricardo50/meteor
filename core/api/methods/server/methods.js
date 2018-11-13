@@ -14,7 +14,10 @@ import {
   submitContactForm,
   addUserToDoc,
   throwDevError,
+  setAdditionalDoc,
 } from '../methodDefinitions';
+import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
+import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -116,4 +119,21 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   }
 
   throw new Meteor.Error(400, 'Dev error!');
+});
+
+setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  switch (collection) {
+  case BORROWERS_COLLECTION:
+    return BorrowerService.setAdditionalDoc({
+      id,
+      additionalDocId,
+      requiredByAdmin,
+      label,
+    });
+  case PROPERTIES_COLLECTION:
+    return null;
+  default:
+    throw new Meteor.Error('Unsupported collection');
+  }
 });

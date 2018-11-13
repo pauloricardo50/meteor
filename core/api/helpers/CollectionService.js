@@ -72,6 +72,43 @@ class CollectionService {
 
     return assignee;
   }
+
+  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
+    const { additionalDocuments } = this.get(id);
+
+    const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
+
+    if (additionalDoc) {
+      const additionalDocumentsUpdate = [
+        ...additionalDocuments.filter(doc => doc.id !== additionalDocId),
+        {
+          id: additionalDocId,
+          requiredByAdmin,
+          ...(additionalDoc.label
+            ? { label: additionalDoc.label }
+            : label
+              ? { label }
+              : {}),
+        },
+      ];
+      return this._update({
+        id,
+        object: { additionalDocuments: additionalDocumentsUpdate },
+        operator: '$set',
+      });
+    }
+
+    return this._update({
+      id,
+      object: {
+        additionalDocuments: [
+          ...additionalDocuments,
+          { id: additionalDocId, requiredByAdmin, ...(label ? { label } : {}) },
+        ],
+      },
+      operator: '$set',
+    });
+  }
 }
 
 export default CollectionService;

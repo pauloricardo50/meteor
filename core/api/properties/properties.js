@@ -8,10 +8,7 @@ import {
   address,
 } from '../helpers/sharedSchemas';
 import * as propertyConstants from './propertyConstants';
-import {
-  initialDocuments,
-  conditionalDocuments,
-} from './propertiesAdditionalDocuments';
+
 
 const Properties = new Mongo.Collection(propertyConstants.PROPERTIES_COLLECTION);
 
@@ -353,11 +350,7 @@ export const PropertySchema = new SimpleSchema({
     max: 1000000,
     optional: true,
   },
-  ...additionalDocuments({
-    collection: propertyConstants.PROPERTIES_COLLECTION,
-    initialDocuments,
-    conditionalDocuments,
-  }),
+  ...additionalDocuments,
 });
 
 const protectedKeys = [
