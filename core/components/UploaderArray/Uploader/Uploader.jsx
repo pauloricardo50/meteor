@@ -8,6 +8,7 @@ import UploaderTop from './UploaderTop.jsx';
 import UploaderBottom from './UploaderBottom.jsx';
 import Checkbox from '../../Checkbox/Checkbox';
 import { setAdditionalDoc } from '../../../api';
+import { DOCUMENTS } from '../../../api/constants';
 
 const Uploader = (props) => {
   const {
@@ -34,6 +35,7 @@ const Uploader = (props) => {
             });
           }}
           id={id}
+          className={id === DOCUMENTS.OTHER && 'visibility-hidden'}
         />
       )}
       <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id}>

@@ -125,7 +125,6 @@ export const propertyDocuments = (property = {}, loan = {}) =>
     ]);
 
 const makeGetDocuments = collection => ({ loan, id }, ...args) => {
-  let documents;
   const isLoans = collection === LOANS_COLLECTION;
   if (!id && !isLoans) {
     return [];
@@ -133,29 +132,15 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
 
   const doc = !isLoans && loan[collection].find(({ _id }) => _id === id);
 
-  switch (collection) {
-  case PROPERTIES_COLLECTION:
-    documents = propertyDocuments(doc, loan);
-    break;
-  case BORROWERS_COLLECTION:
-    documents = borrowerDocuments(doc, ...args);
-    break;
-  case LOANS_COLLECTION:
-    documents = loanDocuments(loan);
-    break;
-  default:
-    documents = [];
-    break;
-  }
-
   return [
-    // ...documents,
     ...(doc && doc.additionalDocuments
-      ? doc.additionalDocuments.map(additionalDoc => ({
-        ...additionalDoc,
-        required: true,
-        isAdditionalDoc: true,
-      }))
+      ? doc.additionalDocuments
+        .filter(additionalDoc => additionalDoc.requiredByAdmin !== false)
+        .map(additionalDoc => ({
+          ...additionalDoc,
+          required: true,
+          isAdditionalDoc: true,
+        }))
       : []),
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
   ];

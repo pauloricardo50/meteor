@@ -44,6 +44,7 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                 collection="borrowers"
                 disabled={disabled}
                 currentUser={currentUser}
+                loan={loan}
               />
             ),
           })),
@@ -65,6 +66,7 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                   collection="properties"
                   disabled={disabled}
                   currentUser={currentUser}
+                  loan={loan}
                 />
               ),
             }))
@@ -82,6 +84,7 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                 collection="loans"
                 disabled={disabled}
                 currentUser={currentUser}
+                loan={loan}
               />
             ),
           },

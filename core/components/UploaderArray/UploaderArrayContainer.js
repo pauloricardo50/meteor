@@ -8,6 +8,11 @@ import {
   LOAN_DOCUMENTS,
   DOCUMENTS,
 } from '../../api/constants';
+import {
+  getBorrowerDocuments,
+  getPropertyDocuments,
+  getLoanDocuments,
+} from '../../api/files/documents';
 
 const allDocuments = ({ doc, collection }) => {
   let documents = [];
@@ -40,10 +45,18 @@ const allDocuments = ({ doc, collection }) => {
     : documents;
 };
 
-const documentsToDisplay = doc =>
-  (doc.additionalDocuments && doc.additionalDocuments.length > 0
-    ? doc.additionalDocuments.filter(({ requiredByAdmin }) => requiredByAdmin !== false)
-    : []);
+const documentsToDisplay = ({ collection, loan, id }) => {
+  switch (collection) {
+  case BORROWERS_COLLECTION:
+    return getBorrowerDocuments({ loan, id });
+  case PROPERTIES_COLLECTION:
+    return getPropertyDocuments({ loan, id });
+  case LOANS_COLLECTION:
+    return getLoanDocuments({ loan, id });
+  default:
+    return [];
+  }
+};
 
 const documentsToHide = ({ doc, collection }) =>
   allDocuments({ doc, collection }).filter(({ requiredByAdmin }) => requiredByAdmin !== true);
@@ -65,8 +78,8 @@ const sortDocuments = (a, b) => {
   return 0;
 };
 
-export default withProps(({ doc, collection }) => ({
-  documentsToDisplay: documentsToDisplay(doc).sort(sortDocuments),
+export default withProps(({ doc, collection, loan }) => ({
+  documentsToDisplay: documentsToDisplay({ collection, loan, id: doc._id }),
   documentsToHide: documentsToHide({ doc, collection }).sort(sortDocuments),
   getFileMeta,
 }));

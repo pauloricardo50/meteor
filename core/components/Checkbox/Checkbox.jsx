@@ -4,12 +4,21 @@ import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import MuiCheckbox from '@material-ui/core/Checkbox';
 
-const Checkbox = ({ value, onChange, label, id, disabled, style }) => (
+const Checkbox = ({
+  value,
+  onChange,
+  label,
+  id,
+  disabled,
+  style,
+  className,
+}) => (
   <FormControlLabel
     control={<MuiCheckbox checked={value} onChange={onChange} value={id} />}
     label={label}
     disabled={disabled}
     style={style}
+    className={className}
   />
 );
 

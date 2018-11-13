@@ -16,6 +16,7 @@ const SingleFileTab = ({
   disabled,
   documentArray,
   currentUser,
+  loan,
 }: SingleFileTabProps) => (
   <div className="single-file-tab">
     {Meteor.microservice === 'admin' && (
@@ -26,6 +27,7 @@ const SingleFileTab = ({
       collection={collection}
       disabled={disabled}
       currentUser={currentUser}
+      loan={loan}
     />
   </div>
 );
