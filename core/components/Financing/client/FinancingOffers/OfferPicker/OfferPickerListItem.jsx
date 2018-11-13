@@ -4,11 +4,6 @@ import cx from 'classnames';
 
 import T, { Percent } from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
-import FinancingCalculator from '../../FinancingCalculator';
-import {
-  getAmortizationForStructureWithOffer,
-  getInterestsForStructureWithOffer,
-} from './offerPickerHelpers';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 import OfferPickerListItemDetail from './OfferPickerListItemDetail';
 
@@ -19,18 +14,12 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
   const {
     organisation: { name, logo },
     maxAmount,
+    hasInvalidInterestRates,
+    interests,
+    amortization,
+    averagedRate,
   } = offer;
   const { loanTranches } = structure;
-  const hasInvalidInterestRates = FinancingCalculator.checkInterestsAndTranches({
-    interestRates: offer,
-    tranches: loanTranches,
-  });
-  const amortization = getAmortizationForStructureWithOffer(props) * 12;
-  const interests = getInterestsForStructureWithOffer(props) * 12;
-  const averagedRate = FinancingCalculator.getAveragedInterestRate({
-    tranches: loanTranches,
-    rates: offer,
-  });
   return (
     <div className={cx({ selected })} onClick={handleClick}>
       <img src={logo} alt={name} />

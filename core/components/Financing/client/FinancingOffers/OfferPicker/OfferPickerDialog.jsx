@@ -1,18 +1,11 @@
 // @flow
 import React from 'react';
-import pick from 'lodash/pick';
 
 import { lifecycle } from 'recompose';
 import Dialog from '../../../../Material/Dialog';
 import T, { Percent, Money } from '../../../../Translation';
 import { RecapSimple } from '../../../../Recap';
 import Button from '../../../../Button';
-import { INTEREST_RATES } from '../../../../../api/constants';
-import {
-  getAmortizationForStructureWithOffer,
-  getInterestsForStructureWithOffer,
-  getMonthlyForStructureWithOffer,
-} from './offerPickerHelpers';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import { getProperty } from '../../FinancingCalculator';
 
@@ -21,11 +14,15 @@ type OfferPickerDialogProps = {};
 const dialogContent = (props) => {
   const { offer, structure } = props;
   const property = getProperty(props);
-  const { maxAmount, conditions, organisation } = offer;
-  const rates = pick(offer, Object.values(INTEREST_RATES));
-  const amortization = getAmortizationForStructureWithOffer(props);
-  const interests = getInterestsForStructureWithOffer(props);
-  const monthly = getMonthlyForStructureWithOffer(props);
+  const {
+    maxAmount,
+    conditions,
+    organisation,
+    amortization,
+    interests,
+    monthly,
+    rates,
+  } = offer;
 
   return (
     <div className="offer-picker-dialog">
