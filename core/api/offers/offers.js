@@ -45,6 +45,18 @@ export const OfferSchema = new SimpleSchema({
     max: 100,
     optional: true,
   },
+  fees: {
+    type: Number,
+    min: 0,
+    max: 1000000000,
+    defaultValue: 0,
+  },
+  epotekFees: {
+    type: Number,
+    min: 0,
+    max: 1000000000,
+    defaultValue: 0,
+  },
   // For each existing rate, insert an allowed value in the schema
   ...Object.values(INTEREST_RATES).reduce(
     (accumulator, interestKey) => ({
