@@ -26,7 +26,7 @@ const getChartData = ({ loan }) => {
   });
 
   if (expenses) {
-    data.push({ id: 'Forms.monthlyExpenses', value: expenses });
+    data.push({ id: 'Forms.monthlyExpenses.short', value: expenses });
   }
 
   return data.map(dataPoint => ({

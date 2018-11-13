@@ -1,4 +1,7 @@
 {
+  "general.total": "Total",
+  "Forms.monthlyExpenses.short": "Charges d'entretien",
+  "offer.averagedInterestRate": "Votre taux",
   "FinancingResultErrors.invalidInterestRates": "Les tranches de taux choisies n'ont pas de taux disponibles",
   "FinancingOffers.invalidRate": "Cette offre n'a pas le taux {rate}",
   "FinancingOffers.interests": "Intérêts",

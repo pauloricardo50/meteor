@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { withState } from 'recompose';
+import { withState, compose } from 'recompose';
 
 import OfferPickerListItem from './OfferPickerListItem';
 import OfferPickerDialog from './OfferPickerDialog';
@@ -14,9 +14,15 @@ const OfferPickerList = ({
   updateStructure,
   dialogOffer,
   setDialogOffer,
+  hovering,
+  setHovering,
   ...data
 }: OfferPickerListProps) => (
-  <div className="offer-picker-list">
+  <div
+    className="offer-picker-list"
+    onMouseEnter={() => setHovering(true)}
+    onMouseLeave={() => setHovering(false)}
+  >
     {offers.map(offer => (
       <OfferPickerListItem
         key={offer._id}
@@ -24,7 +30,11 @@ const OfferPickerList = ({
         selected={structure.offerId === offer._id}
         updateStructure={updateStructure}
         structure={structure}
-        handleClick={() => setDialogOffer(offer._id)}
+        handleClick={() => {
+          setHovering(false);
+          setDialogOffer(offer._id);
+        }}
+        displayDetail={hovering}
         {...data}
       />
     ))}
@@ -41,4 +51,7 @@ const OfferPickerList = ({
   </div>
 );
 
-export default withState('dialogOffer', 'setDialogOffer', '')(OfferPickerList);
+export default compose(
+  withState('dialogOffer', 'setDialogOffer', ''),
+  withState('hovering', 'setHovering', false),
+)(OfferPickerList);

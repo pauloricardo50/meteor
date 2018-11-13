@@ -8,22 +8,19 @@ import FinancingCalculator from '../../FinancingCalculator';
 import {
   getAmortizationForStructureWithOffer,
   getInterestsForStructureWithOffer,
-  getMonthlyForStructureWithOffer,
 } from './offerPickerHelpers';
+import OfferPickerListItemValue from './OfferPickerListItemValue';
+import OfferPickerListItemDetail from './OfferPickerListItemDetail';
 
 type OfferPickerListItemProps = {};
 
 const OfferPickerListItem = (props: OfferPickerListItemProps) => {
-  const {
-    offer,
-    selected,
-    structure: { loanTranches },
-    handleClick,
-  } = props;
+  const { offer, selected, structure, handleClick, displayDetail } = props;
   const {
     organisation: { name, logo },
     maxAmount,
   } = offer;
+  const { loanTranches } = structure;
   const hasInvalidInterestRates = FinancingCalculator.checkInterestsAndTranches({
     interestRates: offer,
     tranches: loanTranches,
@@ -38,38 +35,43 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
     <div className={cx({ selected })} onClick={handleClick}>
       <img src={logo} alt={name} />
 
-      <p className="secondary">
-        <T id="FinancingOffers.interests" />
-      </p>
-      {hasInvalidInterestRates ? (
-        <p className="error">
-          <T
-            id="FinancingOffers.invalidRate"
-            values={{
-              rate: <T id={`offer.${hasInvalidInterestRates}.short`} />,
-            }}
-          />
-        </p>
+      <OfferPickerListItemValue
+        label={<T id="FinancingOffers.interests" />}
+        value={
+          hasInvalidInterestRates ? (
+            <T
+              id="FinancingOffers.invalidRate"
+              values={{
+                rate: <T id={`offer.${hasInvalidInterestRates}.short`} />,
+              }}
+            />
+          ) : (
+            <span>{toMoney(interests)} /an</span>
+          )
+        }
+        valueProps={hasInvalidInterestRates ? { className: 'error' } : {}}
+      />
+
+      <OfferPickerListItemValue
+        label={<T id="FinancingOffers.amortization" />}
+        value={<span>{toMoney(amortization)} /an</span>}
+      />
+
+      <OfferPickerListItemValue
+        label={<T id="offer.maxAmount" />}
+        value={toMoney(maxAmount)}
+      />
+
+      {displayDetail ? (
+        <OfferPickerListItemDetail offer={offer} structure={structure} />
       ) : (
-        <h5>{toMoney(interests)} /an</h5>
+        loanTranches.length > 1 && (
+          <OfferPickerListItemValue
+            label={<T id="offer.averagedInterestRate" />}
+            value={<Percent value={averagedRate} />}
+          />
+        )
       )}
-
-      <p className="secondary">
-        <T id="FinancingOffers.amortization" />
-      </p>
-      <h5>{toMoney(amortization)} /an</h5>
-
-      <p className="secondary">
-        <T id="offer.maxAmount" />
-      </p>
-      <h5>{toMoney(maxAmount)}</h5>
-
-      <p className="secondary">
-        <T id="offer.interests" />
-      </p>
-      <h5>
-        <Percent value={averagedRate} />
-      </h5>
     </div>
   );
 };
