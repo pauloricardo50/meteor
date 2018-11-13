@@ -23,6 +23,7 @@ const FinancingOffers = (props: FinancingOffersProps) => (
       },
     ]}
     detailConfig={[{ id: 'offerId', Component: OfferPicker }]}
+    noWrapper
   />
 );
 

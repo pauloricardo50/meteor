@@ -19,13 +19,13 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
     epotekFees = 0,
   } = offer;
   return (
-    <div className={cx({ selected })} onClick={handleClick}>
+    <div className={cx('card1 card-hover', { selected })} onClick={handleClick}>
       <img src={logo} alt={name} />
 
       {(offer.fees || offer.epotekFees) && (
         <OfferPickerListItemValue
-          label={<T id="FinancingOffers.amortization" />}
-          value={<span>{toMoney(fees + epotekFees)} /an</span>}
+          label={<T id="FinancingOffers.fees" />}
+          value={<span>{toMoney(fees + epotekFees)}</span>}
         />
       )}
 

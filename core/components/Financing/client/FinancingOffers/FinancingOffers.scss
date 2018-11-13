@@ -14,20 +14,15 @@
   > div {
     display: flex;
     flex-direction: column;
-    padding: 8px;
+    padding: 24px;
     margin-bottom: 8px;
 
-    border: 2px solid $border-grey;
-    border-radius: 4px;
-
     &.selected {
-      border-color: $success;
+      border: 2px solid $success;
     }
 
     &:hover {
       cursor: pointer;
-
-      border-color: $primary;
     }
 
     img {
