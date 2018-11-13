@@ -93,12 +93,11 @@ describe('FinanceCalculator', () => {
       expect(calc.getInterestsWithTranches()).to.equal(0);
     });
 
-    it('throws if an interest rate is not present', () => {
-      expect(() =>
-        calc.getInterestsWithTranches({
-          tranches: [{ value: 0.5, type: 'a' }],
-          interestRates: { b: 0.02 },
-        })).to.throw(NO_INTEREST_RATE_ERROR);
+    it('return a dash if an interest rate is not present', () => {
+      expect(calc.getInterestsWithTranches({
+        tranches: [{ value: 0.5, type: 'a' }],
+        interestRates: { b: 0.02 },
+      })).to.equal('-');
     });
   });
 
@@ -249,7 +248,7 @@ describe('FinanceCalculator', () => {
     });
   });
 
-  describe.only('getAveragedInterestRate', () => {
+  describe('getAveragedInterestRate', () => {
     it('returns the same value if only one rate at 100%', () => {
       expect(calc.getAveragedInterestRate({
         tranches: [{ type: 'rateType', value: 1 }],

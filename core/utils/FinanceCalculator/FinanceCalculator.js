@@ -203,6 +203,16 @@ export class FinanceCalculator {
     };
   }
 
+  checkInterestsAndTranches({
+    tranches = [],
+    interestRates = this.interestRates,
+  }: {
+    tranches: Array<{ type: string, value: number }>,
+    interestRates: Object,
+  }) {
+    return tranches.every(({ type }) => !!interestRates[type]);
+  }
+
   getInterestsWithTranches({
     tranches = [],
     interestRates = this.interestRates,
@@ -213,8 +223,8 @@ export class FinanceCalculator {
     return tranches.reduce((acc, { type, value }) => {
       const rate = interestRates[type];
 
-      if (!rate) {
-        throw new Error(NO_INTEREST_RATE_ERROR, type);
+      if (!rate || acc === '-') {
+        return '-';
       }
 
       return acc + value * rate;
@@ -229,7 +239,7 @@ export class FinanceCalculator {
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
       // whichever comes first
-      const amountToAmortize = borrowRatio - 0.65;
+      const amountToAmortize = borrowRatio - this.amortizationGoal;
 
       // Make sure we don't create a black hole, or use negative values by error
       if (amortizationYears > 0) {

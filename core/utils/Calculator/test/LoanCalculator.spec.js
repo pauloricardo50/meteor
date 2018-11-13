@@ -168,10 +168,49 @@ describe('LoanCalculator', () => {
       expect(Calculator.getAmortization({
         loan: {
           structure: {
-            offer: { amortization: 12 },
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5 },
+            property: { value: 1200000 },
           },
         },
-      })).to.equal(1);
+      })).to.equal(2000);
+    });
+
+    it('uses amortizationYears from the offer if defined', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5, amortizationYears: 30 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(1000);
+    });
+
+    it('resets amortizationGoal after calculating with offers', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(2000);
+
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(1000);
     });
   });
 
@@ -210,7 +249,7 @@ describe('LoanCalculator', () => {
             wantedLoan: 960000,
             property: { value: 1200000 },
             offer: {
-              amortization: 24000,
+              amortizationGoal: 0.5,
               [INTEREST_RATES.YEARS_10]: 0.02,
             },
             propertyWork: 0,

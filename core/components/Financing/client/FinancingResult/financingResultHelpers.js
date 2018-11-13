@@ -1,6 +1,7 @@
 // @flow
-import { AMORTIZATION_TYPE } from 'core/api/constants';
-import Calculator from 'core/utils/Calculator';
+import Calculator, {
+  Calculator as CalculatorClass,
+} from 'core/utils/Calculator';
 import FinanceCalculator, {
   getOffer,
   getProperty,
@@ -21,7 +22,16 @@ export const getAmortization = (params) => {
   } = params;
 
   if (offerId) {
-    return getOffer(params).amortization / 12;
+    const { amortizationGoal, amortizationYears } = getOffer(params);
+    const calc = new CalculatorClass({ amortizationGoal });
+    return (
+      (calc.getAmortizationRateBase({
+        ...getAmortizationRateMapper(params),
+        amortizationYears,
+      })
+        * wantedLoan)
+      / 12
+    );
   }
 
   return (
@@ -45,8 +55,9 @@ const getNonPledgedFundsOfType = ({ structure: { ownFunds }, type }) =>
     .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
 
-export const getRemainingCash = ({ borrowers, structure: { fortuneUsed } }) =>
-  Calculator.getFortune({ borrowers }) - fortuneUsed;
+export const getRemainingCash = ({ borrowers, structure }) =>
+  Calculator.getFortune({ borrowers })
+  - getNonPledgedFundsOfType({ structure, type: 'bankFortune' });
 
 export const getRemainingInsurance2 = ({ borrowers, structure }) =>
   Calculator.getInsurance2({ borrowers })

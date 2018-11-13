@@ -1,4 +1,6 @@
 {
+  "offer.amortizationGoal": "Objectif d'amortissement",
+  "offer.amortizationYears": "Durée d'amortissement",
   "general.choose": "Choisir",
   "offer.interests": "Taux",
   "Forms.enableOffers": "Activer offres",

@@ -75,7 +75,20 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       } = loan;
 
       if (offer) {
-        return offer.amortization / 12;
+        // Temporarily change amortizationGoal
+        const oldAmortizationGoal = this.amortizationGoal;
+        this.amortizationGoal = offer.amortizationGoal;
+
+        const amortization = (this.getAmortizationRate({
+          loan,
+          amortizationYears: offer.amortizationYears,
+        })
+            * this.selectLoanValue({ loan }))
+          / 12;
+
+        this.amortizationGoal = oldAmortizationGoal;
+
+        return amortization;
       }
 
       return (
@@ -84,13 +97,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getAmortizationRate({ loan }) {
+    getAmortizationRate({ loan, amortizationYears }) {
       const {
         structure: { wantedLoan, propertyWork },
       } = loan;
       return this.getAmortizationRateBase({
         borrowRatio:
           wantedLoan / (this.getPropertyValue({ loan }) + propertyWork),
+        amortizationYears,
       });
     }
 

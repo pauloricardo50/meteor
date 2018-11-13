@@ -4,7 +4,8 @@ import { INTEREST_RATES } from '../../constants';
 export const fullOfferFragment = {
   loanId: 1,
   user: simpleUserFragment,
-  amortization: 1,
+  amortizationGoal: 1,
+  amortizationYears: 1,
   maxAmount: 1,
   conditions: 1,
   organisation: { name: 1, logo: 1 },

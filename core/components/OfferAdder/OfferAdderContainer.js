@@ -31,7 +31,8 @@ const mapValuesToOffer = ({
   loanId,
   organisation,
   maxAmount,
-  amortization,
+  amortizationGoal,
+  amortizationYears,
   conditions,
   hasCounterparts,
   counterparts,
@@ -42,13 +43,15 @@ const mapValuesToOffer = ({
   const useDiscount = isDiscount && discount;
   const standardOffer = {
     maxAmount,
-    amortization,
+    amortizationGoal,
+    amortizationYears,
     ...reformatInterestRatesObject(interestRates, STANDARD_SUFFIX),
   };
   const counterpartOffer = hasCounterparts
     ? {
       maxAmount,
-      amortization,
+      amortizationGoal,
+      amortizationYears,
       ...reformatInterestRatesObject(
         interestRates,
         // If a discount exists, use the standard rates and add a discounter to
