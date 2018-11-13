@@ -19,6 +19,8 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
     interests,
     monthly,
     rates,
+    fees,
+    epotekFees,
   } = offer;
 
   return (
@@ -37,6 +39,24 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
               ))}
             </ul>
           </p>
+        </>
+      )}
+
+      {fees && (
+        <>
+          <h3>
+            <T id="offer.fees" />
+          </h3>
+          <Money value={fees} />
+        </>
+      )}
+
+      {epotekFees && (
+        <>
+          <h3>
+            <T id="offer.epotekFees" />
+          </h3>
+          <Money value={epotekFees} />
         </>
       )}
 
