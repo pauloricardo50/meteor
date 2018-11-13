@@ -16,22 +16,18 @@ const SingleFileTab = ({
   disabled,
   documentArray,
   currentUser,
-}: SingleFileTabProps) => {
-  const userIsAdmin = Roles.userIsInRole(Meteor.user(), ROLES.DEV)
-    || Roles.userIsInRole(Meteor.user(), ROLES.ADMIN);
-  return (
-    <div className="single-file-tab">
-      {userIsAdmin && (
-        <AdditionalDocAdder collection={collection} docId={doc._id} />
-      )}
-      <UploaderArray
-        doc={doc}
-        collection={collection}
-        disabled={disabled}
-        currentUser={currentUser}
-      />
-    </div>
-  );
-};
+}: SingleFileTabProps) => (
+  <div className="single-file-tab">
+    {Meteor.microservice === 'admin' && (
+      <AdditionalDocAdder collection={collection} docId={doc._id} />
+    )}
+    <UploaderArray
+      doc={doc}
+      collection={collection}
+      disabled={disabled}
+      currentUser={currentUser}
+    />
+  </div>
+);
 
 export default SingleFileTab;
