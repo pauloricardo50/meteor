@@ -84,15 +84,16 @@ const FinancingFinancing = (props: FinancingFinancingProps) => (
         Component: LoanPercent,
         id: 'wantedLoanPercent',
       },
-      {
-        Component: RadioButtons,
-        id: 'amortizationType',
-        options: Object.values(AMORTIZATION_TYPE).map(key => ({
-          id: key,
-          label: `FinancingFinancing.${key}`,
-        })),
-        condition: enableOffers,
-      },
+      // TODO: To be released in the future
+      // {
+      //   Component: RadioButtons,
+      //   id: 'amortizationType',
+      //   options: Object.values(AMORTIZATION_TYPE).map(key => ({
+      //     id: key,
+      //     label: `FinancingFinancing.${key}`,
+      //   })),
+      //   condition: enableOffers,
+      // },
       {
         id: 'loanTranches',
         Component: FinancingTranchePicker,
