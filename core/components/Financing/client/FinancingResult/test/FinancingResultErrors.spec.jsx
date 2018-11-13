@@ -14,16 +14,20 @@ describe('FinancingResultErrors', () => {
   let props;
   let property;
   let propertyId;
-  const component = () =>
-    shallow(<FinancingResultErrors {...props} />);
+  let offer;
+  let offerId;
+  const component = () => shallow(<FinancingResultErrors {...props} />);
 
   beforeEach(() => {
     propertyId = 'property';
+    offerId = 'offerId';
     property = { _id: propertyId, value: 100000 };
+    offer = { _id: offerId, interest10: 0.01 };
     props = {
       structure: { propertyId, wantedLoan: 80000, property },
       properties: [property],
       loan: {},
+      offers: [offer],
     };
   });
 
@@ -97,6 +101,21 @@ describe('FinancingResultErrors', () => {
     expect(component()
       .find(T)
       .props().id).to.contain('missingCash');
+  });
+
+  it('warns of invalid interest rates', () => {
+    props.structure = {
+      ...props.structure,
+      propertyWork: 0,
+      ownFunds: [{ type: OWN_FUNDS_TYPES.BANK_FORTUNE, value: 25000 }],
+      offerId,
+      loanTranches: [{ type: 'interest5', value: 1 }],
+    };
+    props.borrowers = [{ salary: 100000 }];
+
+    expect(component()
+      .find(T)
+      .props().id).to.contain('invalidInterestRates');
   });
 
   it('returns null if no error exists in the structure', () => {

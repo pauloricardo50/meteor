@@ -1,4 +1,5 @@
 {
+  "FinancingResultErrors.invalidInterestRates": "Les tranches de taux choisies n'ont pas de taux disponibles",
   "FinancingOffers.invalidRate": "Cette offre n'a pas le taux {rate}",
   "FinancingOffers.interests": "Intérêts",
   "offer.amortizationGoal": "Objectif d'amortissement",

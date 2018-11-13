@@ -7,7 +7,7 @@ import {
   getMonthlyForStructureWithOffer,
 } from '../offerPickerHelpers';
 
-describe.only('offerPickerHelpers', () => {
+describe('offerPickerHelpers', () => {
   describe('getAmortizationForStructureWithOffer', () => {
     it('returns correct amortization for a structure', () => {
       const props = {
