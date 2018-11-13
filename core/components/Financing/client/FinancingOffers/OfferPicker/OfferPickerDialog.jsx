@@ -3,90 +3,14 @@ import React from 'react';
 
 import { lifecycle } from 'recompose';
 import Dialog from '../../../../Material/Dialog';
-import T, { Percent, Money } from '../../../../Translation';
-import { RecapSimple } from '../../../../Recap';
+import T from '../../../../Translation';
 import Button from '../../../../Button';
-import { toMoney } from '../../../../../utils/conversionFunctions';
-import { getProperty } from '../../FinancingCalculator';
+import OfferPickerDialogContent from './OfferPickerDialogContent';
 
 type OfferPickerDialogProps = {};
 
-const dialogContent = (props) => {
-  const { offer, structure } = props;
-  const property = getProperty(props);
-  const {
-    maxAmount,
-    conditions,
-    organisation,
-    amortization,
-    interests,
-    monthly,
-    rates,
-  } = offer;
-
-  return (
-    <div className="offer-picker-dialog">
-      <img src={organisation.logo} alt={organisation.name} />
-
-      {conditions.length > 0 && (
-        <>
-          <h3>
-            <T id="offer.conditions" />
-          </h3>
-          <p>{conditions.join(' ')}</p>
-        </>
-      )}
-
-      <h3>
-        <T id="offer.monthly" />
-      </h3>
-      <div className="validator recap">
-        <RecapSimple
-          array={[
-            {
-              label: 'FinancingOffers.amortization',
-              value: toMoney(amortization),
-            },
-            { label: 'FinancingOffers.interests', value: toMoney(interests) },
-            {
-              label: 'Forms.monthlyExpenses.short',
-              value: toMoney(property.monthlyExpenses),
-              hide: !(property && property.monthlyExpenses),
-            },
-            {
-              label: 'general.total',
-              value: <span className="sum">{toMoney(monthly)}</span>,
-              spacingTop: true,
-              bold: true,
-            },
-          ]}
-        />
-      </div>
-
-      <h3>
-        <T id="offer.maxAmount" />
-      </h3>
-      <Money value={maxAmount} />
-
-      <h3>
-        <T id="offer.interests" />
-      </h3>
-      <div className="rates">
-        {Object.keys(rates).map(rate => (
-          <span key={rate}>
-            <p>{<T id={`offer.${rate}.short`} />}</p>
-            <h4>
-              <Percent value={rates[rate]} />
-            </h4>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 const OfferPickerDialog = (props: OfferPickerDialogProps) => {
-  const { open, handleClose, handleSelect, offer, structure } = props;
+  const { open, handleClose, handleSelect, offer } = props;
   return (
     <Dialog
       open={open}
@@ -106,7 +30,7 @@ const OfferPickerDialog = (props: OfferPickerDialogProps) => {
         />,
       ]}
     >
-      {offer && dialogContent(props)}
+      {offer && <OfferPickerDialogContent {...props} />}
     </Dialog>
   );
 };

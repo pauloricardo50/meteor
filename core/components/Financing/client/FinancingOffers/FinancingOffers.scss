@@ -15,7 +15,11 @@
     display: flex;
     flex-direction: column;
     padding: 24px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
 
     &.selected {
       border: 2px solid $success;
