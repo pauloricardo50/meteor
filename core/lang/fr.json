@@ -1,4 +1,6 @@
 {
+  "FinancingOffers.invalidRate": "Cette offre n'a pas le taux {rate}",
+  "FinancingOffers.interests": "Intérêts",
   "offer.amortizationGoal": "Objectif d'amortissement",
   "offer.amortizationYears": "Durée d'amortissement",
   "general.choose": "Choisir",

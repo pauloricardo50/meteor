@@ -5,21 +5,31 @@ import cx from 'classnames';
 import T, { Percent } from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import FinancingCalculator from '../../FinancingCalculator';
+import {
+  getAmortizationForStructureWithOffer,
+  getInterestsForStructureWithOffer,
+  getMonthlyForStructureWithOffer,
+} from './offerPickerHelpers';
 
 type OfferPickerListItemProps = {};
 
-const OfferPickerListItem = ({
-  offer,
-  selected,
-  structure: { loanTranches },
-  handleClick,
-}: OfferPickerListItemProps) => {
+const OfferPickerListItem = (props: OfferPickerListItemProps) => {
   const {
-    _id,
+    offer,
+    selected,
+    structure: { loanTranches },
+    handleClick,
+  } = props;
+  const {
     organisation: { name, logo },
-    amortization,
     maxAmount,
   } = offer;
+  const hasInvalidInterestRates = FinancingCalculator.checkInterestsAndTranches({
+    interestRates: offer,
+    tranches: loanTranches,
+  });
+  const amortization = getAmortizationForStructureWithOffer(props) * 12;
+  const interests = getInterestsForStructureWithOffer(props) * 12;
   const averagedRate = FinancingCalculator.getAveragedInterestRate({
     tranches: loanTranches,
     rates: offer,
@@ -27,6 +37,22 @@ const OfferPickerListItem = ({
   return (
     <div className={cx({ selected })} onClick={handleClick}>
       <img src={logo} alt={name} />
+
+      <p className="secondary">
+        <T id="FinancingOffers.interests" />
+      </p>
+      {hasInvalidInterestRates ? (
+        <p className="error">
+          <T
+            id="FinancingOffers.invalidRate"
+            values={{
+              rate: <T id={`offer.${hasInvalidInterestRates}.short`} />,
+            }}
+          />
+        </p>
+      ) : (
+        <h5>{toMoney(interests)} /an</h5>
+      )}
 
       <p className="secondary">
         <T id="FinancingOffers.amortization" />

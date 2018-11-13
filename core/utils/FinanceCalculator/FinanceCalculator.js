@@ -210,7 +210,15 @@ export class FinanceCalculator {
     tranches: Array<{ type: string, value: number }>,
     interestRates: Object,
   }) {
-    return tranches.every(({ type }) => !!interestRates[type]);
+    return tranches.reduce((invalidRate, { type }) => {
+      if (invalidRate) {
+        return invalidRate;
+      }
+
+      if (!interestRates[type]) {
+        return type;
+      }
+    }, undefined);
   }
 
   getInterestsWithTranches({

@@ -14,16 +14,18 @@ const OfferPickerList = ({
   updateStructure,
   dialogOffer,
   setDialogOffer,
+  ...data
 }: OfferPickerListProps) => (
   <div className="offer-picker-list">
     {offers.map(offer => (
       <OfferPickerListItem
+        key={offer._id}
         offer={offer}
         selected={structure.offerId === offer._id}
         updateStructure={updateStructure}
         structure={structure}
         handleClick={() => setDialogOffer(offer._id)}
-        key={offer._id}
+        {...data}
       />
     ))}
     <OfferPickerDialog
@@ -34,6 +36,7 @@ const OfferPickerList = ({
       }
       offer={offers.find(({ _id }) => _id === dialogOffer)}
       structure={structure}
+      {...data}
     />
   </div>
 );

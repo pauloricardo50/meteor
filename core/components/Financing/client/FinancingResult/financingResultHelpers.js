@@ -19,10 +19,11 @@ export const getInterests = (params) => {
 export const getAmortization = (params) => {
   const {
     structure: { wantedLoan, offerId },
+    offer,
   } = params;
 
-  if (offerId) {
-    const { amortizationGoal, amortizationYears } = getOffer(params);
+  if (offerId || offer) {
+    const { amortizationGoal, amortizationYears } = offer || getOffer(params);
     const calc = new CalculatorClass({ amortizationGoal });
     return (
       (calc.getAmortizationRateBase({
@@ -40,9 +41,6 @@ export const getAmortization = (params) => {
     / 12
   );
 };
-
-export const getMonthly = params =>
-  getInterests(params) + getAmortization(params);
 
 export const getPropertyExpenses = (data) => {
   const property = getProperty(data);
