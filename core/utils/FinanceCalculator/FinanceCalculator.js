@@ -363,11 +363,9 @@ export class FinanceCalculator {
   };
 
   getAveragedInterestRate({ tranches = [], rates = {} }) {
-    return (
-      tranches.reduce(
-        (totalRate, { type, value }) => totalRate + rates[type] * value,
-        0,
-      ) / tranches.length
+    return tranches.reduce(
+      (totalRate, { type, value }) => totalRate + rates[type] * value,
+      0,
     );
   }
 }

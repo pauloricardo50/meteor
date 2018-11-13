@@ -262,8 +262,8 @@ describe('FinanceCalculator', () => {
           { type: 'rateType1', value: 0.5 },
           { type: 'rateType2', value: 0.5 },
         ],
-        rates: { rateType1: 0.01, rateType2: 0.01 },
-      })).to.equal(0.005);
+        rates: { rateType1: 0.01, rateType2: 0.02 },
+      })).to.equal(0.015);
     });
   });
 });
