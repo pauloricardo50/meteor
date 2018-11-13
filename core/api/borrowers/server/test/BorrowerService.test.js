@@ -239,10 +239,17 @@ describe.only('BorrowerService', () => {
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);
 
-      expect(additionalDocuments).to.deep.contain({
-        id: 'testDoc',
-        requiredByAdmin: true,
-      });
+      const expectedDocuments = [
+        ...initialDocuments,
+        { id: 'testDoc', requiredByAdmin: true },
+      ];
+
+      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
+      expect(expectedDocuments.every(doc =>
+        additionalDocuments.some(({ id, requiredByAdmin }) =>
+          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
+      expect(additionalDocuments.some(doc =>
+        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
     });
 
     it('adds additional admin not required additional doc', () => {
@@ -253,10 +260,17 @@ describe.only('BorrowerService', () => {
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);
 
-      expect(additionalDocuments).to.deep.contain({
-        id: 'testDoc',
-        requiredByAdmin: false,
-      });
+      const expectedDocuments = [
+        ...initialDocuments,
+        { id: 'testDoc', requiredByAdmin: false },
+      ];
+
+      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
+      expect(expectedDocuments.every(doc =>
+        additionalDocuments.some(({ id, requiredByAdmin }) =>
+          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
+      expect(additionalDocuments.some(doc =>
+        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
     });
 
     it('updates additional doc to be required by admin', () => {
@@ -267,10 +281,17 @@ describe.only('BorrowerService', () => {
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);
 
-      expect(additionalDocuments).to.deep.contain({
-        id: DOCUMENTS.IDENTITY,
-        requiredByAdmin: true,
-      });
+      const expectedDocuments = [
+        ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
+        { id: DOCUMENTS.IDENTITY, requiredByAdmin: true },
+      ];
+
+      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
+      expect(expectedDocuments.every(doc =>
+        additionalDocuments.some(({ id, requiredByAdmin }) =>
+          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
+      expect(additionalDocuments.some(doc =>
+        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
     });
 
     it('updates additional doc to not be required by admin', () => {
@@ -281,10 +302,17 @@ describe.only('BorrowerService', () => {
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);
 
-      expect(additionalDocuments).to.deep.contain({
-        id: DOCUMENTS.IDENTITY,
-        requiredByAdmin: false,
-      });
+       const expectedDocuments = [
+        ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
+        { id: DOCUMENTS.IDENTITY, requiredByAdmin: false },
+      ];
+
+      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
+      expect(expectedDocuments.every(doc =>
+        additionalDocuments.some(({ id, requiredByAdmin }) =>
+          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
+      expect(additionalDocuments.some(doc =>
+        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
     });
 
     it('adds additional doc with label', () => {

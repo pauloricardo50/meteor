@@ -20,20 +20,18 @@ const getLoanResidenceType = ({ propertyId, userId }) => {
 export const conditionalDocuments = [
   {
     id: DOCUMENTS.PROPERTY_VOLUME,
-    relatedFields: ['propertyType'],
-    condition: ({ context }) =>
-      context.field('propertyType').value
-      === propertyConstants.PROPERTY_TYPE.HOUSE,
+    condition: ({ doc: { propertyType } }) =>
+      propertyType && propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   {
     id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
-    relatedFields: ['isCoproperty'],
-    condition: ({ context }) => context.field('isCoproperty').value === true,
+    condition: ({ doc: { isCoproperty } }) =>
+      isCoproperty && isCoproperty === true,
   },
   {
     id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
-    relatedFields: ['isCoproperty'],
-    condition: ({ context }) => context.field('isCoproperty').value === true,
+    condition: ({ doc: { isCoproperty } }) =>
+      isCoproperty && isCoproperty === true,
   },
   {
     id: DOCUMENTS.INVESTEMENT_PROPERTY_RENTAL_STATEMENT,
@@ -55,18 +53,16 @@ export const conditionalDocuments = [
   },
   {
     id: DOCUMENTS.INVESTMENT_PROPERTY_CONDOMINIUM_OWNERSHIP_DIVISION_REGISTER,
-    condition: ({ doc: { _id: propertyId, userId }, context }) =>
+    condition: ({ doc: { _id: propertyId, userId, propertyType } }) =>
       getLoanResidenceType({ propertyId, userId })
         === RESIDENCE_TYPE.INVESTMENT
-      && context.field('propertyType').value
-        === propertyConstants.PROPERTY_TYPE.FLAT,
+      && propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
   },
   {
     id: DOCUMENTS.INVESTMENT_PROPERTY_CONDOMINIUM_REGULATION,
-    condition: ({ doc: { _id: propertyId, userId }, context }) =>
+    condition: ({ doc: { _id: propertyId, userId, propertyType } }) =>
       getLoanResidenceType({ propertyId, userId })
         === RESIDENCE_TYPE.INVESTMENT
-      && context.field('propertyType').value
-        === propertyConstants.PROPERTY_TYPE.FLAT,
+      && propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
   },
 ];

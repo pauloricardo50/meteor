@@ -13,7 +13,8 @@ export const additionalDocumentsHook = ({
   } else {
     // Keep initial documents
     documents = additionalDocuments.filter(document =>
-      initialDocuments.some(({ id }) => id === document.id));
+      initialDocuments.some(({ id }) =>
+        id === document.id && document.requiredByAdmin === undefined));
 
     // Keep required by admin
     documents = [
@@ -25,6 +26,11 @@ export const additionalDocumentsHook = ({
   // Check conditional documents
   const documentsToAdd = conditionalDocuments.reduce(
     (docs, { id, condition }) => {
+      const document = additionalDocuments.find(additionalDocument => additionalDocument.id === id);
+
+      if (document && document.requiredByAdmin !== undefined) {
+        return docs;
+      }
       // Insert conditional documents
       if (condition({ doc })) {
         return [...docs, { id }];
