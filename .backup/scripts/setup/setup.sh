@@ -24,7 +24,7 @@ wget -qO - --header="X-Papertrail-Token: xkqkznVzfJBjb6w5Ww" \
 https://papertrailapp.com/destinations/11226352/setup.sh | sudo bash
 
 # SETUP FAIL2BAN
-sudo cat > /etc/fail2ban/jail.d/custom.conf << EOL
+sudo bash -c 'cat << EOF > /etc/fail2ban/jail.d/custom.conf 
 [DEFAULT]
 ignoreip = 127.0.0.1 213.3.47.70
 findtime = 3600
@@ -33,7 +33,7 @@ maxretry = 3
 
 [sshd]
 enabled = true
-EOL
+EOF'
 
 sudo systemctl restart fail2ban
 
