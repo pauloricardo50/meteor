@@ -73,6 +73,18 @@ class CollectionService {
     return assignee;
   }
 
+  getAdditionalDocLabel({ label, additionalDoc }) {
+    if (label) {
+      return { label };
+    }
+
+    if (additionalDoc.label) {
+      return { label: additionalDoc.label };
+    }
+
+    return {};
+  }
+
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
     const { additionalDocuments } = this.get(id);
 
@@ -84,11 +96,7 @@ class CollectionService {
         {
           id: additionalDocId,
           requiredByAdmin,
-          ...(additionalDoc.label
-            ? { label: additionalDoc.label }
-            : label
-              ? { label }
-              : {}),
+          ...this.getAdditionalDocLabel({ label, additionalDoc }),
         },
       ];
       return this._update({
