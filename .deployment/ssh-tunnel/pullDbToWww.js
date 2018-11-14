@@ -1,21 +1,20 @@
 import { writeYAML } from '../utils/helpers';
 import openSSHTunnel, { PORT_OFFSET, HOST } from './openSSHTunnel';
 
-let SSH_ID;
-
 const writePullDBTmuxinator = ({
   database,
   password,
   username,
   mongoPort,
   environment,
+  sshId,
 }) => {
   return writeYAML({
-    file: `${__dirname}/ssh-tunnel-${SSH_ID}.yml`,
+    file: `${__dirname}/ssh-tunnel-${sshId}.yml`,
     data: {
-      name: `restore-db-${SSH_ID}`,
+      name: `restore-db-${sshId}`,
       root: '~/',
-      on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${SSH_ID} -r -f && rm -rf ${__dirname}/${environment}-${SSH_ID}`,
+      on_project_exit: `cf delete e-potek-ssh-tunnel-${environment}-${sshId} -r -f && rm -rf ${__dirname}/${environment}-${sshId}`,
       windows: [
         {
           sshTunnel: {
@@ -25,7 +24,7 @@ const writePullDBTmuxinator = ({
                 sshTunnel: [
                   `${__dirname}/../../scripts/box_out.sh "SSH tunnel. Don't kill this pane."`,
                   `cf ssh -L ${mongoPort +
-                    PORT_OFFSET}:${HOST}:${mongoPort} e-potek-ssh-tunnel-${environment}-${SSH_ID}`,
+                    PORT_OFFSET}:${HOST}:${mongoPort} e-potek-ssh-tunnel-${environment}-${sshId}`,
                 ],
               },
               {
@@ -39,15 +38,11 @@ const writePullDBTmuxinator = ({
                   `mongodump -h localhost:${mongoPort +
                     PORT_OFFSET} -d ${database} -u ${username} -p ${password} -o /tmp`,
 
-<<<<<<< HEAD
-                      `mongorestore --drop -h localhost:5001 -d meteor /tmp/${database}`,
-=======
                   `mongorestore --drop -h localhost:5001 -d meteor /tmp/${database}`,
->>>>>>> 5508ebcd5ced316a8e4b31ba9705041bc21ad246
 
                   `rm -rf /tmp/${database}`,
 
-                  `tmux kill-session -t restore-db-${SSH_ID}`,
+                  `tmux kill-session -t restore-db-${sshId}`,
                 ],
               },
             ],
@@ -60,7 +55,7 @@ const writePullDBTmuxinator = ({
 
 const main = () =>
   openSSHTunnel().then(credentials => {
-    return writePullDBTmuxinator(environment, credentials);
+    return writePullDBTmuxinator(credentials);
   });
 
 main();
