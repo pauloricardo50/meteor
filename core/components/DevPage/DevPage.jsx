@@ -7,6 +7,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import DevPageContainer from './DevPageContainer';
 import ErrorThrower from './ErrorThrower';
+import ConfirmMethod from '../ConfirmMethod';
 
 class DevPage extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class DevPage extends Component {
       addStep2Loan,
       addStep3Loan,
       purgeAndGenerateDatabase,
+      migrateToLatest,
     } = this.props;
     const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
 
@@ -237,6 +239,13 @@ class DevPage extends Component {
             Créer promotion avec moi dedans, sans promotionOptions
           </Button>
           <hr className="mbt20" />
+          <ConfirmMethod
+            method={cb => migrateToLatest().then(cb)}
+            keyword="MIGRATE"
+            label="Migrate to latest"
+            buttonProps={{ error: true, raised: true }}
+          />
+          <hr className="mbt20" />
           <ErrorThrower />
         </section>
       );
@@ -244,6 +253,12 @@ class DevPage extends Component {
 
     return (
       <section id="dev-page">
+        <ConfirmMethod
+          method={cb => migrateToLatest().then(cb)}
+          keyword="MIGRATE"
+          label="Migrate to latest"
+          buttonProps={{ error: true, raised: true }}
+        />
         <ErrorThrower />
       </section>
     );

@@ -14,7 +14,9 @@ import {
   submitContactForm,
   addUserToDoc,
   throwDevError,
+  migrateToLatest,
 } from '../methodDefinitions';
+import { migrate } from '../../migrations/server';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -116,4 +118,9 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   }
 
   throw new Meteor.Error(400, 'Dev error!');
+});
+
+migrateToLatest.setHandler(({ userId }) => {
+  SecurityService.checkCurrentUserIsDev();
+  migrate();
 });

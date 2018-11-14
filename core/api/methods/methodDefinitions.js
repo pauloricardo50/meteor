@@ -75,3 +75,7 @@ export const throwDevError = new Method({
     promiseNoReturn: Match.Maybe(Boolean),
   },
 });
+
+export const migrateToLatest = new Method({
+  name: 'migrateToLatest',
+});
