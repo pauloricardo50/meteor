@@ -6,13 +6,11 @@ Meteor.methods({
   serverLog: (log) => {
     check(log, String);
     if (Meteor.isServer) {
-      console.log('Logging from server: ', log);
+      console.log('Cypress logging from server: ', log);
     }
   },
   isLoggedIn() {
     return this.userId;
   },
-  resetDatabase() {
-    resetDatabase();
-  },
+  resetDatabase,
 });
