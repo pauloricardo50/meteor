@@ -65,10 +65,8 @@ class PDFGeneratorService {
             if (error) {
               reject(error);
             }
-            if (params.HTML) {
-              resolve(result);
-            }
-            resolve(result && result.base64);
+
+            resolve(result);
           },
         );
       }));

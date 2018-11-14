@@ -60,6 +60,7 @@ export default compose(
             message.error(error.message, 5);
           }
         })
+        .catch(error => message.error(error.message, 5))
         .finally(() => setLoading(false));
     },
     handleHTML: () => {
