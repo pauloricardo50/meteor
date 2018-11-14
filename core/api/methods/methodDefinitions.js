@@ -86,3 +86,7 @@ export const setAdditionalDoc = new Method({
     label: Match.Optional(String),
   },
 });
+
+export const migrateToLatest = new Method({
+  name: 'migrateToLatest',
+});

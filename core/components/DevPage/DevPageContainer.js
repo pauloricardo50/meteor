@@ -19,6 +19,7 @@ import {
   borrowerUpdate,
   propertyUpdate,
   pushLoanValue,
+  migrateToLatest,
 } from '../../api';
 import adminLoan from '../../api/loans/queries/adminLoan';
 
@@ -117,6 +118,7 @@ const DevPageContainer = compose(withProps(({ currentUser: { _id: userId } }) =>
       }
     });
   },
+  migrateToLatest: () => migrateToLatest.run(),
 })));
 
 export default DevPageContainer;

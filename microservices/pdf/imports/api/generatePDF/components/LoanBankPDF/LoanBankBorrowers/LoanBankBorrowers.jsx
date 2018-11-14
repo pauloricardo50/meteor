@@ -7,9 +7,7 @@ type LoanBankBorrowersProps = {
 };
 
 const LoanBankBorrowers = ({ borrowers }: LoanBankBorrowersProps) => (
-  <div className="loan-bank-pdf-borrowers">
-    <BorrowersRecap borrowers={borrowers} />
-  </div>
+  <BorrowersRecap borrowers={borrowers} twoBorrowers={borrowers.length > 1} />
 );
 
 export default LoanBankBorrowers;

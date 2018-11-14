@@ -1,26 +1,42 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 type PDFTableProps = {
-  array: Array,
+  rows: Array,
   className: String,
 };
 
 const shouldRenderRow = condition => condition === undefined || condition;
 
-const PDFTable = ({ array, className }: PDFTableProps) => (
-  <table className={className} cellSpacing="5">
-    {array.map(({ label, data, condition, style }) =>
-      shouldRenderRow(condition) && (
-        <tr key={label}>
-          {label && <td>{label}</td>}
-          {Array.isArray(data) ? (
-            data.map(x => <td style={style}>{x}</td>)
-          ) : (
-            <td style={style}>{data}</td>
-          )}
-        </tr>
-      ))}
+const multiColumn = (data, style) =>
+  data.map((x, index) => (
+    <td style={style} key={index}>
+      {x}
+    </td>
+  ));
+
+const singleColumn = (data, style) => <td style={style}>{data}</td>;
+
+const row = ({ label, data, condition, style, colspan = 1 }, index) => {
+  if (colspan > 1) {
+    return <tr key={index}>{label && <td colSpan={colspan}>{label}</td>}</tr>;
+  }
+
+  return (
+    <tr key={index}>
+      {label && <td>{label}</td>}
+      {Array.isArray(data)
+        ? multiColumn(data, style)
+        : singleColumn(data, style)}
+    </tr>
+  );
+};
+
+const PDFTable = ({ rows, className }: PDFTableProps) => (
+  <table className={cx('pdf-table', className)}>
+    {rows.map((rowData, index) =>
+      shouldRenderRow(rowData.condition) && row(rowData, index))}
   </table>
 );
 

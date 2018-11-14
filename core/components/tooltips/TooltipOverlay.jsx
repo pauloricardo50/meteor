@@ -60,16 +60,17 @@ TooltipOverlay.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
     .isRequired,
   delayShow: PropTypes.number,
-  match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
+  match: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   placement: PropTypes.string,
   tooltipList: PropTypes.string.isRequired,
   trigger: PropTypes.arrayOf(PropTypes.string),
 };
 
 TooltipOverlay.defaultProps = {
-  trigger: ['click'], // Can be 'click', 'hover', and/or 'focus'
-  placement: 'bottom',
   delayShow: 300,
+  match: undefined,
+  placement: 'bottom',
+  trigger: ['click'], // Can be 'click', 'hover', and/or 'focus'
 };
 
 export default TooltipOverlay;

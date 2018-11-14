@@ -15,4 +15,10 @@
   flex-wrap: nowrap;
 
   white-space: nowrap;
+
+  .name {
+    text-overflow: ellipsis;
+    max-width: 160px;
+    overflow: hidden;
+  }
 }

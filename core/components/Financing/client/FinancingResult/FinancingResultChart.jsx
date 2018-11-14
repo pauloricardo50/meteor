@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
+import { compose } from 'recompose';
+import cx from 'classnames';
+
 import DonutChart from 'core/components/charts/DonutChart';
 import { toMoney } from 'core/utils/conversionFunctions';
-import { compose } from 'recompose';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 import {
@@ -19,7 +21,7 @@ const FinancingResultChart = (props: FinancingResultChartProps) => {
   const propertyExpenses = getPropertyExpenses(props);
 
   return (
-    <div className="financing-structures-result-chart result">
+    <div className={cx('financing-structures-result-chart', props.classname)}>
       <DonutChart
         data={[
           { value: interests, id: 'interests' },

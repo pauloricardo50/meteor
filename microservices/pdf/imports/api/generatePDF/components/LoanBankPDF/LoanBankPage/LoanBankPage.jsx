@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import LoanBankHeader from './LoanBankHeader';
-import LoanBankFooter from './LoanBankFooter';
 import LoanBankTitle from './LoanBankTitle';
 
 type LoanBankPageProps = {
@@ -15,13 +14,14 @@ const LoanBankPage = ({
   title,
   subtitle,
   children,
+  isLast,
 }: LoanBankPageProps) => (
-  <div className="page">
+  <>
     <LoanBankHeader />
     <LoanBankTitle title={title} subtitle={subtitle} />
-    <div className="content">{children}</div>
-    <LoanBankFooter pageNumber={pageNumber} />
-  </div>
+    <div className="page content">{children}</div>
+    {!isLast && <hr className="page-break-new" />}
+  </>
 );
 
 export default LoanBankPage;

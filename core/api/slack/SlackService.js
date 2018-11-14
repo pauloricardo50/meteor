@@ -6,15 +6,17 @@ import UserService from '../users/UserService';
 import { ROLES } from '../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
-const shouldNotLog = Meteor.isDevelopment || Meteor.isTest || Meteor.isAppTest;
+const shouldNotLog = Meteor.isDevelopment && Meteor.isAppTest && !Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
-class SlackService {
-  constructor() {
-    if (Meteor.isServer) {
+export class SlackService {
+  constructor({ serverSide }) {
+    if (serverSide) {
       this.fetch = require('node-fetch');
     } else {
-      this.fetch = global.fetch;
+      // Fetch needs window context to function, or else you get this
+      // https://stackoverflow.com/questions/9677985/uncaught-typeerror-illegal-invocation-in-chrome
+      this.fetch = fetch.bind(window);
     }
   }
 
@@ -37,14 +39,11 @@ class SlackService {
           ...rest,
         }),
       },
-    ).catch(this.catchError(text));
+    ).catch((err) => {
+      // Somehow, this error is catched somewhere if we don't do this
+      throw err;
+    });
   };
-
-  catchError = text => error =>
-    this.sendError({
-      error,
-      additionalData: [`Tried to send text: ${text}`],
-    }).catch(err2 => console.log(('Slack error:', err2)));
 
   formatText = text => (isArray(text) ? text.join('\n') : text);
 
@@ -179,4 +178,4 @@ class SlackService {
   };
 }
 
-export default new SlackService();
+export default new SlackService({ serverSide: Meteor.isServer });

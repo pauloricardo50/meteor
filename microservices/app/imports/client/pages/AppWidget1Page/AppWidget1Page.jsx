@@ -20,11 +20,20 @@ const AppWidget1Page = (props: AppWidget1PageProps) => (
 
 export default compose(
   connect(
-    null,
-    dispatch => ({ setStep: () => dispatch(widget1Actions.setStep(5)) }),
+    ({ widget1: { property } }) => ({ property }),
+    dispatch => ({
+      setStep: () => dispatch(widget1Actions.setStep(5)),
+      reset: () => dispatch(widget1Actions.resetCalculator()),
+    }),
   ),
   lifecycle({
     componentDidMount() {
+      // Reset the whole calculator when the user boots the app
+      // Don't reset it if property value is set (lazy, but should cover most cases)
+      if (!this.props.property.value) {
+        this.props.reset();
+      }
+
       // Suggest values only works if step is greater or equal than 4
       // And steps don't exist in app, so just set it immediately to a higher value
       this.props.setStep();

@@ -15,10 +15,13 @@ import {
   addUserToDoc,
   throwDevError,
   setAdditionalDoc,
+  migrateToLatest,
 } from '../methodDefinitions';
 import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
 import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
 import { LOANS_COLLECTION } from '../../loans/loanConstants';
+
+import { migrate } from '../../migrations/server';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -40,12 +43,12 @@ addBorrower.setHandler((context, { loanId, borrower }) => {
 
   // A loan can't have more than 2 borrowers at the moment
   if (loan.borrowerIds.length >= 2) {
-    return false;
+    throw new Meteor.Error('Vous ne pouvez pas avoir plus de 2 emprunteurs');
   }
 
   const newBorrowerId = BorrowerService.insert({
     borrower,
-    userId: Meteor.userId(),
+    userId: loan.userId,
   });
 
   return LoanService.pushValue({
@@ -149,4 +152,9 @@ setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, require
   default:
     throw new Meteor.Error('Unsupported collection');
   }
+});
+
+migrateToLatest.setHandler(({ userId }) => {
+  SecurityService.checkCurrentUserIsDev();
+  migrate();
 });

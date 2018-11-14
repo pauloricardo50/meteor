@@ -85,6 +85,8 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
             ),
           },
         ]}
+        scrollable
+        scrollButtons="auto"
       />
     </div>
   );
