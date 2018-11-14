@@ -1,6 +1,7 @@
 import { Migrations } from 'meteor/percolate:migrations';
 
 import './1';
+import './2';
 
 // To migrate to a specific version
 // Migrations.migrateTo(2);
