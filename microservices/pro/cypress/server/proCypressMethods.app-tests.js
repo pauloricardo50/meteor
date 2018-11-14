@@ -4,8 +4,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import Users from 'core/api/users';
-import { ROLES } from 'core/api/constants';
+import UserService from 'core/api/users/UserService';
+import PromotionService from 'core/api/promotions/PromotionService';
+import { ROLES, PROMOTION_TYPES } from 'core/api/constants';
 import 'core/cypress/server/methods';
 import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
@@ -18,6 +19,21 @@ Meteor.methods({
       email: PRO_EMAIL,
       password: PRO_PASSWORD,
     });
-    Users.update({ _id: userId }, { $set: { roles: [ROLES.PRO] } });
+    UserService.update({ userId, object: { roles: [ROLES.PRO] } });
+  },
+  insertPromotion() {
+    const { _id: userId } = UserService.findOne({
+      'emails.address': PRO_EMAIL,
+    });
+    PromotionService.insert({
+      userId,
+      promotion: {
+        name: 'Test promotion',
+        type: PROMOTION_TYPES.CREDIT,
+        address1: 'Chemin Auguste-Vilbert 14',
+        zipCode: '1218',
+        city: 'Le Grand-Saconnex',
+      },
+    });
   },
 });
