@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import { toClass } from 'recompose';
 
 import T from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
@@ -19,7 +20,10 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
     epotekFees = 0,
   } = offer;
   return (
-    <div className={cx('card1 card-hover', { selected })} onClick={handleClick}>
+    <div
+      className={cx('offer-picker-list-item card1 card-hover', { selected })}
+      onClick={handleClick}
+    >
       <img src={logo} alt={name} />
 
       {(offer.fees || offer.epotekFees) && (
@@ -48,4 +52,5 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
   );
 };
 
-export default OfferPickerListItem;
+// toClass necessary for react-flip-move
+export default toClass(OfferPickerListItem);
