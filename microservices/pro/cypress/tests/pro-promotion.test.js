@@ -18,7 +18,5 @@ describe('Pro', () => {
 
     cy.get('.buttons > a').click();
     cy.location('pathname').should('eq', '/promotions/new');
-
-    cy.location('pathname').should('eq', '/promotions/new');
   });
 });
