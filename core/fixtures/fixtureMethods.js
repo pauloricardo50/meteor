@@ -17,7 +17,6 @@ import {
 } from '../api';
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
-import { AUCTION_STATUS } from '../api/loans/loanConstants';
 import {
   USER_COUNT,
   UNOWNED_LOANS_COUNT,
@@ -78,25 +77,28 @@ const createFakeLoanFixture = ({
 // Create a test user used in app's e2e tests and all the fixtures it needs
 const createTestUserWithData = () => {
   const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
-
   const admins = getAdmins();
 
-  // Create step 3 loans with all types of auction statuses for the app's test user
-  Object.keys(AUCTION_STATUS).forEach((statusKey) => {
-    createFakeLoanFixture({
-      step: STEPS.CLOSING,
-      userId: testUserId,
-      adminId: admins[0]._id,
-      completeFiles: true,
-      auctionStatus: AUCTION_STATUS[statusKey],
-      twoBorrowers: true,
-    });
+  // Create 2 loans to check app page
+  createFakeLoanFixture({
+    step: STEPS.PREPARATION,
+    userId: testUserId,
+    adminId: admins[0]._id,
+    completeFiles: true,
+    twoBorrowers: true,
+  });
+  createFakeLoanFixture({
+    step: STEPS.PREPARATION,
+    userId: testUserId,
+    adminId: admins[0]._id,
+    completeFiles: true,
+    twoBorrowers: true,
   });
 };
 
 Meteor.methods({
   generateTestData(currentUserEmail) {
-    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+    if (isAuthorizedToRun()) {
       createDevs(currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
@@ -122,7 +124,6 @@ Meteor.methods({
         createFakeLoan({});
       });
 
-      console.log('creating E2E user? 2');
       createTestUserWithData();
     }
   },

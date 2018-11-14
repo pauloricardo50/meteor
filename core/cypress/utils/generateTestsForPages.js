@@ -1,4 +1,6 @@
+/* eslint-env mocha */
 import capitalize from 'lodash/capitalize';
+import { getTestUserByRole } from './e2eHelpers';
 
 let testData;
 
@@ -12,7 +14,11 @@ const generateTestsForPages = (pages, getTestData) => {
     .forEach((pageAuthentication) => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
-          cy.setAuthentication(pageAuthentication);
+          cy.meteorLogout();
+
+          if (pageAuthentication !== 'public') {
+            cy.meteorLogin(getTestUserByRole(pageAuthentication));
+          }
 
           // logout the impersonated user
           const { IMPERSONATE_SESSION_KEY } = testData;
