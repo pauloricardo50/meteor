@@ -19,11 +19,8 @@ import adminLoan from '../../api/loans/queries/adminLoan';
 
 const addOfferPromise = loanId =>
   new Promise((resolve, reject) =>
-    Meteor.call(
-      'createFakeOffer',
-      { loanId },
-      (err, result) => (err ? reject(err) : resolve(result)),
-    ));
+    Meteor.call('createFakeOffer', { loanId }, (err, result) =>
+      (err ? reject(err) : resolve(result))));
 
 const addLoanWithData = ({
   borrowers,
@@ -73,6 +70,8 @@ const addLoanWithData = ({
     .then(() => {
       if (addOffers) {
         return Promise.all([
+          addOfferPromise(loanId),
+          addOfferPromise(loanId),
           addOfferPromise(loanId),
           addOfferPromise(loanId),
           addOfferPromise(loanId),

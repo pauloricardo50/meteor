@@ -32,6 +32,7 @@ const FinancingOffers = (props: FinancingOffersProps) => (
       },
     ]}
     noWrapper
+    className="financing-offers"
   />
 );
 
