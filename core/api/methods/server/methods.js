@@ -18,6 +18,7 @@ import {
 } from '../methodDefinitions';
 import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
 import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
+import { LOANS_COLLECTION } from '../../loans/loanConstants';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -133,6 +134,13 @@ setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, require
     });
   case PROPERTIES_COLLECTION:
     return PropertyService.setAdditionalDoc({
+      id,
+      additionalDocId,
+      requiredByAdmin,
+      label,
+    });
+  case LOANS_COLLECTION:
+    return LoanService.setAdditionalDoc({
       id,
       additionalDocId,
       requiredByAdmin,

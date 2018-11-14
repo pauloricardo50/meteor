@@ -58,15 +58,20 @@ const documentsToDisplay = ({ collection, loan, id }) => {
   }
 };
 
-const documentsToHide = ({ doc, collection }) =>
-  allDocuments({ doc, collection }).filter(({ requiredByAdmin }) => requiredByAdmin !== true);
+const documentsToHide = ({ doc, collection, loan, id }) =>
+  allDocuments({ doc, collection }).filter(document =>
+    !documentsToDisplay({ collection, loan, id }).some(({ id: docId }) => docId === document.id));
 
 const getFileMeta = ({ doc, id }) =>
-  (doc.additionalDocuments && doc.additionalDocuments.length > 0
-    ? doc.additionalDocuments.find(document => document.id === id)
-    : {});
+  doc.additionalDocuments
+  && doc.additionalDocuments.length > 0
+  && doc.additionalDocuments.find(document => document.id === id);
 
 const sortDocuments = (a, b) => {
+  if (a.id === DOCUMENTS.OTHER) {
+    return 1;
+  }
+
   if (a.id < b.id) {
     return -1;
   }
@@ -79,7 +84,11 @@ const sortDocuments = (a, b) => {
 };
 
 export default withProps(({ doc, collection, loan }) => ({
-  documentsToDisplay: documentsToDisplay({ collection, loan, id: doc._id }),
-  documentsToHide: documentsToHide({ doc, collection }).sort(sortDocuments),
+  documentsToDisplay: documentsToDisplay({
+    collection,
+    loan,
+    id: doc._id,
+  }).sort(sortDocuments),
+  documentsToHide: documentsToHide({ doc, collection, loan, id: doc._id }).sort(sortDocuments),
   getFileMeta,
 }));

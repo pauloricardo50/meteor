@@ -24,6 +24,8 @@ const UploaderArray = ({
   documentsToHide,
   getFileMeta,
 }) => {
+  console.log('documentsToHide', documentsToHide);
+  console.log('documentsToDisplay', documentsToDisplay);
   if (Meteor.microservice === 'admin') {
     return (
       <div className="flex-col center">

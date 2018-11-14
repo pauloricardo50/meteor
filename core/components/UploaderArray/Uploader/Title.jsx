@@ -7,7 +7,7 @@ import IconButton from 'core/components/IconButton';
 import FileStatusIcon from './FileStatusIcon';
 
 const Title = ({
-  fileMeta: { id, label, isAdditionalDoc, required, noTooltips, tooltipSuffix },
+  fileMeta: { id, label, isAdditionalDoc, noTooltips, tooltipSuffix, required },
   doubleTooltip,
   currentValue,
   displayFull,

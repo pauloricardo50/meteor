@@ -19,11 +19,14 @@ const Uploader = (props) => {
     docId,
     fileMeta: { id, requiredByAdmin },
     isDocumentToHide,
+    allowRequireByAdmin = true,
   } = props;
+  console.log('props', props);
 
   return (
     <div className="uploader-admin">
-      {Meteor.microservice === 'admin' && (
+      {Meteor.microservice === 'admin'
+        && allowRequireByAdmin && (
         <Checkbox
           value={requiredByAdmin !== false && !isDocumentToHide}
           onChange={(event) => {

@@ -130,7 +130,7 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
     return [];
   }
 
-  const doc = !isLoans && loan[collection].find(({ _id }) => _id === id);
+  const doc = !isLoans ? loan[collection].find(({ _id }) => _id === id) : loan;
 
   return [
     ...(doc && doc.additionalDocuments
