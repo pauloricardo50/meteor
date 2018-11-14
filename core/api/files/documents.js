@@ -80,7 +80,7 @@ export const borrowerDocuments = (b = {}, calc) => {
   };
 };
 
-export const loanDocuments = ({ general: { purchaseType }, hasPromotion }) => {
+export const loanDocuments = ({ purchaseType, hasPromotion }) => {
   const isRefinancing = purchaseType === PURCHASE_TYPE.REFINANCING;
   return {
     [STEPS.PREPARATION]: hasPromotion
