@@ -249,7 +249,7 @@ export class LoanService extends CollectionService {
         loanId,
         structure: {
           ...currentStructure,
-          name: `${currentStructure.name} - copie`,
+          name: `${currentStructure.name || 'Plan financier'} - copie`,
         },
         atIndex: currentStructureIndex + 1,
       })

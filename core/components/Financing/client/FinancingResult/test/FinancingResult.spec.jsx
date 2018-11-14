@@ -16,7 +16,12 @@ const expectResult = (component, name, value) => {
     .find(name)
     .last();
 
-  expect(val.contains(`${value}`)).to.equal(true);
+  if (!Number.isInteger(value)) {
+    // On our test browsers, the comma is represented either as a , or .
+    expect(val.contains(`${value}`) || val.contains(`${value}`.replace('.', ','))).to.equal(true);
+  } else {
+    expect(val.contains(`${value}`)).to.equal(true);
+  }
 };
 
 describe('FinancingResult', () => {
