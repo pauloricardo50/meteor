@@ -2,8 +2,8 @@
 import {
   ADMIN_EMAIL,
   route,
-  generateTestsFromPagesConfig,
-} from '../../imports/core/cypress/testHelpers';
+  generateTestsForPages,
+} from '../../imports/core/cypress/utils';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
@@ -105,5 +105,5 @@ describe('Admin Pages', () => {
       });
   });
 
-  generateTestsFromPagesConfig(pages, () => testData);
+  generateTestsForPages(pages, () => testData);
 });
