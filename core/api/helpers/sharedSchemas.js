@@ -1,8 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { Mongo } from 'meteor/mongo';
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
-
-// import Properties from '../properties';
 
 export const createdAt = {
   type: Date,
