@@ -6,17 +6,19 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'flowtype'],
+  plugins: ['import', 'jsx-a11y', 'meteor', 'react', 'flowtype', 'cypress'],
   extends: [
     'airbnb',
     'plugin:meteor/recommended',
     'plugin:react/recommended',
     'plugin:flowtype/recommended',
+    'plugin:cypress/recommended',
   ],
   env: {
     es6: true,
     node: true,
     browser: true,
+    'cypress/globals': true,
   },
   globals: {},
   settings: {
