@@ -76,9 +76,7 @@ class CollectionService {
   getAdditionalDocLabel({ label, additionalDoc }) {
     if (label) {
       return { label };
-    }
-
-    if (additionalDoc.label) {
+    } if (additionalDoc.label) {
       return { label: additionalDoc.label };
     }
 

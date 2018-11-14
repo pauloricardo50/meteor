@@ -11,6 +11,14 @@ export const additionalDocumentsHook = ({
   if (additionalDocuments.length === 0) {
     documents = initialDocuments;
   } else {
+    // Keep old custom documents
+    const oldCustomDocuments = additionalDocuments
+      .filter(document =>
+        document.requiredByAdmin === undefined
+          && !initialDocuments.some(({ id }) => id === document.id)
+          && !conditionalDocuments.some(({ id }) => id === document.id))
+      .map(document => ({ ...document, requiredByAdmin: true }));
+
     // Keep initial documents
     documents = additionalDocuments.filter(document =>
       initialDocuments.some(({ id }) =>
@@ -18,6 +26,8 @@ export const additionalDocumentsHook = ({
 
     // Keep required by admin
     documents = [
+      ...initialDocuments.filter(({ id }) => !additionalDocuments.some(document => document.id === id)),
+      ...oldCustomDocuments,
       ...documents,
       ...additionalDocuments.filter(({ requiredByAdmin }) => requiredByAdmin !== undefined),
     ];

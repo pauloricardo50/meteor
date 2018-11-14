@@ -43,8 +43,11 @@ export const allDocuments = ({ doc, collection }) => {
   return doc.additionalDocuments && doc.additionalDocuments.length > 0
     ? [
       ...doc.additionalDocuments,
-      ...[...documents, ...s3Documents].filter(({ id }) =>
+      ...documents.filter(({ id }) =>
         !doc.additionalDocuments.some(document => id === document.id)),
+      ...s3Documents.filter(({ id }) =>
+        !doc.additionalDocuments.some(document => id === document.id)
+            && !documents.some(document => id === document.id)),
     ]
     : documents;
 };
