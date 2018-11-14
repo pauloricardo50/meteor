@@ -39,6 +39,7 @@ const LotDocumentsManager = ({
         collection={PROPERTIES_COLLECTION}
         documentArray={promotionPropertyDocuments}
         currentUser={currentUser}
+        allowRequireByAdmin={false}
       />
     </DialogSimple>
   </>

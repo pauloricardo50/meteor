@@ -34,6 +34,7 @@ const PromotionDocumentsManager = ({
         collection={PROMOTIONS_COLLECTION}
         documentArray={promotionDocuments}
         currentUser={currentUser}
+        allowRequireByAdmin={false}
       />
     </DialogSimple>
   </>

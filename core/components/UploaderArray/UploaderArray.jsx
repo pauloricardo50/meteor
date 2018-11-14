@@ -1,72 +1,26 @@
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from '../Translation';
 import Uploader from './Uploader';
-import {
-  BORROWERS_COLLECTION,
-  BORROWER_DOCUMENTS,
-  PROPERTIES_COLLECTION,
-  PROPERTY_DOCUMENTS,
-  LOANS_COLLECTION,
-  LOAN_DOCUMENTS,
-} from '../../api/constants';
 
 import UploaderArrayContainer from './UploaderArrayContainer';
 
-const UploaderArray = ({
+export const UploaderArray = ({
   doc,
   disabled,
   collection,
-  currentUser,
-  documentsToDisplay,
-  documentsToHide,
+  documentArray,
   getFileMeta,
+  currentUser,
+  isDocumentToHide,
+  allowRequireByAdmin = true,
 }) => {
-  console.log('documentsToHide', documentsToHide);
-  console.log('documentsToDisplay', documentsToDisplay);
-  if (Meteor.microservice === 'admin') {
-    return (
-      <div className="flex-col center">
-        <h3>Documents requis</h3>
-        {documentsToDisplay.map(documentObject => (
-          <Uploader
-            fileMeta={
-              getFileMeta({ doc, id: documentObject.id }) || documentObject
-            }
-            key={doc._id + documentObject.id}
-            currentValue={doc.documents && doc.documents[documentObject.id]}
-            docId={doc._id}
-            disabled={disabled}
-            collection={collection}
-            currentUser={currentUser}
-          />
-        ))}
-        <h3>Autres documents</h3>
-        {documentsToHide.map(documentObject => (
-          <Uploader
-            fileMeta={
-              getFileMeta({ doc, id: documentObject.id }) || documentObject
-            }
-            key={doc._id + documentObject.id}
-            currentValue={doc.documents && doc.documents[documentObject.id]}
-            docId={doc._id}
-            disabled={disabled}
-            collection={collection}
-            currentUser={currentUser}
-            isDocumentToHide
-          />
-        ))}
-      </div>
-    );
-  }
-
-  if (!documentsToDisplay) {
+  if (!documentArray) {
     return null;
   }
 
-  if (documentsToDisplay.length === 0) {
+  if (documentArray.length === 0) {
     return (
       <p className="description">
         <T id="UploaderArray.empty" />
@@ -76,7 +30,8 @@ const UploaderArray = ({
 
   return (
     <div className="flex-col center">
-      {documentsToDisplay.map(documentObject => (
+      {isDocumentToHide ? <h3>Autres documents</h3> : <h3>Documents requis</h3>}
+      {documentArray.map(documentObject => (
         <Uploader
           fileMeta={
             getFileMeta({ doc, id: documentObject.id }) || documentObject
@@ -87,7 +42,8 @@ const UploaderArray = ({
           disabled={disabled}
           collection={collection}
           currentUser={currentUser}
-          isDocumentToHide={false}
+          isDocumentToHide={isDocumentToHide}
+          allowRequireByAdmin={allowRequireByAdmin}
         />
       ))}
     </div>

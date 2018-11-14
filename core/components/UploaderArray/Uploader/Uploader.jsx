@@ -19,9 +19,8 @@ const Uploader = (props) => {
     docId,
     fileMeta: { id, requiredByAdmin },
     isDocumentToHide,
-    allowRequireByAdmin = true,
+    allowRequireByAdmin,
   } = props;
-  console.log('props', props);
 
   return (
     <div className="uploader-admin">

@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
 import Calculator from 'core/utils/Calculator';
-import {
-  getPropertyDocuments,
-  getBorrowerDocuments,
-  getLoanDocuments,
-} from 'core/api/files/documents';
+
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
