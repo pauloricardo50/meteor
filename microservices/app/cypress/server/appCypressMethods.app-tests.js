@@ -3,10 +3,12 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { check } from 'meteor/check';
+
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
 import { STEPS } from 'core/api/loans/loanConstants';
-import userLoansQueryE2E from 'core/api/loans/queries/userLoansE2E';
+import userLoansE2E from 'core/api/loans/queries/userLoansE2E';
 import {
   createLoginToken,
   createEmailVerificationToken,
@@ -18,25 +20,27 @@ import 'core/cypress/server/methods';
 Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
-  getEndToEndTestData() {
-    const user = Users.findOne(this.userId);
-    const { _id: userId, emails } = user;
+  getAppEndToEndTestData(userEmail) {
+    check(userEmail, String);
+    const { _id: userId } = Users.findOne({
+      'emails.address': userEmail,
+    });
 
     const admin = Users.findOne(
       { roles: { $in: [ROLES.ADMIN] } },
       { fields: { _id: 1 } },
     );
 
-    const preparationLoan = userLoansQueryE2E
+    const preparationLoan = userLoansE2E
       .clone({ userId, step: STEPS.PREPARATION })
       .fetchOne();
 
-    const unownedLoan = userLoansQueryE2E.clone({ owned: false }).fetchOne();
+    const unownedLoan = userLoansE2E.clone({ owned: false }).fetchOne();
 
     const adminLoginToken = createLoginToken(admin._id);
     const emailVerificationToken = createEmailVerificationToken(
       userId,
-      emails[0].address,
+      userEmail,
     );
 
     return {

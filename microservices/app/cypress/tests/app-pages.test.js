@@ -80,12 +80,11 @@ describe('App Pages', () => {
     // Visit the app so that we get the Window instance of the app
     // from which we get the `Meteor` instance used in tests
     cy.visit('/');
-
-    cy.eraseAndGenerateTestData()
-      .getTestData(E2E_USER_EMAIL)
-      .then((data) => {
-        testData = data;
-      });
+    cy.callMethod('resetDatabase');
+    cy.callMethod('generateTestData');
+    cy.callMethod('getAppEndToEndTestData', E2E_USER_EMAIL).then((data) => {
+      testData = data;
+    });
   });
 
   generateTestsForPages(pages, () => testData);
