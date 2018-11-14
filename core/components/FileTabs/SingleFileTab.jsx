@@ -9,15 +9,12 @@ import {
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
   LOANS_COLLECTION,
-  BORROWER_DOCUMENTS,
-  PROPERTY_DOCUMENTS,
-  LOAN_DOCUMENTS,
-  DOCUMENTS_WITH_TOOLTIP,
 } from '../../api/constants';
 import {
   getBorrowerDocuments,
   getPropertyDocuments,
   getLoanDocuments,
+  allDocuments,
 } from '../../api/files/documents';
 
 type SingleFileTabProps = {
@@ -27,40 +24,6 @@ type SingleFileTabProps = {
   documentArray: Array<Object>,
   currentUser: Object,
   loan: Object,
-};
-
-const allDocuments = ({ doc, collection }) => {
-  let documents = [];
-  switch (collection) {
-  case BORROWERS_COLLECTION:
-    documents = Object.values(BORROWER_DOCUMENTS).map(id => ({
-      id,
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    }));
-    break;
-  case PROPERTIES_COLLECTION:
-    documents = Object.values(PROPERTY_DOCUMENTS).map(id => ({
-      id,
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    }));
-    break;
-  case LOANS_COLLECTION:
-    documents = Object.values(LOAN_DOCUMENTS).map(id => ({
-      id,
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    }));
-    break;
-  default:
-    break;
-  }
-
-  return doc.additionalDocuments && doc.additionalDocuments.length > 0
-    ? [
-      ...doc.additionalDocuments,
-      ...documents.filter(({ id }) =>
-        !doc.additionalDocuments.some(document => id === document.id)),
-    ]
-    : documents;
 };
 
 const documentsToDisplay = ({ collection, loan, id }) => {
