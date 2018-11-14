@@ -13,12 +13,12 @@ import Percent from '../../../../../core/components/Translation/numberComponents
 export const NBSP = '\u00A0';
 
 export const shouldDisplayOwnFund = ({ ownFunds, type, usageType }) =>
-  ownFunds.filter((ownFund) => {
+  ownFunds.some((ownFund) => {
     if (usageType) {
       return ownFund.type === type && ownFund.usageType === usageType;
     }
     return ownFund.type === type;
-  }).length > 0;
+  });
 
 export const usedOwnFundsTableData = loan =>
   Object.values(OWN_FUNDS_USAGE_TYPES).reduce(
@@ -32,9 +32,7 @@ export const usedOwnFundsTableData = loan =>
           ].includes(type))
         .map(type => ({
           label: (
-            <T
-              id={`PDF.projectInfos.structure.usedOwnFunds.${type}.${usageType}`}
-            />
+            <T id={`PDF.ownFund.${type}${usageType ? `.${usageType}` : ''}`} />
           ),
           data: toMoney(Calculator.getUsedFundsOfType({ loan, type, usageType })),
           condition:
@@ -47,22 +45,22 @@ export const usedOwnFundsTableData = loan =>
     [],
   );
 
+const oneBorrowerHasOwnFunds = ({ borrowers }, type) =>
+  borrowers.filter((borrower) => {
+    const valueForType = borrower[type];
+    if (Array.isArray(valueForType)) {
+      return valueForType.length > 0;
+    }
+    return !!valueForType;
+  }).length > 0;
+
 export const remainingFundsTableData = loan =>
   Object.values(OWN_FUNDS_TYPES)
-    .filter(type =>
-      ![
-        OWN_FUNDS_TYPES.BANK_FORTUNE,
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
-      ].includes(type))
+    .filter(type => ![OWN_FUNDS_TYPES.BANK_FORTUNE].includes(type))
     .map(type => ({
-      label: (
-        <T
-          id={`PDF.projectInfos.structure.postDisbursementSituation.${type}`}
-        />
-      ),
+      label: <T id={`PDF.ownFund.${type}`} />,
       data: toMoney(Calculator.getRemainingFundsOfType({ loan, type })),
-      condition:
-        loan.borrowers.filter(borrower => borrower[type].length > 0).length > 0,
+      condition: oneBorrowerHasOwnFunds(loan, type),
       style: { textAlign: 'right' },
     }));
 
@@ -233,9 +231,9 @@ export const propertyArrayKeysData = {
   }) => renovationYear,
   parking: ({
     structure: {
-      property: { parkingInside, parkingOutside },
+      property: { parkingInside = 0, parkingOutside = 0 },
     },
-  }) => `${parkingInside} int, ${parkingOutside} ext`,
+  }) => `${parkingInside} int., ${parkingOutside} ext.`,
   minergie: ({
     structure: {
       property: { minergie },
