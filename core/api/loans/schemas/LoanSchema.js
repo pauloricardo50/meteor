@@ -7,8 +7,14 @@ import {
   updatedAt,
   contactsSchema,
 } from '../../helpers/sharedSchemas';
-import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
-import GeneralSchema from './GeneralSchema';
+import {
+  LOAN_STATUS,
+  LOAN_VERIFICATION_STATUS,
+  PURCHASE_TYPE,
+  OWNER,
+  CANTONS,
+} from '../loanConstants';
+import { RESIDENCE_TYPE } from '../../constants';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
@@ -26,8 +32,8 @@ const LoanSchema = new SimpleSchema({
     defaultValue: LOAN_STATUS.LEAD,
     allowedValues: Object.values(LOAN_STATUS),
   },
+  general: { type: Object, optional: true, blackbox: true, defaultValue: {} }, // To be removed once migrations are done
   name: { type: String, unique: true },
-  general: { type: GeneralSchema, defaultValue: {} },
   logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
@@ -39,6 +45,35 @@ const LoanSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
     defaultValue: LOAN_VERIFICATION_STATUS.NONE,
+  },
+  purchaseType: {
+    type: String,
+    defaultValue: PURCHASE_TYPE.ACQUISITION,
+    allowedValues: Object.values(PURCHASE_TYPE),
+  },
+  residenceType: {
+    type: String,
+    defaultValue: RESIDENCE_TYPE.MAIN_RESIDENCE,
+    allowedValues: Object.values(RESIDENCE_TYPE),
+  },
+  canton: {
+    type: String,
+    optional: true,
+    allowedValues: Object.keys(CANTONS),
+  },
+  currentOwner: {
+    type: String,
+    defaultValue: OWNER.FIRST,
+    allowedValues: Object.values(OWNER),
+  },
+  futureOwner: {
+    type: String,
+    defaultValue: OWNER.FIRST,
+    allowedValues: Object.values(OWNER),
+  },
+  otherOwner: {
+    type: String,
+    optional: true,
   },
   ...promotionSchema,
   ...borrowerIdsSchema,

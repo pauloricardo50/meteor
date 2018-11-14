@@ -1,4 +1,6 @@
 {
+  "Forms.purchaseType": "Type de prêt",
+  "Forms.purchaseType.CONSTRUCTION": "Construction",
   "LoanTabs.promotion": "Promotions",
   "PromotionLotLoansTable.date": "Date du choix",
   "Recap.thirdPartyFortune": "Prêt de tiers",

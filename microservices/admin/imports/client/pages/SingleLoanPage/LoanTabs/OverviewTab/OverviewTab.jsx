@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
+import UpdateField from 'core/components/UpdateField';
 import Calculator from 'core/utils/Calculator';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanValidation from './LoanValidation';
@@ -28,6 +29,7 @@ const OverviewTab = (props) => {
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
         <ImpersonateLink user={user} />
+        <UpdateField doc={loan} fields={['purchaseType']} />
       </div>
       {/* <LoanValidation loan={loan} /> */}
       <LoanStatusCheck loan={loan} />
