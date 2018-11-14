@@ -12,6 +12,7 @@ import {
   BORROWER_DOCUMENTS,
   PROPERTY_DOCUMENTS,
   LOAN_DOCUMENTS,
+  DOCUMENTS_WITH_TOOLTIP,
 } from '../../api/constants';
 import {
   getBorrowerDocuments,
@@ -34,16 +35,19 @@ const allDocuments = ({ doc, collection }) => {
   case BORROWERS_COLLECTION:
     documents = Object.values(BORROWER_DOCUMENTS).map(id => ({
       id,
+      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
     }));
     break;
   case PROPERTIES_COLLECTION:
     documents = Object.values(PROPERTY_DOCUMENTS).map(id => ({
       id,
+      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
     }));
     break;
   case LOANS_COLLECTION:
     documents = Object.values(LOAN_DOCUMENTS).map(id => ({
       id,
+      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
     }));
     break;
   default:

@@ -105,6 +105,8 @@ export const DOCUMENTS = {
   OTHER: 'OTHER',
 };
 
+export const DOCUMENTS_WITH_TOOLTIP = [DOCUMENTS.BONUSES];
+
 export const S3_ACLS = {
   PRIVATE: 'private',
   PUBLIC_READ: 'public-read',

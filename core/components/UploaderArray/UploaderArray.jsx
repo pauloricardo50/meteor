@@ -16,6 +16,7 @@ export const UploaderArray = ({
   isDocumentToHide,
   allowRequireByAdmin = true,
 }) => {
+  console.log('documentArray', documentArray);
   if (!documentArray) {
     return null;
   }

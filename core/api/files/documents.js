@@ -4,7 +4,7 @@ import {
   BORROWERS_COLLECTION,
   LOANS_COLLECTION,
 } from '../constants';
-import { DOCUMENTS } from './fileConstants';
+import { DOCUMENTS, DOCUMENTS_WITH_TOOLTIP } from './fileConstants';
 
 const makeGetDocuments = collection => ({ loan, id }, ...args) => {
   const isLoans = collection === LOANS_COLLECTION;
@@ -23,7 +23,7 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
         .map(additionalDoc => ({
           ...additionalDoc,
           required: true,
-          isAdditionalDoc: true,
+          noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === additionalDoc.id),
         }))
       : []),
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
