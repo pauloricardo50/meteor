@@ -58,14 +58,14 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
       type: 'conditionalInput',
       conditionalTrueValue: OWNER.OTHER,
       condition:
-        borrowers.length > 1
-        && r.general.purchaseType === PURCHASE_TYPE.REFINANCING,
+        borrowers.length > 1 && r.purchaseType === PURCHASE_TYPE.REFINANCING,
       inputs: [
         {
-          id: 'general.currentOwner',
+          id: 'currentOwner',
           type: 'radioInput',
           options: Object.values(OWNER)
-            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+            .filter(value =>
+              (borrowers.length === 1 ? value !== OWNER.SECOND : true))
             .map((value) => {
               const isFirst = value === OWNER.FIRST;
               const isSecond = value === OWNER.SECOND;
@@ -81,21 +81,21 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
                 : value;
             }),
         },
-        { id: 'general.otherOwner', type: 'textInput' },
+        { id: 'otherOwner', type: 'textInput' },
       ],
     },
     {
       type: 'conditionalInput',
       conditionalTrueValue: OWNER.OTHER,
       condition:
-        borrowers.length > 1
-        && r.general.purchaseType !== PURCHASE_TYPE.REFINANCING,
+        borrowers.length > 1 && r.purchaseType !== PURCHASE_TYPE.REFINANCING,
       inputs: [
         {
-          id: 'general.futureOwner',
+          id: 'futureOwner',
           type: 'radioInput',
           options: Object.values(OWNER)
-            .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+            .filter(value =>
+              (borrowers.length === 1 ? value !== OWNER.SECOND : true))
             .map((value) => {
               const isFirst = value === OWNER.FIRST;
               const isSecond = value === OWNER.SECOND;
@@ -112,7 +112,7 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
             }),
         },
         {
-          id: 'general.otherOwner',
+          id: 'otherOwner',
           type: 'textInput',
         },
       ],
@@ -150,7 +150,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       id: 'isNew',
       type: 'radioInput',
       options: [true, false],
-      condition: r.general.purchaseType === PURCHASE_TYPE.ACQUISITION,
+      condition: r.purchaseType === PURCHASE_TYPE.ACQUISITION,
     },
     {
       id: 'isCoproperty',

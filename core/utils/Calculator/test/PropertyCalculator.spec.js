@@ -43,7 +43,7 @@ describe('PropertyCalculator', () => {
         copropertyPercentage: 100,
         isCoproperty: false,
       };
-      params.loan.general.residenceType = ' ';
+      params.loan.residenceType = ' ';
       expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(1);
     });
   });

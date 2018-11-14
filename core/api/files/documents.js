@@ -120,11 +120,7 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
       { id: DOCUMENTS.PROPERTY_PICTURES },
       {
         id: DOCUMENTS.PROPERTY_MARKETING_BROCHURE,
-        condition: !!(
-          loan
-            && loan.general
-            && loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
-        ),
+        condition: !!(loan.purchaseType === PURCHASE_TYPE.ACQUISITION),
         required: false,
       },
     ],
@@ -133,9 +129,7 @@ export const propertyDocuments = (property = {}, loan = {}) => ({
     : [
       {
         id: DOCUMENTS.INVESTMENT_PROPERTY_RENT_JUSTIFICATION,
-        condition:
-            !!loan.general
-            && loan.general.residenceType === RESIDENCE_TYPE.INVESTMENT,
+        condition: loan.residenceType === RESIDENCE_TYPE.INVESTMENT,
         doubleTooltip: true,
       },
       { id: DOCUMENTS.LAND_REGISTER_EXTRACT, doubleTooltip: true },

@@ -39,7 +39,7 @@ export const calculateMaxLoan = (data, pledgeOverride) =>
     propertyValue: getPropertyValue(data),
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
-    residenceType: data.loan.general.residenceType,
+    residenceType: data.loan.residenceType,
   });
 
 const offersExist = ({ offers }) => offers && offers.length > 0;

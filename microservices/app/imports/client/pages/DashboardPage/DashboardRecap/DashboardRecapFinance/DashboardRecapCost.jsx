@@ -11,7 +11,7 @@ import DashboardRecapSum from './DashboardRecapSum';
 const getRecapArray = loan => [
   {
     label:
-      loan.general.purchaseType === PURCHASE_TYPE.ACQUISITION
+      loan.purchaseType === PURCHASE_TYPE.ACQUISITION
         ? 'Recap.purchasePrice'
         : 'Recap.propertyValue',
     value: toMoney(Calculator.selectPropertyValue({ loan })),
