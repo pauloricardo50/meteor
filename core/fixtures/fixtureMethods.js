@@ -79,7 +79,7 @@ const createTestUserWithData = () => {
   const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
   const admins = getAdmins();
 
-  // Create 2 loans to check app page
+  // Create 2 loans to check AppPage, which requires multiple loans to display
   createFakeLoanFixture({
     step: STEPS.PREPARATION,
     userId: testUserId,
