@@ -90,9 +90,6 @@ let testData;
 
 describe('Admin Pages', () => {
   before(() => {
-    // We visit the app so that we get the Window instance of the app
-    // from which we get the `Meteor` instance used in tests
-    cy.visit('/');
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');
     cy.callMethod('getAdminEndToEndTestData').then((data) => {

@@ -6,6 +6,7 @@ let testData;
 
 const generateTestsForPages = (pages, getTestData) => {
   before(() => {
+    cy.visit('/');
     testData = getTestData();
   });
 
