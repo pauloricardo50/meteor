@@ -87,7 +87,7 @@ describe('PropertyCalculator', () => {
         'minergie',
         'qualityProfileCondition',
         'qualityProfileStandard',
-        'general.residenceType',
+        'residenceType',
       ]);
     });
   });
