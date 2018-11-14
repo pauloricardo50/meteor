@@ -8,7 +8,7 @@ import BorrowerService from '../../BorrowerService';
 import { initialDocuments } from '../../borrowersAdditionalDocuments';
 import * as borrowerConstants from '../../borrowerConstants';
 
-describe.only('BorrowerService', () => {
+describe('BorrowerService', () => {
   let borrower;
   let user;
 

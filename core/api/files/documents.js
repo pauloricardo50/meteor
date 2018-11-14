@@ -58,9 +58,11 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
     return [];
   }
 
-  const doc = !isLoans
-    ? Mongo.Collection.get(collection).findOne({ _id: id })
-    : loan;
+  const doc = (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
+
+  // const doc = !isLoans
+  //   ? Mongo.Collection.get(collection).findOne({ _id: id })
+  //   : loan;
 
   return [
     ...(doc && doc.additionalDocuments

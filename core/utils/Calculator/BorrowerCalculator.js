@@ -92,7 +92,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       return {
         ...percentages,
-        percent: percentages.percent / percentages.count,
+        percent:
+          percentages.count === 0 ? 1 : percentages.percent / percentages.count,
       };
     }
 
