@@ -44,8 +44,7 @@ const makeMapPromotionOption = ({
   return {
     id: promotionOptionId,
     columns: [
-      !attributedToMe
-        && promotionStatus === PROMOTION_STATUS.OPEN && (
+      !attributedToMe && promotionStatus === PROMOTION_STATUS.OPEN && (
         <div key="priorityOrder" onClick={e => e.stopPropagation()}>
           <PrioritySetter
             index={index}
@@ -155,10 +154,18 @@ export default compose(
     isDashboardTable,
   }) => {
     const { promotionOptions } = loan;
-    const { priorityOrder } = promotion.loans[0].$metadata;
     const options = isAnyLotAttributedToMe(promotionOptions)
       ? getLotsAttributedToMe(promotionOptions)
       : promotionOptions;
+
+    let priorityOrder = promotion.loans
+        && promotion.loans[0]
+        && promotion.loans[0].$metadata.priorityOrder;
+
+    // On admin, the priorityOrder is on the promotion itself
+    if (!priorityOrder) {
+      priorityOrder = promotion.$metadata && promotion.$metadata.priorityOrder;
+    }
 
     return {
       rows: options.sort(makeSortByPriority(priorityOrder)).map(makeMapPromotionOption({

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Tabs from 'core/components/Tabs';
 import ConfirmMethod from 'imports/core/components/ConfirmMethod';
 import { addBorrower } from 'imports/core/api/methods/index';

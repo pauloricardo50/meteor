@@ -10,7 +10,8 @@ const FilesPage = props => (
       {...props}
       properties={props.loan.properties}
       borrowers={props.loan.borrowers}
-      disabled={!props.loan.userFormsEnabled}
+      // disabled={!props.loan.userFormsEnabled}
+      disabled={false}
     />
   </Page>
 );

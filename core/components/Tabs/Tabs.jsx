@@ -53,6 +53,7 @@ class Tabs extends Component {
       tabs,
       initialIndex,
       className,
+      onChangeCallback,
       ...otherProps
     } = this.props;
     const { value } = this.state;
