@@ -73,15 +73,13 @@ const pages = {
   },
 };
 
-let testData;
-
 describe('App Pages', () => {
+  let testData;
+
   before(() => {
-    // Visit the app so that we get the Window instance of the app
-    // from which we get the `Meteor` instance used in tests
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');
-    cy.callMethod('getAppEndToEndTestData', E2E_USER_EMAIL).then((data) => {
+    cy.callMethod('getAppEndToEndTestData').then((data) => {
       testData = data;
     });
   });

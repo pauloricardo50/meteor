@@ -86,9 +86,9 @@ const pages = {
   },
 };
 
-let testData;
-
 describe('Admin Pages', () => {
+  let testData;
+
   before(() => {
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');

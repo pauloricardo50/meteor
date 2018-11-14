@@ -15,16 +15,14 @@ import {
 } from 'core/utils/testHelpers/testHelpers';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 import 'core/cypress/server/methods';
+import { E2E_USER_EMAIL } from 'core/cypress/utils';
 
 // remove login rate limits in E2E tests
 Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
-  getAppEndToEndTestData(userEmail) {
-    check(userEmail, String);
-    const { _id: userId } = Users.findOne({
-      'emails.address': userEmail,
-    });
+  getAppEndToEndTestData() {
+    const { _id: userId } = Users.findOne({ 'emails.address': E2E_USER_EMAIL });
 
     const admin = Users.findOne(
       { roles: { $in: [ROLES.ADMIN] } },
