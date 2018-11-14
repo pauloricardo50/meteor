@@ -33,11 +33,7 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId, history } = props;
-  const {
-    borrowers,
-    properties,
-    general: { residenceType },
-  } = loan;
+  const { borrowers, properties, residenceType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;

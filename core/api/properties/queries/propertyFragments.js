@@ -61,7 +61,7 @@ export const fullPropertyFragment = {
   landArea: 1,
   latitude: 1,
   // residenceType is required for the valuation
-  loans: merge({}, loanBaseFragment, { general: 1 }),
+  loans: merge({}, loanBaseFragment),
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,

@@ -116,11 +116,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getMaxBorrowRatio({
-      loan: {
-        general: { usageType },
-      },
-    }) {
+    getMaxBorrowRatio({ loan: { usageType } }) {
       return this.maxBorrowRatio;
     }
 

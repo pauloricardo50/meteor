@@ -22,7 +22,6 @@ describe('CombinedCalculator', () => {
             { documents: { [DOCUMENTS.TAXES]: [{}] }, _id: 'id2' },
           ],
           properties: [property],
-          general: {},
           logic: { step: STEPS.PREPARATION },
         },
       });

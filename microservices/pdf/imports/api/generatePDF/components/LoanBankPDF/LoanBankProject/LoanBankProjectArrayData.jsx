@@ -161,7 +161,7 @@ export const propertyArrayKeysData = {
       {zipCode} {city}
     </span>
   ),
-  residenceType: ({ general: { residenceType } }) => (
+  residenceType: ({ residenceType }) => (
     <T id={`PDF.residenceType.${residenceType}`} />
   ),
   propertyType: ({

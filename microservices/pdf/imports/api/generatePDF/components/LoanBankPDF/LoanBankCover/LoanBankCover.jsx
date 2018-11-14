@@ -19,10 +19,7 @@ const footer = ({ name, email, phoneNumbers }) => (
 );
 
 const loanInfo = (loan) => {
-  const {
-    name,
-    general: { residenceType, purchaseType },
-  } = loan;
+  const { name, residenceType, purchaseType } = loan;
   const { address1, zipCode, city } = loan.structure.property;
   return (
     <div className="loan-info">

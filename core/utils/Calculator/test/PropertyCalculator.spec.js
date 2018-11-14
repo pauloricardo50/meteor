@@ -14,7 +14,6 @@ describe('PropertyCalculator', () => {
     property = { _id: 'propertyId' };
     params = {
       loan: {
-        general: {},
         structure: { property },
         borrowers: [{}],
         properties: [property],
