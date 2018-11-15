@@ -14,47 +14,49 @@ export const initialDocuments = [
 export const conditionalDocuments = [
   {
     id: DOCUMENTS.RESIDENCY_PERMIT,
-    condition: ({ doc }) => doc.isSwiss === false,
+    condition: ({ doc: { isSwiss } }) => isSwiss === false,
   },
   {
     id: DOCUMENTS.BONUSES,
-    condition: ({ doc }) => doc.bonusExists === true,
+    condition: ({ doc: { bonusExists } }) => bonusExists === true,
   },
   {
     id: DOCUMENTS.PENSION_FUND_YEARLY_STATEMENT,
-    condition: ({ doc }) => doc.insurance2 && doc.insurance2.length > 0,
+    condition: ({ doc: { insurance2 } }) => insurance2 && insurance2.length > 0,
   },
   {
     id: DOCUMENTS.THIRD_PILLAR_ACCOUNTS,
-    condition: ({ doc }) =>
-      (doc.insurance3A && doc.insurance3A.length > 0)
-      || (doc.insurance3B && doc.insurance3B.length > 0)
-      || (doc.bank3A && doc.bank3A.length > 0),
+    condition: ({ doc: { insurance3A, insurance3B, bank3A } }) =>
+      (insurance3A && insurance3A.length > 0)
+      || (insurance3B && insurance3B.length > 0)
+      || (bank3A && bank3A.length > 0),
   },
   {
     id: DOCUMENTS.CURRENT_MORTGAGES,
-    condition: ({ doc }) =>
-      doc.realEstate
-      && doc.realEstate.length > 0
-      && doc.realEstate.some(({ loan }) => loan > 0),
+    condition: ({ doc: { realEstate } }) =>
+      realEstate
+      && realEstate.length > 0
+      && realEstate.some(({ loan }) => loan > 0),
   },
   {
     id: DOCUMENTS.CURRENT_MORTGAGES_INTERESTS_STATEMENT,
-    condition: ({ doc }) =>
-      doc.realEstate
-      && doc.realEstate.length > 0
-      && doc.realEstate.some(({ loan }) => loan > 0),
+    condition: ({ doc: { realEstate } }) =>
+      realEstate
+      && realEstate.length > 0
+      && realEstate.some(({ loan }) => loan > 0),
   },
   {
     id: DOCUMENTS.EXPENSES_JUSTIFICATION,
-    condition: ({ doc }) => doc.expenses && doc.expenses.length > 0,
+    condition: ({ doc: { expenses } }) => expenses && expenses.length > 0,
   },
   {
     id: DOCUMENTS.OTHER_FORTUNE_JUSTIFICATION,
-    condition: ({ doc }) => doc.otherFortune && doc.otherFortune.length > 0,
+    condition: ({ doc: { otherFortune } }) =>
+      otherFortune && otherFortune.length > 0,
   },
   {
     id: DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
-    condition: ({ doc }) => doc.otherIncome && doc.otherIncome.length > 0,
+    condition: ({ doc: { otherIncome } }) =>
+      otherIncome && otherIncome.length > 0,
   },
 ];

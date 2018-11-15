@@ -21,17 +21,15 @@ export const conditionalDocuments = [
   {
     id: DOCUMENTS.PROPERTY_VOLUME,
     condition: ({ doc: { propertyType } }) =>
-      propertyType && propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
+      propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   {
     id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
-    condition: ({ doc: { isCoproperty } }) =>
-      isCoproperty && isCoproperty === true,
+    condition: ({ doc: { isCoproperty } }) => isCoproperty === true,
   },
   {
     id: DOCUMENTS.COOWNERSHIP_ALLOCATION_AGREEMENT,
-    condition: ({ doc: { isCoproperty } }) =>
-      isCoproperty && isCoproperty === true,
+    condition: ({ doc: { isCoproperty } }) => isCoproperty === true,
   },
   {
     id: DOCUMENTS.INVESTEMENT_PROPERTY_RENTAL_STATEMENT,
