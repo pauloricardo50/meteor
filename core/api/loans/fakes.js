@@ -97,17 +97,12 @@ export const emptyLoan = {
 export const loanStep1 = {
   purchaseType: 'ACQUISITION',
   logic: logic1,
+  structures: [
+    {
+      id: 'randomStructureId',
+      wantedLoan: 800000,
+    },
+  ],
+  selectedStructure: 'randomStructureId',
   contacts: [],
 };
-
-export const loanStep2 = {
-  purchaseType: 'ACQUISITION',
-  logic: logic2,
-  contacts: [],
-};
-
-export const loanStep3 = () => ({
-  purchaseType: 'ACQUISITION',
-  logic: logic3,
-  contacts: [],
-});

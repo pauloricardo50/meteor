@@ -34,13 +34,18 @@ export const AutoFormDialog = ({
   opened,
   renderAdditionalActions,
   children,
+  triggerComponent,
   ...otherProps
 }: AutoFormDialogProps) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
 
   return (
     <>
-      <Button {...buttonProps} onClick={() => setOpen(true)} />
+      {triggerComponent ? (
+        triggerComponent(() => setOpen(true))
+      ) : (
+        <Button {...buttonProps} onClick={() => setOpen(true)} />
+      )}
       <MuiDialog
         disableBackdropClick={important}
         disableEscapeKeyDown={important}

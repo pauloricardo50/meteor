@@ -10,7 +10,7 @@ import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 const getChartData = ({ loan }) => {
   const interests = Calculator.getInterests({ loan });
 
-  const data = [
+  let data = [
     {
       id: 'general.interests',
       value: interests,
@@ -26,7 +26,7 @@ const getChartData = ({ loan }) => {
   });
 
   if (expenses) {
-    data.push({ id: 'Forms.monthlyExpenses', value: expenses });
+    data = [...data, { id: 'Forms.monthlyExpenses.short', value: expenses }];
   }
 
   return data.map(dataPoint => ({

@@ -13,7 +13,7 @@ const DashboardInfoInterests = ({ loan }) => {
           <T id="DashboardInfoInterests.title" />
         </h3>
 
-        <DashboardInfoInterestsTable loanId={_id} />
+        <DashboardInfoInterestsTable loan={loan} />
       </div>
     </div>
   );

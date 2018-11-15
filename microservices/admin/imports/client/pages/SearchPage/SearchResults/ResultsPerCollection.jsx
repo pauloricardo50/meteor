@@ -58,7 +58,7 @@ const getPropertyInfo = ({
 });
 
 const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
-  const organization = profile && profile.organization;
+  const organisation = profile && profile.organisation;
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.name
     : 'unassigned';
@@ -68,7 +68,7 @@ const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
     secondary: (
       <ResultSecondaryText
         infos={{
-          organization,
+          organisation,
           roles,
           createdAt,
           assignedTo: assignedEmployeeName,

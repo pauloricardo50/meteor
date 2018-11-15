@@ -12,7 +12,7 @@ import FinancingSection, {
   RadioButtons,
   FinmaRatio,
 } from '../FinancingSection';
-import Calc from '../FinancingCalculator';
+import Calc, { getOffer } from '../FinancingCalculator';
 import FinancingTranchePicker from './FinancingTranchePicker';
 import {
   getBorrowRatio,
@@ -33,16 +33,22 @@ export const calculateLoan = (params) => {
   return wantedLoan;
 };
 
-export const calculateMaxLoan = (data, pledgeOverride) =>
-  Calc.getMaxLoanBase({
+export const calculateMaxLoan = (data, pledgeOverride) => {
+  if (data.structure.offerId) {
+    const { maxAmount } = getOffer(data);
+    return maxAmount;
+  }
+
+  return Calc.getMaxLoanBase({
     propertyWork: data.structure.propertyWork,
     propertyValue: getPropertyValue(data),
     pledgedAmount:
       pledgeOverride !== undefined ? pledgeOverride : getPledgedAmount(data),
     residenceType: data.loan.residenceType,
   });
+};
 
-const offersExist = ({ offers }) => offers && offers.length > 0;
+const enableOffers = ({ loan }) => loan.enableOffers;
 
 type FinancingFinancingProps = {};
 
@@ -78,19 +84,20 @@ const FinancingFinancing = (props: FinancingFinancingProps) => (
         Component: LoanPercent,
         id: 'wantedLoanPercent',
       },
-      {
-        Component: RadioButtons,
-        id: 'amortizationType',
-        options: Object.values(AMORTIZATION_TYPE).map(key => ({
-          id: key,
-          label: `FinancingFinancing.${key}`,
-        })),
-        condition: offersExist,
-      },
+      // TODO: To be released in the future
+      // {
+      //   Component: RadioButtons,
+      //   id: 'amortizationType',
+      //   options: Object.values(AMORTIZATION_TYPE).map(key => ({
+      //     id: key,
+      //     label: `FinancingFinancing.${key}`,
+      //   })),
+      //   condition: enableOffers,
+      // },
       {
         id: 'loanTranches',
         Component: FinancingTranchePicker,
-        condition: offersExist,
+        condition: enableOffers,
       },
     ]}
   />

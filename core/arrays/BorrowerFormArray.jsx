@@ -140,7 +140,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       id: 'company',
       type: 'textInput',
       required: false,
-      autoComplete: 'organization',
+      autoComplete: 'organisation',
     },
   ];
 };

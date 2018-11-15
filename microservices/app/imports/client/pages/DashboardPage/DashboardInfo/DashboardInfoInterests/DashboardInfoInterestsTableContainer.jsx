@@ -12,16 +12,14 @@ import {
 export const DashboardInfoInterestsTableContainer = compose(
   withSmartQuery({
     query: offersQuery,
-    params: ({ loanId }) => ({ loanId }),
-    // queryOptions: { reactive: true }, // FIXME: Crashes E2E tests
+    params: ({ loan: { _id: loanId } }) => ({ loanId }),
     dataName: 'offers',
   }),
-  withProps(({ offers }) => ({
+  withProps(({ loan: { enableOffers }, offers }) => ({
     columnOptions,
-    rows:
-      offers && offers.length > 0
-        ? rows({ interestRates: getInterestRatesFromOffers(offers) })
-        : rows({ interestRates: generalInterestRates }),
+    rows: enableOffers
+      ? rows({ interestRates: getInterestRatesFromOffers(offers) })
+      : rows({ interestRates: generalInterestRates }),
   })),
 );
 

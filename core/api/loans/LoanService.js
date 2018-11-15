@@ -186,7 +186,7 @@ export class LoanService extends CollectionService {
       loanId,
       structure: {
         ...structure,
-        name: `Structure ${structures.length + 1}`,
+        name: `Plan financier ${structures.length + 1}`,
         propertyId,
       },
     });
@@ -212,7 +212,7 @@ export class LoanService extends CollectionService {
       });
     }
 
-    throw new Meteor.Error("Can't delete selected structure");
+    throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
@@ -249,7 +249,7 @@ export class LoanService extends CollectionService {
         loanId,
         structure: {
           ...currentStructure,
-          name: `${currentStructure.name} - copie`,
+          name: `${currentStructure.name || 'Plan financier'} - copie`,
         },
         atIndex: currentStructureIndex + 1,
       })
@@ -275,7 +275,6 @@ export class LoanService extends CollectionService {
       });
     });
   };
-
 
   setPromotionPriorityOrder({ loanId, promotionId, priorityOrder }) {
     return Loans.update(
