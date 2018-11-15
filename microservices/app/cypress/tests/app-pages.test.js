@@ -1,9 +1,5 @@
 /* eslint-env mocha */
-import {
-  E2E_USER_EMAIL,
-  route,
-  generateTestsForPages,
-} from '../../imports/core/cypress/utils';
+import { route, generateTestsForPages } from '../../imports/core/cypress/utils';
 
 const pages = {
   public: {
