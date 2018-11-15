@@ -12,4 +12,5 @@ const HiddenDocuments = (props: HiddenDocumentsProps) => (
 export default withHider({
   label: 'Afficher tous les documents',
   primary: true,
+  style: { alignSelf: 'center', marginBottom: '16px' },
 })(HiddenDocuments);
