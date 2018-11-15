@@ -3,7 +3,6 @@ import { getPercent } from '../../utils/general';
 import { FILE_STATUS } from './fileConstants';
 
 const documentIsRequired = required => required !== false;
-// && condition !== false;
 
 const getDocumentsToCount = (
   documentArray: Array<Object>,
