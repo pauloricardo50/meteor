@@ -210,6 +210,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         0,
       );
     }
+
+    refinancingPercent({ loan }) {
+      return 0;
+    }
   };
 
 export const LoanCalculator = withLoanCalculator(FinanceCalculator);

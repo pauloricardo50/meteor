@@ -17,6 +17,7 @@ import {
   migrateToLatest,
 } from '../../api';
 import adminLoan from '../../api/loans/queries/adminLoan';
+import { PURCHASE_TYPE } from '../../api/constants';
 
 const addOfferPromise = loanId =>
   new Promise((resolve, reject) =>
@@ -81,24 +82,38 @@ const addLoanWithData = ({
     });
 };
 
-const addEmptyLoan = userId => (twoBorrowers, addOffers) =>
+const addEmptyLoan = userId => (twoBorrowers, addOffers, isRefinancing) =>
   addLoanWithData({
     borrowers: twoBorrowers
       ? [emptyFakeBorrower, emptyFakeBorrower]
       : [emptyFakeBorrower],
     properties: [emptyProperty],
-    loan: emptyLoan,
+    loan: {
+      ...emptyLoan,
+      purchaseType: isRefinancing
+        ? PURCHASE_TYPE.REFINANCING
+        : PURCHASE_TYPE.ACQUISITION,
+    },
     userId,
     addOffers,
   });
 
-const addLoanWithSomeData = userId => (twoBorrowers, addOffers) =>
+const addLoanWithSomeData = userId => (
+  twoBorrowers,
+  addOffers,
+  isRefinancing,
+) =>
   addLoanWithData({
     borrowers: twoBorrowers
       ? [completeFakeBorrower, completeFakeBorrower]
       : [completeFakeBorrower],
     properties: [fakeProperty],
-    loan: loanStep1,
+    loan: {
+      ...loanStep1,
+      purchaseType: isRefinancing
+        ? PURCHASE_TYPE.REFINANCING
+        : PURCHASE_TYPE.ACQUISITION,
+    },
     userId,
     addOffers,
   });

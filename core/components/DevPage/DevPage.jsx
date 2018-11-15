@@ -25,7 +25,7 @@ class DevPage extends Component {
     this.setState(prev => ({ [stateName]: value }));
 
   render() {
-    const { twoBorrowers, users, addOffers } = this.state;
+    const { twoBorrowers, users, addOffers, isRefinancing } = this.state;
     const {
       currentUser,
       addEmptyLoan,
@@ -125,12 +125,21 @@ class DevPage extends Component {
             onChange={() => this.makeHandleChange('addOffers')(!addOffers)}
           />
           Add offers
+          <input
+            type="checkbox"
+            name="isRefinancing"
+            value={isRefinancing}
+            onChange={() =>
+              this.makeHandleChange('isRefinancing')(!isRefinancing)
+            }
+          />
+          Refinancing loan
           <br />
           <Button
             raised
             secondary
             className="mr20"
-            onClick={() => addEmptyLoan(twoBorrowers, addOffers)}
+            onClick={() => addEmptyLoan(twoBorrowers, addOffers, isRefinancing)}
           >
             Empty loan
           </Button>
@@ -138,7 +147,9 @@ class DevPage extends Component {
             raised
             secondary
             className="mr20"
-            onClick={() => addLoanWithSomeData(twoBorrowers, addOffers)}
+            onClick={() =>
+              addLoanWithSomeData(twoBorrowers, addOffers, isRefinancing)
+            }
           >
             Loan with some data
           </Button>
