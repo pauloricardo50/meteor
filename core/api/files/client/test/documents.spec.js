@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import { STEPS } from 'core/api/constants';
-import { initialDocuments as propertiesInitialDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
+import { initialDocuments as propertyDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
 import {
   getPropertyDocuments,
   getBorrowerDocuments,
@@ -11,7 +11,7 @@ import {
 } from '../../documents';
 import { DOCUMENTS } from '../../fileConstants';
 
-describe.only('documents', () => {
+describe('documents', () => {
   describe('getPropertyDocuments', () => {
     let loan;
 
@@ -21,7 +21,7 @@ describe.only('documents', () => {
         properties: [
           {
             _id: 'propertyId',
-            additionalDocuments: propertiesInitialDocuments,
+            additionalDocuments: propertyDocuments,
           },
         ],
       };
@@ -33,7 +33,7 @@ describe.only('documents', () => {
 
     it('returns an array of documents for the first step', () => {
       expect(getPropertyDocuments({ loan, id: 'propertyId' }).map(({ id }) => id)).to.deep.equal([
-        ...propertiesInitialDocuments.map(({ id }) => id),
+        ...propertyDocuments.map(({ id }) => id),
         DOCUMENTS.OTHER,
       ]);
     });

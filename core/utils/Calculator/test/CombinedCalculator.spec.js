@@ -2,8 +2,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { DOCUMENTS, STEPS } from 'core/api/constants';
-import { initialDocuments as borrowersInitialDocuments } from 'core/api/borrowers/borrowersAdditionalDocuments';
-import { initialDocuments as propertiesInitialDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
+import { initialDocuments as borrowerDocuments } from 'core/api/borrowers/borrowersAdditionalDocuments';
+import { initialDocuments as propertyDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
 
 import CombinedCalculator from '..';
 
@@ -13,7 +13,7 @@ describe('CombinedCalculator', () => {
       const property = {
         documents: { [DOCUMENTS.PROPERTY_PLANS]: [{}] },
         _id: 'jo',
-        additionalDocuments: propertiesInitialDocuments,
+        additionalDocuments: propertyDocuments,
       };
       const progress = CombinedCalculator.filesProgress({
         loan: {
@@ -24,12 +24,12 @@ describe('CombinedCalculator', () => {
             {
               documents: { [DOCUMENTS.IDENTITY]: [{}] },
               _id: 'id1',
-              additionalDocuments: borrowersInitialDocuments,
+              additionalDocuments: borrowerDocuments,
             },
             {
               documents: { [DOCUMENTS.TAXES]: [{}] },
               _id: 'id2',
-              additionalDocuments: borrowersInitialDocuments,
+              additionalDocuments: borrowerDocuments,
             },
           ],
           properties: [property],
