@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Recap from 'core/components/Recap';
 import { BorrowerForm } from 'core/components/forms';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
 
 const BorrowerTab = ({ borrower }) => (
   <div className="single-borrower-tab">
@@ -16,4 +17,6 @@ BorrowerTab.propTypes = {
   borrower: PropTypes.object.isRequired,
 };
 
-export default BorrowerTab;
+export default withTranslationContext(({ borrower }) => ({
+  gender: borrower.gender,
+}))(BorrowerTab);
