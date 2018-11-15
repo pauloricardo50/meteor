@@ -60,7 +60,7 @@ const StructureSchema = new SimpleSchema({
     max: 100000000,
     defaultValue: 0,
   },
-  ...loanTranchesSchema,
+  ...loanTranchesSchema(),
 });
 
 export type structureType = {

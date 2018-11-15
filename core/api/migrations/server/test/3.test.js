@@ -4,9 +4,9 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Loans } from '../../..';
-import { up, down } from '../2';
+import { up, down } from '../3';
 
-describe('Migration 2', () => {
+describe('Migration 3', () => {
   beforeEach(() => {
     resetDatabase();
   });

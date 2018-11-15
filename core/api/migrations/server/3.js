@@ -8,7 +8,14 @@ export const up = () => {
   return Promise.all(allLoans.map(loan =>
     Loans.rawCollection().update(
       { _id: loan._id },
-      { $set: { ...loan.general }, $unset: { general: 1 } },
+      {
+        $set: {
+          ...loan.general,
+          mortgageNotes: [],
+          previousLoanTranches: [],
+        },
+        $unset: { general: 1 },
+      },
     )));
 };
 
@@ -44,14 +51,16 @@ export const down = () => {
           currentOwner: 1,
           futureOwner: 1,
           otherOwner: 1,
+          mortgageNotes: 1,
         },
       },
     )));
 };
 
 Migrations.add({
-  version: 2,
-  name: 'Remove general from loans',
+  version: 3,
+  name:
+    'Remove general from loans, and add previousLoanTranches and mortgageNotes',
   up,
   down,
 });

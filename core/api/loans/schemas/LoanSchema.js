@@ -18,7 +18,12 @@ import { RESIDENCE_TYPE } from '../../constants';
 import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
-import { borrowerIdsSchema, propertyIdsSchema } from './otherSchemas';
+import {
+  borrowerIdsSchema,
+  propertyIdsSchema,
+  previousLoanTranchesSchema,
+  mortgageNotesSchema,
+} from './otherSchemas';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -80,6 +85,8 @@ const LoanSchema = new SimpleSchema({
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,
+  ...previousLoanTranchesSchema,
+  ...mortgageNotesSchema,
 });
 
 export default LoanSchema;
