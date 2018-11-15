@@ -2,27 +2,34 @@ import * as styles from '../utils/styleHelpers';
 import recapStyleSheet from './recapStyleSheet';
 
 const stylesheet = `
- .loan-bank-pdf-borrowers {
-        ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
-        width: 100%;
-    }
-.loan-bank-pdf-borrowers-recap {
-        ${styles.flex(['FLEX_ROW', 'JUSTIFY_CONTENT_SPACE_BETWEEN'])}
-        width: 100%;
-    }
-.loan-bank-pdf-borrowers-recap-single {
-        width: 50%;
-    }
 
 .borrowers-recap {
     width: 100%;
-    font-size: 10px;
-}  
+}
+
+.borrowers-recap {
+    width: 50%;
+}
+
+.borrowers-recap.twoBorrowers {
+    width: 100%;
+}
+
+.borrowers-recap.twoBorrowers td {
+    width: 25%;
+}
+
+.borrowers-recap.twoBorrowers.info {
+    width: 75%;
+}
+
+.borrowers-recap .info td {
+    text-align: left;
+}
 
 .money-amount {
     text-align: right;  
-    width: 60%;
-    align-self: center;
+    white-space: nowrap;
 }
 
 ${recapStyleSheet}

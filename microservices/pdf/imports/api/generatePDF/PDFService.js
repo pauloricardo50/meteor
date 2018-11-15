@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import FormData from 'form-data';
 
+import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
 import pdf from 'html-pdf';
 import fs from 'fs';
+import queryString from 'query-string';
 
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
 import formatMessage from 'core/utils/intl';
@@ -50,6 +53,7 @@ class PDFService {
         component: LoanBankPDF,
         props: { loan: data, options },
         fileName,
+        pdfName: `${data.name} - ${type}`,
       };
     default:
       throw new Meteor.Error(`Invalid pdf type: ${type}`);
@@ -57,24 +61,162 @@ class PDFService {
   };
 
   getBase64String = (path) => {
-    try {
-      const file = fs.readFileSync(path);
-      return new Buffer(file).toString('base64');
-    } catch (exception) {
-      this.module.reject(exception);
-    }
+    const file = fs.readFileSync(path);
+    fs.unlink(path); // Async delete
+    const base64 = new Buffer(file).toString('base64');
+    return base64;
   };
 
-  getComponentAsHTML = (component, props) => {
-    try {
-      return ReactDOMServer.renderToStaticMarkup(component(props));
-    } catch (exception) {
-      this.module.reject(exception);
-    }
+  getComponentAsHTML = (component, props) =>
+    ReactDOMServer.renderToStaticMarkup(component(props));
+
+  streamToBase64 = (stream) => {
+    const chunks = [];
+    return new Promise((resolve, reject) => {
+      stream
+        .on('data', (chunk) => {
+          chunks.push(chunk);
+        })
+        .on('end', () => {
+          const blob = Buffer.concat(chunks).toString('base64');
+          resolve(blob);
+        })
+        .on('error', reject);
+    });
   };
 
-  generatePDF = (html, fileName) => {
-    try {
+  fetchPDF = (html, fileName, pdfName) =>
+    // this.pdfLayerFetch(html, fileName, pdfName);
+    this.pdfRaptorFetch(html, fileName, pdfName);
+
+  pdfRaptorFetch = (html, fileName, pdfName) => {
+    const API_KEY = 'GkjsAcqhD34P070MOF4I';
+    const body = {
+      user_credentials: API_KEY,
+      doc: {
+        document_content: html,
+        name: pdfName,
+        type: 'pdf',
+        test: true,
+        // help: true,
+        prince_options: {
+          media: 'screen',
+        },
+      },
+    };
+
+    return fetch('https://docraptor.com/docs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
+        const stream = res.body.pipe(dest);
+        return new Promise((resolve) => {
+          stream.on('finish', resolve);
+        });
+      })
+      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`));
+  };
+
+  pdfLayerFetch = (html, fileName, pdfName) => {
+    const API_KEY = '66e0248f5aec81111eaca537eee6d6df';
+    const params = {
+      access_key: API_KEY,
+      test: 1,
+      force: 1,
+      page_size: 'A4',
+      margin_top: 20,
+      margin_bottom: 20,
+      margin_left: 15,
+      margin_right: 15,
+    };
+    const url = `https://api.pdflayer.com/api/convert?${queryString.stringify(
+      params,
+      { encode: false, sort: false },
+    )}`;
+
+    const form = new FormData();
+    form.append('document_html', html);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: form.getHeaders(),
+      body: form,
+    })
+      .then((result) => {
+        const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
+        const stream = result.body.pipe(dest);
+        return new Promise((resolve) => {
+          stream.on('finish', resolve);
+        });
+      })
+      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`))
+      .then(result => result)
+      .catch((error) => {
+        console.log('pdflayer error', error);
+        throw error;
+      });
+  };
+
+  // fetchPDF = (html, fileName) => {
+  //   const API_KEY = '66e0248f5aec81111eaca537eee6d6df';
+  //   const params = {
+  //     access_key: API_KEY,
+  //     document_html: '<html><body><h1>Hello_my_dude</h1></body></html>',
+  //     // document_html: '<h1>Hello_my_dude</h1>',
+  //     // document_url: 'https://pdflayer.com/downloads/invoice.html',
+  //     test: 1,
+  //   };
+  //   const url = `https://api.pdflayer.com/api/convert?${queryString.stringify(
+  //     params,
+  //     { encode: false, sort: false },
+  //   )}`;
+  //   let fetchResult;
+  //   console.log('fetchResult', fetchResult);
+
+  //   return fetch(url, { method: 'POST' })
+  //     .then((result) => {
+  //       fetchResult = result;
+  //       return result;
+  //     })
+  //     .then(result => result.json())
+  //     .catch((error) => {
+  //       // When pdfs are valid, .json() fails
+  //       // so skip this error
+  //       console.log('wut?');
+  //     })
+  //     .then((json) => {
+  //       console.log('json', json);
+
+  //       if (!json.success) {
+  //         new Meteor.Error(json.error.code, json.error.info);
+  //       }
+  //     })
+  //     .then(() => this.streamToBase64(fetchResult.body))
+  //     .then((base64) => {
+  //       console.log('base64', base64);
+  //       return base64;
+  //     });
+  // .then((res) => {
+  //   const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
+  //   const stream = res.body.pipe(dest);
+  //   return new Promise((resolve) => {
+  //     stream.on('finish', resolve);
+  //   });
+  // })
+  // .then(() => this.getBase64String(`/tmp/${fileName}.pdf`))
+  // .catch((error) => {
+  //   console.log('pdflayer error', error);
+  //   throw error
+  // });
+  // };
+
+  useHtmlToPdf = (html, fileName, pdfName) =>
+    new Promise((resolve, reject) => {
       pdf
         .create(html, {
           format: 'a4',
@@ -87,29 +229,28 @@ class PDFService {
         })
         .toFile(`./tmp/${fileName}.pdf`, (error, response) => {
           if (error) {
-            this.module.reject(error);
+            reject(error);
           } else {
-            this.module.resolve({
+            resolve({
               fileName,
               base64: this.getBase64String(response.filename),
             });
             fs.unlink(response.filename);
           }
         });
-    } catch (exception) {
-      this.module.reject(exception);
-    }
-  };
+    });
 
-  handleGeneratePDF = ({ component, props, fileName }, promise, testing) => {
-    this.module = promise;
+  generatePDF = (html, fileName, pdfName) =>
+    this.fetchPDF(html, fileName, pdfName);
+
+  handleGeneratePDF = ({ component, props, fileName, pdfName }, testing) => {
     const html = this.getComponentAsHTML(component, props);
     if (testing) {
       fs.writeFileSync('/tmp/pdf_output.html', html);
     }
 
     if (html && fileName) {
-      this.generatePDF(html, fileName);
+      return this.generatePDF(html, fileName, pdfName);
     }
   };
 
@@ -135,8 +276,7 @@ class PDFService {
       return Promise.resolve(html);
     }
 
-    return new Promise((resolve, reject) =>
-      this.handleGeneratePDF(content, { resolve, reject }, testing));
+    return this.handleGeneratePDF(content, testing);
   };
 }
 

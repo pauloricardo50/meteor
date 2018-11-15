@@ -1,5 +1,4 @@
 @import './LoanTabs/ActionsTab/ActionsTab.scss';
-@import './LoanTabs/FormsTab/FormsTab.scss';
 @import './LoanTabs/OffersTab/OffersTab.scss';
 @import './LoanTabs/OverviewTab/OverviewTab.scss';
 
@@ -51,4 +50,14 @@
 
 .properties-tab .property-form {
   margin: 32px;
+}
+
+.single-borrower-tab {
+  display: flex;
+  flex-direction: column;
+
+  .recap {
+    align-self: center;
+    margin: 40px 0;
+  }
 }

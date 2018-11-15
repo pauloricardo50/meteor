@@ -163,6 +163,55 @@ describe('LoanCalculator', () => {
     });
 
     it('should amortize faster if borrowers are old');
+
+    it('gets amortization from the offer if it is defined', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(2000);
+    });
+
+    it('uses amortizationYears from the offer if defined', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5, amortizationYears: 30 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(1000);
+    });
+
+    it('resets amortizationGoal after calculating with offers', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(2000);
+
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(1000);
+    });
   });
 
   describe('getMonthly', () => {
@@ -200,6 +249,7 @@ describe('LoanCalculator', () => {
             wantedLoan: 960000,
             property: { value: 1200000 },
             offer: {
+              amortizationGoal: 0.5,
               [INTEREST_RATES.YEARS_10]: 0.02,
             },
             propertyWork: 0,
@@ -207,7 +257,7 @@ describe('LoanCalculator', () => {
           },
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
-      })).to.equal(2600);
+      })).to.equal(3600);
     });
   });
 

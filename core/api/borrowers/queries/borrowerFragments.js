@@ -14,7 +14,7 @@ export const baseBorrowerFragment = {
 export const loanBorrowerFragment = {
   ...baseBorrowerFragment,
   address1: 1,
-  additionalDocuments: 1,
+  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   adminValidation: 1,
   age: 1,
   bankFortune: 1,

@@ -92,7 +92,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       return {
         ...percentages,
-        percent: percentages.percent / percentages.count,
+        percent:
+          percentages.count === 0 ? 1 : percentages.percent / percentages.count,
       };
     }
 
@@ -121,7 +122,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowers,
         keys: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
       });
-      console.log('val', val);
       return val;
     }
 

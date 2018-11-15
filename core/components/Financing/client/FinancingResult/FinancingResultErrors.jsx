@@ -12,7 +12,7 @@ import {
 } from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
-import FinanceCalculator from '../FinancingCalculator';
+import FinanceCalculator, { getOffer } from '../FinancingCalculator';
 
 import { ROUNDING_AMOUNT } from '../FinancingOwnFunds/RequiredOwnFunds';
 import {
@@ -62,6 +62,15 @@ const errors = [
     type: ERROR_TYPES.WARNING,
   },
   {
+    id: 'invalidInterestRates',
+    func: data =>
+      FinanceCalculator.checkInterestsAndTranches({
+        tranches: data.structure.loanTranches,
+        interestRates: data.structure.offerId ? getOffer(data) : undefined,
+      }),
+    type: ERROR_TYPES.BREAKING,
+  },
+  {
     id: 'missingCash',
     func: (data) => {
       const { propertyWork, notaryFees } = data.structure;
@@ -87,6 +96,7 @@ const getError = props =>
 
 export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
   const error = getError(props);
+  console.log('error', error);
 
   if (error.type === ERROR_TYPES.BREAKING) {
     return (

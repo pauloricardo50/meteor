@@ -2,8 +2,8 @@
 import {
   E2E_USER_EMAIL,
   route,
-  generateTestsFromPagesConfig,
-} from '../../imports/core/cypress/testHelpers';
+  generateTestsForPages,
+} from '../../imports/core/cypress/utils';
 
 const pages = {
   public: {
@@ -88,5 +88,5 @@ describe('App Pages', () => {
       });
   });
 
-  generateTestsFromPagesConfig(pages, () => testData);
+  generateTestsForPages(pages, () => testData);
 });

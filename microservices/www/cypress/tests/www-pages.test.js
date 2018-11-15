@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import { route } from '../../imports/core/cypress/testHelpers';
+import { route } from '../../imports/core/cypress/utils';
 
 const pages = {
   Home: route('/', { shouldRender: '.home-page' }),

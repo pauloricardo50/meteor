@@ -45,12 +45,7 @@ const FinancingProject = (props: FinancingProjectProps) => (
       {
         Component: InputAndSlider,
         id: 'propertyValue',
-        calculatePlaceholder: (data) => {
-          console.log('calculatePlaceholder');
-          console.log('property', getProperty(data));
-
-          return getProperty(data).value;
-        },
+        calculatePlaceholder: data => getProperty(data).value,
         max: 5000000,
         allowUndefined: true,
         forceUndefined: true,

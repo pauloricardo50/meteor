@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons';
+import { faCity, faBriefcase } from '@fortawesome/pro-light-svg-icons';
 
 import {
   BORROWERS_COLLECTION,
@@ -12,6 +12,7 @@ import {
   USERS_COLLECTION,
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
 } from 'core/api/constants';
 
 import MainSideNavListItem from './MainSideNavListItem';
@@ -48,6 +49,14 @@ const items = [
     icon: 'check',
     to: '/tasks',
     collection: TASKS_COLLECTION,
+  },
+  {
+    label: 'Organisations',
+    icon: (
+      <FontAwesomeIcon icon={faBriefcase} className="admin-side-nav-icon" />
+    ),
+    to: '/organisations',
+    collection: ORGANISATIONS_COLLECTION,
   },
   { label: 'Dev', icon: 'developerMode', to: '/dev' },
 ];

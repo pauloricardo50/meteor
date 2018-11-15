@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { SecurityService } from '../..';
+import { Services } from '../../api-server';
 import LoanService from '../../loans/LoanService';
 import BorrowerService from '../../borrowers/BorrowerService';
 import PropertyService from '../../properties/PropertyService';
@@ -14,7 +15,11 @@ import {
   submitContactForm,
   addUserToDoc,
   throwDevError,
+  setAdditionalDoc,
+  migrateToLatest,
 } from '../methodDefinitions';
+
+import { migrate } from '../../migrations/server';
 
 getMixpanelAuthorization.setHandler(() => {
   SecurityService.checkCurrentUserIsAdmin();
@@ -36,12 +41,12 @@ addBorrower.setHandler((context, { loanId, borrower }) => {
 
   // A loan can't have more than 2 borrowers at the moment
   if (loan.borrowerIds.length >= 2) {
-    return false;
+    throw new Meteor.Error('Vous ne pouvez pas avoir plus de 2 emprunteurs');
   }
 
   const newBorrowerId = BorrowerService.insert({
     borrower,
-    userId: Meteor.userId(),
+    userId: loan.userId,
   });
 
   return LoanService.pushValue({
@@ -116,4 +121,19 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   }
 
   throw new Meteor.Error(400, 'Dev error!');
+});
+
+setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return Services[collection].setAdditionalDoc({
+    id,
+    additionalDocId,
+    requiredByAdmin,
+    label,
+  });
+});
+
+migrateToLatest.setHandler(({ userId }) => {
+  SecurityService.checkCurrentUserIsDev();
+  migrate();
 });

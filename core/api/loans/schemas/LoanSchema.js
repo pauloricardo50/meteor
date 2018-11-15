@@ -6,6 +6,7 @@ import {
   createdAt,
   updatedAt,
   contactsSchema,
+  additionalDocuments,
 } from '../../helpers/sharedSchemas';
 import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
@@ -40,10 +41,12 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
     defaultValue: LOAN_VERIFICATION_STATUS.NONE,
   },
+  enableOffers: { type: Boolean, optional: true, defaultValue: false },
   ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,
+  ...additionalDocuments([]),
 });
 
 export default LoanSchema;

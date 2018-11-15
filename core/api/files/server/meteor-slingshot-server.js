@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
-import { Loans, Properties, Borrowers, Promotions } from '../..';
 import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from '../../constants';
 import SecurityService from '../../security';
 import {
@@ -15,7 +15,6 @@ import {
   ALLOWED_FILE_TYPES,
 } from '../fileConstants';
 import uploadDirective from './uploadDirective';
-import { PROMOTIONS_COLLECTION } from '../../promotions/promotionConstants';
 
 Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
   maxSize: MAX_FILE_SIZE,

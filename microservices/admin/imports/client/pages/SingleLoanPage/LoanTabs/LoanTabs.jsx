@@ -13,7 +13,6 @@ import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
-import FormsTab from './FormsTab';
 import StructuresTab from './StructuresTab';
 import DevTab from './DevTab/loadable';
 import PromotionsTab from './PromotionsTab';
@@ -28,7 +27,6 @@ const getTabs = props =>
     { id: 'offers', Component: OffersTab },
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },
-    { id: 'forms', Component: FormsTab },
     { id: 'files', Component: FileTabs },
     { id: 'actions', Component: ActionsTab },
     props.currentUser.roles.includes(ROLES.DEV) && {

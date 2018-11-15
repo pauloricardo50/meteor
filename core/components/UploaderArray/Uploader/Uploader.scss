@@ -3,6 +3,7 @@
 .uploader {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 
   width: 100%;
   max-width: 600px;
@@ -73,4 +74,15 @@
 
 .additional-doc-deleter {
   margin-left: 8px;
+}
+
+.uploader-admin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 600px;
+
+  .uploader {
+    flex-grow: 1;
+  }
 }
