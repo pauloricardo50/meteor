@@ -47,6 +47,7 @@
     "react-bootstrap": "^0.32.4",
     "react-countup": "^4.0.0-alpha.6",
     "react-dom": "^16.5.2",
+    "react-flip-move": "^3.0.3",
     "react-helmet": "^5.2.0",
     "react-highcharts": "^16.0.2",
     "react-intl": "https://github.com/Floriferous/react-intl/tarball/build",

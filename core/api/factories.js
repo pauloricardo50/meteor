@@ -92,7 +92,7 @@ Factory.define('offer', Offers, {
   canton: 'GE',
   conditions: ['Do something'],
   maxAmount: 800000,
-  amortization: 10000,
+  amortizationGoal: 0.65,
 });
 
 Factory.define('promotion', Promotions, {

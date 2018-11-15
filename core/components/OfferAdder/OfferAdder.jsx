@@ -37,9 +37,25 @@ export const baseForm = [
     label: <T id="offer.maxAmount" />,
   },
   {
-    id: 'amortization',
+    id: 'fees',
     fieldType: FIELD_TYPES.MONEY,
-    label: <T id="offer.amortization" />,
+    label: <T id="offer.fees" />,
+  },
+  {
+    id: 'epotekFees',
+    fieldType: FIELD_TYPES.MONEY,
+    label: <T id="offer.epotekFees" />,
+  },
+  {
+    id: 'amortizationGoal',
+    fieldType: FIELD_TYPES.PERCENT,
+    label: <T id="offer.amortizationGoal" />,
+  },
+  {
+    id: 'amortizationYears',
+    fieldType: FIELD_TYPES.NUMBER,
+    label: <T id="offer.amortizationYears" />,
+    helperText: 'Automatique par défaut',
   },
   {
     id: 'conditions',

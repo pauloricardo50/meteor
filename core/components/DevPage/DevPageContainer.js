@@ -5,12 +5,7 @@ import {
   completeFakeBorrower,
   emptyFakeBorrower,
 } from '../../api/borrowers/fakes';
-import {
-  loanStep1,
-  loanStep2,
-  loanStep3,
-  emptyLoan,
-} from '../../api/loans/fakes';
+import { loanStep1, emptyLoan } from '../../api/loans/fakes';
 import { fakeProperty, emptyProperty } from '../../api/properties/fakes';
 import {
   borrowerInsert,
@@ -22,7 +17,18 @@ import {
 } from '../../api';
 import adminLoan from '../../api/loans/queries/adminLoan';
 
-const addLoanWithData = ({ borrowers, properties, loan: loanData, userId }) => {
+const addOfferPromise = loanId =>
+  new Promise((resolve, reject) =>
+    Meteor.call('createFakeOffer', { loanId }, (err, result) =>
+      (err ? reject(err) : resolve(result))));
+
+const addLoanWithData = ({
+  borrowers,
+  properties,
+  loan: loanData,
+  userId,
+  addOffers,
+}) => {
   let loanId;
   let loan;
   return adminLoanInsert
@@ -60,10 +66,21 @@ const addLoanWithData = ({ borrowers, properties, loan: loanData, userId }) => {
       propertyUpdate.run({
         propertyId: loan.properties[0]._id,
         object: properties[0],
-      }));
+      }))
+    .then(() => {
+      if (addOffers) {
+        return Promise.all([
+          addOfferPromise(loanId),
+          addOfferPromise(loanId),
+          addOfferPromise(loanId),
+          addOfferPromise(loanId),
+          addOfferPromise(loanId),
+        ]);
+      }
+    });
 };
 
-const addEmptyStep1Loan = userId => twoBorrowers =>
+const addEmptyLoan = userId => (twoBorrowers, addOffers) =>
   addLoanWithData({
     borrowers: twoBorrowers
       ? [emptyFakeBorrower, emptyFakeBorrower]
@@ -71,9 +88,10 @@ const addEmptyStep1Loan = userId => twoBorrowers =>
     properties: [emptyProperty],
     loan: emptyLoan,
     userId,
+    addOffers,
   });
 
-const addStep1Loan = userId => twoBorrowers =>
+const addLoanWithSomeData = userId => (twoBorrowers, addOffers) =>
   addLoanWithData({
     borrowers: twoBorrowers
       ? [completeFakeBorrower, completeFakeBorrower]
@@ -81,33 +99,12 @@ const addStep1Loan = userId => twoBorrowers =>
     properties: [fakeProperty],
     loan: loanStep1,
     userId,
-  });
-
-const addStep2Loan = userId => twoBorrowers =>
-  addLoanWithData({
-    borrowers: twoBorrowers
-      ? [completeFakeBorrower, completeFakeBorrower]
-      : [completeFakeBorrower],
-    properties: [fakeProperty],
-    loan: loanStep2,
-    userId,
-  });
-
-const addStep3Loan = userId => (twoBorrowers, completeFiles = true) =>
-  addLoanWithData({
-    borrowers: twoBorrowers
-      ? [completeFakeBorrower, completeFakeBorrower]
-      : [completeFakeBorrower],
-    properties: [fakeProperty],
-    loan: loanStep3(completeFiles),
-    userId,
+    addOffers,
   });
 
 const DevPageContainer = compose(withProps(({ currentUser: { _id: userId } }) => ({
-  addEmptyStep1Loan: addEmptyStep1Loan(userId),
-  addStep1Loan: addStep1Loan(userId),
-  addStep2Loan: addStep2Loan(userId),
-  addStep3Loan: addStep3Loan(userId),
+  addEmptyStep1Loan: addEmptyLoan(userId),
+  addLoanWithSomeData: addLoanWithSomeData(userId),
   purgeAndGenerateDatabase: (currentUserId, currentUserEmail) => {
     Meteor.call('purgeDatabase', currentUserId, (err) => {
       if (err) {

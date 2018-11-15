@@ -122,7 +122,7 @@ describe('LoanService', () => {
       const { id: id2, name: name2, ...structure2 } = loan.structures[1];
       expect(id1).to.not.equal(id2);
       expect(structure1).to.deep.equal(structure2);
-      expect(name2).to.equal('Structure 2');
+      expect(name2).to.equal('Plan financier 2');
     });
 
     it('returns the id of the new structure', () => {
@@ -164,7 +164,7 @@ describe('LoanService', () => {
       })._id;
 
       expect(() =>
-        LoanService.removeStructure({ loanId, structureId })).to.throw("Can't delete");
+        LoanService.removeStructure({ loanId, structureId })).to.throw('pouvez pas');
     });
 
     it('removes a duplicate structure', () => {
@@ -355,6 +355,16 @@ describe('LoanService', () => {
       expect(loan.structures[0].name).to.equal(name + 0);
       expect(loan.structures[1].name).to.equal(`${name + 0} - copie`);
       expect(loan.structures[2].name).to.equal(name + 1);
+    });
+
+    it('duplicates with a good name if no name is on the structure', () => {
+      loanId = Factory.create('loan', {
+        structures: [{ id: 'testId' }],
+        selectedStructure: 'testId',
+      })._id;
+      LoanService.duplicateStructure({ loanId, structureId: 'testId' });
+      loan = LoanService.getLoanById(loanId);
+      expect(loan.structures[1].name).to.equal('Plan financier - copie');
     });
   });
 

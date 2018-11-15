@@ -1,3 +1,5 @@
+const randInArray = array => array[Math.floor(Math.random() * array.length)];
+
 const getRandomCondition = () => {
   const conditions = [
     'Expertise additionelle requise',
@@ -11,7 +13,7 @@ const getRandomCondition = () => {
     '',
   ];
 
-  return conditions[Math.floor(Math.random() * conditions.length)];
+  return randInArray(conditions);
 };
 
 const getRandomCounterpart = () => {
@@ -30,7 +32,7 @@ const getRandomCounterpart = () => {
     '',
   ];
 
-  return counterparts[Math.floor(Math.random() * counterparts.length)];
+  return randInArray(counterparts);
 };
 
 const round = v => Math.round(v * 10000) / 10000;
@@ -49,7 +51,7 @@ export const getRandomOffer = ({ loan }) => {
     organisation: 'fake',
     loanId: loan._id,
     maxAmount: maxAmountLimited,
-    amortization: Math.round(loanWanted * 0.0125),
+    amortizationGoal: randInArray([0.65, 0.6, 0.5]),
     interestLibor: rate1,
     interest1: round(rate1 + rand(0.0004, 0.0016)),
     interest2: round(rate1 + rand(0.0016, 0.004)),

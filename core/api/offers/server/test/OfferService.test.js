@@ -16,14 +16,14 @@ describe('OfferService', () => {
 
   describe('update', () => {
     it('modifies an offer', () => {
-      offer = Factory.create('offer', { interest10: 1, loanId: 'loanId' });
+      offer = Factory.create('offer', { interest10: 0.05, loanId: 'loanId' });
       offerId = offer._id;
-      expect(offer.interest10).to.equal(1);
+      expect(offer.interest10).to.equal(0.05);
 
-      OfferService.update({ offerId, object: { interest10: 2 } });
+      OfferService.update({ offerId, object: { interest10: 0.1 } });
       offer = OfferService.getOfferById(offerId);
 
-      expect(offer.interest10).to.equal(2);
+      expect(offer.interest10).to.equal(0.1);
     });
   });
 
@@ -34,7 +34,7 @@ describe('OfferService', () => {
           loanId: 'loanId',
           organisation: 'UBS',
           maxAmount: 800000,
-          amortization: 10000,
+          amortizationGoal: 0.65,
         },
       });
       offer = OfferService.getOfferById(offerId);

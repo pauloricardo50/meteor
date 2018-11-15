@@ -27,7 +27,6 @@ const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
 
         if (queryParamsAreDefined) {
           const setFiles = (fileData) => {
-            console.log('fileData', fileData);
             this.props.setDocumentsLoaded(true);
             this.setState({ fileData });
           };

@@ -24,13 +24,11 @@ class DevPage extends Component {
     this.setState(prev => ({ [stateName]: value }));
 
   render() {
-    const { twoBorrowers, users } = this.state;
+    const { twoBorrowers, users, addOffers } = this.state;
     const {
       currentUser,
-      addEmptyStep1Loan,
-      addStep1Loan,
-      addStep2Loan,
-      addStep3Loan,
+      addEmptyLoan,
+      addLoanWithSomeData,
       purgeAndGenerateDatabase,
     } = this.props;
     const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
@@ -111,53 +109,36 @@ class DevPage extends Component {
           <hr className="mbt20" />
           <input
             type="checkbox"
-            name="vehicle"
+            name="twoBorrowers"
             value={twoBorrowers}
             onChange={() =>
               this.makeHandleChange('twoBorrowers')(!twoBorrowers)
             }
           />
           2 borrowers
+          <input
+            type="checkbox"
+            name="addOffers"
+            value={addOffers}
+            onChange={() => this.makeHandleChange('addOffers')(!addOffers)}
+          />
+          Add offers
           <br />
           <Button
             raised
             secondary
             className="mr20"
-            onClick={() => addEmptyStep1Loan(twoBorrowers)}
+            onClick={() => addEmptyLoan(twoBorrowers, addOffers)}
           >
-            Empty step 1 Loan
+            Empty loan
           </Button>
           <Button
             raised
             secondary
             className="mr20"
-            onClick={() => addStep1Loan(twoBorrowers)}
+            onClick={() => addLoanWithSomeData(twoBorrowers, addOffers)}
           >
-            step 1 Loan
-          </Button>
-          <Button
-            raised
-            secondary
-            className="mr20"
-            onClick={() => addStep2Loan(twoBorrowers)}
-          >
-            step 2 Loan
-          </Button>
-          <Button
-            raised
-            secondary
-            className="mr20"
-            onClick={() => addStep3Loan(twoBorrowers)}
-          >
-            step 3 Loan
-          </Button>
-          <Button
-            raised
-            secondary
-            className="mr20"
-            onClick={() => addStep3Loan(twoBorrowers, false)}
-          >
-            step 3 Loan, few files
+            Loan with some data
           </Button>
           <hr className="mbt20" />
           <Tooltip title="Insert task related to a random borrower">
