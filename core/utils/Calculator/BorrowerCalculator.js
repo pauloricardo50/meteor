@@ -122,7 +122,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowers,
         keys: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
       });
-      console.log('val', val);
       return val;
     }
 
