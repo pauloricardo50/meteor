@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -5,10 +6,10 @@ import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton';
 
 import FileStatusIcon from './FileStatusIcon';
-import AdditionalDocDeleter from './AdditionalDocDeleter';
+import AdditionalDocModifier from './AdditionalDocModifier';
 
 const Title = ({
-  fileMeta: { id, label, isAdditionalDoc, required, noTooltips, tooltipSuffix },
+  fileMeta: { id, label, noTooltips, tooltipSuffix, required, requiredByAdmin },
   doubleTooltip,
   currentValue,
   displayFull,
@@ -44,14 +45,14 @@ const Title = ({
             values={{ count: (currentValue && currentValue.length) || 0 }}
           />
         </h5>
-        <AdditionalDocDeleter
-          id={id}
-          isAdditionalDoc={isAdditionalDoc}
-          label={label}
+      </div>
+      {Meteor.microservice === 'admin' && (
+        <AdditionalDocModifier
           collection={collection}
           docId={docId}
+          additionalDoc={{ id, label, requiredByAdmin }}
         />
-      </div>
+      )}
 
       <IconButton
         type={displayFull ? 'up' : 'down'}

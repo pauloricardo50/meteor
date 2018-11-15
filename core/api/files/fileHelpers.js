@@ -2,8 +2,7 @@
 import { getPercent } from '../../utils/general';
 import { FILE_STATUS } from './fileConstants';
 
-const documentIsRequired = (required, condition) =>
-  required !== false && condition !== false;
+const documentIsRequired = required => required !== false;
 
 const getDocumentsToCount = (
   documentArray: Array<Object>,
@@ -16,8 +15,8 @@ const getDocumentsToCount = (
   const { documents } = doc;
 
   return documentArray.reduce(
-    (documentsToCount, { required, condition, id: documentId }) => {
-      if (!documentIsRequired(required, condition)) {
+    (documentsToCount, { required, id: documentId }) => {
+      if (!documentIsRequired(required)) {
         // Don't count this document
         return documentsToCount;
       }
@@ -63,8 +62,8 @@ const documentExists = (doc, id) =>
 
 export const getMissingDocumentIds = ({ fileArray, doc }) => {
   const ids = fileArray
-    .filter(({ required, condition, id }) =>
-      documentIsRequired(required, condition) && !documentExists(doc, id))
+    .filter(({ required, id }) =>
+      documentIsRequired(required) && !documentExists(doc, id))
     .map(({ id }) => id);
   return ids;
 };

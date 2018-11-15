@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import Calculator from '..';
 import { BORROWER_DOCUMENTS, STEPS, GENDER } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
+import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
 
 describe('BorrowerCalculator', () => {
   describe('getArrayValues', () => {
@@ -99,8 +100,13 @@ describe('BorrowerCalculator', () => {
     it('should be 0% for a new borrower', () => {
       expect(Calculator.getBorrowerCompletion({
         loan: {
-          borrowers: [{ documents: {}, _id: 'docId' }],
-          logic: { step: STEPS.PREPARATION },
+          borrowers: [
+            {
+              documents: {},
+              _id: 'docId',
+              additionalDocuments: initialDocuments,
+            },
+          ],
         },
       })).to.equal(0);
     });
@@ -115,9 +121,9 @@ describe('BorrowerCalculator', () => {
               documents: {},
               logic: {},
               _id: 'docId',
+              additionalDocuments: initialDocuments,
             },
           ],
-          logic: { step: STEPS.PREPARATION },
         },
       })).to.be.within(0.01, 0.1);
     });
@@ -130,11 +136,11 @@ describe('BorrowerCalculator', () => {
               documents: { [DOCUMENTS.IDENTITY]: [{}] },
               logic: {},
               _id: 'docId',
+              additionalDocuments: initialDocuments,
             },
           ],
-          logic: { step: STEPS.PREPARATION },
         },
-      })).to.equal(0.1);
+      })).to.be.within(0.01, 0.1);
     });
 
     it('should count files and info', () => {
@@ -147,11 +153,11 @@ describe('BorrowerCalculator', () => {
               documents: { [DOCUMENTS.IDENTITY]: [{}] },
               logic: {},
               _id: 'borrowerId',
+              additionalDocuments: initialDocuments,
             },
           ],
-          logic: { step: STEPS.PREPARATION },
         },
-      })).to.be.within(0.165, 0.167);
+      })).to.be.within(0.13, 0.14);
     });
   });
 
@@ -159,17 +165,21 @@ describe('BorrowerCalculator', () => {
     it('returns 0 when no file is present', () => {
       expect(Calculator.getBorrowerFilesProgress({
         loan: {
-          borrowers: [{ documents: {}, _id: 'borrowerId' }],
-          logic: { step: STEPS.PREPARATION },
+          borrowers: [
+            {
+              documents: {},
+              _id: 'borrowerId',
+              additionalDocuments: initialDocuments,
+            },
+          ],
         },
-      })).to.deep.equal({ percent: 0, count: 5 });
+      })).to.deep.equal({ percent: 0, count: 7 });
     });
 
     it('returns 0 when no documents are present', () => {
       expect(Calculator.getBorrowerFilesProgress({
         loan: {
           borrowers: [{}],
-          logic: { step: STEPS.PREPARATION },
         },
       })).to.deep.equal({ percent: 0, count: 1 });
     });
@@ -181,11 +191,11 @@ describe('BorrowerCalculator', () => {
             {
               documents: { [DOCUMENTS.IDENTITY]: [{}] },
               _id: 'borrowerId',
+              additionalDocuments: initialDocuments,
             },
           ],
-          logic: { step: STEPS.PREPARATION },
         },
-      })).to.deep.equal({ percent: 0.2, count: 5 });
+      })).to.deep.equal({ percent: 1 / 7, count: 7 });
     });
   });
 
@@ -252,16 +262,10 @@ describe('BorrowerCalculator', () => {
     it('returns all missing ids for an empty borrower', () => {
       expect(Calculator.getMissingBorrowerDocuments({
         loan: {
-          borrowers: [{ _id: 'borrowerId' }],
+          borrowers: [{ _id: 'borrowerId', additionalDocuments: initialDocuments }],
           logic: { step: STEPS.PREPARATION },
         },
-      })).to.deep.equal([
-        BORROWER_DOCUMENTS.IDENTITY,
-        BORROWER_DOCUMENTS.RESIDENCY_PERMIT,
-        BORROWER_DOCUMENTS.TAXES,
-        BORROWER_DOCUMENTS.SALARY_CERTIFICATE,
-        BORROWER_DOCUMENTS.OTHER_INCOME_JUSTIFICATION,
-      ]);
+      })).to.deep.equal(initialDocuments.map(({id}) => id));
     });
   });
 

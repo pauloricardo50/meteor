@@ -44,7 +44,7 @@ export const propertyPromotionFragment = {
 
 export const fullPropertyFragment = {
   ...propertySummaryFragment,
-  additionalDocuments: 1,
+  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   adminValidation: 1,
   areaNorm: 1,
   category: 1,

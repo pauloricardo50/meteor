@@ -76,6 +76,17 @@ export const throwDevError = new Method({
   },
 });
 
+export const setAdditionalDoc = new Method({
+  name: 'setAdditionalDoc',
+  params: {
+    collection: String,
+    id: String,
+    additionalDocId: String,
+    requiredByAdmin: Boolean,
+    label: Match.Optional(String),
+  },
+});
+
 export const migrateToLatest = new Method({
   name: 'migrateToLatest',
 });
