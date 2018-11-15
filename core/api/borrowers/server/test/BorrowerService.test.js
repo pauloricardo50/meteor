@@ -8,6 +8,21 @@ import BorrowerService from '../../BorrowerService';
 import { initialDocuments } from '../../borrowersAdditionalDocuments';
 import * as borrowerConstants from '../../borrowerConstants';
 
+const checkDocuments = ({
+  additionalDocuments,
+  expectedDocuments,
+  shouldCheckRequiredByAdmin = true,
+}) => {
+  expect(additionalDocuments.length).to.equal(expectedDocuments.length);
+  expect(expectedDocuments.every(doc =>
+    additionalDocuments.find(({ id, requiredByAdmin }) =>
+      id === doc.id
+          && shouldCheckRequiredByAdmin
+          && requiredByAdmin === doc.requiredByAdmin))).to.exist;
+  expect(additionalDocuments.find(doc =>
+    expectedDocuments.every(({ id }) => id !== doc.id))).to.not.exist;
+};
+
 describe('BorrowerService', () => {
   let borrower;
   let user;
@@ -19,7 +34,6 @@ describe('BorrowerService', () => {
 
   describe('update', () => {
     it('updates', () => {
-      // Test code
       expect(borrower.firstName).to.not.equal('bob');
 
       BorrowerService._update({
@@ -45,37 +59,20 @@ describe('BorrowerService', () => {
         object: {
           isSwiss: false,
           bonusExists: true,
-          insurance2: [
-            {
-              description: 'insurance2',
-              value: 123,
-            },
-          ],
-          bank3A: [
-            {
-              description: 'bank3a',
-              value: 123,
-            },
-          ],
+          insurance2: [{ description: 'insurance2', value: 123 }],
+          bank3A: [{ description: 'bank3a', value: 123 }],
           insurance3A: [],
           insurance3B: [],
           expenses: [
             {
-              description: borrowerConstants.EXPENSES.MORTGAGE_LOAN,
+              description: borrowerConstants.EXPENSES.PERSONAL_LOAN,
               value: 123,
             },
           ],
-          otherFortune: [
-            {
-              description: 'otherFortune',
-              value: 123,
-            },
-          ],
+          realEstate: [{ value: 456, loan: 123 }],
+          otherFortune: [{ description: 'otherFortune', value: 123 }],
           otherIncome: [
-            {
-              description: borrowerConstants.OTHER_INCOME.WELFARE,
-              value: 123,
-            },
+            { description: borrowerConstants.OTHER_INCOME.WELFARE, value: 123 },
           ],
         },
       });
@@ -93,11 +90,11 @@ describe('BorrowerService', () => {
         { id: DOCUMENTS.OTHER_INCOME_JUSTIFICATION },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id }) => id === doc.id))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+        shouldCheckRequiredByAdmin: false,
+      });
     });
 
     it('does not add conditional documents when condition is not met', () => {
@@ -106,23 +103,10 @@ describe('BorrowerService', () => {
         object: {
           isSwiss: false,
           bonusExists: true,
-          insurance2: [
-            {
-              description: 'insurance2',
-              value: 123,
-            },
-          ],
-          otherFortune: [
-            {
-              description: 'otherFortune',
-              value: 123,
-            },
-          ],
+          insurance2: [{ description: 'insurance2', value: 123 }],
+          otherFortune: [{ description: 'otherFortune', value: 123 }],
           otherIncome: [
-            {
-              description: borrowerConstants.OTHER_INCOME.WELFARE,
-              value: 123,
-            },
+            { description: borrowerConstants.OTHER_INCOME.WELFARE, value: 123 },
           ],
         },
       });
@@ -137,11 +121,11 @@ describe('BorrowerService', () => {
         { id: DOCUMENTS.OTHER_INCOME_JUSTIFICATION },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id }) => id === doc.id))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+        shouldCheckRequiredByAdmin: false,
+      });
     });
 
     it('removes conditional documents when condition is not met anymore', () => {
@@ -150,18 +134,8 @@ describe('BorrowerService', () => {
         object: {
           isSwiss: false,
           bonusExists: true,
-          insurance2: [
-            {
-              description: 'insurance2',
-              value: 123,
-            },
-          ],
-          bank3A: [
-            {
-              description: 'bank3a',
-              value: 123,
-            },
-          ],
+          insurance2: [{ description: 'insurance2', value: 123 }],
+          bank3A: [{ description: 'bank3a', value: 123 }],
           insurance3A: [],
           insurance3B: [],
           expenses: [
@@ -170,17 +144,9 @@ describe('BorrowerService', () => {
               value: 123,
             },
           ],
-          otherFortune: [
-            {
-              description: 'otherFortune',
-              value: 123,
-            },
-          ],
+          otherFortune: [{ description: 'otherFortune', value: 123 }],
           otherIncome: [
-            {
-              description: borrowerConstants.OTHER_INCOME.WELFARE,
-              value: 123,
-            },
+            { description: borrowerConstants.OTHER_INCOME.WELFARE, value: 123 },
           ],
         },
       });
@@ -191,23 +157,10 @@ describe('BorrowerService', () => {
           bonusExists: true,
           bank3A: [],
           expenses: [],
-          insurance2: [
-            {
-              description: 'insurance2',
-              value: 123,
-            },
-          ],
-          otherFortune: [
-            {
-              description: 'otherFortune',
-              value: 123,
-            },
-          ],
+          insurance2: [{ description: 'insurance2', value: 123 }],
+          otherFortune: [{ description: 'otherFortune', value: 123 }],
           otherIncome: [
-            {
-              description: borrowerConstants.OTHER_INCOME.WELFARE,
-              value: 123,
-            },
+            { description: borrowerConstants.OTHER_INCOME.WELFARE, value: 123 },
           ],
         },
       });
@@ -222,11 +175,11 @@ describe('BorrowerService', () => {
         { id: DOCUMENTS.OTHER_INCOME_JUSTIFICATION },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id }) => id === doc.id))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+        shouldCheckRequiredByAdmin: false,
+      });
     });
   });
 
@@ -244,12 +197,10 @@ describe('BorrowerService', () => {
         { id: 'testDoc', requiredByAdmin: true },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id, requiredByAdmin }) =>
-          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+      });
     });
 
     it('adds additional admin not required additional doc', () => {
@@ -265,12 +216,10 @@ describe('BorrowerService', () => {
         { id: 'testDoc', requiredByAdmin: false },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id, requiredByAdmin }) =>
-          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+      });
     });
 
     it('updates additional doc to be required by admin', () => {
@@ -286,12 +235,10 @@ describe('BorrowerService', () => {
         { id: DOCUMENTS.IDENTITY, requiredByAdmin: true },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id, requiredByAdmin }) =>
-          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+      });
     });
 
     it('updates additional doc to not be required by admin', () => {
@@ -302,17 +249,15 @@ describe('BorrowerService', () => {
       });
       const { additionalDocuments } = BorrowerService.get(borrower._id);
 
-       const expectedDocuments = [
+      const expectedDocuments = [
         ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
         { id: DOCUMENTS.IDENTITY, requiredByAdmin: false },
       ];
 
-      expect(additionalDocuments.length).to.equal(expectedDocuments.length);
-      expect(expectedDocuments.every(doc =>
-        additionalDocuments.some(({ id, requiredByAdmin }) =>
-          id === doc.id && requiredByAdmin === doc.requiredByAdmin))).to.equal(true);
-      expect(additionalDocuments.some(doc =>
-        expectedDocuments.every(({ id }) => id !== doc.id))).to.equal(false);
+      checkDocuments({
+        additionalDocuments,
+        expectedDocuments,
+      });
     });
 
     it('adds additional doc with label', () => {
