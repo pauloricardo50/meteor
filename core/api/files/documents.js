@@ -12,6 +12,15 @@ import {
   LOAN_DOCUMENTS,
 } from './fileConstants';
 
+export const documentHasTooltip = documentId =>
+  !DOCUMENTS_WITH_TOOLTIP.some(id => documentId === id);
+
+const makeAllObjectDocuments = documents =>
+  Object.values(documents).map(id => ({
+    id,
+    noTooltips: documentHasTooltip(id),
+  }));
+
 export const allDocuments = ({ doc, collection }) => {
   const s3Documents = doc.documents
     ? Object.keys(doc.documents).map(key => ({ id: key }))
@@ -19,38 +28,33 @@ export const allDocuments = ({ doc, collection }) => {
   let documents = [];
   switch (collection) {
   case BORROWERS_COLLECTION:
-    documents = Object.values(BORROWER_DOCUMENTS).map(id => ({
-      id,
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    }));
+    documents = makeAllObjectDocuments(BORROWER_DOCUMENTS);
     break;
   case PROPERTIES_COLLECTION:
-    documents = Object.values(PROPERTY_DOCUMENTS).map(id => ({
-      id,
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    }));
+    documents = makeAllObjectDocuments(PROPERTY_DOCUMENTS);
     break;
   case LOANS_COLLECTION:
-    documents = Object.values(LOAN_DOCUMENTS).map(id => ({
-      id,
-      noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    }));
+    documents = makeAllObjectDocuments(LOAN_DOCUMENTS);
     break;
   default:
     break;
   }
 
+  const otherAdditionalDocuments = documents.filter(({ id }) => !doc.additionalDocuments.some(document => id === document.id));
+  const legacyCustomDocuments = s3Documents.filter(({ id }) =>
+    !doc.additionalDocuments.some(document => id === document.id)
+      && !documents.some(document => id === document.id));
+
   return doc.additionalDocuments && doc.additionalDocuments.length > 0
     ? [
       ...doc.additionalDocuments,
-      ...documents.filter(({ id }) =>
-        !doc.additionalDocuments.some(document => id === document.id)),
-      ...s3Documents.filter(({ id }) =>
-        !doc.additionalDocuments.some(document => id === document.id)
-            && !documents.some(document => id === document.id)),
+      ...otherAdditionalDocuments,
+      ...legacyCustomDocuments,
     ]
     : documents;
 };
+
+const requiredByAdminOnly = ({ requiredByAdmin }) => requiredByAdmin !== false;
 
 const makeGetDocuments = collection => ({ loan, id }, ...args) => {
   const isLoans = collection === LOANS_COLLECTION;
@@ -63,11 +67,11 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
   return [
     ...(doc && doc.additionalDocuments && doc.additionalDocuments.length > 0
       ? doc.additionalDocuments
-        .filter(additionalDoc => additionalDoc.requiredByAdmin !== false)
+        .filter(requiredByAdminOnly)
         .map(additionalDoc => ({
           ...additionalDoc,
           required: true,
-          noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === additionalDoc.id),
+          noTooltips: documentHasTooltip(additionalDoc.id),
         }))
       : []),
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
