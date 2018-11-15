@@ -2,12 +2,10 @@ import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
 import { DOCUMENTS, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
 
-const getFileMeta = ({ doc, id }) =>
-  doc.additionalDocuments
-  && doc.additionalDocuments.length > 0
-  && doc.additionalDocuments.find(document => document.id === id) && {
+const getFileMeta = ({ doc: { additionalDocuments = [] }, id }) =>
+  additionalDocuments.find(document => document.id === id) && {
     noTooltips: !DOCUMENTS_WITH_TOOLTIP.some(documentId => documentId === id),
-    ...doc.additionalDocuments.find(document => document.id === id),
+    ...additionalDocuments.find(document => document.id === id),
   };
 
 const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
