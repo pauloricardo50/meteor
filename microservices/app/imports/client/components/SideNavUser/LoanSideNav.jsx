@@ -88,7 +88,7 @@ export const LoanSideNav = ({
               borrowerId: loan.borrowers[0]._id,
             }),
           }))
-      .map(({ Component, to, id, icon, percent, ...otherProps }) => {
+      .map(({ Component, to, id, icon, percent, condition, ...otherProps }) => {
         if (Component) {
           return <Component key={id} />;
         }
