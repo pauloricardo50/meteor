@@ -20,7 +20,7 @@ const offerEnhancer = withProps(props => ({
     rates: pick(offer, Object.values(INTEREST_RATES)),
     averagedRate: FinancingCalculator.getAveragedInterestRate({
       tranches: props.structure.loanTranches,
-      rates: offer,
+      interestRates: offer,
     }),
     hasInvalidInterestRates: FinancingCalculator.checkInterestsAndTranches({
       tranches: props.structure.loanTranches,

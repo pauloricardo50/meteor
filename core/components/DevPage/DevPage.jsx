@@ -109,7 +109,7 @@ class DevPage extends Component {
           <hr className="mbt20" />
           <input
             type="checkbox"
-            name="vehicle"
+            name="twoBorrowers"
             value={twoBorrowers}
             onChange={() =>
               this.makeHandleChange('twoBorrowers')(!twoBorrowers)
@@ -118,7 +118,7 @@ class DevPage extends Component {
           2 borrowers
           <input
             type="checkbox"
-            name="vehicle"
+            name="addOffers"
             value={addOffers}
             onChange={() => this.makeHandleChange('addOffers')(!addOffers)}
           />

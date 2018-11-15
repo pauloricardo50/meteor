@@ -362,9 +362,9 @@ export class FinanceCalculator {
     return Math.floor(Math.min(incomeLimited1, incomeLimited2));
   };
 
-  getAveragedInterestRate({ tranches = [], rates = {} }) {
+  getAveragedInterestRate({ tranches = [], interestRates = {} }) {
     return tranches.reduce(
-      (totalRate, { type, value }) => totalRate + rates[type] * value,
+      (totalRate, { type, value }) => totalRate + interestRates[type] * value,
       0,
     );
   }

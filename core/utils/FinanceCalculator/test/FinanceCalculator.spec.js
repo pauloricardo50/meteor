@@ -252,7 +252,7 @@ describe('FinanceCalculator', () => {
     it('returns the same value if only one rate at 100%', () => {
       expect(calc.getAveragedInterestRate({
         tranches: [{ type: 'rateType', value: 1 }],
-        rates: { rateType: 0.01 },
+        interestRates: { rateType: 0.01 },
       })).to.equal(0.01);
     });
 
@@ -262,7 +262,7 @@ describe('FinanceCalculator', () => {
           { type: 'rateType1', value: 0.5 },
           { type: 'rateType2', value: 0.5 },
         ],
-        rates: { rateType1: 0.01, rateType2: 0.02 },
+        interestRates: { rateType1: 0.01, rateType2: 0.02 },
       })).to.equal(0.015);
     });
   });

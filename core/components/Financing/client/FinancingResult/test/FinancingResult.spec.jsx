@@ -18,6 +18,7 @@ const expectResult = (component, name, value) => {
 
   if (!Number.isInteger(value)) {
     // On our test browsers, the comma is represented either as a , or .
+    // due to the web's "intl" API
     expect(val.contains(`${value}`) || val.contains(`${value}`.replace('.', ','))).to.equal(true);
   } else {
     expect(val.contains(`${value}`)).to.equal(true);

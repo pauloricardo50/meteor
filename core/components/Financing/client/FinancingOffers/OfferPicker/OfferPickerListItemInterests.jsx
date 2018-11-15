@@ -30,7 +30,7 @@ const OfferPickerListItemInterests = ({
 
   if (displayDetail) {
     return (
-      <div className="flex wrap">
+      <div className="flex-row wrap">
         {loanTranches.map(({ type }) => (
           <div className="flex-col single-rate" key={type}>
             <OfferPickerListItemValue
