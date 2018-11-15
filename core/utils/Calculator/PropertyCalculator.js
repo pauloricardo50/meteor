@@ -67,7 +67,6 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getPropertyFilesProgress({ loan, property }) {
       const { structure } = loan;
       const propertyToCalculateWith = property || structure.property;
-      console.log('propertyToCalculateWith', propertyToCalculateWith);
 
       if (!propertyToCalculateWith) {
         return 0;
