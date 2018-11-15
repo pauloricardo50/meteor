@@ -60,12 +60,8 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
 
   const doc = (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
 
-  // const doc = !isLoans
-  //   ? Mongo.Collection.get(collection).findOne({ _id: id })
-  //   : loan;
-
   return [
-    ...(doc && doc.additionalDocuments
+    ...(doc && doc.additionalDocuments && doc.additionalDocuments.length > 0
       ? doc.additionalDocuments
         .filter(additionalDoc => additionalDoc.requiredByAdmin !== false)
         .map(additionalDoc => ({

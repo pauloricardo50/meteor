@@ -45,7 +45,7 @@ const LoanSchema = new SimpleSchema({
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,
-  ...additionalDocuments,
+  ...additionalDocuments([]),
 });
 
 export default LoanSchema;
