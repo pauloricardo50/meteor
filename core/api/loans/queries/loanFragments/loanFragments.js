@@ -42,5 +42,7 @@ export const loanBaseFragment = {
     value: 1,
   },
   hasPromotion: 1,
+  mortgageNotes: 1,
+  previousLoanTranches: 1,
   // $options: { sort: { createdAt: 1 } },
 };

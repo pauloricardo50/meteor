@@ -15,7 +15,8 @@ export const LOAN_STATUS = {
 export const PURCHASE_TYPE = {
   ACQUISITION: 'ACQUISITION',
   REFINANCING: 'REFINANCING',
-  CONSTRUCTION: 'CONSTRUCTION',
+  // TODO: Figure out what needs to be changed for this
+  // CONSTRUCTION: 'CONSTRUCTION',
 };
 
 export const CANTONS = {

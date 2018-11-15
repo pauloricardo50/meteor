@@ -23,7 +23,7 @@ export const loanTranchesSchema = (withDefaultValue = true) => ({
     type: Number,
     optional: true,
     min: 0,
-    max: 1,
+    max: 1000000000, // Can be specified as percentages or monetary amounts
   },
   'loanTranches.$.dueDate': {
     type: String,

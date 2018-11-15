@@ -1,4 +1,12 @@
 {
+  "Forms.previousLender": "Prêteur actuel",
+  "Forms.previousLoanTranches": "Tranches de taux actuelles",
+  "Forms.previousLoanTranches.value": "Montant de la tranche",
+  "Forms.previousLoanTranches.type": "Durée",
+  "Forms.previousLoanTranches.dueDate": "Échéance",
+  "Forms.mortgageNotes": "Cédules hypothécaires",
+  "Forms.mortgageNotes.value": "Montant de la cédule",
+  "LoanTabs.refinancing": "Refinancement",
   "RefinancingPage.title": "Refinancement",
   "Forms.purchaseType": "Type de prêt",
   "Forms.purchaseType.CONSTRUCTION": "Construction",
