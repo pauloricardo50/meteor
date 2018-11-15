@@ -745,7 +745,7 @@
   "Financing.pledgedAmount": "Nantissement",
   "Financing.propertyCost": "Charges mensuelles",
   "Financing.propertyId": "Bien immobilier",
-  "Financing.propertyValue": "Prix d'achat",
+  "Financing.propertyValue": "{purchaseType, select, REFINANCING {Valeur du bien} other {Prix d'achat}}",
   "Financing.propertyWork": "Travaux à plus-value",
   "Financing.remainingCash": "Cash et titres restants",
   "Financing.remainingInsurance2": "2ème pilier restant",
