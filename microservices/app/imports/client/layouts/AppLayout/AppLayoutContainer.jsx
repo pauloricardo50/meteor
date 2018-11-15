@@ -13,6 +13,7 @@ import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
 } from 'core/utils/redirection';
+import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
 
 const WITHOUT_LOAN = [
   '/profile',
@@ -77,4 +78,7 @@ export default compose(
   mergeFilesIntoLoanStructure(loanFiles, ({ loanId }) => ({ loanId }), 'loan'),
   withRouter,
   withRedirect,
+  withTranslationContext(({ loan = {} }) => ({
+    purchaseType: loan.purchaseType,
+  })),
 );

@@ -4,16 +4,12 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import { toMoney } from 'core/utils/conversionFunctions';
 import T from 'core/components/Translation';
-import { PURCHASE_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import DashboardRecapSum from './DashboardRecapSum';
 
 const getRecapArray = loan => [
   {
-    label:
-      loan.purchaseType === PURCHASE_TYPE.ACQUISITION
-        ? 'Recap.purchasePrice'
-        : 'Recap.propertyValue',
+    label: 'Forms.value',
     value: toMoney(Calculator.selectPropertyValue({ loan })),
   },
   {
