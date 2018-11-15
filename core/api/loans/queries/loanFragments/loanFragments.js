@@ -4,6 +4,7 @@ export const loanBaseFragment = {
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   createdAt: 1,
+  enableOffers: 1,
   logic: 1,
   general: 1,
   verificationStatus: 1,

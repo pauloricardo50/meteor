@@ -45,7 +45,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     return {
       link: `/offers/${docId}`,
       icon: 'monetizationOn',
-      text: data.organization,
+      text: data.organisation,
     };
   case PROMOTIONS_COLLECTION:
     return {

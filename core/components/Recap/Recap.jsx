@@ -502,9 +502,9 @@ const arraySwitch = (props) => {
 const Recap = (props) => {
   const array = props.array || arraySwitch(props);
   return (
-    <article className="validator recap">
+    <div className="validator recap">
       <RecapSimple {...props} array={array} />
-    </article>
+    </div>
   );
 };
 

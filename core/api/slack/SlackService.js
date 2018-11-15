@@ -167,6 +167,12 @@ export class SlackService {
   };
 
   notifyOfUpload = (currentUser, fileName) => {
+    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+
+    if (!isUser) {
+      return false;
+    }
+
     const { name, loans } = currentUser;
     const loanNameEnd = loans.length === 1 ? ` pour ${loans[0].name}.` : '.';
     const title = `${name} a uploadé un nouveau document${loanNameEnd}`;

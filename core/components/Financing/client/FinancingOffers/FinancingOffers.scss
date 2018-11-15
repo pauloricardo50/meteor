@@ -1,0 +1,90 @@
+.financing-offers .structure {
+  max-height: 800px;
+  overflow: auto;
+}
+
+.financing-offers-header-image {
+  display: flex;
+
+  img {
+    width: 120px;
+  }
+}
+
+.offer-picker-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    margin-bottom: 16px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &.selected {
+      border: 2px solid $success;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    img {
+      width: 100px;
+      align-self: center;
+      margin-bottom: 8px;
+    }
+
+    p,
+    h5 {
+      margin: 0;
+    }
+
+    h5 {
+      margin-bottom: 8px;
+    }
+
+    .single-rate {
+      margin-right: 8px;
+    }
+  }
+}
+
+.offer-picker-dialog {
+  display: flex;
+  flex-direction: column;
+
+  p,
+  ul {
+    margin: 0;
+  }
+
+  img {
+    align-self: center;
+    margin-bottom: 40px;
+    width: 200px;
+  }
+
+  .rates {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+      margin-right: 16px;
+
+      p {
+        margin: 0;
+        margin-top: 8px;
+      }
+
+      h4 {
+        margin: 0;
+      }
+    }
+  }
+}

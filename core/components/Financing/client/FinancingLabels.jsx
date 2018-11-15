@@ -33,8 +33,8 @@ const FinancingLabels = ({
   ...data
 }: FinancingLabelsProps) => (
   <div className={cx('financing-structures-labels', className)}>
-    {config.filter(makeFilterConfig(data)).map(configItem => (
-      <FinancingLabel id={configItem.id} key={configItem.id}>
+    {config.filter(makeFilterConfig(data)).map((configItem, index) => (
+      <FinancingLabel id={configItem.id} key={configItem.id || index}>
         {renderLabel(configItem)}
       </FinancingLabel>
     ))}

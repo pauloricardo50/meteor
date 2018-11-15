@@ -11,7 +11,7 @@ import cx from 'classnames';
 import T from '../../../Translation';
 import type { structureType } from '../../../../api/types';
 import FinancingLabels from '../FinancingLabels';
-import { makeRenderDetail } from './financingSectionHelpers';
+import { makeRenderDetail, makeRenderSummary } from './financingSectionHelpers';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
 
 type configArray = Array<{
@@ -58,11 +58,12 @@ const FinancingSection = ({
   classes: { container, entered, content, expanded: expandedClass },
   expanded,
   changeExpanded,
+  noWrapper,
   ...data
 }: FinancingSectionProps) => {
   const { structures } = data;
-  const renderDetail = makeRenderDetail(detailConfig);
-  const renderSummary = makeRenderDetail(summaryConfig);
+  const renderSummary = makeRenderSummary(summaryConfig);
+  const renderDetail = makeRenderDetail(detailConfig, noWrapper);
   return (
     <ScrollSyncPane>
       <ExpansionPanel
@@ -84,22 +85,12 @@ const FinancingSection = ({
           </div>
           <FinancingLabels config={summaryConfig} className="summary-labels" />
 
-          {structures.map((structure, index) => (
-            <div className="structure" key={structure.id}>
-              {renderSummary(structure, data, index)}
-            </div>
-          ))}
+          {structures.map(structure => renderSummary(structure, data))}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="section-detail">
           <FinancingLabels config={detailConfig} />
 
-          {structures.map((structure, index) => (
-            <div className="structure" key={structure.id}>
-              <span className="card1">
-                {renderDetail(structure, data, index)}
-              </span>
-            </div>
-          ))}
+          {structures.map(structure => renderDetail(structure, data))}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </ScrollSyncPane>

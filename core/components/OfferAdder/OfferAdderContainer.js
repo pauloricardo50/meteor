@@ -29,9 +29,10 @@ const reformatInterestRatesObject = (rates, suffix, valueEnhancer = x => x) =>
 
 const mapValuesToOffer = ({
   loanId,
-  organization,
+  organisation,
   maxAmount,
-  amortization,
+  amortizationGoal,
+  amortizationYears,
   conditions,
   hasCounterparts,
   counterparts,
@@ -42,13 +43,15 @@ const mapValuesToOffer = ({
   const useDiscount = isDiscount && discount;
   const standardOffer = {
     maxAmount,
-    amortization,
+    amortizationGoal,
+    amortizationYears,
     ...reformatInterestRatesObject(interestRates, STANDARD_SUFFIX),
   };
   const counterpartOffer = hasCounterparts
     ? {
       maxAmount,
-      amortization,
+      amortizationGoal,
+      amortizationYears,
       ...reformatInterestRatesObject(
         interestRates,
         // If a discount exists, use the standard rates and add a discounter to
@@ -62,14 +65,14 @@ const mapValuesToOffer = ({
   return [
     {
       loanId,
-      organization,
-      conditions: [conditions],
+      organisationLink: { _id: organisation },
+      conditions: [conditions].filter(x => x),
       ...standardOffer,
     },
     hasCounterparts && {
       loanId,
-      organization,
-      conditions: [conditions, counterparts],
+      organisationLink: { _id: organisation },
+      conditions: [conditions, counterparts].filter(x => x),
       ...counterpartOffer,
     },
   ].filter(offer => !!offer);
