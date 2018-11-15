@@ -75,13 +75,13 @@ class CollectionService {
 
   getAdditionalDocLabel({ label, additionalDoc }) {
     if (label) {
-      return { label };
+      return label;
     }
     if (additionalDoc.label) {
-      return { label: additionalDoc.label };
+      return additionalDoc.label;
     }
 
-    return {};
+    return undefined;
   }
 
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
@@ -95,7 +95,7 @@ class CollectionService {
         {
           id: additionalDocId,
           requiredByAdmin,
-          ...this.getAdditionalDocLabel({ label, additionalDoc }),
+          label: this.getAdditionalDocLabel({ label, additionalDoc }),
         },
       ];
       return this._update({
@@ -110,7 +110,7 @@ class CollectionService {
       object: {
         additionalDocuments: [
           ...additionalDocuments,
-          { id: additionalDocId, requiredByAdmin, ...(label ? { label } : {}) },
+          { id: additionalDocId, requiredByAdmin, label },
         ],
       },
       operator: '$set',
