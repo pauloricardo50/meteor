@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { SecurityService } from '../..';
+import { Services } from '../../api-server';
 import LoanService from '../../loans/LoanService';
 import BorrowerService from '../../borrowers/BorrowerService';
 import PropertyService from '../../properties/PropertyService';
@@ -17,9 +18,6 @@ import {
   setAdditionalDoc,
   migrateToLatest,
 } from '../methodDefinitions';
-import { BORROWERS_COLLECTION } from '../../borrowers/borrowerConstants';
-import { PROPERTIES_COLLECTION } from '../../properties/propertyConstants';
-import { LOANS_COLLECTION } from '../../loans/loanConstants';
 
 import { migrate } from '../../migrations/server';
 
@@ -127,31 +125,12 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
 
 setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  switch (collection) {
-  case BORROWERS_COLLECTION:
-    return BorrowerService.setAdditionalDoc({
-      id,
-      additionalDocId,
-      requiredByAdmin,
-      label,
-    });
-  case PROPERTIES_COLLECTION:
-    return PropertyService.setAdditionalDoc({
-      id,
-      additionalDocId,
-      requiredByAdmin,
-      label,
-    });
-  case LOANS_COLLECTION:
-    return LoanService.setAdditionalDoc({
-      id,
-      additionalDocId,
-      requiredByAdmin,
-      label,
-    });
-  default:
-    throw new Meteor.Error('Unsupported collection');
-  }
+  return Services[collection].setAdditionalDoc({
+    id,
+    additionalDocId,
+    requiredByAdmin,
+    label,
+  });
 });
 
 migrateToLatest.setHandler(({ userId }) => {
