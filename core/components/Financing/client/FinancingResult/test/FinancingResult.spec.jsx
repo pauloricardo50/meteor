@@ -7,8 +7,23 @@ import { IntlProvider, intlShape } from 'react-intl';
 import { ScrollSync } from 'react-scroll-sync';
 import messages from 'core/lang/fr.json';
 
+import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
+
+const expectResult = (component, name, value) => {
+  const val = component()
+    .find(name)
+    .last();
+
+  if (!Number.isInteger(value)) {
+    // On our test browsers, the comma is represented either as a , or .
+    // due to the web's "intl" API
+    expect(val.contains(`${value}`) || val.contains(`${value}`.replace('.', ','))).to.equal(true);
+  } else {
+    expect(val.contains(`${value}`)).to.equal(true);
+  }
+};
 
 describe('FinancingResult', () => {
   let props;
@@ -91,61 +106,142 @@ describe('FinancingResult', () => {
     });
 
     it('amortizationCost', () => {
-      const amortizationCost = component()
-        .find('.amortizationCost')
-        .last();
-
-      expect(amortizationCost.contains('833')).to.equal(true);
+      expectResult(component, '.amortizationCost', 833);
     });
 
     it('propertyCost', () => {
-      const propertyCost = component()
-        .find('.propertyCost')
-        .last();
-
-      expect(propertyCost.contains('100')).to.equal(true);
+      expectResult(component, '.propertyCost', 100);
     });
 
     it('borrowRatio', () => {
-      const borrowRatio = component()
-        .find('.borrowRatio')
-        .last();
-
-      // Do this because of different browsers..
-      expect(borrowRatio.contains('0,8') || borrowRatio.contains('0.8')).to.equal(true);
+      expectResult(component, '.borrowRatio', 0.8);
     });
 
     it('incomeRatio', () => {
-      const incomeRatio = component()
-        .find('.incomeRatio')
-        .last();
-
-      // Do this because of different browsers..
-      expect(incomeRatio.contains('0,3') || incomeRatio.contains('0.3')).to.equal(true);
+      expectResult(component, '.incomeRatio', 0.3);
     });
 
     it('remainingCash', () => {
-      const remainingCash = component()
-        .find('.remainingCash')
-        .last();
-
-      expect(remainingCash.contains('0')).to.equal(true);
+      expectResult(component, '.remainingCash', 0);
     });
 
     it('remainingInsurance2', () => {
-      const remainingInsurance2 = component()
-        .find('.remainingInsurance2')
-        .last();
-
-      expect(remainingInsurance2.contains('50')).to.equal(true);
+      expectResult(component, '.remainingInsurance2', 50);
     });
 
     it('remainingInsurance3A', () => {
-      const remainingInsurance3A = component()
-        .find('.remainingInsurance3A')
-        .last();
+      expectResult(component, '.remainingInsurance3A', 60);
+    });
+  });
 
-      expect(remainingInsurance3A.contains('60')).to.equal(true);
+  context('structure with an offer', () => {
+    beforeEach(() => {
+      const structure = {
+        id: 'a',
+        loanTranches: [
+          { type: 'interest2', value: 0.8 },
+          { type: 'interestLibor', value: 0.2 },
+        ],
+        propertyId: 'house',
+        offerId: 'offer',
+        propertyWork: 200000,
+        wantedLoan: 1080000,
+        notaryFees: 50000,
+        ownFunds: [
+          { type: 'bankFortune', value: 150000, borrowerId: 'John' },
+          {
+            type: 'insurance2',
+            usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
+            value: 120000,
+            borrowerId: 'John',
+          },
+          { type: 'thirdPartyFortune', value: 20000, borrowerId: 'Mary' },
+        ],
+      };
+      loan = {
+        selectedStructure: 'a',
+        structure,
+        structures: [structure],
+        borrowers: [
+          {
+            _id: 'John',
+            bankFortune: 250000,
+            salary: 200000,
+            insurance2: [{ value: 1000 }],
+            insurance3A: [{ value: 500 }],
+          },
+          {
+            _id: 'Mary',
+            salary: 200000,
+            thirdPartyFortune: 200000,
+            insurance2: [{ value: 2000 }],
+            insurance3A: [{ value: 0 }],
+          },
+        ],
+        properties: [
+          {
+            _id: 'house',
+            value: 1000000,
+            monthlyExpenses: 100,
+          },
+        ],
+        offers: [
+          {
+            _id: 'offer',
+            interest2: 0.02,
+            interestLibor: 0.01,
+            amortizationGoal: 0.5,
+            amortizationYears: 5,
+          },
+        ],
+      };
+    });
+
+    it('monthly', () => {
+      const monthly = component().find('.financing-structures-result-chart .total');
+      const string = monthly.text();
+      const value = string.match(/\d/g).join('');
+      expect(value).to.equal('9720');
+    });
+
+    it('interestsCost', () => {
+      const interestsCost = component()
+        .find('.interestsCost')
+        .last();
+      const string = interestsCost.text();
+      const value = string.match(/\d/g).join('');
+
+      // Average of 1.8% interests
+      expect(value).to.equal('1620');
+    });
+
+    it('amortizationCost', () => {
+      // 1080k in 5 years to 600k
+      expectResult(component, '.amortizationCost', '8 000');
+    });
+
+    it('propertyCost', () => {
+      expectResult(component, '.propertyCost', 100);
+    });
+
+    it('borrowRatio', () => {
+      expectResult(component, '.borrowRatio', 0.9);
+    });
+
+    it('incomeRatio', () => {
+      expectResult(component, '.incomeRatio', 0.215);
+    });
+
+    it('remainingCash', () => {
+      expectResult(component, '.remainingCash', '100 000');
+    });
+
+    it('remainingInsurance2', () => {
+      expectResult(component, '.remainingInsurance2', '3 000');
+    });
+
+    it('remainingInsurance3A', () => {
+      expectResult(component, '.remainingInsurance3A', 500);
     });
   });
 

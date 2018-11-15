@@ -102,17 +102,12 @@ export const emptyLoan = {
 export const loanStep1 = {
   general: fakeGeneral,
   logic: logic1,
+  structures: [
+    {
+      id: 'randomStructureId',
+      wantedLoan: 800000,
+    },
+  ],
+  selectedStructure: 'randomStructureId',
   contacts: [],
 };
-
-export const loanStep2 = {
-  general: fakeGeneral,
-  logic: logic2,
-  contacts: [],
-};
-
-export const loanStep3 = () => ({
-  general: fakeGeneral,
-  logic: logic3,
-  contacts: [],
-});
