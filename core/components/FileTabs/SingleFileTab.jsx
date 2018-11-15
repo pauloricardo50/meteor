@@ -56,6 +56,7 @@ const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
         documentArray={
           documentArray || documentsToDisplay({ collection, loan, id: doc._id })
         }
+        canModify
         {...props}
       />
       {Meteor.microservice === 'admin' && (

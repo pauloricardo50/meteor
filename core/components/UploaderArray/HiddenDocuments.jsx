@@ -6,7 +6,7 @@ import UploaderArray from './UploaderArray';
 type HiddenDocumentsProps = {};
 
 const HiddenDocuments = (props: HiddenDocumentsProps) => (
-  <UploaderArray {...props} isDocumentToHide />
+  <UploaderArray {...props} isDocumentToHide canModify />
 );
 
 export default withHider({

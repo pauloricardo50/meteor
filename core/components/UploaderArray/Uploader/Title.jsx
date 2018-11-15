@@ -17,6 +17,7 @@ const Title = ({
   hideFull,
   collection,
   docId,
+  canModify,
 }) => {
   // Construct the custom tooltip id for this file
   const tooltipId = `files.${id}.tooltip${tooltipSuffix || ''}`;
@@ -46,7 +47,7 @@ const Title = ({
           />
         </h5>
       </div>
-      {Meteor.microservice === 'admin' && (
+      {canModify && (
         <AdditionalDocModifier
           collection={collection}
           docId={docId}

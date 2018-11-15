@@ -24,8 +24,7 @@ const Uploader = (props) => {
 
   return (
     <div className="uploader-admin">
-      {Meteor.microservice === 'admin'
-        && allowRequireByAdmin && (
+      {Meteor.microservice === 'admin' && allowRequireByAdmin && (
         <Checkbox
           value={requiredByAdmin !== false && !isDocumentToHide}
           onChange={(event) => {

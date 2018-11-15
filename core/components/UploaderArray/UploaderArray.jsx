@@ -8,13 +8,10 @@ import UploaderArrayContainer from './UploaderArrayContainer';
 
 export const UploaderArray = ({
   doc,
-  disabled,
-  collection,
   documentArray,
   getFileMeta,
-  currentUser,
-  isDocumentToHide,
   allowRequireByAdmin = true,
+  ...props
 }) => {
   console.log('documentArray', documentArray);
   if (!documentArray) {
@@ -39,11 +36,8 @@ export const UploaderArray = ({
           key={doc._id + documentObject.id}
           currentValue={doc.documents && doc.documents[documentObject.id]}
           docId={doc._id}
-          disabled={disabled}
-          collection={collection}
-          currentUser={currentUser}
-          isDocumentToHide={isDocumentToHide}
           allowRequireByAdmin={allowRequireByAdmin}
+          {...props}
         />
       ))}
     </div>
