@@ -6,7 +6,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Loans } from '../../..';
 import { up, down } from '../2';
 
-describe.only('Migration 2', () => {
+describe('Migration 2', () => {
   beforeEach(() => {
     resetDatabase();
   });
