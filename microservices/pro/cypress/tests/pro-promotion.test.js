@@ -27,7 +27,7 @@ describe('Pro', () => {
       cy.get('.buttons > a').click();
       cy.location('pathname').should('eq', '/promotions/new');
 
-      cy.get('input[name=name]').type('Test promotion 2');
+      cy.get('input[name=name]').type('New promotion');
       cy.setSelect('type', 'CREDIT');
       cy.get('input[name=address1]').type('Chemin Auguste-Vilbert 14');
       cy.get('input[name=address2]').type('1er étage');
@@ -35,14 +35,14 @@ describe('Pro', () => {
       cy.get('input[name=city]').type('Le Grand-Saconnex{enter}');
 
       cy.url().should('include', 'promotions/');
-      cy.get('h1').should('contain', 'Test promotion 2');
+      cy.get('h1').should('contain', 'New promotion');
       cy.contains('Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex').should('exist');
 
       cy.contains('Préparation').should('exist');
       cy.get('.buttons > span button').should('be.disabled');
     });
 
-    context.only('with an existing promotion', () => {
+    context('with an existing promotion', () => {
       it('should add lots and promotionLots', () => {
         cy.callMethod('insertPromotion');
         cy.refetch();
