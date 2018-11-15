@@ -16,6 +16,7 @@ import {
   getLoanDocuments,
   allDocuments,
 } from '../../api/files/documents';
+import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 
 type SingleFileTabProps = {
   collection: Sring,
@@ -43,46 +44,33 @@ const documentsToHide = ({ doc, collection, loan, id }) =>
   allDocuments({ doc, collection }).filter(document =>
     !documentsToDisplay({ collection, loan, id }).some(({ id: docId }) => docId === document.id));
 
-const SingleFileTab = ({
-  collection,
-  doc,
-  disabled,
-  documentArray,
-  currentUser,
-  loan,
-}: SingleFileTabProps) => (
-  <div className="single-file-tab">
-    {Meteor.microservice === 'admin' && (
-      <AdditionalDocAdder collection={collection} docId={doc._id} />
-    )}
+const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
+  const { collection, loan, doc } = props;
+  return (
+    <div className="single-file-tab">
+      {Meteor.microservice === 'admin' && (
+        <AdditionalDocAdder collection={collection} docId={doc._id} />
+      )}
 
-    <UploaderArray
-      doc={doc}
-      collection={collection}
-      disabled={disabled}
-      currentUser={currentUser}
-      loan={loan}
-      documentArray={
-        documentArray || documentsToDisplay({ collection, loan, id: doc._id })
-      }
-    />
-    {Meteor.microservice === 'admin' && (
       <UploaderArray
-        doc={doc}
-        collection={collection}
-        disabled={disabled}
-        currentUser={currentUser}
-        loan={loan}
-        documentArray={documentsToHide({
-          collection,
-          loan,
-          id: doc._id,
-          doc,
-        })}
-        isDocumentToHide
+        documentArray={
+          documentArray || documentsToDisplay({ collection, loan, id: doc._id })
+        }
+        {...props}
       />
-    )}
-  </div>
-);
+      {Meteor.microservice === 'admin' && (
+        <HiddenDocuments
+          documentArray={documentsToHide({
+            collection,
+            loan,
+            id: doc._id,
+            doc,
+          })}
+          {...props}
+        />
+      )}
+    </div>
+  );
+};
 
 export default SingleFileTab;

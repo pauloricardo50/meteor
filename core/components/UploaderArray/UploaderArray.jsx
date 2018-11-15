@@ -31,7 +31,6 @@ export const UploaderArray = ({
 
   return (
     <div className="flex-col center">
-      {isDocumentToHide ? <h3>Autres documents</h3> : <h3>Documents requis</h3>}
       {documentArray.map(documentObject => (
         <Uploader
           fileMeta={
