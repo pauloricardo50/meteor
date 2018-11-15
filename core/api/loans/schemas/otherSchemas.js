@@ -1,5 +1,4 @@
 // @flow
-import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES } from '../../constants';
 
 export const borrowerIdsSchema = {
@@ -23,6 +22,10 @@ export const loanTranchesSchema = {
     optional: true,
     min: 0,
     max: 1,
+  },
+  'loanTranches.$.dueDate': {
+    type: String,
+    optional: true,
   },
 };
 

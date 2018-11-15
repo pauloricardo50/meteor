@@ -6,14 +6,14 @@ import PercentWithStatus from 'core/components/PercentWithStatus';
 import Calculator from 'core/utils/Calculator';
 import { SUCCESS } from 'core/api/constants';
 
-type BorrowersPageTitleProps = {};
+type RefinancingPageTitleProps = {};
 
-const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
-  const value = Calculator.personalInfoPercent({ borrowers });
+const RefinancingPageTitle = ({ loan }: RefinancingPageTitleProps) => {
+  const value = Calculator.refinancingPercent({ loan });
 
   return (
-    <span className="borrowers-page-title">
-      <T id="BorrowersPage.title" />
+    <span className="refinancing-page-title">
+      <T id="RefinancingPage.title" />
       <small>
         &nbsp; - &nbsp;
         <PercentWithStatus
@@ -26,4 +26,4 @@ const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
   );
 };
 
-export default BorrowersPageTitle;
+export default RefinancingPageTitle;
