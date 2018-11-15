@@ -4,7 +4,7 @@ import {
   E2E_USER_EMAIL,
   USER_PASSWORD,
   getTestUserByRole,
-} from '../testHelpers';
+} from '../utils';
 
 Cypress.Commands.add('callMethod', (method, params) => {
   cy.window().then(({ Meteor }) =>
