@@ -3,7 +3,6 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { check } from 'meteor/check';
 
 import Users from 'core/api/users';
 import { ROLES } from 'core/api/users/userConstants';
@@ -38,7 +37,7 @@ Meteor.methods({
     const adminLoginToken = createLoginToken(admin._id);
     const emailVerificationToken = createEmailVerificationToken(
       userId,
-      userEmail,
+      E2E_USER_EMAIL,
     );
 
     return {
