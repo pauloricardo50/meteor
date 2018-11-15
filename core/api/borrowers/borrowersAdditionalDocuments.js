@@ -26,28 +26,24 @@ export const conditionalDocuments = [
   },
   {
     id: DOCUMENTS.THIRD_PILLAR_ACCOUNTS,
-    condition: ({ doc }) => (
+    condition: ({ doc }) =>
       (doc.insurance3A && doc.insurance3A.length > 0)
-        || (doc.insurance3B && doc.insurance3B.length > 0)
-        || (doc.bank3A && doc.bank3A.length > 0)
-    ),
+      || (doc.insurance3B && doc.insurance3B.length > 0)
+      || (doc.bank3A && doc.bank3A.length > 0),
   },
   {
     id: DOCUMENTS.CURRENT_MORTGAGES,
-    condition: ({ doc }) => (
-      doc.expenses
-        && doc.expenses.length > 0
-        && doc.expenses.some(({ description }) =>
-          description === borrowerConstants.EXPENSES.MORTGAGE_LOAN)
-    ),
+    condition: ({ doc }) =>
+      doc.realEstate
+      && doc.realEstate.length > 0
+      && doc.realEstate.some(({ loan }) => loan > 0),
   },
   {
     id: DOCUMENTS.CURRENT_MORTGAGES_INTERESTS_STATEMENT,
     condition: ({ doc }) =>
-      doc.expenses
-      && doc.expenses.length > 0
-      && doc.expenses.some(({ description }) =>
-        description === borrowerConstants.EXPENSES.MORTGAGE_LOAN),
+      doc.realEstate
+      && doc.realEstate.length > 0
+      && doc.realEstate.some(({ loan }) => loan > 0),
   },
   {
     id: DOCUMENTS.EXPENSES_JUSTIFICATION,
