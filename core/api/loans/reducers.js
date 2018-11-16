@@ -20,7 +20,7 @@ Loans.addReducers({
     reduce: ({ promotions }) => promotions && promotions.length > 0,
   },
   enableOffers: {
-    body: { logic: { step: 1 } },
+    body: { logic: 1 },
     reduce: ({ logic: { step } }) =>
       STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER),
   },
