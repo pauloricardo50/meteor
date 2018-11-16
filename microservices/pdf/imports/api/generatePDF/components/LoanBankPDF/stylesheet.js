@@ -1,9 +1,8 @@
-import * as styles from './utils/styleHelpers';
 import { LoanBankPageStyles } from './LoanBankPage';
 import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
-import PDFTableStyles from './utils/PDFTableStyles';
+import PDFTableStyles from '../PdfTable/PdfTableStyles';
 import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../constants';
 
 const stylesheet = `

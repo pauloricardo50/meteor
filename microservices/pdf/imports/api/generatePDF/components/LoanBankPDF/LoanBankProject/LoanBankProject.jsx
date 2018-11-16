@@ -3,9 +3,10 @@ import React from 'react';
 
 import { toMoney } from 'core/utils/conversionFunctions';
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { T } from 'core/components/Translation/Translation';
+import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import PDFTable from '../utils/PDFTable';
+import PdfTable from '../../PdfTable';
+import PdfPage from '../../PdfPage';
 import {
   structureArrayData,
   usedOwnFundsTableData,
@@ -13,7 +14,6 @@ import {
   remainingFundsTableData,
   propertyArrayData,
 } from './LoanBankProjectArrayData';
-import LoanBankPage from '../LoanBankPage/LoanBankPage';
 
 type LoanBankProjectProps = {
   loan: Object,
@@ -98,21 +98,16 @@ const getStructureRecapArray = loan => [
   },
 ];
 
-const structureRecap = loan => (
-  <PDFTable className="structure-table" rows={getStructureRecapArray(loan)} />
-);
-
-const propertyRecap = loan => (
-  <PDFTable className="property-table" rows={getPropertyRecapArray(loan)} />
-);
-
 const LoanBankProject = ({ loan }: LoanBankProjectProps) => (
-  <LoanBankPage className="project-page" title={<T id="PDF.title.project" />}>
+  <PdfPage className="project-page" title={<T id="PDF.title.project" />}>
     <div className="project-table">
-      {structureRecap(loan)}
-      {propertyRecap(loan)}
+      <PdfTable
+        className="structure-table"
+        rows={getStructureRecapArray(loan)}
+      />
+      <PdfTable className="property-table" rows={getPropertyRecapArray(loan)} />
     </div>
-  </LoanBankPage>
+  </PdfPage>
 );
 
 export default LoanBankProject;

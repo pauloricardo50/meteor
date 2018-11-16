@@ -3,7 +3,6 @@ import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
-import { T } from 'core/components/Translation/Translation';
 import messagesFR from '../../../../../lang/fr.json';
 import stylesheet from './stylesheet';
 import LoanBankBorrowers from './LoanBankBorrowers';

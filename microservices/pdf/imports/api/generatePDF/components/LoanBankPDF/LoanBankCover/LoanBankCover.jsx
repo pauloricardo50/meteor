@@ -1,8 +1,8 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
-import { T } from 'core/components/Translation/Translation';
-import LoanBankPage from '../LoanBankPage';
+import T from 'core/components/Translation';
+import PdfPage from '../../PdfPage';
 
 type LoanBankCoverProps = {
   loan: Object,
@@ -39,10 +39,10 @@ const loanInfo = (loan) => {
 };
 
 const LoanBankCover = ({ loan }: LoanBankCoverProps) => (
-  <LoanBankPage className="cover-page" fullHeight>
+  <PdfPage className="cover-page" fullHeight>
     {loanInfo(loan)}
     {footer(loan.user.assignedEmployee)}
-  </LoanBankPage>
+  </PdfPage>
 );
 
 export default LoanBankCover;

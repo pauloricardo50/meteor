@@ -3,10 +3,10 @@ import React from 'react';
 import cx from 'classnames';
 
 import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
-import { T } from 'core/components/Translation/Translation';
+import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
-import PDFTable from '../utils/PDFTable';
+import PdfTable from '../../PdfTable';
 
 type BorrowersRecapProps = {
   borrowers: Array<Object>,
@@ -298,12 +298,12 @@ const getBorrowersFinanceArray = (borrowers) => {
 const BorrowersRecap = ({ borrowers, twoBorrowers }: BorrowersRecapProps) => (
   <>
     <h2>Informations générales</h2>
-    <PDFTable
+    <PdfTable
       className={cx('borrowers-recap info', { twoBorrowers })}
       rows={getBorrowersInfosArray(borrowers)}
     />
     <h2>Situation financière</h2>
-    <PDFTable
+    <PdfTable
       className={cx('borrowers-recap finance', { twoBorrowers })}
       rows={getBorrowersFinanceArray(borrowers)}
     />

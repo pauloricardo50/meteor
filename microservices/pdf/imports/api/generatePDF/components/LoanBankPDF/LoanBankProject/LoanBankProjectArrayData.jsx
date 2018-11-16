@@ -1,6 +1,7 @@
 import React from 'react';
+
 import Calculator from 'core/utils/Calculator';
-import { T } from 'core/components/Translation/Translation';
+import T, { Percent } from 'core/components/Translation';
 import { toMoney } from 'core/utils/conversionFunctions';
 import {
   OWN_FUNDS_USAGE_TYPES,
@@ -8,7 +9,6 @@ import {
   PROPERTY_TYPE,
   FLAT_TYPE,
 } from 'core/api/constants';
-import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
 
 export const NBSP = '\u00A0';
 

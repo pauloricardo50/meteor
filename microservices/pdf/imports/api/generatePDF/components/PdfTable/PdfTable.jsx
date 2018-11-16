@@ -2,7 +2,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-type PDFTableProps = {
+type PdfTableProps = {
   rows: Array,
   className: String,
 };
@@ -33,11 +33,11 @@ const row = ({ label, data, condition, style, colspan = 1 }, index) => {
   );
 };
 
-const PDFTable = ({ rows, className }: PDFTableProps) => (
+const PdfTable = ({ rows, className }: PdfTableProps) => (
   <table className={cx('pdf-table', className)}>
     {rows.map((rowData, index) =>
       shouldRenderRow(rowData.condition) && row(rowData, index))}
   </table>
 );
 
-export default PDFTable;
+export default PdfTable;

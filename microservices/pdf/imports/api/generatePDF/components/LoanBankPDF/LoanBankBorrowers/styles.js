@@ -1,4 +1,3 @@
-import * as styles from '../utils/styleHelpers';
 import recapStyleSheet from './recapStyleSheet';
 
 const stylesheet = `
