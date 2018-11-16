@@ -1,4 +1,4 @@
-import * as styles from '../../../utils/styleHelpers';
+import * as styles from '../../utils/styleHelpers';
 
 const stylesheet = `
     .project-table {

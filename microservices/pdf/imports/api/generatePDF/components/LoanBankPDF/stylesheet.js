@@ -1,4 +1,3 @@
-import { LoanBankPageStyles } from './LoanBankPage';
 import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
@@ -15,7 +14,7 @@ const stylesheet = `
         border: 1px solid red;
     }
 
-    @page { 
+    @page {
         size: A4;
         margin: ${MARGIN_TOP}mm ${MARGIN_SIDE}mm ${MARGIN_BOTTOM}mm ${MARGIN_SIDE}mm;
 
@@ -63,9 +62,8 @@ const stylesheet = `
         height: 0;
         page-break-before: always;
     }
-    
+
     ${PDFTableStyles}
-    ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}
     ${LoanBankCoverStyles}
