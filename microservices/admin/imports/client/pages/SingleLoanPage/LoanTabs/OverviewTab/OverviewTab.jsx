@@ -6,7 +6,6 @@ import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
-import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
@@ -25,11 +24,11 @@ const OverviewTab = (props) => {
   return (
     <div className="overview-tab">
       <div className="admin-section card1">
+        <ImpersonateLink user={user} />
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
-        <ImpersonateLink user={user} />
+        <LoanStepSetter loan={loan} />
       </div>
-      {/* <LoanValidation loan={loan} /> */}
       <LoanStatusCheck loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">
