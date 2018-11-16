@@ -41,7 +41,6 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
     defaultValue: LOAN_VERIFICATION_STATUS.NONE,
   },
-  enableOffers: { type: Boolean, optional: true, defaultValue: false },
   ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
