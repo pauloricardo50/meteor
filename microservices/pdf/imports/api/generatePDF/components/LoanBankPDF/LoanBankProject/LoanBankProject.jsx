@@ -14,14 +14,16 @@ import {
   remainingFundsTableData,
   propertyArrayData,
 } from './LoanBankProjectArrayData';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type LoanBankProjectProps = {
   loan: Object,
 };
 
 const titleLine = label => ({
-  label: <h5 className="title-line">{label}</h5>,
+  label,
   colspan: 2,
+  type: ROW_TYPES.TITLE,
 });
 
 const getPropertyRecapArray = loan => [
@@ -53,7 +55,6 @@ const getStructureRecapArray = loan => [
         loan,
         type: OWN_FUNDS_TYPES.BANK_FORTUNE,
       }) !== 0,
-    style: { textAlign: 'right' },
   },
   ...usedOwnFundsTableData(loan),
   {
@@ -66,16 +67,11 @@ const getStructureRecapArray = loan => [
       ownFunds: loan.structure.ownFunds,
       type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
     }),
-    style: { textAlign: 'right' },
   },
   {
-    label: (
-      <p style={{ fontWeight: 'bold' }}>
-        <T id="PDF.projectInfos.structure.usedOwnFunds.total" />
-      </p>
-    ),
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.total" />,
     data: toMoney(Calculator.getTotalUsed({ loan })),
-    style: { fontWeight: 'bold', textAlign: 'right' },
+    type: ROW_TYPES.SUM,
   },
   titleLine(<T id="PDF.projectInfos.structure.postDisbursementSituation.title" />),
   {
@@ -84,17 +80,14 @@ const getStructureRecapArray = loan => [
       loan,
       type: OWN_FUNDS_TYPES.BANK_FORTUNE,
     })),
-    style: { textAlign: 'right' },
   },
   ...remainingFundsTableData(loan),
   {
     label: (
-      <p style={{ fontWeight: 'bold' }}>
-        <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
-      </p>
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
     ),
     data: toMoney(Calculator.getTotalRemainingFunds({ loan })),
-    style: { fontWeight: 'bold', textAlign: 'right' },
+    type: ROW_TYPES.SUM,
   },
 ];
 

@@ -32,6 +32,7 @@ const PdfPageStyles = `
     }
 
     .pdf-page-title {
+        margin-bottom: 16px;
     }
 
     .pdf-page-title h1 {

@@ -7,6 +7,20 @@ type PdfTableProps = {
   className: String,
 };
 
+export const ROW_TYPES = {
+  TITLE: 'TITLE',
+  REGULAR: 'REGULAR',
+  EMPTY: 'EMPTY',
+  SUM: 'SUM',
+};
+
+const classes = {
+  [ROW_TYPES.TITLE]: 'title-row',
+  [ROW_TYPES.REGULAR]: 'regular-row',
+  [ROW_TYPES.EMPTY]: 'empty-row',
+  [ROW_TYPES.SUM]: 'sum-row',
+};
+
 const shouldRenderRow = condition => condition === undefined || condition;
 
 const multiColumn = (data, style) =>
@@ -18,13 +32,20 @@ const multiColumn = (data, style) =>
 
 const singleColumn = (data, style) => <td style={style}>{data}</td>;
 
-const row = ({ label, data, condition, style, colspan = 1 }, index) => {
+const row = (
+  { label, data, condition, style, colspan = 1, type = ROW_TYPES.REGULAR },
+  index,
+) => {
   if (colspan > 1) {
-    return <tr key={index}>{label && <td colSpan={colspan}>{label}</td>}</tr>;
+    return (
+      <tr key={index} className={classes[type]}>
+        {label && <td colSpan={colspan}>{label}</td>}
+      </tr>
+    );
   }
 
   return (
-    <tr key={index}>
+    <tr key={index} className={classes[type]}>
       {label && <td>{label}</td>}
       {Array.isArray(data)
         ? multiColumn(data, style)
@@ -33,11 +54,13 @@ const row = ({ label, data, condition, style, colspan = 1 }, index) => {
   );
 };
 
-const PdfTable = ({ rows, className }: PdfTableProps) => (
-  <table className={cx('pdf-table', className)}>
-    {rows.map((rowData, index) =>
-      shouldRenderRow(rowData.condition) && row(rowData, index))}
-  </table>
-);
+const PdfTable = ({ rows, className }: PdfTableProps) =>
+// console.log('rows', rows);
 
+  (
+    <table className={cx('pdf-table', className)}>
+      {rows.map((rowData, index) =>
+        shouldRenderRow(rowData.condition) && row(rowData, index))}
+    </table>
+  );
 export default PdfTable;
