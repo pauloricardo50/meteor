@@ -9,6 +9,7 @@ import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggl
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
+import LoanStepSetter from './LoanStepSetter';
 
 const OverviewTab = (props) => {
   const {

@@ -5,10 +5,7 @@ import React from 'react';
 import { ScrollSync } from 'react-scroll-sync';
 
 import type { userLoan } from 'core/api';
-import { loanUpdate } from 'core/api';
-import Toggle from '../../Material/Toggle';
 import Loading from '../../Loading';
-import T from '../../Translation';
 import FinancingFinancing from './FinancingFinancing';
 import FinancingHeader from './FinancingHeader';
 import FinancingOffers from './FinancingOffers';
@@ -21,9 +18,6 @@ type FinancingProps = {
   loan: userLoan,
 };
 
-const makeToggleOffers = loanId => (event, checked) =>
-  loanUpdate.run({ loanId, object: { enableOffers: checked } });
-
 const Financing = ({ loan }: FinancingProps) =>
   (loan.structures.length > 0 ? (
     <ScrollSync proportional={false} vertical={false}>
@@ -33,13 +27,14 @@ const Financing = ({ loan }: FinancingProps) =>
         <FinancingFinancing />
         <FinancingOwnFunds />
         {Meteor.microservice === 'admin' && (
-          <Toggle
-            labelTop={<T id="Forms.enableOffers" />}
-            labelLeft={<T id="general.no" />}
-            labelRight={<T id="general.yes" />}
-            toggled={loan.enableOffers}
-            onToggle={makeToggleOffers(loan._id)}
-          />
+          <span>
+            Offres{' '}
+            {loan.enableOffers ? (
+              <span className="success">Activées</span>
+            ) : (
+              <span className="error">Désactivées</span>
+            )}
+          </span>
         )}
         {(Meteor.microservice === 'admin' || loan.enableOffers) && (
           <FinancingOffers />
