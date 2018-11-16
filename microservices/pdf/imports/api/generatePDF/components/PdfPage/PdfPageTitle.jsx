@@ -10,8 +10,10 @@ const PdfPageTitle = ({ title, subtitle }: PdfPageTitleProps) => {
 
   return (
     <div className="pdf-page-title">
-      <img src="https://www.e-potek.ch/img/logo_square_black.svg" />
-      <h1>{title}</h1>
+      <h1>
+        <img src="https://www.e-potek.ch/img/logo_square_black.svg" />
+        {title}
+      </h1>
       {subtitle && <h2 className="secondary">{subtitle}</h2>}
     </div>
   );

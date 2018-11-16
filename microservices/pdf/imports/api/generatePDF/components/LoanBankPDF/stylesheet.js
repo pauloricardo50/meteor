@@ -3,6 +3,7 @@ import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
 import PDFTableStyles from '../PdfTable/PdfTableStyles';
 import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../constants';
+import PdfPageStyles from '../PdfPage/PdfPageStyles';
 
 const stylesheet = `
     html {
@@ -11,7 +12,8 @@ const stylesheet = `
     }
 
     * {
-        border: 1px solid red;
+        // border: 1px solid red;
+        // border-radius: 8px;
     }
 
     @page {
@@ -67,6 +69,7 @@ const stylesheet = `
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}
     ${LoanBankCoverStyles}
+    ${PdfPageStyles}
 `;
 
 export default stylesheet;

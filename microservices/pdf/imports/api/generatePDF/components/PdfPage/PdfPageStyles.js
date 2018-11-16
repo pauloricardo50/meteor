@@ -10,7 +10,6 @@ const PdfPageStyles = `
 
     .full-height {
         height: ${CONTENT_HEIGHT}mm;
-        border-color: blue !important;
     }
 
     .header {
@@ -33,17 +32,19 @@ const PdfPageStyles = `
     }
 
     .pdf-page-title {
-        display: flex;
-        flex-direction: column;
     }
 
     .pdf-page-title h1 {
-        margin-top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0;
     }
 
     .pdf-page-title img {
         width: 50px;
         height: 50px;
+        margin-right: 16px;
     }
 `;
 
