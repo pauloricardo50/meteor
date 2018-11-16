@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { withProps, compose } from 'recompose';
 import { injectIntl } from 'react-intl';
 import { DOCUMENTS, DOCUMENTS_WITH_TOOLTIP } from '../../api/constants';
@@ -21,8 +22,9 @@ const makeSortDocuments = ({ formatMessage: f }) => (a, b) => {
 
 export default compose(
   injectIntl,
-  withProps(({ documentArray, intl }) => ({
+  withProps(({ documentArray, intl, canModify }) => ({
     documentArray: documentArray.sort(makeSortDocuments(intl)),
     getFileMeta,
+    canModify: canModify && Meteor.microservice === 'admin',
   })),
 );

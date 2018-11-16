@@ -6,10 +6,11 @@ import UploaderArray from './UploaderArray';
 type HiddenDocumentsProps = {};
 
 const HiddenDocuments = (props: HiddenDocumentsProps) => (
-  <UploaderArray {...props} isDocumentToHide />
+  <UploaderArray {...props} isDocumentToHide canModify />
 );
 
 export default withHider({
   label: 'Afficher tous les documents',
   primary: true,
+  style: { alignSelf: 'center', marginBottom: '16px' },
 })(HiddenDocuments);
