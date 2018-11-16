@@ -9,12 +9,21 @@ export default `
         width: 100%;
     }
 
+    .pdf-table td {
+        width: 50%;
+        padding: 8px 0px;
+    }
+
     .pdf-table tr td:last-of-type {
         text-align: right;
     }
+
+    .pdf-table tr:first-child {
+        border-top: none !important;
+    }
     
     .pdf-table tr.regular-row {
-        border-bottom: 1px solid ${BORDER_GREY};
+        border-top: 1px solid ${BORDER_GREY};
     }
 
     .pdf-table tr.regular-row td {
@@ -38,7 +47,12 @@ export default `
         padding-top: 32px;
     }
 
+    .pdf-table tr.title-row.no-padding td {
+        padding: 8px 0;
+    }
+
     .pdf-table tr.empty-row {
+        border-color: white;
     }
 
     .pdf-table tr.sum-row {
@@ -48,14 +62,5 @@ export default `
 
     .pdf-table tr.sum-row td {
         font-weight: 500;
-    }
-
-    .pdf-table td {
-        width: 50%;
-        padding: 8px 0px;
-    }
-
-    .pdf-table tr td:first-of-type {
-        opacity: 0.8;
     }
 `;

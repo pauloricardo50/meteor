@@ -9,6 +9,7 @@ type PdfTableProps = {
 
 export const ROW_TYPES = {
   TITLE: 'TITLE',
+  TITLE_NO_PADDING: 'TITLE_NO_PADDING',
   REGULAR: 'REGULAR',
   EMPTY: 'EMPTY',
   SUM: 'SUM',
@@ -16,6 +17,7 @@ export const ROW_TYPES = {
 
 const classes = {
   [ROW_TYPES.TITLE]: 'title-row',
+  [ROW_TYPES.TITLE_NO_PADDING]: 'title-row no-padding',
   [ROW_TYPES.REGULAR]: 'regular-row',
   [ROW_TYPES.EMPTY]: 'empty-row',
   [ROW_TYPES.SUM]: 'sum-row',
@@ -54,13 +56,12 @@ const row = (
   );
 };
 
-const PdfTable = ({ rows, className }: PdfTableProps) =>
-// console.log('rows', rows);
+const PdfTable = ({ rows, className }: PdfTableProps) => (
+  // console.log('rows', rows);
 
-  (
-    <table className={cx('pdf-table', className)}>
-      {rows.map((rowData, index) =>
-        shouldRenderRow(rowData.condition) && row(rowData, index))}
-    </table>
-  );
+  <table className={cx('pdf-table', className)}>
+    {rows.map((rowData, index) =>
+      shouldRenderRow(rowData.condition) && row(rowData, index))}
+  </table>
+);
 export default PdfTable;

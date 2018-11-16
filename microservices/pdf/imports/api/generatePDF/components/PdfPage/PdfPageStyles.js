@@ -1,5 +1,6 @@
 import * as styles from '../utils/styleHelpers';
 import { CONTENT_HEIGHT } from '../../constants';
+import { BORDER_BLUE } from '../cssConstants';
 
 const PdfPageStyles = `
     .page {
@@ -46,6 +47,21 @@ const PdfPageStyles = `
         width: 50px;
         height: 50px;
         margin-right: 16px;
+    }
+
+    .pdf-page-footer {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid ${BORDER_BLUE};
+        width: 100%;
+        height: 100%;
+        padding-top: 16px;
+        color: ${BORDER_BLUE};
+        font-size: 10px;
+    }
+
+    .bold {
+        font-weight: 600;
     }
 `;
 

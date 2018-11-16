@@ -36,9 +36,10 @@ const stylesheet = `
           content: flow(footer);
         }
 
-        @bottom-right {
-           content: counter(page);
-        }
+        // @bottom-right {
+        //    content: "Page " counter(page) "/" counter(pages);
+        //    font-family: Helvetica;
+        // }
     }
 
     .top-left {
@@ -49,11 +50,11 @@ const stylesheet = `
         flow: static(top-right);
     }
 
-    .pdf-header {
+    .pdf-page-header {
         flow: static(header);
     }
 
-    .pdf-footer {
+    .pdf-page-footer {
         flow: static(footer);
     }
 

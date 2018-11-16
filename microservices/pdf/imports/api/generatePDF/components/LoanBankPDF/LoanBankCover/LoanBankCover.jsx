@@ -38,8 +38,13 @@ const loanInfo = (loan) => {
   );
 };
 
-const LoanBankCover = ({ loan }: LoanBankCoverProps) => (
-  <PdfPage className="cover-page" fullHeight>
+const LoanBankCover = ({ loan, pageNb, pageCount }: LoanBankCoverProps) => (
+  <PdfPage
+    className="cover-page"
+    fullHeight
+    pageNb={pageNb}
+    pageCount={pageCount}
+  >
     {loanInfo(loan)}
     {footer(loan.user.assignedEmployee)}
   </PdfPage>

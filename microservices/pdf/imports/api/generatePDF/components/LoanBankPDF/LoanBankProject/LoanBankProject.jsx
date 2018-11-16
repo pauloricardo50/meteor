@@ -91,8 +91,14 @@ const getStructureRecapArray = loan => [
   },
 ];
 
-const LoanBankProject = ({ loan }: LoanBankProjectProps) => (
-  <PdfPage className="project-page" title={<T id="PDF.title.project" />}>
+const LoanBankProject = ({ loan, pageNb, pageCount }: LoanBankProjectProps) => (
+  <PdfPage
+    className="project-page"
+    title={<T id="PDF.title.project" />}
+    withFooter
+    pageNb={pageNb}
+    pageCount={pageCount}
+  >
     <div className="project-table">
       <PdfTable
         className="structure-table"

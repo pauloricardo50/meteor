@@ -9,11 +9,18 @@ type LoanBankBorrowersProps = {
   borrowers: Array<Object>,
 };
 
-const LoanBankBorrowers = ({ loan: { borrowers } }: LoanBankBorrowersProps) => (
+const LoanBankBorrowers = ({
+  loan: { borrowers },
+  pageNb,
+  pageCount,
+}: LoanBankBorrowersProps) => (
   <PdfPage
     className="borrowers-page"
     isLast
     title={<T id="PDF.title.borrowers" />}
+    withFooter
+    pageNb={pageNb}
+    pageCount={pageCount}
   >
     <BorrowersRecap borrowers={borrowers} twoBorrowers={borrowers.length > 1} />
   </PdfPage>

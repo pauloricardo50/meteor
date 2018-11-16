@@ -7,6 +7,7 @@ import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
 import PdfTable from '../../PdfTable';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type BorrowersRecapProps = {
   borrowers: Array<Object>,
@@ -150,12 +151,12 @@ const makeTableMoneyLine = twoBorrowers => ({
 
 const addTableEmptyLine = () => ({
   label: '\u00A0',
+  type: ROW_TYPES.EMPTY,
 });
 
 const addTableCategoryTitle = title => ({
-  label: (
-    <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{title}</p>
-  ),
+  label: title,
+  type: ROW_TYPES.TITLE_NO_PADDING,
 });
 
 const getBorrowersInfosArray = (borrowers) => {
@@ -248,17 +249,11 @@ const getBorrowersFinanceArray = (borrowers) => {
         field: expenses[expense],
         negative: true,
       })),
-    addTableEmptyLine(),
     {
-      label: (
-        <p style={{ fontWeight: 'bold' }}>
-          <T id="PDF.borrowersInfos.totalIncome" />
-        </p>
-      ),
+      label: <T id="PDF.borrowersInfos.totalIncome" />,
       data: getFormattedMoneyArray(borrowers.map(borrower =>
         Calculator.getTotalIncome({ borrowers: borrower }))),
-      style: { fontWeight: 'bold' },
-      condition: false,
+      type: ROW_TYPES.SUM,
     },
     addTableEmptyLine(),
     addTableCategoryTitle(<T id="PDF.borrowersInfos.category.fortune" />),
@@ -281,16 +276,11 @@ const getBorrowersFinanceArray = (borrowers) => {
       label: <T id="PDF.borrowersInfos.otherFortune" />,
       field: otherFortune,
     }),
-    addTableEmptyLine(),
     {
-      label: (
-        <p style={{ fontWeight: 'bold' }}>
-          <T id="PDF.borrowersInfos.totalFortune" />
-        </p>
-      ),
+      label: <T id="PDF.borrowersInfos.totalFortune" />,
       data: getFormattedMoneyArray(borrowers.map(borrower =>
         Calculator.getTotalFunds({ borrowers: borrower }))),
-      style: { fontWeight: 'bold' },
+      type: ROW_TYPES.SUM,
     },
   ];
 };
