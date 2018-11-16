@@ -1,25 +1,29 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
+
 import LoanBankHeader from './LoanBankHeader';
 import LoanBankTitle from './LoanBankTitle';
 
 type LoanBankPageProps = {
   loan: Object,
-  pageNumber: Number,
   title: String,
 };
 
 const LoanBankPage = ({
-  pageNumber,
   title,
   subtitle,
   children,
   isLast,
+  fullHeight,
+  className,
 }: LoanBankPageProps) => (
   <>
     <LoanBankHeader />
-    <LoanBankTitle title={title} subtitle={subtitle} />
-    <div className="page content">{children}</div>
+    <div className={cx('page', className, { 'full-height': fullHeight })}>
+      <LoanBankTitle title={title} subtitle={subtitle} />
+      {children}
+    </div>
     {!isLast && <hr className="page-break-new" />}
   </>
 );

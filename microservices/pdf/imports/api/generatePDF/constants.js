@@ -34,3 +34,10 @@ export const TEMPLATES = {
     },
   },
 };
+
+export const A4_HEIGHT = 297;
+export const MARGIN_TOP = 20;
+export const MARGIN_BOTTOM = 20;
+export const MARGIN_SIDE = 15;
+export const WIGGLE_ROOM = 2; // Required to make things fit on one page
+export const CONTENT_HEIGHT = A4_HEIGHT - MARGIN_BOTTOM - MARGIN_TOP - WIGGLE_ROOM;

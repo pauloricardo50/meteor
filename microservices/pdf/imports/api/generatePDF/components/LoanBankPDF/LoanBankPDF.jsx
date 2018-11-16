@@ -8,7 +8,6 @@ import messagesFR from '../../../../../lang/fr.json';
 import stylesheet from './stylesheet';
 import LoanBankBorrowers from './LoanBankBorrowers';
 import LoanBankProject from './LoanBankProject';
-import LoanBankPage from './LoanBankPage';
 import LoanBankCover from './LoanBankCover';
 
 type LoanBankPDFProps = {
@@ -16,18 +15,10 @@ type LoanBankPDFProps = {
   options?: Object,
 };
 
-const pages = loan => [
-  {
-    content: <LoanBankCover loan={loan} key="1" />,
-  },
-  {
-    content: <LoanBankProject loan={loan} key="2" />,
-    title: <T id="PDF.title.project" />,
-  },
-  {
-    content: <LoanBankBorrowers borrowers={loan.borrowers} key="3" />,
-    title: <T id="PDF.title.borrowers" />,
-  },
+const pages = [
+  { Component: LoanBankCover },
+  { Component: LoanBankProject },
+  { Component: LoanBankBorrowers },
 ];
 
 const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
@@ -39,16 +30,8 @@ const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
   >
     <>
       <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
-      {pages(loan).map(({ title, subtitle, content }, index, arr) => (
-        <LoanBankPage
-          pageNumber={index + 1}
-          title={title}
-          subtitle={subtitle}
-          key={index}
-          isLast={index === arr.length - 1}
-        >
-          {content}
-        </LoanBankPage>
+      {pages.map(({ Component }, index) => (
+        <Component loan={loan} key={index} />
       ))}
     </>
   </IntlProvider>

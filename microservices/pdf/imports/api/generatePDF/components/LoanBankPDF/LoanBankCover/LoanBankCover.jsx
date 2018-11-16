@@ -2,6 +2,7 @@
 import React from 'react';
 import moment from 'moment';
 import { T } from 'core/components/Translation/Translation';
+import LoanBankPage from '../LoanBankPage';
 
 type LoanBankCoverProps = {
   loan: Object,
@@ -38,10 +39,10 @@ const loanInfo = (loan) => {
 };
 
 const LoanBankCover = ({ loan }: LoanBankCoverProps) => (
-  <div className="cover">
+  <LoanBankPage className="cover-page" fullHeight>
     {loanInfo(loan)}
     {footer(loan.user.assignedEmployee)}
-  </div>
+  </LoanBankPage>
 );
 
 export default LoanBankCover;

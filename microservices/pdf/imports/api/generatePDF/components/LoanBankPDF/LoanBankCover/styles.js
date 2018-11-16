@@ -1,13 +1,13 @@
 import * as styles from '../utils/styleHelpers';
 
 const stylesheet = `
-    .cover {
+    .cover-page {
         ${styles.flex(['FLEX_COLUMN', 'ALIGN_ITEMS_CENTER'])}
         ${styles.flexGrow(1)}
         padding: 30px;
     }
 
-    .cover .loan-info {
+    .cover-page .loan-info {
         ${styles.flex(['FLEX_COLUMN', 'ALIGN_ITEMS_CENTER'])}
         ${styles.flexGrow(1)}
         padding: 48px;
@@ -22,7 +22,7 @@ const stylesheet = `
         text-transform: uppercase;
     }
 
-    .cover .cover-footer {
+    .cover-page .cover-footer {
         ${styles.flex([
     'FLEX_ROW',
     'ALIGN_ITEMS_FLEX_END',

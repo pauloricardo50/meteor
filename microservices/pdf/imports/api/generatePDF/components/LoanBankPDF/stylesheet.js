@@ -4,6 +4,7 @@ import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
 import PDFTableStyles from './utils/PDFTableStyles';
+import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../constants';
 
 const stylesheet = `
     html {
@@ -12,12 +13,12 @@ const stylesheet = `
     }
 
     * {
-        // border: 1px solid red;
+        border: 1px solid red;
     }
 
     @page { 
         size: A4;
-        margin: 3cm 1.5cm 2cm 1.5cm;
+        margin: ${MARGIN_TOP}mm ${MARGIN_SIDE}mm ${MARGIN_BOTTOM}mm ${MARGIN_SIDE}mm;
 
         @top-left {
             content: flow(top-left);
@@ -60,6 +61,7 @@ const stylesheet = `
         border: none;
         margin: 0;
         padding: 0;
+        height: 0;
         page-break-before: always;
     }
     

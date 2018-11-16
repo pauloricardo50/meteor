@@ -1,9 +1,16 @@
 import * as styles from '../utils/styleHelpers';
+import { CONTENT_HEIGHT } from '../../../constants';
 
 const stylesheet = `
     .page {
         ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
         width: 100%;
+        box-sizing: border-box;
+    }
+
+    .full-height {
+        height: ${CONTENT_HEIGHT}mm;
+        border-color: blue !important;
     }
 
     .header {
@@ -25,12 +32,6 @@ const stylesheet = `
         font-weight: bold;
     }
 
-    .page-title {
-        ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
-        text-transform: uppercase;
-        padding: 4px;
-    }
-
     .page-title h1 {
         margin-top: 0;
     }
@@ -49,11 +50,6 @@ const stylesheet = `
     .loan-bank-pdf-info h3 {
         text-align: right;
         margin: 4px 0px;
-    }
-
-    .page.content {
-        ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
-        ${styles.flexGrow(1)}
     }
 `;
 
