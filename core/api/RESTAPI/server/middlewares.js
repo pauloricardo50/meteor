@@ -1,6 +1,8 @@
 import bodyParser from 'body-parser';
 import { REST_API_ERRORS } from './constants';
 import { sendResponse } from './RESTAPI';
+import { Services } from '../../api-server';
+import { USERS_COLLECTION } from '../../users/userConstants';
 
 export const bodyParserJSON = () => bodyParser.json();
 export const bodyParserUrlEncoded = () =>
@@ -23,7 +25,10 @@ export const getToken = (authorization) => {
 };
 
 export const filter = api => (req, res, next) => {
-  const endpoint = api.getRequestPath(req);
+  const endpoint = {
+    path: api.getRequestPath(req),
+    method: api.getRequestMethod(req),
+  };
   const {
     headers: { authorization, 'content-type': contentType },
   } = req;
@@ -56,11 +61,9 @@ export const filter = api => (req, res, next) => {
   next();
 };
 
-export const authenticate = api => (req, res, next) => {
+export const authenticate = () => (req, res, next) => {
   const { token } = req;
-
-  // get user from token HERE
-  const user = token === '12345' && { _id: '1234' };
+  const user = Services[USERS_COLLECTION].findOne({ apiToken: token });
 
   if (!user) {
     return sendResponse({ res, data: REST_API_ERRORS.AUTHORIZATION_FAILED });

@@ -26,11 +26,11 @@ export const REST_API_ERRORS = {
       message: 'Wrong token',
     },
   },
-  UNKNOWN_ENDPOINT: endpoint => ({
+  UNKNOWN_ENDPOINT: ({ path, method }) => ({
     statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
     body: {
       error: 'UNKNOWN_ENDPOINT',
-      message: `The endpoint ${endpoint} is not valid`,
+      message: `The endpoint ${method} ${path} is not valid`,
     },
   }),
 };
