@@ -15,13 +15,15 @@ import PromotionService from 'imports/core/api/promotions/PromotionService';
 import omit from 'lodash/omit';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
 
-describe('RESTAPI', () => {
+describe.only('RESTAPI', () => {
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
       this.skip();
     }
   });
+
+  const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
 
   const userToInvite = {
     email: 'test@example.com',
@@ -75,7 +77,7 @@ describe('RESTAPI', () => {
   describe('returns an error when', () => {
     it('endpoint path is unknown', () =>
       fetchAndCheckResponse({
-        url: 'http://localhost:4106/api/unknown_endpoint',
+        url: `http://localhost:${API_PORT}/api/unknown_endpoint`,
         data: { method: 'POST' },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/unknown_endpoint',
@@ -85,7 +87,7 @@ describe('RESTAPI', () => {
 
     it('endpoint method is unknown', () =>
       fetchAndCheckResponse({
-        url: 'http://localhost:4106/api/test',
+        url: `http://localhost:${API_PORT}/api/test`,
         data: { method: 'GET' },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/test',
@@ -95,7 +97,7 @@ describe('RESTAPI', () => {
 
     it('content type is wrong', () =>
       fetchAndCheckResponse({
-        url: 'http://localhost:4106/api/test',
+        url: `http://localhost:${API_PORT}/api/test`,
         data: {
           method: 'POST',
           headers: { 'Content-Type': 'plain/text' },
@@ -105,7 +107,7 @@ describe('RESTAPI', () => {
 
     it('authorization type is wrong', () =>
       fetchAndCheckResponse({
-        url: 'http://localhost:4106/api/test',
+        url: `http://localhost:${API_PORT}/api/test`,
         data: {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -115,7 +117,7 @@ describe('RESTAPI', () => {
 
     it('token is wrong', () =>
       fetchAndCheckResponse({
-        url: 'http://localhost:4106/api/test',
+        url: `http://localhost:${API_PORT}/api/test`,
         data: {
           method: 'POST',
           headers: {
@@ -129,7 +131,7 @@ describe('RESTAPI', () => {
 
   it('can authenticate', () =>
     fetchAndCheckResponse({
-      url: 'http://localhost:4106/api/test',
+      url: `http://localhost:${API_PORT}/api/test`,
       data: {
         method: 'POST',
         headers: {
@@ -156,7 +158,7 @@ describe('RESTAPI', () => {
     });
 
     return fetchAndCheckResponse({
-      url: 'http://localhost:4106/api/test2',
+      url: `http://localhost:${API_PORT}/api/test2`,
       data: {
         method: 'GET',
         headers: {
@@ -171,7 +173,7 @@ describe('RESTAPI', () => {
   describe('inviteUserToPromotion', () => {
     const inviteUserToPromotion = ({ userData, expectedResponse, id }) =>
       fetchAndCheckResponse({
-        url: 'http://localhost:4106/api/inviteUserToPromotion',
+        url: `http://localhost:${API_PORT}/api/inviteUserToPromotion`,
         data: {
           method: 'POST',
           headers: {
