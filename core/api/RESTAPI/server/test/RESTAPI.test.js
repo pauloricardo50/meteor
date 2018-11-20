@@ -15,7 +15,7 @@ import PromotionService from 'imports/core/api/promotions/PromotionService';
 import omit from 'lodash/omit';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
 
-describe.only('RESTAPI', () => {
+describe('RESTAPI', () => {
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
@@ -74,7 +74,7 @@ describe.only('RESTAPI', () => {
         expectedResponse,
       }));
 
-  describe('returns an error when', () => {
+  context('returns an error when', () => {
     it('endpoint path is unknown', () =>
       fetchAndCheckResponse({
         url: `http://localhost:${API_PORT}/api/unknown_endpoint`,
@@ -170,7 +170,7 @@ describe.only('RESTAPI', () => {
     });
   });
 
-  describe('inviteUserToPromotion', () => {
+  context('inviteUserToPromotion', () => {
     const inviteUserToPromotion = ({ userData, expectedResponse, id }) =>
       fetchAndCheckResponse({
         url: `http://localhost:${API_PORT}/api/inviteUserToPromotion`,
@@ -197,7 +197,7 @@ describe.only('RESTAPI', () => {
         }),
       });
 
-    describe('returns an error when', () => {
+    context('returns an error when', () => {
       it('promotion does not exist', () =>
         inviteUserToPromotion({
           userData: userToInvite,
