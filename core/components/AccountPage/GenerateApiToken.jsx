@@ -17,7 +17,7 @@ const GenerateApiToken = ({
 }: GenerateApiTokenProps) => (
   <div className="api-token-generator">
     <h4>Clé API</h4>
-    <p>{apiToken}</p>
+    {apiToken && <p>{apiToken}</p>}
     <Button onClick={generateToken} loading={loading} primary>
       Générer
     </Button>
