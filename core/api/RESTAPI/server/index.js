@@ -1,20 +1,12 @@
 import RESTAPI from './RESTAPI';
-import { HTTP_STATUS_CODES } from './constants';
+import { inviteUserToPromotion } from './endpoints';
 
 const startAPI = () => {
   const api = new RESTAPI('/api');
   api.connectHandlers({
-    path: '/api/hello',
-    handler: (req, res, next) =>
-      api.sendResponse({
-        res,
-        data: {
-          statusCode: HTTP_STATUS_CODES.OK,
-          body: {
-            message: 'Hello',
-          },
-        },
-      }),
+    path: '/api/inviteUserToPromotion',
+    method: 'POST',
+    handler: inviteUserToPromotion(api),
   });
   return api;
 };

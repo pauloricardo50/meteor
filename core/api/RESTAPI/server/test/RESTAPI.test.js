@@ -7,9 +7,15 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import fetch from 'node-fetch';
 import startAPI from '..';
 import { Factory } from 'meteor/dburles:factory';
+import {
+  DOCUMENT_USER_PERMISSIONS,
+  PROMOTION_STATUS,
+} from 'core/api/constants';
+import PromotionService from 'imports/core/api/promotions/PromotionService';
+import omit from 'lodash/omit';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
 
-describe.only('RESTAPI', () => {
+describe('RESTAPI', () => {
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
@@ -17,8 +23,15 @@ describe.only('RESTAPI', () => {
     }
   });
 
+  const userToInvite = {
+    email: 'test@example.com',
+    firstName: 'Test',
+    lastName: 'User',
+    phoneNumber: '1234',
+  };
   let user;
   let apiToken;
+  let promotionId;
   const api = startAPI();
   const responseData = req => ({
     statusCode: HTTP_STATUS_CODES.OK,
@@ -42,6 +55,7 @@ describe.only('RESTAPI', () => {
     resetDatabase();
     apiToken = Random.id(24);
     user = Factory.create('user', { apiToken });
+    promotionId = Factory.create('promotion')._id;
   });
 
   const checkResponse = ({ res, expectedResponse }) => {
@@ -84,9 +98,7 @@ describe.only('RESTAPI', () => {
         url: 'http://localhost:4106/api/test',
         data: {
           method: 'POST',
-          headers: {
-            'Content-Type': 'plain/text',
-          },
+          headers: { 'Content-Type': 'plain/text' },
         },
         expectedResponse: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text'),
       }));
@@ -96,9 +108,7 @@ describe.only('RESTAPI', () => {
         url: 'http://localhost:4106/api/test',
         data: {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
         },
         expectedResponse: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE,
       }));
@@ -133,9 +143,7 @@ describe.only('RESTAPI', () => {
   it('receive a response', () => {
     const expectedResponse = {
       statusCode: HTTP_STATUS_CODES.OK,
-      body: {
-        message: 'Test2',
-      },
+      body: { message: 'Test2' },
     };
     api.connectHandlers({
       method: 'GET',
@@ -157,6 +165,178 @@ describe.only('RESTAPI', () => {
         },
       },
       expectedResponse,
+    });
+  });
+
+  describe('inviteUserToPromotion', () => {
+    const inviteUserToPromotion = ({ userData, expectedResponse, id }) =>
+      fetchAndCheckResponse({
+        url: 'http://localhost:4106/api/inviteUserToPromotion',
+        data: {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.apiToken}`,
+          },
+          body: JSON.stringify({
+            promotionId: id || promotionId,
+            user: userData,
+          }),
+        },
+        expectedResponse,
+      });
+
+    const inviteUserMissingKey = ({ userData, keyToOmit }) =>
+      inviteUserToPromotion({
+        userData: omit(userData, keyToOmit),
+        expectedResponse: REST_API_ERRORS.MISSING_KEY({
+          key: keyToOmit,
+          object: 'user',
+        }),
+      });
+
+    describe('returns an error when', () => {
+      it('promotion does not exist', () =>
+        inviteUserToPromotion({
+          userData: userToInvite,
+          expectedResponse: REST_API_ERRORS.PROMOTION_NOT_FOUND('12345'),
+          id: '12345',
+        }));
+
+      it('user does not own the promotion', () =>
+        inviteUserToPromotion({
+          userData: userToInvite,
+          expectedResponse: REST_API_ERRORS.NOT_ALLOWED_TO_MODIFY_PROMOTION,
+        }));
+
+      it('user is not allowed to modify the promotion', () => {
+        PromotionService.addProUser({ promotionId, userId: user._id });
+        PromotionService.setUserPermissions({
+          promotionId,
+          userId: user._id,
+          permissions: DOCUMENT_USER_PERMISSIONS.READ,
+        });
+
+        return inviteUserToPromotion({
+          userData: userToInvite,
+          expectedResponse: REST_API_ERRORS.NOT_ALLOWED_TO_MODIFY_PROMOTION,
+        });
+      });
+
+      it('promotion is not open', () => {
+        PromotionService.addProUser({ promotionId, userId: user._id });
+        PromotionService.setUserPermissions({
+          promotionId,
+          userId: user._id,
+          permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+        });
+
+        return inviteUserToPromotion({
+          userData: userToInvite,
+          expectedResponse: {
+            statusCode: HTTP_STATUS_CODES.FORBIDDEN,
+            body: {
+              message:
+                "[Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.]",
+            },
+          },
+        });
+      });
+      it('user is missing informations', () => {
+        PromotionService.addProUser({ promotionId, userId: user._id });
+        PromotionService.setUserPermissions({
+          promotionId,
+          userId: user._id,
+          permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+        });
+        PromotionService.update({
+          promotionId,
+          object: { status: PROMOTION_STATUS.OPEN },
+        });
+
+        return inviteUserMissingKey({
+          userData: userToInvite,
+          keyToOmit: 'email',
+        })
+          .then(() =>
+            inviteUserMissingKey({
+              userData: userToInvite,
+              keyToOmit: 'firstName',
+            }))
+          .then(() =>
+            inviteUserMissingKey({
+              userData: userToInvite,
+              keyToOmit: 'lastName',
+            }))
+          .then(() =>
+            inviteUserMissingKey({
+              userData: userToInvite,
+              keyToOmit: 'phoneNumber',
+            }));
+      });
+
+      it('user is already invited to promotion', () => {
+        PromotionService.addProUser({ promotionId, userId: user._id });
+        PromotionService.setUserPermissions({
+          promotionId,
+          userId: user._id,
+          permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+        });
+        PromotionService.update({
+          promotionId,
+          object: { status: PROMOTION_STATUS.OPEN },
+        });
+
+        const expectedResponse = {
+          statusCode: HTTP_STATUS_CODES.OK,
+          body: {
+            message: `Invited user ${
+              userToInvite.email
+            } to promotion id ${promotionId}`,
+          },
+        };
+
+        return inviteUserToPromotion({
+          userData: userToInvite,
+          expectedResponse,
+        }).then(() =>
+          inviteUserToPromotion({
+            userData: userToInvite,
+            expectedResponse: {
+              statusCode: HTTP_STATUS_CODES.FORBIDDEN,
+              body: {
+                message: '[Cet utilisateur est déjà invité à cette promotion]',
+              },
+            },
+          }));
+      });
+    });
+
+    it('invites user to promotion', () => {
+      PromotionService.addProUser({ promotionId, userId: user._id });
+      PromotionService.setUserPermissions({
+        promotionId,
+        userId: user._id,
+        permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+      });
+      PromotionService.update({
+        promotionId,
+        object: { status: PROMOTION_STATUS.OPEN },
+      });
+
+      const expectedResponse = {
+        statusCode: HTTP_STATUS_CODES.OK,
+        body: {
+          message: `Invited user ${
+            userToInvite.email
+          } to promotion id ${promotionId}`,
+        },
+      };
+
+      return inviteUserToPromotion({
+        userData: userToInvite,
+        expectedResponse,
+      });
     });
   });
 });

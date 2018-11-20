@@ -33,4 +33,25 @@ export const REST_API_ERRORS = {
       message: `The endpoint ${method} ${path} is not valid`,
     },
   }),
+  PROMOTION_NOT_FOUND: promotionId => ({
+    statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
+    body: {
+      error: 'PROMOTION_NOT_FOUND',
+      message: `The promotion with id ${promotionId} was not found`,
+    },
+  }),
+  NOT_ALLOWED_TO_MODIFY_PROMOTION: {
+    statusCode: HTTP_STATUS_CODES.FORBIDDEN,
+    body: {
+      error: 'NOT_ALLOWED_TO_MODIFY_PROMOTION',
+      message: 'This promotion cannot be modified with this token',
+    },
+  },
+  MISSING_KEY: ({ key, object }) => ({
+    statusCode: HTTP_STATUS_CODES.BAD_REQUEST,
+    body: {
+      error: 'MISSING_KEY',
+      message: `Missing key ${key} from object ${object}`,
+    },
+  }),
 };

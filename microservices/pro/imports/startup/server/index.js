@@ -9,7 +9,7 @@ import 'core/api/api-server';
 
 import '../accounts-config';
 import './kadira.js';
-import startAPI from 'core/api/RESTAPI/';
+import startAPI from 'core/api/RESTAPI/server';
 
 Meteor.startup(() => {
   startAPI();
