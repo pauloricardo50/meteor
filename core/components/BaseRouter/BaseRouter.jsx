@@ -17,6 +17,16 @@ import GrapherPage from './GrapherPageLoadable';
 
 const isDev = process.env.NODE_ENV === 'development';
 
+const loginWithToken = ({ history, match: { params: { token } } }) => {
+  if (token) {
+    Meteor.loginWithToken(token, (err) => history.push('/'));
+  } else {
+    history.push('/login');
+  }
+
+  return null;
+};
+
 const BaseRouter = ({
   locale,
   messages,
@@ -43,6 +53,7 @@ const BaseRouter = ({
               which isn't automatic */}
           <ScrollToTop>
             <Switch>
+              <Route exact path="/login-token/:token" render={loginWithToken} />
               {/* LoginPage has to be above / path */}
               {hasLogin && <Route exact path="/login" component={LoginPage} />}
               {isDev && <Route exact path="/grapher" component={GrapherPage} />}
