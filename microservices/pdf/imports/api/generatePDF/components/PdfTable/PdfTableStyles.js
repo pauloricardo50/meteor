@@ -14,7 +14,7 @@ export default `
         padding: 8px 0px;
     }
 
-    .pdf-table tr td:last-of-type {
+    .pdf-table tr td:not(:first-of-type) {
         text-align: right;
     }
 

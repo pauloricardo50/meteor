@@ -112,7 +112,7 @@ const getBorrowersInfos = borrowers => ({
 
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
-const getFormattedMoneyArray = (array, negative = false, twoBorrowers) => {
+const getFormattedMoneyArray = ({ array, negative = false, twoBorrowers }) => {
   if (!twoBorrowers) {
     return [
       ...array.map((x, index) => (
@@ -145,7 +145,11 @@ const makeTableMoneyLine = twoBorrowers => ({
   condition,
 }) => ({
   label,
-  data: getFormattedMoneyArray(field, negative || false, twoBorrowers),
+  data: getFormattedMoneyArray({
+    array: field,
+    negative: negative || false,
+    twoBorrowers,
+  }),
   condition: condition || shouldRenderArray(field),
 });
 
@@ -154,9 +158,10 @@ const addTableEmptyLine = () => ({
   type: ROW_TYPES.EMPTY,
 });
 
-const addTableCategoryTitle = title => ({
+const addTableCategoryTitle = ({ title, multipleBorrowers }) => ({
   label: title,
   type: ROW_TYPES.TITLE_NO_PADDING,
+  colspan: multipleBorrowers ? 4 : 2,
 });
 
 const getBorrowersInfosArray = (borrowers) => {
@@ -228,7 +233,10 @@ const getBorrowersFinanceArray = (borrowers) => {
         ],
       style: { fontWeight: 'bold' },
     },
-    addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
+    addTableCategoryTitle({
+      title: <T id="PDF.borrowersInfos.category.income" />,
+      multipleBorrowers,
+    }),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.salary" />,
       field: salary,
@@ -251,12 +259,19 @@ const getBorrowersFinanceArray = (borrowers) => {
       })),
     {
       label: <T id="PDF.borrowersInfos.totalIncome" />,
-      data: getFormattedMoneyArray(borrowers.map(borrower =>
-        Calculator.getTotalIncome({ borrowers: borrower }))),
+      data: getFormattedMoneyArray({
+        array: borrowers.map(borrower =>
+          Calculator.getTotalIncome({ borrowers: borrower })),
+        negative: false,
+        twoBorrowers: multipleBorrowers,
+      }),
       type: ROW_TYPES.SUM,
     },
     addTableEmptyLine(),
-    addTableCategoryTitle(<T id="PDF.borrowersInfos.category.fortune" />),
+    addTableCategoryTitle({
+      title: <T id="PDF.borrowersInfos.category.fortune" />,
+      multipleBorrowers,
+    }),
     ...Object.values(OWN_FUNDS_TYPES).map(ownFund =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
@@ -278,8 +293,12 @@ const getBorrowersFinanceArray = (borrowers) => {
     }),
     {
       label: <T id="PDF.borrowersInfos.totalFortune" />,
-      data: getFormattedMoneyArray(borrowers.map(borrower =>
-        Calculator.getTotalFunds({ borrowers: borrower }))),
+      data: getFormattedMoneyArray({
+        array: borrowers.map(borrower =>
+          Calculator.getTotalFunds({ borrowers: borrower })),
+        negative: false,
+        twoBorrowers: multipleBorrowers,
+      }),
       type: ROW_TYPES.SUM,
     },
   ];

@@ -6,10 +6,6 @@ const stylesheet = `
     width: 100%;
 }
 
-.borrowers-recap {
-    width: 50%;
-}
-
 .borrowers-recap.twoBorrowers {
     width: 100%;
 }
