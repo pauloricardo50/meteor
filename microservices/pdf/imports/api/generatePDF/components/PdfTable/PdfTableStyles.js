@@ -27,7 +27,7 @@ export default `
     }
 
     .pdf-table tr.regular-row td {
-        font-weight: 400;
+        font-weight: 200;
     }
 
     .pdf-table tr.title-row {
@@ -39,7 +39,7 @@ export default `
         margin: 0;
         padding: 8px 0;
         text-align: left;
-        font-weight: 600;
+        font-weight: 800;
         width: 100%;
     }
 

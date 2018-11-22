@@ -41,6 +41,7 @@ const PdfPageStyles = `
         align-items: center;
         justify-content: flex-start;
         margin: 0;
+        color: ${BORDER_BLUE};
     }
 
     .pdf-page-title img {

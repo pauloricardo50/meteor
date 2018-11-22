@@ -1,4 +1,5 @@
 import recapStyleSheet from './recapStyleSheet';
+import { BORDER_BLUE } from '../../cssConstants';
 
 const stylesheet = `
 
@@ -25,6 +26,10 @@ const stylesheet = `
 .money-amount {
     text-align: right;  
     white-space: nowrap;
+}
+
+.borrowers-page h2 {
+    color: ${BORDER_BLUE}
 }
 
 ${recapStyleSheet}
