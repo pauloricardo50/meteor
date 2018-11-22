@@ -73,6 +73,20 @@ const getBorrowersOwnFunds = (borrowers, types) =>
     {},
   );
 
+const getBorrowersAddress = (borrowers) => {
+  if (borrowers.some(({ sameAddress }) => sameAddress === true)) {
+    const borrowerWithAddress = borrowers.find(({ city, zipCode }) => city && zipCode);
+    const address = [
+      borrowerWithAddress.zipCode,
+      borrowerWithAddress.city,
+    ].join(' ');
+    return [address, address];
+  }
+  const zipCodes = getBorrowersSingleInfo(borrowers, 'zipCode');
+  const cities = getBorrowersSingleInfo(borrowers, 'city');
+  return zipCodes.map((zipCode, index) => `${zipCode} ${cities[index]}`);
+};
+
 const getBorrowersInfos = borrowers => ({
   ...getBorrowersSingleInfos(borrowers, [
     'gender',
@@ -84,6 +98,7 @@ const getBorrowersInfos = borrowers => ({
     'bankFortune',
     'thirdPartyFortune',
   ]),
+  address: getBorrowersAddress(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(borrowers, Object.values(OTHER_INCOME)),
     totalIncome: getBorrowersOtherIncome(
@@ -175,6 +190,10 @@ const getBorrowersInfosArray = (borrowers) => {
         )),
       ],
       style: { fontWeight: 'bold' },
+    },
+    {
+      label: <T id="PDF.borrowersInfo.address" />,
+      data: borrowersInfos.address,
     },
     {
       label: <T id="PDF.borrowersInfos.age" />,
