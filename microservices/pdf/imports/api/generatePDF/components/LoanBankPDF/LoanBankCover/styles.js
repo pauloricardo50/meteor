@@ -1,4 +1,5 @@
 import * as styles from '../../utils/styleHelpers';
+import { BORDER_BLUE } from '../../cssConstants';
 
 const stylesheet = `
     .cover-page {
@@ -13,6 +14,10 @@ const stylesheet = `
         padding: 48px;
     } 
 
+    .loan-info h1,h2,h3,h4,h5{
+        color: ${BORDER_BLUE};
+    }
+
     .loan-info h1 {
         text-transform: uppercase;
     }
@@ -20,6 +25,10 @@ const stylesheet = `
     .loan-info h2 {
         margin-bottom: 48px;
         text-transform: uppercase;
+    }
+
+    .loan-info h4 {
+        margin-top: 48px;
     }
 
     .cover-page .cover-footer {

@@ -19,10 +19,15 @@ const footer = ({ name, email, phoneNumbers }) => (
   </div>
 );
 
-const loanInfo = (loan) => {
+const borrowersNames = borrowers => (
+  <h4>{borrowers.map(({ name }) => name).join(' et ')}</h4>
+);
+
+const loanInfo = ({ loan, anonymous = false }) => {
   const {
     name,
     general: { residenceType, purchaseType },
+    borrowers,
   } = loan;
   const { address1, zipCode, city } = loan.structure.property;
   return (
@@ -34,18 +39,24 @@ const loanInfo = (loan) => {
         <T id={`PDF.residenceType.${residenceType}`} />
       </h2>
       <h3>{`${address1}, ${zipCode} ${city}`}</h3>
+      {!anonymous && borrowersNames(borrowers)}
     </div>
   );
 };
 
-const LoanBankCover = ({ loan, pageNb, pageCount }: LoanBankCoverProps) => (
+const LoanBankCover = ({
+  loan,
+  pageNb,
+  pageCount,
+  options,
+}: LoanBankCoverProps) => (
   <PdfPage
     className="cover-page"
     fullHeight
     pageNb={pageNb}
     pageCount={pageCount}
   >
-    {loanInfo(loan)}
+    {loanInfo({ loan, anonymous: options && options.anonymous })}
     {footer(loan.user.assignedEmployee)}
   </PdfPage>
 );

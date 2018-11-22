@@ -12,14 +12,12 @@ type LoanBankPDFProps = {
   options?: Object,
 };
 
-const pages = loan => [
-  { Component: LoanBankCover, data: { loan } },
-  { Component: LoanBankProject, data: { loan } },
-  { Component: LoanBankBorrowers, data: { loan } },
+const pages = ({ loan, options }) => [
+  { Component: LoanBankCover, data: { loan, options } },
+  { Component: LoanBankProject, data: { loan, options } },
+  { Component: LoanBankBorrowers, data: { loan, options } },
 ];
 
-const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
-  <Pdf stylesheet={stylesheet} pages={pages(loan)} />
-);
+const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => <Pdf stylesheet={stylesheet} pages={pages({ loan, options })} />;
 
 export default LoanBankPDF;

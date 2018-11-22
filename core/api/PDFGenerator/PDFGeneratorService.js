@@ -59,7 +59,7 @@ class PDFGeneratorService {
       new Promise((resolve, reject) => {
         this.remote.call(
           '_generatePDF',
-          { type, data, options: { HTML: params.HTML } },
+          { type, data, options: params.options },
           (error, result) => {
             this.remote.disconnect();
             if (error) {

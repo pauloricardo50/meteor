@@ -89,6 +89,7 @@ const getBorrowersAddress = (borrowers) => {
 
 const getBorrowersInfos = borrowers => ({
   ...getBorrowersSingleInfos(borrowers, [
+    'name',
     'gender',
     'age',
     'childrenCount',
@@ -179,16 +180,20 @@ const addTableCategoryTitle = ({ title, multipleBorrowers }) => ({
   colspan: multipleBorrowers ? 4 : 2,
 });
 
-const getBorrowersInfosArray = (borrowers) => {
+const getBorrowersName = ({ borrowersInfos, anonymous }) => (anonymous
+  ? [
+    ...borrowersInfos.gender.map(gender => (
+      <T id={`PDF.borrowersInfos.gender.${gender}`} />
+    )),
+  ]
+  : borrowersInfos.name);
+
+const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
   const borrowersInfos = getBorrowersInfos(borrowers);
   return [
     {
       label: '\u00A0',
-      data: [
-        ...borrowersInfos.gender.map(gender => (
-          <T id={`PDF.borrowersInfos.gender.${gender}`} />
-        )),
-      ],
+      data: getBorrowersName({borrowersInfos, anonymous}),
       style: { fontWeight: 'bold' },
     },
     {
@@ -220,7 +225,7 @@ const getBorrowersInfosArray = (borrowers) => {
   ];
 };
 
-const getBorrowersFinanceArray = (borrowers) => {
+const getBorrowersFinanceArray = ({borrowers, anonymous}) => {
   const multipleBorrowers = borrowers.length > 1;
   const addTableMoneyLine = makeTableMoneyLine(multipleBorrowers);
   const borrowersInfos = getBorrowersInfos(borrowers);
@@ -240,16 +245,10 @@ const getBorrowersFinanceArray = (borrowers) => {
       label: '\u00A0',
       data: multipleBorrowers
         ? [
-          ...genders.map(gender => (
-            <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
-          )),
+          ...getBorrowersName({ borrowersInfos, anonymous }),
           <T id="PDF.borrowersInfos.total" key="total" />,
         ]
-        : [
-          ...genders.map(gender => (
-            <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
-          )),
-        ],
+        : getBorrowersName({ borrowersInfos, anonymous }),
       style: { fontWeight: 'bold' },
     },
     addTableCategoryTitle({
@@ -323,17 +322,21 @@ const getBorrowersFinanceArray = (borrowers) => {
   ];
 };
 
-const BorrowersRecap = ({ borrowers, twoBorrowers }: BorrowersRecapProps) => (
+const BorrowersRecap = ({
+  borrowers,
+  twoBorrowers,
+  anonymous = false,
+}: BorrowersRecapProps) => (
   <>
     <h2>Informations générales</h2>
     <PdfTable
       className={cx('borrowers-recap info', { twoBorrowers })}
-      rows={getBorrowersInfosArray(borrowers)}
+      rows={getBorrowersInfosArray({ borrowers, anonymous })}
     />
     <h2>Situation financière</h2>
     <PdfTable
       className={cx('borrowers-recap finance', { twoBorrowers })}
-      rows={getBorrowersFinanceArray(borrowers)}
+      rows={getBorrowersFinanceArray({borrowers, anonymous })}
     />
   </>
 );

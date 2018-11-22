@@ -13,6 +13,7 @@ const LoanBankBorrowers = ({
   loan: { borrowers },
   pageNb,
   pageCount,
+  options,
 }: LoanBankBorrowersProps) => (
   <PdfPage
     className="borrowers-page"
@@ -22,7 +23,11 @@ const LoanBankBorrowers = ({
     pageNb={pageNb}
     pageCount={pageCount}
   >
-    <BorrowersRecap borrowers={borrowers} twoBorrowers={borrowers.length > 1} />
+    <BorrowersRecap
+      borrowers={borrowers}
+      twoBorrowers={borrowers.length > 1}
+      anonymous={options && options.anonymous}
+    />
   </PdfPage>
 );
 
