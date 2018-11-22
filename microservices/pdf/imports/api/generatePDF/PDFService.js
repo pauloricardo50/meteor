@@ -48,7 +48,7 @@ class PDFService {
     const fileName = Random.id();
 
     switch (type) {
-    case PDF_TYPES.ANONYMOUS_LOAN:
+    case PDF_TYPES.LOAN:
       return {
         component: LoanBankPDF,
         props: { loan: data, options },

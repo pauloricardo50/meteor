@@ -43,7 +43,7 @@ class PDFGeneratorService {
 
   getDataForPDF = (type, params) => {
     switch (type) {
-    case PDF_TYPES.ANONYMOUS_LOAN: {
+    case PDF_TYPES.LOAN: {
       const { loanId } = params;
       return adminLoan.clone({ _id: loanId }).fetchOne();
     }

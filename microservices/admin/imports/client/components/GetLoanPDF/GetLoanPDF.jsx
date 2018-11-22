@@ -59,7 +59,7 @@ export default compose(
       setLoading(true);
       generatePDF
         .run({
-          type: PDF_TYPES.ANONYMOUS_LOAN,
+          type: PDF_TYPES.LOAN,
           params: { loanId, options: { anonymous } },
         })
         .then((base64) => {
@@ -80,7 +80,7 @@ export default compose(
       setLoading(true);
       generatePDF
         .run({
-          type: PDF_TYPES.ANONYMOUS_LOAN,
+          type: PDF_TYPES.LOAN,
           params: { loanId, options: { HTML: true, anonymous } },
         })
         .then((html) => {
