@@ -7,8 +7,8 @@ export const TEMPLATES = {
     borrowers: [
       {
         gender: 1,
-        zipCode: 1,
-        city: 1,
+        zipCode: { $or: 'sameAddress' },
+        city: { $or: 'sameAddress' },
       },
     ],
     structure: {
