@@ -53,15 +53,6 @@ const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
       {Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}
-
-      {/* <UploaderArray
-        documentArray={
-          documentArray || documentsToDisplay({ collection, loan, id: doc._id })
-        }
-        canModify
-        {...props}
-      /> */}
-
       <UploaderCategories
         documentsToDisplay={
           documentArray || documentsToDisplay({ collection, loan, id: doc._id })
@@ -75,17 +66,6 @@ const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
         canModify
         {...props}
       />
-      {/* {Meteor.microservice === 'admin' && (
-        <HiddenDocuments
-          documentArray={documentsToHide({
-            collection,
-            loan,
-            id: doc._id,
-            doc,
-          })}
-          {...props}
-        />
-      )} */}
     </div>
   );
 };
