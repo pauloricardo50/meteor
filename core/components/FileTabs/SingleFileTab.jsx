@@ -18,6 +18,8 @@ import {
 } from '../../api/files/documents';
 import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 
+import UploaderCategories from './UploaderCategories';
+
 type SingleFileTabProps = {
   collection: Sring,
   doc: Object,
@@ -52,14 +54,28 @@ const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}
 
-      <UploaderArray
+      {/* <UploaderArray
         documentArray={
           documentArray || documentsToDisplay({ collection, loan, id: doc._id })
         }
         canModify
         {...props}
+      /> */}
+
+      <UploaderCategories
+        documentsToDisplay={
+          documentArray || documentsToDisplay({ collection, loan, id: doc._id })
+        }
+        documentsToHide={documentsToHide({
+          collection,
+          loan,
+          id: doc._id,
+          doc,
+        })}
+        canModify
+        {...props}
       />
-      {Meteor.microservice === 'admin' && (
+      {/* {Meteor.microservice === 'admin' && (
         <HiddenDocuments
           documentArray={documentsToHide({
             collection,
@@ -69,7 +85,7 @@ const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
           })}
           {...props}
         />
-      )}
+      )} */}
     </div>
   );
 };
