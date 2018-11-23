@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import UploaderCategoriesContainer from './UploaderCategoriesContainer';
 import UploaderArray from '../UploaderArray/UploaderArray';
 import HiddenDocuments from '../UploaderArray/HiddenDocuments';
+import T from '../Translation';
 
 type UploaderCategoriesProps = {
   categories: Object,
@@ -20,12 +21,14 @@ const filterDocumentsForMicroservice = categories => category =>
 const UploaderCategories = (props: UploaderCategoriesProps) => {
   const { categories } = props;
   return (
-    <div>
+    <>
       {Object.keys(categories)
         .filter(filterDocumentsForMicroservice(categories))
         .map(category => (
-          <>
-            <h3>{category}</h3>
+          <div className="uploader-category" key={category}>
+            <h3>
+              <T id={`files.category.${category}`} />
+            </h3>
             <UploaderArray
               documentArray={categories[category].documentsToDisplay}
               {...props}
@@ -36,9 +39,9 @@ const UploaderCategories = (props: UploaderCategoriesProps) => {
                 {...props}
               />
             )}
-          </>
+          </div>
         ))}
-    </div>
+    </>
   );
 };
 

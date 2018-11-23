@@ -29,21 +29,22 @@ const makeOtherDocumentsObject = ({ documentsToDisplay, documentsToHide }) => ({
 });
 
 export default withProps(({ documentsToDisplay, documentsToHide }) => ({
-  categories: Object.keys(DOCUMENTS_CATEGORIES).reduce(
-    (categories, category) => ({
-      ...categories,
-      [category]: {
-        ...makeDocumentsForCategoryObject({
-          documentsToDisplay,
-          documentsToHide,
-          category,
-        }),
-      },
-    }),
-    {
-      OTHER: {
-        ...makeOtherDocumentsObject({ documentsToDisplay, documentsToHide }),
-      },
+  categories: {
+    ...Object.keys(DOCUMENTS_CATEGORIES).reduce(
+      (categories, category) => ({
+        ...categories,
+        [category]: {
+          ...makeDocumentsForCategoryObject({
+            documentsToDisplay,
+            documentsToHide,
+            category,
+          }),
+        },
+      }),
+      {},
+    ),
+    OTHER: {
+      ...makeOtherDocumentsObject({ documentsToDisplay, documentsToHide }),
     },
-  ),
+  },
 }));
