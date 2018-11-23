@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import UploaderCategoriesContainer from './UploaderCategoriesContainer';
 import UploaderArray from '../UploaderArray/UploaderArray';
 import HiddenDocuments from '../UploaderArray/HiddenDocuments';
@@ -8,16 +9,20 @@ type UploaderCategoriesProps = {
   categories: Object,
 };
 
+const filterDocumentsForMicroservice = categories => category =>
+  (Meteor.microservice === 'admin'
+    ? !(
+      categories[category].documentsToDisplay.length === 0
+        && categories[category].documentsToHide.length === 0
+    )
+    : categories[category].documentsToDisplay.length > 0);
+
 const UploaderCategories = (props: UploaderCategoriesProps) => {
   const { categories } = props;
   return (
     <div>
       {Object.keys(categories)
-        .filter(category =>
-          !(
-            categories[category].documentsToDisplay.length === 0
-              && categories[category].documentsToHide.length === 0
-          ))
+        .filter(filterDocumentsForMicroservice(categories))
         .map(category => (
           <>
             <h3>{category}</h3>
@@ -25,10 +30,12 @@ const UploaderCategories = (props: UploaderCategoriesProps) => {
               documentArray={categories[category].documentsToDisplay}
               {...props}
             />
-            <HiddenDocuments
-              documentArray={categories[category].documentsToHide}
-              {...props}
-            />
+            {Meteor.microservice === 'admin' && (
+              <HiddenDocuments
+                documentArray={categories[category].documentsToHide}
+                {...props}
+              />
+            )}
           </>
         ))}
     </div>
