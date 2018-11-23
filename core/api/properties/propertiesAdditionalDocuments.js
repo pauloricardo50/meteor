@@ -24,6 +24,11 @@ export const conditionalDocuments = [
       propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   {
+    id: DOCUMENTS.PROPERTY_MINERGIE_CERTIFICATE,
+    condition: ({ doc: { minergie } }) =>
+      minergie !== propertyConstants.MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
+  },
+  {
     id: DOCUMENTS.COOWNERSHIP_AGREEMENT,
     condition: ({ doc: { isCoproperty } }) => isCoproperty === true,
   },
@@ -42,25 +47,5 @@ export const conditionalDocuments = [
     condition: ({ doc: { _id: propertyId, userId } }) =>
       getLoanResidenceType({ propertyId, userId })
       === RESIDENCE_TYPE.INVESTMENT,
-  },
-  {
-    id: DOCUMENTS.INVESTEMENT_PROPERTY_WORKS_HISTORY,
-    condition: ({ doc: { _id: propertyId, userId } }) =>
-      getLoanResidenceType({ propertyId, userId })
-      === RESIDENCE_TYPE.INVESTMENT,
-  },
-  {
-    id: DOCUMENTS.INVESTMENT_PROPERTY_CONDOMINIUM_OWNERSHIP_DIVISION_REGISTER,
-    condition: ({ doc: { _id: propertyId, userId, propertyType } }) =>
-      getLoanResidenceType({ propertyId, userId })
-        === RESIDENCE_TYPE.INVESTMENT
-      && propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
-  },
-  {
-    id: DOCUMENTS.INVESTMENT_PROPERTY_CONDOMINIUM_REGULATION,
-    condition: ({ doc: { _id: propertyId, userId, propertyType } }) =>
-      getLoanResidenceType({ propertyId, userId })
-        === RESIDENCE_TYPE.INVESTMENT
-      && propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
   },
 ];
