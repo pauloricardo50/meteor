@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Router } from 'react-router-dom';
@@ -17,9 +19,9 @@ import GrapherPage from './GrapherPageLoadable';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const loginWithToken = ({ history, match: { params: { token } } }) => {
+const loginWithToken = ({ match: { params: { token } } }) => {
   if (token) {
-    Meteor.loginWithToken(token, (err) => history.push('/'));
+    Meteor.loginWithToken(token, () => history.push('/'));
   } else {
     history.push('/login');
   }

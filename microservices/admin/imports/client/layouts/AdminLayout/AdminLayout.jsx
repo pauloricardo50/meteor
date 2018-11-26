@@ -9,7 +9,6 @@ import { HotKeys } from 'react-hotkeys';
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import PageHead from 'core/components/PageHead';
-import getBaseRedirect from 'core/utils/redirection';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';

@@ -19,11 +19,9 @@ export const isOnAllowedRoute = (path, routes) =>
 
 const redirectIfInRoleForOtherApp = (currentUser, app, role) => {
   const inApp = Meteor.settings.public.microservice === app;
-  console.log({inApp});
   if (inApp) return;
 
   const inRole = Roles.userIsInRole(currentUser, role);
-  console.log({inRole});
   if (!inRole) return;
 
   const url = [
