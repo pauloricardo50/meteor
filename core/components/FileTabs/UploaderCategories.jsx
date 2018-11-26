@@ -1,6 +1,7 @@
 // @flow
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import React from 'react';
+
 import UploaderCategoriesContainer from './UploaderCategoriesContainer';
 import UploaderArray from '../UploaderArray/UploaderArray';
 import HiddenDocuments from '../UploaderArray/HiddenDocuments';
@@ -20,29 +21,25 @@ const filterDocumentsForMicroservice = categories => category =>
 
 const UploaderCategories = (props: UploaderCategoriesProps) => {
   const { categories } = props;
-  return (
-    <>
-      {Object.keys(categories)
-        .filter(filterDocumentsForMicroservice(categories))
-        .map(category => (
-          <div className="uploader-category" key={category}>
-            <h3>
-              <T id={`files.category.${category}`} />
-            </h3>
-            <UploaderArray
-              documentArray={categories[category].documentsToDisplay}
-              {...props}
-            />
-            {Meteor.microservice === 'admin' && (
-              <HiddenDocuments
-                documentArray={categories[category].documentsToHide}
-                {...props}
-              />
-            )}
-          </div>
-        ))}
-    </>
-  );
+  return Object.keys(categories)
+    .filter(filterDocumentsForMicroservice(categories))
+    .map(category => (
+      <div className="uploader-category" key={category}>
+        <h3>
+          <T id={`files.category.${category}`} />
+        </h3>
+        <UploaderArray
+          documentArray={categories[category].documentsToDisplay}
+          {...props}
+        />
+        {Meteor.microservice === 'admin' && (
+          <HiddenDocuments
+            documentArray={categories[category].documentsToHide}
+            {...props}
+          />
+        )}
+      </div>
+    ));
 };
 
 export default UploaderCategoriesContainer(UploaderCategories);

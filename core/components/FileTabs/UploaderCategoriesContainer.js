@@ -1,8 +1,9 @@
 import { withProps } from 'recompose';
 import { DOCUMENTS_CATEGORIES } from '../../api/files/fileConstants';
 
-const getDocumentsForCategory = ({ documents, categoryDocuments }) =>
-  documents.filter(({ id }) => categoryDocuments.includes(id));
+const getDocumentsForCategory = ({ documents, documentsCategory }) =>
+  documents.filter(({ id }) => documentsCategory.includes(id));
+
 const makeDocumentsForCategoryObject = ({
   documentsToDisplay,
   documentsToHide,
@@ -10,11 +11,11 @@ const makeDocumentsForCategoryObject = ({
 }) => ({
   documentsToDisplay: getDocumentsForCategory({
     documents: documentsToDisplay,
-    categoryDocuments: DOCUMENTS_CATEGORIES[category],
+    documentsCategory: DOCUMENTS_CATEGORIES[category],
   }),
   documentsToHide: getDocumentsForCategory({
     documents: documentsToHide,
-    categoryDocuments: DOCUMENTS_CATEGORIES[category],
+    documentsCategory: DOCUMENTS_CATEGORIES[category],
   }),
 });
 
@@ -33,18 +34,14 @@ export default withProps(({ documentsToDisplay, documentsToHide }) => ({
     ...Object.keys(DOCUMENTS_CATEGORIES).reduce(
       (categories, category) => ({
         ...categories,
-        [category]: {
-          ...makeDocumentsForCategoryObject({
-            documentsToDisplay,
-            documentsToHide,
-            category,
-          }),
-        },
+        [category]: makeDocumentsForCategoryObject({
+          documentsToDisplay,
+          documentsToHide,
+          category,
+        }),
       }),
       {},
     ),
-    OTHER: {
-      ...makeOtherDocumentsObject({ documentsToDisplay, documentsToHide }),
-    },
+    OTHER: makeOtherDocumentsObject({ documentsToDisplay, documentsToHide }),
   },
 }));
