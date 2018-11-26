@@ -17,7 +17,7 @@ const WITHOUT_LOGIN = [
 export const isOnAllowedRoute = (path, routes) =>
   routes.some(allowedRoute => path.startsWith(allowedRoute));
 
-const redirectIfInRoleForOtherApp = (currentUser, app, role) => {
+export const getRedirectIfInRoleForOtherApp = (currentUser, role, app) => {
   const inApp = Meteor.settings.public.microservice === app;
   if (inApp) return;
 
@@ -30,7 +30,12 @@ const redirectIfInRoleForOtherApp = (currentUser, app, role) => {
     Accounts._storedLoginToken(),
   ];
 
-  window.location.replace(url.join(''));
+  return url.join('');
+};
+
+const redirectIfInRoleForOtherApp = (...args) => {
+  const url = getRedirectIfInRoleForOtherApp(...args);
+  if (url) window.location.replace(url);
 };
 
 const getBaseRedirect = (currentUser, pathname) => {
@@ -43,8 +48,8 @@ const getBaseRedirect = (currentUser, pathname) => {
   const isDev = Roles.userIsInRole(currentUser, ROLES.DEV);
   if (isDev) return false;
 
-  redirectIfInRoleForOtherApp(currentUser, 'app', ROLES.USER);
-  redirectIfInRoleForOtherApp(currentUser, 'pro', ROLES.PRO);
+  redirectIfInRoleForOtherApp(currentUser, ROLES.USER, 'app');
+  redirectIfInRoleForOtherApp(currentUser, ROLES.PRO, 'pro');
 };
 
 export default getBaseRedirect;
