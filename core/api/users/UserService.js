@@ -1,6 +1,7 @@
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
+import { Random } from 'meteor/random';
 import Loans from '../loans';
 import CollectionService from '../helpers/CollectionService';
 import { fullUserFragment } from './queries/userFragments/index';
@@ -108,6 +109,11 @@ class UserService extends CollectionService {
     Accounts.addEmail(userId, newEmail);
     Accounts.removeEmail(userId, emails[0].address);
     Accounts.sendVerificationEmail(userId);
+  };
+
+  generateApiToken = ({ userId }) => {
+    const apiToken = Random.id(24);
+    return this._update({ id: userId, object: { apiToken }, operator: '$set' });
   };
 }
 

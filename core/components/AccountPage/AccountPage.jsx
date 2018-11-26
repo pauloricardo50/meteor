@@ -7,6 +7,7 @@ import T from '../Translation';
 import Page from '../Page';
 import PasswordChange from './PasswordChange';
 import AccountResetter from '../AccountResetter/AccountResetter';
+import GenerateApiToken from './GenerateApiToken';
 
 const styles = {
   section: {
@@ -22,31 +23,38 @@ const styles = {
   },
 };
 
-const AccountPage = ({ currentUser: { email, _id: userId } }) => (
-  <Page id="AccountPage" topFullWidth={Meteor.microservice === 'pro'}>
-    <div className="card1 card-top" style={styles.section}>
-      <div style={styles.div}>
-        <div className="form-group">
-          <h4 style={styles.h}>
-            <T id="AccountPage.email" />
-          </h4>
-          <br />
-          <p className="secondary">{email}</p>
-        </div>
+const AccountPage = ({ currentUser }) => {
+  const { email, _id: userId } = currentUser;
+  return (
+    <Page id="AccountPage" topFullWidth={Meteor.microservice === 'pro'}>
+      <div className="card1 card-top" style={styles.section}>
+        <div style={styles.div}>
+          <div className="form-group">
+            <h4 style={styles.h}>
+              <T id="AccountPage.email" />
+            </h4>
+            <br />
+            <p className="secondary">{email}</p>
+          </div>
 
-        <div className="form-group">
-          <h4 style={styles.h}>
-            <T id="AccountPage.password" />
-          </h4>
-          <br />
-          <PasswordChange />
-        </div>
+          <div className="form-group">
+            <h4 style={styles.h}>
+              <T id="AccountPage.password" />
+            </h4>
+            <br />
+            <PasswordChange />
+          </div>
 
-        {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
+          {Meteor.microservice === 'pro' && (
+            <GenerateApiToken user={currentUser} />
+          )}
+
+          {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
+        </div>
       </div>
-    </div>
-  </Page>
-);
+    </Page>
+  );
+};
 
 AccountPage.propTypes = {
   currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
