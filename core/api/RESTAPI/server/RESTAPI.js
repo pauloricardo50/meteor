@@ -47,7 +47,6 @@ export default class RESTAPI {
   }
 
   sendResponse({ res, data: { statusCode, body } }) {
-    console.log(body);
     res.setHeader('Content-Type', 'application/json');
     res.writeHead(statusCode);
     return res.end(JSON.stringify(body));
