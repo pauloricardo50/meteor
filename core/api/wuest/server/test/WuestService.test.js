@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import WuestService from '../WuestService';
+import WuestService, { getPriceRange } from '../WuestService';
 
 import * as wuestConstants from '../../wuestConstants';
 import { QUALITY } from '../../../constants';
@@ -474,9 +474,17 @@ describe('WuestService', function () {
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
-        expect(result.min).to.equal(640000);
-        expect(result.max).to.equal(770000);
-        expect(result.value).to.equal(709000);
+        const marketValueBeforeCorrection = 709000;
+        const statisticalPriceRangeMin = 640000;
+        const statisticalPriceRangeMax = 770000;
+        const priceRange = getPriceRange({
+          marketValueBeforeCorrection,
+          statisticalPriceRangeMin,
+          statisticalPriceRangeMax,
+        });
+        expect(result.min).to.equal(priceRange.min);
+        expect(result.max).to.equal(priceRange.max);
+        expect(result.value).to.equal(marketValueBeforeCorrection);
       });
     });
 

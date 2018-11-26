@@ -10,7 +10,11 @@ import WuestFlat from './WuestFlat';
 import { URL, TOKEN } from './API_KEY';
 import * as wuestConstants from '../wuestConstants';
 import Properties from '../../properties';
-import { PROPERTY_TYPE, RESIDENCE_TYPE } from '../../constants';
+import {
+  PROPERTY_TYPE,
+  RESIDENCE_TYPE,
+  VALUATION_RANGE_FACTOR,
+} from '../../constants';
 
 const valueIsDefined = value => (value === 0 ? true : !!value);
 class WuestService {
@@ -574,6 +578,23 @@ class WuestService {
     };
   }
 
+  getPriceRange({
+    marketValueBeforeCorrection,
+    statisticalPriceRangeMin,
+    statisticalPriceRangeMax,
+  }) {
+    return {
+      min:
+        marketValueBeforeCorrection
+        - VALUATION_RANGE_FACTOR
+          * (marketValueBeforeCorrection - statisticalPriceRangeMin),
+      max:
+        marketValueBeforeCorrection
+        + VALUATION_RANGE_FACTOR
+          * (statisticalPriceRangeMax - marketValueBeforeCorrection),
+    };
+  }
+
   formatResult({ keyFigures: { marketValueBeforeCorrection }, embedded }) {
     const {
       statisticalPriceRangeMin,
@@ -589,8 +610,11 @@ class WuestService {
 
     return {
       value: marketValueBeforeCorrection,
-      min: statisticalPriceRangeMin,
-      max: statisticalPriceRangeMax,
+      ...this.getPriceRange({
+        marketValueBeforeCorrection,
+        statisticalPriceRangeMin,
+        statisticalPriceRangeMax,
+      }),
       microlocation: this.formatMicrolocation(microlocation),
     };
   }
@@ -641,3 +665,5 @@ class WuestService {
 }
 
 export default new WuestService();
+
+export const getPriceRange = WuestService.prototype.getPriceRange;
