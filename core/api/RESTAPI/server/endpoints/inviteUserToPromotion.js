@@ -8,27 +8,23 @@ const INVITE_USER_BODY_TEMPLATE = {
   user: { email: 1, firstName: 1, lastName: 1, phoneNumber: 1 },
 };
 
-const checkPermissions = ({ api, res, userId, body: { promotionId } }) => {
+const checkPermissions = ({ userId, body: { promotionId } }) => {
   const promotion = PromotionService.get(promotionId);
   if (!promotion) {
-    return api.sendResponse({
-      res,
-      data: REST_API_ERRORS.PROMOTION_NOT_FOUND(promotionId),
-    });
+    return REST_API_ERRORS.PROMOTION_NOT_FOUND(promotionId);
   }
 
   const userLinked = promotion.userLinks.find(({ _id }) => _id === userId);
   const permissions = userLinked && userLinked.permissions;
 
   if (!userLinked || permissions !== DOCUMENT_USER_PERMISSIONS.MODIFY) {
-    return api.sendResponse({
-      res,
-      data: REST_API_ERRORS.NOT_ALLOWED_TO_MODIFY_PROMOTION,
-    });
+    return REST_API_ERRORS.NOT_ALLOWED_TO_MODIFY_PROMOTION;
   }
+
+  return null;
 };
 
-const checkStructure = ({ api, res, body }) => {
+const checkStructure = ({ body }) => {
   try {
     const checkObjectStructure = makeCheckObjectStructure({
       missingKey: (key, parentKey) =>
@@ -36,20 +32,24 @@ const checkStructure = ({ api, res, body }) => {
     });
     checkObjectStructure({ obj: body, template: INVITE_USER_BODY_TEMPLATE });
   } catch (error) {
-    return api.sendResponse({ res, data: error });
+    return error;
   }
+
+  return null;
 };
 
-const verifyData = ({ api, res, userId, body }) => {
-  checkStructure({ api, res, body });
-  checkPermissions({ api, res, userId, body });
-};
+const verifyData = ({ api, res, userId, body }) =>
+  checkStructure({ api, res, body })
+  || checkPermissions({ api, res, userId, body });
 
 export const inviteUserToPromotion = api => (
   { user: { _id: userId }, body },
   res,
 ) => {
-  verifyData({ api, res, userId, body });
+  const error = verifyData({ api, res, userId, body });
+  if (error) {
+    return api.sendResponse({ res, data: error });
+  }
   const { promotionId, user } = body;
   try {
     return PromotionService.inviteUser({ promotionId, user }).then(() =>
@@ -64,12 +64,12 @@ export const inviteUserToPromotion = api => (
           },
         },
       }));
-  } catch (error) {
+  } catch (err) {
     return api.sendResponse({
       res,
       data: {
         statusCode: HTTP_STATUS_CODES.FORBIDDEN,
-        body: { message: error.message },
+        body: { message: err.message },
       },
     });
   }
