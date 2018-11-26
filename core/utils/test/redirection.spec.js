@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import { getRedirectIfInRoleForOtherApp } from '../redirection';
 import { ROLES } from '../../api/constants';
 
-describe.only('getRedirectIfInRoleForOtherApp', () => {
+describe('getRedirectIfInRoleForOtherApp', () => {
   const token = Random.id();
 
   beforeEach(() => {
