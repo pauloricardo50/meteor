@@ -37,8 +37,8 @@ describe('CombinedCalculator', () => {
           logic: { step: STEPS.PREPARATION },
         },
       });
-      expect(progress.percent).to.be.within(0.14, 0.15);
-      expect(progress.count).to.equal(21);
+      expect(progress.percent).to.be.within(0.15, 0.16);
+      expect(progress.count).to.equal(19);
     });
   });
 });

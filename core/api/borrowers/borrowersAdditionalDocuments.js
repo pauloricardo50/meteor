@@ -5,7 +5,6 @@ export const initialDocuments = [
   { id: DOCUMENTS.IDENTITY },
   { id: DOCUMENTS.DEBT_COLLECTION_REGISTER_EXTRACT },
   { id: DOCUMENTS.TAXES },
-  { id: DOCUMENTS.TAX_STATEMENT },
   { id: DOCUMENTS.SALARY_CERTIFICATE },
   { id: DOCUMENTS.LAST_SALARIES },
   { id: DOCUMENTS.OWN_FUNDS_JUSTIFICATION },
@@ -15,6 +14,11 @@ export const conditionalDocuments = [
   {
     id: DOCUMENTS.RESIDENCY_PERMIT,
     condition: ({ doc: { isSwiss } }) => isSwiss === false,
+  },
+  {
+    id: DOCUMENTS.DIVORCE_RULING,
+    condition: ({ doc: { civilStatus } }) =>
+      civilStatus === borrowerConstants.CIVIL_STATUS.DIVORCED,
   },
   {
     id: DOCUMENTS.BONUSES,
@@ -33,13 +37,6 @@ export const conditionalDocuments = [
   },
   {
     id: DOCUMENTS.CURRENT_MORTGAGES,
-    condition: ({ doc: { realEstate } }) =>
-      realEstate
-      && realEstate.length > 0
-      && realEstate.some(({ loan }) => loan > 0),
-  },
-  {
-    id: DOCUMENTS.CURRENT_MORTGAGES_INTERESTS_STATEMENT,
     condition: ({ doc: { realEstate } }) =>
       realEstate
       && realEstate.length > 0
