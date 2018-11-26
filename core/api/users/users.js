@@ -85,6 +85,10 @@ const UserSchema = new SimpleSchema({
   'phoneNumbers.$': {
     type: String,
   },
+  apiToken: {
+    type: String,
+    optional: true,
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);

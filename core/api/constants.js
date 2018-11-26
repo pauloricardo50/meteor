@@ -9,6 +9,7 @@ import { PROMOTION_OPTIONS_COLLECTION } from './promotionOptions/promotionOption
 import { PROMOTIONS_COLLECTION } from './promotions/promotionConstants';
 import { PROPERTIES_COLLECTION } from './properties/propertyConstants';
 import { TASKS_COLLECTION } from './tasks/taskConstants';
+import { USERS_COLLECTION } from './users/userConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './files/fileConstants';
@@ -41,4 +42,5 @@ export const COLLECTIONS = {
   TASKS_COLLECTION,
   OFFERS_COLLECTION,
   ORGANISATIONS_COLLECTION,
+  USERS_COLLECTION,
 };

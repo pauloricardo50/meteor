@@ -476,7 +476,7 @@ describe('WuestService', function () {
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
         expect(result.min).to.equal(640000);
         expect(result.max).to.equal(770000);
-        expect(result.value).to.equal(705000);
+        expect(result.value).to.equal(709000);
       });
     });
 
