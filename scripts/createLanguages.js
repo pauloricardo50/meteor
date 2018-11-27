@@ -19,6 +19,7 @@ const config = {
         'AdminFilesTab',
         'AdminPromotionPage',
         'ArrayInput',
+        'BorrowerRemover',
         'collections',
         'ConditionsButton',
         'ConfirmMethod',
