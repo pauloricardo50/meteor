@@ -1,3 +1,5 @@
+import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
 import { ROLES } from '../api/constants';
@@ -15,6 +17,27 @@ const WITHOUT_LOGIN = [
 export const isOnAllowedRoute = (path, routes) =>
   routes.some(allowedRoute => path.startsWith(allowedRoute));
 
+export const getRedirectIfInRoleForOtherApp = (currentUser, role, app) => {
+  const inApp = Meteor.settings.public.microservice === app;
+  if (inApp) return;
+
+  const inRole = Roles.userIsInRole(currentUser, role);
+  if (!inRole) return;
+
+  const url = [
+    Meteor.settings.public.subdomains[app],
+    '/login-token/',
+    Accounts._storedLoginToken(),
+  ];
+
+  return url.join('');
+};
+
+const redirectIfInRoleForOtherApp = (...args) => {
+  const url = getRedirectIfInRoleForOtherApp(...args);
+  if (url) window.location.replace(url);
+};
+
 const getBaseRedirect = (currentUser, pathname) => {
   if (!currentUser) {
     return isOnAllowedRoute(pathname, WITHOUT_LOGIN)
@@ -22,11 +45,11 @@ const getBaseRedirect = (currentUser, pathname) => {
       : `/login?path=${pathname}`;
   }
 
-  const userIsDev = Roles.userIsInRole(currentUser, ROLES.DEV);
+  const isDev = Roles.userIsInRole(currentUser, ROLES.DEV);
+  if (isDev) return false;
 
-  if (userIsDev) {
-    return false;
-  }
+  redirectIfInRoleForOtherApp(currentUser, ROLES.USER, 'app');
+  redirectIfInRoleForOtherApp(currentUser, ROLES.PRO, 'pro');
 };
 
 export default getBaseRedirect;

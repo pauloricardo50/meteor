@@ -18,7 +18,7 @@ const getRedirect = ({ currentUser }) => {
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!(userIsAdmin || userIsDev) && !(Meteor.isTest || Meteor.isAppTest)) {
-    window.location.replace(`${Meteor.settings.public.subdomains.app}`);
+    window.location.replace(Meteor.settings.public.subdomains.app);
   }
 
   return false;
