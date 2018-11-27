@@ -1,5 +1,4 @@
 // @flow
-import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { toMoney } from 'core/utils/conversionFunctions';
 import T from 'core/components/Translation';
@@ -51,9 +50,7 @@ const ValuationResult = ({
             </h4>
           </div>
         )}
-        {Meteor.microservice === 'admin' && (
-          <Microlocation microlocation={microlocation} />
-        )}
+        <Microlocation microlocation={microlocation} />
       </div>
     );
 
