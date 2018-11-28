@@ -36,7 +36,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           return 0;
         }
         sum += [
-          ...(borrower[key]
+          ...(borrower[key] && borrower[key].length > 0
             ? borrower[key].map(mapFunc || (i => i.value))
             : []),
         ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
