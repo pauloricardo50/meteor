@@ -17,6 +17,7 @@ import {
   throwDevError,
   setAdditionalDoc,
   migrateToLatest,
+  updateDocument,
 } from '../methodDefinitions';
 
 import { migrate } from '../../migrations/server';
@@ -136,4 +137,16 @@ setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, require
 migrateToLatest.setHandler(({ userId }) => {
   SecurityService.checkCurrentUserIsDev();
   migrate();
+});
+
+updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
+  const service = Services[collection];
+  const doc = service.findOne(docId);
+  try {
+    SecurityService.checkUserIsAdmin(userId);
+  } catch (error) {
+    SecurityService.checkOwnership(doc);
+  }
+
+  return service.update({ id: docId, object });
 });

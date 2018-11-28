@@ -2,6 +2,7 @@
 import SimpleSchema from 'simpl-schema';
 import uniforms from 'uniforms-material'; // Leave this imported here for autoforms to work
 
+import DateField from 'imports/core/components/DateField/DateField';
 import {
   createdAt,
   updatedAt,
@@ -22,6 +23,8 @@ const LoanSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
+  disbursementDate: { type: Date, optional: true, uniforms: DateField },
+  signingDate: { type: Date, optional: true, uniforms: DateField },
   status: {
     type: String,
     defaultValue: LOAN_STATUS.LEAD,

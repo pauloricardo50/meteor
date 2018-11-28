@@ -7,6 +7,10 @@ import UpdateField from 'core/components/UpdateField';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
 import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import DateModifier from 'core/components/DateModifier';
+import { LOANS_COLLECTION } from 'imports/core/api/constants';
+
+console.log('DateModifier', DateModifier);
 
 type SingleLoanPageHeaderProps = {};
 
@@ -34,6 +38,11 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
       </Link>
       <UpdateField doc={loan} fields={['status']} />
     </h1>
+    <DateModifier
+      collection={LOANS_COLLECTION}
+      doc={loan}
+      dateField="signingDate"
+    />
     {loan.hasPromotion && (
       <CollectionIconLink
         relatedDoc={{
