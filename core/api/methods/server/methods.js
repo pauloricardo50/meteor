@@ -148,5 +148,5 @@ updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
     SecurityService.checkOwnership(doc);
   }
 
-  return service.update({ id: docId, object });
+  return service._update({ id: docId, object });
 });

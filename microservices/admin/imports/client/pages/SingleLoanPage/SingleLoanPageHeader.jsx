@@ -38,11 +38,16 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
       </Link>
       <UpdateField doc={loan} fields={['status']} />
     </h1>
-    <DateModifier
-      collection={LOANS_COLLECTION}
-      doc={loan}
-      dateField="signingDate"
-    />
+    <div className="single-loan-date-modifiers">
+      {['signing', 'disbursement'].map(dateType => (
+        <DateModifier
+          collection={LOANS_COLLECTION}
+          doc={loan}
+          dateField={`${dateType}Date`}
+          key={`${loan._id}${dateType}`}
+        />
+      ))}
+    </div>
     {loan.hasPromotion && (
       <CollectionIconLink
         relatedDoc={{

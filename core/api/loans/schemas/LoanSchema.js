@@ -23,8 +23,8 @@ const LoanSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  disbursementDate: { type: Date, optional: true, uniforms: DateField },
-  signingDate: { type: Date, optional: true, uniforms: DateField },
+  disbursementDate: { type: Date, optional: true },
+  signingDate: { type: Date, optional: true },
   status: {
     type: String,
     defaultValue: LOAN_STATUS.LEAD,
