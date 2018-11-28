@@ -29,6 +29,7 @@ export const adminLoanFragment = {
   status: 1,
   properties: adminPropertyFragment,
   signingDate: 1,
+  disbursementDate: 1,
 };
 
 export const adminLoansFragment = {
@@ -38,6 +39,7 @@ export const adminLoansFragment = {
   properties: { value: 1, address1: 1 },
   user: { assignedEmployee: { email: 1 }, name: 1 },
   signingDate: 1,
+  disbursementDate: 1,
 };
 
 export const proLoansFragment = {
