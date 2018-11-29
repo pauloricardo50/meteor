@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-import { compose, withProps } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
 
 import T from 'core/components/Translation';
@@ -27,7 +26,7 @@ const getColumnOptions = () => [
   { id: 'actions', label: <T id="TasksTable.actions" /> },
 ];
 
-const makeMapTask = ({ history }) => (task) => {
+const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
   const {
     _id: taskId,
     title,
@@ -83,15 +82,17 @@ const makeMapTask = ({ history }) => (task) => {
       },
     ],
     handleClick: () => {
-      history.push(`/${collection}/${relatedDocId}`);
+      setTaskToModify(task);
+      setShowDialog(true);
     },
   };
 };
 
 export default compose(
-  withRouter,
-  withProps(({ tasks = [], history }) => ({
-    rows: tasks.map(makeMapTask({ history })),
+  withState('taskToModify', 'setTaskToModify', null),
+  withState('showDialog', 'setShowDialog', false),
+  withProps(({ tasks = [], setTaskToModify, setShowDialog }) => ({
+    rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog })),
     columnOptions: getColumnOptions(),
   })),
 );
