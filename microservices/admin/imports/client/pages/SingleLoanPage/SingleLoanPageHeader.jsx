@@ -10,8 +10,6 @@ import { PROMOTIONS_COLLECTION } from 'core/api/constants';
 import DateModifier from 'core/components/DateModifier';
 import { LOANS_COLLECTION } from 'imports/core/api/constants';
 
-console.log('DateModifier', DateModifier);
-
 type SingleLoanPageHeaderProps = {};
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
@@ -39,11 +37,11 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
       <UpdateField doc={loan} fields={['status']} />
     </h1>
     <div className="single-loan-date-modifiers">
-      {['signing', 'disbursement'].map(dateType => (
+      {['signingDate', 'closingDate'].map(dateType => (
         <DateModifier
           collection={LOANS_COLLECTION}
           doc={loan}
-          dateField={`${dateType}Date`}
+          field={dateType}
           key={`${loan._id}${dateType}`}
         />
       ))}

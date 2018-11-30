@@ -1,6 +1,6 @@
 {
   "Forms.signingDate": "Date de signature",
-  "Forms.disbursementDate": "Date de décaissement",
+  "Forms.closingDate": "Date de décaissement",
   "files.PROPERTY_FUTURE_WORKS": "Travaux envisagés",
   "files.PROPERTY_FUTURE_WORKS.tooltip": "Devis et descriptifs des travaux",
   "files.PROPERTY_MINERGIE_CERTIFICATE": "Certificat énergétique",
