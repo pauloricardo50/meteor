@@ -97,7 +97,7 @@ class PDFService {
         document_content: html,
         name: pdfName,
         type: 'pdf',
-        test: true,
+        test: Meteor.settings.public.environment === 'dev',
         // help: true,
         prince_options: {
           media: 'screen',
