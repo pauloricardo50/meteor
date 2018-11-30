@@ -6,10 +6,29 @@ import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../constants';
 import PdfPageStyles from '../PdfPage/PdfPageStyles';
 
 const stylesheet = `
+    @font-face {
+        font-family: 'Eina04-Regular';
+        font-style: normal;
+        font-weight: 300;
+        src: url('fonts/Eina04_Regular.eot');
+        src: url('fonts/Eina04_Regular.eot') format('embedded-opentype');
+        src: url('fonts/Eina04_Regular.ttf') format('truetype');
+        src: url('fonts/Eina04_Regular.woff') format('woff');
+        src: url('fonts/Eina04_Regular.woff2') format('woff2');
+    }
+
+    @font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 300;
+        src: local('Open Sans'), local('OpenSans');
+}
+
     html {
         font-size: 12px;
-        font-family: Helvetica;
+        font-family: 'Open Sans', sans-serif;
     }
+
 
     * {
         // border: 1px solid red;

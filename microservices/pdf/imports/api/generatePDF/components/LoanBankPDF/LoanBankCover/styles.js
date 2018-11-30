@@ -3,48 +3,71 @@ import { BORDER_BLUE } from '../../cssConstants';
 
 const stylesheet = `
     .cover-page {
-        ${styles.flex(['FLEX_COLUMN', 'ALIGN_ITEMS_CENTER'])}
+        ${styles.flex(['FLEX_COLUMN'])}
         ${styles.flexGrow(1)}
         padding: 30px;
     }
 
     .cover-page .loan-info {
-        ${styles.flex(['FLEX_COLUMN', 'ALIGN_ITEMS_CENTER'])}
+        ${styles.flex(['FLEX_COLUMN'])}
         ${styles.flexGrow(1)}
-        padding: 48px;
     } 
 
     .loan-info h1,h2,h3,h4,h5{
         color: ${BORDER_BLUE};
     }
 
-    .loan-info h1 {
-        text-transform: uppercase;
+    .loan-info .title {
+        margin-top: 120px;
+        margin-bottom: 0px;
     }
 
-    .loan-info h2 {
-        margin-bottom: 48px;
-        text-transform: uppercase;
+    .loan-info .loan-name {
+        margin-top: 10px;
+        margin-bottom: 80px;
+        font-weight: 300;
     }
 
-    .loan-info h4 {
-        margin-top: 48px;
+    .loan-info .loan-type {
+        margin: 0px;
+    }
+
+    .loan-info .address {
+        margin-top: 10px;
+        font-weight: 300;
+        margin-bottom: 160px;
+        height: 40px;
+    }
+
+    .loan-info .borrowers {
+        margin: 0px;
     }
 
     .cover-page .cover-footer {
         ${styles.flex([
     'FLEX_ROW',
-    'ALIGN_ITEMS_FLEX_END',
+    'ALIGN_ITEMS_FLEX_START',
     'JUSTIFY_CONTENT_SPACE_BETWEEN',
   ])}
         ${styles.ALIGN_SELF_FLEX_END}
         width: 100%;
-        ${styles.flexGrow(1)}
+        border-top: 1px solid ${BORDER_BLUE};
+        padding-top: 16px;
+        color: ${BORDER_BLUE};
     }
 
     .cover-footer .assigned-employee {
         ${styles.flex(['FLEX_COLUMN'])}
     }
+
+    .cover-footer .assigned-employee >* {
+        margin: 0px;
+        font-weight: 300;
+    }
+
+    .cover-footer .assigned-employee .name {
+            font-weight: 600;
+        }
 `;
 
 export default stylesheet;
