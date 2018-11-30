@@ -21,7 +21,12 @@ Loans.addReducers({
   },
   enableOffers: {
     body: { logic: 1 },
-    reduce: ({ logic: { step } }) =>
-      STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER),
+    reduce: ({ logic }) => {
+      const step = logic && logic.step;
+      return (
+        step
+        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
+      );
+    },
   },
 });

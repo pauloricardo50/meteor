@@ -34,6 +34,7 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
           ) : (
             <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
           )),
+        labelProps: { shrink: true },
       },
     },
   }));
