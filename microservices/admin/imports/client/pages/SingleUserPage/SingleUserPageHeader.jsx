@@ -12,7 +12,8 @@ import { sendEnrollmentEmail } from 'core/api';
 import { ROLES } from 'imports/core/api/constants';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
-import EditUserDialogForm from './EditUserDialogForm';
+import {EditUserDialogForm} from '../../components/UserDialogForm';
+// import EditUserDialogForm from './EditUserDialogForm';
 import UserDeleter from './UserDeleter';
 import EmailModifier from './EmailModifier';
 
@@ -26,6 +27,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     name,
     email,
   } = user;
+  console.log('user', user);
 
   const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
 

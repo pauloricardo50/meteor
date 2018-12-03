@@ -3,14 +3,14 @@ import React from 'react';
 import T from 'core/components/Translation/';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
-import CreateUserDialogForm from './CreateUserDialogForm';
+import { CreateUserDialogForm } from '../../components/UserDialogForm';
 import MyLoansTable from './MyLoansTable';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
   <section className="card1 card-top admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
-    <CreateUserDialogForm history={history} currentUser={currentUser} />
+    <CreateUserDialogForm currentUser={currentUser} />
 
     <h2 className="text-center">Mes dossiers</h2>
     <MyLoansTable currentUser={currentUser} />
