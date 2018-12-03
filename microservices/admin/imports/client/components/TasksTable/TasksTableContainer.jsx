@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
@@ -9,8 +7,6 @@ import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { USERS_COLLECTION } from 'core/api/constants';
 import { TASKS_COLLECTION } from 'imports/core/api/constants';
-import TaskAssignDropdown from '../AssignAdminDropdown/TaskAssignDropdown';
-import TaskStatusSetter from './TaskStatusSetter';
 
 const formatDateTime = (date, toNow) =>
   (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
@@ -23,7 +19,6 @@ const getColumnOptions = () => [
   { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
   { id: 'completedAt', label: <T id="TasksTable.completedAt" /> },
   { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
-  { id: 'actions', label: <T id="TasksTable.actions" /> },
 ];
 
 const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
@@ -56,7 +51,7 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
       },
       formatDateTime(createdAt),
-      formatDateTime(dueAt, true),
+      formatDateTime(dueAt),
       formatDateTime(completedAt),
       {
         label:
@@ -66,19 +61,6 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
             />
           ) : null,
         raw: assignedEmployee && assignedEmployee.name,
-      },
-      {
-        raw: status,
-        label: (
-          <div style={{ display: 'flex' }}>
-            <TaskStatusSetter
-              currentUser={Meteor.user()}
-              taskId={taskId}
-              taskStatus={status}
-            />
-            <TaskAssignDropdown doc={task} />
-          </div>
-        ),
       },
     ],
     handleClick: () => {
