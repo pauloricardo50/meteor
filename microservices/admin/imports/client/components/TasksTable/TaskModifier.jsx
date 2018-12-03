@@ -65,7 +65,7 @@ const TaskModifier = ({
     <AutoFormDialog
       schema={schema}
       model={model}
-      labels={labels}
+      autoFieldProps={{ labels }}
       onSubmit={updateTask}
       open={open}
       setOpen={setOpen}
