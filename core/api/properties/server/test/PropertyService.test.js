@@ -11,7 +11,7 @@ import {
   QUALITY,
 } from '../../../constants';
 
-import { getPriceRange } from '../../../wuest/server/WuestService';
+import WuestService from '../../../wuest/server/WuestService';
 
 describe('PropertyService', () => {
   beforeEach(() => {
@@ -75,7 +75,7 @@ describe('PropertyService', () => {
         const marketValueBeforeCorrection = 709000;
         const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
-        const priceRange = getPriceRange({
+        const priceRange = WuestService.getPriceRange({
           marketValueBeforeCorrection,
           statisticalPriceRangeMin,
           statisticalPriceRangeMax,

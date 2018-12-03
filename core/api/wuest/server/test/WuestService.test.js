@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import WuestService, { getPriceRange } from '../WuestService';
+import WuestService from '../WuestService';
 
 import * as wuestConstants from '../../wuestConstants';
 import { QUALITY } from '../../../constants';
@@ -477,7 +477,7 @@ describe('WuestService', function () {
         const marketValueBeforeCorrection = 709000;
         const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
-        const priceRange = getPriceRange({
+        const priceRange = WuestService.getPriceRange({
           marketValueBeforeCorrection,
           statisticalPriceRangeMin,
           statisticalPriceRangeMax,

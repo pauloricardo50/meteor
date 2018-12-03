@@ -666,4 +666,3 @@ class WuestService {
 
 export default new WuestService();
 
-export const getPriceRange = WuestService.prototype.getPriceRange;
