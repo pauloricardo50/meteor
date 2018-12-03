@@ -91,7 +91,14 @@ class TaskService extends CollectionService {
   };
 
   changeStatus = ({ taskId, newStatus }) =>
-    this.update({ taskId, object: { status: newStatus } });
+    this.update({
+      taskId,
+      object: {
+        status: newStatus,
+        completedAt:
+          newStatus === TASK_STATUS.COMPLETED ? new Date() : undefined,
+      },
+    });
 
   changeAssignedTo = ({ taskId, newAssigneeId }) =>
     this.update({ taskId, object: { assignedEmployeeId: newAssigneeId } });
