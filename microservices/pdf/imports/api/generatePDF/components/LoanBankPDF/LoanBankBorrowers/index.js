@@ -1,2 +1,2 @@
 export { default } from './LoanBankBorrowers';
-export LoanBankBorrowersStyles from './styles';
+export { default as LoanBankBorrowersStyles } from './styles';

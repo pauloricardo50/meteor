@@ -1,6 +1,7 @@
 import React from 'react';
+
 import Calculator from 'core/utils/Calculator';
-import { T } from 'core/components/Translation/Translation';
+import T, { Percent } from 'core/components/Translation';
 import { toMoney } from 'core/utils/conversionFunctions';
 import {
   OWN_FUNDS_USAGE_TYPES,
@@ -8,7 +9,7 @@ import {
   PROPERTY_TYPE,
   FLAT_TYPE,
 } from 'core/api/constants';
-import Percent from '../../../../../core/components/Translation/numberComponents/Percent';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 export const NBSP = '\u00A0';
 
@@ -102,6 +103,7 @@ export const structureArrayKeysData = {
 
 export const EMPTY_LINE = {
   label: NBSP,
+  type: ROW_TYPES.EMPTY,
 };
 
 export const structureArrayKeysCondition = {
@@ -109,25 +111,17 @@ export const structureArrayKeysCondition = {
   pledgedOwnFunds: loan => Calculator.getTotalPledged({ loan }) > 0,
 };
 
-export const structureArrayKeysLabelStyle = {
-  totalCost: label => <p style={{ fontWeight: 'bold' }}>{label}</p>,
-};
-
 export const structureArrayData = loan =>
   structureArrayKeys.map(key =>
     (key === 'emptyLine'
       ? EMPTY_LINE
       : {
-        label: structureArrayKeysLabelStyle[key] ? (
-          structureArrayKeysLabelStyle[key](<T id={`PDF.projectInfos.structure.${key}`} />)
-        ) : (
-          <T id={`PDF.projectInfos.structure.${key}`} />
-        ),
+        label: <T id={`PDF.projectInfos.structure.${key}`} />,
         data: structureArrayKeysData[key](loan),
         condition: structureArrayKeysCondition[key]
           ? structureArrayKeysCondition[key](loan)
           : true,
-        style: { textAlign: 'right' },
+        type: key === 'totalCost' ? ROW_TYPES.SUM : ROW_TYPES.REGULAR,
       }));
 
 export const propertyArrayKeys = [
@@ -264,11 +258,6 @@ export const propertyArrayKeysCondition = {
   maintenance: ({ monthlyExpenses }) => !!monthlyExpenses,
 };
 
-export const propertyArrayKeysStyles = {
-  houseType: { maxWidth: '100px' },
-  flatType: { maxWidth: '100px' },
-};
-
 export const propertyArrayData = loan =>
   propertyArrayKeys.map(key =>
     (key === 'emptyLine'
@@ -279,5 +268,4 @@ export const propertyArrayData = loan =>
         condition: propertyArrayKeysCondition[key]
           ? propertyArrayKeysCondition[key](loan.structure.property)
           : true,
-        style: propertyArrayKeysStyles[key] || {},
       }));
