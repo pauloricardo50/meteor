@@ -1,3 +1,4 @@
+import React from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
@@ -5,6 +6,7 @@ import { withSmartQuery } from 'core/api';
 import { adminCreateUser, editUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
 import query from 'core/api/users/queries/admins';
+import T from 'imports/core/components/Translation/Translation';
 
 const userSchema = (admins = []) =>
   new SimpleSchema({
@@ -35,6 +37,7 @@ export default compose(
   }),
   withProps(({ history, admins, user }) => ({
     schema: userSchema(admins),
+    labels: { assignedEmployeeId: <T id="Forms.assignedEmployee" /> },
     createUser: data =>
       adminCreateUser.run({ options: data, role: ROLES.USER }).then((newId) => {
         history.push(`/users/${newId}`);

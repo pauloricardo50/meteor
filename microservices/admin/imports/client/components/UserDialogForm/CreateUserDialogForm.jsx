@@ -10,12 +10,14 @@ type CreateUserDialogFormProps = {
   schema: Object,
   currentUser: Object,
   createUser: Function,
+  labels: Array<Object>,
 };
 
 const CreateUserDialogForm = ({
   schema,
   currentUser: { _id: adminId },
   createUser,
+  labels,
 }: CreateUserDialogFormProps) => (
   <AutoFormDialog
     schema={schema.extend(new SimpleSchema({
@@ -31,6 +33,14 @@ const CreateUserDialogForm = ({
       label: <T id="CreateUserDialogForm.buttonLabel" />,
       raised: true,
       primary: true,
+    }}
+    autoFieldProps={{
+      labels: {
+        ...labels,
+        sendEnrollmentEmail: (
+          <T id="CreateUserDialogForm.sendEnrollmentEmail" />
+        ),
+      },
     }}
   />
 );

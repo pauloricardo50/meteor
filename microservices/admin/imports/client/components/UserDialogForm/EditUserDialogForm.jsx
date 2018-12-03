@@ -9,12 +9,14 @@ type EditUserDialogFormProps = {
   schema: Object,
   user: Object,
   editUser: Function,
+  labels: Array<Object>,
 };
 
 const EditUserDialogForm = ({
   schema,
   user,
   editUser,
+  labels,
 }: EditUserDialogFormProps) => (
   <AutoFormDialog
     schema={schema}
@@ -25,6 +27,7 @@ const EditUserDialogForm = ({
       raised: true,
       primary: true,
     }}
+    autoFieldProps={{ labels }}
   />
 );
 
