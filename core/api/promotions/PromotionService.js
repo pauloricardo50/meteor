@@ -68,6 +68,7 @@ export class PromotionService extends CollectionService {
   inviteUser({
     promotionId,
     user: { email, firstName, lastName, phoneNumber },
+    sendInvitation = true,
   }) {
     const promotion = this.get(promotionId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
@@ -101,13 +102,18 @@ export class PromotionService extends CollectionService {
     }
 
     const loanId = LoanService.insertPromotionLoan({ userId, promotionId });
-    return this.sendPromotionInvitationEmail({
-      userId,
-      email,
-      isNewUser,
-      promotionId,
-      firstName,
-    }).then(() => loanId);
+
+    if (sendInvitation) {
+      return this.sendPromotionInvitationEmail({
+        userId,
+        email,
+        isNewUser,
+        promotionId,
+        firstName,
+      }).then(() => loanId);
+    }
+
+    return Promise.resolve();
   }
 
   sendPromotionInvitationEmail({
