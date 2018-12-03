@@ -45,5 +45,6 @@ export const loanBaseFragment = {
   previousLender: 1,
   mortgageNotes: 1,
   previousLoanTranches: 1,
+  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   // $options: { sort: { createdAt: 1 } },
 };

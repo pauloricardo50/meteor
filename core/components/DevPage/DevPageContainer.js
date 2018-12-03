@@ -119,7 +119,7 @@ const addLoanWithSomeData = userId => (
   });
 
 const DevPageContainer = compose(withProps(({ currentUser: { _id: userId } }) => ({
-  addEmptyStep1Loan: addEmptyLoan(userId),
+  addEmptyLoan: addEmptyLoan(userId),
   addLoanWithSomeData: addLoanWithSomeData(userId),
   purgeAndGenerateDatabase: (currentUserId, currentUserEmail) => {
     Meteor.call('purgeDatabase', currentUserId, (err) => {

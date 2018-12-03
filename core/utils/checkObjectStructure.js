@@ -10,7 +10,13 @@ export const makeCheckObjectStructure = (errors) => {
   const checkObjectStructure = ({ obj, template, parentKey }) =>
     Object.keys(template).forEach((key) => {
       if (obj[key] === undefined) {
-        throw errors.missingKey(key, parentKey || '');
+        if (typeof template[key] === 'object' && template[key].$or) {
+          if (!obj[template[key].$or]) {
+            throw errors.missingKey(key, parentKey || '');
+          }
+        } else {
+          throw errors.missingKey(key, parentKey || '');
+        }
       }
 
       if (Array.isArray(template[key])) {
@@ -29,7 +35,10 @@ export const makeCheckObjectStructure = (errors) => {
           obj[key].forEach(object =>
             checkObjectStructure({ obj: object, template: template[key][0] }));
         }
-      } else if (typeof template[key] === 'object') {
+      } else if (
+        typeof template[key] === 'object'
+        && !Object.keys(template[key]).includes('$or')
+      ) {
         if (typeof obj[key] !== 'object' || Array.isArray(obj[key])) {
           throw errors.shouldBeObject(key);
         }

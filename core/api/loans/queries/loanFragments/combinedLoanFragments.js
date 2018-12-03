@@ -26,15 +26,19 @@ export const sideNavLoanFragment = {
 
 export const adminLoanFragment = {
   ...userLoanFragment,
-  status: 1,
+  closingDate: 1,
   properties: adminPropertyFragment,
+  signingDate: 1,
+  status: 1,
 };
 
 export const adminLoansFragment = {
   ...loanBaseFragment,
-  status: 1,
   borrowers: { name: 1 },
+  closingDate: 1,
   properties: { value: 1, address1: 1 },
+  signingDate: 1,
+  status: 1,
   user: { assignedEmployee: { email: 1 }, name: 1 },
 };
 

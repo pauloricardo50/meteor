@@ -46,7 +46,7 @@ export type loanTranchesType = Array<{
 }>;
 
 export const propertyIdsSchema = {
-  propertyIds: { type: Array, defaultValue: [] },
+  propertyIds: { type: Array, defaultValue: [], maxCount: 5 },
   'propertyIds.$': String,
 };
 

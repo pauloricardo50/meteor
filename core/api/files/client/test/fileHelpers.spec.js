@@ -55,24 +55,6 @@ describe('fileHelpers', () => {
       });
     });
 
-    it("doesn't count files whose condition is explicitly false", () => {
-      fileArray = [{ id: 'myFile', condition: false }];
-      dummyDoc.documents.myFile = [];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
-        percent: 1,
-        count: 0,
-      });
-    });
-
-    it('counts files whose condition is undefined', () => {
-      fileArray = [{ id: 'myFile', condition: undefined }];
-      dummyDoc.documents.myFile = [{}];
-      expect(filesPercent({ doc: dummyDoc, fileArray })).to.deep.equal({
-        percent: 1,
-        count: 1,
-      });
-    });
-
     describe('status verification', () => {
       it('returns 0 if no files are valid', () => {
         fileArray = [{ id: 'myFile', condition: undefined }];

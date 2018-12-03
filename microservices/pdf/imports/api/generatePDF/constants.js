@@ -1,15 +1,15 @@
 import { PDF_TYPES } from 'core/api/constants';
 
 export const TEMPLATES = {
-  [PDF_TYPES.ANONYMOUS_LOAN]: {
+  [PDF_TYPES.LOAN]: {
     name: 1,
     purchaseType: 1,
     residenceType: 1,
     borrowers: [
       {
         gender: 1,
-        zipCode: 1,
-        city: 1,
+        zipCode: { $or: 'sameAddress' },
+        city: { $or: 'sameAddress' },
       },
     ],
     structure: {
@@ -35,3 +35,10 @@ export const TEMPLATES = {
     },
   },
 };
+
+export const A4_HEIGHT = 297;
+export const MARGIN_TOP = 20;
+export const MARGIN_BOTTOM = 20;
+export const MARGIN_SIDE = 15;
+export const WIGGLE_ROOM = 2; // Required to make things fit on one page
+export const CONTENT_HEIGHT = A4_HEIGHT - MARGIN_BOTTOM - MARGIN_TOP - WIGGLE_ROOM;

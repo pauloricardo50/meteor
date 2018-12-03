@@ -1,8 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
-import { compose, withProps } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { compose, withProps, withState } from 'recompose';
 import moment from 'moment';
 
 import T from 'core/components/Translation';
@@ -10,8 +7,6 @@ import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { USERS_COLLECTION } from 'core/api/constants';
 import { TASKS_COLLECTION } from 'imports/core/api/constants';
-import TaskAssignDropdown from '../AssignAdminDropdown/TaskAssignDropdown';
-import TaskStatusSetter from './TaskStatusSetter';
 
 const formatDateTime = (date, toNow) =>
   (date ? moment(date)[toNow ? 'toNow' : 'fromNow']() : '-');
@@ -24,10 +19,9 @@ const getColumnOptions = () => [
   { id: 'dueAt', label: <T id="TasksTable.dueAt" /> },
   { id: 'completedAt', label: <T id="TasksTable.completedAt" /> },
   { id: 'assignedTo', label: <T id="TasksTable.assignedTo" /> },
-  { id: 'actions', label: <T id="TasksTable.actions" /> },
 ];
 
-const makeMapTask = ({ history }) => (task) => {
+const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
   const {
     _id: taskId,
     title,
@@ -57,7 +51,7 @@ const makeMapTask = ({ history }) => (task) => {
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
       },
       formatDateTime(createdAt),
-      formatDateTime(dueAt, true),
+      formatDateTime(dueAt),
       formatDateTime(completedAt),
       {
         label:
@@ -68,30 +62,19 @@ const makeMapTask = ({ history }) => (task) => {
           ) : null,
         raw: assignedEmployee && assignedEmployee.name,
       },
-      {
-        raw: status,
-        label: (
-          <div style={{ display: 'flex' }}>
-            <TaskStatusSetter
-              currentUser={Meteor.user()}
-              taskId={taskId}
-              taskStatus={status}
-            />
-            <TaskAssignDropdown doc={task} />
-          </div>
-        ),
-      },
     ],
     handleClick: () => {
-      history.push(`/${collection}/${relatedDocId}`);
+      setTaskToModify(task);
+      setShowDialog(true);
     },
   };
 };
 
 export default compose(
-  withRouter,
-  withProps(({ tasks = [], history }) => ({
-    rows: tasks.map(makeMapTask({ history })),
+  withState('taskToModify', 'setTaskToModify', null),
+  withState('showDialog', 'setShowDialog', false),
+  withProps(({ tasks = [], setTaskToModify, setShowDialog }) => ({
+    rows: tasks.map(makeMapTask({ setTaskToModify, setShowDialog })),
     columnOptions: getColumnOptions(),
   })),
 );

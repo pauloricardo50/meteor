@@ -23,12 +23,13 @@ export const updatedAt = {
   optional: true,
 };
 
-export const additionalDocuments = {
-  additionalDocuments: { type: Array, defaultValue: [] },
+export const additionalDocuments = initialDocuments => ({
+  additionalDocuments: { type: Array, defaultValue: initialDocuments },
   'additionalDocuments.$': Object,
   'additionalDocuments.$.id': String,
-  'additionalDocuments.$.label': String,
-};
+  'additionalDocuments.$.label': { type: String, optional: true },
+  'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
+});
 
 export const address = {
   address1: {

@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
 import Calculator from 'core/utils/Calculator';
-import {
-  getPropertyDocuments,
-  getBorrowerDocuments,
-  getLoanDocuments,
-} from 'core/api/files/documents';
+
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from 'core/api/events/ClientEventService';
@@ -43,8 +39,8 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                 doc={borrower}
                 collection="borrowers"
                 disabled={disabled}
-                documentArray={getBorrowerDocuments({ loan, id: borrower._id })}
                 currentUser={currentUser}
+                loan={loan}
               />
             ),
           })),
@@ -65,11 +61,8 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                   doc={property}
                   collection="properties"
                   disabled={disabled}
-                  documentArray={getPropertyDocuments({
-                    loan,
-                    id: property._id,
-                  })}
                   currentUser={currentUser}
+                  loan={loan}
                 />
               ),
             }))
@@ -86,8 +79,8 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
                 doc={loan}
                 collection="loans"
                 disabled={disabled}
-                documentArray={getLoanDocuments({ loan })}
                 currentUser={currentUser}
+                loan={loan}
               />
             ),
           },

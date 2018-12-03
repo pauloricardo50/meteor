@@ -4,11 +4,6 @@ import T from 'core/components/Translation';
 
 import OfferList from 'core/components/OfferList';
 import OfferAdder from 'core/components/OfferAdder';
-import Toggle from 'core/components/Material/Toggle';
-import { loanUpdate } from 'core/api';
-
-const makeToggleOffers = loanId => (event, checked) =>
-  loanUpdate.run({ loanId, object: { enableOffers: checked } });
 
 const OffersTab = (props) => {
   const {
@@ -20,14 +15,20 @@ const OffersTab = (props) => {
         <T id="collections.offers" />
       </h2>
       <div className="flex">
-        <Toggle
-          labelTop={<T id="Forms.enableOffers" />}
-          labelLeft={<T id="general.no" />}
-          labelRight={<T id="general.yes" />}
-          toggled={enableOffers}
-          onToggle={makeToggleOffers(loanId)}
-        />
-        <p className="description" style={{ marginLeft: 16 }}>
+        <span>
+          Offres{' '}
+          {enableOffers ? (
+            <span className="success">Activées</span>
+          ) : (
+            <span className="error">Désactivées</span>
+          )}
+        </span>
+        <p className="description" style={{ marginLeft: 16, marginTop: 0 }}>
+          <b>
+            Les offres sont activées dès que l'étape du dossier est
+            "Identification du prêteur"
+          </b>
+          <br />
           Affiche les offres dans les plans financiers, switch des taux publics
           aux taux des offres reçues sur le dashboard, et active le choix des
           tranches de taux et du type d'amortissement.

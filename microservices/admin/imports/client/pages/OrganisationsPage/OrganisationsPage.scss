@@ -1,22 +1,25 @@
 .organisations-page {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-direction: column;
 
   .organisations {
-    margin-top: 40px;
     display: flex;
     flex-wrap: wrap;
 
+    margin-top: 40px;
+
     .organisation {
-      width: 200px;
-      height: 300px;
       display: flex;
       flex-direction: column;
+
+      width: 200px;
+      height: 300px;
       margin: 8px;
 
       .card-top {
         flex-grow: 1;
+
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;

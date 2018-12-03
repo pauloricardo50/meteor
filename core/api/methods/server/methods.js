@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { SecurityService } from '../..';
+import { Services } from '../../api-server';
 import LoanService from '../../loans/LoanService';
 import BorrowerService from '../../borrowers/BorrowerService';
 import PropertyService from '../../properties/PropertyService';
@@ -14,8 +15,11 @@ import {
   submitContactForm,
   addUserToDoc,
   throwDevError,
+  setAdditionalDoc,
   migrateToLatest,
+  updateDocument,
 } from '../methodDefinitions';
+
 import { migrate } from '../../migrations/server';
 
 getMixpanelAuthorization.setHandler(() => {
@@ -120,7 +124,29 @@ throwDevError.setHandler((_, { promise, promiseNoReturn }) => {
   throw new Meteor.Error(400, 'Dev error!');
 });
 
+setAdditionalDoc.setHandler((context, { collection, id, additionalDocId, requiredByAdmin, label }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return Services[collection].setAdditionalDoc({
+    id,
+    additionalDocId,
+    requiredByAdmin,
+    label,
+  });
+});
+
 migrateToLatest.setHandler(({ userId }) => {
   SecurityService.checkCurrentUserIsDev();
   migrate();
+});
+
+updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
+  const service = Services[collection];
+  const doc = service.findOne(docId);
+  try {
+    SecurityService.checkUserIsAdmin(userId);
+  } catch (error) {
+    SecurityService.checkOwnership(doc);
+  }
+
+  return service._update({ id: docId, object });
 });

@@ -68,6 +68,7 @@ const errors = [
         tranches: data.structure.loanTranches,
         interestRates: data.structure.offerId ? getOffer(data) : undefined,
       }),
+    type: ERROR_TYPES.BREAKING,
   },
   {
     id: 'missingCash',
@@ -95,6 +96,7 @@ const getError = props =>
 
 export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
   const error = getError(props);
+  console.log('error', error);
 
   if (error.type === ERROR_TYPES.BREAKING) {
     return (

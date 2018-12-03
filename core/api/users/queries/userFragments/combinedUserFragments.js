@@ -8,6 +8,7 @@ export const fullUserFragment = {
   createdAt: 1,
   updatedAt: 1,
   loans: loanBaseFragment,
+  apiToken: 1,
 };
 
 export const adminUserFragment = {
