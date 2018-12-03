@@ -7,6 +7,9 @@ import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
+import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
+import { getCountedArray } from '../formArrayHelpers';
+import { getPercent } from '../general';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -212,7 +215,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     refinancingPercent({ loan }) {
-      return 0;
+      const a = [];
+      getCountedArray(getRefinancingFormArray({ loan }), loan, a);
+      return getPercent(a);
     }
   };
 
