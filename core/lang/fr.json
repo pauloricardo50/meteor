@@ -1,5 +1,8 @@
 {
   "PDF.borrowersInfo.address": "Adresse",
+  "Forms.title": "Titre",
+  "Forms.signingDate": "Date de signature",
+  "Forms.closingDate": "Date de décaissement",
   "files.PROPERTY_FUTURE_WORKS": "Travaux envisagés",
   "files.PROPERTY_FUTURE_WORKS.tooltip": "Devis et descriptifs des travaux",
   "files.PROPERTY_MINERGIE_CERTIFICATE": "Certificat énergétique",

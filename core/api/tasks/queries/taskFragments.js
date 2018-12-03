@@ -4,6 +4,7 @@ import { baseBorrowerFragment } from '../../borrowers/queries/borrowerFragments'
 export const baseTaskFragment = {
   createdAt: 1,
   dueAt: 1,
+  completedAt: 1,
   status: 1,
   title: 1,
   type: 1,
@@ -16,6 +17,7 @@ export const baseTaskFragment = {
 
 export const taskFragment = {
   ...baseTaskFragment,
+  assignedEmployeeId: 1,
   assignedEmployee: simpleUserFragment,
   borrower: { ...baseBorrowerFragment, user: { assignedEmployeeId: 1 } },
   loan: { name: 1, user: { assignedEmployeeId: 1 } },

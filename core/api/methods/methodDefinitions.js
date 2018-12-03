@@ -90,3 +90,12 @@ export const setAdditionalDoc = new Method({
 export const migrateToLatest = new Method({
   name: 'migrateToLatest',
 });
+
+export const updateDocument = new Method({
+  name: 'updateDocument',
+  params: {
+    collection: String,
+    docId: String,
+    object: Object,
+  },
+});

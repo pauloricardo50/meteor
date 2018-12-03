@@ -23,10 +23,10 @@
 
   .single-loan-page-header {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
 
-    > * {
+     > * {
       display: inline;
     }
 
@@ -43,7 +43,19 @@
 
     .icon-link {
       transform: scale(1.5);
-      transform-origin: 0%;
+      transform-origin: 0;
+    }
+
+    .single-loan-date-modifiers {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: flex-start;
+
+      > * {
+        margin-right: 8px;
+        padding: 8px;
+      }
     }
   }
 }
@@ -54,11 +66,12 @@
 
 .single-borrower-tab {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 
   .recap {
     align-self: center;
+
     margin: 40px 0;
   }
 }
