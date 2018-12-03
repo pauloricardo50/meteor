@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
+import DateModifier from 'core/components/DateModifier';
 import Calculator from 'core/utils/Calculator';
+import { LOANS_COLLECTION } from 'imports/core/api/constants';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
@@ -29,6 +31,14 @@ const OverviewTab = (props) => {
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
         <LoanStepSetter loan={loan} />
+        {['signingDate', 'closingDate'].map(dateType => (
+          <DateModifier
+            collection={LOANS_COLLECTION}
+            doc={loan}
+            field={dateType}
+            key={`${loan._id}${dateType}`}
+          />
+        ))}
       </div>
       <LoanStatusCheck loan={loan} />
       <div className="overview-recap">
