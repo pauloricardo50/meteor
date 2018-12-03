@@ -7,26 +7,29 @@ import PdfPageStyles from '../PdfPage/PdfPageStyles';
 
 const stylesheet = `
     @font-face {
-        font-family: 'Open Sans';
+        font-family: 'Eina04';
         font-style: normal;
-        font-weight: 300;
-        src: local('Open Sans'), local('OpenSans');
-    }
-
-    @font-face {
-        font-family: 'Eina04-Regular';
-        font-style: normal;
-        font-weight: 300;
+        font-weight: normal;
         src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot');
         src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot') format('embedded-opentype');
         src: url('https://www.e-potek.ch/fonts/Eina04_Regular.ttf') format('truetype');
         src: url('https://www.e-potek.ch/fonts/Eina04_Regular.woff') format('woff');
     }
 
+    @font-face {
+        font-family: 'Eina04';
+        font-style: normal;
+        font-weight: bold;
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot') format('embedded-opentype');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.ttf') format('truetype');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.woff') format('woff');
+    }
+
 
     html {
         font-size: 12px;
-        font-family: 'Eina04-Regular', sans-serif;
+        font-family: 'Eina04', sans-serif;
     }
 
 

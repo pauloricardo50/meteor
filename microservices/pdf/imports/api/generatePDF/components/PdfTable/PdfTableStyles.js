@@ -27,7 +27,7 @@ export default `
     }
 
     .pdf-table tr.regular-row td {
-        font-weight: 200;
+        font-weight: normal;
     }
 
     .pdf-table tr.title-row {
@@ -39,7 +39,7 @@ export default `
         margin: 0;
         padding: 8px 0;
         text-align: left;
-        font-weight: 800;
+        font-weight: bold;
         width: 100%;
     }
 
@@ -61,6 +61,6 @@ export default `
     }
 
     .pdf-table tr.sum-row td {
-        font-weight: 500;
+        font-weight: bold;
     }
 `;
