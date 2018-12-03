@@ -10,8 +10,8 @@
 
   .uploader-category {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
   }
 }
 
@@ -23,8 +23,10 @@
   white-space: nowrap;
 
   .name {
-    text-overflow: ellipsis;
-    max-width: 160px;
     overflow: hidden;
+
+    max-width: 160px;
+
+    text-overflow: ellipsis;
   }
 }
