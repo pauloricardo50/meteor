@@ -11,6 +11,7 @@ Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
   getAdminEndToEndTestData() {
+    console.log('getAdminEndToEndTestData');
     const loan = adminLoansQuery.clone({ owned: true }).fetchOne();
 
     const {

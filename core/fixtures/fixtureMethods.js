@@ -46,7 +46,7 @@ const getAdmins = () => {
   return admins.map(admin => admin._id);
 };
 
-const deleteUsersRelatedData = (usersToDelete) => {
+const deleteUsersRelatedData = usersToDelete => {
   Borrowers.remove({ userId: { $in: usersToDelete } });
   Properties.remove({ userId: { $in: usersToDelete } });
   Offers.remove({ userId: { $in: usersToDelete } });
@@ -98,7 +98,9 @@ const createTestUserWithData = () => {
 
 Meteor.methods({
   generateTestData(currentUserEmail) {
+    console.log('generateTestData');
     if (isAuthorizedToRun()) {
+      console.log('isAuthorizedToRun', isAuthorizedToRun());
       createDevs(currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
@@ -126,6 +128,9 @@ Meteor.methods({
 
       createTestUserWithData();
     }
+
+    console.log('done!');
+    return 'hello';
   },
 
   async purgeDatabase(currentUserId) {
