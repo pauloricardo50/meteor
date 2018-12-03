@@ -26,7 +26,6 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     name,
     email,
   } = user;
-  console.log('user', user);
 
   const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
 
