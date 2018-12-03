@@ -46,9 +46,9 @@ const PdfPageStyles = `
     }
 
     .pdf-page-title img {
-        width: 50px;
-        height: 50px;
-        margin-right: 16px;
+        width: 30px;
+        height: 30px;
+        margin-right: 12px;
     }
 
     .pdf-page-footer {
