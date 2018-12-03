@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import AutoForm from 'core/components/AutoForm2';
 import omit from 'lodash/omit';
 
 import Tabs from 'core/components/Tabs';
@@ -11,6 +10,7 @@ import { BorrowerSchema } from 'core/api/borrowers/borrowers';
 import { PropertySchema } from 'core/api/properties/properties';
 import { OfferSchema } from 'core/api/offers/offers';
 import { propertyUpdate, borrowerUpdate, offerUpdate } from 'core/api';
+import SingleDevTab from './SingleDevTab';
 
 type DevTabProps = {};
 
@@ -24,9 +24,9 @@ const DevTab = ({ loan }: DevTabProps) => {
           id: 'loan',
           label: 'Hypothèque',
           content: (
-            <AutoForm
+            <SingleDevTab
               schema={LoanSchema}
-              model={loan}
+              doc={loan}
               onSubmit={doc =>
                 loanUpdate
                   .run({
@@ -49,9 +49,9 @@ const DevTab = ({ loan }: DevTabProps) => {
           id: property._id,
           label: property.address1 || `Bien immo ${index + 1}`,
           content: (
-            <AutoForm
+            <SingleDevTab
               schema={PropertySchema}
-              model={property}
+              doc={property}
               onSubmit={doc =>
                 propertyUpdate
                   .run({
@@ -67,9 +67,9 @@ const DevTab = ({ loan }: DevTabProps) => {
           id: borrower._id,
           label: borrower.name || `Emprunteur ${index + 1}`,
           content: (
-            <AutoForm
+            <SingleDevTab
               schema={BorrowerSchema}
-              model={borrower}
+              doc={borrower}
               onSubmit={doc =>
                 borrowerUpdate
                   .run({
@@ -85,9 +85,9 @@ const DevTab = ({ loan }: DevTabProps) => {
           id: offer._id,
           label: `Offre: ${offer.organisation.name}` || `Offre ${index + 1}`,
           content: (
-            <AutoForm
+            <SingleDevTab
               schema={OfferSchema}
-              model={offer}
+              doc={offer}
               onSubmit={doc =>
                 offerUpdate
                   .run({
