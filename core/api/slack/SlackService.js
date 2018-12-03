@@ -60,7 +60,10 @@ export class SlackService {
   });
 
   sendError = ({ error, additionalData = [], userId }) => {
-    if (ERRORS_TO_IGNORE.includes(error.name)) {
+    if (
+      ERRORS_TO_IGNORE.includes(error.name)
+      || ERRORS_TO_IGNORE.includes(error.message || error.reason)
+    ) {
       return false;
     }
 
@@ -92,7 +95,7 @@ export class SlackService {
           text: error.message || error.reason,
           color: colors.error,
           footer: 'c la merde',
-          ts: new Date(),
+          ts: new Date().getTime(),
         },
         {
           title: 'Stack',
