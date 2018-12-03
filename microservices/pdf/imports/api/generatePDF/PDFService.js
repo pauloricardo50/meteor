@@ -90,7 +90,7 @@ class PDFService {
         document_content: html,
         name: pdfName,
         type: 'pdf',
-        test: Meteor.isProduction && !Meteor.isStaging,
+        test: !Meteor.isProduction || Meteor.isStaging,
         // help: true,
         prince_options: { media: 'screen' },
       },
