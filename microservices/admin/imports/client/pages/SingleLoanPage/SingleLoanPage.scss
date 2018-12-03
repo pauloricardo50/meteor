@@ -45,6 +45,18 @@
       transform: scale(1.5);
       transform-origin: 0;
     }
+
+    .single-loan-date-modifiers {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: flex-start;
+
+      > * {
+        margin-right: 8px;
+        padding: 8px;
+      }
+    }
   }
 }
 
