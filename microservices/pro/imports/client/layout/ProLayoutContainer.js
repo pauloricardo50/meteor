@@ -7,7 +7,6 @@ import getBaseRedirect, { isLogin } from 'core/utils/redirection';
 
 const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname);
-
   if (baseRedirect !== undefined) {
     return baseRedirect;
   }

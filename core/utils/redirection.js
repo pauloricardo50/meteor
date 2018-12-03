@@ -48,8 +48,8 @@ const getBaseRedirect = (currentUser, pathname) => {
   const isDev = Roles.userIsInRole(currentUser, ROLES.DEV);
   if (isDev) return false;
 
-  // redirectIfInRoleForOtherApp(currentUser, ROLES.USER, 'app');
-  // redirectIfInRoleForOtherApp(currentUser, ROLES.PRO, 'pro');
+  redirectIfInRoleForOtherApp(currentUser, ROLES.USER, 'app');
+  redirectIfInRoleForOtherApp(currentUser, ROLES.PRO, 'pro');
 };
 
 export default getBaseRedirect;
