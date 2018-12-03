@@ -39,9 +39,7 @@ export default withProps(({ collection, doc, field }) => ({
       uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
     },
   }),
-  model: {
-    [field]: doc[field] && moment(doc[field]).format('YYYY-MM-DD'),
-  },
+  model: { [field]: doc[field] },
   onSubmit: object =>
     updateDocument.run({ collection, docId: doc._id, object }),
 }))(DateModifier);
