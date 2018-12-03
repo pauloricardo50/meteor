@@ -28,7 +28,6 @@ const isOnAllowedRouteWithoutLoan = (loans, path) =>
 
 export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname);
-
   if (baseRedirect !== undefined) {
     return baseRedirect;
   }
