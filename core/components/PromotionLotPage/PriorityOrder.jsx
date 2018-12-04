@@ -43,8 +43,8 @@ const PriorityOrder = ({
           to={createRoute(
             '/promotions/:promotionId/promotionLots/:promotionLotId',
             {
-              ':promotionId': promotion._id,
-              ':promotionLotId': promotionLots[0]._id,
+              promotionId: promotion._id,
+              promotionLotId: promotionLots[0]._id,
             },
           )}
           key={`${_id}${promotionLots[0]._id}`}

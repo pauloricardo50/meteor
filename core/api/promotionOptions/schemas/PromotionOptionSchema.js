@@ -18,6 +18,7 @@ const PromotionOptionSchema = new SimpleSchema({
   solvency: {
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_SOLVENCY),
+    defaultValue: PROMOTION_OPTION_SOLVENCY.UNDETERMINED,
   },
 });
 

@@ -17,7 +17,7 @@ const IconLink = ({ link, icon, text, children, ...rest }) => (
 );
 
 IconLink.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
   link: PropTypes.string.isRequired,
   text: PropTypes.node.isRequired,
 };

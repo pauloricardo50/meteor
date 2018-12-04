@@ -1,4 +1,9 @@
 {
+  "PromotionPage.lots.solvency": "Solvabilité",
+  "Forms.solvency": "Solvabilité",
+  "Forms.solvency.SOLVENT": "Solvable",
+  "Forms.solvency.INSOLVENT": "Non solvable",
+  "Forms.solvency.UNDETERMINED": "À déterminer",
   "PromotionLotLoansTable.actions": "Actions",
   "PDF.borrowersInfo.address": "Adresse",
   "Forms.title": "Titre",
