@@ -7,6 +7,10 @@ const stylesheet = `
     width: 100%;
 }
 
+.borrowers-recap:not(:first-child) {
+    margin-top: 30px;
+}
+
 .borrowers-recap.twoBorrowers {
     width: 100%;
 }
