@@ -28,14 +28,10 @@ export const loanTranchesSchema = {
     min: 0,
     max: 1000000000, // Can be specified as percentages or monetary amounts
   },
-  'loanTranches.$.dueDate': {
-    type: String,
-    optional: true,
-  },
 };
 
 export const previousLoanTranchesSchema = {
-  loanTranches: {
+  previousLoanTranches: {
     type: Array,
     defaultValue: [],
     optional: true,
@@ -48,7 +44,7 @@ export const previousLoanTranchesSchema = {
     max: 1000000000, // Can be specified as percentages or monetary amounts
   },
   'previousLoanTranches.$.dueDate': {
-    type: String,
+    type: Date,
     optional: true,
   },
   'previousLoanTranches.$.rate': {
