@@ -35,6 +35,7 @@ import PromotionLotService from './promotionLots/PromotionLotService';
 import PromotionService from './promotions/PromotionService';
 import UserService from './users/UserService';
 import TaskService from './tasks/TaskService';
+import InterestRatesService from './interestRates/InterestRatesService';
 
 process.on('uncaughtException', (error) => {
   SlackService.sendError({
@@ -59,4 +60,5 @@ export const Services = {
   [COLLECTIONS.PROMOTIONS_COLLECTION]: PromotionService,
   [COLLECTIONS.USERS_COLLECTION]: UserService,
   [COLLECTIONS.TASKS_COLLECTION]: TaskService,
+  [COLLECTIONS.INTEREST_RATES_COLLECTION]: InterestRatesService,
 };

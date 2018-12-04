@@ -14,5 +14,6 @@ export * from '../promotions/methodDefinitions';
 export * from '../properties/methodDefinitions';
 export * from '../tasks/methodDefinitions';
 export * from '../users/methodDefinitions';
+export * from '../interestRates/methodDefinitions';
 
 export * from './methodDefinitions';

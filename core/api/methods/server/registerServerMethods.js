@@ -13,5 +13,6 @@ import '../../promotions/server/methods';
 import '../../properties/server/methods';
 import '../../tasks/server/methods';
 import '../../users/server/methods';
+import '../../interestRates/server/methods';
 
 import './methods';
