@@ -51,6 +51,20 @@ export default `
         width: 100%;
     }
 
+    .pdf-table tr.tooltip {
+        border-top: none;
+    }
+
+    .pdf-table tr.tooltip td {
+        font-weight: 200;
+        padding-top: 20px;
+    }
+
+    .pdf-table tr.tooltip ~ tr.tooltip td{
+        padding-top: 4px;
+    }
+
+
     .pdf-table tr.title-row:not(:first-child) td {
         padding-top: 24px;
     }
