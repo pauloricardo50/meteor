@@ -6,7 +6,7 @@ import { Factory } from 'meteor/dburles:factory';
 import TaskService from '../../TaskService';
 import { TASK_STATUS } from '../../taskConstants';
 
-describe.only('TaskService', () => {
+describe('TaskService', () => {
   let taskId;
   let task;
 
