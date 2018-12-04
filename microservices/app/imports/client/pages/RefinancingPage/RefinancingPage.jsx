@@ -21,7 +21,7 @@ const RefinancingPage = ({ loan }: RefinancingPageProps) => {
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
-            formClasses="user-form"
+            formClasses="user-form user-form__info"
             inputs={getRefinancingFormArray({ loan })}
             collection={LOANS_COLLECTION}
             doc={loan}

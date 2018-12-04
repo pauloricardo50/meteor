@@ -48,7 +48,7 @@
   &-block {
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -60,7 +60,7 @@
     }
 
     &.success {
-       > span {
+      > span {
         color: $success;
       }
 
@@ -184,7 +184,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -243,7 +243,7 @@
     }
 
     .saving-icon {
-      top: -10px;
+      top: 0;
       right: -12px;
     }
   }
@@ -264,9 +264,7 @@
   }
 
   &__finance {
-     > div {
-      width: 400px;
-    }
+    max-width: 400px;
   }
 }
 
@@ -320,49 +318,47 @@
   }
 }
 
-.borrower-page-info {
-  .user-form__info h3,
-  h2 {
-    margin-bottom: 25px;
+.user-form__info h3,
+h2 {
+  margin-bottom: 25px;
+
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.user-form__info {
+  h3 {
+    margin-top: 40px;
+  }
+
+  .form-group {
+    > div {
+      max-width: 100% !important;
+    }
+  }
+
+  > div {
+    max-width: 100% !important;
+  }
+
+  .mui-text-input {
+    box-sizing: border-box;
+    max-width: 100% !important;
+    padding-right: 50px;
+  }
+}
+
+.description {
+  align-self: initial;
+
+  > p {
+    justify-content: flex-start;
+
+    max-width: 100%;
+    margin-top: 0;
 
     font-size: 17px;
-    font-weight: bold;
-  }
-
-  .user-form__info {
-    h3 {
-      margin-top: 40px;
-    }
-
-    .form-group {
-       > div {
-        max-width: 100% !important;
-      }
-    }
-
-     > div {
-      max-width: 100% !important;
-    }
-
-    .mui-text-input {
-      box-sizing: border-box;
-      max-width: 100% !important;
-      padding-right: 50px;
-    }
-  }
-
-  .description {
-    align-self: initial;
-
-     > p {
-      justify-content: flex-start;
-
-      max-width: 100%;
-      margin-top: 0;
-
-      font-size: 17px;
-      font-style: italic;
-    }
+    font-style: italic;
   }
 }
 
