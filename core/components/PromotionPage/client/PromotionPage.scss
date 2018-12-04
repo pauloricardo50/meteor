@@ -62,10 +62,14 @@
 
           width: 150px;
           min-height: 100px;
-          max-height: 150px;
 
           p {
             max-width: 150px;
+          }
+
+          .logo-wrapper {
+            max-width: 150px;
+            height: 50px;
           }
 
           img {
