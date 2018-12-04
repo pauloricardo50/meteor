@@ -17,7 +17,7 @@ describe('LoanService', () => {
     resetDatabase();
   });
 
-  describe.only('popValue', () => {
+  describe('popValue', () => {
     it('removes a value from an array', () => {
       loanId = Factory.create('loan', {
         mortgageNotes: [

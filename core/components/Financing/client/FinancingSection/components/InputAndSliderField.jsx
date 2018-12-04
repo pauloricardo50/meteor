@@ -48,7 +48,7 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
       <MoneyInput
         value={setValue(value, allowUndefined, forceUndefined)}
         onChange={makeHandleTextChange(props)}
-        placeholder={placeholder}
+        placeholder={placeholder === undefined ? '' : `${placeholder}`} // Placeholders should always be a string
         className="money-input"
       />
       <Slider
