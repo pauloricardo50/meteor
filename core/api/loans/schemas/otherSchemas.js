@@ -10,15 +10,10 @@ export const borrowerIdsSchema = {
   'borrowerIds.$': String,
 };
 
-export const loanTranchesSchema = ({
-  withDefaultValue = true,
-  withRate,
-} = {}) => ({
+export const loanTranchesSchema = {
   loanTranches: {
     type: Array,
-    defaultValue: withDefaultValue
-      ? [{ type: INTEREST_RATES.YEARS_10, value: 1 }]
-      : [],
+    defaultValue: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
     optional: true,
   },
   'loanTranches.$': Object,
@@ -37,31 +32,31 @@ export const loanTranchesSchema = ({
     type: String,
     optional: true,
   },
-  ...(withRate
-    ? {
-      'loanTranches.$.rate': {
-        type: Number,
-        min: 0,
-        max: 1,
-      },
-    }
-    : {}),
-});
+};
 
-// Same as loanTranchesSchema, but prefixed with "previousLoanTranches"
-const previousTranches = loanTranchesSchema({
-  withDefaultValue: false,
-  withRate: true,
-});
-export const previousLoanTranchesSchema = Object.keys(previousTranches).reduce(
-  (obj, key) => ({
-    ...obj,
-    [key.replace('loanTranches', 'previousLoanTranches')]: previousTranches[
-      key
-    ],
-  }),
-  {},
-);
+export const previousLoanTranchesSchema = {
+  loanTranches: {
+    type: Array,
+    defaultValue: [],
+    optional: true,
+  },
+  'previousLoanTranches.$': Object,
+  'previousLoanTranches.$.value': {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 1000000000, // Can be specified as percentages or monetary amounts
+  },
+  'previousLoanTranches.$.dueDate': {
+    type: String,
+    optional: true,
+  },
+  'previousLoanTranches.$.rate': {
+    type: Number,
+    min: 0,
+    max: 1,
+  },
+};
 
 export type loanTranchesType = Array<{
   type: string,
