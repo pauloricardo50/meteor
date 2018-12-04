@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
+import moment from 'moment';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -47,9 +48,9 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
     };
   case 'date':
     return {
-      onChangeHandler: undefined,
+      onChangeHandler: event => onChange(id, event.target.value, event),
       showMask: false,
-      value: '',
+      value: moment(value).format('YYYY-MM-DD'),
     };
   default:
     return {
@@ -109,6 +110,7 @@ const TextInput = (props) => {
     simpleOnChange,
     style,
     type,
+    inputType,
     ...otherProps
   } = props;
 
@@ -136,7 +138,7 @@ const TextInput = (props) => {
         className={classes ? Object.values(classes).join(' ') : ''}
         id={id}
         onChange={onChangeHandler}
-        type="text"
+        type={inputType || 'text'}
         style={{ fontSize: 'inherit' }}
         inputComponent={showMask ? MaskedInput : inputComponent || undefined}
         inputProps={{

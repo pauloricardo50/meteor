@@ -115,6 +115,7 @@ class TextInput extends Component {
         disabled,
         money,
         required,
+        date,
 
         // Destructure these props to avoid warnings
         inputRef,
@@ -136,10 +137,13 @@ class TextInput extends Component {
       type = 'money';
     } else if (number) {
       type = 'number';
+    } else if (date) {
+      type = 'date';
     } else {
       type = 'text';
     }
 
+    console.log('type', id, type);
     return (
       <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <MyTextInput

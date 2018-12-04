@@ -149,3 +149,13 @@ export const LOAN_VERIFICATION_STATUS = {
   OK: 'OK',
   ERROR: 'ERROR',
 };
+
+export const MORTGAGE_NOTE_TYPES = {
+  PAPER: 'PAPER',
+  REGISTRAR: 'REGISTRAR',
+};
+
+export const MORTGAGE_NOTE_CATEGORIES = {
+  BEARER: 'BEARER',
+  REGISTERED: 'REGISTERED',
+};

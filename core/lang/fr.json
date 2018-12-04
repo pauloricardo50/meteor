@@ -1,4 +1,15 @@
 {
+  "Forms.previousLoanTranches.rate": "Taux",
+  "Forms.previousLoanTranches.rate.placeholder": "1.50%",
+  "Forms.mortgageNotes.rank": "Rang",
+  "Forms.mortgageNotes.rank.placeholder": "1",
+  "Forms.mortgageNotes.type": "Type",
+  "Forms.mortgageNotes.PAPER": "Papier",
+  "Forms.mortgageNotes.REGISTRAR": "De registre",
+  "Forms.mortgageNotes.category": "Catégorie",
+  "Forms.mortgageNotes.BEARER": "Au porteur",
+  "Forms.mortgageNotes.REGISTERED": "Nominative",
+
   "DashboardProgressInfo.completeRefinancing": "Complétez les informations sur votre refinancement",
   "RefinancingPage.pageTitle": "Votre hypothèque actuelle",
   "Forms.previousLender": "Prêteur actuel",

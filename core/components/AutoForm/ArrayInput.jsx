@@ -5,6 +5,7 @@ import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
 import TextInput from './TextInput';
+import DateInput from './DateInput';
 import SelectFieldInput from './SelectFieldInput';
 
 import FormValidator from './FormValidator';
@@ -69,6 +70,9 @@ class ArrayInput extends Component {
             key={id + inputId + i}
           />
         );
+      }
+      if (type === 'dateInput') {
+        return <DateInput {...childProps} noValidator key={id + inputId + i} />;
       }
     };
 

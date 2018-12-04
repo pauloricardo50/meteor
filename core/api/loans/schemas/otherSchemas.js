@@ -1,12 +1,19 @@
 // @flow
-import { INTEREST_RATES } from '../../constants';
+import {
+  INTEREST_RATES,
+  MORTGAGE_NOTE_TYPES,
+  MORTGAGE_NOTE_CATEGORIES,
+} from '../../constants';
 
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
   'borrowerIds.$': String,
 };
 
-export const loanTranchesSchema = (withDefaultValue = true) => ({
+export const loanTranchesSchema = ({
+  withDefaultValue = true,
+  withRate,
+} = {}) => ({
   loanTranches: {
     type: Array,
     defaultValue: withDefaultValue
@@ -29,13 +36,28 @@ export const loanTranchesSchema = (withDefaultValue = true) => ({
     type: String,
     optional: true,
   },
+  ...(withRate
+    ? {
+      'loanTranches.$.rate': {
+        type: Number,
+        min: 0,
+        max: 1,
+      },
+    }
+    : {}),
 });
 
 // Same as loanTranchesSchema, but prefixed with "previousLoanTranches"
-export const previousLoanTranchesSchema = Object.keys(loanTranchesSchema(false)).reduce(
+const previousTranches = loanTranchesSchema({
+  withDefaultValue: false,
+  withRate: true,
+});
+export const previousLoanTranchesSchema = Object.keys(previousTranches).reduce(
   (obj, key) => ({
     ...obj,
-    [key.replace('loanTranches', 'previousLoanTranches')]: loanTranchesSchema(false)[key],
+    [key.replace('loanTranches', 'previousLoanTranches')]: previousTranches[
+      key
+    ],
   }),
   {},
 );
@@ -54,4 +76,13 @@ export const mortgageNotesSchema = {
   mortgageNotes: { type: Array, defaultValue: [] },
   'mortgageNotes.$': Object,
   'mortgageNotes.$.value': { type: Number, min: 0, max: 1000000000 },
+  'mortgageNotes.$.rank': { type: Number, min: 0, max: 10 },
+  'mortgageNotes.$.type': {
+    type: String,
+    allowedValues: Object.values(MORTGAGE_NOTE_TYPES),
+  },
+  'mortgageNotes.$.category': {
+    type: String,
+    allowedValues: Object.values(MORTGAGE_NOTE_CATEGORIES),
+  },
 };
