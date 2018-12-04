@@ -13,6 +13,7 @@ export const ROW_TYPES = {
   REGULAR: 'REGULAR',
   EMPTY: 'EMPTY',
   SUM: 'SUM',
+  SUBSECTION: 'SUBSECTION',
 };
 
 const classes = {
@@ -21,6 +22,7 @@ const classes = {
   [ROW_TYPES.REGULAR]: 'regular-row',
   [ROW_TYPES.EMPTY]: 'empty-row',
   [ROW_TYPES.SUM]: 'sum-row',
+  [ROW_TYPES.SUBSECTION]: 'subsection-row',
 };
 
 const shouldRenderRow = condition => condition === undefined || condition;

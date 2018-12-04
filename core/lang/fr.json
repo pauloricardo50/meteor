@@ -1,5 +1,8 @@
 {
-  "PDF.borrowersInfo.address": "Adresse",
+  "PDF.borrowersInfos.category.general": "Informations générales",
+  "PDF.borrowersInfos.category.financialSituation": "Situation financière",
+  "PDF.borrowersInfos.name": "Nom",
+  "PDF.borrowersInfos.address": "Adresse",
   "Forms.title": "Titre",
   "Forms.signingDate": "Date de signature",
   "Forms.closingDate": "Date de décaissement",
@@ -1352,7 +1355,7 @@
   "PDF.borrowersInfos.age": "Age",
   "PDF.borrowersInfos.bonus": "Bonus considéré",
   "PDF.borrowersInfos.category.fortune": "Patrimoine",
-  "PDF.borrowersInfos.category.income": "Revenus",
+  "PDF.borrowersInfos.income": "Revenus",
   "PDF.borrowersInfos.children": "Enfants",
   "PDF.borrowersInfos.civilStatus": "Status matrimonial",
   "PDF.borrowersInfos.civilStatus.DIVORCED": "Divorcé",

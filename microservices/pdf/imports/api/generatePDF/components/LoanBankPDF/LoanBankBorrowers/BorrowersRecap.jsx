@@ -181,24 +181,35 @@ const addTableCategoryTitle = ({ title, multipleBorrowers }) => ({
   colspan: multipleBorrowers ? 4 : 2,
 });
 
-const getBorrowersName = ({ borrowersInfos, anonymous }) => (anonymous
-  ? [
-    ...borrowersInfos.gender.map(gender => (
-      <T id={`PDF.borrowersInfos.gender.${gender}`} />
-    )),
-  ]
-  : borrowersInfos.name);
+const getBorrowersGender = borrowersInfos =>
+  borrowersInfos.gender.map(gender => (
+    <T id={`PDF.borrowersInfos.gender.${gender}`} />
+  ));
+
+const getBorrowersName = ({ borrowersInfos, anonymous }) =>
+  (anonymous ? getBorrowersGender(borrowersInfos) : borrowersInfos.name);
 
 const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
   const borrowersInfos = getBorrowersInfos(borrowers);
+  const multipleBorrowers = borrowers.length > 1;
+
   return [
+    addTableCategoryTitle({
+      title: <T id="PDF.borrowersInfos.category.general" />,
+      multipleBorrowers,
+    }),
     {
       label: '\u00A0',
-      data: getBorrowersName({borrowersInfos, anonymous}),
-      style: { fontWeight: 'bold', color: BORDER_BLUE },
+      data: getBorrowersGender(borrowersInfos),
+      style: { fontWeight: 'bold' },
     },
     {
-      label: <T id="PDF.borrowersInfo.address" />,
+      label: <T id="PDF.borrowersInfos.name" />,
+      data: borrowersInfos.name,
+      condition: !anonymous,
+    },
+    {
+      label: <T id="PDF.borrowersInfos.address" />,
       data: borrowersInfos.address,
     },
     {
@@ -226,7 +237,7 @@ const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
   ];
 };
 
-const getBorrowersFinanceArray = ({borrowers, anonymous}) => {
+const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
   const multipleBorrowers = borrowers.length > 1;
   const addTableMoneyLine = makeTableMoneyLine(multipleBorrowers);
   const borrowersInfos = getBorrowersInfos(borrowers);
@@ -242,20 +253,20 @@ const getBorrowersFinanceArray = ({borrowers, anonymous}) => {
   } = borrowersInfos;
 
   return [
+    addTableCategoryTitle({
+      title: <T id="PDF.borrowersInfos.category.financialSituation" />,
+      multipleBorrowers,
+    }),
     {
-      label: '\u00A0',
+      label: <T id="PDF.borrowersInfos.income" />,
       data: multipleBorrowers
         ? [
           ...getBorrowersName({ borrowersInfos, anonymous }),
           <T id="PDF.borrowersInfos.total" key="total" />,
         ]
         : getBorrowersName({ borrowersInfos, anonymous }),
-      style: { fontWeight: 'bold', color: BORDER_BLUE },
+      type: ROW_TYPES.SUBSECTION,
     },
-    addTableCategoryTitle({
-      title: <T id="PDF.borrowersInfos.category.income" />,
-      multipleBorrowers,
-    }),
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.salary" />,
       field: salary,
@@ -287,10 +298,14 @@ const getBorrowersFinanceArray = ({borrowers, anonymous}) => {
       type: ROW_TYPES.SUM,
     },
     addTableEmptyLine(),
-    addTableCategoryTitle({
-      title: <T id="PDF.borrowersInfos.category.fortune" />,
-      multipleBorrowers,
-    }),
+    {
+      label: <T id="PDF.borrowersInfos.category.fortune" />,
+      type: ROW_TYPES.SUBSECTION,
+    },
+    // addTableCategoryTitle({
+    //   title: <T id="PDF.borrowersInfos.category.fortune" />,
+    //   multipleBorrowers,
+    // }),
     ...Object.values(OWN_FUNDS_TYPES).map(ownFund =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
@@ -328,18 +343,16 @@ const BorrowersRecap = ({
   twoBorrowers,
   anonymous = false,
 }: BorrowersRecapProps) => (
-  <>
-    <h2>Informations générales</h2>
+  <div className="borrowers-recap">
     <PdfTable
       className={cx('borrowers-recap info', { twoBorrowers })}
       rows={getBorrowersInfosArray({ borrowers, anonymous })}
     />
-    <h2>Situation financière</h2>
     <PdfTable
       className={cx('borrowers-recap finance', { twoBorrowers })}
-      rows={getBorrowersFinanceArray({borrowers, anonymous })}
+      rows={getBorrowersFinanceArray({ borrowers, anonymous })}
     />
-  </>
+  </div>
 );
 
 export default BorrowersRecap;

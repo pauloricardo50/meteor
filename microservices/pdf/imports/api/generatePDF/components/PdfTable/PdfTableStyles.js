@@ -30,6 +30,14 @@ export default `
         font-weight: normal;
     }
 
+    .pdf-table tr.subsection-row {
+        border-top: none !important;
+    }
+
+    .pdf-table tr.subsection-row td {
+        font-weight: bold;
+    }
+
     .pdf-table tr.title-row {
         border-bottom: 1px solid ${BORDER_BLUE};
     }
