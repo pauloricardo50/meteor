@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+
 import Promotions from './promotions';
 import { PROMOTION_STATUS } from './promotionConstants';
 import UserService from '../users/UserService';
@@ -12,6 +13,7 @@ import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { sendEmail } from '../email/methodDefinitions';
 import { EMAIL_IDS } from '../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import PromotionOptionService from '../promotionOptions/PromotionOptionService';
 
 export class PromotionService extends CollectionService {
   constructor({ sendEmail: injectedSendEmail }) {
@@ -179,6 +181,19 @@ export class PromotionService extends CollectionService {
       { _id: promotionId, 'userLinks._id': userId },
       { $set: { 'userLinks.$.permissions': permissions } },
     );
+  }
+
+  removeUser({ promotionId, loanId }) {
+    const loan = LoanService.get(loanId);
+    LoanService.removeLink({
+      id: loanId,
+      linkName: 'promotionLinks',
+      linkId: promotionId,
+    });
+
+    loan.promotionOptionLinks.forEach(({ _id }) => {
+      PromotionOptionService.remove({ promotionOptionId: _id });
+    });
   }
 }
 
