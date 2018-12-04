@@ -75,9 +75,12 @@ export const structureArrayKeys = [
   'wantedLoan',
   'usedOwnFunds',
   'pledgedOwnFunds',
+  'emptyLine',
+  'charges',
   'interests',
   'amortization',
   'maintenance',
+  'totalCharges',
   'solvency',
 ];
 
@@ -92,10 +95,13 @@ export const structureArrayKeysData = {
   wantedLoan: loan => toMoney(Calculator.selectLoanValue({ loan })),
   usedOwnFunds: loan => toMoney(Calculator.getTotalUsed({ loan })),
   pledgedOwnFunds: loan => toMoney(Calculator.getTotalPledged({ loan })),
+  charges: () => null,
   interests: loan => toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
   amortization: loan => toMoney(12 * Calculator.getAmortization({ loan })),
   maintenance: loan =>
     toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
+  totalCharges: loan =>
+    toMoney(12 * Calculator.getTheoreticalMonthly({ loan })),
   solvency: loan => (
     <Percent value={Calculator.getIncomeRatio({ loan })} rounded />
   ),
@@ -111,18 +117,81 @@ export const structureArrayKeysCondition = {
   pledgedOwnFunds: loan => Calculator.getTotalPledged({ loan }) > 0,
 };
 
-export const structureArrayData = loan =>
-  structureArrayKeys.map(key =>
-    (key === 'emptyLine'
-      ? EMPTY_LINE
-      : {
-        label: <T id={`PDF.projectInfos.structure.${key}`} />,
-        data: structureArrayKeysData[key](loan),
-        condition: structureArrayKeysCondition[key]
-          ? structureArrayKeysCondition[key](loan)
-          : true,
-        type: key === 'totalCost' ? ROW_TYPES.SUM : ROW_TYPES.REGULAR,
-      }));
+export const structureArrayData = loan => [
+  {
+    label: <T id="PDF.projectInfos.structure.propertyValue" />,
+    data: toMoney(Calculator.getPropertyValue({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.notaryFees" />,
+    data: toMoney(Calculator.getFees({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.propertyWork" />,
+    data: toMoney(Calculator.getPropertyWork({ loan })),
+    condition: !!loan.propertyWork,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.totalCost" />,
+    data: toMoney(Calculator.getProjectValue({ loan })),
+    type: ROW_TYPES.SUM,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.wantedLoan" />,
+    data: toMoney(Calculator.selectLoanValue({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
+    data: toMoney(Calculator.getTotalUsed({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
+    data: toMoney(Calculator.getTotalPledged({ loan })),
+    condition: Calculator.getTotalPledged({ loan }) > 0,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.theoreticalCharges" />,
+    type: ROW_TYPES.SUBSECTION,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.interests" />,
+    data: toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.amortization" />,
+    data: toMoney(12 * Calculator.getAmortization({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.maintenance" />,
+    data: toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.totalTheoreticalCharges" />,
+    data: toMoney(12 * Calculator.getTheoreticalMonthly({ loan })),
+    type: ROW_TYPES.SUM,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.totalIncome" />,
+    data: toMoney(Calculator.getTotalIncome({loan})),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.solvency" />,
+    data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
+  },
+];
+
+// export const structureArrayData = loan =>
+//   structureArrayKeys.map(key =>
+//     (key === 'emptyLine'
+//       ? EMPTY_LINE
+//       : {
+//         label: <T id={`PDF.projectInfos.structure.${key}`} />,
+//         data: structureArrayKeysData[key](loan),
+//         condition: structureArrayKeysCondition[key]
+//           ? structureArrayKeysCondition[key](loan)
+//           : true,
+//         type: key.includes('total') ? ROW_TYPES.SUM : (structureArrayKeysData[key](loan) === null ? ROW_TYPES.SUBSECTION : ROW_TYPES.REGULAR),
+//       }));
 
 export const propertyArrayKeys = [
   'address',

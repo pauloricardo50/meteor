@@ -52,7 +52,7 @@ export default `
     }
 
     .pdf-table tr.title-row:not(:first-child) td {
-        padding-top: 32px;
+        padding-top: 24px;
     }
 
     .pdf-table tr.title-row.no-padding td {

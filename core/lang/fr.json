@@ -1,4 +1,7 @@
 {
+  "PDF.projectInfos.structure.totalIncome": "Revenus considérés",
+  "PDF.projectInfos.structure.theoreticalCharges": "Charges théoriques",
+  "PDF.projectInfos.structure.totalTheoreticalCharges": "Charges théoriques totales",
   "PDF.borrowersInfos.category.general": "Informations générales",
   "PDF.borrowersInfos.category.financialSituation": "Situation financière",
   "PDF.borrowersInfos.name": "Nom",
