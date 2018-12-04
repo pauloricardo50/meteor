@@ -80,7 +80,6 @@ describe('PromotionService', () => {
     let FakePromotionService;
 
     beforeEach(() => {
-      resetDatabase();
       sendEmail = { run: sinon.spy() };
       FakePromotionService = new PromotionServiceClass({
         sendEmail,
@@ -205,6 +204,56 @@ describe('PromotionService', () => {
               user: newUser,
             })).to.throw('Vous ne pouvez pas inviter');
         });
+    });
+  });
+
+  describe('removeUser', () => {
+    let promotionId;
+    let loanId;
+    let loan;
+
+    it('removes the promotion from the loan', () => {
+      promotionId = Factory.create('promotion')._id;
+      loanId = Factory.create('loan', {
+        promotionLinks: [
+          { _id: promotionId, priorityOrder: [] },
+          { _id: 'someOtherPromotion', priorityOrder: [] },
+        ],
+      })._id;
+
+      PromotionService.removeUser({ promotionId, loanId });
+
+      loan = LoanService.get(loanId);
+      expect(loan.promotionLinks).to.deep.equal([
+        { _id: 'someOtherPromotion', priorityOrder: [] },
+      ]);
+    });
+
+    it('removes all promotionOptions from the loan', () => {
+      const promotionLotId1 = Factory.create('promotionLot')._id;
+      const promotionLotId2 = Factory.create('promotionLot')._id;
+      promotionId = Factory.create('promotion', {
+        promotionLotLinks: [{ _id: promotionLotId1 }, { _id: promotionLotId2 }],
+      })._id;
+
+      const promotionOptionId1 = Factory.create('promotionOption', {
+        promotionLotLinks: [{ _id: promotionLotId1 }],
+      })._id;
+      const promotionOptionId2 = Factory.create('promotionOption', {
+        promotionLotLinks: [{ _id: promotionLotId2 }],
+      })._id;
+
+      loanId = Factory.create('loan', {
+        promotionOptionLinks: [
+          { _id: promotionOptionId1 },
+          { _id: promotionOptionId2 },
+        ],
+      })._id;
+
+      PromotionService.removeUser({ promotionId, loanId });
+
+      expect(loan.promotionOptionLinks).to.deep.equal([]);
+      expect(PromotionOptionService.find({}).count()).to.equal(0);
     });
   });
 });

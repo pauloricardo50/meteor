@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
+import { LOAN_VERIFICATION_STATUS, LOANS_COLLECTION } from 'core/api/constants';
 import UpdateField from 'core/components/UpdateField';
 import { loanUpdate } from 'core/api';
 
@@ -9,6 +9,7 @@ type VerificationSetterProps = {};
 
 const VerificationSetter = ({ loan }: VerificationSetterProps) => (
   <UpdateField
+    collection={LOANS_COLLECTION}
     doc={loan}
     fields={['verificationStatus']}
     onSuccess={({ verificationStatus }) => {

@@ -1,4 +1,11 @@
 {
+  "PromotionPage.lots.solvency": "Solvabilité",
+  "Forms.solvency": "Solvabilité",
+  "Forms.solvency.SOLVENT": "Solvable",
+  "Forms.solvency.INSOLVENT": "Non solvable",
+  "Forms.solvency.UNDETERMINED": "À déterminer",
+  "PromotionLotLoansTable.actions": "Actions",
+  "PDF.borrowersInfo.address": "Adresse",
   "PDF.projectInfos.structure.totalIncome": "Revenus considérés",
   "PDF.projectInfos.structure.theoreticalCharges": "Charges théoriques",
   "PDF.projectInfos.structure.totalTheoreticalCharges": "Charges théoriques totales",
