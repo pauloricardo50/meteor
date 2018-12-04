@@ -116,6 +116,7 @@ class TextInput extends Component {
         money,
         required,
         date,
+        percent,
 
         // Destructure these props to avoid warnings
         inputRef,
@@ -139,11 +140,12 @@ class TextInput extends Component {
       type = 'number';
     } else if (date) {
       type = 'date';
+    } else if (percent) {
+      type = 'percent';
     } else {
       type = 'text';
     }
 
-    console.log('type', id, type);
     return (
       <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <MyTextInput
