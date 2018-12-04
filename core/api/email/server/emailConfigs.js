@@ -192,9 +192,10 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     ...params,
     promotionName: params.promotion.name,
     phoneNumber:
-      params.promotion.contacts.length > 0
-        ? params.promotion.contacts[0].phoneNumber
-        : EPOTEK_PHONE,
+      params.promotion.contacts.length
+      && params.promotion.contacts[0].phoneNumber,
+    name: params.promotion.contacts.length && params.promotion.contacts[0].name,
+    epotekPhone: EPOTEK_PHONE,
   }),
 });
 
