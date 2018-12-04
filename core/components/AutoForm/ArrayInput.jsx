@@ -37,7 +37,7 @@ class ArrayInput extends Component {
     } = this.props;
 
     const mapInput = (input, i) => {
-      const { id: inputId, type, options } = input;
+      const { id: inputId, type, options, intlId } = input;
       const childProps = {
         ...this.props,
         inputProps: {
@@ -46,8 +46,8 @@ class ArrayInput extends Component {
           currentValue:
             currentValue && currentValue[i] && currentValue[i][inputId],
           key: inputId,
-          label: <T id={`Forms.${id}.${inputId}`} />,
-          placeholder: `Forms.${id}.${inputId}.placeholder`,
+          label: <T id={`Forms.${intlId || id}.${inputId}`} />,
+          placeholder: `Forms.${intlId || id}.${inputId}.placeholder`,
           required: true,
           disabled,
         },
@@ -61,8 +61,8 @@ class ArrayInput extends Component {
         // and mess up the labels in the SelectFieldInput
         childProps.inputProps.options = options.map(opt =>
           (opt.id === undefined
-            ? { id: opt, label: <T id={`Forms.${id}.${opt}`} /> }
-            : { ...opt, label: <T id={`Forms.${id}.${opt.id}`} /> }));
+            ? { id: opt, label: <T id={`Forms.${intlId || id}.${opt}`} /> }
+            : { ...opt, label: <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
         return (
           <SelectFieldInput
             {...childProps}
