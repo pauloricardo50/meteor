@@ -19,6 +19,7 @@ export const loanTranchesSchema = ({
     defaultValue: withDefaultValue
       ? [{ type: INTEREST_RATES.YEARS_10, value: 1 }]
       : [],
+    optional: true,
   },
   'loanTranches.$': Object,
   'loanTranches.$.type': {
@@ -73,7 +74,7 @@ export const propertyIdsSchema = {
 };
 
 export const mortgageNotesSchema = {
-  mortgageNotes: { type: Array, defaultValue: [] },
+  mortgageNotes: { type: Array, defaultValue: [], optional: true },
   'mortgageNotes.$': Object,
   'mortgageNotes.$.value': { type: Number, min: 0, max: 1000000000 },
   'mortgageNotes.$.rank': { type: Number, min: 0, max: 10 },

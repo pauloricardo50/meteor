@@ -17,6 +17,23 @@ describe('LoanService', () => {
     resetDatabase();
   });
 
+  describe.only('popValue', () => {
+    it('removes a value from an array', () => {
+      loanId = Factory.create('loan', {
+        mortgageNotes: [
+          { value: 150000, type: 'PAPER', category: 'REGISTERED', rank: 2 },
+        ],
+      })._id;
+      loan = LoanService.get(loanId);
+      expect(loan.mortgageNotes.length).to.equal(1);
+
+      LoanService.popValue({ loanId, object: { mortgageNotes: 1 } });
+
+      loan = LoanService.get(loanId);
+      expect(loan.mortgageNotes).to.deep.equal([]);
+    });
+  });
+
   describe('disableUserForms', () => {
     it('disables user forms', () => {
       loanId = Factory.create('loan')._id;
