@@ -42,7 +42,7 @@ const PdfPageStyles = `
         justify-content: flex-start;
         margin: 0;
         color: ${BORDER_BLUE};
-        font-weight: 300;
+        font-weight: normal;
     }
 
     .pdf-page-title img {
@@ -63,7 +63,7 @@ const PdfPageStyles = `
     }
 
     .bold {
-        font-weight: 600;
+        font-weight: bold;
     }
 `;
 

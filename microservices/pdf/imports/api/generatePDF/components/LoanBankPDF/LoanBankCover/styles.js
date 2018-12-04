@@ -25,7 +25,7 @@ const stylesheet = `
     .loan-info .loan-name {
         margin-top: 10px;
         margin-bottom: 80px;
-        font-weight: 300;
+        font-weight: normal;
     }
 
     .loan-info .loan-type {
@@ -34,7 +34,7 @@ const stylesheet = `
 
     .loan-info .address {
         margin-top: 10px;
-        font-weight: 300;
+        font-weight: normal;
         margin-bottom: 160px;
         height: 40px;
     }
@@ -62,11 +62,11 @@ const stylesheet = `
 
     .cover-footer .assigned-employee >* {
         margin: 0px;
-        font-weight: 300;
+        font-weight: normal;
     }
 
     .cover-footer .assigned-employee .name {
-            font-weight: 600;
+            font-weight: bold;
         }
 
     .cover-header {
@@ -84,7 +84,7 @@ const stylesheet = `
         justify-content: flex-start;
         margin: 0;
         color: ${BORDER_BLUE};
-        font-weight: 300;
+        font-weight: normal;
     }
 
     .cover-header img {
@@ -102,7 +102,7 @@ const stylesheet = `
 
     .e-potek-address h6 {
         color: ${BORDER_BLUE};
-        font-weight: 200;
+        font-weight: normal;
         margin: 0;
     }
 `;

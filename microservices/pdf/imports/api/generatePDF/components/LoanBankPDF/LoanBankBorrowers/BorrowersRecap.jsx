@@ -8,7 +8,6 @@ import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
 import PdfTable from '../../PdfTable';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
-import { BORDER_BLUE } from '../../cssConstants';
 
 type BorrowersRecapProps = {
   borrowers: Array<Object>,
@@ -302,10 +301,6 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
       label: <T id="PDF.borrowersInfos.category.fortune" />,
       type: ROW_TYPES.SUBSECTION,
     },
-    // addTableCategoryTitle({
-    //   title: <T id="PDF.borrowersInfos.category.fortune" />,
-    //   multipleBorrowers,
-    // }),
     ...Object.values(OWN_FUNDS_TYPES).map(ownFund =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
