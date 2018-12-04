@@ -18,6 +18,12 @@ const PromotionLotsManager = ({
   canModify,
 }: PromotionLotsManagerProps) => {
   const allowEdit = canModify && status === PROMOTION_LOT_STATUS.AVAILABLE;
+
+  if (!allowEdit && lots.length === 0) {
+    // Don't display an empty title for users who can't even add a new lot
+    return null;
+  }
+
   return (
     <div className="promotion-lots-manager">
       {lots.map(lot => (
