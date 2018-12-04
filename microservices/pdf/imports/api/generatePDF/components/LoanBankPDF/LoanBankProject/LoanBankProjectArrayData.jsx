@@ -65,56 +65,9 @@ export const remainingFundsTableData = loan =>
       style: { textAlign: 'right' },
     }));
 
-export const structureArrayKeys = [
-  'propertyValue',
-  'notaryFees',
-  'propertyWork',
-  'totalCost',
-  'emptyLine',
-  'wantedLoanRate',
-  'wantedLoan',
-  'usedOwnFunds',
-  'pledgedOwnFunds',
-  'emptyLine',
-  'charges',
-  'interests',
-  'amortization',
-  'maintenance',
-  'totalCharges',
-  'solvency',
-];
-
-export const structureArrayKeysData = {
-  propertyValue: loan => toMoney(Calculator.getPropertyValue({ loan })),
-  notaryFees: loan => toMoney(Calculator.getFees({ loan })),
-  propertyWork: loan => toMoney(Calculator.getPropertyWork({ loan })),
-  totalCost: loan => toMoney(Calculator.getProjectValue({ loan })),
-  wantedLoanRate: loan => (
-    <Percent value={Calculator.getBorrowRatio({ loan })} rounded />
-  ),
-  wantedLoan: loan => toMoney(Calculator.selectLoanValue({ loan })),
-  usedOwnFunds: loan => toMoney(Calculator.getTotalUsed({ loan })),
-  pledgedOwnFunds: loan => toMoney(Calculator.getTotalPledged({ loan })),
-  charges: () => null,
-  interests: loan => toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
-  amortization: loan => toMoney(12 * Calculator.getAmortization({ loan })),
-  maintenance: loan =>
-    toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
-  totalCharges: loan =>
-    toMoney(12 * Calculator.getTheoreticalMonthly({ loan })),
-  solvency: loan => (
-    <Percent value={Calculator.getIncomeRatio({ loan })} rounded />
-  ),
-};
-
 export const EMPTY_LINE = {
   label: NBSP,
   type: ROW_TYPES.EMPTY,
-};
-
-export const structureArrayKeysCondition = {
-  propertyWork: ({ propertyWork }) => !!propertyWork,
-  pledgedOwnFunds: loan => Calculator.getTotalPledged({ loan }) > 0,
 };
 
 export const structureArrayData = loan => [
@@ -179,19 +132,6 @@ export const structureArrayData = loan => [
     data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
   },
 ];
-
-// export const structureArrayData = loan =>
-//   structureArrayKeys.map(key =>
-//     (key === 'emptyLine'
-//       ? EMPTY_LINE
-//       : {
-//         label: <T id={`PDF.projectInfos.structure.${key}`} />,
-//         data: structureArrayKeysData[key](loan),
-//         condition: structureArrayKeysCondition[key]
-//           ? structureArrayKeysCondition[key](loan)
-//           : true,
-//         type: key.includes('total') ? ROW_TYPES.SUM : (structureArrayKeysData[key](loan) === null ? ROW_TYPES.SUBSECTION : ROW_TYPES.REGULAR),
-//       }));
 
 export const propertyArrayKeys = [
   'address',
