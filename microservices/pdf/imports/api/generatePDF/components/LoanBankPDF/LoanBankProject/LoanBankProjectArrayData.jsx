@@ -65,64 +65,73 @@ export const remainingFundsTableData = loan =>
       style: { textAlign: 'right' },
     }));
 
-export const structureArrayKeys = [
-  'propertyValue',
-  'notaryFees',
-  'propertyWork',
-  'totalCost',
-  'emptyLine',
-  'wantedLoanRate',
-  'wantedLoan',
-  'usedOwnFunds',
-  'pledgedOwnFunds',
-  'interests',
-  'amortization',
-  'maintenance',
-  'solvency',
-];
-
-export const structureArrayKeysData = {
-  propertyValue: loan => toMoney(Calculator.getPropertyValue({ loan })),
-  notaryFees: loan => toMoney(Calculator.getFees({ loan })),
-  propertyWork: loan => toMoney(Calculator.getPropertyWork({ loan })),
-  totalCost: loan => toMoney(Calculator.getProjectValue({ loan })),
-  wantedLoanRate: loan => (
-    <Percent value={Calculator.getBorrowRatio({ loan })} rounded />
-  ),
-  wantedLoan: loan => toMoney(Calculator.selectLoanValue({ loan })),
-  usedOwnFunds: loan => toMoney(Calculator.getTotalUsed({ loan })),
-  pledgedOwnFunds: loan => toMoney(Calculator.getTotalPledged({ loan })),
-  interests: loan => toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
-  amortization: loan => toMoney(12 * Calculator.getAmortization({ loan })),
-  maintenance: loan =>
-    toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
-  solvency: loan => (
-    <Percent value={Calculator.getIncomeRatio({ loan })} rounded />
-  ),
-};
-
 export const EMPTY_LINE = {
   label: NBSP,
   type: ROW_TYPES.EMPTY,
 };
 
-export const structureArrayKeysCondition = {
-  propertyWork: ({ propertyWork }) => !!propertyWork,
-  pledgedOwnFunds: loan => Calculator.getTotalPledged({ loan }) > 0,
-};
-
-export const structureArrayData = loan =>
-  structureArrayKeys.map(key =>
-    (key === 'emptyLine'
-      ? EMPTY_LINE
-      : {
-        label: <T id={`PDF.projectInfos.structure.${key}`} />,
-        data: structureArrayKeysData[key](loan),
-        condition: structureArrayKeysCondition[key]
-          ? structureArrayKeysCondition[key](loan)
-          : true,
-        type: key === 'totalCost' ? ROW_TYPES.SUM : ROW_TYPES.REGULAR,
-      }));
+export const structureArrayData = loan => [
+  {
+    label: <T id="PDF.projectInfos.structure.propertyValue" />,
+    data: toMoney(Calculator.getPropertyValue({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.notaryFees" />,
+    data: toMoney(Calculator.getFees({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.propertyWork" />,
+    data: toMoney(Calculator.getPropertyWork({ loan })),
+    condition: !!loan.propertyWork,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.totalCost" />,
+    data: toMoney(Calculator.getProjectValue({ loan })),
+    type: ROW_TYPES.SUM,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.wantedLoan" />,
+    data: toMoney(Calculator.selectLoanValue({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
+    data: toMoney(Calculator.getTotalUsed({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
+    data: toMoney(Calculator.getTotalPledged({ loan })),
+    condition: Calculator.getTotalPledged({ loan }) > 0,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.theoreticalCharges" />,
+    type: ROW_TYPES.SUBSECTION,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.interests" />,
+    data: toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.amortization" />,
+    data: toMoney(12 * Calculator.getAmortization({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.maintenance" />,
+    data: toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.totalTheoreticalCharges" />,
+    data: toMoney(12 * Calculator.getTheoreticalMonthly({ loan })),
+    type: ROW_TYPES.SUM,
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.totalIncome" />,
+    data: toMoney(Calculator.getTotalIncome({ loan })),
+  },
+  {
+    label: <T id="PDF.projectInfos.structure.solvency" />,
+    data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
+  },
+];
 
 export const propertyArrayKeys = [
   'address',
@@ -258,14 +267,143 @@ export const propertyArrayKeysCondition = {
   maintenance: ({ monthlyExpenses }) => !!monthlyExpenses,
 };
 
-export const propertyArrayData = loan =>
-  propertyArrayKeys.map(key =>
-    (key === 'emptyLine'
-      ? EMPTY_LINE
-      : {
-        label: <T id={`PDF.projectInfos.property.${key}`} />,
-        data: propertyArrayKeysData[key](loan),
-        condition: propertyArrayKeysCondition[key]
-          ? propertyArrayKeysCondition[key](loan.structure.property)
-          : true,
-      }));
+// export const propertyArrayData = loan =>
+//   propertyArrayKeys.map(key =>
+//     (key === 'emptyLine'
+//       ? EMPTY_LINE
+//       : {
+//         label: <T id={`PDF.projectInfos.property.${key}`} />,
+//         data: propertyArrayKeysData[key](loan),
+//         condition: propertyArrayKeysCondition[key]
+//           ? propertyArrayKeysCondition[key](loan.structure.property)
+//           : true,
+//       }));
+
+export const propertyArrayData = (loan) => {
+  const {
+    structure: {
+      property: {
+        address1,
+        zipCode,
+        city,
+        propertyType,
+        houseType,
+        flatType,
+        roomCount,
+        insideArea,
+        landArea,
+        volume,
+        volumeNorm,
+        terraceArea,
+        numberOfFloors,
+        floorNumber,
+        constructionYear,
+        renovationYear,
+        parkingInside = 0,
+        parkingOutside = 0,
+        minergie,
+        monthlyExpenses,
+      },
+    },
+    general: { residenceType },
+  } = loan;
+  return [
+    {
+      label: <T id="PDF.projectInfos.property.address" />,
+      data: (
+        <span>
+          {address1},<br />
+          {zipCode} {city}
+        </span>
+      ),
+    },
+    {
+      label: <T id="PDF.projectInfos.property.residenceType" />,
+      data: <T id={`PDF.residenceType.${residenceType}`} />,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.propertyType" />,
+      data: <T id={`PDF.projectInfos.property.propertyType.${propertyType}`} />,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.houseType" />,
+      data: <T id={`PDF.projectInfos.property.houseType.${houseType}`} />,
+      condition: propertyType === PROPERTY_TYPE.HOUSE,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.flatType" />,
+      data: <T id={`PDF.projectInfos.property.flatType.${flatType}`} />,
+      condition: propertyType === PROPERTY_TYPE.FLAT,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.roomCount" />,
+      data: roomCount,
+      tooltip: {
+        text: <T id="PDF.projectInfos.property.roomCount.tooltip" />,
+        symbol: '*',
+      },
+    },
+    {
+      label: <T id="PDF.projectInfos.property.insideArea" />,
+      data: `${insideArea} m2`,
+      condition: propertyType === PROPERTY_TYPE.FLAT,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.landArea" />,
+      data: `${landArea} m2`,
+      condition: propertyType === PROPERTY_TYPE.HOUSE,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.volume" />,
+      data: (
+        <span>
+          {volume} m3 (
+          <T id={`PDF.projectInfos.property.volumeNorm.${volumeNorm}`} />)
+        </span>
+      ),
+      condition: propertyType === PROPERTY_TYPE.HOUSE,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.terraceArea" />,
+      data: `${terraceArea} m2`,
+      condition:
+        propertyType === PROPERTY_TYPE.FLAT
+        && flatType === FLAT_TYPE.TERRACE_APARTMENT,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.numberOfFloors" />,
+      data: numberOfFloors,
+      condition: propertyType === PROPERTY_TYPE.FLAT,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.floorNumber" />,
+      data: floorNumber,
+      condition:
+        propertyType === PROPERTY_TYPE.FLAT
+        && (flatType === FLAT_TYPE.SINGLE_FLOOR_APARTMENT
+          || flatType === FLAT_TYPE.DUPLEX_APARTMENT),
+    },
+    {
+      label: <T id="PDF.projectInfos.property.constructionYear" />,
+      data: constructionYear,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.renovationYear" />,
+      data: renovationYear,
+      condition: !!renovationYear,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.parking" />,
+      data: `${parkingInside} int., ${parkingOutside} ext.`,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.minergie" />,
+      data: <T id={`PDF.projectInfos.property.minergie.${minergie}`} />,
+    },
+    {
+      label: <T id="PDF.projectInfos.property.maintenance" />,
+      data: toMoney(monthlyExpenses),
+      condition: !!monthlyExpenses,
+    },
+  ];
+};
