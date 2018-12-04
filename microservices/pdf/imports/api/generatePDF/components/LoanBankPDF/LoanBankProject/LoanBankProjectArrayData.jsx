@@ -267,18 +267,6 @@ export const propertyArrayKeysCondition = {
   maintenance: ({ monthlyExpenses }) => !!monthlyExpenses,
 };
 
-// export const propertyArrayData = loan =>
-//   propertyArrayKeys.map(key =>
-//     (key === 'emptyLine'
-//       ? EMPTY_LINE
-//       : {
-//         label: <T id={`PDF.projectInfos.property.${key}`} />,
-//         data: propertyArrayKeysData[key](loan),
-//         condition: propertyArrayKeysCondition[key]
-//           ? propertyArrayKeysCondition[key](loan.structure.property)
-//           : true,
-//       }));
-
 export const propertyArrayData = (loan) => {
   const {
     structure: {
