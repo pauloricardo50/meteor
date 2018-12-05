@@ -15,7 +15,7 @@ export default InterestRates.createQuery(
     $options: { sort: { date: -1 }, limit: 1 },
     $postFilter(results, params) {
       const interestRates = results.length > 0 && results[0];
-      return Object.keys(interestRates)
+      const rates = Object.keys(interestRates)
         .filter(type =>
           interestRates[type].rateLow
             && interestRates[type].rateHigh
@@ -26,6 +26,7 @@ export default InterestRates.createQuery(
           rateHigh: interestRates[type].rateHigh,
           trend: interestRates[type].trend,
         }));
+      return { rates, date: interestRates.date };
     },
   },
 );

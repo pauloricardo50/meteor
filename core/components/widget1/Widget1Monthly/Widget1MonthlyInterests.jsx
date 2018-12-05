@@ -5,7 +5,6 @@ import { lifecycle } from 'recompose';
 import Select from 'core/components/Select';
 import T, { Percent } from 'core/components/Translation';
 import { INTEREST_RATES } from 'core/api/constants';
-import interestRates from 'core/components/InterestRatesTable/interestRates';
 
 const displayedRates = [
   INTEREST_RATES.LIBOR,
@@ -14,33 +13,34 @@ const displayedRates = [
   INTEREST_RATES.YEARS_20,
 ];
 
-const options = interestRates
-  .filter(({ type }) => displayedRates.indexOf(type) > -1)
-  .map(({ type, rateLow, rateHigh }) => {
-    const averageRate = (rateHigh + rateLow) / 2;
-    return {
-      type,
-      id: averageRate,
-      label: (
-        <span>
-          <T
-            id="Widget1MonthlyInterests.optionLabel"
-            values={{
-              type: <T id={`InterestsTable.${type}`} />,
-              rate: <Percent value={averageRate} />,
-            }}
-          />
-        </span>
-      ),
-    };
-  });
+const options = interestRates =>
+  interestRates
+    .filter(({ type }) => displayedRates.indexOf(type) > -1)
+    .map(({ type, rateLow, rateHigh }) => {
+      const averageRate = (rateHigh + rateLow) / 2;
+      return {
+        type,
+        id: averageRate,
+        label: (
+          <span>
+            <T
+              id="Widget1MonthlyInterests.optionLabel"
+              values={{
+                type: <T id={`InterestsTable.${type}`} />,
+                rate: <Percent value={averageRate} />,
+              }}
+            />
+          </span>
+        ),
+      };
+    });
 
-const Widget1MonthlyInterests = ({ value, onChange }) => (
+const Widget1MonthlyInterests = ({ value, onChange, interestRates }) => (
   <Select
     label={<T id="Widget1MonthlyInterests.label" />}
     value={value}
     onChange={(_, val) => onChange(val)}
-    options={options}
+    options={options(interestRates)}
     className="widget1-montly-interests"
   />
 );
@@ -54,7 +54,7 @@ Widget1MonthlyInterests.propTypes = {
 // rates
 export default lifecycle({
   componentDidMount() {
-    const initialRate = options.find(rate => rate.type === INTEREST_RATES.YEARS_10).id;
+    const initialRate = options(this.props.interestRates).find(rate => rate.type === INTEREST_RATES.YEARS_10).id;
     this.props.onChange(initialRate);
   },
 })(Widget1MonthlyInterests);
