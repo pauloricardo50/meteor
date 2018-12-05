@@ -26,7 +26,14 @@ export default InterestRates.createQuery(
           rateHigh: interestRates[type].rateHigh,
           trend: interestRates[type].trend,
         }));
-      return { rates, date: interestRates.date };
+      const averageRates = rates.reduce(
+        (avgRates, { type, rateLow, rateHigh }) => ({
+          ...avgRates,
+          [type]: (rateLow + rateHigh) / 2,
+        }),
+        {},
+      );
+      return { rates, averageRates, date: interestRates.date };
     },
   },
 );

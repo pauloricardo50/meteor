@@ -1,8 +1,16 @@
-import { compose } from 'recompose';
+import { compose, mapProps } from 'recompose';
 import query from 'core/api/loans/queries/adminLoan';
 import loanFiles from 'core/api/loans/queries/loanFiles';
 import { withSmartQuery } from 'core/api';
 import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
+import interestRates from 'core/api/interestRates/queries/currentInterestRates';
+
+const withInterestRates = withSmartQuery({
+  query: interestRates,
+  queryOptions: { reactive: false },
+  dataName: 'currentInterestRates',
+  smallLoader: true,
+});
 
 export default compose(
   withSmartQuery({
@@ -16,4 +24,9 @@ export default compose(
     ({ loan: { _id: loanId } }) => ({ loanId }),
     'loan',
   ),
+  withInterestRates,
+  mapProps(({ loan, currentInterestRates, ...props }) => ({
+    ...props,
+    loan: { ...loan, currentInterestRates: currentInterestRates.averageRates },
+  })),
 );

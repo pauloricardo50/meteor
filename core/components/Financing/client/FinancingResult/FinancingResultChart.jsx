@@ -17,6 +17,7 @@ type FinancingResultChartProps = {};
 
 const FinancingResultChart = (props: FinancingResultChartProps) => {
   const interests = getInterests(props);
+  console.log('interests', interests);
   const amortization = getAmortization(props);
   const propertyExpenses = getPropertyExpenses(props);
 

@@ -9,6 +9,8 @@ import DashboardRecapChartLegend from './DashboardRecapChartLegend';
 
 const getChartData = ({ loan }) => {
   const interests = Calculator.getInterests({ loan });
+  console.log('interests', interests);
+  console.log('loanCalc', loan);
 
   let data = [
     {
