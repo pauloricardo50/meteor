@@ -87,4 +87,22 @@ describe('degressive', () => {
       brackets: [{ rate: 0.1, max: 200 }, { rate: 0.2 }],
     })).to.equal(180);
   });
+
+  it('should use minTax if min and max are provided', () => {
+    expect(degressive({
+      amount: 1000,
+      brackets: [{ max: 500, rate: 0.5 }],
+      minTax: 400,
+      maxTax: 1000,
+    })).to.equal(400);
+  });
+
+  it('should use maxTax if min and max are provided', () => {
+    expect(degressive({
+      amount: 1000000,
+      brackets: [{ max: 100000, rate: 0.5 }],
+      minTax: 400,
+      maxTax: 1000,
+    })).to.equal(1000);
+  });
 });

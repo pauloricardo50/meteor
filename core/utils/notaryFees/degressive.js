@@ -42,11 +42,11 @@ const degressive = ({
   });
 
   if (maxTax) {
-    return Math.min(tax, maxTax);
+    tax = Math.min(tax, maxTax);
   }
 
   if (minTax) {
-    return Math.max(tax, minTax);
+    tax = Math.max(tax, minTax);
   }
 
   return tax;
