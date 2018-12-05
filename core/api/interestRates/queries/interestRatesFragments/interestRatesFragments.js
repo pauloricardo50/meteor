@@ -18,3 +18,8 @@ export const interestRatesFragment = {
   date: 1,
   ...ratesFragments,
 };
+
+export const currentInterestRatesFragment = {
+  date: 1,
+  ...ratesFragments,
+};
