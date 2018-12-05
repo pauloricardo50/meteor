@@ -84,7 +84,7 @@ export class PromotionService extends CollectionService {
 
     if (!UserService.doesUserExist({ email })) {
       isNewUser = true;
-      const yannisUser = Accounts.findUserByEmail('yannis@e-potek.ch');
+      const admin = UserService.get(promotion.assignedEmployeeId);
       userId = UserService.adminCreateUser({
         options: {
           email,
@@ -94,7 +94,7 @@ export class PromotionService extends CollectionService {
           phoneNumbers: [phoneNumber],
         },
         role: ROLES.USER,
-        adminId: yannisUser && yannisUser._id,
+        adminId: admin && admin._id,
       });
     } else {
       userId = Accounts.findUserByEmail(email)._id;
@@ -131,6 +131,7 @@ export class PromotionService extends CollectionService {
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
       const promotion = this.get(promotionId);
+      const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
@@ -149,7 +150,7 @@ export class PromotionService extends CollectionService {
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
-          promotion,
+          promotion: { ...promotion, assignedEmployee },
           coverImageUrl,
           logoUrls,
           ctaUrl,
