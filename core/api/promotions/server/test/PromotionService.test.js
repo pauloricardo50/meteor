@@ -78,15 +78,18 @@ describe('PromotionService', () => {
     let promotionId;
     let sendEmail;
     let FakePromotionService;
+    let adminId;
 
     beforeEach(() => {
       sendEmail = { run: sinon.spy() };
       FakePromotionService = new PromotionServiceClass({
         sendEmail,
       });
+      adminId = Factory.create('admin')._id;
       promotionId = Factory.create('promotion', {
         _id: 'promotion',
         status: PROMOTION_STATUS.OPEN,
+        assignedEmployeeId: adminId,
       })._id;
     });
 
@@ -204,6 +207,24 @@ describe('PromotionService', () => {
               user: newUser,
             })).to.throw('Vous ne pouvez pas inviter');
         });
+    });
+
+    it('assigns the assignedEmployee to the user', () => {
+      const newUser = {
+        email: 'new@user.com',
+        firstName: 'New',
+        lastName: 'User',
+        phoneNumber: '1234',
+      };
+
+      return FakePromotionService.inviteUser({
+        promotionId,
+        user: newUser,
+      }).then(() => {
+        const user = Accounts.findUserByEmail(newUser.email);
+        const { assignedEmployeeId } = user;
+        expect(assignedEmployeeId).to.equal(adminId);
+      });
     });
   });
 

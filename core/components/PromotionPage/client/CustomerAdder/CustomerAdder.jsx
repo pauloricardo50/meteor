@@ -16,7 +16,7 @@ const CustomerAdderUserSchema = new SimpleSchema({
   email: String,
   firstName: String,
   lastName: String,
-  phoneNumber: String,
+  phoneNumber: { type: String, optional: true },
 });
 
 const onSuccessMessage = ({ email }) => `Invitation envoyée à ${email}`;

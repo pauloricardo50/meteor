@@ -27,7 +27,7 @@ export class SlackService {
     ...rest
   }) => {
     if (shouldNotLog) {
-      return false;
+      return Promise.resolve();
     }
 
     return this.fetch(
@@ -136,14 +136,14 @@ export class SlackService {
   getChannelForAdmin = admin =>
     (admin ? `#clients_${admin.email.split('@')[0]}` : '#clients_general');
 
-  notifyAssignee = ({ currentUser, message, title, link }) => {
+  notifyAssignee = ({ currentUser, message, title, link, assignee }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 
     if (!isUser) {
       return false;
     }
 
-    const admin = currentUser.assignedEmployee;
+    const admin = assignee || currentUser.assignedEmployee;
     const channel = this.getChannelForAdmin(admin);
 
     const slackPayload = {

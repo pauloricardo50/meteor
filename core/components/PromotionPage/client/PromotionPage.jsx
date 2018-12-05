@@ -18,8 +18,7 @@ type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
   const { promotion, currentUser, canModify, isPro, loan } = props;
-  console.log('promotion', promotion);
-  
+
   return (
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
