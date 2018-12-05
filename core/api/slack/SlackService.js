@@ -136,10 +136,19 @@ export class SlackService {
   getChannelForAdmin = admin =>
     (admin ? `#clients_${admin.email.split('@')[0]}` : '#clients_general');
 
-  notifyAssignee = ({ currentUser, message, title, link, assignee }) => {
-    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+  notifyAssignee = ({
+    currentUser,
+    message,
+    title,
+    link,
+    assignee,
+    notifyAlways,
+  }) => {
+    const isAdmin = currentUser
+      && (currentUser.roles.includes(ROLES.ADMIN)
+        || currentUser.roles.includes(ROLES.DEV));
 
-    if (!isUser) {
+    if (!notifyAlways && isAdmin) {
       return false;
     }
 
@@ -148,13 +157,7 @@ export class SlackService {
 
     const slackPayload = {
       channel,
-      attachments: [
-        {
-          title,
-          title_link: link,
-          text: message,
-        },
-      ],
+      attachments: [{ title, title_link: link, text: message }],
     };
 
     if (Meteor.isStaging || Meteor.isDevelopment) {

@@ -20,6 +20,7 @@ ServerEventService.addMethodListener(
         Meteor.settings.public.subdomains.admin
       }/promotions/${promotionId}`,
       assignee,
+      notifyAlways: true,
     });
   },
 );
