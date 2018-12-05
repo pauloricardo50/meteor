@@ -20,3 +20,4 @@ export const CURRENCY = 'CHF';
 export const MIN_CASH = 0.1; // Percent of property value
 export const AVERAGE_TAX_RATE = 0.25; // Percent
 export const SECOND_PILLAR_WITHDRAWAL_TAX_RATE = 0.1; // Percent
+export const VAT = 0.077;

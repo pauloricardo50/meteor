@@ -1,7 +1,7 @@
 import NotaryFeesCalculator from './NotaryFeesCalculator';
 
-const notaryFees = ({ loan }) => {
-  const calculator = new NotaryFeesCalculator({ canton: 'GE' });
+const notaryFees = ({ loan, canton = 'GE' }) => {
+  const calculator = new NotaryFeesCalculator({ canton });
   return calculator.getNotaryFeesForLoan(loan);
 };
 

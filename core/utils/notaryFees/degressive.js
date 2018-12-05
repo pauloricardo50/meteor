@@ -34,8 +34,9 @@ const degressive = ({
       } -> ${max}`);
     }
 
-    tax
-      += Math.min(amount - previousBracket.max, max - previousBracket.max) * rate;
+    const bracketTax = Math.min(amount - previousBracket.max, max - previousBracket.max) * rate;
+
+    tax += bracketTax;
 
     // Stop calculating once you've reached the highest bracket you're in
     return max <= amount;

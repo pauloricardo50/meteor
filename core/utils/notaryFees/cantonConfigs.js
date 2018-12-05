@@ -1,16 +1,39 @@
+import { RESIDENCE_TYPE } from 'core/api/constants';
 import degressive from './degressive';
 import cantons from './cantonConstants';
+import { VAT } from '../../config/financeConstants';
+import Calculator from '../Calculator';
+
+const isCasatax = loan =>
+  loan.residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
+  && Calculator.selectPropertyValue({ loan }) <= cantons.GE.CASATAX_CUTOFF;
 
 export const GE = {
   notaryIncomeFromProperty: ({ value }) =>
     degressive({
       amount: value,
       brackets: cantons.GE.NOTARY_PROPERTY_BRACKETS,
-    }),
-  notaryIncomeFromMortgageDeed: ({ deedValue, deedIncrease }) =>
+      minTax: cantons.GE.NOTARY_PROPERTY_BRACKETS_MIN,
+    })
+    * (1 + VAT),
+  notaryIncomeFromMortgageNote: ({ noteValue, noteIncrease }) =>
     degressive({
-      amount: deedIncrease || deedValue,
-      brackets: cantons.GE.NOTARY_DEED_BRACKETS,
-    }),
-  propertyTransferTax: ({ value }) => value * cantons.GE.TRANSFER_TAX,
+      amount: noteValue || noteIncrease,
+      brackets: cantons.GE.NOTARY_NOTE_BRACKETS,
+    })
+    * (1 + VAT),
+  propertyTransferTax: ({ loan, value }) => value * cantons.GE.TRANSFER_TAX,
+  landRegistryPropertyTax: ({ value }) =>
+    value * cantons.GE.LAND_REGISTRY_PROPERTY_TAX,
+  mortgageNoteRegistrationTax: ({ loan, noteValue, noteIncrease }) =>
+    (noteValue || noteIncrease) * cantons.GE.MORTGAGE_NOTE_REGISTRATION_TAX,
+  landRegistryMortgageNoteTax: ({ noteValue, noteIncrease }) =>
+    (noteValue || noteIncrease) * cantons.GE.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
+  additionalFees: () => cantons.GE.ADDITIONAL_FEES * (1 + VAT),
+  buyersContractDeductions: ({ loan, transferTax }) =>
+    (isCasatax(loan)
+      ? Math.min(cantons.GE.CASATAX_PROPERTY_DEDUCTION, transferTax)
+      : 0),
+  mortgageNoteDeductions: ({ loan, mortgageNoteRegistrationTax }) =>
+    (isCasatax(loan) ? mortgageNoteRegistrationTax * 0.5 : 0),
 };
