@@ -3,13 +3,13 @@ import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 import { TRENDS, INTEREST_RATES } from '../interestRatesConstants';
 
 const singleInterestRate = type => ({
-  [type]: Object,
-  [`${type}.rateLow`]: { type: Number, min: 0, max: 1, optional: false },
-  [`${type}.rateHigh`]: { type: Number, min: 0, max: 1, optional: false },
+  [type]: { type: Object, optional: true },
+  [`${type}.rateLow`]: { type: Number, min: 0, max: 1, optional: true },
+  [`${type}.rateHigh`]: { type: Number, min: 0, max: 1, optional: true },
   [`${type}.trend`]: {
     type: String,
     allowedValues: Object.values(TRENDS),
-    optional: false,
+    optional: true,
   },
 });
 
@@ -21,7 +21,7 @@ const rates = Object.values(INTEREST_RATES).reduce(
 const InterestRatesSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  date: { type: Date, optional: false },
+  date: Date,
   ...rates,
 });
 

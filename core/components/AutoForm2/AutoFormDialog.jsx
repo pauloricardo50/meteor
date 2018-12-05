@@ -35,10 +35,10 @@ export const AutoFormDialog = ({
   renderAdditionalActions,
   children,
   triggerComponent,
+  emptyDialog,
   ...otherProps
 }: AutoFormDialogProps) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
-
   return (
     <>
       {triggerComponent ? (
@@ -58,7 +58,7 @@ export const AutoFormDialog = ({
             {description && (
               <DialogContentText>{description}</DialogContentText>
             )}
-            <CustomAutoFields autoField={AutoField} />
+            {!emptyDialog && <CustomAutoFields autoField={AutoField} />}
             <ErrorsField />
             {children
               && children({

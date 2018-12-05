@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity, faBriefcase } from '@fortawesome/pro-light-svg-icons';
+import { faCity, faBriefcase, faChartLine } from '@fortawesome/pro-light-svg-icons';
 
 import {
   BORROWERS_COLLECTION,
@@ -57,6 +57,13 @@ const items = [
     ),
     to: '/organisations',
     collection: ORGANISATIONS_COLLECTION,
+  },
+  {
+    label: 'Taux',
+    icon: (
+      <FontAwesomeIcon icon={faChartLine} className="admin-side-nav-icon" />
+    ),
+    to: '/interestRates',
   },
   { label: 'Dev', icon: 'developerMode', to: '/dev' },
 ];

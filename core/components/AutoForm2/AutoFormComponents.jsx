@@ -9,6 +9,7 @@ import DefaultSubmitField from 'uniforms-material/SubmitField';
 import T from '../Translation';
 import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
+import PercentInput from '../PercentInput/PercentInput';
 
 const CustomSelectField = ({ transform, ...props }) => (
   <SelectField
@@ -30,6 +31,13 @@ const determineComponentFromProps = (props) => {
     && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
   ) {
     return DateField;
+  }
+
+  if (
+    props.field.uniforms
+    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
+  ) {
+    return PercentInput;
   }
 
   return false;

@@ -6,17 +6,17 @@ import {
   interestRatesUpdate,
 } from '../methodDefinitions';
 
-interestRatesInsert.setHandler((context, params) => {
+interestRatesInsert.setHandler((context, { interestRates }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return InterestRatesService.insert(params);
+  return InterestRatesService.insert(interestRates);
 });
 
-interestRatesRemove.setHandler((context, params) => {
+interestRatesRemove.setHandler((context, { interestRatesId }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return InterestRatesService.remove(params);
+  return InterestRatesService.remove(interestRatesId);
 });
 
-interestRatesUpdate.setHandler((context, params) => {
+interestRatesUpdate.setHandler((context, { interestRatesId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return InterestRatesService._update(params);
+  return InterestRatesService._update(interestRatesId, object);
 });
