@@ -33,9 +33,9 @@ const CustomerAdder = ({
         primary: true,
         label: <T id="PromotionPage.addCustomer" />,
         disabled,
-        tooltip:
-          disabled
-          && 'Vous ne pouvez ajouter des clients que lorsque la promotion est en cours, contactez e-Potek pour changer le statut de la promotion',
+        tooltip: disabled
+          ? 'Vous ne pouvez ajouter des clients que lorsque la promotion est en cours, contactez e-Potek pour changer le statut de la promotion'
+          : undefined,
       }}
       schema={CustomerAdderUserSchema}
       onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}

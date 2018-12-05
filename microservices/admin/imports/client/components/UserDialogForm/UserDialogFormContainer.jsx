@@ -2,11 +2,12 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
+
 import { withSmartQuery } from 'core/api';
 import { adminCreateUser, editUser } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
 import query from 'core/api/users/queries/admins';
-import T from 'imports/core/components/Translation/Translation';
+import T from 'core/components/Translation';
 
 const userSchema = (admins = []) =>
   new SimpleSchema({
