@@ -19,7 +19,9 @@ describe('NotaryFeesCalculator', () => {
   });
 
   describe('GE', () => {
-    calc = new NotaryFeesCalculator({ canton: 'GE' });
+    before(() => {
+      calc = new NotaryFeesCalculator({ canton: 'GE' });
+    });
 
     it('returns the correct amount for a buyers contract', () => {
       const fees = calc.buyersContractFees(loan);
@@ -63,6 +65,18 @@ describe('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan(loan);
 
       expect(fees).to.equal(154684.65);
+    });
+  });
+
+  describe('unknown cantons', () => {
+    before(() => {
+      calc = new NotaryFeesCalculator({ canton: 'XX' });
+    });
+
+    it("returns 5% for cantons where we don't have any Math", () => {
+      const fees = calc.getNotaryFeesForLoan(loan);
+
+      expect(fees).to.equal(50000);
     });
   });
 });

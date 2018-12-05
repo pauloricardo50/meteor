@@ -1,5 +1,6 @@
 import * as cantonConfigs from './cantonConfigs';
 import Calculator from '../Calculator';
+import { NOTARY_FEES } from '../../config/financeConstants';
 
 class NotaryFeesCalculator {
   constructor({ canton }) {
@@ -8,17 +9,15 @@ class NotaryFeesCalculator {
 
   init(canton) {
     const config = cantonConfigs[canton];
+    this.canton = canton;
     Object.assign(this, config);
   }
 
-  getMortgageNoteIncrease({ loan }) {
-    const loanValue = Calculator.selectLoanValue({ loan });
-    const currentMortgageNoteValue = 0; // TODO: Calculate this
-
-    return Math.max(0, loanValue - currentMortgageNoteValue);
-  }
-
   getNotaryFeesForLoan(loan) {
+    if (!cantonConfigs[this.canton]) {
+      return this.getDefaultFees({ loan });
+    }
+
     const buyersContractFees = this.buyersContractFees(loan);
     const mortgageNoteFees = this.mortgageNoteFees(loan);
     const deductions = this.getDeductions({
@@ -26,7 +25,15 @@ class NotaryFeesCalculator {
       mortgageNoteFees,
       loan,
     });
+
     return Number((buyersContractFees + mortgageNoteFees - deductions).toFixed(2));
+  }
+
+  getMortgageNoteIncrease({ loan }) {
+    const loanValue = Calculator.selectLoanValue({ loan });
+    const currentMortgageNoteValue = 0; // TODO: Calculate this
+
+    return Math.max(0, loanValue - currentMortgageNoteValue);
   }
 
   buyersContractFees(loan) {
@@ -97,6 +104,12 @@ class NotaryFeesCalculator {
       : 0;
 
     return buyersContractDeductions + mortgageNoteDeductions;
+  }
+
+  getDefaultFees({ loan }) {
+    const propertyValue = Calculator.selectPropertyValue({ loan });
+
+    return propertyValue * NOTARY_FEES;
   }
 }
 
