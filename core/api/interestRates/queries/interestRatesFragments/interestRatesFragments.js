@@ -20,6 +20,5 @@ export const interestRatesFragment = {
 };
 
 export const currentInterestRatesFragment = {
-  date: 1,
   ...ratesFragments,
 };

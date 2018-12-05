@@ -13,5 +13,19 @@ export default InterestRates.createQuery(
     },
     ...currentInterestRatesFragment,
     $options: { sort: { date: -1 }, limit: 1 },
+    $postFilter(results, params) {
+      const interestRates = results.length > 0 && results[0];
+      return Object.keys(interestRates)
+        .filter(type =>
+          interestRates[type].rateLow
+            && interestRates[type].rateHigh
+            && interestRates[type].trend)
+        .map(type => ({
+          type,
+          rateLow: interestRates[type].rateLow,
+          rateHigh: interestRates[type].rateHigh,
+          trend: interestRates[type].trend,
+        }));
+    },
   },
 );
