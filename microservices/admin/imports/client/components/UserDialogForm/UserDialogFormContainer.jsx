@@ -14,7 +14,7 @@ const userSchema = (admins = []) =>
     firstName: { type: String, optional: false },
     lastName: { type: String, optional: false },
     email: { type: String, optional: false },
-    phoneNumbers: { type: Array, optional: false, minCount: 1 },
+    phoneNumbers: { type: Array, optional: true },
     'phoneNumbers.$': String,
     assignedEmployeeId: {
       type: String,
