@@ -1,4 +1,6 @@
 {
+  "TopNavDropdown.home": "Home",
+  "TopNavDropdown.pro": "Interface Pro",
   "PromotionPage.lots.solvency": "Solvabilité",
   "Forms.solvency": "Solvabilité",
   "Forms.solvency.SOLVENT": "Solvable",
@@ -1627,7 +1629,6 @@
   "TopNav.login": "Login",
   "TopNavDropdown.account": "Mon Compte",
   "TopNavDropdown.admin": "Admin Dashboard",
-  "TopNavDropdown.app": "App",
   "TopNavDropdown.dashboard": "Tableau de Bord",
   "TopNavDropdown.dev": "< dev />",
   "TopNavDropdown.logout": "Déconnexion",
