@@ -199,6 +199,9 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     assignedEmployeeName:
       (params.promotion.assignedEmployee
       && params.promotion.assignedEmployee.name) || 'Yannis Eggert',
+    assignedEmployeeFirstName:
+      (params.promotion.assignedEmployee
+      && params.promotion.assignedEmployee.firstName) || 'Yannis',
     assignedEmployeePhone:
       (params.promotion.assignedEmployee
       && params.promotion.assignedEmployee.phoneNumbers[0]) || EPOTEK_PHONE,
