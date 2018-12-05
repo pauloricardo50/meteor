@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import NotaryFeesCalculator from '../NotaryFeesCalculator';
 
-describe.only('NotaryFeesCalculator', () => {
+describe('NotaryFeesCalculator', () => {
   let calc;
   let loan;
 
@@ -55,6 +55,14 @@ describe.only('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan(loan);
 
       expect(fees).to.equal(10052.16);
+    });
+
+    it('works for large properties', () => {
+      loan.structure.property.value = 3000000;
+      loan.structure.wantedLoan = 2400000;
+      const fees = calc.getNotaryFeesForLoan(loan);
+
+      expect(fees).to.equal(154684.65);
     });
   });
 });
