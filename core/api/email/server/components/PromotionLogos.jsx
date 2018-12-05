@@ -25,7 +25,7 @@ const PromotionLogos = ({ logoUrls }: PromotionLogosProps) => (
       <tr key={url}>
         <td align="center">
           <img
-            style={{ width: 150, maxHeight: 50, marginBottom: 16 }}
+            style={{ maxWidth: 150, maxHeight: 50, marginBottom: 16 }}
             src={url}
             alt={`Logo promotion${index + 1}`}
           />
