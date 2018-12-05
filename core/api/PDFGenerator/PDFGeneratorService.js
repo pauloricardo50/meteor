@@ -43,7 +43,7 @@ class PDFGeneratorService {
 
   getDataForPDF = (type, params) => {
     switch (type) {
-    case PDF_TYPES.ANONYMOUS_LOAN: {
+    case PDF_TYPES.LOAN: {
       const { loanId } = params;
       return adminLoan.clone({ _id: loanId }).fetchOne();
     }
@@ -59,16 +59,14 @@ class PDFGeneratorService {
       new Promise((resolve, reject) => {
         this.remote.call(
           '_generatePDF',
-          { type, data, options: { HTML: params.HTML } },
+          { type, data, options: params.options },
           (error, result) => {
             this.remote.disconnect();
             if (error) {
               reject(error);
             }
-            if (params.HTML) {
-              resolve(result);
-            }
-            resolve(result && result.base64);
+
+            resolve(result);
           },
         );
       }));

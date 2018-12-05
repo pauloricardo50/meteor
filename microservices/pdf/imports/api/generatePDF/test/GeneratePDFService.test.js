@@ -131,7 +131,7 @@ describe('GeneratePDFService', () => {
           ...loan,
           ...FAKE_USER,
         },
-        type: PDF_TYPES.ANONYMOUS_LOAN,
+        type: PDF_TYPES.LOAN,
       },
       true,
     )

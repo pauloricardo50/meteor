@@ -3,6 +3,7 @@ import Loans from '.';
 import { userPropertyFragment } from '../properties/queries/propertyFragments';
 import { fullOfferFragment } from '../offers/queries/offerFragments';
 import { formatLoanWithStructure } from '../../utils/loanFunctions';
+import { STEPS, STEP_ORDER } from './loanConstants';
 
 Loans.addReducers({
   structure: {
@@ -15,9 +16,17 @@ Loans.addReducers({
     reduce: formatLoanWithStructure,
   },
   hasPromotion: {
-    body: {
-      promotions: { _id: 1 },
-    },
+    body: { promotions: { _id: 1 } },
     reduce: ({ promotions }) => promotions && promotions.length > 0,
+  },
+  enableOffers: {
+    body: { logic: 1 },
+    reduce: ({ logic }) => {
+      const step = logic && logic.step;
+      return (
+        step
+        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
+      );
+    },
   },
 });

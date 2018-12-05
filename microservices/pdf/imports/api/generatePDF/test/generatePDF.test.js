@@ -22,7 +22,7 @@ describe('generatePDF', () => {
   it('return an error if options is not an object', (done) => {
     Meteor.call(
       '_generatePDF',
-      { data: {}, type: PDF_TYPES.ANONYMOUS_LOAN, options: () => null },
+      { data: {}, type: PDF_TYPES.LOAN, options: () => null },
       (error) => {
         expect(error.message).to.include('Match error');
         done();

@@ -69,3 +69,4 @@ service-configuration
 epotek:accounts-ui
 lmachens:kadira
 matb33:collection-hooks
+percolate:migrations

@@ -4,6 +4,7 @@ export const loanBaseFragment = {
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   createdAt: 1,
+  enableOffers: 1,
   logic: 1,
   general: 1,
   verificationStatus: 1,
@@ -34,7 +35,9 @@ export const loanBaseFragment = {
     priority: 1,
     promotion: 1,
     value: 1,
+    solvency: 1,
   },
   hasPromotion: 1,
+  additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   // $options: { sort: { createdAt: 1 } },
 };

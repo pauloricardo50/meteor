@@ -22,6 +22,7 @@ const PromotionLotPage = ({
   currentUser,
   promotionId,
   canModify,
+  isAdmin,
 }: PromotionLotPageProps) => {
   const {
     name,
@@ -33,7 +34,6 @@ const PromotionLotPage = ({
     status,
     documents,
   } = promotionLot;
-  console.log('promotionLot', promotionLot);
   const { lots: allLots } = promotion;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
@@ -86,9 +86,11 @@ const PromotionLotPage = ({
           promotionOptions={promotionOptions}
           promotionLot={promotionLot}
           canModify={canModify}
+          isAdmin={isAdmin}
         />
       </div>
     </div>
   );
 };
+
 export default PromotionLotPageContainer(PromotionLotPage);

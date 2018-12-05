@@ -10,6 +10,7 @@ type PromotionLotLoansTableProps = {};
 const PromotionLotLoansTable = ({
   rows,
   columnOptions,
+  isAdmin,
 }: PromotionLotLoansTableProps) => (
   <>
     <h3 className="text-center">
@@ -18,7 +19,7 @@ const PromotionLotLoansTable = ({
     <Table
       rows={rows}
       columnOptions={columnOptions}
-      clickable={false}
+      clickable={!!isAdmin}
       initialOrderBy={1} // By date
     />
   </>

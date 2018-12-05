@@ -173,7 +173,7 @@ const Icon = ({ type, size, tooltip, tooltipPlacement, ...props }) => {
 
 Icon.propTypes = {
   size: PropTypes.number,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.node.isRequired,
 };
 
 Icon.defaultProps = {

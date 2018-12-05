@@ -12,7 +12,7 @@ import {
 } from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
-import FinanceCalculator from '../FinancingCalculator';
+import FinanceCalculator, { getOffer } from '../FinancingCalculator';
 
 import { ROUNDING_AMOUNT } from '../FinancingOwnFunds/RequiredOwnFunds';
 import {
@@ -21,6 +21,11 @@ import {
 } from '../../../../api/constants';
 
 type FinancingResultErrorsProps = {};
+
+export const ERROR_TYPES = {
+  BREAKING: 'BREAKING',
+  WARNING: 'WARNING',
+};
 
 const getCashUsed = ({ structure: { ownFunds } }) =>
   ownFunds
@@ -33,6 +38,7 @@ const errors = [
   {
     id: 'noMortgageLoan',
     func: ({ structure: { wantedLoan } }) => !wantedLoan || wantedLoan === 0,
+    type: ERROR_TYPES.BREAKING,
   },
   {
     id: 'missingOwnFunds',
@@ -40,6 +46,7 @@ const errors = [
       const missingFunds = calculateMissingOwnFunds(data);
       return Number.isNaN(missingFunds) || missingFunds >= ROUNDING_AMOUNT;
     },
+    type: ERROR_TYPES.WARNING,
   },
   {
     id: 'tooMuchOwnFunds',
@@ -47,10 +54,21 @@ const errors = [
       const missingFunds = calculateMissingOwnFunds(data);
       return Number.isNaN(missingFunds) || missingFunds <= -ROUNDING_AMOUNT;
     },
+    type: ERROR_TYPES.WARNING,
   },
   {
     id: 'highIncomeRatio',
     func: data => getIncomeRatio(data) > FinanceCalculator.maxIncomeRatio,
+    type: ERROR_TYPES.WARNING,
+  },
+  {
+    id: 'invalidInterestRates',
+    func: data =>
+      FinanceCalculator.checkInterestsAndTranches({
+        tranches: data.structure.loanTranches,
+        interestRates: data.structure.offerId ? getOffer(data) : undefined,
+      }),
+    type: ERROR_TYPES.BREAKING,
   },
   {
     id: 'missingCash',
@@ -65,25 +83,41 @@ const errors = [
         }) > getCashUsed(data)
       );
     },
+    type: ERROR_TYPES.WARNING,
   },
 ];
 
 const getError = props =>
   errors.reduce(
-    (currentError, { id, func }) => currentError || (func(props) && id),
+    (currentError, { id, type, func }) =>
+      currentError || (func(props) && { id, type }),
     undefined,
   );
 
 export const FinancingResultErrors = (props: FinancingResultErrorsProps) => {
   const error = getError(props);
+  console.log('error', error);
 
-  return error ? (
-    <p className="error result">
-      <T id={`FinancingResultErrors.${error}`} />
-    </p>
-  ) : (
-    <FinancingResultChart {...props} />
-  );
+  if (error.type === ERROR_TYPES.BREAKING) {
+    return (
+      <p className="error result">
+        <T id={`FinancingResultErrors.${error.id}`} />
+      </p>
+    );
+  }
+  if (error.type === ERROR_TYPES.WARNING) {
+    return (
+      <div className="result">
+        <FinancingResultChart {...props} className="" />
+
+        <p className="error">
+          <T id={`FinancingResultErrors.${error.id}`} />
+        </p>
+      </div>
+    );
+  }
+
+  return <FinancingResultChart {...props} />;
 };
 
 export default compose(

@@ -1,4 +1,5 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import T from 'core/components/Translation';
 import StarRating from 'core/components/StarRating';
@@ -24,9 +25,11 @@ export const Microlocation = ({
     </h3>
     <StarRating value={grade} />
     &nbsp;
-    <Button onClick={() => setOpen(!open)} primary raised={!open}>
-      <T id={open ? 'Microlocation.close' : 'Microlocation.open'} />
-    </Button>
+    {Meteor.microservice === 'admin' && (
+      <Button onClick={() => setOpen(!open)} primary raised={!open}>
+        <T id={open ? 'Microlocation.close' : 'Microlocation.open'} />
+      </Button>
+    )}
     {open && (
       <div className="microlocation-factors animated fadeIn">
         {Object.keys(factors).map(factor => (

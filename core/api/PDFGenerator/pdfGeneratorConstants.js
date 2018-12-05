@@ -1,3 +1,3 @@
 export const PDF_TYPES = {
-  ANONYMOUS_LOAN: 'ANONYMOUS_LOAN',
+  LOAN: 'LOAN',
 };

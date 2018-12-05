@@ -1,7 +1,12 @@
 import Borrowers from '.';
 import LoanService from '../loans/LoanService';
+import CollectionService from '../helpers/CollectionService';
 
-export class BorrowerService {
+export class BorrowerService extends CollectionService {
+  constructor() {
+    super(Borrowers);
+  }
+
   update = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $set: object });
 

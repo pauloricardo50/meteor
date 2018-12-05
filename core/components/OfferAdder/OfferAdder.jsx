@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import { DialogForm, FIELD_TYPES } from '../Form';
 import T from '../Translation';
 import Button from '../Button';
@@ -18,16 +19,43 @@ export const interestRatesFormArray = index =>
   }));
 
 export const baseForm = [
-  { id: 'organization' },
+  {
+    id: 'organisation',
+    fieldType: FIELD_TYPES.SELECT,
+    fetchOptions: () =>
+      new Promise((resolve, reject) =>
+        adminOrganisations
+          .clone()
+          .fetch((err, res) =>
+            (err
+              ? reject(err)
+              : resolve(res.map(({ name, _id }) => ({ label: name, id: _id })))))),
+  },
   {
     id: 'maxAmount',
     fieldType: FIELD_TYPES.MONEY,
     label: <T id="offer.maxAmount" />,
   },
   {
-    id: 'amortization',
+    id: 'fees',
     fieldType: FIELD_TYPES.MONEY,
-    label: <T id="offer.amortization" />,
+    label: <T id="offer.fees" />,
+  },
+  {
+    id: 'epotekFees',
+    fieldType: FIELD_TYPES.MONEY,
+    label: <T id="offer.epotekFees" />,
+  },
+  {
+    id: 'amortizationGoal',
+    fieldType: FIELD_TYPES.PERCENT,
+    label: <T id="offer.amortizationGoal" />,
+  },
+  {
+    id: 'amortizationYears',
+    fieldType: FIELD_TYPES.NUMBER,
+    label: <T id="offer.amortizationYears" />,
+    helperText: 'Automatique par défaut',
   },
   {
     id: 'conditions',

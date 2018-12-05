@@ -3,6 +3,8 @@ import { compose, withProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
+import { removeUserFromPromotion } from '../../api';
+import ConfirmMethod from '../ConfirmMethod';
 import T from '../Translation';
 import PromotionProgress from '../PromotionLotPage/PromotionProgress';
 import PriorityOrder from '../PromotionLotPage/PriorityOrder';
@@ -16,6 +18,7 @@ const columnOptions = [
   { id: 'createdAt' },
   { id: 'promotionProgress', label: <PromotionProgressHeader /> },
   { id: 'priorityOrder' },
+  { id: 'actions' },
 ].map(({ id, label }) => ({
   id,
   label: label || <T id={`PromotionLotLoansTable.${id}`} />,
@@ -52,6 +55,11 @@ const makeMapLoan = ({ promotionId, history, isAdmin }) => (loan) => {
           />
         ),
       },
+      <ConfirmMethod
+        method={() => removeUserFromPromotion.run({ promotionId, loanId })}
+        label={<T id="general.remove" />}
+        key="remove"
+      />,
     ],
     ...(isAdmin
       ? {

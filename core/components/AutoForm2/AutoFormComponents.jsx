@@ -7,6 +7,8 @@ import connectField from 'uniforms/connectField';
 import DefaultSubmitField from 'uniforms-material/SubmitField';
 
 import T from '../Translation';
+import { CUSTOM_AUTOFIELD_TYPES } from './constants';
+import DateField from '../DateField';
 
 const CustomSelectField = ({ transform, ...props }) => (
   <SelectField
@@ -21,6 +23,13 @@ const CustomSelectField = ({ transform, ...props }) => (
 const determineComponentFromProps = (props) => {
   if (props.allowedValues) {
     return CustomSelectField;
+  }
+
+  if (
+    props.field.uniforms
+    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
+  ) {
+    return DateField;
   }
 
   return false;
@@ -41,6 +50,8 @@ const selectLabel = ({ label, props: { name, overrideLabel } }) =>
 export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
     (props) => {
+      console.log('Getting component for ', props.name);
+
       const Component = determineComponentFromProps(props) || AutoField;
       const label = labels && labels[props.name];
       return <Component {...props} label={selectLabel({ label, props })} />;

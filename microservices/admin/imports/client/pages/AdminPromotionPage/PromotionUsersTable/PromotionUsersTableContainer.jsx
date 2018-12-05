@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import IconButton from 'core/components/IconButton/IconButton';
-import { removeUserFromPromotion } from 'core/api';
+import { removeProFromPromotion } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
 import { compose, withProps } from 'recompose';
@@ -49,7 +49,7 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
         />
         <IconButton
           onClick={() =>
-            removeUserFromPromotion.run({ promotionId, userId: _id })
+            removeProFromPromotion.run({ promotionId, userId: _id })
           }
           type="close"
           tooltip="Enlever de la promotion"

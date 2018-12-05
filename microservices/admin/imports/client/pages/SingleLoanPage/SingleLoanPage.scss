@@ -1,5 +1,4 @@
 @import './LoanTabs/ActionsTab/ActionsTab.scss';
-@import './LoanTabs/FormsTab/FormsTab.scss';
 @import './LoanTabs/OffersTab/OffersTab.scss';
 @import './LoanTabs/OverviewTab/OverviewTab.scss';
 
@@ -23,7 +22,13 @@
   }
 
   .single-loan-page-header {
-    display: inline;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+     > * {
+      display: inline;
+    }
 
     .update-field {
       display: inline-block;
@@ -31,9 +36,42 @@
       min-width: 170px;
       margin-left: 8px;
     }
+
+    form > * {
+      margin-top: 0;
+    }
+
+    .icon-link {
+      transform: scale(1.5);
+      transform-origin: 0;
+    }
+
+    .single-loan-date-modifiers {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: flex-start;
+
+      > * {
+        margin-right: 8px;
+        padding: 8px;
+      }
+    }
   }
 }
 
 .properties-tab .property-form {
   margin: 32px;
+}
+
+.single-borrower-tab {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .recap {
+    align-self: center;
+
+    margin: 40px 0;
+  }
 }

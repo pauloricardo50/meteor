@@ -59,8 +59,8 @@ const inputSwitch = (childProps, index, parentProps) => {
         style={style}
         doc={parentProps.doc}
       >
-        {mapInputs(inputs[0], 0, parentProps)}
-        {inputs.slice(1).map((input, i) => mapInputs(input, i, parentProps))}
+        {makeMapInputs(parentProps)(inputs[0], 0)}
+        {inputs.slice(1).map(makeMapInputs(parentProps))}
       </ConditionalInput>
     );
   case 'h3':
@@ -95,7 +95,7 @@ const inputSwitch = (childProps, index, parentProps) => {
   }
 };
 
-const mapInputs = (singleInput, index, parentProps) => {
+const makeMapInputs = parentProps => (singleInput, index) => {
   const childProps = {
     ...parentProps,
     key: index, // Some inputs don't have id's, this means rendering a different form requires a re-render (or key prop on the form)
@@ -146,7 +146,8 @@ const mapInputs = (singleInput, index, parentProps) => {
     childProps.inputProps.type === 'radioInput'
     || childProps.inputProps.type === 'selectFieldInput'
   ) {
-    childProps.inputProps.options = childProps.inputProps.options.map(o => (o.id === undefined ? { id: o } : o));
+    childProps.inputProps.options = childProps.inputProps.options.map(o =>
+      (o.id === undefined ? { id: o } : o));
   }
 
   // if info is true, map it to a i18n string
@@ -164,7 +165,7 @@ const mapInputs = (singleInput, index, parentProps) => {
 
 const AutoForm = props => (
   <div className={props.formClasses} onSubmit={e => e.preventDefault()}>
-    {props.inputs.map((input, i) => mapInputs(input, i, props))}
+    {props.inputs.map(makeMapInputs(props))}
   </div>
 );
 

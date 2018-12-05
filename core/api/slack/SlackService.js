@@ -2,18 +2,21 @@ import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
 
 import colors from 'core/config/colors';
-import { ROLES } from '../users/userConstants';
+import UserService from '../users/UserService';
+import { ROLES } from '../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
-const shouldNotLog = Meteor.isDevelopment || Meteor.isTest || Meteor.isAppTest;
+const shouldNotLog = Meteor.isDevelopment && Meteor.isAppTest && !Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
-class SlackService {
-  constructor() {
-    if (Meteor.isServer) {
+export class SlackService {
+  constructor({ serverSide }) {
+    if (serverSide) {
       this.fetch = require('node-fetch');
     } else {
-      this.fetch = global.fetch;
+      // Fetch needs window context to function, or else you get this
+      // https://stackoverflow.com/questions/9677985/uncaught-typeerror-illegal-invocation-in-chrome
+      this.fetch = fetch.bind(window);
     }
   }
 
@@ -36,12 +39,11 @@ class SlackService {
           ...rest,
         }),
       },
-    ).catch(this.catchError(text));
+    ).catch((err) => {
+      // Somehow, this error is catched somewhere if we don't do this
+      throw err;
+    });
   };
-
-  catchError = text => error =>
-    this.sendError(error, `Tried to send text: ${text}`).catch(err2 =>
-      console.log(('Slack error:', err2)));
 
   formatText = text => (isArray(text) ? text.join('\n') : text);
 
@@ -57,8 +59,11 @@ class SlackService {
     ...rest,
   });
 
-  sendError = (error, ...additionalData) => {
-    if (ERRORS_TO_IGNORE.includes(error.name)) {
+  sendError = ({ error, additionalData = [], userId }) => {
+    if (
+      ERRORS_TO_IGNORE.includes(error.name)
+      || ERRORS_TO_IGNORE.includes(error.message || error.reason)
+    ) {
       return false;
     }
 
@@ -75,6 +80,10 @@ class SlackService {
       windowObj = null;
     }
 
+    if (!user && userId && Meteor.isServer) {
+      user = UserService.findOne(userId);
+    }
+
     return this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
       attachments: [
@@ -86,7 +95,7 @@ class SlackService {
           text: error.message || error.reason,
           color: colors.error,
           footer: 'c la merde',
-          ts: new Date(),
+          ts: new Date().getTime(),
         },
         {
           title: 'Stack',
@@ -161,6 +170,12 @@ class SlackService {
   };
 
   notifyOfUpload = (currentUser, fileName) => {
+    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+
+    if (!isUser) {
+      return false;
+    }
+
     const { name, loans } = currentUser;
     const loanNameEnd = loans.length === 1 ? ` pour ${loans[0].name}.` : '.';
     const title = `${name} a uploadé un nouveau document${loanNameEnd}`;
@@ -172,4 +187,4 @@ class SlackService {
   };
 }
 
-export default new SlackService();
+export default new SlackService({ serverSide: Meteor.isServer });

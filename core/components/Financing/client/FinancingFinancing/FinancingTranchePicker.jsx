@@ -10,13 +10,13 @@ type FinancingTranchePickerProps = {};
 
 const FinancingTranchePicker = ({
   structure: { loanTranches },
-  handleChange,
+  updateStructure,
   className,
 }: FinancingTranchePickerProps) => (
   <span className={className}>
     <TranchePickerDialog
       initialTranches={loanTranches}
-      handleSave={handleChange}
+      handleSave={tranches => updateStructure({ loanTranches: tranches })}
     />
   </span>
 );

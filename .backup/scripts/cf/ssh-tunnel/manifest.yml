@@ -1,5 +1,5 @@
 applications:
-  - name: e-potek-ssh-tunnel-backup-manager
+  - name: e-potek-backup-manager
     memory: 64M
     instances: 1
     buildpacks:

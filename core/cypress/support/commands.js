@@ -4,7 +4,20 @@ import {
   E2E_USER_EMAIL,
   USER_PASSWORD,
   getTestUserByRole,
-} from '../testHelpers';
+} from '../utils';
+
+Cypress.Commands.add('callMethod', (method, params) => {
+  cy.window().then(({ Meteor }) =>
+    new Cypress.Promise((resolve, reject) => {
+      Meteor.call(method, params, (err, result) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(result);
+      });
+    }));
+});
 
 Cypress.Commands.add('eraseAndGenerateTestData', () =>
   cy.meteorLogoutAndLogin(DEV_EMAIL).then(window =>

@@ -474,9 +474,17 @@ describe('WuestService', function () {
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
-        expect(result.min).to.equal(640000);
-        expect(result.max).to.equal(770000);
-        expect(result.value).to.equal(705000);
+        const marketValueBeforeCorrection = 709000;
+        const statisticalPriceRangeMin = 640000;
+        const statisticalPriceRangeMax = 770000;
+        const priceRange = WuestService.getPriceRange({
+          marketValueBeforeCorrection,
+          statisticalPriceRangeMin,
+          statisticalPriceRangeMax,
+        });
+        expect(result.min).to.equal(priceRange.min);
+        expect(result.max).to.equal(priceRange.max);
+        expect(result.value).to.equal(marketValueBeforeCorrection);
       });
     });
 

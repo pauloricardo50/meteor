@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCity } from '@fortawesome/pro-light-svg-icons';
 
 import IconLink from './IconLink';
 import {
@@ -8,6 +10,7 @@ import {
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
   OFFERS_COLLECTION,
+  PROMOTIONS_COLLECTION,
 } from '../../api/constants';
 
 type CollectionIconLinkProps = {};
@@ -42,7 +45,13 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     return {
       link: `/offers/${docId}`,
       icon: 'monetizationOn',
-      text: data.organization,
+      text: data.organisation,
+    };
+  case PROMOTIONS_COLLECTION:
+    return {
+      link: `/promotions/${docId}`,
+      icon: <FontAwesomeIcon icon={faCity} className="icon-link-icon" />,
+      text: data.name,
     };
   case 'NOT_FOUND':
     return {

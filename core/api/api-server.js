@@ -25,9 +25,40 @@ import './server/queries';
 import './server/reducers';
 import './server/mongoIndexes';
 
+import { COLLECTIONS } from './constants';
+import BorrowerService from './borrowers/BorrowerService';
+import LoanService from './loans/LoanService';
+import LotService from './lots/LotService';
+import OfferService from './offers/OfferService';
+import PromotionLotService from './promotionLots/PromotionLotService';
+import PromotionOptionService from './promotionOptions/PromotionOptionService';
+import PromotionService from './promotions/PromotionService';
+import PropertyService from './properties/PropertyService';
+import TaskService from './tasks/TaskService';
+import UserService from './users/UserService';
+
 process.on('uncaughtException', (error) => {
-  SlackService.sendError(error, 'Server uncaughtException');
+  SlackService.sendError({
+    error,
+    additionalData: ['Server uncaughtException'],
+  });
 });
 process.on('unhandledRejection', (error) => {
-  SlackService.sendError(error, 'Server uncaughtException');
+  SlackService.sendError({
+    error,
+    additionalData: ['Server uncaughtException'],
+  });
 });
+
+export const Services = {
+  [COLLECTIONS.LOANS_COLLECTION]: LoanService,
+  [COLLECTIONS.PROPERTIES_COLLECTION]: PropertyService,
+  [COLLECTIONS.BORROWERS_COLLECTION]: BorrowerService,
+  [COLLECTIONS.LOTS_COLLECTION]: LotService,
+  [COLLECTIONS.OFFERS_COLLECTION]: OfferService,
+  [COLLECTIONS.PROMOTION_LOTS_COLLECTION]: PromotionLotService,
+  [COLLECTIONS.PROMOTIONS_COLLECTION]: PromotionService,
+  [COLLECTIONS.PROMOTION_OPTIONS_COLLECTION]: PromotionOptionService,
+  [COLLECTIONS.USERS_COLLECTION]: UserService,
+  [COLLECTIONS.TASKS_COLLECTION]: TaskService,
+};

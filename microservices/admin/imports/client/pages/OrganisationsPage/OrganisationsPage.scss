@@ -1,0 +1,33 @@
+.organisations-page {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+  .organisations {
+    display: flex;
+    flex-wrap: wrap;
+
+    margin-top: 40px;
+
+    .organisation {
+      display: flex;
+      flex-direction: column;
+
+      width: 200px;
+      height: 300px;
+      margin: 8px;
+
+      .card-top {
+        flex-grow: 1;
+
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+
+      .card-bottom {
+        flex-grow: 0;
+      }
+    }
+  }
+}

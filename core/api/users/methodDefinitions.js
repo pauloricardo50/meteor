@@ -90,3 +90,10 @@ export const changeEmail = new Method({
     newEmail: String,
   },
 });
+
+export const generateApiToken = new Method({
+  name: 'generateApiToken',
+  params: {
+    userId: String,
+  },
+});

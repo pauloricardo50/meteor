@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Router } from 'react-router-dom';
@@ -16,6 +18,16 @@ import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
 
 const isDev = process.env.NODE_ENV === 'development';
+
+const loginWithToken = ({ match: { params: { token } } }) => {
+  if (token) {
+    Meteor.loginWithToken(token, () => history.push('/'));
+  } else {
+    history.push('/login');
+  }
+
+  return null;
+};
 
 const BaseRouter = ({
   locale,
@@ -43,6 +55,7 @@ const BaseRouter = ({
               which isn't automatic */}
           <ScrollToTop>
             <Switch>
+              <Route exact path="/login-token/:token" render={loginWithToken} />
               {/* LoginPage has to be above / path */}
               {hasLogin && <Route exact path="/login" component={LoginPage} />}
               {isDev && <Route exact path="/grapher" component={GrapherPage} />}

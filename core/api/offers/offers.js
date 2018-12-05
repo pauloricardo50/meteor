@@ -27,16 +27,35 @@ export const OfferSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
-  organization: String,
+  organisationLink: { type: Object, optional: true },
+  'organisationLink._id': String,
   maxAmount: {
     type: SimpleSchema.Integer,
     min: 0,
     max: 100000000,
   },
-  amortization: {
-    type: SimpleSchema.Integer,
+  amortizationGoal: {
+    type: Number,
     min: 0,
-    max: 1000000,
+    max: 1,
+  },
+  amortizationYears: {
+    type: Number,
+    min: 0,
+    max: 100,
+    optional: true,
+  },
+  fees: {
+    type: Number,
+    min: 0,
+    max: 1000000000,
+    defaultValue: 0,
+  },
+  epotekFees: {
+    type: Number,
+    min: 0,
+    max: 1000000000,
+    defaultValue: 0,
   },
   // For each existing rate, insert an allowed value in the schema
   ...Object.values(INTEREST_RATES).reduce(
@@ -45,7 +64,7 @@ export const OfferSchema = new SimpleSchema({
       [interestKey]: {
         type: Number,
         min: 0,
-        max: 100,
+        max: 1,
         optional: true,
       },
     }),
@@ -54,8 +73,9 @@ export const OfferSchema = new SimpleSchema({
   conditions: {
     type: Array,
     optional: true,
+    defaultValue: [],
   },
-  'conditions.$': String,
+  'conditions.$': { type: String, optional: true },
 });
 
 // Attach schema

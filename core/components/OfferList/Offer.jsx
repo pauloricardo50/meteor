@@ -8,7 +8,7 @@ import OfferModifier from './OfferModifier';
 
 const Offer = ({ offer, offerValues }) => (
   <div className="offer-list-item">
-    <h3>{offer.organization}</h3>
+    <img src={offer.organisation.logo} alt={offer.organisation.name} />
     <div className="offer-list-item-detail">
       {offerValues.map(offerValue => (
         <OfferField key={offer._id} offerValue={offerValue} offer={offer} />
