@@ -6,7 +6,7 @@ import UserService from '../users/UserService';
 import { ROLES } from '../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
-const shouldNotLog = Meteor.isDevelopment && Meteor.isAppTest && !Meteor.isTest;
+const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
 export class SlackService {
@@ -20,7 +20,12 @@ export class SlackService {
     }
   }
 
-  send = ({ channel, username = 'e-Potek Bot', text, ...rest }) => {
+  send = ({
+    channel = '#clients_general',
+    username = 'e-Potek Bot',
+    text,
+    ...rest
+  }) => {
     if (shouldNotLog) {
       return false;
     }
