@@ -15,7 +15,8 @@ const CustomSelectField = ({ transform, ...props }) => (
   <SelectField
     {...props}
     transform={
-      transform || (option => <T id={`Forms.${props.name}.${option}`} />)
+      transform
+      || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
     }
     displayEmpty
   />
@@ -58,8 +59,6 @@ const selectLabel = ({ label, props: { name, overrideLabel } }) =>
 export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
     (props) => {
-      console.log('Getting component for ', props.name);
-
       const Component = determineComponentFromProps(props) || AutoField;
       const label = labels && labels[props.name];
       return <Component {...props} label={selectLabel({ label, props })} />;

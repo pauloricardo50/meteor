@@ -18,5 +18,5 @@ interestRatesRemove.setHandler((context, { interestRatesId }) => {
 
 interestRatesUpdate.setHandler((context, { interestRatesId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return InterestRatesService._update(interestRatesId, object);
+  return InterestRatesService._update({ id: interestRatesId, object });
 });

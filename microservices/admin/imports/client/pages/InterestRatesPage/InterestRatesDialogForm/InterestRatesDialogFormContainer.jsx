@@ -5,8 +5,12 @@ import {
   TRENDS,
   INTEREST_RATES,
 } from 'core/api/interestRates/interestRatesConstants';
-import { withProps } from 'recompose';
-import { interestRatesInsert } from 'imports/core/api/methods/index';
+import { withProps, compose, withState } from 'recompose';
+import {
+  interestRatesInsert,
+  interestRatesUpdate,
+  interestRatesRemove,
+} from 'imports/core/api/methods/index';
 import { PercentField } from 'imports/core/components/PercentInput/';
 import { CustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
 import T from 'imports/core/components/Translation';
@@ -49,19 +53,22 @@ const interestRatesSchema = new SimpleSchema({
 
 const singleInterestRateField = type => (
   <>
-    <h3>{type}</h3>
+    <h3>
+      <T id={`InterestsTable.${type}`} />
+    </h3>
     <div className="interest-rates-dialog-form" key={type}>
       <CustomAutoField
         name={`${type}.rateLow`}
-        overrideLabel={<T id="Forms.rateLow" />}
+        overrideLabel={<T id="InterestsTable.rateLow" />}
       />
       <CustomAutoField
         name={`${type}.rateHigh`}
-        overrideLabel={<T id="Forms.rateHigh" />}
+        overrideLabel={<T id="InterestsTable.rateHigh" />}
       />
       <CustomAutoField
         name={`${type}.trend`}
-        overrideLabel={<T id="Forms.trend" />}
+        overrideLabel={<T id="InterestsTable.trend" />}
+        intlId="trend"
       />
     </div>
   </>
@@ -72,8 +79,27 @@ const fields = [
   ...Object.values(INTEREST_RATES).map(singleInterestRateField),
 ];
 
-export default withProps(() => ({
-  schema: interestRatesSchema,
-  fields,
-  insertInterestRates: data => interestRatesInsert.run({ interestRates: data }),
-}));
+export default compose(
+  withState('submitting', 'setSubmitting', false),
+  withProps(({ setOpen, setSubmitting }) => ({
+    schema: interestRatesSchema,
+    fields,
+    insertInterestRates: data =>
+      interestRatesInsert.run({ interestRates: data }),
+    modifyInterestRates: (data) => {
+      const { _id: interestRatesId, ...object } = data;
+      setSubmitting(true);
+      return interestRatesUpdate
+        .run({ interestRatesId, object })
+        .then(() => setOpen(false))
+        .finally(() => setSubmitting(false));
+    },
+    removeInterestRates: (interestRatesId) => {
+      setSubmitting(true);
+      return interestRatesRemove
+        .run({ interestRatesId })
+        .then(() => setOpen(false))
+        .finally(() => setSubmitting(false));
+    },
+  })),
+);

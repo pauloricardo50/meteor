@@ -28,6 +28,8 @@ const config = {
         'Financing',
         'Forms',
         'Impersonation',
+        'InterestRates',
+        'InterestsTable',
         'LoginPage',
         'Microlocation',
         'offer',
