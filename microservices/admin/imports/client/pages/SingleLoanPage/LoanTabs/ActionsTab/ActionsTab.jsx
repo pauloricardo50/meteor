@@ -41,6 +41,9 @@ const ActionsTab = ({ loan }) => (
       onUserSelect={userId =>
         assignLoanToUser.run({ userId, loanId: loan._id })
       }
+      onUserDeselect={() =>
+        assignLoanToUser.run({ userId: null, loanId: loan._id })
+      }
       userId={loan.userId}
     />
   </div>

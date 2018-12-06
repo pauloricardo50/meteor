@@ -16,6 +16,7 @@ type UserAssignerProps = {
   setSearchQuery: Function,
   searchResults: Array<Object>,
   onUserSelect: Function,
+  onUserDeselect: Function,
   title: any,
   buttonLabel: any,
 };
@@ -23,6 +24,7 @@ type UserAssignerProps = {
 const UserAssigner = ({
   userId,
   onUserSelect,
+  onUserDeselect,
   title,
   buttonLabel,
   searchQuery,
@@ -46,7 +48,9 @@ const UserAssigner = ({
           && searchResults.map(user => (
             <ListItem
               key={user._id}
-              onClick={() => onUserSelect(user._id)}
+              onClick={() =>
+                (user._id === userId ? onUserDeselect() : onUserSelect(user._id))
+              }
               button
             >
               <ListItemText

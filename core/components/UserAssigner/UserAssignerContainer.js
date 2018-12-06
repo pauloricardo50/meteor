@@ -4,7 +4,7 @@ import userSearch from 'core/api/users/queries/userSearch';
 export default compose(
   withState('searchQuery', 'setSearchQuery', ''),
   withState('searchResults', 'setSearchResults', undefined),
-  withProps(({ searchQuery, setSearchResults, onUserSelect }) => ({
+  withProps(({ searchQuery, setSearchResults }) => ({
     onSearch: (event) => {
       event.preventDefault();
       userSearch.clone({ searchQuery }).fetch((err, users) => {
@@ -14,6 +14,5 @@ export default compose(
         setSearchResults(users);
       });
     },
-    onUserSelect: userId => onUserSelect(userId),
   })),
 );

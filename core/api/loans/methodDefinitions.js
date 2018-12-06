@@ -142,6 +142,6 @@ export const assignLoanToUser = new Method({
   name: 'assignLoanToUser',
   params: {
     loanId: String,
-    userId: String,
+    userId: Match.OneOf(String, null),
   },
 });
