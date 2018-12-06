@@ -10,6 +10,10 @@ export default {
       { rate: 0.003, max: 2000000 },
       { rate: 0.0025, max: 3500000 },
       { rate: 0.002, max: 5000000 },
+      { rate: 0.0015, max: 7500000 },
+      { rate: 0.001, max: 10000000 },
+      { rate: 0.00075, max: 20000000 },
+      { rate: 0.0005 },
     ],
     NOTARY_PROPERTY_BRACKETS_MIN: 200,
     NOTARY_NOTE_BRACKETS: [
