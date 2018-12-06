@@ -20,7 +20,11 @@ import PromotionsTab from './PromotionsTab';
 const getTabs = props =>
   [
     { id: 'overview', Component: OverviewTab },
-    props.loan.hasPromotion && { id: 'promotion', Component: PromotionsTab },
+    props.loan.hasPromotion && {
+      id: 'promotion',
+      Component: PromotionsTab,
+      style: { color: 'red' },
+    },
     { id: 'structures', Component: StructuresTab },
     { id: 'borrowers', Component: BorrowersTab },
     { id: 'properties', Component: PropertiesTab },
@@ -35,10 +39,14 @@ const getTabs = props =>
     },
   ]
     .filter(x => x)
-    .map(({ id, Component }) => ({
+    .map(({ id, Component, style = {} }) => ({
       id,
       content: <Component {...props} />,
-      label: <T id={`LoanTabs.${id}`} noTooltips />,
+      label: (
+        <span style={style}>
+          <T id={`LoanTabs.${id}`} noTooltips />
+        </span>
+      ),
       to: `/loans/${props.loan._id}/${id}`,
     }));
 
