@@ -19,6 +19,7 @@ import {
   updateStructure,
   selectStructure,
   duplicateStructure,
+  assignLoanToUser,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -125,3 +126,8 @@ export const duplicateStructureHandler = (
   return LoanService.duplicateStructure({ loanId, structureId });
 };
 duplicateStructure.setHandler(duplicateStructureHandler);
+
+assignLoanToUser.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  LoanService.assignLoanToUser(params);
+});
