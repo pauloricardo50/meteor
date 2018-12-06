@@ -4,6 +4,7 @@ import { expect } from 'chai';
 
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import NotaryFeesCalculator from '../NotaryFeesCalculator';
+import { PURCHASE_TYPE } from '../../../api/constants';
 
 describe('NotaryFeesCalculator', () => {
   let calc;
@@ -16,6 +17,20 @@ describe('NotaryFeesCalculator', () => {
         wantedLoan: 800000,
       },
     };
+  });
+
+  describe('general', () => {
+    before(() => {
+      calc = new NotaryFeesCalculator({ canton: 'GE' });
+    });
+
+    it('returns 0 for buyers contract fees for a refinancing loan', () => {
+      loan.purchaseType = PURCHASE_TYPE.REFINANCING;
+
+      const fees = calc.getNotaryFeesForLoan(loan);
+
+      expect(fees.buyersContractFees).to.equal(0);
+    });
   });
 
   describe('GE', () => {

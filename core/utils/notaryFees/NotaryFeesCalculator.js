@@ -1,6 +1,7 @@
 import * as cantonConfigs from './cantonConfigs';
 import Calculator from '../Calculator';
 import { NOTARY_FEES } from '../../config/financeConstants';
+import { PURCHASE_TYPE } from '../../api/constants';
 
 const roundToCents = val => Number(val.toFixed(2));
 
@@ -48,6 +49,10 @@ class NotaryFeesCalculator {
   }
 
   buyersContractFees(loan) {
+    if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
+      return 0;
+    }
+
     const propertyValue = Calculator.selectPropertyValue({ loan });
 
     // Frais d'enregistrement/Droits de mutation
