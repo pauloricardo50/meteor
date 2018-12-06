@@ -9,3 +9,4 @@ import '../properties/queries/exposures';
 import '../resolvers/exposures';
 import '../tasks/queries/exposures';
 import '../users/queries/exposures';
+import '../interestRates/queries/exposures';

@@ -32,7 +32,7 @@ export default compose(
   withRouter,
   withSmartQuery({
     query,
-    queryoptions: { reactive: true },
+    queryOptions: { reactive: true },
     dataName: 'admins',
     smallLoader: true,
   }),

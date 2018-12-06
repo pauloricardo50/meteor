@@ -15,5 +15,6 @@ export * from '../properties/methodDefinitions';
 export * from '../slack/methodDefinitions';
 export * from '../tasks/methodDefinitions';
 export * from '../users/methodDefinitions';
+export * from '../interestRates/methodDefinitions';
 
 export * from './methodDefinitions';

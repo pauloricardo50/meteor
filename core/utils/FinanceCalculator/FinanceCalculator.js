@@ -19,10 +19,8 @@ import {
   MAX_INCOME_RATIO_TIGHT,
   MAX_BORROW_RATIO_WITH_PLEDGE,
 } from '../../config/financeConstants';
-import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
-import { averageRates } from '../../components/InterestRatesTable/interestRates';
 
 export class FinanceCalculator {
   constructor(settings?: Object) {
@@ -38,7 +36,6 @@ export class FinanceCalculator {
   initFinanceCalculator({
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
-    interestRates = averageRates,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
     maxBorrowRatioWithPledge = MAX_BORROW_RATIO_WITH_PLEDGE,
     maxIncomeRatio = MAX_INCOME_RATIO,
@@ -68,7 +65,6 @@ export class FinanceCalculator {
   } = {}) {
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
-    this.interestRates = interestRates;
     this.maxBorrowRatio = maxBorrowRatio;
     this.maxBorrowRatioWithPledge = maxBorrowRatioWithPledge;
     this.maxIncomeRatio = maxIncomeRatio;
@@ -205,7 +201,7 @@ export class FinanceCalculator {
 
   checkInterestsAndTranches({
     tranches = [],
-    interestRates = this.interestRates,
+    interestRates,
   }: {
     tranches: Array<{ type: string, value: number }>,
     interestRates: Object,
@@ -223,7 +219,7 @@ export class FinanceCalculator {
 
   getInterestsWithTranches({
     tranches = [],
-    interestRates = this.interestRates,
+    interestRates,
   }: {
     tranches: Array<{ type: string, value: number }>,
     interestRates: Object,

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import interestRates from 'core/components/InterestRatesTable/interestRates';
 import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 
 export const columnOptions = [
@@ -20,13 +19,14 @@ export const formatRate = rate => (
   </span>
 );
 
-export const rows = interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
-  id: type,
-  columns: [
-    <T id={`InterestsTable.${type}`} />,
-    <InterestsTableTrend trend={trend} />,
-    <span>
-      {formatRate(rateLow)} - {formatRate(rateHigh)}
-    </span>,
-  ],
-}));
+export const rows = interestRates =>
+  interestRates.map(({ type, rateLow, rateHigh, trend }) => ({
+    id: type,
+    columns: [
+      <T id={`InterestsTable.${type}`} />,
+      <InterestsTableTrend trend={trend} />,
+      <span>
+        {formatRate(rateLow)} - {formatRate(rateHigh)}
+      </span>,
+    ],
+  }));

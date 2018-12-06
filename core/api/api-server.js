@@ -35,6 +35,7 @@ import PromotionOptionService from './promotionOptions/PromotionOptionService';
 import PromotionService from './promotions/PromotionService';
 import PropertyService from './properties/PropertyService';
 import TaskService from './tasks/TaskService';
+import InterestRatesService from './interestRates/InterestRatesService';
 import UserService from './users/UserService';
 
 process.on('uncaughtException', (error) => {
@@ -61,4 +62,5 @@ export const Services = {
   [COLLECTIONS.PROMOTION_OPTIONS_COLLECTION]: PromotionOptionService,
   [COLLECTIONS.USERS_COLLECTION]: UserService,
   [COLLECTIONS.TASKS_COLLECTION]: TaskService,
+  [COLLECTIONS.INTEREST_RATES_COLLECTION]: InterestRatesService,
 };

@@ -10,6 +10,7 @@ import messages from 'core/lang/fr.json';
 import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
+import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
 
 const expectResult = (component, name, value) => {
   const val = component()
@@ -84,10 +85,12 @@ describe('FinancingResult', () => {
             monthlyExpenses: 100,
           },
         ],
+        currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
       };
     });
 
     it('monthly', () => {
+      console.log(component().debug())
       const monthly = component().find('.financing-structures-result-chart .total');
       const string = monthly.text();
       const hasNonZeroNumber = /[1-9]/.test(string);
@@ -194,6 +197,7 @@ describe('FinancingResult', () => {
             amortizationYears: 5,
           },
         ],
+        currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
       };
     });
 
