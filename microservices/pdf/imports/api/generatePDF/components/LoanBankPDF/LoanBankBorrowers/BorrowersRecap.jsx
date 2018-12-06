@@ -257,13 +257,17 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
       multipleBorrowers,
     }),
     {
-      label: <T id="PDF.borrowersInfos.income" />,
+      label: '\u00A0',
       data: multipleBorrowers
         ? [
           ...getBorrowersName({ borrowersInfos, anonymous }),
           <T id="PDF.borrowersInfos.total" key="total" />,
         ]
         : getBorrowersName({ borrowersInfos, anonymous }),
+      style: { fontWeight: 'bold' },
+    },
+    {
+      label: <T id="PDF.borrowersInfos.income" />,
       type: ROW_TYPES.SUBSECTION,
     },
     addTableMoneyLine({
