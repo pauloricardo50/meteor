@@ -20,3 +20,10 @@ export const WwwInterestsTableContainer = compose(
 );
 
 export default WwwInterestsTableContainer;
+
+export const WwwInterestsTableContainerForTests = withProps(props => ({
+  ...props,
+  columnOptions,
+  rows: rows(props.currentInterestRates.rates),
+  date: props.currentInterestRates.date,
+}));
