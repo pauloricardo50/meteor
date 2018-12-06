@@ -287,6 +287,27 @@ export class LoanService extends CollectionService {
     const promotionLink = this.get(loanId).promotionLinks.find(({ _id }) => _id === promotionId);
     return promotionLink ? promotionLink.priorityOrder : [];
   }
+
+  assignLoanToUser({ loanId, userId }) {
+    const {
+      propertyIds = [],
+      borrowerIds = [],
+    } = this.createQuery({
+      $filters: { _id: loanId },
+      propertyIds: 1,
+      borrowerIds: 1,
+      promotionOptionIds: 1,
+    }).fetchOne();
+    const object = { userId };
+
+    this.update({ loanId, object });
+    propertyIds.forEach((propertyId) => {
+      PropertyService.update({ propertyId, object });
+    });
+    borrowerIds.forEach((borrowerId) => {
+      BorrowerService.update({ borrowerId, object });
+    });
+  }
 }
 
 export default new LoanService({});

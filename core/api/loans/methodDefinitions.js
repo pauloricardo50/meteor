@@ -137,3 +137,11 @@ export const duplicateStructure = new Method({
     structureId: String,
   },
 });
+
+export const assignLoanToUser = new Method({
+  name: 'assignLoanToUser',
+  params: {
+    loanId: String,
+    userId: String,
+  },
+});

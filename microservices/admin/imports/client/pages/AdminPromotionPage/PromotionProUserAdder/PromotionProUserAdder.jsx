@@ -8,7 +8,7 @@ import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 type PromotionProUserAdderProps = {
   promotion: Object,
   searchQuery: String,
-  search: Function,
+  onSearch: Function,
   setSearchQuery: Function,
   searchResults: Array<Object>,
   addUser: Function,
@@ -17,7 +17,7 @@ type PromotionProUserAdderProps = {
 const PromotionProUserAdder = ({
   searchQuery,
   setSearchQuery,
-  search,
+  onSearch,
   searchResults,
   addUser,
   promotion,
@@ -29,7 +29,7 @@ const PromotionProUserAdder = ({
     title={<T id="AdminPromotionPage.addUser.title" />}
   >
     <div className="search-pro-users">
-      <form onSubmit={search}>
+      <form onSubmit={onSearch}>
         <input
           type="text"
           value={searchQuery}

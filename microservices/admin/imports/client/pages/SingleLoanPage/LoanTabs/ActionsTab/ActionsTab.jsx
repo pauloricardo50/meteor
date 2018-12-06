@@ -4,10 +4,11 @@ import AutoForm from 'uniforms-material/AutoForm';
 import pick from 'lodash/pick';
 
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import { loanDelete, loanUpdate } from 'core/api';
+import UserAssigner from 'core/components/UserAssigner';
+import { loanDelete, loanUpdate, assignLoanToUser } from 'core/api';
 import LoanSchema from 'core/api/loans/schemas/LoanSchema';
-import loanWithName from 'core/api/loans/queries/loanWithName'
-import message from 'core/utils/message'
+import loanWithName from 'core/api/loans/queries/loanWithName';
+import message from 'core/utils/message';
 
 const ActionsTab = ({ loan }) => (
   <div className="actions-tab">
@@ -31,13 +32,16 @@ const ActionsTab = ({ loan }) => (
     <ConfirmMethod
       label="Supprimer la demande"
       keyword="SUPPRIMER"
-      method={cb =>
-        loanDelete
-          .run({ loanId: loan._id })
-          .then(cb)
-          .catch(console.log)
-      }
+      method={cb => loanDelete.run({ loanId: loan._id }).then(cb)}
       buttonProps={{ error: true, raised: true, className: 'delete-button' }}
+    />
+    <UserAssigner
+      title="Choisir utilisateur"
+      buttonLabel="Choisir utilisateur"
+      onUserSelect={userId =>
+        assignLoanToUser.run({ userId, loanId: loan._id })
+      }
+      userId={loan.userId}
     />
   </div>
 );
