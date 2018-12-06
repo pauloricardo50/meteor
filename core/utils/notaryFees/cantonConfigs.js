@@ -1,6 +1,6 @@
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import degressive from './degressive';
-import cantons from './cantonConstants';
+import * as cantons from './cantonConstants';
 import { VAT } from '../../config/financeConstants';
 import Calculator from '../Calculator';
 
