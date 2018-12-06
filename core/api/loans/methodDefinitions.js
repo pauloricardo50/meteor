@@ -94,7 +94,7 @@ export const enableUserForms = new Method({
 export const adminLoanInsert = new Method({
   name: 'adminLoanInsert',
   params: {
-    userId: String,
+    userId: Match.Optional(String),
   },
 });
 

@@ -25,13 +25,20 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
           ),
         }}
       />
-      <Link to={`/users/${loan.user._id}`}>
+      {loan.user ? (
+        <Link to={`/users/${loan.user._id}`}>
+          <small className="secondary">
+            {' - '}
+            {loan.user.name}
+            {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+          </small>
+        </Link>
+      ) : (
         <small className="secondary">
           {' - '}
-          {loan.user.name}
-          {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+          Pas d'utilisateur
         </small>
-      </Link>
+      )}
 
       <UpdateField
         collection={LOANS_COLLECTION}
