@@ -66,6 +66,10 @@ describe('NotaryFeesCalculator', () => {
 
       expect(fees.total).to.equal(154684.65);
     });
+
+    it('adds tax on propertyWork', () => {
+      // Test code
+    });
   });
 
   describe('unknown cantons', () => {

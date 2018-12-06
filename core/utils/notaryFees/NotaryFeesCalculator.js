@@ -2,6 +2,8 @@ import * as cantonConfigs from './cantonConfigs';
 import Calculator from '../Calculator';
 import { NOTARY_FEES } from '../../config/financeConstants';
 
+const roundToCents = val => Number(val.toFixed(2));
+
 class NotaryFeesCalculator {
   constructor({ canton }) {
     this.init(canton);
@@ -30,10 +32,10 @@ class NotaryFeesCalculator {
     });
 
     return {
-      total: Number((buyersContractFees + mortgageNoteFees - deductions).toFixed(2)),
-      buyersContractFees,
-      mortgageNoteFees,
-      deductions,
+      total: roundToCents(buyersContractFees + mortgageNoteFees - deductions),
+      buyersContractFees: roundToCents(buyersContractFees),
+      mortgageNoteFees: roundToCents(mortgageNoteFees),
+      deductions: roundToCents(deductions),
       canton: this.canton,
     };
   }
