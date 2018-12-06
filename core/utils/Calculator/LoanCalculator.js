@@ -42,8 +42,6 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     getInterests({ loan, interestRates }) {
       let finalInterestRates = interestRates || loan.currentInterestRates;
-      console.log('finalInterestRates', finalInterestRates);
-      console.log('currentInterestRates', loan.currentInterestRates);
       const offer = this.makeSelectStructureKey('offer')({ loan });
       if (offer) {
         finalInterestRates = offer;

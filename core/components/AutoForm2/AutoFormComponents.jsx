@@ -9,7 +9,7 @@ import DefaultSubmitField from 'uniforms-material/SubmitField';
 import T from '../Translation';
 import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
-import PercentInput from '../PercentInput/PercentInput';
+import PercentInput from '../PercentInput';
 
 const CustomSelectField = ({ transform, ...props }) => (
   <SelectField

@@ -7,7 +7,7 @@ import InterestsTableTrend from 'imports/core/components/InterestRatesTable/Inte
 import { INTEREST_RATES } from 'imports/core/api/interestRates/interestRatesConstants';
 import Percent from 'imports/core/components/Translation/numberComponents/Percent';
 
-const getColumnOptions = () => [
+const columnOptions = [
   { id: 'date', label: <T id="Forms.date" /> },
   { id: 'interestLibor', label: <T id="InterestsTable.interestLibor" /> },
   { id: 'interest1', label: <T id="InterestsTable.interest1" /> },
@@ -46,7 +46,7 @@ const makeMapInterestRatesData = interestRates =>
     .filter(x => x);
 
 const makeMapInterestRates = ({
-    setInterestRatesToModify,
+  setInterestRatesToModify,
   setShowDialog,
 }) => (interestRates) => {
   const { _id: interestRatesId, date } = interestRates;
@@ -61,7 +61,7 @@ const makeMapInterestRates = ({
       ...makeMapInterestRatesData(interestRates),
     ],
     handleClick: () => {
-        setInterestRatesToModify(interestRates);
+      setInterestRatesToModify(interestRates);
       setShowDialog(true);
     },
   };
@@ -72,6 +72,6 @@ export default compose(
   withState('showDialog', 'setShowDialog', false),
   withProps(({ interestRates = [], setInterestRatesToModify, setShowDialog }) => ({
     rows: interestRates.map(makeMapInterestRates({ setInterestRatesToModify, setShowDialog })),
-    columnOptions: getColumnOptions(),
+    columnOptions,
   })),
 );

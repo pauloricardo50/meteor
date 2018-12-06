@@ -18,7 +18,6 @@ const Widget1Monthly = ({
   currentInterestRates,
 }) => (
   <div className="card1 widget1-monthly">
-    {console.log('currentInterestRates', currentInterestRates)}
     <h3>
       <T id="Widget1Monthly.title" />
     </h3>
