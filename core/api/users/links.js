@@ -31,4 +31,8 @@ Users.addLinks({
     collection: Promotions,
     inversedBy: 'users',
   },
+  assignedPromotions: {
+    collection: Promotions,
+    inversedBy: 'assignedEmployee',
+  },
 });

@@ -11,6 +11,7 @@ import '../../promotionLots/server/methods';
 import '../../promotionOptions/server/methods';
 import '../../promotions/server/methods';
 import '../../properties/server/methods';
+import '../../slack/server/methods';
 import '../../tasks/server/methods';
 import '../../users/server/methods';
 import '../../interestRates/server/methods';

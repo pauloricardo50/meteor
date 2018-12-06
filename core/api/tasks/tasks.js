@@ -19,7 +19,7 @@ Tasks.allow({
   remove: () => false,
 });
 
-const TasksSchema = new SimpleSchema({
+export const TasksSchema = new SimpleSchema({
   createdAt,
   updatedAt,
   status: {

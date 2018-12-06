@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import PdfTableTooltips from './PdfTableTooltips';
 
 type PdfTableProps = {
   rows: Array,
@@ -13,6 +14,8 @@ export const ROW_TYPES = {
   REGULAR: 'REGULAR',
   EMPTY: 'EMPTY',
   SUM: 'SUM',
+  SUBSECTION: 'SUBSECTION',
+  TOOLTIP: 'TOOLTIP',
 };
 
 const classes = {
@@ -21,6 +24,8 @@ const classes = {
   [ROW_TYPES.REGULAR]: 'regular-row',
   [ROW_TYPES.EMPTY]: 'empty-row',
   [ROW_TYPES.SUM]: 'sum-row',
+  [ROW_TYPES.SUBSECTION]: 'subsection-row',
+  [ROW_TYPES.TOOLTIP]: 'tooltip',
 };
 
 const shouldRenderRow = condition => condition === undefined || condition;
@@ -35,7 +40,15 @@ const multiColumn = (data, style) =>
 const singleColumn = (data, style) => <td style={style}>{data}</td>;
 
 const row = (
-  { label, data, condition, style, colspan = 1, type = ROW_TYPES.REGULAR },
+  {
+    label,
+    tooltip,
+    data,
+    condition,
+    style,
+    colspan = 1,
+    type = ROW_TYPES.REGULAR,
+  },
   index,
 ) => {
   if (colspan > 1) {
@@ -48,7 +61,12 @@ const row = (
 
   return (
     <tr key={index} className={classes[type]}>
-      {label && <td>{label}</td>}
+      {label && (
+        <td>
+          {label}
+          {tooltip && <sup> {tooltip.symbol}</sup>}
+        </td>
+      )}
       {Array.isArray(data)
         ? multiColumn(data, style)
         : singleColumn(data, style)}
@@ -58,10 +76,14 @@ const row = (
 
 const PdfTable = ({ rows, className }: PdfTableProps) => (
   // console.log('rows', rows);
-
   <table className={cx('pdf-table', className)}>
     {rows.map((rowData, index) =>
       shouldRenderRow(rowData.condition) && row(rowData, index))}
+    <PdfTableTooltips
+      tooltips={rows.filter(({ tooltip, condition }) => !!tooltip && shouldRenderRow(condition))}
+      rowRenderFunc={row}
+      startIndex={rows.length + 1}
+    />
   </table>
 );
 export default PdfTable;

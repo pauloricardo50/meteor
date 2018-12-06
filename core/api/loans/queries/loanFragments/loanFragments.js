@@ -35,6 +35,7 @@ export const loanBaseFragment = {
     priority: 1,
     promotion: 1,
     value: 1,
+    solvency: 1,
   },
   hasPromotion: 1,
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },

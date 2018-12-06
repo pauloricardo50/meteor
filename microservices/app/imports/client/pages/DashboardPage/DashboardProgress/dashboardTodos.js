@@ -117,15 +117,15 @@ export const getDashboardTodosArray = list =>
       link: createFinancingLink,
     },
     {
+      id: 'chooseLots',
+      isDone: loan => loan.promotionOptions && loan.promotionOptions.length > 0,
+      link: createPropertiesLink,
+    },
+    {
       id: 'uploadDocuments',
       isDone: loan => Calculator.filesProgress({ loan }).percent >= 1,
       hide: loan => !loan.documents,
       link: ({ _id: loanId }) => createRoute(FILES_PAGE, { ':loanId': loanId }),
-    },
-    {
-      id: 'chooseLots',
-      isDone: loan => loan.promotionOptions && loan.promotionOptions.length > 0,
-      link: createPropertiesLink,
     },
     {
       id: 'verification',

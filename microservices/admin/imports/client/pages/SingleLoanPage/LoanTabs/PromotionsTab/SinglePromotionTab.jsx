@@ -5,7 +5,7 @@ import UserPromotionOptionsTable from 'core/components/PromotionPage/client/User
 type SinglePromotionTabProps = {};
 
 const SinglePromotionTab = ({ loan, promotion }: SinglePromotionTabProps) => (
-  <UserPromotionOptionsTable loan={loan} promotion={promotion} />
+  <UserPromotionOptionsTable loan={loan} promotion={promotion} isAdmin />
 );
 
 export default SinglePromotionTab;
