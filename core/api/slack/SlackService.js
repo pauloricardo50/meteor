@@ -152,7 +152,7 @@ export class SlackService {
       return false;
     }
 
-    const admin = assignee || currentUser.assignedEmployee;
+    const admin = assignee || (currentUser && currentUser.assignedEmployee);
     const channel = this.getChannelForAdmin(admin);
 
     const slackPayload = {
