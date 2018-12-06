@@ -5,14 +5,14 @@ import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 type InterestRatesChartProps = {
   title: String,
-  xLabels: Array<String>,
+  config: Object,
   lines: Array<Object>,
 };
 
 const InterestRatesChart = ({
   title,
-  xLabels,
   lines,
-}: InterestRatesChartProps) => <LineChart title={title} xLabels={xLabels} lines={lines} />;
+  config,
+}: InterestRatesChartProps) => <LineChart title={title} lines={lines} config={config} />;
 
 export default InterestRatesChartContainer(InterestRatesChart);

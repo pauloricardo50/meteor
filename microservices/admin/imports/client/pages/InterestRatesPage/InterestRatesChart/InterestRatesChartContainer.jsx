@@ -1,11 +1,9 @@
-import React from 'react';
 import { withProps, compose } from 'recompose';
-import moment from 'moment';
 import { injectIntl } from 'react-intl';
+import moment from 'moment';
 
 import formatMessage from 'core/utils/intl';
 import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
-import T from 'core/components/Translation/Translation';
 
 const getAverageRate = (rate) => {
   if (!rate || !rate.rateLow || !rate.rateHigh) {
@@ -14,14 +12,43 @@ const getAverageRate = (rate) => {
   return (100 * (rate.rateLow + rate.rateHigh)) / 2;
 };
 
-const getAllRatesOfType = ({ interestRates, type }) =>
-  interestRates.reduce(
-    (data, rates) => [...data, getAverageRate(rates[type])],
+const getConfig = (lines) => {
+  const points = lines.reduce(
+    (allPoints, { data }) => [...allPoints, ...data.map(x => x[1])],
     [],
   );
 
-const getAllDates = interestRates =>
-  interestRates.map(({ date }) => moment(date).format('DD.MM.YYYY'));
+  const maxY = Math.max(...points) + 0.1;
+  const minY = Math.min(...points) - 0.1;
+
+  return {
+    xAxis: {
+      type: 'datetime',
+      title: { text: 'Date' },
+    },
+    yAxis: {
+      title: { text: 'Taux moyens [%]' },
+      min: minY < 0 ? 0 : minY,
+      max: maxY,
+    },
+    chart: { type: 'spline' },
+    plotOptions: { spline: { marker: { enabled: true } } },
+    tooltip: {
+      headerFormat: '<b>{point.x:%d.%m.%y}</b><br>',
+      pointFormat: '{series.name}: {point.y:.2f}%<br>',
+      crosshairs: true,
+      shared: true,
+    },
+  };
+};
+
+const getAllRatesOfType = ({ interestRates, type }) =>
+  interestRates
+    .map(rates => [
+      moment.utc(rates.date).valueOf(),
+      getAverageRate(rates[type]),
+    ])
+    .filter(rate => rate[1]);
 
 const getLines = interestRates =>
   Object.values(INTEREST_RATES).map(type => ({
@@ -31,9 +58,12 @@ const getLines = interestRates =>
 
 export default compose(
   injectIntl,
-  withProps(({ interestRates }) => ({
-    title: "Taux d'intérêt",
-    xLabels: getAllDates(interestRates),
-    lines: getLines(interestRates),
-  })),
+  withProps(({ interestRates }) => {
+    const lines = getLines(interestRates);
+    return {
+      title: "Taux d'intérêt",
+      lines,
+      config: getConfig(lines),
+    };
+  }),
 );
