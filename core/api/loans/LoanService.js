@@ -296,7 +296,6 @@ export class LoanService extends CollectionService {
       $filters: { _id: loanId },
       propertyIds: 1,
       borrowerIds: 1,
-      promotionOptionIds: 1,
     }).fetchOne();
     const object = { userId };
 
