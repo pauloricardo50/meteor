@@ -12,6 +12,7 @@ export * from '../promotionLots/methodDefinitions';
 export * from '../promotionOptions/methodDefinitions';
 export * from '../promotions/methodDefinitions';
 export * from '../properties/methodDefinitions';
+export * from '../slack/methodDefinitions';
 export * from '../tasks/methodDefinitions';
 export * from '../users/methodDefinitions';
 
