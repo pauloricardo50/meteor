@@ -7,6 +7,12 @@
 
     margin: 16px;
   }
+
+  .uploader-category {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
 }
 
 .file-tab-label {
@@ -15,4 +21,12 @@
   flex-wrap: nowrap;
 
   white-space: nowrap;
+
+  .name {
+    overflow: hidden;
+
+    max-width: 160px;
+
+    text-overflow: ellipsis;
+  }
 }

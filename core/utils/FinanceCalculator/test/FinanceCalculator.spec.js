@@ -2,7 +2,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { MAX_YEARLY_THIRD_PILLAR_PAYMENTS } from '../../../config/financeConstants';
 import DefaultFinanceCalculator, {
   FinanceCalculator,
 } from '../FinanceCalculator';
@@ -94,12 +93,11 @@ describe('FinanceCalculator', () => {
       expect(calc.getInterestsWithTranches()).to.equal(0);
     });
 
-    it('throws if an interest rate is not present', () => {
-      expect(() =>
-        calc.getInterestsWithTranches({
-          tranches: [{ value: 0.5, type: 'a' }],
-          interestRates: { b: 0.02 },
-        })).to.throw(NO_INTEREST_RATE_ERROR);
+    it('return a dash if an interest rate is not present', () => {
+      expect(calc.getInterestsWithTranches({
+        tranches: [{ value: 0.5, type: 'a' }],
+        interestRates: { b: 0.02 },
+      })).to.equal('-');
     });
   });
 
@@ -148,7 +146,6 @@ describe('FinanceCalculator', () => {
       expect(calc.getAmortizationRateBase({ borrowRatio: 0.8 })).to.equal(0.0125);
     });
   });
-
 
   describe('Calculate Years to Retirement', () => {
     it('Should return 35 with a male of 30 yo', () => {
@@ -248,6 +245,25 @@ describe('FinanceCalculator', () => {
         residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
         pledgedAmount: 20,
       })).to.equal(90);
+    });
+  });
+
+  describe('getAveragedInterestRate', () => {
+    it('returns the same value if only one rate at 100%', () => {
+      expect(calc.getAveragedInterestRate({
+        tranches: [{ type: 'rateType', value: 1 }],
+        interestRates: { rateType: 0.01 },
+      })).to.equal(0.01);
+    });
+
+    it('averages 2 rates out', () => {
+      expect(calc.getAveragedInterestRate({
+        tranches: [
+          { type: 'rateType1', value: 0.5 },
+          { type: 'rateType2', value: 0.5 },
+        ],
+        interestRates: { rateType1: 0.01, rateType2: 0.02 },
+      })).to.equal(0.015);
     });
   });
 });

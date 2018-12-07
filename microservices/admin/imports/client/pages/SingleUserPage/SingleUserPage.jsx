@@ -9,15 +9,20 @@ import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 
 const SingleUserPage = ({ user, className, currentUser }) => {
-  const { loans, _id: userId } = user;
-  console.log('user', user);
+  const { loans, _id: userId, assignedEmployee } = user;
   const isUser = user.roles.includes(ROLES.USER);
 
   return (
     <section
       className={classnames('card1 card-top single-user-page', className)}
     >
-      <SingleUserPageHeader user={user} currentUser={currentUser} />
+      <SingleUserPageHeader
+        user={{
+          ...user,
+          assignedEmployeeId: assignedEmployee && assignedEmployee._id,
+        }}
+        currentUser={currentUser}
+      />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
       )}

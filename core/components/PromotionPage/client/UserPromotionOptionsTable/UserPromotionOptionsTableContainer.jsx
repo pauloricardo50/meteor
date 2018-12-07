@@ -13,7 +13,9 @@ import {
   PROMOTION_LOTS_COLLECTION,
   PROMOTION_LOT_STATUS,
   PROMOTION_STATUS,
+  PROMOTION_OPTIONS_COLLECTION,
 } from '../../../../api/constants';
+import UpdateField from '../../../UpdateField';
 
 const getLotsAttributedToMe = promotionOptions =>
   promotionOptions.filter(({ attributedToMe }) => attributedToMe);
@@ -35,8 +37,9 @@ const makeMapPromotionOption = ({
   history,
   isDashboardTable = false,
   promotionStatus,
+  isAdmin,
 }) => (
-  { _id: promotionOptionId, promotionLots, custom, attributedToMe },
+  { _id: promotionOptionId, promotionLots, custom, attributedToMe, solvency },
   index,
   arr,
 ) => {
@@ -56,7 +59,7 @@ const makeMapPromotionOption = ({
           />
         </div>
       ),
-      name,
+      { raw: name, label: name },
       {
         raw: reducedStatus,
         label: (
@@ -82,9 +85,20 @@ const makeMapPromotionOption = ({
           />
         </div>
       ),
+      !!isAdmin && (
+        <UpdateField
+          doc={{ _id: promotionOptionId, solvency }}
+          collection={PROMOTION_OPTIONS_COLLECTION}
+          fields={['solvency']}
+        />
+      ),
     ].filter(x => x !== false),
 
     handleClick: (event) => {
+      if (isAdmin) {
+        return;
+      }
+
       event.stopPropagation();
       event.preventDefault();
       history.push(createRoute(
@@ -108,6 +122,7 @@ const columnOptions = ({
   isDashboardTable = false,
   isLotAttributedToMe,
   promotionStatus,
+  isAdmin,
 }) =>
   [
     !isLotAttributedToMe
@@ -119,6 +134,7 @@ const columnOptions = ({
     { id: 'status' },
     { id: 'totalValue' },
     !isDashboardTable && { id: 'custom', style: { maxWidth: '400px' } },
+    !!isAdmin && { id: 'solvency' },
   ]
     .filter(x => x !== false)
     .map(({ id, ...rest }) => ({
@@ -152,6 +168,7 @@ export default compose(
     makeChangeCustom,
     history,
     isDashboardTable,
+    isAdmin,
   }) => {
     const { promotionOptions } = loan;
     const options = isAnyLotAttributedToMe(promotionOptions)
@@ -177,11 +194,13 @@ export default compose(
         history,
         isDashboardTable,
         promotionStatus: promotion.status,
+        isAdmin,
       })),
       columnOptions: columnOptions({
         isDashboardTable,
         isLotAttributedToMe: isAnyLotAttributedToMe(promotionOptions),
         promotionStatus: promotion.status,
+        isAdmin,
       }),
       isDashboardTable,
     };

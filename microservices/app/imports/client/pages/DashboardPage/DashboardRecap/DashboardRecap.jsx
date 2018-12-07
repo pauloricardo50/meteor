@@ -9,7 +9,7 @@ import DashboardRecapPromotion from './DashboardRecapPromotion';
 const DashboardRecap = (props) => {
   const propertyToDisplay = props.loan.structure.property || props.loan.properties[0];
   const {
-    loan: { hasPromotion, promotions, loanId },
+    loan: { hasPromotion, promotions, _id: loanId },
   } = props;
 
   return (

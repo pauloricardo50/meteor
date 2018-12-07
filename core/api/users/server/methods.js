@@ -14,6 +14,7 @@ import {
   removeUser,
   sendEnrollmentEmail,
   changeEmail,
+  generateApiToken,
 } from '../methodDefinitions';
 import UserService from '../UserService';
 
@@ -94,4 +95,11 @@ sendEnrollmentEmail.setHandler((context, params) => {
 changeEmail.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.changeEmail(params);
+});
+
+generateApiToken.setHandler((context, { userId }) => {
+  if (!SecurityService.currentUserIsAdmin()) {
+    SecurityService.checkUserLoggedIn(userId);
+  }
+  return UserService.generateApiToken({ userId });
 });

@@ -6,7 +6,7 @@ import UserService from '../users/UserService';
 import { ROLES } from '../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
-const shouldNotLog = Meteor.isDevelopment && Meteor.isAppTest && !Meteor.isTest;
+const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
 export class SlackService {
@@ -20,9 +20,14 @@ export class SlackService {
     }
   }
 
-  send = ({ channel, username = 'e-Potek Bot', text, ...rest }) => {
+  send = ({
+    channel = '#clients_general',
+    username = 'e-Potek Bot',
+    text,
+    ...rest
+  }) => {
     if (shouldNotLog) {
-      return false;
+      return Promise.resolve();
     }
 
     return this.fetch(
@@ -60,7 +65,10 @@ export class SlackService {
   });
 
   sendError = ({ error, additionalData = [], userId }) => {
-    if (ERRORS_TO_IGNORE.includes(error.name)) {
+    if (
+      ERRORS_TO_IGNORE.includes(error.name)
+      || ERRORS_TO_IGNORE.includes(error.message || error.reason)
+    ) {
       return false;
     }
 
@@ -92,7 +100,7 @@ export class SlackService {
           text: error.message || error.reason,
           color: colors.error,
           footer: 'c la merde',
-          ts: new Date(),
+          ts: new Date().getTime(),
         },
         {
           title: 'Stack',
@@ -128,25 +136,28 @@ export class SlackService {
   getChannelForAdmin = admin =>
     (admin ? `#clients_${admin.email.split('@')[0]}` : '#clients_general');
 
-  notifyAssignee = ({ currentUser, message, title, link }) => {
-    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+  notifyAssignee = ({
+    currentUser,
+    message,
+    title,
+    link,
+    assignee,
+    notifyAlways,
+  }) => {
+    const isAdmin = currentUser
+      && (currentUser.roles.includes(ROLES.ADMIN)
+        || currentUser.roles.includes(ROLES.DEV));
 
-    if (!isUser) {
+    if (!notifyAlways && isAdmin) {
       return false;
     }
 
-    const admin = currentUser.assignedEmployee;
+    const admin = assignee || (currentUser && currentUser.assignedEmployee);
     const channel = this.getChannelForAdmin(admin);
 
     const slackPayload = {
       channel,
-      attachments: [
-        {
-          title,
-          title_link: link,
-          text: message,
-        },
-      ],
+      attachments: [{ title, title_link: link, text: message }],
     };
 
     if (Meteor.isStaging || Meteor.isDevelopment) {
@@ -167,6 +178,12 @@ export class SlackService {
   };
 
   notifyOfUpload = (currentUser, fileName) => {
+    const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
+
+    if (!isUser) {
+      return false;
+    }
+
     const { name, loans } = currentUser;
     const loanNameEnd = loans.length === 1 ? ` pour ${loans[0].name}.` : '.';
     const title = `${name} a uploadé un nouveau document${loanNameEnd}`;

@@ -1,12 +1,15 @@
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
+import { withSmartQuery } from 'core/api/containerToolkit/index';
+import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
 import {
   getLoanValue,
   getSimpleYearlyInterests,
   getYearlyAmortization,
   getSimpleYearlyMaintenance,
 } from '../widget1Math';
-import { widget1Types, widget1Constants } from '../../../redux/widget1';
+import { widget1Constants } from '../../../redux/widget1';
 import { commonTypes } from '../../../redux/common';
 
 const mapStateToProps = ({
@@ -49,7 +52,15 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: commonTypes.SET_VALUE('useMaintenance'), value }),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withSmartQuery({
+    query: currentInterestRates,
+    queryOptions: { reactive: true },
+    dataName: 'currentInterestRates',
+    smallLoader: true,
+  }),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 );

@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { ScrollSync } from 'react-scroll-sync';
 
@@ -24,7 +26,19 @@ const Financing = ({ loan }: FinancingProps) =>
         <FinancingProject />
         <FinancingFinancing />
         <FinancingOwnFunds />
-        {/* <FinancingOffers /> */}
+        {Meteor.microservice === 'admin' && (
+          <span>
+            Offres{' '}
+            {loan.enableOffers ? (
+              <span className="success">Activées</span>
+            ) : (
+              <span className="error">Désactivées</span>
+            )}
+          </span>
+        )}
+        {(Meteor.microservice === 'admin' || loan.enableOffers) && (
+          <FinancingOffers />
+        )}
         <FinancingResult />
       </div>
     </ScrollSync>

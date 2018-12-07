@@ -11,6 +11,8 @@ import {
   QUALITY,
 } from '../../../constants';
 
+import WuestService from '../../../wuest/server/WuestService';
+
 describe('PropertyService', () => {
   beforeEach(() => {
     resetDatabase();
@@ -70,9 +72,17 @@ describe('PropertyService', () => {
         loanResidenceType,
       }).then(() => {
         const property = PropertyService.getPropertyById(propertyId);
-        expect(property.valuation.min).to.equal(640000);
-        expect(property.valuation.max).to.equal(770000);
-        expect(property.valuation.value).to.equal(705000);
+        const marketValueBeforeCorrection = 709000;
+        const statisticalPriceRangeMin = 640000;
+        const statisticalPriceRangeMax = 770000;
+        const priceRange = WuestService.getPriceRange({
+          marketValueBeforeCorrection,
+          statisticalPriceRangeMin,
+          statisticalPriceRangeMax,
+        });
+        expect(property.valuation.min).to.equal(priceRange.min);
+        expect(property.valuation.max).to.equal(priceRange.max);
+        expect(property.valuation.value).to.equal(marketValueBeforeCorrection);
       });
     }).timeout(10000);
 

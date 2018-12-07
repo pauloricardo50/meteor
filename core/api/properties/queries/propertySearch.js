@@ -7,7 +7,7 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTY_SEARCH, {
   $filter({ filters, params: { searchQuery } }) {
     Object.assign(
       filters,
-      createSearchFilters(['address1', 'city'], searchQuery),
+      createSearchFilters(['address1', 'city', '_id'], searchQuery),
     );
   },
   ...propertySummaryFragment,

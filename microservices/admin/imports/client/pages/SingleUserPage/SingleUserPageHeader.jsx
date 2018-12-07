@@ -12,7 +12,7 @@ import { sendEnrollmentEmail } from 'core/api';
 import { ROLES } from 'imports/core/api/constants';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
-import EditUserDialogForm from './EditUserDialogForm';
+import { EditUserDialogForm } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
 import EmailModifier from './EmailModifier';
 

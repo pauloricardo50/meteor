@@ -1,31 +1,33 @@
 // @flow
 import React from 'react';
+
 import { toMoney } from 'core/utils/conversionFunctions';
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { T } from 'core/components/Translation/Translation';
+import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
-import PDFTable from '../utils/PDFTable';
+import PdfTable from '../../PdfTable';
+import PdfPage from '../../PdfPage';
 import {
   structureArrayData,
   usedOwnFundsTableData,
   shouldDisplayOwnFund,
   remainingFundsTableData,
   propertyArrayData,
-  EMPTY_LINE,
 } from './LoanBankProjectArrayData';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type LoanBankProjectProps = {
   loan: Object,
 };
 
+const titleLine = label => ({
+  label,
+  colspan: 2,
+  type: ROW_TYPES.TITLE,
+});
+
 const getPropertyRecapArray = loan => [
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.valuation.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.valuation.title" />),
   {
     label: <T id="PDF.projectInfos.valuation.value" />,
     data: `${toMoney(loan.structure.property.valuation.value)} - ${toMoney(loan.structure.property.valuation.max)}`,
@@ -34,36 +36,16 @@ const getPropertyRecapArray = loan => [
     label: <T id="PDF.projectInfos.valuation.microlocation" />,
     data: `${loan.structure.property.valuation.microlocation.grade}/5`,
   },
-  EMPTY_LINE,
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.property.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.property.title" />),
   ...propertyArrayData(loan),
 ];
 
 const getStructureRecapArray = loan => [
-  {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.structure.title" />
-      </p>
-    ),
-  },
+  titleLine(<T id="PDF.projectInfos.structure.title" />),
   ...structureArrayData(loan),
-  EMPTY_LINE,
+  titleLine(<T id="PDF.projectInfos.structure.usedOwnFunds.title" />),
   {
-    label: (
-      <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-        <T id="PDF.projectInfos.structure.usedOwnFunds.title" />
-      </p>
-    ),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.usedOwnFunds.bankFortune" />,
+    label: <T id="PDF.ownFund.bankFortune" />,
     data: toMoney(Calculator.getUsedFundsOfType({
       loan,
       type: OWN_FUNDS_TYPES.BANK_FORTUNE,
@@ -73,11 +55,10 @@ const getStructureRecapArray = loan => [
         loan,
         type: OWN_FUNDS_TYPES.BANK_FORTUNE,
       }) !== 0,
-    style: { textAlign: 'right' },
   },
   ...usedOwnFundsTableData(loan),
   {
-    label: <T id="PDF.projectInfos.structure.usedOwnFunds.thirdPartyFortune" />,
+    label: <T id="PDF.ownFund.thirdPartyFortune" />,
     data: toMoney(Calculator.getUsedFundsOfType({
       loan,
       type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
@@ -86,78 +67,46 @@ const getStructureRecapArray = loan => [
       ownFunds: loan.structure.ownFunds,
       type: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
     }),
-    style: { textAlign: 'right' },
   },
   {
-    label: (
-      <p style={{ fontWeight: 'bold' }}>
-        <T id="PDF.projectInfos.structure.usedOwnFunds.total" />
-      </p>
-    ),
+    label: <T id="PDF.projectInfos.structure.usedOwnFunds.total" />,
     data: toMoney(Calculator.getTotalUsed({ loan })),
-    style: { fontWeight: 'bold', textAlign: 'right' },
+    type: ROW_TYPES.SUM,
   },
-  EMPTY_LINE,
+  titleLine(<T id="PDF.projectInfos.structure.postDisbursementSituation.title" />),
   {
-    label: (
-      <p
-        style={{
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
-          maxWidth: '150px',
-        }}
-      >
-        <T id="PDF.projectInfos.structure.postDisbursementSituation.title" />
-      </p>
-    ),
-  },
-  {
-    label: (
-      <T id="PDF.projectInfos.structure.postDisbursementSituation.bankFortune" />
-    ),
+    label: <T id="PDF.ownFund.bankFortune" />,
     data: toMoney(Calculator.getRemainingFundsOfType({
       loan,
       type: OWN_FUNDS_TYPES.BANK_FORTUNE,
     })),
-    style: { textAlign: 'right' },
   },
   ...remainingFundsTableData(loan),
   {
     label: (
-      <p style={{ fontWeight: 'bold' }}>
-        <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
-      </p>
+      <T id="PDF.projectInfos.structure.postDisbursementSituation.total" />
     ),
     data: toMoney(Calculator.getTotalRemainingFunds({ loan })),
-    style: { fontWeight: 'bold', textAlign: 'right' },
+    type: ROW_TYPES.SUM,
   },
 ];
 
-const structureRecap = loan => (
-  <div className="loan-bank-pdf-project-details">
-    <PDFTable
-      className="loan-bank-pdf-project-table"
-      array={getStructureRecapArray(loan)}
-    />
-  </div>
-);
-
-const propertyRecap = loan => (
-  <div className="loan-bank-pdf-property">
-    <PDFTable
-      className="loan-bank-pdf-property-table"
-      array={getPropertyRecapArray(loan)}
-    />
-  </div>
-);
-
-const LoanBankProject = ({ loan }: LoanBankProjectProps) => (
-  <div className="loan-bank-pdf-project">
-    <div className="loan-bank-pdf-project-recap">
-      {structureRecap(loan)}
-      {propertyRecap(loan)}
+const LoanBankProject = ({ loan, pageNb, pageCount }: LoanBankProjectProps) => (
+  <PdfPage
+    className="project-page"
+    title={<T id="PDF.title.project" />}
+    withFooter
+    pageNb={pageNb}
+    pageCount={pageCount}
+  >
+    <div className="project-table">
+      <PdfTable
+        className="structure-table"
+        rows={getStructureRecapArray(loan)}
+      />
+      <PdfTable className="property-table" rows={getPropertyRecapArray(loan)} />
     </div>
-  </div>
+  </PdfPage>
 );
 
 export default LoanBankProject;

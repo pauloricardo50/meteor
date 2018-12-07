@@ -39,7 +39,6 @@ export const AppPromotionLotPage = ({
   const { custom, attributedToMe } = promotionOption || {};
   const property = properties.length > 0 && properties[0];
   const { description } = property;
-  console.log('property', property);
 
   return (
     <div>
@@ -65,9 +64,11 @@ export const AppPromotionLotPage = ({
           />
         </h1>
         {description && <h3 className="secondary">{description}</h3>}
-        <h4>
-          <T id="PromotionLotPage.manageLot" />
-        </h4>
+        {lots.length > 0 && (
+          <h4>
+            <T id="PromotionLotPage.manageLot" />
+          </h4>
+        )}
         <div className="lots">
           {lots.map(lot => (
             <LotChip lot={lot} key={lot._id} />

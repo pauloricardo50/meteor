@@ -186,7 +186,7 @@ export class LoanService extends CollectionService {
       loanId,
       structure: {
         ...structure,
-        name: `Structure ${structures.length + 1}`,
+        name: `Plan financier ${structures.length + 1}`,
         propertyId,
       },
     });
@@ -212,7 +212,7 @@ export class LoanService extends CollectionService {
       });
     }
 
-    throw new Meteor.Error("Can't delete selected structure");
+    throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
@@ -249,7 +249,7 @@ export class LoanService extends CollectionService {
         loanId,
         structure: {
           ...currentStructure,
-          name: `${currentStructure.name} - copie`,
+          name: `${currentStructure.name || 'Plan financier'} - copie`,
         },
         atIndex: currentStructureIndex + 1,
       })
@@ -276,7 +276,6 @@ export class LoanService extends CollectionService {
     });
   };
 
-
   setPromotionPriorityOrder({ loanId, promotionId, priorityOrder }) {
     return Loans.update(
       { _id: loanId, 'promotionLinks._id': promotionId },
@@ -287,6 +286,26 @@ export class LoanService extends CollectionService {
   getPromotionPriorityOrder({ loanId, promotionId }) {
     const promotionLink = this.get(loanId).promotionLinks.find(({ _id }) => _id === promotionId);
     return promotionLink ? promotionLink.priorityOrder : [];
+  }
+
+  assignLoanToUser({ loanId, userId }) {
+    const {
+      propertyIds = [],
+      borrowerIds = [],
+    } = this.createQuery({
+      $filters: { _id: loanId },
+      propertyIds: 1,
+      borrowerIds: 1,
+    }).fetchOne();
+    const object = { userId };
+
+    this.update({ loanId, object });
+    propertyIds.forEach((propertyId) => {
+      PropertyService.update({ propertyId, object });
+    });
+    borrowerIds.forEach((borrowerId) => {
+      BorrowerService.update({ borrowerId, object });
+    });
   }
 }
 

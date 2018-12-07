@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+
 import {
   withStateHandlers,
   lifecycle,
@@ -7,10 +9,9 @@ import {
   compose,
 } from 'recompose';
 import { withRouter } from 'react-router-dom';
-import { Accounts } from 'meteor/accounts-base';
 
 import withMatchParam from '../../containers/withMatchParam';
-import { getUserByPasswordResetToken } from '../../api';
+import { getUserByPasswordResetToken, notifyAssignee } from '../../api';
 
 const stateHandlers = withStateHandlers(
   { newPassword: '', newPassword2: '' },
@@ -26,6 +27,7 @@ const props = withProps(({ newPassword, token, history, setError, changeSubmitti
         setError(err);
       } else {
         history.push('/');
+        notifyAssignee.run({ message: 'A choisi/changé son mot de passe!' });
       }
       changeSubmitting(false);
     });

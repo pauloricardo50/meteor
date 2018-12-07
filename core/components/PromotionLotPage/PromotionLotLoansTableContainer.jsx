@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose, withProps, mapProps } from 'recompose';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
@@ -9,6 +10,7 @@ import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
+import { createRoute } from '../../utils/routerUtils';
 
 const getSolvency = (email) => {
   const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
@@ -21,8 +23,8 @@ const getSolvency = (email) => {
   return { className: 'primary', text: 'En cours' };
 };
 
-const mapOption = (
-  {
+const makeMapOption = ({
+  promotionLot: {
     status: promotionLotStatus,
     _id: promotionLotId,
     promotion: lotPromotion,
@@ -30,7 +32,9 @@ const mapOption = (
     name,
   },
   canModify,
-) => (promotionOption) => {
+  isAdmin,
+  history,
+}) => (promotionOption) => {
   const {
     _id: promotionOptionId,
     loan: {
@@ -84,6 +88,12 @@ const mapOption = (
         key="promotionLotAttributer"
       />,
     ],
+    ...(isAdmin
+      ? {
+        handleClick: () =>
+          history.push(createRoute('/loans/:loanId', { loanId })),
+      }
+      : {}),
   };
 };
 
@@ -102,10 +112,11 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions, promotionLot, canModify }) => ({
+  mapProps(({ promotionOptions, promotionLot, canModify, isAdmin }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
     canModify,
+    isAdmin,
   })),
   withSmartQuery({
     query: proPromotionOptions,
@@ -113,8 +124,9 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'promotionOptions',
   }),
-  withProps(({ promotionOptions, promotionLot, canModify }) => ({
-    rows: promotionOptions.map(mapOption(promotionLot, canModify)),
+  withRouter,
+  withProps(({ promotionOptions, promotionLot, canModify, history, isAdmin }) => ({
+    rows: promotionOptions.map(makeMapOption({ promotionLot, canModify, history, isAdmin })),
     columnOptions,
   })),
 );

@@ -1,35 +1,70 @@
 // @flow
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 
 import UploaderArray from '../UploaderArray';
 import AdditionalDocAdder from './AdditionalDocAdder';
-import { ROLES } from '../../api/constants';
+import {
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  LOANS_COLLECTION,
+} from '../../api/constants';
+import {
+  getBorrowerDocuments,
+  getPropertyDocuments,
+  getLoanDocuments,
+  allDocuments,
+} from '../../api/files/documents';
+import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 
-type SingleFileTabProps = {};
+import UploaderCategories from './UploaderCategories';
 
-const SingleFileTab = ({
-  collection,
-  doc,
-  disabled,
-  documentArray,
-  currentUser,
-}: SingleFileTabProps) => {
-  const userIsAdmin = Roles.userIsInRole(Meteor.user(), ROLES.DEV)
-    || Roles.userIsInRole(Meteor.user(), ROLES.ADMIN);
+type SingleFileTabProps = {
+  collection: Sring,
+  doc: Object,
+  disabled: Boolean,
+  documentArray: Array<Object>,
+  currentUser: Object,
+  loan: Object,
+};
+
+const documentsToDisplay = ({ collection, loan, id }) => {
+  switch (collection) {
+  case BORROWERS_COLLECTION:
+    return getBorrowerDocuments({ loan, id });
+  case PROPERTIES_COLLECTION:
+    return getPropertyDocuments({ loan, id });
+  case LOANS_COLLECTION:
+    return getLoanDocuments({ loan, id });
+  default:
+    return [];
+  }
+};
+
+const documentsToHide = ({ doc, collection, loan, id }) =>
+  allDocuments({ doc, collection }).filter(document =>
+    !documentsToDisplay({ collection, loan, id }).some(({ id: docId }) => docId === document.id));
+
+const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
+  const { collection, loan, doc } = props;
   return (
     <div className="single-file-tab">
-      {userIsAdmin && (
+      {Meteor.microservice === 'admin' && (
         <AdditionalDocAdder collection={collection} docId={doc._id} />
       )}
-      <UploaderArray
-        doc={doc}
-        collection={collection}
-        disabled={disabled}
-        documentArray={documentArray}
-        currentUser={currentUser}
+      <UploaderCategories
+        documentsToDisplay={
+          documentArray || documentsToDisplay({ collection, loan, id: doc._id })
+        }
+        documentsToHide={documentsToHide({
+          collection,
+          loan,
+          id: doc._id,
+          doc,
+        })}
+        canModify
+        {...props}
       />
     </div>
   );

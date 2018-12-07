@@ -89,11 +89,10 @@ Factory.define('property', Properties, {
 Factory.define('offer', Offers, {
   userId: () => faker.random.uuid(),
   createdAt: () => new Date(),
-  organization: 'bankName',
   canton: 'GE',
   conditions: ['Do something'],
   maxAmount: 800000,
-  amortization: 10000,
+  amortizationGoal: 0.65,
 });
 
 Factory.define('promotion', Promotions, {
@@ -115,3 +114,5 @@ Factory.define('lot', Lots, {
   type: LOT_TYPES.PARKING_CAR,
   value: 1000,
 });
+
+Factory.define('task', Tasks, {});

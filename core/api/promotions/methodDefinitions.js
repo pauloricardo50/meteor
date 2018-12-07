@@ -55,8 +55,8 @@ export const addProUserToPromotion = new Method({
   },
 });
 
-export const removeUserFromPromotion = new Method({
-  name: 'removeUserFromPromotion',
+export const removeProFromPromotion = new Method({
+  name: 'removeProFromPromotion',
   params: {
     promotionId: String,
     userId: String,
@@ -71,5 +71,13 @@ export const sendPromotionInvitationEmail = new Method({
     isNewUser: Boolean,
     promotionId: String,
     firstName: String,
+  },
+});
+
+export const removeUserFromPromotion = new Method({
+  name: 'removeUserFromPromotion',
+  params: {
+    promotionId: String,
+    loanId: String,
   },
 });

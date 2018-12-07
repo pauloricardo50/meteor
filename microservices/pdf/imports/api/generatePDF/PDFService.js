@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
+import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
-import pdf from 'html-pdf';
 import fs from 'fs';
 
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
@@ -45,11 +45,12 @@ class PDFService {
     const fileName = Random.id();
 
     switch (type) {
-    case PDF_TYPES.ANONYMOUS_LOAN:
+    case PDF_TYPES.LOAN:
       return {
         component: LoanBankPDF,
         props: { loan: data, options },
         fileName,
+        pdfName: `${data.name} - ${type}`,
       };
     default:
       throw new Meteor.Error(`Invalid pdf type: ${type}`);
@@ -57,59 +58,69 @@ class PDFService {
   };
 
   getBase64String = (path) => {
-    try {
-      const file = fs.readFileSync(path);
-      return new Buffer(file).toString('base64');
-    } catch (exception) {
-      this.module.reject(exception);
-    }
+    const file = fs.readFileSync(path);
+    fs.unlink(path); // Async delete
+    const base64 = new Buffer(file).toString('base64');
+    return base64;
   };
 
-  getComponentAsHTML = (component, props) => {
-    try {
-      return ReactDOMServer.renderToStaticMarkup(component(props));
-    } catch (exception) {
-      this.module.reject(exception);
-    }
-  };
+  getComponentAsHTML = (component, props) =>
+    ReactDOMServer.renderToStaticMarkup(component(props));
 
-  generatePDF = (html, fileName) => {
-    try {
-      pdf
-        .create(html, {
-          format: 'a4',
-          border: {
-            top: '2cm',
-            right: '1.5cm',
-            left: '1.5cm',
-            bottom: '2cm',
-          },
+  streamToBase64 = (stream) => {
+    const chunks = [];
+    return new Promise((resolve, reject) => {
+      stream
+        .on('data', (chunk) => {
+          chunks.push(chunk);
         })
-        .toFile(`./tmp/${fileName}.pdf`, (error, response) => {
-          if (error) {
-            this.module.reject(error);
-          } else {
-            this.module.resolve({
-              fileName,
-              base64: this.getBase64String(response.filename),
-            });
-            fs.unlink(response.filename);
-          }
-        });
-    } catch (exception) {
-      this.module.reject(exception);
-    }
+        .on('end', () => {
+          const blob = Buffer.concat(chunks).toString('base64');
+          resolve(blob);
+        })
+        .on('error', reject);
+    });
   };
 
-  handleGeneratePDF = ({ component, props, fileName }, promise, testing) => {
-    this.module = promise;
+  generatePDF = (html, fileName, pdfName) => {
+    const API_KEY = 'GkjsAcqhD34P070MOF4I';
+    const body = {
+      user_credentials: API_KEY,
+      doc: {
+        document_content: html,
+        name: pdfName,
+        type: 'pdf',
+        test: !Meteor.isProduction || Meteor.isStaging,
+        // help: true,
+        prince_options: { media: 'screen' },
+      },
+    };
+
+    return fetch('https://docraptor.com/docs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        const dest = fs.createWriteStream(`/tmp/${fileName}.pdf`);
+        const stream = res.body.pipe(dest);
+        return new Promise((resolve) => {
+          stream.on('finish', resolve);
+        });
+      })
+      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`));
+  };
+
+  handleGeneratePDF = ({ component, props, fileName, pdfName }, testing) => {
     const html = this.getComponentAsHTML(component, props);
     if (testing) {
       fs.writeFileSync('/tmp/pdf_output.html', html);
     }
 
     if (html && fileName) {
-      this.generatePDF(html, fileName);
+      return this.generatePDF(html, fileName, pdfName);
     }
   };
 
@@ -135,8 +146,7 @@ class PDFService {
       return Promise.resolve(html);
     }
 
-    return new Promise((resolve, reject) =>
-      this.handleGeneratePDF(content, { resolve, reject }, testing));
+    return this.handleGeneratePDF(content, testing);
   };
 }
 

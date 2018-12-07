@@ -1,32 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Calculator from 'core/utils/Calculator';
 import ConditionsButton from 'core/components/ConditionsButton';
-import { T, IntlNumber } from 'core/components/Translation';
+import { T } from 'core/components/Translation';
 import Offer from './Offer';
 import OfferListSorting from './OfferListSorting';
 
-const getOfferValues = ({ monthly, conditions }) => [
-  {
-    id: 'monthly',
-    value: (
-      <span>
-        <IntlNumber value={monthly} format="money" />{' '}
-        <span className="secondary">
-          {' '}
-          <T id="general.perMonth" />
-        </span>
-      </span>
-    ),
-  },
+const getOfferValues = ({ conditions }) => [
+  { key: 'fees', format: 'money' },
+  { key: 'epotekFees', format: 'money' },
   { key: 'maxAmount', format: 'money' },
-  { key: 'amortization', format: 'money' },
+  { key: 'amortizationGoal', format: 'percentage' },
+  { key: 'amortizationYears', format: '' },
   { key: 'interestLibor', format: 'percentage' },
   { key: 'interest1', format: 'percentage' },
   { key: 'interest2', format: 'percentage' },
   { key: 'interest5', format: 'percentage' },
   { key: 'interest10', format: 'percentage' },
+  { key: 'interest15', format: 'percentage' },
+  { key: 'interest20', format: 'percentage' },
+  { key: 'interest25', format: 'percentage' },
   {
     component: <ConditionsButton conditions={conditions} />,
   },
@@ -48,14 +41,10 @@ class OfferList extends Component {
     this.setState(prev => ({ isAscending: !prev.isAscending }));
 
   render() {
-    const { loan, offers } = this.props;
+    const { offers } = this.props;
     const { sort, isAscending } = this.state;
 
-    const filteredOffers = sortOffers(
-      offers.map(offer => Calculator.addMetadataToOffer({ offer, loan })),
-      sort,
-      isAscending,
-    );
+    const filteredOffers = sortOffers(offers, sort, isAscending);
 
     return (
       <div className="flex-col" style={{ width: '100%' }}>

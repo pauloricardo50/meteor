@@ -33,6 +33,10 @@ class CollectionService {
     return this.collection.findOne(...args);
   }
 
+  createQuery(...args) {
+    return this.collection.createQuery(...args);
+  }
+
   addLink({
     id,
     linkName,
@@ -71,6 +75,50 @@ class CollectionService {
       .fetchOne();
 
     return assignee;
+  }
+
+  getAdditionalDocLabel({ label, additionalDoc }) {
+    if (label) {
+      return label;
+    }
+    if (additionalDoc.label) {
+      return additionalDoc.label;
+    }
+
+    return undefined;
+  }
+
+  setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
+    const { additionalDocuments } = this.get(id);
+
+    const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
+
+    if (additionalDoc) {
+      const additionalDocumentsUpdate = [
+        ...additionalDocuments.filter(doc => doc.id !== additionalDocId),
+        {
+          id: additionalDocId,
+          requiredByAdmin,
+          label: this.getAdditionalDocLabel({ label, additionalDoc }),
+        },
+      ];
+      return this._update({
+        id,
+        object: { additionalDocuments: additionalDocumentsUpdate },
+        operator: '$set',
+      });
+    }
+
+    return this._update({
+      id,
+      object: {
+        additionalDocuments: [
+          ...additionalDocuments,
+          { id: additionalDocId, requiredByAdmin, label },
+        ],
+      },
+      operator: '$set',
+    });
   }
 }
 

@@ -2,10 +2,12 @@
 import SimpleSchema from 'simpl-schema';
 import uniforms from 'uniforms-material'; // Leave this imported here for autoforms to work
 
+import DateField from 'imports/core/components/DateField/DateField';
 import {
   createdAt,
   updatedAt,
   contactsSchema,
+  additionalDocuments,
 } from '../../helpers/sharedSchemas';
 import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import GeneralSchema from './GeneralSchema';
@@ -13,6 +15,7 @@ import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
 import { borrowerIdsSchema, propertyIdsSchema } from './otherSchemas';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const LoanSchema = new SimpleSchema({
   userId: {
@@ -21,6 +24,16 @@ const LoanSchema = new SimpleSchema({
   },
   createdAt,
   updatedAt,
+  closingDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  signingDate: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
   status: {
     type: String,
     defaultValue: LOAN_STATUS.LEAD,
@@ -44,6 +57,7 @@ const LoanSchema = new SimpleSchema({
   ...borrowerIdsSchema,
   ...propertyIdsSchema,
   ...contactsSchema,
+  ...additionalDocuments([]),
 });
 
 export default LoanSchema;

@@ -182,13 +182,15 @@ p.description,
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
 
-.flex.center,
-.flex-row.center,
-.flex-col.center {
-  align-items: center;
-  justify-content: center;
+  &.center {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
 }
 
 .flex-col {
@@ -307,4 +309,13 @@ p.description,
 }
 .delay-800 {
   animation-delay: 800ms;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.space-children > * {
+  margin-right: 8px;
+  margin-bottom: 8px;
 }
