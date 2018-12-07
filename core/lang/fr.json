@@ -1,4 +1,8 @@
 {
+  "BorrowerReuser.buttonLabel": "Réutiliser profil emprunteur",
+  "BorrowerReuser.dialogTitle": "Réutiliser profil emprunteur",
+  "BorrowerReuser.dialogDescription": "Les données personnelles, financières et les documents seront tous partagés entre vos différents dossiers.",
+  "BorrowerReuser.dialogDescriptionLastLoan": "Les données et documents de l'emprunteur actuel seront supprimées.{verticalSpace}Les données personnelles, financières et les documents seront tous partagés entre vos différents dossiers.",
   "Forms.date": "Date",
   "InterestRates.insert": "Ajouter des taux",
   "InterestRates.remove": "Supprimer",

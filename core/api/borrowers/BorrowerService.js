@@ -1,10 +1,20 @@
 import Borrowers from '.';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
+import { loanBorrowerFragment } from './queries/borrowerFragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
     super(Borrowers);
+  }
+
+  get(borrowerId) {
+    return this.collection
+      .createQuery({
+        $filters: { _id: borrowerId },
+        ...loanBorrowerFragment,
+      })
+      .fetchOne();
   }
 
   update = ({ borrowerId, object }) =>
@@ -28,6 +38,23 @@ export class BorrowerService extends CollectionService {
 
   pullValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pull: object });
+
+  getReusableBorrowers({ userId, loanId, borrowerId }) {
+    const userBorrowers = this.createQuery({
+      $filters: { userId },
+      name: 1,
+      loans: { name: 1 },
+    }).fetch();
+    const loan = LoanService.get(loanId);
+    const borrower = this.get(borrowerId);
+    const isLastLoan = borrower.loans
+      && borrower.loans.length === 1
+      && borrower.loans[0]._id === loanId;
+
+    const borrowersNotOnLoan = userBorrowers.filter(({ _id }) => !loan.borrowerIds.includes(_id));
+
+    return { borrowers: borrowersNotOnLoan, isLastLoan };
+  }
 }
 
 export default new BorrowerService();

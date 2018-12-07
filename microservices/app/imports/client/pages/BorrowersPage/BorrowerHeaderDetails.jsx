@@ -2,6 +2,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+import BorrowerReuser from 'core/components/BorrowerReuser';
 import BorrowerRemover from 'core/components/BorrowerRemover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/pro-light-svg-icons';
@@ -13,7 +14,8 @@ const BorrowerHeaderDetails = ({
   borrower,
   index,
   borrowerCount,
-  tabId,
+  tabId = 'personal',
+  loanId,
 }: BorrowerHeaderDetailsProps) => (
   <div
     className="col--50 flex-col borrower-header__info flex--helper"
@@ -41,6 +43,9 @@ const BorrowerHeaderDetails = ({
       {borrowerCount === 2 && <BorrowerRemover borrower={borrower} />}
     </div>
     <Progress borrower={borrower} tabId={tabId} />
+    {tabId === 'personal' && (
+      <BorrowerReuser loanId={loanId} borrowerId={borrower._id} />
+    )}
   </div>
 );
 

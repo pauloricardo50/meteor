@@ -7,6 +7,7 @@ import {
   pushBorrowerValue,
   popBorrowerValue,
   pullBorrowerValue,
+  getReusableBorrowers,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -39,4 +40,9 @@ popBorrowerValue.setHandler((context, { borrowerId, object }) => {
 pullBorrowerValue.setHandler((context, { borrowerId, object }) => {
   SecurityService.borrowers.isAllowedToUpdate(borrowerId);
   return BorrowerService.pullValue({ borrowerId, object });
+});
+
+getReusableBorrowers.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return BorrowerService.getReusableBorrowers({ ...params, userId });
 });

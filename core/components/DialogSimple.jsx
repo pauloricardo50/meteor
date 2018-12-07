@@ -47,6 +47,7 @@ export default class DialogSimple extends Component {
       passProps,
       primary,
       raised = true,
+      renderProps,
       rootStyle,
       secondary,
       style,
@@ -111,7 +112,9 @@ export default class DialogSimple extends Component {
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
-            : children}
+            : renderProps
+              ? children(childProps)
+              : children}
         </Dialog>
       </span>
     );
