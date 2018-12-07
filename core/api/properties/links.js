@@ -11,9 +11,10 @@ Properties.addLinks({
     collection: Loans,
     inversedBy: 'properties',
   },
-  promotions: {
+  promotion: {
     collection: Promotions,
     inversedBy: 'properties',
+    unique: true,
   },
   promotionLots: {
     collection: PromotionLots,
