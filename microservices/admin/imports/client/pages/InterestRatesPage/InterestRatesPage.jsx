@@ -1,10 +1,12 @@
 // @flow
 import React from 'react';
+import Tabs from 'imports/core/components/Tabs/Tabs';
 import InterestRatesTable from './InterestRatesTable';
 import InterestRatesPageContainer from './InterestRatesPageContainer';
 import { InsertInterestRatesDialogForm } from './InterestRatesDialogForm';
 import InterestRatesChart from './InterestRatesChart/InterestRatesChart';
-import InsertIrs10yDialogForm from './Irs10yDialogForm/InsertIrs10yDialogForm';
+import { InsertIrs10yDialogForm } from './Irs10yDialogForm';
+import Irs10yTable from './Irs10yTable/Irs10yTable';
 
 type InterestRatesPageProps = {
   interestRates: Array<Object>,
@@ -22,9 +24,29 @@ const InterestRatesPage = ({
       interestRates={[...interestRates].reverse()}
       irs10y={[...irs10y].reverse()}
     />
-    <InsertInterestRatesDialogForm />
-    <InsertIrs10yDialogForm />
-    <InterestRatesTable interestRates={interestRates} />
+    <Tabs
+      id="tabs"
+      tabs={[
+        {
+          label: "Taux d'intérêt",
+          content: (
+            <>
+              <InsertInterestRatesDialogForm />
+              <InterestRatesTable interestRates={interestRates} />
+            </>
+          ),
+        },
+        {
+          label: 'IRS 10 ans',
+          content: (
+            <>
+              <InsertIrs10yDialogForm />
+              <Irs10yTable irs10y={irs10y} />
+            </>
+          ),
+        },
+      ]}
+    />
   </div>
 );
 
