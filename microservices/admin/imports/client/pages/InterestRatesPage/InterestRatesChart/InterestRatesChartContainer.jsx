@@ -42,24 +42,37 @@ const getConfig = (lines) => {
   };
 };
 
+const formatDate = date =>
+  moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
+
 const getAllRatesOfType = ({ interestRates, type }) =>
   interestRates
-    .map(rates => [
-      moment.utc(rates.date).valueOf(),
-      getAverageRate(rates[type]),
-    ])
+    .map(rates => [formatDate(rates.date), getAverageRate(rates[type])])
     .filter(rate => rate[1]);
 
-const getLines = interestRates =>
-  Object.values(INTEREST_RATES).map(type => ({
-    name: formatMessage(`InterestsTable.${type}`),
-    data: getAllRatesOfType({ interestRates, type }),
-  }));
+const shouldDisplayInterestRatesOfType = ({ interestRates, type }) =>
+  interestRates.some(rate => Object.keys(rate[type]).length > 0);
+
+const getInterestRateLines = interestRates =>
+  Object.values(INTEREST_RATES).map(type =>
+    shouldDisplayInterestRatesOfType({ interestRates, type }) && {
+      name: formatMessage(`InterestsTable.${type}`),
+      data: getAllRatesOfType({ interestRates, type }),
+    });
+
+const getIrs10yLine = irs10y =>
+  irs10y.length > 0 && {
+    name: formatMessage('Irs10y.name'),
+    data: irs10y.map(({ date, rate }) => [formatDate(date), 100 * rate]),
+  };
+
+const getLines = ({ interestRates, irs10y }) =>
+  [...getInterestRateLines(interestRates), getIrs10yLine(irs10y)].filter(x => x);
 
 export default compose(
   injectIntl,
-  withProps(({ interestRates }) => {
-    const lines = getLines(interestRates);
+  withProps(({ interestRates = [], irs10y = [] }) => {
+    const lines = getLines({ interestRates, irs10y });
     return {
       title: "Taux d'intérêt",
       lines,
