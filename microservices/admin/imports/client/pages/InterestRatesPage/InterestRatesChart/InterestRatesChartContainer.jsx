@@ -19,7 +19,6 @@ const getConfig = (lines) => {
   );
 
   const maxY = Math.max(...points) + 0.1;
-  const minY = Math.min(...points) - 0.1;
 
   return {
     xAxis: {
@@ -28,10 +27,11 @@ const getConfig = (lines) => {
     },
     yAxis: {
       title: { text: 'Taux moyens [%]' },
-      min: minY < 0 ? 0 : minY,
+      min: 0,
       max: maxY,
+      tickInterval: 0.1,
     },
-    chart: { type: 'spline' },
+    chart: { type: 'line', height: 800 },
     plotOptions: { spline: { marker: { enabled: true } } },
     tooltip: {
       headerFormat: '<b>{point.x:%d.%m.%y}</b><br>',
