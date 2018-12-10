@@ -11,14 +11,16 @@ import Irs10yTable from './Irs10yTable/Irs10yTable';
 type InterestRatesPageProps = {
   interestRates: Array<Object>,
   irs10y: Array<Object>,
+  currentInterestRates: Object,
 };
 
 const InterestRatesPage = ({
   interestRates,
   irs10y,
+  currentInterestRates: { rates: currentRates },
 }: InterestRatesPageProps) => (
   <div className="card1 card-top interest-rates-page">
-    {console.log('irs10y', irs10y)}
+    {console.log('currentRates', currentRates)}
     <h1>Taux d'intérêt</h1>
     <InterestRatesChart
       interestRates={[...interestRates].reverse()}
@@ -31,8 +33,13 @@ const InterestRatesPage = ({
           label: "Taux d'intérêt",
           content: (
             <>
-              <InsertInterestRatesDialogForm />
-              <InterestRatesTable interestRates={interestRates} />
+              <InsertInterestRatesDialogForm
+                currentInterestRates={currentRates}
+              />
+              <InterestRatesTable
+                interestRates={interestRates}
+                currentInterestRates={currentRates}
+              />
             </>
           ),
         },
