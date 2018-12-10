@@ -64,7 +64,7 @@ const PromotionPage = (props: PromotionPageProps) => {
       {!isPro && (
         <div className="card1 residence-type-setter">
           {!residenceType && (
-            <p align="justify">
+            <p>
               <T id="Forms.promotionPage.residenceTypeSetter.text" />
             </p>
           )}
