@@ -23,9 +23,19 @@ export class BorrowerService extends CollectionService {
   insert = ({ borrower = {}, userId }) =>
     Borrowers.insert({ ...borrower, userId });
 
-  remove = ({ borrowerId }) => {
+  remove = ({ borrowerId, loanId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    return Borrowers.remove(borrowerId);
+    const borrower = this.get(borrowerId);
+    if (borrower.loans && borrower.loans.length > 1) {
+      const loansLink = this.getLink(borrowerId, 'loans');
+      if (loanId) {
+        // Fix this conditional when the issue has been dealt with
+        // https://github.com/cult-of-coders/grapher/issues/332
+        loansLink.remove(loanId);
+      }
+    } else {
+      return Borrowers.remove(borrowerId);
+    }
   };
 
   pushValue = ({ borrowerId, object }) =>
