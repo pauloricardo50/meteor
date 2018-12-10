@@ -20,7 +20,6 @@ const InterestRatesPage = ({
   currentInterestRates: { rates: currentRates },
 }: InterestRatesPageProps) => (
   <div className="card1 card-top interest-rates-page">
-    {console.log('currentRates', currentRates)}
     <h1>Taux d'intérêt</h1>
     <InterestRatesChart
       interestRates={[...interestRates].reverse()}
@@ -36,10 +35,7 @@ const InterestRatesPage = ({
               <InsertInterestRatesDialogForm
                 currentInterestRates={currentRates}
               />
-              <InterestRatesTable
-                interestRates={interestRates}
-                currentInterestRates={currentRates}
-              />
+              <InterestRatesTable interestRates={interestRates} />
             </>
           ),
         },

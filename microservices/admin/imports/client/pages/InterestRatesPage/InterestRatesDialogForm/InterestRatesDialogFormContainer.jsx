@@ -58,7 +58,7 @@ const interestRatesSchema = new SimpleSchema({
 
 const renderCurrentRates = ({ rateLow, rateHigh, trend }) => (
   <div className="current-rates">
-    <h4>Derniers taux</h4>
+    <h4>Taux en cours</h4>
     <table>
       <tr>
         <td>
