@@ -3,6 +3,13 @@
 
 import { Meteor } from 'meteor/meteor';
 import 'core/cypress/server/methods';
+import { createFakeInterestRates } from 'core/fixtures/interestRatesFixtures';
 
 // make sure we have the full version of the app, not changed by any feature
 Meteor.settings.public.features = {};
+
+Meteor.method({
+  generateFixtures() {
+    createFakeInterestRates({ number: 10 });
+  },
+});

@@ -31,6 +31,7 @@ const config = {
         'Impersonation',
         'InterestRates',
         'InterestsTable',
+        'Irs10y',
         'LoginPage',
         'Microlocation',
         'offer',
