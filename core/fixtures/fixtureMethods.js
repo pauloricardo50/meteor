@@ -40,6 +40,7 @@ import { createFakeOffer } from './offerFixtures';
 import { E2E_USER_EMAIL } from './fixtureConstants';
 import { createYannisData } from './demoFixtures';
 import { createOrganisations } from './organisationFixtures';
+import { createFakeInterestRates } from './interestRatesFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -201,5 +202,9 @@ Meteor.methods({
 
   createFakeOffer({ loanId, userId }) {
     createFakeOffer(loanId, userId);
+  },
+
+  createFakeInterestRates({ number }) {
+    createFakeInterestRates({ number });
   },
 });

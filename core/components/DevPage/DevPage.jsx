@@ -12,7 +12,7 @@ import ConfirmMethod from '../ConfirmMethod';
 class DevPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { twoBorrowers: false, users: 5 };
+    this.state = { twoBorrowers: false, users: 5, numberOfRates: 20 };
   }
 
   componentDidMount() {
@@ -25,7 +25,7 @@ class DevPage extends Component {
     this.setState(prev => ({ [stateName]: value }));
 
   render() {
-    const { twoBorrowers, users, addOffers } = this.state;
+    const { twoBorrowers, users, addOffers, numberOfRates } = this.state;
     const {
       currentUser,
       addEmptyLoan,
@@ -218,6 +218,27 @@ class DevPage extends Component {
             }
           >
             Créer promotion avec moi dedans, sans promotionOptions
+          </Button>
+          <hr className="mbt20" />
+          Nb. de taux
+          <input
+            type="number"
+            value={numberOfRates}
+            onChange={e =>
+              this.makeHandleChange('numberOfRates')(e.target.value)
+            }
+          />
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              Meteor.call('createFakeInterestRates', {
+                number: numberOfRates,
+              })
+            }
+          >
+            Créer des taux d'intérêt
           </Button>
           <hr className="mbt20" />
           <ConfirmMethod

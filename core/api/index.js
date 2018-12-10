@@ -12,6 +12,8 @@ import { OfferSchema } from './offers/offers';
 import PromotionLotSchema from './promotionLots/schemas/PromotionLotSchema';
 import { OrganisationSchema } from './organisations/organisations';
 import { UserSchema } from './users/users';
+import InterestRatesSchema from './interestRates/schemas/interestRatesSchema';
+import Irs10ySchema from './irs10y/schemas/irs10ySchema';
 
 export { withQuery } from 'meteor/cultofcoders:grapher-react';
 
@@ -26,6 +28,8 @@ export { default as Promotions } from './promotions';
 export { default as Properties } from './properties';
 export { default as Tasks } from './tasks';
 export { default as Users } from './users';
+export { default as InterestRates } from './interestRates';
+export { default as Irs10y } from './irs10y';
 
 export { default as SecurityService } from './security';
 export * from './methods';
@@ -47,6 +51,8 @@ export const schemas = {
   [constants.TASKS_COLLECTION]: TasksSchema,
   [constants.ORGANISATIONS_COLLECTION]: OrganisationSchema,
   [constants.USERS_COLLECTION]: UserSchema,
+  [constants.INTEREST_RATES_COLLECTION]: InterestRatesSchema,
+  [constants.IRS10Y_COLLECTION]: Irs10ySchema,
 };
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';

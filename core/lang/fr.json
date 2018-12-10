@@ -1,4 +1,8 @@
 {
+  "Irs10y.rate": "Taux",
+  "Irs10y.name": "IRS 10Y",
+  "Irs10y.insert": "Ajouter un taux",
+  "Forms.rate": "Taux",
   "Forms.date": "Date",
   "InterestRates.insert": "Ajouter des taux",
   "InterestRates.remove": "Supprimer",

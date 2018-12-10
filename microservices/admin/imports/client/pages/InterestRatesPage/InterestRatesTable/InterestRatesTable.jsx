@@ -7,6 +7,7 @@ import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
 type InterestRatesTableProps = {
   rows: Array<Object>,
   columnOptions: Array<Object>,
+  currentInterestRates: Array<Object>,
 };
 
 const InterestRatesTable = ({
