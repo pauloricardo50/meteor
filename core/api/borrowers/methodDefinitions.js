@@ -13,7 +13,7 @@ export const borrowerUpdate = new Method({
 
 export const borrowerDelete = new Method({
   name: 'borrowerDelete',
-  params: { borrowerId: String },
+  params: { borrowerId: String, loanId: Match.Optional(String) },
 });
 
 export const pushBorrowerValue = new Method({

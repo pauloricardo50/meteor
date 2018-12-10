@@ -40,7 +40,7 @@ const BorrowerHeaderDetails = ({
           </span>
         </h1>
       </div>
-      {borrowerCount === 2 && <BorrowerRemover borrower={borrower} />}
+      {borrowerCount === 2 && <BorrowerRemover borrower={borrower} loanId={loanId} />}
     </div>
     <Progress borrower={borrower} tabId={tabId} />
     {tabId === 'personal' && (

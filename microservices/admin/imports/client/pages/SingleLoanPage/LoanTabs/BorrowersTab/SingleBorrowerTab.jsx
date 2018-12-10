@@ -5,11 +5,11 @@ import Recap from 'core/components/Recap';
 import { BorrowerForm } from 'core/components/forms';
 import BorrowerRemover from 'core/components/BorrowerRemover';
 
-const BorrowerTab = ({ borrower, loan: { borrowers } }) => (
+const BorrowerTab = ({ borrower, loan: { borrowers, _id: loanId } }) => (
   <div className="single-borrower-tab">
     <h2>{borrower.name}</h2>
     {borrowers && borrowers.length > 1 && (
-      <BorrowerRemover borrower={borrower} />
+      <BorrowerRemover borrower={borrower} loanId={loanId} />
     )}
     <Recap arrayName="borrower" borrower={borrower} />
     <BorrowerForm borrower={borrower} />
