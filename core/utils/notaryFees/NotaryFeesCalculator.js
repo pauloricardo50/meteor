@@ -112,7 +112,7 @@ class NotaryFeesCalculator {
     const buyersContractDeductions = this.buyersContractDeductions
       ? this.buyersContractDeductions({
         loan,
-        transferTax: this.propertyTransferTax({
+        transferTax: this.propertyRegistrationTax({
           value: propertyValue,
           loan,
         }),
