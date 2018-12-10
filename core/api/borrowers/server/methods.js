@@ -42,7 +42,7 @@ pullBorrowerValue.setHandler((context, params) => {
   return BorrowerService.pullValue(params);
 });
 
-getReusableBorrowers.setHandler(({ userId }, params) => {
+getReusableBorrowers.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
-  return BorrowerService.getReusableBorrowers({ ...params, userId });
+  return BorrowerService.getReusableBorrowers({ ...params });
 });

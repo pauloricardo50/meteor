@@ -39,7 +39,7 @@ const BorrowerReuser = ({
       {({ handleClose }) => (
         <div>
           <List className="flex-col">
-            {borrowers.map(({ name, _id, loans }) => (
+            {borrowers.map(({ name, _id, loans = [] }) => (
               <ListItem
                 key={_id}
                 button

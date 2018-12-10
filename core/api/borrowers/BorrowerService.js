@@ -49,17 +49,21 @@ export class BorrowerService extends CollectionService {
   pullValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pull: object });
 
-  getReusableBorrowers({ userId, loanId, borrowerId }) {
+  getReusableBorrowers({ loanId, borrowerId }) {
+    // borrowerId can be the previous removed borrower, and therefore
+    // this line will fail if we don't provide a default empty object
+    const { userId, loans } = this.get(borrowerId) || {};
+    if (!userId) {
+      return { borrowers: [], isLastLoan: true };
+    }
+
     const userBorrowers = this.createQuery({
       $filters: { userId },
       name: 1,
       loans: { name: 1 },
     }).fetch();
     const loan = LoanService.get(loanId);
-    const borrower = this.get(borrowerId);
-    const isLastLoan = borrower.loans
-      && borrower.loans.length === 1
-      && borrower.loans[0]._id === loanId;
+    const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 
     const borrowersNotOnLoan = userBorrowers.filter(({ _id }) => !loan.borrowerIds.includes(_id));
 

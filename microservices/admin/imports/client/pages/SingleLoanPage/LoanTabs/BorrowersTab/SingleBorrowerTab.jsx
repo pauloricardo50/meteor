@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import { BorrowerForm } from 'core/components/forms';
 import BorrowerRemover from 'core/components/BorrowerRemover';
+import BorrowerReuser from 'core/components/BorrowerReuser';
 
 const BorrowerTab = ({ borrower, loan: { borrowers, _id: loanId } }) => (
   <div className="single-borrower-tab">
@@ -11,6 +12,7 @@ const BorrowerTab = ({ borrower, loan: { borrowers, _id: loanId } }) => (
     {borrowers && borrowers.length > 1 && (
       <BorrowerRemover borrower={borrower} loanId={loanId} />
     )}
+    <BorrowerReuser loanId={loanId} borrowerId={borrower._id} />
     <Recap arrayName="borrower" borrower={borrower} />
     <BorrowerForm borrower={borrower} />
   </div>
