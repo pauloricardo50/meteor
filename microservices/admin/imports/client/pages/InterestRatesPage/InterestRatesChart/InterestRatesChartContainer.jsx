@@ -31,7 +31,7 @@ const getConfig = (lines) => {
       max: maxY,
       tickInterval: 0.1,
     },
-    chart: { type: 'line', height: 800 },
+    chart: { type: 'line', height: 800, zoomType: 'x' },
     plotOptions: { spline: { marker: { enabled: true } } },
     tooltip: {
       headerFormat: '<b>{point.x:%d.%m.%y}</b><br>',
