@@ -8,6 +8,7 @@ const jobName = 'Fetch IRS 10Y';
 Meteor.startup(() => {
   try {
     SyncedCron.stop();
+    SyncedCron.remove(jobName);
     SyncedCron.add({
       name: jobName,
       schedule(parser) {
