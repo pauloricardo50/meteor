@@ -7,11 +7,7 @@ import Calculator from '../../../../../utils/Calculator';
 import { calculateMaxLoan } from '../../FinancingFinancing/FinancingFinancing';
 import { getProperty } from '../../FinancingCalculator';
 
-export const chooseOwnFundsTypes = ({
-  loan: {
-    general: { residenceType },
-  },
-}) =>
+export const chooseOwnFundsTypes = ({ loan: { residenceType } }) =>
   (residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
     ? Object.values(OWN_FUNDS_TYPES)
     : [

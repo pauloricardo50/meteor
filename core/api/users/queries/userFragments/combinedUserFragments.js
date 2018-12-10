@@ -23,7 +23,7 @@ export const appUserFragment = {
     _id: 1,
     name: 1,
     borrowers: { _id: 1 },
-    general: 1,
+    purchaseType: 1,
     logic: { step: 1 },
   },
   borrowers: { _id: 1, name: 1 },

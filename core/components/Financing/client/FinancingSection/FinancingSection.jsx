@@ -9,7 +9,6 @@ import { compose, withState } from 'recompose';
 import cx from 'classnames';
 
 import T from '../../../Translation';
-import type { structureType } from '../../../../api/types';
 import FinancingLabels from '../FinancingLabels';
 import { makeRenderDetail, makeRenderSummary } from './financingSectionHelpers';
 import FinancingDataContainer from '../containers/FinancingDataContainer';

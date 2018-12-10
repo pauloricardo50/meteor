@@ -152,7 +152,7 @@ const withAdditionalProps = withProps((props) => {
     },
     types: chooseOwnFundsTypes(props),
     otherValueOfTypeAndBorrower,
-    allowPledge: loan.general.residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE,
+    allowPledge: loan.residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE,
   };
 });
 

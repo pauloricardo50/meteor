@@ -26,8 +26,7 @@ const SinglePropertyPage = (props) => {
     // Warning: this might be false if multiple loans point to this property
     residenceType = loans
       && loans.length > 0
-      && loans[0].general
-      && loans[0].general.residenceType;
+      && loans[0].residenceType;
   }
 
   return (

@@ -1,76 +1,22 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import moment from 'moment';
+import React from 'react';
 
-import MyDateInput from 'core/components/DateInput';
+import TextInput from './TextInput';
 
-import FormValidator from './FormValidator';
+const DateInput = (props) => {
+  const { inputProps } = props;
 
-const styles = {
-  div: {
-    // display: 'block',
-    // marginTop: 10,
-    marginBottom: 8,
-    position: 'relative',
-  },
-  DatePickerField: {
-    width: '100%',
-    // fontWeight: 'normal',
-  },
-  label: {
-    fontSize: 12,
-    marginBottom: 0,
-    color: 'rgba(0, 0, 0, 0.298039)',
-  },
+  return (
+    <TextInput
+      {...props}
+      inputProps={{
+        ...inputProps,
+        date: true,
+        inputType: 'date',
+      }}
+    />
+  );
 };
-
-class DateInput extends Component {
-  handleChange = (date) => {
-    if (date === undefined) {
-      this.saveValue(null);
-    } else {
-      this.saveValue(date);
-    }
-  };
-
-  saveValue = (date) => {
-    // Save data to DB
-    const object = { [this.props.inputProps.id]: date };
-
-    this.props.updateFunc({ object, id: this.props.docId });
-  };
-
-  render() {
-    const {
-      inputProps: {
-        style,
-        label,
-        currentValue,
-        id,
-        minDate,
-        maxDate,
-        disabled,
-        openDirection,
-      },
-    } = this.props;
-
-    return (
-      <div style={{ ...styles.div, ...style }}>
-        <MyDateInput
-          label={label}
-          value={currentValue}
-          onChange={this.handleChange}
-          id={id}
-          minDate={minDate}
-          maxDate={maxDate}
-          disabled={disabled}
-          openDirection={openDirection}
-        />
-        <FormValidator {...this.props} />
-      </div>
-    );
-  }
-}
 
 DateInput.propTypes = {
   currentValue: PropTypes.object,

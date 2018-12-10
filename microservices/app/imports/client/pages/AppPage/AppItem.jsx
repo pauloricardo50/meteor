@@ -14,9 +14,7 @@ const AppItem = ({ loan }) => (
       <T
         id="AppItem.title"
         values={{
-          purchaseType: (
-            <T id={`Forms.purchaseType.${loan.general.purchaseType}`} />
-          ),
+          purchaseType: <T id={`Forms.purchaseType.${loan.purchaseType}`} />,
         }}
       />
     </h3>

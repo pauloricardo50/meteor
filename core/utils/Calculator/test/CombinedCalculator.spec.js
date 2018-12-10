@@ -33,7 +33,6 @@ describe('CombinedCalculator', () => {
             },
           ],
           properties: [property],
-          general: {},
           logic: { step: STEPS.PREPARATION },
         },
       });

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
 
 import AutoTooltip from '../tooltips/AutoTooltip';
 import defaultIntlValues from './defaultIntlValues';
+import FormattedMessage from './FormattedMessage';
 
 const makeAutoTooltip = props => (content, key) => (
   <AutoTooltip {...props} placement={props.tooltipPlacement} key={key}>

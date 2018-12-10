@@ -7,6 +7,9 @@ import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
+import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
+import { getCountedArray } from '../formArrayHelpers';
+import { getPercent } from '../general';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -138,11 +141,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getMaxBorrowRatio({
-      loan: {
-        general: { usageType },
-      },
-    }) {
+    getMaxBorrowRatio({ loan: { usageType } }) {
       return this.maxBorrowRatio;
     }
 
@@ -213,6 +212,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
         0,
       );
+    }
+
+    refinancingPercent({ loan }) {
+      const a = [];
+      getCountedArray(getRefinancingFormArray({ loan }), loan, a);
+      return getPercent(a);
     }
   };
 

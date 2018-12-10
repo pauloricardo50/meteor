@@ -11,12 +11,13 @@ import {
   faChartBar,
   faUsers,
   faCalculator,
+  faUsdCircle,
 } from '@fortawesome/pro-light-svg-icons';
 import Divider from '@material-ui/core/Divider';
 
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import { SUCCESS } from 'core/api/constants';
+import { SUCCESS, PURCHASE_TYPE } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import * as ROUTES from '../../../startup/client/appRoutes';
 import PercentWithStatus from '../../../core/components/PercentWithStatus/PercentWithStatus';
@@ -39,6 +40,13 @@ const sideNavLinks: linksType = [
   { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
   { id: 'AppWidget1Page', to: ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
   { id: 'divider', Component: () => <Divider className="divider" /> },
+  {
+    id: 'RefinancingPage',
+    to: ROUTES.REFINANCING_PAGE,
+    icon: faUsdCircle,
+    percent: loan => Calculator.refinancingPercent({ loan }),
+    condition: loan => loan.purchaseType === PURCHASE_TYPE.REFINANCING,
+  },
   {
     id: 'BorrowersPage',
     to: ROUTES.BORROWERS_PAGE_NO_TAB,
@@ -69,6 +77,7 @@ export const LoanSideNav = ({
 }) => (
   <ul className="loan-side-nav">
     {links
+      .filter(({ condition }) => (condition ? condition(loan) : true))
       .map(link =>
         (link.Component
           ? link
@@ -79,7 +88,7 @@ export const LoanSideNav = ({
               borrowerId: loan.borrowers[0]._id,
             }),
           }))
-      .map(({ Component, to, id, icon, percent, ...otherProps }) => {
+      .map(({ Component, to, id, icon, percent, condition, ...otherProps }) => {
         if (Component) {
           return <Component key={id} />;
         }
@@ -96,8 +105,7 @@ export const LoanSideNav = ({
             <FontAwesomeIcon icon={icon} className="icon" />
             <span className="text">
               <T id={`${id}.title`} />
-              {percent
-                && progress !== false && (
+              {percent && progress !== false && (
                 <span className="progress">
                   <PercentWithStatus
                     value={progress}
