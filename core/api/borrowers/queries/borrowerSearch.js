@@ -16,6 +16,7 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER_SEARCH, {
     const formattedSearchQuery = generateMatchAnyWordRegexp(searchQuery);
 
     filters.$or = [
+      createRegexQuery('_id', searchQuery),
       createRegexQuery('firstName', searchQuery),
       createRegexQuery('lastName', searchQuery),
       {

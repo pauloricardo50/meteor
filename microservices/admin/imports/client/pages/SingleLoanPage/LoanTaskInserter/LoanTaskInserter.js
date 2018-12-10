@@ -2,19 +2,14 @@ import { withProps } from 'recompose';
 import { taskInsert } from 'core/api';
 import LoanTaskInsertForm from './LoanTaskInsertForm';
 
-const LoanTaskInserter = withProps(({
-  loan: {
-    _id: loanId,
-    user: { assignedEmployee },
-  },
-  refetch,
-}) => ({
+const LoanTaskInserter = withProps(({ loan: { _id: loanId, user }, refetch }) => ({
   onSubmit: ({ title }) =>
     taskInsert
       .run({
         docId: loanId,
         title,
-        assignedTo: assignedEmployee && assignedEmployee._id,
+        assignedTo:
+            user && user.assignedEmployee && user.assignedEmployee._id,
       })
       .then(refetch),
   buttonLabelId: 'LoanTaskInsertForm.label',
