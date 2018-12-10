@@ -293,7 +293,7 @@ export const propertyArrayData = (loan) => {
         monthlyExpenses,
       },
     },
-    general: { residenceType },
+    residenceType,
   } = loan;
   return [
     {
