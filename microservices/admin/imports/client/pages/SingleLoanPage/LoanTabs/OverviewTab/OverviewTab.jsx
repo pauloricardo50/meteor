@@ -8,6 +8,7 @@ import UpdateField from 'core/components/UpdateField';
 import DateModifier from 'core/components/DateModifier';
 import Calculator from 'core/utils/Calculator';
 import { LOANS_COLLECTION } from 'imports/core/api/constants';
+import { COLLECTIONS } from 'core/api/constants';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
@@ -31,8 +32,12 @@ const OverviewTab = (props) => {
         <ImpersonateLink user={user} />
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
-        <ImpersonateLink user={user} />
-        <UpdateField doc={loan} fields={['purchaseType']} />
+        <UpdateField
+          doc={loan}
+          fields={['residenceType']}
+          collection={COLLECTIONS.LOANS_COLLECTION}
+        />
+        <UpdateField doc={loan} fields={['purchaseType']} collection={COLLECTIONS.LOANS_COLLECTION} disabled />
         <LoanStepSetter loan={loan} />
         {['signingDate', 'closingDate'].map(dateType => (
           <DateModifier
