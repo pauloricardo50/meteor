@@ -11,7 +11,7 @@ describe('getPropertyArray', () => {
   it('returns an array of objects, with an id in each', () => {
     const arr = getPropertyArray({
       property: {},
-      loan: { general: {} },
+      loan: {},
       borrowers: [{}],
     });
     expect(arr).to.have.length.above(0);
@@ -28,7 +28,7 @@ describe('getPropertyLoanArray', () => {
   it('returns an array of objects, with an id in each', () => {
     const arr = getPropertyLoanArray({
       property: {},
-      loan: { general: {} },
+      loan: {},
       borrowers: [{}],
     });
     expect(arr).to.have.length.above(0);

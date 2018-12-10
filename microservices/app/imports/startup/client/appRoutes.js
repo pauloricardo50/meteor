@@ -1,8 +1,11 @@
 // @flow
 export const ACCOUNT_PAGE = '/account';
-export const APP_WIDGET1_PAGE = '/loans/:loanId/widget1';
 export const ADD_LOAN_PAGE = '/add-loan/:loanId';
 export const APP_PAGE = '/';
+export const APP_PROMOTION_LOT_PAGE = '/loans/:loanId/promotions/:promotionId/promotionLots/:promotionLotId';
+export const APP_PROMOTION_OPTION_PAGE = '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId';
+export const APP_PROMOTION_PAGE = '/loans/:loanId/promotions/:promotionId';
+export const APP_WIDGET1_PAGE = '/loans/:loanId/widget1';
 export const BORROWERS_PAGE_NO_TAB = '/loans/:loanId/borrowers';
 export const BORROWERS_PAGE = `${BORROWERS_PAGE_NO_TAB}/:tabId`;
 export const DASHBOARD_PAGE = '/loans/:loanId';
@@ -14,6 +17,4 @@ export const FINANCING_PAGE = '/loans/:loanId/financing';
 export const PASSWORD_RESET_PAGE = '/reset-password/:token';
 export const PROPERTIES_PAGE = '/loans/:loanId/properties';
 export const PROPERTY_PAGE = '/loans/:loanId/properties/:propertyId';
-export const APP_PROMOTION_LOT_PAGE = '/loans/:loanId/promotions/:promotionId/promotionLots/:promotionLotId';
-export const APP_PROMOTION_OPTION_PAGE = '/loans/:loanId/promotions/:promotionId/promotionOptions/:promotionOptionId';
-export const APP_PROMOTION_PAGE = '/loans/:loanId/promotions/:promotionId';
+export const REFINANCING_PAGE = '/loans/:loanId/refinancing';

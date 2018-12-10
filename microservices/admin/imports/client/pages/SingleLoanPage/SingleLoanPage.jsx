@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'recompose';
 
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
@@ -32,4 +31,4 @@ SingleLoanPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(SingleLoanPageContainer)(SingleLoanPage);
+export default SingleLoanPageContainer(SingleLoanPage);

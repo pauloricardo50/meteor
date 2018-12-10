@@ -3,7 +3,8 @@ import { PDF_TYPES } from 'core/api/constants';
 export const TEMPLATES = {
   [PDF_TYPES.LOAN]: {
     name: 1,
-    general: { purchaseType: 1, residenceType: 1 },
+    purchaseType: 1,
+    residenceType: 1,
     borrowers: [
       {
         gender: 1,

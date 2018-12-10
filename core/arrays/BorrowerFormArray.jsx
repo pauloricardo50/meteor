@@ -125,7 +125,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       type: 'radioInput',
       options: Object.values(constants.CIVIL_STATUS).map(value => ({
         id: value,
-        intlValues: { gender: b.gender },
       })),
     },
     {

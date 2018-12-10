@@ -27,7 +27,7 @@ describe('OwnFundsCompleter', () => {
             propertyWork: 0,
           },
           properties: [{ _id: 'propertyId', value: 1000000 }],
-          loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+          loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
           ownFundsIndex: -1,
           value: 0,
         };

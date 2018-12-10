@@ -27,11 +27,7 @@ const borrowersNames = borrowers => (
 );
 
 const loanInfo = ({ loan, anonymous = false }) => {
-  const {
-    name,
-    general: { residenceType, purchaseType },
-    borrowers,
-  } = loan;
+  const { name, residenceType, purchaseType, borrowers } = loan;
   const { address1, zipCode, city } = loan.structure.property;
   return (
     <div className="loan-info">

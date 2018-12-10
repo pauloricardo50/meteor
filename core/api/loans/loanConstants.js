@@ -15,7 +15,8 @@ export const LOAN_STATUS = {
 export const PURCHASE_TYPE = {
   ACQUISITION: 'ACQUISITION',
   REFINANCING: 'REFINANCING',
-  CONSTRUCTION: 'CONSTRUCTION',
+  // TODO: Figure out what needs to be changed for this
+  // CONSTRUCTION: 'CONSTRUCTION',
 };
 
 export const CANTONS = {
@@ -136,4 +137,14 @@ export const LOAN_VERIFICATION_STATUS = {
   REQUESTED: 'REQUESTED',
   OK: 'OK',
   ERROR: 'ERROR',
+};
+
+export const MORTGAGE_NOTE_TYPES = {
+  PAPER: 'PAPER',
+  REGISTRAR: 'REGISTRAR',
+};
+
+export const MORTGAGE_NOTE_CATEGORIES = {
+  BEARER: 'BEARER',
+  REGISTERED: 'REGISTERED',
 };

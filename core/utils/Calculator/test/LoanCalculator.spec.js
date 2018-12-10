@@ -314,7 +314,7 @@ describe('LoanCalculator', () => {
 
   describe('getMaxBorrowRatio', () => {
     it('returns the max ratio for a loan', () => {
-      expect(Calculator.getMaxBorrowRatio({ loan: { general: {} } })).to.equal(0.8);
+      expect(Calculator.getMaxBorrowRatio({ loan: {} })).to.equal(0.8);
     });
   });
 
@@ -361,12 +361,12 @@ describe('LoanCalculator', () => {
 
   describe('getLoanFilesProgress', () => {
     it('returns 0 for an empty loan', () => {
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.deep.equal({ percent: 0, count: 1 });
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {} } })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns 100% for a loan initially, when documents have arrived', () => {
       expect(Calculator.getLoanFilesProgress({
-        loan: { documents: {}, logic: {}, general: {} },
+        loan: { documents: {}, logic: {} },
       })).to.deep.equal({ percent: 1, count: 0 });
     });
   });
@@ -374,19 +374,18 @@ describe('LoanCalculator', () => {
   describe('getMissingLoanDocuments', () => {
     it('shows nothing is required initially', () => {
       expect(Calculator.getMissingLoanDocuments({
-        loan: { logic: {}, general: {} },
+        loan: { logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { logic: {}, general: {} },
+        loan: { logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { documents: {}, logic: {}, general: {} },
+        loan: { documents: {}, logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
         loan: {
           documents: { other: [{ key: 'hello' }] },
           logic: {},
-          general: {},
         },
       })).to.deep.equal([]);
     });

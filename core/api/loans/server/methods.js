@@ -71,7 +71,7 @@ pushLoanValue.setHandler((context, { loanId, object }) => {
 
 popLoanValue.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.pushValue({ loanId, object });
+  return LoanService.popValue({ loanId, object });
 });
 
 export const disableUserFormsHandler = ({ userId }, { loanId }) => {

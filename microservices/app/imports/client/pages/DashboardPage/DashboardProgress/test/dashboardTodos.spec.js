@@ -52,7 +52,6 @@ describe('dashboardTodos', () => {
       PropertyCalculator.propertyPercent.restore();
       sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 0.9);
       expect(dashboardTodosObject.completeProperty.isDone({
-        general: {},
         structure: { property: {} },
         borrowers: [{}],
       })).to.equal(false);
@@ -60,7 +59,6 @@ describe('dashboardTodos', () => {
 
     it('hides when property is complete', () => {
       expect(dashboardTodosObject.completeProperty.isDone({
-        general: {},
         structure: { property: { documents: {} } },
         borrowers: [{}],
       })).to.equal(true);
@@ -158,7 +156,6 @@ describe('dashboardTodos', () => {
       const callEpotek = defaultTodos.find(({ id }) => id === 'callEpotek');
 
       expect(callEpotek.hide({
-        general: {},
         structure: { property: { valuation: {} }, offer: {} },
         structures: [{}, {}],
         borrowers: [{ salary: 2000, bankFortune: 3000 }],
@@ -173,7 +170,6 @@ describe('dashboardTodos', () => {
       Calculator.filesProgress.restore();
       sinon.stub(Calculator, 'filesProgress').callsFake(() => 0.8);
       expect(callEpotek.hide({
-        general: {},
         structure: { property: { valuation: {} }, offer: {} },
         structures: [{}, {}],
         borrowers: [{}],

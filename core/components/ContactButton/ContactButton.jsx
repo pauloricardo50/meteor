@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import Button from 'core/components/Button';
+import Fab from '@material-ui/core/Fab';
 import Icon from 'core/components/Icon';
 
 import ContactButtonContainer from './ContactButtonContainer';
@@ -18,9 +18,9 @@ export const ContactButton = ({
   ...props
 }: ContactButtonProps) => (
   <div className="contact-button">
-    <Button onClick={() => toggleOpen(!open)} variant="fab" color="primary">
+    <Fab onClick={() => toggleOpen(!open)} color="primary">
       {open ? <Icon type="close" /> : <Icon type="forum" />}
-    </Button>
+    </Fab>
     <ContactButtonOverlay {...props} open={open} />
   </div>
 );

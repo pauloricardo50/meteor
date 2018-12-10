@@ -61,6 +61,6 @@ export const propertyDataIsInvalid = new Method({
   name: 'propertyDataIsInvalid',
   params: {
     propertyId: String,
-    loanResidenceType: String,
+    loanResidenceType: Match.Optional(String),
   },
 });

@@ -15,7 +15,6 @@ describe('PropertyCalculator', () => {
     property = { _id: 'propertyId', additionalDocuments: initialDocuments };
     params = {
       loan: {
-        general: {},
         structure: { property },
         borrowers: [{}],
         properties: [property],
@@ -44,7 +43,7 @@ describe('PropertyCalculator', () => {
         copropertyPercentage: 100,
         isCoproperty: false,
       };
-      params.loan.general.residenceType = ' ';
+      params.loan.residenceType = ' ';
       expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(1);
     });
   });
@@ -89,7 +88,7 @@ describe('PropertyCalculator', () => {
         'minergie',
         'qualityProfileCondition',
         'qualityProfileStandard',
-        'general.residenceType',
+        'residenceType',
       ]);
     });
   });

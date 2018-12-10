@@ -22,6 +22,7 @@ import BorrowersPage from '../../client/pages/BorrowersPage';
 import DashboardPage from '../../client/pages/DashboardPage';
 import FilesPage from '../../client/pages/FilesPage';
 import FinancingPage from '../../client/pages/FinancingPage';
+import RefinancingPage from '../../client/pages/RefinancingPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import AppLayout from '../../client/layouts/AppLayout';
@@ -40,6 +41,7 @@ const AppRouter = () => (
   >
     <AppLayout>
       <Switch>
+        <Route path={ROUTES.REFINANCING_PAGE} component={RefinancingPage} />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />
         {/* Keep BORROWERS_PAGE above BORROWERS_PAGE_NO_TAB */}
