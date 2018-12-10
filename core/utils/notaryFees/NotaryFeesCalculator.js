@@ -56,7 +56,7 @@ class NotaryFeesCalculator {
     const propertyValue = Calculator.selectPropertyValue({ loan });
 
     // Frais d'enregistrement/Droits de mutation
-    const propertyTransferTax = this.propertyTransferTax({
+    const propertyRegistrationTax = this.propertyRegistrationTax({
       value: propertyValue,
       loan,
     });
@@ -72,7 +72,7 @@ class NotaryFeesCalculator {
     const additionalFees = this.additionalFees();
 
     return (
-      propertyTransferTax
+      propertyRegistrationTax
       + notaryIncomeFromProperty
       + landRegistryPropertyTax
       + additionalFees

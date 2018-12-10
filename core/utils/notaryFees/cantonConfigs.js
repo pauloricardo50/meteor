@@ -22,7 +22,8 @@ export const GE = {
       brackets: cantons.GE.NOTARY_NOTE_BRACKETS,
     })
     * (1 + VAT),
-  propertyTransferTax: ({ value }) => value * cantons.GE.TRANSFER_TAX,
+  propertyRegistrationTax: ({ value }) =>
+    value * cantons.GE.PROPERTY_REGISTRATION_TAX,
   landRegistryPropertyTax: ({ value }) =>
     value * cantons.GE.LAND_REGISTRY_PROPERTY_TAX,
   mortgageNoteRegistrationTax: ({ noteValue, noteIncrease }) =>
@@ -52,7 +53,8 @@ export const VD = {
       brackets: cantons.VD.NOTARY_NOTE_BRACKETS,
     })
     * (1 + VAT),
-  propertyTransferTax: ({ value }) => value * cantons.VD.TRANSFER_TAX,
+  propertyRegistrationTax: ({ value }) =>
+    value * cantons.VD.PROPERTY_REGISTRATION_TAX,
   landRegistryPropertyTax: ({ value }) =>
     value * cantons.VD.LAND_REGISTRY_PROPERTY_TAX,
   mortgageNoteRegistrationTax: ({ noteValue, noteIncrease }) =>

@@ -1,5 +1,5 @@
 export const GE = {
-  TRANSFER_TAX: 0.03,
+  PROPERTY_REGISTRATION_TAX: 0.03,
   NOTARY_PROPERTY_BRACKETS_MIN: 200,
   NOTARY_PROPERTY_BRACKETS: [
     { rate: 0.007, max: 200000 },
@@ -32,7 +32,7 @@ export const GE = {
 };
 
 export const VD = {
-  TRANSFER_TAX: 0.03,
+  PROPERTY_REGISTRATION_TAX: 0.033,
   NOTARY_PROPERTY_BRACKETS_MIN: 300,
   NOTARY_PROPERTY_BRACKETS: [
     { rate: 0.007, max: 100000 },
@@ -82,6 +82,7 @@ export const VS = {
   ],
 };
 
+// TODO: Complete
 export const FR = {
   TRANSFER_TAX: 0.03,
 };
