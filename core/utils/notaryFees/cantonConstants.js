@@ -1,3 +1,6 @@
+// Rates and sources are documented in this google doc:
+// https://docs.google.com/document/d/1EF373nmAZ7dZB22NELh-ffaaOwYkFCuTeQ5JrST5wUg
+
 export const GE = {
   PROPERTY_REGISTRATION_TAX: 0.03,
   NOTARY_PROPERTY_BRACKETS_MIN: 200,
