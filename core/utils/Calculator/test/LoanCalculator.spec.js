@@ -59,19 +59,6 @@ describe('LoanCalculator', () => {
   });
 
   describe('getInterests', () => {
-    it('uses constructor interest rates if none are provided', () => {
-      const Calc = new CalculatorClass({ interestRates: { myRate: 0.012 } });
-      expect(Calc.getInterests({
-        loan: {
-          structure: {
-            property: { value: 100000 },
-            wantedLoan: 500000,
-            loanTranches: [{ value: 1, type: 'myRate' }],
-          },
-        },
-      })).to.equal(500);
-    });
-
     it('uses interest rates if provided', () => {
       expect(Calculator.getInterests({
         loan: {
@@ -224,6 +211,7 @@ describe('LoanCalculator', () => {
             propertyWork: 0,
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
+          currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
         },
       })).to.be.within(1800, 2500);
     });

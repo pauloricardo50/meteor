@@ -114,3 +114,5 @@ Factory.define('lot', Lots, {
   type: LOT_TYPES.PARKING_CAR,
   value: 1000,
 });
+
+Factory.define('task', Tasks, {});

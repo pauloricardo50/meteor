@@ -10,6 +10,8 @@ import { PROMOTIONS_COLLECTION } from './promotions/promotionConstants';
 import { PROPERTIES_COLLECTION } from './properties/propertyConstants';
 import { TASKS_COLLECTION } from './tasks/taskConstants';
 import { USERS_COLLECTION } from './users/userConstants';
+import { INTEREST_RATES_COLLECTION } from './interestRates/interestRatesConstants';
+import { IRS10Y_COLLECTION } from './irs10y/irs10yConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './files/fileConstants';
@@ -27,6 +29,7 @@ export * from './tasks/taskConstants';
 export * from './users/userConstants';
 export * from './wuest/wuestConstants';
 export * from './security/constants';
+export * from './irs10y/irs10yConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -43,4 +46,6 @@ export const COLLECTIONS = {
   OFFERS_COLLECTION,
   ORGANISATIONS_COLLECTION,
   USERS_COLLECTION,
+  INTEREST_RATES_COLLECTION,
+  IRS10Y_COLLECTION,
 };

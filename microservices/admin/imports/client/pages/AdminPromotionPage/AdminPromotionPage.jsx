@@ -10,10 +10,7 @@ type AdminPromotionPageProps = {};
 const AdminPromotionPage = ({
   promotion,
   currentUser,
-}: AdminPromotionPageProps) => {
-  console.log('promotion', promotion);
-
-  return (
+}: AdminPromotionPageProps) => (
     <>
       <PromotionUsersTable promotion={promotion} />
       <PromotionPage
@@ -24,7 +21,6 @@ const AdminPromotionPage = ({
         isPro
       />
     </>
-  );
-};
+);
 
 export default AdminPromotionPageContainer(AdminPromotionPage);

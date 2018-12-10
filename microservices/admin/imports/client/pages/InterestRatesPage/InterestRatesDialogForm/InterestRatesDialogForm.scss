@@ -1,0 +1,38 @@
+.single-interest-rate-field {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+
+  > * {
+    padding-right: 8px;
+    margin-bottom: 0px;
+  }
+
+  &-title {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .interest-rates-dialog-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .current-rates {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > table {
+      padding: 4px;
+    }
+
+    > * {
+      margin-right: 4px;
+    }
+  }
+}

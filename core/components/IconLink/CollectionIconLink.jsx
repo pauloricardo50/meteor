@@ -55,7 +55,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     };
   case 'NOT_FOUND':
     return {
-      link: null,
+      link: '/',
       icon: 'help',
       text: "N'existe plus",
     };

@@ -66,7 +66,9 @@ const errors = [
     func: data =>
       FinanceCalculator.checkInterestsAndTranches({
         tranches: data.structure.loanTranches,
-        interestRates: data.structure.offerId ? getOffer(data) : undefined,
+        interestRates: data.structure.offerId
+          ? getOffer(data)
+          : data.loan.currentInterestRates,
       }),
     type: ERROR_TYPES.BREAKING,
   },

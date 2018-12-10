@@ -37,4 +37,9 @@ Promotions.addLinks({
     collection: Loans,
     inversedBy: 'promotions',
   },
+  assignedEmployee: {
+    collection: Users,
+    field: 'assignedEmployeeId',
+    type: 'one',
+  },
 });

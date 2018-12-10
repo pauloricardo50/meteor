@@ -60,14 +60,17 @@ const argumentMappings = {
 
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
+    loan: { currentInterestRates },
     offer,
     offers,
   }) => {
     let interestRates;
     if (offer) {
       interestRates = offer;
-    } else {
+    } else if (offerId) {
       interestRates = offerId && offers.find(({ _id }) => _id === offerId);
+    } else {
+      interestRates = currentInterestRates;
     }
 
     return { tranches: loanTranches, interestRates };

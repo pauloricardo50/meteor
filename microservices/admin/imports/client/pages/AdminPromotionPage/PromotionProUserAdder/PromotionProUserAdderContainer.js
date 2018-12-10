@@ -7,7 +7,7 @@ export default compose(
   withState('searchQuery', 'setSearchQuery', ''),
   withState('searchResults', 'setSearchResults', []),
   withProps(({ searchQuery, setSearchResults, promotion }) => ({
-    search: (event) => {
+    onSearch: (event) => {
       event.preventDefault();
       userSearch
         .clone({ searchQuery, roles: [ROLES.PRO] })

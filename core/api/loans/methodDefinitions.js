@@ -94,7 +94,7 @@ export const enableUserForms = new Method({
 export const adminLoanInsert = new Method({
   name: 'adminLoanInsert',
   params: {
-    userId: String,
+    userId: Match.Optional(String),
   },
 });
 
@@ -135,5 +135,22 @@ export const duplicateStructure = new Method({
   params: {
     loanId: String,
     structureId: String,
+  },
+});
+
+export const assignLoanToUser = new Method({
+  name: 'assignLoanToUser',
+  params: {
+    loanId: String,
+    userId: Match.OneOf(String, null),
+  },
+});
+
+export const switchBorrower = new Method({
+  name: 'switchBorrower',
+  params: {
+    loanId: String,
+    borrowerId: String,
+    oldBorrowerId: String,
   },
 });

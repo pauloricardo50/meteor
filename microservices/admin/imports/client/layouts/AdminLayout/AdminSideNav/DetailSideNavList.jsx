@@ -22,7 +22,7 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { roles, name, structure, loans, address1, value, user, status },
+  { roles, name, structure, loans, address1, value, user, status, promotion },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -35,7 +35,7 @@ const getListItemDetails = (
     const loanValueText = loanValue > 0 ? `CHF ${toMoney(loanValue)}` : 'Pas encore structuré';
 
     return {
-      primary: `${name} - ${user && user.name}`,
+      primary: `${name} - ${user ? user.name : "Pas d'utilisateur"}`,
       secondary: (
         <span>
           <StatusLabel status={status} collection={LOANS_COLLECTION} /> -{' '}
@@ -61,12 +61,13 @@ const getListItemDetails = (
 
   case PROPERTIES_COLLECTION:
     return {
-      primary: address1 || 'Bien sans adresse',
+      primary: name || address1 || 'Bien sans adresse',
       secondary: (
         <span className="flex-col">
           <span>{value && `CHF ${toMoney(value)}`}</span>
           <span>
             {loans && loans.map(({ name: loanName }) => loanName).join(', ')}
+            {promotion && promotion.name}
           </span>
         </span>
       ),

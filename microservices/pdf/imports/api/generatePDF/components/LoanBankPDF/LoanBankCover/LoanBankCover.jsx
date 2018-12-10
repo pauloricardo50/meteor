@@ -3,6 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import T from 'core/components/Translation';
 import PdfPage from '../../PdfPage';
+import LoanBankCoverHeader from './LoanBankCoverHeader';
 
 type LoanBankCoverProps = {
   loan: Object,
@@ -54,6 +55,7 @@ const LoanBankCover = ({
     pageNb={pageNb}
     pageCount={pageCount}
   >
+    <LoanBankCoverHeader />
     {loanInfo({ loan, anonymous: options && options.anonymous })}
     {footer(loan.user.assignedEmployee)}
   </PdfPage>

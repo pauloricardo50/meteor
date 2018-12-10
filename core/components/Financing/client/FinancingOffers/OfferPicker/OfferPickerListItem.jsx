@@ -26,7 +26,7 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
     >
       <img src={logo} alt={name} />
 
-      {(offer.fees || offer.epotekFees) && (
+      {!!(offer.fees || offer.epotekFees) && (
         <OfferPickerListItemValue
           label={<T id="FinancingOffers.fees" />}
           value={<span>{toMoney(fees + epotekFees)}</span>}

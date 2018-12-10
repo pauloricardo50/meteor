@@ -44,7 +44,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getInterests({ loan, interestRates }) {
-      let finalInterestRates = interestRates || this.interestRates;
+      let finalInterestRates = interestRates || loan.currentInterestRates;
       const offer = this.makeSelectStructureKey('offer')({ loan });
       if (offer) {
         finalInterestRates = offer;

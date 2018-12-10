@@ -314,3 +314,8 @@ p.description,
 .visibility-hidden {
   visibility: hidden;
 }
+
+.space-children > * {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}

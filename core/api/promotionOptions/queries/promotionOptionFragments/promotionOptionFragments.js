@@ -8,6 +8,7 @@ export const fullPromotionOptionFragment = {
   loan: { name: 1 },
   priority: 1,
   custom: 1,
+  solvency: 1,
 };
 
 export const proPromotionOptionFragment = {
@@ -23,12 +24,14 @@ export const proPromotionOptionFragment = {
         _id: 1,
         attributedTo: { user: { _id: 1 } },
       },
+      solvency: 1,
     },
     promotionProgress: 1,
   },
   lots: { name: 1, type: 1, description: 1 },
   priority: 1,
   custom: 1,
+  solvency: 1,
 };
 
 export const appPromotionOptionFragment = {
@@ -44,4 +47,5 @@ export const appPromotionOptionFragment = {
   promotionLots: appPromotionLotFragment,
   priority: 1,
   attributedToMe: 1,
+  solvency: 1,
 };

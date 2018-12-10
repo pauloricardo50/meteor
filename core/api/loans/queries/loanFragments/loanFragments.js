@@ -40,6 +40,7 @@ export const loanBaseFragment = {
     priority: 1,
     promotion: 1,
     value: 1,
+    solvency: 1,
   },
   hasPromotion: 1,
   previousLender: 1,

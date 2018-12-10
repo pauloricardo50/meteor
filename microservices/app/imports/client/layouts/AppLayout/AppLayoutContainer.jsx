@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { compose, withProps } from 'recompose';
+import { compose, withProps, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import withMatchParam from 'core/containers/withMatchParam';
@@ -8,6 +8,8 @@ import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import userLoanQuery from 'core/api/loans/queries/userLoan';
 import loanFiles from 'core/api/loans/queries/loanFiles';
 import appUserQuery from 'core/api/users/queries/appUser';
+import interestRates from 'core/api/interestRates/queries/currentInterestRates';
+
 import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
 import getBaseRedirect, {
   isOnAllowedRoute,
@@ -59,6 +61,13 @@ const withUserLoan = withSmartQuery({
   renderMissingDoc: ({ loanId }) => !!loanId,
 });
 
+const withInterestRates = withSmartQuery({
+  query: interestRates,
+  queryOptions: { reactive: false },
+  dataName: 'currentInterestRates',
+  smallLoader: true,
+});
+
 const withRedirect = withProps(({ currentUser, history }) => {
   const redirect = getRedirect(currentUser, history.location.pathname);
   return { redirect: !isLogin(history.location.pathname) && redirect };
@@ -76,6 +85,11 @@ export default compose(
   ),
   withUserLoan,
   mergeFilesIntoLoanStructure(loanFiles, ({ loanId }) => ({ loanId }), 'loan'),
+  withInterestRates,
+  mapProps(({ loan, currentInterestRates, ...props }) => ({
+    ...props,
+    loan: { ...loan, currentInterestRates: currentInterestRates.averageRates },
+  })),
   withRouter,
   withRedirect,
   withTranslationContext(({ loan = {} }) => ({

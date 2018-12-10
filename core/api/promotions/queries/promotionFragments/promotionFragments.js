@@ -48,6 +48,8 @@ export const proPromotionFragment = {
     name: 1,
     attributedTo: { user: { name: 1 } },
   },
+  assignedEmployee: { name: 1, email: 1 },
+  assignedEmployeeId: 1,
 };
 
 export const proPromotionsFragment = {
