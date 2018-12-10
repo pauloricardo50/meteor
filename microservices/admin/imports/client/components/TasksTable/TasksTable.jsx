@@ -3,6 +3,7 @@ import React from 'react';
 
 import Table from 'core/components/Table';
 import TasksTableContainer from './TasksTableContainer';
+import TaskModifier from './TaskModifier';
 
 const TasksTable = ({
   children,
@@ -10,6 +11,9 @@ const TasksTable = ({
   hideIfNoDataText,
   rows,
   columnOptions,
+  showDialog,
+  setShowDialog,
+  taskToModify,
 }) => (
   <React.Fragment>
     {children}
@@ -22,6 +26,13 @@ const TasksTable = ({
         noIntl
         className="tasks-table"
         clickable
+      />
+    )}
+    {taskToModify && (
+      <TaskModifier
+        task={taskToModify}
+        open={showDialog}
+        setOpen={setShowDialog}
       />
     )}
   </React.Fragment>

@@ -15,13 +15,12 @@ const BorrowerRemover = ({ handleClick }: BorrowerRemoverProps) => (
     <ConfirmMethod
       method={handleClick}
       label={<T id="BorrowerRemover.button" />}
-      keyword={false}
       buttonProps={{ primary: true, outlined: true }}
     />
   </div>
 );
 
-export default withProps(({ borrower: { _id: borrowerId } }) => ({
+export default withProps(({ borrower: { _id: borrowerId }, loanId }) => ({
   handleClick: () =>
-    borrowerDelete.run({ borrowerId }).then(() => location.reload()),
+    borrowerDelete.run({ borrowerId, loanId }).then(() => location.reload()),
 }))(BorrowerRemover);

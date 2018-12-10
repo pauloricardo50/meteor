@@ -34,6 +34,10 @@ const PromotionSchema = new SimpleSchema({
   'promotionLotLinks.$': Object,
   'promotionLotLinks.$._id': String,
   ...userLinksSchema,
+  assignedEmployeeId: {
+    type: String,
+    optional: true,
+  },
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

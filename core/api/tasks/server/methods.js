@@ -16,7 +16,7 @@ taskInsert.setHandler((context, params) => {
 
 taskUpdate.setHandler((context, params) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.insert(params);
+  return TaskService.update(params);
 });
 
 taskComplete.setHandler((context, params) => {

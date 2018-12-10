@@ -19,7 +19,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
   describe('chooseOwnFundsTypes', () => {
     it('returns the right values for main', () => {
       expect(chooseOwnFundsTypes({
-        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
       })).to.deep.equal(Object.values(OWN_FUNDS_TYPES));
     });
 
@@ -31,11 +31,11 @@ describe('FinancingOwnFundsPickerHelpers', () => {
       ];
 
       expect(chooseOwnFundsTypes({
-        loan: { general: { residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE },
       })).to.deep.equal(expected);
 
       expect(chooseOwnFundsTypes({
-        loan: { general: { residenceType: RESIDENCE_TYPE.INVESTMENT } },
+        loan: { residenceType: RESIDENCE_TYPE.INVESTMENT },
       })).to.deep.equal(expected);
     });
   });
@@ -248,7 +248,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           propertyWork: 0,
         },
         properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 50000,
       })).to.equal(850000);
@@ -263,7 +263,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           propertyWork: 0,
         },
         properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 150000,
       })).to.equal(900000);
@@ -278,7 +278,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           propertyWork: 0,
         },
         properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { general: { residenceType: RESIDENCE_TYPE.INVESTMENT } },
+        loan: { residenceType: RESIDENCE_TYPE.INVESTMENT },
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 150000,
       })).to.equal(800000);
@@ -295,7 +295,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           propertyWork: 0,
         },
         properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 50000,
         ownFundsIndex: -1,
@@ -313,7 +313,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           propertyWork: 0,
         },
         properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 40000,
         ownFundsIndex: 0,
@@ -331,7 +331,7 @@ describe('FinancingOwnFundsPickerHelpers', () => {
           propertyWork: 0,
         },
         properties: [{ _id: 'propertyId', value: 1000000 }],
-        loan: { general: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE } },
+        loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
         usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE,
         value: 40000,
         ownFundsIndex: 0,

@@ -26,15 +26,18 @@ import './server/reducers';
 import './server/mongoIndexes';
 
 import { COLLECTIONS } from './constants';
-import LoanService from './loans/LoanService';
-import PropertyService from './properties/PropertyService';
 import BorrowerService from './borrowers/BorrowerService';
+import LoanService from './loans/LoanService';
 import LotService from './lots/LotService';
 import OfferService from './offers/OfferService';
 import PromotionLotService from './promotionLots/PromotionLotService';
+import PromotionOptionService from './promotionOptions/PromotionOptionService';
 import PromotionService from './promotions/PromotionService';
-import UserService from './users/UserService';
+import PropertyService from './properties/PropertyService';
 import TaskService from './tasks/TaskService';
+import InterestRatesService from './interestRates/InterestRatesService';
+import UserService from './users/UserService';
+import Irs10yService from './irs10y/Irs10yService';
 
 process.on('uncaughtException', (error) => {
   SlackService.sendError({
@@ -57,6 +60,9 @@ export const Services = {
   [COLLECTIONS.OFFERS_COLLECTION]: OfferService,
   [COLLECTIONS.PROMOTION_LOTS_COLLECTION]: PromotionLotService,
   [COLLECTIONS.PROMOTIONS_COLLECTION]: PromotionService,
+  [COLLECTIONS.PROMOTION_OPTIONS_COLLECTION]: PromotionOptionService,
   [COLLECTIONS.USERS_COLLECTION]: UserService,
   [COLLECTIONS.TASKS_COLLECTION]: TaskService,
+  [COLLECTIONS.INTEREST_RATES_COLLECTION]: InterestRatesService,
+  [COLLECTIONS.IRS10Y_COLLECTION]: Irs10yService,
 };

@@ -15,7 +15,6 @@ const loan = {
   _id: 'id',
   name: 'loanName',
   logic: { step: STEPS.PREPARATION },
-  general: { fortuneUsed: 25000, insuranceFortuneUsed: 20000 },
   createdAt,
   updatedAt,
   borrowers: [],

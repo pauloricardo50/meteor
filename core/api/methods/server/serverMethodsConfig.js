@@ -6,6 +6,7 @@ import ServerEventService from '../../events/server/ServerEventService';
 
 const logMethod = ({ context, config, params, result, error }) => {
   if (Meteor.isProduction || Meteor.isStaging) {
+    console.log('---------------------- METHOD CALL ----------------------');
     console.log(`METHOD Method ${config.name} called`);
     console.log('METHOD Params:', params);
     console.log('METHOD userId:', context.userId);
@@ -20,7 +21,11 @@ Method.addAfterExecution(({ context, config, params, result, error }) => {
   if (error) {
     SlackService.sendError({
       error,
-      additionalData: ['Server method error'],
+      additionalData: [
+        `Server method error in method: "${config.name}"`,
+        { name: 'context', data: context },
+        { name: 'params', data: params },
+      ],
       userId: context.userId,
     });
   }

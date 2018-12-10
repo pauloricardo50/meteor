@@ -15,6 +15,7 @@ const Widget1Monthly = ({
   setInterestRate,
   useMaintenance,
   setMaintenance,
+  currentInterestRates,
 }) => (
   <div className="card1 widget1-monthly">
     <h3>
@@ -49,6 +50,7 @@ const Widget1Monthly = ({
       <Widget1MonthlyInterests
         value={interestRate}
         onChange={setInterestRate}
+        interestRates={currentInterestRates.rates}
       />
       <Widget1MonthlyMaintenance
         value={useMaintenance}

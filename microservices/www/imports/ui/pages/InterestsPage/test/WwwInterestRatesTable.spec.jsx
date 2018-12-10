@@ -6,18 +6,39 @@ import InterestRatesTable from 'core/components/InterestRatesTable';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 import { getMountedComponent } from 'core/utils/testHelpers';
 
-import WwwInterestRatesTable from '../WwwInterestRatesTable';
+import { INTEREST_RATES, TRENDS } from 'imports/core/api/constants';
+import { WwwInterestRatesTableForTests } from '../WwwInterestRatesTable';
 import { columnOptions, rows } from '../wwwInterestsTableHelpers';
 
-const defaultProps = { columnOptions, rows };
+const date = new Date();
 
-const component = props => shallow(<WwwInterestRatesTable {...props} />);
+const currentInterestRates = {
+  date,
+  rates: [
+    {
+      type: INTEREST_RATES.YEARS_10,
+      rateLow: 0.01,
+      rateHigh: 0.02,
+      trend: TRENDS.FLAT,
+    },
+  ],
+};
+
+const defaultProps = {
+  currentInterestRates,
+  date,
+  columnOptions,
+  rows: rows(currentInterestRates.rates),
+};
+
+const component = props =>
+  shallow(<WwwInterestRatesTableForTests {...props} />);
 
 describe('WwwInterestRatesTable', () => {
   beforeEach(() => getMountedComponent.reset());
 
   it('renders a `InterestRatesTable` component with correct props', () => {
-    expect(component()
+    expect(component({ currentInterestRates })
       .find(InterestRatesTable)
       .props()).to.deep.equal(defaultProps);
   });

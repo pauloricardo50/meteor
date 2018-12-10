@@ -3,10 +3,11 @@ import React from 'react';
 import cx from 'classnames';
 
 import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
-import { T } from 'core/components/Translation/Translation';
+import T from 'core/components/Translation';
 import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
-import PDFTable from '../utils/PDFTable';
+import PdfTable from '../../PdfTable';
+import { ROW_TYPES } from '../../PdfTable/PdfTable';
 
 type BorrowersRecapProps = {
   borrowers: Array<Object>,
@@ -72,8 +73,23 @@ const getBorrowersOwnFunds = (borrowers, types) =>
     {},
   );
 
+const getBorrowersAddress = (borrowers) => {
+  if (borrowers.some(({ sameAddress }) => sameAddress === true)) {
+    const borrowerWithAddress = borrowers.find(({ city, zipCode }) => city && zipCode);
+    const address = [
+      borrowerWithAddress.zipCode,
+      borrowerWithAddress.city,
+    ].join(' ');
+    return [address, address];
+  }
+  const zipCodes = getBorrowersSingleInfo(borrowers, 'zipCode');
+  const cities = getBorrowersSingleInfo(borrowers, 'city');
+  return zipCodes.map((zipCode, index) => `${zipCode} ${cities[index]}`);
+};
+
 const getBorrowersInfos = borrowers => ({
   ...getBorrowersSingleInfos(borrowers, [
+    'name',
     'gender',
     'age',
     'childrenCount',
@@ -83,6 +99,7 @@ const getBorrowersInfos = borrowers => ({
     'bankFortune',
     'thirdPartyFortune',
   ]),
+  address: getBorrowersAddress(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(borrowers, Object.values(OTHER_INCOME)),
     totalIncome: getBorrowersOtherIncome(
@@ -111,7 +128,7 @@ const getBorrowersInfos = borrowers => ({
 
 const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
 
-const getFormattedMoneyArray = (array, negative = false, twoBorrowers) => {
+const getFormattedMoneyArray = ({ array, negative = false, twoBorrowers }) => {
   if (!twoBorrowers) {
     return [
       ...array.map((x, index) => (
@@ -144,31 +161,55 @@ const makeTableMoneyLine = twoBorrowers => ({
   condition,
 }) => ({
   label,
-  data: getFormattedMoneyArray(field, negative || false, twoBorrowers),
+  data: getFormattedMoneyArray({
+    array: field,
+    negative: negative || false,
+    twoBorrowers,
+  }),
   condition: condition || shouldRenderArray(field),
 });
 
 const addTableEmptyLine = () => ({
   label: '\u00A0',
+  type: ROW_TYPES.EMPTY,
 });
 
-const addTableCategoryTitle = title => ({
-  label: (
-    <p style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{title}</p>
-  ),
+const addTableCategoryTitle = ({ title, multipleBorrowers }) => ({
+  label: title,
+  type: ROW_TYPES.TITLE_NO_PADDING,
+  colspan: multipleBorrowers ? 4 : 2,
 });
 
-const getBorrowersInfosArray = (borrowers) => {
+const getBorrowersGender = borrowersInfos =>
+  borrowersInfos.gender.map(gender => (
+    <T id={`PDF.borrowersInfos.gender.${gender}`} />
+  ));
+
+const getBorrowersName = ({ borrowersInfos, anonymous }) =>
+  (anonymous ? getBorrowersGender(borrowersInfos) : borrowersInfos.name);
+
+const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
   const borrowersInfos = getBorrowersInfos(borrowers);
+  const multipleBorrowers = borrowers.length > 1;
+
   return [
+    addTableCategoryTitle({
+      title: <T id="PDF.borrowersInfos.category.general" />,
+      multipleBorrowers,
+    }),
     {
       label: '\u00A0',
-      data: [
-        ...borrowersInfos.gender.map(gender => (
-          <T id={`PDF.borrowersInfos.gender.${gender}`} />
-        )),
-      ],
+      data: getBorrowersGender(borrowersInfos),
       style: { fontWeight: 'bold' },
+    },
+    {
+      label: <T id="PDF.borrowersInfos.name" />,
+      data: borrowersInfos.name,
+      condition: !anonymous,
+    },
+    {
+      label: <T id="PDF.borrowersInfos.address" />,
+      data: borrowersInfos.address,
     },
     {
       label: <T id="PDF.borrowersInfos.age" />,
@@ -195,7 +236,7 @@ const getBorrowersInfosArray = (borrowers) => {
   ];
 };
 
-const getBorrowersFinanceArray = (borrowers) => {
+const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
   const multipleBorrowers = borrowers.length > 1;
   const addTableMoneyLine = makeTableMoneyLine(multipleBorrowers);
   const borrowersInfos = getBorrowersInfos(borrowers);
@@ -211,23 +252,24 @@ const getBorrowersFinanceArray = (borrowers) => {
   } = borrowersInfos;
 
   return [
+    addTableCategoryTitle({
+      title: <T id="PDF.borrowersInfos.category.financialSituation" />,
+      multipleBorrowers,
+    }),
     {
       label: '\u00A0',
       data: multipleBorrowers
         ? [
-          ...genders.map(gender => (
-            <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
-          )),
+          ...getBorrowersName({ borrowersInfos, anonymous }),
           <T id="PDF.borrowersInfos.total" key="total" />,
         ]
-        : [
-          ...genders.map(gender => (
-            <T id={`PDF.borrowersInfos.gender.${gender}`} key="gender" />
-          )),
-        ],
+        : getBorrowersName({ borrowersInfos, anonymous }),
       style: { fontWeight: 'bold' },
     },
-    addTableCategoryTitle(<T id="PDF.borrowersInfos.category.income" />),
+    {
+      label: <T id="PDF.borrowersInfos.income" />,
+      type: ROW_TYPES.SUBSECTION,
+    },
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.salary" />,
       field: salary,
@@ -248,20 +290,21 @@ const getBorrowersFinanceArray = (borrowers) => {
         field: expenses[expense],
         negative: true,
       })),
-    addTableEmptyLine(),
     {
-      label: (
-        <p style={{ fontWeight: 'bold' }}>
-          <T id="PDF.borrowersInfos.totalIncome" />
-        </p>
-      ),
-      data: getFormattedMoneyArray(borrowers.map(borrower =>
-        Calculator.getTotalIncome({ borrowers: borrower }))),
-      style: { fontWeight: 'bold' },
-      condition: false,
+      label: <T id="PDF.borrowersInfos.totalIncome" />,
+      data: getFormattedMoneyArray({
+        array: borrowers.map(borrower =>
+          Calculator.getTotalIncome({ borrowers: borrower })),
+        negative: false,
+        twoBorrowers: multipleBorrowers,
+      }),
+      type: ROW_TYPES.SUM,
     },
     addTableEmptyLine(),
-    addTableCategoryTitle(<T id="PDF.borrowersInfos.category.fortune" />),
+    {
+      label: <T id="PDF.borrowersInfos.category.fortune" />,
+      type: ROW_TYPES.SUBSECTION,
+    },
     ...Object.values(OWN_FUNDS_TYPES).map(ownFund =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.ownFund.${ownFund}`} />,
@@ -281,33 +324,34 @@ const getBorrowersFinanceArray = (borrowers) => {
       label: <T id="PDF.borrowersInfos.otherFortune" />,
       field: otherFortune,
     }),
-    addTableEmptyLine(),
     {
-      label: (
-        <p style={{ fontWeight: 'bold' }}>
-          <T id="PDF.borrowersInfos.totalFortune" />
-        </p>
-      ),
-      data: getFormattedMoneyArray(borrowers.map(borrower =>
-        Calculator.getTotalFunds({ borrowers: borrower }))),
-      style: { fontWeight: 'bold' },
+      label: <T id="PDF.borrowersInfos.totalFortune" />,
+      data: getFormattedMoneyArray({
+        array: borrowers.map(borrower =>
+          Calculator.getTotalFunds({ borrowers: borrower })),
+        negative: false,
+        twoBorrowers: multipleBorrowers,
+      }),
+      type: ROW_TYPES.SUM,
     },
   ];
 };
 
-const BorrowersRecap = ({ borrowers, twoBorrowers }: BorrowersRecapProps) => (
-  <>
-    <h2>Informations générales</h2>
-    <PDFTable
+const BorrowersRecap = ({
+  borrowers,
+  twoBorrowers,
+  anonymous = false,
+}: BorrowersRecapProps) => (
+  <div className="borrowers-recap">
+    <PdfTable
       className={cx('borrowers-recap info', { twoBorrowers })}
-      rows={getBorrowersInfosArray(borrowers)}
+      rows={getBorrowersInfosArray({ borrowers, anonymous })}
     />
-    <h2>Situation financière</h2>
-    <PDFTable
+    <PdfTable
       className={cx('borrowers-recap finance', { twoBorrowers })}
-      rows={getBorrowersFinanceArray(borrowers)}
+      rows={getBorrowersFinanceArray({ borrowers, anonymous })}
     />
-  </>
+  </div>
 );
 
 export default BorrowersRecap;

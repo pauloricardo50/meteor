@@ -6,7 +6,7 @@ import T, { IntlNumber } from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
-import { PROMOTIONS_COLLECTION } from 'core/api/constants';
+import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 
 type SingleLoanPageHeaderProps = {};
 
@@ -25,14 +25,26 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
           ),
         }}
       />
-      <Link to={`/users/${loan.user._id}`}>
+      {loan.user ? (
+        <Link to={`/users/${loan.user._id}`}>
+          <small className="secondary">
+            {' - '}
+            {loan.user.name}
+            {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+          </small>
+        </Link>
+      ) : (
         <small className="secondary">
           {' - '}
-          {loan.user.name}
-          {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+          Pas d'utilisateur
         </small>
-      </Link>
-      <UpdateField doc={loan} fields={['status']} />
+      )}
+
+      <UpdateField
+        collection={LOANS_COLLECTION}
+        doc={loan}
+        fields={['status']}
+      />
     </h1>
     {loan.hasPromotion && (
       <CollectionIconLink

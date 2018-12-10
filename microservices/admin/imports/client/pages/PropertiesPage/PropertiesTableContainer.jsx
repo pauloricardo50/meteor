@@ -6,32 +6,31 @@ import { withRouter } from 'react-router-dom';
 import { IntlNumber } from 'core/components/Translation';
 import { withSmartQuery } from 'core/api';
 import adminProperties from 'core/api/properties/queries/adminProperties';
-import IconLink from 'core/components/IconLink/IconLink';
+import PropertyRelatedDoc from './PropertyRelatedDoc';
 
 const mapProperty = history => ({
   _id,
   address1,
+  category,
   city,
-  user,
   createdAt,
-  updatedAt,
-  value,
-  valuation: { value: expertiseValue },
   loans,
+  name,
+  promotion,
+  updatedAt,
+  user,
+  valuation: { value: expertiseValue },
+  value,
 }) => ({
   id: _id,
   columns: [
-    loans.map(({ name, _id: loanId }) => (
-      <IconLink
-        key={name}
-        onClick={e => e.stopPropagation()}
-        link={`/loans/${loanId}`}
-        icon="dollarSign"
-      >
-        {name}
-      </IconLink>
-    )),
-    `${address1}, ${city}`,
+    <PropertyRelatedDoc
+      category={category}
+      loans={loans}
+      promotion={promotion}
+      key="relatedTo"
+    />,
+    name || `${address1}, ${city}`,
     user && user.name,
     moment(createdAt).format('D.M.YY à H:mm'),
     moment(updatedAt).fromNow(),
@@ -42,8 +41,8 @@ const mapProperty = history => ({
 });
 
 const columnOptions = [
-  { id: 'Dossiers' },
-  { id: 'Addresse' },
+  { id: 'Lié à' },
+  { id: 'Nom/Addresse' },
   { id: 'Utilisateur' },
   { id: 'Créé le' },
   { id: 'Modifié' },
@@ -67,15 +66,10 @@ const PropertiesTableContainer = compose(
     dataName: 'properties',
   }),
   withRouter,
-  withProps(({ properties, history, ...rest }) => {
-    console.log('properties', properties);
-    console.log('rest', rest);
-
-    return {
-      rows: properties.map(mapProperty(history)),
-      columnOptions,
-    };
-  }),
+  withProps(({ properties, history }) => ({
+    rows: properties.map(mapProperty(history)),
+    columnOptions,
+  })),
 );
 
 export default PropertiesTableContainer;

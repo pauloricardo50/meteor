@@ -7,6 +7,7 @@ import { DOCUMENTS } from 'core/api/constants';
 import BorrowerService from '../../BorrowerService';
 import { initialDocuments } from '../../borrowersAdditionalDocuments';
 import * as borrowerConstants from '../../borrowerConstants';
+import LoanService from '../../../loans/LoanService';
 
 const checkDocuments = ({
   additionalDocuments,
@@ -44,6 +45,60 @@ describe('BorrowerService', () => {
       const { firstName } = BorrowerService.get(borrower._id);
 
       expect(firstName).to.equal('bob');
+    });
+  });
+
+  describe('delete', () => {
+    it('removes a borrower', () => {
+      BorrowerService.remove({ borrowerId: borrower._id });
+
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('deletes the borrower if it only has one loan', () => {
+      Factory.create('loan', { borrowerIds: [borrower._id] });
+
+      BorrowerService.remove({ borrowerId: borrower._id });
+
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('deletes the borrower if it only has one loan and loanId is passed', () => {
+      const loanId = Factory.create('loan', { borrowerIds: [borrower._id] });
+
+      BorrowerService.remove({ borrowerId: borrower._id, loanId });
+
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('only removes the link if the borrower has multiple loans', () => {
+      const loanId = Factory.create('loan', { borrowerIds: [borrower._id] });
+      const loanId2 = Factory.create('loan', { borrowerIds: [borrower._id] });
+
+      BorrowerService.remove({ borrowerId: borrower._id, loanId });
+
+      expect(BorrowerService.find({}).count()).to.equal(1);
+
+      const loan = LoanService.get(loanId);
+      expect(loan.borrowerIds).to.deep.equal([]);
+
+      const loan2 = LoanService.get(loanId2);
+      expect(loan2.borrowerIds).to.deep.equal([borrower._id]);
+    });
+
+    it('does not do anything if no loanId is passed and multiple loans exist', () => {
+      const loanId = Factory.create('loan', { borrowerIds: [borrower._id] });
+      const loanId2 = Factory.create('loan', { borrowerIds: [borrower._id] });
+
+      BorrowerService.remove({ borrowerId: borrower._id });
+
+      expect(BorrowerService.find({}).count()).to.equal(1);
+
+      const loan = LoanService.get(loanId);
+      expect(loan.borrowerIds).to.deep.equal([borrower._id]);
+
+      const loan2 = LoanService.get(loanId2);
+      expect(loan2.borrowerIds).to.deep.equal([borrower._id]);
     });
   });
 

@@ -17,3 +17,4 @@ export const SINGLE_PROPERTY_PAGE = '/properties/:propertyId';
 export const SINGLE_USER_PAGE = '/users/:userId';
 export const TASKS_PAGE = '/tasks';
 export const USERS_PAGE = '/users';
+export const INTEREST_RATES_PAGE = '/interestRates';

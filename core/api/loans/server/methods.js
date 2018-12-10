@@ -19,6 +19,8 @@ import {
   updateStructure,
   selectStructure,
   duplicateStructure,
+  assignLoanToUser,
+  switchBorrower,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -69,7 +71,7 @@ pushLoanValue.setHandler((context, { loanId, object }) => {
 
 popLoanValue.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.pushValue({ loanId, object });
+  return LoanService.popValue({ loanId, object });
 });
 
 export const disableUserFormsHandler = ({ userId }, { loanId }) => {
@@ -125,3 +127,13 @@ export const duplicateStructureHandler = (
   return LoanService.duplicateStructure({ loanId, structureId });
 };
 duplicateStructure.setHandler(duplicateStructureHandler);
+
+assignLoanToUser.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsAdmin(userId);
+  LoanService.assignLoanToUser(params);
+});
+
+switchBorrower.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return LoanService.switchBorrower(params);
+});

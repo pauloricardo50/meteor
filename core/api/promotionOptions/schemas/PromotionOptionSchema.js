@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import { PROMOTION_OPTION_SOLVENCY } from '../promotionOptionConstants';
 
 const PromotionOptionSchema = new SimpleSchema({
   createdAt,
@@ -13,6 +14,11 @@ const PromotionOptionSchema = new SimpleSchema({
   custom: {
     type: String,
     optional: true,
+  },
+  solvency: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_OPTION_SOLVENCY),
+    defaultValue: PROMOTION_OPTION_SOLVENCY.UNDETERMINED,
   },
 });
 

@@ -1,7 +1,7 @@
 import { withProps, compose } from 'recompose';
 import { withSmartQuery } from 'core/api';
 import offersQuery from 'core/api/offers/queries/offers';
-import generalInterestRates from 'core/components/InterestRatesTable/interestRates';
+import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
 
 import {
   columnOptions,
@@ -15,11 +15,18 @@ export const DashboardInfoInterestsTableContainer = compose(
     params: ({ loan: { _id: loanId } }) => ({ loanId }),
     dataName: 'offers',
   }),
-  withProps(({ loan: { enableOffers }, offers }) => ({
+  withSmartQuery({
+    query: currentInterestRates,
+    queryOptions: { reactive: true },
+    dataName: 'generalInterestRates',
+    smallLoader: true,
+  }),
+  withProps(({ loan: { enableOffers }, offers, generalInterestRates }) => ({
     columnOptions,
     rows: enableOffers
       ? rows({ interestRates: getInterestRatesFromOffers(offers) })
-      : rows({ interestRates: generalInterestRates }),
+      : rows({ interestRates: generalInterestRates.rates }),
+    date: generalInterestRates.date,
   })),
 );
 

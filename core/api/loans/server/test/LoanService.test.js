@@ -8,6 +8,7 @@ import Loans from '../../loans';
 import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
+import BorrowerService from '../../../borrowers/BorrowerService';
 
 describe('LoanService', () => {
   let loanId;
@@ -15,6 +16,23 @@ describe('LoanService', () => {
 
   beforeEach(() => {
     resetDatabase();
+  });
+
+  describe('popValue', () => {
+    it('removes a value from an array', () => {
+      loanId = Factory.create('loan', {
+        mortgageNotes: [
+          { value: 150000, type: 'PAPER', category: 'REGISTERED', rank: 2 },
+        ],
+      })._id;
+      loan = LoanService.get(loanId);
+      expect(loan.mortgageNotes.length).to.equal(1);
+
+      LoanService.popValue({ loanId, object: { mortgageNotes: 1 } });
+
+      loan = LoanService.get(loanId);
+      expect(loan.mortgageNotes).to.deep.equal([]);
+    });
   });
 
   describe('disableUserForms', () => {
@@ -446,6 +464,75 @@ describe('LoanService', () => {
 
       expect(loan.structures[0].ownFunds.length).to.equal(1);
       expect(loan.structures[0].ownFunds[0].borrowerId).to.equal(borrowerId2);
+    });
+  });
+
+  describe('switchBorrower', () => {
+    it('switches a borrowerId with a new one', () => {
+      const oldBorrowerId = Factory.create('borrower')._id;
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId] })._id;
+      loan = LoanService.get(loanId);
+
+      expect(loan.borrowerIds).to.deep.equal([oldBorrowerId]);
+
+      LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
+
+      loan = LoanService.get(loanId);
+
+      expect(loan.borrowerIds).to.deep.equal([borrowerId]);
+    });
+
+    it('switches a borrowerId with a new one with multiple borrowers', () => {
+      const oldBorrowerId = Factory.create('borrower')._id;
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId, 'dude'] })
+        ._id;
+      loan = LoanService.get(loanId);
+
+      expect(loan.borrowerIds).to.deep.equal([oldBorrowerId, 'dude']);
+
+      LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
+
+      loan = LoanService.get(loanId);
+
+      expect(loan.borrowerIds).to.deep.equal([borrowerId, 'dude']);
+    });
+
+    it('deletes the old borrower if it is only on this loan', () => {
+      const oldBorrowerId = Factory.create('borrower')._id;
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId] })._id;
+
+      LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
+
+      const borrowers = BorrowerService.find({}).fetch();
+
+      expect(borrowers.length).to.equal(1);
+    });
+
+    it('does not delete the old borrower if it is only on this loan', () => {
+      const oldBorrowerId = Factory.create('borrower')._id;
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [oldBorrowerId] })._id;
+      Factory.create('loan', { borrowerIds: [oldBorrowerId] });
+
+      LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId });
+
+      const borrowers = BorrowerService.find({}).fetch();
+
+      expect(borrowers.length).to.equal(2);
+    });
+
+    it('throws if the same borrower is tried to be added twice', () => {
+      const oldBorrowerId = Factory.create('borrower')._id;
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', {
+        borrowerIds: [oldBorrowerId, borrowerId],
+      })._id;
+
+      expect(() =>
+        LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId })).to.throw('déjà');
     });
   });
 });

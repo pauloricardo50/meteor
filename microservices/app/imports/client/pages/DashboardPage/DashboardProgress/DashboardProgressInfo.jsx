@@ -26,7 +26,8 @@ const getTodos = (loan) => {
 
   return getDashboardTodosArray(list)
     .filter(({ hide }) => !hide || !hide(loan))
-    .sort((a, b) => b.isDone(loan) - a.isDone(loan));
+    .map(todo => ({ ...todo, isDone: !!todo.isDone(loan) }))
+    .sort((a, b) => b.isDone - a.isDone);
 };
 
 const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
@@ -39,8 +40,7 @@ const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
   return (
     <div className="dashboard-progress-info">
       {todos.map((todo) => {
-        const { id, link, isDone: isDoneFunc, Component } = todo;
-        const isDone = isDoneFunc(loan);
+        const { id, link, isDone, Component } = todo;
         const WrapperComponent = link && !isDone ? Link : 'div';
         return (
           <WrapperComponent
@@ -55,9 +55,9 @@ const DashboardProgressInfo = ({ loan }: DashboardProgressInfoProps) => {
             <p>
               <T id={`DashboardProgressInfo.${id}`} />
             </p>
-            {link
-              && !Component
-              && !isDone && <Icon type="right" className="icon-arrow" />}
+            {link && !Component && !isDone && (
+              <Icon type="right" className="icon-arrow" />
+            )}
             {Component && (
               <Component {...todo} todos={todos} isDone={isDone} loan={loan} />
             )}

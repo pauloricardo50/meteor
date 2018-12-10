@@ -33,6 +33,14 @@ class CollectionService {
     return this.collection.findOne(...args);
   }
 
+  createQuery(...args) {
+    return this.collection.createQuery(...args);
+  }
+
+  getLink(...args) {
+    return this.collection.getLink(...args);
+  }
+
   addLink({
     id,
     linkName,

@@ -14,6 +14,7 @@ const BorrowerHeader = ({ tabId, loan: { _id: loanId, borrowers } }) => (
           borrowerCount={borrowers.length}
           tabId={tabId}
           index={borrowerIndex}
+          loanId={loanId}
         />
       ))}
       {borrowers.length === 1 && (

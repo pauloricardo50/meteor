@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+
 import Promotions from './promotions';
 import { PROMOTION_STATUS } from './promotionConstants';
 import UserService from '../users/UserService';
@@ -12,6 +13,7 @@ import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { sendEmail } from '../email/methodDefinitions';
 import { EMAIL_IDS } from '../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
+import PromotionOptionService from '../promotionOptions/PromotionOptionService';
 
 export class PromotionService extends CollectionService {
   constructor({ sendEmail: injectedSendEmail }) {
@@ -82,7 +84,7 @@ export class PromotionService extends CollectionService {
 
     if (!UserService.doesUserExist({ email })) {
       isNewUser = true;
-      const yannisUser = Accounts.findUserByEmail('yannis@e-potek.ch');
+      const admin = UserService.get(promotion.assignedEmployeeId);
       userId = UserService.adminCreateUser({
         options: {
           email,
@@ -92,7 +94,7 @@ export class PromotionService extends CollectionService {
           phoneNumbers: [phoneNumber],
         },
         role: ROLES.USER,
-        adminId: yannisUser && yannisUser._id,
+        adminId: admin && admin._id,
       });
     } else {
       userId = Accounts.findUserByEmail(email)._id;
@@ -129,6 +131,7 @@ export class PromotionService extends CollectionService {
 
       let ctaUrl = Meteor.settings.public.subdomains.app;
       const promotion = this.get(promotionId);
+      const assignedEmployee = UserService.get(promotion.assignedEmployeeId);
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
@@ -147,7 +150,7 @@ export class PromotionService extends CollectionService {
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
-          promotion,
+          promotion: { ...promotion, assignedEmployee },
           coverImageUrl,
           logoUrls,
           ctaUrl,
@@ -179,6 +182,19 @@ export class PromotionService extends CollectionService {
       { _id: promotionId, 'userLinks._id': userId },
       { $set: { 'userLinks.$.permissions': permissions } },
     );
+  }
+
+  removeUser({ promotionId, loanId }) {
+    const loan = LoanService.get(loanId);
+    LoanService.removeLink({
+      id: loanId,
+      linkName: 'promotionLinks',
+      linkId: promotionId,
+    });
+
+    loan.promotionOptionLinks.forEach(({ _id }) => {
+      PromotionOptionService.remove({ promotionOptionId: _id });
+    });
   }
 }
 

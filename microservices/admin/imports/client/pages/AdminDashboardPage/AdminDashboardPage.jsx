@@ -1,16 +1,31 @@
 import React from 'react';
 
-import T from 'core/components/Translation/';
+import T from 'core/components/Translation';
+import Button from 'core/components/Button';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
+import { adminLoanInsert } from 'imports/core/api/loans/index';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
-import CreateUserDialogForm from './CreateUserDialogForm';
+import { CreateUserDialogForm } from '../../components/UserDialogForm';
 import MyLoansTable from './MyLoansTable';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
   <section className="card1 card-top admin-dashboard-page">
     <h1>Admin Dashboard</h1>
 
-    <CreateUserDialogForm history={history} currentUser={currentUser} />
+    <div className="flex space-children">
+      <CreateUserDialogForm currentUser={currentUser} />
+      <Button
+        primary
+        raised
+        onClick={() =>
+          adminLoanInsert
+            .run({})
+            .then(loanId => history.push(`/loans/${loanId}`))
+        }
+      >
+        Nouvelle hypothèque
+      </Button>
+    </div>
 
     <h2 className="text-center">Mes dossiers</h2>
     <MyLoansTable currentUser={currentUser} />

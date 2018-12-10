@@ -3,8 +3,11 @@ import React from 'react';
 
 import AutoForm from 'core/components/AutoForm';
 import { getBorrowerInfoArray } from 'core/arrays/BorrowerFormArray';
+import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
 
-import T from 'core/components/Translation';
+const TranslatedAutoForm = withTranslationContext(({ doc }) => ({
+  gender: doc.gender,
+}))(AutoForm);
 
 const Info = (props) => {
   const {
@@ -15,7 +18,7 @@ const Info = (props) => {
     <section className="animated borrower-page-info flex--helper fadeIn">
       {borrowers.map(borrower => (
         <div className="borrower-page__wrapper col--50" key={borrower._id}>
-          <AutoForm
+          <TranslatedAutoForm
             inputs={getBorrowerInfoArray({
               borrowers,
               borrowerId: borrower._id,

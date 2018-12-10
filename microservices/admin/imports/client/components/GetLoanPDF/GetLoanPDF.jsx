@@ -22,9 +22,19 @@ const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
     <Button
       raised
       primary
-      onClick={handlePDF}
+      onClick={() => handlePDF({ anonymous: false })}
       loading={loading}
       style={{ marginTop: 16 }}
+    >
+      Générer PDF
+    </Button>
+
+    <Button
+      raised
+      primary
+      onClick={() => handlePDF({ anonymous: true })}
+      loading={loading}
+      style={{ marginTop: 16, marginLeft: 16 }}
     >
       Générer PDF anonyme
     </Button>
@@ -32,7 +42,7 @@ const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
       <Button
         raised
         primary
-        onClick={handleHTML}
+        onClick={() => handleHTML({ anonymous: false })}
         loading={loading}
         style={{ marginTop: 16, marginLeft: 16 }}
       >
@@ -45,10 +55,13 @@ const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
 export default compose(
   withState('loading', 'setLoading', false),
   withProps(({ setLoading, loan: { name, _id: loanId } }) => ({
-    handlePDF: () => {
+    handlePDF: ({ anonymous }) => {
       setLoading(true);
       generatePDF
-        .run({ type: PDF_TYPES.ANONYMOUS_LOAN, params: { loanId } })
+        .run({
+          type: PDF_TYPES.LOAN,
+          params: { loanId, options: { anonymous } },
+        })
         .then((base64) => {
           if (!base64) {
             return false;
@@ -63,10 +76,13 @@ export default compose(
         .catch(error => message.error(error.message, 5))
         .finally(() => setLoading(false));
     },
-    handleHTML: () => {
+    handleHTML: ({ anonymous }) => {
       setLoading(true);
       generatePDF
-        .run({ type: PDF_TYPES.ANONYMOUS_LOAN, params: { loanId, HTML: true } })
+        .run({
+          type: PDF_TYPES.LOAN,
+          params: { loanId, options: { HTML: true, anonymous } },
+        })
         .then((html) => {
           try {
             return fileSaver.saveAs(new Blob([html]), `${name}.html`);

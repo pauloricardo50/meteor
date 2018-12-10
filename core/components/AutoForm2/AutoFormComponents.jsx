@@ -7,12 +7,16 @@ import connectField from 'uniforms/connectField';
 import DefaultSubmitField from 'uniforms-material/SubmitField';
 
 import T from '../Translation';
+import { CUSTOM_AUTOFIELD_TYPES } from './constants';
+import DateField from '../DateField';
+import PercentInput from '../PercentInput';
 
 const CustomSelectField = ({ transform, ...props }) => (
   <SelectField
     {...props}
     transform={
-      transform || (option => <T id={`Forms.${props.name}.${option}`} />)
+      transform
+      || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
     }
     displayEmpty
   />
@@ -21,6 +25,20 @@ const CustomSelectField = ({ transform, ...props }) => (
 const determineComponentFromProps = (props) => {
   if (props.allowedValues) {
     return CustomSelectField;
+  }
+
+  if (
+    props.field.uniforms
+    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
+  ) {
+    return DateField;
+  }
+
+  if (
+    props.field.uniforms
+    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
+  ) {
+    return PercentInput;
   }
 
   return false;

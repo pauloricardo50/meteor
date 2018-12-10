@@ -1,2 +1,2 @@
 export { default } from './LoanBankProject';
-export LoanBankProjectStyles from './styles.js';
+export { default as LoanBankProjectStyles } from './styles.js';

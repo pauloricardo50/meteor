@@ -2,7 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCity } from '@fortawesome/pro-light-svg-icons';
 
+import { ROLES } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
 
@@ -11,10 +14,11 @@ import DropdownMenu from '../DropdownMenu';
 // a partner link for partners,
 // a home, settings, and contact link for regular users
 const getMenuItems = (currentUser) => {
-  const isDev = Roles.userIsInRole(currentUser._id, 'dev');
+  const isDev = Roles.userIsInRole(currentUser._id, ROLES.DEV);
+  const isPro = Roles.userIsInRole(currentUser._id, ROLES.PRO);
   return [
     {
-      id: 'app',
+      id: 'home',
       link: '/',
       icon: 'app',
       show: true,
@@ -31,6 +35,15 @@ const getMenuItems = (currentUser) => {
       link: '/dev',
       show: isDev,
       icon: 'developerMode',
+    },
+    {
+      id: 'pro',
+      link: '/',
+      show: Meteor.microservice === 'app' && (isPro || isDev),
+      icon: <FontAwesomeIcon icon={faCity} />,
+      onClick: () => {
+        window.location.replace(Meteor.settings.public.subdomains.pro);
+      },
     },
     {
       id: 'logout',

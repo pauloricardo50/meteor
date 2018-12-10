@@ -33,11 +33,7 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId, history } = props;
-  const {
-    borrowers,
-    properties,
-    general: { residenceType },
-  } = loan;
+  const { borrowers, properties, residenceType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
   const { address1, zipCode, city } = property;
   const { userFormsEnabled } = loan;
@@ -86,7 +82,7 @@ const SinglePropertyPage = (props) => {
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
-            formClasses="user-form"
+            formClasses="user-form user-form__info"
             inputs={getPropertyLoanArray({ loan, borrowers })}
             collection={LOANS_COLLECTION}
             doc={loan}
@@ -97,7 +93,7 @@ const SinglePropertyPage = (props) => {
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
-            formClasses="user-form"
+            formClasses="user-form user-form__info"
             inputs={getPropertyArray({ loan, borrowers, property })}
             collection={PROPERTIES_COLLECTION}
             doc={property}

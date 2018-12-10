@@ -32,4 +32,6 @@ export const fakeProperty = {
   valuation: {
     status: VALUATION_STATUS.NONE,
   },
+  qualityProfileCondition: 'INTACT',
+  qualityProfileStandard: 'AVERAGE',
 };

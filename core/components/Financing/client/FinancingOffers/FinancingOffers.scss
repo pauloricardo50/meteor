@@ -25,7 +25,7 @@
     padding: 24px;
 
     &:last-of-type {
-      margin-bottom: 0;
+      margin-bottom: 16px;
     }
 
     &.selected {
@@ -78,7 +78,7 @@
     display: flex;
     flex-wrap: wrap;
 
-     > * {
+    > * {
       margin-right: 16px;
 
       p {

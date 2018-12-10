@@ -115,6 +115,8 @@ class TextInput extends Component {
         disabled,
         money,
         required,
+        date,
+        percent,
 
         // Destructure these props to avoid warnings
         inputRef,
@@ -136,6 +138,10 @@ class TextInput extends Component {
       type = 'money';
     } else if (number) {
       type = 'number';
+    } else if (date) {
+      type = 'date';
+    } else if (percent) {
+      type = 'percent';
     } else {
       type = 'text';
     }

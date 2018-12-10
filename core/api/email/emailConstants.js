@@ -7,7 +7,7 @@ export const CTA_URL_DEFAULT = Meteor.settings.public.subdomains.app;
 export const INTERNAL_EMAIL = Meteor.settings.public.environment === 'production'
   ? FROM_EMAIL
   : 'dev@e-potek.ch';
-export const EPOTEK_PHONE = '022 566 01 10';
+export const EPOTEK_PHONE = '+41 22 566 01 10';
 
 export const EMAIL_I18N_NAMESPACE = 'emails';
 

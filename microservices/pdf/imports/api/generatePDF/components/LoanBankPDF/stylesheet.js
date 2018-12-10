@@ -1,23 +1,46 @@
-import * as styles from './utils/styleHelpers';
-import { LoanBankPageStyles } from './LoanBankPage';
 import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
-import PDFTableStyles from './utils/PDFTableStyles';
+import PDFTableStyles from '../PdfTable/PdfTableStyles';
+import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../constants';
+import PdfPageStyles from '../PdfPage/PdfPageStyles';
 
 const stylesheet = `
+    @font-face {
+        font-family: 'Eina04';
+        font-style: normal;
+        font-weight: normal;
+        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.eot') format('embedded-opentype');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.ttf') format('truetype');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Regular.woff') format('woff');
+    }
+
+    @font-face {
+        font-family: 'Eina04';
+        font-style: normal;
+        font-weight: bold;
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.eot') format('embedded-opentype');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.ttf') format('truetype');
+        src: url('https://www.e-potek.ch/fonts/Eina04_Bold.woff') format('woff');
+    }
+
+
     html {
         font-size: 12px;
-        font-family: Helvetica;
+        font-family: 'Eina04', sans-serif;
     }
+
 
     * {
         // border: 1px solid red;
+        // border-radius: 8px;
     }
 
-    @page { 
+    @page {
         size: A4;
-        margin: 3cm 1.5cm 2cm 1.5cm;
+        margin: ${MARGIN_TOP}mm ${MARGIN_SIDE}mm ${MARGIN_BOTTOM}mm ${MARGIN_SIDE}mm;
 
         @top-left {
             content: flow(top-left);
@@ -35,9 +58,10 @@ const stylesheet = `
           content: flow(footer);
         }
 
-        @bottom-right {
-           content: counter(page);
-        }
+        // @bottom-right {
+        //    content: "Page " counter(page) "/" counter(pages);
+        //    font-family: Helvetica;
+        // }
     }
 
     .top-left {
@@ -48,11 +72,11 @@ const stylesheet = `
         flow: static(top-right);
     }
 
-    .pdf-header {
+    .pdf-page-header {
         flow: static(header);
     }
 
-    .pdf-footer {
+    .pdf-page-footer {
         flow: static(footer);
     }
 
@@ -60,14 +84,15 @@ const stylesheet = `
         border: none;
         margin: 0;
         padding: 0;
+        height: 0;
         page-break-before: always;
     }
-    
+
     ${PDFTableStyles}
-    ${LoanBankPageStyles}
     ${LoanBankBorrowersStyles}
     ${LoanBankProjectStyles}
     ${LoanBankCoverStyles}
+    ${PdfPageStyles}
 `;
 
 export default stylesheet;
