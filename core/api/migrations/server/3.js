@@ -11,7 +11,6 @@ export const up = () => {
       {
         $set: {
           ...loan.general,
-          mortgageNotes: [],
           previousLoanTranches: [],
         },
         $unset: { general: 1 },
@@ -51,7 +50,6 @@ export const down = () => {
           currentOwner: 1,
           futureOwner: 1,
           otherOwner: 1,
-          mortgageNotes: 1,
         },
       },
     )));
@@ -59,8 +57,7 @@ export const down = () => {
 
 Migrations.add({
   version: 3,
-  name:
-    'Remove general from loans, and add previousLoanTranches and mortgageNotes',
+  name: 'Remove general from loans, and add previousLoanTranches',
   up,
   down,
 });
