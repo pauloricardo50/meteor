@@ -7,6 +7,7 @@ import {
   pushBorrowerValue,
   popBorrowerValue,
   pullBorrowerValue,
+  getReusableBorrowers,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -16,27 +17,32 @@ borrowerInsert.setHandler((context, { borrower, userId }) =>
     userId: checkInsertUserId(userId),
   }));
 
-borrowerUpdate.setHandler((context, { borrowerId, object }) => {
-  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.update({ borrowerId, object });
+borrowerUpdate.setHandler((context, params) => {
+  SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);
+  return BorrowerService.update(params);
 });
 
-borrowerDelete.setHandler((context, { borrowerId }) => {
-  SecurityService.borrowers.isAllowedToDelete(borrowerId);
-  return BorrowerService.remove({ borrowerId });
+borrowerDelete.setHandler((context, params) => {
+  SecurityService.borrowers.isAllowedToDelete(params.borrowerId);
+  return BorrowerService.remove(params);
 });
 
-pushBorrowerValue.setHandler((context, { borrowerId, object }) => {
-  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.pushValue({ borrowerId, object });
+pushBorrowerValue.setHandler((context, params) => {
+  SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);
+  return BorrowerService.pushValue(params);
 });
 
-popBorrowerValue.setHandler((context, { borrowerId, object }) => {
-  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.popValue({ borrowerId, object });
+popBorrowerValue.setHandler((context, params) => {
+  SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);
+  return BorrowerService.popValue(params);
 });
 
-pullBorrowerValue.setHandler((context, { borrowerId, object }) => {
-  SecurityService.borrowers.isAllowedToUpdate(borrowerId);
-  return BorrowerService.pullValue({ borrowerId, object });
+pullBorrowerValue.setHandler((context, params) => {
+  SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);
+  return BorrowerService.pullValue(params);
+});
+
+getReusableBorrowers.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return BorrowerService.getReusableBorrowers({ ...params });
 });

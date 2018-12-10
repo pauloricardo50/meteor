@@ -20,6 +20,7 @@ import {
   selectStructure,
   duplicateStructure,
   assignLoanToUser,
+  switchBorrower,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -130,4 +131,9 @@ duplicateStructure.setHandler(duplicateStructureHandler);
 assignLoanToUser.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsAdmin(userId);
   LoanService.assignLoanToUser(params);
+});
+
+switchBorrower.setHandler(({ userId }, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return LoanService.switchBorrower(params);
 });

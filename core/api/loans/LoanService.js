@@ -289,10 +289,7 @@ export class LoanService extends CollectionService {
   }
 
   assignLoanToUser({ loanId, userId }) {
-    const {
-      propertyIds = [],
-      borrowerIds = [],
-    } = this.createQuery({
+    const { propertyIds = [], borrowerIds = [] } = this.createQuery({
       $filters: { _id: loanId },
       propertyIds: 1,
       borrowerIds: 1,
@@ -306,6 +303,30 @@ export class LoanService extends CollectionService {
     borrowerIds.forEach((borrowerId) => {
       BorrowerService.update({ borrowerId, object });
     });
+  }
+
+  switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
+    const { borrowerIds } = this.get(loanId);
+    const { loans: oldBorrowerLoans = [] } = BorrowerService.createQuery({
+      $filters: { _id: oldBorrowerId },
+      loans: { name: 1 },
+    }).fetchOne();
+
+    if (borrowerIds.includes(borrowerId)) {
+      throw new Meteor.Error('Cet emprunteur est déjà sur ce prêt hypothécaire');
+    }
+
+    this.update({
+      loanId,
+      object: {
+        borrowerIds: borrowerIds.map(id =>
+          (id === oldBorrowerId ? borrowerId : id)),
+      },
+    });
+
+    if (oldBorrowerLoans.length === 1 && oldBorrowerLoans[0]._id === loanId) {
+      BorrowerService.remove({ borrowerId: oldBorrowerId });
+    }
   }
 }
 
