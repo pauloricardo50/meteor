@@ -70,8 +70,8 @@ const LoanSchema = new SimpleSchema({
   },
   residenceType: {
     type: String,
-    defaultValue: RESIDENCE_TYPE.MAIN_RESIDENCE,
     allowedValues: Object.values(RESIDENCE_TYPE),
+    optional: true,
   },
   canton: {
     type: String,
