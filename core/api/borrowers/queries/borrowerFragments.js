@@ -26,6 +26,7 @@ export const loanBorrowerFragment = {
   bonus2017: 1,
   bonus2018: 1,
   bonusExists: 1,
+  canton: 1,
   childrenCount: 1,
   citizenship: 1,
   city: 1,

@@ -19,6 +19,7 @@ export const adminValuation = {
 export const propertySummaryFragment = {
   address1: 1,
   address2: 1,
+  canton: 1,
   city: 1,
   insideArea: 1,
   promotion: { name: 1 },
@@ -31,16 +32,17 @@ export const propertySummaryFragment = {
 };
 
 export const propertyPromotionFragment = {
-  name: 1,
-  value: 1,
   address: 1,
-  insideArea: 1,
-  terraceArea: 1,
-  gardenArea: 1,
-  roomCount: 1,
   bathroomCount: 1,
+  canton: 1,
   description: 1,
+  gardenArea: 1,
+  insideArea: 1,
   monthlyExpenses: 1,
+  name: 1,
+  roomCount: 1,
+  terraceArea: 1,
+  value: 1,
 };
 
 export const fullPropertyFragment = {

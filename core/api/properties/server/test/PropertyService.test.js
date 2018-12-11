@@ -17,6 +17,7 @@ describe('PropertyService', () => {
   beforeEach(() => {
     resetDatabase();
   });
+
   describe('evaluateProperty', () => {
     it('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
@@ -111,5 +112,21 @@ describe('PropertyService', () => {
         expect(property.valuation).to.have.property('microlocation');
       });
     }).timeout(10000);
+  });
+
+  describe('canton autovalue', () => {
+    it('sets the canton on the property', () => {
+      const propertyId = Factory.create('property', { zipCode: 1400 })._id;
+      const property = PropertyService.get(propertyId);
+
+      expect(property.canton).to.equal('VD');
+    });
+
+    it('removes the canton if an invalid zipcode is given', () => {
+      const propertyId = Factory.create('property', { zipCode: 75000 })._id;
+      const property = PropertyService.get(propertyId);
+
+      expect(property.canton).to.equal(null);
+    });
   });
 });
