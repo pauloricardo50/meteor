@@ -28,8 +28,6 @@ addContactToOrgnaisation.setHandler((context, { organisationId, contactId, metad
     id: organisationId,
     linkName: 'contacts',
     linkId: contactId,
-    multi: false,
-    hasMeta: true,
     metadata,
   });
 });
