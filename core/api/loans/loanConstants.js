@@ -45,6 +45,7 @@ export const CANTONS = {
   VS: 'Valais',
   ZG: 'Zug',
   ZH: 'Zürich',
+  LI: 'Liechtenstein',
 };
 
 export const OWNER = {
