@@ -6,6 +6,7 @@ import {
   updatedAt,
   additionalDocuments,
   address,
+  mortgageNotesSchema,
 } from '../helpers/sharedSchemas';
 import * as propertyConstants from './propertyConstants';
 import { initialDocuments } from './propertiesAdditionalDocuments';
@@ -351,6 +352,7 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
   ...additionalDocuments(initialDocuments),
+  ...mortgageNotesSchema,
 });
 
 const protectedKeys = [

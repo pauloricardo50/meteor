@@ -30,6 +30,7 @@ export * from './users/userConstants';
 export * from './wuest/wuestConstants';
 export * from './security/constants';
 export * from './irs10y/irs10yConstants';
+export * from './helpers/sharedSchemaConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';

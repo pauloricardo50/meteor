@@ -5,6 +5,7 @@ import {
   updatedAt,
   additionalDocuments,
   address,
+  mortgageNotesSchema,
 } from '../helpers/sharedSchemas';
 import {
   BORROWERS_COLLECTION,
@@ -187,6 +188,7 @@ export const BorrowerSchema = new SimpleSchema({
     blackbox: true,
   },
   ...additionalDocuments(initialDocuments),
+  ...mortgageNotesSchema,
 });
 
 const protectedKeys = [
