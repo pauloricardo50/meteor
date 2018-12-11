@@ -17,6 +17,6 @@ export * from '../tasks/methodDefinitions';
 export * from '../users/methodDefinitions';
 export * from '../interestRates/methodDefinitions';
 export * from '../irs10y/methodDefinitions';
-export * from '../partners/methodDefinitions';
+export * from '../contacts/methodDefinitions';
 
 export * from './methodDefinitions';

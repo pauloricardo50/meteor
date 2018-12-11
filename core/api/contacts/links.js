@@ -1,8 +1,8 @@
-import Partners from '.';
+import Contacts from '.';
 
 import { Users, Organisations } from '..';
 
-Partners.addLinks({
+Contacts.addLinks({
   user: {
     collection: Users,
     field: 'userLink',
@@ -11,6 +11,6 @@ Partners.addLinks({
   },
   organisation: {
     collection: Organisations,
-    inversedBy: 'partners',
+    inversedBy: 'contacts',
   },
 });

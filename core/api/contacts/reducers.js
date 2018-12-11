@@ -1,7 +1,7 @@
 import { addressReducer, tasksReducer } from '../reducers';
-import Partners from './partners';
+import Contacts from './contacts';
 
-Partners.addReducers({
+Contacts.addReducers({
   name: {
     body: {
       firstName: 1,

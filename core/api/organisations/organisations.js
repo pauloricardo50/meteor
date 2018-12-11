@@ -31,8 +31,8 @@ export const OrganisationSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  partnerIds: { type: Array, optional: true },
-  'partnerIds.$': String,
+  contactIds: { type: Array, optional: true },
+  'contactIds.$': String,
 });
 
 Organisations.attachSchema(OrganisationSchema);

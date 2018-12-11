@@ -1,4 +1,4 @@
-export const partnerFragment = {
+export const contactFragment = {
   firstName: 1,
   lastName: 1,
   name: 1,

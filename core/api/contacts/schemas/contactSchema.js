@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { createdAt, updatedAt, address } from '../../helpers/sharedSchemas';
 
-const PartnerSchema = new SimpleSchema({
+const ContactSchema = new SimpleSchema({
   createdAt,
   updatedAt,
   firstName: String,
@@ -15,4 +15,4 @@ const PartnerSchema = new SimpleSchema({
   userLink: { type: String, optional: true },
 });
 
-export default PartnerSchema;
+export default ContactSchema;
