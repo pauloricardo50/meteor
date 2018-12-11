@@ -27,6 +27,8 @@ import SingleUserPage from '../../client/pages/SingleUserPage';
 import TasksPage from '../../client/pages/TasksPage';
 import UsersPage from '../../client/pages/UsersPage';
 import InterestRatesPage from '../../client/pages/InterestRatesPage';
+import ContactsPage from '../../client/pages/ContactsPage';
+import SingleContactPage from '../../client/pages/SingleContactPage';
 
 import AdminStore from '../../client/components/AdminStore';
 
@@ -84,6 +86,11 @@ const AdminRouter = () => (
         <Route
           path={adminRoutes.INTEREST_RATES_PAGE}
           component={InterestRatesPage}
+        />
+        <Route path={adminRoutes.CONTACTS_PAGE} component={ContactsPage} />
+        <Route
+          path={adminRoutes.SINGLE_CONTACT_PAGE}
+          component={SingleContactPage}
         />
         <Route path={adminRoutes.DEV_PAGE} component={DevPage} />
         <Route component={NotFound} />
