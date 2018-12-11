@@ -4,6 +4,7 @@ import {
   organisationInsert,
   organisationUpdate,
   organisationRemove,
+  addContactToOrgnaisation,
 } from '../methodDefinitions';
 
 organisationInsert.setHandler((context, { organisation }) => {
@@ -19,4 +20,16 @@ organisationUpdate.setHandler((context, { organisationId, object }) => {
 organisationRemove.setHandler((context, { organisationId }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return OrganisationService.remove(organisationId);
+});
+
+addContactToOrgnaisation.setHandler((context, { organisationId, contactId, metadata }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return OrganisationService.addLink({
+    id: organisationId,
+    linkName: 'contacts',
+    linkId: contactId,
+    multi: false,
+    hasMeta: true,
+    metadata,
+  });
 });

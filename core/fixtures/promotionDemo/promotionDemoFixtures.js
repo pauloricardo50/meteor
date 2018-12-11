@@ -110,13 +110,13 @@ const createLots = (promotionId) => {
     lotIds.forEach(lotId =>
       PromotionLotService.addLink({
         id: promotionLotId,
-        linkName: 'lotLinks',
+        linkName: 'lots',
         linkId: lotId,
       }));
     lotIds.forEach(lotId =>
       PromotionService.addLink({
         id: promotionId,
-        linkName: 'lotLinks',
+        linkName: 'lots',
         linkId: lotId,
       }));
   });
