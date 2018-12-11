@@ -1,16 +1,15 @@
 import { propertyPromotionFragment } from '../../../properties/queries/propertyFragments';
 
 export const basePromotionFragment = {
-  createdAt: 1,
-  updatedAt: 1,
-  name: 1,
-  type: 1,
-  status: 1,
   address: 1,
   address1: 1,
-  zipCode: 1,
+  availablePromotionLots: 1,
+  bookedPromotionLots: 1,
+  canton: 1,
   city: 1,
-  properties: propertyPromotionFragment,
+  contacts: 1,
+  createdAt: 1,
+  loans: { _id: 1 },
   lots: {
     value: 1,
     name: 1,
@@ -19,6 +18,7 @@ export const basePromotionFragment = {
     promotionLots: { name: 1 },
     status: 1,
   },
+  name: 1,
   promotionLots: {
     _id: 1,
     status: 1,
@@ -27,12 +27,13 @@ export const basePromotionFragment = {
     promotionOptions: { _id: 1 },
     name: 1,
   },
-  users: { _id: 1, name: 1, email: 1, roles: 1 },
-  loans: { _id: 1 },
+  properties: propertyPromotionFragment,
   soldPromotionLots: 1,
-  bookedPromotionLots: 1,
-  availablePromotionLots: 1,
-  contacts: 1,
+  status: 1,
+  type: 1,
+  updatedAt: 1,
+  users: { _id: 1, name: 1, email: 1, roles: 1 },
+  zipCode: 1,
 };
 
 export const proPromotionFragment = {
