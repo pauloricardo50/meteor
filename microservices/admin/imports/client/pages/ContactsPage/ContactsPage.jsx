@@ -9,7 +9,8 @@ type ContactsPageProps = {
 };
 
 const ContactsPage = ({ contacts }: ContactsPageProps) => (
-  <div className="card1">
+  <div className="card1 card-top">
+    {console.log('contacts', contacts)}
     <InsertContactDialogForm />
     <ContactsTable contacts={contacts} />
   </div>

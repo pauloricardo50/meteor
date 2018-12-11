@@ -58,7 +58,9 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
     return {
       link: `/organisations/${docId}`,
       icon: <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />,
-      text: data.name,
+      text: data.$metadata.role
+        ? `${data.$metadata.role} @${data.name}`
+        : data.name,
     };
   case 'NOT_FOUND':
     return {

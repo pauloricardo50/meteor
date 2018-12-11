@@ -6,6 +6,7 @@ import T from 'imports/core/components/Translation/Translation';
 import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import { createRoute } from 'imports/core/utils/routerUtils';
+import Organisations from 'imports/core/api/organisations/index';
 
 const columnOptions = [
   { id: 'firstName', label: <T id="Forms.firstName" /> },
@@ -22,9 +23,8 @@ const makeMapContact = ({ history }) => (contact) => {
     lastName,
     email,
     phoneNumber,
-    organisation,
+    organisations,
   } = contact;
-  const { name: organisationName } = organisation || {};
 
   return {
     id: contactId,
@@ -38,17 +38,18 @@ const makeMapContact = ({ history }) => (contact) => {
         label: lastName,
       },
       {
-        raw: organisationName,
-        label: organisationName ? (
-          <CollectionIconLink
-            relatedDoc={{
-              ...organisation,
-              collection: ORGANISATIONS_COLLECTION,
-            }}
-          />
-        ) : (
-          "N'est lié à aucune organisation"
-        ),
+        raw: organisations && organisations.length > 0 && organisations[0].name,
+        label: organisations && organisations.length > 0 ? organisations.map(organisation => (
+            <CollectionIconLink
+              key={organisation._id}
+              relatedDoc={{
+                ...organisation,
+                collection: ORGANISATIONS_COLLECTION,
+              }}
+            />
+          )) : (
+            "N'est lié à aucune organisation"
+          ),
       },
       {
         raw: email,

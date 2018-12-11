@@ -9,7 +9,7 @@ Contacts.addLinks({
     type: 'one',
     metadata: true,
   },
-  organisation: {
+  organisations: {
     collection: Organisations,
     inversedBy: 'contacts',
   },

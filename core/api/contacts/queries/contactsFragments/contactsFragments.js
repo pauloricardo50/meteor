@@ -7,5 +7,5 @@ export const contactFragment = {
   phoneNumber: 1,
   emails: 1,
   email: 1,
-  organisation: { name: 1, _id: 1 },
+  organisations: { name: 1, _id: 1 },
 };
