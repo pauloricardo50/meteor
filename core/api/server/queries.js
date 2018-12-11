@@ -11,3 +11,4 @@ import '../tasks/queries/exposures';
 import '../users/queries/exposures';
 import '../interestRates/queries/exposures';
 import '../irs10y/queries/exposures';
+import '../partners/queries/exposures';
