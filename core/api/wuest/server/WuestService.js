@@ -493,7 +493,7 @@ class WuestService {
             countryIsoCode: 'CH',
           },
           residenceType:
-              wuestConstants.WUEST_RESIDENCE_TYPE[
+              loanResidenceType && wuestConstants.WUEST_RESIDENCE_TYPE[
                 invert(RESIDENCE_TYPE)[loanResidenceType]
               ],
           houseType,
