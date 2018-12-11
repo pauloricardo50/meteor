@@ -1,5 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
+import { CANTONS } from '../loans/loanConstants';
+import zipcodes from '../../utils/zipcodes';
 
 export const createdAt = {
   type: Date,
@@ -50,10 +52,13 @@ export const address = {
     type: String,
     optional: true,
   },
-  isForeignAddress: {
-    type: Boolean,
+  canton: {
+    type: String,
+    allowedValues: Object.keys(CANTONS),
     optional: true,
-    defaultValue: false,
+    autoValue() {
+      return zipcodes(this.field('zipCode').value);
+    },
   },
 };
 
