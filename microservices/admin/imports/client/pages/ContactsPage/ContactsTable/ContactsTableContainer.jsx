@@ -39,17 +39,18 @@ const makeMapContact = ({ history }) => (contact) => {
       },
       {
         raw: organisations && organisations.length > 0 && organisations[0].name,
-        label: organisations && organisations.length > 0 ? organisations.map(organisation => (
-            <CollectionIconLink
-              key={organisation._id}
-              relatedDoc={{
-                ...organisation,
-                collection: ORGANISATIONS_COLLECTION,
-              }}
-            />
-          )) : (
-            "N'est lié à aucune organisation"
-          ),
+        label:
+          organisations && organisations.length > 0
+            ? organisations.map(organisation => (
+              <CollectionIconLink
+                key={organisation._id}
+                relatedDoc={{
+                  ...organisation,
+                  collection: ORGANISATIONS_COLLECTION,
+                }}
+              />
+            ))
+            : "N'est lié à aucune organisation",
       },
       {
         raw: email,
