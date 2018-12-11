@@ -20,23 +20,13 @@ const schema = new SimpleSchema({
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting }) => ({
+  withProps(() => ({
     schema,
     insertContact: contact => contactInsert.run({ contact }),
     modifyContact: (data) => {
       const { _id: contactId, ...object } = data;
-      setSubmitting(true);
-      return contactUpdate
-        .run({ contactId, object })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
+      return contactUpdate.run({ contactId, object });
     },
-    removeContact: (contactId) => {
-      setSubmitting(true);
-      return contactRemove
-        .run({ contactId })
-        .then(() => setOpen(false))
-        .finally(() => setSubmitting(false));
-    },
+    removeContact: contactId => contactRemove.run({ contactId }),
   })),
 );
