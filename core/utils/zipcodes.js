@@ -4,7 +4,7 @@ import { CANTONS } from '../api/constants';
 // cantons in an array, sorted by short form ('GE', 'ZH')
 export const zipcodes = {
   1000: 22,
-  1201: 7,
+  1200: 7, // Edited to allow 1200 to be used as a zipcode in geneva
   1260: 22,
   1281: 7,
   1291: 22,

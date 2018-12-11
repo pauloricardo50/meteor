@@ -12,6 +12,10 @@ describe('zipcodes', () => {
     expect(zipcodes(9485)).to.equal('LI');
   });
 
+  it('allows using 1200 for geneva', () => {
+    expect(zipcodes(1200)).to.equal('GE');
+  });
+
   it('returns null if no canton is found', () => {
     expect(zipcodes(100)).to.equal(null);
     expect(zipcodes(100)).to.equal(null);
