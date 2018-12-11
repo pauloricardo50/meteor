@@ -18,6 +18,7 @@ export const PURCHASE_TYPE = {
   CONSTRUCTION: 'CONSTRUCTION',
 };
 
+// Keep these sorted alphabetically for zipcode search to work
 export const CANTONS = {
   AG: 'Aargau',
   AR: 'Appenzell Ausserrhoden',
