@@ -1,6 +1,11 @@
-import { Offers } from 'core/api';
+import Offers from '.';
+import CollectionService from '../helpers/CollectionService';
 
-export class OfferService {
+export class OfferService extends CollectionService {
+  constructor() {
+    super(Offers);
+  }
+
   update = ({ offerId, object }) => Offers.update(offerId, { $set: object });
 
   insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });

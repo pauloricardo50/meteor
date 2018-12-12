@@ -10,6 +10,7 @@ import LoanService from '../../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/BorrowerService';
 import PropertyService from '../../../properties/PropertyService';
+import OfferService from '../../../offers/OfferService';
 
 describe('LoanService', () => {
   let loanId;
@@ -36,7 +37,7 @@ describe('LoanService', () => {
     });
   });
 
-  describe.only('remove', () => {
+  describe('remove', () => {
     it('removes the borrowers via a before remove hook', () => {
       // Add other borrowers to simulate a real DB
       const otherBorrower = Factory.create('borrower')._id;
@@ -62,7 +63,7 @@ describe('LoanService', () => {
       expect(PropertyService.find({}).count()).to.equal(0);
     });
 
-    it('does not autoremove if a borrower is linked to multiple loans', () => {
+    it('does not remove if a borrower is linked to multiple loans', () => {
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
       Factory.create('loan', { borrowerIds: [borrowerId] });
@@ -74,6 +75,19 @@ describe('LoanService', () => {
 
       expect(LoanService.find({}).count()).to.equal(1);
       expect(BorrowerService.find({}).count()).to.equal(1);
+    });
+
+    it('autoremoves offers', () => {
+      loanId = Factory.create('loan')._id;
+      Factory.create('offer', { loanId });
+      Factory.create('offer', { loanId });
+      Factory.create('offer', { loanId });
+
+      expect(OfferService.find({}).count()).to.equal(3)
+      
+      LoanService.remove({ loanId });
+
+      expect(OfferService.find({}).count()).to.equal(0)
     });
   });
 
