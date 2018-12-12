@@ -9,7 +9,6 @@ module.exports = function (plop) {
         .get(command, (err, data, stderr) => {
           if (stderr || err) {
             console.error(`Error while executing command ${command}: ${stderr || err}`);
-            reject('Cannot format files');
           }
           resolve('Successfully formatted files');
         })
