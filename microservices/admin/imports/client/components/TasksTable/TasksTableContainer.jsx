@@ -33,7 +33,7 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
     completedAt,
     assignedEmployee,
   } = task;
-  const { collection, _id: relatedDocId } = relatedDoc;
+  const { collection } = relatedDoc;
 
   return {
     id: taskId,
@@ -50,9 +50,15 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
         raw: status,
         label: <StatusLabel status={status} collection={TASKS_COLLECTION} />,
       },
-      formatDateTime(createdAt),
-      formatDateTime(dueAt),
-      formatDateTime(completedAt),
+      {
+        raw: createdAt && createdAt.getTime(),
+        label: formatDateTime(createdAt),
+      },
+      { raw: dueAt && dueAt.getTime(), label: formatDateTime(dueAt) },
+      {
+        raw: completedAt && completedAt.getTime(),
+        label: formatDateTime(completedAt),
+      },
       {
         label:
           assignedEmployee && assignedEmployee._id ? (

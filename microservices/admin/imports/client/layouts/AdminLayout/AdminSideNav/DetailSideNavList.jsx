@@ -5,7 +5,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Loading from 'core/components/Loading';
-import T from 'core/components/Translation';
 import Roles from 'core/components/Roles';
 import { toMoney } from 'core/utils/conversionFunctions';
 import {

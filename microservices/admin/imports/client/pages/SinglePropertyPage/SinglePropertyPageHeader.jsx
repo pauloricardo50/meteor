@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'core/components/Link';
 
-import { T, MetricArea, Money } from 'core/components/Translation';
+import { T, Money } from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import { propertyDelete } from 'imports/core/api/methods/index';
 import { getPropertyAddress } from './SinglePropertyPage';
 
 const SinglePropertyHeader = ({
   property: {
+    _id: propertyId,
     address1,
     city,
     zipCode,
@@ -20,29 +23,26 @@ const SinglePropertyHeader = ({
 }) => (
   <div className="single-property-page-header">
     <div className="top">
-      <h1>
-        {getPropertyAddress({ address1, city, zipCode }) || (
-          <T id="general.property" />
-        )}
-      </h1>
+      <div>
+        <h1>
+          {getPropertyAddress({ address1, city, zipCode }) || (
+            <T id="general.property" />
+          )}
+        </h1>
+      </div>
+      <div>
+        <ConfirmMethod
+          label="Supprimer"
+          method={() => propertyDelete.run({ propertyId })}
+        />
+      </div>
     </div>
 
     <h2>
       <Money value={value} />
     </h2>
 
-    <p className="secondary">
-      {roomCount && (
-        <T
-          id="SinglePropertyPageHeader.roomCount"
-          values={{ value: roomCount }}
-        />
-      )}
-      {insideArea && [', ', <MetricArea value={insideArea} key="insideArea" />]}
-    </p>
-
-    {/* TODO: This can be uncommented once PDFs can be generated */}
-    {/* <div className="bottom">
+    <div className="bottom">
       <p className="created-at">
         {user && (
           <T
@@ -57,19 +57,8 @@ const SinglePropertyHeader = ({
             }}
           />
         )}
-
-        {user
-          && user.assignedEmployee && (
-          <span>
-            {' - '}
-            <T id="SinglePropertyPageHeader.assignedTo" />{' '}
-            <Link to={`/users/${user.assignedEmployee._id}`}>
-              {user.assignedEmployee.email}
-            </Link>
-          </span>
-        )}
       </p>
-    </div> */}
+    </div>
   </div>
 );
 

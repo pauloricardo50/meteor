@@ -4,8 +4,10 @@ import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
 import { IntlNumber } from 'core/components/Translation';
+import { CollectionIconLink } from 'core/components/IconLink';
 import { withSmartQuery } from 'core/api';
 import adminProperties from 'core/api/properties/queries/adminProperties';
+import { USERS_COLLECTION, PROPERTY_CATEGORY } from 'core/api/constants';
 import PropertyRelatedDoc from './PropertyRelatedDoc';
 
 const mapProperty = history => ({
@@ -30,10 +32,21 @@ const mapProperty = history => ({
       promotion={promotion}
       key="relatedTo"
     />,
-    name || `${address1}, ${city}`,
-    user && user.name,
-    moment(createdAt).format('D.M.YY à H:mm'),
-    moment(updatedAt).fromNow(),
+    name || [address1, city].filter(x => x).join(', '),
+    category !== PROPERTY_CATEGORY.PROMOTION && (
+      <CollectionIconLink
+        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+        key="user"
+      />
+    ),
+    {
+      raw: createdAt && createdAt.getTime(),
+      label: moment(createdAt).format('D.M.YY à H:mm'),
+    },
+    {
+      raw: updatedAt && updatedAt.getTime(),
+      label: moment(updatedAt).fromNow(),
+    },
     value,
     expertiseValue,
   ],

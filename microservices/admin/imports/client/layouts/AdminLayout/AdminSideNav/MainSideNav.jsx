@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity, faBriefcase, faChartLine } from '@fortawesome/pro-light-svg-icons';
+import {
+  faCity,
+  faBriefcase,
+  faChartLine,
+} from '@fortawesome/pro-light-svg-icons';
 
 import {
   BORROWERS_COLLECTION,
@@ -34,11 +38,11 @@ const items = [
     collection: PROMOTIONS_COLLECTION,
     detail: true,
   },
-  // {
-  //   icon: 'people',
-  //   detail: true,
-  //   collection: BORROWERS_COLLECTION,
-  // },
+  {
+    icon: 'people',
+    detail: true,
+    collection: BORROWERS_COLLECTION,
+  },
   {
     icon: 'domain',
     detail: true,
