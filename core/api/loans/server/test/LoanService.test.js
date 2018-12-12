@@ -9,6 +9,7 @@ import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/BorrowerService';
+import PropertyService from '../../../properties/PropertyService';
 
 describe('LoanService', () => {
   let loanId;
@@ -549,6 +550,58 @@ describe('LoanService', () => {
 
       expect(() =>
         LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId })).to.throw('déjà');
+    });
+  });
+
+  describe.only('assignLoanToUser', () => {
+    it('assigns all properties and borrowers to the new user', () => {
+      const userId = Factory.create('user')._id;
+      const borrowerId1 = Factory.create('borrower')._id;
+      const borrowerId2 = Factory.create('borrower')._id;
+      const propertyId1 = Factory.create('property')._id;
+      const propertyId2 = Factory.create('property')._id;
+      loanId = Factory.create('loan', {
+        borrowerIds: [borrowerId1, borrowerId2],
+        propertyIds: [propertyId1, propertyId2],
+      })._id;
+
+      LoanService.assignLoanToUser({ loanId, userId });
+
+      expect(LoanService.get(loanId).userId).to.equal(userId);
+      expect(BorrowerService.get(borrowerId1).userId).to.equal(userId);
+      expect(BorrowerService.get(borrowerId2).userId).to.equal(userId);
+      expect(PropertyService.get(propertyId1).userId).to.equal(userId);
+      expect(PropertyService.get(propertyId2).userId).to.equal(userId);
+    });
+
+    it('throws if a borrower is assigned to multiple loans', () => {
+      const borrowerId1 = Factory.create('borrower')._id;
+      const borrowerId2 = Factory.create('borrower')._id;
+
+      loanId = Factory.create('loan', {
+        borrowerIds: [borrowerId1],
+      })._id;
+      Factory.create('loan', {
+        borrowerIds: [borrowerId1, borrowerId2],
+      });
+
+      expect(() => LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to
+        .throw('emprunteur');
+    });
+
+    it('throws if a property is assigned to multiple loans', () => {
+      const propertyId1 = Factory.create('property')._id;
+      const propertyId2 = Factory.create('property')._id;
+
+      loanId = Factory.create('loan', {
+        propertyIds: [propertyId1],
+      })._id;
+      Factory.create('loan', {
+        propertyIds: [propertyId2, propertyId1],
+      });
+
+      expect(() => LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to
+        .throw('bien immobilier');
     });
   });
 });
