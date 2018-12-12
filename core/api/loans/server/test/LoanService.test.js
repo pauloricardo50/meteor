@@ -438,6 +438,22 @@ describe('LoanService', () => {
     });
   });
 
+  describe('loan name regEx', () => {
+    it('allows loan names with correct format', () => {
+      expect(() => Factory.create('loan', { name: '18-0202' })).to.not.throw();
+    });
+
+    it('does not allow loan names with incorrect format', () => {
+      expect(() => Factory.create('loan', { name: '18-202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '1-202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '18202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '0202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: 'abc' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '18-a202' })).to.throw('regular expression');
+    });
+  });
+
   describe('cleanupRemovedBorrower', () => {
     it('removes all occurences of a borrower in structures', () => {
       const borrowerId = 'dude';
