@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'core/components/Link';
 
-import { T, MetricArea, Money } from 'core/components/Translation';
+import { T, Money } from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { propertyDelete } from 'imports/core/api/methods/index';
@@ -41,16 +41,6 @@ const SinglePropertyHeader = ({
     <h2>
       <Money value={value} />
     </h2>
-
-    <p className="secondary">
-      {roomCount && (
-        <T
-          id="SinglePropertyPageHeader.roomCount"
-          values={{ value: roomCount }}
-        />
-      )}
-      {insideArea && [', ', <MetricArea value={insideArea} key="insideArea" />]}
-    </p>
 
     <div className="bottom">
       <p className="created-at">
