@@ -54,7 +54,10 @@ const mapLoan = history => (loan) => {
         key="status"
         collection={LOANS_COLLECTION}
       />,
-      moment(updatedAt).fromNow(),
+      {
+        raw: updatedAt && updatedAt.getTime(),
+        label: moment(updatedAt).fromNow(),
+      },
       property ? property.value : 'Pas choisi',
       wantedLoan,
       <ProgressCell loan={loan} key="progress" />,

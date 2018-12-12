@@ -35,8 +35,14 @@ const mapBorrower = ({ history }) => (
         key={loan._id}
       />
     )),
-    moment(createdAt).format('D MMM YY à HH:mm'),
-    moment(updatedAt).fromNow(),
+    {
+      raw: createdAt && createdAt.getTime(),
+      label: moment(createdAt).format('D MMM YY à HH:mm'),
+    },
+    {
+      raw: updatedAt && updatedAt.getTime(),
+      label: moment(updatedAt).fromNow(),
+    },
   ],
   handleClick: () => history.push(`/borrowers/${borrowerId}`),
 });
