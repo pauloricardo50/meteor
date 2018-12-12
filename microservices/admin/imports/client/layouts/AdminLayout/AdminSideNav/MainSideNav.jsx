@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity, faBriefcase, faChartLine } from '@fortawesome/pro-light-svg-icons';
+import {
+  faCity,
+  faBriefcase,
+  faChartLine,
+} from '@fortawesome/pro-light-svg-icons';
 
 import {
   BORROWERS_COLLECTION,

@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 import Icon from 'core/components/Icon';
-import colors from 'core/config/colors';
 import T from 'core/components/Translation';
+import { compose } from 'recompose';
 
 const styles = () => ({
   root: {
@@ -25,11 +24,15 @@ const MainSideNavListItem = ({
   collection,
   collectionName,
   to,
+  history,
 }) => (
   <ListItem
     button
     classes={classes}
     onClick={onClick}
+    onDoubleClick={() => {
+      history.push(`/${collection}`);
+    }}
     component={!detail ? NavLink : undefined}
     to={!detail ? to : undefined}
   >
@@ -66,4 +69,7 @@ MainSideNavListItem.defaultProps = {
   to: undefined,
 };
 
-export default withStyles(styles)(MainSideNavListItem);
+export default compose(
+  withStyles(styles),
+  withRouter,
+)(MainSideNavListItem);
