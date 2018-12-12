@@ -2,16 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import FullDate from 'core/components/dateComponents/FullDate';
 import { USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { borrowerDelete } from 'core/api';
 
 const SingleBorrowerHeader = ({
-  borrower: { address1, age, gender, name, createdAt, updatedAt, user },
+  borrower: {
+    address1,
+    age,
+    gender,
+    name,
+    createdAt,
+    updatedAt,
+    user,
+    _id: borrowerId,
+  },
 }) => (
   <div className="single-borrower-page-header">
     <div className="top">
-      <h1>{name || <T id="general.borrower" />}</h1>
+      <div>
+        <h1>{name || <T id="general.borrower" />}</h1>
+      </div>
+      <div>
+        <ConfirmMethod
+          label="Supprimer"
+          method={() => borrowerDelete.run({ borrowerId })}
+        />
+      </div>
     </div>
 
     {gender && age && address1 && (
