@@ -83,11 +83,11 @@ describe('LoanService', () => {
       Factory.create('offer', { loanId });
       Factory.create('offer', { loanId });
 
-      expect(OfferService.find({}).count()).to.equal(3)
-      
+      expect(OfferService.find({}).count()).to.equal(3);
+
       LoanService.remove({ loanId });
 
-      expect(OfferService.find({}).count()).to.equal(0)
+      expect(OfferService.find({}).count()).to.equal(0);
     });
   });
 

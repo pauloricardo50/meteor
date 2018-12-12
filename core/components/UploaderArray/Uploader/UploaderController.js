@@ -1,4 +1,4 @@
-import {Meteor} from 'meteor/meteor'
+import { Meteor } from 'meteor/meteor';
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
 import bert from 'core/utils/bert';
