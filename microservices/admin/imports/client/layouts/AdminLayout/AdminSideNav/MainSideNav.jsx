@@ -34,11 +34,11 @@ const items = [
     collection: PROMOTIONS_COLLECTION,
     detail: true,
   },
-  // {
-  //   icon: 'people',
-  //   detail: true,
-  //   collection: BORROWERS_COLLECTION,
-  // },
+  {
+    icon: 'people',
+    detail: true,
+    collection: BORROWERS_COLLECTION,
+  },
   {
     icon: 'domain',
     detail: true,

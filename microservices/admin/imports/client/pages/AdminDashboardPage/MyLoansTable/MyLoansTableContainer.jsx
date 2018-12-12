@@ -43,7 +43,7 @@ const mapLoan = history => (loan) => {
   return {
     id: loanId,
     columns: [
-      name,
+      name || 'Emprunteur sans nom',
       userName,
       <StatusLabel
         status={status}

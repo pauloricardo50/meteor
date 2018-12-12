@@ -33,7 +33,7 @@ const makeMapTask = ({ setTaskToModify, setShowDialog }) => (task) => {
     completedAt,
     assignedEmployee,
   } = task;
-  const { collection, _id: relatedDocId } = relatedDoc;
+  const { collection } = relatedDoc;
 
   return {
     id: taskId,
