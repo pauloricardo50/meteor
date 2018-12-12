@@ -36,6 +36,42 @@ describe('LoanService', () => {
     });
   });
 
+  describe.only('remove', () => {
+    it('autoremoves the borrowers', () => {
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
+
+      LoanService.remove({loanId});
+
+      expect(LoanService.find({}).count()).to.equal(0);
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('autoremoves the properties', () => {
+      const propertyId = Factory.create('property')._id;
+      loanId = Factory.create('loan', { propertyIds: [propertyId] })._id;
+
+      LoanService.remove({loanId});
+
+      expect(LoanService.find({}).count()).to.equal(0);
+      expect(PropertyService.find({}).count()).to.equal(0);
+    });
+
+    it('does not autoremove if a borrower is linked to multiple loans', () => {
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
+      Factory.create('loan', { borrowerIds: [borrowerId] });
+      
+      expect(LoanService.find({}).count()).to.equal(2);
+      expect(BorrowerService.find({}).count()).to.equal(1);
+
+      LoanService.remove({loanId});
+
+      expect(LoanService.find({}).count()).to.equal(1);
+      expect(BorrowerService.find({}).count()).to.equal(1);
+    });
+  });
+
   describe('disableUserForms', () => {
     it('disables user forms', () => {
       loanId = Factory.create('loan')._id;
@@ -553,7 +589,7 @@ describe('LoanService', () => {
     });
   });
 
-  describe.only('assignLoanToUser', () => {
+  describe('assignLoanToUser', () => {
     it('assigns all properties and borrowers to the new user', () => {
       const userId = Factory.create('user')._id;
       const borrowerId1 = Factory.create('borrower')._id;
@@ -585,8 +621,8 @@ describe('LoanService', () => {
         borrowerIds: [borrowerId1, borrowerId2],
       });
 
-      expect(() => LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to
-        .throw('emprunteur');
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('emprunteur');
     });
 
     it('throws if a property is assigned to multiple loans', () => {
@@ -600,8 +636,8 @@ describe('LoanService', () => {
         propertyIds: [propertyId2, propertyId1],
       });
 
-      expect(() => LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to
-        .throw('bien immobilier');
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
     });
   });
 });
