@@ -6,7 +6,7 @@ import PropertyService from '../../properties/PropertyService';
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
   borrowerIds.forEach((borrowerId) => {
     const { loans } = BorrowerService.createQuery({
-      filters: { _id: borrowerId },
+      $filters: { _id: borrowerId },
       loans: { _id: 1 },
     }).fetchOne();
 
@@ -16,7 +16,7 @@ Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
   });
   propertyIds.forEach((propertyId) => {
     const { loans } = PropertyService.createQuery({
-      filters: { _id: propertyId },
+      $filters: { _id: propertyId },
       loans: { _id: 1 },
     }).fetchOne();
 

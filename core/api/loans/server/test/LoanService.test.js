@@ -36,18 +36,23 @@ describe('LoanService', () => {
     });
   });
 
-  describe('remove', () => {
-    it('autoremoves the borrowers', () => {
+  describe.only('remove', () => {
+    it('removes the borrowers via a before remove hook', () => {
+      // Add other borrowers to simulate a real DB
+      const otherBorrower = Factory.create('borrower')._id;
       const borrowerId = Factory.create('borrower')._id;
+      const otherBorrower2 = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
 
       LoanService.remove({ loanId });
 
       expect(LoanService.find({}).count()).to.equal(0);
-      expect(BorrowerService.find({}).count()).to.equal(0);
+      expect(BorrowerService.find({ _id: borrowerId }).count()).to.equal(0);
+      expect(BorrowerService.find({ _id: otherBorrower }).count()).to.equal(1);
+      expect(BorrowerService.find({ _id: otherBorrower2 }).count()).to.equal(1);
     });
 
-    it('autoremoves the properties', () => {
+    it('removes the properties via a before remove hook', () => {
       const propertyId = Factory.create('property')._id;
       loanId = Factory.create('loan', { propertyIds: [propertyId] })._id;
 
