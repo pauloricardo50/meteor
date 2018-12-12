@@ -36,12 +36,12 @@ describe('LoanService', () => {
     });
   });
 
-  describe.only('remove', () => {
+  describe('remove', () => {
     it('autoremoves the borrowers', () => {
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
 
-      LoanService.remove({loanId});
+      LoanService.remove({ loanId });
 
       expect(LoanService.find({}).count()).to.equal(0);
       expect(BorrowerService.find({}).count()).to.equal(0);
@@ -51,7 +51,7 @@ describe('LoanService', () => {
       const propertyId = Factory.create('property')._id;
       loanId = Factory.create('loan', { propertyIds: [propertyId] })._id;
 
-      LoanService.remove({loanId});
+      LoanService.remove({ loanId });
 
       expect(LoanService.find({}).count()).to.equal(0);
       expect(PropertyService.find({}).count()).to.equal(0);
@@ -61,11 +61,11 @@ describe('LoanService', () => {
       const borrowerId = Factory.create('borrower')._id;
       loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
       Factory.create('loan', { borrowerIds: [borrowerId] });
-      
+
       expect(LoanService.find({}).count()).to.equal(2);
       expect(BorrowerService.find({}).count()).to.equal(1);
 
-      LoanService.remove({loanId});
+      LoanService.remove({ loanId });
 
       expect(LoanService.find({}).count()).to.equal(1);
       expect(BorrowerService.find({}).count()).to.equal(1);
