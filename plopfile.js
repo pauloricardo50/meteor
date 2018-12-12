@@ -1,6 +1,21 @@
+const cmd = require('node-cmd');
 const changeCase = require('change-case');
 
 module.exports = function (plop) {
+  plop.setActionType('format', (answers, config, plop) => {
+    const command = `meteor npx eslint --fix ${config.path}`;
+    return new Promise((resolve, reject) => {
+      cmd
+        .get(command, (err, data, stderr) => {
+          if (stderr || err) {
+            console.error(`Error while executing command ${command}: ${stderr || err}`);
+            reject('Cannot format files');
+          }
+          resolve('Successfully formatted files');
+        })
+        .stdout.on('data', console.log);
+    });
+  });
   plop.setGenerator('collection', {
     description: 'application controller logic',
     prompts: [
@@ -12,7 +27,7 @@ module.exports = function (plop) {
     ],
     actions(data) {
       const actions = [];
-      const collectionPath = './core/api/{{collectionName}}';
+      const collectionPath = `./core/api/${data.collectionName}`;
       const templatesPath = './plop-templates/collections';
       data.collection = changeCase.pascal(data.collectionName);
       data.schema = `${data.collection}Schema`;
@@ -139,6 +154,10 @@ module.exports = function (plop) {
         pattern: /(^export \* from .*;\n$)(?!\1)/s,
         templateFile: `${templatesPath}/registerMethodDefinitionsAppend.hbs`,
         separator: '',
+      });
+      actions.push({
+        type: 'format',
+        path: collectionPath,
       });
 
       return actions;
