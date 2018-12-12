@@ -129,7 +129,7 @@ module.exports = function (plop) {
       actions.push({
         type: 'append',
         path: './core/api/methods/server/registerServerMethods.js',
-        pattern: /(^import \'\.\.\/\.\.\/.*;\n$)(?!\1)/s,
+        pattern: /(^import \'\.\.\/\.\.\/.*;\n$)(?!\1)/m,
         templateFile: `${templatesPath}/registerServerMethodsAppend.hbs`,
         separator: '',
       });
