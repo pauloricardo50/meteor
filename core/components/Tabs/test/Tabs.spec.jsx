@@ -1,6 +1,5 @@
 // @flow
 /* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import getMountedComponent from 'core/utils/testHelpers/getMountedComponent';
