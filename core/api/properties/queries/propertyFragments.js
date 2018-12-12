@@ -83,6 +83,7 @@ export const fullPropertyFragment = {
   residenceType: 1,
   roomCount: 1,
   terraceArea: 1,
+  updatedAt: 1,
   user: appUserFragment,
   volume: 1,
   volumeNorm: 1,
