@@ -16,6 +16,14 @@ import {
 type CollectionIconLinkProps = {};
 
 const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
+  if (!docId) {
+    return {
+      link: '/',
+      icon: 'help',
+      text: "N'existe plus",
+    };
+  }
+
   switch (collection) {
   case LOANS_COLLECTION:
     return {
