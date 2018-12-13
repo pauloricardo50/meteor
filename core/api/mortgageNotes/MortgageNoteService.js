@@ -19,7 +19,7 @@ class MortgageNoteService extends CollectionService {
       this.addLink({ id, linkName: 'borrowers', linkId: borrowerId });
     }
     if (propertyId) {
-      this.addLink({ id, linkName: 'borrowers', linkId: borrowerId });
+      this.addLink({ id, linkName: 'properties', linkId: propertyId });
     }
 
     return id;

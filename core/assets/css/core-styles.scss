@@ -78,6 +78,16 @@ hr {
   transition: box-shadow 200ms $bezier;
 }
 
+:not(.card1).card-hover {
+  padding: 16px;
+  box-sizing: border-box;
+
+  &:hover {
+    border-radius: 8px;
+    box-shadow: $shadow-level-2;
+  }
+}
+
 .card1.shadow-2,
 .card1.card-hover:hover {
   box-shadow: $shadow-level-2;
@@ -337,4 +347,8 @@ p.description,
 }
 .mb-16 {
   margin-bottom: 16px;
+}
+
+.pointer:hover {
+  cursor: pointer;
 }
