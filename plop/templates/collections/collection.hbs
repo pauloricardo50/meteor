@@ -1,0 +1,21 @@
+import { Mongo } from 'meteor/mongo';
+
+import {{schema}} from './schemas/{{collectionName}}Schema';
+import { {{collectionConstant}} } from './{{collectionName}}Constants';
+
+const {{collection}} = new Mongo.Collection({{collectionConstant}});
+
+{{collection}}.deny({
+insert: () => true,
+update: () => true,
+remove: () => true,
+});
+
+{{collection}}.allow({
+insert: () => false,
+update: () => false,
+remove: () => false,
+});
+
+{{collection}}.attachSchema({{schema}});
+export default {{collection}};

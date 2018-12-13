@@ -1,0 +1,23 @@
+import { Method } from '../methods/methods';
+
+export const {{collectionName}}Insert = new Method({
+name: '{{collectionName}}Insert',
+params: {
+{{collectionName}}: Object,
+},
+});
+
+export const {{collectionName}}Remove = new Method({
+name: '{{collectionName}}Remove',
+params: {
+{{collectionName}}Id: String,
+},
+});
+
+export const {{collectionName}}Update = new Method({
+name: '{{collectionName}}Update',
+params: {
+{{collectionName}}Id: String,
+object: Object,
+},
+});
