@@ -1,8 +1,10 @@
 {
+  "FinancingMortgageNotesPicker.noProperty": "Choisissez un bien immobilier sur ce plan financier avant d'ajouter des cédules.",
+  "FinancingMortgageNotesPicker.noCanton": "Entrez le code postal du bien immobilier pour déterminer le canton duquel vos cédules vont provenir.",
   "FinancingMortgageNotesPicker.empty": "Pas de cédules",
   "FinancingMortgageNotesPicker.title": "{count, plural, one {Une cédule} other {# cédules}}",
   "Financing.mortgageNoteIds": "Cédules hypothécaires",
-  "MortgageNotesForm.borrowerDescription": "Ajoutez ici vos cédules sur un autre bien immobilier, à réutiliser dans votre nouveau projet.",
+  "MortgageNotesForm.borrowerDescription": "Ajoutez ici les cédules hypothécaires disponibles, que vous pourriez réutiliser pour votre nouveau projet.",
   "MortgageNotesForm.propertyDescription": "Ajoutez ici les cédule(s) existante(s) sur ce bien immobilier.",
   "Forms.rank": "Rang",
   "Forms.rank.placeholder": "1",

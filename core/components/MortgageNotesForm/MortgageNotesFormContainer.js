@@ -9,16 +9,18 @@ import {
 
 const getInputs = mortgageNote => [
   { id: 'value', type: 'textInput', money: true },
-  { id: 'rank', type: 'textInput', number: true },
+  { id: 'rank', type: 'textInput', number: true, required: false },
   {
     id: 'type',
     type: 'selectFieldInput',
     options: Object.values(MORTGAGE_NOTE_TYPES),
+    required: false,
   },
   {
     id: 'category',
     type: 'selectFieldInput',
     options: Object.values(MORTGAGE_NOTE_CATEGORIES),
+    required: false,
   },
   {
     id: 'canton',

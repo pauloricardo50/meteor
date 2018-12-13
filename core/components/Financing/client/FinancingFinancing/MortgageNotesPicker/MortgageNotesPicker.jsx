@@ -4,13 +4,14 @@ import React from 'react';
 import DialogSimple from '../../../../DialogSimple';
 import MortgageNotesPickerSummary from './MortgageNotesPickerSummary';
 import MortgageNotesPickerContainer from './MortgageNotesPickerContainer';
+import MortgageNotesPickerDialog from './MortgageNotesPickerDialog';
 
 type MortgageNotesPickerProps = {};
 
 const MortgageNotesPicker = ({
   className,
-  structure: { mortgageNotes },
   currentMortgageNotes,
+  ...data
 }: MortgageNotesPickerProps) => (
   <div className={className}>
     <DialogSimple
@@ -21,7 +22,7 @@ const MortgageNotesPicker = ({
         />
       )}
     >
-      <div>Hello mah dude</div>
+      <MortgageNotesPickerDialog {...data} />
     </DialogSimple>
   </div>
 );
