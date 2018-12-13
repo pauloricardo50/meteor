@@ -68,6 +68,7 @@ const config = {
         'Impersonation',
         'LoginPage',
         'Microlocation',
+        'MortgageNotesForm',
         'offer',
         'PasswordChange',
         'PasswordResetPage',

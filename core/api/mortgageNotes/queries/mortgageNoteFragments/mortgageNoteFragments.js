@@ -1,6 +1,7 @@
 export const mortgageNoteFragment = {
-  // Insert your fragment here
-  // Example
-  // firstName: 1,
-  // lastName: 1,
+  value: 1,
+  rank: 1,
+  type: 1,
+  category: 1,
+  canton: 1,
 };

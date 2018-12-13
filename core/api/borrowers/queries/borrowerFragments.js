@@ -1,3 +1,4 @@
+import { mortgageNoteFragment } from 'imports/core/api/mortgageNotes/queries/mortgageNoteFragments/index';
 import { appUserFragment } from '../../users/queries/userFragments';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 
@@ -41,6 +42,7 @@ export const loanBorrowerFragment = {
   isUSPerson: 1,
   loans: { name: 1 },
   logic: 1,
+  mortgageNotes: mortgageNoteFragment,
   otherFortune: 1,
   otherIncome: 1,
   personalBank: 1,

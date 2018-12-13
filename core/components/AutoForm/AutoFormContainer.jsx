@@ -1,6 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { withProps } from 'recompose';
 
+import {
+  LOANS_COLLECTION,
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  MORTGAGE_NOTES_COLLECTION,
+} from '../../api/constants';
+
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
 const ArrayInputContainer = withProps(({ collection }) => {
@@ -10,28 +17,32 @@ const ArrayInputContainer = withProps(({ collection }) => {
   let idKey;
 
   switch (collection) {
-  case 'loans':
+  case LOANS_COLLECTION:
     updateFunc = 'loanUpdate';
     popFunc = 'popLoanValue';
     pushFunc = 'pushLoanValue';
     idKey = 'loanId';
     break;
-  case 'borrowers':
+  case BORROWERS_COLLECTION:
     updateFunc = 'borrowerUpdate';
     popFunc = 'popBorrowerValue';
     pushFunc = 'pushBorrowerValue';
     idKey = 'borrowerId';
 
     break;
-  case 'properties':
+  case PROPERTIES_COLLECTION:
     updateFunc = 'propertyUpdate';
     popFunc = 'popPropertyValue';
     pushFunc = 'pushPropertyValue';
     idKey = 'propertyId';
     break;
+  case MORTGAGE_NOTES_COLLECTION:
+    updateFunc = 'mortgageNoteUpdate';
+    idKey = 'mortgageNoteId';
+    break;
 
   default:
-    break;
+    throw new Error(`Invalid collection in AutoForm: ${collection}`);
   }
 
   return {
