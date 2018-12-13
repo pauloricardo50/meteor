@@ -4,8 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import * as _constants from './constants';
 import LoanSchema from './loans/schemas/LoanSchema';
 import PromotionOptionSchema from './promotionOptions/schemas/PromotionOptionSchema';
-import { BorrowerSchema } from './borrowers/borrowers';
-import { PropertySchema } from './properties/properties';
+import BorrowerSchema from './borrowers/schemas/BorrowerSchema';
+import PropertySchema from './properties/schemas/PropertySchema';
 import { TasksSchema } from './tasks/tasks';
 import PromotionSchema from './promotions/schemas/PromotionSchema';
 import LotSchema from './lots/schemas/LotSchema';
@@ -15,6 +15,7 @@ import { OrganisationSchema } from './organisations/organisations';
 import { UserSchema } from './users/users';
 import InterestRatesSchema from './interestRates/schemas/interestRatesSchema';
 import Irs10ySchema from './irs10y/schemas/irs10ySchema';
+import MortgageNoteSchema from './mortgageNotes/schemas/MortgageNoteSchema';
 
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';
@@ -29,6 +30,7 @@ export { default as Tasks } from './tasks';
 export { default as Users } from './users';
 export { default as InterestRates } from './interestRates';
 export { default as Irs10y } from './irs10y';
+export { default as MortgageNotes } from './MortgageNotes';
 
 export { default as SecurityService } from './security';
 export * from './methods';
@@ -52,6 +54,7 @@ export const schemas = {
   [constants.USERS_COLLECTION]: UserSchema,
   [constants.INTEREST_RATES_COLLECTION]: InterestRatesSchema,
   [constants.IRS10Y_COLLECTION]: Irs10ySchema,
+  [constants.MORTGAGE_NOTES_COLLECTION]: MortgageNoteSchema,
 };
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';
