@@ -90,7 +90,6 @@ describe('FinancingResult', () => {
     });
 
     it('monthly', () => {
-      console.log(component().debug())
       const monthly = component().find('.financing-structures-result-chart .total');
       const string = monthly.text();
       const hasNonZeroNumber = /[1-9]/.test(string);

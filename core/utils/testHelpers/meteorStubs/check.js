@@ -1,2 +1,2 @@
 export const check = {};
-export const Match = { Optional: () => {}, Maybe: () => {} };
+export const Match = { Optional: () => {}, Maybe: () => {}, OneOf: () => {} };

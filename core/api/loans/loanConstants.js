@@ -19,6 +19,7 @@ export const PURCHASE_TYPE = {
   // CONSTRUCTION: 'CONSTRUCTION',
 };
 
+// Keep these sorted alphabetically for zipcode search to work
 export const CANTONS = {
   AG: 'Aargau',
   AR: 'Appenzell Ausserrhoden',
@@ -46,6 +47,7 @@ export const CANTONS = {
   VS: 'Valais',
   ZG: 'Zug',
   ZH: 'Zürich',
+  LI: 'Liechtenstein',
 };
 
 export const OWNER = {

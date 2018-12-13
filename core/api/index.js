@@ -1,5 +1,6 @@
 // @flow
 import { Meteor } from 'meteor/meteor';
+
 import * as _constants from './constants';
 import LoanSchema from './loans/schemas/LoanSchema';
 import PromotionOptionSchema from './promotionOptions/schemas/PromotionOptionSchema';
@@ -15,8 +16,6 @@ import { UserSchema } from './users/users';
 import InterestRatesSchema from './interestRates/schemas/interestRatesSchema';
 import Irs10ySchema from './irs10y/schemas/irs10ySchema';
 import ContactSchema from './contacts/schemas/contactSchema';
-
-export { withQuery } from 'meteor/cultofcoders:grapher-react';
 
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';

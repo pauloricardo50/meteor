@@ -12,35 +12,25 @@ const getAverageRate = (rate) => {
   return (100 * (rate.rateLow + rate.rateHigh)) / 2;
 };
 
-const getConfig = (lines) => {
-  const points = lines.reduce(
-    (allPoints, { data }) => [...allPoints, ...data.map(x => x[1])],
-    [],
-  );
-
-  const maxY = Math.max(...points) + 0.1;
-
-  return {
-    xAxis: {
-      type: 'datetime',
-      title: { text: 'Date' },
-    },
-    yAxis: {
-      title: { text: 'Taux moyens [%]' },
-      min: 0,
-      max: maxY,
-      tickInterval: 0.1,
-    },
-    chart: { type: 'line', height: 800, zoomType: 'x' },
-    plotOptions: { spline: { marker: { enabled: true } } },
-    tooltip: {
-      headerFormat: '<b>{point.x:%d.%m.%y}</b><br>',
-      pointFormat: '{series.name}: {point.y:.2f}%<br>',
-      crosshairs: true,
-      shared: true,
-    },
-  };
-};
+const getConfig = () => ({
+  xAxis: {
+    type: 'datetime',
+    title: { text: 'Date' },
+  },
+  yAxis: {
+    title: { text: 'Taux moyens [%]' },
+    min: 0,
+    tickInterval: 0.1,
+  },
+  chart: { type: 'line', height: 800, zoomType: 'x' },
+  plotOptions: { spline: { marker: { enabled: true } } },
+  tooltip: {
+    headerFormat: '<b>{point.x:%d.%m.%y}</b><br>',
+    pointFormat: '{series.name}: {point.y:.2f}%<br>',
+    crosshairs: true,
+    shared: true,
+  },
+});
 
 const formatDate = date =>
   moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
@@ -76,7 +66,7 @@ export default compose(
     return {
       title: "Taux d'intérêt",
       lines,
-      config: getConfig(lines),
+      config: getConfig(),
     };
   }),
 );

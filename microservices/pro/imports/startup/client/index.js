@@ -2,11 +2,12 @@ import '../shared-startup';
 
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
+
+import { localizationStartup } from 'core/utils/localization';
 import 'url-search-params-polyfill';
 import 'core/api/api';
 import 'core/api/client/api';
 import 'core/api/files/meteor-slingshot';
-import { localizationStartup } from 'core/utils/localization';
 
 import '../accounts-config';
 import './css';
