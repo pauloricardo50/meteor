@@ -71,7 +71,7 @@ export class PromotionOptionService extends CollectionService {
     });
     LoanService.addLink({
       id: loanId,
-      linkName: 'promotionOptionLinks',
+      linkName: 'promotionOptions',
       linkId: promotionOptionId,
     });
     const promotionId = this.getPromotion(promotionOptionId)._id;

@@ -41,36 +41,40 @@ class CollectionService {
     return this.collection.getLink(...args);
   }
 
-  addLink({
-    id,
-    linkName,
-    linkId,
-    multi = true,
-    hasMeta = true,
-    metadata = {},
-  }) {
-    return this._update({
-      id,
-      object: { [linkName]: hasMeta ? { _id: linkId, ...metadata } : linkId },
-      operator: multi ? '$push' : '$set',
-    });
+  addLink({ id, linkName, linkId, metadata = {} }) {
+    const linker = this.collection.getLink(id, linkName);
+    const {
+      linker: { strategy },
+    } = linker;
+
+    switch (strategy) {
+    case 'one':
+      return linker.set(linkId);
+    case 'many':
+      return linker.add(linkId);
+    case 'one-meta':
+      return linker.set(linkId, metadata);
+    case 'many-meta':
+      return linker.add(linkId, metadata);
+    default:
+      return null;
+    }
   }
 
   removeLink({ id, linkName, linkId }) {
-    const doc = this.get(id);
-    const link = doc[linkName];
+    const linker = this.collection.getLink(id, linkName);
+    const {
+      linker: { strategy },
+    } = linker;
 
-    if (Array.isArray(link)) {
-      return this._update({
-        id,
-        object: {
-          [linkName]: link.filter(linkItem =>
-            (linkItem._id ? linkItem._id !== linkId : linkItem !== linkId)),
-        },
-      });
+    switch (strategy.split('-')[0]) {
+    case 'one':
+      return linker.unset(linkId);
+    case 'many':
+      return linker.remove(linkId);
+    default:
+      return null;
     }
-
-    return this._update({ id, object: { [linkName]: 1 }, operator: '$unset' });
   }
 
   getAssignedEmployee({ id }) {

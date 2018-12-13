@@ -13,6 +13,7 @@ import {
   BORROWERS_COLLECTION,
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
+  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import StatusLabel from 'imports/core/components/StatusLabel/StatusLabel';
@@ -70,6 +71,12 @@ const getListItemDetails = (
           </span>
         </span>
       ),
+    };
+
+  case CONTACTS_COLLECTION:
+    return {
+      primary: name || 'Contact sans nom',
+      secondary: null,
     };
   default:
     throw new Error('invalid collection name');
