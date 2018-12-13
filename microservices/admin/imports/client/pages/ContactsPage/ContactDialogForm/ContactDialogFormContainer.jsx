@@ -8,28 +8,29 @@ import {
   contactInsert,
   contactUpdate,
   contactRemove,
-  addContactToOrgnaisation,
+  contactChangeOrganisations,
 } from 'imports/core/api/methods/index';
 import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
 
-const schema = organisations =>
+const schema = existingOrganisations =>
   new SimpleSchema({
     firstName: String,
     lastName: String,
-    organisationId: {
+    organisations: Array,
+    'organisations.$': Object,
+    'organisations.$._id': {
       type: String,
       optional: true,
       defaultValue: null,
-      allowedValues: [...organisations.map(({ _id }) => _id), null],
+      allowedValues: existingOrganisations.map(({ _id }) => _id),
       uniforms: {
-        transform: (organisationId) => {
-          const organisation = organisations.find(({ _id }) => organisationId === _id);
-          return organisation ? organisation.name : 'Aucune organisation';
-        },
+        transform: organisationId =>
+          existingOrganisations.find(({ _id }) => organisationId === _id).name,
         labelProps: { shrink: true },
       },
     },
-    role: { type: String, optional: true },
+    'organisations.$.$metadata': Object,
+    'organisations.$.$metadata.role': { type: String, optional: true },
     ...omit(address, ['isForeignAddress']),
     emails: { type: Array, optional: true },
     'emails.$': Object,
@@ -42,26 +43,33 @@ export default compose(
   withSmartQuery({
     query: adminOrganisations,
     queryOptions: { reactive: false },
-    dataName: 'organisations',
+    dataName: 'existingOrganisations',
     smallLoader: true,
   }),
   withState('submitting', 'setSubmitting', false),
-  withProps(({ organisations }) => ({
-    schema: schema(organisations),
-    insertContact: ({ organisationId, role, ...contact }) =>
-      contactInsert.run({ contact }).then((contactId) => {
-        if (organisationId) {
-          return addContactToOrgnaisation.run({
+  withProps(({ existingOrganisations }) => ({
+    schema: schema(existingOrganisations),
+    insertContact: ({ organisations = [], ...contact }) =>
+      contactInsert.run({ contact }).then(contactId =>
+        contactChangeOrganisations
+          .run({
             contactId,
-            organisationId,
-            metadata: { role },
-          });
-        }
-        return Promise.resolve(contactId);
-      }),
+            newOrganisations: organisations.map(({ _id, $metadata }) => ({
+              _id,
+              metadata: $metadata,
+            })),
+          })
+          .then(() => contactId)),
     modifyContact: (data) => {
-      const { _id: contactId, ...object } = data;
-      return contactUpdate.run({ contactId, object });
+      const { _id: contactId, organisations = [], ...object } = data;
+      return contactUpdate.run({ contactId, object }).then(() =>
+        contactChangeOrganisations.run({
+          contactId,
+          newOrganisations: organisations.map(({ _id, $metadata }) => ({
+            _id,
+            metadata: $metadata,
+          })),
+        }));
     },
     removeContact: contactId => contactRemove.run({ contactId }),
   })),

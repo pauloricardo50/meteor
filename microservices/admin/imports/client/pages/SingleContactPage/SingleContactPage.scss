@@ -1,0 +1,16 @@
+.single-contact-page-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .contact-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    > * {
+      padding: 4px;
+    }
+  }
+}

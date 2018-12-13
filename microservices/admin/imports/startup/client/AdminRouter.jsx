@@ -87,11 +87,11 @@ const AdminRouter = () => (
           path={adminRoutes.INTEREST_RATES_PAGE}
           component={InterestRatesPage}
         />
-        <Route path={adminRoutes.CONTACTS_PAGE} component={ContactsPage} />
         <Route
           path={adminRoutes.SINGLE_CONTACT_PAGE}
           component={SingleContactPage}
         />
+        <Route path={adminRoutes.CONTACTS_PAGE} component={ContactsPage} />
         <Route path={adminRoutes.DEV_PAGE} component={DevPage} />
         <Route component={NotFound} />
       </Switch>

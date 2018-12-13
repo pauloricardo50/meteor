@@ -4,6 +4,7 @@ import {
   contactInsert,
   contactRemove,
   contactUpdate,
+  contactChangeOrganisations,
 } from '../methodDefinitions';
 
 contactInsert.setHandler((context, { contact }) => {
@@ -19,4 +20,9 @@ contactRemove.setHandler((context, { contactId }) => {
 contactUpdate.setHandler((context, { contactId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return ContactService._update({ id: contactId, object });
+});
+
+contactChangeOrganisations.setHandler((context, { contactId, newOrganisations }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return ContactService.changeOrganisations({ contactId, newOrganisations });
 });

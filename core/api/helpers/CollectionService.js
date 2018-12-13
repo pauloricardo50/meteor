@@ -37,6 +37,10 @@ class CollectionService {
     return this.collection.createQuery(...args);
   }
 
+  fetchOne(...args) {
+    return this.createQuery(...args).fetchOne();
+  }
+
   getLink(...args) {
     return this.collection.getLink(...args);
   }
