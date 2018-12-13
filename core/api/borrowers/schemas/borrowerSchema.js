@@ -4,8 +4,8 @@ import {
   updatedAt,
   additionalDocuments,
   address,
-  mortgageNotesSchema,
-} from '../helpers/sharedSchemas';
+  mortgageNoteLinks,
+} from '../../helpers/sharedSchemas';
 import {
   RESIDENCY_PERMIT,
   GENDER,
@@ -13,9 +13,9 @@ import {
   OTHER_INCOME,
   EXPENSES,
   OWN_FUNDS_TYPES,
-} from './borrowerConstants';
-import { RESIDENCE_TYPE } from '../constants';
-import { initialDocuments } from './borrowersAdditionalDocuments';
+} from '../borrowerConstants';
+import { RESIDENCE_TYPE } from '../../constants';
+import { initialDocuments } from '../borrowersAdditionalDocuments';
 
 const LogicSchema = new SimpleSchema({
   adminValidated: {
@@ -171,7 +171,7 @@ const BorrowerSchema = new SimpleSchema({
     blackbox: true,
   },
   ...additionalDocuments(initialDocuments),
-  ...mortgageNotesSchema,
+  ...mortgageNoteLinks,
 });
 
 const protectedKeys = [

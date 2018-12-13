@@ -5,10 +5,10 @@ import {
   updatedAt,
   additionalDocuments,
   address,
-  mortgageNotesSchema,
-} from '../helpers/sharedSchemas';
-import * as propertyConstants from './propertyConstants';
-import { initialDocuments } from './propertiesAdditionalDocuments';
+  mortgageNoteLinks,
+} from '../../helpers/sharedSchemas';
+import * as propertyConstants from '../propertyConstants';
+import { initialDocuments } from '../propertiesAdditionalDocuments';
 
 export const MicrolocationFactorSchema = new SimpleSchema({
   grade: {
@@ -337,7 +337,7 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
   },
   ...additionalDocuments(initialDocuments),
-  ...mortgageNotesSchema,
+  ...mortgageNoteLinks,
 });
 
 const protectedKeys = [

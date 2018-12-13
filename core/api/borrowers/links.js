@@ -1,5 +1,5 @@
 import Borrowers from './borrowers';
-import { Loans, Users } from '..';
+import { Loans, Users, MortgageNotes } from '..';
 
 Borrowers.addLinks({
   user: {
@@ -10,5 +10,12 @@ Borrowers.addLinks({
   loans: {
     collection: Loans,
     inversedBy: 'borrowers',
+  },
+  mortgageNotes: {
+    field: 'mortgageNoteLinks',
+    collection: MortgageNotes,
+    type: 'many',
+    metadata: true,
+    autoremove: true,
   },
 });

@@ -96,31 +96,8 @@ export const userLinksSchema = {
   },
 };
 
-export const mortgageNotesSchema = {
-  mortgageNotes: { type: Array, defaultValue: [], optional: true },
-  'mortgageNotes.$': Object,
-  'mortgageNotes.$.id': {
-    type: String,
-    autoValue() {
-      if (this.value) {
-        return this.unset();
-      }
-
-      return Random.id();
-    },
-  },
-  'mortgageNotes.$.value': { type: Number, min: 0, max: 1000000000 },
-  'mortgageNotes.$.rank': { type: Number, min: 0, max: 10 },
-  'mortgageNotes.$.type': {
-    type: String,
-    allowedValues: Object.values(MORTGAGE_NOTE_TYPES),
-  },
-  'mortgageNotes.$.category': {
-    type: String,
-    allowedValues: Object.values(MORTGAGE_NOTE_CATEGORIES),
-  },
-  'mortgageNotes.$.canton': {
-    type: String,
-    allowedValues: Object.keys(CANTONS),
-  },
+export const mortgageNoteLinks = {
+  mortgageNoteLinks: Array,
+  'mortgageNoteLinks.$': Object,
+  'mortgageNoteLinks.$._id': String,
 };

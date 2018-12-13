@@ -30,7 +30,7 @@ export { default as Tasks } from './tasks';
 export { default as Users } from './users';
 export { default as InterestRates } from './interestRates';
 export { default as Irs10y } from './irs10y';
-export { default as MortgageNotes } from './MortgageNotes';
+export { default as MortgageNotes } from './mortgageNotes';
 
 export { default as SecurityService } from './security';
 export * from './methods';

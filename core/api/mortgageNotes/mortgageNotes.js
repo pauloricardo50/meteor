@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 
-import MortgageNotesSchema from './schemas/mortgageNotesSchema';
+import MortgageNoteSchema from './schemas/MortgageNoteSchema';
 import { MORTGAGE_NOTES_COLLECTION } from './mortgageNoteConstants';
 
 const MortgageNotes = new Mongo.Collection(MORTGAGE_NOTES_COLLECTION);
@@ -17,5 +17,5 @@ MortgageNotes.allow({
   remove: () => false,
 });
 
-MortgageNotes.attachSchema(MortgageNotesSchema);
+MortgageNotes.attachSchema(MortgageNoteSchema);
 export default MortgageNotes;

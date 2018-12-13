@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { BORROWERS_COLLECTION } from './borrowerConstants';
-import borrowerSchema from './schemas/borrowerSchema';
+import BorrowerSchema from './schemas/BorrowerSchema';
 
 const Borrowers = new Mongo.Collection(BORROWERS_COLLECTION);
 
@@ -17,5 +17,5 @@ Borrowers.allow({
   remove: () => false,
 });
 
-Borrowers.attachSchema(borrowerSchema);
+Borrowers.attachSchema(BorrowerSchema);
 export default Borrowers;

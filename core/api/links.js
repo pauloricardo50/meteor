@@ -1,6 +1,7 @@
 import './borrowers/links';
 import './loans/links';
 import './lots/links';
+import './mortgageNotes/links';
 import './offers/links';
 import './organisations/links';
 import './promotionLots/links';
