@@ -33,6 +33,7 @@ Loans.addLinks({
   offers: {
     collection: Offers,
     inversedBy: 'loan',
+    autoremove: true,
   },
   promotions: {
     field: 'promotionLinks',

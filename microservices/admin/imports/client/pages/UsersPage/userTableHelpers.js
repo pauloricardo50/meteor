@@ -29,13 +29,16 @@ export const getColumnOptions = ({ showAssignee }) => {
   return columnOptions;
 };
 
-const getColumns = ({ showAssignee, index, user }) => {
+const getColumns = ({ showAssignee, user }) => {
   const { email, createdAt, roles, assignedEmployee, name } = user;
 
   const columns = [
     name,
     email,
-    moment(createdAt).format('D MMM YY à HH:mm'),
+    {
+      raw: createdAt.getTime(),
+      label: moment(createdAt).format('D MMM YY à HH:mm'),
+    },
     { label: <Roles roles={roles} />, raw: roles && roles.toString() },
   ];
   if (showAssignee) {
@@ -67,9 +70,9 @@ const getColumns = ({ showAssignee, index, user }) => {
 
 export const getRows = ({ data: users, history, showAssignee }) => {
   if (users && users.length) {
-    return users.map((user, index) => ({
+    return users.map(user => ({
       id: user._id,
-      columns: getColumns({ showAssignee, index, user }),
+      columns: getColumns({ showAssignee, user }),
       handleClick: (event) => {
         if (event.target.href) {
           event.stopPropagation();

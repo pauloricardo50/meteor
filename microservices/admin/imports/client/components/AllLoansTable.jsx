@@ -4,8 +4,9 @@ import moment from 'moment';
 
 import Table from 'core/components/Table';
 import T, { IntlNumber } from 'core/components/Translation';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
   { id: 'No.' },
@@ -48,7 +49,10 @@ export default class AllLoansTable extends Component {
       id: loanId,
       columns: [
         name,
-        user && user.name,
+        <CollectionIconLink
+          relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+          key="user"
+        />,
         <StatusLabel
           status={status}
           key="status"

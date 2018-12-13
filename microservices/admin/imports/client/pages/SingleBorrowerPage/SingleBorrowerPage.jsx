@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Recap from 'core/components/Recap';
-
+import { BorrowerForm } from 'core/components/forms';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SingleBorrowerPageContainer from './SingleBorrowerPageContainer';
 import SingleBorrowerPageHeader from './SingleBorrowerPageHeader';
@@ -17,6 +17,8 @@ const SingleBorrowerPage = ({ borrower }) => {
         <Recap arrayName="borrower" borrower={borrower} />
       </div>
       {loans && <LoanSummaryList loans={loans} />}
+      <h2>Formulaires</h2>
+      <BorrowerForm borrower={borrower} />
     </section>
   );
 };

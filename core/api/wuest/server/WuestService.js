@@ -665,4 +665,3 @@ class WuestService {
 }
 
 export default new WuestService();
-

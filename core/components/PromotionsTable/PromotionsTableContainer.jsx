@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 
 import { createRoute } from '../../utils/routerUtils';
 import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
@@ -13,6 +14,7 @@ const makeMapPromotion = history => ({
   _id,
   name,
   status,
+  createdAt,
   soldPromotionLots,
   bookedPromotionLots,
   availablePromotionLots,
@@ -27,6 +29,10 @@ const makeMapPromotion = history => ({
       collection={PROMOTIONS_COLLECTION}
       key="status"
     />,
+    {
+      raw: createdAt && createdAt.getTime(),
+      label: moment(createdAt).fromNow(),
+    },
     promotionLots.length,
     availablePromotionLots.length,
     bookedPromotionLots.length,
@@ -40,6 +46,7 @@ const makeMapPromotion = history => ({
 const columnOptions = [
   { id: 'name', label: 'dude' },
   { id: 'status' },
+  { id: 'createdAt' },
   { id: 'lots' },
   { id: 'available' },
   { id: 'booked' },

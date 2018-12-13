@@ -55,7 +55,7 @@ const makeMapInterestRates = ({
     id: interestRatesId,
     columns: [
       {
-        raw: date,
+        raw: moment(date).valueOf(),
         label: moment(date).format('DD.MM.YYYY'),
       },
       ...makeMapInterestRatesData(interestRates),

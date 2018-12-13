@@ -9,7 +9,8 @@ import { Money } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import withLoansDocuments from 'core/api/files/withLoansDocuments';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
+import { CollectionIconLink } from 'core/components/IconLink';
 import ProgressCell from './ProgressCell';
 
 const columnOptions = [
@@ -37,20 +38,26 @@ const mapLoan = history => (loan) => {
     status,
     name,
     updatedAt,
-    user: { name: userName },
+    user,
     structure: { property, wantedLoan },
   } = loan;
   return {
     id: loanId,
     columns: [
-      name,
-      userName,
+      name || 'Emprunteur sans nom',
+      <CollectionIconLink
+        relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+        key="user"
+      />,
       <StatusLabel
         status={status}
         key="status"
         collection={LOANS_COLLECTION}
       />,
-      moment(updatedAt).fromNow(),
+      {
+        raw: updatedAt && updatedAt.getTime(),
+        label: moment(updatedAt).fromNow(),
+      },
       property ? property.value : 'Pas choisi',
       wantedLoan,
       <ProgressCell loan={loan} key="progress" />,

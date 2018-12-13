@@ -9,6 +9,8 @@ import { Borrowers, Properties } from '../../..';
 import LoanService from '../../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/BorrowerService';
+import PropertyService from '../../../properties/PropertyService';
+import OfferService from '../../../offers/OfferService';
 
 describe('LoanService', () => {
   let loanId;
@@ -32,6 +34,60 @@ describe('LoanService', () => {
 
       loan = LoanService.get(loanId);
       expect(loan.contacts).to.deep.equal([]);
+    });
+  });
+
+  describe('remove', () => {
+    it('removes the borrowers via a before remove hook', () => {
+      // Add other borrowers to simulate a real DB
+      const otherBorrower = Factory.create('borrower')._id;
+      const borrowerId = Factory.create('borrower')._id;
+      const otherBorrower2 = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
+
+      LoanService.remove({ loanId });
+
+      expect(LoanService.find({}).count()).to.equal(0);
+      expect(BorrowerService.find({ _id: borrowerId }).count()).to.equal(0);
+      expect(BorrowerService.find({ _id: otherBorrower }).count()).to.equal(1);
+      expect(BorrowerService.find({ _id: otherBorrower2 }).count()).to.equal(1);
+    });
+
+    it('removes the properties via a before remove hook', () => {
+      const propertyId = Factory.create('property')._id;
+      loanId = Factory.create('loan', { propertyIds: [propertyId] })._id;
+
+      LoanService.remove({ loanId });
+
+      expect(LoanService.find({}).count()).to.equal(0);
+      expect(PropertyService.find({}).count()).to.equal(0);
+    });
+
+    it('does not remove if a borrower is linked to multiple loans', () => {
+      const borrowerId = Factory.create('borrower')._id;
+      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
+      Factory.create('loan', { borrowerIds: [borrowerId] });
+
+      expect(LoanService.find({}).count()).to.equal(2);
+      expect(BorrowerService.find({}).count()).to.equal(1);
+
+      LoanService.remove({ loanId });
+
+      expect(LoanService.find({}).count()).to.equal(1);
+      expect(BorrowerService.find({}).count()).to.equal(1);
+    });
+
+    it('autoremoves offers', () => {
+      loanId = Factory.create('loan')._id;
+      Factory.create('offer', { loanId });
+      Factory.create('offer', { loanId });
+      Factory.create('offer', { loanId });
+
+      expect(OfferService.find({}).count()).to.equal(3);
+
+      LoanService.remove({ loanId });
+
+      expect(OfferService.find({}).count()).to.equal(0);
     });
   });
 
@@ -438,6 +494,22 @@ describe('LoanService', () => {
     });
   });
 
+  describe('loan name regEx', () => {
+    it('allows loan names with correct format', () => {
+      expect(() => Factory.create('loan', { name: '18-0202' })).to.not.throw();
+    });
+
+    it('does not allow loan names with incorrect format', () => {
+      expect(() => Factory.create('loan', { name: '18-202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '1-202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '18202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '0202' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: 'abc' })).to.throw('regular expression');
+      expect(() => Factory.create('loan', { name: '18-a202' })).to.throw('regular expression');
+    });
+  });
+
   describe('cleanupRemovedBorrower', () => {
     it('removes all occurences of a borrower in structures', () => {
       const borrowerId = 'dude';
@@ -533,6 +605,58 @@ describe('LoanService', () => {
 
       expect(() =>
         LoanService.switchBorrower({ loanId, oldBorrowerId, borrowerId })).to.throw('déjà');
+    });
+  });
+
+  describe('assignLoanToUser', () => {
+    it('assigns all properties and borrowers to the new user', () => {
+      const userId = Factory.create('user')._id;
+      const borrowerId1 = Factory.create('borrower')._id;
+      const borrowerId2 = Factory.create('borrower')._id;
+      const propertyId1 = Factory.create('property')._id;
+      const propertyId2 = Factory.create('property')._id;
+      loanId = Factory.create('loan', {
+        borrowerIds: [borrowerId1, borrowerId2],
+        propertyIds: [propertyId1, propertyId2],
+      })._id;
+
+      LoanService.assignLoanToUser({ loanId, userId });
+
+      expect(LoanService.get(loanId).userId).to.equal(userId);
+      expect(BorrowerService.get(borrowerId1).userId).to.equal(userId);
+      expect(BorrowerService.get(borrowerId2).userId).to.equal(userId);
+      expect(PropertyService.get(propertyId1).userId).to.equal(userId);
+      expect(PropertyService.get(propertyId2).userId).to.equal(userId);
+    });
+
+    it('throws if a borrower is assigned to multiple loans', () => {
+      const borrowerId1 = Factory.create('borrower')._id;
+      const borrowerId2 = Factory.create('borrower')._id;
+
+      loanId = Factory.create('loan', {
+        borrowerIds: [borrowerId1],
+      })._id;
+      Factory.create('loan', {
+        borrowerIds: [borrowerId1, borrowerId2],
+      });
+
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('emprunteur');
+    });
+
+    it('throws if a property is assigned to multiple loans', () => {
+      const propertyId1 = Factory.create('property')._id;
+      const propertyId2 = Factory.create('property')._id;
+
+      loanId = Factory.create('loan', {
+        propertyIds: [propertyId1],
+      })._id;
+      Factory.create('loan', {
+        propertyIds: [propertyId2, propertyId1],
+      });
+
+      expect(() =>
+        LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
     });
   });
 });

@@ -9,10 +9,10 @@ import { ContactButton } from '../../ContactButton';
 
 describe('ContactButton', () => {
   let props;
-  const component = props =>
+  const component = propz =>
     getMountedComponent({
       Component: ContactButton,
-      props,
+      props: propz,
     });
 
   beforeEach(() => {
