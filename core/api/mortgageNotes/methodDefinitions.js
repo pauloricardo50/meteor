@@ -1,9 +1,13 @@
+import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const mortgageNoteInsert = new Method({
   name: 'mortgageNoteInsert',
   params: {
     mortgageNote: Object,
+    propertyId: Match.Optional(String),
+    borrowerId: Match.Optional(String),
   },
 });
 

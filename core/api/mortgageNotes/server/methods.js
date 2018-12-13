@@ -6,20 +6,24 @@ import {
   mortgageNoteUpdate,
 } from '../methodDefinitions';
 
-mortgageNoteInsert.setHandler((context, { mortgageNotes }) =>
-  // Add security checks
-  // Example
-  // SecurityService.checkCurrentUserIsAdmin();
-  MortgageNoteService.insert(mortgageNotes));
+mortgageNoteInsert.setHandler((context, params) => {
+  if (params.propertyId) {
+    SecurityService.properties.isAllowedToUpdate(params.propertyId);
+  }
+  if (params.borrowerId) {
+    SecurityService.borrowers.isAllowedToUpdate(params.borrowerId);
+  }
+  MortgageNoteService.insert(params);
+});
 
-mortgageNoteRemove.setHandler((context, { mortgageNotesId }) =>
+mortgageNoteRemove.setHandler((context, { mortgageNoteId }) =>
   // Add security checks
   // Example
   // SecurityService.checkCurrentUserIsAdmin();
-  MortgageNoteService.remove(mortgageNotesId));
+  MortgageNoteService.remove(mortgageNoteId));
 
-mortgageNoteUpdate.setHandler((context, { mortgageNotesId, object }) =>
+mortgageNoteUpdate.setHandler((context, { mortgageNoteId, object }) =>
   // Add security checks
   // Example
   // SecurityService.checkCurrentUserIsAdmin();
-  MortgageNoteService._update({ id: mortgageNotesId, object }));
+  MortgageNoteService._update({ id: mortgageNoteId, object }));
