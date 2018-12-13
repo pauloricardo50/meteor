@@ -97,7 +97,7 @@ export const userLinksSchema = {
 };
 
 export const mortgageNoteLinks = {
-  mortgageNoteLinks: Array,
+  mortgageNoteLinks: { type: Array, optional: true },
   'mortgageNoteLinks.$': Object,
   'mortgageNoteLinks.$._id': String,
 };
