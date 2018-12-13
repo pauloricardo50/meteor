@@ -1,5 +1,5 @@
 import IntlMessageFormat from 'intl-messageformat';
-import { getUserLocale, getFormats } from 'core/utils/localization';
+import { getUserLocale, getFormats } from 'core/utils/localization/localization';
 import messagesFR from 'core/lang/fr.json';
 
 /**

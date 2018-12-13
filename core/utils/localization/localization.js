@@ -33,20 +33,6 @@ export const getFormats = () => ({
   },
 });
 
-export const localizationStartup = ({ setupAccounts = true } = {}) => {
-  // Add locales used in app here
-  addLocaleData(fr);
-  setupMoment();
-  moment.locale('fr');
-
-  if (setupAccounts) {
-    const { T9n } = require('meteor-accounts-t9n');
-    const { fr: accountsFr } = require('meteor-accounts-t9n/build/fr');
-    T9n.map('fr', accountsFr);
-    T9n.setLanguage('fr');
-  }
-};
-
 const setupMoment = () => {
   moment.locale('fr', {
     months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
@@ -108,4 +94,18 @@ const setupMoment = () => {
       doy: 4, // The week that contains Jan 4th is the first week of the year.
     },
   });
+};
+
+export const localizationStartup = ({ setupAccounts = true } = {}) => {
+  // Add locales used in app here
+  addLocaleData(fr);
+  setupMoment();
+  moment.locale('fr');
+
+  if (setupAccounts) {
+    const { T9n } = require('meteor-accounts-t9n');
+    const { fr: accountsFr } = require('meteor-accounts-t9n/build/fr');
+    T9n.map('fr', accountsFr);
+    T9n.setLanguage('fr');
+  }
 };
