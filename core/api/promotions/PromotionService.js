@@ -47,12 +47,12 @@ export class PromotionService extends CollectionService {
     });
     this.addLink({
       id: promotionId,
-      linkName: 'promotionLotLinks',
+      linkName: 'promotionLots',
       linkId: promotionLotId,
     });
     this.addLink({
       id: promotionId,
-      linkName: 'propertyLinks',
+      linkName: 'properties',
       linkId: propertyId,
     });
 
@@ -163,7 +163,7 @@ export class PromotionService extends CollectionService {
   addProUser({ promotionId, userId }) {
     return this.addLink({
       id: promotionId,
-      linkName: 'userLinks',
+      linkName: 'users',
       linkId: userId,
       metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
     });
@@ -172,7 +172,7 @@ export class PromotionService extends CollectionService {
   removeProUser({ promotionId, userId }) {
     return this.removeLink({
       id: promotionId,
-      linkName: 'userLinks',
+      linkName: 'users',
       linkId: userId,
     });
   }
@@ -188,7 +188,7 @@ export class PromotionService extends CollectionService {
     const loan = LoanService.get(loanId);
     LoanService.removeLink({
       id: loanId,
-      linkName: 'promotionLinks',
+      linkName: 'promotions',
       linkId: promotionId,
     });
 

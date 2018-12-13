@@ -8,6 +8,7 @@ import {
   USERS_COLLECTION,
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
+  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 
 const getAssignedToMeFilter = ({
@@ -63,6 +64,7 @@ const getFilterOptions = (props) => {
     [USERS_COLLECTION]: userFilters,
     [PROPERTIES_COLLECTION]: propertyFilters,
     [PROMOTIONS_COLLECTION]: [],
+    [CONTACTS_COLLECTION]: [],
   }[collectionName];
 };
 

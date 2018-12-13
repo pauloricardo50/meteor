@@ -14,7 +14,7 @@ export class PromotionLotService extends CollectionService {
   addLotToPromotionLot({ promotionLotId, lotId }) {
     return this.addLink({
       id: promotionLotId,
-      linkName: 'lotLinks',
+      linkName: 'lots',
       linkId: lotId,
     });
   }
@@ -22,7 +22,7 @@ export class PromotionLotService extends CollectionService {
   removeLotLink({ promotionLotId, lotId }) {
     return this.removeLink({
       id: promotionLotId,
-      linkName: 'lotLinks',
+      linkName: 'lots',
       linkId: lotId,
     });
   }
@@ -34,7 +34,7 @@ export class PromotionLotService extends CollectionService {
     });
     return this.addLink({
       id: promotionLotId,
-      linkName: 'attributedToLink',
+      linkName: 'attributedTo',
       linkId: loanId,
       multi: false,
     });
@@ -47,7 +47,7 @@ export class PromotionLotService extends CollectionService {
     });
     return this.removeLink({
       id: promotionLotId,
-      linkName: 'attributedToLink',
+      linkName: 'attributedTo',
     });
   }
 

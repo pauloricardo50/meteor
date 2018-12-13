@@ -38,6 +38,7 @@ import TaskService from './tasks/TaskService';
 import InterestRatesService from './interestRates/InterestRatesService';
 import UserService from './users/UserService';
 import Irs10yService from './irs10y/Irs10yService';
+import ContactService from './contacts/ContactService';
 
 process.on('uncaughtException', (error) => {
   SlackService.sendError({
@@ -65,4 +66,5 @@ export const Services = {
   [COLLECTIONS.TASKS_COLLECTION]: TaskService,
   [COLLECTIONS.INTEREST_RATES_COLLECTION]: InterestRatesService,
   [COLLECTIONS.IRS10Y_COLLECTION]: Irs10yService,
+  [COLLECTIONS.CONTACTS_COLLECTION]: ContactService,
 };

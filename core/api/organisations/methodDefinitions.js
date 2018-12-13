@@ -19,6 +19,15 @@ export const organisationUpdate = new Method({
 export const organisationRemove = new Method({
   name: 'organisationRemove',
   params: {
-    organisationId: Object,
+    organisationId: String,
+  },
+});
+
+export const addContactToOrgnaisation = new Method({
+  name: 'addContactToOrganisation',
+  params: {
+    organisationId: String,
+    contactId: String,
+    metadata: Object,
   },
 });
