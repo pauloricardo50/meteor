@@ -15,5 +15,6 @@ export const fullOfferFragment = {
     (rates, rate) => ({ ...rates, [rate]: 1 }),
     {},
   ),
+  contact: { _id: 1, name: 1, feedback: 1 },
   // $options: { sort: { createdAt: 1 } },
 };

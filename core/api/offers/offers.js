@@ -29,6 +29,9 @@ export const OfferSchema = new SimpleSchema({
   updatedAt,
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': String,
+  contactLink: { type: Object, optional: true },
+  'contactLink._id': String,
+  'contactLink.feedback': { type: String, optional: true },
   maxAmount: {
     type: SimpleSchema.Integer,
     min: 0,
