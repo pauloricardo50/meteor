@@ -23,7 +23,11 @@ borrowerUpdate.setHandler((context, params) => {
 });
 
 borrowerDelete.setHandler((context, params) => {
-  SecurityService.borrowers.isAllowedToDelete(params.borrowerId);
+  if (!params.loanId) {
+    SecurityService.checkCurrentUserIsAdmin();
+  } else {
+    SecurityService.borrowers.isAllowedToDelete(params.borrowerId);
+  }
   return BorrowerService.remove(params);
 });
 

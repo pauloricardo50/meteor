@@ -32,6 +32,9 @@ export class BorrowerService extends CollectionService {
         // Fix this conditional when the issue has been dealt with
         // https://github.com/cult-of-coders/grapher/issues/332
         loansLink.remove(loanId);
+      } else {
+        // Only admins can remove a borrower that has multiple loans
+        return Borrowers.remove(borrowerId);
       }
     } else {
       return Borrowers.remove(borrowerId);
