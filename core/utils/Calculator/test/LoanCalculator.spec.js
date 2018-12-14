@@ -390,4 +390,74 @@ describe('LoanCalculator', () => {
       })).to.deep.equal([]);
     });
   });
+
+  describe('getMortgageNoteIncrease', () => {
+    it('returns the loan value if no mortgage note is added', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [{ _id: 'propertyId' }],
+        },
+      })).to.equal(800000);
+    });
+
+    it('returns the loan value if no property is selected', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000 },
+        },
+      })).to.equal(800000);
+    });
+
+    it('returns the increase with mortgageNotes on the property', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [
+            { _id: 'propertyId', mortgageNotes: [{ value: 100000 }] },
+          ],
+        },
+      })).to.equal(700000);
+    });
+
+    it('counts a mortgagenote as 0 if no value is set on it', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [{ _id: 'propertyId', mortgageNotes: [{}] }],
+        },
+      })).to.equal(800000);
+    });
+
+    it('works with borrowers mortgageNotes', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000, mortgageNoteIds: ['note'] },
+          borrowers: [{ mortgageNotes: [{ _id: 'note' }] }],
+        },
+      })).to.equal(800000);
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000, mortgageNoteIds: ['note'] },
+          borrowers: [{ mortgageNotes: [{ _id: 'note', value: 200000 }] }],
+        },
+      })).to.equal(600000);
+    });
+
+    it('caps the increase at 0', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            propertyId: 'propertyId',
+            mortgageNoteIds: ['note'],
+          },
+          properties: [
+            { _id: 'propertyId', mortgageNotes: [{ value: 500000 }] },
+          ],
+          borrowers: [{ mortgageNotes: [{ _id: 'note', value: 500000 }] }],
+        },
+      })).to.equal(0);
+    });
+  });
 });

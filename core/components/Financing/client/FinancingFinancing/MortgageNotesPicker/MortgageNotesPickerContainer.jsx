@@ -8,7 +8,7 @@ import StructureUpdateContainer from '../../containers/StructureUpdateContainer'
 import { getProperty } from '../../FinancingCalculator';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 
-const sortMortgageNotes = (mortgageNoteIds, borrowers, canton) =>
+const sortMortgageNotes = (mortgageNoteIds, borrowers) =>
   borrowers.reduce(
     (obj, { mortgageNotes: notes, name }, index) => {
       const notesWithName = notes.map(note => ({
@@ -49,9 +49,7 @@ const formatBorrowerMortgageNote = (
         </span>
       ),
       onClick: () =>
-        updateStructure({
-          mortgageNoteIds: [...mortgageNoteIds, note._id],
-        }),
+        updateStructure({ mortgageNoteIds: [...mortgageNoteIds, note._id] }),
     }));
 
 export default compose(

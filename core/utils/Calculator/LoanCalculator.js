@@ -219,6 +219,30 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       getCountedArray(getRefinancingFormArray({ loan }), loan, a);
       return getPercent(a);
     }
+
+    getMortgageNoteIncrease({ loan, structureId }) {
+      const { structures, properties = [], structure, borrowers = [] } = loan;
+      const { propertyId, mortgageNoteIds = [] } = structureId
+        ? structures.find(({ id }) => id === structureId)
+        : structure;
+
+      const { mortgageNotes: propertyMortgageNotes = [] } = properties.find(({ _id }) => _id === propertyId) || {};
+      const borrowerMortgageNotes = this.getMortgageNotes({ borrowers });
+      const structureMortgageNotes = mortgageNoteIds.map(id =>
+        borrowerMortgageNotes.find(({ _id }) => _id === id));
+
+      const allMortgageNotes = [
+        ...structureMortgageNotes,
+        ...propertyMortgageNotes,
+      ];
+      const mortgageNoteValue = allMortgageNotes.reduce(
+        (total, { value }) => total + (value || 0),
+        0,
+      );
+      const loanValue = this.selectLoanValue({ loan });
+
+      return Math.max(0, loanValue - mortgageNoteValue);
+    }
   };
 
 export const LoanCalculator = withLoanCalculator(FinanceCalculator);
