@@ -1,16 +1,13 @@
 import { compose, withProps } from 'recompose';
-import { organisationUpdate } from 'core/api';
-import organisationFiles from 'core/api/organisations/queries/organisationFiles';
-import mergeFilesWithQuery from 'imports/core/api/files/mergeFilesWithQuery';
+import { withRouter } from 'react-router-dom';
+
+import { createRoute } from 'core/utils/routerUtils';
+import { SINGLE_ORGANISATION_PAGE } from 'imports/startup/client/adminRoutes';
 
 export default compose(
-  mergeFilesWithQuery(
-    organisationFiles,
-    ({ organisation: { _id: organisationId } }) => ({ organisationId }),
-    'organisation',
-  ),
-  withProps(({ organisation: { _id: organisationId } }) => ({
-    updateOrganisation: object =>
-      organisationUpdate.run({ organisationId, object }),
+  withRouter,
+  withProps(({ organisation: { _id: organisationId }, history }) => ({
+    onClick: () =>
+      history.push(createRoute(SINGLE_ORGANISATION_PAGE, { organisationId })),
   })),
 );

@@ -8,6 +8,12 @@ export default Organisations.createQuery(
     name: 1,
     type: 1,
     logo: 1,
+    contacts: {
+      _id: 1,
+      role: 1,
+      email: 1,
+      name: 1,
+    },
     $options: { sort: { name: 1 } },
   },
 );

@@ -6,6 +6,7 @@ import NotFound from 'core/components/NotFound';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import DevPage from 'core/components/DevPage';
 
+import SingleOrganisationPage from 'imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.jsx';
 import messagesFR from '../../../lang/fr.json';
 
 import AdminAccountPage from '../../client/pages/AdminAccountPage';
@@ -79,6 +80,10 @@ const AdminRouter = () => (
         <Route path={adminRoutes.PROMOTIONS_PAGE} component={PromotionsPage} />
         <Route path={adminRoutes.SEARCH_PAGE} component={SearchPage} />
         <Route path={adminRoutes.ACCOUNT_PAGE} component={AdminAccountPage} />
+        <Route
+          path={adminRoutes.SINGLE_ORGANISATION_PAGE}
+          component={SingleOrganisationPage}
+        />
         <Route
           path={adminRoutes.ORGANISATIONS_PAGE}
           component={OrganisationsPage}
