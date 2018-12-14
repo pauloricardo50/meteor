@@ -6,6 +6,7 @@ import {
   MORTGAGE_NOTE_CATEGORIES,
   CANTONS,
 } from '../../api/constants';
+import withTranslationContext from '../Translation/withTranslationContext';
 
 const makeGetInputs = withCanton => mortgageNote =>
   [
@@ -32,10 +33,14 @@ const makeGetInputs = withCanton => mortgageNote =>
       : null,
   ].filter(x => x);
 
-export default compose(withProps(({ borrowerId, propertyId }) => ({
-  mortgageNoteInsert: () =>
-    mortgageNoteInsert.run({ mortgageNote: {}, borrowerId, propertyId }),
-  mortgageNoteRemove: mortgageNoteId =>
-    mortgageNoteRemove.run({ mortgageNoteId }),
-  getInputs: makeGetInputs(!!borrowerId),
-})));
+export default compose(
+  // To trigger the proper Forms.value
+  withTranslationContext(() => ({ purchaseType: 'mortgageNote' })),
+  withProps(({ borrowerId, propertyId }) => ({
+    mortgageNoteInsert: () =>
+      mortgageNoteInsert.run({ mortgageNote: {}, borrowerId, propertyId }),
+    mortgageNoteRemove: mortgageNoteId =>
+      mortgageNoteRemove.run({ mortgageNoteId }),
+    getInputs: makeGetInputs(!!borrowerId),
+  })),
+);
