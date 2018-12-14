@@ -48,10 +48,6 @@ const MortgageNotesPickerDialog = (props: MortgageNotesPickerDialogProps) => {
 
   return (
     <div className="mortgage-notes-picker-dialog">
-      <h3>
-        <T id="FinancingMortgageNotesPicker.dialogTitle" />
-      </h3>
-
       <h4>
         <T id="FinancingMortgageNotesPicker.propertyMortgageNotes" />
       </h4>
