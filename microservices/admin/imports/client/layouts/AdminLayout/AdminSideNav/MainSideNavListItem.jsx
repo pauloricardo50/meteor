@@ -31,7 +31,9 @@ const MainSideNavListItem = ({
     classes={classes}
     onClick={onClick}
     onDoubleClick={() => {
-      history.push(`/${collection}`);
+      if (!to) {
+        history.push(`/${collection}`);
+      }
     }}
     component={!detail ? NavLink : undefined}
     to={!detail ? to : undefined}

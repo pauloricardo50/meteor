@@ -67,7 +67,6 @@ const items = [
   {
     label: 'Contacts',
     icon: <FontAwesomeIcon icon={faUserTie} className="admin-side-nav-icon" />,
-    to: '/contacts',
     detail: true,
     collection: CONTACTS_COLLECTION,
   },
