@@ -4,13 +4,25 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
 
-  .contact-name {
+.single-contact-page-infos {
+  > * {
+    padding: 8px;
+  }
+  .organisations {
     display: flex;
     flex-direction: row;
     align-items: center;
     > * {
-      padding: 4px;
+      padding: 8px;
     }
+  }
+
+  .contact-details {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

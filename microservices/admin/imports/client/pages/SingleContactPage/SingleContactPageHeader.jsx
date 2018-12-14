@@ -1,26 +1,21 @@
 // @flow
 import React from 'react';
 import ModifyContactFormDialog from '../ContactsPage/ContactDialogForm/ModifyContactFormDialog';
-import OrganisationsPage from '../OrganisationsPage/OrganisationsPage';
 
 type SingleContactPageHeaderProps = {
   contact: Object,
 };
 
 const SingleContactPageHeader = ({ contact }: SingleContactPageHeaderProps) => {
-  const { name, organisations } = contact;
-  console.log('contact', contact);
+  const { name, organisations = [] } = contact;
   return (
     <div className="single-contact-page-header">
-      <span className="contact-name">
-        <h1>{name}</h1>
-        {organisations && organisations.length > 0 && (
-          <h3 className="secondary">
-            {' '}
-            - {organisations.map(organisation => organisation.name).join(', ')}
-          </h3>
-        )}
-      </span>
+      <h1 className="space-children">
+        <span>{name}</span>
+        <small className="secondary">
+          {organisations.map(organisation => organisation.name).join(', ')}
+        </small>
+      </h1>
       <ModifyContactFormDialog contact={contact} />
     </div>
   );

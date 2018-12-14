@@ -1,4 +1,6 @@
-import { addressReducer, tasksReducer } from '../reducers';
+// import { addressReducer, tasksReducer } from '../reducers';
+import addressReducer from '../reducers/addressReducer';
+import tasksReducer from '../reducers/tasksReducer';
 import Contacts from './contacts';
 
 Contacts.addReducers({
