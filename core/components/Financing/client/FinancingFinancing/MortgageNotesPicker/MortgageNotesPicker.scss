@@ -1,9 +1,24 @@
 .mortgage-notes-picker-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
   h4 {
     margin: 0;
   }
 
   .calculated-value {
+    margin: 8px 0;
+  }
+
+  p:last-of-type {
     margin-bottom: 0;
+  }
+}
+
+.mortgage-notes-picker-dialog {
+  a {
+    display: block;
+    max-width: 400px;
   }
 }

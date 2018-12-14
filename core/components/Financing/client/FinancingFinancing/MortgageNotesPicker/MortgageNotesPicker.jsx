@@ -8,23 +8,27 @@ import MortgageNotesPickerDialog from './MortgageNotesPickerDialog';
 
 type MortgageNotesPickerProps = {};
 
-const MortgageNotesPicker = ({
-  className,
-  currentMortgageNotes,
-  ...data
-}: MortgageNotesPickerProps) => (
-  <div className={className}>
-    <DialogSimple
-      renderTrigger={({ handleOpen }) => (
-        <MortgageNotesPickerSummary
-          handleOpen={handleOpen}
-          currentMortgageNotes={currentMortgageNotes}
-        />
-      )}
-    >
-      <MortgageNotesPickerDialog {...data} />
-    </DialogSimple>
-  </div>
-);
+const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
+  const {
+    currentMortgageNotes,
+    className,
+    structure: { wantedLoan },
+  } = props;
+  return (
+    <div className={className}>
+      <DialogSimple
+        renderTrigger={({ handleOpen }) => (
+          <MortgageNotesPickerSummary
+            handleOpen={handleOpen}
+            currentMortgageNotes={currentMortgageNotes}
+            wantedLoan={wantedLoan}
+          />
+        )}
+      >
+        <MortgageNotesPickerDialog {...props} />
+      </DialogSimple>
+    </div>
+  );
+};
 
 export default MortgageNotesPickerContainer(MortgageNotesPicker);

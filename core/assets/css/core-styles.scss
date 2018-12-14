@@ -352,3 +352,11 @@ p.description,
 .pointer:hover {
   cursor: pointer;
 }
+
+.a {
+  text-decoration: underline !important;
+
+  &:hover {
+    color: $primary !important;
+  }
+}
