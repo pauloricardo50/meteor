@@ -15,6 +15,12 @@ const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
     className,
     structure: { wantedLoan },
   } = props;
+
+  // This component does not make sense if there's no wantedLoan
+  if (!wantedLoan) {
+    return null;
+  }
+
   return (
     <div className={className}>
       <DialogSimple

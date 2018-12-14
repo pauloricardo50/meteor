@@ -27,6 +27,7 @@
   "Forms.canton.ZH": "Zürich",
   "Forms.canton.LI": "Liechtenstein",
   "FinancingMortgageNotesPicker.addMortgageNote": "Ajouter cédule",
+  "FinancingMortgageNotesPicker.emptyPropertyMortgageNotes": "Ajoutez des cédules sur ce bien immobilier pour les faire apparaître ici.",
   "FinancingMortgageNotesPicker.noAvailableMortgageNotes": "Ajoutez des cédules du canton de {canton} sur un emprunteur pour pouvoir les choisir ici.",
   "FinancingMortgageNotesPicker.mortgageNoteToCreate": "Cédule à constituer",
   "FinancingMortgageNotesPicker.dialogTitle": "Cédules hypothécaires",

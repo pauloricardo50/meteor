@@ -29,7 +29,7 @@ const MortgageNotesPickerDialog = (props: MortgageNotesPickerDialogProps) => {
     );
   }
 
-  const { canton } = property;
+  const { canton, _id: propertyId } = property;
 
   if (!canton) {
     return (
@@ -51,9 +51,19 @@ const MortgageNotesPickerDialog = (props: MortgageNotesPickerDialogProps) => {
       <h3>
         <T id="FinancingMortgageNotesPicker.dialogTitle" />
       </h3>
+
       <h4>
         <T id="FinancingMortgageNotesPicker.propertyMortgageNotes" />
       </h4>
+
+      {currentMortgageNotes.length === 0 && (
+        <Link
+          to={createRoute(`/loans/${loanId}/properties/${propertyId}`)}
+          className="a"
+        >
+          <T id="FinancingMortgageNotesPicker.emptyPropertyMortgageNotes" />
+        </Link>
+      )}
       <MortgageNotesPickerList mortgageNotes={currentMortgageNotes} />
       <h4>
         <T id="FinancingMortgageNotesPicker.borrowerMortgageNotes" />
@@ -62,7 +72,6 @@ const MortgageNotesPickerDialog = (props: MortgageNotesPickerDialogProps) => {
         mortgageNotes={borrowerMortgageNotes}
         removeMortgageNote={removeMortgageNote}
       />
-
       {availableMortgageNotes.length > 0 ? (
         <span className="text-center">
           <DropdownMenu

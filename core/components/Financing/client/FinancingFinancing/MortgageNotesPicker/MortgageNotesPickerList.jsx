@@ -17,14 +17,14 @@ const MortgageNotesPickerList = ({
   removeMortgageNote,
 }: MortgageNotesPickerListProps) => (
   <List>
-    {mortgageNotes.map(({ _id, value, rank, borrowerName }) => (
+    {mortgageNotes.map(({ _id, value, rank, borrowerName, isBorrower }) => (
       <ListItem key={_id} button>
         <ListItemText
           primary={<span>{`CHF ${toMoney(value)}`}&nbsp;</span>}
           secondary={(
             <span>
               {[
-                borrowerName && <span>{borrowerName}</span>,
+                isBorrower && <span>{borrowerName}</span>,
                 rank && (
                   <span>
                     <T id="Forms.rank" />
@@ -38,7 +38,7 @@ const MortgageNotesPickerList = ({
             </span>
           )}
         />
-        {borrowerName && (
+        {isBorrower && (
           <ListItemSecondaryAction>
             <IconButton
               tooltip={<T id="general.remove" />}

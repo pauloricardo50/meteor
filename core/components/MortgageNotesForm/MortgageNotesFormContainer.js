@@ -11,6 +11,13 @@ import withTranslationContext from '../Translation/withTranslationContext';
 const makeGetInputs = withCanton => mortgageNote =>
   [
     { id: 'value', type: 'textInput', money: true },
+    withCanton
+      ? {
+        id: 'canton',
+        type: 'selectFieldInput',
+        options: Object.keys(CANTONS),
+      }
+      : null,
     { id: 'rank', type: 'textInput', number: true, required: false },
     {
       id: 'type',
@@ -24,13 +31,6 @@ const makeGetInputs = withCanton => mortgageNote =>
       options: Object.values(MORTGAGE_NOTE_CATEGORIES),
       required: false,
     },
-    withCanton
-      ? {
-        id: 'canton',
-        type: 'selectFieldInput',
-        options: Object.keys(CANTONS),
-      }
-      : null,
   ].filter(x => x);
 
 export default compose(

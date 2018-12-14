@@ -1,6 +1,7 @@
 import React from 'react';
 import { withProps, compose } from 'recompose';
 
+import T from '../../../../Translation';
 import FinancingDataContainer from '../../containers/FinancingDataContainer';
 import SingleStructureContainer from '../../containers/SingleStructureContainer';
 import StructureUpdateContainer from '../../containers/StructureUpdateContainer';
@@ -9,10 +10,13 @@ import { toMoney } from '../../../../../utils/conversionFunctions';
 
 const sortMortgageNotes = (mortgageNoteIds, borrowers, canton) =>
   borrowers.reduce(
-    (obj, { mortgageNotes: notes, name }) => {
+    (obj, { mortgageNotes: notes, name }, index) => {
       const notesWithName = notes.map(note => ({
         ...note,
-        borrowerName: name,
+        borrowerName: name || (
+          <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+        ),
+        isBorrower: true,
       }));
       return {
         current: [
