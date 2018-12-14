@@ -90,7 +90,7 @@ describe('BorrowerService', () => {
     });
 
     it('removes references of mortgageNotes from loans', () => {
-      const mortgageNoteId = Factory.create('mortgageNote');
+      const mortgageNoteId = Factory.create('mortgageNote')._id;
       Factory.create('loan', {
         borrowerIds: [borrowerId],
         structures: [{ mortgageNoteIds: [mortgageNoteId], id: '1' }],
