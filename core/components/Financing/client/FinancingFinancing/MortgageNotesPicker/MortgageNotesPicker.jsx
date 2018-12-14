@@ -10,6 +10,7 @@ type MortgageNotesPickerProps = {};
 
 const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
   const {
+    borrowerMortgageNotes,
     currentMortgageNotes,
     className,
     structure: { wantedLoan },
@@ -21,6 +22,7 @@ const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
           <MortgageNotesPickerSummary
             handleOpen={handleOpen}
             currentMortgageNotes={currentMortgageNotes}
+            borrowerMortgageNotes={borrowerMortgageNotes}
             wantedLoan={wantedLoan}
           />
         )}

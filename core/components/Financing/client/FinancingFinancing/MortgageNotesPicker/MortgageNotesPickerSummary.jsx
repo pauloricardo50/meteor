@@ -5,17 +5,20 @@ import T from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 
 type MortgageNotesPickerSummaryProps = {
-  handleOpen: Function,
+  borrowerMortgageNotes: Array<Object>,
   currentMortgageNotes: Array<Object>,
+  handleOpen: Function,
   wantedLoan: Number,
 };
 
 const MortgageNotesPickerSummary = ({
-  handleOpen,
+  borrowerMortgageNotes,
   currentMortgageNotes,
+  handleOpen,
   wantedLoan,
 }: MortgageNotesPickerSummaryProps) => {
-  const currentMortgageNotesValue = currentMortgageNotes.reduce(
+  const allNotes = [...borrowerMortgageNotes, ...currentMortgageNotes];
+  const currentMortgageNotesValue = allNotes.reduce(
     (total, { value = 0 }) => total + value,
     0,
   );
@@ -37,12 +40,12 @@ const MortgageNotesPickerSummary = ({
           </p>
         </>
       )}
-      {currentMortgageNotes.length > 0 && (
+      {allNotes.length > 0 && (
         <>
           <h4>
             <T
               id="FinancingMortgageNotesPicker.title"
-              values={{ count: currentMortgageNotes.length }}
+              values={{ count: allNotes.length }}
             />
           </h4>
           <p className="calculated-value">
