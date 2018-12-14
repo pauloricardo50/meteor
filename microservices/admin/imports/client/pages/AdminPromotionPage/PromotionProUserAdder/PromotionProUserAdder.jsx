@@ -40,7 +40,7 @@ const PromotionProUserAdder = ({
           type="text"
           value={searchQuery}
           onChange={event => setSearchQuery(event.target.value)}
-          placeHolder="Rechercher un utilisateur"
+          placeholder="Rechercher..."
           style={{ width: '100%', marginBottom: '16px' }}
         />
       </form>
