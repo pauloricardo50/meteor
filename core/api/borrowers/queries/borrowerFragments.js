@@ -1,4 +1,4 @@
-import { mortgageNoteFragment } from 'imports/core/api/mortgageNotes/queries/mortgageNoteFragments/index';
+import { mortgageNoteFragment } from '../../mortgageNotes/queries/mortgageNoteFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 

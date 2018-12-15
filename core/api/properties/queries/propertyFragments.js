@@ -1,5 +1,5 @@
 import merge from 'lodash/merge';
-import { mortgageNoteFragment } from 'imports/core/api/mortgageNotes/queries/mortgageNoteFragments/index';
+import { mortgageNoteFragment } from '../../mortgageNotes/queries/mortgageNoteFragments';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 
