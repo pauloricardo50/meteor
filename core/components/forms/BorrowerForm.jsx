@@ -2,7 +2,7 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { BorrowerSchemaAdmin } from 'core/api/borrowers/borrowers';
+import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { borrowerUpdate } from 'core/api';
 import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';

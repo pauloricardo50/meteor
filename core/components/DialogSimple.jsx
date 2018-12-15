@@ -52,6 +52,7 @@ export default class DialogSimple extends Component {
       secondary,
       style,
       title,
+      renderTrigger,
       ...otherProps
     } = this.props;
 
@@ -92,15 +93,19 @@ export default class DialogSimple extends Component {
     return (
       // Prevent triggering background clicks
       <span style={rootStyle} onClick={e => e.stopPropagation()}>
-        <Button
-          raised={raised}
-          label={label}
-          onClick={this.handleOpen}
-          primary={primary}
-          secondary={secondary}
-          style={buttonStyle}
-          {...buttonProps}
-        />
+        {renderTrigger ? (
+          renderTrigger({ handleOpen: this.handleOpen })
+        ) : (
+          <Button
+            raised={raised}
+            label={label}
+            onClick={this.handleOpen}
+            primary={primary}
+            secondary={secondary}
+            style={buttonStyle}
+            {...buttonProps}
+          />
+        )}
         <Dialog
           {...otherProps}
           title={title}

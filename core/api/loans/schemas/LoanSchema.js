@@ -23,7 +23,6 @@ import {
   borrowerIdsSchema,
   propertyIdsSchema,
   previousLoanTranchesSchema,
-  mortgageNotesSchema,
 } from './otherSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
@@ -99,7 +98,6 @@ const LoanSchema = new SimpleSchema({
   ...propertyIdsSchema,
   ...contactsSchema,
   ...previousLoanTranchesSchema,
-  ...mortgageNotesSchema,
   ...additionalDocuments([]),
 });
 

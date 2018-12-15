@@ -23,17 +23,17 @@ describe('LoanService', () => {
   describe('popValue', () => {
     it('removes a value from an array', () => {
       loanId = Factory.create('loan', {
-        mortgageNotes: [
-          { value: 150000, type: 'PAPER', category: 'REGISTERED', rank: 2 },
+        contacts: [
+          { name: 'Joe', title: 'Mah dude' },
         ],
       })._id;
       loan = LoanService.get(loanId);
-      expect(loan.mortgageNotes.length).to.equal(1);
+      expect(loan.contacts.length).to.equal(1);
 
-      LoanService.popValue({ loanId, object: { mortgageNotes: 1 } });
+      LoanService.popValue({ loanId, object: { contacts: 1 } });
 
       loan = LoanService.get(loanId);
-      expect(loan.mortgageNotes).to.deep.equal([]);
+      expect(loan.contacts).to.deep.equal([]);
     });
   });
 
