@@ -7,7 +7,7 @@ const assertRecapValue = (label, value) => () =>
     .parent()
     .siblings('p')
     .invoke('text')
-    .then((text) => {
+    .then(text => {
       expect(text).to.eq(value);
     });
 
@@ -18,7 +18,7 @@ const assertFinmaValue = () => () =>
     .parent()
     .siblings()
     .invoke('text')
-    .then((text) => {
+    .then(text => {
       expect(text).to.eq('80,00%');
     });
 
@@ -26,11 +26,13 @@ describe('Widget1', () => {
   describe('On homepage', () => {
     before(() => {
       cy.visit('/');
+      cy.callMethod('resetDatabase');
+      cy.callMethod('generateFixtures');
     });
 
     it('opens with 0 CHF value', () => {
       cy.get('input#property')
-        .then(($input) => {
+        .then($input => {
           expect($input.val()).to.equal('0');
         })
         .should('have.value', '0');
@@ -47,7 +49,9 @@ describe('Widget1', () => {
     });
 
     it('enables the Enter button when a value is typed', () => {
-      cy.get('#widget1-property button[type="submit"]').should('be.not.disabled');
+      cy.get('#widget1-property button[type="submit"]').should(
+        'be.not.disabled',
+      );
     });
 
     it('sets the slider to 1M value', () => {
@@ -95,7 +99,9 @@ describe('Widget1', () => {
     });
 
     it('displays the full calculator when matching recap values', () => {
-      cy.then(assertRecapValue('Coût total du projet', '1 050 000')).then(assertRecapValue('Financement total', '1 050 000'));
+      cy.then(assertRecapValue('Coût total du projet', '1 050 000')).then(
+        assertRecapValue('Financement total', '1 050 000'),
+      );
     });
 
     it('resets the calculator when clicking reset', () => {
@@ -141,7 +147,9 @@ describe('Widget1', () => {
     });
 
     it('shows the proper recap fields', () => {
-      cy.then(assertRecapValue('Prêt max possible', '800 000')).then(assertRecapValue('Augmentation du prêt', '300 000'));
+      cy.then(assertRecapValue('Prêt max possible', '800 000')).then(
+        assertRecapValue('Augmentation du prêt', '300 000'),
+      );
     });
   });
 });
