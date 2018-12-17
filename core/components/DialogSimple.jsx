@@ -38,7 +38,7 @@ export default class DialogSimple extends Component {
       bodyStyle,
       buttonProps,
       buttonStyle,
-      cancelOnly,
+      closeOnly,
       children,
       contentStyle,
       important,
@@ -57,13 +57,13 @@ export default class DialogSimple extends Component {
     } = this.props;
 
     const finalActions = (actions && actions(this.handleClose))
-      || (cancelOnly
+      || (closeOnly
         ? [
           <Button
             primary
-            label={<T id="general.cancel" />}
+            label={<T id="general.close" />}
             onClick={this.handleClose}
-            key="cancel"
+            key="close"
           />,
         ]
         : [
@@ -131,8 +131,8 @@ DialogSimple.propTypes = {
   autoFocus: PropTypes.bool,
   autoScroll: PropTypes.bool,
   buttonStyle: PropTypes.objectOf(PropTypes.any),
-  cancelOnly: PropTypes.bool,
   close: PropTypes.bool,
+  closeOnly: PropTypes.bool,
   important: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   onOpen: PropTypes.func,
@@ -148,7 +148,7 @@ DialogSimple.defaultProps = {
   autoFocus: false,
   autoScroll: false,
   buttonStyle: {},
-  cancelOnly: false,
+  closeOnly: false,
   close: undefined,
   important: false,
   onOpen: () => {},

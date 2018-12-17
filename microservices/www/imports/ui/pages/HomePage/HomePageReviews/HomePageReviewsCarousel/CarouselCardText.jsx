@@ -20,7 +20,7 @@ const CarouselCardText = ({ name, title, text }) => {
             raised: false,
             primary: true,
           }}
-          cancelOnly
+          closeOnly
           title={name}
         >
           <h4>{title}</h4>

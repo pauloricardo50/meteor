@@ -14,7 +14,7 @@ const getRecapArray = loan => [
   },
   {
     label: 'general.notaryFees',
-    value: toMoney(Calculator.getFees({ loan })),
+    value: toMoney(Calculator.getFees({ loan }).total),
   },
   {
     label: 'Recap.propertyWork',

@@ -10,6 +10,7 @@ import {
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import { getCountedArray } from '../formArrayHelpers';
 import { getPercent } from '../general';
+import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -21,7 +22,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       const value = propertyValue
         + (this.selectStructureKey({ loan, key: 'propertyWork' }) || 0)
-        + this.getFees({ loan });
+        + this.getFees({ loan }).total;
 
       return value;
     }
@@ -36,11 +37,33 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         .reduce((sum, { value }) => sum + value, 0);
     }
 
-    getFees({ loan }): number {
+    getFees({ loan, structureId }): number {
       const notaryFees = this.selectStructureKey({ loan, key: 'notaryFees' });
-      const defaultNotaryFees = this.getPropertyValue({ loan }) * this.notaryFees;
 
-      return notaryFees === 0 ? 0 : notaryFees || defaultNotaryFees;
+      const canton = this.makeSelectPropertyKey('canton')({
+        loan,
+        structureId,
+      });
+      const calculator = new NotaryFeesCalculator({ canton });
+
+      const defaultNotaryFees = calculator.getNotaryFeesForLoan({
+        loan,
+        structureId,
+      });
+
+      if (notaryFees === 0 || notaryFees) {
+        return { total: notaryFees };
+      }
+
+      return defaultNotaryFees;
+    }
+
+    getFeesCalculator({ loan, structureId }) {
+      const canton = this.makeSelectPropertyKey('canton')({
+        loan,
+        structureId,
+      });
+      return new NotaryFeesCalculator({ canton });
     }
 
     getInterests({ loan, interestRates }) {
@@ -221,12 +244,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getMortgageNoteIncrease({ loan, structureId }) {
-      const { structures, properties = [], structure, borrowers = [] } = loan;
-      const { propertyId, mortgageNoteIds = [] } = structureId
-        ? structures.find(({ id }) => id === structureId)
-        : structure;
+      const { borrowers = [] } = loan;
+      const { mortgageNoteIds = [] } = this.selectStructure({
+        loan,
+        structureId,
+      });
 
-      const { mortgageNotes: propertyMortgageNotes = [] } = properties.find(({ _id }) => _id === propertyId) || {};
+      const { mortgageNotes: propertyMortgageNotes = [] } = this.selectProperty({ loan, structureId });
       const borrowerMortgageNotes = this.getMortgageNotes({ borrowers });
       const structureMortgageNotes = mortgageNoteIds.map(id =>
         borrowerMortgageNotes.find(({ _id }) => _id === id));
@@ -239,7 +263,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         (total, { value }) => total + (value || 0),
         0,
       );
-      const loanValue = this.selectLoanValue({ loan });
+      const loanValue = this.selectLoanValue({ loan, structureId });
 
       return Math.max(0, loanValue - mortgageNoteValue);
     }

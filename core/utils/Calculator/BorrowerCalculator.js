@@ -305,7 +305,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getMortgageNotes({ borrowers }) {
       return borrowers.reduce(
-        (arr, { mortgageNotes: notes }) => [...arr, ...notes],
+        (arr, { mortgageNotes: notes = [] }) => [...arr, ...notes],
         [],
       );
     }
