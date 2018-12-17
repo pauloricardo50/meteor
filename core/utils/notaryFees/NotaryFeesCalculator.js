@@ -16,20 +16,21 @@ class NotaryFeesCalculator {
     Object.assign(this, config);
   }
 
-  getNotaryFeesForLoan(loan) {
+  getNotaryFeesForLoan({ loan, structureId }) {
     if (!cantonConfigs[this.canton]) {
       return { total: this.getDefaultFees({ loan }), canton: this.canton };
     }
 
     // Acte d'achat
-    const buyersContractFees = this.buyersContractFees(loan);
+    const buyersContractFees = this.buyersContractFees({ loan, structureId });
     // Cédule hypothécaire
-    const mortgageNoteFees = this.mortgageNoteFees(loan);
+    const mortgageNoteFees = this.mortgageNoteFees({ loan, structureId });
     // Déductions
     const deductions = this.getDeductions({
       buyersContractFees,
       mortgageNoteFees,
       loan,
+      structureId,
     });
 
     return {
@@ -41,19 +42,12 @@ class NotaryFeesCalculator {
     };
   }
 
-  getMortgageNoteIncrease({ loan }) {
-    const loanValue = Calculator.selectLoanValue({ loan });
-    const currentMortgageNoteValue = 0; // TODO: Calculate this
-
-    return Math.max(0, loanValue - currentMortgageNoteValue);
-  }
-
-  buyersContractFees(loan) {
+  buyersContractFees({ loan, structureId }) {
     if (loan.purchaseType === PURCHASE_TYPE.REFINANCING) {
       return 0;
     }
 
-    const propertyValue = Calculator.selectPropertyValue({ loan });
+    const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
 
     // Frais d'enregistrement/Droits de mutation
     const propertyRegistrationTax = this.propertyRegistrationTax({
@@ -79,8 +73,11 @@ class NotaryFeesCalculator {
     );
   }
 
-  mortgageNoteFees(loan) {
-    const noteIncrease = this.getMortgageNoteIncrease({ loan });
+  mortgageNoteFees({ loan, structureId }) {
+    const noteIncrease = Calculator.getMortgageNoteIncrease({
+      loan,
+      structureId,
+    });
 
     // Frais d'enregistrement
     const mortgageNoteRegistrationTax = this.mortgageNoteRegistrationTax({
@@ -96,7 +93,8 @@ class NotaryFeesCalculator {
       noteIncrease,
     });
     // Frais du notaire additionnels estimés
-    const additionalFees = this.additionalFees();
+    // Nuls si aucune cédule nécessaire
+    const additionalFees = noteIncrease > 0 ? this.additionalFees() : 0;
 
     return (
       mortgageNoteRegistrationTax
@@ -106,8 +104,8 @@ class NotaryFeesCalculator {
     );
   }
 
-  getDeductions({ loan }) {
-    const propertyValue = Calculator.selectPropertyValue({ loan });
+  getDeductions({ loan, structureId }) {
+    const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
 
     const buyersContractDeductions = this.buyersContractDeductions
       ? this.buyersContractDeductions({
@@ -122,7 +120,10 @@ class NotaryFeesCalculator {
       ? this.mortgageNoteDeductions({
         loan,
         mortgageNoteRegistrationTax: this.mortgageNoteRegistrationTax({
-          noteIncrease: this.getMortgageNoteIncrease({ loan }),
+          noteIncrease: Calculator.getMortgageNoteIncrease({
+            loan,
+            structureId,
+          }),
           loan,
         }),
       })

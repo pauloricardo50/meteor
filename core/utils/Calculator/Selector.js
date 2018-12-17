@@ -1,14 +1,24 @@
 // @flow
 import { createSelector } from 'reselect';
-import type { userLoan, userProperty } from '../../api/types';
+import { userLoan, userProperty } from '../../api/types';
 
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
-    selectProperty({ loan }: { loan: userLoan } = {}): userProperty {
+    selectProperty({
+      loan,
+      structureId,
+    }: { loan: userLoan } = {}): userProperty {
+      if (structureId) {
+        const { propertyId } = loan.structures.find(({ id }) => id === structureId);
+        return loan.properties.find(({ _id }) => _id === propertyId);
+      }
       return loan.structure.property;
     }
 
-    selectStructure({ loan }: { loan: userLoan } = {}): {} {
+    selectStructure({ loan, structureId }: { loan: userLoan } = {}): {} {
+      if (structureId) {
+        return loan.structures.find(({ id }) => id === structureId);
+      }
       return loan.structure;
     }
 
@@ -24,19 +34,25 @@ export const withSelector = (SuperClass = class {}) =>
     }
 
     makeSelectStructureKey(key: string): Function {
-      return createSelector(this.selectStructure, structure => structure[key]);
+      return createSelector(
+        this.selectStructure,
+        structure => structure[key],
+      );
     }
 
-    selectPropertyValue({ loan }: { loan: userLoan } = {}): number {
-      return this.makeSelectPropertyKey('value')({ loan });
+    selectPropertyValue({
+      loan,
+      structureId,
+    }: { loan: userLoan } = {}): number {
+      return this.makeSelectPropertyKey('value')({ loan, structureId });
     }
 
     selectPropertyWork({ loan }: { loan: userLoan } = {}): number {
       return this.makeSelectStructureKey('propertyWork')({ loan });
     }
 
-    selectLoanValue({ loan }: { loan: userLoan } = {}): number {
-      return loan.structure.wantedLoan;
+    selectLoanValue({ loan, structureId }: { loan: userLoan } = {}): number {
+      return this.selectStructure({ loan, structureId }).wantedLoan;
     }
 
     getCashUsed = this.makeSelectStructureKey('fortuneUsed');

@@ -221,12 +221,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getMortgageNoteIncrease({ loan, structureId }) {
-      const { structures, properties = [], structure, borrowers = [] } = loan;
-      const { propertyId, mortgageNoteIds = [] } = structureId
-        ? structures.find(({ id }) => id === structureId)
-        : structure;
+      const { borrowers = [] } = loan;
+      const { mortgageNoteIds = [] } = this.selectStructure({
+        loan,
+        structureId,
+      });
 
-      const { mortgageNotes: propertyMortgageNotes = [] } = properties.find(({ _id }) => _id === propertyId) || {};
+      const { mortgageNotes: propertyMortgageNotes = [] } = this.selectProperty({ loan, structureId });
       const borrowerMortgageNotes = this.getMortgageNotes({ borrowers });
       const structureMortgageNotes = mortgageNoteIds.map(id =>
         borrowerMortgageNotes.find(({ _id }) => _id === id));
@@ -239,7 +240,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         (total, { value }) => total + (value || 0),
         0,
       );
-      const loanValue = this.selectLoanValue({ loan });
+      const loanValue = this.selectLoanValue({ loan, structureId });
 
       return Math.max(0, loanValue - mortgageNoteValue);
     }
