@@ -1,5 +1,5 @@
-import pollUntilReady from '../../utils/testHelpers/pollUntilReady';
-import { E2E_USER_EMAIL, USER_PASSWORD } from '../utils';
+import pollUntilReady from '../../../utils/testHelpers/pollUntilReady';
+import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
 Cypress.Commands.add('getMeteor', () =>
   cy.window().then(({ Meteor }) => {
@@ -97,6 +97,15 @@ Cypress.Commands.add(
   },
 );
 
+// Refetches all non-reactive queries, would require a refresh, so this speeds tests up
+Cypress.Commands.add('refetch', () => {
+  cy.window().then(({ activeQueries = [], ClientEventService }) => {
+    activeQueries.forEach(query => {
+      ClientEventService.emit(query);
+    });
+  });
+});
+
 Cypress.Commands.add('routeShouldExist', expectedPageUri => {
   // make sure the page's route exist (doesn't get redirected to the not-found page)
   // Note: it can get redirected on componentDidMount - that's not tested here
@@ -145,15 +154,3 @@ Cypress.Commands.add('dropdownShouldRender', dropdownAssertionConfig => {
     });
   });
 });
-
-Cypress.Commands.add(
-  'selectDropdownOption',
-  (dropdownSelector, itemSelector) => {
-    // open dropdown
-    const dropdown = cy.get(dropdownSelector).first();
-    dropdown.click();
-
-    // click dropdown option
-    dropdown.get(itemSelector).click();
-  },
-);

@@ -72,7 +72,11 @@ const ProPromotionLotsTable = ({
         />
       </div>
     )}
-    <Table rows={rows} columnOptions={columnOptions} />
+    <Table
+      rows={rows}
+      columnOptions={columnOptions}
+      className="pro-promotion-lots-table"
+    />
   </>
 );
 
