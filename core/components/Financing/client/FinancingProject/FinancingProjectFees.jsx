@@ -19,7 +19,10 @@ const FinancingProjectFees = ({
   ...props
 }: FinancingProjectFeesProps) => {
   const { loan, structureId } = props;
-  const fees = Calculator.getFees({ loan, structureId });
+  const canton = Calculator.makeSelectPropertyKey('canton')({
+    loan,
+    structureId,
+  });
   return (
     <div className={cx(className, 'notary-fees')}>
       <InputAndSlider {...props} />
@@ -33,11 +36,8 @@ const FinancingProjectFees = ({
           <h3>
             <T id="general.notaryFees" />
           </h3>
-          <T
-            id="FinancingProjectFees.description"
-            values={{ canton: fees.canton }}
-          />
-          <Recap {...fees} arrayName="notaryFees" />
+          <T id="FinancingProjectFees.description" values={{ canton }} />
+          <Recap loan={loan} structureId={structureId} arrayName="notaryFees" />
         </div>
       </DialogSimple>
     </div>

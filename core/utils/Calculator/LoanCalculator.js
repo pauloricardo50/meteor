@@ -58,6 +58,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return defaultNotaryFees;
     }
 
+    getFeesCalculator({ loan, structureId }) {
+      const canton = this.makeSelectPropertyKey('canton')({
+        loan,
+        structureId,
+      });
+      return new NotaryFeesCalculator({ canton });
+    }
+
     getInterests({ loan, interestRates }) {
       let finalInterestRates = interestRates || loan.currentInterestRates;
       const offer = this.makeSelectStructureKey('offer')({ loan });

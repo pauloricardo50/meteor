@@ -30,7 +30,7 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.buyersContractFees).to.equal(0);
+      expect(fees.buyersContractFees.total).to.equal(0);
     });
   });
 
@@ -42,13 +42,13 @@ describe('NotaryFeesCalculator', () => {
     it('returns the correct amount for a buyers contract', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.buyersContractFees).to.equal(39177.4);
+      expect(fees.buyersContractFees.total).to.equal(39177.4);
     });
 
     it('returns the correct amount for a new mortgage note', () => {
       const fees = calc.getNotaryFeesForLoan({ loan });
 
-      expect(fees.mortgageNoteFees).to.equal(16135.7);
+      expect(fees.mortgageNoteFees.total).to.equal(16135.7);
     });
 
     it('returns the correct amount as a whole', () => {
@@ -92,7 +92,7 @@ describe('NotaryFeesCalculator', () => {
       loan.borrowers[0].mortgageNotes = [{ _id: 'asdf', value: 800000 }];
 
       const fees = calc.getNotaryFeesForLoan({ loan });
-      expect(fees.mortgageNoteFees).to.equal(0);
+      expect(fees.mortgageNoteFees.total).to.equal(0);
     });
 
     it('calculates fees for a different structure', () => {
@@ -103,6 +103,26 @@ describe('NotaryFeesCalculator', () => {
 
       const fees = calc.getNotaryFeesForLoan({ loan, structureId: 'struct2' });
       expect(fees.total).to.equal(55313.1);
+    });
+  });
+
+  describe('VD', () => {
+    before(() => {
+      calc = new NotaryFeesCalculator({ canton: 'VD' });
+    });
+
+    it('returns the correct amounts for a regular loan', () => {
+      const fees = calc.getNotaryFeesForLoan({ loan });
+
+      expect(fees).to.deep.include({
+        total: 41354.25,
+      });
+      expect(fees.buyersContractFees).to.deep.include({
+        total: 37596.38,
+      });
+      expect(fees.mortgageNoteFees).to.deep.include({
+        total: 3757.88,
+      });
     });
   });
 

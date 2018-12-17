@@ -42,19 +42,30 @@ describe('LoanCalculator', () => {
     it('calculates fees if no notary fees exist', () => {
       expect(Calculator.getFees({
         loan: { structure: { property: { value: 100 } } },
-      })).to.equal(5);
+      }).total).to.equal(5);
     });
 
     it('uses provided notary fees if they are defined', () => {
       expect(Calculator.getFees({
         loan: { structure: { property: { value: 100 }, notaryFees: 123 } },
-      })).to.equal(123);
+      }).total).to.equal(123);
     });
 
     it('uses provided notary fees if they are 0', () => {
       expect(Calculator.getFees({
         loan: { structure: { property: { value: 100 }, notaryFees: 0 } },
-      })).to.equal(0);
+      }).total).to.equal(0);
+    });
+
+    it('returns accurate notary fees if data is sufficient', () => {
+      expect(Calculator.getFees({
+        loan: {
+          structure: {
+            property: { value: 1000000, canton: 'GE' },
+            wantedLoan: 800000,
+          },
+        },
+      })).to.deep.include({ total: 55313.1 });
     });
   });
 

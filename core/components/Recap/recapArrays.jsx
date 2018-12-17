@@ -479,35 +479,103 @@ export const getStructureArray = (props) => {
   ];
 };
 
-export const getNotaryFeesArray = ({
-  total,
-  buyersContractFees,
-  mortgageNoteFees,
-  deductions,
-}) => [
-  {
-    label: 'Recap.buyersContractFeesWithVAT',
-    value: toMoney(buyersContractFees),
-  },
-  {
-    label: 'Recap.buyersContractFeesDeductions',
-    value: `-${toMoney(deductions.buyersContractDeductions)}`,
-    hide: !deductions.buyersContractDeductions,
-    spacing: true,
-  },
-  {
-    label: 'Recap.mortgageNoteFeesWithVAT',
-    value: toMoney(mortgageNoteFees),
-  },
-  {
-    label: 'Recap.mortgageNoteDeductions',
-    value: `-${toMoney(deductions.mortgageNoteDeductions)}`,
-    hide: !deductions.mortgageNoteDeductions,
-  },
-  {
-    label: 'Recap.total',
-    value: <span className="sum">{toMoney(total)}</span>,
-    spacingTop: true,
-    bold: true,
-  },
-];
+export const getNotaryFeesArray = ({ loan, structureId }) => {
+  const calc = Calculator.getFeesCalculator({ loan, structureId });
+  const {
+    total,
+    buyersContractFees: {
+      propertyRegistrationTax,
+      landRegistryPropertyTax,
+      notaryIncomeFromProperty,
+      additionalFees: buyersContractAdditionalFees,
+      total: buyersContractFees,
+    },
+    mortgageNoteFees: {
+      mortgageNoteRegistrationTax,
+      landRegistryMortgageNoteTax,
+      notaryIncomeFromMortgageNote,
+      additionalFees: mortgageNoteAdditionalFees,
+      total: mortgageNoteFees,
+    },
+    deductions: { buyersContractDeductions, mortgageNoteDeductions },
+  } = calc.getNotaryFeesForLoan({
+    loan,
+    structureId,
+  });
+
+  return [
+    {
+      title: true,
+      label: 'Recap.buyersContract',
+    },
+    {
+      label: 'Recap.propertyRegistrationTax',
+      value: toMoney(propertyRegistrationTax),
+    },
+    {
+      label: 'Recap.propertyRegistrationTaxDeductions',
+      value: `-${toMoney(buyersContractDeductions)}`,
+      hide: !buyersContractDeductions,
+    },
+    {
+      label: 'Recap.landRegistryPropertyTax',
+      value: toMoney(landRegistryPropertyTax),
+    },
+    {
+      label: 'Recap.notaryIncomeFromPropertyWithVAT',
+      value: toMoney(notaryIncomeFromProperty),
+    },
+    {
+      label: 'Recap.buyersContractAdditionalFees',
+      value: `~${toMoney(buyersContractAdditionalFees)}`,
+      hide: !buyersContractAdditionalFees,
+    },
+    {
+      key: 'subtotal1',
+      label: 'Recap.subTotal',
+      value: <span className="sum">{toMoney(buyersContractFees - buyersContractDeductions)}</span>,
+      spacingTop: true,
+      spacing: true,
+    },
+    {
+      title: true,
+      label: 'Recap.mortgageNote',
+    },
+    {
+      label: 'Recap.mortgageNoteRegistrationTax',
+      value: toMoney(mortgageNoteRegistrationTax),
+      hide: !mortgageNoteRegistrationTax,
+    },
+    {
+      label: 'Recap.mortgageNoteRegistrationTaxDeductions',
+      value: `-${toMoney(mortgageNoteDeductions)}`,
+      hide: !mortgageNoteDeductions,
+    },
+    {
+      label: 'Recap.landRegistryMortgageNoteTax',
+      value: toMoney(landRegistryMortgageNoteTax),
+      hide: !landRegistryMortgageNoteTax,
+    },
+    {
+      label: 'Recap.notaryIncomeFromMortgageNoteWithVAT',
+      value: toMoney(notaryIncomeFromMortgageNote),
+    },
+    {
+      label: 'Recap.mortgageNoteAdditionalFees',
+      value: `~${toMoney(mortgageNoteAdditionalFees)}`,
+      hide: !mortgageNoteAdditionalFees,
+    },
+    {
+      key: 'subtotal2',
+      label: 'Recap.subTotal',
+      value: <span className="sum">{toMoney(mortgageNoteFees - mortgageNoteDeductions)}</span>,
+      spacingTop: true,
+    },
+    {
+      label: 'Recap.total',
+      value: <span className="sum">{toMoney(total)}</span>,
+      spacingTop: true,
+      bold: true,
+    },
+  ];
+};

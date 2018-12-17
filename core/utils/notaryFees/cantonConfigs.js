@@ -9,27 +9,27 @@ const isCasatax = loan =>
   && Calculator.selectPropertyValue({ loan }) <= cantons.GE.CASATAX_CUTOFF;
 
 export const GE = {
-  notaryIncomeFromProperty: ({ value }) =>
+  notaryIncomeFromProperty: ({ propertyValue }) =>
     degressive({
-      amount: value,
+      amount: propertyValue,
       brackets: cantons.GE.NOTARY_PROPERTY_BRACKETS,
       minTax: cantons.GE.NOTARY_PROPERTY_BRACKETS_MIN,
     })
     * (1 + VAT),
-  notaryIncomeFromMortgageNote: ({ noteValue, noteIncrease }) =>
+  notaryIncomeFromMortgageNote: ({ noteIncrease }) =>
     degressive({
-      amount: noteValue || noteIncrease,
+      amount: noteIncrease,
       brackets: cantons.GE.NOTARY_NOTE_BRACKETS,
     })
     * (1 + VAT),
-  propertyRegistrationTax: ({ value }) =>
-    value * cantons.GE.PROPERTY_REGISTRATION_TAX,
-  landRegistryPropertyTax: ({ value }) =>
-    value * cantons.GE.LAND_REGISTRY_PROPERTY_TAX,
-  mortgageNoteRegistrationTax: ({ noteValue, noteIncrease }) =>
-    (noteValue || noteIncrease) * cantons.GE.MORTGAGE_NOTE_REGISTRATION_TAX,
-  landRegistryMortgageNoteTax: ({ noteValue, noteIncrease }) =>
-    (noteValue || noteIncrease) * cantons.GE.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
+  propertyRegistrationTax: ({ propertyValue }) =>
+    propertyValue * cantons.GE.PROPERTY_REGISTRATION_TAX,
+  landRegistryPropertyTax: ({ propertyValue }) =>
+    propertyValue * cantons.GE.LAND_REGISTRY_PROPERTY_TAX,
+  mortgageNoteRegistrationTax: ({ noteIncrease }) =>
+    noteIncrease * cantons.GE.MORTGAGE_NOTE_REGISTRATION_TAX,
+  landRegistryMortgageNoteTax: ({ noteIncrease }) =>
+    noteIncrease * cantons.GE.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
   additionalFees: () => cantons.GE.ADDITIONAL_FEES * (1 + VAT),
   buyersContractDeductions: ({ loan, transferTax }) =>
     (isCasatax(loan)
@@ -40,26 +40,25 @@ export const GE = {
 };
 
 export const VD = {
-  notaryIncomeFromProperty: ({ value }) =>
+  notaryIncomeFromProperty: ({ propertyValue }) =>
     degressive({
-      amount: value,
+      amount: propertyValue,
       brackets: cantons.VD.NOTARY_PROPERTY_BRACKETS,
       minTax: cantons.VD.NOTARY_PROPERTY_BRACKETS_MIN,
     })
     * (1 + VAT),
-  notaryIncomeFromMortgageNote: ({ noteValue, noteIncrease }) =>
+  notaryIncomeFromMortgageNote: ({ noteIncrease }) =>
     degressive({
-      amount: noteValue || noteIncrease,
+      amount: noteIncrease,
       brackets: cantons.VD.NOTARY_NOTE_BRACKETS,
     })
     * (1 + VAT),
-  propertyRegistrationTax: ({ value }) =>
-    value * cantons.VD.PROPERTY_REGISTRATION_TAX,
-  landRegistryPropertyTax: ({ value }) =>
-    value * cantons.VD.LAND_REGISTRY_PROPERTY_TAX,
-  mortgageNoteRegistrationTax: ({ noteValue, noteIncrease }) =>
-    (noteValue || noteIncrease) * cantons.VD.MORTGAGE_NOTE_REGISTRATION_TAX,
-  landRegistryMortgageNoteTax: ({ noteValue, noteIncrease }) =>
-    (noteValue || noteIncrease) * cantons.VD.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
+  propertyRegistrationTax: ({ propertyValue }) =>
+    propertyValue * cantons.VD.PROPERTY_REGISTRATION_TAX,
+  landRegistryPropertyTax: ({ propertyValue }) =>
+    propertyValue * cantons.VD.LAND_REGISTRY_PROPERTY_TAX,
+  mortgageNoteRegistrationTax: ({ noteIncrease }) => 0,
+  landRegistryMortgageNoteTax: ({ noteIncrease }) =>
+    noteIncrease * cantons.VD.LAND_REGISTRY_MORTGAGE_NOTE_TAX,
   additionalFees: () => cantons.VD.ADDITIONAL_FEES * (1 + VAT),
 };
