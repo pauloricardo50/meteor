@@ -53,7 +53,7 @@ const getAdmins = () => {
   return admins.map(admin => admin._id);
 };
 
-const deleteUsersRelatedData = (usersToDelete) => {
+const deleteUsersRelatedData = usersToDelete => {
   Borrowers.remove({ userId: { $in: usersToDelete } });
   Properties.remove({ userId: { $in: usersToDelete } });
   Offers.remove({ userId: { $in: usersToDelete } });
@@ -84,25 +84,30 @@ const createFakeLoanFixture = ({
 // Create a test user used in app's e2e tests and all the fixtures it needs
 const createTestUserWithData = () => {
   const testUserId = createUser(E2E_USER_EMAIL, ROLES.USER);
-
   const admins = getAdmins();
 
-  // Create step 3 loans with all types of auction statuses for the app's test user
-  Object.keys(AUCTION_STATUS).forEach((statusKey) => {
-    createFakeLoanFixture({
-      step: STEPS.CLOSING,
-      userId: testUserId,
-      adminId: admins[0]._id,
-      completeFiles: true,
-      auctionStatus: AUCTION_STATUS[statusKey],
-      twoBorrowers: true,
-    });
+  // Create 2 loans to check AppPage, which requires multiple loans to display
+  createFakeLoanFixture({
+    step: STEPS.PREPARATION,
+    userId: testUserId,
+    adminId: admins[0]._id,
+    completeFiles: true,
+    twoBorrowers: true,
+  });
+  createFakeLoanFixture({
+    step: STEPS.PREPARATION,
+    userId: testUserId,
+    adminId: admins[0]._id,
+    completeFiles: true,
+    twoBorrowers: true,
   });
 };
 
 Meteor.methods({
   generateTestData(currentUserEmail) {
-    if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
+    console.log('generateTestData');
+    if (isAuthorizedToRun()) {
+      console.log('isAuthorizedToRun', isAuthorizedToRun());
       createDevs(currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
@@ -129,9 +134,11 @@ Meteor.methods({
         createFakeLoan({});
       });
 
-      console.log('creating E2E user? 2');
       createTestUserWithData();
     }
+
+    console.log('done!');
+    return 'hello';
   },
 
   async purgeDatabase(currentUserId) {

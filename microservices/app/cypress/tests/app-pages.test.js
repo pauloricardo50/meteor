@@ -1,9 +1,5 @@
 /* eslint-env mocha */
-import {
-  E2E_USER_EMAIL,
-  route,
-  generateTestsForPages,
-} from '../../imports/core/cypress/utils';
+import { route, generateTestsForPages } from '../../imports/core/cypress/utils';
 
 const pages = {
   public: {
@@ -73,19 +69,15 @@ const pages = {
   },
 };
 
-let testData;
-
 describe('App Pages', () => {
-  before(() => {
-    // Visit the app so that we get the Window instance of the app
-    // from which we get the `Meteor` instance used in tests
-    cy.visit('/');
+  let testData;
 
-    cy.eraseAndGenerateTestData()
-      .getTestData(E2E_USER_EMAIL)
-      .then((data) => {
-        testData = data;
-      });
+  before(() => {
+    cy.callMethod('resetDatabase');
+    cy.callMethod('generateTestData');
+    cy.callMethod('getAppEndToEndTestData').then((data) => {
+      testData = data;
+    });
   });
 
   generateTestsForPages(pages, () => testData);
