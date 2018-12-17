@@ -1,1 +1,2 @@
-export { default } from './Recap.jsx';
+export { default } from './Recap';
+export { default as RecapSimple } from './RecapSimple';

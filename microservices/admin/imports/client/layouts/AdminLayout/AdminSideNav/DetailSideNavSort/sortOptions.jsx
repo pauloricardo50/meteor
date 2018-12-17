@@ -9,6 +9,7 @@ import {
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import { ORDER } from 'core/utils/sortArrayOfObjects';
+import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 
 const createdAtSortOption = {
   label: <T id="TasksTable.createdAt" />,
@@ -36,12 +37,15 @@ const propertySortOptions = [createdAtSortOption, updateAtSortOption];
 
 const promotionSortOptions = [createdAtSortOption, updateAtSortOption];
 
+const contactsSortOptions = [createdAtSortOption, updateAtSortOption];
+
 const sortOptions = {
   [LOANS_COLLECTION]: loanSortOptions,
   [BORROWERS_COLLECTION]: borrowerSortOptions,
   [USERS_COLLECTION]: userSortOptions,
   [PROPERTIES_COLLECTION]: propertySortOptions,
   [PROMOTIONS_COLLECTION]: promotionSortOptions,
+  [CONTACTS_COLLECTION]: contactsSortOptions,
 };
 
 export const defaultSortOption = {
@@ -50,6 +54,7 @@ export const defaultSortOption = {
   [USERS_COLLECTION]: createdAtSortOption.value,
   [PROPERTIES_COLLECTION]: createdAtSortOption.value,
   [PROMOTIONS_COLLECTION]: createdAtSortOption.value,
+  [CONTACTS_COLLECTION]: createdAtSortOption.value,
 };
 
 export const getSortOptionFromField = (options, fieldName) =>

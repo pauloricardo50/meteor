@@ -2,7 +2,7 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { BorrowerSchemaAdmin } from 'core/api/borrowers/borrowers';
+import { BorrowerSchemaAdmin } from 'core/api/borrowers/schemas/BorrowerSchema';
 import { borrowerUpdate } from 'core/api';
 import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';
@@ -45,7 +45,7 @@ const financeFields = [
   'bank3A',
   'thirdPartyFortune',
 ];
-const grapherLinks = ['loans', 'user', 'documents'];
+const omittedFields = ['loans', 'user', 'documents', 'additionalDocuments'];
 
 const otherSchema = BorrowerSchemaAdmin.omit(
   ...personalFields,
@@ -55,7 +55,7 @@ const otherSchema = BorrowerSchemaAdmin.omit(
 const handleSubmit = borrowerId => (doc) => {
   const hideLoader = message.loading('...', 0);
   return borrowerUpdate
-    .run({ borrowerId, object: omit(doc, grapherLinks) })
+    .run({ borrowerId, object: omit(doc, omittedFields) })
     .finally(hideLoader)
     .then(() => message.success('Enregistré', 2));
 };

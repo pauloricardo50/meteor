@@ -16,6 +16,7 @@ import AdminPromotionPage from '../../client/pages/AdminPromotionPage';
 import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
 import LoansPage from '../../client/pages/LoansPage';
+import OrganisationsPage from '../../client/pages/OrganisationsPage';
 import PromotionsPage from '../../client/pages/PromotionsPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SearchPage from '../../client/pages/SearchPage';
@@ -25,6 +26,9 @@ import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import SingleUserPage from '../../client/pages/SingleUserPage';
 import TasksPage from '../../client/pages/TasksPage';
 import UsersPage from '../../client/pages/UsersPage';
+import InterestRatesPage from '../../client/pages/InterestRatesPage';
+import ContactsPage from '../../client/pages/ContactsPage';
+import SingleContactPage from '../../client/pages/SingleContactPage';
 
 import AdminStore from '../../client/components/AdminStore';
 
@@ -75,6 +79,19 @@ const AdminRouter = () => (
         <Route path={adminRoutes.PROMOTIONS_PAGE} component={PromotionsPage} />
         <Route path={adminRoutes.SEARCH_PAGE} component={SearchPage} />
         <Route path={adminRoutes.ACCOUNT_PAGE} component={AdminAccountPage} />
+        <Route
+          path={adminRoutes.ORGANISATIONS_PAGE}
+          component={OrganisationsPage}
+        />
+        <Route
+          path={adminRoutes.INTEREST_RATES_PAGE}
+          component={InterestRatesPage}
+        />
+        <Route path={adminRoutes.CONTACTS_PAGE} component={ContactsPage} />
+        <Route
+          path={adminRoutes.SINGLE_CONTACT_PAGE}
+          component={SingleContactPage}
+        />
         <Route path={adminRoutes.DEV_PAGE} component={DevPage} />
         <Route component={NotFound} />
       </Switch>

@@ -3,9 +3,10 @@ import '../shared-startup';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
+// Keep localization before api to translate simple schema
+import { localizationStartup } from 'core/utils/localization';
 import 'core/api/api';
 import 'core/api/files/meteor-slingshot';
-import { localizationStartup } from 'core/utils/localization';
 
 import '../accounts-config';
 import './css';

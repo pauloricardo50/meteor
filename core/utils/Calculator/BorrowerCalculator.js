@@ -36,7 +36,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           return 0;
         }
         sum += [
-          ...(borrower[key]
+          ...(borrower[key] && borrower[key].length > 0
             ? borrower[key].map(mapFunc || (i => i.value))
             : []),
         ].reduce((tot, val) => (val > 0 && tot + val) || tot, 0);
@@ -92,7 +92,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
       return {
         ...percentages,
-        percent: percentages.percent / percentages.count,
+        percent:
+          percentages.count === 0 ? 1 : percentages.percent / percentages.count,
       };
     }
 
@@ -121,7 +122,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowers,
         keys: OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
       });
-      console.log('val', val);
       return val;
     }
 
@@ -295,11 +295,18 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getNetFortune(borrowers) {
+    getNetFortune({ borrowers }) {
       return (
         this.getTotalFunds({ borrowers })
         + this.getRealEstateFortune({ borrowers })
         + this.getOtherFortune({ borrowers })
+      );
+    }
+
+    getMortgageNotes({ borrowers }) {
+      return borrowers.reduce(
+        (arr, { mortgageNotes: notes }) => [...arr, ...notes],
+        [],
       );
     }
   };

@@ -2,7 +2,7 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { PropertySchemaAdmin } from 'core/api/properties/properties';
+import { PropertySchemaAdmin } from 'core/api/properties/schemas/PropertySchema';
 import { propertyUpdate } from 'core/api';
 import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';

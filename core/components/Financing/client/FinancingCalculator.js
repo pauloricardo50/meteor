@@ -18,6 +18,15 @@ export const getProperty = ({
 
   return {};
 };
+
+export const getOffer = ({ structure: { offerId }, offers }) => {
+  if (offerId) {
+    return offers.find(({ _id }) => _id === offerId);
+  }
+
+  return {};
+};
+
 export const getAmortizationRateMapper = (data) => {
   const {
     structure: { wantedLoan, propertyWork },
@@ -51,9 +60,18 @@ const argumentMappings = {
 
   getInterestsWithTranches: ({
     structure: { loanTranches, offerId },
+    loan: { currentInterestRates },
+    offer,
     offers,
   }) => {
-    const interestRates = offerId && offers.find(({ _id }) => _id === offerId);
+    let interestRates;
+    if (offer) {
+      interestRates = offer;
+    } else if (offerId) {
+      interestRates = offerId && offers.find(({ _id }) => _id === offerId);
+    } else {
+      interestRates = currentInterestRates;
+    }
 
     return { tranches: loanTranches, interestRates };
   },

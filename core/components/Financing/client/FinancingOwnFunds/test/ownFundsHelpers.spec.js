@@ -47,7 +47,7 @@ describe('ownFundsHelpers', () => {
         properties: [{ _id: 'propertyId', value: 900000 }],
         loan: {},
         borrowers: [{}],
-      })).to.equal(250000);
+      })).to.equal(245000);
     });
 
     it('subtracts used own funds', () => {

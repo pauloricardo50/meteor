@@ -62,15 +62,19 @@
 
           width: 150px;
           min-height: 100px;
-          max-height: 150px;
 
           p {
             max-width: 150px;
           }
 
+          .logo-wrapper {
+            max-width: 150px;
+            height: 50px;
+          }
+
           img {
             max-width: 150px;
-            max-height: 100px;
+            max-height: 50px;
             margin-bottom: 8px;
           }
         }
@@ -152,6 +156,21 @@
 
      > * {
       margin-left: 4px;
+    }
+  }
+
+  .residence-type-setter {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    flex-direction: column;
+
+    width: 50%;
+    margin: 16px;
+    padding: 16px;
+
+     > * {
+      width: 80%;
     }
   }
 }

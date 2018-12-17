@@ -59,19 +59,6 @@ describe('LoanCalculator', () => {
   });
 
   describe('getInterests', () => {
-    it('uses constructor interest rates if none are provided', () => {
-      const Calc = new CalculatorClass({ interestRates: { myRate: 0.012 } });
-      expect(Calc.getInterests({
-        loan: {
-          structure: {
-            property: { value: 100000 },
-            wantedLoan: 500000,
-            loanTranches: [{ value: 1, type: 'myRate' }],
-          },
-        },
-      })).to.equal(500);
-    });
-
     it('uses interest rates if provided', () => {
       expect(Calculator.getInterests({
         loan: {
@@ -163,6 +150,55 @@ describe('LoanCalculator', () => {
     });
 
     it('should amortize faster if borrowers are old');
+
+    it('gets amortization from the offer if it is defined', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(2000);
+    });
+
+    it('uses amortizationYears from the offer if defined', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5, amortizationYears: 30 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(1000);
+    });
+
+    it('resets amortizationGoal after calculating with offers', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            offer: { amortizationGoal: 0.5 },
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(2000);
+
+      expect(Calculator.getAmortization({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            propertyWork: 0,
+            property: { value: 1200000 },
+          },
+        },
+      })).to.equal(1000);
+    });
   });
 
   describe('getMonthly', () => {
@@ -175,6 +211,7 @@ describe('LoanCalculator', () => {
             propertyWork: 0,
             loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
           },
+          currentInterestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
         },
       })).to.be.within(1800, 2500);
     });
@@ -200,6 +237,7 @@ describe('LoanCalculator', () => {
             wantedLoan: 960000,
             property: { value: 1200000 },
             offer: {
+              amortizationGoal: 0.5,
               [INTEREST_RATES.YEARS_10]: 0.02,
             },
             propertyWork: 0,
@@ -207,7 +245,7 @@ describe('LoanCalculator', () => {
           },
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
-      })).to.equal(2600);
+      })).to.equal(3600);
     });
   });
 
@@ -276,7 +314,7 @@ describe('LoanCalculator', () => {
 
   describe('getMaxBorrowRatio', () => {
     it('returns the max ratio for a loan', () => {
-      expect(Calculator.getMaxBorrowRatio({ loan: { general: {} } })).to.equal(0.8);
+      expect(Calculator.getMaxBorrowRatio({ loan: {} })).to.equal(0.8);
     });
   });
 
@@ -323,12 +361,12 @@ describe('LoanCalculator', () => {
 
   describe('getLoanFilesProgress', () => {
     it('returns 0 for an empty loan', () => {
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.deep.equal({ percent: 0, count: 1 });
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {} } })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns 100% for a loan initially, when documents have arrived', () => {
       expect(Calculator.getLoanFilesProgress({
-        loan: { documents: {}, logic: {}, general: {} },
+        loan: { documents: {}, logic: {} },
       })).to.deep.equal({ percent: 1, count: 0 });
     });
   });
@@ -336,21 +374,90 @@ describe('LoanCalculator', () => {
   describe('getMissingLoanDocuments', () => {
     it('shows nothing is required initially', () => {
       expect(Calculator.getMissingLoanDocuments({
-        loan: { logic: {}, general: {} },
+        loan: { logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { logic: {}, general: {} },
+        loan: { logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { documents: {}, logic: {}, general: {} },
+        loan: { documents: {}, logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
         loan: {
           documents: { other: [{ key: 'hello' }] },
           logic: {},
-          general: {},
         },
       })).to.deep.equal([]);
+    });
+  });
+
+  describe('getMortgageNoteIncrease', () => {
+    it('returns the loan value if no mortgage note is added', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [{ _id: 'propertyId' }],
+        },
+      })).to.equal(800000);
+    });
+
+    it('returns the loan value if no property is selected', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000 },
+        },
+      })).to.equal(800000);
+    });
+
+    it('returns the increase with mortgageNotes on the property', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [
+            { _id: 'propertyId', mortgageNotes: [{ value: 100000 }] },
+          ],
+        },
+      })).to.equal(700000);
+    });
+
+    it('counts a mortgagenote as 0 if no value is set on it', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [{ _id: 'propertyId', mortgageNotes: [{}] }],
+        },
+      })).to.equal(800000);
+    });
+
+    it('works with borrowers mortgageNotes', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000, mortgageNoteIds: ['note'] },
+          borrowers: [{ mortgageNotes: [{ _id: 'note' }] }],
+        },
+      })).to.equal(800000);
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000, mortgageNoteIds: ['note'] },
+          borrowers: [{ mortgageNotes: [{ _id: 'note', value: 200000 }] }],
+        },
+      })).to.equal(600000);
+    });
+
+    it('caps the increase at 0', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            propertyId: 'propertyId',
+            mortgageNoteIds: ['note'],
+          },
+          properties: [
+            { _id: 'propertyId', mortgageNotes: [{ value: 500000 }] },
+          ],
+          borrowers: [{ mortgageNotes: [{ _id: 'note', value: 500000 }] }],
+        },
+      })).to.equal(0);
     });
   });
 });

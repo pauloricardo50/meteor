@@ -59,7 +59,11 @@ const BorrowersPage = (props) => {
 
 BorrowersPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
-  tabId: PropTypes.string.isRequired,
+  tabId: PropTypes.string,
 };
+
+BorrowersPage.defaultProps = {
+  tabId: 'personal'
+}
 
 export default withMatchParam('tabId')(BorrowersPage);

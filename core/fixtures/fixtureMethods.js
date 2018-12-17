@@ -1,19 +1,26 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import range from 'lodash/range';
-import { STEPS, STEP_ORDER } from 'imports/core/api/constants';
+import {
+  STEPS,
+  STEP_ORDER,
+  AUCTION_STATUS,
+  ROLES,
+  TASK_TYPE,
+} from 'core/api/constants';
 import {
   Borrowers,
   Loans,
+  Lots,
   Offers,
+  Organisations,
+  PromotionLots,
+  PromotionOptions,
+  Promotions,
   Properties,
+  SecurityService,
   Tasks,
   Users,
-  Promotions,
-  PromotionLots,
-  Lots,
-  PromotionOptions,
-  SecurityService,
 } from '../api';
 import TaskService from '../api/tasks/TaskService';
 import { TASK_TYPE } from '../api/tasks/taskConstants';
@@ -31,9 +38,10 @@ import {
   createFakeUsers,
 } from './userFixtures';
 import { createFakeOffer } from './offerFixtures';
-import { ROLES } from '../api/users/userConstants';
 import { E2E_USER_EMAIL } from './fixtureConstants';
 import { createYannisData } from './demoFixtures';
+import { createOrganisations } from './organisationFixtures';
+import { createFakeInterestRates } from './interestRatesFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -46,7 +54,7 @@ const getAdmins = () => {
   return admins.map(admin => admin._id);
 };
 
-const deleteUsersRelatedData = (usersToDelete) => {
+const deleteUsersRelatedData = usersToDelete => {
   Borrowers.remove({ userId: { $in: usersToDelete } });
   Properties.remove({ userId: { $in: usersToDelete } });
   Offers.remove({ userId: { $in: usersToDelete } });
@@ -98,10 +106,13 @@ const createTestUserWithData = () => {
 
 Meteor.methods({
   generateTestData(currentUserEmail) {
+    console.log('generateTestData');
     if (isAuthorizedToRun()) {
+      console.log('isAuthorizedToRun', isAuthorizedToRun());
       createDevs(currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
+      createOrganisations();
 
       // for each regular fixture user, create a loan with a certain step
       newUsers.forEach((userId, index) => {
@@ -126,6 +137,9 @@ Meteor.methods({
 
       createTestUserWithData();
     }
+
+    console.log('done!');
+    return 'hello';
   },
 
   async purgeDatabase(currentUserId) {
@@ -136,6 +150,7 @@ Meteor.methods({
         Loans.rawCollection().remove({}),
         Lots.remove({}),
         Offers.rawCollection().remove({}),
+        Organisations.rawCollection().remove({}),
         PromotionLots.rawCollection().remove({}),
         PromotionOptions.rawCollection().remove({}),
         Promotions.rawCollection().remove({}),
@@ -191,5 +206,13 @@ Meteor.methods({
     Borrowers.remove({ userId });
     Properties.remove({ userId });
     createYannisData(userId);
+  },
+
+  createFakeOffer({ loanId, userId }) {
+    createFakeOffer(loanId, userId);
+  },
+
+  createFakeInterestRates({ number }) {
+    createFakeInterestRates({ number });
   },
 });

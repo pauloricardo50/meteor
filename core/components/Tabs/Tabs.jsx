@@ -19,6 +19,10 @@ const styles = theme => ({
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
   },
+  labelContainer: {
+    paddingRight: 12,
+    paddingLeft: 12,
+  },
 });
 
 class Tabs extends Component {
@@ -73,7 +77,11 @@ class Tabs extends Component {
         >
           {tabs.map(({ label, to, id }, i) => (
             <Tab
-              classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+              classes={{
+                root: classes.tabRoot,
+                selected: classes.tabSelected,
+                labelContainer: classes.labelContainer,
+              }}
               label={label}
               component={to ? Link : undefined}
               to={to}

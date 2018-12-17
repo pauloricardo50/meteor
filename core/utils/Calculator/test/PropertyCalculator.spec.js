@@ -5,16 +5,16 @@ import { expect } from 'chai';
 import PropertyCalculator from '..';
 import { STEPS, PROPERTY_TYPE } from 'core/api/constants';
 import { PROPERTY_DOCUMENTS, DOCUMENTS } from '../../../api/constants';
+import { initialDocuments } from '../../../api/properties/propertiesAdditionalDocuments';
 
 describe('PropertyCalculator', () => {
   let params;
   let property;
 
   beforeEach(() => {
-    property = { _id: 'propertyId' };
+    property = { _id: 'propertyId', additionalDocuments: initialDocuments };
     params = {
       loan: {
-        general: {},
         structure: { property },
         borrowers: [{}],
         properties: [property],
@@ -43,7 +43,7 @@ describe('PropertyCalculator', () => {
         copropertyPercentage: 100,
         isCoproperty: false,
       };
-      params.loan.general.residenceType = ' ';
+      params.loan.residenceType = ' ';
       expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(1);
     });
   });
@@ -62,14 +62,14 @@ describe('PropertyCalculator', () => {
       expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 0, count: 1 });
     });
 
-    it('returns 0.5 if one document is provided', () => {
+    it('returns 1/6 if one document is provided', () => {
       params.loan.structure.property = {
         documents: {
           [PROPERTY_DOCUMENTS.PROPERTY_PLANS]: [{}],
         },
         _id: 'propertyId',
       };
-      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 0.5, count: 2 });
+      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 1 / 6, count: 6 });
     });
   });
 
@@ -88,14 +88,14 @@ describe('PropertyCalculator', () => {
         'minergie',
         'qualityProfileCondition',
         'qualityProfileStandard',
-        'general.residenceType',
+        'residenceType',
       ]);
     });
   });
 
   describe('getMissingPropertyDocuments', () => {
     it('returns the list of missing documents from a property 1', () => {
-      expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal([DOCUMENTS.PROPERTY_PLANS, DOCUMENTS.PROPERTY_PICTURES]);
+      expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments.map(({ id }) => id));
     });
 
     it('returns the list of missing documents from a property 2', () => {
@@ -103,7 +103,10 @@ describe('PropertyCalculator', () => {
         [DOCUMENTS.PROPERTY_PLANS]: [{}],
         [DOCUMENTS.PROPERTY_PICTURES]: [{}],
       };
-      expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal([]);
+      expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments
+        .map(({ id }) => id)
+        .filter(id =>
+          ![DOCUMENTS.PROPERTY_PLANS, DOCUMENTS.PROPERTY_PICTURES].includes(id)));
     });
   });
 });

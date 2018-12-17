@@ -1,5 +1,14 @@
+import { Random } from 'meteor/random';
+
 import SimpleSchema from 'simpl-schema';
+
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
+import { CANTONS } from '../loans/loanConstants';
+import zipcodes from '../../utils/zipcodes';
+import {
+  MORTGAGE_NOTE_TYPES,
+  MORTGAGE_NOTE_CATEGORIES,
+} from './sharedSchemaConstants';
 
 export const createdAt = {
   type: Date,
@@ -23,12 +32,13 @@ export const updatedAt = {
   optional: true,
 };
 
-export const additionalDocuments = {
-  additionalDocuments: { type: Array, defaultValue: [] },
+export const additionalDocuments = initialDocuments => ({
+  additionalDocuments: { type: Array, defaultValue: initialDocuments },
   'additionalDocuments.$': Object,
   'additionalDocuments.$.id': String,
-  'additionalDocuments.$.label': String,
-};
+  'additionalDocuments.$.label': { type: String, optional: true },
+  'additionalDocuments.$.requiredByAdmin': { type: Boolean, optional: true },
+});
 
 export const address = {
   address1: {
@@ -49,10 +59,13 @@ export const address = {
     type: String,
     optional: true,
   },
-  isForeignAddress: {
-    type: Boolean,
+  canton: {
+    type: String,
+    allowedValues: Object.keys(CANTONS),
     optional: true,
-    defaultValue: false,
+    autoValue() {
+      return zipcodes(this.field('zipCode').value);
+    },
   },
 };
 
@@ -81,4 +94,10 @@ export const userLinksSchema = {
     type: String,
     allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
   },
+};
+
+export const mortgageNoteLinks = {
+  mortgageNoteLinks: { type: Array, optional: true },
+  'mortgageNoteLinks.$': Object,
+  'mortgageNoteLinks.$._id': String,
 };

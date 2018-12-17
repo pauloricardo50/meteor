@@ -110,13 +110,13 @@ const createLots = (promotionId) => {
     lotIds.forEach(lotId =>
       PromotionLotService.addLink({
         id: promotionLotId,
-        linkName: 'lotLinks',
+        linkName: 'lots',
         linkId: lotId,
       }));
     lotIds.forEach(lotId =>
       PromotionService.addLink({
         id: promotionId,
-        linkName: 'lotLinks',
+        linkName: 'lots',
         linkId: lotId,
       }));
   });
@@ -158,6 +158,7 @@ export const createPromotionDemo = async (
     const loanId = await PromotionService.inviteUser({
       promotionId,
       user: { ...Meteor.user(), email: Meteor.user().emails[0].address },
+      sendInvitation: false,
     });
     if (withPromotionOptions) {
       const promotionOptionIds = addPromotionOptions(loanId, promotion);

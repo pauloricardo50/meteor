@@ -1,8 +1,11 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 import { ScrollSync } from 'react-scroll-sync';
 
-import type { userLoan } from 'core/api';
+import type { userLoan } from '../../../api';
+import { PURCHASE_TYPE } from '../../../api/constants';
 import Loading from '../../Loading';
 import FinancingFinancing from './FinancingFinancing';
 import FinancingHeader from './FinancingHeader';
@@ -11,6 +14,7 @@ import FinancingOwnFunds from './FinancingOwnFunds';
 import FinancingProject from './FinancingProject';
 import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
+import FinancingRefinancing from './FinancingRefinancing';
 
 type FinancingProps = {
   loan: userLoan,
@@ -22,9 +26,24 @@ const Financing = ({ loan }: FinancingProps) =>
       <div className="financing-structures">
         <FinancingHeader selectedStructure={loan.selectedStructure} />
         <FinancingProject />
+        {loan.purchaseType === PURCHASE_TYPE.REFINANCING && (
+          <FinancingRefinancing />
+        )}
         <FinancingFinancing />
         <FinancingOwnFunds />
-        {/* <FinancingOffers /> */}
+        {Meteor.microservice === 'admin' && (
+          <span>
+            Offres{' '}
+            {loan.enableOffers ? (
+              <span className="success">Activées</span>
+            ) : (
+              <span className="error">Désactivées</span>
+            )}
+          </span>
+        )}
+        {(Meteor.microservice === 'admin' || loan.enableOffers) && (
+          <FinancingOffers />
+        )}
         <FinancingResult />
       </div>
     </ScrollSync>

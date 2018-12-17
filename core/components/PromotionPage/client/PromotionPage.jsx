@@ -13,12 +13,15 @@ import UserPromotionLotsTable from './UserPromotionLotsTable';
 import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import CustomerAdder from './CustomerAdder';
 import EmailTester from './EmailTester';
+import UpdateField from '../../UpdateField';
+import { COLLECTIONS } from '../../../api/constants';
 
 type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
-  const { promotion, currentUser, canModify, isPro, loan } = props;
-  console.log('promotion', promotion);
+  const { promotion, currentUser, canModify, isPro, loan = {} } = props;
+  const { residenceType } = loan;
+
   return (
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
@@ -59,9 +62,25 @@ const PromotionPage = (props: PromotionPageProps) => {
         </>
       )}
       {!isPro && (
+        <div className="card1 residence-type-setter">
+          {!residenceType && (
+            <p>
+              <T id="Forms.promotionPage.residenceTypeSetter.text" />
+            </p>
+          )}
+          <UpdateField
+            doc={loan}
+            fields={['residenceType']}
+            collection={COLLECTIONS.LOANS_COLLECTION}
+          />
+        </div>
+      )}
+      {!isPro && residenceType && (
         <UserPromotionOptionsTable promotion={promotion} loan={loan} />
       )}
-      {!isPro && <UserPromotionLotsTable promotion={promotion} loan={loan} />}
+      {!isPro && residenceType && (
+        <UserPromotionLotsTable promotion={promotion} loan={loan} />
+      )}
     </div>
   );
 };

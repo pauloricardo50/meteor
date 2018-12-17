@@ -23,10 +23,10 @@
 
   .single-loan-page-header {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
 
-    > * {
+     > * {
       display: inline;
     }
 
@@ -43,11 +43,42 @@
 
     .icon-link {
       transform: scale(1.5);
-      transform-origin: 0%;
+      transform-origin: 0;
+    }
+
+    .single-loan-date-modifiers {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+
+      width: 100%;
+
+       > * {
+        margin-right: 8px;
+        padding: 8px;
+      }
     }
   }
 }
 
 .properties-tab .property-form {
   margin: 32px;
+}
+
+.single-borrower-tab {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .recap {
+    align-self: center;
+
+    margin: 40px 0;
+  }
+}
+
+.refinancing-tab {
+  form {
+    max-width: 400px;
+  }
 }

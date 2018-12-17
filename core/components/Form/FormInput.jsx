@@ -13,6 +13,7 @@ const FormInput = ({
   required,
   className,
   id,
+  helperText,
   ...rest
 }) => {
   const displayError = !!(touched && error);
@@ -27,6 +28,9 @@ const FormInput = ({
       {label && <InputLabel shrink>{label}</InputLabel>}
       <Input {...input} {...rest} />
       {displayError && <FormHelperText>{error}</FormHelperText>}
+      {!displayError && helperText && (
+        <FormHelperText>{helperText}</FormHelperText>
+      )}
     </FormControl>
   );
 };

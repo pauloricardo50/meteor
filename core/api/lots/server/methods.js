@@ -9,7 +9,7 @@ lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
   const lotId = LotService.insert(lot);
   PromotionService.addLink({
     id: promotionId,
-    linkName: 'lotLinks',
+    linkName: 'lots',
     linkId: lotId,
   });
   return lotId;

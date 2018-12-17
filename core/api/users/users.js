@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
 import { ROLES } from './userConstants';
 
-const UserSchema = new SimpleSchema({
+export const UserSchema = new SimpleSchema({
   username: {
     type: String,
     // For accounts-password, either emails or username is required, but not both. It is OK to make this
@@ -84,6 +84,10 @@ const UserSchema = new SimpleSchema({
   },
   'phoneNumbers.$': {
     type: String,
+  },
+  apiToken: {
+    type: String,
+    optional: true,
   },
 });
 

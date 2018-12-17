@@ -7,6 +7,9 @@ import {
   filesPercent,
   getMissingDocumentIds,
 } from '../../api/files/fileHelpers';
+import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
+import { getCountedArray } from '../formArrayHelpers';
+import { getPercent } from '../general';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -41,7 +44,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getInterests({ loan, interestRates }) {
-      let finalInterestRates = interestRates || this.interestRates;
+      let finalInterestRates = interestRates || loan.currentInterestRates;
       const offer = this.makeSelectStructureKey('offer')({ loan });
       if (offer) {
         finalInterestRates = offer;
@@ -70,19 +73,41 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getAmortization({ loan }) {
+      const {
+        structure: { offer },
+      } = loan;
+
+      if (offer) {
+        // Temporarily change amortizationGoal
+        const oldAmortizationGoal = this.amortizationGoal;
+        this.amortizationGoal = offer.amortizationGoal;
+
+        const amortization = (this.getAmortizationRate({
+          loan,
+          amortizationYears: offer.amortizationYears,
+        })
+            * this.selectLoanValue({ loan }))
+          / 12;
+
+        this.amortizationGoal = oldAmortizationGoal;
+
+        return amortization;
+      }
+
       return (
         (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
         / 12
       );
     }
 
-    getAmortizationRate({ loan }) {
+    getAmortizationRate({ loan, amortizationYears }) {
       const {
         structure: { wantedLoan, propertyWork },
       } = loan;
       return this.getAmortizationRateBase({
         borrowRatio:
           wantedLoan / (this.getPropertyValue({ loan }) + propertyWork),
+        amortizationYears,
       });
     }
 
@@ -116,11 +141,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getMaxBorrowRatio({
-      loan: {
-        general: { usageType },
-      },
-    }) {
+    getMaxBorrowRatio({ loan: { usageType } }) {
       return this.maxBorrowRatio;
     }
 
@@ -191,6 +212,36 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
         0,
       );
+    }
+
+    refinancingPercent({ loan }) {
+      const a = [];
+      getCountedArray(getRefinancingFormArray({ loan }), loan, a);
+      return getPercent(a);
+    }
+
+    getMortgageNoteIncrease({ loan, structureId }) {
+      const { structures, properties = [], structure, borrowers = [] } = loan;
+      const { propertyId, mortgageNoteIds = [] } = structureId
+        ? structures.find(({ id }) => id === structureId)
+        : structure;
+
+      const { mortgageNotes: propertyMortgageNotes = [] } = properties.find(({ _id }) => _id === propertyId) || {};
+      const borrowerMortgageNotes = this.getMortgageNotes({ borrowers });
+      const structureMortgageNotes = mortgageNoteIds.map(id =>
+        borrowerMortgageNotes.find(({ _id }) => _id === id));
+
+      const allMortgageNotes = [
+        ...structureMortgageNotes,
+        ...propertyMortgageNotes,
+      ];
+      const mortgageNoteValue = allMortgageNotes.reduce(
+        (total, { value }) => total + (value || 0),
+        0,
+      );
+      const loanValue = this.selectLoanValue({ loan });
+
+      return Math.max(0, loanValue - mortgageNoteValue);
     }
   };
 

@@ -4,12 +4,16 @@ import PropTypes from 'prop-types';
 import Recap from 'core/components/Recap';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
+import UpdateField from 'core/components/UpdateField';
+import DateModifier from 'core/components/DateModifier';
 import Calculator from 'core/utils/Calculator';
+import { LOANS_COLLECTION } from 'imports/core/api/constants';
+import { COLLECTIONS } from 'core/api/constants';
 import DisableUserFormsToggle from '../../../../components/DisableUserFormsToggle';
-import LoanValidation from './LoanValidation';
 import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
+import LoanStepSetter from './LoanStepSetter';
 
 const OverviewTab = (props) => {
   const {
@@ -25,11 +29,25 @@ const OverviewTab = (props) => {
   return (
     <div className="overview-tab">
       <div className="admin-section card1">
+        <ImpersonateLink user={user} />
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
-        <ImpersonateLink user={user} />
+        <UpdateField
+          doc={loan}
+          fields={['residenceType']}
+          collection={COLLECTIONS.LOANS_COLLECTION}
+        />
+        <UpdateField doc={loan} fields={['purchaseType']} collection={COLLECTIONS.LOANS_COLLECTION} disabled />
+        <LoanStepSetter loan={loan} />
+        {['signingDate', 'closingDate'].map(dateType => (
+          <DateModifier
+            collection={LOANS_COLLECTION}
+            doc={loan}
+            field={dateType}
+            key={`${loan._id}${dateType}`}
+          />
+        ))}
       </div>
-      {/* <LoanValidation loan={loan} /> */}
       <LoanStatusCheck loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">

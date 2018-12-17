@@ -186,7 +186,7 @@ export class LoanService extends CollectionService {
       loanId,
       structure: {
         ...structure,
-        name: `Structure ${structures.length + 1}`,
+        name: `Plan financier ${structures.length + 1}`,
         propertyId,
       },
     });
@@ -212,7 +212,7 @@ export class LoanService extends CollectionService {
       });
     }
 
-    throw new Meteor.Error("Can't delete selected structure");
+    throw new Meteor.Error('Vous ne pouvez pas supprimer votre plan financier choisi');
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
@@ -249,7 +249,7 @@ export class LoanService extends CollectionService {
         loanId,
         structure: {
           ...currentStructure,
-          name: `${currentStructure.name} - copie`,
+          name: `${currentStructure.name || 'Plan financier'} - copie`,
         },
         atIndex: currentStructureIndex + 1,
       })
@@ -276,7 +276,6 @@ export class LoanService extends CollectionService {
     });
   };
 
-
   setPromotionPriorityOrder({ loanId, promotionId, priorityOrder }) {
     return Loans.update(
       { _id: loanId, 'promotionLinks._id': promotionId },
@@ -287,6 +286,66 @@ export class LoanService extends CollectionService {
   getPromotionPriorityOrder({ loanId, promotionId }) {
     const promotionLink = this.get(loanId).promotionLinks.find(({ _id }) => _id === promotionId);
     return promotionLink ? promotionLink.priorityOrder : [];
+  }
+
+  assignLoanToUser({ loanId, userId }) {
+    const {
+      propertyIds = [],
+      borrowerIds = [],
+      properties = [],
+      borrowers = [],
+    } = this.createQuery({
+      $filters: { _id: loanId },
+      propertyIds: 1,
+      borrowerIds: 1,
+      properties: { loans: { _id: 1 }, address1: 1 },
+      borrowers: { loans: { _id: 1 }, name: 1 },
+    }).fetchOne();
+
+    borrowers.forEach(({ loans = [], name }) => {
+      if (loans.length > 1) {
+        throw new Meteor.Error(`Peut pas réassigner l'hypothèque, l'emprunteur "${name}" est assigné à plus d'une hypothèque`);
+      }
+    });
+    properties.forEach(({ loans = [], address1 }) => {
+      if (loans.length > 1) {
+        throw new Meteor.Error(`Peut pas réassigner l'hypothèque, le bien immobilier "${address1}" est assigné à plus d'une hypothèque`);
+      }
+    });
+
+    const object = { userId };
+
+    this.update({ loanId, object });
+    propertyIds.forEach((propertyId) => {
+      PropertyService.update({ propertyId, object });
+    });
+    borrowerIds.forEach((borrowerId) => {
+      BorrowerService.update({ borrowerId, object });
+    });
+  }
+
+  switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
+    const { borrowerIds } = this.get(loanId);
+    const { loans: oldBorrowerLoans = [] } = BorrowerService.createQuery({
+      $filters: { _id: oldBorrowerId },
+      loans: { name: 1 },
+    }).fetchOne();
+
+    if (borrowerIds.includes(borrowerId)) {
+      throw new Meteor.Error('Cet emprunteur est déjà sur ce prêt hypothécaire');
+    }
+
+    this.update({
+      loanId,
+      object: {
+        borrowerIds: borrowerIds.map(id =>
+          (id === oldBorrowerId ? borrowerId : id)),
+      },
+    });
+
+    if (oldBorrowerLoans.length === 1 && oldBorrowerLoans[0]._id === loanId) {
+      BorrowerService.remove({ borrowerId: oldBorrowerId });
+    }
   }
 }
 

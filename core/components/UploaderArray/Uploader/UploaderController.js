@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
 import bert from 'core/utils/bert';
@@ -35,7 +36,7 @@ export const propHasChanged = (oldProp, newProp) =>
 
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
-    displayFull: !filesExistAndAreValid(currentValue),
+    displayFull: Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
   }),
   {
     showFull: () => () => ({ displayFull: true }),
@@ -55,7 +56,13 @@ const tempFileState = withStateHandlers(
   },
 );
 
-const props = withProps(({ deleteFile, addTempFiles, intl: { formatMessage: f }, currentUser }) => ({
+const props = withProps(({
+  deleteFile,
+  addTempFiles,
+  intl: { formatMessage: f },
+  currentUser,
+  handleSuccess,
+}) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
     let showError = false;
@@ -83,6 +90,9 @@ const props = withProps(({ deleteFile, addTempFiles, intl: { formatMessage: f },
   handleUploadComplete: (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
     SlackService.notifyOfUpload(currentUser, file.name);
+    if (handleSuccess) {
+      handleSuccess(file, url);
+    }
   },
   handleRemove: key =>
     deleteFile(key).then(() => {
@@ -97,6 +107,7 @@ const willReceiveProps = lifecycle({
   // props.
   // FIXME: This prevents someone from uploading a file with the same name twice
   componentWillReceiveProps({ currentValue: nextValue }) {
+    console.log('nextValue', nextValue);
     const { currentValue, tempFiles, filterTempFiles } = this.props;
 
     // Lazy check to see if they are of different size

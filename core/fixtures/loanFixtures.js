@@ -15,9 +15,6 @@ import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
-const fakeGeneral = {
-  purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
-};
 
 const logic1 = {};
 
@@ -194,7 +191,7 @@ export const createFakeLoan = ({
     name: faker.address.streetAddress(),
     borrowerIds,
     propertyIds: [propertyId],
-    general: fakeGeneral,
+    purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
     contacts: [],
     structures: [
       {

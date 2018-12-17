@@ -20,15 +20,12 @@ describe('Valuation', () => {
     });
 
   beforeEach(() => {
+    getMountedComponent.reset();
     props = {
       property: {
         valuation: { status: VALUATION_STATUS.NONE, microlocation: {} },
       },
     };
-  });
-
-  afterEach(() => {
-    getMountedComponent.reset();
   });
 
   it('renders the valuation button when the valuation does not exist', () => {

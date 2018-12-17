@@ -10,7 +10,6 @@ import {
   NOTARY_FEES,
   AMORTIZATION_STOP,
   DEFAULT_AMORTIZATION,
-  MAX_YEARLY_THIRD_PILLAR_PAYMENTS,
   AVERAGE_TAX_RATE,
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MIN_CASH,
@@ -20,10 +19,8 @@ import {
   MAX_INCOME_RATIO_TIGHT,
   MAX_BORROW_RATIO_WITH_PLEDGE,
 } from '../../config/financeConstants';
-import { NO_INTEREST_RATE_ERROR } from './financeCalculatorConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
-import { averageRates } from '../../components/InterestRatesTable/interestRates';
 
 export class FinanceCalculator {
   constructor(settings?: Object) {
@@ -39,7 +36,6 @@ export class FinanceCalculator {
   initFinanceCalculator({
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
-    interestRates = averageRates,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
     maxBorrowRatioWithPledge = MAX_BORROW_RATIO_WITH_PLEDGE,
     maxIncomeRatio = MAX_INCOME_RATIO,
@@ -69,7 +65,6 @@ export class FinanceCalculator {
   } = {}) {
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
-    this.interestRates = interestRates;
     this.maxBorrowRatio = maxBorrowRatio;
     this.maxBorrowRatioWithPledge = maxBorrowRatioWithPledge;
     this.maxIncomeRatio = maxIncomeRatio;
@@ -204,9 +199,27 @@ export class FinanceCalculator {
     };
   }
 
+  checkInterestsAndTranches({
+    tranches = [],
+    interestRates,
+  }: {
+    tranches: Array<{ type: string, value: number }>,
+    interestRates: Object,
+  }) {
+    return tranches.reduce((invalidRate, { type }) => {
+      if (invalidRate) {
+        return invalidRate;
+      }
+
+      if (!interestRates[type]) {
+        return type;
+      }
+    }, undefined);
+  }
+
   getInterestsWithTranches({
     tranches = [],
-    interestRates = this.interestRates,
+    interestRates,
   }: {
     tranches: Array<{ type: string, value: number }>,
     interestRates: Object,
@@ -214,8 +227,8 @@ export class FinanceCalculator {
     return tranches.reduce((acc, { type, value }) => {
       const rate = interestRates[type];
 
-      if (!rate) {
-        throw new Error(NO_INTEREST_RATE_ERROR, type);
+      if (!rate || acc === '-') {
+        return '-';
       }
 
       return acc + value * rate;
@@ -230,7 +243,7 @@ export class FinanceCalculator {
     if (borrowRatio > this.amortizationGoal) {
       // The loan has to be below 65% before 15 years or before retirement,
       // whichever comes first
-      const amountToAmortize = borrowRatio - 0.65;
+      const amountToAmortize = borrowRatio - this.amortizationGoal;
 
       // Make sure we don't create a black hole, or use negative values by error
       if (amortizationYears > 0) {
@@ -321,12 +334,12 @@ export class FinanceCalculator {
     return (propertyValue + propertyWork) * this.minCash + fees;
   }
 
-  getFeesBase({ fees, propertyValue = 0, propertyWork = 0 }) {
+  getFeesBase({ fees, propertyValue = 0 }) {
     if (fees === 0 || fees > 0) {
       return fees;
     }
 
-    return (propertyValue + propertyWork) * this.notaryFees;
+    return propertyValue * this.notaryFees;
   }
 
   getIncomeLimitedPropertyValue = ({ nF, r, i, mR, m }) => ({
@@ -344,6 +357,13 @@ export class FinanceCalculator {
     // Because of the ratios, round this value down
     return Math.floor(Math.min(incomeLimited1, incomeLimited2));
   };
+
+  getAveragedInterestRate({ tranches = [], interestRates = {} }) {
+    return tranches.reduce(
+      (totalRate, { type, value }) => totalRate + interestRates[type] * value,
+      0,
+    );
+  }
 }
 
 export default new FinanceCalculator();

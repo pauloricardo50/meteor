@@ -15,6 +15,8 @@ import {
   PROMOTIONS_COLLECTION,
 } from 'core/api/constants';
 import adminPromotions from 'core/api/promotions/queries/adminPromotions';
+import contacts from 'core/api/contacts/queries/contacts';
+import { CONTACTS_COLLECTION } from 'imports/core/api/constants';
 
 const PAGINATION_AMOUNT = 10;
 
@@ -30,6 +32,8 @@ const getQuery = ({ collectionName }) => {
     return sideNavUsers;
   case PROMOTIONS_COLLECTION:
     return adminPromotions;
+  case CONTACTS_COLLECTION:
+    return contacts;
   default:
     return null;
   }

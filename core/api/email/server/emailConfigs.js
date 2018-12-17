@@ -166,7 +166,7 @@ addEmailConfig(EMAIL_IDS.CONTACT_US_ADMIN, {
 addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
   template: EMAIL_TEMPLATES.PROMOTION_INVITATION,
   createOverrides(
-    { coverImageUrl, logoUrls = [], ctaUrl, firstName, promotionName },
+    { coverImageUrl, logoUrls = [], ctaUrl },
     { title, body, cta },
   ) {
     const { variables } = this.template;
@@ -192,9 +192,19 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     ...params,
     promotionName: params.promotion.name,
     phoneNumber:
-      params.promotion.contacts.length > 0
-        ? params.promotion.contacts[0].phoneNumber
-        : EPOTEK_PHONE,
+      params.promotion.contacts.length
+      && params.promotion.contacts[0].phoneNumber,
+    name: params.promotion.contacts.length && params.promotion.contacts[0].name,
+    epotekNumber: EPOTEK_PHONE,
+    assignedEmployeeName:
+      (params.promotion.assignedEmployee
+      && params.promotion.assignedEmployee.name) || 'Yannis Eggert',
+    assignedEmployeeFirstName:
+      (params.promotion.assignedEmployee
+      && params.promotion.assignedEmployee.firstName) || 'Yannis',
+    assignedEmployeePhone:
+      (params.promotion.assignedEmployee
+      && params.promotion.assignedEmployee.phoneNumbers[0]) || EPOTEK_PHONE,
   }),
 });
 

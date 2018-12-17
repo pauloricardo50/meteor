@@ -30,6 +30,7 @@ const getDashboardArray = (props) => {
   const realEstateFortune = Calculator.getRealEstateFortune(props);
   const realEstateValue = Calculator.getRealEstateValue(props);
   const totalFunds = Calculator.getTotalFunds(props);
+  const totalFinancing = Calculator.getTotalFinancing(props);
 
   return [
     {
@@ -82,7 +83,7 @@ const getDashboardArray = (props) => {
     },
     {
       label: 'Recap.totalFinancing',
-      value: <span className="sum">{toMoney(project)}</span>,
+      value: <span className="sum">{toMoney(totalFinancing)}</span>,
       spacingTop: true,
       spacing: true,
       bold: true,
@@ -502,9 +503,9 @@ const arraySwitch = (props) => {
 const Recap = (props) => {
   const array = props.array || arraySwitch(props);
   return (
-    <article className="validator recap">
+    <div className="validator recap">
       <RecapSimple {...props} array={array} />
-    </article>
+    </div>
   );
 };
 

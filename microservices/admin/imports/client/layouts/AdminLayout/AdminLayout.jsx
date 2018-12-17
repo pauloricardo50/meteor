@@ -9,16 +9,27 @@ import { HotKeys } from 'react-hotkeys';
 import { handleLoggedOut } from 'core/utils/history';
 import ErrorBoundary from 'core/components/ErrorBoundary';
 import PageHead from 'core/components/PageHead';
+import getBaseRedirect from 'core/utils/redirection';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
 
-const getRedirect = ({ currentUser }) => {
+const getRedirect = ({ currentUser, history }) => {
+  const baseRedirect = getBaseRedirect(currentUser, history.location.pathname);
+  if (baseRedirect !== undefined) {
+    return baseRedirect;
+  }
+
   const userIsAdmin = Roles.userIsInRole(currentUser, 'admin');
   const userIsDev = Roles.userIsInRole(currentUser, 'dev');
 
   if (!(userIsAdmin || userIsDev) && !(Meteor.isTest || Meteor.isAppTest)) {
-    window.location.replace(`${Meteor.settings.public.subdomains.app}`);
+    // If `getBaseRedirect` redirected, then we have a race condition. Waiting a
+    // second forces let browser resolve that first redirect and eventually
+    // reschedule this one.
+    setTimeout(() => {
+      window.location.replace(Meteor.settings.public.subdomains.app);
+    }, 1000);
   }
 
   return false;

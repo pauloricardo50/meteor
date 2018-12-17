@@ -1,5 +1,5 @@
 import Users from './users';
-import { Loans, Offers, Borrowers, Properties, Promotions } from '..';
+import { Loans, Offers, Borrowers, Properties, Promotions, Contacts } from '..';
 
 Users.addLinks({
   loans: {
@@ -30,5 +30,13 @@ Users.addLinks({
   promotions: {
     collection: Promotions,
     inversedBy: 'users',
+  },
+  assignedPromotions: {
+    collection: Promotions,
+    inversedBy: 'assignedEmployee',
+  },
+  contact: {
+    collection: Contacts,
+    inversedBy: 'user',
   },
 });

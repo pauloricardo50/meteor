@@ -6,6 +6,7 @@ import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionModifier from './PromotionModifier';
 import PromotionStatusModifier from './PromotionStatusModifier';
+import PromotionAssignee from './PromotionAssignee';
 
 type PromotionPageHeaderProps = {};
 
@@ -42,6 +43,7 @@ const PromotionPageHeader = ({
             />
           </h3>
           {isAdmin && <PromotionStatusModifier promotion={promotion} />}
+          {isAdmin && <PromotionAssignee promotion={promotion} />}
         </div>
 
         {logos.length > 0 ? (
@@ -53,7 +55,9 @@ const PromotionPageHeader = ({
             <div className="list">
               {logos.map(logo => (
                 <div className="logo" key={logo.Key}>
-                  <img src={logo.url} alt="" />
+                  <div className="logo-wrapper">
+                    <img src={logo.url} alt="" />
+                  </div>
                   <p className="text-center bold">{logo.name.split('.')[0]}</p>
                 </div>
               ))}

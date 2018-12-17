@@ -23,6 +23,7 @@ import {
 } from '.';
 import { LOT_TYPES } from './lots/lotConstants';
 import { ROLES } from './users/userConstants';
+import MortgageNotes from './mortgageNotes';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -77,7 +78,7 @@ Factory.define('loan', Loans, {
     verification: {},
     step: STEPS.PREPARATION,
   }),
-  name: () => faker.random.uuid(),
+  name: () => `18-0${Math.floor(Math.random() * 899 + 100)}`,
   emails: () => [],
   propertyIds: [],
 });
@@ -89,11 +90,10 @@ Factory.define('property', Properties, {
 Factory.define('offer', Offers, {
   userId: () => faker.random.uuid(),
   createdAt: () => new Date(),
-  organization: 'bankName',
   canton: 'GE',
   conditions: ['Do something'],
   maxAmount: 800000,
-  amortization: 10000,
+  amortizationGoal: 0.65,
 });
 
 Factory.define('promotion', Promotions, {
@@ -114,4 +114,11 @@ Factory.define('lot', Lots, {
   name: 'test',
   type: LOT_TYPES.PARKING_CAR,
   value: 1000,
+});
+
+Factory.define('task', Tasks, {});
+
+Factory.define('mortgageNote', MortgageNotes, {
+  value: 100000,
+  canton: 'GE',
 });

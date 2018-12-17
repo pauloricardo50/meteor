@@ -91,8 +91,13 @@ describe('Admin Pages', () => {
 
   before(() => {
     cy.callMethod('resetDatabase');
+
+    // FIXME: This method's call is never returning
+    cy.callMethod('serverLog', 'Log 1?');
     cy.callMethod('generateTestData');
-    cy.callMethod('getAdminEndToEndTestData').then((data) => {
+    cy.callMethod('serverLog', 'Log 2?');
+
+    cy.callMethod('getAdminEndToEndTestData').then(data => {
       testData = data;
     });
   });

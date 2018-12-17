@@ -28,23 +28,13 @@ const getLoanInfo = (loan) => {
     createdAt,
     updatedAt,
     logic: { step },
-    general: { fortuneUsed, insuranceFortuneUsed },
   } = loan;
   const value = Calculator.selectLoanValue({ loan });
 
   return {
     primary: name || <T id="general.loan" />,
     secondary: (
-      <ResultSecondaryText
-        infos={{
-          createdAt,
-          updatedAt,
-          step,
-          value,
-          fortuneUsed,
-          insuranceFortuneUsed,
-        }}
-      />
+      <ResultSecondaryText infos={{ createdAt, updatedAt, step, value }} />
     ),
   };
 };
@@ -62,20 +52,13 @@ const getPropertyInfo = ({
   primary: address1 || address2 || <T id="general.property" />,
   secondary: (
     <ResultSecondaryText
-      infos={{
-        city,
-        zipCode,
-        value,
-        status,
-        style,
-        insideArea,
-      }}
+      infos={{ city, zipCode, value, status, style, insideArea }}
     />
   ),
 });
 
 const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
-  const organization = profile && profile.organization;
+  const organisation = profile && profile.organisation;
   const assignedEmployeeName = assignedEmployee
     ? assignedEmployee.name
     : 'unassigned';
@@ -85,7 +68,7 @@ const getUserInfo = ({ profile, roles, createdAt, assignedEmployee, name }) => {
     secondary: (
       <ResultSecondaryText
         infos={{
-          organization,
+          organisation,
           roles,
           createdAt,
           assignedTo: assignedEmployeeName,

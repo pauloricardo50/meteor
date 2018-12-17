@@ -7,10 +7,6 @@ import {
   STEPS,
 } from '../constants';
 
-export const fakeGeneral = {
-  purchaseType: 'ACQUISITION',
-};
-
 export const fakeProperty = {
   value: 1000000,
   address1: 'Rue du Succès 18',
@@ -93,26 +89,20 @@ export const logic3 = {
 export const fakeFiles2 = {};
 
 export const emptyLoan = {
-  general: {},
   logic: logic1,
   documents: {},
   contacts: [],
 };
 
 export const loanStep1 = {
-  general: fakeGeneral,
+  purchaseType: 'ACQUISITION',
   logic: logic1,
+  structures: [
+    {
+      id: 'randomStructureId',
+      wantedLoan: 800000,
+    },
+  ],
+  selectedStructure: 'randomStructureId',
   contacts: [],
 };
-
-export const loanStep2 = {
-  general: fakeGeneral,
-  logic: logic2,
-  contacts: [],
-};
-
-export const loanStep3 = () => ({
-  general: fakeGeneral,
-  logic: logic3,
-  contacts: [],
-});
