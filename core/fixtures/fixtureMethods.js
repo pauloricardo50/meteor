@@ -23,7 +23,6 @@ import {
   Users,
 } from '../api';
 import TaskService from '../api/tasks/TaskService';
-import { TASK_TYPE } from '../api/tasks/taskConstants';
 import {
   USER_COUNT,
   UNOWNED_LOANS_COUNT,
