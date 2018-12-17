@@ -26,11 +26,16 @@ class NotaryFeesCalculator {
     Object.assign(this, config);
   }
 
+  hasDetailedConfig() {
+    return cantonConfigs[this.canton];
+  }
+
   getNotaryFeesForLoan({ loan, structureId }) {
-    if (!cantonConfigs[this.canton]) {
+    if (!this.hasDetailedConfig()) {
       return {
         total: this.getDefaultFees({ loan, structureId }),
         canton: this.canton,
+        estimate: true,
       };
     }
 

@@ -23,6 +23,10 @@ const FinancingProjectFees = ({
     loan,
     structureId,
   });
+  const hasDetailedFees = Calculator.getFeesCalculator({
+    loan,
+    structureId,
+  }).hasDetailedConfig();
   return (
     <div className={cx(className, 'notary-fees')}>
       <InputAndSlider {...props} />
@@ -36,7 +40,16 @@ const FinancingProjectFees = ({
           <h3>
             <T id="general.notaryFees" />
           </h3>
-          <T id="FinancingProjectFees.description" values={{ canton }} />
+          <div>
+            <T
+              id={
+                hasDetailedFees
+                  ? 'FinancingProjectFees.description'
+                  : 'FinancingProjectFees.descriptionNoDetail'
+              }
+              values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
+            />
+          </div>
           <Recap loan={loan} structureId={structureId} arrayName="notaryFees" />
         </div>
       </DialogSimple>

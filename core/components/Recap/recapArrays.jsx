@@ -483,31 +483,42 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
   const calc = Calculator.getFeesCalculator({ loan, structureId });
   const {
     total,
+    estimate,
     buyersContractFees: {
       propertyRegistrationTax,
       landRegistryPropertyTax,
       notaryIncomeFromProperty,
       additionalFees: buyersContractAdditionalFees,
       total: buyersContractFees,
-    },
+    } = {},
     mortgageNoteFees: {
       mortgageNoteRegistrationTax,
       landRegistryMortgageNoteTax,
       notaryIncomeFromMortgageNote,
       additionalFees: mortgageNoteAdditionalFees,
       total: mortgageNoteFees,
-    },
-    deductions: { buyersContractDeductions, mortgageNoteDeductions },
+    } = {},
+    deductions: { buyersContractDeductions, mortgageNoteDeductions } = {},
   } = calc.getNotaryFeesForLoan({
     loan,
     structureId,
   });
+
+  if (estimate) {
+    return [
+      {
+        label: 'Recap.estimatedFees',
+        value: toMoney(total),
+      },
+    ];
+  }
 
   return [
     {
       title: true,
       label: 'Recap.buyersContract',
     },
+
     {
       label: 'Recap.propertyRegistrationTax',
       value: toMoney(propertyRegistrationTax),
@@ -520,6 +531,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       label: 'Recap.landRegistryPropertyTax',
       value: toMoney(landRegistryPropertyTax),
+      hide: !landRegistryPropertyTax,
     },
     {
       label: 'Recap.notaryIncomeFromPropertyWithVAT',
@@ -533,7 +545,11 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       key: 'subtotal1',
       label: 'Recap.subTotal',
-      value: <span className="sum">{toMoney(buyersContractFees - buyersContractDeductions)}</span>,
+      value: (
+        <span className="sum">
+          {toMoney(buyersContractFees - buyersContractDeductions)}
+        </span>
+      ),
       spacingTop: true,
       spacing: true,
     },
@@ -568,7 +584,11 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       key: 'subtotal2',
       label: 'Recap.subTotal',
-      value: <span className="sum">{toMoney(mortgageNoteFees - mortgageNoteDeductions)}</span>,
+      value: (
+        <span className="sum">
+          {toMoney(mortgageNoteFees - mortgageNoteDeductions)}
+        </span>
+      ),
       spacingTop: true,
     },
     {
