@@ -8,8 +8,8 @@ import FinancingSection, {
 } from '../FinancingSection';
 import FinancingPropertyPicker from './FinancingPropertyPicker';
 import FinancingCalculator, { getProperty } from '../FinancingCalculator';
-
 import { getPropertyValue } from '../FinancingOwnFunds/ownFundsHelpers';
+import FinancingProjectFees from './FinancingProjectFees';
 
 type FinancingProjectProps = {};
 
@@ -51,7 +51,7 @@ const FinancingProject = (props: FinancingProjectProps) => (
         forceUndefined: true,
       },
       {
-        Component: InputAndSlider,
+        Component: FinancingProjectFees,
         id: 'notaryFees',
         calculatePlaceholder: calculateDefaultNotaryFees,
         max: calculateMaxNotaryFees,
