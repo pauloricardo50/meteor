@@ -5,6 +5,15 @@ import { PURCHASE_TYPE } from '../../api/constants';
 
 const roundToCents = val => Number(val.toFixed(2));
 
+const roundObjectKeys = obj =>
+  Object.keys(obj).reduce(
+    (newObj, key) => ({
+      ...newObj,
+      [key]: typeof obj[key] === 'number' ? roundToCents(obj[key]) : obj[key],
+    }),
+    {},
+  );
+
 class NotaryFeesCalculator {
   constructor({ canton }) {
     this.init(canton);
@@ -18,7 +27,10 @@ class NotaryFeesCalculator {
 
   getNotaryFeesForLoan({ loan, structureId }) {
     if (!cantonConfigs[this.canton]) {
-      return { total: this.getDefaultFees({ loan }), canton: this.canton };
+      return {
+        total: this.getDefaultFees({ loan, structureId }),
+        canton: this.canton,
+      };
     }
 
     // Acte d'achat
@@ -33,13 +45,15 @@ class NotaryFeesCalculator {
       structureId,
     });
 
-    return {
-      total: roundToCents(buyersContractFees + mortgageNoteFees - deductions),
-      buyersContractFees: roundToCents(buyersContractFees),
-      mortgageNoteFees: roundToCents(mortgageNoteFees),
-      deductions: roundToCents(deductions),
+    const roundedResult = roundObjectKeys({
+      total: buyersContractFees + mortgageNoteFees - deductions.total,
+      buyersContractFees,
+      mortgageNoteFees,
+      deductions: roundObjectKeys(deductions),
       canton: this.canton,
-    };
+    });
+
+    return roundedResult;
   }
 
   buyersContractFees({ loan, structureId }) {
@@ -129,11 +143,15 @@ class NotaryFeesCalculator {
       })
       : 0;
 
-    return buyersContractDeductions + mortgageNoteDeductions;
+    return {
+      buyersContractDeductions,
+      mortgageNoteDeductions,
+      total: buyersContractDeductions + mortgageNoteDeductions,
+    };
   }
 
-  getDefaultFees({ loan }) {
-    const propertyValue = Calculator.selectPropertyValue({ loan });
+  getDefaultFees({ loan, structureId }) {
+    const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
 
     return propertyValue * NOTARY_FEES;
   }

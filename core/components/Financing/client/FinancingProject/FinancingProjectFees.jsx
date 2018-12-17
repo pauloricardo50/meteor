@@ -6,6 +6,9 @@ import { InputAndSlider } from '../FinancingSection';
 import DialogSimple from '../../../DialogSimple';
 import IconButton from '../../../IconButton';
 import T from '../../../Translation';
+import Recap from '../../../Recap';
+import FinancingDataContainer from '../containers/FinancingDataContainer';
+import Calculator from '../../../../utils/Calculator';
 
 type FinancingProjectFeesProps = {
   classname: string,
@@ -14,22 +17,31 @@ type FinancingProjectFeesProps = {
 const FinancingProjectFees = ({
   className,
   ...props
-}: FinancingProjectFeesProps) => (
-  <div className={cx(className, 'notary-fees')}>
-    <InputAndSlider {...props} />
-    <DialogSimple
-      closeOnly
-      renderTrigger={({ handleOpen }) => (
-        <IconButton type="help" onClick={handleOpen} />
-      )}
-    >
-      <div>
-        <h3>
-          <T id="general.notaryFees" />
-        </h3>
-      </div>
-    </DialogSimple>
-  </div>
-);
+}: FinancingProjectFeesProps) => {
+  const { loan, structureId } = props;
+  const fees = Calculator.getFees({ loan, structureId });
+  return (
+    <div className={cx(className, 'notary-fees')}>
+      <InputAndSlider {...props} />
+      <DialogSimple
+        closeOnly
+        renderTrigger={({ handleOpen }) => (
+          <IconButton type="help" onClick={handleOpen} />
+        )}
+      >
+        <div className="notary-fees-dialog">
+          <h3>
+            <T id="general.notaryFees" />
+          </h3>
+          <T
+            id="FinancingProjectFees.description"
+            values={{ canton: fees.canton }}
+          />
+          <Recap {...fees} arrayName="notaryFees" />
+        </div>
+      </DialogSimple>
+    </div>
+  );
+};
 
-export default FinancingProjectFees;
+export default FinancingDataContainer(FinancingProjectFees);

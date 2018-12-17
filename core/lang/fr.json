@@ -1,4 +1,10 @@
 {
+  "Recap.total": "Total",
+  "Recap.buyersContractFeesWithVAT": "Frais de l'acte d'achat (TVA inclus)",
+  "Recap.buyersContractFeesDeductions": "Déductions sur l'acte d'achat",
+  "Recap.mortgageNoteFeesWithVAT": "Frais de la cédule hypothécaire (TVA inclus)",
+  "Recap.mortgageNoteDeductions": "Déductions sur la cédule",
+  "FinancingProjectFees.description": "Les frais de notaire indiqués sont calculés pour le canton de {canton}, et sont une estimation qui inclut une marge variable.",
   "Forms.canton.AG": "Aargau",
   "Forms.canton.AR": "Appenzell Ausserrhoden",
   "Forms.canton.AI": "Appenzell Innerrhoden",

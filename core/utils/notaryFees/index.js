@@ -1,1 +1,1 @@
-export { default } from './notaryFees';
+export { default as NotaryFeesCalculator } from './NotaryFeesCalculator';

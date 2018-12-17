@@ -7,16 +7,16 @@ import FinancingSection, {
   CalculatedValue,
 } from '../FinancingSection';
 import FinancingPropertyPicker from './FinancingPropertyPicker';
-import FinancingCalculator, { getProperty } from '../FinancingCalculator';
+import { getProperty } from '../FinancingCalculator';
 import { getPropertyValue } from '../FinancingOwnFunds/ownFundsHelpers';
 import FinancingProjectFees from './FinancingProjectFees';
+import Calculator from '../../../../utils/Calculator';
 
 type FinancingProjectProps = {};
 
 const MAX_NOTARY_FEES_RATE = 0.1;
 
-const calculateDefaultNotaryFees = data =>
-  FinancingCalculator.getFeesBase(data);
+const calculateDefaultNotaryFees = data => Calculator.getFees(data).total;
 
 const calculateMaxNotaryFees = data =>
   (getPropertyValue(data) + data.structure.propertyWork) * MAX_NOTARY_FEES_RATE;
@@ -24,7 +24,7 @@ const calculateMaxNotaryFees = data =>
 const calculateProjectValue = data =>
   getPropertyValue(data)
   + data.structure.propertyWork
-  + FinancingCalculator.getFeesBase(data);
+  + Calculator.getFees(data).total;
 
 const FinancingProject = (props: FinancingProjectProps) => (
   <FinancingSection
