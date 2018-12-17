@@ -12,11 +12,8 @@ import message from '../../utils/message';
 import T from '../Translation';
 import Button from '../Button';
 import AutoForm from './AutoForm';
-import {
-  makeCustomAutoField,
-  SubmitField,
-  CustomAutoFields,
-} from './AutoFormComponents';
+import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
+import CustomAutoFields from './CustomAutoFields';
 
 type AutoFormDialogProps = {};
 
