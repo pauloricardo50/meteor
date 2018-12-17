@@ -28,7 +28,7 @@ const VerificationRequester = ({
 
   const previousTodos = todos.filter(({ id }) => id !== 'verification');
 
-  if (previousTodos.some(({ isDone }) => !isDone(loan))) {
+  if (previousTodos.some(({ isDone }) => !isDone)) {
     return null;
   }
 

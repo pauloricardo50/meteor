@@ -164,9 +164,10 @@ const makeMapInputs = parentProps => (singleInput, index) => {
 };
 
 const AutoForm = props => (
-  <div className={props.formClasses} onSubmit={e => e.preventDefault()}>
+  <form className={props.formClasses} onSubmit={e => e.preventDefault()}>
     {props.inputs.map(makeMapInputs(props))}
-  </div>
+    {props.children}
+  </form>
 );
 
 AutoForm.propTypes = {

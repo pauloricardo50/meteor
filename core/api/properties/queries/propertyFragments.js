@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import { mortgageNoteFragment } from '../../mortgageNotes/queries/mortgageNoteFragments';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 
@@ -19,6 +20,7 @@ export const adminValuation = {
 export const propertySummaryFragment = {
   address1: 1,
   address2: 1,
+  canton: 1,
   city: 1,
   insideArea: 1,
   promotion: { name: 1 },
@@ -31,16 +33,17 @@ export const propertySummaryFragment = {
 };
 
 export const propertyPromotionFragment = {
-  name: 1,
-  value: 1,
   address: 1,
-  insideArea: 1,
-  terraceArea: 1,
-  gardenArea: 1,
-  roomCount: 1,
   bathroomCount: 1,
+  canton: 1,
   description: 1,
+  gardenArea: 1,
+  insideArea: 1,
   monthlyExpenses: 1,
+  name: 1,
+  roomCount: 1,
+  terraceArea: 1,
+  value: 1,
 };
 
 export const fullPropertyFragment = {
@@ -65,10 +68,11 @@ export const fullPropertyFragment = {
   landArea: 1,
   latitude: 1,
   // residenceType is required for the valuation
-  loans: merge({}, loanBaseFragment, { general: 1 }),
+  loans: merge({}, loanBaseFragment),
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
+  mortgageNotes: mortgageNoteFragment,
   name: 1,
   numberOfFloors: 1,
   parkingInside: 1,
@@ -81,6 +85,7 @@ export const fullPropertyFragment = {
   residenceType: 1,
   roomCount: 1,
   terraceArea: 1,
+  updatedAt: 1,
   user: appUserFragment,
   volume: 1,
   volumeNorm: 1,

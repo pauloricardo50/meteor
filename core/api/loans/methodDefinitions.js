@@ -145,3 +145,12 @@ export const assignLoanToUser = new Method({
     userId: Match.OneOf(String, null),
   },
 });
+
+export const switchBorrower = new Method({
+  name: 'switchBorrower',
+  params: {
+    loanId: String,
+    borrowerId: String,
+    oldBorrowerId: String,
+  },
+});

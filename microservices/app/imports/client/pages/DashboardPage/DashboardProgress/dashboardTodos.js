@@ -3,13 +3,17 @@ import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
-import { VALUATION_STATUS } from '../../../../core/api/constants';
+import {
+  VALUATION_STATUS,
+  PURCHASE_TYPE,
+} from '../../../../core/api/constants';
 import {
   FINANCING_PAGE,
   PROPERTY_PAGE,
   BORROWERS_PAGE,
   FILES_PAGE,
   PROPERTIES_PAGE,
+  REFINANCING_PAGE,
 } from '../../../../startup/client/appRoutes';
 import VerificationRequester from './VerificationRequester/VerificationRequester';
 
@@ -17,15 +21,10 @@ const createFinancingLink = ({ _id: loanId }) =>
   createRoute(FINANCING_PAGE, { ':loanId': loanId });
 
 const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
-  createRoute(PROPERTY_PAGE, {
-    ':loanId': loanId,
-    ':propertyId': propertyId,
-  });
+  createRoute(PROPERTY_PAGE, { loanId, propertyId });
 
 const createPropertiesLink = ({ _id: loanId }) =>
-  createRoute(PROPERTIES_PAGE, {
-    ':loanId': loanId,
-  });
+  createRoute(PROPERTIES_PAGE, { loanId });
 
 export const checkArrayIsDone = (array = [], params) =>
   array
@@ -46,6 +45,7 @@ export const defaultTodoList = {
   completeBorrowers: true,
   completeBorrowersFinance: true,
   completeProperty: true,
+  completeRefinancing: true,
   doAnExpertise: true,
   createStructure: true,
   createSecondStructure: true,
@@ -69,10 +69,7 @@ export const getDashboardTodosArray = list =>
         return false;
       },
       link: ({ _id: loanId }) =>
-        createRoute(BORROWERS_PAGE, {
-          ':loanId': loanId,
-          ':tabId': 'personal',
-        }),
+        createRoute(BORROWERS_PAGE, { loanId, tabId: 'personal' }),
     },
     {
       id: 'completeProperty',
@@ -95,6 +92,20 @@ export const getDashboardTodosArray = list =>
       },
       hide: ({ structure: { property } }) => !property,
       link: createSinglePropertyLink,
+    },
+    {
+      id: 'completeRefinancing',
+      isDone: (loan) => {
+        const percent = Calculator.refinancingPercent({ loan });
+
+        if (percent >= 1) {
+          return true;
+        }
+
+        return false;
+      },
+      hide: ({ purchaseType }) => purchaseType !== PURCHASE_TYPE.REFINANCING,
+      link: ({ _id: loanId }) => createRoute(REFINANCING_PAGE, { loanId }),
     },
     {
       id: 'doAnExpertise',

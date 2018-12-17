@@ -15,6 +15,7 @@ import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
 } from 'core/utils/redirection';
+import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
 
 const WITHOUT_LOAN = [
   '/profile',
@@ -30,7 +31,6 @@ const isOnAllowedRouteWithoutLoan = (loans, path) =>
 
 export const getRedirect = (currentUser, pathname) => {
   const baseRedirect = getBaseRedirect(currentUser, pathname);
-
   if (baseRedirect !== undefined) {
     return baseRedirect;
   }
@@ -91,4 +91,7 @@ export default compose(
   })),
   withRouter,
   withRedirect,
+  withTranslationContext(({ loan = {} }) => ({
+    purchaseType: loan.purchaseType,
+  })),
 );

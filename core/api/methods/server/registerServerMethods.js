@@ -15,5 +15,8 @@ import '../../slack/server/methods';
 import '../../tasks/server/methods';
 import '../../users/server/methods';
 import '../../interestRates/server/methods';
+import '../../irs10y/server/methods';
+import '../../mortgageNotes/server/methods';
+import '../../contacts/server/methods';
 
 import './methods';

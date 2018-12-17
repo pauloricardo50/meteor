@@ -292,11 +292,27 @@ export class LoanService extends CollectionService {
     const {
       propertyIds = [],
       borrowerIds = [],
+      properties = [],
+      borrowers = [],
     } = this.createQuery({
       $filters: { _id: loanId },
       propertyIds: 1,
       borrowerIds: 1,
+      properties: { loans: { _id: 1 }, address1: 1 },
+      borrowers: { loans: { _id: 1 }, name: 1 },
     }).fetchOne();
+
+    borrowers.forEach(({ loans = [], name }) => {
+      if (loans.length > 1) {
+        throw new Meteor.Error(`Peut pas réassigner l'hypothèque, l'emprunteur "${name}" est assigné à plus d'une hypothèque`);
+      }
+    });
+    properties.forEach(({ loans = [], address1 }) => {
+      if (loans.length > 1) {
+        throw new Meteor.Error(`Peut pas réassigner l'hypothèque, le bien immobilier "${address1}" est assigné à plus d'une hypothèque`);
+      }
+    });
+
     const object = { userId };
 
     this.update({ loanId, object });
@@ -306,6 +322,30 @@ export class LoanService extends CollectionService {
     borrowerIds.forEach((borrowerId) => {
       BorrowerService.update({ borrowerId, object });
     });
+  }
+
+  switchBorrower({ loanId, borrowerId, oldBorrowerId }) {
+    const { borrowerIds } = this.get(loanId);
+    const { loans: oldBorrowerLoans = [] } = BorrowerService.createQuery({
+      $filters: { _id: oldBorrowerId },
+      loans: { name: 1 },
+    }).fetchOne();
+
+    if (borrowerIds.includes(borrowerId)) {
+      throw new Meteor.Error('Cet emprunteur est déjà sur ce prêt hypothécaire');
+    }
+
+    this.update({
+      loanId,
+      object: {
+        borrowerIds: borrowerIds.map(id =>
+          (id === oldBorrowerId ? borrowerId : id)),
+      },
+    });
+
+    if (oldBorrowerLoans.length === 1 && oldBorrowerLoans[0]._id === loanId) {
+      BorrowerService.remove({ borrowerId: oldBorrowerId });
+    }
   }
 }
 

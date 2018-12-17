@@ -14,7 +14,7 @@ export const initialDocuments = [
 
 const getLoanResidenceType = ({ propertyId, userId }) => {
   const loan = Loans.findOne({ userId, propertyIds: { $in: [propertyId] } });
-  return loan && loan.general.residenceType;
+  return loan && loan.residenceType;
 };
 
 export const conditionalDocuments = [

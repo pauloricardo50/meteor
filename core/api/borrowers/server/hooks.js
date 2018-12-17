@@ -5,6 +5,7 @@ import {
   initialDocuments,
   conditionalDocuments,
 } from '../borrowersAdditionalDocuments';
+import BorrowerService from '../BorrowerService';
 
 Borrowers.after.insert(additionalDocumentsHook({
   collection: BORROWERS_COLLECTION,
@@ -17,3 +18,8 @@ Borrowers.after.update(additionalDocumentsHook({
   initialDocuments,
   conditionalDocuments,
 }));
+
+// Clean up mortgagenotes from all structures that come from this borrower
+Borrowers.before.remove((userId, { _id: borrowerId }) => {
+  BorrowerService.cleanUpMortgageNotes({ borrowerId });
+});

@@ -47,10 +47,12 @@ export default class DialogSimple extends Component {
       passProps,
       primary,
       raised = true,
+      renderProps,
       rootStyle,
       secondary,
       style,
       title,
+      renderTrigger,
       ...otherProps
     } = this.props;
 
@@ -91,15 +93,19 @@ export default class DialogSimple extends Component {
     return (
       // Prevent triggering background clicks
       <span style={rootStyle} onClick={e => e.stopPropagation()}>
-        <Button
-          raised={raised}
-          label={label}
-          onClick={this.handleOpen}
-          primary={primary}
-          secondary={secondary}
-          style={buttonStyle}
-          {...buttonProps}
-        />
+        {renderTrigger ? (
+          renderTrigger({ handleOpen: this.handleOpen })
+        ) : (
+          <Button
+            raised={raised}
+            label={label}
+            onClick={this.handleOpen}
+            primary={primary}
+            secondary={secondary}
+            style={buttonStyle}
+            {...buttonProps}
+          />
+        )}
         <Dialog
           {...otherProps}
           title={title}
@@ -111,7 +117,9 @@ export default class DialogSimple extends Component {
         >
           {!!children && passProps
             ? React.cloneElement(children, { ...childProps })
-            : children}
+            : renderProps
+              ? children(childProps)
+              : children}
         </Dialog>
       </span>
     );

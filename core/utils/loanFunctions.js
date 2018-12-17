@@ -48,6 +48,7 @@ export const formatLoanWithStructure = ({
   properties,
   offers,
   promotionOptions,
+  borrowers,
 }) => {
   let structure = {};
 
@@ -70,6 +71,17 @@ export const formatLoanWithStructure = ({
       if (structure.offerId) {
         const offer = offers.find(({ _id }) => _id === structure.offerId);
         structure = { ...structure, offer };
+      }
+
+      if (structure.mortgageNoteIds) {
+        const borrowerMortgageNotes = borrowers.reduce(
+          (arr, { mortgageNotes: notes = [] }) => [...arr, ...notes],
+          [],
+        );
+        const mortgageNotes = structure.mortgageNoteIds.map(id =>
+          borrowerMortgageNotes.find(({ _id }) => _id === id));
+
+        structure = { ...structure, mortgageNotes };
       }
     } else {
       structure = {};

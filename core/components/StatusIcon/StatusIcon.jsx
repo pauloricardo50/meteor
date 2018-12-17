@@ -45,7 +45,7 @@ const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
 };
 
 StatusIcon.propTypes = {
-  status: PropTypes.oneOf(STATUSES),
+  status: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 StatusIcon.defaultProps = {

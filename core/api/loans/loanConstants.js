@@ -15,9 +15,11 @@ export const LOAN_STATUS = {
 export const PURCHASE_TYPE = {
   ACQUISITION: 'ACQUISITION',
   REFINANCING: 'REFINANCING',
-  CONSTRUCTION: 'CONSTRUCTION',
+  // TODO: Figure out what needs to be changed for this
+  // CONSTRUCTION: 'CONSTRUCTION',
 };
 
+// Keep these sorted alphabetically for zipcode search to work
 export const CANTONS = {
   AG: 'Aargau',
   AR: 'Appenzell Ausserrhoden',
@@ -45,6 +47,7 @@ export const CANTONS = {
   VS: 'Valais',
   ZG: 'Zug',
   ZH: 'Zürich',
+  LI: 'Liechtenstein',
 };
 
 export const OWNER = {

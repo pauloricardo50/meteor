@@ -5,6 +5,7 @@ import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import AutoForm from 'core/components/AutoForm';
+import MortgageNotesForm from 'core/components/MortgageNotesForm';
 import {
   getPropertyArray,
   getPropertyLoanArray,
@@ -33,13 +34,9 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId, history } = props;
-  const {
-    borrowers,
-    properties,
-    general: { residenceType },
-  } = loan;
+  const { borrowers, properties, residenceType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
-  const { address1, zipCode, city } = property;
+  const { address1, zipCode, city, mortgageNotes } = property;
   const { userFormsEnabled } = loan;
   const progress = PropertyCalculator.propertyPercent({
     property,
@@ -86,7 +83,7 @@ const SinglePropertyPage = (props) => {
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
-            formClasses="user-form"
+            formClasses="user-form user-form__info"
             inputs={getPropertyLoanArray({ loan, borrowers })}
             collection={LOANS_COLLECTION}
             doc={loan}
@@ -97,13 +94,16 @@ const SinglePropertyPage = (props) => {
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
-            formClasses="user-form"
+            formClasses="user-form user-form__info"
             inputs={getPropertyArray({ loan, borrowers, property })}
             collection={PROPERTIES_COLLECTION}
             doc={property}
             docId={property._id}
             disabled={!userFormsEnabled}
           />
+        </div>
+        <div className="flex--helper flex-justify--center">
+          <MortgageNotesForm propertyId={propertyId} mortgageNotes={mortgageNotes} />
         </div>
       </section>
       <div className="single-property-page-buttons">

@@ -3,15 +3,13 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
+import Calculator from 'core/utils/Calculator';
 import { SUCCESS } from 'core/api/constants';
 
 type BorrowersPageTitleProps = {};
 
 const BorrowersPageTitle = ({ borrowers }: BorrowersPageTitleProps) => {
-  const value = BorrowerCalculator.personalInfoPercent({
-    borrowers,
-  });
+  const value = Calculator.personalInfoPercent({ borrowers });
 
   return (
     <span className="borrowers-page-title">

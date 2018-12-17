@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Input from '@material-ui/core/Input';
 
+import List, {
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+} from 'core/components/List';
 import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button/Button';
 import T from 'core/components/Translation';
@@ -40,7 +41,7 @@ const PromotionProUserAdder = ({
           type="text"
           value={searchQuery}
           onChange={event => setSearchQuery(event.target.value)}
-          placeHolder="Rechercher un utilisateur"
+          placeholder="Rechercher..."
           style={{ width: '100%', marginBottom: '16px' }}
         />
       </form>

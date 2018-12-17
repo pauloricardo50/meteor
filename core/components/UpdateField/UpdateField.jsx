@@ -12,6 +12,7 @@ const UpdateField = ({
   doc,
   onSuccess,
   collection,
+  ...props
 }: UpdateFieldProps) => (
   <AutoForm
     autosave
@@ -23,6 +24,7 @@ const UpdateField = ({
         .then(() => (onSuccess ? onSuccess(values) : null))
     }
     className="update-field"
+    {...props}
   >
     {fields.map(field => (
       <CustomAutoField name={field} key={field} fullWidth />

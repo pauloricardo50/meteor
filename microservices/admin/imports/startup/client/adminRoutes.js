@@ -18,3 +18,5 @@ export const SINGLE_USER_PAGE = '/users/:userId';
 export const TASKS_PAGE = '/tasks';
 export const USERS_PAGE = '/users';
 export const INTEREST_RATES_PAGE = '/interestRates';
+export const CONTACTS_PAGE = '/contacts';
+export const SINGLE_CONTACT_PAGE = '/contacts/:contactId';

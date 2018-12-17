@@ -1,10 +1,20 @@
 import Borrowers from '.';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
+import { loanBorrowerFragment } from './queries/borrowerFragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
     super(Borrowers);
+  }
+
+  get(borrowerId) {
+    return this.collection
+      .createQuery({
+        $filters: { _id: borrowerId },
+        ...loanBorrowerFragment,
+      })
+      .fetchOne();
   }
 
   update = ({ borrowerId, object }) =>
@@ -13,9 +23,22 @@ export class BorrowerService extends CollectionService {
   insert = ({ borrower = {}, userId }) =>
     Borrowers.insert({ ...borrower, userId });
 
-  remove = ({ borrowerId }) => {
+  remove = ({ borrowerId, loanId }) => {
     LoanService.cleanupRemovedBorrower({ borrowerId });
-    return Borrowers.remove(borrowerId);
+    const borrower = this.get(borrowerId);
+    if (borrower.loans && borrower.loans.length > 1) {
+      const loansLink = this.getLink(borrowerId, 'loans');
+      if (loanId) {
+        // Fix this conditional when the issue has been dealt with
+        // https://github.com/cult-of-coders/grapher/issues/332
+        loansLink.remove(loanId);
+      } else {
+        // Only admins can remove a borrower that has multiple loans
+        return Borrowers.remove(borrowerId);
+      }
+    } else {
+      return Borrowers.remove(borrowerId);
+    }
   };
 
   pushValue = ({ borrowerId, object }) =>
@@ -28,6 +51,48 @@ export class BorrowerService extends CollectionService {
 
   pullValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pull: object });
+
+  getReusableBorrowers({ loanId, borrowerId }) {
+    // borrowerId can be the previous removed borrower, and therefore
+    // this line will fail if we don't provide a default empty object
+    const { userId, loans } = this.get(borrowerId) || {};
+    if (!userId) {
+      return { borrowers: [], isLastLoan: true };
+    }
+
+    const userBorrowers = this.createQuery({
+      $filters: { userId },
+      name: 1,
+      loans: { name: 1 },
+    }).fetch();
+    const loan = LoanService.get(loanId);
+    const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
+
+    const borrowersNotOnLoan = userBorrowers.filter(({ _id }) => !loan.borrowerIds.includes(_id));
+
+    return { borrowers: borrowersNotOnLoan, isLastLoan };
+  }
+
+  cleanUpMortgageNotes({ borrowerId }) {
+    const { mortgageNotes = [], loans = [] } = this.createQuery({
+      $filters: { _id: borrowerId },
+      mortgageNotes: { _id: 1 },
+      loans: { structures: 1 },
+    }).fetchOne();
+    const borrowerMortgageNoteIds = mortgageNotes.map(({ _id }) => _id);
+
+    loans.forEach(({ _id: loanId, structures = [] }) => {
+      structures.forEach(({ id: structureId, mortgageNoteIds }) => {
+        LoanService.updateStructure({
+          loanId,
+          structureId,
+          structure: {
+            mortgageNoteIds: mortgageNoteIds.filter(id => !borrowerMortgageNoteIds.includes(id)),
+          },
+        });
+      });
+    });
+  }
 }
 
 export default new BorrowerService();

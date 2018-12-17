@@ -100,7 +100,7 @@ export class SlackService {
           text: error.message || error.reason,
           color: colors.error,
           footer: 'c la merde',
-          ts: new Date().getTime(),
+          ts: new Date() / 1000,
         },
         {
           title: 'Stack',

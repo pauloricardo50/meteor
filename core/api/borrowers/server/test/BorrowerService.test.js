@@ -7,6 +7,8 @@ import { DOCUMENTS } from 'core/api/constants';
 import BorrowerService from '../../BorrowerService';
 import { initialDocuments } from '../../borrowersAdditionalDocuments';
 import * as borrowerConstants from '../../borrowerConstants';
+import LoanService from '../../../loans/LoanService';
+import MortgageNoteService from '../../../mortgageNotes/MortgageNoteService';
 
 const checkDocuments = ({
   additionalDocuments,
@@ -25,11 +27,13 @@ const checkDocuments = ({
 
 describe('BorrowerService', () => {
   let borrower;
+  let borrowerId;
   let user;
 
   beforeEach(() => {
     resetDatabase();
     borrower = Factory.create('borrower');
+    borrowerId = borrower._id;
   });
 
   describe('update', () => {
@@ -37,7 +41,7 @@ describe('BorrowerService', () => {
       expect(borrower.firstName).to.not.equal('bob');
 
       BorrowerService._update({
-        id: borrower._id,
+        id: borrowerId,
         object: { firstName: 'bob' },
       });
 
@@ -47,15 +51,83 @@ describe('BorrowerService', () => {
     });
   });
 
+  describe('delete', () => {
+    it('removes a borrower', () => {
+      BorrowerService.remove({ borrowerId });
+
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('deletes the borrower if it only has one loan', () => {
+      Factory.create('loan', { borrowerIds: [borrowerId] });
+
+      BorrowerService.remove({ borrowerId });
+
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('deletes the borrower if it only has one loan and loanId is passed', () => {
+      const loanId = Factory.create('loan', { borrowerIds: [borrower._id] });
+
+      BorrowerService.remove({ borrowerId, loanId });
+
+      expect(BorrowerService.find({}).count()).to.equal(0);
+    });
+
+    it('only removes the link if the borrower has multiple loans', () => {
+      const loanId = Factory.create('loan', { borrowerIds: [borrowerId] });
+      const loanId2 = Factory.create('loan', { borrowerIds: [borrowerId] });
+
+      BorrowerService.remove({ borrowerId, loanId });
+
+      expect(BorrowerService.find({}).count()).to.equal(1);
+
+      const loan = LoanService.get(loanId);
+      expect(loan.borrowerIds).to.deep.equal([]);
+
+      const loan2 = LoanService.get(loanId2);
+      expect(loan2.borrowerIds).to.deep.equal([borrowerId]);
+    });
+
+    it('removes references of mortgageNotes from loans', () => {
+      const mortgageNoteId = Factory.create('mortgageNote')._id;
+      Factory.create('loan', {
+        borrowerIds: [borrowerId],
+        structures: [{ mortgageNoteIds: [mortgageNoteId], id: '1' }],
+      });
+      Factory.create('loan', {
+        borrowerIds: [borrowerId],
+        structures: [
+          { mortgageNoteIds: [mortgageNoteId, 'someOtherNote'], id: '2' },
+        ],
+      });
+      BorrowerService.addLink({
+        id: borrowerId,
+        linkName: 'mortgageNotes',
+        linkId: mortgageNoteId,
+      });
+
+      BorrowerService.remove({ borrowerId });
+
+      expect(BorrowerService.find({}).count()).to.equal(0, 'borrowers');
+      expect(LoanService.find({}).count()).to.equal(2, 'loans');
+      expect(MortgageNoteService.find({}).count()).to.equal(0, 'mortgageNotes');
+
+      LoanService.find({}).forEach(({ structures }) => {
+        expect(structures[0].mortgageNoteIds.every(id => id !== mortgageNoteId)).to.equal(true);
+      });
+    });
+  });
+
   describe('additional documents', () => {
     it('adds initial documents when borrower is created', () => {
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
       expect(additionalDocuments).to.deep.equal(initialDocuments);
     });
 
     it('adds conditional documents when condition is met', () => {
       BorrowerService._update({
-        id: borrower._id,
+        id: borrowerId,
         object: {
           isSwiss: false,
           bonusExists: true,
@@ -98,7 +170,7 @@ describe('BorrowerService', () => {
 
     it('does not add conditional documents when condition is not met', () => {
       BorrowerService._update({
-        id: borrower._id,
+        id: borrowerId,
         object: {
           isSwiss: false,
           bonusExists: true,
@@ -109,7 +181,7 @@ describe('BorrowerService', () => {
           ],
         },
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -129,7 +201,7 @@ describe('BorrowerService', () => {
 
     it('removes conditional documents when condition is not met anymore', () => {
       BorrowerService._update({
-        id: borrower._id,
+        id: borrowerId,
         object: {
           isSwiss: false,
           bonusExists: true,
@@ -150,7 +222,7 @@ describe('BorrowerService', () => {
         },
       });
       BorrowerService._update({
-        id: borrower._id,
+        id: borrowerId,
         object: {
           isSwiss: false,
           bonusExists: true,
@@ -163,7 +235,7 @@ describe('BorrowerService', () => {
           ],
         },
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -185,11 +257,11 @@ describe('BorrowerService', () => {
   describe('setAdditionalDoc', () => {
     it('adds additional admin required additional doc', () => {
       BorrowerService.setAdditionalDoc({
-        id: borrower._id,
+        id: borrowerId,
         additionalDocId: 'testDoc',
         requiredByAdmin: true,
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -204,11 +276,11 @@ describe('BorrowerService', () => {
 
     it('adds additional admin not required additional doc', () => {
       BorrowerService.setAdditionalDoc({
-        id: borrower._id,
+        id: borrowerId,
         additionalDocId: 'testDoc',
         requiredByAdmin: false,
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       const expectedDocuments = [
         ...initialDocuments,
@@ -223,11 +295,11 @@ describe('BorrowerService', () => {
 
     it('updates additional doc to be required by admin', () => {
       BorrowerService.setAdditionalDoc({
-        id: borrower._id,
+        id: borrowerId,
         additionalDocId: DOCUMENTS.IDENTITY,
         requiredByAdmin: true,
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       const expectedDocuments = [
         ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
@@ -242,11 +314,11 @@ describe('BorrowerService', () => {
 
     it('updates additional doc to not be required by admin', () => {
       BorrowerService.setAdditionalDoc({
-        id: borrower._id,
+        id: borrowerId,
         additionalDocId: DOCUMENTS.IDENTITY,
         requiredByAdmin: false,
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       const expectedDocuments = [
         ...initialDocuments.filter(({ id }) => id !== DOCUMENTS.IDENTITY),
@@ -261,12 +333,12 @@ describe('BorrowerService', () => {
 
     it('adds additional doc with label', () => {
       BorrowerService.setAdditionalDoc({
-        id: borrower._id,
+        id: borrowerId,
         additionalDocId: 'testDoc',
         requiredByAdmin: true,
         label: 'test label',
       });
-      const { additionalDocuments } = BorrowerService.get(borrower._id);
+      const { additionalDocuments } = BorrowerService.get(borrowerId);
 
       expect(additionalDocuments).to.deep.contain({
         id: 'testDoc',

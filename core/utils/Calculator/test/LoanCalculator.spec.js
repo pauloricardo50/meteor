@@ -314,7 +314,7 @@ describe('LoanCalculator', () => {
 
   describe('getMaxBorrowRatio', () => {
     it('returns the max ratio for a loan', () => {
-      expect(Calculator.getMaxBorrowRatio({ loan: { general: {} } })).to.equal(0.8);
+      expect(Calculator.getMaxBorrowRatio({ loan: {} })).to.equal(0.8);
     });
   });
 
@@ -361,12 +361,12 @@ describe('LoanCalculator', () => {
 
   describe('getLoanFilesProgress', () => {
     it('returns 0 for an empty loan', () => {
-      expect(Calculator.getLoanFilesProgress({ loan: { logic: {}, general: {} } })).to.deep.equal({ percent: 0, count: 1 });
+      expect(Calculator.getLoanFilesProgress({ loan: { logic: {} } })).to.deep.equal({ percent: 0, count: 1 });
     });
 
     it('returns 100% for a loan initially, when documents have arrived', () => {
       expect(Calculator.getLoanFilesProgress({
-        loan: { documents: {}, logic: {}, general: {} },
+        loan: { documents: {}, logic: {} },
       })).to.deep.equal({ percent: 1, count: 0 });
     });
   });
@@ -374,21 +374,90 @@ describe('LoanCalculator', () => {
   describe('getMissingLoanDocuments', () => {
     it('shows nothing is required initially', () => {
       expect(Calculator.getMissingLoanDocuments({
-        loan: { logic: {}, general: {} },
+        loan: { logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { logic: {}, general: {} },
+        loan: { logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
-        loan: { documents: {}, logic: {}, general: {} },
+        loan: { documents: {}, logic: {} },
       })).to.deep.equal([]);
       expect(Calculator.getMissingLoanDocuments({
         loan: {
           documents: { other: [{ key: 'hello' }] },
           logic: {},
-          general: {},
         },
       })).to.deep.equal([]);
+    });
+  });
+
+  describe('getMortgageNoteIncrease', () => {
+    it('returns the loan value if no mortgage note is added', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [{ _id: 'propertyId' }],
+        },
+      })).to.equal(800000);
+    });
+
+    it('returns the loan value if no property is selected', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000 },
+        },
+      })).to.equal(800000);
+    });
+
+    it('returns the increase with mortgageNotes on the property', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [
+            { _id: 'propertyId', mortgageNotes: [{ value: 100000 }] },
+          ],
+        },
+      })).to.equal(700000);
+    });
+
+    it('counts a mortgagenote as 0 if no value is set on it', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { propertyId: 'propertyId', wantedLoan: 800000 },
+          properties: [{ _id: 'propertyId', mortgageNotes: [{}] }],
+        },
+      })).to.equal(800000);
+    });
+
+    it('works with borrowers mortgageNotes', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000, mortgageNoteIds: ['note'] },
+          borrowers: [{ mortgageNotes: [{ _id: 'note' }] }],
+        },
+      })).to.equal(800000);
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: { wantedLoan: 800000, mortgageNoteIds: ['note'] },
+          borrowers: [{ mortgageNotes: [{ _id: 'note', value: 200000 }] }],
+        },
+      })).to.equal(600000);
+    });
+
+    it('caps the increase at 0', () => {
+      expect(Calculator.getMortgageNoteIncrease({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            propertyId: 'propertyId',
+            mortgageNoteIds: ['note'],
+          },
+          properties: [
+            { _id: 'propertyId', mortgageNotes: [{ value: 500000 }] },
+          ],
+          borrowers: [{ mortgageNotes: [{ _id: 'note', value: 500000 }] }],
+        },
+      })).to.equal(0);
     });
   });
 });
