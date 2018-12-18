@@ -77,6 +77,7 @@ There is a single staging server hosting all copies of the microservices. They c
 Here we can keep track of bundle size changes over time.
 
 
-| Date       | `www`  | `app`  | `admin` | `pro`  |
+| Date       | `www`  | `app`  | `admin` | `pro`  | Comment                                  |
 | ---------- | ------ | ------ | ------- | ------ |
 | 18/12/2018 | 3.27MB | 4.69MB | 4.77MB  | 3.81MB |
+| 18/12/2018 |        | 4.04MB |         |        | Added `loadable` on all of `app`'s pages |
