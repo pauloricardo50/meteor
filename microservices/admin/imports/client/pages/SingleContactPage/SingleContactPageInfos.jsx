@@ -8,8 +8,13 @@ type SingleContactPageInfosProps = {
   contact: Object,
 };
 
+const getAddress = ({ address, organisations }) => {
+  const { address: organisationAddress } = organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
+  return organisationAddress || address;
+};
+
 const SingleContactPageInfos = ({ contact }: SingleContactPageInfosProps) => {
-  const { organisations = [], address, email, phoneNumbers } = contact;
+  const { organisations = [], email, phoneNumbers } = contact;
   return (
     <div className="single-contact-page-infos">
       <div className="organisations">
@@ -26,7 +31,7 @@ const SingleContactPageInfos = ({ contact }: SingleContactPageInfosProps) => {
           : "N'est lié à aucune organisation"}
       </div>
       <div className="contact-details space-children">
-        <span>{address}</span>
+        <span>{getAddress(contact)}</span>
         <div className="flex flex-row space-children">
           <div className="flex flex-row space-children">
             <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>

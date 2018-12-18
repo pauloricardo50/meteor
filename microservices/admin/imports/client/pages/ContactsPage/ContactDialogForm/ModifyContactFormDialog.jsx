@@ -10,6 +10,11 @@ type ModifyContactDialogFormProps = {
   contact: Object,
 };
 
+const getOrganisationWithSameAddress = ({ organisations = [] }) => {
+  const { _id: organisationId } = organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
+  return organisationId || null;
+};
+
 const ModifyContactDialogForm = ({
   schema,
   modifyContact,
@@ -17,7 +22,10 @@ const ModifyContactDialogForm = ({
 }: ModifyContactDialogFormProps) => (
   <AutoFormDialog
     schema={schema}
-    model={contact}
+    model={{
+      ...contact,
+      useSameAddress: getOrganisationWithSameAddress(contact),
+    }}
     onSubmit={modifyContact}
     buttonProps={{
       label: <T id="Contacts.modify" />,

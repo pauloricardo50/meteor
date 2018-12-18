@@ -13,5 +13,11 @@ export default Organisations.createQuery(
     logo: 1,
     contacts: contactFragment,
     $options: { sort: { name: 1 } },
+    address: 1,
+    address1: 1,
+    address2: 1,
+    zipCode: 1,
+    city: 1,
+    canton: 1,
   },
 );

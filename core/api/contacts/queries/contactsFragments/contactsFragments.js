@@ -14,6 +14,6 @@ export const contactFragment = {
   phoneNumber: 1,
   emails: 1,
   email: 1,
-  organisations: { name: 1, _id: 1 },
+  organisations: { name: 1, _id: 1, address: 1 },
   offers: fullOfferFragment,
 };

@@ -7,3 +7,4 @@ import './promotions/reducers';
 import './properties/reducers';
 import './users/reducers';
 import './contacts/reducers';
+import './organisations/reducers';

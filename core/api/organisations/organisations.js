@@ -1,5 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
+import { address } from '../helpers/sharedSchemas';
 
 import {
   ORGANISATIONS_COLLECTION,
@@ -31,10 +32,12 @@ export const OrganisationSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  ...address,
   contactIds: { type: Array, defaultValue: [] },
   'contactIds.$': Object,
   'contactIds.$._id': String,
   'contactIds.$.role': { type: String, optional: true },
+  'contactIds.$.useSameAddress': { type: Boolean, optional: true },
 });
 
 Organisations.attachSchema(OrganisationSchema);
