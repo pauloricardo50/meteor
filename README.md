@@ -70,3 +70,13 @@ There is a single staging server hosting all copies of the microservices. They c
 * https://www.staging.e-potek.ch
 * https://app.staging.e-potek.ch
 * https://admin.staging.e-potek.ch
+
+
+## Client Sizes
+
+Here we can keep track of bundle size changes over time.
+
+
+| Date       | `www`  | `app`  | `admin` | `pro` |
+| ---------- | ------ | ------ | ------- | ----- |
+| 18/12/2018 | 3.27MB | 4.69MB |         |       |
