@@ -90,6 +90,7 @@ describe('Admin Pages', () => {
   let testData;
 
   before(() => {
+    cy.visit('/');
     cy.callMethod('resetDatabase');
 
     // FIXME: This method's call is never returning
@@ -97,7 +98,7 @@ describe('Admin Pages', () => {
     cy.callMethod('generateTestData');
     cy.callMethod('serverLog', 'Log 2?');
 
-    cy.callMethod('getAdminEndToEndTestData').then(data => {
+    cy.callMethod('getAdminEndToEndTestData').then((data) => {
       testData = data;
     });
   });

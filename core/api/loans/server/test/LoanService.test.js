@@ -94,9 +94,9 @@ describe('LoanService', () => {
   describe('disableUserForms', () => {
     it('disables user forms', () => {
       loanId = Factory.create('loan')._id;
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       LoanService.disableUserForms({ loanId });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.userFormsEnabled).to.equal(false);
     });
   });
@@ -104,9 +104,9 @@ describe('LoanService', () => {
   describe('enableUserForms', () => {
     it('enables the user forms', () => {
       loanId = Factory.create('loan')._id;
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       LoanService.enableUserForms({ loanId });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.userFormsEnabled).to.equal(true);
     });
   });
@@ -145,12 +145,12 @@ describe('LoanService', () => {
   describe('addNewStructure', () => {
     it('adds a new structure to a loan', () => {
       loanId = Factory.create('loan')._id;
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures).to.deep.equal([]);
 
       LoanService.addNewStructure({ loanId });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures).to.have.length(1);
       expect(typeof loan.structures[0].id).to.equal('string');
@@ -160,7 +160,7 @@ describe('LoanService', () => {
       loanId = Factory.create('loan')._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.selectedStructure).to.equal(loan.structures[0].id);
     });
 
@@ -171,7 +171,7 @@ describe('LoanService', () => {
       })._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.selectedStructure).to.equal('first');
     });
 
@@ -189,7 +189,7 @@ describe('LoanService', () => {
       })._id;
       LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, name, ...structure1 } = loan.structures[0];
@@ -203,7 +203,7 @@ describe('LoanService', () => {
       loanId = Factory.create('loan')._id;
       const structureId = LoanService.addNewStructure({ loanId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.equal(structureId);
@@ -216,7 +216,7 @@ describe('LoanService', () => {
         structures: [{ id: '1' }, { id: '2' }],
         selectedStructure: '1',
       })._id;
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(2);
 
@@ -224,7 +224,7 @@ describe('LoanService', () => {
 
       LoanService.removeStructure({ loanId, structureId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(1);
       expect(loan.structures[0].id).to.not.equal(structureId);
@@ -249,7 +249,7 @@ describe('LoanService', () => {
 
       LoanService.duplicateStructure({ loanId, structureId: '1' });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(2);
 
@@ -258,7 +258,7 @@ describe('LoanService', () => {
         structureId: loan.structures[1].id,
       });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(1);
     });
@@ -279,7 +279,7 @@ describe('LoanService', () => {
 
       LoanService.removeStructure({ loanId, structureId: 'CfN4k8WKqRySCfvns' });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(1);
     });
@@ -296,7 +296,7 @@ describe('LoanService', () => {
           { id: `${structureId}1` },
         ],
       })._id;
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.structures.propertyId).to.equal(undefined);
       LoanService.updateStructure({
         loanId,
@@ -304,7 +304,7 @@ describe('LoanService', () => {
         structure: { propertyId },
       });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       // This structure is correct
       expect(loan.structures.find(({ id }) => id === structureId)).to.deep.include({ id: structureId, propertyId });
 
@@ -330,7 +330,7 @@ describe('LoanService', () => {
       })._id;
 
       LoanService.selectStructure({ loanId, structureId: structureId2 });
-      const { selectedStructure } = LoanService.getLoanById(loanId);
+      const { selectedStructure } = LoanService.get(loanId);
 
       expect(selectedStructure).to.equal(structureId2);
     });
@@ -361,7 +361,7 @@ describe('LoanService', () => {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(2);
       const { id: id1, name, ...structure1 } = loan.structures[0];
@@ -390,7 +390,7 @@ describe('LoanService', () => {
 
       LoanService.duplicateStructure({ loanId, structureId });
 
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       const { id: id1, name, ...structure1 } = loan.structures[0];
       const { id: id2, name: name2, ...structure2 } = loan.structures[1];
@@ -407,7 +407,7 @@ describe('LoanService', () => {
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures[1].name).to.equal(`${name} - copie`);
     });
@@ -423,7 +423,7 @@ describe('LoanService', () => {
       })._id;
 
       LoanService.duplicateStructure({ loanId, structureId: structureId + 0 });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures.length).to.equal(3);
       expect(loan.structures[0].name).to.equal(name + 0);
@@ -437,7 +437,7 @@ describe('LoanService', () => {
         selectedStructure: 'testId',
       })._id;
       LoanService.duplicateStructure({ loanId, structureId: 'testId' });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.structures[1].name).to.equal('Plan financier - copie');
     });
   });
@@ -450,7 +450,7 @@ describe('LoanService', () => {
 
     it('returns 18-0002 for the second loan', () => {
       loanId = LoanService.insert({ loan: {} });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
       expect(loan.name).to.equal('18-0001');
 
       const name = LoanService.getNewLoanName();
@@ -532,7 +532,7 @@ describe('LoanService', () => {
       })._id;
 
       LoanService.cleanupRemovedBorrower({ borrowerId });
-      loan = LoanService.getLoanById(loanId);
+      loan = LoanService.get(loanId);
 
       expect(loan.structures[0].ownFunds.length).to.equal(1);
       expect(loan.structures[0].ownFunds[0].borrowerId).to.equal(borrowerId2);

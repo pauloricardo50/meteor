@@ -53,7 +53,7 @@ const getAdmins = () => {
   return admins.map(admin => admin._id);
 };
 
-const deleteUsersRelatedData = usersToDelete => {
+const deleteUsersRelatedData = (usersToDelete) => {
   Borrowers.remove({ userId: { $in: usersToDelete } });
   Properties.remove({ userId: { $in: usersToDelete } });
   Offers.remove({ userId: { $in: usersToDelete } });
@@ -138,7 +138,7 @@ Meteor.methods({
     }
 
     console.log('done!');
-    return 'hello';
+    // return Promise.resolve();
   },
 
   async purgeDatabase(currentUserId) {
