@@ -3,6 +3,7 @@ import message from 'antd/lib/message';
 
 // API: https://ant.design/components/message/
 // duration is in seconds
+// content can be a string or JSX
 
 // message.success(content, [duration], onClose);
 // message.error(content, [duration], onClose);
