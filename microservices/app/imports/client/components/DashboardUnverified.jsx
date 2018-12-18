@@ -2,7 +2,6 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 
-import { Bert } from 'meteor/themeteorchef:bert';
 import { injectIntl } from 'react-intl';
 
 import T from 'core/components/Translation';
@@ -12,19 +11,15 @@ const handleClick = (event, props) => {
   event.preventDefault();
   Meteor.call('sendVerificationLink', (error, response) => {
     if (error) {
-      console.log(error);
       const message = props.intl.formatMessage({ id: 'error.general' });
-      Bert.alert(`<h3 style="color:white;margin:0;">${message}</h3>`, 'danger');
+      message.error(message, 5);
     } else {
       const email = Meteor.user().emails[0].address;
       const message = props.intl.formatMessage(
         { id: 'bert.emailVerificationSent' },
         { email },
       );
-      Bert.alert(
-        `<h3 style="color:white;margin:0;">${message}</h3>`,
-        'success',
-      );
+      message.success(message, 5);
     }
   });
 };

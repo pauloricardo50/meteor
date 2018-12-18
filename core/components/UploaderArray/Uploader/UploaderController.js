@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
-import bert from 'core/utils/bert';
+import notification from 'core/utils/notification';
 import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
@@ -36,7 +36,8 @@ export const propHasChanged = (oldProp, newProp) =>
 
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
-    displayFull: Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
+    displayFull:
+      Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
   }),
   {
     showFull: () => () => ({ displayFull: true }),
@@ -77,11 +78,10 @@ const props = withProps(({
     });
 
     if (showError) {
-      bert(
-        f({ id: `error.${showError}.title` }),
-        f({ id: `error.${showError}.description` }),
-        'danger',
-      );
+      notification.error({
+        message: f({ id: `error.${showError}.title` }),
+        description: f({ id: `error.${showError}.description` }),
+      });
       return;
     }
 
@@ -107,7 +107,6 @@ const willReceiveProps = lifecycle({
   // props.
   // FIXME: This prevents someone from uploading a file with the same name twice
   componentWillReceiveProps({ currentValue: nextValue }) {
-    console.log('nextValue', nextValue);
     const { currentValue, tempFiles, filterTempFiles } = this.props;
 
     // Lazy check to see if they are of different size
