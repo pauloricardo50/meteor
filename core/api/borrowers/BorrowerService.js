@@ -44,8 +44,6 @@ export class BorrowerService extends CollectionService {
   pushValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $push: object });
 
-  getBorrowerById = borrowerId => Borrowers.findOne(borrowerId);
-
   popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });
 

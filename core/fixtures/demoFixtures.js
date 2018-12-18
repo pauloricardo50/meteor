@@ -14,7 +14,7 @@ export const createYannisData = (userId) => {
     object: { name: '18-0000' },
   });
   const loan = LoanService.get(loanId);
-  const borrower = BorrowerService.getBorrowerById(loan.borrowerIds[0]);
+  const borrower = BorrowerService.get(loan.borrowerIds[0]);
   BorrowerService.update({
     borrowerId: borrower._id,
     object: {
@@ -29,7 +29,7 @@ export const createYannisData = (userId) => {
       insurance2: [{ value: 250000, description: 'Allianz' }],
     },
   });
-  const property = PropertyService.getPropertyById(loan.propertyIds[0]);
+  const property = PropertyService.get(loan.propertyIds[0]);
   PropertyService.update({
     propertyId: property._id,
     object: {

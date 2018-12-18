@@ -63,8 +63,6 @@ export class PropertyService extends CollectionService {
         });
       });
 
-  getPropertyById = propertyId => Properties.findOne(propertyId);
-
   propertyDataIsInvalid = ({ propertyId, loanResidenceType }) => {
     try {
       WuestService.createPropertyFromCollection({

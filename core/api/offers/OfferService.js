@@ -11,8 +11,6 @@ export class OfferService extends CollectionService {
   insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
 
   remove = ({ offerId }) => Offers.remove(offerId);
-
-  getOfferById = offerId => Offers.findOne(offerId);
 }
 
 export default new OfferService();

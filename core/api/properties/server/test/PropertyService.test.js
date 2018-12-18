@@ -41,7 +41,7 @@ describe('PropertyService', () => {
         propertyId,
         loanResidenceType,
       }).then(() => {
-        const property = PropertyService.getPropertyById(propertyId);
+        const property = PropertyService.get(propertyId);
         expect(property.valuation.status).to.equal(VALUATION_STATUS.ERROR);
         expect(property.valuation.error).contains('entre 1000 et 3000');
       });
@@ -72,7 +72,7 @@ describe('PropertyService', () => {
         propertyId,
         loanResidenceType,
       }).then(() => {
-        const property = PropertyService.getPropertyById(propertyId);
+        const property = PropertyService.get(propertyId);
         const marketValueBeforeCorrection = 709000;
         const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
@@ -108,7 +108,7 @@ describe('PropertyService', () => {
         propertyId,
         loanResidenceType,
       }).then(() => {
-        const property = PropertyService.getPropertyById(propertyId);
+        const property = PropertyService.get(propertyId);
         expect(property.valuation).to.have.property('microlocation');
       });
     }).timeout(10000);
