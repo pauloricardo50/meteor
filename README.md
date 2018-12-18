@@ -89,3 +89,15 @@ Main things to optimize:
 * redux-form
 * Remove jquery: Required by `themeteorchef:bert`, `cultofcoders:persistent-session` and `meteortoys`, which can be ignored since it's dev-only
   * https://github.com/cult-of-coders/meteor-persistent-session/issues/2
+
+
+## Troubleshooting tricks
+
+Sometimes meteor won't start, or get stuck without printing the error it encountered (in tests for example).
+
+To see what's wrong, follow these steps:
+
+1. Create a file in lib/index.js or lib/index.test.js, because files in lib/ are loaded early
+2. add an exception handler: 
+   1. `process.on('uncaughtException', console.log)`
+3. Restart the app
