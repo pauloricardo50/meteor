@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 import BorrowerReuser from 'core/components/BorrowerReuser';
 import BorrowerRemover from 'core/components/BorrowerRemover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/pro-light-svg-icons';
+import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 import Progress from './Progress';
 
 type BorrowerHeaderDetailsProps = {};
@@ -40,7 +40,9 @@ const BorrowerHeaderDetails = ({
           </span>
         </h1>
       </div>
-      {borrowerCount === 2 && <BorrowerRemover borrower={borrower} loanId={loanId} />}
+      {borrowerCount === 2 && (
+        <BorrowerRemover borrower={borrower} loanId={loanId} />
+      )}
     </div>
     <Progress borrower={borrower} tabId={tabId} />
     {tabId === 'personal' && (

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/pro-light-svg-icons';
+import { faUserCircle } from '@fortawesome/pro-light-svg-icons/faUserCircle';
 
 import TextField from '../Material/TextField';
 import Loading from '../Loading/Loading';

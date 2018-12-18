@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 
 import T from 'core/components/Translation';
 import IconLink from 'core/components/IconLink';
