@@ -130,7 +130,7 @@ const shouldDisplayFloorNumber = ({ propertyType, flatType }) =>
 
 const shouldDisplayTerraceArea = ({ propertyType, flatType }) =>
   propertyType === PROPERTY_TYPE.FLAT
-  && flatType === FLAT_TYPE.TERRACE_APARTMENT;
+
 
 export const getPropertyArray = ({ loan, borrowers, property }) => {
   const r = loan;
