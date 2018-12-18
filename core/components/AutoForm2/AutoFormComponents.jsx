@@ -9,20 +9,27 @@ import T from '../Translation';
 import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
 import PercentInput from '../PercentInput';
+import CustomSelectField from './CustomSelectField';
 
-const CustomSelectField = ({ transform, ...props }) => (
-  <SelectField
-    {...props}
-    transform={
-      transform
-      || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
-    }
-    displayEmpty
-  />
-);
+// const CustomSelectField = ({
+//   transform,
+//   allowedValues,
+//   customAllowedValues,
+//   ...props
+// }) => (
+//   <SelectField
+//     {...props}
+//     allowedValues={customAllowedValues || allowedValues}
+//     transform={
+//       transform
+//       || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
+//     }
+//     displayEmpty
+//   />
+// );
 
 const determineComponentFromProps = (props) => {
-  if (props.allowedValues) {
+  if (props.allowedValues || props.customAllowedValues) {
     return CustomSelectField;
   }
 
