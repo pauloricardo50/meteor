@@ -89,7 +89,7 @@ export const contactsSchema = {
 export const userLinksSchema = {
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
-  'userLinks.$._id': String,
+  'userLinks.$._id': { type: String, optional: true },
   'userLinks.$.permissions': {
     type: String,
     allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
@@ -99,5 +99,5 @@ export const userLinksSchema = {
 export const mortgageNoteLinks = {
   mortgageNoteLinks: { type: Array, optional: true },
   'mortgageNoteLinks.$': Object,
-  'mortgageNoteLinks.$._id': String,
+  'mortgageNoteLinks.$._id': { type: String, optional: true },
 };
