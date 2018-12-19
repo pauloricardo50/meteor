@@ -100,6 +100,7 @@ describe('Pro', () => {
 
         cy.contains('Lot 2').should('exist');
         cy.contains('2 500').should('exist');
+        cy.contains('1 002 500').should('exist');
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('exist');
