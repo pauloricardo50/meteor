@@ -11,8 +11,10 @@ import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 import { createRoute } from '../../utils/routerUtils';
+import { CollectionIconLink } from 'core/components/IconLink';
+import { LOANS_COLLECTION } from '../../api/constants';
 
-const getSolvency = (email) => {
+const getSolvency = email => {
   const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
   if (nb % 3 === 0) {
     return { className: 'success', text: 'Solvable' };
@@ -34,26 +36,38 @@ const makeMapOption = ({
   canModify,
   isAdmin,
   history,
-}) => (promotionOption) => {
+}) => promotionOption => {
   const {
     _id: promotionOptionId,
-    loan: {
-      user,
-      promotions,
-      promotionOptions = [],
-      _id: loanId,
-      promotionProgress,
-    },
+    loan,
     lots,
     custom,
     createdAt,
   } = promotionOption;
-  const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
+  const {
+    user,
+    promotions,
+    promotionOptions = [],
+    _id: loanId,
+    promotionProgress,
+  } = loan;
+  const promotion =
+    promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
 
   return {
     id: promotionOptionId,
     columns: [
-      user && user.name,
+      isAdmin
+        ? user && (
+            <CollectionIconLink
+              relatedDoc={{
+                ...loan,
+                name: user.name,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+          )
+        : user && user.name,
       { raw: moment(createdAt).valueOf(), label: moment(createdAt).fromNow() },
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
@@ -88,12 +102,6 @@ const makeMapOption = ({
         key="promotionLotAttributer"
       />,
     ],
-    ...(isAdmin
-      ? {
-        handleClick: () =>
-          history.push(createRoute('/loans/:loanId', { loanId })),
-      }
-      : {}),
   };
 };
 
@@ -125,8 +133,12 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(({ promotionOptions, promotionLot, canModify, history, isAdmin }) => ({
-    rows: promotionOptions.map(makeMapOption({ promotionLot, canModify, history, isAdmin })),
-    columnOptions,
-  })),
+  withProps(
+    ({ promotionOptions, promotionLot, canModify, history, isAdmin }) => ({
+      rows: promotionOptions.map(
+        makeMapOption({ promotionLot, canModify, history, isAdmin }),
+      ),
+      columnOptions,
+    }),
+  ),
 );

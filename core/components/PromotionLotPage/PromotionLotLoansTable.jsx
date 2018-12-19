@@ -19,7 +19,6 @@ const PromotionLotLoansTable = ({
     <Table
       rows={rows}
       columnOptions={columnOptions}
-      clickable={!!isAdmin}
       initialOrderBy={1} // By date
     />
   </>
