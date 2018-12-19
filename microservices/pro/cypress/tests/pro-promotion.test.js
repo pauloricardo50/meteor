@@ -19,6 +19,7 @@ describe('Pro', () => {
     beforeEach(() => {
       cy.visit('/');
       cy.meteorLogin(PRO_EMAIL, PRO_PASSWORD);
+      cy.visit('/');
     });
 
     it('should add a promotion', () => {
