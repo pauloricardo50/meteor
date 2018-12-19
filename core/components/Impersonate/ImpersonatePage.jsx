@@ -31,7 +31,7 @@ class ImpersonatePage extends Component {
       Session.setPersistent(IMPERSONATE_SESSION_KEY, true);
 
       notification.success({
-        message: 'Yay',
+        message: <span id="impersonation-success-message">Yay</span>,
         description: formatMessage(
           { id: 'Impersonation.impersonationSuccess' },
           { email: emails[0].address },
