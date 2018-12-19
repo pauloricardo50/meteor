@@ -20,6 +20,8 @@ function setWallabyConfig(name, overrides = {}) {
           '!imports/**/*.spec.js*',
           // Load language files for some tests
           'lang/*.json',
+          // // Don't load css files
+          { pattern: 'node_modules/**/*.css', ignore: true },
         ],
         tests: ['imports/**/*.spec.js*', '!imports/core/node_modules/**'],
         compilers: {

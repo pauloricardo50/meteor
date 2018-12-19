@@ -1,9 +1,5 @@
 /* eslint-env mocha */
-import {
-  ADMIN_EMAIL,
-  route,
-  generateTestsForPages,
-} from '../../imports/core/cypress/utils';
+import { route, generateTestsForPages } from '../../imports/core/cypress/utils';
 
 // "public", "admin", "dev" and other keys of the pages object
 // are the type of authentication needed for those pages
@@ -90,19 +86,21 @@ const pages = {
   },
 };
 
-let testData;
-
 describe('Admin Pages', () => {
-  before(() => {
-    // We visit the app so that we get the Window instance of the app
-    // from which we get the `Meteor` instance used in tests
-    cy.visit('/');
+  let testData;
 
-    cy.eraseAndGenerateTestData()
-      .getTestData(ADMIN_EMAIL)
-      .then((data) => {
-        testData = data;
-      });
+  before(() => {
+    cy.visit('/');
+    cy.callMethod('resetDatabase');
+
+    // FIXME: This method's call is never returning
+    cy.callMethod('serverLog', 'Log 1?');
+    cy.callMethod('generateTestData');
+    cy.callMethod('serverLog', 'Log 2?');
+
+    cy.callMethod('getAdminEndToEndTestData').then((data) => {
+      testData = data;
+    });
   });
 
   generateTestsForPages(pages, () => testData);

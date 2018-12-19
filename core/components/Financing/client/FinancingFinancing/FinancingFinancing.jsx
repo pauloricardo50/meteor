@@ -14,6 +14,7 @@ import FinancingSection, {
 } from '../FinancingSection';
 import Calc, { getOffer } from '../FinancingCalculator';
 import FinancingTranchePicker from './FinancingTranchePicker';
+import MortgageNotesPicker from './MortgageNotesPicker';
 import {
   getBorrowRatio,
   getBorrowRatioStatus,
@@ -83,6 +84,10 @@ const FinancingFinancing = (props: FinancingFinancingProps) => (
       {
         Component: LoanPercent,
         id: 'wantedLoanPercent',
+      },
+      {
+        Component: MortgageNotesPicker,
+        id: 'mortgageNoteIds',
       },
       // TODO: To be released in the future
       // {

@@ -23,6 +23,7 @@ import {
 } from '.';
 import { LOT_TYPES } from './lots/lotConstants';
 import { ROLES } from './users/userConstants';
+import MortgageNotes from './mortgageNotes';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -116,3 +117,8 @@ Factory.define('lot', Lots, {
 });
 
 Factory.define('task', Tasks, {});
+
+Factory.define('mortgageNote', MortgageNotes, {
+  value: 100000,
+  canton: 'GE',
+});

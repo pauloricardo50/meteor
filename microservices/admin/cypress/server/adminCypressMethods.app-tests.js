@@ -10,7 +10,8 @@ import 'core/cypress/server/methods';
 Accounts.removeDefaultRateLimit();
 
 Meteor.methods({
-  getEndToEndTestData() {
+  getAdminEndToEndTestData() {
+    console.log('getAdminEndToEndTestData');
     const loan = adminLoansQuery.clone({ owned: true }).fetchOne();
 
     const {

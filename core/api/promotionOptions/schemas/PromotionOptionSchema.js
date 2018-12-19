@@ -7,10 +7,10 @@ const PromotionOptionSchema = new SimpleSchema({
   updatedAt,
   promotionLotLinks: { type: Array, defaultValue: [] },
   'promotionLotLinks.$': Object,
-  'promotionLotLinks.$._id': String,
+  'promotionLotLinks.$._id': { type: String, optional: true },
   lotLinks: { type: Array, optional: true },
   'lotLinks.$': Object,
-  'lotLinks.$._id': String,
+  'lotLinks.$._id': { type: String, optional: true },
   custom: {
     type: String,
     optional: true,

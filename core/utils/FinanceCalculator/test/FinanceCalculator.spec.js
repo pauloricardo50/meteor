@@ -190,8 +190,7 @@ describe('FinanceCalculator', () => {
 
     it('returns calculated fees if no fees are provided', () => {
       expect(calc.getFeesBase({ propertyValue: 100 })).to.equal(5);
-      expect(calc.getFeesBase({ propertyWork: 100 })).to.equal(5);
-      expect(calc.getFeesBase({ propertyValue: 100, propertyWork: 100 })).to.equal(10);
+      expect(calc.getFeesBase({ propertyValue: 0 })).to.equal(0);
     });
   });
 

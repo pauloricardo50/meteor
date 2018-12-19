@@ -295,11 +295,18 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getNetFortune(borrowers) {
+    getNetFortune({ borrowers }) {
       return (
         this.getTotalFunds({ borrowers })
         + this.getRealEstateFortune({ borrowers })
         + this.getOtherFortune({ borrowers })
+      );
+    }
+
+    getMortgageNotes({ borrowers }) {
+      return borrowers.reduce(
+        (arr, { mortgageNotes: notes = [] }) => [...arr, ...notes],
+        [],
       );
     }
   };

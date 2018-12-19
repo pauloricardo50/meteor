@@ -48,8 +48,6 @@ export class LoanService extends CollectionService {
 
   remove = ({ loanId }) => Loans.remove(loanId);
 
-  getLoanById = loanId => Loans.findOne(loanId);
-
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const propertyId = PropertyService.insert({ userId });
@@ -62,7 +60,7 @@ export class LoanService extends CollectionService {
   };
 
   askVerification = ({ loanId }) => {
-    const loan = this.getLoanById(loanId);
+    const loan = this.get(loanId);
 
     if (
       loan.verificationStatus === LOAN_VERIFICATION_STATUS.REQUESTED
@@ -95,7 +93,7 @@ export class LoanService extends CollectionService {
   };
 
   startAuction = ({ loanId }) => {
-    const loan = this.getLoanById(loanId);
+    const loan = this.get(loanId);
 
     if (loan.logic.auction.status !== AUCTION_STATUS.NONE) {
       // Don't do anything if this auction has already started or ended
@@ -113,7 +111,7 @@ export class LoanService extends CollectionService {
   };
 
   endAuction = ({ loanId }) => {
-    const loan = this.getLoanById(loanId);
+    const loan = this.get(loanId);
 
     // This method is called in the future (through a job),
     // so only call this if the auction is ongoing
@@ -172,7 +170,7 @@ export class LoanService extends CollectionService {
   };
 
   addNewStructure = ({ loanId, structure }) => {
-    const { structures, selectedStructure, propertyIds } = this.getLoanById(loanId);
+    const { structures, selectedStructure, propertyIds } = this.get(loanId);
     const isFirstStructure = structures.length === 0;
     const shouldCopyExistingStructure = !isFirstStructure && !structure && selectedStructure;
 
@@ -199,7 +197,7 @@ export class LoanService extends CollectionService {
   };
 
   removeStructure = ({ loanId, structureId }) => {
-    const { selectedStructure: currentlySelected } = this.getLoanById(loanId);
+    const { selectedStructure: currentlySelected } = this.get(loanId);
 
     if (currentlySelected !== structureId) {
       const updateObj = {
@@ -216,7 +214,7 @@ export class LoanService extends CollectionService {
   };
 
   updateStructure = ({ loanId, structureId, structure }) => {
-    const currentStructure = this.getLoanById(loanId).structures.find(({ id }) => id === structureId);
+    const currentStructure = this.get(loanId).structures.find(({ id }) => id === structureId);
 
     return Loans.update(
       { _id: loanId, 'structures.id': structureId },
@@ -226,7 +224,7 @@ export class LoanService extends CollectionService {
 
   selectStructure = ({ loanId, structureId }) => {
     // Make sure the structure exists
-    const structureExists = this.getLoanById(loanId).structures.some(({ id }) => id === structureId);
+    const structureExists = this.get(loanId).structures.some(({ id }) => id === structureId);
 
     if (structureExists) {
       return this.update({
@@ -239,7 +237,7 @@ export class LoanService extends CollectionService {
   };
 
   duplicateStructure = ({ loanId, structureId }) => {
-    const { structures } = this.getLoanById(loanId);
+    const { structures } = this.get(loanId);
     const currentStructure = structures.find(({ id }) => id === structureId);
     const currentStructureIndex = structures.findIndex(({ id }) => id === structureId);
 

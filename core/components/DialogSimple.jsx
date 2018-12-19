@@ -38,7 +38,7 @@ export default class DialogSimple extends Component {
       bodyStyle,
       buttonProps,
       buttonStyle,
-      cancelOnly,
+      closeOnly,
       children,
       contentStyle,
       important,
@@ -52,17 +52,18 @@ export default class DialogSimple extends Component {
       secondary,
       style,
       title,
+      renderTrigger,
       ...otherProps
     } = this.props;
 
     const finalActions = (actions && actions(this.handleClose))
-      || (cancelOnly
+      || (closeOnly
         ? [
           <Button
             primary
-            label={<T id="general.cancel" />}
+            label={<T id="general.close" />}
             onClick={this.handleClose}
-            key="cancel"
+            key="close"
           />,
         ]
         : [
@@ -92,15 +93,19 @@ export default class DialogSimple extends Component {
     return (
       // Prevent triggering background clicks
       <span style={rootStyle} onClick={e => e.stopPropagation()}>
-        <Button
-          raised={raised}
-          label={label}
-          onClick={this.handleOpen}
-          primary={primary}
-          secondary={secondary}
-          style={buttonStyle}
-          {...buttonProps}
-        />
+        {renderTrigger ? (
+          renderTrigger({ handleOpen: this.handleOpen })
+        ) : (
+          <Button
+            raised={raised}
+            label={label}
+            onClick={this.handleOpen}
+            primary={primary}
+            secondary={secondary}
+            style={buttonStyle}
+            {...buttonProps}
+          />
+        )}
         <Dialog
           {...otherProps}
           title={title}
@@ -126,8 +131,8 @@ DialogSimple.propTypes = {
   autoFocus: PropTypes.bool,
   autoScroll: PropTypes.bool,
   buttonStyle: PropTypes.objectOf(PropTypes.any),
-  cancelOnly: PropTypes.bool,
   close: PropTypes.bool,
+  closeOnly: PropTypes.bool,
   important: PropTypes.bool,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   onOpen: PropTypes.func,
@@ -143,7 +148,7 @@ DialogSimple.defaultProps = {
   autoFocus: false,
   autoScroll: false,
   buttonStyle: {},
-  cancelOnly: false,
+  closeOnly: false,
   close: undefined,
   important: false,
   onOpen: () => {},

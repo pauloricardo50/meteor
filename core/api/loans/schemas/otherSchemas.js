@@ -1,9 +1,5 @@
 // @flow
-import {
-  INTEREST_RATES,
-  MORTGAGE_NOTE_TYPES,
-  MORTGAGE_NOTE_CATEGORIES,
-} from '../../constants';
+import { INTEREST_RATES } from '../../constants';
 
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
@@ -62,19 +58,4 @@ export type loanTranchesType = Array<{
 export const propertyIdsSchema = {
   propertyIds: { type: Array, defaultValue: [], maxCount: 5 },
   'propertyIds.$': String,
-};
-
-export const mortgageNotesSchema = {
-  mortgageNotes: { type: Array, defaultValue: [], optional: true },
-  'mortgageNotes.$': Object,
-  'mortgageNotes.$.value': { type: Number, min: 0, max: 1000000000 },
-  'mortgageNotes.$.rank': { type: Number, min: 0, max: 10 },
-  'mortgageNotes.$.type': {
-    type: String,
-    allowedValues: Object.values(MORTGAGE_NOTE_TYPES),
-  },
-  'mortgageNotes.$.category': {
-    type: String,
-    allowedValues: Object.values(MORTGAGE_NOTE_CATEGORIES),
-  },
 };

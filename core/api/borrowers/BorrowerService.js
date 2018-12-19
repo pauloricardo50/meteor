@@ -32,6 +32,9 @@ export class BorrowerService extends CollectionService {
         // Fix this conditional when the issue has been dealt with
         // https://github.com/cult-of-coders/grapher/issues/332
         loansLink.remove(loanId);
+      } else {
+        // Only admins can remove a borrower that has multiple loans
+        return Borrowers.remove(borrowerId);
       }
     } else {
       return Borrowers.remove(borrowerId);
@@ -40,8 +43,6 @@ export class BorrowerService extends CollectionService {
 
   pushValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $push: object });
-
-  getBorrowerById = borrowerId => Borrowers.findOne(borrowerId);
 
   popValue = ({ borrowerId, object }) =>
     Borrowers.update(borrowerId, { $pop: object });
@@ -68,6 +69,27 @@ export class BorrowerService extends CollectionService {
     const borrowersNotOnLoan = userBorrowers.filter(({ _id }) => !loan.borrowerIds.includes(_id));
 
     return { borrowers: borrowersNotOnLoan, isLastLoan };
+  }
+
+  cleanUpMortgageNotes({ borrowerId }) {
+    const { mortgageNotes = [], loans = [] } = this.createQuery({
+      $filters: { _id: borrowerId },
+      mortgageNotes: { _id: 1 },
+      loans: { structures: 1 },
+    }).fetchOne();
+    const borrowerMortgageNoteIds = mortgageNotes.map(({ _id }) => _id);
+
+    loans.forEach(({ _id: loanId, structures = [] }) => {
+      structures.forEach(({ id: structureId, mortgageNoteIds }) => {
+        LoanService.updateStructure({
+          loanId,
+          structureId,
+          structure: {
+            mortgageNoteIds: mortgageNoteIds.filter(id => !borrowerMortgageNoteIds.includes(id)),
+          },
+        });
+      });
+    });
   }
 }
 

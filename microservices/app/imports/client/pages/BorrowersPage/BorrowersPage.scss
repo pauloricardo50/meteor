@@ -50,7 +50,7 @@
 
     text-align: right;
 
-     > span {
+    > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -62,7 +62,7 @@
     }
 
     &.success {
-       > span {
+      > span {
         color: $success;
       }
 
@@ -186,7 +186,7 @@
       font-size: 18px;
       font-weight: bold;
 
-       > span {
+      > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -231,11 +231,20 @@
 
   width: 100%;
 
+  &.card1 {
+    box-sizing: border-box;
+  }
+
   .form-select__row {
+    width: 100%;
     position: relative;
 
-    margin-bottom: 10px;
-    padding-right: 50px;
+    .mui-select {
+      position: relative;
+
+      margin-bottom: 10px;
+      padding-right: 50px;
+    }
   }
 
   .form-input__row {
@@ -324,7 +333,7 @@
 h2 {
   margin-bottom: 25px;
 
-  font-size: 17px;
+  // font-size: 17px;
   font-weight: bold;
 }
 
@@ -334,12 +343,12 @@ h2 {
   }
 
   .form-group {
-     > div {
+    > div {
       max-width: 100% !important;
     }
   }
 
-   > div {
+  > div {
     max-width: 100% !important;
   }
 
@@ -353,7 +362,7 @@ h2 {
 .description {
   align-self: initial;
 
-   > p {
+  > p {
     justify-content: flex-start;
 
     max-width: 100%;

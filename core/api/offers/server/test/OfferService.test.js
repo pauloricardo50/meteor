@@ -21,7 +21,7 @@ describe('OfferService', () => {
       expect(offer.interest10).to.equal(0.05);
 
       OfferService.update({ offerId, object: { interest10: 0.1 } });
-      offer = OfferService.getOfferById(offerId);
+      offer = OfferService.get(offerId);
 
       expect(offer.interest10).to.equal(0.1);
     });
@@ -37,7 +37,7 @@ describe('OfferService', () => {
           amortizationGoal: 0.65,
         },
       });
-      offer = OfferService.getOfferById(offerId);
+      offer = OfferService.get(offerId);
 
       expect(offer.createdAt).to.not.equal(undefined);
     });
@@ -49,7 +49,7 @@ describe('OfferService', () => {
       offerId = offer._id;
 
       OfferService.remove({ offerId });
-      offer = OfferService.getOfferById(offerId);
+      offer = OfferService.get(offerId);
 
       expect(offer).to.equal(undefined);
     });

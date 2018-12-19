@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import { mortgageNoteFragment } from '../../mortgageNotes/queries/mortgageNoteFragments';
 import { loanBaseFragment } from '../../loans/queries/loanFragments';
 import { appUserFragment } from '../../users/queries/userFragments';
 
@@ -71,6 +72,7 @@ export const fullPropertyFragment = {
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
+  mortgageNotes: mortgageNoteFragment,
   name: 1,
   numberOfFloors: 1,
   parkingInside: 1,

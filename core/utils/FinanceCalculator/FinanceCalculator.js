@@ -334,12 +334,12 @@ export class FinanceCalculator {
     return (propertyValue + propertyWork) * this.minCash + fees;
   }
 
-  getFeesBase({ fees, propertyValue = 0, propertyWork = 0 }) {
+  getFeesBase({ fees, propertyValue = 0 }) {
     if (fees === 0 || fees > 0) {
       return fees;
     }
 
-    return (propertyValue + propertyWork) * this.notaryFees;
+    return propertyValue * this.notaryFees;
   }
 
   getIncomeLimitedPropertyValue = ({ nF, r, i, mR, m }) => ({

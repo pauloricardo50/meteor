@@ -62,7 +62,7 @@ meteorhacks:inject-initial
 force-ssl                     # Automatically route users to https
 dynamic-import
 dburles:google-maps
-lmachens:kadira
+# lmachens:kadira
 okgrow:analytics
 
 

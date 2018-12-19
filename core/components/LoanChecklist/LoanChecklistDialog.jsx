@@ -9,7 +9,7 @@ type LoanChecklistDialogProps = {};
 
 const LoanChecklistDialog = ({ loan }: LoanChecklistDialogProps) => (
   <DialogSimple
-    cancelOnly
+    closeOnly
     label={<T id="LoanChecklist.dialogButton" />}
     buttonProps={{ className: 'loan-checklist-dialog' }}
   >

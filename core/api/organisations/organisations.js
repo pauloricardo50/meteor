@@ -35,7 +35,7 @@ export const OrganisationSchema = new SimpleSchema({
   ...address,
   contactIds: { type: Array, defaultValue: [] },
   'contactIds.$': Object,
-  'contactIds.$._id': String,
+  'contactIds.$._id': { type: String, optional: true },
   'contactIds.$.role': { type: String, optional: true },
   'contactIds.$.useSameAddress': { type: Boolean, optional: true },
 });

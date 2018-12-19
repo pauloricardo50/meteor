@@ -18,6 +18,8 @@ const StructureSchema = new SimpleSchema({
   },
   description: { type: String, optional: true },
   id: String,
+  mortgageNoteIds: { type: Array, optional: true },
+  'mortgageNoteIds.$': String,
   name: { type: String, optional: true },
   notaryFees: {
     type: SimpleSchema.Integer,

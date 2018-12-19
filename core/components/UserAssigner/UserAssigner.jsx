@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Input from '@material-ui/core/Input';
 
 import DialogSimple from '../DialogSimple';
 import T from '../Translation';
+import List, { ListItem, ListItemText } from '../List';
 import UserAssignerContainer from './UserAssignerContainer';
 
 type UserAssignerProps = {
@@ -39,7 +37,7 @@ const UserAssigner = ({
           type="text"
           value={searchQuery}
           onChange={event => setSearchQuery(event.target.value)}
-          placeHolder="Rechercher un utilisateur"
+          placeholder="Chercher..."
           style={{ width: '100%', marginBottom: '16px' }}
         />
       </form>

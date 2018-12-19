@@ -11,6 +11,7 @@ import PromotionService from '../../promotions/PromotionService';
 import PromotionLotService from '../../promotionLots/PromotionLotService';
 import UserService from '../../users/UserService';
 import LoanService from '../../loans/LoanService';
+import { simpleUserFragment } from 'imports/core/api/users/queries/userFragments/index';
 
 ServerEventService.addMethodListener(
   inviteUserToPromotion,
@@ -40,7 +41,7 @@ ServerEventService.addMethodListener(
     } = PromotionLotService.createQuery({
       $filters: { _id: promotionLotId },
       name: 1,
-      promotion: { name: 1, assignedEmployee: 1 },
+      promotion: { name: 1, assignedEmployee: simpleUserFragment },
     }).fetchOne();
     const { userId } = LoanService.get(loanId);
     const { firstName, lastName } = UserService.get(userId);
@@ -66,7 +67,7 @@ ServerEventService.addMethodListener(
     } = PromotionLotService.createQuery({
       $filters: { _id: promotionLotId },
       name: 1,
-      promotion: { name: 1, assignedEmployee: 1 },
+      promotion: { name: 1, assignedEmployee: simpleUserFragment },
     }).fetchOne();
     const { userId } = LoanService.get(loanId);
     const { firstName, lastName } = UserService.get(userId);

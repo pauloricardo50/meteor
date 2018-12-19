@@ -1,7 +1,14 @@
+import { Random } from 'meteor/random';
+
 import SimpleSchema from 'simpl-schema';
+
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
+import {
+  MORTGAGE_NOTE_TYPES,
+  MORTGAGE_NOTE_CATEGORIES,
+} from './sharedSchemaConstants';
 
 export const createdAt = {
   type: Date,
@@ -82,9 +89,15 @@ export const contactsSchema = {
 export const userLinksSchema = {
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
-  'userLinks.$._id': String,
+  'userLinks.$._id': { type: String, optional: true },
   'userLinks.$.permissions': {
     type: String,
     allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
   },
+};
+
+export const mortgageNoteLinks = {
+  mortgageNoteLinks: { type: Array, optional: true },
+  'mortgageNoteLinks.$': Object,
+  'mortgageNoteLinks.$._id': { type: String, optional: true },
 };

@@ -3,3 +3,17 @@
     margin-top: 16px;
   }
 }
+
+.notary-fees {
+  flex-direction: row !important;
+}
+
+.notary-fees-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .recap {
+    margin-top: 40px;
+  }
+}
