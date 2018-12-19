@@ -98,7 +98,7 @@ const createTestUserWithData = () => {
 };
 
 Meteor.methods({
-  generateTestData2(currentUserEmail) {
+  generateTestData(currentUserEmail) {
     // Do this to avoid client-side method timeout
     // https://github.com/e-Potek/epotek/pull/329#issuecomment-438977389
     if (!Meteor.isServer) {

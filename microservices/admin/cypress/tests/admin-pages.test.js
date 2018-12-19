@@ -95,7 +95,7 @@ describe('Admin Pages', () => {
 
     // FIXME: This method's call is never returning
     cy.callMethod('serverLog', 'Log 1?');
-    cy.callMethod('generateTestData2');
+    cy.callMethod('generateTestData');
     cy.callMethod('serverLog', 'Log 2?');
 
     cy.callMethod('getAdminEndToEndTestData').then((data) => {
