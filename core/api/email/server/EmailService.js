@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
 import {
@@ -10,6 +11,7 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 const skipEmails = Meteor.isDevelopment || Meteor.isTest;
+const isTest = Meteor.isTest || Meteor.isAppTest;
 
 class EmailService {
   sendEmail = (emailId, address, params) => {
@@ -93,7 +95,9 @@ class EmailService {
   };
 
   emailLogger = ({ emailId, address, template }) => {
-    if (Meteor.isTest) {
+    if (isTest) {
+      // Store all sent emails in the DB, to be asserted in tests
+      Meteor.call('storeTestEmail', emailId, address, template);
       return;
     }
     if (skipEmails) {
