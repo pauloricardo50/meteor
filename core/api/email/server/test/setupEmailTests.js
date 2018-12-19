@@ -1,14 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-
-const isTest = Meteor.isTest || Meteor.isAppTest;
+import { isEmailTestEnv } from '../EmailService';
 
 let emailTestCollection;
 
-if (isTest) {
-  emailTestCollection = new Mongo.Collection('emailTestCollection', {
-    connection: null,
-  });
+if (isEmailTestEnv) {
+  emailTestCollection = new Mongo.Collection('emailTestCollection');
 
   Meteor.methods({
     storeTestEmail(email) {
