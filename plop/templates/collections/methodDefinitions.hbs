@@ -1,23 +1,23 @@
 import { Method } from '../methods/methods';
 
-export const {{collectionName}}Insert = new Method({
-name: '{{collectionName}}Insert',
+export const {{methodInsert}} = new Method({
+name: '{{methodInsert}}',
 params: {
-{{collectionName}}: Object,
+{{collectionNameSingular}}: Object,
 },
 });
 
-export const {{collectionName}}Remove = new Method({
-name: '{{collectionName}}Remove',
+export const {{methodRemove}} = new Method({
+name: '{{methodRemove}}',
 params: {
-{{collectionName}}Id: String,
+{{collectionNameSingular}}Id: String,
 },
 });
 
-export const {{collectionName}}Update = new Method({
-name: '{{collectionName}}Update',
+export const {{methodUpdate}} = new Method({
+name: '{{methodUpdate}}',
 params: {
-{{collectionName}}Id: String,
+{{collectionNameSingular}}Id: String,
 object: Object,
 },
 });
