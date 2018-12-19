@@ -15,26 +15,26 @@ import {
   SecurityService,
   Tasks,
   Users,
-} from '../api';
-import TaskService from '../api/tasks/TaskService';
+} from '../../api';
+import TaskService from '../../api/tasks/TaskService';
 import {
   USER_COUNT,
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
-} from './fixtureConfig';
-import { createFakeLoan } from './loanFixtures';
+} from '../fixtureConfig';
+import { createFakeLoan } from '../loanFixtures';
 import {
   createDevs,
   createAdmins,
   getFakeUsersIds,
   createUser,
   createFakeUsers,
-} from './userFixtures';
-import { createFakeOffer } from './offerFixtures';
-import { E2E_USER_EMAIL } from './fixtureConstants';
-import { createYannisData } from './demoFixtures';
-import { createOrganisations } from './organisationFixtures';
-import { createFakeInterestRates } from './interestRatesFixtures';
+} from '../userFixtures';
+import { createFakeOffer } from '../offerFixtures';
+import { E2E_USER_EMAIL } from '../fixtureConstants';
+import { createYannisData } from '../demoFixtures';
+import { createOrganisations } from '../organisationFixtures';
+import { createFakeInterestRates } from '../interestRatesFixtures';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
