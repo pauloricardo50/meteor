@@ -31,7 +31,7 @@ describe('methods', () => {
     });
   });
 
-  describe.only('submitContactForm', () => {
+  describe('submitContactForm', () => {
     it('should send 2 emails', () => {
       const address = 'digital@e-potek.ch';
       return submitContactForm
