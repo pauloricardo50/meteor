@@ -1,13 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import range from 'lodash/range';
-import {
-  STEPS,
-  STEP_ORDER,
-  AUCTION_STATUS,
-  ROLES,
-  TASK_TYPE,
-} from 'core/api/constants';
+import { STEPS, STEP_ORDER, ROLES, TASK_TYPE } from 'core/api/constants';
 import {
   Borrowers,
   Loans,
@@ -104,11 +98,15 @@ const createTestUserWithData = () => {
 };
 
 Meteor.methods({
-  generateTestData(currentUserEmail) {
-    console.log('generateTestData');
+  generateTestData2(currentUserEmail) {
+    // Do this to avoid client-side method timeout
+    // https://github.com/e-Potek/epotek/pull/329#issuecomment-438977389
+    if (!Meteor.isServer) {
+      return;
+    }
     if (isAuthorizedToRun()) {
-      console.log('isAuthorizedToRun', isAuthorizedToRun());
-      createDevs(currentUserEmail);
+      debugger;
+      const devs = createDevs(currentUserEmail);
       const admins = getAdmins();
       const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
       createOrganisations();
@@ -136,9 +134,6 @@ Meteor.methods({
 
       createTestUserWithData();
     }
-
-    console.log('done!');
-    // return Promise.resolve();
   },
 
   async purgeDatabase(currentUserId) {
