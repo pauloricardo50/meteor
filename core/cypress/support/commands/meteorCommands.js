@@ -20,7 +20,9 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
 
   cy.getMeteor().then(Meteor =>
     new Cypress.Promise((resolve, reject) => {
-      Meteor.call(method, ...params, (err, result) => {
+      // Keep wait:true to avoid an issue related to this
+      // https://github.com/e-Potek/epotek/pull/329#issuecomment-438977389
+      Meteor.apply(method, params, { wait: true }, (err, result) => {
         if (err) {
           reject(err);
         }
