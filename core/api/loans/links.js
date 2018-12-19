@@ -8,6 +8,7 @@ import {
   Offers,
   Promotions,
   PromotionOptions,
+  Lenders,
 } from '..';
 
 Loans.addLinks({
@@ -48,5 +49,11 @@ Loans.addLinks({
     unique: true,
     metadata: true,
     autoremove: true,
+  },
+  lenders: {
+    field: 'lenderLinks',
+    collection: Lenders,
+    type: 'many',
+    metadata: true,
   },
 });

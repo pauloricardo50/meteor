@@ -92,7 +92,7 @@ module.exports = {
     });
     actions.push({
       type: 'add',
-      path: `${collectionPath}/queries/{{fragmentsFolder}}/{{fragmentsFile}}js`,
+      path: `${collectionPath}/queries/{{fragmentsFolder}}/{{fragmentsFile}}.js`,
       templateFile: `${templatesPath}/fragments.hbs`,
     });
     actions.push({

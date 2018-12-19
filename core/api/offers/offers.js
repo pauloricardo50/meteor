@@ -79,6 +79,9 @@ export const OfferSchema = new SimpleSchema({
     defaultValue: [],
   },
   'conditions.$': { type: String, optional: true },
+  lenderLink: { type: Object, optional: true },
+  'lenderLink._id': { type: String, optional: true },
+  feedback: { type: String, optional: true },
 });
 
 // Attach schema

@@ -11,10 +11,10 @@ export const fullOfferFragment = {
   fees: 1,
   epotekFees: 1,
   organisation: { name: 1, logo: 1 },
+  feedback: 1,
   ...Object.values(INTEREST_RATES).reduce(
     (rates, rate) => ({ ...rates, [rate]: 1 }),
     {},
   ),
-  contact: { _id: 1, name: 1, feedback: 1 },
   // $options: { sort: { createdAt: 1 } },
 };

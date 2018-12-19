@@ -1,5 +1,3 @@
-import { fullOfferFragment } from '../../../offers/queries/offerFragments';
-
 export const contactFragment = {
   firstName: 1,
   lastName: 1,
@@ -15,5 +13,4 @@ export const contactFragment = {
   emails: 1,
   email: 1,
   organisations: { name: 1, _id: 1, address: 1 },
-  offers: fullOfferFragment,
 };
