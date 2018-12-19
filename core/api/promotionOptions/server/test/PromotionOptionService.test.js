@@ -38,13 +38,13 @@ describe('PromotionOptionService', () => {
 
     it('Removes the link from the loan', () => {
       PromotionOptionService.remove({ promotionOptionId });
-      const loan = LoanService.getLoanById(loanId);
+      const loan = LoanService.get(loanId);
       expect(loan.promotionOptionLinks).to.deep.equal([]);
     });
 
     it('Removes the priority order from the loan', () => {
       PromotionOptionService.remove({ promotionOptionId });
-      const loan = LoanService.getLoanById(loanId);
+      const loan = LoanService.get(loanId);
       expect(loan.promotionLinks).to.deep.equal([
         { _id: 'promotion', priorityOrder: [] },
       ]);

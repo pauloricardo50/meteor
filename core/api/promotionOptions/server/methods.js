@@ -10,7 +10,7 @@ import {
 } from '../methodDefinitions';
 
 promotionOptionInsert.setHandler(({ userId }, params) => {
-  const loan = LoanService.getLoanById(params.loanId);
+  const loan = LoanService.get(params.loanId);
   SecurityService.checkOwnership(loan);
   return PromotionOptionService.insert(params);
 });
