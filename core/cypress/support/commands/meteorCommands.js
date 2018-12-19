@@ -20,23 +20,13 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
 
   cy.getMeteor().then(Meteor =>
     new Cypress.Promise((resolve, reject) => {
-      Meteor.apply(
-        method,
-        params,
-        {
-          wait: true,
-          noRetry: true,
-          throwStubExceptions: true,
-          returnStubValue: true,
-        },
-        (err, result) => {
-          if (err) {
-            reject(err);
-          }
+      Meteor.call(method, ...params, (err, result) => {
+        if (err) {
+          reject(err);
+        }
 
-          resolve(result);
-        },
-      );
+        resolve(result);
+      });
     }));
 });
 
