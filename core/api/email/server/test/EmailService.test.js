@@ -19,7 +19,7 @@ const checkEmails = () =>
     });
   });
 
-describe.only('EmailService', () => {
+describe('EmailService', () => {
   beforeEach(() => {
     resetDatabase();
   });
