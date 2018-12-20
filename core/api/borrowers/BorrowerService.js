@@ -80,7 +80,7 @@ export class BorrowerService extends CollectionService {
     const borrowerMortgageNoteIds = mortgageNotes.map(({ _id }) => _id);
 
     loans.forEach(({ _id: loanId, structures = [] }) => {
-      structures.forEach(({ id: structureId, mortgageNoteIds }) => {
+      structures.forEach(({ id: structureId, mortgageNoteIds = [] }) => {
         LoanService.updateStructure({
           loanId,
           structureId,
