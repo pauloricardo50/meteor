@@ -4,7 +4,7 @@
   "scripts": {
     "cypress-open": "../../node_modules/cypress/bin/cypress open",
     "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
-    "cypress-run": "../../node_modules/cypress/bin/cypress run --browser chrome",
+    "cypress-run": "../../node_modules/cypress/bin/cypress run",
     "debug": "meteor npm run start -- --inspect",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 3000",
     "prestart": "cd ../.. && npm run lang -- www",
