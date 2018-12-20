@@ -39,8 +39,17 @@ export class PromotionService extends CollectionService {
   }
 
   insertPromotionProperty({ promotionId, property }) {
+    const { address1, address2, zipCode, city, canton } = this.get(promotionId);
     const propertyId = PropertyService.insert({
-      property: { ...property, category: PROPERTY_CATEGORY.PROMOTION },
+      property: {
+        ...property,
+        address1,
+        address2,
+        zipCode,
+        city,
+        canton,
+        category: PROPERTY_CATEGORY.PROMOTION,
+      },
     });
     const promotionLotId = PromotionLotService.insert({
       propertyLinks: [{ _id: propertyId }],
@@ -60,7 +69,22 @@ export class PromotionService extends CollectionService {
   }
 
   update({ promotionId, ...rest }) {
-    return this._update({ id: promotionId, ...rest });
+    const result = this._update({ id: promotionId, ...rest });
+
+    const { propertyLinks, ...address } = this.createQuery({
+      $filters: { _id: promotionId },
+      propertyLinks: 1,
+      address1: 1,
+      address2: 1,
+      city: 1,
+      zipCode: 1,
+    }).fetchOne();
+
+    propertyLinks.forEach(({ _id }) => {
+      PropertyService.update({ propertyId: _id, object: address });
+    });
+
+    return result;
   }
 
   remove({ promotionId }) {

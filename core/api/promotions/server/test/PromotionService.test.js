@@ -17,10 +17,48 @@ import PromotionService, {
 import PromotionLotService from '../../../promotionLots/PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/PromotionOptionService';
 import LotService from '../../../lots/LotService';
+import PropertyService from '../../../properties/PropertyService';
 
 describe('PromotionService', () => {
   beforeEach(() => {
     resetDatabase();
+  });
+
+  describe('update', () => {
+    let promotionId;
+
+    it('sets the address on all properties', () => {
+      promotionId = Factory.create('promotion')._id;
+
+      PromotionService.insertPromotionProperty({
+        promotionId,
+        property: { value: 500000 },
+      });
+      PromotionService.insertPromotionProperty({
+        promotionId,
+        property: { value: 1000000 },
+      });
+
+      PromotionService.update({
+        promotionId,
+        object: {
+          address1: 'address1',
+          address2: 'address2',
+          city: 'Geneva',
+          zipCode: 1200,
+        },
+      });
+
+      PropertyService.find({}).forEach((property) => {
+        expect(property).to.deep.include({
+          address1: 'address1',
+          address2: 'address2',
+          city: 'Geneva',
+          zipCode: 1200,
+          canton: 'GE',
+        });
+      });
+    });
   });
 
   describe('remove', () => {
@@ -275,6 +313,44 @@ describe('PromotionService', () => {
 
       expect(loan.promotionOptionLinks).to.deep.equal([]);
       expect(PromotionOptionService.find({}).count()).to.equal(0);
+    });
+  });
+
+  describe('insertPromotionProperty', () => {
+    let promotionId;
+
+    it('inserts a property and promotionLot', () => {
+      promotionId = Factory.create('promotion')._id;
+
+      PromotionService.insertPromotionProperty({
+        promotionId,
+        property: { value: 1000000 },
+      });
+
+      expect(PropertyService.find().count()).to.equal(1);
+      expect(PromotionLotService.find().count()).to.equal(1);
+    });
+
+    it('adds the promotions address on the property', () => {
+      promotionId = Factory.create('promotion', {
+        address1: 'address1',
+        address2: 'address2',
+        city: 'city',
+        zipCode: 1400,
+      })._id;
+
+      PromotionService.insertPromotionProperty({
+        promotionId,
+        property: { value: 1000000 },
+      });
+
+      expect(PropertyService.findOne()).to.deep.include({
+        address1: 'address1',
+        address2: 'address2',
+        city: 'city',
+        zipCode: 1400,
+        canton: 'VD',
+      });
     });
   });
 });
