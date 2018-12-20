@@ -38,7 +38,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getFees({ loan, structureId }): number {
-      const notaryFees = this.selectStructureKey({ loan, key: 'notaryFees' });
+      const notaryFees = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'notaryFees',
+      });
 
       const canton = this.makeSelectPropertyKey('canton')({
         loan,

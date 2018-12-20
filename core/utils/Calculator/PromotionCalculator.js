@@ -62,6 +62,17 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         m: this.theoreticalMaintenanceRate,
       })({ income, fortune });
     }
+
+    formatPromotionOptionIntoProperty(promotionOption) {
+      if (!promotionOption) {
+        return;
+      }
+
+      return {
+        ...promotionOption.promotionLots[0].properties[0],
+        ...promotionOption,
+      };
+    }
   };
 
 export const PromotionCalculator = withPromotionCalculator(FinanceCalculator);

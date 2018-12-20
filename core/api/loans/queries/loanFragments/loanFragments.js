@@ -1,3 +1,5 @@
+import { userPropertyFragment } from '../../../properties/queries/propertyFragments';
+
 // Separate these fragments into separate files to avoid cyclic dependencies
 
 export const loanBaseFragment = {
@@ -21,6 +23,7 @@ export const loanBaseFragment = {
       status: 1,
       reducedStatus: 1,
       value: 1,
+      properties: userPropertyFragment,
     },
     name: 1,
     custom: 1,
