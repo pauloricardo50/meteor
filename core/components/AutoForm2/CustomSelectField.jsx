@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import SelectField from 'uniforms-material/SelectField';
 import debounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
 
 import T from '../Translation';
 import Loading from '../Loading/Loading';
@@ -27,19 +26,20 @@ export default class CustomSelectField extends Component<
   }
 
   componentDidMount() {
-    this.getAllowedValues();
+    this.getAllowedValues(this.props);
   }
 
-  componentWillReceiveProps({ model: nextModel }) {
+  componentWillReceiveProps(nextProps) {
+    const { model: nextModel } = nextProps;
     const { model } = this.props;
 
-    if (!isEqual(nextModel, model)) {
-      this.getAllowedValues();
+    if (JSON.stringify(model) !== JSON.stringify(nextModel)) {
+      this.getAllowedValues(nextProps);
     }
   }
 
-  getAllowedValues = () => {
-    const { customAllowedValues, model } = this.props;
+  getAllowedValues = props => {
+    const { customAllowedValues, model } = props;
     if (typeof customAllowedValues === 'function') {
       Promise.resolve(customAllowedValues(model)).then(values =>
         this.setState({ values }),
