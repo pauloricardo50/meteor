@@ -40,18 +40,20 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
             content: (
               <div className="borrowers-file-tab">
                 {borrowers.map((borrower, index) => (
-                  <div key={borrower._id}>
-                    <div className="borrower-name">
-                      <FontAwesomeIcon icon={faUserCircle} className="icon" />
-                      <h1>
-                        {borrower.name || (
-                          <T
-                            id="general.borrowerWithIndex"
-                            values={{ index: index + 1 }}
-                          />
-                        )}
-                      </h1>
-                    </div>
+                  <div key={borrower._id} className="borrowers-file-tab-single">
+                    {borrowers.length > 1 && (
+                      <div className="borrower-name">
+                        <FontAwesomeIcon icon={faUserCircle} className="icon" />
+                        <h1>
+                          {borrower.name || (
+                            <T
+                              id="general.borrowerWithIndex"
+                              values={{ index: index + 1 }}
+                            />
+                          )}
+                        </h1>
+                      </div>
+                    )}
                     <SingleFileTab
                       doc={borrower}
                       collection="borrowers"
