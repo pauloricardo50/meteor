@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "cypress-open": "../../node_modules/cypress/bin/cypress open",
-    "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
+    "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
     "cypress-run": "../../node_modules/cypress/bin/cypress run --browser chrome",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 4100",
     "prestart": "cd ../.. && npm run lang -- pro",
