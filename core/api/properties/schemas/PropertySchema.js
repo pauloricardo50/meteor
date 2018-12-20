@@ -6,128 +6,11 @@ import {
   additionalDocuments,
   address,
   mortgageNoteLinks,
+  roundedInteger,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
-
-export const MicrolocationFactorSchema = new SimpleSchema({
-  grade: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  text: {
-    type: String,
-    optional: true,
-  },
-});
-
-const MicrolocationFactor = {
-  type: MicrolocationFactorSchema,
-  optional: true,
-};
-
-export const MicrolocationSchema = new SimpleSchema({
-  grade: {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  factors: {
-    type: Object,
-    optional: true,
-  },
-  'factors.terrain': {
-    type: Object,
-    optional: true,
-  },
-  'factors.terrain.grade': {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  'factors.terrain.slopeInclination': MicrolocationFactor,
-  'factors.terrain.exposition': MicrolocationFactor,
-  'factors.terrain.sunShineDurationSummer': MicrolocationFactor,
-  'factors.terrain.sunShineDurationWinter': MicrolocationFactor,
-  'factors.terrain.lakeView': MicrolocationFactor,
-  'factors.terrain.mountainView': MicrolocationFactor,
-  'factors.infrastructure': {
-    type: Object,
-    optional: true,
-  },
-  'factors.infrastructure.grade': {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  'factors.infrastructure.distanceCenter': MicrolocationFactor,
-  'factors.infrastructure.distanceSchool': MicrolocationFactor,
-  'factors.infrastructure.distanceShopping': MicrolocationFactor,
-  'factors.infrastructure.distanceBusStop': MicrolocationFactor,
-  'factors.infrastructure.publicTransportGrade': MicrolocationFactor,
-  'factors.infrastructure.distanceRecreationArea': MicrolocationFactor,
-  'factors.infrastructure.distanceLake': MicrolocationFactor,
-  'factors.infrastructure.distanceRiver': MicrolocationFactor,
-  'factors.immission': {
-    type: Object,
-    optional: true,
-  },
-  'factors.immission.grade': {
-    type: Number,
-    min: 0,
-    max: 5,
-    optional: true,
-  },
-  'factors.immission.immissionTrainDay': MicrolocationFactor,
-  'factors.immission.immissionTrainNight': MicrolocationFactor,
-  'factors.immission.immissionStreetDay': MicrolocationFactor,
-  'factors.immission.immissionStreetNight': MicrolocationFactor,
-  'factors.immission.distanceMainRoadResidential': MicrolocationFactor,
-  'factors.immission.distanceRailway': MicrolocationFactor,
-  'factors.immission.distanceRadioAntenna': MicrolocationFactor,
-  'factors.immission.distanceNuclearPower': MicrolocationFactor,
-  'factors.immission.distanceHighVoltagePowerLine': MicrolocationFactor,
-});
-
-export const ValuationSchema = new SimpleSchema({
-  status: {
-    type: String,
-    defaultValue: propertyConstants.VALUATION_STATUS.NONE,
-    allowedValues: Object.keys(propertyConstants.VALUATION_STATUS),
-  },
-  min: {
-    type: Number,
-    min: 0,
-    optional: true,
-  },
-  max: {
-    type: Number,
-    min: 0,
-    optional: true,
-  },
-  value: {
-    type: Number,
-    min: 0,
-    optional: true,
-  },
-  date: {
-    type: Date,
-    optional: true,
-  },
-  error: {
-    type: String,
-    optional: true,
-  },
-  microlocation: {
-    type: MicrolocationSchema,
-    optional: true,
-  },
-});
+import { ValuationSchema } from './wuestSchemas';
 
 export const PropertySchema = new SimpleSchema({
   userId: {
@@ -150,18 +33,8 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.PROPERTY_CATEGORY.USER,
     allowedValues: Object.values(propertyConstants.PROPERTY_CATEGORY),
   },
-  value: {
-    // Cost of the property
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    autoValue() {
-      if (this.isSet) {
-        return Math.round(this.value / 1000) * 1000;
-      }
-    },
-    optional: true,
-  },
+  // Cost of the property
+  value: roundedInteger(3),
   status: {
     type: String,
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
@@ -336,6 +209,8 @@ export const PropertySchema = new SimpleSchema({
     max: 1000000,
     optional: true,
   },
+  landValue: roundedInteger(3),
+  constructionValue: roundedInteger(3),
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
 });
