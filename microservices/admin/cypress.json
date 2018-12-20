@@ -8,5 +8,7 @@
   "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/admin-screenshots",
   "supportFile": "imports/core/cypress/support",
   "video": true,
-  "videosFolder": "/home/circleci/app/e2e-results/cypress/admin-videos"
+  "videosFolder": "/home/circleci/app/e2e-results/cypress/admin-videos",
+  "viewportHeight": 900,
+  "viewportWidth": 1440
 }
