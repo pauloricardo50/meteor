@@ -7,6 +7,6 @@
   "screenshotOnRunFailure": true,
   "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/admin-screenshots",
   "supportFile": "imports/core/cypress/support",
-  "video": false,
+  "video": true,
   "videosFolder": "/home/circleci/app/e2e-results/cypress/admin-videos"
 }
