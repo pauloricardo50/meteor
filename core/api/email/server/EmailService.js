@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
 import {
@@ -9,7 +10,8 @@ import {
 } from './mandrill';
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
-const skipEmails = Meteor.isDevelopment || Meteor.isTest;
+export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
+export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmailTestEnv;
 
 class EmailService {
   sendEmail = (emailId, address, params) => {
@@ -19,11 +21,9 @@ class EmailService {
       params,
     });
     const template = this.getTemplate(templateOptions);
-    if (skipEmails) {
-      this.emailLogger({ emailId, address, template });
-    } else {
-      sendMandrillTemplate(template);
-    }
+    return sendMandrillTemplate(template).then((response) => {
+      this.emailLogger({ emailId, address, template, response });
+    });
   };
 
   sendEmailToUser = (emailId, userId, params) => {
@@ -92,8 +92,10 @@ class EmailService {
     return result;
   };
 
-  emailLogger = ({ emailId, address, template }) => {
-    if (Meteor.isTest) {
+  emailLogger = ({ emailId, address, template, response }) => {
+    if (isEmailTestEnv) {
+      // Store all sent emails in the DB, to be asserted in tests
+      Meteor.call('storeTestEmail', { emailId, address, template, response });
       return;
     }
     if (skipEmails) {
