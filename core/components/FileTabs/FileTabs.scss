@@ -1,6 +1,12 @@
+.files-tab .tab-content.tab-content {
+  padding: 0;
+}
+
 .single-file-tab {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  padding: 8px;
 
   .additional-doc-adder {
     align-self: center;
@@ -12,6 +18,36 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+
+    .uploader-array {
+      width: 100%;
+    }
+  }
+}
+
+.borrowers-file-tab {
+  padding-top: 16px;
+  display: flex;
+
+  > *:not(:first-child) {
+    border-left: 1px solid $border-grey;
+  }
+
+  .borrower-name {
+    display: flex;
+    align-items: center;
+
+    h1 {
+      padding-left: 15px;
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      margin-left: 30px;
+    }
   }
 }
 

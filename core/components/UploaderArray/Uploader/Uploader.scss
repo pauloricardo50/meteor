@@ -81,7 +81,8 @@
   align-items: center;
   flex-direction: row;
 
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
 
   .uploader {
     flex-grow: 1;
