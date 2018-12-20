@@ -2,10 +2,11 @@ import { Mandrill } from 'meteor/wylio:mandrill';
 import { Meteor } from 'meteor/meteor';
 
 import { getEmailFooter } from './emailHelpers';
+import { isEmailTestEnv, skipEmails } from './EmailService';
 
 export const setupMandrill = () => {
   let key = '';
-  if (Meteor.isTest) {
+  if (isEmailTestEnv) {
     key = Meteor.settings.mandrill.MANDRILL_API_KEY_TEST;
   } else {
     key = Meteor.settings.mandrill.MANDRILL_API_KEY;
@@ -65,16 +66,20 @@ export const getMandrillTemplate = ({
 export const renderMandrillTemplate = mandrillTemplate =>
   Mandrill.templates.render(mandrillTemplate);
 
-export const sendMandrillTemplate = mandrillTemplate =>
-  new Promise((resolve, reject) => {
+export const sendMandrillTemplate = (mandrillTemplate) => {
+  if (skipEmails) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
     Mandrill.messages.sendTemplate(mandrillTemplate, (error, result) => {
       if (error) {
         reject(error);
       }
-      const content = JSON.parse(result.content)[0];
-      resolve(content);
+      resolve(result.data[0]);
     });
   });
+};
 
 const getDate30DaysAgo = () => {
   const date = new Date();
