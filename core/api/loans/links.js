@@ -31,11 +31,11 @@ Loans.addLinks({
     collection: Tasks,
     inversedBy: 'loan',
   },
-  offers: {
-    collection: Offers,
-    inversedBy: 'loan',
-    autoremove: true,
-  },
+  // offers: {
+  //   collection: Offers,
+  //   inversedBy: 'loan',
+  //   autoremove: true,
+  // },
   promotions: {
     field: 'promotionLinks',
     collection: Promotions,
@@ -51,9 +51,8 @@ Loans.addLinks({
     autoremove: true,
   },
   lenders: {
-    field: 'lenderLinks',
     collection: Lenders,
-    type: 'many',
-    metadata: true,
+    inversedBy: 'loan',
+    unique: true,
   },
 });

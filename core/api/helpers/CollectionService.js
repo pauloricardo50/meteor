@@ -36,7 +36,6 @@ class CollectionService {
   }
 
   createQuery(...args) {
-    console.log('called with', args);
     return this.collection.createQuery(...args);
   }
 

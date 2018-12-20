@@ -8,11 +8,11 @@ import Button from '../Button';
 import OfferModiferContainer from './OfferModifierContainer';
 
 const FORM_NAME = 'offer-modifier';
-const formArray = [...baseForm, ...interestRatesFormArray()];
+const formArray = loanId => [...baseForm(loanId), ...interestRatesFormArray()];
 
 type OfferModifierProps = {};
 
-const OfferModifier = ({ onSubmit, offer }: OfferModifierProps) => (
+const OfferModifier = ({ onSubmit, offer, loanId }: OfferModifierProps) => (
   <DialogForm
     title={<T id="OfferModifier.dialogTitle" />}
     form={FORM_NAME}
@@ -21,13 +21,13 @@ const OfferModifier = ({ onSubmit, offer }: OfferModifierProps) => (
       ...offer,
       organisation: offer.organisation ? offer.organisation._id : undefined,
     }}
-    formArray={formArray}
+    formArray={formArray(loanId)}
     destroyOnUnmount
-    button={(
+    button={
       <Button>
         <T id="general.modify" />
       </Button>
-    )}
+    }
   />
 );
 

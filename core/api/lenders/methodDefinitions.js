@@ -1,4 +1,5 @@
 import { Method } from '../methods/methods';
+import { Match } from 'meteor/check';
 
 export const lenderInsert = new Method({
   name: 'lenderInsert',
@@ -19,5 +20,14 @@ export const lenderUpdate = new Method({
   params: {
     lenderId: String,
     object: Object,
+  },
+});
+
+export const lenderLinkOrganisationAndContact = new Method({
+  name: 'lenderLinkOrganisationAndContact',
+  params: {
+    lenderId: String,
+    organisationId: String,
+    contactId: Match.OneOf(String, null),
   },
 });

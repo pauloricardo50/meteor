@@ -3,11 +3,11 @@ import { Loans, Users, Contacts, Lenders } from '..';
 import Organisations from '../organisations';
 
 Offers.addLinks({
-  loan: {
-    field: 'loanId',
-    collection: Loans,
-    type: 'one',
-  },
+  // loan: {
+  //   field: 'loanId',
+  //   collection: Loans,
+  //   type: 'one',
+  // },
   user: {
     field: 'userId',
     collection: Users,

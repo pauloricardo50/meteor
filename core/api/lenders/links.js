@@ -1,5 +1,5 @@
 import Lenders from '.';
-import { Contacts, Organisations, Loans } from '..';
+import { Contacts, Organisations, Loans, Offers } from '..';
 
 Lenders.addLinks({
   contact: {
@@ -15,7 +15,13 @@ Lenders.addLinks({
     metadata: true,
   },
   loan: {
+    field: 'loanLink',
     collection: Loans,
-    inversedBy: 'lenders',
+    type: 'one',
+    metadata: true,
+  },
+  offers: {
+    collection: Offers,
+    inversedBy: 'lender',
   },
 });

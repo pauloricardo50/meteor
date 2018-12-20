@@ -6,6 +6,7 @@ import { appUserFragment } from '../../../users/queries/userFragments';
 import { loanBorrowerFragment } from '../../../borrowers/queries/borrowerFragments';
 import { fullOfferFragment } from '../../../offers/queries/offerFragments';
 import { loanBaseFragment } from './loanFragments';
+import { lenderFragment } from '../../../lenders/queries/lendersFragments';
 
 export const userLoanFragment = {
   ...loanBaseFragment,
@@ -30,6 +31,7 @@ export const adminLoanFragment = {
   properties: adminPropertyFragment,
   signingDate: 1,
   status: 1,
+  lenders: lenderFragment,
 };
 
 export const adminLoansFragment = {

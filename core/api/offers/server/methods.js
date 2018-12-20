@@ -2,9 +2,9 @@ import { SecurityService } from '../..';
 import OfferService from '../OfferService';
 import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 
-offerInsert.setHandler((context, { offer, loanId, userId }) => {
+offerInsert.setHandler((context, { offer, userId }) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return OfferService.insert({ offer: { ...offer, loanId }, userId });
+  return OfferService.insert({ offer: { ...offer }, userId });
 });
 
 offerUpdate.setHandler((context, { offerId, object }) => {

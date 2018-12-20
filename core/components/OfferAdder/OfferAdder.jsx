@@ -8,6 +8,7 @@ import Button from '../Button';
 import { INTEREST_RATES } from '../../api/constants';
 import OfferAdderContainer from './OfferAdderContainer';
 import { FORM_NAME, HAS_COUNTERPARTS, IS_DISCOUNT } from './constants';
+import loanLenders from '../../api/lenders/queries/loanLenders';
 
 export const interestRatesFormArray = index =>
   Object.values(INTEREST_RATES).map(rate => ({
@@ -18,7 +19,7 @@ export const interestRatesFormArray = index =>
     defaultValue: 0,
   }));
 
-export const baseForm = [
+export const baseForm = loanId => [
   {
     id: 'organisation',
     fieldType: FIELD_TYPES.SELECT,
@@ -27,9 +28,30 @@ export const baseForm = [
         adminOrganisations
           .clone()
           .fetch((err, res) =>
-            (err
+            err
               ? reject(err)
-              : resolve(res.map(({ name, _id }) => ({ label: name, id: _id })))))),
+              : resolve(res.map(({ name, _id }) => ({ label: name, id: _id }))),
+          ),
+      ),
+  },
+  {
+    id: 'lenderId',
+    fieldType: FIELD_TYPES.SELECT,
+    fetchOptions: () =>
+      new Promise((resolve, reject) =>
+        loanLenders.clone({ loanId }).fetch((err, res) => {
+          console.log('res', res);
+
+          return err
+            ? reject(err)
+            : resolve(
+                res.map(({ organisation: { name }, _id }) => ({
+                  label: name,
+                  id: _id,
+                })),
+              );
+        }),
+      ),
   },
   {
     id: 'maxAmount',
@@ -64,8 +86,8 @@ export const baseForm = [
   },
 ];
 
-export const standardForm = [
-  ...baseForm,
+export const standardForm = loanId => [
+  ...baseForm(loanId),
   ...interestRatesFormArray(1),
   { id: HAS_COUNTERPARTS, fieldType: FIELD_TYPES.CHECKBOX },
 ];
@@ -83,28 +105,28 @@ const counterpartsForm = isDiscount => [
     : [...interestRatesFormArray(2)]),
 ];
 
-const getFormArray = (hasCounterparts, isDiscount) =>
+const getFormArray = (hasCounterparts, isDiscount, loanId) =>
   (hasCounterparts
-    ? [...standardForm, ...counterpartsForm(isDiscount)]
-    : standardForm
+    ? [...standardForm(loanId), ...counterpartsForm(isDiscount)]
+    : standardForm(loanId)
   ).map(field => ({
     ...field,
     required: field.required !== undefined ? field.required : true,
     label: field.label || <T id={`OfferAdder.${field.id}`} />,
   }));
 
-const OfferAdder = ({ hasCounterparts, isDiscount, onSubmit }) => (
+const OfferAdder = ({ hasCounterparts, isDiscount, onSubmit, loanId }) => (
   <DialogForm
     form={FORM_NAME}
     onSubmit={onSubmit}
-    button={(
+    button={
       <Button raised primary>
         <T id="OfferAdder.buttonLabel" />
       </Button>
-    )}
+    }
     title={<T id="OfferAdder.dialogTitle" />}
     description={<T id="OfferAdder.dialogDescription" />}
-    formArray={getFormArray(hasCounterparts, isDiscount)}
+    formArray={getFormArray(hasCounterparts, isDiscount, loanId)}
     destroyOnUnmount={false}
     initialValues={{ [IS_DISCOUNT]: true }}
     enableReinitialize

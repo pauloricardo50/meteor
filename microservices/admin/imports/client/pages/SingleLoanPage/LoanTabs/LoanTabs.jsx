@@ -17,6 +17,7 @@ import StructuresTab from './StructuresTab';
 import DevTab from './DevTab/loadable';
 import PromotionsTab from './PromotionsTab';
 import RefinancingTab from './RefinancingTab';
+import LendersTab from './LendersTab';
 
 const getTabs = props =>
   [
@@ -34,6 +35,7 @@ const getTabs = props =>
     },
     { id: 'borrowers', Component: BorrowersTab },
     { id: 'properties', Component: PropertiesTab },
+    { id: 'lenders', Component: LendersTab },
     { id: 'offers', Component: OffersTab },
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },

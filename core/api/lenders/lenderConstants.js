@@ -1,9 +1,7 @@
 export const LENDERS_COLLECTION = 'lenders';
 
 export const LENDERS_QUERIES = {
-  // Insert your queries name here
-  // Example:
-  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+  LOAN_LENDERS: 'LOAN_LENDERS',
 };
 
 export const LENDERS_STATUS = {
