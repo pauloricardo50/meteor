@@ -16,5 +16,10 @@ export const fullOfferFragment = {
     (rates, rate) => ({ ...rates, [rate]: 1 }),
     {},
   ),
+  lender: {
+    loan: { _id: 1, name: 1 },
+    contact: { _id: 1, name: 1 },
+    organisation: { _id: 1, name: 1 },
+  },
   // $options: { sort: { createdAt: 1 } },
 };

@@ -89,7 +89,7 @@ class CollectionBService extends CollectionService {
 const AService = new CollectionAService();
 const BService = new CollectionBService();
 
-describe.only('CollectionService', () => {
+describe('CollectionService', () => {
   let ADocId;
   let BDocId;
 

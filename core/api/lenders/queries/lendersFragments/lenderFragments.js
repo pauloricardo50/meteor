@@ -1,4 +1,5 @@
 import { contactFragment } from 'imports/core/api/contacts/queries/contactsFragments/';
+import { fullOfferFragment } from '../../../offers/queries/offerFragments';
 
 export const lenderFragment = {
   organisation: {
@@ -16,6 +17,7 @@ export const lenderFragment = {
   },
   contact: contactFragment,
   loan: { _id: 1 },
+  offers: fullOfferFragment,
   // Insert your fragment here
   // Example
   // firstName: 1,

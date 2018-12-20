@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import SelectField from 'uniforms-material/SelectField';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 
 import T from '../Translation';
 import Loading from '../Loading/Loading';
@@ -25,25 +26,37 @@ export default class CustomSelectField extends Component<
     this.state = { values: props.allowedValues };
   }
 
-  getAllowedValues = debounce(() => {
+  componentDidMount() {
+    this.getAllowedValues();
+  }
+
+  componentWillReceiveProps({ model: nextModel }) {
+    const { model } = this.props;
+
+    if (!isEqual(nextModel, model)) {
+      this.getAllowedValues();
+    }
+  }
+
+  getAllowedValues = () => {
     const { customAllowedValues, model } = this.props;
     if (typeof customAllowedValues === 'function') {
       Promise.resolve(customAllowedValues(model)).then(values =>
-        this.setState({ values }));
+        this.setState({ values }),
+      );
     }
-  }, 300);
+  };
 
   render() {
-    this.getAllowedValues();
-    const { transform, ...props } = this.props;
+    const { transform, submitting, ...props } = this.props;
     const { values } = this.state;
-    return values ? (
+    return values || submitting ? (
       <SelectField
         {...props}
-        allowedValues={values}
+        allowedValues={values || []}
         transform={
-          transform
-          || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
+          transform ||
+          (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
         }
         displayEmpty
       />

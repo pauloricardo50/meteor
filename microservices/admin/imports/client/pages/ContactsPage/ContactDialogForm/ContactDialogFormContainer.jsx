@@ -1,3 +1,4 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
 
@@ -11,6 +12,7 @@ import {
   contactChangeOrganisations,
 } from 'imports/core/api/methods/index';
 import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
+import T from 'imports/core/components/Translation';
 
 SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
@@ -29,6 +31,7 @@ const schema = existingOrganisations =>
         transform: organisationId =>
           existingOrganisations.find(({ _id }) => organisationId === _id).name,
         labelProps: { shrink: true },
+        label: <T id="Forms.organisationName" />,
       },
     },
     useSameAddress: {
@@ -36,24 +39,36 @@ const schema = existingOrganisations =>
       optional: true,
       defaultValue: null,
       condition: ({ organisations = [] }) =>
-        organisations.length >= 1
-        && organisations.some(({ _id }) =>
-          existingOrganisations.some(({ _id: organisationId }) => _id === organisationId)),
+        organisations.length >= 1 &&
+        organisations.some(({ _id }) =>
+          existingOrganisations.some(
+            ({ _id: organisationId }) => _id === organisationId,
+          ),
+        ),
       customAllowedValues: ({ organisations = [] }) => [
         ...organisations.filter(({ _id }) => _id).map(({ _id }) => _id),
         null,
       ],
       uniforms: {
-        transform: (organisationId) => {
-          const { name } = existingOrganisations.find(({ _id }) => organisationId === _id)
-            || {};
+        transform: organisationId => {
+          const { name } =
+            existingOrganisations.find(({ _id }) => organisationId === _id) ||
+            {};
           return name || 'Non';
         },
         labelProps: { shrink: true },
       },
     },
-    'organisations.$.$metadata': Object,
-    'organisations.$.$metadata.role': { type: String, optional: true },
+    'organisations.$.$metadata': {
+      type: Object,
+      uniforms: { label: '' },
+      optional: true,
+    },
+    'organisations.$.$metadata.role': {
+      type: String,
+      optional: true,
+      uniforms: { label: <T id="Forms.contact.role" /> },
+    },
     ...Object.keys(omit(address, ['isForeignAddress', 'canton'])).reduce(
       (fields, field) => ({
         ...fields,
@@ -67,7 +82,11 @@ const schema = existingOrganisations =>
     ),
     emails: { type: Array, optional: true },
     'emails.$': Object,
-    'emails.$.address': { type: String, regEx: SimpleSchema.RegEx.Email },
+    'emails.$.address': {
+      type: String,
+      regEx: SimpleSchema.RegEx.Email,
+      uniforms: { label: <T id="Forms.email" /> },
+    },
     phoneNumbers: { type: Array, optional: true },
     'phoneNumbers.$': String,
   });
@@ -97,8 +116,9 @@ export default compose(
           contactId,
           organisations,
           useSameAddress,
-        }).then(() => contactId)),
-    modifyContact: (data) => {
+        }).then(() => contactId),
+      ),
+    modifyContact: data => {
       const {
         _id: contactId,
         organisations = [],
@@ -108,7 +128,8 @@ export default compose(
       return contactUpdate
         .run({ contactId, object })
         .then(() =>
-          changeOrganisations({ contactId, organisations, useSameAddress }));
+          changeOrganisations({ contactId, organisations, useSameAddress }),
+        );
     },
     removeContact: contactId => contactRemove.run({ contactId }),
   })),

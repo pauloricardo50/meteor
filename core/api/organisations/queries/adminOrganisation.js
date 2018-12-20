@@ -1,6 +1,8 @@
 import { contactFragment } from 'imports/core/api/contacts/queries/contactsFragments/';
 import Organisations from '../organisations';
 import { ORGANISATION_QUERIES } from '../organisationConstants';
+import { lenderFragment } from 'imports/core/api/lenders/queries/lendersFragments/index';
+import { fullOfferFragment } from 'imports/core/api/offers/queries/offerFragments';
 
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATION,
@@ -19,5 +21,7 @@ export default Organisations.createQuery(
     zipCode: 1,
     city: 1,
     canton: 1,
+    lenders: lenderFragment,
+    offers: fullOfferFragment,
   },
 );

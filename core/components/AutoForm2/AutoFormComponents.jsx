@@ -11,38 +11,21 @@ import DateField from '../DateField';
 import PercentInput from '../PercentInput';
 import CustomSelectField from './CustomSelectField';
 
-// const CustomSelectField = ({
-//   transform,
-//   allowedValues,
-//   customAllowedValues,
-//   ...props
-// }) => (
-//   <SelectField
-//     {...props}
-//     allowedValues={customAllowedValues || allowedValues}
-//     transform={
-//       transform
-//       || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
-//     }
-//     displayEmpty
-//   />
-// );
-
-const determineComponentFromProps = (props) => {
+const determineComponentFromProps = props => {
   if (props.allowedValues || props.customAllowedValues) {
     return CustomSelectField;
   }
 
   if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
+    props.field.uniforms &&
+    props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
   ) {
     return DateField;
   }
 
   if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
+    props.field.uniforms &&
+    props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
   ) {
     return PercentInput;
   }
@@ -60,11 +43,12 @@ export const SubmitField = props => (
 );
 
 const selectLabel = ({ label, props: { name, overrideLabel } }) =>
-  (label === null ? null : overrideLabel || label || <T id={`Forms.${name}`} />);
+  label === null ? null : overrideLabel || label || <T id={`Forms.${name}`} />;
 
 export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
-    (props) => {
+    props => {
+      console.log('props', props);
       const Component = determineComponentFromProps(props) || AutoField;
       const label = labels && labels[props.name];
       return <Component {...props} label={selectLabel({ label, props })} />;

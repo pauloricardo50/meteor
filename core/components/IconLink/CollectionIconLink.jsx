@@ -1,7 +1,11 @@
 // @flow
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity, faBriefcase } from '@fortawesome/pro-light-svg-icons';
+import {
+  faCity,
+  faBriefcase,
+  faUserTie,
+} from '@fortawesome/pro-light-svg-icons';
 
 import IconLink from './IconLink';
 import {
@@ -12,6 +16,7 @@ import {
   OFFERS_COLLECTION,
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
+  CONTACTS_COLLECTION,
 } from '../../api/constants';
 
 type CollectionIconLinkProps = {};
@@ -26,61 +31,67 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   }
 
   switch (collection) {
-  case LOANS_COLLECTION:
-    return {
-      link: `/loans/${docId}`,
-      icon: 'dollarSign',
-      text: data.name,
-    };
-  case USERS_COLLECTION:
-    return {
-      link: `/users/${docId}`,
-      icon: 'contactMail',
-      text: data.name,
-    };
-  case BORROWERS_COLLECTION:
-    return {
-      link: `/borrowers/${docId}`,
-      icon: 'people',
-      text: data.name,
-    };
-  case PROPERTIES_COLLECTION:
-    return {
-      link: `/properties/${docId}`,
-      icon: 'building',
-      text: data.address1,
-    };
-  case OFFERS_COLLECTION:
-    return {
-      link: `/offers/${docId}`,
-      icon: 'monetizationOn',
-      text: data.organisation,
-    };
-  case PROMOTIONS_COLLECTION:
-    return {
-      link: `/promotions/${docId}`,
-      icon: <FontAwesomeIcon icon={faCity} className="icon-link-icon" />,
-      text: data.name,
-    };
-  case ORGANISATIONS_COLLECTION:
-    return {
-      link: `/organisations/${docId}`,
-      icon: <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />,
-      text: data.$metadata.role
-        ? `${data.$metadata.role} @ ${data.name}`
-        : data.name,
-    };
-  case 'NOT_FOUND':
-    return {
-      link: '/',
-      icon: 'help',
-      text: "N'existe plus",
-    };
+    case LOANS_COLLECTION:
+      return {
+        link: `/loans/${docId}`,
+        icon: 'dollarSign',
+        text: data.name,
+      };
+    case USERS_COLLECTION:
+      return {
+        link: `/users/${docId}`,
+        icon: 'contactMail',
+        text: data.name,
+      };
+    case BORROWERS_COLLECTION:
+      return {
+        link: `/borrowers/${docId}`,
+        icon: 'people',
+        text: data.name,
+      };
+    case PROPERTIES_COLLECTION:
+      return {
+        link: `/properties/${docId}`,
+        icon: 'building',
+        text: data.address1,
+      };
+    case OFFERS_COLLECTION:
+      return {
+        link: `/offers/${docId}`,
+        icon: 'monetizationOn',
+        text: data.organisation,
+      };
+    case PROMOTIONS_COLLECTION:
+      return {
+        link: `/promotions/${docId}`,
+        icon: <FontAwesomeIcon icon={faCity} className="icon-link-icon" />,
+        text: data.name,
+      };
+    case ORGANISATIONS_COLLECTION:
+      return {
+        link: `/organisations/${docId}`,
+        icon: <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />,
+        text: data.$metadata.role
+          ? `${data.$metadata.role} @ ${data.name}`
+          : data.name,
+      };
+    case CONTACTS_COLLECTION:
+      return {
+        link: `/contacts/${docId}`,
+        icon: <FontAwesomeIcon icon={faUserTie} className="icon-link-icon" />,
+        text: data.name,
+      };
+    case 'NOT_FOUND':
+      return {
+        link: '/',
+        icon: 'help',
+        text: "N'existe plus",
+      };
 
-  default:
-    return {
-      text: 'Unknown collection',
-    };
+    default:
+      return {
+        text: 'Unknown collection',
+      };
   }
 };
 

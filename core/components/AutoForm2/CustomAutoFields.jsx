@@ -6,20 +6,27 @@ import nothing from 'uniforms/nothing';
 
 const CustomAutoFields = (
   { autoField, element, fields, omitFields, ...props },
-  { uniforms: { schema, model } },
+  {
+    uniforms: {
+      schema,
+      model,
+      state: { submitting },
+    },
+  },
 ) =>
   createElement(
     element,
     props,
     (fields || schema.getSubfields())
       .filter(field => omitFields.indexOf(field) === -1)
-      .map((field) => {
+      .map(field => {
         const { condition, customAllowedValues } = schema.getField(field);
         const component = createElement(autoField, {
           key: field,
           name: field,
           customAllowedValues,
           model,
+          submitting,
         });
         if (typeof condition === 'function') {
           return condition(model) ? component : nothing;

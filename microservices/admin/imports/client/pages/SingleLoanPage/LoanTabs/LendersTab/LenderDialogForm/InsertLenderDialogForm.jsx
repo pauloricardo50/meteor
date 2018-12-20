@@ -7,11 +7,13 @@ import LenderDialogFormContainer from './LenderDialogFormContainer';
 type InsertLenderDialogFormProps = {
   schema: Object,
   insertLender: Function,
+  autoFieldProps: Object,
 };
 
 const InsertLenderDialogForm = ({
   schema,
   insertLender,
+  autoFieldProps,
 }: InsertLenderDialogFormProps) => {
   return (
     <AutoFormDialog
@@ -22,6 +24,7 @@ const InsertLenderDialogForm = ({
         raised: true,
         primary: true,
       }}
+      autoFieldProps={autoFieldProps}
     />
   );
 };

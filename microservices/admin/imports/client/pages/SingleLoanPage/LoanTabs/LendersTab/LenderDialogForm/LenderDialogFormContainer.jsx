@@ -1,3 +1,4 @@
+import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withState, withProps } from 'recompose';
 
@@ -8,6 +9,7 @@ import {
   lenderLinkOrganisationAndContact,
 } from 'imports/core/api/methods/index';
 import { LENDERS_STATUS } from 'imports/core/api/constants';
+import T from 'core/components/Translation';
 
 SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
@@ -72,5 +74,6 @@ export default compose(
           contactId,
         }),
       ),
+    autoFieldProps: { labels: { status: <T id="Lenders.status" /> } },
   })),
 );
