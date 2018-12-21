@@ -22,7 +22,7 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
   });
 
   cy.getMeteor().then(Meteor =>
-    new Cypress.Promise((resolve, reject) => {
+    new Cypress.Promise((resolve) => {
       console.log('Calling method', method, 'with params', params);
       if (method === 'generateTestData') {
         debugger;
@@ -36,7 +36,7 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
         console.log('result', result);
 
         if (err) {
-          reject(err);
+          resolve(err);
         }
 
         resolve(result);

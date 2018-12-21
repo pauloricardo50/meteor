@@ -45,11 +45,10 @@ const methodLimiterRule = ({ name, limitRoles = [], role = 'global' }) => ({
 
 export const getRateLimitedMethods = () => rateLimitedMethods;
 
-export const setMethodLimiter = ({ name, rateLimit }) => {
-  if (Meteor.isServer && !Meteor.isAppTest) {
+export const setMethodLimiter = ({ name, rateLimit, testRateLimit }) => {
+  if (Meteor.isServer && (!Meteor.isAppTest || testRateLimit)) {
     if (rateLimit) {
       const limitRoles = Object.keys(rateLimit);
-      console.log( rateLimitCheckPattern(limitRoles))
       check(rateLimit, rateLimitCheckPattern(limitRoles));
       if (!limitRoles.length) {
         DDPRateLimiter.addRule(methodLimiterRule({
