@@ -8,3 +8,4 @@ import './properties/reducers';
 import './users/reducers';
 import './contacts/reducers';
 import './organisations/reducers';
+import './offers/reducers';
