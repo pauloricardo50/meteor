@@ -29,10 +29,10 @@ Loans.addReducers({
       },
     },
     reduce: ({ lenders = [] }) => {
-      return lenders.reduce(
-        (offers, lender) => [...offers, ...lender.offers],
-        [],
-      );
+      return lenders.reduce((offers, lender) => {
+        const lenderOffers = lender.offers || [];
+        return [...offers, ...lenderOffers];
+      }, []);
     },
   },
   hasPromotion: {
