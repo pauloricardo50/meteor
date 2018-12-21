@@ -36,6 +36,7 @@ const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => {
   const { contacts, logo, name, offers } = organisation;
+  console.log('organisation', organisation);
   console.log('offers', offers);
   return (
     <div className="card1 card-top">

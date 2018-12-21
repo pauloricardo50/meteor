@@ -161,9 +161,9 @@ const mapValuesToOffer = ({
   amortizationYears,
   fees,
   epotekFees,
-  conditions,
+  conditions = [],
   hasCounterParts,
-  counterParts,
+  counterParts = [],
   hasFlatDiscount,
   flatDiscount,
   ...interestRates
@@ -201,7 +201,7 @@ const mapValuesToOffer = ({
       epotekFees,
       ...standardOffer,
     },
-    {
+    hasCounterParts && {
       lenderId,
       conditions: [...conditions, ...counterParts].filter(x => x),
       fees,
