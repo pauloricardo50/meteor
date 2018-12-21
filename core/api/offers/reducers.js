@@ -11,4 +11,10 @@ Offers.addReducers({
       },
     }) => loanId,
   },
+  organisation: {
+    body: {
+      lender: { organisation: { name: 1, logo: 1 } },
+    },
+    reduce: ({ lender: { organisation } }) => organisation,
+  },
 });

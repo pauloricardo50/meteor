@@ -13,7 +13,7 @@ const Offer = ({ offer, offerValues }) => (
       {offerValues.map(offerValue => (
         <OfferField key={offer._id} offerValue={offerValue} offer={offer} />
       ))}
-      <OfferModifier offer={offer} />
+      {/* <OfferModifier offer={offer} /> */}
       <ConfirmMethod
         label="Supprimer"
         keyword="Supprimer"

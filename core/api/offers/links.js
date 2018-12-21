@@ -13,12 +13,12 @@ Offers.addLinks({
     collection: Users,
     type: 'one',
   },
-  organisation: {
-    field: 'organisationLink',
-    collection: Organisations,
-    type: 'one',
-    metadata: true,
-  },
+  // organisation: {
+  //   field: 'organisationLink',
+  //   collection: Organisations,
+  //   type: 'one',
+  //   metadata: true,
+  // },
   lender: {
     field: 'lenderLink',
     collection: Lenders,
