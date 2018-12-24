@@ -1,6 +1,6 @@
 // Separate these fragments into separate files to avoid cyclic dependencies
 
-export const loanFragment = {
+export default {
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
