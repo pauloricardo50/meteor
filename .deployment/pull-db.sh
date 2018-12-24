@@ -9,7 +9,7 @@ $SCRIPTPATH/../scripts/checkPackage.sh mongodb install
 RANDOM_ID=$(cat /dev/random | LC_CTYPE=C tr -dc "[:alpha:]" | head -c 8)
 
 ../scripts/box_out.sh "Establishing a SSH tunnel with args:" "$*"
-npx babel-node -- ./ssh-tunnel/pullDbToWww.js "$@" -i $RANDOM_ID
+npx babel-node -- ./ssh-tunnel/pullDbLocally.js "$@" -i $RANDOM_ID
 tmuxinator start -p ./ssh-tunnel/ssh-tunnel-$RANDOM_ID.yml
 rm ./ssh-tunnel/ssh-tunnel-$RANDOM_ID.yml
 
