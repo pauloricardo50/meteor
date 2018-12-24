@@ -1,4 +1,4 @@
-import { loanBaseFragment } from '../../../loans/queries/loanFragments';
+import { loanFragment } from '../../../loans/queries/loanFragments';
 import { simpleUserFragment } from './userFragments';
 
 export const fullUserFragment = {
@@ -7,7 +7,7 @@ export const fullUserFragment = {
   emails: 1,
   createdAt: 1,
   updatedAt: 1,
-  loans: loanBaseFragment,
+  loans: loanFragment,
   apiToken: 1,
 };
 

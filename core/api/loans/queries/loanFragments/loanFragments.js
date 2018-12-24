@@ -1,8 +1,6 @@
-import { userPropertyFragment } from '../../../properties/queries/propertyFragments';
-
 // Separate these fragments into separate files to avoid cyclic dependencies
 
-export const loanBaseFragment = {
+export const loanFragment = {
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
@@ -17,22 +15,6 @@ export const loanBaseFragment = {
   otherOwner: 1,
   previousLender: 1,
   previousLoanTranches: 1,
-  promotionOptions: {
-    promotionLots: {
-      name: 1,
-      status: 1,
-      reducedStatus: 1,
-      value: 1,
-      properties: userPropertyFragment,
-    },
-    name: 1,
-    custom: 1,
-    attributedToMe: 1,
-    priority: 1,
-    promotion: 1,
-    value: 1,
-    solvency: 1,
-  },
   promotions: {
     name: 1,
     address: 1,

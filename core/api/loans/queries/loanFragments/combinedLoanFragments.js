@@ -5,7 +5,27 @@ import {
 import { appUserFragment } from '../../../users/queries/userFragments';
 import { loanBorrowerFragment } from '../../../borrowers/queries/borrowerFragments';
 import { fullOfferFragment } from '../../../offers/queries/offerFragments';
-import { loanBaseFragment } from './loanFragments';
+import { loanFragment } from './loanFragments';
+
+export const loanBaseFragment = {
+  ...loanFragment,
+  promotionOptions: {
+    promotionLots: {
+      name: 1,
+      status: 1,
+      reducedStatus: 1,
+      value: 1,
+      properties: userPropertyFragment,
+    },
+    name: 1,
+    custom: 1,
+    attributedToMe: 1,
+    priority: 1,
+    promotion: 1,
+    value: 1,
+    solvency: 1,
+  },
+};
 
 export const userLoanFragment = {
   ...loanBaseFragment,
