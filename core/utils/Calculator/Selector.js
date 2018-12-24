@@ -33,6 +33,8 @@ export const withSelector = (SuperClass = class {}) =>
       if (promotionOptionId) {
         return this.formatPromotionOptionIntoProperty(loan.promotionOptions.find(({ _id }) => _id === promotionOptionId));
       }
+
+      return {};
     }
 
     selectStructure({ loan, structureId }: { loan: userLoan } = {}): {} {
