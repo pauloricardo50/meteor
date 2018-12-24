@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import Table from 'core/components/Table';
+
+import Table, { ORDER } from 'core/components/Table';
 import InterestRatesTableContainer from './InterestRatesTableContainer';
 import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
 
@@ -18,7 +19,12 @@ const InterestRatesTable = ({
   interestRatesToModify,
 }: InterestRatesTableProps) => (
   <>
-    <Table columnOptions={columnOptions} rows={rows} clickable />
+    <Table
+      columnOptions={columnOptions}
+      rows={rows}
+      clickable
+      initialOrder={ORDER.DESC}
+    />
     {interestRatesToModify && (
       <ModifyInterestRatesDialogForm
         interestRatesToModify={interestRatesToModify}
