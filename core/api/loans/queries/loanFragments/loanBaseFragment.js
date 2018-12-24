@@ -1,5 +1,5 @@
 import loanFragment from './loanFragment';
-import { userPropertyFragment } from '../../../properties/queries/propertyFragments';
+import userPropertyFragment from '../../../properties/queries/propertyFragments/userPropertyFragment';
 
 export default {
   ...loanFragment,

@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 
 import { propertySummaryFragment } from './propertyFragments';
-import { loanBaseFragment } from '../../../loans/queries/loanFragments';
+import loanBaseFragment from '../../../loans/queries/loanFragments/loanBaseFragment';
 import { mortgageNoteFragment } from '../../../mortgageNotes/queries/mortgageNoteFragments';
 import { appUserFragment } from '../../../users/queries/userFragments';
 
