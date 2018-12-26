@@ -8,7 +8,7 @@ class LenderService extends CollectionService {
 
   insert(object = {}) {
     const { loanId, ...lender } = object;
-    const lenderId = this.insert(lender);
+    const lenderId = super.insert(lender);
     this.addLink({ id: lenderId, linkName: 'loan', linkId: loanId });
     return lenderId;
   }
