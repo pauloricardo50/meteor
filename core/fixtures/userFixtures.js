@@ -49,12 +49,14 @@ export const createDevs = (currentEmail) => {
       firstName: 'Florian',
       lastName: 'Bienefelt',
       role: 'dev',
+      password: '12345',
     },
     {
       email: 'quentin@e-potek.ch',
       firstName: 'Quentin',
       lastName: 'Herzig',
       role: 'dev',
+      password: '12345',
     },
   ];
   return devs.filter(({ email }) => email !== currentEmail).map(addUser);

@@ -30,9 +30,9 @@ Meteor.methods({
       promotion: {
         name: 'Test promotion',
         type: PROMOTION_TYPES.CREDIT,
-        address1: 'Chemin Auguste-Vilbert 14',
-        zipCode: '1218',
-        city: 'Le Grand-Saconnex',
+        address1: 'Rue du four 1',
+        zipCode: '1400',
+        city: 'Yverdon-les-Bains',
       },
     });
   },

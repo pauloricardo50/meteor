@@ -1,6 +1,6 @@
 import SlackService from './slack/SlackService';
 
-import 'core/fixtures/fixtureMethods';
+import 'core/fixtures/server/fixtureMethods';
 
 import './users/server/accounts-server-config';
 

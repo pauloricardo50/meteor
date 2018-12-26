@@ -4,15 +4,13 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { withProps } from 'recompose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTachometer,
-  faFolderOpen,
-  faHome,
-  faChartBar,
-  faUsers,
-  faCalculator,
-  faUsdCircle,
-} from '@fortawesome/pro-light-svg-icons';
+import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
+import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
+import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
+import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
+import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
+import { faCalculator } from '@fortawesome/pro-light-svg-icons/faCalculator';
+import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
 import Divider from '@material-ui/core/Divider';
 
 import T from 'core/components/Translation';
