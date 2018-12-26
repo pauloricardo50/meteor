@@ -1,4 +1,4 @@
-import { adminPropertyFragment } from '../../../properties/queries/propertyFragments';
+import adminPropertyFragment from '../../../properties/queries/propertyFragments/adminPropertyFragment';
 import userLoanFragment from './userLoanFragment';
 
 export default {

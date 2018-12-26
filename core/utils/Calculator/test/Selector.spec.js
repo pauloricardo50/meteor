@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 import Calculator from '..';
 
-describe.only('Calculator Selector', () => {
+describe('Calculator Selector', () => {
   let params;
 
   beforeEach(() => {

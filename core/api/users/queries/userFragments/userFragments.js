@@ -8,5 +8,4 @@ export const simpleUserFragment = {
   lastName: 1,
   phoneNumbers: 1,
   roles: 1,
-  $options: { sort: { createdAt: -1 } },
 };

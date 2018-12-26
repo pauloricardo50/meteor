@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
 import stylesheet from './stylesheet';
 import LoanBankBorrowers from './LoanBankBorrowers';
 import LoanBankProject from './LoanBankProject';
@@ -18,6 +19,8 @@ const pages = ({ loan, options }) => [
   { Component: LoanBankBorrowers, data: { loan, options } },
 ];
 
-const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => <Pdf stylesheet={stylesheet} pages={pages({ loan, options })} />;
+const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
+  <Pdf stylesheet={stylesheet} pages={pages({ loan, options })} />
+);
 
-export default LoanBankPDF;
+export default withTranslationContext(() => ({ purchaseType: 'ACQUISITION' }))(LoanBankPDF);

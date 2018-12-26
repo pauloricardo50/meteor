@@ -1,6 +1,6 @@
 import Users from '../users';
 import { USER_QUERIES } from '../userConstants';
-import { fullUserFragment } from './userFragments';
+import fullUserFragment from './userFragments/fullUserFragment';
 
 export default Users.createQuery(USER_QUERIES.SIDENAV_USERS, {
   $options: {

@@ -1,5 +1,5 @@
 import fullPropertyFragment from './fullPropertyFragment';
-import { userValuation } from '../propertyFragments';
+import { userValuation } from './propertyFragments';
 
 export default {
   ...fullPropertyFragment,

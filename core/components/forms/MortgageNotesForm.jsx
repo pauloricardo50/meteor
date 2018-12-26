@@ -34,7 +34,7 @@ const removeMortgageNote = (mortgageNoteId) => {
 const AutoField = makeCustomAutoField();
 
 const MortgageNotesForm = ({
-  mortgageNotes,
+  mortgageNotes = [],
   insertMortgageNote,
   id,
   withCanton,
