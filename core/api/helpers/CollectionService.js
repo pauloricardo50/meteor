@@ -1,9 +1,7 @@
 class CollectionService {
   constructor(collection) {
     if (!collection) {
-      throw new Error(
-        'A collection is needed in CollectionService, but none was passed',
-      );
+      throw new Error('A collection is needed in CollectionService, but none was passed');
     }
     this.collection = collection;
   }
@@ -43,6 +41,10 @@ class CollectionService {
     return this.createQuery(...args).fetchOne();
   }
 
+  fetch(...args) {
+    return this.createQuery(...args).fetch();
+  }
+
   getLink(...args) {
     return this.collection.getLink(...args);
   }
@@ -54,16 +56,16 @@ class CollectionService {
     } = linker;
 
     switch (strategy) {
-      case 'one':
-        return linker.set(linkId);
-      case 'many':
-        return linker.add(linkId);
-      case 'one-meta':
-        return linker.set(linkId, metadata);
-      case 'many-meta':
-        return linker.add(linkId, metadata);
-      default:
-        return null;
+    case 'one':
+      return linker.set(linkId);
+    case 'many':
+      return linker.add(linkId);
+    case 'one-meta':
+      return linker.set(linkId, metadata);
+    case 'many-meta':
+      return linker.add(linkId, metadata);
+    default:
+      return null;
     }
   }
 
@@ -74,12 +76,12 @@ class CollectionService {
     } = linker;
 
     switch (strategy.split('-')[0]) {
-      case 'one':
-        return linker.unset(linkId);
-      case 'many':
-        return linker.remove(linkId);
-      default:
-        return null;
+    case 'one':
+      return linker.unset(linkId);
+    case 'many':
+      return linker.remove(linkId);
+    default:
+      return null;
     }
   }
 
@@ -105,9 +107,7 @@ class CollectionService {
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
     const { additionalDocuments } = this.get(id);
 
-    const additionalDoc = additionalDocuments.find(
-      doc => doc.id === additionalDocId,
-    );
+    const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
 
     if (additionalDoc) {
       const additionalDocumentsUpdate = [

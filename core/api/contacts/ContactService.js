@@ -15,20 +15,20 @@ class ContactService extends CollectionService {
   }
 
   changeOrganisations({ contactId, newOrganisations = [] }) {
-    const oldOrganisations = this.get(contactId).organisations;
+    const { organisations: oldOrganisations } = this.get(contactId);
 
-    oldOrganisations.map(({ _id }) =>
+    oldOrganisations.forEach(({ _id: organisationId }) =>
       this.removeLink({
         id: contactId,
         linkName: 'organisations',
-        linkId: _id,
+        linkId: organisationId,
       }));
 
-    newOrganisations.map(({ _id, metadata }) =>
+    newOrganisations.forEach(({ _id: organisationId, metadata }) =>
       this.addLink({
         id: contactId,
         linkName: 'organisations',
-        linkId: _id,
+        linkId: organisationId,
         metadata,
       }));
   }

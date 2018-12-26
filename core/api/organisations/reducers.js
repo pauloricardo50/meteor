@@ -8,10 +8,7 @@ Organisations.addReducers({
     body: {
       lenders: { offers: fullOfferFragment },
     },
-    reduce: ({ lenders }) =>
-      lenders.reduce(
-        (offers, lender) => [...offers, ...lender.offers.map(offer => offer)],
-        [],
-      ) || [],
+    reduce: ({ lenders = [] }) =>
+      lenders.reduce((allOffers, { offers }) => [...allOffers, ...offers], []),
   },
 });

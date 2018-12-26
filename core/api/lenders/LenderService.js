@@ -8,9 +8,24 @@ class LenderService extends CollectionService {
 
   insert(object = {}) {
     const { loanId, ...lender } = object;
-    const lenderId = this.collection.insert(lender);
+    const lenderId = this.insert(lender);
     this.addLink({ id: lenderId, linkName: 'loan', linkId: loanId });
     return lenderId;
+  }
+
+  linkOrganisationAndContact({ lenderId, organisationId, contactId }) {
+    this.addLink({
+      id: lenderId,
+      linkName: 'organisation',
+      linkId: organisationId,
+    });
+    if (contactId) {
+      this.addLink({
+        id: lenderId,
+        linkName: 'contact',
+        linkId: contactId,
+      });
+    }
   }
 }
 

@@ -2,17 +2,17 @@ import { SecurityService } from '../..';
 import OfferService from '../OfferService';
 import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 
-offerInsert.setHandler((context, { offer, userId }) => {
+offerInsert.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return OfferService.insert({ offer: { ...offer }, userId });
+  return OfferService.insert(params);
 });
 
-offerUpdate.setHandler((context, { offerId, object }) => {
-  SecurityService.offers.isAllowedToUpdate(offerId);
-  return OfferService.update({ offerId, object });
+offerUpdate.setHandler((context, params) => {
+  SecurityService.offers.isAllowedToUpdate(params.offerId);
+  return OfferService.update(params);
 });
 
-offerDelete.setHandler((context, { offerId }) => {
-  SecurityService.offers.isAllowedToDelete(offerId);
-  return OfferService.remove({ offerId });
+offerDelete.setHandler((context, params) => {
+  SecurityService.offers.isAllowedToDelete(params.offerId);
+  return OfferService.remove(params);
 });

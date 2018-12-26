@@ -1,7 +1,7 @@
 {
   "Forms.organisationId": "Organisation",
   "Forms.contactId": "Contact",
-  "Forms.status.TO_CONTACT": "À contacter",
+  "Forms.status.TO_BE_CONTACTED": "À contacter",
   "Forms.status.CONTACTED": "Contacté",
   "Forms.status.OFFER_RECEIVED": "Offre reçue",
   "Forms.status.TO_EXCLUDE": "À exclure",

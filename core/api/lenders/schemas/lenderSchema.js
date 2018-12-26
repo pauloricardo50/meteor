@@ -8,7 +8,7 @@ const LenderSchema = new SimpleSchema({
   status: {
     type: String,
     allowedValues: Object.values(LENDERS_STATUS),
-    defaultValue: LENDERS_STATUS.TO_CONTACT,
+    defaultValue: LENDERS_STATUS.TO_BE_CONTACTED,
   },
   contactLink: { type: Object, optional: true },
   'contactLink._id': { type: String, optional: true },

@@ -42,13 +42,13 @@ import MortgageNoteService from './mortgageNotes/MortgageNoteService';
 import ContactService from './contacts/ContactService';
 import LenderService from './lenders/LenderService';
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error) => {
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],
   });
 });
-process.on('unhandledRejection', error => {
+process.on('unhandledRejection', (error) => {
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],

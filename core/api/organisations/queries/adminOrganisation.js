@@ -1,8 +1,8 @@
-import { contactFragment } from 'imports/core/api/contacts/queries/contactsFragments/';
+import { contactFragment } from '../../contacts/queries/contactsFragments';
+import { lenderFragment } from '../../lenders/queries/lendersFragments';
+import { fullOfferFragment } from '../../offers/queries/offerFragments';
 import Organisations from '../organisations';
 import { ORGANISATION_QUERIES } from '../organisationConstants';
-import { lenderFragment } from 'imports/core/api/lenders/queries/lendersFragments/index';
-import { fullOfferFragment } from 'imports/core/api/offers/queries/offerFragments';
 
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATION,
@@ -10,18 +10,18 @@ export default Organisations.createQuery(
     $filter({ filters, params: { organisationId } }) {
       filters._id = organisationId;
     },
-    name: 1,
-    type: 1,
-    logo: 1,
-    contacts: contactFragment,
-    $options: { sort: { name: 1 } },
     address: 1,
     address1: 1,
     address2: 1,
-    zipCode: 1,
-    city: 1,
     canton: 1,
+    city: 1,
+    contacts: contactFragment,
     lenders: lenderFragment,
+    logo: 1,
+    name: 1,
     offers: fullOfferFragment,
+    type: 1,
+    zipCode: 1,
+    $options: { sort: { name: 1 } },
   },
 );

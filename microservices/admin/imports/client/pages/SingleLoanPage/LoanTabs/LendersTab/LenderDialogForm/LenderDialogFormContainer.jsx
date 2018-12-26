@@ -52,7 +52,7 @@ const schema = existingOrganisations =>
       type: String,
       optional: false,
       allowedValues: Object.values(LENDERS_STATUS),
-      defaultValue: LENDERS_STATUS.TO_CONTACT,
+      defaultValue: LENDERS_STATUS.TO_BE_CONTACTED,
     },
   });
 

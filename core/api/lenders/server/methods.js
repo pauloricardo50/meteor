@@ -22,20 +22,7 @@ lenderUpdate.setHandler((context, { lenderId, object }) => {
   return LenderService._update({ id: lenderId, object });
 });
 
-lenderLinkOrganisationAndContact.setHandler(
-  (context, { lenderId, organisationId, contactId }) => {
-    SecurityService.checkCurrentUserIsAdmin();
-    LenderService.addLink({
-      id: lenderId,
-      linkName: 'organisation',
-      linkId: organisationId,
-    });
-    if (contactId) {
-      LenderService.addLink({
-        id: lenderId,
-        linkName: 'contact',
-        linkId: contactId,
-      });
-    }
-  },
-);
+lenderLinkOrganisationAndContact.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderService.linkOrganisationAndContact(params);
+});

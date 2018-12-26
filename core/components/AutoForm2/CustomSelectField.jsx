@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import SelectField from 'uniforms-material/SelectField';
-import debounce from 'lodash/debounce';
 
 import T from '../Translation';
 import Loading from '../Loading/Loading';
@@ -38,25 +37,25 @@ export default class CustomSelectField extends Component<
     }
   }
 
-  getAllowedValues = props => {
+  getAllowedValues = (props) => {
     const { customAllowedValues, model } = props;
     if (typeof customAllowedValues === 'function') {
       Promise.resolve(customAllowedValues(model)).then(values =>
-        this.setState({ values }),
-      );
+        this.setState({ values }));
     }
   };
 
   render() {
-    const { transform, submitting, ...props } = this.props;
+    const { transform, submitting, intlId, name, ...props } = this.props;
     const { values } = this.state;
     return values || submitting ? (
       <SelectField
         {...props}
+        name={name}
         allowedValues={values || []}
         transform={
-          transform ||
-          (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
+          transform
+          || (option => <T id={`Forms.${intlId || name}.${option}`} />)
         }
         displayEmpty
       />
