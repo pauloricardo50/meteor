@@ -13,9 +13,13 @@ export const lenderFragment = {
     name: 1,
     type: 1,
     zipCode: 1,
-    $options: { sort: { name: 1 } },
   },
   contact: contactFragment,
   loan: { _id: 1 },
   offers: fullOfferFragment,
+};
+
+export const adminLenderFragment = {
+  ...lenderFragment,
+  status: 1,
 };

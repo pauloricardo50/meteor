@@ -12,6 +12,8 @@ import {
   TASK_STATUS,
   LOANS_COLLECTION,
   LOAN_STATUS,
+  LENDERS_COLLECTION,
+  LENDER_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 
@@ -54,6 +56,14 @@ const getStatusColor = (status, collection) => {
       [TASK_STATUS.ACTIVE]: colors.primary,
       [TASK_STATUS.COMPLETED]: colors.success,
       [TASK_STATUS.CANCELLED]: colors.error,
+    }[status];
+
+  case LENDERS_COLLECTION:
+    return {
+      [LENDER_STATUS.TO_BE_CONTACTED]: colors.warning,
+      [LENDER_STATUS.CONTACTED]: colors.primary,
+      [LENDER_STATUS.OFFER_RECEIVED]: colors.success,
+      [LENDER_STATUS.TO_EXCLUDE]: colors.error,
     }[status];
 
   default:

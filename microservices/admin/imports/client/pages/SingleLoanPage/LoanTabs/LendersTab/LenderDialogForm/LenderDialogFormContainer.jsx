@@ -8,7 +8,7 @@ import {
   lenderInsert,
   lenderLinkOrganisationAndContact,
 } from 'core/api/methods/index';
-import { LENDERS_STATUS } from 'core/api/constants';
+import { LENDER_STATUS } from 'core/api/constants';
 import T from 'core/components/Translation';
 
 SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
@@ -50,8 +50,8 @@ const schema = existingOrganisations =>
     status: {
       type: String,
       optional: false,
-      allowedValues: Object.values(LENDERS_STATUS),
-      defaultValue: LENDERS_STATUS.TO_BE_CONTACTED,
+      allowedValues: Object.values(LENDER_STATUS),
+      defaultValue: LENDER_STATUS.TO_BE_CONTACTED,
     },
   });
 
