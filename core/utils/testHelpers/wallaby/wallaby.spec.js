@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import dummyFunc from 'core/utils/testHelpers/wallaby/wallabyDummy';
 
@@ -25,7 +25,7 @@ describe('Wallaby examples', () => {
 
   it('should import from core properly with stubbed packages', () => {
     if (global.IS_WALLABY) {
-      expect(dummyFunc()).to.equal(Bert.alert());
+      expect(dummyFunc()).to.equal(resetDatabase());
     }
   });
 });

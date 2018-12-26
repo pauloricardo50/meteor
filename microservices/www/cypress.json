@@ -7,6 +7,8 @@
   "screenshotOnRunFailure": true,
   "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/www-screenshots",
   "supportFile": "imports/core/cypress/support",
-  "video": false,
-  "videosFolder": "/home/circleci/app/e2e-results/cypress/www-videos"
+  "video": true,
+  "videosFolder": "/home/circleci/app/e2e-results/cypress/www-videos",
+  "viewportHeight": 900,
+  "viewportWidth": 1440
 }

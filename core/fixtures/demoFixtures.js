@@ -14,9 +14,8 @@ export const createYannisData = userId => {
     object: { name: '18-0000' },
   });
   const loan = LoanService.get(loanId);
-  const borrower = BorrowerService.get(loan.borrowerIds[0]);
   BorrowerService.update({
-    borrowerId: borrower._id,
+    borrowerId: loan.borrowerIds[0],
     object: {
       firstName: 'Hans',
       lastName: 'Müller',
