@@ -11,29 +11,19 @@ Loans.addReducers({
       selectedStructure: 1,
       structures: 1,
       properties: omit(userPropertyFragment, ['loans', '$options', 'user']),
-      offers: omit(fullOfferFragment, ['loans', '$options', 'user']),
+      offers: 1,
     },
     reduce: formatLoanWithStructure,
   },
   offers: {
     body: {
-      borrowers: { name: 1 },
-      lenders: {
-        offers: omit(
-          {
-            ...fullOfferFragment,
-            user: omit(fullOfferFragment.user, ['$options']),
-          },
-          ['loans', '$options', 'user'],
-        ),
-      },
+      lenders: { offers: omit(fullOfferFragment, ['user']) },
     },
-    reduce: ({ lenders = [] }) => {
-      return lenders.reduce((offers, lender) => {
-        const lenderOffers = lender.offers || [];
-        return [...offers, ...lenderOffers];
-      }, []);
-    },
+    reduce: ({ lenders = [] }) =>
+      lenders.reduce(
+        (allOffers, { offers = [] }) => [...allOffers, ...offers],
+        [],
+      ),
   },
   hasPromotion: {
     body: { promotions: { _id: 1 } },
@@ -44,8 +34,8 @@ Loans.addReducers({
     reduce: ({ logic }) => {
       const step = logic && logic.step;
       return (
-        step &&
-        STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
+        step
+        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
       );
     },
   },
