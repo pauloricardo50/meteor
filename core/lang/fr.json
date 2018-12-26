@@ -1,4 +1,6 @@
 {
+  "OrganisationTabs.contacts": "Contacts",
+  "OrganisationTabs.offers": "Offres",
   "Forms.organisationId": "Organisation",
   "Forms.contactId": "Contact",
   "Forms.status.TO_BE_CONTACTED": "À contacter",

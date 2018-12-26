@@ -6,12 +6,8 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { propertyUpdate } from 'core/api/methods';
-import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_LOT_QUERIES,
-} from 'core/api/constants';
+import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { promotionLotRemove } from 'core/api';
-import ClientEventService from 'core/api/events/ClientEventService/index';
 import { promotionLotSchema } from '../PromotionPage/client/ProPromotionLotsTable/ProPromotionLotsTable';
 
 type ProPromotionLotModifierProps = {

@@ -9,7 +9,6 @@ import FileTabs from 'core/components/FileTabs';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
 import PropertiesTab from './PropertiesTab';
-import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
@@ -36,7 +35,6 @@ const getTabs = props =>
     { id: 'borrowers', Component: BorrowersTab },
     { id: 'properties', Component: PropertiesTab },
     { id: 'lenders', Component: LendersTab },
-    { id: 'offers', Component: OffersTab },
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },
     { id: 'files', Component: FileTabs },

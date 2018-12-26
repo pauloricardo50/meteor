@@ -1,13 +1,15 @@
 // @flow
 import React from 'react';
 import AutoFormDialog from 'imports/core/components/AutoForm2/AutoFormDialog';
-import T from 'core/components/Translation/';
+import T from 'core/components/Translation';
+import Button from 'core/components/Button';
 import ContactDialogFormContainer from './ContactDialogFormContainer';
 
 type ModifyContactDialogFormProps = {
-  schema: Object,
-  modifyContact: Function,
   contact: Object,
+  removeContact: Function,
+  modifyContact: Function,
+  schema: Object,
 };
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {
@@ -16,9 +18,10 @@ const getOrganisationWithSameAddress = ({ organisations = [] }) => {
 };
 
 const ModifyContactDialogForm = ({
-  schema,
-  modifyContact,
   contact,
+  removeContact,
+  modifyContact,
+  schema,
 }: ModifyContactDialogFormProps) => (
   <AutoFormDialog
     schema={schema}
@@ -32,6 +35,14 @@ const ModifyContactDialogForm = ({
       raised: true,
       primary: true,
     }}
+    renderAdditionalActions={({ closeDialog }) => (
+      <Button
+        onClick={() => removeContact(contact._id).then(closeDialog)}
+        error
+      >
+        <T id="general.delete" />
+      </Button>
+    )}
   />
 );
 
