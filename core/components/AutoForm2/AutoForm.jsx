@@ -12,6 +12,7 @@ const CustomAutoForm = ({
   model,
   submitting,
   children,
+  omitFields,
   ...props
 }) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
@@ -23,7 +24,7 @@ const CustomAutoForm = ({
     >
       {children || (
         <>
-          <CustomAutoFields autoField={AutoField} />
+          <CustomAutoFields omitFields={omitFields} autoField={AutoField} />
           <SubmitField
             loading={submitting}
             raised

@@ -19,7 +19,7 @@ const CustomAutoFields = (
     props,
     (fields || schema.getSubfields())
       .filter(field => omitFields.indexOf(field) === -1)
-      .map(field => {
+      .map((field) => {
         const { condition, customAllowedValues } = schema.getField(field);
         const component = createElement(autoField, {
           key: field,
