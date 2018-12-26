@@ -1,18 +1,13 @@
 // @flow
 import React from 'react';
 
-import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
-import { OrganisationSchema } from 'core/api/organisations/organisations';
-import { Uploader } from 'imports/core/components/UploaderArray/index';
-import { S3_ACLS } from 'imports/core/api/constants';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
+import Tabs from 'core/components/Tabs';
+import T from 'core/components/Translation';
 import { InsertContactDialogForm } from '../ContactsPage/ContactDialogForm/index';
 import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import OrganisationModifier from './OrganisationModifier';
 import OffersTable from './OffersTable/OffersTable';
-import Tabs from 'core/components/Tabs';
-import T from 'imports/core/components/Translation';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
@@ -36,8 +31,7 @@ const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => {
   const { contacts, logo, name, offers } = organisation;
-  console.log('organisation', organisation);
-  console.log('offers', offers);
+
   return (
     <div className="card1 card-top">
       <h1>{logo ? <img src={logo} alt={name} /> : name}</h1>

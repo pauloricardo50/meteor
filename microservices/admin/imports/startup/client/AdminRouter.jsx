@@ -6,7 +6,6 @@ import NotFound from 'core/components/NotFound';
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import DevPage from 'core/components/DevPage';
 
-import SingleOrganisationPage from 'imports/client/pages/SingleOrganisationPage/SingleOrganisationPage.jsx';
 import messagesFR from '../../../lang/fr.json';
 
 import AdminAccountPage from '../../client/pages/AdminAccountPage';
@@ -16,20 +15,21 @@ import AdminPromotionLotPage from '../../client/pages/AdminPromotionLotPage';
 import AdminPromotionPage from '../../client/pages/AdminPromotionPage';
 import AdminPromotionUsersPage from '../../client/pages/AdminPromotionUsersPage';
 import BorrowersPage from '../../client/pages/BorrowersPage';
+import ContactsPage from '../../client/pages/ContactsPage';
+import InterestRatesPage from '../../client/pages/InterestRatesPage';
 import LoansPage from '../../client/pages/LoansPage';
 import OrganisationsPage from '../../client/pages/OrganisationsPage';
 import PromotionsPage from '../../client/pages/PromotionsPage';
 import PropertiesPage from '../../client/pages/PropertiesPage';
 import SearchPage from '../../client/pages/SearchPage';
 import SingleBorrowerPage from '../../client/pages/SingleBorrowerPage';
+import SingleContactPage from '../../client/pages/SingleContactPage';
 import SingleLoanPage from '../../client/pages/SingleLoanPage';
+import SingleOrganisationPage from '../../client/pages/SingleOrganisationPage';
 import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import SingleUserPage from '../../client/pages/SingleUserPage';
 import TasksPage from '../../client/pages/TasksPage';
 import UsersPage from '../../client/pages/UsersPage';
-import InterestRatesPage from '../../client/pages/InterestRatesPage';
-import ContactsPage from '../../client/pages/ContactsPage';
-import SingleContactPage from '../../client/pages/SingleContactPage';
 
 import AdminStore from '../../client/components/AdminStore';
 

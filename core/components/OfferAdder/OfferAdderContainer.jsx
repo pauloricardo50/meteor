@@ -1,11 +1,9 @@
-import React from 'react';
 import SimpleSchema from 'simpl-schema';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import loanLenders from '../../api/lenders/queries/loanLenders';
-import T from '../Translation';
 import { PercentField } from 'imports/core/components/PercentInput/';
+import loanLenders from '../../api/lenders/queries/loanLenders';
 import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';
 
@@ -22,7 +20,7 @@ const interestRatesSchema = ({ isDiscount }) =>
         uniforms: { component: PercentField },
         optional: true,
         condition: ({ hasCounterParts, hasFlatDiscount }) =>
-          isDiscount ? hasCounterParts && !hasFlatDiscount : true,
+          (isDiscount ? hasCounterParts && !hasFlatDiscount : true),
       },
     }),
     {},
@@ -36,9 +34,8 @@ const schema = lenders =>
       defaultValue: null,
       allowedValues: [...lenders.map(({ _id }) => _id), null],
       uniforms: {
-        transform: lenderId => {
-          const { organisation, contact } =
-            lenders.find(({ _id }) => lenderId === _id) || {};
+        transform: (lenderId) => {
+          const { organisation, contact } = lenders.find(({ _id }) => lenderId === _id) || {};
           const { name: organisationName } = organisation || { name: 'Aucune' };
           const { name: contactName } = contact || {};
           return contactName
@@ -127,7 +124,7 @@ const schema = lenders =>
 const getStandardRatesKeys = key => !key.includes('Discount');
 const getDiscountRatesKeys = key => !getStandardRatesKeys(key);
 
-const filterRates = ({ isCounterPartOffer, hasFlatDiscount }) => key => {
+const filterRates = ({ isCounterPartOffer, hasFlatDiscount }) => (key) => {
   if (isCounterPartOffer) {
     return hasFlatDiscount
       ? getStandardRatesKeys(key)
@@ -168,7 +165,6 @@ const mapValuesToOffer = ({
   flatDiscount,
   ...interestRates
 }) => {
-  const useDiscount = hasFlatDiscount && flatDiscount;
   const standardOffer = {
     maxAmount,
     amortizationGoal,
@@ -181,16 +177,16 @@ const mapValuesToOffer = ({
 
   const counterPartsOffer = hasCounterParts
     ? {
-        maxAmount,
-        amortizationGoal,
-        amortizationYears,
-        ...reformatInterestRatesObject({
-          interestRates,
-          isCounterPartOffer: true,
-          hasFlatDiscount,
-          flatDiscount,
-        }),
-      }
+      maxAmount,
+      amortizationGoal,
+      amortizationYears,
+      ...reformatInterestRatesObject({
+        interestRates,
+        isCounterPartOffer: true,
+        hasFlatDiscount,
+        flatDiscount,
+      }),
+    }
     : undefined;
 
   return [
@@ -211,7 +207,7 @@ const mapValuesToOffer = ({
   ].filter(x => x);
 };
 
-const insertOffer = values => {
+const insertOffer = (values) => {
   const offers = mapValuesToOffer({ ...values });
   return Promise.all(offers.map(offer => offerInsert.run({ offer })));
 };
@@ -224,8 +220,5 @@ export default compose(
     dataName: 'lenders',
     smallLoader: true,
   }),
-  withProps(({ lenders }) => ({
-    schema: schema(lenders),
-    insertOffer,
-  })),
+  withProps(({ lenders }) => ({ schema: schema(lenders), insertOffer })),
 );

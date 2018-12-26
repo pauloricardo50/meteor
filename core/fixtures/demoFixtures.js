@@ -7,7 +7,7 @@ import { ROLES, GENDER } from '../api/constants';
 import BorrowerService from '../api/borrowers/BorrowerService';
 import PropertyService from '../api/properties/PropertyService';
 
-export const createYannisData = userId => {
+export const createYannisData = (userId) => {
   const loanId = LoanService.adminLoanInsert({ userId });
   LoanService.update({
     loanId,

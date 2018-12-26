@@ -3,12 +3,12 @@ import SimpleSchema from 'simpl-schema';
 import { compose, withState, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
+import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import {
   lenderInsert,
   lenderLinkOrganisationAndContact,
-} from 'imports/core/api/methods/index';
-import { LENDERS_STATUS } from 'imports/core/api/constants';
+} from 'core/api/methods/index';
+import { LENDERS_STATUS } from 'core/api/constants';
 import T from 'core/components/Translation';
 
 SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
@@ -38,11 +38,10 @@ const schema = existingOrganisations =>
         null,
       ],
       uniforms: {
-        transform: contactId => {
-          const { name } =
-            existingOrganisations
-              .reduce((contacts, org) => [...contacts, ...org.contacts], [])
-              .find(({ _id }) => _id === contactId) || {};
+        transform: (contactId) => {
+          const { name } = existingOrganisations
+            .reduce((contacts, org) => [...contacts, ...org.contacts], [])
+            .find(({ _id }) => _id === contactId) || {};
           return name || 'Non spécifié';
         },
         labelProps: { shrink: true },
@@ -72,8 +71,7 @@ export default compose(
           lenderId,
           organisationId,
           contactId,
-        }),
-      ),
+        })),
     autoFieldProps: { labels: { status: <T id="Lenders.status" /> } },
   })),
 );

@@ -5,11 +5,10 @@ import T from 'core/components/Translation';
 import OfferList from 'core/components/OfferList';
 import OfferAdder from 'core/components/OfferAdder';
 
-const OffersTab = props => {
+const OffersTab = (props) => {
   const {
     loan: { _id: loanId, offers, enableOffers },
   } = props;
-  console.log('offers', offers);
   return (
     <div className="offers-tab">
       <h2>

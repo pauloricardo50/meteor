@@ -49,17 +49,17 @@ const mapValuesToOffer = ({
   };
   const counterpartOffer = hasCounterparts
     ? {
-        maxAmount,
-        amortizationGoal,
-        amortizationYears,
-        ...reformatInterestRatesObject(
-          interestRates,
-          // If a discount exists, use the standard rates and add a discounter to
-          // each rate
-          useDiscount ? STANDARD_SUFFIX : COUNTERPART_SUFFIX,
-          useDiscount ? makeRateDiscounter(discount) : undefined,
-        ),
-      }
+      maxAmount,
+      amortizationGoal,
+      amortizationYears,
+      ...reformatInterestRatesObject(
+        interestRates,
+        // If a discount exists, use the standard rates and add a discounter to
+        // each rate
+        useDiscount ? STANDARD_SUFFIX : COUNTERPART_SUFFIX,
+        useDiscount ? makeRateDiscounter(discount) : undefined,
+      ),
+    }
     : undefined;
 
   return [
@@ -78,7 +78,7 @@ const mapValuesToOffer = ({
   ].filter(offer => !!offer);
 };
 
-const onSubmit = values => {
+const onSubmit = (values) => {
   const offers = mapValuesToOffer({ ...values });
   return Promise.all(offers.map(offer => offerInsert.run({ offer })));
 };

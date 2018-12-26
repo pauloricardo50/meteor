@@ -50,7 +50,7 @@ const makeMapContact = ({ history }) => (contact) => {
                 }}
               />
             ))
-            : "N'est lié à aucune organisation",
+            : "N'appartient à aucune organisation pour l'instant",
       },
       {
         raw: email,

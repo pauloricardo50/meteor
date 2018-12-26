@@ -1,15 +1,15 @@
 import { compose } from 'recompose';
 
-import { withSmartQuery } from 'core/api/containerToolkit/index';
-import query from 'core/api/organisations/queries/adminOrganisation';
+import { withSmartQuery } from 'core/api';
+import adminOrganisation from 'core/api/organisations/queries/adminOrganisation';
 import withMatchParam from 'core/containers/withMatchParam';
 import organisationFiles from 'core/api/organisations/queries/organisationFiles';
-import mergeFilesWithQuery from 'imports/core/api/files/mergeFilesWithQuery';
+import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 
 export default compose(
   withMatchParam('organisationId'),
   withSmartQuery({
-    query,
+    query: adminOrganisation,
     queryOptions: { reactive: true, single: true },
     params: ({ organisationId }) => ({ organisationId }),
     dataName: 'organisation',

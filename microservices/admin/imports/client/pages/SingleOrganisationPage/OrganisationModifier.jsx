@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
-import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
-import { S3_ACLS } from 'imports/core/api/constants';
-import AutoFormDialog from 'imports/core/components/AutoForm2/AutoFormDialog';
-import { Uploader } from 'imports/core/components/UploaderArray/index';
+import { ORGANISATIONS_COLLECTION, S3_ACLS } from 'core/api/constants';
+import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
+import { Uploader } from 'core/components/UploaderArray';
 import OrganisationModifierContainer from './OrganisationModifierContainer';
 
 type OrganisationModifierProps = {
