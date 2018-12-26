@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity, faBriefcase } from '@fortawesome/pro-light-svg-icons';
+import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 
 import IconLink from './IconLink';
 import {

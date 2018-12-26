@@ -5,8 +5,8 @@
   "integrationFolder": "cypress/tests",
   "pluginsFile": "imports/core/cypress/plugins",
   "screenshotOnRunFailure": true,
-  "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/admin-screenshots",
+  "screenshotsFolder": "/home/circleci/app/e2e-results/cypress/pdf-screenshots",
   "supportFile": "imports/core/cypress/support",
-  "video": false,
-  "videosFolder": "/home/circleci/app/e2e-results/cypress/admin-videos"
+  "video": true,
+  "videosFolder": "/home/circleci/app/e2e-results/cypress/pdf-videos"
 }

@@ -15,26 +15,14 @@ Cypress.Commands.add('getMeteor', () =>
 Cypress.Commands.add('callMethod', (method, ...params) => {
   Cypress.log({
     name: 'Calling method',
-    consoleProps: () => ({
-      name: method,
-      params,
-    }),
+    consoleProps: () => ({ name: method, params }),
   });
 
   cy.getMeteor().then(Meteor =>
     new Cypress.Promise((resolve, reject) => {
-      console.log('Calling method', method, 'with params', params);
-      if (method === 'generateTestData') {
-        debugger;
-      }
-      Meteor.call(method, ...params, (err, result) => {
-        if (method === 'generateTestData') {
-          debugger;
-        }
-        console.log('result from method');
-        console.log('err', err);
-        console.log('result', result);
-
+      // Keep wait:true to avoid an issue related to this
+      // https://github.com/e-Potek/epotek/pull/329#issuecomment-438977389
+      Meteor.apply(method, params, (err, result) => {
         if (err) {
           reject(err);
         }

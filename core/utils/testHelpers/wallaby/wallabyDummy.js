@@ -1,3 +1,3 @@
-import { Bert } from 'meteor/themeteorchef:bert';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-export default () => Bert.alert();
+export default () => resetDatabase();
