@@ -25,7 +25,6 @@ const calculateProjectValue = data =>
   getPropertyValue(data)
   + data.structure.propertyWork
   + Calculator.getFees(data).total;
-
 const FinancingProject = (props: FinancingProjectProps) => (
   <FinancingSection
     summaryConfig={[

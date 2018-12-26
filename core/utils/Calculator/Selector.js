@@ -8,11 +8,33 @@ export const withSelector = (SuperClass = class {}) =>
       loan,
       structureId,
     }: { loan: userLoan } = {}): userProperty {
+      let propertyId = loan.structure && loan.structure.propertyId;
+      let promotionOptionId = loan.structure && loan.structure.promotionOptionId;
+
+      if (!structureId) {
+        return (
+          loan.structure.property
+          || this.formatPromotionOptionIntoProperty(loan.structure.promotionOption)
+          || {}
+        );
+      }
+
       if (structureId) {
-        const { propertyId } = loan.structures.find(({ id }) => id === structureId);
+        propertyId = loan.structures.find(({ id }) => id === structureId)
+          .propertyId;
+        promotionOptionId = loan.structures.find(({ id }) => id === structureId)
+          .promotionOptionId;
+      }
+
+      if (propertyId) {
         return loan.properties.find(({ _id }) => _id === propertyId);
       }
-      return loan.structure.property;
+
+      if (promotionOptionId) {
+        return this.formatPromotionOptionIntoProperty(loan.promotionOptions.find(({ _id }) => _id === promotionOptionId));
+      }
+
+      return {};
     }
 
     selectStructure({ loan, structureId }: { loan: userLoan } = {}): {} {

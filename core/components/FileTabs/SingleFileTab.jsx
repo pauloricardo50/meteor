@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import UploaderArray from '../UploaderArray';
 import AdditionalDocAdder from './AdditionalDocAdder';
 import {
   BORROWERS_COLLECTION,
@@ -16,7 +15,6 @@ import {
   getLoanDocuments,
   allDocuments,
 } from '../../api/files/documents';
-import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 
 import UploaderCategories from './UploaderCategories';
 

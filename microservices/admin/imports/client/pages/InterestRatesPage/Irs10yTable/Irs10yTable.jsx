@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Table from 'core/components/Table';
+import Table, { ORDER } from 'core/components/Table';
 import Irs10yTableContainer from './Irs10yTableContainer';
 import { ModifyIrs10yDialogForm } from '../Irs10yDialogForm';
 // import { ModifyInterestRatesDialogForm } from '../InterestRatesDialogForm';
@@ -18,7 +18,12 @@ const Irs10yTable = ({
   irs10yToModify,
 }: Irs10yTableProps) => (
   <>
-    <Table columnOptions={columnOptions} rows={rows} clickable />
+    <Table
+      columnOptions={columnOptions}
+      rows={rows}
+      clickable
+      initialOrder={ORDER.DESC}
+    />
     {irs10yToModify && (
       <ModifyIrs10yDialogForm
         irs10yToModify={irs10yToModify}
