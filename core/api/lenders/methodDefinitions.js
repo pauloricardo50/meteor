@@ -27,7 +27,7 @@ export const lenderLinkOrganisationAndContact = new Method({
   name: 'lenderLinkOrganisationAndContact',
   params: {
     lenderId: String,
-    organisationId: String,
+    organisationId: Match.OneOf(String, null),
     contactId: Match.OneOf(String, null),
   },
 });

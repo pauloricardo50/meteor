@@ -31,16 +31,20 @@ const schema = existingOrganisations =>
       optional: true,
       defaultValue: null,
       condition: ({ organisationId }) => !!organisationId,
-      customAllowedValues: ({ organisationId }) => [
-        ...existingOrganisations
-          .find(({ _id }) => organisationId === _id)
-          .contacts.map(({ _id }) => _id),
-        null,
-      ],
+      customAllowedValues: ({ organisationId }) => {
+        const { contacts = [] } = existingOrganisations.find(({ _id }) => organisationId === _id);
+        return [...contacts.map(({ _id }) => _id), null];
+      },
       uniforms: {
         transform: (contactId) => {
           const { name } = existingOrganisations
-            .reduce((contacts, org) => [...contacts, ...org.contacts], [])
+            .reduce(
+              (allContacts, { contacts = [] }) => [
+                ...allContacts,
+                ...contacts,
+              ],
+              [],
+            )
             .find(({ _id }) => _id === contactId) || {};
           return name || 'Non spécifié';
         },

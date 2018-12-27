@@ -14,17 +14,21 @@ class LenderService extends CollectionService {
   }
 
   linkOrganisationAndContact({ lenderId, organisationId, contactId }) {
-    this.addLink({
-      id: lenderId,
-      linkName: 'organisation',
-      linkId: organisationId,
-    });
+    if (organisationId) {
+      this.addLink({
+        id: lenderId,
+        linkName: 'organisation',
+        linkId: organisationId,
+      });
+    }
     if (contactId) {
       this.addLink({
         id: lenderId,
         linkName: 'contact',
         linkId: contactId,
       });
+    } else {
+      this.removeLink({ id: lenderId, linkName: 'contact' });
     }
   }
 }
