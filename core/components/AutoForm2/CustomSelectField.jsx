@@ -60,7 +60,14 @@ export default class CustomSelectField extends Component<
         allowedValues={values || []}
         transform={transform || this.formatOption}
         renderValue={(value) => {
+          if (transform) {
+            return transform(value);
+          }
+
           if (value === undefined || value === '') {
+            return null;
+          }
+          if (value === null) {
             return null;
           }
 

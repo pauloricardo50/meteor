@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { InsertLenderDialogForm } from './LenderDialogForm';
+import OfferAdder from 'core/components/OfferAdder';
 import LendersActivation from './LendersActivation';
 import LenderList from './LenderList';
 import LenderPicker from './LenderPicker';
@@ -17,8 +17,8 @@ const LendersTab = (props: LendersTabProps) => {
   return (
     <div>
       <LendersActivation loan={props.loan} />
-      {/* <InsertLenderDialogForm loanId={loanId} /> */}
       <LenderPicker {...props} />
+      <OfferAdder loanId={loanId} />
       <LenderList {...props} />
     </div>
   );

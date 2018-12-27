@@ -2,10 +2,10 @@ import SimpleSchema from 'simpl-schema';
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
-import { PercentField } from 'imports/core/components/PercentInput/';
 import loanLenders from '../../api/lenders/queries/loanLenders';
 import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
 SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
@@ -17,10 +17,11 @@ const interestRatesSchema = ({ isDiscount }) =>
         type: Number,
         min: 0,
         max: 1,
-        uniforms: { component: PercentField },
+        uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
+        label: 'Yo!',
         optional: true,
-        condition: ({ hasCounterParts, hasFlatDiscount }) =>
-          (isDiscount ? hasCounterParts && !hasFlatDiscount : true),
+        condition: ({ hasCounterparts, hasFlatDiscount }) =>
+          (isDiscount ? hasCounterparts && !hasFlatDiscount : true),
       },
     }),
     {},
@@ -69,14 +70,16 @@ const schema = lenders =>
       type: Number,
       min: 0,
       max: 1,
-      uniforms: { component: PercentField },
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
       optional: false,
+      defaultValue: 0.65,
     },
     amortizationYears: {
       type: SimpleSchema.Integer,
       min: 0,
       max: 100,
       optional: true,
+      defaultValue: 15,
     },
     conditions: {
       type: Array,
@@ -88,18 +91,18 @@ const schema = lenders =>
       optional: true,
     },
     ...interestRatesSchema({ isDiscount: false }),
-    hasCounterParts: {
+    hasCounterparts: {
       type: Boolean,
       defaultValue: false,
       optional: true,
     },
-    counterParts: {
+    counterparts: {
       type: Array,
       optional: true,
       defaultValue: [],
-      condition: ({ hasCounterParts }) => hasCounterParts,
+      condition: ({ hasCounterparts }) => hasCounterparts,
     },
-    'counterParts.$': {
+    'counterparts.$': {
       type: String,
       optional: true,
     },
@@ -107,16 +110,16 @@ const schema = lenders =>
       type: Boolean,
       defaultValue: true,
       optional: true,
-      condition: ({ hasCounterParts }) => hasCounterParts,
+      condition: ({ hasCounterparts }) => hasCounterparts,
     },
     flatDiscount: {
       type: Number,
       min: 0,
       max: 1,
-      uniforms: { component: PercentField },
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
       optional: true,
-      condition: ({ hasCounterParts, hasFlatDiscount }) =>
-        hasCounterParts && hasFlatDiscount,
+      condition: ({ hasCounterparts, hasFlatDiscount }) =>
+        hasCounterparts && hasFlatDiscount,
     },
     ...interestRatesSchema({ isDiscount: true }),
   });
@@ -159,7 +162,7 @@ const mapValuesToOffer = ({
   fees,
   epotekFees,
   conditions = [],
-  hasCounterParts,
+  hasCounterparts,
   counterParts = [],
   hasFlatDiscount,
   flatDiscount,
@@ -175,7 +178,7 @@ const mapValuesToOffer = ({
     }),
   };
 
-  const counterPartsOffer = hasCounterParts
+  const counterPartsOffer = hasCounterparts
     ? {
       maxAmount,
       amortizationGoal,
@@ -197,7 +200,7 @@ const mapValuesToOffer = ({
       epotekFees,
       ...standardOffer,
     },
-    hasCounterParts && {
+    hasCounterparts && {
       lenderId,
       conditions: [...conditions, ...counterParts].filter(x => x),
       fees,

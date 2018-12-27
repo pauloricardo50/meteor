@@ -4,17 +4,18 @@ import React from 'react';
 import {
   LENDERS_COLLECTION,
   ORGANISATIONS_COLLECTION,
-  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
-import DropdownMenu from 'core/components/DropdownMenu';
-import { lenderLinkOrganisationAndContact } from 'imports/core/api/methods';
+import LenderContact from './LenderContact';
+import LenderOffer from './LenderOffer';
 
-type LenderProps = {};
+type LenderProps = {
+  lender: Object,
+};
 
 const Lender = ({
-  lender: { organisation, status, contact, _id: lenderId },
+  lender: { organisation, status, contact, _id: lenderId, offers = [] },
 }: LenderProps) => {
   // Organisation is undefined at the start, before grapher data settles down
   if (!organisation) {
@@ -41,25 +42,17 @@ const Lender = ({
           docId={lenderId}
         />
       </div>
-      <div className="flex center">
-        {contact && (
-          <CollectionIconLink
-            relatedDoc={{ ...contact, collection: CONTACTS_COLLECTION }}
-          />
-        )}
-        <DropdownMenu
-          iconType="edit"
-          options={[...contacts, { _id: null, name: 'Pas de contact' }].map(orgContact => ({
-            label: orgContact.name,
-            id: orgContact._id,
-            onClick: () =>
-              lenderLinkOrganisationAndContact.run({
-                lenderId,
-                contactId: orgContact._id,
-                organisationId: null,
-              }),
-          }))}
-        />
+
+      <LenderContact
+        contact={contact}
+        contacts={contacts}
+        lenderId={lenderId}
+      />
+
+      <div className="offers">
+        {offers.map(offer => (
+          <LenderOffer offer={offer} key={offer._id} />
+        ))}
       </div>
     </div>
   );

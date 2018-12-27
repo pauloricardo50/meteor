@@ -18,13 +18,6 @@ Offers.allow({
 });
 
 export const OfferSchema = new SimpleSchema({
-  // loanId: {
-  //   type: String,
-  // },
-  userId: {
-    type: String,
-    optional: true,
-  },
   createdAt,
   updatedAt,
   organisationLink: { type: Object, optional: true },

@@ -15,7 +15,12 @@ const LenderPicker = ({
   addLender,
   removeLender,
 }: LenderPickerProps) => (
-  <DialogSimple label="Choisir prêteurs" closeOnly primary>
+  <DialogSimple
+    label="Choisir prêteurs"
+    closeOnly
+    primary
+    rootStyle={{ marginRight: 8 }}
+  >
     <div className="lender-picker-dialog">
       <h3>Choisir prêteurs</h3>
       {count === 0 && (
@@ -26,9 +31,9 @@ const LenderPicker = ({
       )}
       {Object.keys(organisations).map(type => (
         <div key={type}>
-          <h4>
+          <h2>
             <T id={`Forms.type.${type}`} />
-          </h4>
+          </h2>
           {organisations[type].map(org => (
             <LenderPickerOrganisation
               key={org._id}

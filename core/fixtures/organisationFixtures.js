@@ -3,28 +3,32 @@ import random from 'lodash/random';
 
 import OrganisationService from '../api/organisations/OrganisationService';
 import ContactService from '../api/contacts/ContactService';
-import { ORGANISATION_TYPES } from '../api/constants';
+import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../api/constants';
 
 const orgs = [
   {
     name: 'UBS',
     type: ORGANISATION_TYPES.BANK,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/ubs-logo.png',
+    features: [ORGANISATION_FEATURES.LENDER],
   },
   {
     name: 'Crédit Suisse',
     type: ORGANISATION_TYPES.BANK,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/cs-logo.png',
+    features: [ORGANISATION_FEATURES.LENDER],
   },
   {
     name: 'Allianz',
     type: ORGANISATION_TYPES.INSURANCE,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/allianz-logo.png',
+    features: [ORGANISATION_FEATURES.LENDER],
   },
   {
     name: 'Pictet',
     type: ORGANISATION_TYPES.PRIVATE_BANK,
     logo: 'https://sos-ch-dk-2.exo.io/fixture-files/pictet-logo.png',
+    features: [ORGANISATION_FEATURES.LENDER],
   },
 ];
 
@@ -32,7 +36,7 @@ export const createOrganisations = () =>
   orgs.map((org) => {
     const orgId = OrganisationService.insert(org);
 
-    const contactCount = random(0, 3, false);
+    const contactCount = random(1, 3, false);
 
     for (let index = 0; index < contactCount; index++) {
       const contactId = ContactService.insert({

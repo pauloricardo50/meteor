@@ -11,15 +11,35 @@
     h3 {
       margin: 0;
     }
+
+    .offers {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+    }
+
+    .lender-offer {
+      padding: 16px;
+      border: 2px solid $border-grey;
+      border-radius: 4px;
+      margin-bottom: 4px;
+
+      &:hover {
+        border-color: $primary;
+      }
+    }
   }
 }
 
 .lender-picker-dialog {
   .organisation {
     display: flex;
+    justify-content: flex-start;
 
     h4 {
       margin-right: 8px;
+      width: 200px;
     }
   }
 }

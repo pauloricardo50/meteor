@@ -7,7 +7,7 @@ import DefaultSubmitField from 'uniforms-material/SubmitField';
 import T from '../Translation';
 import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
-import PercentInput from '../PercentInput';
+import { PercentField } from '../PercentInput';
 import CustomSelectField from './CustomSelectField';
 
 const determineComponentFromProps = ({
@@ -24,7 +24,7 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
-    return PercentInput;
+    return PercentField;
   }
 
   return false;

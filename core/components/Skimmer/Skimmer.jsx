@@ -26,7 +26,7 @@ const getElementToDisplay = (data, xPos) => {
   const trancheWidth = elementWidth / data.length;
   const trancheIndex = Math.floor(xPos / trancheWidth);
 
-  return data[trancheIndex];
+  return trancheIndex >= data.length ? data[0] : data[trancheIndex];
 };
 
 export default compose(
