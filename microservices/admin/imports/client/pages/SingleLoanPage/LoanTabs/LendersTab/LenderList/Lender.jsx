@@ -36,7 +36,7 @@ const Lender = ({
         </h3>
         <StatusLabel status={status} collection={LENDERS_COLLECTION} />
       </div>
-      <div className="flex">
+      <div className="flex center">
         {contact && (
           <CollectionIconLink
             relatedDoc={{ ...contact, collection: CONTACTS_COLLECTION }}

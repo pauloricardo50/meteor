@@ -65,14 +65,29 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
       icon: <FontAwesomeIcon icon={faCity} className="icon-link-icon" />,
       text: data.name,
     };
-  case ORGANISATIONS_COLLECTION:
+  case ORGANISATIONS_COLLECTION: {
+    let text;
+
+    if (data.$metadata.role) {
+      text = `${data.$metadata.role} @ ${data.name}`;
+    } else if (data.logo) {
+      text = (
+        <img
+          src={data.logo}
+          alt={data.name}
+          style={{ maxWidth: 100, maxHeight: 50 }}
+        />
+      );
+    } else {
+      text = data.name;
+    }
+
     return {
       link: `/organisations/${docId}`,
       icon: <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />,
-      text: data.$metadata.role
-        ? `${data.$metadata.role} @ ${data.name}`
-        : data.name,
+      text,
     };
+  }
   case CONTACTS_COLLECTION:
     return {
       link: `/contacts/${docId}`,
