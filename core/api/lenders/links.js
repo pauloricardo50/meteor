@@ -23,5 +23,6 @@ Lenders.addLinks({
   offers: {
     collection: Offers,
     inversedBy: 'lender',
+    autoremove: true,
   },
 });

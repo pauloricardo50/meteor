@@ -7,14 +7,14 @@ import {
   lenderLinkOrganisationAndContact,
 } from '../methodDefinitions';
 
-lenderInsert.setHandler((context, { lender }) => {
+lenderInsert.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return LenderService.insert(lender);
+  return LenderService.insert(params);
 });
 
-lenderRemove.setHandler((context, { lenderId }) => {
+lenderRemove.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return LenderService.remove(lenderId);
+  return LenderService.remove(params);
 });
 
 lenderUpdate.setHandler((context, { lenderId, object }) => {

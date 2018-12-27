@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import Lenders from './lenders';
 import CollectionService from '../helpers/CollectionService';
 
@@ -6,10 +8,23 @@ class LenderService extends CollectionService {
     super(Lenders);
   }
 
-  insert(object = {}) {
-    const { loanId, ...lender } = object;
-    const lenderId = super.insert(lender);
+  insert({ lender, contactId, organisationId }) {
+    const { loanId, ...data } = lender;
+
+    const existingLender = this.fetchOne({
+      filter: {
+        'loanLink._id': loanId,
+        'organisationLink._id': organisationId,
+      },
+    });
+
+    if (existingLender) {
+      throw new Meteor.Error('Peut pas ajouter le même prêteur 2 fois');
+    }
+
+    const lenderId = super.insert(data);
     this.addLink({ id: lenderId, linkName: 'loan', linkId: loanId });
+    this.linkOrganisationAndContact({ lenderId, organisationId, contactId });
     return lenderId;
   }
 
@@ -30,6 +45,10 @@ class LenderService extends CollectionService {
     } else {
       this.removeLink({ id: lenderId, linkName: 'contact' });
     }
+  }
+
+  remove({ lenderId }) {
+    super.remove(lenderId);
   }
 }
 

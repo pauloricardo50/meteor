@@ -5,6 +5,8 @@ export const lenderInsert = new Method({
   name: 'lenderInsert',
   params: {
     lender: Object,
+    organisationId: String,
+    contactId: Match.OneOf(String, null),
   },
 });
 

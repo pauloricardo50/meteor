@@ -5,6 +5,7 @@ import { address } from '../helpers/sharedSchemas';
 import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_TYPES,
+  ORGANISATION_FEATURES,
 } from './organisationConstants';
 
 const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
@@ -27,6 +28,11 @@ export const OrganisationSchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(ORGANISATION_TYPES),
+  },
+  features: { type: Array, optional: true, defaultValue: [] },
+  'features.$': {
+    type: String,
+    allowedValues: Object.values(ORGANISATION_FEATURES),
   },
   logo: {
     type: String,

@@ -49,6 +49,10 @@ class CollectionService {
     return this.collection.getLink(...args);
   }
 
+  countAll() {
+    return this.find({}).count();
+  }
+
   addLink({ id, linkName, linkId, metadata = {} }) {
     const linker = this.collection.getLink(id, linkName);
     const {

@@ -70,12 +70,11 @@ export default compose(
   withProps(({ existingOrganisations, loanId }) => ({
     schema: schema(existingOrganisations),
     insertLender: ({ organisationId, contactId, status }) =>
-      lenderInsert.run({ lender: { status, loanId } }).then(lenderId =>
-        lenderLinkOrganisationAndContact.run({
-          lenderId,
-          organisationId,
-          contactId,
-        })),
+      lenderInsert.run({
+        lender: { status, loanId },
+        organisationId,
+        contactId,
+      }),
     autoFieldProps: { labels: { status: <T id="Lenders.status" /> } },
   })),
 );

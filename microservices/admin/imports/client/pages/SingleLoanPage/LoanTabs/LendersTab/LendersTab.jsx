@@ -4,6 +4,7 @@ import React from 'react';
 import { InsertLenderDialogForm } from './LenderDialogForm';
 import LendersActivation from './LendersActivation';
 import LenderList from './LenderList';
+import LenderPicker from './LenderPicker';
 
 type LendersTabProps = {
   loan: Object,
@@ -16,7 +17,8 @@ const LendersTab = (props: LendersTabProps) => {
   return (
     <div>
       <LendersActivation loan={props.loan} />
-      <InsertLenderDialogForm loanId={loanId} />
+      {/* <InsertLenderDialogForm loanId={loanId} /> */}
+      <LenderPicker {...props} />
       <LenderList {...props} />
     </div>
   );
