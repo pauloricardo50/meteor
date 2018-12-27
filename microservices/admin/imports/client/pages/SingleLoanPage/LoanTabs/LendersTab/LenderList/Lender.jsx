@@ -16,7 +16,7 @@ type LenderProps = {};
 const Lender = ({
   lender: { organisation, status, contact, _id: lenderId },
 }: LenderProps) => {
-  // Organisation is undefined at the start
+  // Organisation is undefined at the start, before grapher data settles down
   if (!organisation) {
     return null;
   }
@@ -24,7 +24,7 @@ const Lender = ({
   const { contacts = [] } = organisation;
 
   return (
-    <div className="lender">
+    <div className="lender card1 card-top">
       <div className="flex center">
         <h3>
           <CollectionIconLink
@@ -34,7 +34,12 @@ const Lender = ({
             }}
           />
         </h3>
-        <StatusLabel status={status} collection={LENDERS_COLLECTION} />
+        <StatusLabel
+          status={status}
+          collection={LENDERS_COLLECTION}
+          allowModify
+          docId={lenderId}
+        />
       </div>
       <div className="flex center">
         {contact && (

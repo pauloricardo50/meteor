@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'core/components/Link';
 
 import T, { IntlNumber } from 'core/components/Translation';
-import UpdateField from 'core/components/UpdateField';
+import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
 import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
@@ -40,10 +40,11 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
         </small>
       )}
 
-      <UpdateField
+      <StatusLabel
         collection={LOANS_COLLECTION}
-        doc={loan}
-        fields={['status']}
+        status={loan.status}
+        allowModify
+        docId={loan._id}
       />
     </h1>
     {loan.hasPromotion && (
