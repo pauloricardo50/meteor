@@ -1,6 +1,6 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
-import faker from 'faker';
+import faker from 'faker/locale/fr';
 
 import { Users } from '../api';
 import { USER_PASSWORD } from './fixtureConstants';

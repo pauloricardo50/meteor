@@ -15,6 +15,7 @@ import {
   SecurityService,
   Tasks,
   Users,
+  Contacts,
 } from '../../api';
 import TaskService from '../../api/tasks/TaskService';
 import {
@@ -136,6 +137,7 @@ Meteor.methods({
     if (SecurityService.currentUserHasRole(ROLES.DEV) && isAuthorizedToRun()) {
       await Promise.all([
         Borrowers.rawCollection().remove({}),
+        Contacts.rawCollection().remove({}),
         Loans.rawCollection().remove({}),
         Lots.remove({}),
         Offers.rawCollection().remove({}),

@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from 'faker/locale/fr';
 import BorrowerService from '../api/borrowers/BorrowerService';
 import { Borrowers } from '../api';
 import { RESIDENCE_TYPE, OTHER_INCOME, EXPENSES } from '../api/constants';
