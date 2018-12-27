@@ -14,8 +14,20 @@ if (Meteor.isServer) {
 }
 
 const rateLimitedMethods = [];
+
 const defaultLimit = 5;
 const defaultTimeRange = 1000;
+
+const defaultRateLimit = {
+  global: {
+    limit: defaultLimit,
+    timeRange: defaultTimeRange,
+  },
+  dev: {
+    limit: 300,
+    timeRange: defaultTimeRange,
+  },
+};
 
 const roleLimiterCheckPattern = Match.Optional(Match.ObjectIncluding({
   limit: Match.Optional(Number),
@@ -45,30 +57,23 @@ const methodLimiterRule = ({ name, limitRoles = [], role = 'global' }) => ({
 
 export const getRateLimitedMethods = () => rateLimitedMethods;
 
-export const setMethodLimiter = ({ name, rateLimit, testRateLimit }) => {
+export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
   if (Meteor.isServer && (!Meteor.isAppTest || testRateLimit)) {
-    if (rateLimit) {
-      const limitRoles = Object.keys(rateLimit);
-      check(rateLimit, rateLimitCheckPattern(limitRoles));
-      if (!limitRoles.length) {
-        DDPRateLimiter.addRule(methodLimiterRule({
-          name,
-          limitRoles,
-        }), defaultLimit, defaultTimeRange);
-      } else {
-        limitRoles.forEach((role) => {
-          const {
-            limit = defaultLimit,
-            timeRange = defaultTimeRange,
-          } = rateLimit[role];
-          DDPRateLimiter.addRule(methodLimiterRule({
-            name,
-            role,
-            limitRoles,
-          }), limit, timeRange);
-        });
-      }
-      rateLimitedMethods.push(name);
-    }
+    const currentRateLimit = { ...defaultRateLimit, ...rateLimit };
+    const limitRoles = Object.keys(currentRateLimit);
+    check(currentRateLimit, rateLimitCheckPattern(limitRoles));
+    limitRoles.forEach((role) => {
+      const {
+        limit = defaultLimit,
+        timeRange = defaultTimeRange,
+      } = currentRateLimit[role];
+      console.log(name, role, limit, timeRange)
+      DDPRateLimiter.addRule(methodLimiterRule({
+        name,
+        role,
+        limitRoles,
+      }), limit, timeRange);
+    });
+    rateLimitedMethods.push(name);
   }
 };

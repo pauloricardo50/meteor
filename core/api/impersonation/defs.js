@@ -6,5 +6,4 @@ export const impersonateUser = new Method({
     authToken: String,
     userId: String,
   },
-  rateLimit: {},
 });
