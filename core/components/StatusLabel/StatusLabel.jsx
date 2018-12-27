@@ -17,7 +17,13 @@ import {
 } from '../../api/constants';
 import T from '../Translation';
 
-type StatusLabelProps = {};
+type StatusLabelProps = {
+  status: string,
+  collection: string,
+  suffix?: string,
+  label: React.Node,
+  color: string,
+};
 
 const getStatusColor = (status, collection) => {
   switch (collection) {
@@ -78,7 +84,7 @@ const StatusLabel = ({
   label = null,
   color = null,
 }: StatusLabelProps) => (
-  <div
+  <span
     className="status-label"
     style={{
       backgroundColor: color || getStatusColor(status, collection),
@@ -88,7 +94,7 @@ const StatusLabel = ({
       {label || <T id={`Forms.status.${status}`} />}
       {suffix}
     </span>
-  </div>
+  </span>
 );
 
 export default StatusLabel;
