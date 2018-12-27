@@ -12,10 +12,12 @@ class LenderService extends CollectionService {
     const { loanId, ...data } = lender;
 
     const existingLender = this.fetchOne({
-      filter: {
+      $filters: {
         'loanLink._id': loanId,
         'organisationLink._id': organisationId,
       },
+      organisationLink: 1,
+      loanLink: 1,
     });
 
     if (existingLender) {

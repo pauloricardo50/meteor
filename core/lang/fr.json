@@ -1,4 +1,6 @@
 {
+  "Forms.features": "Fonctionnalités",
+  "Forms.features.LENDER": "Prêteur",
   "OrganisationTabs.contacts": "Contacts",
   "OrganisationTabs.offers": "Offres",
   "Forms.organisationId": "Organisation",

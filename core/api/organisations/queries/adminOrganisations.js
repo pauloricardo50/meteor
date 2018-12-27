@@ -1,6 +1,6 @@
 import Organisations from '../organisations';
 import { ORGANISATION_QUERIES } from '../organisationConstants';
-import { fullOrganisationFragment } from './organisationFragments';
+import fullOrganisationFragment from './organisationFragments/fullOrganisationFragment';
 
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,

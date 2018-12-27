@@ -9,6 +9,9 @@ Organisations.addReducers({
       lenders: { offers: fullOfferFragment },
     },
     reduce: ({ lenders = [] }) =>
-      lenders.reduce((allOffers, { offers }) => [...allOffers, ...offers], []),
+      lenders.reduce(
+        (allOffers, { offers = [] }) => [...allOffers, ...offers],
+        [],
+      ),
   },
 });

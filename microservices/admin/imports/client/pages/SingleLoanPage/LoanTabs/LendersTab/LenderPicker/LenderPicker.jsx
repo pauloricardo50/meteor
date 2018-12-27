@@ -16,7 +16,7 @@ const LenderPicker = ({
   removeLender,
 }: LenderPickerProps) => (
   <DialogSimple label="Choisir prêteurs" closeOnly primary>
-    <div>
+    <div className="lender-picker-dialog">
       <h3>Choisir prêteurs</h3>
       {count === 0 && (
         <h1 className="secondary">

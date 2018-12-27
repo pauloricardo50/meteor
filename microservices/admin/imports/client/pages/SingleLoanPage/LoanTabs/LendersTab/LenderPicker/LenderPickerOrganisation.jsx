@@ -11,11 +11,17 @@ const LenderPickerOrganisation = ({
   removeLender,
   isActive,
 }: LenderPickerOrganisationProps) => (
-  <div>
+  <div className="flex center organisation">
     <h4>{name}</h4>
-    {isActive && <Button onClick={() => removeLender()}>Supprimer</Button>}
+    {isActive && (
+      <Button raised error onClick={() => removeLender(organisationId)}>
+        Supprimer
+      </Button>
+    )}
     {!isActive && (
-      <Button onClick={() => addLender(organisationId)}>Ajouter</Button>
+      <Button raised primary onClick={() => addLender(organisationId)}>
+        Ajouter
+      </Button>
     )}
   </div>
 );

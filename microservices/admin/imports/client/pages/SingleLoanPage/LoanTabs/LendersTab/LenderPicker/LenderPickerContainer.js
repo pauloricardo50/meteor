@@ -20,11 +20,16 @@ export default compose(
     count: organisations.length,
     organisations: formatOrganisations(organisations),
     addLender: organisationId =>
-      lenderInsert.run({ lender: { loanId }, organisationId }),
-    removeLender: organisationId =>
-      lenderRemove.run({
-        lenderId: lenders.find(({ organisation }) =>
-          organisation && organisation._id === organisationId)._id,
-      }),
+      lenderInsert.run({ lender: { loanId }, organisationId, contactId: null }),
+    removeLender: (organisationId) => {
+      const lenderToRemove = lenders.find(({ organisation }) =>
+        organisation && organisation._id === organisationId);
+
+      const confirmed = window.confirm('Supprimera les offres de ce prêteur aussi, si il y en a.');
+
+      if (confirmed) {
+        return lenderRemove.run({ lenderId: lenderToRemove._id });
+      }
+    },
   })),
 );

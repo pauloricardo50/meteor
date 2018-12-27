@@ -1,4 +1,4 @@
-export const fullOrganisationFragment = {
+export const baseOrganisationFragment = {
   address: 1,
   address1: 1,
   address2: 1,

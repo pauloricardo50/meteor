@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import SelectField from 'uniforms-material/SelectField';
 
+import Chip from '../Material/Chip';
 import T from '../Translation';
 import Loading from '../Loading/Loading';
 
@@ -45,18 +46,36 @@ export default class CustomSelectField extends Component<
     }
   };
 
+  formatOption = (option) => {
+    const { intlId, name } = this.props;
+    return <T id={`Forms.${intlId || name}.${option}`} />;
+  };
+
   render() {
-    const { transform, submitting, intlId, name, ...props } = this.props;
+    const { transform, submitting, ...props } = this.props;
     const { values } = this.state;
     return values || submitting ? (
       <SelectField
         {...props}
-        name={name}
         allowedValues={values || []}
-        transform={
-          transform
-          || (option => <T id={`Forms.${intlId || name}.${option}`} />)
-        }
+        transform={transform || this.formatOption}
+        renderValue={(value) => {
+          if (value === undefined || value === '') {
+            return null;
+          }
+
+          if (Array.isArray(value)) {
+            return value.map(val => (
+              <Chip
+                key={val}
+                label={this.formatOption(val)}
+                style={{ marginRight: 4 }}
+              />
+            ));
+          }
+
+          return this.formatOption(value);
+        }}
         displayEmpty
       />
     ) : (
