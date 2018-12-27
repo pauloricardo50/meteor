@@ -26,7 +26,7 @@ taskComplete.setHandler((context, params) => {
 
 taskCompleteByType.setHandler((context, params) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.completeByType(params);
+  return TaskService.completeTaskByType(params);
 });
 
 taskChangeStatus.setHandler((context, params) => {
