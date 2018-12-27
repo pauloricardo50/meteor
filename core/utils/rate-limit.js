@@ -67,7 +67,6 @@ export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
         limit = defaultLimit,
         timeRange = defaultTimeRange,
       } = currentRateLimit[role];
-      console.log(name, role, limit, timeRange)
       DDPRateLimiter.addRule(methodLimiterRule({
         name,
         role,
