@@ -5,7 +5,6 @@ import {
   Borrowers,
   Users,
   Tasks,
-  Offers,
   Promotions,
   PromotionOptions,
   Lenders,
@@ -31,11 +30,6 @@ Loans.addLinks({
     collection: Tasks,
     inversedBy: 'loan',
   },
-  // offers: {
-  //   collection: Offers,
-  //   inversedBy: 'loan',
-  //   autoremove: true,
-  // },
   promotions: {
     field: 'promotionLinks',
     collection: Promotions,

@@ -17,8 +17,6 @@ export const fullOfferFragment = {
     contact: { _id: 1, name: 1 },
     organisation: { _id: 1, name: 1 },
   },
-  loanId: 1,
   maxAmount: 1,
-  organisation: { name: 1, logo: 1 },
   user: simpleUserFragment,
 };
