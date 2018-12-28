@@ -1,38 +1,45 @@
 // @flow
-import React from 'react';
-import { compose, withProps, withState } from 'recompose';
+import React, { Component } from 'react';
 
-type SkimmerProps = {};
+type SkimmerProps = {
+  data: Array<any>,
+};
+type SkimmerState = {};
 
-const element = React.createRef();
-
-const Skimmer = ({ onMouseMove, toDisplay, ...props }: SkimmerProps) => (
-  <div ref={element} onMouseMove={onMouseMove} {...props}>
-    {toDisplay}
-  </div>
-);
-
-const getElementToDisplay = (data, xPos) => {
-  const elementWidth = element.current && element.current.clientWidth;
-
-  if (!data || data.length === 0) {
+const getElementToDisplay = (data, xPos, ref) => {
+  if (!ref.current || !data || data.length === 0) {
     return null;
   }
 
-  if (!elementWidth || !xPos) {
+  const { clientWidth } = ref.current;
+
+  if (!clientWidth || !xPos) {
     return data[0];
   }
 
-  const trancheWidth = elementWidth / data.length;
+  const trancheWidth = clientWidth / data.length;
   const trancheIndex = Math.floor(xPos / trancheWidth);
 
   return trancheIndex >= data.length ? data[0] : data[trancheIndex];
 };
 
-export default compose(
-  withState('xPos', 'setX', 0),
-  withProps(({ setX, data, xPos }) => ({
-    onMouseMove: event => setX(event.pageX - element.current.offsetLeft),
-    toDisplay: getElementToDisplay(data, xPos),
-  })),
-)(Skimmer);
+export default class Skimmer extends Component<SkimmerProps, SkimmerState> {
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef();
+    this.state = { xPos: 0 };
+  }
+
+  setX = event =>
+    this.setState({ xPos: event.pageX - this.ref.current.offsetLeft });
+
+  render() {
+    const { data } = this.props;
+    const { xPos } = this.state;
+    return (
+      <div ref={this.ref} onMouseMove={this.setX} {...this.props}>
+        {getElementToDisplay(data, xPos, this.ref)}
+      </div>
+    );
+  }
+}
