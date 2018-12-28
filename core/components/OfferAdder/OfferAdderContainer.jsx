@@ -163,7 +163,7 @@ const mapValuesToOffer = ({
   epotekFees,
   conditions = [],
   hasCounterparts,
-  counterParts = [],
+  counterparts = [],
   hasFlatDiscount,
   flatDiscount,
   ...interestRates
@@ -178,7 +178,7 @@ const mapValuesToOffer = ({
     }),
   };
 
-  const counterPartsOffer = hasCounterparts
+  const counterpartsOffer = hasCounterparts
     ? {
       maxAmount,
       amortizationGoal,
@@ -202,10 +202,10 @@ const mapValuesToOffer = ({
     },
     hasCounterparts && {
       lenderId,
-      conditions: [...conditions, ...counterParts].filter(x => x),
+      conditions: [...conditions, ...counterparts].filter(x => x),
       fees,
       epotekFees,
-      ...counterPartsOffer,
+      ...counterpartsOffer,
     },
   ].filter(x => x);
 };
