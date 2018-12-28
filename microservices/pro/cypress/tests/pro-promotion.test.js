@@ -50,7 +50,7 @@ describe('Pro', () => {
         cy.contains('Test promotion').click();
 
         cy.get('.promotion-table-actions > button:first-of-type').click();
-        cy.get('.autoform-dialog').contains('Ajouter');
+        cy.wait(2000); // Try to wait for focus to settle
 
         // Form should have autofocus
         cy.focused().type('Promotion lot 1');
