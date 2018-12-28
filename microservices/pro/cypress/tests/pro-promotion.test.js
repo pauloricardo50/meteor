@@ -3,7 +3,7 @@ import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
 describe('Pro', () => {
   before(() => {
-    cy.visit('/');
+    cy.visit('/login');
     cy.callMethod('resetDatabase');
     cy.callMethod('generateProFixtures');
   });
@@ -17,7 +17,7 @@ describe('Pro', () => {
 
   context('when logged in', () => {
     beforeEach(() => {
-      cy.visit('/');
+      cy.visit('/login');
       cy.meteorLogin(PRO_EMAIL, PRO_PASSWORD);
       cy.visit('/');
     });
