@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Lenders from './lenders';
 import CollectionService from '../helpers/CollectionService';
+import OrganisationService from '../organisations/OrganisationService';
 
 class LenderService extends CollectionService {
   constructor() {
@@ -26,6 +27,19 @@ class LenderService extends CollectionService {
 
     const lenderId = super.insert(data);
     this.addLink({ id: lenderId, linkName: 'loan', linkId: loanId });
+
+    // If no contact is set, fetch first contact of organisation
+    if (!contactId) {
+      const { contacts } = OrganisationService.fetchOne({
+        $filters: { _id: organisationId },
+        contacts: { _id: 1 },
+      });
+
+      if (contacts && contacts.length > 0) {
+        contactId = contacts[0]._id;
+      }
+    }
+
     this.linkOrganisationAndContact({ lenderId, organisationId, contactId });
     return lenderId;
   }
