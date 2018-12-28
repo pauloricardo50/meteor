@@ -80,7 +80,19 @@ Cypress.Commands.add('routeTo', (path) => {
   });
 });
 
+// This is helpful to avoid weird issues when starting tests
+// Always make sure to `get` something on the page before doing things
+// Otherwise meteor methods might time out because of multiple websocket
+// connections
 Cypress.Commands.add('initiateTest', () => {
-  cy.visit('/login');
+  const projectName = Cypress.config('projectName');
+
+  // Visit login page on all microservices except www to start tests
+  if (projectName === 'www') {
+    cy.visit('/');
+  } else {
+    cy.visit('/login');
+  }
+
   cy.get('.logo');
 });

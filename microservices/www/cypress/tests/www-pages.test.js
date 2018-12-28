@@ -29,6 +29,8 @@ const pages = {
 
 describe('Www Pages', () => {
   before(() => {
+    cy.initiateTest();
+
     cy.callMethod('resetDatabase');
     cy.callMethod('generateFixtures');
   });

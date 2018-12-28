@@ -30,7 +30,8 @@ const assertFinmaValue = (label, value) => () =>
 describe('Widget1', () => {
   describe('On homepage', () => {
     before(() => {
-      cy.visit('/');
+      cy.initiateTest();
+
       cy.callMethod('resetDatabase');
       cy.callMethod('generateFixtures');
     });
