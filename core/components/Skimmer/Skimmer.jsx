@@ -4,7 +4,9 @@ import React, { Component } from 'react';
 type SkimmerProps = {
   data: Array<any>,
 };
-type SkimmerState = {};
+type SkimmerState = {
+  xPos: number,
+};
 
 const getElementToDisplay = (data, xPos, ref) => {
   if (!ref.current || !data || data.length === 0) {
@@ -20,7 +22,13 @@ const getElementToDisplay = (data, xPos, ref) => {
   const trancheWidth = clientWidth / data.length;
   const trancheIndex = Math.floor(xPos / trancheWidth);
 
-  return trancheIndex >= data.length ? data[0] : data[trancheIndex];
+  // When trancheIndex goes out of bounds, usually at the edges, simply
+  // return the first data point
+  if (trancheIndex < 0 || trancheIndex >= data.length) {
+    return data[0];
+  }
+
+  return data[trancheIndex];
 };
 
 export default class Skimmer extends Component<SkimmerProps, SkimmerState> {
