@@ -5,22 +5,21 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { ROLES } from 'core/api/constants';
 import { Method } from '../../api/methods';
 
-const methodWitoutLimit = new Method({
-  name: 'methodWitoutLimit',
+const methodWithoutSetLimit = new Method({
+  name: 'methodWithoutSetLimit',
   testRateLimit: true, // Additional param only for test limits logic
 });
-methodWitoutLimit.setHandler(() => 1);
+methodWithoutSetLimit.setHandler(() => 1);
 
-const methodWithDefaultLimit = new Method({
-  name: 'methodWithDefaultLimit',
+const methodWithSetDefaultLimit = new Method({
+  name: 'methodWithSetDefaultLimit',
   testRateLimit: true, // Additional param only for test limits logic
   rateLimit: {},
 });
-methodWithDefaultLimit.setHandler(() => 1);
+methodWithSetDefaultLimit.setHandler(() => 1);
 
-
-const methodWithtLimit = new Method({
-  name: 'methodWithtLimit',
+const methodWithSetLimit = new Method({
+  name: 'methodWithSetLimit',
   testRateLimit: true, // Additional param only for test limits logic
   rateLimit: {
     global: {
@@ -33,7 +32,7 @@ const methodWithtLimit = new Method({
     },
   },
 });
-methodWithtLimit.setHandler(() => 1);
+methodWithSetLimit.setHandler(() => 1);
 
 Meteor.methods({
   serverLog: (log) => {

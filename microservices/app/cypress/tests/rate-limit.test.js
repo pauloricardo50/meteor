@@ -13,10 +13,10 @@ describe('Method rate limits', () => {
     cy.meteorLogout();
   });
 
-  describe('Method without defined limit', () => {
+  describe('Method without set limit', () => {
     it('method should allow call 5 times', () => {
       for (let i = 0; i < 5; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithoutSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
@@ -24,27 +24,27 @@ describe('Method rate limits', () => {
 
     it('method should not allow call 6 times as logged out', () => {
       for (let i = 0; i < 5; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithoutSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithoutSetLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
 
     it('method should not allow call 6 times as user', () => {
       cy.meteorLogin(E2E_USER_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 5; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithoutSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithoutSetLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 6 times as dev', () => {
       cy.meteorLogin(E2E_DEV_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 6; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithoutSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
@@ -54,7 +54,7 @@ describe('Method rate limits', () => {
   describe('Method with default limit', () => {
     it('method should allow call 5 times', () => {
       for (let i = 0; i < 5; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithSetDefaultLimit').then((data) => {
           expect(data).equal(1);
         });
       }
@@ -62,37 +62,37 @@ describe('Method rate limits', () => {
 
     it('method should not allow call 6 times as logged out', () => {
       for (let i = 0; i < 5; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithSetDefaultLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
 
     it('method should not allow call 6 times as user', () => {
       cy.meteorLogin(E2E_USER_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 5; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithSetDefaultLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 6 times as dev', () => {
       cy.meteorLogin(E2E_DEV_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 6; i += 1) {
-        cy.callMethod('methodWithDefaultLimit').then((data) => {
+        cy.callMethod('methodWithSetDefaultLimit').then((data) => {
           expect(data).equal(1);
         });
       }
     });
   });
 
-  describe('Method with limit', () => {
+  describe('Method with set limit', () => {
     it('method should allow call 3 times as logged out', () => {
       for (let i = 0; i < 3; i += 1) {
-        cy.callMethod('methodWithtLimit').then((data) => {
+        cy.callMethod('methodWithSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
@@ -100,17 +100,17 @@ describe('Method rate limits', () => {
 
     it('method should not allow call 4 times as logged out', () => {
       for (let i = 0; i < 3; i += 1) {
-        cy.callMethod('methodWithtLimit').then((data) => {
+        cy.callMethod('methodWithSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithtLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 3 times as user', () => {
       cy.meteorLogin(E2E_USER_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 3; i += 1) {
-        cy.callMethod('methodWithtLimit').then((data) => {
+        cy.callMethod('methodWithSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
@@ -119,17 +119,17 @@ describe('Method rate limits', () => {
     it('method should not allow call 4 times as user', () => {
       cy.meteorLogin(E2E_USER_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 3; i += 1) {
-        cy.callMethod('methodWithtLimit').then((data) => {
+        cy.callMethod('methodWithSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithtLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 4 times as dev', () => {
       cy.meteorLogin(E2E_DEV_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 4; i += 1) {
-        cy.callMethod('methodWithtLimit').then((data) => {
+        cy.callMethod('methodWithSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
@@ -138,11 +138,11 @@ describe('Method rate limits', () => {
     it('method should not allow call 5 times as dev', () => {
       cy.meteorLogin(E2E_DEV_EMAIL, USER_PASSWORD);
       for (let i = 0; i < 4; i += 1) {
-        cy.callMethod('methodWithtLimit').then((data) => {
+        cy.callMethod('methodWithSetLimit').then((data) => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithtLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetLimit').then(err => expect(err.error).equal('too-many-requests'));
     });
   });
 });

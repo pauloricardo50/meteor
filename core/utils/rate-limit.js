@@ -61,18 +61,22 @@ export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
   if (Meteor.isServer && (!Meteor.isAppTest || testRateLimit)) {
     const currentRateLimit = { ...defaultRateLimit, ...rateLimit };
     const limitRoles = Object.keys(currentRateLimit);
+
     check(currentRateLimit, rateLimitCheckPattern(limitRoles));
+
     limitRoles.forEach((role) => {
       const {
         limit = defaultLimit,
         timeRange = defaultTimeRange,
       } = currentRateLimit[role];
+
       DDPRateLimiter.addRule(methodLimiterRule({
         name,
         role,
         limitRoles,
       }), limit, timeRange);
     });
+
     rateLimitedMethods.push(name);
   }
 };
