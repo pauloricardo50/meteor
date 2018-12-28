@@ -42,19 +42,19 @@ export const createYannisData = (userId) => {
 
 export const createYannisUser = () => {
   console.log('creating yannis...');
-  // const userId = Accounts.createUser({
-  //   email: 'y@nnis.ch',
-  //   password: 'Yannis1977',
-  // });
+  const userId = Accounts.createUser({
+    email: 'y@nnis.ch',
+    password: 'Yannis1977',
+  });
 
-  // Roles.setUserRoles(userId, ROLES.DEV);
+  Roles.setUserRoles(userId, ROLES.DEV);
 
-  // UserService.update({
-  //   userId,
-  //   object: { firstName: 'Yannis', lastName: 'Demo' },
-  // });
+  UserService.update({
+    userId,
+    object: { firstName: 'Yannis', lastName: 'Demo' },
+  });
 
-  // createYannisData(userId);
+  createYannisData(userId);
 
   console.log('Yannis created !');
 };
