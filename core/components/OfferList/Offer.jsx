@@ -9,7 +9,11 @@ const Offer = ({ offer, offerValues }) => (
     <img src={offer.organisation.logo} alt={offer.organisation.name} />
     <div className="offer-list-item-detail">
       {offerValues.map(offerValue => (
-        <OfferField key={offer._id} offerValue={offerValue} offer={offer} />
+        <OfferField
+          key={offerValue.key}
+          offerValue={offerValue}
+          offer={offer}
+        />
       ))}
       <OfferModifier offer={offer} />
     </div>

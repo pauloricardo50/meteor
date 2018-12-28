@@ -1,4 +1,5 @@
 import { ORDER } from '../../utils/sortArrayOfObjects';
+import makeSorter from '../../utils/sorting';
 
 export { ORDER } from '../../utils/sortArrayOfObjects';
 
@@ -9,31 +10,21 @@ export const shouldDisplayLabelAndData = columnValue =>
   && 'raw' in columnValue
   && 'label' in columnValue;
 
-const makeSortFunc = orderBy => (a, b) => {
-  let valueA = a.columns[orderBy];
-  let valueB = b.columns[orderBy];
+const makeSortFunc = (orderBy, isReversed) => {
+  const sorter = makeSorter(isReversed);
 
-  // Add support for columns that have a label and raw data
-  if (shouldDisplayLabelAndData(valueA)) {
-    valueA = valueA.raw;
-    valueB = valueB.raw;
-  }
+  return (a, b) => {
+    let valueA = a.columns[orderBy];
+    let valueB = b.columns[orderBy];
 
-  if (typeof valueA === 'string') {
-    if (typeof valueB === 'string') {
-      // a and b are strings
-
-      return valueA.localeCompare(valueB);
+    // Add support for columns that have a label and raw data
+    if (shouldDisplayLabelAndData(valueA)) {
+      valueA = valueA.raw;
+      valueB = valueB.raw;
     }
-    // a string and b number
-    return 1; // a > b
-  }
-  if (typeof valueB === 'string') {
-    // a number and b string
-    return -1; // a < b
-  }
-  // a and b are numbers
-  return Number.parseFloat(valueA) - Number.parseFloat(valueB);
+
+    return sorter(valueA, valueB);
+  };
 };
 
 const determineOrder = ({
@@ -78,14 +69,7 @@ export const sortData = ({
     changeOrder,
   });
 
-  const sortedData = data.sort(makeSortFunc(newOrderBy));
-  const sortedDataInCorrectOrder = isReversed
-    ? sortedData.slice().reverse()
-    : sortedData;
+  const sortedData = data.sort(makeSortFunc(newOrderBy, isReversed));
 
-  return {
-    data: sortedDataInCorrectOrder,
-    order: finalOrder,
-    orderBy: newOrderBy,
-  };
+  return { data: sortedData, order: finalOrder, orderBy: newOrderBy };
 };
