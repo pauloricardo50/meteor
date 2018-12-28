@@ -1,33 +1,40 @@
 // @flow
 import React from 'react';
 
-import { DialogForm } from 'core/components/Form';
-import T from 'core/components/Translation';
-import { baseForm, interestRatesFormArray } from '../OfferAdder/OfferAdder';
+import { AutoFormDialog } from '../AutoForm2';
+import T from '../Translation';
 import Button from '../Button';
 import OfferModiferContainer from './OfferModifierContainer';
-
-const FORM_NAME = 'offer-modifier';
-const formArray = loanId => [...baseForm(loanId), ...interestRatesFormArray()];
+import { offerDelete } from '../../api';
 
 type OfferModifierProps = {};
 
-const OfferModifier = ({ onSubmit, offer, loanId }: OfferModifierProps) => (
-  <DialogForm
-    title={<T id="OfferModifier.dialogTitle" />}
-    form={FORM_NAME}
+const OfferModifier = ({ onSubmit, offer, schema }: OfferModifierProps) => (
+  <AutoFormDialog
     onSubmit={onSubmit}
-    initialValues={{
-      ...offer,
-      organisation: offer.organisation ? offer.organisation._id : undefined,
+    model={offer}
+    schema={schema}
+    buttonProps={{
+      label: <T id="general.modify" />,
+      raised: true,
+      primary: true,
+      style: { alignSelf: 'center' },
     }}
-    formArray={formArray(loanId)}
-    destroyOnUnmount
-    button={
-      <Button>
-        <T id="general.modify" />
+    renderAdditionalActions={({ closeDialog }) => (
+      <Button
+        onClick={() => {
+          const confirm = window.confirm("T'es sûr mon pote?");
+          if (confirm) {
+            offerDelete.run({ offerId: offer._id }).then(closeDialog);
+          } else {
+            return Promise.resolve();
+          }
+        }}
+        error
+      >
+        <T id="general.delete" />
       </Button>
-    }
+    )}
   />
 );
 

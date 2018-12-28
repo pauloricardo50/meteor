@@ -32,7 +32,7 @@ class OfferList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { sort: 'monthly', isAscending: true };
+    this.state = { sort: 'maxAmount', isAscending: false };
   }
 
   handleChange = (_, value) => this.setState({ sort: value });

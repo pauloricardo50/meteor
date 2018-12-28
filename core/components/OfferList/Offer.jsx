@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { offerDelete } from '../../api';
-import ConfirmMethod from '../ConfirmMethod';
 import OfferField from './OfferField';
 import OfferModifier from './OfferModifier';
 
@@ -13,12 +11,7 @@ const Offer = ({ offer, offerValues }) => (
       {offerValues.map(offerValue => (
         <OfferField key={offer._id} offerValue={offerValue} offer={offer} />
       ))}
-      {/* <OfferModifier offer={offer} /> */}
-      <ConfirmMethod
-        label="Supprimer"
-        keyword="Supprimer"
-        method={() => offerDelete.run({ offerId: offer.id })}
-      />
+      <OfferModifier offer={offer} />
     </div>
   </div>
 );

@@ -77,6 +77,14 @@ export const OfferSchema = new SimpleSchema({
   feedback: { type: String, optional: true },
 });
 
+export const AdminOfferSchema = OfferSchema.omit(
+  'lenderLink',
+  'organisationLink',
+  'contactLink',
+  'createdAt',
+  'updatedAt',
+);
+
 // Attach schema
 Offers.attachSchema(OfferSchema);
 export default Offers;
