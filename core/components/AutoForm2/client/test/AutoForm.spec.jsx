@@ -6,14 +6,14 @@ import SimpleSchema from 'simpl-schema';
 import TextField from 'uniforms-material/TextField';
 import Button from '@material-ui/core/Button';
 
-import getMountedComponent from '../../../utils/testHelpers/getMountedComponent';
+import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 
-import AutoForm from '../AutoForm';
-import CustomSelectField from '../CustomSelectField';
-import DateField from '../../DateField/DateField';
-import { CUSTOM_AUTOFIELD_TYPES } from '../constants';
-import { PercentField } from '../../PercentInput';
-import { CustomAutoField } from '../AutoFormComponents';
+import AutoForm from '../../AutoForm';
+import CustomSelectField from '../../CustomSelectField';
+import DateField from '../../../DateField';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../constants';
+import { PercentField } from '../../../PercentInput';
+import { CustomAutoField } from '../../AutoFormComponents';
 
 let props;
 const component = () =>

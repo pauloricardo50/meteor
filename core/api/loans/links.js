@@ -54,5 +54,6 @@ Loans.addLinks({
     collection: Lenders,
     inversedBy: 'loan',
     unique: true,
+    autoremove: true,
   },
 });

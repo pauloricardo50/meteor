@@ -11,6 +11,7 @@ import {
 } from './constants';
 import {
   Borrowers,
+  Lenders,
   Loans,
   Lots,
   Offers,
@@ -129,3 +130,5 @@ Factory.define('organisation', Organisations, {
   name: 'UBS SA',
   type: ORGANISATION_TYPES.BANK,
 });
+
+Factory.define('lender', Lenders, {});

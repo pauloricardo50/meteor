@@ -15,7 +15,7 @@ describe('LenderService', () => {
   describe('remove', () => {
     it('removes all offers related to this lender', () => {
       const loanId = Factory.create('loan')._id;
-      const lenderId = LenderService.insert({ loanId });
+      const lenderId = LenderService.insert({ lender: { loanId } });
       const offerId = Factory.create('offer')._id;
 
       OfferService.addLink({
