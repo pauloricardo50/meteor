@@ -16,7 +16,7 @@ const LendersTab = (props: LendersTabProps) => {
     loan: { _id: loanId, offers },
   } = props;
   return (
-    <div>
+    <div className="lenders-tab">
       <LendersActivation loan={props.loan} />
       <LenderPicker {...props} />
       <OfferAdder loanId={loanId} />

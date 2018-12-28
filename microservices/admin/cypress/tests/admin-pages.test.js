@@ -45,9 +45,9 @@ const pages = {
         shouldRender: '.single-property-page .google-map',
       }),
 
-    'Loan Offers Tab': ({ loan: { _id } }) =>
-      route(`/loans/${_id}/offers`, {
-        shouldRender: '.offers-tab',
+    'Loan Lenders Tab': ({ loan: { _id } }) =>
+      route(`/loans/${_id}/lenders`, {
+        shouldRender: '.lenders-tab',
       }),
 
     'Loan Documents Tab': ({ loan: { _id } }) =>
@@ -90,7 +90,8 @@ describe('Admin Pages', () => {
   let testData;
 
   before(() => {
-    cy.visit('/');
+    cy.visit('/login');
+    cy.contains('Accédez');
     cy.callMethod('resetDatabase');
 
     // FIXME: This method's call is never returning

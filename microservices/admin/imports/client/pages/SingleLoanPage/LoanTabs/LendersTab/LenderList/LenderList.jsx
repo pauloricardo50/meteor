@@ -6,7 +6,7 @@ import Lender from './Lender';
 type LenderListProps = {};
 
 const LenderList = ({ loan: { lenders = [] } }: LenderListProps) => (
-  <div className="lenders-tab flex wrap">
+  <div className="lenders-list flex wrap">
     {lenders.map(lender => (
       <Lender key={lender._id} lender={lender} />
     ))}
