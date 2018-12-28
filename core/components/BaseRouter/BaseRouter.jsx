@@ -16,7 +16,6 @@ import Switch from './Switch';
 import Route from './Route';
 import LibraryWrappers from './LibraryWrappers';
 import GrapherPage from './GrapherPageLoadable';
-import TestHistory from './TestHistory';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -59,7 +58,6 @@ const BaseRouter = ({
           {/* Every route change should scroll to top,
               which isn't automatic */}
           <ScrollToTop>
-            <TestHistory />
             <Switch>
               <Route exact path="/login-token/:token" render={loginWithToken} />
               {/* LoginPage has to be above / path */}

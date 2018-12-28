@@ -19,10 +19,7 @@ Cypress.Commands.add(
       // this is used for navigating on a static router/website
       cy.visit(uri);
     } else {
-      cy.window().then(({ reactRouterDomHistory }) => {
-        // this is used for navigating on a dynamic router
-        reactRouterDomHistory.push(uri);
-      });
+      cy.routeTo(uri);
     }
 
     cy.routeShouldExist(uri);
@@ -78,7 +75,7 @@ Cypress.Commands.add('setSelect', (name, value) => {
 });
 
 Cypress.Commands.add('routeTo', (path) => {
-  cy.window().then(({ reactHistory }) => {
-    reactHistory.push(path);
+  cy.window().then(({ reactRouterDomHistory }) => {
+    reactRouterDomHistory.push(path);
   });
 });

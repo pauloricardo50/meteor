@@ -37,7 +37,7 @@ describe('Loans', () => {
     cy.get('.tasks-table').contains('Cypress Task');
   });
 
-  it.only('should add lenders', () => {
+  it('should add lenders', () => {
     cy.contains('Nouvelle hypothèque').click();
     cy.contains('Prêteurs').click();
     cy.contains('Choisir prêteurs').click();
