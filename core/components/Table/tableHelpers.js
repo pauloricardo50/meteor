@@ -11,7 +11,7 @@ export const shouldDisplayLabelAndData = columnValue =>
   && 'label' in columnValue;
 
 const makeSortFunc = (orderBy, isReversed) => {
-  const sorter = makeSorter(isReversed);
+  const sorter = makeSorter(!isReversed);
 
   return (a, b) => {
     let valueA = a.columns[orderBy];

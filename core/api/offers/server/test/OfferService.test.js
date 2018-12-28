@@ -42,9 +42,13 @@ describe('OfferService', () => {
       expect(offer.createdAt).to.not.equal(undefined);
     });
 
-    it.only('rounds interestRates', () => {
+    it('rounds interestRates', () => {
+      const lenderId = Factory.create('lender')._id;
       offerId = OfferService.insert({
         offer: {
+          lenderId,
+          maxAmount: 800000,
+          amortizationGoal: 0.65,
           interest1: 0.0123,
         },
       });

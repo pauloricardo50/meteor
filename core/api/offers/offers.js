@@ -65,7 +65,7 @@ export const OfferSchema = new SimpleSchema({
         optional: true,
         autoValue() {
           if (this.isSet) {
-            return Number(this.value.toFixed(2));
+            return Number(this.value.toFixed(3));
           }
         },
         uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
