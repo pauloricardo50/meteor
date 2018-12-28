@@ -48,6 +48,7 @@ export const AutoFormDialog = ({
         disableBackdropClick={important}
         disableEscapeKeyDown={important}
         onClose={() => setOpen(false)}
+        className="autoform-dialog"
         {...otherProps}
       >
         {title && <DialogTitle>{title}</DialogTitle>}

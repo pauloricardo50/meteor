@@ -44,12 +44,13 @@ describe('Pro', () => {
     });
 
     context('with an existing promotion', () => {
-      it('should add lots and promotionLots', () => {
+      it.only('should add lots and promotionLots', () => {
         cy.callMethod('insertPromotion');
         cy.refetch();
         cy.contains('Test promotion').click();
 
         cy.get('.promotion-table-actions > button:first-of-type').click();
+        cy.get('.autoform-dialog').contains('Ajouter');
 
         // Form should have autofocus
         cy.focused().type('Promotion lot 1');
