@@ -39,7 +39,8 @@ export default class ConditionsButton extends Component {
   };
 
   render() {
-    const { primary, conditions, counterparts } = this.props;
+    const { primary, conditions } = this.props;
+    const { open } = this.state;
     const actions = [
       <Button
         key={0}
@@ -56,11 +57,11 @@ export default class ConditionsButton extends Component {
           label={<T id="ConditionsButton.title" />}
           primary={primary}
           onClick={this.handleOpen}
-          disabled={conditions.length === 0 && counterparts.length === 0}
+          disabled={conditions.length === 0}
         />
         <Dialog
           actions={actions}
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           // autoScrollBodyContent
         >
@@ -70,16 +71,11 @@ export default class ConditionsButton extends Component {
                 <h2 className="fixed-size">
                   <T id="ConditionsButton.mandatory" />
                 </h2>
-                {conditions}
-              </React.Fragment>
-            )}
-
-            {!!(counterparts.length > 0) && (
-              <React.Fragment>
-                <h2 className="fixed-size">
-                  <T id="ConditionsButton.counterparts" />
-                </h2>
-                {counterparts}
+                <ul>
+                  {conditions.map((c, i) => (
+                    <li key={i}>{c}</li>
+                  ))}
+                </ul>
               </React.Fragment>
             )}
           </div>
@@ -91,10 +87,8 @@ export default class ConditionsButton extends Component {
 
 ConditionsButton.propTypes = {
   conditions: PropTypes.string,
-  counterparts: PropTypes.string,
 };
 
 ConditionsButton.defaultProps = {
   conditions: '',
-  counterparts: '',
 };
