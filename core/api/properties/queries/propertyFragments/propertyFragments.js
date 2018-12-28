@@ -24,5 +24,4 @@ export const propertySummaryFragment = {
   userId: 1,
   value: 1,
   zipCode: 1,
-  $options: { sort: { createdAt: 1 } },
 };

@@ -1,8 +1,8 @@
 import { loanBorrowerFragment } from '../../../borrowers/queries/borrowerFragments';
 import { fullOfferFragment } from '../../../offers/queries/offerFragments';
-import { appUserFragment } from '../../../users/queries/userFragments';
-import { userPropertyFragment } from '../../../properties/queries/propertyFragments';
+import userPropertyFragment from '../../../properties/queries/propertyFragments/userPropertyFragment';
 import loanBaseFragment from './loanBaseFragment';
+import appUserFragment from '../../../users/queries/userFragments/appUserFragment';
 
 export default {
   ...loanBaseFragment,

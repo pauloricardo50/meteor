@@ -13,7 +13,9 @@ import LoanBankPDF from './components/LoanBankPDF';
 
 const formatKey = (key) => {
   const i18nKey = `Forms.${key}`;
-  const translated = formatMessage(`Forms.${key}`);
+  const translated = formatMessage(`Forms.${key}`, {
+    purchaseType: 'ACQUISITION', // Do this to avoid purchaseType error
+  });
 
   if (i18nKey === translated) {
     // Translation does not exist
@@ -139,14 +141,17 @@ class PDFService {
 
   generateDataAsPDF = ({ data, type, options = {} }, testing = false) => {
     const { HTML } = options;
-    const content = this.generateContentObject({ data, type, options });
+    try {
+      const content = this.generateContentObject({ data, type, options });
 
-    if (HTML) {
-      const html = this.getComponentAsHTML(content.component, content.props);
-      return Promise.resolve(html);
+      if (HTML) {
+        const html = this.getComponentAsHTML(content.component, content.props);
+        return Promise.resolve(html);
+      }
+      return this.handleGeneratePDF(content, testing);
+    } catch (error) {
+      return Promise.reject(error);
     }
-
-    return this.handleGeneratePDF(content, testing);
   };
 }
 
