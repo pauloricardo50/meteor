@@ -76,3 +76,9 @@ Cypress.Commands.add('setSelect', (name, value) => {
       .click();
   }
 });
+
+Cypress.Commands.add('routeTo', (path) => {
+  cy.window().then(({ reactHistory }) => {
+    reactHistory.push(path);
+  });
+});

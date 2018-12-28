@@ -3,6 +3,7 @@ import shuffle from 'lodash/shuffle';
 import OfferService from 'core/api/offers/OfferService';
 import { getRandomOffer } from 'core/api/offers/fakes';
 import { Loans, Properties, Organisations } from 'core/api';
+import LenderService from 'imports/core/api/lenders/LenderService';
 import { createOrganisations } from './organisationFixtures';
 
 const getOrgIds = () =>
@@ -10,7 +11,7 @@ const getOrgIds = () =>
     .fetch()
     .map(({ _id }) => _id);
 
-export const createFakeOffer = (loanId, userId) => {
+export const createFakeOffer = (loanId) => {
   const loan = Loans.findOne(loanId);
   const property = Properties.findOne(loan.propertyIds[0]);
   const offer = getRandomOffer(
@@ -26,12 +27,13 @@ export const createFakeOffer = (loanId, userId) => {
 
   const randomOrganisationId = shuffle(allOrganisationIds)[0];
 
+  const lenderId = LenderService.insert({
+    lender: { loanId: loan._id },
+    contactId: null,
+    organisationId: randomOrganisationId,
+  });
+
   return OfferService.insert({
-    offer: {
-      ...offer,
-      organisationLink: { _id: randomOrganisationId },
-      loanId: loan._id,
-    },
-    userId,
+    offer: { ...offer, lenderId },
   });
 };

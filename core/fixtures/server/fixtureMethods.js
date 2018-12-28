@@ -73,7 +73,7 @@ const createFakeLoanFixture = ({
     auctionStatus,
     twoBorrowers,
   });
-  createFakeOffer(loanId, userId);
+  createFakeOffer(loanId);
 };
 
 // Create a test user used in app's e2e tests and all the fixtures it needs
@@ -100,35 +100,40 @@ const createTestUserWithData = () => {
 
 Meteor.methods({
   generateTestData(currentUserEmail) {
-    if (isAuthorizedToRun()) {
-      debugger;
-      const devs = createDevs(currentUserEmail);
-      const admins = getAdmins();
-      const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
-      createOrganisations();
+    try {
+      if (isAuthorizedToRun()) {
+        const devs = createDevs(currentUserEmail);
+        const admins = getAdmins();
+        const newUsers = createFakeUsers(USER_COUNT, ROLES.USER);
+        createOrganisations();
 
-      // for each regular fixture user, create a loan with a certain step
-      newUsers.forEach((userId, index) => {
-        const adminId = admins[Math.floor(Math.random() * admins.length)];
+        // for each regular fixture user, create a loan with a certain step
+        newUsers.forEach((userId, index) => {
+          const adminId = admins[Math.floor(Math.random() * admins.length)];
 
-        // based on index, always generate 0, 1 and 2 numbers
-        const loanStep = index % 3;
+          // based on index, always generate 0, 1 and 2 numbers
+          const loanStep = index % 3;
 
-        range(LOANS_PER_USER).forEach(() => {
-          createFakeLoanFixture({
-            step: STEP_ORDER[loanStep],
-            userId,
-            adminId,
-            twoBorrowers: true,
+          range(LOANS_PER_USER).forEach(() => {
+            createFakeLoanFixture({
+              step: STEP_ORDER[loanStep],
+              userId,
+              adminId,
+              twoBorrowers: true,
+            });
           });
         });
-      });
 
-      range(UNOWNED_LOANS_COUNT).forEach(() => {
-        createFakeLoan({});
-      });
+        range(UNOWNED_LOANS_COUNT).forEach(() => {
+          createFakeLoan({});
+        });
 
-      createTestUserWithData();
+        createTestUserWithData();
+      }
+    } catch (error) {
+      // FIXME: If you throw an error here it does not appear without this
+      // try catch block
+      console.log('generateTestData error', error);
     }
   },
 
@@ -199,8 +204,8 @@ Meteor.methods({
     createYannisData(userId);
   },
 
-  createFakeOffer({ loanId, userId }) {
-    createFakeOffer(loanId, userId);
+  createFakeOffer({ loanId }) {
+    createFakeOffer(loanId);
   },
 
   createFakeInterestRates({ number }) {
