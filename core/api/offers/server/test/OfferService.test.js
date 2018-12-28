@@ -41,6 +41,16 @@ describe('OfferService', () => {
 
       expect(offer.createdAt).to.not.equal(undefined);
     });
+
+    it.only('rounds interestRates', () => {
+      offerId = OfferService.insert({
+        offer: {
+          interest1: 0.0123,
+        },
+      });
+
+      expect(OfferService.get(offerId).interest1).to.equal(0.012);
+    });
   });
 
   describe('remove', () => {
