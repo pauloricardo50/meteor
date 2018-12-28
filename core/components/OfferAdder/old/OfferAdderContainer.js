@@ -28,7 +28,7 @@ const reformatInterestRatesObject = (rates, suffix, valueEnhancer = x => x) =>
     );
 
 const mapValuesToOffer = ({
-  loanId,
+  lenderId,
   organisation,
   maxAmount,
   amortizationGoal,
@@ -64,13 +64,13 @@ const mapValuesToOffer = ({
 
   return [
     {
-      loanId,
+      lenderId,
       organisationLink: { _id: organisation },
       conditions: [conditions].filter(x => x),
       ...standardOffer,
     },
     hasCounterparts && {
-      loanId,
+      lenderId,
       organisationLink: { _id: organisation },
       conditions: [conditions, counterparts].filter(x => x),
       ...counterpartOffer,
@@ -78,14 +78,14 @@ const mapValuesToOffer = ({
   ].filter(offer => !!offer);
 };
 
-const onSubmit = (values, loanId) => {
-  const offers = mapValuesToOffer({ ...values, loanId });
-  return Promise.all(offers.map(offer => offerInsert.run({ offer, loanId })));
+const onSubmit = (values) => {
+  const offers = mapValuesToOffer({ ...values });
+  return Promise.all(offers.map(offer => offerInsert.run({ offer })));
 };
 
 export default compose(
-  withProps(({ loanId }) => ({
-    onSubmit: values => onSubmit(values, loanId),
+  withProps(() => ({
+    onSubmit: values => onSubmit(values),
   })),
   connect(state => ({
     [HAS_COUNTERPARTS]: selector(state, HAS_COUNTERPARTS),

@@ -51,6 +51,7 @@ const ProPromotionLotsTable = ({
     {canModify && (
       <div className="promotion-table-actions">
         <AutoFormDialog
+          title={<T id="PromotionPage.addProperty" />}
           buttonProps={{
             label: <T id="PromotionPage.addProperty" />,
             raised: true,
@@ -61,6 +62,7 @@ const ProPromotionLotsTable = ({
           onSubmit={addProperty}
         />
         <AutoFormDialog
+          title={<T id="PromotionPage.addLot" />}
           buttonProps={{
             label: <T id="PromotionPage.addLot" />,
             raised: true,

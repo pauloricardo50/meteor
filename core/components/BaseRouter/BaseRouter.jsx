@@ -19,7 +19,11 @@ import GrapherPage from './GrapherPageLoadable';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const loginWithToken = ({ match: { params: { token } } }) => {
+const loginWithToken = ({
+  match: {
+    params: { token },
+  },
+}) => {
   if (token) {
     Meteor.loginWithToken(token, () => history.push('/'));
   } else {

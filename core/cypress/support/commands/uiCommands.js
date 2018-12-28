@@ -19,10 +19,7 @@ Cypress.Commands.add(
       // this is used for navigating on a static router/website
       cy.visit(uri);
     } else {
-      cy.window().then(({ reactRouterDomHistory }) => {
-        // this is used for navigating on a dynamic router
-        reactRouterDomHistory.push(uri);
-      });
+      cy.routeTo(uri);
     }
 
     cy.routeShouldExist(uri);
@@ -75,4 +72,27 @@ Cypress.Commands.add('setSelect', (name, value) => {
       .eq(value)
       .click();
   }
+});
+
+Cypress.Commands.add('routeTo', (path) => {
+  cy.window().then(({ reactRouterDomHistory }) => {
+    reactRouterDomHistory.push(path);
+  });
+});
+
+// This is helpful to avoid weird issues when starting tests
+// Always make sure to `get` something on the page before doing things
+// Otherwise meteor methods might time out because of multiple websocket
+// connections
+Cypress.Commands.add('initiateTest', () => {
+  const projectName = Cypress.config('projectName');
+
+  // Visit login page on all microservices except www to start tests
+  if (projectName === 'www') {
+    cy.visit('/');
+  } else {
+    cy.visit('/login');
+  }
+
+  cy.get('.logo');
 });

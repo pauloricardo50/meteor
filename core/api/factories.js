@@ -11,19 +11,22 @@ import {
 } from './constants';
 import {
   Borrowers,
+  Lenders,
   Loans,
+  Lots,
   Offers,
+  Organisations,
   PromotionLots,
   PromotionOptions,
   Promotions,
   Properties,
   Tasks,
   Users,
-  Lots,
 } from '.';
 import { LOT_TYPES } from './lots/lotConstants';
 import { ROLES } from './users/userConstants';
 import MortgageNotes from './mortgageNotes';
+import { ORGANISATION_TYPES } from './organisations/organisationConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -122,3 +125,10 @@ Factory.define('mortgageNote', MortgageNotes, {
   value: 100000,
   canton: 'GE',
 });
+
+Factory.define('organisation', Organisations, {
+  name: 'UBS SA',
+  type: ORGANISATION_TYPES.BANK,
+});
+
+Factory.define('lender', Lenders, {});

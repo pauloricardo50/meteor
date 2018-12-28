@@ -3,7 +3,7 @@ import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
 describe('Pro', () => {
   before(() => {
-    cy.visit('/');
+    cy.initiateTest();
     cy.callMethod('resetDatabase');
     cy.callMethod('generateProFixtures');
   });
@@ -17,7 +17,7 @@ describe('Pro', () => {
 
   context('when logged in', () => {
     beforeEach(() => {
-      cy.visit('/');
+      cy.visit('/login');
       cy.meteorLogin(PRO_EMAIL, PRO_PASSWORD);
       cy.visit('/');
     });
@@ -44,12 +44,13 @@ describe('Pro', () => {
     });
 
     context('with an existing promotion', () => {
-      it('should add lots and promotionLots', () => {
+      it.only('should add lots and promotionLots', () => {
         cy.callMethod('insertPromotion');
         cy.refetch();
         cy.contains('Test promotion').click();
 
         cy.get('.promotion-table-actions > button:first-of-type').click();
+        cy.wait(2000); // Try to wait for focus to settle
 
         // Form should have autofocus
         cy.focused().type('Promotion lot 1');

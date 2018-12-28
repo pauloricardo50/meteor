@@ -10,7 +10,7 @@ import LoanService from '../../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/BorrowerService';
 import PropertyService from '../../../properties/PropertyService';
-import OfferService from '../../../offers/OfferService';
+import LenderService from '../../../lenders/LenderService';
 
 describe('LoanService', () => {
   let loanId;
@@ -23,9 +23,7 @@ describe('LoanService', () => {
   describe('popValue', () => {
     it('removes a value from an array', () => {
       loanId = Factory.create('loan', {
-        contacts: [
-          { name: 'Joe', title: 'Mah dude' },
-        ],
+        contacts: [{ name: 'Joe', title: 'Mah dude' }],
       })._id;
       loan = LoanService.get(loanId);
       expect(loan.contacts.length).to.equal(1);
@@ -77,17 +75,24 @@ describe('LoanService', () => {
       expect(BorrowerService.find({}).count()).to.equal(1);
     });
 
-    it('autoremoves offers', () => {
+    it('autoremoves lenders', () => {
       loanId = Factory.create('loan')._id;
-      Factory.create('offer', { loanId });
-      Factory.create('offer', { loanId });
-      Factory.create('offer', { loanId });
+      const lender1 = Factory.create('lender', { loanLink: { _id: 'asdf' } })
+        ._id;
+      const lender2 = Factory.create('lender', { loanLink: { _id: loanId } })
+        ._id;
+      const lender3 = Factory.create('lender', { loanLink: { _id: loanId } })
+        ._id;
 
-      expect(OfferService.find({}).count()).to.equal(3);
+      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender1 });
+      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender2 });
+      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender3 });
+
+      expect(LenderService.countAll()).to.equal(3);
 
       LoanService.remove({ loanId });
 
-      expect(OfferService.find({}).count()).to.equal(0);
+      expect(LenderService.countAll()).to.equal(0);
     });
   });
 

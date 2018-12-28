@@ -1,6 +1,6 @@
 {
   "baseUrl": "http://localhost:5015",
-  "defaultCommandTimeout": 30000,
+  "defaultCommandTimeout": 10000,
   "fixturesFolder": false,
   "integrationFolder": "cypress/tests",
   "pluginsFile": "imports/core/cypress/plugins",

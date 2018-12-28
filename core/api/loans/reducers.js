@@ -11,9 +11,19 @@ Loans.addReducers({
       selectedStructure: 1,
       structures: 1,
       properties: omit(userPropertyFragment, ['loans', '$options', 'user']),
-      offers: omit(fullOfferFragment, ['loans', '$options', 'user']),
+      offers: 1,
     },
     reduce: formatLoanWithStructure,
+  },
+  offers: {
+    body: {
+      lenders: { offers: omit(fullOfferFragment, ['user']) },
+    },
+    reduce: ({ lenders = [] }) =>
+      lenders.reduce(
+        (allOffers, { offers = [] }) => [...allOffers, ...offers],
+        [],
+      ),
   },
   hasPromotion: {
     body: { promotions: { _id: 1 } },

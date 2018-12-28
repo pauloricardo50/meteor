@@ -1,5 +1,5 @@
 import LoanService from 'core/api/loans/LoanService';
-import faker from 'faker';
+import faker from 'faker/locale/fr';
 import {
   PURCHASE_TYPE,
   AUCTION_STATUS,
@@ -14,7 +14,6 @@ import { createFakeProperty } from './propertyFixtures';
 import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
-
 
 const logic1 = {};
 
@@ -191,7 +190,8 @@ export const createFakeLoan = ({
     name: faker.address.streetAddress(),
     borrowerIds,
     propertyIds: [propertyId],
-    purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
+    purchaseType:
+      purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
     contacts: [],
     structures: [
       {

@@ -2,6 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
 import { createdAt, updatedAt } from '../helpers/sharedSchemas';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/constants';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 
@@ -18,17 +19,13 @@ Offers.allow({
 });
 
 export const OfferSchema = new SimpleSchema({
-  loanId: {
-    type: String,
-  },
-  userId: {
-    type: String,
-    optional: true,
-  },
   createdAt,
   updatedAt,
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': { type: String, optional: true },
+  contactLink: { type: Object, optional: true },
+  'contactLink._id': String,
+  'contactLink.feedback': { type: String, optional: true },
   maxAmount: {
     type: SimpleSchema.Integer,
     min: 0,
@@ -66,6 +63,12 @@ export const OfferSchema = new SimpleSchema({
         min: 0,
         max: 1,
         optional: true,
+        autoValue() {
+          if (this.isSet) {
+            return Number(this.value.toFixed(3));
+          }
+        },
+        uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
       },
     }),
     {},
@@ -76,7 +79,18 @@ export const OfferSchema = new SimpleSchema({
     defaultValue: [],
   },
   'conditions.$': { type: String, optional: true },
+  lenderLink: { type: Object, optional: true },
+  'lenderLink._id': { type: String, optional: true },
+  feedback: { type: String, optional: true },
 });
+
+export const AdminOfferSchema = OfferSchema.omit(
+  'lenderLink',
+  'organisationLink',
+  'contactLink',
+  'createdAt',
+  'updatedAt',
+);
 
 // Attach schema
 Offers.attachSchema(OfferSchema);

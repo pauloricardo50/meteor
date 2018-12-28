@@ -29,10 +29,10 @@ describe('OfferService', () => {
 
   describe('insert', () => {
     it('inserts an offer', () => {
+      const lenderId = Factory.create('lender')._id;
       offerId = OfferService.insert({
         offer: {
-          loanId: 'loanId',
-          organisation: 'UBS',
+          lenderId,
           maxAmount: 800000,
           amortizationGoal: 0.65,
         },
@@ -41,11 +41,25 @@ describe('OfferService', () => {
 
       expect(offer.createdAt).to.not.equal(undefined);
     });
+
+    it('rounds interestRates', () => {
+      const lenderId = Factory.create('lender')._id;
+      offerId = OfferService.insert({
+        offer: {
+          lenderId,
+          maxAmount: 800000,
+          amortizationGoal: 0.65,
+          interest1: 0.0123,
+        },
+      });
+
+      expect(OfferService.get(offerId).interest1).to.equal(0.012);
+    });
   });
 
   describe('remove', () => {
     it('removes an offer', () => {
-      offer = Factory.create('offer', { interest10: 1, loanId: 'loanId' });
+      offer = Factory.create('offer', { interest10: 1 });
       offerId = offer._id;
 
       OfferService.remove({ offerId });

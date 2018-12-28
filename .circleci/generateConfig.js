@@ -55,18 +55,18 @@ const cachePaths = {
 const runCommand = (name, command) => ({ run: { name, command } });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-    case 'e2e':
-      return runCommand(
-        'Run e2e tests',
-        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
-      );
-    case 'unit':
-      return runCommand(
-        'Run unit tests',
-        `meteor npm --prefix microservices/${name} run test-CI`,
-      );
-    default:
-      throw new Error(`Unknown tests type: ${testsType}`);
+  case 'e2e':
+    return runCommand(
+      'Run e2e tests',
+      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+    );
+  case 'unit':
+    return runCommand(
+      'Run unit tests',
+      `meteor npm --prefix microservices/${name} run test-CI`,
+    );
+  default:
+    throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
@@ -79,8 +79,8 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-')
+            + (index === 0 ? '' : '-'),
         ],
         [],
       ),

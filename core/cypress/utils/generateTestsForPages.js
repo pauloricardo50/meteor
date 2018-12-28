@@ -15,6 +15,7 @@ const generateTestsForPages = (pages, getTestData) => {
     .forEach((pageAuthentication) => {
       describe(capitalize(pageAuthentication), () => {
         before(() => {
+          cy.initiateTest();
           cy.meteorLogout();
 
           if (pageAuthentication !== 'public') {

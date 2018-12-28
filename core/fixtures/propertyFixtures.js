@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from 'faker/locale/fr';
 import PropertyService from '../api/properties/PropertyService';
 import {
   PROPERTY_STATUS,

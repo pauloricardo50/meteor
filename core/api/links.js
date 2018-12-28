@@ -11,3 +11,4 @@ import './properties/links';
 import './tasks/links';
 import './users/links';
 import './contacts/links';
+import './lenders/links';

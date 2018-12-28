@@ -81,6 +81,13 @@ type withSmartQueryArgs = {
   smallLoader?: boolean,
 };
 
+const calculateParams = (params, props) => {
+  if (typeof params === 'function') {
+    return params(props);
+  }
+  return params;
+};
+
 const withSmartQuery = ({
   query,
   params = () => {},
@@ -93,9 +100,9 @@ const withSmartQuery = ({
   let completeQuery;
 
   if (typeof query === 'function') {
-    completeQuery = props => query(props).clone(params(props));
+    completeQuery = props => query(props).clone(calculateParams(params, props));
   } else {
-    completeQuery = props => query.clone(params(props));
+    completeQuery = props => query.clone(calculateParams(params, props));
   }
 
   return compose(

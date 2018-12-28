@@ -17,6 +17,7 @@ import InterestRatesSchema from './interestRates/schemas/interestRatesSchema';
 import Irs10ySchema from './irs10y/schemas/irs10ySchema';
 import MortgageNoteSchema from './mortgageNotes/schemas/MortgageNoteSchema';
 import ContactSchema from './contacts/schemas/contactSchema';
+import LenderSchema from './lenders/schemas/lenderSchema';
 
 export { default as Borrowers } from './borrowers';
 export { default as Loans } from './loans';
@@ -33,6 +34,7 @@ export { default as InterestRates } from './interestRates';
 export { default as Irs10y } from './irs10y';
 export { default as MortgageNotes } from './mortgageNotes';
 export { default as Contacts } from './contacts';
+export { default as Lenders } from './lenders';
 
 export { default as SecurityService } from './security';
 export * from './methods';
@@ -58,6 +60,7 @@ export const schemas = {
   [constants.IRS10Y_COLLECTION]: Irs10ySchema,
   [constants.MORTGAGE_NOTES_COLLECTION]: MortgageNoteSchema,
   [constants.CONTACTS_COLLECTION]: ContactSchema,
+  [constants.LENDERS_COLLECTION]: LenderSchema,
 };
 
 Meteor.isStaging = Meteor.settings.public.environment === 'staging';

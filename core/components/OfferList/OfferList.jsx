@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import ConditionsButton from 'core/components/ConditionsButton';
-import { T } from 'core/components/Translation';
+import T from 'core/components/Translation';
+import makeSort from 'core/utils/sorting';
 import Offer from './Offer';
 import OfferListSorting from './OfferListSorting';
 
@@ -25,14 +26,15 @@ const getOfferValues = ({ conditions }) => [
   },
 ];
 
-const sortOffers = (offers, sort, isAscending) =>
-  offers.sort((a, b) => (isAscending ? a[sort] - b[sort] : b[sort] - a[sort]));
-
+const sortOffers = (offers, sort, isAscending) => {
+  const sorter = makeSort(isAscending);
+  return offers.sort((a, b) => sorter(a[sort], b[sort]));
+};
 class OfferList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { sort: 'monthly', isAscending: true };
+    this.state = { sort: 'maxAmount', isAscending: false };
   }
 
   handleChange = (_, value) => this.setState({ sort: value });

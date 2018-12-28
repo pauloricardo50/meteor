@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import { simpleUserFragment } from 'imports/core/api/users/queries/userFragments/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   inviteUserToPromotion,
@@ -11,7 +12,6 @@ import PromotionService from '../../promotions/PromotionService';
 import PromotionLotService from '../../promotionLots/PromotionLotService';
 import UserService from '../../users/UserService';
 import LoanService from '../../loans/LoanService';
-import { simpleUserFragment } from 'imports/core/api/users/queries/userFragments/index';
 
 ServerEventService.addMethodListener(
   inviteUserToPromotion,

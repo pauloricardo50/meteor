@@ -14,12 +14,10 @@ class UserService extends CollectionService {
   }
 
   get(userId) {
-    return this.collection
-      .createQuery({
-        $filters: { _id: userId },
-        ...fullUserFragment,
-      })
-      .fetchOne();
+    return this.fetchOne({
+      $filters: { _id: userId },
+      ...fullUserFragment,
+    });
   }
 
   createUser = ({ options, role }) => {

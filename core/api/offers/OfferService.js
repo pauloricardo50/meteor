@@ -8,7 +8,11 @@ export class OfferService extends CollectionService {
 
   update = ({ offerId, object }) => Offers.update(offerId, { $set: object });
 
-  insert = ({ offer, userId }) => Offers.insert({ ...offer, userId });
+  insert = ({ offer: { lenderId, ...offer } }) => {
+    const offerId = Offers.insert({ ...offer });
+    this.addLink({ id: offerId, linkName: 'lender', linkId: lenderId });
+    return offerId;
+  };
 
   remove = ({ offerId }) => Offers.remove(offerId);
 }

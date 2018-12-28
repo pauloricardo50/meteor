@@ -3,6 +3,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
+import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 
 import IconLink from './IconLink';
 import {
@@ -13,6 +14,7 @@ import {
   OFFERS_COLLECTION,
   PROMOTIONS_COLLECTION,
   ORGANISATIONS_COLLECTION,
+  CONTACTS_COLLECTION,
 } from '../../api/constants';
 
 type CollectionIconLinkProps = {};
@@ -63,13 +65,34 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
       icon: <FontAwesomeIcon icon={faCity} className="icon-link-icon" />,
       text: data.name,
     };
-  case ORGANISATIONS_COLLECTION:
+  case ORGANISATIONS_COLLECTION: {
+    let text;
+
+    if (data.$metadata.role) {
+      text = `${data.$metadata.role} @ ${data.name}`;
+    } else if (data.logo) {
+      text = (
+        <img
+          src={data.logo}
+          alt={data.name}
+          style={{ maxWidth: 100, maxHeight: 50 }}
+        />
+      );
+    } else {
+      text = data.name;
+    }
+
     return {
       link: `/organisations/${docId}`,
       icon: <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />,
-      text: data.$metadata.role
-        ? `${data.$metadata.role} @ ${data.name}`
-        : data.name,
+      text,
+    };
+  }
+  case CONTACTS_COLLECTION:
+    return {
+      link: `/contacts/${docId}`,
+      icon: <FontAwesomeIcon icon={faUserTie} className="icon-link-icon" />,
+      text: data.name,
     };
   case 'NOT_FOUND':
     return {

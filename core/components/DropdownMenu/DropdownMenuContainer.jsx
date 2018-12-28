@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withProps, withStateHandlers } from 'recompose';
+import { compose, withProps, withStateHandlers, withState } from 'recompose';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
@@ -79,25 +79,45 @@ const mapOption = (
   return arr;
 };
 
-const withState = withStateHandlers(
-  { anchorEl: null, isOpen: false },
-  {
-    handleOpen: () => currentTarget => ({
-      isOpen: true,
-      anchorEl: currentTarget,
-    }),
-    handleClose: () => (event) => {
-      console.log('event', event);
+const addState = compose(
+  withState('fetchedOptions', 'setFetchedOptions', []),
+  withStateHandlers(
+    { anchorEl: null, isOpen: false, fetchedOptions: [] },
+    {
+      handleOpen: (_, { fetchOptions, setFetchedOptions }) => (currentTarget) => {
+        if (fetchOptions) {
+          fetchOptions().then(setFetchedOptions);
+        }
 
-      return { isOpen: false };
+        return {
+          isOpen: true,
+          anchorEl: currentTarget,
+        };
+      },
+      handleClose: () => () => ({ isOpen: false }),
     },
-  },
+  ),
 );
 
 export default compose(
-  withState,
+  addState,
   withStyles(styles),
-  withProps(({ options, handleClose, classes }) => ({
-    options: options.map(option => mapOption(option, handleClose, classes)),
-  })),
+  withProps(({
+    options = [],
+    fetchedOptions = [],
+    fetchOptions,
+    handleClose,
+    classes,
+  }) => {
+    if (fetchOptions) {
+      return {
+        options: fetchedOptions.map(option =>
+          mapOption(option, handleClose, classes)),
+      };
+    }
+
+    return {
+      options: options.map(option => mapOption(option, handleClose, classes)),
+    };
+  }),
 );

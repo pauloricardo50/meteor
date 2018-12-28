@@ -1,44 +1,30 @@
 // @flow
 import React from 'react';
-import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
-import AutoFields from 'uniforms-material/AutoFields';
 import connectField from 'uniforms/connectField';
 import DefaultSubmitField from 'uniforms-material/SubmitField';
 
 import T from '../Translation';
 import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
-import PercentInput from '../PercentInput';
+import { PercentField } from '../PercentInput';
+import CustomSelectField from './CustomSelectField';
 
-const CustomSelectField = ({ transform, ...props }) => (
-  <SelectField
-    {...props}
-    transform={
-      transform
-      || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
-    }
-    displayEmpty
-  />
-);
-
-const determineComponentFromProps = (props) => {
-  if (props.allowedValues) {
+const determineComponentFromProps = ({
+  allowedValues,
+  customAllowedValues,
+  field: { uniforms },
+}) => {
+  if (allowedValues || customAllowedValues) {
     return CustomSelectField;
   }
 
-  if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
-  ) {
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
     return DateField;
   }
 
-  if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
-  ) {
-    return PercentInput;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
+    return PercentField;
   }
 
   return false;
@@ -67,5 +53,3 @@ export const makeCustomAutoField = ({ labels } = {}) =>
   );
 
 export const CustomAutoField = makeCustomAutoField({});
-
-export const CustomAutoFields = AutoFields;
