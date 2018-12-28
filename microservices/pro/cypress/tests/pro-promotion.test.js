@@ -3,7 +3,7 @@ import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
 describe('Pro', () => {
   before(() => {
-    cy.visit('/login');
+    cy.initiateTest();
     cy.callMethod('resetDatabase');
     cy.callMethod('generateProFixtures');
   });

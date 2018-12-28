@@ -79,3 +79,8 @@ Cypress.Commands.add('routeTo', (path) => {
     reactRouterDomHistory.push(path);
   });
 });
+
+Cypress.Commands.add('initiateTest', () => {
+  cy.visit('/login');
+  cy.get('.logo');
+});

@@ -90,15 +90,9 @@ describe('Admin Pages', () => {
   let testData;
 
   before(() => {
-    cy.visit('/login');
-    cy.contains('Accédez');
+    cy.initiateTest();
     cy.callMethod('resetDatabase');
-
-    // FIXME: This method's call is never returning
-    cy.callMethod('serverLog', 'Log 1?');
     cy.callMethod('generateTestData');
-    cy.callMethod('serverLog', 'Log 2?');
-
     cy.callMethod('getAdminEndToEndTestData').then((data) => {
       testData = data;
     });

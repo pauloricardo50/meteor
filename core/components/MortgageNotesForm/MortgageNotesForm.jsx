@@ -22,7 +22,7 @@ const MortgageNotesForm = ({
   getInputs,
   mortgageNoteInsert,
   mortgageNoteRemove,
-  mortgageNotes,
+  mortgageNotes = [],
 }: MortgageNotesFormProps) => (
   <div style={{ maxWidth: 400, width: '100%' }}>
     <h3 className="text-center">

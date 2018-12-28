@@ -3,14 +3,15 @@ import { ADMIN_EMAIL, USER_PASSWORD } from '../../imports/core/cypress/utils';
 
 describe('Loans', () => {
   before(() => {
-    cy.visit('/login');
+    cy.initiateTest();
+
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');
   });
 
   beforeEach(() => {
     cy.routeTo('/login');
-    cy.contains('Accédez');
+    cy.get('.login-page');
     cy.meteorLogin(ADMIN_EMAIL, USER_PASSWORD);
     cy.routeTo('/');
   });
