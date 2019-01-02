@@ -3,7 +3,7 @@ import { INTEREST_RATES } from '../../interestRatesConstants';
 //
 // borrower fragments
 //
-export const baseBorrowerFragment = {
+export const baseBorrower = {
   firstName: 1,
   lastName: 1,
   name: 1,
@@ -13,8 +13,8 @@ export const baseBorrowerFragment = {
   $options: { sort: { createdAt: 1 } },
 };
 
-export const loanBorrowerFragment = {
-  ...baseBorrowerFragment,
+export const loanBorrower = {
+  ...baseBorrower,
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   address1: 1,
   address2: 1,
@@ -43,7 +43,7 @@ export const loanBorrowerFragment = {
   isUSPerson: 1,
   loans: { name: 1 },
   logic: 1,
-  mortgageNotes: mortgageNoteFragment,
+  mortgageNotes: mortgageNote,
   otherFortune: 1,
   otherIncome: 1,
   personalBank: 1,
@@ -56,8 +56,8 @@ export const loanBorrowerFragment = {
   zipCode: 1,
 };
 
-export const sideNavBorrowerFragment = {
-  ...baseBorrowerFragment,
+export const sideNavBorrower = {
+  ...baseBorrower,
   user: { assignedEmployee: { email: 1 } },
   loans: { name: 1 },
 };
@@ -65,7 +65,7 @@ export const sideNavBorrowerFragment = {
 //
 // Contact fragments
 //
-export const contactFragment = {
+export const contact = {
   firstName: 1,
   lastName: 1,
   name: 1,
@@ -85,34 +85,34 @@ export const contactFragment = {
 //
 // InterestRate fragments
 //
-const singleInterestRateFragment = type => ({
+const singleInterestRate = type => ({
   [type]: { rateLow: 1, rateHigh: 1, trend: 1 },
 });
 
-const ratesFragments = Object.values(INTEREST_RATES).reduce(
+const ratess = Object.values(INTEREST_RATES).reduce(
   (interestRates, type) => ({
     ...interestRates,
-    ...singleInterestRateFragment(type),
+    ...singleInterestRate(type),
   }),
   {},
 );
 
-export const interestRatesFragment = {
+export const interestRates = {
   createdAt: 1,
   updatedAt: 1,
   date: 1,
-  ...ratesFragments,
+  ...ratess,
 };
 
-export const currentInterestRatesFragment = {
+export const currentInterestRates = {
   date: 1,
-  ...ratesFragments,
+  ...ratess,
 };
 
 //
 // Irs10Y fragments
 //
-export const irs10yFragment = {
+export const irs10y = {
   date: 1,
   rate: 1,
 };
@@ -120,33 +120,33 @@ export const irs10yFragment = {
 //
 // Lender fragments
 //
-export const lenderFragment = {
+export const lender = {
   organisation: {
     address: 1,
     address1: 1,
     address2: 1,
     canton: 1,
     city: 1,
-    contacts: contactFragment,
+    contacts: contact,
     logo: 1,
     name: 1,
     type: 1,
     zipCode: 1,
   },
-  contact: contactFragment,
+  contact,
   loan: { _id: 1 },
-  offers: fullOfferFragment,
+  offers: fullOffer,
 };
 
-export const adminLenderFragment = {
-  ...lenderFragment,
+export const adminLender = {
+  ...lender,
   status: 1,
 };
 
 //
 // Loan fragments
 //
-export const loanFragment = {
+export const loan = {
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
@@ -179,15 +179,15 @@ export const loanFragment = {
   verificationStatus: 1,
 };
 
-export const loanBaseFragment = {
-  ...loanFragment,
+export const loanBase = {
+  ...loan,
   promotionOptions: {
     promotionLots: {
       name: 1,
       status: 1,
       reducedStatus: 1,
       value: 1,
-      properties: userPropertyFragment,
+      properties: userProperty,
     },
     name: 1,
     custom: 1,
@@ -199,28 +199,28 @@ export const loanBaseFragment = {
   },
 };
 
-export const adminLoanFragment = {
-  ...userLoanFragment,
+export const adminLoan = {
+  ...userLoan,
   closingDate: 1,
-  lenders: adminLenderFragment,
-  properties: adminPropertyFragment,
+  lenders: adminLender,
+  properties: adminProperty,
   signingDate: 1,
   status: 1,
 };
 
-export const userLoanFragment = {
-  ...loanBaseFragment,
+export const userLoan = {
+  ...loanBase,
   adminValidation: 1,
-  borrowers: loanBorrowerFragment,
+  borrowers: loanBorrower,
   contacts: 1,
-  offers: fullOfferFragment,
-  properties: userPropertyFragment,
-  user: appUserFragment,
+  offers: fullOffer,
+  properties: userProperty,
+  user: appUser,
   userFormsEnabled: 1,
 };
 
-export const adminLoansFragment = {
-  ...loanBaseFragment,
+export const adminLoans = {
+  ...loanBase,
   borrowers: { name: 1 },
   closingDate: 1,
   properties: { value: 1, address1: 1 },
@@ -229,7 +229,7 @@ export const adminLoansFragment = {
   user: { assignedEmployee: { email: 1 }, name: 1 },
 };
 
-export const proLoansFragment = {
+export const proLoans = {
   name: 1,
   user: { name: 1, phoneNumbers: 1, email: 1 },
   promotionProgress: 1,
@@ -244,8 +244,8 @@ export const proLoansFragment = {
   createdAt: 1,
 };
 
-export const sideNavLoanFragment = {
-  ...loanBaseFragment,
+export const sideNavLoan = {
+  ...loanBase,
   status: 1,
   user: { assignedEmployee: { email: 1 }, name: 1 },
 };
@@ -253,7 +253,7 @@ export const sideNavLoanFragment = {
 //
 // MortgageNote fragments
 //
-export const mortgageNoteFragment = {
+export const mortgageNote = {
   value: 1,
   rank: 1,
   type: 1,
@@ -264,7 +264,7 @@ export const mortgageNoteFragment = {
 //
 // Offer fragments
 //
-export const fullOfferFragment = {
+export const fullOffer = {
   amortizationGoal: 1,
   amortizationYears: 1,
   conditions: 1,
@@ -283,13 +283,13 @@ export const fullOfferFragment = {
   loanId: 1,
   maxAmount: 1,
   organisation: 1,
-  user: simpleUserFragment,
+  user: simpleUser,
 };
 
 //
 // Organisation fragments
 //
-export const baseOrganisationFragment = {
+export const baseOrganisation = {
   address: 1,
   address1: 1,
   address2: 1,
@@ -303,17 +303,17 @@ export const baseOrganisationFragment = {
   zipCode: 1,
 };
 
-export const fullOrganisationFragment = {
-  ...baseOrganisationFragment,
-  contacts: contactFragment,
-  lenders: lenderFragment,
-  offers: fullOfferFragment,
+export const fullOrganisation = {
+  ...baseOrganisation,
+  contacts: contact,
+  lenders: lender,
+  offers: fullOffer,
 };
 
 //
 // PromotionLot fragments
 //
-export const proPromotionLotFragment = {
+export const proPromotionLot = {
   _id: 1,
   createdAt: 1,
   updatedAt: 1,
@@ -325,7 +325,7 @@ export const proPromotionLotFragment = {
     type: 1,
     description: 1,
   },
-  properties: propertyPromotionFragment,
+  properties: propertyPromotion,
   promotionOptions: { _id: 1 },
   promotion: {
     status: 1,
@@ -346,7 +346,7 @@ export const proPromotionLotFragment = {
   },
 };
 
-export const appPromotionLotFragment = {
+export const appPromotionLot = {
   _id: 1,
   createdAt: 1,
   updatedAt: 1,
@@ -359,7 +359,7 @@ export const appPromotionLotFragment = {
     type: 1,
     description: 1,
   },
-  properties: propertyPromotionFragment,
+  properties: propertyPromotion,
   name: 1,
   attributedTo: {
     user: { _id: 1 },
@@ -370,7 +370,7 @@ export const appPromotionLotFragment = {
 //
 // PromotionOption fragments
 //
-export const fullPromotionOptionFragment = {
+export const fullPromotionOption = {
   createdAt: 1,
   updatedAt: 1,
   promotionLots: { name: 1, promotion: { name: 1 } },
@@ -381,7 +381,7 @@ export const fullPromotionOptionFragment = {
   solvency: 1,
 };
 
-export const proPromotionOptionFragment = {
+export const proPromotionOption = {
   createdAt: 1,
   updatedAt: 1,
   loan: {
@@ -404,7 +404,7 @@ export const proPromotionOptionFragment = {
   solvency: 1,
 };
 
-export const appPromotionOptionFragment = {
+export const appPromotionOption = {
   createdAt: 1,
   updatedAt: 1,
   custom: 1,
@@ -414,7 +414,7 @@ export const appPromotionOptionFragment = {
     description: 1,
     value: 1,
   },
-  promotionLots: appPromotionLotFragment,
+  promotionLots: appPromotionLot,
   priority: 1,
   attributedToMe: 1,
   solvency: 1,
@@ -423,7 +423,7 @@ export const appPromotionOptionFragment = {
 //
 // Promotion fragments
 //
-export const basePromotionFragment = {
+export const basePromotion = {
   address: 1,
   address1: 1,
   availablePromotionLots: 1,
@@ -450,7 +450,7 @@ export const basePromotionFragment = {
     promotionOptions: { _id: 1 },
     name: 1,
   },
-  properties: propertyPromotionFragment,
+  properties: propertyPromotion,
   soldPromotionLots: 1,
   status: 1,
   type: 1,
@@ -459,15 +459,15 @@ export const basePromotionFragment = {
   zipCode: 1,
 };
 
-export const proPromotionFragment = {
-  ...basePromotionFragment,
+export const proPromotion = {
+  ...basePromotion,
   promotionLots: {
     _id: 1,
     value: 1,
     status: 1,
     reducedStatus: 1,
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
-    properties: propertyPromotionFragment,
+    properties: propertyPromotion,
     promotionOptions: { _id: 1 },
     name: 1,
     attributedTo: { user: { name: 1 } },
@@ -476,15 +476,15 @@ export const proPromotionFragment = {
   assignedEmployeeId: 1,
 };
 
-export const proPromotionsFragment = {
-  ...basePromotionFragment,
+export const proPromotions = {
+  ...basePromotion,
 };
 
-export const adminPromotionsFragment = {
-  ...proPromotionFragment,
+export const adminPromotions = {
+  ...proPromotion,
 };
 
-export const searchPromotionsFragment = {
+export const searchPromotions = {
   createdAt: 1,
   updatedAt: 1,
   name: 1,
@@ -508,7 +508,7 @@ export const adminValuation = {
   value: 1,
 };
 
-export const propertySummaryFragment = {
+export const propertySummary = {
   address1: 1,
   address2: 1,
   canton: 1,
@@ -522,8 +522,8 @@ export const propertySummaryFragment = {
   zipCode: 1,
 };
 
-export const fullPropertyFragment = {
-  ...propertySummaryFragment,
+export const fullProperty = {
+  ...propertySummary,
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   adminValidation: 1,
   areaNorm: 1,
@@ -544,11 +544,11 @@ export const fullPropertyFragment = {
   landArea: 1,
   latitude: 1,
   // residenceType is required for the valuation
-  loans: loanBaseFragment,
+  loans: loanBase,
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
-  mortgageNotes: mortgageNoteFragment,
+  mortgageNotes: mortgageNote,
   name: 1,
   numberOfFloors: 1,
   parkingInside: 1,
@@ -562,17 +562,17 @@ export const fullPropertyFragment = {
   roomCount: 1,
   terraceArea: 1,
   updatedAt: 1,
-  user: appUserFragment,
+  user: appUser,
   volume: 1,
   volumeNorm: 1,
 };
 
-export const adminPropertyFragment = {
-  ...fullPropertyFragment,
+export const adminProperty = {
+  ...fullProperty,
   valuation: adminValuation,
 };
 
-export const promotionPropertyFragment = {
+export const promotionProperty = {
   address: 1,
   bathroomCount: 1,
   canton: 1,
@@ -586,7 +586,7 @@ export const promotionPropertyFragment = {
   value: 1,
 };
 
-export const sideNavPropertyFragment = {
+export const sideNavProperty = {
   address1: 1,
   city: 1,
   createdAt: 1,
@@ -599,15 +599,15 @@ export const sideNavPropertyFragment = {
   zipCode: 1,
 };
 
-export const userPropertyFragment = {
-  ...fullPropertyFragment,
+export const userProperty = {
+  ...fullProperty,
   valuation: userValuation,
 };
 
 //
 // Task fragments
 //
-export const baseTaskFragment = {
+export const baseTask = {
   createdAt: 1,
   dueAt: 1,
   completedAt: 1,
@@ -621,20 +621,20 @@ export const baseTaskFragment = {
   $options: { sort: { createdAt: -1 } },
 };
 
-export const taskFragment = {
-  ...baseTaskFragment,
+export const task = {
+  ...baseTask,
   assignedEmployeeId: 1,
-  assignedEmployee: simpleUserFragment,
-  borrower: { ...baseBorrowerFragment, user: { assignedEmployeeId: 1 } },
+  assignedEmployee: simpleUser,
+  borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },
   loan: { name: 1, user: { assignedEmployeeId: 1 } },
   property: { address1: 1, user: { assignedEmployeeId: 1 } },
-  user: simpleUserFragment,
+  user: simpleUser,
 };
 
 //
 // User fragments
 //
-export const simpleUserFragment = {
+export const simpleUser = {
   email: 1,
   emails: 1,
   name: 1,
@@ -644,14 +644,14 @@ export const simpleUserFragment = {
   roles: 1,
 };
 
-export const adminUserFragment = {
-  ...fullUserFragment,
-  assignedEmployee: simpleUserFragment,
+export const adminUser = {
+  ...fullUser,
+  assignedEmployee: simpleUser,
 };
 
-export const appUserFragment = {
-  ...fullUserFragment,
-  assignedEmployee: simpleUserFragment,
+export const appUser = {
+  ...fullUser,
+  assignedEmployee: simpleUser,
   loans: {
     _id: 1,
     name: 1,
@@ -663,9 +663,9 @@ export const appUserFragment = {
   properties: { _id: 1 },
 };
 
-export const fullUserFragment = {
-  ...simpleUserFragment,
-  assignedEmployee: simpleUserFragment,
+export const fullUser = {
+  ...simpleUser,
+  assignedEmployee: simpleUser,
   emails: 1,
   createdAt: 1,
   updatedAt: 1,
@@ -695,7 +695,7 @@ export const fullUserFragment = {
         status: 1,
         reducedStatus: 1,
         value: 1,
-        properties: userPropertyFragment,
+        properties: userProperty,
       },
       name: 1,
       custom: 1,
@@ -720,7 +720,7 @@ export const fullUserFragment = {
   apiToken: 1,
 };
 
-export const proUserFragment = {
-  ...fullUserFragment,
-  assignedEmployee: simpleUserFragment,
+export const proUser = {
+  ...fullUser,
+  assignedEmployee: simpleUser,
 };
