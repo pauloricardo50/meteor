@@ -22,9 +22,4 @@ Tasks.addLinks({
     collection: Borrowers,
     type: 'one',
   },
-  user: {
-    field: 'userId',
-    collection: Users,
-    type: 'one',
-  },
 });
