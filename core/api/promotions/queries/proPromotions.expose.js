@@ -12,5 +12,5 @@ query.expose({
       filters['userLinks._id'] = params.userId;
     },
   },
-  validateParams: {},
+  validateParams: { userId: String },
 });

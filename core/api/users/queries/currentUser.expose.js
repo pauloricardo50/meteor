@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import SecurityService from '../../security';
 import query from './currentUser';
 
@@ -11,5 +13,5 @@ query.expose({
       filters._id = params.userId;
     },
   },
-  validateParams: {},
+  validateParams: { userId: Match.Maybe(String) },
 });
