@@ -5,4 +5,5 @@ query.expose({
   firewall(userId, { propertyId }) {
     Security.property.isAlllowedToUpdate(propertyId);
   },
+  validateParams: { propertyId: String },
 });

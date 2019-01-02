@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { currentInterestRates } from '../../fragments';
 import InterestRates from '../interestRates';
 import {
@@ -7,7 +5,7 @@ import {
   INTEREST_RATES,
 } from '../interestRatesConstants';
 
-const makeCheckRate = rates => type =>
+const makeCheckIsRate = rates => type =>
   rates[type].rateLow && rates[type].rateHigh && rates[type].trend;
 
 const makeFormatRate = rates => type => ({
@@ -33,16 +31,10 @@ const getAverageRates = rates =>
 export default InterestRates.createQuery(
   INTEREST_RATES_QUERIES.CURRENT_INTEREST_RATES,
   {
-    $filter({ filters }) {
-      filters.date = {
-        $lte: moment().toDate(),
-      };
-    },
-    $options: { sort: { date: -1 }, limit: 1 },
     $postFilter(results) {
       const interestRates = results.length > 0 && results[0];
       const cleanedRates = Object.keys(interestRates)
-        .filter(makeCheckRate(interestRates))
+        .filter(makeCheckIsRate(interestRates))
         .map(makeFormatRate(interestRates))
         .sort(sortRates);
       const averageRates = getAverageRates(cleanedRates);

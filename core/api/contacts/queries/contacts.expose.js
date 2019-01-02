@@ -3,4 +3,5 @@ import query from './contacts';
 
 query.expose({
   firewall(userId) {},
+  validateParams: {},
 });

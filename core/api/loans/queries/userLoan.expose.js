@@ -1,10 +1,14 @@
-import query from './userLoan';
+import userLoan from './userLoan';
 
-query.expose({
-  firewall() {
-    // This query only returns data for the logged in user, so no need
-    // for a firewall
-    // It's done to be able to wrap the appLayout with this query at all
-    // times, even for logged out pages
+userLoan.expose({
+  firewall(userId, params) {
+    params.userId = userId;
   },
+  embody: {
+    // This will deepExtend your body
+    $filter({ filters, params }) {
+      filters.userId = params.userId;
+    },
+  },
+  validateParams: { loanId: String },
 });

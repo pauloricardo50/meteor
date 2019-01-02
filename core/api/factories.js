@@ -27,6 +27,7 @@ import { LOT_TYPES } from './lots/lotConstants';
 import { ROLES } from './users/userConstants';
 import MortgageNotes from './mortgageNotes';
 import { ORGANISATION_TYPES } from './organisations/organisationConstants';
+import InterestRates from './interestRates';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -132,3 +133,5 @@ Factory.define('organisation', Organisations, {
 });
 
 Factory.define('lender', Lenders, {});
+
+Factory.define('interestRates', InterestRates, {});

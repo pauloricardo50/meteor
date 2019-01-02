@@ -5,4 +5,5 @@ query.expose({
   firewall: () => {
     SecurityService.checkCurrentUserIsAdmin();
   },
+  validateParams: { organisationId: String },
 });

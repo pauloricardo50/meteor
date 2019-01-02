@@ -4,13 +4,9 @@ import { createSearchFilters } from '../../helpers/mongoHelpers';
 import { adminLoans } from '../../fragments';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOANS, {
-  $filter({ filters, params: { searchQuery, step, owned } }) {
+  $filter({ filters, params: { searchQuery, owned } }) {
     if (searchQuery) {
       Object.assign(filters, createSearchFilters(['name'], searchQuery));
-    }
-
-    if (step) {
-      filters['logic.step'] = step;
     }
 
     if (owned) {
