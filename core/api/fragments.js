@@ -148,7 +148,7 @@ export const lender = () => ({
 });
 
 export const adminLender = () => ({
-  ...lender,
+  ...lender(),
   status: 1,
 });
 
@@ -209,7 +209,7 @@ export const loanBase = () => ({
 });
 
 export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
-  ...loanBase,
+  ...loanBase(),
   adminValidation: 1,
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
@@ -278,15 +278,13 @@ export const sideNavLoan = () => ({
 // //
 // // MortgageNote fragments
 // //
-export function mortgageNote() {
-  return {
-    canton: 1,
-    category: 1,
-    rank: 1,
-    type: 1,
-    value: 1,
-  };
-}
+export const mortgageNote = () => ({
+  canton: 1,
+  category: 1,
+  rank: 1,
+  type: 1,
+  value: 1,
+});
 
 // //
 // // Offer fragments
@@ -463,7 +461,7 @@ export const basePromotion = () => ({
 });
 
 export const proPromotion = ({ withFilteredLoan } = {}) => ({
-  ...basePromotion,
+  ...basePromotion(),
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
   promotionLots: {
@@ -488,13 +486,9 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     : {}),
 });
 
-export const proPromotions = () => ({
-  ...basePromotion(),
-});
+export const proPromotions = basePromotion;
 
-export const adminPromotions = () => ({
-  ...proPromotion(),
-});
+export const adminPromotions = proPromotion;
 
 export const searchPromotions = () => ({
   createdAt: 1,

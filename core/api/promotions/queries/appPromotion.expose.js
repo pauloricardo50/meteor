@@ -8,6 +8,7 @@ query.expose({
   },
   embody: {
     $filter({ filters, params }) {
+      filters._id = params.promotionId;
       filters.status = PROMOTION_STATUS.OPEN;
     },
   },

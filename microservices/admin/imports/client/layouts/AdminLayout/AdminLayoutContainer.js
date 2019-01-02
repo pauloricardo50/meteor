@@ -1,10 +1,10 @@
 // @flow
 import { compose } from 'recompose';
-import query from 'core/api/users/queries/currentUser';
+import currentUser from 'core/api/users/queries/currentUser';
 import { withSmartQuery } from 'core/api/containerToolkit';
 
 export default compose(withSmartQuery({
-  query,
+  query: currentUser,
   params: () => ({}),
   queryOptions: { reactive: true, single: true },
   dataName: 'currentUser',

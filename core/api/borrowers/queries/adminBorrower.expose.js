@@ -5,5 +5,5 @@ query.expose({
   firewall(userId) {
     Security.checkUserIsAdmin(userId);
   },
-  validateParams: {},
+  validateParams: { _id: String },
 });
