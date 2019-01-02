@@ -1,21 +1,21 @@
-import merge from 'lodash/merge';
+// import merge from 'lodash/merge';
 
-import { INTEREST_RATES } from '../../interestRatesConstants';
+import { INTEREST_RATES } from './constants';
 
-//
-// borrower fragments
-//
-export const baseBorrower = {
+// //
+// // borrower fragments
+// //
+export const baseBorrower = () => ({
   createdAt: 1,
   firstName: 1,
   lastName: 1,
   name: 1,
   updatedAt: 1,
   userId: 1,
-};
+});
 
-export const loanBorrower = {
-  ...baseBorrower,
+export const loanBorrower = () => ({
+  ...baseBorrower(),
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   address1: 1,
   address2: 1,
@@ -44,7 +44,7 @@ export const loanBorrower = {
   isUSPerson: 1,
   loans: { name: 1 },
   logic: 1,
-  mortgageNotes: mortgageNote,
+  mortgageNotes: mortgageNote(),
   otherFortune: 1,
   otherIncome: 1,
   personalBank: 1,
@@ -55,18 +55,18 @@ export const loanBorrower = {
   thirdPartyFortune: 1,
   worksForOwnCompany: 1,
   zipCode: 1,
-};
+});
 
-export const sideNavBorrower = {
-  ...baseBorrower,
+export const sideNavBorrower = () => ({
+  ...baseBorrower(),
   loans: { name: 1 },
   user: { assignedEmployee: { email: 1 } },
-};
+});
 
-//
-// Contact fragments
-//
-export const contact = {
+// //
+// // Contact fragments
+// //
+export const contact = () => ({
   address: 1,
   address1: 1,
   address2: 1,
@@ -81,11 +81,11 @@ export const contact = {
   phoneNumber: 1,
   phoneNumbers: 1,
   zipCode: 1,
-};
+});
 
-//
-// InterestRate fragments
-//
+// //
+// // InterestRate fragments
+// //
 const singleInterestRate = type => ({
   [type]: { rateLow: 1, rateHigh: 1, trend: 1 },
 });
@@ -98,56 +98,56 @@ const rates = Object.values(INTEREST_RATES).reduce(
   {},
 );
 
-export const interestRates = {
+export const interestRates = () => ({
   createdAt: 1,
   updatedAt: 1,
   date: 1,
   ...rates,
-};
+});
 
-export const currentInterestRates = {
+export const currentInterestRates = () => ({
   date: 1,
   ...rates,
-};
+});
 
-//
-// Irs10Y fragments
-//
-export const irs10y = {
+// //
+// // Irs10Y fragments
+// //
+export const irs10y = () => ({
   date: 1,
   rate: 1,
-};
+});
 
-//
-// Lender fragments
-//
-export const lender = {
-  contact,
+// //
+// // Lender fragments
+// //
+export const lender = () => ({
+  contact: contact(),
   loan: { _id: 1 },
-  offers: fullOffer,
+  offers: fullOffer(),
   organisation: {
     address: 1,
     address1: 1,
     address2: 1,
     canton: 1,
     city: 1,
-    contacts: contact,
+    contacts: contact(),
     logo: 1,
     name: 1,
     type: 1,
     zipCode: 1,
   },
-};
+});
 
-export const adminLender = {
+export const adminLender = () => ({
   ...lender,
   status: 1,
-};
+});
 
-//
-// Loan fragments
-//
-export const loan = {
+// //
+// // Loan fragments
+// //
+export const loan = () => ({
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
@@ -178,10 +178,10 @@ export const loan = {
   updatedAt: 1,
   userId: 1,
   verificationStatus: 1,
-};
+});
 
-export const loanBase = {
-  ...loan,
+export const loanBase = () => ({
+  ...loan(),
   promotionOptions: {
     attributedToMe: 1,
     custom: 1,
@@ -193,44 +193,43 @@ export const loanBase = {
       status: 1,
       reducedStatus: 1,
       value: 1,
-      properties: userProperty,
+      properties: promotionProperty(),
     },
     solvency: 1,
     value: 1,
   },
-};
+});
 
-export const adminLoan = {
-  ...userLoan,
-  closingDate: 1,
-  lenders: adminLender,
-  properties: adminProperty,
-  signingDate: 1,
-  status: 1,
-};
-
-export const userLoan = {
+export const userLoan = () => ({
   ...loanBase,
   adminValidation: 1,
   borrowers: loanBorrower,
   contacts: 1,
-  offers: fullOffer,
-  properties: userProperty,
-  user: appUser,
+  offers: fullOffer(),
+  properties: userProperty(),
+  user: appUser(),
   userFormsEnabled: 1,
-};
+});
 
-export const adminLoans = {
-  ...loanBase,
+export const adminLoan = () => ({
+  ...userLoan(),
+  closingDate: 1,
+  lenders: adminLender(),
+  properties: adminProperty(),
+  signingDate: 1,
+  status: 1,
+});
+export const adminLoans = () => ({
+  ...loanBase(),
   borrowers: { name: 1 },
   closingDate: 1,
   properties: { value: 1, address1: 1 },
   signingDate: 1,
   status: 1,
   user: { assignedEmployee: { email: 1 }, name: 1 },
-};
+});
 
-export const proLoans = {
+export const proLoans = () => ({
   createdAt: 1,
   name: 1,
   promotions: { _id: 1, users: { _id: 1 }, status: 1 },
@@ -243,36 +242,38 @@ export const proLoans = {
   },
   promotionProgress: 1,
   user: { name: 1, phoneNumbers: 1, email: 1 },
-};
+});
 
-export const sideNavLoan = {
-  ...loanBase,
+export const sideNavLoan = () => ({
+  ...loanBase(),
   status: 1,
   user: { assignedEmployee: { email: 1 }, name: 1 },
-};
+});
 
-//
-// MortgageNote fragments
-//
-export const mortgageNote = {
-  canton: 1,
-  category: 1,
-  rank: 1,
-  type: 1,
-  value: 1,
-};
+// //
+// // MortgageNote fragments
+// //
+export function mortgageNote() {
+  return {
+    canton: 1,
+    category: 1,
+    rank: 1,
+    type: 1,
+    value: 1,
+  };
+}
 
-//
-// Offer fragments
-//
-export const fullOffer = {
+// //
+// // Offer fragments
+// //
+export const fullOffer = () => ({
   amortizationGoal: 1,
   amortizationYears: 1,
   conditions: 1,
   epotekFees: 1,
   feedback: 1,
   ...Object.values(INTEREST_RATES).reduce(
-    (rates, rate) => ({ ...rates, [rate]: 1 }),
+    (obj, rate) => ({ ...obj, [rate]: 1 }),
     {},
   ),
   fees: 1,
@@ -284,13 +285,13 @@ export const fullOffer = {
   loanId: 1,
   maxAmount: 1,
   organisation: 1,
-  user: simpleUser,
-};
+  user: simpleUser(),
+});
 
-//
-// Organisation fragments
-//
-export const baseOrganisation = {
+// //
+// // Organisation fragments
+// //
+export const baseOrganisation = () => ({
   address: 1,
   address1: 1,
   address2: 1,
@@ -302,19 +303,19 @@ export const baseOrganisation = {
   name: 1,
   type: 1,
   zipCode: 1,
-};
+});
 
-export const fullOrganisation = {
-  ...baseOrganisation,
+export const fullOrganisation = () => ({
+  ...baseOrganisation(),
   contacts: contact,
   lenders: lender,
   offers: fullOffer,
-};
+});
 
-//
-// PromotionLot fragments
-//
-export const proPromotionLot = {
+// //
+// // PromotionLot fragments
+// //
+export const proPromotionLot = () => ({
   attributedTo: { user: { name: 1 } },
   createdAt: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
@@ -333,29 +334,29 @@ export const proPromotionLot = {
     },
   },
   promotionOptions: { _id: 1 },
-  properties: propertyPromotion,
+  properties: promotionProperty(),
   status: 1,
   updatedAt: 1,
   value: 1,
-};
+});
 
-export const appPromotionLot = {
+export const appPromotionLot = () => ({
   attributedTo: { user: { _id: 1 } },
   createdAt: 1,
   lots: { name: 1, value: 1, type: 1, description: 1 },
   name: 1,
   promotion: { name: 1, status: 1 },
-  properties: propertyPromotion,
+  properties: promotionProperty(),
   reducedStatus: 1,
   status: 1,
   updatedAt: 1,
   value: 1,
-};
+});
 
-//
-// PromotionOption fragments
-//
-export const fullPromotionOption = {
+// //
+// // PromotionOption fragments
+// //
+export const fullPromotionOption = () => ({
   createdAt: 1,
   custom: 1,
   loan: { name: 1 },
@@ -364,9 +365,9 @@ export const fullPromotionOption = {
   promotionLots: { name: 1, promotion: { name: 1 } },
   solvency: 1,
   updatedAt: 1,
-};
+});
 
-export const proPromotionOption = {
+export const proPromotionOption = () => ({
   createdAt: 1,
   custom: 1,
   loan: {
@@ -384,23 +385,23 @@ export const proPromotionOption = {
   priority: 1,
   solvency: 1,
   updatedAt: 1,
-};
+});
 
-export const appPromotionOption = {
+export const appPromotionOption = () => ({
   attributedToMe: 1,
   createdAt: 1,
   custom: 1,
   lots: { description: 1, name: 1, type: 1, value: 1 },
-  promotionLots: appPromotionLot,
+  promotionLots: appPromotionLot(),
   priority: 1,
   solvency: 1,
   updatedAt: 1,
-};
+});
 
-//
-// Promotion fragments
-//
-export const basePromotion = {
+// //
+// // Promotion fragments
+// //
+export const basePromotion = () => ({
   address: 1,
   address1: 1,
   availablePromotionLots: 1,
@@ -427,16 +428,16 @@ export const basePromotion = {
     promotionOptions: { _id: 1 },
     name: 1,
   },
-  properties: propertyPromotion,
+  properties: promotionProperty(),
   soldPromotionLots: 1,
   status: 1,
   type: 1,
   updatedAt: 1,
   users: { _id: 1, name: 1, email: 1, roles: 1 },
   zipCode: 1,
-};
+});
 
-export const proPromotion = {
+export const proPromotion = () => ({
   ...basePromotion,
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
@@ -446,46 +447,46 @@ export const proPromotion = {
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
     name: 1,
     promotionOptions: { _id: 1 },
-    properties: propertyPromotion,
+    properties: promotionProperty(),
     reducedStatus: 1,
     status: 1,
     value: 1,
   },
-};
+});
 
-export const proPromotions = {
-  ...basePromotion,
-};
+export const proPromotions = () => ({
+  ...basePromotion(),
+});
 
-export const adminPromotions = {
-  ...proPromotion,
-};
+export const adminPromotions = () => ({
+  ...proPromotion(),
+});
 
-export const searchPromotions = {
+export const searchPromotions = () => ({
   createdAt: 1,
   name: 1,
   promotionLotLinks: 1,
   updatedAt: 1,
-};
+});
 
-//
-// Property fragments
-//
-export const userValuation = {
+// //
+// // Property fragments
+// //
+export const userValuation = () => ({
   date: 1,
   error: 1,
   max: 1,
   microlocation: 1,
   min: 1,
   status: 1,
-};
+});
 
-export const adminValuation = {
-  ...userValuation,
+export const adminValuation = () => ({
+  ...userValuation(),
   value: 1,
-};
+});
 
-export const propertySummary = {
+export const propertySummary = () => ({
   address1: 1,
   address2: 1,
   canton: 1,
@@ -497,10 +498,10 @@ export const propertySummary = {
   userId: 1,
   value: 1,
   zipCode: 1,
-};
+});
 
-export const fullProperty = {
-  ...propertySummary,
+export const fullProperty = () => ({
+  ...propertySummary(),
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   adminValidation: 1,
   areaNorm: 1,
@@ -520,11 +521,11 @@ export const fullProperty = {
   isNew: 1,
   landArea: 1,
   latitude: 1,
-  loans: loanBase,
+  loans: loanBase(),
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
-  mortgageNotes: mortgageNote,
+  mortgageNotes: mortgageNote(),
   name: 1,
   numberOfFloors: 1,
   parkingInside: 1,
@@ -538,17 +539,17 @@ export const fullProperty = {
   roomCount: 1,
   terraceArea: 1,
   updatedAt: 1,
-  user: appUser,
+  user: appUser(),
   volume: 1,
   volumeNorm: 1,
-};
+});
 
-export const adminProperty = {
-  ...fullProperty,
-  valuation: adminValuation,
-};
+export const adminProperty = () => ({
+  ...fullProperty(),
+  valuation: adminValuation(),
+});
 
-export const promotionProperty = {
+export const promotionProperty = () => ({
   address: 1,
   bathroomCount: 1,
   canton: 1,
@@ -560,9 +561,9 @@ export const promotionProperty = {
   roomCount: 1,
   terraceArea: 1,
   value: 1,
-};
+});
 
-export const sideNavProperty = {
+export const sideNavProperty = () => ({
   address1: 1,
   city: 1,
   createdAt: 1,
@@ -573,17 +574,17 @@ export const sideNavProperty = {
   user: { assignedEmployee: { email: 1 } },
   value: 1,
   zipCode: 1,
-};
+});
 
-export const userProperty = {
-  ...fullProperty,
-  valuation: userValuation,
-};
+export const userProperty = () => ({
+  ...fullProperty(),
+  valuation: userValuation(),
+});
 
-//
-// Task fragments
-//
-export const baseTask = {
+// //
+// // Task fragments
+// //
+export const baseTask = () => ({
   completedAt: 1,
   createdAt: 1,
   dueAt: 1,
@@ -594,22 +595,21 @@ export const baseTask = {
   type: 1,
   updatedAt: 1,
   userId: 1,
-};
+});
 
-export const task = {
-  ...baseTask,
+export const task = () => ({
+  ...baseTask(),
   assignedEmployeeId: 1,
-  assignedEmployee: simpleUser,
+  assignedEmployee: simpleUser(),
   borrower: { ...baseBorrower, user: { assignedEmployeeId: 1 } },
   loan: { name: 1, user: { assignedEmployeeId: 1 } },
   property: { address1: 1, user: { assignedEmployeeId: 1 } },
-  user: simpleUser,
-};
+});
 
-//
-// User fragments
-//
-export const simpleUser = {
+// //
+// // User fragments
+// //
+export const simpleUser = () => ({
   email: 1,
   emails: 1,
   name: 1,
@@ -617,16 +617,26 @@ export const simpleUser = {
   lastName: 1,
   phoneNumbers: 1,
   roles: 1,
-};
+});
 
-export const adminUser = {
-  ...fullUser,
+export const adminUser = () => ({
+  ...fullUser(),
   assignedEmployee: simpleUser,
-};
+});
 
-export const appUser = {
-  ...fullUser,
-  assignedEmployee: simpleUser,
+export const fullUser = () => ({
+  ...simpleUser(),
+  apiToken: 1,
+  assignedEmployee: simpleUser(),
+  createdAt: 1,
+  emails: 1,
+  loans: loanBase,
+  updatedAt: 1,
+});
+
+export const appUser = () => ({
+  ...fullUser(),
+  assignedEmployee: simpleUser(),
   borrowers: { _id: 1, name: 1 },
   loans: {
     _id: 1,
@@ -636,19 +646,9 @@ export const appUser = {
     purchaseType: 1,
   },
   properties: { _id: 1 },
-};
+});
 
-export const fullUser = {
-  ...simpleUser,
-  apiToken: 1,
-  assignedEmployee: simpleUser,
-  createdAt: 1,
-  emails: 1,
-  loans: loanBase,
-  updatedAt: 1,
-};
-
-export const proUser = {
-  ...fullUser,
-  assignedEmployee: simpleUser,
-};
+export const proUser = () => ({
+  ...fullUser(),
+  assignedEmployee: simpleUser(),
+});
