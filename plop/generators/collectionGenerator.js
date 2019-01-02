@@ -29,9 +29,6 @@ module.exports = {
     data.methodInsert = `${data.collectionNameSingular}Insert`;
     data.methodRemove = `${data.collectionNameSingular}Remove`;
     data.methodUpdate = `${data.collectionNameSingular}Update`;
-    data.fragmentsFolder = `${data.collectionNamePlural}Fragments`;
-    data.fragmentsFile = `${data.collectionNameSingular}Fragments`;
-    data.fragment = `${data.collectionNameSingular}Fragment`;
     data.query = `${data.collectionNamePlural}`;
 
     actions.push({
@@ -78,16 +75,6 @@ module.exports = {
       type: 'add',
       path: `${collectionPath}/reducers.js`,
       templateFile: `${templatesPath}/reducers.hbs`,
-    });
-    actions.push({
-      type: 'add',
-      path: `${collectionPath}/queries/{{fragmentsFolder}}/index.js`,
-      templateFile: `${templatesPath}/fragmentsIndex.hbs`,
-    });
-    actions.push({
-      type: 'add',
-      path: `${collectionPath}/queries/{{fragmentsFolder}}/{{fragmentsFile}}.js`,
-      templateFile: `${templatesPath}/fragments.hbs`,
     });
     actions.push({
       type: 'add',
