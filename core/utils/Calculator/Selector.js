@@ -1,13 +1,9 @@
 // @flow
 import { createSelector } from 'reselect';
-import { userLoan, userProperty } from '../../api/types';
 
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
-    selectProperty({
-      loan,
-      structureId,
-    }: { loan: userLoan } = {}): userProperty {
+    selectProperty({ loan, structureId } = {}) {
       let propertyId = loan.structure && loan.structure.propertyId;
       let promotionOptionId = loan.structure && loan.structure.promotionOptionId;
 
@@ -37,7 +33,7 @@ export const withSelector = (SuperClass = class {}) =>
       return {};
     }
 
-    selectStructure({ loan, structureId }: { loan: userLoan } = {}): {} {
+    selectStructure({ loan, structureId } = {}): {} {
       if (structureId) {
         return loan.structures.find(({ id }) => id === structureId);
       }
@@ -77,11 +73,11 @@ export const withSelector = (SuperClass = class {}) =>
       );
     }
 
-    selectPropertyWork({ loan }: { loan: userLoan } = {}): number {
+    selectPropertyWork({ loan } = {}): number {
       return this.makeSelectStructureKey('propertyWork')({ loan });
     }
 
-    selectLoanValue({ loan, structureId }: { loan: userLoan } = {}): number {
+    selectLoanValue({ loan, structureId } = {}): number {
       return this.selectStructure({ loan, structureId }).wantedLoan;
     }
 

@@ -12,6 +12,8 @@ import {
 describe('OwnFundsCompleter', () => {
   describe('getRequiredAndCurrentFunds', () => {
     let props;
+    let structure;
+    let property;
 
     beforeEach(() => {
       props = {};
@@ -19,15 +21,23 @@ describe('OwnFundsCompleter', () => {
 
     context('for an initial structure', () => {
       beforeEach(() => {
+        structure = {
+          id: 'struct1',
+          ownFunds: [],
+          propertyId: 'propertyId',
+          wantedLoan: 800000,
+          propertyWork: 0,
+        };
+        property = { _id: 'propertyId', value: 1000000 };
         props = {
-          structure: {
-            ownFunds: [],
-            propertyId: 'propertyId',
-            wantedLoan: 800000,
-            propertyWork: 0,
+          structure,
+          structureId: 'struct1',
+          properties: [property],
+          loan: {
+            properties: [property],
+            residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+            structures: [structure],
           },
-          properties: [{ _id: 'propertyId', value: 1000000 }],
-          loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
           ownFundsIndex: -1,
           value: 0,
         };
@@ -49,7 +59,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('properly discounts an existing ownFunds value', () => {
-        props.structure.ownFunds = [{ value: 150000 }];
+        structure.ownFunds = [{ value: 150000 }];
         props.ownFundsIndex = 0;
         props.value = 100000;
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
@@ -59,7 +69,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('counts other values', () => {
-        props.structure.ownFunds = [
+        structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
         ];
         props.ownFundsIndex = -1;
@@ -71,7 +81,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('counts other values, even if value is undefined', () => {
-        props.structure.ownFunds = [
+        structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW },
         ];
         props.ownFundsIndex = -1;
@@ -83,7 +93,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('does not count other pledged values', () => {
-        props.structure.ownFunds = [
+        structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
         ];
         props.ownFundsIndex = -1;
@@ -113,7 +123,7 @@ describe('OwnFundsCompleter', () => {
 
         // We chose Nb. 2, which is the simpler and more intuitive way to go
 
-        props.structure.ownFunds = [{ value: 150000 }];
+        structure.ownFunds = [{ value: 150000 }];
         props.ownFundsIndex = -1;
         props.value = 150000;
         props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
@@ -124,7 +134,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('takes into account previously pledged values', () => {
-        props.structure.ownFunds = [
+        structure.ownFunds = [
           { value: 40000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
           { value: 150000 },
         ];
@@ -138,8 +148,8 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('works if changing a wrong pledged amount', () => {
-        props.structure.wantedLoan = 900000;
-        props.structure.ownFunds = [
+        structure.wantedLoan = 900000;
+        structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
         ];
         props.ownFundsIndex = 0;
@@ -153,8 +163,8 @@ describe('OwnFundsCompleter', () => {
 
       // Show warning instead
       it.skip('works if adding a wrong pledged amount twice', () => {
-        props.structure.wantedLoan = 900000;
-        props.structure.ownFunds = [
+        structure.wantedLoan = 900000;
+        structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
         ];
         props.ownFundsIndex = -1;
@@ -167,7 +177,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge 1', () => {
-        props.structure.ownFunds = [
+        structure.ownFunds = [
           { value: 100000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
           { value: 150000 },
         ];
@@ -181,7 +191,7 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('takes into account previously pledged values without exceeding maxBorrowRatioWithPledge 2', () => {
-        props.structure.ownFunds = [
+        structure.ownFunds = [
           { value: 150000, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
           { value: 150000 },
         ];
@@ -195,8 +205,8 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('increases the wantedLoan only by the amount possible', () => {
-        props.structure.wantedLoan = 600000;
-        props.structure.ownFunds = [{ value: 150000 }];
+        structure.wantedLoan = 600000;
+        structure.ownFunds = [{ value: 150000 }];
         props.value = 300000;
         props.usageType = OWN_FUNDS_USAGE_TYPES.PLEDGE;
         expect(getRequiredAndCurrentFunds(props)).to.deep.equal({
@@ -206,8 +216,8 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('works when editing a pledge funds with high loan', () => {
-        props.structure.wantedLoan = 900000;
-        props.structure.ownFunds = [
+        structure.wantedLoan = 900000;
+        structure.ownFunds = [
           {
             value: 120000,
             type: OWN_FUNDS_TYPES.BANK_FORTUNE,
@@ -237,9 +247,9 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('works when changing withdraw to pledge', () => {
-        props.properties[0].value = 500000;
-        props.structure.wantedLoan = 400000;
-        props.structure.ownFunds = [
+        property.value = 500000;
+        structure.wantedLoan = 400000;
+        structure.ownFunds = [
           {
             value: 75000,
             type: OWN_FUNDS_TYPES.BANK_FORTUNE,
@@ -264,9 +274,9 @@ describe('OwnFundsCompleter', () => {
       });
 
       it('works when changing pledge to withdraw', () => {
-        props.properties[0].value = 500000;
-        props.structure.wantedLoan = 450000;
-        props.structure.ownFunds = [
+        property.value = 500000;
+        structure.wantedLoan = 450000;
+        structure.ownFunds = [
           {
             value: 75000,
             type: OWN_FUNDS_TYPES.BANK_FORTUNE,
