@@ -1,6 +1,6 @@
 import Loans from '../loans';
 import { LOAN_QUERIES, AUCTION_STATUS } from '../loanConstants';
-import loanBaseFragment from './loanFragments/loanBaseFragment';
+import { loanBase } from '../../fragments';
 
 export default Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
   $filter({ filters, params: { userId, unowned, step, auction } }) {
@@ -18,6 +18,6 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
       filters['logic.auction.status'] = auction;
     }
   },
-  ...loanBaseFragment,
+  ...loanBase(),
   $options: { sort: { createdAt: -1 } },
 });

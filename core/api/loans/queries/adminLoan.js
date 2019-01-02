@@ -1,10 +1,10 @@
 import Loans from '../loans';
 import { LOAN_QUERIES } from '../../constants';
-import adminLoanFragment from './loanFragments/adminLoanFragment';
+import { adminLoan } from '../../fragments';
 
 export default Loans.createQuery(LOAN_QUERIES.ADMIN_LOAN, {
   $filter({ filters, params }) {
     filters._id = params._id;
   },
-  ...adminLoanFragment,
+  ...adminLoan({ withSort: true }),
 });

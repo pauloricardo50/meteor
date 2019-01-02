@@ -1,6 +1,6 @@
 import { Users } from '../..';
+import { adminLoan } from '../../fragments';
 import { LOAN_QUERIES } from '../loanConstants';
-import { adminLoanFragment } from './loanFragments';
 
 export default Users.createQuery(LOAN_QUERIES.LOANS_ASSIGNED_TO_ADMIN, {
   $filter({ filters, params: { adminId } }) {
@@ -20,5 +20,5 @@ export default Users.createQuery(LOAN_QUERIES.LOANS_ASSIGNED_TO_ADMIN, {
 
     return users.loans || [];
   },
-  loans: adminLoanFragment,
+  loans: adminLoan({ withSort: true }),
 });

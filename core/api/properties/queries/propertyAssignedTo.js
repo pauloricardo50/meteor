@@ -5,7 +5,5 @@ export default Property.createQuery(PROPERTY_QUERIES.PROPERTY_ASSIGNED_TO, {
   $filter({ filters, params }) {
     filters._id = params.propertyId;
   },
-  user: {
-    assignedEmployeeId: 1,
-  },
+  user: { assignedEmployeeId: 1 },
 });

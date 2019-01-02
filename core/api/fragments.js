@@ -1,5 +1,6 @@
 // import merge from 'lodash/merge';
 
+import { Meteor } from 'meteor/meteor';
 import { INTEREST_RATES } from './constants';
 
 // //
@@ -14,7 +15,7 @@ export const baseBorrower = () => ({
   userId: 1,
 });
 
-export const loanBorrower = () => ({
+export const loanBorrower = ({ withSort } = {}) => ({
   ...baseBorrower(),
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   address1: 1,
@@ -55,6 +56,13 @@ export const loanBorrower = () => ({
   thirdPartyFortune: 1,
   worksForOwnCompany: 1,
   zipCode: 1,
+  ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
+});
+
+export const adminBorrower = () => ({
+  ...loanBorrower(),
+  loans: loanBase(),
+  user: appUser(),
 });
 
 export const sideNavBorrower = () => ({
@@ -99,15 +107,15 @@ const rates = Object.values(INTEREST_RATES).reduce(
 );
 
 export const interestRates = () => ({
+  ...rates,
   createdAt: 1,
   updatedAt: 1,
   date: 1,
-  ...rates,
 });
 
 export const currentInterestRates = () => ({
-  date: 1,
   ...rates,
+  date: 1,
 });
 
 // //
@@ -200,19 +208,36 @@ export const loanBase = () => ({
   },
 });
 
-export const userLoan = () => ({
+export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   ...loanBase,
   adminValidation: 1,
-  borrowers: loanBorrower,
+  borrowers: loanBorrower({ withSort }),
   contacts: 1,
   offers: fullOffer(),
-  properties: userProperty(),
+  properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
+  ...(withFilteredPromotions
+    ? {
+      promotions: {
+        name: 1,
+        address: 1,
+        status: 1,
+        contacts: 1,
+        loans: {
+          _id: 1,
+          $filter({ filters, params: { loanId } }) {
+            filters.userId = Meteor.userId();
+            filters._id = loanId;
+          },
+        },
+      },
+    }
+    : {}),
 });
 
-export const adminLoan = () => ({
-  ...userLoan(),
+export const adminLoan = ({ withSort } = {}) => ({
+  ...userLoan({ withSort }),
   closingDate: 1,
   lenders: adminLender(),
   properties: adminProperty(),
@@ -307,9 +332,9 @@ export const baseOrganisation = () => ({
 
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
-  contacts: contact,
-  lenders: lender,
-  offers: fullOffer,
+  contacts: contact(),
+  lenders: lender(),
+  offers: fullOffer(),
 });
 
 // //
@@ -437,7 +462,7 @@ export const basePromotion = () => ({
   zipCode: 1,
 });
 
-export const proPromotion = () => ({
+export const proPromotion = ({ withFilteredLoan } = {}) => ({
   ...basePromotion,
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
@@ -452,6 +477,15 @@ export const proPromotion = () => ({
     status: 1,
     value: 1,
   },
+  ...(withFilteredLoan
+    ? {
+      loans: {
+        $filter({ filters, params: { loanId } }) {
+          filters._id = loanId;
+        },
+      },
+    }
+    : {}),
 });
 
 export const proPromotions = () => ({
@@ -500,7 +534,7 @@ export const propertySummary = () => ({
   zipCode: 1,
 });
 
-export const fullProperty = () => ({
+export const fullProperty = ({ withSort } = {}) => ({
   ...propertySummary(),
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
   adminValidation: 1,
@@ -542,10 +576,11 @@ export const fullProperty = () => ({
   user: appUser(),
   volume: 1,
   volumeNorm: 1,
+  ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
 });
 
-export const adminProperty = () => ({
-  ...fullProperty(),
+export const adminProperty = ({ withSort } = {}) => ({
+  ...fullProperty({ withSort }),
   valuation: adminValuation(),
 });
 
@@ -621,7 +656,7 @@ export const simpleUser = () => ({
 
 export const adminUser = () => ({
   ...fullUser(),
-  assignedEmployee: simpleUser,
+  assignedEmployee: simpleUser(),
 });
 
 export const fullUser = () => ({
@@ -630,7 +665,7 @@ export const fullUser = () => ({
   assignedEmployee: simpleUser(),
   createdAt: 1,
   emails: 1,
-  loans: loanBase,
+  loans: loanBase(),
   updatedAt: 1,
 });
 

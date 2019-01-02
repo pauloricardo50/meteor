@@ -1,6 +1,6 @@
 import Organisations from '../organisations';
 import { ORGANISATION_QUERIES } from '../organisationConstants';
-import fullOrganisationFragment from './organisationFragments/fullOrganisationFragment';
+import { fullOrganisation } from '../../fragments';
 
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,
@@ -11,6 +11,6 @@ export default Organisations.createQuery(
       }
     },
     $options: { sort: { name: 1 } },
-    ...fullOrganisationFragment,
+    ...fullOrganisation(),
   },
 );

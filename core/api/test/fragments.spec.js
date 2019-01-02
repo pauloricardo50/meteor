@@ -5,9 +5,10 @@ import { expect } from 'chai';
 import * as fragments from '../fragments';
 
 const checkFields = (obj) => {
-  Object.keys(obj).forEach((field) => {
-    expect(typeof field).to.not.equal('function');
-    expect(field).to.not.equal(undefined);
+  Object.keys(obj).forEach((fieldName) => {
+    const field = obj[fieldName];
+    expect(typeof field).to.not.equal('function', fieldName);
+    expect(field).to.not.equal(undefined, fieldName);
 
     if (typeof field === 'object') {
       checkFields(field);
@@ -15,7 +16,7 @@ const checkFields = (obj) => {
   });
 };
 
-describe.only('fragments', () => {
+describe('fragments', () => {
   it('mortgageNote is defined', () => {
     expect(fragments.loanBorrower().mortgageNotes).to.deep.include({
       value: 1,
