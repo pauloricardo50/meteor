@@ -1,12 +1,12 @@
 import addressReducer from '../reducers/addressReducer';
 import Organisations from './organisations';
-import { fullOfferFragment } from '../offers/queries/offerFragments';
+import { fullOffer } from '../fragments';
 
 Organisations.addReducers({
   ...addressReducer,
   offers: {
     body: {
-      lenders: { offers: fullOfferFragment },
+      lenders: { offers: fullOffer() },
     },
     reduce: ({ lenders = [] }) =>
       lenders.reduce(

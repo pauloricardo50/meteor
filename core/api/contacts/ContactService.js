@@ -1,6 +1,6 @@
 import Contacts from './contacts';
 import CollectionService from '../helpers/CollectionService';
-import { contactFragment } from './queries/contactsFragments';
+import { contact } from '../fragments';
 
 class ContactService extends CollectionService {
   constructor() {
@@ -10,7 +10,7 @@ class ContactService extends CollectionService {
   get(contactId) {
     return this.fetchOne({
       $filters: { _id: contactId },
-      ...contactFragment,
+      ...contact(),
     });
   }
 

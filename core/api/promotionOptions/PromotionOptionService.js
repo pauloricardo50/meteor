@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import PromotionOptions from './promotionOptions';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
-import { fullPromotionOptionFragment } from './queries/promotionOptionFragments';
-import Loans from '../loans';
+import { fullPromotionOption } from '../fragments';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {
@@ -14,7 +13,7 @@ export class PromotionOptionService extends CollectionService {
     return this.collection
       .createQuery({
         $filters: { _id: promotionOptionId },
-        ...fullPromotionOptionFragment,
+        ...fullPromotionOption(),
       })
       .fetchOne();
   }
@@ -52,10 +51,10 @@ export class PromotionOptionService extends CollectionService {
   }
 
   insert = ({ promotionLotId, loanId }) => {
-    const { promotionOptions } = Loans.createQuery({
+    const { promotionOptions } = LoanService.fetchOne({
       $filters: { _id: loanId },
       promotionOptions: { _id: 1, promotionLots: { _id: 1 } },
-    }).fetchOne();
+    });
 
     const existingPromotionOption = promotionOptions
       && promotionOptions.find(({ promotionLots }) =>
