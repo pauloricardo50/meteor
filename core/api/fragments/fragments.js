@@ -1,16 +1,17 @@
+import merge from 'lodash/merge';
+
 import { INTEREST_RATES } from '../../interestRatesConstants';
 
 //
 // borrower fragments
 //
 export const baseBorrower = {
+  createdAt: 1,
   firstName: 1,
   lastName: 1,
   name: 1,
-  createdAt: 1,
   updatedAt: 1,
   userId: 1,
-  $options: { sort: { createdAt: 1 } },
 };
 
 export const loanBorrower = {
@@ -58,28 +59,28 @@ export const loanBorrower = {
 
 export const sideNavBorrower = {
   ...baseBorrower,
-  user: { assignedEmployee: { email: 1 } },
   loans: { name: 1 },
+  user: { assignedEmployee: { email: 1 } },
 };
 
 //
 // Contact fragments
 //
 export const contact = {
+  address: 1,
+  address1: 1,
+  address2: 1,
+  canton: 1,
+  city: 1,
+  email: 1,
+  emails: 1,
   firstName: 1,
   lastName: 1,
   name: 1,
-  address: 1,
-  zipCode: 1,
-  address1: 1,
-  address2: 1,
-  city: 1,
-  canton: 1,
-  phoneNumbers: 1,
-  phoneNumber: 1,
-  emails: 1,
-  email: 1,
   organisations: { name: 1, _id: 1, address: 1 },
+  phoneNumber: 1,
+  phoneNumbers: 1,
+  zipCode: 1,
 };
 
 //
@@ -89,7 +90,7 @@ const singleInterestRate = type => ({
   [type]: { rateLow: 1, rateHigh: 1, trend: 1 },
 });
 
-const ratess = Object.values(INTEREST_RATES).reduce(
+const rates = Object.values(INTEREST_RATES).reduce(
   (interestRates, type) => ({
     ...interestRates,
     ...singleInterestRate(type),
@@ -101,12 +102,12 @@ export const interestRates = {
   createdAt: 1,
   updatedAt: 1,
   date: 1,
-  ...ratess,
+  ...rates,
 };
 
 export const currentInterestRates = {
   date: 1,
-  ...ratess,
+  ...rates,
 };
 
 //
@@ -121,6 +122,9 @@ export const irs10y = {
 // Lender fragments
 //
 export const lender = {
+  contact,
+  loan: { _id: 1 },
+  offers: fullOffer,
   organisation: {
     address: 1,
     address1: 1,
@@ -133,9 +137,6 @@ export const lender = {
     type: 1,
     zipCode: 1,
   },
-  contact,
-  loan: { _id: 1 },
-  offers: fullOffer,
 };
 
 export const adminLender = {
@@ -182,6 +183,11 @@ export const loan = {
 export const loanBase = {
   ...loan,
   promotionOptions: {
+    attributedToMe: 1,
+    custom: 1,
+    name: 1,
+    priority: 1,
+    promotion: 1,
     promotionLots: {
       name: 1,
       status: 1,
@@ -189,13 +195,8 @@ export const loanBase = {
       value: 1,
       properties: userProperty,
     },
-    name: 1,
-    custom: 1,
-    attributedToMe: 1,
-    priority: 1,
-    promotion: 1,
-    value: 1,
     solvency: 1,
+    value: 1,
   },
 };
 
@@ -230,9 +231,9 @@ export const adminLoans = {
 };
 
 export const proLoans = {
+  createdAt: 1,
   name: 1,
-  user: { name: 1, phoneNumbers: 1, email: 1 },
-  promotionProgress: 1,
+  promotions: { _id: 1, users: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
@@ -240,8 +241,8 @@ export const proLoans = {
     promotionLots: { _id: 1, attributedTo: { user: { _id: 1 } } },
     solvency: 1,
   },
-  promotions: { _id: 1, users: { _id: 1 }, status: 1 },
-  createdAt: 1,
+  promotionProgress: 1,
+  user: { name: 1, phoneNumbers: 1, email: 1 },
 };
 
 export const sideNavLoan = {
@@ -254,11 +255,11 @@ export const sideNavLoan = {
 // MortgageNote fragments
 //
 export const mortgageNote = {
-  value: 1,
+  canton: 1,
+  category: 1,
   rank: 1,
   type: 1,
-  category: 1,
-  canton: 1,
+  value: 1,
 };
 
 //
@@ -295,11 +296,11 @@ export const baseOrganisation = {
   address2: 1,
   canton: 1,
   city: 1,
-  contacts: { _id: 1, role: 1, email: 1, name: 1 },
+  contacts: { role: 1, email: 1, name: 1 },
+  features: 1,
   logo: 1,
   name: 1,
   type: 1,
-  features: 1,
   zipCode: 1,
 };
 
@@ -314,19 +315,10 @@ export const fullOrganisation = {
 // PromotionLot fragments
 //
 export const proPromotionLot = {
-  _id: 1,
+  attributedTo: { user: { name: 1 } },
   createdAt: 1,
-  updatedAt: 1,
-  value: 1,
-  status: 1,
-  lots: {
-    name: 1,
-    value: 1,
-    type: 1,
-    description: 1,
-  },
-  properties: propertyPromotion,
-  promotionOptions: { _id: 1 },
+  lots: { name: 1, value: 1, type: 1, description: 1 },
+  name: 1,
   promotion: {
     status: 1,
     name: 1,
@@ -340,31 +332,24 @@ export const proPromotionLot = {
       promotionLots: { _id: 1 },
     },
   },
-  name: 1,
-  attributedTo: {
-    user: { name: 1 },
-  },
+  promotionOptions: { _id: 1 },
+  properties: propertyPromotion,
+  status: 1,
+  updatedAt: 1,
+  value: 1,
 };
 
 export const appPromotionLot = {
-  _id: 1,
+  attributedTo: { user: { _id: 1 } },
   createdAt: 1,
+  lots: { name: 1, value: 1, type: 1, description: 1 },
+  name: 1,
+  promotion: { name: 1, status: 1 },
+  properties: propertyPromotion,
+  reducedStatus: 1,
+  status: 1,
   updatedAt: 1,
   value: 1,
-  status: 1,
-  reducedStatus: 1,
-  lots: {
-    name: 1,
-    value: 1,
-    type: 1,
-    description: 1,
-  },
-  properties: propertyPromotion,
-  name: 1,
-  attributedTo: {
-    user: { _id: 1 },
-  },
-  promotion: { name: 1, status: 1 },
 };
 
 //
@@ -372,52 +357,44 @@ export const appPromotionLot = {
 //
 export const fullPromotionOption = {
   createdAt: 1,
-  updatedAt: 1,
-  promotionLots: { name: 1, promotion: { name: 1 } },
-  lots: { name: 1, type: 1, status: 1, description: 1 },
-  loan: { name: 1 },
-  priority: 1,
   custom: 1,
+  loan: { name: 1 },
+  lots: { name: 1, type: 1, status: 1, description: 1 },
+  priority: 1,
+  promotionLots: { name: 1, promotion: { name: 1 } },
   solvency: 1,
+  updatedAt: 1,
 };
 
 export const proPromotionOption = {
   createdAt: 1,
-  updatedAt: 1,
+  custom: 1,
   loan: {
     solvency: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
     promotions: { _id: 1 },
     promotionOptions: {
       name: 1,
-      promotionLots: {
-        _id: 1,
-        attributedTo: { user: { _id: 1 } },
-      },
+      promotionLots: { attributedTo: { user: { _id: 1 } } },
       solvency: 1,
     },
     promotionProgress: 1,
   },
   lots: { name: 1, type: 1, description: 1 },
   priority: 1,
-  custom: 1,
   solvency: 1,
+  updatedAt: 1,
 };
 
 export const appPromotionOption = {
+  attributedToMe: 1,
   createdAt: 1,
-  updatedAt: 1,
   custom: 1,
-  lots: {
-    name: 1,
-    type: 1,
-    description: 1,
-    value: 1,
-  },
+  lots: { description: 1, name: 1, type: 1, value: 1 },
   promotionLots: appPromotionLot,
   priority: 1,
-  attributedToMe: 1,
   solvency: 1,
+  updatedAt: 1,
 };
 
 //
@@ -461,19 +438,19 @@ export const basePromotion = {
 
 export const proPromotion = {
   ...basePromotion,
-  promotionLots: {
-    _id: 1,
-    value: 1,
-    status: 1,
-    reducedStatus: 1,
-    lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
-    properties: propertyPromotion,
-    promotionOptions: { _id: 1 },
-    name: 1,
-    attributedTo: { user: { name: 1 } },
-  },
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
+  promotionLots: {
+    _id: 1,
+    attributedTo: { user: { name: 1 } },
+    lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
+    name: 1,
+    promotionOptions: { _id: 1 },
+    properties: propertyPromotion,
+    reducedStatus: 1,
+    status: 1,
+    value: 1,
+  },
 };
 
 export const proPromotions = {
@@ -486,9 +463,9 @@ export const adminPromotions = {
 
 export const searchPromotions = {
   createdAt: 1,
-  updatedAt: 1,
   name: 1,
   promotionLotLinks: 1,
+  updatedAt: 1,
 };
 
 //
@@ -543,7 +520,6 @@ export const fullProperty = {
   isNew: 1,
   landArea: 1,
   latitude: 1,
-  // residenceType is required for the valuation
   loans: loanBase,
   longitude: 1,
   minergie: 1,
@@ -608,17 +584,16 @@ export const userProperty = {
 // Task fragments
 //
 export const baseTask = {
+  completedAt: 1,
   createdAt: 1,
   dueAt: 1,
-  completedAt: 1,
+  fileKey: 1,
+  relatedDoc: 1,
   status: 1,
   title: 1,
   type: 1,
   updatedAt: 1,
   userId: 1,
-  fileKey: 1,
-  relatedDoc: 1,
-  $options: { sort: { createdAt: -1 } },
 };
 
 export const task = {
@@ -652,72 +627,25 @@ export const adminUser = {
 export const appUser = {
   ...fullUser,
   assignedEmployee: simpleUser,
+  borrowers: { _id: 1, name: 1 },
   loans: {
     _id: 1,
-    name: 1,
     borrowers: { _id: 1 },
-    purchaseType: 1,
     logic: { step: 1 },
+    name: 1,
+    purchaseType: 1,
   },
-  borrowers: { _id: 1, name: 1 },
   properties: { _id: 1 },
 };
 
 export const fullUser = {
   ...simpleUser,
-  assignedEmployee: simpleUser,
-  emails: 1,
-  createdAt: 1,
-  updatedAt: 1,
-  loans: {
-    additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
-    borrowerIds: 1,
-    borrowers: { firstName: 1, lastName: 1, name: 1 },
-    canton: 1,
-    createdAt: 1,
-    currentOwner: 1,
-    enableOffers: 1,
-    futureOwner: 1,
-    hasPromotion: 1,
-    logic: 1,
-    name: 1,
-    otherOwner: 1,
-    previousLender: 1,
-    previousLoanTranches: 1,
-    promotions: {
-      name: 1,
-      address: 1,
-      contacts: 1,
-    },
-    promotionOptions: {
-      promotionLots: {
-        name: 1,
-        status: 1,
-        reducedStatus: 1,
-        value: 1,
-        properties: userProperty,
-      },
-      name: 1,
-      custom: 1,
-      attributedToMe: 1,
-      priority: 1,
-      promotion: 1,
-      value: 1,
-      solvency: 1,
-    },
-    properties: { value: 1, address1: 1 },
-    propertyIds: 1,
-    purchaseType: 1,
-    residenceType: 1,
-    selectedStructure: 1,
-    status: 1,
-    structure: 1,
-    structures: 1,
-    updatedAt: 1,
-    userId: 1,
-    verificationStatus: 1,
-  },
   apiToken: 1,
+  assignedEmployee: simpleUser,
+  createdAt: 1,
+  emails: 1,
+  loans: loanBase,
+  updatedAt: 1,
 };
 
 export const proUser = {
