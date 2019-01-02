@@ -1,5 +1,3 @@
-import merge from 'lodash/merge';
-
 import { propertySummaryFragment } from './propertyFragments';
 import loanBaseFragment from '../../../loans/queries/loanFragments/loanBaseFragment';
 import { mortgageNoteFragment } from '../../../mortgageNotes/queries/mortgageNoteFragments';
@@ -27,7 +25,7 @@ export default {
   landArea: 1,
   latitude: 1,
   // residenceType is required for the valuation
-  loans: merge({}, loanBaseFragment),
+  loans: loanBaseFragment,
   longitude: 1,
   minergie: 1,
   monthlyExpenses: 1,
