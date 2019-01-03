@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 import LoanSelector from './LoanSelector';
-import DrawerHeader from '../AppTopNav/DrawerHeader';
+import SideNavHeader from './SideNavHeader';
 import LoanSideNav from './LoanSideNav';
 
 const SideNavUser = ({
@@ -18,8 +18,8 @@ const SideNavUser = ({
   // Return an empty side nav if there is no loan
   if (!currentUser) {
     return (
-      <nav className="side-nav-user hidden-xs">
-        <DrawerHeader permanent />
+      <nav className="side-nav-user">
+        <SideNavHeader />
       </nav>
     );
   }
@@ -41,7 +41,7 @@ const SideNavUser = ({
 
   return (
     <nav className={classnames({ 'side-nav-user': true, fixed })} style={style}>
-      <DrawerHeader permanent />
+      <SideNavHeader />
       <div className="scrollable">
         {!!(loans && loans.length > 0) && (
           <LoanSelector
@@ -71,4 +71,4 @@ SideNavUser.defaultProps = {
   toggleDrawer: () => {},
 };
 
-export default SideNavUser;
+export default withRouter(SideNavUser);

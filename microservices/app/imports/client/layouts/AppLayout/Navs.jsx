@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 
 import TopNav from 'core/components/TopNav';
-import SearchModal from 'core/components/SearchModal';
+// import SearchModal from 'core/components/SearchModal';
 import PermanentSideNav from './PermanentSideNav';
 
 export default class Navs extends Component {
@@ -21,21 +21,18 @@ export default class Navs extends Component {
 
   render() {
     const { open } = this.state;
-    const { showSideNav } = this.props;
+    const { showSideNav, currentUser } = this.props;
 
     return (
       <div className="navs">
         <TopNav
-          key={0}
-          {...this.props}
+          currentUser={currentUser}
           public={false}
           drawerState={open}
           toggleDrawer={this.handleToggle}
           handleClickLink={this.handleClickLink}
-        >
-          <SearchModal />
-        </TopNav>
-        <div key={1} className="permanent-side-nav">
+        />
+        <div className="permanent-side-nav">
           {showSideNav && <PermanentSideNav {...this.props} />}
         </div>
       </div>

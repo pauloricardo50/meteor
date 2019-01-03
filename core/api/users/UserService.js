@@ -4,7 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
 import Loans from '../loans';
 import CollectionService from '../helpers/CollectionService';
-import { fullUserFragment } from './queries/userFragments/index';
+import { fullUser } from '../fragments';
 import { ROLES } from './userConstants';
 import Users from '.';
 
@@ -16,7 +16,7 @@ class UserService extends CollectionService {
   get(userId) {
     return this.fetchOne({
       $filters: { _id: userId },
-      ...fullUserFragment,
+      ...fullUser(),
     });
   }
 

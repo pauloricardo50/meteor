@@ -2,22 +2,6 @@ import Users from './users';
 import { Loans, Offers, Borrowers, Properties, Promotions, Contacts } from '..';
 
 Users.addLinks({
-  loans: {
-    collection: Loans,
-    inversedBy: 'user',
-  },
-  borrowers: {
-    collection: Borrowers,
-    inversedBy: 'user',
-  },
-  properties: {
-    collection: Properties,
-    inversedBy: 'user',
-  },
-  offers: {
-    collection: Offers,
-    inversedBy: 'user',
-  },
   assignedEmployee: {
     collection: Users,
     field: 'assignedEmployeeId',
@@ -27,16 +11,32 @@ Users.addLinks({
     collection: Users,
     inversedBy: 'assignedEmployee',
   },
-  promotions: {
-    collection: Promotions,
-    inversedBy: 'users',
-  },
   assignedPromotions: {
     collection: Promotions,
     inversedBy: 'assignedEmployee',
   },
+  borrowers: {
+    collection: Borrowers,
+    inversedBy: 'user',
+  },
   contact: {
     collection: Contacts,
+    inversedBy: 'user',
+  },
+  loans: {
+    collection: Loans,
+    inversedBy: 'user',
+  },
+  promotions: {
+    collection: Promotions,
+    inversedBy: 'users',
+  },
+  properties: {
+    collection: Properties,
+    inversedBy: 'user',
+  },
+  offers: {
+    collection: Offers,
     inversedBy: 'user',
   },
 });

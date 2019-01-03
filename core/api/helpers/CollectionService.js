@@ -49,6 +49,10 @@ class CollectionService {
     return this.collection.getLink(...args);
   }
 
+  count(...args) {
+    return this.collection.createQuery(...args).count();
+  }
+
   countAll() {
     return this.find({}).count();
   }

@@ -7,4 +7,5 @@ query.expose({
       SecurityService.loans.isAllowedToUpdate(loanId);
     }
   },
+  validateParams: { loanId: String },
 });

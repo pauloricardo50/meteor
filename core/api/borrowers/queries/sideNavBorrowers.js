@@ -1,9 +1,9 @@
 import Borrowers from '..';
 import { BORROWER_QUERIES } from '../borrowerConstants';
-import { sideNavBorrowerFragment } from './borrowerFragments';
+import { sideNavBorrower } from '../../fragments';
 
 export default Borrowers.createQuery(BORROWER_QUERIES.SIDENAV_BORROWERS, {
   $paginate: true,
-  ...sideNavBorrowerFragment,
+  ...sideNavBorrower(),
   $options: { sort: { createdAt: -1 } },
 });

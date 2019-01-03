@@ -1,5 +1,5 @@
 import Lenders from '../lenders';
-import { lenderFragment } from './lendersFragments';
+import { lender } from '../../fragments';
 import { LENDERS_QUERIES } from '../lenderConstants';
 
 // Insert your query here
@@ -8,6 +8,6 @@ export default Lenders.createQuery(LENDERS_QUERIES.LOAN_LENDERS, {
   $filter({ filters, params }) {
     filters['loanLink._id'] = params.loanId;
   },
-  ...lenderFragment,
+  ...lender(),
   $options: { sort: { createdAt: -1 } },
 });

@@ -1,6 +1,6 @@
 import PromotionLots from '../promotionLots';
 import { PROMOTION_LOT_QUERIES } from '../promotionLotConstants';
-import { proPromotionLotFragment } from './promotionLotFragments';
+import { proPromotionLot } from '../../fragments';
 
 export default PromotionLots.createQuery(
   PROMOTION_LOT_QUERIES.PRO_PROMOTION_LOT,
@@ -8,6 +8,6 @@ export default PromotionLots.createQuery(
     $filter({ filters, params: { promotionLotId } }) {
       filters._id = promotionLotId;
     },
-    ...proPromotionLotFragment,
+    ...proPromotionLot(),
   },
 );

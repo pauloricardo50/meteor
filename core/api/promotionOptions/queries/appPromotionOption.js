@@ -1,6 +1,6 @@
 import PromotionOptions from '../promotionOptions';
 import { PROMOTION_OPTION_QUERIES } from '../promotionOptionConstants';
-import { appPromotionOptionFragment } from './promotionOptionFragments';
+import { appPromotionOption } from '../../fragments';
 
 export default PromotionOptions.createQuery(
   PROMOTION_OPTION_QUERIES.APP_PROMOTION_OPTION,
@@ -8,6 +8,6 @@ export default PromotionOptions.createQuery(
     $filter({ filters, params: { promotionOptionId } }) {
       filters._id = promotionOptionId;
     },
-    ...appPromotionOptionFragment,
+    ...appPromotionOption(),
   },
 );

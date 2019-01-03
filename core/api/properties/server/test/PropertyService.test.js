@@ -73,7 +73,7 @@ describe('PropertyService', () => {
         loanResidenceType,
       }).then(() => {
         const property = PropertyService.get(propertyId);
-        const marketValueBeforeCorrection = 709000;
+        const marketValueBeforeCorrection = 708000;
         const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
         const priceRange = WuestService.getPriceRange({
@@ -81,9 +81,9 @@ describe('PropertyService', () => {
           statisticalPriceRangeMin,
           statisticalPriceRangeMax,
         });
+        expect(property.valuation.value).to.equal(marketValueBeforeCorrection);
         expect(property.valuation.min).to.equal(priceRange.min);
         expect(property.valuation.max).to.equal(priceRange.max);
-        expect(property.valuation.value).to.equal(marketValueBeforeCorrection);
       });
     }).timeout(10000);
 

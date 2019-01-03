@@ -3,4 +3,5 @@ import query from './appPromotionOption';
 
 query.expose({
   firewall(userId) {},
+  validateParams: { promotionOptionId: String },
 });

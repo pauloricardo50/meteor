@@ -1,11 +1,15 @@
 import SimpleSchema from 'simpl-schema';
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import {
+  createdAt,
+  updatedAt,
+  percentageField,
+} from '../../helpers/sharedSchemas';
 
 const Irs10ySchema = new SimpleSchema({
   createdAt,
   updatedAt,
   date: Date,
-  rate: { type: Number, min: 0, max: 1 },
+  rate: { ...percentageField, optional: false },
 });
 
 export default Irs10ySchema;

@@ -5,4 +5,5 @@ query.expose({
   firewall(userId) {
     SecurityService.checkUserIsPro(userId);
   },
+  validateParams: { promotionOptionIds: [String] },
 });

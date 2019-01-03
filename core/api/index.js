@@ -1,4 +1,5 @@
 // @flow
+import './initialization';
 import { Meteor } from 'meteor/meteor';
 
 import * as _constants from './constants';

@@ -474,7 +474,7 @@ describe('WuestService', function () {
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
-        const marketValueBeforeCorrection = 709000;
+        const marketValueBeforeCorrection = 708000;
         const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
         const priceRange = WuestService.getPriceRange({
@@ -482,9 +482,9 @@ describe('WuestService', function () {
           statisticalPriceRangeMin,
           statisticalPriceRangeMax,
         });
+        expect(result.value).to.equal(marketValueBeforeCorrection);
         expect(result.min).to.equal(priceRange.min);
         expect(result.max).to.equal(priceRange.max);
-        expect(result.value).to.equal(marketValueBeforeCorrection);
       });
     });
 

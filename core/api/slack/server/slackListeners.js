@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 
-import { simpleUserFragment } from 'imports/core/api/users/queries/userFragments/index';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
   inviteUserToPromotion,
@@ -12,6 +11,7 @@ import PromotionService from '../../promotions/PromotionService';
 import PromotionLotService from '../../promotionLots/PromotionLotService';
 import UserService from '../../users/UserService';
 import LoanService from '../../loans/LoanService';
+import { simpleUser } from '../../fragments';
 
 ServerEventService.addMethodListener(
   inviteUserToPromotion,
@@ -41,7 +41,7 @@ ServerEventService.addMethodListener(
     } = PromotionLotService.createQuery({
       $filters: { _id: promotionLotId },
       name: 1,
-      promotion: { name: 1, assignedEmployee: simpleUserFragment },
+      promotion: { name: 1, assignedEmployee: simpleUser() },
     }).fetchOne();
     const { userId } = LoanService.get(loanId);
     const { firstName, lastName } = UserService.get(userId);
@@ -67,7 +67,7 @@ ServerEventService.addMethodListener(
     } = PromotionLotService.createQuery({
       $filters: { _id: promotionLotId },
       name: 1,
-      promotion: { name: 1, assignedEmployee: simpleUserFragment },
+      promotion: { name: 1, assignedEmployee: simpleUser() },
     }).fetchOne();
     const { userId } = LoanService.get(loanId);
     const { firstName, lastName } = UserService.get(userId);

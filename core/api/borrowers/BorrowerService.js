@@ -1,7 +1,7 @@
 import Borrowers from '.';
 import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
-import { loanBorrowerFragment } from './queries/borrowerFragments';
+import { loanBorrower } from '../fragments';
 
 export class BorrowerService extends CollectionService {
   constructor() {
@@ -12,7 +12,7 @@ export class BorrowerService extends CollectionService {
     return this.collection
       .createQuery({
         $filters: { _id: borrowerId },
-        ...loanBorrowerFragment,
+        ...loanBorrower(),
       })
       .fetchOne();
   }

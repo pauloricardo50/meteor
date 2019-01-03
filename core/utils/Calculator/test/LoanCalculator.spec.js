@@ -519,4 +519,19 @@ describe('LoanCalculator', () => {
       })).to.equal(0);
     });
   });
+
+  describe('getNonPledgedOwnFunds', () => {
+    it('gets them', () => {
+      const loan = {
+        structure: {
+          ownFunds: [
+            { value: 100 },
+            { value: 100, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          ],
+        },
+      };
+
+      expect(Calculator.getNonPledgedOwnFunds({ loan })).to.equal(100);
+    });
+  });
 });

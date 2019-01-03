@@ -29,7 +29,7 @@ class LenderService extends CollectionService {
     this.addLink({ id: lenderId, linkName: 'loan', linkId: loanId });
 
     // If no contact is set, fetch first contact of organisation
-    if (!contactId) {
+    if (!contactId && organisationId) {
       const { contacts } = OrganisationService.fetchOne({
         $filters: { _id: organisationId },
         contacts: { _id: 1 },
