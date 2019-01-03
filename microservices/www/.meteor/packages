@@ -31,7 +31,6 @@ meteortesting:mocha@1.0.1
 
 # Data
 cultofcoders:mutations
-cultofcoders:grapher-react
 ddp-rate-limiter
 
 
@@ -54,3 +53,4 @@ dynamic-import
 qualia:profile
 matb33:collection-hooks
 percolate:migrations
+cultofcoders:grapher-react
