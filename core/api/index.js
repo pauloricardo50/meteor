@@ -41,7 +41,6 @@ export { default as SecurityService } from './security';
 export * from './methods';
 export * from './helpers';
 export * from './containerToolkit';
-export * from './types';
 
 // Do this for autocompletion...
 export const constants = _constants;

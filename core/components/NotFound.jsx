@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import SlackService from 'core/api/slack/SlackService';
+import { logError } from 'core/api/slack/methodDefinitions';
 import Link from './Link';
 
 const styles = {
@@ -25,7 +25,7 @@ const styles = {
 
 export default class NotFound extends Component {
   componentDidMount() {
-    SlackService.sendError({ error: { name: 'NotFound page triggered' } });
+    logError.run({ error: { name: 'NotFound page triggered' } });
   }
 
   render() {

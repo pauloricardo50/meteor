@@ -8,3 +8,11 @@ export const notifyAssignee = new Method({
     title: Match.Optional(String),
   },
 });
+
+export const logError = new Method({
+  name: 'logError',
+  params: {
+    error: Match.Any,
+    additionalData: Match.Any,
+  },
+});

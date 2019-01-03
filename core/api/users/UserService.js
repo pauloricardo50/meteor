@@ -2,7 +2,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 
 import { Random } from 'meteor/random';
-import Loans from '../loans';
+import LoanService from '../loans/LoanService';
 import CollectionService from '../helpers/CollectionService';
 import { fullUser } from '../fragments';
 import { ROLES } from './userConstants';
@@ -85,7 +85,10 @@ class UserService extends CollectionService {
   testCreateUser = ({ user }) => Users.insert(user);
 
   hasPromotion = ({ userId, promotionId }) => {
-    const loans = Loans.find({ userId }).fetch();
+    const loans = LoanService.fetch({
+      $filters: { userId },
+      promotionLinks: 1,
+    });
 
     if (!promotionId) {
       // Return true if any promotion exists
