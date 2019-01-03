@@ -13,8 +13,8 @@ const FinancingPropertyPickerContainer = compose(
   SingleStructureContainer,
   withRouter,
   mapProps(({
-    properties,
-    promotionOptions,
+    properties = [],
+    promotionOptions = [],
     loan: { _id: loanId },
     structure: { id: structureId, propertyId, promotionOptionId },
     history: { push },

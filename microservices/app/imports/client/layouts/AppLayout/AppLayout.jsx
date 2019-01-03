@@ -25,11 +25,7 @@ const AppLayout = ({ children, redirect, history, ...props }) => {
 
   return (
     <div className="app-root">
-      <Navs
-        {...props}
-        showSideNav={showSideNav}
-        key={props.loan && props.loan._id}
-      />
+      <Navs {...props} showSideNav={showSideNav} />
 
       <div className={classes}>
         <LayoutErrorBoundary>
