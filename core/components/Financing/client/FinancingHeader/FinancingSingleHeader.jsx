@@ -2,13 +2,12 @@
 import React from 'react';
 import cx from 'classnames';
 
-import type { structureType } from '../../../../api/types';
 import ClickToEditField from '../../../ClickToEditField';
 import FinancingHeaderActions from './FinancingHeaderActions';
 import FinancingSingleHeaderContainer from './FinancingSingleHeaderContainer';
 
 type FinancingSingleHeaderProps = {
-  structure: structureType,
+  structure: Object,
   index: number,
   handleEditTitle: Function,
   handleEditDescription: Function,
@@ -30,10 +29,7 @@ const FinancingSingleHeader = ({
       { selected },
     )}
   >
-    <FinancingHeaderActions
-      structureId={structure.id}
-      loanId={loanId}
-    />
+    <FinancingHeaderActions structureId={structure.id} loanId={loanId} />
     <h3>
       <ClickToEditField
         value={structure.name}

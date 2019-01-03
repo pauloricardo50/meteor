@@ -5,7 +5,6 @@ import cx from 'classnames';
 
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
-import type { userLoan } from 'core/api/types';
 import Loading from 'core/components/Loading';
 import {
   getDashboardTodosArray,
@@ -14,7 +13,7 @@ import {
 } from './dashboardTodos';
 
 type DashboardProgressInfoProps = {
-  loan: userLoan,
+  loan: Object,
 };
 
 const getTodos = (loan) => {
