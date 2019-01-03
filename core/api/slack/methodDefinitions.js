@@ -10,7 +10,7 @@ export const notifyAssignee = new Method({
 });
 
 export const notifyOfUpload = new Method({
-  name: 'notifyAssignee',
+  name: 'notifyOfUpload',
   params: {
     fileName: String,
   },
