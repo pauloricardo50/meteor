@@ -1,3 +1,4 @@
+import './initialization';
 import SlackService from './slack/SlackService';
 
 import 'core/fixtures/server/fixtureMethods';
