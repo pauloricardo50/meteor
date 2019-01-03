@@ -24,6 +24,7 @@ const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
 
   return branch(renderFunc, renderComponent(MissingDoc));
 };
+
 // Use proper name for data, and remove unnecessary props from children
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
@@ -90,7 +91,7 @@ const calculateParams = (params, props) => {
 
 const withSmartQuery = ({
   query,
-  params = () => {},
+  params = {},
   queryOptions = { single: false },
   dataName = 'data',
   // used to bypass the missing doc component

@@ -1,3 +1,5 @@
+import { Match } from 'meteor/check';
+
 import userLoan from './userLoan';
 
 userLoan.expose({
@@ -5,10 +7,10 @@ userLoan.expose({
     params.userId = userId;
   },
   embody: {
-    // This will deepExtend your body
     $filter({ filters, params }) {
       filters.userId = params.userId;
+      filters._id = params.loanId;
     },
   },
-  validateParams: { loanId: String },
+  validateParams: { loanId: Match.Maybe(String), userId: Match.Maybe(String) },
 });
