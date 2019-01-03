@@ -79,8 +79,8 @@ hr {
 }
 
 :not(.card1).card-hover {
-  padding: 16px;
   box-sizing: border-box;
+  padding: 16px;
 
   &:hover {
     border-radius: 8px;
