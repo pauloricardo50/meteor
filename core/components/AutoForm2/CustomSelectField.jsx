@@ -60,6 +60,11 @@ export default class CustomSelectField extends Component<
         allowedValues={values || []}
         transform={transform || this.formatOption}
         renderValue={(value) => {
+          // Return null before going into the transform function
+          if (value === null) {
+            return null;
+          }
+
           if (transform) {
             return transform(value);
           }
@@ -67,9 +72,7 @@ export default class CustomSelectField extends Component<
           if (value === undefined || value === '') {
             return null;
           }
-          if (value === null) {
-            return null;
-          }
+
 
           if (Array.isArray(value)) {
             return value.map(val => (
