@@ -1,8 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { INTEREST_RATES, OFFERS_COLLECTION } from '../constants';
-import { createdAt, updatedAt } from '../helpers/sharedSchemas';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../components/AutoForm2/constants';
+import {
+  createdAt,
+  updatedAt,
+  percentageField,
+} from '../helpers/sharedSchemas';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
 
@@ -58,18 +61,7 @@ export const OfferSchema = new SimpleSchema({
   ...Object.values(INTEREST_RATES).reduce(
     (accumulator, interestKey) => ({
       ...accumulator,
-      [interestKey]: {
-        type: Number,
-        min: 0,
-        max: 1,
-        optional: true,
-        autoValue() {
-          if (this.isSet) {
-            return Number(this.value.toFixed(3));
-          }
-        },
-        uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
-      },
+      [interestKey]: percentageField,
     }),
     {},
   ),

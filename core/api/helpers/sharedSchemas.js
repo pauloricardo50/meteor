@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
@@ -94,4 +95,17 @@ export const mortgageNoteLinks = {
   mortgageNoteLinks: { type: Array, optional: true },
   'mortgageNoteLinks.$': Object,
   'mortgageNoteLinks.$._id': { type: String, optional: true },
+};
+
+export const percentageField = {
+  type: Number,
+  min: 0,
+  max: 1,
+  optional: true,
+  autoValue() {
+    if (this.isSet) {
+      return Number(this.value.toFixed(3));
+    }
+  },
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
 };
