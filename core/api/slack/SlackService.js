@@ -177,7 +177,7 @@ export class SlackService {
     });
   };
 
-  notifyOfUpload = (currentUser, fileName) => {
+  notifyOfUpload = ({ currentUser, fileName }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 
     if (!isUser) {

@@ -10,7 +10,7 @@ import {
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
-import SlackService from '../../../api/slack';
+import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
 
 const checkFile = (file) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
@@ -89,7 +89,7 @@ const props = withProps(({
   },
   handleUploadComplete: (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    SlackService.notifyOfUpload(currentUser, file.name);
+    notifyOfUpload.run({ fileName: file.name });
     if (handleSuccess) {
       handleSuccess(file, url);
     }

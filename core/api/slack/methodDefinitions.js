@@ -9,6 +9,13 @@ export const notifyAssignee = new Method({
   },
 });
 
+export const notifyOfUpload = new Method({
+  name: 'notifyAssignee',
+  params: {
+    fileName: String,
+  },
+});
+
 export const logError = new Method({
   name: 'logError',
   params: {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import SlackService from 'core/api/slack';
 import LayoutError from './LayoutError';
 import RootError from './RootError';
 import withErrorCatcher from '../../utils/withErrorCatcher';
+import { logError } from '../../api/slack/methodDefinitions';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     this.setState({ hasError: true, error });
     this.sendToKadira(error);
-    SlackService.sendError({ error, additionalData: ['Render error', info] });
+    logError.run({ error, additionalData: ['Render error', info] });
   }
 
   render() {
