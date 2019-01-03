@@ -5,8 +5,8 @@ import moment from 'moment';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import currentInterestRates from '../currentInterestRates';
-import { TRENDS } from '../../interestRatesConstants';
+import currentInterestRates from '../../currentInterestRates';
+import { TRENDS } from '../../../interestRatesConstants';
 
 describe('currentInterestRates', () => {
   beforeEach(() => {
