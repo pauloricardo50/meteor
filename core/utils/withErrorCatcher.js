@@ -13,7 +13,11 @@ const withErrorCatcher = lifecycle({
       if (Kadira && Kadira.trackError) {
         Kadira.trackError('react', error.stack.toString());
       }
-      logError.run({ error, additionalData: ['JS error'] });
+      logError.run({
+        error,
+        additionalData: ['JS error'],
+        url: window && window.location && window.location.href,
+      });
     };
   },
 });

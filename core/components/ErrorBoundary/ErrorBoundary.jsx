@@ -31,7 +31,11 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     this.setState({ hasError: true, error });
     this.sendToKadira(error);
-    logError.run({ error, additionalData: ['Render error', info] });
+    logError.run({
+      error,
+      additionalData: ['Render error', info],
+      url: window && window.location && window.location.href,
+    });
   }
 
   render() {

@@ -64,7 +64,7 @@ export class SlackService {
     ...rest,
   });
 
-  sendError = ({ error, additionalData = [], userId }) => {
+  sendError = ({ error, additionalData = [], userId, url }) => {
     if (
       ERRORS_TO_IGNORE.includes(error.name)
       || ERRORS_TO_IGNORE.includes(error.message || error.reason)
@@ -73,16 +73,13 @@ export class SlackService {
     }
 
     let user;
-    let windowObj;
 
     try {
       // Can't use Meteor.user() outside of client or server-methods-body
       user = Meteor.user();
       // Can't access window on server
-      windowObj = window;
     } catch (err) {
       user = null;
-      windowObj = null;
     }
 
     if (!user && userId && Meteor.isServer) {
@@ -114,13 +111,7 @@ export class SlackService {
         },
         {
           title: 'URL',
-          text: windowObj && windowObj.location && windowObj.location.href,
-          color: colors.primary,
-        },
-        {
-          title: 'User agent',
-          text:
-            windowObj && windowObj.navigator && windowObj.navigator.userAgent,
+          text: url,
           color: colors.primary,
         },
         ...(additionalData && additionalData.length > 0
