@@ -27,14 +27,17 @@ const DashboardInfoTeamMember = ({
     <div className="contact">
       {allowEdit && (
         <DashboardInfoTeamForm
-          button={
-            <IconButton type="edit" tooltip={<T id="general.modify" />} />
-          }
+          triggerComponent={handleOpen => (
+            <IconButton
+              onClick={handleOpen}
+              type="edit"
+              tooltip={<T id="general.modify" />}
+            />
+          )}
           onSubmit={values => editContact(name, values)}
-          initialValues={{ name, title, email, phoneNumber }}
-          form={name}
+          model={{ name, title, email, phoneNumber }}
           renderAdditionalActions={({ handleClose }) => (
-            <Button onClick={() => removeContact(name).then(handleClose)}>
+            <Button error onClick={() => removeContact(name).then(handleClose)}>
               <T id="general.delete" />
             </Button>
           )}
