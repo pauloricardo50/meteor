@@ -15,7 +15,7 @@ const withErrorCatcher = lifecycle({
       }
       logError.run({
         error,
-        additionalData: ['JS error'],
+        additionalData: ['JS error', msg],
         url: window && window.location && window.location.href,
       });
     };
