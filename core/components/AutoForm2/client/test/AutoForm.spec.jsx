@@ -281,6 +281,18 @@ describe('AutoForm', () => {
         .text()).to.include('Dude');
     });
 
+    it('uses the label on the schema', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String, uniforms: { label: 'mah dude' } },
+        }),
+      };
+
+      expect(component()
+        .find('label')
+        .text()).to.include('mah dude');
+    });
+
     it('sets a default label with Translation', () => {
       props = {
         schema: new SimpleSchema({

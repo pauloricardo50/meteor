@@ -1,31 +1,32 @@
 // @flow
 import React from 'react';
+import SimpleSchema from 'simpl-schema';
 
-import DialogForm from '../Form/DialogForm';
-import Button from '../Button';
+import { AutoFormDialog } from '../AutoForm2';
 import AdditionalDocAdderContainer from './AdditionalDocAdderContainer';
 
 type AdditionalDocAdderProps = {};
 
-const formArray = [
-  {
-    id: 'label',
-    label: 'Nom du document supplémentaire',
-    placeholder: "p.ex. Annexes déclaration d'impôts",
+const schema = new SimpleSchema({
+  label: {
+    type: String,
+    uniforms: {
+      label: 'Nom du document supplémentaire',
+    },
   },
-];
+});
 
 const AdditionalDocAdder = ({ onSubmit }: AdditionalDocAdderProps) => (
-  <DialogForm
-    form="add-additional-doc"
+  <AutoFormDialog
     onSubmit={onSubmit}
-    button={(
-      <Button raised primary className="additional-doc-adder">
-        Demander document supplémentaire
-      </Button>
-    )}
+    buttonProps={{
+      label: 'Demander document supplémentaire',
+      raised: true,
+      primary: true,
+      className: 'additional-doc-adder',
+    }}
     title="Demander document supplémentaire"
-    formArray={formArray}
+    schema={schema}
   />
 );
 
