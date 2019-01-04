@@ -15,7 +15,24 @@ import AutoForm from './AutoForm';
 import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 
-type AutoFormDialogProps = {};
+type AutoFormDialogProps = {
+  schema: Object,
+  model?: Object,
+  onSubmit: Function,
+  buttonProps: Object,
+  setOpen: Function,
+  description?: React.Node,
+  title?: React.Node,
+  important?: Boolean,
+  autoFieldProps?: Object,
+  submitting: Boolean,
+  opened: Boolean,
+  renderAdditionalActions?: Function,
+  children?: React.Node,
+  triggerComponent?: Function,
+  emptyDialog?: Boolean,
+  noButton?: Boolean,
+};
 
 export const AutoFormDialog = ({
   schema,
@@ -37,13 +54,17 @@ export const AutoFormDialog = ({
   ...otherProps
 }: AutoFormDialogProps) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
+  const handleOpen = (event) => {
+    event.preventDefault();
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+
   return (
     <>
       {triggerComponent
-        ? triggerComponent(() => setOpen(true))
-        : !noButton && (
-          <Button {...buttonProps} onClick={() => setOpen(true)} />
-        )}
+        ? triggerComponent(handleOpen)
+        : !noButton && <Button {...buttonProps} onClick={handleOpen} />}
       <MuiDialog
         disableBackdropClick={important}
         disableEscapeKeyDown={important}
@@ -61,18 +82,18 @@ export const AutoFormDialog = ({
             <ErrorsField />
             {children
               && children({
-                closeDialog: () => setOpen(false),
+                closeDialog: handleClose,
                 submitting,
                 onSubmit,
               })}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpen(false)} disabled={submitting}>
+            <Button onClick={handleClose} disabled={submitting}>
               <T id="general.cancel" />
             </Button>
             {renderAdditionalActions
               && renderAdditionalActions({
-                closeDialog: () => setOpen(false),
+                closeDialog: handleClose,
                 submitting,
                 onSubmit,
               })}

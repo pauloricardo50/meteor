@@ -26,8 +26,8 @@ const PropertiesPage = ({ loan }) => {
           {!hasPromotion && (
             <PropertyAdder
               loanId={loanId}
-              button={(
-                <div className="property-adder-button">
+              triggerComponent={handleOpen => (
+                <div className="property-adder-button" onClick={handleOpen}>
                   <span className="plus">+</span>
                   <h3>
                     <T id="PropertyForm.adderLabel" />

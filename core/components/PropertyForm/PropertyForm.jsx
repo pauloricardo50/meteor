@@ -2,27 +2,17 @@
 import * as React from 'react';
 import cx from 'classnames';
 
-import { DialogForm, FIELD_TYPES } from 'core/components/Form';
-import T from 'core/components/Translation';
-import Button from 'core/components/Button';
-import Icon from 'core/components/Icon';
+import T from '../Translation';
+import Icon from '../Icon';
+import PropertySchema from '../../api/properties/schemas/PropertySchema';
+import { AutoFormDialog } from '../AutoForm2';
 
-const formArray = [
-  { id: 'address1', fieldType: FIELD_TYPES.TEXT },
-  { id: 'zipCode', fieldType: FIELD_TYPES.NUMBER },
-  { id: 'city', fieldType: FIELD_TYPES.TEXT },
-  { id: 'value', fieldType: FIELD_TYPES.MONEY },
-].map(field => ({
-  ...field,
-  label: <T id={`PropertyForm.${field.id}`} />,
-  required: true,
-}));
+const schema = PropertySchema.pick('address1', 'zipCode', 'city', 'value');
 
 type PropertyFormProps = {
   formTitleId: String,
   formDescriptionId: String,
   buttonLabelId: String,
-  button?: React.Node,
   className?: string,
 };
 
@@ -30,26 +20,29 @@ const PropertyForm = ({
   formTitleId,
   formDescriptionId,
   buttonLabelId,
-  button,
   className = '',
   ...props
 }: PropertyFormProps) => (
   <div
     className={cx('property-form', className)}
-    // Prevent Link to be fired on DashboardPage
-    onClick={e => e.preventDefault()}
+    onClick={(event) => {
+      // Prevent all event defaults except when submitting
+      // In this case, the skip is handled by DashboardRecapProperty
+      if (event.target.type !== 'submit') {
+        event.preventDefault();
+      }
+    }}
   >
-    <DialogForm
-      formArray={formArray}
+    <AutoFormDialog
+      schema={schema}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
-      button={
-        button || (
-          <Button raised primary icon={<Icon type="home" />}>
-            <T id={buttonLabelId} />
-          </Button>
-        )
-      }
+      buttonProps={{
+        raised: true,
+        primary: true,
+        icon: <Icon type="home" />,
+        label: <T id={buttonLabelId} />,
+      }}
       {...props}
     />
   </div>

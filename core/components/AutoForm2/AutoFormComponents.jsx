@@ -41,11 +41,17 @@ export const SubmitField = props => (
 
 const selectLabel = ({
   label,
-  props: { name, label: schemaLabel, overrideLabel },
+  props: {
+    name,
+    field: { uniforms },
+    overrideLabel,
+  },
 }) =>
   (label === null
     ? null
-    : overrideLabel || label || schemaLabel || <T id={`Forms.${name}`} />);
+    : overrideLabel
+      || label
+      || (uniforms && uniforms.label) || <T id={`Forms.${name}`} />);
 
 export const makeCustomAutoField = ({ labels } = {}) =>
   connectField(
