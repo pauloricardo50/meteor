@@ -3,7 +3,7 @@ import React from 'react';
 import Input from '@material-ui/core/Input';
 import MaskedInput from 'react-text-mask';
 import { percentMask } from '../../utils/textMasks';
-import { percentFormatters } from '../Form/formHelpers';
+import { percentFormatters } from '../../utils/formHelpers';
 
 type PercentInputProps = {
   onChange: Function,
