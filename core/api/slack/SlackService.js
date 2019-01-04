@@ -66,7 +66,7 @@ export class SlackService {
 
   sendError = ({ error, additionalData = [], userId, url }) => {
     if (
-      ERRORS_TO_IGNORE.includes(error.name)
+      (error && ERRORS_TO_IGNORE.includes(error.name))
       || ERRORS_TO_IGNORE.includes(error.message || error.reason)
     ) {
       return false;
