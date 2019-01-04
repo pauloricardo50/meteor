@@ -1,6 +1,7 @@
 import React from 'react';
-import T from '../Translation';
-import { toNumber } from '../../utils/conversionFunctions';
+
+import T from '../components/Translation';
+import { toNumber } from './conversionFunctions';
 
 const onlyNums = value => value.replace(/[^\d]/g, '');
 const onlyNumsAndPlus = value => value.replace(/[^\d&+]/g, '');
