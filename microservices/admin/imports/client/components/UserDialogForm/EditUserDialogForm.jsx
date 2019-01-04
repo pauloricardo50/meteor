@@ -19,7 +19,8 @@ const EditUserDialogForm = ({
   labels,
 }: EditUserDialogFormProps) => (
   <AutoFormDialog
-    schema={schema}
+    // Emails should not be modified like this, but with EmailModifier
+    schema={schema.omit('email')}
     model={user}
     onSubmit={editUser}
     buttonProps={{
