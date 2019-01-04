@@ -2,13 +2,14 @@
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
-import { AutoFormDialog } from 'imports/core/components/AutoForm2/AutoFormDialog';
+
+import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
-import { CUSTOM_AUTOFIELD_TYPES } from 'imports/core/components/AutoForm2/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
 import { withSmartQuery } from 'core/api';
 import query from 'core/api/users/queries/admins';
-import T from 'imports/core/components/Translation/Translation';
+import T from 'core/components/Translation/Translation';
 
 type TaskModifierProps = {
   task: Object,
@@ -19,7 +20,7 @@ type TaskModifierProps = {
   admins: Array<String>,
 };
 
-const taskSchema = (admins = []) =>
+export const taskSchema = (admins = []) =>
   new SimpleSchema({
     title: String,
     dueAt: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
@@ -75,12 +76,7 @@ const TaskModifier = ({
 };
 
 export default compose(
-  withSmartQuery({
-    query,
-    queryOptions: { reactive: true },
-    dataName: 'admins',
-    smallLoader: true,
-  }),
+  withSmartQuery({ query, dataName: 'admins', smallLoader: true }),
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting }) => ({
     updateTask: ({ _id: taskId, ...values }) => {

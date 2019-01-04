@@ -1,4 +1,5 @@
 {
+  "Forms.dueAt": "Échéance",
   "Forms.feedback": "Feedback",
   "Forms.hasFlatDiscount": "Offre avec rabais sur les taux",
   "Forms.flatDiscount": "Rabais",
@@ -374,7 +375,7 @@
   "AppItem.name": "Dossier no. {name}",
   "LoanSelector.name": "Dossier {name}",
   "SinglePropertyPage.noDelete": "Vous ne pouvez pas supprimer votre dernier bien immobilier",
-  "Forms.status": "Statut du dossier",
+  "Forms.status": "Statut",
   "Forms.status.TEST": "Test",
   "Forms.status.LEAD": "Prospect",
   "Forms.status.ONGOING": "En cours",
@@ -1382,7 +1383,7 @@
   "LoanTabs.tasks": "Tâches",
   "LoanTaskInsertForm.label": "Ajouter tâche",
   "LoanTaskInsertForm.dialogTitle": "Nouvelle tâche",
-  "LoanTaskInsertForm.dialogDescription": "Cette tâche sera liée à l'hypothèque en cours",
+  "LoanTaskInsertForm.dialogDescription": "Cette tâche sera liée à cette hypothèque",
   "LoanTaskInsertForm.title": "Description",
   "LoanValidation.comment": "Commentaire",
   "LoanValidation.field": "Champ",

@@ -1,15 +1,9 @@
 // @flow
 import React from 'react';
 
-import { DialogForm, FIELD_TYPES } from 'core/components/Form';
 import T from 'core/components/Translation';
-import Button from 'core/components/Button';
-
-const formArray = [{ id: 'title', fieldType: FIELD_TYPES.TEXT }].map(field => ({
-  ...field,
-  label: <T id={`LoanTaskInsertForm.${field.id}`} />,
-  required: true,
-}));
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import { taskSchema } from 'imports/client/components/TasksTable/TaskModifier';
 
 type LoanTaskInsertFormProps = {
   formTitleId: String,
@@ -21,18 +15,19 @@ const LoanTaskInsertForm = ({
   formTitleId,
   formDescriptionId,
   buttonLabelId,
+  admins,
   ...props
 }: LoanTaskInsertFormProps) => (
   <div className="loan-task-insert-form">
-    <DialogForm
-      formArray={formArray}
+    <AutoFormDialog
+      schema={taskSchema(admins)}
       title={<T id={formTitleId} />}
       description={<T id={formDescriptionId} />}
-      button={(
-        <Button raised primary>
-          <T id={buttonLabelId} />
-        </Button>
-      )}
+      buttonProps={{
+        raised: true,
+        primary: true,
+        label: <T id={buttonLabelId} />,
+      }}
       {...props}
     />
   </div>

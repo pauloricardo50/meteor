@@ -4,11 +4,12 @@ import { Method } from '../methods/methods';
 export const taskInsert = new Method({
   name: 'taskInsert',
   params: {
-    type: Match.Optional(String),
+    dueAt: Match.Optional(Date),
     title: Match.Optional(String),
     description: Match.Optional(String),
     docId: Match.Optional(String),
-    assignedTo: Match.Optional(String),
+    status: String,
+    assignedEmployeeId: Match.Optional(String),
   },
 });
 

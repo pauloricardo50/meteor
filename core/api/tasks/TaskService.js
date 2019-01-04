@@ -18,13 +18,16 @@ class TaskService extends CollectionService {
     fileKey,
     userId,
     assignedTo,
+    assignedEmployeeId,
     createdBy,
     title,
     docId,
     collection,
+    status,
+    dueAt,
   }) => {
-    let assignee = assignedTo;
-    if (!assignedTo && docId && collection) {
+    let assignee = assignedTo || assignedEmployeeId;
+    if (!assignee && docId && collection) {
       assignee = this.getAssigneeForDoc(docId, collection);
     }
 
@@ -36,6 +39,8 @@ class TaskService extends CollectionService {
       userId,
       title,
       docId,
+      status,
+      dueAt,
     });
 
     const user = UserService.get(Meteor.userId());

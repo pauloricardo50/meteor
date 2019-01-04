@@ -2,6 +2,7 @@
 @import './LoanTabs/LendersTab/LendersTab.scss';
 @import './LoanTabs/OffersTab/OffersTab.scss';
 @import './LoanTabs/OverviewTab/OverviewTab.scss';
+@import './SingleLoanPageTasks/LoanTaskInserter/LoanTaskInserter.scss';
 
 .single-loan-page {
   .single-loan-page-tasks {
@@ -27,7 +28,7 @@
     align-items: flex-start;
     flex-direction: column;
 
-     > * {
+    > * {
       display: inline;
     }
 
@@ -56,7 +57,7 @@
 
       width: 100%;
 
-       > * {
+      > * {
         margin-right: 8px;
         padding: 8px;
       }
