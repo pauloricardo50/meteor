@@ -71,14 +71,14 @@ export class PromotionService extends CollectionService {
   update({ promotionId, ...rest }) {
     const result = this._update({ id: promotionId, ...rest });
 
-    const { propertyLinks, ...address } = this.createQuery({
+    const { propertyLinks, ...address } = this.fetchOne({
       $filters: { _id: promotionId },
       propertyLinks: 1,
       address1: 1,
       address2: 1,
       city: 1,
       zipCode: 1,
-    }).fetchOne();
+    });
 
     propertyLinks.forEach(({ _id }) => {
       PropertyService.update({ propertyId: _id, object: address });

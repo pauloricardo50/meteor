@@ -58,11 +58,11 @@ export class BorrowerService extends CollectionService {
       return { borrowers: [], isLastLoan: true };
     }
 
-    const userBorrowers = this.createQuery({
+    const userBorrowers = this.fetch({
       $filters: { userId },
       name: 1,
       loans: { name: 1 },
-    }).fetch();
+    });
     const loan = LoanService.get(loanId);
     const isLastLoan = loans && loans.length === 1 && loans[0]._id === loanId;
 

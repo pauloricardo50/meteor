@@ -292,13 +292,13 @@ export class LoanService extends CollectionService {
       borrowerIds = [],
       properties = [],
       borrowers = [],
-    } = this.createQuery({
+    } = this.fetchOne({
       $filters: { _id: loanId },
       propertyIds: 1,
       borrowerIds: 1,
       properties: { loans: { _id: 1 }, address1: 1 },
       borrowers: { loans: { _id: 1 }, name: 1 },
-    }).fetchOne();
+    });
 
     borrowers.forEach(({ loans = [], name }) => {
       if (loans.length > 1) {
