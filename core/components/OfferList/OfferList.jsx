@@ -48,6 +48,10 @@ class OfferList extends Component {
 
     const filteredOffers = sortOffers(offers, sort, isAscending);
 
+    if (filteredOffers.length === 0) {
+      return <h3 className="secondary text-center">Pas encore d'offres</h3>;
+    }
+
     return (
       <div className="flex-col" style={{ width: '100%' }}>
         <OfferListSorting
