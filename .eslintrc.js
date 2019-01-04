@@ -61,6 +61,8 @@ module.exports = {
     curly: 'error',
     'global-require': 'off',
     'consistent-return': 'off',
+    // They're very useful for confirming things, and much more performant than Dialogs
+    'no-alert': 'off',
 
     // eslint-plugin-import rules
 
