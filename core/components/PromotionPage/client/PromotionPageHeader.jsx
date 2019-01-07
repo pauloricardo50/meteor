@@ -5,7 +5,6 @@ import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionModifier from './PromotionModifier';
-import PromotionStatusModifier from './PromotionStatusModifier';
 import PromotionAssignee from './PromotionAssignee';
 
 type PromotionPageHeaderProps = {};
@@ -16,6 +15,7 @@ const PromotionPageHeader = ({
   isAdmin,
 }: PromotionPageHeaderProps) => {
   const {
+    _id: promotionId,
     name,
     promotionLots = [],
     status,
@@ -32,7 +32,12 @@ const PromotionPageHeader = ({
             {name}
             &nbsp;
             {status && (
-              <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+              <StatusLabel
+                status={status}
+                collection={PROMOTIONS_COLLECTION}
+                allowModify={isAdmin}
+                docId={promotionId}
+              />
             )}
             {canModify && <PromotionModifier promotion={promotion} />}
           </h1>
@@ -42,7 +47,6 @@ const PromotionPageHeader = ({
               values={{ promotionLotCount: promotionLots.length }}
             />
           </h3>
-          {isAdmin && <PromotionStatusModifier promotion={promotion} />}
           {isAdmin && <PromotionAssignee promotion={promotion} />}
         </div>
 
