@@ -3,8 +3,9 @@ import React from 'react';
 import AutoForm from 'uniforms-material/AutoForm';
 import pickBy from 'lodash/pickBy';
 
-import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
+import { makeCustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
+import CustomSubmitField from './CustomSubmitField';
 import T from '../Translation';
 
 const CustomAutoForm = ({
@@ -13,6 +14,7 @@ const CustomAutoForm = ({
   submitting,
   children,
   omitFields,
+  submitFieldProps,
   ...props
 }) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
@@ -25,11 +27,12 @@ const CustomAutoForm = ({
       {children || (
         <>
           <CustomAutoFields omitFields={omitFields} autoField={AutoField} />
-          <SubmitField
+          <CustomSubmitField
             loading={submitting}
             raised
             primary
             label={<T id="general.ok" />}
+            {...submitFieldProps}
           />
         </>
       )}

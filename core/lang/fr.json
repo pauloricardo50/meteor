@@ -1,4 +1,5 @@
 {
+  "Forms.email.placeholder": "nom@mail.com",
   "Forms.dueAt": "Échéance",
   "Forms.feedback": "Feedback",
   "Forms.hasFlatDiscount": "Offre avec rabais sur les taux",

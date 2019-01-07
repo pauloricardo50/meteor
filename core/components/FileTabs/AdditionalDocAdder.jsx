@@ -12,6 +12,7 @@ const schema = new SimpleSchema({
     type: String,
     uniforms: {
       label: 'Nom du document supplémentaire',
+      placeholder: null,
     },
   },
 });
@@ -27,6 +28,7 @@ const AdditionalDocAdder = ({ onSubmit }: AdditionalDocAdderProps) => (
     }}
     title="Demander document supplémentaire"
     schema={schema}
+    placeholder={false}
   />
 );
 

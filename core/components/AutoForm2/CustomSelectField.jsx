@@ -54,6 +54,7 @@ export default class CustomSelectField extends Component<
   render() {
     const { transform, submitting, ...props } = this.props;
     const { values } = this.state;
+
     return values || submitting ? (
       <SelectField
         {...props}
@@ -73,7 +74,6 @@ export default class CustomSelectField extends Component<
             return null;
           }
 
-
           if (Array.isArray(value)) {
             return value.map(val => (
               <Chip
@@ -87,6 +87,7 @@ export default class CustomSelectField extends Component<
           return this.formatOption(value);
         }}
         displayEmpty
+        labelProps={{ shrink: true }}
       />
     ) : (
       <Loading />

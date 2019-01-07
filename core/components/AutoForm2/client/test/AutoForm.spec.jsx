@@ -34,11 +34,7 @@ describe('AutoForm', () => {
 
   beforeEach(() => {
     getMountedComponent.reset();
-    props = {
-      schema: new SimpleSchema({
-        text: String,
-      }),
-    };
+    props = { schema: new SimpleSchema({ text: String }) };
   });
 
   it('renders a form with a field and submit button', () => {
@@ -95,10 +91,7 @@ describe('AutoForm', () => {
 
   it('skips fields that are omitted', () => {
     props = {
-      schema: new SimpleSchema({
-        text: String,
-        stuff: String,
-      }),
+      schema: new SimpleSchema({ text: String, stuff: String }),
       omitFields: ['text'],
     };
 
@@ -129,10 +122,7 @@ describe('AutoForm', () => {
     it('renders a date field if uniforms type is Date', () => {
       props = {
         schema: new SimpleSchema({
-          text: {
-            type: Date,
-            uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-          },
+          text: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
         }),
       };
 
@@ -295,14 +285,70 @@ describe('AutoForm', () => {
 
     it('sets a default label with Translation', () => {
       props = {
-        schema: new SimpleSchema({
-          myText: { type: String },
-        }),
+        schema: new SimpleSchema({ myText: { type: String } }),
       };
 
       expect(component()
         .find('label')
         .text()).to.include('Forms.myText');
+    });
+  });
+
+  describe('placeholders', () => {
+    it('does not set a placeholder if placeholder is false on the autoform', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String },
+        }),
+        placeholder: false,
+      };
+
+      expect(component()
+        .find(AutoForm)
+        .prop('placeholder')).to.equal(false);
+
+      expect(component()
+        .find('input')
+        .prop('placeholder')).to.equal('');
+    });
+
+    it('sets the placeholder', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String, uniforms: { placeholder: 'Howdy' } },
+        }),
+        placeholder: true,
+      };
+
+      expect(component()
+        .find('input')
+        .prop('placeholder')).to.equal('Howdy');
+    });
+
+    it('does not set the placeholder if null is used', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String, uniforms: { placeholder: null } },
+        }),
+        placeholder: true,
+      };
+
+      expect(component()
+        .find('input')
+        .prop('placeholder')).to.equal(null);
+    });
+
+    it('sets a default placeholder', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String },
+        }),
+        placeholder: true,
+      };
+
+      expect(component()
+        .find('input')
+        .prop('placeholder')).to.equal('Forms.myText.placeholder');
     });
   });
 });

@@ -24,7 +24,6 @@ export default compose(
     removeLender: (organisationId) => {
       const lenderToRemove = lenders.find(({ organisation }) =>
         organisation && organisation._id === organisationId);
-
       const confirmed = window.confirm('Supprimera les offres de ce prêteur aussi, si il y en a.');
 
       if (confirmed) {

@@ -14,7 +14,7 @@ const assertEmails = () => {
   });
 };
 
-describe.only('ContactPage', () => {
+describe('ContactPage', () => {
   before(() => {
     cy.initiateTest();
 

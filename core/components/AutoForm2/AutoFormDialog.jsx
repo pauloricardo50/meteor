@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { compose, withProps, withState } from 'recompose';
+import pick from 'lodash/pick';
 import MuiDialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -12,8 +13,9 @@ import message from '../../utils/message';
 import T from '../Translation';
 import Button from '../Button';
 import AutoForm from './AutoForm';
-import { makeCustomAutoField, SubmitField } from './AutoFormComponents';
+import { makeCustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
+import CustomSubmitField from './CustomSubmitField';
 
 type AutoFormDialogProps = {
   schema: Object,
@@ -34,25 +36,33 @@ type AutoFormDialogProps = {
   noButton?: Boolean,
 };
 
-export const AutoFormDialog = ({
-  schema,
-  model,
-  onSubmit,
-  buttonProps,
-  setOpen,
-  description,
-  title,
-  important,
-  autoFieldProps,
-  submitting,
-  opened,
-  renderAdditionalActions,
-  children,
-  triggerComponent,
-  emptyDialog,
-  noButton,
-  ...otherProps
-}: AutoFormDialogProps) => {
+const getAutoFormProps = props =>
+  pick(props, [
+    'model',
+    'schema',
+    'onSubmit',
+    'placeholder',
+    'showInlineError',
+  ]);
+
+export const AutoFormDialog = (props: AutoFormDialogProps) => {
+  const {
+    autoFieldProps,
+    buttonProps,
+    children,
+    description,
+    emptyDialog,
+    important,
+    noButton,
+    onSubmit,
+    opened,
+    renderAdditionalActions,
+    setOpen,
+    submitting,
+    title,
+    triggerComponent,
+    ...otherProps
+  } = props;
   const AutoField = makeCustomAutoField(autoFieldProps);
   const handleOpen = (event) => {
     event.preventDefault();
@@ -73,7 +83,7 @@ export const AutoFormDialog = ({
         {...otherProps}
       >
         {title && <DialogTitle>{title}</DialogTitle>}
-        <AutoForm schema={schema} model={model} onSubmit={onSubmit}>
+        <AutoForm {...getAutoFormProps(props)}>
           <DialogContent>
             {description && (
               <DialogContentText>{description}</DialogContentText>
@@ -97,7 +107,7 @@ export const AutoFormDialog = ({
                 submitting,
                 onSubmit,
               })}
-            <SubmitField
+            <CustomSubmitField
               loading={submitting}
               raised
               primary
