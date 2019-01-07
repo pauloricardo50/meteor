@@ -23,7 +23,7 @@ Organisations.allow({
 });
 
 export const OrganisationSchema = new SimpleSchema({
-  name: { type: String },
+  name: { type: String, uniforms: { placeholder: 'Crédit Suisse' } },
   type: {
     type: String,
     optional: true,

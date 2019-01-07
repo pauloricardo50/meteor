@@ -22,7 +22,7 @@ type TaskModifierProps = {
 
 export const taskSchema = (admins = []) =>
   new SimpleSchema({
-    title: String,
+    title: { type: String, uniforms: { placeholder: 'Faire la vaisselle' } },
     dueAt: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
     status: {
       type: String,

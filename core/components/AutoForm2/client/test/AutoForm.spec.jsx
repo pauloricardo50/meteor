@@ -293,8 +293,20 @@ describe('AutoForm', () => {
         .text()).to.include('Forms.myText');
     });
 
+    it('does not set the label if one of them is null', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String, uniforms: { label: null } },
+        }),
+      };
+
+      expect(component()
+        .find('label')
+        .length).to.equal(0);
+    });
+
     context('in nested fields', () => {
-      it('sets the right placeholder on nested objects', () => {
+      it('sets the right label on nested objects', () => {
         props = {
           schema: new SimpleSchema({
             myText: Array,

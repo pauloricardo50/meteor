@@ -20,6 +20,18 @@ const formatStringId = ({ intlId, name, intlPrefix, parent }) => {
   return start + end;
 };
 
+const flowProps = arr =>
+  arr.reduce((val, i) => {
+    if (val === null) {
+      return null;
+    }
+    if (val) {
+      return val;
+    }
+
+    return i;
+  }, '');
+
 export const getLabel = ({
   name,
   field: { uniforms },
@@ -38,13 +50,12 @@ export const getLabel = ({
     return null;
   }
 
-  return (
-    overrideLabel
-    || label
-    || (uniforms && uniforms.label) || (
-      <T id={formatStringId({ intlPrefix, intlId, name, parent })} />
-    )
-  );
+  return flowProps([
+    overrideLabel,
+    label,
+    uniforms && uniforms.label,
+    <T id={formatStringId({ intlPrefix, intlId, name, parent })} />,
+  ]);
 };
 
 const placeholdersAreEnabled = ({ placeholder, parent }) => {

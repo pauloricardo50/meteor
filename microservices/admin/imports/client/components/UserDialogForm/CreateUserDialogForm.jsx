@@ -42,7 +42,6 @@ const CreateUserDialogForm = ({
         ),
       },
     }}
-    placeholder={false}
   />
 );
 
