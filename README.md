@@ -85,9 +85,9 @@ Here we can keep track of bundle size changes over time.
 
 Main things to optimize:
 
-* Antd icons: https://github.com/ant-design/ant-design/issues/12011
-* redux-form
-* Remove jquery: Required by `themeteorchef:bert`, `cultofcoders:persistent-session` and `meteortoys`, which can be ignored since it's dev-only
+* [ ] Antd icons: https://github.com/ant-design/ant-design/issues/12011
+* [x] redux-form
+* [ ] Remove jquery: Required by `themeteorchef:bert`, `cultofcoders:persistent-session` and `meteortoys`, which can be ignored since it's dev-only
   * https://github.com/cult-of-coders/meteor-persistent-session/issues/2
 
 

@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import { reducer as formReducer } from 'redux-form';
 
 import widget1Reducer from 'core/redux/widget1';
 
@@ -23,10 +22,7 @@ const appReducer = (state, action) => {
   if (action.type === 'RESET') {
     state = undefined;
   }
-  return combineReducers({ widget1: widget1Reducer, form: formReducer })(
-    state,
-    action,
-  );
+  return combineReducers({ widget1: widget1Reducer })(state, action);
 };
 
 const createRootReducer = (isClient) => {
