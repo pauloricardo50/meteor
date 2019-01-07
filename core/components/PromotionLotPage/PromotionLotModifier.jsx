@@ -23,9 +23,10 @@ const ProPromotionLotModifier = ({
   submitting,
   deletePromotionLot,
 }: ProPromotionLotModifierProps) => {
-  const model = promotionLot.properties
-    && promotionLot.properties.length > 0
-    && promotionLot.properties[0];
+  const model =
+    promotionLot.properties &&
+    promotionLot.properties.length > 0 &&
+    promotionLot.properties[0];
   return (
     <AutoFormDialog
       buttonProps={{
@@ -38,11 +39,20 @@ const ProPromotionLotModifier = ({
       onSubmit={updateProperty}
       submitting={submitting}
       model={model}
-      renderAdditionalActions={({ closeDialog }) => (
+      renderAdditionalActions={({
+        closeDialog,
+        setDisableActions,
+        disabled,
+      }) => (
         <Button
-          onClick={() => deletePromotionLot().then(closeDialog)}
+          onClick={() => {
+            setDisableActions(true);
+            return deletePromotionLot()
+              .then(() => setDisableActions(false))
+              .finally(closeDialog);
+          }}
           error
-          disabled={submitting}
+          disabled={submitting || disabled}
         >
           <T id="general.delete" />
         </Button>

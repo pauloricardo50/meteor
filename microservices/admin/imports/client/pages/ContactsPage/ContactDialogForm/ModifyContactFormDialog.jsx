@@ -13,7 +13,8 @@ type ModifyContactDialogFormProps = {
 };
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {
-  const { _id: organisationId } = organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
+  const { _id: organisationId } =
+    organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
   return organisationId || null;
 };
 
@@ -35,9 +36,14 @@ const ModifyContactDialogForm = ({
       raised: true,
       primary: true,
     }}
-    renderAdditionalActions={({ closeDialog }) => (
+    renderAdditionalActions={({ closeDialog, disabled, setDisableActions }) => (
       <Button
-        onClick={() => removeContact(contact._id).then(closeDialog)}
+        onClick={() => {
+          setDisableActions(true);
+          return removeContact(contact._id)
+            .then(() => setDisableActions(false))
+            .finally(closeDialog);
+        }}
         error
       >
         <T id="general.delete" />

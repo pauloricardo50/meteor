@@ -3,22 +3,46 @@ import React from 'react';
 import filterDOMProps from 'uniforms/filterDOMProps';
 
 import Button from '../Button';
+import pick from 'lodash/pick';
 
-const CustomSubmitField = (
-  { children, disabled, inputRef, label, value, ...props },
-  { uniforms: { error, state } },
-) => (
+const shouldDisableButton = ({
+  disableActions,
+  error,
+  state: { submitting, validating, disabled },
+  setDisableActions,
+}) => {
+  return disableActions === undefined
+    ? !!(error || disabled || submitting || validating)
+    : disableActions;
+};
+
+const CustomSubmitField = ({
+  children,
+  disableActions,
+  inputRef,
+  label,
+  value,
+  error,
+  state,
+  setDisableActions,
+  ...props
+}) => (
   <Button
-    disabled={disabled === undefined ? !!(error || state.disabled) : disabled}
+    disabled={shouldDisableButton({
+      disableActions,
+      error,
+      state,
+      setDisableActions,
+    })}
     ref={inputRef}
     type="submit"
     value={value}
+    loading={state.submitting}
     {...filterDOMProps(props)}
   >
     {label || children}
   </Button>
 );
-CustomSubmitField.contextTypes = BaseField.contextTypes;
 
 CustomSubmitField.defaultProps = { label: 'Submit', variant: 'contained' };
 

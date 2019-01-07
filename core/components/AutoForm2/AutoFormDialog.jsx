@@ -1,21 +1,15 @@
 // @flow
 import React from 'react';
-import { compose, withProps, withState } from 'recompose';
+import { compose, withProps, withState, lifecycle } from 'recompose';
 import pick from 'lodash/pick';
 import MuiDialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import ErrorsField from 'uniforms-material/ErrorsField';
 
 import message from '../../utils/message';
-import T from '../Translation';
 import Button from '../Button';
 import AutoForm from './AutoForm';
 import { makeCustomAutoField } from './AutoFormComponents';
-import CustomAutoFields from './CustomAutoFields';
-import CustomSubmitField from './CustomSubmitField';
+import AutoFormDialogContent from './AutoFormDialogContent';
+import AutoFormDialogActions from './AutoFormDialogActions';
 
 type AutoFormDialogProps = {
   schema: Object,
@@ -27,7 +21,6 @@ type AutoFormDialogProps = {
   title?: React.Node,
   important?: Boolean,
   autoFieldProps?: Object,
-  submitting: Boolean,
   opened: Boolean,
   renderAdditionalActions?: Function,
   children?: React.Node,
@@ -58,13 +51,12 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
     opened,
     renderAdditionalActions,
     setOpen,
-    submitting,
     title,
     triggerComponent,
     ...otherProps
   } = props;
-  const AutoField = makeCustomAutoField(autoFieldProps);
-  const handleOpen = (event) => {
+  const autoField = makeCustomAutoField(autoFieldProps);
+  const handleOpen = event => {
     event.preventDefault();
     setOpen(true);
   };
@@ -84,36 +76,19 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
       >
         {title && <DialogTitle>{title}</DialogTitle>}
         <AutoForm {...getAutoFormProps(props)}>
-          <DialogContent>
-            {description && (
-              <DialogContentText>{description}</DialogContentText>
-            )}
-            {!emptyDialog && <CustomAutoFields autoField={AutoField} />}
-            <ErrorsField />
-            {children
-              && children({
-                closeDialog: handleClose,
-                submitting,
-                onSubmit,
-              })}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} disabled={submitting}>
-              <T id="general.cancel" />
-            </Button>
-            {renderAdditionalActions
-              && renderAdditionalActions({
-                closeDialog: handleClose,
-                submitting,
-                onSubmit,
-              })}
-            <CustomSubmitField
-              loading={submitting}
-              raised
-              primary
-              label={<T id="general.ok" />}
-            />
-          </DialogActions>
+          <AutoFormDialogContent
+            autoField={autoField}
+            description={description}
+            emptyDialog={emptyDialog}
+            children={children}
+            handleClose={handleClose}
+            onSubmit={onSubmit}
+          />
+          <AutoFormDialogActions
+            handleClose={handleClose}
+            onSubmit={onSubmit}
+            renderAdditionalActions={renderAdditionalActions}
+          />
         </AutoForm>
       </MuiDialog>
     </>
@@ -122,23 +97,19 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
 
 export default compose(
   withState('open', 'setOpen', false),
-  withState('submitting', 'setSubmitting', false),
-  withProps(({ onSubmit, setOpen, setSubmitting, onSuccessMessage }) => ({
+  withProps(({ onSubmit, setOpen, onSuccessMessage }) => ({
     onSubmit: (...args) => {
-      setSubmitting(true);
-      return onSubmit(...args)
-        .then(() => {
-          setOpen(false);
-          message.success(
-            onSuccessMessage
-              ? typeof onSuccessMessage === 'function'
-                ? onSuccessMessage(...args)
-                : onSuccessMessage
-              : "C'est dans la boite !",
-            5,
-          );
-        })
-        .finally(() => setSubmitting(false));
+      return onSubmit(...args).then(() => {
+        setOpen(false);
+        message.success(
+          onSuccessMessage
+            ? typeof onSuccessMessage === 'function'
+              ? onSuccessMessage(...args)
+              : onSuccessMessage
+            : "C'est dans la boite !",
+          5,
+        );
+      });
     },
   })),
 )(AutoFormDialog);
