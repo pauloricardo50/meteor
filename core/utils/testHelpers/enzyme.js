@@ -9,7 +9,9 @@ configure({ adapter: new Adapter() });
 
 // Avoid weird wallaby bug, inspired from here
 // https://github.com/wallabyjs/public/issues/1487
-global.HTMLInputElement = () => {};
+if (global.IS_WALLABY) {
+  global.HTMLInputElement = () => {};
+}
 
 export default defaultEnzyme;
 export const mount = defaultMount;
