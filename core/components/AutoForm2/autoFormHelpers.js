@@ -27,13 +27,14 @@ export const getLabel = ({
   intlId,
   intlPrefix,
   label,
+  isListField,
   parent,
 }) => {
   if (label === null) {
     return null;
   }
 
-  if (parent) {
+  if (isListField) {
     return null;
   }
 
@@ -41,7 +42,7 @@ export const getLabel = ({
     overrideLabel
     || label
     || (uniforms && uniforms.label) || (
-      <T id={formatStringId({ intlPrefix, intlId, name })} />
+      <T id={formatStringId({ intlPrefix, intlId, name, parent })} />
     )
   );
 };

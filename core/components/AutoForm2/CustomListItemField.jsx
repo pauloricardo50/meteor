@@ -19,7 +19,7 @@ const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
           label: null,
         }))
     ) : (
-      <CustomAutoField isNested {...props} />
+      <CustomAutoField isListField {...props} />
     )}
     <ListDelField name={props.name} icon={removeIcon} />
   </ListItemMaterial>

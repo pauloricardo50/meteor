@@ -292,6 +292,27 @@ describe.only('AutoForm', () => {
         .find('label')
         .text()).to.include('Forms.myText');
     });
+
+    context('in nested fields', () => {
+      it('sets the right placeholder on nested objects', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: Array,
+            'myText.$': Object,
+            'myText.$.stuff': String,
+          }),
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('label')
+          .text()).to.include('Forms.myText.stuff');
+      });
+    })
   });
 
   describe('placeholders', () => {
@@ -406,6 +427,26 @@ describe.only('AutoForm', () => {
         expect(component()
           .find('input')
           .prop('placeholder')).to.equal('Forms.myText.stuff.placeholder');
+      });
+
+      it('skips placeholders on nested objects', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: Array,
+            'myText.$': Object,
+            'myText.$.stuff': String,
+          }),
+          placeholder: false,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.equal('');
       });
     });
   });
