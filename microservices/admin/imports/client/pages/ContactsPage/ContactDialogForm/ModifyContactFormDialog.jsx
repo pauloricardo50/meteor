@@ -13,8 +13,7 @@ type ModifyContactDialogFormProps = {
 };
 
 const getOrganisationWithSameAddress = ({ organisations = [] }) => {
-  const { _id: organisationId } =
-    organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
+  const { _id: organisationId } = organisations.find(({ $metadata }) => $metadata.useSameAddress) || {};
   return organisationId || null;
 };
 
@@ -36,13 +35,13 @@ const ModifyContactDialogForm = ({
       raised: true,
       primary: true,
     }}
-    renderAdditionalActions={({ closeDialog, disabled, setDisableActions }) => (
+    renderAdditionalActions={({ closeDialog, setDisableActions }) => (
       <Button
         onClick={() => {
           setDisableActions(true);
           return removeContact(contact._id)
-            .then(() => setDisableActions(false))
-            .finally(closeDialog);
+            .then(closeDialog)
+            .finally(() => setDisableActions(false));
         }}
         error
       >

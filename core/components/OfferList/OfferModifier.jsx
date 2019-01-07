@@ -28,8 +28,8 @@ const OfferModifier = ({ onSubmit, offer, schema }: OfferModifierProps) => (
             setDisableActions(true);
             offerDelete
               .run({ offerId: offer._id })
-              .then(() => setDisableActions(false))
-              .finally(closeDialog);
+              .then(closeDialog)
+              .finally(() => setDisableActions(false));
           } else {
             return Promise.resolve();
           }

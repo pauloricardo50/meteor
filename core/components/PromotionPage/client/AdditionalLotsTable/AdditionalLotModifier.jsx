@@ -22,24 +22,22 @@ type AdditionalLotModifierProps = {
 };
 
 const AdditionalLotModifierSchema = (promotionLots = []) =>
-  lotSchema.extend(
-    new SimpleSchema({
-      promotionLot: {
-        type: String,
-        allowedValues: [...promotionLots.map(({ _id }) => _id), null],
-        optional: true,
-        uniforms: {
-          transform: _id =>
-            _id ? (
-              promotionLots.find(promotionLot => promotionLot._id === _id).name
-            ) : (
-              <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
-            ),
-          labelProps: { shrink: true },
-        },
+  lotSchema.extend(new SimpleSchema({
+    promotionLot: {
+      type: String,
+      allowedValues: [...promotionLots.map(({ _id }) => _id), null],
+      optional: true,
+      uniforms: {
+        transform: _id =>
+          (_id ? (
+            promotionLots.find(promotionLot => promotionLot._id === _id).name
+          ) : (
+            <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
+          )),
+        labelProps: { shrink: true },
       },
-    }),
-  );
+    },
+  }));
 
 const AdditionalLotModifier = ({
   lot,
@@ -88,7 +86,7 @@ export default compose(
       lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
   })),
   withProps(({ setOpen, setSubmitting }) => ({
-    updateAdditionalLot: values => {
+    updateAdditionalLot: (values) => {
       console.log('additional lot values', values);
       const {
         _id: lotId,
@@ -115,8 +113,10 @@ export default compose(
       return lotRemove
         .run({ lotId })
         .then(closeDialog)
-        .then(() => setDisableActions(false))
-        .finally(() => setSubmitting(false));
+        .finally(() => {
+          setDisableActions(false);
+          setSubmitting(false);
+        });
     },
   })),
 )(AdditionalLotModifier);

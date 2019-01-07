@@ -42,9 +42,8 @@ const ModifyInterestRatesDialogForm = ({
         outlined
         onClick={() => {
           setDisableActions(true);
-          return removeInterestRates(interestRatesToModify._id).then(() =>
-            setDisableActions(false),
-          );
+          return removeInterestRates(interestRatesToModify._id).finally(() =>
+            setDisableActions(false));
         }}
         disabled={disabled}
       />
