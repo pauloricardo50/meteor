@@ -368,7 +368,7 @@ describe('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal(null);
+        .prop('placeholder')).to.equal('');
     });
 
     it('sets a default placeholder', () => {
