@@ -25,9 +25,12 @@ const AutoFormDialogActions = (
     disableActions,
     setDisableActions,
   }: AutoFormDialogActionsProps,
-  { uniforms: { state, error } },
+  {
+    uniforms: {
+      state: { submitting },
+    },
+  },
 ) => {
-  const { submitting } = state;
   return (
     <DialogActions>
       <AutoFormDialogChildren
@@ -53,8 +56,6 @@ const AutoFormDialogActions = (
         label={<T id="general.ok" />}
         setDisableActions={setDisableActions}
         disableActions={disableActions}
-        state={state}
-        error={error}
       />
     </DialogActions>
   );
@@ -62,11 +63,8 @@ const AutoFormDialogActions = (
 
 AutoFormDialogActions.contextTypes = {
   uniforms: PropTypes.shape({
-    error: PropTypes.any,
     state: PropTypes.shape({
       submitting: PropTypes.bool.isRequired,
-      disabled: PropTypes.bool.isRequired,
-      validating: PropTypes.bool.isRequired,
     }).isRequired,
   }),
 };
