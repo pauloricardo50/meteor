@@ -1,4 +1,11 @@
 {
+  "Forms.gardenArea.placeholder": "50",
+  "Forms.contacts.name.placeholder": "Marie Rochat",
+  "Forms.contacts.title.placeholder": "Architecte",
+  "Forms.contacts.email.placeholder": "nom@mail.com",
+  "Forms.contacts.email": "Email",
+  "Forms.contacts.phoneNumber.placeholder": "+41 79 000 00 00",
+  "Forms.phoneNumber.placeholder": "+41 79 000 00 00",
   "Forms.email.placeholder": "nom@mail.com",
   "Forms.dueAt": "Échéance",
   "Forms.feedback": "Feedback",

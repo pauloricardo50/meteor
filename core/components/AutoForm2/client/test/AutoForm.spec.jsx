@@ -29,7 +29,7 @@ const setInput = (name, value) => {
     .simulate('change', { target: { value } });
 };
 
-describe.only('AutoForm', () => {
+describe('AutoForm', () => {
   SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
   beforeEach(() => {
@@ -312,7 +312,7 @@ describe.only('AutoForm', () => {
           .find('label')
           .text()).to.include('Forms.myText.stuff');
       });
-    })
+    });
   });
 
   describe('placeholders', () => {
@@ -343,7 +343,7 @@ describe.only('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal('Howdy');
+        .prop('placeholder')).to.equal('p.ex: Howdy');
     });
 
     it('does not set the placeholder if null is used', () => {
@@ -369,7 +369,7 @@ describe.only('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal('Forms.myText.placeholder');
+        .prop('placeholder')).to.include('Forms.myText.placeholder');
     });
 
     context('in nested fields', () => {
@@ -388,7 +388,7 @@ describe.only('AutoForm', () => {
 
         expect(component()
           .find('input')
-          .prop('placeholder')).to.equal('Forms.myText.placeholder');
+          .prop('placeholder')).to.include('Forms.myText.placeholder');
       });
 
       it('does not set a placeholder for a list item field', () => {
@@ -426,7 +426,7 @@ describe.only('AutoForm', () => {
 
         expect(component()
           .find('input')
-          .prop('placeholder')).to.equal('Forms.myText.stuff.placeholder');
+          .prop('placeholder')).to.include('Forms.myText.stuff.placeholder');
       });
 
       it('skips placeholders on nested objects', () => {

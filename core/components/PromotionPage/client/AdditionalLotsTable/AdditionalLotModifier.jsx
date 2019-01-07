@@ -82,15 +82,13 @@ export default compose(
       lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
   })),
   withProps(({ setOpen, setSubmitting }) => ({
-    updateAdditionalLot: (values) => {
-      console.log('additional lot values', values);
-      const {
-        _id: lotId,
-        name,
-        description,
-        value,
-        promotionLot: promotionLotId,
-      } = values;
+    updateAdditionalLot: ({
+      _id: lotId,
+      name,
+      description,
+      value,
+      promotionLot: promotionLotId,
+    }) => {
       setSubmitting(true);
       return lotUpdate
         .run({

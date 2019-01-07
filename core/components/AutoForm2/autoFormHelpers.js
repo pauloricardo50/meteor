@@ -80,14 +80,21 @@ export const getPlaceholder = ({
   }
 
   if (uniforms && uniforms.placeholder !== undefined) {
-    return uniforms.placeholder;
+    return uniforms.placeholder
+      ? `p.ex: ${uniforms.placeholder}`
+      : uniforms.placeholder;
   }
   // Let select fields manage their own null states
   if (type === COMPONENT_TYPES.SELECT) {
     return '';
   }
 
-  return formatMessage({
-    id: `${formatStringId({ intlPrefix, intlId, name, parent })}.placeholder`,
-  });
+  return `p.ex: ${formatMessage({
+    id: `${formatStringId({
+      intlPrefix,
+      intlId,
+      name,
+      parent,
+    })}.placeholder`,
+  })}`;
 };
