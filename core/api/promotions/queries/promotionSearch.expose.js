@@ -1,10 +1,11 @@
 import { Match } from 'meteor/check';
-import SecurityService from '../../security';
-import query from './borrowerSearch';
+
+import Security from '../../security';
+import query from './promotionSearch';
 
 query.expose({
   firewall(userId) {
-    SecurityService.checkUserIsAdmin(userId);
+    Security.checkUserIsAdmin(userId);
   },
   validateParams: { searchQuery: Match.Maybe(String) },
 });

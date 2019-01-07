@@ -1,3 +1,4 @@
+import './adminOrganisation.expose';
 import './adminOrganisations.expose';
 import './organisationFiles.expose';
-import './adminOrganisation.expose';
+import './organisationSearch.expose';
