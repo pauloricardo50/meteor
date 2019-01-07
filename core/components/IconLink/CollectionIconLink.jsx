@@ -72,11 +72,13 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
       text = `${data.$metadata.role} @ ${data.name}`;
     } else if (data.logo) {
       text = (
-        <img
-          src={data.logo}
-          alt={data.name}
-          style={{ maxWidth: 100, maxHeight: 50 }}
-        />
+        <div style={{ width: 100, height: 30 }}>
+          <img
+            src={data.logo}
+            alt={data.name}
+            style={{ maxWidth: 100, maxHeight: 30 }}
+          />
+        </div>
       );
     } else {
       text = data.name;
