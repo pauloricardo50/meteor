@@ -79,7 +79,7 @@ export const getPlaceholder = ({
   type,
   parent,
 }) => {
-  if (fieldType === Boolean) {
+  if (fieldType === Boolean || fieldType === Date) {
     return '';
   }
 
@@ -103,7 +103,7 @@ export const getPlaceholder = ({
       : uniforms.placeholder;
   }
   // Let select fields manage their own null states
-  if (type === COMPONENT_TYPES.SELECT) {
+  if (type === COMPONENT_TYPES.SELECT || type === COMPONENT_TYPES.PERCENT) {
     return '';
   }
 
