@@ -62,12 +62,12 @@ const columnOptions = [
   {
     id: 'Valeur du bien',
     format: value => <IntlNumber value={value} format="money" />,
-    numeric: true,
+    align: 'right',
   },
   {
     id: 'Valeur expertisée',
     format: value => <IntlNumber value={value} format="money" />,
-    numeric: true,
+    align: 'right',
   },
 ];
 

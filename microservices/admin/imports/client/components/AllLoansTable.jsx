@@ -18,12 +18,12 @@ const columnOptions = [
   {
     id: 'Valeur du bien',
     format: value => <IntlNumber value={value} format="money" />,
-    numeric: true,
+    align: 'right',
   },
   {
     id: 'Hypothèque',
     format: value => <IntlNumber value={value} format="money" />,
-    numeric: true,
+    align: 'right',
   },
 ];
 

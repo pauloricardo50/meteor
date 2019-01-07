@@ -21,12 +21,12 @@ const columnOptions = [
   {
     id: 'Valeur du bien',
     format: value => <Money value={value} />,
-    numeric: true,
+    align: 'right'
   },
   {
     id: 'Hypothèque',
     format: value => <Money value={value} />,
-    numeric: true,
+    align: 'right'
   },
   { id: 'Progrès' },
   { id: 'Checklist' },
