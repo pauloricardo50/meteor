@@ -1,20 +1,14 @@
-import BaseField from 'uniforms/BaseField';
 import React from 'react';
 import filterDOMProps from 'uniforms/filterDOMProps';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
-import pick from 'lodash/pick';
 
 const shouldDisableButton = ({
   disableActions,
   error,
   state: { submitting, validating, disabled },
-}) => {
-  return disableActions === undefined
-    ? !!(error || disabled || submitting || validating)
-    : disableActions;
-};
+}) => !!(disableActions || error || disabled || submitting || validating);
 
 const CustomSubmitField = (
   {

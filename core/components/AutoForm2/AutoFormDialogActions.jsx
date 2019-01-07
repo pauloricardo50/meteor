@@ -2,12 +2,12 @@
 import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
+import { withState } from 'recompose';
 
 import AutoFormDialogChildren from './AutoFormDialogChildren';
 import Button from '../Button';
 import CustomSubmitField from './CustomSubmitField';
 import T from '../Translation';
-import { withState } from 'recompose';
 
 type AutoFormDialogActionsProps = {
   handleClose: Function,
@@ -30,36 +30,34 @@ const AutoFormDialogActions = (
       state: { submitting },
     },
   },
-) => {
-  return (
-    <DialogActions>
-      <AutoFormDialogChildren
-        renderFunc={() => (
-          <Button onClick={handleClose} disabled={submitting || disableActions}>
-            <T id="general.cancel" />
-          </Button>
-        )}
-      />
-
-      {renderAdditionalActions && (
-        <AutoFormDialogChildren
-          renderFunc={renderAdditionalActions}
-          closeDialog={handleClose}
-          onSubmit={onSubmit}
-          setDisableActions={setDisableActions}
-          disabled={submitting || disableActions}
-        />
+) => (
+  <DialogActions>
+    <AutoFormDialogChildren
+      renderFunc={() => (
+        <Button onClick={handleClose} disabled={submitting || disableActions}>
+          <T id="general.cancel" />
+        </Button>
       )}
-      <CustomSubmitField
-        raised
-        primary
-        label={<T id="general.ok" />}
+    />
+
+    {renderAdditionalActions && (
+      <AutoFormDialogChildren
+        renderFunc={renderAdditionalActions}
+        closeDialog={handleClose}
+        onSubmit={onSubmit}
         setDisableActions={setDisableActions}
-        disableActions={disableActions}
+        disabled={submitting || disableActions}
       />
-    </DialogActions>
-  );
-};
+    )}
+    <CustomSubmitField
+      raised
+      primary
+      label={<T id="general.ok" />}
+      setDisableActions={setDisableActions}
+      disableActions={disableActions}
+    />
+  </DialogActions>
+);
 
 AutoFormDialogActions.contextTypes = {
   uniforms: PropTypes.shape({
@@ -69,6 +67,4 @@ AutoFormDialogActions.contextTypes = {
   }),
 };
 
-export default withState('disableActions', 'setDisableActions', false)(
-  AutoFormDialogActions,
-);
+export default withState('disableActions', 'setDisableActions', false)(AutoFormDialogActions);

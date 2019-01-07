@@ -1,5 +1,3 @@
-import BaseField from 'uniforms/BaseField';
-import React from 'react';
 import PropTypes from 'prop-types';
 
 const AutoFormDialogChildren = (

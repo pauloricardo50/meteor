@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
-import { compose, withProps, withState, lifecycle } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 import pick from 'lodash/pick';
 import MuiDialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import message from '../../utils/message';
 import Button from '../Button';
@@ -56,7 +57,7 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
     ...otherProps
   } = props;
   const autoField = makeCustomAutoField(autoFieldProps);
-  const handleOpen = event => {
+  const handleOpen = (event) => {
     event.preventDefault();
     setOpen(true);
   };
@@ -98,8 +99,8 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
 export default compose(
   withState('open', 'setOpen', false),
   withProps(({ onSubmit, setOpen, onSuccessMessage }) => ({
-    onSubmit: (...args) => {
-      return onSubmit(...args).then(() => {
+    onSubmit: (...args) =>
+      onSubmit(...args).then(() => {
         setOpen(false);
         message.success(
           onSuccessMessage
@@ -109,7 +110,6 @@ export default compose(
             : "C'est dans la boite !",
           5,
         );
-      });
-    },
+      }),
   })),
 )(AutoFormDialog);

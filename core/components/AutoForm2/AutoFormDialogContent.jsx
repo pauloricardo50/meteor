@@ -5,7 +5,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import ErrorsField from 'uniforms-material/ErrorsField';
 
 import CustomAutoFields from './CustomAutoFields';
-import { makeCustomAutoField } from './AutoFormComponents';
 import AutoFormDialogChildren from './AutoFormDialogChildren';
 
 type AutoFormDialogContentProps = {
