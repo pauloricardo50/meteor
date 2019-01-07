@@ -8,20 +8,32 @@ import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
 import T from '../Translation';
 
+type CustomAutoFormProps = {
+  autoFieldProps?: Object,
+  children?: React.Node,
+  model: Object,
+  omitFields?: Array<String>,
+  placeholder?: Boolean,
+  submitFieldProps?: Object,
+  submitting?: Boolean,
+};
+
 const CustomAutoForm = ({
   autoFieldProps = {},
-  model,
-  submitting,
   children,
+  model,
   omitFields,
+  placeholder = true,
   submitFieldProps,
+  submitting,
   ...props
-}) => {
+}: CustomAutoFormProps) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
   return (
     <AutoForm
       showInlineError
       model={pickBy(model, (_, key) => !key.startsWith('$'))}
+      placeholder={placeholder}
       {...props}
     >
       {children || (

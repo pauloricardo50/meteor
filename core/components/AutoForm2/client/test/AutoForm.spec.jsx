@@ -29,7 +29,7 @@ const setInput = (name, value) => {
     .simulate('change', { target: { value } });
 };
 
-describe('AutoForm', () => {
+describe.only('AutoForm', () => {
   SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
   beforeEach(() => {
@@ -349,6 +349,64 @@ describe('AutoForm', () => {
       expect(component()
         .find('input')
         .prop('placeholder')).to.equal('Forms.myText.placeholder');
+    });
+
+    context('in nested fields', () => {
+      it('sets a placeholder for a list item field', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: [String],
+          }),
+          placeholder: true,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.equal('Forms.myText.placeholder');
+      });
+
+      it('does not set a placeholder for a list item field', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: [String],
+          }),
+          placeholder: false,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.equal('');
+      });
+
+      it('sets the right placeholder on nested objects', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: Array,
+            'myText.$': Object,
+            'myText.$.stuff': String,
+          }),
+          placeholder: true,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.equal('Forms.myText.stuff.placeholder');
+      });
     });
   });
 });
