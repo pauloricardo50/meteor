@@ -32,6 +32,8 @@ const flowProps = arr =>
     return i;
   }, '');
 
+const oneIsNull = arr => arr.some(i => i === null);
+
 export const getLabel = ({
   name,
   field: { uniforms },
@@ -65,6 +67,7 @@ const placeholdersAreEnabled = ({ placeholder, parent }) => {
 
   return placeholder !== '';
 };
+
 export const getPlaceholder = ({
   field: { uniforms },
   fieldType,
@@ -87,6 +90,10 @@ export const getPlaceholder = ({
   // When you set placeholder to `false`, it sets the default placeholder to
   // an empty string
   if (!placeholdersAreEnabled({ placeholder, parent })) {
+    return '';
+  }
+
+  if (oneIsNull([placeholder, uniforms && uniforms.placeholder])) {
     return '';
   }
 

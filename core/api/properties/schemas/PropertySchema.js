@@ -139,10 +139,12 @@ export const PropertySchema = new SimpleSchema({
   name: {
     type: String,
     optional: true,
+    uniforms: { placeholder: null },
   },
   description: {
     type: String,
     optional: true,
+    uniforms: { placeholder: null },
   },
   category: {
     type: String,
