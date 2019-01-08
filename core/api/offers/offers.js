@@ -34,11 +34,7 @@ export const OfferSchema = new SimpleSchema({
     min: 0,
     max: 100000000,
   },
-  amortizationGoal: {
-    type: Number,
-    min: 0,
-    max: 1,
-  },
+  amortizationGoal: percentageField,
   amortizationYears: {
     type: Number,
     min: 0,

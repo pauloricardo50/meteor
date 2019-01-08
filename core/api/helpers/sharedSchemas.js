@@ -107,5 +107,5 @@ export const percentageField = {
       return Number(this.value.toFixed(3));
     }
   },
-  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
 };

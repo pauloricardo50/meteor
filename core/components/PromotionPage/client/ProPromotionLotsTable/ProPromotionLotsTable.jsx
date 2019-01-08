@@ -11,7 +11,7 @@ import { LOT_TYPES } from '../../../../api/constants';
 type ProPromotionLotsTableProps = {};
 
 export const promotionLotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true } },
+  name: { type: String, uniforms: { autoFocus: true, placeholder: 'A' } },
   value: {
     type: Number,
     defaultValue: 0,
@@ -23,13 +23,21 @@ export const promotionLotSchema = new SimpleSchema({
   roomCount: { type: Number, optional: true, min: 0, max: 100 },
   bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
   monthlyExpenses: { type: Number, optional: true, min: 0, max: 100000 },
-  description: { type: String, optional: true },
+  description: {
+    type: String,
+    optional: true,
+    uniforms: { placeholder: 'Attique avec la meilleure vue du bâtiment' },
+  },
 });
 
 export const lotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true } },
+  name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
   type: { type: String, allowedValues: Object.values(LOT_TYPES) },
-  description: { type: String, optional: true },
+  description: {
+    type: String,
+    optional: true,
+    uniforms: { placeholder: 'Parking en enfilade' },
+  },
   value: {
     type: Number,
     defaultValue: 0,

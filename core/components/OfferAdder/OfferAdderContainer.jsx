@@ -17,7 +17,7 @@ const interestRatesSchema = ({ isDiscount }) =>
         type: Number,
         min: 0,
         max: 1,
-        uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
+        uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: null },
         label: 'Yo!',
         optional: true,
         condition: ({ hasCounterparts, hasFlatDiscount }) =>
@@ -70,7 +70,7 @@ const schema = lenders =>
       type: Number,
       min: 0,
       max: 1,
-      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: null },
       optional: false,
       defaultValue: 0.65,
     },

@@ -1,6 +1,7 @@
 import { Match } from 'meteor/check';
+
 import SecurityService from '../../security';
-import query from './borrowerSearch';
+import query from './contactSearch';
 
 query.expose({
   firewall(userId) {

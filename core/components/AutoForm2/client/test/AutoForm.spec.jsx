@@ -292,6 +292,39 @@ describe('AutoForm', () => {
         .find('label')
         .text()).to.include('Forms.myText');
     });
+
+    it('does not set the label if one of them is null', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText: { type: String, uniforms: { label: null } },
+        }),
+      };
+
+      expect(component()
+        .find('label')
+        .length).to.equal(0);
+    });
+
+    context('in nested fields', () => {
+      it('sets the right label on nested objects', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: Array,
+            'myText.$': Object,
+            'myText.$.stuff': String,
+          }),
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('label')
+          .text()).to.include('Forms.myText.stuff');
+      });
+    });
   });
 
   describe('placeholders', () => {
@@ -322,7 +355,7 @@ describe('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal('Howdy');
+        .prop('placeholder')).to.equal('p.ex: Howdy');
     });
 
     it('does not set the placeholder if null is used', () => {
@@ -335,7 +368,7 @@ describe('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal(null);
+        .prop('placeholder')).to.equal('');
     });
 
     it('sets a default placeholder', () => {
@@ -348,7 +381,85 @@ describe('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal('Forms.myText.placeholder');
+        .prop('placeholder')).to.include('Forms.myText.placeholder');
+    });
+
+    context('in nested fields', () => {
+      it('sets a placeholder for a list item field', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: [String],
+          }),
+          placeholder: true,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.include('Forms.myText.placeholder');
+      });
+
+      it('does not set a placeholder for a list item field', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: [String],
+          }),
+          placeholder: false,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.equal('');
+      });
+
+      it('sets the right placeholder on nested objects', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: Array,
+            'myText.$': Object,
+            'myText.$.stuff': String,
+          }),
+          placeholder: true,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.include('Forms.myText.stuff.placeholder');
+      });
+
+      it('skips placeholders on nested objects', () => {
+        props = {
+          schema: new SimpleSchema({
+            myText: Array,
+            'myText.$': Object,
+            'myText.$.stuff': String,
+          }),
+          placeholder: false,
+        };
+
+        component()
+          .find('button')
+          .at(0)
+          .simulate('click');
+
+        expect(component()
+          .find('input')
+          .prop('placeholder')).to.equal('');
+      });
     });
   });
 });

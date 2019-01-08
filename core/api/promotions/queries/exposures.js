@@ -1,5 +1,6 @@
+import './adminPromotions.expose';
 import './appPromotion.expose';
 import './promotionFiles.expose';
+import './promotionSearch.expose';
 import './proPromotion.expose';
 import './proPromotions.expose';
-import './adminPromotions.expose';

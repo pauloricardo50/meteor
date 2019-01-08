@@ -13,7 +13,6 @@ const LoanTaskInserter = compose(
         user && user.assignedEmployee && user.assignedEmployee._id,
     },
     buttonLabelId: 'LoanTaskInsertForm.label',
-    form: 'loan-add-task',
     formTitleId: 'LoanTaskInsertForm.dialogTitle',
     formDescriptionId: 'LoanTaskInsertForm.dialogDescription',
   })),

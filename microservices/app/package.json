@@ -79,15 +79,14 @@
     "react-text-mask": "^5.4.3",
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
-    "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "sift": "^6.0.0",
     "simpl-schema": "^1.5.3",
     "text-mask-addons": "^3.8.0",
-    "uniforms": "^1.25.0",
-    "uniforms-material": "^1.25.0",
+    "uniforms": "^1.30.0",
+    "uniforms-material": "^1.30.0",
     "url-search-params-polyfill": "^5.0.0"
   },
   "devDependencies": {

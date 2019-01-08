@@ -17,10 +17,11 @@ const OrganisationsPage = ({
     <AutoFormDialog
       schema={OrganisationSchema.omit('logo', 'contactIds')}
       buttonProps={{
-        label: 'Ajouter Organisation',
+        label: 'Ajouter organisation',
         raised: true,
         primary: true,
       }}
+      title="Ajouter organisation"
       onSubmit={insertOrganisation}
     />
 

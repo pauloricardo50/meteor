@@ -67,13 +67,13 @@ const schema = existingOrganisations =>
     },
     'organisations.$.$metadata': {
       type: Object,
-      uniforms: { label: '' },
+      uniforms: { label: null },
       optional: true,
     },
     'organisations.$.$metadata.role': {
       type: String,
       optional: true,
-      uniforms: { label: <T id="Forms.contact.role" /> },
+      uniforms: { label: <T id="Forms.contact.role" />, placeholder: 'Responsable Hypothèques' },
     },
     ...Object.keys(omit(address, ['isForeignAddress', 'canton'])).reduce(
       (fields, field) => ({

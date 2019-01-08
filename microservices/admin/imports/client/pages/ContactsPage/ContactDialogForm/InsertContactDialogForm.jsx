@@ -24,6 +24,7 @@ const InsertContactDialogForm = ({
       raised: true,
       primary: true,
     }}
+    title={<T id="Contacts.insert" />}
   />
 );
 

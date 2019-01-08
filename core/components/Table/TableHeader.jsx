@@ -37,14 +37,11 @@ const TableHeader = ({
           />
         </TableCell>
       )}
-      {columnOptions.map((
-        { id, style, intlValues, label, numeric, padding = 'dense' },
-        index,
-      ) => (
+      {columnOptions.map(({ id, style, intlValues, label, align, padding = 'dense' }, index) => (
         <TableCell
           key={id}
           style={style || styles.cell}
-          numeric={numeric}
+          align={align}
           padding={padding}
         >
           {sortable ? (
