@@ -5,6 +5,7 @@ import SelectField from 'uniforms-material/SelectField';
 import Chip from '../Material/Chip';
 import T from '../Translation';
 import Loading from '../Loading/Loading';
+import CustomAllowedValuesFromQuery from './CustomAllowedValuesFromQuery';
 
 type CustomSelectFieldProps = {
   transform: Function,
@@ -16,7 +17,7 @@ type CustomSelectFieldState = {
   values: Array,
 };
 
-export default class CustomSelectField extends Component<
+class CustomSelectField extends Component<
   CustomSelectFieldProps,
   CustomSelectFieldState,
 > {
@@ -40,7 +41,7 @@ export default class CustomSelectField extends Component<
 
   getAllowedValues = (props) => {
     const { customAllowedValues, model } = props;
-    if (typeof customAllowedValues === 'function') {
+    if (customAllowedValues && typeof customAllowedValues === 'function') {
       Promise.resolve(customAllowedValues(model)).then(values =>
         this.setState({ values }));
     }
@@ -94,3 +95,5 @@ export default class CustomSelectField extends Component<
     );
   }
 }
+
+export default CustomAllowedValuesFromQuery(CustomSelectField);

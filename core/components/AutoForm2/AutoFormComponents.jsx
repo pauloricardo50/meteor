@@ -21,9 +21,10 @@ const COMPONENT_TYPES = {
 const determineComponentFromProps = ({
   allowedValues,
   customAllowedValues,
+  customAllowedValuesFromQuery,
   field: { uniforms },
 }) => {
-  if (allowedValues || customAllowedValues) {
+  if (allowedValues || customAllowedValues || customAllowedValuesFromQuery) {
     return { Component: CustomSelectField, type: COMPONENT_TYPES.SELECT };
   }
 
@@ -96,6 +97,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
   )(
     (props) => {
       let { Component, type } = determineComponentFromProps(props);
+      console.log('props', props);
       Component = Component || AutoField;
 
       const label = getLabel({

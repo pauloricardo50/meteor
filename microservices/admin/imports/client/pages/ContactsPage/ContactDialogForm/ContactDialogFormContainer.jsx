@@ -14,7 +14,11 @@ import {
 import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
 import T from 'imports/core/components/Translation';
 
-SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
+SimpleSchema.extendOptions([
+  'condition',
+  'customAllowedValues',
+  'customAllowedValuesFromQuery',
+]);
 
 const schema = existingOrganisations =>
   new SimpleSchema({
@@ -26,10 +30,16 @@ const schema = existingOrganisations =>
       type: String,
       optional: true,
       defaultValue: null,
-      allowedValues: existingOrganisations.map(({ _id }) => _id),
+      // customAllowedValuesFromQuery: {
+      //   query: adminOrganisations,
+      // },
+      allowedValues: () => existingOrganisations.map(({ _id }) => _id),
       uniforms: {
-        transform: organisationId =>
-          existingOrganisations.find(({ _id }) => organisationId === _id).name,
+        transform: (organisationId) => {
+          const { name } = existingOrganisations.find(({ _id }) => organisationId === _id)
+            || {};
+          return name;
+        },
         labelProps: { shrink: true },
         label: <T id="Forms.organisationName" />,
       },
