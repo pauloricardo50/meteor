@@ -1,11 +1,9 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import SelectField from 'uniforms-material/SelectField';
 
-import Chip from '../Material/Chip';
-import T from '../Translation';
 import Loading from '../Loading/Loading';
-import CustomAllowedValuesFromQuery from './CustomAllowedValuesFromQuery';
+import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 
 type CustomSelectFieldProps = {
   transform: Function,
@@ -13,87 +11,24 @@ type CustomSelectFieldProps = {
   customAllowedValues: Function,
   model: Object,
 };
-type CustomSelectFieldState = {
-  values: Array,
-};
 
-class CustomSelectField extends Component<
-  CustomSelectFieldProps,
-  CustomSelectFieldState,
-> {
-  constructor(props) {
-    super(props);
-    this.state = { values: props.allowedValues };
-  }
+const CustomSelectField = ({
+  transform,
+  values = [],
+  displayEmpty = true,
+  renderValue,
+  ...props
+}: CustomSelectFieldProps) => (values ? (
+  <SelectField
+    {...props}
+    allowedValues={values}
+    transform={transform}
+    renderValue={renderValue}
+    displayEmpty={displayEmpty}
+    labelProps={{ shrink: true }}
+  />
+) : (
+  <Loading />
+));
 
-  componentDidMount() {
-    this.getAllowedValues(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { model: nextModel } = nextProps;
-    const { model } = this.props;
-
-    if (JSON.stringify(model) !== JSON.stringify(nextModel)) {
-      this.getAllowedValues(nextProps);
-    }
-  }
-
-  getAllowedValues = (props) => {
-    const { customAllowedValues, model } = props;
-    if (customAllowedValues && typeof customAllowedValues === 'function') {
-      Promise.resolve(customAllowedValues(model)).then(values =>
-        this.setState({ values }));
-    }
-  };
-
-  formatOption = (option) => {
-    const { intlId, name } = this.props;
-    return <T id={`Forms.${intlId || name}.${option}`} />;
-  };
-
-  render() {
-    const { transform, submitting, ...props } = this.props;
-    const { values } = this.state;
-
-    return values || submitting ? (
-      <SelectField
-        {...props}
-        allowedValues={values || []}
-        transform={transform || this.formatOption}
-        renderValue={(value) => {
-          // Return null before going into the transform function
-          if (value === null) {
-            return null;
-          }
-
-          if (transform) {
-            return transform(value);
-          }
-
-          if (value === undefined || value === '') {
-            return null;
-          }
-
-          if (Array.isArray(value)) {
-            return value.map(val => (
-              <Chip
-                key={val}
-                label={this.formatOption(val)}
-                style={{ marginRight: 4 }}
-              />
-            ));
-          }
-
-          return this.formatOption(value);
-        }}
-        displayEmpty
-        labelProps={{ shrink: true }}
-      />
-    ) : (
-      <Loading />
-    );
-  }
-}
-
-export default CustomAllowedValuesFromQuery(CustomSelectField);
+export default CustomSelectFieldContainer(CustomSelectField);

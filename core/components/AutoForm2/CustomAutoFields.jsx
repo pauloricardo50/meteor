@@ -25,7 +25,6 @@ const CustomAutoFields = (
           customAllowedValues,
           customAllowedValuesFromQuery,
         } = schema.getField(field);
-        console.log('field', schema.getProps(field), schema.getField(field));
         const component = createElement(autoField, {
           key: field,
           name: field,

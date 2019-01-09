@@ -79,6 +79,13 @@ export const getPlaceholder = ({
   type,
   parent,
 }) => {
+  let placeholderPrefix = 'p.ex: ';
+
+  // Doesn't make sense to add example prefix on select field
+  if (type === COMPONENT_TYPES.SELECT) {
+    placeholderPrefix = '';
+  }
+
   if (fieldType === Boolean || fieldType === Date) {
     return '';
   }
@@ -87,6 +94,11 @@ export const getPlaceholder = ({
     return placeholder;
   }
 
+  if (uniforms && uniforms.placeholder !== undefined) {
+    return uniforms.placeholder
+      ? `${placeholderPrefix}${uniforms.placeholder}`
+      : uniforms.placeholder;
+  }
   // When you set placeholder to `false`, it sets the default placeholder to
   // an empty string
   if (!placeholdersAreEnabled({ placeholder, parent })) {
@@ -97,17 +109,12 @@ export const getPlaceholder = ({
     return '';
   }
 
-  if (uniforms && uniforms.placeholder !== undefined) {
-    return uniforms.placeholder
-      ? `p.ex: ${uniforms.placeholder}`
-      : uniforms.placeholder;
-  }
   // Let select fields manage their own null states
-  if (type === COMPONENT_TYPES.SELECT || type === COMPONENT_TYPES.PERCENT) {
+  if (type === COMPONENT_TYPES.PERCENT) {
     return '';
   }
 
-  return `p.ex: ${formatMessage({
+  return `${placeholderPrefix}${formatMessage({
     id: `${formatStringId({
       intlPrefix,
       intlId,

@@ -15,13 +15,16 @@ export default withProps(({
   return {
     customAllowedValues: customAllowedValuesFromQuery
       ? model =>
-        query.clone(params(model)).fetch((error, data) => {
-          if (error) {
-            throw error;
-          }
+        new Promise((resolve, reject) =>
+          query.clone(params(model)).fetch((error, data) => {
+            if (error) {
+              reject(error);
+            }
 
-          return allowNull ? [null, ...data] : data;
-        })
+            const ids = data.map(({ _id }) => _id);
+
+            resolve(allowNull ? [null, ...ids] : ids);
+          }))
       : customAllowedValues,
     transform: queryTransform || uniformsTransform || (x => x),
   };

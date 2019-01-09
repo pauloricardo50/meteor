@@ -50,7 +50,6 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
   )(
     (props) => {
       let { Component, type } = determineComponentFromProps(props);
-      console.log('props', props);
       Component = Component || AutoField;
 
       const label = getLabel({
