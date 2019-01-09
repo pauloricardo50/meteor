@@ -15,20 +15,19 @@ type CustomSelectFieldProps = {
 const CustomSelectField = ({
   transform,
   values = [],
-  displayEmpty = true,
   renderValue,
   ...props
-}: CustomSelectFieldProps) => (values ? (
-  <SelectField
-    {...props}
-    allowedValues={values}
-    transform={transform}
-    renderValue={renderValue}
-    displayEmpty={displayEmpty}
-    labelProps={{ shrink: true }}
-  />
-) : (
-  <Loading />
-));
+}: CustomSelectFieldProps) =>
+  (values ? (
+    <SelectField
+      {...props}
+      allowedValues={values}
+      transform={transform}
+      renderValue={renderValue}
+      labelProps={{ shrink: true }}
+    />
+  ) : (
+    <Loading />
+  ));
 
 export default CustomSelectFieldContainer(CustomSelectField);

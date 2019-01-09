@@ -14,12 +14,6 @@ import {
 import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
 import T from 'imports/core/components/Translation';
 
-SimpleSchema.extendOptions([
-  'condition',
-  'customAllowedValues',
-  'customAllowedValuesFromQuery',
-]);
-
 const schema = existingOrganisations =>
   new SimpleSchema({
     firstName: String,

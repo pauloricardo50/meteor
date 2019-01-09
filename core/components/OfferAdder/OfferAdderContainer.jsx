@@ -7,7 +7,6 @@ import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
-SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
 const interestRatesSchema = ({ isDiscount }) =>
   Object.values(INTEREST_RATES).reduce(

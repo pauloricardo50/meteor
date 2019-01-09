@@ -65,6 +65,8 @@ function setWallabyConfig(name, overrides = {}) {
             'denyInsert',
             'denyUpdate',
             'uniforms',
+            'condition',
+            'customAllowedValues',
           ]);
         },
       },

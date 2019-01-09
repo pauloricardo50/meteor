@@ -3,7 +3,7 @@ import React from 'react';
 import T from '../Translation';
 import Chip from '../Material/Chip';
 
-export default Component =>
+export default (Component) => {
   class CustomSelectFieldContainer extends React.Component {
     constructor(props) {
       super(props);
@@ -36,7 +36,7 @@ export default Component =>
 
         query.clone(params(model)).fetch((error, data) => {
           if (error) {
-            this.setState({ error });
+            return this.setState({ error });
           }
 
           this.setState({ values: data.map(({ _id }) => _id), data });
@@ -93,7 +93,7 @@ export default Component =>
       return (
         <Component
           {...this.props}
-          placeholder={displayEmpty && placeholder}
+          placeholder={displayEmpty ? placeholder : ''}
           values={values}
           formatOption={this.formatOption}
           renderValue={this.renderValue}
@@ -101,4 +101,11 @@ export default Component =>
         />
       );
     }
+  }
+
+  CustomSelectFieldContainer.defaultProps = {
+    displayEmpty: true,
   };
+
+  return CustomSelectFieldContainer;
+};

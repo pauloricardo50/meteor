@@ -23,7 +23,6 @@ const setInput = (name, value) => {
 };
 
 describe('CustomSelectField', () => {
-  SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
   beforeEach(() => {
     getMountedComponent.reset();

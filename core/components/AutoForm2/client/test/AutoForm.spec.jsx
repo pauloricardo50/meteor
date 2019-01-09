@@ -30,7 +30,6 @@ const setInput = (name, value) => {
 };
 
 describe('AutoForm', () => {
-  SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
   beforeEach(() => {
     getMountedComponent.reset();

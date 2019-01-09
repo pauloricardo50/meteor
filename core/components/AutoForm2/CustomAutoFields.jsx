@@ -23,13 +23,11 @@ const CustomAutoFields = (
         const {
           condition,
           customAllowedValues,
-          customAllowedValuesFromQuery,
         } = schema.getField(field);
         const component = createElement(autoField, {
           key: field,
           name: field,
           customAllowedValues,
-          customAllowedValuesFromQuery,
           model,
           submitting,
         });

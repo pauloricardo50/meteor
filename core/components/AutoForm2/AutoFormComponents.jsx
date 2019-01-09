@@ -16,11 +16,10 @@ import { getLabel, getPlaceholder } from './autoFormHelpers';
 const determineComponentFromProps = ({
   allowedValues,
   customAllowedValues,
-  customAllowedValuesFromQuery,
   field: { uniforms },
   fieldType,
 }) => {
-  if (allowedValues || customAllowedValues || customAllowedValuesFromQuery) {
+  if (allowedValues || customAllowedValues) {
     return { Component: CustomSelectField, type: COMPONENT_TYPES.SELECT };
   }
 
