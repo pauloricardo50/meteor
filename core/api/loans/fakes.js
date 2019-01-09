@@ -57,33 +57,6 @@ export const logic3 = {
     startTime: new Date(),
     endTime: new Date(),
   },
-  closingSteps: [
-    { id: 'upload0', title: 'Contrat de prêt signé', type: 'UPLOAD' },
-    {
-      id: 'todo0',
-      title: 'Ouverture de compte chez votre prêteur',
-      description:
-        'Il faut ouvrir un compte bancaire chez votre prêteur où les fonds de votre hypothèque résideront.',
-      type: 'TODO',
-      status: 'VALID',
-    },
-    {
-      id: 'todo1',
-      title: 'Versement des fonds propres',
-      description:
-        'Vous devez aller chez le notaire et verser les fonds propres nécessaires sur un compte escrow.',
-      type: 'TODO',
-      status: 'UNVERIFIED',
-    },
-    {
-      id: 'todo2',
-      title: 'Engagement du notaire relative aux cédules hypothécaires',
-      description: '',
-      type: 'TODO',
-      status: 'ERROR',
-      error: 'Le notaire doit vous convier à un 2ème rendez-vous',
-    },
-  ],
 };
 
 export const fakeFiles2 = {};

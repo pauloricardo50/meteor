@@ -3,8 +3,6 @@ import faker from 'faker/locale/fr';
 import {
   PURCHASE_TYPE,
   AUCTION_STATUS,
-  CLOSING_STEPS_TYPE,
-  CLOSING_STEPS_STATUS,
   INTEREST_RATES,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
@@ -37,42 +35,6 @@ const logic3 = {
     verifiedAt: new Date(),
     comments: [],
   },
-  auction: {
-    status: AUCTION_STATUS.ENDED,
-    startTime: new Date(),
-    endTime: new Date(),
-  },
-  closingSteps: [
-    {
-      id: 'upload0',
-      title: 'Contrat de prêt signé',
-      type: CLOSING_STEPS_TYPE.UPLOAD,
-    },
-    {
-      id: 'todo0',
-      title: 'Ouverture de compte chez votre prêteur',
-      description:
-        'Il faut ouvrir un compte bancaire chez votre prêteur où les fonds de votre hypothèque résideront.',
-      type: CLOSING_STEPS_TYPE.TODO,
-      status: CLOSING_STEPS_STATUS.VALID,
-    },
-    {
-      id: 'todo1',
-      title: 'Versement des fonds propres',
-      description:
-        'Vous devez aller chez le notaire et verser les fonds propres nécessaires sur un compte escrow.',
-      type: CLOSING_STEPS_TYPE.TODO,
-      status: CLOSING_STEPS_STATUS.UNVERIFIED,
-    },
-    {
-      id: 'todo2',
-      title: 'Engagement du notaire relative aux cédules hypothécaires',
-      description: '',
-      type: CLOSING_STEPS_TYPE.TODO,
-      status: CLOSING_STEPS_STATUS.ERROR,
-      error: 'Le notaire doit vous convier à un 2ème rendez-vous',
-    },
-  ],
 };
 
 const getRandomValueInArray = array =>
