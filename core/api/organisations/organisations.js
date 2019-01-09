@@ -28,6 +28,7 @@ export const OrganisationSchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(ORGANISATION_TYPES),
+    uniforms: { displayEmpty: false },
   },
   features: { type: Array, optional: true, defaultValue: [] },
   'features.$': {

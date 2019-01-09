@@ -19,6 +19,7 @@ const PromotionOptionSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(PROMOTION_OPTION_SOLVENCY),
     defaultValue: PROMOTION_OPTION_SOLVENCY.UNDETERMINED,
+    uniforms: { displayEmpty: false },
   },
 });
 

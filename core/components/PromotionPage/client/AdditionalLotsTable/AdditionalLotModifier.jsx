@@ -25,7 +25,7 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
   lotSchema.extend(new SimpleSchema({
     promotionLot: {
       type: String,
-      allowedValues: [...promotionLots.map(({ _id }) => _id), null],
+      allowedValues: promotionLots.map(({ _id }) => _id),
       optional: true,
       uniforms: {
         transform: _id =>
@@ -35,6 +35,7 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
             <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
           )),
         labelProps: { shrink: true },
+        placeholder: 'Non alloué',
       },
     },
   }));

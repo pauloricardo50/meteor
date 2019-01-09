@@ -32,7 +32,11 @@ export const promotionLotSchema = new SimpleSchema({
 
 export const lotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
-  type: { type: String, allowedValues: Object.values(LOT_TYPES) },
+  type: {
+    type: String,
+    allowedValues: Object.values(LOT_TYPES),
+    uniforms: { displayEmpty: false },
+  },
   description: {
     type: String,
     optional: true,

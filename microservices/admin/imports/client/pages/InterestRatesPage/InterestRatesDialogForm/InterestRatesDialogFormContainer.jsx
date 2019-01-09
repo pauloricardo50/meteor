@@ -37,6 +37,7 @@ const singleInterestRate = type => ({
     type: String,
     allowedValues: Object.values(TRENDS),
     optional: true,
+    uniforms: { displayEmpty: false },
   },
 });
 

@@ -28,7 +28,12 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
   [`${name}.$`]: Object,
   [`${name}.$.value`]: { type: SimpleSchema.Integer, min: 0, max: 100000000 },
-  [`${name}.$.description`]: { type: String, optional: true, allowedValues },
+  [`${name}.$.description`]: {
+    type: String,
+    optional: true,
+    allowedValues,
+    uniforms: { displayEmpty: false },
+  },
 });
 
 // Documentation is in the google drive dev/MongoDB Schemas
@@ -52,6 +57,7 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(GENDER),
+    uniforms: { displayEmpty: false },
   },
   age: {
     type: SimpleSchema.Integer,
@@ -72,6 +78,7 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
+    uniforms: { displayEmpty: false },
   },
   citizenship: {
     type: String,
@@ -85,6 +92,7 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(CIVIL_STATUS),
     optional: true,
+    uniforms: { displayEmpty: false },
   },
   childrenCount: {
     type: SimpleSchema.Integer,
