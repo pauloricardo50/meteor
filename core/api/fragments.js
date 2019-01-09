@@ -309,6 +309,7 @@ export const fullOffer = () => ({
   maxAmount: 1,
   organisation: 1,
   user: simpleUser(),
+  createdAt: 1,
 });
 
 // //

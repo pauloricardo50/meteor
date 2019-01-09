@@ -56,12 +56,13 @@ class OfferList extends Component {
       <div className="flex-col" style={{ width: '100%' }}>
         <OfferListSorting
           sort={sort}
-          options={getOfferValues({})
-            .filter(({ component }) => !component)
-            .map(({ key, id }) => ({
-              id: key || id,
-              label: <T id={`offer.${key || id}`} />,
-            }))}
+          options={[
+            ...getOfferValues({}).filter(({ component }) => !component),
+            { key: 'createdAt' },
+          ].map(({ key, id }) => ({
+            id: key || id,
+            label: <T id={`offer.${key || id}`} />,
+          }))}
           handleChange={this.handleChange}
           handleChangeOrder={this.handleChangeOrder}
           isAscending={isAscending}
