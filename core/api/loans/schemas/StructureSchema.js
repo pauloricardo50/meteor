@@ -3,14 +3,10 @@ import SimpleSchema from 'simpl-schema';
 import { AMORTIZATION_TYPE, OWN_FUNDS_USAGE_TYPES } from '../loanConstants';
 import { OWN_FUNDS_TYPES } from '../../constants';
 import { loanTranchesSchema } from './otherSchemas';
+import { moneyField } from '../../helpers/sharedSchemas';
 
 const StructureSchema = new SimpleSchema({
-  amortization: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    defaultValue: 0,
-  },
+  amortization: moneyField,
   amortizationType: {
     type: String,
     allowedValues: Object.values(AMORTIZATION_TYPE),
@@ -22,26 +18,17 @@ const StructureSchema = new SimpleSchema({
   'mortgageNoteIds.$': String,
   name: { type: String, optional: true },
   notaryFees: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    max: 100000000,
+    ...moneyField,
     defaultValue: null,
   },
   propertyValue: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    max: 1000000000,
+    ...moneyField,
     defaultValue: null,
   },
   offerId: { type: String, optional: true },
   propertyId: { type: String, optional: true },
   promotionOptionId: { type: String, optional: true },
-  propertyWork: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    defaultValue: 0,
-  },
+  propertyWork: moneyField,
   sortOffersBy: { type: String, optional: true },
   ownFunds: { type: Array, defaultValue: [] },
   'ownFunds.$': Object,
@@ -56,12 +43,7 @@ const StructureSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(OWN_FUNDS_USAGE_TYPES),
   },
-  wantedLoan: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    defaultValue: 0,
-  },
+  wantedLoan: moneyField,
   ...loanTranchesSchema,
 });
 

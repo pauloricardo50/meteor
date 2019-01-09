@@ -9,7 +9,7 @@ const OfferModiferContainer = withProps(({ offer: { _id: offerId } }) => ({
       object: offer,
       offerId,
     }),
-  schema: AdminOfferSchema,
+  schema: AdminOfferSchema.omit('feedback'),
 }));
 
 export default OfferModiferContainer;

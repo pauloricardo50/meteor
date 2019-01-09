@@ -110,3 +110,11 @@ export const percentageField = {
   },
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
 };
+
+export const moneyField = {
+  type: SimpleSchema.Integer,
+  min: 0,
+  max: 1000000000,
+  optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
+};

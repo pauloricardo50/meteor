@@ -1,5 +1,6 @@
 // @flow
 import { INTEREST_RATES } from '../../constants';
+import { moneyField } from '../../helpers/sharedSchemas';
 
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
@@ -19,10 +20,8 @@ export const loanTranchesSchema = {
     allowedValues: Object.values(INTEREST_RATES),
   },
   'loanTranches.$.value': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 1000000000, // Can be specified as percentages or monetary amounts
+    ...moneyField,
+    type: Number, // Can be specified as percentages or monetary amounts
   },
 };
 
@@ -34,10 +33,8 @@ export const previousLoanTranchesSchema = {
   },
   'previousLoanTranches.$': Object,
   'previousLoanTranches.$.value': {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 1000000000, // Can be specified as percentages or monetary amounts
+    ...moneyField,
+    type: Number, // Can be specified as percentages or monetary amounts
   },
   'previousLoanTranches.$.dueDate': {
     type: Date,

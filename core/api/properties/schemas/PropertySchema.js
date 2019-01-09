@@ -6,6 +6,7 @@ import {
   additionalDocuments,
   address,
   mortgageNoteLinks,
+  moneyField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
@@ -155,17 +156,12 @@ export const PropertySchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   value: {
-    // Cost of the property
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
+    ...moneyField,
     autoValue() {
       if (this.isSet) {
         return Math.round(this.value / 1000) * 1000;
       }
     },
-    optional: true,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
   status: {
     type: String,

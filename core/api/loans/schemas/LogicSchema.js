@@ -1,31 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import {
-  AUCTION_STATUS,
-  CLOSING_STEPS_TYPE,
-  CLOSING_STEPS_STATUS,
-  STEPS,
-} from '../../constants';
-
-const closingStepsSchema = {
-  closingSteps: {
-    type: Array,
-    defaultValue: [],
-  },
-  'closingSteps.$': Object,
-  'closingSteps.$.id': String,
-  'closingSteps.$.type': {
-    type: String,
-    allowedValues: Object.values(CLOSING_STEPS_TYPE),
-  },
-  'closingSteps.$.title': String,
-  'closingSteps.$.description': { type: String, optional: true },
-  'closingSteps.$.status': {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(CLOSING_STEPS_STATUS),
-  },
-  'closingSteps.$.error': { type: String, optional: true },
-};
+import { AUCTION_STATUS, STEPS } from '../../constants';
 
 const verificationSchema = {
   verification: {
@@ -84,7 +58,6 @@ const LogicSchema = new SimpleSchema({
     allowedValues: Object.values(STEPS),
   },
   ...verificationSchema,
-  ...closingStepsSchema,
   ...auctionSchema,
 });
 

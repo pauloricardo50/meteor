@@ -90,18 +90,18 @@ export class SlackService {
       channel: `errors-${Meteor.settings.public.environment}`,
       attachments: [
         {
-          title: error.name,
+          title: error && error.name,
           pretext: `Une erreur est arrivée sur *e-Potek ${
             Meteor.microservice
           }*`,
-          text: error.message || error.reason,
+          text: error && (error.message || error.reason),
           color: colors.error,
           footer: 'c la merde',
           ts: new Date() / 1000,
         },
         {
           title: 'Stack',
-          text: `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
+          text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
           color: colors.error,
         },
         {
