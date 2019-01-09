@@ -9,6 +9,7 @@ import {
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 export const MicrolocationFactorSchema = new SimpleSchema({
   grade: {
@@ -163,6 +164,7 @@ export const PropertySchema = new SimpleSchema({
       }
     },
     optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
   status: {
     type: String,

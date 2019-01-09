@@ -1151,7 +1151,7 @@
   "Forms.minergie.OTHER_CERTIFICATE": "Autre certificat Minergie",
   "Forms.minergie.WITHOUT_CERTIFICATE": "Sans certificat Minergie",
   "Forms.minergie": "Certificat Minergie",
-  "Forms.monthlyExpenses.placeholder": "0",
+  "Forms.monthlyExpenses.placeholder": "2 000",
   "Forms.monthlyExpenses": "Charges mensuelles du bien immobilier",
   "Forms.monthlyExpenses.info": "Facultatif: Inclut ce montant dans les charges du prêt hypothécaire",
   "Forms.numberOfFloors.placeholder": "2",

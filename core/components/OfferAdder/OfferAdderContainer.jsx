@@ -55,6 +55,9 @@ const schema = lenders =>
       min: 0,
       max: 100000000,
       optional: false,
+      uniforms: {
+        type: CUSTOM_AUTOFIELD_TYPES.MONEY,
+      },
     },
     fees: {
       type: Number,
@@ -62,6 +65,9 @@ const schema = lenders =>
       max: 100000000,
       defaultValue: 0,
       optional: true,
+      uniforms: {
+        type: CUSTOM_AUTOFIELD_TYPES.MONEY,
+      },
     },
     epotekFees: {
       type: Number,
@@ -69,6 +75,9 @@ const schema = lenders =>
       max: 100000000,
       defaultValue: 0,
       optional: true,
+      uniforms: {
+        type: CUSTOM_AUTOFIELD_TYPES.MONEY,
+      },
     },
     amortizationGoal: {
       type: Number,
