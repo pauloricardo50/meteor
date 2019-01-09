@@ -119,6 +119,7 @@ const config = {
   generalExceptions: [
     'BorrowersSummary',
     'e-Potek',
+    'errors',
     'ExpensesChart',
     'ExpensesChartInterests',
     'File',
