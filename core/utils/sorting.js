@@ -3,8 +3,7 @@
 // If the return value is positive, sort a higher up than b
 import moment from 'moment';
 
-const isDate = date =>
-  date && Object.prototype.toString.call(date) === '[object Date]';
+const isDate = date => date instanceof Date;
 
 const sortFunc = (a, b) => {
   if (!a) {
