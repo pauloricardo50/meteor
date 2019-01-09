@@ -28,7 +28,6 @@ export const OfferSchema = new SimpleSchema({
   'organisationLink._id': { type: String, optional: true },
   contactLink: { type: Object, optional: true },
   'contactLink._id': String,
-  'contactLink.feedback': { type: String, optional: true },
   maxAmount: {
     type: SimpleSchema.Integer,
     min: 0,
@@ -78,6 +77,7 @@ export const AdminOfferSchema = OfferSchema.omit(
   'contactLink',
   'createdAt',
   'updatedAt',
+  'feedback',
 );
 
 // Attach schema

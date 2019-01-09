@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import OfferField from './OfferField';
 import OfferModifier from './OfferModifier';
+import OfferFeedback from './OfferFeedback';
 
 const Offer = ({ offer, offerValues }) => (
   <div className="offer-list-item">
@@ -20,6 +21,7 @@ const Offer = ({ offer, offerValues }) => (
         />
       ))}
       <OfferModifier offer={offer} />
+      <OfferFeedback offer={offer} />
     </div>
   </div>
 );

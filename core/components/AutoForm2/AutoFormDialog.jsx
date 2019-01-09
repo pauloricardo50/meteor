@@ -54,6 +54,7 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
     setOpen,
     title,
     triggerComponent,
+    disableActions = false,
     ...otherProps
   } = props;
   const autoField = makeCustomAutoField(autoFieldProps);
@@ -90,6 +91,7 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
             handleClose={handleClose}
             onSubmit={onSubmit}
             renderAdditionalActions={renderAdditionalActions}
+            disableActions={disableActions}
           />
         </AutoForm>
       </MuiDialog>
