@@ -57,18 +57,6 @@ export const OWNER = {
   OTHER: 'OTHER',
 };
 
-export const AUCTION_STATUS = {
-  NONE: '',
-  STARTED: 'STARTED',
-  ENDED: 'ENDED',
-};
-
-export const AUCTION_MOST_IMPORTANT = {
-  SPEED: 'SPEED',
-  PRICE: 'PRICE',
-  NOTHING: 'NOTHING',
-};
-
 export const INSURANCE_USE_PRESET = {
   WITHDRAWAL: 'WITHDRAWAL',
   COLLATERAL: 'COLLATERAL',

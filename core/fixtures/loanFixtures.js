@@ -2,7 +2,6 @@ import LoanService from 'core/api/loans/LoanService';
 import faker from 'faker/locale/fr';
 import {
   PURCHASE_TYPE,
-  AUCTION_STATUS,
   INTEREST_RATES,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
@@ -23,7 +22,6 @@ const logic2 = {
     verifiedAt: new Date(),
     comments: [],
   },
-  auction: {},
 };
 
 const logic3 = {
@@ -140,12 +138,7 @@ const getRandomStructure = (propertyValue, borrowerId) =>
     },
   ]);
 
-export const createFakeLoan = ({
-  userId,
-  step,
-  auctionStatus = AUCTION_STATUS.NONE,
-  twoBorrowers,
-}) => {
+export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
   const { _id: propertyId, value } = createFakeProperty(userId);
   const loan = {
@@ -182,22 +175,6 @@ export const createFakeLoan = ({
     break;
   default:
     loan.logic = logic1;
-  }
-
-  if (auctionStatus === AUCTION_STATUS.NONE) {
-    loan.logic.auction = {};
-  } else if (auctionStatus === AUCTION_STATUS.STARTED) {
-    loan.logic.auction = {
-      status: AUCTION_STATUS.STARTED,
-      startTime: new Date(Date.now() - 1000),
-      endTime: new Date(Date.now() + 60 * 60 * 1000),
-    };
-  } else if (auctionStatus === AUCTION_STATUS.ENDED) {
-    loan.logic.auction = {
-      status: AUCTION_STATUS.ENDED,
-      startTime: new Date(),
-      endTime: new Date(),
-    };
   }
 
   return LoanService.insert({ loan, userId });

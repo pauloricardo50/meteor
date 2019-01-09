@@ -2,9 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import moment from 'moment';
 
-import { getAuctionEndTime } from '../../utils/loanFunctions';
 import CollectionService from '../helpers/CollectionService';
-import { LOAN_STATUS, AUCTION_STATUS } from '../constants';
+import { LOAN_STATUS } from '../constants';
 import BorrowerService from '../borrowers/BorrowerService';
 import PropertyService from '../properties/PropertyService';
 import Loans from './loans';
@@ -91,52 +90,6 @@ export class LoanService extends CollectionService {
     this.addNewStructure({ loanId });
     return loanId;
   };
-
-  startAuction = ({ loanId }) => {
-    const loan = this.get(loanId);
-
-    if (loan.logic.auction.status !== AUCTION_STATUS.NONE) {
-      // Don't do anything if this auction has already started or ended
-      return false;
-    }
-
-    return this.update({
-      loanId,
-      object: {
-        'logic.auction.status': AUCTION_STATUS.STARTED,
-        'logic.auction.startTime': moment().toDate(),
-        'logic.auction.endTime': getAuctionEndTime(moment()),
-      },
-    });
-  };
-
-  endAuction = ({ loanId }) => {
-    const loan = this.get(loanId);
-
-    // This method is called in the future (through a job),
-    // so only call this if the auction is ongoing
-    if (!loan || loan.logic.auction.status !== AUCTION_STATUS.STARTED) {
-      return false;
-    }
-
-    return this.update({
-      loanId,
-      object: {
-        'logic.auction.status': AUCTION_STATUS.ENDED,
-        'logic.auction.endTime': new Date(),
-      },
-    });
-  };
-
-  cancelAuction = ({ loanId }) =>
-    this.update({
-      loanId,
-      object: {
-        'logic.auction.endTime': undefined,
-        'logic.auction.status': '',
-        'logic.auction.startTime': undefined,
-      },
-    });
 
   confirmClosing = ({ loanId, object }) =>
     this.update({

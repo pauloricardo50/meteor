@@ -121,24 +121,6 @@ addEmailConfig(EMAIL_IDS.VERIFICATION_PASSED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
 });
 
-addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
-});
-
-addEmailConfig(EMAIL_IDS.AUCTION_ENDED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
-addEmailConfig(EMAIL_IDS.AUCTION_CANCELLED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
-addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
-});
-
 const getFirstName = string => string.trim().split(' ')[0];
 
 addEmailConfig(EMAIL_IDS.CONTACT_US, {
@@ -198,13 +180,16 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     epotekNumber: EPOTEK_PHONE,
     assignedEmployeeName:
       (params.promotion.assignedEmployee
-      && params.promotion.assignedEmployee.name) || 'Yannis Eggert',
+        && params.promotion.assignedEmployee.name)
+      || 'Yannis Eggert',
     assignedEmployeeFirstName:
       (params.promotion.assignedEmployee
-      && params.promotion.assignedEmployee.firstName) || 'Yannis',
+        && params.promotion.assignedEmployee.firstName)
+      || 'Yannis',
     assignedEmployeePhone:
       (params.promotion.assignedEmployee
-      && params.promotion.assignedEmployee.phoneNumbers[0]) || EPOTEK_PHONE,
+        && params.promotion.assignedEmployee.phoneNumbers[0])
+      || EPOTEK_PHONE,
   }),
 });
 

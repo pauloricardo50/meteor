@@ -61,16 +61,13 @@ const deleteUsers = usersToDelete =>
 const createFakeLoanFixture = ({
   userId,
   step,
-  adminId,
   completeFiles,
-  auctionStatus,
   twoBorrowers,
 }) => {
   const loanId = createFakeLoan({
     userId,
     step,
     completeFiles,
-    auctionStatus,
     twoBorrowers,
   });
   createFakeOffer(loanId);

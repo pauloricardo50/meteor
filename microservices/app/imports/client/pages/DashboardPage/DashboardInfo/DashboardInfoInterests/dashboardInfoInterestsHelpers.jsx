@@ -1,7 +1,7 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import { AUCTION_STATUS, INTEREST_RATES } from 'core/api/constants';
+import { INTEREST_RATES } from 'core/api/constants';
 
 export const columnOptions = [
   { id: 'InterestsTable.duration', style: { textAlign: 'center' } },
@@ -63,6 +63,3 @@ export const getInterestRatesFromOffers = offers =>
     .filter(interestRatesTableOption => interestRatesTableOption);
 
 export const rows = ({ interestRates }) => formatInterestRates(interestRates);
-
-export const checkForCompletedAuction = ({ loans }) =>
-  loans.some(loan => loan.logic.auction.status === AUCTION_STATUS.ENDED);

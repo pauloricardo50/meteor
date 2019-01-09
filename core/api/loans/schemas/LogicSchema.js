@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-import { AUCTION_STATUS, STEPS } from '../../constants';
+import { STEPS } from '../../constants';
 
 const verificationSchema = {
   verification: {
@@ -29,27 +29,6 @@ const verificationSchema = {
   },
 };
 
-const auctionSchema = {
-  auction: {
-    type: Object,
-    defaultValue: {},
-  },
-  'auction.status': {
-    type: String,
-    optional: true,
-    defaultValue: AUCTION_STATUS.NONE,
-    allowedValues: Object.values(AUCTION_STATUS),
-  },
-  'auction.startTime': {
-    type: Date,
-    optional: true,
-  },
-  'auction.endTime': {
-    type: Date,
-    optional: true,
-  },
-};
-
 // All logic fields required by the app to trigger the right things at the right time
 const LogicSchema = new SimpleSchema({
   step: {
@@ -58,7 +37,6 @@ const LogicSchema = new SimpleSchema({
     allowedValues: Object.values(STEPS),
   },
   ...verificationSchema,
-  ...auctionSchema,
 });
 
 export default LogicSchema;

@@ -42,7 +42,6 @@ export const logic2 = {
     validated: true,
     comments: [],
   },
-  auction: {},
 };
 
 export const logic3 = {
@@ -51,11 +50,6 @@ export const logic3 = {
     requested: false,
     validated: true,
     comments: [],
-  },
-  auction: {
-    status: 'ENDED',
-    startTime: new Date(),
-    endTime: new Date(),
   },
 };
 

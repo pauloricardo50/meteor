@@ -5,9 +5,6 @@ import {
   loanUpdate,
   loanDelete,
   requestLoanVerification,
-  startAuction,
-  endAuction,
-  cancelAuction,
   confirmClosing,
   pushLoanValue,
   popLoanValue,
@@ -42,21 +39,6 @@ loanDelete.setHandler((context, { loanId }) => {
 requestLoanVerification.setHandler((context, { loanId }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.askVerification({ loanId });
-});
-
-startAuction.setHandler((context, { loanId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.startAuction({ loanId });
-});
-
-endAuction.setHandler((context, { loanId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.startAuction({ loanId });
-});
-
-cancelAuction.setHandler((context, { loanId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.startAuction({ loanId });
 });
 
 confirmClosing.setHandler((context, { loanId, object }) => {
