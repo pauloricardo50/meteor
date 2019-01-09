@@ -5,9 +5,9 @@ import { Factory } from 'meteor/dburles:factory';
 import sinon from 'sinon';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { ROLES } from '../../../constants';
-import { SECURITY_ERROR } from '../../Security';
-import UserSecurity from '../UserSecurity';
+import { ROLES } from '../../../../constants';
+import { SECURITY_ERROR } from '../../../Security';
+import SecurityService from '../../..';
 
 describe('UserSecurity', () => {
   beforeEach(() => {
@@ -33,26 +33,26 @@ describe('UserSecurity', () => {
     });
 
     it('throws if no argument is provided', () => {
-      expect(() => UserSecurity.isAllowedToInsertByRole()).to.throw();
+      expect(() => SecurityService.users.isAllowedToInsertByRole()).to.throw();
     });
 
     it('throws if no role is provided', () => {
-      expect(() => UserSecurity.isAllowedToInsertByRole({})).to.throw(SECURITY_ERROR);
+      expect(() => SecurityService.users.isAllowedToInsertByRole({})).to.throw(SECURITY_ERROR);
     });
 
     it('throws if passed another role than the ones defined', () => {
       expect(() =>
-        UserSecurity.isAllowedToInsertByRole({ role: otherRole })).to.throw(SECURITY_ERROR);
+        SecurityService.users.isAllowedToInsertByRole({ role: otherRole })).to.throw(SECURITY_ERROR);
     });
 
     it('throws if you try to add devs without dev privileges', () => {
       expect(() =>
-        UserSecurity.isAllowedToInsertByRole({ role: devRole })).to.throw(SECURITY_ERROR);
+        SecurityService.users.isAllowedToInsertByRole({ role: devRole })).to.throw(SECURITY_ERROR);
     });
 
     it('throws if you try to add admins without dev privileges', () => {
       expect(() =>
-        UserSecurity.isAllowedToInsertByRole({ role: adminRole })).to.throw(SECURITY_ERROR);
+        SecurityService.users.isAllowedToInsertByRole({ role: adminRole })).to.throw(SECURITY_ERROR);
     });
 
     it('throws if you try to add users with user privileges', () => {
@@ -61,7 +61,7 @@ describe('UserSecurity', () => {
       sinon.stub(Meteor, 'userId').callsFake(() => user._id);
 
       expect(() =>
-        UserSecurity.isAllowedToInsertByRole({ role: userRole })).to.throw(SECURITY_ERROR);
+        SecurityService.users.isAllowedToInsertByRole({ role: userRole })).to.throw(SECURITY_ERROR);
     });
   });
 });

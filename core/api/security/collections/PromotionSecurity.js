@@ -1,10 +1,27 @@
-import { PROMOTION_STATUS } from 'core/api/constants';
-import Security from '../Security';
+import { PROMOTION_STATUS } from '../../constants';
 import { Promotions } from '../..';
+import UserService from '../../users/UserService';
+import Security from '../Security';
 
 class PromotionSecurity {
   static isAllowedToInsert() {
     Security.checkLoggedIn();
+  }
+
+  static isAllowedToRead(promotionId, userId) {
+    try {
+      this.isAllowedToUpdate(promotionId);
+    } catch (error) {
+      if (!error) {
+        return;
+      }
+
+      const hasPromotion = UserService.hasPromotion({ userId, promotionId });
+
+      if (!hasPromotion) {
+        Security.handleUnauthorized("Vous n'avez pas accès à cette promotion");
+      }
+    }
   }
 
   static isAllowedToUpdate(promotionId) {
