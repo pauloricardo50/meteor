@@ -12,6 +12,7 @@ import CustomSelectField from './CustomSelectField';
 import CustomListField from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
+import TextArea from '../TextArea';
 
 const determineComponentFromProps = ({
   allowedValues,
@@ -31,6 +32,10 @@ const determineComponentFromProps = ({
     return { Component: PercentField, type: COMPONENT_TYPES.PERCENT };
   }
 
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.TEXT_AREA) {
+    return { Component: TextArea, type: COMPONENT_TYPES.TEXT_AREA };
+  }
+
   if (fieldType === Array) {
     return { Component: CustomListField, type: COMPONENT_TYPES.ARRAY };
   }
@@ -48,6 +53,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
     connectField,
   )(
     (props) => {
+      console.log('props', props);
       let { Component, type } = determineComponentFromProps(props);
       Component = Component || AutoField;
 
