@@ -11,6 +11,15 @@ type OfferAdderProps = {
   insertOffer: Function,
 };
 
+const interestRatesLabels = Object.values(INTEREST_RATES).reduce(
+  (obj, rate) => ({
+    ...obj,
+    [rate]: <T id={`offer.${rate}`} />,
+    [`${rate}Discount`]: <T id={`offer.${rate}`} />,
+  }),
+  {},
+);
+
 const OfferAdder = ({ schema, insertOffer }: OfferAdderProps) => (
   <AutoFormDialog
     schema={schema}
@@ -20,16 +29,9 @@ const OfferAdder = ({ schema, insertOffer }: OfferAdderProps) => (
       raised: true,
       primary: true,
     }}
-    autoFieldProps={{
-      labels: Object.values(INTEREST_RATES).reduce(
-        (obj, rate) => ({
-          ...obj,
-          [rate]: <T id={`offer.${rate}`} />,
-          [`${rate}Discount`]: <T id={`offer.${rate}`} />,
-        }),
-        {},
-      ),
-    }}
+    title={<T id="OfferAdder.buttonLabel" />}
+    autoFieldProps={{ labels: interestRatesLabels }}
+    fullWidth
   />
 );
 

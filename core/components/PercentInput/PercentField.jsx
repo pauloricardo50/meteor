@@ -7,8 +7,13 @@ import PercentInput from './PercentInput';
 
 type PercentFieldProps = {};
 
-const PercentField = ({ label, required, ...props }: PercentFieldProps) => (
-  <FormControl required={required} margin="normal">
+const PercentField = ({
+  label,
+  required,
+  fullWidth = true,
+  ...props
+}: PercentFieldProps) => (
+  <FormControl required={required} fullWidth={fullWidth}>
     <InputLabel>{label}</InputLabel>
     <PercentInput {...props} />
   </FormControl>

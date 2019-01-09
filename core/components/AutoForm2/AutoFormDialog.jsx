@@ -80,6 +80,7 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
         disableEscapeKeyDown={important}
         onClose={() => setOpen(false)}
         className="autoform-dialog"
+        maxWidth="md"
         {...otherProps}
       >
         {title && <DialogTitle>{title}</DialogTitle>}
