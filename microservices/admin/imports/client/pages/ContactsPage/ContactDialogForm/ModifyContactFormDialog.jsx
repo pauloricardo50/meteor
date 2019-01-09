@@ -35,9 +35,14 @@ const ModifyContactDialogForm = ({
       raised: true,
       primary: true,
     }}
-    renderAdditionalActions={({ closeDialog }) => (
+    renderAdditionalActions={({ closeDialog, setDisableActions }) => (
       <Button
-        onClick={() => removeContact(contact._id).then(closeDialog)}
+        onClick={() => {
+          setDisableActions(true);
+          return removeContact(contact._id)
+            .then(closeDialog)
+            .finally(() => setDisableActions(false));
+        }}
         error
       >
         <T id="general.delete" />

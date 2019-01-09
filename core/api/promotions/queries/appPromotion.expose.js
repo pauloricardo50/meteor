@@ -12,5 +12,5 @@ query.expose({
       filters.status = PROMOTION_STATUS.OPEN;
     },
   },
-  validateParams: { promotionId: String },
+  validateParams: { promotionId: String, loanId: String },
 });

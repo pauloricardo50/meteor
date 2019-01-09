@@ -7,7 +7,6 @@ import { AutoFormDialog } from 'core/components/AutoForm2/AutoFormDialog';
 import { taskUpdate } from 'core/api/tasks/methodDefinitions';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { TASK_STATUS } from 'core/api/constants';
-import { withSmartQuery } from 'core/api';
 import query from 'core/api/users/queries/admins';
 import T from 'core/components/Translation/Translation';
 
@@ -17,33 +16,35 @@ type TaskModifierProps = {
   open: boolean,
   setOpen: Function,
   submitting: boolean,
-  admins: Array<String>,
 };
 
-export const taskSchema = (admins = []) =>
-  new SimpleSchema({
-    title: { type: String, uniforms: { placeholder: 'Faire la vaisselle' } },
-    dueAt: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
-    status: {
-      type: String,
-      allowedValues: Object.values(TASK_STATUS),
+export const schema = new SimpleSchema({
+  title: { type: String, uniforms: { placeholder: 'Faire la vaisselle' } },
+  dueAt: {
+    type: Date,
+    optional: true,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+  },
+  status: {
+    type: String,
+    allowedValues: Object.values(TASK_STATUS),
+    defaultValue: TASK_STATUS.ACTIVE,
+    uniforms: {
+      displayEmpty: false,
+      placeholder: '',
     },
-    assignedEmployeeId: {
-      type: String,
-      allowedValues: [...admins.map(({ _id }) => _id), null],
-      optional: true,
-      defaultValue: null,
-      uniforms: {
-        transform: assignedEmployeeId =>
-          (assignedEmployeeId ? (
-            admins.find(({ _id }) => assignedEmployeeId === _id).name
-          ) : (
-            <T id="Forms.unassigned" />
-          )),
-        labelProps: { shrink: true },
-      },
+  },
+  assignedEmployeeId: {
+    type: String,
+    customAllowedValues: { query },
+    optional: true,
+    defaultValue: null,
+    uniforms: {
+      transform: ({ name }) => name,
+      labelProps: { shrink: true },
     },
-  });
+  },
+});
 
 const labels = {
   title: <T id="TasksTable.title" />,
@@ -58,9 +59,7 @@ const TaskModifier = ({
   open,
   setOpen,
   submitting,
-  admins,
 }: TaskModifierProps) => {
-  const schema = taskSchema(admins);
   const model = task;
   return (
     <AutoFormDialog
@@ -76,7 +75,6 @@ const TaskModifier = ({
 };
 
 export default compose(
-  withSmartQuery({ query, dataName: 'admins', smallLoader: true }),
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting }) => ({
     updateTask: ({ _id: taskId, ...values }) => {

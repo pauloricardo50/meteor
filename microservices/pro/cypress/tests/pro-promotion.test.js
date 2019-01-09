@@ -44,7 +44,7 @@ describe('Pro', () => {
     });
 
     context('with an existing promotion', () => {
-      it.only('should add lots and promotionLots', () => {
+      it('should add lots and promotionLots', () => {
         cy.callMethod('insertPromotion');
         cy.refetch();
         cy.contains('Test promotion').click();

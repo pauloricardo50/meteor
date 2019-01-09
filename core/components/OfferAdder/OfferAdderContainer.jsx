@@ -7,8 +7,6 @@ import { INTEREST_RATES } from '../../api/constants';
 import { offerInsert } from '../../api';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
-SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
-
 const interestRatesSchema = ({ isDiscount }) =>
   Object.values(INTEREST_RATES).reduce(
     (types, type) => ({
@@ -38,16 +36,17 @@ const schema = lenders =>
       type: String,
       optional: false,
       defaultValue: null,
-      allowedValues: [...lenders.map(({ _id }) => _id), null],
+      allowedValues: lenders.map(({ _id }) => _id),
       uniforms: {
         transform: (lenderId) => {
           const { organisation, contact } = lenders.find(({ _id }) => lenderId === _id) || {};
-          const { name: organisationName } = organisation || { name: 'Aucune' };
+          const { name: organisationName } = organisation || {};
           const { name: contactName } = contact || {};
           return contactName
             ? `${organisationName} (${contactName})`
             : organisationName;
         },
+        placeholder: 'Aucun',
         labelProps: { shrink: true },
       },
     },

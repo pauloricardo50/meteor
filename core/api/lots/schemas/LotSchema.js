@@ -6,7 +6,11 @@ const LotSchema = new SimpleSchema({
   createdAt,
   updatedAt,
   name: String,
-  type: { type: String, allowedValues: Object.values(LOT_TYPES) },
+  type: {
+    type: String,
+    allowedValues: Object.values(LOT_TYPES),
+    uniforms: { displayEmpty: false },
+  },
   description: { type: String, optional: true },
   value: {
     type: Number,

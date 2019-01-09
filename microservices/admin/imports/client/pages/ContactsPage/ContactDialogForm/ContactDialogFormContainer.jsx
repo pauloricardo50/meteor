@@ -14,8 +14,6 @@ import {
 import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
 import T from 'imports/core/components/Translation';
 
-SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
-
 const schema = existingOrganisations =>
   new SimpleSchema({
     firstName: String,
@@ -26,12 +24,14 @@ const schema = existingOrganisations =>
       type: String,
       optional: true,
       defaultValue: null,
-      allowedValues: existingOrganisations.map(({ _id }) => _id),
+      customAllowedValues: { query: adminOrganisations },
+
       uniforms: {
-        transform: organisationId =>
-          existingOrganisations.find(({ _id }) => organisationId === _id).name,
+        transform: ({ name }) => name,
         labelProps: { shrink: true },
         label: <T id="Forms.organisationName" />,
+        displayEmtpy: false,
+        placeholder: '',
       },
     },
     useSameAddress: {
@@ -42,17 +42,16 @@ const schema = existingOrganisations =>
         organisations.length >= 1
         && organisations.some(({ _id }) =>
           existingOrganisations.some(({ _id: organisationId }) => _id === organisationId)),
-      customAllowedValues: ({ organisations = [] }) => [
-        ...organisations.filter(({ _id }) => _id).map(({ _id }) => _id),
-        null,
-      ],
+      customAllowedValues: ({ organisations = [] }) =>
+        organisations.filter(({ _id }) => _id).map(({ _id }) => _id),
       uniforms: {
         transform: (organisationId) => {
           const { name } = existingOrganisations.find(({ _id }) => organisationId === _id)
             || {};
-          return name || 'Non';
+          return name;
         },
         labelProps: { shrink: true },
+        placeholder: 'Non',
       },
     },
     'organisations.$.$metadata': {
@@ -63,7 +62,11 @@ const schema = existingOrganisations =>
     'organisations.$.$metadata.role': {
       type: String,
       optional: true,
-      uniforms: { label: <T id="Forms.contact.role" />, placeholder: 'Responsable Hypothèques' },
+      uniforms: {
+        label: <T id="Forms.contact.role" />,
+        placeholder: 'Responsable Hypothèques',
+        displayEmpty: true,
+      },
     },
     ...Object.keys(omit(address, ['isForeignAddress', 'canton'])).reduce(
       (fields, field) => ({

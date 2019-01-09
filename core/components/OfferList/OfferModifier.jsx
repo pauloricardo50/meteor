@@ -20,16 +20,21 @@ const OfferModifier = ({ onSubmit, offer, schema }: OfferModifierProps) => (
       primary: true,
       style: { alignSelf: 'center' },
     }}
-    renderAdditionalActions={({ closeDialog }) => (
+    renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) => (
       <Button
         onClick={() => {
           const confirm = window.confirm("T'es sûr mon pote?");
           if (confirm) {
-            offerDelete.run({ offerId: offer._id }).then(closeDialog);
+            setDisableActions(true);
+            offerDelete
+              .run({ offerId: offer._id })
+              .then(closeDialog)
+              .finally(() => setDisableActions(false));
           } else {
             return Promise.resolve();
           }
         }}
+        disabled={disabled}
         error
       >
         <T id="general.delete" />

@@ -36,8 +36,20 @@ const DashboardInfoTeamMember = ({
           )}
           onSubmit={values => editContact(name, values)}
           model={{ name, title, email, phoneNumber }}
-          renderAdditionalActions={({ handleClose }) => (
-            <Button error onClick={() => removeContact(name).then(handleClose)}>
+          renderAdditionalActions={({
+            handleClose,
+            disabled,
+            setDisableActions,
+          }) => (
+            <Button
+              error
+              onClick={() => {
+                setDisableActions(true);
+                return removeContact(name)
+                  .then(() => setDisableActions(false))
+                  .finally(handleClose);
+              }}
+            >
               <T id="general.delete" />
             </Button>
           )}

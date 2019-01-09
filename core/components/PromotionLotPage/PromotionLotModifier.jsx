@@ -38,11 +38,20 @@ const ProPromotionLotModifier = ({
       onSubmit={updateProperty}
       submitting={submitting}
       model={model}
-      renderAdditionalActions={({ closeDialog }) => (
+      renderAdditionalActions={({
+        closeDialog,
+        setDisableActions,
+        disabled,
+      }) => (
         <Button
-          onClick={() => deletePromotionLot().then(closeDialog)}
+          onClick={() => {
+            setDisableActions(true);
+            return deletePromotionLot()
+              .then(closeDialog)
+              .finally(() => setDisableActions(false));
+          }}
           error
-          disabled={submitting}
+          disabled={submitting || disabled}
         >
           <T id="general.delete" />
         </Button>

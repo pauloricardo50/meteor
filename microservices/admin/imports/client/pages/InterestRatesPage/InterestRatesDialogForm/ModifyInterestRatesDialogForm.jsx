@@ -35,12 +35,17 @@ const ModifyInterestRatesDialogForm = ({
     open={open}
     setOpen={setOpen}
     submitting={submitting}
-    renderAdditionalActions={() => (
+    renderAdditionalActions={({ disabled, setDisableActions }) => (
       <Button
         label={<T id="InterestRates.remove" />}
         error
         outlined
-        onClick={() => removeInterestRates(interestRatesToModify._id)}
+        onClick={() => {
+          setDisableActions(true);
+          return removeInterestRates(interestRatesToModify._id).finally(() =>
+            setDisableActions(false));
+        }}
+        disabled={disabled}
       />
     )}
   >

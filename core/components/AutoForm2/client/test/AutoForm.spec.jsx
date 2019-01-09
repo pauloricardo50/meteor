@@ -30,7 +30,6 @@ const setInput = (name, value) => {
 };
 
 describe('AutoForm', () => {
-  SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
 
   beforeEach(() => {
     getMountedComponent.reset();
@@ -141,95 +140,6 @@ describe('AutoForm', () => {
 
       expect(component().find(PercentField).length).to.equal(1);
     });
-
-    describe('CustomSelectField', () => {
-      it('renders allowed values', () => {
-        props = {
-          schema: new SimpleSchema({
-            text: { type: String, allowedValues: ['yo', 'dude'] },
-          }),
-        };
-
-        expect(component()
-          .find(CustomSelectField)
-          .childAt(0)
-          .prop('allowedValues')).to.deep.equal(['yo', 'dude']);
-      });
-
-      it('renders custom allowed values coming from a promise', (done) => {
-        props = {
-          schema: new SimpleSchema({
-            text: {
-              type: String,
-              customAllowedValues: () => Promise.resolve(['yo', 'dude']),
-            },
-          }),
-        };
-        component();
-
-        setTimeout(() => {
-          component().update();
-          expect(component()
-            .find(CustomSelectField)
-            .childAt(0)
-            .prop('allowedValues')).to.deep.equal(['yo', 'dude']);
-          done();
-        }, 0);
-      });
-
-      it('renders custom allowed values coming from a function', (done) => {
-        props = {
-          schema: new SimpleSchema({
-            text: {
-              type: String,
-              customAllowedValues: () => ['yo', 'dude'],
-            },
-          }),
-        };
-        component();
-
-        setTimeout(() => {
-          component().update();
-          expect(component()
-            .find(CustomSelectField)
-            .childAt(0)
-            .prop('allowedValues')).to.deep.equal(['yo', 'dude']);
-          done();
-        }, 0);
-      });
-
-      it('fetches allowed values based on the model', (done) => {
-        props = {
-          schema: new SimpleSchema({
-            text: {
-              type: String,
-              customAllowedValues: ({ text2 }) => [text2],
-            },
-            text2: String,
-          }),
-        };
-        component();
-
-        setTimeout(() => {
-          component().update();
-          expect(component()
-            .find(CustomSelectField)
-            .childAt(0)
-            .prop('allowedValues')).to.deep.equal(['']);
-
-          setInput('text2', 'dude');
-
-          setTimeout(() => {
-            component().update();
-            expect(component()
-              .find(CustomSelectField)
-              .childAt(0)
-              .prop('allowedValues')).to.deep.equal(['dude']);
-            done();
-          }, 0);
-        }, 0);
-      });
-    });
   });
 
   describe('labels', () => {
@@ -300,9 +210,7 @@ describe('AutoForm', () => {
         }),
       };
 
-      expect(component()
-        .find('label')
-        .length).to.equal(0);
+      expect(component().find('label').length).to.equal(0);
     });
 
     context('in nested fields', () => {
@@ -368,7 +276,7 @@ describe('AutoForm', () => {
 
       expect(component()
         .find('input')
-        .prop('placeholder')).to.equal('');
+        .prop('placeholder')).to.equal(null);
     });
 
     it('sets a default placeholder', () => {
@@ -388,19 +296,21 @@ describe('AutoForm', () => {
       it('sets a placeholder for a list item field', () => {
         props = {
           schema: new SimpleSchema({
-            myText: [String],
+            myText: { type: String, allowedValues: ['yo', 'dude'] },
           }),
           placeholder: true,
         };
 
         component()
-          .find('button')
+          .find(CustomSelectField)
           .at(0)
           .simulate('click');
 
+        component().update();
+
         expect(component()
-          .find('input')
-          .prop('placeholder')).to.include('Forms.myText.placeholder');
+          .find(CustomSelectField)
+          .prop('placeholder')).to.equal('Forms.myText.placeholder');
       });
 
       it('does not set a placeholder for a list item field', () => {
@@ -421,24 +331,49 @@ describe('AutoForm', () => {
           .prop('placeholder')).to.equal('');
       });
 
-      it('sets the right placeholder on nested objects', () => {
-        props = {
-          schema: new SimpleSchema({
-            myText: Array,
-            'myText.$': Object,
-            'myText.$.stuff': String,
-          }),
-          placeholder: true,
-        };
+      context('sets the right placeholder on nested objects', () => {
+        it('when parent label is not null', () => {
+          props = {
+            schema: new SimpleSchema({
+              myText: Array,
+              'myText.$': Object,
+              'myText.$.stuff': String,
+            }),
+            placeholder: true,
+          };
 
-        component()
-          .find('button')
-          .at(0)
-          .simulate('click');
+          component()
+            .find('button')
+            .at(0)
+            .simulate('click');
 
-        expect(component()
-          .find('input')
-          .prop('placeholder')).to.include('Forms.myText.stuff.placeholder');
+          expect(component()
+            .find('input')
+            .prop('placeholder')).to.include('Forms.myText.stuff.placeholder');
+        });
+
+        it('when parent label is null', () => {
+          props = {
+            schema: new SimpleSchema({
+              myText: Array,
+              'myText.$': { type: Object, uniforms: { label: null } },
+              'myText.$.stuff': {
+                type: String,
+                uniforms: { placeholder: 'myPlaceholder' },
+              },
+            }),
+            placeholder: true,
+          };
+
+          component()
+            .find('button')
+            .at(0)
+            .simulate('click');
+
+          expect(component()
+            .find('input')
+            .prop('placeholder')).to.include('myPlaceholder');
+        });
       });
 
       it('skips placeholders on nested objects', () => {
