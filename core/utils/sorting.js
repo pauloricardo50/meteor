@@ -1,6 +1,7 @@
 // @flow
 // Sorting basics:
 // If the return value is positive, sort a higher up than b
+import moment from 'moment';
 
 const sortFunc = (a, b) => {
   if (!a) {
@@ -23,6 +24,12 @@ const sortFunc = (a, b) => {
     // a number and b string
     return -1; // a < b
   }
+
+  // a and b are Date
+  if (typeof a.getMonth === 'function' && typeof b.getMonth === 'function') {
+    return moment(b).isBefore(a) ? 1 : -1;
+  }
+
   // a and b are numbers
   return Number.parseFloat(a) - Number.parseFloat(b);
 };

@@ -146,5 +146,47 @@ describe('<Table />', () => {
         ]);
       });
     });
+
+    describe('when data is a Date', () => {
+      beforeEach(() => {
+        order = ORDER.ASC;
+        data = [
+          { columns: [{ label: 'one', raw: new Date('02.05.2015') }] },
+          { columns: [{ label: 'three', raw: new Date('01.01.2010') }] },
+          { columns: [{ label: 'four', raw: new Date('04.06.2010') }] },
+        ];
+      });
+
+      it('sorts 3 rows of data ascending', () => {
+        const { data: sortedData } = sortData({
+          data,
+          newOrderBy: column,
+          order,
+          orderBy,
+        });
+
+        expect(sortedData).to.deep.equal([
+          { columns: [{ label: 'three', raw: new Date('01.01.2010') }] },
+          { columns: [{ label: 'four', raw: new Date('04.06.2010') }] },
+          { columns: [{ label: 'one', raw: new Date('02.05.2015') }] },
+        ]);
+      });
+
+      it('sorts 3 rows of data descending', () => {
+        orderBy = column;
+        const { data: sortedData } = sortData({
+          data,
+          newOrderBy: column,
+          order,
+          orderBy,
+        });
+
+        expect(sortedData).to.deep.equal([
+          { columns: [{ label: 'one', raw: new Date('02.05.2015') }] },
+          { columns: [{ label: 'four', raw: new Date('04.06.2010') }] },
+          { columns: [{ label: 'three', raw: new Date('01.01.2010') }] },
+        ]);
+      });
+    });
   });
 });
