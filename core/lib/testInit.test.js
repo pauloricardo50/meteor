@@ -1,6 +1,6 @@
 // Somehow the .app-test files importing this can't use import statements???
 // Leave this imported here for autoforms to work
-import SimpleSchema from 'simpl-schema';
+const SimpleSchema = require('simpl-schema').default;
 
 const uniforms = require('uniforms-material');
 
