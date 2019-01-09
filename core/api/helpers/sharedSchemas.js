@@ -61,6 +61,7 @@ export const address = {
     autoValue() {
       return zipcodes(this.field('zipCode').value);
     },
+    uniforms: { placeholder: null },
   },
 };
 
