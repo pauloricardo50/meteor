@@ -12,7 +12,7 @@ export default Organisations.createQuery(
         createSearchFilters(['name', '_id', 'type'], searchQuery),
       );
     },
-    $options: { sort: { name: 1 } },
     ...fullOrganisation(),
+    $options: { sort: { name: 1 }, limit: 5 },
   },
 );

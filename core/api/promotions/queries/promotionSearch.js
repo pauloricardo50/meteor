@@ -9,5 +9,5 @@ export default Promotions.createQuery(PROMOTION_QUERIES.PROMOTION_SEARCH, {
     Object.assign(filters, createSearchFilters(['name', '_id'], searchQuery));
   },
   ...searchPromotions(),
-  $options: { sort: { createdAt: -1 } },
+  $options: { sort: { createdAt: -1 }, limit: 5 },
 });
