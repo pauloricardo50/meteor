@@ -3,6 +3,9 @@
 // If the return value is positive, sort a higher up than b
 import moment from 'moment';
 
+const isDate = date =>
+  date && Object.prototype.toString.call(date) === '[object Date]';
+
 const sortFunc = (a, b) => {
   if (!a) {
     return -1;
@@ -26,7 +29,7 @@ const sortFunc = (a, b) => {
   }
 
   // a and b are Date
-  if (typeof a.getMonth === 'function' && typeof b.getMonth === 'function') {
+  if (isDate(a) && isDate(b)) {
     return moment(b).isBefore(a) ? 1 : -1;
   }
 
