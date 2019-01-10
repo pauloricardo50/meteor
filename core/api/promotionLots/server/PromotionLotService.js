@@ -32,11 +32,11 @@ export class PromotionLotService extends CollectionService {
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.BOOKED },
     });
+
     return this.addLink({
       id: promotionLotId,
       linkName: 'attributedTo',
       linkId: loanId,
-      multi: false,
     });
   }
 

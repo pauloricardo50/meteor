@@ -3,9 +3,9 @@ import '../shared-startup';
 
 import { Inject } from 'meteor/meteorhacks:inject-initial';
 
-import 'core/fixtures';
-import 'core/api/api';
 import 'core/api/api-server';
+import 'core/api/api';
+import 'core/fixtures';
 
 import '../accounts-config';
 import './kadira.js';

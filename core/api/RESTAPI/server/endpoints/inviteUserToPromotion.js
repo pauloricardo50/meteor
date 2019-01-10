@@ -1,6 +1,6 @@
 import { DOCUMENT_USER_PERMISSIONS } from '../../../constants';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
-import PromotionService from '../../../promotions/PromotionService';
+import PromotionService from '../../../promotions/server/PromotionService';
 import { makeCheckObjectStructure } from '../../../../utils/checkObjectStructure';
 
 const INVITE_USER_BODY_TEMPLATE = {
