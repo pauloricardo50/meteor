@@ -4,9 +4,9 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import LenderService from '../../LenderService';
-import OfferService from '../../../offers/OfferService';
-import OrganisationService from '../../../organisations/OrganisationService';
+import LenderService from '../LenderService';
+import OfferService from '../../../offers/server/OfferService';
+import OrganisationService from '../../../organisations/server/OrganisationService';
 
 describe('LenderService', () => {
   beforeEach(() => {

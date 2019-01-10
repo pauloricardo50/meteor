@@ -8,8 +8,8 @@ import sinon from 'sinon';
 import SecurityService, { SECURITY_ERROR } from '../..';
 import { ROLES } from '../../../constants';
 import { DOCUMENT_USER_PERMISSIONS } from '../../constants';
-import PromotionService from '../../../promotions/PromotionService';
-import LoanService from '../../../loans/LoanService';
+import PromotionService from '../../../promotions/server/PromotionService';
+import LoanService from '../../../loans/server/LoanService';
 
 describe('Collection Security', () => {
   describe('UserSecurity', () => {

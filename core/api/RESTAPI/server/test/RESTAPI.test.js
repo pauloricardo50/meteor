@@ -1,19 +1,20 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-import fetch from 'node-fetch';
-import startAPI from '..';
 import { Factory } from 'meteor/dburles:factory';
+
+import { expect } from 'chai';
+import fetch from 'node-fetch';
+import omit from 'lodash/omit';
+
 import {
   DOCUMENT_USER_PERMISSIONS,
   PROMOTION_STATUS,
-} from 'core/api/constants';
-import PromotionService from 'imports/core/api/promotions/PromotionService';
-import omit from 'lodash/omit';
+} from '../../../constants';
+import PromotionService from '../../../promotions/server/PromotionService';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
+import startAPI from '..';
 
 describe('RESTAPI', () => {
   before(function () {

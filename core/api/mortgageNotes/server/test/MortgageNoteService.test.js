@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import MortgageNoteService from '../../MortgageNoteService';
-import LoanService from '../../../loans/LoanService';
+import MortgageNoteService from '../MortgageNoteService';
+import LoanService from '../../../loans/server/LoanService';
 
 describe('MortgageNoteService', () => {
   beforeEach(() => {

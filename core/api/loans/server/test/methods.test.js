@@ -4,12 +4,12 @@ import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import TaskService from '../../../tasks/TaskService';
-import SecurityService from '../../../security/index';
+import TaskService from '../../../tasks/server/TaskService';
+import SecurityService from '../../../security';
 import { generateData } from '../../../../utils/testHelpers';
-import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
 import { requestLoanVerification } from '../../methodDefinitions';
-import LoanService from '../../LoanService';
+import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
+import LoanService from '../LoanService';
 
 let userId;
 let adminId;
