@@ -46,6 +46,18 @@
       margin: 0;
     }
   }
+
+  &-actions {
+    display: flex;
+    flex-direction: flex-row;
+    align-items: center;
+    justify-content: space-between;
+
+    > * {
+      margin: 8px;
+      padding: 8px;
+    }
+  }
 }
 
 .offer-list-sorting {

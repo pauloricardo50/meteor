@@ -20,8 +20,10 @@ const Offer = ({ offer, offerValues }) => (
           offer={offer}
         />
       ))}
-      <OfferModifier offer={offer} />
-      <OfferFeedback offer={offer} />
+      <div className="offer-list-item-actions">
+        <OfferFeedback offer={offer} />
+        <OfferModifier offer={offer} />
+      </div>
     </div>
   </div>
 );

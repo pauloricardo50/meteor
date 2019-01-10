@@ -51,7 +51,7 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
           return (
             <>
               <h4>Feedback déjà envoyé</h4>
-              <p>{feedback}</p>
+              <p style={{ whiteSpace: 'pre-line' }}>{feedback}</p>
             </>
           );
         }
