@@ -1,5 +1,6 @@
 import { withProps } from 'recompose';
-import { SecurityService, setRole } from 'core/api';
+import { setRole } from 'core/api';
+import SecurityService from 'core/api/security/Security';
 import { ROLES, USER_QUERIES } from 'core/api/constants';
 import ClientEventService from 'core/api/events/ClientEventService/index';
 
