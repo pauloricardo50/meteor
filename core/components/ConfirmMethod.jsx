@@ -32,8 +32,11 @@ export default class ConfirmMethod extends Component {
     if (this.shouldAllowSubmit(keyword)) {
       this.setState({ loading: true });
       method()
-        .then(() => this.setState({ open: false, loading: false }))
-        .then(() => message.success('Succès !', 2));
+        .finally(() => this.setState({ loading: false }))
+        .then(() => {
+          this.setState({ open: false });
+          return message.success('Succès !', 2);
+        });
     }
   };
 
