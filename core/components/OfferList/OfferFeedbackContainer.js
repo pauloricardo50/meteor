@@ -18,9 +18,7 @@ export default withProps(({
   offer: {
     _id: offerId,
     feedback,
-    lender: {
-      contact: { name },
-    },
+    lender: { contact },
   },
 }) => ({
   schema,
@@ -28,6 +26,8 @@ export default withProps(({
     if (feedback) {
       return Promise.resolve();
     }
+
+    const { name } = contact || {};
     const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
     if (confirm) {
       return offerUpdate.run({ offerId, object });
