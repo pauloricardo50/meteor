@@ -142,7 +142,6 @@ class CollectionService {
       return this._update({
         id,
         object: { additionalDocuments: additionalDocumentsUpdate },
-        operator: '$set',
       });
     }
 
@@ -154,7 +153,6 @@ class CollectionService {
           { id: additionalDocId, requiredByAdmin, label },
         ],
       },
-      operator: '$set',
     });
   }
 }
