@@ -92,12 +92,11 @@ describe('Pro', () => {
           .should('not.exist');
 
         cy.contains('Lot 1').click();
-        cy.get('input[name=name]')
-          .clear()
-          .type('Lot 2');
+        cy.get('input[name=name]').clear();
+        cy.get('input[name=name]').type('Lot 2');
         cy.setSelect('type', 'BASEMENT');
+        cy.get('input[name=value]').clear();
         cy.get('input[name=value]')
-          .clear()
           .type('{backspace}') // Remove initial 0
           .type(2500);
         cy.setSelect('promotionLot', 1);
