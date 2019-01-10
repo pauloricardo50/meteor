@@ -92,6 +92,8 @@ describe('Pro', () => {
           .should('not.exist');
 
         cy.contains('Lot 1').click();
+        cy.wait(2000); // Try to wait for focus to settle
+
         cy.get('input[name=name]').clear();
         cy.get('input[name=name]').type('Lot 2');
         cy.setSelect('type', 'BASEMENT');
