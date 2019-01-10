@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
 
 import colors from 'core/config/colors';
-import UserService from '../users/server/UserService';
-import { ROLES } from '../constants';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;

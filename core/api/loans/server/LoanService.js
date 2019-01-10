@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import moment from 'moment';
 
 import CollectionService from '../helpers/CollectionService';
 import { LOAN_STATUS } from '../constants';
-import BorrowerService from '../borrowers/BorrowerService';
-import PropertyService from '../properties/PropertyService';
+import BorrowerService from '../borrowers/server/BorrowerService';
+import PropertyService from '../properties/server/PropertyService';
 import Loans from './loans';
 import { LOAN_VERIFICATION_STATUS } from './loanConstants';
 

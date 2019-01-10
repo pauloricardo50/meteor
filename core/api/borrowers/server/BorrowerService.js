@@ -1,5 +1,5 @@
 import Borrowers from '../borrowers';
-import LoanService from '../../loans/LoanService';
+import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import { loanBorrower } from '../../fragments';
 

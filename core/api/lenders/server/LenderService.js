@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import Lenders from '../lenders';
 import CollectionService from '../../helpers/CollectionService';
-import OrganisationService from '../../organisations/OrganisationService';
+import OrganisationService from '../../organisations/server/OrganisationService';
 
 class LenderService extends CollectionService {
   constructor() {

@@ -1,4 +1,4 @@
-import LoanService from '../../loans/LoanService';
+import LoanService from '../../loans/server/LoanService';
 import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
 import { VALUATION_STATUS } from '../propertyConstants';

@@ -2,7 +2,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
 
-import LoanService from '../loans/LoanService';
+import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
 import { ROLES } from '../userConstants';
