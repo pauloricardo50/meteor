@@ -1,10 +1,10 @@
 import { PROMOTION_STATUS } from '../../constants';
-import PromotionService from '../../promotions/PromotionService';
-import PromotionLotService from '../../promotionLots/PromotionLotService';
-import PromotionOptionService from '../../promotionOptions/PromotionOptionService';
-import UserService from '../../users/UserService';
-import Security from '../Security';
+import PromotionService from '../../promotions/server/PromotionService';
+import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
+import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
+import Security from '../Security';
 import LoanSecurity from './LoanSecurity';
 
 class PromotionSecurity {

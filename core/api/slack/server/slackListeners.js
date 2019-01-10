@@ -6,11 +6,11 @@ import {
   bookPromotionLot,
   sellPromotionLot,
 } from '../../methods';
-import SlackService from '../SlackService';
-import PromotionService from '../../promotions/PromotionService';
-import PromotionLotService from '../../promotionLots/PromotionLotService';
-import UserService from '../../users/UserService';
-import LoanService from '../../loans/LoanService';
+import SlackService from './SlackService';
+import PromotionService from '../../promotions/server/PromotionService';
+import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import UserService from '../../users/server/UserService';
+import LoanService from '../../loans/server/LoanService';
 import { simpleUser } from '../../fragments';
 
 ServerEventService.addMethodListener(

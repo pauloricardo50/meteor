@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import TaskService from '../TaskService';
+import TaskService from './TaskService';
 import {
   taskInsert,
   taskUpdate,

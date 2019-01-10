@@ -1,6 +1,6 @@
 import SecurityService from '../../security';
-import OfferService from '../OfferService';
 import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
+import OfferService from './OfferService';
 
 offerInsert.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();

@@ -1,6 +1,6 @@
 import ServerEventService from '../../events/server/ServerEventService';
 import { requestLoanVerification } from '../../methods';
-import TaskService from '../TaskService';
+import TaskService from './TaskService';
 import { TASK_TYPE } from '../taskConstants';
 import { LOANS_COLLECTION } from '../../constants';
 

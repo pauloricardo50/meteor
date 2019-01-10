@@ -1,6 +1,6 @@
 import Loans from '../loans';
-import BorrowerService from '../../borrowers/BorrowerService';
-import PropertyService from '../../properties/PropertyService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import PropertyService from '../../properties/server/PropertyService';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {

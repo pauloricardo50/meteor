@@ -1,8 +1,7 @@
 import SecurityService from '../../security';
-import LotService from '../LotService';
-import PromotionService from '../../promotions/PromotionService';
-
+import PromotionService from '../../promotions/server/PromotionService';
 import { lotInsert, lotUpdate, lotRemove } from '../methodDefinitions';
+import LotService from './LotService';
 
 lotInsert.setHandler(({ userId }, { promotionId, lot }) => {
   SecurityService.checkUserIsPro(userId);

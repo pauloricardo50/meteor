@@ -1,11 +1,11 @@
 import SecurityService from '../../security';
-import OrganisationService from '../OrganisationService';
 import {
   organisationInsert,
   organisationUpdate,
   organisationRemove,
   addContactToOrgnaisation,
 } from '../methodDefinitions';
+import OrganisationService from './OrganisationService';
 
 organisationInsert.setHandler((context, { organisation }) => {
   SecurityService.checkCurrentUserIsAdmin();

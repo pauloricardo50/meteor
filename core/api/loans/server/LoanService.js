@@ -1,13 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import CollectionService from '../helpers/CollectionService';
-import { LOAN_STATUS } from '../constants';
-import BorrowerService from '../borrowers/server/BorrowerService';
-import PropertyService from '../properties/server/PropertyService';
-import Loans from './loans';
-import { LOAN_VERIFICATION_STATUS } from './loanConstants';
+import CollectionService from '../../helpers/CollectionService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import PropertyService from '../../properties/server/PropertyService';
+import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
+import Loans from '../loans';
 
+// Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
   const zero = places - num.toString().length + 1;
   return Array(+(zero > 0 && zero)).join('0') + num;

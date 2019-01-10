@@ -16,7 +16,7 @@ import {
   changeEmail,
   generateApiToken,
 } from '../methodDefinitions';
-import UserService from '../UserService';
+import UserService from './UserService';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }));

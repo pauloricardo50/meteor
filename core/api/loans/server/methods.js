@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import LoanService from '../LoanService';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import {
   loanInsert,
   loanUpdate,
@@ -19,7 +19,7 @@ import {
   assignLoanToUser,
   switchBorrower,
 } from '../methodDefinitions';
-import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import LoanService from './LoanService';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);

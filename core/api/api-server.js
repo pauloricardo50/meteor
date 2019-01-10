@@ -1,7 +1,6 @@
 import './initialization';
-import SlackService from './slack/SlackService';
 
-import 'core/fixtures/server/fixtureMethods';
+import '../fixtures/server/fixtureMethods';
 
 import './users/server/accounts-server-config';
 
@@ -42,14 +41,17 @@ import PromotionService from './promotions/server/PromotionService';
 import PropertyService from './properties/server/PropertyService';
 import TaskService from './tasks/server/TaskService';
 import UserService from './users/server/UserService';
+import SlackService from './slack/server/SlackService';
 
 process.on('uncaughtException', (error) => {
+  console.log('uncaughtException error', error);
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],
   });
 });
 process.on('unhandledRejection', (error) => {
+  console.log('unhandledRejection error', error);
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],

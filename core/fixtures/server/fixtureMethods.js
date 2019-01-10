@@ -17,7 +17,7 @@ import {
   Users,
   Contacts,
 } from '../../api';
-import TaskService from '../../api/tasks/TaskService';
+import TaskService from '../../api/tasks/server/TaskService';
 import {
   USER_COUNT,
   UNOWNED_LOANS_COUNT,

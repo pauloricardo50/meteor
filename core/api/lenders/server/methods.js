@@ -1,11 +1,11 @@
 import SecurityService from '../../security';
-import LenderService from '../LenderService';
 import {
   lenderInsert,
   lenderRemove,
   lenderUpdate,
   lenderLinkOrganisationAndContact,
 } from '../methodDefinitions';
+import LenderService from './LenderService';
 
 lenderInsert.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
