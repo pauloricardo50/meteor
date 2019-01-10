@@ -1,7 +1,7 @@
 import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 
-import { offerUpdate } from '../../api';
+import { offerSendFeedback } from '../../api';
 import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
 const schema = new SimpleSchema({
@@ -30,7 +30,7 @@ export default withProps(({
     const { name } = contact || {};
     const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
     if (confirm) {
-      return offerUpdate.run({ offerId, object });
+      return offerSendFeedback.run({ offerId, feedback: object.feedback });
     }
     return Promise.resolve();
   },

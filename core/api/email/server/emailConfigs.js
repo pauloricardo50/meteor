@@ -198,14 +198,35 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
     epotekNumber: EPOTEK_PHONE,
     assignedEmployeeName:
       (params.promotion.assignedEmployee
-      && params.promotion.assignedEmployee.name) || 'Yannis Eggert',
+        && params.promotion.assignedEmployee.name)
+      || 'Yannis Eggert',
     assignedEmployeeFirstName:
       (params.promotion.assignedEmployee
-      && params.promotion.assignedEmployee.firstName) || 'Yannis',
+        && params.promotion.assignedEmployee.firstName)
+      || 'Yannis',
     assignedEmployeePhone:
       (params.promotion.assignedEmployee
-      && params.promotion.assignedEmployee.phoneNumbers[0]) || EPOTEK_PHONE,
+        && params.promotion.assignedEmployee.phoneNumbers[0])
+      || EPOTEK_PHONE,
   }),
 });
 
+addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION,
+  createOverrides({ assigneeName, assigneeAddress, feedback }, { title }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: feedback },
+      ],
+      senderName: assigneeName,
+      senderAddress: assigneeAddress,
+    };
+  },
+  createIntlValues: ({ loanName }) => ({
+    loanName,
+  }),
+});
 export default emailConfigs;

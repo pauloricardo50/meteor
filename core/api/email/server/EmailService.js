@@ -11,10 +11,11 @@ import {
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
 export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
-export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmailTestEnv;
+// export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmailTestEnv;
+export const skipEmails = false;
 
 class EmailService {
-  sendEmail = (emailId, address, params) => {
+  sendEmail = ({ emailId, address, params }) => {
     const templateOptions = this.createTemplateOptions({
       emailId,
       address,
@@ -26,7 +27,7 @@ class EmailService {
     });
   };
 
-  sendEmailToUser = (emailId, userId, params) => {
+  sendEmailToUser = ({ emailId, userId, params }) => {
     const user = Meteor.users.findOne(userId);
     const emailAddress = user && user.emails[0].address;
     this.sendEmail(emailId, emailAddress, params);

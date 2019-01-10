@@ -32,12 +32,12 @@ const getButtonOtherProps = ({ lender }) => {
   if (!assignedEmployee) {
     otherProps = {
       ...otherProps,
-      tooltip: `Assignez un employé à ${userName} pour entrer un feedback`,
+      tooltip: `Assignez un conseiller à ${userName} pour entrer un feedback`,
     };
   } else if (!assignedEmployeeEmail) {
     otherProps = {
       ...otherProps,
-      tooltip: `Ajoutez une addresse email à l'employé ${assignedEmployeeName} pour entrer un feedback`,
+      tooltip: `Ajoutez une addresse email au conseiller ${assignedEmployeeName} pour entrer un feedback`,
     };
   } else if (!contact) {
     otherProps = {
@@ -47,7 +47,7 @@ const getButtonOtherProps = ({ lender }) => {
   } else if (!contactEmail) {
     otherProps = {
       ...otherProps,
-      tooltip: `Ajoutez une adresse email à ${contactName} pour entrer un feedback`,
+      tooltip: `Ajoutez une adresse email au contact ${contactName} pour entrer un feedback`,
     };
   }
 
