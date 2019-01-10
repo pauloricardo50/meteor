@@ -1,4 +1,4 @@
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 import OfferService from '../OfferService';
 import { offerInsert, offerUpdate, offerDelete } from '../methodDefinitions';
 

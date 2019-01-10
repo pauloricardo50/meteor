@@ -3,8 +3,8 @@ import query from './appPromotion';
 import { PROMOTION_STATUS } from '../promotionConstants';
 
 query.expose({
-  firewall(userId) {
-    // SecurityService.checkUserIsPro(userId);
+  firewall(userId, { promotionId }) {
+    SecurityService.promotions.isAllowedToRead(promotionId, userId);
   },
   embody: {
     $filter({ filters, params }) {

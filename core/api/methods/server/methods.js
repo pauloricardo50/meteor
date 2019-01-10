@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 import { Services } from '../../api-server';
 import LoanService from '../../loans/LoanService';
 import BorrowerService from '../../borrowers/BorrowerService';

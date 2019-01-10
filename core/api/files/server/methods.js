@@ -1,4 +1,4 @@
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 import {
   deleteFile,
   setFileStatus,
