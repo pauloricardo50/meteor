@@ -49,11 +49,16 @@
 
   &-actions {
     display: flex;
-    flex-direction: flex-row;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    > * {
+    > button {
+      margin: 8px;
+      padding: 8px;
+    }
+
+    > span > button {
       margin: 8px;
       padding: 8px;
     }

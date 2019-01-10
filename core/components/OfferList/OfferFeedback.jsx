@@ -9,27 +9,53 @@ type OfferFeedbackProps = {
   onSubmit: Function,
 };
 
-const getButtonTooltip = ({ lender }) => {
+const getButtonOtherProps = ({ lender }) => {
+  let otherProps = {};
+
   const {
     contact,
     organisation: { name: organisationName },
+    loan: {
+      user: { assignedEmployee, name: userName },
+    },
   } = lender;
-  const { email, name: contactName } = contact || {};
-  if (!contact) {
-    return `Ajoutez un contact à ${organisationName} pour entrer un feedback`;
+
+  const { name: assignedEmployeeName, email: assignedEmployeeEmail } = assignedEmployee || {};
+  const { email: contactEmail, name: contactName } = contact || {};
+
+  // Should disable button
+  if (!assignedEmployeeEmail || !contactEmail) {
+    otherProps = { ...otherProps, disabled: true };
   }
 
-  if (!email) {
-    return `Ajoutez une adresse email à ${contactName} pour entrer un feedback`;
+  // Should display tooltip
+  if (!assignedEmployee) {
+    otherProps = {
+      ...otherProps,
+      tooltip: `Assignez un employé à ${userName} pour entrer un feedback`,
+    };
+  } else if (!assignedEmployeeEmail) {
+    otherProps = {
+      ...otherProps,
+      tooltip: `Ajoutez une addresse email à l'employé ${assignedEmployeeName} pour entrer un feedback`,
+    };
+  } else if (!contact) {
+    otherProps = {
+      ...otherProps,
+      tooltip: `Ajoutez un contact à ${organisationName} pour entrer un feedback`,
+    };
+  } else if (!contactEmail) {
+    otherProps = {
+      ...otherProps,
+      tooltip: `Ajoutez une adresse email à ${contactName} pour entrer un feedback`,
+    };
   }
 
-  return null;
+  return otherProps;
 };
 
 const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
   const { lender, feedback } = offer;
-  const { contact } = lender;
-  const { email } = contact || {};
   return (
     <AutoFormDialog
       onSubmit={onSubmit}
@@ -37,10 +63,9 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
       model={offer}
       buttonProps={{
         label: 'Feedback',
-        tooltip: getButtonTooltip({ lender }),
         raised: true,
         primary: true,
-        disabled: !email,
+        ...getButtonOtherProps({ lender }),
       }}
       emptyDialog={!!feedback}
       title="Feedback de l'offre"
