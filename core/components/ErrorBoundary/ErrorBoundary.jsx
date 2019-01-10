@@ -32,7 +32,7 @@ class ErrorBoundary extends Component {
     this.setState({ hasError: true, error });
     this.sendToKadira(error);
     logError.run({
-      error,
+      error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
       additionalData: ['Render error', info],
       url: window && window.location && window.location.href,
     });

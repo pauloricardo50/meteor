@@ -6,7 +6,7 @@ import Loading from '../components/Loading';
 const LoadableLoading = ({ error, retry, pastDelay }) => {
   if (error) {
     logError.run({
-      error,
+      error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
       additionalData: ['Loadable error'],
       url: window && window.location && window.location.href,
     });
