@@ -27,21 +27,21 @@ import './server/reducers';
 import './server/mongoIndexes';
 
 import { COLLECTIONS } from './constants';
-import BorrowerService from './borrowers/BorrowerService';
-import LoanService from './loans/LoanService';
-import LotService from './lots/LotService';
-import OfferService from './offers/OfferService';
-import PromotionLotService from './promotionLots/PromotionLotService';
-import PromotionOptionService from './promotionOptions/PromotionOptionService';
-import PromotionService from './promotions/PromotionService';
-import PropertyService from './properties/PropertyService';
-import TaskService from './tasks/TaskService';
-import InterestRatesService from './interestRates/InterestRatesService';
-import UserService from './users/UserService';
-import Irs10yService from './irs10y/Irs10yService';
-import MortgageNoteService from './mortgageNotes/MortgageNoteService';
-import ContactService from './contacts/ContactService';
-import LenderService from './lenders/LenderService';
+import BorrowerService from './borrowers/server/BorrowerService';
+import ContactService from './contacts/server/ContactService';
+import InterestRatesService from './interestRates/server/InterestRatesService';
+import Irs10yService from './irs10y/server/Irs10yService';
+import LenderService from './lenders/server/LenderService';
+import LoanService from './loans/server/LoanService';
+import LotService from './lots/server/LotService';
+import MortgageNoteService from './mortgageNotes/server/MortgageNoteService';
+import OfferService from './offers/server/OfferService';
+import PromotionLotService from './promotionLots/server/PromotionLotService';
+import PromotionOptionService from './promotionOptions/server/PromotionOptionService';
+import PromotionService from './promotions/server/PromotionService';
+import PropertyService from './properties/server/PropertyService';
+import TaskService from './tasks/server/TaskService';
+import UserService from './users/server/UserService';
 
 process.on('uncaughtException', (error) => {
   SlackService.sendError({

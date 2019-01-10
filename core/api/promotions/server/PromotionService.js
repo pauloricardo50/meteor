@@ -1,19 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import Promotions from './promotions';
-import { PROMOTION_STATUS } from './promotionConstants';
-import UserService from '../users/UserService';
-import LoanService from '../loans/LoanService';
-import FileService from '../files/server/FileService';
-import CollectionService from '../helpers/CollectionService';
-import PropertyService from '../properties/PropertyService';
-import PromotionLotService from '../promotionLots/PromotionLotService';
-import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../constants';
-import { sendEmail } from '../email/methodDefinitions';
-import { EMAIL_IDS } from '../email/emailConstants';
-import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
-import PromotionOptionService from '../promotionOptions/PromotionOptionService';
+import Promotions from '../promotions';
+import { PROMOTION_STATUS } from '../promotionConstants';
+import UserService from '../../users/server/UserService';
+import LoanService from '../../loans/LoanService';
+import FileService from '../../files/server/FileService';
+import CollectionService from '../../helpers/CollectionService';
+import PropertyService from '../../properties/server/PropertyService';
+import PromotionLotService from '../../promotionLots/PromotionLotService';
+import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../../constants';
+import { sendEmail } from '../../email/methodDefinitions';
+import { EMAIL_IDS } from '../../email/emailConstants';
+import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
+import PromotionOptionService from '../../promotionOptions/PromotionOptionService';
 
 export class PromotionService extends CollectionService {
   constructor({ sendEmail: injectedSendEmail }) {

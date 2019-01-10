@@ -1,6 +1,6 @@
-import PromotionLots from './promotionLots';
-import CollectionService from '../helpers/CollectionService';
-import { PROMOTION_LOT_STATUS } from './promotionLotConstants';
+import CollectionService from '../../helpers/CollectionService';
+import PromotionLots from '../promotionLots';
+import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 
 export class PromotionLotService extends CollectionService {
   constructor() {
