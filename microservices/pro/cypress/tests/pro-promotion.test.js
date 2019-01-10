@@ -100,7 +100,7 @@ describe('Pro', () => {
           .clear()
           .type('{backspace}') // Remove initial 0
           .type(2500);
-        cy.setSelect('promotionLot', 0);
+        cy.setSelect('promotionLot', 1);
         cy.contains('Ok').click();
 
         cy.contains('Lot 2').should('exist');
