@@ -139,7 +139,7 @@ export class PromotionService extends CollectionService {
       }).then(() => loanId);
     }
 
-    return Promise.resolve();
+    return Promise.resolve(loanId);
   }
 
   sendPromotionInvitationEmail({

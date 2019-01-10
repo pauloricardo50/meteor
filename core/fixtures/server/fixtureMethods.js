@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+
 import range from 'lodash/range';
-import { STEPS, STEP_ORDER, ROLES, TASK_TYPE } from 'core/api/constants';
+
+import { STEPS, STEP_ORDER, ROLES, TASK_TYPE } from '../../api/constants';
 import {
   Borrowers,
   Loans,
@@ -12,11 +14,11 @@ import {
   PromotionOptions,
   Promotions,
   Properties,
-  SecurityService,
   Tasks,
   Users,
   Contacts,
 } from '../../api';
+import SecurityService from '../../api/security';
 import TaskService from '../../api/tasks/server/TaskService';
 import {
   USER_COUNT,
