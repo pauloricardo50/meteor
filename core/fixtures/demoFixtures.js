@@ -1,11 +1,11 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 
-import UserService from '../api/users/UserService';
-import LoanService from '../api/loans/LoanService';
+import UserService from '../api/users/server/UserService';
+import LoanService from '../api/loans/server/LoanService';
+import BorrowerService from '../api/borrowers/server/BorrowerService';
+import PropertyService from '../api/properties/server/PropertyService';
 import { ROLES, GENDER } from '../api/constants';
-import BorrowerService from '../api/borrowers/BorrowerService';
-import PropertyService from '../api/properties/PropertyService';
 
 export const createYannisData = (userId) => {
   const loanId = LoanService.adminLoanInsert({ userId });

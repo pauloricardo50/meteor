@@ -1,5 +1,5 @@
-import LoanService from 'core/api/loans/LoanService';
 import faker from 'faker/locale/fr';
+import LoanService from '../api/loans/server/LoanService';
 import {
   PURCHASE_TYPE,
   INTEREST_RATES,
@@ -8,7 +8,6 @@ import {
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
-import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
@@ -181,6 +180,4 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
 };
 
 export const getRelatedLoansIds = usersIds =>
-  Loans.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-    .fetch()
-    .map(item => item._id);
+  LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(item => item._id);

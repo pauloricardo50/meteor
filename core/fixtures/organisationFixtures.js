@@ -1,8 +1,8 @@
 import faker from 'faker/locale/fr';
 import random from 'lodash/random';
 
-import OrganisationService from '../api/organisations/OrganisationService';
-import ContactService from '../api/contacts/ContactService';
+import OrganisationService from '../api/organisations/server/OrganisationService';
+import ContactService from '../api/contacts/server/ContactService';
 import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../api/constants';
 
 const orgs = [
