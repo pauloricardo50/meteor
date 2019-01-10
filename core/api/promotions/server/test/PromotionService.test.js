@@ -6,18 +6,18 @@ import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 import sinon from 'sinon';
 
-import { PROMOTION_STATUS } from 'core/api/constants';
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
-import UserService from 'core/api/users/UserService';
-import { ROLES } from 'core/api/users/userConstants';
-import LoanService from 'core/api/loans/LoanService';
+import { PROMOTION_STATUS } from '../../../constants';
+import { EMAIL_IDS } from '../../../email/emailConstants';
+import UserService from '../../../users/server/UserService';
+import { ROLES } from '../../../users/userConstants';
+import LoanService from '../../../loans/server/LoanService';
 import PromotionService, {
   PromotionService as PromotionServiceClass,
-} from '../../PromotionService';
-import PromotionLotService from '../../../promotionLots/PromotionLotService';
-import PromotionOptionService from '../../../promotionOptions/PromotionOptionService';
-import LotService from '../../../lots/LotService';
-import PropertyService from '../../../properties/PropertyService';
+} from '../PromotionService';
+import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
+import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
+import LotService from '../../../lots/server/LotService';
+import PropertyService from '../../../properties/server/PropertyService';
 
 describe('PromotionService', () => {
   beforeEach(() => {

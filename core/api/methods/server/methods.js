@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 import { Services } from '../../api-server';
-import LoanService from '../../loans/LoanService';
-import BorrowerService from '../../borrowers/BorrowerService';
-import PropertyService from '../../properties/PropertyService';
+import LoanService from '../../loans/server/LoanService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
+import PropertyService from '../../properties/server/PropertyService';
 import {
   getMixpanelAuthorization,
   getServerTime,

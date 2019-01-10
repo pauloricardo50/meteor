@@ -23,5 +23,5 @@ export default Contacts.createQuery(CONTACTS_QUERIES.CONTACT_SEARCH, {
     ];
   },
   ...contact(),
-  $options: { sort: { createdAt: -1 } },
+  $options: { sort: { createdAt: -1 }, limit: 5 },
 });

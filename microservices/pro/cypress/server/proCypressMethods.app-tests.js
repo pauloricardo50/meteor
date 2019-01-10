@@ -4,8 +4,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import UserService from 'core/api/users/UserService';
-import PromotionService from 'core/api/promotions/PromotionService';
+import UserService from 'core/api/users/server/UserService';
+import PromotionService from 'core/api/promotions/server/PromotionService';
 import { ROLES, PROMOTION_TYPES } from 'core/api/constants';
 import 'core/cypress/server/methods';
 import { PRO_EMAIL, PRO_PASSWORD } from '../constants';

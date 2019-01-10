@@ -6,18 +6,18 @@ import random from 'lodash/random';
 import shuffle from 'lodash/shuffle';
 import faker from 'faker/locale/fr';
 
-import LoanService from '../../api/loans/LoanService';
-import PromotionService from '../../api/promotions/PromotionService';
+import LoanService from '../../api/loans/server/LoanService';
+import PromotionService from '../../api/promotions/server/PromotionService';
+import UserService from '../../api/users/server/UserService';
+import PromotionOptionService from '../../api/promotionOptions/server/PromotionOptionService';
+import PromotionLotService from '../../api/promotionLots/server/PromotionLotService';
+import LotService from '../../api/lots/server/LotService';
 import {
+  LOT_TYPES,
   PROMOTION_TYPES,
   PROMOTION_STATUS,
-} from '../../api/promotions/promotionConstants';
-import UserService from '../../api/users/UserService';
-import { ROLES } from '../../api/users/userConstants';
-import PromotionOptionService from '../../api/promotionOptions/PromotionOptionService';
-import PromotionLotService from '../../api/promotionLots/PromotionLotService';
-import LotService from '../../api/lots/LotService';
-import { LOT_TYPES } from '../../api/constants';
+  ROLES,
+} from '../../api/constants';
 import { properties } from './data';
 
 const DEMO_PROMOTION = {

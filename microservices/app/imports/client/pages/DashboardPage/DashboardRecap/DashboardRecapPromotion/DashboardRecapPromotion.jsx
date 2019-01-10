@@ -4,7 +4,6 @@ import Link from 'core/components/Link';
 import { createRoute } from 'core/utils/routerUtils';
 
 import UserPromotionOptionsTable from 'core/components/PromotionPage/client/UserPromotionOptionsTable';
-import MapWithMarker from 'core/components/maps/MapWithMarker';
 import { APP_PROMOTION_PAGE } from 'imports/startup/client/appRoutes';
 import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 import promotionFiles from 'core/api/promotions/queries/promotionFiles';
@@ -42,6 +41,7 @@ const DashboardRecapPromotion = ({
           'animated fadeIn': promotionImage.length > 0,
         })}
       />
+      <h2 className="secondary">{promotion.name}</h2>
       <UserPromotionOptionsTable
         promotion={promotion}
         loan={loan}

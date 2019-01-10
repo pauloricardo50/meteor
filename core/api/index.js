@@ -37,7 +37,6 @@ export { default as MortgageNotes } from './mortgageNotes';
 export { default as Contacts } from './contacts';
 export { default as Lenders } from './lenders';
 
-export { default as SecurityService } from './security';
 export * from './methods';
 export * from './helpers';
 export * from './containerToolkit';

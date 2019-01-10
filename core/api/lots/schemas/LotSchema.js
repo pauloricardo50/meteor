@@ -1,6 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 import { LOT_TYPES } from '../lotConstants';
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import { createdAt, updatedAt, moneyField } from '../../helpers/sharedSchemas';
 
 const LotSchema = new SimpleSchema({
   createdAt,
@@ -13,9 +13,8 @@ const LotSchema = new SimpleSchema({
   },
   description: { type: String, optional: true },
   value: {
-    type: Number,
-    min: 0,
-    max: 1000000000,
+    ...moneyField,
+    optional: false,
   },
 });
 

@@ -38,10 +38,6 @@ const AccountPage = ({ currentUser }) => {
           </div>
 
           <div className="form-group">
-            <h4 style={styles.h}>
-              <T id="AccountPage.password" />
-            </h4>
-            <br />
             <PasswordChange />
           </div>
 

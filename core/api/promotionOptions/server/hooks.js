@@ -1,4 +1,4 @@
-import LoanService from '../../loans/LoanService';
+import LoanService from '../../loans/server/LoanService';
 import PromotionOptions from '..';
 
 PromotionOptions.before.remove((userId, { _id: promotionOptionId }) => {

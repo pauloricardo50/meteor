@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import InterestRatesService from '../InterestRatesService';
+import InterestRatesService from './InterestRatesService';
 import {
   interestRatesInsert,
   interestRatesRemove,

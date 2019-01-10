@@ -34,6 +34,7 @@ const SinglePropertyHeader = ({
         <ConfirmMethod
           label="Supprimer"
           method={() => propertyDelete.run({ propertyId })}
+          buttonProps={{ error: true }}
         />
       </div>
     </div>

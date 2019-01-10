@@ -5,6 +5,7 @@ import ConfirmMethod from 'core/components/ConfirmMethod';
 import T from 'core/components/Translation';
 import { PROMOTION_LOT_STATUS } from 'imports/core/api/constants';
 import PromotionLotAttributerContainer from './PromotionLotAttributerContainer';
+import PromotionLotAttributerContent from './PromotionLotAttributerContent';
 
 type PromotionLotAttributerProps = {};
 
@@ -19,7 +20,6 @@ const PromotionLotAttributer = ({
   userName,
   lots,
   solvency,
-  solvencyClassName,
   promotionLotName,
   canModify,
 }: PromotionLotAttributerProps) => (
@@ -34,19 +34,11 @@ const PromotionLotAttributer = ({
         method={bookPromotionLot}
         disabled={!canModify}
       >
-        <div className="book-client-infos">
-          <p className="bold">Attribuer {promotionLotName} à</p>
-          <table className="book-client-infos-table">
-            <tr>
-              <td>Nom</td>
-              <td>{userName}</td>
-            </tr>
-            <tr>
-              <td>Solvabilité</td>
-              <td className={solvencyClassName}>{solvency}</td>
-            </tr>
-          </table>
-        </div>
+        <PromotionLotAttributerContent
+          promotionLotName={promotionLotName}
+          userName={userName}
+          solvency={solvency}
+        />
       </ConfirmMethod>
     )}
     {promotionLotStatus === PROMOTION_LOT_STATUS.BOOKED

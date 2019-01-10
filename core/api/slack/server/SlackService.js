@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
 
 import colors from 'core/config/colors';
-import UserService from '../users/UserService';
-import { ROLES } from '../constants';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../constants';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
@@ -65,6 +65,10 @@ export class SlackService {
   });
 
   sendError = ({ error, additionalData = [], userId, url }) => {
+    console.log('error', error);
+    console.log('additionalData', additionalData);
+    console.log('userId', userId);
+    console.log('url', url);
     if (
       (error && ERRORS_TO_IGNORE.includes(error.name))
       || ERRORS_TO_IGNORE.includes(error.message || error.reason)
@@ -90,18 +94,18 @@ export class SlackService {
       channel: `errors-${Meteor.settings.public.environment}`,
       attachments: [
         {
-          title: error.name,
+          title: error && error.name,
           pretext: `Une erreur est arrivée sur *e-Potek ${
             Meteor.microservice
           }*`,
-          text: error.message || error.reason,
+          text: error && (error.message || error.reason),
           color: colors.error,
           footer: 'c la merde',
           ts: new Date() / 1000,
         },
         {
           title: 'Stack',
-          text: `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
+          text: error && `\`\`\`${error.stack && error.stack.toString()}\`\`\``,
           color: colors.error,
         },
         {

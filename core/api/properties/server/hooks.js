@@ -1,4 +1,4 @@
-import LoanService from '../../loans/LoanService';
+import LoanService from '../../loans/server/LoanService';
 import Properties from '..';
 
 import { additionalDocumentsHook } from '../../helpers/sharedHooks';
