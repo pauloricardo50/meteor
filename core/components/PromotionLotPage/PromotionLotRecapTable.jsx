@@ -82,7 +82,6 @@ const getPromotionLotValueRecapArray = ({
 
 const getPromotionLotRecapArray = (promotionLot) => {
   const { lots = [], properties } = promotionLot;
-
   const property = properties.length > 0 && properties[0];
   const {
     bathroomCount,
@@ -92,7 +91,6 @@ const getPromotionLotRecapArray = (promotionLot) => {
     roomCount,
     terraceArea,
   } = property;
-  console.log('property', property);
 
   return [
     {
