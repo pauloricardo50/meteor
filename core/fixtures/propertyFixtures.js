@@ -1,5 +1,5 @@
 import faker from 'faker/locale/fr';
-import PropertyService from '../api/properties/PropertyService';
+import PropertyService from '../api/properties/server/PropertyService';
 import {
   PROPERTY_STATUS,
   RESIDENCE_TYPE,

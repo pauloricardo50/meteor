@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import OfferService from '../../OfferService';
+import OfferService from '../OfferService';
 
 describe('OfferService', () => {
   let offer;

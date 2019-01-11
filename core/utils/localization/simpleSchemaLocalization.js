@@ -18,23 +18,29 @@ const translateSimpleSchema = () => {
         // Can also use "name"
         required: args => `${translate(args)} est requis`,
         minString: args =>
-          `${translate(args)} doit faire au minimum {{min}} caractères`,
+          `${translate(args)} doit faire au minimum ${args.min} caractères`,
         maxString: args =>
-          `${translate(args)} peut faire au maximum {{max}} caractères`,
-        minNumber: args => `${translate(args)} doit être au moins {{min}}`,
-        maxNumber: args => `${translate(args)} ne peut pas dépasser {{max}}`,
+          `${translate(args)} peut faire au maximum ${args.max} caractères`,
+        minNumber: args => `${translate(args)} doit être au moins ${args.min}`,
+        maxNumber: args =>
+          `${translate(args)} ne peut pas dépasser ${args.max}`,
         minNumberExclusive: args =>
-          `${translate(args)} doit être plus grand que {{min}}`,
+          `${translate(args)} doit être plus grand que ${args.min}`,
         maxNumberExclusive: args =>
-          `${translate(args)} doit être plus petit que {{max}}`,
-        minDate: args => `${translate(args)} doit être au plus tôt le {{min}}`,
-        maxDate: args => `${translate(args)} doit être au plus tard le {{max}}`,
+          `${translate(args)} doit être plus petit que ${args.max}`,
+        minDate: args =>
+          `${translate(args)} doit être au plus tôt le ${args.min}`,
+        maxDate: args =>
+          `${translate(args)} doit être au plus tard le ${args.max}`,
         badDate: args => `${translate(args)} n'est pas une date valide`,
-        minCount: () => 'Vous devez ajouter au moins {{minCount}} valeurs',
-        maxCount: () => 'Vous devez choisir moins de {{maxCount}} valeurs',
+        minCount: ({ minCount }) =>
+          `Vous devez ajouter au moins ${minCount} valeurs`,
+        maxCount: ({ maxCount }) =>
+          `Vous devez choisir moins de ${maxCount} valeurs`,
         noDecimal: args => `${translate(args)} doit être un nombre entier`,
-        notAllowed: () => "{{value}} n'est pas valide",
-        expectedType: args => `${translate(args)} doit être un {{dataType}}`,
+        notAllowed: ({ value }) => `${value} n'est pas valide`,
+        expectedType: args =>
+          `${translate(args)} doit être un ${args.dataType}`,
       },
     },
   });

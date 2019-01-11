@@ -57,29 +57,6 @@ export const OWNER = {
   OTHER: 'OTHER',
 };
 
-export const AUCTION_STATUS = {
-  NONE: '',
-  STARTED: 'STARTED',
-  ENDED: 'ENDED',
-};
-
-export const CLOSING_STEPS_TYPE = {
-  TODO: 'TODO',
-  UPLOAD: 'UPLOAD',
-};
-
-export const CLOSING_STEPS_STATUS = {
-  UNVERIFIED: 'UNVERIFIED',
-  VALID: 'VALID',
-  ERROR: 'ERROR',
-};
-
-export const AUCTION_MOST_IMPORTANT = {
-  SPEED: 'SPEED',
-  PRICE: 'PRICE',
-  NOTHING: 'NOTHING',
-};
-
 export const INSURANCE_USE_PRESET = {
   WITHDRAWAL: 'WITHDRAWAL',
   COLLATERAL: 'COLLATERAL',

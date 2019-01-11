@@ -11,7 +11,7 @@ const handleClick = (event, props) => {
   event.preventDefault();
   Meteor.call('sendVerificationLink', (error, response) => {
     if (error) {
-      const message = props.intl.formatMessage({ id: 'error.general' });
+      const message = props.intl.formatMessage({ id: 'errors.general' });
       message.error(message, 5);
     } else {
       const email = Meteor.user().emails[0].address;

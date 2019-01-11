@@ -3,16 +3,11 @@ import { Mongo } from 'meteor/mongo';
 import { Loans } from '..';
 import { loanIsVerified } from '../../utils/loanFunctions';
 import { getCollectionNameFromIdField } from '../helpers';
-import { AUCTION_STATUS, TASK_TYPE, FILE_STATUS } from '../constants';
+import { TASK_TYPE, FILE_STATUS } from '../constants';
 
 const verifyTaskValidation = ({ loanId }) => {
   const loan = Loans.findOne(loanId);
   return loanIsVerified({ loan });
-};
-
-const auctionTaskValidation = ({ loanId }) => {
-  const loan = Loans.findOne(loanId);
-  return loan.logic.auction.status === AUCTION_STATUS.ENDED;
 };
 
 // check if the file related to the input task has been validated or invalidated
@@ -53,9 +48,6 @@ export const validateTask = (task) => {
   switch (task.type) {
   case TASK_TYPE.VERIFY: {
     return verifyTaskValidation(task);
-  }
-  case TASK_TYPE.AUCTION: {
-    return auctionTaskValidation(task);
   }
   case TASK_TYPE.LENDER_CHOSEN: {
     return lenderChosenTaskValidation(task);

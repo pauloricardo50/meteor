@@ -4,10 +4,9 @@ import sinon from 'sinon';
 
 import ServerEventService from '../../../events/server/ServerEventService';
 import '../../../events/server/registerServerListeners';
-import { disableUserFormsListener } from '../loanListeners';
 import { requestLoanVerification } from '../../methodDefinitions';
-
-import LoanService from '../../LoanService';
+import { disableUserFormsListener } from '../loanListeners';
+import LoanService from '../LoanService';
 
 describe('Loan Listeners', () => {
   describe('disableUserFormsListener', () => {

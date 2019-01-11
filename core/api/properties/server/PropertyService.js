@@ -1,8 +1,8 @@
-import LoanService from '../loans/LoanService';
-import Properties from '.';
-import WuestService from '../wuest/server/WuestService';
-import { VALUATION_STATUS } from './propertyConstants';
-import CollectionService from '../helpers/CollectionService';
+import LoanService from '../../loans/server/LoanService';
+import WuestService from '../../wuest/server/WuestService';
+import CollectionService from '../../helpers/CollectionService';
+import { VALUATION_STATUS } from '../propertyConstants';
+import Properties from '../properties';
 
 export class PropertyService extends CollectionService {
   constructor() {

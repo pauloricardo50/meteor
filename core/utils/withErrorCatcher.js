@@ -14,7 +14,7 @@ const withErrorCatcher = lifecycle({
         Kadira.trackError('react', error.stack.toString());
       }
       logError.run({
-        error,
+        error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
         additionalData: ['JS error', msg],
         url: window && window.location && window.location.href,
       });

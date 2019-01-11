@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import UserService from '../../../users/UserService';
+import UserService from '../../../users/server/UserService';
 import assigneeReducer from '../../assigneeReducer';
 
 const defaultReducer = assigneeReducer().assignee.reduce;

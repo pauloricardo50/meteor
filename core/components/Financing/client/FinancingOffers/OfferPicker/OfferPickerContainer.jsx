@@ -26,9 +26,9 @@ const offerEnhancer = withProps(props => ({
       tranches: props.structure.loanTranches,
       interestRates: offer,
     }),
-    amortization: getAmortizationForStructureWithOffer(props),
-    interests: getInterestsForStructureWithOffer(props),
-    monthly: getMonthlyForStructureWithOffer(props),
+    amortization: getAmortizationForStructureWithOffer({ ...props, offer }),
+    interests: getInterestsForStructureWithOffer({ ...props, offer }),
+    monthly: getMonthlyForStructureWithOffer({ ...props, offer }),
   })),
 }));
 

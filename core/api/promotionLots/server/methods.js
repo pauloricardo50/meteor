@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import PromotionLotService from '../PromotionLotService';
+import PromotionLotService from './PromotionLotService';
 import {
   promotionLotInsert,
   promotionLotUpdate,

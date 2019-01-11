@@ -1,5 +1,5 @@
 import { Match } from 'meteor/check';
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 import query from './adminOrganisations';
 
 query.expose({

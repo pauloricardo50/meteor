@@ -1,0 +1,12 @@
+.autoform {
+  .autofields {
+    > *,
+    ul > * {
+      margin-bottom: 16px;
+    }
+
+    ul {
+      margin-bottom: 0;
+    }
+  }
+}

@@ -11,4 +11,5 @@ export default Properties.createQuery(PROPERTY_QUERIES.PROPERTY_SEARCH, {
     );
   },
   ...propertySummary(),
+  $options: { limit: 5 },
 });

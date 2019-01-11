@@ -1,5 +1,5 @@
-import Offers from '.';
-import CollectionService from '../helpers/CollectionService';
+import Offers from '../offers';
+import CollectionService from '../../helpers/CollectionService';
 
 export class OfferService extends CollectionService {
   constructor() {

@@ -47,6 +47,7 @@ export const getMandrillTemplate = ({
   subject,
   sendAt,
   templateContent = [],
+  replyTo,
 }) => ({
   template_name: templateName,
   template_content: [
@@ -59,6 +60,9 @@ export const getMandrillTemplate = ({
     subject,
     to: [{ email: recipientAddress, type: 'to' }],
     merge_vars: [{ rcpt: recipientAddress, vars: variables }],
+    headers: {
+      'Reply-To': replyTo || senderAddress,
+    },
   },
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });

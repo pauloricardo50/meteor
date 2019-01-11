@@ -1,6 +1,6 @@
-import PromotionLots from './promotionLots';
-import CollectionService from '../helpers/CollectionService';
-import { PROMOTION_LOT_STATUS } from './promotionLotConstants';
+import CollectionService from '../../helpers/CollectionService';
+import PromotionLots from '../promotionLots';
+import { PROMOTION_LOT_STATUS } from '../promotionLotConstants';
 
 export class PromotionLotService extends CollectionService {
   constructor() {
@@ -32,11 +32,11 @@ export class PromotionLotService extends CollectionService {
       promotionLotId,
       object: { status: PROMOTION_LOT_STATUS.BOOKED },
     });
+
     return this.addLink({
       id: promotionLotId,
       linkName: 'attributedTo',
       linkId: loanId,
-      multi: false,
     });
   }
 

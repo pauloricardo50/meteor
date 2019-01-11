@@ -3,8 +3,9 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import TaskService from '../../TaskService';
+
 import { TASK_STATUS } from '../../taskConstants';
+import TaskService from '../TaskService';
 
 describe('TaskService', () => {
   let taskId;

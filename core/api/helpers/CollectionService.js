@@ -12,6 +12,7 @@ class CollectionService {
 
   _update({ id, object, operator = '$set' }) {
     if (Object.keys(object).length > 0) {
+      // debugger;
       return this.collection.update(id, { [operator]: object });
     }
     return null;
@@ -57,6 +58,11 @@ class CollectionService {
     return this.find({}).count();
   }
 
+  getAll() {
+    return this.find({}).fetch();
+  }
+
+  // Don't return the results from linker
   addLink({ id, linkName, linkId, metadata = {} }) {
     const linker = this.collection.getLink(id, linkName);
     const {
@@ -65,18 +71,23 @@ class CollectionService {
 
     switch (strategy) {
     case 'one':
-      return linker.set(linkId);
+      linker.set(linkId);
+      return;
     case 'many':
-      return linker.add(linkId);
+      linker.add(linkId);
+      return;
     case 'one-meta':
-      return linker.set(linkId, metadata);
+      linker.set(linkId, metadata);
+      return;
     case 'many-meta':
-      return linker.add(linkId, metadata);
+      linker.add(linkId, metadata);
+      return;
     default:
       return null;
     }
   }
 
+  // Don't return the results from linker
   removeLink({ id, linkName, linkId }) {
     const linker = this.collection.getLink(id, linkName);
     const {
@@ -85,9 +96,11 @@ class CollectionService {
 
     switch (strategy.split('-')[0]) {
     case 'one':
-      return linker.unset(linkId);
+      linker.unset(linkId);
+      return;
     case 'many':
-      return linker.remove(linkId);
+      linker.remove(linkId);
+      return;
     default:
       return null;
     }
@@ -129,7 +142,6 @@ class CollectionService {
       return this._update({
         id,
         object: { additionalDocuments: additionalDocumentsUpdate },
-        operator: '$set',
       });
     }
 
@@ -141,7 +153,6 @@ class CollectionService {
           { id: additionalDocId, requiredByAdmin, label },
         ],
       },
-      operator: '$set',
     });
   }
 }

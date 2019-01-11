@@ -1,5 +1,5 @@
-import Irs10y from './irs10y';
-import CollectionService from '../helpers/CollectionService';
+import Irs10y from '../irs10y';
+import CollectionService from '../../helpers/CollectionService';
 
 class Irs10yService extends CollectionService {
   constructor() {

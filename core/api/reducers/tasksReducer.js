@@ -1,4 +1,4 @@
-import TaskService from '../tasks/TaskService';
+import TaskService from '../tasks/server/TaskService';
 
 const tasksReducer = {
   tasks: {

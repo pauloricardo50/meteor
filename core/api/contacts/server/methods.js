@@ -1,11 +1,11 @@
 import SecurityService from '../../security';
-import ContactService from '../ContactService';
 import {
   contactInsert,
   contactRemove,
   contactUpdate,
   contactChangeOrganisations,
 } from '../methodDefinitions';
+import ContactService from './ContactService';
 
 contactInsert.setHandler((context, { contact }) => {
   SecurityService.checkCurrentUserIsAdmin();

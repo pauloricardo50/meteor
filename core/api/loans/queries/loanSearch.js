@@ -8,5 +8,5 @@ export default Loans.createQuery(LOAN_QUERIES.LOAN_SEARCH, {
     Object.assign(filters, createSearchFilters(['name', '_id'], searchQuery));
   },
   ...adminLoans(),
-  $options: { sort: { createdAt: -1 } },
+  $options: { sort: { createdAt: -1 }, limit: 5 },
 });

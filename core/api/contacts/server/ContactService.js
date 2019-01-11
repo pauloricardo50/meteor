@@ -1,6 +1,6 @@
-import Contacts from './contacts';
-import CollectionService from '../helpers/CollectionService';
-import { contact } from '../fragments';
+import Contacts from '../contacts';
+import CollectionService from '../../helpers/CollectionService';
+import { contact } from '../../fragments';
 
 class ContactService extends CollectionService {
   constructor() {

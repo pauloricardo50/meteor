@@ -12,7 +12,6 @@ Factory.define('testLoan', Loans, {
   borrowerIds: [],
   documents: () => ({}),
   logic: () => ({
-    auction: { status: '' },
     lender: {},
     verification: {},
   }),

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import InterestRatesService from 'core/api/interestRates';
+import InterestRatesService from '../api/interestRates/server/InterestRatesService';
 import { INTEREST_RATES } from '../api/constants';
 import { getRandomInterestRate } from '../api/interestRates/fakes';
 

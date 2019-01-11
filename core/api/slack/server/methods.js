@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
 import { notifyAssignee, logError, notifyOfUpload } from '../methodDefinitions';
-import UserService from '../../users/UserService';
-import SlackService from '../SlackService';
+import UserService from '../../users/server/UserService';
+import SlackService from './SlackService';
 import SecurityService from '../../security';
 
 notifyAssignee.setHandler(({ userId }, { message, title }) => {
