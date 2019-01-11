@@ -19,5 +19,6 @@ export * from '../interestRates/methodDefinitions';
 export * from '../irs10y/methodDefinitions';
 export * from '../contacts/methodDefinitions';
 export * from '../mortgageNotes/methodDefinitions';
+export * from '../lenders/methodDefinitions';
 
 export * from './methodDefinitions';

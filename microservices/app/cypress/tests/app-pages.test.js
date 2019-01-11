@@ -73,6 +73,7 @@ describe('App Pages', () => {
   let testData;
 
   before(() => {
+    cy.initiateTest();
     cy.callMethod('resetDatabase');
     cy.callMethod('generateTestData');
     cy.callMethod('getAppEndToEndTestData').then((data) => {

@@ -1,10 +1,9 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
-import faker from 'faker';
+import faker from 'faker/locale/fr';
 
-import { Users } from '../api';
 import { USER_PASSWORD } from './fixtureConstants';
-import UserService from '../api/users/UserService';
+import UserService from '../api/users/server/UserService';
 
 export const createUser = (email, role, password) => {
   const userId = Accounts.createUser({
@@ -49,12 +48,14 @@ export const createDevs = (currentEmail) => {
       firstName: 'Florian',
       lastName: 'Bienefelt',
       role: 'dev',
+      password: '12345',
     },
     {
       email: 'quentin@e-potek.ch',
       firstName: 'Quentin',
       lastName: 'Herzig',
       role: 'dev',
+      password: '12345',
     },
   ];
   return devs.filter(({ email }) => email !== currentEmail).map(addUser);
@@ -92,7 +93,7 @@ export const createAdmins = () => {
 
 export const getFakeUsersIds = () => {
   const regex = /^(admin|dev|user)-[1-9]|10@e-potek.ch/;
-  const allUsers = Users.find().fetch();
+  const allUsers = UserService.getAll();
   const fakeUserIds = allUsers
     .filter(user => regex.test(user.emails[0].address))
     .map(fakeUser => fakeUser._id);

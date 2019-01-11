@@ -10,7 +10,7 @@ import { toMoney } from '../../../../../utils/conversionFunctions';
 
 const sortMortgageNotes = (mortgageNoteIds, borrowers) =>
   borrowers.reduce(
-    (obj, { mortgageNotes: notes, name }, index) => {
+    (obj, { mortgageNotes: notes = [], name }, index) => {
       const notesWithName = notes.map(note => ({
         ...note,
         borrowerName: name || (

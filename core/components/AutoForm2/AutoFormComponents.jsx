@@ -1,71 +1,78 @@
 // @flow
 import React from 'react';
-import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
-import AutoFields from 'uniforms-material/AutoFields';
 import connectField from 'uniforms/connectField';
-import DefaultSubmitField from 'uniforms-material/SubmitField';
+import { compose } from 'recompose';
+import { injectIntl } from 'react-intl';
 
-import T from '../Translation';
-import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
-import PercentInput from '../PercentInput';
+import { PercentField } from '../PercentInput';
+import { CUSTOM_AUTOFIELD_TYPES, COMPONENT_TYPES } from './constants';
+import CustomSelectField from './CustomSelectField';
+import CustomListField from './CustomListField';
+import CustomNestField from './CustomNestField';
+import { getLabel, getPlaceholder } from './autoFormHelpers';
+import MoneyInput from '../MoneyInput';
 
-const CustomSelectField = ({ transform, ...props }) => (
-  <SelectField
-    {...props}
-    transform={
-      transform
-      || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
-    }
-    displayEmpty
-  />
-);
-
-const determineComponentFromProps = (props) => {
-  if (props.allowedValues) {
-    return CustomSelectField;
+const determineComponentFromProps = ({
+  allowedValues,
+  customAllowedValues,
+  field: { uniforms },
+  fieldType,
+}) => {
+  if (allowedValues || customAllowedValues) {
+    return { Component: CustomSelectField, type: COMPONENT_TYPES.SELECT };
   }
 
-  if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
-  ) {
-    return DateField;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
+    return { Component: DateField, type: COMPONENT_TYPES.DATE };
   }
 
-  if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
-  ) {
-    return PercentInput;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
+    return { Component: PercentField, type: COMPONENT_TYPES.PERCENT };
   }
 
-  return false;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
+    return { Component: MoneyInput, type: COMPONENT_TYPES.MONEY };
+  }
+
+  if (fieldType === Array) {
+    return { Component: CustomListField, type: COMPONENT_TYPES.ARRAY };
+  }
+
+  if (fieldType === Object) {
+    return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
+  }
+
+  return { Component: false, type: null };
 };
 
-export const SubmitField = props => (
-  <DefaultSubmitField
-    label={<T id="general.save" />}
-    variant="raised"
-    color="primary"
-    {...props}
-  />
-);
-
-const selectLabel = ({ label, props: { name, overrideLabel } }) =>
-  (label === null ? null : overrideLabel || label || <T id={`Forms.${name}`} />);
-
-export const makeCustomAutoField = ({ labels } = {}) =>
-  connectField(
+export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
+  compose(
+    injectIntl,
+    connectField,
+  )(
     (props) => {
-      const Component = determineComponentFromProps(props) || AutoField;
-      const label = labels && labels[props.name];
-      return <Component {...props} label={selectLabel({ label, props })} />;
+      let { Component, type } = determineComponentFromProps(props);
+      Component = Component || AutoField;
+
+      const label = getLabel({
+        ...props,
+        intlPrefix,
+        label: labels[props.name],
+      });
+      const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+
+      return (
+        <Component
+          {...props}
+          label={label}
+          placeholder={placeholder}
+          InputLabelProps={{ shrink: true }}
+        />
+      );
     },
-    { includeInChain: false },
+    { includeInChain: false, includeParent: true },
   );
 
 export const CustomAutoField = makeCustomAutoField({});
-
-export const CustomAutoFields = AutoFields;

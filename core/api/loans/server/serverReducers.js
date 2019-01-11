@@ -2,11 +2,11 @@ import merge from 'lodash/merge';
 
 import filesReducer from '../../reducers/filesReducer';
 import Calculator from '../../../utils/Calculator';
-import { userLoanFragment } from '../queries/loanFragments';
 import Loans from '../loans';
 import assigneeReducer from '../../reducers/assigneeReducer';
+import { userLoan } from '../../fragments';
 
-const body = merge({}, userLoanFragment, {
+const body = merge({}, userLoan(), {
   documents: 1,
   borrowers: {
     documents: 1,

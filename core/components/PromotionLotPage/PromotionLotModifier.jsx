@@ -6,12 +6,8 @@ import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
 import { propertyUpdate } from 'core/api/methods';
-import {
-  PROMOTION_LOT_STATUS,
-  PROMOTION_LOT_QUERIES,
-} from 'core/api/constants';
+import { PROMOTION_LOT_STATUS } from 'core/api/constants';
 import { promotionLotRemove } from 'core/api';
-import ClientEventService from 'core/api/events/ClientEventService/index';
 import { promotionLotSchema } from '../PromotionPage/client/ProPromotionLotsTable/ProPromotionLotsTable';
 
 type ProPromotionLotModifierProps = {
@@ -42,11 +38,20 @@ const ProPromotionLotModifier = ({
       onSubmit={updateProperty}
       submitting={submitting}
       model={model}
-      renderAdditionalActions={({ closeDialog }) => (
+      renderAdditionalActions={({
+        closeDialog,
+        setDisableActions,
+        disabled,
+      }) => (
         <Button
-          onClick={() => deletePromotionLot().then(closeDialog)}
+          onClick={() => {
+            setDisableActions(true);
+            return deletePromotionLot()
+              .then(closeDialog)
+              .finally(() => setDisableActions(false));
+          }}
           error
-          disabled={submitting}
+          disabled={submitting || disabled}
         >
           <T id="general.delete" />
         </Button>

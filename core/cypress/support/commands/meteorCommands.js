@@ -1,40 +1,23 @@
 import pollUntilReady from '../../../utils/testHelpers/pollUntilReady';
 import { E2E_USER_EMAIL, USER_PASSWORD } from '../../utils';
 
+// You have to have visited the app before this can work
+// Like: cy.visit('/')
 Cypress.Commands.add('getMeteor', () =>
-  cy.window().then(({ Meteor }) => {
-    if (!Meteor) {
-      // We visit the app so that we get the Window instance of the app
-      // from which we get the `Meteor` instance used in tests
-      cy.visit('/');
-      return cy.window().then(({ Meteor: MeteorSecondTry }) => MeteorSecondTry);
-    }
-    return Meteor;
-  }));
+  cy.window().then(({ Meteor }) => Meteor));
 
 Cypress.Commands.add('callMethod', (method, ...params) => {
   Cypress.log({
     name: 'Calling method',
-    consoleProps: () => ({
-      name: method,
-      params,
-    }),
+    consoleProps: () => ({ name: method, params }),
   });
 
   cy.getMeteor().then(Meteor =>
     new Cypress.Promise((resolve, reject) => {
-      console.log('Calling method', method, 'with params', params);
-      if (method === 'generateTestData') {
-        debugger;
-      }
-      Meteor.call(method, ...params, (err, result) => {
-        if (method === 'generateTestData') {
-          debugger;
-        }
-        console.log('result from method');
-        console.log('err', err);
-        console.log('result', result);
-
+      // Be careful, if methods don't come back, you might be creating a new
+      // websocket connection, see the network tab if you have multiple ones
+      // https://github.com/meteor/meteor/issues/10392
+      Meteor.apply(method, params, (err, result) => {
         if (err) {
           reject(err);
         }

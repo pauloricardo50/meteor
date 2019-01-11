@@ -6,6 +6,7 @@ import {
   additionalDocuments,
   address,
   mortgageNoteLinks,
+  moneyField,
   roundedInteger,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
@@ -22,19 +23,21 @@ export const PropertySchema = new SimpleSchema({
   name: {
     type: String,
     optional: true,
+    uniforms: { placeholder: null },
   },
   description: {
     type: String,
     optional: true,
+    uniforms: { placeholder: null },
   },
   category: {
     type: String,
     optional: true,
     defaultValue: propertyConstants.PROPERTY_CATEGORY.USER,
     allowedValues: Object.values(propertyConstants.PROPERTY_CATEGORY),
+    uniforms: { placeholder: null },
   },
-  // Cost of the property
-  value: roundedInteger(3),
+  value: { ...moneyField, ...roundedInteger(3) },
   status: {
     type: String,
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
@@ -88,6 +91,7 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(propertyConstants.AREA_NORM),
     defaultValue: propertyConstants.AREA_NORM.NIA,
+    uniforms: { placeholder: null },
   },
   landArea: {
     type: SimpleSchema.Integer,
@@ -138,6 +142,7 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     defaultValue: propertyConstants.VOLUME_NORM.SIA_416,
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
+    uniforms: { placeholder: null },
   },
   parkingInside: {
     type: SimpleSchema.Integer,
@@ -155,6 +160,7 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     defaultValue: propertyConstants.MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
     allowedValues: Object.values(propertyConstants.MINERGIE_CERTIFICATE),
+    uniforms: { placeholder: null },
   },
   isCoproperty: {
     type: Boolean,
@@ -192,25 +198,22 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
+    uniforms: { placeholder: null },
   },
   qualityProfileStandard: {
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
+    uniforms: { placeholder: null },
   },
   valuation: {
     type: ValuationSchema,
     defaultValue: {},
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
-  monthlyExpenses: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 1000000,
-    optional: true,
-  },
-  landValue: roundedInteger(3),
-  constructionValue: roundedInteger(3),
+  monthlyExpenses: moneyField,
+  landValue: { ...moneyField, ...roundedInteger(3) },
+  constructionValue: { ...moneyField, ...roundedInteger(3) },
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
 });

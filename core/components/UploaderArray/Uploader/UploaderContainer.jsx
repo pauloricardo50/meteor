@@ -1,6 +1,7 @@
 import { compose, withProps } from 'recompose';
 
-import { deleteFile, SecurityService } from 'core/api';
+import { deleteFile } from 'core/api';
+import SecurityService from 'core/api/security/Security';
 import UploaderController from './UploaderController';
 
 const UploaderContainer = withProps(({ collection, docId, disabled }) => {

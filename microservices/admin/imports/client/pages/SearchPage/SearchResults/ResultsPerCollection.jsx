@@ -13,6 +13,8 @@ import {
   PROPERTIES_COLLECTION,
   USERS_COLLECTION,
   PROMOTIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 
 import ResultSecondaryText from './ResultSecondaryText';
@@ -83,6 +85,16 @@ const getPromotionInfo = ({ name, promotionLotLinks }) => ({
   secondary: `${promotionLotLinks.length} lots`,
 });
 
+const getContactInfo = ({ name, organisations = [] }) => ({
+  primary: name,
+  secondary: organisations.map(({ name: orgName }) => orgName).join(', '),
+});
+
+const getOrganisationInfo = ({ name }) => ({
+  primary: name,
+  secondary: null,
+});
+
 const getInfoToDisplay = (result, collection) => {
   switch (collection) {
   case BORROWERS_COLLECTION:
@@ -95,6 +107,10 @@ const getInfoToDisplay = (result, collection) => {
     return getUserInfo(result);
   case PROMOTIONS_COLLECTION:
     return getPromotionInfo(result);
+  case CONTACTS_COLLECTION:
+    return getContactInfo(result);
+  case ORGANISATIONS_COLLECTION:
+    return getOrganisationInfo(result);
   default:
     return null;
   }

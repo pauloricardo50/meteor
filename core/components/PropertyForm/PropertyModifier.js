@@ -16,7 +16,7 @@ const PropertyModifierContainer = withProps(({
   form: 'modify-property',
   formTitleId: 'PropertyForm.modifierDialogTitle',
   formDescriptionId: 'PropertyForm.modifierDialogDescription',
-  initialValues: { address1, zipCode, city, value },
+  model: { address1, zipCode, city, value },
 }));
 
 export default PropertyModifierContainer(PropertyForm);

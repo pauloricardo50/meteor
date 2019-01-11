@@ -1,0 +1,52 @@
+.lenders-tab > h1 {
+  margin-top: 40px;
+}
+
+.lenders-list {
+  margin-top: 32px;
+
+  .lender {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin-right: 16px;
+    margin-bottom: 16px;
+
+    h3 {
+      margin: 0;
+    }
+
+    .offers {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+
+      width: 100%;
+    }
+
+    .lender-offer {
+      margin-bottom: 4px;
+      padding: 16px;
+
+      border: 2px solid $border-grey;
+      border-radius: 4px;
+
+      &:hover {
+        border-color: $primary;
+      }
+    }
+  }
+}
+
+.lender-picker-dialog {
+  .organisation {
+    display: flex;
+    justify-content: flex-start;
+
+    h4 {
+      width: 200px;
+      margin-right: 8px;
+    }
+  }
+}

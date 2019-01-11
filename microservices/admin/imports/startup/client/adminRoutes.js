@@ -8,6 +8,7 @@ export const DASHBOARD_PAGE = '/';
 export const DEV_PAGE = '/dev';
 export const LOANS_PAGE = '/loans';
 export const ORGANISATIONS_PAGE = '/organisations';
+export const SINGLE_ORGANISATION_PAGE = '/organisations/:organisationId';
 export const PROMOTIONS_PAGE = '/promotions';
 export const PROPERTIES_PAGE = '/properties';
 export const SEARCH_PAGE = '/search';

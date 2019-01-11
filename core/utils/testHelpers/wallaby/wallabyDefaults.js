@@ -38,8 +38,6 @@ function setWallabyConfig(name, overrides = {}) {
                   alias: {
                     core: './imports/core',
                     meteor: './imports/core/utils/testHelpers/meteorStubs',
-                    'simpl-schema':
-                      './imports/core/utils/testHelpers/packageStubs/simpl-schema',
                   },
                 },
               ],
@@ -53,11 +51,23 @@ function setWallabyConfig(name, overrides = {}) {
 
           // Configure jsdom for react mount tests
           const jsdom = require('jsdom');
+
           const { JSDOM } = jsdom;
           const { document } = new JSDOM('<!doctype html><html><body></body></html>').window;
           global.document = document;
           global.window = document.defaultView;
           global.navigator = { userAgent: 'node.js', platform: 'MacIntel' };
+
+          const SimpleSchema = require('simpl-schema').default;
+          SimpleSchema.extendOptions([
+            'index',
+            'unique',
+            'denyInsert',
+            'denyUpdate',
+            'uniforms',
+            'condition',
+            'customAllowedValues',
+          ]);
         },
       },
       overrides,

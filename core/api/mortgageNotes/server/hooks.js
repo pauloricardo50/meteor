@@ -1,6 +1,6 @@
-import BorrowerService from '../../borrowers/BorrowerService';
+import BorrowerService from '../../borrowers/server/BorrowerService';
 import MortgageNotes from '../mortgageNotes';
-import MortgageNoteService from '../MortgageNoteService';
+import MortgageNoteService from './MortgageNoteService';
 
 MortgageNotes.before.remove((userId, { _id: mortgageNoteId }) => {
   const { borrowers = [] } = MortgageNoteService.createQuery({

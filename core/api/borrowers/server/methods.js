@@ -1,5 +1,5 @@
-import { SecurityService } from '../..';
-import BorrowerService from '../BorrowerService';
+import SecurityService from '../../security';
+import BorrowerService from './BorrowerService';
 import {
   borrowerInsert,
   borrowerUpdate,

@@ -4,8 +4,8 @@
   "scripts": {
     "clean": "rm -rf node_modules/ && meteor npm install",
     "cypress-open": "../../node_modules/cypress/bin/cypress open",
-    "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --browser chrome --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
-    "cypress-run": "../../node_modules/cypress/bin/cypress run --browser chrome",
+    "cypress-run-CI": "../../node_modules/cypress/bin/cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/mocha-multi-reporters-config.json",
+    "cypress-run": "../../node_modules/cypress/bin/cypress run",
     "debug": "meteor npm run start -- --inspect",
     "ngrok": "cd ../../scripts/ && ./ngrok.sh 5000",
     "prestart": "cd ../.. && npm run lang -- admin",
@@ -13,8 +13,8 @@
     "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor run --settings settings-dev.json --port 5000",
     "start": "meteor run --settings settings-dev.json --port 5000",
     "test-CI": "SERVER_TEST_REPORTER=xunit XUNIT_FILE=~/app/results/unit-admin.xml TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
-    "test-console-once": "meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json  --port 5006",
-    "test-console": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json  --port 5006",
+    "test-console-once": "meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json --port 5006",
+    "test-console": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5006",
     "test-e2e-CI": "start-server-and-test start-e2e http://localhost:5015 cypress-run-CI",
     "test-e2e-once": "start-server-and-test start-e2e http://localhost:5015 cypress-run",
     "test-e2e": "start-server-and-test start-e2e http://localhost:5015 cypress-open",
@@ -77,7 +77,6 @@
     "react-text-mask": "^5.4.3",
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
-    "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
@@ -86,8 +85,8 @@
     "sift": "^6.0.0",
     "simpl-schema": "^1.5.3",
     "text-mask-addons": "^3.8.0",
-    "uniforms": "^1.25.0",
-    "uniforms-material": "^1.25.0"
+    "uniforms": "^1.30.0",
+    "uniforms-material": "^1.30.0"
   },
   "devDependencies": {
     "@babel/core": "7.1.2",

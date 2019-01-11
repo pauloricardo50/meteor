@@ -1,6 +1,6 @@
 import Offers from '..';
 import { OFFER_QUERIES } from '../offerConstants';
-import { fullOfferFragment } from './offerFragments';
+import { fullOffer } from '../../fragments';
 
 export default Offers.createQuery(OFFER_QUERIES.OFFERS, {
   $filter({ filters, params: { loanId } }) {
@@ -8,6 +8,6 @@ export default Offers.createQuery(OFFER_QUERIES.OFFERS, {
       filters.loanId = loanId;
     }
   },
-  ...fullOfferFragment,
+  ...fullOffer(),
   $options: { sort: { createdAt: -1 } },
 });

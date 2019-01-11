@@ -1,14 +1,9 @@
-import { Random } from 'meteor/random';
-
 import SimpleSchema from 'simpl-schema';
 
+import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
-import {
-  MORTGAGE_NOTE_TYPES,
-  MORTGAGE_NOTE_CATEGORIES,
-} from './sharedSchemaConstants';
 
 export const createdAt = {
   type: Date,
@@ -66,6 +61,7 @@ export const address = {
     autoValue() {
       return zipcodes(this.field('zipCode').value);
     },
+    uniforms: { placeholder: null },
   },
 };
 
@@ -107,7 +103,7 @@ export const roundedInteger = (digits) => {
   return {
     type: SimpleSchema.Integer,
     min: 0,
-    max: 100000000,
+    max: 1000000000,
     autoValue() {
       if (this.isSet) {
         return Math.round(this.value / rounder) * rounder;
@@ -115,4 +111,25 @@ export const roundedInteger = (digits) => {
     },
     optional: true,
   };
+};
+
+export const percentageField = {
+  type: Number,
+  min: 0,
+  max: 1,
+  optional: true,
+  autoValue() {
+    if (this.isSet) {
+      return Number(this.value.toFixed(3));
+    }
+  },
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
+};
+
+export const moneyField = {
+  type: SimpleSchema.Integer,
+  min: 0,
+  max: 1000000000,
+  optional: true,
+  uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
 };

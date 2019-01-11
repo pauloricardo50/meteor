@@ -24,6 +24,7 @@ const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
 
   return branch(renderFunc, renderComponent(MissingDoc));
 };
+
 // Use proper name for data, and remove unnecessary props from children
 // error should be thrown and catched by our errorboundaries anyways
 // or displayed by an alert
@@ -81,9 +82,16 @@ type withSmartQueryArgs = {
   smallLoader?: boolean,
 };
 
+const calculateParams = (params, props) => {
+  if (typeof params === 'function') {
+    return params(props);
+  }
+  return params;
+};
+
 const withSmartQuery = ({
   query,
-  params = () => {},
+  params = {},
   queryOptions = { single: false },
   dataName = 'data',
   // used to bypass the missing doc component
@@ -93,9 +101,9 @@ const withSmartQuery = ({
   let completeQuery;
 
   if (typeof query === 'function') {
-    completeQuery = props => query(props).clone(params(props));
+    completeQuery = props => query(props).clone(calculateParams(params, props));
   } else {
-    completeQuery = props => query.clone(params(props));
+    completeQuery = props => query.clone(calculateParams(params, props));
   }
 
   return compose(

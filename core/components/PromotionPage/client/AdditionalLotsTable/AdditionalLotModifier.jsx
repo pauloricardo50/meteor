@@ -25,7 +25,7 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
   lotSchema.extend(new SimpleSchema({
     promotionLot: {
       type: String,
-      allowedValues: [...promotionLots.map(({ _id }) => _id), null],
+      allowedValues: promotionLots.map(({ _id }) => _id),
       optional: true,
       uniforms: {
         transform: _id =>
@@ -35,6 +35,7 @@ const AdditionalLotModifierSchema = (promotionLots = []) =>
             <T id="PromotionPage.AdditionalLotsTable.nonAllocated" />
           )),
         labelProps: { shrink: true },
+        placeholder: 'Non alloué',
       },
     },
   }));
@@ -62,11 +63,15 @@ const AdditionalLotModifier = ({
       open={open}
       setOpen={setOpen}
       submitting={submitting}
-      renderAdditionalActions={({ closeDialog }) => (
+      renderAdditionalActions={({
+        closeDialog,
+        setDisableActions,
+        disabled,
+      }) => (
         <Button
           onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
           error
-          disabled={submitting}
+          disabled={submitting || disabled}
         >
           <T id="general.delete" />
         </Button>
@@ -82,15 +87,13 @@ export default compose(
       lot.promotionLots.length > 0 ? lot.promotionLots[0]._id : null,
   })),
   withProps(({ setOpen, setSubmitting }) => ({
-    updateAdditionalLot: (values) => {
-      console.log('additional lot values', values);
-      const {
-        _id: lotId,
-        name,
-        description,
-        value,
-        promotionLot: promotionLotId,
-      } = values;
+    updateAdditionalLot: ({
+      _id: lotId,
+      name,
+      description,
+      value,
+      promotionLot: promotionLotId,
+    }) => {
       setSubmitting(true);
       return lotUpdate
         .run({
@@ -103,13 +106,16 @@ export default compose(
         })
         .finally(() => setSubmitting(false));
     },
-    deleteAdditionalLot: (lotId, closeDialog) => {
+    deleteAdditionalLot: ({ lotId, closeDialog, setDisableActions }) => {
       setSubmitting(true);
-
+      setDisableActions(true);
       return lotRemove
         .run({ lotId })
         .then(closeDialog)
-        .then(() => setSubmitting(false));
+        .finally(() => {
+          setDisableActions(false);
+          setSubmitting(false);
+        });
     },
   })),
 )(AdditionalLotModifier);

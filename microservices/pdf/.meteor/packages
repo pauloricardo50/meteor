@@ -38,13 +38,11 @@ email
 check                    # variable type verification for server side validation
 session                 # Lets you use Session variables
 edgee:slingshot
-cultofcoders:grapher-react
 cultofcoders:mutations
 dburles:mongo-collection-instances
 
 
 # UI tricks
-themeteorchef:bert
 fortawesome:fontawesome
 meteorhacks:inject-initial
 
@@ -69,3 +67,4 @@ cultofcoders:grapher
 epotek:accounts-ui
 matb33:collection-hooks
 percolate:migrations
+cultofcoders:grapher-react

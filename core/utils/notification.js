@@ -1,5 +1,5 @@
 import notification from 'antd/lib/notification';
-import 'antd/lib/notification/style/index.css';
+// import 'antd/lib/notification/style/index.css';
 
 // API: https://ant.design/components/notification/
 
@@ -14,6 +14,8 @@ import 'antd/lib/notification/style/index.css';
 
 // Config API
 // Property	    Description	                                                                                                  Type	          Default
+// message     title of the notification (string/JSX)
+// description     message below the title (string/JSX)
 // bottom	      Distance from the bottom of the viewport, when placement is bottomRight or bottomLeft(unit: pixels).          number	        24
 // duration	    Time in seconds before Notification is closed.When set to 0 or null, it will never be closed automatically	  number	        4.5
 // getContainer	Return the mount node for Notification                                                                        () => HTMLNode  () => document.body

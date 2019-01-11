@@ -46,8 +46,6 @@ const employees = [
     name: 'Jean-Luc Kringel',
     title: 'Responsable Assurances',
     phoneNumber: '+41 22 566 82 94',
-    // Attendre début emploiement de Jean-Luc pour éviter problèmes avec chomage
-    hideFromHomePage: true,
   },
   {
     email: '',

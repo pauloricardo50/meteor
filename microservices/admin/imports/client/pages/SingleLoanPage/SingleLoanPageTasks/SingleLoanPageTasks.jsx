@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
-import LoanTaskInserter from '../LoanTaskInserter';
+import LoanTaskInserter from './LoanTaskInserter';
 import TasksTable from '../../../components/TasksTable';
 import SingleLoanPageTasksContainer from './SingleLoanPageTasksContainer';
 

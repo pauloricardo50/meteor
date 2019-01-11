@@ -44,22 +44,23 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         key: 'notaryFees',
       });
 
+      // Custom notary fees are provided
+      if (notaryFees === 0 || notaryFees) {
+        return { total: notaryFees };
+      }
+
       const canton = this.makeSelectPropertyKey('canton')({
         loan,
         structureId,
       });
       const calculator = new NotaryFeesCalculator({ canton });
 
-      const defaultNotaryFees = calculator.getNotaryFeesForLoan({
+      const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
         structureId,
       });
 
-      if (notaryFees === 0 || notaryFees) {
-        return { total: notaryFees };
-      }
-
-      return defaultNotaryFees;
+      return calculatedNotaryFees;
     }
 
     getFeesCalculator({ loan, structureId }) {

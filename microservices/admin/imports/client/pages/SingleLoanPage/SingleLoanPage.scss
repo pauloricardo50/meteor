@@ -1,6 +1,8 @@
 @import './LoanTabs/ActionsTab/ActionsTab.scss';
+@import './LoanTabs/LendersTab/LendersTab.scss';
 @import './LoanTabs/OffersTab/OffersTab.scss';
 @import './LoanTabs/OverviewTab/OverviewTab.scss';
+@import './SingleLoanPageTasks/LoanTaskInserter/LoanTaskInserter.scss';
 
 .single-loan-page {
   .single-loan-page-tasks {
@@ -26,15 +28,17 @@
     align-items: flex-start;
     flex-direction: column;
 
-     > * {
+    > * {
       display: inline;
     }
 
-    .update-field {
-      display: inline-block;
+    .status-label-dropdown {
+      display: inline-flex;
+      align-items: center;
 
-      min-width: 170px;
       margin-left: 8px;
+
+      vertical-align: middle;
     }
 
     form > * {
@@ -53,7 +57,7 @@
 
       width: 100%;
 
-       > * {
+      > * {
         margin-right: 8px;
         padding: 8px;
       }

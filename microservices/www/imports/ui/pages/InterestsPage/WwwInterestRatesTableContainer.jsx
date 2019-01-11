@@ -7,7 +7,9 @@ import { columnOptions, rows } from './wwwInterestsTableHelpers';
 export const WwwInterestsTableContainer = compose(
   withSmartQuery({
     query: currentInterestRates,
-    queryOptions: { reactive: true },
+    // Don't make this reactive, there is a weird SSR issue with meteor
+    // https://forums.meteor.com/t/solved-need-help-with-server-render-and-withtracker/41337/5
+    queryOptions: { reactive: false },
     dataName: 'currentInterestRates',
     smallLoader: true,
   }),

@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 
-import {{schema}} from './schemas/{{collectionName}}Schema';
-import { {{collectionConstant}} } from './{{collectionName}}Constants';
+import {{schema}} from './schemas/{{schemaFile}}';
+import { {{collectionConstant}} } from './{{constantsFile}}';
 
 const {{collection}} = new Mongo.Collection({{collectionConstant}});
 

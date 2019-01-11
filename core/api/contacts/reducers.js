@@ -1,4 +1,4 @@
-import { addressReducer, tasksReducer } from '../reducers';
+import addressReducer from '../reducers/addressReducer';
 import Contacts from './contacts';
 
 Contacts.addReducers({
@@ -24,5 +24,4 @@ Contacts.addReducers({
       phoneNumbers && phoneNumbers.length && phoneNumbers[0],
   },
   ...addressReducer,
-  ...tasksReducer,
 });

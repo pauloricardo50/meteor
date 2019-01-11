@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartBar } from '@fortawesome/pro-light-svg-icons';
+import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
 
 import Button from 'core/components/Button';
 import { createRoute } from 'core/utils/routerUtils';

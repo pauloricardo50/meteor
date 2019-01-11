@@ -11,12 +11,17 @@ import {
 const PromotionSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-  name: { type: String },
-  type: { type: String, allowedValues: Object.values(PROMOTION_TYPES) },
+  name: { type: String, uniforms: { placeholder: 'Les Terrasses de Versoix' } },
+  type: {
+    type: String,
+    allowedValues: Object.values(PROMOTION_TYPES),
+    uniforms: { displayEmpty: false },
+  },
   status: {
     type: String,
     allowedValues: Object.values(PROMOTION_STATUS),
     defaultValue: PROMOTION_STATUS.PREPARATION,
+    uniforms: { displayEmpty: false },
   },
   ...address,
   ...contactsSchema,

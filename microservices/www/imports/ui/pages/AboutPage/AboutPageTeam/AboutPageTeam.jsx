@@ -21,7 +21,7 @@ const AboutPageTeam = () => (
       <T id="AboutPageTeam.title" />
     </h2>
     <div className="about-page-team-list">
-      {employees.filter(({ hideFromHomePage }) => !hideFromHomePage).sort(sortByLastName).map(employee => (
+      {employees.sort(sortByLastName).map(employee => (
         <AboutPageTeamMember key={employee.name} {...employee} />
       ))}
       <AboutPageTeamRecruiting />

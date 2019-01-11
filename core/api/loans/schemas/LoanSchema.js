@@ -1,6 +1,5 @@
 // @flow
 import SimpleSchema from 'simpl-schema';
-import uniforms from 'uniforms-material'; // Leave this imported here for autoforms to work
 
 import {
   createdAt,
@@ -61,16 +60,19 @@ const LoanSchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(LOAN_VERIFICATION_STATUS),
     defaultValue: LOAN_VERIFICATION_STATUS.NONE,
+    uniforms: { displayEmpty: false },
   },
   purchaseType: {
     type: String,
     defaultValue: PURCHASE_TYPE.ACQUISITION,
     allowedValues: Object.values(PURCHASE_TYPE),
+    uniforms: { displayEmpty: false },
   },
   residenceType: {
     type: String,
     allowedValues: Object.values(RESIDENCE_TYPE),
     optional: true,
+    uniforms: { displayEmpty: false },
   },
   canton: {
     type: String,

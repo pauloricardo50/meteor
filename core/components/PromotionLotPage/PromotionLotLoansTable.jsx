@@ -13,7 +13,7 @@ const PromotionLotLoansTable = ({
   isAdmin,
 }: PromotionLotLoansTableProps) => (
   <>
-    <h3 className="text-center">
+    <h3 className="text-center promotion-lot-loans-table-title">
       <T id="PromotionLotLoansTable.title" />
     </h3>
     <Table

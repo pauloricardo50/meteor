@@ -6,21 +6,25 @@ import ContactDialogFormContainer from './ContactDialogFormContainer';
 
 type InsertContactDialogFormProps = {
   schema: Object,
+  model: Object,
   insertContact: Function,
 };
 
 const InsertContactDialogForm = ({
   schema,
   insertContact,
+  model,
 }: InsertContactDialogFormProps) => (
   <AutoFormDialog
     schema={schema}
+    model={model}
     onSubmit={insertContact}
     buttonProps={{
       label: <T id="Contacts.insert" />,
       raised: true,
       primary: true,
     }}
+    title={<T id="Contacts.insert" />}
   />
 );
 

@@ -3,7 +3,7 @@ import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
 describe('Pro', () => {
   before(() => {
-    cy.visit('/');
+    cy.initiateTest();
     cy.callMethod('resetDatabase');
     cy.callMethod('generateProFixtures');
   });
@@ -17,8 +17,9 @@ describe('Pro', () => {
 
   context('when logged in', () => {
     beforeEach(() => {
-      cy.visit('/');
+      cy.visit('/login');
       cy.meteorLogin(PRO_EMAIL, PRO_PASSWORD);
+      cy.visit('/');
     });
 
     it('should add a promotion', () => {
@@ -49,7 +50,10 @@ describe('Pro', () => {
         cy.contains('Test promotion').click();
 
         cy.get('.promotion-table-actions > button:first-of-type').click();
-        cy.get('input[name=name]').type('Promotion lot 1');
+        cy.wait(2000); // Try to wait for focus to settle
+
+        // Form should have autofocus
+        cy.focused().type('Promotion lot 1');
         cy.get('input[name=value]')
           .type('{backspace}') // Remove initial 0
           .type(1000000);
@@ -59,7 +63,9 @@ describe('Pro', () => {
         cy.contains('1 000 000').should('exist');
 
         cy.get('.promotion-table-actions > button:last-of-type').click();
-        cy.get('input[name=name]').type('Lot 1');
+
+        // Form should have autofocus
+        cy.focused().type('Lot 1');
         cy.setSelect('type', 'PARKING_CAR');
         cy.get('input[name=value]')
           .type('{backspace}') // Remove initial 0
@@ -86,19 +92,19 @@ describe('Pro', () => {
           .should('not.exist');
 
         cy.contains('Lot 1').click();
-        cy.get('input[name=name]')
-          .clear()
-          .type('Lot 2');
+        cy.wait(2000); // Try to wait for focus to settle
+
+        cy.get('input[name=name]').clear();
+        cy.get('input[name=name]').type('Lot 2');
         cy.setSelect('type', 'BASEMENT');
-        cy.get('input[name=value]')
-          .clear()
-          .type('{backspace}') // Remove initial 0
-          .type(2500);
-        cy.setSelect('promotionLot', 0);
+        cy.get('input[name=value]').clear();
+        cy.get('input[name=value]').type('{backspace}2500'); // Remove initial 0
+        cy.setSelect('promotionLot', 1);
         cy.contains('Ok').click();
 
         cy.contains('Lot 2').should('exist');
         cy.contains('2 500').should('exist');
+        cy.contains('1 002 500').should('exist');
         cy.get('.additional-lots-table')
           .contains('Promotion lot 1')
           .should('exist');

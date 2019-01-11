@@ -1,8 +1,18 @@
 // @flow
 import React from 'react';
+import SingleContactPageContainer from './SingleContactPageContainer';
+import SingleContactPageHeader from './SingleContactPageHeader';
+import SingleContactPageInfos from './SingleContactPageInfos';
 
-type SingleContactPageProps = {};
+type SingleContactPageProps = {
+  contact: Object,
+};
 
-const SingleContactPage = (props: SingleContactPageProps) => <div>Hello World</div>;
+const SingleContactPage = ({ contact }: SingleContactPageProps) => (
+  <div className="card1 card-top">
+    <SingleContactPageHeader contact={contact} />
+    <SingleContactPageInfos contact={contact} />
+  </div>
+);
 
-export default SingleContactPage;
+export default SingleContactPageContainer(SingleContactPage);

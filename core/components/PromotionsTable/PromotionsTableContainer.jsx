@@ -65,7 +65,6 @@ export const BasePromotionsTableContainer = compose(
 export default compose(
   withSmartQuery({
     query: proPromotions,
-    params: ({ currentUser: { _id: userId } }) => ({ userId }),
     queryOptions: { reactive: false },
     dataName: 'promotions',
     renderMissingDoc: false,

@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { SlackService } from '../../SlackService';
+import { SlackService } from '../SlackService';
 
 const TEST_CHANNEL = 'test';
 

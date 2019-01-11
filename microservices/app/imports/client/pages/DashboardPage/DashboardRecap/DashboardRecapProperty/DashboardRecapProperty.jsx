@@ -93,6 +93,15 @@ const DashboardRecapProperty = ({ property, loanId }) => (
       ':loanId': loanId,
     })}
     className="dashboard-recap-property card1 card-hover"
+    onClick={(event) => {
+      // Do this to prevent the link from triggering if a form is submitted
+      // in the propertyModifier
+      // This hack skips the link in react-router
+      // https://github.com/ReactTraining/react-router/blob/0853628daff26a809e5384f352fada57753fc1c3/packages/react-router-dom/modules/Link.js#L7
+      if (event.target.type === 'submit') {
+        event.metaKey = true;
+      }
+    }}
   >
     {getContent(property, loanId)}
   </Link>

@@ -53,7 +53,7 @@ const getVariant = ({ raised, outlined }) => {
   return undefined;
 };
 
-const Button = (props) => {
+const Button = props => {
   const childProps = omit(props, [
     'primary',
     'secondary',
@@ -119,9 +119,10 @@ Button.defaultProps = {
 };
 
 const withLoadingProp = mapProps(({ loading, ...props }) =>
-  (loading
+  loading
     ? { ...props, disabled: true, icon: <Icon type="loop-spin" /> }
-    : props));
+    : props,
+);
 
 export default compose(
   withLoadingProp,

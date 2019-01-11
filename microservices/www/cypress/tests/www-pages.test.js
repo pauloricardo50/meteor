@@ -29,11 +29,13 @@ const pages = {
 
 describe('Www Pages', () => {
   before(() => {
+    cy.initiateTest();
+
     cy.callMethod('resetDatabase');
     cy.callMethod('generateFixtures');
   });
 
-  Object.keys(pages).forEach(pageName => {
+  Object.keys(pages).forEach((pageName) => {
     it(`${pageName} Page should render`, () => {
       cy.routeShouldRenderSuccessfully(pages[pageName], null, {
         reloadWindowOnNavigation: true,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Button from 'core/components/Button';
+import Fab from '@material-ui/core/Fab';
 import Icon from 'core/components/Icon';
 
 import MotionCarousel from './MotionCarousel';
@@ -32,17 +32,13 @@ export default class HomePageReviewsCarousel extends Component {
     const { currentIndex } = this.state;
     return (
       <div className="home-page-reviews-carousel">
-        <Button onClick={this.handleClick} variant="fab" color="primary">
+        <Fab onClick={this.handleClick} color="primary">
           <Icon type="left" />
-        </Button>
+        </Fab>
         <MotionCarousel reviews={shuffledReviews} currentIndex={currentIndex} />
-        <Button
-          onClick={() => this.handleClick(NEXT)}
-          variant="fab"
-          color="primary"
-        >
+        <Fab onClick={() => this.handleClick(NEXT)} color="primary">
           <Icon type="right" />
-        </Button>
+        </Fab>
       </div>
     );
   }

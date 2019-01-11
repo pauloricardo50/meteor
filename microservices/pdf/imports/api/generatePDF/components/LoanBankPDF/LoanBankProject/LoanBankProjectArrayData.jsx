@@ -70,68 +70,71 @@ export const EMPTY_LINE = {
   type: ROW_TYPES.EMPTY,
 };
 
-export const structureArrayData = loan => [
-  {
-    label: <T id="PDF.projectInfos.structure.propertyValue" />,
-    data: toMoney(Calculator.getPropertyValue({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.notaryFees" />,
-    data: toMoney(Calculator.getFees({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.propertyWork" />,
-    data: toMoney(Calculator.getPropertyWork({ loan })),
-    condition: !!loan.propertyWork,
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.totalCost" />,
-    data: toMoney(Calculator.getProjectValue({ loan })),
-    type: ROW_TYPES.SUM,
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.wantedLoan" />,
-    data: toMoney(Calculator.selectLoanValue({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
-    data: toMoney(Calculator.getTotalUsed({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
-    data: toMoney(Calculator.getTotalPledged({ loan })),
-    condition: Calculator.getTotalPledged({ loan }) > 0,
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.theoreticalCharges" />,
-    type: ROW_TYPES.SUBSECTION,
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.interests" />,
-    data: toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.amortization" />,
-    data: toMoney(12 * Calculator.getAmortization({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.maintenance" />,
-    data: toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.totalTheoreticalCharges" />,
-    data: toMoney(12 * Calculator.getTheoreticalMonthly({ loan })),
-    type: ROW_TYPES.SUM,
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.totalIncome" />,
-    data: toMoney(Calculator.getTotalIncome({ loan })),
-  },
-  {
-    label: <T id="PDF.projectInfos.structure.solvency" />,
-    data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
-  },
-];
+export const structureArrayData = (loan) => {
+  const propertyWork = Calculator.getPropertyWork({ loan });
+  return [
+    {
+      label: <T id="PDF.projectInfos.structure.propertyValue" />,
+      data: toMoney(Calculator.getPropertyValue({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.notaryFees" />,
+      data: toMoney(Calculator.getFees({ loan }).total),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.propertyWork" />,
+      data: toMoney(propertyWork),
+      condition: !!propertyWork,
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.totalCost" />,
+      data: toMoney(Calculator.getProjectValue({ loan })),
+      type: ROW_TYPES.SUM,
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.wantedLoan" />,
+      data: toMoney(Calculator.selectLoanValue({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.usedOwnFunds" />,
+      data: toMoney(Calculator.getTotalUsed({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.pledgedOwnFunds" />,
+      data: toMoney(Calculator.getTotalPledged({ loan })),
+      condition: Calculator.getTotalPledged({ loan }) > 0,
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.theoreticalCharges" />,
+      type: ROW_TYPES.SUBSECTION,
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.interests" />,
+      data: toMoney(12 * Calculator.getTheoreticalInterests({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.amortization" />,
+      data: toMoney(12 * Calculator.getAmortization({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.maintenance" />,
+      data: toMoney(12 * Calculator.getTheoreticalMaintenance({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.totalTheoreticalCharges" />,
+      data: toMoney(12 * Calculator.getTheoreticalMonthly({ loan })),
+      type: ROW_TYPES.SUM,
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.totalIncome" />,
+      data: toMoney(Calculator.getTotalIncome({ loan })),
+    },
+    {
+      label: <T id="PDF.projectInfos.structure.solvency" />,
+      data: <Percent value={Calculator.getIncomeRatio({ loan })} rounded />,
+    },
+  ];
+};
 
 export const propertyArrayKeys = [
   'address',

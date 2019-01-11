@@ -70,3 +70,34 @@ There is a single staging server hosting all copies of the microservices. They c
 * https://www.staging.e-potek.ch
 * https://app.staging.e-potek.ch
 * https://admin.staging.e-potek.ch
+
+
+## Client Sizes
+
+Here we can keep track of bundle size changes over time.
+
+
+| Date       | `www`  | `app`  | `admin` | `pro`  | Comment                                  |
+| ---------- | ------ | ------ | ------- | ------ | ---------------------------------------- |
+| 18/12/2018 | 3.27MB | 4.69MB | 4.77MB  | 3.81MB |                                          |
+| 18/12/2018 |        | 4.04MB |         |        | Added `loadable` on all of `app`'s pages |
+| 18/12/2018 |        |        |         | 3.67MB | Added `loadable` on all of `pro`'s pages |
+
+Main things to optimize:
+
+* [ ] Antd icons: https://github.com/ant-design/ant-design/issues/12011
+* [x] redux-form
+* [ ] Remove jquery: Required by `themeteorchef:bert`, `cultofcoders:persistent-session` and `meteortoys`, which can be ignored since it's dev-only
+  * https://github.com/cult-of-coders/meteor-persistent-session/issues/2
+
+
+## Troubleshooting tricks
+
+Sometimes meteor won't start, or get stuck without printing the error it encountered (in tests for example).
+
+To see what's wrong, follow these steps:
+
+1. Create a file in lib/index.js or lib/index.test.js, because files in lib/ are loaded early
+2. add an exception handler: 
+   1. `process.on('uncaughtException', console.log)`
+3. Restart the app

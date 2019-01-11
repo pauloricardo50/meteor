@@ -6,12 +6,12 @@ import {
   bookPromotionLot,
   sellPromotionLot,
 } from '../../methods';
-import SlackService from '../SlackService';
-import PromotionService from '../../promotions/PromotionService';
-import PromotionLotService from '../../promotionLots/PromotionLotService';
-import UserService from '../../users/UserService';
-import LoanService from '../../loans/LoanService';
-import { simpleUserFragment } from 'imports/core/api/users/queries/userFragments/index';
+import SlackService from './SlackService';
+import PromotionService from '../../promotions/server/PromotionService';
+import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import UserService from '../../users/server/UserService';
+import LoanService from '../../loans/server/LoanService';
+import { simpleUser } from '../../fragments';
 
 ServerEventService.addMethodListener(
   inviteUserToPromotion,
@@ -38,11 +38,11 @@ ServerEventService.addMethodListener(
     const {
       name: lotName,
       promotion: { name, assignedEmployee, _id: promotionId },
-    } = PromotionLotService.createQuery({
+    } = PromotionLotService.fetchOne({
       $filters: { _id: promotionLotId },
       name: 1,
-      promotion: { name: 1, assignedEmployee: simpleUserFragment },
-    }).fetchOne();
+      promotion: { name: 1, assignedEmployee: simpleUser() },
+    });
     const { userId } = LoanService.get(loanId);
     const { firstName, lastName } = UserService.get(userId);
 
@@ -58,28 +58,27 @@ ServerEventService.addMethodListener(
   },
 );
 
-ServerEventService.addMethodListener(
-  sellPromotionLot,
-  ({ promotionLotId, loanId }) => {
-    const {
-      name: lotName,
-      promotion: { name, assignedEmployee, _id: promotionId },
-    } = PromotionLotService.createQuery({
-      $filters: { _id: promotionLotId },
-      name: 1,
-      promotion: { name: 1, assignedEmployee: simpleUserFragment },
-    }).fetchOne();
-    const { userId } = LoanService.get(loanId);
-    const { firstName, lastName } = UserService.get(userId);
+ServerEventService.addMethodListener(sellPromotionLot, ({ promotionLotId }) => {
+  const {
+    name: lotName,
+    promotion: { name, assignedEmployee, _id: promotionId },
+    attributedTo,
+  } = PromotionLotService.fetchOne({
+    $filters: { _id: promotionLotId },
+    name: 1,
+    promotion: { name: 1, assignedEmployee: simpleUser() },
+    attributedTo: { _id: 1 },
+  });
+  const { userId } = LoanService.get(attributedTo._id);
+  const { firstName, lastName } = UserService.get(userId);
 
-    SlackService.notifyAssignee({
-      title: `Promotion ${name}`,
-      message: `Le lot ${lotName} a été vendu à ${firstName} ${lastName}`,
-      link: `${
-        Meteor.settings.public.subdomains.admin
-      }/promotions/${promotionId}`,
-      assignee: assignedEmployee,
-      notifyAlways: true,
-    });
-  },
-);
+  SlackService.notifyAssignee({
+    title: `Promotion ${name}`,
+    message: `Le lot ${lotName} a été vendu à ${firstName} ${lastName}`,
+    link: `${
+      Meteor.settings.public.subdomains.admin
+    }/promotions/${promotionId}`,
+    assignee: assignedEmployee,
+    notifyAlways: true,
+  });
+});

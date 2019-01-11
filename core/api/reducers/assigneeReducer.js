@@ -1,4 +1,4 @@
-import UserService from '../users/UserService';
+import UserService from '../users/server/UserService';
 
 const assigneeReducer = (body = {}, getUserId) => ({
   assignee: {

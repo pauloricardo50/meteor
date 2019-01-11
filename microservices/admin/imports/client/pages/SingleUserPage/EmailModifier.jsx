@@ -1,19 +1,25 @@
 // @flow
 import React from 'react';
+import SimpleSchema from 'simpl-schema';
 
-import { DialogForm, email } from 'core/components/Form';
-import Button from 'core/components/Button';
 import { changeEmail } from 'core/api';
+import { AutoFormDialog } from 'imports/core/components/AutoForm2';
 
 type EmailModifierProps = {};
 
+const schema = new SimpleSchema({
+  email: { type: String, regEx: SimpleSchema.RegEx.EmailWithTLD },
+});
+
+const handleSubmit = userId => ({ email: newEmail }) =>
+  changeEmail.run({ userId, newEmail });
+
 const EmailModifier = ({ userId }: EmailModifierProps) => (
-  <DialogForm
-    button={<Button>Modifier</Button>}
+  <AutoFormDialog
+    buttonProps={{ label: 'Modifer' }}
     title="Changer l'adresse email"
-    form="change-email"
-    formArray={[{ id: 'email', validate: [email] }]}
-    onSubmit={({ email: newEmail }) => changeEmail.run({ userId, newEmail })}
+    schema={schema}
+    onSubmit={handleSubmit(userId)}
   />
 );
 

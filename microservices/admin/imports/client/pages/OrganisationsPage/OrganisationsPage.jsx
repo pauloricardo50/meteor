@@ -15,12 +15,13 @@ const OrganisationsPage = ({
   <div className="card1 card-top organisations-page">
     <h1>Organisations</h1>
     <AutoFormDialog
-      schema={OrganisationSchema.omit('logo')}
+      schema={OrganisationSchema.omit('logo', 'contactIds', 'canton')}
       buttonProps={{
-        label: 'Ajouter Organisation',
+        label: 'Ajouter organisation',
         raised: true,
         primary: true,
       }}
+      title="Ajouter organisation"
       onSubmit={insertOrganisation}
     />
 

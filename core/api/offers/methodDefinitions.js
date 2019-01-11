@@ -5,8 +5,6 @@ export const offerInsert = new Method({
   name: 'offerInsert',
   params: {
     offer: Object,
-    userId: Match.Optional(String),
-    loanId: String,
   },
 });
 

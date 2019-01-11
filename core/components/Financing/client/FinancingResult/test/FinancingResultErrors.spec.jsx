@@ -14,20 +14,28 @@ describe('FinancingResultErrors', () => {
   let props;
   let property;
   let propertyId;
+  let structureId;
   let offer;
   let offerId;
   const component = () => shallow(<FinancingResultErrors {...props} />);
 
   beforeEach(() => {
     propertyId = 'property';
+    structureId = 'structureId';
     offerId = 'offerId';
     property = { _id: propertyId, value: 100000 };
     offer = { _id: offerId, interest10: 0.01 };
     props = {
       structure: { propertyId, wantedLoan: 80000, property },
       properties: [property],
-      loan: {},
+      loan: {
+        properties: [property],
+        structures: [
+          { propertyId, wantedLoan: 80000, property, id: structureId },
+        ],
+      },
       offers: [offer],
+      structureId,
     };
   });
 

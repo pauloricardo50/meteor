@@ -19,7 +19,7 @@ const ContactUsFormRender = ({ submitSucceeded, ...rest }) => (
         'animated zoomIn': submitSucceeded,
       })}
     >
-      <ContactUsFormSuccess />
+      {submitSucceeded && <ContactUsFormSuccess />}
     </div>
   </div>
 );

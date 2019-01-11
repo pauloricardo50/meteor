@@ -1,6 +1,6 @@
 import { Users } from '../..';
 import { USER_QUERIES } from '../userConstants';
-import { adminUserFragment } from './userFragments';
+import { adminUser } from '../../fragments';
 
 export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
   $filter({ filters, params: { assignedTo } }) {
@@ -8,5 +8,5 @@ export default Users.createQuery(USER_QUERIES.ADMIN_USERS, {
       filters.assignedEmployeeId = assignedTo;
     }
   },
-  ...adminUserFragment,
+  ...adminUser(),
 });

@@ -5,17 +5,15 @@ import MortgageNoteSchema from 'core/api/mortgageNotes/schemas/MortgageNoteSchem
 import { mortgageNoteUpdate, mortgageNoteRemove } from 'core/api';
 import message from 'core/utils/message';
 import AutoForm from '../AutoForm2';
-import {
-  makeCustomAutoField,
-  SubmitField,
-  CustomAutoFields,
-} from '../AutoForm2/AutoFormComponents';
+import { makeCustomAutoField } from '../AutoForm2/AutoFormComponents';
+import CustomAutoFields from '../AutoForm2/CustomAutoFields';
 import Button from '../Button';
 import T from '../Translation';
+import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 
 type MortgageNotesFormProps = {};
 
-const handleSubmitMortgageNote = mortgageNoteId => (doc) => {
+const handleSubmitMortgageNote = mortgageNoteId => doc => {
   const hideLoader = message.loading('...', 0);
   return mortgageNoteUpdate
     .run({ mortgageNoteId, object: doc })
@@ -23,7 +21,7 @@ const handleSubmitMortgageNote = mortgageNoteId => (doc) => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const removeMortgageNote = (mortgageNoteId) => {
+const removeMortgageNote = mortgageNoteId => {
   const hideLoader = message.loading('...', 0);
   return mortgageNoteRemove
     .run({ mortgageNoteId })
@@ -34,7 +32,7 @@ const removeMortgageNote = (mortgageNoteId) => {
 const AutoField = makeCustomAutoField();
 
 const MortgageNotesForm = ({
-  mortgageNotes,
+  mortgageNotes = [],
   insertMortgageNote,
   id,
   withCanton,
@@ -56,7 +54,7 @@ const MortgageNotesForm = ({
         >
           <CustomAutoFields autoField={AutoField} />
           <div className="flex">
-            <SubmitField
+            <CustomSubmitField
               raised
               primary
               label={<T id="general.save" />}

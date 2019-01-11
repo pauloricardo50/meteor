@@ -20,11 +20,13 @@ import VerificationRequester from './VerificationRequester/VerificationRequester
 const createFinancingLink = ({ _id: loanId }) =>
   createRoute(FINANCING_PAGE, { ':loanId': loanId });
 
-const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
-  createRoute(PROPERTY_PAGE, { loanId, propertyId });
-
 const createPropertiesLink = ({ _id: loanId }) =>
   createRoute(PROPERTIES_PAGE, { loanId });
+
+const createSinglePropertyLink = ({ _id: loanId, structure: { propertyId } }) =>
+  (propertyId
+    ? createRoute(PROPERTY_PAGE, { loanId, propertyId })
+    : createPropertiesLink({ _id: loanId }));
 
 export const checkArrayIsDone = (array = [], params) =>
   array

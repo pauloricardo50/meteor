@@ -6,6 +6,33 @@ import IconButton from '../IconButton';
 import Button from '../Button';
 import DropdownMenuContainer from './DropdownMenuContainer';
 
+const getTrigger = ({
+  button,
+  buttonProps,
+  renderTrigger,
+  onClickHandler,
+  iconType,
+  tooltip,
+  tooltipPlacement,
+}) => {
+  if (button) {
+    return <Button onClick={onClickHandler} {...buttonProps} />;
+  }
+  if (renderTrigger) {
+    return renderTrigger({ handleOpen: onClickHandler });
+  }
+
+  return (
+    <IconButton
+      onClick={onClickHandler}
+      type={iconType}
+      tooltip={tooltip}
+      tooltipPlacement={tooltipPlacement}
+      {...buttonProps}
+    />
+  );
+};
+
 const DropdownMenu = ({
   anchorEl,
   button,
@@ -19,44 +46,38 @@ const DropdownMenu = ({
   style,
   tooltip,
   tooltipPlacement,
-}) => (
-  <div className={className} style={{ ...style }}>
-    {button ? (
-      <Button
-        onClick={(event) => {
-          // Prevent background from receiving clicks
-          event.stopPropagation();
-          // Pass currentTarget directly, to avoid it resetting to null
-          // https://stackoverflow.com/questions/17607766/how-come-my-event-currenttarget-is-changing-automatically
-          handleOpen(event.currentTarget);
-        }}
-        {...buttonProps}
-      />
-    ) : (
-      <IconButton
-        onClick={(event) => {
-          // Prevent background from receiving clicks
-          event.stopPropagation();
-          // Pass currentTarget directly, to avoid it resetting to null
-          // https://stackoverflow.com/questions/17607766/how-come-my-event-currenttarget-is-changing-automatically
-          handleOpen(event.currentTarget);
-        }}
-        type={iconType}
-        tooltip={tooltip}
-        tooltipPlacement={tooltipPlacement}
-        {...buttonProps}
-      />
-    )}
-    <Menu
-      id="long-menu"
-      anchorEl={anchorEl}
-      open={isOpen}
-      onClose={handleClose}
-    >
-      {options}
-    </Menu>
-  </div>
-);
+  renderTrigger,
+}) => {
+  const onClickHandler = (event) => {
+    // Prevent background from receiving clicks
+    event.stopPropagation();
+    // Pass currentTarget directly, to avoid it resetting to null
+    // https://stackoverflow.com/questions/17607766/how-come-my-event-currenttarget-is-changing-automatically
+    handleOpen(event.currentTarget);
+  };
+
+  return (
+    <div className={className} style={{ ...style }}>
+      {getTrigger({
+        button,
+        buttonProps,
+        renderTrigger,
+        onClickHandler,
+        iconType,
+        tooltip,
+        tooltipPlacement,
+      })}
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        open={isOpen}
+        onClose={handleClose}
+      >
+        {options}
+      </Menu>
+    </div>
+  );
+};
 
 DropdownMenu.propTypes = {
   anchorEl: PropTypes.any,

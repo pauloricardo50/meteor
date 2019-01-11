@@ -1,23 +1,19 @@
 import React from 'react';
+import SimpleSchema from 'simpl-schema';
 
-import { DialogForm, email } from 'core/components/Form';
 import T from 'core/components/Translation';
+import { AutoFormDialog } from 'imports/core/components/AutoForm2';
 
-const formArray = [
-  { id: 'name' },
-  { id: 'title' },
-  { id: 'email', validate: [email] },
-  { id: 'phoneNumber' },
-].map(field => ({
-  ...field,
-  label: <T id={`DashboardInfoTeamForm.${field.id}`} />,
-  required: true,
-}));
+const schema = new SimpleSchema({
+  name: String,
+  title: String,
+  email: { type: String, regEx: SimpleSchema.RegEx.EmailWithTLD },
+  phoneNumber: String,
+});
 
 const DashboardInfoTeamForm = props => (
-  <DialogForm
-    form="add-contact"
-    formArray={formArray}
+  <AutoFormDialog
+    schema={schema}
     title={<T id="DashboardInfoTeamForm.dialogTitle" />}
     description={<T id="DashboardInfoTeamForm.dialogDescription" />}
     {...props}

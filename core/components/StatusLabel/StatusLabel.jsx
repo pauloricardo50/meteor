@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
 import colors from '../../config/colors';
 import {
@@ -12,12 +13,22 @@ import {
   TASK_STATUS,
   LOANS_COLLECTION,
   LOAN_STATUS,
+  LENDERS_COLLECTION,
+  LENDER_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
+import DropdownMenu from '../DropdownMenu';
+import { updateDocument } from '../../api/methods/methodDefinitions';
 
-type StatusLabelProps = {};
+type StatusLabelProps = {
+  status: string,
+  collection: string,
+  suffix?: string,
+  label: React.Node,
+  color: string,
+};
 
-const getStatusColor = (status, collection) => {
+const getStatuses = (collection) => {
   switch (collection) {
   case LOANS_COLLECTION:
     return {
@@ -29,7 +40,7 @@ const getStatusColor = (status, collection) => {
       [LOAN_STATUS.BILLING]: colors.success,
       [LOAN_STATUS.FINALIZED]: colors.success,
       [LOAN_STATUS.UNSUCCESSFUL]: colors.error,
-    }[status];
+    };
 
   case PROMOTIONS_COLLECTION:
     return {
@@ -37,7 +48,7 @@ const getStatusColor = (status, collection) => {
       [PROMOTION_STATUS.FINISHED]: colors.error,
       [PROMOTION_STATUS.OPEN]: colors.success,
       [PROMOTION_STATUS.PREPARATION]: colors.primary,
-    }[status];
+    };
 
   case PROMOTION_LOTS_COLLECTION:
     return {
@@ -47,14 +58,22 @@ const getStatusColor = (status, collection) => {
       [PROMOTION_LOT_REDUCED_STATUS.SOLD_TO_ME]: colors.tertiary,
       [PROMOTION_LOT_REDUCED_STATUS.BOOKED_FOR_ME]: colors.primary,
       [PROMOTION_LOT_REDUCED_STATUS.NOT_AVAILABLE]: colors.warning,
-    }[status];
+    };
 
   case TASKS_COLLECTION:
     return {
       [TASK_STATUS.ACTIVE]: colors.primary,
       [TASK_STATUS.COMPLETED]: colors.success,
       [TASK_STATUS.CANCELLED]: colors.error,
-    }[status];
+    };
+
+  case LENDERS_COLLECTION:
+    return {
+      [LENDER_STATUS.TO_BE_CONTACTED]: colors.warning,
+      [LENDER_STATUS.CONTACTED]: colors.primary,
+      [LENDER_STATUS.OFFER_RECEIVED]: colors.success,
+      [LENDER_STATUS.TO_EXCLUDE]: colors.error,
+    };
 
   default:
     break;
@@ -67,18 +86,45 @@ const StatusLabel = ({
   suffix = '',
   label = null,
   color = null,
-}: StatusLabelProps) => (
-  <div
-    className="status-label"
-    style={{
-      backgroundColor: color || getStatusColor(status, collection),
-    }}
-  >
-    <span>
-      {label || <T id={`Forms.status.${status}`} />}
-      {suffix}
+  allowModify,
+  docId,
+}: StatusLabelProps) => {
+  const statuses = getStatuses(collection);
+  const statusLabel = (props = {}) => (
+    <span
+      className={cx({ allowModify, 'status-label': true })}
+      style={{
+        backgroundColor: color || statuses[status],
+      }}
+      {...props}
+    >
+      <span>
+        {label || <T id={`Forms.status.${status}`} />}
+        {suffix}
+      </span>
     </span>
-  </div>
-);
+  );
+
+  if (allowModify) {
+    return (
+      <DropdownMenu
+        className="status-label-dropdown"
+        renderTrigger={({ handleOpen }) => statusLabel({ onClick: handleOpen })}
+        options={Object.keys(statuses).map(stat => ({
+          id: stat,
+          label: <T id={`Forms.status.${stat}`} />,
+          onClick: () =>
+            updateDocument.run({
+              collection,
+              object: { status: stat },
+              docId,
+            }),
+        }))}
+      />
+    );
+  }
+
+  return statusLabel();
+};
 
 export default StatusLabel;

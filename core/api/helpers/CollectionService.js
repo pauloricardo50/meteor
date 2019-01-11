@@ -1,9 +1,7 @@
 class CollectionService {
   constructor(collection) {
     if (!collection) {
-      throw new Error(
-        'A collection is needed in CollectionService, but none was passed',
-      );
+      throw new Error('A collection is needed in CollectionService, but none was passed');
     }
     this.collection = collection;
   }
@@ -14,6 +12,7 @@ class CollectionService {
 
   _update({ id, object, operator = '$set' }) {
     if (Object.keys(object).length > 0) {
+      // debugger;
       return this.collection.update(id, { [operator]: object });
     }
     return null;
@@ -36,14 +35,34 @@ class CollectionService {
   }
 
   createQuery(...args) {
-    console.log('called with', args);
     return this.collection.createQuery(...args);
+  }
+
+  fetchOne(...args) {
+    return this.createQuery(...args).fetchOne();
+  }
+
+  fetch(...args) {
+    return this.createQuery(...args).fetch();
   }
 
   getLink(...args) {
     return this.collection.getLink(...args);
   }
 
+  count(...args) {
+    return this.collection.createQuery(...args).count();
+  }
+
+  countAll() {
+    return this.find({}).count();
+  }
+
+  getAll() {
+    return this.find({}).fetch();
+  }
+
+  // Don't return the results from linker
   addLink({ id, linkName, linkId, metadata = {} }) {
     const linker = this.collection.getLink(id, linkName);
     const {
@@ -51,19 +70,24 @@ class CollectionService {
     } = linker;
 
     switch (strategy) {
-      case 'one':
-        return linker.set(linkId);
-      case 'many':
-        return linker.add(linkId);
-      case 'one-meta':
-        return linker.set(linkId, metadata);
-      case 'many-meta':
-        return linker.add(linkId, metadata);
-      default:
-        return null;
+    case 'one':
+      linker.set(linkId);
+      return;
+    case 'many':
+      linker.add(linkId);
+      return;
+    case 'one-meta':
+      linker.set(linkId, metadata);
+      return;
+    case 'many-meta':
+      linker.add(linkId, metadata);
+      return;
+    default:
+      return null;
     }
   }
 
+  // Don't return the results from linker
   removeLink({ id, linkName, linkId }) {
     const linker = this.collection.getLink(id, linkName);
     const {
@@ -71,12 +95,14 @@ class CollectionService {
     } = linker;
 
     switch (strategy.split('-')[0]) {
-      case 'one':
-        return linker.unset(linkId);
-      case 'many':
-        return linker.remove(linkId);
-      default:
-        return null;
+    case 'one':
+      linker.unset(linkId);
+      return;
+    case 'many':
+      linker.remove(linkId);
+      return;
+    default:
+      return null;
     }
   }
 
@@ -102,9 +128,7 @@ class CollectionService {
   setAdditionalDoc({ id, additionalDocId, requiredByAdmin, label }) {
     const { additionalDocuments } = this.get(id);
 
-    const additionalDoc = additionalDocuments.find(
-      doc => doc.id === additionalDocId,
-    );
+    const additionalDoc = additionalDocuments.find(doc => doc.id === additionalDocId);
 
     if (additionalDoc) {
       const additionalDocumentsUpdate = [
@@ -118,7 +142,6 @@ class CollectionService {
       return this._update({
         id,
         object: { additionalDocuments: additionalDocumentsUpdate },
-        operator: '$set',
       });
     }
 
@@ -130,7 +153,6 @@ class CollectionService {
           { id: additionalDocId, requiredByAdmin, label },
         ],
       },
-      operator: '$set',
     });
   }
 }

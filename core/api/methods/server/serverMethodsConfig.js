@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Method } from '../methods';
-import SlackService from '../../slack/SlackService';
+import SlackService from '../../slack/server/SlackService';
 
 import ServerEventService from '../../events/server/ServerEventService';
 

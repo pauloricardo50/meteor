@@ -4,8 +4,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import UserService from 'core/api/users/UserService';
-import PromotionService from 'core/api/promotions/PromotionService';
+import UserService from 'core/api/users/server/UserService';
+import PromotionService from 'core/api/promotions/server/PromotionService';
 import { ROLES, PROMOTION_TYPES } from 'core/api/constants';
 import 'core/cypress/server/methods';
 import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
@@ -30,9 +30,9 @@ Meteor.methods({
       promotion: {
         name: 'Test promotion',
         type: PROMOTION_TYPES.CREDIT,
-        address1: 'Chemin Auguste-Vilbert 14',
-        zipCode: '1218',
-        city: 'Le Grand-Saconnex',
+        address1: 'Rue du four 1',
+        zipCode: '1400',
+        city: 'Yverdon-les-Bains',
       },
     });
   },
