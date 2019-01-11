@@ -69,6 +69,7 @@ export const withSelector = (SuperClass = class {}) =>
       });
       return (
         structurePropertyValue
+        || this.makeSelectPropertyKey('totalValue')({ loan, structureId })
         || this.makeSelectPropertyKey('value')({ loan, structureId })
       );
     }
