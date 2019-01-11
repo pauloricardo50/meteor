@@ -49,6 +49,7 @@ export const VD = {
       minTax: cantons.VD.NOTARY_PROPERTY_BRACKETS_MIN,
     })
     * (1 + VAT),
+  propertyConstructionTax: () => 0, // TODO
   notaryIncomeFromMortgageNote: ({ noteIncrease }) =>
     degressive({
       amount: noteIncrease,

@@ -135,6 +135,16 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
     getPropertyValue({ loan }) {
       return loan.structure.propertyValue || this.selectPropertyValue({ loan });
     }
+
+    hasDetailedPropertyValue({ loan, structureId }) {
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const propertyExactValue = this.makeSelectPropertyKey('value')({
+        loan,
+        structureId,
+      });
+
+      return !propertyExactValue || propertyValue !== propertyExactValue;
+    }
   };
 
 export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);
