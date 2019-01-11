@@ -72,8 +72,9 @@ const makeMapContact = ({ history }) => (contact) => {
 
 export default compose(
   withRouter,
-  withProps(({ contacts = [], history }) => ({
+  withProps(({ contacts = [], history, organisationId }) => ({
     rows: contacts.map(makeMapContact({ history })),
     columnOptions,
+    insertContactModel: {organisations: [{_id: organisationId}]}
   })),
 );
