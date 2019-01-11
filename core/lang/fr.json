@@ -1,4 +1,5 @@
 {
+  "FinancingProjectFees.noCanton": "Ajoutez un code postal sur ce bien immobilier pour que nous puissions calculer les frais de notaire.",
   "AccountPage.changePassword": "Changer mot de passe",
   "errors.sameName.title": "Pas de noms identiques",
   "errors.sameName.description": "Vous ne pouvez pas ajouter 2 fichiers avec le même nom.",

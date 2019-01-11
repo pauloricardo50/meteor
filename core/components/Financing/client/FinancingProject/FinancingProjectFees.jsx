@@ -43,9 +43,11 @@ const FinancingProjectFees = ({
           <div>
             <T
               id={
-                hasDetailedFees
-                  ? 'FinancingProjectFees.description'
-                  : 'FinancingProjectFees.descriptionNoDetail'
+                canton
+                  ? hasDetailedFees
+                    ? 'FinancingProjectFees.description'
+                    : 'FinancingProjectFees.descriptionNoDetail'
+                  : 'FinancingProjectFees.noCanton'
               }
               values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
             />
