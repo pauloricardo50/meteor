@@ -1,4 +1,5 @@
 {
+  "offer.feedback": "Feedback",
   "emails.SEND_FEEDBACK_TO_LENDER.TITLE": "Feedback",
   "emails.SEND_FEEDBACK_TO_LENDER.SUBJECT": "Feedback de l'offre pour le dossier {loanName}",
   "offer.createdAt": "Date d'ajout",
