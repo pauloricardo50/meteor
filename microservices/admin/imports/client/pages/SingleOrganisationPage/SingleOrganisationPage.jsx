@@ -5,7 +5,7 @@ import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
-import OrganisationModifier from './OrganisationModifier';
+import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 
 type SingleOrganisationPageProps = {
@@ -29,14 +29,11 @@ const tabs = props =>
 const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => {
-  const { contacts, logo, name, offers } = organisation;
+  const { contacts, offers } = organisation;
 
   return (
-    <div className="card1 card-top">
-      <h1 className="single-organisation-header">
-        {logo ? <img src={logo} alt={name} /> : name}
-        <OrganisationModifier organisation={organisation} />
-      </h1>
+    <div className="card1 card-top single-organisation-page">
+      <SingleOrganisationPageHeader organisation={organisation} />
       <Tabs
         tabs={tabs({
           contacts,
