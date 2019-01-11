@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import PromotionOptions from './promotionOptions';
-import LoanService from '../loans/LoanService';
-import CollectionService from '../helpers/CollectionService';
-import { fullPromotionOption } from '../fragments';
+
+import LoanService from '../../loans/server/LoanService';
+import CollectionService from '../../helpers/CollectionService';
+import { fullPromotionOption } from '../../fragments';
+import PromotionOptions from '../promotionOptions';
 
 export class PromotionOptionService extends CollectionService {
   constructor() {

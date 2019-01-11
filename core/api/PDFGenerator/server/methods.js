@@ -1,4 +1,4 @@
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 import { generatePDF } from '../methodDefinitions';
 import PDFGeneratorService from '../PDFGeneratorService';
 

@@ -33,4 +33,5 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
     }
   },
   ...adminUser(),
+  $options: { limit: 5 },
 });

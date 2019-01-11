@@ -13,6 +13,7 @@ import CustomListField from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import TextArea from '../TextArea';
+import MoneyInput from '../MoneyInput';
 
 const determineComponentFromProps = ({
   allowedValues,
@@ -34,6 +35,9 @@ const determineComponentFromProps = ({
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.TEXT_AREA) {
     return { Component: TextArea, type: COMPONENT_TYPES.TEXT_AREA };
+  }
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
+    return { Component: MoneyInput, type: COMPONENT_TYPES.MONEY };
   }
 
   if (fieldType === Array) {

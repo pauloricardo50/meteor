@@ -25,7 +25,11 @@ const AutoFormDialogContent = ({
   onSubmit,
 }: AutoFormDialogContentProps) => (
   <DialogContent>
-    {description && <DialogContentText>{description}</DialogContentText>}
+    {description && (
+      <DialogContentText style={{ marginBottom: 32 }}>
+        {description}
+      </DialogContentText>
+    )}
     {!emptyDialog && <CustomAutoFields autoField={autoField} />}
     <ErrorsField />
     {children && (

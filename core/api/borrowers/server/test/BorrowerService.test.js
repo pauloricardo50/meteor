@@ -4,11 +4,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect } from 'chai';
 
 import { DOCUMENTS } from 'core/api/constants';
-import BorrowerService from '../../BorrowerService';
+import BorrowerService from '../BorrowerService';
 import { initialDocuments } from '../../borrowersAdditionalDocuments';
 import * as borrowerConstants from '../../borrowerConstants';
-import LoanService from '../../../loans/LoanService';
-import MortgageNoteService from '../../../mortgageNotes/MortgageNoteService';
+import LoanService from '../../../loans/server/LoanService';
+import MortgageNoteService from '../../../mortgageNotes/server/MortgageNoteService';
 
 const checkDocuments = ({
   additionalDocuments,

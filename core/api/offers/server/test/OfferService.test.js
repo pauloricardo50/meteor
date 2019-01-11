@@ -5,9 +5,9 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import OfferService from '../../OfferService';
-import LenderService from '../../../lenders/LenderService';
+import LenderService from '../../../lenders/server/LenderService';
 import { EMAIL_TEMPLATES, EMAIL_IDS } from '../../../email/emailConstants';
+import OfferService from '../OfferService';
 
 describe('OfferService', () => {
   let offer;
@@ -83,7 +83,7 @@ describe('OfferService', () => {
         });
       });
 
-    it.only('sends the feedback to the lender', () => {
+    it('sends the feedback to the lender', () => {
       const adminId = Factory.create('admin', {
         firstName: 'Dev',
         lastName: 'e-Potek',

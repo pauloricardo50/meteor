@@ -20,7 +20,7 @@ export const logError = new Method({
   name: 'logError',
   params: {
     error: Match.Any,
-    additionalData: Match.Any,
+    additionalData: Match.Maybe(Match.Any),
     url: Match.Maybe(String),
   },
 });

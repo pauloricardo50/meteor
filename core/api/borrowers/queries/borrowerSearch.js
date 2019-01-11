@@ -28,5 +28,5 @@ export default Borrowers.createQuery(BORROWER_QUERIES.BORROWER_SEARCH, {
     ];
   },
   ...baseBorrower(),
-  $options: { sort: { createdAt: -1 } },
+  $options: { sort: { createdAt: -1 }, limit: 5 },
 });

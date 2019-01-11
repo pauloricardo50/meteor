@@ -5,6 +5,7 @@ import {
   createdAt,
   updatedAt,
   percentageField,
+  moneyField,
 } from '../helpers/sharedSchemas';
 
 const Offers = new Mongo.Collection(OFFERS_COLLECTION);
@@ -28,11 +29,8 @@ export const OfferSchema = new SimpleSchema({
   'organisationLink._id': { type: String, optional: true },
   contactLink: { type: Object, optional: true },
   'contactLink._id': String,
-  maxAmount: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-  },
+  'contactLink.feedback': { type: String, optional: true },
+  maxAmount: moneyField,
   amortizationGoal: percentageField,
   amortizationYears: {
     type: Number,
@@ -40,18 +38,8 @@ export const OfferSchema = new SimpleSchema({
     max: 100,
     optional: true,
   },
-  fees: {
-    type: Number,
-    min: 0,
-    max: 1000000000,
-    defaultValue: 0,
-  },
-  epotekFees: {
-    type: Number,
-    min: 0,
-    max: 1000000000,
-    defaultValue: 0,
-  },
+  fees: moneyField,
+  epotekFees: moneyField,
   // For each existing rate, insert an allowed value in the schema
   ...Object.values(INTEREST_RATES).reduce(
     (accumulator, interestKey) => ({

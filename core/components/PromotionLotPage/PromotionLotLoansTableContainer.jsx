@@ -6,24 +6,12 @@ import { withRouter } from 'react-router-dom';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
 import T from 'core/components/Translation';
+import { CollectionIconLink } from 'core/components/IconLink';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
-import { createRoute } from '../../utils/routerUtils';
-import { CollectionIconLink } from 'core/components/IconLink';
 import { LOANS_COLLECTION } from '../../api/constants';
-
-const getSolvency = email => {
-  const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
-  if (nb % 3 === 0) {
-    return { className: 'success', text: 'Solvable' };
-  }
-  if (nb % 3 === 1) {
-    return { className: 'warning', text: 'Non solvable' };
-  }
-  return { className: 'primary', text: 'En cours' };
-};
 
 const makeMapOption = ({
   promotionLot: {
@@ -36,13 +24,14 @@ const makeMapOption = ({
   canModify,
   isAdmin,
   history,
-}) => promotionOption => {
+}) => (promotionOption) => {
   const {
     _id: promotionOptionId,
     loan,
     lots,
     custom,
     createdAt,
+    solvency,
   } = promotionOption;
   const {
     user,
@@ -51,22 +40,21 @@ const makeMapOption = ({
     _id: loanId,
     promotionProgress,
   } = loan;
-  const promotion =
-    promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
+  const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
 
   return {
     id: promotionOptionId,
     columns: [
       isAdmin
         ? user && (
-            <CollectionIconLink
-              relatedDoc={{
-                ...loan,
-                name: user.name,
-                collection: LOANS_COLLECTION,
-              }}
-            />
-          )
+          <CollectionIconLink
+            relatedDoc={{
+              ...loan,
+              name: user.name,
+              collection: LOANS_COLLECTION,
+            }}
+          />
+        )
         : user && user.name,
       { raw: moment(createdAt).valueOf(), label: moment(createdAt).fromNow() },
       user && user.phoneNumbers && user.phoneNumbers[0],
@@ -95,8 +83,7 @@ const makeMapOption = ({
         attributedToId={attributedTo && attributedTo._id}
         userName={user && user.name}
         lots={lots}
-        solvency={getSolvency(user && user.email).text}
-        solvencyClassName={getSolvency(user && user.email).className}
+        solvency={solvency}
         promotionLotName={name}
         canModify={canModify}
         key="promotionLotAttributer"
@@ -133,12 +120,8 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(
-    ({ promotionOptions, promotionLot, canModify, history, isAdmin }) => ({
-      rows: promotionOptions.map(
-        makeMapOption({ promotionLot, canModify, history, isAdmin }),
-      ),
-      columnOptions,
-    }),
-  ),
+  withProps(({ promotionOptions, promotionLot, canModify, history, isAdmin }) => ({
+    rows: promotionOptions.map(makeMapOption({ promotionLot, canModify, history, isAdmin })),
+    columnOptions,
+  })),
 );

@@ -8,7 +8,7 @@ import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
 
-const SingleUserPage = ({ user, className, currentUser }) => {
+const SingleUserPage = ({ user, className, currentUser, children }) => {
   const { loans, _id: userId, assignedEmployee } = user;
   const isUser = user.roles.includes(ROLES.USER);
 
@@ -29,6 +29,7 @@ const SingleUserPage = ({ user, className, currentUser }) => {
 
       {/* Make sure this component reloads when the userId changes */}
       <EmailList userId={userId} key={userId} />
+      {children}
     </section>
   );
 };

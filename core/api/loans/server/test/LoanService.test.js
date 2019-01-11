@@ -4,13 +4,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
 import '../../../factories';
-import Loans from '../../loans';
-import { Borrowers, Properties } from '../../..';
-import LoanService from '../../LoanService';
+import LoanService from '../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
-import BorrowerService from '../../../borrowers/BorrowerService';
-import PropertyService from '../../../properties/PropertyService';
-import LenderService from '../../../lenders/LenderService';
+import BorrowerService from '../../../borrowers/server/BorrowerService';
+import PropertyService from '../../../properties/server/PropertyService';
+import LenderService from '../../../lenders/server/LenderService';
 
 describe('LoanService', () => {
   let loanId;
@@ -124,23 +122,23 @@ describe('LoanService', () => {
     });
 
     it('inserts a property, borrower and loan', () => {
-      expect(Loans.find({}).count()).to.equal(0, 'loans 0');
-      expect(Borrowers.find({}).count()).to.equal(0, 'borrowers 0');
-      expect(Properties.find({}).count()).to.equal(0, 'properties 0');
+      expect(LoanService.countAll()).to.equal(0, 'loans 0');
+      expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
+      expect(PropertyService.countAll()).to.equal(0, 'properties 0');
 
       LoanService.adminLoanInsert({ userId });
 
-      expect(Loans.find({}).count()).to.equal(1, 'loans 1');
-      expect(Borrowers.find({}).count()).to.equal(1, 'borrowers 1');
-      expect(Properties.find({}).count()).to.equal(1, 'properties 1');
+      expect(LoanService.countAll()).to.equal(1, 'loans 1');
+      expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
+      expect(PropertyService.countAll()).to.equal(1, 'properties 1');
     });
 
     it('adds the same userId on all 3 documents', () => {
       LoanService.adminLoanInsert({ userId });
 
-      expect(Loans.findOne({}).userId).to.equal(userId, 'loans userId');
-      expect(Borrowers.findOne({}).userId).to.equal(userId, 'borrowers userId');
-      expect(Properties.findOne({}).userId).to.equal(
+      expect(LoanService.findOne({}).userId).to.equal(userId, 'loans userId');
+      expect(BorrowerService.findOne({}).userId).to.equal(userId, 'borrowers userId');
+      expect(PropertyService.findOne({}).userId).to.equal(
         userId,
         'properties userId',
       );

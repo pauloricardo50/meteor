@@ -12,12 +12,18 @@ import ClientEventService, {
 } from '../../../api/events/ClientEventService';
 import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
 
-const checkFile = (file) => {
+const checkFile = (file, currentValue = [], tempFiles = []) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
     return 'fileType';
   }
   if (file.size > MAX_FILE_SIZE) {
     return 'fileSize';
+  }
+  if (
+    currentValue.some(({ name }) => name === file.name)
+    || tempFiles.some(({ name }) => name === file.name)
+  ) {
+    return 'sameName';
   }
   return true;
 };
@@ -61,15 +67,16 @@ const props = withProps(({
   deleteFile,
   addTempFiles,
   intl: { formatMessage: f },
-  currentUser,
   handleSuccess,
+  currentValue,
+  tempFiles,
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
     let showError = false;
 
     files.forEach((file) => {
-      const isValid = checkFile(file);
+      const isValid = checkFile(file, currentValue, tempFiles);
       if (isValid === true) {
         fileArray.push(file);
       } else {
@@ -79,8 +86,8 @@ const props = withProps(({
 
     if (showError) {
       notification.error({
-        message: f({ id: `error.${showError}.title` }),
-        description: f({ id: `error.${showError}.description` }),
+        message: f({ id: `errors.${showError}.title` }),
+        description: f({ id: `errors.${showError}.description` }),
       });
       return;
     }
@@ -114,6 +121,8 @@ const willReceiveProps = lifecycle({
       if (tempFiles && tempFiles.length) {
         // Loop over the new props to see if they match any of the temp files
         // Remove the ones that match
+        console.log('nextValue', nextValue);
+        console.log('tempFiles', tempFiles);
         nextValue.forEach(file =>
           tempFiles.forEach(temp =>
             temp.name === file.name

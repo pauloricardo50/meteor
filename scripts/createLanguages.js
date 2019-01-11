@@ -16,6 +16,7 @@ const config = {
       id: 'admin',
       path: __dirname + '/../microservices/admin',
       exceptions: [
+        'AccountPage',
         'AdminFilesTab',
         'AdminPromotionPage',
         'ArrayInput',
@@ -38,6 +39,7 @@ const config = {
         'Microlocation',
         'offer',
         'OfferAdder',
+        'PasswordChange',
         'Promotion',
         'PromotionLotPage',
         'PropertyForm',
@@ -119,6 +121,7 @@ const config = {
   generalExceptions: [
     'BorrowersSummary',
     'e-Potek',
+    'errors',
     'ExpensesChart',
     'ExpensesChartInterests',
     'File',

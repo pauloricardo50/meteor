@@ -6,9 +6,11 @@ import {
   additionalDocuments,
   address,
   mortgageNoteLinks,
+  moneyField,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 export const MicrolocationFactorSchema = new SimpleSchema({
   grade: {
@@ -151,18 +153,15 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     defaultValue: propertyConstants.PROPERTY_CATEGORY.USER,
     allowedValues: Object.values(propertyConstants.PROPERTY_CATEGORY),
+    uniforms: { placeholder: null },
   },
   value: {
-    // Cost of the property
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
+    ...moneyField,
     autoValue() {
       if (this.isSet) {
         return Math.round(this.value / 1000) * 1000;
       }
     },
-    optional: true,
   },
   status: {
     type: String,
@@ -217,6 +216,7 @@ export const PropertySchema = new SimpleSchema({
     optional: true,
     allowedValues: Object.values(propertyConstants.AREA_NORM),
     defaultValue: propertyConstants.AREA_NORM.NIA,
+    uniforms: { placeholder: null },
   },
   landArea: {
     type: SimpleSchema.Integer,
@@ -267,6 +267,7 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     defaultValue: propertyConstants.VOLUME_NORM.SIA_416,
     allowedValues: Object.values(propertyConstants.VOLUME_NORM),
+    uniforms: { placeholder: null },
   },
   parkingInside: {
     type: SimpleSchema.Integer,
@@ -284,6 +285,7 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     defaultValue: propertyConstants.MINERGIE_CERTIFICATE.WITHOUT_CERTIFICATE,
     allowedValues: Object.values(propertyConstants.MINERGIE_CERTIFICATE),
+    uniforms: { placeholder: null },
   },
   isCoproperty: {
     type: Boolean,
@@ -321,11 +323,13 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.CONDITION),
+    uniforms: { placeholder: null },
   },
   qualityProfileStandard: {
     type: String,
     optional: true,
     allowedValues: Object.values(propertyConstants.QUALITY.STANDARD),
+    uniforms: { placeholder: null },
   },
   valuation: {
     type: ValuationSchema,

@@ -2,8 +2,11 @@ import SecurityService from '../../security';
 import query from './appPromotionLot';
 
 query.expose({
-  firewall(userId) {
-    // TODO: Check promotion permissions
+  firewall(userId, { promotionLotId }) {
+    SecurityService.promotions.isAllowedToReadPromotionLot(
+      promotionLotId,
+      userId,
+    );
   },
   validateParams: { promotionLotId: String },
 });

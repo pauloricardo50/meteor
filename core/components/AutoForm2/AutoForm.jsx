@@ -34,6 +34,7 @@ const CustomAutoForm = ({
       showInlineError
       model={pickBy(model, (_, key) => !key.startsWith('$'))}
       placeholder={placeholder}
+      className="autoform"
       {...props}
     >
       {children || (

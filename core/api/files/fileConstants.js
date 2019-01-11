@@ -6,13 +6,6 @@ export const FILE_STATUS = {
   ERROR: 'ERROR',
 };
 
-export const FILE_STEPS = {
-  AUCTION: 'auction',
-  CONTRACT: 'contract',
-  CLOSING: 'closing',
-  ALL: 'all',
-};
-
 export const ALLOWED_FILE_TYPES = [
   'image/png',
   'image/jpeg',

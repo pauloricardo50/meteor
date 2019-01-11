@@ -1,6 +1,5 @@
 import faker from 'faker/locale/fr';
-import BorrowerService from '../api/borrowers/BorrowerService';
-import { Borrowers } from '../api';
+import BorrowerService from '../api/borrowers/server/BorrowerService';
 import { RESIDENCE_TYPE, OTHER_INCOME, EXPENSES } from '../api/constants';
 
 const insertFakeBorrower = (userId) => {
@@ -77,6 +76,7 @@ export const createFakeBorrowers = (userId, twoBorrowers = false) => {
 };
 
 export const getRelatedBorrowerIds = usersIds =>
-  Borrowers.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-    .fetch()
-    .map(item => item._id);
+  BorrowerService.fetch({
+    $filters: { userId: { $in: usersIds } },
+    _id: 1,
+  }).map(item => item._id);

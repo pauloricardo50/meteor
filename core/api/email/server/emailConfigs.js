@@ -121,24 +121,6 @@ addEmailConfig(EMAIL_IDS.VERIFICATION_PASSED, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
 });
 
-addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
-});
-
-addEmailConfig(EMAIL_IDS.AUCTION_ENDED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
-addEmailConfig(EMAIL_IDS.AUCTION_CANCELLED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-});
-
-addEmailConfig(EMAIL_IDS.AUCTION_STARTED, {
-  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createIntlValues: ({ auctionEndTime }) => ({ date: auctionEndTime }),
-});
-
 const getFirstName = string => string.trim().split(' ')[0];
 
 addEmailConfig(EMAIL_IDS.CONTACT_US, {

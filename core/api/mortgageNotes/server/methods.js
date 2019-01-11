@@ -1,10 +1,10 @@
 import SecurityService from '../../security';
-import MortgageNoteService from '../MortgageNoteService';
 import {
   mortgageNoteInsert,
   mortgageNoteRemove,
   mortgageNoteUpdate,
 } from '../methodDefinitions';
+import MortgageNoteService from './MortgageNoteService';
 
 mortgageNoteInsert.setHandler((context, params) => {
   if (params.propertyId) {

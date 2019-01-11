@@ -7,6 +7,7 @@ import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 import { LOT_TYPES } from '../../../../api/constants';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/constants';
 
 type ProPromotionLotsTableProps = {};
 
@@ -16,13 +17,20 @@ export const promotionLotSchema = new SimpleSchema({
     type: Number,
     defaultValue: 0,
     min: 0,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
   insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   roomCount: { type: Number, optional: true, min: 0, max: 100 },
   bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
-  monthlyExpenses: { type: Number, optional: true, min: 0, max: 100000 },
+  monthlyExpenses: {
+    type: Number,
+    optional: true,
+    min: 0,
+    max: 100000,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
+  },
   description: {
     type: String,
     optional: true,
@@ -46,6 +54,7 @@ export const lotSchema = new SimpleSchema({
     type: Number,
     defaultValue: 0,
     min: 0,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
   },
 });
 

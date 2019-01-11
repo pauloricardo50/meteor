@@ -1,10 +1,10 @@
-import Offers from '.';
-import CollectionService from '../helpers/CollectionService';
-import LenderService from '../lenders/LenderService';
-import { LENDER_STATUS } from '../lenders/lenderConstants';
-import { fullOffer } from '../fragments';
-import { EMAIL_IDS } from '../email/emailConstants';
-import { sendEmailToAddress } from '../methods';
+import CollectionService from '../../helpers/CollectionService';
+import Offers from '../offers';
+import LenderService from '../../lenders/server/LenderService';
+import { LENDER_STATUS } from '../../lenders/lenderConstants';
+import { fullOffer } from '../../fragments';
+import { EMAIL_IDS } from '../../email/emailConstants';
+import { sendEmailToAddress } from '../../methods';
 
 export class OfferService extends CollectionService {
   constructor() {

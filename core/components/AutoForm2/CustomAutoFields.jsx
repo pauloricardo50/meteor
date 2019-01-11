@@ -16,14 +16,11 @@ const CustomAutoFields = (
 ) =>
   createElement(
     element,
-    props,
+    { className: 'autofields', ...props },
     (fields || schema.getSubfields())
       .filter(field => omitFields.indexOf(field) === -1)
       .map((field) => {
-        const {
-          condition,
-          customAllowedValues,
-        } = schema.getField(field);
+        const { condition, customAllowedValues } = schema.getField(field);
         const component = createElement(autoField, {
           key: field,
           name: field,
@@ -43,7 +40,6 @@ CustomAutoFields.contextTypes = AutoField.contextTypes;
 CustomAutoFields.propTypes = {
   autoField: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   element: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-
   fields: PropTypes.arrayOf(PropTypes.string),
   omitFields: PropTypes.arrayOf(PropTypes.string),
 };

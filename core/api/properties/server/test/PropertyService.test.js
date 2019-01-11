@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-import PropertyService from '../../PropertyService';
+
 import {
   VALUATION_STATUS,
   PROPERTY_TYPE,
@@ -10,8 +10,8 @@ import {
   WUEST_ERRORS,
   QUALITY,
 } from '../../../constants';
-
 import WuestService from '../../../wuest/server/WuestService';
+import PropertyService from '../PropertyService';
 
 describe('PropertyService', () => {
   beforeEach(() => {

@@ -21,8 +21,11 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
     rates,
     fees,
     epotekFees,
+    organisation: { name },
   } = offer;
 
+  console.log('interests', interests);
+  console.log('org name', name);
   return (
     <div className="offer-picker-dialog animated fadeIn">
       <img src={organisation.logo} alt={organisation.name} />
@@ -42,7 +45,7 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
         </>
       )}
 
-      {fees && (
+      {!!fees && (
         <>
           <h3>
             <T id="offer.fees" />
@@ -51,7 +54,7 @@ const OfferPickerDialogContent = (props: OfferPickerDialogContentProps) => {
         </>
       )}
 
-      {epotekFees && (
+      {!!epotekFees && (
         <>
           <h3>
             <T id="offer.epotekFees" />

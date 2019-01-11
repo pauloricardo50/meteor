@@ -5,7 +5,7 @@ import {
   initialDocuments,
   conditionalDocuments,
 } from '../borrowersAdditionalDocuments';
-import BorrowerService from '../BorrowerService';
+import BorrowerService from './BorrowerService';
 
 Borrowers.after.insert(additionalDocumentsHook({
   collection: BORROWERS_COLLECTION,

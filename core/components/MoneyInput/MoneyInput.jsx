@@ -13,21 +13,29 @@ import { toNumber } from '../../utils/conversionFunctions';
 type MoneyInputProps = {
   onChange: Function,
   value: number,
+  fullWidth?: boolean,
+  label?: React.Node,
+  helperText?: React.Node,
+  required?: boolean,
 };
 
 const MoneyInput = ({
-  onChange,
-  value,
-  label,
+  fullWidth = true,
   helperText,
+  label,
+  onChange,
+  required,
   ...props
 }: MoneyInputProps) => (
-  <FormControl className="money-input">
+  <FormControl
+    className="money-input"
+    required={required}
+    fullWidth={fullWidth}
+  >
     {label && <InputLabel>{label}</InputLabel>}
     <Input
       startAdornment={<InputAdornment position="start">CHF</InputAdornment>}
       onChange={event => onChange(toNumber(event.target.value))}
-      value={value}
       type="tel"
       inputComponent={MaskedInput}
       inputProps={{ mask: swissFrancMask }}
