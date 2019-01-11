@@ -12,11 +12,19 @@ PromotionLots.addReducers({
       properties && properties[0] && properties[0].name,
   },
   value: {
-    body: { properties: { value: 1 }, lots: { value: 1 } },
-    reduce: ({ properties, lots }) =>
+    body: { properties: { totalValue: 1 }, lots: { value: 1 } },
+    reduce: ({ properties, lots }) => {
       // Sometimes, lots are undefined........ fuck me
-      properties.reduce((total, { value }) => total + value, 0)
-      + (lots ? lots.reduce((total, { value }) => total + value, 0) : 0),
+      const propertiesValue = properties.reduce(
+        (total, { totalValue }) => total + totalValue,
+        0,
+      );
+      const lotsValue = lots
+        ? lots.reduce((total, { value }) => total + value, 0)
+        : 0;
+
+      return propertiesValue + lotsValue;
+    },
   },
   reducedStatus: {
     body: { status: 1, attributedTo: { user: { _id: 1 } } },
