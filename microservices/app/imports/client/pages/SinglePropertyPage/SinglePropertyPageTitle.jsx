@@ -13,7 +13,7 @@ const SinglePropertyPageTitle = ({
   loan,
 }: SinglePropertyPageTitleProps) => {
   const title = property.address1 || <T id="SinglePropertyPage.title" />;
-  const value = PropertyCalculator.propertyPercent({
+  const progress = PropertyCalculator.propertyPercent({
     property,
     loan,
   });
@@ -22,7 +22,7 @@ const SinglePropertyPageTitle = ({
       {title}
       <small>
         &nbsp; - &nbsp;
-        <PercentWithStatus value={value} status={value >= 1 && SUCCESS} />
+        <PercentWithStatus value={progress} status={progress >= 1 && SUCCESS} />
       </small>
     </span>
   );
