@@ -36,6 +36,7 @@ const determineComponentFromProps = ({
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.TEXT_AREA) {
     return { Component: TextArea, type: COMPONENT_TYPES.TEXT_AREA };
   }
+
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
     return { Component: MoneyInput, type: COMPONENT_TYPES.MONEY };
   }
