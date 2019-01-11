@@ -16,7 +16,7 @@ export const promotionLotSchema = new SimpleSchema({
   value: { ...moneyField, defaultValue: 0 },
   landValue: { ...moneyField, defaultValue: 0 },
   constructionValue: { ...moneyField, defaultValue: 0 },
-  margin: { ...moneyField, defaultValue: 0 },
+  additionalMargin: { ...moneyField, defaultValue: 0 },
   insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },

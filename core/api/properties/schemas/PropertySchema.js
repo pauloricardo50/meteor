@@ -214,7 +214,7 @@ export const PropertySchema = new SimpleSchema({
   monthlyExpenses: moneyField,
   landValue: { ...moneyField, ...roundedInteger(3) },
   constructionValue: { ...moneyField, ...roundedInteger(3) },
-  margin: { ...moneyField, ...roundedInteger(3) },
+  additionalMargin: { ...moneyField, ...roundedInteger(3) },
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
 });
