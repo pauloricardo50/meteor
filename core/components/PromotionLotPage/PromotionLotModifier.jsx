@@ -34,6 +34,8 @@ const ProPromotionLotModifier = ({
         primary: true,
         disabled: promotionLot.status !== PROMOTION_LOT_STATUS.AVAILABLE,
       }}
+      title={<T id="PromotionLotPage.modifyPromotionLot" />}
+      description={<T id="PromotionPage.promotionLotValueDescription" />}
       schema={promotionLotSchema}
       onSubmit={updateProperty}
       submitting={submitting}

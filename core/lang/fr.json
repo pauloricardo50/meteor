@@ -1,4 +1,8 @@
 {
+  "PromotionPage.promotionLotValueDescription": "Veuillez ajouter un prix d'achat - OU - la valeur du terrain + le montant de la construction + la msie en valeur. Si vous ajoutez un prix d'achat, ça précèdera les autres montants qui auraient été additionnés.",
+  "Forms.landValue": "Valeur du terrain",
+  "Forms.constructionValue": "Montant de la construction",
+  "Forms.margin": "Mise en valeur",
   "FinancingProjectFees.noCanton": "Ajoutez un code postal sur ce bien immobilier pour que nous puissions calculer les frais de notaire.",
   "AccountPage.changePassword": "Changer mot de passe",
   "errors.sameName.title": "Pas de noms identiques",
