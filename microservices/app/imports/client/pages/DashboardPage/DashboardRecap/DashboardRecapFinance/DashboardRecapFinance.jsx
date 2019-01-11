@@ -11,9 +11,7 @@ import DashboardRecapChart from './DashboardRecapChart';
 import { FINANCING_PAGE } from '../../../../../startup/client/appRoutes';
 import DashboardRecapFinanceEmpty from './DashboardRecapFinanceEmpty';
 
-const shouldDisplayRecap = loan =>
-  (loan.structure.property && loan.structure.property.value)
-  || loan.structure.propertyValue;
+const shouldDisplayRecap = loan => Calculator.selectPropertyValue({ loan });
 
 const DashboardRecapFinance = (props) => {
   const { loan } = props;
