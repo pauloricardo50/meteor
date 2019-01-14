@@ -6,6 +6,11 @@
 
   border-right: 1px solid $border-grey;
   background-color: white;
+
+  .collection-icon {
+    width: 32px !important;
+    height: 32px;
+  }
 }
 
 .admin-side-nav .main-side-nav-list-item {
@@ -86,9 +91,4 @@
       margin: 4px;
     }
   }
-}
-
-.admin-side-nav-icon {
-  width: 32px !important;
-  height: 32px;
 }

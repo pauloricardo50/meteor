@@ -19,6 +19,7 @@ import {
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
 import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
+import collectionIcons from 'core/arrays/collectionIcons';
 import MainSideNavListItem from './MainSideNavListItem';
 import {
   DASHBOARD_PAGE,
@@ -31,60 +32,47 @@ import {
 const items = [
   { label: 'Dashboard', icon: 'home', to: DASHBOARD_PAGE, exact: true },
   {
-    icon: 'contactMail',
     detail: true,
     collection: USERS_COLLECTION,
   },
   {
-    icon: 'dollarSign',
     detail: true,
     collection: LOANS_COLLECTION,
   },
   {
-    icon: <FontAwesomeIcon icon={faCity} className="admin-side-nav-icon" />,
     collection: PROMOTIONS_COLLECTION,
     detail: true,
   },
   {
-    icon: 'people',
     detail: true,
     collection: BORROWERS_COLLECTION,
   },
   {
-    icon: 'domain',
     detail: true,
     collection: PROPERTIES_COLLECTION,
   },
   {
     label: 'Tâches',
-    icon: 'check',
     to: TASKS_PAGE,
     collection: TASKS_COLLECTION,
   },
   {
     label: 'Organisations',
-    icon: (
-      <FontAwesomeIcon icon={faBriefcase} className="admin-side-nav-icon" />
-    ),
     to: ORGANISATIONS_PAGE,
     collection: ORGANISATIONS_COLLECTION,
   },
   {
     label: 'Contacts',
-    icon: <FontAwesomeIcon icon={faUserTie} className="admin-side-nav-icon" />,
     detail: true,
     collection: CONTACTS_COLLECTION,
   },
   {
     label: 'Taux',
-    icon: (
-      <FontAwesomeIcon icon={faChartLine} className="admin-side-nav-icon" />
-    ),
     to: INTEREST_RATES_PAGE,
     collection: INTEREST_RATES_COLLECTION,
   },
   { label: 'Dev', icon: 'developerMode', to: DEV_PAGE },
-];
+].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (
   { detail, collection },
