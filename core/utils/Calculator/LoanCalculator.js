@@ -173,16 +173,16 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return this.maxBorrowRatio;
     }
 
-    loanHasMinimalInformation({
-      loan: {
-        structure: { property, ownFunds, wantedLoan },
-      },
-    }) {
+    loanHasMinimalInformation({ loan }) {
+      const {
+        structure: { ownFunds },
+      } = loan;
+
       return !!(
         ownFunds
         && ownFunds.length > 0
-        && (property && property.value)
-        && wantedLoan
+        && this.selectPropertyValue({ loan })
+        && this.selectLoanValue({ loan })
       );
     }
 

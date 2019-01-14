@@ -479,30 +479,30 @@ export const getStructureArray = (props) => {
   ];
 };
 
+const getRecapForObject = obj =>
+  Object.keys(obj).map(key => ({
+    label: `Recap.${key}`,
+    value: toMoney(obj[key]),
+    hide: !obj[key],
+  }));
+
 export const getNotaryFeesArray = ({ loan, structureId }) => {
   const calc = Calculator.getFeesCalculator({ loan, structureId });
   const {
     total,
     estimate,
     buyersContractFees: {
-      propertyRegistrationTax,
-      landRegistryPropertyTax,
-      notaryIncomeFromProperty,
       additionalFees: buyersContractAdditionalFees,
       total: buyersContractFees,
+      ...buyersContractValues
     } = {},
     mortgageNoteFees: {
-      mortgageNoteRegistrationTax,
-      landRegistryMortgageNoteTax,
-      notaryIncomeFromMortgageNote,
       additionalFees: mortgageNoteAdditionalFees,
       total: mortgageNoteFees,
+      ...mortgageNoteValues
     } = {},
     deductions: { buyersContractDeductions, mortgageNoteDeductions } = {},
-  } = calc.getNotaryFeesForLoan({
-    loan,
-    structureId,
-  });
+  } = calc.getNotaryFeesForLoan({ loan, structureId });
 
   if (estimate) {
     return [
@@ -518,24 +518,11 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       title: true,
       label: 'Recap.buyersContract',
     },
-
-    {
-      label: 'Recap.propertyRegistrationTax',
-      value: toMoney(propertyRegistrationTax),
-    },
+    ...getRecapForObject(buyersContractValues),
     {
       label: 'Recap.propertyRegistrationTaxDeductions',
       value: `-${toMoney(buyersContractDeductions)}`,
       hide: !buyersContractDeductions,
-    },
-    {
-      label: 'Recap.landRegistryPropertyTax',
-      value: toMoney(landRegistryPropertyTax),
-      hide: !landRegistryPropertyTax,
-    },
-    {
-      label: 'Recap.notaryIncomeFromPropertyWithVAT',
-      value: toMoney(notaryIncomeFromProperty),
     },
     {
       label: 'Recap.buyersContractAdditionalFees',
@@ -557,24 +544,11 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       title: true,
       label: 'Recap.mortgageNote',
     },
-    {
-      label: 'Recap.mortgageNoteRegistrationTax',
-      value: toMoney(mortgageNoteRegistrationTax),
-      hide: !mortgageNoteRegistrationTax,
-    },
+    ...getRecapForObject(mortgageNoteValues),
     {
       label: 'Recap.mortgageNoteRegistrationTaxDeductions',
       value: `-${toMoney(mortgageNoteDeductions)}`,
       hide: !mortgageNoteDeductions,
-    },
-    {
-      label: 'Recap.landRegistryMortgageNoteTax',
-      value: toMoney(landRegistryMortgageNoteTax),
-      hide: !landRegistryMortgageNoteTax,
-    },
-    {
-      label: 'Recap.notaryIncomeFromMortgageNoteWithVAT',
-      value: toMoney(notaryIncomeFromMortgageNote),
     },
     {
       label: 'Recap.mortgageNoteAdditionalFees',

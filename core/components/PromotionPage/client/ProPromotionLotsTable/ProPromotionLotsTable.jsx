@@ -7,30 +7,22 @@ import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
 import { LOT_TYPES } from '../../../../api/constants';
-import { CUSTOM_AUTOFIELD_TYPES } from '../../../AutoForm2/constants';
+import { moneyField } from '../../../../api/helpers/sharedSchemas';
 
 type ProPromotionLotsTableProps = {};
 
 export const promotionLotSchema = new SimpleSchema({
   name: { type: String, uniforms: { autoFocus: true, placeholder: 'A' } },
-  value: {
-    type: Number,
-    defaultValue: 0,
-    min: 0,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
-  },
+  value: { ...moneyField, defaultValue: 0 },
+  landValue: { ...moneyField, defaultValue: 0 },
+  constructionValue: { ...moneyField, defaultValue: 0 },
+  additionalMargin: { ...moneyField, defaultValue: 0 },
   insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   roomCount: { type: Number, optional: true, min: 0, max: 100 },
   bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
-  monthlyExpenses: {
-    type: Number,
-    optional: true,
-    min: 0,
-    max: 100000,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
-  },
+  monthlyExpenses: moneyField,
   description: {
     type: String,
     optional: true,
@@ -50,12 +42,7 @@ export const lotSchema = new SimpleSchema({
     optional: true,
     uniforms: { placeholder: 'Parking en enfilade' },
   },
-  value: {
-    type: Number,
-    defaultValue: 0,
-    min: 0,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.MONEY },
-  },
+  value: { ...moneyField, min: 0 },
 });
 
 const ProPromotionLotsTable = ({
@@ -73,6 +60,7 @@ const ProPromotionLotsTable = ({
       <div className="promotion-table-actions">
         <AutoFormDialog
           title={<T id="PromotionPage.addProperty" />}
+          description={<T id="PromotionPage.promotionLotValueDescription" />}
           buttonProps={{
             label: <T id="PromotionPage.addProperty" />,
             raised: true,

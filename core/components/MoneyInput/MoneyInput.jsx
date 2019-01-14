@@ -11,12 +11,13 @@ import { swissFrancMask } from '../../utils/textMasks';
 import { toNumber } from '../../utils/conversionFunctions';
 
 type MoneyInputProps = {
-  onChange: Function,
-  value: number,
   fullWidth?: boolean,
-  label?: React.Node,
   helperText?: React.Node,
+  label?: React.Node,
+  margin?: string,
+  onChange: Function,
   required?: boolean,
+  value: number,
 };
 
 const MoneyInput = ({
@@ -25,12 +26,14 @@ const MoneyInput = ({
   label,
   onChange,
   required,
+  margin,
   ...props
 }: MoneyInputProps) => (
   <FormControl
     className="money-input"
     required={required}
     fullWidth={fullWidth}
+    margin={margin}
   >
     {label && <InputLabel>{label}</InputLabel>}
     <Input

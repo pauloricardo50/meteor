@@ -11,6 +11,7 @@ import withLoansDocuments from 'core/api/files/withLoansDocuments';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import Calculator from 'core/utils/Calculator';
 import ProgressCell from './ProgressCell';
 
 const columnOptions = [
@@ -21,26 +22,20 @@ const columnOptions = [
   {
     id: 'Valeur du bien',
     format: value => <Money value={value} />,
-    align: 'right'
+    align: 'right',
   },
   {
     id: 'Hypothèque',
     format: value => <Money value={value} />,
-    align: 'right'
+    align: 'right',
   },
   { id: 'Progrès' },
   { id: 'Checklist' },
 ];
 
 const mapLoan = history => (loan) => {
-  const {
-    _id: loanId,
-    status,
-    name,
-    updatedAt,
-    user,
-    structure: { property, wantedLoan },
-  } = loan;
+  const { _id: loanId, status, name, updatedAt, user } = loan;
+  
   return {
     id: loanId,
     columns: [
@@ -58,8 +53,8 @@ const mapLoan = history => (loan) => {
         raw: updatedAt && updatedAt.getTime(),
         label: moment(updatedAt).fromNow(),
       },
-      property ? property.value : 'Pas choisi',
-      wantedLoan,
+      Calculator.selectPropertyValue({ loan }),
+      Calculator.selectLoanValue({ loan }),
       <ProgressCell loan={loan} key="progress" />,
       <LoanChecklistDialog loan={loan} key="checklist" />,
     ],

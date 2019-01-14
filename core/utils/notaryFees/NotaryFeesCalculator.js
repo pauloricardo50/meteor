@@ -66,6 +66,19 @@ class NotaryFeesCalculator {
       return { total: 0 };
     }
 
+    const hasDetailedValue = Calculator.hasDetailedPropertyValue({
+      loan,
+      structureId,
+    });
+
+    if (hasDetailedValue) {
+      return this.buyersContractFeesConstruction({ loan, structureId });
+    }
+
+    return this.buyersContractFeesAcquisition({ loan, structureId });
+  }
+
+  buyersContractFeesAcquisition({ loan, structureId }) {
     const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
 
     // Frais d'enregistrement/Droits de mutation
@@ -93,6 +106,52 @@ class NotaryFeesCalculator {
       propertyRegistrationTax,
       notaryIncomeFromProperty,
       landRegistryPropertyTax,
+      additionalFees,
+    };
+  }
+
+  buyersContractFeesConstruction({ loan, structureId }) {
+    const {
+      landValue,
+      constructionValue,
+      additionalMargin,
+    } = Calculator.selectProperty({ loan, structureId });
+
+    // Frais d'enregistrement/Droits de mutation
+    const propertyRegistrationTax = this.propertyRegistrationTax({
+      propertyValue: landValue + additionalMargin,
+      loan,
+    });
+
+    // Emoluments du notaire
+    const notaryIncomeFromProperty = this.notaryIncomeFromProperty({
+      propertyValue: landValue + additionalMargin,
+    });
+
+    // Registre foncier
+    const landRegistryPropertyTax = this.landRegistryPropertyTax({
+      propertyValue: landValue + additionalMargin,
+    });
+
+    // Contrat de construction
+    const propertyConstructionTax = this.propertyConstructionTax({
+      constructionValue,
+    });
+
+    // Frais du notaire additionnels estimés
+    const additionalFees = this.additionalFees();
+
+    return {
+      total:
+        propertyRegistrationTax
+        + notaryIncomeFromProperty
+        + landRegistryPropertyTax
+        + propertyConstructionTax
+        + additionalFees,
+      propertyRegistrationTax,
+      notaryIncomeFromProperty,
+      landRegistryPropertyTax,
+      propertyConstructionTax,
       additionalFees,
     };
   }

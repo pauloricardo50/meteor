@@ -69,8 +69,8 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       }
 
       return {
-        ...promotionOption.promotionLots[0].properties[0],
         ...promotionOption,
+        ...promotionOption.promotionLots[0].properties[0],
       };
     }
   };

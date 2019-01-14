@@ -104,6 +104,17 @@ describe('NotaryFeesCalculator', () => {
       const fees = calc.getNotaryFeesForLoan({ loan, structureId: 'struct2' });
       expect(fees.total).to.equal(55313.1);
     });
+
+    it('calculates fees for properties with landValue and constructionValue', () => {
+      loan.structure.property.value = 0;
+      loan.structure.property.totalValue = 1000000;
+      loan.structure.property.landValue = 400000;
+      loan.structure.property.constructionValue = 400000;
+      loan.structure.property.additionalMargin = 200000;
+
+      const fees = calc.getNotaryFeesForLoan({ loan });
+      expect(fees.buyersContractFees.total).to.equal(28346.5);
+    });
   });
 
   describe('VD', () => {

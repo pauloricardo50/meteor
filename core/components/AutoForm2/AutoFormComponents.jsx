@@ -33,7 +33,11 @@ const determineComponentFromProps = ({
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
-    return { Component: MoneyInput, type: COMPONENT_TYPES.MONEY };
+    return {
+      Component: MoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { margin: 'normal' },
+    };
   }
 
   if (fieldType === Array) {
@@ -53,7 +57,11 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
     connectField,
   )(
     (props) => {
-      let { Component, type } = determineComponentFromProps(props);
+      let {
+        Component,
+        type,
+        props: additionalProps = {},
+      } = determineComponentFromProps(props);
       Component = Component || AutoField;
 
       const label = getLabel({
@@ -65,6 +73,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
 
       return (
         <Component
+          {...additionalProps}
           {...props}
           label={label}
           placeholder={placeholder}

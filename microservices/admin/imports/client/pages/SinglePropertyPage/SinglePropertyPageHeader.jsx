@@ -14,7 +14,7 @@ const SinglePropertyHeader = ({
     address1,
     city,
     zipCode,
-    value,
+    totalValue,
     roomCount,
     insideArea,
     createdAt,
@@ -40,7 +40,7 @@ const SinglePropertyHeader = ({
     </div>
 
     <h2>
-      <Money value={value} />
+      <Money value={totalValue} />
     </h2>
 
     <div className="bottom">
