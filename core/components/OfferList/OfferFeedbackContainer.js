@@ -2,14 +2,16 @@ import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 
 import { offerSendFeedback } from '../../api';
-import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
 const schema = new SimpleSchema({
   feedback: {
     type: String,
     optional: false,
     uniforms: {
-      type: CUSTOM_AUTOFIELD_TYPES.TEXT_AREA,
+      multiline: true,
+      rows: 10,
+      rowsMax: 10,
+      style: { width: '500px' },
     },
   },
 });

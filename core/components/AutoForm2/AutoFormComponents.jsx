@@ -12,7 +12,6 @@ import CustomSelectField from './CustomSelectField';
 import CustomListField from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
-import TextArea from '../TextArea';
 import MoneyInput from '../MoneyInput';
 
 const determineComponentFromProps = ({
@@ -31,10 +30,6 @@ const determineComponentFromProps = ({
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
     return { Component: PercentField, type: COMPONENT_TYPES.PERCENT };
-  }
-
-  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.TEXT_AREA) {
-    return { Component: TextArea, type: COMPONENT_TYPES.TEXT_AREA };
   }
 
   if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
