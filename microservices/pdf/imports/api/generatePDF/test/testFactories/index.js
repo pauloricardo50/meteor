@@ -1,15 +1,15 @@
 import './testFactories';
 import { Factory } from 'meteor/dburles:factory';
-import Loans from 'core/api/loans/loans';
-import { adminLoanFragment } from 'core/api/loans/queries/loanFragments/index';
 
+import { adminLoan } from 'core/api/fragments';
+import LoanService from 'core/api/loans/server/LoanService';
+import { PROPERTY_TYPE } from 'core/api/constants';
 import {
   fakeBorrower,
   FAKE_HOUSE,
   FAKE_APPARTMENT,
   fakeStructure,
 } from './fakes';
-import { PROPERTY_TYPE } from '../../../../core/api/constants';
 
 export const getSingleBorrowerLoan = ({
   purchaseType,
@@ -71,11 +71,4 @@ export const getTwoBorrowersLoan = ({
 };
 
 export const getFullLoan = loanId =>
-  Loans.createQuery('', {
-    $filter({ filters, params }) {
-      filters._id = params.id;
-    },
-    ...adminLoanFragment,
-  })
-    .clone({ id: loanId })
-    .fetchOne();
+  LoanService.fetchOne({ $filters: { id: loanId }, ...adminLoan() });
