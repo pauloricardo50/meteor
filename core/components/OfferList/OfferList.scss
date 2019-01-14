@@ -10,8 +10,8 @@
 
   img {
     align-self: center;
-
     width: 150px;
+    margin-bottom: 16px;
   }
 
   &-detail {
@@ -44,6 +44,23 @@
 
     h4 {
       margin: 0;
+    }
+  }
+
+  &-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    > button {
+      margin: 8px;
+      padding: 8px;
+    }
+
+    > span > button {
+      margin: 8px;
+      padding: 8px;
     }
   }
 }

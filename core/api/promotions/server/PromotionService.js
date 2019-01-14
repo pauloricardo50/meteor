@@ -16,9 +16,8 @@ import Promotions from '../promotions';
 import { PROMOTION_STATUS } from '../promotionConstants';
 
 export class PromotionService extends CollectionService {
-  constructor({ sendEmail: injectedSendEmail }) {
+  constructor() {
     super(Promotions);
-    this.sendEmail = injectedSendEmail;
   }
 
   insert({ promotion = {}, userId }) {
@@ -170,7 +169,7 @@ export class PromotionService extends CollectionService {
       }
 
       // Envoyer invitation sans enrollment link
-      return this.sendEmail.run({
+      return sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
         params: {
@@ -222,4 +221,4 @@ export class PromotionService extends CollectionService {
   }
 }
 
-export default new PromotionService({ sendEmail });
+export default new PromotionService();

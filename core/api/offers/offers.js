@@ -65,6 +65,7 @@ export const AdminOfferSchema = OfferSchema.omit(
   'contactLink',
   'createdAt',
   'updatedAt',
+  'feedback',
 );
 
 // Attach schema

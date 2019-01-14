@@ -22,3 +22,11 @@ export const offerDelete = new Method({
     offerId: String,
   },
 });
+
+export const offerSendFeedback = new Method({
+  name: 'offerSendFeedback',
+  params: {
+    offerId: String,
+    feedback: String,
+  },
+});

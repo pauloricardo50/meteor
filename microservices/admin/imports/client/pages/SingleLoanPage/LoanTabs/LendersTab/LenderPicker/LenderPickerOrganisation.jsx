@@ -1,9 +1,15 @@
 // @flow
 import React from 'react';
+import cx from 'classnames';
 
-import Button from 'core/components/Button';
+import IconButton from 'core/components/IconButton/IconButton';
 
-type LenderPickerOrganisationProps = {};
+type LenderPickerOrganisationProps = {
+  organisation: Object,
+  addLender: Function,
+  removeLender: Function,
+  isActive: boolean,
+};
 
 const LenderPickerOrganisation = ({
   organisation: { name, _id: organisationId },
@@ -12,16 +18,16 @@ const LenderPickerOrganisation = ({
   isActive,
 }: LenderPickerOrganisationProps) => (
   <div className="flex center organisation">
-    <h4>{name}</h4>
+    <h4 className={cx({ secondary: !isActive })}>{name}</h4>
     {isActive && (
-      <Button raised error onClick={() => removeLender(organisationId)}>
-        Supprimer
-      </Button>
+      <IconButton
+        className="error"
+        onClick={() => removeLender(organisationId)}
+        type="delete"
+      />
     )}
     {!isActive && (
-      <Button raised primary onClick={() => addLender(organisationId)}>
-        Ajouter
-      </Button>
+      <IconButton onClick={() => addLender(organisationId)} type="add" />
     )}
   </div>
 );
