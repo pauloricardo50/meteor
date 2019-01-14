@@ -5,26 +5,26 @@ import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 import UserDialogFormContainer from './UserDialogFormContainer';
 
-type EditUserDialogFormProps = {
+type UserModifierProps = {
   schema: Object,
   user: Object,
   editUser: Function,
   labels: Array<Object>,
 };
 
-const EditUserDialogForm = ({
+const UserModifier = ({
   schema,
   user,
   editUser,
   labels,
-}: EditUserDialogFormProps) => (
+}: UserModifierProps) => (
   <AutoFormDialog
     // Emails should not be modified like this, but with EmailModifier
     schema={schema.omit('email')}
     model={user}
     onSubmit={editUser}
     buttonProps={{
-      label: <T id="EditUserDialogForm.buttonLabel" />,
+      label: <T id="UserModifier.buttonLabel" />,
       raised: true,
       primary: true,
     }}
@@ -32,4 +32,4 @@ const EditUserDialogForm = ({
   />
 );
 
-export default UserDialogFormContainer(EditUserDialogForm);
+export default UserDialogFormContainer(UserModifier);

@@ -19,7 +19,7 @@ const userSchema = (admins = []) =>
     assignedEmployeeId: {
       type: String,
       allowedValues: admins.map(({ _id }) => _id),
-      optional: false,
+      optional: true,
       uniforms: {
         transform: assignedEmployeeId =>
           admins.find(({ _id }) => assignedEmployeeId === _id).name,

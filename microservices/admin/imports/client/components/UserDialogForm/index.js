@@ -1,2 +1,2 @@
-export { default as CreateUserDialogForm } from './CreateUserDialogForm';
-export { default as EditUserDialogForm } from './EditUserDialogForm';
+export { default as UserAdder } from './UserAdder';
+export { default as UserModifier } from './UserModifier';

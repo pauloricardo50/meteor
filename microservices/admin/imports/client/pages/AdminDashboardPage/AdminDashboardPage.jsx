@@ -5,7 +5,7 @@ import Button from 'core/components/Button';
 import { TASK_STATUS } from 'core/api/tasks/taskConstants';
 import { adminLoanInsert } from 'core/api/loans/index';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
-import { CreateUserDialogForm } from '../../components/UserDialogForm';
+import { UserAdder } from '../../components/UserDialogForm';
 import MyLoansTable from './MyLoansTable';
 
 const AdminDashboardPage = ({ currentUser, history }) => (
@@ -13,7 +13,7 @@ const AdminDashboardPage = ({ currentUser, history }) => (
     <h1>Admin Dashboard</h1>
 
     <div className="flex space-children">
-      <CreateUserDialogForm currentUser={currentUser} />
+      <UserAdder currentUser={currentUser} />
       <Button
         primary
         raised

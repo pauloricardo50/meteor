@@ -13,7 +13,7 @@ import { ROLES, USERS_COLLECTION } from 'imports/core/api/constants';
 import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
-import { EditUserDialogForm } from '../../components/UserDialogForm';
+import { UserModifier } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
 import EmailModifier from './EmailModifier';
 
@@ -43,7 +43,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
           <RolePicker userId={userId} />
         </h1>
-        <EditUserDialogForm user={user} />
+        <UserModifier user={user} />
         <ConfirmMethod
           method={() => sendEnrollmentEmail.run({ userId })}
           label="Envoyer email d'invitation"
