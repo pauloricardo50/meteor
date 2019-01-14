@@ -14,11 +14,7 @@ import {
 } from 'core/api/constants';
 import PDFService from '../PDFService';
 
-import {
-  getSingleBorrowerLoan,
-  getTwoBorrowersLoan,
-  getFullLoan,
-} from './testFactories';
+import { getTwoBorrowersLoan, getFullLoan } from './testFactories';
 import { GENDER } from '../../../core/api/constants';
 import { FAKE_USER } from './testFactories/fakes';
 
@@ -126,13 +122,7 @@ describe('GeneratePDFService', () => {
     const loan = getFullLoan(loanId);
 
     return PDFService.generateDataAsPDF(
-      {
-        data: {
-          ...loan,
-          ...FAKE_USER,
-        },
-        type: PDF_TYPES.LOAN,
-      },
+      { data: { ...loan, ...FAKE_USER }, type: PDF_TYPES.LOAN },
       true,
     )
       .then((response) => {

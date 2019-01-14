@@ -18,11 +18,18 @@ import {
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
-
+import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
 import MainSideNavListItem from './MainSideNavListItem';
+import {
+  DASHBOARD_PAGE,
+  DEV_PAGE,
+  INTEREST_RATES_PAGE,
+  ORGANISATIONS_PAGE,
+  TASKS_PAGE,
+} from '../../../../startup/client/adminRoutes';
 
 const items = [
-  { label: 'Dashboard', icon: 'home', to: '/', exact: true },
+  { label: 'Dashboard', icon: 'home', to: DASHBOARD_PAGE, exact: true },
   {
     icon: 'contactMail',
     detail: true,
@@ -51,7 +58,7 @@ const items = [
   {
     label: 'Tâches',
     icon: 'check',
-    to: '/tasks',
+    to: TASKS_PAGE,
     collection: TASKS_COLLECTION,
   },
   {
@@ -59,7 +66,7 @@ const items = [
     icon: (
       <FontAwesomeIcon icon={faBriefcase} className="admin-side-nav-icon" />
     ),
-    to: '/organisations',
+    to: ORGANISATIONS_PAGE,
     collection: ORGANISATIONS_COLLECTION,
   },
   {
@@ -73,9 +80,10 @@ const items = [
     icon: (
       <FontAwesomeIcon icon={faChartLine} className="admin-side-nav-icon" />
     ),
-    to: '/interestRates',
+    to: INTEREST_RATES_PAGE,
+    collection: INTEREST_RATES_COLLECTION,
   },
-  { label: 'Dev', icon: 'developerMode', to: '/dev' },
+  { label: 'Dev', icon: 'developerMode', to: DEV_PAGE },
 ];
 
 const createOnClickHandler = (

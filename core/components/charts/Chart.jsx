@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 
 export default class Chart extends Component {
+  constructor() {
+    super();
+    this.chart = null;
+  }
+
   componentWillReceiveProps({ data: nextData }) {
     const { data: prevData } = this.props;
     // If previous data[i].value is different from next data, update chart

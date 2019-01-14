@@ -53,7 +53,6 @@ aldeed:schema-index
 aldeed:schema-deny
 
 # UI tricks
-fortawesome:fontawesome
 meteorhacks:inject-initial
 
 

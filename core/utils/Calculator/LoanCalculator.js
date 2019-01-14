@@ -236,10 +236,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getTotalRemainingFunds({ loan }) {
-      return Object.values(OWN_FUNDS_TYPES).reduce(
-        (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
-        0,
-      );
+      // Don't count extra third party fortune, as it is not a real "loan" from them
+      return Object.values(OWN_FUNDS_TYPES)
+        .filter(type => type !== OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE)
+        .reduce(
+          (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
+          0,
+        );
     }
 
     refinancingPercent({ loan }) {

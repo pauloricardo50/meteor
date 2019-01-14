@@ -6,19 +6,19 @@ import AutoFormDialog from 'core/components/AutoForm2/AutoFormDialog';
 import T from 'core/components/Translation';
 import UserDialogFormContainer from './UserDialogFormContainer';
 
-type CreateUserDialogFormProps = {
+type UserAdderProps = {
   schema: Object,
   currentUser: Object,
   createUser: Function,
   labels: Array<Object>,
 };
 
-const CreateUserDialogForm = ({
+const UserAdder = ({
   schema,
   currentUser: { _id: adminId },
   createUser,
   labels,
-}: CreateUserDialogFormProps) => (
+}: UserAdderProps) => (
   <AutoFormDialog
     schema={schema.extend(new SimpleSchema({
       sendEnrollmentEmail: {
@@ -30,19 +30,17 @@ const CreateUserDialogForm = ({
     model={{ assignedEmployeeId: adminId }}
     onSubmit={createUser}
     buttonProps={{
-      label: <T id="CreateUserDialogForm.buttonLabel" />,
+      label: <T id="UserAdder.buttonLabel" />,
       raised: true,
       primary: true,
     }}
     autoFieldProps={{
       labels: {
         ...labels,
-        sendEnrollmentEmail: (
-          <T id="CreateUserDialogForm.sendEnrollmentEmail" />
-        ),
+        sendEnrollmentEmail: <T id="UserAdder.sendEnrollmentEmail" />,
       },
     }}
   />
 );
 
-export default UserDialogFormContainer(CreateUserDialogForm);
+export default UserDialogFormContainer(UserAdder);
