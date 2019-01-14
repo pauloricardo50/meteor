@@ -513,7 +513,6 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     ];
   }
 
-  console.log('buyersContractValues', buyersContractValues);
   return [
     {
       title: true,

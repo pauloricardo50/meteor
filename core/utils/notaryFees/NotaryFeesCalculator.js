@@ -71,7 +71,6 @@ class NotaryFeesCalculator {
       structureId,
     });
 
-    console.log('hasDetailedValue', hasDetailedValue);
     if (hasDetailedValue) {
       return this.buyersContractFeesConstruction({ loan, structureId });
     }
