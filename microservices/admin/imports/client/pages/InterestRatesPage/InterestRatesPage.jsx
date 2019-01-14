@@ -1,6 +1,10 @@
 // @flow
 import React from 'react';
-import Tabs from 'imports/core/components/Tabs/Tabs';
+
+import Tabs from 'core/components/Tabs/Tabs';
+import Icon from 'core/components/Icon/Icon';
+import collectionIcons from 'core/arrays/collectionIcons';
+import { INTEREST_RATES_COLLECTION } from 'core/api/constants';
 import InterestRatesTable from './InterestRatesTable';
 import InterestRatesPageContainer from './InterestRatesPageContainer';
 import { InsertInterestRatesDialogForm } from './InterestRatesDialogForm';
@@ -20,7 +24,14 @@ const InterestRatesPage = ({
   currentInterestRates: { rates: currentRates },
 }: InterestRatesPageProps) => (
   <div className="card1 card-top interest-rates-page">
-    <h1>Taux d'intérêt</h1>
+    <h1 className="flex center-align">
+      <Icon
+        type={collectionIcons[INTEREST_RATES_COLLECTION]}
+        style={{ marginRight: 8 }}
+        size={32}
+      />
+      <span>Taux d'intérêt</span>
+    </h1>
     <InterestRatesChart
       interestRates={[...interestRates].reverse()}
       irs10y={[...irs10y].reverse()}

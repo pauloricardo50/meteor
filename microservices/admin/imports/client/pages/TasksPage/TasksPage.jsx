@@ -1,7 +1,10 @@
 import React from 'react';
+
 import T from 'core/components/Translation';
-import { TASK_TYPE, TASK_STATUS } from 'core/api/constants';
+import { TASK_TYPE, TASK_STATUS, TASKS_COLLECTION } from 'core/api/constants';
 import adminsQuery from 'core/api/users/queries/admins';
+import Icon from 'core/components/Icon/Icon';
+import collectionIcons from 'core/arrays/collectionIcons';
 import AllTasksTable from '../../components/TasksTable/AllTasksTable';
 
 const getAdminsEmails = async () => {
@@ -32,7 +35,12 @@ const TasksPage = () => (
     className="card1 card-top tasks-page"
     style={{ overflow: 'initial' }}
   >
-    <h1>
+    <h1 className="flex center-align">
+      <Icon
+        type={collectionIcons[TASKS_COLLECTION]}
+        style={{ marginRight: 8 }}
+        size={32}
+      />
       <T id="collections.tasks" />
     </h1>
 
