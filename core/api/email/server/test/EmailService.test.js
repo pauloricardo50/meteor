@@ -44,8 +44,10 @@ describe('EmailService', () => {
     it('should add emails in the test database and send them with the test key', () => {
       const address = 'florian@e-potek.ch';
 
-      return EmailService.sendEmail(EMAIL_IDS.CONTACT_US, address, {
-        name: 'Florian Bienefelt',
+      return EmailService.sendEmail({
+        emailId: EMAIL_IDS.CONTACT_US,
+        address,
+        params: { name: 'Florian Bienefelt' },
       }).then(() =>
         checkEmails().then((emails) => {
           expect(emails.length).to.equal(1);

@@ -67,4 +67,8 @@ AutoFormDialogActions.contextTypes = {
   }),
 };
 
-export default withState('disableActions', 'setDisableActions', false)(AutoFormDialogActions);
+export default withState(
+  'disableActions',
+  'setDisableActions',
+  ({ disableActions }) => !!disableActions,
+)(AutoFormDialogActions);

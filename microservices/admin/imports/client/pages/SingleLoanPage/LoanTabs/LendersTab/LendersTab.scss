@@ -49,4 +49,11 @@
       margin-right: 8px;
     }
   }
+
+  &-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }

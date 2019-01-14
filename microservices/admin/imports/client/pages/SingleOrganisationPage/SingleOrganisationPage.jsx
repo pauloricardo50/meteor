@@ -3,10 +3,9 @@ import React from 'react';
 
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
-import { InsertContactDialogForm } from '../ContactsPage/ContactDialogForm/index';
 import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
-import OrganisationModifier from './OrganisationModifier';
+import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 
 type SingleOrganisationPageProps = {
@@ -30,21 +29,18 @@ const tabs = props =>
 const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => {
-  const { contacts, logo, name, offers } = organisation;
+  const { contacts, offers } = organisation;
 
   return (
-    <div className="card1 card-top">
-      <h1>{logo ? <img src={logo} alt={name} /> : name}</h1>
-      <div className="flex flex-row space-children">
-        <InsertContactDialogForm
-          model={{ organisations: [{ _id: organisation._id }] }}
-        />
-        <OrganisationModifier organisation={organisation} />
-      </div>
-      <Tabs tabs={tabs({ contacts, offers })} />
-      {/* // <h3>Contacts</h3>
-      // <ContactsTable contacts={contacts} />
-      // <OffersTable offers={offers} /> */}
+    <div className="card1 card-top single-organisation-page">
+      <SingleOrganisationPageHeader organisation={organisation} />
+      <Tabs
+        tabs={tabs({
+          contacts,
+          offers,
+          organisationId: organisation._id,
+        })}
+      />
     </div>
   );
 };

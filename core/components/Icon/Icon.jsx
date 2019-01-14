@@ -70,6 +70,7 @@ import Help from '@material-ui/icons/Help';
 import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import InsertChart from '@material-ui/icons/InsertChart';
 import Image from '@material-ui/icons/Image';
+import Delete from '@material-ui/icons/Delete';
 
 const iconMap = {
   close: CloseIcon,
@@ -141,6 +142,7 @@ const iconMap = {
   monetizationOn: MonetizationOn,
   chart: InsertChart,
   image: Image,
+  delete: Delete,
 };
 
 const Icon = ({ type, size, tooltip, tooltipPlacement, ...props }) => {

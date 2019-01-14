@@ -14,14 +14,15 @@ Contacts.addReducers({
     body: {
       emails: 1,
     },
-    reduce: ({ emails }) => emails && emails.length && emails[0].address,
+    reduce: ({ emails }) =>
+      (emails && emails.length && emails[0].address) || '',
   },
   phoneNumber: {
     body: {
       phoneNumbers: 1,
     },
     reduce: ({ phoneNumbers }) =>
-      phoneNumbers && phoneNumbers.length && phoneNumbers[0],
+      (phoneNumbers && phoneNumbers.length && phoneNumbers[0]) || '',
   },
   ...addressReducer,
 });
