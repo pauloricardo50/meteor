@@ -24,7 +24,6 @@ const OfferRecapDialogContent = ({ offer }: OfferRecapDialogContentProps) => {
     feedback,
     ...rest
   } = offer || {};
-  console.log('offer', offer);
   const rates = pick(rest, Object.values(INTEREST_RATES));
 
   const { logo = '', name = '' } = organisation || {};

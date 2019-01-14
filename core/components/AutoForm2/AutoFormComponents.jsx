@@ -58,7 +58,6 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
     connectField,
   )(
     (props) => {
-      console.log('props', props);
       let { Component, type } = determineComponentFromProps(props);
       Component = Component || AutoField;
 
