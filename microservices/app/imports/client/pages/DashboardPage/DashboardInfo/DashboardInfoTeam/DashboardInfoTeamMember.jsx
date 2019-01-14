@@ -59,7 +59,9 @@ const DashboardInfoTeamMember = ({
       <a href={`mailto:${email}`}>
         <IconButton
           type="mail"
-          tooltip={<T id="DashboardInfoTeamMember.emailTooltip" />}
+          tooltip={
+            <T id="DashboardInfoTeamMember.emailTooltip" values={{ email }} />
+          }
         />
       </a>
 
@@ -67,7 +69,12 @@ const DashboardInfoTeamMember = ({
         <a href={`tel:${phoneNumber}`}>
           <IconButton
             type="phone"
-            tooltip={<T id="DashboardInfoTeamMember.phoneTooltip" />}
+            tooltip={(
+              <T
+                id="DashboardInfoTeamMember.phoneTooltip"
+                values={{ phoneNumber }}
+              />
+            )}
           />
         </a>
       )}
