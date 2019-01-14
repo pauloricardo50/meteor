@@ -35,9 +35,12 @@ export const createFakeUsers = (count, role, currentUserEmail = '') => {
   return insertedUsers;
 };
 
-export const addUser = ({ email, role, password, ...data }) => {
+export const addUser = ({ email, role, password = USER_PASSWORD, ...data }) => {
   const newUserId = createUser(email, role, password);
-  UserService.update({ userId: newUserId, object: data });
+  UserService.update({
+    userId: newUserId,
+    object: { ...data, phoneNumbers: [faker.phone.phoneNumber()] },
+  });
   return newUserId;
 };
 
@@ -47,18 +50,17 @@ export const createDevs = (currentEmail) => {
       email: 'florian@e-potek.ch',
       firstName: 'Florian',
       lastName: 'Bienefelt',
-      role: 'dev',
-      password: '12345',
     },
     {
       email: 'quentin@e-potek.ch',
       firstName: 'Quentin',
       lastName: 'Herzig',
-      role: 'dev',
-      password: '12345',
     },
   ];
-  return devs.filter(({ email }) => email !== currentEmail).map(addUser);
+  return devs
+    .filter(({ email }) => email !== currentEmail)
+    .map(obj => ({ ...obj, role: 'dev' }))
+    .map(addUser);
 };
 
 export const createAdmins = () => {
@@ -67,28 +69,24 @@ export const createAdmins = () => {
       email: 'lydia@e-potek.ch',
       firstName: 'Lydia',
       lastName: 'Abraha',
-      role: 'admin',
     },
     {
       email: 'joel@e-potek.ch',
       firstName: 'Joel',
       lastName: 'Santos',
-      role: 'admin',
     },
     {
       email: 'yannis@e-potek.ch',
       firstName: 'Yannis',
       lastName: 'Eggert',
-      role: 'admin',
     },
     {
       email: 'jeanluc@e-potek.ch',
       firstName: 'Jean-luc',
       lastName: 'Kringel',
-      role: 'admin',
     },
   ];
-  return devs.map(addUser);
+  return devs.map(obj => ({ ...obj, role: 'admin' })).map(addUser);
 };
 
 export const getFakeUsersIds = () => {
