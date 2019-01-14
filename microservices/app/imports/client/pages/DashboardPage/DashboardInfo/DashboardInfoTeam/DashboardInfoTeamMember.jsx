@@ -7,21 +7,22 @@ import IconButton from 'core/components/IconButton';
 import DashboardInfoTeamForm from './DashboardInfoTeamForm';
 
 const DashboardInfoTeamMember = ({
-  src,
-  name,
-  title,
-  email,
-  phoneNumber,
   allowEdit,
   editContact,
+  email,
+  name,
+  phoneNumber,
   removeContact,
+  renderTitle,
+  src,
+  title,
 }) => (
   <div className="dashboard-info-team-company-member">
     {src && <img src={src} alt={name} />}
 
     <div className="person">
       <h4>{name}</h4>
-      <p>{title}</p>
+      <p>{renderTitle}</p>
     </div>
 
     <div className="contact">

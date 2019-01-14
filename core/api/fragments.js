@@ -190,22 +190,7 @@ export const loan = () => ({
 
 export const loanBase = () => ({
   ...loan(),
-  promotionOptions: {
-    attributedToMe: 1,
-    custom: 1,
-    name: 1,
-    priority: 1,
-    promotion: 1,
-    promotionLots: {
-      name: 1,
-      status: 1,
-      reducedStatus: 1,
-      value: 1,
-      properties: promotionProperty(),
-    },
-    solvency: 1,
-    value: 1,
-  },
+  promotionOptions: loanPromotionOption(),
 });
 
 export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
@@ -301,7 +286,11 @@ export const fullOffer = () => ({
   ),
   fees: 1,
   lender: {
-    loan: { _id: 1, name: 1, user: { name: 1, assignedEmployee: { email: 1, name: 1 } } },
+    loan: {
+      _id: 1,
+      name: 1,
+      user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+    },
     contact: { _id: 1, name: 1, email: 1 },
     organisation: { _id: 1, name: 1 },
   },
@@ -381,6 +370,7 @@ export const appPromotionLot = () => ({
 // // PromotionOption fragments
 // //
 export const fullPromotionOption = () => ({
+  canton: 1,
   createdAt: 1,
   custom: 1,
   loan: { name: 1 },
@@ -392,6 +382,7 @@ export const fullPromotionOption = () => ({
 });
 
 export const proPromotionOption = () => ({
+  canton: 1,
   createdAt: 1,
   custom: 1,
   loan: {
@@ -413,6 +404,7 @@ export const proPromotionOption = () => ({
 
 export const appPromotionOption = () => ({
   attributedToMe: 1,
+  canton: 1,
   createdAt: 1,
   custom: 1,
   lots: { description: 1, name: 1, type: 1, value: 1 },
@@ -420,6 +412,24 @@ export const appPromotionOption = () => ({
   priority: 1,
   solvency: 1,
   updatedAt: 1,
+});
+
+export const loanPromotionOption = () => ({
+  attributedToMe: 1,
+  canton: 1,
+  custom: 1,
+  name: 1,
+  priority: 1,
+  promotion: 1,
+  promotionLots: {
+    name: 1,
+    status: 1,
+    reducedStatus: 1,
+    value: 1,
+    properties: promotionProperty(),
+  },
+  solvency: 1,
+  value: 1,
 });
 
 // //

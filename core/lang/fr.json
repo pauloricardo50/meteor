@@ -1,4 +1,9 @@
 {
+  "NotaryAdder.suggestNotary": "Nous pouvons vous suggérer {name} pour le canton de {canton}.",
+  "Forms.alreadyHaveNotary": "Avez-vous déjà un notaire?",
+  "Forms.alreadyHaveNotary.yes": "Oui",
+  "Forms.alreadyHaveNotary.no": "Non, suggérez-m'en un",
+  "NotaryAdder.buttonLabel": "Ajouter un notaire",
   "general.perYear": "/an",
   "Forms.name.placeholder": "Jean Dupont",
   "Forms.title.placeholder": "Notaire",

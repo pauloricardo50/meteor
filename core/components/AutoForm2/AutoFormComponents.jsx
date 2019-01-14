@@ -48,6 +48,10 @@ const determineComponentFromProps = ({
     return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
   }
 
+  if (uniforms && uniforms.render) {
+    return { Component: uniforms.render, type: COMPONENT_TYPES.RENDER };
+  }
+
   return { Component: false, type: null };
 };
 
