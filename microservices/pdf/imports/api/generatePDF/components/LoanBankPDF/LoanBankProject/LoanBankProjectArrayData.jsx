@@ -38,9 +38,7 @@ export const usedOwnFundsTableData = loan =>
           data: toMoney(Calculator.getUsedFundsOfType({ loan, type, usageType })),
           condition:
             Calculator.getUsedFundsOfType({ loan, type, usageType }) > 0,
-          style: {
-            textAlign: 'right',
-          },
+          style: { textAlign: 'right' },
         })),
     ],
     [],
@@ -57,7 +55,11 @@ const oneBorrowerHasOwnFunds = ({ borrowers }, type) =>
 
 export const remainingFundsTableData = loan =>
   Object.values(OWN_FUNDS_TYPES)
-    .filter(type => ![OWN_FUNDS_TYPES.BANK_FORTUNE].includes(type))
+    .filter(type =>
+      ![
+        OWN_FUNDS_TYPES.BANK_FORTUNE,
+        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+      ].includes(type))
     .map(type => ({
       label: <T id={`PDF.ownFund.${type}`} />,
       data: toMoney(Calculator.getRemainingFundsOfType({ loan, type })),
