@@ -49,11 +49,11 @@ describe('OfferService', () => {
           lenderId,
           maxAmount: 800000,
           amortizationGoal: 0.65,
-          interest1: 0.0123,
+          interest1: 0.01234,
         },
       });
 
-      expect(OfferService.get(offerId).interest1).to.equal(0.012);
+      expect(OfferService.get(offerId).interest1).to.equal(0.0123);
     });
   });
 
