@@ -9,6 +9,10 @@
     align-items: center;
     justify-content: space-between;
 
+    img {
+      width: 200px;
+    }
+
     &-type {
       display: flex;
       flex-direction: column;
