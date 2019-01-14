@@ -6,6 +6,7 @@ import {
   ORGANISATIONS_COLLECTION,
   ORGANISATION_TYPES,
   ORGANISATION_FEATURES,
+  ORGANISATION_TAGS,
 } from './organisationConstants';
 
 const Organisations = new Mongo.Collection(ORGANISATIONS_COLLECTION);
@@ -50,6 +51,13 @@ export const OrganisationSchema = new SimpleSchema({
   'contactIds.$._id': { type: String, optional: true },
   'contactIds.$.role': { type: String, optional: true },
   'contactIds.$.useSameAddress': { type: Boolean, optional: true },
+  tags: {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+    uniforms: { placeholder: null },
+  },
+  'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
 });
 
 Organisations.attachSchema(OrganisationSchema);

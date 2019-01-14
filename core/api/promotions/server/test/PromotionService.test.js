@@ -1,25 +1,33 @@
 // @flow
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
-import sinon from 'sinon';
 
 import { PROMOTION_STATUS } from '../../../constants';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import UserService from '../../../users/server/UserService';
 import { ROLES } from '../../../users/userConstants';
 import LoanService from '../../../loans/server/LoanService';
-import PromotionService, {
-  PromotionService as PromotionServiceClass,
-} from '../PromotionService';
+import PromotionService from '../PromotionService';
 import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
 import PromotionOptionService from '../../../promotionOptions/server/PromotionOptionService';
 import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
 
 describe('PromotionService', () => {
+  const checkEmails = () =>
+    new Promise((resolve, reject) => {
+      Meteor.call('getAllTestEmails', (err, emails) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(emails);
+      });
+    });
+
   beforeEach(() => {
     resetDatabase();
   });
@@ -114,15 +122,9 @@ describe('PromotionService', () => {
 
   describe('inviteUser', () => {
     let promotionId;
-    let sendEmail;
-    let FakePromotionService;
     let adminId;
 
     beforeEach(() => {
-      sendEmail = { run: sinon.spy() };
-      FakePromotionService = new PromotionServiceClass({
-        sendEmail,
-      });
       adminId = Factory.create('admin')._id;
       promotionId = Factory.create('promotion', {
         _id: 'promotion',
@@ -139,30 +141,45 @@ describe('PromotionService', () => {
         phoneNumber: '1234',
       };
 
-      return FakePromotionService.inviteUser({
-        promotionId,
-        user: newUser,
-      }).then((loanId) => {
-        const user = Accounts.findUserByEmail(newUser.email);
-        const {
-          _id: userId,
-          services: {
-            password: {
-              reset: { token },
+      let resetToken;
+
+      return PromotionService.inviteUser({ promotionId, user: newUser })
+        .then((loanId) => {
+          const user = Accounts.findUserByEmail(newUser.email);
+          const {
+            _id: userId,
+            services: {
+              password: {
+                reset: { token },
+              },
             },
-          },
-        } = user;
-        const {
-          emailId,
-          params: { ctaUrl },
-        } = sendEmail.run.args[0][0];
-        expect(!!loanId).to.equal(true);
-        expect(!!userId).to.equal(true);
-        expect(ctaUrl.split('/').slice(-1)[0]).to.equal(token);
-        expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
-        expect(sendEmail.run.called).to.equal(true);
-        expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-      });
+          } = user;
+
+          resetToken = token;
+
+          expect(!!loanId).to.equal(true);
+          expect(!!userId).to.equal(true);
+          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
+
+          return checkEmails();
+        })
+        .then((emails) => {
+          expect(emails.length).to.equal(1);
+          const {
+            emailId,
+            response: { status },
+            template: {
+              message: { merge_vars },
+            },
+          } = emails[0];
+
+          expect(status).to.equal('sent');
+          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
+          expect(merge_vars[0].vars
+            .find(({ name }) => name === 'CTA_URL')
+            .content.split('/')
+            .slice(-1)[0]).to.equal(resetToken);
+        });
     });
 
     it('sends the invitation email if user exists', () => {
@@ -184,15 +201,26 @@ describe('PromotionService', () => {
         role: ROLES.USER,
       });
 
-      return FakePromotionService.inviteUser({
+      return PromotionService.inviteUser({
         promotionId,
         user: newUser,
-      }).then((loanId) => {
-        expect(!!loanId).to.equal(true);
-        expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
-        expect(sendEmail.run.called).to.equal(true);
-        expect(sendEmail.run.args[0][0].emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-      });
+      })
+        .then((loanId) => {
+          expect(!!loanId).to.equal(true);
+          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
+
+          return checkEmails();
+        })
+        .then((emails) => {
+          expect(emails.length).to.equal(1);
+          const {
+            emailId,
+            response: { status },
+          } = emails[0];
+
+          expect(status).to.equal('sent');
+          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
+        });
     });
 
     it('throws an error if user is already invited to the promotion', () => {
@@ -217,7 +245,7 @@ describe('PromotionService', () => {
       LoanService.insertPromotionLoan({ userId, promotionId });
 
       expect(() =>
-        FakePromotionService.inviteUser({
+        PromotionService.inviteUser({
           promotionId,
           user: newUser,
         })).to.throw('déjà invité');
@@ -240,7 +268,7 @@ describe('PromotionService', () => {
           });
 
           expect(() =>
-            FakePromotionService.inviteUser({
+            PromotionService.inviteUser({
               promotionId,
               user: newUser,
             })).to.throw('Vous ne pouvez pas inviter');
@@ -255,7 +283,7 @@ describe('PromotionService', () => {
         phoneNumber: '1234',
       };
 
-      return FakePromotionService.inviteUser({
+      return PromotionService.inviteUser({
         promotionId,
         user: newUser,
       }).then(() => {

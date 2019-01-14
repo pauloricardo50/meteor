@@ -30,11 +30,11 @@ class EmailService {
   sendEmailToUser = ({ emailId, userId, params }) => {
     const user = Meteor.users.findOne(userId);
     const emailAddress = user && user.emails[0].address;
-    this.sendEmail(emailId, emailAddress, params);
+    this.sendEmail({ emailId, address: emailAddress, params });
   };
 
   sendEmailToLoggedInUser = (emailId, params) => {
-    this.sendEmailToUser(emailId, Meteor.userId(), params);
+    this.sendEmailToUser({ emailId, userId: Meteor.userId(), params });
   };
 
   getEmailConfig = emailId => emailConfigs[emailId];
