@@ -10,7 +10,7 @@ const Offer = ({ offer, offerValues }) => (
   <div className="offer-list-item">
     <div className="flex-col center" style={{ padding: '16px' }}>
       <img src={offer.organisation.logo} alt={offer.organisation.name} />
-      {offer.createdAt && <b>{moment(offer.createdAt).format('DD.MM.YYYY')}</b>}
+      {offer.createdAt && <b>{moment(offer.createdAt).format('D MMM YY')}</b>}
     </div>
     <div className="offer-list-item-detail">
       {offerValues.map(offerValue => (

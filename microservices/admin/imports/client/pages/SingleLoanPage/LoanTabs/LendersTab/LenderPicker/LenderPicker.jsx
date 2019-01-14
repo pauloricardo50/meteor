@@ -4,11 +4,17 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
-import IconButton from 'imports/core/components/IconButton/IconButton';
+import IconButton from 'core/components/IconButton/IconButton';
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
 
-type LenderPickerProps = {};
+type LenderPickerProps = {
+  organisations: Array<Object>,
+  count: Number,
+  loan: Object,
+  addLender: Function,
+  removeLender: Function,
+};
 
 const addAllLendersOfType = ({ organisations, type, addLender }) => () =>
   organisations[type].forEach(({ _id }) => addLender(_id));
@@ -27,7 +33,6 @@ const LenderPicker = ({
     closeOnly
     primary
     rootStyle={{ marginRight: 8 }}
-    // title="Choisir prêteurs"
   >
     <div className="lender-picker-dialog">
       <h2>Choisir prêteurs</h2>

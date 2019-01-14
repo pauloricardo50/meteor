@@ -47,9 +47,7 @@ describe('EmailService', () => {
       return EmailService.sendEmail({
         emailId: EMAIL_IDS.CONTACT_US,
         address,
-        params: {
-          name: 'Florian Bienefelt',
-        },
+        params: { name: 'Florian Bienefelt' },
       }).then(() =>
         checkEmails().then((emails) => {
           expect(emails.length).to.equal(1);

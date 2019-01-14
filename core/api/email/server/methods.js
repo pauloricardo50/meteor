@@ -4,7 +4,6 @@ import { sendEmail, sendEmailToAddress } from '../methodDefinitions';
 import EmailService from './EmailService';
 
 sendEmail.setHandler((context, { emailId, userId, params }) => {
-  console.log('userId', userId);
   context.unblock();
   try {
     EmailService.sendEmailToUser({ emailId, userId, params });

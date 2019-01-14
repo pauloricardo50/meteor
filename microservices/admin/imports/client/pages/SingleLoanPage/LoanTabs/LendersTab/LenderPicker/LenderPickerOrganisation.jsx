@@ -2,9 +2,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-import IconButton from 'imports/core/components/IconButton/IconButton';
+import IconButton from 'core/components/IconButton/IconButton';
 
-type LenderPickerOrganisationProps = {};
+type LenderPickerOrganisationProps = {
+  organisation: Object,
+  addLender: Function,
+  removeLender: Function,
+  isActive: boolean,
+};
 
 const LenderPickerOrganisation = ({
   organisation: { name, _id: organisationId },

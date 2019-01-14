@@ -71,17 +71,14 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
       title="Feedback de l'offre"
       important
     >
-      {() => {
-        if (feedback) {
-          return (
-            <>
-              <h4>Feedback déjà envoyé</h4>
-              <p style={{ whiteSpace: 'pre-line' }}>{feedback}</p>
-            </>
-          );
-        }
-        return null;
-      }}
+      {() =>
+        (feedback ? (
+          <>
+            <h4>Feedback déjà envoyé</h4>
+            <p style={{ whiteSpace: 'pre-line' }}>{feedback}</p>
+          </>
+        ) : null)
+      }
     </AutoFormDialog>
   );
 };

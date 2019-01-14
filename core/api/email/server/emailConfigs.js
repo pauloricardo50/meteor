@@ -207,8 +207,6 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       senderAddress: assigneeAddress,
     };
   },
-  createIntlValues: ({ loanName }) => ({
-    loanName,
-  }),
+  createIntlValues: ({ loanName }) => ({ loanName }),
 });
 export default emailConfigs;

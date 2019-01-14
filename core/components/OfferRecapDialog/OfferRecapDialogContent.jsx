@@ -11,22 +11,24 @@ type OfferRecapDialogContentProps = {
   offer: Object,
 };
 
-const OfferRecapDialogContent = ({ offer }: OfferRecapDialogContentProps) => {
+const OfferRecapDialogContent = ({
+  offer = {},
+}: OfferRecapDialogContentProps) => {
   const {
     createdAt,
     maxAmount,
     conditions = [],
-    organisation,
+    organisation = {},
     amortizationGoal,
     amortizationYears,
     fees,
     epotekFees,
     feedback,
     ...rest
-  } = offer || {};
+  } = offer;
   const rates = pick(rest, Object.values(INTEREST_RATES));
 
-  const { logo = '', name = '' } = organisation || {};
+  const { logo = '', name = '' } = organisation;
   return (
     <div className="offer-recap-dialog">
       <img src={logo} alt={name} />

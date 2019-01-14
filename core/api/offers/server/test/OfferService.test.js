@@ -75,12 +75,8 @@ describe('OfferService', () => {
   describe('send feedback', () => {
     const checkEmails = () =>
       new Promise((resolve, reject) => {
-        Meteor.call('getAllTestEmails', (err, emails) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(emails);
-        });
+        Meteor.call('getAllTestEmails', (err, emails) =>
+          (err ? reject(err) : resolve(emails)));
       });
 
     it('sends the feedback to the lender', () => {
