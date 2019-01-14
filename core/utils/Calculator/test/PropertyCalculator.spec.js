@@ -2,9 +2,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import PropertyCalculator from '..';
-import { STEPS, PROPERTY_TYPE } from 'core/api/constants';
-import { PROPERTY_DOCUMENTS, DOCUMENTS } from '../../../api/constants';
+import Calculator from '..';
+import { PROPERTY_DOCUMENTS, DOCUMENTS, STEPS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/properties/propertiesAdditionalDocuments';
 
 describe('PropertyCalculator', () => {
@@ -25,7 +24,7 @@ describe('PropertyCalculator', () => {
 
   describe('propertyPercent', () => {
     it('returns 0 for a new property', () => {
-      expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(0);
+      expect(Calculator.propertyPercent(params)).to.deep.equal(0);
     });
 
     it('returns 1 for a complete property', () => {
@@ -44,7 +43,7 @@ describe('PropertyCalculator', () => {
         isCoproperty: false,
       };
       params.loan.residenceType = ' ';
-      expect(PropertyCalculator.propertyPercent(params)).to.deep.equal(1);
+      expect(Calculator.propertyPercent(params)).to.deep.equal(1);
     });
   });
 
@@ -52,14 +51,17 @@ describe('PropertyCalculator', () => {
     it('sums propertyWork and property value', () => {
       params.loan.structure.property.value = 1;
       params.loan.structure.propertyWork = 2;
-      expect(PropertyCalculator.getPropAndWork(params)).to.deep.equal(3);
+      expect(Calculator.getPropAndWork(params)).to.deep.equal(3);
     });
   });
 
   describe('getPropertyFilesProgress', () => {
     it('returns 0 if no documents are provided', () => {
       property = {};
-      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 0, count: 1 });
+      expect(Calculator.getPropertyFilesProgress(params)).to.deep.equal({
+        percent: 0,
+        count: 1,
+      });
     });
 
     it('returns 1/6 if one document is provided', () => {
@@ -69,13 +71,16 @@ describe('PropertyCalculator', () => {
         },
         _id: 'propertyId',
       };
-      expect(PropertyCalculator.getPropertyFilesProgress(params)).to.deep.equal({ percent: 1 / 6, count: 6 });
+      expect(Calculator.getPropertyFilesProgress(params)).to.deep.equal({
+        percent: 1 / 6,
+        count: 6,
+      });
     });
   });
 
   describe('getMissingPropertyFields', () => {
     it('returns the list of missing data from a property', () => {
-      expect(PropertyCalculator.getMissingPropertyFields(params)).to.deep.equal([
+      expect(Calculator.getMissingPropertyFields(params)).to.deep.equal([
         'value',
         'propertyType',
         'isCoproperty',
@@ -95,7 +100,7 @@ describe('PropertyCalculator', () => {
 
   describe('getMissingPropertyDocuments', () => {
     it('returns the list of missing documents from a property 1', () => {
-      expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments.map(({ id }) => id));
+      expect(Calculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments.map(({ id }) => id));
     });
 
     it('returns the list of missing documents from a property 2', () => {
@@ -103,10 +108,101 @@ describe('PropertyCalculator', () => {
         [DOCUMENTS.PROPERTY_PLANS]: [{}],
         [DOCUMENTS.PROPERTY_PICTURES]: [{}],
       };
-      expect(PropertyCalculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments
+      expect(Calculator.getMissingPropertyDocuments(params)).to.deep.equal(initialDocuments
         .map(({ id }) => id)
         .filter(id =>
           ![DOCUMENTS.PROPERTY_PLANS, DOCUMENTS.PROPERTY_PICTURES].includes(id)));
+    });
+  });
+
+  describe('hasDetailedPropertyValue', () => {
+    it('returns false for a simple property', () => {
+      params = {
+        loan: { structure: { property: { value: 100 } } },
+      };
+      expect(Calculator.hasDetailedPropertyValue(params)).to.equal(false);
+    });
+
+    it('returns true for a detailed property', () => {
+      params = {
+        loan: {
+          structure: {
+            property: {
+              landValue: 100,
+              additionalMargin: 100,
+              constructionValue: 200,
+            },
+          },
+        },
+      };
+      expect(Calculator.hasDetailedPropertyValue(params)).to.equal(true);
+    });
+
+    it('returns true if both are provided', () => {
+      params = {
+        loan: {
+          structure: {
+            property: {
+              value: 5,
+              landValue: 100,
+              additionalMargin: 100,
+              constructionValue: 200,
+            },
+          },
+        },
+      };
+      expect(Calculator.hasDetailedPropertyValue(params)).to.equal(true);
+    });
+
+    it('works for promotionOption structures', () => {
+      params = {
+        loan: {
+          structure: {
+            promotionOption: {
+              value: 50,
+              promotionLots: [
+                {
+                  properties: [
+                    {
+                      landValue: 100,
+                      additionalMargin: 100,
+                      constructionValue: 200,
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      };
+      expect(Calculator.hasDetailedPropertyValue(params)).to.equal(true);
+    });
+
+    it('works for specific promotionOption structures', () => {
+      params = {
+        loan: {
+          structures: [{ id: 'yo', promotionOptionId: 'option1' }],
+          promotionOptions: [
+            {
+              value: 500,
+              _id: 'option1',
+              promotionLots: [
+                {
+                  properties: [
+                    {
+                      landValue: 100,
+                      additionalMargin: 100,
+                      constructionValue: 200,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        structureId: 'yo',
+      };
+      expect(Calculator.hasDetailedPropertyValue(params)).to.equal(true);
     });
   });
 });

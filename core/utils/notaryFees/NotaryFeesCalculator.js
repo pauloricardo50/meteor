@@ -71,6 +71,7 @@ class NotaryFeesCalculator {
       structureId,
     });
 
+    console.log('hasDetailedValue', hasDetailedValue);
     if (hasDetailedValue) {
       return this.buyersContractFeesConstruction({ loan, structureId });
     }
@@ -125,7 +126,7 @@ class NotaryFeesCalculator {
 
     // Emoluments du notaire
     const notaryIncomeFromProperty = this.notaryIncomeFromProperty({
-      propertyValue: landValue + additionalMargin + constructionValue,
+      propertyValue: landValue + additionalMargin,
     });
 
     // Registre foncier

@@ -113,7 +113,7 @@ describe('NotaryFeesCalculator', () => {
       loan.structure.property.additionalMargin = 200000;
 
       const fees = calc.getNotaryFeesForLoan({ loan });
-      expect(fees.buyersContractFees.total).to.equal(30177.4);
+      expect(fees.buyersContractFees.total).to.equal(28346.5);
     });
   });
 

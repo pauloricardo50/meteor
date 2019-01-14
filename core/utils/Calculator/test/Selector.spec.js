@@ -82,4 +82,23 @@ describe('Calculator Selector', () => {
       expect(Calculator.selectPropertyValue(params)).to.deep.equal(100);
     });
   });
+
+  describe('makeSelectPropertyKey', () => {
+    it('returns the exact value of a property for a promotionOption', () => {
+      const params = {
+        loan: {
+          structures: [{ id: 'dude', promotionOptionId: 'yo' }],
+          promotionOptions: [
+            {
+              _id: 'yo',
+              value: 100,
+              promotionLots: [{ properties: [{ value: 0 }] }],
+            },
+          ],
+        },
+        structureId: 'dude',
+      };
+      expect(Calculator.makeSelectPropertyKey('value')(params)).to.equal(0);
+    });
+  });
 });

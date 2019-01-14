@@ -142,8 +142,16 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
         loan,
         structureId,
       });
+      const landValue = this.makeSelectPropertyKey('landValue')({
+        loan,
+        structureId,
+      });
+      const constructionValue = this.makeSelectPropertyKey('constructionValue')({
+        loan,
+        structureId,
+      });
 
-      return !propertyExactValue || propertyValue !== propertyExactValue;
+      return !propertyExactValue || !!(landValue && constructionValue);
     }
   };
 
