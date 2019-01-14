@@ -301,7 +301,11 @@ export const fullOffer = () => ({
   ),
   fees: 1,
   lender: {
-    loan: { _id: 1, name: 1, user: { name: 1, assignedEmployee: { email: 1, name: 1 } } },
+    loan: {
+      _id: 1,
+      name: 1,
+      user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+    },
     contact: { _id: 1, name: 1, email: 1 },
     organisation: { _id: 1, name: 1 },
   },
@@ -310,6 +314,7 @@ export const fullOffer = () => ({
   organisation: 1,
   user: simpleUser(),
   createdAt: 1,
+  withCounterparts: 1,
 });
 
 // //

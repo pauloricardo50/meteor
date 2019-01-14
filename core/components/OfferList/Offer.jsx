@@ -5,9 +5,11 @@ import moment from 'moment';
 import OfferField from './OfferField';
 import OfferModifier from './OfferModifier';
 import OfferFeedback from './OfferFeedback';
+import CounterpartsOfferIcon from '../CounterpartsOfferIcon';
 
 const Offer = ({ offer, offerValues }) => (
   <div className="offer-list-item">
+    {offer.withCounterparts && <CounterpartsOfferIcon />}
     <div className="flex-col center" style={{ padding: '16px' }}>
       <img src={offer.organisation.logo} alt={offer.organisation.name} />
       {offer.createdAt && <b>{moment(offer.createdAt).format('D MMM YY')}</b>}
