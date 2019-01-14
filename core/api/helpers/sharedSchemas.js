@@ -120,7 +120,7 @@ export const percentageField = {
   optional: true,
   autoValue() {
     if (this.isSet) {
-      return Number(this.value.toFixed(3));
+      return Math.floor(Number(this.value) * 10000) / 10000;
     }
   },
   uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
