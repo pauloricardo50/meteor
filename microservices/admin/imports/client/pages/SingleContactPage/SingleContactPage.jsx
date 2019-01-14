@@ -18,7 +18,7 @@ const tabs = props =>
     content: <Component {...props} />,
     label: (
       <span style={style}>
-        <T id={`SingleContactPageTabs.${id}`} noTooltips />
+        <T id={`SingleContactPage.${id}`} noTooltips />
       </span>
     ),
   }));

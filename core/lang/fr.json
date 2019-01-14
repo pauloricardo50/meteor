@@ -1,4 +1,5 @@
 {
+  "SingleContactPage.offers": "Offres",
   "PromotionPage.promotionLotValueDescription": "Veuillez ajouter un prix d'achat - OU - la valeur du terrain + le montant de la construction + la msie en valeur. Si vous ajoutez un prix d'achat, ça précèdera les autres montants qui auraient été additionnés.",
   "Forms.landValue": "Valeur du terrain",
   "Forms.landValue.placeholder": "CHF 500 000",
