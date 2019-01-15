@@ -1,4 +1,11 @@
 {
+  "Forms.tags": "Tags",
+  "Forms.tags.CH_PREMIUM": "CH - Premium",
+  "Forms.tags.CH_RETAIL": "CH - Retail",
+  "Forms.tags.FR_PREMIUM": "FR - Premium",
+  "Forms.tags.FR_RETAIL": "FR - Retail",
+  "Forms.tags.YACHTING": "Yachting",
+  "Forms.tags.HELICOPTERS_LEASING": "Leasing hélicoptères",
   "Forms.withCounterparts": "Ceci est une offre avec contreparties",
   "Forms.name.placeholder": "Jean Dupont",
   "Forms.title.placeholder": "Notaire",

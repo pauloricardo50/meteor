@@ -1,7 +1,9 @@
-import { withProps, compose } from 'recompose';
+import { withProps, compose, withState } from 'recompose';
+import SimpleSchema from 'simpl-schema';
+
 import { withSmartQuery } from 'core/api';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
+import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
 import { lenderInsert, lenderRemove } from 'core/api/methods';
 
 const formatOrganisations = orgs =>
@@ -10,13 +12,29 @@ const formatOrganisations = orgs =>
     {},
   );
 
+const tagsPickerSchema = new SimpleSchema({
+  tags: {
+    type: Array,
+    defaultValue: null,
+    uniforms: { placeholder: 'Tous' },
+  },
+  'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
+});
+
 export default compose(
+  withState('tags', 'setTags', undefined),
   withSmartQuery({
     query: adminOrganisations,
-    params: { features: [ORGANISATION_FEATURES.LENDER] },
+    params: ({ tags }) => ({
+      features: [ORGANISATION_FEATURES.LENDER],
+      tags,
+    }),
     dataName: 'organisations',
   }),
-  withProps(({ organisations, loan: { _id: loanId, lenders } }) => ({
+  withProps(({ organisations, loan: { _id: loanId, lenders }, setTags }) => ({
+    tagsPickerSchema,
+    filterOrganisations: ({ tags = [] }) =>
+      (tags.length > 0 ? setTags(tags) : setTags(undefined)),
     count: organisations.length,
     organisations: formatOrganisations(organisations),
     addLender: organisationId =>
