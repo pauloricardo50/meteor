@@ -30,4 +30,20 @@
       }
     }
   }
+  .filters-form {
+    width: 100%;
+
+    .filters {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      > * {
+        width: 30%;
+        margin-right: 50px;
+      }
+    }
+  }
 }
