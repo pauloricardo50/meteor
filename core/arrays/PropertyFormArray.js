@@ -131,7 +131,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
   }
 
   const array = [
-    { id: 'value', type: 'textInput', money: true, info: true },
+    { id: 'value', type: 'textInput', money: true },
     {
       id: 'propertyType',
       type: 'radioInput',
