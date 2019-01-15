@@ -15,8 +15,18 @@ const getConfig = ({ lines, title, subtitle, config }) =>
 
 type LineChartProps = {};
 
-const LineChart = (props: LineChartProps) => (
-  <Chart config={getConfig(props)} data={props.lines} />
+const LineChart = ({
+  lines,
+  title,
+  subtitle,
+  config,
+  ...props
+}: LineChartProps) => (
+  <Chart
+    config={getConfig({ lines, title, subtitle, config })}
+    data={lines}
+    {...props}
+  />
 );
 
 export default LineChart;

@@ -4,9 +4,13 @@ import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 
 export default class Chart extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.chart = null;
+    const { HighchartsExporting } = this.props;
+    if (HighchartsExporting) {
+      HighchartsExporting(ReactHighcharts.Highcharts);
+    }
   }
 
   componentWillReceiveProps({ data: nextData }) {
