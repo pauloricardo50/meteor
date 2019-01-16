@@ -332,6 +332,7 @@ export const baseOrganisation = () => ({
   name: 1,
   type: 1,
   zipCode: 1,
+  tags: 1,
 });
 
 export const fullOrganisation = () => ({
