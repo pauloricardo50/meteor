@@ -41,7 +41,7 @@ const SingleOrganisationPage = ({
                         {
                           tags: [tag],
                         },
-                        { arrayFormat: 'index' },
+                        { arrayFormat: 'bracket' },
                       )}`)
                     }
                   />

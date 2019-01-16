@@ -15,7 +15,7 @@ type LenderPickerProps = {
   loan: Object,
   addLender: Function,
   removeLender: Function,
-  tagsPickerSchema: Object,
+  tagPickerSchema: Object,
   filterOrganisations: Function,
 };
 
@@ -30,7 +30,7 @@ const LenderPicker = ({
   loan,
   addLender,
   removeLender,
-  tagsPickerSchema,
+  tagPickerSchema,
   filterOrganisations,
 }: LenderPickerProps) => (
   <DialogSimple
@@ -49,7 +49,7 @@ const LenderPicker = ({
         </h1>
       )}
       <AutoForm
-        schema={tagsPickerSchema}
+        schema={tagPickerSchema}
         onSubmit={filterOrganisations}
         autosave
       >

@@ -12,7 +12,7 @@ const formatOrganisations = orgs =>
     {},
   );
 
-const tagsPickerSchema = new SimpleSchema({
+const tagPickerSchema = new SimpleSchema({
   tags: {
     type: Array,
     defaultValue: null,
@@ -32,9 +32,8 @@ export default compose(
     dataName: 'organisations',
   }),
   withProps(({ organisations, loan: { _id: loanId, lenders }, setTags }) => ({
-    tagsPickerSchema,
-    filterOrganisations: ({ tags = [] }) =>
-      (tags.length > 0 ? setTags(tags) : setTags(undefined)),
+    tagPickerSchema,
+    filterOrganisations: ({ tags = [] }) => setTags(tags),
     count: organisations.length,
     organisations: formatOrganisations(organisations),
     addLender: organisationId =>

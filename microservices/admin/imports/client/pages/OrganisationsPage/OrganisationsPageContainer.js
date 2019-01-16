@@ -44,7 +44,7 @@ const filtersSchema = new SimpleSchema({
 export default compose(
   withRouter,
   withState('filters', 'setFilters', ({ location }) =>
-    queryString.parse(location.search, { arrayFormat: 'index' })),
+    queryString.parse(location.search, {arrayFormat: 'bracket'})),
   withProps(({ history }) => ({
     insertOrganisation: organisation =>
       organisationInsert.run({ organisation }).then((organisationId) => {
