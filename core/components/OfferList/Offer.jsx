@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import CounterpartsOfferIcon from '../CounterpartsOfferIcon';
 import OfferField from './OfferField';
 import OfferModifier from './OfferModifier';
 import OfferFeedback from './OfferFeedback';
-import CounterpartsOfferIcon from '../CounterpartsOfferIcon';
 
 const Offer = ({ offer, offerValues }) => (
   <div className="offer-list-item">

@@ -3,11 +3,11 @@ import React from 'react';
 import cx from 'classnames';
 import { toClass } from 'recompose';
 
-import T from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import T from '../../../../Translation';
+import CounterpartsOfferIcon from '../../../../CounterpartsOfferIcon';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 import OfferPickerListItemInterests from './OfferPickerListItemInterests';
-import CounterpartsOfferIcon from '../../../../CounterpartsOfferIcon';
 
 type OfferPickerListItemProps = {};
 
