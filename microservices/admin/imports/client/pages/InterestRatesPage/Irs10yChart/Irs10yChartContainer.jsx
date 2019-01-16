@@ -3,6 +3,7 @@ import { injectIntl } from 'react-intl';
 import moment from 'moment';
 
 import formatMessage from 'core/utils/intl';
+import colors from 'core/config/colors';
 
 const getConfig = () => ({
   xAxis: {
@@ -20,7 +21,15 @@ const getConfig = () => ({
     shared: true,
     valueSuffix: '%',
   },
-  exporting: { enabled: true, width: 1200, scale: 1 },
+  exporting: {
+    enabled: true,
+    sourceWidth: 1200,
+    sourceHeight: 800,
+    width: 1200,
+    height: 800,
+    printMaxWidth: 1200,
+    scale: 3,
+  },
 });
 
 const getRatesOfMonth = ({ rates, month, year }) =>
@@ -74,11 +83,11 @@ const getLines = ({ irs10y }) => {
           [],
         ),
         zIndex: 1,
-        color: 'red',
+        color: colors.mui.darkPrimary,
         marker: {
           fillColor: 'white',
           lineWidth: 2,
-          lineColor: 'red',
+            lineColor: colors.mui.darkPrimary,
         },
       },
       {
@@ -89,8 +98,9 @@ const getLines = ({ irs10y }) => {
         ),
         type: 'arearange',
         zIndex: 0,
-        fillOpacity: 0.3,
+        fillOpacity: 0.2,
         lineWidth: 0,
+          color: colors.mui.darkPrimary,
         marker: {
           enabled: false,
         },
