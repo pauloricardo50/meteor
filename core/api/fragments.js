@@ -314,6 +314,7 @@ export const fullOffer = () => ({
   organisation: 1,
   user: simpleUser(),
   createdAt: 1,
+  withCounterparts: 1,
 });
 
 // //

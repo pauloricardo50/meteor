@@ -18,11 +18,20 @@
   flex-direction: column;
 
   &-item {
+    position: relative;
     display: flex;
     flex-direction: column;
 
     margin-bottom: 16px;
     padding: 24px;
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 8px;
+      left: 8px;
+    }
 
     &:last-of-type {
       margin-bottom: 16px;

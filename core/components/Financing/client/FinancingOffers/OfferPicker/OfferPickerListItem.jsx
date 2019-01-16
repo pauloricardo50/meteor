@@ -3,8 +3,9 @@ import React from 'react';
 import cx from 'classnames';
 import { toClass } from 'recompose';
 
-import T from '../../../../Translation';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import T from '../../../../Translation';
+import CounterpartsOfferIcon from '../../../../CounterpartsOfferIcon';
 import OfferPickerListItemValue from './OfferPickerListItemValue';
 import OfferPickerListItemInterests from './OfferPickerListItemInterests';
 
@@ -18,12 +19,14 @@ const OfferPickerListItem = (props: OfferPickerListItemProps) => {
     amortization,
     fees = 0,
     epotekFees = 0,
+    withCounterparts,
   } = offer;
   return (
     <div
       className={cx('offer-picker-list-item card1 card-hover', { selected })}
       onClick={handleClick}
     >
+      {withCounterparts && <CounterpartsOfferIcon />}
       <img src={logo} alt={name} />
 
       {!!(offer.fees || offer.epotekFees) && (
