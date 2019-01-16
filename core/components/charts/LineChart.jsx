@@ -10,13 +10,6 @@ const getConfig = ({ lines, title, subtitle, config }) =>
     title: { text: title },
     subtitle: { text: subtitle },
     series: lines,
-    // lines.map(({ data, name, type, linkedTo, zIndex }) => ({
-    //   data,
-    //   name,
-    //   type,
-    //   linkedTo,
-    //   zIndex,
-    // })),
     ...config,
   });
 

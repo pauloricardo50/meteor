@@ -88,7 +88,6 @@ const getLines = ({ irs10y }) => {
           [],
         ),
         type: 'arearange',
-        // linkedTo: ':previous',
         zIndex: 0,
         fillOpacity: 0.3,
         lineWidth: 0,
