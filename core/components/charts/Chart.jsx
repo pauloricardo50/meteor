@@ -4,6 +4,15 @@ import { Random } from 'meteor/random';
 
 import ReactHighcharts from 'react-highcharts';
 
+ReactHighcharts.Highcharts.setOptions({
+  lang: {
+    months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
+    shortMonths: 'Janv._Févr._Mars_Avr._Mai_Juin_Juil._Août_Sept._Oct._Nov._Déc.'.split('_'),
+    weekdays: 'Dimanche_Lundi_Mardi_Mercredi_Jeudi_Vendredi_Samedi'.split('_'),
+    shortWeekdays: 'Dim._Lun._Mar._Mer._Jeu._Ven._Sam.'.split('_'),
+  },
+});
+
 export default class Chart extends Component {
   constructor(props) {
     super(props);
