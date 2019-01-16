@@ -15,7 +15,6 @@ const getConfig = () => ({
     tickInterval: 0.1,
   },
   chart: { height: 800, zoomType: 'x' },
-  //   plotOptions: { spline: { marker: { enabled: true } } },
   tooltip: {
     crosshairs: true,
     shared: true,
@@ -51,18 +50,16 @@ const findMinRate = rates =>
 const findMaxRate = rates =>
   roundAndFormat(rates.reduce((max, { rate }) => (rate > max ? rate : max), 0));
 
-const formatDate = date =>
-  moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
-
 const getLines = ({ irs10y }) => {
   const allMonths = getAllMonths({ rates: irs10y });
   const rates = allMonths.map(({ month, year }) => {
     const ratesOfMonth = getRatesOfMonth({ rates: irs10y, month, year });
     const min = findMinRate(ratesOfMonth);
     const max = findMaxRate(ratesOfMonth);
+    const date = new Date(parseInt(year), parseInt(month) - 1).valueOf();
     const average = Math.round(((min + max) / 2) * 100) / 100;
     return {
-      date: formatDate(new Date(year, month)),
+      date,
       min,
       max,
       average,
