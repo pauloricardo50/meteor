@@ -1,5 +1,6 @@
 {
   "Forms.withCounterparts": "Ceci est une offre avec contreparties",
+  "SingleContactPage.offers": "Offres",
   "Forms.name.placeholder": "Jean Dupont",
   "Forms.title.placeholder": "Notaire",
   "PromotionPage.promotionLotValueDescription": "Veuillez ajouter un prix d'achat - OU - la valeur du terrain + le montant de la construction + la msie en valeur. Si vous ajoutez un prix d'achat, ça précèdera les autres montants qui auraient été additionnés.",

@@ -37,7 +37,7 @@ export const PropertySchema = new SimpleSchema({
     allowedValues: Object.values(propertyConstants.PROPERTY_CATEGORY),
     uniforms: { placeholder: null },
   },
-  value: { ...moneyField, ...roundedInteger(3) },
+  value: moneyField,
   status: {
     type: String,
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
