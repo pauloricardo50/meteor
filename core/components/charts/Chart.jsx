@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Random } from 'meteor/random';
 
 import ReactHighcharts from 'react-highcharts';
 
 export default class Chart extends Component {
   constructor(props) {
     super(props);
-    this.chart = null;
-    const { HighchartsExporting } = this.props;
+    this.id = Random.id();
+    const { HighchartsExporting, HighchartsMore } = this.props;
     if (HighchartsExporting) {
       HighchartsExporting(ReactHighcharts.Highcharts);
+    }
+    if (HighchartsMore) {
+      HighchartsMore(ReactHighcharts.Highcharts);
     }
   }
 
@@ -24,12 +28,16 @@ export default class Chart extends Component {
   }
 
   update = (data) => {
-    if (this.chart) {
+    if (this[this.id]) {
       // FIXME: This should animate the chart somehow
-      this.chart.getChart().series[0].setData(data);
-      this.chart.getChart().update({});
+      this[this.id].getChart().series[0].setData(data);
+      this[this.id].getChart().update({});
     }
   };
+
+  componentWillUnmount() {
+    this[this.id] = null;
+  }
 
   render() {
     const { config } = this.props;
@@ -38,7 +46,8 @@ export default class Chart extends Component {
       <ReactHighcharts
         config={config}
         ref={(c) => {
-          this.chart = c;
+          this[this.id] = c;
+          // this[this.id] = c;
         }}
       />
     );

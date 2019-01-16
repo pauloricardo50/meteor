@@ -6,10 +6,17 @@ import Chart from './Chart';
 import { defaultConfig } from './chartSettings';
 
 const getConfig = ({ lines, title, subtitle, config }) =>
-  merge(defaultConfig, {
+  merge({}, defaultConfig, {
     title: { text: title },
     subtitle: { text: subtitle },
-    series: lines.map(({ data, name }) => ({ data, name })),
+    series: lines,
+    // lines.map(({ data, name, type, linkedTo, zIndex }) => ({
+    //   data,
+    //   name,
+    //   type,
+    //   linkedTo,
+    //   zIndex,
+    // })),
     ...config,
   });
 
