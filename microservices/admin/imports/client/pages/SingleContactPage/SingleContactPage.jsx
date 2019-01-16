@@ -23,19 +23,12 @@ const tabs = props =>
     ),
   }));
 
-const SingleContactPage = ({ contact }: SingleContactPageProps) => {
-  console.log('contact', contact);
-  return (
-    <div className="card1 card-top">
-      <SingleContactPageHeader contact={contact} />
-      <SingleContactPageInfos contact={contact} />
-      <Tabs
-        tabs={tabs({
-          offers: contact.offers,
-        })}
-      />
-    </div>
-  );
-};
+const SingleContactPage = ({ contact }: SingleContactPageProps) => (
+  <div className="card1 card-top">
+    <SingleContactPageHeader contact={contact} />
+    <SingleContactPageInfos contact={contact} />
+    <Tabs tabs={tabs({ offers: contact.offers })} />
+  </div>
+);
 
 export default SingleContactPageContainer(SingleContactPage);
