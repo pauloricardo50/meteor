@@ -51,37 +51,38 @@ const determineComponentFromProps = ({
   return { Component: false, type: null };
 };
 
-export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
-  compose(
+export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
+  const CustomAutoField = (props, { uniforms }) => {
+    let {
+      Component,
+      type,
+      props: additionalProps = {},
+    } = determineComponentFromProps(props);
+    Component = Component || AutoField;
+
+    const label = getLabel({
+      ...props,
+      intlPrefix,
+      label: labels[props.name],
+    });
+    const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+
+    return (
+      <Component
+        {...additionalProps}
+        {...props}
+        label={label}
+        placeholder={placeholder}
+        InputLabelProps={{ shrink: true }}
+      />
+    );
+  };
+
+  CustomAutoField.contextTypes = AutoField.contextTypes;
+
+  return compose(
     injectIntl,
     connectField,
-  )(
-    (props) => {
-      let {
-        Component,
-        type,
-        props: additionalProps = {},
-      } = determineComponentFromProps(props);
-      Component = Component || AutoField;
-
-      const label = getLabel({
-        ...props,
-        intlPrefix,
-        label: labels[props.name],
-      });
-      const placeholder = getPlaceholder({ ...props, intlPrefix, type });
-
-      return (
-        <Component
-          {...additionalProps}
-          {...props}
-          label={label}
-          placeholder={placeholder}
-          InputLabelProps={{ shrink: true }}
-        />
-      );
-    },
-    { includeInChain: false, includeParent: true },
-  );
-
+  )(CustomAutoField, { includeInChain: false, includeParent: true });
+};
 export const CustomAutoField = makeCustomAutoField({});
