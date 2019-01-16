@@ -85,10 +85,11 @@ export const contact = () => ({
   firstName: 1,
   lastName: 1,
   name: 1,
-  organisations: { name: 1, _id: 1, address: 1 },
+  organisations: { name: 1, address: 1 },
   phoneNumber: 1,
   phoneNumbers: 1,
   zipCode: 1,
+  offers: { _id: 1 },
 });
 
 // //
@@ -257,12 +258,12 @@ export const adminLoans = () => ({
 export const proLoans = () => ({
   createdAt: 1,
   name: 1,
-  promotions: { _id: 1, users: { _id: 1 }, status: 1 },
+  promotions: { users: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
     status: 1,
-    promotionLots: { _id: 1, attributedTo: { user: { _id: 1 } } },
+    promotionLots: { attributedTo: { user: { _id: 1 } } },
     solvency: 1,
   },
   promotionProgress: 1,
@@ -301,9 +302,12 @@ export const fullOffer = () => ({
   ),
   fees: 1,
   lender: {
-    loan: { _id: 1, name: 1, user: { name: 1, assignedEmployee: { email: 1, name: 1 } } },
-    contact: { _id: 1, name: 1, email: 1 },
-    organisation: { _id: 1, name: 1 },
+    loan: {
+      name: 1,
+      user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+    },
+    contact: { name: 1, email: 1 },
+    organisation: { name: 1 },
   },
   loanId: 1,
   maxAmount: 1,
@@ -445,7 +449,6 @@ export const basePromotion = () => ({
   },
   name: 1,
   promotionLots: {
-    _id: 1,
     status: 1,
     reducedStatus: 1,
     lots: { name: 1 },
@@ -457,7 +460,7 @@ export const basePromotion = () => ({
   status: 1,
   type: 1,
   updatedAt: 1,
-  users: { _id: 1, name: 1, email: 1, roles: 1 },
+  users: { name: 1, email: 1, roles: 1 },
   zipCode: 1,
 });
 
@@ -466,7 +469,6 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
   assignedEmployee: { name: 1, email: 1 },
   assignedEmployeeId: 1,
   promotionLots: {
-    _id: 1,
     attributedTo: { user: { name: 1 } },
     lots: { name: 1, value: 1, type: 1, description: 1, status: 1 },
     name: 1,
@@ -676,9 +678,8 @@ export const fullUser = () => ({
 export const appUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
-  borrowers: { _id: 1, name: 1 },
+  borrowers: { name: 1 },
   loans: {
-    _id: 1,
     borrowers: { _id: 1 },
     logic: { step: 1 },
     name: 1,

@@ -1,5 +1,6 @@
 import addressReducer from '../reducers/addressReducer';
 import Contacts from './contacts';
+import { fullOffer } from '../fragments';
 
 Contacts.addReducers({
   name: {
@@ -23,6 +24,18 @@ Contacts.addReducers({
     },
     reduce: ({ phoneNumbers }) =>
       (phoneNumbers && phoneNumbers.length && phoneNumbers[0]) || '',
+  },
+  offers: {
+    body: {
+      lenders: { offers: fullOffer() },
+    },
+    reduce: ({ lenders = [] }) => {
+      const contactOffers = lenders.reduce(
+        (allOffers, { offers = [] }) => [...allOffers, ...offers],
+        [],
+      );
+      return contactOffers;
+    },
   },
   ...addressReducer,
 });
