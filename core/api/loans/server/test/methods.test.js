@@ -38,14 +38,18 @@ describe('Loan methods', () => {
       SecurityService.loans.isAllowedToUpdate.restore();
     });
 
-    it('inserts a task with the proper assignee', () => {
+    it('inserts a task with the proper assignee and disables forms', () => {
       const admin = Factory.create('admin');
       const user = Factory.create('user', { assignedEmployeeId: admin._id });
       const loan = Factory.create('loan', { userId: user._id });
+      const loanId = loan._id;
+
+      expect(loan.userFormsEnabled).to.equal(true);
 
       return requestLoanVerification.run({ loanId: loan._id }).then(() => {
         const task = TaskService.findOne({ docId: loan.id });
         expect(task.assignedEmployeeId).to.equal(admin._id);
+        expect(LoanService.get(loanId).userFormsEnabled).to.equal(false);
       });
     });
   });
