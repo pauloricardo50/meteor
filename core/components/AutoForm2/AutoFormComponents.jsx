@@ -2,8 +2,9 @@
 import React from 'react';
 import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
-import { compose } from 'recompose';
-import { injectIntl } from 'react-intl';
+import { compose, getContext } from 'recompose';
+import { intlShape } from 'react-intl';
+import nothing from 'uniforms/nothing';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
@@ -52,13 +53,35 @@ const determineComponentFromProps = ({
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
-  const CustomAutoField = (props, { uniforms }) => {
+  const CustomAutoField = (props, context) => {
+    const {
+      uniforms: {
+        schema,
+        model,
+        state: { submitting },
+      },
+    } = context;
+    const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
+
     let {
       Component,
       type,
       props: additionalProps = {},
-    } = determineComponentFromProps(props);
+    } = determineComponentFromProps({
+      ...props,
+      customAllowedValues,
+      model,
+      submitting,
+      condition,
+    });
     Component = Component || AutoField;
+
+    let autoValue;
+
+    if (typeof customAutoValue === 'function') {
+      autoValue = customAutoValue(model);
+    }
+
 
     const label = getLabel({
       ...props,
@@ -67,10 +90,16 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     });
     const placeholder = getPlaceholder({ ...props, intlPrefix, type });
 
-    return (
+    return typeof condition === 'function' && !condition(model) ? (
+      nothing
+    ) : (
       <Component
         {...additionalProps}
         {...props}
+        {...(autoValue ? { value: autoValue } : {})}
+        model={model}
+        submitting={submitting}
+        customAllowedValues={customAllowedValues}
         label={label}
         placeholder={placeholder}
         InputLabelProps={{ shrink: true }}
@@ -81,8 +110,12 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
   CustomAutoField.contextTypes = AutoField.contextTypes;
 
   return compose(
-    injectIntl,
+    getContext({
+      intl: intlShape,
+      ...AutoField.contextTypes,
+    }),
     connectField,
   )(CustomAutoField, { includeInChain: false, includeParent: true });
 };
+
 export const CustomAutoField = makeCustomAutoField({});

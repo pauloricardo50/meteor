@@ -2,17 +2,10 @@ import { createElement } from 'react';
 import PropTypes from 'prop-types';
 
 import AutoField from 'uniforms-material/AutoField';
-import nothing from 'uniforms/nothing';
 
 const CustomAutoFields = (
   { autoField, element, fields, omitFields, ...props },
-  {
-    uniforms: {
-      schema,
-      model,
-      state: { submitting },
-    },
-  },
+  { uniforms: { schema } },
 ) =>
   createElement(
     element,
@@ -20,17 +13,11 @@ const CustomAutoFields = (
     (fields || schema.getSubfields())
       .filter(field => omitFields.indexOf(field) === -1)
       .map((field) => {
-        const { condition, customAllowedValues } = schema.getField(field);
         const component = createElement(autoField, {
           key: field,
           name: field,
-          customAllowedValues,
-          model,
-          submitting,
         });
-        if (typeof condition === 'function') {
-          return condition(model) ? component : nothing;
-        }
+
         return component;
       }),
   );
