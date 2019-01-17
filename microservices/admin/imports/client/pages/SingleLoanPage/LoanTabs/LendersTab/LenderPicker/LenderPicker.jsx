@@ -5,6 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DialogSimple from 'core/components/DialogSimple';
 import T from 'core/components/Translation';
 import IconButton from 'core/components/IconButton/IconButton';
+import AutoForm, { CustomAutoField } from 'imports/core/components/AutoForm2';
 import LenderPickerContainer from './LenderPickerContainer';
 import LenderPickerOrganisation from './LenderPickerOrganisation';
 
@@ -14,6 +15,8 @@ type LenderPickerProps = {
   loan: Object,
   addLender: Function,
   removeLender: Function,
+  tagPickerSchema: Object,
+  filterOrganisations: Function,
 };
 
 const addAllLendersOfType = ({ organisations, type, addLender }) => () =>
@@ -27,12 +30,15 @@ const LenderPicker = ({
   loan,
   addLender,
   removeLender,
+  tagPickerSchema,
+  filterOrganisations,
 }: LenderPickerProps) => (
   <DialogSimple
     label="Choisir prêteurs"
     closeOnly
     primary
     rootStyle={{ marginRight: 8 }}
+    onClose={() => filterOrganisations({ tags: [] })}
   >
     <div className="lender-picker-dialog">
       <h2>Choisir prêteurs</h2>
@@ -42,6 +48,13 @@ const LenderPicker = ({
           une organisation.
         </h1>
       )}
+      <AutoForm
+        schema={tagPickerSchema}
+        onSubmit={filterOrganisations}
+        autosave
+      >
+        <CustomAutoField name="tags" />
+      </AutoForm>
       {Object.keys(organisations).map(type => (
         <div key={type}>
           <div className="lender-picker-dialog-type">

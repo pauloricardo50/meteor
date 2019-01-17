@@ -53,6 +53,7 @@ export default class DialogSimple extends Component {
       style,
       title,
       renderTrigger,
+      onClose = () => null,
       ...otherProps
     } = this.props;
 
@@ -62,7 +63,10 @@ export default class DialogSimple extends Component {
           <Button
             primary
             label={<T id="general.close" />}
-            onClick={this.handleClose}
+            onClick={(args) => {
+              onClose();
+              this.handleClose(args);
+            }}
             key="close"
           />,
         ]

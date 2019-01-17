@@ -6,5 +6,9 @@ query.expose({
   firewall: () => {
     SecurityService.checkCurrentUserIsAdmin();
   },
-  validateParams: { features: Match.Maybe(Match.OneOf(String, [String])) },
+  validateParams: {
+    features: Match.Maybe(Match.OneOf(String, [String])),
+    tags: Match.Maybe(Match.OneOf(String, [String])),
+    type: Match.Maybe(Match.OneOf(String, [String])),
+  },
 });

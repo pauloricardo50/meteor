@@ -15,21 +15,25 @@ const getButtonOtherProps = ({ lender }) => {
   const {
     contact,
     organisation: { name: organisationName },
-    loan: {
-      user: { assignedEmployee, name: userName },
-    },
+    loan: { user },
   } = lender;
 
+  const { assignedEmployee, name: userName } = user || {};
   const { name: assignedEmployeeName, email: assignedEmployeeEmail } = assignedEmployee || {};
   const { email: contactEmail, name: contactName } = contact || {};
 
   // Should disable button
-  if (!assignedEmployeeEmail || !contactEmail) {
+  if (!assignedEmployeeEmail || !contactEmail || !user) {
     otherProps = { ...otherProps, disabled: true };
   }
 
   // Should display tooltip
-  if (!assignedEmployee) {
+  if (!user) {
+    otherProps = {
+      ...otherProps,
+      tooltip: 'Assignez ce dossier à un utilisateur pour entrer un feedback',
+    };
+  } else if (!assignedEmployee) {
     otherProps = {
       ...otherProps,
       tooltip: `Assignez un conseiller à ${userName} pour entrer un feedback`,

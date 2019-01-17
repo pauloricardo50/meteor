@@ -62,6 +62,9 @@ export default (Component) => {
       }
 
       if (Array.isArray(value)) {
+        if (value.length === 0) {
+          return placeholder;
+        }
         return value.map(val => (
           <Chip
             key={val}
