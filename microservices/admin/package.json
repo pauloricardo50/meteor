@@ -96,6 +96,7 @@
     "@babel/preset-flow": "7.0.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-react-intl": "https://github.com/Floriferous/babel-plugin-react-intl/tarball/master",
+    "babel-plugin-remove-test-ids": "^1.1.0",
     "babel-preset-meteor": "^7.1.2",
     "chai": "^4.1.2",
     "enzyme": "^3.6.0",
