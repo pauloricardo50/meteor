@@ -16,7 +16,7 @@ import PromotionService from '../../../promotions/server/PromotionService';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
 import startAPI from '..';
 
-describe.only('RESTAPI', () => {
+describe('RESTAPI', () => {
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
