@@ -34,14 +34,12 @@ const getConfig = () => ({
 
 const getRatesOfMonth = ({ rates, month, year }) =>
   rates.filter(({ date }) =>
-    moment(date).format('MM') === month
-      && moment(date).format('YYYY') === year);
+    moment(date).month() === month && moment(date).year() === year);
 
 const getAllMonths = ({ rates }) =>
-  rates.reduce((months, rate) => {
-    const { date } = rate;
-    const rateMonth = moment(date).format('MM');
-    const rateYear = moment(date).format('YYYY');
+  rates.reduce((months, { date }) => {
+    const rateMonth = moment(date).month();
+    const rateYear = moment(date).year();
 
     if (
       !months.find(({ month, year }) => month === rateMonth && year === rateYear)
@@ -59,51 +57,58 @@ const findMinRate = rates =>
 const findMaxRate = rates =>
   roundAndFormat(rates.reduce((max, { rate }) => (rate > max ? rate : max), 0));
 
-const getLines = ({ irs10y }) => {
-  const allMonths = getAllMonths({ rates: irs10y });
-  const rates = allMonths.map(({ month, year }) => {
-    const ratesOfMonth = getRatesOfMonth({ rates: irs10y, month, year });
+const getData = ({ formattedRates, type }) => {
+  switch (type) {
+  case 'average':
+    return formattedRates.reduce(
+      (data, rate) => [...data, [rate.date, rate.average]],
+      [],
+    );
+  case 'range':
+    return formattedRates.reduce(
+      (data, rate) => [...data, [rate.date, rate.min, rate.max]],
+      [],
+    );
+  default:
+    return [];
+  }
+};
+
+const getFormattedRates = ({ rates, allMonths }) =>
+  allMonths.map(({ month, year }) => {
+    const ratesOfMonth = getRatesOfMonth({ rates, month, year });
     const min = findMinRate(ratesOfMonth);
     const max = findMaxRate(ratesOfMonth);
-    const date = new Date(parseInt(year), parseInt(month) - 1).valueOf();
+    const date = moment({ year, month }).valueOf();
     const average = Math.round(((min + max) / 2) * 100) / 100;
-    return {
-      date,
-      min,
-      max,
-      average,
-    };
+    return { date, min, max, average };
   });
+
+const getLines = ({ rates }) => {
+  const allMonths = getAllMonths({ rates });
+  const formattedRates = getFormattedRates({ rates, allMonths });
   return (
-    irs10y.length && [
+    rates.length && [
       {
         name: formatMessage('Irs10y.name.average'),
-        data: rates.reduce(
-          (data, rate) => [...data, [rate.date, rate.average]],
-          [],
-        ),
+        data: getData({ formattedRates, type: 'average' }),
         zIndex: 1,
         color: colors.mui.darkPrimary,
         marker: {
           fillColor: 'white',
           lineWidth: 2,
-            lineColor: colors.mui.darkPrimary,
+          lineColor: colors.mui.darkPrimary,
         },
       },
       {
         name: formatMessage('Irs10y.name.range'),
-        data: rates.reduce(
-          (data, rate) => [...data, [rate.date, rate.min, rate.max]],
-          [],
-        ),
+        data: getData({ formattedRates, type: 'range' }),
         type: 'arearange',
         zIndex: 0,
         fillOpacity: 0.2,
         lineWidth: 0,
-          color: colors.mui.darkPrimary,
-        marker: {
-          enabled: false,
-        },
+        color: colors.mui.darkPrimary,
+        marker: { enabled: false },
       },
     ]
   );
@@ -112,7 +117,7 @@ const getLines = ({ irs10y }) => {
 export default compose(
   injectIntl,
   withProps(({ irs10y = [] }) => {
-    const lines = getLines({ irs10y });
+    const lines = getLines({ rates: irs10y });
     return {
       title: "Moyenne mensuelle de l'IRS 10 ans",
       lines,

@@ -33,7 +33,6 @@ const InterestRatesPage = ({
               <InterestRatesChart
                 interestRates={[...interestRates].reverse()}
                 irs10y={[...irs10y].reverse()}
-                key="interest-rates-chart"
               />
               <InsertInterestRatesDialogForm
                 currentInterestRates={currentRates}
@@ -46,7 +45,7 @@ const InterestRatesPage = ({
           label: 'IRS 10 ans',
           content: (
             <>
-              <Irs10yChart irs10y={[...irs10y].reverse()} key="irs10y-chart" />
+              <Irs10yChart irs10y={[...irs10y].reverse()} />
               <InsertIrs10yDialogForm />
               <Irs10yTable irs10y={irs10y} />
             </>

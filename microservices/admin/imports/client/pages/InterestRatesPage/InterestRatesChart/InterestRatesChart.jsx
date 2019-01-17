@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
+import HighchartsExporting from 'highcharts-exporting';
+
 import LineChart from 'core/components/charts/LineChart';
 import InterestRatesChartContainer from './InterestRatesChartContainer';
-
-const HighchartsExporting = require('highcharts-exporting');
 
 type InterestRatesChartProps = {
   title: String,
