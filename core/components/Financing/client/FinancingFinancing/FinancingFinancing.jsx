@@ -51,6 +51,9 @@ export const calculateMaxLoan = (data, pledgeOverride) => {
 
 const enableOffers = ({ loan }) => loan.enableOffers;
 
+const oneStructureHasLoan = ({ loan: { structures } }) =>
+  structures.some(({ wantedLoan }) => wantedLoan);
+
 type FinancingFinancingProps = {};
 
 const FinancingFinancing = (props: FinancingFinancingProps) => (
@@ -88,6 +91,7 @@ const FinancingFinancing = (props: FinancingFinancingProps) => (
       {
         Component: MortgageNotesPicker,
         id: 'mortgageNoteIds',
+        condition: oneStructureHasLoan,
       },
       // TODO: To be released in the future
       // {
