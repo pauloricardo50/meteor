@@ -21,7 +21,6 @@ const interestRatesSchema = ({ isDiscount }) =>
           fullWidth: false,
           style: { width: 100, marginRight: 4 },
         },
-        label: 'Yo!',
         optional: true,
         condition: ({ hasCounterparts, hasFlatDiscount }) =>
           (isDiscount ? hasCounterparts && !hasFlatDiscount : true),
@@ -32,6 +31,11 @@ const interestRatesSchema = ({ isDiscount }) =>
 
 const schema = lenders =>
   new SimpleSchema({
+    withCounterparts: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+    },
     lender: {
       type: String,
       optional: false,
@@ -108,12 +112,14 @@ const schema = lenders =>
       type: Boolean,
       defaultValue: false,
       optional: true,
+      condition: ({ withCounterparts }) => !withCounterparts,
     },
     counterparts: {
       type: Array,
       optional: true,
       defaultValue: [],
-      condition: ({ hasCounterparts }) => hasCounterparts,
+      condition: ({ hasCounterparts, withCounterparts }) =>
+        !withCounterparts && hasCounterparts,
     },
     'counterparts.$': {
       type: String,
@@ -123,7 +129,8 @@ const schema = lenders =>
       type: Boolean,
       defaultValue: true,
       optional: true,
-      condition: ({ hasCounterparts }) => hasCounterparts,
+      condition: ({ hasCounterparts, withCounterparts }) =>
+        !withCounterparts && hasCounterparts,
     },
     flatDiscount: {
       type: Number,
@@ -131,8 +138,8 @@ const schema = lenders =>
       max: 1,
       uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
       optional: true,
-      condition: ({ hasCounterparts, hasFlatDiscount }) =>
-        hasCounterparts && hasFlatDiscount,
+      condition: ({ hasCounterparts, withCounterparts, hasFlatDiscount }) =>
+        !withCounterparts && hasCounterparts && hasFlatDiscount,
     },
     ...interestRatesSchema({ isDiscount: true }),
   });
@@ -168,6 +175,7 @@ const reformatInterestRatesObject = ({
     );
 
 const mapValuesToOffer = ({
+  withCounterparts,
   lender: lenderId,
   maxAmount,
   amortizationGoal,
@@ -182,6 +190,7 @@ const mapValuesToOffer = ({
   ...interestRates
 }) => {
   const standardOffer = {
+    withCounterparts,
     maxAmount,
     amortizationGoal,
     amortizationYears,
@@ -191,8 +200,9 @@ const mapValuesToOffer = ({
     }),
   };
 
-  const counterpartsOffer = hasCounterparts
+  const counterpartsOffer = !withCounterparts && hasCounterparts
     ? {
+      withCounterparts: true,
       maxAmount,
       amortizationGoal,
       amortizationYears,
@@ -213,7 +223,8 @@ const mapValuesToOffer = ({
       epotekFees,
       ...standardOffer,
     },
-    hasCounterparts && {
+    !withCounterparts
+      && hasCounterparts && {
       lenderId,
       conditions: [...conditions, ...counterparts].filter(x => x),
       fees,
