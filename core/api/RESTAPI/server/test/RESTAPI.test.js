@@ -16,7 +16,7 @@ import PromotionService from '../../../promotions/server/PromotionService';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
 import startAPI from '..';
 
-describe('RESTAPI', () => {
+describe.only('RESTAPI', () => {
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
       this.parent.pending = true;
@@ -270,11 +270,6 @@ describe('RESTAPI', () => {
             inviteUserMissingKey({
               userData: userToInvite,
               keyToOmit: 'lastName',
-            }))
-          .then(() =>
-            inviteUserMissingKey({
-              userData: userToInvite,
-              keyToOmit: 'phoneNumber',
             }));
       });
 
@@ -293,9 +288,9 @@ describe('RESTAPI', () => {
         const expectedResponse = {
           statusCode: HTTP_STATUS_CODES.OK,
           body: {
-            message: `Invited user ${
+            message: `Successfully invited user "${
               userToInvite.email
-            } to promotion id ${promotionId}`,
+            }" to promotion id "${promotionId}"`,
           },
         };
 
@@ -330,9 +325,9 @@ describe('RESTAPI', () => {
       const expectedResponse = {
         statusCode: HTTP_STATUS_CODES.OK,
         body: {
-          message: `Invited user ${
+          message: `Successfully invited user "${
             userToInvite.email
-          } to promotion id ${promotionId}`,
+          }" to promotion id "${promotionId}"`,
         },
       };
 
