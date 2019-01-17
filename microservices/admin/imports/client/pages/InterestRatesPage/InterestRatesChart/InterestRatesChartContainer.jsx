@@ -30,6 +30,7 @@ const getConfig = () => ({
     crosshairs: true,
     shared: true,
   },
+  exporting: { enabled: true },
 });
 
 const formatDate = date =>

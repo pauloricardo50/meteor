@@ -1,27 +1,25 @@
 // @flow
 import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
+import HighchartsMore from 'highcharts-more';
 
 import LineChart from 'core/components/charts/LineChart';
-import InterestRatesChartContainer from './InterestRatesChartContainer';
+import Irs10yChartContainer from './Irs10yChartContainer';
 
-type InterestRatesChartProps = {
+type Irs10yChartProps = {
   title: String,
   config: Object,
   lines: Array<Object>,
 };
 
-const InterestRatesChart = ({
-  title,
-  lines,
-  config,
-}: InterestRatesChartProps) => (
+const Irs10yChart = ({ title, lines, config }: Irs10yChartProps) => (
   <LineChart
     title={title}
     lines={lines}
     config={config}
     HighchartsExporting={HighchartsExporting}
+    HighchartsMore={HighchartsMore}
   />
 );
 
-export default InterestRatesChartContainer(InterestRatesChart);
+export default Irs10yChartContainer(Irs10yChart);
