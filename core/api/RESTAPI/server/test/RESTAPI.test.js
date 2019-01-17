@@ -245,6 +245,7 @@ describe('RESTAPI', () => {
           },
         });
       });
+
       it('user is missing informations', () => {
         PromotionService.addProUser({ promotionId, userId: user._id });
         PromotionService.setUserPermissions({
@@ -270,11 +271,6 @@ describe('RESTAPI', () => {
             inviteUserMissingKey({
               userData: userToInvite,
               keyToOmit: 'lastName',
-            }))
-          .then(() =>
-            inviteUserMissingKey({
-              userData: userToInvite,
-              keyToOmit: 'phoneNumber',
             }));
       });
 
