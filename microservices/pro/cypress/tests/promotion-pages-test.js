@@ -18,6 +18,7 @@ describe('Promotion pages', () => {
     let usersCount;
 
     cy.callMethod('insertFullPromotion');
+    cy.wait(2000); // Wait a bit before crushing through the tests
     cy.refetch();
     cy.contains('En cours').click();
 
