@@ -5,7 +5,7 @@ import { makeCheckObjectStructure } from '../../../../utils/checkObjectStructure
 
 const INVITE_USER_BODY_TEMPLATE = {
   promotionId: 1,
-  user: { email: 1, firstName: 1, lastName: 1, phoneNumber: 1 },
+  user: { email: 1, firstName: 1, lastName: 1 },
 };
 
 const checkPermissions = ({ userId, body: { promotionId } }) => {
@@ -38,9 +38,7 @@ const checkStructure = ({ body }) => {
   return null;
 };
 
-const verifyData = ({ api, res, userId, body }) =>
-  checkStructure({ api, res, body })
-  || checkPermissions({ api, res, userId, body });
+const verifyData = params => checkStructure(params) || checkPermissions(params);
 
 export const inviteUserToPromotion = api => (
   { user: { _id: userId }, body },
@@ -50,17 +48,25 @@ export const inviteUserToPromotion = api => (
   if (error) {
     return api.sendResponse({ res, data: error });
   }
-  const { promotionId, user } = body;
+  const { promotionId, user, testing } = body;
   try {
-    return PromotionService.inviteUser({ promotionId, user }).then(() =>
+    const promise = testing
+      ? Promise.resolve()
+      : PromotionService.inviteUser({ promotionId, user });
+
+    return promise.then(() =>
       api.sendResponse({
         res,
         data: {
           statusCode: HTTP_STATUS_CODES.OK,
           body: {
-            message: `Invited user ${
-              user.email
-            } to promotion id ${promotionId}`,
+            message: testing
+              ? `Test mode: user "${
+                user.email
+              }" would've been successfully invited to promotion id "${promotionId}"! Yay :)`
+              : `Successfully invited user "${
+                user.email
+              }" to promotion id "${promotionId}"`,
           },
         },
       }));
