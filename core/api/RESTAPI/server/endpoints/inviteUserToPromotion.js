@@ -5,7 +5,7 @@ import { makeCheckObjectStructure } from '../../../../utils/checkObjectStructure
 
 const INVITE_USER_BODY_TEMPLATE = {
   promotionId: 1,
-  user: { email: 1, firstName: 1, lastName: 1, phoneNumber: 1 },
+  user: { email: 1, firstName: 1, lastName: 1 },
 };
 
 const checkPermissions = ({ userId, body: { promotionId } }) => {
@@ -38,9 +38,7 @@ const checkStructure = ({ body }) => {
   return null;
 };
 
-const verifyData = ({ api, res, userId, body }) =>
-  checkStructure({ api, res, body })
-  || checkPermissions({ api, res, userId, body });
+const verifyData = params => checkStructure(params) || checkPermissions(params);
 
 export const inviteUserToPromotion = api => (
   { user: { _id: userId }, body },
