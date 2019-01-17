@@ -31,10 +31,11 @@ describe('Loans', () => {
     cy.get('.status-label').should('contain', 'Closing');
   });
 
-  it('should add a task to the loan', () => {
+  it.only('should add a task to the loan', () => {
     cy.contains('Nouvelle hypothèque').click();
     cy.contains('Ajouter tâche').click();
-    cy.get('input[name=title]').type('Cypress Task{enter}');
+    cy.get('input[name=title]').type('Cypress Task');
+    cy.contains('Ok').click();
     cy.get('.tasks-table').contains('Cypress Task');
   });
 
