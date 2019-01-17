@@ -8,8 +8,6 @@ import {
   confirmClosing,
   pushLoanValue,
   popLoanValue,
-  disableUserForms,
-  enableUserForms,
   adminLoanInsert,
   addNewStructure,
   removeStructure,
@@ -55,18 +53,6 @@ popLoanValue.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.popValue({ loanId, object });
 });
-
-export const disableUserFormsHandler = ({ userId }, { loanId }) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return LoanService.disableUserForms({ loanId });
-};
-disableUserForms.setHandler(disableUserFormsHandler);
-
-export const enableUserFormsHandler = ({ userId }, { loanId }) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return LoanService.enableUserForms({ loanId });
-};
-enableUserForms.setHandler(enableUserFormsHandler);
 
 export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   SecurityService.checkUserIsAdmin(adminUserId);

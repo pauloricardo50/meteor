@@ -96,12 +96,6 @@ export class LoanService extends CollectionService {
       object: { status: LOAN_STATUS.BILLING, ...object },
     });
 
-  disableUserForms = ({ loanId }) =>
-    this.update({ loanId, object: { userFormsEnabled: false } });
-
-  enableUserForms = ({ loanId }) =>
-    this.update({ loanId, object: { userFormsEnabled: true } });
-
   pushValue = ({ loanId, object }) => Loans.update(loanId, { $push: object });
 
   popValue = ({ loanId, object }) => Loans.update(loanId, { $pop: object });
