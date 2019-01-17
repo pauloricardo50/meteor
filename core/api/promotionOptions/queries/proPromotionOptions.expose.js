@@ -5,7 +5,7 @@ query.expose({
   firewall(userId, { promotionOptionIds }) {
     SecurityService.checkUserIsPro(userId);
     promotionOptionIds.forEach((id) => {
-      SecurityService.promotions.isAllowedToReadPromotionOption(id);
+      SecurityService.promotions.isAllowedToReadPromotionOption(id, userId);
     });
   },
   validateParams: { promotionOptionIds: [String] },
