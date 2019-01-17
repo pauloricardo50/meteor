@@ -8,6 +8,7 @@ import UserService from 'core/api/users/server/UserService';
 import PromotionService from 'core/api/promotions/server/PromotionService';
 import { ROLES, PROMOTION_TYPES } from 'core/api/constants';
 import 'core/cypress/server/methods';
+import { createPromotionDemo } from 'core/fixtures/promotionDemo/promotionDemoFixtures';
 import { PRO_EMAIL, PRO_PASSWORD } from '../constants';
 
 // remove login rate limits in E2E tests
@@ -35,5 +36,8 @@ Meteor.methods({
         city: 'Yverdon-les-Bains',
       },
     });
+  },
+  insertFullPromotion() {
+    createPromotionDemo(this.userId, false, false, 10);
   },
 });

@@ -44,14 +44,14 @@ import UserService from './users/server/UserService';
 import SlackService from './slack/server/SlackService';
 
 process.on('uncaughtException', (error) => {
-  console.log('uncaughtException error', error);
+  console.log('uncaughtException error', JSON.stringify(error, null, 2));
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],
   });
 });
 process.on('unhandledRejection', (error) => {
-  console.log('unhandledRejection error', error);
+  console.log('unhandledRejection error', JSON.stringify(error, null, 2));
   SlackService.sendError({
     error,
     additionalData: ['Server uncaughtException'],

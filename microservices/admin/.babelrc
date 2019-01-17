@@ -5,12 +5,7 @@
     ["@babel/plugin-proposal-class-properties"],
     [
       "module-resolver",
-      {
-        "root": ["."],
-        "alias": {
-          "core": "./imports/core"
-        }
-      }
+      { "root": ["."], "alias": { "core": "./imports/core" } }
     ]
   ]
 }
