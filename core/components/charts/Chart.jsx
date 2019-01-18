@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 
-const initiliazeOptions = () =>
+const initiliazeHighcharts = () => {
   ReactHighcharts.Highcharts.setOptions({
     lang: {
       months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
@@ -11,6 +11,23 @@ const initiliazeOptions = () =>
       shortWeekdays: 'Dim._Lun._Mar._Mer._Jeu._Ven._Sam.'.split('_'),
     },
   });
+
+  ReactHighcharts.Highcharts.wrap(
+    ReactHighcharts.Highcharts.Chart.prototype,
+    'init',
+    function (proceed, options, callback) {
+      if (options.chart && options.chart.forExport && options.series) {
+        $.each(options.series, function () {
+          if (this.visible === false) {
+            this.showInLegend = false;
+          }
+        });
+      }
+
+      return proceed.call(this, options, callback);
+    },
+  );
+};
 
 export default class Chart extends Component {
   constructor(props) {
@@ -25,7 +42,7 @@ export default class Chart extends Component {
       HighchartsMore(ReactHighcharts.Highcharts);
     }
 
-    initiliazeOptions();
+    initiliazeHighcharts();
   }
 
   componentWillReceiveProps({ data: nextData }) {
