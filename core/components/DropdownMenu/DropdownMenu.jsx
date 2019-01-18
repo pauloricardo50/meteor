@@ -84,7 +84,7 @@ DropdownMenu.propTypes = {
   className: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
   handleOpen: PropTypes.func.isRequired,
-  iconType: PropTypes.string.isRequired,
+  iconType: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
   options: PropTypes.array.isRequired,
   style: PropTypes.objectOf(PropTypes.any),
@@ -95,6 +95,7 @@ DropdownMenu.propTypes = {
 DropdownMenu.defaultProps = {
   anchorEl: null,
   className: '',
+  iconType: undefined,
   style: {},
   tooltip: undefined,
   tooltipPlacement: undefined,

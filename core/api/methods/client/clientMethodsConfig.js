@@ -8,13 +8,13 @@ import { logError } from '../../slack/methodDefinitions';
 
 const shouldLogErrorsToConsole = (Meteor.isDevelopment || Meteor.isStaging) && !Meteor.isTest;
 
-const handleError = (error) => {
+const handleError = ({ config, params, result, error }) => {
   if (shouldLogErrorsToConsole) {
     console.error('Meteor Method error:', error);
   }
   logError.run({
     error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
-    additionalData: ['Meteor method afterCall error'],
+    additionalData: ['Meteor method afterCall error', config, params],
     url: window && window.location && window.location.href,
   });
 
@@ -35,7 +35,7 @@ const handleSuccess = (config, params) => {
 
 Method.addAfterCall(({ config, params, result, error }) => {
   if (error) {
-    handleError(error);
+    handleError({ config, params, result, error });
   } else {
     handleSuccess(config, params);
   }

@@ -38,9 +38,7 @@ describe('Promotion pages', () => {
       .click();
     cy.contains('Confirmer').click();
 
-    cy.refetch();
-
-    cy.wait(2000);
+    cy.reload();
 
     cy.get('tbody')
       .find('tr')
@@ -54,8 +52,8 @@ describe('Promotion pages', () => {
     let additionalLotsCount;
 
     cy.callMethod('insertFullPromotion');
-    cy.refetch();
     cy.wait(2000); // Wait for users to be generated
+    cy.refetch();
     cy.contains('En cours').click();
 
     cy.get('.pro-promotion-lots-table td[data-id="loans"]').each((td) => {

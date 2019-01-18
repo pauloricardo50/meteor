@@ -2,8 +2,9 @@
 import React from 'react';
 import AutoField from 'uniforms-material/AutoField';
 import connectField from 'uniforms/connectField';
-import { compose } from 'recompose';
-import { injectIntl } from 'react-intl';
+import { compose, getContext } from 'recompose';
+import { intlShape } from 'react-intl';
+import nothing from 'uniforms/nothing';
 
 import DateField from '../DateField';
 import { PercentField } from '../PercentInput';
@@ -48,40 +49,73 @@ const determineComponentFromProps = ({
     return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
   }
 
+  if (uniforms && uniforms.render) {
+    return { Component: uniforms.render, type: COMPONENT_TYPES.RENDER };
+  }
+
   return { Component: false, type: null };
 };
 
-export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) =>
-  compose(
-    injectIntl,
+export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
+  const CustomAutoField = (props, context) => {
+    const {
+      uniforms: {
+        schema,
+        model,
+        state: { submitting },
+      },
+    } = context;
+    const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
+
+    let {
+      Component,
+      type,
+      props: additionalProps = {},
+    } = determineComponentFromProps({
+      ...props,
+      customAllowedValues,
+      model,
+      submitting,
+      condition,
+    });
+    Component = Component || AutoField;
+
+    let autoValue;
+
+    if (typeof customAutoValue === 'function') {
+      autoValue = customAutoValue(model);
+    }
+
+    const label = getLabel({
+      ...props,
+      intlPrefix,
+      label: labels[props.name],
+    });
+    const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+
+    return typeof condition === 'function' && !condition(model) ? (
+      nothing
+    ) : (
+      <Component
+        {...additionalProps}
+        {...props}
+        {...(autoValue ? { value: autoValue } : {})}
+        model={model}
+        submitting={submitting}
+        customAllowedValues={customAllowedValues}
+        label={label}
+        placeholder={placeholder}
+        InputLabelProps={{ shrink: true }}
+      />
+    );
+  };
+
+  CustomAutoField.contextTypes = AutoField.contextTypes;
+
+  return compose(
+    getContext({ intl: intlShape, ...AutoField.contextTypes }),
     connectField,
-  )(
-    (props) => {
-      let {
-        Component,
-        type,
-        props: additionalProps = {},
-      } = determineComponentFromProps(props);
-      Component = Component || AutoField;
-
-      const label = getLabel({
-        ...props,
-        intlPrefix,
-        label: labels[props.name],
-      });
-      const placeholder = getPlaceholder({ ...props, intlPrefix, type });
-
-      return (
-        <Component
-          {...additionalProps}
-          {...props}
-          label={label}
-          placeholder={placeholder}
-          InputLabelProps={{ shrink: true }}
-        />
-      );
-    },
-    { includeInChain: false, includeParent: true },
-  );
+  )(CustomAutoField, { includeInChain: false, includeParent: true });
+};
 
 export const CustomAutoField = makeCustomAutoField({});

@@ -21,6 +21,6 @@ export const logError = new Method({
   params: {
     error: Match.Any,
     additionalData: Match.Maybe(Match.Any),
-    url: Match.Maybe(String),
+    url: Match.Optional(String),
   },
 });

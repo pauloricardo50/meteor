@@ -94,26 +94,6 @@ describe('LoanService', () => {
     });
   });
 
-  describe('disableUserForms', () => {
-    it('disables user forms', () => {
-      loanId = Factory.create('loan')._id;
-      loan = LoanService.get(loanId);
-      LoanService.disableUserForms({ loanId });
-      loan = LoanService.get(loanId);
-      expect(loan.userFormsEnabled).to.equal(false);
-    });
-  });
-
-  describe('enableUserForms', () => {
-    it('enables the user forms', () => {
-      loanId = Factory.create('loan')._id;
-      loan = LoanService.get(loanId);
-      LoanService.enableUserForms({ loanId });
-      loan = LoanService.get(loanId);
-      expect(loan.userFormsEnabled).to.equal(true);
-    });
-  });
-
   describe('adminLoanInsert', () => {
     let userId;
 
@@ -137,7 +117,10 @@ describe('LoanService', () => {
       LoanService.adminLoanInsert({ userId });
 
       expect(LoanService.findOne({}).userId).to.equal(userId, 'loans userId');
-      expect(BorrowerService.findOne({}).userId).to.equal(userId, 'borrowers userId');
+      expect(BorrowerService.findOne({}).userId).to.equal(
+        userId,
+        'borrowers userId',
+      );
       expect(PropertyService.findOne({}).userId).to.equal(
         userId,
         'properties userId',

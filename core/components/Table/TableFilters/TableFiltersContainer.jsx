@@ -12,10 +12,6 @@ export default compose(
         this.state = { filters };
       }
 
-      getDerivedStateFromProps(nextProps) {
-        return { filters: nextProps.filters, data: nextProps.data };
-      }
-
       handleOptionsSelect = (filterPath, newFilterValue) => {
         this.setState(({ filters: prevFilters }) => {
           const newFilters = set(

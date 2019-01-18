@@ -201,6 +201,10 @@ p.description,
   &.wrap {
     flex-wrap: wrap;
   }
+
+  &.center-align {
+    align-items: center;
+  }
 }
 
 .flex-col {
