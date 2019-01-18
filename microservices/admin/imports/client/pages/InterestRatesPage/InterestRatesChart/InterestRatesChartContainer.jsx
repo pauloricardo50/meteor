@@ -80,6 +80,7 @@ const getAllRatesOfTypeLines = ({ rates, type }) =>
       fillOpacity: 0.2,
       lineWidth: 0,
       marker: { enabled: false },
+      visible: false,
     },
   ];
 
@@ -117,6 +118,7 @@ const getIrs10yLine = irs10y =>
   irs10y.length > 0 && {
     name: formatMessage('Irs10y.name'),
     data: irs10y.map(({ date, rate }) => [formatDate(date), 100 * rate]),
+    visible: false,
   };
 
 const getLines = ({ interestRates, irs10y }) =>
