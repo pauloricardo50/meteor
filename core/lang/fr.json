@@ -1,4 +1,9 @@
 {
+  "Feedback.POSITIVE.body": "{singleBorrower, select, true {Il est ravi et souhaite} other {Ils sont ravis et souhaitent}} poursuivre l'expérience afin d'obtenir une offre ferme de financement.\n\n",
+  "Feedback.closing": "Cordialement,\n{assignee}",
+  "Feedback.introduction.singleBorrower": "Nous avons présenté ce jour votre offre à {borrower} concernant le financement de son projet sis {address}.\n\n",
+  "Feedback.introduction.twoBorrowers": "Nous avons présenté ce jour votre offre à {borrower1} et {borrower2} concernant le financement de leur projet sis {address}.\n\n",
+  "Feedback.greetings": "Bonjour {contactName},\n\n",
   "NotaryAdder.suggestNotary": "Nous pouvons vous suggérer {name} pour le canton de {canton}.",
   "Forms.alreadyHaveNotary": "Avez-vous déjà un notaire?",
   "Forms.alreadyHaveNotary.yes": "Oui",
