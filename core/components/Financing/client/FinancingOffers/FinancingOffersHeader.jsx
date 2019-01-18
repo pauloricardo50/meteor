@@ -5,7 +5,6 @@ import { compose } from 'recompose';
 import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import OfferListDialog from './OfferListDialog';
 
 type FinancingOffersHeaderProps = {};
 
@@ -18,7 +17,6 @@ const FinancingOffersHeader = (props: FinancingOffersHeaderProps) => {
     const offer = offers.find(({ _id }) => _id === offerId);
     return (
       <>
-        <OfferListDialog offers={offers} />
         <div className="financing-offers-header-image offer">
           <img src={offer.organisation.logo} alt={offer.organisation.name} />
         </div>
@@ -27,7 +25,6 @@ const FinancingOffersHeader = (props: FinancingOffersHeaderProps) => {
   }
   return (
     <p className="secondary offer">
-      <OfferListDialog offers={offers} />
       <T id="FinancingOffersHeader.empty" />
     </p>
   );
