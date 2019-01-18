@@ -290,6 +290,7 @@ export const fullOffer = () => ({
     loan: {
       name: 1,
       user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+      borrowers: { name: 1 },
     },
     contact: { name: 1, email: 1 },
     organisation: { name: 1 },
