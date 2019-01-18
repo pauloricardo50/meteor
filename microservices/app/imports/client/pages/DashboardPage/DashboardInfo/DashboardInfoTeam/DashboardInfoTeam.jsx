@@ -14,8 +14,7 @@ const DashboardInfoTeam = ({
   removeContact,
   editContact,
   loan,
-  co
-  ntacts,
+  contacts,
 }) => {
   const {
     _id: loanId,
