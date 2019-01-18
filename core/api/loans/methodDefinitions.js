@@ -56,20 +56,6 @@ export const popLoanValue = new Method({
   },
 });
 
-export const disableUserForms = new Method({
-  name: 'disableUserForms',
-  params: {
-    loanId: String,
-  },
-});
-
-export const enableUserForms = new Method({
-  name: 'enableUserForms',
-  params: {
-    loanId: String,
-  },
-});
-
 export const adminLoanInsert = new Method({
   name: 'adminLoanInsert',
   params: {

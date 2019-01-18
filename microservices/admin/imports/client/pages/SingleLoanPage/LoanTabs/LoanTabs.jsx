@@ -64,7 +64,7 @@ const LoanTabs = ({ tabId = 'overview', ...props }) => {
     <Tabs
       tabs={tabs}
       initialIndex={initialIndex}
-      scrollable
+      variant="scrollable"
       scrollButtons="auto"
     />
   );

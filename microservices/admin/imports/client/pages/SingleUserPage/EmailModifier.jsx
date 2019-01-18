@@ -7,18 +7,31 @@ import { AutoFormDialog } from 'imports/core/components/AutoForm2';
 
 type EmailModifierProps = {};
 
-const schema = new SimpleSchema({
-  email: { type: String, regEx: SimpleSchema.RegEx.EmailWithTLD },
+SimpleSchema.setDefaultMessages({
+  messages: { fr: { differentEmail: 'Entrez un email différent' } },
 });
+
+const getSchema = oldEmail =>
+  new SimpleSchema({
+    email: {
+      type: String,
+      regEx: SimpleSchema.RegEx.EmailWithTLD,
+      custom() {
+        if (this.value === oldEmail) {
+          return 'differentEmail';
+        }
+      },
+    },
+  });
 
 const handleSubmit = userId => ({ email: newEmail }) =>
   changeEmail.run({ userId, newEmail });
 
-const EmailModifier = ({ userId }: EmailModifierProps) => (
+const EmailModifier = ({ userId, email }: EmailModifierProps) => (
   <AutoFormDialog
     buttonProps={{ label: 'Modifer' }}
     title="Changer l'adresse email"
-    schema={schema}
+    schema={getSchema(email)}
     onSubmit={handleSubmit(userId)}
   />
 );

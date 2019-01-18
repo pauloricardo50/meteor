@@ -48,7 +48,7 @@ module.exports = {
     });
     actions.push({
       type: 'add',
-      path: `${collectionPath}/{{serviceName}}.js`,
+      path: `${collectionPath}/server/{{serviceName}}.js`,
       templateFile: `${templatesPath}/service.hbs`,
     });
     actions.push({

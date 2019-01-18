@@ -16,6 +16,7 @@ import {
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
 } from '../../api/constants';
+import collectionIcons from '../../arrays/collectionIcons';
 
 type CollectionIconLinkProps = {};
 
@@ -32,37 +33,31 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   case LOANS_COLLECTION:
     return {
       link: `/loans/${docId}`,
-      icon: 'dollarSign',
       text: data.name,
     };
   case USERS_COLLECTION:
     return {
       link: `/users/${docId}`,
-      icon: 'contactMail',
       text: data.name,
     };
   case BORROWERS_COLLECTION:
     return {
       link: `/borrowers/${docId}`,
-      icon: 'people',
       text: data.name,
     };
   case PROPERTIES_COLLECTION:
     return {
       link: `/properties/${docId}`,
-      icon: 'building',
       text: data.address1,
     };
   case OFFERS_COLLECTION:
     return {
       link: `/offers/${docId}`,
-      icon: 'monetizationOn',
       text: data.organisation,
     };
   case PROMOTIONS_COLLECTION:
     return {
       link: `/promotions/${docId}`,
-      icon: <FontAwesomeIcon icon={faCity} className="icon-link-icon" />,
       text: data.name,
     };
   case ORGANISATIONS_COLLECTION: {
@@ -86,14 +81,12 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
 
     return {
       link: `/organisations/${docId}`,
-      icon: <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />,
       text,
     };
   }
   case CONTACTS_COLLECTION:
     return {
       link: `/contacts/${docId}`,
-      icon: <FontAwesomeIcon icon={faUserTie} className="icon-link-icon" />,
       text: data.name,
     };
   case 'NOT_FOUND':
@@ -111,9 +104,17 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
 };
 
 const CollectionIconLink = ({ relatedDoc }: CollectionIconLinkProps) => {
-  const { link, icon, text } = getIconConfig(relatedDoc);
+  const { collection } = relatedDoc;
+  const { link, icon = collectionIcons[collection], text } = getIconConfig(relatedDoc);
 
-  return <IconLink link={link} icon={icon} text={text} />;
+  return (
+    <IconLink
+      link={link}
+      icon={icon}
+      text={text}
+      className="collection-icon"
+    />
+  );
 };
 
 export default CollectionIconLink;

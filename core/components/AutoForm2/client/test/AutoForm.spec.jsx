@@ -30,7 +30,6 @@ const setInput = (name, value) => {
 };
 
 describe('AutoForm', () => {
-
   beforeEach(() => {
     getMountedComponent.reset();
     props = { schema: new SimpleSchema({ text: String }) };
@@ -95,6 +94,25 @@ describe('AutoForm', () => {
     };
 
     expect(component().find(TextField).length).to.equal(1);
+  });
+
+  it('filters the model and only submits the form values', () => {
+    props = {
+      schema: new SimpleSchema({
+        stuff: String,
+        arr: Array,
+        'arr.$': Object,
+        'arr.$.text': String,
+      }),
+      model: { stuff: 'yo', arr: [{ text: 'dude' }], hello: 'dawg' },
+      onSubmit: (values) => {
+        expect(values).to.deep.equal({ stuff: 'yo', arr: [{ text: 'dude' }] });
+      },
+    };
+
+    component()
+      .find('form')
+      .simulate('submit');
   });
 
   describe('Custom components', () => {
@@ -395,6 +413,86 @@ describe('AutoForm', () => {
           .find('input')
           .prop('placeholder')).to.equal('');
       });
+    });
+  });
+
+  describe('children', () => {
+    it('have access to conditional rendering', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText1: { type: String, defaultValue: 'yo' },
+          myText2: {
+            type: String,
+            condition: ({ myText1 }) => myText1 === 'dude',
+          },
+        }),
+        children: (
+          <>
+            <CustomAutoField name="myText1" />
+            <CustomAutoField name="myText2" />
+          </>
+        ),
+      };
+
+      expect(component().find(TextField).length).to.equal(1);
+
+      setInput('myText1', 'dude');
+
+      expect(component().find(TextField).length).to.equal(2);
+    });
+
+    it('have access to custom auto values', () => {
+      props = {
+        schema: new SimpleSchema({
+          myText1: { type: String, defaultValue: 'yo' },
+          myText2: {
+            type: String,
+            customAutoValue: ({ myText1 }) => `${myText1} dude`,
+          },
+        }),
+        children: (
+          <>
+            <CustomAutoField name="myText1" />
+            <CustomAutoField name="myText2" />
+          </>
+        ),
+      };
+
+      expect(component()
+        .find('[name="myText2"]')
+        .find('input')
+        .prop('value')).to.equal('yo dude');
+
+      setInput('myText1', 'hello');
+
+      expect(component()
+        .find('[name="myText2"]')
+        .find('input')
+        .prop('value')).to.equal('hello dude');
+    });
+
+    it('can render custom components', () => {
+      props = {
+        schema: new SimpleSchema({
+          percent: {
+            type: Number,
+            uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT },
+          },
+          date: { type: Date, uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE } },
+          select: { type: String, customAllowedValues: () => ['yo'] },
+        }),
+        children: (
+          <>
+            <CustomAutoField name="percent" />
+            <CustomAutoField name="date" />
+            <CustomAutoField name="select" />
+          </>
+        ),
+      };
+
+      expect(component().find(PercentField).length).to.equal(1);
+      expect(component().find(DateField).length).to.equal(1);
+      expect(component().find(CustomSelectField).length).to.equal(1);
     });
   });
 });
