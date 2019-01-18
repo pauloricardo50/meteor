@@ -4,11 +4,14 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import fileSaver from 'file-saver';
 import { compose, withState, withProps } from 'recompose';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
 
 import Button from 'core/components/Button/Button';
 import { generatePDF } from 'core/api/PDFGenerator/methodDefinitions';
 import message from 'core/utils/message';
 import { ROLES, PDF_TYPES } from 'core/api/constants';
+import Icon from 'imports/core/components/Icon/Icon';
 import { base64ToBlob } from './base64-to-blob';
 
 type GetLoanPDFProps = {
@@ -22,11 +25,11 @@ const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
     <Button
       raised
       primary
-      onClick={() => handlePDF({ anonymous: false })}
+      onClick={() => handlePDF({})}
       loading={loading}
-      style={{ marginTop: 16 }}
+      icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
     >
-      Générer PDF
+      PDF
     </Button>
 
     <Button
@@ -34,9 +37,10 @@ const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
       primary
       onClick={() => handlePDF({ anonymous: true })}
       loading={loading}
-      style={{ marginTop: 16, marginLeft: 16 }}
+      style={{ marginLeft: 8 }}
+      icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
     >
-      Générer PDF anonyme
+      PDF anonyme
     </Button>
     {Meteor.user().roles.includes(ROLES.DEV) && (
       <Button
@@ -44,9 +48,9 @@ const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
         primary
         onClick={() => handleHTML({ anonymous: false })}
         loading={loading}
-        style={{ marginTop: 16, marginLeft: 16 }}
+        style={{ marginLeft: 8 }}
       >
-        Générer PDF HTML
+        {'<HTML />'}
       </Button>
     )}
   </>
