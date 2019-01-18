@@ -4,7 +4,6 @@ import SimpleSchema from 'simpl-schema';
 
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
-import { loanUpdate } from 'core/api/methods';
 import notaries from 'core/arrays/notaries';
 
 type NotaryAdderProps = {};
