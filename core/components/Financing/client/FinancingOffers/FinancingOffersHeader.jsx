@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
-
 import { compose } from 'recompose';
+
 import T from '../../../Translation';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
+import OfferListDialog from './OfferListDialog';
 
 type FinancingOffersHeaderProps = {};
 
@@ -16,13 +17,17 @@ const FinancingOffersHeader = (props: FinancingOffersHeaderProps) => {
   if (offerId) {
     const offer = offers.find(({ _id }) => _id === offerId);
     return (
-      <div className="financing-offers-header-image offer">
-        <img src={offer.organisation.logo} alt={offer.organisation.name} />
-      </div>
+      <>
+        <OfferListDialog offers={offers} />
+        <div className="financing-offers-header-image offer">
+          <img src={offer.organisation.logo} alt={offer.organisation.name} />
+        </div>
+      </>
     );
   }
   return (
     <p className="secondary offer">
+      <OfferListDialog offers={offers} />
       <T id="FinancingOffersHeader.empty" />
     </p>
   );
