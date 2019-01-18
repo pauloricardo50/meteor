@@ -10,14 +10,54 @@ import {
   interestRatesInsert,
   interestRatesUpdate,
   interestRatesRemove,
-} from 'imports/core/api/methods/index';
-import { PercentField } from 'imports/core/components/PercentInput/';
-import { CustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
-import T from 'imports/core/components/Translation';
-import Percent from 'imports/core/components/Translation/numberComponents/Percent';
-import InterestsTableTrend from 'imports/core/components/InterestRatesTable/InterestsTableTrend';
+} from 'core/api/methods/index';
+import { PercentField } from 'core/components/PercentInput/';
+import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
+import T from 'core/components/Translation';
+import Percent from 'core/components/Translation/numberComponents/Percent';
+import InterestsTableTrend from 'core/components/InterestRatesTable/InterestsTableTrend';
 
-const singleInterestRate = type => ({
+const TRESHOLD = 0.001;
+
+const getAverage = (values = []) => {
+  const filteredValues = !!values.length && values.filter(x => !!x);
+  return (
+    filteredValues.reduce(
+      (sum, x) => sum + x,
+      filteredValues.length > 1 ? 0 : undefined,
+    ) / filteredValues.length
+  );
+};
+
+const getNewTrend = ({ trend, diff }) => {
+  let newTrend = trend;
+
+  if (!!diff && !newTrend) {
+    if (diff < -TRESHOLD) {
+      newTrend = TRENDS.DOWN;
+    } else if (diff > TRESHOLD) {
+      newTrend = TRENDS.UP;
+    } else {
+      newTrend = TRENDS.FLAT;
+    }
+  }
+
+  return newTrend;
+};
+
+const getTrend = ({ model, type, currentInterestRates }) => {
+  const { rateLow, rateHigh, trend } = model[type] || {};
+  const { rateLow: currentRateLow, rateHigh: currentRateHigh } = currentInterestRates.find(({ type: rateType }) => rateType === type) || {};
+
+  const average = getAverage([rateLow, rateHigh]);
+  const currentAverage = getAverage([currentRateLow, currentRateHigh]);
+
+  const diff = average - currentAverage;
+
+  return getNewTrend({ trend, diff });
+};
+
+const singleInterestRate = ({ type, currentInterestRates }) => ({
   [type]: { type: Object, optional: true },
   [`${type}.rateLow`]: {
     type: Number,
@@ -37,25 +77,28 @@ const singleInterestRate = type => ({
     type: String,
     allowedValues: Object.values(TRENDS),
     optional: true,
-    uniforms: { displayEmpty: false },
+    uniforms: { displayEmpty: false, placeholder: '' },
+    customAutoValue: model => getTrend({ model, type, currentInterestRates }),
   },
 });
 
-const rates = Object.values(INTEREST_RATES).reduce(
-  (interestRates, type) => ({
-    ...interestRates,
-    ...singleInterestRate(type),
-  }),
-  {},
-);
+const rates = ({ currentInterestRates }) =>
+  Object.values(INTEREST_RATES).reduce(
+    (interestRates, type) => ({
+      ...interestRates,
+      ...singleInterestRate({ type, currentInterestRates }),
+    }),
+    {},
+  );
 
-const interestRatesSchema = new SimpleSchema({
-  date: {
-    type: Date,
-    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
-  },
-  ...rates,
-});
+const interestRatesSchema = ({ currentInterestRates }) =>
+  new SimpleSchema({
+    date: {
+      type: Date,
+      uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
+    },
+    ...rates({ currentInterestRates }),
+  });
 
 const renderCurrentRates = ({ rateLow, rateHigh, trend }) => (
   <div className="current-rates">
@@ -114,7 +157,7 @@ const fields = currentInterestRates => [
 export default compose(
   withState('submitting', 'setSubmitting', false),
   withProps(({ setOpen, setSubmitting, currentInterestRates = [] }) => ({
-    schema: interestRatesSchema,
+    schema: interestRatesSchema({ currentInterestRates }),
     fields: fields(currentInterestRates),
     insertInterestRates: data =>
       interestRatesInsert.run({ interestRates: data }),

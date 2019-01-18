@@ -2,4 +2,4 @@
 import uniforms from 'uniforms-material';
 import SimpleSchema from 'simpl-schema';
 
-SimpleSchema.extendOptions(['condition', 'customAllowedValues']);
+SimpleSchema.extendOptions(['condition', 'customAllowedValues','customAutoValue']);
