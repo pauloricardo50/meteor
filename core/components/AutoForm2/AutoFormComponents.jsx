@@ -82,7 +82,6 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
       autoValue = customAutoValue(model);
     }
 
-
     const label = getLabel({
       ...props,
       intlPrefix,
@@ -110,10 +109,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
   CustomAutoField.contextTypes = AutoField.contextTypes;
 
   return compose(
-    getContext({
-      intl: intlShape,
-      ...AutoField.contextTypes,
-    }),
+    getContext({ intl: intlShape, ...AutoField.contextTypes }),
     connectField,
   )(CustomAutoField, { includeInChain: false, includeParent: true });
 };
