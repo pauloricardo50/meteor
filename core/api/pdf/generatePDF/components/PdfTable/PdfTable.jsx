@@ -75,10 +75,14 @@ const row = (
 };
 
 const PdfTable = ({ rows, className }: PdfTableProps) => (
-  // console.log('rows', rows);
   <table className={cx('pdf-table', className)}>
-    {rows.map((rowData, index) =>
-      shouldRenderRow(rowData.condition) && row(rowData, index))}
+    {rows.map((rowData, index) => {
+      if (!shouldRenderRow(rowData.condition)) {
+        return null;
+      }
+
+      return row(rowData, index);
+    })}
     <PdfTableTooltips
       tooltips={rows.filter(({ tooltip, condition }) => !!tooltip && shouldRenderRow(condition))}
       rowRenderFunc={row}

@@ -6,10 +6,10 @@ import ReactDOMServer from 'react-dom/server';
 import fs from 'fs';
 
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
-import { PDF_TYPES } from 'core/api/constants';
-import { TEMPLATES } from '../generatePDF/constants';
-import LoanBankPDF from '../generatePDF/components/LoanBankPDF';
 import adminLoan from '../../loans/queries/adminLoan';
+import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
+import LoanBankPDF from '../generatePDF/components/LoanBankPDF';
+import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
 
 class PDFService {
@@ -51,7 +51,12 @@ class PDFService {
     switch (type) {
     case PDF_TYPES.LOAN: {
       const { loanId } = params;
-      return adminLoan.clone({ _id: loanId }).fetchOne();
+      const loan = adminLoan.clone({ _id: loanId }).fetchOne();
+      if (loan.hasPromotion) {
+        return formatLoanWithPromotion(loan);
+      }
+
+      return loan;
     }
     default:
     }

@@ -26,7 +26,7 @@ const titleLine = label => ({
   type: ROW_TYPES.TITLE,
 });
 
-const getPropertyRecapArray = loan => [
+const getPropertyValuationArray = loan => [
   titleLine(<T id="PDF.projectInfos.valuation.title" />),
   {
     label: <T id="PDF.projectInfos.valuation.value" />,
@@ -36,9 +36,17 @@ const getPropertyRecapArray = loan => [
     label: <T id="PDF.projectInfos.valuation.microlocation" />,
     data: `${loan.structure.property.valuation.microlocation.grade}/5`,
   },
-  titleLine(<T id="PDF.projectInfos.property.title" />),
-  ...propertyArrayData(loan),
 ];
+
+const getPropertyRecapArray = (loan) => {
+  const valuationExists = !!loan.structure.property.valuation;
+
+  return [
+    ...(valuationExists ? getPropertyValuationArray(loan) : []),
+    titleLine(<T id="PDF.projectInfos.property.title" />),
+    ...propertyArrayData(loan),
+  ];
+};
 
 const getStructureRecapArray = loan => [
   titleLine(<T id="PDF.projectInfos.structure.title" />),

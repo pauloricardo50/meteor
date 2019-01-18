@@ -595,6 +595,7 @@ export const adminProperty = ({ withSort } = {}) => ({
 });
 
 export const promotionProperty = () => ({
+  additionalMargin: 1,
   address: 1,
   bathroomCount: 1,
   canton: 1,
@@ -603,9 +604,9 @@ export const promotionProperty = () => ({
   gardenArea: 1,
   insideArea: 1,
   landValue: 1,
-  additionalMargin: 1,
   monthlyExpenses: 1,
   name: 1,
+  propertyType: 1,
   roomCount: 1,
   terraceArea: 1,
   totalValue: 1,

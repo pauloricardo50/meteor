@@ -2,7 +2,7 @@ import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
 import PDFTableStyles from '../PdfTable/PdfTableStyles';
-import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../constants';
+import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../../pdfConstants';
 import PdfPageStyles from '../PdfPage/PdfPageStyles';
 
 const stylesheet = `

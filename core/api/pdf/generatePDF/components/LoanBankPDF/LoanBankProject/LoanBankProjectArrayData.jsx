@@ -296,11 +296,22 @@ export const propertyArrayData = (loan) => {
         parkingOutside = 0,
         minergie,
         monthlyExpenses,
+        promotion,
       },
     },
     residenceType,
   } = loan;
   return [
+    {
+      label: <T id="PDF.projectInfos.property.promotionName" />,
+      data: (
+        <T
+          id="PDF.projectInfos.property.promotionNameData"
+          values={{ name: promotion && promotion.name }}
+        />
+      ),
+      condition: !!promotion,
+    },
     {
       label: <T id="PDF.projectInfos.property.address" />,
       data: (
@@ -321,12 +332,12 @@ export const propertyArrayData = (loan) => {
     {
       label: <T id="PDF.projectInfos.property.houseType" />,
       data: <T id={`PDF.projectInfos.property.houseType.${houseType}`} />,
-      condition: propertyType === PROPERTY_TYPE.HOUSE,
+      condition: !!houseType && propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       label: <T id="PDF.projectInfos.property.flatType" />,
       data: <T id={`PDF.projectInfos.property.flatType.${flatType}`} />,
-      condition: propertyType === PROPERTY_TYPE.FLAT,
+      condition: !!flatType && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       label: <T id="PDF.projectInfos.property.roomCount" />,
@@ -335,16 +346,17 @@ export const propertyArrayData = (loan) => {
         text: <T id="PDF.projectInfos.property.roomCount.tooltip" />,
         symbol: '*',
       },
+      condition: !!roomCount,
     },
     {
       label: <T id="PDF.projectInfos.property.insideArea" />,
       data: `${insideArea} m2`,
-      condition: propertyType === PROPERTY_TYPE.FLAT,
+      condition: !!insideArea && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       label: <T id="PDF.projectInfos.property.landArea" />,
       data: `${landArea} m2`,
-      condition: propertyType === PROPERTY_TYPE.HOUSE,
+      condition: !!landArea && propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       label: <T id="PDF.projectInfos.property.volume" />,
@@ -354,13 +366,15 @@ export const propertyArrayData = (loan) => {
           <T id={`PDF.projectInfos.property.volumeNorm.${volumeNorm}`} />)
         </span>
       ),
-      condition: propertyType === PROPERTY_TYPE.HOUSE,
+      condition:
+        !!volume && !!volumeNorm && propertyType === PROPERTY_TYPE.HOUSE,
     },
     {
       label: <T id="PDF.projectInfos.property.terraceArea" />,
       data: `${terraceArea} m2`,
       condition:
-        propertyType === PROPERTY_TYPE.FLAT
+        !!terraceArea
+        && propertyType === PROPERTY_TYPE.FLAT
         && flatType === FLAT_TYPE.TERRACE_APARTMENT,
     },
     {
@@ -379,6 +393,7 @@ export const propertyArrayData = (loan) => {
     {
       label: <T id="PDF.projectInfos.property.constructionYear" />,
       data: constructionYear,
+      condition: !!constructionYear,
     },
     {
       label: <T id="PDF.projectInfos.property.renovationYear" />,
@@ -388,10 +403,12 @@ export const propertyArrayData = (loan) => {
     {
       label: <T id="PDF.projectInfos.property.parking" />,
       data: `${parkingInside} int., ${parkingOutside} ext.`,
+      condition: !!parkingInside || !!parkingOutside,
     },
     {
       label: <T id="PDF.projectInfos.property.minergie" />,
       data: <T id={`PDF.projectInfos.property.minergie.${minergie}`} />,
+      condition: !!minergie,
     },
     {
       label: <T id="PDF.projectInfos.property.maintenance" />,

@@ -8,8 +8,9 @@ import {
   OWN_FUNDS_USAGE_TYPES,
   OTHER_INCOME,
   EXPENSES,
-} from 'core/api/constants';
-import { PROPERTY_TYPE, HOUSE_TYPE } from '../../../../core/api/constants';
+  PROPERTY_TYPE,
+  HOUSE_TYPE,
+} from '../../../../core/api/constants';
 
 export const FAKE_SALARY = 150000;
 export const FAKE_BANK_FORTUNE = 1000000;
