@@ -1,6 +1,7 @@
 {
   "PDF.projectInfos.property.promotionNameData": "Promotion {name}",
   "PDF.projectInfos.property.promotionName": "Promotion immobilière",
+  "FinancingOffers.showAll": "Afficher toutes les offres",
   "NotaryAdder.suggestNotary": "Nous pouvons vous suggérer {name} pour le canton de {canton}.",
   "Forms.alreadyHaveNotary": "Avez-vous déjà un notaire?",
   "Forms.alreadyHaveNotary.yes": "Oui",
