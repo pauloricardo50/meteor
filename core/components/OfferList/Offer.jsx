@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -22,10 +23,12 @@ const Offer = ({ offer, offerValues }) => (
           offer={offer}
         />
       ))}
-      <div className="offer-list-item-actions">
-        <OfferFeedback offer={offer} />
-        <OfferModifier offer={offer} />
-      </div>
+      {Meteor.microservice === 'admin' && (
+        <div className="offer-list-item-actions">
+          <OfferFeedback offer={offer} />
+          <OfferModifier offer={offer} />
+        </div>
+      )}
     </div>
   </div>
 );
