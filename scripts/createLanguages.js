@@ -40,6 +40,7 @@ const config = {
         'offer',
         'OfferAdder',
         'PasswordChange',
+        'PDF',
         'Promotion',
         'PromotionLotPage',
         'PropertyForm',
@@ -84,11 +85,6 @@ const config = {
         'Valuation',
         'Widget1',
       ],
-    },
-    {
-      id: 'pdf',
-      path: __dirname + '/../microservices/pdf',
-      exceptions: ['PDF'],
     },
     {
       id: 'pro',
