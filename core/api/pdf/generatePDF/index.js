@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
-import PDFService from './PDFService';
+import PDFService from '../server/PDFService';
 
 Meteor.methods({
   _generatePDF({ data, type, options }) {

@@ -1,8 +1,8 @@
 import SecurityService from '../../security';
 import { generatePDF } from '../methodDefinitions';
-import PDFGeneratorService from '../PDFGeneratorService';
+import PDFService from './PDFService';
 
 generatePDF.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return PDFGeneratorService.generatePDF(params);
+  return PDFService.makePDF(params);
 });

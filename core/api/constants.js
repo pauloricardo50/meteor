@@ -23,7 +23,7 @@ export * from './loans/loanConstants';
 export * from './lots/lotConstants';
 export * from './offers/offerConstants';
 export * from './organisations/organisationConstants';
-export * from './PDFGenerator/pdfGeneratorConstants';
+export * from './pdf/pdfConstants';
 export * from './promotionLots/promotionLotConstants';
 export * from './promotionOptions/promotionOptionConstants';
 export * from './promotions/promotionConstants';
