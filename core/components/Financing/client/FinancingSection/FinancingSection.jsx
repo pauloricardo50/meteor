@@ -66,7 +66,7 @@ const FinancingSection = ({
   return (
     <ScrollSyncPane>
       <ExpansionPanel
-        className={cx('financing-structures-section', className)}
+        className={cx('financing-structures-section', className, { expanded })}
         CollapseProps={{ classes: { container, entered } }}
         expanded={expanded}
         onChange={() => changeExpanded(!expanded)}
@@ -75,13 +75,6 @@ const FinancingSection = ({
           className="section-summary"
           classes={{ content, expanded: expandedClass }}
         >
-          <div
-            className={cx('expand-helper animated slideInDown', {
-              appear: !expanded,
-            })}
-          >
-            <T id="FinancingSection.expandHelper" />
-          </div>
           <FinancingLabels config={summaryConfig} className="summary-labels" />
 
           {structures.map(structure => renderSummary(structure, data))}

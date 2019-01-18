@@ -2,7 +2,9 @@
 import React from 'react';
 import AutoForm from 'uniforms-material/AutoForm';
 import pickBy from 'lodash/pickBy';
+import pick from 'lodash/pick';
 
+import { withProps } from 'recompose';
 import { makeCustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
@@ -53,4 +55,10 @@ const CustomAutoForm = ({
   );
 };
 
-export default CustomAutoForm;
+export default withProps(({ onSubmit, schema }) => {
+  const schemaKeys = schema._schemaKeys;
+  console.log('schemaKeys:', schemaKeys);
+  return {
+    onSubmit: values => onSubmit(pick(values, schemaKeys)),
+  };
+})(CustomAutoForm);

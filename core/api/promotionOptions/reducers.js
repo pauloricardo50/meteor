@@ -36,4 +36,9 @@ PromotionOptions.addReducers({
         && promotionLots[0].attributedTo.userId === Meteor.userId()
       ),
   },
+  canton: {
+    body: { promotionLots: { promotion: { canton: 1 } } },
+    reduce: ({ promotionLots = [] }) =>
+      (promotionLots.length > 0 ? promotionLots[0].promotion.canton : undefined),
+  },
 });

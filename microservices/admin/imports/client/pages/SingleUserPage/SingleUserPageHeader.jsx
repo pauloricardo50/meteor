@@ -56,7 +56,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       <div className="bottom">
         <div className="email">
           <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>{' '}
-          <EmailModifier userId={userId} />
+          <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">

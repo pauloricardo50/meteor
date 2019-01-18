@@ -13,4 +13,5 @@ export const COMPONENT_TYPES = {
   SELECT: 'SELECT',
   TEXT_AREA: 'TEXT_AREA',
   MONEY: 'MONEY',
+  RENDER: 'RENDER',
 };

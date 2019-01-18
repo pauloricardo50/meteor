@@ -7,11 +7,7 @@ import T from '../Translation';
 import { AutoFormDialog } from '../AutoForm2';
 
 SimpleSchema.setDefaultMessages({
-  messages: {
-    fr: {
-      passwordMismatch: 'Entrez 2 fois le même mot de passe',
-    },
-  },
+  messages: { fr: { passwordMismatch: 'Entrez 2 fois le même mot de passe' } },
 });
 
 const schema = new SimpleSchema({

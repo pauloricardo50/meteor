@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 import T from 'core/components/Translation';
 import { AutoFormDialog } from 'imports/core/components/AutoForm2';
 
-const schema = new SimpleSchema({
+const dashboardContactSchema = new SimpleSchema({
   name: String,
   title: String,
   email: { type: String, regEx: SimpleSchema.RegEx.EmailWithTLD },
@@ -13,7 +13,7 @@ const schema = new SimpleSchema({
 
 const DashboardInfoTeamForm = props => (
   <AutoFormDialog
-    schema={schema}
+    schema={dashboardContactSchema}
     title={<T id="DashboardInfoTeamForm.dialogTitle" />}
     description={<T id="DashboardInfoTeamForm.dialogDescription" />}
     {...props}

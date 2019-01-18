@@ -96,6 +96,25 @@ describe('AutoForm', () => {
     expect(component().find(TextField).length).to.equal(1);
   });
 
+  it('filters the model and only submits the form values', () => {
+    props = {
+      schema: new SimpleSchema({
+        stuff: String,
+        arr: Array,
+        'arr.$': Object,
+        'arr.$.text': String,
+      }),
+      model: { stuff: 'yo', arr: [{ text: 'dude' }], hello: 'dawg' },
+      onSubmit: (values) => {
+        expect(values).to.deep.equal({ stuff: 'yo', arr: [{ text: 'dude' }] });
+      },
+    };
+
+    component()
+      .find('form')
+      .simulate('submit');
+  });
+
   describe('Custom components', () => {
     it('renders a select field if allowedValues is passed', () => {
       props = {
