@@ -107,7 +107,7 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
             ),
           },
         ]}
-        scrollable
+        variant="scrollable"
         scrollButtons="auto"
       />
     </div>
@@ -116,7 +116,7 @@ const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
 
 FileTabs.propTypes = {
   borrowers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
   properties: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

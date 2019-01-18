@@ -36,7 +36,7 @@ const Uploader = (props) => {
             });
           }}
           id={id}
-          className={id === DOCUMENTS.OTHER && 'visibility-hidden'}
+          className={id === DOCUMENTS.OTHER ? 'visibility-hidden' : ''}
         />
       )}
       <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id}>
