@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import T from 'core/components/Translation';
-import Calculator from 'imports/core/utils/Calculator';
+import Calculator from 'core/utils/Calculator';
 import DashboardInfoTeamCompany from './DashboardInfoTeamCompany';
 import DashboardInfoTeamExternal from './DashboardInfoTeamExternal';
 import DashboardInfoTeamAdder from './DashboardInfoTeamAdder';
@@ -14,7 +14,8 @@ const DashboardInfoTeam = ({
   removeContact,
   editContact,
   loan,
-  contacts,
+  co
+  ntacts,
 }) => {
   const {
     _id: loanId,
