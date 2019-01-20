@@ -2,15 +2,15 @@ import { Random } from 'meteor/random';
 import sample from 'lodash/sample';
 
 import {
-  MINERGIE_CERTIFICATE,
+  EXPENSES,
   FLAT_TYPE,
+  HOUSE_TYPE,
+  MINERGIE_CERTIFICATE,
+  OTHER_INCOME,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
-  OTHER_INCOME,
-  EXPENSES,
   PROPERTY_TYPE,
-  HOUSE_TYPE,
-} from '../../../../core/api/constants';
+} from '../../../../constants';
 
 export const FAKE_SALARY = 150000;
 export const FAKE_BANK_FORTUNE = 1000000;

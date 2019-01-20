@@ -1,8 +1,8 @@
 import { Factory } from 'meteor/dburles:factory';
 
-import Loans from '../../../../core/api/loans';
-import Borrowers from '../../../../core/api/borrowers';
-import Properties from '../../../../core/api/properties';
+import Loans from '../../../../loans';
+import Borrowers from '../../../../borrowers';
+import Properties from '../../../../properties';
 import { FAKE_LOAN_NAME } from './fakes';
 
 Factory.define('testBorrower', Borrowers);

@@ -1,21 +1,21 @@
 /* eslint-env mocha */
+import { resetDatabase } from 'meteor/xolvio:cleaner';
+
 import { expect } from 'chai';
 import base64 from 'base64topdf';
 import fs from 'fs';
 import cheerio from 'cheerio';
 
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import {
   PROPERTY_TYPE,
   RESIDENCE_TYPE,
   PURCHASE_TYPE,
   CIVIL_STATUS,
   PDF_TYPES,
-} from 'core/api/constants';
+  GENDER,
+} from '../../../constants';
 import PDFService from '../PDFService';
-
 import { getTwoBorrowersLoan, getFullLoan } from './testFactories';
-import { GENDER } from '../../../core/api/constants';
 import { FAKE_USER } from './testFactories/fakes';
 
 describe('GeneratePDFService', () => {
@@ -23,7 +23,7 @@ describe('GeneratePDFService', () => {
     resetDatabase();
   });
 
-  it('returns a base64 encoded PDF', () => {
+  it.skip('returns a base64 encoded PDF', () => {
     // const loanId = getSingleBorrowerLoan({
     //   borrowers: {
     //     borrowerInfos: {

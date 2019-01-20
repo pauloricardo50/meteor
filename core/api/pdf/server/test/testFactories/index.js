@@ -1,9 +1,9 @@
 import './testFactories';
 import { Factory } from 'meteor/dburles:factory';
 
-import { adminLoan } from 'core/api/fragments';
-import LoanService from 'core/api/loans/server/LoanService';
-import { PROPERTY_TYPE } from 'core/api/constants';
+import { PROPERTY_TYPE } from '../../../../constants';
+import LoanService from '../../../../loans/server/LoanService';
+import { adminLoan } from '../../../../fragments';
 import {
   fakeBorrower,
   FAKE_HOUSE,

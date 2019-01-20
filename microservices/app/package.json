@@ -36,6 +36,7 @@
     "antd": "^3.9.3",
     "aws-sdk": "^2.320.0",
     "babel-polyfill": "^6.26.0",
+    "base64topdf": "^1.1.8",
     "bcrypt": "2.0.1",
     "body-parser": "^1.18.3",
     "btoa": "^1.2.1",
