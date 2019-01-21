@@ -127,7 +127,7 @@ describe('OfferService', () => {
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('dev@e-potek.ch');
         expect(from_name).to.equal('Dev e-Potek');
-        expect(subject).to.include("Feedback de l'offre");
+        expect(subject).to.include('Feedback client sur');
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
         expect(1).to.equal(1);
       });
