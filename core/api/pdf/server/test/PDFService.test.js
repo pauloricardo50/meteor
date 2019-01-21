@@ -18,49 +18,12 @@ import PDFService from '../PDFService';
 import { getTwoBorrowersLoan, getFullLoan } from './testFactories';
 import { FAKE_USER } from './testFactories/fakes';
 
-describe('GeneratePDFService', () => {
+describe('PDFService', () => {
   beforeEach(() => {
     resetDatabase();
   });
 
   it.skip('returns a base64 encoded PDF', () => {
-    // const loanId = getSingleBorrowerLoan({
-    //   borrowers: {
-    //     borrowerInfos: {
-    //       firstName: 'John',
-    //       lastName: 'Doe',
-    //       gender: GENDER.M,
-    //       age: 51,
-    //       childrenCount: 2,
-    //       civilStatus: CIVIL_STATUS.MARRIED,
-    //     },
-    //     withSalary: true,
-    //     withBonus: true,
-    //     withBankFortune: true,
-    //     withInsurance2: true,
-    //     withInsurance3A: true,
-    //     withBank3A: true,
-    //     withInsurance3B: true,
-    //     withThirdPartyFortune: true,
-    //     withOtherIncome: true,
-    //     withOtherFortune: true,
-    //     withExpenses: true,
-    //     withRealEstate: true,
-    //   },
-    //   structures: [
-    //     {
-    //       withBankWithdraw: true,
-    //       withInsurance3APledge: true,
-    //       withThirdPartyFortuneWithdraw: true,
-    //     },
-    //     {
-    //       withCustomNotaryFees: true,
-    //       withBankWithdraw: true,
-    //       withInsurance3AWithdraw: true,
-    //     },
-    //   ],
-    //   propertyType: PROPERTY_TYPE.FLAT,
-    // });
     const loanId = getTwoBorrowersLoan({
       purchaseType: PURCHASE_TYPE.ACQUISITION,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
