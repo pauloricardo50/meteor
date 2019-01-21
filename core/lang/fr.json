@@ -298,7 +298,7 @@
   "Recap.netRealEstate": "Fortune immobilière nette",
   "PromotionLotLoansTable.email": "Email",
   "PromotionPageHeader.partners": "Partenaires",
-  "PromotionPageHeader.contacts": "Personnes de contact",
+  "PromotionPageHeader.contacts": "{multipleContacts, select , true {Personnes} other {Personne}} de contact",
   "Forms.ownFunds": "Fonds propres",
   "Forms.structure": "Plan financier",
   "Forms.status.SOLD_TO_ME": "Vendu à moi",
