@@ -75,20 +75,22 @@ class Tabs extends Component {
           textColor="primary"
           {...otherProps}
         >
-          {tabs.map(({ label, to, id }, i) => (
-            <Tab
-              classes={{
-                root: classes.tabRoot,
-                selected: classes.tabSelected,
-                labelContainer: classes.labelContainer,
-              }}
-              label={label}
-              component={to ? Link : undefined}
-              to={to}
-              key={id || i}
-              className="core-tabs-tab"
-            />
-          ))}
+          {tabs
+            .filter(({ condition = true }) => condition)
+            .map(({ label, to, id }, i) => (
+              <Tab
+                classes={{
+                  root: classes.tabRoot,
+                  selected: classes.tabSelected,
+                  labelContainer: classes.labelContainer,
+                }}
+                label={label}
+                component={to ? Link : undefined}
+                to={to}
+                key={id || i}
+                className="core-tabs-tab"
+              />
+            ))}
         </MuiTabs>
         <div className="tab-content">{this.getContent()}</div>
       </div>
