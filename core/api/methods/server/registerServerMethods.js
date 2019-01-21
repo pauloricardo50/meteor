@@ -6,7 +6,7 @@ import '../../loans/server/methods';
 import '../../lots/server/methods';
 import '../../offers/server/methods';
 import '../../organisations/server/methods';
-import '../../PDFGenerator/server/methods';
+import '../../pdf/server/methods';
 import '../../promotionLots/server/methods';
 import '../../promotionOptions/server/methods';
 import '../../promotions/server/methods';

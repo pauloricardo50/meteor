@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import LoanTabs from './LoanTabs';
 import SingleLoanPageContainer from './SingleLoanPageContainer';
 import SingleLoanPageHeader from './SingleLoanPageHeader';
-import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 import SingleLoanPageTasks from './SingleLoanPageTasks';
 
 const SingleLoanPage = ({ loan, ...rest }) => {
@@ -22,7 +21,6 @@ const SingleLoanPage = ({ loan, ...rest }) => {
       <SingleLoanPageHeader loan={loan} />
       <SingleLoanPageTasks loan={loan} />
       <LoanTabs {...dataToPassDown} />
-      <GetLoanPDF loan={loan} />
     </section>
   );
 };

@@ -34,7 +34,10 @@ class ErrorBoundary extends Component {
     logError.run({
       error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
       additionalData: ['Render error', info],
-      url: window && window.location && window.location.href,
+      url:
+        window && window.location && window.location.href
+          ? window.location.href
+          : '',
     });
   }
 

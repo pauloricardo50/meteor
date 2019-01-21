@@ -18,7 +18,6 @@
     "subdomains": {
       "admin": "https://admin.staging.e-potek.ch",
       "app": "https://app.staging.e-potek.ch",
-      "pdf": "https://pdf.staging.e-potek.ch",
       "pro": "https://pro.staging.e-potek.ch",
       "www": "https://www.staging.e-potek.ch"
     }
@@ -46,10 +45,6 @@
       "appId": "e4p8nzzMeN5qfCEPW", 
       "appSecret": "afee013d-e32f-49ad-b705-05ebab7de073" 
     },
-    "pdf": {
-      "appId": "6KLgbnxEs85tg8p55",
-      "appSecret": "e9fe5636-c695-47ab-870f-9a1f1f3842aa"
-    },
     "pro": {
       "appId": "PqGxnwRWTbfsLufGw",
       "appSecret": "e08c8e98-d23f-43ff-8b22-021ed4aafabe"
@@ -75,5 +70,6 @@
     },
     "debug": false,
     "overridePublishFunction": true
-  }
+  },
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I"
 }

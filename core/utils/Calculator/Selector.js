@@ -16,10 +16,9 @@ export const withSelector = (SuperClass = class {}) =>
       }
 
       if (structureId) {
-        propertyId = loan.structures.find(({ id }) => id === structureId)
-          .propertyId;
-        promotionOptionId = loan.structures.find(({ id }) => id === structureId)
-          .promotionOptionId;
+        const structure = loan.structures.find(({ id }) => id === structureId);
+        propertyId = structure.propertyId;
+        promotionOptionId = structure.promotionOptionId;
       }
 
       if (propertyId) {
