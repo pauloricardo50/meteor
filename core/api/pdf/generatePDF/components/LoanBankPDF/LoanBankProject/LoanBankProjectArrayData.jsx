@@ -380,7 +380,7 @@ export const propertyArrayData = (loan) => {
     {
       label: <T id="PDF.projectInfos.property.numberOfFloors" />,
       data: numberOfFloors,
-      condition: propertyType === PROPERTY_TYPE.FLAT,
+      condition: !!numberOfFloors && propertyType === PROPERTY_TYPE.FLAT,
     },
     {
       label: <T id="PDF.projectInfos.property.floorNumber" />,
