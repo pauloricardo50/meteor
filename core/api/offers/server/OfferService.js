@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import CollectionService from '../../helpers/CollectionService';
 import Offers from '../offers';
 import LenderService from '../../lenders/server/LenderService';
@@ -17,6 +19,8 @@ export class OfferService extends CollectionService {
     this.update({ offerId, object: { feedback } });
     const {
       lender: {
+        createdAt,
+        organisation: {name: organisationName},
         contact: { email: address },
         loan: {
           name: loanName,
@@ -37,6 +41,8 @@ export class OfferService extends CollectionService {
         assigneeAddress,
         assigneeName,
         loanName,
+        organisationName,
+        date: moment(createdAt).format('DD.MM.YYYY'),
         feedback: `<p style="color: white; white-space: pre-line;">${feedback}</p>`,
       },
     });

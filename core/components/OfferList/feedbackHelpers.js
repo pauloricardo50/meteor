@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import formatMessage from 'core/utils/intl';
 
 export const FEEDBACK_OPTIONS = {
