@@ -6,7 +6,7 @@ import Table from '../../../Table';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
-import { LOT_TYPES } from '../../../../api/constants';
+import { LOT_TYPES, PROPERTY_TYPE } from '../../../../api/constants';
 import { moneyField } from '../../../../api/helpers/sharedSchemas';
 
 type ProPromotionLotsTableProps = {};
@@ -17,6 +17,11 @@ export const promotionLotSchema = new SimpleSchema({
   landValue: { ...moneyField, defaultValue: 0 },
   constructionValue: { ...moneyField, defaultValue: 0 },
   additionalMargin: { ...moneyField, defaultValue: 0 },
+  propertyType: {
+    type: String,
+    allowedValues: Object.values(PROPERTY_TYPE),
+    uniforms: { placeholder: null },
+  },
   insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },

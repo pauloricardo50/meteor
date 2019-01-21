@@ -1,3 +1,5 @@
+import Calculator from './Calculator';
+
 export const loanIsVerified = ({
   loan: {
     logic: {
@@ -55,4 +57,18 @@ export const formatLoanWithStructure = ({
   }
 
   return structure;
+};
+
+export const formatLoanWithPromotion = (loan) => {
+  if (loan.structure.promotionOptionId) {
+    const property = Calculator.selectProperty({
+      loan,
+      // Do this to make sure we're getting the promotionOption and not the
+      // fake property created from it
+      structureId: loan.structure.id,
+    });
+    return { ...loan, structure: { ...loan.structure, property } };
+  }
+
+  return loan;
 };
