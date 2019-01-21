@@ -15,6 +15,7 @@
   "InterestsChart.interest20.range": "20 ans étendue",
   "InterestsChart.interest25.average": "25 ans moyen",
   "InterestsChart.interest25.range": "25 ans étendue",
+  "FinancingOffers.showAll": "Afficher toutes les offres",
   "NotaryAdder.suggestNotary": "Nous pouvons vous suggérer {name} pour le canton de {canton}.",
   "Forms.alreadyHaveNotary": "Avez-vous déjà un notaire?",
   "Forms.alreadyHaveNotary.yes": "Oui",

@@ -53,18 +53,34 @@ export default class AllLoansTable extends Component {
         id: loanId,
         columns: [
           name,
-          <CollectionIconLink
-            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-            key="user"
-          />,
-          <StatusLabel
-            status={status}
-            key="status"
-            collection={LOANS_COLLECTION}
-          />,
-          moment(createdAt).format('D.M.YY à H:mm'),
-          moment(updatedAt).fromNow(),
-          <T id={`Forms.steps.${logic.step}`} key="step" />,
+          {
+            raw: user.name,
+            label: (
+              <CollectionIconLink
+                relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+                key="user"
+              />
+            ),
+          },
+          {
+            raw: status,
+            label: (
+              <StatusLabel
+                status={status}
+                key="status"
+                collection={LOANS_COLLECTION}
+              />
+            ),
+          },
+          {
+            label: moment(createdAt).format('D.M.YY à H:mm'),
+            raw: createdAt.getTime(),
+          },
+          { raw: updatedAt.getTime(), label: moment(updatedAt).fromNow() },
+          {
+            label: <T id={`Forms.steps.${logic.step}`} key="step" />,
+            raw: logic.step,
+          },
           Calculator.selectPropertyValue({ loan }),
           Calculator.selectLoanValue({ loan }),
         ],
