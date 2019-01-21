@@ -12,6 +12,8 @@ import LoanBankPDF from '../generatePDF/components/LoanBankPDF';
 import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
 
+const PDF_URL = 'https://docraptor.com/docs';
+
 class PDFService {
   constructor() {
     this.module = null;
@@ -88,7 +90,7 @@ class PDFService {
     ReactDOMServer.renderToStaticMarkup(component(props));
 
   fetchPDF = (html, fileName, pdfName) => {
-    const API_KEY = 'GkjsAcqhD34P070MOF4I';
+    const API_KEY = Meteor.settings.DOC_RAPTOR_API_KEY;
     const body = {
       user_credentials: API_KEY,
       doc: {
@@ -101,7 +103,7 @@ class PDFService {
       },
     };
 
-    return fetch('https://docraptor.com/docs', {
+    return fetch(PDF_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

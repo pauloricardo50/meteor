@@ -21,11 +21,6 @@ export const TEMPLATES = {
         address1: 1,
         zipCode: 1,
         city: 1,
-        // valuation: {
-        //   value: 1,
-        //   max: 1,
-        //   microlocation: { grade: 1 },
-        // },
       },
     },
     user: {
