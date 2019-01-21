@@ -1,18 +1,21 @@
-import { withProps, compose } from 'recompose';
+import { withProps, compose, withState } from 'recompose';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
 
 import formatMessage from 'core/utils/intl';
 import { INTEREST_RATES } from 'core/api/interestRates/interestRatesConstants';
+import colors from 'core/config/colors';
+
+const roundAndFormat = rate => Math.round(100000 * rate) / 1000;
 
 const getAverageRate = (rate) => {
   if (!rate || !rate.rateLow || !rate.rateHigh) {
     return null;
   }
-  return (100 * (rate.rateLow + rate.rateHigh)) / 2;
+  return roundAndFormat((rate.rateLow + rate.rateHigh) / 2);
 };
 
-const getConfig = () => ({
+const getConfig = ({ showRanges }) => ({
   xAxis: {
     type: 'datetime',
     title: { text: 'Date' },
@@ -27,6 +30,11 @@ const getConfig = () => ({
     crosshairs: true,
     shared: true,
     valueSuffix: '%',
+  },
+  plotOptions: {
+    arearange: {
+      visible: showRanges,
+    },
   },
   exporting: {
     enabled: true,
@@ -56,7 +64,11 @@ const getData = ({ rates, dataType }) => {
     return rates.reduce(
       (data, rate) => [
         ...data,
-        [formatDate(rate.date), 100 * rate.rateLow, 100 * rate.rateHigh],
+        [
+          formatDate(rate.date),
+          roundAndFormat(rate.rateLow),
+          roundAndFormat(rate.rateHigh),
+        ],
       ],
       [],
     );
@@ -71,6 +83,13 @@ const getAllRatesOfTypeLines = ({ rates, type }) =>
       name: formatMessage(`InterestsChart.${type}.average`),
       data: getData({ rates, dataType: 'average' }),
       zIndex: 1,
+      color: colors.interestRates[type],
+      marker: {
+        fillColor: 'white',
+        lineWidth: 2,
+        lineColor: colors.interestRates[type],
+        symbol: 'circle',
+      },
     },
     {
       name: formatMessage(`InterestsChart.${type}.range`),
@@ -79,8 +98,8 @@ const getAllRatesOfTypeLines = ({ rates, type }) =>
       zIndex: 0,
       fillOpacity: 0.2,
       lineWidth: 0,
+      color: colors.interestRates[type],
       marker: { enabled: false },
-      visible: false,
     },
   ];
 
@@ -117,8 +136,18 @@ const getInterestRateLines = interestRates =>
 const getIrs10yLine = irs10y =>
   irs10y.length > 0 && {
     name: formatMessage('Irs10y.name'),
-    data: irs10y.map(({ date, rate }) => [formatDate(date), 100 * rate]),
-    visible: false,
+    data: irs10y.map(({ date, rate }) => [
+      formatDate(date),
+      roundAndFormat(rate),
+    ]),
+    zIndex: 1,
+    color: colors.interestRates.irs10y,
+    marker: {
+      fillColor: 'white',
+      lineWidth: 2,
+      lineColor: colors.interestRates.irs10y,
+      symbol: 'circle',
+    },
   };
 
 const getLines = ({ interestRates, irs10y }) =>
@@ -126,12 +155,14 @@ const getLines = ({ interestRates, irs10y }) =>
 
 export default compose(
   injectIntl,
-  withProps(({ interestRates = [], irs10y = [] }) => {
-    const lines = getLines({ interestRates, irs10y });
+  withState('showRanges', 'setShowRanges', false),
+  withProps(({ interestRates = [], irs10y = [], showRanges, setShowRanges }) => {
+    const lines = getLines({ interestRates, irs10y, showRanges });
     return {
       title: "Taux d'intérêt",
       lines,
-      config: getConfig(),
+      config: getConfig({ showRanges }),
+      toggleRanges: () => setShowRanges(!showRanges),
     };
   }),
 );
