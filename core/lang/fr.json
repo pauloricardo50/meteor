@@ -22,6 +22,7 @@
   "Feedback.introduction.singleBorrower": "\n\nNous avons présenté ce jour votre offre à {borrower} concernant le financement de son projet sis {address}.",
   "Feedback.introduction.twoBorrowers": "\n\nNous avons présenté ce jour votre offre à {borrower1} et {borrower2} concernant le financement de leur projet sis {address}.",
   "Feedback.greetings": "Bonjour {contactName},",
+  "FinancingOffers.showAll": "Afficher toutes les offres",
   "NotaryAdder.suggestNotary": "Nous pouvons vous suggérer {name} pour le canton de {canton}.",
   "Forms.alreadyHaveNotary": "Avez-vous déjà un notaire?",
   "Forms.alreadyHaveNotary.yes": "Oui",

@@ -45,7 +45,6 @@ class OfferList extends Component {
   render() {
     const { offers, property } = this.props;
     const { sort, isAscending } = this.state;
-    console.log('property:', property);
 
     const filteredOffers = sortOffers(offers, sort, isAscending);
 
