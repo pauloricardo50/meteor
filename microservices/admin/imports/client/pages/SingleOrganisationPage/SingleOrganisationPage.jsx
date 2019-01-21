@@ -15,8 +15,12 @@ type SingleOrganisationPageProps = {
 const tabs = props =>
   [
     { id: 'contacts', Component: ContactsTable },
-    { id: 'offers', Component: OffersTable },
-  ].map(({ id, Component, style = {} }) => ({
+    {
+      id: 'offers',
+      Component: OffersTable,
+      condition: props.offers && !!props.offers.length,
+    },
+  ].map(({ id, Component, condition, style = {} }) => ({
     id,
     content: <Component {...props} />,
     label: (
@@ -24,6 +28,7 @@ const tabs = props =>
         <T id={`OrganisationTabs.${id}`} noTooltips />
       </span>
     ),
+    condition,
   }));
 
 const SingleOrganisationPage = ({
