@@ -2,37 +2,49 @@ import SimpleSchema from 'simpl-schema';
 import { withProps } from 'recompose';
 
 import { offerSendFeedback } from '../../api';
-import { FEEDBACK_OPTIONS, makeFeedback } from './feedbackHelpers';
+import {
+  FEEDBACK_OPTIONS,
+  makeFeedback,
+  FEEDBACK_OPTIONS_SETTINGS,
+} from './feedbackHelpers';
 
 const schema = ({ offer }) =>
   new SimpleSchema({
     option: {
       type: String,
-      optional: false,
+      optional: true,
       allowedValues: Object.values(FEEDBACK_OPTIONS),
       uniforms: { displayEmpty: false, placeholder: '' },
     },
     comments: {
       type: Array,
       optional: true,
-      defaultValue: [],
       condition: ({ option }) =>
-        [
-          FEEDBACK_OPTIONS.POSITIVE,
-          FEEDBACK_OPTIONS.NEGATIVE_NOT_COMPETITIVE,
-        ].includes(option),
+        option && FEEDBACK_OPTIONS_SETTINGS[option].enableComments,
     },
     'comments.$': { type: String, optional: true },
-    feedback: {
+    customFeedback: {
       type: String,
-      optional: false,
+      optional: true,
       uniforms: {
         multiline: true,
-        rows: 10,
-        rowsMax: 10,
+        rows: 15,
+        rowsMax: 15,
         style: { width: '500px' },
       },
-      condition: ({ option }) => !!option,
+      condition: ({ option }) => option === FEEDBACK_OPTIONS.CUSTOM,
+    },
+    feedbackPreview: {
+      type: String,
+      optional: true,
+      uniforms: {
+        multiline: true,
+        rows: 15,
+        rowsMax: 15,
+        style: { width: '500px' },
+        disabled: true,
+      },
+      condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
       customAutoValue: model => makeFeedback({ model, offer }),
     },
   });
@@ -54,7 +66,10 @@ export default withProps(({ offer }) => {
       const { name } = contact || {};
       const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
       if (confirm) {
-        return offerSendFeedback.run({ offerId, feedback: object.feedback });
+        return offerSendFeedback.run({
+          offerId,
+          feedback: makeFeedback({ model: object, offer }),
+        });
       }
       return Promise.resolve();
     },
