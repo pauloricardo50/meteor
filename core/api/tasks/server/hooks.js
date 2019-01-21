@@ -7,7 +7,7 @@ Tasks.before.update((userId, { status: oldStatus }, fieldNames, modifier) => {
     oldStatus !== TASK_STATUS.COMPLETED
     && newStatus === TASK_STATUS.COMPLETED
   ) {
-    modifier.$set.completedAt = Date.now();
+    modifier.$set.completedAt = new Date();
   }
   if (
     oldStatus === TASK_STATUS.COMPLETED

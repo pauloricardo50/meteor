@@ -76,8 +76,8 @@ const TaskModifier = ({
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting }) => ({
-    updateTask: ({ _id: taskId, ...values }) => {
+  withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
+    updateTask: (values) => {
       setSubmitting(true);
       return taskUpdate
         .run({ taskId, object: values })
