@@ -2,6 +2,7 @@ import React from 'react';
 
 import T from '../Translation';
 import Chip from '../Material/Chip';
+import Loading from '../Loading';
 
 export default (Component) => {
   class CustomSelectFieldContainer extends React.Component {
@@ -33,13 +34,21 @@ export default (Component) => {
         && typeof customAllowedValues === 'object'
       ) {
         const { query, params = () => ({}) } = customAllowedValues;
+        const { values } = this.state;
+
+        this.setState({ loading: !values || !!values.length });
 
         query.clone(params(model)).fetch((error, data) => {
           if (error) {
             return this.setState({ error });
           }
 
-          this.setState({ values: data.map(({ _id }) => _id), data });
+          this.setState({
+            values: data.map(({ _id }) => _id),
+            data,
+            error: null,
+            loading: false,
+          });
         });
       }
     };
@@ -87,12 +96,17 @@ export default (Component) => {
     };
 
     render() {
-      const { values, error } = this.state;
+      const { values, error, loading } = this.state;
       const { placeholder, displayEmpty } = this.props;
 
       if (error) {
         return <span className="error">{error.message || error.reason}</span>;
       }
+
+      if (loading) {
+        return <Loading />;
+      }
+
       return (
         <Component
           {...this.props}
