@@ -1,0 +1,69 @@
+import { DDPCommon } from 'meteor/ddp-common';
+import { DDP } from 'meteor/ddp-client';
+import { Meteor } from 'meteor/meteor';
+
+import { HTTP_STATUS_CODES } from './restApiConstants';
+
+export const getHeader = (req, name) => req.headers[name];
+
+export const getToken = (req) => {
+  const authorization = getHeader(req, 'authorization');
+  if (!authorization) {
+    return undefined;
+  }
+
+  const auth = authorization.split(' ');
+
+  if (auth.length !== 2 || !auth.includes('Bearer')) {
+    return undefined;
+  }
+
+  const token = auth[1];
+
+  return token;
+};
+
+export const getRequestPath = (req) => {
+  const { _parsedUrl: parsedUrl } = req;
+  return parsedUrl && parsedUrl.path;
+};
+
+export const getRequestMethod = req => req.method;
+
+export const withMeteorUserId = (userId, func) => {
+  const invocation = new DDPCommon.MethodInvocation({
+    userId,
+    // isSimulation: false,
+    // setUserId,
+    // unblock,
+    // connection: self.connectionHandle,
+    // randomSeed,
+  });
+
+  return DDP._CurrentInvocation.withValue(invocation, func);
+};
+
+export const getErrorObject = (error, res) => {
+  let { statusCode: status } = res;
+  let message;
+  let errorName;
+
+  if (!status || status === 200) {
+    status = HTTP_STATUS_CODES.SERVER_ERROR;
+  }
+
+  if (error instanceof Meteor.Error) {
+    message = error.message;
+  } else {
+    message = 'Internal server error';
+  }
+
+  if (error && error.status && error.message && error.errorName) {
+    // This is one of our custom errors
+    errorName = error.errorName;
+    status = error.status;
+    message = error.message;
+  }
+
+  return { status, errorName, message };
+};
