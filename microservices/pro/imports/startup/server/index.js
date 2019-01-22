@@ -9,11 +9,6 @@ import 'core/fixtures';
 import '../accounts-config';
 import './kadira.js';
 import './restAPI';
-// import startAPI from 'core/api/RESTAPI/server';
-
-// Meteor.startup(() => {
-//   startAPI();
-// });
 
 // Inject a loader before client is ready,
 // is removed in the on startup function on the client
