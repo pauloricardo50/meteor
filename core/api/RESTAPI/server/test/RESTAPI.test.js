@@ -67,6 +67,10 @@ describe('RESTAPI', () => {
     }
   });
 
+  after(() => {
+    api.reset();
+  });
+
   beforeEach(() => {
     resetDatabase();
     apiToken = Random.id(24);

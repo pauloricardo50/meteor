@@ -81,6 +81,10 @@ describe('REST: inviteUserToPromotion', () => {
     }
   });
 
+  after(() => {
+    api.reset();
+  });
+
   beforeEach(() => {
     resetDatabase();
     apiToken = Random.id(24);
