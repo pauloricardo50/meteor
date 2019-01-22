@@ -153,6 +153,45 @@ describe('Collection Security', () => {
       }
     });
 
+    describe('isAllowedToUpdate', () => {
+      it('throws if the user is not linked to this promotion', () => {
+        userId = Factory.create('pro')._id;
+        const promotionId = Factory.create('promotion')._id;
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.throw(SECURITY_ERROR);
+      });
+
+
+      it('throws if the user is a PRO with READ on it', () => {
+        userId = Factory.create('pro')._id;
+        const promotionId = Factory.create('promotion')._id;
+        PromotionService.addLink({
+          id: promotionId,
+          linkName: 'users',
+          linkId: userId,
+          metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.throw(SECURITY_ERROR);
+      });
+
+      it('does not throw if the user is a PRO with MODIFY on it', () => {
+        userId = Factory.create('pro')._id;
+        const promotionId = Factory.create('promotion')._id;
+        PromotionService.addLink({
+          id: promotionId,
+          linkName: 'users',
+          linkId: userId,
+          metadata: { permissions: DOCUMENT_USER_PERMISSIONS.MODIFY },
+        });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.not.throw();
+      });
+    });
+
     describe('isAllowedToRead', () => {
       it('throws if the user has no loan linked to this promotion', () => {
         userId = Factory.create('user')._id;

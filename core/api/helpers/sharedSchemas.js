@@ -36,24 +36,15 @@ export const additionalDocuments = initialDocuments => ({
 });
 
 export const address = {
-  address1: {
-    type: String,
-    optional: true,
-  },
-  address2: {
-    type: String,
-    optional: true,
-  },
+  address1: { type: String, optional: true },
+  address2: { type: String, optional: true },
   zipCode: {
     type: SimpleSchema.Integer,
     optional: true,
     min: 1000,
     max: 99999,
   },
-  city: {
-    type: String,
-    optional: true,
-  },
+  city: { type: String, optional: true },
   canton: {
     type: String,
     allowedValues: Object.keys(CANTONS),

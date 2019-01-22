@@ -19,22 +19,22 @@ promotionInsert.setHandler(({ userId }, { promotion }) => {
 });
 
 promotionUpdate.setHandler(({ userId }, { promotionId, object }) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
   return PromotionService.update({ promotionId, object });
 });
 
 promotionRemove.setHandler(({ userId }, { promotionId }) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.checkUserIsAdmin(userId);
   return PromotionService.remove(promotionId);
 });
 
 insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
   return PromotionService.insertPromotionProperty({ promotionId, property });
 });
 
 inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
   return PromotionService.inviteUser({ promotionId, user });
 });
 
@@ -58,11 +58,11 @@ removeProFromPromotion.setHandler(({ userId: currentUserId }, { promotionId, use
 });
 
 sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToRead(params.promotionId, userId);
   return PromotionService.sendPromotionInvitationEmail(params);
 });
 
 removeUserFromPromotion.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
+  SecurityService.promotions.isAllowedToUpdate(params.promotionId, userId);
   return PromotionService.removeUser(params);
 });
