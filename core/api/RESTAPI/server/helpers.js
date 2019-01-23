@@ -2,6 +2,7 @@ import { DDPCommon } from 'meteor/ddp-common';
 import { DDP } from 'meteor/ddp-client';
 import { Meteor } from 'meteor/meteor';
 
+import { Match } from 'meteor/check';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 
 export const getHeader = (req, name) => req.headers[name];
@@ -52,7 +53,7 @@ export const getErrorObject = (error, res) => {
     status = HTTP_STATUS_CODES.SERVER_ERROR;
   }
 
-  if (error instanceof Meteor.Error) {
+  if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
   } else {
     message = 'Internal server error';

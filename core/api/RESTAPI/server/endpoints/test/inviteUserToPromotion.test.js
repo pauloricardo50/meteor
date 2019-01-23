@@ -163,7 +163,21 @@ describe('REST: inviteUserToPromotion', () => {
       });
     });
 
-    it('fails if the body is incorrect', () => {});
+    it('fails if the body is incorrect', () => {
+      PromotionService.addProUser({ promotionId, userId: user._id });
+      setupPromotion();
+
+      promotionId = undefined;
+
+      return inviteUser({
+        userData: userToInvite,
+        expectedResponse: {
+          status: 500,
+          message:
+            'Match error: Expected string, got undefined in field promotionId',
+        },
+      });
+    });
 
     it('user is already invited to promotion', () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
