@@ -1,7 +1,6 @@
 {
   "presets": ["meteor", "@babel/preset-flow"],
   "plugins": [
-    ["remove-test-ids", { "attributes": ["data-test", "data-test-id"] }],
     ["@babel/plugin-proposal-class-properties"],
     [
       "module-resolver",
