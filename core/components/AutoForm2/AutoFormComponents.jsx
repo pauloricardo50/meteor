@@ -93,9 +93,11 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     });
     const placeholder = getPlaceholder({ ...props, intlPrefix, type });
 
-    return typeof condition === 'function' && !condition(model) ? (
-      nothing
-    ) : (
+    if (typeof condition === 'function' && !condition(model)) {
+      return nothing;
+    }
+
+    return (
       <Component
         {...additionalProps}
         {...props}
