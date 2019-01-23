@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 
-import { REST_API_ERRORS } from './restApiConstants';
+import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
 import { Services } from '../../api-server';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import {
@@ -11,11 +11,11 @@ import {
   getErrorObject,
 } from './helpers';
 
-const bodyParserJsonMiddleware = bodyParser.json({ limit: '50mb' });
+const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
 const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
   extended: false,
-  limit: '50mb',
+  limit: BODY_SIZE_LIMIT,
 });
 
 // Filters out badly formatted requests, or ones missing basic headers

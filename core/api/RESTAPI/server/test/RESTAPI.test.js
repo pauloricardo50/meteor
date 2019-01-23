@@ -234,4 +234,21 @@ describe('RESTAPI', () => {
       },
       expectedResponse: '',
     }));
+
+  it('does not match sub endpoints', () =>
+    fetchAndCheckResponse({
+      url: '/test/subtest',
+      data: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.apiToken}`,
+        },
+      },
+      expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
+        path: '/api/test/subtest',
+        method: 'POST',
+      }),
+      status: 404,
+    }));
 });

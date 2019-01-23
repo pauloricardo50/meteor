@@ -6,6 +6,8 @@ export const HTTP_STATUS_CODES = {
   SERVER_ERROR: 500,
 };
 
+export const BODY_SIZE_LIMIT = '50mb';
+
 export const REST_API_ERRORS = {
   WRONG_CONTENT_TYPE: contentType => ({
     status: HTTP_STATUS_CODES.BAD_REQUEST,

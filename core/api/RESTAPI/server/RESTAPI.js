@@ -1,6 +1,6 @@
 import { WebApp } from 'meteor/webapp';
 import * as defaultMiddlewares from './middlewares';
-import { getRequestMethod } from './helpers';
+import { getRequestMethod, getRequestPath } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -52,6 +52,12 @@ export default class RESTAPI {
     WebApp.connectHandlers.use(endpoint, (req, res, next) => {
       if (getRequestMethod(req) !== method) {
         // Not the right method, pass to the following middlewares
+        next();
+        return;
+      }
+
+      if (getRequestPath(req) !== endpoint) {
+        // Not an exact route match
         next();
         return;
       }
