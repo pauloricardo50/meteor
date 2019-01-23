@@ -38,7 +38,16 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getFees({ loan, structureId }): number {
-      const notaryFees = this.selectStructureKey({ loan, key: 'notaryFees' });
+      const notaryFees = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'notaryFees',
+      });
+
+      // Custom notary fees are provided
+      if (notaryFees === 0 || notaryFees) {
+        return { total: notaryFees };
+      }
 
       const canton = this.makeSelectPropertyKey('canton')({
         loan,
@@ -46,16 +55,12 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
       const calculator = new NotaryFeesCalculator({ canton });
 
-      const defaultNotaryFees = calculator.getNotaryFeesForLoan({
+      const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
         structureId,
       });
 
-      if (notaryFees === 0 || notaryFees) {
-        return { total: notaryFees };
-      }
-
-      return defaultNotaryFees;
+      return calculatedNotaryFees;
     }
 
     getFeesCalculator({ loan, structureId }) {
@@ -168,16 +173,16 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return this.maxBorrowRatio;
     }
 
-    loanHasMinimalInformation({
-      loan: {
-        structure: { property, ownFunds, wantedLoan },
-      },
-    }) {
+    loanHasMinimalInformation({ loan }) {
+      const {
+        structure: { ownFunds },
+      } = loan;
+
       return !!(
         ownFunds
         && ownFunds.length > 0
-        && (property && property.value)
-        && wantedLoan
+        && this.selectPropertyValue({ loan })
+        && this.selectLoanValue({ loan })
       );
     }
 
@@ -231,10 +236,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getTotalRemainingFunds({ loan }) {
-      return Object.values(OWN_FUNDS_TYPES).reduce(
-        (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
-        0,
-      );
+      // Don't count extra third party fortune, as it is not a real "loan" from them
+      return Object.values(OWN_FUNDS_TYPES)
+        .filter(type => type !== OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE)
+        .reduce(
+          (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
+          0,
+        );
     }
 
     refinancingPercent({ loan }) {

@@ -35,6 +35,30 @@ const mapInput = (input) => {
   return intlSafeObject;
 };
 
+const getOwnerOptions = ({ borrowers }) =>
+  Object.values(OWNER)
+    .filter(value => (borrowers.length === 1 ? value !== OWNER.SECOND : true))
+    .map((value) => {
+      const isFirst = value === OWNER.FIRST;
+      const isSecond = value === OWNER.SECOND;
+      let borrowerFirstName;
+
+      if (!isFirst && borrowers.length <= 1) {
+        borrowerFirstName = null;
+      } else {
+        borrowerFirstName = borrowers[isFirst ? 0 : 1].firstName;
+      }
+
+      return isFirst || isSecond
+        ? {
+          id: isFirst ? 0 : 1,
+          intlValues: {
+            name: borrowerFirstName || `Emprunteur ${isFirst ? 1 : 2}`,
+          },
+        }
+        : value;
+    });
+
 export const getPropertyLoanArray = ({ loan, borrowers }) => {
   const r = loan;
 
@@ -63,23 +87,7 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
         {
           id: 'currentOwner',
           type: 'radioInput',
-          options: Object.values(OWNER)
-            .filter(value =>
-              (borrowers.length === 1 ? value !== OWNER.SECOND : true))
-            .map((value) => {
-              const isFirst = value === OWNER.FIRST;
-              const isSecond = value === OWNER.SECOND;
-              return isFirst || isSecond
-                ? {
-                  id: isFirst ? 0 : 1,
-                  intlValues: {
-                    name:
-                        borrowers[isFirst ? 0 : 1].firstName
-                        || `Emprunteur ${isFirst ? 1 : 2}`,
-                  },
-                }
-                : value;
-            }),
+          options: getOwnerOptions({ borrowers }),
         },
         { id: 'otherOwner', type: 'textInput' },
       ],
@@ -93,23 +101,7 @@ export const getPropertyLoanArray = ({ loan, borrowers }) => {
         {
           id: 'futureOwner',
           type: 'radioInput',
-          options: Object.values(OWNER)
-            .filter(value =>
-              (borrowers.length === 1 ? value !== OWNER.SECOND : true))
-            .map((value) => {
-              const isFirst = value === OWNER.FIRST;
-              const isSecond = value === OWNER.SECOND;
-              return isFirst || isSecond
-                ? {
-                  id: isFirst ? 0 : 1,
-                  intlValues: {
-                    name:
-                        borrowers[isFirst ? 0 : 1].firstName
-                        || `Emprunteur ${isFirst ? 1 : 2}`,
-                  },
-                }
-                : value;
-            }),
+          options: getOwnerOptions({ borrowers }),
         },
         {
           id: 'otherOwner',
@@ -129,8 +121,7 @@ const shouldDisplayFloorNumber = ({ propertyType, flatType }) =>
   && flatType !== FLAT_TYPE.TERRACE_APARTMENT;
 
 const shouldDisplayTerraceArea = ({ propertyType, flatType }) =>
-  propertyType === PROPERTY_TYPE.FLAT
-
+  propertyType === PROPERTY_TYPE.FLAT;
 
 export const getPropertyArray = ({ loan, borrowers, property }) => {
   const r = loan;
@@ -140,7 +131,7 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
   }
 
   const array = [
-    { id: 'value', type: 'textInput', money: true, info: true },
+    { id: 'value', type: 'textInput', money: true },
     {
       id: 'propertyType',
       type: 'radioInput',

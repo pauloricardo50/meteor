@@ -6,22 +6,12 @@ import { withRouter } from 'react-router-dom';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
 import T from 'core/components/Translation';
+import { CollectionIconLink } from 'core/components/IconLink';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
-import { createRoute } from '../../utils/routerUtils';
-
-const getSolvency = (email) => {
-  const nb = Number(email.replace(/(^.+\D)(\d+)(\D.+$)/i, '$2'));
-  if (nb % 3 === 0) {
-    return { className: 'success', text: 'Solvable' };
-  }
-  if (nb % 3 === 1) {
-    return { className: 'warning', text: 'Non solvable' };
-  }
-  return { className: 'primary', text: 'En cours' };
-};
+import { LOANS_COLLECTION } from '../../api/constants';
 
 const makeMapOption = ({
   promotionLot: {
@@ -37,23 +27,35 @@ const makeMapOption = ({
 }) => (promotionOption) => {
   const {
     _id: promotionOptionId,
-    loan: {
-      user,
-      promotions,
-      promotionOptions = [],
-      _id: loanId,
-      promotionProgress,
-    },
+    loan,
     lots,
     custom,
     createdAt,
+    solvency,
   } = promotionOption;
+  const {
+    user,
+    promotions,
+    promotionOptions = [],
+    _id: loanId,
+    promotionProgress,
+  } = loan;
   const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
 
   return {
     id: promotionOptionId,
     columns: [
-      user && user.name,
+      isAdmin
+        ? user && (
+          <CollectionIconLink
+            relatedDoc={{
+              ...loan,
+              name: user.name,
+              collection: LOANS_COLLECTION,
+            }}
+          />
+        )
+        : user && user.name,
       { raw: moment(createdAt).valueOf(), label: moment(createdAt).fromNow() },
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
@@ -81,19 +83,12 @@ const makeMapOption = ({
         attributedToId={attributedTo && attributedTo._id}
         userName={user && user.name}
         lots={lots}
-        solvency={getSolvency(user && user.email).text}
-        solvencyClassName={getSolvency(user && user.email).className}
+        solvency={solvency}
         promotionLotName={name}
         canModify={canModify}
         key="promotionLotAttributer"
       />,
     ],
-    ...(isAdmin
-      ? {
-        handleClick: () =>
-          history.push(createRoute('/loans/:loanId', { loanId })),
-      }
-      : {}),
   };
 };
 

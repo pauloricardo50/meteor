@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { ROLES } from 'core/api/constants';
+
+import { ROLES } from '../api/constants';
+import InterestRatesService from '../api/interestRates/server/InterestRatesService';
 import { createDevs, createAdmins } from './userFixtures';
 import { createYannisUser } from './demoFixtures';
 import './promotionDemo/promotionFixturesMethods';
-import { InterestRates } from '../api';
 import { createFakeInterestRates } from './interestRatesFixtures';
 
 Meteor.startup(() => {
@@ -11,12 +12,10 @@ Meteor.startup(() => {
     createDevs();
     createAdmins();
   }
-
   if (Meteor.users.find({ 'emails.address': 'y@nnis.ch' }).count() === 0) {
     createYannisUser();
   }
-
-  if (InterestRates.find({}).count() === 0) {
+  if (InterestRatesService.countAll() === 0) {
     createFakeInterestRates({ number: 10 });
   }
 });

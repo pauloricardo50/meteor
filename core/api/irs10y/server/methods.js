@@ -1,7 +1,7 @@
 import { Method } from '../../methods/methods';
 import SecurityService from '../../security';
-import Irs10yService from '../Irs10yService';
 import { irs10yInsert, irs10yRemove, irs10yUpdate } from '../methodDefinitions';
+import Irs10yService from './Irs10yService';
 import { fetchIrs10y } from './fetchIrs10y';
 
 irs10yInsert.setHandler((context, { irs10y }) => {

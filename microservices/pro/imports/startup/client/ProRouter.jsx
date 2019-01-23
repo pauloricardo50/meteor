@@ -18,13 +18,13 @@ import AccountPage from 'core/components/AccountPage';
 import ProLayout from '../../client/layout';
 import messagesFR from '../../../lang/fr.json';
 import * as ROUTES from './proRoutes';
-import ProDashboardPage from '../../client/pages/ProDashboardPage';
-import ProPromotionPage from '../../client/pages/ProPromotionPage';
-import ProPropertyPage from '../../client/pages/ProPropertyPage';
-import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage';
-import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage';
-import NewPromotionPage from '../../client/pages/NewPromotionPage';
-import NewPropertyPage from '../../client/pages/NewPropertyPage';
+import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
+import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
+import ProPropertyPage from '../../client/pages/ProPropertyPage/loadable';
+import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
+import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
+import NewPromotionPage from '../../client/pages/NewPromotionPage/loadable';
+import NewPropertyPage from '../../client/pages/NewPropertyPage/loadable';
 
 const ProRouter = () => (
   <BaseRouter

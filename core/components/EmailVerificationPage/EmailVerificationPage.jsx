@@ -1,33 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Bert } from 'meteor/themeteorchef:bert';
 import { Accounts } from 'meteor/accounts-base';
 import { injectIntl } from 'react-intl';
+import message from '../../utils/message';
 
 class EmailVerificationPage extends Component {
   componentDidMount() {
-    const token = this.props.match.params.token;
+    const {
+      match: {
+        params: { token },
+      },
+      history,
+      intl,
+    } = this.props;
 
     if (!token) {
-      this.props.history.push('/');
+      history.push('/');
     }
 
     Accounts.verifyEmail(token, (error) => {
       if (error) {
-        this.props.history.push('/');
-        console.log(error.reason);
-        Bert.alert(
-          this.props.intl.formatMessage({
+        history.push('/');
+        message.error(
+          intl.formatMessage({
             id: 'EmailVerification.error',
           }),
-          'danger',
+          5,
         );
       } else {
-        const message = `<h3 style="color:white;margin:0;">${this.props.intl.formatMessage({
-          id: 'EmailVerification.message',
-        })}</h3>`;
-        Bert.alert(message, 'success');
-        this.props.history.push('/');
+        const msg = intl.formatMessage({ id: 'EmailVerification.message' });
+        message.success(msg, 2);
+        history.push('/');
       }
     });
   }

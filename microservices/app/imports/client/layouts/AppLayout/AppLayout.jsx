@@ -13,8 +13,7 @@ const routesWithoutSidenav = ['/'];
 const getShowSideNav = ({ location }) =>
   routesWithoutSidenav.indexOf(location.pathname) === -1;
 
-const AppLayout = (props) => {
-  const { history, children, redirect } = props;
+const AppLayout = ({ children, redirect, history, ...props }) => {
   const showSideNav = getShowSideNav(history);
   const classes = classnames('app-layout', { 'no-nav': !showSideNav });
 
@@ -26,11 +25,7 @@ const AppLayout = (props) => {
 
   return (
     <div className="app-root">
-      <Navs
-        {...props}
-        showSideNav={showSideNav}
-        key={props.loan && props.loan._id}
-      />
+      <Navs {...props} showSideNav={showSideNav} />
 
       <div className={classes}>
         <LayoutErrorBoundary>

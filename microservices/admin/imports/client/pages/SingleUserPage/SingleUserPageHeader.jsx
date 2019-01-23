@@ -9,10 +9,11 @@ import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { sendEnrollmentEmail } from 'core/api';
-import { ROLES } from 'imports/core/api/constants';
+import { ROLES, USERS_COLLECTION } from 'imports/core/api/constants';
+import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
-import { EditUserDialogForm } from '../../components/UserDialogForm';
+import { UserModifier } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
 import EmailModifier from './EmailModifier';
 
@@ -42,7 +43,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
 
           <RolePicker userId={userId} />
         </h1>
-        <EditUserDialogForm user={user} />
+        <UserModifier user={user} />
         <ConfirmMethod
           method={() => sendEnrollmentEmail.run({ userId })}
           label="Envoyer email d'invitation"
@@ -55,7 +56,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       <div className="bottom">
         <div className="email">
           <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>{' '}
-          <EmailModifier userId={userId} />
+          <EmailModifier userId={userId} email={email} />
         </div>
         {!!(phoneNumbers && phoneNumbers.length) && (
           <div className="phone">
@@ -74,11 +75,17 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         </p>
 
         {allowAssign && (
-          <div className="assigned-employee">
+          <div className="assigned-employee space-children">
             {assignedEmployee && (
-              <p>
-                <T id="UsersTable.assignedTo" /> {assignedEmployee.name}
-              </p>
+              <>
+                <T id="UsersTable.assignedTo" />
+                <CollectionIconLink
+                  relatedDoc={{
+                    ...assignedEmployee,
+                    collection: USERS_COLLECTION,
+                  }}
+                />
+              </>
             )}
             <UserAssignDropdown doc={user} />
           </div>

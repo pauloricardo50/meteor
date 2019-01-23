@@ -70,6 +70,7 @@ import Help from '@material-ui/icons/Help';
 import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import InsertChart from '@material-ui/icons/InsertChart';
 import Image from '@material-ui/icons/Image';
+import Delete from '@material-ui/icons/Delete';
 
 const iconMap = {
   close: CloseIcon,
@@ -141,11 +142,24 @@ const iconMap = {
   monetizationOn: MonetizationOn,
   chart: InsertChart,
   image: Image,
+  delete: Delete,
 };
 
-const Icon = ({ type, size, tooltip, tooltipPlacement, ...props }) => {
+const Icon = ({
+  type,
+  size,
+  tooltip,
+  tooltipPlacement,
+  style = {},
+  ...props
+}) => {
+  const iconStyle = {
+    ...style,
+    ...(size ? { width: size, height: size } : {}),
+  };
+
   if (type !== null && typeof type === 'object') {
-    return type;
+    return React.cloneElement(type, { style: iconStyle });
   }
 
   const MyIcon = iconMap[type];
@@ -153,12 +167,10 @@ const Icon = ({ type, size, tooltip, tooltipPlacement, ...props }) => {
   if (!MyIcon) {
     throw new Error(`invalid icon type: ${type}`);
   } else if (MyIcon.component) {
-    return <MyIcon.component {...MyIcon.props} {...props} />;
+    return <MyIcon.component {...MyIcon.props} {...props} {...iconStyle} />;
   }
 
-  const icon = (
-    <MyIcon style={size ? { width: size, height: size } : {}} {...props} />
-  );
+  const icon = <MyIcon style={iconStyle} {...props} />;
 
   if (tooltip) {
     return (

@@ -17,14 +17,10 @@ export const makeConditionForValue = funcName => ({ borrowers }) =>
   Calculator[funcName]({ borrowers }) > 0;
 
 export const calculateRequiredOwnFunds = (data) => {
-  const { propertyWork, notaryFees, wantedLoan } = data.structure;
+  const { propertyWork, wantedLoan } = data.structure;
   const propertyValue = getPropertyValue(data);
-  const fees = Calculator.getFeesBase({
-    fees: notaryFees,
-    propertyValue,
-    propertyWork,
-  });
-  return propertyValue + propertyWork + fees - wantedLoan;
+  const fees = Calculator.getFees(data).total;
+  return propertyValue + propertyWork + Math.round(fees) - wantedLoan;
 };
 
 export const calculateMissingOwnFunds = (data) => {

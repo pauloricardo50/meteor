@@ -30,7 +30,7 @@ export default withProps(({ loan: { _id: loanId, contacts = [], promotions, hasP
     ? [
       ...promotions[0].contacts.map(contact => ({
         ...contact,
-        title: (
+        renderTitle: (
           <span>
             {contact.title}
             <span className="secondary"> &bull; {promotions[0].name}</span>
@@ -38,7 +38,7 @@ export default withProps(({ loan: { _id: loanId, contacts = [], promotions, hasP
         ),
         disableEdit: true,
       })),
-      ...contacts,
+      ...contacts.map(obj => ({ ...obj, renderTitle: obj.title })),
     ]
     : contacts,
 }));

@@ -8,12 +8,30 @@ import classnames from 'classnames';
 import Icon from 'core/components/Icon';
 import T from 'core/components/Translation';
 import { compose } from 'recompose';
+import { DASHBOARD_PAGE } from 'imports/startup/client/adminRoutes';
 
 const styles = () => ({
-  root: {
-    justifyContent: 'center',
-  },
+  root: { justifyContent: 'center' },
 });
+
+const shouldRenderInPrimaryColor = ({
+  collection,
+  collectionName,
+  path,
+  to,
+}) => {
+  if (collection && collection === collectionName) {
+    return true;
+  }
+
+  if (path.slice(1).startsWith(collection)) {
+    return true;
+  }
+
+  if (path === DASHBOARD_PAGE && to === DASHBOARD_PAGE) {
+    return true;
+  }
+};
 
 const MainSideNavListItem = ({
   label,
@@ -41,7 +59,12 @@ const MainSideNavListItem = ({
     <div
       className={classnames({
         'main-side-nav-list-item': true,
-        primary: collection && collection === collectionName,
+        primary: shouldRenderInPrimaryColor({
+          collection,
+          collectionName,
+          path: history.location.pathname,
+          to,
+        }),
       })}
     >
       {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}

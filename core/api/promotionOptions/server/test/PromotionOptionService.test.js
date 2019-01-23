@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import PromotionOptionService from '../../PromotionOptionService';
-import LoanService from '../../../loans/LoanService';
+import PromotionOptionService from '../PromotionOptionService';
+import LoanService from '../../../loans/server/LoanService';
 
 describe('PromotionOptionService', () => {
   beforeEach(() => {

@@ -1,21 +1,38 @@
 // @flow
 import { createSelector } from 'reselect';
-import { userLoan, userProperty } from '../../api/types';
 
 export const withSelector = (SuperClass = class {}) =>
   class extends SuperClass {
-    selectProperty({
-      loan,
-      structureId,
-    }: { loan: userLoan } = {}): userProperty {
+    selectProperty({ loan, structureId } = {}) {
+      let propertyId = loan.structure && loan.structure.propertyId;
+      let promotionOptionId = loan.structure && loan.structure.promotionOptionId;
+
+      if (!structureId) {
+        return (
+          loan.structure.property
+          || this.formatPromotionOptionIntoProperty(loan.structure.promotionOption)
+          || {}
+        );
+      }
+
       if (structureId) {
-        const { propertyId } = loan.structures.find(({ id }) => id === structureId);
+        const structure = loan.structures.find(({ id }) => id === structureId);
+        propertyId = structure.propertyId;
+        promotionOptionId = structure.promotionOptionId;
+      }
+
+      if (propertyId) {
         return loan.properties.find(({ _id }) => _id === propertyId);
       }
-      return loan.structure.property;
+
+      if (promotionOptionId) {
+        return this.formatPromotionOptionIntoProperty(loan.promotionOptions.find(({ _id }) => _id === promotionOptionId));
+      }
+
+      return {};
     }
 
-    selectStructure({ loan, structureId }: { loan: userLoan } = {}): {} {
+    selectStructure({ loan, structureId } = {}): {} {
       if (structureId) {
         return loan.structures.find(({ id }) => id === structureId);
       }
@@ -51,15 +68,16 @@ export const withSelector = (SuperClass = class {}) =>
       });
       return (
         structurePropertyValue
+        || this.makeSelectPropertyKey('totalValue')({ loan, structureId })
         || this.makeSelectPropertyKey('value')({ loan, structureId })
       );
     }
 
-    selectPropertyWork({ loan }: { loan: userLoan } = {}): number {
+    selectPropertyWork({ loan } = {}): number {
       return this.makeSelectStructureKey('propertyWork')({ loan });
     }
 
-    selectLoanValue({ loan, structureId }: { loan: userLoan } = {}): number {
+    selectLoanValue({ loan, structureId } = {}): number {
       return this.selectStructure({ loan, structureId }).wantedLoan;
     }
 

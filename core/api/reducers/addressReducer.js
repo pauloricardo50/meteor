@@ -7,7 +7,9 @@ const addressReducer = {
     },
     reduce(object) {
       const { address1, zipCode, city } = object;
-      return `${address1}, ${zipCode} ${city}`;
+      return address1
+        ? `${address1}, ${zipCode} ${city}`
+        : 'Aucune addresse indiquée';
     },
   },
 };

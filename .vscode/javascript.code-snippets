@@ -1,0 +1,51 @@
+{
+  "Meteor tests": {
+    "prefix": "testmeteor",
+    "body": [
+      "// @flow",
+      "/* eslint-env mocha */",
+      "import { expect } from 'chai';",
+      "import { Factory } from 'meteor/dburles:factory';",
+      "import { resetDatabase } from 'meteor/xolvio:cleaner';",
+      "",
+      "import ${1:module} from '../${2:path}';",
+      "",
+      "describe('${1:test suite name}', () => {",
+      "  beforeEach(() => {",
+      "    resetDatabase();",
+      "  });",
+      "",
+      "	it('${4:test name}', () => {",
+      "		${5:// Test code}",
+      "	});",
+      "});"
+    ],
+    "description": "Meteor testing setup"
+  },
+  "Testing JSX": {
+    "prefix": "testjsx",
+    "body": [
+      "// @flow",
+      "/* eslint-env mocha */",
+      "import React from 'react';",
+      "import { expect } from 'chai';",
+      "import { shallow } from 'core/utils/testHelpers/enzyme';",
+      "",
+      "import ${1:component} from '../${1:component}';",
+      "",
+      "describe('${1:component}', () => {",
+      "  let props;",
+      "  const component = () => shallow(<${1:component} {...props} />);",
+      "",
+      "  beforeEach(() => {",
+      "    props = {};",
+      "  });",
+      "",
+      "  it('${2:test name}', () => {",
+      "	  ${3:// Test code}",
+      "  });",
+      "});"
+    ],
+    "description": "Testing JS"
+  }
+}

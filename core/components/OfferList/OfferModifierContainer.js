@@ -1,15 +1,15 @@
 import { withProps } from 'recompose';
+
 import { offerUpdate } from '../../api';
+import { AdminOfferSchema } from '../../api/offers/offers';
 
 const OfferModiferContainer = withProps(({ offer: { _id: offerId } }) => ({
-  onSubmit: formValues =>
+  onSubmit: offer =>
     offerUpdate.run({
-      object: {
-        ...formValues,
-        organisationLink: { _id: formValues.organisation },
-      },
+      object: offer,
       offerId,
     }),
+  schema: AdminOfferSchema.omit('feedback'),
 }));
 
 export default OfferModiferContainer;

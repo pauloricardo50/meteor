@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Icon from '../Icon';
 import Link from '../Link';
 
-const IconLink = ({ link, icon, text, children, ...rest }) => (
+const IconLink = ({ link, icon, text, children, className, ...rest }) => (
   <Link
     to={link}
     className="icon-link"
     onClick={e => e.stopPropagation()}
     {...rest}
   >
-    <Icon type={icon} className="icon-link-icon" />
+    <Icon type={icon} className={className || 'icon-link-icon'} />
     {children || text}
   </Link>
 );

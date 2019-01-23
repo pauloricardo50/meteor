@@ -1,6 +1,6 @@
 import { Accounts } from 'meteor/accounts-base';
 
-import UserService from '../UserService';
+import UserService from './UserService';
 
 Accounts.onCreateUser(UserService.onCreateUser);
 Accounts.config({ forbidClientAccountCreation: true });

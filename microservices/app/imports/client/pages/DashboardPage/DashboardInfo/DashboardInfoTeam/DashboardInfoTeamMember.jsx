@@ -7,34 +7,50 @@ import IconButton from 'core/components/IconButton';
 import DashboardInfoTeamForm from './DashboardInfoTeamForm';
 
 const DashboardInfoTeamMember = ({
-  src,
-  name,
-  title,
-  email,
-  phoneNumber,
   allowEdit,
   editContact,
+  email,
+  name,
+  phoneNumber,
   removeContact,
+  renderTitle,
+  src,
+  title,
 }) => (
   <div className="dashboard-info-team-company-member">
     {src && <img src={src} alt={name} />}
 
     <div className="person">
       <h4>{name}</h4>
-      <p>{title}</p>
+      <p>{renderTitle}</p>
     </div>
 
     <div className="contact">
       {allowEdit && (
         <DashboardInfoTeamForm
-          button={
-            <IconButton type="edit" tooltip={<T id="general.modify" />} />
-          }
+          triggerComponent={handleOpen => (
+            <IconButton
+              onClick={handleOpen}
+              type="edit"
+              tooltip={<T id="general.modify" />}
+            />
+          )}
           onSubmit={values => editContact(name, values)}
-          initialValues={{ name, title, email, phoneNumber }}
-          form={name}
-          renderAdditionalActions={({ handleClose }) => (
-            <Button onClick={() => removeContact(name).then(handleClose)}>
+          model={{ name, title, email, phoneNumber }}
+          renderAdditionalActions={({
+            handleClose,
+            disabled,
+            setDisableActions,
+          }) => (
+            <Button
+              error
+              onClick={() => {
+                setDisableActions(true);
+                return removeContact(name)
+                  .then(() => setDisableActions(false))
+                  .finally(handleClose);
+              }}
+            >
               <T id="general.delete" />
             </Button>
           )}
@@ -44,7 +60,9 @@ const DashboardInfoTeamMember = ({
       <a href={`mailto:${email}`}>
         <IconButton
           type="mail"
-          tooltip={<T id="DashboardInfoTeamMember.emailTooltip" />}
+          tooltip={
+            <T id="DashboardInfoTeamMember.emailTooltip" values={{ email }} />
+          }
         />
       </a>
 
@@ -52,7 +70,12 @@ const DashboardInfoTeamMember = ({
         <a href={`tel:${phoneNumber}`}>
           <IconButton
             type="phone"
-            tooltip={<T id="DashboardInfoTeamMember.phoneTooltip" />}
+            tooltip={(
+              <T
+                id="DashboardInfoTeamMember.phoneTooltip"
+                values={{ phoneNumber }}
+              />
+            )}
           />
         </a>
       )}

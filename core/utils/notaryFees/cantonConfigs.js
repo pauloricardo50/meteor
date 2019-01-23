@@ -22,6 +22,8 @@ export const GE = {
       brackets: cantons.GE.NOTARY_NOTE_BRACKETS,
     })
     * (1 + VAT),
+  propertyConstructionTax: ({ constructionValue }) =>
+    constructionValue * cantons.GE.PROPERTY_CONSTRUCTION_TAX,
   propertyRegistrationTax: ({ propertyValue }) =>
     propertyValue * cantons.GE.PROPERTY_REGISTRATION_TAX,
   landRegistryPropertyTax: ({ propertyValue }) =>
@@ -47,6 +49,7 @@ export const VD = {
       minTax: cantons.VD.NOTARY_PROPERTY_BRACKETS_MIN,
     })
     * (1 + VAT),
+  propertyConstructionTax: () => 0, // TODO
   notaryIncomeFromMortgageNote: ({ noteIncrease }) =>
     degressive({
       amount: noteIncrease,

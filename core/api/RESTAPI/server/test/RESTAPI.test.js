@@ -1,19 +1,20 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-import fetch from 'node-fetch';
-import startAPI from '..';
 import { Factory } from 'meteor/dburles:factory';
+
+import { expect } from 'chai';
+import fetch from 'node-fetch';
+import omit from 'lodash/omit';
+
 import {
   DOCUMENT_USER_PERMISSIONS,
   PROMOTION_STATUS,
-} from 'core/api/constants';
-import PromotionService from 'imports/core/api/promotions/PromotionService';
-import omit from 'lodash/omit';
+} from '../../../constants';
+import PromotionService from '../../../promotions/server/PromotionService';
 import { REST_API_ERRORS, HTTP_STATUS_CODES } from '../constants';
+import startAPI from '..';
 
 describe('RESTAPI', () => {
   before(function () {
@@ -244,6 +245,7 @@ describe('RESTAPI', () => {
           },
         });
       });
+
       it('user is missing informations', () => {
         PromotionService.addProUser({ promotionId, userId: user._id });
         PromotionService.setUserPermissions({
@@ -269,11 +271,6 @@ describe('RESTAPI', () => {
             inviteUserMissingKey({
               userData: userToInvite,
               keyToOmit: 'lastName',
-            }))
-          .then(() =>
-            inviteUserMissingKey({
-              userData: userToInvite,
-              keyToOmit: 'phoneNumber',
             }));
       });
 
@@ -292,9 +289,9 @@ describe('RESTAPI', () => {
         const expectedResponse = {
           statusCode: HTTP_STATUS_CODES.OK,
           body: {
-            message: `Invited user ${
+            message: `Successfully invited user "${
               userToInvite.email
-            } to promotion id ${promotionId}`,
+            }" to promotion id "${promotionId}"`,
           },
         };
 
@@ -329,9 +326,9 @@ describe('RESTAPI', () => {
       const expectedResponse = {
         statusCode: HTTP_STATUS_CODES.OK,
         body: {
-          message: `Invited user ${
+          message: `Successfully invited user "${
             userToInvite.email
-          } to promotion id ${promotionId}`,
+          }" to promotion id "${promotionId}"`,
         },
       };
 

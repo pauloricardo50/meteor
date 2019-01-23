@@ -5,10 +5,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { shouldDisplayLabelAndData } from './tableHelpers';
 
-const styles = {
-  cell: { textAlign: 'left' },
-};
-
 const displayValue = (columnValue, columnOptions) => {
   let value = columnValue;
   if (shouldDisplayLabelAndData(columnValue)) {
@@ -31,9 +27,10 @@ const Row = ({
     {columns.map((column, j) => (
       <TableCell
         key={j}
-        style={columnOptions[j].style || styles.cell}
-        numeric={columnOptions[j].numeric}
+        style={columnOptions[j].style}
+        align={columnOptions[j].align}
         padding={columnOptions[j].padding || 'dense'}
+        data-id={columnOptions[j].id}
       >
         {displayValue(column, columnOptions[j])}
       </TableCell>

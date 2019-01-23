@@ -3,7 +3,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 
 import { ROLES } from '../../api/constants';
 import T from '../Translation';

@@ -467,7 +467,7 @@ jobs:
       - store_test_results:
           path: ./results
       - store_artifacts:
-          path: ./results
+          path: ./e2e-results
   App - e2e tests:
     working_directory: ~/app
     docker: *ref_0
@@ -550,7 +550,7 @@ jobs:
       - store_test_results:
           path: ./results
       - store_artifacts:
-          path: ./results
+          path: ./e2e-results
   Admin - e2e tests:
     working_directory: ~/app
     docker: *ref_0
@@ -633,7 +633,7 @@ jobs:
       - store_test_results:
           path: ./results
       - store_artifacts:
-          path: ./results
+          path: ./e2e-results
   Pro - e2e tests:
     working_directory: ~/app
     docker: *ref_0
@@ -716,7 +716,7 @@ jobs:
       - store_test_results:
           path: ./results
       - store_artifacts:
-          path: ./results
+          path: ./e2e-results
 workflows:
   version: 2
   Build and test:

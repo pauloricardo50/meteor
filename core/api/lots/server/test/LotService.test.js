@@ -3,9 +3,9 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import LotService from '../../LotService';
-import PromotionLotService from '../../../promotionLots/PromotionLotService';
-import PromotionService from '../../../promotions/PromotionService';
+import LotService from '../LotService';
+import PromotionLotService from '../../../promotionLots/server/PromotionLotService';
+import PromotionService from '../../../promotions/server/PromotionService';
 
 describe('LotService', () => {
   beforeEach(() => {

@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+
 import { Users } from '../..';
-import { ROLES } from '../../constants';
-import { USER_QUERIES } from '../userConstants';
-import { simpleUserFragment } from './userFragments';
+import { ROLES, USER_QUERIES } from '../../constants';
+import { simpleUser } from '../../fragments';
 
 export default Users.createQuery(USER_QUERIES.ADMINS, {
-  $filter({ filters, options, params }) {
+  $filter({ filters }) {
     const userIsDev = Roles.userIsInRole(Meteor.user(), ROLES.DEV);
 
     if (userIsDev) {
@@ -15,5 +15,5 @@ export default Users.createQuery(USER_QUERIES.ADMINS, {
       filters.roles = { $in: [ROLES.ADMIN] };
     }
   },
-  ...simpleUserFragment,
+  ...simpleUser(),
 });

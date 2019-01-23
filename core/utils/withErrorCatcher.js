@@ -1,6 +1,6 @@
 import { lifecycle } from 'recompose';
 
-import SlackService from '../api/slack';
+import { logError } from '../api/slack/methodDefinitions';
 
 const withErrorCatcher = lifecycle({
   componentDidMount() {
@@ -13,7 +13,14 @@ const withErrorCatcher = lifecycle({
       if (Kadira && Kadira.trackError) {
         Kadira.trackError('react', error.stack.toString());
       }
-      SlackService.sendError({ error, additionalData: ['JS error'] });
+      logError.run({
+        error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+        additionalData: ['JS error', msg],
+        url:
+          window && window.location && window.location.href
+            ? window.location.href
+            : '',
+      });
     };
   },
 });

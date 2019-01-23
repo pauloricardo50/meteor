@@ -5,7 +5,6 @@ import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
 import PromotionModifier from './PromotionModifier';
-import PromotionStatusModifier from './PromotionStatusModifier';
 import PromotionAssignee from './PromotionAssignee';
 
 type PromotionPageHeaderProps = {};
@@ -16,6 +15,7 @@ const PromotionPageHeader = ({
   isAdmin,
 }: PromotionPageHeaderProps) => {
   const {
+    _id: promotionId,
     name,
     promotionLots = [],
     status,
@@ -32,7 +32,12 @@ const PromotionPageHeader = ({
             {name}
             &nbsp;
             {status && (
-              <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />
+              <StatusLabel
+                status={status}
+                collection={PROMOTIONS_COLLECTION}
+                allowModify={isAdmin}
+                docId={promotionId}
+              />
             )}
             {canModify && <PromotionModifier promotion={promotion} />}
           </h1>
@@ -42,7 +47,6 @@ const PromotionPageHeader = ({
               values={{ promotionLotCount: promotionLots.length }}
             />
           </h3>
-          {isAdmin && <PromotionStatusModifier promotion={promotion} />}
           {isAdmin && <PromotionAssignee promotion={promotion} />}
         </div>
 
@@ -69,7 +73,10 @@ const PromotionPageHeader = ({
         {contacts.length > 0 ? (
           <div className="contacts animated fadeIn delay-400">
             <h3>
-              <T id="PromotionPageHeader.contacts" />
+              <T
+                id="PromotionPageHeader.contacts"
+                values={{ multipleContacts: contacts.length > 1 }}
+              />
             </h3>
 
             <div className="list">

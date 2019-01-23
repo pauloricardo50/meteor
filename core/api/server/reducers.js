@@ -1,4 +1,5 @@
 import '../borrowers/server/serverReducers';
+import '../contacts/server/serverReducers';
 import '../loans/server/serverReducers';
 import '../lots/server/serverReducers';
 import '../offers/server/serverReducers';

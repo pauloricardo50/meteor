@@ -32,27 +32,6 @@ export const requestLoanVerification = new Method({
   },
 });
 
-export const startAuction = new Method({
-  name: 'startAuction',
-  params: {
-    loanId: String,
-  },
-});
-
-export const endAuction = new Method({
-  name: 'endAuction',
-  params: {
-    loanId: String,
-  },
-});
-
-export const cancelAuction = new Method({
-  name: 'cancelAuction',
-  params: {
-    loanId: String,
-  },
-});
-
 export const confirmClosing = new Method({
   name: 'confirmClosing',
   params: {
@@ -74,20 +53,6 @@ export const popLoanValue = new Method({
   params: {
     loanId: String,
     object: Object,
-  },
-});
-
-export const disableUserForms = new Method({
-  name: 'disableUserForms',
-  params: {
-    loanId: String,
-  },
-});
-
-export const enableUserForms = new Method({
-  name: 'enableUserForms',
-  params: {
-    loanId: String,
   },
 });
 

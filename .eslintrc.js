@@ -34,22 +34,7 @@ module.exports = {
       'error',
       { code: 80, ignoreStrings: true, ignoreUrls: true, ignoreComments: true },
     ],
-    'no-underscore-dangle': [
-      'error',
-      {
-        allowAfterThis: true,
-        // These are all meteor specific exceptions
-        allow: [
-          '_id',
-          '_ensureIndex',
-          '_verifyEmailToken',
-          '_resetPasswordToken',
-          '_storedLoginToken',
-          '_name',
-          '_execute',
-        ],
-      },
-    ],
+    'no-underscore-dangle': ['off'],
     // The most sane value, allows objects to stay on a single line if possible
     'object-curly-newline': ['error', { multiline: true, consistent: true }],
     'object-property-newline': [
@@ -76,6 +61,8 @@ module.exports = {
     curly: 'error',
     'global-require': 'off',
     'consistent-return': 'off',
+    // They're very useful for confirming things, and much more performant than Dialogs
+    'no-alert': 'off',
 
     // eslint-plugin-import rules
 

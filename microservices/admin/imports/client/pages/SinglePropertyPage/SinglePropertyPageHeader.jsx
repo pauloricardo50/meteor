@@ -14,7 +14,7 @@ const SinglePropertyHeader = ({
     address1,
     city,
     zipCode,
-    value,
+    totalValue,
     roomCount,
     insideArea,
     createdAt,
@@ -34,12 +34,13 @@ const SinglePropertyHeader = ({
         <ConfirmMethod
           label="Supprimer"
           method={() => propertyDelete.run({ propertyId })}
+          buttonProps={{ error: true }}
         />
       </div>
     </div>
 
     <h2>
-      <Money value={value} />
+      <Money value={totalValue} />
     </h2>
 
     <div className="bottom">

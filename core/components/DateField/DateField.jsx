@@ -9,7 +9,7 @@ type DateFieldProps = {};
 const DateField = (props: DateFieldProps) => (
   <TextField
     {...props}
-    value={moment(props.value).format('YYYY-MM-DD')}
+    value={props.value && moment(props.value).format('YYYY-MM-DD')}
     type="date"
     InputLabelProps={{ shrink: true }}
   />

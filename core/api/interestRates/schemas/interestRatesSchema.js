@@ -1,11 +1,15 @@
 import SimpleSchema from 'simpl-schema';
-import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
+import {
+  createdAt,
+  updatedAt,
+  percentageField,
+} from '../../helpers/sharedSchemas';
 import { TRENDS, INTEREST_RATES } from '../interestRatesConstants';
 
 const singleInterestRate = type => ({
   [type]: { type: Object, optional: true },
-  [`${type}.rateLow`]: { type: Number, min: 0, max: 1, optional: true },
-  [`${type}.rateHigh`]: { type: Number, min: 0, max: 1, optional: true },
+  [`${type}.rateLow`]: percentageField,
+  [`${type}.rateHigh`]: percentageField,
   [`${type}.trend`]: {
     type: String,
     allowedValues: Object.values(TRENDS),

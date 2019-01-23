@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Dialog from 'core/components/Material/Dialog';
-import Button from 'core/components/Button';
-import T from 'core/components/Translation';
+import Dialog from './Material/Dialog';
+import Button from './Button';
+import T from './Translation';
 
 export default class DialogSimple extends Component {
   constructor(props) {
@@ -53,6 +53,7 @@ export default class DialogSimple extends Component {
       style,
       title,
       renderTrigger,
+      onClose = () => null,
       ...otherProps
     } = this.props;
 
@@ -62,7 +63,10 @@ export default class DialogSimple extends Component {
           <Button
             primary
             label={<T id="general.close" />}
-            onClick={this.handleClose}
+            onClick={(args) => {
+              onClose();
+              this.handleClose(args);
+            }}
             key="close"
           />,
         ]
@@ -134,7 +138,7 @@ DialogSimple.propTypes = {
   close: PropTypes.bool,
   closeOnly: PropTypes.bool,
   important: PropTypes.bool,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onOpen: PropTypes.func,
   passProps: PropTypes.bool,
   primary: PropTypes.bool,
@@ -151,6 +155,7 @@ DialogSimple.defaultProps = {
   closeOnly: false,
   close: undefined,
   important: false,
+  label: null,
   onOpen: () => {},
   passProps: false,
   primary: false,

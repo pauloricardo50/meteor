@@ -9,7 +9,7 @@ import proLoans from 'core/api/loans/queries/proLoans';
 import { compose, withProps } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'core/utils/routerUtils';
-import PromotionSecurity from 'core/api/security/collections/PromotionSecurity';
+import { isAllowedToModifyPromotion } from 'core/api/security/clientSecurityHelpers';
 import { PRO_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
 
 type ProPromotionUsersPageProps = {};
@@ -44,8 +44,6 @@ export default compose(
       && loans[0].promotions
       && loans[0].promotions.length > 0
       && loans[0].promotions[0];
-    return {
-      canModify: promotion && PromotionSecurity.isAllowedToModify(promotion),
-    };
+    return { canModify: promotion && isAllowedToModifyPromotion(promotion) };
   }),
 )(ProPromotionUsersPage);

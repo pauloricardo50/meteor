@@ -50,7 +50,7 @@
 
     text-align: right;
 
-    > span {
+     > span {
       display: inline-block;
 
       margin-bottom: 15px;
@@ -62,7 +62,7 @@
     }
 
     &.success {
-      > span {
+       > span {
         color: $success;
       }
 
@@ -166,7 +166,7 @@
     box-sizing: border-box;
     padding-bottom: 40px;
 
-    border-left: 1px #e4e4e4 solid;
+    border-left: 1px $border-grey solid;
 
     &:first-of-type {
       padding-right: 30px;
@@ -186,7 +186,7 @@
       font-size: 18px;
       font-weight: bold;
 
-      > span {
+       > span {
         display: inline-block;
 
         &:nth-of-type(2) {
@@ -236,8 +236,9 @@
   }
 
   .form-select__row {
-    width: 100%;
     position: relative;
+
+    width: 100%;
 
     .mui-select {
       position: relative;
@@ -283,7 +284,7 @@
   box-sizing: border-box;
   padding: 32px 16px 0;
 
-  border-left: 1px #e4e4e4 solid;
+  border-left: 1px $border-grey solid;
 
   &:first-of-type {
     padding-right: 32px;
@@ -304,7 +305,7 @@
 
     box-sizing: border-box;
 
-    border-left: 1px #e4e4e4 solid;
+    border-left: 1px $border-grey solid;
 
     &:first-of-type {
       border-left: 0;
@@ -316,7 +317,7 @@
   &__item {
     box-sizing: border-box;
 
-    border-left: 1px #e4e4e4 solid;
+    border-left: 1px $border-grey solid;
 
     &:first-of-type {
       border-left: 0;
@@ -332,8 +333,8 @@
 .user-form__info h3,
 h2 {
   margin-bottom: 25px;
-
   // font-size: 17px;
+
   font-weight: bold;
 }
 
@@ -343,12 +344,12 @@ h2 {
   }
 
   .form-group {
-    > div {
+     > div {
       max-width: 100% !important;
     }
   }
 
-  > div {
+   > div {
     max-width: 100% !important;
   }
 
@@ -362,7 +363,7 @@ h2 {
 .description {
   align-self: initial;
 
-  > p {
+   > p {
     justify-content: flex-start;
 
     max-width: 100%;

@@ -5,7 +5,7 @@ import Link from 'core/components/Link';
 import { VARIANTS } from './WwwTopNav';
 
 const WwwTopNavLogo = ({ variant }) => (
-  <Link to="/" className="www-top-nav-logo">
+  <Link to="/" className="www-top-nav-logo logo">
     <img
       src={
         variant === VARIANTS.BLUE

@@ -8,8 +8,8 @@ import DashboardInfoTeamForm from './DashboardInfoTeamForm';
 
 const DashboardInfoTeamAdder = ({ addContact }) => (
   <DashboardInfoTeamForm
-    button={(
-      <Button raised icon={<Icon type="personAdd" />}>
+    triggerComponent={handleOpen => (
+      <Button onClick={handleOpen} raised icon={<Icon type="personAdd" />}>
         <T id="DashboardInfoTeamAdder.label" />
       </Button>
     )}

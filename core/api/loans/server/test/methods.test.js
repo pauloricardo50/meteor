@@ -4,12 +4,11 @@ import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import TaskService from '../../../tasks/TaskService';
-import SecurityService from '../../../security/index';
+import TaskService from '../../../tasks/server/TaskService';
+import SecurityService from '../../../security';
 import { generateData } from '../../../../utils/testHelpers';
-import { disableUserFormsHandler, enableUserFormsHandler } from '../methods';
 import { requestLoanVerification } from '../../methodDefinitions';
-import LoanService from '../../LoanService';
+import LoanService from '../LoanService';
 
 let userId;
 let adminId;
@@ -27,64 +26,6 @@ describe('Loan methods', () => {
     });
   });
 
-  describe('disableUserForms', () => {
-    beforeEach(() => {
-      sinon.stub(LoanService, 'disableUserForms');
-    });
-
-    afterEach(() => {
-      LoanService.disableUserForms.restore();
-    });
-
-    it('calls `LoanService.disableUserForms` in order to disable the user forms', () => {
-      const loanId = 'aFakeLoanId';
-
-      expect(LoanService.disableUserForms.called).to.equal(false);
-      disableUserFormsHandler({ userId: adminId }, { loanId });
-      expect(LoanService.disableUserForms.getCall(0).args).to.deep.equal([
-        { loanId },
-      ]);
-    });
-
-    it(`throws and does not call 'LoanService.disableUserForms'
-        when current user is a non-admin`, () => {
-      const loanId = 'aFakeLoanId';
-
-      expect(LoanService.disableUserForms.called).to.equal(false);
-      expect(() => disableUserFormsHandler({ userId }, { loanId })).to.throw();
-      expect(LoanService.disableUserForms.called).to.equal(false);
-    });
-  });
-
-  describe('enableUserForms', () => {
-    beforeEach(() => {
-      sinon.stub(LoanService, 'enableUserForms');
-    });
-
-    afterEach(() => {
-      LoanService.enableUserForms.restore();
-    });
-
-    it('calls `LoanService.enableUserForms` in order to enable the user forms', () => {
-      const loanId = 'aFakeLoanId';
-
-      expect(LoanService.enableUserForms.called).to.equal(false);
-      enableUserFormsHandler({ userId: adminId }, { loanId });
-      expect(LoanService.enableUserForms.getCall(0).args).to.deep.equal([
-        { loanId },
-      ]);
-    });
-
-    it(`throws and does not call 'LoanService.enableUserForms'
-        when current user is a non-admin`, () => {
-      const loanId = 'aFakeLoanId';
-
-      expect(LoanService.enableUserForms.called).to.equal(false);
-      expect(() => enableUserFormsHandler({ userId }, { loanId })).to.throw();
-      expect(LoanService.enableUserForms.called).to.equal(false);
-    });
-  });
-
   describe('requestLoanVerification', () => {
     beforeEach(() => {
       resetDatabase();
@@ -97,14 +38,18 @@ describe('Loan methods', () => {
       SecurityService.loans.isAllowedToUpdate.restore();
     });
 
-    it('inserts a task with the proper assignee', () => {
+    it('inserts a task with the proper assignee and disables forms', () => {
       const admin = Factory.create('admin');
       const user = Factory.create('user', { assignedEmployeeId: admin._id });
       const loan = Factory.create('loan', { userId: user._id });
+      const loanId = loan._id;
+
+      expect(loan.userFormsEnabled).to.equal(true);
 
       return requestLoanVerification.run({ loanId: loan._id }).then(() => {
         const task = TaskService.findOne({ docId: loan.id });
         expect(task.assignedEmployeeId).to.equal(admin._id);
+        expect(LoanService.get(loanId).userFormsEnabled).to.equal(false);
       });
     });
   });

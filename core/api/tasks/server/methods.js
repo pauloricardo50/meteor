@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import TaskService from '../TaskService';
+import TaskService from './TaskService';
 import {
   taskInsert,
   taskUpdate,
@@ -26,7 +26,7 @@ taskComplete.setHandler((context, params) => {
 
 taskCompleteByType.setHandler((context, params) => {
   SecurityService.tasks.isAllowedToUpdate();
-  return TaskService.completeByType(params);
+  return TaskService.completeTaskByType(params);
 });
 
 taskChangeStatus.setHandler((context, params) => {

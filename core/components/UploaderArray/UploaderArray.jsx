@@ -27,7 +27,7 @@ export const UploaderArray = ({
   }
 
   return (
-    <div className="flex-col center">
+    <div className="flex-col center uploader-array">
       {documentArray.map(documentObject => (
         <Uploader
           fileMeta={

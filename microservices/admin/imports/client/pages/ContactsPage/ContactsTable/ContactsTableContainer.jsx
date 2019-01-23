@@ -6,7 +6,6 @@ import T from 'imports/core/components/Translation/Translation';
 import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 import { createRoute } from 'imports/core/utils/routerUtils';
-import Organisations from 'imports/core/api/organisations/index';
 
 const columnOptions = [
   { id: 'firstName', label: <T id="Forms.firstName" /> },
@@ -50,7 +49,7 @@ const makeMapContact = ({ history }) => (contact) => {
                 }}
               />
             ))
-            : "N'est lié à aucune organisation",
+            : "N'appartient à aucune organisation pour l'instant",
       },
       {
         raw: email,
@@ -72,8 +71,9 @@ const makeMapContact = ({ history }) => (contact) => {
 
 export default compose(
   withRouter,
-  withProps(({ contacts = [], history }) => ({
+  withProps(({ contacts = [], history, organisationId }) => ({
     rows: contacts.map(makeMapContact({ history })),
     columnOptions,
+    insertContactModel: { organisations: [{ _id: organisationId }] },
   })),
 );

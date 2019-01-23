@@ -12,3 +12,4 @@ import '../users/queries/exposures';
 import '../interestRates/queries/exposures';
 import '../irs10y/queries/exposures';
 import '../contacts/queries/exposures';
+import '../lenders/queries/exposures';

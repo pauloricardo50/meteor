@@ -1,24 +1,24 @@
 import SecurityService from '../../security';
-import {{serviceName}} from '../{{serviceName}}';
-import { {{collectionName}}Insert, {{collectionName}}Remove, {{collectionName}}Update } from '../methodDefinitions';
+import {{serviceName}} from './{{serviceName}}';
+import { {{methodInsert}}, {{methodRemove}}, {{methodUpdate}} } from '../methodDefinitions';
 
-{{collectionName}}Insert.setHandler((context, { {{collectionName}} }) => {
+{{methodInsert}}.setHandler((context, { {{collectionNameSingular}} }) => {
 // Add security checks
 // Example
 // SecurityService.checkCurrentUserIsAdmin();
-return {{serviceName}}.insert({{collectionName}});
+return {{serviceName}}.insert({{collectionNameSingular}});
 });
 
-{{collectionName}}Remove.setHandler((context, { {{collectionName}}Id }) => {
+{{methodRemove}}.setHandler((context, { {{collectionNameSingular}}Id }) => {
 // Add security checks
 // Example
 // SecurityService.checkCurrentUserIsAdmin();
-return {{serviceName}}.remove({{collectionName}}Id);
+return {{serviceName}}.remove({{collectionNameSingular}}Id);
 });
 
-{{collectionName}}Update.setHandler((context, { {{collectionName}}Id, object }) => {
+{{methodUpdate}}.setHandler((context, { {{collectionNameSingular}}Id, object }) => {
 // Add security checks
 // Example
 // SecurityService.checkCurrentUserIsAdmin();
-return {{serviceName}}._update({ id: {{collectionName}}Id, object });
+return {{serviceName}}._update({ id: {{collectionNameSingular}}Id, object });
 });

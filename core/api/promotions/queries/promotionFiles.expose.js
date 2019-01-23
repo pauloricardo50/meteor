@@ -1,6 +1,9 @@
-import Security from '../../security';
+import SecurityService from '../../security';
 import query from './promotionFiles';
 
 query.expose({
-  firewall(userId) {},
+  firewall(userId, { promotionId }) {
+    SecurityService.promotions.isAllowedToRead(promotionId, userId);
+  },
+  validateParams: { promotionId: String },
 });

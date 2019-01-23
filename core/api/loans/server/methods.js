@@ -1,18 +1,13 @@
 import SecurityService from '../../security';
-import LoanService from '../LoanService';
+import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import {
   loanInsert,
   loanUpdate,
   loanDelete,
   requestLoanVerification,
-  startAuction,
-  endAuction,
-  cancelAuction,
   confirmClosing,
   pushLoanValue,
   popLoanValue,
-  disableUserForms,
-  enableUserForms,
   adminLoanInsert,
   addNewStructure,
   removeStructure,
@@ -22,7 +17,7 @@ import {
   assignLoanToUser,
   switchBorrower,
 } from '../methodDefinitions';
-import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import LoanService from './LoanService';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -44,21 +39,6 @@ requestLoanVerification.setHandler((context, { loanId }) => {
   return LoanService.askVerification({ loanId });
 });
 
-startAuction.setHandler((context, { loanId }) => {
-  SecurityService.loans.isAllowedToUpdate(loanId);
-  return LoanService.startAuction({ loanId });
-});
-
-endAuction.setHandler((context, { loanId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.startAuction({ loanId });
-});
-
-cancelAuction.setHandler((context, { loanId }) => {
-  SecurityService.checkCurrentUserIsAdmin();
-  return LoanService.startAuction({ loanId });
-});
-
 confirmClosing.setHandler((context, { loanId, object }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LoanService.confirmClosing({ loanId, object });
@@ -73,18 +53,6 @@ popLoanValue.setHandler((context, { loanId, object }) => {
   SecurityService.loans.isAllowedToUpdate(loanId);
   return LoanService.popValue({ loanId, object });
 });
-
-export const disableUserFormsHandler = ({ userId }, { loanId }) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return LoanService.disableUserForms({ loanId });
-};
-disableUserForms.setHandler(disableUserFormsHandler);
-
-export const enableUserFormsHandler = ({ userId }, { loanId }) => {
-  SecurityService.checkUserIsAdmin(userId);
-  return LoanService.enableUserForms({ loanId });
-};
-enableUserForms.setHandler(enableUserFormsHandler);
 
 export const adminLoanInsertHandler = ({ userId: adminUserId }, { userId }) => {
   SecurityService.checkUserIsAdmin(adminUserId);

@@ -1,3 +1,5 @@
+import pick from 'lodash/pick';
+
 import { FinanceCalculator } from '../FinanceCalculator';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
@@ -61,6 +63,24 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         mR: this.maxIncomeRatio,
         m: this.theoreticalMaintenanceRate,
       })({ income, fortune });
+    }
+
+    formatPromotionOptionIntoProperty(promotionOption) {
+      if (!promotionOption) {
+        return;
+      }
+
+      return {
+        // Get the address from the promotion
+        ...pick(promotionOption.promotion, [
+          'address1',
+          'address2',
+          'zipCode',
+          'city',
+        ]),
+        ...promotionOption,
+        ...promotionOption.promotionLots[0].properties[0],
+      };
     }
   };
 

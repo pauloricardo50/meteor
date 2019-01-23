@@ -1,13 +1,16 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { Meteor } from 'meteor/meteor';
 
 import methods from '../../registerMethodDefinitions';
 import { getRateLimitedMethods } from '../../../../utils/rate-limit';
+import { submitContactForm } from '../../methodDefinitions';
+import { EMAIL_IDS } from '../../../email/emailConstants';
 
 describe('methods', () => {
-  after(() => {
-    // resetDatabase();
+  beforeEach(() => {
+    resetDatabase();
   });
 
   Object.keys(methods).forEach((methodName) => {
@@ -25,6 +28,28 @@ describe('methods', () => {
           expect(getRateLimitedMethods()).to.include(methodName);
         });
       }
+    });
+  });
+
+  describe('submitContactForm', () => {
+    it('should send 2 emails', () => {
+      const address = 'digital@e-potek.ch';
+      return submitContactForm
+        .run({
+          name: 'Florian Bienefelt',
+          email: address,
+          phoneNumber: '+41 22 566 01 10',
+        })
+        .then(() =>
+          new Promise(resolve =>
+            Meteor.call('getAllTestEmails', { expected: 2 }, (_, res) =>
+              resolve(res))))
+        .then((emails) => {
+          expect(emails.length).to.equal(2);
+          const ids = emails.map(({ emailId }) => emailId);
+          expect(ids).to.include(EMAIL_IDS.CONTACT_US);
+          expect(ids).to.include(EMAIL_IDS.CONTACT_US_ADMIN);
+        });
     });
   });
 });

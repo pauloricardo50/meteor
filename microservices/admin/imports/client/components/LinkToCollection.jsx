@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/pro-light-svg-icons';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
+import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
+import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 
 import T from 'core/components/Translation';
 import IconLink from 'core/components/IconLink';
 import {
-  BORROWERS_COLLECTION,
   LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
   USERS_COLLECTION,
+  BORROWERS_COLLECTION,
+  PROPERTIES_COLLECTION,
+  OFFERS_COLLECTION,
   PROMOTIONS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+  CONTACTS_COLLECTION,
 } from 'core/api/constants';
 
 const getCollectionIcon = (collection) => {
@@ -25,6 +30,13 @@ const getCollectionIcon = (collection) => {
     return 'contactMail';
   case PROMOTIONS_COLLECTION:
     return <FontAwesomeIcon icon={faCity} className="icon-link-icon" />;
+  case OFFERS_COLLECTION:
+    return 'monetizationOn';
+  case ORGANISATIONS_COLLECTION:
+    return <FontAwesomeIcon icon={faBriefcase} className="icon-link-icon" />;
+  case CONTACTS_COLLECTION:
+    return <FontAwesomeIcon icon={faUserTie} className="icon-link-icon" />;
+
   default:
     return null;
   }

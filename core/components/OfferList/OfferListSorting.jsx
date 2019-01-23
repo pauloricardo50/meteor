@@ -12,7 +12,7 @@ const OfferListSorting = ({
   handleChangeOrder,
   isAscending,
 }) => (
-  <div className="flex" style={{ marginBottom: 16, width: '100%' }}>
+  <div className="offer-list-sorting">
     <Select
       id="sort"
       label={<T id="general.sortBy" />}

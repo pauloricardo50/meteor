@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
-import UploaderArray from '../UploaderArray';
 import AdditionalDocAdder from './AdditionalDocAdder';
 import {
   BORROWERS_COLLECTION,
@@ -16,7 +15,6 @@ import {
   getLoanDocuments,
   allDocuments,
 } from '../../api/files/documents';
-import HiddenDocuments from '../UploaderArray/HiddenDocuments';
 
 import UploaderCategories from './UploaderCategories';
 
@@ -31,8 +29,9 @@ type SingleFileTabProps = {
 
 const documentsToDisplay = ({ collection, loan, id }) => {
   switch (collection) {
-  case BORROWERS_COLLECTION:
+  case BORROWERS_COLLECTION: {
     return getBorrowerDocuments({ loan, id });
+  }
   case PROPERTIES_COLLECTION:
     return getPropertyDocuments({ loan, id });
   case LOANS_COLLECTION:
@@ -42,9 +41,13 @@ const documentsToDisplay = ({ collection, loan, id }) => {
   }
 };
 
-const documentsToHide = ({ doc, collection, loan, id }) =>
-  allDocuments({ doc, collection }).filter(document =>
-    !documentsToDisplay({ collection, loan, id }).some(({ id: docId }) => docId === document.id));
+const documentsToHide = ({ doc, collection, loan, id }) => {
+  const allDocs = allDocuments({ doc, collection });
+  return allDocs.filter((document) => {
+    const docsToDisplay = documentsToDisplay({ collection, loan, id });
+    return !docsToDisplay.some(({ id: docId }) => docId === document.id);
+  });
+};
 
 const SingleFileTab = ({ documentArray, ...props }: SingleFileTabProps) => {
   const { collection, loan, doc } = props;

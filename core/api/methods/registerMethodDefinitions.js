@@ -7,7 +7,7 @@ export * from '../loans/methodDefinitions';
 export * from '../lots/methodDefinitions';
 export * from '../offers/methodDefinitions';
 export * from '../organisations/methodDefinitions';
-export * from '../PDFGenerator/methodDefinitions';
+export * from '../pdf/methodDefinitions';
 export * from '../promotionLots/methodDefinitions';
 export * from '../promotionOptions/methodDefinitions';
 export * from '../promotions/methodDefinitions';
@@ -19,5 +19,6 @@ export * from '../interestRates/methodDefinitions';
 export * from '../irs10y/methodDefinitions';
 export * from '../contacts/methodDefinitions';
 export * from '../mortgageNotes/methodDefinitions';
+export * from '../lenders/methodDefinitions';
 
 export * from './methodDefinitions';

@@ -1,71 +1,123 @@
 // @flow
 import React from 'react';
-import SelectField from 'uniforms-material/SelectField';
 import AutoField from 'uniforms-material/AutoField';
-import AutoFields from 'uniforms-material/AutoFields';
 import connectField from 'uniforms/connectField';
-import DefaultSubmitField from 'uniforms-material/SubmitField';
+import { compose, getContext } from 'recompose';
+import { intlShape } from 'react-intl';
+import nothing from 'uniforms/nothing';
 
-import T from '../Translation';
-import { CUSTOM_AUTOFIELD_TYPES } from './constants';
 import DateField from '../DateField';
-import PercentInput from '../PercentInput';
+import { PercentField } from '../PercentInput';
+import { CUSTOM_AUTOFIELD_TYPES, COMPONENT_TYPES } from './constants';
+import CustomSelectField from './CustomSelectField';
+import CustomListField from './CustomListField';
+import CustomNestField from './CustomNestField';
+import { getLabel, getPlaceholder } from './autoFormHelpers';
+import MoneyInput from '../MoneyInput';
 
-const CustomSelectField = ({ transform, ...props }) => (
-  <SelectField
-    {...props}
-    transform={
-      transform
-      || (option => <T id={`Forms.${props.intlId || props.name}.${option}`} />)
-    }
-    displayEmpty
-  />
-);
-
-const determineComponentFromProps = (props) => {
-  if (props.allowedValues) {
-    return CustomSelectField;
+const determineComponentFromProps = ({
+  allowedValues,
+  customAllowedValues,
+  field: { uniforms },
+  fieldType,
+}) => {
+  if (allowedValues || customAllowedValues) {
+    return { Component: CustomSelectField, type: COMPONENT_TYPES.SELECT };
   }
 
-  if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE
-  ) {
-    return DateField;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.DATE) {
+    return { Component: DateField, type: COMPONENT_TYPES.DATE };
   }
 
-  if (
-    props.field.uniforms
-    && props.field.uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT
-  ) {
-    return PercentInput;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.PERCENT) {
+    return { Component: PercentField, type: COMPONENT_TYPES.PERCENT };
   }
 
-  return false;
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.MONEY) {
+    return {
+      Component: MoneyInput,
+      type: COMPONENT_TYPES.MONEY,
+      props: { margin: 'normal' },
+    };
+  }
+
+  if (fieldType === Array) {
+    return { Component: CustomListField, type: COMPONENT_TYPES.ARRAY };
+  }
+
+  if (fieldType === Object) {
+    return { Component: CustomNestField, type: COMPONENT_TYPES.ARRAY };
+  }
+
+  if (uniforms && uniforms.render) {
+    return { Component: uniforms.render, type: COMPONENT_TYPES.RENDER };
+  }
+
+  return { Component: false, type: null };
 };
 
-export const SubmitField = props => (
-  <DefaultSubmitField
-    label={<T id="general.save" />}
-    variant="raised"
-    color="primary"
-    {...props}
-  />
-);
+export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
+  const CustomAutoField = (props, context) => {
+    const {
+      uniforms: {
+        schema,
+        model,
+        state: { submitting },
+      },
+    } = context;
+    const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
 
-const selectLabel = ({ label, props: { name, overrideLabel } }) =>
-  (label === null ? null : overrideLabel || label || <T id={`Forms.${name}`} />);
+    let {
+      Component,
+      type,
+      props: additionalProps = {},
+    } = determineComponentFromProps({
+      ...props,
+      customAllowedValues,
+      model,
+      submitting,
+      condition,
+    });
+    Component = Component || AutoField;
 
-export const makeCustomAutoField = ({ labels } = {}) =>
-  connectField(
-    (props) => {
-      const Component = determineComponentFromProps(props) || AutoField;
-      const label = labels && labels[props.name];
-      return <Component {...props} label={selectLabel({ label, props })} />;
-    },
-    { includeInChain: false },
-  );
+    let autoValue;
+
+    if (typeof customAutoValue === 'function') {
+      autoValue = customAutoValue(model);
+    }
+
+    const label = getLabel({
+      ...props,
+      intlPrefix,
+      label: labels[props.name],
+    });
+    const placeholder = getPlaceholder({ ...props, intlPrefix, type });
+
+    if (typeof condition === 'function' && !condition(model)) {
+      return nothing;
+    }
+
+    return (
+      <Component
+        {...additionalProps}
+        {...props}
+        {...(autoValue ? { value: autoValue } : {})}
+        model={model}
+        submitting={submitting}
+        customAllowedValues={customAllowedValues}
+        label={label}
+        placeholder={placeholder}
+        InputLabelProps={{ shrink: true }}
+      />
+    );
+  };
+
+  CustomAutoField.contextTypes = AutoField.contextTypes;
+
+  return compose(
+    getContext({ intl: intlShape, ...AutoField.contextTypes }),
+    connectField,
+  )(CustomAutoField, { includeInChain: false, includeParent: true });
+};
 
 export const CustomAutoField = makeCustomAutoField({});
-
-export const CustomAutoFields = AutoFields;

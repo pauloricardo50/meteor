@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import Table from 'core/components/Table';
 import T, { IntlNumber } from 'core/components/Translation';
-import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
+import Calculator from 'core/utils/Calculator';
 
 const columnOptions = [
   { id: 'No.' },
@@ -18,12 +19,12 @@ const columnOptions = [
   {
     id: 'Valeur du bien',
     format: value => <IntlNumber value={value} format="money" />,
-    numeric: true,
+    align: 'right',
   },
   {
     id: 'Hypothèque',
     format: value => <IntlNumber value={value} format="money" />,
-    numeric: true,
+    align: 'right',
   },
 ];
 
@@ -36,36 +37,59 @@ export default class AllLoansTable extends Component {
 
   setupRows = () => {
     const { loans, history } = this.props;
-    this.rows = loans.map(({
-      _id: loanId,
-      name,
-      user,
-      status,
-      createdAt,
-      updatedAt,
-      structure,
-      logic,
-    }) => ({
-      id: loanId,
-      columns: [
+    this.rows = loans.map((loan) => {
+      const {
+        _id: loanId,
         name,
-        <CollectionIconLink
-          relatedDoc={{ ...user, collection: USERS_COLLECTION }}
-          key="user"
-        />,
-        <StatusLabel
-          status={status}
-          key="status"
-          collection={LOANS_COLLECTION}
-        />,
-        moment(createdAt).format('D.M.YY à H:mm'),
-        moment(updatedAt).fromNow(),
-        <T id={`Forms.steps.${logic.step}`} key="step" />,
-        structure.property ? structure.property.value : 0,
-        structure.wantedLoan,
-      ],
-      handleClick: () => history.push(`/loans/${loanId}`),
-    }));
+        user,
+        status,
+        createdAt,
+        updatedAt,
+        structure,
+        logic,
+      } = loan;
+
+      return {
+        id: loanId,
+        columns: [
+          name,
+          {
+            raw: user && user.name,
+            label: (
+              <CollectionIconLink
+                relatedDoc={{ ...user, collection: USERS_COLLECTION }}
+                key="user"
+              />
+            ),
+          },
+          {
+            raw: status,
+            label: (
+              <StatusLabel
+                status={status}
+                key="status"
+                collection={LOANS_COLLECTION}
+              />
+            ),
+          },
+          {
+            label: moment(createdAt).format('D.M.YY à H:mm'),
+            raw: createdAt && createdAt.getTime(),
+          },
+          {
+            raw: updatedAt && updatedAt.getTime(),
+            label: moment(updatedAt).fromNow(),
+          },
+          {
+            label: <T id={`Forms.steps.${logic.step}`} key="step" />,
+            raw: logic.step,
+          },
+          Calculator.selectPropertyValue({ loan }),
+          Calculator.selectLoanValue({ loan }),
+        ],
+        handleClick: () => history.push(`/loans/${loanId}`),
+      };
+    });
   };
 
   render() {

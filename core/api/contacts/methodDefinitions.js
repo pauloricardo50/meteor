@@ -21,3 +21,11 @@ export const contactUpdate = new Method({
     object: Object,
   },
 });
+
+export const contactChangeOrganisations = new Method({
+  name: 'contactChangeOrganisations',
+  params: {
+    contactId: String,
+    newOrganisations: Array,
+  },
+});

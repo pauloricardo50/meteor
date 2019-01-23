@@ -4,6 +4,14 @@ import classnames from 'classnames';
 
 import T from '../Translation';
 
+const renderLabel = ({ label, noIntl }) => {
+  if (typeof label !== 'string' || noIntl) {
+    return label;
+  }
+
+  return <T id={label} tooltipPlacement="bottom" />;
+};
+
 const RecapSimple = ({ array, noScale, className }) => (
   <div
     className={classnames(
@@ -11,35 +19,39 @@ const RecapSimple = ({ array, noScale, className }) => (
       className,
     )}
   >
-    {array.map(({
-      hide,
-      space,
-      title,
-      props,
-      label,
-      labelStyle,
-      noIntl,
-      bold,
-      spacing,
-      spacingTop,
-      value,
-      key,
-    }) => {
+    {array.map((
+      {
+        hide,
+        space,
+        title,
+        props,
+        label,
+        labelStyle,
+        noIntl,
+        bold,
+        spacing,
+        spacingTop,
+        value,
+        key,
+      },
+      index,
+    ) => {
+      const finalLabel = renderLabel({ label, noIntl });
       if (hide) {
         return null;
       }
       if (space) {
-        return <div style={{ height: 16 }} />;
+        return <div key={index} style={{ height: 16 }} />;
       }
       if (title) {
         return (
           <h4
             className="text-center"
             {...props}
-            key={key || label}
+            key={index}
             style={labelStyle}
           >
-            {noIntl ? label : <T id={label} />}
+            {finalLabel}
           </h4>
         );
       }
@@ -53,9 +65,9 @@ const RecapSimple = ({ array, noScale, className }) => (
             marginBottom: spacing && 32,
             marginTop: spacingTop && 8,
           }}
-          key={key || label}
+          key={index}
         >
-          <p>{noIntl ? label : <T id={label} tooltipPlacement="bottom" />}</p>
+          <p>{finalLabel}</p>
           <p {...props}>{value}</p>
         </div>
       );

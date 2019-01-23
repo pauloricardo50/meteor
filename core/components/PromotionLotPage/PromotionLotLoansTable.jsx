@@ -13,14 +13,14 @@ const PromotionLotLoansTable = ({
   isAdmin,
 }: PromotionLotLoansTableProps) => (
   <>
-    <h3 className="text-center">
+    <h3 className="text-center promotion-lot-loans-table-title">
       <T id="PromotionLotLoansTable.title" />
     </h3>
     <Table
       rows={rows}
       columnOptions={columnOptions}
-      clickable={!!isAdmin}
       initialOrderBy={1} // By date
+      className="promotion-lot-loans-table"
     />
   </>
 );

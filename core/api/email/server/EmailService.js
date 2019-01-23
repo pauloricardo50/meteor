@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import emailConfigs from './emailConfigs';
 import { getEmailContent, getEmailPart } from './emailHelpers';
 import {
@@ -9,31 +10,31 @@ import {
 } from './mandrill';
 import { FROM_NAME, FROM_EMAIL } from '../emailConstants';
 
-const skipEmails = Meteor.isDevelopment || Meteor.isTest;
+export const isEmailTestEnv = Meteor.isTest || Meteor.isAppTest;
+export const skipEmails = (Meteor.isDevelopment || Meteor.isStaging) && !isEmailTestEnv;
+// export const skipEmails = false;
 
 class EmailService {
-  sendEmail = (emailId, address, params) => {
+  sendEmail = ({ emailId, address, params }) => {
     const templateOptions = this.createTemplateOptions({
       emailId,
       address,
       params,
     });
     const template = this.getTemplate(templateOptions);
-    if (skipEmails) {
-      this.emailLogger({ emailId, address, template });
-    } else {
-      sendMandrillTemplate(template);
-    }
+    return sendMandrillTemplate(template).then((response) => {
+      this.emailLogger({ emailId, address, template, response });
+    });
   };
 
-  sendEmailToUser = (emailId, userId, params) => {
+  sendEmailToUser = ({ emailId, userId, params }) => {
     const user = Meteor.users.findOne(userId);
     const emailAddress = user && user.emails[0].address;
-    this.sendEmail(emailId, emailAddress, params);
+    this.sendEmail({ emailId, address: emailAddress, params });
   };
 
   sendEmailToLoggedInUser = (emailId, params) => {
-    this.sendEmailToUser(emailId, Meteor.userId(), params);
+    this.sendEmailToUser({ emailId, userId: Meteor.userId(), params });
   };
 
   getEmailConfig = emailId => emailConfigs[emailId];
@@ -92,8 +93,10 @@ class EmailService {
     return result;
   };
 
-  emailLogger = ({ emailId, address, template }) => {
-    if (Meteor.isTest) {
+  emailLogger = ({ emailId, address, template, response }) => {
+    if (isEmailTestEnv) {
+      // Store all sent emails in the DB, to be asserted in tests
+      Meteor.call('storeTestEmail', { emailId, address, template, response });
       return;
     }
     if (skipEmails) {

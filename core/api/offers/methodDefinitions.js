@@ -5,8 +5,6 @@ export const offerInsert = new Method({
   name: 'offerInsert',
   params: {
     offer: Object,
-    userId: Match.Optional(String),
-    loanId: String,
   },
 });
 
@@ -22,5 +20,13 @@ export const offerDelete = new Method({
   name: 'offerDelete',
   params: {
     offerId: String,
+  },
+});
+
+export const offerSendFeedback = new Method({
+  name: 'offerSendFeedback',
+  params: {
+    offerId: String,
+    feedback: String,
   },
 });

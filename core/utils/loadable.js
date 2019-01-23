@@ -1,11 +1,20 @@
 import React from 'react';
 import Loadable from 'react-loadable';
+import { logError } from '../api/methods/index';
 import Loading from '../components/Loading';
 
 const LoadableLoading = ({ error, retry, pastDelay }) => {
   if (error) {
+    logError.run({
+      error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+      additionalData: ['Loadable error'],
+      url:
+        window && window.location && window.location.href
+          ? window.location.href
+          : '',
+    });
     return (
-      <div>
+      <div className="error">
         Error: {error.message} <button onClick={retry}>Retry</button>
       </div>
     );

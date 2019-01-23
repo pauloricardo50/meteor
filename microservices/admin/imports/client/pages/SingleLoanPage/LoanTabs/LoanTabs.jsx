@@ -9,7 +9,6 @@ import FileTabs from 'core/components/FileTabs';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
 import PropertiesTab from './PropertiesTab';
-import OffersTab from './OffersTab';
 import CommunicationTab from './CommunicationTab';
 import MixpanelAnalytics from './AnalyticsTab';
 import ActionsTab from './ActionsTab';
@@ -17,6 +16,7 @@ import StructuresTab from './StructuresTab';
 import DevTab from './DevTab/loadable';
 import PromotionsTab from './PromotionsTab';
 import RefinancingTab from './RefinancingTab';
+import LendersTab from './LendersTab';
 
 const getTabs = props =>
   [
@@ -34,7 +34,7 @@ const getTabs = props =>
     },
     { id: 'borrowers', Component: BorrowersTab },
     { id: 'properties', Component: PropertiesTab },
-    { id: 'offers', Component: OffersTab },
+    { id: 'lenders', Component: LendersTab },
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },
     { id: 'files', Component: FileTabs },
@@ -64,7 +64,7 @@ const LoanTabs = ({ tabId = 'overview', ...props }) => {
     <Tabs
       tabs={tabs}
       initialIndex={initialIndex}
-      scrollable
+      variant="scrollable"
       scrollButtons="auto"
     />
   );

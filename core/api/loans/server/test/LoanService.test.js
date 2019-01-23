@@ -4,13 +4,11 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
 import '../../../factories';
-import Loans from '../../loans';
-import { Borrowers, Properties } from '../../..';
-import LoanService from '../../LoanService';
+import LoanService from '../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
-import BorrowerService from '../../../borrowers/BorrowerService';
-import PropertyService from '../../../properties/PropertyService';
-import OfferService from '../../../offers/OfferService';
+import BorrowerService from '../../../borrowers/server/BorrowerService';
+import PropertyService from '../../../properties/server/PropertyService';
+import LenderService from '../../../lenders/server/LenderService';
 
 describe('LoanService', () => {
   let loanId;
@@ -23,9 +21,7 @@ describe('LoanService', () => {
   describe('popValue', () => {
     it('removes a value from an array', () => {
       loanId = Factory.create('loan', {
-        contacts: [
-          { name: 'Joe', title: 'Mah dude' },
-        ],
+        contacts: [{ name: 'Joe', title: 'Mah dude' }],
       })._id;
       loan = LoanService.get(loanId);
       expect(loan.contacts.length).to.equal(1);
@@ -77,37 +73,24 @@ describe('LoanService', () => {
       expect(BorrowerService.find({}).count()).to.equal(1);
     });
 
-    it('autoremoves offers', () => {
+    it('autoremoves lenders', () => {
       loanId = Factory.create('loan')._id;
-      Factory.create('offer', { loanId });
-      Factory.create('offer', { loanId });
-      Factory.create('offer', { loanId });
+      const lender1 = Factory.create('lender', { loanLink: { _id: 'asdf' } })
+        ._id;
+      const lender2 = Factory.create('lender', { loanLink: { _id: loanId } })
+        ._id;
+      const lender3 = Factory.create('lender', { loanLink: { _id: loanId } })
+        ._id;
 
-      expect(OfferService.find({}).count()).to.equal(3);
+      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender1 });
+      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender2 });
+      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender3 });
+
+      expect(LenderService.countAll()).to.equal(3);
 
       LoanService.remove({ loanId });
 
-      expect(OfferService.find({}).count()).to.equal(0);
-    });
-  });
-
-  describe('disableUserForms', () => {
-    it('disables user forms', () => {
-      loanId = Factory.create('loan')._id;
-      loan = LoanService.get(loanId);
-      LoanService.disableUserForms({ loanId });
-      loan = LoanService.get(loanId);
-      expect(loan.userFormsEnabled).to.equal(false);
-    });
-  });
-
-  describe('enableUserForms', () => {
-    it('enables the user forms', () => {
-      loanId = Factory.create('loan')._id;
-      loan = LoanService.get(loanId);
-      LoanService.enableUserForms({ loanId });
-      loan = LoanService.get(loanId);
-      expect(loan.userFormsEnabled).to.equal(true);
+      expect(LenderService.countAll()).to.equal(0);
     });
   });
 
@@ -119,23 +102,26 @@ describe('LoanService', () => {
     });
 
     it('inserts a property, borrower and loan', () => {
-      expect(Loans.find({}).count()).to.equal(0, 'loans 0');
-      expect(Borrowers.find({}).count()).to.equal(0, 'borrowers 0');
-      expect(Properties.find({}).count()).to.equal(0, 'properties 0');
+      expect(LoanService.countAll()).to.equal(0, 'loans 0');
+      expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
+      expect(PropertyService.countAll()).to.equal(0, 'properties 0');
 
       LoanService.adminLoanInsert({ userId });
 
-      expect(Loans.find({}).count()).to.equal(1, 'loans 1');
-      expect(Borrowers.find({}).count()).to.equal(1, 'borrowers 1');
-      expect(Properties.find({}).count()).to.equal(1, 'properties 1');
+      expect(LoanService.countAll()).to.equal(1, 'loans 1');
+      expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
+      expect(PropertyService.countAll()).to.equal(1, 'properties 1');
     });
 
     it('adds the same userId on all 3 documents', () => {
       LoanService.adminLoanInsert({ userId });
 
-      expect(Loans.findOne({}).userId).to.equal(userId, 'loans userId');
-      expect(Borrowers.findOne({}).userId).to.equal(userId, 'borrowers userId');
-      expect(Properties.findOne({}).userId).to.equal(
+      expect(LoanService.findOne({}).userId).to.equal(userId, 'loans userId');
+      expect(BorrowerService.findOne({}).userId).to.equal(
+        userId,
+        'borrowers userId',
+      );
+      expect(PropertyService.findOne({}).userId).to.equal(
         userId,
         'properties userId',
       );
@@ -443,54 +429,54 @@ describe('LoanService', () => {
   });
 
   describe('getNewLoanName', () => {
-    it('returns 18-0001 for the very first loan', () => {
+    it('returns 19-0001 for the very first loan', () => {
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('18-0001');
+      expect(name).to.equal('19-0001');
     });
 
-    it('returns 18-0002 for the second loan', () => {
+    it('returns 19-0002 for the second loan', () => {
       loanId = LoanService.insert({ loan: {} });
       loan = LoanService.get(loanId);
-      expect(loan.name).to.equal('18-0001');
+      expect(loan.name).to.equal('19-0001');
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('18-0002');
+      expect(name).to.equal('19-0002');
     });
 
     it('sorts loans properly 1', () => {
-      Factory.create('loan', { name: '18-0009' });
-      Factory.create('loan', { name: '18-0010' });
+      Factory.create('loan', { name: '19-0009' });
+      Factory.create('loan', { name: '19-0010' });
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('18-0011');
+      expect(name).to.equal('19-0011');
     });
 
     it('sorts loans properly even if created in different order', () => {
-      Factory.create('loan', { name: '18-0955' });
-      Factory.create('loan', { name: '18-0153' });
-      Factory.create('loan', { name: '18-0001' });
+      Factory.create('loan', { name: '19-0955' });
+      Factory.create('loan', { name: '19-0153' });
+      Factory.create('loan', { name: '19-0001' });
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('18-0956');
+      expect(name).to.equal('19-0956');
     });
 
-    it('returns 18-1234 for the nth loan', () => {
-      Factory.create('loan', { name: '18-1233' });
+    it('returns 19-1234 for the nth loan', () => {
+      Factory.create('loan', { name: '19-1233' });
 
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('18-1234');
+      expect(name).to.equal('19-1234');
     });
 
     it('does not break if a 10000th loan is added', () => {
-      Factory.create('loan', { name: '18-9999' });
+      Factory.create('loan', { name: '19-9999' });
       const name = LoanService.getNewLoanName();
-      expect(name).to.equal('18-10000');
+      expect(name).to.equal('19-10000');
     });
 
     it('handles new year properly', () => {
-      Factory.create('loan', { name: '18-0003' });
-      const name = LoanService.getNewLoanName(new Date(2019, 1, 1));
-      expect(name).to.equal('19-0001');
+      Factory.create('loan', { name: '19-0003' });
+      const name = LoanService.getNewLoanName(new Date(2020, 1, 1));
+      expect(name).to.equal('20-0001');
     });
   });
 

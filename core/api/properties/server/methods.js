@@ -1,5 +1,5 @@
 import SecurityService from '../../security';
-import PropertyService from '../PropertyService';
+import PropertyService from './PropertyService';
 import {
   propertyInsert,
   propertyUpdate,

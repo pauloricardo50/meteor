@@ -83,6 +83,15 @@ $result-section-negative-offset: -32px;
 
   background-color: #f7fafb;
 
+  &:not(.expanded):not(.financing-structures-header):hover {
+    background-color: #e9f1f4;
+    cursor: pointer;
+
+    &.result-section {
+      background-color: $primary-dark;
+    }
+  }
+
   input {
     color: $primary;
   }

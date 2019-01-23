@@ -1,36 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import SimpleSchema from 'simpl-schema';
 
-import Form, { makeFormArray, email, FIELD_TYPES } from 'core/components/Form';
+import AutoForm from 'core/components/AutoForm2';
+// import Form, { makeFormArray, email, FIELD_TYPES } from 'core/components/Form';
 import T from 'core/components/Translation';
 
-const formArray = makeFormArray(
-  [
-    { id: 'name' },
-    { id: 'email', validate: [email], type: 'email' },
-    { id: 'phoneNumber', fieldType: FIELD_TYPES.PHONE, type: 'tel' },
-    { id: 'details', required: false, fieldType: FIELD_TYPES.TEXT_AREA },
-  ].map(field => ({ ...field, placeholder: true })),
-  'ContactUsForm',
-);
+const schema = new SimpleSchema({
+  name: String,
+  email: { type: String, regEx: SimpleSchema.RegEx.EmailWithTLD },
+  phoneNumber: String,
+  details: {
+    type: String,
+    required: false,
+    uniforms: {
+      multiline: true,
+      rows: 3,
+    },
+  },
+});
+
+Object.keys(schema.schema()).forEach((key, i) => {
+  const oldField = schema.schema()[key];
+  schema.schema()[key] = {
+    ...oldField,
+    uniforms: {
+      ...(oldField.uniforms || {}),
+      label: <T id={`ContactUsForm.${key}`} />,
+    },
+  };
+});
 
 const ContactUsForm = ({ onSubmit, onSubmitSuccess, className }) => (
   <div
     className={classnames({ 'contact-us-form card1': true, [className]: true })}
   >
-    <Form
-      form="contact-us"
+    <AutoForm
       onSubmit={onSubmit}
       onSubmitSuccess={onSubmitSuccess}
-      formArray={formArray}
-      destroyOnUnmount={false}
-      submitButtonProps={{
+      schema={schema}
+      submitFieldProps={{
         label: <T id="general.continue" />,
-        raised: true,
+        primary: false,
         secondary: true,
+        style: {
+          alignSelf: 'flex-end',
+          marginTop: 40,
+          float: 'right',
+          padding: 16,
+        },
       }}
-      intlPrefix="ContactUsForm"
+      placeholder
+      autoFieldProps={{ intlPrefix: 'ContactUsForm' }}
     />
   </div>
 );

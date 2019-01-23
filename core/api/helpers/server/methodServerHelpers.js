@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { SecurityService } from '../..';
+import SecurityService from '../../security';
 
 export const checkInsertUserId = (userId) => {
   if (userId === undefined) {

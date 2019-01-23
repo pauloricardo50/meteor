@@ -41,7 +41,12 @@ describe('LoanCalculator', () => {
   describe('getFees', () => {
     it('calculates fees if no notary fees exist', () => {
       expect(Calculator.getFees({
-        loan: { structure: { property: { value: 100 } } },
+        loan: {
+          structure: {
+            propertyId: 'prop',
+            property: { _id: 'prop', value: 100 },
+          },
+        },
       }).total).to.equal(5);
     });
 
@@ -61,10 +66,37 @@ describe('LoanCalculator', () => {
       expect(Calculator.getFees({
         loan: {
           structure: {
-            property: { value: 1000000, canton: 'GE' },
+            propertyId: 'prop',
             wantedLoan: 800000,
+            property: { _id: 'prop', value: 1000000, canton: 'GE' },
           },
         },
+      })).to.deep.include({ total: 55313.1 });
+    });
+
+    it('calculates accurate fees for a promotionOption', () => {
+      expect(Calculator.getFees({
+        loan: {
+          structures: [
+            {
+              id: 'struct1',
+              promotionOptionId: 'option1',
+              wantedLoan: 800000,
+            },
+          ],
+          promotionOptions: [
+            {
+              value: 1000000,
+              _id: 'option1',
+              promotionLots: [
+                {
+                  properties: [{ _id: 'prop', canton: 'GE' }],
+                },
+              ],
+            },
+          ],
+        },
+        structureId: 'struct1',
       })).to.deep.include({ total: 55313.1 });
     });
   });
@@ -485,6 +517,21 @@ describe('LoanCalculator', () => {
           borrowers: [{ mortgageNotes: [{ _id: 'note', value: 500000 }] }],
         },
       })).to.equal(0);
+    });
+  });
+
+  describe('getNonPledgedOwnFunds', () => {
+    it('gets them', () => {
+      const loan = {
+        structure: {
+          ownFunds: [
+            { value: 100 },
+            { value: 100, usageType: OWN_FUNDS_USAGE_TYPES.PLEDGE },
+          ],
+        },
+      };
+
+      expect(Calculator.getNonPledgedOwnFunds({ loan })).to.equal(100);
     });
   });
 });

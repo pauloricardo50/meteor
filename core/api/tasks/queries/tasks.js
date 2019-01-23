@@ -1,11 +1,10 @@
 import { Tasks } from '../..';
 import { TASK_QUERIES } from '../taskConstants';
-import { taskFragment } from './taskFragments';
+import { task } from '../../fragments';
 
 export default Tasks.createQuery(TASK_QUERIES.TASKS, {
   $filter({
     filters,
-    options,
     params: {
       assignedTo,
       unassigned,
@@ -49,5 +48,5 @@ export default Tasks.createQuery(TASK_QUERIES.TASKS, {
     }
   },
   $paginate: true,
-  ...taskFragment,
+  ...task(),
 });

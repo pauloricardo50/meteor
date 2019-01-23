@@ -22,7 +22,18 @@ import DetailSideNavPagination from './DetailSideNavPagination';
 
 const getListItemDetails = (
   collectionName,
-  { roles, name, structure, loans, address1, value, user, status, promotion },
+  {
+    roles,
+    name,
+    structure,
+    loans,
+    address1,
+    value,
+    user,
+    status,
+    promotion,
+    organisations = [],
+  },
 ) => {
   switch (collectionName) {
   case USERS_COLLECTION:
@@ -76,7 +87,7 @@ const getListItemDetails = (
   case CONTACTS_COLLECTION:
     return {
       primary: name || 'Contact sans nom',
-      secondary: null,
+      secondary: organisations.map(({ name: orgName }) => orgName).join(', '),
     };
   default:
     throw new Error('invalid collection name');

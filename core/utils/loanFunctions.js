@@ -1,38 +1,4 @@
-import moment from 'moment';
-
-// Gives the end time of an auction, given the start time
-export const getAuctionEndTime = (startTime) => {
-  const time = moment(startTime);
-
-  if (time.isoWeekday() === 6) {
-    // On saturdays, go to Tuesday
-    time.add(3, 'd');
-  } else if (time.isoWeekday() === 7) {
-    // On sundays, go to Tuesday
-    time.add(2, 'd');
-  } else if (time.hour() >= 0 && time.hour() < 7) {
-    // If the start time is between midnight and 7:00,
-    // set endtime to be tomorrow night
-    time.add(1, 'd');
-  } else {
-    // Else, set endtime in 2 days from now
-    time.add(2, 'd');
-  }
-
-  // Skip weekends
-  if (time.isoWeekday() === 6 || time.isoWeekday() === 7) {
-    // Saturday or Sunday
-    time.add(2, 'd');
-  }
-
-  // Auctions always end at midnight
-  time.hours(23);
-  time.minutes(59);
-  time.seconds(59);
-  time.milliseconds(0);
-
-  return time.toDate();
-};
+import Calculator from './Calculator';
 
 export const loanIsVerified = ({
   loan: {
@@ -91,4 +57,18 @@ export const formatLoanWithStructure = ({
   }
 
   return structure;
+};
+
+export const formatLoanWithPromotion = (loan) => {
+  if (loan.structure.promotionOptionId) {
+    const property = Calculator.selectProperty({
+      loan,
+      // Do this to make sure we're getting the promotionOption and not the
+      // fake property created from it
+      structureId: loan.structure.id,
+    });
+    return { ...loan, structure: { ...loan.structure, property } };
+  }
+
+  return loan;
 };

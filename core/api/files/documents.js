@@ -56,6 +56,12 @@ export const allDocuments = ({ doc, collection }) => {
 
 const requiredByAdminOnly = ({ requiredByAdmin }) => requiredByAdmin !== false;
 
+const formatAdditionalDoc = additionalDoc => ({
+  ...additionalDoc,
+  required: true,
+  noTooltips: documentHasTooltip(additionalDoc.id),
+});
+
 const makeGetDocuments = collection => ({ loan, id }, ...args) => {
   const isLoans = collection === LOANS_COLLECTION;
   if (!id && !isLoans) {
@@ -63,16 +69,13 @@ const makeGetDocuments = collection => ({ loan, id }, ...args) => {
   }
 
   const doc = (!isLoans && loan[collection].find(({ _id }) => _id === id)) || loan;
+  const additionalDocumentsExist = doc && doc.additionalDocuments && doc.additionalDocuments.length > 0;
 
   return [
-    ...(doc && doc.additionalDocuments && doc.additionalDocuments.length > 0
+    ...(additionalDocumentsExist
       ? doc.additionalDocuments
         .filter(requiredByAdminOnly)
-        .map(additionalDoc => ({
-          ...additionalDoc,
-          required: true,
-          noTooltips: documentHasTooltip(additionalDoc.id),
-        }))
+        .map(formatAdditionalDoc)
       : []),
     { id: DOCUMENTS.OTHER, required: false, noTooltips: true },
   ];

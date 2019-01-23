@@ -4,7 +4,7 @@ import {
   createRegexQuery,
   generateMatchAnyWordRegexp,
 } from '../../helpers/mongoHelpers';
-import { adminUserFragment } from './userFragments';
+import { adminUser } from '../../fragments';
 
 const queryHasSpace = query => query.indexOf(' ') > -1;
 
@@ -32,5 +32,6 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
       filters.$or.push();
     }
   },
-  ...adminUserFragment,
+  ...adminUser(),
+  $options: { limit: 5 },
 });

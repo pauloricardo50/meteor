@@ -18,7 +18,6 @@
     "subdomains": {
       "admin": "https://admin.e-potek.ch",
       "app": "https://app.e-potek.ch",
-      "pdf": "https://pdf.e-potek.ch",
       "pro": "https://pro.e-potek.ch",
       "www": "https://www.e-potek.ch"
     }
@@ -46,10 +45,6 @@
       "appId": "KLociQZYhg92Xr2kt",
       "appSecret": "ade6d05b-e3cb-40ad-8b3b-7e4e81605ba7"
     },
-    "pdf": {
-      "appId": "y5Aoh6N3f2rh5Z7A4",
-      "appSecret": "4a290460-acd2-4a69-b54e-85ade77564f0"
-    },
     "pro": {
       "appId": "LahXKo9AFBp8pnQ2f",
       "appSecret": "404c2df5-178c-4404-b43f-724ce97abf3f"
@@ -62,18 +57,19 @@
     "API_KEY": "EXOfaa01de0dd64ae217e1748c2",
     "SECRET_KEY": "QOMZaTbdybrigeFg2bTeNMcXAKXBebdJjkIAoYonyRU"
   },
-    "redisOplog": {
-      "redis": {
-        "port": 45783,
-        "host": "kubernetes-service-node.service.consul",
-        "password": "Z524DK6IDGXOznCJtQZVpOadaiaK7a"
-      },
-      "retryIntervalMs": 10000,
-      "mutationDefaults": {
-        "optimistic": true,
-        "pushToRedis": true
-      },
-      "debug": false,
-      "overridePublishFunction": true
-    }
+  "redisOplog": {
+    "redis": {
+      "port": 45783,
+      "host": "kubernetes-service-node.service.consul",
+      "password": "Z524DK6IDGXOznCJtQZVpOadaiaK7a"
+    },
+    "retryIntervalMs": 10000,
+    "mutationDefaults": {
+      "optimistic": true,
+      "pushToRedis": true
+    },
+    "debug": false,
+    "overridePublishFunction": true
+  },
+  "DOC_RAPTOR_API_KEY": "GkjsAcqhD34P070MOF4I"
 }

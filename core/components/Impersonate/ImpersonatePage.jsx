@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-import { Bert } from 'meteor/themeteorchef:bert';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
 import { impersonateUser } from 'core/api';
+import notification from 'core/utils/notification';
 import { IMPERSONATE_SESSION_KEY } from 'core/api/impersonation/impersonation';
 
 class ImpersonatePage extends Component {
@@ -30,14 +30,13 @@ class ImpersonatePage extends Component {
       Meteor.connection.setUserId(userId);
       Session.setPersistent(IMPERSONATE_SESSION_KEY, true);
 
-      Bert.alert({
-        title: 'Success!',
-        message: `<h3 id="impersonation-success-message" class="bert">${formatMessage(
+      notification.success({
+        message: <span id="impersonation-success-message">Yay</span>,
+        description: formatMessage(
           { id: 'Impersonation.impersonationSuccess' },
           { email: emails[0].address },
-        )}</h3>`,
-        type: 'success',
-        style: 'fixed-top',
+        ),
+        duration: 5,
       });
 
       history.push('/');

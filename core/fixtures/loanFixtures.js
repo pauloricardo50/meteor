@@ -1,20 +1,15 @@
-import LoanService from 'core/api/loans/LoanService';
-import faker from 'faker';
+import faker from 'faker/locale/fr';
+import LoanService from '../api/loans/server/LoanService';
 import {
   PURCHASE_TYPE,
-  AUCTION_STATUS,
-  CLOSING_STEPS_TYPE,
-  CLOSING_STEPS_STATUS,
   INTEREST_RATES,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
-import { Loans } from '../api';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
-
 
 const logic1 = {};
 
@@ -26,7 +21,6 @@ const logic2 = {
     verifiedAt: new Date(),
     comments: [],
   },
-  auction: {},
 };
 
 const logic3 = {
@@ -38,42 +32,6 @@ const logic3 = {
     verifiedAt: new Date(),
     comments: [],
   },
-  auction: {
-    status: AUCTION_STATUS.ENDED,
-    startTime: new Date(),
-    endTime: new Date(),
-  },
-  closingSteps: [
-    {
-      id: 'upload0',
-      title: 'Contrat de prêt signé',
-      type: CLOSING_STEPS_TYPE.UPLOAD,
-    },
-    {
-      id: 'todo0',
-      title: 'Ouverture de compte chez votre prêteur',
-      description:
-        'Il faut ouvrir un compte bancaire chez votre prêteur où les fonds de votre hypothèque résideront.',
-      type: CLOSING_STEPS_TYPE.TODO,
-      status: CLOSING_STEPS_STATUS.VALID,
-    },
-    {
-      id: 'todo1',
-      title: 'Versement des fonds propres',
-      description:
-        'Vous devez aller chez le notaire et verser les fonds propres nécessaires sur un compte escrow.',
-      type: CLOSING_STEPS_TYPE.TODO,
-      status: CLOSING_STEPS_STATUS.UNVERIFIED,
-    },
-    {
-      id: 'todo2',
-      title: 'Engagement du notaire relative aux cédules hypothécaires',
-      description: '',
-      type: CLOSING_STEPS_TYPE.TODO,
-      status: CLOSING_STEPS_STATUS.ERROR,
-      error: 'Le notaire doit vous convier à un 2ème rendez-vous',
-    },
-  ],
 };
 
 const getRandomValueInArray = array =>
@@ -179,19 +137,15 @@ const getRandomStructure = (propertyValue, borrowerId) =>
     },
   ]);
 
-export const createFakeLoan = ({
-  userId,
-  step,
-  auctionStatus = AUCTION_STATUS.NONE,
-  twoBorrowers,
-}) => {
+export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   const borrowerIds = createFakeBorrowers(userId, twoBorrowers);
   const { _id: propertyId, value } = createFakeProperty(userId);
   const loan = {
     name: faker.address.streetAddress(),
     borrowerIds,
     propertyIds: [propertyId],
-    purchaseType: purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
+    purchaseType:
+      purchaseTypes[Math.floor(Math.random() * purchaseTypes.length)],
     contacts: [],
     structures: [
       {
@@ -222,26 +176,8 @@ export const createFakeLoan = ({
     loan.logic = logic1;
   }
 
-  if (auctionStatus === AUCTION_STATUS.NONE) {
-    loan.logic.auction = {};
-  } else if (auctionStatus === AUCTION_STATUS.STARTED) {
-    loan.logic.auction = {
-      status: AUCTION_STATUS.STARTED,
-      startTime: new Date(Date.now() - 1000),
-      endTime: new Date(Date.now() + 60 * 60 * 1000),
-    };
-  } else if (auctionStatus === AUCTION_STATUS.ENDED) {
-    loan.logic.auction = {
-      status: AUCTION_STATUS.ENDED,
-      startTime: new Date(),
-      endTime: new Date(),
-    };
-  }
-
   return LoanService.insert({ loan, userId });
 };
 
 export const getRelatedLoansIds = usersIds =>
-  Loans.find({ userId: { $in: usersIds } }, { fields: { _id: 1 } })
-    .fetch()
-    .map(item => item._id);
+  LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(item => item._id);

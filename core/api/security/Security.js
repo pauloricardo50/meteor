@@ -131,9 +131,17 @@ export default class Security {
 
   static canModifyDoc = (doc) => {
     // Only for client side docs that replace userLinks with users
-    const userId = Meteor.userId();
+    const { _id: userId } = Meteor.user();
+    if (this.minimumRole(ROLES.ADMIN)) {
+      return;
+    }
+
     const me = doc.users.find(({ _id }) => _id === userId);
 
-    return me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY;
+    return (
+      me
+      && me.$metadata
+      && me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
+    );
   };
 }

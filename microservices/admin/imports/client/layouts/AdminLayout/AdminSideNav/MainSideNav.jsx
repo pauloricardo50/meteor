@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCity,
-  faBriefcase,
-  faChartLine,
-  faUserTie,
-} from '@fortawesome/pro-light-svg-icons';
+import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
+import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
+import { faChartLine } from '@fortawesome/pro-light-svg-icons/faChartLine';
+import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 
 import {
   BORROWERS_COLLECTION,
@@ -20,65 +18,61 @@ import {
   ORGANISATIONS_COLLECTION,
   CONTACTS_COLLECTION,
 } from 'core/api/constants';
-
+import { INTEREST_RATES_COLLECTION } from 'imports/core/api/constants';
+import collectionIcons from 'core/arrays/collectionIcons';
 import MainSideNavListItem from './MainSideNavListItem';
+import {
+  DASHBOARD_PAGE,
+  DEV_PAGE,
+  INTEREST_RATES_PAGE,
+  ORGANISATIONS_PAGE,
+  TASKS_PAGE,
+} from '../../../../startup/client/adminRoutes';
 
 const items = [
-  { label: 'Dashboard', icon: 'home', to: '/', exact: true },
+  { label: 'Dashboard', icon: 'home', to: DASHBOARD_PAGE, exact: true },
   {
-    icon: 'contactMail',
     detail: true,
     collection: USERS_COLLECTION,
   },
   {
-    icon: 'dollarSign',
     detail: true,
     collection: LOANS_COLLECTION,
   },
   {
-    icon: <FontAwesomeIcon icon={faCity} className="admin-side-nav-icon" />,
     collection: PROMOTIONS_COLLECTION,
     detail: true,
   },
   {
-    icon: 'people',
     detail: true,
     collection: BORROWERS_COLLECTION,
   },
   {
-    icon: 'domain',
     detail: true,
     collection: PROPERTIES_COLLECTION,
   },
   {
     label: 'Tâches',
-    icon: 'check',
-    to: '/tasks',
+    to: TASKS_PAGE,
     collection: TASKS_COLLECTION,
   },
   {
     label: 'Organisations',
-    icon: (
-      <FontAwesomeIcon icon={faBriefcase} className="admin-side-nav-icon" />
-    ),
-    to: '/organisations',
+    to: ORGANISATIONS_PAGE,
     collection: ORGANISATIONS_COLLECTION,
   },
   {
     label: 'Contacts',
-    icon: <FontAwesomeIcon icon={faUserTie} className="admin-side-nav-icon" />,
     detail: true,
     collection: CONTACTS_COLLECTION,
   },
   {
     label: 'Taux',
-    icon: (
-      <FontAwesomeIcon icon={faChartLine} className="admin-side-nav-icon" />
-    ),
-    to: '/interestRates',
+    to: INTEREST_RATES_PAGE,
+    collection: INTEREST_RATES_COLLECTION,
   },
-  { label: 'Dev', icon: 'developerMode', to: '/dev' },
-];
+  { label: 'Dev', icon: 'developerMode', to: DEV_PAGE },
+].map(obj => ({ ...obj, icon: obj.icon || collectionIcons[obj.collection] }));
 
 const createOnClickHandler = (
   { detail, collection },

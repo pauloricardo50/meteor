@@ -28,7 +28,7 @@ const SelectableRow = ({ row, columnOptions, isSelected, onSelect }) => (
       <TableCell
         key={j}
         style={columnOptions[j].style || styles.cell}
-        numeric={columnOptions[j].numeric}
+        align={columnOptions[j].align}
         padding={columnOptions[j].padding || 'dense'}
       >
         {/* if the format function is provided, format the column, otherwise

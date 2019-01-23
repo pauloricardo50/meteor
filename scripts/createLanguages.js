@@ -16,6 +16,7 @@ const config = {
       id: 'admin',
       path: __dirname + '/../microservices/admin',
       exceptions: [
+        'AccountPage',
         'AdminFilesTab',
         'AdminPromotionPage',
         'ArrayInput',
@@ -24,6 +25,7 @@ const config = {
         'collections',
         'ConditionsButton',
         'ConfirmMethod',
+        'Contacts',
         'FileAdder',
         'files',
         'Financing',
@@ -32,10 +34,13 @@ const config = {
         'InterestRates',
         'InterestsTable',
         'Irs10y',
+        'Lenders',
         'LoginPage',
         'Microlocation',
         'offer',
         'OfferAdder',
+        'PasswordChange',
+        'PDF',
         'Promotion',
         'PromotionLotPage',
         'PropertyForm',
@@ -82,11 +87,6 @@ const config = {
       ],
     },
     {
-      id: 'pdf',
-      path: __dirname + '/../microservices/pdf',
-      exceptions: ['PDF'],
-    },
-    {
       id: 'pro',
       path: __dirname + '/../microservices/pro',
       exceptions: [
@@ -117,6 +117,7 @@ const config = {
   generalExceptions: [
     'BorrowersSummary',
     'e-Potek',
+    'errors',
     'ExpensesChart',
     'ExpensesChartInterests',
     'File',

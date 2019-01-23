@@ -6,35 +6,48 @@ import Table from '../../../Table';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
 import ProPromotionLotsTableContainer from './ProPromotionLotsTableContainer';
-import { LOT_TYPES } from '../../../../api/constants';
+import { LOT_TYPES, PROPERTY_TYPE } from '../../../../api/constants';
+import { moneyField } from '../../../../api/helpers/sharedSchemas';
 
 type ProPromotionLotsTableProps = {};
 
 export const promotionLotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true } },
-  value: {
-    type: Number,
-    defaultValue: 0,
-    min: 0,
+  name: { type: String, uniforms: { autoFocus: true, placeholder: 'A' } },
+  value: { ...moneyField, defaultValue: 0 },
+  landValue: { ...moneyField, defaultValue: 0 },
+  constructionValue: { ...moneyField, defaultValue: 0 },
+  additionalMargin: { ...moneyField, defaultValue: 0 },
+  propertyType: {
+    type: String,
+    allowedValues: Object.values(PROPERTY_TYPE),
+    uniforms: { placeholder: null },
   },
   insideArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   terraceArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   gardenArea: { type: SimpleSchema.Integer, optional: true, min: 0 },
   roomCount: { type: Number, optional: true, min: 0, max: 100 },
   bathroomCount: { type: Number, optional: true, min: 0, max: 100 },
-  monthlyExpenses: { type: Number, optional: true, min: 0, max: 100000 },
-  description: { type: String, optional: true },
+  monthlyExpenses: moneyField,
+  description: {
+    type: String,
+    optional: true,
+    uniforms: { placeholder: 'Attique avec la meilleure vue du bâtiment' },
+  },
 });
 
 export const lotSchema = new SimpleSchema({
-  name: { type: String, uniforms: { autoFocus: true } },
-  type: { type: String, allowedValues: Object.values(LOT_TYPES) },
-  description: { type: String, optional: true },
-  value: {
-    type: Number,
-    defaultValue: 0,
-    min: 0,
+  name: { type: String, uniforms: { autoFocus: true, placeholder: '1' } },
+  type: {
+    type: String,
+    allowedValues: Object.values(LOT_TYPES),
+    uniforms: { displayEmpty: false },
   },
+  description: {
+    type: String,
+    optional: true,
+    uniforms: { placeholder: 'Parking en enfilade' },
+  },
+  value: { ...moneyField, min: 0 },
 });
 
 const ProPromotionLotsTable = ({
@@ -51,6 +64,8 @@ const ProPromotionLotsTable = ({
     {canModify && (
       <div className="promotion-table-actions">
         <AutoFormDialog
+          title={<T id="PromotionPage.addProperty" />}
+          description={<T id="PromotionPage.promotionLotValueDescription" />}
           buttonProps={{
             label: <T id="PromotionPage.addProperty" />,
             raised: true,
@@ -61,6 +76,7 @@ const ProPromotionLotsTable = ({
           onSubmit={addProperty}
         />
         <AutoFormDialog
+          title={<T id="PromotionPage.addLot" />}
           buttonProps={{
             label: <T id="PromotionPage.addLot" />,
             raised: true,

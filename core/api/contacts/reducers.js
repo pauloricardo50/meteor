@@ -1,5 +1,6 @@
-import { addressReducer, tasksReducer } from '../reducers';
+import addressReducer from '../reducers/addressReducer';
 import Contacts from './contacts';
+import { fullOffer } from '../fragments';
 
 Contacts.addReducers({
   name: {
@@ -14,15 +15,27 @@ Contacts.addReducers({
     body: {
       emails: 1,
     },
-    reduce: ({ emails }) => emails && emails.length && emails[0].address,
+    reduce: ({ emails }) =>
+      (emails && emails.length && emails[0].address) || '',
   },
   phoneNumber: {
     body: {
       phoneNumbers: 1,
     },
     reduce: ({ phoneNumbers }) =>
-      phoneNumbers && phoneNumbers.length && phoneNumbers[0],
+      (phoneNumbers && phoneNumbers.length && phoneNumbers[0]) || '',
+  },
+  offers: {
+    body: {
+      lenders: { offers: fullOffer() },
+    },
+    reduce: ({ lenders = [] }) => {
+      const contactOffers = lenders.reduce(
+        (allOffers, { offers = [] }) => [...allOffers, ...offers],
+        [],
+      );
+      return contactOffers;
+    },
   },
   ...addressReducer,
-  ...tasksReducer,
 });

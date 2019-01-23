@@ -5,6 +5,7 @@ import {
   additionalDocuments,
   address,
   mortgageNoteLinks,
+  moneyField,
 } from '../../helpers/sharedSchemas';
 import {
   RESIDENCY_PERMIT,
@@ -27,8 +28,13 @@ const LogicSchema = new SimpleSchema({
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
   [`${name}.$`]: Object,
-  [`${name}.$.value`]: { type: SimpleSchema.Integer, min: 0, max: 100000000 },
-  [`${name}.$.description`]: { type: String, optional: true, allowedValues },
+  [`${name}.$.value`]: { ...moneyField, optional: false },
+  [`${name}.$.description`]: {
+    type: String,
+    optional: true,
+    allowedValues,
+    uniforms: { displayEmpty: false },
+  },
 });
 
 // Documentation is in the google drive dev/MongoDB Schemas
@@ -52,6 +58,7 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(GENDER),
+    uniforms: { displayEmpty: false },
   },
   age: {
     type: SimpleSchema.Integer,
@@ -72,6 +79,7 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
     allowedValues: Object.values(RESIDENCY_PERMIT),
+    uniforms: { displayEmpty: false },
   },
   citizenship: {
     type: String,
@@ -85,6 +93,7 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(CIVIL_STATUS),
     optional: true,
+    uniforms: { displayEmpty: false },
   },
   childrenCount: {
     type: SimpleSchema.Integer,
@@ -96,64 +105,28 @@ const BorrowerSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  salary: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
+  salary: moneyField,
   bonusExists: {
     type: Boolean,
     defaultValue: false,
   },
-  bonus2015: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  bonus2016: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  bonus2017: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  bonus2018: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
-  [OWN_FUNDS_TYPES.BANK_FORTUNE]: {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
-    optional: true,
-  },
+  bonus2015: moneyField,
+  bonus2016: moneyField,
+  bonus2017: moneyField,
+  bonus2018: moneyField,
+  [OWN_FUNDS_TYPES.BANK_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_2),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3A),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.BANK_3A),
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
-  [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    min: 0,
-    max: 100000000,
-  },
+  [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
   ...makeArrayOfObjectsSchema('otherFortune'),
   ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
   ...makeArrayOfObjectsSchema('realEstate', Object.values(RESIDENCE_TYPE)),
   'realEstate.$.loan': {
-    type: SimpleSchema.Integer,
-    min: 0,
-    max: 100000000,
+    ...moneyField,
+    optional: false,
   },
   // business logic and admin
   logic: {

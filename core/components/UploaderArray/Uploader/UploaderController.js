@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
-import bert from 'core/utils/bert';
+import notification from 'core/utils/notification';
 import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
@@ -10,14 +10,20 @@ import {
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
-import SlackService from '../../../api/slack';
+import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
 
-const checkFile = (file) => {
+const checkFile = (file, currentValue = [], tempFiles = []) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
     return 'fileType';
   }
   if (file.size > MAX_FILE_SIZE) {
     return 'fileSize';
+  }
+  if (
+    currentValue.some(({ name }) => name === file.name)
+    || tempFiles.some(({ name }) => name === file.name)
+  ) {
+    return 'sameName';
   }
   return true;
 };
@@ -36,7 +42,8 @@ export const propHasChanged = (oldProp, newProp) =>
 
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
-    displayFull: Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
+    displayFull:
+      Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
   }),
   {
     showFull: () => () => ({ displayFull: true }),
@@ -60,15 +67,16 @@ const props = withProps(({
   deleteFile,
   addTempFiles,
   intl: { formatMessage: f },
-  currentUser,
   handleSuccess,
+  currentValue,
+  tempFiles,
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
     let showError = false;
 
     files.forEach((file) => {
-      const isValid = checkFile(file);
+      const isValid = checkFile(file, currentValue, tempFiles);
       if (isValid === true) {
         fileArray.push(file);
       } else {
@@ -77,11 +85,10 @@ const props = withProps(({
     });
 
     if (showError) {
-      bert(
-        f({ id: `error.${showError}.title` }),
-        f({ id: `error.${showError}.description` }),
-        'danger',
-      );
+      notification.error({
+        message: f({ id: `errors.${showError}.title` }),
+        description: f({ id: `errors.${showError}.description` }),
+      });
       return;
     }
 
@@ -89,7 +96,7 @@ const props = withProps(({
   },
   handleUploadComplete: (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    SlackService.notifyOfUpload(currentUser, file.name);
+    notifyOfUpload.run({ fileName: file.name });
     if (handleSuccess) {
       handleSuccess(file, url);
     }
@@ -107,7 +114,6 @@ const willReceiveProps = lifecycle({
   // props.
   // FIXME: This prevents someone from uploading a file with the same name twice
   componentWillReceiveProps({ currentValue: nextValue }) {
-    console.log('nextValue', nextValue);
     const { currentValue, tempFiles, filterTempFiles } = this.props;
 
     // Lazy check to see if they are of different size
@@ -115,6 +121,8 @@ const willReceiveProps = lifecycle({
       if (tempFiles && tempFiles.length) {
         // Loop over the new props to see if they match any of the temp files
         // Remove the ones that match
+        console.log('nextValue', nextValue);
+        console.log('tempFiles', tempFiles);
         nextValue.forEach(file =>
           tempFiles.forEach(temp =>
             temp.name === file.name

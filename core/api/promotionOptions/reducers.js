@@ -3,7 +3,18 @@ import PromotionOptions from '.';
 
 PromotionOptions.addReducers({
   promotion: {
-    body: { promotionLots: { promotion: { name: 1 } } },
+    body: {
+      promotionLots: {
+        promotion: {
+          name: 1,
+          address1: 1,
+          address2: 1,
+          zipCode: 1,
+          canton: 1,
+          city: 1,
+        },
+      },
+    },
     reduce: ({ promotionLots = [] }) =>
       (promotionLots.length > 0 ? promotionLots[0].promotion : {}),
   },
@@ -35,5 +46,10 @@ PromotionOptions.addReducers({
         && promotionLots[0].attributedTo
         && promotionLots[0].attributedTo.userId === Meteor.userId()
       ),
+  },
+  canton: {
+    body: { promotionLots: { promotion: { canton: 1 } } },
+    reduce: ({ promotionLots = [] }) =>
+      (promotionLots.length > 0 ? promotionLots[0].promotion.canton : undefined),
   },
 });

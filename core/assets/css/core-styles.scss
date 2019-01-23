@@ -79,8 +79,8 @@ hr {
 }
 
 :not(.card1).card-hover {
-  padding: 16px;
   box-sizing: border-box;
+  padding: 16px;
 
   &:hover {
     border-radius: 8px;
@@ -201,6 +201,10 @@ p.description,
   &.wrap {
     flex-wrap: wrap;
   }
+
+  &.center-align {
+    align-items: center;
+  }
 }
 
 .flex-col {
@@ -258,28 +262,6 @@ p.description,
 
 .choice.disabled {
   cursor: default !important;
-}
-
-.bert-alert.success {
-  background: $success;
-}
-.bert-alert.info {
-  background: $primary;
-}
-.bert-alert.warning {
-  background: $warning;
-}
-.bert-alert.danger {
-  background: $error;
-}
-
-.bert-content h5,
-.bert-content p {
-  color: white !important;
-}
-
-.bert {
-  color: white !important;
 }
 
 .text-center {

@@ -1,10 +1,11 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
+import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import sinon from 'sinon';
-import UserService from '../../UserService';
+
 import { ROLES } from '../../userConstants';
+import UserService from '../UserService';
 
 describe('UserService', () => {
   const firstName = 'testFirstName';

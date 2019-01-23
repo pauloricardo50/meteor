@@ -1,0 +1,29 @@
+// @flow
+import React from 'react';
+import SelectField from 'uniforms-material/SelectField';
+
+import CustomSelectFieldContainer from './CustomSelectFieldContainer';
+
+type CustomSelectFieldProps = {
+  transform: Function,
+  allowedValues: Array,
+  customAllowedValues: Function,
+  model: Object,
+};
+
+const CustomSelectField = ({
+  transform,
+  values = [],
+  renderValue,
+  ...props
+}: CustomSelectFieldProps) => (
+  <SelectField
+    {...props}
+    allowedValues={values}
+    transform={transform}
+    renderValue={renderValue}
+    labelProps={{ shrink: true }}
+  />
+);
+
+export default CustomSelectFieldContainer(CustomSelectField);
