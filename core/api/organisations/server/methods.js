@@ -4,6 +4,7 @@ import {
   organisationUpdate,
   organisationRemove,
   addContactToOrgnaisation,
+  addUserToOrganisation,
   removeUserFromOrganisation,
 } from '../methodDefinitions';
 import OrganisationService from './OrganisationService';

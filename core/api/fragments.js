@@ -683,6 +683,7 @@ export const fullUser = () => ({
   emails: 1,
   loans: loanBase(),
   updatedAt: 1,
+  organisations: fullOrganisation(),
 });
 
 export const appUser = () => ({

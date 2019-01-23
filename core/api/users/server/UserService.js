@@ -116,6 +116,25 @@ class UserService extends CollectionService {
     const apiToken = Random.id(24);
     return this._update({ id: userId, object: { apiToken }, operator: '$set' });
   };
+
+  updateOrganisations = ({ userId, newOrganisations = [] }) => {
+    const { organisations: oldOrganisations = [] } = this.get(userId);
+
+    oldOrganisations.forEach(({ _id: organisationId }) =>
+      this.removeLink({
+        id: userId,
+        linkName: 'organisations',
+        linkId: organisationId,
+      }));
+
+    newOrganisations.forEach(({ _id: organisationId, metadata }) =>
+      this.addLink({
+        id: userId,
+        linkName: 'organisations',
+        linkId: organisationId,
+        metadata,
+      }));
+  };
 }
 
 export default new UserService();

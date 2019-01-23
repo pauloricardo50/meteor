@@ -97,3 +97,11 @@ export const generateApiToken = new Method({
     userId: String,
   },
 });
+
+export const userUpdateOrganisations = new Method({
+  name: 'userUpdateOrganisations',
+  params: {
+    userId: String,
+    newOrganisations: Array,
+  },
+});
