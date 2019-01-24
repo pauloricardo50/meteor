@@ -1,10 +1,15 @@
 /* eslint-env mocha */
-import { E2E_DEV_EMAIL, E2E_USER_EMAIL, USER_PASSWORD } from '../../imports/core/fixtures/fixtureConstants';
+import {
+  E2E_DEV_EMAIL,
+  E2E_USER_EMAIL,
+  USER_PASSWORD,
+} from '../../imports/core/fixtures/fixtureConstants';
 
 describe('Method rate limits', () => {
   before(() => {
-    cy.callMethod('resetDatabase');
-    cy.callMethod('generateTestData');
+    cy.initiateTest();
+    // cy.callMethod('resetDatabase');
+    // cy.callMethod('generateTestData');
   });
 
   beforeEach(() => {
@@ -28,7 +33,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithoutSetLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithoutSetLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
 
     it('method should not allow call 6 times as user', () => {
@@ -38,7 +44,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithoutSetLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithoutSetLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 6 times as dev', () => {
@@ -66,7 +73,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithSetDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetDefaultLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
 
     it('method should not allow call 6 times as user', () => {
@@ -76,7 +84,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithSetDefaultLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetDefaultLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 6 times as dev', () => {
@@ -104,7 +113,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithSetLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 3 times as user', () => {
@@ -123,7 +133,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithSetLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
 
     it('method should allow call 4 times as dev', () => {
@@ -142,7 +153,8 @@ describe('Method rate limits', () => {
           expect(data).equal(1);
         });
       }
-      cy.callMethod('methodWithSetLimit').then(err => expect(err.error).equal('too-many-requests'));
+      cy.callMethod('methodWithSetLimit').then(err =>
+        expect(err.error).equal('too-many-requests'));
     });
   });
 });
