@@ -9,7 +9,7 @@ const CustomAutoFields = (
 ) =>
   createElement(
     element,
-    { className: 'autofields', ...props },
+    { key: 'custom-autofields', className: 'autofields', ...props },
     (fields || schema.getSubfields())
       .filter(field => omitFields.indexOf(field) === -1)
       .map((field) => {

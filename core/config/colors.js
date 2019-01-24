@@ -1,3 +1,5 @@
+import { INTEREST_RATES } from 'imports/core/api/constants';
+
 const colors = {
   primary: '#005bea',
   primaryArray: [0, 91, 234],
@@ -17,6 +19,17 @@ const colors = {
     contrastText: '#fff',
     darkPrimary: '#0048bb', // Darken 20%
     darkSuccess: '#1aa890', // Darken 20%
+  },
+  interestRates: {
+    [INTEREST_RATES.LIBOR]: '#0047AC',
+    [INTEREST_RATES.YEARS_1]: '#2C82BE',
+    [INTEREST_RATES.YEARS_2]: '#A8B9C5',
+    [INTEREST_RATES.YEARS_5]: '#43AAC8',
+    [INTEREST_RATES.YEARS_10]: '#005bea',
+    [INTEREST_RATES.YEARS_15]: '#2075AF',
+    [INTEREST_RATES.YEARS_20]: '#3793CC',
+    [INTEREST_RATES.YEARS_25]: '#53A8E2',
+    irs10y: '#0048bb',
   },
 };
 

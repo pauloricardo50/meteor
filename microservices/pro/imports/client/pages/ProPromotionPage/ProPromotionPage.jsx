@@ -18,5 +18,4 @@ const ProPromotionPage = ({
     isPro
   />
 );
-
 export default ProPromotionPageContainer(ProPromotionPage);

@@ -12,7 +12,6 @@ const pollUntilReady = (
     let poll;
 
     const handleIsReady = (isReady) => {
-      console.log('isReady:', isReady);
       const hasTimedOut = count > timeout / interval;
 
       if (isReady) {

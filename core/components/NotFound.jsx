@@ -27,7 +27,10 @@ export default class NotFound extends Component {
   componentDidMount() {
     logError.run({
       error: { name: 'NotFound page triggered' },
-      url: window && window.location && window.location.href,
+      url:
+        window && window.location && window.location.href
+          ? window.location.href
+          : '',
     });
   }
 

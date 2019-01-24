@@ -26,17 +26,22 @@ export default (Component) => {
 
     getAllowedValues = (props) => {
       const { customAllowedValues, model } = props;
+      const { values } = this.state;
+
+      if (customAllowedValues) {
+        this.setState({ loading: !values || !values.length });
+      }
+
       if (customAllowedValues && typeof customAllowedValues === 'function') {
-        Promise.resolve(customAllowedValues(model)).then(values =>
-          this.setState({ values }));
+        Promise.resolve()
+          .then(() => customAllowedValues(model))
+          .then(result => this.setState({ values: result }))
+          .finally(() => this.setState({ loading: false }));
       } else if (
         customAllowedValues
         && typeof customAllowedValues === 'object'
       ) {
         const { query, params = () => ({}) } = customAllowedValues;
-        const { values } = this.state;
-
-        this.setState({ loading: !values || !!values.length });
 
         query.clone(params(model)).fetch((error, data) => {
           if (error) {
@@ -104,7 +109,7 @@ export default (Component) => {
       }
 
       if (loading) {
-        return <Loading />;
+        return <Loading small />;
       }
 
       return (

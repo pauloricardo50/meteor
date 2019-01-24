@@ -92,6 +92,19 @@ export default class Security {
     }
   }
 
+  static hasPermissionOnDoc(doc, permissions, userId) {
+    const { userLinks = [] } = doc;
+    const userLink = userLinks.find(({ _id }) => _id === userId);
+
+    if (!userLink) {
+      this.handleUnauthorized('Checking permissions');
+    }
+
+    if (!permissions.includes(userLink.permissions)) {
+      this.handleUnauthorized('Checking permissions');
+    }
+  }
+
   static checkCurrentUserIsDev() {
     if (!this.currentUserHasRole(ROLES.DEV)) {
       this.handleUnauthorized('unauthorized developer');
@@ -131,9 +144,17 @@ export default class Security {
 
   static canModifyDoc = (doc) => {
     // Only for client side docs that replace userLinks with users
-    const userId = Meteor.userId();
+    const { _id: userId } = Meteor.user();
+    if (this.minimumRole(ROLES.ADMIN)) {
+      return;
+    }
+
     const me = doc.users.find(({ _id }) => _id === userId);
 
-    return me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY;
+    return (
+      me
+      && me.$metadata
+      && me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
+    );
   };
 }
