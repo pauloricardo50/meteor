@@ -1,8 +1,6 @@
 import { Match } from 'meteor/check';
 import { Method } from './methods';
 
-import rateLimit from '../../utils/rate-limit';
-
 export const getMixpanelAuthorization = new Method({
   name: 'getMixpanelAuthorization',
 });
@@ -50,12 +48,12 @@ export const submitContactForm = new Method({
     phoneNumber: String,
     details: Match.Optional(String),
   },
-});
-
-rateLimit({
-  methods: [submitContactForm.config.name],
-  limit: 1,
-  timeRange: 5000,
+  rateLimit: {
+    global: {
+      limit: 1,
+      timeRange: 5000,
+    },
+  },
 });
 
 export const addUserToDoc = new Method({
