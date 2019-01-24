@@ -1,0 +1,19 @@
+.blog-page main {
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-page-content {
+  align-self: center;
+  max-width: 1000px;
+}
+
+.blog-author {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 16px;
+    border-radius: 50%;
+  }
+}
