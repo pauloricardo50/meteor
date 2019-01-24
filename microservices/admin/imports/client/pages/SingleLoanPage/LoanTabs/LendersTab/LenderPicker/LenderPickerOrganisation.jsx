@@ -21,13 +21,17 @@ const LenderPickerOrganisation = ({
     <h4 className={cx({ secondary: !isActive })}>{name}</h4>
     {isActive && (
       <IconButton
-        className="error"
+        className="error remove"
         onClick={() => removeLender(organisationId)}
         type="delete"
       />
     )}
     {!isActive && (
-      <IconButton onClick={() => addLender(organisationId)} type="add" />
+      <IconButton
+        onClick={() => addLender(organisationId)}
+        type="add"
+        className="add"
+      />
     )}
   </div>
 );

@@ -45,14 +45,19 @@ describe('Loans', () => {
     cy.contains('Choisir prêteurs').click();
 
     cy.get('.lender-picker-dialog')
-      .contains('Ajouter')
+      .find('.add')
+      .first()
       .click();
-    // Wait for button to toggle to "delete"
-    cy.get('.lender-picker-dialog').contains('Supprimer');
+    cy.get('.lender-picker-dialog .remove').should('exist');
     cy.get('.lender-picker-dialog')
-      .contains('Ajouter')
+      .find('.add')
+      .first()
       .click();
     cy.contains('Fermer').click();
+
+    // Wait for reactive query to come back
+    cy.wait(2000);
+
     cy.get('.lender.card1').then((lenders) => {
       expect(lenders.length).to.equal(2);
     });

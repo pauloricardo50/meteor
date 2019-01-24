@@ -92,6 +92,19 @@ export default class Security {
     }
   }
 
+  static hasPermissionOnDoc(doc, permissions, userId) {
+    const { userLinks = [] } = doc;
+    const userLink = userLinks.find(({ _id }) => _id === userId);
+
+    if (!userLink) {
+      this.handleUnauthorized('Checking permissions');
+    }
+
+    if (!permissions.includes(userLink.permissions)) {
+      this.handleUnauthorized('Checking permissions');
+    }
+  }
+
   static checkCurrentUserIsDev() {
     if (!this.currentUserHasRole(ROLES.DEV)) {
       this.handleUnauthorized('unauthorized developer');
