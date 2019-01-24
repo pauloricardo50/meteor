@@ -4,7 +4,7 @@ import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
 
 import LineChart from 'core/components/charts/LineChart';
-import Button from 'core/components/Button';
+import Toggle from '/core/components/Material/Toggle/Toggle';
 import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 type InterestRatesChartProps = {
@@ -21,21 +21,21 @@ const InterestRatesChart = ({
   config,
   toggleRanges,
   showRanges,
-}: InterestRatesChartProps) => {
-  return (
-    <>
-      <Button onClick={toggleRanges} primary>
-        {showRanges ? 'Masquer les étendues' : 'Afficher les étendues'}
-      </Button>
-      <LineChart
-        title={title}
-        lines={lines}
-        config={config}
-        HighchartsExporting={HighchartsExporting}
-        HighchartsMore={HighchartsMore}
-      />
-    </>
-  );
-};
+}: InterestRatesChartProps) => (
+  <>
+    <Toggle
+      onToggle={toggleRanges}
+      toggled={showRanges}
+      labelRight="Afficher les étendues"
+    />
+    <LineChart
+      title={title}
+      lines={lines}
+      config={config}
+      HighchartsExporting={HighchartsExporting}
+      HighchartsMore={HighchartsMore}
+    />
+  </>
+);
 
 export default InterestRatesChartContainer(InterestRatesChart);
