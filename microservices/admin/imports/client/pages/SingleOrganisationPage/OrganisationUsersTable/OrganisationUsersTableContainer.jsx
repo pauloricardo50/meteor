@@ -2,10 +2,10 @@ import React from 'react';
 import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import T from 'imports/core/components/Translation/Translation';
-import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
+import T from 'core/components/Translation/Translation';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
-import { createRoute } from 'imports/core/utils/routerUtils';
+import { createRoute } from 'core/utils/routerUtils';
 
 const columnOptions = [
   { id: 'firstName', label: <T id="Forms.firstName" /> },
@@ -71,9 +71,8 @@ const makeMapUser = ({ history }) => (user) => {
 
 export default compose(
   withRouter,
-  withProps(({ organisation: {users = []}, history, organisationId }) => ({
+  withProps(({ organisation: { users = [] }, history }) => ({
     rows: users.map(makeMapUser({ history })),
     columnOptions,
-    // insertContactModel: { organisations: [{ _id: organisationId }] },
   })),
 );
