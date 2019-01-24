@@ -8,6 +8,7 @@ type PromotionUsersPageProps = {};
 
 const PromotionUsersPage = (props: PromotionUsersPageProps) => (
   <div className="promotion-users-page card1">
+    {console.log('props:', props)}
     <h1>
       <T id="PromotionUsersPage.title" />
     </h1>
