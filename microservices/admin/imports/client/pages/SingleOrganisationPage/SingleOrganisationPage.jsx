@@ -7,6 +7,7 @@ import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
+import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
@@ -15,6 +16,7 @@ type SingleOrganisationPageProps = {
 const tabs = props =>
   [
     { id: 'contacts', Component: ContactsTable },
+    { id: 'users', Component: OrganisationUsersTable },
     {
       id: 'offers',
       Component: OffersTable,
@@ -34,7 +36,7 @@ const tabs = props =>
 const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => {
-  const { contacts, offers } = organisation;
+  const { contacts, offers, users } = organisation;
 
   return (
     <div className="card1 card-top single-organisation-page">
@@ -42,6 +44,7 @@ const SingleOrganisationPage = ({
       <Tabs
         tabs={tabs({
           contacts,
+          users,
           offers,
           organisationId: organisation._id,
         })}

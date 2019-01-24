@@ -318,7 +318,7 @@ export const baseOrganisation = () => ({
   type: 1,
   zipCode: 1,
   tags: 1,
-  users: {role: 1, email: 1, name: 1},
+  users: {_id : 1},
 });
 
 export const fullOrganisation = () => ({
@@ -326,6 +326,7 @@ export const fullOrganisation = () => ({
   contacts: contact(),
   lenders: lender(),
   offers: fullOffer(),
+  users: organisationUser(),
 });
 
 // //
@@ -667,7 +668,13 @@ export const simpleUser = () => ({
   firstName: 1,
   lastName: 1,
   phoneNumbers: 1,
+  phoneNumber: 1,
   roles: 1,
+});
+
+export const organisationUser = () => ({
+  ...simpleUser(),
+  organisations: baseOrganisation(),
 });
 
 export const adminUser = () => ({
