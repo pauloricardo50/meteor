@@ -318,7 +318,7 @@ export const baseOrganisation = () => ({
   type: 1,
   zipCode: 1,
   tags: 1,
-  users: {_id : 1},
+  users: { _id: 1 },
 });
 
 export const fullOrganisation = () => ({
@@ -470,7 +470,7 @@ export const basePromotion = () => ({
   status: 1,
   type: 1,
   updatedAt: 1,
-  users: { name: 1, email: 1, roles: 1 },
+  users: { name: 1, email: 1, roles: 1, organisations: { name: 1 } },
   zipCode: 1,
 });
 

@@ -77,15 +77,17 @@ export class LoanService extends CollectionService {
     });
   };
 
-  insertPromotionLoan = ({ userId, promotionId }) => {
+  insertPromotionLoan = ({ userId, promotionId, invitedBy }) => {
+    console.log('invitedBy:', invitedBy)
     const borrowerId = BorrowerService.insert({ userId });
     const loanId = this.insert({
       loan: {
         borrowerIds: [borrowerId],
-        promotionLinks: [{ _id: promotionId }],
+        // promotionLinks: [{ _id: promotionId, metadata: {invitedBy} }],
       },
       userId,
     });
+    this.addLink({id: loanId, linkName: 'promotions', linkId: promotionId, metadata: {invitedBy}})
     this.addNewStructure({ loanId });
     return loanId;
   };

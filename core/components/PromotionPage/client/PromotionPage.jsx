@@ -20,6 +20,7 @@ type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
   const { promotion, currentUser, canModify, isPro, loan = {} } = props;
+  console.log('promotion:', promotion);
   const { residenceType } = loan;
 
   return (
@@ -28,7 +29,7 @@ const PromotionPage = (props: PromotionPageProps) => {
       <div className="buttons flex center animated fadeIn delay-600">
         {canModify && (
           <CustomerAdder
-            promotionId={promotion._id}
+            promotion={promotion}
             promotionStatus={promotion.status}
           />
         )}

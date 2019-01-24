@@ -92,7 +92,7 @@ export class PromotionService extends CollectionService {
 
   inviteUser({
     promotionId,
-    user: { email, firstName, lastName, phoneNumber },
+    user: { email, firstName, lastName, phoneNumber, invitedBy },
     sendInvitation = true,
   }) {
     const promotion = this.get(promotionId);
@@ -126,7 +126,7 @@ export class PromotionService extends CollectionService {
       }
     }
 
-    const loanId = LoanService.insertPromotionLoan({ userId, promotionId });
+    const loanId = LoanService.insertPromotionLoan({ userId, promotionId, invitedBy });
 
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({

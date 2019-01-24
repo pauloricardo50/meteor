@@ -33,6 +33,7 @@ const makeMapOption = ({
     createdAt,
     solvency,
   } = promotionOption;
+  console.log('promotionOption:', promotionOption)
   const {
     user,
     promotions,
