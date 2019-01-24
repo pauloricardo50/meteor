@@ -27,6 +27,10 @@ const BlogPage = ({ posts }: BlogPageProps) => {
           <div dangerouslySetInnerHTML={{ __html: posts[0].content }} />
 
           <BlogAuthor author={posts[0].author} />
+
+          {posts.map(post => (
+            <div>{post.title}</div>
+          ))}
         </section>
       </WwwLayout.Content>
       <WwwLayout.Footer />

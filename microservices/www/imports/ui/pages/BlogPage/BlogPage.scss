@@ -6,6 +6,10 @@
 .blog-page-content {
   align-self: center;
   max-width: 1000px;
+
+  blockquote {
+    background-color: red;
+  }
 }
 
 .blog-author {
