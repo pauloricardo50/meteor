@@ -17,9 +17,9 @@ const initiliazeHighcharts = () => {
     'init',
     function (proceed, options, callback) {
       if (options.chart && options.chart.forExport && options.series) {
-        $.each(options.series, function () {
-          if (this.visible === false) {
-            this.showInLegend = false;
+        options.series.forEach((serie) => {
+          if (serie.visible === false) {
+            serie.showInLegend = false;
           }
         });
       }
