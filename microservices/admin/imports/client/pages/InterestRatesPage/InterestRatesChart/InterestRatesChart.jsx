@@ -1,27 +1,41 @@
 // @flow
 import React from 'react';
 import HighchartsExporting from 'highcharts-exporting';
+import HighchartsMore from 'highcharts-more';
 
 import LineChart from 'core/components/charts/LineChart';
+import Toggle from 'core/components/Material/Toggle/Toggle';
 import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 type InterestRatesChartProps = {
   title: String,
   config: Object,
   lines: Array<Object>,
+  toggleRanges: Function,
+  showRanges: boolean,
 };
 
 const InterestRatesChart = ({
   title,
   lines,
   config,
+  toggleRanges,
+  showRanges,
 }: InterestRatesChartProps) => (
-  <LineChart
-    title={title}
-    lines={lines}
-    config={config}
-    HighchartsExporting={HighchartsExporting}
-  />
+  <>
+    <Toggle
+      onToggle={toggleRanges}
+      toggled={showRanges}
+      labelRight="Afficher les étendues"
+    />
+    <LineChart
+      title={title}
+      lines={lines}
+      config={config}
+      HighchartsExporting={HighchartsExporting}
+      HighchartsMore={HighchartsMore}
+    />
+  </>
 );
 
 export default InterestRatesChartContainer(InterestRatesChart);
