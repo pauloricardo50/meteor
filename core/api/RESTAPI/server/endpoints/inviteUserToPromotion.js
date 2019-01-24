@@ -52,7 +52,10 @@ export const inviteUserToPromotion = api => (
   try {
     const promise = testing
       ? Promise.resolve()
-      : PromotionService.inviteUser({ promotionId, user });
+      : PromotionService.inviteUser({
+        promotionId,
+        user: { ...user, invitedBy: userId },
+      });
 
     return promise.then(() =>
       api.sendResponse({
