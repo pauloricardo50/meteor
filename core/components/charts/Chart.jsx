@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactHighcharts from 'react-highcharts';
 
-const initiliazeHighcharts = () => {
+const initialazeHighcharts = () => {
   ReactHighcharts.Highcharts.setOptions({
     lang: {
       months: 'Janvier_Février_Mars_Avril_Mai_Juin_Juillet_Août_Septembre_Octobre_Novembre_Décembre'.split('_'),
@@ -42,7 +42,7 @@ export default class Chart extends Component {
       HighchartsMore(ReactHighcharts.Highcharts);
     }
 
-    initiliazeHighcharts();
+    initialazeHighcharts();
   }
 
   componentWillReceiveProps({ data: nextData }) {
