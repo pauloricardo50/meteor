@@ -36,7 +36,7 @@ const tabs = props =>
 const SingleOrganisationPage = ({
   organisation,
 }: SingleOrganisationPageProps) => {
-  const { contacts, offers, users } = organisation;
+  const { contacts, offers } = organisation;
 
   return (
     <div className="card1 card-top single-organisation-page">
@@ -44,7 +44,7 @@ const SingleOrganisationPage = ({
       <Tabs
         tabs={tabs({
           contacts,
-          users,
+          organisation,
           offers,
           organisationId: organisation._id,
         })}
