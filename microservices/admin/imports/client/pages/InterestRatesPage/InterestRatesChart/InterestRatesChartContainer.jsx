@@ -50,28 +50,31 @@ const getConfig = ({ showRanges }) => ({
 const formatDate = date =>
   moment.utc(moment(date).format('YYYY-MM-DD')).valueOf();
 
+const getAverageTypeData = ({ rates }) =>
+  rates.reduce(
+    (data, rate) => [...data, [formatDate(rate.date), getAverageRate(rate)]],
+    [],
+  );
+
+const getRangeTypeData = ({ rates }) =>
+  rates.reduce(
+    (data, rate) => [
+      ...data,
+      [
+        formatDate(rate.date),
+        roundAndFormat(rate.rateLow),
+        roundAndFormat(rate.rateHigh),
+      ],
+    ],
+    [],
+  );
+
 const getData = ({ rates, dataType }) => {
   switch (dataType) {
   case 'average':
-    return rates.reduce(
-      (data, rate) => [
-        ...data,
-        [formatDate(rate.date), getAverageRate(rate)],
-      ],
-      [],
-    );
+    return getAverageTypeData({ rates });
   case 'range':
-    return rates.reduce(
-      (data, rate) => [
-        ...data,
-        [
-          formatDate(rate.date),
-          roundAndFormat(rate.rateLow),
-          roundAndFormat(rate.rateHigh),
-        ],
-      ],
-      [],
-    );
+    return getRangeTypeData({ rates });
   default:
     return [];
   }
