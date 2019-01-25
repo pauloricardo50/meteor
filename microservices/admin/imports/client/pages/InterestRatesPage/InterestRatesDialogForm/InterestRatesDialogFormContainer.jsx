@@ -169,7 +169,6 @@ export default compose(
       interestRatesInsert.run({ interestRates: data }),
     modifyInterestRates: (data) => {
       const {_id: interestRatesId, ...object} = data;
-      // const { _id: interestRatesId } = interestRatesToModify;
       setSubmitting(true);
       return interestRatesUpdate
         .run({ interestRatesId, object })
