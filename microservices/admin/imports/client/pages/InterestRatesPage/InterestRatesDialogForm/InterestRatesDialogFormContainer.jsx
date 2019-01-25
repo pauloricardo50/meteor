@@ -161,14 +161,13 @@ export default compose(
     setOpen,
     setSubmitting,
     currentInterestRates = [],
-    interestRatesToModify,
   }) => ({
     schema: interestRatesSchema({ currentInterestRates }),
     fields: fields(currentInterestRates),
     insertInterestRates: data =>
       interestRatesInsert.run({ interestRates: data }),
     modifyInterestRates: (data) => {
-      const {_id: interestRatesId, ...object} = data;
+      const { _id: interestRatesId, ...object } = data;
       setSubmitting(true);
       return interestRatesUpdate
         .run({ interestRatesId, object })
