@@ -1,4 +1,8 @@
 {
+  "BlogAuthor.by": "Par {name}",
+  "BlogPage.title": "Blog e-Potek",
+  "BlogPage.description": "Retrouvez les dernières actualités, conseils, et guides en hypothèques.",
+  "WwwTopNavLinks.blog": "Blog",
   "InterestsChart.interestLibor.average": "Libor moyen",
   "InterestsChart.interestLibor.range": "Libor étendue",
   "InterestsChart.interest1.average": "1 an moyen",

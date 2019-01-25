@@ -6,7 +6,14 @@ import Link from 'core/components/Link';
 
 import T from 'core/components/Translation';
 
-export const links = ['about', 'interests', 'faq', 'careers', 'contact'];
+export const links = [
+  'about',
+  'interests',
+  'faq',
+  'careers',
+  'blog',
+  'contact',
+];
 
 const WwwTopNavLinksList = ({ variant }) => (
   <React.Fragment>

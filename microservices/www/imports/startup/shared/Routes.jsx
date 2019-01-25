@@ -5,6 +5,7 @@ import ScrollToTop from 'core/components/ScrollToTop';
 import NotFound from 'core/components/NotFound';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
+import BlogPostPage from 'imports/ui/pages/BlogPostPage/BlogPostPage';
 import HomePage from '../../ui/pages/HomePage'; // Load this page instantly
 import AboutPage from '../../ui/pages/AboutPage';
 import FaqPage from '../../ui/pages/FaqPage/loadable';
@@ -27,6 +28,7 @@ const routesConfig = [
   { path: '/careers', component: CareersPage },
   { path: '/about', component: AboutPage },
   { path: '/faq', component: FaqPage },
+  { path: '/blog/:blogPostId', component: BlogPostPage },
   { path: '/blog', component: BlogPage },
 
   ...liteVersionModifier([
