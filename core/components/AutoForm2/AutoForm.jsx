@@ -57,5 +57,5 @@ const CustomAutoForm = ({
 
 export default withProps(({ onSubmit, schema }) => {
   const schemaKeys = schema._schemaKeys;
-  return { onSubmit: values => onSubmit(pick(values, schemaKeys)) };
+  return { onSubmit: values => onSubmit(pick(values, [...schemaKeys, '_id'])) };
 })(CustomAutoForm);
