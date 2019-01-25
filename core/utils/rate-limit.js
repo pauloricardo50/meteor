@@ -9,9 +9,12 @@ if (Meteor.isServer) {
   DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
     const time = Math.ceil(timeToReset / 1000);
     const seconds = time === 1 ? 'seconde' : 'secondes';
-    return `Doucement l'ami, tu peux reessayer dans ${time} ${seconds}.`;
+    return `Doucement, tu peux reessayer dans ${time} ${seconds}.`;
   });
 }
+
+const shouldRateLimit = testRateLimit =>
+  Meteor.isServer && (!Meteor.isAppTest || testRateLimit);
 
 const rateLimitedMethods = [];
 
@@ -34,10 +37,8 @@ const roleLimiterCheckPattern = Match.Optional(Match.ObjectIncluding({
   timeRange: Match.Optional(Number),
 }));
 
-const rateLimitCheckPattern = limitRoles => Match.ObjectIncluding(zipObject(
-  limitRoles,
-  map(limitRoles, () => roleLimiterCheckPattern),
-));
+const rateLimitCheckPattern = limitRoles =>
+  Match.ObjectIncluding(zipObject(limitRoles, map(limitRoles, () => roleLimiterCheckPattern)));
 
 const methodLimiterRule = ({ name, limitRoles = [], role = 'global' }) => ({
   userId: (userId) => {
@@ -58,7 +59,7 @@ const methodLimiterRule = ({ name, limitRoles = [], role = 'global' }) => ({
 export const getRateLimitedMethods = () => rateLimitedMethods;
 
 export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
-  if (Meteor.isServer && (!Meteor.isAppTest || testRateLimit)) {
+  if (shouldRateLimit(testRateLimit)) {
     const currentRateLimit = { ...defaultRateLimit, ...rateLimit };
     const limitRoles = Object.keys(currentRateLimit);
 
@@ -70,11 +71,15 @@ export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
         timeRange = defaultTimeRange,
       } = currentRateLimit[role];
 
-      DDPRateLimiter.addRule(methodLimiterRule({
-        name,
-        role,
-        limitRoles,
-      }), limit, timeRange);
+      DDPRateLimiter.addRule(
+        methodLimiterRule({
+          name,
+          role,
+          limitRoles,
+        }),
+        limit,
+        timeRange,
+      );
     });
 
     rateLimitedMethods.push(name);
