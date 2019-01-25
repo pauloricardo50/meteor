@@ -10,7 +10,6 @@ const promotionSchema = {
   'promotionLinks.$.invitedBy': {
     type: String,
     optional: true,
-    defaultValue: null,
   },
   promotionOptionLinks: { type: Array, defaultValue: [] },
   'promotionOptionLinks.$': Object,

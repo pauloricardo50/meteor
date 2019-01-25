@@ -120,7 +120,7 @@ describe('PromotionService', () => {
     });
   });
 
-  describe('inviteUser', () => {
+  describe.only('inviteUser', () => {
     let promotionId;
     let adminId;
 
@@ -159,6 +159,10 @@ describe('PromotionService', () => {
 
           expect(!!loanId).to.equal(true);
           expect(!!userId).to.equal(true);
+          console.log(
+            'hasPromotion',
+            UserService.hasPromotion({ userId, promotionId }),
+          );
           expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
           return checkEmails();
