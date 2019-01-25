@@ -11,13 +11,31 @@
     align-self: flex-start;
   }
 }
+
 .blog-post-page-content {
   width: 100%;
   max-width: 700px;
   margin-top: 40px;
   box-sizing: border-box;
 
-  article {
+  h1 {
+    color: $primary;
+    margin-bottom: 0;
+  }
+
+  .date {
+    margin-top: 0;
+  }
+
+  @include screen(med, min) {
+    padding: 32px;
+  }
+
+  .thumbnail {
+    display: block;
+    margin: auto;
+    max-height: 300px;
+    max-width: 300px;
   }
 
   p {

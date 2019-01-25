@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
-import Loading from 'core/components/Loading/Loading';
+
+import T from 'core/components/Translation';
+import Loading from 'core/components/Loading';
 import Link from 'core/components/Link';
 
 type BlogListProps = {};
@@ -26,6 +28,7 @@ const BlogList = ({ posts }: BlogListProps) => {
               className="excerpt"
               dangerouslySetInnerHTML={{ __html: excerpt }}
             />
+            <T id="BlogList.readMore" />
           </Link>
         </div>
       ))}
