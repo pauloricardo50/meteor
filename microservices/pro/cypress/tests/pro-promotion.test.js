@@ -43,7 +43,7 @@ describe('Pro', () => {
       cy.get('.buttons > span button').should('be.disabled');
     });
 
-    context('with an existing promotion', () => {
+    context.only('with an existing promotion', () => {
       it('should add lots and promotionLots', () => {
         cy.callMethod('insertPromotion');
         cy.refetch();
@@ -57,6 +57,7 @@ describe('Pro', () => {
         cy.get('input[name=value]')
           .type('{backspace}') // Remove initial 0
           .type(1000000);
+        cy.setSelect('propertyType', 'HOUSE');
         cy.get('input[name=insideArea]').type('120{enter}');
 
         cy.contains('Promotion lot 1').should('exist');

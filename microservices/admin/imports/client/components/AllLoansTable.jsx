@@ -54,7 +54,7 @@ export default class AllLoansTable extends Component {
         columns: [
           name,
           {
-            raw: user.name,
+            raw: user && user.name,
             label: (
               <CollectionIconLink
                 relatedDoc={{ ...user, collection: USERS_COLLECTION }}
@@ -74,9 +74,12 @@ export default class AllLoansTable extends Component {
           },
           {
             label: moment(createdAt).format('D.M.YY à H:mm'),
-            raw: createdAt.getTime(),
+            raw: createdAt && createdAt.getTime(),
           },
-          { raw: updatedAt.getTime(), label: moment(updatedAt).fromNow() },
+          {
+            raw: updatedAt && updatedAt.getTime(),
+            label: moment(updatedAt).fromNow(),
+          },
           {
             label: <T id={`Forms.steps.${logic.step}`} key="step" />,
             raw: logic.step,

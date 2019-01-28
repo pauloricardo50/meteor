@@ -13,7 +13,13 @@ type SingleContactPageProps = {
 };
 
 const tabs = props =>
-  [{ id: 'offers', Component: OffersTable }].map(({ id, Component, style = {} }) => ({
+  [
+    {
+      id: 'offers',
+      Component: OffersTable,
+      condition: props.offers && !!props.offers.length,
+    },
+  ].map(({ id, Component, condition, style = {} }) => ({
     id,
     content: <Component {...props} />,
     label: (
@@ -21,13 +27,16 @@ const tabs = props =>
         <T id={`SingleContactPage.${id}`} noTooltips />
       </span>
     ),
+    condition,
   }));
 
 const SingleContactPage = ({ contact }: SingleContactPageProps) => (
   <div className="card1 card-top">
     <SingleContactPageHeader contact={contact} />
     <SingleContactPageInfos contact={contact} />
-    <Tabs tabs={tabs({ offers: contact.offers })} />
+    {contact.offers && !!contact.offers.length && (
+      <Tabs tabs={tabs({ offers: contact.offers })} />
+    )}
   </div>
 );
 

@@ -73,7 +73,10 @@ const PromotionPageHeader = ({
         {contacts.length > 0 ? (
           <div className="contacts animated fadeIn delay-400">
             <h3>
-              <T id="PromotionPageHeader.contacts" />
+              <T
+                id="PromotionPageHeader.contacts"
+                values={{ multipleContacts: contacts.length > 1 }}
+              />
             </h3>
 
             <div className="list">

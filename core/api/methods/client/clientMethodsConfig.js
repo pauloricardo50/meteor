@@ -15,7 +15,10 @@ const handleError = ({ config, params, result, error }) => {
   logError.run({
     error: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
     additionalData: ['Meteor method afterCall error', config, params],
-    url: window && window.location && window.location.href,
+    url:
+      window && window.location && window.location.href
+        ? window.location.href
+        : '',
   });
 
   message.error(error.reason || error.message, 8);

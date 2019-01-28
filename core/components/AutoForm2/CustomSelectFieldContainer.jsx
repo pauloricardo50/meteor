@@ -2,6 +2,7 @@ import React from 'react';
 
 import T from '../Translation';
 import Chip from '../Material/Chip';
+import Loading from '../Loading';
 
 export default (Component) => {
   class CustomSelectFieldContainer extends React.Component {
@@ -25,9 +26,17 @@ export default (Component) => {
 
     getAllowedValues = (props) => {
       const { customAllowedValues, model } = props;
+      const { values } = this.state;
+
+      if (customAllowedValues) {
+        this.setState({ loading: !values || !values.length });
+      }
+
       if (customAllowedValues && typeof customAllowedValues === 'function') {
-        Promise.resolve(customAllowedValues(model)).then(values =>
-          this.setState({ values }));
+        Promise.resolve()
+          .then(() => customAllowedValues(model))
+          .then(result => this.setState({ values: result }))
+          .finally(() => this.setState({ loading: false }));
       } else if (
         customAllowedValues
         && typeof customAllowedValues === 'object'
@@ -39,7 +48,12 @@ export default (Component) => {
             return this.setState({ error });
           }
 
-          this.setState({ values: data.map(({ _id }) => _id), data });
+          this.setState({
+            values: data.map(({ _id }) => _id),
+            data,
+            error: null,
+            loading: false,
+          });
         });
       }
     };
@@ -87,12 +101,17 @@ export default (Component) => {
     };
 
     render() {
-      const { values, error } = this.state;
+      const { values, error, loading } = this.state;
       const { placeholder, displayEmpty } = this.props;
 
       if (error) {
         return <span className="error">{error.message || error.reason}</span>;
       }
+
+      if (loading) {
+        return <Loading small />;
+      }
+
       return (
         <Component
           {...this.props}

@@ -6,6 +6,8 @@ import SimpleSchema from 'simpl-schema';
 import TextField from 'uniforms-material/TextField';
 import Button from '@material-ui/core/Button';
 
+import Loading from 'imports/core/components/Loading/Loading';
+import { pollUntilReady } from 'imports/core/utils/testHelpers/index';
 import getMountedComponent from '../../../../utils/testHelpers/getMountedComponent';
 
 import AutoForm from '../../AutoForm';
@@ -493,6 +495,37 @@ describe('AutoForm', () => {
       expect(component().find(PercentField).length).to.equal(1);
       expect(component().find(DateField).length).to.equal(1);
       expect(component().find(CustomSelectField).length).to.equal(1);
+    });
+  });
+
+  it('does not unmount components when updating the model, and loading only displays once', () => {
+    // Checking that the loading component only renders once is like
+    // checking that the component only mounted once, since loading only
+    // renders after mounting
+    props = {
+      schema: new SimpleSchema({
+        text: { type: String, uniforms: { label: 'Text' } },
+        select: {
+          type: String,
+          customAllowedValues: () => ['yo'],
+          uniforms: { label: 'Select' },
+        },
+      }),
+      placeholder: false,
+    };
+
+    expect(component().find(Loading).length).to.equal(1);
+
+    return pollUntilReady(() => {
+      component().update();
+      return component().find(Loading).length === 0;
+    }).then(() => {
+      // Loading only reappears when the component remounts
+      expect(component().find(Loading).length).to.equal(0);
+
+      setInput('text', 'some text');
+
+      expect(component().find(Loading).length).to.equal(0);
     });
   });
 });
