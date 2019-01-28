@@ -1,4 +1,10 @@
 {
+  "Forms.maxBorrowRatio": "Taux d'avance max",
+  "Forms.maxIncomeRatio": "Taux d'endettement max",
+  "Forms.maxIncomeRatioTight": "Taux d'avance max, cas par cas",
+  "Forms.minCash": "Taux de fonds propres non-LPP min",
+  "Forms.theoreticalInterestRate": "Taux d'intérêts théorique",
+  "Forms.theoreticalMaintenanceRate": "Frais d'entretien théorique",
   "general.and": "et",
   "general.or": "ou",
   "OrganisationTabs.lenderRules": "Critères d'octroi",

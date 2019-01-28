@@ -13,7 +13,6 @@ const LenderRulesEditor = ({
   updateMath,
   updateFilter,
 }: LenderRulesEditorProps) => {
-  console.log('lenderRules:', lenderRules);
   if (!lenderRules) {
     return (
       <Button raised primary onClick={addLenderRules}>
@@ -23,7 +22,7 @@ const LenderRulesEditor = ({
   }
 
   return (
-    <div>
+    <div className="lender-rules-editor">
       <LenderRulesEditorMath
         lenderRules={lenderRules}
         updateMath={updateMath}

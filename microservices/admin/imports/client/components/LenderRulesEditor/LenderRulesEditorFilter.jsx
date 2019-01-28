@@ -11,7 +11,7 @@ const LenderRulesEditorFilter = ({
   filterObject: { id, filter, ...rules },
   updateFilter,
 }: LenderRulesEditorFilterProps) => (
-  <div>
+  <div className="lender-rules-editor-filter">
     <h3>
       <LenderRulesEditorTitle filter={filter} />
     </h3>
