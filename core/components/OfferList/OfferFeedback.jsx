@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import moment from 'moment';
+
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
 import OfferFeedbackContainer from './OfferFeedbackContainer';
 
@@ -59,7 +61,8 @@ const getButtonOtherProps = ({ lender }) => {
 };
 
 const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
-  const { lender, feedback } = offer;
+  const { lender, feedback = {} } = offer;
+  const { message, date } = feedback;
   return (
     <AutoFormDialog
       onSubmit={onSubmit}
@@ -71,15 +74,15 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
         primary: true,
         ...getButtonOtherProps({ lender }),
       }}
-      emptyDialog={!!feedback}
+      emptyDialog={!!message}
       title="Feedback de l'offre"
       important
     >
       {() =>
-        (feedback ? (
+        (message && date ? (
           <>
-            <h4>Feedback déjà envoyé</h4>
-            <p style={{ whiteSpace: 'pre-line' }}>{feedback}</p>
+            <h4>Feedback envoyé le {moment(date).format('DD.MM.YYYY')}</h4>
+            <p style={{ whiteSpace: 'pre-line' }}>{message}</p>
           </>
         ) : null)
       }

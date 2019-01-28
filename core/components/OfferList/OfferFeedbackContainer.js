@@ -55,14 +55,16 @@ export default compose(
   withProps(({ offer, intl: { formatMessage } }) => {
     const {
       _id: offerId,
-      feedback,
+      feedback = {},
       lender: { contact },
     } = offer;
+
+    const { message } = feedback;
 
     return {
       schema: schema({ offer, formatMessage }),
       onSubmit: (object) => {
-        if (feedback) {
+        if (message) {
           return Promise.resolve();
         }
 

@@ -16,11 +16,14 @@ export class OfferService extends CollectionService {
   update = ({ offerId, object }) => Offers.update(offerId, { $set: object });
 
   sendFeedback = ({ offerId, feedback }) => {
-    this.update({ offerId, object: { feedback } });
+    this.update({
+      offerId,
+      object: { feedback: { message: feedback, date: new Date() } },
+    });
     const {
       lender: {
         createdAt,
-        organisation: {name: organisationName},
+        organisation: { name: organisationName },
         contact: { email: address },
         loan: {
           name: loanName,

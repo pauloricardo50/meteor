@@ -280,7 +280,7 @@ export const fullOffer = () => ({
   amortizationYears: 1,
   conditions: 1,
   epotekFees: 1,
-  feedback: 1,
+  feedback: {message: 1, date: 1},
   ...Object.values(INTEREST_RATES).reduce(
     (obj, rate) => ({ ...obj, [rate]: 1 }),
     {},

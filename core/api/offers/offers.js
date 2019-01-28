@@ -56,7 +56,9 @@ export const OfferSchema = new SimpleSchema({
   'conditions.$': { type: String, optional: true },
   lenderLink: { type: Object, optional: true },
   'lenderLink._id': { type: String, optional: true },
-  feedback: { type: String, optional: true },
+  feedback: { type: Object, optional: true },
+  'feedback.message': { type: String, optional: true },
+  'feedback.date': { type: Date, optional: true },
   withCounterparts: { type: Boolean, optional: true },
 });
 
