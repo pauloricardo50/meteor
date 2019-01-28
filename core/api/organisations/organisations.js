@@ -27,7 +27,6 @@ export const OrganisationSchema = new SimpleSchema({
   name: { type: String, uniforms: { placeholder: 'Crédit Suisse' } },
   type: {
     type: String,
-    optional: true,
     allowedValues: Object.values(ORGANISATION_TYPES),
     uniforms: { displayEmpty: false },
   },
