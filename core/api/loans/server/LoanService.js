@@ -82,21 +82,13 @@ export class LoanService extends CollectionService {
     const loanId = this.insert({
       loan: {
         borrowerIds: [borrowerId],
+        promotionLinks: [{ _id: promotionId, invitedBy }],
       },
       userId,
     });
 
-    if (invitedBy) {
-      this.addLink({
-        id: loanId,
-        linkName: 'promotions',
-        linkId: promotionId,
-        metadata: { invitedBy },
-      });
-    }
-
     this.addNewStructure({ loanId });
-    
+
     return loanId;
   };
 

@@ -126,7 +126,11 @@ export class PromotionService extends CollectionService {
       }
     }
 
-    const loanId = LoanService.insertPromotionLoan({ userId, promotionId, invitedBy });
+    const loanId = LoanService.insertPromotionLoan({
+      userId,
+      promotionId,
+      invitedBy,
+    });
 
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({
