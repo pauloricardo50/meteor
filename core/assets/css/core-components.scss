@@ -1,6 +1,6 @@
 // Imports all scss files here, make sure the path uses imports, or else they
 // won't be found in the microservices that use them
-@import '{}/imports/core/components/AccountPage/GenerateApiToken.scss';
+@import '{}/imports/core/components/AccountPage/DevelopperSection/DevelopperSection.scss';
 @import '{}/imports/core/components/AutoForm/ValidIcon/ValidIcon.scss';
 @import '{}/imports/core/components/AutoForm2/AutoForm.scss';
 @import '{}/imports/core/components/BorrowerAddPartner/BorrowerAddPartner.scss';
@@ -42,7 +42,6 @@
 @import '{}/imports/core/components/UploaderArray/Uploader/Uploader.scss';
 @import '{}/imports/core/components/Valuation/Valuation.scss';
 @import '{}/imports/core/components/widget1/widget1.scss';
-@import '{}/imports/core/components/AccountPage/GenerateApiToken.scss';
 @import '{}/imports/core/components/DateModifier/DateModifier.scss';
 @import '{}/imports/core/components/OfferRecapDialog/OfferRecapDialog.scss';
 
