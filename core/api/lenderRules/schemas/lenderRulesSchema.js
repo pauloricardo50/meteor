@@ -4,9 +4,8 @@ import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
 const LenderRulesSchema = new SimpleSchema({
   createdAt,
   updatedAt,
-// Insert your schema here
-// Example
-// firstName: {type: String, optional: true},
+  organisationLink: { type: Object, optional: true },
+  'organisationLink._id': { type: String, optional: true },
 });
 
 export default LenderRulesSchema;
