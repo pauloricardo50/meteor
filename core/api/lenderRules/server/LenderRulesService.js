@@ -17,7 +17,7 @@ class LenderRulesService extends CollectionService {
       lenderRulesId,
       filter: {
         and: [
-          { '==': [{ var: 'residenceType' }, RESIDENCE_TYPE.MAIN_RESIDENCE] },
+          { '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.MAIN_RESIDENCE] },
         ],
       },
       rules: { maxBorrowRatio: 0.8 },
@@ -26,7 +26,9 @@ class LenderRulesService extends CollectionService {
       lenderRulesId,
       filter: {
         and: [
-          { '==': [{ var: 'residenceType' }, RESIDENCE_TYPE.SECOND_RESIDENCE] },
+          {
+            '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.SECOND_RESIDENCE],
+          },
         ],
       },
       rules: { maxBorrowRatio: 0.7 },
