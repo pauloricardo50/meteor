@@ -15,5 +15,6 @@ Organisations.addLinks({
   lenderRules: {
     collection: LenderRules,
     inversedBy: 'organisation',
+    autoremove: true,
   },
 });

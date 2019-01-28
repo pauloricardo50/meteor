@@ -1,4 +1,6 @@
 {
+  "general.and": "et",
+  "general.or": "ou",
   "OrganisationTabs.lenderRules": "Critères d'octroi",
   "InterestsChart.interestLibor.average": "Libor moyen",
   "InterestsChart.interestLibor.range": "Libor étendue",

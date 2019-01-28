@@ -157,6 +157,8 @@ export const adminLender = () => ({
 // // LenderRules fragments
 // //
 export const lenderRules = () => ({
+  createdAt: 1,
+  updatedAt: 1,
   filters: 1,
 });
 
