@@ -162,7 +162,6 @@ describe('Collection Security', () => {
           SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.throw(SECURITY_ERROR);
       });
 
-
       it('throws if the user is a PRO with READ on it', () => {
         userId = Factory.create('pro')._id;
         const promotionId = Factory.create('promotion')._id;
@@ -239,6 +238,14 @@ describe('Collection Security', () => {
           linkId: userId,
           metadata: { permissions: DOCUMENT_USER_PERMISSIONS.MODIFY },
         });
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToRead(promotionId, userId)).to.not.throw();
+      });
+
+      it('does not throw if user is an admin', () => {
+        userId = Factory.create('admin')._id;
+        const promotionId = Factory.create('promotion')._id;
 
         expect(() =>
           SecurityService.promotions.isAllowedToRead(promotionId, userId)).to.not.throw();

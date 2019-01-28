@@ -27,7 +27,7 @@ export default class RESTAPI {
 
   registerMiddlewares(middlewares) {
     middlewares.forEach((middleware) => {
-      WebApp.connectHandlers.use(middleware);
+      WebApp.connectHandlers.use(this.rootPath, middleware);
     });
   }
 

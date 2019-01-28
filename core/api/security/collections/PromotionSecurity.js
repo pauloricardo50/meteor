@@ -41,6 +41,10 @@ class PromotionSecurity {
   }
 
   static isAllowedToRead(promotionId, userId) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
     try {
       const promotion = PromotionService.safeGet(promotionId);
       Security.hasPermissionOnDoc(

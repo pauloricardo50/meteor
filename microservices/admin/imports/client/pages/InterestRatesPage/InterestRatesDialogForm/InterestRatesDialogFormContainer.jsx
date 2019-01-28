@@ -1,5 +1,6 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
+
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
 import {
   TRENDS,
@@ -156,7 +157,11 @@ const fields = currentInterestRates => [
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting, currentInterestRates = [] }) => ({
+  withProps(({
+    setOpen,
+    setSubmitting,
+    currentInterestRates = [],
+  }) => ({
     schema: interestRatesSchema({ currentInterestRates }),
     fields: fields(currentInterestRates),
     insertInterestRates: data =>
