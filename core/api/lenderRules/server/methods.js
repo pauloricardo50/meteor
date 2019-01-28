@@ -1,21 +1,28 @@
 import SecurityService from '../../security';
 import LenderRulesService from './LenderRulesService';
-import { lenderRulesInsert, lenderRulesRemove, lenderRulesUpdate } from '../methodDefinitions';
+import {
+  lenderRulesInsert,
+  lenderRulesRemove,
+  lenderRulesUpdate,
+  addLenderRulesFilter,
+} from '../methodDefinitions';
 
-lenderRulesInsert.setHandler((context, { lenderRules }) =>
-// Add security checks
-// Example
-// SecurityService.checkCurrentUserIsAdmin();
-  LenderRulesService.insert(lenderRules));
+lenderRulesInsert.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.insert(params);
+});
 
-lenderRulesRemove.setHandler((context, { lenderRulesId }) =>
-// Add security checks
-// Example
-// SecurityService.checkCurrentUserIsAdmin();
-  LenderRulesService.remove(lenderRulesId));
+lenderRulesRemove.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.remove(params);
+});
 
-lenderRulesUpdate.setHandler((context, { lenderRulesId, object }) =>
-// Add security checks
-// Example
-// SecurityService.checkCurrentUserIsAdmin();
-  LenderRulesService._update({ id: lenderRulesId, object }));
+lenderRulesUpdate.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.update(params);
+});
+
+addLenderRulesFilter.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.addLenderRulesFilter(params);
+});

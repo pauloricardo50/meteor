@@ -3,7 +3,7 @@ import { Method } from '../methods/methods';
 export const lenderRulesInsert = new Method({
   name: 'lenderRulesInsert',
   params: {
-    lenderRules: Object,
+    organisationId: String,
   },
 });
 
@@ -19,5 +19,13 @@ export const lenderRulesUpdate = new Method({
   params: {
     lenderRulesId: String,
     object: Object,
+  },
+});
+
+export const addLenderRulesFilter = new Method({
+  name: 'addLenderRulesFilter',
+  params: {
+    lenderRulesId: String,
+    filter: Object,
   },
 });

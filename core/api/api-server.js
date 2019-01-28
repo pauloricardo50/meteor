@@ -42,6 +42,7 @@ import PropertyService from './properties/server/PropertyService';
 import TaskService from './tasks/server/TaskService';
 import UserService from './users/server/UserService';
 import SlackService from './slack/server/SlackService';
+import LenderRulesService from './lenderRules/server/LenderRulesService';
 
 process.on('uncaughtException', (error) => {
   console.log('uncaughtException error', JSON.stringify(error, null, 2));
@@ -74,5 +75,5 @@ export const Services = {
   [COLLECTIONS.MORTGAGE_NOTES_COLLECTION]: MortgageNoteService,
   [COLLECTIONS.CONTACTS_COLLECTION]: ContactService,
   [COLLECTIONS.LENDERS_COLLECTION]: LenderService,
-[COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
+  [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
 };

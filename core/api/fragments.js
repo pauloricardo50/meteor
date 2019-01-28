@@ -154,6 +154,13 @@ export const adminLender = () => ({
 });
 
 // //
+// // LenderRules fragments
+// //
+export const lenderRules = () => ({
+  filters: 1,
+});
+
+// //
 // // Loan fragments
 // //
 export const loan = () => ({
@@ -323,6 +330,7 @@ export const baseOrganisation = () => ({
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
   contacts: contact(),
+  lenderRules: lenderRules(),
   lenders: lender(),
   offers: fullOffer(),
 });
