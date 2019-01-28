@@ -18,7 +18,7 @@ const LenderRulesEditorFilter = ({
     <AutoForm
       model={rules}
       onSubmit={updateFilter}
-      schema={filterSchema.omit('filter')}
+      schema={filterSchema.omit('filter', 'id')}
     />
   </div>
 );
