@@ -32,7 +32,10 @@ class Tabs extends Component {
     this.state = { value: Math.max(this.props.initialIndex, 0) };
   }
 
-  getContent = () => this.props.tabs[this.state.value].content;
+  filterTabs = () =>
+    this.props.tabs.filter(({ condition = true }) => condition);
+
+  getContent = () => this.filterTabs()[this.state.value].content;
 
   handleChange = (event, value) => {
     const { onChangeCallback } = this.props;
@@ -75,22 +78,20 @@ class Tabs extends Component {
           textColor="primary"
           {...otherProps}
         >
-          {tabs
-            .filter(({ condition = true }) => condition)
-            .map(({ label, to, id }, i) => (
-              <Tab
-                classes={{
-                  root: classes.tabRoot,
-                  selected: classes.tabSelected,
-                  labelContainer: classes.labelContainer,
-                }}
-                label={label}
-                component={to ? Link : undefined}
-                to={to}
-                key={id || i}
-                className="core-tabs-tab"
-              />
-            ))}
+          {this.filterTabs().map(({ label, to, id }, i) => (
+            <Tab
+              classes={{
+                root: classes.tabRoot,
+                selected: classes.tabSelected,
+                labelContainer: classes.labelContainer,
+              }}
+              label={label}
+              component={to ? Link : undefined}
+              to={to}
+              key={id || i}
+              className="core-tabs-tab"
+            />
+          ))}
         </MuiTabs>
         <div className="tab-content">{this.getContent()}</div>
       </div>
