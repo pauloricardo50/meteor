@@ -1,5 +1,6 @@
 import SimpleSchema from 'simpl-schema';
-import { withProps } from 'recompose';
+import { withProps, compose } from 'recompose';
+import { injectIntl } from 'react-intl';
 
 import { offerSendFeedback } from '../../api';
 import {
@@ -8,7 +9,7 @@ import {
   FEEDBACK_OPTIONS_SETTINGS,
 } from './feedbackHelpers';
 
-const schema = ({ offer }) =>
+const schema = ({ offer, formatMessage }) =>
   new SimpleSchema({
     option: {
       type: String,
@@ -45,33 +46,36 @@ const schema = ({ offer }) =>
         disabled: true,
       },
       condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
-      customAutoValue: model => makeFeedback({ model, offer }),
+      customAutoValue: model => makeFeedback({ model, offer, formatMessage }),
     },
   });
 
-export default withProps(({ offer }) => {
-  const {
-    _id: offerId,
-    feedback,
-    lender: { contact },
-  } = offer;
+export default compose(
+  injectIntl,
+  withProps(({ offer, intl: { formatMessage } }) => {
+    const {
+      _id: offerId,
+      feedback,
+      lender: { contact },
+    } = offer;
 
-  return {
-    schema: schema({ offer }),
-    onSubmit: (object) => {
-      if (feedback) {
+    return {
+      schema: schema({ offer, formatMessage }),
+      onSubmit: (object) => {
+        if (feedback) {
+          return Promise.resolve();
+        }
+
+        const { name } = contact || {};
+        const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
+        if (confirm) {
+          return offerSendFeedback.run({
+            offerId,
+            feedback: makeFeedback({ model: object, offer, formatMessage }),
+          });
+        }
         return Promise.resolve();
-      }
-
-      const { name } = contact || {};
-      const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
-      if (confirm) {
-        return offerSendFeedback.run({
-          offerId,
-          feedback: makeFeedback({ model: object, offer }),
-        });
-      }
-      return Promise.resolve();
-    },
-  };
-});
+      },
+    };
+  }),
+);

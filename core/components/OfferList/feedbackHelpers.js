@@ -1,7 +1,5 @@
 import moment from 'moment';
 
-import formatMessage from 'core/utils/intl';
-
 export const FEEDBACK_OPTIONS = {
   POSITIVE: 'POSITIVE',
   NEGATIVE_NOT_COMPETITIVE: 'NEGATIVE_NOT_COMPETITIVE',
@@ -27,40 +25,58 @@ export const FEEDBACK_OPTIONS_SETTINGS = {
   },
 };
 
-const greetings = contactName =>
-  formatMessage('Feedback.greetings', { contactName });
+const greetings = ({ contactName, formatMessage }) =>
+  formatMessage({ id: 'Feedback.greetings' }, { contactName });
 
-const introduction = ({ borrowers, singleBorrower, address }) => {
+const introduction = ({
+  borrowers,
+  singleBorrower,
+  address,
+  formatMessage,
+}) => {
   if (singleBorrower) {
-    return formatMessage('Feedback.introduction.singleBorrower', {
-      borrower: borrowers[0].name,
+    return formatMessage(
+      { id: 'Feedback.introduction.singleBorrower' },
+      {
+        borrower: borrowers[0].name,
+        address,
+      },
+    );
+  }
+
+  return formatMessage(
+    { id: 'Feedback.introduction.twoBorrowers' },
+    {
+      borrower1: borrowers[0].name,
+      borrower2: borrowers[1].name,
       address,
-    });
-  }
-
-  return formatMessage('Feedback.introduction.twoBorrowers', {
-    borrower1: borrowers[0].name,
-    borrower2: borrowers[1].name,
-    address,
-  });
+    },
+  );
 };
 
-const outro = ({ borrowers, singleBorrower, option }) => {
+const outro = ({ borrowers, singleBorrower, option, formatMessage }) => {
   if (singleBorrower) {
-    return formatMessage(`Feedback.${option}.outro.singleBorrowers`, {
-      borrower: borrowers[0].name,
-    });
+    return formatMessage(
+      { id: `Feedback.${option}.outro.singleBorrower` },
+      {
+        borrower: borrowers[0].name,
+      },
+    );
   }
 
-  return formatMessage(`Feedback.${option}.outro.twoBorrowers`, {
-    borrower1: borrowers[0].name,
-    borrower2: borrowers[1].name,
-  });
+  return formatMessage(
+    { id: `Feedback.${option}.outro.twoBorrowers` },
+    {
+      borrower1: borrowers[0].name,
+      borrower2: borrowers[1].name,
+    },
+  );
 };
 
-const closing = assignee => formatMessage('Feedback.closing', { assignee });
+const closing = ({ assignee, formatMessage }) =>
+  formatMessage({ id: 'Feedback.closing' }, { assignee });
 
-export const makeFeedback = ({ model, offer }) => {
+export const makeFeedback = ({ model, offer, formatMessage }) => {
   const { option, comments = [], customFeedback } = model;
   const {
     lender: {
@@ -84,24 +100,27 @@ export const makeFeedback = ({ model, offer }) => {
   let feedback = '';
   const singleBorrower = borrowers.length === 1;
 
-  feedback = feedback.concat(greetings(contactName));
-  feedback = feedback.concat(introduction({ borrowers, singleBorrower, address }));
-  feedback = feedback.concat(formatMessage(`Feedback.${option}.body`, { singleBorrower }));
+  feedback = feedback.concat(greetings({ contactName, formatMessage }));
+  feedback = feedback.concat(introduction({ borrowers, singleBorrower, address, formatMessage }));
+  feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.body` }, { singleBorrower }));
 
   if (
     comments.length
     && option
     && FEEDBACK_OPTIONS_SETTINGS[option].enableComments
   ) {
-    feedback = feedback.concat(formatMessage(`Feedback.${option}.comments`, { singleBorrower }));
-    feedback = feedback.concat(comments.map(comment => `- ${comment}`).join('\n'));
+    feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.comments` }, { singleBorrower }));
+    feedback = feedback.concat(comments
+      .filter(x => x)
+      .map(comment => `- ${comment}`)
+      .join('\n'));
   }
 
   if (option && FEEDBACK_OPTIONS_SETTINGS[option].enableOutro) {
-    feedback = feedback.concat(outro({ option, singleBorrower, borrowers }));
+    feedback = feedback.concat(outro({ option, singleBorrower, borrowers, formatMessage }));
   }
 
-  feedback = feedback.concat(closing(assignee));
+  feedback = feedback.concat(closing({ assignee, formatMessage }));
 
   return feedback;
 };

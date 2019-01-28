@@ -26,6 +26,7 @@ const config = {
         'ConditionsButton',
         'ConfirmMethod',
         'Contacts',
+        'Feedback',
         'FileAdder',
         'files',
         'Financing',
