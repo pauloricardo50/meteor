@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { LOANS_COLLECTION, USERS_COLLECTION } from 'core/api/constants';
-import Table from 'core/components/Table';
+import Table, { ORDER } from 'core/components/Table';
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
@@ -94,7 +94,13 @@ export default class AllLoansTable extends Component {
 
   render() {
     return (
-      <Table columnOptions={columnOptions} rows={this.rows} noIntl clickable />
+      <Table
+        columnOptions={columnOptions}
+        rows={this.rows}
+        noIntl
+        clickable
+        initialOrder={ORDER.DESC}
+      />
     );
   }
 }
