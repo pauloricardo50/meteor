@@ -45,7 +45,7 @@ const PromotionProUserAdder = ({
           style={{ width: '100%', marginBottom: '16px' }}
         />
       </form>
-      <List className="flex-col">
+      <List className="flex-col user-list">
         {searchResults
           && searchResults.map(user => (
             <ListItem key={user._id} className="user">
