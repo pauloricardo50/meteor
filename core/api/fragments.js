@@ -672,6 +672,7 @@ export const simpleUser = () => ({
 export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  promotions: { name: 1, status: 1 },
 });
 
 export const fullUser = () => ({
