@@ -1,7 +1,25 @@
+import queryString from 'query-string';
+
+// Doc: https://developer.wordpress.com/docs/api/
+
 const WORDPRESS_URL = 'https://public-api.wordpress.com/rest/v1.1/sites/blogepotek.wordpress.com';
 
-export const fetchBlogPosts = () =>
-  fetch(`${WORDPRESS_URL}/posts`).then(result => result.json());
+const makeUrl = (url, fields) => {
+  if (!fields) {
+    return url;
+  }
 
-export const fetchBlogPost = blogPostId =>
-  fetch(`${WORDPRESS_URL}/posts/${blogPostId}`).then(result => result.json());
+  return `${url}?${queryString.stringify({
+    fields: fields.join(','),
+  })}`;
+};
+
+const listFields = ['ID', 'title', 'excerpt', 'slug', 'post_thumbnail'];
+const blogFields = [...listFields, 'date', 'content', 'author'];
+
+export const fetchBlogPosts = () =>
+  fetch(makeUrl(`${WORDPRESS_URL}/posts`, listFields)).then(result =>
+    result.json());
+
+export const fetchBlogPostBySlug = slug =>
+  fetch(makeUrl(`${WORDPRESS_URL}/posts/slug:${slug}`, blogFields)).then(result => result.json());

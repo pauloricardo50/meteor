@@ -28,7 +28,7 @@ const routesConfig = [
   { path: '/careers', component: CareersPage },
   { path: '/about', component: AboutPage },
   { path: '/faq', component: FaqPage },
-  { path: '/blog/:blogPostId', component: BlogPostPage },
+  { path: '/blog/:slug', component: BlogPostPage },
   { path: '/blog', component: BlogPage },
 
   ...liteVersionModifier([

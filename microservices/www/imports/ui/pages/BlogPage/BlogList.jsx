@@ -14,9 +14,9 @@ const BlogList = ({ posts }: BlogListProps) => {
 
   return (
     <div className="blog-list">
-      {posts.map(({ ID, title, excerpt, post_thumbnail }) => (
+      {posts.map(({ ID, title, excerpt, post_thumbnail, slug }) => (
         <div key={ID} className="blog-list-post">
-          <Link className="card1 card-top" to={`/blog/${ID}`}>
+          <Link className="card1 card-top" to={`/blog/${slug}`}>
             {post_thumbnail && (
               <div
                 className="thumbnail"

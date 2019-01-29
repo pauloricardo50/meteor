@@ -6,7 +6,7 @@ import PageHead from 'core/components/PageHead';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
-import { fetchBlogPost } from 'core/api/blog';
+import { fetchBlogPostBySlug } from 'core/api/blog';
 import Loading from 'core/components/Loading';
 import BlogPostPageContent from './BlogPostPageContent';
 import WwwLayout from '../../WwwLayout';
@@ -29,11 +29,11 @@ const BlogPostPage = ({ loading = true, post }: BlogPostPageProps) => (
 );
 
 export default compose(
-  withMatchParam('blogPostId'),
+  withMatchParam('slug'),
   lifecycle({
     componentDidMount() {
-      const { blogPostId } = this.props;
-      fetchBlogPost(blogPostId)
+      const { slug } = this.props;
+      fetchBlogPostBySlug(slug)
         .then(post => this.setState({ post }))
         .finally(() => this.setState({ loading: false }));
     },
