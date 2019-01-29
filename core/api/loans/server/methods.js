@@ -16,6 +16,7 @@ import {
   duplicateStructure,
   assignLoanToUser,
   switchBorrower,
+  sendNegativeFeedbackToAllLenders,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 
@@ -104,4 +105,9 @@ assignLoanToUser.setHandler(({ userId }, params) => {
 switchBorrower.setHandler(({ userId }, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.switchBorrower(params);
+});
+
+sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LoanService.sendNegativeFeedbackToAllLenders(params);
 });

@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { injectIntl } from 'react-intl';
 import uniqBy from 'lodash/uniqBy';
 
 import Link from 'core/components/Link';
@@ -10,71 +9,49 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
 import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
 import { LOAN_STATUS } from 'imports/core/api/constants';
-import {
-  makeFeedback,
-  FEEDBACK_OPTIONS,
-} from 'imports/core/components/OfferList/feedbackHelpers';
-import { offerSendFeedback } from 'core/api';
+import { sendNegativeFeedbackToAllLenders } from 'core/api';
 
 type SingleLoanPageHeaderProps = {};
 
-const sendFeedbackToAllLenders = ({ loan, formatMessage }) => {
-  const {
-    offers = [],
-    structure: { property },
-  } = loan;
-  const promises = [];
+const sendFeedbackToAllLenders = (loan) => {
+  const { _id: loanId, offers = [] } = loan;
 
-  // Remove duplicate lenders
-  const filteredOffers = uniqBy(
+  // Don't show duplicate lenders
+  const contacts = uniqBy(
     offers,
     ({
       lender: {
         contact: { name },
       },
     }) => name,
-  );
-  const contacts = filteredOffers.map(({
+  ).map(({
     lender: {
       contact: { name },
       organisation: { name: organisationName },
     },
   }) => `${name} (${organisationName})`);
 
-  const confirm = window.confirm(`Attention: modifier le statut du dossier à sans suite enverra automatiquememt un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
+  if (offers.length) {
+    const confirm = window.confirm(`Attention: modifier le statut du dossier à sans suite enverra automatiquememt un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
 
-  if (confirm) {
-    filteredOffers.map((offer) => {
-      const feedback = makeFeedback({
-        offer: { ...offer, property },
-        model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-        formatMessage,
-      });
-      return [
-        ...promises,
-        offerSendFeedback.run({ offerId: offer._id, feedback, saveFeedback: false }),
-      ];
-    });
-
-    return Promise.all(promises);
+    if (confirm) {
+      return sendNegativeFeedbackToAllLenders.run({ loanId });
+    }
   }
 
   return Promise.resolve();
 };
 
-const additionalActions = ({ loan, formatMessage }) => (status) => {
+const additionalActions = loan => (status) => {
   switch (status) {
   case LOAN_STATUS.UNSUCCESSFUL:
-    return sendFeedbackToAllLenders({ loan, formatMessage });
+    return sendFeedbackToAllLenders(loan);
   default:
     return Promise.resolve();
   }
 };
 
-const SingleLoanPageHeader = ({
-  loan,
-  intl: { formatMessage },
-}: SingleLoanPageHeaderProps) => (
+const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
   <div className="single-loan-page-header">
     <h1>
       <T
@@ -109,7 +86,7 @@ const SingleLoanPageHeader = ({
         status={loan.status}
         allowModify
         docId={loan._id}
-        additionalActions={additionalActions({ loan, formatMessage })}
+        additionalActions={additionalActions(loan)}
       />
     </h1>
     {loan.hasPromotion && (
@@ -123,4 +100,4 @@ const SingleLoanPageHeader = ({
   </div>
 );
 
-export default injectIntl(SingleLoanPageHeader);
+export default SingleLoanPageHeader;

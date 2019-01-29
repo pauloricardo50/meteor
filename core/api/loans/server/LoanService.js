@@ -1,6 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import moment from 'moment';
 
+import formatMessage from 'imports/core/utils/intl';
+import {
+  makeFeedback,
+  FEEDBACK_OPTIONS,
+} from 'imports/core/components/OfferList/feedbackHelpers';
+import  OfferService  from '../../offers/server/OfferService';
+import { adminLoan } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -290,6 +298,58 @@ export class LoanService extends CollectionService {
     if (oldBorrowerLoans.length === 1 && oldBorrowerLoans[0]._id === loanId) {
       BorrowerService.remove({ borrowerId: oldBorrowerId });
     }
+  }
+
+  sendNegativeFeedbackToAllLenders({ loanId }) {
+    const {
+      offers = [],
+      structure: { property },
+    } = this.createQuery({
+      $filters: { _id: loanId },
+      ...adminLoan({ withSort: true }),
+    }).fetchOne() || {};
+
+    // Get lenders' last offer
+    const filteredOffers = offers
+      .sort((a, b) => (moment(a.createdAt).isBefore(b.createdAt) ? 1 : -1))
+      .reduce((filtered, offer) => {
+        const {
+          lender: {
+            contact: { email: lenderEmail },
+          },
+        } = offer;
+        if (
+          filtered.find(({
+            lender: {
+              contact: { email },
+            },
+          }) => lenderEmail === email)
+        ) {
+          return filtered;
+        }
+
+        return [...filtered, offer];
+      }, []);
+
+    let promises = [];
+
+    filteredOffers.forEach((offer) => {
+      const feedback = makeFeedback({
+        offer: { ...offer, property },
+        model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
+        formatMessage,
+      });
+      promises = [
+        ...promises,
+        OfferService.sendFeedback({
+          offerId: offer._id,
+          feedback,
+          saveFeedback: false,
+        }),
+      ];
+    });
+
+    return Promise.all(promises);
   }
 }
 

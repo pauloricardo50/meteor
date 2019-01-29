@@ -88,7 +88,7 @@ const StatusLabel = ({
   color = null,
   allowModify,
   docId,
-  additionalActions = () => Promise.resolve(),
+  additionalActions = Promise.resolve,
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = (props = {}) => (

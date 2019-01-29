@@ -92,14 +92,14 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
       contact: { firstName: contactName },
       loan: {
         borrowers,
-        user: {
-          assignedEmployee: { name: assignee },
-        },
+        user: { assignedEmployee },
       },
     },
     property: { address1, zipCode, city },
     createdAt,
   } = offer;
+
+  const { name: assignee = 'e-Potek' } = assignedEmployee || {};
 
   const address = `${address1}, ${zipCode} ${city}`;
 
