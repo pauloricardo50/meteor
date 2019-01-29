@@ -8,6 +8,7 @@ import {
   makeFeedback,
   FEEDBACK_OPTIONS_SETTINGS,
 } from './feedbackHelpers';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
 const schema = ({ offer, formatMessage }) =>
   new SimpleSchema({
@@ -39,11 +40,7 @@ const schema = ({ offer, formatMessage }) =>
       type: String,
       optional: true,
       uniforms: {
-        multiline: true,
-        rows: 15,
-        rowsMax: 15,
-        style: { width: '500px' },
-        disabled: true,
+        type: CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW,
       },
       condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
       customAutoValue: model => makeFeedback({ model, offer, formatMessage }),

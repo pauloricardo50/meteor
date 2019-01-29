@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import AutoFormDialog from '../AutoForm2/AutoFormDialog';
 import OfferFeedbackContainer from './OfferFeedbackContainer';
+import HtmlPreview from '../HtmlPreview';
 
 type OfferFeedbackProps = {
   offer: Object,
@@ -82,7 +83,7 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
         (message && date ? (
           <>
             <h4>Feedback envoyé le {moment(date).format('DD.MM.YYYY')}</h4>
-            <p style={{ whiteSpace: 'pre-line' }}>{message}</p>
+            <HtmlPreview value={message} />
           </>
         ) : null)
       }

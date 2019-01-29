@@ -94,7 +94,8 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
   const address = `${address1}, ${zipCode} ${city}`;
 
   if (customFeedback && option === FEEDBACK_OPTIONS.CUSTOM) {
-    return customFeedback;
+    // Replace all returns into HTML
+    return customFeedback.replace(/(?:\r\n|\r|\n)/g, '<br>');
   }
 
   let feedback = '';
@@ -110,10 +111,14 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
     && FEEDBACK_OPTIONS_SETTINGS[option].enableComments
   ) {
     feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.comments` }, { singleBorrower }));
-    feedback = feedback.concat(comments
-      .filter(x => x)
-      .map(comment => `- ${comment}`)
-      .join('\n'));
+    feedback = feedback.concat(
+      '<ul>',
+      comments
+        .filter(x => x)
+        .map(comment => `<li><b>${comment}</b></li>`)
+        .join('\n'),
+      '</ul>',
+    );
   }
 
   if (option && FEEDBACK_OPTIONS_SETTINGS[option].enableOutro) {

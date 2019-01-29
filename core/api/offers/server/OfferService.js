@@ -46,7 +46,7 @@ export class OfferService extends CollectionService {
         loanName,
         organisationName,
         date: moment(createdAt).format('DD.MM.YYYY'),
-        feedback: `<p style="color: white; white-space: pre-line;">${feedback}</p>`,
+        feedback,
       },
     });
   };

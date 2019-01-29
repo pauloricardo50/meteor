@@ -194,7 +194,7 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
 });
 
 addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
-  template: EMAIL_TEMPLATES.NOTIFICATION,
+  template: EMAIL_TEMPLATES.SIMPLE,
   createOverrides({ assigneeName, assigneeAddress, feedback }, { title }) {
     const { variables } = this.template;
 
