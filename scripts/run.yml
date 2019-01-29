@@ -12,9 +12,6 @@ windows:
         - app:
             - cd ../microservices/app
             - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
-        - pdf:
-            - cd ../microservices/pdf
-            - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start
         - pro:
             - cd ../microservices/pro
             - env MONGO_URL=mongodb://localhost:3001/meteor meteor npm start

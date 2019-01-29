@@ -1,34 +1,87 @@
 import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
-import includes from 'lodash/includes';
+import { Match, check } from 'meteor/check';
+import map from 'lodash/map';
+import zipObject from 'lodash/zipObject';
+import SecurityService from '../api/security/Security';
 
 if (Meteor.isServer) {
   DDPRateLimiter.setErrorMessage(({ timeToReset }) => {
     const time = Math.ceil(timeToReset / 1000);
     const seconds = time === 1 ? 'seconde' : 'secondes';
-    return `Doucement l'ami, tu peux reessayer dans ${time} ${seconds}.`;
+    return `Doucement, tu peux reessayer dans ${time} ${seconds}.`;
   });
 }
 
-let rateLimitedMethods = [];
-export const getRateLimitedMethods = () => rateLimitedMethods;
+const shouldRateLimit = testRateLimit =>
+  Meteor.isServer && (!Meteor.isAppTest || testRateLimit);
 
-const assignLimits = ({ methods, limit = 5, timeRange = 1000 }) => {
-  if (Meteor.isServer && !Meteor.isAppTest) {
-    DDPRateLimiter.addRule(
-      {
-        name: name => includes(methods, name),
-        connectionId: () => true,
-        type: 'method',
-      },
-      limit,
-      timeRange,
-    );
+const rateLimitedMethods = [];
 
-    rateLimitedMethods = rateLimitedMethods.concat(methods);
-  }
+const defaultLimit = 5;
+const defaultTimeRange = 1000;
+
+const defaultRateLimit = {
+  global: {
+    limit: defaultLimit,
+    timeRange: defaultTimeRange,
+  },
+  dev: {
+    limit: 300,
+    timeRange: defaultTimeRange,
+  },
 };
 
-export default function rateLimit(options) {
-  return assignLimits(options);
-}
+const roleLimiterCheckPattern = Match.Optional(Match.ObjectIncluding({
+  limit: Match.Optional(Number),
+  timeRange: Match.Optional(Number),
+}));
+
+const rateLimitCheckPattern = limitRoles =>
+  Match.ObjectIncluding(zipObject(limitRoles, map(limitRoles, () => roleLimiterCheckPattern)));
+
+const methodLimiterRule = ({ name, limitRoles = [], role = 'global' }) => ({
+  userId: (userId) => {
+    if (userId) {
+      if (role !== 'global') {
+        return SecurityService.hasRole(userId, role);
+      }
+      if (limitRoles.length > 1) {
+        return !SecurityService.hasRole(userId, limitRoles);
+      }
+    }
+    return true;
+  },
+  type: 'method',
+  name,
+});
+
+export const getRateLimitedMethods = () => rateLimitedMethods;
+
+export const setMethodLimiter = ({ name, rateLimit = {}, testRateLimit }) => {
+  if (shouldRateLimit(testRateLimit)) {
+    const currentRateLimit = { ...defaultRateLimit, ...rateLimit };
+    const limitRoles = Object.keys(currentRateLimit);
+
+    check(currentRateLimit, rateLimitCheckPattern(limitRoles));
+
+    limitRoles.forEach((role) => {
+      const {
+        limit = defaultLimit,
+        timeRange = defaultTimeRange,
+      } = currentRateLimit[role];
+
+      DDPRateLimiter.addRule(
+        methodLimiterRule({
+          name,
+          role,
+          limitRoles,
+        }),
+        limit,
+        timeRange,
+      );
+    });
+
+    rateLimitedMethods.push(name);
+  }
+};

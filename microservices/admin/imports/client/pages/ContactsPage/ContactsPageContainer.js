@@ -1,9 +1,9 @@
-import { withSmartQuery } from 'core/api/containerToolkit/index';
+import { withSmartQuery } from 'core/api/containerToolkit';
 import query from 'core/api/contacts/queries/contacts';
 
 export default withSmartQuery({
   query,
-  queryOptions: { reactive: true },
+  queryOptions: { reactive: false },
   dataName: 'contacts',
   smallLoader: true,
 });

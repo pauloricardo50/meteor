@@ -12,14 +12,17 @@ Cypress.Commands.add('callMethod', (method, ...params) => {
     consoleProps: () => ({ name: method, params }),
   });
 
-  cy.getMeteor().then(Meteor =>
+  return cy.getMeteor().then(Meteor =>
     new Cypress.Promise((resolve, reject) => {
       // Be careful, if methods don't come back, you might be creating a new
       // websocket connection, see the network tab if you have multiple ones
       // https://github.com/meteor/meteor/issues/10392
       Meteor.apply(method, params, (err, result) => {
         if (err) {
-          reject(err);
+          // It would be great if you could catch cypress.Promise errors..
+          // But for now you have to resolve, or it fails the test
+          resolve(err);
+          return;
         }
 
         resolve(result);

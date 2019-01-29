@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 class CollectionService {
   constructor(collection) {
     if (!collection) {
@@ -24,6 +26,18 @@ class CollectionService {
 
   get(id) {
     return this.collection.findOne(id);
+  }
+
+  safeGet(id) {
+    const result = this.get(id);
+    
+    if (!result) {
+      throw new Meteor.Error(`Could not find object with id "${id}" in collection "${
+        this.collection._name
+      }"`);
+    }
+
+    return result;
   }
 
   find(...args) {

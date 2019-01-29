@@ -6,6 +6,7 @@ import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
 import Security from '../Security';
 import LoanSecurity from './LoanSecurity';
+import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 
 class PromotionSecurity {
   static isAllowedToInsert() {
@@ -40,8 +41,17 @@ class PromotionSecurity {
   }
 
   static isAllowedToRead(promotionId, userId) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
     try {
-      this.isAllowedToUpdate(promotionId);
+      const promotion = PromotionService.safeGet(promotionId);
+      Security.hasPermissionOnDoc(
+        promotion,
+        [DOCUMENT_USER_PERMISSIONS.READ, DOCUMENT_USER_PERMISSIONS.MODIFY],
+        userId,
+      );
     } catch (error) {
       if (!error) {
         return;
@@ -55,13 +65,18 @@ class PromotionSecurity {
     }
   }
 
-  static isAllowedToUpdate(promotionId) {
+  static isAllowedToUpdate(promotionId, userId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
-    const promotion = PromotionService.findOne(promotionId);
+    const promotion = PromotionService.safeGet(promotionId);
     Security.checkOwnership(promotion);
+    Security.hasPermissionOnDoc(
+      promotion,
+      [DOCUMENT_USER_PERMISSIONS.MODIFY],
+      userId,
+    );
   }
 
   static isAllowedToDelete() {

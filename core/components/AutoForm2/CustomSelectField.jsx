@@ -2,7 +2,6 @@
 import React from 'react';
 import SelectField from 'uniforms-material/SelectField';
 
-import Loading from '../Loading/Loading';
 import CustomSelectFieldContainer from './CustomSelectFieldContainer';
 
 type CustomSelectFieldProps = {
@@ -17,17 +16,14 @@ const CustomSelectField = ({
   values = [],
   renderValue,
   ...props
-}: CustomSelectFieldProps) =>
-  (values ? (
-    <SelectField
-      {...props}
-      allowedValues={values}
-      transform={transform}
-      renderValue={renderValue}
-      labelProps={{ shrink: true }}
-    />
-  ) : (
-    <Loading />
-  ));
+}: CustomSelectFieldProps) => (
+  <SelectField
+    {...props}
+    allowedValues={values}
+    transform={transform}
+    renderValue={renderValue}
+    labelProps={{ shrink: true }}
+  />
+);
 
 export default CustomSelectFieldContainer(CustomSelectField);

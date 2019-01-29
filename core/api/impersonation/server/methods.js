@@ -1,4 +1,4 @@
-import { impersonateUser } from '../defs';
+import { impersonateUser } from '../methodDefinitions';
 import ImpersonateService from './ImpersonateService';
 
 impersonateUser.setHandler((context, { authToken, userId }) => {

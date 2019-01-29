@@ -1,7 +1,4 @@
-import {
-  CLOUDFOUNDRY_MARKETPLACE,
-  CLOUDFOUNDRY_MEMORY_LIMIT,
-} from '../CloudFoundry/cloudFoundryConstants';
+import { CLOUDFOUNDRY_MEMORY_LIMIT } from '../CloudFoundry/cloudFoundryConstants';
 
 export const ENVIRONMENT = {
   STAGING: 'staging',
@@ -11,7 +8,6 @@ export const ENVIRONMENT = {
 export const APPLICATIONS = {
   ADMIN: 'admin',
   APP: 'app',
-  PDF: 'pdf',
   PRO: 'pro',
   WWW: 'www',
 };
@@ -37,7 +33,6 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB512_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB512_1i },
-    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB256_1i },
     [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
   [ENVIRONMENT.PRODUCTION]: {
@@ -45,7 +40,6 @@ export const ENVIRONMENT_CONFIG = {
     [APPLICATIONS.APP]: { appConfig: APP_CONFIGS.MB1024_2i },
     [APPLICATIONS.ADMIN]: { appConfig: APP_CONFIGS.MB1024_1i },
     [APPLICATIONS.WWW]: { appConfig: APP_CONFIGS.MB1024_1i },
-    [APPLICATIONS.PDF]: { appConfig: APP_CONFIGS.MB256_1i },
     [APPLICATIONS.PRO]: { appConfig: APP_CONFIGS.MB512_1i },
   },
 };
@@ -81,7 +75,6 @@ export const APP_SMOKE_TEST_FILES = {
   [APPLICATIONS.APP]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.ADMIN]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.WWW]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
-  [APPLICATIONS.PDF]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
   [APPLICATIONS.PRO]: [SMOKE_TESTS_MAIN_SCRIPT, 'test.js'],
 };
 
@@ -90,14 +83,12 @@ export const APP_ENV_VARIABLES = {
     [APPLICATIONS.APP]: {},
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
-    [APPLICATIONS.PDF]: {},
     [APPLICATIONS.PRO]: {},
   },
   [ENVIRONMENT.PRODUCTION]: {
     [APPLICATIONS.APP]: {},
     [APPLICATIONS.ADMIN]: {},
     [APPLICATIONS.WWW]: { DISABLE_WEBSOCKETS: 1 },
-    [APPLICATIONS.PDF]: {},
     [APPLICATIONS.PRO]: {},
   },
 };

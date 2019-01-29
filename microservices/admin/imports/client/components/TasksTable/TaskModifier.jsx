@@ -29,20 +29,14 @@ export const schema = new SimpleSchema({
     type: String,
     allowedValues: Object.values(TASK_STATUS),
     defaultValue: TASK_STATUS.ACTIVE,
-    uniforms: {
-      displayEmpty: false,
-      placeholder: '',
-    },
+    uniforms: { displayEmpty: false, placeholder: '' },
   },
   assignedEmployeeId: {
     type: String,
     customAllowedValues: { query },
     optional: true,
     defaultValue: null,
-    uniforms: {
-      transform: ({ name }) => name,
-      labelProps: { shrink: true },
-    },
+    uniforms: { transform: ({ name }) => name, labelProps: { shrink: true } },
   },
 });
 
@@ -76,8 +70,8 @@ const TaskModifier = ({
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({ setOpen, setSubmitting }) => ({
-    updateTask: ({ _id: taskId, ...values }) => {
+  withProps(({ setOpen, setSubmitting, task: { _id: taskId } }) => ({
+    updateTask: (values) => {
       setSubmitting(true);
       return taskUpdate
         .run({ taskId, object: values })

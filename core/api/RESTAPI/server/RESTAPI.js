@@ -1,58 +1,94 @@
 import { WebApp } from 'meteor/webapp';
-import {
-  bodyParserJSON,
-  bodyParserUrlEncoded,
-  filter,
-  authenticate,
-} from './middlewares';
+import * as defaultMiddlewares from './middlewares';
+import { getRequestMethod, getRequestPath } from './helpers';
 
 export default class RESTAPI {
-  constructor(rootPath) {
+  constructor({
+    rootPath = '/api',
+    preMiddlewares = defaultMiddlewares.preMiddlewares,
+    postMiddlewares = defaultMiddlewares.postMiddlewares,
+  } = {}) {
     this.rootPath = rootPath;
-    this.middlewares = [
-      filter,
-      bodyParserJSON,
-      bodyParserUrlEncoded,
-      authenticate,
-    ];
-    this.endpoints = [];
-    this.middlewares.forEach(middleware =>
-      this.connectHandlers({ handler: middleware(this) }));
+    this.preMiddlewares = preMiddlewares;
+    this.postMiddlewares = postMiddlewares;
+    this.endpoints = {};
   }
 
-  addEndpoint(endpoint) {
-    this.endpoints = [
-      ...this.endpoints,
-      ...(this.endpointExists(endpoint) ? [] : [endpoint]),
-    ];
+  reset() {
+    WebApp.connectHandlers.stack = [];
   }
 
-  endpointExists(endpoint) {
-    return this.endpoints.some(({ path, method }) =>
-      path === endpoint.path && method === endpoint.method);
+  start() {
+    this.reset();
+    this.registerMiddlewares(this.preMiddlewares);
+    this.registerEndpoints();
+    this.registerMiddlewares(this.postMiddlewares);
   }
 
-  getRequestPath(req) {
-    const { _parsedUrl: parsedUrl } = req;
-    return parsedUrl && parsedUrl.path;
+  registerMiddlewares(middlewares) {
+    middlewares.forEach((middleware) => {
+      WebApp.connectHandlers.use(this.rootPath, middleware);
+    });
   }
 
-  getRequestMethod(req) {
-    return req.method;
+  makeEndpoint = path => this.rootPath + path;
+
+  registerEndpoints() {
+    const endpoints = Object.keys(this.endpoints);
+
+    endpoints.forEach((endpoint) => {
+      const methods = Object.keys(this.endpoints[endpoint]);
+
+      methods.forEach((method) => {
+        const finalEndpoint = this.makeEndpoint(endpoint);
+        const func = this.endpoints[endpoint][method];
+
+        this.registerEndpoint(finalEndpoint, func, method);
+      });
+    });
   }
 
-  connectHandlers({ path, method, handler }) {
-    WebApp.connectHandlers.use(path || this.rootPath, handler);
-    this.addEndpoint({ path, method } || { path: this.rootPath, method });
+  registerEndpoint(endpoint, func, method) {
+    WebApp.connectHandlers.use(endpoint, (req, res, next) => {
+      if (getRequestMethod(req) !== method) {
+        // Not the right method, pass to the following middlewares
+        next();
+        return;
+      }
+
+      if (getRequestPath(req) !== endpoint) {
+        // Not an exact route match
+        next();
+        return;
+      }
+
+      try {
+        Promise.resolve()
+          .then(() => func({ user: req.user, body: req.body }))
+          .then(result => this.handleSuccess(result, res))
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
   }
 
-  sendResponse({ res, data: { statusCode, body } }) {
+  handleSuccess(result = '', res) {
+    const stringified = JSON.stringify(result);
     res.setHeader('Content-Type', 'application/json');
-    res.writeHead(statusCode);
-    return res.end(JSON.stringify(body));
+    res.write(stringified);
+
+    res.end();
+  }
+
+  addEndpoint(path, method, handler) {
+    if (this.endpoints[path] && this.endpoints[path][method]) {
+      throw new Error(`Endpoint "${path}" for method "${method}" already exists in REST API`);
+    }
+
+    this.endpoints[path] = {
+      ...(this.endpoints[path] || {}),
+      [method]: handler,
+    };
   }
 }
-
-export const sendResponse = RESTAPI.prototype.sendResponse;
-export const getRequestPath = RESTAPI.prototype.getRequestPath;
-export const getRequestMethod = RESTAPI.prototype.getRequestMethod;
