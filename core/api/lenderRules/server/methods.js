@@ -5,6 +5,8 @@ import {
   lenderRulesRemove,
   lenderRulesUpdate,
   addLenderRulesFilter,
+  removeLenderRulesFilter,
+  updateLenderRulesFilter,
 } from '../methodDefinitions';
 
 lenderRulesInsert.setHandler((context, params) => {
@@ -25,4 +27,14 @@ lenderRulesUpdate.setHandler((context, params) => {
 addLenderRulesFilter.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return LenderRulesService.addLenderRulesFilter(params);
+});
+
+removeLenderRulesFilter.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.removeFilter(params);
+});
+
+updateLenderRulesFilter.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return LenderRulesService.updateFilter(params);
 });

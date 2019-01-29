@@ -29,3 +29,20 @@ export const addLenderRulesFilter = new Method({
     filter: Object,
   },
 });
+
+export const removeLenderRulesFilter = new Method({
+  name: 'removeLenderRulesFilter',
+  params: {
+    lenderRulesId: String,
+    filterId: String,
+  },
+});
+
+export const updateLenderRulesFilter = new Method({
+  name: 'updateLenderRulesFilter',
+  params: {
+    lenderRulesId: String,
+    filterId: String,
+    rules: Object,
+  },
+});

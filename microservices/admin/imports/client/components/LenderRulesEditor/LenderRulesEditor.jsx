@@ -11,7 +11,7 @@ const LenderRulesEditor = ({
   lenderRules,
   addLenderRules,
   updateMath,
-  updateFilter,
+  makeUpdateFilter,
 }: LenderRulesEditorProps) => {
   if (!lenderRules) {
     return (
@@ -31,7 +31,7 @@ const LenderRulesEditor = ({
         <LenderRulesEditorFilter
           key={filterObject.id}
           filterObject={filterObject}
-          updateFilter={updateFilter}
+          updateFilter={makeUpdateFilter(filterObject.id)}
         />
       ))}
     </div>

@@ -110,5 +110,21 @@ describe.only('lenderRules helpers', () => {
         hello: 'ma dude',
       });
     });
+
+    it('works with nested variables', () => {
+      const loan = { a: { b: { c: true } } };
+      const lenderRules = {
+        filters: [
+          {
+            filter: { and: [{ '===': [{ var: 'a.b.c' }, true] }] },
+            hello: 'dude',
+          },
+        ],
+      };
+
+      expect(getAllRules(loan, lenderRules)).to.deep.equal({
+        hello: 'dude',
+      });
+    });
   });
 });

@@ -17,6 +17,7 @@ export const filterSchema = new SimpleSchema({
   minCash: percentageField,
   theoreticalInterestRate: percentageField,
   theoreticalMaintenanceRate: percentageField,
+  comments: [String],
 });
 
 const LenderRulesSchema = new SimpleSchema({

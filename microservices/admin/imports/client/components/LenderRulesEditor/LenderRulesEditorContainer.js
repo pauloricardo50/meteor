@@ -4,6 +4,7 @@ import {
   lenderRulesInsert,
   addLenderRulesFilter,
   lenderRulesUpdate,
+  updateLenderRulesFilter,
 } from 'core/api/methods';
 
 export default withProps(({ organisationId, lenderRules = {} }) => {
@@ -13,6 +14,7 @@ export default withProps(({ organisationId, lenderRules = {} }) => {
     addFilter: filter => addLenderRulesFilter.run({ organisationId, filter }),
     updateMath: values =>
       lenderRulesUpdate.run({ lenderRulesId, object: values }),
-    updateFilter: () => {},
+    makeUpdateFilter: filterId => rules =>
+      updateLenderRulesFilter.run({ lenderRulesId, filterId, rules }),
   };
 });
