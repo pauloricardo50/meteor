@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { getAllRules } from '../../helpers';
 import { RESIDENCE_TYPE } from '../../../properties/propertyConstants';
 
-describe.only('lenderRules helpers', () => {
+describe('lenderRules helpers', () => {
   describe('getAllRules', () => {
     it('gets all the rules from a single filter', () => {
       const loan = { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE };
