@@ -17,11 +17,7 @@ export const FEEDBACK_OPTIONS_SETTINGS = {
     enableOutro: true,
   },
   [FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP]: {
-    enableComments: false,
-  },
-  [FEEDBACK_OPTIONS.CUSTOM]: {
-    enableComments: false,
-    enableOutro: false,
+    enableCustomIntro: true,
   },
 };
 
@@ -29,27 +25,40 @@ const greetings = ({ contactName, formatMessage }) =>
   formatMessage({ id: 'Feedback.greetings' }, { contactName });
 
 const introduction = ({
+  option,
   borrowers,
   singleBorrower,
   address,
+  date,
   formatMessage,
 }) => {
+  console.log('option', option);
   if (singleBorrower) {
     return formatMessage(
-      { id: 'Feedback.introduction.singleBorrower' },
+      {
+        id: FEEDBACK_OPTIONS_SETTINGS[option].enableCustomIntro
+          ? `Feedback.${option}.introduction.singleBorrower`
+          : 'Feedback.introduction.singleBorrower',
+      },
       {
         borrower: borrowers[0].name,
         address,
+        date,
       },
     );
   }
 
   return formatMessage(
-    { id: 'Feedback.introduction.twoBorrowers' },
+    {
+      id: FEEDBACK_OPTIONS_SETTINGS[option].enableCustomIntro
+        ? `Feedback.${option}.introduction.twoBorrowers`
+        : 'Feedback.introduction.twoBorrowers',
+    },
     {
       borrower1: borrowers[0].name,
       borrower2: borrowers[1].name,
       address,
+      date,
     },
   );
 };
@@ -89,6 +98,7 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
       },
     },
     property: { address1, zipCode, city },
+    createdAt,
   } = offer;
 
   const address = `${address1}, ${zipCode} ${city}`;
@@ -101,31 +111,39 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
   let feedback = '';
   const singleBorrower = borrowers.length === 1;
 
-  feedback = feedback.concat(greetings({ contactName, formatMessage }));
-  feedback = feedback.concat(introduction({ borrowers, singleBorrower, address, formatMessage }));
-  feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.body` }, { singleBorrower }));
+  if (option) {
+    feedback = feedback.concat(greetings({ contactName, formatMessage }));
+    feedback = feedback.concat(introduction({
+      option,
+      borrowers,
+      singleBorrower,
+      address,
+      date: moment(createdAt).format('DD.MM.YYYY'),
+      formatMessage,
+    }));
+    feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.body` }, { singleBorrower }));
 
-  if (
-    comments.length
-    && option
-    && FEEDBACK_OPTIONS_SETTINGS[option].enableComments
-  ) {
-    feedback = feedback.concat(formatMessage({ id: `Feedback.${option}.comments` }, { singleBorrower }));
-    feedback = feedback.concat(
-      '<ul>',
-      comments
-        .filter(x => x)
-        .map(comment => `<li><b>${comment}</b></li>`)
-        .join('\n'),
-      '</ul>',
-    );
+    if (comments.length && FEEDBACK_OPTIONS_SETTINGS[option].enableComments) {
+      feedback = feedback.concat(formatMessage(
+        { id: `Feedback.${option}.comments` },
+        { singleBorrower },
+      ));
+      feedback = feedback.concat(
+        '<ul>',
+        comments
+          .filter(x => x)
+          .map(comment => `<li><b>${comment}</b></li>`)
+          .join('\n'),
+        '</ul>',
+      );
+    }
+
+    if (FEEDBACK_OPTIONS_SETTINGS[option].enableOutro) {
+      feedback = feedback.concat(outro({ option, singleBorrower, borrowers, formatMessage }));
+    }
+
+    feedback = feedback.concat(closing({ assignee, formatMessage }));
   }
-
-  if (option && FEEDBACK_OPTIONS_SETTINGS[option].enableOutro) {
-    feedback = feedback.concat(outro({ option, singleBorrower, borrowers, formatMessage }));
-  }
-
-  feedback = feedback.concat(closing({ assignee, formatMessage }));
 
   return feedback;
 };
