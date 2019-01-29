@@ -29,9 +29,6 @@ const BlogPage = ({ posts }: BlogPageProps) => (
 
 export default lifecycle({
   componentDidMount() {
-    fetchBlogPosts().then(({ posts }) => {
-      console.log('posts', posts);
-      return this.setState({ posts });
-    });
+    fetchBlogPosts().then(({ posts }) => this.setState({ posts }));
   },
 })(BlogPage);
