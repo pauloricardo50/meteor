@@ -44,3 +44,19 @@ export const DEFAULT_VALUE_FOR_ALL = {
   maxIncomeRatio: 0.3333,
   allowPledge: true,
 };
+
+export const LENDER_RULES_VARIABLES = {
+  INCOME: 'income',
+  RESIDENCE_TYPE: 'residenceType',
+  CANTON: 'canton',
+  BORROW_RATIO: 'borrowRatio',
+  WANTED_LOAN: 'wantedLoan',
+};
+
+export const LENDER_RULES_OPERATORS = {
+  EQUALS: '===',
+  MORE_THAN: '>',
+  MORE_THAN_OR_EQUAL: '>=',
+  LESS_THAN: '<',
+  LESS_THAN_OR_EQUAL: '<=',
+};

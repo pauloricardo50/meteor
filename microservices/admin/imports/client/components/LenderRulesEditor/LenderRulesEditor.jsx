@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
-import Button from 'imports/core/components/Button/Button';
+
+import Button from 'core/components/Button';
 import LenderRulesEditorContainer from './LenderRulesEditorContainer';
 import LenderRulesEditorSingle from './LenderRulesEditorSingle';
+import LenderRulesAdder from './LenderRulesForm/LenderRulesAdder';
 
 type LenderRulesEditorProps = {};
 
@@ -28,6 +30,7 @@ const LenderRulesEditor = ({
           updateLenderRules={makeUpdateLenderRules(lenderRulesObject._id)}
         />
       ))}
+      <LenderRulesAdder />
     </div>
   );
 };
