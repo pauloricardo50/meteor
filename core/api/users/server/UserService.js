@@ -135,6 +135,12 @@ class UserService extends CollectionService {
         metadata,
       }));
   };
+
+  testUserAccount = ({ email, password, role }) => {
+    const userId = Accounts.createUser({ email, password });
+    Roles.setUserRoles(userId, role);
+    return this.get(userId);
+  };
 }
 
 export default new UserService();

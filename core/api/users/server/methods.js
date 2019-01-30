@@ -16,6 +16,7 @@ import {
   changeEmail,
   generateApiToken,
   userUpdateOrganisations,
+  testUserAccount,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -99,13 +100,20 @@ changeEmail.setHandler((context, params) => {
 });
 
 generateApiToken.setHandler((context, { userId }) => {
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService.checkUserLoggedIn(userId);
-  }
+  // if (!SecurityService.currentUserIsAdmin()) {
+  //   SecurityService.checkUserLoggedIn(userId);
+  // }
+  SecurityService.checkUserIsPro(context.userId);
   return UserService.generateApiToken({ userId });
 });
 
 userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.updateOrganisations({ userId, newOrganisations });
+});
+
+testUserAccount.setHandler((context, params) => {
+  if (Meteor.isTest) {
+    return UserService.testUserAccount(params);
+  }
 });

@@ -105,3 +105,12 @@ export const userUpdateOrganisations = new Method({
     newOrganisations: Array,
   },
 });
+
+export const testUserAccount = new Method({
+  name: 'testUserAccount',
+  parmas: {
+    email: String,
+    password: String,
+    role: String,
+  }
+});
