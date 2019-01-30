@@ -33,7 +33,7 @@ export const OfferSchema = new SimpleSchema({
   maxAmount: moneyField,
   amortizationGoal: percentageField,
   amortizationYears: {
-    type: Number,
+    type: SimpleSchema.Integer,
     min: 0,
     max: 100,
     optional: true,

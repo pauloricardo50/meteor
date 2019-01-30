@@ -1,7 +1,22 @@
 export const LENDER_RULES_COLLECTION = 'lenderRules';
 
 export const LENDER_RULES_QUERIES = {
-// Insert your queries name here
-// Example:
-// EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+  // Insert your queries name here
+  // Example:
+  // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
+};
+
+export const INCOME_CONSIDERATION_TYPES = {
+  GROSS: 'GROSS',
+  NET: 'NET',
+};
+
+export const REAL_ESTATE_CONSIDERATION_TYPES = {
+  ADD_TO_INCOME: 'ADD_TO_INCOME',
+  SUBTRACT_FROM_EXPENSES: 'SUBTRACT_FROM_EXPENSES',
+};
+
+export const OTHER_EXPENSES_CONSIDERATION_TYPES = {
+  ADD_TO_INCOME: 'ADD_TO_INCOME',
+  SUBTRACT_FROM_EXPENSES: 'SUBTRACT_FROM_EXPENSES',
 };
