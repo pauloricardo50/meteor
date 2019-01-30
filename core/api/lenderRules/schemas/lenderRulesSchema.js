@@ -5,8 +5,11 @@ import {
   percentageField,
 } from '../../helpers/sharedSchemas';
 
-export const filterSchema = new SimpleSchema({
-  id: String,
+const LenderRulesSchema = new SimpleSchema({
+  createdAt,
+  updatedAt,
+  organisationLink: { type: Object, optional: true },
+  'organisationLink._id': { type: String, optional: true },
   filter: {
     type: Object,
     blackbox: true,
@@ -19,22 +22,15 @@ export const filterSchema = new SimpleSchema({
   theoreticalMaintenanceRate: percentageField,
   comments: { type: Array, defaultValue: [] },
   'comments.$': String,
+  name: { type: String, optional: true },
 });
 
-const LenderRulesSchema = new SimpleSchema({
-  createdAt,
-  updatedAt,
-  organisationLink: { type: Object, optional: true },
-  'organisationLink._id': { type: String, optional: true },
-  filters: { type: Array, defaultValue: [] },
-  'filters.$': filterSchema,
-});
-
-export const LenderRulesMathSchema = LenderRulesSchema.omit(
+export const LenderRulesEditorSchema = LenderRulesSchema.omit(
   'updatedAt',
   'createdAt',
   'organisationLink',
-  'filters',
+  'filter',
+  'name',
 );
 
 export default LenderRulesSchema;

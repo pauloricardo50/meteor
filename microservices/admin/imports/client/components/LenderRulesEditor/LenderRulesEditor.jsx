@@ -2,20 +2,18 @@
 import React from 'react';
 import Button from 'imports/core/components/Button/Button';
 import LenderRulesEditorContainer from './LenderRulesEditorContainer';
-import LenderRulesEditorMath from './LenderRulesEditorMath';
-import LenderRulesEditorFilter from './LenderRulesEditorFilter';
+import LenderRulesEditorSingle from './LenderRulesEditorSingle';
 
 type LenderRulesEditorProps = {};
 
 const LenderRulesEditor = ({
+  initializeLenderRules,
   lenderRules,
-  addLenderRules,
-  updateMath,
-  makeUpdateFilter,
+  makeUpdateLenderRules,
 }: LenderRulesEditorProps) => {
-  if (!lenderRules) {
+  if (!lenderRules || lenderRules.length === 0) {
     return (
-      <Button raised primary onClick={addLenderRules}>
+      <Button raised primary onClick={initializeLenderRules}>
         Ajouter règles et critères d'octroi
       </Button>
     );
@@ -23,15 +21,11 @@ const LenderRulesEditor = ({
 
   return (
     <div className="lender-rules-editor">
-      <LenderRulesEditorMath
-        lenderRules={lenderRules}
-        updateMath={updateMath}
-      />
-      {lenderRules.filters.map(filterObject => (
-        <LenderRulesEditorFilter
-          key={filterObject.id}
-          filterObject={filterObject}
-          updateFilter={makeUpdateFilter(filterObject.id)}
+      {lenderRules.map(lenderRulesObject => (
+        <LenderRulesEditorSingle
+          key={lenderRulesObject._id}
+          lenderRules={lenderRulesObject}
+          updateLenderRules={makeUpdateLenderRules(lenderRulesObject._id)}
         />
       ))}
     </div>

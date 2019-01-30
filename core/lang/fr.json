@@ -1,4 +1,5 @@
 {
+  "LenderRulesEditorTitle.all": "Tous les dossiers",
   "Forms.comments": "Commentaires",
   "Forms.comments.placeholder": "Pas de financements au delà de Nyon - N'accepte pas les prêts de tiers",
   "Forms.maxBorrowRatio": "Taux d'avance max",

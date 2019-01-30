@@ -6,6 +6,12 @@ export const lenderRulesInsert = new Method({
     organisationId: String,
   },
 });
+export const lenderRulesInitialize = new Method({
+  name: 'lenderRulesInitialize',
+  params: {
+    organisationId: String,
+  },
+});
 
 export const lenderRulesRemove = new Method({
   name: 'lenderRulesRemove',
@@ -19,30 +25,5 @@ export const lenderRulesUpdate = new Method({
   params: {
     lenderRulesId: String,
     object: Object,
-  },
-});
-
-export const addLenderRulesFilter = new Method({
-  name: 'addLenderRulesFilter',
-  params: {
-    lenderRulesId: String,
-    filter: Object,
-  },
-});
-
-export const removeLenderRulesFilter = new Method({
-  name: 'removeLenderRulesFilter',
-  params: {
-    lenderRulesId: String,
-    filterId: String,
-  },
-});
-
-export const updateLenderRulesFilter = new Method({
-  name: 'updateLenderRulesFilter',
-  params: {
-    lenderRulesId: String,
-    filterId: String,
-    rules: Object,
   },
 });

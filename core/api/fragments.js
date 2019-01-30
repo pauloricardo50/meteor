@@ -159,7 +159,15 @@ export const adminLender = () => ({
 export const lenderRules = () => ({
   createdAt: 1,
   updatedAt: 1,
-  filters: 1,
+  filter: 1,
+  maxBorrowRatio: 1,
+  maxIncomeRatio: 1,
+  maxIncomeRatioTight: 1,
+  minCash: 1,
+  theoreticalInterestRate: 1,
+  theoreticalMaintenanceRate: 1,
+  comments: 1,
+  name: 1,
 });
 
 // //

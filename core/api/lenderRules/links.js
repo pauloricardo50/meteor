@@ -6,7 +6,6 @@ LenderRules.addLinks({
     field: 'organisationLink',
     type: 'one',
     metadata: true,
-    unique: true,
     collection: Organisations,
   },
 });

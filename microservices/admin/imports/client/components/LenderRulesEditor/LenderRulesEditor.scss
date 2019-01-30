@@ -1,5 +1,13 @@
 .lender-rules-editor {
   &-filter {
     margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  form {
+    align-self: center;
+    max-width: 500px;
+    width: 100%;
   }
 }

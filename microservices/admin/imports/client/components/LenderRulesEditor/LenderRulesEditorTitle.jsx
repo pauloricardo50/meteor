@@ -6,6 +6,10 @@ import T from 'core/components/Translation';
 type LenderRulesEditorTitleProps = {};
 
 const renderSingleVariable = (variable) => {
+  if (variable === true) {
+    return <T id="LenderRulesEditorTitle.all" />;
+  }
+
   const [variableOperator] = Object.keys(variable);
   const { var: variableName } = variable[variableOperator].find(operand => operand && operand.var);
   const variableValue = variable[variableOperator].find(operand => !(operand && operand.var));

@@ -60,4 +60,9 @@ describe('LenderRulesEditorTitle', () => {
       .at(8)
       .prop('id')).to.equal('Forms.other.OPTION2');
   });
+
+  it('return all if rule is true', () => {
+    props.filter = { and: [true] };
+    expect(component().prop('id')).to.equal('LenderRulesEditorTitle.all');
+  });
 });
