@@ -194,7 +194,10 @@ export const loanBase = () => ({
   promotionOptions: loanPromotionOption(),
 });
 
-export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
+export const userLoan = ({
+  withSort,
+  withFilteredPromotions,
+} = {}) => ({
   ...loanBase(),
   adminValidation: 1,
   borrowers: loanBorrower({ withSort }),
@@ -280,7 +283,7 @@ export const fullOffer = () => ({
   amortizationYears: 1,
   conditions: 1,
   epotekFees: 1,
-  feedback: {message: 1, date: 1},
+  feedback: { message: 1, date: 1 },
   ...Object.values(INTEREST_RATES).reduce(
     (obj, rate) => ({ ...obj, [rate]: 1 }),
     {},
@@ -301,6 +304,7 @@ export const fullOffer = () => ({
   user: simpleUser(),
   createdAt: 1,
   withCounterparts: 1,
+  enableOffer: 1,
 });
 
 // //

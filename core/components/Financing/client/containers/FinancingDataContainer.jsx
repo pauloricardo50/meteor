@@ -10,7 +10,7 @@ export default Component => props => (
         loan={loan}
         structures={loan.structures}
         borrowers={loan.borrowers}
-        offers={loan.offers}
+        offers={loan.offers.filter(({ enableOffer = true }) => enableOffer)}
         properties={loan.properties}
         promotionOptions={loan.promotionOptions}
       />
