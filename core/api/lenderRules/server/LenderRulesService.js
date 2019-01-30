@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { RESIDENCE_TYPE } from '../../constants';
 import LenderRules from '../lenderRules';
 import CollectionService from '../../helpers/CollectionService';
+import { DEFAULT_VALUE_FOR_ALL } from '../lenderRulesConstants';
 
 class LenderRulesService extends CollectionService {
   constructor() {
@@ -12,7 +13,7 @@ class LenderRulesService extends CollectionService {
   initialize({ organisationId }) {
     const lenderRulesId1 = this.insert({
       organisationId,
-      object: { filter: { and: [true] } },
+      object: { filter: { and: [true] }, ...DEFAULT_VALUE_FOR_ALL },
     });
     const lenderRulesId2 = this.insert({
       organisationId,

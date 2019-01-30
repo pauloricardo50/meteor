@@ -18,11 +18,11 @@ const incomeConsideration = {
   },
   bonusConsideration: percentageField,
   bonusHistoryToConsider: { type: SimpleSchema.Integer, defaultValue: 3 },
+  companyIncomeConsideration: percentageField,
   companyIncomeHistoryToConsider: {
     type: SimpleSchema.Integer,
-    defaultValue: 3,
+    optional: true,
   },
-  companyIncomeConsideration: percentageField,
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, defaultValue: 3 },
   pensionIncomeConsideration: percentageField,
