@@ -11,43 +11,32 @@ class LenderRulesService extends CollectionService {
   }
 
   initialize({ organisationId }) {
-    const lenderRulesId1 = this.insert({
+    this.insert({
       organisationId,
-      object: { filter: { and: [true] }, ...DEFAULT_VALUE_FOR_ALL },
+      object: DEFAULT_VALUE_FOR_ALL,
+      logicRules: [true],
     });
-    const lenderRulesId2 = this.insert({
+    this.insert({
       organisationId,
-      object: {
-        filter: {
-          and: [
-            {
-              '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.MAIN_RESIDENCE],
-            },
-          ],
-        },
-        maxBorrowRatio: 0.8,
-      },
+      object: { maxBorrowRatio: 0.8 },
+      logicRules: [
+        { '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.MAIN_RESIDENCE] },
+      ],
     });
-    const lenderRulesId3 = this.insert({
+    this.insert({
       organisationId,
-      object: {
-        filter: {
-          and: [
-            {
-              '===': [
-                { var: 'residenceType' },
-                RESIDENCE_TYPE.SECOND_RESIDENCE,
-              ],
-            },
-          ],
-        },
-        maxBorrowRatio: 0.7,
-      },
+      object: { maxBorrowRatio: 0.7 },
+      logicRules: [
+        { '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.SECOND_RESIDENCE] },
+      ],
     });
   }
 
-  insert({ organisationId, object = {} }) {
-    const lenderRulesId = super.insert(object);
+  insert({ organisationId, object = {}, logicRules }) {
+    const lenderRulesId = super.insert({
+      ...object,
+      filter: { and: logicRules },
+    });
 
     this.addLink({
       id: lenderRulesId,

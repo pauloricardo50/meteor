@@ -12,6 +12,7 @@ const LenderRulesEditor = ({
   initializeLenderRules,
   lenderRules,
   makeUpdateLenderRules,
+  organisationId,
 }: LenderRulesEditorProps) => {
   if (!lenderRules || lenderRules.length === 0) {
     return (
@@ -30,7 +31,7 @@ const LenderRulesEditor = ({
           updateLenderRules={makeUpdateLenderRules(lenderRulesObject._id)}
         />
       ))}
-      <LenderRulesAdder />
+      <LenderRulesAdder organisationId={organisationId} />
     </div>
   );
 };

@@ -40,7 +40,7 @@
   "Forms.comments": "Commentaires",
   "Forms.comments.placeholder": "Pas de financements au delà de Nyon - N'accepte pas les prêts de tiers",
   "Forms.maxBorrowRatio": "Taux d'avance max",
-  "Forms.maxIncomeRatio": "Taux d'endettement max",
+  "Forms.maxIncomeRatio": "Taux d'effort max",
   "Forms.maxIncomeRatioTight": "Taux d'avance max, cas par cas",
   "Forms.minCash": "Taux de fonds propres non-LPP min",
   "Forms.theoreticalInterestRate": "Taux d'intérêts théorique",

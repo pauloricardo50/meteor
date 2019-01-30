@@ -1,9 +1,13 @@
+import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const lenderRulesInsert = new Method({
   name: 'lenderRulesInsert',
   params: {
     organisationId: String,
+    logicRules: Array,
+    object: Match.Maybe(Object),
   },
 });
 export const lenderRulesInitialize = new Method({
