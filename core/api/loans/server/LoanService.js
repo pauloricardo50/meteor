@@ -331,6 +331,7 @@ export class LoanService extends CollectionService {
         return [...filtered, offer];
       }, []);
 
+
     let promises = [];
 
     filteredOffers.forEach((offer) => {

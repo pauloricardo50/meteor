@@ -1,7 +1,9 @@
 /* eslint-env mocha */
+import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
+import faker from 'faker/locale/fr';
 
 import '../../../factories';
 import LoanService from '../LoanService';
@@ -9,6 +11,7 @@ import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
+import OfferService from '../../../offers/server/OfferService';
 
 describe('LoanService', () => {
   let loanId;
@@ -643,6 +646,110 @@ describe('LoanService', () => {
 
       expect(() =>
         LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
+    });
+  });
+
+  describe('sendNegativeFeedbackToAllLenders', () => {
+    let addresses = [];
+    const insertMultipleOffers = ({
+      numberOfLenders,
+      numberOfOffersPerLender,
+    }) => {
+      let offerIds = [];
+
+      [...Array(numberOfLenders)].forEach(() => {
+        // Create contact
+        const address = faker.internet.email();
+        addresses = [...addresses, address];
+        const contactId = Factory.create('contact', {
+          emails: [{ address }],
+        })._id;
+
+        // Create org
+        const organisationId = Factory.create('organisation', {
+          contactIds: [{ _id: contactId }],
+        })._id;
+
+        // Create lender
+        const lenderId = LenderService.insert({
+          lender: { loanId },
+          organisationId,
+          contactId,
+        });
+
+        // Create offers
+        [...Array(numberOfOffersPerLender)].forEach(() => {
+          offerIds = [
+            ...offerIds,
+            OfferService.insert({
+              offer: { interest10: 1, maxAmount: 1000000, lenderId },
+            }),
+          ];
+        });
+      });
+
+      return offerIds;
+    };
+
+    const checkEmails = expected =>
+      new Promise((resolve, reject) => {
+        Meteor.call('getAllTestEmails', { expected }, (err, emails) =>
+          (err ? reject(err) : resolve(emails)));
+      });
+
+    beforeEach(() => {
+      resetDatabase();
+      const adminId = Factory.create('admin', {
+        firstName: 'Dev',
+        lastName: 'e-Potek',
+        emails: [{ address: 'dev@e-potek.ch', verified: true }],
+      })._id;
+      const userId = Factory.create('user', { assignedEmployeeId: adminId })
+        ._id;
+      loanId = LoanService.adminLoanInsert({ userId });
+      addresses = [];
+    });
+
+    it('sends a negative feedback to all lenders', () => {
+      const numberOfLenders = 5;
+      const numberOfOffersPerLender = 1;
+
+      const offerIds = insertMultipleOffers({
+        loanId,
+        numberOfLenders,
+        numberOfOffersPerLender,
+      });
+
+      expect(offerIds.length).to.equal(numberOfLenders * numberOfOffersPerLender);
+
+      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
+        .then(() => checkEmails(numberOfLenders))
+        .then((emails) => {
+          expect(emails.length).to.equal(numberOfLenders);
+          addresses.forEach(email =>
+            expect(emails.some(({ address }) => address === email)).to.equal(true));
+        });
+    });
+
+    it('sends a negative feedback to all lenders once only', () => {
+      const numberOfLenders = 5;
+      const numberOfOffersPerLender = 10;
+
+      const offerIds = insertMultipleOffers({
+        loanId,
+        numberOfLenders,
+        numberOfOffersPerLender,
+      });
+
+      expect(offerIds.length).to.equal(numberOfLenders * numberOfOffersPerLender);
+
+      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
+        .then(() => checkEmails(numberOfLenders))
+        .then((emails) => {
+          expect(emails.length).to.equal(numberOfLenders);
+          addresses.forEach(email =>
+            expect(emails.some(({ address }) => address === email)).to.equal(true));
+        });
     });
   });
 });

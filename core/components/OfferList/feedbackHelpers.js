@@ -32,7 +32,6 @@ const introduction = ({
   date,
   formatMessage,
 }) => {
-  console.log('option', option);
   if (singleBorrower) {
     return formatMessage(
       {

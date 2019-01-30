@@ -123,7 +123,7 @@ describe('OfferService', () => {
         } = emails[0];
         expect(status).to.equal('sent');
         expect(emailId).to.equal(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER);
-        expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION.mandrillId);
+        expect(template_name).to.equal(EMAIL_TEMPLATES.SIMPLE.mandrillId);
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('dev@e-potek.ch');
         expect(from_name).to.equal('Dev e-Potek');
