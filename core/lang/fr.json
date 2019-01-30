@@ -1,4 +1,5 @@
 {
+  "Forms.enableOffer": "Montrer l'offre au client",
   "Forms.option": "Option",
   "Forms.option.POSITIVE": "Positif",
   "Forms.option.NEGATIVE_NOT_COMPETITIVE": "Négatif pas compétitif",
