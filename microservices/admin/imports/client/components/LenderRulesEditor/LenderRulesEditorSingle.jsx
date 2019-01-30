@@ -12,7 +12,7 @@ const getInitialFormKeys = ({ lenderRules }) =>
   Object.keys(lenderRules).filter((key) => {
     const val = lenderRules[key];
 
-    if (val && val.length === 0) {
+    if (val && val.length !== undefined && val.length === 0) {
       return false;
     }
 
@@ -34,7 +34,7 @@ const LenderRulesEditorSingle = ({
 
     <DropdownMenu
       options={LenderRulesEditorSchema._schemaKeys
-        .filter(key => !formKeys.includes(key))
+        .filter(key => !formKeys.includes(key) && !key.includes('$'))
         .map(key => ({
           id: key,
           label: <T id={`Forms.${key}`} />,

@@ -42,4 +42,5 @@ export const DEFAULT_VALUE_FOR_ALL = {
   amortizationYears: 15,
   maxBorrowRatio: 0.9,
   maxIncomeRatio: 0.3333,
+  allowPledge: true,
 };

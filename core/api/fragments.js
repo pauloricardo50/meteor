@@ -157,17 +157,32 @@ export const adminLender = () => ({
 // // LenderRules fragments
 // //
 export const lenderRules = () => ({
+  allowPledge: 1,
+  amortizationGoal: 1,
+  amortizationYears: 1,
+  bonusConsideration: 1,
+  bonusHistoryToConsider: 1,
+  comments: 1,
+  companyIncomeConsideration: 1,
+  companyIncomeHistoryToConsider: 1,
   createdAt: 1,
-  updatedAt: 1,
+  dividendsConsideration: 1,
+  dividendsHistoryToConsider: 1,
   filter: 1,
+  incomeConsiderationType: 1,
+  investmentIncomeConsideration: 1,
   maxBorrowRatio: 1,
   maxIncomeRatio: 1,
   maxIncomeRatioTight: 1,
   minCash: 1,
+  name: 1,
+  otherExpensesConsiderationType: 1,
+  pensionIncomeConsideration: 1,
+  realEstateIncomeConsideration: 1,
+  realEstateIncomeConsiderationType: 1,
   theoreticalInterestRate: 1,
   theoreticalMaintenanceRate: 1,
-  comments: 1,
-  name: 1,
+  updatedAt: 1,
 });
 
 // //

@@ -15,28 +15,31 @@ const incomeConsideration = {
     type: String,
     allowedValues: Object.values(INCOME_CONSIDERATION_TYPES),
     optional: true,
+    uniforms: { placeholder: null },
   },
   bonusConsideration: percentageField,
-  bonusHistoryToConsider: { type: SimpleSchema.Integer, defaultValue: 3 },
+  bonusHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
   companyIncomeConsideration: percentageField,
   companyIncomeHistoryToConsider: {
     type: SimpleSchema.Integer,
     optional: true,
   },
   dividendsConsideration: percentageField,
-  dividendsHistoryToConsider: { type: SimpleSchema.Integer, defaultValue: 3 },
+  dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
   pensionIncomeConsideration: percentageField,
   realEstateIncomeConsideration: percentageField,
   realEstateIncomeConsiderationType: {
     type: String,
     allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
     optional: true,
+    uniforms: { placeholder: null },
   },
   investmentIncomeConsideration: percentageField,
   otherExpensesConsiderationType: {
     type: String,
     allowedValues: Object.values(OTHER_EXPENSES_CONSIDERATION_TYPES),
     optional: true,
+    uniforms: { placeholder: null },
   },
 };
 
@@ -58,6 +61,10 @@ const cutOffCriteria = {
   maxIncomeRatioTight: percentageField,
 };
 
+const other = {
+  allowPledge: { type: Boolean, optional: true },
+};
+
 const LenderRulesSchema = new SimpleSchema({
   createdAt,
   updatedAt,
@@ -73,6 +80,7 @@ const LenderRulesSchema = new SimpleSchema({
   ...incomeConsideration,
   ...theoreticalExpenses,
   ...cutOffCriteria,
+  ...other,
 });
 
 export const LenderRulesEditorSchema = LenderRulesSchema.omit(
