@@ -1,5 +1,6 @@
 .offer-list-item {
   position: relative;
+
   display: flex;
   flex-wrap: nowrap;
 
@@ -11,6 +12,7 @@
 
   img {
     align-self: center;
+
     width: 150px;
     margin-bottom: 16px;
   }
@@ -29,12 +31,13 @@
   }
 
   .icon {
-    width: 25px;
-    height: 25px;
-    margin-bottom: 16px;
     position: absolute;
     top: 16px;
     left: 16px;
+
+    width: 25px;
+    height: 25px;
+    margin-bottom: 16px;
   }
 
   .value {
@@ -59,16 +62,16 @@
 
   &-actions {
     display: flex;
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     justify-content: space-between;
 
-    > button {
+     > button {
       margin: 8px;
       padding: 8px;
     }
 
-    > span > button {
+     > span > button {
       margin: 8px;
       padding: 8px;
     }

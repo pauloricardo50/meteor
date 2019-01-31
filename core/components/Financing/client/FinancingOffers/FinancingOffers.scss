@@ -19,6 +19,7 @@
 
   &-item {
     position: relative;
+
     display: flex;
     flex-direction: column;
 
@@ -26,11 +27,12 @@
     padding: 24px;
 
     .icon {
-      width: 24px;
-      height: 24px;
       position: absolute;
       top: 8px;
       left: 8px;
+
+      width: 24px;
+      height: 24px;
     }
 
     &:last-of-type {
@@ -87,7 +89,7 @@
     display: flex;
     flex-wrap: wrap;
 
-    > * {
+     > * {
       margin-right: 16px;
 
       p {

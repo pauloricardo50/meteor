@@ -84,9 +84,10 @@
         .contact {
           display: flex;
           align-items: flex-start;
-          flex-direction: column;
-          margin-bottom: 16px;
           flex-basis: 200px;
+          flex-direction: column;
+
+          margin-bottom: 16px;
 
           h4 {
             margin: 0;
@@ -118,7 +119,7 @@
 
   .buttons {
     margin: 40px 0;
-    > * {
+     > * {
       margin-right: 16px;
       margin-bottom: 8px;
     }
@@ -135,7 +136,7 @@
     display: flex;
     align-self: flex-start;
 
-    > * {
+     > * {
       margin-right: 8px;
     }
   }
@@ -156,7 +157,7 @@
     display: flex;
     align-items: center;
 
-    > * {
+     > * {
       margin-left: 4px;
     }
   }
@@ -171,7 +172,7 @@
     margin: 16px;
     padding: 16px;
 
-    > * {
+     > * {
       width: 80%;
     }
   }
