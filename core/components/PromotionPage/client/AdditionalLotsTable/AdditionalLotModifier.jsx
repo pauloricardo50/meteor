@@ -69,7 +69,13 @@ const AdditionalLotModifier = ({
         disabled,
       }) => (
         <Button
-          onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
+          onClick={() =>
+            deleteAdditionalLot({
+              lotId: lot._id,
+              closeDialog,
+              setDisableActions,
+            })
+          }
           error
           disabled={submitting || disabled}
         >

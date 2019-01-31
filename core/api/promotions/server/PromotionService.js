@@ -131,7 +131,6 @@ export class PromotionService extends CollectionService {
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({
         userId,
-        email,
         isNewUser,
         promotionId,
         firstName,
@@ -141,13 +140,7 @@ export class PromotionService extends CollectionService {
     return Promise.resolve(loanId);
   }
 
-  sendPromotionInvitationEmail({
-    userId,
-    email,
-    isNewUser,
-    promotionId,
-    firstName,
-  }) {
+  sendPromotionInvitationEmail({ userId, isNewUser, promotionId, firstName }) {
     return FileService.listFilesForDocByCategory(promotionId).then(({ promotionImage, logos }) => {
       const coverImageUrl = promotionImage && promotionImage.length > 0 && promotionImage[0].url;
       const logoUrls = logos && logos.map(({ url }) => url);
@@ -160,7 +153,7 @@ export class PromotionService extends CollectionService {
         // Envoyer invitation avec enrollment link
         const { token } = Accounts.generateResetToken(
           userId,
-          email,
+          null,
           'enrollAccount',
         );
         ctaUrl = `${

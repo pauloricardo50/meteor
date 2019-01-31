@@ -50,9 +50,6 @@ const AutoFormDialogActions = (
       />
     )}
     <CustomSubmitField
-      raised
-      primary
-      label={<T id="general.ok" />}
       setDisableActions={setDisableActions}
       disableActions={disableActions}
     />

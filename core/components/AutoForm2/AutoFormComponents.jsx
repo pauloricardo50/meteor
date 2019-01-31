@@ -65,14 +65,16 @@ const determineComponentFromProps = ({
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
-  const CustomAutoField = (props, context) => {
-    const {
+  const CustomAutoField = (
+    props,
+    {
       uniforms: {
         schema,
         model,
         state: { submitting },
       },
-    } = context;
+    },
+  ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
 
     let {
@@ -101,7 +103,10 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     });
     const placeholder = getPlaceholder({ ...props, intlPrefix, type });
 
-    if (typeof condition === 'function' && !condition(model)) {
+    if (
+      typeof condition === 'function'
+      && !condition(model, props.parent && Number(props.parent.name.slice(-1)))
+    ) {
       return nothing;
     }
 
