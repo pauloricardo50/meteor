@@ -31,3 +31,11 @@ export const lenderRulesUpdate = new Method({
     object: Object,
   },
 });
+
+export const lenderRulesUpdateFilter = new Method({
+  name: 'lenderRulesUpdateFilter',
+  params: {
+    lenderRulesId: String,
+    logicRules: Array,
+  },
+});

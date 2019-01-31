@@ -73,6 +73,8 @@ export const otherParams = {
       }
     },
   },
+  comments: { type: Array, defaultValue: [] },
+  'comments.$': String,
 };
 
 const LenderRulesSchema = new SimpleSchema({
@@ -80,12 +82,7 @@ const LenderRulesSchema = new SimpleSchema({
   updatedAt,
   organisationLink: { type: Object, optional: true },
   'organisationLink._id': { type: String, optional: true },
-  filter: {
-    type: Object,
-    blackbox: true,
-  },
-  comments: { type: Array, defaultValue: [] },
-  'comments.$': String,
+  filter: { type: Object, blackbox: true },
   name: { type: String, optional: true },
   ...incomeConsideration,
   ...theoreticalExpenses,
@@ -93,12 +90,11 @@ const LenderRulesSchema = new SimpleSchema({
   ...otherParams,
 });
 
-export const LenderRulesEditorSchema = LenderRulesSchema.omit(
-  'updatedAt',
-  'createdAt',
-  'organisationLink',
-  'filter',
-  'name',
+export const LenderRulesEditorSchema = LenderRulesSchema.pick(
+  ...Object.keys(incomeConsideration),
+  ...Object.keys(theoreticalExpenses),
+  ...Object.keys(cutOffCriteria),
+  ...Object.keys(otherParams),
 );
 
 export default LenderRulesSchema;

@@ -1,20 +1,14 @@
 // @flow
 import React from 'react';
 
-import {
-  LenderRulesEditorSchema,
-  incomeConsideration,
-  theoreticalExpenses,
-  cutOffCriteria,
-  otherParams,
-} from 'core/api/lenderRules/schemas/lenderRulesSchema';
-import AutoForm from 'core/components/AutoForm2';
+import { LenderRulesEditorSchema } from 'core/api/lenderRules/schemas/lenderRulesSchema';
 import T from 'core/components/Translation';
 import { withState } from 'recompose';
 import DropdownMenu from 'core/components/DropdownMenu';
-import CustomSubmitField from 'core/components/AutoForm2/CustomSubmitField';
-import { makeCustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
+
 import LenderRulesEditorTitle from './LenderRulesEditorTitle';
+import LenderRulesModifier from './LenderRulesForm/LenderRulesModifier';
+import LenderRulesEditorSingleForm from './LenderRulesEditorSingleForm';
 
 const getInitialFormKeys = ({ lenderRules }) =>
   Object.keys(lenderRules).filter((key) => {
@@ -29,34 +23,19 @@ const getInitialFormKeys = ({ lenderRules }) =>
 
 type LenderRulesEditorSingleProps = {};
 
-const getAutoFormParts = formKeys =>
-  [
-    {
-      title: 'Revenus',
-      keys: Object.keys(incomeConsideration),
-    },
-    { title: 'Charges théoriques', keys: Object.keys(theoreticalExpenses) },
-    { title: "Critères d'octroi", keys: Object.keys(cutOffCriteria) },
-    { title: 'Autres', keys: Object.keys(otherParams) },
-  ]
-    .map(({ title, keys }) => ({
-      title,
-      keys: keys.filter(key => formKeys.includes(key)),
-    }))
-    .filter(({ keys }) => keys.some(key => formKeys.includes(key)));
-
-const AutoField = makeCustomAutoField();
-
 const LenderRulesEditorSingle = ({
-  lenderRules: { filter, ...rules },
+  lenderRules: { _id: lenderRulesId, filter, ...rules },
   updateLenderRules,
   formKeys,
   setFormKeys,
 }: LenderRulesEditorFilterProps) => (
   <div className="card1 card-top lender-rules-editor-filter">
-    <h3>
-      <LenderRulesEditorTitle filter={filter} />
-    </h3>
+    <div className="filter-title">
+      <h3>
+        <LenderRulesEditorTitle filter={filter} />
+      </h3>
+      <LenderRulesModifier filter={filter} lenderRulesId={lenderRulesId} />
+    </div>
 
     <DropdownMenu
       options={LenderRulesEditorSchema._schemaKeys
@@ -75,21 +54,11 @@ const LenderRulesEditorSingle = ({
       }}
     />
 
-    <AutoForm
-      model={rules}
-      onSubmit={updateLenderRules}
-      schema={LenderRulesEditorSchema.pick(...formKeys)}
-    >
-      {getAutoFormParts(formKeys).map(({ title, keys }) => (
-        <>
-          <h2>{title}</h2>
-          {keys.map(key => (
-            <AutoField name={key} key={key} />
-          ))}
-        </>
-      ))}
-      <CustomSubmitField />
-    </AutoForm>
+    <LenderRulesEditorSingleForm
+      formKeys={formKeys}
+      rules={rules}
+      updateLenderRules={updateLenderRules}
+    />
   </div>
 );
 

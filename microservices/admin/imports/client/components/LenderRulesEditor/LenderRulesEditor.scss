@@ -3,11 +3,21 @@
     margin-top: 40px;
     display: flex;
     flex-direction: column;
+
+    .filter-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
   }
 
   form {
     align-self: center;
     max-width: 500px;
     width: 100%;
+
+    button {
+      margin-top: 16px;
+    }
   }
 }

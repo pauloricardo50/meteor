@@ -11,3 +11,13 @@ export const getAllRules = (loan, lenderRules) => {
     return validRules;
   }, {});
 };
+
+export const isAllRule = ({ filter: { and } }) => and[0] === true;
+
+export const parseFilter = (ruleObject) => {
+  const [operator] = Object.keys(ruleObject);
+  const { var: variable } = ruleObject[operator].find(o => o && o.var);
+  const value = ruleObject[operator].find(o => !(o && o.var));
+
+  return { operator, variable, value };
+};

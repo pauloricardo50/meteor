@@ -34,16 +34,21 @@ const schema = new SimpleSchema({
   'rules.$.value.$': { type: String, condition: () => false },
 });
 
-const LenderRulesForm = ({ model = {}, onSubmit }: LenderRulesFormProps) => (
+const LenderRulesForm = ({
+  model = {},
+  onSubmit,
+  buttonProps = {},
+  ...otherProps
+}: LenderRulesFormProps) => (
   <AutoFormDialog
     model={model}
     onSubmit={onSubmit}
     schema={schema}
     buttonProps={{
-      label: 'Ajouter/Modifier filtre',
-      raised: true,
       primary: true,
+      ...buttonProps,
     }}
+    {...otherProps}
   />
 );
 

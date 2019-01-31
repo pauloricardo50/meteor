@@ -3,6 +3,7 @@ import React from 'react';
 
 import { LENDER_RULES_OPERATORS } from 'core/api/constants';
 import T, { Percent, Money } from 'core/components/Translation';
+import { parseFilter } from 'core/api/lenderRules/helpers';
 
 type LenderRulesEditorTitleProps = {};
 
@@ -34,20 +35,22 @@ const renderValue = (name, value) => {
   return <T id={`Forms.${name}.${value}`} />;
 };
 
-const renderSingleVariable = (variable) => {
-  if (variable === true) {
+const renderSingleVariable = (ruleObject) => {
+  if (ruleObject === true) {
     return <T id="LenderRulesEditorTitle.all" />;
   }
 
-  const [variableOperator] = Object.keys(variable);
-  const { var: variableName } = variable[variableOperator].find(operand => operand && operand.var);
-  const variableValue = variable[variableOperator].find(operand => !(operand && operand.var));
+  const { operator, variable, value } = parseFilter(ruleObject);
+
+  // const [variableOperator] = Object.keys(variable);
+  // const { var: variableName } = variable[variableOperator].find(operand => operand && operand.var);
+  // const variableValue = variable[variableOperator].find(operand => !(operand && operand.var));
 
   return (
     <>
-      <T id={`Forms.${variableName}`} />
-      &nbsp;{operatorText[variableOperator]}&nbsp;
-      {renderValue(variableName, variableValue)}
+      <T id={`Forms.${variable}`} />
+      &nbsp;{operatorText[operator]}&nbsp;
+      {renderValue(variable, value)}
     </>
   );
 };

@@ -13,6 +13,10 @@ class LenderRulesService extends CollectionService {
     super(LenderRules);
   }
 
+  remove({ lenderRulesId }) {
+    return super.remove(lenderRulesId);
+  }
+
   initialize({ organisationId }) {
     this.insert({
       organisationId,
@@ -66,6 +70,13 @@ class LenderRulesService extends CollectionService {
     }
 
     return this._update({ id: lenderRulesId, object });
+  }
+
+  updateFilter({ lenderRulesId, logicRules }) {
+    return this._update({
+      id: lenderRulesId,
+      object: { filter: { and: logicRules } },
+    });
   }
 }
 
