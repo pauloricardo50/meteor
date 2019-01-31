@@ -3,7 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import { RESIDENCE_TYPE } from '../../constants';
 import LenderRules from '../lenderRules';
 import CollectionService from '../../helpers/CollectionService';
-import { DEFAULT_VALUE_FOR_ALL } from '../lenderRulesConstants';
+import {
+  DEFAULT_VALUE_FOR_ALL,
+  LENDER_RULES_OPERATORS,
+} from '../lenderRulesConstants';
 
 class LenderRulesService extends CollectionService {
   constructor() {
@@ -20,14 +23,24 @@ class LenderRulesService extends CollectionService {
       organisationId,
       object: { maxBorrowRatio: 0.8 },
       logicRules: [
-        { '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.MAIN_RESIDENCE] },
+        {
+          [LENDER_RULES_OPERATORS.EQUALS]: [
+            { var: 'residenceType' },
+            RESIDENCE_TYPE.MAIN_RESIDENCE,
+          ],
+        },
       ],
     });
     this.insert({
       organisationId,
       object: { maxBorrowRatio: 0.7 },
       logicRules: [
-        { '===': [{ var: 'residenceType' }, RESIDENCE_TYPE.SECOND_RESIDENCE] },
+        {
+          [LENDER_RULES_OPERATORS.EQUALS]: [
+            { var: 'residenceType' },
+            RESIDENCE_TYPE.SECOND_RESIDENCE,
+          ],
+        },
       ],
     });
   }

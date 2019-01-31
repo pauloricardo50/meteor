@@ -16,7 +16,7 @@ describe('LenderRulesEditorTitle', () => {
 
   it('Renders the name of the rule', () => {
     props.filter = {
-      and: [{ '==': [{ var: 'stuff' }, 'OPTION1'] }],
+      and: [{ '===': [{ var: 'stuff' }, 'OPTION1'] }],
     };
     expect(component()
       .children()
@@ -25,39 +25,49 @@ describe('LenderRulesEditorTitle', () => {
     expect(component()
       .children()
       .at(2)
+      .text()).to.equal('=');
+    expect(component()
+      .children()
+      .at(4)
       .prop('id')).to.equal('Forms.stuff.OPTION1');
   });
 
   it('renders multiple rules', () => {
     props.filter = {
       and: [
-        { '==': [{ var: 'stuff' }, 'OPTION1'] },
-        { '==': [{ var: 'other' }, 'OPTION2'] },
+        { '<': [{ var: 'stuff' }, 'OPTION1'] },
+        { '>': [{ var: 'other' }, 'OPTION2'] },
       ],
     };
     expect(component()
       .children()
       .at(0)
       .prop('id')).to.equal('Forms.stuff');
-
     expect(component()
       .children()
       .at(2)
+      .text()).to.equal('<');
+    expect(component()
+      .children()
+      .at(4)
       .prop('id')).to.equal('Forms.stuff.OPTION1');
 
     expect(component()
       .children()
-      .at(4)
+      .at(6)
       .prop('id')).to.equal('general.and');
 
     expect(component()
       .children()
-      .at(6)
+      .at(8)
       .prop('id')).to.equal('Forms.other');
-
     expect(component()
       .children()
-      .at(8)
+      .at(10)
+      .text()).to.equal('>');
+    expect(component()
+      .children()
+      .at(12)
       .prop('id')).to.equal('Forms.other.OPTION2');
   });
 

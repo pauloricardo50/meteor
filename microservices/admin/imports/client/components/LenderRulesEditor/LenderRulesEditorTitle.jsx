@@ -1,9 +1,38 @@
 // @flow
 import React from 'react';
 
-import T from 'core/components/Translation';
+import { LENDER_RULES_OPERATORS } from 'core/api/constants';
+import T, { Percent, Money } from 'core/components/Translation';
 
 type LenderRulesEditorTitleProps = {};
+
+const operatorText = {
+  [LENDER_RULES_OPERATORS.EQUALS]: '=',
+  [LENDER_RULES_OPERATORS.LESS_THAN]: '<',
+  [LENDER_RULES_OPERATORS.LESS_THAN_OR_EQUAL]: '<=',
+  [LENDER_RULES_OPERATORS.MORE_THAN]: '>',
+  [LENDER_RULES_OPERATORS.MORE_THAN_OR_EQUAL]: '>=',
+};
+
+const renderValue = (name, value) => {
+  if (typeof value === 'number') {
+    return value === 0 ? (
+      0
+    ) : value <= 1 ? (
+      <Percent value={value} />
+    ) : (
+      <Money value={value} />
+    );
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map(v => <T key={v} id={`Forms.${name}.${v}`} />)
+      .map((tag, i) => [i !== 0 && ', ', tag]);
+  }
+
+  return <T id={`Forms.${name}.${value}`} />;
+};
 
 const renderSingleVariable = (variable) => {
   if (variable === true) {
@@ -17,8 +46,8 @@ const renderSingleVariable = (variable) => {
   return (
     <>
       <T id={`Forms.${variableName}`} />
-      :&nbsp;
-      <T id={`Forms.${variableName}.${variableValue}`} />
+      &nbsp;{operatorText[variableOperator]}&nbsp;
+      {renderValue(variableName, variableValue)}
     </>
   );
 };

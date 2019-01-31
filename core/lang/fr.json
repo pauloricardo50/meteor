@@ -1,4 +1,6 @@
 {
+  "Forms.wantedLoan": "Prêt hypothécaire souhaité",
+  "Forms.income": "Revenus",
   "Forms.operator.===": "Égale à",
   "Forms.operator.>": "Plus grand que",
   "Forms.operator.>=": "Plus grand, ou égale à",
