@@ -699,11 +699,7 @@ describe('LoanService', () => {
 
     beforeEach(() => {
       resetDatabase();
-      const adminId = Factory.create('admin', {
-        firstName: 'Dev',
-        lastName: 'e-Potek',
-        emails: [{ address: 'dev@e-potek.ch', verified: true }],
-      })._id;
+      const adminId = Factory.create('adminEpotek')._id;
       const userId = Factory.create('user', { assignedEmployeeId: adminId })
         ._id;
       loanId = LoanService.adminLoanInsert({ userId });
