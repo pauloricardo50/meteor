@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import { percentFormatters } from '../percentFormatters';
+import { percentFormatters } from '../formHelpers';
 
 describe('form helpers', () => {
   describe('percentFormatters', () => {

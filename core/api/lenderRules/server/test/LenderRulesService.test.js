@@ -1,12 +1,14 @@
 // @flow
 /* eslint-env mocha */
 import { expect } from 'chai';
+import jsonLogic from 'json-logic-js';
+
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import LenderRulesService from '../LenderRulesService';
 
-describe('LenderRulesService', () => {
+describe.only('LenderRulesService', () => {
   let organisationId;
   let lenderRulesId;
 
@@ -17,21 +19,20 @@ describe('LenderRulesService', () => {
     Factory.create('lenderRules');
   });
 
-  describe('insert', () => {
-    it('adds 2 filters with random ids', () => {
-      lenderRulesId = LenderRulesService.insert({ organisationId });
+  describe('initialize', () => {
+    it('adds 3 lenderRules', () => {
+      const ids = LenderRulesService.initialize({ organisationId });
 
-      const { filters } = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
+      const lenderRules = LenderRulesService.fetch({
+        $filters: { _id: { $in: ids } },
         filters: 1,
       });
 
-      expect(filters.length).to.equal(2);
-
-      const [filter1, filter2] = filters;
-      expect(filter1.id).to.not.equal(filter2.id);
+      expect(lenderRules.length).to.equal(3);
     });
+  });
 
+  describe('insert', () => {
     it('adds a link to the organisation', () => {
       const rulesId = LenderRulesService.insert({ organisationId });
 
@@ -46,89 +47,27 @@ describe('LenderRulesService', () => {
     });
   });
 
-  describe('removeFilter', () => {
-    it('removes a matching filter', () => {
-      lenderRulesId = LenderRulesService.insert({ organisationId });
-      let { filters } = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
-        filters: 1,
-      });
-      const [filter1, filter2] = filters;
-
-      LenderRulesService.removeFilter({ lenderRulesId, filterId: filter2.id });
-
-      filters = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
-        filters: 1,
-      }).filters;
-
-      expect(filters.length).to.equal(1);
-      expect(filters[0].id).to.equal(filter1.id);
-    });
-
-    it('does nothing if the id does not exist', () => {
-      lenderRulesId = LenderRulesService.insert({ organisationId });
-
-      LenderRulesService.removeFilter({ lenderRulesId, filterId: 'someId' });
-
-      const { filters } = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
-        filters: 1,
-      });
-
-      expect(filters.length).to.equal(2);
+  describe('update', () => {
+    it('does not let you update the filter directly', () => {
+      expect(() =>
+        LenderRulesService.update({
+          lenderRulesId: '',
+          object: { filter: 'stuff' },
+        })).to.throw('can not');
     });
   });
 
   describe('updateFilter', () => {
-    it('updates the right filter', () => {
+    it('updates the filter of a lenderRules document', () => {
       lenderRulesId = LenderRulesService.insert({ organisationId });
-      let filters;
-      filters = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
-        filters: 1,
-      }).filters;
-      const [filter1, filter2] = filters;
-
       LenderRulesService.updateFilter({
         lenderRulesId,
-        filterId: filter2.id,
-        rules: { maxBorrowRatio: 0.6 },
+        logicRules: [{ '>': [{ var: 'a' }, 2] }],
       });
 
-      filters = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
-        filters: 1,
-      }).filters;
+      const lenderRules = LenderRulesService.get(lenderRulesId);
 
-      expect(filters[0]).to.deep.equal(filter1);
-      expect(filters[1].maxBorrowRatio).to.equal(0.6);
-    });
-
-    it('throws if no filter id matches', () => {
-      lenderRulesId = LenderRulesService.insert({ organisationId });
-      let filters;
-      filters = LenderRulesService.fetchOne({
-        $filters: { _id: lenderRulesId },
-        filters: 1,
-      }).filters;
-      const [filter1, filter2] = filters;
-
-      expect(() =>
-        LenderRulesService.updateFilter({
-          lenderRulesId,
-          filterId: 'heya',
-        })).to.throw('pas');
-    });
-
-    it('throws if you try to update the filter rule directly', () => {
-      lenderRulesId = LenderRulesService.insert({ organisationId });
-
-      expect(() =>
-        LenderRulesService.updateFilter({
-          lenderRulesId,
-          rules: { filter: { yo: 'dude' } },
-        })).to.throw('can not');
+      expect(jsonLogic.apply(lenderRules.filter, { a: 3 })).to.equal(true);
     });
   });
 });

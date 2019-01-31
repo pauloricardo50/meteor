@@ -18,12 +18,12 @@ class LenderRulesService extends CollectionService {
   }
 
   initialize({ organisationId }) {
-    this.insert({
+    const id1 = this.insert({
       organisationId,
       object: DEFAULT_VALUE_FOR_ALL,
       logicRules: [true],
     });
-    this.insert({
+    const id2 = this.insert({
       organisationId,
       object: { maxBorrowRatio: 0.8 },
       logicRules: [
@@ -35,7 +35,7 @@ class LenderRulesService extends CollectionService {
         },
       ],
     });
-    this.insert({
+    const id3 = this.insert({
       organisationId,
       object: { maxBorrowRatio: 0.7 },
       logicRules: [
@@ -47,6 +47,8 @@ class LenderRulesService extends CollectionService {
         },
       ],
     });
+
+    return [id1, id2, id3];
   }
 
   insert({ organisationId, object = {}, logicRules }) {

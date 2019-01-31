@@ -143,4 +143,6 @@ Factory.define('contact', Contacts, {
   lastName: 'Doe',
 });
 
-Factory.define('lenderRules', LenderRules, {});
+Factory.define('lenderRules', LenderRules, {
+  filter: {},
+});
