@@ -7,8 +7,11 @@ import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
-import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
-import { LOAN_STATUS } from 'core/api/constants';
+import {
+  PROMOTIONS_COLLECTION,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+} from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 

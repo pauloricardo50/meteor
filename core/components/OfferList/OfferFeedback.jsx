@@ -12,21 +12,33 @@ type OfferFeedbackProps = {
   onSubmit: Function,
 };
 
-const getButtonOtherProps = ({ lender }) => {
+const getButtonOtherProps = ({ offer }) => {
   let otherProps = {};
 
   const {
-    contact,
-    organisation: { name: organisationName },
-    loan: { user },
-  } = lender;
+    lender: {
+      contact,
+      organisation: { name: organisationName },
+      loan: { user },
+    },
+    property,
+  } = offer;
 
   const { assignedEmployee, name: userName } = user || {};
   const { name: assignedEmployeeName, email: assignedEmployeeEmail } = assignedEmployee || {};
   const { email: contactEmail, name: contactName } = contact || {};
+  const { address1, zipCode, city } = property || {};
 
   // Should disable button
-  if (!assignedEmployeeEmail || !contactEmail || !user) {
+  if (
+    !assignedEmployeeEmail
+    || !contactEmail
+    || !user
+    || !property
+    || !address1
+    || !zipCode
+    || !city
+  ) {
     otherProps = { ...otherProps, disabled: true };
   }
 
@@ -56,13 +68,23 @@ const getButtonOtherProps = ({ lender }) => {
       ...otherProps,
       tooltip: `Ajoutez une adresse email au contact ${contactName} pour entrer un feedback`,
     };
+  } else if (!property) {
+    otherProps = {
+      ...otherProps,
+      tooltip: 'Choisissez une propriété pour entrer un feedback',
+    };
+  } else if (!address1 || !zipCode || !city) {
+    otherProps = {
+      ...otherProps,
+      tooltip: 'Ajoutez une adresse à la propriété pour entrer un feedback',
+    };
   }
 
   return otherProps;
 };
 
 const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
-  const { lender, feedback = {} } = offer;
+  const { feedback = {} } = offer;
   const { message, date } = feedback;
   return (
     <AutoFormDialog
@@ -73,7 +95,7 @@ const OfferFeedback = ({ onSubmit, schema, offer }: OfferFeedbackProps) => {
         label: 'Feedback',
         raised: true,
         primary: true,
-        ...getButtonOtherProps({ lender }),
+        ...getButtonOtherProps({ offer }),
       }}
       emptyDialog={!!message}
       title="Feedback de l'offre"

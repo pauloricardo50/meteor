@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 
 export const FEEDBACK_OPTIONS = {
@@ -66,18 +67,13 @@ const outro = ({ borrowers, singleBorrower, option, formatMessage }) => {
   if (singleBorrower) {
     return formatMessage(
       { id: `Feedback.${option}.outro.singleBorrower` },
-      {
-        borrower: borrowers[0].name,
-      },
+      { borrower: borrowers[0].name },
     );
   }
 
   return formatMessage(
     { id: `Feedback.${option}.outro.twoBorrowers` },
-    {
-      borrower1: borrowers[0].name,
-      borrower2: borrowers[1].name,
-    },
+    { borrower1: borrowers[0].name, borrower2: borrowers[1].name },
   );
 };
 
@@ -94,11 +90,16 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
         user: { assignedEmployee },
       },
     },
-    property: { address1, zipCode, city },
+    property,
     createdAt,
   } = offer;
 
   const { name: assignee = 'e-Potek' } = assignedEmployee || {};
+  const { address1, zipCode, city } = property || {};
+
+  if (!property || !address1 || !zipCode || !city) {
+    throw new Meteor.Error('No property or address');
+  }
 
   const address = `${address1}, ${zipCode} ${city}`;
 

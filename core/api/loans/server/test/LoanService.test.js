@@ -703,6 +703,10 @@ describe('LoanService', () => {
       const userId = Factory.create('user', { assignedEmployeeId: adminId })
         ._id;
       loanId = LoanService.adminLoanInsert({ userId });
+      PropertyService.collection.update(
+        {},
+        { $set: { address1: 'rue du lac 31', zipCode: 1400, city: 'Yverdon' } },
+      );
       addresses = [];
     });
 

@@ -33,10 +33,7 @@ export class OfferService extends CollectionService {
           user: { assignedEmployee },
         },
       },
-    } = this.fetchOne({
-      $filters: { _id: offerId },
-      ...fullOffer(),
-    });
+    } = this.fetchOne({ $filters: { _id: offerId }, ...fullOffer() });
 
     const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
 

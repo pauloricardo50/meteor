@@ -71,7 +71,7 @@ class OfferList extends Component {
         {filteredOffers.map(offer => (
           <Offer
             offerValues={getOfferValues(offer)}
-            offer={{ ...offer, property: this.props.property }}
+            offer={{ ...offer, property }}
             key={offer._id}
           />
         ))}
