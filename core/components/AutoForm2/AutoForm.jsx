@@ -8,7 +8,6 @@ import { withProps } from 'recompose';
 import { makeCustomAutoField } from './AutoFormComponents';
 import CustomAutoFields from './CustomAutoFields';
 import CustomSubmitField from './CustomSubmitField';
-import T from '../Translation';
 
 type CustomAutoFormProps = {
   autoFieldProps?: Object,
@@ -27,7 +26,6 @@ const CustomAutoForm = ({
   omitFields,
   placeholder = true,
   submitFieldProps,
-  submitting,
   ...props
 }: CustomAutoFormProps) => {
   const AutoField = makeCustomAutoField(autoFieldProps);
@@ -42,13 +40,7 @@ const CustomAutoForm = ({
       {children || (
         <>
           <CustomAutoFields omitFields={omitFields} autoField={AutoField} />
-          <CustomSubmitField
-            loading={submitting}
-            raised
-            primary
-            label={<T id="general.ok" />}
-            {...submitFieldProps}
-          />
+          <CustomSubmitField {...submitFieldProps} />
         </>
       )}
     </AutoForm>
