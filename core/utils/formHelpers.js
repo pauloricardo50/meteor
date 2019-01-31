@@ -17,8 +17,9 @@ export const phoneFormatters = {
 };
 
 export const percentFormatters = {
-  parse: value => Math.round(parseFloat(value) * 100) / 10000,
-  format: value => (value * 100).toFixed(2),
+  parse: value =>
+    (value === '' ? '' : Math.round(parseFloat(value) * 100) / 10000),
+  format: value => (value === '' ? '' : (value * 100).toFixed(2)),
 };
 
 export const moneyFormatters = {

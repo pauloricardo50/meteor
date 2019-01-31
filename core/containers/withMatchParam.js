@@ -6,7 +6,7 @@ import { compose, mapProps } from 'recompose';
 // Lets you pass a param as a string, or an array of params, and you will get
 // them as simple props from react-router, instead of drilling down
 // match.params.paramName
-export default (paramName: string | string[], path) =>
+export default (paramName: string | string[] | (() => string), path) =>
   compose(
     withRouter,
     mapProps(({ match, history, location, ...rest }) => {
@@ -27,13 +27,19 @@ export default (paramName: string | string[], path) =>
 
       if (isArray(paramName)) {
         return paramName.reduce(
-          (acc, param) => ({
-            ...acc,
-            [param]: realMatch.params[param],
-          }),
+          (acc, param) => ({ ...acc, [param]: realMatch.params[param] }),
           { ...rest },
         );
       }
+
+      if (typeof paramName === 'function') {
+        const paramNameFromProps = paramName(rest);
+        return {
+          [paramNameFromProps]: realMatch.params[paramNameFromProps],
+          ...rest,
+        };
+      }
+
       return { [paramName]: realMatch.params[paramName], ...rest };
     }),
   );

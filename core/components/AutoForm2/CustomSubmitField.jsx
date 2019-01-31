@@ -3,6 +3,7 @@ import filterDOMProps from 'uniforms/filterDOMProps';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
+import T from '../Translation';
 
 const shouldDisableButton = ({
   disableActions,
@@ -33,9 +34,12 @@ const CustomSubmitField = (
     type="submit"
     value={value}
     loading={state.submitting}
+    primary
+    raised
+    label={label || <T id="general.ok" />}
     {...filterDOMProps(props)}
   >
-    {label || children}
+    {children}
   </Button>
 );
 

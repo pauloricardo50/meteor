@@ -22,6 +22,7 @@ import {
   Properties,
   Tasks,
   Users,
+  LenderRules,
 } from '.';
 import { LOT_TYPES } from './lots/lotConstants';
 import { ROLES } from './users/userConstants';
@@ -140,4 +141,8 @@ Factory.define('interestRates', InterestRates, {});
 Factory.define('contact', Contacts, {
   firstName: 'John',
   lastName: 'Doe',
+});
+
+Factory.define('lenderRules', LenderRules, {
+  filter: {},
 });
