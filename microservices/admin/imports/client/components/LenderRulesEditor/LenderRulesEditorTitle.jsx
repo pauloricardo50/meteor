@@ -42,10 +42,6 @@ const renderSingleVariable = (ruleObject) => {
 
   const { operator, variable, value } = parseFilter(ruleObject);
 
-  // const [variableOperator] = Object.keys(variable);
-  // const { var: variableName } = variable[variableOperator].find(operand => operand && operand.var);
-  // const variableValue = variable[variableOperator].find(operand => !(operand && operand.var));
-
   return (
     <>
       <T id={`Forms.${variable}`} />
