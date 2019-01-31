@@ -2,12 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import moment from 'moment';
 
-import formatMessage from 'imports/core/utils/intl';
+import formatMessage from 'core/utils/intl';
 import {
   makeFeedback,
   FEEDBACK_OPTIONS,
-} from 'imports/core/components/OfferList/feedbackHelpers';
-import  OfferService  from '../../offers/server/OfferService';
+} from 'core/components/OfferList/feedbackHelpers';
+import OfferService from '../../offers/server/OfferService';
 import { adminLoan } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
@@ -307,30 +307,28 @@ export class LoanService extends CollectionService {
     } = this.createQuery({
       $filters: { _id: loanId },
       ...adminLoan({ withSort: true }),
+      $options: { sort: { createdAt: -1 } },
     }).fetchOne() || {};
 
     // Get lenders' last offer
-    const filteredOffers = offers
-      .sort((a, b) => (moment(a.createdAt).isBefore(b.createdAt) ? 1 : -1))
-      .reduce((filtered, offer) => {
-        const {
+    const filteredOffers = offers.reduce((filtered, offer) => {
+      const {
+        lender: {
+          contact: { email: lenderEmail },
+        },
+      } = offer;
+      if (
+        filtered.find(({
           lender: {
-            contact: { email: lenderEmail },
+            contact: { email },
           },
-        } = offer;
-        if (
-          filtered.find(({
-            lender: {
-              contact: { email },
-            },
-          }) => lenderEmail === email)
-        ) {
-          return filtered;
-        }
+        }) => lenderEmail === email)
+      ) {
+        return filtered;
+      }
 
-        return [...filtered, offer];
-      }, []);
-
+      return [...filtered, offer];
+    }, []);
 
     let promises = [];
 
