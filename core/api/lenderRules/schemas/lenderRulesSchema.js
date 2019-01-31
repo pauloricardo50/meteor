@@ -1,4 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
+
 import {
   createdAt,
   updatedAt,
@@ -62,7 +64,15 @@ export const cutOffCriteria = {
 };
 
 export const otherParams = {
-  allowPledge: { type: Boolean, optional: true },
+  allowPledge: {
+    type: Boolean,
+    optional: true,
+    autoValue() {
+      if (Meteor.isServer && this.isSet && this.value === false) {
+        return { $unset: true };
+      }
+    },
+  },
 };
 
 const LenderRulesSchema = new SimpleSchema({
