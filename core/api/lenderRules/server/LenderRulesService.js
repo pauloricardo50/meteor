@@ -6,6 +6,8 @@ import CollectionService from '../../helpers/CollectionService';
 import {
   DEFAULT_VALUE_FOR_ALL,
   LENDER_RULES_OPERATORS,
+  DEFAULT_MAIN_RESIDENCE_RULES,
+  DEFAULT_SECONDARY_RESIDENCE_RULES,
 } from '../lenderRulesConstants';
 
 class LenderRulesService extends CollectionService {
@@ -26,26 +28,12 @@ class LenderRulesService extends CollectionService {
     const id2 = this.insert({
       organisationId,
       object: { maxBorrowRatio: 0.8 },
-      logicRules: [
-        {
-          [LENDER_RULES_OPERATORS.EQUALS]: [
-            { var: 'residenceType' },
-            RESIDENCE_TYPE.MAIN_RESIDENCE,
-          ],
-        },
-      ],
+      logicRules: DEFAULT_MAIN_RESIDENCE_RULES,
     });
     const id3 = this.insert({
       organisationId,
       object: { maxBorrowRatio: 0.7 },
-      logicRules: [
-        {
-          [LENDER_RULES_OPERATORS.EQUALS]: [
-            { var: 'residenceType' },
-            RESIDENCE_TYPE.SECOND_RESIDENCE,
-          ],
-        },
-      ],
+      logicRules: DEFAULT_SECONDARY_RESIDENCE_RULES,
     });
 
     return [id1, id2, id3];

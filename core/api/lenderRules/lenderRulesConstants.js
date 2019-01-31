@@ -1,3 +1,5 @@
+import { RESIDENCE_TYPE } from '../properties/propertyConstants';
+
 export const LENDER_RULES_COLLECTION = 'lenderRules';
 
 export const LENDER_RULES_QUERIES = {
@@ -60,3 +62,21 @@ export const LENDER_RULES_OPERATORS = {
   LESS_THAN: '<',
   LESS_THAN_OR_EQUAL: '<=',
 };
+
+export const DEFAULT_MAIN_RESIDENCE_RULES = [
+  {
+    [LENDER_RULES_OPERATORS.EQUALS]: [
+      { var: 'residenceType' },
+      RESIDENCE_TYPE.MAIN_RESIDENCE,
+    ],
+  },
+];
+
+export const DEFAULT_SECONDARY_RESIDENCE_RULES = [
+  {
+    [LENDER_RULES_OPERATORS.EQUALS]: [
+      { var: 'residenceType' },
+      RESIDENCE_TYPE.SECOND_RESIDENCE,
+    ],
+  },
+];
