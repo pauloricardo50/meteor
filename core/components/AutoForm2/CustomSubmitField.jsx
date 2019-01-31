@@ -36,10 +36,10 @@ const CustomSubmitField = (
     loading={state.submitting}
     primary
     raised
-    label={<T id="general.ok" />}
+    label={label || <T id="general.ok" />}
     {...filterDOMProps(props)}
   >
-    {label || children}
+    {children}
   </Button>
 );
 
