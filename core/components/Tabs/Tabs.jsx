@@ -33,9 +33,7 @@ class Tabs extends Component {
 
   getContent = () => {
     const { value } = this.state;
-    console.log('value:', value);
     const { tabs } = this.props;
-    console.log('tabs:', tabs);
 
     return tabs[value].content;
   };
