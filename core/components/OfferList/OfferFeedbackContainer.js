@@ -24,7 +24,11 @@ const schema = ({ offer, formatMessage }) =>
       condition: ({ option }) =>
         option && FEEDBACK_OPTIONS_SETTINGS[option].enableComments,
     },
-    'comments.$': { type: String, optional: true },
+    'comments.$': {
+      type: String,
+      optional: true,
+      uniforms: { placeholder: '' },
+    },
     customFeedback: {
       type: String,
       optional: true,
