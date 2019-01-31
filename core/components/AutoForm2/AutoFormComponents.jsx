@@ -97,7 +97,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
 
     if (
       typeof condition === 'function'
-      && !condition(model, parent && Number(props.parent.name.slice(-1)))
+      && !condition(model, props.parent && Number(props.parent.name.slice(-1)))
     ) {
       return nothing;
     }
