@@ -10,7 +10,7 @@ import {
   OTHER_EXPENSES_CONSIDERATION_TYPES,
 } from '../lenderRulesConstants';
 
-const incomeConsideration = {
+export const incomeConsideration = {
   incomeConsiderationType: {
     type: String,
     allowedValues: Object.values(INCOME_CONSIDERATION_TYPES),
@@ -43,7 +43,7 @@ const incomeConsideration = {
   },
 };
 
-const theoreticalExpenses = {
+export const theoreticalExpenses = {
   theoreticalInterestRate: percentageField,
   theoreticalMaintenanceRate: percentageField,
   amortizationGoal: percentageField,
@@ -55,13 +55,13 @@ const theoreticalExpenses = {
   },
 };
 
-const cutOffCriteria = {
+export const cutOffCriteria = {
   maxBorrowRatio: percentageField,
   maxIncomeRatio: percentageField,
   maxIncomeRatioTight: percentageField,
 };
 
-const other = {
+export const otherParams = {
   allowPledge: { type: Boolean, optional: true },
 };
 
@@ -80,7 +80,7 @@ const LenderRulesSchema = new SimpleSchema({
   ...incomeConsideration,
   ...theoreticalExpenses,
   ...cutOffCriteria,
-  ...other,
+  ...otherParams,
 });
 
 export const LenderRulesEditorSchema = LenderRulesSchema.omit(

@@ -1,11 +1,19 @@
 // @flow
 import React from 'react';
 
-import { LenderRulesEditorSchema } from 'core/api/lenderRules/schemas/lenderRulesSchema';
+import {
+  LenderRulesEditorSchema,
+  incomeConsideration,
+  theoreticalExpenses,
+  cutOffCriteria,
+  otherParams,
+} from 'core/api/lenderRules/schemas/lenderRulesSchema';
 import AutoForm from 'core/components/AutoForm2';
 import T from 'core/components/Translation';
 import { withState } from 'recompose';
 import DropdownMenu from 'core/components/DropdownMenu';
+import CustomSubmitField from 'core/components/AutoForm2/CustomSubmitField';
+import { makeCustomAutoField } from 'imports/core/components/AutoForm2/AutoFormComponents';
 import LenderRulesEditorTitle from './LenderRulesEditorTitle';
 
 const getInitialFormKeys = ({ lenderRules }) =>
@@ -20,6 +28,24 @@ const getInitialFormKeys = ({ lenderRules }) =>
   });
 
 type LenderRulesEditorSingleProps = {};
+
+const getAutoFormParts = formKeys =>
+  [
+    {
+      title: 'Revenus',
+      keys: Object.keys(incomeConsideration),
+    },
+    { title: 'Charges théoriques', keys: Object.keys(theoreticalExpenses) },
+    { title: "Critères d'octroi", keys: Object.keys(cutOffCriteria) },
+    { title: 'Autres', keys: Object.keys(otherParams) },
+  ]
+    .map(({ title, keys }) => ({
+      title,
+      keys: keys.filter(key => formKeys.includes(key)),
+    }))
+    .filter(({ keys }) => keys.some(key => formKeys.includes(key)));
+
+const AutoField = makeCustomAutoField();
 
 const LenderRulesEditorSingle = ({
   lenderRules: { filter, ...rules },
@@ -53,7 +79,17 @@ const LenderRulesEditorSingle = ({
       model={rules}
       onSubmit={updateLenderRules}
       schema={LenderRulesEditorSchema.pick(...formKeys)}
-    />
+    >
+      {getAutoFormParts(formKeys).map(({ title, keys }) => (
+        <>
+          <h2>{title}</h2>
+          {keys.map(key => (
+            <AutoField name={key} key={key} />
+          ))}
+        </>
+      ))}
+      <CustomSubmitField />
+    </AutoForm>
   </div>
 );
 
