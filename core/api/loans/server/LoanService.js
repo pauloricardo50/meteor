@@ -317,35 +317,31 @@ export class LoanService extends CollectionService {
           contact: { email: lenderEmail },
         },
       } = offer;
-      if (
-        filtered.find(({
-          lender: {
-            contact: { email },
-          },
-        }) => lenderEmail === email)
-      ) {
+
+      const lenderIsAlreadyInMailingList = filtered.find(({
+        lender: {
+          contact: { email },
+        },
+      }) => lenderEmail === email);
+
+      if (lenderIsAlreadyInMailingList) {
         return filtered;
       }
 
       return [...filtered, offer];
     }, []);
 
-    let promises = [];
-
-    filteredOffers.forEach((offer) => {
+    const promises = filteredOffers.map((offer) => {
       const feedback = makeFeedback({
         offer: { ...offer, property },
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
         formatMessage,
       });
-      promises = [
-        ...promises,
-        OfferService.sendFeedback({
-          offerId: offer._id,
-          feedback,
-          saveFeedback: false,
-        }),
-      ];
+      return OfferService.sendFeedback({
+        offerId: offer._id,
+        feedback,
+        saveFeedback: false,
+      });
     });
 
     return Promise.all(promises);
