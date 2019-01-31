@@ -109,5 +109,6 @@ switchBorrower.setHandler(({ userId }, params) => {
 
 sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
+  context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
