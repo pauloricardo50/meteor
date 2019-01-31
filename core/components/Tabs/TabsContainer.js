@@ -25,16 +25,20 @@ export default compose(
   withStyles(styles),
   withMatchParam(({ routerParamName }) => routerParamName),
   withProps(({ routerParamName, tabs, ...props }) => {
+    const filteredTabs = tabs.filter(({ condition = true }) => condition);
     if (!routerParamName) {
-      return {};
+      return { tabs: filteredTabs };
     }
 
     const routerParam = props[routerParamName];
 
     if (!routerParam) {
-      return { initialIndex: 0 };
+      return { initialIndex: 0, tabs: filteredTabs };
     }
 
-    return { initialIndex: tabs.map(tab => tab.id).indexOf(routerParam) };
+    return {
+      initialIndex: filteredTabs.map(tab => tab.id).indexOf(routerParam),
+      tabs: filteredTabs,
+    };
   }),
 );

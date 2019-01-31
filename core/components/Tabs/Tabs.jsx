@@ -14,10 +14,13 @@ class Tabs extends Component {
     this.state = { value: Math.max(this.props.initialIndex, 0) };
   }
 
-  filterTabs = () =>
-    this.props.tabs.filter(({ condition = true }) => condition);
+  componentWillReceiveProps({ initialIndex: nextIndex }) {
+    const { initialIndex } = this.props;
 
-  getContent = () => this.filterTabs()[this.state.value].content;
+    if (nextIndex !== initialIndex) {
+      this.setState({ value: nextIndex });
+    }
+  }
 
   handleChange = (event, value) => {
     const { onChangeCallback } = this.props;
@@ -28,13 +31,14 @@ class Tabs extends Component {
     }
   };
 
-  componentWillReceiveProps({ initialIndex: nextIndex }) {
-    const { initialIndex } = this.props;
+  getContent = () => {
+    const { value } = this.state;
+    console.log('value:', value);
+    const { tabs } = this.props;
+    console.log('tabs:', tabs);
 
-    if (nextIndex !== initialIndex) {
-      this.setState({ value: nextIndex });
-    }
-  }
+    return tabs[value].content;
+  };
 
   render() {
     const {
@@ -60,7 +64,7 @@ class Tabs extends Component {
           textColor="primary"
           {...otherProps}
         >
-          {this.filterTabs().map(({ label, to, id }, i) => (
+          {tabs.map(({ label, to, id }, i) => (
             <Tab
               classes={{
                 root: classes.tabRoot,
