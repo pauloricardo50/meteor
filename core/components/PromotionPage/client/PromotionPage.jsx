@@ -20,7 +20,6 @@ type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
   const { promotion, currentUser, canModify, isPro, loan = {} } = props;
-  console.log('promotion:', promotion);
   const { residenceType } = loan;
 
   return (
