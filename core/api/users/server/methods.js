@@ -100,9 +100,6 @@ changeEmail.setHandler((context, params) => {
 });
 
 generateApiToken.setHandler((context, { userId }) => {
-  // if (!SecurityService.currentUserIsAdmin()) {
-  //   SecurityService.checkUserLoggedIn(userId);
-  // }
   SecurityService.checkUserIsPro(context.userId);
   return UserService.generateApiToken({ userId });
 });
