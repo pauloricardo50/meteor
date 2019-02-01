@@ -175,7 +175,7 @@ export class SlackService {
     });
   };
 
-  notifyOfUpload = ({ currentUser, fileName }) => {
+  notifyOfUpload = ({ currentUser, fileName, docLabel }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 
     if (!isUser) {
@@ -184,7 +184,7 @@ export class SlackService {
 
     const { name, loans } = currentUser;
     const loanNameEnd = loans.length === 1 ? ` pour ${loans[0].name}.` : '.';
-    const title = `${name} a uploadé un nouveau document${loanNameEnd}`;
+    const title = `${name} a uploadé dans ${docLabel}${loanNameEnd}`;
     const link = `${Meteor.settings.public.subdomains.admin}/users/${
       currentUser._id
     }`;

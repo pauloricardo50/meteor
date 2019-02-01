@@ -70,6 +70,7 @@ const props = withProps(({
   handleSuccess,
   currentValue,
   tempFiles,
+  fileMeta: { id, label },
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
@@ -96,7 +97,10 @@ const props = withProps(({
   },
   handleUploadComplete: (file, url) => {
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    notifyOfUpload.run({ fileName: file.name });
+    notifyOfUpload.run({
+      fileName: file.name,
+      docLabel: label || f({ id: `files.${id}` }),
+    });
     if (handleSuccess) {
       handleSuccess(file, url);
     }
@@ -121,8 +125,6 @@ const willReceiveProps = lifecycle({
       if (tempFiles && tempFiles.length) {
         // Loop over the new props to see if they match any of the temp files
         // Remove the ones that match
-        console.log('nextValue', nextValue);
-        console.log('tempFiles', tempFiles);
         nextValue.forEach(file =>
           tempFiles.forEach(temp =>
             temp.name === file.name

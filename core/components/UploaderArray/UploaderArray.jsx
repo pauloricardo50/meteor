@@ -13,7 +13,6 @@ export const UploaderArray = ({
   allowRequireByAdmin = true,
   ...props
 }) => {
-  console.log('documentArray', documentArray);
   if (!documentArray) {
     return null;
   }
