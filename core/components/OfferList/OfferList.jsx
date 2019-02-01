@@ -43,7 +43,7 @@ class OfferList extends Component {
     this.setState(prev => ({ isAscending: !prev.isAscending }));
 
   render() {
-    const { offers } = this.props;
+    const { offers, property } = this.props;
     const { sort, isAscending } = this.state;
 
     const filteredOffers = sortOffers(offers, sort, isAscending);
@@ -71,7 +71,7 @@ class OfferList extends Component {
         {filteredOffers.map(offer => (
           <Offer
             offerValues={getOfferValues(offer)}
-            offer={offer}
+            offer={{ ...offer, property }}
             key={offer._id}
           />
         ))}

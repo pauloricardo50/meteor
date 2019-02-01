@@ -142,6 +142,7 @@ const schema = lenders =>
         !withCounterparts && hasCounterparts && hasFlatDiscount,
     },
     ...interestRatesSchema({ isDiscount: true }),
+    enableOffer: { type: Boolean, defaultValue: true, optional: true },
   });
 
 const getStandardRatesKeys = key => !key.includes('Discount');
@@ -187,6 +188,7 @@ const mapValuesToOffer = ({
   counterparts = [],
   hasFlatDiscount,
   flatDiscount,
+  enableOffer,
   ...interestRates
 }) => {
   const standardOffer = {
@@ -194,6 +196,7 @@ const mapValuesToOffer = ({
     maxAmount,
     amortizationGoal,
     amortizationYears,
+    enableOffer,
     ...reformatInterestRatesObject({
       interestRates,
       isCounterPartOffer: false,
@@ -206,6 +209,7 @@ const mapValuesToOffer = ({
       maxAmount,
       amortizationGoal,
       amortizationYears,
+      enableOffer,
       ...reformatInterestRatesObject({
         interestRates,
         isCounterPartOffer: true,

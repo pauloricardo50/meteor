@@ -1,15 +1,59 @@
 // @flow
 import React from 'react';
-import Link from 'core/components/Link';
+import uniqBy from 'lodash/uniqBy';
 
+import Link from 'core/components/Link';
 import T, { IntlNumber } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel';
 import { CollectionIconLink } from 'core/components/IconLink';
 import Calculator from 'core/utils/Calculator';
-import { PROMOTIONS_COLLECTION, LOANS_COLLECTION } from 'core/api/constants';
+import {
+  PROMOTIONS_COLLECTION,
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+} from 'core/api/constants';
+import { sendNegativeFeedbackToAllLenders } from 'core/api';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 
 type SingleLoanPageHeaderProps = {};
+
+const sendFeedbackToAllLenders = (loan) => {
+  const { _id: loanId, offers = [] } = loan;
+
+  // Don't show duplicate lenders
+  const contacts = uniqBy(
+    offers,
+    ({
+      lender: {
+        contact: { name },
+      },
+    }) => name,
+  ).map(({
+    lender: {
+      contact: { name },
+      organisation: { name: organisationName },
+    },
+  }) => `${name} (${organisationName})`);
+
+  if (offers.length) {
+    const confirm = window.confirm(`Attention: modifier le statut du dossier à sans suite enverra automatiquememt un feedback aux prêteurs suivants:\n\n${contacts.join('\n')}\n\nValider pour envoyer les feedbacks.`);
+
+    if (confirm) {
+      return sendNegativeFeedbackToAllLenders.run({ loanId });
+    }
+  }
+
+  return Promise.resolve();
+};
+
+const additionalActions = loan => (status) => {
+  switch (status) {
+  case LOAN_STATUS.UNSUCCESSFUL:
+    return sendFeedbackToAllLenders(loan);
+  default:
+    return Promise.resolve();
+  }
+};
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
   <div className="single-loan-page-header">
@@ -47,6 +91,7 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
           status={loan.status}
           allowModify
           docId={loan._id}
+          additionalActions={additionalActions(loan)}
         />
       </h1>
       {loan.hasPromotion && (

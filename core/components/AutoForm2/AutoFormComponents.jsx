@@ -14,6 +14,7 @@ import CustomListField from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import MoneyInput from '../MoneyInput';
+import HtmlPreview from '../HtmlPreview';
 
 const determineComponentFromProps = ({
   allowedValues,
@@ -38,6 +39,13 @@ const determineComponentFromProps = ({
       Component: MoneyInput,
       type: COMPONENT_TYPES.MONEY,
       props: { margin: 'normal' },
+    };
+  }
+
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW) {
+    return {
+      Component: HtmlPreview,
+      type: COMPONENT_TYPES.HTML_PREVIEW,
     };
   }
 

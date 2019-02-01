@@ -1,5 +1,8 @@
 import IntlMessageFormat from 'intl-messageformat';
-import { getUserLocale, getFormats } from 'core/utils/localization/localization';
+import {
+  getUserLocale,
+  getFormats,
+} from 'core/utils/localization/localization';
 import messagesFR from 'core/lang/fr.json';
 
 /**
@@ -15,8 +18,17 @@ const formatMessage = (id, values = {}, customFallback) => {
   if (id === undefined) {
     throw new Error('an id is required in formatMessage');
   }
+
+  let intlId;
+  if (typeof id === 'object' && !!id.id) {
+    intlId = id.id;
+  } else {
+    intlId = id;
+  }
+
   const message = new IntlMessageFormat(
-    messagesFR[id] || (customFallback !== undefined ? customFallback : id),
+    messagesFR[intlId]
+      || (customFallback !== undefined ? customFallback : intlId),
     getUserLocale(),
     // getFormats(),
   );

@@ -28,5 +28,6 @@ export const offerSendFeedback = new Method({
   params: {
     offerId: String,
     feedback: String,
+    saveFeedback: Match.Maybe(Boolean),
   },
 });
