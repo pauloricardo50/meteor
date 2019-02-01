@@ -6,6 +6,9 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { ROLES } from '../../userConstants';
 import UserService from '../UserService';
+import LoanService from '../../../loans/server/LoanService';
+import BorrowerService from '../../../borrowers/server/BorrowerService';
+import PropertyService from '../../../properties/server/PropertyService';
 
 describe('UserService', () => {
   const firstName = 'testFirstName';
@@ -166,6 +169,20 @@ describe('UserService', () => {
       expect(UserService.getUserById({ userId: user._id })).to.deep.equal(user);
       UserService.remove({ userId: user._id });
       expect(UserService.getUserById({ userId: user._id })).to.equal(undefined);
+    });
+
+    it('autoremoves all loans, properties and borrowers', () => {
+      Factory.create('loan', { userId: user._id });
+      Factory.create('loan', { userId: user._id });
+      Factory.create('borrower', { userId: user._id });
+      Factory.create('borrower', { userId: user._id });
+      Factory.create('property', { userId: user._id });
+      Factory.create('property', { userId: user._id });
+      UserService.remove({ userId: user._id });
+      expect(UserService.getUserById({ userId: user._id })).to.equal(undefined);
+      expect(LoanService.countAll()).to.equal(0);
+      expect(BorrowerService.countAll()).to.equal(0);
+      expect(PropertyService.countAll()).to.equal(0);
     });
   });
 

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import CollectionService from '../../helpers/CollectionService';
 import Offers from '../offers';
 import LenderService from '../../lenders/server/LenderService';
@@ -13,22 +15,27 @@ export class OfferService extends CollectionService {
 
   update = ({ offerId, object }) => Offers.update(offerId, { $set: object });
 
-  sendFeedback = ({ offerId, feedback }) => {
-    this.update({ offerId, object: { feedback } });
+  sendFeedback = ({ offerId, feedback, saveFeedback = true }) => {
+    if (saveFeedback) {
+      this.update({
+        offerId,
+        object: { feedback: { message: feedback, date: new Date() } },
+      });
+    }
+
     const {
+      createdAt,
       lender: {
+        organisation: { name: organisationName },
         contact: { email: address },
         loan: {
           name: loanName,
-          user: {
-            assignedEmployee: { email: assigneeAddress, name: assigneeName },
-          },
+          user: { assignedEmployee },
         },
       },
-    } = this.fetchOne({
-      $filters: { _id: offerId },
-      ...fullOffer(),
-    });
+    } = this.fetchOne({ $filters: { _id: offerId }, ...fullOffer() });
+
+    const { email: assigneeAddress, name: assigneeName } = assignedEmployee || {};
 
     return sendEmailToAddress.run({
       emailId: EMAIL_IDS.SEND_FEEDBACK_TO_LENDER,
@@ -37,7 +44,9 @@ export class OfferService extends CollectionService {
         assigneeAddress,
         assigneeName,
         loanName,
-        feedback: `<p style="color: white; white-space: pre-line;">${feedback}</p>`,
+        organisationName,
+        date: moment(createdAt).format('DD.MM.YYYY'),
+        feedback,
       },
     });
   };

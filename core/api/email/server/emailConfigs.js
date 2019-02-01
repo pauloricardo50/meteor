@@ -194,8 +194,15 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROMOTION, {
 });
 
 addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
-  template: EMAIL_TEMPLATES.NOTIFICATION,
-  createOverrides({ assigneeName, assigneeAddress, feedback }, { title }) {
+  template: EMAIL_TEMPLATES.SIMPLE,
+  createOverrides(
+    {
+      assigneeName = 'e-Potek',
+      assigneeAddress = 'financements@e-potek.ch',
+      feedback,
+    },
+    { title },
+  ) {
     const { variables } = this.template;
 
     return {
@@ -207,6 +214,6 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       senderAddress: assigneeAddress,
     };
   },
-  createIntlValues: ({ loanName }) => ({ loanName }),
+  createIntlValues: params => params,
 });
 export default emailConfigs;

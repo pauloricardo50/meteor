@@ -20,6 +20,10 @@ class CollectionService {
     return null;
   }
 
+  baseUpdate(...args) {
+    return this.collection.update(...args);
+  }
+
   remove(id) {
     return this.collection.remove(id);
   }
@@ -30,7 +34,7 @@ class CollectionService {
 
   safeGet(id) {
     const result = this.get(id);
-    
+
     if (!result) {
       throw new Meteor.Error(`Could not find object with id "${id}" in collection "${
         this.collection._name

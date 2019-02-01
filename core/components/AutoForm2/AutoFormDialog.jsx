@@ -83,10 +83,11 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
             autoField={autoField}
             description={description}
             emptyDialog={emptyDialog}
-            children={children}
             handleClose={handleClose}
             onSubmit={onSubmit}
-          />
+          >
+            {children}
+          </AutoFormDialogContent>
           <AutoFormDialogActions
             handleClose={handleClose}
             onSubmit={onSubmit}

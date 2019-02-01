@@ -34,7 +34,3 @@ Method.addAfterExecution(({ context, config, params, result, error }) => {
     ServerEventService.emitMethod(config, params);
   }
 });
-
-if (Meteor.isTest) {
-  Method.isDebugEnabled = false;
-}

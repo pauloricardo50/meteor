@@ -5,7 +5,8 @@ import {
   USER_PASSWORD,
 } from '../../imports/core/fixtures/fixtureConstants';
 
-describe('Method rate limits', () => {
+// FIXME: Rate-limiting has been disabled
+describe.skip('Method rate limits', () => {
   before(() => {
     cy.initiateTest();
     // cy.callMethod('resetDatabase');

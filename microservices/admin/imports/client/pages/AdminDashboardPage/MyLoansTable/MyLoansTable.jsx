@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import Table from 'core/components/Table';
+import Table, { ORDER } from 'core/components/Table';
 import MyLoansTableContainer from './MyLoansTableContainer';
 
 type MyLoansTableProps = {};
@@ -12,10 +12,7 @@ const MyLoansTable = ({ columnOptions, rows }: MyLoansTableProps) => (
     rows={rows}
     clickable
     noIntl
-    // tableFilters={{
-    //   filters: {},
-    //   options: {},
-    // }}
+    initialOrder={ORDER.DESC}
   />
 );
 

@@ -8,7 +8,7 @@ import LoanAdder from './LoanAdder';
 const LoanSummaryList = ({ loans, userId, withAdder }) => {
   if (loans && loans.length > 0) {
     return (
-      <React.Fragment>
+      <>
         <h3>
           <T id="collections.loans" />
           {withAdder && <LoanAdder userId={userId} />}
@@ -16,7 +16,7 @@ const LoanSummaryList = ({ loans, userId, withAdder }) => {
         {loans.map(loan => (
           <LoanSummary loan={loan} key={loan._id} />
         ))}
-      </React.Fragment>
+      </>
     );
   }
 

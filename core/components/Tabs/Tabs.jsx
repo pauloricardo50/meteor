@@ -1,29 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import MuiTabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import cx from 'classnames';
 
 import Link from '../Link';
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  tabsRoot: {
-    borderBottom: '1px solid #e8e8e8',
-  },
-  tabRoot: {
-    textTransform: 'initial',
-    minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-  labelContainer: {
-    paddingRight: 12,
-    paddingLeft: 12,
-  },
-});
+import TabsContainer from './TabsContainer';
 
 class Tabs extends Component {
   constructor(props) {
@@ -32,7 +14,13 @@ class Tabs extends Component {
     this.state = { value: Math.max(this.props.initialIndex, 0) };
   }
 
-  getContent = () => this.props.tabs[this.state.value].content;
+  componentWillReceiveProps({ initialIndex: nextIndex }) {
+    const { initialIndex } = this.props;
+
+    if (nextIndex !== initialIndex) {
+      this.setState({ value: nextIndex });
+    }
+  }
 
   handleChange = (event, value) => {
     const { onChangeCallback } = this.props;
@@ -43,13 +31,12 @@ class Tabs extends Component {
     }
   };
 
-  componentWillReceiveProps({ initialIndex: nextIndex }) {
-    const { initialIndex } = this.props;
+  getContent = () => {
+    const { value } = this.state;
+    const { tabs } = this.props;
 
-    if (nextIndex !== initialIndex) {
-      this.setState({ value: nextIndex });
-    }
-  }
+    return tabs[value].content;
+  };
 
   render() {
     const {
@@ -75,22 +62,20 @@ class Tabs extends Component {
           textColor="primary"
           {...otherProps}
         >
-          {tabs
-            .filter(({ condition = true }) => condition)
-            .map(({ label, to, id }, i) => (
-              <Tab
-                classes={{
-                  root: classes.tabRoot,
-                  selected: classes.tabSelected,
-                  labelContainer: classes.labelContainer,
-                }}
-                label={label}
-                component={to ? Link : undefined}
-                to={to}
-                key={id || i}
-                className="core-tabs-tab"
-              />
-            ))}
+          {tabs.map(({ label, to, id }, i) => (
+            <Tab
+              classes={{
+                root: classes.tabRoot,
+                selected: classes.tabSelected,
+                labelContainer: classes.labelContainer,
+              }}
+              label={label}
+              component={to ? Link : undefined}
+              to={to}
+              key={id || i}
+              className="core-tabs-tab"
+            />
+          ))}
         </MuiTabs>
         <div className="tab-content">{this.getContent()}</div>
       </div>
@@ -111,4 +96,4 @@ Tabs.defaultProps = {
   initialIndex: 0,
 };
 
-export default withStyles(styles)(Tabs);
+export default TabsContainer(Tabs);

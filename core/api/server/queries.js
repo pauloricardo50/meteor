@@ -1,4 +1,8 @@
 import '../borrowers/queries/exposures';
+import '../contacts/queries/exposures';
+import '../interestRates/queries/exposures';
+import '../irs10y/queries/exposures';
+import '../lenders/queries/exposures';
 import '../loans/queries/exposures';
 import '../offers/queries/exposures';
 import '../organisations/queries/exposures';
@@ -9,7 +13,3 @@ import '../properties/queries/exposures';
 import '../resolvers/exposures';
 import '../tasks/queries/exposures';
 import '../users/queries/exposures';
-import '../interestRates/queries/exposures';
-import '../irs10y/queries/exposures';
-import '../contacts/queries/exposures';
-import '../lenders/queries/exposures';

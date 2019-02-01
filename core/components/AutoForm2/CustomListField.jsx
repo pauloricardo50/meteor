@@ -5,7 +5,7 @@ import connectField from 'uniforms/connectField';
 import filterDOMProps from 'uniforms/filterDOMProps';
 import joinName from 'uniforms/joinName';
 
-import ListAddField from 'uniforms-material/ListAddField';
+import CustomListAddField from './CustomListAddField';
 import ListItemField from './CustomListItemField';
 
 const List = ({
@@ -47,10 +47,9 @@ const List = ({
         />
       ))}
   </ListMaterial>,
-  <ListAddField
+  <CustomListAddField
     key="listAddField"
     name={`${name}.$`}
-    icon={addIcon}
     initialCount={initialCount}
   />,
 ];

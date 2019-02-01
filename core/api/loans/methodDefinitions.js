@@ -119,3 +119,8 @@ export const switchBorrower = new Method({
     oldBorrowerId: String,
   },
 });
+
+export const sendNegativeFeedbackToAllLenders = new Method({
+  name: 'sendNegativeFeedbackToAllLenders',
+  params: { loanId: String },
+});

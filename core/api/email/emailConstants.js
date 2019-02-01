@@ -58,6 +58,14 @@ export const EMAIL_TEMPLATES = {
       LOGO_URL_3: 'LOGO_URL_3',
     },
   },
+  SIMPLE: {
+    name: 'SIMPLE',
+    mandrillId: 'simple',
+    variables: {
+      TITLE: 'TITLE',
+      BODY: 'BODY',
+    },
+  },
 };
 
 export const EMAIL_IDS = {

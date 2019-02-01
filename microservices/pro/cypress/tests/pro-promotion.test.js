@@ -43,7 +43,7 @@ describe('Pro', () => {
       cy.get('.buttons > span button').should('be.disabled');
     });
 
-    context.only('with an existing promotion', () => {
+    context('with an existing promotion', () => {
       it('should add lots and promotionLots', () => {
         cy.callMethod('insertPromotion');
         cy.refetch();

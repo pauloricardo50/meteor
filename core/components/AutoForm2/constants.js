@@ -3,6 +3,7 @@ export const CUSTOM_AUTOFIELD_TYPES = {
   PERCENT: 'PERCENT',
   TEXT_AREA: 'TEXT_AREA',
   MONEY: 'MONEY',
+  HTML_PREVIEW: 'HTML_PREVIEW',
 };
 
 // Use internally to manage exceptions
@@ -14,4 +15,5 @@ export const COMPONENT_TYPES = {
   TEXT_AREA: 'TEXT_AREA',
   MONEY: 'MONEY',
   RENDER: 'RENDER',
+  HTML_PREVIEW: 'HTML_PREVIEW',
 };

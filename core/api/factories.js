@@ -22,6 +22,7 @@ import {
   Properties,
   Tasks,
   Users,
+  LenderRules,
 } from '.';
 import { LOT_TYPES } from './lots/lotConstants';
 import { ROLES } from './users/userConstants';
@@ -55,6 +56,14 @@ Factory.define('admin', Users, {
   emails: () => [{ address: faker.internet.email(), verified: false }],
   lastName: TEST_LASTNAME,
   firstName: TEST_FIRSTNAME,
+  phoneNumbers: [TEST_PHONE],
+});
+
+Factory.define('adminEpotek', Users, {
+  roles: [ROLES.ADMIN],
+  emails: () => [{ address: 'dev@e-potek.ch', verified: true }],
+  lastName: 'e-Potek',
+  firstName: 'Dev',
   phoneNumbers: [TEST_PHONE],
 });
 
@@ -140,4 +149,8 @@ Factory.define('interestRates', InterestRates, {});
 Factory.define('contact', Contacts, {
   firstName: 'John',
   lastName: 'Doe',
+});
+
+Factory.define('lenderRules', LenderRules, {
+  filter: {},
 });

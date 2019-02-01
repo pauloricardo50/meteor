@@ -59,6 +59,28 @@ export const formatLoanWithStructure = ({
   return structure;
 };
 
+export const formatLoanWithDocuments = (loan) => {
+  if (!loan || !loan.structure) {
+    return undefined;
+  }
+
+  const { structure, properties = [] } = loan;
+  const { property, propertyId } = structure;
+  const structureProperty = properties.find(({ _id }) => _id === propertyId);
+  const propertyDocuments = structureProperty && structureProperty.documents;
+
+  return {
+    ...loan,
+    structure: {
+      ...structure,
+      property: {
+        ...property,
+        documents: propertyDocuments,
+      },
+    },
+  };
+};
+
 export const formatLoanWithPromotion = (loan) => {
   if (loan.structure.promotionOptionId) {
     const property = Calculator.selectProperty({

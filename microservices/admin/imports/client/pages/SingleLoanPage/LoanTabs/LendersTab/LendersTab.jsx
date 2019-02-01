@@ -13,7 +13,11 @@ type LendersTabProps = {
 
 const LendersTab = (props: LendersTabProps) => {
   const {
-    loan: { _id: loanId, offers },
+    loan: {
+      _id: loanId,
+      offers,
+      structure: { property },
+    },
   } = props;
   return (
     <div className="lenders-tab">
@@ -23,7 +27,7 @@ const LendersTab = (props: LendersTabProps) => {
       <h1 className="text-center">Prêteurs</h1>
       <LenderList {...props} />
       <h1 className="text-center">Offres</h1>
-      <OfferList offers={offers} />
+      <OfferList offers={offers} property={property} />
     </div>
   );
 };

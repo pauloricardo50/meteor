@@ -45,10 +45,10 @@ const DashboardInfoTeamCompany = ({ assignedEmployee, hasPromotion }) => {
 
   return (
     <React.Fragment>
-      {/* Remove duplicates from array if they exist */}
       {removeDuplicates(team, 'email').map(teamMember => (
         <DashboardInfoTeamMember
           {...teamMember}
+          renderTitle={teamMember.title}
           key={teamMember.email}
           src={teamMember.src || '/img/placeholder.png'}
         />

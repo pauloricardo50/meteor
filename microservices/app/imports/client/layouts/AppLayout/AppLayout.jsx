@@ -21,8 +21,6 @@ const AppLayout = ({ children, redirect, history, ...props }) => {
     return <Redirect to={redirect} />;
   }
 
-  console.log('loan', props.loan);
-
   return (
     <div className="app-root">
       <Navs {...props} showSideNav={showSideNav} />

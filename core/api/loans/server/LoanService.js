@@ -1,6 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import moment from 'moment';
 
+import formatMessage from 'core/utils/intl';
+import {
+  makeFeedback,
+  FEEDBACK_OPTIONS,
+} from 'core/components/OfferList/feedbackHelpers';
+import OfferService from '../../offers/server/OfferService';
+import { adminLoan } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
@@ -290,6 +298,53 @@ export class LoanService extends CollectionService {
     if (oldBorrowerLoans.length === 1 && oldBorrowerLoans[0]._id === loanId) {
       BorrowerService.remove({ borrowerId: oldBorrowerId });
     }
+  }
+
+  sendNegativeFeedbackToAllLenders({ loanId }) {
+    const {
+      offers = [],
+      structure: { property },
+    } = this.createQuery({
+      $filters: { _id: loanId },
+      ...adminLoan({ withSort: true }),
+      $options: { sort: { createdAt: -1 } },
+    }).fetchOne() || {};
+
+    // Get lenders' last offer
+    const filteredOffers = offers.reduce((filtered, offer) => {
+      const {
+        lender: {
+          contact: { email: lenderEmail },
+        },
+      } = offer;
+
+      const lenderIsAlreadyInMailingList = filtered.find(({
+        lender: {
+          contact: { email },
+        },
+      }) => lenderEmail === email);
+
+      if (lenderIsAlreadyInMailingList) {
+        return filtered;
+      }
+
+      return [...filtered, offer];
+    }, []);
+
+    const promises = filteredOffers.map((offer) => {
+      const feedback = makeFeedback({
+        offer: { ...offer, property },
+        model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
+        formatMessage,
+      });
+      return OfferService.sendFeedback({
+        offerId: offer._id,
+        feedback,
+        saveFeedback: false,
+      });
+    });
+
+    return Promise.all(promises);
   }
 }
 
