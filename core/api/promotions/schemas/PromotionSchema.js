@@ -21,17 +21,21 @@ export const promotionPermissionsSchema = {
   canSeeCustomers: { type: Boolean, optional: true, defaultValue: false },
   displayCustomerNames: { type: Object, optional: true },
   'displayCustomerNames.forLotStatus': {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+  },
+  'displayCustomerNames.forLotStatus.$': {
     type: String,
     optional: true,
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
-    defaultValue:
-      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS.NONE,
   },
   'displayCustomerNames.invitedBy': {
     type: String,
     optional: true,
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
-    defaultValue: PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.NONE,
+    defaultValue:
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
   },
   canInviteCustomers: { type: Boolean, optional: true, defaultValue: false },
   canBookLots: { type: Boolean, optional: true, defaultValue: false },

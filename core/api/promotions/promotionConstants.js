@@ -1,3 +1,4 @@
+import merge from 'lodash/merge';
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export const PROMOTIONS_COLLECTION = 'promotions';
@@ -27,13 +28,10 @@ export const PROMOTION_QUERIES = {
 export const PROMOTION_PERMISSIONS = {
   DISPLAY_CUSTOMER_NAMES: {
     FOR_LOT_STATUS: {
-      ANY: 'ANY',
-      NONE: 'NONE',
       ...PROMOTION_LOT_STATUS,
     },
     INVITED_BY: {
       ANY: 'ANY',
-      NONE: 'NONE',
       USER: 'USER',
       ORGANISATION: 'ORGANISATION',
     },
@@ -46,15 +44,13 @@ export const PROMOTION_PERMISSIONS_PACKAGES = {
     canSeeCustomers: true,
     canPreBookLots: true,
     displayCustomerNames: {
-      forLotStatus:
-        PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS.ANY,
+      forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
       invitedBy:
         PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
     },
   }),
   CONSULTATION: ({
-    forLotStatus = PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS
-      .ANY,
+    forLotStatus = [],
     invitedBy = PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ANY,
   } = {}) => ({
     canSeeCustomers: true,
