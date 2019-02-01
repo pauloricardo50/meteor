@@ -751,5 +751,31 @@ describe('LoanService', () => {
             expect(emails.some(({ address }) => address === email)).to.equal(true));
         });
     });
+
+    it('does not send any feedback if there is no lender', () =>
+      LoanService.sendNegativeFeedbackToAllLenders({ loanId })
+        .then(() => checkEmails(0))
+        .then((emails) => {
+          expect(emails.length).to.equal(0);
+        }));
+
+    it('does no send any feedback if there is no offer', () => {
+      const numberOfLenders = 5;
+      const numberOfOffersPerLender = 0;
+
+      const offerIds = insertMultipleOffers({
+        loanId,
+        numberOfLenders,
+        numberOfOffersPerLender,
+      });
+
+      expect(offerIds.length).to.equal(0);
+
+      return LoanService.sendNegativeFeedbackToAllLenders({ loanId })
+        .then(() => checkEmails(0))
+        .then((emails) => {
+          expect(emails.length).to.equal(0);
+        });
+    });
   });
 });
