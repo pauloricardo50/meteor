@@ -6,5 +6,10 @@ import T from '../../Translation';
 export default withHider({
   label: <T id="AccountPage.DevelopperSection.show" />,
   primary: true,
-  style: { alignSelf: 'center', marginTop: '16px' },
+  style: {
+    margin: '16px',
+    position: 'absolute',
+    right: '0px',
+    top: '0px',
+  },
 });

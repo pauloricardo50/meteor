@@ -15,7 +15,7 @@ import { generateApiToken } from '../../../../api';
 
 describe('GenerateApiToken', () => {
   let props;
-  let alertSpy;
+  let confirmSpy;
   let generateApiTokenSpy;
 
   const component = () => mount(<GenerateApiToken {...props} />);
@@ -34,12 +34,12 @@ describe('GenerateApiToken', () => {
   });
 
   afterEach(() => {
-    alertSpy.restore();
+    confirmSpy.restore();
     generateApiTokenSpy.restore();
   });
 
   const makeAlertSpy = (fakeFunc) => {
-    alertSpy = sinon.stub(window, 'alert').callsFake(fakeFunc);
+    confirmSpy = sinon.stub(window, 'confirm').callsFake(fakeFunc);
   };
 
   it('displays an alert when the button is clicked', () =>
@@ -50,7 +50,7 @@ describe('GenerateApiToken', () => {
         .find('button')
         .at(0)
         .simulate('click');
-      expect(alertSpy.called).to.equal(true);
+      expect(confirmSpy.called).to.equal(true);
       expect(generateApiTokenSpy.called).to.equal(false);
     }));
 
@@ -62,7 +62,7 @@ describe('GenerateApiToken', () => {
         .find('button')
         .at(0)
         .simulate('click');
-      expect(alertSpy.called).to.equal(true);
+      expect(confirmSpy.called).to.equal(true);
       expect(generateApiTokenSpy.called).to.equal(true);
     }));
 });
