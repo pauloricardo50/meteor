@@ -1,4 +1,3 @@
-import merge from 'lodash/merge';
 import { PROMOTION_LOT_STATUS } from '../promotionLots/promotionLotConstants';
 
 export const PROMOTIONS_COLLECTION = 'promotions';
@@ -49,13 +48,16 @@ export const PROMOTION_PERMISSIONS_PACKAGES = {
         PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
     },
   }),
-  CONSULTATION: ({
-    forLotStatus = [],
-    invitedBy = PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ANY,
-  } = {}) => ({
-    canSeeCustomers: true,
-    displayCustomerNames: { forLotStatus, invitedBy },
-  }),
+  CONSULTATION: ({ consultation = {} } = {}) => {
+    const {
+      forLotStatus = [],
+      invitedBy = PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ANY,
+    } = consultation;
+    return {
+      canSeeCustomers: true,
+      displayCustomerNames: { forLotStatus, invitedBy },
+    };
+  },
   MODIFICATION: settings => ({
     canAddLots: true,
     canModifyLots: true,

@@ -192,7 +192,7 @@ export class PromotionService extends CollectionService {
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
+      // metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
     });
   }
 

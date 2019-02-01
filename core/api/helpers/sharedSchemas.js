@@ -72,7 +72,11 @@ export const contactsSchema = {
   },
 };
 
-const makePermissions = ({ permissionsSchema, prefix }) =>
+export const makePermissions = ({
+  permissionsSchema,
+  prefix,
+  autoFormDisplayCondition = () => true,
+}) =>
   Object.keys(permissionsSchema).reduce(
     (permissions, key) => ({
       ...permissions,
@@ -82,6 +86,7 @@ const makePermissions = ({ permissionsSchema, prefix }) =>
       [prefix]: {
         type: Object,
         optional: true,
+        condition: autoFormDisplayCondition,
       },
     },
   );

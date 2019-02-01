@@ -19,15 +19,19 @@ export const promotionPermissionsSchema = {
   canModifyPromotion: { type: Boolean, optional: true, defaultValue: false },
   canManageDocuments: { type: Boolean, optional: true, defaultValue: false },
   canSeeCustomers: { type: Boolean, optional: true, defaultValue: false },
-  displayCustomerNames: { type: Object, optional: true },
+  displayCustomerNames: {
+    type: Object,
+    optional: true,
+    condition: ({ permissions }) => permissions && permissions.canSeeCustomers,
+  },
   'displayCustomerNames.forLotStatus': {
     type: Array,
     optional: true,
     defaultValue: [],
+    uniforms: { displayEmpty: false, placeholder: '' },
   },
   'displayCustomerNames.forLotStatus.$': {
     type: String,
-    optional: true,
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
   },
   'displayCustomerNames.invitedBy': {
