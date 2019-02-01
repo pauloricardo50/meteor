@@ -4,6 +4,7 @@ import {
   setFileStatus,
   setFileError,
   downloadFile,
+  getSignedUrl,
 } from '../methodDefinitions';
 import FileService from './FileService';
 import S3Service from './S3Service';
@@ -30,4 +31,9 @@ setFileError.setHandler((context, { collection, docId, fileKey, error }) => {
 downloadFile.setHandler((context, { key }) => {
   S3Service.isAllowedToAccess(key);
   return S3Service.getObject(key);
+});
+
+getSignedUrl.setHandler((context, { key }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return S3Service.makeSignedUrl(key);
 });

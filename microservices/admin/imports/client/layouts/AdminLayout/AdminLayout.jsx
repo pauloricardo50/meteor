@@ -13,6 +13,7 @@ import getBaseRedirect from 'core/utils/redirection';
 import AdminTopNav from './AdminTopNav';
 import AdminSideNav from './AdminSideNav';
 import AdminLayoutContainer from './AdminLayoutContainer';
+import FileViewer from '../../components/FileViewer/FileViewer';
 
 const getRedirect = ({ currentUser, history }) => {
   const baseRedirect = getBaseRedirect(currentUser, history.location.pathname);
@@ -71,6 +72,8 @@ const AdminLayout = (props) => {
             {React.cloneElement(children, { ...props })}
           </ErrorBoundary>
         </div>
+
+        <FileViewer />
       </div>
     </div>
   );

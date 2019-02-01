@@ -3,14 +3,14 @@ import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withState } from 'recompose';
+import { withState, compose } from 'recompose';
 
-import T from 'core/components/Translation';
-import IconButton from 'core/components/IconButton';
-import { FILE_STATUS } from 'core/api/constants';
-
+import { FILE_STATUS, ROLES } from '../../../api/constants';
+import { getSignedUrl } from '../../../api/methods';
+import { withFileViewerContext } from '../../../containers/FileViewerContext';
+import T from '../../Translation';
+import IconButton from '../../IconButton';
 import Downloader from '../../Downloader';
-import { ROLES } from '../../../api/constants';
 
 const isAllowedToDelete = (disabled) => {
   const currentUser = Meteor.user();
@@ -24,44 +24,62 @@ const isAllowedToDelete = (disabled) => {
   return !disabled;
 };
 
-const File = ({
-  file: { name, Key, status = FILE_STATUS.VALID, message },
-  disabled,
-  handleRemove,
-  deleting,
-  setDeleting,
-}) => (
-  <div className="flex-col">
-    <div className="file">
-      <h5 className="secondary bold">{name}</h5>
-      <div className="flex center">
-        <span className={`${status} bold`}>
-          <T id={`File.status.${status}`} />
-        </span>
-        {isAllowedToDelete(disabled) && (
-          <IconButton
-            disabled={deleting}
-            type={deleting ? 'loop-spin' : 'close'}
-            tooltip={<T id="general.delete" />}
-            onClick={(event) => {
+const File = (props) => {
+  const {
+    file: { name, Key, status = FILE_STATUS.VALID, message },
+    disabled,
+    handleRemove,
+    deleting,
+    setDeleting,
+    displayFile,
+  } = props;
+
+  return (
+    <div className="flex-col">
+      <div className="file">
+        <h5
+          className="secondary bold"
+          onClick={(event) => {
+            if (Meteor.microservice === 'admin') {
               event.preventDefault();
-              setDeleting(true);
-              return handleRemove(Key).catch((error) => {
-                // Only stop the loader if deleting fails
-                // This component will be deleted anyways when the deletion worked
-                setDeleting(false);
-                throw error;
+              getSignedUrl.run({ key: props.file.Key }).then((signedUrl) => {
+                displayFile(signedUrl, props.file.url.split('.').slice(-1)[0]);
               });
-            }}
-          />
-        )}
-        <Downloader fileKey={Key} fileName={name} />
+            }
+          }}
+        >
+          {Meteor.microservice === 'admin' ? <a>{name}</a> : name}
+        </h5>
+        <div className="flex center">
+          <span className={`${status} bold`}>
+            <T id={`File.status.${status}`} />
+          </span>
+          {isAllowedToDelete(disabled) && (
+            <IconButton
+              disabled={deleting}
+              type={deleting ? 'loop-spin' : 'close'}
+              tooltip={<T id="general.delete" />}
+              onClick={(event) => {
+                event.preventDefault();
+                setDeleting(true);
+                return handleRemove(Key).catch((error) => {
+                  // Only stop the loader if deleting fails
+                  // This component will be deleted anyways when the deletion worked
+                  setDeleting(false);
+                  throw error;
+                });
+              }}
+            />
+          )}
+          <Downloader fileKey={Key} fileName={name} />
+        </div>
       </div>
+      {message && status === FILE_STATUS.ERROR && (
+        <p className="error">{message}</p>
+      )}
     </div>
-    {message
-      && status === FILE_STATUS.ERROR && <p className="error">{message}</p>}
-  </div>
-);
+  );
+};
 
 File.propTypes = {
   disabled: PropTypes.bool.isRequired,
@@ -73,4 +91,7 @@ File.defaultProps = {
   message: '',
 };
 
-export default withState('deleting', 'setDeleting', false)(File);
+export default compose(
+  withState('deleting', 'setDeleting', false),
+  withFileViewerContext,
+)(File);
