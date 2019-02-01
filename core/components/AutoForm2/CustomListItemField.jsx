@@ -5,6 +5,7 @@ import joinName from 'uniforms/joinName';
 
 import ListDelField from 'uniforms-material/ListDelField';
 import { CustomAutoField } from './AutoFormComponents';
+import { iconMap as IconMap } from '../Icon/Icon';
 
 const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
   <ListItemMaterial
@@ -21,7 +22,11 @@ const ListItem = ({ dense, divider, disableGutters, removeIcon, ...props }) => (
     ) : (
       <CustomAutoField isListField {...props} />
     )}
-    <ListDelField name={props.name} icon={removeIcon} />
+    <ListDelField
+      className="list-del-field"
+      name={props.name}
+      icon={<IconMap.remove />}
+    />
   </ListItemMaterial>
 );
 

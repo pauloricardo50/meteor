@@ -1,6 +1,6 @@
 .autoform {
   .autofields {
-     > *,
+    > *,
     ul > * {
       margin-bottom: 16px;
     }
@@ -8,5 +8,13 @@
     ul {
       margin-bottom: 0;
     }
+  }
+
+  .list-add-field {
+    // align-self: center;
+    flex: 0 0 auto;
+  }
+
+  .list-del-field {
   }
 }
