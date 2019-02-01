@@ -54,6 +54,6 @@ CustomSubmitField.contextTypes = {
   }),
 };
 
-CustomSubmitField.defaultProps = { label: 'Submit', variant: 'contained' };
+CustomSubmitField.defaultProps = { variant: 'contained' };
 
 export default CustomSubmitField;
