@@ -64,7 +64,8 @@ export default class RESTAPI {
 
       try {
         Promise.resolve()
-          .then(() => func({ user: req.user, body: req.body }))
+          .then(() =>
+            func({ user: req.user, body: req.body }, { req, res, next }))
           .then(result => this.handleSuccess(result, res))
           .catch(next);
       } catch (error) {
