@@ -1,5 +1,9 @@
 import SimpleSchema from 'simpl-schema';
-import { PROMOTION_TYPES, PROMOTION_STATUS } from '../promotionConstants';
+import {
+  PROMOTION_TYPES,
+  PROMOTION_STATUS,
+  PROMOTION_PERMISSIONS,
+} from '../promotionConstants';
 import {
   address,
   contactsSchema,
@@ -7,6 +11,33 @@ import {
   createdAt,
   updatedAt,
 } from '../../helpers/sharedSchemas';
+
+export const promotionPermissionsSchema = {
+  canAddLots: { type: Boolean, optional: true, defaultValue: false },
+  canModifyLots: { type: Boolean, optional: true, defaultValue: false },
+  canRemoveLots: { type: Boolean, optional: true, defaultValue: false },
+  canModifyPromotion: { type: Boolean, optional: true, defaultValue: false },
+  canManageDocuments: { type: Boolean, optional: true, defaultValue: false },
+  canSeeCustomers: { type: Boolean, optional: true, defaultValue: false },
+  displayCustomerNames: { type: Object, optional: true },
+  'displayCustomerNames.forLotStatus': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+    defaultValue:
+      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS.NONE,
+  },
+  'displayCustomerNames.invitedBy': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
+    defaultValue: PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.NONE,
+  },
+  canInviteCustomers: { type: Boolean, optional: true, defaultValue: false },
+  canBookLots: { type: Boolean, optional: true, defaultValue: false },
+  canPreBookLots: { type: Boolean, optional: true, defaultValue: false },
+  canSellLots: { type: Boolean, optional: true, defaultValue: false },
+};
 
 const PromotionSchema = new SimpleSchema({
   createdAt,
@@ -38,7 +69,7 @@ const PromotionSchema = new SimpleSchema({
   promotionLotLinks: { type: Array, defaultValue: [] },
   'promotionLotLinks.$': Object,
   'promotionLotLinks.$._id': { type: String, optional: true },
-  ...userLinksSchema,
+  ...userLinksSchema(promotionPermissionsSchema),
   assignedEmployeeId: { type: String, optional: true },
 });
 

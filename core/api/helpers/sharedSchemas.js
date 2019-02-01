@@ -1,7 +1,6 @@
 import SimpleSchema from 'simpl-schema';
 
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
-import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 import { CANTONS } from '../loans/loanConstants';
 import zipcodes from '../../utils/zipcodes';
 
@@ -73,15 +72,28 @@ export const contactsSchema = {
   },
 };
 
-export const userLinksSchema = {
+const makePermissions = ({ permissionsSchema, prefix }) =>
+  Object.keys(permissionsSchema).reduce(
+    (permissions, key) => ({
+      ...permissions,
+      [`${prefix}.${key}`]: permissionsSchema[key],
+    }),
+    {
+      [prefix]: {
+        type: Object,
+        optional: true,
+      },
+    },
+  );
+
+export const userLinksSchema = permissionsSchema => ({
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
   'userLinks.$._id': { type: String, optional: true },
-  'userLinks.$.permissions': {
-    type: String,
-    allowedValues: Object.values(DOCUMENT_USER_PERMISSIONS),
-  },
-};
+  ...(permissionsSchema
+    ? makePermissions({ permissionsSchema, prefix: 'userLinks.$.permissions' })
+    : {}),
+});
 
 export const mortgageNoteLinks = {
   mortgageNoteLinks: { type: Array, optional: true },
