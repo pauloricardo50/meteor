@@ -245,4 +245,10 @@ describe('S3Service', function () {
       Promotions.remove(promotion._id);
     });
   });
+
+  describe.only('makeSignedUrl', () => {
+    it('should return a signed url', () => {
+      expect(S3Service.makeSignedUrl('dude/file.pdf')).to.include('dude/file.pdf');
+    });
+  });
 });

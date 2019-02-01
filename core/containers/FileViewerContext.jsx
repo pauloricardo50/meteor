@@ -5,7 +5,7 @@ export const { Consumer, Provider } = React.createContext();
 
 export const withFileViewer = compose(
   withStateHandlers(
-    { filePath: '/img/placeholder.png', fileType: 'png' },
+    { filePath: null, fileType: null },
     {
       displayFile: () => (filePath, fileType) => ({ filePath, fileType }),
       hideFileViewer: () => () => ({ filePath: null, fileType: null }),

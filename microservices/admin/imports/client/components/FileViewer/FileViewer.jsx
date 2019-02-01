@@ -3,7 +3,7 @@ import React from 'react';
 import ReactFileViewer from 'react-file-viewer';
 
 import IconButton from 'core/components/IconButton';
-import { withFileViewerContext } from './FileViewerContext';
+import { withFileViewerContext } from 'core/containers/FileViewerContext';
 
 type FileViewerProps = {};
 
