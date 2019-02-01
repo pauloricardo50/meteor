@@ -1,48 +1,44 @@
 import { Meteor } from 'meteor/meteor';
 import isArray from 'lodash/isArray';
+import fetch from 'node-fetch';
 
 import colors from 'core/config/colors';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../constants';
+import fullLoan from '../../loans/queries/fullLoan';
+import Calculator from '../../../utils/Calculator';
+import { percentFormatters } from '../../../utils/formHelpers';
 
 const LOGO_URL = 'http://d2gb1cl8lbi69k.cloudfront.net/E-Potek_icon_signature.jpg';
 const shouldNotLog = Meteor.isDevelopment || Meteor.isAppTest || Meteor.isTest;
 const ERRORS_TO_IGNORE = ['INVALID_STATE_ERR'];
 
 export class SlackService {
-  constructor({ serverSide }) {
-    if (serverSide) {
-      this.fetch = require('node-fetch');
-    } else {
-      // Fetch needs window context to function, or else you get this
-      // https://stackoverflow.com/questions/9677985/uncaught-typeerror-illegal-invocation-in-chrome
-      this.fetch = fetch.bind(window);
-    }
-  }
-
   send = ({
     channel = '#clients_general',
     username = 'e-Potek Bot',
     text,
     ...rest
   }) => {
+    const body = {
+      channel,
+      username,
+      text: this.formatText(text),
+      icon_url: LOGO_URL,
+      mrkdwn: true,
+      ...rest,
+    };
+
     if (shouldNotLog) {
-      return Promise.resolve();
+      return Promise.resolve(body);
     }
 
-    return this.fetch(
+    return fetch(
       'https://hooks.slack.com/services/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',
       {
         method: 'POST',
         headers: {},
-        body: JSON.stringify({
-          channel,
-          username,
-          text: this.formatText(text),
-          icon_url: LOGO_URL,
-          mrkdwn: true,
-          ...rest,
-        }),
+        body: JSON.stringify(body),
       },
     ).catch((err) => {
       // Somehow, this error is catched somewhere if we don't do this
@@ -158,7 +154,7 @@ export class SlackService {
       attachments: [{ title, title_link: link, text: message }],
     };
 
-    if (Meteor.isStaging || Meteor.isDevelopment) {
+    if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
       console.log('Slack dev/staging notification');
       console.log('Payload:', slackPayload);
       return slackPayload;
@@ -167,29 +163,39 @@ export class SlackService {
     return this.sendAttachments(slackPayload);
   };
 
-  notifyOfTask = (currentUser) => {
+  notifyOfTask = currentUser =>
     this.notifyAssignee({
       currentUser,
       title: `Nouvelle tâche créée par ${currentUser && currentUser.name}`,
       link: Meteor.settings.public.subdomains.admin,
     });
-  };
 
-  notifyOfUpload = ({ currentUser, fileName, docLabel }) => {
+  notifyOfUpload = ({ currentUser, fileName, docLabel, loanId }) => {
     const isUser = currentUser && currentUser.roles.includes(ROLES.USER);
 
     if (!isUser) {
       return false;
     }
 
-    const { name, loans } = currentUser;
-    const loanNameEnd = loans.length === 1 ? ` pour ${loans[0].name}.` : '.';
-    const title = `${name} a uploadé dans ${docLabel}${loanNameEnd}`;
+    const { name } = currentUser;
+    const loan = loanId && fullLoan.clone({ loanId }).fetchOne();
+    const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
+    const title = `${name} a uploadé \`${fileName}\` dans ${docLabel}${loanNameEnd}`;
     const link = `${Meteor.settings.public.subdomains.admin}/users/${
       currentUser._id
     }`;
+    let message;
 
-    this.notifyAssignee({ currentUser, message: fileName, title, link });
+    if (loan) {
+      const infoProgress = Calculator.personalInfoPercent({ loan });
+      const propertyProgress = Calculator.propertyPercent({ loan });
+      const documentsProgress = Calculator.filesProgress({
+        loan,
+      }).percent;
+      message = `*Progrès:* Emprunteurs \`${percentFormatters.format(infoProgress)}%\`, Bien immo: \`${percentFormatters.format(propertyProgress)}%\`, Documents: \`${percentFormatters.format(documentsProgress)}%\``;
+    }
+
+    return this.notifyAssignee({ currentUser, message, title, link });
   };
 }
 

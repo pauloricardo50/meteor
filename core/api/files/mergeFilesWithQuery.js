@@ -2,6 +2,7 @@ import merge from 'lodash/merge';
 import { compose, mapProps, withProps, lifecycle, withState } from 'recompose';
 
 import deepOmit from '../../utils/deepOmit';
+import { formatLoanWithDocuments } from '../../utils/loanFunctions';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../events/ClientEventService';
@@ -57,29 +58,10 @@ const mergeFilesWithQuery = (query, queryParamsFunc, mergeName) =>
 
 export default mergeFilesWithQuery;
 
-export const mapPropertyDocumentsIntoProperty = mapProps(({ loan, ...props }) => {
-  if (!loan || !loan.structure) {
-    return props;
-  }
-  const { structure, properties = [] } = loan;
-  const { property, propertyId } = structure;
-  const structureProperty = properties.find(({ _id }) => _id === propertyId);
-  const propertyDocuments = structureProperty && structureProperty.documents;
-
-  return {
-    ...props,
-    loan: {
-      ...loan,
-      structure: {
-        ...structure,
-        property: {
-          ...property,
-          documents: propertyDocuments,
-        },
-      },
-    },
-  };
-});
+export const mapPropertyDocumentsIntoProperty = mapProps(({ loan, ...props }) => ({
+  ...props,
+  loan: formatLoanWithDocuments(loan),
+}));
 
 export const mergeFilesIntoLoanStructure = (...params) =>
   compose(

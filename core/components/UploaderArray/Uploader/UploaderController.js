@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
+
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
-import notification from 'core/utils/notification';
+
+import notification from '../../../utils/notification';
 import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
@@ -11,6 +13,7 @@ import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
 import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
+import withMatchParam from '../../../containers/withMatchParam';
 
 const checkFile = (file, currentValue = [], tempFiles = []) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
@@ -43,7 +46,7 @@ export const propHasChanged = (oldProp, newProp) =>
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
     displayFull:
-      Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
+      Meteor.microservice === 'admin' || !filesExistAndAreValid(currentValue),
   }),
   {
     showFull: () => () => ({ displayFull: true }),
@@ -71,6 +74,7 @@ const props = withProps(({
   currentValue,
   tempFiles,
   fileMeta: { id, label },
+  loanId,
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
@@ -100,6 +104,7 @@ const props = withProps(({
     notifyOfUpload.run({
       fileName: file.name,
       docLabel: label || f({ id: `files.${id}` }),
+      loanId,
     });
     if (handleSuccess) {
       handleSuccess(file, url);
@@ -138,6 +143,7 @@ export default compose(
   injectIntl,
   displayFullState,
   tempFileState,
+  withMatchParam('loanId'),
   props,
   willReceiveProps,
 );

@@ -16,10 +16,10 @@ notifyAssignee.setHandler(({ userId }, { message, title }) => {
   });
 });
 
-notifyOfUpload.setHandler(({ userId }, { fileName }) => {
+notifyOfUpload.setHandler(({ userId }, params) => {
   SecurityService.checkLoggedIn();
   const user = UserService.get(userId);
-  SlackService.notifyOfUpload({ currentUser: user, fileName });
+  SlackService.notifyOfUpload({ currentUser: user, ...params });
 });
 
 logError.setHandler((context, params) => {

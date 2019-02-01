@@ -14,6 +14,7 @@ export const notifyOfUpload = new Method({
   params: {
     docLabel: String,
     fileName: String,
+    loanId: Match.Optional(String),
   },
 });
 
