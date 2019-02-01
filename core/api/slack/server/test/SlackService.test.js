@@ -11,7 +11,9 @@ import LoanService from '../../../loans/server/LoanService';
 
 const TEST_CHANNEL = 'test';
 
-describe.only('SlackService - server', () => {
+describe('SlackService - server', function () {
+  this.timeout(10000);
+
   beforeEach(() => {
     resetDatabase();
   });
