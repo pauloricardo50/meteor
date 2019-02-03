@@ -25,7 +25,7 @@ const isAllowedToDelete = (disabled) => {
 };
 
 const File = ({
-  file: { name, Key, status = FILE_STATUS.VALID, message },
+  file: { name, Key, status = FILE_STATUS.VALID, message, url },
   disabled,
   handleRemove,
   deleting,
@@ -39,8 +39,8 @@ const File = ({
         onClick={(event) => {
           if (Meteor.microservice === 'admin') {
             event.preventDefault();
-            getSignedUrl.run({ key: props.file.Key }).then((signedUrl) => {
-              displayFile(signedUrl, props.file.url.split('.').slice(-1)[0]);
+            getSignedUrl.run({ key: Key }).then((signedUrl) => {
+              displayFile(signedUrl, url.split('.').slice(-1)[0]);
             });
           }
         }}
@@ -81,10 +81,6 @@ File.propTypes = {
   disabled: PropTypes.bool.isRequired,
   file: PropTypes.objectOf(PropTypes.any).isRequired,
   handleRemove: PropTypes.func.isRequired,
-};
-
-File.defaultProps = {
-  message: '',
 };
 
 export default compose(
