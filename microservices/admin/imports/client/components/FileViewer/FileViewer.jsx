@@ -23,7 +23,7 @@ const FileViewer = ({
         type="close"
         className="file-viewer-closer"
       />
-      <ReactFileViewer fileType={fileType} filePath={filePath} />
+      <ReactFileViewer fileType={fileType} filePath={filePath} key={filePath} />
     </div>
   );
 };
