@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import moment from 'moment';
 
 import formatMessage from 'core/utils/intl';
 import {

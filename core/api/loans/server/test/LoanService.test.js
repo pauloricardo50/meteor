@@ -13,7 +13,8 @@ import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
 import OfferService from '../../../offers/server/OfferService';
 
-describe('LoanService', () => {
+describe('LoanService', function () {
+  this.timeout(10000);
   let loanId;
   let loan;
 
