@@ -52,8 +52,8 @@ export default class EventService {
 
   logEmittedEvent(eventName, params) {
     if (IS_LOGGING && !Meteor.isTest) {
-      console.log(`Event "${eventName}" triggered with params:`);
-      console.log(params);
+      // console.log(`Event "${eventName}" triggered with params:`);
+      // console.log(params);
     }
   }
 
