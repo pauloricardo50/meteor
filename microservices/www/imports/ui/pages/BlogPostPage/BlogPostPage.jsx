@@ -13,7 +13,10 @@ import BlogPostPageContent from './BlogPostPageContent';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
 
-type BlogPostPageProps = {};
+type BlogPostPageProps = {
+  loading: boolean,
+  post?: Object,
+};
 
 const BlogPostPage = ({ loading = true, post }: BlogPostPageProps) => {
   if (post && post.error) {
