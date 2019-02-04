@@ -151,7 +151,7 @@ const testMicroserviceJob = (name, testsType) => ({
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
     ),
-    storeTestResults('./results'),
+    storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
   ],

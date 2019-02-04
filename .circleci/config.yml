@@ -465,7 +465,7 @@ jobs:
           paths:
             - ./microservices/www/.meteor/local
       - store_test_results:
-          path: ./results
+          path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
   App - e2e tests:
@@ -548,7 +548,7 @@ jobs:
           paths:
             - ./microservices/app/.meteor/local
       - store_test_results:
-          path: ./results
+          path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
   Admin - e2e tests:
@@ -631,7 +631,7 @@ jobs:
           paths:
             - ./microservices/admin/.meteor/local
       - store_test_results:
-          path: ./results
+          path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
   Pro - e2e tests:
@@ -714,7 +714,7 @@ jobs:
           paths:
             - ./microservices/pro/.meteor/local
       - store_test_results:
-          path: ./results
+          path: ./e2e-results
       - store_artifacts:
           path: ./e2e-results
 workflows:
