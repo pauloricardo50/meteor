@@ -48,6 +48,7 @@ const FinancingSingleHeader = ({
         value={structure.name}
         placeholder={`Structure ${index + 1}`}
         onSubmit={handleEditTitle}
+        disabled={structure.disableForms}
       />
     </h3>
     <span className="secondary">
@@ -55,6 +56,7 @@ const FinancingSingleHeader = ({
         value={structure.description}
         placeholder="Description"
         onSubmit={handleEditDescription}
+        disabled={structure.disableForms}
       />
     </span>
   </div>

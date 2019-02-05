@@ -40,6 +40,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
       inputProps,
       className,
       allowEditing = true,
+      disabled,
     } = this.props;
 
     return isEditing ? (
@@ -51,6 +52,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           defaultValue={value}
           inputRef={this.input}
           onBlur={this.handleSubmit}
+          disabled={disabled}
           {...inputProps}
         />
       </form>
@@ -62,7 +64,7 @@ class ClickToEditField extends Component<ClickToEditFieldProps> {
           'not-allowed-to-edit': !allowEditing,
         })}
         onClick={
-          allowEditing
+          allowEditing && !disabled
             ? () => toggleEdit(true, () => this.input.current.focus())
             : null
         }
