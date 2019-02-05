@@ -53,7 +53,7 @@ class PDFService {
     switch (type) {
     case PDF_TYPES.LOAN: {
       const { loanId } = params;
-      const loan = adminLoan.clone({ _id: loanId }).fetchOne();
+      const loan = adminLoan.clone({ loanId }).fetchOne();
       if (loan.hasPromotion) {
         return formatLoanWithPromotion(loan);
       }

@@ -42,6 +42,7 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
     forceUndefined,
     allowUndefined,
     max = 1000000,
+    disabled,
   } = props;
   return (
     <>
@@ -50,6 +51,7 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
         onChange={makeHandleTextChange(props)}
         placeholder={placeholder === undefined ? '' : `${placeholder}`} // Placeholders should always be a string
         className="money-input"
+        disabled={disabled}
       />
       <Slider
         min={0}
@@ -58,6 +60,7 @@ export const InputAndSliderField = (props: InputAndSliderFieldProps) => {
         value={setValue(value, allowUndefined, forceUndefined)}
         onChange={onChange}
         className="slider"
+        disabled={disabled}
       />
     </>
   );

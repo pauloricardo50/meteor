@@ -16,7 +16,7 @@ const withInterestRates = withSmartQuery({
 export default compose(
   withSmartQuery({
     query,
-    params: ({ match }) => ({ _id: match.params.loanId }),
+    params: ({ match }) => ({ loanId: match.params.loanId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'loan',
   }),

@@ -13,7 +13,7 @@ const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
     borrowerMortgageNotes,
     currentMortgageNotes,
     className,
-    structure: { wantedLoan },
+    structure: { wantedLoan, disableForms },
   } = props;
 
   // This component does not make sense if there's no wantedLoan
@@ -30,6 +30,7 @@ const MortgageNotesPicker = (props: MortgageNotesPickerProps) => {
             currentMortgageNotes={currentMortgageNotes}
             borrowerMortgageNotes={borrowerMortgageNotes}
             wantedLoan={wantedLoan}
+            disabled={disableForms}
           />
         )}
       >

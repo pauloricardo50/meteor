@@ -13,6 +13,7 @@ const StructureSchema = new SimpleSchema({
     optional: true,
   },
   description: { type: String, optional: true },
+  disabled: { type: Boolean, defaultValue: false },
   id: String,
   mortgageNoteIds: { type: Array, optional: true },
   'mortgageNoteIds.$': String,
