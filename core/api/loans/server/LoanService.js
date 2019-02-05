@@ -201,6 +201,7 @@ export class LoanService extends CollectionService {
         structure: {
           ...currentStructure,
           name: `${currentStructure.name || 'Plan financier'} - copie`,
+          disabled: false,
         },
         atIndex: currentStructureIndex + 1,
       })

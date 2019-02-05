@@ -23,6 +23,7 @@ const FinancingHeaderActionsContainer = withProps(({ loanId, structureId, struct
       label: 'Supprimer',
       onClick: () => removeStructure.run({ loanId, structureId }),
       dividerTop: true,
+      condition: !disabled,
     },
     {
       label: disabled ? '[ADMIN] Déverouiller' : '[ADMIN] Verouiller',
