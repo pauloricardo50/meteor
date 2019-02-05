@@ -8,15 +8,16 @@ import {
 } from 'core/api/constants';
 import { makePermissions } from 'core/api/helpers/sharedSchemas';
 import { promotionPermissionsSchema } from 'core/api/promotions/schemas/PromotionSchema';
+import { setPromotionUserPermissions } from 'imports/core/api/methods/index';
 
 const packagesSchema = {
-  usePackages: { type: Boolean, defaultValue: true },
+  usePackages: { type: Boolean, defaultValue: false },
   packages: {
     optional: true,
     type: Array,
     defaultValue: [],
     condition: ({ usePackages }) => usePackages,
-    uniforms: { displayEmpty: false, placeholder: '' },
+    uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
   },
   'packages.$': {
     type: String,
@@ -38,7 +39,7 @@ const packagesSchema = {
     type: Array,
     optional: true,
     defaultValue: [],
-    uniforms: { displayEmpty: false, placeholder: '' },
+    uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
   },
   'packagesSettings.consultation.forLotStatus.$': {
     type: String,
@@ -84,8 +85,13 @@ const makeUserPermissions = ({
   return permissions;
 };
 
-export default withProps(({ user }) => ({
+export default withProps(({ user, promotionId }) => ({
   schema: userPermissionsSchema,
-  model: user && user.$metadata.permissions,
-  onSubmit: model => console.log('permissions', makeUserPermissions(model)),
+  model: user && user.$metadata,
+  onSubmit: model =>
+    setPromotionUserPermissions.run({
+      promotionId,
+      userId: user._id,
+      permissions: makeUserPermissions(model),
+    }),
 }));
