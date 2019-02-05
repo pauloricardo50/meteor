@@ -43,7 +43,7 @@ export const setPromotionUserPermissions = new Method({
   params: {
     promotionId: String,
     userId: String,
-    permissions: String,
+    permissions: Object,
   },
 });
 
