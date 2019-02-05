@@ -1,11 +1,15 @@
+import { Meteor } from 'meteor/meteor';
+
 import { withProps } from 'recompose';
+
 import {
   duplicateStructure,
   removeStructure,
   selectStructure,
+  updateStructure,
 } from '../../../../api';
 
-const FinancingHeaderActionsContainer = withProps(({ loanId, structureId }) => ({
+const FinancingHeaderActionsContainer = withProps(({ loanId, structureId, structure: { disabled } }) => ({
   options: [
     {
       label: 'Choisir',
@@ -20,7 +24,18 @@ const FinancingHeaderActionsContainer = withProps(({ loanId, structureId }) => (
       onClick: () => removeStructure.run({ loanId, structureId }),
       dividerTop: true,
     },
-  ],
+    {
+      label: disabled ? '[ADMIN] Déverouiller' : '[ADMIN] Verouiller',
+      onClick: () =>
+        updateStructure.run({
+          loanId,
+          structureId,
+          structure: { disabled: !disabled },
+        }),
+      dividerTop: true,
+      condition: Meteor.microservice === 'admin',
+    },
+  ].filter(({ condition }) => condition !== false),
 }));
 
 export default FinancingHeaderActionsContainer;

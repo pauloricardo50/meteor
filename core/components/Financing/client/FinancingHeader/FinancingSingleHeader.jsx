@@ -29,7 +29,11 @@ const FinancingSingleHeader = ({
       { selected },
     )}
   >
-    <FinancingHeaderActions structureId={structure.id} loanId={loanId} />
+    <FinancingHeaderActions
+      structureId={structure.id}
+      loanId={loanId}
+      structure={structure}
+    />
     <h3>
       <ClickToEditField
         value={structure.name}
