@@ -28,7 +28,7 @@ export const promotionPermissionsSchema = {
     type: Array,
     optional: true,
     defaultValue: [],
-    uniforms: { displayEmpty: false, placeholder: '' },
+    uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
   },
   'displayCustomerNames.forLotStatus.$': {
     type: String,
@@ -44,7 +44,7 @@ export const promotionPermissionsSchema = {
   },
   canInviteCustomers: { type: Boolean, optional: true, defaultValue: false },
   canBookLots: { type: Boolean, optional: true, defaultValue: false },
-  canPreBookLots: { type: Boolean, optional: true, defaultValue: false },
+  // canPreBookLots: { type: Boolean, optional: true, defaultValue: false },
   canSellLots: { type: Boolean, optional: true, defaultValue: false },
 };
 
