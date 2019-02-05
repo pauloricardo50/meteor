@@ -195,6 +195,7 @@ export const loan = () => ({
   canton: 1,
   createdAt: 1,
   currentOwner: 1,
+  customName: 1,
   enableOffers: 1,
   futureOwner: 1,
   hasPromotion: 1,
@@ -729,6 +730,7 @@ export const appUser = () => ({
     logic: { step: 1 },
     name: 1,
     purchaseType: 1,
+    customName: 1,
   },
   properties: { _id: 1 },
 });

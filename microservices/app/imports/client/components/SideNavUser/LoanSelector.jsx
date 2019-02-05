@@ -5,7 +5,6 @@ import { Meteor } from 'meteor/meteor';
 import T from 'core/components/Translation';
 import track from 'core/utils/analytics';
 import Select from 'core/components/Select';
-import Divider from 'core/components/Material/Divider';
 
 const handleChange = (value, toggleDrawer, history) => {
   if (value === 0) {
@@ -19,13 +18,14 @@ const handleChange = (value, toggleDrawer, history) => {
 };
 
 const getOptions = (loans) => {
-  const array = loans.map(({ _id: loanId, name }) => ({
+  const array = loans.map(({ _id: loanId, name, customName }) => ({
     id: loanId,
     label: name ? (
       <T id="LoanSelector.name" values={{ name }} />
     ) : (
       <T id="LoanSelector.empty" />
     ),
+    secondary: customName,
     icon: 'home',
   }));
 
@@ -37,17 +37,22 @@ const LoanSelector = ({
   toggleDrawer,
   history,
   currentUser: { loans },
-}) => (
-  <div className="loan-selector">
-    <Select
-      id="loan-selector"
-      value={value}
-      onChange={(id, newValue) => handleChange(newValue, toggleDrawer, history)}
-      options={getOptions(loans)}
-      displayEmpty
-    />
-  </div>
-);
+}) => {
+  const options = getOptions(loans);
+  return (
+    <div className="loan-selector">
+      <Select
+        id="loan-selector"
+        value={value}
+        onChange={(id, newValue) =>
+          handleChange(newValue, toggleDrawer, history)
+        }
+        options={options}
+        displayEmpty
+      />
+    </div>
+  );
+};
 
 LoanSelector.propTypes = {
   currentUser: PropTypes.object.isRequired,

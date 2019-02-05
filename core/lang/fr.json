@@ -1,4 +1,6 @@
 {
+  "Forms.customName": "Nom personnalisé",
+  "Forms.customName.placeholder": "Avenue de la gare",
   "MobileWarning.title": "e-Potek est optimisée pour une utilisation sur tablette ou ordinateur.",
   "MobileWarning.description": "Pour une meilleure expérience utilisateur, nous vous recommandons d'utiliser un écran plus grand.",
   "MobileWarning.buttonLabel": "Ignorer",
