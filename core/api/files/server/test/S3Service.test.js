@@ -236,9 +236,7 @@ describe('S3Service', function () {
 
     it('should return true for a promotion and the user exists', () => {
       const promotion = Factory.create('promotion', {
-        userLinks: [
-          { _id: userId, permissions: DOCUMENT_USER_PERMISSIONS.MODIFY },
-        ],
+        userLinks: [{ _id: userId, permissions: { canManageDocuments: true } }],
       });
 
       expect(S3Service.isAllowedToAccess(`${promotion._id}/`)).to.equal(true);
