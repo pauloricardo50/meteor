@@ -1,4 +1,5 @@
 import faker from 'faker/locale/fr';
+
 import LoanService from '../api/loans/server/LoanService';
 import {
   PURCHASE_TYPE,
@@ -8,31 +9,13 @@ import {
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
+import adminLoan from '../api/loans/queries/adminLoan';
+import BorrowerService from '../api/borrowers/server/BorrowerService';
+import PropertyService from '../api/properties/server/PropertyService';
+import { createFakeOffer } from './offerFixtures';
+import { logic1, logic2, logic3 } from '../api/loans/fakes';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
-
-const logic1 = {};
-
-const logic2 = {
-  step: 2,
-  verification: {
-    requested: false,
-    validated: true,
-    verifiedAt: new Date(),
-    comments: [],
-  },
-};
-
-const logic3 = {
-  step: 3,
-  verification: {
-    requested: false,
-    validated: false,
-    requestedAt: new Date(),
-    verifiedAt: new Date(),
-    comments: [],
-  },
-};
 
 const getRandomValueInArray = array =>
   array[Math.floor(Math.random() * array.length)];
@@ -181,3 +164,64 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
 
 export const getRelatedLoansIds = usersIds =>
   LoanService.fetch({ $filters: { userId: { $in: usersIds } }, _id: 1 }).map(item => item._id);
+
+export const addLoanWithData = ({
+  borrowers,
+  properties,
+  loan: loanData,
+  userId,
+  addOffers,
+}) => {
+  const loanId = LoanService.adminLoanInsert({ userId });
+  LoanService.update({ loanId, object: loanData });
+  const loan = adminLoan.clone({ loanId }).fetchOne();
+  const propertyId = loan.properties[0]._id;
+  const structureId = loan.structures[0].id;
+  const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
+  LoanService.updateStructure({
+    loanId,
+    structureId,
+    structure: {
+      propertyId,
+      loanTranches: [
+        { type: INTEREST_RATES.YEARS_10, value: 0.8 },
+        { type: INTEREST_RATES.YEARS_5, value: 0.2 },
+      ],
+      ...getRandomStructure(1000000, borrowerId1),
+    },
+  });
+  BorrowerService.update({ borrowerId: borrowerId1, object: borrowers[0] });
+
+  if (borrowers.length > 1) {
+    const borrowerId2 = BorrowerService.insert({ borrower: borrowers[1] });
+    BorrowerService.update({ borrowerId: borrowerId2, object: borrowers[1] });
+    LoanService.addLink({
+      id: loanId,
+      linkName: 'borrowers',
+      linkId: borrowerId2,
+    });
+  }
+
+  PropertyService.update({
+    propertyId,
+    object: properties[0],
+  });
+
+  console.log('addOffers:', addOffers);
+  if (addOffers) {
+    let offerIds;
+    try {
+      offerIds = [1, 2, 3, 4, 5].map(() => createFakeOffer(loanId));
+    } catch (error) {
+      console.log('error??', error);
+    }
+    console.log('offerIds?', offerIds);
+    LoanService.updateStructure({
+      loanId,
+      structureId,
+      structure: { offerId: getRandomValueInArray(offerIds) },
+    });
+  }
+
+  return loanId;
+};

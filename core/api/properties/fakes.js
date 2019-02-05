@@ -34,4 +34,5 @@ export const fakeProperty = {
   },
   qualityProfileCondition: 'INTACT',
   qualityProfileStandard: 'AVERAGE',
+  terraceArea: 20,
 };

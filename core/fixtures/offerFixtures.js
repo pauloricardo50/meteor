@@ -25,14 +25,22 @@ export const createFakeOffer = (loanId) => {
   }
 
   const randomOrganisationId = shuffle(allOrganisationIds)[0];
+  let lenderId;
 
-  const lenderId = LenderService.insert({
-    lender: { loanId: loan._id },
-    contactId: null,
-    organisationId: randomOrganisationId,
+  const lender = LenderService.findOne({
+    'loanLink._id': loanId,
+    'organisationLink._id': randomOrganisationId,
   });
 
-  return OfferService.insert({
-    offer: { ...offer, lenderId },
-  });
+  if (lender) {
+    lenderId = lender._id;
+  } else {
+    lenderId = LenderService.insert({
+      lender: { loanId: loan._id },
+      contactId: null,
+      organisationId: randomOrganisationId,
+    });
+  }
+
+  return OfferService.insert({ offer: { ...offer, lenderId } });
 };
