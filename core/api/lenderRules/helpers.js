@@ -21,3 +21,7 @@ export const parseFilter = (ruleObject) => {
 
   return { operator, variable, value };
 };
+
+export const formatFilter = ({ variable, operator, value }) => ({
+  [operator]: [{ var: variable }, value],
+});
