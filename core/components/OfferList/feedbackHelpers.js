@@ -20,6 +20,11 @@ export const FEEDBACK_OPTIONS_SETTINGS = {
   [FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP]: {
     enableCustomIntro: true,
   },
+  [FEEDBACK_OPTIONS.CUSTOM]: {
+    enableCustomIntro: false,
+    enableComments: false,
+    enableOutro: false,
+  },
 };
 
 const greetings = ({ contactName, formatMessage }) =>
@@ -81,7 +86,7 @@ const closing = ({ assignee, formatMessage }) =>
   formatMessage({ id: 'Feedback.closing' }, { assignee });
 
 export const makeFeedback = ({ model, offer, formatMessage }) => {
-  const { option, comments = [], customFeedback } = model;
+  const { option, comments = [], customFeedback = '' } = model;
   const {
     lender: {
       contact: { firstName: contactName },
@@ -103,7 +108,7 @@ export const makeFeedback = ({ model, offer, formatMessage }) => {
 
   const address = `${address1}, ${zipCode} ${city}`;
 
-  if (customFeedback && option === FEEDBACK_OPTIONS.CUSTOM) {
+  if (option === FEEDBACK_OPTIONS.CUSTOM) {
     // Replace all returns into HTML
     return customFeedback.replace(/(?:\r\n|\r|\n)/g, '<br>');
   }
