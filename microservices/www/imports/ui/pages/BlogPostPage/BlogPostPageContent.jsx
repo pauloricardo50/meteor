@@ -19,7 +19,7 @@ const BlogPostPageContent = ({
 
     <article dangerouslySetInnerHTML={{ __html: content }} />
 
-    <BlogAuthor author={author} />
+    {/* <BlogAuthor author={author} /> */}
   </section>
 );
 
