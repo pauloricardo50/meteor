@@ -3,6 +3,8 @@ import React from 'react';
 import cx from 'classnames';
 
 import ClickToEditField from '../../../ClickToEditField';
+import Icon from '../../../Icon';
+import T from '../../../Translation';
 import FinancingHeaderActions from './FinancingHeaderActions';
 import FinancingSingleHeaderContainer from './FinancingSingleHeaderContainer';
 
@@ -29,6 +31,13 @@ const FinancingSingleHeader = ({
       { selected },
     )}
   >
+    {structure.disabled && (
+      <Icon
+        type="lock"
+        tooltip={<T id="Financing.disabledTooltip" />}
+        className="disabled-icon"
+      />
+    )}
     <FinancingHeaderActions
       structureId={structure.id}
       loanId={loanId}
