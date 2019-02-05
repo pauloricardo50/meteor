@@ -40,6 +40,7 @@ export const promotionPermissionsSchema = {
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
     defaultValue:
       PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
+    uniforms: { displayEmpty: false, placeholder: '' },
   },
   canInviteCustomers: { type: Boolean, optional: true, defaultValue: false },
   canBookLots: { type: Boolean, optional: true, defaultValue: false },
