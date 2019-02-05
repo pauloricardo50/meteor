@@ -38,9 +38,7 @@ const SingleOrganisationPage = ({
                     key={tag}
                     onClick={() =>
                       history.push(`/organisations?${queryString.stringify(
-                        {
-                          tags: [tag],
-                        },
+                        { tags: [tag] },
                         { arrayFormat: 'bracket' },
                       )}`)
                     }

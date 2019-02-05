@@ -1,4 +1,9 @@
 {
+  "BlogList.readMore": "Lire plus",
+  "BlogAuthor.by": "Par {name}",
+  "BlogPage.title": "Blog e-Potek",
+  "BlogPage.description": "Retrouvez les dernières actualités, conseils, et guides en hypothèques.",
+  "WwwTopNavLinks.blog": "Blog",
   "Forms.enableOffer": "Montrer l'offre au client",
   "Forms.option": "Option",
   "Forms.option.POSITIVE": "Positif",
