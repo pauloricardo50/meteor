@@ -17,7 +17,6 @@ export const incomeConsideration = {
     type: String,
     allowedValues: Object.values(INCOME_CONSIDERATION_TYPES),
     optional: true,
-    uniforms: { placeholder: null },
   },
   bonusConsideration: percentageField,
   bonusHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
@@ -34,14 +33,12 @@ export const incomeConsideration = {
     type: String,
     allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
     optional: true,
-    uniforms: { placeholder: null },
   },
   investmentIncomeConsideration: percentageField,
   otherExpensesConsiderationType: {
     type: String,
     allowedValues: Object.values(OTHER_EXPENSES_CONSIDERATION_TYPES),
     optional: true,
-    uniforms: { placeholder: null },
   },
 };
 
