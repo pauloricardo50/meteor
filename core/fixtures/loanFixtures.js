@@ -207,15 +207,8 @@ export const addLoanWithData = ({
     object: properties[0],
   });
 
-  console.log('addOffers:', addOffers);
   if (addOffers) {
-    let offerIds;
-    try {
-      offerIds = [1, 2, 3, 4, 5].map(() => createFakeOffer(loanId));
-    } catch (error) {
-      console.log('error??', error);
-    }
-    console.log('offerIds?', offerIds);
+    const offerIds = [1, 2, 3, 4, 5].map(() => createFakeOffer(loanId));
     LoanService.updateStructure({
       loanId,
       structureId,
