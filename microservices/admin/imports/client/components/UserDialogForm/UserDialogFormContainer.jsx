@@ -19,7 +19,7 @@ const userSchema = new SimpleSchema({
   lastName: { type: String, optional: false },
   organisations: {
     type: Array,
-    condition: ({ roles }) => roles.includes(ROLES.PRO),
+    condition: ({ roles = [] }) => roles.includes(ROLES.PRO),
   },
   'organisations.$': Object,
   'organisations.$._id': {
