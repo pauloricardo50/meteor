@@ -3,8 +3,6 @@ import uniqWith from 'lodash/uniqWith';
 import isEqual from 'lodash/isEqual';
 import { PROMOTION_PERMISSIONS } from './promotionConstants';
 
-const ANONYMITED_STRING = '******';
-
 const getAllOrganisationsUserIds = organisations =>
   uniqWith(
     organisations.reduce((userIds, organisation) => {
@@ -15,26 +13,14 @@ const getAllOrganisationsUserIds = organisations =>
     isEqual,
   );
 
-const anonymizeUser = user => ({
-  _id: user._id,
-  createdAt: user.createdAt,
-  name: ANONYMITED_STRING,
-  email: ANONYMITED_STRING,
-  phoneNumbers: [ANONYMITED_STRING],
-});
-
-// const anonymizeLoan = (loan) => {
-//   const { user, ...rest } = loan;
-//   return {
-//     user: anonymizeUser(user),
-//     ...rest,
-//   };
-// };
-
-// const anonimizePromotionOption = (promotionOption) => {
-//   const { loan, custom, ...promotionOptionRest } = promotionOption;
-//   const { user, ...loanRest } = loan;
-// };
+export const getCurrentUserPermissionsForPromotion = ({
+  currentUser = {},
+  promotionId,
+}) => {
+  const { promotions = [] } = currentUser;
+  const promotion = promotions.find(({ _id }) => _id === promotionId);
+  return promotion && promotion.$metadata.permissions;
+};
 
 export const shouldAnonymize = ({
   currentUser = {},
@@ -70,27 +56,3 @@ export const shouldAnonymize = ({
     return true;
   }
 };
-
-// export const promotionOptionsAnonimization = ({
-//   currentUser,
-//   promotionOptions,
-//   promotionId,
-//   promotionLot,
-// }) => {
-//   const { organisations = [], promotions = [], userId } = currentUser;
-//   const promotion = promotions.find(({ _id }) => _id === promotionId);
-//   const permissions = promotion && promotion.$metadata.permissions;
-//   const organisationUserIds = getAllOrganisationsUserIds(organisations);
-//   const { status } = promotionLot;
-//   const {
-//     canViewPromotion,
-//     canSeeCustomers,
-//     displayCustomerNames,
-//   } = permissions;
-
-//   if (!canViewPromotion || !canSeeCustomers) {
-//     return [];
-//   }
-
-//   return customers.map((customer) => {});
-// };

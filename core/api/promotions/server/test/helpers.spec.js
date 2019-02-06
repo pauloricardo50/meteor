@@ -68,7 +68,7 @@ describe('helpers', () => {
       })).to.equal(false);
     });
 
-    it('returns true if invitedBy is USER and customer is not invited by user', () => {
+    it('returns true if invitedBy is USER and customer is not invited by current user', () => {
       expect(shouldAnonymize({
         currentUser: { _id: 'michael' },
         permissions: makePermissions({
@@ -81,7 +81,7 @@ describe('helpers', () => {
       })).to.equal(true);
     });
 
-    it('returns false if invitedBy is USER and customer is invited by user', () => {
+    it('returns false if invitedBy is USER and customer is invited by current user', () => {
       expect(shouldAnonymize({
         currentUser: { _id: 'john' },
         permissions: makePermissions({
@@ -90,6 +90,70 @@ describe('helpers', () => {
               PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.USER,
         }),
         invitedBy: 'john',
+        lotStatus: PROMOTION_LOT_STATUS.AVAILABLE,
+      })).to.equal(false);
+    });
+
+    it('returns true if invitedBy is ORGANISATION and customer is not invited by a current user organisation member', () => {
+      expect(shouldAnonymize({
+        currentUser: {
+          _id: 'john',
+          organisations: [
+            {
+              users: [{ _id: 'john' }, { _id: 'paul' }],
+            },
+            {
+              users: [{ _id: 'john' }, { _id: 'stephan' }],
+            },
+          ],
+        },
+        permissions: makePermissions({
+          forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+          invitedBy:
+              PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY
+                .ORGANISATION,
+        }),
+        invitedBy: 'mike',
+        lotStatus: PROMOTION_LOT_STATUS.AVAILABLE,
+      })).to.equal(true);
+    });
+
+    it('returns true if invitedBy is ORGANISATION and current user is not in an organisation', () => {
+      expect(shouldAnonymize({
+        currentUser: {
+          _id: 'john',
+        },
+        permissions: makePermissions({
+          forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+          invitedBy:
+              PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY
+                .ORGANISATION,
+        }),
+        invitedBy: 'mike',
+        lotStatus: PROMOTION_LOT_STATUS.AVAILABLE,
+      })).to.equal(true);
+    });
+
+    it('returns false if invitedBy is ORGANISATION and customer is invited by a current user organisation member', () => {
+      expect(shouldAnonymize({
+        currentUser: {
+          _id: 'john',
+          organisations: [
+            {
+              users: [{ _id: 'john' }, { _id: 'paul' }],
+            },
+            {
+              users: [{ _id: 'john' }, { _id: 'stephan' }, { _id: 'mike' }],
+            },
+          ],
+        },
+        permissions: makePermissions({
+          forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
+          invitedBy:
+              PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY
+                .ORGANISATION,
+        }),
+        invitedBy: 'mike',
         lotStatus: PROMOTION_LOT_STATUS.AVAILABLE,
       })).to.equal(false);
     });
