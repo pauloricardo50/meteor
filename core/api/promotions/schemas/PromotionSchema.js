@@ -13,6 +13,7 @@ import {
 } from '../../helpers/sharedSchemas';
 
 export const promotionPermissionsSchema = {
+  canViewPromotion: { type: Boolean, optional: true, defaultValue: true },
   canAddLots: { type: Boolean, optional: true, defaultValue: false },
   canModifyLots: { type: Boolean, optional: true, defaultValue: false },
   canRemoveLots: { type: Boolean, optional: true, defaultValue: false },
