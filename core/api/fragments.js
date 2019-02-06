@@ -709,4 +709,5 @@ export const appUser = () => ({
 export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  promotions: { _id: 1 },
 });
