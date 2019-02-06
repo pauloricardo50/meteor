@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
+import { PROMOTION_PERMISSIONS_BUNDLES } from 'imports/core/api/constants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import FileService from '../../files/server/FileService';
@@ -13,7 +14,7 @@ import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Promotions from '../promotions';
-import { PROMOTION_STATUS } from '../promotionConstants';
+import { PROMOTION_STATUS, PROMOTION_PERMISSIONS } from '../promotionConstants';
 
 export class PromotionService extends CollectionService {
   constructor() {
@@ -192,7 +193,16 @@ export class PromotionService extends CollectionService {
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      // metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
+      metadata: {
+        permissions: PROMOTION_PERMISSIONS_BUNDLES.CONSULTATION({
+          consultation: {
+            forLotStatus: [],
+            invitedBy:
+              PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY
+                .ORGANISATION,
+          },
+        }),
+      },
     });
   }
 

@@ -3,49 +3,49 @@ import { withProps } from 'recompose';
 import merge from 'lodash/merge';
 
 import {
-  PROMOTION_PERMISSIONS_PACKAGES,
+  PROMOTION_PERMISSIONS_BUNDLES,
   PROMOTION_PERMISSIONS,
 } from 'core/api/constants';
 import { makePermissions } from 'core/api/helpers/sharedSchemas';
 import { promotionPermissionsSchema } from 'core/api/promotions/schemas/PromotionSchema';
 import { setPromotionUserPermissions } from 'imports/core/api/methods/index';
 
-const packagesSchema = {
-  usePackages: { type: Boolean, defaultValue: false },
-  packages: {
+const bundlesSchema = {
+  useBundles: { type: Boolean, defaultValue: false },
+  bundles: {
     optional: true,
     type: Array,
     defaultValue: [],
-    condition: ({ usePackages }) => usePackages,
+    condition: ({ useBundles }) => useBundles,
     uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
   },
-  'packages.$': {
+  'bundles.$': {
     type: String,
-    allowedValues: Object.keys(PROMOTION_PERMISSIONS_PACKAGES),
+    allowedValues: Object.keys(PROMOTION_PERMISSIONS_BUNDLES),
   },
-  packagesSettings: {
+  bundlesSettings: {
     type: Object,
     optional: true,
-    condition: ({ usePackages, packages = [] }) =>
-      usePackages && packages.includes('CONSULTATION'),
+    condition: ({ useBundles, bundles = [] }) =>
+      useBundles && bundles.includes('CONSULTATION'),
   },
-  'packagesSettings.consultation': {
+  'bundlesSettings.consultation': {
     type: Object,
     optional: true,
-    condition: ({ usePackages, packages = [] }) =>
-      usePackages && packages.includes('CONSULTATION'),
+    condition: ({ useBundles, bundles = [] }) =>
+      useBundles && bundles.includes('CONSULTATION'),
   },
-  'packagesSettings.consultation.forLotStatus': {
+  'bundlesSettings.consultation.forLotStatus': {
     type: Array,
     optional: true,
     defaultValue: [],
     uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
   },
-  'packagesSettings.consultation.forLotStatus.$': {
+  'bundlesSettings.consultation.forLotStatus.$': {
     type: String,
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
   },
-  'packagesSettings.consultation.invitedBy': {
+  'bundlesSettings.consultation.invitedBy': {
     type: String,
     optional: true,
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
@@ -56,30 +56,30 @@ const packagesSchema = {
 };
 
 const userPermissionsSchema = new SimpleSchema({
-  ...packagesSchema,
+  ...bundlesSchema,
   ...makePermissions({
     permissionsSchema: promotionPermissionsSchema,
     prefix: 'permissions',
-    autoFormDisplayCondition: ({ usePackages }) => !usePackages,
+    autoFormDisplayCondition: ({ useBundles }) => !useBundles,
   }),
 });
 
 const makeUserPermissions = ({
-  usePackages,
-  packages = [],
-  packagesSettings = {},
+  useBundles,
+  bundles = [],
+  bundlesSettings = {},
   permissions,
 }) => {
-  if (usePackages) {
-    const packagesPermissions = {};
-    packages.forEach((packageName) => {
+  if (useBundles) {
+    const bundlesPermissions = {};
+    bundles.forEach((bundleName) => {
       merge(
-        packagesPermissions,
-        PROMOTION_PERMISSIONS_PACKAGES[packageName](packagesSettings),
+        bundlesPermissions,
+        PROMOTION_PERMISSIONS_BUNDLES[bundleName](bundlesSettings),
       );
     });
 
-    return packagesPermissions;
+    return bundlesPermissions;
   }
 
   return permissions;
