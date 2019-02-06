@@ -63,7 +63,7 @@ const setupPromotion = () => {
   PromotionService.setUserPermissions({
     promotionId,
     userId: user._id,
-    permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+    permissions: {canInviteCustomers: true},
   });
   PromotionService.update({
     promotionId,
@@ -127,12 +127,12 @@ describe('REST: inviteUserToPromotion', () => {
         },
       }));
 
-    it('user is not allowed to modify the promotion', () => {
+    it('user is not allowed to invite customers to the promotion', () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       PromotionService.setUserPermissions({
         promotionId,
         userId: user._id,
-        permissions: DOCUMENT_USER_PERMISSIONS.READ,
+        permissions: { canInviteCustomers: false },
       });
 
       return inviteUser({
@@ -149,7 +149,7 @@ describe('REST: inviteUserToPromotion', () => {
       PromotionService.setUserPermissions({
         promotionId,
         userId: user._id,
-        permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+        permissions: { canInviteCustomers: true },
       });
 
       return inviteUser({

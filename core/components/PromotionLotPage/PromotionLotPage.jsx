@@ -87,6 +87,7 @@ const PromotionLotPage = ({
           promotionLot={promotionLot}
           canModify={canModify}
           isAdmin={isAdmin}
+          currentUser={currentUser}
         />
       </div>
     </div>

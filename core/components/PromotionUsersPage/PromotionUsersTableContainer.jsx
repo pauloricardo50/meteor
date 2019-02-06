@@ -82,10 +82,7 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-    invitedBy
-      && promotionUsers
-      && !!promotionUsers.length
-      && promotionUsers.find(({ _id }) => _id === invitedBy).name,
+    invitedByName,
     {
       raw: promotionProgress.verificationStatus,
       label: <PromotionProgress promotionProgress={promotionProgress} />,
