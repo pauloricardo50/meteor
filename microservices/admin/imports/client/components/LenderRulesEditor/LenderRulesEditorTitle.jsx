@@ -21,6 +21,8 @@ const renderValue = (name, value) => {
       0
     ) : value <= 1 ? (
       <Percent value={value} />
+    ) : value <= 10000 ? (
+      value
     ) : (
       <Money value={value} />
     );
@@ -44,7 +46,7 @@ const renderSingleVariable = (ruleObject) => {
 
   return (
     <>
-      <T id={`Forms.${variable}`} />
+      <T id={`Forms.variable.${variable}`} />
       &nbsp;{operatorText[operator]}&nbsp;
       {renderValue(variable, value)}
     </>

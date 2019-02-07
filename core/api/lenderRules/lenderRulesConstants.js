@@ -53,6 +53,8 @@ export const LENDER_RULES_VARIABLES = {
   CANTON: 'canton',
   BORROW_RATIO: 'borrowRatio',
   WANTED_LOAN: 'wantedLoan',
+  PROPERTY_VALUE: 'propertyValue',
+  INSIDE_AREA: 'insideArea',
 };
 
 export const LENDER_RULES_OPERATORS = {

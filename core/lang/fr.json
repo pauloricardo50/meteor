@@ -50,6 +50,8 @@
   "Forms.operator.<=": "Plus petit, ou égale à",
   "Forms.rules": "Règles",
   "Forms.variable": "Variable",
+  "Forms.variable.propertyValue": "Valeur du bien immobilier",
+  "Forms.variable.insideArea": "Surface habitable",
   "Forms.variable.income": "Revenus",
   "Forms.variable.residenceType": "Type de résidence",
   "Forms.variable.canton": "Canton du bien immobilier",
