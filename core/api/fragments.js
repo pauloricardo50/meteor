@@ -726,7 +726,7 @@ export const appUser = () => ({
   assignedEmployee: simpleUser(),
   borrowers: { name: 1 },
   loans: {
-    borrowers: { _id: 1 },
+    borrowers: { _id: 1, name: 1 },
     logic: { step: 1 },
     name: 1,
     purchaseType: 1,
