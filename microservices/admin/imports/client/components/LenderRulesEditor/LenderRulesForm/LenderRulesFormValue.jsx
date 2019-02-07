@@ -7,7 +7,7 @@ import {
   CANTONS,
 } from 'core/api/constants';
 import MoneyInput from 'core/components/MoneyInput';
-import { NumberField} from 'core/components/NumberInput';
+import { NumberField } from 'core/components/NumberInput';
 import T from 'core/components/Translation';
 import { PercentField } from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
@@ -48,6 +48,7 @@ const LenderRulesFormValue = (props: LenderRulesFormValueProps) => {
       LENDER_RULES_VARIABLES.INCOME,
       LENDER_RULES_VARIABLES.WANTED_LOAN,
       LENDER_RULES_VARIABLES.PROPERTY_VALUE,
+      LENDER_RULES_VARIABLES.BANK_FORTUNE,
     ].includes(variable)
   ) {
     return <MoneyInput {...props} />;

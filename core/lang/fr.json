@@ -53,6 +53,7 @@
   "Forms.variable.propertyValue": "Valeur du bien immobilier",
   "Forms.variable.insideArea": "Surface habitable",
   "Forms.variable.income": "Revenus",
+  "Forms.variable.bankFortune": "Cash et Titres",
   "Forms.variable.residenceType": "Type de résidence",
   "Forms.variable.canton": "Canton du bien immobilier",
   "Forms.variable.borrowRatio": "Taux d'avance",

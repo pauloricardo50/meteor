@@ -55,6 +55,7 @@ export const LENDER_RULES_VARIABLES = {
   WANTED_LOAN: 'wantedLoan',
   PROPERTY_VALUE: 'propertyValue',
   INSIDE_AREA: 'insideArea',
+  BANK_FORTUNE: 'bankFortune',
 };
 
 export const LENDER_RULES_OPERATORS = {
