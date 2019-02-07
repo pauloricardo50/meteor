@@ -157,18 +157,19 @@ export const adminLender = () => ({
 // // LenderRules fragments
 // //
 export const lenderRules = () => ({
+  adminComments: 1,
   allowPledge: 1,
   amortizationGoal: 1,
   amortizationYears: 1,
   bonusConsideration: 1,
   bonusHistoryToConsider: 1,
-  comments: 1,
   companyIncomeConsideration: 1,
   companyIncomeHistoryToConsider: 1,
   createdAt: 1,
   dividendsConsideration: 1,
   dividendsHistoryToConsider: 1,
   filter: 1,
+  fortuneReturnsRatio: 1,
   incomeConsiderationType: 1,
   investmentIncomeConsideration: 1,
   maxBorrowRatio: 1,
@@ -177,10 +178,12 @@ export const lenderRules = () => ({
   minCash: 1,
   name: 1,
   otherExpensesConsiderationType: 1,
+  pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeConsideration: 1,
   realEstateIncomeConsiderationType: 1,
   theoreticalInterestRate: 1,
+  theoreticalInterestRate2ndRank: 1,
   theoreticalMaintenanceRate: 1,
   updatedAt: 1,
 });

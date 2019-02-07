@@ -1,4 +1,10 @@
 {
+  "Forms.adminComments": "Commentaires pour admins",
+  "Forms.adminComments.placeholder": "Ne pas soumettre si la lune est pleine",
+  "Forms.pdfComments": "Commentaires pour PDF",
+  "Forms.pdfComments.placeholder": "Considéré comme une résidence de luxe",
+  "Forms.fortuneReturnsRatio": "Taux de rendement sur la fortune mobilière",
+  "Forms.theoreticalInterestRate2ndRank": "Taux d'intérêts théorique sur 2e rang",
   "Forms.borrowRatio": "Taux d'avance",
   "Financing.disabledTooltip": "Ce plan financier a été vérouillé par votre conseiller",
   "Forms.customName": "Nom personnalisé",

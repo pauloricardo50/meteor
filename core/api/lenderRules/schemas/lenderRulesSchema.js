@@ -40,10 +40,12 @@ export const incomeConsideration = {
     allowedValues: Object.values(OTHER_EXPENSES_CONSIDERATION_TYPES),
     optional: true,
   },
+  fortuneReturnsRatio: percentageField,
 };
 
 export const theoreticalExpenses = {
   theoreticalInterestRate: percentageField,
+  theoreticalInterestRate2ndRank: percentageField,
   theoreticalMaintenanceRate: percentageField,
   amortizationGoal: percentageField,
   amortizationYears: {
@@ -70,8 +72,10 @@ export const otherParams = {
       }
     },
   },
-  comments: { type: Array, defaultValue: [] },
-  'comments.$': String,
+  adminComments: { type: Array, defaultValue: [] },
+  'adminComments.$': String,
+  pdfComments: { type: Array, defaultValue: [] },
+  'pdfComments.$': String,
 };
 
 const LenderRulesSchema = new SimpleSchema({
