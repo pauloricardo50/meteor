@@ -12,13 +12,14 @@ import LenderRulesForm from './LenderRulesForm';
 
 export default compose(
   branch(({ filter }) => isAllRule({ filter }), renderNothing),
-  mapProps(({ lenderRulesId, filter }) => ({
-    onSubmit: ({ rules }) =>
+  mapProps(({ lenderRulesId, filter, name }) => ({
+    onSubmit: ({ rules, name: newName }) =>
       lenderRulesUpdateFilter.run({
         lenderRulesId,
         logicRules: rules.map(formatFilter),
+        name: newName,
       }),
-    model: { rules: filter.and.map(parseFilter) },
+    model: { rules: filter.and.map(parseFilter), name },
     buttonProps: { label: 'Modifier' },
     renderAdditionalActions: ({ closeDialog, setDisableActions, disabled }) => (
       <Button

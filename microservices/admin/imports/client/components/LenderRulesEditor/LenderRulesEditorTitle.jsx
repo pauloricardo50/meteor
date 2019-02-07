@@ -51,12 +51,17 @@ const renderSingleVariable = (ruleObject) => {
   );
 };
 
-const LenderRulesEditorTitle = ({ filter }: LenderRulesEditorTitleProps) => {
+const LenderRulesEditorTitle = ({
+  filter,
+  name,
+}: LenderRulesEditorTitleProps) => {
   const [operator] = Object.keys(filter);
   const variables = filter[operator];
 
+  let formattedRules = '';
+
   if (variables.length > 1) {
-    return variables.map(renderSingleVariable).map((tag, i) => [
+    formattedRules = variables.map(renderSingleVariable).map((tag, i) => [
       i !== 0 && (
         <span>
           ,&nbsp;
@@ -66,9 +71,19 @@ const LenderRulesEditorTitle = ({ filter }: LenderRulesEditorTitleProps) => {
       ),
       tag,
     ]);
+  } else {
+    formattedRules = renderSingleVariable(variables[0]);
   }
 
-  return renderSingleVariable(variables[0]);
+  if (name) {
+    return (
+      <div className="lender-rules-title-with-name">
+        <h3>{name}</h3>
+        <h4 className="secondary">{formattedRules}</h4>
+      </div>
+    );
+  }
+  return <h3>{formattedRules}</h3>;
 };
 
 export default LenderRulesEditorTitle;

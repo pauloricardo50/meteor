@@ -5,10 +5,11 @@ import { formatFilter } from 'core/api/lenderRules/helpers';
 import LenderRulesForm from './LenderRulesForm';
 
 export default mapProps(({ organisationId }) => ({
-  onSubmit: ({ rules }) =>
+  onSubmit: ({ rules, name }) =>
     lenderRulesInsert.run({
       organisationId,
       logicRules: rules.map(formatFilter),
+      object: { name },
     }),
   buttonProps: {
     label: 'Ajouter filtre',

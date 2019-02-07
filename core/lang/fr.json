@@ -1,4 +1,5 @@
 {
+  "Forms.borrowRatio": "Taux d'avance",
   "Financing.disabledTooltip": "Ce plan financier a été vérouillé par votre conseiller",
   "Forms.customName": "Nom personnalisé",
   "Forms.customName.placeholder": "Avenue de la gare",

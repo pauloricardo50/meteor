@@ -12,7 +12,8 @@ import LenderRulesFormValue from './LenderRulesFormValue';
 type LenderRulesFormProps = {};
 
 const schema = new SimpleSchema({
-  rules: Array,
+  name: { type: String, optional: true },
+  rules: { type: Array, minCount: 1 },
   'rules.$': Object,
   'rules.$.variable': {
     type: String,
@@ -29,7 +30,7 @@ const schema = new SimpleSchema({
     type: SimpleSchema.oneOf(String, Number, Boolean, Array),
     uniforms: { component: LenderRulesFormValue, placeholder: null },
     condition: (model, index) =>
-      model.rules[index] && model.rules[index].variable,
+      model.rules && model.rules[index] && model.rules[index].variable,
   },
   'rules.$.value.$': { type: String, condition: () => false },
 });

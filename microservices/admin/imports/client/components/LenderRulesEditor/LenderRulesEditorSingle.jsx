@@ -24,17 +24,19 @@ const getInitialFormKeys = ({ lenderRules }) =>
 type LenderRulesEditorSingleProps = {};
 
 const LenderRulesEditorSingle = ({
-  lenderRules: { _id: lenderRulesId, filter, ...rules },
+  lenderRules: { _id: lenderRulesId, filter, name, ...rules },
   updateLenderRules,
   formKeys,
   setFormKeys,
 }: LenderRulesEditorFilterProps) => (
   <div className="card1 card-top lender-rules-editor-filter">
     <div className="filter-title">
-      <h3>
-        <LenderRulesEditorTitle filter={filter} />
-      </h3>
-      <LenderRulesModifier filter={filter} lenderRulesId={lenderRulesId} />
+      <LenderRulesEditorTitle filter={filter} name={name} />
+      <LenderRulesModifier
+        name={name}
+        filter={filter}
+        lenderRulesId={lenderRulesId}
+      />
     </div>
 
     <DropdownMenu

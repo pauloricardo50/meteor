@@ -62,10 +62,10 @@ class LenderRulesService extends CollectionService {
     return this._update({ id: lenderRulesId, object });
   }
 
-  updateFilter({ lenderRulesId, logicRules }) {
+  updateFilter({ lenderRulesId, logicRules, name }) {
     return this._update({
       id: lenderRulesId,
-      object: { filter: { and: logicRules } },
+      object: { filter: { and: logicRules }, name },
     });
   }
 }
