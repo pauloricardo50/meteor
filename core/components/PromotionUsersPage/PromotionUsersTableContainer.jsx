@@ -58,13 +58,14 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     currentUser,
   });
 
-  const shouldAnonymizeRow = shouldAnonymize({
-    currentUser,
-    permissions,
-    invitedBy,
-  });
-
-  if (shouldAnonymizeRow && Meteor.microservice !== 'admin') {
+  if (
+    shouldAnonymize({
+      currentUser,
+      promotionId,
+      invitedBy,
+    })
+    && Meteor.microservice !== 'admin'
+  ) {
     return [
       <i key="name">Masqué</i>,
       <i key="phone">Masqué</i>,

@@ -25,16 +25,19 @@ export const getCurrentUserPermissionsForPromotion = ({
 export const shouldAnonymize = ({
   currentUser = {},
   permissions = {},
+  promotionId,
   invitedBy,
   lotStatus,
 }) => {
   const { organisations = [], _id: userId } = currentUser;
+  const userPermissions = getCurrentUserPermissionsForPromotion({ currentUser, promotionId })
+    || permissions;
 
   const {
     canViewPromotion,
     canSeeCustomers,
     displayCustomerNames,
-  } = permissions;
+  } = userPermissions;
 
   if (!canViewPromotion || !canSeeCustomers || !invitedBy) {
     return true;

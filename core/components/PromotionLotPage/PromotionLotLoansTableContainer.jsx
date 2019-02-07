@@ -46,14 +46,15 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     currentUser,
   });
 
-  const shouldAnonymizeRow = shouldAnonymize({
-    currentUser,
-    permissions,
-    invitedBy,
-    lotStatus,
-  });
-
-  if (shouldAnonymizeRow && Meteor.microservice !== 'admin') {
+  if (
+    shouldAnonymize({
+      currentUser,
+      promotionId,
+      invitedBy,
+      lotStatus,
+    })
+    && Meteor.microservice !== 'admin'
+  ) {
     return [
       <i key="name">Masqué</i>,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
@@ -105,7 +106,7 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
       lots={lots}
       solvency={solvency}
       promotionLotName={name}
-      canModify
+      permissions={permissions}
       key="promotionLotAttributer"
     />,
   ];
