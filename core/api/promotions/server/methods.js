@@ -34,7 +34,11 @@ insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
 });
 
 inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
-  SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
+  SecurityService.promotions.isAllowedToInviteCustomers({
+    promotionId,
+    userId,
+  });
+  // SecurityService.promotions.isAllowedToUpdate(promotionId, userId);
   return PromotionService.inviteUser({ promotionId, user });
 });
 

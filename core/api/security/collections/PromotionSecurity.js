@@ -88,6 +88,19 @@ class PromotionSecurity {
       [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.PREPARATION].includes(promotion.status) && Security.canModifyDoc(promotion)
     );
   }
+
+  static isAllowedToInviteCustomers({ promotionId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const promotion = PromotionService.safeGet(promotionId);
+    Security.hasPermissionOnDoc({
+      doc: promotion,
+      permissions: { canInviteCustomers: true },
+      userId,
+    });
+  }
 }
 
 export default PromotionSecurity;
