@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import get from 'lodash/get';
 
+import { flattenObject } from '../helpers';
 import { ROLES } from '../constants';
 import { DOCUMENT_USER_PERMISSIONS } from './constants';
 
@@ -92,7 +94,20 @@ export default class Security {
     }
   }
 
-  static hasPermissionOnDoc(doc, permissions, userId) {
+  // static hasPermissionOnDoc(doc, permissions, userId) {
+  //   const { userLinks = [] } = doc;
+  //   const userLink = userLinks.find(({ _id }) => _id === userId);
+
+  //   if (!userLink) {
+  //     this.handleUnauthorized('Checking permissions');
+  //   }
+
+  //   if (!permissions.includes(userLink.permissions)) {
+  //     this.handleUnauthorized('Checking permissions');
+  //   }
+  // }
+
+  static hasPermissionOnDoc({ doc, permissions, userId }) {
     const { userLinks = [] } = doc;
     const userLink = userLinks.find(({ _id }) => _id === userId);
 
@@ -100,7 +115,28 @@ export default class Security {
       this.handleUnauthorized('Checking permissions');
     }
 
-    if (!permissions.includes(userLink.permissions)) {
+    const userPermissions = userLink.permissions;
+
+    if (
+      !Object.keys(flattenObject(permissions)).every((permission) => {
+        const userPermission = get(userPermissions, permission);
+        const requiredPermission = get(permissions, permission);
+
+        if (!userPermission) {
+          return false;
+        }
+
+        if (Array.isArray(requiredPermission)) {
+          if (!Array.isArray(userPermission)) {
+            return false;
+          }
+          return requiredPermission.every(required =>
+            userPermission.includes(required));
+        }
+
+        return userPermission === requiredPermission;
+      })
+    ) {
       this.handleUnauthorized('Checking permissions');
     }
   }
