@@ -28,10 +28,7 @@ export default compose(
         || loanResidenceType !== this.props.loanResidenceType
       ) {
         propertyDataIsInvalid
-          .run({
-            propertyId: property._id,
-            loanResidenceType,
-          })
+          .run({ propertyId: property._id, loanResidenceType })
           .then(error => this.setState({ disabled: !!error, error }));
       }
     },
