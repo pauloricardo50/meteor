@@ -5,6 +5,8 @@ import {
   ERROR,
   WARNING,
   RESIDENCE_TYPE,
+  REAL_ESTATE_CONSIDERATION_TYPES,
+  OTHER_EXPENSES_CONSIDERATION_TYPES,
 } from '../../api/constants';
 import {
   NOTARY_FEES,
@@ -18,6 +20,16 @@ import {
   MAX_INCOME_RATIO,
   MAX_INCOME_RATIO_TIGHT,
   MAX_BORROW_RATIO_WITH_PLEDGE,
+  BONUS_CONSIDERATION,
+  BONUS_HISTORY_TO_CONSIDER,
+  COMPANY_INCOME_TO_CONSIDER,
+  DIVIDENDS_CONSIDERATION,
+  DIVIDENDS_HISTORY_TO_CONSIDER,
+  PENSION_INCOME_CONSIDERATION,
+  REAL_ESTATE_INCOME_CONSIDERATION,
+  INVESTMENT_INCOME_CONSIDERATION,
+  FORTUNE_RETURNS_RATIO,
+  AMORTIZATION_YEARS,
 } from '../../config/financeConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
@@ -36,43 +48,54 @@ export class FinanceCalculator {
   initFinanceCalculator({
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
+    amortizationYears = AMORTIZATION_YEARS,
+    bonusConsideration = BONUS_CONSIDERATION,
+    bonusHistoryToConsider = BONUS_HISTORY_TO_CONSIDER,
+    companyIncomeHistoryToConsider = COMPANY_INCOME_TO_CONSIDER,
+    dividendsConsideration = DIVIDENDS_CONSIDERATION,
+    dividendsHistoryToConsider = DIVIDENDS_HISTORY_TO_CONSIDER,
+    fortuneReturnsRatio = FORTUNE_RETURNS_RATIO,
+    investmentIncomeConsideration = INVESTMENT_INCOME_CONSIDERATION,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
     maxBorrowRatioWithPledge = MAX_BORROW_RATIO_WITH_PLEDGE,
     maxIncomeRatio = MAX_INCOME_RATIO,
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
     notaryFees = NOTARY_FEES,
+    otherExpensesConsiderationType = OTHER_EXPENSES_CONSIDERATION_TYPES.ADD_TO_EXPENSES,
+    pensionIncomeConsideration = PENSION_INCOME_CONSIDERATION,
+    realEstateIncomeConsideration = REAL_ESTATE_INCOME_CONSIDERATION,
+    realEstateIncomeConsiderationType = REAL_ESTATE_CONSIDERATION_TYPES.ADD_TO_INCOME,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
+    theoreticalInterestRate2ndRank = INTERESTS_FINMA,
     theoreticalMaintenanceRate = MAINTENANCE_FINMA,
     middlewares = [],
     middlewareObject,
-  }: {
-    amortizationBaseRate?: number,
-    amortizationGoal?: number,
-    interestRates: Object,
-    maxBorrowRatio?: number,
-    maxBorrowRatioWithPledge?: number,
-    maxIncomeRatio?: number,
-    maxIncomeRatioTight?: number,
-    minCash?: number,
-    notaryFees?: number,
-    taxRate?: number,
-    theoreticalInterestRate?: number,
-    theoreticalMaintenanceRate: number,
-    middlewares?: Array<Function>,
-    middlewareObject: Object,
   } = {}) {
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
+    this.amortizationYears = amortizationYears;
+    this.bonusConsideration = bonusConsideration;
+    this.bonusHistoryToConsider = bonusHistoryToConsider;
+    this.companyIncomeHistoryToConsider = companyIncomeHistoryToConsider;
+    this.dividendsConsideration = dividendsConsideration;
+    this.dividendsHistoryToConsider = dividendsHistoryToConsider;
+    this.fortuneReturnsRatio = fortuneReturnsRatio;
+    this.investmentIncomeConsideration = investmentIncomeConsideration;
     this.maxBorrowRatio = maxBorrowRatio;
     this.maxBorrowRatioWithPledge = maxBorrowRatioWithPledge;
     this.maxIncomeRatio = maxIncomeRatio;
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
     this.notaryFees = notaryFees;
+    this.otherExpensesConsiderationType = otherExpensesConsiderationType;
+    this.pensionIncomeConsideration = pensionIncomeConsideration;
+    this.realEstateIncomeConsideration = realEstateIncomeConsideration;
+    this.realEstateIncomeConsiderationType = realEstateIncomeConsiderationType;
     this.taxRate = taxRate;
     this.theoreticalInterestRate = theoreticalInterestRate;
+    this.theoreticalInterestRate2ndRank = theoreticalInterestRate2ndRank;
     this.theoreticalMaintenanceRate = theoreticalMaintenanceRate;
     this.setMiddleware(middlewares, middlewareObject);
   }

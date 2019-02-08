@@ -85,14 +85,25 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     applyRules(rules) {
       const rulesToApply = [
+        'amortizationGoal',
+        'amortizationYears',
+        'bonusConsideration',
+        'bonusHistoryToConsider',
+        'companyIncomeHistoryToConsider',
+        'dividendsConsideration',
+        'dividendsHistoryToConsider',
+        'fortuneReturnsRatio',
+        'incomeConsiderationType',
+        'investmentIncomeConsideration',
         'maxBorrowRatio',
         'maxIncomeRatio',
+        'otherExpensesConsiderationType',
+        'pensionIncomeConsideration',
+        'realEstateIncomeConsideration',
+        'realEstateIncomeConsiderationType',
         'theoreticalInterestRate',
         'theoreticalInterestRate2ndRank',
         'theoreticalMaintenanceRate',
-        'amortizationGoal',
-        'amortizationYears',
-        'incomeConsiderationType',
       ];
 
       rulesToApply.forEach((rule) => {

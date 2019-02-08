@@ -157,7 +157,7 @@ describe('BorrowerCalculator', () => {
             },
           ],
         },
-      })).to.equal(0.15);
+      })).to.be.within(0.14, 0.15);
     });
   });
 
@@ -407,6 +407,7 @@ describe('BorrowerCalculator', () => {
           updatedAt: '2018-08-23T10:20:22.234Z',
           userId: 'fAksm7pJveZybme5F',
           salary: 100,
+          netSalary: 80,
           bankFortune: 1000,
         },
       })).to.equal(1);
