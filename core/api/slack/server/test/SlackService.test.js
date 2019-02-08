@@ -53,7 +53,7 @@ describe('SlackService - server', function () {
         loanId: loanId2,
       }).then(({ attachments, channel }) => {
         expect(attachments[0].title).to.equal('John Doe a uploadé file.pdf dans Taxes pour 19-0001.');
-        expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `6.67%`, Documents: `0.00%`, Bien immo: `27.78%`');
+        expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `6.25%`, Documents: `0.00%`, Bien immo: `27.78%`');
         expect(channel).to.equal('#clients_yannis');
       });
     });
@@ -95,7 +95,7 @@ describe('SlackService - server', function () {
         docLabel: 'Taxes',
         loanId,
       }).then(({ attachments }) => {
-        expect(attachments[0].text).to.equal('_Promotion: `A Promotion`_ *Progrès:* Emprunteurs `6.67%`, Documents: `0.00%`');
+        expect(attachments[0].text).to.equal('_Promotion: `A Promotion`_ *Progrès:* Emprunteurs `6.25%`, Documents: `0.00%`');
       });
     });
   });
