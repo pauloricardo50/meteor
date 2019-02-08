@@ -161,11 +161,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getBorrowRatio({ loan }) {
+    getBorrowRatio({ loan, structureId }) {
       return (
-        this.selectStructureKey({ loan, key: 'wantedLoan' })
-        / (this.getPropertyValue({ loan })
-          + this.selectStructureKey({ loan, key: 'propertyWork' }))
+        this.selectStructureKey({ loan, structureId, key: 'wantedLoan' })
+        / (this.getPropertyValue({ loan, structureId })
+          + this.selectStructureKey({ loan, structureId, key: 'propertyWork' }))
       );
     }
 

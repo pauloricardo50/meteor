@@ -1,16 +1,13 @@
 import jsonLogic from 'json-logic-js';
 
-export const getAllRules = (loan, lenderRules) => {
-  const { filters } = lenderRules;
-
-  return filters.reduce((validRules, { filter, ...rules }) => {
-    if (jsonLogic.apply(filter, loan)) {
+export const getMatchingRules = (lenderRules, variables) =>
+  lenderRules.reduce((validRules, { filter, ...rules }) => {
+    if (jsonLogic.apply(filter, variables)) {
       return { ...validRules, ...rules };
     }
 
     return validRules;
   }, {});
-};
 
 export const isAllRule = ({ filter: { and } }) => and[0] === true;
 

@@ -13,6 +13,7 @@ import {
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
+import { INCOME_CONSIDERATION_TYPES } from '../../api/constants';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -234,7 +235,14 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getSalary({ borrowers }) {
+      if (this.incomeConsiderationType === INCOME_CONSIDERATION_TYPES.NET) {
+        return this.getNetSalary({ borrowers });
+      }
       return this.sumValues({ borrowers, keys: 'salary' });
+    }
+
+    getNetSalary({ borrowers }) {
+      return this.sumValues({ borrowers, keys: 'netSalary' });
     }
 
     getTotalIncome({ borrowers }) {
