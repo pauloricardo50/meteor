@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Calculator from '..';
+import Calculator, { Calculator as CalculatorClass } from '..';
 import { BORROWER_DOCUMENTS, STEPS, GENDER } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
@@ -71,18 +71,6 @@ describe('BorrowerCalculator', () => {
       })).to.equal(50);
     });
 
-    it('discounts the lowest of 4 bonuses', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2015: 50,
-          bonus2016: 150,
-          bonus2017: 40,
-          bonus2018: 100,
-        },
-      })).to.equal(50);
-    });
-
     it('returns 0 if bonusExists is false', () => {
       expect(Calculator.getBonusIncome({
         borrowers: {
@@ -93,6 +81,37 @@ describe('BorrowerCalculator', () => {
           bonus2018: 100,
         },
       })).to.equal(0);
+    });
+
+    it('considers bonuses differently based on bonusConsideration', () => {
+      const calc = new CalculatorClass({ bonusConsideration: 1 });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2015: 40,
+          bonus2016: 150,
+          bonus2017: 50,
+          bonus2018: 100,
+        },
+      })).to.equal(100);
+    });
+
+    it('considers fewer bonuses with bonusHistoryToConsider', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 1,
+      });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2015: 50,
+          bonus2016: 150,
+          bonus2017: 40,
+          bonus2019: 200,
+        },
+      })).to.equal(200);
     });
   });
 
@@ -262,7 +281,9 @@ describe('BorrowerCalculator', () => {
     it('returns all missing ids for an empty borrower', () => {
       expect(Calculator.getMissingBorrowerDocuments({
         loan: {
-          borrowers: [{ _id: 'borrowerId', additionalDocuments: initialDocuments }],
+          borrowers: [
+            { _id: 'borrowerId', additionalDocuments: initialDocuments },
+          ],
           logic: { step: STEPS.PREPARATION },
         },
       })).to.deep.equal(initialDocuments.map(({ id }) => id));
