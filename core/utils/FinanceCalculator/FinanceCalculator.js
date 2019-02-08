@@ -260,7 +260,7 @@ export class FinanceCalculator {
 
   getAmortizationRateBase({
     borrowRatio = 0,
-    amortizationYears = 15,
+    amortizationYears = this.amortizationYears,
   }: { borrowRatio: number, amortizationRate?: number } = {}) {
     let amortizationRate = 0;
     if (borrowRatio > this.amortizationGoal) {
