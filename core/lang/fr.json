@@ -1,4 +1,5 @@
 {
+  "Forms.netSalary": "Revenus nets annuels",
   "Forms.adminComments": "Commentaires pour admins",
   "Forms.adminComments.placeholder": "Ne pas soumettre si la lune est pleine",
   "Forms.pdfComments": "Commentaires pour PDF",

@@ -159,6 +159,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       required: false,
     },
     { id: 'salary', type: 'textInput', money: true },
+    { id: 'netSalary', type: 'textInput', money: true },
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
