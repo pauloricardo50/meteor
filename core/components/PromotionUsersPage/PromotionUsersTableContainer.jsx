@@ -4,10 +4,6 @@ import { compose, withProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
-import {
-  getCurrentUserPermissionsForPromotion,
-  shouldAnonymize,
-} from '../../api/promotions/helpers';
 import { removeUserFromPromotion, withSmartQuery } from '../../api';
 import ConfirmMethod from '../ConfirmMethod';
 import T from '../Translation';
@@ -53,31 +49,6 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
       && promotionUsers.find(({ _id }) => _id === invitedBy).name)
     || 'Personne';
 
-  const permissions = getCurrentUserPermissionsForPromotion({
-    promotionId,
-    currentUser,
-  });
-
-  if (
-    shouldAnonymize({
-      currentUser,
-      promotionId,
-      invitedBy,
-    })
-    && Meteor.microservice !== 'admin'
-  ) {
-    return [
-      <i key="name">Masqué</i>,
-      <i key="phone">Masqué</i>,
-      <i key="email">Masqué</i>,
-      { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      invitedByName,
-      <i key="promotionProgress">Masqué</i>,
-      <i key="priorityOrder">Masqué</i>,
-      <span key="actions">-</span>,
-    ];
-  }
-
   return [
     user && user.name,
     user && user.phoneNumbers && user.phoneNumbers[0],
@@ -98,7 +69,7 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         />
       ),
     },
-    Meteor.microservice === 'admin' || permissions.canInviteCustomers ? (
+    Meteor.microservice === 'admin' ? (
       <ConfirmMethod
         method={() => removeUserFromPromotion.run({ promotionId, loanId })}
         label={<T id="general.remove" />}

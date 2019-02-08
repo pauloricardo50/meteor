@@ -101,6 +101,19 @@ class PromotionSecurity {
       userId,
     });
   }
+
+  static isAllowedToViewPromotion({ promotionId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const promotion = PromotionService.safeGet(promotionId);
+    Security.hasPermissionOnDoc({
+      doc: promotion,
+      permissions: { canViewPromotion: true },
+      userId,
+    });
+  }
 }
 
 export default PromotionSecurity;
