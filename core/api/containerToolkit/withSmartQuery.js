@@ -64,17 +64,18 @@ const withGlobalQueryManager = (
   { reactive },
   refetchOnMethodCall,
 ) => {
-  const shouldActivateGlobalRefetch = refetchOnMethodCall && !reactive && window;
+  const shouldActivateGlobalRefetch = refetchOnMethodCall && !reactive && global.window;
+
+  if (!shouldActivateGlobalRefetch) {
+    return x => x;
+  }
+
   return lifecycle({
     componentDidMount() {
-      if (shouldActivateGlobalRefetch) {
-        addQueryToRefetch(queryName, refetchOnMethodCall);
-      }
+      addQueryToRefetch(queryName, refetchOnMethodCall);
     },
     componentWillUnmount() {
-      if (shouldActivateGlobalRefetch) {
-        removeQueryToRefetch(queryName);
-      }
+      removeQueryToRefetch(queryName);
     },
   });
 };
@@ -115,10 +116,7 @@ const withSmartQuery = ({
 
   return compose(
     withGlobalQueryManager(query, queryOptions, refetchOnMethodCall),
-    withQuery(completeQuery, {
-      loadOnRefetch: false,
-      ...queryOptions,
-    }),
+    withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
     withLoading(smallLoader),
     makeRenderMissingDocIfNoData(renderMissingDoc, queryOptions),
     makeMapProps(dataName),
