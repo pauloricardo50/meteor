@@ -25,15 +25,19 @@ export const PROMOTION_QUERIES = {
   PROMOTION_SEARCH: 'PROMOTION_SEARCH',
 };
 
+export const PROMOTION_INVITED_BY = {
+  ANY: 'ANY',
+  USER: 'USER',
+  ORGANISATION: 'ORGANISATION',
+};
+
 export const PROMOTION_PERMISSIONS = {
   DISPLAY_CUSTOMER_NAMES: {
     FOR_LOT_STATUS: {
       ...PROMOTION_LOT_STATUS,
     },
     INVITED_BY: {
-      ANY: 'ANY',
-      USER: 'USER',
-      ORGANISATION: 'ORGANISATION',
+      ...PROMOTION_INVITED_BY,
     },
   },
 };

@@ -114,6 +114,21 @@ class PromotionSecurity {
       userId,
     });
   }
+
+  static isAllowedToViewPromotionLot({ promotionLotId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const {
+      promotion: { _id: promotionId },
+    } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
+
+    return this.isAllowedToViewPromotion({ promotionId, userId });
+  }
 }
 
 export default PromotionSecurity;

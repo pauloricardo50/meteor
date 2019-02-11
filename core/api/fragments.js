@@ -487,6 +487,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     reducedStatus: 1,
     status: 1,
     value: 1,
+    promotion: {_id: 1},
   },
   ...(withFilteredLoan
     ? {

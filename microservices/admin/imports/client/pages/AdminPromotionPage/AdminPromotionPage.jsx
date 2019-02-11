@@ -11,16 +11,16 @@ const AdminPromotionPage = ({
   promotion,
   currentUser,
 }: AdminPromotionPageProps) => (
-    <>
-      <PromotionUsersTable promotion={promotion} />
-      <PromotionPage
-        promotion={promotion}
-        currentUser={currentUser}
-        canModify
-        isAdmin
-        isPro
-      />
-    </>
+  <>
+    <PromotionUsersTable promotion={promotion} />
+    <PromotionPage
+      promotion={promotion}
+      currentUser={currentUser}
+      canModify
+      isAdmin
+      isPro
+    />
+  </>
 );
 
 export default AdminPromotionPageContainer(AdminPromotionPage);

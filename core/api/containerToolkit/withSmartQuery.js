@@ -18,8 +18,9 @@ const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
     renderFunc = props =>
       render(props) && single && (!props.isLoading && !props.data);
   } else {
-    renderFunc = ({ isLoading, data }) =>
-      render && single && (!isLoading && !data);
+    renderFunc = ({ isLoading, data }) => {
+      return render && single && (!isLoading && !data);
+    };
   }
 
   return branch(renderFunc, renderComponent(MissingDoc));
