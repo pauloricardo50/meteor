@@ -564,6 +564,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
         </span>
       ),
       spacingTop: true,
+      spacing: true,
     },
     {
       label: 'Recap.total',
