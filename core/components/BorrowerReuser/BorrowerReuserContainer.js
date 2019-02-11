@@ -17,6 +17,8 @@ export default compose(
   lifecycle({
     componentDidMount() {
       const { fetchBorrowers } = this.props;
+      console.log('componentDidMount!!');
+
       fetchBorrowers();
     },
   }),

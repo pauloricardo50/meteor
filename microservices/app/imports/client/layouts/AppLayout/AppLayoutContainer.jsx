@@ -9,13 +9,12 @@ import userLoan from 'core/api/loans/queries/userLoan';
 import loanFiles from 'core/api/loans/queries/loanFiles';
 import appUser from 'core/api/users/queries/appUser';
 import currentInterestRates from 'core/api/interestRates/queries/currentInterestRates';
-
 import { mergeFilesIntoLoanStructure } from 'core/api/files/mergeFilesWithQuery';
 import getBaseRedirect, {
   isOnAllowedRoute,
   isLogin,
 } from 'core/utils/redirection';
-import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
+import withTranslationContext from 'core/components/Translation/withTranslationContext';
 
 const WITHOUT_LOAN = [
   '/profile',
@@ -62,9 +61,10 @@ const withUserLoan = withSmartQuery({
 
 const withInterestRates = withSmartQuery({
   query: currentInterestRates,
-  queryOptions: { reactive: false },
+  queryOptions: { reactive: false, shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   smallLoader: true,
+  refetchOnMethodCall: false,
 });
 
 const withRedirect = withProps(({ currentUser, history }) => {

@@ -87,10 +87,8 @@ Cypress.Commands.add(
 
 // Refetches all non-reactive queries, would require a refresh, so this speeds tests up
 Cypress.Commands.add('refetch', () => {
-  cy.window().then(({ activeQueries = [], ClientEventService }) => {
-    activeQueries.forEach((query) => {
-      ClientEventService.emit(query);
-    });
+  cy.window().then(({ refetchQueries }) => {
+    refetchQueries();
   });
 });
 

@@ -10,6 +10,10 @@ import {
 import { withLoading } from '../../components/Loading';
 import MissingDoc from '../../components/MissingDoc';
 import ClientEventService from '../events/ClientEventService';
+import {
+  addQueryToRefetch,
+  removeQueryToRefetch,
+} from '../methods/clientQueryManager';
 
 // render the missing doc component only when we want to
 const makeRenderMissingDocIfNoData = (render: boolean = false, { single }) => {
@@ -55,23 +59,26 @@ const withQueryRefetcher = ({ queryName }) =>
 // when the query disappears
 // These queries can then all be refreshed from `clientMethodsConfig`
 // every time a method is called
-const withGlobalQueryManager = ({ queryName }, { reactive }) =>
-  lifecycle({
+const withGlobalQueryManager = (
+  { queryName },
+  { reactive },
+  refetchOnMethodCall,
+) => {
+  const shouldActivateGlobalRefetch = refetchOnMethodCall && !reactive && global.window;
+
+  if (!shouldActivateGlobalRefetch) {
+    return x => x;
+  }
+
+  return lifecycle({
     componentDidMount() {
-      if (!reactive && window) {
-        if (!window.activeQueries) {
-          window.activeQueries = [queryName];
-        } else {
-          window.activeQueries = [...window.activeQueries, queryName];
-        }
-      }
+      addQueryToRefetch(queryName, refetchOnMethodCall);
     },
     componentWillUnmount() {
-      if (!reactive && window) {
-        window.activeQueries = window.activeQueries.filter(query => query !== queryName);
-      }
+      removeQueryToRefetch(queryName);
     },
   });
+};
 
 type withSmartQueryArgs = {
   query: () => mixed,
@@ -97,6 +104,7 @@ const withSmartQuery = ({
   // used to bypass the missing doc component
   renderMissingDoc = true,
   smallLoader = false,
+  refetchOnMethodCall = 'all',
 }: withSmartQueryArgs) => {
   let completeQuery;
 
@@ -107,12 +115,13 @@ const withSmartQuery = ({
   }
 
   return compose(
-    withGlobalQueryManager(query, queryOptions),
-    withQuery(completeQuery, { ...queryOptions, loadOnRefetch: false }),
+    withGlobalQueryManager(query, queryOptions, refetchOnMethodCall),
+    withQuery(completeQuery, { loadOnRefetch: false, ...queryOptions }),
     withLoading(smallLoader),
     makeRenderMissingDocIfNoData(renderMissingDoc, queryOptions),
     makeMapProps(dataName),
     withQueryRefetcher(query),
   );
 };
+
 export default withSmartQuery;

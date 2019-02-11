@@ -105,7 +105,8 @@ describe('NotaryFeesCalculator', () => {
       expect(fees.total).to.equal(55313.1);
     });
 
-    it('calculates fees for properties with landValue and constructionValue', () => {
+    it('calculates fees for properties with landValue and constructionValue, if it is a construction', () => {
+      loan.purchaseType = PURCHASE_TYPE.CONSTRUCTION;
       loan.structure.property.value = 0;
       loan.structure.property.totalValue = 1000000;
       loan.structure.property.landValue = 400000;

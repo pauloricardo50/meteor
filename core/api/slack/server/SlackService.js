@@ -181,7 +181,7 @@ export class SlackService {
     const loan = loanId && fullLoan.clone({ loanId }).fetchOne();
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
     const title = `${name} a uploadé ${fileName} dans ${docLabel}${loanNameEnd}`;
-    const link = `${Meteor.settings.public.subdomains.admin}/users/${
+    let link = `${Meteor.settings.public.subdomains.admin}/users/${
       currentUser._id
     }`;
     let message = '';
@@ -192,7 +192,7 @@ export class SlackService {
       const documentsProgress = Calculator.filesProgress({
         loan,
       }).percent;
-      
+
       const progressParts = [
         `Emprunteurs \`${percentFormatters.format(infoProgress)}%\``,
         `Documents: \`${percentFormatters.format(documentsProgress)}%\``,
@@ -205,6 +205,7 @@ export class SlackService {
       }
 
       message += `*Progrès:* ${progressParts.join(', ')}`;
+      link = `${Meteor.settings.public.subdomains.admin}/loans/${loan._id}`;
     }
 
     return this.notifyAssignee({ currentUser, message, title, link });

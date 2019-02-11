@@ -47,8 +47,8 @@ export const adminCreateUser = new Method({
   },
 });
 
-export const editUser = new Method({
-  name: 'editUser',
+export const updateUser = new Method({
+  name: 'updateUser',
   params: {
     userId: String,
     object: Object,
