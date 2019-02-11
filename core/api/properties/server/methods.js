@@ -48,6 +48,7 @@ evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {
 });
 
 propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) => {
+  context.unblock();
   SecurityService.properties.isAllowedToUpdate(propertyId);
   return PropertyService.propertyDataIsInvalid({
     propertyId,
