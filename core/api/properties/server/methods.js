@@ -43,6 +43,7 @@ pullPropertyValue.setHandler((context, { propertyId, object }) => {
 });
 
 evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {
+  context.unblock();
   SecurityService.properties.isAllowedToUpdate(propertyId);
   return PropertyService.evaluateProperty({ propertyId, loanResidenceType });
 });
