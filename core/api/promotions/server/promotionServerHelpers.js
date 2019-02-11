@@ -1,6 +1,9 @@
 import UserService from '../../users/server/UserService';
-import { PROMOTION_INVITED_BY } from '../promotionConstants';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
+import {
+  shouldAnonymize as clientShouldAnonymize,
+  getPromotionCustomerOwningGroup as clientGetPromotionCustomerOwningGroup,
+} from '../promotionClientHelpers';
 
 const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
@@ -52,34 +55,15 @@ const getPromotionCustomerOwningGroup = ({
   userId,
 }) => {
   const invitedBy = getCustomerInvitedBy({ customerId, promotionId });
-
-  // Is invited by nobody
-  if (!invitedBy) {
-    return null;
-  }
-
-  // Is invited by user
-  if (invitedBy === userId) {
-    return PROMOTION_INVITED_BY.USER;
-  }
-
   const { organisations = [] } = UserService.fetchOne({
     $filters: { _id: userId },
     organisations: { users: { _id: 1 } },
   });
 
-  const organisationUserIds = organisations.reduce(
-    (userIds, org) => [...userIds, ...org.users.map(({ _id }) => _id)],
-    [],
-  );
-
-  // Is invited by organisation
-  if (organisationUserIds.includes(invitedBy)) {
-    return PROMOTION_INVITED_BY.ORGANISATION;
-  }
-
-  // Is invited by someone else
-  return PROMOTION_INVITED_BY.ANY;
+  return clientGetPromotionCustomerOwningGroup({
+    invitedBy,
+    currentUser: { _id: userId, organisations },
+  });
 };
 
 const shouldAnonymize = ({
@@ -93,43 +77,15 @@ const shouldAnonymize = ({
     userId,
     promotionId,
   });
-  const {
-    canViewPromotion,
-    canSeeCustomers,
-    displayCustomerNames,
-  } = getUserPromotionPermissions({ userId, promotionId });
-
-  if (!canViewPromotion || !canSeeCustomers) {
-    return true;
-  }
+  const permissions = getUserPromotionPermissions({ userId, promotionId });
 
   const promotionLotStatus = promotionLotId && getPromotionLotStatus({ promotionLotId });
 
-  const shouldHideForLotStatus = !!promotionLotStatus
-    && !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
-
-  switch (customerOwningGroup) {
-  case PROMOTION_INVITED_BY.USER:
-    return (
-      shouldHideForLotStatus
-        || ![
-          PROMOTION_INVITED_BY.USER,
-          PROMOTION_INVITED_BY.ORGANISATION,
-        ].includes(displayCustomerNames.invitedBy)
-    );
-  case PROMOTION_INVITED_BY.ORGANISATION:
-    return (
-      shouldHideForLotStatus
-        || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY.ORGANISATION
-    );
-  case PROMOTION_INVITED_BY.ANY:
-    return (
-      shouldHideForLotStatus
-        || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY.ANY
-    );
-  default:
-    return true;
-  }
+  return clientShouldAnonymize({
+    customerOwningGroup,
+    permissions,
+    promotionLotStatus,
+  });
 };
 
 export const handleLoansAnonymization = ({
@@ -139,10 +95,11 @@ export const handleLoansAnonymization = ({
   promotionLotId,
 }) =>
   loans.map((loan) => {
-    const { user, ...rest } = loan;
+    const { user = {}, ...rest } = loan;
+    const { _id: customerId } = user;
     return {
       user: shouldAnonymize({
-        customerId: user._id,
+        customerId,
         userId,
         promotionId,
         promotionLotId,
@@ -167,6 +124,36 @@ export const handlePromotionLotsAnonymization = ({
     });
     return {
       attributedTo: loan,
+      ...rest,
+    };
+  });
+
+export const handlePromotionOptionsAnonymization = ({
+  promotionOptions = [],
+  userId,
+}) =>
+  promotionOptions.map((promotionOption) => {
+    const { loan, custom, ...rest } = promotionOption;
+    const {
+      promotionLots,
+      promotion: { _id: promotionId },
+    } = promotionOption;
+    const { _id: promotionLotId } = promotionLots[0];
+    return {
+      loan: handleLoansAnonymization({
+        loans: [loan],
+        userId,
+        promotionId,
+        promotionLotId,
+      })[0],
+      custom: shouldAnonymize({
+        customerId: loan.user._id,
+        userId,
+        promotionId,
+        promotionLotId,
+      })
+        ? ANONYMIZED_STRING
+        : custom,
       ...rest,
     };
   });

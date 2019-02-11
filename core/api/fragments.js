@@ -404,6 +404,8 @@ export const proPromotionOption = () => ({
   priority: 1,
   solvency: 1,
   updatedAt: 1,
+  promotion: { _id: 1 },
+  promotionLots: { _id: 1 },
 });
 
 export const appPromotionOption = () => ({
@@ -487,7 +489,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     reducedStatus: 1,
     status: 1,
     value: 1,
-    promotion: {_id: 1},
+    promotion: { _id: 1 },
   },
   ...(withFilteredLoan
     ? {
@@ -500,7 +502,10 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     : {}),
 });
 
-export const proPromotions = basePromotion;
+export const proPromotions = () => ({
+  ...basePromotion(),
+  promotionLots: { attributedTo: { user: { name: 1 } }, promotion: { _id: 1 } },
+});
 
 export const adminPromotions = proPromotion;
 

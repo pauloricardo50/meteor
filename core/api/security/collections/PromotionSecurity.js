@@ -127,7 +127,22 @@ class PromotionSecurity {
       promotion: { _id: 1 },
     });
 
-    return this.isAllowedToViewPromotion({ promotionId, userId });
+    this.isAllowedToViewPromotion({ promotionId, userId });
+  }
+
+  static isAllowedToViewPromotionOption({ promotionOptionId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const { promotionLots = [] } = PromotionOptionService.fetchOne({
+      $filters: { _id: promotionOptionId },
+      promotionLots: { _id: 1 },
+    });
+
+    promotionLots.forEach(({ _id: promotionLotId }) => {
+      this.isAllowedToViewPromotionLot({ promotionLotId, userId });
+    });
   }
 }
 

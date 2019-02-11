@@ -16,7 +16,7 @@ import { LOANS_COLLECTION } from '../../api/constants';
 import {
   shouldAnonymize,
   getCurrentUserPermissionsForPromotion,
-} from '../../api/promotions/helpers';
+} from '../../api/promotions/promotionClientHelpers';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
@@ -46,26 +46,26 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     currentUser,
   });
 
-  if (
-    shouldAnonymize({
-      currentUser,
-      promotionId,
-      invitedBy,
-      lotStatus,
-    })
-    && Meteor.microservice !== 'admin'
-  ) {
-    return [
-      <i key="name">Masqué</i>,
-      { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      <i key="phone">Masqué</i>,
-      <i key="email">Masqué</i>,
-      <i key="promotionProgress">Masqué</i>,
-      <i key="custom">Masqué</i>,
-      <i key="priorityOrder">Masqué</i>,
-      <span key="actions">-</span>,
-    ];
-  }
+  // if (
+  //   shouldAnonymize({
+  //     currentUser,
+  //     promotionId,
+  //     invitedBy,
+  //     lotStatus,
+  //   })
+  //   && Meteor.microservice !== 'admin'
+  // ) {
+  //   return [
+  //     <i key="name">Masqué</i>,
+  //     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+  //     <i key="phone">Masqué</i>,
+  //     <i key="email">Masqué</i>,
+  //     <i key="promotionProgress">Masqué</i>,
+  //     <i key="custom">Masqué</i>,
+  //     <i key="priorityOrder">Masqué</i>,
+  //     <span key="actions">-</span>,
+  //   ];
+  // }
 
   return [
     Meteor.microservice === 'admin'

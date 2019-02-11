@@ -24,7 +24,7 @@ query.resolve(({ userId, promotionId }) => {
   });
 
   try {
-    SecurityService.checkCurrentUserIsAdmin(userId);
+    SecurityService.checkCurrentUserIsAdmin();
     return [promotion];
   } catch (error) {
     const { promotionLots, ...rest } = promotion;
