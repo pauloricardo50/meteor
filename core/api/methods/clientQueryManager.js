@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import ClientEventService from '../events/ClientEventService';
 
 const isActive = () => !!global.window;
@@ -69,3 +70,7 @@ export const refetchQueries = (methodName) => {
     }
   }
 };
+
+if (Meteor.isAppTest && global.window) {
+  global.window.refetchQueries = refetchQueries;
+}
