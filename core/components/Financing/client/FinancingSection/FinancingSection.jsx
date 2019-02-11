@@ -5,13 +5,14 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { withStyles } from '@material-ui/core/styles';
 import { ScrollSyncPane } from 'react-scroll-sync';
-import { compose, withState } from 'recompose';
+import { compose, withState, lifecycle } from 'recompose';
 import cx from 'classnames';
 
 import T from '../../../Translation';
 import FinancingLabels from '../FinancingLabels';
 import { makeRenderDetail, makeRenderSummary } from './financingSectionHelpers';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
+import ClientEventService from '../../../../api/events/ClientEventService';
 
 type configArray = Array<{
   Component: React.Component,
@@ -70,6 +71,9 @@ const FinancingSection = ({
         CollapseProps={{ classes: { container, entered } }}
         expanded={expanded}
         onChange={() => changeExpanded(!expanded)}
+        onDoubleClick={() => {
+          ClientEventService.emit('expandAll', expanded);
+        }}
       >
         <ExpansionPanelSummary
           className="section-summary"
@@ -91,6 +95,18 @@ const FinancingSection = ({
 
 export default compose(
   withState('expanded', 'changeExpanded', true),
+  lifecycle({
+    componentDidMount() {
+      const { changeExpanded } = this.props;
+      ClientEventService.addListener('expandAll', current =>
+        changeExpanded(!current));
+    },
+    componentWillUnmount() {
+      const { changeExpanded } = this.props;
+      ClientEventService.removeListener('expandAll', current =>
+        changeExpanded(!current));
+    },
+  }),
   FinancingDataContainer,
   withStyles(styles),
 )(FinancingSection);
