@@ -55,6 +55,10 @@ export const shouldAnonymize = ({
   const shouldHideForLotStatus = !!promotionLotStatus
     && !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
 
+  if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY.ANY) {
+    return shouldHideForLotStatus;
+  }
+
   switch (customerOwningGroup) {
   case PROMOTION_INVITED_BY.USER:
     return (
@@ -68,11 +72,6 @@ export const shouldAnonymize = ({
     return (
       shouldHideForLotStatus
         || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY.ORGANISATION
-    );
-  case PROMOTION_INVITED_BY.ANY:
-    return (
-      shouldHideForLotStatus
-        || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY.ANY
     );
   default:
     return true;

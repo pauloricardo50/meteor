@@ -49,6 +49,7 @@ const AdditionalLotModifier = ({
   currentPromotionLotId,
   updateAdditionalLot,
   deleteAdditionalLot,
+  canRemoveLots
 }: AdditionalLotModifierProps) => {
   const schema = AdditionalLotModifierSchema(promotionLots);
   const model = {
@@ -67,7 +68,7 @@ const AdditionalLotModifier = ({
         closeDialog,
         setDisableActions,
         disabled,
-      }) => (
+      }) => canRemoveLots && (
         <Button
           onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
           error

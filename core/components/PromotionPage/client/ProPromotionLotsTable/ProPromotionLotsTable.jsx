@@ -55,13 +55,13 @@ const ProPromotionLotsTable = ({
   columnOptions,
   addProperty,
   addLot,
-  canModify,
+  canAddLots,
 }: ProPromotionLotsTableProps) => (
   <>
     <h3 className="text-center">
       <T id="collections.lots" />
     </h3>
-    {canModify && (
+    {canAddLots && (
       <div className="promotion-table-actions">
         <AutoFormDialog
           title={<T id="PromotionPage.addProperty" />}

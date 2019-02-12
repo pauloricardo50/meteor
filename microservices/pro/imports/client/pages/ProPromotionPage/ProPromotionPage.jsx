@@ -11,22 +11,9 @@ import ProPromotionPageContainer from './ProPromotionPageContainer';
 
 type ProPromotionPageProps = {};
 
-const ProPromotionPage = ({
-  promotion,
-  currentUser,
-}: ProPromotionPageProps) => (
+const ProPromotionPage = (props: ProPromotionPageProps) => (
   <PromotionPage
-    promotion={promotion}
-    currentUser={currentUser}
-    canModifyPromotion={isAllowedToModifyPromotion({ promotion, currentUser })}
-    canInviteCustomers={isAllowedToInviteCustomersToPromotion({
-      promotion,
-      currentUser,
-    })}
-    canManageDocuments={isAllowedToManagePromotionDocuments({
-      promotion,
-      currentUser,
-    })}
+    {...props}
     // isPro
   />
 );

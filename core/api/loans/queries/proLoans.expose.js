@@ -9,7 +9,7 @@ query.expose({
     const { promotionId } = params;
     params.userId = userId;
     SecurityService.checkUserIsPro(userId);
-    SecurityService.promotions.isAllowedToViewPromotion({
+    SecurityService.promotions.isAllowedToView({
       userId,
       promotionId,
     });

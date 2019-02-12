@@ -38,13 +38,12 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  withProps(({ loans }) => {
-    console.log('loans:', loans)
+  withProps(({ loans, currentUser }) => {
     const promotion = loans
       && loans.length > 0
       && loans[0].promotions
       && loans[0].promotions.length > 0
       && loans[0].promotions[0];
-    return { canModify: promotion && isAllowedToModifyPromotion(promotion) };
+    return { canModify: promotion && isAllowedToModifyPromotion({promotion, currentUser}) };
   }),
 )(ProPromotionUsersPage);

@@ -14,7 +14,7 @@ import {
 const makeMapAdditionalLot = ({
   setAdditionalLotToModify,
   setShowDialog,
-  canModify,
+  canModifyLots,
 }) => (lot) => {
   const { _id, name, type, value, description, promotionLots, status } = lot;
   return {
@@ -39,7 +39,10 @@ const makeMapAdditionalLot = ({
       ),
     ],
     handleClick: () => {
-      if (canModify && (!status || status === PROMOTION_LOT_STATUS.AVAILABLE)) {
+      if (
+        canModifyLots
+        && (!status || status === PROMOTION_LOT_STATUS.AVAILABLE)
+      ) {
         setAdditionalLotToModify(lot);
         setShowDialog(true);
       }
@@ -78,14 +81,14 @@ export default compose(
     setAdditionalLotToModify,
     setShowTable,
     showTable,
-    canModify,
+    canModifyLots,
   }) => {
     const { lots = [] } = promotion;
     return {
       rows: lots.map(makeMapAdditionalLot({
         setAdditionalLotToModify,
         setShowDialog,
-        canModify,
+        canModifyLots,
       })),
       columnOptions,
       handleClick: () => {

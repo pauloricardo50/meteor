@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import MapWithMarkerWrapper from '../../maps/MapWithMarkerWrapper';
 import Button from '../../Button';
@@ -29,8 +30,6 @@ const PromotionPage = (props: PromotionPageProps) => {
     canSeeCustomers,
   } = props;
   const { residenceType } = loan;
-  const canModify = false;
-  const isPro = false;
 
   return (
     <div className="card1 promotion-page">
@@ -65,13 +64,13 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      {isPro && (
+      {Meteor.microservice !== 'app' && (
         <>
-          <ProPromotionLotsTable promotion={promotion} canModify={canModify} />
-          <AdditionalLotsTable promotion={promotion} canModify={canModify} />
+          <ProPromotionLotsTable {...props} />
+          <AdditionalLotsTable {...props} />
         </>
       )}
-      {!isPro && (
+      {Meteor.microservice === 'app' && (
         <div className="card1 residence-type-setter">
           {!residenceType && (
             <p>
@@ -85,10 +84,10 @@ const PromotionPage = (props: PromotionPageProps) => {
           />
         </div>
       )}
-      {!isPro && residenceType && (
+      {Meteor.microservice === 'app' && residenceType && (
         <UserPromotionOptionsTable promotion={promotion} loan={loan} />
       )}
-      {!isPro && residenceType && (
+      {Meteor.microservice === 'app' && residenceType && (
         <UserPromotionLotsTable promotion={promotion} loan={loan} />
       )}
     </div>

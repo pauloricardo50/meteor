@@ -10,12 +10,36 @@ import { DOCUMENT_USER_PERMISSIONS } from '../constants';
 import {
   isAllowedToInviteCustomersToPromotion,
   isAllowedToRemoveCustomerFromPromotion,
+  isAllowedToModifyPromotion,
+  isAllowedToManagePromotionDocuments,
+  isAllowedToAddLotsToPromotion,
+  isAllowedToModifyPromotionLots,
+  isAllowedToRemovePromotionLots,
+  isAllowedToViewPromotion,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
 import { getPromotionCustomerOwningGroup } from '../../promotions/server/promotionServerHelpers';
 import { proPromotion, proUser, proLoans } from '../../fragments';
 
 class PromotionSecurity {
+  static checkPermissions({ promotionId, userId, checkingFunction }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+    const promotion = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      ...proPromotion(),
+    });
+    const currentUser = UserService.fetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    if (!checkingFunction({ promotion, currentUser })) {
+      this.handleUnauthorized('Checking permissions');
+    }
+  }
+
   static isAllowedToInsert() {
     Security.checkLoggedIn();
   }
@@ -90,22 +114,52 @@ class PromotionSecurity {
     Security.checkCurrentUserIsAdmin();
   }
 
-  static isAllowedToModify(promotion) {
-    return (
-      [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.PREPARATION].includes(promotion.status) && Security.canModifyDoc(promotion)
-    );
+  static isAllowedToModify({ promotionId, userId }) {
+    this.checkPermissions({
+      promotionId,
+      userId,
+      checkingFunction: isAllowedToModifyPromotion,
+    });
+  }
+
+  static isAllowedToManageDocuments({ promotionId, userId }) {
+    this.checkPermissions({
+      promotionId,
+      userId,
+      checkingFunction: isAllowedToManagePromotionDocuments,
+    });
+  }
+
+  static isAllowedToAddLots({ promotionId, userId }) {
+    this.checkPermissions({
+      promotionId,
+      userId,
+      checkingFunction: isAllowedToAddLotsToPromotion,
+    });
+  }
+
+  static isAllowedToModifyLots({ promotionId, userId }) {
+    this.checkPermissions({
+      promotionId,
+      userId,
+      checkingFunction: isAllowedToModifyPromotionLots,
+    });
+  }
+
+  static isAllowedToRemoveLots({ promotionId, userId }) {
+    this.checkPermissions({
+      promotionId,
+      userId,
+      checkingFunction: isAllowedToRemovePromotionLots,
+    });
   }
 
   static isAllowedToInviteCustomers({ promotionId, userId }) {
-    if (Security.currentUserIsAdmin()) {
-      return;
-    }
-
-    const promotion = PromotionService.safeGet(promotionId);
-    const currentUser = UserService.safeGet(userId);
-    if (!isAllowedToInviteCustomersToPromotion({ promotion, currentUser })) {
-      this.handleUnauthorized('Checking permissions');
-    }
+    this.checkPermissions({
+      promotionId,
+      userId,
+      checkingFunction: isAllowedToInviteCustomersToPromotion,
+    });
   }
 
   static isAllowedToRemoveCustomer({ promotionId, loanId, userId }) {
@@ -144,16 +198,11 @@ class PromotionSecurity {
     }
   }
 
-  static isAllowedToViewPromotion({ promotionId, userId }) {
-    if (Security.currentUserIsAdmin()) {
-      return;
-    }
-
-    const promotion = PromotionService.safeGet(promotionId);
-    Security.hasPermissionOnDoc({
-      doc: promotion,
-      permissions: { canViewPromotion: true },
+  static isAllowedToView({ promotionId, userId }) {
+    this.checkPermissions({
+      promotionId,
       userId,
+      checkingFunction: isAllowedToViewPromotion,
     });
   }
 
@@ -169,7 +218,7 @@ class PromotionSecurity {
       promotion: { _id: 1 },
     });
 
-    this.isAllowedToViewPromotion({ promotionId, userId });
+    this.isAllowedToView({ promotionId, userId });
   }
 
   static isAllowedToViewPromotionOption({ promotionOptionId, userId }) {

@@ -20,6 +20,9 @@ const AdminPromotionPage = ({
       canInviteCustomers
       canManageDocuments
       canSeeCustomers
+      canAddLots
+      canModifyLots
+      canRemoveLots
     />
   </>
 );
