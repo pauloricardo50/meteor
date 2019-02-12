@@ -12,6 +12,11 @@ export const getMatchingRules = (lenderRules, variables) =>
 export const isAllRule = ({ filter: { and } }) => and[0] === true;
 
 export const parseFilter = (ruleObject) => {
+  if (ruleObject === true) {
+    // Handle exception for rules that are true
+    return { value: true };
+  }
+
   const [operator] = Object.keys(ruleObject);
   const { var: variable } = ruleObject[operator].find(o => o && o.var);
   const value = ruleObject[operator].find(o => !(o && o.var));

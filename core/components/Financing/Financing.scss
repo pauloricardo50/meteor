@@ -1,8 +1,10 @@
-@import './client/FinancingHeader/FinancingHeader.scss';
-@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
-@import './client/FinancingOffers/FinancingOffers.scss';
-@import './client/FinancingProject/FinancingProject.scss';
 @import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
+@import './client/FinancingHeader/FinancingHeader.scss';
+@import './client/FinancingLenders/FinancingLenders.scss';
+@import './client/FinancingOffers/FinancingOffers.scss';
+@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
+@import './client/FinancingProject/FinancingProject.scss';
+
 $labels-width: 180px;
 $structure-width: 320px;
 $item-height: 24px;

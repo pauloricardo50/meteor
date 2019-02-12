@@ -1,0 +1,20 @@
+.lender-list-item {
+  display: flex;
+  flex-direction: column;
+
+  &-data {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .percent {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

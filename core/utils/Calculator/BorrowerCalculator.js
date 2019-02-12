@@ -14,6 +14,7 @@ import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
 import { INCOME_CONSIDERATION_TYPES } from '../../api/constants';
+import { borrowerExtractorMiddleware } from './middleware';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -23,10 +24,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     initBorrowerCalculator(config) {
-      if (config && config.borrowerMiddleware) {
-        const middlewareManager = new MiddlewareManager(this);
-        middlewareManager.applyToAllMethods([config.borrowerMiddleware]);
-      }
+      const middleware = (config && config.borrowerMiddleware) || borrowerExtractorMiddleware;
+      const middlewareManager = new MiddlewareManager(this);
+      middlewareManager.applyToAllMethods([middleware]);
     }
 
     getArrayValues({ borrowers, key, mapFunc }) {

@@ -59,9 +59,9 @@ const FinancingSection = ({
   expanded,
   changeExpanded,
   noWrapper,
-  ...data
+  ...sectionProps
 }: FinancingSectionProps) => {
-  const { structures } = data;
+  const { structures } = sectionProps;
   const renderSummary = makeRenderSummary(summaryConfig);
   const renderDetail = makeRenderDetail(detailConfig, noWrapper);
   return (
@@ -81,12 +81,12 @@ const FinancingSection = ({
         >
           <FinancingLabels config={summaryConfig} className="summary-labels" />
 
-          {structures.map(structure => renderSummary(structure, data))}
+          {structures.map(structure => renderSummary(structure, sectionProps))}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="section-detail">
           <FinancingLabels config={detailConfig} />
 
-          {structures.map(structure => renderDetail(structure, data))}
+          {structures.map(structure => renderDetail(structure, sectionProps))}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </ScrollSyncPane>
@@ -94,7 +94,7 @@ const FinancingSection = ({
 };
 
 export default compose(
-  withState('expanded', 'changeExpanded', true),
+  withState('expanded', 'changeExpanded', false),
   lifecycle({
     componentDidMount() {
       const { changeExpanded } = this.props;
