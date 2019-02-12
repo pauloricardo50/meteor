@@ -10,5 +10,8 @@ export default Promotions.createQuery(PROMOTION_QUERIES.PRO_PROMOTION_USERS, {
     const { users = [] } = !!promotion.length && promotion[0];
     return users;
   },
-  users: { name: 1, organisations: { name: 1, users: { _id: 1 } } },
+  users: {
+    name: 1,
+    organisations: { name: 1, users: { _id: 1 } },
+  },
 });

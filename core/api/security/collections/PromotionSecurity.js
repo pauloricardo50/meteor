@@ -7,6 +7,13 @@ import { ROLES } from '../../users/userConstants';
 import Security from '../Security';
 import LoanSecurity from './LoanSecurity';
 import { DOCUMENT_USER_PERMISSIONS } from '../constants';
+import {
+  isAllowedToInviteCustomersToPromotion,
+  isAllowedToRemoveCustomerFromPromotion,
+} from '../clientSecurityHelpers';
+import LoanService from '../../loans/server/LoanService';
+import { getPromotionCustomerOwningGroup } from '../../promotions/server/promotionServerHelpers';
+import { proPromotion, proUser, proLoans } from '../../fragments';
 
 class PromotionSecurity {
   static isAllowedToInsert() {
@@ -95,11 +102,46 @@ class PromotionSecurity {
     }
 
     const promotion = PromotionService.safeGet(promotionId);
-    Security.hasPermissionOnDoc({
-      doc: promotion,
-      permissions: { canInviteCustomers: true },
-      userId,
+    const currentUser = UserService.safeGet(userId);
+    if (!isAllowedToInviteCustomersToPromotion({ promotion, currentUser })) {
+      this.handleUnauthorized('Checking permissions');
+    }
+  }
+
+  static isAllowedToRemoveCustomer({ promotionId, loanId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const promotion = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      ...proPromotion(),
     });
+    const currentUser = UserService.fetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      ...proLoans(),
+    });
+
+    const customerOwningGroup = getPromotionCustomerOwningGroup({
+      customerId: loan.user._id,
+      userId,
+      promotionId,
+    });
+
+    if (
+      !isAllowedToRemoveCustomerFromPromotion({
+        promotion,
+        currentUser,
+        customerOwningGroup,
+      })
+    ) {
+      this.handleUnauthorized('Checking permissions');
+    }
   }
 
   static isAllowedToViewPromotion({ promotionId, userId }) {

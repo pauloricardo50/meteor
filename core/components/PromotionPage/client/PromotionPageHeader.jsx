@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
@@ -11,8 +12,7 @@ type PromotionPageHeaderProps = {};
 
 const PromotionPageHeader = ({
   promotion,
-  canModify,
-  isAdmin,
+  canModifyPromotion,
 }: PromotionPageHeaderProps) => {
   const {
     _id: promotionId,
@@ -35,11 +35,11 @@ const PromotionPageHeader = ({
               <StatusLabel
                 status={status}
                 collection={PROMOTIONS_COLLECTION}
-                allowModify={isAdmin}
+                allowModify={Meteor.microservice === 'admin'}
                 docId={promotionId}
               />
             )}
-            {canModify && <PromotionModifier promotion={promotion} />}
+            {canModifyPromotion && <PromotionModifier promotion={promotion} />}
           </h1>
           <h3 className="secondary">
             <T
@@ -47,7 +47,9 @@ const PromotionPageHeader = ({
               values={{ promotionLotCount: promotionLots.length }}
             />
           </h3>
-          {isAdmin && <PromotionAssignee promotion={promotion} />}
+          {Meteor.microservice === 'admin' && (
+            <PromotionAssignee promotion={promotion} />
+          )}
         </div>
 
         {logos.length > 0 ? (

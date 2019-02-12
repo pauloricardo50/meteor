@@ -94,28 +94,19 @@ export default class Security {
     }
   }
 
-  // static hasPermissionOnDoc(doc, permissions, userId) {
-  //   const { userLinks = [] } = doc;
-  //   const userLink = userLinks.find(({ _id }) => _id === userId);
-
-  //   if (!userLink) {
-  //     this.handleUnauthorized('Checking permissions');
-  //   }
-
-  //   if (!permissions.includes(userLink.permissions)) {
-  //     this.handleUnauthorized('Checking permissions');
-  //   }
-  // }
 
   static hasPermissionOnDoc({ doc, permissions, userId }) {
     const { userLinks = [] } = doc;
-    const userLink = userLinks.find(({ _id }) => _id === userId);
+    const { users = [] } = doc;
 
-    if (!userLink) {
+    const user = userLinks.find(({ _id }) => _id === userId)
+      || users.find(({ _id }) => _id === userId);
+
+    if (!user) {
       this.handleUnauthorized('Checking permissions');
     }
 
-    const userPermissions = userLink.permissions;
+    const userPermissions = user.permissions || user.$metadata.permissions;
 
     if (
       !Object.keys(flattenObject(permissions)).every((permission) => {

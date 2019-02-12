@@ -16,9 +16,10 @@ const AdminPromotionPage = ({
     <PromotionPage
       promotion={promotion}
       currentUser={currentUser}
-      canModify
-      isAdmin
-      isPro
+      canModifyPromotion
+      canInviteCustomers
+      canManageDocuments
+      canSeeCustomers
     />
   </>
 );

@@ -12,6 +12,12 @@ import PriorityOrder from '../PromotionLotPage/PriorityOrder';
 import { createRoute } from '../../utils/routerUtils';
 import PromotionProgressHeader from './PromotionProgressHeader';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
+import {
+  getPromotionCustomerOwningGroup,
+  getCurrentUserPermissionsForPromotion,
+  shouldAnonymize,
+} from '../../api/promotions/promotionClientHelpers';
+import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
 
 const columnOptions = [
   { id: 'name' },
@@ -26,6 +32,19 @@ const columnOptions = [
   id,
   label: label || <T id={`PromotionLotLoansTable.${id}`} />,
 }));
+
+const shouldRenderRemoveUserButton = ({ permissions, customerOwningGroup }) => {
+  if (Meteor.microservice === 'admin') {
+    return true;
+  }
+
+  return (
+    !shouldAnonymize({
+      customerOwningGroup,
+      permissions,
+    }) && permissions.canInviteCustomers
+  );
+};
 
 const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
   const {
@@ -42,6 +61,15 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
   const {
     $metadata: { invitedBy },
   } = promotion;
+
+  const customerOwningGroup = getPromotionCustomerOwningGroup({
+    invitedBy,
+    currentUser,
+  });
+  const permissions = getCurrentUserPermissionsForPromotion({
+    currentUser,
+    promotionId,
+  });
 
   const invitedByName = (invitedBy
       && promotionUsers
@@ -69,7 +97,7 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         />
       ),
     },
-    Meteor.microservice === 'admin' ? (
+    isAllowedToRemoveCustomerFromPromotion({promotion, currentUser, customerOwningGroup}) ? (
       <ConfirmMethod
         method={() => removeUserFromPromotion.run({ promotionId, loanId })}
         label={<T id="general.remove" />}

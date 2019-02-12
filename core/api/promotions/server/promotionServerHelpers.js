@@ -29,15 +29,16 @@ const getCustomerInvitedBy = ({ customerId, promotionId }) => {
   const { loans = [] } = UserService.fetchOne({
     $filters: { _id: customerId },
     loans: { promotions: { _id: 1 } },
-  });
+  }) || {};
 
-  const {
-    $metadata: { invitedBy },
-  } = loans
-    .reduce((promotions, loan) => [...promotions, ...loan.promotions], [])
-    .find(({ _id }) => _id === promotionId);
+  const { $metadata } = loans
+    .reduce((promotions, loan) => {
+      const { promotions: loanPromotions = [] } = loan;
+      return [...promotions, ...loanPromotions];
+    }, [])
+    .find(({ _id }) => _id === promotionId) || {};
 
-  return invitedBy;
+  return $metadata && $metadata.invitedBy;
 };
 
 const getPromotionLotStatus = ({ promotionLotId }) => {
@@ -49,7 +50,7 @@ const getPromotionLotStatus = ({ promotionLotId }) => {
   return status;
 };
 
-const getPromotionCustomerOwningGroup = ({
+export const getPromotionCustomerOwningGroup = ({
   customerId,
   promotionId,
   userId,

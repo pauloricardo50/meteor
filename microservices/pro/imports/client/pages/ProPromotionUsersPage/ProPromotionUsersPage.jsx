@@ -39,6 +39,7 @@ export default compose(
     dataName: 'loans',
   }),
   withProps(({ loans }) => {
+    console.log('loans:', loans)
     const promotion = loans
       && loans.length > 0
       && loans[0].promotions

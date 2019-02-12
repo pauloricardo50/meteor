@@ -19,27 +19,37 @@ import { COLLECTIONS } from '../../../api/constants';
 type PromotionPageProps = {};
 
 const PromotionPage = (props: PromotionPageProps) => {
-  const { promotion, currentUser, canModify, isPro, loan = {} } = props;
+  const {
+    promotion,
+    currentUser,
+    loan = {},
+    canModifyPromotion,
+    canInviteCustomers,
+    canManageDocuments,
+    canSeeCustomers,
+  } = props;
   const { residenceType } = loan;
+  const canModify = false;
+  const isPro = false;
 
   return (
     <div className="card1 promotion-page">
       <PromotionPageHeader {...props} />
       <div className="buttons flex center animated fadeIn delay-600">
-        {canModify && (
+        {canInviteCustomers && (
           <CustomerAdder
             promotion={promotion}
             promotionStatus={promotion.status}
           />
         )}
-        {canModify && (
+        {canManageDocuments && (
           <PromotionDocumentsManager
             promotion={promotion}
             currentUser={currentUser}
           />
         )}
-        {isPro && canModify && <EmailTester promotionId={promotion._id} />}
-        {isPro && (
+        {canInviteCustomers && <EmailTester promotionId={promotion._id} />}
+        {canSeeCustomers && (
           <Button link to={`/promotions/${promotion._id}/users`} raised primary>
             <T id="PromotionPage.users" />
           </Button>

@@ -67,6 +67,12 @@ sendPromotionInvitationEmail.setHandler(({ userId }, params) => {
 });
 
 removeUserFromPromotion.setHandler(({ userId }, params) => {
-  SecurityService.promotions.isAllowedToUpdate(params.promotionId, userId);
+  const { promotionId, loanId } = params;
+  // SecurityService.promotions.isAllowedToUpdate(params.promotionId, userId);
+  SecurityService.promotions.isAllowedToRemoveCustomer({
+    promotionId,
+    loanId,
+    userId,
+  });
   return PromotionService.removeUser(params);
 });
