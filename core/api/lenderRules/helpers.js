@@ -13,7 +13,7 @@ export const isAllRule = ({ filter: { and } }) => and[0] === true;
 
 export const parseFilter = (ruleObject) => {
   if (ruleObject === true) {
-    // Handle exception for rules that are true
+    // Handle exception for rules that are true, i.e. apply to all loans
     return { value: true };
   }
 
