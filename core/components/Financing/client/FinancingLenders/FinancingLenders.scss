@@ -2,6 +2,16 @@
   display: flex;
   flex-direction: column;
 
+  .title {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      color: #999;
+      margin-left: 4px;
+    }
+  }
+
   &-data {
     display: flex;
     flex-direction: column;
@@ -17,4 +27,8 @@
       align-items: center;
     }
   }
+}
+
+.lenders-header {
+  font-size: calc((16 / 14) * 1rem);
 }

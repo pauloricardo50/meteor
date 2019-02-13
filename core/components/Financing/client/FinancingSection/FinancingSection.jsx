@@ -71,13 +71,13 @@ const FinancingSection = ({
         CollapseProps={{ classes: { container, entered } }}
         expanded={expanded}
         onChange={() => changeExpanded(!expanded)}
-        onDoubleClick={() => {
-          ClientEventService.emit('expandAll', expanded);
-        }}
       >
         <ExpansionPanelSummary
           className="section-summary"
           classes={{ content, expanded: expandedClass }}
+          onDoubleClick={() => {
+            ClientEventService.emit('expandAll', expanded);
+          }}
         >
           <FinancingLabels config={summaryConfig} className="summary-labels" />
 

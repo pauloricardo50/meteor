@@ -1,10 +1,31 @@
 // @flow
 import React from 'react';
 
-type MyComponentProps = {};
+import { Calculator } from '../../../../utils/Calculator';
 
-const MyComponent = ({ lenders = [] }: MyComponentProps) => (
-  <div className="lenders">{lenders.length} Prêteurs intéressés</div>
-);
+type FinancingLendersHeaderProps = {};
 
-export default MyComponent;
+const FinancingLendersHeader = ({
+  organisations,
+  loan,
+  structureId,
+}: FinancingLendersHeaderProps) => {
+  const interestedLenders = organisations
+    .filter(({ lenderRules }) => lenderRules && lenderRules.length > 0)
+    .filter(({ lenderRules }) => {
+      const calc = new Calculator({ loan, structureId, lenderRules });
+      const incomeRatio = calc.getIncomeRatio({ loan, structureId });
+      const borrowRatio = calc.getBorrowRatio({ loan, structureId });
+
+      return (
+        incomeRatio <= calc.maxIncomeRatio && borrowRatio <= calc.maxBorrowRatio
+      );
+    });
+  return (
+    <div className="lenders lenders-header">
+      {interestedLenders.length} prêteurs intéressés
+    </div>
+  );
+};
+
+export default FinancingLendersHeader;
