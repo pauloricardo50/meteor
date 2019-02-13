@@ -49,16 +49,29 @@ removeLotLink.setHandler(({ userId }, params) => {
 });
 
 bookPromotionLot.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
+  const { promotionLotId, loanId } = params;
+  SecurityService.promotions.isAllowedToBookLotToCustomer({
+    promotionLotId,
+    loanId,
+    userId,
+  });
   return PromotionLotService.bookPromotionLot(params);
 });
 
 cancelPromotionLotBooking.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
+  const { promotionLotId } = params;
+  SecurityService.promotions.isAllowedToCancelLotBooking({
+    promotionLotId,
+    userId,
+  });
   return PromotionLotService.cancelPromotionLotBooking(params);
 });
 
 sellPromotionLot.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
+  const { promotionLotId } = params;
+  SecurityService.promotions.isAllowedToSellLotToCustomer({
+    promotionLotId,
+    userId,
+  });
   return PromotionLotService.sellPromotionLot(params);
 });

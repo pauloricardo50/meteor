@@ -153,3 +153,63 @@ export const isAllowedToRemovePromotionLots = ({ promotion, currentUser }) => {
 
   return checkPromotionPermissions({ promotion, userId, permissions });
 };
+
+export const isAllowedToBookPromotionLots = ({ promotion, currentUser }) => {
+  const { _id: userId } = currentUser;
+  const permissions = {
+    canViewPromotion: true,
+    canBookLots: true,
+  };
+
+  return checkPromotionPermissions({ promotion, userId, permissions });
+};
+
+export const isAllowedToBookPromotionLotToCustomer = ({
+  promotion,
+  currentUser,
+  customerOwningGroup,
+}) => {
+  const { _id: userId } = currentUser;
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+  const { _id: promotionId } = promotion;
+  const permissions = getCurrentUserPermissionsForPromotion({
+    currentUser,
+    promotionId,
+  });
+  return (
+    isAllowedToBookPromotionLots({ promotion, currentUser })
+    && !shouldAnonymize({ customerOwningGroup, permissions })
+  );
+};
+
+export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
+  const { _id: userId } = currentUser;
+  const permissions = {
+    canViewPromotion: true,
+    canSellLots: true,
+  };
+
+  return checkPromotionPermissions({ promotion, userId, permissions });
+};
+
+export const isAllowedToSellPromotionLotToCustomer = ({
+  promotion,
+  currentUser,
+  customerOwningGroup,
+}) => {
+  const { _id: userId } = currentUser;
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+  const { _id: promotionId } = promotion;
+  const permissions = getCurrentUserPermissionsForPromotion({
+    currentUser,
+    promotionId,
+  });
+  return (
+    isAllowedToSellPromotionLots({ promotion, currentUser })
+    && !shouldAnonymize({ customerOwningGroup, permissions })
+  );
+};

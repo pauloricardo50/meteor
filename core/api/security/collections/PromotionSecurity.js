@@ -16,6 +16,10 @@ import {
   isAllowedToModifyPromotionLots,
   isAllowedToRemovePromotionLots,
   isAllowedToViewPromotion,
+  isAllowedToBookPromotionLots,
+  isAllowedToBookPromotionLotToCustomer,
+  isAllowedToSellPromotionLots,
+  isAllowedToSellPromotionLotToCustomer,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
 import { getPromotionCustomerOwningGroup } from '../../promotions/server/promotionServerHelpers';
@@ -25,9 +29,15 @@ import {
   proLoans,
   proPromotionLot,
 } from '../../fragments';
+import LotService from '../../lots/server/LotService';
 
 class PromotionSecurity {
-  static checkPermissions({ promotionId, userId, checkingFunction }) {
+  static checkPermissions({
+    promotionId,
+    userId,
+    checkingFunction,
+    errorMessage,
+  }) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
@@ -41,7 +51,7 @@ class PromotionSecurity {
     });
 
     if (!checkingFunction({ promotion, currentUser })) {
-      Security.handleUnauthorized('Checking permissions');
+      Security.handleUnauthorized(errorMessage || 'Checking permissions');
     }
   }
 
@@ -124,6 +134,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToModifyPromotion,
+      errorMessage: 'Vous ne pouvez pas modifier cette promotion',
     });
   }
 
@@ -132,6 +143,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToManagePromotionDocuments,
+      errorMessage: 'Vous ne pouvez pas gérer les documents de cette promotion',
     });
   }
 
@@ -149,6 +161,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToAddLotsToPromotion,
+      errorMessage: 'Vous ne pouvez pas ajouter de lots à cette promotion',
     });
   }
 
@@ -157,6 +170,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToModifyPromotionLots,
+      errorMessage: 'Vous ne pouvez pas modifier les lots de cette promotion',
     });
   }
 
@@ -165,6 +179,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToRemovePromotionLots,
+      errorMessage: 'Vous ne pouvez pas supprimer les lots de cette promotion',
     });
   }
 
@@ -173,6 +188,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToInviteCustomersToPromotion,
+      errorMessage: 'Vous ne pouvez pas inviter des clients à cette promotion',
     });
   }
 
@@ -208,7 +224,7 @@ class PromotionSecurity {
         customerOwningGroup,
       })
     ) {
-      Security.handleUnauthorized('Checking permissions');
+      Security.handleUnauthorized('Vous ne pouvez pas supprimer ce client de cette promotion');
     }
   }
 
@@ -217,6 +233,7 @@ class PromotionSecurity {
       promotionId,
       userId,
       checkingFunction: isAllowedToViewPromotion,
+      errorMessage: "Vous n'avez pas accès à cette promotion",
     });
   }
 
@@ -266,6 +283,144 @@ class PromotionSecurity {
     });
 
     this.isAllowedToRemoveLots({ promotionId: promotion._id, userId });
+  }
+
+  static isAllowedToBookLots({ promotionLotId, userId }) {
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
+
+    this.checkPermissions({
+      promotionId: promotion._id,
+      userId,
+      checkingFunction: isAllowedToBookPromotionLots,
+      errorMessage: 'Vous ne pouvez pas réserver des lots dans cette promotion',
+    });
+  }
+
+  static isAllowedToBookLotToCustomer({ promotionLotId, loanId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1, users: { _id: 1 } },
+    });
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      ...proLoans(),
+    });
+
+    const customerOwningGroup = getPromotionCustomerOwningGroup({
+      customerId: loan.user._id,
+      userId,
+      promotionId: promotion._id,
+    });
+
+    const currentUser = UserService.fetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    if (
+      !isAllowedToBookPromotionLotToCustomer({
+        promotion,
+        currentUser,
+        customerOwningGroup,
+      })
+    ) {
+      Security.handleUnauthorized('Vous ne pouvez pas réserver de lot à ce client');
+    }
+  }
+
+  static isAllowedToCancelLotBooking({ promotionLotId, userId }) {
+    const { attributedTo } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      attributedTo: { _id: 1 },
+    });
+
+    this.isAllowedToBookLotToCustomer({
+      promotionLotId,
+      loanId: attributedTo._id,
+      userId,
+    });
+  }
+
+  static isAllowedToSellLots({ promotionLotId, userId }) {
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
+
+    this.checkPermissions({
+      promotionId: promotion._id,
+      userId,
+      checkingFunction: isAllowedToSellPromotionLots,
+      errorMessage: 'Vous ne pouvez pas vendre des lots dans cette promotion',
+    });
+  }
+
+  static isAllowedToSellLotToCustomer({ promotionLotId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1, users: { _id: 1 } },
+    });
+
+    const { attributedTo } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      attributedTo: { _id: 1 },
+    });
+
+    const loan = LoanService.fetchOne({
+      $filters: { _id: attributedTo._id },
+      ...proLoans(),
+    });
+
+    const customerOwningGroup = getPromotionCustomerOwningGroup({
+      customerId: loan.user._id,
+      userId,
+      promotionId: promotion._id,
+    });
+
+    const currentUser = UserService.fetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    if (
+      !isAllowedToSellPromotionLotToCustomer({
+        promotion,
+        currentUser,
+        customerOwningGroup,
+      })
+    ) {
+      Security.handleUnauthorized('Vous ne pouvez pas vendre de lot à ce client');
+    }
+  }
+
+  static isAllowedToModifyAdditionalLot({ lotId, userId }) {
+    const { promotions } = LotService.fetchOne({
+      $filters: { _id: lotId },
+      promotions: { _id: 1 },
+    });
+
+    this.isAllowedToModifyLots({ promotionId: promotions._id, userId });
+  }
+
+  static isAllowedToRemoveAdditionalLot({ lotId, userId }) {
+    const { promotions } = LotService.fetchOne({
+      $filters: { _id: lotId },
+      promotions: { _id: 1 },
+    });
+
+    this.isAllowedToRemoveLots({ promotionId: promotions._id, userId });
   }
 }
 

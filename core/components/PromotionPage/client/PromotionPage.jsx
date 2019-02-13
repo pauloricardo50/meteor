@@ -10,26 +10,30 @@ import ProPromotionLotsTable from './ProPromotionLotsTable';
 import PromotionDocumentsManager from './PromotionDocumentsManager';
 import PromotionPageDocuments from './PromotionPageDocuments';
 import AdditionalLotsTable from './AdditionalLotsTable';
-import UserPromotionLotsTable from './UserPromotionLotsTable';
-import UserPromotionOptionsTable from './UserPromotionOptionsTable';
 import CustomerAdder from './CustomerAdder';
 import EmailTester from './EmailTester';
-import UpdateField from '../../UpdateField';
-import { COLLECTIONS } from '../../../api/constants';
+import UserPromotionTables from './UserPromotionTables';
 
-type PromotionPageProps = {};
+type PromotionPageProps = {
+  promotion: Object,
+  currentUser: Object,
+  loan: Object,
+  canInviteCustomers: boolean,
+  canManageDocuments: boolean,
+  canSeeCustomers: boolean,
+};
 
 const PromotionPage = (props: PromotionPageProps) => {
   const {
     promotion,
     currentUser,
     loan = {},
-    canModifyPromotion,
     canInviteCustomers,
     canManageDocuments,
     canSeeCustomers,
   } = props;
-  const { residenceType } = loan;
+
+  const isApp = Meteor.microservice === 'app';
 
   return (
     <div className="card1 promotion-page">
@@ -64,32 +68,13 @@ const PromotionPage = (props: PromotionPageProps) => {
       />
 
       <PromotionPageDocuments promotion={promotion} />
-      {Meteor.microservice !== 'app' && (
+      {!isApp && (
         <>
           <ProPromotionLotsTable {...props} />
           <AdditionalLotsTable {...props} />
         </>
       )}
-      {Meteor.microservice === 'app' && (
-        <div className="card1 residence-type-setter">
-          {!residenceType && (
-            <p>
-              <T id="Forms.promotionPage.residenceTypeSetter.text" />
-            </p>
-          )}
-          <UpdateField
-            doc={loan}
-            fields={['residenceType']}
-            collection={COLLECTIONS.LOANS_COLLECTION}
-          />
-        </div>
-      )}
-      {Meteor.microservice === 'app' && residenceType && (
-        <UserPromotionOptionsTable promotion={promotion} loan={loan} />
-      )}
-      {Meteor.microservice === 'app' && residenceType && (
-        <UserPromotionLotsTable promotion={promotion} loan={loan} />
-      )}
+      {isApp && <UserPromotionTables loan={loan} promotion={promotion} />}
     </div>
   );
 };

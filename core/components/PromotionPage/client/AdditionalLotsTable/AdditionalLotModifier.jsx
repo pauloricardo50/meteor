@@ -49,7 +49,7 @@ const AdditionalLotModifier = ({
   currentPromotionLotId,
   updateAdditionalLot,
   deleteAdditionalLot,
-  canRemoveLots
+  canRemoveLots,
 }: AdditionalLotModifierProps) => {
   const schema = AdditionalLotModifierSchema(promotionLots);
   const model = {
@@ -64,19 +64,23 @@ const AdditionalLotModifier = ({
       open={open}
       setOpen={setOpen}
       submitting={submitting}
-      renderAdditionalActions={({
-        closeDialog,
-        setDisableActions,
-        disabled,
-      }) => canRemoveLots && (
-        <Button
-          onClick={() => deleteAdditionalLot(lot._id, closeDialog)}
-          error
-          disabled={submitting || disabled}
-        >
-          <T id="general.delete" />
-        </Button>
-      )}
+      renderAdditionalActions={({ closeDialog, setDisableActions, disabled }) =>
+        canRemoveLots && (
+          <Button
+            onClick={() =>
+              deleteAdditionalLot({
+                lotId: lot._id,
+                closeDialog,
+                setDisableActions,
+              })
+            }
+            error
+            disabled={submitting || disabled}
+          >
+            <T id="general.delete" />
+          </Button>
+        )
+      }
     />
   );
 };

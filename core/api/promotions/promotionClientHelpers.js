@@ -48,7 +48,7 @@ export const shouldAnonymize = ({
     displayCustomerNames,
   } = permissions;
 
-  if (!canViewPromotion || !canSeeCustomers) {
+  if (!canViewPromotion || !canSeeCustomers || !customerOwningGroup) {
     return true;
   }
 

@@ -16,6 +16,7 @@ import { LOANS_COLLECTION } from '../../api/constants';
 import {
   shouldAnonymize,
   getCurrentUserPermissionsForPromotion,
+  getPromotionCustomerOwningGroup,
 } from '../../api/promotions/promotionClientHelpers';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
@@ -40,6 +41,8 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
     $metadata: { invitedBy },
   } = promotion;
+
+  const customerOwningGroup = getPromotionCustomerOwningGroup({invitedBy, currentUser});
 
   const permissions = getCurrentUserPermissionsForPromotion({
     promotionId,
@@ -103,10 +106,11 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
       promotionLotStatus={lotStatus}
       attributedToId={attributedTo && attributedTo._id}
       userName={user && user.name}
-      lots={lots}
       solvency={solvency}
       promotionLotName={name}
-      permissions={permissions}
+      currentUser={currentUser}
+      promotion={promotion}
+      customerOwningGroup={customerOwningGroup}
       key="promotionLotAttributer"
     />,
   ];

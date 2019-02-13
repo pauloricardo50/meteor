@@ -10,15 +10,16 @@ import PromotionLotAttributerContent from './PromotionLotAttributerContent';
 
 const renderLotBooking = ({
   promotionLotStatus,
-  permissions,
   bookPromotionLot,
   promotionLotName,
   userName,
   solvency,
+  canBookLot,
+  isAdmin,
 }) => {
   if (
     promotionLotStatus === PROMOTION_LOT_STATUS.AVAILABLE
-    && (Meteor.microservice === 'admin' || permissions.canBookLots)
+    && (isAdmin || canBookLot)
   ) {
     return (
       <ConfirmMethod
@@ -28,7 +29,7 @@ const renderLotBooking = ({
           label: <T id="PromotionLotAttributer.book" />,
         }}
         method={bookPromotionLot}
-        disabled={Meteor.microservice !== 'admin' && !permissions.canBookLots}
+        disabled={!isAdmin && !canBookLot}
       >
         <PromotionLotAttributerContent
           promotionLotName={promotionLotName}
@@ -45,13 +46,14 @@ const renderLotSelling = ({
   promotionLotStatus,
   loanId,
   attributedToId,
-  permissions,
   sellPromotionLot,
+  canSellLot,
+  isAdmin,
 }) => {
   if (
     promotionLotStatus === PROMOTION_LOT_STATUS.BOOKED
     && loanId === attributedToId
-    && (Meteor.microservice === 'admin' || permissions.canSellLots)
+    && (isAdmin || canSellLot)
   ) {
     return (
       <ConfirmMethod
@@ -59,7 +61,7 @@ const renderLotSelling = ({
         key="sell"
         method={sellPromotionLot}
         label={<T id="PromotionLotAttributer.sell" />}
-        disabled={Meteor.microservice !== 'admin' && !permissions.canSellLots}
+        disabled={!isAdmin && !canSellLot}
       />
     );
   }
@@ -71,13 +73,14 @@ const renderCancelLotBooking = ({
   promotionLotStatus,
   loanId,
   attributedToId,
-  permissions,
   cancelPromotionLotBooking,
+  canBookLot,
+  isAdmin,
 }) => {
   if (
     promotionLotStatus === PROMOTION_LOT_STATUS.BOOKED
     && loanId === attributedToId
-    && (Meteor.microservice === 'admin' || permissions.canBookLots)
+    && (isAdmin || canBookLot)
   ) {
     return (
       <ConfirmMethod
@@ -85,7 +88,7 @@ const renderCancelLotBooking = ({
         key="cancel"
         method={cancelPromotionLotBooking}
         label={<T id="PromotionLotAttributer.cancelBooking" />}
-        disabled={Meteor.microservice !== 'admin' && !permissions.canBookLots}
+        disabled={!isAdmin && !canBookLot}
       />
     );
   }
@@ -93,52 +96,69 @@ const renderCancelLotBooking = ({
   return null;
 };
 
-type PromotionLotAttributerProps = {};
+type PromotionLotAttributerProps = {
+  bookPromotionLot: Function,
+  cancelPromotionLotBooking: Function,
+  sellPromotionLot: Function,
+  promotionLotStatus: String,
+  loanId: String,
+  attributedToId: String,
+  userName: String,
+  solvency: String,
+  promotionLotName: String,
+  canBookLot: boolean,
+  canSellLot: boolean,
+};
 
 const PromotionLotAttributer = ({
   bookPromotionLot,
   cancelPromotionLotBooking,
   sellPromotionLot,
-  isLoading,
   promotionLotStatus,
   loanId,
   attributedToId,
   userName,
-  lots,
   solvency,
   promotionLotName,
-  permissions = {},
-}: PromotionLotAttributerProps) => (
-  <div className="promotion-lot-attributer">
-    {renderLotBooking({
-      promotionLotStatus,
-      permissions,
-      bookPromotionLot,
-      promotionLotName,
-      userName,
-      solvency,
-    })}
-    {renderLotSelling({
-      promotionLotStatus,
-      loanId,
-      attributedToId,
-      permissions,
-      sellPromotionLot,
-    })}
-    {renderCancelLotBooking({
-      promotionLotStatus,
-      loanId,
-      attributedToId,
-      permissions,
-      cancelPromotionLotBooking,
-    })}
-    {promotionLotStatus === PROMOTION_LOT_STATUS.SOLD
-      && loanId === attributedToId && (
-      <span className="sold">
-        <T id="PromotionLotAttributer.sold" />
-      </span>
-    )}
-  </div>
-);
+  canBookLot,
+  canSellLot,
+}: PromotionLotAttributerProps) => {
+  const isAdmin = Meteor.microservice === 'admin';
+  return (
+    <div className="promotion-lot-attributer">
+      {renderLotBooking({
+        promotionLotStatus,
+        bookPromotionLot,
+        promotionLotName,
+        userName,
+        solvency,
+        canBookLot,
+        isAdmin,
+      })}
+      {renderLotSelling({
+        promotionLotStatus,
+        loanId,
+        attributedToId,
+        sellPromotionLot,
+        canSellLot,
+        isAdmin,
+      })}
+      {renderCancelLotBooking({
+        promotionLotStatus,
+        loanId,
+        attributedToId,
+        cancelPromotionLotBooking,
+        canBookLot,
+        isAdmin,
+      })}
+      {promotionLotStatus === PROMOTION_LOT_STATUS.SOLD
+        && loanId === attributedToId && (
+        <span className="sold">
+          <T id="PromotionLotAttributer.sold" />
+        </span>
+      )}
+    </div>
+  );
+};
 
 export default PromotionLotAttributerContainer(PromotionLotAttributer);
