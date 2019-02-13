@@ -101,9 +101,6 @@ Factory.define('offer', Offers, {
 Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
-  userLinks: [
-    { _id: 'userId', permissions: PROMOTION_PERMISSIONS_FULL_ACCESS },
-  ],
   promotionLotLinks: [{ _id: 'lotId' }],
 });
 

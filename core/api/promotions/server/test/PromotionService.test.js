@@ -17,7 +17,8 @@ import PromotionOptionService from '../../../promotionOptions/server/PromotionOp
 import LotService from '../../../lots/server/LotService';
 import PropertyService from '../../../properties/server/PropertyService';
 
-describe('PromotionService', () => {
+describe('PromotionService', function () {
+  this.timeout(10000);
   const checkEmails = () =>
     new Promise((resolve, reject) => {
       Meteor.call('getAllTestEmails', (err, emails) => {

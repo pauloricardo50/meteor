@@ -8,7 +8,6 @@ import { expect } from 'chai';
 import fetch from 'node-fetch';
 
 import {
-  DOCUMENT_USER_PERMISSIONS,
   PROMOTION_STATUS,
 } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
@@ -113,7 +112,7 @@ describe('REST: inviteUserToPromotion', () => {
         expectedResponse: {
           status: 500,
           message:
-            '[Could not find object with id "12345" in collection "promotions"]',
+            '[Could not find object with filters "{"_id":"12345"}" in collection "promotions"]',
         },
         id: '12345',
       }));
@@ -122,7 +121,7 @@ describe('REST: inviteUserToPromotion', () => {
       inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          message: 'Checking ownership [NOT_AUTHORIZED]',
+          message: 'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
           status: 500,
         },
       }));
@@ -139,7 +138,7 @@ describe('REST: inviteUserToPromotion', () => {
         userData: userToInvite,
         expectedResponse: {
           status: 500,
-          message: 'Checking permissions [NOT_AUTHORIZED]',
+          message: 'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });
@@ -158,7 +157,7 @@ describe('REST: inviteUserToPromotion', () => {
         expectedResponse: {
           status: 500,
           message:
-            "[Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.]",
+            "Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]",
         },
       });
     });

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import isObject from 'lodash/isObject';
 
 class CollectionService {
   constructor(collection) {
@@ -30,7 +31,7 @@ class CollectionService {
 
   safeGet(id) {
     const result = this.get(id);
-    
+
     if (!result) {
       throw new Meteor.Error(`Could not find object with id "${id}" in collection "${
         this.collection._name
@@ -54,6 +55,17 @@ class CollectionService {
 
   fetchOne(...args) {
     return this.createQuery(...args).fetchOne();
+  }
+
+  safeFetchOne(...args) {
+    const { $filters = {} } = args.find(arg => arg.$filters);
+    const result = this.fetchOne(...args);
+
+    if (!result) {
+      throw new Meteor.Error(`Could not find object with filters "${JSON.stringify($filters)}" in collection "${this.collection._name}"`);
+    }
+
+    return result;
   }
 
   fetch(...args) {

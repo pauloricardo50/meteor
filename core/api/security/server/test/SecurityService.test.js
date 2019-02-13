@@ -219,7 +219,7 @@ describe('Security service', () => {
           docId: promotionId,
           userId: proId,
           collection: COLLECTIONS.PROMOTIONS_COLLECTION,
-        })).to.throw('Checking permissions');
+        })).to.throw('Vous ne pouvez pas');
     });
 
     it('lets an admin modify promotion lot files', () => {
@@ -288,7 +288,7 @@ describe('Security service', () => {
           docId: propertyId,
           userId: proId,
           collection: COLLECTIONS.PROPERTIES_COLLECTION,
-        })).to.throw('Checking permissions');
+        })).to.throw('Vous ne pouvez pas');
     });
 
     it('lets a user modify loan files', () => {

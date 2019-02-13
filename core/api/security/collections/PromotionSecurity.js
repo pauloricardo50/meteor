@@ -34,11 +34,11 @@ class PromotionSecurity {
     if (Security.currentUserIsAdmin()) {
       return;
     }
-    const promotion = PromotionService.fetchOne({
+    const promotion = PromotionService.safeFetchOne({
       $filters: { _id: promotionId },
       ...proPromotion(),
     });
-    const currentUser = UserService.fetchOne({
+    const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
@@ -62,7 +62,7 @@ class PromotionSecurity {
   }
 
   static hasAccessToPromotionLot({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1 },
     });
@@ -75,7 +75,7 @@ class PromotionSecurity {
       return;
     }
 
-    const { loan, promotionLots } = PromotionOptionService.fetchOne({
+    const { loan, promotionLots } = PromotionOptionService.safeFetchOne({
       $filters: { _id: promotionOptionId },
       loan: { _id: 1, userId: 1 },
       promotionLots: { _id: 1 },
@@ -107,7 +107,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToManagePromotionLotDocuments({ propertyId, userId }) {
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { 'propertyLinks._id': propertyId },
       promotion: { _id: 1 },
     });
@@ -156,16 +156,16 @@ class PromotionSecurity {
       return;
     }
 
-    const promotion = PromotionService.fetchOne({
+    const promotion = PromotionService.safeFetchOne({
       $filters: { _id: promotionId },
       ...proPromotion(),
     });
-    const currentUser = UserService.fetchOne({
+    const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
 
-    const loan = LoanService.fetchOne({
+    const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
       ...proLoans(),
     });
@@ -203,7 +203,7 @@ class PromotionSecurity {
 
     const {
       promotion: { _id: promotionId },
-    } = PromotionLotService.fetchOne({
+    } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1 },
     });
@@ -216,7 +216,7 @@ class PromotionSecurity {
       return;
     }
 
-    const { promotionLots = [] } = PromotionOptionService.fetchOne({
+    const { promotionLots = [] } = PromotionOptionService.safeFetchOne({
       $filters: { _id: promotionOptionId },
       promotionLots: { _id: 1 },
     });
@@ -227,7 +227,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToModifyPromotionLot({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1 },
     });
@@ -236,7 +236,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToRemovePromotionLot({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1 },
     });
@@ -245,7 +245,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToBookLots({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1 },
     });
@@ -263,12 +263,12 @@ class PromotionSecurity {
       return;
     }
 
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1, users: { _id: 1 } },
     });
 
-    const loan = LoanService.fetchOne({
+    const loan = LoanService.safeFetchOne({
       $filters: { _id: loanId },
       ...proLoans(),
     });
@@ -279,7 +279,7 @@ class PromotionSecurity {
       promotionId: promotion._id,
     });
 
-    const currentUser = UserService.fetchOne({
+    const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
@@ -296,7 +296,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToCancelLotBooking({ promotionLotId, userId }) {
-    const { attributedTo } = PromotionLotService.fetchOne({
+    const { attributedTo } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       attributedTo: { _id: 1 },
     });
@@ -309,7 +309,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToSellLots({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1 },
     });
@@ -327,17 +327,17 @@ class PromotionSecurity {
       return;
     }
 
-    const { promotion } = PromotionLotService.fetchOne({
+    const { promotion } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1, users: { _id: 1 } },
     });
 
-    const { attributedTo } = PromotionLotService.fetchOne({
+    const { attributedTo } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       attributedTo: { _id: 1 },
     });
 
-    const loan = LoanService.fetchOne({
+    const loan = LoanService.safeFetchOne({
       $filters: { _id: attributedTo._id },
       ...proLoans(),
     });
@@ -348,7 +348,7 @@ class PromotionSecurity {
       promotionId: promotion._id,
     });
 
-    const currentUser = UserService.fetchOne({
+    const currentUser = UserService.safeFetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
@@ -365,7 +365,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToModifyAdditionalLot({ lotId, userId }) {
-    const { promotions } = LotService.fetchOne({
+    const { promotions } = LotService.safeFetchOne({
       $filters: { _id: lotId },
       promotions: { _id: 1 },
     });
@@ -374,7 +374,7 @@ class PromotionSecurity {
   }
 
   static isAllowedToRemoveAdditionalLot({ lotId, userId }) {
-    const { promotions } = LotService.fetchOne({
+    const { promotions } = LotService.safeFetchOne({
       $filters: { _id: lotId },
       promotions: { _id: 1 },
     });
