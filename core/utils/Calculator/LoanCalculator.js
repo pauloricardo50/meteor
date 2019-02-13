@@ -14,24 +14,35 @@ import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
-    getProjectValue({ loan }) {
-      const propertyValue = this.getPropertyValue({ loan });
+    getProjectValue({ loan, structureId }) {
+      const propertyValue = this.getPropertyValue({ loan, structureId });
       if (!propertyValue) {
         return 0;
       }
 
       const value = propertyValue
-        + (this.selectStructureKey({ loan, key: 'propertyWork' }) || 0)
-        + this.getFees({ loan }).total;
+        + (this.selectStructureKey({ loan, key: 'propertyWork', structureId })
+          || 0)
+        + this.getFees({ loan, structureId }).total;
 
       return value;
     }
 
-    getTotalUsed({ loan: { structure: { ownFunds = [] } = {} } }) {
+    getTotalUsed({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'ownFunds',
+      });
       return ownFunds.reduce((sum, { value }) => sum + value, 0);
     }
 
-    getTotalPledged({ loan: { structure: { ownFunds = [] } = {} } }) {
+    getTotalPledged({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'ownFunds',
+      });
       return ownFunds
         .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
@@ -71,9 +82,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return new NotaryFeesCalculator({ canton });
     }
 
-    getInterests({ loan, interestRates }) {
+    getInterests({ loan, interestRates, structureId }) {
       let finalInterestRates = interestRates || loan.currentInterestRates;
-      const offer = this.makeSelectStructureKey('offer')({ loan });
+      const offer = this.selectStructureKey({
+        loan,
+        key: 'offer',
+        structureId,
+      });
       if (offer) {
         finalInterestRates = offer;
       }
@@ -83,24 +98,28 @@ export const withLoanCalculator = (SuperClass = class {}) =>
           tranches: this.makeSelectStructureKey('loanTranches')({ loan }),
           interestRates: finalInterestRates,
         })
-          * this.selectLoanValue({ loan }))
+          * this.selectLoanValue({ loan, structureId }))
         / 12
       );
     }
 
-    getTheoreticalInterests({ loan }) {
+    getTheoreticalInterests({ loan, structureId }) {
       return (
-        (this.selectLoanValue({ loan }) * this.theoreticalInterestRate) / 12
+        (this.selectLoanValue({ loan, structureId })
+          * this.theoreticalInterestRate)
+        / 12
       );
     }
 
-    getTheoreticalMaintenance({ loan }) {
+    getTheoreticalMaintenance({ loan, structureId }) {
       return (
-        (this.getPropAndWork({ loan }) * this.theoreticalMaintenanceRate) / 12
+        (this.getPropAndWork({ loan, structureId })
+          * this.theoreticalMaintenanceRate)
+        / 12
       );
     }
 
-    getAmortization({ loan }) {
+    getAmortization({ loan, structureId }) {
       const {
         structure: { offer },
       } = loan;
@@ -113,8 +132,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         const amortization = (this.getAmortizationRate({
           loan,
           amortizationYears: offer.amortizationYears,
+          structureId,
         })
-            * this.selectLoanValue({ loan }))
+            * this.selectLoanValue({ loan, structureId }))
           / 12;
 
         this.amortizationGoal = oldAmortizationGoal;
@@ -123,40 +143,42 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }
 
       return (
-        (this.getAmortizationRate({ loan }) * this.selectLoanValue({ loan }))
+        (this.getAmortizationRate({ loan, structureId })
+          * this.selectLoanValue({ loan, structureId }))
         / 12
       );
     }
 
-    getAmortizationRate({ loan, amortizationYears }) {
+    getAmortizationRate({ loan, amortizationYears, structureId }) {
       const {
         structure: { wantedLoan, propertyWork },
       } = loan;
       return this.getAmortizationRateBase({
         borrowRatio:
-          wantedLoan / (this.getPropertyValue({ loan }) + propertyWork),
+          wantedLoan
+          / (this.getPropertyValue({ loan, structureId }) + propertyWork),
         amortizationYears,
       });
     }
 
-    getMonthly({ loan, interestRates }) {
+    getMonthly({ loan, interestRates, structureId }) {
       return (
-        this.getInterests({ loan, interestRates })
-        + this.getAmortization({ loan })
+        this.getInterests({ loan, interestRates, structureId })
+        + this.getAmortization({ loan, structureId })
       );
     }
 
-    getTheoreticalMonthly({ loan }) {
+    getTheoreticalMonthly({ loan, structureId }) {
       return (
-        this.getTheoreticalInterests({ loan })
-        + this.getAmortization({ loan })
-        + this.getTheoreticalMaintenance({ loan })
+        this.getTheoreticalInterests({ loan, structureId })
+        + this.getAmortization({ loan, structureId })
+        + this.getTheoreticalMaintenance({ loan, structureId })
       );
     }
 
-    getIncomeRatio({ loan }) {
+    getIncomeRatio({ loan, structureId }) {
       return (
-        this.getTheoreticalMonthly({ loan })
+        this.getTheoreticalMonthly({ loan, structureId })
         / (this.getTotalIncome({ borrowers: loan.borrowers }) / 12)
       );
     }
