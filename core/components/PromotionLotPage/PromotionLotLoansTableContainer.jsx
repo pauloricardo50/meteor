@@ -14,8 +14,6 @@ import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 import { LOANS_COLLECTION } from '../../api/constants';
 import {
-  shouldAnonymize,
-  getCurrentUserPermissionsForPromotion,
   getPromotionCustomerOwningGroup,
 } from '../../api/promotions/promotionClientHelpers';
 
@@ -27,9 +25,10 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     attributedTo,
     name,
   } = promotionLot;
-  const { loan, lots, custom, createdAt, solvency } = promotionOption;
+  const { loan, custom, createdAt, solvency } = promotionOption;
   const {
     _id: loanId,
+    name: loanName,
     user,
     promotionProgress,
     promotionOptions = [],
@@ -42,35 +41,13 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     $metadata: { invitedBy },
   } = promotion;
 
-  const customerOwningGroup = getPromotionCustomerOwningGroup({invitedBy, currentUser});
-
-  const permissions = getCurrentUserPermissionsForPromotion({
-    promotionId,
+  const customerOwningGroup = getPromotionCustomerOwningGroup({
+    invitedBy,
     currentUser,
   });
 
-  // if (
-  //   shouldAnonymize({
-  //     currentUser,
-  //     promotionId,
-  //     invitedBy,
-  //     lotStatus,
-  //   })
-  //   && Meteor.microservice !== 'admin'
-  // ) {
-  //   return [
-  //     <i key="name">Masqué</i>,
-  //     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-  //     <i key="phone">Masqué</i>,
-  //     <i key="email">Masqué</i>,
-  //     <i key="promotionProgress">Masqué</i>,
-  //     <i key="custom">Masqué</i>,
-  //     <i key="priorityOrder">Masqué</i>,
-  //     <span key="actions">-</span>,
-  //   ];
-  // }
-
   return [
+    loanName,
     Meteor.microservice === 'admin'
       ? user && (
         <CollectionIconLink
@@ -126,6 +103,7 @@ const makeMapOption = ({ promotionLot, currentUser }) => (promotionOption) => {
 };
 
 const columnOptions = [
+  { id: 'loanName' },
   { id: 'name' },
   { id: 'date' },
   { id: 'phone' },

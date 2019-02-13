@@ -393,6 +393,7 @@ export const proPromotionOption = () => ({
   createdAt: 1,
   custom: 1,
   loan: {
+    name: 1,
     solvency: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
     promotions: { _id: 1, users: { _id: 1 } },
