@@ -85,6 +85,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     applyRules(rules) {
       const rulesToApply = [
+        'allowPledge',
         'amortizationGoal',
         'amortizationYears',
         'bonusConsideration',

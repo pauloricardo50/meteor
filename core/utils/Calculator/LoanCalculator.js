@@ -197,22 +197,29 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getTotalFinancing({ loan }) {
+    getTotalFinancing({ loan, structureId }) {
       return (
-        this.selectStructureKey({ loan, key: 'wantedLoan' })
-        + this.getNonPledgedOwnFunds({ loan })
+        this.selectStructureKey({ loan, structureId, key: 'wantedLoan' })
+        + this.getNonPledgedOwnFunds({ loan, structureId })
       );
     }
 
-    getNonPledgedOwnFunds({ loan }) {
-      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+    getNonPledgedOwnFunds({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
         .reduce((sum, { value }) => sum + value, 0);
     }
 
-    getUsedFundsOfType({ loan, type, usageType }) {
-      const ownFunds = this.selectStructureKey({ loan, key: 'ownFunds' }) || [];
+    getPledgedOwnFunds({ loan, structureId }) {
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
+      return ownFunds
+        .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getUsedFundsOfType({ loan, type, usageType, structureId }) {
+      const ownFunds = this.selectStructureKey({ loan, structureId, key: 'ownFunds' }) || [];
       return ownFunds
         .filter(({ type: ownFundType }) => (type ? ownFundType === type : true))
         .filter(({ usageType: ownFundUsageType }) =>
@@ -274,6 +281,27 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const loanValue = this.selectLoanValue({ loan, structureId });
 
       return Math.max(0, loanValue - mortgageNoteValue);
+    }
+
+    structureIsValid({ loan, structureId }) {
+      const incomeRatio = this.getIncomeRatio({ loan, structureId });
+      const borrowRatio = this.getBorrowRatio({ loan, structureId });
+
+      if (
+        incomeRatio > this.maxIncomeRatio
+        || borrowRatio > this.maxBorrowRatio
+      ) {
+        return false;
+      }
+
+      if (
+        !this.allowPledge
+        && this.getPledgedOwnFunds({ loan, structureId }) > 0
+      ) {
+        return false;
+      }
+
+      return true;
     }
   };
 

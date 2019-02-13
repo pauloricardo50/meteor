@@ -46,6 +46,7 @@ export class FinanceCalculator {
   amortizationGoal: number;
 
   initFinanceCalculator({
+    allowPledge = true,
     amortizationBaseRate = DEFAULT_AMORTIZATION,
     amortizationGoal = AMORTIZATION_STOP,
     amortizationYears = AMORTIZATION_YEARS,
@@ -73,6 +74,7 @@ export class FinanceCalculator {
     middlewares = [],
     middlewareObject,
   } = {}) {
+    this.allowPledge = allowPledge;
     this.amortizationBaseRate = amortizationBaseRate;
     this.amortizationGoal = amortizationGoal;
     this.amortizationYears = amortizationYears;
