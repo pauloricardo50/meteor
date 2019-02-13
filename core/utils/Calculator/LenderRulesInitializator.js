@@ -22,7 +22,8 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         lenderRules,
       });
       this.applyRules(primaryRules);
-      const secondaryRules = this.getPrimaryLenderRules({
+
+      const secondaryRules = this.getSecondaryLenderRules({
         loan,
         structureId,
         lenderRules,
