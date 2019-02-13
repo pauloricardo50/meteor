@@ -14,12 +14,11 @@ import PromotionProgressHeader from './PromotionProgressHeader';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
 import {
   getPromotionCustomerOwningGroup,
-  getCurrentUserPermissionsForPromotion,
-  shouldAnonymize,
 } from '../../api/promotions/promotionClientHelpers';
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
 
 const columnOptions = [
+  { id: 'loanName'},
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -33,22 +32,10 @@ const columnOptions = [
   label: label || <T id={`PromotionLotLoansTable.${id}`} />,
 }));
 
-const shouldRenderRemoveUserButton = ({ permissions, customerOwningGroup }) => {
-  if (Meteor.microservice === 'admin') {
-    return true;
-  }
-
-  return (
-    !shouldAnonymize({
-      customerOwningGroup,
-      permissions,
-    }) && permissions.canInviteCustomers
-  );
-};
-
 const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
   const {
     _id: loanId,
+    name: loanName,
     user,
     promotionProgress,
     promotionOptions = [],
@@ -66,10 +53,6 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     invitedBy,
     currentUser,
   });
-  const permissions = getCurrentUserPermissionsForPromotion({
-    currentUser,
-    promotionId,
-  });
 
   const invitedByName = (invitedBy
       && promotionUsers
@@ -78,6 +61,7 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     || 'Personne';
 
   return [
+    loanName,
     user && user.name,
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
@@ -97,15 +81,19 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
         />
       ),
     },
-    isAllowedToRemoveCustomerFromPromotion({promotion, currentUser, customerOwningGroup}) ? (
+    isAllowedToRemoveCustomerFromPromotion({
+      promotion,
+      currentUser,
+      customerOwningGroup,
+    }) ? (
       <ConfirmMethod
-        method={() => removeUserFromPromotion.run({ promotionId, loanId })}
-        label={<T id="general.remove" />}
-        key="remove"
-      />
-    ) : (
-      <span key="actions">-</span>
-    ),
+          method={() => removeUserFromPromotion.run({ promotionId, loanId })}
+          label={<T id="general.remove" />}
+          key="remove"
+        />
+      ) : (
+        <span key="actions">-</span>
+      ),
   ];
 };
 
