@@ -11,23 +11,17 @@ import {
   isAllowedToSeePromotionCustomers,
   isAllowedToAddLotsToPromotion,
   isAllowedToModifyPromotionLots,
-  isAllowedToRemovePromotionLots
+  isAllowedToRemovePromotionLots,
 } from 'core/api/security/clientSecurityHelpers';
 
-const makePermissions = ({ currentUser, promotion }) => ({
-  canModifyPromotion: isAllowedToModifyPromotion({ promotion, currentUser }),
-  canInviteCustomers: isAllowedToInviteCustomersToPromotion({
-    promotion,
-    currentUser,
-  }),
-  canManageDocuments: isAllowedToManagePromotionDocuments({
-    promotion,
-    currentUser,
-  }),
-  canSeeCustomers: isAllowedToSeePromotionCustomers({ promotion, currentUser }),
-  canAddLots: isAllowedToAddLotsToPromotion({ promotion, currentUser }),
-  canModifyLots: isAllowedToModifyPromotionLots({promotion, currentUser}),
-  canRemoveLots: isAllowedToRemovePromotionLots({promotion, currentUser}),
+const makePermissions = props => ({
+  canModifyPromotion: isAllowedToModifyPromotion(props),
+  canInviteCustomers: isAllowedToInviteCustomersToPromotion(props),
+  canManageDocuments: isAllowedToManagePromotionDocuments(props),
+  canSeeCustomers: isAllowedToSeePromotionCustomers(props),
+  canAddLots: isAllowedToAddLotsToPromotion(props),
+  canModifyLots: isAllowedToModifyPromotionLots(props),
+  canRemoveLots: isAllowedToRemovePromotionLots(props),
 });
 
 export default compose(
@@ -43,7 +37,5 @@ export default compose(
     ({ promotion: { _id: promotionId } }) => ({ promotionId }),
     'promotion',
   ),
-  withProps(({ currentUser, promotion }) => ({
-    ...makePermissions({ currentUser, promotion }),
-  })),
+  withProps(makePermissions),
 );

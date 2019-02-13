@@ -2,16 +2,13 @@
 import React from 'react';
 
 import PromotionLotPage from 'core/components/PromotionLotPage';
-import { isAllowedToModifyPromotion } from 'core/api/security/clientSecurityHelpers';
 import ProPromotionLotPageContainer from './ProPromotionLotPageContainer';
 
 type ProPromotionLotPageProps = {};
 
-const ProPromotionLotPage = (props: ProPromotionLotPageProps) => (
-  <PromotionLotPage
-    {...props}
-    canModify={isAllowedToModifyPromotion(props.promotionLot.promotion)}
-  />
-);
+const ProPromotionLotPage = (props: ProPromotionLotPageProps) => {
+  console.log('props', props);
+  return <PromotionLotPage {...props} />;
+};
 
 export default ProPromotionLotPageContainer(ProPromotionLotPage);

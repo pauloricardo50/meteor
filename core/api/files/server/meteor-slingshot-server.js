@@ -44,9 +44,19 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
     } else if (collection === LOANS_COLLECTION) {
       SecurityService.loans.isAllowedToUpdate(docId);
     } else if (collection === PROPERTIES_COLLECTION) {
-      SecurityService.properties.isAllowedToUpdate(docId);
+      if (SecurityService.properties.isPromotionLot(docId)) {
+        SecurityService.promotions.isAllowedToManagePromotionLotDocuments({
+          propertyId: docId,
+          userId: this.userId,
+        });
+      } else {
+        SecurityService.properties.isAllowedToUpdate(docId);
+      }
     } else if (collection === PROMOTIONS_COLLECTION) {
-      SecurityService.promotions.isAllowedToUpdate(docId);
+      SecurityService.promotions.isAllowedToManageDocuments({
+        promotionId: docId,
+        userId: this.userId,
+      });
     } else {
       throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }

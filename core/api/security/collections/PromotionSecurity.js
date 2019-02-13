@@ -19,7 +19,12 @@ import {
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
 import { getPromotionCustomerOwningGroup } from '../../promotions/server/promotionServerHelpers';
-import { proPromotion, proUser, proLoans } from '../../fragments';
+import {
+  proPromotion,
+  proUser,
+  proLoans,
+  proPromotionLot,
+} from '../../fragments';
 
 class PromotionSecurity {
   static checkPermissions({ promotionId, userId, checkingFunction }) {
@@ -36,7 +41,7 @@ class PromotionSecurity {
     });
 
     if (!checkingFunction({ promotion, currentUser })) {
-      this.handleUnauthorized('Checking permissions');
+      Security.handleUnauthorized('Checking permissions');
     }
   }
 
@@ -130,6 +135,15 @@ class PromotionSecurity {
     });
   }
 
+  static isAllowedToManagePromotionLotDocuments({ propertyId, userId }) {
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { 'propertyLinks._id': propertyId },
+      promotion: { _id: 1 },
+    });
+
+    this.isAllowedToManageDocuments({ promotionId: promotion._id, userId });
+  }
+
   static isAllowedToAddLots({ promotionId, userId }) {
     this.checkPermissions({
       promotionId,
@@ -194,7 +208,7 @@ class PromotionSecurity {
         customerOwningGroup,
       })
     ) {
-      this.handleUnauthorized('Checking permissions');
+      Security.handleUnauthorized('Checking permissions');
     }
   }
 
@@ -234,6 +248,24 @@ class PromotionSecurity {
     promotionLots.forEach(({ _id: promotionLotId }) => {
       this.isAllowedToViewPromotionLot({ promotionLotId, userId });
     });
+  }
+
+  static isAllowedToModifyPromotionLot({ promotionLotId, userId }) {
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
+
+    this.isAllowedToModifyLots({ promotionId: promotion._id, userId });
+  }
+
+  static isAllowedToRemovePromotionLot({ promotionLotId, userId }) {
+    const { promotion } = PromotionLotService.fetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
+
+    this.isAllowedToRemoveLots({ promotionId: promotion._id, userId });
   }
 }
 

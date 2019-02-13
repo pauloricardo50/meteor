@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
@@ -21,7 +22,10 @@ const PromotionLotPage = ({
   promotionLot,
   currentUser,
   promotionId,
-  canModify,
+  canManageDocuments,
+  canSeeCustomers,
+  canModifyLots,
+  canRemoveLots,
   isAdmin,
 }: PromotionLotPageProps) => {
   const {
@@ -37,6 +41,7 @@ const PromotionLotPage = ({
   const { lots: allLots } = promotion;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
+  const canModify = true;
 
   return (
     <div>
@@ -55,14 +60,18 @@ const PromotionLotPage = ({
           <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>
         {description && <h3 className="secondary">{description}</h3>}
-        {canModify && (
+        {Meteor.microservice !== 'app' && (
           <div className="promotion-buttons">
-            <LotDocumentsManager
-              documents={documents}
-              property={properties[0]}
-              currentUser={currentUser}
-            />
-            <PromotionLotModifier promotionLot={promotionLot} />
+            {canManageDocuments && (
+              <LotDocumentsManager
+                documents={documents}
+                property={properties[0]}
+                currentUser={currentUser}
+              />
+            )}
+            {canModifyLots && (
+              <PromotionLotModifier promotionLot={promotionLot} />
+            )}
           </div>
         )}
 
