@@ -11,6 +11,7 @@ import { DOCUMENT_USER_PERMISSIONS } from '../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LoanService from '../../../loans/server/LoanService';
 
+
 describe('Collection Security', () => {
   describe('UserSecurity', () => {
     beforeEach(() => {
@@ -137,7 +138,7 @@ describe('Collection Security', () => {
     });
   });
 
-  describe('PromotionSecurity', () => {
+  describe.only('PromotionSecurity', () => {
     let userId;
     beforeEach(() => {
       resetDatabase();
@@ -153,41 +154,47 @@ describe('Collection Security', () => {
       }
     });
 
-    describe('isAllowedToUpdate', () => {
+    describe.only('isAllowedToModify', () => {
       it('throws if the user is not linked to this promotion', () => {
         userId = Factory.create('pro')._id;
         const promotionId = Factory.create('promotion')._id;
 
         expect(() =>
-          SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.throw(SECURITY_ERROR);
+          SecurityService.promotions.isAllowedToModify({ promotionId, userId })).to.throw(SECURITY_ERROR);
       });
 
-      it.skip('throws if the user is a PRO with READ on it', () => {
+      it.only('throws if the user is a PRO without permissions', () => {
+        userId = Factory.create('user')._id;
+        const promotionId = Factory.create('promotion')._id;
+
+        PromotionService.addLink({
+          id: promotionId,
+          linkName: 'users',
+          linkId: userId,
+          metadata: {
+            permissions: { canViewPromotion: true, canModifyPromotion: false },
+          },
+        });
+        SecurityService.promotions.isAllowedToModify({ promotionId, userId })
+
+        expect(() =>
+          SecurityService.promotions.isAllowedToModify({promotionId, userId})).to.throw(SECURITY_ERROR);
+      });
+
+      it('does not throw if the user is a PRO with MODIFY on it', () => {
         userId = Factory.create('pro')._id;
         const promotionId = Factory.create('promotion')._id;
         PromotionService.addLink({
           id: promotionId,
           linkName: 'users',
           linkId: userId,
-          metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
+          metadata: {
+            permissions: { canViewPromotion: true, canModifyPromotion: true },
+          },
         });
 
         expect(() =>
-          SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.throw(SECURITY_ERROR);
-      });
-
-      it.skip('does not throw if the user is a PRO with MODIFY on it', () => {
-        userId = Factory.create('pro')._id;
-        const promotionId = Factory.create('promotion')._id;
-        PromotionService.addLink({
-          id: promotionId,
-          linkName: 'users',
-          linkId: userId,
-          metadata: { permissions: DOCUMENT_USER_PERMISSIONS.MODIFY },
-        });
-
-        expect(() =>
-          SecurityService.promotions.isAllowedToUpdate(promotionId, userId)).to.not.throw();
+          SecurityService.promotions.isAllowedToModify({promotionId, userId})).to.not.throw();
       });
     });
 

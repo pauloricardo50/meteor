@@ -4,7 +4,7 @@ import { PROMOTION_STATUS } from '../promotionConstants';
 
 query.expose({
   firewall(userId, { promotionId }) {
-    SecurityService.promotions.isAllowedToRead(promotionId, userId);
+    SecurityService.promotions.hasAccessToPromotion({ promotionId, userId });
   },
   embody: {
     $filter({ filters, params }) {
