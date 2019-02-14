@@ -242,6 +242,40 @@ describe('LoanCalculator', () => {
         },
       })).to.equal(1000);
     });
+
+    it('calculates amortization with an overrideOffer if provided', () => {
+      expect(Calculator.getAmortization({
+        loan: {
+          structures: [
+            {
+              id: 'asdf',
+              wantedLoan: 640000,
+              propertyWork: 0,
+              propertyId: 'prop',
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1000000 }],
+        },
+        offerOverride: { amortizationGoal: 0.65 },
+        structureId: 'asdf',
+      })).to.equal(0);
+
+      expect(Calculator.getAmortization({
+        loan: {
+          structures: [
+            {
+              id: 'asdf',
+              wantedLoan: 650000,
+              propertyWork: 0,
+              propertyId: 'prop',
+            },
+          ],
+          properties: [{ _id: 'prop', value: 1000000 }],
+        },
+        offerOverride: { amortizationGoal: 0.5, amortizationYears: 10 },
+        structureId: 'asdf',
+      })).to.equal(1250);
+    });
   });
 
   describe('getMonthly', () => {
