@@ -348,6 +348,15 @@ export class LoanService extends CollectionService {
 
     return Promise.all(promises);
   }
+
+  updatePromotionInvitedBy({ loanId, promotionId, invitedBy }) {
+    this.updateLinkMetadata({
+      id: loanId,
+      linkName: 'promotions',
+      linkId: promotionId,
+      metadata: { invitedBy },
+    });
+  }
 }
 
 export default new LoanService({});

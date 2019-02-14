@@ -136,6 +136,24 @@ class CollectionService {
     }
   }
 
+  updateLinkMetadata({ id, linkName, linkId, metadata }) {
+    const linker = this.collection.getLink(id, linkName);
+    const {
+      linker: { strategy },
+    } = linker;
+
+    switch (strategy.split('-')[0]) {
+    case 'one':
+      linker.metadata(metadata);
+      return;
+    case 'many':
+      linker.metadata(linkId, metadata);
+      return;
+    default:
+      return null;
+    }
+  }
+
   getAssignedEmployee({ id }) {
     const { assignee } = this.collection
       .createQuery({ $filters: { _id: id }, assignee: 1 })

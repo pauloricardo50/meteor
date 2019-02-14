@@ -12,13 +12,12 @@ import PriorityOrder from '../PromotionLotPage/PriorityOrder';
 import { createRoute } from '../../utils/routerUtils';
 import PromotionProgressHeader from './PromotionProgressHeader';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
-import {
-  getPromotionCustomerOwningGroup,
-} from '../../api/promotions/promotionClientHelpers';
+import { getPromotionCustomerOwningGroup } from '../../api/promotions/promotionClientHelpers';
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
+import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 
 const columnOptions = [
-  { id: 'loanName'},
+  { id: 'loanName' },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -66,7 +65,17 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-    invitedByName,
+    Meteor.microservice === 'admin' ? (
+        <InvitedByAssignDropdown
+          promotionUsers={promotionUsers}
+          invitedBy={invitedBy}
+          invitedByName={invitedByName}
+          loanId={loanId}
+          promotionId={promotionId}
+        />
+    ) : (
+      invitedByName
+    ),
     {
       raw: promotionProgress.verificationStatus,
       label: <PromotionProgress promotionProgress={promotionProgress} />,
