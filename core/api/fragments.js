@@ -212,6 +212,7 @@ export const loan = () => ({
     address: 1,
     contacts: 1,
     type: 1,
+    users: { _id: 1, name: 1, email: 1, phoneNumber: 1 },
   },
   properties: { totalValue: 1, address1: 1 },
   propertyIds: 1,
@@ -247,6 +248,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         address: 1,
         status: 1,
         contacts: 1,
+        users: { _id: 1, name: 1, email: 1, phoneNumber: 1 },
         loans: {
           _id: 1,
           $filter({ filters, params: { loanId } }) {
@@ -516,7 +518,13 @@ export const basePromotion = () => ({
   status: 1,
   type: 1,
   updatedAt: 1,
-  users: { name: 1, email: 1, roles: 1, organisations: { name: 1 } },
+  users: {
+    name: 1,
+    email: 1,
+    roles: 1,
+    phoneNumber: 1,
+    organisations: { name: 1 },
+  },
   zipCode: 1,
 });
 

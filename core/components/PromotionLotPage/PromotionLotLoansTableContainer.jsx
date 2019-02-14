@@ -118,7 +118,7 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions, promotionLot, canModify, isAdmin, currentUser }) => ({
+  mapProps(({ promotionOptions = [], promotionLot, canModify, isAdmin, currentUser }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
     canModify,

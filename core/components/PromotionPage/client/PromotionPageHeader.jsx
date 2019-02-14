@@ -10,7 +10,21 @@ import PromotionAssignee from './PromotionAssignee';
 
 type PromotionPageHeaderProps = {};
 
+const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
+  if (!Object.keys(invitedByUser).length) {
+    return contacts;
+  }
+  const { email } = invitedByUser;
+
+  if (contacts.some(({ email: contactEmail }) => contactEmail === email)) {
+    return contacts;
+  }
+
+  return [...contacts, { ...invitedByUser, title: 'Courtier' }];
+};
+
 const PromotionPageHeader = ({
+  invitedByUser,
   promotion,
   canModifyPromotion,
 }: PromotionPageHeaderProps) => {
@@ -22,8 +36,11 @@ const PromotionPageHeader = ({
     documents,
     contacts = [],
   } = promotion;
+  const mergedContacts = mergeInvitedByWithContacts({
+    contacts,
+    invitedByUser,
+  });
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
-
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
@@ -72,17 +89,17 @@ const PromotionPageHeader = ({
         ) : (
           <div style={{ height: '150px' }} />
         )}
-        {contacts.length > 0 ? (
+        {mergedContacts.length > 0 ? (
           <div className="contacts animated fadeIn delay-400">
             <h3>
               <T
                 id="PromotionPageHeader.contacts"
-                values={{ multipleContacts: contacts.length > 1 }}
+                values={{ multipleContacts: mergedContacts.length > 1 }}
               />
             </h3>
 
             <div className="list">
-              {contacts.map(({ name: contactName, phoneNumber, title, email }) => (
+              {mergedContacts.map(({ name: contactName, phoneNumber, title, email }) => (
                 <div className="contact" key={email}>
                   <h4 className="name">{contactName}</h4>
                   <span className="title secondary">{title}</span>
