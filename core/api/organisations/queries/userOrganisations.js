@@ -3,7 +3,7 @@ import {
   ORGANISATION_FEATURES,
   ORGANISATION_QUERIES,
 } from '../organisationConstants';
-import { lenderOrganisation } from '../../fragments';
+import { userOrganisation } from '../../fragments';
 
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.USER_ORGANISATIONS,
@@ -12,6 +12,6 @@ export default Organisations.createQuery(
       filters.features = { $in: [ORGANISATION_FEATURES.LENDER] };
     },
     $options: { sort: { name: 1 } },
-    ...lenderOrganisation(),
+    ...userOrganisation(),
   },
 );

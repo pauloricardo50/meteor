@@ -366,7 +366,7 @@ export const fullOrganisation = () => ({
   offers: fullOffer(),
 });
 
-export const lenderOrganisation = () => ({
+export const userOrganisation = () => ({
   logo: 1,
   name: 1,
   lenderRules: lenderRules(),
