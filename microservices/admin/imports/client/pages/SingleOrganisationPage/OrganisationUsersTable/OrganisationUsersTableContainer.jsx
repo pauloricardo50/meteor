@@ -71,7 +71,7 @@ const makeMapUser = ({ history }) => (user) => {
 
 export default compose(
   withRouter,
-  withProps(({ organisation: { users = [] }, history }) => ({
+  withProps(({ users = [], history }) => ({
     rows: users.map(makeMapUser({ history })),
     columnOptions,
   })),

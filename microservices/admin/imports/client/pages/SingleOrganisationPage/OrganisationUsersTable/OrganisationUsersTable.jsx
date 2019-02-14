@@ -8,13 +8,12 @@ import OrganisationUserAdder from '../OrganisationUserAdder/OrganisationUserAdde
 type OrganisationUsersTableProps = {
   rows: Array<Object>,
   columnOptions: Array<Object>,
-  organisation: Object,
 };
 
 const OrganisationUsersTable = ({
   rows,
   columnOptions,
-  organisation,
+  ...organisation
 }: OrganisationUsersTableProps) => (
   <div>
     <OrganisationUserAdder organisation={organisation} />
