@@ -9,7 +9,6 @@ import ConfirmMethod from '../ConfirmMethod';
 import T from '../Translation';
 import PromotionProgress from '../PromotionLotPage/PromotionProgress';
 import PriorityOrder from '../PromotionLotPage/PriorityOrder';
-import { createRoute } from '../../utils/routerUtils';
 import PromotionProgressHeader from './PromotionProgressHeader';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
 import { getPromotionCustomerOwningGroup } from '../../api/promotions/promotionClientHelpers';
