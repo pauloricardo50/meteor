@@ -47,7 +47,13 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   });
 
   return [
-    loanName,
+    Meteor.microservice === 'admin' ? (
+      <CollectionIconLink
+        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+      />
+    ) : (
+        loanName
+      ),
     Meteor.microservice === 'admin'
       ? user && (
         <CollectionIconLink
