@@ -42,24 +42,28 @@ export const PropertySchema = new SimpleSchema({
     type: String,
     defaultValue: propertyConstants.PROPERTY_STATUS.FOR_SALE,
     allowedValues: Object.values(propertyConstants.PROPERTY_STATUS),
+    uniforms: { placeholder: null },
   },
   propertyType: {
     type: String,
     optional: true,
     defaultValue: propertyConstants.PROPERTY_TYPE.FLAT,
     allowedValues: Object.values(propertyConstants.PROPERTY_TYPE),
+    uniforms: { placeholder: null },
   },
   houseType: {
     type: String,
     optional: true,
     defaultValue: propertyConstants.HOUSE_TYPE.DETACHED,
     allowedValues: Object.values(propertyConstants.HOUSE_TYPE),
+    uniforms: { placeholder: null },
   },
   flatType: {
     type: String,
     optional: true,
     defaultValue: propertyConstants.FLAT_TYPE.SINGLE_FLOOR_APARTMENT,
     allowedValues: Object.values(propertyConstants.FLAT_TYPE),
+    uniforms: { placeholder: null },
   },
   investmentRent: {
     // Rent of property if investment

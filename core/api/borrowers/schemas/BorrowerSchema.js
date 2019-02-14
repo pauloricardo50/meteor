@@ -33,7 +33,11 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
     type: String,
     optional: true,
     allowedValues,
-    uniforms: { displayEmpty: false },
+    uniforms: {
+      displayEmpty: false,
+      intlId: `${name}.description`,
+      allowedValuesIntlId: name,
+    },
   },
 });
 
