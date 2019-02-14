@@ -106,6 +106,7 @@ const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   salary: moneyField,
+  netSalary: moneyField,
   bonusExists: {
     type: Boolean,
     defaultValue: false,

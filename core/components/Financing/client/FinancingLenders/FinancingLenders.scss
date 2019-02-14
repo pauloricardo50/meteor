@@ -1,0 +1,34 @@
+.lender-list-item {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      color: #999;
+      margin-left: 4px;
+    }
+  }
+
+  &-data {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .percent {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.lenders-header {
+  font-size: calc((16 / 14) * 1rem);
+}

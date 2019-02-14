@@ -6,17 +6,19 @@ export const withSelector = (SuperClass = class {}) =>
     selectProperty({ loan, structureId } = {}) {
       let propertyId = loan.structure && loan.structure.propertyId;
       let promotionOptionId = loan.structure && loan.structure.promotionOptionId;
+      const structure = this.selectStructure({ loan, structureId });
 
       if (!structureId) {
         return (
-          loan.structure.property
-          || this.formatPromotionOptionIntoProperty(loan.structure.promotionOption)
+          structure.property
+          || (structure.propertyId
+            && loan.properties.find(({ _id }) => _id === structure.propertyId))
+          || this.formatPromotionOptionIntoProperty(structure.promotionOption)
           || {}
         );
       }
 
       if (structureId) {
-        const structure = loan.structures.find(({ id }) => id === structureId);
         propertyId = structure.propertyId;
         promotionOptionId = structure.promotionOptionId;
       }
@@ -36,7 +38,10 @@ export const withSelector = (SuperClass = class {}) =>
       if (structureId) {
         return loan.structures.find(({ id }) => id === structureId);
       }
-      return loan.structure;
+      return (
+        loan.structure
+        || loan.structures.find(({ id }) => id === loan.selectedStructure)
+      );
     }
 
     makeSelectPropertyKey(key: string): Function {

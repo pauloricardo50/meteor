@@ -9,9 +9,7 @@ type OfferPickerProps = {};
 
 const OfferPicker = (props: OfferPickerProps) => (
   <div className="offerId">
-    <div className="flex center">
-      <OfferListDialog offers={props.offers} />
-    </div>
+    <OfferListDialog offers={props.offers} />
 
     <OfferPickerList {...props} />
   </div>

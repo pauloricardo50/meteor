@@ -330,7 +330,7 @@ export const fullOffer = () => ({
       borrowers: { name: 1 },
     },
     contact: { name: 1, email: 1 },
-    organisation: { name: 1 },
+    organisation: { name: 1, lenderRules: lenderRules() },
   },
   loanId: 1,
   maxAmount: 1,
@@ -365,6 +365,12 @@ export const fullOrganisation = () => ({
   lenderRules: lenderRules(),
   lenders: lender(),
   offers: fullOffer(),
+});
+
+export const userOrganisation = () => ({
+  logo: 1,
+  name: 1,
+  lenderRules: lenderRules(),
 });
 
 // //
