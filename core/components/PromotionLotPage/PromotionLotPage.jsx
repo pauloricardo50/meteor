@@ -18,6 +18,14 @@ import PromotionLotRecapTable from './PromotionLotRecapTable';
 
 type PromotionLotPageProps = {};
 
+const displayPromotionLotLoansTable = ({ canSeeCustomers }) => {
+  if (Meteor.microservice === 'pro') {
+    return canSeeCustomers;
+  }
+
+  return true;
+};
+
 const PromotionLotPage = ({
   promotionLot,
   currentUser,
@@ -91,13 +99,15 @@ const PromotionLotPage = ({
           files={documents && documents.promotionPropertyDocuments}
         />
 
-        <PromotionLotLoansTable
-          promotionOptions={promotionOptions}
-          promotionLot={promotionLot}
-          canModify={canModify}
-          isAdmin={isAdmin}
-          currentUser={currentUser}
-        />
+        {displayPromotionLotLoansTable({ canSeeCustomers }) && (
+          <PromotionLotLoansTable
+            promotionOptions={promotionOptions}
+            promotionLot={promotionLot}
+            canModify={canModify}
+            isAdmin={isAdmin}
+            currentUser={currentUser}
+          />
+        )}
       </div>
     </div>
   );

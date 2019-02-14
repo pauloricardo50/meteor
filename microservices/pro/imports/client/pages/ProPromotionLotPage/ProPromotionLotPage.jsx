@@ -6,9 +6,6 @@ import ProPromotionLotPageContainer from './ProPromotionLotPageContainer';
 
 type ProPromotionLotPageProps = {};
 
-const ProPromotionLotPage = (props: ProPromotionLotPageProps) => {
-  console.log('props', props);
-  return <PromotionLotPage {...props} />;
-};
+const ProPromotionLotPage = (props: ProPromotionLotPageProps) => <PromotionLotPage {...props} />;
 
 export default ProPromotionLotPageContainer(ProPromotionLotPage);
