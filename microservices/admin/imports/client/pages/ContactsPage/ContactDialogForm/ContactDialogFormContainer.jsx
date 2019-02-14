@@ -1,18 +1,18 @@
 import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import omit from 'lodash/omit';
+import { compose, withState, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
 import { address } from 'core/api/helpers/sharedSchemas';
-import { compose, withState, withProps } from 'recompose';
 import {
   contactInsert,
   contactUpdate,
   contactRemove,
   contactChangeOrganisations,
-} from 'imports/core/api/methods/index';
-import adminOrganisations from 'imports/core/api/organisations/queries/adminOrganisations';
-import T from 'imports/core/components/Translation';
+} from 'core/api/methods';
+import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
+import T from 'core/components/Translation';
 
 const schema = existingOrganisations =>
   new SimpleSchema({
@@ -22,10 +22,7 @@ const schema = existingOrganisations =>
     'organisations.$': Object,
     'organisations.$._id': {
       type: String,
-      optional: true,
-      defaultValue: null,
       customAllowedValues: { query: adminOrganisations },
-
       uniforms: {
         transform: ({ name }) => name,
         labelProps: { shrink: true },
@@ -93,10 +90,12 @@ const schema = existingOrganisations =>
 const changeOrganisations = ({ contactId, organisations, useSameAddress }) =>
   contactChangeOrganisations.run({
     contactId,
-    newOrganisations: organisations.map(({ _id, $metadata: metadata }) => ({
-      _id,
-      metadata: { ...metadata, useSameAddress: useSameAddress === _id },
-    })),
+    newOrganisations: organisations
+      .filter(({ _id }) => !!_id)
+      .map(({ _id, $metadata: metadata }) => ({
+        _id,
+        metadata: { ...metadata, useSameAddress: useSameAddress === _id },
+      })),
   });
 
 export default compose(

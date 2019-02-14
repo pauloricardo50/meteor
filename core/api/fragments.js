@@ -154,6 +154,41 @@ export const adminLender = () => ({
 });
 
 // //
+// // LenderRules fragments
+// //
+export const lenderRules = () => ({
+  adminComments: 1,
+  allowPledge: 1,
+  amortizationGoal: 1,
+  amortizationYears: 1,
+  bonusConsideration: 1,
+  bonusHistoryToConsider: 1,
+  companyIncomeConsideration: 1,
+  companyIncomeHistoryToConsider: 1,
+  createdAt: 1,
+  dividendsConsideration: 1,
+  dividendsHistoryToConsider: 1,
+  filter: 1,
+  fortuneReturnsRatio: 1,
+  incomeConsiderationType: 1,
+  investmentIncomeConsideration: 1,
+  maxBorrowRatio: 1,
+  maxIncomeRatio: 1,
+  maxIncomeRatioTight: 1,
+  minCash: 1,
+  name: 1,
+  otherExpensesConsiderationType: 1,
+  pdfComments: 1,
+  pensionIncomeConsideration: 1,
+  realEstateIncomeConsideration: 1,
+  realEstateIncomeConsiderationType: 1,
+  theoreticalInterestRate: 1,
+  theoreticalInterestRate2ndRank: 1,
+  theoreticalMaintenanceRate: 1,
+  updatedAt: 1,
+});
+
+// //
 // // Loan fragments
 // //
 export const loan = () => ({
@@ -163,6 +198,7 @@ export const loan = () => ({
   canton: 1,
   createdAt: 1,
   currentOwner: 1,
+  customName: 1,
   enableOffers: 1,
   futureOwner: 1,
   hasPromotion: 1,
@@ -175,6 +211,7 @@ export const loan = () => ({
     name: 1,
     address: 1,
     contacts: 1,
+    type: 1,
   },
   properties: { totalValue: 1, address1: 1 },
   propertyIds: 1,
@@ -293,6 +330,7 @@ export const fullOffer = () => ({
     loan: {
       name: 1,
       user: { name: 1, assignedEmployee: { email: 1, name: 1 } },
+      borrowers: { name: 1 },
     },
     contact: { name: 1, email: 1 },
     organisation: { name: 1 },
@@ -303,6 +341,7 @@ export const fullOffer = () => ({
   user: simpleUser(),
   createdAt: 1,
   withCounterparts: 1,
+  enableOffer: 1,
 });
 
 // //
@@ -327,6 +366,7 @@ export const baseOrganisation = () => ({
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
   contacts: contact(),
+  lenderRules: lenderRules(),
   lenders: lender(),
   offers: fullOffer(),
   users: organisationUser(),
@@ -690,6 +730,7 @@ export const organisationUser = () => ({
 export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  promotions: { name: 1, status: 1 },
 });
 
 export const fullUser = () => ({
@@ -708,10 +749,11 @@ export const appUser = () => ({
   assignedEmployee: simpleUser(),
   borrowers: { name: 1 },
   loans: {
-    borrowers: { _id: 1 },
+    borrowers: { _id: 1, name: 1 },
     logic: { step: 1 },
     name: 1,
     purchaseType: 1,
+    customName: 1,
   },
   properties: { _id: 1 },
 });

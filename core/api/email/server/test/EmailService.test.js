@@ -19,7 +19,9 @@ const checkEmails = () =>
     });
   });
 
-describe('EmailService', () => {
+describe('EmailService', function () {
+  this.timeout(10000);
+
   beforeEach(() => {
     resetDatabase();
   });

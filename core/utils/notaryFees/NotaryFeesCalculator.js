@@ -70,8 +70,9 @@ class NotaryFeesCalculator {
       loan,
       structureId,
     });
+    const shouldUseConstructionNotaryFees = Calculator.shouldUseConstructionNotaryFees({ loan, structureId });
 
-    if (hasDetailedValue) {
+    if (shouldUseConstructionNotaryFees && hasDetailedValue) {
       return this.buyersContractFeesConstruction({ loan, structureId });
     }
 

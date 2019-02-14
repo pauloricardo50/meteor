@@ -58,12 +58,11 @@ hr {
   box-shadow: $shadow-level-1;
 }
 
-.card1.card-top,
-.card1 .card-top {
+.card-top {
   padding: 16px;
 }
 
-.card1 .card-bottom {
+.card-bottom {
   flex-grow: 1;
 
   padding: 16px;
@@ -74,7 +73,7 @@ hr {
   background-color: #fafafa;
 }
 
-.card1.card-hover {
+.card-hover {
   transition: box-shadow 200ms $bezier;
 }
 

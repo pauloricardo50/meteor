@@ -25,7 +25,7 @@ export default (Component) => {
     }
 
     getAllowedValues = (props) => {
-      const { customAllowedValues, model } = props;
+      const { customAllowedValues, model, parent } = props;
       const { values } = this.state;
 
       if (customAllowedValues) {
@@ -34,7 +34,8 @@ export default (Component) => {
 
       if (customAllowedValues && typeof customAllowedValues === 'function') {
         Promise.resolve()
-          .then(() => customAllowedValues(model))
+          .then(() =>
+            customAllowedValues(model, parent && Number(parent.name.slice(-1))))
           .then(result => this.setState({ values: result }))
           .finally(() => this.setState({ loading: false }));
       } else if (

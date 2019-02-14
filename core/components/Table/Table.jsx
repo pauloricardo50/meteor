@@ -115,11 +115,12 @@ export default class Table extends Component {
     this.setState({ rowsPerPage: event.target.value });
 
   isSelected = (id) => {
-    if (this.props.multiSelectable) {
+    const { selected, multiSelectable } = this.props;
+    if (multiSelectable) {
       return this.state.selected.indexOf(id) !== -1;
     }
 
-    return this.props.selected === id;
+    return selected === id;
   };
 
   render() {

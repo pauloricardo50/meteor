@@ -2,6 +2,11 @@
 import React from 'react';
 import { Consumer } from './loan-context';
 
+const filterOffers = offers =>
+  (offers && !!offers.length
+    ? offers.filter(({ enableOffer = true }) => enableOffer)
+    : []);
+
 export default Component => props => (
   <Consumer>
     {loan => (
@@ -10,7 +15,7 @@ export default Component => props => (
         loan={loan}
         structures={loan.structures}
         borrowers={loan.borrowers}
-        offers={loan.offers}
+        offers={filterOffers(loan.offers)}
         properties={loan.properties}
         promotionOptions={loan.promotionOptions}
       />

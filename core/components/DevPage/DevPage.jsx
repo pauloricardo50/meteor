@@ -38,6 +38,7 @@ class DevPage extends Component {
       addLoanWithSomeData,
       purgeAndGenerateDatabase,
       migrateToLatest,
+      addCompleteLoan,
     } = this.props;
     const showDevStuff = !Meteor.isProduction || Meteor.isStaging;
 
@@ -145,7 +146,9 @@ class DevPage extends Component {
             raised
             secondary
             className="mr20"
-            onClick={() => addEmptyLoan(twoBorrowers, addOffers, isRefinancing)}
+            onClick={() =>
+              addEmptyLoan({ twoBorrowers, addOffers, isRefinancing })
+            }
           >
             Empty loan
           </Button>
@@ -154,10 +157,20 @@ class DevPage extends Component {
             secondary
             className="mr20"
             onClick={() =>
-              addLoanWithSomeData(twoBorrowers, addOffers, isRefinancing)
+              addLoanWithSomeData({ twoBorrowers, addOffers, isRefinancing })
             }
           >
             Loan with some data
+          </Button>
+          <Button
+            raised
+            secondary
+            className="mr20"
+            onClick={() =>
+              addCompleteLoan({ twoBorrowers, addOffers, isRefinancing })
+            }
+          >
+            Loan - complete
           </Button>
           <hr className="mbt20" />
           <Tooltip title="Insert task related to a random borrower">

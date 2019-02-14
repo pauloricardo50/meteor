@@ -7,3 +7,4 @@ import './loanWithName.expose';
 import './proLoans.expose';
 import './sideNavLoans.expose';
 import './userLoan.expose';
+import './fullLoan.expose';

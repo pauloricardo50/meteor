@@ -7,7 +7,7 @@ import adminOrganisations from 'core/api/organisations/queries/adminOrganisation
 import { withSmartQuery } from 'core/api';
 import {
   adminCreateUser,
-  editUser,
+  updateUser,
   userUpdateOrganisations,
 } from 'core/api/methods';
 import { ROLES } from 'core/api/users/userConstants';
@@ -83,7 +83,7 @@ export default compose(
       }),
     editUser: (data) => {
       const { organisations = [], ...object } = data;
-      return editUser
+      return updateUser
         .run({ userId: user._id, object })
         .then(() =>
           user.roles.includes(ROLES.PRO)

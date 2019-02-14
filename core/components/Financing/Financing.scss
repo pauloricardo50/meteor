@@ -71,6 +71,10 @@ $result-section-negative-offset: -32px;
     opacity: 0.5;
     color: initial;
   }
+
+  .offerId {
+    justify-content: flex-start !important;
+  }
 }
 
 .financing-structures-section {
@@ -84,8 +88,9 @@ $result-section-negative-offset: -32px;
   background-color: #f7fafb;
 
   &:not(.expanded):not(.financing-structures-header):hover {
-    background-color: #e9f1f4;
     cursor: pointer;
+
+    background-color: #e9f1f4;
 
     &.result-section {
       background-color: $primary-dark;
@@ -300,18 +305,6 @@ $result-section-negative-offset: -32px;
 
 $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
-.financing-structures-refresher {
-  position: fixed;
-  z-index: 500;
-  top: 136px;
-  right: 16px;
-
-  padding: 40px;
-
-  border-radius: 4px;
-  box-shadow: $shadow-level-2;
-}
-
 .own-funds-completer {
   position: relative;
 
@@ -329,44 +322,5 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
     flex-shrink: 1;
 
     width: calc(100% - 24px);
-  }
-}
-
-.top-off-icon {
-  position: relative;
-
-  display: flex;
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 0;
-
-  width: 16px;
-  height: 16px;
-  margin: 8px;
-  margin-left: 0;
-
-  cursor: not-allowed;
-
-  border-radius: 4px;
-  background-color: $light-grey;
-
-  &.active {
-    cursor: pointer;
-
-    background-color: $grey1;
-  }
-
-  .appear {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 16px;
-    height: 16px;
-
-    animation-duration: 300ms;
-
-    border-radius: 4px;
-    background-color: $primary;
   }
 }

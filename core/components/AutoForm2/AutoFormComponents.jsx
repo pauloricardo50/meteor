@@ -14,6 +14,7 @@ import CustomListField from './CustomListField';
 import CustomNestField from './CustomNestField';
 import { getLabel, getPlaceholder } from './autoFormHelpers';
 import MoneyInput from '../MoneyInput';
+import HtmlPreview from '../HtmlPreview';
 
 const determineComponentFromProps = ({
   allowedValues,
@@ -41,6 +42,13 @@ const determineComponentFromProps = ({
     };
   }
 
+  if (uniforms && uniforms.type === CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW) {
+    return {
+      Component: HtmlPreview,
+      type: COMPONENT_TYPES.HTML_PREVIEW,
+    };
+  }
+
   if (fieldType === Array) {
     return { Component: CustomListField, type: COMPONENT_TYPES.ARRAY };
   }
@@ -57,14 +65,16 @@ const determineComponentFromProps = ({
 };
 
 export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
-  const CustomAutoField = (props, context) => {
-    const {
+  const CustomAutoField = (
+    props,
+    {
       uniforms: {
         schema,
         model,
         state: { submitting },
       },
-    } = context;
+    },
+  ) => {
     const { condition, customAllowedValues, customAutoValue } = schema.getField(props.name);
 
     let {
@@ -93,7 +103,10 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
     });
     const placeholder = getPlaceholder({ ...props, intlPrefix, type });
 
-    if (typeof condition === 'function' && !condition(model)) {
+    if (
+      typeof condition === 'function'
+      && !condition(model, props.parent && Number(props.parent.name.slice(-1)))
+    ) {
       return nothing;
     }
 

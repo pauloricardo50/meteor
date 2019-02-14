@@ -31,3 +31,10 @@ export const downloadFile = new Method({
     key: String,
   },
 });
+
+export const getSignedUrl = new Method({
+  name: 'getSignedUrl',
+  params: {
+    key: String,
+  },
+});

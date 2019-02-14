@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
-import AutoFormDialog from 'imports/core/components/AutoForm2/AutoFormDialog';
-import T from 'core/components/Translation/';
+
+import { AutoFormDialog } from 'core/components/AutoForm2';
+import T from 'core/components/Translation';
 import ContactDialogFormContainer from './ContactDialogFormContainer';
 
 type InsertContactDialogFormProps = {

@@ -21,6 +21,10 @@ class CollectionService {
     return null;
   }
 
+  baseUpdate(...args) {
+    return this.collection.update(...args);
+  }
+
   remove(id) {
     return this.collection.remove(id);
   }

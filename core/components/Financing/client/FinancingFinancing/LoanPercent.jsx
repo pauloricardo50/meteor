@@ -13,7 +13,11 @@ type LoanPercentProps = {};
 
 const LoanPercent = ({ handleChange, ...props }: LoanPercentProps) => (
   <span className="wantedLoanPercent">
-    <PercentInput value={getBorrowRatio(props)} onChange={handleChange} />
+    <PercentInput
+      value={getBorrowRatio(props)}
+      onChange={handleChange}
+      disabled={props.structure.disableForms}
+    />
   </span>
 );
 

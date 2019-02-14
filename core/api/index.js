@@ -36,6 +36,7 @@ export { default as Irs10y } from './irs10y';
 export { default as MortgageNotes } from './mortgageNotes';
 export { default as Contacts } from './contacts';
 export { default as Lenders } from './lenders';
+export { default as LenderRules } from './lenderRules';
 
 export * from './methods';
 export * from './helpers';

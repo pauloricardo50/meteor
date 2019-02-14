@@ -10,6 +10,7 @@ import { EMAIL_IDS } from '../../../email/emailConstants';
 
 describe('methods', function () {
   this.timeout(10000);
+
   beforeEach(() => {
     resetDatabase();
   });

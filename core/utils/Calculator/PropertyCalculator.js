@@ -153,6 +153,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
       return !propertyExactValue || !!(landValue && constructionValue);
     }
+
+    isPromotionProperty({ loan, structureId }) {
+      const structure = this.selectStructure({ loan, structureId });
+      return !!structure.promotionOptionId;
+    }
   };
 
 export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);

@@ -5,6 +5,7 @@ import ScrollToTop from 'core/components/ScrollToTop';
 import NotFound from 'core/components/NotFound';
 import togglePoint, { TOGGLE_POINTS } from 'core/api/features/togglePoint';
 
+import BlogPostPage from '../../ui/pages/BlogPostPage';
 import HomePage from '../../ui/pages/HomePage'; // Load this page instantly
 import AboutPage from '../../ui/pages/AboutPage';
 import FaqPage from '../../ui/pages/FaqPage/loadable';
@@ -14,6 +15,7 @@ import ConditionsPage from '../../ui/pages/ConditionsPage/loadable';
 import Widget1Page from '../../ui/pages/Widget1Page';
 import CheckMailboxPage from '../../ui/pages/CheckMailboxPage/loadable';
 import InterestsPage from '../../ui/pages/InterestsPage/loadable';
+import BlogPage from '../../ui/pages/BlogPage/loadable';
 
 const liteVersionModifier = togglePoint(TOGGLE_POINTS.ROUTES_CONFIG_STRIPPED_IN_LITE_VERSION);
 const notProductionReadyModifier = togglePoint(TOGGLE_POINTS.ROUTES_NOT_PRODUCTION_READY);
@@ -26,6 +28,8 @@ const routesConfig = [
   { path: '/careers', component: CareersPage },
   { path: '/about', component: AboutPage },
   { path: '/faq', component: FaqPage },
+  { path: '/blog/:slug', component: BlogPostPage },
+  { path: '/blog', component: BlogPage },
 
   ...liteVersionModifier([
     { path: '/conditions', component: ConditionsPage },

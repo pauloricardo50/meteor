@@ -1,16 +1,21 @@
 import { Meteor } from 'meteor/meteor';
+
 import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
 import { injectIntl } from 'react-intl';
-import notification from 'core/utils/notification';
+import uniqBy from 'lodash/uniqBy';
+
+import notification from '../../../utils/notification';
 import {
   FILE_STATUS,
   ALLOWED_FILE_TYPES,
   MAX_FILE_SIZE,
+  DOCUMENTS,
 } from '../../../api/constants';
 import ClientEventService, {
   MODIFIED_FILES_EVENT,
 } from '../../../api/events/ClientEventService';
 import { notifyOfUpload } from '../../../api/slack/methodDefinitions';
+import withMatchParam from '../../../containers/withMatchParam';
 
 const checkFile = (file, currentValue = [], tempFiles = []) => {
   if (ALLOWED_FILE_TYPES.indexOf(file.type) < 0) {
@@ -43,7 +48,7 @@ export const propHasChanged = (oldProp, newProp) =>
 const displayFullState = withStateHandlers(
   ({ currentValue }) => ({
     displayFull:
-      Meteor.microservice !== 'admin' && !filesExistAndAreValid(currentValue),
+      Meteor.microservice === 'admin' || !filesExistAndAreValid(currentValue),
   }),
   {
     showFull: () => () => ({ displayFull: true }),
@@ -52,13 +57,17 @@ const displayFullState = withStateHandlers(
 );
 
 const tempFileState = withStateHandlers(
-  { tempFiles: [] },
+  { tempFiles: [], tempSuccessFiles: [] },
   {
+    addTempSuccessFile: ({ tempSuccessFiles, tempFiles }) => file => ({
+      tempSuccessFiles: [...tempSuccessFiles, file],
+      tempFiles: tempFiles.filter(({ name }) => name !== file.name),
+    }),
     addTempFiles: ({ tempFiles }) => (files = []) => ({
       tempFiles: [...tempFiles, ...files],
     }),
-    filterTempFiles: ({ tempFiles }) => filterFunction => ({
-      tempFiles: tempFiles.filter(filterFunction),
+    setTempSuccessFiles: () => (files = []) => ({
+      tempSuccessFiles: files,
     }),
   },
 );
@@ -66,17 +75,26 @@ const tempFileState = withStateHandlers(
 const props = withProps(({
   deleteFile,
   addTempFiles,
+  addTempSuccessFile,
   intl: { formatMessage: f },
   handleSuccess,
-  currentValue,
+  currentValue = [],
   tempFiles,
+  tempSuccessFiles,
+  fileMeta: { id, label },
+  loanId,
+  setTempSuccessFiles,
 }) => ({
   handleAddFiles: (files) => {
     const fileArray = [];
     let showError = false;
 
     files.forEach((file) => {
-      const isValid = checkFile(file, currentValue, tempFiles);
+      const isValid = checkFile(
+        file,
+        [...currentValue, ...tempSuccessFiles],
+        tempFiles,
+      );
       if (isValid === true) {
         fileArray.push(file);
       } else {
@@ -95,14 +113,23 @@ const props = withProps(({
     addTempFiles(files);
   },
   handleUploadComplete: (file, url) => {
+    addTempSuccessFile(file);
     ClientEventService.emit(MODIFIED_FILES_EVENT);
-    notifyOfUpload.run({ fileName: file.name });
+    notifyOfUpload.run({
+      fileName: file.name,
+      docLabel: label || f({ id: `files.${id}` }),
+      loanId,
+    });
     if (handleSuccess) {
       handleSuccess(file, url);
     }
   },
   handleRemove: key =>
     deleteFile(key).then(() => {
+      // Filter temp files if this is not a real file from the DB
+      setTempSuccessFiles(tempSuccessFiles.filter(({ Key }) => Key !== key));
+
+      // Wait for a sec before pinging the DB again
       setTimeout(() => {
         ClientEventService.emit(MODIFIED_FILES_EVENT);
       }, 0);
@@ -110,32 +137,33 @@ const props = withProps(({
 }));
 
 const willReceiveProps = lifecycle({
-  // Remove temp files from state when they are saved to the DB, and appear in
-  // props.
-  // FIXME: This prevents someone from uploading a file with the same name twice
-  componentWillReceiveProps({ currentValue: nextValue }) {
-    const { currentValue, tempFiles, filterTempFiles } = this.props;
+  componentWillReceiveProps({ currentValue: nextValue = [] }) {
+    const {
+      currentValue = [],
+      tempSuccessFiles,
+      setTempSuccessFiles,
+    } = this.props;
 
-    // Lazy check to see if they are of different size
-    if (propHasChanged(currentValue, nextValue)) {
-      if (tempFiles && tempFiles.length) {
-        // Loop over the new props to see if they match any of the temp files
-        // Remove the ones that match
-        console.log('nextValue', nextValue);
-        console.log('tempFiles', tempFiles);
-        nextValue.forEach(file =>
-          tempFiles.forEach(temp =>
-            temp.name === file.name
-              && filterTempFiles(tempFile => tempFile.name !== file.name)));
-      }
+    if (
+      propHasChanged(currentValue, nextValue)
+      && tempSuccessFiles.length > 0
+    ) {
+      const nonDuplicateFiles = tempSuccessFiles.filter(({ name }) => !nextValue.find(file => file.name === name));
+      setTempSuccessFiles(nonDuplicateFiles);
     }
   },
 });
+
+const withMergedSuccessfulFiles = withProps(({ currentValue = [], tempSuccessFiles }) => ({
+  currentValue: uniqBy([...currentValue, ...tempSuccessFiles], 'name'),
+}));
 
 export default compose(
   injectIntl,
   displayFullState,
   tempFileState,
+  withMatchParam('loanId'),
   props,
   willReceiveProps,
+  withMergedSuccessfulFiles,
 );

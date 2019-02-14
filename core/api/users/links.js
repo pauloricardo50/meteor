@@ -26,6 +26,7 @@ Users.addLinks({
   borrowers: {
     collection: Borrowers,
     inversedBy: 'user',
+    autoremove: true,
   },
   contact: {
     collection: Contacts,
@@ -34,6 +35,7 @@ Users.addLinks({
   loans: {
     collection: Loans,
     inversedBy: 'user',
+    autoremove: true,
   },
   promotions: {
     collection: Promotions,
@@ -42,6 +44,7 @@ Users.addLinks({
   properties: {
     collection: Properties,
     inversedBy: 'user',
+    autoremove: true,
   },
   offers: {
     collection: Offers,

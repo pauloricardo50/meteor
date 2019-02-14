@@ -7,9 +7,10 @@ import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import EmailList from '../../components/EmailList';
+import PromotionList from './PromotionList';
 
 const SingleUserPage = ({ user, className, currentUser, children }) => {
-  const { loans, _id: userId, assignedEmployee } = user;
+  const { loans, _id: userId, assignedEmployee, promotions } = user;
   const isUser = user.roles.includes(ROLES.USER);
 
   return (
@@ -25,6 +26,10 @@ const SingleUserPage = ({ user, className, currentUser, children }) => {
       />
       {(isUser || (loans && loans.length > 0)) && (
         <LoanSummaryList loans={loans} userId={user._id} withAdder />
+      )}
+
+      {promotions && promotions.length > 0 && (
+        <PromotionList promotions={promotions} />
       )}
 
       {/* Make sure this component reloads when the userId changes */}

@@ -212,9 +212,9 @@ export const PropertySchema = new SimpleSchema({
   },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   monthlyExpenses: moneyField,
-  landValue: { ...moneyField, ...roundedInteger(3) },
-  constructionValue: { ...moneyField, ...roundedInteger(3) },
-  additionalMargin: { ...moneyField, ...roundedInteger(3) },
+  landValue: moneyField,
+  constructionValue: moneyField,
+  additionalMargin: moneyField,
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
 });

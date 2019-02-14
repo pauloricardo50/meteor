@@ -95,7 +95,7 @@ export default class Security {
     }
   }
 
-  static hasPermissionOnDoc({ doc, permissions, userId }) {
+  static hasPermissionOnDoc({ doc, permissions, userId = Meteor.userId() }) {
     const { userLinks = [] } = doc;
     const { users = [] } = doc;
 
@@ -174,7 +174,7 @@ export default class Security {
   static canModifyDoc = (doc) => {
     // Only for client side docs that replace userLinks with users
     const { _id: userId } = Meteor.user();
-    if (this.minimumRole(ROLES.ADMIN)) {
+    if (this.minimumRole(ROLES.ADMIN)(userId)) {
       return;
     }
 

@@ -127,16 +127,20 @@ class S3Service {
 
   promisify = (methodName, params) =>
     new Promise((resolve, reject) =>
-      this.s3[methodName](
-        params,
-        (err, data) => (err ? reject(err) : resolve(data)),
-      ));
+      this.s3[methodName](params, (err, data) =>
+        (err ? reject(err) : resolve(data))));
 
   updateMetadata = (key, newMetadata) =>
     this.getObject(key).then(({ Metadata: oldMetaData }) =>
       this.putObject(undefined, key, { ...oldMetaData, ...newMetadata }));
 
   buildFileUrl = file => `${OBJECT_STORAGE_PATH}/${file.Key}`;
+
+  makeSignedUrl = Key => this.s3.getSignedUrl('getObject', {
+    Bucket: this.params.Bucket,
+    Key,
+    Expires: 180,
+  });
 }
 
 export default new S3Service();

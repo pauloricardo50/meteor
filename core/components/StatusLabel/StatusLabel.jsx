@@ -88,6 +88,7 @@ const StatusLabel = ({
   color = null,
   allowModify,
   docId,
+  additionalActions = () => Promise.resolve(),
 }: StatusLabelProps) => {
   const statuses = getStatuses(collection);
   const statusLabel = (props = {}) => (
@@ -114,11 +115,12 @@ const StatusLabel = ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
-            updateDocument.run({
-              collection,
-              object: { status: stat },
-              docId,
-            }),
+            additionalActions(stat).then(() =>
+              updateDocument.run({
+                collection,
+                object: { status: stat },
+                docId,
+              })),
         }))}
       />
     );

@@ -1,0 +1,34 @@
+.lender-rules-editor {
+  &-filter {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 40px;
+
+    .filter-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+  }
+
+  form {
+    align-self: center;
+
+    width: 100%;
+    max-width: 500px;
+
+    button {
+      margin-top: 16px;
+    }
+  }
+
+  .lender-rules-title-with-name {
+    h3 {
+      margin-bottom: 0;
+    }
+    h4 {
+      margin-top: 0;
+    }
+  }
+}

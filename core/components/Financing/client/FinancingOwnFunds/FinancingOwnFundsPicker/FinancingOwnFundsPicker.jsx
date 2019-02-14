@@ -25,7 +25,10 @@ const FinancingOwnFundsPicker = ({
         {...data}
       />
     ))}
-    <OwnFundsAdder structureId={structureId} />
+    <OwnFundsAdder
+      structureId={structureId}
+      disabled={structure.disableForms}
+    />
   </div>
 );
 

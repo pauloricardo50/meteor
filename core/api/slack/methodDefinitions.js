@@ -12,7 +12,9 @@ export const notifyAssignee = new Method({
 export const notifyOfUpload = new Method({
   name: 'notifyOfUpload',
   params: {
+    docLabel: String,
     fileName: String,
+    loanId: Match.Optional(String),
   },
 });
 

@@ -17,8 +17,8 @@ propertyInsert.setHandler((context, { property, userId, loanId }) => {
   return PropertyService.insert({ property, userId, loanId });
 });
 
-propertyUpdate.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
+propertyUpdate.setHandler(({ userId }, { propertyId, object }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId, userId);
   return PropertyService.update({ propertyId, object });
 });
 
@@ -27,28 +27,30 @@ propertyDelete.setHandler((context, { propertyId }) => {
   return PropertyService.remove({ propertyId });
 });
 
-pushPropertyValue.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
+pushPropertyValue.setHandler(({ userId }, { propertyId, object }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId, userId);
   return PropertyService.pushValue({ propertyId, object });
 });
 
-popPropertyValue.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
+popPropertyValue.setHandler(({ userId }, { propertyId, object }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId, userId);
   return PropertyService.popValue({ propertyId, object });
 });
 
-pullPropertyValue.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
+pullPropertyValue.setHandler(({ userId }, { propertyId, object }) => {
+  SecurityService.properties.isAllowedToUpdate(propertyId, userId);
   return PropertyService.pullValue({ propertyId, object });
 });
 
 evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
+  context.unblock();
+  SecurityService.properties.isAllowedToUpdate(propertyId, context.userId);
   return PropertyService.evaluateProperty({ propertyId, loanResidenceType });
 });
 
 propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
+  context.unblock();
+  SecurityService.properties.isAllowedToUpdate(propertyId, context.userId);
   return PropertyService.propertyDataIsInvalid({
     propertyId,
     loanResidenceType,

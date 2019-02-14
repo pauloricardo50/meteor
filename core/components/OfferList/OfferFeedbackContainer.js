@@ -1,39 +1,84 @@
 import SimpleSchema from 'simpl-schema';
-import { withProps } from 'recompose';
+import { withProps, compose } from 'recompose';
+import { injectIntl } from 'react-intl';
 
 import { offerSendFeedback } from '../../api';
+import {
+  FEEDBACK_OPTIONS,
+  makeFeedback,
+  FEEDBACK_OPTIONS_SETTINGS,
+} from './feedbackHelpers';
+import { CUSTOM_AUTOFIELD_TYPES } from '../AutoForm2/constants';
 
-const schema = new SimpleSchema({
-  feedback: {
-    type: String,
-    optional: false,
-    uniforms: {
-      multiline: true,
-      rows: 10,
-      rowsMax: 10,
-      style: { width: '500px' },
+const schema = ({ offer, formatMessage }) =>
+  new SimpleSchema({
+    option: {
+      type: String,
+      optional: true,
+      allowedValues: Object.values(FEEDBACK_OPTIONS),
+      uniforms: { displayEmpty: false, placeholder: '' },
     },
-  },
-});
+    comments: {
+      type: Array,
+      optional: true,
+      condition: ({ option }) =>
+        option && FEEDBACK_OPTIONS_SETTINGS[option].enableComments,
+    },
+    'comments.$': {
+      type: String,
+      optional: true,
+      uniforms: { placeholder: '' },
+    },
+    customFeedback: {
+      type: String,
+      optional: true,
+      uniforms: {
+        multiline: true,
+        rows: 15,
+        rowsMax: 15,
+        style: { width: '500px' },
+      },
+      condition: ({ option }) => option === FEEDBACK_OPTIONS.CUSTOM,
+    },
+    feedbackPreview: {
+      type: String,
+      optional: true,
+      uniforms: {
+        type: CUSTOM_AUTOFIELD_TYPES.HTML_PREVIEW,
+      },
+      condition: ({ option }) => option && option !== FEEDBACK_OPTIONS.CUSTOM,
+      customAutoValue: model => makeFeedback({ model, offer, formatMessage }),
+    },
+  });
 
-export default withProps(({
-  offer: {
-    _id: offerId,
-    feedback,
-    lender: { contact },
-  },
-}) => ({
-  schema,
-  onSubmit: (object) => {
-    if (feedback) {
-      return Promise.resolve();
-    }
+export default compose(
+  injectIntl,
+  withProps(({ offer, intl: { formatMessage } }) => {
+    const {
+      _id: offerId,
+      feedback = {},
+      lender: { contact },
+    } = offer;
 
-    const { name } = contact || {};
-    const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
-    if (confirm) {
-      return offerSendFeedback.run({ offerId, feedback: object.feedback });
-    }
-    return Promise.resolve();
-  },
-}));
+    const { message } = feedback;
+
+    return {
+      schema: schema({ offer, formatMessage }),
+      onSubmit: (object) => {
+        if (message) {
+          return Promise.resolve();
+        }
+
+        const { name } = contact || {};
+        const confirm = window.confirm(`Envoyer le feedback à ${name} ? Attention: le feedback ne pourra plus être modifié !`);
+        if (confirm) {
+          return offerSendFeedback.run({
+            offerId,
+            feedback: makeFeedback({ model: object, offer, formatMessage }),
+          });
+        }
+        return Promise.resolve();
+      },
+    };
+  }),
+);

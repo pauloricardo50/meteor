@@ -5,23 +5,26 @@ import UserService from '../../users/server/UserService';
 import SlackService from './SlackService';
 import SecurityService from '../../security';
 
-notifyAssignee.setHandler(({ userId }, { message, title }) => {
+notifyAssignee.setHandler((context, { message, title }) => {
+  context.unblock();
   SecurityService.checkLoggedIn();
-  const user = UserService.get(userId);
+  const user = UserService.get(context.userId);
   SlackService.notifyAssignee({
     currentUser: user,
     message,
     title: title || `Utilisateur ${user.name}`,
-    link: `${Meteor.settings.public.subdomains.admin}/users/${userId}`,
+    link: `${Meteor.settings.public.subdomains.admin}/users/${context.userId}`,
   });
 });
 
-notifyOfUpload.setHandler(({ userId }, { fileName }) => {
+notifyOfUpload.setHandler((context, params) => {
+  context.unblock();
   SecurityService.checkLoggedIn();
-  const user = UserService.get(userId);
-  SlackService.notifyOfUpload({ currentUser: user, fileName });
+  const user = UserService.get(context.userId);
+  SlackService.notifyOfUpload({ currentUser: user, ...params });
 });
 
 logError.setHandler((context, params) => {
+  context.unblock();
   SlackService.sendError(params);
 });

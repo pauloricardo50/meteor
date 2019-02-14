@@ -50,6 +50,10 @@ export const withSelector = (SuperClass = class {}) =>
       return this.makeSelectStructureKey(key)({ loan, structureId });
     }
 
+    selectPropertyKey({ loan, structureId, key }) {
+      return this.makeSelectPropertyKey(key)({ loan, structureId });
+    }
+
     makeSelectStructureKey(key: string): Function {
       return createSelector(
         this.selectStructure,

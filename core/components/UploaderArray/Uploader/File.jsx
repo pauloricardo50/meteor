@@ -3,14 +3,14 @@ import { Roles } from 'meteor/alanning:roles';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withState } from 'recompose';
+import { withState, compose } from 'recompose';
 
-import T from 'core/components/Translation';
-import IconButton from 'core/components/IconButton';
-import { FILE_STATUS } from 'core/api/constants';
-
+import { FILE_STATUS, ROLES } from '../../../api/constants';
+import { getSignedUrl } from '../../../api/methods';
+import { withFileViewerContext } from '../../../containers/FileViewerContext';
+import T from '../../Translation';
+import IconButton from '../../IconButton';
 import Downloader from '../../Downloader';
-import { ROLES } from '../../../api/constants';
 
 const isAllowedToDelete = (disabled) => {
   const currentUser = Meteor.user();
@@ -25,15 +25,28 @@ const isAllowedToDelete = (disabled) => {
 };
 
 const File = ({
-  file: { name, Key, status = FILE_STATUS.VALID, message },
+  file: { name, Key, status = FILE_STATUS.VALID, message, url },
   disabled,
   handleRemove,
   deleting,
   setDeleting,
+  displayFile,
 }) => (
   <div className="flex-col">
     <div className="file">
-      <h5 className="secondary bold">{name}</h5>
+      <h5
+        className="secondary bold"
+        onClick={(event) => {
+          if (Meteor.microservice === 'admin') {
+            event.preventDefault();
+            getSignedUrl.run({ key: Key }).then((signedUrl) => {
+              displayFile(signedUrl, url.split('.').slice(-1)[0]);
+            });
+          }
+        }}
+      >
+        {Meteor.microservice === 'admin' ? <a>{name}</a> : name}
+      </h5>
       <div className="flex center">
         <span className={`${status} bold`}>
           <T id={`File.status.${status}`} />
@@ -58,8 +71,9 @@ const File = ({
         <Downloader fileKey={Key} fileName={name} />
       </div>
     </div>
-    {message
-      && status === FILE_STATUS.ERROR && <p className="error">{message}</p>}
+    {message && status === FILE_STATUS.ERROR && (
+      <p className="error">{message}</p>
+    )}
   </div>
 );
 
@@ -69,8 +83,7 @@ File.propTypes = {
   handleRemove: PropTypes.func.isRequired,
 };
 
-File.defaultProps = {
-  message: '',
-};
-
-export default withState('deleting', 'setDeleting', false)(File);
+export default compose(
+  withState('deleting', 'setDeleting', false),
+  withFileViewerContext,
+)(File);

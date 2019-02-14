@@ -5,6 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 import LoopIcon from '@material-ui/icons/Loop';
 import WarningIcon from '@material-ui/icons/Warning';
 import ForumIcon from '@material-ui/icons/Forum';
@@ -71,11 +72,13 @@ import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import InsertChart from '@material-ui/icons/InsertChart';
 import Image from '@material-ui/icons/Image';
 import Delete from '@material-ui/icons/Delete';
+import Phonelink from '@material-ui/icons/Phonelink';
 
-const iconMap = {
+export const iconMap = {
   close: CloseIcon,
   check: CheckIcon,
   add: AddIcon,
+  remove: RemoveIcon,
   warning: WarningIcon,
   menu: MenuIcon,
   forum: ForumIcon,
@@ -143,6 +146,7 @@ const iconMap = {
   chart: InsertChart,
   image: Image,
   delete: Delete,
+  phoneLink: Phonelink,
 };
 
 const Icon = ({

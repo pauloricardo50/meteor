@@ -39,7 +39,10 @@ const getPropertyValuationArray = loan => [
 ];
 
 const getPropertyRecapArray = (loan) => {
-  const valuationExists = !!loan.structure.property.valuation;
+  const valuationExists = !!(
+    loan.structure.property.valuation
+    && loan.structure.property.valuation.microlocation
+  );
 
   return [
     ...(valuationExists ? getPropertyValuationArray(loan) : []),

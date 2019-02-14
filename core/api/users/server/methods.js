@@ -8,7 +8,7 @@ import {
   assignAdminToNewUser,
   setRole,
   adminCreateUser,
-  editUser,
+  updateUser,
   getUserByPasswordResetToken,
   testCreateUser,
   removeUser,
@@ -67,9 +67,11 @@ adminCreateUser.setHandler((context, { options, role }) => {
   });
 });
 
-editUser.setHandler((context, { userId, object }) => {
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService.checkUserLoggedIn(userId);
+updateUser.setHandler((context, { userId, object }) => {
+  SecurityService.users.isAllowedToUpdate(userId, context.userId);
+
+  if (object.roles) {
+    SecurityService.handleUnauthorized('Vous ne pouvez pas changer le rôle');
   }
 
   return UserService.update({ userId, object });
