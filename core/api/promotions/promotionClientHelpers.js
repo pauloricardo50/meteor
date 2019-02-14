@@ -1,5 +1,4 @@
 import { PROMOTION_INVITED_BY } from './promotionConstants';
-import Security from '../security/Security';
 
 export const getCurrentUserPermissionsForPromotion = ({
   currentUser = {},

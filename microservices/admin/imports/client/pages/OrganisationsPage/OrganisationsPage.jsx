@@ -35,7 +35,12 @@ const OrganisationsPage = ({
       <span>Organisations</span>
     </h1>
     <AutoFormDialog
-      schema={OrganisationSchema.omit('logo', 'contactIds', 'canton')}
+      schema={OrganisationSchema.omit(
+        'logo',
+        'contactIds',
+        'canton',
+        'userLinks',
+      )}
       buttonProps={{
         label: 'Ajouter organisation',
         raised: true,

@@ -1,4 +1,10 @@
 {
+  "OrganisationTabs.users": "Utilisateurs",
+  "Forms.type.REAL_ESTATE_BROKER": "Cabinet de courtage immobilier",
+  "Forms.type.NOTARY_OFFICE": "Cabinet de notaire",
+  "Forms.type.CONSTRUCTION_COMPANY": "Entreprise générale",
+  "Forms.type.DEVELOPER": "Promoteur",
+  "Forms.type.OTHER": "Autre",
   "PromotionLotLoansTable.invitedBy": "Invité par",
   "PromotionLotLoansTable.loanName": "Dossier",
   "Forms.permissions.canSellLots": "Peut vendre des lots",
