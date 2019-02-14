@@ -13,7 +13,7 @@ const FinancingLenders = (props: FinancingLendersProps) => (
     summaryConfig={[
       {
         id: 'lenders',
-        label: <span className="section-title">PRÊTEURS</span>,
+        label: <span className="section-title">Prêteurs</span>,
         Component: FinancingLendersHeader,
       },
     ]}

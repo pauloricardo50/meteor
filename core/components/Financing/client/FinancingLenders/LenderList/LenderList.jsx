@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import LenderListContainer from './LenderListContainer';
 import LenderListItem from './LenderListItem';
 
 type LenderListProps = {};
@@ -21,4 +20,4 @@ const LenderList = ({ organisations, loan, structureId }: LenderListProps) => (
   </div>
 );
 
-export default LenderListContainer(LenderList);
+export default LenderList;
