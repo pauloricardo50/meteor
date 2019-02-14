@@ -15,6 +15,8 @@ import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
 import { getPromotionCustomerOwningGroup } from '../../api/promotions/promotionClientHelpers';
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
+import { CollectionIconLink } from '../IconLink';
+import { LOANS_COLLECTION } from '../../api/constants';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -60,19 +62,25 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     || 'Personne';
 
   return [
-    loanName,
+    Meteor.microservice === 'admin' ? (
+      <CollectionIconLink
+        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+      />
+    ) : (
+      loanName
+    ),
     user && user.name,
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     Meteor.microservice === 'admin' ? (
-        <InvitedByAssignDropdown
-          promotionUsers={promotionUsers}
-          invitedBy={invitedBy}
-          invitedByName={invitedByName}
-          loanId={loanId}
-          promotionId={promotionId}
-        />
+      <InvitedByAssignDropdown
+        promotionUsers={promotionUsers}
+        invitedBy={invitedBy}
+        invitedByName={invitedByName}
+        loanId={loanId}
+        promotionId={promotionId}
+      />
     ) : (
       invitedByName
     ),
@@ -117,12 +125,6 @@ const makeMapLoan = ({
   return {
     id: loanId,
     columns: getColumns({ promotionId, promotionUsers, loan, currentUser }),
-    ...(Meteor.microservice === 'admin'
-      ? {
-        handleClick: () =>
-          history.push(createRoute('/loans/:loanId', { loanId })),
-      }
-      : {}),
   };
 };
 
