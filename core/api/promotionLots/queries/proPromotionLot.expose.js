@@ -1,8 +1,8 @@
-import SecurityService from '../../security';
-import query from './proPromotionLot';
-import PromotionLotService from '../server/PromotionLotService';
-import { proPromotionLot } from '../../fragments';
 import { handlePromotionLotsAnonymization } from '../../promotions/server/promotionServerHelpers';
+import SecurityService from '../../security';
+import { proPromotionLot } from '../../fragments';
+import PromotionLotService from '../server/PromotionLotService';
+import query from './proPromotionLot';
 
 query.expose({
   firewall(userId, params) {

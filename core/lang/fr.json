@@ -45,7 +45,7 @@
   "Forms.bundles.BOOKING": "Réservation",
   "Forms.bundles": "Packages",
   "Forms.useBundles": "Utiliser des packages de permissions",
-  "AccountPage.DevelopperSection.show": "Zone développeur",
+  "AccountPage.DeveloperSection.show": "Zone développeur",
   "Forms.adminComments": "Commentaires pour admins",
   "Forms.adminComments.placeholder": "Ne pas soumettre si la lune est pleine",
   "Forms.pdfComments": "Commentaires pour PDF",

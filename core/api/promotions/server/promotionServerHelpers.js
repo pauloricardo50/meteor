@@ -2,7 +2,7 @@ import UserService from '../../users/server/UserService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
   shouldAnonymize as clientShouldAnonymize,
-  getPromotionCustomerOwningGroup as clientGetPromotionCustomerOwningGroup,
+  getPromotionCustomerOwnerType as getCustomerOwnerType,
 } from '../promotionClientHelpers';
 
 const ANONYMIZED_STRING = 'XXX';
@@ -50,7 +50,7 @@ const getPromotionLotStatus = ({ promotionLotId }) => {
   return status;
 };
 
-export const getPromotionCustomerOwningGroup = ({
+export const getPromotionCustomerOwnerType = ({
   customerId,
   promotionId,
   userId,
@@ -61,7 +61,7 @@ export const getPromotionCustomerOwningGroup = ({
     organisations: { users: { _id: 1 } },
   });
 
-  return clientGetPromotionCustomerOwningGroup({
+  return getCustomerOwnerType({
     invitedBy,
     currentUser: { _id: userId, organisations },
   });
@@ -73,17 +73,17 @@ const shouldAnonymize = ({
   promotionId,
   promotionLotId,
 }) => {
-  const customerOwningGroup = getPromotionCustomerOwningGroup({
+  const customerOwnerType = getPromotionCustomerOwnerType({
     customerId,
     userId,
     promotionId,
   });
   const permissions = getUserPromotionPermissions({ userId, promotionId });
 
-  const promotionLotStatus = promotionLotId && getPromotionLotStatus({ promotionLotId });
+  const promotionLotStatus = getPromotionLotStatus({ promotionLotId });
 
   return clientShouldAnonymize({
-    customerOwningGroup,
+    customerOwnerType,
     permissions,
     promotionLotStatus,
   });
@@ -94,19 +94,22 @@ export const handleLoansAnonymization = ({
   userId,
   promotionId,
   promotionLotId,
+  anonymize,
 }) =>
   loans.map((loan) => {
     const { user = {}, ...rest } = loan;
     const { _id: customerId } = user;
     return {
-      user: shouldAnonymize({
-        customerId,
-        userId,
-        promotionId,
-        promotionLotId,
-      })
-        ? ANONYMIZED_USER
-        : user,
+      user:
+        anonymize
+        || shouldAnonymize({
+          customerId,
+          userId,
+          promotionId,
+          promotionLotId,
+        })
+          ? ANONYMIZED_USER
+          : user,
       ...rest,
     };
   });
@@ -123,10 +126,7 @@ export const handlePromotionLotsAnonymization = ({
       promotionId: promotionLot.promotion._id,
       promotionLotId: promotionLot._id,
     });
-    return {
-      attributedTo: loan,
-      ...rest,
-    };
+    return { attributedTo: loan, ...rest };
   });
 
 export const handlePromotionOptionsAnonymization = ({
@@ -140,21 +140,22 @@ export const handlePromotionOptionsAnonymization = ({
       promotion: { _id: promotionId },
     } = promotionOption;
     const { _id: promotionLotId } = promotionLots[0];
+    const anonymize = shouldAnonymize({
+      customerId: loan.user._id,
+      userId,
+      promotionId,
+      promotionLotId,
+    });
+
     return {
       loan: handleLoansAnonymization({
         loans: [loan],
         userId,
         promotionId,
         promotionLotId,
+        anonymize,
       })[0],
-      custom: shouldAnonymize({
-        customerId: loan.user._id,
-        userId,
-        promotionId,
-        promotionLotId,
-      })
-        ? ANONYMIZED_STRING
-        : custom,
+      custom: anonymize ? ANONYMIZED_STRING : custom,
       ...rest,
     };
   });

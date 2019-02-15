@@ -282,10 +282,7 @@ export const adminLoans = () => ({
 export const proLoans = () => ({
   createdAt: 1,
   name: 1,
-  promotions: {
-    users: { _id: 1 },
-    status: 1,
-  },
+  promotions: { sers: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
@@ -438,7 +435,7 @@ export const proPromotionOption = () => ({
     name: 1,
     solvency: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
-    promotions: { _id: 1, users: { _id: 1 } },
+    promotions: { users: { _id: 1 } },
     promotionOptions: {
       name: 1,
       promotionLots: { attributedTo: { user: { _id: 1 } } },
@@ -450,7 +447,7 @@ export const proPromotionOption = () => ({
   priority: 1,
   solvency: 1,
   updatedAt: 1,
-  promotion: { _id: 1, users: { _id: 1 } },
+  promotion: { users: { _id: 1 } },
   promotionLots: { _id: 1 },
 });
 

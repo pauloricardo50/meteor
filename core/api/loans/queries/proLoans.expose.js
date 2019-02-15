@@ -1,8 +1,9 @@
-import LoanService from 'core/api/loans/server/LoanService';
-import { proLoans } from 'core/api/fragments';
-import query from './proLoans';
-import SecurityService from '../../security';
+// import LoanService from 'core/api/loans/server/LoanService';
 import { handleLoansAnonymization } from '../../promotions/server/promotionServerHelpers';
+import { proLoans } from '../../fragments';
+import SecurityService from '../../security';
+import LoanService from '../server/LoanService';
+import query from './proLoans';
 
 query.expose({
   firewall(userId, params) {

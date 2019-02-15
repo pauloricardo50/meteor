@@ -30,8 +30,6 @@ export default compose(
   }),
   withProps(({ currentUser, promotionLot }) => {
     const { promotion } = promotionLot;
-    return {
-      ...makePermissions({ currentUser, promotion }),
-    };
+    return makePermissions({ currentUser, promotion });
   }),
 );

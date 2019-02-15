@@ -1,7 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import each from 'lodash/each';
-import isObject from 'lodash/isObject';
-import isArray from 'lodash/isArray';
 
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 import {
@@ -62,10 +59,12 @@ export const flattenObject = (object, delimiter) => {
   const delim = delimiter || '.';
   let flattened = {};
 
-  each(object, (val, key) => {
-    if (isObject(val) && !isArray(val)) {
+  Object.keys(object).forEach((key) => {
+    const val = object[key];
+    if (val instanceof Object && !(val instanceof Array)) {
       const strip = flattenObject(val);
-      each(strip, (v, k) => {
+      Object.keys(strip).forEach((k) => {
+        const v = strip[k];
         flattened = { ...flattened, [`${key}${delim}${k}`]: v };
       });
     } else {

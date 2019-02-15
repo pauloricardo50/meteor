@@ -2,9 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import get from 'lodash/get';
 
-import { COLLECTIONS } from 'imports/core/api/constants';
 import { flattenObject } from '../helpers';
-import { ROLES } from '../constants';
+import { ROLES, COLLECTIONS } from '../constants';
 import { DOCUMENT_USER_PERMISSIONS } from './constants';
 
 export const SECURITY_ERROR = 'NOT_AUTHORIZED';

@@ -1,17 +1,16 @@
 // @flow
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
+import { resetDatabase } from 'meteor/xolvio:cleaner';
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'core/utils/testHelpers/enzyme';
 import sinon from 'sinon';
 
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-
-import GenerateApiToken from '../../DevelopperSection/GenerateApiToken';
+import { mount } from 'core/utils/testHelpers/enzyme';
 import { userLogin } from '../../../../utils/testHelpers/testHelpers';
 import { ROLES } from '../../../../api/constants';
 import { generateApiToken } from '../../../../api';
+import GenerateApiToken from '../../DeveloperSection/GenerateApiToken';
 
 describe('GenerateApiToken', () => {
   let props;

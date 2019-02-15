@@ -1,7 +1,7 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { STEPS, TASK_STATUS, TASK_TYPE } from './constants';
+import { STEPS, TASK_STATUS, TASK_TYPE, PROMOTION_TYPES } from './constants';
 import {
   Borrowers,
   Lenders,
@@ -23,10 +23,6 @@ import MortgageNotes from './mortgageNotes';
 import { ORGANISATION_TYPES } from './organisations/organisationConstants';
 import InterestRates from './interestRates';
 import Contacts from './contacts';
-import {
-  PROMOTION_PERMISSIONS_FULL_ACCESS,
-  PROMOTION_TYPES,
-} from './promotions/promotionConstants';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';

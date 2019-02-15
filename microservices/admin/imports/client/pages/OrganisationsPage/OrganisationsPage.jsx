@@ -31,34 +31,6 @@ const OrganisationsPage = ({
       />
       <span>Organisations</span>
     </h1>
-    {/* <AutoFormDialog
-      schema={OrganisationSchema.omit(
-        'logo',
-        'contactIds',
-        'canton',
-        'userLinks',
-      )}
-      buttonProps={{
-        label: 'Ajouter organisation',
-        raised: true,
-        primary: true,
-      }}
-      title="Ajouter organisation"
-      onSubmit={insertOrganisation}
-    />
-    <AutoForm
-      schema={filtersSchema}
-      model={filters}
-      onSubmit={setFilters}
-      autosave
-      className="filters-form"
-    >
-      <div className="filters center">
-        <CustomAutoField name="type" />
-        <CustomAutoField name="features" />
-        <CustomAutoField name="tags" />
-      </div>
-    </AutoForm> */}
 
     <OrganisationAdder insertOrganisation={insertOrganisation} />
 

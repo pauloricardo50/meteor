@@ -7,7 +7,7 @@ import T from '../Translation';
 import Page from '../Page';
 import AccountResetter from '../AccountResetter/AccountResetter';
 import PasswordChange from './PasswordChange';
-import DevelopperSection from './DevelopperSection';
+import DeveloperSection from './DeveloperSection';
 
 const styles = {
   section: {
@@ -42,7 +42,7 @@ const AccountPage = ({ currentUser }) => {
           </div>
 
           {Meteor.microservice === 'pro' && (
-            <DevelopperSection user={currentUser} />
+            <DeveloperSection user={currentUser} />
           )}
 
           {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}

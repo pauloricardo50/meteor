@@ -34,7 +34,6 @@ const PromotionLotPage = ({
   canSeeCustomers,
   canModifyLots,
   canRemoveLots,
-  isAdmin,
 }: PromotionLotPageProps) => {
   const {
     name,
@@ -49,7 +48,6 @@ const PromotionLotPage = ({
   const { lots: allLots } = promotion;
   const property = properties.length > 0 && properties[0];
   const { description } = property;
-  const canModify = true;
 
   return (
     <div>
@@ -91,7 +89,7 @@ const PromotionLotPage = ({
           lots={lots}
           allLots={allLots}
           status={promotionLot.status}
-          canModify={canModify}
+          canModifyLots={canModifyLots}
         />
         <PromotionLotRecapTable promotionLot={promotionLot} />
 
@@ -103,8 +101,6 @@ const PromotionLotPage = ({
           <PromotionLotLoansTable
             promotionOptions={promotionOptions}
             promotionLot={promotionLot}
-            canModify={canModify}
-            isAdmin={isAdmin}
             currentUser={currentUser}
           />
         )}

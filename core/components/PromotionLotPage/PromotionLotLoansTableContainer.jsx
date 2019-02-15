@@ -13,9 +13,7 @@ import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 import { LOANS_COLLECTION } from '../../api/constants';
-import {
-  getPromotionCustomerOwningGroup,
-} from '../../api/promotions/promotionClientHelpers';
+import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 
 const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
   const {
@@ -41,7 +39,7 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     $metadata: { invitedBy },
   } = promotion;
 
-  const customerOwningGroup = getPromotionCustomerOwningGroup({
+  const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
     currentUser,
   });
@@ -52,19 +50,23 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
         relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
       />
     ) : (
-        loanName
-      ),
-    Meteor.microservice === 'admin'
-      ? user && (
-        <CollectionIconLink
-          relatedDoc={{
-            ...loan,
-            name: user.name,
-            collection: LOANS_COLLECTION,
-          }}
-        />
-      )
-      : user && user.name,
+      loanName
+    ),
+    {
+      raw: user.name,
+      label:
+        Meteor.microservice === 'admin'
+          ? user && (
+            <CollectionIconLink
+              relatedDoc={{
+                ...loan,
+                name: user.name,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+          )
+          : user && user.name,
+    },
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
@@ -93,7 +95,7 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
       promotionLotName={name}
       currentUser={currentUser}
       promotion={promotion}
-      customerOwningGroup={customerOwningGroup}
+      customerOwnerType={customerOwnerType}
       key="promotionLotAttributer"
     />,
   ];
@@ -124,11 +126,13 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions = [], promotionLot, canModify, isAdmin, currentUser }) => ({
+  mapProps(({
+    promotionOptions = [],
+    promotionLot,
+    currentUser,
+  }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
-    canModify,
-    isAdmin,
     currentUser,
   })),
   withSmartQuery({

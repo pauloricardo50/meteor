@@ -16,7 +16,7 @@ Users.addReducers({
     body: {
       phoneNumbers: 1,
     },
-    reduce: ({ phoneNumbers }) =>
-      (phoneNumbers && phoneNumbers.length && phoneNumbers[0]) || '',
+    reduce: ({ phoneNumbers = [] }) =>
+      (!!phoneNumbers.length && phoneNumbers[0]) || '',
   },
 });

@@ -25,7 +25,7 @@ export const PROMOTION_QUERIES = {
   PROMOTION_SEARCH: 'PROMOTION_SEARCH',
 };
 
-export const PROMOTION_INVITED_BY = {
+export const PROMOTION_INVITED_BY_TYPE = {
   ANY: 'ANY',
   USER: 'USER',
   ORGANISATION: 'ORGANISATION',
@@ -33,12 +33,8 @@ export const PROMOTION_INVITED_BY = {
 
 export const PROMOTION_PERMISSIONS = {
   DISPLAY_CUSTOMER_NAMES: {
-    FOR_LOT_STATUS: {
-      ...PROMOTION_LOT_STATUS,
-    },
-    INVITED_BY: {
-      ...PROMOTION_INVITED_BY,
-    },
+    FOR_LOT_STATUS: { ...PROMOTION_LOT_STATUS },
+    INVITED_BY: { ...PROMOTION_INVITED_BY_TYPE },
   },
 };
 
@@ -46,7 +42,6 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
   INVITATION: settings => ({
     canInviteCustomers: true,
     canSeeCustomers: true,
-    canPreBookLots: true,
     displayCustomerNames: {
       forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
       invitedBy:
@@ -71,9 +66,7 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
     canModifyPromotion: true,
     canManageDocuments: true,
   }),
-  BOOKING: settings => ({
-    canBookLots: true,
-  }),
+  BOOKING: settings => ({ canBookLots: true }),
 };
 
 export const PROMOTION_PERMISSIONS_FULL_ACCESS = () => {

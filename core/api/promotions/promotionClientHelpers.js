@@ -1,15 +1,14 @@
-import { PROMOTION_INVITED_BY } from './promotionConstants';
+import { PROMOTION_INVITED_BY_TYPE } from './promotionConstants';
 
 export const getCurrentUserPermissionsForPromotion = ({
-  currentUser = {},
+  currentUser: { promotions = [] } = {},
   promotionId,
 }) => {
-  const { promotions = [] } = currentUser;
   const promotion = promotions.find(({ _id }) => _id === promotionId);
   return promotion && promotion.$metadata.permissions;
 };
 
-export const getPromotionCustomerOwningGroup = ({ invitedBy, currentUser }) => {
+export const getPromotionCustomerOwnerType = ({ invitedBy, currentUser }) => {
   const { _id: userId, organisations = [] } = currentUser;
 
   // Is invited by nobody
@@ -19,7 +18,7 @@ export const getPromotionCustomerOwningGroup = ({ invitedBy, currentUser }) => {
 
   // Is invited by user
   if (invitedBy === userId) {
-    return PROMOTION_INVITED_BY.USER;
+    return PROMOTION_INVITED_BY_TYPE.USER;
   }
 
   const organisationUserIds = organisations.reduce(
@@ -29,15 +28,15 @@ export const getPromotionCustomerOwningGroup = ({ invitedBy, currentUser }) => {
 
   // Is invited by organisation
   if (organisationUserIds.includes(invitedBy)) {
-    return PROMOTION_INVITED_BY.ORGANISATION;
+    return PROMOTION_INVITED_BY_TYPE.ORGANISATION;
   }
 
   // Is invited by someone else
-  return PROMOTION_INVITED_BY.ANY;
+  return PROMOTION_INVITED_BY_TYPE.ANY;
 };
 
 export const shouldAnonymize = ({
-  customerOwningGroup,
+  customerOwnerType,
   permissions,
   promotionLotStatus,
 }) => {
@@ -47,30 +46,30 @@ export const shouldAnonymize = ({
     displayCustomerNames,
   } = permissions;
 
-  if (!canViewPromotion || !canSeeCustomers || !customerOwningGroup) {
+  if (!canViewPromotion || !canSeeCustomers || !customerOwnerType) {
     return true;
   }
 
   const shouldHideForLotStatus = !!promotionLotStatus
     && !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
 
-  if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY.ANY) {
+  if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY_TYPE.ANY) {
     return shouldHideForLotStatus;
   }
 
-  switch (customerOwningGroup) {
-  case PROMOTION_INVITED_BY.USER:
+  switch (customerOwnerType) {
+  case PROMOTION_INVITED_BY_TYPE.USER:
     return (
       shouldHideForLotStatus
         || ![
-          PROMOTION_INVITED_BY.USER,
-          PROMOTION_INVITED_BY.ORGANISATION,
+          PROMOTION_INVITED_BY_TYPE.USER,
+          PROMOTION_INVITED_BY_TYPE.ORGANISATION,
         ].includes(displayCustomerNames.invitedBy)
     );
-  case PROMOTION_INVITED_BY.ORGANISATION:
+  case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
     return (
       shouldHideForLotStatus
-        || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY.ORGANISATION
+        || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
     );
   default:
     return true;

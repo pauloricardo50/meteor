@@ -12,14 +12,16 @@ import {
   updatedAt,
 } from '../../helpers/sharedSchemas';
 
+const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
+
 export const promotionPermissionsSchema = {
   canViewPromotion: { type: Boolean, optional: true, defaultValue: true },
-  canAddLots: { type: Boolean, optional: true, defaultValue: false },
-  canModifyLots: { type: Boolean, optional: true, defaultValue: false },
-  canRemoveLots: { type: Boolean, optional: true, defaultValue: false },
-  canModifyPromotion: { type: Boolean, optional: true, defaultValue: false },
-  canManageDocuments: { type: Boolean, optional: true, defaultValue: false },
-  canSeeCustomers: { type: Boolean, optional: true, defaultValue: false },
+  canAddLots: SCHEMA_BOOLEAN,
+  canModifyLots: SCHEMA_BOOLEAN,
+  canRemoveLots: SCHEMA_BOOLEAN,
+  canModifyPromotion: SCHEMA_BOOLEAN,
+  canManageDocuments: SCHEMA_BOOLEAN,
+  canSeeCustomers: SCHEMA_BOOLEAN,
   displayCustomerNames: {
     type: Object,
     optional: true,
@@ -43,10 +45,10 @@ export const promotionPermissionsSchema = {
       PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
     uniforms: { displayEmpty: false, placeholder: '' },
   },
-  canInviteCustomers: { type: Boolean, optional: true, defaultValue: false },
-  canBookLots: { type: Boolean, optional: true, defaultValue: false },
-  // canPreBookLots: { type: Boolean, optional: true, defaultValue: false },
-  canSellLots: { type: Boolean, optional: true, defaultValue: false },
+  canInviteCustomers: SCHEMA_BOOLEAN,
+  canBookLots: SCHEMA_BOOLEAN,
+  // canPreBookLots: SCHEMA_BOOLEAN,
+  canSellLots: SCHEMA_BOOLEAN,
 };
 
 const PromotionSchema = new SimpleSchema({
@@ -69,18 +71,14 @@ const PromotionSchema = new SimpleSchema({
   propertyLinks: { type: Array, defaultValue: [] },
   'propertyLinks.$': Object,
   'propertyLinks.$._id': { type: String, optional: true },
-  'propertyLinks.$.propertyWork': { type: Array, optional: true },
-  'propertyLinks.$.propertyWork.$': Object,
-  'propertyLinks.$.propertyWork.$.description': String,
-  'propertyLinks.$.propertyWork.$.value': Number,
   lotLinks: { type: Array, defaultValue: [] },
   'lotLinks.$': Object,
   'lotLinks.$._id': { type: String, optional: true },
   promotionLotLinks: { type: Array, defaultValue: [] },
   'promotionLotLinks.$': Object,
   'promotionLotLinks.$._id': { type: String, optional: true },
-  ...userLinksSchema(promotionPermissionsSchema),
   assignedEmployeeId: { type: String, optional: true },
+  ...userLinksSchema(promotionPermissionsSchema),
 });
 
 export const BasePromotionSchema = PromotionSchema.pick(

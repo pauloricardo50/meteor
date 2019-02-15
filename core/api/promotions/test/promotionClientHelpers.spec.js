@@ -3,9 +3,9 @@ import { expect } from 'chai';
 
 import {
   shouldAnonymize,
-  getPromotionCustomerOwningGroup,
+  getPromotionCustomerOwnerType,
 } from '../promotionClientHelpers';
-import { PROMOTION_INVITED_BY } from '../promotionConstants';
+import { PROMOTION_INVITED_BY_TYPE } from '../promotionConstants';
 import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants';
 
 describe('promotionClientHelpers', () => {
@@ -22,11 +22,11 @@ describe('promotionClientHelpers', () => {
 
     it('returns true if customer is invited by nobody', () => {
       const currentUser = { _id: 'bob' };
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: { canViewPromotion: true, canSeeCustomers: true },
       })).to.equal(true);
     });
@@ -34,17 +34,17 @@ describe('promotionClientHelpers', () => {
     it('returns true if lot status is not in permissions', () => {
       const currentUser = { _id: 'bob' };
       const invitedBy = 'bob';
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
         invitedBy,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: {
           canViewPromotion: true,
           canSeeCustomers: true,
           displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY.ANY,
+            invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
             forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
           },
         },
@@ -55,17 +55,17 @@ describe('promotionClientHelpers', () => {
     it('returns false if lot status is in permissions', () => {
       const currentUser = { _id: 'bob' };
       const invitedBy = 'bob';
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
         invitedBy,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: {
           canViewPromotion: true,
           canSeeCustomers: true,
           displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY.USER,
+            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
             forLotStatus: [
               PROMOTION_LOT_STATUS.AVAILABLE,
               PROMOTION_LOT_STATUS.BOOKED,
@@ -79,17 +79,17 @@ describe('promotionClientHelpers', () => {
     it('returns true if customer is not invited by current user', () => {
       const currentUser = { _id: 'bob' };
       const invitedBy = 'john';
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
         invitedBy,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: {
           canViewPromotion: true,
           canSeeCustomers: true,
           displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY.USER,
+            invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
           },
         },
       })).to.equal(true);
@@ -101,17 +101,17 @@ describe('promotionClientHelpers', () => {
         organisations: [{ users: [{ _id: 'bob' }, { _id: 'dylan' }] }],
       };
       const invitedBy = 'john';
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
         invitedBy,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: {
           canViewPromotion: true,
           canSeeCustomers: true,
           displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY.ORGANISATION,
+            invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
           },
         },
       })).to.equal(true);
@@ -126,38 +126,36 @@ describe('promotionClientHelpers', () => {
         ],
       };
       const invitedBy = 'john';
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
         invitedBy,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: {
           canViewPromotion: true,
           canSeeCustomers: true,
           displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY.ORGANISATION,
+            invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
           },
         },
       })).to.equal(false);
     });
 
     it('returns true if current user has no organisation', () => {
-      const currentUser = {
-        _id: 'bob',
-      };
+      const currentUser = { _id: 'bob' };
       const invitedBy = 'john';
-      const customerOwningGroup = getPromotionCustomerOwningGroup({
+      const customerOwnerType = getPromotionCustomerOwnerType({
         currentUser,
         invitedBy,
       });
       expect(shouldAnonymize({
-        customerOwningGroup,
+        customerOwnerType,
         permissions: {
           canViewPromotion: true,
           canSeeCustomers: true,
           displayCustomerNames: {
-            invitedBy: PROMOTION_INVITED_BY.ORGANISATION,
+            invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
           },
         },
       })).to.equal(true);

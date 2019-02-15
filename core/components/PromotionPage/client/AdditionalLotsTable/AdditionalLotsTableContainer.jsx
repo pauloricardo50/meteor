@@ -39,10 +39,8 @@ const makeMapAdditionalLot = ({
       ),
     ],
     handleClick: () => {
-      if (
-        canModifyLots
-        && (!status || status === PROMOTION_LOT_STATUS.AVAILABLE)
-      ) {
+      const isAllowedToModifyLots = canModifyLots && (!status || status === PROMOTION_LOT_STATUS.AVAILABLE);
+      if (isAllowedToModifyLots) {
         setAdditionalLotToModify(lot);
         setShowDialog(true);
       }

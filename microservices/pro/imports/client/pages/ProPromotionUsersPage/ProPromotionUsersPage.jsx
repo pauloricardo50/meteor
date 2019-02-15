@@ -44,6 +44,9 @@ export default compose(
       && loans[0].promotions
       && loans[0].promotions.length > 0
       && loans[0].promotions[0];
-    return { canModify: promotion && isAllowedToModifyPromotion({promotion, currentUser}) };
+    return {
+      canModify:
+        promotion && isAllowedToModifyPromotion({ promotion, currentUser }),
+    };
   }),
 )(ProPromotionUsersPage);

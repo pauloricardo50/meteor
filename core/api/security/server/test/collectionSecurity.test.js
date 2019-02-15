@@ -272,10 +272,10 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.promotions.hasAccessToPromotionLot(
-            {promotionLotId,
-            userId,}
-          )).to.throw(SECURITY_ERROR);
+          SecurityService.promotions.hasAccessToPromotionLot({
+            promotionLotId,
+            userId,
+          })).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the user is on the promotion', () => {
@@ -296,10 +296,10 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.promotions.hasAccessToPromotionLot(
-            {promotionLotId,
-            userId,}
-          )).to.not.throw(SECURITY_ERROR);
+          SecurityService.promotions.hasAccessToPromotionLot({
+            promotionLotId,
+            userId,
+          })).to.not.throw(SECURITY_ERROR);
       });
     });
 
@@ -317,10 +317,10 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.promotions.hasAccessToPromotionOption(
-            {promotionOptionId,
-            userId,}
-          )).to.throw(SECURITY_ERROR);
+          SecurityService.promotions.hasAccessToPromotionOption({
+            promotionOptionId,
+            userId,
+          })).to.throw(SECURITY_ERROR);
       });
 
       it('does not throw if the option is on the users loan', () => {
@@ -341,10 +341,10 @@ describe('Collection Security', () => {
         });
 
         expect(() =>
-          SecurityService.promotions.hasAccessToPromotionOption(
-            {promotionOptionId,
-            userId,}
-          )).to.not.throw(SECURITY_ERROR);
+          SecurityService.promotions.hasAccessToPromotionOption({
+            promotionOptionId,
+            userId,
+          })).to.not.throw(SECURITY_ERROR);
       });
     });
   });

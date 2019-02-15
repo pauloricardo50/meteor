@@ -30,10 +30,12 @@ export default compose(
   withProps(({ user: { _id: userId }, setLoading }) => ({
     generateToken: (event) => {
       event.preventDefault();
-      const confirm = window.confirm('Êtes-vous sûr de vouloir regénérer une clé API ?');
+      const confirm = window.confirm("Êtes-vous sûr de vouloir regénérer une clé API ? L'ancienne clé sera immédiatement annulée.");
       if (confirm) {
         setLoading(true);
-        return generateApiToken.run({ userId }).then(() => setLoading(false));
+        return generateApiToken
+          .run({ userId })
+          .finally(() => setLoading(false));
       }
 
       return Promise.resolve();

@@ -7,9 +7,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 import fetch from 'node-fetch';
 
-import {
-  PROMOTION_STATUS,
-} from '../../../../constants';
+import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
@@ -62,7 +60,7 @@ const setupPromotion = () => {
   PromotionService.setUserPermissions({
     promotionId,
     userId: user._id,
-    permissions: {canInviteCustomers: true},
+    permissions: { canInviteCustomers: true },
   });
   PromotionService.update({
     promotionId,
@@ -123,7 +121,8 @@ describe('REST: inviteUserToPromotion', function () {
       inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          message: 'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
+          message:
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
           status: 500,
         },
       }));
@@ -140,7 +139,8 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 500,
-          message: 'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
+          message:
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });
@@ -159,7 +159,7 @@ describe('REST: inviteUserToPromotion', function () {
         expectedResponse: {
           status: 500,
           message:
-            "Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]",
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });

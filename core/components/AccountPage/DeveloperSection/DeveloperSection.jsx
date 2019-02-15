@@ -2,13 +2,13 @@
 import React from 'react';
 
 import GenerateApiToken from './GenerateApiToken';
-import DevelopperSectionContainer from './DevelopperSectionContainer';
+import DeveloperSectionContainer from './DeveloperSectionContainer';
 
-type DevelopperSectionProps = {
+type DeveloperSectionProps = {
   user: Object,
 };
 
-const DevelopperSection = ({ user }: DevelopperSectionProps) => (
+const DeveloperSection = ({ user }: DeveloperSectionProps) => (
   <div className="developper-section card1 animated fadeIn">
     <h2>Zone développeurs</h2>
     <p>
@@ -20,4 +20,4 @@ const DevelopperSection = ({ user }: DevelopperSectionProps) => (
   </div>
 );
 
-export default DevelopperSectionContainer(DevelopperSection);
+export default DeveloperSectionContainer(DeveloperSection);

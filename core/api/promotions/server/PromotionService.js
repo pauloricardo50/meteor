@@ -1,20 +1,24 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import { PROMOTION_PERMISSIONS_BUNDLES } from 'imports/core/api/constants';
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
 import FileService from '../../files/server/FileService';
 import CollectionService from '../../helpers/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../../constants';
+import {
+  ROLES,
+  PROMOTION_PERMISSIONS_BUNDLES,
+  PROMOTION_STATUS,
+  PROMOTION_PERMISSIONS,
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+} from '../../constants';
 import { sendEmail } from '../../email/methodDefinitions';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Promotions from '../promotions';
-import { PROMOTION_STATUS, PROMOTION_PERMISSIONS } from '../promotionConstants';
 
 export class PromotionService extends CollectionService {
   constructor() {
@@ -32,7 +36,7 @@ export class PromotionService extends CollectionService {
       userLinks: [
         {
           _id: userId,
-          permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+          permissions: PROMOTION_PERMISSIONS_FULL_ACCESS,
         },
       ],
     });

@@ -1,5 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-
 import { PROMOTION_STATUS, ROLES } from '../constants';
 import SecurityService from './Security';
 import {
@@ -67,7 +65,7 @@ export const isAllowedToInviteCustomersToPromotion = ({
 export const isAllowedToRemoveCustomerFromPromotion = ({
   promotion,
   currentUser,
-  customerOwningGroup,
+  customerOwnerType,
 }) => {
   const { _id: userId } = currentUser;
   if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
@@ -80,7 +78,7 @@ export const isAllowedToRemoveCustomerFromPromotion = ({
   });
   return (
     isAllowedToInviteCustomersToPromotion({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwningGroup, permissions })
+    && !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -156,10 +154,7 @@ export const isAllowedToRemovePromotionLots = ({ promotion, currentUser }) => {
 
 export const isAllowedToBookPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = {
-    canViewPromotion: true,
-    canBookLots: true,
-  };
+  const permissions = { canViewPromotion: true, canBookLots: true };
 
   return checkPromotionPermissions({ promotion, userId, permissions });
 };
@@ -167,7 +162,7 @@ export const isAllowedToBookPromotionLots = ({ promotion, currentUser }) => {
 export const isAllowedToBookPromotionLotToCustomer = ({
   promotion,
   currentUser,
-  customerOwningGroup,
+  customerOwnerType,
 }) => {
   const { _id: userId } = currentUser;
   if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
@@ -180,7 +175,7 @@ export const isAllowedToBookPromotionLotToCustomer = ({
   });
   return (
     isAllowedToBookPromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwningGroup, permissions })
+    && !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
 
@@ -197,7 +192,7 @@ export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
 export const isAllowedToSellPromotionLotToCustomer = ({
   promotion,
   currentUser,
-  customerOwningGroup,
+  customerOwnerType,
 }) => {
   const { _id: userId } = currentUser;
   if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
@@ -210,6 +205,6 @@ export const isAllowedToSellPromotionLotToCustomer = ({
   });
   return (
     isAllowedToSellPromotionLots({ promotion, currentUser })
-    && !shouldAnonymize({ customerOwningGroup, permissions })
+    && !shouldAnonymize({ customerOwnerType, permissions })
   );
 };

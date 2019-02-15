@@ -20,7 +20,7 @@ import {
   isAllowedToSellPromotionLotToCustomer,
 } from '../clientSecurityHelpers';
 import LoanService from '../../loans/server/LoanService';
-import { getPromotionCustomerOwningGroup } from '../../promotions/server/promotionServerHelpers';
+import { getPromotionCustomerOwnerType } from '../../promotions/server/promotionServerHelpers';
 import { proPromotion, proUser, proLoans } from '../../fragments';
 import LotService from '../../lots/server/LotService';
 
@@ -48,6 +48,15 @@ class PromotionSecurity {
     }
   }
 
+  static getPromotionIdFromPromotionLot = ({ promotionLotId }) => {
+    const { promotion = {} } = PromotionLotService.safeFetchOne({
+      $filters: { _id: promotionLotId },
+      promotion: { _id: 1 },
+    });
+
+    return promotion._id;
+  };
+
   static hasAccessToPromotion({ promotionId, userId }) {
     try {
       this.isAllowedToView({ promotionId, userId });
@@ -62,12 +71,10 @@ class PromotionSecurity {
   }
 
   static hasAccessToPromotionLot({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
+    this.hasAccessToPromotion({
+      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
+      userId,
     });
-
-    this.hasAccessToPromotion({ promotionId: promotion._id, userId });
   }
 
   static hasAccessToPromotionOption({ promotionOptionId, userId }) {
@@ -170,7 +177,7 @@ class PromotionSecurity {
       ...proLoans(),
     });
 
-    const customerOwningGroup = getPromotionCustomerOwningGroup({
+    const customerOwnerType = getPromotionCustomerOwnerType({
       customerId: loan.user._id,
       userId,
       promotionId,
@@ -180,7 +187,7 @@ class PromotionSecurity {
       !isAllowedToRemoveCustomerFromPromotion({
         promotion,
         currentUser,
-        customerOwningGroup,
+        customerOwnerType,
       })
     ) {
       Security.handleUnauthorized('Vous ne pouvez pas supprimer ce client de cette promotion');
@@ -201,14 +208,10 @@ class PromotionSecurity {
       return;
     }
 
-    const {
-      promotion: { _id: promotionId },
-    } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
+    this.isAllowedToView({
+      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
+      userId,
     });
-
-    this.isAllowedToView({ promotionId, userId });
   }
 
   static isAllowedToViewPromotionOption({ promotionOptionId, userId }) {
@@ -227,31 +230,22 @@ class PromotionSecurity {
   }
 
   static isAllowedToModifyPromotionLot({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
+    this.isAllowedToModifyLots({
+      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
+      userId,
     });
-
-    this.isAllowedToModifyLots({ promotionId: promotion._id, userId });
   }
 
   static isAllowedToRemovePromotionLot({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
+    this.isAllowedToRemoveLots({
+      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
+      userId,
     });
-
-    this.isAllowedToRemoveLots({ promotionId: promotion._id, userId });
   }
 
   static isAllowedToBookLots({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
-    });
-
     this.checkPermissions({
-      promotionId: promotion._id,
+      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
       userId,
       checkingFunction: isAllowedToBookPromotionLots,
       errorMessage: 'Vous ne pouvez pas réserver des lots dans cette promotion',
@@ -273,7 +267,7 @@ class PromotionSecurity {
       ...proLoans(),
     });
 
-    const customerOwningGroup = getPromotionCustomerOwningGroup({
+    const customerOwnerType = getPromotionCustomerOwnerType({
       customerId: loan.user._id,
       userId,
       promotionId: promotion._id,
@@ -288,7 +282,7 @@ class PromotionSecurity {
       !isAllowedToBookPromotionLotToCustomer({
         promotion,
         currentUser,
-        customerOwningGroup,
+        customerOwnerType,
       })
     ) {
       Security.handleUnauthorized('Vous ne pouvez pas réserver de lot à ce client');
@@ -309,13 +303,8 @@ class PromotionSecurity {
   }
 
   static isAllowedToSellLots({ promotionLotId, userId }) {
-    const { promotion } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
-      promotion: { _id: 1 },
-    });
-
     this.checkPermissions({
-      promotionId: promotion._id,
+      promotionId: this.getPromotionIdFromPromotionLot({ promotionLotId }),
       userId,
       checkingFunction: isAllowedToSellPromotionLots,
       errorMessage: 'Vous ne pouvez pas vendre des lots dans cette promotion',
@@ -327,13 +316,9 @@ class PromotionSecurity {
       return;
     }
 
-    const { promotion } = PromotionLotService.safeFetchOne({
+    const { promotion, attributedTo } = PromotionLotService.safeFetchOne({
       $filters: { _id: promotionLotId },
       promotion: { _id: 1, users: { _id: 1 } },
-    });
-
-    const { attributedTo } = PromotionLotService.safeFetchOne({
-      $filters: { _id: promotionLotId },
       attributedTo: { _id: 1 },
     });
 
@@ -342,7 +327,7 @@ class PromotionSecurity {
       ...proLoans(),
     });
 
-    const customerOwningGroup = getPromotionCustomerOwningGroup({
+    const customerOwnerType = getPromotionCustomerOwnerType({
       customerId: loan.user._id,
       userId,
       promotionId: promotion._id,
@@ -357,7 +342,7 @@ class PromotionSecurity {
       !isAllowedToSellPromotionLotToCustomer({
         promotion,
         currentUser,
-        customerOwningGroup,
+        customerOwnerType,
       })
     ) {
       Security.handleUnauthorized('Vous ne pouvez pas vendre de lot à ce client');

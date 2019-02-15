@@ -14,8 +14,7 @@ import {
   TaskSecurity,
 } from '../../collections';
 import { ROLES } from '../../../users/userConstants';
-import { COLLECTIONS } from '../../../constants';
-import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { COLLECTIONS, PROPERTY_CATEGORY } from '../../../constants';
 
 describe('Security service', () => {
   let userId;

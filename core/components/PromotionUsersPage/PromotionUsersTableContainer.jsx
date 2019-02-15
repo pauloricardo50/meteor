@@ -11,7 +11,7 @@ import PromotionProgress from '../PromotionLotPage/PromotionProgress';
 import PriorityOrder from '../PromotionLotPage/PriorityOrder';
 import PromotionProgressHeader from './PromotionProgressHeader';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
-import { getPromotionCustomerOwningGroup } from '../../api/promotions/promotionClientHelpers';
+import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 import { CollectionIconLink } from '../IconLink';
@@ -49,40 +49,48 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     $metadata: { invitedBy },
   } = promotion;
 
-  const customerOwningGroup = getPromotionCustomerOwningGroup({
+  const customerOwnerType = getPromotionCustomerOwnerType({
     invitedBy,
     currentUser,
   });
 
   const invitedByName = (invitedBy
       && promotionUsers
-      && !!promotionUsers.length
-      && promotionUsers.find(({ _id }) => _id === invitedBy).name)
+      && (!!promotionUsers.length
+        && promotionUsers.find(({ _id }) => _id === invitedBy).name))
     || 'Personne';
 
   return [
-    Meteor.microservice === 'admin' ? (
-      <CollectionIconLink
-        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
-      />
-    ) : (
-      loanName
-    ),
+    {
+      raw: loanName,
+      label:
+        Meteor.microservice === 'admin' ? (
+          <CollectionIconLink
+            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          />
+        ) : (
+          loanName
+        ),
+    },
     user && user.name,
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-    Meteor.microservice === 'admin' ? (
-      <InvitedByAssignDropdown
-        promotionUsers={promotionUsers}
-        invitedBy={invitedBy}
-        invitedByName={invitedByName}
-        loanId={loanId}
-        promotionId={promotionId}
-      />
-    ) : (
-      invitedByName
-    ),
+    {
+      raw: invitedByName,
+      label:
+        Meteor.microservice === 'admin' ? (
+          <InvitedByAssignDropdown
+            promotionUsers={promotionUsers}
+            invitedBy={invitedBy}
+            invitedByName={invitedByName}
+            loanId={loanId}
+            promotionId={promotionId}
+          />
+        ) : (
+          invitedByName
+        ),
+    },
     {
       raw: promotionProgress.verificationStatus,
       label: <PromotionProgress promotionProgress={promotionProgress} />,
@@ -100,7 +108,7 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     isAllowedToRemoveCustomerFromPromotion({
       promotion,
       currentUser,
-      customerOwningGroup,
+      customerOwnerType,
     }) ? (
       <ConfirmMethod
           method={() => removeUserFromPromotion.run({ promotionId, loanId })}
