@@ -202,6 +202,29 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
         { id: 'value', type: 'textInput', money: true },
       ],
     },
+    {
+      type: 'conditionalInput',
+      conditionalTrueValue: true,
+      inputs: [
+        {
+          id: 'hasOwnCompany',
+          type: 'radioInput',
+          options: [true, false],
+        },
+        {
+          id: 'ownCompanies',
+          type: 'arrayInput',
+          required: false,
+          inputs: [
+            { id: 'description', type: 'textInput' },
+            { id: 'ownership', type: 'textInput', percent: true },
+            { id: 'netIncome2018', type: 'textInput', money: true },
+            { id: 'netIncome2017', type: 'textInput', money: true },
+            { id: 'netIncome2016', type: 'textInput', money: true },
+          ],
+        },
+      ],
+    },
   ];
 
   const fortuneArray = [

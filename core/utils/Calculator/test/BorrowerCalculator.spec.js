@@ -419,7 +419,6 @@ describe('BorrowerCalculator', () => {
           isSwiss: false,
           isUSPerson: false,
           lastName: 'asdfasd',
-          logic: { adminValidated: false },
           otherFortune: [],
           otherIncome: [],
           realEstate: [],

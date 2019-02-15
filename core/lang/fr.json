@@ -1,4 +1,12 @@
 {
+  "Forms.hasOwnCompany": "Travaillez-vous pour votre propre entreprise?",
+  "Forms.ownCompanies": "Entreprises",
+  "Forms.ownCompanies.description": "Description",
+  "Forms.ownCompanies.description.placeholder": "Nom de votre entreprise",
+  "Forms.ownCompanies.ownership": "% de parts dans la société",
+  "Forms.ownCompanies.netIncome2018": "Bénéfice net 2018",
+  "Forms.ownCompanies.netIncome2017": "Bénéfice net 2017",
+  "Forms.ownCompanies.netIncome2016": "Bénéfice net 2016",
   "PercentWithStatus.max": "Max: {max}",
   "Forms.netSalary": "Revenus nets annuels",
   "Forms.adminComments": "Commentaires pour admins",
