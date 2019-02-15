@@ -89,73 +89,82 @@ const shouldAnonymize = ({
   });
 };
 
-export const handleLoansAnonymization = ({
-  loans = [],
+export const makeLoanAnonymizer = ({
   userId,
   promotionId,
   promotionLotId,
   anonymize,
-}) =>
-  loans.map((loan) => {
+}) => {
+  let permissions;
+  let promotionLotStatus;
+
+  if (anonymize === undefined) {
+    permissions = getUserPromotionPermissions({ userId, promotionId });
+    promotionLotStatus = promotionLotId && getPromotionLotStatus({ promotionLotId });
+  }
+
+  return (loan) => {
     const { user = {}, ...rest } = loan;
     const { _id: customerId } = user;
+
+    const customerOwnerType = getPromotionCustomerOwnerType({
+      customerId,
+      promotionId,
+      userId,
+    });
+
+    const anonymizeUser = anonymize === undefined
+      ? clientShouldAnonymize({
+        customerOwnerType,
+        permissions,
+        promotionLotStatus,
+      })
+      : anonymize;
+
     return {
-      user:
-        anonymize
-        || shouldAnonymize({
-          customerId,
-          userId,
-          promotionId,
-          promotionLotId,
-        })
-          ? ANONYMIZED_USER
-          : user,
+      user: anonymizeUser ? ANONYMIZED_USER : user,
       ...rest,
     };
+  };
+};
+
+export const makePromotionLotAnonymizer = ({ userId }) => (promotionLot) => {
+  const { attributedTo, ...rest } = promotionLot;
+  const {
+    _id: promotionLotId,
+    promotion: { _id: promotionId },
+  } = promotionLot;
+  const [loan] = [attributedTo]
+    .filter(x => x)
+    .map(makeLoanAnonymizer({ userId, promotionId, promotionLotId }));
+  return { attributedTo: loan, ...rest };
+};
+
+export const makePromotionOptionAnonymizer = ({
+  userId,
+}) => (promotionOption) => {
+  const { loan, custom, ...rest } = promotionOption;
+  const {
+    promotionLots,
+    promotion: { _id: promotionId },
+  } = promotionOption;
+  const { _id: promotionLotId } = promotionLots[0];
+
+  const anonymize = shouldAnonymize({
+    customerId: loan.user._id,
+    userId,
+    promotionId,
+    promotionLotId,
   });
 
-export const handlePromotionLotsAnonymization = ({
-  promotionLots = [],
-  userId,
-}) =>
-  promotionLots.map((promotionLot) => {
-    const { attributedTo, ...rest } = promotionLot;
-    const [loan] = handleLoansAnonymization({
-      loans: [attributedTo].filter(x => x),
-      userId,
-      promotionId: promotionLot.promotion._id,
-      promotionLotId: promotionLot._id,
-    });
-    return { attributedTo: loan, ...rest };
-  });
-
-export const handlePromotionOptionsAnonymization = ({
-  promotionOptions = [],
-  userId,
-}) =>
-  promotionOptions.map((promotionOption) => {
-    const { loan, custom, ...rest } = promotionOption;
-    const {
-      promotionLots,
-      promotion: { _id: promotionId },
-    } = promotionOption;
-    const { _id: promotionLotId } = promotionLots[0];
-    const anonymize = shouldAnonymize({
-      customerId: loan.user._id,
+  return {
+    loan: makeLoanAnonymizer({
       userId,
       promotionId,
       promotionLotId,
-    });
-
-    return {
-      loan: handleLoansAnonymization({
-        loans: [loan],
-        userId,
-        promotionId,
-        promotionLotId,
-        anonymize,
-      })[0],
-      custom: anonymize ? ANONYMIZED_STRING : custom,
-      ...rest,
-    };
-  });
+      anonymize,
+    })(loan),
+    custom: anonymize ? ANONYMIZED_STRING : custom,
+    ...rest,
+  };
+};

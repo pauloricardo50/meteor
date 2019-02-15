@@ -2,7 +2,7 @@ import SecurityService from '../../security';
 import query from './proPromotionOptions';
 import PromotionOptionService from '../server/PromotionOptionService';
 import { proPromotionOption } from '../../fragments';
-import { handlePromotionOptionsAnonymization } from '../../promotions/server/promotionServerHelpers';
+import { makePromotionOptionAnonymizer } from '../../promotions/server/promotionServerHelpers';
 
 query.expose({
   firewall(userId, params) {
@@ -23,12 +23,12 @@ query.resolve(({ userId, promotionOptionIds }) => {
   const promotionOptions = PromotionOptionService.fetch({
     $filters: { _id: { $in: promotionOptionIds } },
     ...proPromotionOption(),
-  });
+  }) || [];
 
   try {
     SecurityService.checkCurrentUserIsAdmin();
     return promotionOptions;
   } catch (error) {
-    return handlePromotionOptionsAnonymization({ promotionOptions, userId });
+    return promotionOptions.map(makePromotionOptionAnonymizer({ userId }));
   }
 });

@@ -1,7 +1,7 @@
 import SecurityService from '../../security';
 import { proPromotions } from '../../fragments';
 import PromotionService from '../server/PromotionService';
-import { handlePromotionLotsAnonymization } from '../server/promotionServerHelpers';
+import { makePromotionLotAnonymizer } from '../server/promotionServerHelpers';
 import query from './proPromotions';
 
 query.expose({
@@ -23,12 +23,9 @@ query.resolve(({ userId }) => {
     return promotions;
   } catch (error) {
     return promotions.map((promotion) => {
-      const { promotionLots, ...rest } = promotion;
+      const { promotionLots = [], ...rest } = promotion;
       return {
-        promotionLots: handlePromotionLotsAnonymization({
-          promotionLots,
-          userId,
-        }),
+        promotionLots: promotionLots.map(makePromotionLotAnonymizer({ userId })),
         ...rest,
       };
     });

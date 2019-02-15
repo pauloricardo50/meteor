@@ -1,4 +1,4 @@
-import { handlePromotionLotsAnonymization } from '../../promotions/server/promotionServerHelpers';
+import { makePromotionLotAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import SecurityService from '../../security';
 import { proPromotionLot } from '../../fragments';
 import PromotionLotService from '../server/PromotionLotService';
@@ -27,9 +27,6 @@ query.resolve(({ userId, promotionLotId }) => {
     SecurityService.checkCurrentUserIsAdmin(userId);
     return [promotionLot];
   } catch (error) {
-    return handlePromotionLotsAnonymization({
-      promotionLots: [promotionLot],
-      userId,
-    });
+    return [promotionLot].map(makePromotionLotAnonymizer({ userId }));
   }
 });

@@ -1,5 +1,5 @@
 // import LoanService from 'core/api/loans/server/LoanService';
-import { handleLoansAnonymization } from '../../promotions/server/promotionServerHelpers';
+import { makeLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
@@ -28,6 +28,6 @@ query.resolve(({ userId, promotionId }) => {
     SecurityService.checkUserIsAdmin(userId);
     return loans;
   } catch (error) {
-    return handleLoansAnonymization({ loans, userId, promotionId });
+    return loans.map(makeLoanAnonymizer({ userId, promotionId }));
   }
 });
