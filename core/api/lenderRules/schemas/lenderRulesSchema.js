@@ -27,7 +27,6 @@ export const incomeConsideration = {
   },
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
-  pensionIncomeConsideration: percentageField,
   realEstateIncomeConsideration: percentageField,
   realEstateIncomeConsiderationType: {
     type: String,
