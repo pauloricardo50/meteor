@@ -94,7 +94,7 @@ const FinancingSection = ({
 };
 
 export default compose(
-  withState('expanded', 'changeExpanded', false),
+  withState('expanded', 'changeExpanded', true),
   lifecycle({
     componentDidMount() {
       const { changeExpanded } = this.props;

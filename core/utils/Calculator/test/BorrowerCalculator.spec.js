@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator, { Calculator as CalculatorClass } from '..';
-import { BORROWER_DOCUMENTS, STEPS, GENDER } from 'core/api/constants';
+import { STEPS, GENDER } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
 
@@ -399,6 +399,20 @@ describe('BorrowerCalculator', () => {
         },
       })).to.equal(0);
     });
+
+    it('adds fortuneReturns if they exist', () => {
+      const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
+      expect(calc.getTotalIncome({
+        borrowers: {
+          bankFortune: 100,
+          salary: 1,
+          bonusExists: true,
+          bonus2018: 2, // Adds 1
+          otherIncome: [{ value: 3 }],
+          expenses: [{ value: 5 }], // Subtracts 5
+        },
+      })).to.equal(1);
+    });
   });
 
   describe('personalInfoPercent', () => {
@@ -454,7 +468,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getYearsToRetiement', () => {
+  describe('getYearsToRetirement', () => {
     it('returns the proper difference for a male', () => {
       expect(Calculator.getRetirement({
         borrowers: [{ age: 25, gender: GENDER.M }],
@@ -465,6 +479,23 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getRetirement({
         borrowers: [{ age: 70, gender: GENDER.M }],
       })).to.equal(0);
+    });
+  });
+
+  describe('getFortuneReturns', () => {
+    it('returns 0 if the ratio is not set', () => {
+      expect(Calculator.getFortuneReturns({
+        borrowers: [{ bankFortune: 100 }],
+      })).to.equal(0);
+    });
+
+    it('returns some revenue if the constant is set', () => {
+      const calc = new CalculatorClass({
+        fortuneReturnsRatio: 0.01,
+      });
+      expect(calc.getFortuneReturns({
+        borrowers: [{ bankFortune: 100 }],
+      })).to.equal(1);
     });
   });
 });

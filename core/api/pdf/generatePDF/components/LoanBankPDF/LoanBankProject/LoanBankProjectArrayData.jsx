@@ -77,7 +77,7 @@ export const structureArrayData = (loan) => {
   return [
     {
       label: <T id="PDF.projectInfos.structure.propertyValue" />,
-      data: toMoney(Calculator.getPropertyValue({ loan })),
+      data: toMoney(Calculator.selectPropertyValue({ loan })),
     },
     {
       label: <T id="PDF.projectInfos.structure.notaryFees" />,

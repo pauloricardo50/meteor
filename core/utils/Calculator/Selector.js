@@ -34,6 +34,21 @@ export const withSelector = (SuperClass = class {}) =>
       return {};
     }
 
+    selectOffer({ loan, structureId }) {
+      const { offers = [] } = loan;
+      const { offerId, offer } = this.selectStructure({ loan, structureId });
+
+      if (offer) {
+        return offer;
+      }
+
+      if (!offerId) {
+        return undefined;
+      }
+
+      return offers.find(({ _id }) => _id === offerId);
+    }
+
     selectStructure({ loan, structureId } = {}): {} {
       if (structureId) {
         return loan.structures.find(({ id }) => id === structureId);
@@ -62,7 +77,7 @@ export const withSelector = (SuperClass = class {}) =>
     makeSelectStructureKey(key: string): Function {
       return createSelector(
         this.selectStructure,
-        structure => structure[key],
+        structure => structure && structure[key],
       );
     }
 
@@ -75,10 +90,11 @@ export const withSelector = (SuperClass = class {}) =>
         loan,
         structureId,
       });
+      console.log('structurePropertyValue:', structurePropertyValue);
       return (
         structurePropertyValue
-        || this.makeSelectPropertyKey('totalValue')({ loan, structureId })
-        || this.makeSelectPropertyKey('value')({ loan, structureId })
+        || this.selectPropertyKey({ loan, structureId, key: 'totalValue' })
+        || this.selectPropertyKey({ loan, structureId, key: 'value' })
       );
     }
 

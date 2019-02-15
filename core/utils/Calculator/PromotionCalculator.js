@@ -101,7 +101,7 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
 
       const promotion = promotions[0];
 
-      return promotion.type === PROMOTION_TYPES.CREDIT;
+      return promotion.type === PROMOTION_TYPES.SHARE;
     }
   };
 

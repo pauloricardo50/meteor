@@ -12,7 +12,7 @@ import S3Service from './S3Service';
 deleteFile.setHandler((context, { collection, docId, fileKey }) => {
   context.unblock();
   if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService[collection].isAllowedToUpdate(docId);
+    SecurityService[collection].isAllowedToUpdate(docId, context.userId);
     S3Service.isAllowedToAccess(fileKey);
   }
 
@@ -21,13 +21,13 @@ deleteFile.setHandler((context, { collection, docId, fileKey }) => {
 
 setFileStatus.setHandler((context, { collection, docId, fileKey, newStatus }) => {
   context.unblock();
-  SecurityService[collection].isAllowedToUpdate(docId);
+  SecurityService[collection].isAllowedToUpdate(docId, context.userId);
   FileService.setFileStatus(fileKey, newStatus);
 });
 
 setFileError.setHandler((context, { collection, docId, fileKey, error }) => {
   context.unblock();
-  SecurityService[collection].isAllowedToUpdate(docId);
+  SecurityService[collection].isAllowedToUpdate(docId, context.userId);
   FileService.setFileError(fileKey, error);
 });
 

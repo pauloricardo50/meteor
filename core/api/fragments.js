@@ -213,6 +213,7 @@ export const loan = () => ({
     name: 1,
     address: 1,
     contacts: 1,
+    type: 1,
   },
   properties: { totalValue: 1, address1: 1 },
   propertyIds: 1,

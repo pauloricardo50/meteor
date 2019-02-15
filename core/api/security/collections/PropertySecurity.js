@@ -8,24 +8,24 @@ class PropertySecurity {
     Security.checkLoggedIn();
   }
 
-  static checkBelongsToPromotion(propertyId) {
+  static checkBelongsToPromotion(propertyId, userId) {
     const promotion = Promotions.findOne({ 'propertyLinks._id': propertyId });
     if (promotion) {
-      PromotionSecurity.isAllowedToUpdate(promotion._id);
+      PromotionSecurity.isAllowedToUpdate(promotion._id, userId);
       return;
     }
 
     Security.handleUnauthorized('Not allowed to modify promotion property');
   }
 
-  static isAllowedToUpdate(propertyId) {
+  static isAllowedToUpdate(propertyId, userId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
     if (Security.currentUserHasRole(ROLES.PRO)) {
       // Check if this property belongs to one of his promotions
-      this.checkBelongsToPromotion(propertyId);
+      this.checkBelongsToPromotion(propertyId, userId);
       return;
     }
 

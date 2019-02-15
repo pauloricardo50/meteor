@@ -29,6 +29,8 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         lenderRules,
       });
       this.applyRules(secondaryRules);
+
+      this.cleanUpUnusedRules();
     }
 
     getLenderRulesVariables({ loan, structureId }) {
@@ -113,5 +115,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           this[rule] = rules[rule];
         }
       });
+    }
+
+    cleanUpUnusedRules() {
+      this.maxIncomeRatioTight = 0;
+      this.maxBorrowRatioWithPledge = 0;
     }
   };

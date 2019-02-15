@@ -1,31 +1,14 @@
 // @flow
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
+import Calculator from 'core/utils/Calculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
 import { getPropertyValue } from './FinancingOwnFunds/ownFundsHelpers.js';
 
-export const getProperty = ({
-  structure: { propertyId, promotionOptionId },
-  properties,
-  promotionOptions,
-}) => {
-  if (propertyId) {
-    return properties.find(({ _id }) => _id === propertyId);
-  }
-  if (promotionOptionId) {
-    return promotionOptions.find(({ _id }) => _id === promotionOptionId);
-  }
+export const getProperty = ({ loan, structureId }) =>
+  Calculator.selectProperty({ loan, structureId });
 
-  return {};
-};
-
-export const getOffer = ({ structure: { offerId }, offers }) => {
-  if (offerId) {
-    return offers.find(({ _id }) => _id === offerId);
-  }
-
-  return {};
-};
+export const getOffer = ({ structureId, loan }) =>
+  Calculator.selectOffer({ loan, structureId });
 
 export const getAmortizationRateMapper = (data) => {
   const {
@@ -38,11 +21,11 @@ export const getAmortizationRateMapper = (data) => {
 
 const argumentMappings = {
   getIncomeRatio: data => ({
-    monthlyIncome: BorrowerCalculator.getTotalIncome(data) / 12,
+    monthlyIncome: Calculator.getTotalIncome(data) / 12,
     monthlyPayment: Calc.getTheoreticalMonthly({
       propAndWork: getPropertyValue(data) + data.structure.propertyWork,
       loanValue: data.structure.wantedLoan,
-      amortizationRate: Calc.getAmortizationRateBase(getAmortizationRateMapper(data)),
+      amortizationRate: Calc.getAmortizationRate(data),
     }).total,
   }),
 
@@ -58,19 +41,21 @@ const argumentMappings = {
 
   getAmortizationRateBase: getAmortizationRateMapper,
 
-  getInterestsWithTranches: ({
-    structure: { loanTranches, offerId },
-    loan: { currentInterestRates },
-    offer,
-    offers,
-  }) => {
+  getInterestsWithTranches: ({ structureId, loan, offer }) => {
+    const { loanTranches, offerId } = Calculator.selectStructure({
+      loan,
+      structureId,
+    });
     let interestRates;
     if (offer) {
       interestRates = offer;
     } else if (offerId) {
-      interestRates = offerId && offers.find(({ _id }) => _id === offerId);
+      interestRates = Calculator.selectOffer({
+        loan,
+        structureId,
+      });
     } else {
-      interestRates = currentInterestRates;
+      interestRates = loan.currentInterestRates;
     }
 
     return { tranches: loanTranches, interestRates };

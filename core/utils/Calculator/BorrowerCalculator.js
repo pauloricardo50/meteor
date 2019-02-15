@@ -258,12 +258,21 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.sumValues({ borrowers, keys: 'netSalary' });
     }
 
+    getFortuneReturns({ borrowers }) {
+      if (this.fortuneReturnsRatio) {
+        return this.fortuneReturnsRatio * this.getFortune({ borrowers });
+      }
+
+      return 0;
+    }
+
     getTotalIncome({ borrowers }) {
       const sum = arrayify(borrowers).reduce((total, borrower) => {
         let borrowerIncome = 0;
         borrowerIncome += borrower.salary || 0;
         borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
+        borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
         borrowerIncome -= this.getExpenses({ borrowers: borrower }) || 0;
         return total + borrowerIncome;
       }, 0);

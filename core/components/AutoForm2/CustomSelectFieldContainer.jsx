@@ -60,8 +60,10 @@ export default (Component) => {
     };
 
     formatOption = (option) => {
-      const { intlId, name } = this.props;
-      return <T id={`Forms.${intlId || name}.${option}`} />;
+      const { allowedValuesIntlId, intlId, name } = this.props;
+      return (
+        <T id={`Forms.${allowedValuesIntlId || intlId || name}.${option}`} />
+      );
     };
 
     renderValue = (value) => {
