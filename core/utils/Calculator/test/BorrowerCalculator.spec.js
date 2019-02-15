@@ -443,6 +443,8 @@ describe('BorrowerCalculator', () => {
           salary: 100,
           netSalary: 80,
           bankFortune: 1000,
+          hasOwnCompany: false,
+          ownCompanies: [],
         },
       })).to.equal(1);
     });
@@ -496,6 +498,22 @@ describe('BorrowerCalculator', () => {
       expect(calc.getFortuneReturns({
         borrowers: [{ bankFortune: 100 }],
       })).to.equal(1);
+    });
+  });
+
+  describe('getTheoreticalExpenses', () => {
+    it('adds up expenses for real estate', () => {
+      // 12k maintenance, 48k interests, 12k amort
+      expect(Calculator.getTheoreticalExpenses({
+        borrowers: [{ realEstate: [{ value: 1200000, loan: 960000 }] }],
+      })).to.equal(6000);
+    });
+
+    it('counts no amortization if the loan is below amortizationGoal', () => {
+      // 12k maintenance, 39k interests, 0 amort
+      expect(Calculator.getTheoreticalExpenses({
+        borrowers: [{ realEstate: [{ value: 1200000, loan: 780000 }] }],
+      })).to.equal(4250);
     });
   });
 });

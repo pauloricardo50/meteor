@@ -339,6 +339,31 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         [],
       );
     }
+
+    getTheoreticalExpenses({ borrowers }) {
+      const realEstate = borrowers.reduce(
+        (arr, borrower) => [...arr, ...borrower.realEstate],
+        [],
+      );
+      const realEstateCost = realEstate.reduce(
+        (tot, obj) => tot + this.getRealEstateCost(obj),
+        0,
+      );
+
+      return realEstateCost;
+    }
+
+    getRealEstateCost({ loan, value }) {
+      const amortizationRate = this.getAmortizationRateBase({
+        borrowRatio: super.getBorrowRatio({ loan, propertyValue: value }),
+      });
+
+      return super.getTheoreticalMonthly({
+        propAndWork: value,
+        loanValue: loan,
+        amortizationRate,
+      }).total;
+    }
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);
