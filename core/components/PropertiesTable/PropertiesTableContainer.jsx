@@ -1,6 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { compose, mapProps } from 'recompose';
 
+import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
 import proProperties from '../../api/properties/queries/proProperties';
 import T, { Money } from '../Translation';
@@ -13,7 +15,8 @@ const columnOptions = [
   { id: 'value' },
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 
-const mapProperty = ({ address1, status, totalValue }) => ({
+const makeMapProperty = history => ({ _id, address1, status, totalValue }) => ({
+  id: _id,
   columns: [
     address1,
     {
@@ -22,6 +25,8 @@ const mapProperty = ({ address1, status, totalValue }) => ({
     },
     { raw: totalValue, label: <Money value={totalValue} /> },
   ],
+  handleClick: () =>
+    history.push(createRoute('/properties/:propertyId', { propertyId: _id })),
 });
 
 export default compose(
@@ -31,8 +36,9 @@ export default compose(
     renderMissingDoc: false,
     dataName: 'properties',
   }),
-  mapProps(({ properties }) => ({
-    rows: properties.map(mapProperty),
+  withRouter,
+  mapProps(({ properties, history }) => ({
+    rows: properties.map(makeMapProperty(history)),
     columnOptions,
   })),
 );

@@ -1,4 +1,11 @@
 {
+  "files.propertyDocuments": "Documents du bien immobilier",
+  "files.propertyImage": "Image du bien immobilier",
+  "ProPropertyPage.manageDocuments": "Gérer documents",
+  "ProDashboardPage.properties": "Biens immobiliers",
+  "PropertiesTable.address": "Adresse",
+  "PropertiesTable.status": "Statut",
+  "PropertiesTable.value": "Prix d'achat",
   "PercentWithStatus.max": "Max: {max}",
   "Forms.netSalary": "Revenus nets annuels",
   "Forms.netSalary.placeholder": "CHF 80 000",

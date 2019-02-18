@@ -13,7 +13,7 @@ import { PRO_PROPERTY_PAGE } from '../../../startup/client/proRoutes';
 
 type PropertyAdderProps = {};
 
-const proPropertySchema = new SimpleSchema({
+export const proPropertySchema = new SimpleSchema({
   address1: String,
   address2: { type: String, optional: true },
   city: String,

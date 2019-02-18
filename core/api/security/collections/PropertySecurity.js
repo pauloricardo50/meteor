@@ -41,6 +41,11 @@ class PropertySecurity {
     const property = Properties.findOne(propertyId);
     Security.checkOwnership(property);
   }
+
+  static isAllowedToRead(propertyId, userId) {
+    // TODO
+    return true;
+  }
 }
 
 export default PropertySecurity;
