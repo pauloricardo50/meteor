@@ -22,7 +22,7 @@ describe('Promotion pages', () => {
     cy.refetch();
     cy.contains('En cours').click();
 
-    cy.contains('Voir tous les utilisateurs').click();
+    cy.contains('Voir tous les clients').click();
 
     cy.get('tbody')
       .find('tr')
