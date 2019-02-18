@@ -9,9 +9,7 @@ import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
   ROLES,
-  PROMOTION_PERMISSIONS_BUNDLES,
   PROMOTION_STATUS,
-  PROMOTION_PERMISSIONS,
   PROMOTION_PERMISSIONS_FULL_ACCESS,
 } from '../../constants';
 import { sendEmail } from '../../email/methodDefinitions';
@@ -36,7 +34,7 @@ export class PromotionService extends CollectionService {
       userLinks: [
         {
           _id: userId,
-          permissions: PROMOTION_PERMISSIONS_FULL_ACCESS,
+          permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
         },
       ],
     });

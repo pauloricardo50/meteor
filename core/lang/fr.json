@@ -43,6 +43,7 @@
   "Forms.bundles.CONSULTATION": "Consultation",
   "Forms.bundles.MODIFICATION": "Modification",
   "Forms.bundles.BOOKING": "Réservation",
+  "Forms.bundles.SELLING": "Vente",
   "Forms.bundles": "Packages",
   "Forms.useBundles": "Utiliser des packages de permissions",
   "AccountPage.DeveloperSection.show": "Zone développeur",
