@@ -7,7 +7,6 @@ import {
   address,
   mortgageNoteLinks,
   moneyField,
-  roundedInteger,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
