@@ -4,7 +4,7 @@ import T from 'core/components/Translation';
 import PageHead from 'core/components/PageHead';
 import WwwLayout from '../../WwwLayout';
 import { VARIANTS } from '../../WwwLayout/WwwTopNav';
-import WwwInterestRatesTable from './WwwInterestRatesTable';
+import WwwInterestRatesTable from './WwwInterestRatesTabl';
 
 const InterestsPage = () => (
   <WwwLayout className="interests-page">

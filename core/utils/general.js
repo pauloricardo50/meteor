@@ -42,6 +42,8 @@ export const getPercent = (array) => {
   return Number.isFinite(percent) ? percent : 0;
 };
 
+// Given multiple objects of the form { percent, count },
+// Merge them together with a single count and percent
 export const getAggregatePercent = (percentageObjects) => {
   const {
     percent: aggregatePercent,
