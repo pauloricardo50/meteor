@@ -40,7 +40,6 @@ describe('Pro', () => {
       cy.contains('Chemin Auguste-Vilbert 14, 1218 Le Grand-Saconnex').should('exist');
 
       cy.contains('Préparation').should('exist');
-      cy.get('.buttons > span button').should('be.disabled');
     });
 
     context('with an existing promotion', () => {

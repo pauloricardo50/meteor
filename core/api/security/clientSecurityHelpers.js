@@ -84,6 +84,7 @@ export const isAllowedToRemoveCustomerFromPromotion = ({
     currentUser,
     promotionId,
   });
+
   return (
     isAllowedToInviteCustomersToPromotion({ promotion, currentUser })
     && !shouldAnonymize({ customerOwnerType, permissions })

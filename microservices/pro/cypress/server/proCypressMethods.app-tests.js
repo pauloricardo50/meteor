@@ -38,6 +38,6 @@ Meteor.methods({
     });
   },
   insertFullPromotion() {
-    createPromotionDemo(this.userId, false, false, 10);
+    createPromotionDemo(this.userId, false, false, 10, true);
   },
 });
