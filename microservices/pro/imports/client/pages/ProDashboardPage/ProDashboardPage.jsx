@@ -2,8 +2,8 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
+import { ProPropertyAdder } from 'core/components/ProPropertyPage/ProPropertyForm';
 import PromotionAdder from './PromotionAdder';
-import PropertyAdder from './PropertyAdder';
 import ProPromotionsTable from './ProPromotionsTable';
 import ProPropertiesTable from './ProPropertiesTable';
 
@@ -16,7 +16,7 @@ const ProDashboardPage = (props: ProDashboardPageProps) => (
     </h1>
     <div className="buttons">
       <PromotionAdder />
-      <PropertyAdder />
+      <ProPropertyAdder />
     </div>
 
     <ProPromotionsTable />

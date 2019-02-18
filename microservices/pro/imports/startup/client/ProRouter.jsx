@@ -15,12 +15,12 @@ import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import PasswordResetPage from 'core/components/PasswordResetPage';
 import EmailVerificationPage from 'core/components/EmailVerificationPage';
 import AccountPage from 'core/components/AccountPage';
+import ProPropertyPage from 'core/components/ProPropertyPage/loadable';
 import ProLayout from '../../client/layout';
 import messagesFR from '../../../lang/fr.json';
 import * as ROUTES from './proRoutes';
 import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
 import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
-import ProPropertyPage from '../../client/pages/ProPropertyPage/loadable';
 import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
 import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
 

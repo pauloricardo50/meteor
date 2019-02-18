@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { Money } from 'core/components/Translation';
-import PropertyModifier from './PropertyModifier';
+import { ProPropertyModifier } from './ProPropertyForm';
 import PropertyDocumentsManager from './PropertyDocumentsManager';
 import PropertyCustomerAdder from './PropertyCustomerAdder';
 
@@ -21,7 +21,7 @@ const ProPropertyPageHeader = ({ property }: ProPropertyPageHeaderProps) => {
           <Money value={totalValue} />
         </h3>
       </div>
-      <PropertyModifier property={property} />
+      <ProPropertyModifier property={property} />
       <PropertyDocumentsManager property={property} />
       <PropertyCustomerAdder />
     </div>
