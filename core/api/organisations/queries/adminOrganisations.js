@@ -8,20 +8,13 @@ const makeFilter = ({ param, field, filters }) => {
   }
 };
 
-const makeRegexFilter = ({ param, field, filters }) => {
-  if (param && typeof param === 'string') {
-    filters[field] = { $regex: `.*${param}.*`, $options: 'i' };
-  }
-};
-
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.ADMIN_ORGANISATIONS,
   {
-    $filter({ filters, params: { features, tags, type, name } }) {
+    $filter({ filters, params: { features, tags, type } }) {
       makeFilter({ param: features, field: 'features', filters });
       makeFilter({ param: tags, field: 'tags', filters });
       makeFilter({ param: type, field: 'type', filters });
-      makeRegexFilter({ param: name, field: 'name', filters });
     },
     $options: { sort: { name: 1 } },
     ...fullOrganisation(),
