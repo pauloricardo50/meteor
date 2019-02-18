@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import { Promotions, Users } from '../../..';
-import { up, down } from '../4';
+import { up, down, PERMISSIONS } from '../4';
 
 describe('Migration 4', () => {
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe('Migration 4', () => {
         Promotions.find().forEach(({ userLinks }) => {
           userLinks.forEach(({ permissions }) => {
             expect(typeof permissions).to.equal('object');
-            expect(Object.keys(permissions).length).to.equal(0);
+            expect(permissions).to.deep.equal(PERMISSIONS);
           });
         }));
     });

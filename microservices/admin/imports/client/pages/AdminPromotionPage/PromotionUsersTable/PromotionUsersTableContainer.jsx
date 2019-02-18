@@ -48,9 +48,13 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
           className="impersonate-link"
         />
         <IconButton
-          onClick={() =>
-            removeProFromPromotion.run({ promotionId, userId: _id })
-          }
+          onClick={() => {
+            const confirm = window.confirm(`Supprimer ${name} de la promotion ?`);
+            if (confirm) {
+              return removeProFromPromotion.run({ promotionId, userId: _id });
+            }
+            return Promise.resolve();
+          }}
           type="close"
           tooltip="Enlever de la promotion"
         />

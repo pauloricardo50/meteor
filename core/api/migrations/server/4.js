@@ -2,15 +2,24 @@ import { Migrations } from 'meteor/percolate:migrations';
 
 import { Promotions } from '../..';
 
+export const PERMISSIONS = {
+  canSellLots: false,
+  canModifyLots: false,
+  canRemoveLots: false,
+  canModifyPromotion: false,
+  canManageDocuments: false,
+  canBookLots: false,
+  canInviteCustomers: false,
+  canAddLots: false,
+};
+
 export const up = () => {
   const allPromotions = Promotions.find().fetch();
-
-  const userPermissions = {};
 
   return Promise.all(allPromotions.map((promotion) => {
     const { _id, userLinks = [] } = promotion;
     const newUserLinks = userLinks.map(({ permissions, ...user }) => ({
-      permissions: userPermissions,
+      permissions: PERMISSIONS,
       ...user,
     }));
     return Promotions.rawCollection().update(

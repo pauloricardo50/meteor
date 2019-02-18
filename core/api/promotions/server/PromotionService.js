@@ -190,11 +190,23 @@ export class PromotionService extends CollectionService {
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      metadata: {},
+      metadata: { permissions: {} },
     });
   }
 
   removeProUser({ promotionId, userId }) {
+    const loans = LoanService.fetch({
+      $filters: { 'promotionLinks.invitedBy': userId },
+    }) || [];
+    loans.forEach(({ _id: loanId }) => {
+      this.updateLinkMetadata({
+        id: promotionId,
+        linkName: 'loans',
+        linkId: loanId,
+        metadata: { invitedBy: undefined },
+      });
+    });
+
     return this.removeLink({
       id: promotionId,
       linkName: 'users',
