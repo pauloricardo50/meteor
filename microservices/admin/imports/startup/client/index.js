@@ -6,12 +6,11 @@ import { render } from 'react-dom';
 // Keep localization before api to translate simple schema
 import { localizationStartup } from 'core/utils/localization';
 import 'core/api/api';
-import 'core/api/files/meteor-slingshot';
+import 'core/api/client/api';
 
 import '../accounts-config';
 import './css';
 import AdminRouter from './AdminRouter';
-import 'core/api/client/api';
 import 'react-dates/initialize'; // Fix issue #750
 
 /**

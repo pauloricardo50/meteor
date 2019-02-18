@@ -33,7 +33,13 @@ const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
   if (tooltip) {
     return (
       <Tooltip
-        title={<T id={`StatusIconTooltip.${id}.${status}`} />}
+        title={
+          typeof tooltip === 'object' ? (
+            tooltip
+          ) : (
+            <T id={`StatusIconTooltip.${id}.${status}`} />
+          )
+        }
         placement="right"
       >
         {icon}

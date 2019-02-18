@@ -11,6 +11,7 @@ import { OWN_FUNDS_USAGE_TYPES } from 'imports/core/api/constants';
 import FinancingResult from '../FinancingResult';
 import { Provider } from '../../containers/loan-context';
 import { INTEREST_RATES } from '../../../../../api/interestRates/interestRatesConstants';
+import Calculator from '../../../../../utils/Calculator';
 
 const expectResult = (component, name, value) => {
   const val = component()
@@ -232,6 +233,8 @@ describe('FinancingResult', () => {
     });
 
     it('incomeRatio', () => {
+      // 400k income
+      // 12k maintenance, 54k interests, 20k amortization
       expectResult(component, '.incomeRatio', 0.215);
     });
 

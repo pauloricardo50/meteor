@@ -6,10 +6,7 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import {
-  calculateMissingOwnFunds,
-  getPropertyValue,
-} from '../FinancingOwnFunds/ownFundsHelpers';
+import { calculateMissingOwnFunds } from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator, { getOffer } from '../FinancingCalculator';
@@ -27,17 +24,26 @@ export const ERROR_TYPES = {
   WARNING: 'WARNING',
 };
 
-const getCashUsed = ({ structure: { ownFunds } }) =>
-  ownFunds
+const getCashUsed = ({ loan, structureId }) => {
+  const { ownFunds } = Calculator.selectStructure({ loan, structureId });
+
+  return ownFunds
     .filter(({ type, usageType }) =>
       type !== OWN_FUNDS_TYPES.INSURANCE_2
         && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
     .reduce((sum, { value }) => sum + value, 0);
-
+};
 const errors = [
   {
     id: 'noMortgageLoan',
-    func: ({ structure: { wantedLoan } }) => !wantedLoan || wantedLoan === 0,
+    func: ({ loan, structureId }) => {
+      const wantedLoan = Calculator.selectStructureKey({
+        loan,
+        structureId,
+        key: 'wantedLoan',
+      });
+      return !wantedLoan || wantedLoan === 0;
+    },
     type: ERROR_TYPES.BREAKING,
   },
   {
@@ -63,20 +69,32 @@ const errors = [
   },
   {
     id: 'invalidInterestRates',
-    func: data =>
+    func: ({ loan, structureId }) =>
       FinanceCalculator.checkInterestsAndTranches({
-        tranches: data.structure.loanTranches,
-        interestRates: data.structure.offerId
-          ? getOffer(data)
-          : data.loan.currentInterestRates,
+        tranches: Calculator.selectStructureKey({
+          loan,
+          structureId,
+          key: 'loanTranches',
+        }),
+        interestRates: Calculator.selectStructureKey({
+          loan,
+          structureId,
+          key: 'offerId',
+        })
+          ? Calculator.selectOffer({ loan, structureId })
+          : loan.currentInterestRates,
       }),
     type: ERROR_TYPES.BREAKING,
   },
   {
     id: 'missingCash',
     func: (data) => {
-      const { propertyWork, notaryFees } = data.structure;
-      const propertyValue = getPropertyValue(data);
+      const { loan, structureId } = data;
+      const { propertyWork, notaryFees } = Calculator.selectStructure({
+        loan,
+        structureId,
+      });
+      const propertyValue = Calculator.selectPropertyValue(data);
       return (
         Calculator.getMinCash({
           fees: notaryFees,

@@ -30,6 +30,7 @@ const personalFields = [
 ];
 const financeFields = [
   'salary',
+  'netSalary',
   'bonusExists',
   'bonus2015',
   'bonus2016',

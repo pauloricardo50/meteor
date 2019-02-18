@@ -2,8 +2,8 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Calculator from '..';
-import { BORROWER_DOCUMENTS, STEPS, GENDER } from 'core/api/constants';
+import Calculator, { Calculator as CalculatorClass } from '..';
+import { STEPS, GENDER } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
 
@@ -71,18 +71,6 @@ describe('BorrowerCalculator', () => {
       })).to.equal(50);
     });
 
-    it('discounts the lowest of 4 bonuses', () => {
-      expect(Calculator.getBonusIncome({
-        borrowers: {
-          bonusExists: true,
-          bonus2015: 50,
-          bonus2016: 150,
-          bonus2017: 40,
-          bonus2018: 100,
-        },
-      })).to.equal(50);
-    });
-
     it('returns 0 if bonusExists is false', () => {
       expect(Calculator.getBonusIncome({
         borrowers: {
@@ -93,6 +81,37 @@ describe('BorrowerCalculator', () => {
           bonus2018: 100,
         },
       })).to.equal(0);
+    });
+
+    it('considers bonuses differently based on bonusConsideration', () => {
+      const calc = new CalculatorClass({ bonusConsideration: 1 });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2015: 40,
+          bonus2016: 150,
+          bonus2017: 50,
+          bonus2018: 100,
+        },
+      })).to.equal(100);
+    });
+
+    it('considers fewer bonuses with bonusHistoryToConsider', () => {
+      const calc = new CalculatorClass({
+        bonusConsideration: 1,
+        bonusHistoryToConsider: 1,
+      });
+
+      expect(calc.getBonusIncome({
+        borrowers: {
+          bonusExists: true,
+          bonus2015: 50,
+          bonus2016: 150,
+          bonus2017: 40,
+          bonus2019: 200,
+        },
+      })).to.equal(200);
     });
   });
 
@@ -157,7 +176,7 @@ describe('BorrowerCalculator', () => {
             },
           ],
         },
-      })).to.equal(0.15);
+      })).to.be.within(0.14, 0.15);
     });
   });
 
@@ -262,7 +281,9 @@ describe('BorrowerCalculator', () => {
     it('returns all missing ids for an empty borrower', () => {
       expect(Calculator.getMissingBorrowerDocuments({
         loan: {
-          borrowers: [{ _id: 'borrowerId', additionalDocuments: initialDocuments }],
+          borrowers: [
+            { _id: 'borrowerId', additionalDocuments: initialDocuments },
+          ],
           logic: { step: STEPS.PREPARATION },
         },
       })).to.deep.equal(initialDocuments.map(({ id }) => id));
@@ -378,6 +399,20 @@ describe('BorrowerCalculator', () => {
         },
       })).to.equal(0);
     });
+
+    it('adds fortuneReturns if they exist', () => {
+      const calc = new CalculatorClass({ fortuneReturnsRatio: 0.01 });
+      expect(calc.getTotalIncome({
+        borrowers: {
+          bankFortune: 100,
+          salary: 1,
+          bonusExists: true,
+          bonus2018: 2, // Adds 1
+          otherIncome: [{ value: 3 }],
+          expenses: [{ value: 5 }], // Subtracts 5
+        },
+      })).to.equal(1);
+    });
   });
 
   describe('personalInfoPercent', () => {
@@ -407,6 +442,7 @@ describe('BorrowerCalculator', () => {
           updatedAt: '2018-08-23T10:20:22.234Z',
           userId: 'fAksm7pJveZybme5F',
           salary: 100,
+          netSalary: 80,
           bankFortune: 1000,
         },
       })).to.equal(1);
@@ -433,7 +469,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getYearsToRetiement', () => {
+  describe('getYearsToRetirement', () => {
     it('returns the proper difference for a male', () => {
       expect(Calculator.getRetirement({
         borrowers: [{ age: 25, gender: GENDER.M }],
@@ -444,6 +480,23 @@ describe('BorrowerCalculator', () => {
       expect(Calculator.getRetirement({
         borrowers: [{ age: 70, gender: GENDER.M }],
       })).to.equal(0);
+    });
+  });
+
+  describe('getFortuneReturns', () => {
+    it('returns 0 if the ratio is not set', () => {
+      expect(Calculator.getFortuneReturns({
+        borrowers: [{ bankFortune: 100 }],
+      })).to.equal(0);
+    });
+
+    it('returns some revenue if the constant is set', () => {
+      const calc = new CalculatorClass({
+        fortuneReturnsRatio: 0.01,
+      });
+      expect(calc.getFortuneReturns({
+        borrowers: [{ bankFortune: 100 }],
+      })).to.equal(1);
     });
   });
 });

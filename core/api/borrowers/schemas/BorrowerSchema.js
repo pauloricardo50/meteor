@@ -33,7 +33,11 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
     type: String,
     optional: true,
     allowedValues,
-    uniforms: { displayEmpty: false },
+    uniforms: {
+      displayEmpty: false,
+      intlId: `${name}.description`,
+      allowedValuesIntlId: name,
+    },
   },
 });
 
@@ -106,6 +110,7 @@ const BorrowerSchema = new SimpleSchema({
     optional: true,
   },
   salary: moneyField,
+  netSalary: moneyField,
   bonusExists: {
     type: Boolean,
     defaultValue: false,

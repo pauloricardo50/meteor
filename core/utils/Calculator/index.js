@@ -8,11 +8,9 @@ import { withPropertyCalculator } from './PropertyCalculator';
 import { withPromotionCalculator } from './PromotionCalculator';
 import { withCombinedCalculator } from './CombinedCalculator';
 import { withSelector } from './Selector';
+import { withLenderRulesInitializator } from './LenderRulesInitializator';
 import { withConfig } from './classUtils';
-import {
-  financeCalculatorArgumentMapper,
-  borrowerExtractorMiddleware,
-} from './middleware';
+import { financeCalculatorArgumentMapper } from './middleware';
 
 const MappedFinanceCalculator = withConfig({
   middlewareObject: financeCalculatorArgumentMapper,
@@ -21,6 +19,7 @@ const MappedFinanceCalculator = withConfig({
 // Put CombinedCalculator first, so that it can modify the following calculators
 // with middleware
 export const Calculator = compose(
+  withLenderRulesInitializator,
   withCombinedCalculator,
   withPromotionCalculator,
   withLoanCalculator,
@@ -30,6 +29,4 @@ export const Calculator = compose(
   withSelector,
 )(MappedFinanceCalculator);
 
-export default new Calculator({
-  borrowerMiddleware: borrowerExtractorMiddleware,
-});
+export default new Calculator({});

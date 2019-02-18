@@ -52,16 +52,17 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       ]);
     }
 
-    getPropAndWork({ loan }) {
-      const propertyValue = this.getPropertyValue({ loan });
+    getPropAndWork({ loan, structureId }) {
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
       const propertyWork = this.makeSelectStructureKey('propertyWork')({
         loan,
+        structureId,
       });
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
-    getPropertyWork({ loan }) {
-      return this.selectPropertyWork({ loan });
+    getPropertyWork({ loan, structureId }) {
+      return this.selectPropertyWork({ loan, structureId });
     }
 
     getPropertyFilesProgress({ loan, property }) {
@@ -81,9 +82,10 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getPropertyCompletion({ loan, property }) {
-      const { borrowers, structure } = loan;
-      const propertyToCalculateWith = property || structure.property;
+    getPropertyCompletion({ loan, structureId, property }) {
+      const { borrowers } = loan;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
       const formsProgress = this.propertyPercent({
         loan,
@@ -98,9 +100,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return (formsProgress + filesProgress) / 2;
     }
 
-    getMissingPropertyFields({ loan, property }) {
-      const { borrowers, structure } = loan;
-      const propertyToCalculateWith = property || structure.property;
+    getMissingPropertyFields({ loan, structureId, property }) {
+      const { borrowers } = loan;
+      const selectedProperty = this.selectProperty({ loan, structureId });
+
+      const propertyToCalculateWith = property || selectedProperty;
 
       const formArray1 = getPropertyArray({
         loan,
@@ -119,9 +123,9 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       ];
     }
 
-    getMissingPropertyDocuments({ loan, property }) {
-      const { structure } = loan;
-      const propertyToCalculateWith = property || (structure && structure.property);
+    getMissingPropertyDocuments({ loan, structureId, property }) {
+      const selectedProperty = this.selectProperty({ loan, structureId });
+      const propertyToCalculateWith = property || selectedProperty;
 
       return getMissingDocumentIds({
         doc: propertyToCalculateWith,
@@ -132,12 +136,7 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       });
     }
 
-    getPropertyValue({ loan }) {
-      return loan.structure.propertyValue || this.selectPropertyValue({ loan });
-    }
-
     hasDetailedPropertyValue({ loan, structureId }) {
-      const propertyValue = this.selectPropertyValue({ loan, structureId });
       const propertyExactValue = this.makeSelectPropertyKey('value')({
         loan,
         structureId,

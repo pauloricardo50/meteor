@@ -1,6 +1,8 @@
 import React from 'react';
 import Loadable from 'react-loadable';
+
 import { logError } from '../api/methods/index';
+import LayoutError from '../components/ErrorBoundary/LayoutError';
 import Loading from '../components/Loading';
 
 const LoadableLoading = ({ error, retry, pastDelay }) => {
@@ -13,11 +15,7 @@ const LoadableLoading = ({ error, retry, pastDelay }) => {
           ? window.location.href
           : '',
     });
-    return (
-      <div className="error">
-        Error: {error.message} <button onClick={retry}>Retry</button>
-      </div>
-    );
+    return <LayoutError error={error} />;
   }
   if (pastDelay) {
     return <Loading />;

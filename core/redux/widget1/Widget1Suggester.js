@@ -6,7 +6,7 @@ import {
   MAX_BORROW_RATIO_PRIMARY_PROPERTY,
   MAX_BORROW_RATIO_WITH_PLEDGE,
   AMORTIZATION_STOP,
-  MAX_AMORTIZATION_DURATION,
+  AMORTIZATION_YEARS,
 } from 'core/config/financeConstants';
 import { roundTo } from 'core/utils/conversionFunctions';
 
@@ -66,7 +66,7 @@ export class Widget1SuggesterClass {
     const i = INTERESTS_FINMA;
     const mR = MAX_INCOME_RATIO;
     const m = MAINTENANCE_FINMA;
-    const r = MAX_AMORTIZATION_DURATION;
+    const r = AMORTIZATION_YEARS;
 
     // The first one is with 0 amortization
     const incomeLimited1 = (mR * salary + fortune * i) / (m + (1 + nF) * i);
@@ -108,7 +108,7 @@ export class Widget1SuggesterClass {
   defaultAmortization = () =>
     (MAX_BORROW_RATIO_PRIMARY_PROPERTY - AMORTIZATION_STOP)
     / MAX_BORROW_RATIO_PRIMARY_PROPERTY
-    / MAX_AMORTIZATION_DURATION;
+    / AMORTIZATION_YEARS;
 
   loanCost = () => INTERESTS_FINMA + this.defaultAmortization();
 

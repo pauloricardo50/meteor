@@ -46,6 +46,7 @@ export const loanBorrower = ({ withSort } = {}) => ({
   loans: { name: 1 },
   logic: 1,
   mortgageNotes: mortgageNote(),
+  netSalary: 1,
   otherFortune: 1,
   otherIncome: 1,
   personalBank: 1,
@@ -332,7 +333,7 @@ export const fullOffer = () => ({
       borrowers: { name: 1 },
     },
     contact: { name: 1, email: 1 },
-    organisation: { name: 1 },
+    organisation: { name: 1, lenderRules: lenderRules() },
   },
   loanId: 1,
   maxAmount: 1,
@@ -369,6 +370,12 @@ export const fullOrganisation = () => ({
   lenders: lender(),
   offers: fullOffer(),
   users: organisationUser(),
+});
+
+export const userOrganisation = () => ({
+  logo: 1,
+  name: 1,
+  lenderRules: lenderRules(),
 });
 
 // //

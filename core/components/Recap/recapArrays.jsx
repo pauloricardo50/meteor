@@ -9,8 +9,6 @@ export const getDashboardArray = (props) => {
   const borrowRatio = Calculator.getBorrowRatio(props);
   const expenses = Calculator.getExpenses(props);
   const fortune = Calculator.getFortune(props);
-  const ownFundsNonPledged = Calculator.getNonPledgedOwnFunds(props);
-  const ownFundsPledged = Calculator.getTotalPledged(props);
   const incomeRatio = Calculator.getIncomeRatio(props);
   const insuranceFortune = Calculator.getInsuranceFortune(props);
   const loanValue = Calculator.selectLoanValue(props);
@@ -18,6 +16,8 @@ export const getDashboardArray = (props) => {
   const monthly = Calculator.getMonthly(props);
   const notaryFees = Calculator.getFees(props).total;
   const otherIncome = Calculator.getOtherIncome(props);
+  const ownFundsNonPledged = Calculator.getNonPledgedOwnFunds(props);
+  const ownFundsPledged = Calculator.getTotalPledged(props);
   const project = Calculator.getProjectValue(props);
   const propAndWork = Calculator.getPropAndWork(props);
   const propertyValue = Calculator.selectPropertyValue(props);
@@ -25,8 +25,8 @@ export const getDashboardArray = (props) => {
   const realEstateDebt = Calculator.getRealEstateDebt(props);
   const realEstateFortune = Calculator.getRealEstateFortune(props);
   const realEstateValue = Calculator.getRealEstateValue(props);
-  const totalFunds = Calculator.getTotalFunds(props);
   const totalFinancing = Calculator.getTotalFinancing(props);
+  const totalFunds = Calculator.getTotalFunds(props);
 
   return [
     {
@@ -223,6 +223,7 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
   });
   const totalFunds = Calculator.getTotalFunds({ borrowers });
   const salary = Calculator.getSalary({ borrowers });
+  const netSalary = Calculator.getNetSalary({ borrowers });
   const income = Calculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;
@@ -294,6 +295,12 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
     {
       label: 'general.salary',
       value: toMoney(salary),
+    },
+    {
+      label: 'Recap.netSalary',
+      value: <span className="secondary">{toMoney(netSalary)}</span>,
+      hide: !netSalary,
+      spacing: true,
     },
     {
       label: 'Recap.consideredBonus',
