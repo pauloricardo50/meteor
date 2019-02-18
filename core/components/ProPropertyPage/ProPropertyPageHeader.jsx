@@ -11,7 +11,7 @@ type ProPropertyPageHeaderProps = {
 };
 
 const ProPropertyPageHeader = ({ property }: ProPropertyPageHeaderProps) => {
-  const { address1, totalValue } = property;
+  const { address1, totalValue, _id: propertyId } = property;
 
   return (
     <div className="pro-property-page-header">
@@ -23,7 +23,7 @@ const ProPropertyPageHeader = ({ property }: ProPropertyPageHeaderProps) => {
       </div>
       <ProPropertyModifier property={property} />
       <PropertyDocumentsManager property={property} />
-      <PropertyCustomerAdder />
+      <PropertyCustomerAdder propertyId={propertyId} />
     </div>
   );
 };

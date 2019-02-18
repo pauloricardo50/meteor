@@ -12,7 +12,7 @@ type CustomerAdderProps = {
   promotionStatus: String,
 };
 
-const CustomerAdderUserSchema = new SimpleSchema({
+export const CustomerAdderUserSchema = new SimpleSchema({
   email: String,
   firstName: String,
   lastName: String,
