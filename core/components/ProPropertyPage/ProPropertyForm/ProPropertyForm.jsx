@@ -13,6 +13,16 @@ const proPropertySchema = new SimpleSchema({
   city: String,
   zipCode: address.zipCode,
   value: { ...moneyField, optional: false },
+  description: {
+    type: String,
+    optional: true,
+    uniforms: {
+      multiline: true,
+      rows: 5,
+      rowsMax: 15,
+      // style: { width: '500px' },
+    },
+  },
 });
 
 const ProPropertyForm = ({

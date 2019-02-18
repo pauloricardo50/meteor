@@ -1,5 +1,5 @@
 import React from 'react';
-import { withProps, compose } from 'recompose';
+import { mapProps, compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { propertyInsert } from '../../../api/methods';
@@ -10,7 +10,7 @@ import ProPropertyForm from './ProPropertyForm';
 
 export default compose(
   withRouter,
-  withProps(({ history }) => ({
+  mapProps(({ history }) => ({
     onSubmit: property =>
       propertyInsert
         .run({ property: { ...property, category: PROPERTY_CATEGORY.PRO } })

@@ -9,7 +9,7 @@ import { PROPERTIES_COLLECTION, S3_ACLS } from 'core/api/constants';
 type PropertyDocumentsManagerProps = {};
 
 const propertyDocuments = [
-  { id: 'propertyImage', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
+  { id: 'propertyImages', acl: S3_ACLS.PUBLIC_READ, noTooltips: true },
   {
     id: 'propertyDocuments',
     acl: S3_ACLS.PUBLIC_READ,

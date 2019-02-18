@@ -1,6 +1,6 @@
 {
   "files.propertyDocuments": "Documents du bien immobilier",
-  "files.propertyImage": "Image du bien immobilier",
+  "files.propertyImages": "Images du bien immobilier",
   "ProPropertyPage.manageDocuments": "Gérer documents",
   "ProDashboardPage.properties": "Biens immobiliers",
   "PropertiesTable.address": "Adresse",
@@ -494,6 +494,7 @@
   "PromotionLotsManager.empty": "Pas de lots annexes",
   "Forms.type": "Type",
   "Forms.description": "Déscription",
+  "Forms.description.placeholder": "Ajoutez une déscription...",
   "Forms.type.BASEMENT": "Cave",
   "Forms.type.PARKING_MOTORBIKE": "Parking moto",
   "Forms.type.PARKING_CAR": "Parking",
