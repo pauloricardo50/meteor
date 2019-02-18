@@ -11,12 +11,12 @@ import { PROMOTION_LOT_STATUS } from '../../promotionLots/promotionLotConstants'
 describe('promotionClientHelpers', () => {
   context('shouldAnonymize', () => {
     it('returns true if user cannot view the promotion', () => {
-      expect(shouldAnonymize({ permissions: { canViewPromotion: false } })).to.equal(true);
+      expect(shouldAnonymize({ permissions: {} })).to.equal(true);
     });
 
     it('returns true if user cannot see customers', () => {
       expect(shouldAnonymize({
-        permissions: { canViewPromotion: true, canSeeCustomers: false },
+        permissions: { displayCustomerNames: false },
       })).to.equal(true);
     });
 
@@ -27,7 +27,7 @@ describe('promotionClientHelpers', () => {
       });
       expect(shouldAnonymize({
         customerOwnerType,
-        permissions: { canViewPromotion: true, canSeeCustomers: true },
+        permissions: {},
       })).to.equal(true);
     });
 
@@ -41,8 +41,6 @@ describe('promotionClientHelpers', () => {
       expect(shouldAnonymize({
         customerOwnerType,
         permissions: {
-          canViewPromotion: true,
-          canSeeCustomers: true,
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.ANY,
             forLotStatus: [PROMOTION_LOT_STATUS.AVAILABLE],
@@ -62,8 +60,6 @@ describe('promotionClientHelpers', () => {
       expect(shouldAnonymize({
         customerOwnerType,
         permissions: {
-          canViewPromotion: true,
-          canSeeCustomers: true,
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
             forLotStatus: [
@@ -86,8 +82,6 @@ describe('promotionClientHelpers', () => {
       expect(shouldAnonymize({
         customerOwnerType,
         permissions: {
-          canViewPromotion: true,
-          canSeeCustomers: true,
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.USER,
           },
@@ -108,8 +102,6 @@ describe('promotionClientHelpers', () => {
       expect(shouldAnonymize({
         customerOwnerType,
         permissions: {
-          canViewPromotion: true,
-          canSeeCustomers: true,
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
           },
@@ -133,8 +125,6 @@ describe('promotionClientHelpers', () => {
       expect(shouldAnonymize({
         customerOwnerType,
         permissions: {
-          canViewPromotion: true,
-          canSeeCustomers: true,
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
           },
@@ -152,8 +142,6 @@ describe('promotionClientHelpers', () => {
       expect(shouldAnonymize({
         customerOwnerType,
         permissions: {
-          canViewPromotion: true,
-          canSeeCustomers: true,
           displayCustomerNames: {
             invitedBy: PROMOTION_INVITED_BY_TYPE.ORGANISATION,
           },

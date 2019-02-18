@@ -190,7 +190,7 @@ describe('Security service', () => {
         userLinks: [
           {
             _id: proId,
-            permissions: { canViewPromotion: true, canManageDocuments: true },
+            permissions: { canManageDocuments: true },
           },
         ],
       })._id;
@@ -208,7 +208,7 @@ describe('Security service', () => {
         userLinks: [
           {
             _id: proId,
-            permissions: { canViewPromotion: true, canManageDocuments: false },
+            permissions: { canManageDocuments: false },
           },
         ],
       })._id;
@@ -252,7 +252,7 @@ describe('Security service', () => {
         userLinks: [
           {
             _id: proId,
-            permissions: { canViewPromotion: true, canManageDocuments: true },
+            permissions: { canManageDocuments: true },
           },
         ],
       });
@@ -277,7 +277,7 @@ describe('Security service', () => {
         userLinks: [
           {
             _id: proId,
-            permissions: { canViewPromotion: true, canManageDocuments: false },
+            permissions: { canManageDocuments: false },
           },
         ],
       });

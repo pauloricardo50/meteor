@@ -41,7 +41,7 @@ describe('Migration 4', () => {
         Promotions.find().forEach(({ userLinks }) => {
           userLinks.forEach(({ permissions }) => {
             expect(typeof permissions).to.equal('object');
-            expect(permissions.canViewPromotion).to.equal(true);
+            expect(Object.keys(permissions).length).to.equal(0);
           });
         }));
     });
@@ -54,22 +54,22 @@ describe('Migration 4', () => {
       Promotions.rawCollection().insert({
         _id: 'promotionId1',
         userLinks: [
-          { _id: userId1, permissions: { canViewPromotion: true } },
-          { _id: userId2, permissions: { canViewPromotion: true } },
+          { _id: userId1, permissions: { canInviteCustomers: true } },
+          { _id: userId2, permissions: { canInviteCustomers: true } },
         ],
       });
       Promotions.rawCollection().insert({
         _id: 'promotionId2',
         userLinks: [
-          { _id: userId1, permissions: { canViewPromotion: true } },
-          { _id: userId2, permissions: { canViewPromotion: true } },
+          { _id: userId1, permissions: { canInviteCustomers: true } },
+          { _id: userId2, permissions: { canInviteCustomers: true } },
         ],
       });
 
       Promotions.find().forEach(({ userLinks }) => {
         userLinks.forEach(({ permissions }) => {
           expect(typeof permissions).to.equal('object');
-          expect(permissions.canViewPromotion).to.equal(true);
+          expect(permissions.canInviteCustomers).to.equal(true);
         });
       });
 

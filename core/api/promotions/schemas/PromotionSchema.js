@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import {
   PROMOTION_TYPES,
@@ -15,17 +16,33 @@ import {
 const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
 
 export const promotionPermissionsSchema = {
-  canViewPromotion: { type: Boolean, optional: true, defaultValue: true },
   canAddLots: SCHEMA_BOOLEAN,
   canModifyLots: SCHEMA_BOOLEAN,
   canRemoveLots: SCHEMA_BOOLEAN,
   canModifyPromotion: SCHEMA_BOOLEAN,
   canManageDocuments: SCHEMA_BOOLEAN,
-  canSeeCustomers: SCHEMA_BOOLEAN,
   displayCustomerNames: {
-    type: Object,
+    type: SimpleSchema.oneOf(Boolean, Object),
     optional: true,
-    condition: ({ permissions }) => permissions && permissions.canSeeCustomers,
+    autoValue() {
+      if (Meteor.isServer && this.isSet) {
+        if (this.value === undefined) {
+          return false;
+        }
+
+        if (this.value instanceof Object) {
+          if (!Object.keys(this.value).length) {
+            return false;
+          }
+
+          if (!this.value.invitedBy) {
+            return false;
+          }
+        }
+
+        return this.value;
+      }
+    },
   },
   'displayCustomerNames.forLotStatus': {
     type: Array,
@@ -41,8 +58,6 @@ export const promotionPermissionsSchema = {
     type: String,
     optional: true,
     allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
-    defaultValue:
-      PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ORGANISATION,
     uniforms: { displayEmpty: false, placeholder: '' },
   },
   canInviteCustomers: SCHEMA_BOOLEAN,

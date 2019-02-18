@@ -5,7 +5,7 @@ import { Promotions } from '../..';
 export const up = () => {
   const allPromotions = Promotions.find().fetch();
 
-  const userPermissions = { canViewPromotion: true };
+  const userPermissions = {};
 
   return Promise.all(allPromotions.map((promotion) => {
     const { _id, userLinks = [] } = promotion;

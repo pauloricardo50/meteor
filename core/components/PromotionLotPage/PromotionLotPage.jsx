@@ -31,9 +31,9 @@ const PromotionLotPage = ({
   currentUser,
   promotionId,
   canManageDocuments,
-  canSeeCustomers,
   canModifyLots,
   canRemoveLots,
+  canSeeCustomers,
 }: PromotionLotPageProps) => {
   const {
     name,

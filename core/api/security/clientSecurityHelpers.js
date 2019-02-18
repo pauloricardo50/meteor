@@ -38,13 +38,21 @@ const checkPromotionPermissions = ({
 
 export const isAllowedToViewPromotion = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canViewPromotion: true };
 
-  return checkPromotionPermissions({
-    promotion,
-    userId,
-    permissions,
-  });
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+
+  const { userLinks = [], users = [] } = promotion;
+
+  const user = userLinks.find(({ _id }) => _id === userId)
+    || users.find(({ _id }) => _id === userId);
+
+  if (!user) {
+    return false;
+  }
+
+  return true;
 };
 
 export const isAllowedToInviteCustomersToPromotion = ({
@@ -52,7 +60,7 @@ export const isAllowedToInviteCustomersToPromotion = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canViewPromotion: true, canInviteCustomers: true };
+  const permissions = { canInviteCustomers: true };
 
   return checkPromotionPermissions({
     promotion,
@@ -84,7 +92,7 @@ export const isAllowedToRemoveCustomerFromPromotion = ({
 
 export const isAllowedToModifyPromotion = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canViewPromotion: true, canModifyPromotion: true };
+  const permissions = { canModifyPromotion: true };
 
   return checkPromotionPermissions({
     promotion,
@@ -99,7 +107,7 @@ export const isAllowedToManagePromotionDocuments = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canViewPromotion: true, canManageDocuments: true };
+  const permissions = { canManageDocuments: true };
 
   return checkPromotionPermissions({
     promotion,
@@ -114,15 +122,32 @@ export const isAllowedToSeePromotionCustomers = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canViewPromotion: true, canSeeCustomers: true };
 
-  return checkPromotionPermissions({ promotion, userId, permissions });
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+
+  const { userLinks = [], users = [] } = promotion;
+
+  const user = userLinks.find(({ _id }) => _id === userId)
+    || users.find(({ _id }) => _id === userId);
+
+  if (!user) {
+    return false;
+  }
+
+  const userPermissions = user.permissions || user.$metadata.permissions;
+
+  if (userPermissions.displayCustomerNames === false) {
+    return false;
+  }
+
+  return true;
 };
 
 export const isAllowedToAddLotsToPromotion = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
   const permissions = {
-    canViewPromotion: true,
     canModifyPromotion: true,
     canAddLots: true,
   };
@@ -133,7 +158,6 @@ export const isAllowedToAddLotsToPromotion = ({ promotion, currentUser }) => {
 export const isAllowedToModifyPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
   const permissions = {
-    canViewPromotion: true,
     canModifyPromotion: true,
     canModifyLots: true,
   };
@@ -144,7 +168,6 @@ export const isAllowedToModifyPromotionLots = ({ promotion, currentUser }) => {
 export const isAllowedToRemovePromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
   const permissions = {
-    canViewPromotion: true,
     canModifyPromotion: true,
     canRemoveLots: true,
   };
@@ -154,7 +177,7 @@ export const isAllowedToRemovePromotionLots = ({ promotion, currentUser }) => {
 
 export const isAllowedToBookPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canViewPromotion: true, canBookLots: true };
+  const permissions = { canBookLots: true };
 
   return checkPromotionPermissions({ promotion, userId, permissions });
 };
@@ -182,7 +205,6 @@ export const isAllowedToBookPromotionLotToCustomer = ({
 export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
   const permissions = {
-    canViewPromotion: true,
     canSellLots: true,
   };
 

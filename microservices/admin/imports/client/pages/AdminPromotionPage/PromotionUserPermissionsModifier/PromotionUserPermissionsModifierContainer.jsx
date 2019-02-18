@@ -55,14 +55,57 @@ const bundlesSchema = {
   },
 };
 
-const userPermissionsSchema = new SimpleSchema({
-  ...bundlesSchema,
-  ...makePermissions({
-    permissionsSchema: promotionPermissionsSchema,
-    prefix: 'permissions',
-    autoFormDisplayCondition: ({ useBundles }) => !useBundles,
-  }),
-});
+const displayCustomerNamesSchema = {
+  'permissions.displayCustomerNames': {
+    type: Object,
+    optional: true,
+  },
+  'permissions.displayCustomerNames.invitedBy': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY),
+    uniforms: {
+      displayEmpty: true,
+      placeholder: 'Ne pas afficher le nom des clients',
+    },
+  },
+  'permissions.displayCustomerNames.forLotStatus': {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+    uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
+    condition: ({ permissions: { displayCustomerNames = {} } }) => {
+      const { invitedBy } = displayCustomerNames;
+      return !!invitedBy;
+    },
+  },
+  'permissions.displayCustomerNames.forLotStatus.$': {
+    type: String,
+    allowedValues: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
+  },
+};
+
+const userPermissionsSchema = () => {
+  const permissionsSchema = Object.keys(promotionPermissionsSchema)
+    .filter(key => !key.includes('displayCustomerNames'))
+    .reduce(
+      (permissions, key) => ({
+        ...permissions,
+        [key]: promotionPermissionsSchema[key],
+      }),
+      {},
+    );
+
+  return new SimpleSchema({
+    ...bundlesSchema,
+    ...makePermissions({
+      permissionsSchema,
+      prefix: 'permissions',
+      autoFormDisplayCondition: ({ useBundles }) => !useBundles,
+    }),
+      ...displayCustomerNamesSchema,
+  });
+};
 
 const makeUserPermissions = ({
   useBundles,
@@ -82,11 +125,21 @@ const makeUserPermissions = ({
     return bundlesPermissions;
   }
 
+  // const {
+  //   displayCustomerNames = {},
+  //   canSeeCustomers = false,
+  //   ...userPermissions
+  // } = permissions;
+  // if (!canSeeCustomers) {
+  //   return { ...userPermissions, displayCustomerNames: false };
+  // }
+
+  // return { ...userPermissions, displayCustomerNames };
   return permissions;
 };
 
 export default withProps(({ user, promotionId }) => ({
-  schema: userPermissionsSchema,
+  schema: userPermissionsSchema(),
   model: user && user.$metadata,
   onSubmit: model =>
     setPromotionUserPermissions.run({

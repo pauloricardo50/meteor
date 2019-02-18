@@ -95,8 +95,7 @@ export default class Security {
   }
 
   static hasPermissionOnDoc({ doc, permissions, userId = Meteor.userId() }) {
-    const { userLinks = [] } = doc;
-    const { users = [] } = doc;
+    const { userLinks = [], users = [] } = doc;
 
     const user = userLinks.find(({ _id }) => _id === userId)
       || users.find(({ _id }) => _id === userId);

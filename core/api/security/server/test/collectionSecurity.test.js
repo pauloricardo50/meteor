@@ -169,7 +169,7 @@ describe('Collection Security', () => {
         PromotionService.setUserPermissions({
           promotionId,
           userId,
-          permissions: { canViewPromotion: true, canModifyPromotion: false },
+          permissions: { canModifyPromotion: false },
         });
 
         expect(() =>
@@ -183,7 +183,7 @@ describe('Collection Security', () => {
         PromotionService.setUserPermissions({
           promotionId,
           userId,
-          permissions: { canViewPromotion: true, canModifyPromotion: true },
+          permissions: { canModifyPromotion: true },
         });
 
         expect(() =>
@@ -228,7 +228,7 @@ describe('Collection Security', () => {
         PromotionService.setUserPermissions({
           promotionId,
           userId,
-          permissions: { canViewPromotion: true },
+          permissions: { },
         });
 
         expect(() =>

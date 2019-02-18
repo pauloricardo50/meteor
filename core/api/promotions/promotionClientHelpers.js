@@ -40,13 +40,9 @@ export const shouldAnonymize = ({
   permissions,
   promotionLotStatus,
 }) => {
-  const {
-    canViewPromotion,
-    canSeeCustomers,
-    displayCustomerNames,
-  } = permissions;
+  const { displayCustomerNames } = permissions;
 
-  if (!canViewPromotion || !canSeeCustomers || !customerOwnerType) {
+  if (displayCustomerNames === false || !customerOwnerType) {
     return true;
   }
 
@@ -69,7 +65,8 @@ export const shouldAnonymize = ({
   case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
     return (
       shouldHideForLotStatus
-        || displayCustomerNames.invitedBy !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
+        || displayCustomerNames.invitedBy
+          !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
     );
   default:
     return true;

@@ -190,16 +190,7 @@ export class PromotionService extends CollectionService {
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      metadata: {
-        permissions: PROMOTION_PERMISSIONS_BUNDLES.CONSULTATION({
-          consultation: {
-            forLotStatus: [],
-            invitedBy:
-              PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY
-                .ORGANISATION,
-          },
-        }),
-      },
+      metadata: {},
     });
   }
 

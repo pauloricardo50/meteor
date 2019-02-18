@@ -41,7 +41,6 @@ export const PROMOTION_PERMISSIONS = {
 export const PROMOTION_PERMISSIONS_BUNDLES = {
   INVITATION: settings => ({
     canInviteCustomers: true,
-    canSeeCustomers: true,
     displayCustomerNames: {
       forLotStatus: Object.values(PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.FOR_LOT_STATUS),
       invitedBy:
@@ -54,12 +53,10 @@ export const PROMOTION_PERMISSIONS_BUNDLES = {
       invitedBy = PROMOTION_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.INVITED_BY.ANY,
     } = consultation;
     return {
-      canSeeCustomers: true,
       displayCustomerNames: { forLotStatus, invitedBy },
     };
   },
   MODIFICATION: settings => ({
-    canViewPromotion: true,
     canAddLots: true,
     canModifyLots: true,
     canRemoveLots: true,
