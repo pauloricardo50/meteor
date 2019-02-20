@@ -6,6 +6,7 @@ import Icon from '../../../../Icon';
 import { Calculator } from '../../../../../utils/Calculator';
 import T, { Money, Percent } from '../../../../Translation';
 import { ERROR, SUCCESS } from '../../../../../api/constants';
+import StatusIcon from '../../../../StatusIcon';
 
 type LenderListItemProps = {};
 
@@ -22,57 +23,53 @@ const LenderListItem = ({
 
   return (
     <div className="lender-list-item">
-      <div className="title">
-        <h4>{name}</h4>
-        <Icon
-          type="info"
-          className="icon"
-          tooltip={(
+      <h4>{name}</h4>
+      <Icon
+        type="info"
+        className="icon"
+        tooltip={(
+          <div>
             <div>
-              <div>
-                <span>Revenus considérés</span>:&nbsp;
-                <Money value={totalIncome} />
-              </div>
-              <div>
-                <span>Charges considérées</span>:&nbsp;
-                <Money value={expenses} />
-              </div>
+              <span>Revenus considérés</span>:&nbsp;
+              <Money value={totalIncome} />
             </div>
-          )}
-        />
-      </div>
-      <div className="lender-list-item-data">
-        <div>
-          <span>Taux d'effort</span>
-          <div className="percent">
-            <PercentWithStatus
-              value={incomeRatio}
-              status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
-              tooltip={(
-                <T
-                  id="PercentWithStatus.max"
-                  values={{ max: <Percent value={calc.maxIncomeRatio} /> }}
-                />
-              )}
-            />
+            <div>
+              <span>Charges considérées</span>:&nbsp;
+              <Money value={expenses} />
+            </div>
           </div>
-        </div>
-        <div>
-          <span>Taux d'avance</span>
-          <div className="percent">
-            <PercentWithStatus
-              value={borrowRatio}
-              status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
-              tooltip={(
-                <T
-                  id="PercentWithStatus.max"
-                  values={{ max: <Percent value={calc.maxBorrowRatio} /> }}
-                />
-              )}
+        )}
+      />
+      <StatusIcon
+        status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
+        tooltip={(
+          <span>
+            Taux d'effort
+            <br />
+            <Percent value={incomeRatio} />
+            <br />
+            <T
+              id="PercentWithStatus.max"
+              values={{ max: <Percent value={calc.maxIncomeRatio} /> }}
             />
-          </div>
-        </div>
-      </div>
+          </span>
+        )}
+      />
+      <StatusIcon
+        status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
+        tooltip={(
+          <span>
+            Taux d'avance
+            <br />
+            <Percent value={borrowRatio} />
+            <br />
+            <T
+              id="PercentWithStatus.max"
+              values={{ max: <Percent value={calc.maxBorrowRatio} /> }}
+            />
+          </span>
+        )}
+      />
     </div>
   );
 };
