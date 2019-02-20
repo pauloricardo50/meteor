@@ -1508,7 +1508,7 @@
   "InterestsTable.rateLow": "Min",
   "InterestsTable.rateHigh": "Max",
   "InterestsTable.trend": "Tendance",
-  "LayoutError.description": "Quelque chose n'a pas fonctionné comme prévu, on en est déjà informés, et vous pouvez essayer de recharger la page.{verticalSpace}Si ça ne résoud pas le problème, écrivez-nous.",
+  "LayoutError.description": "Quelque chose n'a pas fonctionné comme prévu, on en est déjà informés, et vous pouvez essayer de recharger la page.{verticalSpace}Si ça ne résoud pas le problème, écrivez-nous à digital@e-potek.ch.",
   "LayoutError.redirectHome": "Page d'accueil",
   "LayoutError.reload": "Recharger la page",
   "LayoutError.title": "Woops une erreur!",
