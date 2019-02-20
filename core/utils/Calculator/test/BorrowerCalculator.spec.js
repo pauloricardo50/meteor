@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator, { Calculator as CalculatorClass } from '..';
-import { STEPS, GENDER } from 'core/api/constants';
+import { STEPS, GENDER, EXPENSES } from 'core/api/constants';
 import { DOCUMENTS } from '../../../api/constants';
 import { initialDocuments } from '../../../api/borrowers/borrowersAdditionalDocuments';
 
@@ -395,7 +395,7 @@ describe('BorrowerCalculator', () => {
           bonusExists: true,
           bonus2018: 2, // Adds 1
           otherIncome: [{ value: 3 }],
-          expenses: [{ value: 5 }], // Subtracts 5
+          expenses: [{ value: 5, description: EXPENSES.LEASING }], // Subtracts 5
         },
       })).to.equal(0);
     });
@@ -409,9 +409,27 @@ describe('BorrowerCalculator', () => {
           bonusExists: true,
           bonus2018: 2, // Adds 1
           otherIncome: [{ value: 3 }],
-          expenses: [{ value: 5 }], // Subtracts 5
+          expenses: [{ value: 5, description: EXPENSES.LEASING }], // Subtracts 5
         },
       })).to.equal(1);
+    });
+
+    it('should only subtract expenses that are meant to be subtracted', () => {
+      const calc = new CalculatorClass({
+        expensesSubtractFromIncome: [EXPENSES.LEASING],
+      });
+      expect(calc.getTotalIncome({
+        borrowers: {
+          salary: 1,
+          bonusExists: true,
+          bonus2018: 2, // Adds 1
+          otherIncome: [{ value: 3 }],
+          expenses: [
+            { value: 1, description: EXPENSES.LEASING },
+            { value: 5, description: EXPENSES.OTHER },
+          ],
+        },
+      })).to.equal(4);
     });
   });
 
@@ -501,19 +519,69 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getTheoreticalExpenses', () => {
+  describe('getRealEstateExpenses', () => {
     it('adds up expenses for real estate', () => {
       // 12k maintenance, 48k interests, 12k amort
-      expect(Calculator.getTheoreticalExpenses({
+      expect(Calculator.getRealEstateExpenses({
         borrowers: [{ realEstate: [{ value: 1200000, loan: 960000 }] }],
       })).to.equal(6000);
     });
 
     it('counts no amortization if the loan is below amortizationGoal', () => {
       // 12k maintenance, 39k interests, 0 amort
-      expect(Calculator.getTheoreticalExpenses({
+      expect(Calculator.getRealEstateExpenses({
         borrowers: [{ realEstate: [{ value: 1200000, loan: 780000 }] }],
       })).to.equal(4250);
+    });
+  });
+
+  describe('getGroupedExpenses', () => {
+    it('groups expenses between borrowers', () => {
+      const borrowers = [
+        {
+          expenses: [
+            { description: 'a', value: 10 },
+            { description: 'c', value: 1 },
+          ],
+        },
+        {
+          expenses: [
+            { description: 'b', value: 5 },
+            { description: 'a', value: 5 },
+          ],
+        },
+      ];
+      expect(Calculator.getGroupedExpenses({ borrowers })).to.deep.equal({
+        a: 15,
+        b: 5,
+        c: 1,
+      });
+    });
+  });
+
+  describe('getFormattedExpenses', () => {
+    it('gets an object with expenses to add or subtract', () => {
+      const calc = new CalculatorClass({
+        expensesSubtractFromIncome: [EXPENSES.LEASING],
+      });
+      const borrowers = [
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 10 },
+            { description: EXPENSES.PENSIONS, value: 1 },
+          ],
+        },
+        {
+          expenses: [
+            { description: EXPENSES.LEASING, value: 5 },
+            { description: EXPENSES.OTHER, value: 1 },
+          ],
+        },
+      ];
+      expect(calc.getFormattedExpenses({ borrowers })).to.deep.equal({
+        add: 2,
+        subtract: 15,
+      });
     });
   });
 });
