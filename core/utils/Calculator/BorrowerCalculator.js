@@ -231,7 +231,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.value - i.loan,
+        mapFunc: i => (i.value - (i.loan || 0)) || 0,
       });
     }
 
@@ -243,7 +243,15 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.loan,
+        mapFunc: i => i.loan || 0,
+      });
+    }
+
+    getRealEstateIncome({ borrowers }) {
+      return this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: i => i.income || 0,
       });
     }
 
@@ -273,6 +281,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
+        borrowerIncome
+          += this.getRealEstateIncome({ borrowers: borrower }) || 0;
         return total + borrowerIncome;
       }, 0);
 
@@ -381,9 +391,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
 
     getFormattedExpenses({ borrowers }) {
       const expenses = {
-        [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]: this.getRealEstateExpenses({
-          borrowers,
-        }) * 12, // All expenses are annualized
+        [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
+          this.getRealEstateExpenses({
+            borrowers,
+          }) * 12, // All expenses are annualized
         ...this.getGroupedExpenses({ borrowers }),
       };
 

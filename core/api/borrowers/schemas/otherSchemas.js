@@ -23,7 +23,11 @@ const makeArrayOfObjectsSchema = (name, allowedValues) => ({
     type: String,
     optional: true,
     allowedValues,
-    uniforms: { displayEmpty: false },
+    uniforms: {
+      displayEmpty: false,
+      intlId: `${name}.description`,
+      allowedValuesIntlId: name,
+    },
   },
 });
 
@@ -113,6 +117,15 @@ export const financeInfoSchema = {
   'realEstate.$.loan': {
     ...moneyField,
     optional: false,
+  },
+  'realEstate.$.name': {
+    type: String,
+    optional: true,
+  },
+  'realEstate.$.income': {
+    ...moneyField,
+    optional: true,
+    defaultValue: 0,
   },
 };
 

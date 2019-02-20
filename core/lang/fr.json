@@ -1,5 +1,10 @@
 {
+  "Recap.netSalary": "Salaire net",
+  "Forms.realEstate.income": "Revenus annuels générés",
+  "Forms.realEstate.name": "Description",
+  "Forms.realEstate.name.placeholder": "Chalet à Verbier",
   "Recap.realEstateExpenses": "Charges immobilières",
+  "Recap.realEstateIncome": "Revenus immobiliers",
   "Forms.expenses.THEORETICAL_REAL_ESTATE": "Charges théoriques des autres biens immobiliers",
   "Forms.hasOwnCompany": "Travaillez-vous pour votre propre entreprise?",
   "Forms.ownCompanies": "Entreprises",

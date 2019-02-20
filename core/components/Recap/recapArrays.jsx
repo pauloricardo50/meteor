@@ -5,7 +5,6 @@ import { toMoney } from '../../utils/conversionFunctions';
 
 export const getDashboardArray = (props) => {
   const bonusIncome = Calculator.getBonusIncome(props);
-  const totalIncome = Calculator.getTotalIncome(props);
   const borrowRatio = Calculator.getBorrowRatio(props);
   const expenses = Calculator.getExpenses(props);
   const fortune = Calculator.getFortune(props);
@@ -22,13 +21,15 @@ export const getDashboardArray = (props) => {
   const propAndWork = Calculator.getPropAndWork(props);
   const propertyValue = Calculator.selectPropertyValue(props);
   const propertyWork = Calculator.makeSelectStructureKey('propertyWork')(props);
-  const realEstateExpenses = Calculator.getRealEstateExpenses(props) * 12;
   const realEstateDebt = Calculator.getRealEstateDebt(props);
+  const realEstateExpenses = Calculator.getRealEstateExpenses(props) * 12;
   const realEstateFortune = Calculator.getRealEstateFortune(props);
+  const realEstateIncome = Calculator.getRealEstateIncome(props);
   const realEstateValue = Calculator.getRealEstateValue(props);
   const salary = Calculator.getSalary(props);
   const totalFinancing = Calculator.getTotalFinancing(props);
   const totalFunds = Calculator.getTotalFunds(props);
+  const totalIncome = Calculator.getTotalIncome(props);
 
   return [
     {
@@ -189,6 +190,11 @@ export const getDashboardArray = (props) => {
       hide: !otherIncome,
     },
     {
+      label: 'Recap.realEstateIncome',
+      value: `- ${toMoney(realEstateIncome)}`,
+      hide: !realEstateIncome,
+    },
+    {
       label: 'Recap.expenses',
       value: `- ${toMoney(expenses)}`,
       hide: !expenses,
@@ -212,27 +218,21 @@ export const getDashboardArray = (props) => {
 };
 
 export const getBorrowerArray = ({ borrower: borrowers }) => {
-  const expenses = Calculator.getExpenses({ borrowers });
   const bonusIncome = Calculator.getBonusIncome({ borrowers });
-  const otherIncome = Calculator.getOtherIncome({ borrowers });
-  const otherFortune = Calculator.getOtherFortune({ borrowers });
-  const realEstateExpenses = Calculator.getRealEstateExpenses({ borrowers }) * 12;
-  console.log('realEstateExpenses:', realEstateExpenses);
-  const realEstateFortune = Calculator.getRealEstateFortune({
-    borrowers,
-  });
-  const realEstateValue = Calculator.getRealEstateValue({
-    borrowers,
-  });
-  const realEstateDebt = Calculator.getRealEstateDebt({ borrowers });
+  const expenses = Calculator.getExpenses({ borrowers });
   const fortune = Calculator.getFortune({ borrowers });
-  const thirdPartyFortune = Calculator.getThirdPartyFortune({ borrowers });
-  const insuranceFortune = Calculator.getInsuranceFortune({
-    borrowers,
-  });
-  const totalFunds = Calculator.getTotalFunds({ borrowers });
-  const salary = Calculator.getSalary({ borrowers });
+  const insuranceFortune = Calculator.getInsuranceFortune({ borrowers });
   const netSalary = Calculator.getNetSalary({ borrowers });
+  const otherFortune = Calculator.getOtherFortune({ borrowers });
+  const otherIncome = Calculator.getOtherIncome({ borrowers });
+  const realEstateDebt = Calculator.getRealEstateDebt({ borrowers });
+  const realEstateExpenses = Calculator.getRealEstateExpenses({ borrowers }) * 12;
+  const realEstateFortune = Calculator.getRealEstateFortune({ borrowers });
+  const realEstateIncome = Calculator.getRealEstateIncome({ borrowers });
+  const realEstateValue = Calculator.getRealEstateValue({ borrowers });
+  const salary = Calculator.getSalary({ borrowers });
+  const thirdPartyFortune = Calculator.getThirdPartyFortune({ borrowers });
+  const totalFunds = Calculator.getTotalFunds({ borrowers });
   const totalIncome = Calculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;
@@ -320,6 +320,11 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
       label: 'Recap.otherIncome',
       value: toMoney(otherIncome),
       hide: !otherIncome,
+    },
+    {
+      label: 'Recap.realEstateIncome',
+      value: toMoney(realEstateIncome),
+      hide: !realEstateIncome,
     },
     {
       label: 'Recap.expenses',
