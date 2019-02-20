@@ -474,7 +474,7 @@ describe('WuestService', function () {
       const loanResidenceType = wuestConstants.WUEST_RESIDENCE_TYPE.MAIN_RESIDENCE;
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
-        const marketValueBeforeCorrection = 708000;
+        const marketValueBeforeCorrection = 709000;
         const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
         const priceRange = WuestService.getPriceRange({
