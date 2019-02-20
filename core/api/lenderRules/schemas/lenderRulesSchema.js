@@ -9,7 +9,7 @@ import {
 import {
   INCOME_CONSIDERATION_TYPES,
   REAL_ESTATE_CONSIDERATION_TYPES,
-  OTHER_EXPENSES_CONSIDERATION_TYPES,
+  EXPENSE_TYPES,
 } from '../lenderRulesConstants';
 
 export const incomeConsideration = {
@@ -33,10 +33,19 @@ export const incomeConsideration = {
     optional: true,
   },
   investmentIncomeConsideration: percentageField,
-  otherExpensesConsiderationType: {
-    type: String,
-    allowedValues: Object.values(OTHER_EXPENSES_CONSIDERATION_TYPES),
+  expensesSubtractFromIncome: {
+    type: Array,
+    defaultValue: [],
     optional: true,
+    uniforms: {
+      intlId: 'expenses',
+      placeholder: 'Ajouter toutes les charges aux charges théoriques',
+      label: 'Charges a soustraire aux revenus',
+    },
+  },
+  'expensesSubtractFromIncome.$': {
+    type: String,
+    allowedValues: Object.values(EXPENSE_TYPES),
   },
   fortuneReturnsRatio: percentageField,
 };

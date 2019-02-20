@@ -179,7 +179,7 @@ export const lenderRules = () => ({
   maxIncomeRatioTight: 1,
   minCash: 1,
   name: 1,
-  otherExpensesConsiderationType: 1,
+  expensesSubtractFromIncome: 1,
   pdfComments: 1,
   pensionIncomeConsideration: 1,
   realEstateIncomeConsiderationType: 1,
