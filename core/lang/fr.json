@@ -91,7 +91,6 @@
   "Forms.otherExpensesConsiderationType.placeholder": "Par défaut",
   "Forms.otherExpensesConsiderationType.ADD_TO_EXPENSES": "Ajouter aux charges",
   "Forms.otherExpensesConsiderationType.SUBTRACT_FROM_INCOME": "Soustraire aux revenus",
-  "Forms.realEstateIncomeConsideration": "Considération des revenus immobiliers",
   "Forms.realEstateIncomeConsiderationType": "Comment considérer les revenus immobiliers",
   "Forms.realEstateIncomeConsiderationType.placeholder": "Par défaut",
   "Forms.realEstateIncomeConsiderationType.ADD_TO_INCOME": "Ajouter aux revenus",

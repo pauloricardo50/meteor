@@ -32,7 +32,6 @@ export const DEFAULT_VALUE_FOR_ALL = {
   dividendsConsideration: 1,
   dividendsHistoryToConsider: 1,
   pensionIncomeConsideration: 1,
-  realEstateIncomeConsideration: 1,
   realEstateIncomeConsiderationType:
     REAL_ESTATE_CONSIDERATION_TYPES.SUBTRACT_FROM_EXPENSES,
   investmentIncomeConsideration: 1,

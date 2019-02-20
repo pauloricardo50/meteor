@@ -103,7 +103,6 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'maxIncomeRatio',
         'otherExpensesConsiderationType',
         'pensionIncomeConsideration',
-        'realEstateIncomeConsideration',
         'realEstateIncomeConsiderationType',
         'theoreticalInterestRate',
         'theoreticalInterestRate2ndRank',
