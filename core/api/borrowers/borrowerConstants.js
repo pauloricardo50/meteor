@@ -31,7 +31,7 @@ export const OTHER_INCOME = {
   WELFARE: 'WELFARE',
   PENSIONS: 'PENSIONS',
   REAL_ESTATE: 'REAL_ESTATE',
-  INVESTMENT: 'INVESTMENT',
+  // INVESTMENT: 'INVESTMENT', // We probably don't need this
   OTHER: 'OTHER',
 };
 
