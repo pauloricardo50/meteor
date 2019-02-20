@@ -55,13 +55,15 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     currentUser,
   });
 
-  const invitedByUser = (invitedBy
-      && promotionUsers
-      && (!!promotionUsers.length
-        && promotionUsers.find(({ _id }) => _id === invitedBy)))
-    || 'Personne';
+  const invitedByUser =
+    invitedBy &&
+    promotionUsers &&
+    (!!promotionUsers.length &&
+      promotionUsers.find(({ _id }) => _id === invitedBy));
 
-  const userName = getUserNameAndOrganisation({user: invitedByUser});
+  const userName = invitedByUser
+    ? getUserNameAndOrganisation({ user: invitedByUser })
+    : 'Personne';
 
   return [
     {
