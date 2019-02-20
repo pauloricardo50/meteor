@@ -11,6 +11,7 @@ export const PERMISSIONS = {
   canBookLots: false,
   canInviteCustomers: false,
   canAddLots: false,
+  displayCustomerNames: false,
 };
 
 export const up = () => {
