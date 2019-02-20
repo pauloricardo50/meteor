@@ -33,7 +33,7 @@ describe('SlackService - server', function () {
       expect(SlackService.notifyOfUpload({ currentUser: user })).to.equal(false);
     });
 
-    it.only('should send a notification to the right channel with proper text', () => {
+    it('should send a notification to the right channel with proper text', () => {
       const yannis = Factory.create('admin', {
         emails: [{ address: 'yannis@e-potek.ch', verified: true }],
       });
@@ -95,7 +95,7 @@ describe('SlackService - server', function () {
         docLabel: 'Taxes',
         loanId,
       }).then(({ attachments }) => {
-        expect(attachments[0].text).to.equal('_Promotion: `A Promotion`_ *Progrès:* Emprunteurs `5.88%`, Documents: `0.00%`');
+        expect(attachments[0].text).to.equal('_Promotion: `A Promotion`_ *Progrès:* Emprunteurs `6.25%`, Documents: `0.00%`');
       });
     });
   });

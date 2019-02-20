@@ -74,7 +74,7 @@ describe('PropertyService', () => {
       }).then(() => {
         const property = PropertyService.get(propertyId);
         const marketValueBeforeCorrection = 709000;
-        const statisticalPriceRangeMin = 640000;
+        const statisticalPriceRangeMin = 650000;
         const statisticalPriceRangeMax = 770000;
         const priceRange = WuestService.getPriceRange({
           marketValueBeforeCorrection,
