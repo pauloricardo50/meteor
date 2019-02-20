@@ -5,7 +5,7 @@ import { toMoney } from '../../utils/conversionFunctions';
 
 export const getDashboardArray = (props) => {
   const bonusIncome = Calculator.getBonusIncome(props);
-  const borrowerIncome = Calculator.getTotalIncome(props);
+  const totalIncome = Calculator.getTotalIncome(props);
   const borrowRatio = Calculator.getBorrowRatio(props);
   const expenses = Calculator.getExpenses(props);
   const fortune = Calculator.getFortune(props);
@@ -22,9 +22,11 @@ export const getDashboardArray = (props) => {
   const propAndWork = Calculator.getPropAndWork(props);
   const propertyValue = Calculator.selectPropertyValue(props);
   const propertyWork = Calculator.makeSelectStructureKey('propertyWork')(props);
+  const realEstateExpenses = Calculator.getRealEstateExpenses(props) * 12;
   const realEstateDebt = Calculator.getRealEstateDebt(props);
   const realEstateFortune = Calculator.getRealEstateFortune(props);
   const realEstateValue = Calculator.getRealEstateValue(props);
+  const salary = Calculator.getSalary(props);
   const totalFinancing = Calculator.getTotalFinancing(props);
   const totalFunds = Calculator.getTotalFunds(props);
 
@@ -174,7 +176,7 @@ export const getDashboardArray = (props) => {
     },
     {
       label: 'general.salary',
-      value: toMoney(borrowerIncome),
+      value: toMoney(salary),
     },
     {
       label: 'Recap.consideredBonus',
@@ -192,8 +194,13 @@ export const getDashboardArray = (props) => {
       hide: !expenses,
     },
     {
+      label: 'Recap.realEstateCosts',
+      value: `- ${toMoney(realEstateExpenses)}`,
+      hide: !realEstateExpenses,
+    },
+    {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(borrowerIncome)}</span>,
+      value: <span className="sum">{toMoney(totalIncome)}</span>,
       spacingTop: true,
       bold: true,
     },
@@ -209,6 +216,8 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
   const bonusIncome = Calculator.getBonusIncome({ borrowers });
   const otherIncome = Calculator.getOtherIncome({ borrowers });
   const otherFortune = Calculator.getOtherFortune({ borrowers });
+  const realEstateExpenses = Calculator.getRealEstateExpenses({ borrowers }) * 12;
+  console.log('realEstateExpenses:', realEstateExpenses);
   const realEstateFortune = Calculator.getRealEstateFortune({
     borrowers,
   });
@@ -224,7 +233,7 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
   const totalFunds = Calculator.getTotalFunds({ borrowers });
   const salary = Calculator.getSalary({ borrowers });
   const netSalary = Calculator.getNetSalary({ borrowers });
-  const income = Calculator.getTotalIncome({ borrowers });
+  const totalIncome = Calculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;
 
@@ -318,8 +327,13 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
       hide: !expenses,
     },
     {
+      label: 'Recap.realEstateExpenses',
+      value: `- ${toMoney(realEstateExpenses)}`,
+      hide: !realEstateExpenses,
+    },
+    {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(income)}</span>,
+      value: <span className="sum">{toMoney(totalIncome)}</span>,
       spacingTop: true,
       bold: true,
     },
