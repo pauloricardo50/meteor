@@ -16,6 +16,7 @@ import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clien
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 import { CollectionIconLink } from '../IconLink';
 import { LOANS_COLLECTION } from '../../api/constants';
+import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientHelpers';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -54,11 +55,13 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     currentUser,
   });
 
-  const invitedByName = (invitedBy
+  const invitedByUser = (invitedBy
       && promotionUsers
       && (!!promotionUsers.length
-        && promotionUsers.find(({ _id }) => _id === invitedBy).name))
+        && promotionUsers.find(({ _id }) => _id === invitedBy)))
     || 'Personne';
+
+  const userName = getUserNameAndOrganisation({user: invitedByUser});
 
   return [
     {
@@ -77,13 +80,13 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     user && user.email,
     { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
     {
-      raw: invitedByName,
+      raw: userName,
       label:
         Meteor.microservice === 'admin' ? (
           <InvitedByAssignDropdown
             promotionUsers={promotionUsers}
             invitedBy={invitedBy}
-            invitedByName={invitedByName}
+            invitedByName={userName}
             loanId={loanId}
             promotionId={promotionId}
           />

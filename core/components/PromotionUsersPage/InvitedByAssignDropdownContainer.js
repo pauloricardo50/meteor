@@ -1,5 +1,6 @@
 import { withProps } from 'recompose';
 import { loanUpdatePromotionInvitedBy } from '../../api';
+import { getUserNameAndOrganisation } from '../../api/promotions/promotionClientHelpers';
 
 const getMenuItems = ({
   promotionUsers = [],
@@ -8,11 +9,12 @@ const getMenuItems = ({
   promotionId,
 }) =>
   promotionUsers.map((user) => {
-    const { _id, name } = user;
+    const { _id } = user;
+    const userName = getUserNameAndOrganisation({ user });
     return {
       id: _id,
       show: _id !== invitedBy,
-      label: name,
+      label: userName,
       link: false,
       onClick: () =>
         loanUpdatePromotionInvitedBy.run({

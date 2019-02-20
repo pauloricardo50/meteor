@@ -6,6 +6,7 @@ import { removeProFromPromotion } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
 import { compose, withProps } from 'recompose';
+import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientHelpers';
 import PromotionUserPermissionsModifier from '../PromotionUserPermissionsModifier';
 
 const columnOptions = [
@@ -21,14 +22,13 @@ const columnOptions = [
 const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
   const {
     _id,
-    name,
     email,
     $metadata: { permissions },
   } = user;
   return {
     id: _id,
     columns: [
-      name,
+      getUserNameAndOrganisation({ user }),
       email,
       {
         raw: permissions,
@@ -49,7 +49,9 @@ const makeMapPromotionUser = ({ promotionId, history }) => (user) => {
         />
         <IconButton
           onClick={() => {
-            const confirm = window.confirm(`Supprimer ${name} de la promotion ?`);
+            const confirm = window.confirm(`Supprimer ${getUserNameAndOrganisation({
+              user,
+            })} de la promotion ?`);
             if (confirm) {
               return removeProFromPromotion.run({ promotionId, userId: _id });
             }

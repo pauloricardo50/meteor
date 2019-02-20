@@ -46,8 +46,9 @@ export const shouldAnonymize = ({
     return true;
   }
 
-  const shouldHideForLotStatus = !!promotionLotStatus
-    && !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
+  const shouldHideForLotStatus =
+    !!promotionLotStatus &&
+    !displayCustomerNames.forLotStatus.includes(promotionLotStatus);
 
   if (displayCustomerNames.invitedBy === PROMOTION_INVITED_BY_TYPE.ANY) {
     return shouldHideForLotStatus;
@@ -56,19 +57,25 @@ export const shouldAnonymize = ({
   switch (customerOwnerType) {
   case PROMOTION_INVITED_BY_TYPE.USER:
     return (
-      shouldHideForLotStatus
-        || ![
+      shouldHideForLotStatus ||
+        ![
           PROMOTION_INVITED_BY_TYPE.USER,
           PROMOTION_INVITED_BY_TYPE.ORGANISATION,
         ].includes(displayCustomerNames.invitedBy)
     );
   case PROMOTION_INVITED_BY_TYPE.ORGANISATION:
     return (
-      shouldHideForLotStatus
-        || displayCustomerNames.invitedBy
-          !== PROMOTION_INVITED_BY_TYPE.ORGANISATION
+      shouldHideForLotStatus ||
+        displayCustomerNames.invitedBy !==
+          PROMOTION_INVITED_BY_TYPE.ORGANISATION
     );
   default:
     return true;
   }
+};
+
+export const getUserNameAndOrganisation = ({ user }) => {
+  const { name, organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName ? `${name} (${organisationName})` : name;
 };
