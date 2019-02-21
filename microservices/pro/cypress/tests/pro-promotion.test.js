@@ -42,9 +42,70 @@ describe('Pro', () => {
       cy.contains('Préparation').should('exist');
     });
 
-    context('with an existing promotion', () => {
-      it('should add lots and promotionLots', () => {
+    context.only('with an existing promotion', () => {
+      it('should render buttons based on permissions', () => {
         cy.callMethod('insertPromotion');
+        cy.callMethod('resetUserPermissions');
+        cy.refetch();
+        cy.contains('Test promotion').click();
+
+        // No permissions at all
+        cy.get('.promotion-page button').should('not.exist');
+
+        // canModifyPromotion
+        cy.callMethod('setUserPermissions', {
+          permissions: { canModifyPromotion: true },
+        });
+        cy.refetch();
+        cy.get('.promotion-page-header button')
+          .contains('Modifier')
+          .should('exist');
+        cy.get('.buttons > a')
+          .contains('Voir tous les clients')
+          .should('exist');
+
+        // canAddLots
+        cy.callMethod('setUserPermissions', {
+          permissions: { canModifyPromotion: true, canAddLots: true },
+        });
+        cy.refetch();
+        cy.get('.promotion-table-actions > button')
+          .contains('Ajouter lot principal')
+          .should('exist');
+        cy.get('.promotion-table-actions > button')
+          .contains('Ajouter lot annexe')
+          .should('exist');
+
+        // canManageDocuments
+        cy.callMethod('setUserPermissions', {
+          permissions: { canModifyPromotion: true, canManageDocuments: true },
+        });
+        cy.refetch();
+        cy.get('.buttons button')
+          .contains('Gérer documents')
+          .should('exist');
+
+        // canInviteCustomers
+        cy.callMethod('setUserPermissions', {
+          permissions: { canInviteCustomers: true },
+        });
+        cy.callMethod('setPromotionStatus', { status: 'OPEN' });
+        cy.refetch();
+        cy.get('.buttons > button')
+          .contains('Ajouter un client')
+          .should('exist');
+        cy.get('.buttons > button')
+          .contains("Tester email d'invitation")
+          .should('exist');
+        cy.get('.buttons > a')
+          .contains('Voir tous les clients')
+          .should('exist');
+      });
+
+      it('should add lots and promotionLots', () => {
+        cy.callMethod('setUserPermissions', {
+          permissions: { canModifyPromotion: true, canAddLots: true },
+        });
         cy.refetch();
         cy.contains('Test promotion').click();
 
@@ -80,6 +141,13 @@ describe('Pro', () => {
       });
 
       it('should modify lots', () => {
+        cy.callMethod('setUserPermissions', {
+          permissions: {
+            canModifyPromotion: true,
+            canAddLots: true,
+            canModifyLots: true,
+          },
+        });
         cy.contains('Test promotion').click();
         cy.get('.additional-lots button').click();
 
@@ -111,6 +179,26 @@ describe('Pro', () => {
         cy.get('.pro-promotion-lots-table')
           .contains('Lot 2')
           .should('exist');
+      });
+
+      it('should remove lots', () => {
+        cy.callMethod('setUserPermissions', {
+          permissions: {
+            canModifyPromotion: true,
+            canAddLots: true,
+            canModifyLots: true,
+            canRemoveLots: true,
+          },
+        });
+        cy.contains('Test promotion').click();
+        cy.get('.additional-lots button').click();
+
+        cy.get('.additional-lots-table')
+          .contains('Lot 2')
+          .click();
+
+        cy.contains('Supprimer').click();
+        cy.contains('Lot 2').should('not.exist');
       });
     });
   });

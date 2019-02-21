@@ -455,7 +455,7 @@ describe('WuestService', function () {
   });
 
   context('evaluateById', () => {
-    const getValueRange = (value) => ({ min: value * 0.9, max: value * 1.1 });
+    const getValueRange = value => ({ min: value * 0.9, max: value * 1.1 });
 
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {

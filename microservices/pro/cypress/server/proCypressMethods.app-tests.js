@@ -40,4 +40,49 @@ Meteor.methods({
   insertFullPromotion() {
     createPromotionDemo(this.userId, false, false, 10, true);
   },
+  setUserPermissions({ permissions }) {
+    const { _id: userId } = UserService.findOne({
+      'emails.address': PRO_EMAIL,
+    });
+    const promotions = PromotionService.find({
+      'userLinks._id': userId,
+    }) || [];
+
+    promotions.forEach(({ _id: promotionId }) =>
+      PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+  },
+  setPromotionStatus({ status }) {
+    const { _id: userId } = UserService.findOne({
+      'emails.address': PRO_EMAIL,
+    });
+    const promotions = PromotionService.find({
+      'userLinks._id': userId,
+    }) || [];
+
+    promotions.forEach(({ _id: promotionId }) =>
+      PromotionService.update({ promotionId, object: { status } }));
+  },
+  resetUserPermissions() {
+    const { _id: userId } = UserService.findOne({
+      'emails.address': PRO_EMAIL,
+    });
+    const promotions = PromotionService.find({
+      'userLinks._id': userId,
+    }).fetch() || [];
+
+    const permissions = {
+      canSellLots: false,
+      canModifyLots: false,
+      canRemoveLots: false,
+      canModifyPromotion: false,
+      canManageDocuments: false,
+      canBookLots: false,
+      canInviteCustomers: false,
+      canAddLots: false,
+      displayCustomerNames: false,
+    };
+
+    promotions.forEach(({ _id: promotionId }) =>
+      PromotionService.setUserPermissions({ promotionId, userId, permissions }));
+  },
 });
