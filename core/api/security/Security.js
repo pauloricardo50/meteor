@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import get from 'lodash/get';
 
-import { ROLES } from '../constants';
+import { flattenObject } from '../helpers';
+import { ROLES, COLLECTIONS } from '../constants';
 import { DOCUMENT_USER_PERMISSIONS } from './constants';
 
 export const SECURITY_ERROR = 'NOT_AUTHORIZED';
@@ -92,15 +94,38 @@ export default class Security {
     }
   }
 
-  static hasPermissionOnDoc(doc, permissions, userId = Meteor.userId()) {
-    const { userLinks = [] } = doc;
-    const userLink = userLinks.find(({ _id }) => _id === userId);
+  static hasPermissionOnDoc({ doc, permissions, userId = Meteor.userId() }) {
+    const { userLinks = [], users = [] } = doc;
 
-    if (!userLink) {
+    const user = userLinks.find(({ _id }) => _id === userId)
+      || users.find(({ _id }) => _id === userId);
+
+    if (!user) {
       this.handleUnauthorized('Checking permissions');
     }
 
-    if (!permissions.includes(userLink.permissions)) {
+    const userPermissions = user.permissions || user.$metadata.permissions;
+
+    if (
+      !Object.keys(flattenObject(permissions)).every((permission) => {
+        const userPermission = get(userPermissions, permission);
+        const requiredPermission = get(permissions, permission);
+
+        if (!userPermission) {
+          return false;
+        }
+
+        if (Array.isArray(requiredPermission)) {
+          if (!Array.isArray(userPermission)) {
+            return false;
+          }
+          return requiredPermission.every(required =>
+            userPermission.includes(required));
+        }
+
+        return userPermission === requiredPermission;
+      })
+    ) {
       this.handleUnauthorized('Checking permissions');
     }
   }
@@ -139,6 +164,8 @@ export default class Security {
       if (!isAllowed) {
         this.handleUnauthorized('Unauthorized role');
       }
+
+      return true;
     };
   }
 
@@ -157,4 +184,41 @@ export default class Security {
       && me.$metadata.permissions === DOCUMENT_USER_PERMISSIONS.MODIFY
     );
   };
+
+  static isAllowedToModifyFiles({ collection, docId, userId, fileKey }) {
+    const keyId = fileKey.split('/')[0];
+
+    if (keyId !== docId) {
+      this.handleUnauthorized('Invalid fileKey or docId');
+    }
+
+    try {
+      this.minimumRole(ROLES.ADMIN)(userId);
+      return;
+    } catch (error) {}
+
+    switch (collection) {
+    case COLLECTIONS.PROMOTIONS_COLLECTION: {
+      this.promotions.isAllowedToManageDocuments({
+        promotionId: docId,
+        userId,
+      });
+      break;
+    }
+    case COLLECTIONS.PROPERTIES_COLLECTION: {
+      if (this.properties.isPromotionLot(docId)) {
+        this.promotions.isAllowedToManagePromotionLotDocuments({
+          propertyId: docId,
+          userId,
+        });
+        break;
+      }
+
+      this.properties.isAllowedToUpdate(docId);
+      break;
+    }
+    default:
+      this[collection].isAllowedToUpdate(docId);
+    }
+  }
 }

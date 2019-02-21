@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
@@ -9,10 +10,23 @@ import PromotionAssignee from './PromotionAssignee';
 
 type PromotionPageHeaderProps = {};
 
+const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
+  if (!Object.keys(invitedByUser).length) {
+    return contacts;
+  }
+  const { email } = invitedByUser;
+
+  if (contacts.some(({ email: contactEmail }) => contactEmail === email)) {
+    return contacts;
+  }
+
+  return [...contacts, { ...invitedByUser, title: 'Courtier' }];
+};
+
 const PromotionPageHeader = ({
+  invitedByUser,
   promotion,
-  canModify,
-  isAdmin,
+  canModifyPromotion,
 }: PromotionPageHeaderProps) => {
   const {
     _id: promotionId,
@@ -22,8 +36,11 @@ const PromotionPageHeader = ({
     documents,
     contacts = [],
   } = promotion;
+  const mergedContacts = mergeInvitedByWithContacts({
+    contacts,
+    invitedByUser,
+  });
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
-
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
@@ -35,11 +52,11 @@ const PromotionPageHeader = ({
               <StatusLabel
                 status={status}
                 collection={PROMOTIONS_COLLECTION}
-                allowModify={isAdmin}
+                allowModify={Meteor.microservice === 'admin'}
                 docId={promotionId}
               />
             )}
-            {canModify && <PromotionModifier promotion={promotion} />}
+            {canModifyPromotion && <PromotionModifier promotion={promotion} />}
           </h1>
           <h3 className="secondary">
             <T
@@ -47,7 +64,9 @@ const PromotionPageHeader = ({
               values={{ promotionLotCount: promotionLots.length }}
             />
           </h3>
-          {isAdmin && <PromotionAssignee promotion={promotion} />}
+          {Meteor.microservice === 'admin' && (
+            <PromotionAssignee promotion={promotion} />
+          )}
         </div>
 
         {logos.length > 0 ? (
@@ -70,17 +89,17 @@ const PromotionPageHeader = ({
         ) : (
           <div style={{ height: '150px' }} />
         )}
-        {contacts.length > 0 ? (
+        {mergedContacts.length > 0 ? (
           <div className="contacts animated fadeIn delay-400">
             <h3>
               <T
                 id="PromotionPageHeader.contacts"
-                values={{ multipleContacts: contacts.length > 1 }}
+                values={{ multipleContacts: mergedContacts.length > 1 }}
               />
             </h3>
 
             <div className="list">
-              {contacts.map(({ name: contactName, phoneNumber, title, email }) => (
+              {mergedContacts.map(({ name: contactName, phoneNumber, title, email }) => (
                 <div className="contact" key={email}>
                   <h4 className="name">{contactName}</h4>
                   <span className="title secondary">{title}</span>

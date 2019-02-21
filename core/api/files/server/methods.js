@@ -11,23 +11,25 @@ import S3Service from './S3Service';
 
 deleteFile.setHandler((context, { collection, docId, fileKey }) => {
   context.unblock();
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService[collection].isAllowedToUpdate(docId, context.userId);
-    S3Service.isAllowedToAccess(fileKey);
-  }
+  SecurityService.isAllowedToModifyFiles({
+    collection,
+    docId,
+    userId: context.userId,
+    fileKey,
+  });
 
   return FileService.deleteFile(fileKey);
 });
 
-setFileStatus.setHandler((context, { collection, docId, fileKey, newStatus }) => {
+setFileStatus.setHandler((context, { fileKey, newStatus }) => {
   context.unblock();
-  SecurityService[collection].isAllowedToUpdate(docId, context.userId);
+  SecurityService.checkCurrentUserIsAdmin();
   FileService.setFileStatus(fileKey, newStatus);
 });
 
-setFileError.setHandler((context, { collection, docId, fileKey, error }) => {
+setFileError.setHandler((context, { fileKey, error }) => {
   context.unblock();
-  SecurityService[collection].isAllowedToUpdate(docId, context.userId);
+  SecurityService.checkCurrentUserIsAdmin();
   FileService.setFileError(fileKey, error);
 });
 

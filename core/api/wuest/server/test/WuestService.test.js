@@ -455,6 +455,8 @@ describe('WuestService', function () {
   });
 
   context('evaluateById', () => {
+    const getValueRange = value => ({ min: value * 0.9, max: value * 1.1 });
+
     it('returns min, max and value', () => {
       const propertyId = Factory.create('property', {
         propertyType: PROPERTY_TYPE.FLAT,
@@ -475,16 +477,19 @@ describe('WuestService', function () {
 
       return WuestService.evaluateById({ propertyId, loanResidenceType }).then((result) => {
         const marketValueBeforeCorrection = 709000;
-        const statisticalPriceRangeMin = 650000;
+        const statisticalPriceRangeMin = 640000;
         const statisticalPriceRangeMax = 770000;
         const priceRange = WuestService.getPriceRange({
           marketValueBeforeCorrection,
           statisticalPriceRangeMin,
           statisticalPriceRangeMax,
         });
-        expect(result.value).to.equal(marketValueBeforeCorrection, 'value');
-        expect(result.min).to.equal(priceRange.min, 'min');
-        expect(result.max).to.equal(priceRange.max, 'max');
+        const valueRange = getValueRange(marketValueBeforeCorrection);
+        const minRange = getValueRange(priceRange.min);
+        const maxRange = getValueRange(priceRange.max);
+        expect(result.value).to.be.within(valueRange.min, valueRange.max);
+        expect(result.min).to.be.within(minRange.min, minRange.max);
+        expect(result.max).to.be.within(maxRange.min, maxRange.max);
       });
     });
 

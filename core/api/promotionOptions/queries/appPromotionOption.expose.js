@@ -3,10 +3,10 @@ import query from './appPromotionOption';
 
 query.expose({
   firewall(userId, { promotionOptionId }) {
-    SecurityService.promotions.isAllowedToReadPromotionOption(
+    SecurityService.promotions.hasAccessToPromotionOption({
       promotionOptionId,
       userId,
-    );
+    });
   },
   validateParams: { promotionOptionId: String },
 });
