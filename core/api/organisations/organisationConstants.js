@@ -18,6 +18,7 @@ export const ORGANISATION_QUERIES = {
 };
 export const ORGANISATION_FEATURES = {
   LENDER: 'LENDER',
+  PRO: 'PRO',
 };
 
 export const ORGANISATION_TAGS = {
