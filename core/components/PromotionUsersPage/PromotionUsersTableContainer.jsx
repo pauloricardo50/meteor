@@ -93,7 +93,7 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
             promotionId={promotionId}
           />
         ) : (
-          invitedByName
+          userName
         ),
     },
     {
