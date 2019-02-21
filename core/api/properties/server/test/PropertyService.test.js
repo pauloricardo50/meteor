@@ -19,6 +19,11 @@ describe('PropertyService', () => {
   });
 
   describe('evaluateProperty', () => {
+    const getValueRange = value => ({
+      min: value * 0.9,
+      max: value * 1.1,
+    });
+
     it('adds an error on the property', () => {
       const propertyId = Factory.create('property', {
         propertyType: PROPERTY_TYPE.FLAT,
@@ -81,9 +86,15 @@ describe('PropertyService', () => {
           statisticalPriceRangeMin,
           statisticalPriceRangeMax,
         });
-        expect(property.valuation.value).to.equal(marketValueBeforeCorrection);
-        expect(property.valuation.min).to.equal(priceRange.min);
-        expect(property.valuation.max).to.equal(priceRange.max);
+        const valueRange = getValueRange(marketValueBeforeCorrection);
+        const minRange = getValueRange(priceRange.min);
+        const maxRange = getValueRange(priceRange.max);
+        expect(property.valuation.value).to.be.within(
+          valueRange.min,
+          valueRange.max,
+        );
+        expect(property.valuation.min).to.be.within(minRange.min, minRange.max);
+        expect(property.valuation.max).to.be.within(maxRange.min, maxRange.max);
       });
     }).timeout(10000);
 
