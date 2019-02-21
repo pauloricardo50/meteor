@@ -15,12 +15,23 @@ const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
     return contacts;
   }
   const { email } = invitedByUser;
+  console.log('invitedByUser:', invitedByUser);
 
   if (contacts.some(({ email: contactEmail }) => contactEmail === email)) {
     return contacts;
   }
 
-  return [...contacts, { ...invitedByUser, title: 'Courtier' }];
+  const organisation = invitedByUser
+    && invitedByUser.organisations
+    && !!invitedByUser.organisations.length
+    && invitedByUser.organisations[0];
+
+  const title = organisation && organisation.$metadata.role;
+
+  return [
+    ...contacts,
+    { ...invitedByUser, title: title || 'Courtier immobilier' },
+  ];
 };
 
 const PromotionPageHeader = ({

@@ -11,6 +11,11 @@ const mergeContacts = ({ promotion, contacts }) => {
     $metadata: { invitedBy },
   } = promotion;
   const invitedByUser = invitedBy && promotionUsers.find(({ _id }) => _id === invitedBy);
+  const organisation = invitedByUser
+    && invitedByUser.organisations
+    && !!invitedByUser.organisations.length
+    && invitedByUser.organisations[0];
+  const title = organisation && organisation.$metadata.role;
 
   return [
     ...promotionContacts.map(contact => ({
@@ -27,14 +32,22 @@ const mergeContacts = ({ promotion, contacts }) => {
       ...invitedByUser,
       renderTitle: (
         <span>
-          Courtier
+          {title || 'Courtier immobilier'}
           <span className="secondary"> &bull; {promotionName}</span>
         </span>
       ),
       disableEdit: true,
     },
     ...contacts.map(obj => ({ ...obj, renderTitle: obj.title })),
-  ].filter(x => x);
+  ]
+    .filter(x => x)
+    .reduce((allContacts, contact) => {
+      if (allContacts.some(({ email }) => contact.email === email)) {
+        return allContacts;
+      }
+
+      return [...allContacts, contact];
+    }, []);
 };
 
 export default withProps(({ loan: { _id: loanId, contacts = [], promotions, hasPromotion } }) => ({
