@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import Input from '@material-ui/core/Input';
 
 import List, {
   ListItem,
@@ -10,6 +9,7 @@ import List, {
 import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button/Button';
 import T from 'core/components/Translation';
+import TextField from 'imports/core/components/Material/TextField';
 import OrganisationUserAdderContainer from './OrganisationUserAdderContainer';
 
 type OrganisationUserAdderProps = {
@@ -37,8 +37,8 @@ const renderUserSearcher = ({
 }) => (
   <>
     <form onSubmit={onSearch}>
-      <Input
-        type="text"
+      <TextField
+        key="user"
         value={searchQuery}
         onChange={event => setSearchQuery(event.target.value)}
         placeholder="Rechercher..."
@@ -86,7 +86,9 @@ const renderRoleSetter = ({
         .then(handleClose);
     }}
   >
-    <Input
+    <TextField
+      label="Titre"
+      key="role"
       type="text"
       value={role}
       onChange={event => setRole(event.target.value)}
