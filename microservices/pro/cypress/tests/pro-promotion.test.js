@@ -42,7 +42,7 @@ describe('Pro', () => {
       cy.contains('Préparation').should('exist');
     });
 
-    context.only('with an existing promotion', () => {
+    context('with an existing promotion', () => {
       it('should render buttons based on permissions', () => {
         cy.callMethod('insertPromotion');
         cy.callMethod('resetUserPermissions');
