@@ -42,6 +42,7 @@ const FinancingSingleHeader = ({
       structureId={structure.id}
       loanId={loanId}
       structure={structure}
+      selected={selected}
     />
     <h3>
       <ClickToEditField

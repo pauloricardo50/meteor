@@ -42,7 +42,7 @@ describe('SlackService - server', function () {
         lastName: 'Doe',
         assignedEmployeeId: yannis._id,
       })._id;
-      const loanId1 = Factory.create('loan', { userId })._id;
+      const loanId1 = Factory.create('loan', { userId, name: '19-0001' })._id;
       const loanId2 = LoanService.adminLoanInsert({ userId });
       const user = UserService.get(userId);
 
@@ -52,7 +52,7 @@ describe('SlackService - server', function () {
         docLabel: 'Taxes',
         loanId: loanId2,
       }).then(({ attachments, channel }) => {
-        expect(attachments[0].title).to.equal('John Doe a uploadé file.pdf dans Taxes pour 19-0001.');
+        expect(attachments[0].title).to.equal('John Doe a uploadé file.pdf dans Taxes pour 19-0002.');
         expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `6.25%`, Documents: `0.00%`, Bien immo: `27.78%`');
         expect(channel).to.equal('#clients_yannis');
       });

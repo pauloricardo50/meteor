@@ -85,7 +85,7 @@ Factory.define('loan', Loans, {
     verification: {},
     step: STEPS.PREPARATION,
   }),
-  name: () => `18-0${Math.floor(Math.random() * 899 + 100)}`,
+  name: () => `19-0${Math.floor(Math.random() * 899 + 100)}`,
   emails: () => [],
   propertyIds: [],
 });
