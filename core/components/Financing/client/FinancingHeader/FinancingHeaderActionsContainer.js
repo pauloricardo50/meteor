@@ -9,7 +9,7 @@ import {
   updateStructure,
 } from '../../../../api';
 
-const FinancingHeaderActionsContainer = withProps(({ loanId, structureId, structure: { disabled } }) => ({
+export default withProps(({ loanId, structureId, structure: { disabled }, selected }) => ({
   options: [
     {
       label: 'Choisir',
@@ -24,6 +24,7 @@ const FinancingHeaderActionsContainer = withProps(({ loanId, structureId, struct
       onClick: () => removeStructure.run({ loanId, structureId }),
       dividerTop: true,
       condition: !disabled,
+      disabled: selected,
     },
     {
       label: disabled ? '[ADMIN] Déverouiller' : '[ADMIN] Verouiller',
@@ -38,5 +39,3 @@ const FinancingHeaderActionsContainer = withProps(({ loanId, structureId, struct
     },
   ].filter(({ condition }) => condition !== false),
 }));
-
-export default FinancingHeaderActionsContainer;
