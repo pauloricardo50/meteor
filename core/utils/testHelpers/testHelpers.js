@@ -1,7 +1,13 @@
+import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
+import { Roles } from 'meteor/alanning:roles';
 
-import { Users } from '../../api';
+import faker from 'faker';
+
+import { testCreateUser, Users, testUserAccount } from '../../api';
+import { ROLES } from '../../api/constants';
+import { fullUser } from '../../api/fragments';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id
@@ -49,4 +55,32 @@ export const createEmailVerificationToken = (userId, email) => {
   );
 
   return token;
+};
+
+export const userLogin = ({ email, password, role }) => {
+  const userEmail = email || faker.internet.email();
+  const userPassword = password || faker.random.word();
+
+  if (Meteor.isServer) {
+    const user = testUserAccount.run({
+      email: userEmail,
+      password: userPassword,
+      role: role || ROLES.USER,
+    });
+    Meteor.loginWithPassword({ id: user._id }, userPassword);
+    return Promise.resolve(user);
+  }
+
+  if (Meteor.isClient) {
+    return testUserAccount
+      .run({
+        email: userEmail,
+        password: userPassword,
+        role: role || ROLES.USER,
+      })
+      .then((user) => {
+        Meteor.loginWithPassword({ id: user._id }, userPassword);
+        return user;
+      });
+  }
 };

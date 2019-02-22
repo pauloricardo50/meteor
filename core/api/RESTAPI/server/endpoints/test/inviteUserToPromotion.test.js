@@ -7,10 +7,7 @@ import { Factory } from 'meteor/dburles:factory';
 import { expect } from 'chai';
 import fetch from 'node-fetch';
 
-import {
-  DOCUMENT_USER_PERMISSIONS,
-  PROMOTION_STATUS,
-} from '../../../../constants';
+import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
@@ -63,7 +60,7 @@ const setupPromotion = () => {
   PromotionService.setUserPermissions({
     promotionId,
     userId: user._id,
-    permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+    permissions: { canInviteCustomers: true },
   });
   PromotionService.update({
     promotionId,
@@ -115,7 +112,7 @@ describe('REST: inviteUserToPromotion', function () {
         expectedResponse: {
           status: 500,
           message:
-            '[Could not find object with id "12345" in collection "promotions"]',
+            '[Could not find object with filters "{"_id":"12345"}" in collection "promotions"]',
         },
         id: '12345',
       }));
@@ -124,24 +121,26 @@ describe('REST: inviteUserToPromotion', function () {
       inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          message: 'Checking ownership [NOT_AUTHORIZED]',
+          message:
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
           status: 500,
         },
       }));
 
-    it('user is not allowed to modify the promotion', () => {
+    it('user is not allowed to invite customers to the promotion', () => {
       PromotionService.addProUser({ promotionId, userId: user._id });
       PromotionService.setUserPermissions({
         promotionId,
         userId: user._id,
-        permissions: DOCUMENT_USER_PERMISSIONS.READ,
+        permissions: { canInviteCustomers: false },
       });
 
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
           status: 500,
-          message: 'Checking permissions [NOT_AUTHORIZED]',
+          message:
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });
@@ -151,7 +150,7 @@ describe('REST: inviteUserToPromotion', function () {
       PromotionService.setUserPermissions({
         promotionId,
         userId: user._id,
-        permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+        permissions: { canInviteCustomers: true },
       });
 
       return inviteUser({
@@ -160,7 +159,7 @@ describe('REST: inviteUserToPromotion', function () {
         expectedResponse: {
           status: 500,
           message:
-            "[Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.]",
+            'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
       });
     });

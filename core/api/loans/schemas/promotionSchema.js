@@ -7,6 +7,7 @@ const promotionSchema = {
     defaultValue: [],
   },
   'promotionLinks.$.priorityOrder.$': String,
+  'promotionLinks.$.invitedBy': { type: String, optional: true },
   promotionOptionLinks: { type: Array, defaultValue: [] },
   'promotionOptionLinks.$': Object,
   'promotionOptionLinks.$._id': { type: String, optional: true },

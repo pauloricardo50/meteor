@@ -7,13 +7,16 @@ import FileService from '../../files/server/FileService';
 import CollectionService from '../../helpers/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
-import { ROLES, DOCUMENT_USER_PERMISSIONS } from '../../constants';
+import {
+  ROLES,
+  PROMOTION_STATUS,
+  PROMOTION_PERMISSIONS_FULL_ACCESS,
+} from '../../constants';
 import { sendEmail } from '../../email/methodDefinitions';
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
 import PromotionOptionService from '../../promotionOptions/server/PromotionOptionService';
 import Promotions from '../promotions';
-import { PROMOTION_STATUS } from '../promotionConstants';
 
 export class PromotionService extends CollectionService {
   constructor() {
@@ -31,7 +34,7 @@ export class PromotionService extends CollectionService {
       userLinks: [
         {
           _id: userId,
-          permissions: DOCUMENT_USER_PERMISSIONS.MODIFY,
+          permissions: PROMOTION_PERMISSIONS_FULL_ACCESS(),
         },
       ],
     });
@@ -92,7 +95,7 @@ export class PromotionService extends CollectionService {
 
   inviteUser({
     promotionId,
-    user: { email, firstName, lastName, phoneNumber },
+    user: { email, firstName, lastName, phoneNumber, invitedBy },
     sendInvitation = true,
   }) {
     const promotion = this.get(promotionId);
@@ -125,7 +128,11 @@ export class PromotionService extends CollectionService {
       }
     }
 
-    const loanId = LoanService.insertPromotionLoan({ userId, promotionId });
+    const loanId = LoanService.insertPromotionLoan({
+      userId,
+      promotionId,
+      invitedBy,
+    });
 
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({
@@ -180,11 +187,23 @@ export class PromotionService extends CollectionService {
       id: promotionId,
       linkName: 'users',
       linkId: userId,
-      metadata: { permissions: DOCUMENT_USER_PERMISSIONS.READ },
+      metadata: { permissions: {} },
     });
   }
 
   removeProUser({ promotionId, userId }) {
+    const loans = LoanService.fetch({
+      $filters: { 'promotionLinks.invitedBy': userId },
+    }) || [];
+    loans.forEach(({ _id: loanId }) => {
+      this.updateLinkMetadata({
+        id: promotionId,
+        linkName: 'loans',
+        linkId: loanId,
+        metadata: { invitedBy: undefined },
+      });
+    });
+
     return this.removeLink({
       id: promotionId,
       linkName: 'users',

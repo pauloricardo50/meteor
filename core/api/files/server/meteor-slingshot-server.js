@@ -7,6 +7,7 @@ import {
   PROPERTIES_COLLECTION,
   BORROWERS_COLLECTION,
   PROMOTIONS_COLLECTION,
+  COLLECTIONS,
 } from '../../constants';
 import SecurityService from '../../security';
 import {
@@ -38,18 +39,16 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
       );
     }
 
-    // Make sure this user is the owner of the document
-    if (collection === BORROWERS_COLLECTION) {
-      SecurityService.borrowers.isAllowedToUpdate(docId);
-    } else if (collection === LOANS_COLLECTION) {
-      SecurityService.loans.isAllowedToUpdate(docId);
-    } else if (collection === PROPERTIES_COLLECTION) {
-      SecurityService.properties.isAllowedToUpdate(docId);
-    } else if (collection === PROMOTIONS_COLLECTION) {
-      SecurityService.promotions.isAllowedToUpdate(docId);
-    } else {
+    if (!Object.values(COLLECTIONS).includes(collection)) {
       throw new Meteor.Error('Invalid collection', "Collection doesn't exist");
     }
+
+    SecurityService.isAllowedToModifyFiles({
+      collection,
+      docId,
+      userId: this.userId,
+      fileKey: docId,
+    });
 
     return true;
   },
