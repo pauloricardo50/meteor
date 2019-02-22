@@ -1,0 +1,23 @@
+.pro-property-page {
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    h1,
+    h3 {
+      margin: 0;
+    }
+
+    > * {
+      margin-right: 8px !important;
+    }
+  }
+
+  > * {
+    margin-bottom: 16px;
+  }
+}

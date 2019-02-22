@@ -9,6 +9,7 @@ import {
   pullPropertyValue,
   evaluateProperty,
   propertyDataIsInvalid,
+  inviteUserToProperty,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -55,4 +56,10 @@ propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) =>
     propertyId,
     loanResidenceType,
   });
+});
+
+inviteUserToProperty.setHandler(({ userId }, params) => {
+  // TODO: Fix security
+  SecurityService.checkUserIsPro(userId);
+  return PropertyService.inviteUser(params);
 });

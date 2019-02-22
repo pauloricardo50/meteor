@@ -6,6 +6,8 @@ import Recap from 'core/components/Recap';
 import Valuation from 'core/components/Valuation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import { PropertyForm } from 'core/components/forms';
+import { PROPERTY_CATEGORY } from 'core/api/constants';
+import { ProPropertyPage } from 'core/components/ProPropertyPage/ProPropertyPage';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
@@ -15,6 +17,11 @@ export const getPropertyAddress = ({ address1, zipCode, city }) =>
 
 const SinglePropertyPage = (props) => {
   const { property, displayLoans, className, loanResidenceType } = props;
+
+  if (property.category === PROPERTY_CATEGORY.PRO) {
+    return <ProPropertyPage property={property} />;
+  }
+
   const { loans } = property;
   const address = getPropertyAddress(property);
   let residenceType = loanResidenceType;
@@ -24,9 +31,7 @@ const SinglePropertyPage = (props) => {
     // is not specifically defined, so use the residenceType of the first
     // loan instead
     // Warning: this might be false if multiple loans point to this property
-    residenceType = loans
-      && loans.length > 0
-      && loans[0].residenceType;
+    residenceType = loans && loans.length > 0 && loans[0].residenceType;
   }
 
   return (

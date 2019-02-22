@@ -64,3 +64,8 @@ export const propertyDataIsInvalid = new Method({
     loanResidenceType: Match.Optional(String),
   },
 });
+
+export const inviteUserToProperty = new Method({
+  name: 'inviteUserToProperty',
+  params: { user: Object, propertyId: String },
+});

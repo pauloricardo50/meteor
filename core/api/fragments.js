@@ -678,6 +678,13 @@ export const userProperty = () => ({
   valuation: userValuation(),
 });
 
+export const proPropertySummary = () => ({
+  address1: 1,
+  city: 1,
+  status: 1,
+  totalValue: 1,
+});
+
 // //
 // // Task fragments
 // //

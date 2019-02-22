@@ -4,18 +4,8 @@ import { Element } from 'react-scroll';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
-import AutoForm from 'core/components/AutoForm';
-import MortgageNotesForm from 'core/components/MortgageNotesForm';
-import {
-  getPropertyArray,
-  getPropertyLoanArray,
-} from 'core/arrays/PropertyFormArray';
 import T from 'core/components/Translation';
-import {
-  LOANS_COLLECTION,
-  PROPERTIES_COLLECTION,
-  VALUATION_STATUS,
-} from 'core/api/constants';
+import { VALUATION_STATUS, PROPERTY_CATEGORY } from 'core/api/constants';
 import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
@@ -24,10 +14,12 @@ import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
 import Page from 'core/components/Page';
+import ProProperty from 'core/components/ProProperty';
 import { PROPERTIES_PAGE } from '../../../startup/client/appRoutes';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import LaunchValuationButton from './LaunchValuationButton';
+import SinglePropertyPageForms from './SinglePropertyPageForms';
 
 const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
@@ -36,8 +28,12 @@ const SinglePropertyPage = (props) => {
   const { loan, propertyId, history } = props;
   const { borrowers, properties, residenceType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
-  const { address1, zipCode, city, mortgageNotes } = property;
-  const { userFormsEnabled } = loan;
+
+  if (property.category === PROPERTY_CATEGORY.PRO) {
+    return <ProProperty property={property} />;
+  }
+
+  const { address1, zipCode, city } = property;
   const progress = PropertyCalculator.propertyPercent({
     property,
     loan,
@@ -81,30 +77,11 @@ const SinglePropertyPage = (props) => {
           <Valuation property={property} loanResidenceType={residenceType} />
         </Element>
 
-        <div className="flex--helper flex-justify--center">
-          <AutoForm
-            formClasses="user-form user-form__info"
-            inputs={getPropertyLoanArray({ loan, borrowers })}
-            collection={LOANS_COLLECTION}
-            doc={loan}
-            docId={loan._id}
-            disabled={!userFormsEnabled}
-          />
-        </div>
-
-        <div className="flex--helper flex-justify--center">
-          <AutoForm
-            formClasses="user-form user-form__info"
-            inputs={getPropertyArray({ loan, borrowers, property })}
-            collection={PROPERTIES_COLLECTION}
-            doc={property}
-            docId={property._id}
-            disabled={!userFormsEnabled}
-          />
-        </div>
-        <div className="flex--helper flex-justify--center">
-          <MortgageNotesForm propertyId={propertyId} mortgageNotes={mortgageNotes} />
-        </div>
+        <SinglePropertyPageForms
+          loan={loan}
+          borrowers={borrowers}
+          property={property}
+        />
       </section>
       <div className="single-property-page-buttons">
         <ReturnToDashboard />

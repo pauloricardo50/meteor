@@ -1,8 +1,13 @@
+import { Accounts } from 'meteor/accounts-base';
+
+import { Meteor } from 'meteor/meteor';
 import LoanService from '../../loans/server/LoanService';
 import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
 import { VALUATION_STATUS } from '../propertyConstants';
 import Properties from '../properties';
+import UserService from '../../users/server/UserService';
+import { ROLES } from '../../users/userConstants';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -73,6 +78,53 @@ export class PropertyService extends CollectionService {
       return error.reason;
     }
     return false;
+  };
+
+  inviteUser = ({
+    proUserId,
+    user: { email, firstName, lastName, phoneNumber },
+    propertyId,
+    sendInvitation,
+  }) => {
+    const property = this.get(propertyId);
+    let assignedEmployeeId;
+
+    if (proUserId) {
+      const pro = UserService.fetchOne({
+        filters: { _id: proUserId },
+        assignedEmployeeId: 1,
+      });
+      assignedEmployeeId = pro.assignedEmployeeId;
+    }
+
+    let userId;
+    let isNewUser = false;
+
+    if (!UserService.doesUserExist({ email })) {
+      isNewUser = true;
+      const admin = UserService.get(assignedEmployeeId);
+      userId = UserService.adminCreateUser({
+        options: {
+          email,
+          sendEnrollmentEmail: false,
+          firstName,
+          lastName,
+          phoneNumbers: [phoneNumber],
+        },
+        adminId: admin && admin._id,
+      });
+    } else {
+      userId = Accounts.findUserByEmail(email)._id;
+      if (UserService.hasProperty({ userId, propertyId })) {
+        throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
+      }
+    }
+
+    const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
+
+    console.log('Should send invitation to property loan!');
+    if (sendInvitation) {
+    }
   };
 }
 
