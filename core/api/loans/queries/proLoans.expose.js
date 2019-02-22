@@ -7,6 +7,26 @@ import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import query from './proLoans';
 
+const anonymizeLoans = ({ loans = [], userId, propertyId, promotionId }) => {
+  let anonymizedLoans = [];
+  if (promotionId) {
+    anonymizedLoans = [
+      ...anonymizedLoans,
+      ...loans
+        .filter(({ hasPromotion }) => hasPromotion)
+        .map(makePromotionLoanAnonymizer({ userId, promotionId })),
+    ];
+  }
+  if (propertyId) {
+    // TODO: Make proProperty loan anonymizer
+    anonymizedLoans = [
+      ...anonymizedLoans,
+      ...loans.filter(({ hasProProperty }) => hasProProperty),
+    ];
+  }
+  return anonymizedLoans;
+};
+
 query.expose({
   firewall(userId, params) {
     const { promotionId, propertyId } = params;
@@ -17,7 +37,8 @@ query.expose({
         userId,
         promotionId,
       });
-    } else if (propertyId) {
+    }
+    if (propertyId) {
       SecurityService.properties.isAllowedToView({ propertyId, userId });
     }
   },
@@ -42,13 +63,6 @@ query.resolve(({ userId, promotionId, propertyId }) => {
     SecurityService.checkUserIsAdmin(userId);
     return loans;
   } catch (error) {
-    if (promotionId) {
-      return loans.map(makePromotionLoanAnonymizer({ userId, promotionId }));
-    }
-    if (propertyId) {
-      // TODO: Make proProperty loan anonymizer
-      return loans;
-    }
-    return [];
+    return anonymizeLoans({ loans, userId, propertyId, promotionId });
   }
 });

@@ -299,6 +299,8 @@ export const proLoans = () => ({
   },
   promotionProgress: 1,
   user: { name: 1, phoneNumbers: 1, email: 1 },
+  hasPromotion: 1,
+  hasProProperty: 1,
 });
 
 export const sideNavLoan = () => ({

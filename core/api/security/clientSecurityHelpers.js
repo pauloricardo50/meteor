@@ -246,7 +246,7 @@ export const isAllowedToViewProProperty = ({ property, currentUser }) => {
     return true;
   }
 
-  if (isPropertyOwner({ property, userId })) {
+  if (isPropertyOwner({ property, currentUser })) {
     return true;
   }
 
