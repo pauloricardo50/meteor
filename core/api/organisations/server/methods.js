@@ -4,6 +4,8 @@ import {
   organisationUpdate,
   organisationRemove,
   addContactToOrgnaisation,
+  addUserToOrganisation,
+  removeUserFromOrganisation,
 } from '../methodDefinitions';
 import OrganisationService from './OrganisationService';
 
@@ -29,5 +31,24 @@ addContactToOrgnaisation.setHandler((context, { organisationId, contactId, metad
     linkName: 'contacts',
     linkId: contactId,
     metadata,
+  });
+});
+
+addUserToOrganisation.setHandler((context, { organisationId, userId, metadata }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return OrganisationService.addLink({
+    id: organisationId,
+    linkName: 'users',
+    linkId: userId,
+    metadata,
+  });
+});
+
+removeUserFromOrganisation.setHandler((context, { organisationId, userId }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return OrganisationService.removeLink({
+    id: organisationId,
+    linkName: 'users',
+    linkId: userId,
   });
 });

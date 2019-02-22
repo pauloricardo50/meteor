@@ -21,7 +21,7 @@ const DashboardInfoTeamExternal = ({
       .map(contact => (
         <DashboardInfoTeamMember
           {...contact}
-          renderTitle={contact.title}
+          renderTitle={contact.renderTitle}
           key={contact.name}
           allowEdit={!contact.disableEdit}
           removeContact={removeContact}

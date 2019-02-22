@@ -57,6 +57,10 @@ export const OrganisationSchema = new SimpleSchema({
     uniforms: { placeholder: null },
   },
   'tags.$': { type: String, allowedValues: Object.values(ORGANISATION_TAGS) },
+  userLinks: { type: Array, defaultValue: [] },
+  'userLinks.$': Object,
+  'userLinks.$._id': { type: String, optional: true },
+  'userLinks.$.role': { type: String, optional: true },
 });
 
 Organisations.attachSchema(OrganisationSchema);

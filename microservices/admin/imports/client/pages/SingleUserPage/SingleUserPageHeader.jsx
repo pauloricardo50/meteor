@@ -9,7 +9,7 @@ import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { sendEnrollmentEmail } from 'core/api';
-import { ROLES, USERS_COLLECTION } from 'imports/core/api/constants';
+import { ROLES, USERS_COLLECTION, ORGANISATIONS_COLLECTION } from 'imports/core/api/constants';
 import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
@@ -26,6 +26,7 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
     phoneNumbers,
     name,
     email,
+    organisations = [],
   } = user;
 
   const allowAssign = !roles.includes(ROLES.DEV) && !roles.includes(ROLES.ADMIN);
@@ -54,6 +55,18 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
       </div>
 
       <div className="bottom">
+        <div className="organisations">
+          {!!organisations.length
+            && organisations.map(organisation => (
+              <CollectionIconLink
+                key={organisation._id}
+                relatedDoc={{
+                  ...organisation,
+                  collection: ORGANISATIONS_COLLECTION,
+                }}
+              />
+            ))}
+        </div>
         <div className="email">
           <Icon type="mail" /> <a href={`mailto:${email}`}>{email}</a>{' '}
           <EmailModifier userId={userId} email={email} />

@@ -5,9 +5,9 @@ import React from 'react';
 
 import T from '../Translation';
 import Page from '../Page';
-import PasswordChange from './PasswordChange';
 import AccountResetter from '../AccountResetter/AccountResetter';
-import GenerateApiToken from './GenerateApiToken';
+import PasswordChange from './PasswordChange';
+import DeveloperSection from './DeveloperSection';
 
 const styles = {
   section: {
@@ -42,7 +42,7 @@ const AccountPage = ({ currentUser }) => {
           </div>
 
           {Meteor.microservice === 'pro' && (
-            <GenerateApiToken user={currentUser} />
+            <DeveloperSection user={currentUser} />
           )}
 
           {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}

@@ -19,7 +19,6 @@ import PropertyService from '../../../properties/server/PropertyService';
 
 describe('PromotionService', function () {
   this.timeout(10000);
-  
   const checkEmails = () =>
     new Promise((resolve, reject) => {
       Meteor.call('getAllTestEmails', (err, emails) => {
@@ -146,9 +145,10 @@ describe('PromotionService', function () {
       let resetToken;
 
       return PromotionService.inviteUser({ promotionId, user: newUser })
-        .then(() => {
+        .then((loanId) => {
           const user = Accounts.findUserByEmail(newUser.email);
           const {
+            _id: userId,
             services: {
               password: {
                 reset: { token },
@@ -157,6 +157,10 @@ describe('PromotionService', function () {
           } = user;
 
           resetToken = token;
+
+          expect(!!loanId).to.equal(true);
+          expect(!!userId).to.equal(true);
+          expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
           return checkEmails();
         })
@@ -176,25 +180,6 @@ describe('PromotionService', function () {
             .find(({ name }) => name === 'CTA_URL')
             .content.split('/')
             .slice(-1)[0]).to.equal(resetToken);
-        });
-    });
-
-    it('does not fail if there are extra spaces in the email address', () => {
-      const newUser = {
-        email: ' new@user.com',
-        firstName: 'New',
-        lastName: 'User',
-        phoneNumber: '1234',
-      };
-
-      return PromotionService.inviteUser({ promotionId, user: newUser })
-        .then(checkEmails)
-        .then((emails) => {
-          expect(emails.length).to.equal(1);
-          const {
-            response: { status },
-          } = emails[0];
-          expect(status).to.equal('sent');
         });
     });
 

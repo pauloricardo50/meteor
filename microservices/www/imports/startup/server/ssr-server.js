@@ -8,6 +8,7 @@ import * as startupConstants from '../shared/startupConstants';
 import ServerApp from './ServerApp';
 import MaterialUiServer from '../shared/MaterialUi/MaterialUiServer';
 import setupMaterialUiServer from '../shared/MaterialUi/setupMaterialUiServer';
+import { setHeaders } from './seo';
 
 const prepareState = (store) => {
   const preloadedState = store.getState();
@@ -17,11 +18,13 @@ const prepareState = (store) => {
   return stringifiedState.replace(/</g, '\\u003c');
 };
 
-onPageLoad((sink) => {
+onPageLoad(async (sink) => {
   const context = {};
   const { store } = createStore();
   const serverState = prepareState(store);
   const { registry, generateClassName } = setupMaterialUiServer();
+
+  await setHeaders(sink);
 
   sink.renderIntoElementById(
     startupConstants.ROOT_ID,

@@ -10,6 +10,7 @@ import List, {
 import DialogSimple from 'core/components/DialogSimple';
 import Button from 'core/components/Button/Button';
 import T from 'core/components/Translation';
+import { getUserNameAndOrganisation } from 'imports/core/api/promotions/promotionClientHelpers';
 import PromotionProUserAdderContainer from './PromotionProUserAdderContainer';
 
 type PromotionProUserAdderProps = {
@@ -49,7 +50,7 @@ const PromotionProUserAdder = ({
         {searchResults
           && searchResults.map(user => (
             <ListItem key={user._id} className="user">
-              <ListItemText primary={user.name} />
+              <ListItemText primary={getUserNameAndOrganisation({ user })} />
               <ListItemSecondaryAction>
                 <Button
                   onClick={() => addUser({ userId: user._id })}
