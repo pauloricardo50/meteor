@@ -232,6 +232,13 @@ export const isAllowedToSellPromotionLotToCustomer = ({
   );
 };
 
+export const isPropertyOwner = ({ property, currentUser }) => {
+  const { _id: userId } = currentUser;
+  const { userId: propertyOwner } = property;
+
+  return propertyOwner === userId;
+};
+
 export const isAllowedToViewProProperty = ({ property, currentUser }) => {
   const { _id: userId } = currentUser;
 
@@ -239,11 +246,11 @@ export const isAllowedToViewProProperty = ({ property, currentUser }) => {
     return true;
   }
 
-  const { userLinks = [], users = [], userId: propertyOwner } = property;
-
-  if (propertyOwner === userId) {
+  if (isPropertyOwner({ property, userId })) {
     return true;
   }
+
+  const { userLinks = [], users = [] } = property;
 
   const user = userLinks.find(({ _id }) => _id === userId)
     || users.find(({ _id }) => _id === userId);
