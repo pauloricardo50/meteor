@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import PercentWithStatus from '../../../../PercentWithStatus';
 import Icon from '../../../../Icon';
 import { Calculator } from '../../../../../utils/Calculator';
 import T, { Money, Percent } from '../../../../Translation';
@@ -30,11 +29,17 @@ const LenderListItem = ({
         tooltip={(
           <div>
             <div>
-              <span>Revenus considérés</span>:&nbsp;
+              <span>
+                <T id="FinancingLenders.consideredIncome" /> Revenus
+              </span>
+              :&nbsp;
               <Money value={totalIncome} />
             </div>
             <div>
-              <span>Charges considérées</span>:&nbsp;
+              <span>
+                <T id="FinancingLenders.consideredExpenses" />
+              </span>
+              :&nbsp;
               <Money value={expenses} />
             </div>
           </div>
@@ -44,7 +49,7 @@ const LenderListItem = ({
         status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
         tooltip={(
           <span>
-            Taux d'effort
+            <T id="Financing.incomeRatio" />
             <br />
             <Percent value={incomeRatio} />
             <br />
@@ -59,7 +64,7 @@ const LenderListItem = ({
         status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
         tooltip={(
           <span>
-            Taux d'avance
+            <T id="Financing.borrowRatio" />
             <br />
             <Percent value={borrowRatio} />
             <br />

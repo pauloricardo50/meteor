@@ -1,4 +1,6 @@
 {
+  "FinancingLenders.consideredIncome": "Revenus considérés",
+  "FinancingLenders.consideredExpenses": "Charges considérées",
   "Recap.netSalary": "Salaire net",
   "Forms.realEstate.income": "Revenus annuels générés",
   "Forms.realEstate.name": "Description",
@@ -94,7 +96,7 @@
   "Forms.incomeConsiderationType.GROSS": "Bruts",
   "Forms.incomeConsiderationType.NET": "Nets",
   "Forms.investmentIncomeConsideration": "Considération des revenus mobiliers",
-  "Forms.expensesSubtractFromIncome": "Charges a soustraire aux revenus",
+  "Forms.expensesSubtractFromIncome": "Charges à soustraire aux revenus",
   "Forms.expensesSubtractFromIncome.placeholder": "Par défaut",
   "Forms.expensesSubtractFromIncome.ADD_TO_EXPENSES": "Ajouter aux charges",
   "Forms.expensesSubtractFromIncome.SUBTRACT_FROM_INCOME": "Soustraire aux revenus",

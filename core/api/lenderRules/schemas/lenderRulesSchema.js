@@ -40,7 +40,7 @@ export const incomeConsideration = {
     uniforms: {
       intlId: 'expenses',
       placeholder: 'Ajouter toutes les charges aux charges théoriques',
-      label: 'Charges a soustraire aux revenus',
+      label: 'Charges à soustraire aux revenus',
     },
   },
   'expensesSubtractFromIncome.$': {
