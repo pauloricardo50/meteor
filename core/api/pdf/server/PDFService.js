@@ -8,7 +8,7 @@ import fs from 'fs';
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
 import adminLoan from '../../loans/queries/adminLoan';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
-import LoanBankPDF from '../generatePDF/components/LoanBankPDF';
+import LoanBankPDF from '../pdfComponents/LoanBankPDF';
 import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
 
