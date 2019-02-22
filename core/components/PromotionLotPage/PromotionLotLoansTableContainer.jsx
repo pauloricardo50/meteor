@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { compose, withProps, mapProps } from 'recompose';
 import moment from 'moment';
@@ -12,87 +13,105 @@ import PriorityOrder from './PriorityOrder';
 import PromotionProgress from './PromotionProgress';
 import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 import { LOANS_COLLECTION } from '../../api/constants';
+import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 
-const makeMapOption = ({
-  promotionLot: {
-    status: promotionLotStatus,
+const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
+  const {
     _id: promotionLotId,
-    promotion: lotPromotion,
+    status: lotStatus,
+    promotion: { _id: promotionId },
     attributedTo,
     name,
-  },
-  canModify,
-  isAdmin,
-  history,
-}) => (promotionOption) => {
+  } = promotionLot;
+  const { loan, custom, createdAt, solvency } = promotionOption;
   const {
-    _id: promotionOptionId,
-    loan,
-    lots,
-    custom,
-    createdAt,
-    solvency,
-  } = promotionOption;
-  const {
-    user,
-    promotions,
-    promotionOptions = [],
     _id: loanId,
+    name: loanName,
+    user,
     promotionProgress,
+    promotionOptions = [],
+    promotions,
   } = loan;
-  const promotion = promotions && promotions.find(({ _id }) => _id === lotPromotion._id);
+
+  const promotion = promotions.find(({ _id }) => _id === promotionId);
+
+  const {
+    $metadata: { invitedBy },
+  } = promotion;
+
+  const customerOwnerType = getPromotionCustomerOwnerType({
+    invitedBy,
+    currentUser,
+  });
+
+  return [
+    Meteor.microservice === 'admin' ? (
+      <CollectionIconLink
+        relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+      />
+    ) : (
+      loanName
+    ),
+    {
+      raw: user.name,
+      label:
+        Meteor.microservice === 'admin'
+          ? user && (
+            <CollectionIconLink
+              relatedDoc={{
+                ...loan,
+                name: user.name,
+                collection: LOANS_COLLECTION,
+              }}
+            />
+          )
+          : user && user.name,
+    },
+    { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+    user && user.phoneNumbers && user.phoneNumbers[0],
+    user && user.email,
+    {
+      raw: promotionProgress.verificationStatus,
+      label: <PromotionProgress promotionProgress={promotionProgress} />,
+    },
+    custom,
+    {
+      raw: promotionOptions.length,
+      label: (
+        <PriorityOrder
+          promotion={promotion}
+          promotionOptions={promotionOptions}
+          userId={user && user._id}
+        />
+      ),
+    },
+    <PromotionLotAttributer
+      promotionLotId={promotionLotId}
+      loanId={loanId}
+      promotionLotStatus={lotStatus}
+      attributedToId={attributedTo && attributedTo._id}
+      userName={user && user.name}
+      solvency={solvency}
+      promotionLotName={name}
+      currentUser={currentUser}
+      promotion={promotion}
+      customerOwnerType={customerOwnerType}
+      key="promotionLotAttributer"
+    />,
+  ];
+};
+
+const makeMapOption = ({ promotionLot, currentUser }) => (promotionOption) => {
+  const { _id: promotionOptionId } = promotionOption;
 
   return {
     id: promotionOptionId,
-    columns: [
-      isAdmin
-        ? user && (
-          <CollectionIconLink
-            relatedDoc={{
-              ...loan,
-              name: user.name,
-              collection: LOANS_COLLECTION,
-            }}
-          />
-        )
-        : user && user.name,
-      { raw: moment(createdAt).valueOf(), label: moment(createdAt).fromNow() },
-      user && user.phoneNumbers && user.phoneNumbers[0],
-      user && user.email,
-      {
-        raw: promotionProgress.verificationStatus,
-        label: <PromotionProgress promotionProgress={promotionProgress} />,
-      },
-      custom,
-      {
-        raw: promotionOptions.length,
-        label: (
-          <PriorityOrder
-            promotion={promotion}
-            promotionOptions={promotionOptions}
-            currentId={promotionOptionId}
-            userId={user && user._id}
-            key="priorityOrder"
-          />
-        ),
-      },
-      <PromotionLotAttributer
-        promotionLotId={promotionLotId}
-        loanId={loanId}
-        promotionLotStatus={promotionLotStatus}
-        attributedToId={attributedTo && attributedTo._id}
-        userName={user && user.name}
-        lots={lots}
-        solvency={solvency}
-        promotionLotName={name}
-        canModify={canModify}
-        key="promotionLotAttributer"
-      />,
-    ],
+    columns: getColumns({ promotionLot, promotionOption, currentUser }),
   };
 };
 
 const columnOptions = [
+  { id: 'loanName' },
   { id: 'name' },
   { id: 'date' },
   { id: 'phone' },
@@ -107,11 +126,14 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({ promotionOptions, promotionLot, canModify, isAdmin }) => ({
+  mapProps(({
+    promotionOptions = [],
+    promotionLot,
+    currentUser,
+  }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
-    canModify,
-    isAdmin,
+    currentUser,
   })),
   withSmartQuery({
     query: proPromotionOptions,
@@ -120,8 +142,8 @@ export default compose(
     dataName: 'promotionOptions',
   }),
   withRouter,
-  withProps(({ promotionOptions, promotionLot, canModify, history, isAdmin }) => ({
-    rows: promotionOptions.map(makeMapOption({ promotionLot, canModify, history, isAdmin })),
+  withProps(({ promotionOptions, promotionLot, currentUser }) => ({
+    rows: promotionOptions.map(makeMapOption({ promotionLot, currentUser })),
     columnOptions,
   })),
 );

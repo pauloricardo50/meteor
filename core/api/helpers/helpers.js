@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+
 import { Loans, Borrowers, Offers, Properties, Tasks, Users } from '..';
 import {
   LOANS_COLLECTION,
@@ -53,3 +54,23 @@ export const createMeteorAsyncFunction = promiseFunc =>
     promiseFunc(params)
       .then(result => callback(null, result))
       .catch(callback));
+
+export const flattenObject = (object, delimiter) => {
+  const delim = delimiter || '.';
+  let flattened = {};
+
+  Object.keys(object).forEach((key) => {
+    const val = object[key];
+    if (val instanceof Object && !(val instanceof Array)) {
+      const strip = flattenObject(val);
+      Object.keys(strip).forEach((k) => {
+        const v = strip[k];
+        flattened = { ...flattened, [`${key}${delim}${k}`]: v };
+      });
+    } else {
+      flattened = { ...flattened, [key]: val };
+    }
+  });
+
+  return flattened;
+};

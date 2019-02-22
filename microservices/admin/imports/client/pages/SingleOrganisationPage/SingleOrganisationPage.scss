@@ -26,4 +26,16 @@
       }
     }
   }
+
+  .user {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 100%;
+    > * {
+      padding: 8px;
+    }
+  }
 }

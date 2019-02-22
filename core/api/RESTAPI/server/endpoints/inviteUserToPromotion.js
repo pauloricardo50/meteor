@@ -13,7 +13,10 @@ const inviteUserToPromotionAPI = ({ user: { _id: userId }, body }) => {
   }
 
   return withMeteorUserId(userId, () =>
-    inviteUserToPromotion.run({ promotionId, user })).then(() => ({
+    inviteUserToPromotion.run({
+      promotionId,
+      user: { ...user, invitedBy: userId },
+    })).then(() => ({
     message: `Successfully invited user "${
       user.email
     }" to promotion id "${promotionId}"`,

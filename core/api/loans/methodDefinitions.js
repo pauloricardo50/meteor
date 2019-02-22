@@ -124,3 +124,8 @@ export const sendNegativeFeedbackToAllLenders = new Method({
   name: 'sendNegativeFeedbackToAllLenders',
   params: { loanId: String },
 });
+
+export const loanUpdatePromotionInvitedBy = new Method({
+  name: 'loanUpdatePromotionInvitedBy',
+  params: { loanId: String, promotionId: String, invitedBy: String },
+});

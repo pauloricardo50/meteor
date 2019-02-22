@@ -10,7 +10,12 @@ type OrganisationAdderProps = {
 
 const OrganisationAdder = ({ insertOrganisation }: OrganisationAdderProps) => (
   <AutoFormDialog
-    schema={OrganisationSchema.omit('logo', 'contactIds', 'canton')}
+    schema={OrganisationSchema.omit(
+      'logo',
+      'contactIds',
+      'canton',
+      'userLinks',
+    )}
     buttonProps={{
       label: 'Ajouter organisation',
       raised: true,

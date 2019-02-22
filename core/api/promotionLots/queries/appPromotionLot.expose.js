@@ -3,10 +3,10 @@ import query from './appPromotionLot';
 
 query.expose({
   firewall(userId, { promotionLotId }) {
-    SecurityService.promotions.isAllowedToReadPromotionLot(
+    SecurityService.promotions.hasAccessToPromotionLot({
       promotionLotId,
       userId,
-    );
+    });
   },
   validateParams: { promotionLotId: String },
 });
