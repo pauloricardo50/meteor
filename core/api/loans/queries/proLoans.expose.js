@@ -1,7 +1,7 @@
 import { Match } from 'meteor/check';
 
 // import LoanService from 'core/api/loans/server/LoanService';
-import { makeLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
+import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
@@ -9,13 +9,17 @@ import query from './proLoans';
 
 query.expose({
   firewall(userId, params) {
-    const { promotionId } = params;
+    const { promotionId, propertyId } = params;
     params.userId = userId;
     SecurityService.checkUserIsPro(userId);
-    SecurityService.promotions.isAllowedToView({
-      userId,
-      promotionId,
-    });
+    if (promotionId) {
+      SecurityService.promotions.isAllowedToView({
+        userId,
+        promotionId,
+      });
+    } else if (propertyId) {
+      SecurityService.properties.isAllowedToView({ propertyId, userId });
+    }
   },
   validateParams: {
     promotionId: Match.Maybe(String),
@@ -24,15 +28,13 @@ query.expose({
   },
 });
 
-query.resolve(({ userId, promotionId }) => {
+query.resolve(({ userId, promotionId, propertyId }) => {
   const loans = LoanService.fetch({
-    $filter({ filters, params: { promotionId, propertyId } }) {
-      if (promotionId) {
-        filters['promotionLinks._id'] = promotionId;
-      } else if (propertyId) {
-        filters.propertyIds = propertyId;
-      }
-    },
+    ...(propertyId
+      ? { $filters: { propertyIds: propertyId } }
+      : promotionId
+        ? { $filters: { 'promotionLinks._id': promotionId } }
+        : {}),
     ...proLoans(),
   });
 
@@ -40,6 +42,13 @@ query.resolve(({ userId, promotionId }) => {
     SecurityService.checkUserIsAdmin(userId);
     return loans;
   } catch (error) {
-    return loans.map(makeLoanAnonymizer({ userId, promotionId }));
+    if (promotionId) {
+      return loans.map(makePromotionLoanAnonymizer({ userId, promotionId }));
+    }
+    if (propertyId) {
+      // TODO: Make proProperty loan anonymizer
+      return loans;
+    }
+    return [];
   }
 });
