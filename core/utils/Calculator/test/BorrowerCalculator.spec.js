@@ -300,7 +300,7 @@ describe('BorrowerCalculator', () => {
         'city',
         'zipCode',
         'isSwiss',
-        'age',
+        'birthDate',
         'citizenship',
         'isUSPerson',
         'civilStatus',
@@ -439,7 +439,7 @@ describe('BorrowerCalculator', () => {
         borrowers: {
           _id: 'aBcNvYnq34rnb29nh',
           adminValidation: {},
-          age: 45,
+          birthDate: '1992-04-14',
           bonusExists: false,
           childrenCount: 0,
           citizenship: 'hello',
