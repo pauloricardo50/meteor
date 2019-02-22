@@ -91,3 +91,17 @@
     border-radius: 50%;
   }
 }
+
+.blog-post-page-share {
+  margin-top: 16px;
+  display: flex;
+
+  .share-button {
+    margin-right: 8px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}
