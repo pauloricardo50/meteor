@@ -90,7 +90,6 @@ export const withSelector = (SuperClass = class {}) =>
         loan,
         structureId,
       });
-      console.log('structurePropertyValue:', structurePropertyValue);
       return (
         structurePropertyValue
         || this.selectPropertyKey({ loan, structureId, key: 'totalValue' })
