@@ -88,3 +88,27 @@ export const PROPERTY_CATEGORY = {
   PRO: 'PRO',
   PROMOTION: 'PROMOTION',
 };
+
+export const PROPERTY_REFERRED_BY_TYPE = {
+  ANY: 'ANY',
+  USER: 'USER',
+  ORGANISATION: 'ORGANISATION',
+};
+
+export const PROPERTY_PERMISSIONS = {
+  DISPLAY_CUSTOMER_NAMES: {
+    FOR_PROPERTY_STATUS: PROPERTY_STATUS,
+    REFERRED_BY: PROPERTY_REFERRED_BY_TYPE,
+  },
+};
+
+export const PROPERTY_PERMISSIONS_FULL_ACCESS = {
+  canInviteCustomers: true,
+  canInviteProUsers: true,
+  canModifyProperty: true,
+  canManagePermissions: true,
+  displayCustomerNames: {
+    forPropertyStatus: Object.values(PROPERTY_STATUS),
+    referredBy: PROPERTY_REFERRED_BY_TYPE.ANY,
+  },
+};
