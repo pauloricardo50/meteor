@@ -6,6 +6,7 @@ import query from './proProperties';
 query.expose({
   firewall(userId, params) {
     if (params.userId) {
+      // When visiting a pro user's page from admin
       Security.checkUserIsAdmin(userId);
     } else {
       Security.checkUserIsPro(userId);

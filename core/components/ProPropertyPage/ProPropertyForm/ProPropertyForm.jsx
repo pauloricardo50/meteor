@@ -20,7 +20,6 @@ const proPropertySchema = new SimpleSchema({
       multiline: true,
       rows: 5,
       rowsMax: 15,
-      // style: { width: '500px' },
     },
   },
 });
