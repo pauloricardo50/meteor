@@ -140,12 +140,10 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
         this.amortizationGoal = oldAmortizationGoal;
 
-        console.log(amortization);
         return amortization;
       }
 
       const amortizationRate = this.getAmortizationRate({ loan, structureId });
-      console.log(amortizationRate);
       return (amortizationRate * loanValue) / 12;
     }
 

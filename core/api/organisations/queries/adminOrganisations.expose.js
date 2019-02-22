@@ -10,5 +10,6 @@ query.expose({
     features: Match.Maybe(Match.OneOf(String, [String])),
     tags: Match.Maybe(Match.OneOf(String, [String])),
     type: Match.Maybe(Match.OneOf(String, [String])),
+    name: Match.Maybe(String),
   },
 });

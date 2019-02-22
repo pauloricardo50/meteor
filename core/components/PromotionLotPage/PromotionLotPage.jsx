@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 import T from 'core/components/Translation';
 import Button from 'core/components/Button';
@@ -17,12 +18,22 @@ import PromotionLotRecapTable from './PromotionLotRecapTable';
 
 type PromotionLotPageProps = {};
 
+const displayPromotionLotLoansTable = ({ canSeeCustomers }) => {
+  if (Meteor.microservice === 'pro') {
+    return canSeeCustomers;
+  }
+
+  return true;
+};
+
 const PromotionLotPage = ({
   promotionLot,
   currentUser,
   promotionId,
-  canModify,
-  isAdmin,
+  canManageDocuments,
+  canModifyLots,
+  canRemoveLots,
+  canSeeCustomers,
 }: PromotionLotPageProps) => {
   const {
     name,
@@ -55,14 +66,18 @@ const PromotionLotPage = ({
           <StatusLabel status={status} collection={PROMOTION_LOTS_COLLECTION} />
         </h1>
         {description && <h3 className="secondary">{description}</h3>}
-        {canModify && (
+        {Meteor.microservice !== 'app' && (
           <div className="promotion-buttons">
-            <LotDocumentsManager
-              documents={documents}
-              property={properties[0]}
-              currentUser={currentUser}
-            />
-            <PromotionLotModifier promotionLot={promotionLot} />
+            {canManageDocuments && (
+              <LotDocumentsManager
+                documents={documents}
+                property={properties[0]}
+                currentUser={currentUser}
+              />
+            )}
+            {canModifyLots && (
+              <PromotionLotModifier promotionLot={promotionLot} />
+            )}
           </div>
         )}
 
@@ -74,7 +89,7 @@ const PromotionLotPage = ({
           lots={lots}
           allLots={allLots}
           status={promotionLot.status}
-          canModify={canModify}
+          canModifyLots={canModifyLots}
         />
         <PromotionLotRecapTable promotionLot={promotionLot} />
 
@@ -82,12 +97,13 @@ const PromotionLotPage = ({
           files={documents && documents.promotionPropertyDocuments}
         />
 
-        <PromotionLotLoansTable
-          promotionOptions={promotionOptions}
-          promotionLot={promotionLot}
-          canModify={canModify}
-          isAdmin={isAdmin}
-        />
+        {displayPromotionLotLoansTable({ canSeeCustomers }) && (
+          <PromotionLotLoansTable
+            promotionOptions={promotionOptions}
+            promotionLot={promotionLot}
+            currentUser={currentUser}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import Organisations from './organisations';
-import { Contacts, Lenders, LenderRules } from '..';
+import { Contacts, Lenders, Users, LenderRules } from '..';
 
 Organisations.addLinks({
   contacts: {
@@ -11,6 +11,12 @@ Organisations.addLinks({
   lenders: {
     collection: Lenders,
     inversedBy: 'organisation',
+  },
+  users: {
+    collection: Users,
+    field: 'userLinks',
+    type: 'many',
+    metadata: true,
   },
   lenderRules: {
     collection: LenderRules,

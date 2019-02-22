@@ -12,8 +12,6 @@ export const deleteFile = new Method({
 export const setFileStatus = new Method({
   name: 'setFileStatus',
   params: {
-    collection: String,
-    docId: String,
     fileKey: String,
     newStatus: String,
   },
@@ -22,8 +20,6 @@ export const setFileStatus = new Method({
 export const setFileError = new Method({
   name: 'setFileError',
   params: {
-    collection: String,
-    docId: String,
     error: String,
     fileKey: String,
   },

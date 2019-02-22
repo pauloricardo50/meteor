@@ -213,6 +213,7 @@ export const loan = () => ({
     address: 1,
     contacts: 1,
     type: 1,
+    users: { name: 1, email: 1, phoneNumber: 1 },
   },
   properties: { totalValue: 1, address1: 1 },
   propertyIds: 1,
@@ -248,6 +249,13 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
         address: 1,
         status: 1,
         contacts: 1,
+        users: {
+          _id: 1,
+          name: 1,
+          email: 1,
+          phoneNumber: 1,
+          organisations: { users: { role: 1 } },
+        },
         loans: {
           _id: 1,
           $filter({ filters, params: { loanId } }) {
@@ -358,6 +366,7 @@ export const baseOrganisation = () => ({
   type: 1,
   zipCode: 1,
   tags: 1,
+  users: { _id: 1 },
 });
 
 export const fullOrganisation = () => ({
@@ -366,6 +375,7 @@ export const fullOrganisation = () => ({
   lenderRules: lenderRules(),
   lenders: lender(),
   offers: fullOffer(),
+  users: organisationUser(),
 });
 
 export const userOrganisation = () => ({
@@ -435,9 +445,10 @@ export const proPromotionOption = () => ({
   createdAt: 1,
   custom: 1,
   loan: {
+    name: 1,
     solvency: 1,
     user: { phoneNumbers: 1, name: 1, email: 1 },
-    promotions: { _id: 1 },
+    promotions: { users: { _id: 1 } },
     promotionOptions: {
       name: 1,
       promotionLots: { attributedTo: { user: { _id: 1 } } },
@@ -449,6 +460,8 @@ export const proPromotionOption = () => ({
   priority: 1,
   solvency: 1,
   updatedAt: 1,
+  promotion: { users: { _id: 1 } },
+  promotionLots: { _id: 1 },
 });
 
 export const appPromotionOption = () => ({
@@ -515,7 +528,13 @@ export const basePromotion = () => ({
   status: 1,
   type: 1,
   updatedAt: 1,
-  users: { name: 1, email: 1, roles: 1 },
+  users: {
+    name: 1,
+    email: 1,
+    roles: 1,
+    phoneNumber: 1,
+    organisations: { name: 1 },
+  },
   zipCode: 1,
 });
 
@@ -532,6 +551,7 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     reducedStatus: 1,
     status: 1,
     value: 1,
+    promotion: { _id: 1 },
   },
   ...(withFilteredLoan
     ? {
@@ -544,7 +564,10 @@ export const proPromotion = ({ withFilteredLoan } = {}) => ({
     : {}),
 });
 
-export const proPromotions = basePromotion;
+export const proPromotions = () => ({
+  ...basePromotion(),
+  promotionLots: { attributedTo: { user: { name: 1 } }, promotion: { _id: 1 } },
+});
 
 export const adminPromotions = proPromotion;
 
@@ -720,7 +743,13 @@ export const simpleUser = () => ({
   firstName: 1,
   lastName: 1,
   phoneNumbers: 1,
+  phoneNumber: 1,
   roles: 1,
+});
+
+export const organisationUser = () => ({
+  ...simpleUser(),
+  organisations: baseOrganisation(),
 });
 
 export const adminUser = () => ({
@@ -737,6 +766,7 @@ export const fullUser = () => ({
   emails: 1,
   loans: loanBase(),
   updatedAt: 1,
+  organisations: fullOrganisation(),
 });
 
 export const appUser = () => ({
@@ -756,4 +786,5 @@ export const appUser = () => ({
 export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
+  promotions: { _id: 1 },
 });

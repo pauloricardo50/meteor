@@ -11,6 +11,7 @@ import ContactsTable from '../ContactsPage/ContactsTable/ContactsTable';
 import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
+import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
@@ -19,6 +20,7 @@ type SingleOrganisationPageProps = {
 const tabs = organisation =>
   [
     { id: 'contacts', Component: ContactsTable },
+    { id: 'users', Component: OrganisationUsersTable },
     {
       id: 'offers',
       Component: OffersTable,
