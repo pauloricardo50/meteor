@@ -83,23 +83,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       noIntl: disableAddress,
       required: addressFieldsAreNecessary,
     },
-    // {
-    //   id: 'zipCode',
-    //   type: 'custom',
-    //   component: 'ZipAutoComplete',
-    //   componentProps: {
-    //     savePath: '',
-    //     initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
-    //   },
-    //   condition: !disableAddress,
-    //   placeholder:
-    //     disableAddress
-    //     && (borrowers[0].zipCode && borrowers[0].city
-    //       ? `${borrowers[0].zipCode} ${borrowers[0].city}`
-    //       : ''),
-    //   noIntl: disableAddress,
-    //   required: addressFieldsAreNecessary,
-    // },
     {
       type: 'conditionalInput',
       conditionalTrueValue: false,
@@ -112,11 +95,15 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
         },
       ],
     },
+    // {
+    //   id: 'age',
+    //   type: 'textInput',
+    //   number: true,
+    //   saveOnChange: false,
+    // },
     {
-      id: 'age',
-      type: 'textInput',
-      number: true,
-      saveOnChange: false,
+      id: 'birthDate',
+      type: 'dateInput',
     },
     { id: 'citizenship', type: 'textInput', condition: !b.isSwiss },
     { id: 'isUSPerson', type: 'radioInput', options: [true, false] },

@@ -14,6 +14,7 @@ import {
   OWN_FUNDS_TYPES,
 } from '../borrowerConstants';
 import { RESIDENCE_TYPE } from '../../constants';
+import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
 const makeArrayOfObjectsSchema = (name, allowedValues) => ({
   [name]: { type: Array, defaultValue: [], optional: true },
@@ -46,11 +47,16 @@ export const personalInfoSchema = {
     allowedValues: Object.values(GENDER),
     uniforms: { displayEmpty: false },
   },
-  age: {
-    type: SimpleSchema.Integer,
+  // age: {
+  //   type: SimpleSchema.Integer,
+  //   optional: true,
+  //   min: 1,
+  //   max: 120,
+  // },
+  birthDate: {
+    type: Date,
     optional: true,
-    min: 1,
-    max: 120,
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
   },
   ...address,
   sameAddress: {
