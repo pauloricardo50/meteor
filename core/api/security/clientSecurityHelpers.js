@@ -231,3 +231,26 @@ export const isAllowedToSellPromotionLotToCustomer = ({
     && !shouldAnonymize({ customerOwnerType, permissions })
   );
 };
+
+export const isAllowedToViewProProperty = ({ property, currentUser }) => {
+  const { _id: userId } = currentUser;
+
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+
+  const { userLinks = [], users = [], userId: propertyOwner } = property;
+
+  if (propertyOwner === userId) {
+    return true;
+  }
+
+  const user = userLinks.find(({ _id }) => _id === userId)
+    || users.find(({ _id }) => _id === userId);
+
+  if (!user) {
+    return false;
+  }
+
+  return true;
+};
