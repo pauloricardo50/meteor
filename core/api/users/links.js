@@ -54,4 +54,8 @@ Users.addLinks({
     collection: Organisations,
     inversedBy: 'users',
   },
+  proProperties: {
+    collection: Properties,
+    inversedBy: 'users',
+  },
 });
