@@ -231,7 +231,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => (i.value - (i.loan || 0)) || 0,
+        mapFunc: ({ value = 0, loan = 0 }) => value - loan,
       });
     }
 
@@ -243,7 +243,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.loan || 0,
+        mapFunc: ({ loan = 0 }) => loan,
       });
     }
 
@@ -251,7 +251,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.income || 0,
+        mapFunc: ({ income = 0 }) => income,
       });
     }
 
