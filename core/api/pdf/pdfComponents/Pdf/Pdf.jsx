@@ -3,7 +3,7 @@ import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import { getUserLocale, getFormats } from 'core/utils/localization';
-import messagesFR from '../../../../../lang/fr.json';
+import messagesFR from '../../../../lang/fr.json';
 
 type PdfProps = {};
 

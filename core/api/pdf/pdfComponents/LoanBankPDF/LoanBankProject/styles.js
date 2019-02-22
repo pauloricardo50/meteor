@@ -6,7 +6,6 @@ const stylesheet = `
 
     .project-table table {
         width: 48%;
-        //box-sizing: border-box;
     }
 `;
 

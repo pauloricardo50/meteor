@@ -7,6 +7,7 @@ import LoanBankBorrowers from './LoanBankBorrowers';
 import LoanBankProject from './LoanBankProject';
 import LoanBankCover from './LoanBankCover';
 import Pdf from '../Pdf/Pdf';
+import PropertyPdfPage from '../pages/PropertyPdfPage';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -15,6 +16,7 @@ type LoanBankPDFProps = {
 
 const pages = ({ loan, options }) => [
   { Component: LoanBankCover, data: { loan, options } },
+  { Component: PropertyPdfPage, data: { loan, options } },
   { Component: LoanBankProject, data: { loan, options } },
   { Component: LoanBankBorrowers, data: { loan, options } },
 ];

@@ -2,8 +2,9 @@ import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
 import { LoanBankProjectStyles } from './LoanBankProject';
 import { LoanBankCoverStyles } from './LoanBankCover';
 import PDFTableStyles from '../PdfTable/PdfTableStyles';
-import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../../pdfConstants';
+import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../pdfConstants';
 import PdfPageStyles from '../PdfPage/PdfPageStyles';
+import PropertyPageStyles from '../pages/PropertyPdfPage/stylesheet';
 
 const stylesheet = `
     @font-face {
@@ -93,6 +94,7 @@ const stylesheet = `
     ${LoanBankProjectStyles}
     ${LoanBankCoverStyles}
     ${PdfPageStyles}
+    ${PropertyPageStyles}
 `;
 
 export default stylesheet;
