@@ -9,7 +9,7 @@ const ACTIONS = {
   PAUSE: 'pause',
   FAIL: 'fail',
 };
-const REQ_TIMEOUT = 1000;
+const REQ_TIMEOUT = 10000;
 
 export default class CronitorService {
   constructor({ id, authKey }) {
@@ -18,27 +18,33 @@ export default class CronitorService {
     this.baseUrl = CRONITOR_URL;
   }
 
-  run() {
-    console.log('RUUUUN');
+  run = () => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.RUN });
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
-  }
+  };
 
-  complete() {
+  complete = (msg) => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.COMPLETE });
+    if (msg) {
+      if (!urlObj.qs) {
+        urlObj.qs = {};
+      }
+
+      urlObj.qs.msg = JSON.stringify(msg);
+    }
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
-  }
+  };
 
-  pause({ hours }) {
+  pause = (hours) => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.PAUSE });
     urlObj.basePath = `${urlObj.basePath}/${hours}`;
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
-  }
+  };
 
-  fail({ msg }) {
+  fail = (msg) => {
     const urlObj = this.buildUrlObj({ action: ACTIONS.FAIL });
     if (msg) {
       if (!urlObj.qs) {
@@ -49,25 +55,21 @@ export default class CronitorService {
     }
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
-  }
+  };
 
-  buildUrlObj({ action }) {
+  buildUrlObj = ({ action }) => {
     const urlObj = { basePath: `${this.baseUrl}/${this.id}/${action}` };
     if (this.authKey) {
       urlObj.qs = { auth_key: this.authKey };
     }
 
     return urlObj;
-  }
+  };
 
-  buildUrl({ urlObj }) {
-    return (
-      urlObj.basePath
-      + (urlObj.qs ? `?${queryString.stringify(urlObj.qs)}` : '')
-    );
-  }
+  buildUrl = ({ urlObj }) =>
+    urlObj.basePath + (urlObj.qs ? `?${queryString.stringify(urlObj.qs)}` : '');
 
-  getWithTimeout({ url }) {
+  getWithTimeout = ({ url }) => {
     const promise = new Promise((resolve, reject) => {
       https
         .get(url, (response) => {
@@ -81,9 +83,7 @@ export default class CronitorService {
             resolve(data);
           });
         })
-        .on('error', (err) => {
-          reject(err);
-        });
+        .on('error', reject);
     });
 
     const timeout = new Promise((resolve, reject) => {
@@ -94,5 +94,5 @@ export default class CronitorService {
     });
 
     return Promise.race([promise, timeout]);
-  }
+  };
 }

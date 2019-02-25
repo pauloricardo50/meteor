@@ -40,8 +40,8 @@ Meteor.startup(() => {
         cronitor
           .run()
           .then(() => irs10yFetch.run({}))
-          .then(() => cronitor.complete())
-          .catch(error => cronitor.fail({ msg: error }));
+          .then(cronitor.complete)
+          .catch(cronitor.fail);
       },
     });
     SyncedCron.start();
