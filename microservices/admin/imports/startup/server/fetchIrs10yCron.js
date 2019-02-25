@@ -3,10 +3,14 @@ import { SyncedCron } from 'meteor/littledata:synced-cron';
 
 import moment from 'moment';
 
-import { logError, irs10yFetch } from 'core/api/methods';
+import { logError } from 'core/api/methods';
+import { irs10yFetch } from 'core/api/irs10y/server/methods';
+import CronitorService from 'core/api/cronitor/server/CronitorService';
 
 const getRandomMinute = () => Math.floor(Math.random() * 49) + 10;
 const jobName = 'Fetch IRS 10Y';
+
+const cronitor = new CronitorService({ id: '19MCrQ' });
 
 SyncedCron.config({
   logger: ({ level, message, tag }) => {
@@ -33,7 +37,11 @@ Meteor.startup(() => {
         return parser.text(`at 6:${randomMinute} on ${tomorrow}`);
       },
       job() {
-        irs10yFetch.run({});
+        cronitor
+          .run()
+          .then(() => irs10yFetch.run({}))
+          .then(cronitor.complete)
+          .catch(cronitor.fail);
       },
     });
     SyncedCron.start();
