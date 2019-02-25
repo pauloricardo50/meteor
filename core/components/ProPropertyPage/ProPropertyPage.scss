@@ -20,4 +20,19 @@
   > * {
     margin-bottom: 16px;
   }
+
+  .property-owner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    > * {
+      margin: 0;
+    }
+
+    .icon {
+      color: $primary;
+      margin-right: 8px;
+    }
+  }
 }

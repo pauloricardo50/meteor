@@ -4,7 +4,6 @@ import SimpleSchema from 'simpl-schema';
 
 import { inviteUserToProperty } from 'core/api/methods';
 import { AutoFormDialog } from '../AutoForm2';
-import { CustomerAdderUserSchema } from '../PromotionPage/client/CustomerAdder/CustomerAdder';
 
 type PropertyCustomerAdderProps = {};
 
