@@ -168,7 +168,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getTheoreticalMonthly({ loan, structureId }) {
+    getTheoreticalPropertyCost({ loan, structureId }) {
       const interests = this.getTheoreticalInterests({ loan, structureId });
       const amortization = this.getTheoreticalAmortization({
         loan,
@@ -176,6 +176,16 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       });
       const maintenance = this.getTheoreticalMaintenance({ loan, structureId });
       return interests + amortization + maintenance;
+    }
+
+    getTheoreticalMonthly({ loan, structureId }) {
+      const propertyCost = this.getTheoreticalPropertyCost({
+        loan,
+        structureId,
+      });
+      const expensesToAddToTheoreticalCost = this.getFormattedExpenses({ loan, structureId }).add / 12;
+
+      return propertyCost + expensesToAddToTheoreticalCost;
     }
 
     getIncomeRatio({ loan, structureId }) {

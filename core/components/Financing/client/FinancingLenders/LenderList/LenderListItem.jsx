@@ -1,78 +1,24 @@
 // @flow
 import React from 'react';
 
-import PercentWithStatus from '../../../../PercentWithStatus';
-import Icon from '../../../../Icon';
-import { Calculator } from '../../../../../utils/Calculator';
-import T, { Money, Percent } from '../../../../Translation';
-import { ERROR, SUCCESS } from '../../../../../api/constants';
+import LenderListItemRules from './LenderListItemRules';
 
 type LenderListItemProps = {};
 
 const LenderListItem = ({
-  organisation: { name, lenderRules, logo },
+  organisation,
   loan,
   structureId,
 }: LenderListItemProps) => {
-  const calc = new Calculator({ loan, structureId, lenderRules });
-  const incomeRatio = calc.getIncomeRatio({ loan, structureId });
-  const borrowRatio = calc.getBorrowRatio({ loan, structureId });
-  const totalIncome = calc.getTotalIncome({ loan });
-  const expenses = calc.getTheoreticalMonthly({ loan, structureId }) * 12;
-
+  const { name } = organisation;
   return (
     <div className="lender-list-item">
-      <div className="title">
-        <h4>{name}</h4>
-        <Icon
-          type="info"
-          className="icon"
-          tooltip={(
-            <div>
-              <div>
-                <span>Revenus considérés</span>:&nbsp;
-                <Money value={totalIncome} />
-              </div>
-              <div>
-                <span>Charges considérées</span>:&nbsp;
-                <Money value={expenses} />
-              </div>
-            </div>
-          )}
-        />
-      </div>
-      <div className="lender-list-item-data">
-        <div>
-          <span>Taux d'effort</span>
-          <div className="percent">
-            <PercentWithStatus
-              value={incomeRatio}
-              status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
-              tooltip={(
-                <T
-                  id="PercentWithStatus.max"
-                  values={{ max: <Percent value={calc.maxIncomeRatio} /> }}
-                />
-              )}
-            />
-          </div>
-        </div>
-        <div>
-          <span>Taux d'avance</span>
-          <div className="percent">
-            <PercentWithStatus
-              value={borrowRatio}
-              status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
-              tooltip={(
-                <T
-                  id="PercentWithStatus.max"
-                  values={{ max: <Percent value={calc.maxBorrowRatio} /> }}
-                />
-              )}
-            />
-          </div>
-        </div>
-      </div>
+      <h4>{name}</h4>
+      <LenderListItemRules
+        organisation={organisation}
+        loan={loan}
+        structureId={structureId}
+      />
     </div>
   );
 };

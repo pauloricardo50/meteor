@@ -6,9 +6,15 @@
     margin-top: 40px;
 
     .filter-title {
+      flex-grow: 1;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
+    }
+
+    &-details {
+      display: flex;
+      flex-direction: column;
     }
   }
 

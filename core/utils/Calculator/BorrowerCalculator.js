@@ -13,7 +13,7 @@ import {
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
-import { INCOME_CONSIDERATION_TYPES } from '../../api/constants';
+import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
 import { borrowerExtractorMiddleware } from './middleware';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
@@ -231,7 +231,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.value - i.loan,
+        mapFunc: ({ value = 0, loan = 0 }) => value - loan,
       });
     }
 
@@ -243,7 +243,15 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.loan,
+        mapFunc: ({ loan = 0 }) => loan,
+      });
+    }
+
+    getRealEstateIncome({ borrowers }) {
+      return this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: ({ income = 0 }) => income,
       });
     }
 
@@ -267,15 +275,18 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getTotalIncome({ borrowers }) {
-      const sum = arrayify(borrowers).reduce((total, borrower) => {
+      let sum = arrayify(borrowers).reduce((total, borrower) => {
         let borrowerIncome = 0;
         borrowerIncome += borrower.salary || 0;
         borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
-        borrowerIncome -= this.getExpenses({ borrowers: borrower }) || 0;
+        borrowerIncome
+          += this.getRealEstateIncome({ borrowers: borrower }) || 0;
         return total + borrowerIncome;
       }, 0);
+
+      sum -= this.getFormattedExpenses({ borrowers }).subtract;
 
       return sum;
     }
@@ -337,6 +348,65 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return borrowers.reduce(
         (arr, { mortgageNotes: notes = [] }) => [...arr, ...notes],
         [],
+      );
+    }
+
+    getRealEstateExpenses({ borrowers }) {
+      const realEstate = arrayify(borrowers).reduce(
+        (arr, borrower) => [...arr, ...(borrower.realEstate || [])],
+        [],
+      );
+      const realEstateCost = realEstate.reduce(
+        (tot, obj) => tot + this.getRealEstateCost(obj),
+        0,
+      );
+
+      return realEstateCost;
+    }
+
+    getRealEstateCost({ loan, value }) {
+      const amortizationRate = this.getAmortizationRateBase({
+        borrowRatio: super.getBorrowRatio({ loan, propertyValue: value }),
+      });
+
+      return super.getTheoreticalMonthly({
+        propAndWork: value,
+        loanValue: loan,
+        amortizationRate,
+      }).total;
+    }
+
+    getGroupedExpenses({ borrowers }) {
+      const flattenedExpenses = []
+        .concat([], ...arrayify(borrowers).map(({ expenses }) => expenses))
+        .filter(x => x);
+      return flattenedExpenses.reduce(
+        (obj, { value, description }) => ({
+          ...obj,
+          [description]: (obj[description] || 0) + value,
+        }),
+        {},
+      );
+    }
+
+    getFormattedExpenses({ borrowers }) {
+      const expenses = {
+        [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
+          this.getRealEstateExpenses({
+            borrowers,
+          }) * 12, // All expenses are annualized
+        ...this.getGroupedExpenses({ borrowers }),
+      };
+
+      return Object.keys(expenses).reduce(
+        (obj, expenseType) => {
+          if (this.expensesSubtractFromIncome.indexOf(expenseType) >= 0) {
+            return { ...obj, subtract: obj.subtract + expenses[expenseType] };
+          }
+
+          return { ...obj, add: obj.add + expenses[expenseType] };
+        },
+        { subtract: 0, add: 0 },
       );
     }
   };

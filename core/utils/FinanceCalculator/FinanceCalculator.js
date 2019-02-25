@@ -6,7 +6,7 @@ import {
   WARNING,
   RESIDENCE_TYPE,
   REAL_ESTATE_CONSIDERATION_TYPES,
-  OTHER_EXPENSES_CONSIDERATION_TYPES,
+  EXPENSE_TYPES,
 } from '../../api/constants';
 import {
   NOTARY_FEES,
@@ -63,7 +63,7 @@ export class FinanceCalculator {
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
     notaryFees = NOTARY_FEES,
-    otherExpensesConsiderationType = OTHER_EXPENSES_CONSIDERATION_TYPES.ADD_TO_EXPENSES,
+    expensesSubtractFromIncome = Object.values(EXPENSE_TYPES),
     pensionIncomeConsideration = PENSION_INCOME_CONSIDERATION,
     realEstateIncomeConsideration = REAL_ESTATE_INCOME_CONSIDERATION,
     realEstateIncomeConsiderationType = REAL_ESTATE_CONSIDERATION_TYPES.ADD_TO_INCOME,
@@ -91,7 +91,7 @@ export class FinanceCalculator {
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
     this.notaryFees = notaryFees;
-    this.otherExpensesConsiderationType = otherExpensesConsiderationType;
+    this.expensesSubtractFromIncome = expensesSubtractFromIncome;
     this.pensionIncomeConsideration = pensionIncomeConsideration;
     this.realEstateIncomeConsideration = realEstateIncomeConsideration;
     this.realEstateIncomeConsiderationType = realEstateIncomeConsiderationType;

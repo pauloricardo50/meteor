@@ -82,6 +82,7 @@ const LenderPicker = ({
               addLender={addLender}
               removeLender={removeLender}
               isActive={isActive({ loan, org })}
+              loan={loan}
             />
           ))}
         </div>
