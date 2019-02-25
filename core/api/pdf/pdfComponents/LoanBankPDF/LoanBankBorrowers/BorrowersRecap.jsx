@@ -74,13 +74,14 @@ const getBorrowersOwnFunds = (borrowers, types) =>
   );
 
 const getBorrowersAddress = (borrowers) => {
-  if (borrowers.some(({ sameAddress }) => sameAddress === true)) {
+  const borrowersHaveSameAddress = borrowers.some(({ sameAddress }) => sameAddress === true);
+  if (borrowersHaveSameAddress) {
     const borrowerWithAddress = borrowers.find(({ city, zipCode }) => city && zipCode);
     const address = [
       borrowerWithAddress.zipCode,
       borrowerWithAddress.city,
     ].join(' ');
-    return [address, address];
+    return borrowers.map(() => address);
   }
   const zipCodes = getBorrowersSingleInfo(borrowers, 'zipCode');
   const cities = getBorrowersSingleInfo(borrowers, 'city');

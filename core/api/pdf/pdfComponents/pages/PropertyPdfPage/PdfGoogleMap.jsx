@@ -18,7 +18,7 @@ const makeGoogleMapsUrl = (property) => {
     {
       center: place,
       zoom: 14,
-      size: '1200x900',
+      size: '2400x900', // This ratio is good for 300px height image and full width
       markers: `color:red|${place}`,
       key: Meteor.settings.public.google_maps_key,
     },

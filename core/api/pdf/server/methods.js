@@ -22,7 +22,14 @@ const loanName = '19-0019';
 Meteor.startup(() => {
   if (Meteor.isDevelopment && PDF_TESTING) {
     Meteor.defer(() => {
+      console.log(`Generating html only pdf for ${loanName} at ~/Desktop/pdf-test.html`);
       const loanId = Loans.findOne({ name: loanName })._id;
+
+      if (!loanId) {
+        console.log(`Loan ${loanName} not found`);
+        return;
+      }
+
       PDFService.makePDF({
         type: PDF_TYPES.LOAN,
         params: { loanId },

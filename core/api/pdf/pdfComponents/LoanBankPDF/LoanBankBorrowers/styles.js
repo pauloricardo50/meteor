@@ -1,5 +1,5 @@
 import recapStyleSheet from './recapStyleSheet';
-import { BORDER_BLUE } from '../../cssConstants';
+import { BORDER_BLUE } from '../../../pdfConstants';
 
 const stylesheet = `
 

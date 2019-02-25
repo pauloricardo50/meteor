@@ -1,4 +1,4 @@
-import { BORDER_BLUE, BORDER_GREY } from '../cssConstants';
+import { BORDER_BLUE, BORDER_GREY } from '../../pdfConstants';
 
 export default `
     .pdf-table {

@@ -1,6 +1,5 @@
-import { CONTENT_HEIGHT } from '../../pdfConstants';
+import { CONTENT_HEIGHT, BORDER_BLUE } from '../../pdfConstants';
 import * as styles from '../utils/styleHelpers';
-import { BORDER_BLUE } from '../cssConstants';
 
 const PdfPageStyles = `
     .page {
