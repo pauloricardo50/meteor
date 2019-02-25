@@ -298,7 +298,13 @@ export const proLoans = () => ({
     solvency: 1,
   },
   promotionProgress: 1,
-  user: { name: 1, phoneNumbers: 1, email: 1 },
+  user: {
+    name: 1,
+    phoneNumbers: 1,
+    email: 1,
+    referredByUser: { _id: 1 },
+    referredByOrganisation: { _id: 1 },
+  },
   hasPromotion: 1,
   hasProProperty: 1,
 });
