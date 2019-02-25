@@ -18,7 +18,7 @@ export const ROW_TYPES = {
   TOOLTIP: 'TOOLTIP',
 };
 
-const classes = {
+export const classes = {
   [ROW_TYPES.TITLE]: 'title-row',
   [ROW_TYPES.TITLE_NO_PADDING]: 'title-row no-padding',
   [ROW_TYPES.REGULAR]: 'regular-row',
@@ -28,7 +28,8 @@ const classes = {
   [ROW_TYPES.TOOLTIP]: 'tooltip',
 };
 
-const shouldRenderRow = condition => condition === undefined || condition;
+export const shouldRenderRow = condition =>
+  condition === undefined || condition;
 
 const multiColumn = (data, style) =>
   data.map((x, index) => (
