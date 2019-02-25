@@ -18,7 +18,7 @@ const makeGoogleMapsUrl = (property) => {
     {
       center: place,
       zoom: 14,
-      size: '600x300',
+      size: '1200x900',
       markers: `color:red|${place}`,
       key: Meteor.settings.public.google_maps_key,
     },
@@ -31,12 +31,10 @@ const makeGoogleMapsUrl = (property) => {
 const PdfGoogleMap = ({ loan }: PdfGoogleMapProps) => {
   const property = Calculator.selectProperty({ loan });
   return (
-    <div className="pdf-google-map">
-      <img
-        style={{ width: 600, height: 300 }}
-        src={makeGoogleMapsUrl(property)}
-      />
-    </div>
+    <div
+      className="pdf-google-map"
+      style={{ backgroundImage: `url("${makeGoogleMapsUrl(property)}")` }}
+    />
   );
 };
 

@@ -27,7 +27,7 @@ class PDFService {
       type,
       options,
     });
-    const html = this.getComponentAsHTML(component, props);
+    const html = this.getComponentAsHTML(component, props, pdfName);
 
     if (htmlOnly) {
       return Promise.resolve(html);
@@ -86,8 +86,8 @@ class PDFService {
     return base64;
   };
 
-  getComponentAsHTML = (component, props) =>
-    ReactDOMServer.renderToStaticMarkup(component(props));
+  getComponentAsHTML = (component, props, pdfName) =>
+    ReactDOMServer.renderToStaticMarkup(component({ ...props, pdfName }));
 
   fetchPDF = (html, fileName, pdfName) => {
     const API_KEY = Meteor.settings.DOC_RAPTOR_API_KEY;
@@ -99,7 +99,7 @@ class PDFService {
         type: 'pdf',
         test: !Meteor.isProduction || Meteor.isStaging,
         // help: true,
-        prince_options: { media: 'screen' },
+        prince_options: { media: 'screen', baseurl: 'https://www.e-potek.ch' },
       },
     };
 

@@ -7,7 +7,7 @@ import messagesFR from '../../../../lang/fr.json';
 
 type PdfProps = {};
 
-const Pdf = ({ stylesheet, pages }: PdfProps) => (
+const Pdf = ({ stylesheet, pages, pdfName }: PdfProps) => (
   <IntlProvider
     locale={getUserLocale()}
     messages={messagesFR}
@@ -16,6 +16,7 @@ const Pdf = ({ stylesheet, pages }: PdfProps) => (
   >
     <>
       <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
+      {pdfName && <title>{pdfName}</title>}
       {pages.map(({ Component, data }, index) => (
         <Component
           {...data}

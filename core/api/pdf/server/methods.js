@@ -29,8 +29,8 @@ Meteor.startup(() => {
         options: { anonymous: false },
         htmlOnly: true,
       }).then((html) => {
+        console.log('Writing test PDF to ~/Desktop/pdf-testing.html');
         const homedir = require('os').homedir();
-
         fs.writeFileSync(`${homedir}/Desktop/pdf-test.html`, html);
       });
     });

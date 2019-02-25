@@ -12,6 +12,7 @@ import PropertyPdfPage from '../pages/PropertyPdfPage';
 type LoanBankPDFProps = {
   loan: Object,
   options?: Object,
+  pdfName: String,
 };
 
 const pages = ({ loan, options }) => [
@@ -21,8 +22,12 @@ const pages = ({ loan, options }) => [
   { Component: LoanBankBorrowers, data: { loan, options } },
 ];
 
-const LoanBankPDF = ({ loan, options }: LoanBankPDFProps) => (
-  <Pdf stylesheet={stylesheet} pages={pages({ loan, options })} />
+const LoanBankPDF = ({ loan, options, pdfName }: LoanBankPDFProps) => (
+  <Pdf
+    stylesheet={stylesheet}
+    pages={pages({ loan, options })}
+    pdfName={pdfName}
+  />
 );
 
 export default withTranslationContext(() => ({ purchaseType: 'ACQUISITION' }))(LoanBankPDF);
