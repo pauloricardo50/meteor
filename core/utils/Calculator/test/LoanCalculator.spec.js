@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator, { Calculator as CalculatorClass } from '..';
-import { INTEREST_RATES } from 'core/api/constants';
+import { INTEREST_RATES, EXPENSES } from 'core/api/constants';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../api/constants';
 
 describe('LoanCalculator', () => {
@@ -355,6 +355,35 @@ describe('LoanCalculator', () => {
           },
         },
       })).to.equal(2800);
+    });
+
+    it('adds any expenses from the borrowers', () => {
+      const Calc = new CalculatorClass({
+        interestRates: { myRate: 0.012 },
+        theoreticalInterestRate: 0.01,
+        expensesSubtractFromIncome: Object.values(EXPENSES).filter(v => v !== EXPENSES.LEASING),
+      });
+
+      // 2800 for the loan
+      // 100 more for the leasing
+      // 2800 for the other property
+
+      expect(Calc.getTheoreticalMonthly({
+        loan: {
+          structure: {
+            wantedLoan: 960000,
+            property: { value: 1200000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            {
+              expenses: { description: EXPENSES.LEASING, value: 1200 },
+              realEstate: [{ value: 1200000, loan: 960000 }],
+            },
+          ],
+        },
+      })).to.equal(5700);
     });
   });
 
