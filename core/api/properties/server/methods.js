@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import SecurityService from '../../security';
 import PropertyService from './PropertyService';
 import {
@@ -61,5 +62,8 @@ propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) =>
 inviteUserToProperty.setHandler(({ userId }, params) => {
   // TODO: Fix security
   SecurityService.checkUserIsPro(userId);
+  if (Meteor.microservice === 'pro') {
+    return PropertyService.inviteUser({ ...params, proUserId: userId });
+  }
   return PropertyService.inviteUser(params);
 });
