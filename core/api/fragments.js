@@ -789,4 +789,6 @@ export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
   promotions: { _id: 1 },
+  properties: { _id: 1 },
+  proProperties: { _id: 1 },
 });

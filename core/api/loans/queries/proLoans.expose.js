@@ -50,14 +50,23 @@ query.expose({
 });
 
 query.resolve(({ userId, promotionId, propertyId }) => {
-  const loans = LoanService.fetch({
-    ...(propertyId
-      ? { $filters: { propertyIds: propertyId } }
-      : promotionId
-        ? { $filters: { 'promotionLinks._id': promotionId } }
-        : {}),
-    ...proLoans(),
-  });
+  let loans = [];
+  if (promotionId) {
+    const promotionLoans = LoanService.fetch({
+      $filters: { 'promotionLinks._id': promotionId },
+      ...proLoans(),
+    });
+
+    loans = [...loans, ...promotionLoans];
+  }
+  if (propertyId) {
+    const proPropertyLoans = LoanService.fetch({
+      $filters: { propertyIds: propertyId },
+      ...proLoans(),
+    });
+
+    loans = [...loans, ...proPropertyLoans];
+  }
 
   try {
     SecurityService.checkUserIsAdmin(userId);
