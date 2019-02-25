@@ -88,13 +88,21 @@ export class PropertyService extends CollectionService {
   }) => {
     const property = this.get(propertyId);
     let assignedEmployeeId;
+    let organisationId;
 
     if (proUserId) {
       const pro = UserService.fetchOne({
         filters: { _id: proUserId },
         assignedEmployeeId: 1,
+        organisations: { _id: 1 },
       });
-      assignedEmployeeId = pro.assignedEmployeeId;
+
+      const {
+        assignedEmployeeId: proAssignedEmployeeId,
+        organisations = [],
+      } = pro;
+      assignedEmployeeId = proAssignedEmployeeId;
+      organisationId = !!organisations.length && organisations[0]._id;
     }
 
     let userId;
@@ -118,6 +126,22 @@ export class PropertyService extends CollectionService {
       if (UserService.hasProperty({ userId, propertyId })) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
       }
+    }
+
+    if (proUserId) {
+      UserService.addLink({
+        id: userId,
+        linkName: 'referredByUser',
+        linkId: proUserId,
+      });
+    }
+
+    if (organisationId) {
+      UserService.addLink({
+        id: userId,
+        linkName: 'referredByOrganisation',
+        linkId: organisationId,
+      });
     }
 
     const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
