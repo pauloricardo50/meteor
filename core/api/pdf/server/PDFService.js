@@ -66,6 +66,7 @@ class PDFService {
         $filters: { _id: organisationId },
         lenderRules: lenderRules(),
         name: 1,
+        logo: 1,
       });
       const loan = adminLoan.clone({ loanId }).fetchOne();
       if (loan.hasPromotion) {

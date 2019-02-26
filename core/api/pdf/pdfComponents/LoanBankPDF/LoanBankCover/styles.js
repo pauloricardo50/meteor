@@ -1,5 +1,5 @@
 import * as styles from '../../utils/styleHelpers';
-import { BORDER_BLUE } from '../../../pdfConstants';
+import { BORDER_BLUE, BORDER_GREY } from '../../../pdfConstants';
 
 const stylesheet = `
     .cover-page {
@@ -87,10 +87,21 @@ const stylesheet = `
         font-weight: normal;
     }
 
-    .cover-header img {
+    .cover-header .epotek-logo {
         width: 30px;
         height: 30px;
         margin-right: 12px;
+    }
+
+    .cover-header .logo-divider {
+        width: 2px;
+        height: 30px;
+        margin: 0 16px;
+        background-color: ${BORDER_GREY};
+    }
+
+    .cover-header .organisation-logo {
+        height: 30px;
     }
 
     .cover-header .e-potek-address {

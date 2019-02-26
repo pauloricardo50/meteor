@@ -48,6 +48,7 @@ const LoanBankCover = ({
   pageNb,
   pageCount,
   options,
+  organisation,
 }: LoanBankCoverProps) => (
   <PdfPage
     className="cover-page"
@@ -55,7 +56,7 @@ const LoanBankCover = ({
     pageNb={pageNb}
     pageCount={pageCount}
   >
-    <LoanBankCoverHeader />
+    <LoanBankCoverHeader organisation={organisation} />
     {loanInfo({ loan, anonymous: options && options.anonymous })}
     {footer(loan.user.assignedEmployee)}
   </PdfPage>

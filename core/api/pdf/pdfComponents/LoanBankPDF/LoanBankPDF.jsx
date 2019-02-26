@@ -13,17 +13,18 @@ import { Calculator } from '../../../../utils/Calculator';
 
 type LoanBankPDFProps = {
   loan: Object,
+  organisation?: Object,
   options?: Object,
   pdfName: String,
 };
 
-const pages = ({ loan, organisation = {}, options }) => {
-  const { lenderRules } = organisation;
+const pages = ({ loan, organisation, options }) => {
+  const { lenderRules } = organisation || {};
   const structureIds = options.structureIds || loan.structures.map(({ id }) => id);
 
   // FIXME: What calculator to pass to the main page?
   return [
-    { Component: LoanBankCover, data: { loan, options } },
+    { Component: LoanBankCover, data: { loan, options, organisation } },
     ...structureIds.map((structureId, index) => {
       const calculator = new Calculator({ loan, structureId, lenderRules });
 
@@ -38,12 +39,9 @@ const pages = ({ loan, organisation = {}, options }) => {
   ];
 };
 
-const LoanBankPDF = ({ loan, options, pdfName }: LoanBankPDFProps) => (
-  <Pdf
-    stylesheet={stylesheet}
-    pages={pages({ loan, options })}
-    pdfName={pdfName}
-  />
-);
+const LoanBankPDF = (props: LoanBankPDFProps) => {
+  const { pdfName } = props;
+  return <Pdf stylesheet={stylesheet} pages={pages(props)} pdfName={pdfName} />;
+};
 
 export default withTranslationContext(() => ({ purchaseType: 'ACQUISITION' }))(LoanBankPDF);
