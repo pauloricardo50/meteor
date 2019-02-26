@@ -4,7 +4,8 @@ import React from 'react';
 import Calculator from '../../../../../utils/Calculator';
 import T from '../../../../../components/Translation';
 import PdfPage from '../../PdfPage';
-import BalanceSheetTable from './BalanceSheetTable';
+import BalanceSheet from './BalanceSheet';
+import IncomeAndExpenses from './IncomeAndExpenses';
 
 type StructurePdfPageProps = {};
 
@@ -14,6 +15,7 @@ const StructurePdfPage = ({
   structureIndex,
   pageNb,
   pageCount,
+  calculator,
 }: StructurePdfPageProps) => {
   const structureName = Calculator.selectStructure({ loan, structureId }).name;
   return (
@@ -29,7 +31,16 @@ const StructurePdfPage = ({
       pageNb={pageNb}
       pageCount={pageCount}
     >
-      <BalanceSheetTable loan={loan} structureId={structureId} />
+      <BalanceSheet
+        loan={loan}
+        structureId={structureId}
+        calculator={calculator}
+      />
+      <IncomeAndExpenses
+        loan={loan}
+        structureId={structureId}
+        calculator={calculator}
+      />
     </PdfPage>
   );
 };

@@ -11,7 +11,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.initialize(settings);
     }
 
-    initialize({ loan, structureId, lenderRules }) {
+    initialize({ loan, structureId, lenderRules = [] }) {
       if (!(loan && lenderRules)) {
         return;
       }

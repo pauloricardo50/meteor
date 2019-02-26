@@ -8,6 +8,8 @@ import fs from 'fs';
 import { makeCheckObjectStructure } from 'core/utils/checkObjectStructure';
 import adminLoan from '../../loans/queries/adminLoan';
 import { formatLoanWithPromotion } from '../../../utils/loanFunctions';
+import { lenderRules } from '../../fragments';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import LoanBankPDF from '../pdfComponents/LoanBankPDF';
 import { PDF_TYPES, TEMPLATES } from '../pdfConstants';
 import { frenchErrors } from './pdfHelpers';
@@ -37,28 +39,40 @@ class PDFService {
   };
 
   checkData = ({ data, type }) => {
-    const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
+    switch (type) {
+    case PDF_TYPES.LOAN: {
+      const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
 
-    try {
-      checkObjectStructure({
-        obj: data,
-        template: TEMPLATES[type],
-      });
-    } catch (error) {
-      throw new Meteor.Error(error);
+      try {
+        checkObjectStructure({
+          obj: data.loan,
+          template: TEMPLATES[type],
+        });
+      } catch (error) {
+        throw new Meteor.Error(error);
+      }
+      break;
+    }
+    default:
+      break;
     }
   };
 
   getDataForPDF = (type, params) => {
     switch (type) {
     case PDF_TYPES.LOAN: {
-      const { loanId } = params;
+      const { loanId, organisationId } = params;
+      const organisation = OrganisationService.fetchOne({
+        $filters: { _id: organisationId },
+        lenderRules: lenderRules(),
+        name: 1,
+      });
       const loan = adminLoan.clone({ loanId }).fetchOne();
       if (loan.hasPromotion) {
-        return formatLoanWithPromotion(loan);
+        return { loan: formatLoanWithPromotion(loan), organisation };
       }
 
-      return loan;
+      return { loan, organisation };
     }
     default:
     }
@@ -68,13 +82,15 @@ class PDFService {
     const fileName = Random.id();
 
     switch (type) {
-    case PDF_TYPES.LOAN:
+    case PDF_TYPES.LOAN: {
+      const { loan } = data;
       return {
         component: LoanBankPDF,
-        props: { loan: data, options },
+        props: { ...data, options },
         fileName,
-        pdfName: `${data.name} - ${type}`,
+        pdfName: `${loan.name} - ${type}`,
       };
+    }
     default:
     }
   };

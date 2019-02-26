@@ -28,4 +28,8 @@ export default `
     .balance-sheet-table tr td:nth-child(odd) {
         text-align: left;
     }
+
+    .balance-sheet-table {
+        margin-bottom: 40px;
+    }
 `;

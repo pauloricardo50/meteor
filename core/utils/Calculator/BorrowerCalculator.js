@@ -376,6 +376,16 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }).total;
     }
 
+    getAllExpenses({ borrowers }) {
+      return {
+        [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
+          this.getRealEstateExpenses({
+            borrowers,
+          }) * 12, // All expenses are annualized
+        ...this.getGroupedExpenses({ borrowers }),
+      };
+    }
+
     getGroupedExpenses({ borrowers }) {
       const flattenedExpenses = []
         .concat([], ...arrayify(borrowers).map(({ expenses }) => expenses))
@@ -389,14 +399,25 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       );
     }
 
+    getGroupedExpensesBySide({ borrowers, toSubtractFromIncome = true }) {
+      const expenses = this.getAllExpenses({ borrowers });
+
+      return Object.keys(expenses)
+        .filter(expenseType =>
+          (toSubtractFromIncome
+            ? this.expensesSubtractFromIncome.indexOf(expenseType) >= 0
+            : this.expensesSubtractFromIncome.indexOf(expenseType) < 0))
+        .reduce(
+          (obj, expenseType) => ({
+            ...obj,
+            [expenseType]: expenses[expenseType],
+          }),
+          {},
+        );
+    }
+
     getFormattedExpenses({ borrowers }) {
-      const expenses = {
-        [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
-          this.getRealEstateExpenses({
-            borrowers,
-          }) * 12, // All expenses are annualized
-        ...this.getGroupedExpenses({ borrowers }),
-      };
+      const expenses = this.getAllExpenses({ borrowers });
 
       return Object.keys(expenses).reduce(
         (obj, expenseType) => {

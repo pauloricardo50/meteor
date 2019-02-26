@@ -9,6 +9,7 @@ import LoanBankCover from './LoanBankCover';
 import Pdf from '../Pdf/Pdf';
 import PropertyPdfPage from '../pages/PropertyPdfPage';
 import StructurePdfPage from '../pages/StructurePdfPage';
+import { Calculator } from '../../../../utils/Calculator';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -16,14 +17,21 @@ type LoanBankPDFProps = {
   pdfName: String,
 };
 
-const pages = ({ loan, options }) => {
+const pages = ({ loan, organisation = {}, options }) => {
+  const { lenderRules } = organisation;
   const structureIds = options.structureIds || loan.structures.map(({ id }) => id);
+
+  // FIXME: What calculator to pass to the main page?
   return [
     { Component: LoanBankCover, data: { loan, options } },
-    ...structureIds.map((structureId, index) => ({
-      Component: StructurePdfPage,
-      data: { loan, structureId, structureIndex: index, options },
-    })),
+    ...structureIds.map((structureId, index) => {
+      const calculator = new Calculator({ loan, structureId, lenderRules });
+
+      return {
+        Component: StructurePdfPage,
+        data: { loan, structureId, structureIndex: index, options, calculator },
+      };
+    }),
     { Component: LoanBankProject, data: { loan, options } },
     { Component: LoanBankBorrowers, data: { loan, options } },
     { Component: PropertyPdfPage, data: { loan, options } },
