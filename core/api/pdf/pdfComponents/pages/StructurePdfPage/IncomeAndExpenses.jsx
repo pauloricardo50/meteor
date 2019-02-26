@@ -19,8 +19,13 @@ const getIncomeRows = ({ loan, structureId, calculator }) => {
     toSubtractFromIncome: true,
   });
 
+  const useNetSalary = calculator.shouldUseNetSalary();
+
   return [
-    { label: <T id="Forms.income" />, value: salary },
+    {
+      label: <T id={useNetSalary ? 'Forms.netSalary' : 'Forms.salary'} />,
+      value: salary,
+    },
     {
       label: <T id="Recap.consideredBonus" />,
       value: bonus,

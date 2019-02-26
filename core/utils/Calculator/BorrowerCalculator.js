@@ -255,8 +255,12 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       });
     }
 
+    shouldUseNetSalary() {
+      return this.incomeConsiderationType === INCOME_CONSIDERATION_TYPES.NET;
+    }
+
     getSalary({ borrowers }) {
-      if (this.incomeConsiderationType === INCOME_CONSIDERATION_TYPES.NET) {
+      if (this.shouldUseNetSalary()) {
         return this.getNetSalary({ borrowers });
       }
       return this.sumValues({ borrowers, keys: 'salary' });
@@ -277,7 +281,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     getTotalIncome({ borrowers }) {
       let sum = arrayify(borrowers).reduce((total, borrower) => {
         let borrowerIncome = 0;
-        borrowerIncome += borrower.salary || 0;
+        borrowerIncome += this.getSalary({ borrowers: borrower }) || 0;
         borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
