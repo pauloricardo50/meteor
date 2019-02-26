@@ -11,25 +11,27 @@ type StructurePdfPageProps = {};
 const StructurePdfPage = ({
   loan,
   structureId,
+  structureIndex,
   pageNb,
   pageCount,
-}: StructurePdfPageProps) => (
-  <PdfPage
-    className="property-page"
-    title={(
-      <T
-        id="PDF.title.structure"
-        values={{
-          name: Calculator.selectStructure({ loan, structureId }).name,
-        }}
-      />
-    )}
-    withFooter
-    pageNb={pageNb}
-    pageCount={pageCount}
-  >
-    <BalanceSheetTable loan={loan} structureId={structureId} />
-  </PdfPage>
-);
+}: StructurePdfPageProps) => {
+  const structureName = Calculator.selectStructure({ loan, structureId }).name;
+  return (
+    <PdfPage
+      className="property-page"
+      title={(
+        <T
+          id="PDF.title.structure"
+          values={{ name: structureName || structureIndex + 1 }}
+        />
+      )}
+      withFooter
+      pageNb={pageNb}
+      pageCount={pageCount}
+    >
+      <BalanceSheetTable loan={loan} structureId={structureId} />
+    </PdfPage>
+  );
+};
 
 export default StructurePdfPage;

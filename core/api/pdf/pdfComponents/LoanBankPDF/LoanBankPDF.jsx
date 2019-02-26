@@ -20,9 +20,9 @@ const pages = ({ loan, options }) => {
   const structureIds = options.structureIds || loan.structures.map(({ id }) => id);
   return [
     { Component: LoanBankCover, data: { loan, options } },
-    ...structureIds.map(structureId => ({
+    ...structureIds.map((structureId, index) => ({
       Component: StructurePdfPage,
-      data: { loan, structureId, options },
+      data: { loan, structureId, structureIndex: index, options },
     })),
     { Component: LoanBankProject, data: { loan, options } },
     { Component: LoanBankBorrowers, data: { loan, options } },

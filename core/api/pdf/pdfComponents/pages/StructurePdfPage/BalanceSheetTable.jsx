@@ -1,10 +1,11 @@
 // @flow
 import React from 'react';
 
-import { Money } from '../../../../../components/Translation';
+import T, { Money, Percent } from '../../../../../components/Translation';
 import Calculator from '../../../../../utils/Calculator';
 import { ROW_TYPES, classes, shouldRenderRow } from '../../PdfTable/PdfTable';
 import { toMoney } from '../../../../../utils/conversionFunctions';
+import { OWN_FUNDS_USAGE_TYPES } from '../../../../loans/loanConstants';
 
 type BalanceSheetTableProps = {};
 
@@ -28,25 +29,67 @@ const getCostLines = ({ loan, structureId }) => {
   ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
+const ownFundLabel = (type, usageType) =>
+  (usageType ? (
+    <T id={`PDF.ownFund.${type}.${usageType}`} />
+  ) : (
+    <T id={`PDF.ownFund.${type}`} />
+  ));
+
 const getFinancingLines = ({ loan, structureId }) => {
   const wantedLoan = Calculator.selectLoanValue({ loan, structureId });
+  const borrowRatio = Calculator.getBorrowRatio({ loan, structureId });
+  const ownFunds = Calculator.selectStructureKey({
+    loan,
+    structureId,
+    key: 'ownFunds',
+  });
 
-  return [{ label: 'Prêt hypothécaire', value: wantedLoan }].filter(({ condition }) => shouldRenderRow(condition));
+  return [
+    {
+      label: 'Prêt hypothécaire',
+      value: (
+        <span>
+          (<Percent value={borrowRatio} />
+          )&nbsp;
+          <Money value={wantedLoan} currency={false} />
+        </span>
+      ),
+      money: false,
+    },
+    ...ownFunds
+      .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+      .map(({ value, type, usageType }) => ({
+        label: ownFundLabel(type, usageType),
+        value,
+      })),
+    ...ownFunds
+      .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
+      .map(({ value, type, usageType }) => ({
+        label: ownFundLabel(type, usageType),
+        value: <span className="secondary">{toMoney(value)}</span>,
+        money: false,
+      })),
+  ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
 const makeTableContent = (costLines, financingLines) => {
   const lines = Math.max(costLines.length, financingLines.length);
 
   return [...Array(lines)].map((_, index) => {
-    const costLine = costLines[index] || {};
-    const financingLine = financingLines[index] || {};
+    const { label: costLabel, value: costValue, money: costMoney = true } = costLines[index] || {};
+    const {
+      label: financingLabel,
+      value: financingValue,
+      money: financingMoney = true,
+    } = financingLines[index] || {};
 
     return (
       <tr key={index} className={classes[ROW_TYPES.REGULAR]}>
-        <td>{costLine.label}</td>
-        <td>{toMoney(costLine.value)}</td>
-        <td>{financingLine.label}</td>
-        <td>{toMoney(financingLine.value)}</td>
+        <td>{costLabel}</td>
+        <td>{costMoney ? toMoney(costValue) : costValue}</td>
+        <td>{financingLabel}</td>
+        <td>{financingMoney ? toMoney(financingValue) : financingValue}</td>
       </tr>
     );
   });
