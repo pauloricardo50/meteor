@@ -7,25 +7,17 @@ import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import query from './proLoans';
 
-const anonymizeLoans = ({ loans = [], userId, propertyId, promotionId }) => {
-  let anonymizedLoans = [];
-  if (promotionId) {
-    anonymizedLoans = [
-      ...anonymizedLoans,
-      ...loans
-        .filter(({ hasPromotion }) => hasPromotion)
-        .map(makePromotionLoanAnonymizer({ userId, promotionId })),
-    ];
-  }
-  if (propertyId) {
-    // TODO: Make proProperty loan anonymizer
-    anonymizedLoans = [
-      ...anonymizedLoans,
-      ...loans.filter(({ hasProProperty }) => hasProProperty),
-    ];
-  }
-  return anonymizedLoans;
-};
+const anonymizeLoans = ({ loans = [], userId }) => [
+  ...loans
+    .filter(({ hasPromotion }) => hasPromotion)
+    .map((loan) => {
+      const { promotions } = loan;
+      const promotionId = promotions[0]._id;
+      return makePromotionLoanAnonymizer({ userId, promotionId })(loan);
+    }),
+  // TODO: pro properties loan anonymizer
+  ...loans.filter(({ hasProProperty }) => hasProProperty),
+];
 
 query.expose({
   firewall(userId, params) {
@@ -43,8 +35,8 @@ query.expose({
     }
   },
   validateParams: {
-    promotionId: Match.Maybe(String),
-    propertyId: Match.Maybe(String),
+    promotionId: Match.Maybe(Match.OneOf(String, Object)),
+    propertyId: Match.Maybe(Match.OneOf(String, Object)),
     userId: String,
   },
 });

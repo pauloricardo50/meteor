@@ -1,6 +1,35 @@
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, withProps } from 'recompose';
+import { withRouter } from 'react-router-dom';
+import moment from 'moment';
+
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
+
+const columnOptions = [
+  { id: 'loanName' },
+  { id: 'name' },
+  { id: 'phone' },
+  { id: 'email' },
+  { id: 'createdAt' },
+].map(({ id, label }) => ({
+  id,
+  label,
+}));
+
+const makeMapLoan = history => (loan) => {
+  const { _id: loanId, user, createdAt, name: loanName } = loan;
+
+  return {
+    id: loanId,
+    columns: [
+      loanName,
+      user && user.name,
+      user && user.phoneNumbers && user.phoneNumbers[0],
+      user && user.email,
+      { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+    ],
+  };
+};
 
 export default compose(
   mapProps(({ currentUser, ...props }) => {
@@ -11,7 +40,7 @@ export default compose(
     } = currentUser;
     return {
       currentUser,
-      properyIds: [
+      propertyIds: [
         ...properties.map(({ _id }) => _id),
         ...proProperties.map(({ _id }) => _id),
       ],
@@ -28,4 +57,9 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
+  withRouter,
+  withProps(({ loans, history }) => ({
+    rows: loans.map(makeMapLoan(history)),
+    columnOptions,
+  })),
 );
