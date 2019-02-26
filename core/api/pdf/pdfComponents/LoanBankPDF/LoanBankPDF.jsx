@@ -1,14 +1,15 @@
 // @flow
 import React from 'react';
 
-import withTranslationContext from 'imports/core/components/Translation/withTranslationContext';
-import stylesheet from './stylesheet';
-import LoanBankBorrowers from './LoanBankBorrowers';
-import LoanBankCover from './LoanBankCover';
+import { Calculator } from '../../../../utils/Calculator';
+import withTranslationContext from '../../../../components/Translation/withTranslationContext';
 import Pdf from '../Pdf/Pdf';
 import PropertyPdfPage from '../pages/PropertyPdfPage';
 import StructurePdfPage from '../pages/StructurePdfPage';
-import { Calculator } from '../../../../utils/Calculator';
+import LenderRulesPdfPage from '../pages/LenderRulesPdfPage';
+import stylesheet from './stylesheet';
+import LoanBankBorrowers from './LoanBankBorrowers';
+import LoanBankCover from './LoanBankCover';
 
 type LoanBankPDFProps = {
   loan: Object,
@@ -34,6 +35,7 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
     }),
     { Component: LoanBankBorrowers, data: { loan, options } },
     { Component: PropertyPdfPage, data: { loan, options } },
+    { Component: LenderRulesPdfPage, data: { loan, organisation, options } },
   ];
 };
 

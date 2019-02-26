@@ -5,7 +5,7 @@ const stylesheet = `
     .cover-page {
         ${styles.flex(['FLEX_COLUMN'])}
         ${styles.flexGrow(1)}
-        padding: 30px;
+        // padding: 30px; pourquoi yavait ce padding?
     }
 
     .cover-page .loan-info {
@@ -13,7 +13,7 @@ const stylesheet = `
         ${styles.flexGrow(1)}
     } 
 
-    .loan-info h1,h2,h3,h4,h5{
+    .loan-info h1,h2,h3,h4,h5 {
         color: ${BORDER_BLUE};
     }
 
