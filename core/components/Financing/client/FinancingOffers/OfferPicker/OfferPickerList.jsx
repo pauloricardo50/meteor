@@ -48,7 +48,12 @@ const OfferPickerList = ({
       handleSelect={() =>
         updateStructure(dialogOffer).then(() => setDialogOffer(''))
       }
+      handleDeselect={() => {
+        updateStructure('');
+        setDialogOffer('');
+      }}
       offer={offers.find(({ _id }) => _id === dialogOffer)}
+      selected={structure.offerId === dialogOffer}
       structure={structure}
       {...data}
     />

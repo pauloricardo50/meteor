@@ -10,7 +10,15 @@ import OfferPickerDialogContent from './OfferPickerDialogContent';
 type OfferPickerDialogProps = {};
 
 const OfferPickerDialog = (props: OfferPickerDialogProps) => {
-  const { open, handleClose, handleSelect, offer } = props;
+  const {
+    open,
+    handleClose,
+    handleSelect,
+    handleDeselect,
+    offer,
+    selected,
+  } = props;
+
   return (
     <Dialog
       open={open}
@@ -21,6 +29,14 @@ const OfferPickerDialog = (props: OfferPickerDialogProps) => {
           onClick={handleClose}
           key="close"
         />,
+        selected ? (
+          <Button
+            label={<T id="FinancingOffers.deselect" />}
+            onClick={handleDeselect}
+            key="close"
+            error
+          />
+        ) : null,
         <Button
           raised
           primary
