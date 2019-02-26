@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import { check, Match } from 'meteor/check';
 
 import fetch from 'node-fetch';
 import ReactDOMServer from 'react-dom/server';
@@ -41,7 +42,12 @@ class PDFService {
   checkData = ({ data, type }) => {
     switch (type) {
     case PDF_TYPES.LOAN: {
+      const { loanId, organisationId, structureIds } = data;
       const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
+
+      check(loanId, String);
+      check(organisationId, Match.Maybe(String));
+      check(structureIds, Match.Maybe([String]));
 
       try {
         checkObjectStructure({
@@ -62,6 +68,7 @@ class PDFService {
     switch (type) {
     case PDF_TYPES.LOAN: {
       const { loanId, organisationId } = params;
+
       const organisation = OrganisationService.fetchOne({
         $filters: { _id: organisationId },
         lenderRules: lenderRules(),
@@ -69,11 +76,12 @@ class PDFService {
         logo: 1,
       });
       const loan = adminLoan.clone({ loanId }).fetchOne();
+
       if (loan.hasPromotion) {
         return { loan: formatLoanWithPromotion(loan), organisation };
       }
 
-      return { loan, organisation };
+      return { ...params, loan, organisation };
     }
     default:
     }
