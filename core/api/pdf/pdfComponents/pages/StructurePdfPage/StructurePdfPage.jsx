@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
 
-import Calculator from '../../../../../utils/Calculator';
-import T from '../../../../../components/Translation';
+import T, { Percent } from '../../../../../components/Translation';
+import PercentWithStatus from '../../../../../components/PercentWithStatus';
 import PdfPage from '../../PdfPage';
 import BalanceSheet from './BalanceSheet';
 import IncomeAndExpenses from './IncomeAndExpenses';
+import { ERROR, SUCCESS } from '../../../../constants';
 
 type StructurePdfPageProps = {};
 
@@ -17,7 +18,9 @@ const StructurePdfPage = ({
   pageCount,
   calculator,
 }: StructurePdfPageProps) => {
-  const structureName = Calculator.selectStructure({ loan, structureId }).name;
+  const structureName = calculator.selectStructure({ loan, structureId }).name;
+  const incomeRatio = calculator.getIncomeRatio({ loan, structureId });
+  const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
   return (
     <PdfPage
       className="property-page"
@@ -31,11 +34,32 @@ const StructurePdfPage = ({
       pageNb={pageNb}
       pageCount={pageCount}
     >
+      <h3 className="finma-ratio">
+        Taux d'avance:{' '}
+        <span>
+          <PercentWithStatus
+            value={borrowRatio}
+            status={incomeRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS}
+          />
+        </span>
+      </h3>
+
       <BalanceSheet
         loan={loan}
         structureId={structureId}
         calculator={calculator}
       />
+
+      <h3 className="finma-ratio">
+        Taux d'effort:{' '}
+        <span>
+          <PercentWithStatus
+            value={incomeRatio}
+            status={incomeRatio > calculator.maxIncomeRatio ? ERROR : SUCCESS}
+          />
+        </span>
+      </h3>
+
       <IncomeAndExpenses
         loan={loan}
         structureId={structureId}

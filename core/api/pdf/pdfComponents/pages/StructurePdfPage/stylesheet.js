@@ -32,4 +32,22 @@ export default `
     .balance-sheet-table {
         margin-bottom: 40px;
     }
+
+    .finma-ratio {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: normal;
+    }
+
+    .finma-ratio span {
+        display: flex;
+        align-items: center;
+        font-size: 1.3em;
+        margin-left: 8px;
+    }
+
+    .finma-ratio svg {
+        width: 40px;
+    }
 `;
