@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
 
-import T, { Percent } from '../../../../../components/Translation';
+import T from '../../../../../components/Translation';
 import PercentWithStatus from '../../../../../components/PercentWithStatus';
 import PdfPage from '../../PdfPage';
 import BalanceSheet from './BalanceSheet';
 import IncomeAndExpenses from './IncomeAndExpenses';
 import { ERROR, SUCCESS } from '../../../../constants';
+import RemainingOwnFundsTable from './RemainingOwnFundsTable';
 
 type StructurePdfPageProps = {};
 
@@ -61,6 +62,11 @@ const StructurePdfPage = ({
       </h3>
 
       <IncomeAndExpenses
+        loan={loan}
+        structureId={structureId}
+        calculator={calculator}
+      />
+      <RemainingOwnFundsTable
         loan={loan}
         structureId={structureId}
         calculator={calculator}

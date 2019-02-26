@@ -69,12 +69,13 @@ class PDFService {
     case PDF_TYPES.LOAN: {
       const { loanId, organisationId } = params;
 
-      const organisation = OrganisationService.fetchOne({
-        $filters: { _id: organisationId },
-        lenderRules: lenderRules(),
-        name: 1,
-        logo: 1,
-      });
+      const organisation = organisationId
+          && OrganisationService.fetchOne({
+            $filters: { _id: organisationId },
+            lenderRules: lenderRules(),
+            name: 1,
+            logo: 1,
+          });
       const loan = adminLoan.clone({ loanId }).fetchOne();
 
       if (loan.hasPromotion) {

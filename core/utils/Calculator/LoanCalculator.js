@@ -209,7 +209,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return wantedLoan / (propertyValue + propertyWork);
     }
 
-    getMaxBorrowRatio({ loan: { usageType } }) {
+    getMaxBorrowRatio() {
       return this.maxBorrowRatio;
     }
 
@@ -267,13 +267,14 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         .reduce((sum, { value }) => sum + value, 0);
     }
 
-    getRemainingFundsOfType({ loan, type }) {
-      const ownFunds = this.getFunds({ loan, type });
+    getRemainingFundsOfType({ loan, structureId, type }) {
+      const ownFunds = this.getFunds({ loan, type, structureId });
       return (
         ownFunds
         - this.getUsedFundsOfType({
           loan,
           type,
+          structureId,
           usageType:
             type !== OWN_FUNDS_TYPES.BANK_FORTUNE
               ? OWN_FUNDS_USAGE_TYPES.WITHDRAW
@@ -282,12 +283,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getTotalRemainingFunds({ loan }) {
+    getTotalRemainingFunds({ loan, structureId }) {
       // Don't count extra third party fortune, as it is not a real "loan" from them
       return Object.values(OWN_FUNDS_TYPES)
         .filter(type => type !== OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE)
         .reduce(
-          (sum, type) => sum + this.getRemainingFundsOfType({ loan, type }),
+          (sum, type) =>
+            sum + this.getRemainingFundsOfType({ loan, structureId, type }),
           0,
         );
     }
