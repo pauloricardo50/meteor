@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import cx from 'classnames';
+import moment from 'moment';
 
 import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
 import T from 'core/components/Translation';
@@ -93,6 +94,7 @@ const getBorrowersInfos = borrowers => ({
     'name',
     'gender',
     'age',
+    'birthDate',
     'childrenCount',
     'company',
     'civilStatus',
@@ -207,6 +209,7 @@ const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
       label: <T id="PDF.borrowersInfos.name" />,
       data: borrowersInfos.name,
       condition: !anonymous,
+      style: { fontWeight: 'bold' },
     },
     {
       label: <T id="PDF.borrowersInfos.address" />,
@@ -214,24 +217,26 @@ const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
     },
     {
       label: <T id="PDF.borrowersInfos.age" />,
-      data: borrowersInfos.age,
+      data: borrowersInfos.birthDate.map((date, index) => (
+        <span key={index}>
+          ({moment(date).format('DD.MM.YYYY')}) - {borrowersInfos.age[index]}
+        </span>
+      )),
     },
     {
       label: <T id="PDF.borrowersInfos.children" />,
-      data: [...borrowersInfos.childrenCount.map(children => children || '-')],
+      data: borrowersInfos.childrenCount.map(children => children || '-'),
       condition: shouldRenderArray(borrowersInfos.childrenCount),
     },
     {
       label: <T id="PDF.borrowersInfos.company" />,
-      data: [...borrowersInfos.company.map(company => company || '-')],
+      data: borrowersInfos.company.map(company => company || '-'),
       condition: shouldRenderArray(borrowersInfos.company),
     },
     {
       label: <T id="PDF.borrowersInfos.civilStatus" />,
-      data: [
-        ...borrowersInfos.civilStatus.map(status =>
-          <T id={`PDF.borrowersInfos.civilStatus.${status}`} /> || '-'),
-      ],
+      data: borrowersInfos.civilStatus.map(status => <T id={`PDF.borrowersInfos.civilStatus.${status}`} /> || '-'),
+
       condition: borrowersInfos.civilStatus.filter(x => x).length > 0,
     },
   ];
