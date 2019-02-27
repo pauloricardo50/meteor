@@ -16,6 +16,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         return;
       }
 
+      // Store the rules for retrieval later
+      this.lenderRules = lenderRules;
+      this.ruleOrigin = {};
+
       const primaryRules = this.getPrimaryLenderRules({
         loan,
         structureId,
@@ -31,6 +35,18 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.applyRules(secondaryRules);
 
       this.cleanUpUnusedRules();
+    }
+
+    storeRuleOrigin(rules, lenderRulesId) {
+      Object.keys(rules).forEach((ruleName) => {
+        this.ruleOrigin[ruleName] = lenderRulesId;
+      });
+    }
+
+    getOriginOfRule(ruleName) {
+      const lenderRulesId = this.ruleOrigin[ruleName];
+      const lenderRules = this.lenderRules.find(({ _id }) => _id === lenderRulesId);
+      return lenderRules;
     }
 
     getLenderRulesVariables({ loan, structureId }) {
@@ -61,6 +77,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       const matchingRules = getMatchingRules(
         primaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
+        this.storeRuleOrigin,
       );
       return matchingRules;
     }
@@ -72,6 +89,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       const matchingRules = getMatchingRules(
         secondaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
+        this.storeRuleOrigin,
       );
       return matchingRules;
     }

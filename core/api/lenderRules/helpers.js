@@ -1,8 +1,14 @@
 import jsonLogic from 'json-logic-js';
 
-export const getMatchingRules = (lenderRules, variables) =>
-  lenderRules.reduce((validRules, { filter, ...rules }) => {
-    if (jsonLogic.apply(filter, variables)) {
+const filterIsValid = (filter, variables) => jsonLogic.apply(filter, variables);
+
+export const getMatchingRules = (lenderRules, variables, updateRulesCache) =>
+  lenderRules.reduce((validRules, { _id, filter, ...rules }) => {
+    if (filterIsValid(filter, variables)) {
+      if (updateRulesCache) {
+        updateRulesCache(rules, _id);
+      }
+
       return { ...validRules, ...rules };
     }
 

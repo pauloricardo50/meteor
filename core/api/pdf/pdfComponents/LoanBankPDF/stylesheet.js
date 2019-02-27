@@ -5,6 +5,7 @@ import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../pdfConstants';
 import PdfPageStyles from '../PdfPage/PdfPageStyles';
 import PropertyPageStyles from '../pages/PropertyPdfPage/stylesheet';
 import StructurePageStyles from '../pages/StructurePdfPage/stylesheet';
+import LenderRulesPageStyles from '../pages/LenderRulesPdfPage/stylesheet';
 
 const stylesheet = `
     @font-face {
@@ -95,6 +96,7 @@ const stylesheet = `
     ${PdfPageStyles}
     ${PropertyPageStyles}
     ${StructurePageStyles}
+    ${LenderRulesPageStyles}
 `;
 
 export default stylesheet;
