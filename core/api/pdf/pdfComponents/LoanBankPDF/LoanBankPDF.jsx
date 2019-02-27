@@ -22,9 +22,16 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
   const { lenderRules } = organisation || {};
   const finalStructureIds = structureIds || loan.structures.map(({ id }) => id);
 
-  // FIXME: What calculator to pass to the main page?
   return [
-    { Component: LoanBankCover, data: { loan, options, organisation } },
+    {
+      Component: LoanBankCover,
+      data: {
+        loan,
+        options,
+        organisation,
+        structureIds: finalStructureIds,
+      },
+    },
     ...finalStructureIds.map((structureId, index) => {
       const calculator = new Calculator({ loan, structureId, lenderRules });
 

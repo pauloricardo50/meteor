@@ -94,8 +94,9 @@ const stylesheet = `
     }
 
     .cover-content .organisation-logo {
-        height: 80px;
+        max-height: 80px;
         max-width: 200px;
+        width: 100%;
         align-self: center;
         margin-top: 40px;
         margin-bottom: -80px;
@@ -112,6 +113,24 @@ const stylesheet = `
         color: ${BORDER_BLUE};
         font-weight: normal;
         margin: 0;
+    }
+
+    .structure-recap-table {
+        margin-top: 100px;
+    }
+
+    .structure-recap-table tr td {
+        width: 25% !important;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .structure-recap-table td:not(:first-child) {
+        justify-content: flex-end;
+    }
+
+    .structure-recap-table svg {
+        width: 24px;
     }
 `;
 

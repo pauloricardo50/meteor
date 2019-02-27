@@ -33,7 +33,7 @@ export const TEMPLATES = {
   },
 };
 
-export const A4_HEIGHT = 297;
+export const A4_HEIGHT = 295;
 export const MARGIN_TOP = 10;
 export const MARGIN_BOTTOM = 15;
 export const MARGIN_SIDE = 15;

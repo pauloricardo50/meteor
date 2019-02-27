@@ -4,6 +4,7 @@ import moment from 'moment';
 import T from 'core/components/Translation';
 import PdfPage from '../../PdfPage';
 import LoanBankCoverHeader from './LoanBankCoverHeader';
+import StructureRecapTable from './StructureRecapTable';
 
 type LoanBankCoverProps = {
   loan: Object,
@@ -26,7 +27,12 @@ const borrowersNames = borrowers => (
   </h3>
 );
 
-const coverContent = ({ loan, anonymous = false, organisation }) => {
+const coverContent = ({
+  loan,
+  anonymous = false,
+  organisation,
+  structureIds,
+}) => {
   const { name, residenceType, purchaseType, borrowers } = loan;
   const { address1, zipCode, city } = loan.structure.property;
   return (
@@ -42,6 +48,11 @@ const coverContent = ({ loan, anonymous = false, organisation }) => {
       </h2>
       <h2 className="address">{`${address1}, ${zipCode} ${city}`}</h2>
       {!anonymous && borrowersNames(borrowers)}
+      <StructureRecapTable
+        loan={loan}
+        organisation={organisation}
+        structureIds={structureIds}
+      />
     </div>
   );
 };
@@ -52,6 +63,7 @@ const LoanBankCover = ({
   pageCount,
   options,
   organisation,
+  structureIds,
 }: LoanBankCoverProps) => (
   <PdfPage
     className="cover-page"
@@ -64,6 +76,7 @@ const LoanBankCover = ({
       loan,
       anonymous: options && options.anonymous,
       organisation,
+      structureIds,
     })}
     {footer(loan.user.assignedEmployee)}
   </PdfPage>
