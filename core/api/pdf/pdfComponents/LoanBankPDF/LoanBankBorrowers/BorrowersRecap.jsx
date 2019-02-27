@@ -3,12 +3,12 @@ import React from 'react';
 import cx from 'classnames';
 import moment from 'moment';
 
-import { OTHER_INCOME, EXPENSES, OWN_FUNDS_TYPES } from 'core/api/constants';
+import { OTHER_INCOME, OWN_FUNDS_TYPES } from 'core/api/constants';
 import T from 'core/components/Translation';
-import Calculator from 'core/utils/Calculator';
 import { toMoney } from 'core/utils/conversionFunctions';
 import PdfTable from '../../PdfTable';
 import { ROW_TYPES } from '../../PdfTable/PdfTable';
+import { EXPENSE_TYPES } from '../../../../lenderRules/lenderRulesConstants';
 
 type BorrowersRecapProps = {
   borrowers: Array<Object>,
@@ -42,23 +42,28 @@ const getBorrowersOtherIncomes = (borrowers, types) =>
     {},
   );
 
-const getBorrowersOtherFortune = borrowers =>
-  borrowers.map(({ otherFortune }) =>
-    otherFortune
-      && otherFortune.reduce((sum, fortune) => sum + fortune.value, 0));
+const getBorrowersExpense = (borrowers, types, calculator) =>
+  borrowers.map(({ expenses = [], ...borrower }) => {
+    const allExpenses = [
+      ...expenses,
+      {
+        value: calculator.getRealEstateExpenses({ borrowers: borrower }) * 12,
+        description: EXPENSE_TYPES.THEORETICAL_REAL_ESTATE,
+      },
+    ];
 
-const getBorrowersExpense = (borrowers, type) =>
-  borrowers.map(({ expenses }) =>
-    expenses
-      && expenses
-        .filter(expense => type.includes(expense.description))
-        .reduce((sum, expense) => sum + expense.value, 0));
+    return allExpenses
+      .filter(expense => types.includes(expense.description))
+      .filter(({ description }) =>
+        calculator.shouldSubtractExpenseFromIncome(description))
+      .reduce((sum, expense) => sum + expense.value, 0);
+  });
 
-const getBorrowersExpenses = (borrowers, types) =>
+const getBorrowersExpenses = (borrowers, types, calculator) =>
   types.reduce(
     (borrowersExpenses, type) => ({
       ...borrowersExpenses,
-      [type]: getBorrowersExpense(borrowers, [type]),
+      [type]: getBorrowersExpense(borrowers, [type], calculator),
     }),
     {},
   );
@@ -89,7 +94,7 @@ const getBorrowersAddress = (borrowers) => {
   return zipCodes.map((zipCode, index) => `${zipCode} ${cities[index]}`);
 };
 
-const getBorrowersInfos = borrowers => ({
+const getBorrowersInfos = (borrowers, calculator) => ({
   ...getBorrowersSingleInfos(borrowers, [
     'name',
     'gender',
@@ -98,10 +103,11 @@ const getBorrowersInfos = borrowers => ({
     'childrenCount',
     'company',
     'civilStatus',
-    'salary',
     'bankFortune',
     'thirdPartyFortune',
   ]),
+  salary: borrowers.map(borrower =>
+    calculator.getSalary({ borrowers: borrower })),
   address: getBorrowersAddress(borrowers),
   otherIncome: {
     ...getBorrowersOtherIncomes(borrowers, Object.values(OTHER_INCOME)),
@@ -111,16 +117,25 @@ const getBorrowersInfos = borrowers => ({
     ),
   },
   expenses: {
-    ...getBorrowersExpenses(borrowers, Object.values(EXPENSES)),
-    totalExpenses: getBorrowersExpense(borrowers, Object.values(EXPENSES)),
+    ...getBorrowersExpenses(
+      borrowers,
+      Object.values(EXPENSE_TYPES),
+      calculator,
+    ),
+    totalExpenses: getBorrowersExpense(
+      borrowers,
+      Object.values(EXPENSE_TYPES),
+      calculator,
+    ),
   },
   bonus: borrowers.map(borrower =>
-    Calculator.getBonusIncome({ borrowers: borrower })),
-  otherFortune: getBorrowersOtherFortune(borrowers),
+    calculator.getBonusIncome({ borrowers: borrower })),
+  otherFortune: borrowers.map(borrower =>
+    calculator.getOtherFortune({ borrowers: borrower })),
   realEstateValue: borrowers.map(borrower =>
-    Calculator.getRealEstateValue({ borrowers: borrower })),
+    calculator.getRealEstateValue({ borrowers: borrower })),
   realEstateDebt: borrowers.map(borrower =>
-    Calculator.getRealEstateDebt({ borrowers: borrower })),
+    calculator.getRealEstateDebt({ borrowers: borrower })),
   ...getBorrowersOwnFunds(borrowers, [
     OWN_FUNDS_TYPES.INSURANCE_2,
     OWN_FUNDS_TYPES.INSURANCE_3A,
@@ -191,8 +206,8 @@ const getBorrowersGender = borrowersInfos =>
 const getBorrowersName = ({ borrowersInfos, anonymous }) =>
   (anonymous ? getBorrowersGender(borrowersInfos) : borrowersInfos.name);
 
-const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
-  const borrowersInfos = getBorrowersInfos(borrowers);
+const getBorrowersInfosArray = ({ borrowers, anonymous, calculator }) => {
+  const borrowersInfos = getBorrowersInfos(borrowers, calculator);
   const multipleBorrowers = borrowers.length > 1;
 
   return [
@@ -242,10 +257,10 @@ const getBorrowersInfosArray = ({ borrowers, anonymous }) => {
   ];
 };
 
-const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
+const getBorrowersFinanceArray = ({ borrowers, anonymous, calculator }) => {
   const multipleBorrowers = borrowers.length > 1;
   const addTableMoneyLine = makeTableMoneyLine(multipleBorrowers);
-  const borrowersInfos = getBorrowersInfos(borrowers);
+  const borrowersInfos = getBorrowersInfos(borrowers, calculator);
   const {
     gender: genders,
     salary,
@@ -277,7 +292,15 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
       type: ROW_TYPES.SUBSECTION,
     },
     addTableMoneyLine({
-      label: <T id="PDF.borrowersInfos.salary" />,
+      label: (
+        <T
+          id={
+            calculator.shouldUseNetSalary()
+              ? 'PDF.borrowersInfos.netSalary'
+              : 'PDF.borrowersInfos.salary'
+          }
+        />
+      ),
       field: salary,
       condition: true,
     }),
@@ -290,7 +313,7 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
         label: <T id={`PDF.borrowersInfos.otherIncome.${income}`} />,
         field: otherIncome[income],
       })),
-    ...Object.values(EXPENSES).map(expense =>
+    ...Object.values(EXPENSE_TYPES).map(expense =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.expenses.${expense}`} />,
         field: expenses[expense],
@@ -300,7 +323,7 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
       label: <T id="PDF.borrowersInfos.totalIncome" />,
       data: getFormattedMoneyArray({
         array: borrowers.map(borrower =>
-          Calculator.getTotalIncome({ borrowers: borrower })),
+          calculator.getTotalIncome({ borrowers: borrower })),
         negative: false,
         twoBorrowers: multipleBorrowers,
       }),
@@ -334,7 +357,7 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous }) => {
       label: <T id="PDF.borrowersInfos.totalFortune" />,
       data: getFormattedMoneyArray({
         array: borrowers.map(borrower =>
-          Calculator.getTotalFunds({ borrowers: borrower })),
+          calculator.getTotalFunds({ borrowers: borrower })),
         negative: false,
         twoBorrowers: multipleBorrowers,
       }),
@@ -347,15 +370,16 @@ const BorrowersRecap = ({
   borrowers,
   twoBorrowers,
   anonymous = false,
+  calculator,
 }: BorrowersRecapProps) => (
   <div className="borrowers-recap">
     <PdfTable
       className={cx('borrowers-recap info', { twoBorrowers })}
-      rows={getBorrowersInfosArray({ borrowers, anonymous })}
+      rows={getBorrowersInfosArray({ borrowers, anonymous, calculator })}
     />
     <PdfTable
       className={cx('borrowers-recap finance', { twoBorrowers })}
-      rows={getBorrowersFinanceArray({ borrowers, anonymous })}
+      rows={getBorrowersFinanceArray({ borrowers, anonymous, calculator })}
     />
   </div>
 );

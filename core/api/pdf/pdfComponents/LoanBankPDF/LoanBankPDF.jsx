@@ -21,7 +21,7 @@ type LoanBankPDFProps = {
 const getPages = ({ loan, organisation, structureIds, options }) => {
   const { lenderRules } = organisation || {};
   const finalStructureIds = structureIds || loan.structures.map(({ id }) => id);
-
+  const defaultCalculator = new Calculator({ loan, lenderRules });
   return [
     {
       Component: LoanBankCover,
@@ -40,7 +40,10 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
         data: { loan, structureId, structureIndex: index, options, calculator },
       };
     }),
-    { Component: LoanBankBorrowers, data: { loan, options } },
+    {
+      Component: LoanBankBorrowers,
+      data: { loan, options, calculator: defaultCalculator },
+    },
     { Component: PropertyPdfPage, data: { loan, options } },
     { Component: LenderRulesPdfPage, data: { loan, organisation, options } },
   ];

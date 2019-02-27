@@ -11,6 +11,7 @@ type LoanBankBorrowersProps = {
 
 const LoanBankBorrowers = ({
   loan: { borrowers },
+  calculator,
   pageNb,
   pageCount,
   options,
@@ -25,6 +26,7 @@ const LoanBankBorrowers = ({
   >
     <BorrowersRecap
       borrowers={borrowers}
+      calculator={calculator}
       twoBorrowers={borrowers.length > 1}
       anonymous={options && options.anonymous}
     />

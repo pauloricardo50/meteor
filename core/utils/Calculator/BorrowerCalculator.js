@@ -403,6 +403,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       );
     }
 
+    shouldSubtractExpenseFromIncome(expenseType) {
+      return this.expensesSubtractFromIncome.indexOf(expenseType) >= 0;
+    }
+
     getGroupedExpensesBySide({ borrowers, toSubtractFromIncome = true }) {
       const expenses = this.getAllExpenses({ borrowers });
 
