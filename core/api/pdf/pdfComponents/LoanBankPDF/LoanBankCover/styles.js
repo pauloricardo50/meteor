@@ -1,5 +1,5 @@
 import * as styles from '../../utils/styleHelpers';
-import { BORDER_BLUE, BORDER_GREY } from '../../../pdfConstants';
+import { BORDER_BLUE } from '../../../pdfConstants';
 
 const stylesheet = `
     .cover-page {
@@ -17,39 +17,51 @@ const stylesheet = `
         color: ${BORDER_BLUE};
     }
 
+    .cover-content .organisation-logo {
+        max-height: 80px;
+        max-width: 200px;
+        width: 100%;
+        align-self: center;
+        margin-top: 40px;
+        margin-bottom: -80px;
+    }
+
     .cover-content .title {
         margin-top: 120px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
     }
 
     .cover-content .loan-name {
-        margin-top: 10px;
+        margin-top: 8px;
         margin-bottom: 80px;
         font-weight: normal;
     }
 
     .cover-content .loan-type {
-        margin: 0px;
+        margin: 0;
+    }
+    
+    .cover-content .address {
+        margin: 0;
+        margin-top: 8px;
+        font-weight: normal;
     }
 
-    .cover-content .address {
-        margin-top: 10px;
+    .cover-content .property-value {
+        margin-top: 8px;
         font-weight: normal;
-        margin-bottom: 160px;
-        height: 40px;
+        margin-bottom: 120px;
     }
 
     .cover-content .borrowers {
-        margin: 0px;
+        margin: 0;
     }
 
     .cover-page .cover-footer {
-        ${styles.flex([
-    'FLEX_ROW',
-    'ALIGN_ITEMS_FLEX_START',
-    'JUSTIFY_CONTENT_SPACE_BETWEEN',
-  ])}
-        ${styles.ALIGN_SELF_FLEX_END}
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        align-self: flex-end;
         width: 100%;
         border-top: 1px solid ${BORDER_BLUE};
         padding-top: 16px;
@@ -66,8 +78,8 @@ const stylesheet = `
     }
 
     .cover-footer .assigned-employee .name {
-            font-weight: bold;
-        }
+        font-weight: bold;
+    }
 
     .cover-header {
         display: flex;
@@ -91,15 +103,6 @@ const stylesheet = `
         width: 30px;
         height: 30px;
         margin-right: 12px;
-    }
-
-    .cover-content .organisation-logo {
-        max-height: 80px;
-        max-width: 200px;
-        width: 100%;
-        align-self: center;
-        margin-top: 40px;
-        margin-bottom: -80px;
     }
 
     .cover-header .e-potek-address {

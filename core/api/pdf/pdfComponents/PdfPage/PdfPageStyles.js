@@ -23,11 +23,11 @@ const PdfPageStyles = `
         margin-top: 24px;
     }
 
-    .address {
+    .header .address {
         ${styles.flex(['FLEX_COLUMN'])}
     }
 
-    .address .company-name {
+    .header .address .company-name {
         font-weight: bold;
     }
 

@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import moment from 'moment';
-import T from 'core/components/Translation';
+
+import T, { Money } from '../../../../../components/Translation';
+import Calculator from '../../../../../utils/Calculator';
 import PdfPage from '../../PdfPage';
 import LoanBankCoverHeader from './LoanBankCoverHeader';
 import StructureRecapTable from './StructureRecapTable';
@@ -34,7 +36,9 @@ const coverContent = ({
   structureIds,
 }) => {
   const { name, residenceType, purchaseType, borrowers } = loan;
-  const { address1, zipCode, city } = loan.structure.property;
+  const { address1, zipCode, city } = Calculator.selectProperty({ loan });
+  const propertyValue = Calculator.selectPropertyValue({ loan });
+
   return (
     <div className="cover-content">
       {organisation && (
@@ -47,6 +51,11 @@ const coverContent = ({
         <T id={`PDF.residenceType.${residenceType}`} />
       </h2>
       <h2 className="address">{`${address1}, ${zipCode} ${city}`}</h2>
+      <h2 className="property-value">
+        <T id="Forms.value" values={{ purchaseType }} />
+        :&nbsp;
+        <Money value={propertyValue} />
+      </h2>
       {!anonymous && borrowersNames(borrowers)}
       <StructureRecapTable
         loan={loan}

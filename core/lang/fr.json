@@ -1450,7 +1450,7 @@
   "Forms.usageType": "Type d'utilisation",
   "Forms.user": "Utilisateur",
   "Forms.value.placeholder": "CHF 500 000",
-  "Forms.value": "{purchaseType, select, REFINANCING {Valeur du bien} mortgageNote {Montant de la cédule} other {Prix d'achat}}",
+  "Forms.value": "{purchaseType, select, REFINANCING {Valeur du bien} CONSTRUCTION {Montant de la construction} mortgageNote {Montant de la cédule} other {Prix d'achat}}",
   "Forms.value.info": "Arrondi à CHF 1000.- près",
   "Forms.volume.placeholder": "1000",
   "Forms.volume": "Volume/Cubage en m3",
