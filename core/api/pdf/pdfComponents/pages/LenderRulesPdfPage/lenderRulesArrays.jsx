@@ -16,24 +16,28 @@ const RULE_TYPES = {
 };
 
 const getRuleArray = schemaPart =>
-  Object.keys(schemaPart)
-    .map((ruleName) => {
-      const rule = schemaPart[ruleName];
+  Object.keys(schemaPart).map((ruleName) => {
+    const rule = schemaPart[ruleName];
 
-      switch (rule.type) {
-      case Number:
-        return { ...rule, id: ruleName, type: RULE_TYPES.PERCENT };
-      case Array:
-        return { ...rule, id: ruleName, type: RULE_TYPES.SELECT };
-      case SimpleSchema.Integer:
-        return { ...rule, id: ruleName, type: RULE_TYPES.NUMBER };
-      default:
-        return null;
-      }
-    })
-    .filter(x => x);
+    switch (rule.type) {
+    case Number:
+      return { ...rule, id: ruleName, type: RULE_TYPES.PERCENT };
+    case String:
+      return { ...rule, id: ruleName, type: RULE_TYPES.SELECT };
+    case Array:
+      return { ...rule, id: ruleName, type: RULE_TYPES.SELECT };
+    case SimpleSchema.Integer:
+      return { ...rule, id: ruleName, type: RULE_TYPES.NUMBER };
+    default:
+      return null;
+    }
+  });
 
 const makeMapRule = ({ loan, calculator }) => ({ id, type, uniforms }) => {
+  if (id.includes('$')) {
+    return null;
+  }
+
   const ruleOrigin = calculator.getOriginOfRule(id);
 
   const mappedRule = {
@@ -64,7 +68,7 @@ const makeMapRule = ({ loan, calculator }) => ({ id, type, uniforms }) => {
   case RULE_TYPES.NUMBER:
     return { ...mappedRule, value: calculator[id] };
   default:
-    break;
+    return null;
   }
 };
 
@@ -78,7 +82,9 @@ const formatRuleIntoRow = ({ label, value, detail }, index) => (
 
 const getTableRows = ({ loan, calculator, schemaPart }) =>
   getRuleArray(schemaPart)
+    .filter(x => x)
     .map(makeMapRule({ loan, calculator }))
+    .filter(x => x)
     .map(formatRuleIntoRow);
 
 export const getExpenseRules = ({ loan, calculator }) =>
