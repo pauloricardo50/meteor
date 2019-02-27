@@ -30,7 +30,7 @@ const insertDoc = ({ doc, collection, useFactories, factory }) => {
     return doc;
   }
 
-  if (useFactories) {
+  if (useFactories && factory !== null) {
     return Factory.create(factory || collection, doc);
   }
   const _id = Mongo.Collection.get(collection).insert(doc);

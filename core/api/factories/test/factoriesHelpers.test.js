@@ -63,7 +63,7 @@ Factory.define('specialComment', CommentCollection, {
 });
 Factory.define('categories', CategoryCollection, { description: 'category' });
 
-describe.only('factoriesHelpers', () => {
+describe('factoriesHelpers', () => {
   beforeEach(() => {
     resetDatabase();
   });

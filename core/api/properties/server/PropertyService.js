@@ -92,7 +92,7 @@ export class PropertyService extends CollectionService {
 
     if (proUserId) {
       const pro = UserService.fetchOne({
-        filters: { _id: proUserId },
+        $filters: { _id: proUserId },
         assignedEmployeeId: 1,
         organisations: { _id: 1 },
       });

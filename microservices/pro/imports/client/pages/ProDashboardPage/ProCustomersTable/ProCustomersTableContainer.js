@@ -53,6 +53,7 @@ export default compose(
     params: ({ propertyIds, promotionIds }) => ({
       promotionId: { $in: promotionIds },
       propertyId: { $in: propertyIds },
+      // showAnonymizedPromotionLoans: true,
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',

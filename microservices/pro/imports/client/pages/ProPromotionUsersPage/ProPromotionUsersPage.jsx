@@ -2,7 +2,7 @@
 import React from 'react';
 import { compose, withProps } from 'recompose';
 
-import proLoans from 'core/api/loans/queries/proLoans';
+import proPromotionLoans from 'core/api/loans/queries/proPromotionLoans';
 import { isAllowedToModifyPromotion } from 'core/api/security/clientSecurityHelpers';
 import { withSmartQuery } from 'core/api';
 import PromotionUsersPage from 'core/components/PromotionUsersPage';
@@ -33,7 +33,7 @@ const ProPromotionUsersPage = (props: ProPromotionUsersPageProps) => {
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
-    query: proLoans,
+    query: proPromotionLoans,
     params: ({ promotionId }) => ({ promotionId }),
     queryOptions: { reactive: false },
     dataName: 'loans',
