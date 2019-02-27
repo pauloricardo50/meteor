@@ -11,7 +11,7 @@ export const fakeBorrower = {
   zipCode: 1400,
   city: 'Yverdon-les-Bains',
   citizenships: 'Suisse, Français',
-  age: 35,
+  birthDate: '1980-03-01',
   birthPlace: 'Lausanne',
   civilStatus: 'SINGLE',
   childrenCount: 2,
