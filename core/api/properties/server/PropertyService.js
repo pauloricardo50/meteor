@@ -148,8 +148,30 @@ export class PropertyService extends CollectionService {
 
     console.log('Should send invitation to property loan!');
     if (sendInvitation) {
+      // TODO:
     }
   };
+
+  addProUser({ propertyId, userId }) {
+    return this.addLink({
+      id: propertyId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { permissions: {} },
+    });
+  }
+
+  proPropertyInsert({ property, userId }) {
+    const propertyId = Properties.insert({ ...property, userId });
+    this.addLink({
+      id: propertyId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { permissions: {} },
+    });
+
+    return propertyId;
+  }
 }
 
 export default new PropertyService();

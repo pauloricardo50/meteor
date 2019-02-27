@@ -6,6 +6,7 @@ import { proUser } from '../../fragments';
 const anonymizeUsers = ({ users = [], userId, propertyId }) =>
   // TODO: users anonymization
   users;
+
 query.expose({
   firewall(userId, params) {
     const { propertyId } = params;
@@ -20,17 +21,10 @@ query.expose({
 });
 
 query.resolve(({ userId, propertyId }) => {
-  let users = [];
-  const {
-    user: propertyOwner,
-    users: propertyProUsers = [],
-  } = PropertyService.fetchOne({
+  const { users = [] } = PropertyService.fetchOne({
     $filters: { _id: propertyId },
-    user: proUser(),
     users: proUser(),
   });
-
-  users = [...users, { ...propertyOwner, isOwner: true }, ...propertyProUsers];
 
   try {
     SecurityService.checkUserIsAdmin(userId);

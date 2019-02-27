@@ -11,6 +11,8 @@ import {
   evaluateProperty,
   propertyDataIsInvalid,
   inviteUserToProperty,
+  addProUserToProperty,
+  proPropertyInsert,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -66,4 +68,15 @@ inviteUserToProperty.setHandler(({ userId }, params) => {
     return PropertyService.inviteUser({ ...params, proUserId: userId });
   }
   return PropertyService.inviteUser(params);
+});
+
+addProUserToProperty.setHandler(({ userId }, params) => {
+  // TODO: security
+  SecurityService.checkUserIsPro(userId);
+  return PropertyService.addProUser(params);
+});
+
+proPropertyInsert.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PropertyService.proPropertyInsert(params);
 });

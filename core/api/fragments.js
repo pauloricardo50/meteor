@@ -716,6 +716,11 @@ export const proPropertySummary = () => ({
   totalValue: 1,
 });
 
+export const proProperty = () => ({
+  ...fullProperty(),
+  users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
+});
+
 // //
 // // Task fragments
 // //

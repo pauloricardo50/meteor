@@ -16,7 +16,7 @@ query.expose({
   validateParams: { userId: Match.Maybe(String) },
   embody: {
     $filter({ filters, params }) {
-      filters.userId = params.userId;
+      filters['userLinks._id'] = params.userId;
     },
   },
 });
