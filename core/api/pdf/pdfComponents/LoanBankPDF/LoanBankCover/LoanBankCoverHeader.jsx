@@ -3,7 +3,7 @@ import React from 'react';
 
 type LoanBankCoverHeaderProps = {};
 
-const LoanBankCoverHeader = ({ organisation }: LoanBankCoverHeaderProps) => (
+const LoanBankCoverHeader = (props: LoanBankCoverHeaderProps) => (
   <div className="cover-header">
     <h1>
       <img
@@ -11,10 +11,6 @@ const LoanBankCoverHeader = ({ organisation }: LoanBankCoverHeaderProps) => (
         className="epotek-logo"
       />
       e-Potek SA
-      {organisation && <span className="logo-divider" />}
-      {organisation && (
-        <img src={organisation.logo} className="organisation-logo" />
-      )}
     </h1>
     <div className="e-potek-address">
       <h6>

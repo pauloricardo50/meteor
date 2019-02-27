@@ -8,38 +8,38 @@ const stylesheet = `
         // padding: 30px; pourquoi yavait ce padding?
     }
 
-    .cover-page .loan-info {
+    .cover-page .cover-content {
         ${styles.flex(['FLEX_COLUMN'])}
         ${styles.flexGrow(1)}
     } 
 
-    .loan-info h1,h2,h3,h4,h5 {
+    .cover-content h1,h2,h3,h4,h5 {
         color: ${BORDER_BLUE};
     }
 
-    .loan-info .title {
+    .cover-content .title {
         margin-top: 120px;
         margin-bottom: 0px;
     }
 
-    .loan-info .loan-name {
+    .cover-content .loan-name {
         margin-top: 10px;
         margin-bottom: 80px;
         font-weight: normal;
     }
 
-    .loan-info .loan-type {
+    .cover-content .loan-type {
         margin: 0px;
     }
 
-    .loan-info .address {
+    .cover-content .address {
         margin-top: 10px;
         font-weight: normal;
         margin-bottom: 160px;
         height: 40px;
     }
 
-    .loan-info .borrowers {
+    .cover-content .borrowers {
         margin: 0px;
     }
 
@@ -93,15 +93,12 @@ const stylesheet = `
         margin-right: 12px;
     }
 
-    .cover-header .logo-divider {
-        width: 2px;
-        height: 30px;
-        margin: 0 16px;
-        background-color: ${BORDER_GREY};
-    }
-
-    .cover-header .organisation-logo {
-        height: 30px;
+    .cover-content .organisation-logo {
+        height: 80px;
+        max-width: 200px;
+        align-self: center;
+        margin-top: 40px;
+        margin-bottom: -80px;
     }
 
     .cover-header .e-potek-address {

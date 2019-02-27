@@ -16,7 +16,7 @@ const footer = ({ name, email, phoneNumbers }) => (
       <h5>{email}</h5>
       <h5>{phoneNumbers[0]}</h5>
     </div>
-    <div>Le Grand-Saconnex, le {moment(new Date()).format('DD.MM.YYYY')}</div>
+    <div>{moment(new Date()).format('DD.MM.YYYY')}</div>
   </div>
 );
 
@@ -26,11 +26,14 @@ const borrowersNames = borrowers => (
   </h3>
 );
 
-const loanInfo = ({ loan, anonymous = false }) => {
+const coverContent = ({ loan, anonymous = false, organisation }) => {
   const { name, residenceType, purchaseType, borrowers } = loan;
   const { address1, zipCode, city } = loan.structure.property;
   return (
-    <div className="loan-info">
+    <div className="cover-content">
+      {organisation && (
+        <img src={organisation.logo} className="organisation-logo" />
+      )}
       <h1 className="title">Financement hypothécaire</h1>
       <h1 className="loan-name">{name}</h1>
       <h2 className="loan-type">
@@ -56,8 +59,12 @@ const LoanBankCover = ({
     pageNb={pageNb}
     pageCount={pageCount}
   >
-    <LoanBankCoverHeader organisation={organisation} />
-    {loanInfo({ loan, anonymous: options && options.anonymous })}
+    <LoanBankCoverHeader />
+    {coverContent({
+      loan,
+      anonymous: options && options.anonymous,
+      organisation,
+    })}
     {footer(loan.user.assignedEmployee)}
   </PdfPage>
 );
