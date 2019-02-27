@@ -5,7 +5,6 @@ const stylesheet = `
     .cover-page {
         ${styles.flex(['FLEX_COLUMN'])}
         ${styles.flexGrow(1)}
-        // padding: 30px; pourquoi yavait ce padding?
     }
 
     .cover-page .cover-content {

@@ -234,7 +234,7 @@ const getBorrowersInfosArray = ({ borrowers, anonymous, calculator }) => {
       label: <T id="PDF.borrowersInfos.age" />,
       data: borrowersInfos.birthDate.map((date, index) => (
         <span key={index}>
-          ({moment(date).format('DD.MM.YYYY')}) - {borrowersInfos.age[index]}
+          {borrowersInfos.age[index]}&nbsp;({moment(date).format('DD.MM.YYYY')})
         </span>
       )),
     },

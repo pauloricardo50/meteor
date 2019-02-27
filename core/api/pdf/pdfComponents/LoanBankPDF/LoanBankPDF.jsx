@@ -30,6 +30,7 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
         options,
         organisation,
         structureIds: finalStructureIds,
+        calculator: defaultCalculator,
       },
     },
     ...finalStructureIds.map((structureId, index) => {

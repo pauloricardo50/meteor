@@ -31,12 +31,12 @@ const LenderRulesPdfPage = ({
     >
       <h3>Revenus & Charges</h3>
       <LenderRulesPdfTable rows={getExpenseRules({ loan, calculator })} />
-      {/* <h2>Charges</h2>
-      <LenderRulesPdfTable rows={[]} /> */}
+
       <h3>Charges théoriques</h3>
       <LenderRulesPdfTable
         rows={getTheoreticalExpenseRules({ loan, calculator })}
       />
+
       <h3>Critères d'octroi</h3>
       <LenderRulesPdfTable
         rows={getCutOffCriteriaRules({ loan, calculator })}

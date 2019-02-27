@@ -28,7 +28,7 @@ const makeSchema = loan =>
     organisationId: {
       type: String,
       optional: true,
-      allowedValues: loan.lenders.map(({ organisation }) => organisation._id),
+      allowedValues: loan.lenders.map(({ organisation }) => organisation && organisation._id),
       uniforms: {
         transform: (organisationId) => {
           const lender = loan.lenders.find(({ organisation }) => organisation._id === organisationId);

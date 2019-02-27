@@ -82,8 +82,8 @@ const IncomeAndExpenses = ({
 }: IncomeAndExpensesProps) => (
   <BalanceSheetTable
     titles={['Charges', 'Revenus']}
-    rightRows={getExpenseRows({ loan, structureId, calculator })}
-    leftRows={getIncomeRows({ loan, structureId, calculator })}
+    leftRows={getExpenseRows({ loan, structureId, calculator })}
+    rightRows={getIncomeRows({ loan, structureId, calculator })}
     bottomTitles={['Total', 'Total']}
     bottomValues={[
       <Money

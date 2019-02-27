@@ -34,6 +34,7 @@ const coverContent = ({
   anonymous = false,
   organisation,
   structureIds,
+  calculator,
 }) => {
   const { name, residenceType, purchaseType, borrowers } = loan;
   const { address1, zipCode, city } = Calculator.selectProperty({ loan });

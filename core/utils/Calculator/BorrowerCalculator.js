@@ -380,16 +380,23 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }).total;
     }
 
+    // Returns an object with all the types of expenses, combined between
+    // borrowers:
+    // {
+    //  LEASING: 23000,
+    //  WELFARE: 4000,
+    //  THEORETICAL_REAL_ESTATE: 30000,
+    //  etc
+    // }
     getAllExpenses({ borrowers }) {
       return {
         [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
-          this.getRealEstateExpenses({
-            borrowers,
-          }) * 12, // All expenses are annualized
+          this.getRealEstateExpenses({ borrowers }) * 12, // All expenses are annualized
         ...this.getGroupedExpenses({ borrowers }),
       };
     }
 
+    // Same as getAllExpenses, but without real estate expenses
     getGroupedExpenses({ borrowers }) {
       const flattenedExpenses = []
         .concat([], ...arrayify(borrowers).map(({ expenses }) => expenses))
@@ -407,6 +414,11 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.expensesSubtractFromIncome.indexOf(expenseType) >= 0;
     }
 
+    // Returns an object with all expenses to subtract from income
+    // or all expenses to add to expenses, depending on the param `toSubtractFromIncome`¨
+    // {
+    //  LEASING: 23000,
+    // }
     getGroupedExpensesBySide({ borrowers, toSubtractFromIncome = true }) {
       const expenses = this.getAllExpenses({ borrowers });
 
@@ -424,6 +436,8 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         );
     }
 
+    // Returns an object with 2 keys, `subtract` and `add` that contain the sum
+    // of all expenses to "subtract from income" and "add to expenses", respectively
     getFormattedExpenses({ borrowers }) {
       const expenses = this.getAllExpenses({ borrowers });
 

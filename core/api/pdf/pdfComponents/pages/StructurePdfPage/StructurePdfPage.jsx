@@ -36,7 +36,7 @@ const StructurePdfPage = ({
       pageCount={pageCount}
     >
       <h3 className="finma-ratio">
-        Taux d'avance:{' '}
+        Taux d'avance:&nbsp;
         <span>
           <PercentWithStatus
             value={borrowRatio}
@@ -52,7 +52,7 @@ const StructurePdfPage = ({
       />
 
       <h3 className="finma-ratio">
-        Taux d'effort:{' '}
+        Taux d'effort:&nbsp;
         <span>
           <PercentWithStatus
             value={incomeRatio}

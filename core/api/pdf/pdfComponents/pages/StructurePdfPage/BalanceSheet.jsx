@@ -19,7 +19,12 @@ const getCostLines = ({ loan, structureId, calculator }) => {
   });
 
   return [
-    { label: "Prix d'achat", value: propertyValue },
+    {
+      label: (
+        <T id="Forms.value" values={{ purchaseType: loan.purchaseType }} />
+      ),
+      value: propertyValue,
+    },
     { label: 'Frais de notaire', value: notaryFees },
     {
       label: 'Travaux de plus-value',
@@ -80,8 +85,8 @@ const BalanceSheet = ({
 }: BalanceSheetTableProps) => (
   <BalanceSheetTable
     titles={["Coût de l'opération", 'Financement']}
-    rightRows={getCostLines({ loan, structureId, calculator })}
-    leftRows={getFinancingLines({ loan, structureId, calculator })}
+    leftRows={getCostLines({ loan, structureId, calculator })}
+    rightRows={getFinancingLines({ loan, structureId, calculator })}
     bottomTitles={['Prix de revient', 'Financement total']}
     bottomValues={[
       <Money

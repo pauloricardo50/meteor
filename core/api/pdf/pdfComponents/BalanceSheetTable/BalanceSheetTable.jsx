@@ -5,19 +5,19 @@ import { toMoney } from '../../../../utils/conversionFunctions';
 
 type BalanceSheetTableProps = {};
 
-const makeTableContent = (rightRows, leftRows) => {
+const makeTableContent = (leftRows, rightRows) => {
   const lines = Math.max(rightRows.length, leftRows.length);
 
   return [...Array(lines)].map((_, index) => {
-    const { label: rightLabel, value: rightValue, money: rightMoney = true } = rightRows[index] || {};
     const { label: leftLabel, value: leftValue, money: leftMoney = true } = leftRows[index] || {};
+    const { label: rightLabel, value: rightValue, money: rightMoney = true } = rightRows[index] || {};
 
     return (
       <tr key={index} className={classes[ROW_TYPES.REGULAR]}>
-        <td>{rightLabel}</td>
-        <td>{rightMoney ? toMoney(rightValue) : rightValue}</td>
         <td>{leftLabel}</td>
         <td>{leftMoney ? toMoney(leftValue) : leftValue}</td>
+        <td>{rightLabel}</td>
+        <td>{rightMoney ? toMoney(rightValue) : rightValue}</td>
       </tr>
     );
   });
@@ -36,7 +36,7 @@ const BalanceSheetTable = ({
       <td colSpan={2}>{titles[1]}</td>
     </tr>
 
-    {makeTableContent(rightRows, leftRows)}
+    {makeTableContent(leftRows, rightRows)}
 
     <tr className={classes[ROW_TYPES.SUM]}>
       <td>{bottomTitles[0]}</td>
