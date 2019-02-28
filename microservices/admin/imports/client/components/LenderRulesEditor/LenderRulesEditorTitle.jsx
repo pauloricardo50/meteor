@@ -4,6 +4,8 @@ import React from 'react';
 import { LENDER_RULES_OPERATORS } from 'core/api/constants';
 import T, { Percent, Money } from 'core/components/Translation';
 import { parseFilter } from 'core/api/lenderRules/helpers';
+import Chip from 'core/components/Material/Chip';
+
 
 type LenderRulesEditorTitleProps = {};
 
@@ -13,6 +15,7 @@ const operatorText = {
   [LENDER_RULES_OPERATORS.LESS_THAN_OR_EQUAL]: '<=',
   [LENDER_RULES_OPERATORS.MORE_THAN]: '>',
   [LENDER_RULES_OPERATORS.MORE_THAN_OR_EQUAL]: '>=',
+  [LENDER_RULES_OPERATORS.IN]: 'dans',
 };
 
 const renderValue = (name, value) => {
@@ -30,7 +33,13 @@ const renderValue = (name, value) => {
 
   if (Array.isArray(value)) {
     return value
-      .map(v => <T key={v} id={`Forms.${name}.${v}`} />)
+      .map(v => (
+        <Chip
+          key={v}
+          label={<T key={v} id={`Forms.${name}.${v}`} />}
+          style={{ marginRight: 4 }}
+        />
+      ))
       .map((tag, i) => [i !== 0 && ', ', tag]);
   }
 
@@ -47,7 +56,7 @@ const renderSingleVariable = (ruleObject) => {
   return (
     <>
       <T id={`Forms.variable.${variable}`} />
-      &nbsp;{operatorText[operator]}&nbsp;
+      &nbsp;<span className="rule-operator">{operatorText[operator]}</span>&nbsp;
       {renderValue(variable, value)}
     </>
   );
