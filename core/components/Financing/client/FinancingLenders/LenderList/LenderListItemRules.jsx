@@ -6,6 +6,7 @@ import { Calculator } from '../../../../../utils/Calculator';
 import T, { Money, Percent } from '../../../../Translation';
 import { ERROR, SUCCESS } from '../../../../../api/constants';
 import StatusIcon from '../../../../StatusIcon';
+import colors from '../../../../../config/colors';
 
 type LenderListItemRulesProps = {};
 
@@ -75,6 +76,19 @@ const LenderListItemRules = ({
           </span>
         )}
       />
+      {calc.adminComments && calc.adminComments.length > 0 && (
+        <Icon
+          type="warning"
+          style={{ color: colors.warning }}
+          tooltip={(
+            <ul style={{ padding: 0 }}>
+              {calc.adminComments.map(comment => (
+                <li key="comment">&bull; {comment}</li>
+              ))}
+            </ul>
+          )}
+        />
+      )}
     </>
   );
 };
