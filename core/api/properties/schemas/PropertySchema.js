@@ -44,22 +44,29 @@ export const propertyPermissionsSchema = {
       }
     },
   },
+  'displayCustomerNames.referredBy': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
+    uniforms: {
+      displayEmpty: true,
+      placeholder: 'Ne pas afficher le nom des clients',
+    },
+  },
   'displayCustomerNames.forPropertyStatus': {
     type: Array,
     optional: true,
     defaultValue: [],
     uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
+    condition: ({ permissions: { displayCustomerNames = {} } }) => {
+      const { referredBy } = displayCustomerNames;
+      return !!referredBy;
+    },
   },
   'displayCustomerNames.forPropertyStatus.$': {
     type: String,
     allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
       .FOR_PROPERTY_STATUS),
-  },
-  'displayCustomerNames.referredBy': {
-    type: String,
-    optional: true,
-    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
-    uniforms: { displayEmpty: false, placeholder: '' },
   },
 };
 

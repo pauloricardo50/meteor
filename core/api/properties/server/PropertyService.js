@@ -172,6 +172,15 @@ export class PropertyService extends CollectionService {
 
     return propertyId;
   }
+
+  setProUserPermissions({ propertyId, userId, permissions }) {
+    this.updateLinkMetadata({
+      id: propertyId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { permissions },
+    });
+  }
 }
 
 export default new PropertyService();

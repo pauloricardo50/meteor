@@ -1,8 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCrown } from '@fortawesome/pro-light-svg-icons/faCrown';
 
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import IconButton from 'core/components/IconButton/IconButton';
@@ -12,6 +10,7 @@ import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientH
 import { createRoute } from 'core/utils/routerUtils';
 import proPropertyUsers from '../../../api/properties/queries/proPropertyUsers';
 import { withSmartQuery } from '../../../api/containerToolkit';
+import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';
 
 const columnOptions = [
   { id: 'name' },
@@ -20,11 +19,11 @@ const columnOptions = [
   { id: 'actions' },
 ].map(({ id }) => ({
   id,
-  label: <T id={`AdminPromotionPage.PromotionUsers.${id}`} />,
+  label: <T id={`ProPropertyPage.ProUsers.${id}`} />,
 }));
 
 const makeMapProPropertyUser = ({ propertyId, history }) => (user) => {
-  const { _id, email, $metadata = {}, isOwner, name } = user;
+  const { _id, email, $metadata = {}, name } = user;
 
   const { permissions = {} } = $metadata;
   return {
@@ -32,24 +31,14 @@ const makeMapProPropertyUser = ({ propertyId, history }) => (user) => {
     columns: [
       {
         raw: name,
-        label: isOwner ? (
-          <div className="property-owner">
-            <FontAwesomeIcon icon={faCrown} className="icon" />
-            <p>{getUserNameAndOrganisation({ user })}</p>
-          </div>
-        ) : (
-          getUserNameAndOrganisation({ user })
-        ),
+        label: getUserNameAndOrganisation({ user }),
       },
       email,
       {
         raw: permissions,
         label: (
           <div onClick={event => event.stopPropagation()}>
-            {/* <PromotionUserPermissionsModifier
-              user={user}
-              promotionId={promotionId}
-            /> */}
+            <ProPropertyUserPermissionsModifier user={user} propertyId={propertyId} />
           </div>
         ),
       },

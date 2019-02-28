@@ -79,3 +79,8 @@ export const proPropertyInsert = new Method({
   name: 'proPropertyInsert',
   params: { userId: String, property: Object },
 });
+
+export const proPropertySetProUserPermissions = new Method({
+  name: 'proPropertySetProUserPermissions',
+  params: {propertyId: String, userId: String, permissions: Object}
+})
