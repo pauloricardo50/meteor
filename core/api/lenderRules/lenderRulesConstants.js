@@ -41,11 +41,12 @@ export const LENDER_RULES_OPERATORS = {
   MORE_THAN_OR_EQUAL: '>=',
   LESS_THAN: '<',
   LESS_THAN_OR_EQUAL: '<=',
+  IN: 'in',
 };
 
 export const DEFAULT_MAIN_RESIDENCE_RULES = [
   {
-    [LENDER_RULES_OPERATORS.EQUALS]: [
+    [LENDER_RULES_OPERATORS.IN]: [
       { var: 'residenceType' },
       [RESIDENCE_TYPE.MAIN_RESIDENCE],
     ],
@@ -54,7 +55,7 @@ export const DEFAULT_MAIN_RESIDENCE_RULES = [
 
 export const DEFAULT_SECONDARY_RESIDENCE_RULES = [
   {
-    [LENDER_RULES_OPERATORS.EQUALS]: [
+    [LENDER_RULES_OPERATORS.IN]: [
       { var: 'residenceType' },
       [RESIDENCE_TYPE.SECOND_RESIDENCE],
     ],

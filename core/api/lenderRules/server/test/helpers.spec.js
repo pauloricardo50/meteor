@@ -118,5 +118,31 @@ describe('lenderRules helpers', () => {
         hello: 'dude',
       });
     });
+
+    it('matches one in an array of values', () => {
+      const variables = { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE };
+      const lenderRules = [
+        {
+          filter: {
+            and: [
+              {
+                in: [
+                  { var: 'residenceType' },
+                  [
+                    RESIDENCE_TYPE.MAIN_RESIDENCE,
+                    RESIDENCE_TYPE.SECOND_RESIDENCE,
+                  ],
+                ],
+              },
+            ],
+          },
+          hello: 'dude',
+        },
+      ];
+
+      expect(getMatchingRules(lenderRules, variables)).to.deep.equal({
+        hello: 'dude',
+      });
+    });
   });
 });
