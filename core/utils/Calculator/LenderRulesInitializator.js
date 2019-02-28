@@ -88,6 +88,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     applyRules(rules) {
       const rulesToApply = [
+        'adminComments',
         'allowPledge',
         'amortizationGoal',
         'amortizationYears',
@@ -96,12 +97,13 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'companyIncomeHistoryToConsider',
         'dividendsConsideration',
         'dividendsHistoryToConsider',
+        'expensesSubtractFromIncome',
         'fortuneReturnsRatio',
         'incomeConsiderationType',
         'investmentIncomeConsideration',
         'maxBorrowRatio',
         'maxIncomeRatio',
-        'expensesSubtractFromIncome',
+        'pdfComments',
         'pensionIncomeConsideration',
         'realEstateIncomeConsiderationType',
         'theoreticalInterestRate',
