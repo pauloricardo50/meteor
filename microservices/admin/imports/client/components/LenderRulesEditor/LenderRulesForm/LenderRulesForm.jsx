@@ -8,8 +8,12 @@ import {
   LENDER_RULES_OPERATORS,
 } from 'core/api/constants';
 import LenderRulesFormValue from './LenderRulesFormValue';
+import LenderRulesFormOperator from './LenderRulesFormOperator';
 
 type LenderRulesFormProps = {};
+
+const shouldRenderAdditionalFields = (model, index) =>
+  model.rules && model.rules[index] && model.rules[index].variable;
 
 const schema = new SimpleSchema({
   name: { type: String, optional: true },
@@ -22,15 +26,16 @@ const schema = new SimpleSchema({
   },
   'rules.$.operator': {
     type: String,
-    allowedValues: Object.values(LENDER_RULES_OPERATORS),
-    defaultValue: LENDER_RULES_OPERATORS.EQUALS,
-    uniforms: { placeholder: null, intlId: 'operator' },
+    uniforms: {
+      placeholder: null,
+      component: LenderRulesFormOperator,
+    },
+    condition: shouldRenderAdditionalFields,
   },
   'rules.$.value': {
     type: SimpleSchema.oneOf(String, Number, Boolean, Array),
     uniforms: { component: LenderRulesFormValue, placeholder: null },
-    condition: (model, index) =>
-      model.rules && model.rules[index] && model.rules[index].variable,
+    condition: shouldRenderAdditionalFields,
   },
   'rules.$.value.$': { type: String, condition: () => false },
 });

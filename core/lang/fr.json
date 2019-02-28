@@ -1,4 +1,5 @@
 {
+  "Forms.operator.in": "Inclus dans",
   "Forms.birthDate": "Date de naissance",
   "FinancingLenders.consideredIncome": "Revenus considérés",
   "FinancingLenders.consideredExpenses": "Charges considérées",
@@ -129,7 +130,7 @@
   "Forms.variable.canton": "Canton du bien immobilier",
   "Forms.variable.borrowRatio": "Taux d'avance",
   "Forms.variable.wantedLoan": "Prêt hypothécaire",
-  "Forms.operator": "Maths",
+  "Forms.rules.operator": "Maths",
   "Forms.rules.value": "Valeur",
   "Forms.allowPledge": "Autoriser nantissement LPP",
   "Forms.amortizationYears.placeholder": "15",
