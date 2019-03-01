@@ -95,4 +95,27 @@ describe('LenderRulesInitializator', () => {
     const calc = new Calculator({ loan, lenderRules });
     expect(calc.maxBorrowRatio).to.equal(0.6);
   });
+
+  it('merges comments together', () => {
+    lenderRules = [
+      {
+        filter: {
+          and: [
+            { '>': [{ var: LENDER_RULES_VARIABLES.PROPERTY_VALUE }, 100000] },
+          ],
+        },
+        adminComments: ['a'],
+      },
+      {
+        filter: {
+          and: [
+            { '>': [{ var: LENDER_RULES_VARIABLES.PROPERTY_VALUE }, 110000] },
+          ],
+        },
+        adminComments: ['b'],
+      },
+    ];
+    const calc = new Calculator({ loan, lenderRules });
+    expect(calc.adminComments).to.deep.equal(['a', 'b']);
+  });
 });

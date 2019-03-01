@@ -49,8 +49,15 @@ const getDefaults = ({ type, id, onChange, value, simpleOnChange }) => {
   case 'date':
     return {
       onChangeHandler: event => onChange(id, event.target.value, event),
+      onDateChange: (val) => {
+        // This specific format should be used for the server to get the
+        // date in the right order
+        const date = moment(val).format('YYYY-MM-DD');
+        // Allow setting a date to null
+        onChange(id, val ? date : null, {});
+      },
       showMask: false,
-      value: moment(value).format('YYYY-MM-DD'),
+      value: value ? moment(value) : null,
     };
   default:
     return {
@@ -116,6 +123,7 @@ const TextInput = (props) => {
 
   const {
     onChangeHandler,
+    onDateChange,
     showMask,
     mask,
     placeholder: defaultPlaceholder,
@@ -155,6 +163,7 @@ const TextInput = (props) => {
           noValidate: true,
           mask: mask || undefined,
           pattern: mask ? '[0-9]*' : undefined,
+          onDateChange: inputType === 'date' ? onDateChange : undefined,
         }}
         startAdornment={
           props.type === 'money' ? (

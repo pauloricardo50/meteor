@@ -77,9 +77,9 @@ const SinglePropertyPage = (props) => {
           zipCode={zipCode}
           options={{ zoom: 15 }}
         />
-        <Element name="valuation" className="valuation">
+        {/* <Element name="valuation" className="valuation">
           <Valuation property={property} loanResidenceType={residenceType} />
-        </Element>
+        </Element> */}
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
@@ -108,12 +108,12 @@ const SinglePropertyPage = (props) => {
       </section>
       <div className="single-property-page-buttons">
         <ReturnToDashboard />
-        <LaunchValuationButton
+        {/* <LaunchValuationButton
           enabled={shouldDisplayLaunchValuationButton({
             progress,
             status: property.valuation.status,
           })}
-        />
+        /> */}
       </div>
     </Page>
   );
