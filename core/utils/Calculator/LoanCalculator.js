@@ -105,11 +105,24 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     getTheoreticalInterests({ loan, structureId }) {
-      return (
-        (this.selectLoanValue({ loan, structureId })
-          * this.theoreticalInterestRate)
-        / 12
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const propertyWork = this.selectStructureKey({
+        loan,
+        structureId,
+        key: 'propertyWork',
+      }) || 0;
+      const firstRank = Math.min(
+        loanValue,
+        this.amortizationGoal * (propertyValue + propertyWork),
       );
+      const secondRank = Math.max(0, loanValue - firstRank);
+
+      const firstRankInterests = firstRank * this.theoreticalInterestRate;
+      const secondRankInterests = secondRank
+        * (this.theoreticalInterestRate2ndRank || this.theoreticalInterestRate);
+
+      return (firstRankInterests + secondRankInterests) / 12;
     }
 
     getTheoreticalMaintenance({ loan, structureId }) {
