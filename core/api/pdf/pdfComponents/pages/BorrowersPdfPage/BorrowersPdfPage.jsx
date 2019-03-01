@@ -5,17 +5,17 @@ import T from 'core/components/Translation';
 import BorrowersRecap from './BorrowersRecap';
 import PdfPage from '../../PdfPage';
 
-type LoanBankBorrowersProps = {
+type BorrowersPdfPageProps = {
   borrowers: Array<Object>,
 };
 
-const LoanBankBorrowers = ({
+const BorrowersPdfPage = ({
   loan: { borrowers },
   calculator,
   pageNb,
   pageCount,
   options,
-}: LoanBankBorrowersProps) => (
+}: BorrowersPdfPageProps) => (
   <PdfPage
     className="borrowers-page"
     isLast
@@ -33,4 +33,4 @@ const LoanBankBorrowers = ({
   </PdfPage>
 );
 
-export default LoanBankBorrowers;
+export default BorrowersPdfPage;

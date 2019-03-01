@@ -26,24 +26,45 @@ const getBorrowersSingleInfos = (borrowers, infos) =>
     {},
   );
 
-const getBorrowersOtherIncome = (borrowers, type) =>
-  borrowers.map(({ otherIncome }) =>
-    otherIncome
-      && otherIncome
-        .filter(income => type.includes(income.description))
-        .reduce((sum, income) => sum + income.value, 0));
+const getBorrowersOtherIncome = (borrowers, types, calculator) =>
+  borrowers.map((borrower) => {
+    const { otherIncome = [] } = borrower;
+    const otherIncomeValue = otherIncome
+      .filter(income => types.includes(income.description))
+      .reduce((sum, income) => sum + income.value, 0);
 
-const getBorrowersOtherIncomes = (borrowers, types) =>
+    // Only render comments if this is for one single expense type
+    const otherIncomeComments = types.length === 1
+      && calculator.getCommentsForExpenseType({
+        borrowers: borrower,
+        type: types[0],
+      });
+
+
+    return otherIncomeComments && otherIncomeComments.length > 0
+      ? ({ negative }) => (
+        <div>
+          <div>
+            {negative ? `-${toMoney(otherIncomeValue)}` : toMoney(otherIncomeValue)}
+          </div>
+          <div className="secondary">{otherIncomeComments.join(', ')}</div>
+        </div>
+      )
+      : otherIncomeValue;
+  });
+
+const getBorrowersOtherIncomes = (borrowers, types, calculator) =>
   types.reduce(
     (borrowersOtherIncomes, type) => ({
       ...borrowersOtherIncomes,
-      [type]: getBorrowersOtherIncome(borrowers, [type]),
+      [type]: getBorrowersOtherIncome(borrowers, [type], calculator),
     }),
     {},
   );
 
 const getBorrowersExpense = (borrowers, types, calculator) =>
-  borrowers.map(({ expenses = [], ...borrower }) => {
+  borrowers.map((borrower) => {
+    const { expenses } = borrower;
     const allExpenses = [
       ...expenses,
       {
@@ -52,11 +73,29 @@ const getBorrowersExpense = (borrowers, types, calculator) =>
       },
     ];
 
-    return allExpenses
+    const expenseValue = allExpenses
       .filter(expense => types.includes(expense.description))
       .filter(({ description }) =>
         calculator.shouldSubtractExpenseFromIncome(description))
       .reduce((sum, expense) => sum + expense.value, 0);
+
+    // Only render comments if this is for one single expense type
+    const expenseComments = types.length === 1
+      && calculator.getCommentsForExpenseType({
+        borrowers: borrower,
+        type: types[0],
+      });
+
+    return expenseComments && expenseComments.length > 0
+      ? ({ negative }) => (
+        <div>
+          <div>
+            {negative ? `-${toMoney(expenseValue)}` : toMoney(expenseValue)}
+          </div>
+          <div className="secondary">{expenseComments.join(', ')}</div>
+        </div>
+      )
+      : expenseValue;
   });
 
 const getBorrowersExpenses = (borrowers, types, calculator) =>
@@ -110,10 +149,15 @@ const getBorrowersInfos = (borrowers, calculator) => ({
     calculator.getSalary({ borrowers: borrower })),
   address: getBorrowersAddress(borrowers),
   otherIncome: {
-    ...getBorrowersOtherIncomes(borrowers, Object.values(OTHER_INCOME)),
+    ...getBorrowersOtherIncomes(
+      borrowers,
+      Object.values(OTHER_INCOME),
+      calculator,
+    ),
     totalIncome: getBorrowersOtherIncome(
       borrowers,
       Object.values(OTHER_INCOME),
+      calculator,
     ),
   },
   expenses: {
@@ -151,7 +195,9 @@ const getFormattedMoneyArray = ({ array, negative = false, twoBorrowers }) => {
     return [
       ...array.map((x, index) => (
         <div className="money-amount" key={index}>
-          {toMoney(negative ? -x : x || 0)}
+          {typeof x === 'function'
+            ? x({ negative })
+            : toMoney(negative ? -x : x || 0)}
         </div>
       )),
     ];
@@ -160,7 +206,9 @@ const getFormattedMoneyArray = ({ array, negative = false, twoBorrowers }) => {
   return [
     ...array.map((x, index) => (
       <div className="money-amount" key={index}>
-        {toMoney(negative ? -x : x || 0)}
+        {typeof x === 'function'
+          ? x({ negative })
+          : toMoney(negative ? -x : x || 0)}
       </div>
     )),
 

@@ -1,4 +1,4 @@
-import { LoanBankBorrowersStyles } from './LoanBankBorrowers';
+import BorrowersPageStyles from '../pages/BorrowersPdfPage/styles';
 import { LoanBankCoverStyles } from './LoanBankCover';
 import PDFTableStyles from '../PdfTable/PdfTableStyles';
 import { MARGIN_TOP, MARGIN_SIDE, MARGIN_BOTTOM } from '../../pdfConstants';
@@ -91,7 +91,7 @@ const stylesheet = `
     }
 
     ${PDFTableStyles}
-    ${LoanBankBorrowersStyles}
+    ${BorrowersPageStyles}
     ${LoanBankCoverStyles}
     ${PdfPageStyles}
     ${PropertyPageStyles}

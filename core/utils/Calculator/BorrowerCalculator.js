@@ -452,6 +452,26 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         { subtract: 0, add: 0 },
       );
     }
+
+    getCommentsForExpenseType({ borrowers, type }) {
+      return arrayify(borrowers).reduce((comments, { expenses = [] }) => {
+        const expensesOfType = expenses.filter(({ description }) => description === type);
+        return [
+          ...comments,
+          ...expensesOfType.map(({ comment }) => comment),
+        ].filter(x => x);
+      }, []);
+    }
+
+    getCommentsForOtherIncomeType({ borrowers, type }) {
+      return arrayify(borrowers).reduce((comments, { otherIncome = [] }) => {
+        const otherIncomeOfType = otherIncome.filter(({ description }) => description === type);
+        return [
+          ...comments,
+          ...otherIncomeOfType.map(({ comment }) => comment),
+        ].filter(x => x);
+      }, []);
+    }
   };
 
 export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);

@@ -7,8 +7,8 @@ import Pdf from '../Pdf/Pdf';
 import PropertyPdfPage from '../pages/PropertyPdfPage';
 import StructurePdfPage from '../pages/StructurePdfPage';
 import LenderRulesPdfPage from '../pages/LenderRulesPdfPage';
+import BorrowersPdfPage from '../pages/BorrowersPdfPage';
 import stylesheet from './stylesheet';
-import LoanBankBorrowers from './LoanBankBorrowers';
 import LoanBankCover from './LoanBankCover';
 
 type LoanBankPDFProps = {
@@ -42,7 +42,7 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
       };
     }),
     {
-      Component: LoanBankBorrowers,
+      Component: BorrowersPdfPage,
       data: { loan, options, calculator: defaultCalculator },
     },
     { Component: PropertyPdfPage, data: { loan, options } },
