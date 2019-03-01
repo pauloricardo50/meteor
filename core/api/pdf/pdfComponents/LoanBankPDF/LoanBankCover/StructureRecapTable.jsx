@@ -21,7 +21,7 @@ const getRows = ({ loan, structureIds, organisation }) => {
     </tr>,
     ...structureIds
       .map(structureId => loan.structures.find(({ id }) => id === structureId))
-      .map(({ id: structureId, name }) => {
+      .map(({ id: structureId, name }, index) => {
         const calculator = new Calculator({
           loan,
           structureId,
@@ -33,7 +33,9 @@ const getRows = ({ loan, structureIds, organisation }) => {
 
         return (
           <tr key={structureId}>
-            <td>{name}</td>
+            <td>
+              {name} (page {index + 2})
+            </td>
             <td>{toMoney(loanValue)}</td>
             <td>
               <PercentWithStatus

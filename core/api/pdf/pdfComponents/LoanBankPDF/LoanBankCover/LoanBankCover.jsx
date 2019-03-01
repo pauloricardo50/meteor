@@ -53,8 +53,6 @@ const coverContent = ({
       </h2>
       <h2 className="address">{`${address1}, ${zipCode} ${city}`}</h2>
       <h2 className="property-value">
-        <T id="Forms.value" values={{ purchaseType }} />
-        :&nbsp;
         <Money value={propertyValue} />
       </h2>
       {!anonymous && borrowersNames(borrowers)}

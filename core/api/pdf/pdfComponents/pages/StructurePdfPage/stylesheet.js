@@ -33,6 +33,10 @@ export default `
         margin-bottom: 40px;
     }
 
+    .balance-sheet-table .secondary {
+        opacity: 0.5;
+    }
+
     .finma-ratio {
         display: flex;
         justify-content: center;

@@ -168,14 +168,21 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       );
     }
 
-    getTheoreticalPropertyCost({ loan, structureId }) {
+    getTheoreticalPropertyCost({ loan, structureId, asObject = false }) {
       const interests = this.getTheoreticalInterests({ loan, structureId });
       const amortization = this.getTheoreticalAmortization({
         loan,
         structureId,
       });
       const maintenance = this.getTheoreticalMaintenance({ loan, structureId });
-      return interests + amortization + maintenance;
+      return asObject
+        ? {
+          interests,
+          amortization,
+          maintenance,
+          total: interests + amortization + maintenance,
+        }
+        : interests + amortization + maintenance;
     }
 
     getTheoreticalMonthly({ loan, structureId }) {

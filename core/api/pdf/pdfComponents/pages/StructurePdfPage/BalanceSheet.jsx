@@ -71,8 +71,10 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
     ...ownFunds
       .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
       .map(({ value, type, usageType }) => ({
-        label: ownFundLabel(type, usageType),
-        value: <span className="secondary">{toMoney(value)}</span>,
+        label: (
+          <span className="secondary">{ownFundLabel(type, usageType)}</span>
+        ),
+        value: <span className="secondary">({toMoney(value)})</span>,
         money: false,
       })),
   ].filter(({ condition }) => shouldRenderRow(condition));

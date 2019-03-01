@@ -9,13 +9,17 @@ import { shouldRenderRow } from '../../PdfTable/PdfTable';
 type IncomeAndExpensesProps = {};
 
 const getIncomeRows = ({ loan, structureId, calculator }) => {
-  const salary = calculator.getSalary({ loan });
-  const bonus = calculator.getBonusIncome({ loan });
-  const otherIncome = calculator.getOtherIncome({ loan });
-  const fortuneReturns = calculator.getFortuneReturns({ loan });
-  const realEstateIncome = calculator.getRealEstateIncome({ loan });
+  const salary = calculator.getSalary({ loan, structureId });
+  const bonus = calculator.getBonusIncome({ loan, structureId });
+  const otherIncome = calculator.getOtherIncome({ loan, structureId });
+  const fortuneReturns = calculator.getFortuneReturns({ loan, structureId });
+  const realEstateIncome = calculator.getRealEstateIncome({
+    loan,
+    structureId,
+  });
   const expenses = calculator.getGroupedExpensesBySide({
     loan,
+    structureId,
     toSubtractFromIncome: true,
   });
 
@@ -59,14 +63,29 @@ const getExpenseRows = ({ loan, structureId, calculator }) => {
   const propertyCost = calculator.getTheoreticalPropertyCost({
     loan,
     structureId,
-  }) * 12;
+    asObject: true,
+  });
   const expenses = calculator.getGroupedExpensesBySide({
     loan,
     toSubtractFromIncome: false,
   });
 
   return [
-    { label: 'Charges théoriques', value: propertyCost },
+    {
+      label: <i>Taux d'intérêt théorique</i>,
+      value: <i>{toMoney(propertyCost.interests * 12)}</i>,
+      money: false,
+    },
+    {
+      label: <i>Amortissement théorique</i>,
+      value: <i>{toMoney(propertyCost.amortization * 12)}</i>,
+      money: false,
+    },
+    {
+      label: <i>Frais d'entretien théorique</i>,
+      value: <i>{toMoney(propertyCost.maintenance * 12)}</i>,
+      money: false,
+    },
     ...Object.keys(expenses).map(expenseType => ({
       label: <T id={`Forms.expenses.${expenseType}`} />,
       value: expenses[expenseType],
@@ -88,12 +107,12 @@ const IncomeAndExpenses = ({
     bottomValues={[
       <Money
         currency={false}
-        value={calculator.getTheoreticalMonthly({ loan }) * 12}
+        value={calculator.getTheoreticalMonthly({ loan, structureId }) * 12}
         key="0"
       />,
       <Money
         currency={false}
-        value={calculator.getTotalIncome({ loan })}
+        value={calculator.getTotalIncome({ loan, structureId })}
         key="1"
       />,
     ]}
