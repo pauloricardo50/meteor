@@ -23,12 +23,14 @@ const GetLoanPDF = ({ handlePDF, handleHTML, loan }: GetLoanPDFProps) => (
       buttonLabel="PDF"
       icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
       loan={loan}
+      dialogTitle="Télécharger PDF"
     />
     <PdfDownloadDialog
       onSubmit={values => handlePDF({ ...values, anonymous: true })}
       buttonLabel="PDF anonyme"
       icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
       loan={loan}
+      dialogTitle="Télécharger PDF anonyme"
     />
     {Meteor.user().roles.includes(ROLES.DEV) && (
       <PdfDownloadDialog
@@ -36,6 +38,7 @@ const GetLoanPDF = ({ handlePDF, handleHTML, loan }: GetLoanPDFProps) => (
         buttonLabel={'<HTML />'}
         icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
         loan={loan}
+        dialogTitle="Télécharger HTML"
       />
     )}
   </>

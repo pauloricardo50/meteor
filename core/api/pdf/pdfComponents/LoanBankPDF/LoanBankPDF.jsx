@@ -46,8 +46,12 @@ const getPages = ({ loan, organisation, structureIds, options }) => {
       data: { loan, options, calculator: defaultCalculator },
     },
     { Component: PropertyPdfPage, data: { loan, options } },
-    { Component: LenderRulesPdfPage, data: { loan, organisation, options } },
-  ];
+    lenderRules
+      && lenderRules.length > 0 && {
+      Component: LenderRulesPdfPage,
+      data: { loan, organisation, options },
+    },
+  ].filter(x => x);
 };
 
 const LoanBankPDF = (props: LoanBankPDFProps) => {

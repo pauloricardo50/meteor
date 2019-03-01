@@ -1,11 +1,13 @@
 import { CONTENT_HEIGHT, BORDER_BLUE } from '../../pdfConstants';
-import * as styles from '../utils/styleHelpers';
 
 const PdfPageStyles = `
     .page {
-        ${styles.flex(['FLEX_COLUMN', 'JUSTIFY_CONTENT_FLEX_START'])}
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
         width: 100%;
         box-sizing: border-box;
+        align-items: stretch;
     }
 
     .full-height {
@@ -13,18 +15,17 @@ const PdfPageStyles = `
     }
 
     .header {
-        ${styles.flex([
-    'FLEX_ROW',
-    'ALIGN_ITEMS_CENTER',
-    'JUSTIFY_CONTENT_SPACE_BETWEEN',
-  ])}
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
         height: 120px;
         margin-top: 24px;
     }
 
     .header .address {
-        ${styles.flex(['FLEX_COLUMN'])}
+        display: flex;
+        flex-direction: column;    
     }
 
     .header .address .company-name {
@@ -63,6 +64,10 @@ const PdfPageStyles = `
 
     .bold {
         font-weight: bold;
+    }
+
+    .secondary {
+        opacity: 0.5;
     }
 `;
 

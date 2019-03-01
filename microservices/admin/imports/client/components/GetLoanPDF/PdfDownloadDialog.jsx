@@ -46,9 +46,10 @@ const PdfDownloadDialog = ({
   onSubmit,
   buttonLabel,
   icon,
+  dialogTitle,
 }: PdfDownloadDialogProps) => (
   <AutoFormDialog
-    title="Télécharger PDF"
+    title={dialogTitle}
     schema={makeSchema(loan)}
     onSubmit={onSubmit}
     buttonProps={{
