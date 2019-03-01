@@ -7,7 +7,8 @@ import Valuation from 'core/components/Valuation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import { PropertyForm } from 'core/components/forms';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
-import { ProPropertyPage } from 'core/components/ProPropertyPage/ProPropertyPage';
+import AdminProPropertyPage from './AdminProPropertyPage';
+// import { ProPropertyPage } from 'core/components/ProPropertyPage/ProPropertyPage';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
@@ -19,7 +20,7 @@ const SinglePropertyPage = (props) => {
   const { property, displayLoans, className, loanResidenceType } = props;
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
-    return <ProPropertyPage property={property} />;
+    return <AdminProPropertyPage property={property} />;
   }
 
   const { loans } = property;
