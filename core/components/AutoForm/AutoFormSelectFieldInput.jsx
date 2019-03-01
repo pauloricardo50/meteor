@@ -6,7 +6,7 @@ import Select from 'core/components/Select';
 import ValidIcon from './ValidIcon';
 import FormValidator from './FormValidator';
 
-export default class SelectFieldInput extends Component {
+export default class AutoFormSelectFieldInput extends Component {
   constructor(props) {
     super(props);
 
@@ -85,7 +85,7 @@ export default class SelectFieldInput extends Component {
   }
 }
 
-SelectFieldInput.propTypes = {
+AutoFormSelectFieldInput.propTypes = {
   currentValue: PropTypes.any,
   docId: PropTypes.string.isRequired,
   inputProps: PropTypes.shape({
@@ -97,6 +97,6 @@ SelectFieldInput.propTypes = {
   updateFunc: PropTypes.func.isRequired,
 };
 
-SelectFieldInput.defaultProps = {
+AutoFormSelectFieldInput.defaultProps = {
   currentValue: undefined,
 };

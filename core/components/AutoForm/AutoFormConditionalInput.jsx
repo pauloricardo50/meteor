@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import FormValidator from './FormValidator';
 
-export default class ConditionalInput extends Component {
+export default class AutoFormConditionalInput extends Component {
   constructor(props) {
     super(props);
     this.state = { conditional: false };
@@ -67,7 +67,7 @@ export default class ConditionalInput extends Component {
   }
 }
 
-ConditionalInput.propTypes = {
+AutoFormConditionalInput.propTypes = {
   children: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])),
   conditionalTrueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
     .isRequired,

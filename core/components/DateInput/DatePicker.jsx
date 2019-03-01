@@ -8,11 +8,11 @@ import SingleDatePicker from 'react-dates/lib/components/SingleDatePicker';
 import isInclusivelyAfterDay from 'react-dates/lib/utils/isInclusivelyAfterDay';
 
 // Given a min and/or max date, it blocks unavailable dates
-const setDateRange = (minDate = new Date(), maxDate = undefined) => day =>
+const setDateRange = (minDate = undefined, maxDate = undefined) => day =>
   (minDate && !isInclusivelyAfterDay(day, moment(minDate)))
   || (maxDate && isInclusivelyAfterDay(day, moment(maxDate)));
 
-const DatePicker = ({ minDate, maxDate, ...props }) => {
+const DatePicker = ({ minDate, maxDate, value, ...props }) => {
   // To prevent prop warnings
   const otherProps = omit(props, [
     'autoFocus',
@@ -30,6 +30,7 @@ const DatePicker = ({ minDate, maxDate, ...props }) => {
   return (
     <SingleDatePicker
       {...otherProps}
+      date={value}
       numberOfMonths={1}
       hideKeyboardShortcutsPanel
       showClearDate
@@ -38,7 +39,7 @@ const DatePicker = ({ minDate, maxDate, ...props }) => {
       firstDayOfWeek={1}
       enableOutsideDays
       isOutsideRange={
-        minDate || maxDate ? setDateRange(minDate, maxDate) : undefined
+        minDate || maxDate ? setDateRange(minDate, maxDate) : () => false
       }
       displayFormat="D MMMM YYYY"
     />

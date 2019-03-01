@@ -6,7 +6,7 @@ import RadioButtons from 'core/components/RadioButtons';
 import FormValidator from './FormValidator';
 import ValidIcon from './ValidIcon';
 
-export default class RadioInput extends Component {
+export default class AutoFormRadioInput extends Component {
   constructor(props) {
     super(props);
     // Set initial state to be the 1st option
@@ -105,7 +105,7 @@ export default class RadioInput extends Component {
   }
 }
 
-RadioInput.propTypes = {
+AutoFormRadioInput.propTypes = {
   currentValue: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string,
@@ -122,7 +122,7 @@ RadioInput.propTypes = {
   updateFunc: PropTypes.func.isRequired,
 };
 
-RadioInput.defaultProps = {
+AutoFormRadioInput.defaultProps = {
   currentValue: undefined,
   onConditionalChange: () => null,
 };

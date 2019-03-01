@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-class TextInput extends Component {
+class AutoFormTextInput extends Component {
   constructor(props) {
     super(props);
 
@@ -117,6 +117,8 @@ class TextInput extends Component {
         required,
         date,
         percent,
+        onFocusChange,
+        focused,
 
         // Destructure these props to avoid warnings
         inputRef,
@@ -150,6 +152,7 @@ class TextInput extends Component {
       <div className="form-input__row" style={{ ...styles.div, ...style }}>
         <MyTextInput
           {...otherProps}
+          InputProps={{ onFocusChange, focused }}
           label={label}
           placeholder={placeholder}
           value={value}
@@ -181,7 +184,7 @@ class TextInput extends Component {
   }
 }
 
-TextInput.propTypes = {
+AutoFormTextInput.propTypes = {
   autocomplete: PropTypes.string,
   currentValue: PropTypes.any,
   decimal: PropTypes.bool,
@@ -209,7 +212,7 @@ TextInput.propTypes = {
   updateFunc: PropTypes.func,
 };
 
-TextInput.defaultProps = {
+AutoFormTextInput.defaultProps = {
   currentValue: '',
   autocomplete: '',
   rows: 1,
@@ -223,4 +226,4 @@ TextInput.defaultProps = {
   noValidator: false,
 };
 
-export default TextInput;
+export default AutoFormTextInput;
