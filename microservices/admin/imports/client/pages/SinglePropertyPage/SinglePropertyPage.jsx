@@ -32,9 +32,9 @@ const SinglePropertyPage = (props) => {
   return (
     <section className={cx('single-property-page', className)}>
       <SinglePropertyPageHeader property={property} />
-      {residenceType && (
+      {/* {residenceType && (
         <Valuation property={property} loanResidenceType={residenceType} />
-      )}
+      )} */}
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>
