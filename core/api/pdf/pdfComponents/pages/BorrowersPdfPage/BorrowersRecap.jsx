@@ -40,12 +40,13 @@ const getBorrowersOtherIncome = (borrowers, types, calculator) =>
         type: types[0],
       });
 
-
     return otherIncomeComments && otherIncomeComments.length > 0
       ? ({ negative }) => (
         <div>
           <div>
-            {negative ? `-${toMoney(otherIncomeValue)}` : toMoney(otherIncomeValue)}
+            {negative
+              ? `-${toMoney(otherIncomeValue)}`
+              : toMoney(otherIncomeValue)}
           </div>
           <div className="secondary">{otherIncomeComments.join(', ')}</div>
         </div>
@@ -240,39 +241,16 @@ const addTableEmptyLine = () => ({
   type: ROW_TYPES.EMPTY,
 });
 
-const addTableCategoryTitle = ({ title, multipleBorrowers }) => ({
-  label: title,
-  type: ROW_TYPES.TITLE_NO_PADDING,
-  colspan: multipleBorrowers ? 4 : 2,
-});
-
-const getBorrowersGender = borrowersInfos =>
-  borrowersInfos.gender.map(gender => (
-    <T id={`PDF.borrowersInfos.gender.${gender}`} />
-  ));
-
-const getBorrowersName = ({ borrowersInfos, anonymous }) =>
-  (anonymous ? getBorrowersGender(borrowersInfos) : borrowersInfos.name);
-
 const getBorrowersInfosArray = ({ borrowers, anonymous, calculator }) => {
   const borrowersInfos = getBorrowersInfos(borrowers, calculator);
   const multipleBorrowers = borrowers.length > 1;
 
   return [
-    addTableCategoryTitle({
-      title: <T id="PDF.borrowersInfos.category.general" />,
-      multipleBorrowers,
-    }),
     {
-      label: '\u00A0',
-      data: getBorrowersGender(borrowersInfos),
-      style: { fontWeight: 'bold' },
-    },
-    {
-      label: <T id="PDF.borrowersInfos.name" />,
+      label: <T id="PDF.borrowersInfos.category.general" />,
       data: borrowersInfos.name,
-      condition: !anonymous,
-      style: { fontWeight: 'bold' },
+      type: ROW_TYPES.TITLE,
+      className: 'borrower-table-title-row',
     },
     {
       label: <T id="PDF.borrowersInfos.address" />,
@@ -321,19 +299,13 @@ const getBorrowersFinanceArray = ({ borrowers, anonymous, calculator }) => {
   } = borrowersInfos;
 
   return [
-    addTableCategoryTitle({
-      title: <T id="PDF.borrowersInfos.category.financialSituation" />,
-      multipleBorrowers,
-    }),
     {
-      label: '\u00A0',
+      label: <T id="PDF.borrowersInfos.category.financialSituation" />,
+      type: ROW_TYPES.TITLE,
       data: multipleBorrowers
-        ? [
-          ...getBorrowersName({ borrowersInfos, anonymous }),
-          <T id="PDF.borrowersInfos.total" key="total" />,
-        ]
-        : getBorrowersName({ borrowersInfos, anonymous }),
-      style: { fontWeight: 'bold' },
+        ? [null, null, <T id="PDF.borrowersInfos.total" key="total" />]
+        : [],
+      className: 'borrower-table-title-row',
     },
     {
       label: <T id="PDF.borrowersInfos.income" />,

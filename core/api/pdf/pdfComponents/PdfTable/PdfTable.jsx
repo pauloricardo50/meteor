@@ -49,19 +49,20 @@ const row = (
     style,
     colspan = 1,
     type = ROW_TYPES.REGULAR,
+    className,
   },
   index,
 ) => {
   if (colspan > 1) {
     return (
-      <tr key={index} className={classes[type]}>
+      <tr key={index} className={cx(classes[type], className)}>
         {label && <td colSpan={colspan}>{label}</td>}
       </tr>
     );
   }
 
   return (
-    <tr key={index} className={classes[type]}>
+    <tr key={index} className={cx(classes[type], className)}>
       {label && (
         <td>
           {label}
