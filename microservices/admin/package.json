@@ -11,7 +11,7 @@
     "prestart": "cd ../.. && npm run lang -- admin",
     "start-e2e": "meteor test --full-app --driver-package tmeasday:acceptance-test-driver --settings settings-dev.json --port 5015",
     "start-local-db": "MONGO_URL=mongodb://localhost:27017/epotek meteor run --settings settings-dev.json --port 5000",
-    "start": "meteor run --settings settings-dev.json --port 5000",
+    "start": "METEOR_PACKAGE_DIRS=../../packages DDP_DEFAULT_CONNECTION_URL=http://localhost:5500  meteor run --settings settings-dev.json --port 5000",
     "test-CI": "SERVER_TEST_REPORTER=xunit SERVER_MOCHA_OUTPUT=~/app/results/unit-server.xml CLIENT_MOCHA_OUTPUT=~/app/results/unit-client.xml TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --settings settings-dev.json",
     "test-console-once": "meteor test --driver-package meteortesting:mocha --once --settings settings-dev.json --port 5006",
     "test-console": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings-dev.json --port 5006",
