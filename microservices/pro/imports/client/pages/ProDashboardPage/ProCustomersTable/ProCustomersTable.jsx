@@ -7,10 +7,10 @@ import ProCustomersTableContainer from './ProCustomersTableContainer';
 type ProCustomersTableProps = {};
 
 const ProCustomersTable = ({ rows, columnOptions }: ProCustomersTableProps) => (
-  <div className="card1 card-top">
-    <h2>Clients</h2>
-    <Table rows={rows} columnOptions={columnOptions} />
-  </div>
+  <>
+    <h3 className="text-center">Clients</h3>
+    <Table rows={rows} columnOptions={columnOptions} title="Clients" />
+  </>
 );
 
 export default ProCustomersTableContainer(ProCustomersTable);
