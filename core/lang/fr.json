@@ -1,4 +1,5 @@
 {
+  "Forms.realEstateIncome": "Revenus de fortune immobilière",
   "Forms.otherIncome.comment": "Commentaire [ADMIN]",
   "Forms.otherIncome.comment.placeholder": "Apparaît dans le PDF",
   "Forms.expenses.comment": "Commentaire [ADMIN]",

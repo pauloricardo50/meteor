@@ -119,16 +119,17 @@ const stylesheet = `
 
     .structure-recap-table {
         margin-top: 100px;
+        width: 100%;
     }
 
     .structure-recap-table tr td {
-        width: 25% !important;
-        display: inline-flex;
-        align-items: center;
+        // width: 25% !important;
+        // display: inline-flex;
+        // align-items: center;
     }
 
     .structure-recap-table td:not(:first-child) {
-        justify-content: flex-end;
+        // justify-content: flex-end;
     }
 
     .structure-recap-table svg {

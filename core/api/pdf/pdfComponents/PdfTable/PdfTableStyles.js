@@ -2,20 +2,22 @@ import { BORDER_BLUE, BORDER_GREY } from '../../pdfConstants';
 
 export default `
     .pdf-table {
-        border-collapse: collapse; 
+        border-collapse: collapse;
+        table-layout: fixed;
     }
 
     .pdf-table tr {
-        width: 100%;
+        // width: 100%;
     }
 
     .pdf-table td {
-        width: 50%;
+        // width: 50%;
         padding: 8px 0px;
+        vertical-align: middle;
     }
 
     .pdf-table tr td:not(:first-of-type) {
-        text-align: right;
+        // text-align: right;
     }
 
     .pdf-table tr:first-child {
@@ -48,7 +50,7 @@ export default `
         padding: 8px 0;
         text-align: left;
         font-weight: bold;
-        width: 100%;
+        // width: 100%;
     }
 
     .pdf-table tr.tooltip {

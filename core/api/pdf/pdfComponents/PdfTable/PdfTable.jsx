@@ -2,6 +2,7 @@
 import React from 'react';
 import cx from 'classnames';
 import PdfTableTooltips from './PdfTableTooltips';
+import PdfTableRow from './PdfTableRow';
 
 type PdfTableProps = {
   rows: Array,
@@ -31,63 +32,24 @@ export const classes = {
 export const shouldRenderRow = condition =>
   condition === undefined || condition;
 
-const multiColumn = (data, style) =>
-  data.map((x, index) => (
-    <td style={style} key={index}>
-      {x}
-    </td>
-  ));
-
-const singleColumn = (data, style) => <td style={style}>{data}</td>;
-
-const row = (
-  {
-    label,
-    tooltip,
-    data,
-    condition,
-    style,
-    colspan = 1,
-    type = ROW_TYPES.REGULAR,
-    className,
-  },
-  index,
-) => {
-  if (colspan > 1) {
-    return (
-      <tr key={index} className={cx(classes[type], className)}>
-        {label && <td colSpan={colspan}>{label}</td>}
-      </tr>
-    );
-  }
-
-  return (
-    <tr key={index} className={cx(classes[type], className)}>
-      {label && (
-        <td>
-          {label}
-          {tooltip && <sup> {tooltip.symbol}</sup>}
-        </td>
-      )}
-      {Array.isArray(data)
-        ? multiColumn(data, style)
-        : singleColumn(data, style)}
-    </tr>
-  );
-};
-
-const PdfTable = ({ rows, className }: PdfTableProps) => (
+const PdfTable = ({ rows, className, columnOptions = [] }: PdfTableProps) => (
   <table className={cx('pdf-table', className)}>
     {rows.map((rowData, index) => {
       if (!shouldRenderRow(rowData.condition)) {
         return null;
       }
 
-      return row(rowData, index);
+      return (
+        <PdfTableRow
+          key={index}
+          rowData={rowData}
+          index={index}
+          columnOptions={columnOptions}
+        />
+      );
     })}
     <PdfTableTooltips
       tooltips={rows.filter(({ tooltip, condition }) => !!tooltip && shouldRenderRow(condition))}
-      rowRenderFunc={row}
       startIndex={rows.length + 1}
     />
   </table>
