@@ -92,7 +92,8 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
           borrower:
             multipleBorrowers
             && borrowers.find(({ _id }) => _id === borrowerId),
-          borrowerIndex: borrowers.findIndex(({ _id }) => _id === borrowerId),
+          borrowerIndex:
+            borrowers.findIndex(({ _id }) => _id === borrowerId) + 1,
         }),
         value,
       })),
@@ -107,7 +108,8 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
               borrower:
                 multipleBorrowers
                 && borrowers.find(({ _id }) => _id === borrowerId),
-              borrowerIndex: borrowers.findIndex(({ _id }) => _id === borrowerId),
+              borrowerIndex:
+                borrowers.findIndex(({ _id }) => _id === borrowerId) + 1,
             })}
           </span>
         ),
