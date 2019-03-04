@@ -33,19 +33,22 @@ export const getBorrowersOtherIncome = (borrowers, types, calculator) =>
         type: types[0],
       });
 
-    return otherIncomeComments && otherIncomeComments.length > 0
-      ? ({ negative }) => (
+    const renderFunction = ({ negative }) => (
+      <div>
         <div>
-          <div>
-            {negative
-              ? `-${toMoney(otherIncomeValue)}`
-              : toMoney(otherIncomeValue)}
-          </div>
-          <div className="secondary finance-comment">
-            {otherIncomeComments.join(', ')}
-          </div>
+          {negative
+            ? `-${toMoney(otherIncomeValue)}`
+            : toMoney(otherIncomeValue)}
         </div>
-      )
+        <div className="secondary finance-comment">
+          {otherIncomeComments.join(', ')}
+        </div>
+      </div>
+    );
+    renderFunction.rawValue = otherIncomeValue;
+
+    return otherIncomeComments && otherIncomeComments.length > 0
+      ? renderFunction
       : otherIncomeValue;
   });
 
@@ -82,17 +85,20 @@ export const getBorrowersExpense = (borrowers, types, calculator) =>
         type: types[0],
       });
 
-    return expenseComments && expenseComments.length > 0
-      ? ({ negative }) => (
+    const renderFunction = ({ negative }) => (
+      <div>
         <div>
-          <div>
-            {negative ? `-${toMoney(expenseValue)}` : toMoney(expenseValue)}
-          </div>
-          <div className="secondary finance-comment">
-            {expenseComments.join(', ')}
-          </div>
+          {negative ? `-${toMoney(expenseValue)}` : toMoney(expenseValue)}
         </div>
-      )
+        <div className="secondary finance-comment">
+          {expenseComments.join(', ')}
+        </div>
+      </div>
+    );
+    renderFunction.rawValue = expenseValue;
+
+    return expenseComments && expenseComments.length > 0
+      ? renderFunction
       : expenseValue;
   });
 
@@ -143,6 +149,8 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
     'bankFortune',
     'thirdPartyFortune',
   ]),
+  realEstateIncome: borrowers.map(borrower =>
+    calculator.getRealEstateIncome({ borrowers: borrower })),
   salary: borrowers.map(borrower =>
     calculator.getSalary({ borrowers: borrower })),
   address: getBorrowersAddress(borrowers),
@@ -186,7 +194,14 @@ export const getBorrowersInfos = (borrowers, calculator) => ({
   ]),
 });
 
-export const getArraySum = array => array.reduce((sum, val) => sum + val, 0);
+export const getArraySum = array =>
+  array.reduce((sum, val) => {
+    if (val && val.rawValue) {
+      return sum + val.rawValue;
+    }
+
+    return sum + val;
+  }, 0);
 
 export const getFormattedMoneyArray = ({
   array,

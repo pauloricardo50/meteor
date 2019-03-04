@@ -32,6 +32,7 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
     realEstateValue,
     realEstateDebt,
     otherFortune,
+    realEstateIncome,
   } = borrowersInfos;
 
   return [
@@ -70,6 +71,11 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
         label: <T id={`PDF.borrowersInfos.otherIncome.${income}`} />,
         field: otherIncome[income],
       })),
+    addTableMoneyLine({
+      label: <T id="PDF.borrowersInfos.realEstateIncome" />,
+      field: realEstateIncome,
+      condition: !!realEstateIncome,
+    }),
     ...Object.values(EXPENSE_TYPES).map(expense =>
       addTableMoneyLine({
         label: <T id={`PDF.borrowersInfos.expenses.${expense}`} />,
