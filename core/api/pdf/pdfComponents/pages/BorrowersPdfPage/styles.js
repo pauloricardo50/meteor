@@ -43,6 +43,10 @@ const stylesheet = `
         text-align: right;
         color: black;
     }
+    
+    .finance-comment {
+        white-space: normal;
+    }
 
     ${recapStyleSheet}
 `;

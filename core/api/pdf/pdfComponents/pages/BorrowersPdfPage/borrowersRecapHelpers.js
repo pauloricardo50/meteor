@@ -41,7 +41,9 @@ export const getBorrowersOtherIncome = (borrowers, types, calculator) =>
               ? `-${toMoney(otherIncomeValue)}`
               : toMoney(otherIncomeValue)}
           </div>
-          <div className="secondary">{otherIncomeComments.join(', ')}</div>
+          <div className="secondary finance-comment">
+            {otherIncomeComments.join(', ')}
+          </div>
         </div>
       )
       : otherIncomeValue;
@@ -86,7 +88,9 @@ export const getBorrowersExpense = (borrowers, types, calculator) =>
           <div>
             {negative ? `-${toMoney(expenseValue)}` : toMoney(expenseValue)}
           </div>
-          <div className="secondary">{expenseComments.join(', ')}</div>
+          <div className="secondary finance-comment">
+            {expenseComments.join(', ')}
+          </div>
         </div>
       )
       : expenseValue;
