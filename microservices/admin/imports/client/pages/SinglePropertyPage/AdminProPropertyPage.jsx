@@ -7,6 +7,7 @@ const permissions = {
   canInviteCustomers: true,
   canInviteProUsers: true,
   canManagePermissions: true,
+  canSeeCustomers: true,
 };
 
 export default withContextProvider({

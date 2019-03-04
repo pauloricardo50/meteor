@@ -38,7 +38,7 @@ export const isAllowedToViewProProperty = ({ property, currentUser }) => {
 
   const { userLinks = [], users = [], loans = [] } = property;
   const userLoans = loans
-    .reduce((users, { user }) => [...users, user], [])
+    .reduce((usersLoans, { user }) => [...usersLoans, user], [])
     .filter(x => x);
 
   const user = userLinks.find(({ _id }) => _id === userId)
@@ -64,6 +64,34 @@ export const isAllowedToInviteCustomersToProProperty = ({
     userId,
     permissions,
     propertyStatus: [PROPERTY_STATUS.FOR_SALE, PROPERTY_STATUS.BOOKED],
+  });
+};
+
+export const isAllowedToInviteProUsersToProProperty = ({
+  property,
+  currentUser,
+}) => {
+  const { _id: userId } = currentUser;
+  const permissions = { canInviteProUsers: true };
+
+  return checkProPropertyPermissions({
+    property,
+    userId,
+    permissions,
+  });
+};
+
+export const isAllowedToManageProPropertyPermissions = ({
+  property,
+  currentUser,
+}) => {
+  const { _id: userId } = currentUser;
+  const permissions = { canManagePermissions: true };
+
+  return checkProPropertyPermissions({
+    property,
+    userId,
+    permissions,
   });
 };
 
@@ -128,9 +156,62 @@ export const isAllowedToSeeProPropertyCustomers = ({
   return true;
 };
 
-export const isPropertyOwner = ({ property, currentUser }) => {
+export const isAllowedToBookProProperty = ({ property, currentUser }) => {
   const { _id: userId } = currentUser;
-  const { userId: propertyOwner } = property;
+  const permissions = { canBookLots: true };
 
-  return propertyOwner === userId;
+  return checkProPropertyPermissions({ property, userId, permissions });
+};
+
+export const isAllowedToBookProPropertyToCustomer = ({
+  property,
+  currentUser,
+  customerOwnerType,
+}) => {
+  const { _id: userId } = currentUser;
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+
+  const { _id: propertyId } = property;
+  const permissions = getCurrentUserPermissionsForProProperty({
+    propertyId,
+    currentUser,
+  });
+
+  return (
+    isAllowedToBookProProperty({ property, currentUser })
+    && !shouldAnonymize({ customerOwnerType, permissions })
+  );
+};
+
+export const isAllowedToSellProProperty = ({ property, currentUser }) => {
+  const { _id: userId } = currentUser;
+  const permissions = {
+    canSellLots: true,
+  };
+
+  return checkProPropertyPermissions({ property, userId, permissions });
+};
+
+export const isAllowedToSellProPropertyToCustomer = ({
+  property,
+  currentUser,
+  customerOwnerType,
+}) => {
+  const { _id: userId } = currentUser;
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+
+  const { _id: propertyId } = property;
+  const permissions = getCurrentUserPermissionsForProProperty({
+    propertyId,
+    currentUser,
+  });
+
+  return (
+    isAllowedToSellProProperty({ property, currentUser })
+    && !shouldAnonymize({ customerOwnerType, permissions })
+  );
 };

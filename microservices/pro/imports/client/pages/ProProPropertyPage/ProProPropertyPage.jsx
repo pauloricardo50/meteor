@@ -9,6 +9,21 @@ import mergeFilesWithQuery from 'core/api/files/mergeFilesWithQuery';
 import { ProPropertyPageContext } from 'core/components/ProPropertyPage/ProPropertyPageContext';
 import ProPropertyPage from 'core/components/ProPropertyPage/ProPropertyPage';
 import withContextProvider from 'core/api/containerToolkit/withContextProvider';
+import {
+  isAllowedToModifyProProperty,
+  isAllowedToInviteCustomersToProProperty,
+  isAllowedToSeeProPropertyCustomers,
+  isAllowedToInviteProUsersToProProperty,
+  isAllowedToManageProPropertyPermissions,
+} from 'imports/core/api/security/clientSecurityHelpers/index';
+
+const makePermissions = props => ({
+  canModifyProperty: isAllowedToModifyProProperty(props),
+  canInviteCustomers: isAllowedToInviteCustomersToProProperty(props),
+  canInviteProUsers: isAllowedToInviteProUsersToProProperty(props),
+  canManagePermissions: isAllowedToManageProPropertyPermissions(props),
+  canSeeCustomers: isAllowedToSeeProPropertyCustomers(props),
+});
 
 export default compose(
   withMatchParam('propertyId'),
@@ -25,12 +40,6 @@ export default compose(
   ),
   withContextProvider({
     Context: ProPropertyPageContext,
-    value: ({ currentUser: { _id: userId }, property: { users = [] } }) => {
-      const user = users.find(({ _id }) => _id === userId);
-      const permissions = user && user.$metadata.permissions;
-      return {
-        permissions,
-      };
-    },
+    value: props => ({ permissions: makePermissions(props) }),
   }),
 )(ProPropertyPage);

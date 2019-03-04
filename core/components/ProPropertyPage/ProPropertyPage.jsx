@@ -13,7 +13,6 @@ export const ProPropertyPage = ({
   permissions,
 }: ProPropertyPageProps) => (
   <div className="pro-property-page">
-    {console.log('permissions:', permissions)}
     <ProPropertyPageHeader property={property} />
     <ProPropertyPageUsers property={property} />
     <ProPropertyPageCustomers property={property} />
