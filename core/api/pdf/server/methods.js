@@ -17,9 +17,9 @@ generatePDF.setHandler((context, params) => {
 
 // Enable this to iterate faster on pdfs
 // Creates a new PDF on every startup to ~/Desktop/pdf-test.html
-const PDF_TESTING = true;
+const PDF_TESTING = false;
 const loanName = '19-0077';
-const orgName = '';
+const orgName = 'Swisslife';
 
 Meteor.startup(() => {
   if (Meteor.isDevelopment && PDF_TESTING) {
