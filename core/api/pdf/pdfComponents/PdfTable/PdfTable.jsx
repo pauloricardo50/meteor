@@ -32,8 +32,13 @@ export const classes = {
 export const shouldRenderRow = condition =>
   condition === undefined || condition;
 
-const PdfTable = ({ rows, className, columnOptions = [] }: PdfTableProps) => (
-  <table className={cx('pdf-table', className)}>
+const PdfTable = ({
+  rows,
+  className,
+  columnOptions = [],
+  style = {},
+}: PdfTableProps) => (
+  <table className={cx('pdf-table', className)} style={style}>
     {rows.map((rowData, index) => {
       if (!shouldRenderRow(rowData.condition)) {
         return null;

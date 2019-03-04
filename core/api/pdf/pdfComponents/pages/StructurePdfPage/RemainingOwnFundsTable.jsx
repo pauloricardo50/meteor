@@ -64,7 +64,9 @@ const RemainingOwnFundsTable = ({
   calculator,
 }: RemainingOwnFundsTableProps) => (
   <PdfTable
+    className="remaining-own-funds-table"
     rows={getRemainingOwnFundsRows({ loan, structureId, calculator })}
+    columnOptions={[{}, { style: { textAlign: 'right' } }]}
   />
 );
 
