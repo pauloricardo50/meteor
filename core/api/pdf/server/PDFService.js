@@ -23,8 +23,10 @@ class PDFService {
   }
 
   makePDF = ({ type, params, options, htmlOnly }) => {
+    this.checkParams({ params, type });
     const data = this.getDataForPDF(type, params);
-    this.checkData({ data, type });
+    this.checkData(data, type);
+
     const { component, props, fileName, pdfName } = this.makeConfigForPDF({
       data,
       type,
@@ -42,23 +44,31 @@ class PDFService {
   checkData = ({ data, type }) => {
     switch (type) {
     case PDF_TYPES.LOAN: {
-      const { loanId, organisationId, structureIds } = data;
-      const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
-
-      check(loanId, String);
-      check(organisationId, Match.Maybe(String));
-      check(structureIds, Match.Maybe([String]));
-
       try {
-        checkObjectStructure({
-          obj: data.loan,
-          template: TEMPLATES[type],
-        });
+        const { loan } = data;
+        const checkObjectStructure = makeCheckObjectStructure(frenchErrors);
+
+        checkObjectStructure({ obj: loan, template: TEMPLATES[type] });
       } catch (error) {
         throw new Meteor.Error(error);
       }
       break;
     }
+    default:
+      break;
+    }
+  };
+
+  checkParams = ({ params, type }) => {
+    switch (type) {
+    case PDF_TYPES.LOAN: {
+      const { loanId, organisationId, structureIds } = params;
+      check(loanId, String);
+      check(organisationId, Match.Maybe(String));
+      check(structureIds, Match.Maybe([String]));
+      break;
+    }
+
     default:
       break;
     }
