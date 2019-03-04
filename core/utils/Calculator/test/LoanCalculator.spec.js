@@ -133,15 +133,39 @@ describe('LoanCalculator', () => {
   describe('getTheoretialInterests', () => {
     it('uses the theoretical rate', () => {
       expect(Calculator.getTheoreticalInterests({
-        loan: { structure: { wantedLoan: 1200000 } },
+        loan: {
+          structure: { wantedLoan: 1200000, property: { value: 1000000 } },
+        },
       })).to.equal(5000);
     });
 
     it('uses the overridden theoretial rate', () => {
-      const Calc = new CalculatorClass({ theoreticalInterestRate: 0.04 });
+      const Calc = new CalculatorClass({
+        theoreticalInterestRate: 0.04,
+        theoreticalInterestRate2ndRank: 0.04,
+      });
       expect(Calc.getTheoreticalInterests({
-        loan: { structure: { wantedLoan: 1200000 } },
+        loan: {
+          structure: { wantedLoan: 1200000, property: { value: 1000000 } },
+        },
       })).to.equal(4000);
+    });
+
+    it('uses theoreticalInterestRate2ndRank to calculate the rate', () => {
+      const Calc = new CalculatorClass({
+        theoreticalInterestRate: 0.01,
+        theoreticalInterestRate2ndRank: 0.1,
+      });
+
+      // 650k at 1%
+      // 150k at 10%
+      // -> 1791
+
+      expect(Calc.getTheoreticalInterests({
+        loan: {
+          structure: { wantedLoan: 800000, property: { value: 1000000 } },
+        },
+      })).to.be.within(1791, 1792);
     });
   });
 

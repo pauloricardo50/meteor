@@ -69,7 +69,7 @@ export class FinanceCalculator {
     realEstateIncomeConsiderationType = REAL_ESTATE_CONSIDERATION_TYPES.ADD_TO_INCOME,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
-    theoreticalInterestRate2ndRank = INTERESTS_FINMA,
+    theoreticalInterestRate2ndRank = null,
     theoreticalMaintenanceRate = MAINTENANCE_FINMA,
     middlewares = [],
     middlewareObject,

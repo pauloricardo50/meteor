@@ -1,5 +1,5 @@
 import fileSaver from 'file-saver';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 
 import { PDF_TYPES } from 'core/api/constants';
 import { generatePDF } from 'core/api/pdf/methodDefinitions';
@@ -26,32 +26,23 @@ const makeSaveHtmlFile = name => (html) => {
   }
 };
 
-export default compose(
-  withState('loading', 'setLoading', false),
-  withProps(({ setLoading, loan: { name, _id: loanId } }) => ({
-    handlePDF: ({ anonymous }) => {
-      setLoading(true);
-      generatePDF
-        .run({
-          type: PDF_TYPES.LOAN,
-          params: { loanId },
-          options: { anonymous },
-        })
-        .then(makeSavePdf(name))
-        .catch(error => message.error(error.message, 5))
-        .finally(() => setLoading(false));
-    },
-    handleHTML: ({ anonymous }) => {
-      setLoading(true);
-      generatePDF
-        .run({
-          type: PDF_TYPES.LOAN,
-          params: { loanId },
-          options: { anonymous },
-          htmlOnly: true,
-        })
-        .then(makeSaveHtmlFile(name))
-        .finally(() => setLoading(false));
-    },
-  })),
-);
+export default compose(withProps(({ loan: { name, _id: loanId } }) => ({
+  handlePDF: ({ anonymous, organisationId, structureIds }) =>
+    generatePDF
+      .run({
+        type: PDF_TYPES.LOAN,
+        params: { loanId, organisationId, structureIds },
+        options: { anonymous },
+      })
+      .then(makeSavePdf(name))
+      .catch(error => message.error(error.message, 5)),
+  handleHTML: ({ anonymous, organisationId, structureIds }) =>
+    generatePDF
+      .run({
+        type: PDF_TYPES.LOAN,
+        params: { loanId, organisationId, structureIds },
+        options: { anonymous },
+        htmlOnly: true,
+      })
+      .then(makeSaveHtmlFile(name)),
+})));
