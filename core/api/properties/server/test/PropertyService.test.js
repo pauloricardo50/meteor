@@ -23,7 +23,7 @@ describe('PropertyService', () => {
     resetDatabase();
   });
 
-  describe('evaluateProperty', () => {
+  describe.skip('evaluateProperty', () => {
     const getValueRange = value => ({
       min: value * 0.9,
       max: value * 1.1,
@@ -190,13 +190,13 @@ describe('PropertyService', () => {
         referredByUser = {},
         referredByOrganisation = {},
       } = user;
-      
+
       expect(loans.length).to.equal(1);
       expect(loans[0].properties.length).to.equal(1);
       expect(loans[0].properties[0]._id).to.equal('proProperty');
       expect(assignedEmployee._id).to.equal('adminUser');
       expect(referredByUser._id).to.equal('proUser');
-      expect(referredByOrganisation._id).to.equal('organisation')
+      expect(referredByOrganisation._id).to.equal('organisation');
     });
   });
 });
