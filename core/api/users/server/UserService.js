@@ -1,6 +1,7 @@
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
+import NodeRSA from 'node-rsa';
 
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
@@ -140,6 +141,19 @@ class UserService extends CollectionService {
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
     return this.get(userId);
+  };
+
+  generateKeyPair = ({ userId }) => {
+    const key = new NodeRSA();
+    key.generateKeyPair(256);
+    const publicKey = key.exportKey('public');
+    const privateKey = key.exportKey('private');
+    this._update({
+      id: userId,
+      object: { apiPublicKey: {publicKey} },
+      operator: '$set',
+    });
+    return ({ publicKey, privateKey, createdAt: new Date() });
   };
 }
 

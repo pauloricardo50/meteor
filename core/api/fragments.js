@@ -756,6 +756,7 @@ export const adminUser = () => ({
 export const fullUser = () => ({
   ...simpleUser(),
   apiToken: 1,
+  apiPublicKey: 1,
   assignedEmployee: simpleUser(),
   createdAt: 1,
   emails: 1,

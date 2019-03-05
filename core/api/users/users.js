@@ -89,6 +89,17 @@ export const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  apiPublicKey: {
+    type: Object,
+    optional: true,
+  },
+  'apiPublicKey.publicKey': {
+    type: String,
+    optional: true,
+  },
+  'apiPublicKey.createdAt': {
+    ...createdAt,
+  },
 });
 
 Meteor.users.attachSchema(UserSchema);

@@ -108,9 +108,16 @@ export const userUpdateOrganisations = new Method({
 
 export const testUserAccount = new Method({
   name: 'testUserAccount',
-  parmas: {
+  params: {
     email: String,
     password: String,
     role: String,
-  }
+  },
+});
+
+export const generateApiKeyPair = new Method({
+  name: 'generateApiKeyPair',
+  params: {
+    userId: String,
+  },
 });

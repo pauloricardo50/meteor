@@ -17,6 +17,7 @@ import {
   generateApiToken,
   userUpdateOrganisations,
   testUserAccount,
+  generateApiKeyPair,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -115,4 +116,9 @@ testUserAccount.setHandler((context, params) => {
   if (Meteor.isTest) {
     return UserService.testUserAccount(params);
   }
+});
+
+generateApiKeyPair.setHandler((context, { userId }) => {
+  SecurityService.checkUserIsPro(context.userId);
+  return UserService.generateKeyPair({ userId });
 });
