@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import T from 'core/components/Translation';
-import { PropertyAdder } from 'core/components/PropertyForm';
 import Page from 'core/components/Page';
 import PropertiesPageDetail from './PropertiesPageDetail';
 import PropertiesPagePromotions from './PropertiesPagePromotions';
+import PropertiesPageAdder from './PropertiesPageAdder';
 
-const PropertiesPage = ({ loan }) => {
+const PropertiesPage = ({ loan, currentUser }) => {
   const { _id: loanId, properties, hasPromotion } = loan;
   return (
     <Page id="PropertiesPage" titleId="PropertiesPage.title">
@@ -24,18 +23,7 @@ const PropertiesPage = ({ loan }) => {
           ))}
 
           {!hasPromotion && (
-            <PropertyAdder
-              loanId={loanId}
-              triggerComponent={handleOpen => (
-                <div className="property-adder-button" onClick={handleOpen}>
-                  <span className="plus">+</span>
-                  <h3>
-                    <T id="PropertyForm.adderLabel" />
-                  </h3>
-                </div>
-              )}
-              className="properties-page-detail card1 card1-top card-hover"
-            />
+            <PropertiesPageAdder loanId={loanId} currentUser={currentUser} />
           )}
         </div>
       </section>

@@ -22,6 +22,7 @@ export const propertyDelete = new Method({
   name: 'propertyDelete',
   params: {
     propertyId: String,
+    loanId: Match.Maybe(String),
   },
 });
 

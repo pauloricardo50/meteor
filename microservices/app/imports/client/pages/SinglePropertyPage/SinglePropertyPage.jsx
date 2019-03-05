@@ -33,9 +33,16 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
 
 const SinglePropertyPage = (props) => {
-  const { loan, propertyId, history } = props;
-  const { borrowers, properties, residenceType } = loan;
+  const { loan, propertyId, history, currentUser: {loans} } = props;
+  const { borrowers, properties, residenceType, _id: loanId } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
+
+  if (!property) {
+    // Do this when deleting the property, so it doesn't display a giant error
+    // before routing to the properties page
+    return null;
+  }
+
   const { address1, zipCode, city, mortgageNotes } = property;
   const { userFormsEnabled } = loan;
   const progress = PropertyCalculator.propertyPercent({
@@ -63,12 +70,19 @@ const SinglePropertyPage = (props) => {
             }}
             method={() =>
               propertyDelete
-                .run({ propertyId })
+                .run({ propertyId, loanId })
                 .then(() =>
                   history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
             }
             label={<T id="general.delete" />}
-          />
+          >
+            {loans.length > 1 && (
+              <p>
+                Si ce bien immobilier est utilisé dans plusieurs de vos
+                dossiers, il ne sera pas supprimé dans les autres dossiers
+              </p>
+            )}
+          </ConfirmMethod>
         )}
 
         <MapWithMarkerWrapper
@@ -103,7 +117,10 @@ const SinglePropertyPage = (props) => {
           />
         </div>
         <div className="flex--helper flex-justify--center">
-          <MortgageNotesForm propertyId={propertyId} mortgageNotes={mortgageNotes} />
+          <MortgageNotesForm
+            propertyId={propertyId}
+            mortgageNotes={mortgageNotes}
+          />
         </div>
       </section>
       <div className="single-property-page-buttons">

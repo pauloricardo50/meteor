@@ -129,3 +129,8 @@ export const loanUpdatePromotionInvitedBy = new Method({
   name: 'loanUpdatePromotionInvitedBy',
   params: { loanId: String, promotionId: String, invitedBy: String },
 });
+
+export const reuseProperty = new Method({
+  name: 'reuseProperty',
+  params: { loanId: String, propertyId: String },
+});
