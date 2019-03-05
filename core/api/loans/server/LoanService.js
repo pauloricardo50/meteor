@@ -357,6 +357,16 @@ export class LoanService extends CollectionService {
       metadata: { invitedBy },
     });
   }
+
+  reuseProperty({ loanId, propertyId }) {
+    const loan = this.get(loanId);
+
+    if (loan.propertyIds.includes(propertyId)) {
+      return false;
+    }
+
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
 }
 
 export default new LoanService({});

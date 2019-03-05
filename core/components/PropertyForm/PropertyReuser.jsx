@@ -11,7 +11,10 @@ import PropertyReuserContainer from './PropertyReuserContainer';
 
 type PropertyReuserProps = {};
 
-const PropertyReuser = ({ properties = [] }: PropertyReuserProps) => (
+const PropertyReuser = ({
+  properties,
+  handleSelectProperty,
+}: PropertyReuserProps) => (
   <DialogSimple
     buttonProps={{
       raised: true,
@@ -21,9 +24,16 @@ const PropertyReuser = ({ properties = [] }: PropertyReuserProps) => (
     }}
     title={<T id="PropertiesPageAdder.reuseProperty" />}
   >
+    {!properties
+      || (properties.length === 0 && (
+        <p>
+          Vous n'avez pas de bien immobiliers à réutiliser dans d'autres
+          dossiers
+        </p>
+      ))}
     <List className="flex-col">
       {properties.map(({ totalValue, address, _id }) => (
-        <ListItem button key={_id}>
+        <ListItem button key={_id} onClick={() => handleSelectProperty(_id)}>
           <ListItemText
             primary={address}
             secondary={<Money value={totalValue} />}
