@@ -33,7 +33,12 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
 
 const SinglePropertyPage = (props) => {
-  const { loan, propertyId, history, currentUser: {loans} } = props;
+  const {
+    loan,
+    propertyId,
+    history,
+    currentUser: { loans },
+  } = props;
   const { borrowers, properties, residenceType, _id: loanId } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
@@ -61,29 +66,27 @@ const SinglePropertyPage = (props) => {
       <section className="card1 card-top property-page">
         <h1 className="text-center">{title}</h1>
 
-        {hasMultipleProperties && (
-          <ConfirmMethod
-            buttonProps={{
-              error: true,
-              outlined: true,
-              className: 'property-deleter',
-            }}
-            method={() =>
-              propertyDelete
-                .run({ propertyId, loanId })
-                .then(() =>
-                  history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
-            }
-            label={<T id="general.delete" />}
-          >
-            {loans.length > 1 && (
-              <p>
-                Si ce bien immobilier est utilisé dans plusieurs de vos
-                dossiers, il ne sera pas supprimé dans les autres dossiers
-              </p>
-            )}
-          </ConfirmMethod>
-        )}
+        <ConfirmMethod
+          buttonProps={{
+            error: true,
+            outlined: true,
+            className: 'property-deleter',
+          }}
+          method={() =>
+            propertyDelete
+              .run({ propertyId, loanId })
+              .then(() =>
+                history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
+          }
+          label={<T id="general.delete" />}
+        >
+          {loans.length > 1 && (
+            <p>
+              Si ce bien immobilier est utilisé dans plusieurs de vos dossiers,
+              il ne sera pas supprimé dans les autres dossiers
+            </p>
+          )}
+        </ConfirmMethod>
 
         <MapWithMarkerWrapper
           address1={address1}
