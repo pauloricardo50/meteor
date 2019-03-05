@@ -25,7 +25,7 @@
 }
 
 .dashboard-recap-property-empty.dashboard-recap-property-empty {
-  align-self: center;
+  // align-self: center;
 
   max-width: 332px;
   padding: 16px;
@@ -42,7 +42,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  height: 400px;
+  min-height: 400px;
   box-sizing: border-box;
 
   padding: 32px;
