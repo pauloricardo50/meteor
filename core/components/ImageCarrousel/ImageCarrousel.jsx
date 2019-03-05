@@ -11,10 +11,14 @@ const initialState = { index: 0 };
 
 const makeReducer = maxLength => (state, action) => {
   switch (action.type) {
-  case 'increment':
-    return { index: (state.index + 1) % maxLength };
-  case 'decrement':
-    return { index: (state.index - 1) % maxLength };
+  case 'increment': {
+    const nextIndex = state.index + 1;
+    return { index: nextIndex >= maxLength ? 0 : nextIndex };
+  }
+  case 'decrement': {
+    const nextIndex = state.index - 1;
+    return { index: nextIndex < 0 ? maxLength - 1 : nextIndex };
+  }
   default:
     return state;
   }

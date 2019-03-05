@@ -1,18 +1,10 @@
-import { PROMOTION_STATUS, ROLES } from '../constants';
-import SecurityService from './Security';
+import { PROMOTION_STATUS, ROLES } from '../../constants';
+import SecurityService from '../Security';
 import {
   shouldAnonymize,
   getCurrentUserPermissionsForPromotion,
-} from '../promotions/promotionClientHelpers';
-
-const hasMinimumRole = ({ role, userId }) => {
-  try {
-    SecurityService.minimumRole(role)(userId);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
+} from '../../promotions/promotionClientHelpers';
+import { hasMinimumRole } from './generalSecurityHelpers';
 
 const checkPromotionPermissions = ({
   promotion,

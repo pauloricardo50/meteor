@@ -8,3 +8,6 @@ import './proLoans.expose';
 import './sideNavLoans.expose';
 import './userLoan.expose';
 import './fullLoan.expose';
+import './proPromotionLoans.expose';
+import './proPropertyLoans.expose';
+import './proReferredByLoans.expose';

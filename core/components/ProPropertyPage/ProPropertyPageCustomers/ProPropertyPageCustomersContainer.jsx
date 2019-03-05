@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import { withSmartQuery } from '../../../api/containerToolkit';
-import proLoans from '../../../api/loans/queries/proLoans';
+import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
 import PromotionProgressHeader from '../../PromotionUsersPage/PromotionProgressHeader';
 import PromotionProgress from '../../PromotionLotPage/PromotionProgress';
@@ -57,13 +57,13 @@ const makeMapLoan = history => (loan) => {
 
 export default compose(
   withSmartQuery({
-    query: proLoans,
+    query: proPropertyLoans,
     params: ({ property: { _id: propertyId } }) => ({ propertyId }),
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
   withRouter,
-  mapProps(({ loans, history }) => ({
+  mapProps(({ loans = [], history }) => ({
     rows: loans.map(makeMapLoan(history)),
     columnOptions,
   })),

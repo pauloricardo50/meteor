@@ -4,7 +4,10 @@ import { Meteor } from 'meteor/meteor';
 import LoanService from '../../loans/server/LoanService';
 import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
-import { VALUATION_STATUS } from '../propertyConstants';
+import {
+  VALUATION_STATUS,
+  PROPERTY_PERMISSIONS_FULL_ACCESS,
+} from '../propertyConstants';
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
@@ -88,13 +91,23 @@ export class PropertyService extends CollectionService {
   }) => {
     const property = this.get(propertyId);
     let assignedEmployeeId;
+    let organisationId;
 
     if (proUserId) {
       const pro = UserService.fetchOne({
-        filters: { _id: proUserId },
+        $filters: { _id: proUserId },
         assignedEmployeeId: 1,
+        organisations: { _id: 1 },
       });
-      assignedEmployeeId = pro.assignedEmployeeId;
+
+      if (pro) {
+        const {
+          assignedEmployeeId: proAssignedEmployeeId,
+          organisations = [],
+        } = pro;
+        assignedEmployeeId = proAssignedEmployeeId;
+        organisationId = !!organisations.length && organisations[0]._id;
+      }
     }
 
     let userId;
@@ -120,12 +133,59 @@ export class PropertyService extends CollectionService {
       }
     }
 
+    if (proUserId) {
+      UserService.addLink({
+        id: userId,
+        linkName: 'referredByUser',
+        linkId: proUserId,
+      });
+    }
+
+    if (organisationId) {
+      UserService.addLink({
+        id: userId,
+        linkName: 'referredByOrganisation',
+        linkId: organisationId,
+      });
+    }
+
     const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
 
     console.log('Should send invitation to property loan!');
     if (sendInvitation) {
+      // TODO:
     }
   };
+
+  addProUser({ propertyId, userId }) {
+    return this.addLink({
+      id: propertyId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { permissions: {} },
+    });
+  }
+
+  proPropertyInsert({ property, userId }) {
+    const propertyId = this.insert({ ...property });
+    this.addLink({
+      id: propertyId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { permissions: PROPERTY_PERMISSIONS_FULL_ACCESS },
+    });
+
+    return propertyId;
+  }
+
+  setProUserPermissions({ propertyId, userId, permissions }) {
+    this.updateLinkMetadata({
+      id: propertyId,
+      linkName: 'users',
+      linkId: userId,
+      metadata: { permissions },
+    });
+  }
 }
 
 export default new PropertyService();

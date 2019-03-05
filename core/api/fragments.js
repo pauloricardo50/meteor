@@ -298,7 +298,15 @@ export const proLoans = () => ({
     solvency: 1,
   },
   promotionProgress: 1,
-  user: { name: 1, phoneNumbers: 1, email: 1 },
+  user: {
+    name: 1,
+    phoneNumbers: 1,
+    email: 1,
+    referredByUser: { _id: 1 },
+    referredByOrganisation: { _id: 1 },
+  },
+  hasPromotion: 1,
+  hasProProperty: 1,
 });
 
 export const sideNavLoan = () => ({
@@ -654,6 +662,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   totalValue: 1,
   updatedAt: 1,
   user: appUser(),
+  users: { _id: 1 },
   volume: 1,
   volumeNorm: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
@@ -706,6 +715,11 @@ export const proPropertySummary = () => ({
   city: 1,
   status: 1,
   totalValue: 1,
+});
+
+export const proProperty = () => ({
+  ...fullProperty(),
+  users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
 // //
@@ -787,4 +801,6 @@ export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
   promotions: { _id: 1 },
+  properties: { _id: 1 },
+  proProperties: { _id: 1 },
 });

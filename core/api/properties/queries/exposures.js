@@ -7,3 +7,4 @@ import './proProperties.expose';
 import './proProperty.expose';
 import './sideNavProperties.expose';
 import './userProperty.expose';
+import './proPropertyUsers.expose';

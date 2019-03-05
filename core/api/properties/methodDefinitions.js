@@ -69,3 +69,18 @@ export const inviteUserToProperty = new Method({
   name: 'inviteUserToProperty',
   params: { user: Object, propertyId: String },
 });
+
+export const addProUserToProperty = new Method({
+  name: 'addProUserToProperty',
+  params: { propertyId: String, userId: String },
+});
+
+export const proPropertyInsert = new Method({
+  name: 'proPropertyInsert',
+  params: { userId: String, property: Object },
+});
+
+export const setProPropertyPermissions = new Method({
+  name: 'setProPropertyPermissions',
+  params: { propertyId: String, userId: String, permissions: Object },
+});

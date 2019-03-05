@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 import {
@@ -7,10 +8,69 @@ import {
   address,
   mortgageNoteLinks,
   moneyField,
+  userLinksSchema,
 } from '../../helpers/sharedSchemas';
 import * as propertyConstants from '../propertyConstants';
 import { initialDocuments } from '../propertiesAdditionalDocuments';
 import { ValuationSchema } from './wuestSchemas';
+
+const SCHEMA_BOOLEAN = { type: Boolean, optional: true, defaultValue: false };
+
+export const propertyPermissionsSchema = {
+  canInviteCustomers: SCHEMA_BOOLEAN,
+  canInviteProUsers: SCHEMA_BOOLEAN,
+  canModifyProperty: SCHEMA_BOOLEAN,
+  canManagePermissions: SCHEMA_BOOLEAN,
+  canSellProperty: SCHEMA_BOOLEAN,
+  canBookProperty: SCHEMA_BOOLEAN,
+  displayCustomerNames: {
+    type: SimpleSchema.oneOf(Boolean, Object),
+    optional: true,
+    autoValue() {
+      if (Meteor.isServer && this.isSet) {
+        if (this.value === undefined) {
+          return false;
+        }
+
+        if (this.value instanceof Object) {
+          if (!Object.keys(this.value).length) {
+            return false;
+          }
+
+          if (!this.value.referredBy) {
+            return false;
+          }
+        }
+
+        return this.value;
+      }
+    },
+  },
+  'displayCustomerNames.referredBy': {
+    type: String,
+    optional: true,
+    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES.REFERRED_BY),
+    uniforms: {
+      displayEmpty: true,
+      placeholder: 'Ne pas afficher le nom des clients',
+    },
+  },
+  'displayCustomerNames.forPropertyStatus': {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+    uniforms: { displayEmpty: false, placeholder: '', checkboxes: true },
+    condition: ({ permissions: { displayCustomerNames = {} } }) => {
+      const { referredBy } = displayCustomerNames;
+      return !!referredBy;
+    },
+  },
+  'displayCustomerNames.forPropertyStatus.$': {
+    type: String,
+    allowedValues: Object.values(propertyConstants.PROPERTY_PERMISSIONS.DISPLAY_CUSTOMER_NAMES
+      .FOR_PROPERTY_STATUS),
+  },
+};
 
 export const PropertySchema = new SimpleSchema({
   userId: {
@@ -220,6 +280,7 @@ export const PropertySchema = new SimpleSchema({
   additionalMargin: moneyField,
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
+  ...userLinksSchema(propertyPermissionsSchema),
 });
 
 const protectedKeys = [

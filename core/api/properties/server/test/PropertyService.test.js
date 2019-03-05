@@ -12,13 +12,18 @@ import {
 } from '../../../constants';
 import WuestService from '../../../wuest/server/WuestService';
 import PropertyService from '../PropertyService';
+import generator from '../../../factories';
+import { PROPERTY_CATEGORY } from '../../propertyConstants';
+import UserService from '../../../users/server/UserService';
+import { adminUser } from '../../../fragments';
+import OrganisationService from '../../../organisations/server/OrganisationService';
 
 describe('PropertyService', () => {
   beforeEach(() => {
     resetDatabase();
   });
 
-  describe('evaluateProperty', () => {
+  describe.skip('evaluateProperty', () => {
     const getValueRange = value => ({
       min: value * 0.9,
       max: value * 1.1,
@@ -138,6 +143,60 @@ describe('PropertyService', () => {
       const property = PropertyService.get(propertyId);
 
       expect(property.canton).to.equal(null);
+    });
+  });
+
+  describe('inviteUser', () => {
+    it('should invite and create a new user if it does not already exist', () => {
+      generator({
+        users: [
+          { _factory: 'admin', _id: 'adminUser' },
+          {
+            _factory: 'pro',
+            _id: 'proUser',
+            assignedEmployeeId: 'adminUser',
+            organisations: { _factory: 'organisation', _id: 'organisation' },
+            properties: {
+              _factory: 'property',
+              _id: 'proProperty',
+              category: PROPERTY_CATEGORY.PRO,
+            },
+          },
+        ],
+      });
+
+      PropertyService.inviteUser({
+        proUserId: 'proUser',
+        user: {
+          email: 'john@doe.com',
+          firstName: 'John',
+          name: 'Doe',
+          phoneNumber: '123',
+        },
+        propertyId: 'proProperty',
+      });
+
+      const user = UserService.fetchOne({
+        $filters: { 'emails.address': 'john@doe.com' },
+        loans: { properties: { _id: 1 } },
+        assignedEmployee: { _id: 1 },
+        referredByUser: { _id: 1 },
+        referredByOrganisation: { _id: 1 },
+      });
+
+      const {
+        loans = [],
+        assignedEmployee = {},
+        referredByUser = {},
+        referredByOrganisation = {},
+      } = user;
+
+      expect(loans.length).to.equal(1);
+      expect(loans[0].properties.length).to.equal(1);
+      expect(loans[0].properties[0]._id).to.equal('proProperty');
+      expect(assignedEmployee._id).to.equal('adminUser');
+      expect(referredByUser._id).to.equal('proUser');
+      expect(referredByOrganisation._id).to.equal('organisation');
     });
   });
 });

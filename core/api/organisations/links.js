@@ -23,4 +23,9 @@ Organisations.addLinks({
     inversedBy: 'organisation',
     autoremove: true,
   },
+  referredCustomers: {
+    collection: Users,
+    inversedBy: 'referredByOrganisation',
+    type: 'many',
+  },
 });

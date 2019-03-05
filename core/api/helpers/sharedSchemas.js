@@ -76,6 +76,7 @@ export const makePermissions = ({
   permissionsSchema,
   prefix,
   autoFormDisplayCondition = () => true,
+  autoFormLabel,
 }) =>
   Object.keys(permissionsSchema).reduce(
     (permissions, key) => ({
@@ -87,6 +88,7 @@ export const makePermissions = ({
         type: Object,
         optional: true,
         condition: autoFormDisplayCondition,
+        uniforms: {label: autoFormLabel || prefix}
       },
     },
   );

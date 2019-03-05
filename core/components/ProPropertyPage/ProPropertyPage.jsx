@@ -8,7 +8,10 @@ import ProPropertyPageContainer from './ProPropertyPageContainer';
 
 type ProPropertyPageProps = {};
 
-export const ProPropertyPage = ({ property }: ProPropertyPageProps) => (
+export const ProPropertyPage = ({
+  property,
+  permissions,
+}: ProPropertyPageProps) => (
   <div className="pro-property-page">
     <ProPropertyPageHeader property={property} />
     <ProPropertyPageUsers property={property} />

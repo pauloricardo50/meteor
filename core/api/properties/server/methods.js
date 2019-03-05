@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import SecurityService from '../../security';
 import PropertyService from './PropertyService';
 import {
@@ -10,6 +11,9 @@ import {
   evaluateProperty,
   propertyDataIsInvalid,
   inviteUserToProperty,
+  addProUserToProperty,
+  proPropertyInsert,
+  setProPropertyPermissions,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -61,5 +65,24 @@ propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) =>
 inviteUserToProperty.setHandler(({ userId }, params) => {
   // TODO: Fix security
   SecurityService.checkUserIsPro(userId);
+  if (Meteor.microservice === 'pro') {
+    return PropertyService.inviteUser({ ...params, proUserId: userId });
+  }
   return PropertyService.inviteUser(params);
+});
+
+addProUserToProperty.setHandler(({ userId }, params) => {
+  // TODO: security
+  SecurityService.checkUserIsPro(userId);
+  return PropertyService.addProUser(params);
+});
+
+proPropertyInsert.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  return PropertyService.proPropertyInsert(params);
+});
+
+setProPropertyPermissions.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  PropertyService.setProUserPermissions(params);
 });
