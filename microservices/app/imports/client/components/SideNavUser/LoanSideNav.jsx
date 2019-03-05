@@ -69,6 +69,7 @@ const sideNavLinks: linksType = [
 export const LoanSideNav = ({
   loan,
   links,
+  closeDrawer,
 }: {
   loan: any,
   links: linksType,
@@ -98,6 +99,7 @@ export const LoanSideNav = ({
             key={to}
             to={to}
             className="loan-side-nav-link"
+            onClick={closeDrawer}
             {...otherProps}
           >
             <FontAwesomeIcon icon={icon} className="icon" />
@@ -120,6 +122,7 @@ export const LoanSideNav = ({
 );
 
 LoanSideNav.propTypes = {
+  closeDrawer: PropTypes.func.isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.object.isRequired,
 };

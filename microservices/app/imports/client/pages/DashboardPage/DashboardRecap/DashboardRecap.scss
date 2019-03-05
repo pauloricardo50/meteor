@@ -24,4 +24,8 @@
   & > * {
     margin: 8px;
   }
+
+  @include screen(med, max) {
+    flex-wrap: wrap;
+  }
 }
