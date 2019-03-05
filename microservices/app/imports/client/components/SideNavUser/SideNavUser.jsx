@@ -11,7 +11,7 @@ const SideNavUser = ({
   currentUser,
   style,
   fixed,
-  toggleDrawer,
+  closeDrawer,
   history,
   loan,
 }) => {
@@ -48,27 +48,28 @@ const SideNavUser = ({
             history={history}
             currentUser={currentUser}
             value={loanId}
-            toggleDrawer={toggleDrawer}
+            closeDrawer={closeDrawer}
           />
         )}
-        {loanId && currentLoan && <LoanSideNav loan={loan} />}
+        {loanId && currentLoan && (
+          <LoanSideNav closeDrawer={closeDrawer} loan={loan} />
+        )}
       </div>
     </nav>
   );
 };
 
 SideNavUser.propTypes = {
+  closeDrawer: PropTypes.func.isRequired,
   currentUser: PropTypes.object.isRequired,
   fixed: PropTypes.bool,
   history: PropTypes.object.isRequired,
   style: PropTypes.object,
-  toggleDrawer: PropTypes.func,
 };
 
 SideNavUser.defaultProps = {
   fixed: false,
   style: {},
-  toggleDrawer: () => {},
 };
 
 export default withRouter(SideNavUser);
