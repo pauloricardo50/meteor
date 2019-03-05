@@ -121,7 +121,7 @@
   margin: 16px 0;
   padding: 0 16px;
 
-   > * {
+  > * {
     width: 100%;
   }
 }
@@ -136,4 +136,10 @@
   padding: 0 8px;
 
   border-bottom: 1px solid $border-grey;
+
+  .drawer-toggle {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
 }

@@ -41,7 +41,7 @@ const SideNavUser = ({
 
   return (
     <nav className={classnames({ 'side-nav-user': true, fixed })} style={style}>
-      <SideNavHeader />
+      <SideNavHeader closeDrawer={closeDrawer} />
       <div className="scrollable">
         {!!(loans && loans.length > 0) && (
           <LoanSelector
