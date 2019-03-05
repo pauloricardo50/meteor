@@ -15,7 +15,7 @@ query.expose({
     });
   },
   validateParams: {
-    promotionId: Match.OneOf(String, Object),
+    promotionId: String,
     userId: String,
   },
 });

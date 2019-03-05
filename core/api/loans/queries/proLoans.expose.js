@@ -22,7 +22,6 @@ query.expose({
     propertyId: Match.Maybe(Match.OneOf(String, Object)),
     userId: String,
     calledByUserId: String,
-    showAnonymizedPromotionLoans: Match.Maybe(Boolean),
   },
 });
 

@@ -85,6 +85,15 @@ export const proPropertyLoansResolver = ({ calledByUserId, propertyId }) => {
   }
 };
 
+const filterLoans = (loans = []) =>
+  loans.reduce((filteredLoans, currentLoan) => {
+    if (filteredLoans.some(loan => loan._id === currentLoan._id)) {
+      return filteredLoans;
+    }
+
+    return [...filteredLoans, currentLoan];
+  }, []);
+
 export const proLoansResolver = ({
   userId,
   calledByUserId,
@@ -122,11 +131,5 @@ export const proLoansResolver = ({
   });
   loans = [...loans, ...referredByLoans];
 
-  return loans.reduce((filteredLoans, currentLoan) => {
-    if (filteredLoans.some(loan => loan._id === currentLoan._id)) {
-      return filteredLoans;
-    }
-
-    return [...filteredLoans, currentLoan];
-  }, []);
+  return filterLoans(loans);
 };

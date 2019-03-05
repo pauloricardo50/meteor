@@ -12,7 +12,7 @@ query.expose({
     SecurityService.properties.isAllowedToView({ propertyId, userId });
   },
   validateParams: {
-    propertyId: Match.OneOf(String, Object),
+    propertyId: String,
     userId: String,
   },
 });
