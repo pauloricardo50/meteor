@@ -11,10 +11,7 @@ const columnOptions = [
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
-].map(({ id, label }) => ({
-  id,
-  label,
-}));
+].map(({ id, label }) => ({ id, label }));
 
 const makeMapLoan = history => (loan) => {
   const { _id: loanId, user, createdAt, name: loanName } = loan;
@@ -39,13 +36,13 @@ export default compose(
       proProperties = [],
     } = currentUser;
     return {
+      ...props,
       currentUser,
       propertyIds: [
         ...properties.map(({ _id }) => _id),
         ...proProperties.map(({ _id }) => _id),
       ],
       promotionIds: promotions.map(({ _id }) => _id),
-      ...props,
     };
   }),
   withSmartQuery({

@@ -17,10 +17,8 @@
       margin-right: 8px !important;
     }
 
-    &-buttons {
-      > * {
-        margin-right: 8px !important;
-      }
+    &-buttons > * {
+      margin-right: 8px !important;
     }
   }
 

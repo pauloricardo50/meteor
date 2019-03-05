@@ -9,7 +9,6 @@ query.expose({
     const { propertyId } = params;
     params.userId = userId;
     SecurityService.checkUserIsPro(userId);
-
     SecurityService.properties.isAllowedToView({ propertyId, userId });
   },
   validateParams: {

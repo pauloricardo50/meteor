@@ -108,6 +108,8 @@ export const PROPERTY_PERMISSIONS_FULL_ACCESS = {
   canInviteProUsers: true,
   canModifyProperty: true,
   canManagePermissions: true,
+  canSellProperty: true,
+  canBookProperty: true,
   displayCustomerNames: {
     forPropertyStatus: Object.values(PROPERTY_STATUS),
     referredBy: PROPERTY_REFERRED_BY_TYPE.ANY,

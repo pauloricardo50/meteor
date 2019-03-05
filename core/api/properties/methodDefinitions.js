@@ -80,7 +80,7 @@ export const proPropertyInsert = new Method({
   params: { userId: String, property: Object },
 });
 
-export const proPropertySetProUserPermissions = new Method({
-  name: 'proPropertySetProUserPermissions',
-  params: {propertyId: String, userId: String, permissions: Object}
-})
+export const setProPropertyPermissions = new Method({
+  name: 'setProPropertyPermissions',
+  params: { propertyId: String, userId: String, permissions: Object },
+});

@@ -13,7 +13,7 @@ import {
   inviteUserToProperty,
   addProUserToProperty,
   proPropertyInsert,
-  proPropertySetProUserPermissions,
+  setProPropertyPermissions,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -82,7 +82,7 @@ proPropertyInsert.setHandler(({ userId }, params) => {
   return PropertyService.proPropertyInsert(params);
 });
 
-proPropertySetProUserPermissions.setHandler(({ userId }, params) => {
+setProPropertyPermissions.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
   PropertyService.setProUserPermissions(params);
 });

@@ -92,7 +92,7 @@ class PropertySecurity {
       const hasProperty = UserService.hasProperty({ userId, propertyId });
 
       if (!hasProperty) {
-        Security.handleUnauthorized("Vous n'avez pas accès à cette propriété");
+        Security.handleUnauthorized("Vous n'avez pas accès à ce bien immobilier");
       }
     }
   }
@@ -102,7 +102,7 @@ class PropertySecurity {
       propertyId,
       userId,
       checkingFunction: isAllowedToViewProProperty,
-      errorMessage: "Vous n'avez pas accès à cette propriété",
+      errorMessage: "Vous n'avez pas accès à ce bien immobilier",
     });
   }
 }

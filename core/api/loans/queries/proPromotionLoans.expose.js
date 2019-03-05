@@ -21,7 +21,4 @@ query.expose({
 });
 
 query.resolve(({ userId, promotionId }) =>
-  proPromotionLoansResolver({
-    calledByUserId: userId,
-    promotionId,
-  }));
+  proPromotionLoansResolver({ calledByUserId: userId, promotionId }));

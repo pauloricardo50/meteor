@@ -4,7 +4,10 @@ import { Meteor } from 'meteor/meteor';
 import LoanService from '../../loans/server/LoanService';
 import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
-import { VALUATION_STATUS } from '../propertyConstants';
+import {
+  VALUATION_STATUS,
+  PROPERTY_PERMISSIONS_FULL_ACCESS,
+} from '../propertyConstants';
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
@@ -97,12 +100,14 @@ export class PropertyService extends CollectionService {
         organisations: { _id: 1 },
       });
 
-      const {
-        assignedEmployeeId: proAssignedEmployeeId,
-        organisations = [],
-      } = pro;
-      assignedEmployeeId = proAssignedEmployeeId;
-      organisationId = !!organisations.length && organisations[0]._id;
+      if (pro) {
+        const {
+          assignedEmployeeId: proAssignedEmployeeId,
+          organisations = [],
+        } = pro;
+        assignedEmployeeId = proAssignedEmployeeId;
+        organisationId = !!organisations.length && organisations[0]._id;
+      }
     }
 
     let userId;
@@ -162,12 +167,12 @@ export class PropertyService extends CollectionService {
   }
 
   proPropertyInsert({ property, userId }) {
-    const propertyId = Properties.insert({ ...property, userId });
+    const propertyId = this.insert({ ...property });
     this.addLink({
       id: propertyId,
       linkName: 'users',
       linkId: userId,
-      metadata: { permissions: {} },
+      metadata: { permissions: PROPERTY_PERMISSIONS_FULL_ACCESS },
     });
 
     return propertyId;

@@ -4,13 +4,12 @@ import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 
-const anonymizePromotionLoans = ({ loans = [], userId }) => [
-  ...loans.map((loan) => {
+const anonymizePromotionLoans = ({ loans = [], userId }) =>
+  loans.map((loan) => {
     const { promotions } = loan;
     const promotionId = promotions[0]._id;
     return makePromotionLoanAnonymizer({ userId, promotionId })(loan);
-  }),
-];
+  });
 
 // TODO: property loans anonymizer
 const anonymizePropertyLoans = ({ loans = [], userId }) => loans;
@@ -43,7 +42,7 @@ export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
       ].filter(x => x),
     },
     loans: proLoans(),
-  }) || [];
+  });
 
   const loans = users.reduce(
     (allLoans, { loans: userLoans = [] }) => [...allLoans, ...userLoans],
@@ -106,7 +105,7 @@ export const proLoansResolver = ({
       } = promotions[0];
       return showAnonymizedPromotionLoans || invitedBy === userId;
     });
-    loans = [...loans, ...promotionLoans];
+    loans = promotionLoans;
   }
 
   if (propertyId) {

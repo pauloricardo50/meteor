@@ -13,10 +13,16 @@ const ANONYMIZED_USER = {
 };
 
 const getUserProPropertyPermissions = ({ userId, propertyId }) => {
-  const { properties = [] } = UserService.fetchOne({
+  const user = UserService.fetchOne({
     $filters: { _id: userId },
     properties: { _id: 1 },
   });
+
+  if (!user) {
+    return {};
+  }
+
+  const { properties = [] } = user;
 
   const {
     $metadata: { permissions = {} },
@@ -48,10 +54,16 @@ export const getProPropertyCustomerOwnerType = ({ customerId, userId }) => {
   const { referredByUser, referredByOrganisation } = getCustomerReferredBy({
     customerId,
   });
-  const { organisations = [] } = UserService.fetchOne({
+  const user = UserService.fetchOne({
     $filters: { _id: userId },
     organisations: { users: { _id: 1 } },
   });
+
+  if (!user) {
+    return null;
+  }
+
+  const { organisations = [] } = user;
 
   return getCustomerOwnerType({
     referredByUser,

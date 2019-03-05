@@ -13,17 +13,19 @@ export default compose(
         .clone({ searchQuery, roles: [ROLES.PRO] })
         .fetch((err, users) => {
           if (err) {
+            setSearchResults({error: err})
+            return;
             throw err;
           }
-            setSearchResults(property.users
+          setSearchResults(property.users
             ? users.filter(user =>
-                !property.users.map(({ _id }) => _id).includes(user._id))
+              !property.users.map(({ _id }) => _id).includes(user._id))
             : users);
         });
     },
     addUser: ({ userId }) =>
-        addProUserToProperty.run({
-          propertyId: property._id,
+      addProUserToProperty.run({
+        propertyId: property._id,
         userId,
       }),
   })),

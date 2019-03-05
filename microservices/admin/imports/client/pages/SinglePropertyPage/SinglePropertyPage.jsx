@@ -8,7 +8,6 @@ import MapWithMarker from 'core/components/maps/MapWithMarker';
 import { PropertyForm } from 'core/components/forms';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
 import AdminProPropertyPage from './AdminProPropertyPage';
-// import { ProPropertyPage } from 'core/components/ProPropertyPage/ProPropertyPage';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';

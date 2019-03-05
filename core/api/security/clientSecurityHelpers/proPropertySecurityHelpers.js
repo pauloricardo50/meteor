@@ -29,13 +29,7 @@ const checkProPropertyPermissions = ({
   }
 };
 
-export const isAllowedToViewProProperty = ({ property, currentUser }) => {
-  const { _id: userId } = currentUser;
-
-  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
-    return true;
-  }
-
+const isUserLinkedToProperty = ({ userId, property }) => {
   const { userLinks = [], users = [], loans = [] } = property;
   const userLoans = loans
     .reduce((usersLoans, { user }) => [...usersLoans, user], [])
@@ -50,6 +44,16 @@ export const isAllowedToViewProProperty = ({ property, currentUser }) => {
   }
 
   return true;
+};
+
+export const isAllowedToViewProProperty = ({ property, currentUser }) => {
+  const { _id: userId } = currentUser;
+
+  if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+    return true;
+  }
+
+  return isUserLinkedToProperty({ userId, property });
 };
 
 export const isAllowedToInviteCustomersToProProperty = ({

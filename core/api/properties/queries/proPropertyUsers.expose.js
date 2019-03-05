@@ -21,10 +21,16 @@ query.expose({
 });
 
 query.resolve(({ userId, propertyId }) => {
-  const { users = [] } = PropertyService.fetchOne({
+  const property = PropertyService.fetchOne({
     $filters: { _id: propertyId },
     users: proUser(),
   });
+
+  if (!property) {
+    return [];
+  }
+
+  const { users = [] } = property;
 
   try {
     SecurityService.checkUserIsAdmin(userId);

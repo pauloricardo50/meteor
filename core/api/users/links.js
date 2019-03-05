@@ -62,7 +62,6 @@ Users.addLinks({
     collection: Users,
     field: 'referredByUserLink',
     type: 'one',
-    // metadata: true,
   },
   referredCustomers: {
     collection: Users,
@@ -73,6 +72,5 @@ Users.addLinks({
     collection: Organisations,
     field: 'referredByOrganisationLink',
     type: 'one',
-    // metadata: true,
   },
 });

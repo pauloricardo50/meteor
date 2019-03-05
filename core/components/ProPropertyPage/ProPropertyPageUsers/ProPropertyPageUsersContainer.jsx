@@ -34,14 +34,13 @@ const makeMapProPropertyUser = ({ propertyId, history }) => (user) => {
         label: getUserNameAndOrganisation({ user }),
       },
       email,
-      {
-        raw: permissions,
-        label: (
-          <div onClick={event => event.stopPropagation()}>
-            <ProPropertyUserPermissionsModifier user={user} propertyId={propertyId} />
-          </div>
-        ),
-      },
+      <div onClick={event => event.stopPropagation()} key={`permissions${_id}`}>
+        <ProPropertyUserPermissionsModifier
+          user={user}
+          propertyId={propertyId}
+        />
+      </div>,
+
       <div onClick={event => event.stopPropagation()} key={_id}>
         <ImpersonateLink
           user={user}
@@ -54,7 +53,7 @@ const makeMapProPropertyUser = ({ propertyId, history }) => (user) => {
               user,
             })} du bien immobilier ?`);
             // if (confirm) {
-            //   return removeProFromPromotion.run({ promotionId, userId: _id });
+            //   return removeProFromProperty.run({ promotionId, userId: _id });
             // }
             return Promise.resolve();
           }}

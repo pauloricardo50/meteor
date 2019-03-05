@@ -44,6 +44,23 @@ export const getProPropertyCustomerOwnerType = ({
   return PROPERTY_REFERRED_BY_TYPE.ANY;
 };
 
+const shouldAnonymizeWhenReferredByTypeUser = ({
+  shouldHideForPropertyStatus,
+  referredBy,
+}) =>
+  shouldHideForPropertyStatus
+  || ![
+    PROPERTY_REFERRED_BY_TYPE.USER,
+    PROPERTY_REFERRED_BY_TYPE.ORGANISATION,
+  ].includes(referredBy);
+
+const shouldAnonymizeWhenReferredByTypeOrganisation = ({
+  shouldHideForPropertyStatus,
+  referredBy,
+}) =>
+  shouldHideForPropertyStatus
+  || referredBy !== PROPERTY_REFERRED_BY_TYPE.ORGANISATION;
+
 export const shouldAnonymize = ({
   customerOwnerType,
   permissions,
@@ -64,19 +81,15 @@ export const shouldAnonymize = ({
 
   switch (customerOwnerType) {
   case PROPERTY_REFERRED_BY_TYPE.USER:
-    return (
-      shouldHideForPropertyStatus
-        || ![
-          PROPERTY_REFERRED_BY_TYPE.USER,
-          PROPERTY_REFERRED_BY_TYPE.ORGANISATION,
-        ].includes(displayCustomerNames.referredBy)
-    );
+    return shouldAnonymizeWhenReferredByTypeUser({
+      shouldHideForPropertyStatus,
+      referredBy: displayCustomerNames.referredBy,
+    });
   case PROPERTY_REFERRED_BY_TYPE.ORGANISATION:
-    return (
-      shouldHideForPropertyStatus
-        || displayCustomerNames.referredBy
-          !== PROPERTY_REFERRED_BY_TYPE.ORGANISATION
-    );
+    return shouldAnonymizeWhenReferredByTypeOrganisation({
+      shouldHideForPropertyStatus,
+      referredBy: displayCustomerNames.referredBy,
+    });
   default:
     return true;
   }

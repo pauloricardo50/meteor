@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema';
 import { propertyPermissionsSchema } from '../../api/properties/schemas/PropertySchema';
 import { makePermissions } from '../../api/helpers/sharedSchemas';
 import {
-  proPropertySetProUserPermissions,
+  setProPropertyPermissions,
   getUserNameAndOrganisation,
 } from '../../api';
 
@@ -44,9 +44,9 @@ const userPermissionsSchema = ({ user }) => {
 
 export default withProps(({ user, propertyId }) => ({
   schema: userPermissionsSchema({ user }),
-  model: user && user.$metadata && user.$metadata,
+  model: user && user.$metadata,
   onSubmit: ({ permissions }) =>
-    proPropertySetProUserPermissions.run({
+    setProPropertyPermissions.run({
       propertyId,
       userId: user._id,
       permissions,
