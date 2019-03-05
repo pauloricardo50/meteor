@@ -14,7 +14,13 @@ export const getPropertyAddress = ({ address1, zipCode, city }) =>
   (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = (props) => {
-  const { property, displayLoans, className, loanResidenceType } = props;
+  const {
+    property,
+    displayLoans,
+    className,
+    loanResidenceType,
+    loanId,
+  } = props;
   const { loans } = property;
   const address = getPropertyAddress(property);
   let residenceType = loanResidenceType;
@@ -24,14 +30,12 @@ const SinglePropertyPage = (props) => {
     // is not specifically defined, so use the residenceType of the first
     // loan instead
     // Warning: this might be false if multiple loans point to this property
-    residenceType = loans
-      && loans.length > 0
-      && loans[0].residenceType;
+    residenceType = loans && loans.length > 0 && loans[0].residenceType;
   }
 
   return (
     <section className={cx('single-property-page', className)}>
-      <SinglePropertyPageHeader property={property} />
+      <SinglePropertyPageHeader property={property} loanId={loanId} />
       {/* {residenceType && (
         <Valuation property={property} loanResidenceType={residenceType} />
       )} */}

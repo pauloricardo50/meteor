@@ -34,8 +34,15 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
 
 const SinglePropertyPage = (props) => {
   const { loan, propertyId, history } = props;
-  const { borrowers, properties, residenceType } = loan;
+  const { borrowers, properties, residenceType, _id: loanId } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
+
+  if (!property) {
+    // Do this when deleting the property, so it doesn't display a giant error
+    // before routing to the properties page
+    return null;
+  }
+
   const { address1, zipCode, city, mortgageNotes } = property;
   const { userFormsEnabled } = loan;
   const progress = PropertyCalculator.propertyPercent({
@@ -63,7 +70,7 @@ const SinglePropertyPage = (props) => {
             }}
             method={() =>
               propertyDelete
-                .run({ propertyId })
+                .run({ propertyId, loanId })
                 .then(() =>
                   history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
             }
@@ -103,7 +110,10 @@ const SinglePropertyPage = (props) => {
           />
         </div>
         <div className="flex--helper flex-justify--center">
-          <MortgageNotesForm propertyId={propertyId} mortgageNotes={mortgageNotes} />
+          <MortgageNotesForm
+            propertyId={propertyId}
+            mortgageNotes={mortgageNotes}
+          />
         </div>
       </section>
       <div className="single-property-page-buttons">

@@ -24,6 +24,7 @@ const PropertiesTab = ({
               propertyId={property._id}
               displayLoans={false}
               loanResidenceType={loanResidenceType}
+              loanId={loanId}
             />
           ),
         }))}

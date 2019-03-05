@@ -20,6 +20,7 @@ const SinglePropertyHeader = ({
     createdAt,
     user,
   },
+  loanId
 }) => (
   <div className="single-property-page-header">
     <div className="top">
@@ -33,7 +34,7 @@ const SinglePropertyHeader = ({
       <div>
         <ConfirmMethod
           label="Supprimer"
-          method={() => propertyDelete.run({ propertyId })}
+          method={() => propertyDelete.run({ propertyId, loanId })}
           buttonProps={{ error: true }}
         />
       </div>
