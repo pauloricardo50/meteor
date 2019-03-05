@@ -598,6 +598,7 @@ export const adminValuation = () => ({
 });
 
 export const propertySummary = () => ({
+  address: 1,
   address1: 1,
   address2: 1,
   canton: 1,
