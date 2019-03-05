@@ -1,0 +1,9 @@
+.account-page-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  > * {
+    margin-bottom: 8px;
+  }
+}

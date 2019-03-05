@@ -37,13 +37,12 @@ const AccountPage = ({ currentUser }) => {
             <p className="secondary">{email}</p>
           </div>
 
-          <div className="form-group">
+          <div className="account-page-buttons">
             <PasswordChange />
+            {Meteor.microservice === 'pro' && (
+              <DeveloperSection user={currentUser} />
+            )}
           </div>
-
-          {Meteor.microservice === 'pro' && (
-            <DeveloperSection user={currentUser} />
-          )}
 
           {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
         </div>
