@@ -37,6 +37,7 @@
     "btoa": "^1.2.1",
     "core-js": "^2.5.7",
     "faker": "^4.1.0",
+    "html-parse-stringify": "^1.0.3",
     "indexof": "0.0.1",
     "js-search": "^1.4.2",
     "json-logic-js": "^1.2.2",

@@ -6,17 +6,18 @@ import { Helmet } from 'react-helmet';
 import BlogAuthor from './BlogAuthor';
 import BlogPostSeo from './BlogPostSeo';
 import BlogPostPageShare from './BlogPostPageShare';
+import AutoTooltipInjector from './AutoTooltipInjector';
 
 type BlogPostPageContentProps = {
   post: Object,
 };
 
-function htmlDecode(input) {
+export const htmlDecode = (input) => {
   const e = document.createElement('div');
   e.innerHTML = input;
   // handle case of empty input
   return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue;
-}
+};
 
 const BlogPostPageContent = ({ post }: BlogPostPageContentProps) => {
   const { title, date, content, author, excerpt, post_thumbnail } = post;
@@ -29,11 +30,14 @@ const BlogPostPageContent = ({ post }: BlogPostPageContentProps) => {
         <BlogPostSeo {...post} />
       </Helmet>
       <h1 dangerouslySetInnerHTML={{ __html: title }} />
+
       <h4 className="date secondary">
         {moment(date).format('dddd, D MMMM YYYY')}
       </h4>
 
-      <article dangerouslySetInnerHTML={{ __html: content }} />
+      <article>
+        <AutoTooltipInjector html={content} />
+      </article>
 
       <BlogPostPageShare title={escapedTitle} />
     </section>
