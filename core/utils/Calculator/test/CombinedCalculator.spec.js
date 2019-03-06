@@ -8,7 +8,7 @@ import { initialDocuments as propertyDocuments } from 'core/api/properties/prope
 import CombinedCalculator from '..';
 
 describe('CombinedCalculator', () => {
-  describe('filesProgress', () => {
+  describe.only('filesProgress', () => {
     it('sums file progress across the loan', () => {
       const property = {
         documents: { [DOCUMENTS.PROPERTY_PLANS]: [{}] },
@@ -38,6 +38,32 @@ describe('CombinedCalculator', () => {
       });
       expect(progress.percent).to.be.within(0.15, 0.16);
       expect(progress.count).to.equal(19);
+    });
+
+    it('skips the property if there is none', () => {
+      const progress = CombinedCalculator.filesProgress({
+        loan: {
+          structure: {},
+          borrowers: [
+            {
+              documents: { [DOCUMENTS.IDENTITY]: [{}] },
+              _id: 'id1',
+              additionalDocuments: borrowerDocuments,
+            },
+            {
+              documents: {
+                [DOCUMENTS.TAXES]: [{}],
+                [DOCUMENTS.IDENTITY]: [{}],
+              },
+              _id: 'id2',
+              additionalDocuments: borrowerDocuments,
+            },
+          ],
+          logic: { step: STEPS.PREPARATION },
+        },
+      });
+      expect(progress.percent).to.be.within(0.23, 0.24);
+      expect(progress.count).to.equal(13);
     });
   });
 });
