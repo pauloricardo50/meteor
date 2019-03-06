@@ -21,7 +21,10 @@ export const proPropertySchema = new SimpleSchema({
   value: { ...moneyField, optional: false },
 });
 
-const PropertyAdder = ({ history, currentUser: {_id: userId} }: PropertyAdderProps) => (
+const PropertyAdder = ({
+  history,
+  currentUser: { _id: userId },
+}: PropertyAdderProps) => (
   <AutoFormDialog
     title={<T id="ProDashboardPage.addProperty" />}
     buttonProps={{
@@ -32,7 +35,10 @@ const PropertyAdder = ({ history, currentUser: {_id: userId} }: PropertyAdderPro
     schema={proPropertySchema}
     onSubmit={property =>
       proPropertyInsert
-        .run({ property: { ...property, category: PROPERTY_CATEGORY.PRO }, userId  })
+        .run({
+          property: { ...property, category: PROPERTY_CATEGORY.PRO },
+          userId,
+        })
         .then(propertyId =>
           history.push(createRoute(PRO_PROPERTY_PAGE, { propertyId })))
     }

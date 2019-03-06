@@ -99,12 +99,21 @@ const getLoanEstimatedRevenues = (loan) => {
   if (loan.structure) {
     return {
       ...loan,
-      estimatedRevenues: Calculator.getEstimatedReferralRevenues({
-        loan,
-      }),
+      estimatedRevenues: Calculator.getEstimatedReferralRevenues({ loan }),
     };
   }
   return loan;
+};
+
+const shouldShowPromotionLoan = ({
+  showAnonymizedPromotionLoans,
+  userId,
+}) => (loan) => {
+  const { promotions = [] } = loan;
+  const {
+    $metadata: { invitedBy },
+  } = promotions[0];
+  return showAnonymizedPromotionLoans || invitedBy === userId;
 };
 
 export const proLoansResolver = ({
@@ -121,13 +130,7 @@ export const proLoansResolver = ({
       calledByUserId,
       promotionId,
     })
-      .filter((loan) => {
-        const { promotions = [] } = loan;
-        const {
-          $metadata: { invitedBy },
-        } = promotions[0];
-        return showAnonymizedPromotionLoans || invitedBy === userId;
-      })
+      .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
       .map(loan => ({ ...loan, relatedTo: loan.promotions[0].name }));
     loans = promotionLoans;
   }
