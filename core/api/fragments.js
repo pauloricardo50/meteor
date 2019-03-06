@@ -275,17 +275,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   properties: adminProperty(),
   signingDate: 1,
   status: 1,
-  revenues: {
-    status: 1,
-    createdAt: 1,
-    type: 1,
-    description: 1,
-    amount: 1,
-    approximation: 1,
-    loan: { _id: 1 },
-    organisationLinks: 1,
-    organisations: { name: 1 },
-  },
+  revenues: fullRevenues(),
 });
 export const adminLoans = () => ({
   ...loanBase(),
@@ -814,4 +804,18 @@ export const proUser = () => ({
   promotions: { _id: 1 },
   properties: { _id: 1 },
   proProperties: { _id: 1 },
+});
+
+// //
+// // Revenues fragments
+// //
+export const fullRevenues = () => ({
+  status: 1,
+  createdAt: 1,
+  type: 1,
+  description: 1,
+  amount: 1,
+  approximation: 1,
+  organisationLinks: 1,
+  organisations: { name: 1 },
 });

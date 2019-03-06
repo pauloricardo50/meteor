@@ -11,9 +11,9 @@ revenueInsert.setHandler((context, params) => {
   return RevenueService.insert(params);
 });
 
-revenueRemove.setHandler((context, { revenueId }) => {
+revenueRemove.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
-  return RevenueService.remove(revenueId);
+  return RevenueService.remove(params);
 });
 
 revenueUpdate.setHandler((context, { revenueId, object }) => {

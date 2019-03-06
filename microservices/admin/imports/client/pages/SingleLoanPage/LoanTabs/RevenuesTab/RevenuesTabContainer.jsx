@@ -35,7 +35,7 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
         label: <T id={`Forms.status.${status}`} />,
       },
       {
-        raw: createdAt,
+        raw: createdAt.getTime(),
         label: moment(createdAt).format('DD MMM YYYY'),
       },
       {

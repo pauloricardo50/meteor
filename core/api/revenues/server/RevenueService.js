@@ -11,11 +11,6 @@ class RevenueService extends CollectionService {
     const revenueId = this.collection.insert(revenue);
 
     if (loanId) {
-      console.log('loanId:', loanId);
-      // LoanService._update({
-      //   id: loanId,
-      //   object: { $push: { revenueLinks: { _id: revenueId } } },
-      // });
       LoanService.addLink({
         id: loanId,
         linkName: 'revenues',
@@ -24,6 +19,10 @@ class RevenueService extends CollectionService {
     }
 
     return revenueId;
+  }
+
+  remove({ revenueId }) {
+    return super.remove(revenueId);
   }
 }
 

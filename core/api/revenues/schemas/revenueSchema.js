@@ -6,8 +6,8 @@ import {
   percentageField,
 } from '../../helpers/sharedSchemas';
 import {
-  REVENUES_TYPES,
-  REVENUES_STATUS,
+  REVENUE_TYPES,
+  REVENUE_STATUS,
   COMMISSION_STATUS,
 } from '../revenueConstants';
 
@@ -19,7 +19,7 @@ const RevenueSchema = new SimpleSchema({
   amount: moneyField,
   type: {
     type: String,
-    allowedValues: Object.values(REVENUES_TYPES),
+    allowedValues: Object.values(REVENUE_TYPES),
     uniforms: { displayEmpty: false, placeholder: '' },
   },
   description: {
@@ -28,8 +28,9 @@ const RevenueSchema = new SimpleSchema({
   },
   status: {
     type: String,
-    allowedValues: Object.values(REVENUES_STATUS),
+    allowedValues: Object.values(REVENUE_STATUS),
     uniforms: { displayEmpty: false, placeholder: '' },
+    defaultValue: REVENUE_STATUS.EXPECTED,
   },
   organisationLinks: {
     type: Array,
@@ -42,6 +43,7 @@ const RevenueSchema = new SimpleSchema({
   'organisationLinks.$.status': {
     type: String,
     allowedValues: Object.values(COMMISSION_STATUS),
+    defaultValue: COMMISSION_STATUS.TO_BE_PAID,
   },
 });
 

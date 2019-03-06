@@ -47,6 +47,7 @@ const schema = RevenueSchema.omit(
   'organisationLinks.$.status': {
     type: String,
     allowedValues: Object.values(COMMISSION_STATUS),
+    defaultValue: COMMISSION_STATUS.TO_BE_PAID,
     uniforms: {
       displayEmpty: false,
       placeholder: '',
@@ -74,13 +75,20 @@ export default compose(
     deleteRevenue: ({ revenueId, closeDialog, setDisableActions }) => {
       setSubmitting(true);
       setDisableActions(true);
-      return revenueRemove
-        .run({ revenueId })
-        .then(closeDialog)
-        .finally(() => {
-          setDisableActions(false);
-          setSubmitting(false);
-        });
+      const confirm = window.confirm('Êtes-vous sûr ?');
+      if (confirm) {
+        return revenueRemove
+          .run({ revenueId })
+          .then(closeDialog)
+          .finally(() => {
+            setDisableActions(false);
+            setSubmitting(false);
+          });
+      }
+
+      setDisableActions(false);
+      setSubmitting(false);
+      return Promise.resolve();
     },
   })),
 );

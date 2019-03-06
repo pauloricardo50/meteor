@@ -6,14 +6,14 @@ export const REVENUES_QUERIES = {
   // EXAMPLE_QUERIE: 'EXAMPLE_QUERIE',
 };
 
-export const REVENUES_TYPES = {
+export const REVENUE_TYPES = {
   INSURANCE: 'INSURANCE',
   MORTGAGE: 'MORTGAGE',
   FEE: 'FEE',
   OTHER: 'OTHER',
 };
 
-export const REVENUES_STATUS = {
+export const REVENUE_STATUS = {
   EXPECTED: 'EXPECTED',
   CLOSED: 'CLOSED',
 };
