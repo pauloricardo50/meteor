@@ -17,7 +17,8 @@ class DateInput extends Component {
     return (
       <AutoFormTextInput
         {...this.props}
-        // saveOnChange={false}
+        showValidIconOnChange
+        savingIconStyle={{ top: 10 }}
         inputProps={{
           ...inputProps,
           date: true,
