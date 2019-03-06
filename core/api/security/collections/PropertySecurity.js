@@ -5,8 +5,20 @@ import { ROLES } from '../../users/userConstants';
 import PromotionSecurity from './PromotionSecurity';
 import PropertyService from '../../properties/server/PropertyService';
 import { PROPERTY_CATEGORY } from '../../properties/propertyConstants';
-import { isAllowedToViewProProperty } from '../clientSecurityHelpers';
-import { proUser, fullProperty } from '../../fragments';
+import {
+  isAllowedToViewProProperty,
+  isAllowedToModifyProProperty,
+  isAllowedToInviteCustomersToProProperty,
+  isAllowedToInviteProUsersToProProperty,
+  isAllowedToRemoveCustomerFromProProperty,
+  isAllowedToBookProProperty,
+  isAllowedToBookProPropertyToCustomer,
+  isAllowedToSellProProperty,
+  isAllowedToSellProPropertyToCustomer,
+} from '../clientSecurityHelpers';
+import { proUser, fullProperty, proLoans } from '../../fragments';
+import { LoanService } from '../../loans/server/LoanService';
+import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
 
 class PropertySecurity {
   static checkPermissions({
@@ -55,15 +67,27 @@ class PropertySecurity {
     Security.handleUnauthorized('Not allowed to modify promotion property');
   }
 
+  static isProUserAllowedToUpdate({ propertyId, userId }) {
+    const { category } = Properties.findOne(propertyId);
+    if (category === PROPERTY_CATEGORY.PRO) {
+      this.checkPermissions({
+        propertyId,
+        userId,
+        checkingFunction: isAllowedToModifyProProperty,
+        errorMessage: 'Vous ne pouvez pas modifier ce bien immobilier',
+      });
+    }
+
+    this.checkBelongsToPromotion(propertyId, userId);
+  }
+
   static isAllowedToUpdate(propertyId, userId) {
     if (Security.currentUserIsAdmin()) {
       return;
     }
 
     if (Security.currentUserHasRole(ROLES.PRO)) {
-      // Check if this property belongs to one of his promotions
-      this.checkBelongsToPromotion(propertyId, userId);
-      return;
+      this.isProUserAllowedToUpdate({ propertyId, userId });
     }
 
     const property = Properties.findOne(propertyId);
@@ -77,11 +101,6 @@ class PropertySecurity {
 
     const property = Properties.findOne(propertyId);
     Security.checkOwnership(property);
-  }
-
-  static isAllowedToRead(propertyId, userId) {
-    // TODO
-    return true;
   }
 
   static hasAccessToProperty({ propertyId, userId }) {
@@ -104,6 +123,169 @@ class PropertySecurity {
       checkingFunction: isAllowedToViewProProperty,
       errorMessage: "Vous n'avez pas accès à ce bien immobilier",
     });
+  }
+
+  static isAllowedToManageDocuments({ userId, propertyId }) {
+    this.checkPermissions({
+      propertyId,
+      userId,
+      checkingFunction: isAllowedToModifyProProperty,
+      errorMessage:
+        'Vous ne pouvez pas gérer les documents de ce bien immobilier',
+    });
+  }
+
+  static isAllowedToInviteCustomers({ userId, propertyId }) {
+    this.checkPermissions({
+      propertyId,
+      userId,
+      checkingFunction: isAllowedToInviteCustomersToProProperty,
+      errorMessage:
+        'Vous ne pouvez pas inviter de clients sur ce bien immobilier',
+    });
+  }
+
+  static isAllowedToInviteProUsers({ userId, propertyId }) {
+    this.checkPermissions({
+      propertyId,
+      userId,
+      checkingFunction: isAllowedToInviteProUsersToProProperty,
+      errorMessage:
+        'Vous ne pouvez pas inviter de tiers sur ce bien immobilier',
+    });
+  }
+
+  static isAllowedToRemoveCustomer({ userId, propertyId, loanId }) {
+    if (Security.currentUserIsAdmin()) {
+      return true;
+    }
+
+    const property = PropertyService.safeFetchOne({
+      $filters: { _id: propertyId },
+      ...fullProperty(),
+    });
+
+    const currentUser = UserService.safeFetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    const loan = LoanService.safeFetchOne({
+      $filters: { _id: loanId },
+      user: { _id: 1 },
+    });
+
+    const customerOwnerType = getProPropertyCustomerOwnerType({
+      customerId: loan.user._id,
+      userId,
+      propertyId,
+    });
+
+    if (
+      !isAllowedToRemoveCustomerFromProProperty({
+        property,
+        currentUser,
+        customerOwnerType,
+      })
+    ) {
+      Security.handleUnauthorized('Vous ne pouvez pas supprimer ce client de ce bien immobilier');
+    }
+  }
+
+  static isAllowedToBook({ userId, propertyId }) {
+    this.checkPermissions({
+      propertyId,
+      userId,
+      checkingFunction: isAllowedToBookProProperty,
+      errorMessage: 'Vous ne pouvez pas réserver ce bien immobilier',
+    });
+  }
+
+  static isAllowedToBookToCustomer({ propertyId, loanId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return true;
+    }
+
+    const property = PropertyService.safeFetchOne({
+      $filters: { _id: propertyId },
+      ...fullProperty(),
+    });
+
+    const currentUser = UserService.safeFetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    const loan = LoanService.safeFetchOne({
+      $filters: { _id: loanId },
+      user: { _id: 1 },
+    });
+
+    const customerOwnerType = getProPropertyCustomerOwnerType({
+      customerId: loan.user._id,
+      userId,
+      propertyId,
+    });
+
+    if (
+      !isAllowedToBookProPropertyToCustomer({
+        property,
+        currentUser,
+        customerOwnerType,
+      })
+    ) {
+      this.handleUnauthorized('Vous ne pouvez pas réserver ce bien immobilier à ce client');
+    }
+  }
+
+  static isAllowedToCancelBooking({ propertyId, loanId, userId }) {
+    // TODO
+  }
+
+  static isAllowedToSell({ propertyId, userId }) {
+    this.checkPermissions({
+      propertyId,
+      userId,
+      checkingFunction: isAllowedToSellProProperty,
+      errorMessage: 'Vous ne pouvez pas vendre ce bien immobilier',
+    });
+  }
+
+  static isAllowedToSellToCustomer({ propertyId, loanId, userId }) {
+    if (Security.currentUserIsAdmin()) {
+      return true;
+    }
+
+    const property = PropertyService.safeFetchOne({
+      $filters: { _id: propertyId },
+      ...fullProperty(),
+    });
+
+    const currentUser = UserService.safeFetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    const loan = LoanService.safeFetchOne({
+      $filters: { _id: loanId },
+      user: { _id: 1 },
+    });
+
+    const customerOwnerType = getProPropertyCustomerOwnerType({
+      customerId: loan.user._id,
+      userId,
+      propertyId,
+    });
+
+    if (
+      !isAllowedToSellProPropertyToCustomer({
+        property,
+        currentUser,
+        customerOwnerType,
+      })
+    ) {
+      this.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
+    }
   }
 }
 
