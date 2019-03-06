@@ -5,7 +5,7 @@ import { DOCUMENTS, STEPS } from 'core/api/constants';
 import { initialDocuments as borrowerDocuments } from 'core/api/borrowers/borrowersAdditionalDocuments';
 import { initialDocuments as propertyDocuments } from 'core/api/properties/propertiesAdditionalDocuments';
 
-import CombinedCalculator from '..';
+import Calculator from '..';
 
 describe('CombinedCalculator', () => {
   describe('filesProgress', () => {
@@ -15,7 +15,7 @@ describe('CombinedCalculator', () => {
         _id: 'jo',
         additionalDocuments: propertyDocuments,
       };
-      const progress = CombinedCalculator.filesProgress({
+      const progress = Calculator.filesProgress({
         loan: {
           structure: {
             property,
@@ -41,7 +41,7 @@ describe('CombinedCalculator', () => {
     });
 
     it('skips the property if there is none', () => {
-      const progress = CombinedCalculator.filesProgress({
+      const progress = Calculator.filesProgress({
         loan: {
           structure: {},
           borrowers: [

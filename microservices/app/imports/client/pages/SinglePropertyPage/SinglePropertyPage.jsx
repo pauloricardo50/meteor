@@ -20,7 +20,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
+import Calculator from 'core/utils/Calculator';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
 import Page from 'core/components/Page';
@@ -50,11 +50,10 @@ const SinglePropertyPage = (props) => {
 
   const { address1, zipCode, city, mortgageNotes } = property;
   const { userFormsEnabled } = loan;
-  const progress = PropertyCalculator.propertyPercent({
+  const progress = Calculator.propertyPercent({
     property,
     loan,
   });
-  const hasMultipleProperties = properties.length > 1;
 
   const title = address1 || <T id="SinglePropertyPage.title" />;
 

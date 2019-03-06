@@ -5,7 +5,6 @@ import {
 } from '../../arrays/PropertyFormArray';
 import { getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
-import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -158,7 +157,3 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return !!structure.promotionOptionId;
     }
   };
-
-export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);
-
-export default new PropertyCalculator();

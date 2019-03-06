@@ -1,7 +1,6 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
 import { getBorrowerDocuments } from 'imports/core/api/files/documents';
-import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -473,7 +472,3 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       }, []);
     }
   };
-
-export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);
-
-export default new BorrowerCalculator();

@@ -1,6 +1,5 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { FinanceCalculator } from '../FinanceCalculator';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -366,7 +365,3 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return true;
     }
   };
-
-export const LoanCalculator = withLoanCalculator(FinanceCalculator);
-
-export default new LoanCalculator({});
