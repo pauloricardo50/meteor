@@ -95,11 +95,11 @@ const filterLoans = (loans = []) =>
     return [...filteredLoans, currentLoan];
   }, []);
 
-const getEstimatedRevenues = (loan) => {
+const getLoanEstimatedRevenues = (loan) => {
   if (loan.structure) {
     return {
       ...loan,
-      estimatedRevenue: Calculator.getEstimatedReferralRevenues({
+      estimatedRevenues: Calculator.getEstimatedReferralRevenues({
         loan,
       }),
     };
@@ -146,5 +146,5 @@ export const proLoansResolver = ({
   });
   loans = [...loans, ...referredByLoans];
 
-  return filterLoans(loans).map(getEstimatedRevenues);
+  return filterLoans(loans).map(getLoanEstimatedRevenues);
 };

@@ -16,7 +16,7 @@ const ProDashboardPage = (props: ProDashboardPageProps) => (
       <T id="ProDashboardPage.title" />
     </h1>
     <div className="buttons">
-      <PromotionAdder />
+      <PromotionAdder currentUser={props.currentUser} />
       <ProPropertyAdder currentUser={props.currentUser} />
     </div>
     <ProPromotionsTable />

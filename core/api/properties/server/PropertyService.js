@@ -167,7 +167,7 @@ export class PropertyService extends CollectionService {
   }
 
   proPropertyInsert({ property, userId }) {
-    const propertyId = this.insert({ ...property });
+    const propertyId = Properties.insert(property);
     this.addLink({
       id: propertyId,
       linkName: 'users',

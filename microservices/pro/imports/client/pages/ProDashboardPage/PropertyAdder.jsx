@@ -5,7 +5,7 @@ import SimpleSchema from 'simpl-schema';
 
 import T from 'core/components/Translation';
 import { AutoFormDialog } from 'core/components/AutoForm2';
-import { propertyInsert } from 'core/api';
+import { proPropertyInsert } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import { PROPERTY_CATEGORY } from 'core/api/constants';
 import { moneyField, address } from 'core/api/helpers/sharedSchemas';
@@ -21,7 +21,7 @@ export const proPropertySchema = new SimpleSchema({
   value: { ...moneyField, optional: false },
 });
 
-const PropertyAdder = ({ history }: PropertyAdderProps) => (
+const PropertyAdder = ({ history, currentUser: {_id: userId} }: PropertyAdderProps) => (
   <AutoFormDialog
     title={<T id="ProDashboardPage.addProperty" />}
     buttonProps={{
@@ -31,8 +31,8 @@ const PropertyAdder = ({ history }: PropertyAdderProps) => (
     }}
     schema={proPropertySchema}
     onSubmit={property =>
-      propertyInsert
-        .run({ property: { ...property, category: PROPERTY_CATEGORY.PRO } })
+      proPropertyInsert
+        .run({ property: { ...property, category: PROPERTY_CATEGORY.PRO }, userId  })
         .then(propertyId =>
           history.push(createRoute(PRO_PROPERTY_PAGE, { propertyId })))
     }
