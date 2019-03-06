@@ -1,3 +1,4 @@
+import Calculator from 'core/utils/Calculator';
 import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
@@ -94,6 +95,27 @@ const filterLoans = (loans = []) =>
     return [...filteredLoans, currentLoan];
   }, []);
 
+const getLoanEstimatedRevenues = (loan) => {
+  if (loan.structure) {
+    return {
+      ...loan,
+      estimatedRevenues: Calculator.getEstimatedReferralRevenues({ loan }),
+    };
+  }
+  return loan;
+};
+
+const shouldShowPromotionLoan = ({
+  showAnonymizedPromotionLoans,
+  userId,
+}) => (loan) => {
+  const { promotions = [] } = loan;
+  const {
+    $metadata: { invitedBy },
+  } = promotions[0];
+  return showAnonymizedPromotionLoans || invitedBy === userId;
+};
+
 export const proLoansResolver = ({
   userId,
   calledByUserId,
@@ -107,13 +129,9 @@ export const proLoansResolver = ({
     const promotionLoans = proPromotionLoansResolver({
       calledByUserId,
       promotionId,
-    }).filter((loan) => {
-      const { promotions = [] } = loan;
-      const {
-        $metadata: { invitedBy },
-      } = promotions[0];
-      return showAnonymizedPromotionLoans || invitedBy === userId;
-    });
+    })
+      .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
+      .map(loan => ({ ...loan, relatedTo: loan.promotions[0].name }));
     loans = promotionLoans;
   }
 
@@ -121,7 +139,7 @@ export const proLoansResolver = ({
     const propertyLoans = proPropertyLoansResolver({
       calledByUserId,
       propertyId,
-    });
+    }).map(loan => ({ ...loan, relatedTo: loan.properties[0].address1 }));
     loans = [...loans, ...propertyLoans];
   }
 
@@ -131,5 +149,5 @@ export const proLoansResolver = ({
   });
   loans = [...loans, ...referredByLoans];
 
-  return filterLoans(loans);
+  return filterLoans(loans).map(getLoanEstimatedRevenues);
 };

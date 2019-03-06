@@ -1,9 +1,12 @@
+import React from 'react';
 import { compose, mapProps, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
+import { Money } from 'core/components/Translation';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -11,10 +14,20 @@ const columnOptions = [
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
+  { id: 'referredBy' },
+  { id: 'relatedTo' },
+  { id: 'estimatedRevenues' },
 ].map(({ id, label }) => ({ id, label }));
 
 const makeMapLoan = history => (loan) => {
-  const { _id: loanId, user, createdAt, name: loanName } = loan;
+  const {
+    _id: loanId,
+    user,
+    createdAt,
+    name: loanName,
+    relatedTo,
+    estimatedRevenues,
+  } = loan;
 
   return {
     id: loanId,
@@ -24,24 +37,37 @@ const makeMapLoan = history => (loan) => {
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+      {
+        raw: user && user.referredByUser,
+        label:
+          (user
+            && user.referredByUser
+            && getUserNameAndOrganisation({ user: user.referredByUser }))
+          || 'Personne',
+      },
+      {
+        raw: relatedTo,
+        label: relatedTo,
+      },
+      {
+        raw: estimatedRevenues,
+        label: estimatedRevenues ? (
+          <Money value={estimatedRevenues} />
+        ) : (
+          'À déterminer'
+        ),
+      },
     ],
   };
 };
 
 export default compose(
   mapProps(({ currentUser, ...props }) => {
-    const {
-      properties = [],
-      promotions = [],
-      proProperties = [],
-    } = currentUser;
+    const { promotions = [], proProperties = [] } = currentUser;
     return {
       ...props,
       currentUser,
-      propertyIds: [
-        ...properties.map(({ _id }) => _id),
-        ...proProperties.map(({ _id }) => _id),
-      ],
+      propertyIds: proProperties.map(({ _id }) => _id),
       promotionIds: promotions.map(({ _id }) => _id),
     };
   }),

@@ -290,7 +290,7 @@ export const adminLoans = () => ({
 export const proLoans = () => ({
   createdAt: 1,
   name: 1,
-  promotions: { users: { _id: 1 }, status: 1 },
+  promotions: { name: 1, users: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
@@ -303,11 +303,13 @@ export const proLoans = () => ({
     name: 1,
     phoneNumbers: 1,
     email: 1,
-    referredByUser: { _id: 1 },
+    referredByUser: { _id: 1, name: 1, organisations: { name: 1 } },
     referredByOrganisation: { _id: 1 },
   },
   hasPromotion: 1,
   hasProProperty: 1,
+  properties: { address1: 1 },
+  structure: 1,
 });
 
 export const sideNavLoan = () => ({
