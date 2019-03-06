@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -11,10 +12,13 @@ const columnOptions = [
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
+  { id: 'referredBy' },
+  { id: 'relatedTo' },
 ].map(({ id, label }) => ({ id, label }));
 
 const makeMapLoan = history => (loan) => {
-  const { _id: loanId, user, createdAt, name: loanName } = loan;
+  const { _id: loanId, user, createdAt, name: loanName, relatedTo } = loan;
+  console.log('loan:', loan);
 
   return {
     id: loanId,
@@ -24,6 +28,18 @@ const makeMapLoan = history => (loan) => {
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+      {
+        raw: user && user.referredByUser,
+        label:
+          (user
+            && user.referredByUser
+            && getUserNameAndOrganisation({ user: user.referredByUser }))
+          || 'Personne',
+      },
+      {
+        raw: relatedTo,
+        label: relatedTo,
+      },
     ],
   };
 };
