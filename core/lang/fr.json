@@ -1,4 +1,10 @@
 {
+  "Forms.status.EXPECTED": "Attendu",
+  "Forms.status.CLOSED": "Reçu",
+  "LoanTabs.revenues": "Revenus",
+  "Forms.approximation": "Montant approximé",
+  "Forms.amount.placeholder": "2000",
+  "Forms.amount": "Montant",
   "Forms.permissions.displayCustomerNames.forPropertyStatus.FOR_SALE": "En vente",
   "Forms.permissions.displayCustomerNames.forPropertyStatus.BOOKED": "Réservé",
   "Forms.permissions.displayCustomerNames.forPropertyStatus.SOLD": "Vendu",

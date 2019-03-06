@@ -1,9 +1,12 @@
+import { Match } from 'meteor/check';
+
 import { Method } from '../methods/methods';
 
 export const revenueInsert = new Method({
   name: 'revenueInsert',
   params: {
     revenue: Object,
+    loanId: Match.Maybe(String),
   },
 });
 

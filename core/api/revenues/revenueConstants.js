@@ -17,3 +17,8 @@ export const REVENUES_STATUS = {
   EXPECTED: 'EXPECTED',
   CLOSED: 'CLOSED',
 };
+
+export const COMMISSION_STATUS = {
+  PAID: 'PAID',
+  TO_BE_PAID: 'TO_BE_PAID',
+};

@@ -64,6 +64,7 @@ export const AutoFormDialog = (props: AutoFormDialogProps) => {
   };
   const handleClose = () => setOpen(false);
 
+  console.log('otherProps', otherProps);
   return (
     <>
       {triggerComponent
