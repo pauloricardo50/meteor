@@ -1,4 +1,13 @@
 {
+  "Forms.organisationLinks._id": "Organisation",
+  "Forms.organisationLinks.commissionRate": "Commission",
+  "Forms.organisationLinks.paidDate": "Date de paiement",
+  "Forms.organisationLinks.status": "Status",
+  "Forms.status.TO_BE_PAID": "À payer",
+  "Forms.status.PAID": "Payé",
+  "Forms.organisationLinks": "Organisations",
+  "Forms.type.MORTGAGE": "Hypothèque",
+  "Forms.type.FEE": "Honoraires",
   "Forms.status.EXPECTED": "Attendu",
   "Forms.status.CLOSED": "Reçu",
   "LoanTabs.revenues": "Revenus",

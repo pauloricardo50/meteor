@@ -3,13 +3,15 @@ import { withProps, compose, withState } from 'recompose';
 import moment from 'moment';
 
 import T, { Money } from 'core/components/Translation';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import { ORGANISATIONS_COLLECTION } from 'core/api/constants';
 
 const columnOptions = [
   { id: 'status' },
   { id: 'createdAt' },
   { id: 'type' },
   { id: 'description' },
-  { id: 'approximation' },
+  { id: 'organisations' },
   { id: 'amount' },
 ].map(({ id }) => ({ id, label: <T id={`Forms.${id}`} /> }));
 
@@ -22,6 +24,7 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
     type,
     description,
     status,
+    organisations = [],
   } = revenue;
 
   return {
@@ -40,13 +43,19 @@ const makeMapRevenue = ({ setOpenModifier, setRevenueToModify }) => (revenue) =>
         label: <T id={`Forms.type.${type}`} />,
       },
       description,
-      {
-        raw: approximation,
-        label: approximation ? 'Approximé' : 'Exact',
-      },
+      organisations.map(organisation => (
+        <CollectionIconLink
+          relatedDoc={{ ...organisation, collection: ORGANISATIONS_COLLECTION }}
+          key={organisation._id}
+        />
+      )),
       {
         raw: amount,
-        label: <Money value={amount} />,
+        label: (
+          <span>
+            <Money value={amount} /> {approximation ? '(Approximé)' : ''}
+          </span>
+        ),
       },
     ],
     handleClick: () => {

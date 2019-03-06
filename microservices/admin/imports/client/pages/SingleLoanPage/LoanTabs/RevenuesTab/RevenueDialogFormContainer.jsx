@@ -1,4 +1,6 @@
+import React from 'react';
 import { compose, withProps, withState } from 'recompose';
+import merge from 'lodash/merge';
 
 import RevenueSchema from 'core/api/revenues/schemas/revenueSchema';
 import {
@@ -11,6 +13,7 @@ import { percentageField } from 'core/api/helpers/sharedSchemas';
 import { COMMISSION_STATUS } from 'core/api/constants';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import { CUSTOM_AUTOFIELD_TYPES } from 'core/components/AutoForm2/constants';
+import T from 'core/components/Translation';
 
 const schema = RevenueSchema.omit(
   'createdAt',
@@ -32,7 +35,9 @@ const schema = RevenueSchema.omit(
       placeholder: '',
     },
   },
-  'organisationLinks.$.commissionRate': percentageField,
+  'organisationLinks.$.commissionRate': merge({}, percentageField, {
+    uniforms: { labelProps: { shrink: true } },
+  }),
   'organisationLinks.$.paidDate': {
     type: Date,
     optional: true,
@@ -42,7 +47,11 @@ const schema = RevenueSchema.omit(
   'organisationLinks.$.status': {
     type: String,
     allowedValues: Object.values(COMMISSION_STATUS),
-    uniforms: { displayEmpty: false, placeholder: '' },
+    uniforms: {
+      displayEmpty: false,
+      placeholder: '',
+      transform: status => <T id={`Forms.status.${status}`} />,
+    },
   },
 });
 
