@@ -8,7 +8,7 @@ import { initialDocuments as propertyDocuments } from 'core/api/properties/prope
 import CombinedCalculator from '..';
 
 describe('CombinedCalculator', () => {
-  describe.only('filesProgress', () => {
+  describe('filesProgress', () => {
     it('sums file progress across the loan', () => {
       const property = {
         documents: { [DOCUMENTS.PROPERTY_PLANS]: [{}] },
