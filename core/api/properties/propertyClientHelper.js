@@ -66,6 +66,11 @@ export const shouldAnonymize = ({
   permissions = {},
   propertyStatus,
 }) => {
+  // Never anonymize if referred by user
+  if (customerOwnerType === PROPERTY_REFERRED_BY_TYPE.USER) {
+    return false;
+  }
+
   if (!Object.keys(permissions).length) {
     return true;
   }
@@ -84,11 +89,11 @@ export const shouldAnonymize = ({
   }
 
   switch (customerOwnerType) {
-  case PROPERTY_REFERRED_BY_TYPE.USER:
-    return shouldAnonymizeWhenReferredByTypeUser({
-      shouldHideForPropertyStatus,
-      referredBy: displayCustomerNames.referredBy,
-    });
+  // case PROPERTY_REFERRED_BY_TYPE.USER:
+  //   return shouldAnonymizeWhenReferredByTypeUser({
+  //     shouldHideForPropertyStatus,
+  //     referredBy: displayCustomerNames.referredBy,
+  //   });
   case PROPERTY_REFERRED_BY_TYPE.ORGANISATION:
     return shouldAnonymizeWhenReferredByTypeOrganisation({
       shouldHideForPropertyStatus,
