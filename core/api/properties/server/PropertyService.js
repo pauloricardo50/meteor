@@ -192,6 +192,22 @@ export class PropertyService extends CollectionService {
   }
 
   removeCustomerFromProperty({ propertyId, loanId }) {
+    const loan = LoanService.findOne({ _id: loanId });
+    const { structures = [] } = loan;
+
+    if (structures.length) {
+      LoanService.update({
+        loanId,
+        object: {
+          structures: loan.structures.map(structure => ({
+            ...structure,
+            propertyId:
+              structure.propertyId === propertyId ? null : structure.propertyId,
+          })),
+        },
+      });
+    }
+    
     this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
   }
 }

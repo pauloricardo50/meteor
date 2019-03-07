@@ -17,8 +17,8 @@ import {
   isAllowedToSellProPropertyToCustomer,
   isAllowedToManageProPropertyPermissions,
 } from '../clientSecurityHelpers';
-import { proUser, fullProperty, proLoans } from '../../fragments';
-import { LoanService } from '../../loans/server/LoanService';
+import { proUser, fullProperty } from '../../fragments';
+import LoanService from '../../loans/server/LoanService';
 import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
 
 class PropertySecurity {
@@ -31,11 +31,11 @@ class PropertySecurity {
     if (Security.currentUserIsAdmin()) {
       return;
     }
-    const property = PropertyService.safeFetchOne({
+    const property = PropertyService.fetchOne({
       $filters: { _id: propertyId },
       ...fullProperty(),
     });
-    const currentUser = UserService.safeFetchOne({
+    const currentUser = UserService.fetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
@@ -163,17 +163,17 @@ class PropertySecurity {
       return true;
     }
 
-    const property = PropertyService.safeFetchOne({
+    const property = PropertyService.fetchOne({
       $filters: { _id: propertyId },
       ...fullProperty(),
     });
 
-    const currentUser = UserService.safeFetchOne({
+    const currentUser = UserService.fetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
 
-    const loan = LoanService.safeFetchOne({
+    const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       user: { _id: 1 },
     });
@@ -209,17 +209,17 @@ class PropertySecurity {
       return true;
     }
 
-    const property = PropertyService.safeFetchOne({
+    const property = PropertyService.fetchOne({
       $filters: { _id: propertyId },
       ...fullProperty(),
     });
 
-    const currentUser = UserService.safeFetchOne({
+    const currentUser = UserService.fetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
 
-    const loan = LoanService.safeFetchOne({
+    const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       user: { _id: 1 },
     });
@@ -259,17 +259,17 @@ class PropertySecurity {
       return true;
     }
 
-    const property = PropertyService.safeFetchOne({
+    const property = PropertyService.fetchOne({
       $filters: { _id: propertyId },
       ...fullProperty(),
     });
 
-    const currentUser = UserService.safeFetchOne({
+    const currentUser = UserService.fetchOne({
       $filters: { _id: userId },
       ...proUser(),
     });
 
-    const loan = LoanService.safeFetchOne({
+    const loan = LoanService.fetchOne({
       $filters: { _id: loanId },
       user: { _id: 1 },
     });

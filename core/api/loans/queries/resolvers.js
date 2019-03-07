@@ -31,6 +31,8 @@ const anonymizeReferredByLoans = ({ loans = [], userId }) => [
     loans: loans.filter(({ hasProProperty }) => hasProProperty),
     userId,
   }),
+  // Anonymize these ones ?
+  ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
 ];
 
 export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
