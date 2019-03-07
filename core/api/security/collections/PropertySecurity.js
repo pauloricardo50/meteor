@@ -15,6 +15,7 @@ import {
   isAllowedToBookProPropertyToCustomer,
   isAllowedToSellProProperty,
   isAllowedToSellProPropertyToCustomer,
+  isAllowedToManageProPropertyPermissions,
 } from '../clientSecurityHelpers';
 import { proUser, fullProperty, proLoans } from '../../fragments';
 import { LoanService } from '../../loans/server/LoanService';
@@ -76,9 +77,11 @@ class PropertySecurity {
         checkingFunction: isAllowedToModifyProProperty,
         errorMessage: 'Vous ne pouvez pas modifier ce bien immobilier',
       });
+    } else if (category === PROPERTY_CATEGORY.PROMOTION) {
+      this.checkBelongsToPromotion(propertyId, userId);
+    } else {
+      this.handleUnauthorized('Vous ne pouvez pas modifier ce bien immobilier');
     }
-
-    this.checkBelongsToPromotion(propertyId, userId);
   }
 
   static isAllowedToUpdate(propertyId, userId) {
@@ -88,10 +91,10 @@ class PropertySecurity {
 
     if (Security.currentUserHasRole(ROLES.PRO)) {
       this.isProUserAllowedToUpdate({ propertyId, userId });
+    } else {
+      const property = Properties.findOne(propertyId);
+      Security.checkOwnership(property);
     }
-
-    const property = Properties.findOne(propertyId);
-    Security.checkOwnership(property);
   }
 
   static isAllowedToDelete(propertyId) {
@@ -286,6 +289,16 @@ class PropertySecurity {
     ) {
       this.handleUnauthorized('Vous ne pouvez pas vendre ce bien immobilier à ce client');
     }
+  }
+
+  static isAllowedToManagePermissions({ propertyId, userId }) {
+    this.checkPermissions({
+      propertyId,
+      userId,
+      checkingFunction: isAllowedToManageProPropertyPermissions,
+      errorMessage:
+        'Vous ne pouvez pas gérer les permissions sur ce bien immobilier',
+    });
   }
 }
 

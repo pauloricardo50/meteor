@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Slingshot } from 'meteor/edgee:slingshot';
 import { Roles } from 'meteor/alanning:roles';
 
+import { ROLES } from 'core/api/constants';
 import {
   LOANS_COLLECTION,
   PROPERTIES_COLLECTION,
@@ -25,8 +26,7 @@ Slingshot.createDirective(SLINGSHOT_DIRECTIVE_NAME, uploadDirective, {
 
     // Check for devs and admins
     if (
-      Roles.userIsInRole(this.userId, 'admin')
-      || Roles.userIsInRole(this.userId, 'dev')
+      SecurityService.hasMinimumRole({ userId: this.userId, role: ROLES.ADMIN })
     ) {
       return true;
     }

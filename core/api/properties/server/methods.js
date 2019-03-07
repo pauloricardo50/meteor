@@ -63,8 +63,11 @@ propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) =>
 });
 
 inviteUserToProperty.setHandler(({ userId }, params) => {
-  // TODO: Fix security
   SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToInviteCustomers({
+    userId,
+    propertyId: params.propertyId,
+  });
   if (Meteor.microservice === 'pro') {
     return PropertyService.inviteUser({ ...params, proUserId: userId });
   }
@@ -74,6 +77,10 @@ inviteUserToProperty.setHandler(({ userId }, params) => {
 addProUserToProperty.setHandler(({ userId }, params) => {
   // TODO: security
   SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToInviteProUsers({
+    userId,
+    propertyId: params.propertyId,
+  });
   return PropertyService.addProUser(params);
 });
 
@@ -84,5 +91,9 @@ proPropertyInsert.setHandler(({ userId }, params) => {
 
 setProPropertyPermissions.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToManagePermissions({
+    userId,
+    propertyId: params.propertyId,
+  });
   PropertyService.setProUserPermissions(params);
 });

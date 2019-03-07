@@ -136,7 +136,7 @@ export default class Security {
     }
   }
 
-  static minimumRole(role) {
+  static hasMinimumRole({ role, userId }) {
     let allowedRoles;
 
     switch (role) {
@@ -157,16 +157,21 @@ export default class Security {
       throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
     }
 
-    return (userId) => {
-      const isAllowed = allowedRoles.some(allowedRole =>
-        this.hasRole(userId, allowedRole));
+    const isAllowed = allowedRoles.some(allowedRole =>
+      this.hasRole(userId, allowedRole));
 
-      if (!isAllowed) {
-        this.handleUnauthorized('Unauthorized role');
-      }
+    if (!isAllowed) {
+      return false;
+    }
 
-      return true;
-    };
+    return true;
+  }
+
+  static minimumRole(role) {
+    return userId =>
+      (this.hasMinimumRole({ userId, role })
+        ? undefined
+        : this.handleUnauthorized('Unauthorized role'));
   }
 
   static canModifyDoc = (doc) => {
@@ -186,6 +191,7 @@ export default class Security {
   };
 
   static isAllowedToModifyFiles({ collection, docId, userId, fileKey }) {
+    console.log('collection:', collection);
     const keyId = fileKey.split('/')[0];
 
     if (keyId !== docId) {
@@ -214,7 +220,7 @@ export default class Security {
         break;
       }
 
-      this.properties.isAllowedToUpdate(docId);
+      this.properties.isAllowedToUpdate(docId, userId);
       break;
     }
     default:
