@@ -59,11 +59,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return { total: notaryFees };
       }
 
-      const canton = this.makeSelectPropertyKey('canton')({
-        loan,
-        structureId,
-      });
-      const calculator = new NotaryFeesCalculator({ canton });
+      const calculator = this.getFeesCalculator({ loan, structureId });
 
       const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
@@ -219,13 +215,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         structureId,
         key: 'wantedLoan',
       });
-      const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'propertyWork',
-      }) || 0;
-      return wantedLoan / (propertyValue + propertyWork);
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      return wantedLoan / propAndWork;
     }
 
     getMaxBorrowRatio() {
@@ -342,6 +333,29 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       const loanValue = this.selectLoanValue({ loan, structureId });
 
       return Math.max(0, loanValue - mortgageNoteValue);
+    }
+
+    getCashUsed({ loan, structureId }) {
+      const { ownFunds } = this.selectStructure({ loan, structureId });
+
+      return ownFunds
+        .filter(({ type, usageType }) =>
+          type !== OWN_FUNDS_TYPES.INSURANCE_2
+            && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getCashRatio({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const fees = this.getFees({ loan, structureId }).total;
+      const cashUsed = this.getCashUsed({ loan, structureId });
+
+      const cashRatio = (cashUsed - fees) / propAndWork;
+      return cashRatio;
+    }
+
+    hasEnoughCash({ loan, structureId }) {
+      return this.getCashRatio({ loan, structureId }) >= this.minCash;
     }
 
     structureIsValid({ loan, structureId }) {

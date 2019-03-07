@@ -9,7 +9,7 @@ import FinancingDataContainer from '../containers/FinancingDataContainer';
 import { calculateMissingOwnFunds } from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
-import FinanceCalculator, { getOffer } from '../FinancingCalculator';
+import FinanceCalculator from '../FinancingCalculator';
 
 import { ROUNDING_AMOUNT } from '../FinancingOwnFunds/RequiredOwnFunds';
 import {
@@ -24,15 +24,6 @@ export const ERROR_TYPES = {
   WARNING: 'WARNING',
 };
 
-const getCashUsed = ({ loan, structureId }) => {
-  const { ownFunds } = Calculator.selectStructure({ loan, structureId });
-
-  return ownFunds
-    .filter(({ type, usageType }) =>
-      type !== OWN_FUNDS_TYPES.INSURANCE_2
-        && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
-    .reduce((sum, { value }) => sum + value, 0);
-};
 const errors = [
   {
     id: 'noMortgageLoan',
@@ -90,18 +81,7 @@ const errors = [
     id: 'missingCash',
     func: (data) => {
       const { loan, structureId } = data;
-      const { propertyWork, notaryFees } = Calculator.selectStructure({
-        loan,
-        structureId,
-      });
-      const propertyValue = Calculator.selectPropertyValue(data);
-      return (
-        Calculator.getMinCash({
-          fees: notaryFees,
-          propertyValue,
-          propertyWork,
-        }) > getCashUsed(data)
-      );
+      return !Calculator.hasEnoughCash({ loan, structureId });
     },
     type: ERROR_TYPES.WARNING,
   },
