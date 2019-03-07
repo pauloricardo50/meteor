@@ -18,7 +18,6 @@ const BorrowersPdfPage = ({
 }: BorrowersPdfPageProps) => (
   <PdfPage
     className="borrowers-page"
-    isLast
     title={<T id="PDF.title.borrowers" />}
     withFooter
     pageNb={pageNb}

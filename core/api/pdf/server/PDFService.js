@@ -25,7 +25,7 @@ class PDFService {
   makePDF = ({ type, params, options, htmlOnly }) => {
     this.checkParams({ params, type });
     const data = this.getDataForPDF(type, params);
-    this.checkData(data, type);
+    this.checkData({ data, type });
 
     const { component, props, fileName, pdfName } = this.makeConfigForPDF({
       data,
@@ -55,7 +55,7 @@ class PDFService {
       break;
     }
     default:
-      break;
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
@@ -70,7 +70,7 @@ class PDFService {
     }
 
     default:
-      break;
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
@@ -95,6 +95,7 @@ class PDFService {
       return { ...params, loan, organisation };
     }
     default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
@@ -112,6 +113,7 @@ class PDFService {
       };
     }
     default:
+      throw new Meteor.Error(`Invalid pdf type: ${type}`);
     }
   };
 
