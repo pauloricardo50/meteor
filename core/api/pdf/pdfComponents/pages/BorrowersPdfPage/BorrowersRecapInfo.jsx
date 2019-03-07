@@ -26,11 +26,18 @@ const getBorrowersInfosArray = ({ borrowers, calculator }) => {
     },
     {
       label: <T id="PDF.borrowersInfos.age" />,
-      data: borrowersInfos.birthDate.map((date, index) => (
-        <span key={index}>
-          {borrowersInfos.age[index]}&nbsp;({moment(date).format('DD.MM.YYYY')})
-        </span>
-      )),
+      data: borrowersInfos.birthDate.map((date, index) => {
+        if (!date) {
+          return '-';
+        }
+
+        return (
+          <span key={index}>
+            {borrowersInfos.age[index]}&nbsp;(
+            {moment(date).format('DD.MM.YYYY')})
+          </span>
+        );
+      }),
     },
     {
       label: <T id="PDF.borrowersInfos.children" />,
