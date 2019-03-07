@@ -11,22 +11,24 @@ const ANONYMIZED_USER = {
   phoneNumbers: [ANONYMIZED_STRING],
   email: ANONYMIZED_STRING,
 };
+const anonymizeUser = ({ user }) => {
+  const { name, phoneNumbers, email, ...rest } = user;
+  return { ...ANONYMIZED_USER, ...rest };
+};
 
 const getUserProPropertyPermissions = ({ userId, propertyId }) => {
   const user = UserService.fetchOne({
     $filters: { _id: userId },
-    properties: { _id: 1 },
+    proProperties: { _id: 1 },
   });
 
   if (!user) {
     return {};
   }
 
-  const { properties = [] } = user;
+  const { proProperties: properties = [] } = user;
 
-  const {
-    $metadata: { permissions = {} },
-  } = properties.find(({ _id }) => _id === propertyId);
+  const { $metadata: { permissions = {} } = {} } = properties.find(({ _id }) => _id === propertyId) || {};
 
   return permissions;
 };
@@ -110,7 +112,7 @@ export const makeProPropertyLoanAnonymizer = ({
       userId,
     });
 
-    const anonymizeUser = anonymize === undefined
+    const shouldAnonymizeUser = anonymize === undefined
       ? clientShouldAnonymize({
         customerOwnerType,
         permissions,
@@ -119,7 +121,7 @@ export const makeProPropertyLoanAnonymizer = ({
       : anonymize;
 
     return {
-      user: anonymizeUser ? ANONYMIZED_USER : user,
+      user: shouldAnonymizeUser ? anonymizeUser({ user }) : user,
       ...rest,
     };
   };

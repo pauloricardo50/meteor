@@ -1,4 +1,10 @@
 {
+  "ProPropertyPage.addUser.label": "Ajouter utilisateur",
+  "ProPropertyPage.addUser.title": "Ajouter utilisateur",
+  "ProPropertyPage.ProUsers.name": "Nom",
+  "ProPropertyPage.ProUsers.email": "Email",
+  "ProPropertyPage.ProUsers.permissions": "Permissions",
+  "ProPropertyPage.ProUsers.actions": "Actions",
   "Forms.organisationLinks._id": "Organisation",
   "Forms.organisationLinks.commissionRate": "Commission",
   "Forms.organisationLinks.paidDate": "Date de paiement",

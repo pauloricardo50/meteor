@@ -14,7 +14,7 @@ export const ProPropertyPage = ({
 }: ProPropertyPageProps) => (
   <div className="pro-property-page">
     <ProPropertyPageHeader property={property} permissions={permissions} />
-    <ProPropertyPageUsers property={property} />
+    <ProPropertyPageUsers property={property} permissions={permissions} />
     <ProPropertyPageCustomers property={property} permissions={permissions} />
     <ProProperty property={property} />
   </div>

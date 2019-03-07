@@ -12,12 +12,14 @@ import PromotionProgressHeader from '../../PromotionUsersPage/PromotionProgressH
 import PromotionProgress from '../../PromotionLotPage/PromotionProgress';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';
+import { getUserNameAndOrganisation } from '../../../api';
 
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
+  { id: 'referredBy' },
   { id: 'progress', label: <PromotionProgressHeader /> },
   { id: 'actions' },
 ].map(({ id, label }) => ({
@@ -36,6 +38,12 @@ const makeMapLoan = history => (loan) => {
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
+      {
+        raw: user.referredByUser && user.referredByUser.name,
+        label:
+          user.referredByUser
+          && getUserNameAndOrganisation({ user: user.referredByUser }),
+      },
       {
         raw: promotionProgress.verificationStatus,
         label: <PromotionProgress promotionProgress={promotionProgress} />,

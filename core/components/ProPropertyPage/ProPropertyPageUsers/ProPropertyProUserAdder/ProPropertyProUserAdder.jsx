@@ -27,8 +27,8 @@ const ProPropertyProUserAdder = ({
   <DialogSimple
     primary
     raised
-    label={<T id="AdminPromotionPage.addUser.label" />}
-    title={<T id="AdminPromotionPage.addUser.title" />}
+    label={<T id="ProPropertyPage.addUser.label" />}
+    title={<T id="ProPropertyPage.addUser.title" />}
   >
     <div className="flex-col">
       <form onSubmit={onSearch}>

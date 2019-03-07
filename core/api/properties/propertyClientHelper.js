@@ -21,7 +21,7 @@ export const getProPropertyCustomerOwnerType = ({
   }
 
   // Is referred by user
-  if (referredByUser === userId) {
+  if (referredByUser._id === userId) {
     return PROPERTY_REFERRED_BY_TYPE.USER;
   }
 
@@ -33,9 +33,9 @@ export const getProPropertyCustomerOwnerType = ({
 
   // Is referred by organisation
   if (
-    organisationIds.includes(referredByOrganisation)
+    organisationIds.includes(referredByOrganisation._id)
     // User is not referred by organisation, but by a user in current user's organisations
-    || organisationUserIds.includes(referredByUser)
+    || organisationUserIds.includes(referredByUser._id)
   ) {
     return PROPERTY_REFERRED_BY_TYPE.ORGANISATION;
   }
@@ -63,9 +63,13 @@ const shouldAnonymizeWhenReferredByTypeOrganisation = ({
 
 export const shouldAnonymize = ({
   customerOwnerType,
-  permissions,
+  permissions = {},
   propertyStatus,
 }) => {
+  if (!Object.keys(permissions).length) {
+    return true;
+  }
+
   const { displayCustomerNames } = permissions;
 
   if (displayCustomerNames === false || !customerOwnerType) {

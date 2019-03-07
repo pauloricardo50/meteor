@@ -23,6 +23,7 @@ const makePermissions = props => ({
   canInviteProUsers: isAllowedToInviteProUsersToProProperty(props),
   canManagePermissions: isAllowedToManageProPropertyPermissions(props),
   canSeeCustomers: isAllowedToSeeProPropertyCustomers(props),
+  isPro: true,
 });
 
 export default compose(

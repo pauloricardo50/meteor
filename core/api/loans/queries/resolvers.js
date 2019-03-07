@@ -4,6 +4,7 @@ import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promoti
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
+import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
 
 const anonymizePromotionLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
@@ -13,7 +14,12 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
   });
 
 // TODO: property loans anonymizer
-const anonymizePropertyLoans = ({ loans = [], userId }) => loans;
+const anonymizePropertyLoans = ({ loans = [], userId }) =>
+  loans.map((loan) => {
+    const { properties } = loan;
+    const propertyId = properties[0]._id;
+    return makeProPropertyLoanAnonymizer({ userId, propertyId })(loan);
+  });
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
   ...anonymizePromotionLoans({
