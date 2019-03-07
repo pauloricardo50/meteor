@@ -74,7 +74,7 @@ const getBorrowersFinanceArray = ({ borrowers, calculator }) => {
     addTableMoneyLine({
       label: <T id="PDF.borrowersInfos.realEstateIncome" />,
       field: realEstateIncome,
-      condition: !!realEstateIncome,
+      condition: shouldRenderArray(realEstateIncome),
     }),
     ...Object.values(EXPENSE_TYPES).map(expense =>
       addTableMoneyLine({
