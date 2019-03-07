@@ -1,6 +1,6 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { ROUNDING_AMOUNT } from 'imports/core/components/Financing/client/FinancingOwnFunds/RequiredOwnFunds';
+import { OWN_FUNDS_ROUNDING_AMOUNT } from 'core/config/financeConstants';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -395,11 +395,11 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
     isMissingOwnFunds({ loan, structureId }) {
       const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
-      return missingOwnFunds >= ROUNDING_AMOUNT;
+      return missingOwnFunds >= OWN_FUNDS_ROUNDING_AMOUNT;
     }
 
     hasTooMuchOwnFunds({ loan, structureId }) {
       const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
-      return missingOwnFunds <= -ROUNDING_AMOUNT;
+      return missingOwnFunds <= -OWN_FUNDS_ROUNDING_AMOUNT;
     }
   };

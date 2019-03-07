@@ -5,18 +5,16 @@ import { SUCCESS, ERROR } from '../../../../api/constants';
 import StatusIcon from '../../../StatusIcon';
 import T from '../../../Translation';
 import { toMoney } from '../../../../utils/conversionFunctions';
+import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../../../config/financeConstants';
 import { CalculatedValue } from '../FinancingSection';
 
 type RequiredOwnFundsProps = {};
 
-// Add extra 1 so that rounding errors don't break the comparison
-export const ROUNDING_AMOUNT = 1001;
-
 const getLabel = (value) => {
-  if (value > ROUNDING_AMOUNT) {
+  if (value > OWN_FUNDS_ROUNDING_AMOUNT) {
     return 'Financing.requiredOwnFunds.low';
   }
-  if (value < -ROUNDING_AMOUNT) {
+  if (value < -OWN_FUNDS_ROUNDING_AMOUNT) {
     return 'Financing.requiredOwnFunds.high';
   }
 

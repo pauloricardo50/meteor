@@ -158,7 +158,22 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         }
       }
 
-      console.log('iterations:', iterations);
+      console.log('getMaxPropertyValue iterations:', iterations);
       return foundValue;
+    }
+
+    getMaxPropertyValueForLoan({
+      loan,
+      maxBorrowRatio,
+      canton,
+      residenceType,
+    }) {
+      const { borrowers, residenceType: loanResidenceType } = loan;
+      return this.getMaxPropertyValue({
+        borrowers,
+        residenceType: residenceType || loanResidenceType,
+        maxBorrowRatio,
+        canton,
+      });
     }
   };
