@@ -35,7 +35,7 @@ describe('SolvencyCalculator', () => {
       })).to.deep.equal([
         {
           type: OWN_FUNDS_TYPES.BANK_FORTUNE,
-          value: 255315.5,
+          value: 255316,
           borrowerId: 'borrowerId',
         },
       ]);

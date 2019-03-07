@@ -28,7 +28,7 @@ const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
       {
         Component: RequiredOwnFunds,
         id: 'requiredOwnFunds',
-        value: Calculator.getMissingOwnFunds,
+        calculateValue: Calculator.getMissingOwnFunds,
       },
       {
         Component: FinancingOwnFundsPicker,

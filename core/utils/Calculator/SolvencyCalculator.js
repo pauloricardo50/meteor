@@ -21,7 +21,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         .map((borrower) => {
           const ownFundsObject = {
             type,
-            value: Math.min(max, this.getFunds({ borrowers: borrower, type })),
+            value: Math.ceil(Math.min(max, this.getFunds({ borrowers: borrower, type }))),
             borrowerId: borrower._id,
           };
 
@@ -41,16 +41,23 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       loanValue,
       canton,
       residenceType,
+      notaryFees: forcedNotaryFees,
     }) {
-      // const { borrowers } = loan;
+      let notaryFees;
 
       loanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
-      const notaryCalc = new NotaryFeesCalculator({ canton });
-      const { total: notaryFees } = notaryCalc.getNotaryFeesWithoutLoan({
-        propertyValue,
-        mortgageNoteIncrease: loanValue,
-        residenceType,
-      });
+
+      if (forcedNotaryFees) {
+        notaryFees = forcedNotaryFees;
+      } else {
+        const notaryCalc = new NotaryFeesCalculator({ canton });
+        notaryFees = notaryCalc.getNotaryFeesWithoutLoan({
+          propertyValue,
+          mortgageNoteIncrease: loanValue,
+          residenceType,
+        }).total;
+      }
+
       let requiredOwnFunds = propertyValue + notaryFees - loanValue;
       const ownFunds = [];
 
@@ -60,18 +67,20 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       });
 
       allowedOwnFundsTypes.forEach((type) => {
-        const newOwnFunds = this.makeOwnFunds({
-          borrowers,
-          type,
-          max: requiredOwnFunds,
+        borrowers.forEach((borrower) => {
+          const newOwnFunds = this.makeOwnFunds({
+            borrowers: borrower,
+            type,
+            max: requiredOwnFunds,
+          });
+
+          requiredOwnFunds -= newOwnFunds.reduce(
+            (tot, { value }) => tot + value,
+            0,
+          );
+
+          ownFunds.push(...newOwnFunds);
         });
-
-        requiredOwnFunds -= newOwnFunds.reduce(
-          (tot, { value }) => tot + value,
-          0,
-        );
-
-        ownFunds.push(...newOwnFunds);
       });
 
       return ownFunds;
@@ -174,6 +183,20 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         residenceType: residenceType || loanResidenceType,
         maxBorrowRatio,
         canton,
+      });
+    }
+
+    suggestStructureForLoan({ loan, structureId }) {
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      const notaryFees = this.getFees({ loan, structureId }).total;
+
+      return this.suggestStructure({
+        borrowers: loan.borrowers,
+        propertyValue,
+        loanValue,
+        residenceType: loan.residenceType,
+        notaryFees,
       });
     }
   };
