@@ -63,8 +63,10 @@ export default compose(
     dataName: 'loans',
   }),
   withRouter,
-  mapProps(({ loans = [], history }) => ({
+  mapProps(({ loans = [], history, permissions, property }) => ({
     rows: loans.map(makeMapLoan(history)),
     columnOptions,
+    permissions,
+    property,
   })),
 );
