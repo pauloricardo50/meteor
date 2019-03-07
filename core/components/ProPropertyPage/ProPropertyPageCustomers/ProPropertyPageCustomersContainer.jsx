@@ -12,7 +12,12 @@ import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';
-import { getUserNameAndOrganisation } from '../../../api';
+import {
+  getUserNameAndOrganisation,
+  removeCustomerFromProperty,
+} from '../../../api';
+import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
+import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 
 const columnOptions = [
   { id: 'name' },
@@ -27,9 +32,45 @@ const columnOptions = [
   label: label || <T id={`Forms.${id}`} />,
 }));
 
-const makeMapLoan = history => (loan) => {
+const canRemoveCustomerFromProperty = ({
+  customer,
+  currentUser,
+  property,
+  isAdmin,
+}) => {
+  if (isAdmin) {
+    return true;
+  }
+
+  const { referredByUser, referredByOrganisation } = customer;
+  const customerOwnerType = getProPropertyCustomerOwnerType({
+    referredByUser,
+    referredByOrganisation,
+    currentUser,
+  });
+
+  return isAllowedToRemoveCustomerFromProProperty({
+    property,
+    currentUser,
+    customerOwnerType,
+  });
+};
+
+const makeMapLoan = ({
+  history,
+  permissions,
+  currentUser,
+  property,
+}) => (loan) => {
   const { _id: loanId, user, createdAt, loanProgress } = loan;
-  const isAdmin = Meteor.microservice === 'admin';
+  const { isAdmin } = permissions;
+
+  const canRemoveCustomer = canRemoveCustomerFromProperty({
+    customer: user,
+    currentUser,
+    property,
+    isAdmin,
+  });
 
   return {
     id: loanId,
@@ -48,11 +89,17 @@ const makeMapLoan = history => (loan) => {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
       },
-      <ConfirmMethod
-        method={() => console.log('remove!')}
-        label={<T id="general.remove" />}
-        key="remove"
-      />,
+      canRemoveCustomer ? (
+        <ConfirmMethod
+          method={() =>
+            removeCustomerFromProperty.run({ propertyId: property._id, loanId })
+          }
+          label={<T id="general.remove" />}
+          key="remove"
+        />
+      ) : (
+        <span>-</span>
+      ),
     ],
     ...(isAdmin
       ? {
@@ -71,8 +118,8 @@ export default compose(
     dataName: 'loans',
   }),
   withRouter,
-  mapProps(({ loans = [], history, permissions, property }) => ({
-    rows: loans.map(makeMapLoan(history)),
+  mapProps(({ loans = [], history, permissions, property, currentUser }) => ({
+    rows: loans.map(makeMapLoan({ history, permissions, currentUser, property })),
     columnOptions,
     permissions,
     property,

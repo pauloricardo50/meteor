@@ -15,6 +15,7 @@ import {
   proPropertyInsert,
   setProPropertyPermissions,
   removeProFromProperty,
+  removeCustomerFromProperty,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -102,4 +103,15 @@ setProPropertyPermissions.setHandler(({ userId }, params) => {
 removeProFromProperty.setHandler(({ userId }, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   PropertyService.removeProFromProperty(params);
+});
+
+removeCustomerFromProperty.setHandler(({ userId }, params) => {
+  const { loanId, propertyId } = params;
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToRemoveCustomer({
+    userId,
+    propertyId,
+    loanId,
+  });
+  PropertyService.removeCustomerFromProperty(params);
 });

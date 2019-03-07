@@ -187,8 +187,12 @@ export class PropertyService extends CollectionService {
     });
   }
 
-  removeProFromProperty({propertyId, proUserId}){
-    this.removeLink({ id: propertyId, linkName: 'users', linkId: proUserId})
+  removeProFromProperty({ propertyId, proUserId }) {
+    this.removeLink({ id: propertyId, linkName: 'users', linkId: proUserId });
+  }
+
+  removeCustomerFromProperty({ propertyId, loanId }) {
+    this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
   }
 }
 

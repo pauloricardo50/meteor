@@ -89,3 +89,8 @@ export const removeProFromProperty = new Method({
   name: 'removeProFromProperty',
   params: { propertyId: String, proUserId: String },
 });
+
+export const removeCustomerFromProperty = new Method({
+  name: 'removeCustomerFromProperty',
+  params: { propertyId: String, loanId: String },
+});

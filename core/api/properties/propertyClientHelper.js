@@ -9,9 +9,9 @@ export const getCurrentUserPermissionsForProProperty = ({
 };
 
 export const getProPropertyCustomerOwnerType = ({
-  referredByUser,
-  referredByOrganisation,
-  currentUser,
+  referredByUser = {},
+  referredByOrganisation = {},
+  currentUser = {},
 }) => {
   const { _id: userId, organisations = [] } = currentUser;
 
@@ -27,7 +27,7 @@ export const getProPropertyCustomerOwnerType = ({
 
   const organisationIds = organisations.map(({ _id }) => _id);
   const organisationUserIds = organisations.reduce(
-    (userIds, org) => [...userIds, ...org.users.map(({ _id }) => _id)],
+    (userIds, { users = [] }) => [...userIds, ...users.map(({ _id }) => _id)],
     [],
   );
 
