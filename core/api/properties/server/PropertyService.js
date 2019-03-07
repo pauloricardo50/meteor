@@ -158,7 +158,7 @@ export class PropertyService extends CollectionService {
   };
 
   addProUser({ propertyId, userId }) {
-    return this.addLink({
+    this.addLink({
       id: propertyId,
       linkName: 'users',
       linkId: userId,
@@ -185,6 +185,10 @@ export class PropertyService extends CollectionService {
       linkId: userId,
       metadata: { permissions },
     });
+  }
+
+  removeProFromProperty({propertyId, proUserId}){
+    this.removeLink({ id: propertyId, linkName: 'users', linkId: proUserId})
   }
 }
 

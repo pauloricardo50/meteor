@@ -11,6 +11,7 @@ import { createRoute } from 'core/utils/routerUtils';
 import proPropertyUsers from '../../../api/properties/queries/proPropertyUsers';
 import { withSmartQuery } from '../../../api/containerToolkit';
 import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';
+import { removeProFromProperty } from '../../../api';
 
 const columnOptions = ({ permissions }) => {
   const { isAdmin, canManagePermissions } = permissions;
@@ -67,9 +68,9 @@ const makeMapProPropertyUser = ({
               const confirm = window.confirm(`Supprimer ${getUserNameAndOrganisation({
                 user,
               })} du bien immobilier ?`);
-              // if (confirm) {
-              //   return removeProFromProperty.run({ promotionId, userId: _id });
-              // }
+              if (confirm) {
+                return removeProFromProperty.run({ propertyId, proUserId: _id });
+              }
               return Promise.resolve();
             }}
             type="close"

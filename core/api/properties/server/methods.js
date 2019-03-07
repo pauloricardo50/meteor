@@ -14,6 +14,7 @@ import {
   addProUserToProperty,
   proPropertyInsert,
   setProPropertyPermissions,
+  removeProFromProperty,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
@@ -96,4 +97,9 @@ setProPropertyPermissions.setHandler(({ userId }, params) => {
     propertyId: params.propertyId,
   });
   PropertyService.setProUserPermissions(params);
+});
+
+removeProFromProperty.setHandler(({ userId }, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  PropertyService.removeProFromProperty(params);
 });

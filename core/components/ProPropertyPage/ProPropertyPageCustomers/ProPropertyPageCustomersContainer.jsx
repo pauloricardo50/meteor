@@ -24,7 +24,7 @@ const columnOptions = [
   { id: 'actions' },
 ].map(({ id, label }) => ({
   id,
-  label: label || <T id={`PromotionLotLoansTable.${id}`} />,
+  label: label || <T id={`Forms.${id}`} />,
 }));
 
 const makeMapLoan = history => (loan) => {
