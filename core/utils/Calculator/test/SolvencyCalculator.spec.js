@@ -92,7 +92,7 @@ describe('SolvencyCalculator', () => {
     });
   });
 
-  describe.only('getMaxPropertyValue', () => {
+  describe('getMaxPropertyValue', () => {
     it('recommends a standard value with unlimited income', () => {
       expect(Calculator.getMaxPropertyValue({
         borrowers: [{ bankFortune: 500000, salary: 1000000 }],
