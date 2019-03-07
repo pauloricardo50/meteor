@@ -10,7 +10,7 @@ import {
 const checkProPropertyPermissions = ({
   property,
   userId,
-  permissions,
+  requiredPermissions,
   propertyStatus = [],
 }) => {
   if (propertyStatus.length && !propertyStatus.includes(property.status)) {
@@ -22,7 +22,11 @@ const checkProPropertyPermissions = ({
   }
 
   try {
-    SecurityService.hasPermissionOnDoc({ doc: property, permissions, userId });
+    SecurityService.hasPermissionOnDoc({
+      doc: property,
+      requiredPermissions,
+      userId,
+    });
     return true;
   } catch (error) {
     return false;
@@ -61,12 +65,12 @@ export const isAllowedToInviteCustomersToProProperty = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canInviteCustomers: true };
+  const requiredPermissions = { canInviteCustomers: true };
 
   return checkProPropertyPermissions({
     property,
     userId,
-    permissions,
+    requiredPermissions,
     propertyStatus: [PROPERTY_STATUS.FOR_SALE, PROPERTY_STATUS.BOOKED],
   });
 };
@@ -76,12 +80,12 @@ export const isAllowedToInviteProUsersToProProperty = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canInviteProUsers: true };
+  const requiredPermissions = { canInviteProUsers: true };
 
   return checkProPropertyPermissions({
     property,
     userId,
-    permissions,
+    requiredPermissions,
   });
 };
 
@@ -90,12 +94,12 @@ export const isAllowedToManageProPropertyPermissions = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canManagePermissions: true };
+  const requiredPermissions = { canManagePermissions: true };
 
   return checkProPropertyPermissions({
     property,
     userId,
-    permissions,
+    requiredPermissions,
   });
 };
 
@@ -122,12 +126,12 @@ export const isAllowedToRemoveCustomerFromProProperty = ({
 
 export const isAllowedToModifyProProperty = ({ property, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canModifyProperty: true };
+  const requiredPermissions = { canModifyProperty: true };
 
   return checkProPropertyPermissions({
     property,
     userId,
-    permissions,
+    requiredPermissions,
     propertyStatus: [PROPERTY_STATUS.FOR_SALE],
   });
 };
@@ -162,9 +166,9 @@ export const isAllowedToSeeProPropertyCustomers = ({
 
 export const isAllowedToBookProProperty = ({ property, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canBookLots: true };
+  const requiredPermissions = { canBookLots: true };
 
-  return checkProPropertyPermissions({ property, userId, permissions });
+  return checkProPropertyPermissions({ property, userId, requiredPermissions });
 };
 
 export const isAllowedToBookProPropertyToCustomer = ({
@@ -191,11 +195,11 @@ export const isAllowedToBookProPropertyToCustomer = ({
 
 export const isAllowedToSellProProperty = ({ property, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = {
+  const requiredPermissions = {
     canSellLots: true,
   };
 
-  return checkProPropertyPermissions({ property, userId, permissions });
+  return checkProPropertyPermissions({ property, userId, requiredPermissions });
 };
 
 export const isAllowedToSellProPropertyToCustomer = ({

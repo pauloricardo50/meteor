@@ -94,7 +94,11 @@ export default class Security {
     }
   }
 
-  static hasPermissionOnDoc({ doc, permissions, userId = Meteor.userId() }) {
+  static hasPermissionOnDoc({
+    doc,
+    requiredPermissions,
+    userId = Meteor.userId(),
+  }) {
     const { userLinks = [], users = [] } = doc;
 
     const user = userLinks.find(({ _id }) => _id === userId)
@@ -107,9 +111,9 @@ export default class Security {
     const userPermissions = user.permissions || user.$metadata.permissions;
 
     if (
-      !Object.keys(flattenObject(permissions)).every((permission) => {
+      !Object.keys(flattenObject(requiredPermissions)).every((permission) => {
         const userPermission = get(userPermissions, permission);
-        const requiredPermission = get(permissions, permission);
+        const requiredPermission = get(requiredPermissions, permission);
 
         if (!userPermission) {
           return false;

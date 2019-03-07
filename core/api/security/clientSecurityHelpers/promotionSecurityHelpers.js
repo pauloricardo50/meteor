@@ -9,7 +9,7 @@ import { hasMinimumRole } from './generalSecurityHelpers';
 const checkPromotionPermissions = ({
   promotion,
   userId,
-  permissions,
+  requiredPermissions,
   promotionStatus = [],
 }) => {
   if (promotionStatus.length && !promotionStatus.includes(promotion.status)) {
@@ -21,7 +21,11 @@ const checkPromotionPermissions = ({
   }
 
   try {
-    SecurityService.hasPermissionOnDoc({ doc: promotion, permissions, userId });
+    SecurityService.hasPermissionOnDoc({
+      doc: promotion,
+      requiredPermissions,
+      userId,
+    });
     return true;
   } catch (error) {
     return false;
@@ -52,12 +56,12 @@ export const isAllowedToInviteCustomersToPromotion = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canInviteCustomers: true };
+  const requiredPermissions = { canInviteCustomers: true };
 
   return checkPromotionPermissions({
     promotion,
     userId,
-    permissions,
+    requiredPermissions,
     promotionStatus: [PROMOTION_STATUS.OPEN],
   });
 };
@@ -85,12 +89,12 @@ export const isAllowedToRemoveCustomerFromPromotion = ({
 
 export const isAllowedToModifyPromotion = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canModifyPromotion: true };
+  const requiredPermissions = { canModifyPromotion: true };
 
   return checkPromotionPermissions({
     promotion,
     userId,
-    permissions,
+    requiredPermissions,
     promotionStatus: [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.PREPARATION],
   });
 };
@@ -100,12 +104,12 @@ export const isAllowedToManagePromotionDocuments = ({
   currentUser,
 }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canManageDocuments: true };
+  const requiredPermissions = { canManageDocuments: true };
 
   return checkPromotionPermissions({
     promotion,
     userId,
-    permissions,
+    requiredPermissions,
     promotionStatus: [PROMOTION_STATUS.OPEN, PROMOTION_STATUS.PREPARATION],
   });
 };
@@ -140,39 +144,39 @@ export const isAllowedToSeePromotionCustomers = ({
 
 export const isAllowedToAddLotsToPromotion = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = {
+  const requiredPermissions = {
     canModifyPromotion: true,
     canAddLots: true,
   };
 
-  return checkPromotionPermissions({ promotion, userId, permissions });
+  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
 export const isAllowedToModifyPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = {
+  const requiredPermissions = {
     canModifyPromotion: true,
     canModifyLots: true,
   };
 
-  return checkPromotionPermissions({ promotion, userId, permissions });
+  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
 export const isAllowedToRemovePromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = {
+  const requiredPermissions = {
     canModifyPromotion: true,
     canRemoveLots: true,
   };
 
-  return checkPromotionPermissions({ promotion, userId, permissions });
+  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
 export const isAllowedToBookPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = { canBookLots: true };
+  const requiredPermissions = { canBookLots: true };
 
-  return checkPromotionPermissions({ promotion, userId, permissions });
+  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
 export const isAllowedToBookPromotionLotToCustomer = ({
@@ -197,11 +201,11 @@ export const isAllowedToBookPromotionLotToCustomer = ({
 
 export const isAllowedToSellPromotionLots = ({ promotion, currentUser }) => {
   const { _id: userId } = currentUser;
-  const permissions = {
+  const requiredPermissions = {
     canSellLots: true,
   };
 
-  return checkPromotionPermissions({ promotion, userId, permissions });
+  return checkPromotionPermissions({ promotion, userId, requiredPermissions });
 };
 
 export const isAllowedToSellPromotionLotToCustomer = ({
