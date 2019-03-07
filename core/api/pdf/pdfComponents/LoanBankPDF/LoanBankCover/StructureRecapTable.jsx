@@ -41,7 +41,7 @@ const getRows = ({ loan, structureIds, organisation }) => {
         return (
           <tr key={structureId}>
             <td style={columnStyles[0]}>
-              {name} (page {index + 2})
+              {name || index + 1} (page {index + 2})
             </td>
             <td style={columnStyles[1]}>{toMoney(loanValue)}</td>
             <td style={columnStyles[2]}>
