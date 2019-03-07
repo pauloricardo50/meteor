@@ -6,16 +6,10 @@ import T from '../../../Translation';
 import Calculator from '../../../../utils/Calculator';
 import SingleStructureContainer from '../containers/SingleStructureContainer';
 import FinancingDataContainer from '../containers/FinancingDataContainer';
-import { calculateMissingOwnFunds } from '../FinancingOwnFunds/ownFundsHelpers';
 import { getIncomeRatio } from './financingResultHelpers';
 import FinancingResultChart from './FinancingResultChart';
 import FinanceCalculator from '../FinancingCalculator';
 
-import { ROUNDING_AMOUNT } from '../FinancingOwnFunds/RequiredOwnFunds';
-import {
-  OWN_FUNDS_TYPES,
-  OWN_FUNDS_USAGE_TYPES,
-} from '../../../../api/constants';
 
 type FinancingResultErrorsProps = {};
 
@@ -39,18 +33,14 @@ const errors = [
   },
   {
     id: 'missingOwnFunds',
-    func: (data) => {
-      const missingFunds = calculateMissingOwnFunds(data);
-      return Number.isNaN(missingFunds) || missingFunds >= ROUNDING_AMOUNT;
-    },
+    func: ({ loan, structureId }) =>
+      Calculator.isMissingOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
   },
   {
     id: 'tooMuchOwnFunds',
-    func: (data) => {
-      const missingFunds = calculateMissingOwnFunds(data);
-      return Number.isNaN(missingFunds) || missingFunds <= -ROUNDING_AMOUNT;
-    },
+    func: ({ loan, structureId }) =>
+      Calculator.hasTooMuchOwnFunds({ loan, structureId }),
     type: ERROR_TYPES.WARNING,
   },
   {

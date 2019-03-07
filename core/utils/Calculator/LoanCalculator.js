@@ -1,5 +1,6 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
+import { ROUNDING_AMOUNT } from 'imports/core/components/Financing/client/FinancingOwnFunds/RequiredOwnFunds';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -14,15 +15,12 @@ import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     getProjectValue({ loan, structureId }) {
-      const propertyValue = this.selectPropertyValue({ loan, structureId });
-      if (!propertyValue) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      if (!propAndWork) {
         return 0;
       }
 
-      const value = propertyValue
-        + (this.selectStructureKey({ loan, key: 'propertyWork', structureId })
-          || 0)
-        + this.getFees({ loan, structureId }).total;
+      const value = propAndWork + this.getFees({ loan, structureId }).total;
 
       return value;
     }
@@ -377,5 +375,31 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       }
 
       return true;
+    }
+
+    getRequiredOwnFunds({ loan, structureId }) {
+      const projectValue = this.getProjectValue({ loan, structureId });
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      return projectValue - loanValue;
+    }
+
+    getMissingOwnFunds({ loan, structureId }) {
+      const fundsRequired = this.getRequiredOwnFunds({ loan, structureId });
+      const totalCurrentFunds = this.getNonPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+
+      return fundsRequired - totalCurrentFunds;
+    }
+
+    isMissingOwnFunds({ loan, structureId }) {
+      const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
+      return missingOwnFunds >= ROUNDING_AMOUNT;
+    }
+
+    hasTooMuchOwnFunds({ loan, structureId }) {
+      const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
+      return missingOwnFunds <= -ROUNDING_AMOUNT;
     }
   };
