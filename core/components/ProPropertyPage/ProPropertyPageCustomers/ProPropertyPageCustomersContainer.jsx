@@ -5,11 +5,11 @@ import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
+import LoanProgress from 'core/components/LoanProgress/LoanProgress';
+import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
 import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
-import PromotionProgressHeader from '../../PromotionUsersPage/PromotionProgressHeader';
-import PromotionProgress from '../../PromotionLotPage/PromotionProgress';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';
 import { getUserNameAndOrganisation } from '../../../api';
@@ -20,7 +20,7 @@ const columnOptions = [
   { id: 'email' },
   { id: 'createdAt' },
   { id: 'referredBy' },
-  { id: 'progress', label: <PromotionProgressHeader /> },
+  { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'actions' },
 ].map(({ id, label }) => ({
   id,
@@ -28,7 +28,7 @@ const columnOptions = [
 }));
 
 const makeMapLoan = history => (loan) => {
-  const { _id: loanId, user, createdAt, promotionProgress } = loan;
+  const { _id: loanId, user, createdAt, loanProgress } = loan;
   const isAdmin = Meteor.microservice === 'admin';
 
   return {
@@ -45,8 +45,8 @@ const makeMapLoan = history => (loan) => {
           && getUserNameAndOrganisation({ user: user.referredByUser }),
       },
       {
-        raw: promotionProgress.verificationStatus,
-        label: <PromotionProgress promotionProgress={promotionProgress} />,
+        raw: loanProgress.verificationStatus,
+        label: <LoanProgress loanProgress={loanProgress} />,
       },
       <ConfirmMethod
         method={() => console.log('remove!')}

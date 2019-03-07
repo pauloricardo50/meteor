@@ -4,11 +4,11 @@ import React from 'react';
 import Icon from '../Icon';
 import T from '../Translation';
 
-type PromotionProgressHeaderProps = {};
+type LoanProgressHeaderProps = {};
 
-const PromotionProgressHeader = (props: PromotionProgressHeaderProps) => (
+const LoanProgressHeader = (props: LoanProgressHeaderProps) => (
   <div style={{ display: 'flex', flexDirection: 'column' }}>
-    <T id="PromotionLotLoansTable.promotionProgress" />
+    <T id="PromotionLotLoansTable.loanProgress" />
     <div style={{ display: 'flex' }}>
       <Icon type="info" tooltip="Formulaires remplis" />
       <Icon type="attachFile" tooltip="Documents uploadés" />
@@ -17,4 +17,4 @@ const PromotionProgressHeader = (props: PromotionProgressHeaderProps) => (
   </div>
 );
 
-export default PromotionProgressHeader;
+export default LoanProgressHeader;

@@ -558,7 +558,7 @@
   "PromotionLotLoansTable.phone": "Téléphone",
   "PromotionLotLoansTable.status": "Niveau d'intérêt",
   "PromotionLotLoansTable.custom": "Souhaits particuliers",
-  "PromotionLotLoansTable.promotionProgress": "Progrès e-Potek",
+  "PromotionLotLoansTable.loanProgress": "Progrès e-Potek",
   "PromotionLotLoansTable.solvency": "Solvabilité",
   "PromotionLotLoansTable.title": "Acheteurs intéressés",
   "PromotionLotPage.manageLot": "Lots annexes",
