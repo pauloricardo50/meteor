@@ -1,4 +1,8 @@
-import { OWN_FUNDS_TYPES, RESIDENCE_TYPE } from '../../api/constants';
+import {
+  OWN_FUNDS_TYPES,
+  RESIDENCE_TYPE,
+  OWN_FUNDS_USAGE_TYPES,
+} from '../../api/constants';
 import { arrayify } from '../general';
 import { NotaryFeesCalculator } from '../notaryFees/index';
 
@@ -16,6 +20,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         ];
     }
 
+    ownFundTypeRequiresUsageType({ type }) {
+      return [
+        OWN_FUNDS_TYPES.INSURANCE_2,
+        OWN_FUNDS_TYPES.INSURANCE_3A,
+        OWN_FUNDS_TYPES.INSURANCE_3B,
+      ].includes(type);
+    }
+
     makeOwnFunds({ borrowers, type, usageType, max }) {
       return arrayify(borrowers)
         .map((borrower) => {
@@ -24,6 +36,13 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             value: Math.ceil(Math.min(max, this.getFunds({ borrowers: borrower, type }))),
             borrowerId: borrower._id,
           };
+
+          if (!usageType && this.ownFundTypeRequiresUsageType({ type })) {
+            return {
+              ...ownFundsObject,
+              usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
+            };
+          }
 
           if (usageType) {
             return { ...ownFundsObject, usageType };

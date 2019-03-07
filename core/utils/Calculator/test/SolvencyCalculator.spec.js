@@ -3,6 +3,7 @@
 import { expect } from 'chai';
 
 import Calculator from '..';
+import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
 import { OWN_FUNDS_TYPES, RESIDENCE_TYPE } from '../../../api/constants';
 
 describe('SolvencyCalculator', () => {
@@ -54,6 +55,7 @@ describe('SolvencyCalculator', () => {
           type: OWN_FUNDS_TYPES.INSURANCE_3B,
           value: 50000,
           borrowerId: 'borrowerId',
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
         },
       ]);
     });
@@ -87,6 +89,7 @@ describe('SolvencyCalculator', () => {
           type: OWN_FUNDS_TYPES.INSURANCE_2,
           value: 50000,
           borrowerId: 'borrowerId',
+          usageType: OWN_FUNDS_USAGE_TYPES.WITHDRAW,
         },
       ]);
     });
