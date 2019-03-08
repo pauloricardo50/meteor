@@ -10,15 +10,27 @@ import { proInviteUser } from 'core/api/methods/index';
 const schema = ({ proProperties, promotions }) =>
   new SimpleSchema({
     user: Object,
-    'user.email': String,
-    'user.firstName': String,
-    'user.lastName': String,
-    'user.phoneNumber': String,
+    'user.email': {
+      type: String,
+      uniforms: { label: 'Email', placeholder: 'jean.dupont@gmail.com' },
+    },
+    'user.firstName': {
+      type: String,
+      uniforms: { label: 'Prénom', placeholder: 'Jean' },
+    },
+    'user.lastName': {
+      type: String,
+      uniforms: { label: 'Nom', placeholder: 'Dupont' },
+    },
+    'user.phoneNumber': {
+      type: String,
+      optional: true,
+      uniforms: { label: 'Téléphone', placeholder: '012 345 67 89' },
+    },
     referOnly: { type: Boolean, defaultValue: false },
     propertyId: {
       optional: true,
       type: String,
-      // defaultValue: null,
       allowedValues: proProperties.map(({ _id }) => _id),
       condition: ({ promotionId, referOnly }) => !referOnly && !promotionId,
       uniforms: {
@@ -31,7 +43,6 @@ const schema = ({ proProperties, promotions }) =>
     promotionId: {
       optional: true,
       type: String,
-      // defaultValue: null,
       allowedValues: promotions.map(({ _id }) => _id),
       condition: ({ propertyId, referOnly }) => !referOnly && !propertyId,
       uniforms: {

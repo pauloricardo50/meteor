@@ -12,7 +12,7 @@ const ProCustomerAdder = ({ schema, onSubmit }: ProCustomerAdderProps) => (
     title="Inviter un client"
     buttonProps={{
       raised: true,
-      primary: true,
+      secondary: true,
       label: 'Inviter un client',
     }}
   />
