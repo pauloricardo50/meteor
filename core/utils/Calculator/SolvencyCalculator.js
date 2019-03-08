@@ -25,9 +25,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         ? [
           OWN_FUNDS_TYPES.BANK_FORTUNE,
           OWN_FUNDS_TYPES.INSURANCE_2,
-          OWN_FUNDS_TYPES.INSURANCE_3B,
-          OWN_FUNDS_TYPES.BANK_3A,
           OWN_FUNDS_TYPES.INSURANCE_3A,
+          OWN_FUNDS_TYPES.BANK_3A,
+          OWN_FUNDS_TYPES.INSURANCE_3B,
           OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
         ]
         : [
