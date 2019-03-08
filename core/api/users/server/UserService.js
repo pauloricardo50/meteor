@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
@@ -171,10 +172,15 @@ class UserService extends CollectionService {
       }); // Don't send invitation yet
     }
     if (promotionId) {
-      return PromotionService.inviteUser({ promotionId, user }); // Send invitation is true by default
+      return PromotionService.inviteUser({
+        promotionId,
+        user: { ...user, invitedBy: proUserId },
+      }); // Send invitation is true by default
     }
     if (property) {
       // Not yet implemented
+    } else {
+      throw new Meteor.Error('No property given');
     }
   };
 }
