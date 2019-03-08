@@ -1,33 +1,74 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
+import LoanProgress from '../../LoanProgress/LoanProgress';
+import LoanProgressHeader from '../../LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
 import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
-import PromotionProgressHeader from '../../PromotionUsersPage/PromotionProgressHeader';
-import PromotionProgress from '../../PromotionLotPage/PromotionProgress';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';
+import {
+  getUserNameAndOrganisation,
+  removeCustomerFromProperty,
+} from '../../../api';
+import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
+import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 
 const columnOptions = [
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
   { id: 'createdAt' },
-  { id: 'progress', label: <PromotionProgressHeader /> },
+  { id: 'referredBy' },
+  { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'actions' },
 ].map(({ id, label }) => ({
   id,
-  label: label || <T id={`PromotionLotLoansTable.${id}`} />,
+  label: label || <T id={`Forms.${id}`} />,
 }));
 
-const makeMapLoan = history => (loan) => {
-  const { _id: loanId, user, createdAt, promotionProgress } = loan;
-  const isAdmin = Meteor.microservice === 'admin';
+const canRemoveCustomerFromProperty = ({
+  customer,
+  currentUser,
+  property,
+  isAdmin,
+}) => {
+  if (isAdmin) {
+    return true;
+  }
+
+  const { referredByUser, referredByOrganisation } = customer;
+  const customerOwnerType = getProPropertyCustomerOwnerType({
+    referredByUser,
+    referredByOrganisation,
+    currentUser,
+  });
+
+  return isAllowedToRemoveCustomerFromProProperty({
+    property,
+    currentUser,
+    customerOwnerType,
+  });
+};
+
+const makeMapLoan = ({
+  history,
+  permissions,
+  currentUser,
+  property,
+}) => (loan) => {
+  const { _id: loanId, user, createdAt, loanProgress } = loan;
+  const { isAdmin } = permissions;
+
+  const canRemoveCustomer = canRemoveCustomerFromProperty({
+    customer: user,
+    currentUser,
+    property,
+    isAdmin,
+  });
 
   return {
     id: loanId,
@@ -37,14 +78,31 @@ const makeMapLoan = history => (loan) => {
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       {
-        raw: promotionProgress.verificationStatus,
-        label: <PromotionProgress promotionProgress={promotionProgress} />,
+        raw: user.referredByUser && user.referredByUser.name,
+        label:
+          user.referredByUser
+          && getUserNameAndOrganisation({ user: user.referredByUser }),
       },
-      <ConfirmMethod
-        method={() => console.log('remove!')}
-        label={<T id="general.remove" />}
-        key="remove"
-      />,
+      {
+        raw: loanProgress.verificationStatus,
+        label: <LoanProgress loanProgress={loanProgress} />,
+      },
+      canRemoveCustomer ? (
+        <ConfirmMethod
+          method={() =>
+            removeCustomerFromProperty.run({ propertyId: property._id, loanId })
+          }
+          label={<T id="general.remove" />}
+          key="remove"
+        >
+          <p>
+            Êtes-vous sûr de vouloir enlever l\'accès à ce bien immobilier à{' '}
+            {user.name} ?
+          </p>
+        </ConfirmMethod>
+      ) : (
+        <span>-</span>
+      ),
     ],
     ...(isAdmin
       ? {
@@ -63,8 +121,10 @@ export default compose(
     dataName: 'loans',
   }),
   withRouter,
-  mapProps(({ loans = [], history }) => ({
-    rows: loans.map(makeMapLoan(history)),
+  mapProps(({ loans = [], history, permissions, property, currentUser }) => ({
+    rows: loans.map(makeMapLoan({ history, permissions, currentUser, property })),
     columnOptions,
+    permissions,
+    property,
   })),
 );

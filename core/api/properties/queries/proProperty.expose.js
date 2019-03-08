@@ -5,7 +5,10 @@ import query from './proProperty';
 
 query.expose({
   firewall(userId, params) {
-    Security.properties.isAllowedToRead(params.propertyId, userId);
+    Security.properties.hasAccessToProperty({
+      propertyId: params.propertyId,
+      userId,
+    });
   },
   validateParams: { propertyId: String },
   embody: {

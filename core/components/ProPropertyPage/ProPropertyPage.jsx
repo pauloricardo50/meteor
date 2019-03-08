@@ -11,11 +11,16 @@ type ProPropertyPageProps = {};
 export const ProPropertyPage = ({
   property,
   permissions,
+  currentUser,
 }: ProPropertyPageProps) => (
   <div className="pro-property-page">
-    <ProPropertyPageHeader property={property} />
-    <ProPropertyPageUsers property={property} />
-    <ProPropertyPageCustomers property={property} />
+    <ProPropertyPageHeader property={property} permissions={permissions} />
+    <ProPropertyPageUsers property={property} permissions={permissions} />
+    <ProPropertyPageCustomers
+      property={property}
+      permissions={permissions}
+      currentUser={currentUser}
+    />
     <ProProperty property={property} />
   </div>
 );

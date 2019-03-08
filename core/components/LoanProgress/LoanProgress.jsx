@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
 
-import { Percent } from 'core/components/Translation';
-import Icon from 'core/components/Icon';
-import Tooltip from 'core/components/Material/Tooltip';
-import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
+import { Percent } from '../Translation';
+import Icon from '../Icon';
+import Tooltip from '../Material/Tooltip';
+import { LOAN_VERIFICATION_STATUS } from '../../api/constants';
 
-type PromotionProgressProps = {};
+type LoanProgressProps = {
+  loanProgress: Object,
+};
 
 const getVerificationData = (status) => {
   switch (status) {
@@ -36,9 +38,9 @@ const getVerificationData = (status) => {
   }
 };
 
-const PromotionProgress = ({
-  promotionProgress: { info, documents, verificationStatus },
-}: PromotionProgressProps) => {
+const LoanProgress = ({
+  loanProgress: { info, documents, verificationStatus },
+}: LoanProgressProps) => {
   const { icon, text, className = '' } = getVerificationData(verificationStatus);
   return (
     <div className="promotion-progress">
@@ -61,4 +63,4 @@ const PromotionProgress = ({
   );
 };
 
-export default PromotionProgress;
+export default LoanProgress;

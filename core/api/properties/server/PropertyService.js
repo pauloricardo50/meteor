@@ -11,6 +11,7 @@ import {
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
+import { removePropertyFromLoan } from './propertyServerHelpers';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -158,7 +159,7 @@ export class PropertyService extends CollectionService {
   };
 
   addProUser({ propertyId, userId }) {
-    return this.addLink({
+    this.addLink({
       id: propertyId,
       linkName: 'users',
       linkId: userId,
@@ -185,6 +186,21 @@ export class PropertyService extends CollectionService {
       linkId: userId,
       metadata: { permissions },
     });
+  }
+
+  removeProFromProperty({ propertyId, proUserId }) {
+    this.removeLink({ id: propertyId, linkName: 'users', linkId: proUserId });
+  }
+
+  removeCustomerFromProperty({ propertyId, loanId }) {
+    const loan = LoanService.findOne({ _id: loanId });
+    const { structures = [] } = loan;
+
+    if (structures.length) {
+      removePropertyFromLoan({ loan, propertyId });
+    }
+
+    this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
   }
 }
 

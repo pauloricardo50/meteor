@@ -12,8 +12,12 @@ type ProPropertyPageHeaderProps = {
   property: Object,
 };
 
-const ProPropertyPageHeader = ({ property }: ProPropertyPageHeaderProps) => {
+const ProPropertyPageHeader = ({
+  property,
+  permissions,
+}: ProPropertyPageHeaderProps) => {
   const { address1, totalValue, _id: propertyId, status } = property;
+  const { canModifyProperty, canInviteCustomers } = permissions;
 
   return (
     <div className="pro-property-page-header">
@@ -23,7 +27,7 @@ const ProPropertyPageHeader = ({ property }: ProPropertyPageHeaderProps) => {
           <StatusLabel
             status={status}
             collection={PROPERTIES_COLLECTION}
-            allowModify
+            allowModify={canModifyProperty}
             docId={propertyId}
           />
         </div>
@@ -33,9 +37,12 @@ const ProPropertyPageHeader = ({ property }: ProPropertyPageHeaderProps) => {
       </div>
 
       <div className="pro-property-page-header-buttons">
-        <ProPropertyModifier property={property} />
-        <PropertyDocumentsManager property={property} />
-        <PropertyCustomerAdder propertyId={propertyId} />
+        {canModifyProperty && (
+          <>
+            <ProPropertyModifier property={property} />
+            <PropertyDocumentsManager property={property} />
+          </>
+        )}
       </div>
     </div>
   );

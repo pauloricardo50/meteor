@@ -4,6 +4,8 @@ import {
   getProPropertyCustomerOwnerType as getCustomerOwnerType,
 } from '../propertyClientHelper';
 import PropertyService from './PropertyService';
+import LoanService from '../../loans/server/LoanService';
+import { ROLES } from '../../users/userConstants';
 
 const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
@@ -11,22 +13,21 @@ const ANONYMIZED_USER = {
   phoneNumbers: [ANONYMIZED_STRING],
   email: ANONYMIZED_STRING,
 };
+const anonymizeUser = ({ user }) => ({ ...user, ...ANONYMIZED_USER });
 
 const getUserProPropertyPermissions = ({ userId, propertyId }) => {
   const user = UserService.fetchOne({
     $filters: { _id: userId },
-    properties: { _id: 1 },
+    proProperties: { _id: 1 },
   });
 
   if (!user) {
     return {};
   }
 
-  const { properties = [] } = user;
+  const { proProperties: properties = [] } = user;
 
-  const {
-    $metadata: { permissions = {} },
-  } = properties.find(({ _id }) => _id === propertyId);
+  const { $metadata: { permissions = {} } = {} } = properties.find(({ _id }) => _id === propertyId) || {};
 
   return permissions;
 };
@@ -110,7 +111,7 @@ export const makeProPropertyLoanAnonymizer = ({
       userId,
     });
 
-    const anonymizeUser = anonymize === undefined
+    const shouldAnonymizeUser = anonymize === undefined
       ? clientShouldAnonymize({
         customerOwnerType,
         permissions,
@@ -119,8 +120,20 @@ export const makeProPropertyLoanAnonymizer = ({
       : anonymize;
 
     return {
-      user: anonymizeUser ? ANONYMIZED_USER : user,
+      user: shouldAnonymizeUser ? anonymizeUser({ user }) : user,
       ...rest,
     };
   };
 };
+
+export const removePropertyFromLoan = ({ loan, propertyId }) =>
+  LoanService.update({
+    loanId: loan._id,
+    object: {
+      structures: loan.structures.map(structure => ({
+        ...structure,
+        propertyId:
+          structure.propertyId === propertyId ? null : structure.propertyId,
+      })),
+    },
+  });

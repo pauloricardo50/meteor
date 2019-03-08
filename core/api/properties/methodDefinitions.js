@@ -84,3 +84,13 @@ export const setProPropertyPermissions = new Method({
   name: 'setProPropertyPermissions',
   params: { propertyId: String, userId: String, permissions: Object },
 });
+
+export const removeProFromProperty = new Method({
+  name: 'removeProFromProperty',
+  params: { propertyId: String, proUserId: String },
+});
+
+export const removeCustomerFromProperty = new Method({
+  name: 'removeCustomerFromProperty',
+  params: { propertyId: String, loanId: String },
+});

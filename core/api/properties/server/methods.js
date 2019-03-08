@@ -14,8 +14,11 @@ import {
   addProUserToProperty,
   proPropertyInsert,
   setProPropertyPermissions,
+  removeProFromProperty,
+  removeCustomerFromProperty,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import { ROLES } from '../../users/userConstants';
 
 propertyInsert.setHandler((context, { property, userId, loanId }) => {
   userId = checkInsertUserId(userId);
@@ -28,7 +31,7 @@ propertyUpdate.setHandler(({ userId }, { propertyId, object }) => {
 });
 
 propertyDelete.setHandler((context, { propertyId }) => {
-  SecurityService.properties.isAllowedToDelete(propertyId);
+  SecurityService.properties.isAllowedToDelete(propertyId, context.userId);
   return PropertyService.remove({ propertyId });
 });
 
@@ -63,17 +66,23 @@ propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) =>
 });
 
 inviteUserToProperty.setHandler(({ userId }, params) => {
-  // TODO: Fix security
   SecurityService.checkUserIsPro(userId);
-  if (Meteor.microservice === 'pro') {
+  SecurityService.properties.isAllowedToInviteCustomers({
+    userId,
+    propertyId: params.propertyId,
+  });
+  if (SecurityService.currentUserHasRole(ROLES.PRO)) {
     return PropertyService.inviteUser({ ...params, proUserId: userId });
   }
   return PropertyService.inviteUser(params);
 });
 
 addProUserToProperty.setHandler(({ userId }, params) => {
-  // TODO: security
   SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToInviteProUsers({
+    userId,
+    propertyId: params.propertyId,
+  });
   return PropertyService.addProUser(params);
 });
 
@@ -84,5 +93,25 @@ proPropertyInsert.setHandler(({ userId }, params) => {
 
 setProPropertyPermissions.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToManagePermissions({
+    userId,
+    propertyId: params.propertyId,
+  });
   PropertyService.setProUserPermissions(params);
+});
+
+removeProFromProperty.setHandler(({ userId }, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  PropertyService.removeProFromProperty(params);
+});
+
+removeCustomerFromProperty.setHandler(({ userId }, params) => {
+  const { loanId, propertyId } = params;
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.properties.isAllowedToRemoveCustomer({
+    userId,
+    propertyId,
+    loanId,
+  });
+  PropertyService.removeCustomerFromProperty(params);
 });

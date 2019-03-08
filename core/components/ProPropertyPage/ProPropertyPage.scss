@@ -26,18 +26,27 @@
     margin-bottom: 16px;
   }
 
-  .property-owner {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+  .customers-table {
+    .customers-table-header {
+      align-items: center;
+      justify-content: space-between;
 
-    > * {
-      margin: 0;
+      > * {
+        margin: 0;
+        margin-left: 8px;
+      }
     }
+  }
 
-    .icon {
-      color: $primary;
-      margin-right: 8px;
+  .users-table {
+    .users-table-header {
+      align-items: center;
+      justify-content: space-between;
+
+      > * {
+        margin: 0;
+        margin-left: 8px;
+      }
     }
   }
 }
