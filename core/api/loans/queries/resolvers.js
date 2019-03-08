@@ -13,7 +13,6 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
     return makePromotionLoanAnonymizer({ userId, promotionId })(loan);
   });
 
-// TODO: property loans anonymizer
 const anonymizePropertyLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { properties } = loan;
@@ -31,7 +30,6 @@ const anonymizeReferredByLoans = ({ loans = [], userId }) => [
     loans: loans.filter(({ hasProProperty }) => hasProProperty),
     userId,
   }),
-  // Anonymize these ones ?
   ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
 ];
 

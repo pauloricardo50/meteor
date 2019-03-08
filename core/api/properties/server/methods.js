@@ -18,6 +18,7 @@ import {
   removeCustomerFromProperty,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
+import { ROLES } from '../../users/userConstants';
 
 propertyInsert.setHandler((context, { property, userId, loanId }) => {
   userId = checkInsertUserId(userId);
@@ -30,7 +31,7 @@ propertyUpdate.setHandler(({ userId }, { propertyId, object }) => {
 });
 
 propertyDelete.setHandler((context, { propertyId }) => {
-  SecurityService.properties.isAllowedToDelete(propertyId);
+  SecurityService.properties.isAllowedToDelete(propertyId, context.userId);
   return PropertyService.remove({ propertyId });
 });
 
@@ -70,14 +71,13 @@ inviteUserToProperty.setHandler(({ userId }, params) => {
     userId,
     propertyId: params.propertyId,
   });
-  if (Meteor.microservice === 'pro') {
+  if (SecurityService.currentUserHasRole(ROLES.PRO)) {
     return PropertyService.inviteUser({ ...params, proUserId: userId });
   }
   return PropertyService.inviteUser(params);
 });
 
 addProUserToProperty.setHandler(({ userId }, params) => {
-  // TODO: security
   SecurityService.checkUserIsPro(userId);
   SecurityService.properties.isAllowedToInviteProUsers({
     userId,

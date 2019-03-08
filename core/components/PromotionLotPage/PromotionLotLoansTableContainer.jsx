@@ -4,12 +4,12 @@ import { compose, withProps, mapProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
-import T from 'core/components/Translation';
-import { CollectionIconLink } from 'core/components/IconLink';
-import LoanProgress from 'core/components/LoanProgress/LoanProgress';
-import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
+import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
+import proPromotionOptions from '../../api/promotionOptions/queries/proPromotionOptions';
+import T from '../Translation';
+import { CollectionIconLink } from '../IconLink';
+import LoanProgress from '../LoanProgress/LoanProgress';
+import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
 import { LOANS_COLLECTION } from '../../api/constants';

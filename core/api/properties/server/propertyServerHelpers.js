@@ -4,6 +4,8 @@ import {
   getProPropertyCustomerOwnerType as getCustomerOwnerType,
 } from '../propertyClientHelper';
 import PropertyService from './PropertyService';
+import LoanService from '../../loans/server/LoanService';
+import { ROLES } from '../../users/userConstants';
 
 const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
@@ -11,10 +13,7 @@ const ANONYMIZED_USER = {
   phoneNumbers: [ANONYMIZED_STRING],
   email: ANONYMIZED_STRING,
 };
-const anonymizeUser = ({ user }) => {
-  const { name, phoneNumbers, email, ...rest } = user;
-  return { ...ANONYMIZED_USER, ...rest };
-};
+const anonymizeUser = ({ user }) => ({ ...user, ...ANONYMIZED_USER });
 
 const getUserProPropertyPermissions = ({ userId, propertyId }) => {
   const user = UserService.fetchOne({
@@ -126,3 +125,15 @@ export const makeProPropertyLoanAnonymizer = ({
     };
   };
 };
+
+export const removePropertyFromLoan = ({ loan, propertyId }) =>
+  LoanService.update({
+    loanId: loan._id,
+    object: {
+      structures: loan.structures.map(structure => ({
+        ...structure,
+        propertyId:
+          structure.propertyId === propertyId ? null : structure.propertyId,
+      })),
+    },
+  });

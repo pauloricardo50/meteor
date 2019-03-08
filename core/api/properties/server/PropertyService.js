@@ -11,6 +11,7 @@ import {
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
 import { ROLES } from '../../users/userConstants';
+import { removePropertyFromLoan } from './propertyServerHelpers';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -196,18 +197,9 @@ export class PropertyService extends CollectionService {
     const { structures = [] } = loan;
 
     if (structures.length) {
-      LoanService.update({
-        loanId,
-        object: {
-          structures: loan.structures.map(structure => ({
-            ...structure,
-            propertyId:
-              structure.propertyId === propertyId ? null : structure.propertyId,
-          })),
-        },
-      });
+      removePropertyFromLoan({ loan, propertyId });
     }
-    
+
     this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
   }
 }

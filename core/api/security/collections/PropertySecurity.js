@@ -22,23 +22,58 @@ import LoanService from '../../loans/server/LoanService';
 import { getProPropertyCustomerOwnerType } from '../../properties/server/propertyServerHelpers';
 
 class PropertySecurity {
+  static getProperty({ propertyId }) {
+    const property = PropertyService.fetchOne({
+      $filters: { _id: propertyId },
+      ...fullProperty(),
+    });
+
+    return property;
+  }
+
+  static getCurrentUser({ userId }) {
+    const currentUser = UserService.fetchOne({
+      $filters: { _id: userId },
+      ...proUser(),
+    });
+
+    return currentUser;
+  }
+
+  static getLoan({ loanId }) {
+    const loan = LoanService.fetchOne({
+      $filters: { _id: loanId },
+      user: { _id: 1 },
+    });
+
+    return loan;
+  }
+
+  static getObjects({ propertyId, userId, loanId }) {
+    const objects = {};
+    if (propertyId) {
+      objects.property = this.getProperty({ propertyId });
+    }
+    if (userId) {
+      objects.currentUser = this.getCurrentUser({ userId });
+    }
+    if (loanId) {
+      objects.loan = this.getLoan({ loanId });
+    }
+    return objects;
+  }
+
   static checkPermissions({
     propertyId,
     userId,
     checkingFunction,
     errorMessage,
   }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
       return;
     }
-    const property = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      ...fullProperty(),
-    });
-    const currentUser = UserService.fetchOne({
-      $filters: { _id: userId },
-      ...proUser(),
-    });
+
+    const { property, currentUser } = this.getObjects({ propertyId, userId });
 
     if (!checkingFunction({ property, currentUser })) {
       Security.handleUnauthorized(errorMessage || 'Checking permissions');
@@ -61,7 +96,10 @@ class PropertySecurity {
   static checkBelongsToPromotion(propertyId, userId) {
     const promotion = Promotions.findOne({ 'propertyLinks._id': propertyId });
     if (promotion) {
-      PromotionSecurity.isAllowedToUpdate(promotion._id, userId);
+      PromotionSecurity.isAllowedToModify({
+        promotionId: promotion._id,
+        userId,
+      });
       return;
     }
 
@@ -80,25 +118,25 @@ class PropertySecurity {
     } else if (category === PROPERTY_CATEGORY.PROMOTION) {
       this.checkBelongsToPromotion(propertyId, userId);
     } else {
-      this.handleUnauthorized('Vous ne pouvez pas modifier ce bien immobilier');
+      Security.handleUnauthorized('Vous ne pouvez pas modifier ce bien immobilier');
     }
   }
 
   static isAllowedToUpdate(propertyId, userId) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
       return;
     }
 
-    if (Security.currentUserHasRole(ROLES.PRO)) {
+    if (Security.hasMinimumRole({ role: ROLES.PRO, userId })) {
       this.isProUserAllowedToUpdate({ propertyId, userId });
     } else {
       const property = Properties.findOne(propertyId);
-      Security.checkOwnership(property);
+      Security.checkOwnership(property, userId);
     }
   }
 
-  static isAllowedToDelete(propertyId) {
-    if (Security.currentUserIsAdmin()) {
+  static isAllowedToDelete(propertyId, userId) {
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
       return;
     }
 
@@ -159,23 +197,14 @@ class PropertySecurity {
   }
 
   static isAllowedToRemoveCustomer({ userId, propertyId, loanId }) {
-    if (Security.currentUserIsAdmin()) {
-      return true;
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+      return;
     }
 
-    const property = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      ...fullProperty(),
-    });
-
-    const currentUser = UserService.fetchOne({
-      $filters: { _id: userId },
-      ...proUser(),
-    });
-
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      user: { _id: 1 },
+    const { property, currentUser, loan } = this.getObjects({
+      propertyId,
+      userId,
+      loanId,
     });
 
     const customerOwnerType = getProPropertyCustomerOwnerType({
@@ -205,23 +234,14 @@ class PropertySecurity {
   }
 
   static isAllowedToBookToCustomer({ propertyId, loanId, userId }) {
-    if (Security.currentUserIsAdmin()) {
-      return true;
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+      return;
     }
 
-    const property = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      ...fullProperty(),
-    });
-
-    const currentUser = UserService.fetchOne({
-      $filters: { _id: userId },
-      ...proUser(),
-    });
-
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      user: { _id: 1 },
+    const { property, currentUser, loan } = this.getObjects({
+      propertyId,
+      userId,
+      loanId,
     });
 
     const customerOwnerType = getProPropertyCustomerOwnerType({
@@ -255,23 +275,13 @@ class PropertySecurity {
   }
 
   static isAllowedToSellToCustomer({ propertyId, loanId, userId }) {
-    if (Security.currentUserIsAdmin()) {
-      return true;
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
+      return;
     }
-
-    const property = PropertyService.fetchOne({
-      $filters: { _id: propertyId },
-      ...fullProperty(),
-    });
-
-    const currentUser = UserService.fetchOne({
-      $filters: { _id: userId },
-      ...proUser(),
-    });
-
-    const loan = LoanService.fetchOne({
-      $filters: { _id: loanId },
-      user: { _id: 1 },
+    const { property, currentUser, loan } = this.getObjects({
+      propertyId,
+      userId,
+      loanId,
     });
 
     const customerOwnerType = getProPropertyCustomerOwnerType({

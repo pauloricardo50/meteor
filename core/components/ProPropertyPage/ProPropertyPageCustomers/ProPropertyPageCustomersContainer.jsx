@@ -1,12 +1,10 @@
-import { Meteor } from 'meteor/meteor';
-
 import React from 'react';
 import { compose, mapProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
-import LoanProgress from 'core/components/LoanProgress/LoanProgress';
-import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
+import LoanProgress from '../../LoanProgress/LoanProgress';
+import LoanProgressHeader from '../../LoanProgress/LoanProgressHeader';
 import { withSmartQuery } from '../../../api/containerToolkit';
 import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
@@ -96,7 +94,12 @@ const makeMapLoan = ({
           }
           label={<T id="general.remove" />}
           key="remove"
-        />
+        >
+          <p>
+            Êtes-vous sûr de vouloir enlever l\'accès à ce bien immobilier à{' '}
+            {user.name} ?
+          </p>
+        </ConfirmMethod>
       ) : (
         <span>-</span>
       ),

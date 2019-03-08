@@ -82,8 +82,8 @@ export default class Security {
     }
   }
 
-  static checkOwnership(doc) {
-    const userId = Meteor.userId();
+  static checkOwnership(doc, userId) {
+    userId = userId || Meteor.userId();
     const userIdIsValid = doc && doc.userId === userId;
     const userLinksIsValid = doc
       && doc.userLinks
@@ -94,22 +94,7 @@ export default class Security {
     }
   }
 
-  static hasPermissionOnDoc({
-    doc,
-    requiredPermissions,
-    userId = Meteor.userId(),
-  }) {
-    const { userLinks = [], users = [] } = doc;
-
-    const user = userLinks.find(({ _id }) => _id === userId)
-      || users.find(({ _id }) => _id === userId);
-
-    if (!user) {
-      this.handleUnauthorized('Checking permissions');
-    }
-
-    const userPermissions = user.permissions || user.$metadata.permissions;
-
+  static checkRequiredPermissions({ requiredPermissions, userPermissions }) {
     if (
       !Object.keys(flattenObject(requiredPermissions)).every((permission) => {
         const userPermission = get(userPermissions, permission);
@@ -132,6 +117,25 @@ export default class Security {
     ) {
       this.handleUnauthorized('Checking permissions');
     }
+  }
+
+  static hasPermissionOnDoc({
+    doc,
+    requiredPermissions,
+    userId = Meteor.userId(),
+  }) {
+    const { userLinks = [], users = [] } = doc;
+
+    const user = userLinks.find(({ _id }) => _id === userId)
+      || users.find(({ _id }) => _id === userId);
+
+    if (!user) {
+      this.handleUnauthorized('Checking permissions');
+    }
+
+    const userPermissions = user.permissions || user.$metadata.permissions;
+
+    this.checkRequiredPermissions({ requiredPermissions, userPermissions });
   }
 
   static checkCurrentUserIsDev() {
@@ -195,7 +199,6 @@ export default class Security {
   };
 
   static isAllowedToModifyFiles({ collection, docId, userId, fileKey }) {
-    console.log('collection:', collection);
     const keyId = fileKey.split('/')[0];
 
     if (keyId !== docId) {

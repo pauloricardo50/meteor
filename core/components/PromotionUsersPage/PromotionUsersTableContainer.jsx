@@ -7,16 +7,18 @@ import { withRouter } from 'react-router-dom';
 import { removeUserFromPromotion, withSmartQuery } from '../../api';
 import ConfirmMethod from '../ConfirmMethod';
 import T from '../Translation';
-import LoanProgress from 'core/components/LoanProgress/LoanProgress';
-import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
+import LoanProgress from '../LoanProgress/LoanProgress';
+import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
 import PriorityOrder from '../PromotionLotPage/PriorityOrder';
 import proPromotionUsers from '../../api/promotions/queries/proPromotionUsers';
-import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
+import {
+  getPromotionCustomerOwnerType,
+  getUserNameAndOrganisation,
+} from '../../api/promotions/promotionClientHelpers';
 import { isAllowedToRemoveCustomerFromPromotion } from '../../api/security/clientSecurityHelpers';
 import InvitedByAssignDropdown from './InvitedByAssignDropdown';
 import { CollectionIconLink } from '../IconLink';
 import { LOANS_COLLECTION } from '../../api/constants';
-import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientHelpers';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -55,11 +57,10 @@ const getColumns = ({ promotionId, promotionUsers, loan, currentUser }) => {
     currentUser,
   });
 
-  const invitedByUser =
-    invitedBy &&
-    promotionUsers &&
-    (!!promotionUsers.length &&
-      promotionUsers.find(({ _id }) => _id === invitedBy));
+  const invitedByUser = invitedBy
+    && promotionUsers
+    && (!!promotionUsers.length
+      && promotionUsers.find(({ _id }) => _id === invitedBy));
 
   const userName = invitedByUser
     ? getUserNameAndOrganisation({ user: invitedByUser })
