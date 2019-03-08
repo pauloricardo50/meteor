@@ -1,6 +1,6 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { FinanceCalculator } from '../FinanceCalculator';
+import { OWN_FUNDS_ROUNDING_AMOUNT } from 'core/config/financeConstants';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -9,21 +9,18 @@ import {
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import { getCountedArray } from '../formArrayHelpers';
-import { getPercent } from '../general';
+import { getPercent, arrayify } from '../general';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     getProjectValue({ loan, structureId }) {
-      const propertyValue = this.selectPropertyValue({ loan, structureId });
-      if (!propertyValue) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      if (!propAndWork) {
         return 0;
       }
 
-      const value = propertyValue
-        + (this.selectStructureKey({ loan, key: 'propertyWork', structureId })
-          || 0)
-        + this.getFees({ loan, structureId }).total;
+      const value = propAndWork + this.getFees({ loan, structureId }).total;
 
       return value;
     }
@@ -60,11 +57,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         return { total: notaryFees };
       }
 
-      const canton = this.makeSelectPropertyKey('canton')({
-        loan,
-        structureId,
-      });
-      const calculator = new NotaryFeesCalculator({ canton });
+      const calculator = this.getFeesCalculator({ loan, structureId });
 
       const calculatedNotaryFees = calculator.getNotaryFeesForLoan({
         loan,
@@ -220,13 +213,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
         structureId,
         key: 'wantedLoan',
       });
-      const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.selectStructureKey({
-        loan,
-        structureId,
-        key: 'propertyWork',
-      }) || 0;
-      return wantedLoan / (propertyValue + propertyWork);
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      return wantedLoan / propAndWork;
     }
 
     getMaxBorrowRatio() {
@@ -345,6 +333,29 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return Math.max(0, loanValue - mortgageNoteValue);
     }
 
+    getCashUsed({ loan, structureId }) {
+      const { ownFunds } = this.selectStructure({ loan, structureId });
+
+      return ownFunds
+        .filter(({ type, usageType }) =>
+          type !== OWN_FUNDS_TYPES.INSURANCE_2
+            && usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
+        .reduce((sum, { value }) => sum + value, 0);
+    }
+
+    getCashRatio({ loan, structureId }) {
+      const propAndWork = this.getPropAndWork({ loan, structureId });
+      const fees = this.getFees({ loan, structureId }).total;
+      const cashUsed = this.getCashUsed({ loan, structureId });
+
+      const cashRatio = (cashUsed - fees) / propAndWork;
+      return cashRatio;
+    }
+
+    hasEnoughCash({ loan, structureId }) {
+      return this.getCashRatio({ loan, structureId }) >= this.minCash;
+    }
+
     structureIsValid({ loan, structureId }) {
       const incomeRatio = this.getIncomeRatio({ loan, structureId });
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
@@ -365,8 +376,30 @@ export const withLoanCalculator = (SuperClass = class {}) =>
 
       return true;
     }
+
+    getRequiredOwnFunds({ loan, structureId }) {
+      const projectValue = this.getProjectValue({ loan, structureId });
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      return projectValue - loanValue;
+    }
+
+    getMissingOwnFunds({ loan, structureId }) {
+      const fundsRequired = this.getRequiredOwnFunds({ loan, structureId });
+      const totalCurrentFunds = this.getNonPledgedOwnFunds({
+        loan,
+        structureId,
+      });
+
+      return fundsRequired - totalCurrentFunds;
+    }
+
+    isMissingOwnFunds({ loan, structureId }) {
+      const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
+      return missingOwnFunds >= OWN_FUNDS_ROUNDING_AMOUNT;
+    }
+
+    hasTooMuchOwnFunds({ loan, structureId }) {
+      const missingOwnFunds = this.getMissingOwnFunds({ loan, structureId });
+      return missingOwnFunds <= -OWN_FUNDS_ROUNDING_AMOUNT;
+    }
   };
-
-export const LoanCalculator = withLoanCalculator(FinanceCalculator);
-
-export default new LoanCalculator({});
