@@ -9,7 +9,7 @@ import {
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import { getCountedArray } from '../formArrayHelpers';
-import { getPercent } from '../general';
+import { getPercent, arrayify } from '../general';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>

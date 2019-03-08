@@ -1,3 +1,4 @@
+// @flow
 import {
   OWN_FUNDS_TYPES,
   RESIDENCE_TYPE,
@@ -5,8 +6,14 @@ import {
 } from '../../api/constants';
 import { arrayify } from '../general';
 import { NotaryFeesCalculator } from '../notaryFees/index';
+import { roundValue } from '../conversionFunctions';
 
-// @flow
+const INITIAL_MIN_BOUND = 0;
+const INITIAL_MAX_BOUND = 1000000;
+const INITIAL_ABSOLUTE_MAX_BOUND = 100000000;
+const MAX_ITERATIONS = 50;
+const ACCURACY = 10000;
+const MAX_BOUND_MULTIPLICATION_FACTOR = 2;
 
 export const withSolvencyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -57,7 +64,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
           return ownFundsObject;
         })
-        .filter(({ value }) => value && value > 0);
+        .filter(({ value }) => value > 0);
     }
 
     suggestStructure({
@@ -71,7 +78,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     }) {
       let notaryFees;
 
-      loanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
+      const finalLoanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
 
       if (forcedNotaryFees) {
         notaryFees = forcedNotaryFees;
@@ -79,13 +86,13 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         const notaryCalc = new NotaryFeesCalculator({ canton });
         notaryFees = notaryCalc.getNotaryFeesWithoutLoan({
           propertyValue,
-          mortgageNoteIncrease: loanValue,
+          mortgageNoteIncrease: finalLoanValue,
           residenceType,
         }).total;
       }
 
-      let requiredOwnFunds = propertyValue + notaryFees - loanValue;
-      const ownFunds = [];
+      let requiredOwnFunds = propertyValue + notaryFees - finalLoanValue;
+      let ownFunds = [];
 
       // Get all possible OWN_FUNDS_TYPES
       const allowedOwnFundsTypes = this.getAllowedOwnFundsTypes({
@@ -105,7 +112,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
             0,
           );
 
-          ownFunds.push(...newOwnFunds);
+          ownFunds = [...ownFunds, ...newOwnFunds];
         });
       });
 
@@ -121,12 +128,12 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       residenceType,
       ownFunds,
     }) {
-      loanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
+      const finalLoanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
       const loanObject = {
         residenceType,
         borrowers,
         structure: {
-          wantedLoan: loanValue,
+          wantedLoan: finalLoanValue,
           propertyValue,
           property: { canton },
           ownFunds,
@@ -150,14 +157,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
     getMaxPropertyValue({ borrowers, maxBorrowRatio, canton, residenceType }) {
       let foundValue = false;
-      let minBound = 0;
-      let maxBound = 1000000;
-      let absoluteMax = 100000000;
+      let minBound = INITIAL_MIN_BOUND;
+      let maxBound = INITIAL_MAX_BOUND;
+      let absoluteMax = INITIAL_ABSOLUTE_MAX_BOUND;
       let iterations = 0;
 
       while (!foundValue) {
         iterations++;
-        const nextPropertyValue = Math.round((minBound + maxBound) / (2 * 10000)) * 10000;
+        const nextPropertyValue = roundValue((minBound + maxBound) / 2, 4);
 
         const ownFunds = this.suggestStructure({
           borrowers,
@@ -178,17 +185,20 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           })
         ) {
           minBound = nextPropertyValue;
-          maxBound = Math.min(maxBound * 2, absoluteMax);
+          maxBound = Math.min(
+            maxBound * MAX_BOUND_MULTIPLICATION_FACTOR,
+            absoluteMax,
+          );
         } else {
           maxBound = nextPropertyValue;
           absoluteMax = maxBound;
         }
 
-        if (maxBound - minBound <= 10000) {
+        if (maxBound - minBound <= ACCURACY) {
           foundValue = minBound;
         }
 
-        if (iterations > 50) {
+        if (iterations > MAX_ITERATIONS) {
           return minBound;
         }
       }
