@@ -128,7 +128,9 @@ export class PropertyService extends CollectionService {
         adminId: admin && admin._id,
       });
     } else {
-      userId = Accounts.findUserByEmail(email)._id;
+      userId = UserService.findOne({
+        'emails.address': { $in: [email] },
+      })._id;
       if (UserService.hasProperty({ userId, propertyId })) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
       }

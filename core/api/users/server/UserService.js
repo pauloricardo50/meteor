@@ -121,7 +121,7 @@ class UserService extends CollectionService {
     return (
       loans
       && loans.some(({ propertyIds = [] }) =>
-        propertyIds.some(({ _id }) => _id === propertyId))
+        propertyIds.some((id) => id === propertyId))
     );
   };
 
