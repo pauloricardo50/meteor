@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { shallow } from 'core/utils/testHelpers/enzyme';
 
 import StatusIcon from '../../../../StatusIcon';
-import { RequiredOwnFundsBody } from '../RequiredOwnFunds';
+import RequiredOwnFundsBody from '../RequiredOwnFundsBody';
 import { SUCCESS, ERROR } from '../../../../../api/constants';
 import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../../../../config/financeConstants';
 
