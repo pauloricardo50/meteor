@@ -7,6 +7,8 @@ import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
 import { ROLES } from '../userConstants';
 import Users from '../users';
+import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
 
 class UserService extends CollectionService {
   constructor() {
@@ -157,6 +159,23 @@ class UserService extends CollectionService {
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
     return this.get(userId);
+  };
+
+  proInviteUser = ({ user, propertyId, promotionId, property, proUserId }) => {
+    if (propertyId) {
+      return PropertyService.inviteUser({
+        proUserId,
+        user,
+        propertyId,
+        sendInvitation: false,
+      }); // Don't send invitation yet
+    }
+    if (promotionId) {
+      return PromotionService.inviteUser({ promotionId, user }); // Send invitation is true by default
+    }
+    if (property) {
+      // Not yet implemented
+    }
   };
 }
 

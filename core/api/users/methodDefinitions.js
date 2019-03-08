@@ -108,9 +108,20 @@ export const userUpdateOrganisations = new Method({
 
 export const testUserAccount = new Method({
   name: 'testUserAccount',
-  parmas: {
+  params: {
     email: String,
     password: String,
     role: String,
-  }
+  },
+});
+
+export const proInviteUser = new Method({
+  name: 'proInviteUser',
+  params: {
+    user: Object,
+    propertyId: Match.Maybe(String),
+    promotionId: Match.Maybe(String),
+    property: Match.Maybe(Object),
+    proUserId: Match.Maybe(String),
+  },
 });
