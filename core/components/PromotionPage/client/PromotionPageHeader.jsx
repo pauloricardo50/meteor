@@ -15,7 +15,6 @@ const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
     return contacts;
   }
   const { email } = invitedByUser;
-  console.log('invitedByUser:', invitedByUser);
 
   if (contacts.some(({ email: contactEmail }) => contactEmail === email)) {
     return contacts;

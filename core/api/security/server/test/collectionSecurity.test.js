@@ -10,6 +10,8 @@ import { ROLES } from '../../../constants';
 import { DOCUMENT_USER_PERMISSIONS } from '../../constants';
 import PromotionService from '../../../promotions/server/PromotionService';
 import LoanService from '../../../loans/server/LoanService';
+import generator from '../../../factories/factoriesHelpers';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 
 describe('Collection Security', () => {
   describe('UserSecurity', () => {
@@ -228,7 +230,7 @@ describe('Collection Security', () => {
         PromotionService.setUserPermissions({
           promotionId,
           userId,
-          permissions: { },
+          permissions: {},
         });
 
         expect(() =>
@@ -345,6 +347,158 @@ describe('Collection Security', () => {
             promotionOptionId,
             userId,
           })).to.not.throw(SECURITY_ERROR);
+      });
+    });
+  });
+
+  describe('PropertySecurity', () => {
+    beforeEach(() => {
+      resetDatabase();
+    });
+
+    describe('isAllowedToUpdate', () => {
+      it('does not throw if user is admin', () => {
+        generator({
+          users: [{ _id: 'adminId', _factory: 'admin' }],
+          properties: [{ _id: 'propertyId', _factory: 'property' }],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'adminId')).to.not.throw();
+      });
+
+      it('does throw if user is pro and is not allowed to update', () => {
+        generator({
+          users: [{ _id: 'proId', _factory: 'pro' }],
+          properties: [{ _id: 'propertyId', _factory: 'property' }],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.throw('Vous ne pouvez pas modifier ce bien immobilier');
+      });
+
+      it('does throw if user is user and is not allowed to update', () => {
+        generator({
+          users: [{ _id: 'userId', _factory: 'user' }],
+          properties: [{ _id: 'propertyId', _factory: 'property' }],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'userId')).to.throw('Checking ownership [NOT_AUTHORIZED]');
+      });
+
+      it('does not throw if user is user and is allowed to update', () => {
+        generator({
+          users: [{ _id: 'userId', _factory: 'user' }],
+          properties: [
+            { _id: 'propertyId', userId: 'userId', _factory: 'property' },
+          ],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'userId')).to.not.throw();
+      });
+
+      it('does not throw if user is pro and is allowed to update PRO property', () => {
+        generator({
+          users: [{ _id: 'proId', _factory: 'pro' }],
+          properties: [
+            {
+              _id: 'propertyId',
+              category: PROPERTY_CATEGORY.PRO,
+              users: [
+                {
+                  _id: 'proId',
+                  $metadata: { permissions: { canModifyProperty: true } },
+                },
+              ],
+              _factory: 'property',
+            },
+          ],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.not.throw();
+      });
+
+      it('does throw if user is pro and is not allowed to update PRO property', () => {
+        generator({
+          users: [{ _id: 'proId', _factory: 'pro' }],
+          properties: [
+            {
+              _id: 'propertyId',
+              category: PROPERTY_CATEGORY.PRO,
+              users: [
+                {
+                  _id: 'proId',
+                  $metadata: { permissions: { canModifyProperty: false } },
+                },
+              ],
+              _factory: 'property',
+            },
+          ],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.throw('Vous ne pouvez pas modifier ce bien immobilier');
+      });
+
+      it('does throw if user is pro and is not allowed to update PROMOTION property', () => {
+        generator({
+          users: [{ _id: 'proId', _factory: 'pro' }],
+          properties: [
+            {
+              _id: 'propertyId',
+              category: PROPERTY_CATEGORY.PROMOTION,
+              _factory: 'property',
+            },
+          ],
+          promotions: [
+            {
+              _id: 'promotionId',
+              users: [
+                {
+                  _id: 'proId',
+                  $metadata: { permissions: { canModifyPromotion: false } },
+                },
+              ],
+              propertyLinks: [{ _id: 'propertyId' }],
+              _factory: 'promotion',
+            },
+          ],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.throw('Vous ne pouvez pas modifier cette promotion');
+      });
+
+      it('does not throw if user is pro and is allowed to update PROMOTION property', () => {
+        generator({
+          users: [{ _id: 'proId', _factory: 'pro' }],
+          properties: [
+            {
+              _id: 'propertyId',
+              category: PROPERTY_CATEGORY.PROMOTION,
+              _factory: 'property',
+            },
+          ],
+          promotions: [
+            {
+              _id: 'promotionId',
+              users: [
+                {
+                  _id: 'proId',
+                  $metadata: { permissions: { canModifyPromotion: true } },
+                },
+              ],
+              propertyLinks: [{ _id: 'propertyId' }],
+              _factory: 'promotion',
+            },
+          ],
+        });
+
+        expect(() =>
+          SecurityService.properties.isAllowedToUpdate('propertyId', 'proId')).to.not.throw();
       });
     });
   });

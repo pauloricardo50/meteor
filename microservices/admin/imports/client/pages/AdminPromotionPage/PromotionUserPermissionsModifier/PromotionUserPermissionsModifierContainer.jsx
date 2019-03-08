@@ -125,16 +125,6 @@ const makeUserPermissions = ({
     return bundlesPermissions;
   }
 
-  // const {
-  //   displayCustomerNames = {},
-  //   canSeeCustomers = false,
-  //   ...userPermissions
-  // } = permissions;
-  // if (!canSeeCustomers) {
-  //   return { ...userPermissions, displayCustomerNames: false };
-  // }
-
-  // return { ...userPermissions, displayCustomerNames };
   return permissions;
 };
 

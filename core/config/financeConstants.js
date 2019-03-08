@@ -33,3 +33,7 @@ export const FORTUNE_RETURNS_RATIO = 0;
 // Add extra 1 so that rounding errors don't break the comparison
 // f.ex: ???
 export const OWN_FUNDS_ROUNDING_AMOUNT = 1001;
+export const MORTGAGE_COMMISSION = 0.0035;
+export const INDIRECT_AMORTIZATION_COMMISSION = 0.0035;
+export const REFERRAL_COMMISSION = 0.25;
+export const REFERRAL_COMMISSION_SPLIT = 0.5;

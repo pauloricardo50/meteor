@@ -29,7 +29,7 @@ class UserService extends CollectionService {
 
   adminCreateUser = ({
     options: { email, sendEnrollmentEmail, ...additionalData },
-    role,
+    role = ROLES.USER,
     adminId,
   }) => {
     const newUserId = this.createUser({ options: { email }, role });
@@ -102,6 +102,23 @@ class UserService extends CollectionService {
       loans
       && loans.some(({ promotionLinks = [] }) =>
         promotionLinks.some(({ _id }) => _id === promotionId))
+    );
+  };
+
+  hasProperty = ({ userId, propertyId }) => {
+    if (!propertyId) {
+      return false;
+    }
+
+    const loans = LoanService.fetch({
+      $filters: { userId },
+      propertyIds: 1,
+    });
+
+    return (
+      loans
+      && loans.some(({ propertyIds = [] }) =>
+        propertyIds.some(({ _id }) => _id === propertyId))
     );
   };
 

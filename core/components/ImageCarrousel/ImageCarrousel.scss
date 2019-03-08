@@ -1,0 +1,21 @@
+.image-carrousel {
+  border-radius: 32px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+
+  transition: background 200ms ease;
+
+  > :first-child {
+    position: absolute;
+    top: calc(50% - 28px);
+    left: 8px;
+  }
+
+  > :last-child {
+    position: absolute;
+    top: calc(50% - 28px);
+    right: 8px;
+  }
+}

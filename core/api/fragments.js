@@ -277,6 +277,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   properties: adminProperty(),
   signingDate: 1,
   status: 1,
+  revenues: fullRevenues(),
 });
 export const adminLoans = () => ({
   ...loanBase(),
@@ -291,7 +292,7 @@ export const adminLoans = () => ({
 export const proLoans = () => ({
   createdAt: 1,
   name: 1,
-  promotions: { users: { _id: 1 }, status: 1 },
+  promotions: { name: 1, users: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
@@ -299,8 +300,18 @@ export const proLoans = () => ({
     promotionLots: { attributedTo: { user: { _id: 1 } } },
     solvency: 1,
   },
-  promotionProgress: 1,
-  user: { name: 1, phoneNumbers: 1, email: 1 },
+  loanProgress: 1,
+  user: {
+    name: 1,
+    phoneNumbers: 1,
+    email: 1,
+    referredByUser: { _id: 1, name: 1, organisations: { name: 1 } },
+    referredByOrganisation: { _id: 1 },
+  },
+  hasPromotion: 1,
+  hasProProperty: 1,
+  properties: { address1: 1 },
+  structure: 1,
 });
 
 export const sideNavLoan = () => ({
@@ -456,7 +467,7 @@ export const proPromotionOption = () => ({
       promotionLots: { attributedTo: { user: { _id: 1 } } },
       solvency: 1,
     },
-    promotionProgress: 1,
+    loanProgress: 1,
   },
   lots: { name: 1, type: 1, description: 1 },
   priority: 1,
@@ -657,6 +668,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   totalValue: 1,
   updatedAt: 1,
   user: appUser(),
+  users: { _id: 1 },
   volume: 1,
   volumeNorm: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
@@ -702,6 +714,18 @@ export const sideNavProperty = () => ({
 export const userProperty = () => ({
   ...fullProperty(),
   valuation: userValuation(),
+});
+
+export const proPropertySummary = () => ({
+  address1: 1,
+  city: 1,
+  status: 1,
+  totalValue: 1,
+});
+
+export const proProperty = () => ({
+  ...fullProperty(),
+  users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
 // //
@@ -783,4 +807,20 @@ export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
   promotions: { _id: 1 },
+  properties: { _id: 1 },
+  proProperties: { _id: 1 },
+});
+
+// //
+// // Revenues fragments
+// //
+export const fullRevenues = () => ({
+  status: 1,
+  createdAt: 1,
+  type: 1,
+  description: 1,
+  amount: 1,
+  approximation: 1,
+  organisationLinks: 1,
+  organisations: { name: 1 },
 });

@@ -4,14 +4,14 @@ import { compose, withProps, mapProps } from 'recompose';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 
-import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
-import proPromotionOptions from 'core/api/promotionOptions/queries/proPromotionOptions';
-import T from 'core/components/Translation';
-import { CollectionIconLink } from 'core/components/IconLink';
+import withSmartQuery from '../../api/containerToolkit/withSmartQuery';
+import proPromotionOptions from '../../api/promotionOptions/queries/proPromotionOptions';
+import T from '../Translation';
+import { CollectionIconLink } from '../IconLink';
+import LoanProgress from '../LoanProgress/LoanProgress';
+import LoanProgressHeader from '../LoanProgress/LoanProgressHeader';
 import PromotionLotAttributer from './PromotionLotAttributer';
 import PriorityOrder from './PriorityOrder';
-import PromotionProgress from './PromotionProgress';
-import PromotionProgressHeader from '../PromotionUsersPage/PromotionProgressHeader';
 import { LOANS_COLLECTION } from '../../api/constants';
 import { getPromotionCustomerOwnerType } from '../../api/promotions/promotionClientHelpers';
 
@@ -28,7 +28,7 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     _id: loanId,
     name: loanName,
     user,
-    promotionProgress,
+    loanProgress,
     promotionOptions = [],
     promotions,
   } = loan;
@@ -71,8 +71,8 @@ const getColumns = ({ promotionLot, promotionOption, currentUser }) => {
     user && user.phoneNumbers && user.phoneNumbers[0],
     user && user.email,
     {
-      raw: promotionProgress.verificationStatus,
-      label: <PromotionProgress promotionProgress={promotionProgress} />,
+      raw: loanProgress.verificationStatus,
+      label: <LoanProgress loanProgress={loanProgress} />,
     },
     custom,
     {
@@ -116,7 +116,7 @@ const columnOptions = [
   { id: 'date' },
   { id: 'phone' },
   { id: 'email' },
-  { id: 'promotionProgress', label: <PromotionProgressHeader /> },
+  { id: 'loanProgress', label: <LoanProgressHeader /> },
   { id: 'custom' },
   { id: 'priorityOrder' },
   { id: 'attribute' },
@@ -126,11 +126,7 @@ const columnOptions = [
 }));
 
 export default compose(
-  mapProps(({
-    promotionOptions = [],
-    promotionLot,
-    currentUser,
-  }) => ({
+  mapProps(({ promotionOptions = [], promotionLot, currentUser }) => ({
     promotionOptionIds: promotionOptions.map(({ _id }) => _id),
     promotionLot,
     currentUser,
