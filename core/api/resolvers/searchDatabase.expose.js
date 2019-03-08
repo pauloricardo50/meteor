@@ -22,13 +22,13 @@ searchDatabase.resolve(({ searchQuery }) => {
   const contacts = contactSearch.clone({ searchQuery }).fetch();
   const organisations = organisationSearch.clone({ searchQuery }).fetch();
 
-  return [
-    { users },
-    { loans },
-    { contacts },
-    { organisations },
-    { properties },
-    { promotions },
-    { borrowers },
-  ];
+  return {
+    users,
+    loans,
+    contacts,
+    organisations,
+    properties,
+    promotions,
+    borrowers,
+  };
 });

@@ -132,6 +132,7 @@ const config = {
     'Maps',
     'MissingDoc',
     'NotFound',
+    'PercentWithStatus',
     'property',
     'Recap',
     'roles',

@@ -14,9 +14,15 @@ const FinancingPropertyPicker = ({
   options,
   value,
   handleChange,
+  disabled,
 }: FinancingPropertyPickerProps) => (
   <div className="financing-structures-property-picker propertyId">
-    <Select value={value} options={options} onChange={handleChange} />
+    <Select
+      value={value}
+      options={options}
+      onChange={handleChange}
+      disabled={disabled}
+    />
   </div>
 );
 

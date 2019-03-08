@@ -67,6 +67,8 @@
 
   figure {
     margin-top: 2em;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   figcaption {
@@ -89,5 +91,19 @@
     height: 64px;
     margin-right: 16px;
     border-radius: 50%;
+  }
+}
+
+.blog-post-page-share {
+  margin-top: 16px;
+  display: flex;
+
+  .share-button {
+    margin-right: 8px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.75;
+    }
   }
 }

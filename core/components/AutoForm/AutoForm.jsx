@@ -6,11 +6,11 @@ import get from 'lodash/get';
 import T from 'core/components/Translation';
 import ZipAutoComplete from 'core/components/ZipAutoComplete';
 
-import TextInput from './TextInput';
-import RadioInput from './RadioInput';
-import SelectFieldInput from './SelectFieldInput';
-import ConditionalInput from './ConditionalInput';
-import DateInput from './DateInput';
+import AutoFormTextInput from './AutoFormTextInput';
+import AutoFormRadioInput from './AutoFormRadioInput';
+import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
+import AutoFormConditionalInput from './AutoFormConditionalInput';
+import AutoFormDateInput from './AutoFormDateInput';
 import ArrayInput from './ArrayInput';
 import AutoFormContainer from './AutoFormContainer';
 
@@ -46,14 +46,14 @@ const inputSwitch = (childProps, index, parentProps) => {
 
   switch (type) {
   case 'textInput':
-    return <TextInput multiline={false} {...childProps} />;
+    return <AutoFormTextInput multiline={false} {...childProps} />;
   case 'radioInput':
-    return <RadioInput {...childProps} />;
+      return <AutoFormRadioInput {...childProps} />;
   case 'selectFieldInput':
-    return <SelectFieldInput {...childProps} />;
+      return <AutoFormSelectFieldInput {...childProps} />;
   case 'conditionalInput':
     return (
-      <ConditionalInput
+      <AutoFormConditionalInput
         conditionalTrueValue={conditionalTrueValue}
         key={index}
         style={style}
@@ -61,7 +61,7 @@ const inputSwitch = (childProps, index, parentProps) => {
       >
         {makeMapInputs(parentProps)(inputs[0], 0)}
         {inputs.slice(1).map(makeMapInputs(parentProps))}
-      </ConditionalInput>
+      </AutoFormConditionalInput>
     );
   case 'h3':
     return (
@@ -82,7 +82,7 @@ const inputSwitch = (childProps, index, parentProps) => {
       </div>
     );
   case 'dateInput':
-    return <DateInput {...childProps} />;
+    return <AutoFormDateInput {...childProps} />;
   case 'arrayInput':
     return <ArrayInput {...childProps} />;
   case 'custom':

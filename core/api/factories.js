@@ -1,14 +1,7 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import {
-  STEPS,
-  TASK_STATUS,
-  TASK_TYPE,
-  DOCUMENT_USER_PERMISSIONS,
-  PROMOTION_TYPES,
-  PROMOTION_OPTION_STATUS,
-} from './constants';
+import { STEPS, TASK_STATUS, TASK_TYPE, PROMOTION_TYPES } from './constants';
 import {
   Borrowers,
   Lenders,
@@ -92,7 +85,7 @@ Factory.define('loan', Loans, {
     verification: {},
     step: STEPS.PREPARATION,
   }),
-  name: () => `18-0${Math.floor(Math.random() * 899 + 100)}`,
+  name: () => `19-0${Math.floor(Math.random() * 899 + 100)}`,
   emails: () => [],
   propertyIds: [],
 });
@@ -113,7 +106,6 @@ Factory.define('offer', Offers, {
 Factory.define('promotion', Promotions, {
   name: 'Test promotion',
   type: PROMOTION_TYPES.CREDIT,
-  userLinks: [{ _id: 'userId', permissions: DOCUMENT_USER_PERMISSIONS.MODIFY }],
   promotionLotLinks: [{ _id: 'lotId' }],
 });
 

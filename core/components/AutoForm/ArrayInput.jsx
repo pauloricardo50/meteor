@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import Button from 'core/components/Button';
 
 import T from 'core/components/Translation';
-import TextInput from './TextInput';
-import DateInput from './DateInput';
-import SelectFieldInput from './SelectFieldInput';
+import AutoFormTextInput from './AutoFormTextInput';
+import AutoFormDateInput from './AutoFormDateInput';
+import AutoFormSelectFieldInput from './AutoFormSelectFieldInput';
 
 import FormValidator from './FormValidator';
 
@@ -54,7 +54,7 @@ class ArrayInput extends Component {
       };
 
       if (type === 'textInput') {
-        return <TextInput {...childProps} noValidator key={id + inputId + i} />;
+        return <AutoFormTextInput {...childProps} noValidator key={id + inputId + i} />;
       }
       if (type === 'selectInput') {
         // Map these labels here to prevent having the id being xxx.0 or xxx.1
@@ -64,7 +64,7 @@ class ArrayInput extends Component {
             ? { id: opt, label: <T id={`Forms.${intlId || id}.${opt}`} /> }
             : { ...opt, label: <T id={`Forms.${intlId || id}.${opt.id}`} /> }));
         return (
-          <SelectFieldInput
+          <AutoFormSelectFieldInput
             {...childProps}
             noValidator
             key={id + inputId + i}
@@ -72,7 +72,7 @@ class ArrayInput extends Component {
         );
       }
       if (type === 'dateInput') {
-        return <DateInput {...childProps} noValidator key={id + inputId + i} />;
+        return <AutoFormDateInput {...childProps} noValidator key={id + inputId + i} />;
       }
     };
 

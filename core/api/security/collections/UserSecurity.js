@@ -11,6 +11,16 @@ class UserSecurity {
       Security.checkCurrentUserIsDev();
     }
   };
+
+  isAllowedToUpdate = (userId, userId2) => {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
+    if (userId !== userId2) {
+      Security.handleUnauthorized('Pas autorisé');
+    }
+  };
 }
 
 export default new UserSecurity();

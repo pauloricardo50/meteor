@@ -1,4 +1,4 @@
-import { addressReducer } from '../reducers';
+import addressReducer from '../reducers/addressReducer';
 import Properties from '.';
 
 Properties.addReducers({

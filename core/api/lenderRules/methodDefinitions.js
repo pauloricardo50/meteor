@@ -37,5 +37,6 @@ export const lenderRulesUpdateFilter = new Method({
   params: {
     lenderRulesId: String,
     logicRules: Array,
+    name: Match.Optional(String),
   },
 });

@@ -211,7 +211,7 @@ describe('BorrowerService', () => {
           insurance3B: [],
           expenses: [
             {
-              description: borrowerConstants.EXPENSES.MORTGAGE_LOAN,
+              description: borrowerConstants.EXPENSES.PERSONAL_LOAN,
               value: 123,
             },
           ],

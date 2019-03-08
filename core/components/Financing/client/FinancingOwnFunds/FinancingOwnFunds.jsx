@@ -2,13 +2,11 @@
 import React from 'react';
 
 import T from 'core/components/Translation';
-import FinancingSection, {
-  CalculatedValue,
-} from '../FinancingSection';
+import FinancingSection, { CalculatedValue } from '../FinancingSection';
 
 import RequiredOwnFunds from './RequiredOwnFunds';
 import FinancingOwnFundsPicker from './FinancingOwnFundsPicker';
-import { calculateOwnFunds, calculateMissingOwnFunds } from './ownFundsHelpers';
+import Calculator from '../../../../utils/Calculator';
 
 type FinancingOwnFundsProps = {};
 
@@ -23,14 +21,14 @@ const FinancingOwnFunds = (props: FinancingOwnFundsProps) => (
           </span>
         ),
         Component: CalculatedValue,
-        value: calculateOwnFunds,
+        value: Calculator.getNonPledgedOwnFunds,
       },
     ]}
     detailConfig={[
       {
         Component: RequiredOwnFunds,
         id: 'requiredOwnFunds',
-        value: calculateMissingOwnFunds,
+        calculateValue: Calculator.getMissingOwnFunds,
       },
       {
         Component: FinancingOwnFundsPicker,

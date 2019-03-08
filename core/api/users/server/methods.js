@@ -8,13 +8,15 @@ import {
   assignAdminToNewUser,
   setRole,
   adminCreateUser,
-  editUser,
+  updateUser,
   getUserByPasswordResetToken,
   testCreateUser,
   removeUser,
   sendEnrollmentEmail,
   changeEmail,
   generateApiToken,
+  userUpdateOrganisations,
+  testUserAccount,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -65,9 +67,11 @@ adminCreateUser.setHandler((context, { options, role }) => {
   });
 });
 
-editUser.setHandler((context, { userId, object }) => {
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService.checkUserLoggedIn(userId);
+updateUser.setHandler((context, { userId, object }) => {
+  SecurityService.users.isAllowedToUpdate(userId, context.userId);
+
+  if (object.roles) {
+    SecurityService.handleUnauthorized('Vous ne pouvez pas changer le rôle');
   }
 
   return UserService.update({ userId, object });
@@ -98,8 +102,17 @@ changeEmail.setHandler((context, params) => {
 });
 
 generateApiToken.setHandler((context, { userId }) => {
-  if (!SecurityService.currentUserIsAdmin()) {
-    SecurityService.checkUserLoggedIn(userId);
-  }
+  SecurityService.checkUserIsPro(context.userId);
   return UserService.generateApiToken({ userId });
+});
+
+userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.updateOrganisations({ userId, newOrganisations });
+});
+
+testUserAccount.setHandler((context, params) => {
+  if (Meteor.isTest) {
+    return UserService.testUserAccount(params);
+  }
 });

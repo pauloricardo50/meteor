@@ -9,7 +9,7 @@ import {
 import {
   INCOME_CONSIDERATION_TYPES,
   REAL_ESTATE_CONSIDERATION_TYPES,
-  OTHER_EXPENSES_CONSIDERATION_TYPES,
+  EXPENSE_TYPES,
 } from '../lenderRulesConstants';
 
 export const incomeConsideration = {
@@ -17,7 +17,6 @@ export const incomeConsideration = {
     type: String,
     allowedValues: Object.values(INCOME_CONSIDERATION_TYPES),
     optional: true,
-    uniforms: { placeholder: null },
   },
   bonusConsideration: percentageField,
   bonusHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
@@ -28,25 +27,32 @@ export const incomeConsideration = {
   },
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
-  pensionIncomeConsideration: percentageField,
-  realEstateIncomeConsideration: percentageField,
-  realEstateIncomeConsiderationType: {
-    type: String,
-    allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
-    optional: true,
-    uniforms: { placeholder: null },
-  },
+  // realEstateIncomeConsiderationType: {
+  //   type: String,
+  //   allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
+  //   optional: true,
+  // },
   investmentIncomeConsideration: percentageField,
-  otherExpensesConsiderationType: {
-    type: String,
-    allowedValues: Object.values(OTHER_EXPENSES_CONSIDERATION_TYPES),
+  expensesSubtractFromIncome: {
+    type: Array,
+    defaultValue: [],
     optional: true,
-    uniforms: { placeholder: null },
+    uniforms: {
+      intlId: 'expenses',
+      placeholder: 'Ajouter toutes les charges aux charges théoriques',
+      label: 'Charges à soustraire aux revenus',
+    },
   },
+  'expensesSubtractFromIncome.$': {
+    type: String,
+    allowedValues: Object.values(EXPENSE_TYPES),
+  },
+  fortuneReturnsRatio: percentageField,
 };
 
 export const theoreticalExpenses = {
   theoreticalInterestRate: percentageField,
+  theoreticalInterestRate2ndRank: percentageField,
   theoreticalMaintenanceRate: percentageField,
   amortizationGoal: percentageField,
   amortizationYears: {
@@ -60,7 +66,6 @@ export const theoreticalExpenses = {
 export const cutOffCriteria = {
   maxBorrowRatio: percentageField,
   maxIncomeRatio: percentageField,
-  maxIncomeRatioTight: percentageField,
 };
 
 export const otherParams = {
@@ -73,8 +78,10 @@ export const otherParams = {
       }
     },
   },
-  comments: { type: Array, defaultValue: [] },
-  'comments.$': String,
+  adminComments: { type: Array, defaultValue: [] },
+  'adminComments.$': String,
+  pdfComments: { type: Array, defaultValue: [] },
+  'pdfComments.$': String,
 };
 
 const LenderRulesSchema = new SimpleSchema({

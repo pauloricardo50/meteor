@@ -14,9 +14,12 @@ export const createRegexThatFindsAnyWordFromList = (list) => {
 
   return null;
 };
+
+export const reformatString = string => string.replace(/’/gi, "'");
+
 const parseTextForTooltips = props =>
   reactStringReplace(
-    props.children,
+    reformatString(props.children),
     createRegexThatFindsAnyWordFromList(props.tooltipList),
     (match, index) => (
       <TooltipOverlay {...props} key={index} match={match}>
@@ -24,6 +27,11 @@ const parseTextForTooltips = props =>
       </TooltipOverlay>
     ),
   );
+
+export const autoTooltipParser = (
+  string,
+  tooltipList = TOOLTIP_LISTS.GENERAL,
+) => parseTextForTooltips({ children: string, tooltipList });
 
 export const AutoTooltip = (props) => {
   const { children, tooltipId } = props;

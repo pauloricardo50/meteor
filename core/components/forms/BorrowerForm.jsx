@@ -14,7 +14,7 @@ const personalFields = [
   'firstName',
   'lastName',
   'gender',
-  'age',
+  'birthDate',
   'sameAddress',
   'address1',
   'address2',
@@ -30,6 +30,7 @@ const personalFields = [
 ];
 const financeFields = [
   'salary',
+  'netSalary',
   'bonusExists',
   'bonus2015',
   'bonus2016',
@@ -45,6 +46,8 @@ const financeFields = [
   'insurance3B',
   'bank3A',
   'thirdPartyFortune',
+  'hasOwnCompany',
+  'ownCompanies',
 ];
 
 const omittedFields = [

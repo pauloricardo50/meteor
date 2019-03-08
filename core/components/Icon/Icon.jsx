@@ -72,6 +72,7 @@ import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import InsertChart from '@material-ui/icons/InsertChart';
 import Image from '@material-ui/icons/Image';
 import Delete from '@material-ui/icons/Delete';
+import Phonelink from '@material-ui/icons/Phonelink';
 
 export const iconMap = {
   close: CloseIcon,
@@ -145,6 +146,7 @@ export const iconMap = {
   chart: InsertChart,
   image: Image,
   delete: Delete,
+  phoneLink: Phonelink,
 };
 
 const Icon = ({

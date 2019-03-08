@@ -9,12 +9,10 @@ import { SUCCESS, WARNING, ERROR } from 'core/api/constants';
 import colors from 'core/config/colors';
 import T from '../Translation';
 
-const STATUSES = [SUCCESS, WARNING, ERROR];
-
 const styles = {
-  [SUCCESS]: { color: colors.success },
-  [WARNING]: { color: colors.warning },
-  [ERROR]: { color: colors.error },
+  [SUCCESS]: { color: colors.success, fill: colors.success },
+  [WARNING]: { color: colors.warning, fill: colors.warning },
+  [ERROR]: { color: colors.error, fill: colors.error },
 };
 
 const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
@@ -33,7 +31,13 @@ const StatusIcon = ({ id, status, style = {}, tooltip, ...rest }) => {
   if (tooltip) {
     return (
       <Tooltip
-        title={<T id={`StatusIconTooltip.${id}.${status}`} />}
+        title={
+          typeof tooltip === 'object' ? (
+            tooltip
+          ) : (
+            <T id={`StatusIconTooltip.${id}.${status}`} />
+          )
+        }
         placement="right"
       >
         {icon}

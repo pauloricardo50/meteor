@@ -5,7 +5,11 @@ import { Slingshot } from 'meteor/edgee:slingshot';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { SLINGSHOT_DIRECTIVE_NAME } from '../../../api/constants';
+import {
+  SLINGSHOT_DIRECTIVE_NAME,
+  EXOSCALE_PATH,
+  FILE_STATUS,
+} from '../../../api/constants';
 
 export default class TempFile extends Component {
   constructor(props) {
@@ -36,13 +40,19 @@ export default class TempFile extends Component {
     });
 
     this.uploader.send(file, (error, downloadUrl) => {
-      console.log('downloadUrl', downloadUrl);
-      console.log('error', error);
       progressSetter.stop();
       if (error) {
         this.setState({ error: error.reason });
       } else {
-        handleUploadComplete(file, downloadUrl);
+        const fileObject = {
+          name: file.name,
+          Key: downloadUrl.split(`${EXOSCALE_PATH}/`).slice(-1)[0],
+          url: downloadUrl,
+          size: file.size,
+          type: file.type,
+          status: FILE_STATUS.VALID,
+        };
+        handleUploadComplete(fileObject, downloadUrl);
       }
     });
   }

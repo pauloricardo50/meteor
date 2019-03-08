@@ -8,6 +8,10 @@
   width: 100%;
   min-width: 1200px;
   height: 100%;
+
+  @include screen(med, max) {
+    min-width: 800px;
+  }
 }
 
 .app-layout {
@@ -21,6 +25,10 @@
   padding-top: 80px;
   padding-bottom: 16px;
   padding-left: 266px; /* side-nav width + 16px  */
+
+  @include screen(med, max) {
+    padding-left: 16px;
+  }
 }
 
 .app-layout.no-nav {
@@ -57,9 +65,12 @@
   margin: auto;
 }
 
-// Change this with a media query if the side-bar disappears
 .app-layout .transition-wrapper {
   width: calc(100% - 250px - 32px);
+
+  @include screen(med, max) {
+    width: calc(100% - 32px);
+  }
 }
 
 .layout-error {
@@ -74,4 +85,29 @@
 .full-screen {
   width: 100%;
   min-height: 100%;
+}
+
+.mobile-warning {
+  position: absolute;
+  background-color: white;
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+
+  .title,
+  p {
+    max-width: 400px;
+  }
+
+  @include screen(med, min) {
+    display: none;
+  }
 }

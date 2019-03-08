@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import moment from 'moment';
 
 import formatMessage from 'core/utils/intl';
 import {
@@ -85,16 +84,18 @@ export class LoanService extends CollectionService {
     });
   };
 
-  insertPromotionLoan = ({ userId, promotionId }) => {
+  insertPromotionLoan = ({ userId, promotionId, invitedBy }) => {
     const borrowerId = BorrowerService.insert({ userId });
     const loanId = this.insert({
       loan: {
         borrowerIds: [borrowerId],
-        promotionLinks: [{ _id: promotionId }],
+        promotionLinks: [{ _id: promotionId, invitedBy }],
       },
       userId,
     });
+
     this.addNewStructure({ loanId });
+
     return loanId;
   };
 
@@ -202,6 +203,7 @@ export class LoanService extends CollectionService {
         structure: {
           ...currentStructure,
           name: `${currentStructure.name || 'Plan financier'} - copie`,
+          disabled: false,
         },
         atIndex: currentStructureIndex + 1,
       })
@@ -345,6 +347,25 @@ export class LoanService extends CollectionService {
     });
 
     return Promise.all(promises);
+  }
+
+  updatePromotionInvitedBy({ loanId, promotionId, invitedBy }) {
+    this.updateLinkMetadata({
+      id: loanId,
+      linkName: 'promotions',
+      linkId: promotionId,
+      metadata: { invitedBy },
+    });
+  }
+
+  reuseProperty({ loanId, propertyId }) {
+    const loan = this.get(loanId);
+
+    if (loan.propertyIds.includes(propertyId)) {
+      return false;
+    }
+
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
   }
 }
 

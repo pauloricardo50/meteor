@@ -15,6 +15,7 @@ import FinancingProject from './FinancingProject';
 import FinancingResult from './FinancingResult';
 import FinancingContainer from './FinancingContainer';
 import FinancingRefinancing from './FinancingRefinancing';
+import FinancingLenders from './FinancingLenders';
 
 type FinancingProps = {
   loan: userLoan,
@@ -45,6 +46,7 @@ const Financing = ({ loan }: FinancingProps) =>
           <FinancingOffers />
         )}
         <FinancingResult />
+        {Meteor.microservice === 'admin' && <FinancingLenders />}
       </div>
     </ScrollSync>
   ) : (

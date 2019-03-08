@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 9;
+const CACHE_VERSION = 10;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -31,7 +31,7 @@ const defaultJobValues = {
 // Cache keys should have an identifier string at the start, using only _ to separate words
 // and it should include the CACHE_VERSION, so all cache can be flushed at once by incrementing CACHE_VERSION
 // like: "my_cache_name_${CACHE_VERSION}"
-// Then follow with the variable identifiers
+// Then follow with the variable identifiers, each separated by a hyphen "-"
 const cacheKeys = {
   global: () => `global_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
   meteorSystem: name =>
@@ -55,18 +55,18 @@ const cachePaths = {
 const runCommand = (name, command) => ({ run: { name, command } });
 const runTestsCommand = (name, testsType) => {
   switch (testsType) {
-  case 'e2e':
-    return runCommand(
-      'Run e2e tests',
-      `meteor npm --prefix microservices/${name} run test-e2e-CI`,
-    );
-  case 'unit':
-    return runCommand(
-      'Run unit tests',
-      `meteor npm --prefix microservices/${name} run test-CI`,
-    );
-  default:
-    throw new Error(`Unknown tests type: ${testsType}`);
+    case 'e2e':
+      return runCommand(
+        'Run e2e tests',
+        `meteor npm --prefix microservices/${name} run test-e2e-CI`,
+      );
+    case 'unit':
+      return runCommand(
+        'Run unit tests',
+        `meteor npm --prefix microservices/${name} run test-CI`,
+      );
+    default:
+      throw new Error(`Unknown tests type: ${testsType}`);
   }
 };
 const restoreCache = (name, key) => ({
@@ -79,8 +79,8 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-')
-            + (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-') +
+            (index === 0 ? '' : '-'),
         ],
         [],
       ),
@@ -151,7 +151,7 @@ const testMicroserviceJob = (name, testsType) => ({
       cacheKeys.meteorMicroservice(name),
       cachePaths.meteorMicroservice(name),
     ),
-    storeTestResults('./results'),
+    storeTestResults(testsType === 'e2e' ? './e2e-results' : './results'),
     storeArtifacts(testsType === 'e2e' ? './e2e-results' : './results'),
     // storeArtifacts(`./microservices/${name}/profiles`),
   ],

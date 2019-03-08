@@ -20,7 +20,7 @@ import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
+import Calculator from 'core/utils/Calculator';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
 import Page from 'core/components/Page';
@@ -33,16 +33,27 @@ const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
 
 const SinglePropertyPage = (props) => {
-  const { loan, propertyId, history } = props;
-  const { borrowers, properties, residenceType } = loan;
+  const {
+    loan,
+    propertyId,
+    history,
+    currentUser: { loans },
+  } = props;
+  const { borrowers, properties, residenceType, _id: loanId } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
+
+  if (!property) {
+    // Do this when deleting the property, so it doesn't display a giant error
+    // before routing to the properties page
+    return null;
+  }
+
   const { address1, zipCode, city, mortgageNotes } = property;
   const { userFormsEnabled } = loan;
-  const progress = PropertyCalculator.propertyPercent({
+  const progress = Calculator.propertyPercent({
     property,
     loan,
   });
-  const hasMultipleProperties = properties.length > 1;
 
   const title = address1 || <T id="SinglePropertyPage.title" />;
 
@@ -54,22 +65,27 @@ const SinglePropertyPage = (props) => {
       <section className="card1 card-top property-page">
         <h1 className="text-center">{title}</h1>
 
-        {hasMultipleProperties && (
-          <ConfirmMethod
-            buttonProps={{
-              error: true,
-              outlined: true,
-              className: 'property-deleter',
-            }}
-            method={() =>
-              propertyDelete
-                .run({ propertyId })
-                .then(() =>
-                  history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
-            }
-            label={<T id="general.delete" />}
-          />
-        )}
+        <ConfirmMethod
+          buttonProps={{
+            error: true,
+            outlined: true,
+            className: 'property-deleter',
+          }}
+          method={() =>
+            propertyDelete
+              .run({ propertyId, loanId })
+              .then(() =>
+                history.push(createRoute(PROPERTIES_PAGE, { ':loanId': loan._id })))
+          }
+          label={<T id="general.delete" />}
+        >
+          {loans.length > 1 && (
+            <p>
+              Si ce bien immobilier est utilisé dans plusieurs de vos dossiers,
+              il ne sera pas supprimé dans les autres dossiers
+            </p>
+          )}
+        </ConfirmMethod>
 
         <MapWithMarkerWrapper
           address1={address1}
@@ -77,9 +93,9 @@ const SinglePropertyPage = (props) => {
           zipCode={zipCode}
           options={{ zoom: 15 }}
         />
-        <Element name="valuation" className="valuation">
+        {/* <Element name="valuation" className="valuation">
           <Valuation property={property} loanResidenceType={residenceType} />
-        </Element>
+        </Element> */}
 
         <div className="flex--helper flex-justify--center">
           <AutoForm
@@ -103,17 +119,20 @@ const SinglePropertyPage = (props) => {
           />
         </div>
         <div className="flex--helper flex-justify--center">
-          <MortgageNotesForm propertyId={propertyId} mortgageNotes={mortgageNotes} />
+          <MortgageNotesForm
+            propertyId={propertyId}
+            mortgageNotes={mortgageNotes}
+          />
         </div>
       </section>
       <div className="single-property-page-buttons">
         <ReturnToDashboard />
-        <LaunchValuationButton
+        {/* <LaunchValuationButton
           enabled={shouldDisplayLaunchValuationButton({
             progress,
             status: property.valuation.status,
           })}
-        />
+        /> */}
       </div>
     </Page>
   );

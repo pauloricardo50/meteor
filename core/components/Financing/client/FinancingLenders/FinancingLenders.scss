@@ -1,0 +1,12 @@
+.lender-list-item {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-left: 4px;
+  }
+}
+
+.lenders-header {
+  font-size: calc((16 / 14) * 1rem);
+}

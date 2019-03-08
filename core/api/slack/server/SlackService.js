@@ -180,11 +180,11 @@ export class SlackService {
     const { name } = currentUser;
     const loan = loanId && fullLoan.clone({ loanId }).fetchOne();
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
-    const title = `${name} a uploadé \`${fileName}\` dans ${docLabel}${loanNameEnd}`;
-    const link = `${Meteor.settings.public.subdomains.admin}/users/${
+    const title = `${name} a uploadé ${fileName} dans ${docLabel}${loanNameEnd}`;
+    let link = `${Meteor.settings.public.subdomains.admin}/users/${
       currentUser._id
     }`;
-    let message;
+    let message = '';
 
     if (loan) {
       const infoProgress = Calculator.personalInfoPercent({ loan });
@@ -192,7 +192,20 @@ export class SlackService {
       const documentsProgress = Calculator.filesProgress({
         loan,
       }).percent;
-      message = `*Progrès:* Emprunteurs \`${percentFormatters.format(infoProgress)}%\`, Bien immo: \`${percentFormatters.format(propertyProgress)}%\`, Documents: \`${percentFormatters.format(documentsProgress)}%\``;
+
+      const progressParts = [
+        `Emprunteurs \`${percentFormatters.format(infoProgress)}%\``,
+        `Documents: \`${percentFormatters.format(documentsProgress)}%\``,
+        `Bien immo: \`${percentFormatters.format(propertyProgress)}%\``,
+      ];
+
+      if (loan.hasPromotion) {
+        message = `_Promotion: \`${loan.promotions[0].name}\`_ `;
+        progressParts.pop(); // Remove property progress in case of a promotion
+      }
+
+      message += `*Progrès:* ${progressParts.join(', ')}`;
+      link = `${Meteor.settings.public.subdomains.admin}/loans/${loan._id}`;
     }
 
     return this.notifyAssignee({ currentUser, message, title, link });

@@ -19,8 +19,14 @@ class SearchForm extends Component {
     onSubmit(searchText);
   };
 
-  handleChange = ({ target: { value } }) =>
-    this.setState({ searchText: value });
+  handleChange = ({ target: { value } }) => {
+    this.setState({ searchText: value }, () => {
+      if (value.length > 0) {
+        const { onSubmit } = this.props;
+        onSubmit(value);
+      }
+    });
+  };
 
   render() {
     const { searchText } = this.state;

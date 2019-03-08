@@ -95,6 +95,7 @@ const LoanSchema = new SimpleSchema({
   },
   enableOffers: { type: Boolean, optional: true, defaultValue: false },
   previousLender: { type: String, optional: true },
+  customName: { type: String, optional: true },
   ...promotionSchema,
   ...borrowerIdsSchema,
   ...propertyIdsSchema,

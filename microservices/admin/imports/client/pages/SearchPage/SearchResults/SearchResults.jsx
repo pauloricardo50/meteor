@@ -22,19 +22,18 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
 
   if (hasNoSearchResults) {
     return (
-      <div className="description">
-        <p>
+      <div className="flex center">
+        <h2 className="secondary">
           <T id="SearchResults.none" />
-        </p>
+        </h2>
       </div>
     );
   }
 
   return (
     <List className="search-results">
-      {searchResults.map((collection) => {
-        const collectionName = Object.keys(collection)[0];
-        const resultsFromThisCollection = collection[collectionName];
+      {Object.keys(searchResults).map((collectionName) => {
+        const resultsFromThisCollection = searchResults[collectionName];
 
         if (resultsFromThisCollection.length === 0) {
           return null;

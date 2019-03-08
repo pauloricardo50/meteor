@@ -1,7 +1,6 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'imports/core/api/constants';
 import { getBorrowerDocuments } from 'imports/core/api/files/documents';
-import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -13,6 +12,8 @@ import {
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
 import MiddlewareManager from '../MiddlewareManager';
+import { INCOME_CONSIDERATION_TYPES, EXPENSE_TYPES } from '../../api/constants';
+import { borrowerExtractorMiddleware } from './middleware';
 
 export const withBorrowerCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -22,10 +23,9 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     initBorrowerCalculator(config) {
-      if (config && config.borrowerMiddleware) {
-        const middlewareManager = new MiddlewareManager(this);
-        middlewareManager.applyToAllMethods([config.borrowerMiddleware]);
-      }
+      const middleware = (config && config.borrowerMiddleware) || borrowerExtractorMiddleware;
+      const middlewareManager = new MiddlewareManager(this);
+      middlewareManager.applyToAllMethods([middleware]);
     }
 
     getArrayValues({ borrowers, key, mapFunc }) {
@@ -46,25 +46,38 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getBonusIncome({ borrowers }) {
-      const bonusKeys = ['bonus2015', 'bonus2016', 'bonus2017', 'bonus2018'];
+      const bonusKeys = [
+        'bonus2015',
+        'bonus2016',
+        'bonus2017',
+        'bonus2018',
+        'bonus2019',
+      ];
       const total = arrayify(borrowers).reduce((acc, borrower) => {
         if (!borrower.bonusExists) {
           return 0;
         }
 
         const arr = bonusKeys.map(key => borrower[key]);
-        const cleanedUpArray = arr.filter(v => v !== undefined);
 
-        // Sum all values, remove the lowest one, and return 50% of their average
-        let sum = cleanedUpArray.reduce((tot, val) => tot + val, 0);
-
-        if (cleanedUpArray.length > 3) {
-          sum -= Math.min(...arr);
-        }
-        return acc + (0.5 * (sum / Math.min(3, cleanedUpArray.length)) || 0);
+        return (
+          acc
+          + this.getConsideredValue({
+            values: arr,
+            history: this.bonusHistoryToConsider,
+            weighting: this.bonusConsideration,
+          })
+        );
       }, 0);
 
       return Math.max(0, Math.round(total));
+    }
+
+    getConsideredValue({ values, history, weighting }) {
+      const cleanedUpArray = values.filter(v => v !== undefined);
+      const valuesToConsider = cleanedUpArray.slice(Math.max(0, cleanedUpArray.length - history));
+      const sum = valuesToConsider.reduce((tot, val) => tot + val, 0);
+      return (weighting * sum) / valuesToConsider.length || 0;
     }
 
     getBorrowerCompletion({ loan, borrowers }) {
@@ -217,7 +230,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.value - i.loan,
+        mapFunc: ({ value = 0, loan = 0 }) => value - loan,
       });
     }
 
@@ -229,23 +242,54 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return this.getArrayValues({
         borrowers,
         key: 'realEstate',
-        mapFunc: i => i.loan,
+        mapFunc: ({ loan = 0 }) => loan,
       });
     }
 
+    getRealEstateIncome({ borrowers }) {
+      return this.getArrayValues({
+        borrowers,
+        key: 'realEstate',
+        mapFunc: ({ income = 0 }) => income,
+      });
+    }
+
+    shouldUseNetSalary() {
+      return this.incomeConsiderationType === INCOME_CONSIDERATION_TYPES.NET;
+    }
+
     getSalary({ borrowers }) {
+      if (this.shouldUseNetSalary()) {
+        return this.getNetSalary({ borrowers });
+      }
       return this.sumValues({ borrowers, keys: 'salary' });
     }
 
+    getNetSalary({ borrowers }) {
+      return this.sumValues({ borrowers, keys: 'netSalary' });
+    }
+
+    getFortuneReturns({ borrowers }) {
+      if (this.fortuneReturnsRatio) {
+        return this.fortuneReturnsRatio * this.getFortune({ borrowers });
+      }
+
+      return 0;
+    }
+
     getTotalIncome({ borrowers }) {
-      const sum = arrayify(borrowers).reduce((total, borrower) => {
+      let sum = arrayify(borrowers).reduce((total, borrower) => {
         let borrowerIncome = 0;
-        borrowerIncome += borrower.salary || 0;
+        borrowerIncome += this.getSalary({ borrowers: borrower }) || 0;
         borrowerIncome += this.getBonusIncome({ borrowers: borrower }) || 0;
         borrowerIncome += this.getOtherIncome({ borrowers: borrower }) || 0;
-        borrowerIncome -= this.getExpenses({ borrowers: borrower }) || 0;
+        borrowerIncome += this.getFortuneReturns({ borrowers: borrower }) || 0;
+        borrowerIncome
+          += this.getRealEstateIncome({ borrowers: borrower }) || 0;
         return total + borrowerIncome;
       }, 0);
+
+      sum -= this.getFormattedExpenses({ borrowers }).subtract;
 
       return sum;
     }
@@ -309,8 +353,122 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         [],
       );
     }
+
+    getRealEstateExpenses({ borrowers }) {
+      const realEstate = arrayify(borrowers).reduce(
+        (arr, borrower) => [...arr, ...(borrower.realEstate || [])],
+        [],
+      );
+      const realEstateCost = realEstate.reduce(
+        (tot, obj) => tot + this.getRealEstateCost(obj),
+        0,
+      );
+
+      return realEstateCost;
+    }
+
+    getRealEstateCost({ loan, value }) {
+      const amortizationRate = this.getAmortizationRateBase({
+        borrowRatio: super.getBorrowRatio({ loan, propertyValue: value }),
+      });
+
+      return super.getTheoreticalMonthly({
+        propAndWork: value,
+        loanValue: loan,
+        amortizationRate,
+      }).total;
+    }
+
+    // Returns an object with all the types of expenses, combined between
+    // borrowers:
+    // {
+    //  LEASING: 23000,
+    //  WELFARE: 4000,
+    //  THEORETICAL_REAL_ESTATE: 30000,
+    //  etc
+    // }
+    getAllExpenses({ borrowers }) {
+      return {
+        [EXPENSE_TYPES.THEORETICAL_REAL_ESTATE]:
+          this.getRealEstateExpenses({ borrowers }) * 12, // All expenses are annualized
+        ...this.getGroupedExpenses({ borrowers }),
+      };
+    }
+
+    // Same as getAllExpenses, but without real estate expenses
+    getGroupedExpenses({ borrowers }) {
+      const flattenedExpenses = []
+        .concat([], ...arrayify(borrowers).map(({ expenses }) => expenses))
+        .filter(x => x);
+      return flattenedExpenses.reduce(
+        (obj, { value, description }) => ({
+          ...obj,
+          [description]: (obj[description] || 0) + value,
+        }),
+        {},
+      );
+    }
+
+    shouldSubtractExpenseFromIncome(expenseType) {
+      return this.expensesSubtractFromIncome.indexOf(expenseType) >= 0;
+    }
+
+    // Returns an object with all expenses to subtract from income
+    // or all expenses to add to expenses, depending on the param `toSubtractFromIncome`¨
+    // {
+    //  LEASING: 23000,
+    // }
+    getGroupedExpensesBySide({ borrowers, toSubtractFromIncome = true }) {
+      const expenses = this.getAllExpenses({ borrowers });
+
+      return Object.keys(expenses)
+        .filter(expenseType =>
+          (toSubtractFromIncome
+            ? this.expensesSubtractFromIncome.indexOf(expenseType) >= 0
+            : this.expensesSubtractFromIncome.indexOf(expenseType) < 0))
+        .reduce(
+          (obj, expenseType) => ({
+            ...obj,
+            [expenseType]: expenses[expenseType],
+          }),
+          {},
+        );
+    }
+
+    // Returns an object with 2 keys, `subtract` and `add` that contain the sum
+    // of all expenses to "subtract from income" and "add to expenses", respectively
+    getFormattedExpenses({ borrowers }) {
+      const expenses = this.getAllExpenses({ borrowers });
+
+      return Object.keys(expenses).reduce(
+        (obj, expenseType) => {
+          if (this.expensesSubtractFromIncome.indexOf(expenseType) >= 0) {
+            return { ...obj, subtract: obj.subtract + expenses[expenseType] };
+          }
+
+          return { ...obj, add: obj.add + expenses[expenseType] };
+        },
+        { subtract: 0, add: 0 },
+      );
+    }
+
+    getCommentsForExpenseType({ borrowers, type }) {
+      return arrayify(borrowers).reduce((comments, { expenses = [] }) => {
+        const expensesOfType = expenses.filter(({ description }) => description === type);
+        return [
+          ...comments,
+          ...expensesOfType.map(({ comment }) => comment),
+        ].filter(x => x);
+      }, []);
+    }
+
+    getCommentsForOtherIncomeType({ borrowers, type }) {
+      return arrayify(borrowers).reduce((comments, { otherIncome = [] }) => {
+        const otherIncomeOfType = otherIncome.filter(({ description }) => description === type);
+        return [
+          ...comments,
+          ...otherIncomeOfType.map(({ comment }) => comment),
+        ].filter(x => x);
+      }, []);
+    }
   };
-
-export const BorrowerCalculator = withBorrowerCalculator(FinanceCalculator);
-
-export default new BorrowerCalculator();

@@ -4,6 +4,9 @@ import { isEmailTestEnv } from '../EmailService';
 
 let emailTestCollection;
 
+const POLLING_INTERVAL = 50;
+const TIMEOUT = 10000;
+
 if (isEmailTestEnv) {
   emailTestCollection = new Mongo.Collection('emailTestCollection');
 
@@ -13,7 +16,7 @@ if (isEmailTestEnv) {
     },
     getAllTestEmails({ expected = 1 } = {}) {
       // Because emails are sent asynchronously after the actions that trigger
-      // them, poll the DB for 2 seconds until something is found
+      // them, poll the DB for 10 seconds until something is found
       let counter = 0;
 
       return new Promise((resolve) => {
@@ -27,10 +30,10 @@ if (isEmailTestEnv) {
             resolve(emails);
           }
 
-          if (counter > 40) {
+          if (counter > TIMEOUT / POLLING_INTERVAL) {
             resolve(emails);
           }
-        }, 50);
+        }, POLLING_INTERVAL);
       });
     },
   });

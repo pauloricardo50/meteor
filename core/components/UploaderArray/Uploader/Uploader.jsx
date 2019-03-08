@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 
 import UploaderContainer from './UploaderContainer';
 import FileDropper from './FileDropper.jsx';
@@ -36,7 +37,7 @@ const Uploader = (props) => {
             });
           }}
           id={id}
-          className={id === DOCUMENTS.OTHER ? 'visibility-hidden' : ''}
+          className={cx({ 'visibility-hidden': id === DOCUMENTS.OTHER })}
         />
       )}
       <FileDropper handleAddFiles={handleAddFiles} showFull={showFull} id={id}>

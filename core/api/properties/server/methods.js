@@ -12,45 +12,44 @@ import {
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 
-propertyInsert.setHandler((context, { property, userId, loanId }) => {
-  userId = checkInsertUserId(userId);
-  return PropertyService.insert({ property, userId, loanId });
+propertyInsert.setHandler((context, params) => {
+  const userId = checkInsertUserId(params.userId);
+  return PropertyService.insert({ ...params, userId });
 });
 
-propertyUpdate.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.update({ propertyId, object });
+propertyUpdate.setHandler(({ userId }, params) => {
+  SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
+  return PropertyService.update(params);
 });
 
-propertyDelete.setHandler((context, { propertyId }) => {
-  SecurityService.properties.isAllowedToDelete(propertyId);
-  return PropertyService.remove({ propertyId });
+propertyDelete.setHandler((context, params) => {
+  SecurityService.properties.isAllowedToDelete(params.propertyId);
+  return PropertyService.remove(params);
 });
 
-pushPropertyValue.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.pushValue({ propertyId, object });
+pushPropertyValue.setHandler(({ userId }, params) => {
+  SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
+  return PropertyService.pushValue(params);
 });
 
-popPropertyValue.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.popValue({ propertyId, object });
+popPropertyValue.setHandler(({ userId }, params) => {
+  SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
+  return PropertyService.popValue(params);
 });
 
-pullPropertyValue.setHandler((context, { propertyId, object }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.pullValue({ propertyId, object });
+pullPropertyValue.setHandler(({ userId }, params) => {
+  SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
+  return PropertyService.pullValue(params);
 });
 
-evaluateProperty.setHandler((context, { propertyId, loanResidenceType }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.evaluateProperty({ propertyId, loanResidenceType });
+evaluateProperty.setHandler(({ userId }, params) => {
+  context.unblock();
+  SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
+  return PropertyService.evaluateProperty(params);
 });
 
-propertyDataIsInvalid.setHandler((context, { propertyId, loanResidenceType }) => {
-  SecurityService.properties.isAllowedToUpdate(propertyId);
-  return PropertyService.propertyDataIsInvalid({
-    propertyId,
-    loanResidenceType,
-  });
+propertyDataIsInvalid.setHandler(({ userId }, params) => {
+  context.unblock();
+  SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
+  return PropertyService.propertyDataIsInvalid(params);
 });

@@ -17,7 +17,7 @@ import './email/server';
 import './events/server/registerServerListeners';
 
 import './links';
-import './reducers';
+import './reducers/registerReducers';
 
 import './server/grapher-live';
 import './server/hooks';

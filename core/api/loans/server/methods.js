@@ -17,8 +17,11 @@ import {
   assignLoanToUser,
   switchBorrower,
   sendNegativeFeedbackToAllLenders,
+  loanUpdatePromotionInvitedBy,
+  reuseProperty,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
+import Security from '../../security/Security';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -111,4 +114,14 @@ sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
+});
+
+loanUpdatePromotionInvitedBy.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
+  LoanService.updatePromotionInvitedBy(params);
+});
+
+reuseProperty.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  LoanService.reuseProperty(params);
 });

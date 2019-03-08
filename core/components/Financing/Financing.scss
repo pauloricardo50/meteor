@@ -1,8 +1,10 @@
-@import './client/FinancingHeader/FinancingHeader.scss';
-@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
-@import './client/FinancingOffers/FinancingOffers.scss';
-@import './client/FinancingProject/FinancingProject.scss';
 @import './client/FinancingFinancing/MortgageNotesPicker/MortgageNotesPicker.scss';
+@import './client/FinancingHeader/FinancingHeader.scss';
+@import './client/FinancingLenders/FinancingLenders.scss';
+@import './client/FinancingOffers/FinancingOffers.scss';
+@import './client/FinancingOwnFunds/FinancingOwnFundsPicker/FinancingOwnFundsPicker.scss';
+@import './client/FinancingProject/FinancingProject.scss';
+
 $labels-width: 180px;
 $structure-width: 320px;
 $item-height: 24px;
@@ -37,8 +39,8 @@ $result-section-negative-offset: -32px;
   border-right: solid 1px $light-grey;
   border-left: solid 1px $light-grey;
 
-   > .card1 > *,
-   > * {
+  > .card1 > *,
+  > * {
     display: flex;
     align-items: stretch;
     flex-direction: column;
@@ -70,6 +72,10 @@ $result-section-negative-offset: -32px;
 
     opacity: 0.5;
     color: initial;
+  }
+
+  .offerId {
+    justify-content: flex-start !important;
   }
 }
 
@@ -165,6 +171,7 @@ $result-section-negative-offset: -32px;
 
     .section-title {
       font-size: 16px;
+      text-transform: uppercase;
     }
   }
 
@@ -179,7 +186,7 @@ $result-section-negative-offset: -32px;
       box-sizing: border-box;
       padding: 16px;
 
-       > .card1 {
+      > .card1 {
         display: flex;
         flex-direction: column;
 
@@ -242,11 +249,11 @@ $result-section-negative-offset: -32px;
 }
 
 .financing-mortgageLoan {
-   > *:first-child {
+  > *:first-child {
     margin-bottom: 8px;
   }
 
-   > *:last-child {
+  > *:last-child {
     align-self: center;
   }
 }
@@ -301,18 +308,6 @@ $result-section-negative-offset: -32px;
 
 $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
 
-.financing-structures-refresher {
-  position: fixed;
-  z-index: 500;
-  top: 136px;
-  right: 16px;
-
-  padding: 40px;
-
-  border-radius: 4px;
-  box-shadow: $shadow-level-2;
-}
-
 .own-funds-completer {
   position: relative;
 
@@ -333,41 +328,14 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
   }
 }
 
-.top-off-icon {
-  position: relative;
-
+.requiredOwnFunds-component-body {
   display: flex;
-  overflow: hidden;
-  flex-grow: 0;
-  flex-shrink: 0;
+  justify-content: space-around;
+  align-self: stretch;
 
-  width: 16px;
-  height: 16px;
-  margin: 8px;
-  margin-left: 0;
-
-  cursor: not-allowed;
-
-  border-radius: 4px;
-  background-color: $light-grey;
-
-  &.active {
-    cursor: pointer;
-
-    background-color: $grey1;
-  }
-
-  .appear {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 16px;
-    height: 16px;
-
-    animation-duration: 300ms;
-
-    border-radius: 4px;
-    background-color: $primary;
+  .text-and-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

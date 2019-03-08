@@ -26,10 +26,7 @@ const ValidIcon = ({ status, style, fade, hide }) => {
     return (
       <span
         style={style}
-        className={classnames({
-          'saving-icon': true,
-          'animated zoomOut': !!fade,
-        })}
+        className={classnames('saving-icon', { 'animated zoomOut': !!fade })}
       >
         <svg
           className="checkmark"

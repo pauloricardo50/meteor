@@ -12,7 +12,6 @@ import {
   interestRatesUpdate,
   interestRatesRemove,
 } from 'core/api/methods/index';
-import { PercentField } from 'core/components/PercentInput/';
 import { CustomAutoField } from 'core/components/AutoForm2/AutoFormComponents';
 import T from 'core/components/Translation';
 import Percent from 'core/components/Translation/numberComponents/Percent';
@@ -64,14 +63,14 @@ const singleInterestRate = ({ type, currentInterestRates }) => ({
     type: Number,
     min: 0,
     max: 1,
-    uniforms: { component: PercentField },
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
     optional: true,
   },
   [`${type}.rateHigh`]: {
     type: Number,
     min: 0,
     max: 1,
-    uniforms: { component: PercentField },
+    uniforms: { type: CUSTOM_AUTOFIELD_TYPES.PERCENT, placeholder: '0.00%' },
     optional: true,
   },
   [`${type}.trend`]: {
@@ -157,11 +156,7 @@ const fields = currentInterestRates => [
 
 export default compose(
   withState('submitting', 'setSubmitting', false),
-  withProps(({
-    setOpen,
-    setSubmitting,
-    currentInterestRates = [],
-  }) => ({
+  withProps(({ setOpen, setSubmitting, currentInterestRates = [] }) => ({
     schema: interestRatesSchema({ currentInterestRates }),
     fields: fields(currentInterestRates),
     insertInterestRates: data =>

@@ -3,7 +3,13 @@ import { check } from 'meteor/check';
 
 import range from 'lodash/range';
 
-import { STEPS, STEP_ORDER, ROLES, TASK_TYPE } from '../../api/constants';
+import {
+  STEPS,
+  STEP_ORDER,
+  ROLES,
+  TASK_TYPE,
+  PURCHASE_TYPE,
+} from '../../api/constants';
 import {
   Borrowers,
   Loans,
@@ -25,7 +31,7 @@ import {
   UNOWNED_LOANS_COUNT,
   LOANS_PER_USER,
 } from '../fixtureConfig';
-import { createFakeLoan } from '../loanFixtures';
+import { createFakeLoan, addLoanWithData } from '../loanFixtures';
 import {
   createDevs,
   createAdmins,
@@ -38,6 +44,12 @@ import { E2E_USER_EMAIL } from '../fixtureConstants';
 import { createYannisData } from '../demoFixtures';
 import { createOrganisations } from '../organisationFixtures';
 import { createFakeInterestRates } from '../interestRatesFixtures';
+import {
+  emptyFakeBorrower,
+  completeFakeBorrower,
+} from '../../api/borrowers/fakes';
+import { emptyProperty, fakeProperty } from '../../api/properties/fakes';
+import { emptyLoan, loanStep1, loanStep2 } from '../../api/loans/fakes';
 
 const isAuthorizedToRun = () => !Meteor.isProduction || Meteor.isStaging;
 
@@ -168,14 +180,14 @@ Meteor.methods({
   },
 
   purgePersonalData(currentUserId) {
-    deleteUsersRelatedData([currentUserId]);
+    return deleteUsersRelatedData([currentUserId]);
   },
 
   insertBorrowerRelatedTask() {
     const borrower = Borrowers.aggregate({ $sample: { size: 1 } })[0];
     const type = TASK_TYPE.VERIFY;
     if (borrower._id) {
-      TaskService.insert({ type, borrowerId: borrower._id });
+      return TaskService.insert({ type, borrowerId: borrower._id });
     }
   },
 
@@ -183,7 +195,7 @@ Meteor.methods({
     const loanId = Loans.aggregate({ $sample: { size: 1 } })[0]._id;
     const type = TASK_TYPE.VERIFY;
     if (loanId) {
-      TaskService.insert({ type, loanId });
+      return TaskService.insert({ type, loanId });
     }
   },
 
@@ -191,7 +203,7 @@ Meteor.methods({
     const propertyId = Properties.aggregate({ $sample: { size: 1 } })[0]._id;
     const type = TASK_TYPE.CUSTOM;
     if (propertyId) {
-      TaskService.insert({ type, propertyId });
+      return TaskService.insert({ type, propertyId });
     }
   },
 
@@ -200,14 +212,76 @@ Meteor.methods({
     Loans.remove({ userId });
     Borrowers.remove({ userId });
     Properties.remove({ userId });
-    createYannisData(userId);
+    return createYannisData(userId);
   },
 
   createFakeOffer({ loanId }) {
-    createFakeOffer(loanId);
+    SecurityService.currentUserHasRole(ROLES.DEV);
+
+    return createFakeOffer(loanId);
   },
 
   createFakeInterestRates({ number }) {
-    createFakeInterestRates({ number });
+    SecurityService.currentUserHasRole(ROLES.DEV);
+
+    return createFakeInterestRates({ number });
+  },
+
+  addEmptyLoan({ userId, twoBorrowers, addOffers, isRefinancing }) {
+    SecurityService.currentUserHasRole(ROLES.DEV);
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [emptyFakeBorrower, emptyFakeBorrower]
+        : [emptyFakeBorrower],
+      properties: [emptyProperty],
+      loan: {
+        ...emptyLoan,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+      },
+      userId,
+      addOffers,
+    });
+  },
+
+  addLoanWithSomeData({ userId, twoBorrowers, addOffers, isRefinancing }) {
+    SecurityService.currentUserHasRole(ROLES.DEV);
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [completeFakeBorrower, completeFakeBorrower]
+        : [completeFakeBorrower],
+      properties: [fakeProperty],
+      loan: {
+        ...loanStep1,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+      },
+      userId,
+      addOffers,
+    });
+  },
+
+  addCompleteLoan({ userId, twoBorrowers, isRefinancing }) {
+    SecurityService.currentUserHasRole(ROLES.DEV);
+
+    return addLoanWithData({
+      borrowers: twoBorrowers
+        ? [completeFakeBorrower, completeFakeBorrower]
+        : [completeFakeBorrower],
+      properties: [fakeProperty],
+      loan: {
+        ...loanStep2,
+        purchaseType: isRefinancing
+          ? PURCHASE_TYPE.REFINANCING
+          : PURCHASE_TYPE.ACQUISITION,
+        customName: 'Ma maison à la plage',
+      },
+      userId,
+      addOffers: true,
+    });
   },
 });

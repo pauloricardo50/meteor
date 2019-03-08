@@ -47,8 +47,8 @@ export const adminCreateUser = new Method({
   },
 });
 
-export const editUser = new Method({
-  name: 'editUser',
+export const updateUser = new Method({
+  name: 'updateUser',
   params: {
     userId: String,
     object: Object,
@@ -96,4 +96,21 @@ export const generateApiToken = new Method({
   params: {
     userId: String,
   },
+});
+
+export const userUpdateOrganisations = new Method({
+  name: 'userUpdateOrganisations',
+  params: {
+    userId: String,
+    newOrganisations: Array,
+  },
+});
+
+export const testUserAccount = new Method({
+  name: 'testUserAccount',
+  parmas: {
+    email: String,
+    password: String,
+    role: String,
+  }
 });

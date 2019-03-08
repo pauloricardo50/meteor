@@ -1,11 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 
-import { RESIDENCE_TYPE } from '../../constants';
 import LenderRules from '../lenderRules';
 import CollectionService from '../../helpers/CollectionService';
 import {
   DEFAULT_VALUE_FOR_ALL,
-  LENDER_RULES_OPERATORS,
   DEFAULT_MAIN_RESIDENCE_RULES,
   DEFAULT_SECONDARY_RESIDENCE_RULES,
 } from '../lenderRulesConstants';
@@ -62,10 +60,10 @@ class LenderRulesService extends CollectionService {
     return this._update({ id: lenderRulesId, object });
   }
 
-  updateFilter({ lenderRulesId, logicRules }) {
+  updateFilter({ lenderRulesId, logicRules, name }) {
     return this._update({
       id: lenderRulesId,
-      object: { filter: { and: logicRules } },
+      object: { filter: { and: logicRules }, name },
     });
   }
 }

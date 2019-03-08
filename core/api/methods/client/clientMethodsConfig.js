@@ -5,6 +5,7 @@ import ClientEventService, {
 } from '../../events/ClientEventService';
 import message from '../../../utils/message';
 import { logError } from '../../slack/methodDefinitions';
+import { refetchQueries } from '../clientQueryManager';
 
 const shouldLogErrorsToConsole = (Meteor.isDevelopment || Meteor.isStaging) && !Meteor.isTest;
 
@@ -29,10 +30,8 @@ const handleSuccess = (config, params) => {
   ClientEventService.emitMethod(config, params);
 
   // Refresh all non-reactive queries
-  if (!config.noRefreshAfterCall && window) {
-    (window.activeQueries || []).forEach((query) => {
-      ClientEventService.emit(query);
-    });
+  if (!config.noRefreshAfterCall) {
+    refetchQueries(config.name);
   }
 };
 

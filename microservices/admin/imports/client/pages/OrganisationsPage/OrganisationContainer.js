@@ -8,6 +8,6 @@ export default compose(
   withRouter,
   withProps(({ organisation: { _id: organisationId }, history }) => ({
     onClick: () =>
-      history.push(createRoute(SINGLE_ORGANISATION_PAGE, { organisationId })),
+      history.push(createRoute(SINGLE_ORGANISATION_PAGE, { organisationId, tabId: '' })),
   })),
 );

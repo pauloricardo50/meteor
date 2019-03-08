@@ -19,6 +19,7 @@ const TranchePickerDialog = ({
   title,
   tranches,
   handleSave,
+  disabled,
   ...props
 }: TranchePickerDialogProps) => (
   <DialogSimple
@@ -33,7 +34,7 @@ const TranchePickerDialog = ({
           handleSave(tranches);
           handleClose();
         }}
-        disabled={!tranchesAreValid(tranches)}
+        disabled={disabled || !tranchesAreValid(tranches)}
       >
         Enregistrer
       </Button>,

@@ -140,6 +140,7 @@ export const createPromotionDemo = async (
   addCurrentUser,
   withPromotionOptions,
   users,
+  withInvitedBy = false,
 ) => {
   console.log('Creating promotion demo...');
   const promotionId = PromotionService.insert({
@@ -200,7 +201,7 @@ export const createPromotionDemo = async (
 
     const loanId = await PromotionService.inviteUser({
       promotionId,
-      user,
+      user: {...user, ...(withInvitedBy ? {invitedBy: Meteor.userId()} : {})},
     });
 
     const promotionOptionIds = addPromotionOptions(loanId, promotion);

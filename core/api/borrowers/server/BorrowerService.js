@@ -9,12 +9,7 @@ export class BorrowerService extends CollectionService {
   }
 
   get(borrowerId) {
-    return this.collection
-      .createQuery({
-        $filters: { _id: borrowerId },
-        ...loanBorrower(),
-      })
-      .fetchOne();
+    return this.fetchOne({ $filters: { _id: borrowerId }, ...loanBorrower() });
   }
 
   update = ({ borrowerId, object }) =>

@@ -4,28 +4,41 @@ import Link from 'core/components/Link';
 
 import T from 'core/components/Translation';
 import BorrowersSummary from 'core/components/BorrowersSummary';
+import LoanRenamer from './LoanRenamer';
 
-const AppItem = ({ loan }) => (
-  <Link
-    className="card1 card-top card-hover flex-col app-item"
-    to={`/loans/${loan._id}`}
-  >
-    <h3 className="title">
-      <T
-        id="AppItem.title"
-        values={{
-          purchaseType: <T id={`Forms.purchaseType.${loan.purchaseType}`} />,
-        }}
-      />
-    </h3>
-    <h4 className="subtitle secondary">
-      <T id="AppItem.name" values={{ name: loan.name }} />
-    </h4>
-    <BorrowersSummary borrowers={loan.borrowers} />
-    <h1 className="main-text text-center">
-      <T id={`steps.${loan.logic.step}`} />
-    </h1>
-  </Link>
+const AppItem = ({
+  loan: { _id: loanId, purchaseType, name, customName, borrowers, logic },
+}) => (
+  <div className="app-item-wrapper">
+    <Link
+      className="card1 card-top card-hover flex-col app-item"
+      to={`/loans/${loanId}`}
+    >
+      <h3 className="title">
+        {customName ? (
+          <span>
+            {customName}&nbsp;-&nbsp;
+            <T id={`Forms.purchaseType.${purchaseType}`} />
+          </span>
+        ) : (
+          <T
+            id="AppItem.title"
+            values={{
+              purchaseType: <T id={`Forms.purchaseType.${purchaseType}`} />,
+            }}
+          />
+        )}
+      </h3>
+      <h4 className="subtitle secondary">
+        <T id="AppItem.name" values={{ name }} />
+      </h4>
+      <BorrowersSummary borrowers={borrowers} />
+      <h1 className="main-text text-center">
+        <T id={`steps.${logic.step}`} />
+      </h1>
+    </Link>
+    <LoanRenamer loanId={loanId} customName={customName} />
+  </div>
 );
 
 AppItem.propTypes = {};

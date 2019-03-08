@@ -8,7 +8,9 @@ import { getRateLimitedMethods } from '../../../../utils/rate-limit';
 import { submitContactForm } from '../../methodDefinitions';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 
-describe('methods', () => {
+describe('methods', function () {
+  this.timeout(10000);
+
   beforeEach(() => {
     resetDatabase();
   });

@@ -83,23 +83,6 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       noIntl: disableAddress,
       required: addressFieldsAreNecessary,
     },
-    // {
-    //   id: 'zipCode',
-    //   type: 'custom',
-    //   component: 'ZipAutoComplete',
-    //   componentProps: {
-    //     savePath: '',
-    //     initialValue: b.zipCode && b.city ? `${b.zipCode} ${b.city}` : '',
-    //   },
-    //   condition: !disableAddress,
-    //   placeholder:
-    //     disableAddress
-    //     && (borrowers[0].zipCode && borrowers[0].city
-    //       ? `${borrowers[0].zipCode} ${borrowers[0].city}`
-    //       : ''),
-    //   noIntl: disableAddress,
-    //   required: addressFieldsAreNecessary,
-    // },
     {
       type: 'conditionalInput',
       conditionalTrueValue: false,
@@ -112,11 +95,15 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
         },
       ],
     },
+    // {
+    //   id: 'age',
+    //   type: 'textInput',
+    //   number: true,
+    //   saveOnChange: false,
+    // },
     {
-      id: 'age',
-      type: 'textInput',
-      number: true,
-      saveOnChange: false,
+      id: 'birthDate',
+      type: 'dateInput',
     },
     { id: 'citizenship', type: 'textInput', condition: !b.isSwiss },
     { id: 'isUSPerson', type: 'radioInput', options: [true, false] },
@@ -159,6 +146,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       required: false,
     },
     { id: 'salary', type: 'textInput', money: true },
+    { id: 'netSalary', type: 'textInput', money: true },
     {
       type: 'conditionalInput',
       conditionalTrueValue: true,
@@ -201,6 +189,29 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
         { id: 'value', type: 'textInput', money: true },
       ],
     },
+    {
+      type: 'conditionalInput',
+      conditionalTrueValue: true,
+      inputs: [
+        {
+          id: 'hasOwnCompany',
+          type: 'radioInput',
+          options: [true, false],
+        },
+        {
+          id: 'ownCompanies',
+          type: 'arrayInput',
+          required: false,
+          inputs: [
+            { id: 'description', type: 'textInput' },
+            { id: 'ownership', type: 'textInput', percent: true },
+            { id: 'netIncome2018', type: 'textInput', money: true },
+            { id: 'netIncome2017', type: 'textInput', money: true },
+            { id: 'netIncome2016', type: 'textInput', money: true },
+          ],
+        },
+      ],
+    },
   ];
 
   const fortuneArray = [
@@ -222,6 +233,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
       type: 'arrayInput',
       required: false,
       inputs: [
+        { id: 'name', type: 'textInput' },
         {
           id: 'description',
           type: 'selectInput',
@@ -229,6 +241,7 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
         },
         { id: 'value', type: 'textInput', money: true },
         { id: 'loan', type: 'textInput', money: true },
+        { id: 'income', type: 'textInput', money: true, required: false },
       ],
     },
     makeArrayOfObjectsInput('otherFortune'),

@@ -5,12 +5,9 @@ import { toMoney } from '../../utils/conversionFunctions';
 
 export const getDashboardArray = (props) => {
   const bonusIncome = Calculator.getBonusIncome(props);
-  const borrowerIncome = Calculator.getTotalIncome(props);
   const borrowRatio = Calculator.getBorrowRatio(props);
   const expenses = Calculator.getExpenses(props);
   const fortune = Calculator.getFortune(props);
-  const ownFundsNonPledged = Calculator.getNonPledgedOwnFunds(props);
-  const ownFundsPledged = Calculator.getTotalPledged(props);
   const incomeRatio = Calculator.getIncomeRatio(props);
   const insuranceFortune = Calculator.getInsuranceFortune(props);
   const loanValue = Calculator.selectLoanValue(props);
@@ -18,15 +15,21 @@ export const getDashboardArray = (props) => {
   const monthly = Calculator.getMonthly(props);
   const notaryFees = Calculator.getFees(props).total;
   const otherIncome = Calculator.getOtherIncome(props);
+  const ownFundsNonPledged = Calculator.getNonPledgedOwnFunds(props);
+  const ownFundsPledged = Calculator.getTotalPledged(props);
   const project = Calculator.getProjectValue(props);
   const propAndWork = Calculator.getPropAndWork(props);
   const propertyValue = Calculator.selectPropertyValue(props);
   const propertyWork = Calculator.makeSelectStructureKey('propertyWork')(props);
   const realEstateDebt = Calculator.getRealEstateDebt(props);
+  const realEstateExpenses = Calculator.getRealEstateExpenses(props) * 12;
   const realEstateFortune = Calculator.getRealEstateFortune(props);
+  const realEstateIncome = Calculator.getRealEstateIncome(props);
   const realEstateValue = Calculator.getRealEstateValue(props);
-  const totalFunds = Calculator.getTotalFunds(props);
+  const salary = Calculator.getSalary(props);
   const totalFinancing = Calculator.getTotalFinancing(props);
+  const totalFunds = Calculator.getTotalFunds(props);
+  const totalIncome = Calculator.getTotalIncome(props);
 
   return [
     {
@@ -174,7 +177,7 @@ export const getDashboardArray = (props) => {
     },
     {
       label: 'general.salary',
-      value: toMoney(borrowerIncome),
+      value: toMoney(salary),
     },
     {
       label: 'Recap.consideredBonus',
@@ -187,13 +190,23 @@ export const getDashboardArray = (props) => {
       hide: !otherIncome,
     },
     {
+      label: 'Recap.realEstateIncome',
+      value: `- ${toMoney(realEstateIncome)}`,
+      hide: !realEstateIncome,
+    },
+    {
       label: 'Recap.expenses',
       value: `- ${toMoney(expenses)}`,
       hide: !expenses,
     },
     {
+      label: 'Recap.realEstateCosts',
+      value: `- ${toMoney(realEstateExpenses)}`,
+      hide: !realEstateExpenses,
+    },
+    {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(borrowerIncome)}</span>,
+      value: <span className="sum">{toMoney(totalIncome)}</span>,
       spacingTop: true,
       bold: true,
     },
@@ -205,25 +218,22 @@ export const getDashboardArray = (props) => {
 };
 
 export const getBorrowerArray = ({ borrower: borrowers }) => {
-  const expenses = Calculator.getExpenses({ borrowers });
   const bonusIncome = Calculator.getBonusIncome({ borrowers });
-  const otherIncome = Calculator.getOtherIncome({ borrowers });
-  const otherFortune = Calculator.getOtherFortune({ borrowers });
-  const realEstateFortune = Calculator.getRealEstateFortune({
-    borrowers,
-  });
-  const realEstateValue = Calculator.getRealEstateValue({
-    borrowers,
-  });
-  const realEstateDebt = Calculator.getRealEstateDebt({ borrowers });
+  const expenses = Calculator.getExpenses({ borrowers });
   const fortune = Calculator.getFortune({ borrowers });
-  const thirdPartyFortune = Calculator.getThirdPartyFortune({ borrowers });
-  const insuranceFortune = Calculator.getInsuranceFortune({
-    borrowers,
-  });
-  const totalFunds = Calculator.getTotalFunds({ borrowers });
+  const insuranceFortune = Calculator.getInsuranceFortune({ borrowers });
+  const netSalary = Calculator.getNetSalary({ borrowers });
+  const otherFortune = Calculator.getOtherFortune({ borrowers });
+  const otherIncome = Calculator.getOtherIncome({ borrowers });
+  const realEstateDebt = Calculator.getRealEstateDebt({ borrowers });
+  const realEstateExpenses = Calculator.getRealEstateExpenses({ borrowers }) * 12;
+  const realEstateFortune = Calculator.getRealEstateFortune({ borrowers });
+  const realEstateIncome = Calculator.getRealEstateIncome({ borrowers });
+  const realEstateValue = Calculator.getRealEstateValue({ borrowers });
   const salary = Calculator.getSalary({ borrowers });
-  const income = Calculator.getTotalIncome({ borrowers });
+  const thirdPartyFortune = Calculator.getThirdPartyFortune({ borrowers });
+  const totalFunds = Calculator.getTotalFunds({ borrowers });
+  const totalIncome = Calculator.getTotalIncome({ borrowers });
 
   const netFortune = totalFunds + realEstateFortune + otherFortune;
 
@@ -296,6 +306,12 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
       value: toMoney(salary),
     },
     {
+      label: 'Recap.netSalary',
+      value: <span className="secondary">{toMoney(netSalary)}</span>,
+      hide: !netSalary,
+      spacing: true,
+    },
+    {
       label: 'Recap.consideredBonus',
       value: toMoney(bonusIncome),
       hide: !borrowers.bonusExists,
@@ -306,13 +322,23 @@ export const getBorrowerArray = ({ borrower: borrowers }) => {
       hide: !otherIncome,
     },
     {
+      label: 'Recap.realEstateIncome',
+      value: toMoney(realEstateIncome),
+      hide: !realEstateIncome,
+    },
+    {
       label: 'Recap.expenses',
       value: `- ${toMoney(expenses)}`,
       hide: !expenses,
     },
     {
+      label: 'Recap.realEstateExpenses',
+      value: `- ${toMoney(realEstateExpenses)}`,
+      hide: !realEstateExpenses,
+    },
+    {
       label: 'Recap.consideredIncome',
-      value: <span className="sum">{toMoney(income)}</span>,
+      value: <span className="sum">{toMoney(totalIncome)}</span>,
       spacingTop: true,
       bold: true,
     },
@@ -564,6 +590,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
         </span>
       ),
       spacingTop: true,
+      spacing: true,
     },
     {
       label: 'Recap.total',

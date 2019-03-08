@@ -16,7 +16,7 @@ export default Users.createQuery(USER_QUERIES.USER_SEARCH, {
     }
     filters.$or = [
       createRegexQuery('_id', searchQuery),
-      createRegexQuery('email', searchQuery),
+      createRegexQuery('emails.0.address', searchQuery),
       createRegexQuery('organisation', searchQuery),
       createRegexQuery('firstName', searchQuery),
       createRegexQuery('lastName', searchQuery),

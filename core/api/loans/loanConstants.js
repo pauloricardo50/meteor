@@ -16,7 +16,7 @@ export const PURCHASE_TYPE = {
   ACQUISITION: 'ACQUISITION',
   REFINANCING: 'REFINANCING',
   // TODO: Figure out what needs to be changed for this
-  // CONSTRUCTION: 'CONSTRUCTION',
+  CONSTRUCTION: 'CONSTRUCTION',
 };
 
 // Keep these sorted alphabetically for zipcode search to work
@@ -89,6 +89,7 @@ export const LOAN_QUERIES = {
   PRO_LOANS: 'PRO_LOANS',
   SIDENAV_LOANS: 'SIDENAV_LOANS',
   USER_LOAN: 'USER_LOAN',
+  USER_LOANS: 'USER_LOANS',
   USER_LOANS_E2E: 'USER_LOANS_E2E',
 };
 

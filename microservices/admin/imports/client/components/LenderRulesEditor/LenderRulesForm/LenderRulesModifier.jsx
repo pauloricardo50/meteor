@@ -2,16 +2,24 @@ import React from 'react';
 import { compose, branch, renderNothing, mapProps } from 'recompose';
 
 import { lenderRulesRemove, lenderRulesUpdateFilter } from 'core/api/methods';
-import { isAllRule, parseFilter } from 'core/api/lenderRules/helpers';
+import {
+  isAllRule,
+  parseFilter,
+  formatFilter,
+} from 'core/api/lenderRules/helpers';
 import Button from 'core/components/Button';
 import LenderRulesForm from './LenderRulesForm';
 
 export default compose(
   branch(({ filter }) => isAllRule({ filter }), renderNothing),
-  mapProps(({ lenderRulesId, filter }) => ({
-    onSubmit: ({ rules }) =>
-      lenderRulesUpdateFilter.run({ lenderRulesId, logicRules: rules }),
-    model: { rules: filter.and.map(parseFilter) },
+  mapProps(({ lenderRulesId, filter, name }) => ({
+    onSubmit: ({ rules, name: newName }) =>
+      lenderRulesUpdateFilter.run({
+        lenderRulesId,
+        logicRules: rules.map(formatFilter),
+        name: newName,
+      }),
+    model: { rules: filter.and.map(parseFilter), name },
     buttonProps: { label: 'Modifier' },
     renderAdditionalActions: ({ closeDialog, setDisableActions, disabled }) => (
       <Button

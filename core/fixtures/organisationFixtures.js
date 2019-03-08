@@ -4,6 +4,7 @@ import random from 'lodash/random';
 import OrganisationService from '../api/organisations/server/OrganisationService';
 import ContactService from '../api/contacts/server/ContactService';
 import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../api/constants';
+import { createLenderRules } from './lenderRulesFixtures';
 
 const orgs = [
   {
@@ -36,9 +37,13 @@ export const createOrganisations = () =>
   orgs.map((org) => {
     const orgId = OrganisationService.insert(org);
 
+    if (org.features.includes(ORGANISATION_FEATURES.LENDER)) {
+      createLenderRules(orgId);
+    }
+
     const contactCount = random(1, 3, false);
 
-    for (let index = 0; index < contactCount; index++) {
+    for (let index = 0; index < contactCount; index += 1) {
       const contactId = ContactService.insert({
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),

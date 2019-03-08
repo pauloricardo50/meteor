@@ -60,6 +60,17 @@ class CollectionService {
     return this.createQuery(...args).fetchOne();
   }
 
+  safeFetchOne(...args) {
+    const { $filters = {} } = args.find(arg => arg.$filters);
+    const result = this.fetchOne(...args);
+
+    if (!result) {
+      throw new Meteor.Error(`Could not find object with filters "${JSON.stringify($filters)}" in collection "${this.collection._name}"`);
+    }
+
+    return result;
+  }
+
   fetch(...args) {
     return this.createQuery(...args).fetch();
   }
@@ -118,6 +129,24 @@ class CollectionService {
       return;
     case 'many':
       linker.remove(linkId);
+      return;
+    default:
+      return null;
+    }
+  }
+
+  updateLinkMetadata({ id, linkName, linkId, metadata }) {
+    const linker = this.collection.getLink(id, linkName);
+    const {
+      linker: { strategy },
+    } = linker;
+
+    switch (strategy.split('-')[0]) {
+    case 'one':
+      linker.metadata(metadata);
+      return;
+    case 'many':
+      linker.metadata(linkId, metadata);
       return;
     default:
       return null;

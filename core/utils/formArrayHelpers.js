@@ -49,6 +49,8 @@ const fieldIsValid = (field, doc) => {
   return currentValue !== undefined;
 };
 
+// Returns a list of fields that are missing from the doc, given a form array
+// Helps you know which fields still need to be filled
 export const getMissingFieldIds = (formArray, doc) =>
   formArray.reduce((missingFieldIds, field) => {
     const { type, id, inputs } = field;

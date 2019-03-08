@@ -8,15 +8,16 @@ import interestRates from 'core/api/interestRates/queries/currentInterestRates';
 
 const withInterestRates = withSmartQuery({
   query: interestRates,
-  queryOptions: { reactive: false },
+  queryOptions: { reactive: false, shouldRefetch: () => false },
   dataName: 'currentInterestRates',
   smallLoader: true,
+  refetchOnMethodCall: false,
 });
 
 export default compose(
   withSmartQuery({
     query,
-    params: ({ match }) => ({ _id: match.params.loanId }),
+    params: ({ match }) => ({ loanId: match.params.loanId }),
     queryOptions: { reactive: true, single: true },
     dataName: 'loan',
   }),

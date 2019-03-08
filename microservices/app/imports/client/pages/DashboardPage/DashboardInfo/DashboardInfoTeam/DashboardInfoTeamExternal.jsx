@@ -16,15 +16,18 @@ const DashboardInfoTeamExternal = ({
         <T id="DashboardInfoTeamExternal.title" />
       </small>
     </h3>
-    {contacts.sort((a, b) => a.name.localeCompare(b.name)).map(contact => (
-      <DashboardInfoTeamMember
-        {...contact}
-        key={contact.name}
-        allowEdit={!contact.disableEdit}
-        removeContact={removeContact}
-        editContact={editContact}
-      />
-    ))}
+    {contacts
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(contact => (
+        <DashboardInfoTeamMember
+          {...contact}
+          renderTitle={contact.renderTitle}
+          key={contact.name}
+          allowEdit={!contact.disableEdit}
+          removeContact={removeContact}
+          editContact={editContact}
+        />
+      ))}
   </div>
 );
 

@@ -1,12 +1,10 @@
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
 import {
+  LOAN_VERIFICATION_STATUS,
   VALUATION_STATUS,
   PURCHASE_TYPE,
-} from '../../../../core/api/constants';
+} from 'core/api/constants';
 import {
   FINANCING_PAGE,
   PROPERTY_PAGE,
@@ -15,7 +13,7 @@ import {
   PROPERTIES_PAGE,
   REFINANCING_PAGE,
 } from '../../../../startup/client/appRoutes';
-import VerificationRequester from './VerificationRequester/VerificationRequester';
+import VerificationRequester from './VerificationRequester';
 
 const createFinancingLink = ({ _id: loanId }) =>
   createRoute(FINANCING_PAGE, { ':loanId': loanId });
@@ -62,7 +60,7 @@ export const getDashboardTodosArray = list =>
       id: 'completeBorrowers',
       isDone: ({ borrowers }) => {
         const percentages = borrowers.map(borrower =>
-          BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
+          Calculator.personalInfoPercent({ borrowers: borrower }));
 
         if (percentages.some(percent => percent >= 1)) {
           return true;
@@ -84,7 +82,7 @@ export const getDashboardTodosArray = list =>
           return false;
         }
 
-        const percent = PropertyCalculator.propertyPercent({ loan, property });
+        const percent = Calculator.propertyPercent({ loan, property });
 
         if (percent >= 1) {
           return true;

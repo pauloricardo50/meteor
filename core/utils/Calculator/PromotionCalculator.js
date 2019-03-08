@@ -1,6 +1,7 @@
 import pick from 'lodash/pick';
 
 import { FinanceCalculator } from '../FinanceCalculator';
+import { PROMOTION_TYPES, PURCHASE_TYPE } from '../../api/constants';
 
 export const withPromotionCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -82,8 +83,24 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
         ...promotionOption.promotionLots[0].properties[0],
       };
     }
+
+    shouldUseConstructionNotaryFees({ loan, structureId }) {
+      const { promotions } = loan;
+
+      if (loan.purchaseType === PURCHASE_TYPE.CONSTRUCTION) {
+        return true;
+      }
+
+      if (!this.isPromotionProperty({ loan, structureId })) {
+        return false;
+      }
+
+      if (!promotions || (promotions.length && promotions.length === 0)) {
+        return false;
+      }
+
+      const promotion = promotions[0];
+
+      return promotion.type === PROMOTION_TYPES.SHARE;
+    }
   };
-
-export const PromotionCalculator = withPromotionCalculator(FinanceCalculator);
-
-export default new PromotionCalculator({});
