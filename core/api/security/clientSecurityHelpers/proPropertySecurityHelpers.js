@@ -16,7 +16,6 @@ const checkProPropertyPermissions = ({
   if (propertyStatus.length && !propertyStatus.includes(property.status)) {
     return false;
   }
-
   if (hasMinimumRole({ role: ROLES.ADMIN, userId })) {
     return true;
   }

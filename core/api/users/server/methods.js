@@ -120,7 +120,7 @@ testUserAccount.setHandler((context, params) => {
 
 proInviteUser.setHandler((context, params) => {
   const { userId } = context;
-  const { propertyId, promotionId, property } = params;
+  const { propertyId, promotionId, property, referOnly } = params;
   SecurityService.checkUserIsPro(userId);
 
   // Allow only one
@@ -140,7 +140,7 @@ proInviteUser.setHandler((context, params) => {
     });
   } else if (property) {
     // Not yet implemented
-  }
+  } 
 
   return UserService.proInviteUser(params);
 });
