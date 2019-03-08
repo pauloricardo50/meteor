@@ -12,7 +12,14 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
     getAllowedOwnFundsTypes({ residenceType }) {
       return residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
-        ? Object.values(OWN_FUNDS_TYPES)
+        ? [
+          OWN_FUNDS_TYPES.BANK_FORTUNE,
+          OWN_FUNDS_TYPES.INSURANCE_2,
+          OWN_FUNDS_TYPES.INSURANCE_3B,
+          OWN_FUNDS_TYPES.BANK_3A,
+          OWN_FUNDS_TYPES.INSURANCE_3A,
+          OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        ]
         : [
           OWN_FUNDS_TYPES.BANK_FORTUNE,
           OWN_FUNDS_TYPES.INSURANCE_3B,
