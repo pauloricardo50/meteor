@@ -31,8 +31,12 @@ propertyUpdate.setHandler(({ userId }, params) => {
 });
 
 propertyDelete.setHandler((context, params) => {
-  SecurityService.properties.isAllowedToDelete(params.propertyId, params.userId);
+  SecurityService.properties.isAllowedToDelete(
+    params.propertyId,
+    params.userId,
+  );
   return PropertyService.remove(params);
+});
 
 pushPropertyValue.setHandler(({ userId }, params) => {
   SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
