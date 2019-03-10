@@ -9,6 +9,7 @@ import 'core/fixtures';
 import '../accounts-config';
 import './kadira';
 
+import 'core/api/updateWatchers/server/updateWatcherCron';
 import './fetchIrs10yCron';
 
 // Inject a loader before client is ready, is removed in the on startup function on the client

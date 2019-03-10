@@ -4,11 +4,13 @@
     "module": "es6",
     "baseUrl": ".",
     "paths": {
-      "core/*": ["./core/*"]
+      "core/*": [
+        "./core/*"
+      ]
     }
   },
   "exclude": [
     "node_modules",
     "microservices/*/node_modules"
-  ]
+  ],
 }

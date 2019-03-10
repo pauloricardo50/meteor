@@ -40,6 +40,7 @@ export * from './mortgageNotes/mortgageNoteConstants';
 export * from './contacts/contactsConstants';
 export * from './lenders/lenderConstants';
 export * from './lenderRules/lenderRulesConstants';
+export * from './updateWatchers/updateWatcherConstants';
 export * from './revenues/revenueConstants';
 
 export const SUCCESS = 'SUCCESS';

@@ -25,8 +25,8 @@ SyncedCron.config({
 
 Meteor.startup(() => {
   try {
-    SyncedCron.stop();
-    SyncedCron.remove(jobName);
+    // SyncedCron.stop();
+    // SyncedCron.remove(jobName);
     SyncedCron.add({
       name: jobName,
       schedule(parser) {
