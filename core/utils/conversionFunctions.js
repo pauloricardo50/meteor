@@ -12,10 +12,11 @@ export function toMoney(value) {
     // Don't format the value if it is undefined or an empty string
     return value;
   }
-  const negativePrefix = value < 0 ? '-' : '';
+  const roundedValue = Math.round(Number(Math.round(value)));
+  const negativePrefix = value < 0 && roundedValue !== 0 ? '-' : '';
   return (
     negativePrefix
-    + String(Math.round(Number(Math.round(value))))
+    + String(roundedValue)
       .replace(/\D/g, '')
       .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
   );

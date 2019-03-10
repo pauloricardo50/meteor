@@ -6,30 +6,31 @@ import {
   WARNING,
   RESIDENCE_TYPE,
   REAL_ESTATE_CONSIDERATION_TYPES,
-  OTHER_EXPENSES_CONSIDERATION_TYPES,
+  EXPENSE_TYPES,
 } from '../../api/constants';
 import {
-  NOTARY_FEES,
   AMORTIZATION_STOP,
-  DEFAULT_AMORTIZATION,
+  AMORTIZATION_YEARS,
   AVERAGE_TAX_RATE,
-  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-  MIN_CASH,
-  INTERESTS_FINMA,
-  MAINTENANCE_FINMA,
-  MAX_INCOME_RATIO,
-  MAX_INCOME_RATIO_TIGHT,
-  MAX_BORROW_RATIO_WITH_PLEDGE,
   BONUS_CONSIDERATION,
   BONUS_HISTORY_TO_CONSIDER,
   COMPANY_INCOME_TO_CONSIDER,
+  DEFAULT_AMORTIZATION,
   DIVIDENDS_CONSIDERATION,
   DIVIDENDS_HISTORY_TO_CONSIDER,
+  FORTUNE_RETURNS_RATIO,
+  INTERESTS_FINMA,
+  INVESTMENT_INCOME_CONSIDERATION,
+  MAINTENANCE_FINMA,
+  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
+  MAX_INCOME_RATIO_TIGHT,
+  MAX_INCOME_RATIO,
+  MIN_CASH,
+  NOTARY_FEES,
+  OWN_FUNDS_ROUNDING_AMOUNT,
   PENSION_INCOME_CONSIDERATION,
   REAL_ESTATE_INCOME_CONSIDERATION,
-  INVESTMENT_INCOME_CONSIDERATION,
-  FORTUNE_RETURNS_RATIO,
-  AMORTIZATION_YEARS,
   MORTGAGE_COMMISSION,
   INDIRECT_AMORTIZATION_COMMISSION,
   REFERRAL_COMMISSION,
@@ -59,6 +60,7 @@ export class FinanceCalculator {
     companyIncomeHistoryToConsider = COMPANY_INCOME_TO_CONSIDER,
     dividendsConsideration = DIVIDENDS_CONSIDERATION,
     dividendsHistoryToConsider = DIVIDENDS_HISTORY_TO_CONSIDER,
+    expensesSubtractFromIncome = Object.values(EXPENSE_TYPES),
     fortuneReturnsRatio = FORTUNE_RETURNS_RATIO,
     investmentIncomeConsideration = INVESTMENT_INCOME_CONSIDERATION,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
@@ -67,13 +69,13 @@ export class FinanceCalculator {
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
     notaryFees = NOTARY_FEES,
-    otherExpensesConsiderationType = OTHER_EXPENSES_CONSIDERATION_TYPES.ADD_TO_EXPENSES,
+    ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_AMOUNT,
     pensionIncomeConsideration = PENSION_INCOME_CONSIDERATION,
     realEstateIncomeConsideration = REAL_ESTATE_INCOME_CONSIDERATION,
     realEstateIncomeConsiderationType = REAL_ESTATE_CONSIDERATION_TYPES.ADD_TO_INCOME,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
-    theoreticalInterestRate2ndRank = INTERESTS_FINMA,
+    theoreticalInterestRate2ndRank = null,
     theoreticalMaintenanceRate = MAINTENANCE_FINMA,
     mortgageCommission = MORTGAGE_COMMISSION,
     indirectAmortizationCommission = INDIRECT_AMORTIZATION_COMMISSION,
@@ -91,6 +93,7 @@ export class FinanceCalculator {
     this.companyIncomeHistoryToConsider = companyIncomeHistoryToConsider;
     this.dividendsConsideration = dividendsConsideration;
     this.dividendsHistoryToConsider = dividendsHistoryToConsider;
+    this.expensesSubtractFromIncome = expensesSubtractFromIncome;
     this.fortuneReturnsRatio = fortuneReturnsRatio;
     this.investmentIncomeConsideration = investmentIncomeConsideration;
     this.maxBorrowRatio = maxBorrowRatio;
@@ -99,7 +102,7 @@ export class FinanceCalculator {
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
     this.notaryFees = notaryFees;
-    this.otherExpensesConsiderationType = otherExpensesConsiderationType;
+    this.ownFundsRoundingAmount = ownFundsRoundingAmount;
     this.pensionIncomeConsideration = pensionIncomeConsideration;
     this.realEstateIncomeConsideration = realEstateIncomeConsideration;
     this.realEstateIncomeConsiderationType = realEstateIncomeConsiderationType;

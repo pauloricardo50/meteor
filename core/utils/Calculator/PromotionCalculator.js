@@ -104,7 +104,3 @@ export const withPromotionCalculator = (SuperClass = class {}) =>
       return promotion.type === PROMOTION_TYPES.SHARE;
     }
   };
-
-export const PromotionCalculator = withPromotionCalculator(FinanceCalculator);
-
-export default new PromotionCalculator({});

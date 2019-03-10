@@ -16,7 +16,13 @@ export const getPropertyAddress = ({ address1, zipCode, city }) =>
   (address1 && zipCode && city ? `${address1}, ${zipCode} ${city}` : undefined);
 
 const SinglePropertyPage = (props) => {
-  const { property, displayLoans, className, loanResidenceType } = props;
+  const {
+    property,
+    displayLoans,
+    className,
+    loanResidenceType,
+    loanId,
+  } = props;
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
     return <AdminProPropertyPage property={property} />;
@@ -36,10 +42,10 @@ const SinglePropertyPage = (props) => {
 
   return (
     <section className={cx('single-property-page', className)}>
-      <SinglePropertyPageHeader property={property} />
-      {residenceType && (
+      <SinglePropertyPageHeader property={property} loanId={loanId} />
+      {/* {residenceType && (
         <Valuation property={property} loanResidenceType={residenceType} />
-      )}
+      )} */}
       <div className="property-recap">
         <Recap arrayName="property" property={property} />
       </div>

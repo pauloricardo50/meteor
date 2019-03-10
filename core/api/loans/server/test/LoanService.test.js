@@ -638,12 +638,8 @@ describe('LoanService', function () {
       const propertyId1 = Factory.create('property')._id;
       const propertyId2 = Factory.create('property')._id;
 
-      loanId = Factory.create('loan', {
-        propertyIds: [propertyId1],
-      })._id;
-      Factory.create('loan', {
-        propertyIds: [propertyId2, propertyId1],
-      });
+      loanId = Factory.create('loan', { propertyIds: [propertyId1] })._id;
+      Factory.create('loan', { propertyIds: [propertyId2, propertyId1] });
 
       expect(() =>
         LoanService.assignLoanToUser({ loanId, userId: 'dude' })).to.throw('bien immobilier');
@@ -662,9 +658,8 @@ describe('LoanService', function () {
         // Create contact
         const address = faker.internet.email();
         addresses = [...addresses, address];
-        const contactId = Factory.create('contact', {
-          emails: [{ address }],
-        })._id;
+        const contactId = Factory.create('contact', { emails: [{ address }] })
+          ._id;
 
         // Create org
         const organisationId = Factory.create('organisation', {

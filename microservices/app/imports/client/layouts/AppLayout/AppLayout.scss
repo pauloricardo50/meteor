@@ -8,6 +8,10 @@
   width: 100%;
   min-width: 1200px;
   height: 100%;
+
+  @include screen(med, max) {
+    min-width: 800px;
+  }
 }
 
 .app-layout {
@@ -21,6 +25,10 @@
   padding-top: 80px;
   padding-bottom: 16px;
   padding-left: 266px; /* side-nav width + 16px  */
+
+  @include screen(med, max) {
+    padding-left: 16px;
+  }
 }
 
 .app-layout.no-nav {
@@ -57,9 +65,12 @@
   margin: auto;
 }
 
-// Change this with a media query if the side-bar disappears
 .app-layout .transition-wrapper {
   width: calc(100% - 250px - 32px);
+
+  @include screen(med, max) {
+    width: calc(100% - 32px);
+  }
 }
 
 .layout-error {

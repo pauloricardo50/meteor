@@ -11,10 +11,14 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.initialize(settings);
     }
 
-    initialize({ loan, structureId, lenderRules }) {
+    initialize({ loan, structureId, lenderRules = [] }) {
       if (!(loan && lenderRules)) {
         return;
       }
+
+      // Store the rules for retrieval later
+      this.lenderRules = lenderRules;
+      this.ruleOrigin = {};
 
       const primaryRules = this.getPrimaryLenderRules({
         loan,
@@ -31,6 +35,18 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       this.applyRules(secondaryRules);
 
       this.cleanUpUnusedRules();
+    }
+
+    storeRuleOrigin(rules, lenderRulesId) {
+      Object.keys(rules).forEach((ruleName) => {
+        this.ruleOrigin[ruleName] = lenderRulesId;
+      });
+    }
+
+    getOriginOfRule(ruleName) {
+      const lenderRulesId = this.ruleOrigin[ruleName];
+      const lenderRules = this.lenderRules.find(({ _id }) => _id === lenderRulesId);
+      return lenderRules;
     }
 
     getLenderRulesVariables({ loan, structureId }) {
@@ -61,6 +77,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       const matchingRules = getMatchingRules(
         primaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
+        this.storeRuleOrigin,
       );
       return matchingRules;
     }
@@ -72,6 +89,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       const matchingRules = getMatchingRules(
         secondaryRules,
         this.getLenderRulesVariables({ loan, structureId }),
+        this.storeRuleOrigin,
       );
       return matchingRules;
     }
@@ -88,6 +106,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
 
     applyRules(rules) {
       const rulesToApply = [
+        'adminComments',
         'allowPledge',
         'amortizationGoal',
         'amortizationYears',
@@ -96,14 +115,14 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         'companyIncomeHistoryToConsider',
         'dividendsConsideration',
         'dividendsHistoryToConsider',
+        'expensesSubtractFromIncome',
         'fortuneReturnsRatio',
         'incomeConsiderationType',
         'investmentIncomeConsideration',
         'maxBorrowRatio',
         'maxIncomeRatio',
-        'otherExpensesConsiderationType',
+        'pdfComments',
         'pensionIncomeConsideration',
-        'realEstateIncomeConsideration',
         'realEstateIncomeConsiderationType',
         'theoreticalInterestRate',
         'theoreticalInterestRate2ndRank',

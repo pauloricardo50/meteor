@@ -1,9 +1,32 @@
 import jsonLogic from 'json-logic-js';
 
+const rulesToMerge = ['pdfComments', 'adminComments'];
+
+const filterIsValid = (filter, variables) => jsonLogic.apply(filter, variables);
+
+const mergeRules = (oldRules, newRules) => {
+  let mergedObject = { ...oldRules };
+
+  Object.keys(newRules).forEach((newRuleName) => {
+    const newRule = newRules[newRuleName];
+
+    if (rulesToMerge.includes(newRuleName) && mergedObject[newRuleName]) {
+      mergedObject = {
+        ...mergedObject,
+        [newRuleName]: [...mergedObject[newRuleName], ...newRule],
+      };
+    } else {
+      mergedObject = { ...mergedObject, [newRuleName]: newRule };
+    }
+  });
+
+  return mergedObject;
+};
+
 export const getMatchingRules = (lenderRules, variables) =>
   lenderRules.reduce((validRules, { filter, ...rules }) => {
-    if (jsonLogic.apply(filter, variables)) {
-      return { ...validRules, ...rules };
+    if (filterIsValid(filter, variables)) {
+      return mergeRules(validRules, rules);
     }
 
     return validRules;

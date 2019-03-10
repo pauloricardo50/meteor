@@ -30,7 +30,26 @@ export class PropertyService extends CollectionService {
   update = ({ propertyId, object }) =>
     Properties.update(propertyId, { $set: object });
 
-  remove = ({ propertyId }) => Properties.remove(propertyId);
+  remove = ({ propertyId, loanId }) => {
+    const property = this.fetchOne({
+      $filters: { _id: propertyId },
+      loans: { _id: 1 },
+      category: 1,
+    });
+
+    if (property && property.loans.length > 1) {
+      if (loanId) {
+        const loansLink = this.getLink(propertyId, 'loans');
+        loansLink.remove(loanId);
+      } else {
+        // Can't delete a property that has multiple loans without specifying
+        // from where you want to remove it
+        return false;
+      }
+    } else {
+      Properties.remove(propertyId);
+    }
+  };
 
   pushValue = ({ propertyId, object }) =>
     Properties.update(propertyId, { $push: object });

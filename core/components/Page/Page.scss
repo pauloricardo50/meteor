@@ -23,10 +23,14 @@
   box-sizing: border-box;
   width: 100%;
   width: calc(
-  100% - 250px
+    100% - 250px
   ); /* Side-nav width, careful, not updated with variable */
   height: 64px;
   padding: 0 16px;
+
+  @include screen(med, max) {
+    width: 100%;
+  }
 
   background-color: #f1f3f5;
 

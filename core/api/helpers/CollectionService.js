@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import isObject from 'lodash/isObject';
 
 class CollectionService {
   constructor(collection) {

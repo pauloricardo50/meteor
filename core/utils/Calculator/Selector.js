@@ -107,7 +107,3 @@ export const withSelector = (SuperClass = class {}) =>
 
     getCashUsed = this.makeSelectStructureKey('fortuneUsed');
   };
-
-export const Selector = withSelector();
-
-export default new Selector();

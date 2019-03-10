@@ -74,10 +74,6 @@ export default (Component) => {
         return placeholder;
       }
 
-      if (transform) {
-        return transform(value);
-      }
-
       if (Array.isArray(value)) {
         if (value.length === 0) {
           return placeholder;
@@ -85,10 +81,14 @@ export default (Component) => {
         return value.map(val => (
           <Chip
             key={val}
-            label={this.formatOption(val)}
+            label={transform ? transform(val) : this.formatOption(val)}
             style={{ marginRight: 4 }}
           />
         ));
+      }
+
+      if (transform) {
+        return transform(value);
       }
 
       return this.formatOption(value);

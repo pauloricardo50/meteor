@@ -2,7 +2,7 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
-import { PropertyAdder } from 'core/components/PropertyForm';
+import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
 import SinglePropertyPage from '../../SinglePropertyPage/SinglePropertyPage';
 
 type PropertiesTabProps = {
@@ -13,7 +13,10 @@ const PropertiesTab = ({
   loan: { properties, userId, _id: loanId, residenceType: loanResidenceType },
 }: PropertiesTabProps) => (
   <div className="properties-tab">
-    <PropertyAdder loanId={loanId} propertyUserId={userId} />
+    <div className="buttons">
+      <PropertyAdder loanId={loanId} propertyUserId={userId} />
+      <PropertyReuser loanId={loanId} propertyUserId={userId} />
+    </div>
     {properties && properties.length > 0 && (
       <Tabs
         tabs={properties.map((property, index) => ({
@@ -24,6 +27,7 @@ const PropertiesTab = ({
               propertyId={property._id}
               displayLoans={false}
               loanResidenceType={loanResidenceType}
+              loanId={loanId}
             />
           ),
         }))}

@@ -7,7 +7,6 @@ import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
-import MobileWarning from './MobileWarning';
 
 const routesWithoutSidenav = ['/'];
 
@@ -25,7 +24,6 @@ const AppLayout = ({ children, redirect, history, ...props }) => {
   return (
     <div className="app-root">
       <Navs {...props} showSideNav={showSideNav} />
-      <MobileWarning />
 
       <div className={classes}>
         <LayoutErrorBoundary>

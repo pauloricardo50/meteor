@@ -8,7 +8,6 @@ import {
 } from 'core/api/constants';
 import MoneyInput from 'core/components/MoneyInput';
 import { NumberField } from 'core/components/NumberInput';
-import T from 'core/components/Translation';
 import { PercentField } from 'core/components/PercentInput';
 import CustomSelectField from 'core/components/AutoForm2/CustomSelectField';
 
@@ -18,7 +17,8 @@ const getSelectProps = (variable) => {
   if (variable === LENDER_RULES_VARIABLES.RESIDENCE_TYPE) {
     return {
       allowedValues: Object.values(RESIDENCE_TYPE),
-      transform: type => <T id={`Forms.residenceType.${type}`} />,
+      multiple: true,
+      intlId: 'residenceType',
     };
   }
 

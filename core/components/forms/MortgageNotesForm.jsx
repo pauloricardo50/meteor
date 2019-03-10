@@ -13,7 +13,7 @@ import CustomSubmitField from '../AutoForm2/CustomSubmitField';
 
 type MortgageNotesFormProps = {};
 
-const handleSubmitMortgageNote = mortgageNoteId => doc => {
+const handleSubmitMortgageNote = mortgageNoteId => (doc) => {
   const hideLoader = message.loading('...', 0);
   return mortgageNoteUpdate
     .run({ mortgageNoteId, object: doc })
@@ -21,7 +21,7 @@ const handleSubmitMortgageNote = mortgageNoteId => doc => {
     .then(() => message.success('Enregistré', 2));
 };
 
-const removeMortgageNote = mortgageNoteId => {
+const removeMortgageNote = (mortgageNoteId) => {
   const hideLoader = message.loading('...', 0);
   return mortgageNoteRemove
     .run({ mortgageNoteId })
@@ -60,7 +60,7 @@ const MortgageNotesForm = ({
               label={<T id="general.save" />}
               style={{ flexGrow: 1 }}
             />
-            <Button error onClick={() => removeMortgageNote(id)}>
+            <Button error onClick={() => removeMortgageNote(note._id)}>
               <T id="general.delete" />
             </Button>
           </div>

@@ -11,5 +11,5 @@ deploy.yml
 ssh-tunnel/*
 !ssh-tunnel/openSSHTunnel.js
 !ssh-tunnel/connectToDB.js
-!ssh-tunnel/pullDbToWww.js
+!ssh-tunnel/pullDbLocally.js
 !ssh-tunnel/productionDbToStaging.js
