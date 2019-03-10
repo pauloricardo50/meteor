@@ -47,14 +47,14 @@ const makeMapLoan = history => (loan) => {
       },
       {
         raw: relatedTo,
-        label: relatedTo || 'Pas de bien immobilier',
+        label: relatedTo || '-',
       },
       {
         raw: estimatedRevenues,
         label: estimatedRevenues ? (
           <Money value={estimatedRevenues} />
         ) : (
-          'À déterminer'
+          '-'
         ),
       },
     ],
