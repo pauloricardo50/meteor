@@ -4,9 +4,9 @@ import UpdateWatcherService from './UpdateWatcherService';
 SyncedCron.add({
   name: 'Manage update watchers',
   schedule(parser) {
-    return parser.text('every 10 seconds');
+    return parser.text('every 1 minute');
   },
   job() {
-    UpdateWatcherService.manageUpdateWatchers({ secondsFromNow: 10 });
+    UpdateWatcherService.manageUpdateWatchers({ secondsFromNow: 300 });
   },
 });

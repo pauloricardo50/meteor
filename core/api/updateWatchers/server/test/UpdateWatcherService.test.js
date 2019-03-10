@@ -10,7 +10,7 @@ import UpdateWatcherService from '../UpdateWatcherService';
 const collectionName = 'todos_test';
 const Todos = new Mongo.Collection(collectionName);
 
-describe.only('UpdateWatcherService', () => {
+describe('UpdateWatcherService', () => {
   beforeEach(() => {
     resetDatabase();
   });
@@ -82,7 +82,7 @@ describe.only('UpdateWatcherService', () => {
     });
   });
 
-  describe.only('processUpdateWatcher', () => {
+  describe('processUpdateWatcher', () => {
     it('sends a notification to the assignee', () => {
       const testAdmin = Factory.create('admin', {
         emails: [{ address: 'test@e-potek.ch', verified: false }],
@@ -119,6 +119,36 @@ describe.only('UpdateWatcherService', () => {
       UpdateWatcherService.processUpdateWatcher(updateWatcher);
 
       expect(UpdateWatcherService.fetch({}).length).to.equal(0);
+    });
+  });
+
+  describe('formatValue', () => {
+    it('renders booleans properly', () => {
+      expect(UpdateWatcherService.formatValue(true)).to.equal('Oui');
+      expect(UpdateWatcherService.formatValue(false)).to.equal('Non');
+    });
+
+    it('renders falsy values properly', () => {
+      expect(UpdateWatcherService.formatValue(null)).to.equal('-');
+      expect(UpdateWatcherService.formatValue(undefined)).to.equal('-');
+    });
+
+    it('formats numbers properly if they are small or large', () => {
+      expect(UpdateWatcherService.formatValue(0)).to.equal('0');
+      expect(UpdateWatcherService.formatValue(1000)).to.equal('1 000');
+      expect(UpdateWatcherService.formatValue(0.01)).to.equal('1.00%');
+    });
+
+    it('formats numbers properly if they are small or large', () => {
+      expect(UpdateWatcherService.formatValue(new Date('December 17, 1995 03:24:00'))).to.equal('17/12/1995');
+    });
+
+    it('formats arrays properly', () => {
+      expect(UpdateWatcherService.formatValue(['a', 'b'])).to.equal('a\nb');
+    });
+
+    it('formats objects properly', () => {
+      expect(UpdateWatcherService.formatValue({ a: 10, b: 'yo' }, 'obj')).to.equal('Forms.obj.a: 10, Forms.obj.b: yo');
     });
   });
 });

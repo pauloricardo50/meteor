@@ -1,4 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+
 import SimpleSchema from 'simpl-schema';
 
 import { createdAt, updatedAt } from '../../helpers/sharedSchemas';
@@ -30,7 +32,9 @@ const UpdateWatcherSchema = new SimpleSchema({
 
 UpdateWatchers.attachSchema(UpdateWatcherSchema);
 
-UpdateWatchers._ensureIndex({ docId: 1, collection: 1 });
-UpdateWatchers._ensureIndex({ updatedAt: 1 });
+Meteor.startup(() => {
+  UpdateWatchers._ensureIndex({ docId: 1, collection: 1 });
+  UpdateWatchers._ensureIndex({ updatedAt: -1 });
+});
 
 export default UpdateWatchers;

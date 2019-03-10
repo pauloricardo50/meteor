@@ -3,12 +3,15 @@ import { Mongo } from 'meteor/mongo';
 
 import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
+import moment from 'moment';
 
 import formatMessage from '../../../utils/intl';
+import { toMoney } from '../../../utils/conversionFunctions';
+import { percentFormatters } from '../../../utils/formHelpers';
 import { BORROWERS_COLLECTION, PROPERTIES_COLLECTION } from '../../constants';
 import SlackService from '../../slack/server/SlackService';
-import CollectionService from '../../helpers/CollectionService';
 import UserService from '../../users/server/UserService';
+import CollectionService from '../../helpers/CollectionService';
 import UpdateWatchers from './updateWatchers';
 
 class UpdateWatcherService extends CollectionService {
@@ -25,7 +28,6 @@ class UpdateWatcherService extends CollectionService {
       modifier,
       options,
     ) {
-      console.log('fieldNames:', fieldNames);
       const collectionName = collection._name;
       const changedFields = that.getChangedFields({ fieldNames, fields });
 
@@ -196,15 +198,61 @@ class UpdateWatcherService extends CollectionService {
   }
 
   formatUpdatedFields(updatedFields) {
-    return updatedFields.map(this.formatField).join('\n');
+    return updatedFields.map(field => this.formatField(field)).join('\n');
   }
 
   formatField({ fieldName, previousValue, currentValue }) {
-    if (previousValue) {
-      return `${formatMessage(`Forms.${fieldName}`)}: ${previousValue} -> ${currentValue}`;
+    const previousValueIsNonEmpty = previousValue
+      || (Array.isArray(previousValue) && previousValue.length > 0);
+
+    if (previousValueIsNonEmpty) {
+      return `${formatMessage(`Forms.${fieldName}`)}: ${this.formatValue(
+        previousValue,
+        fieldName,
+      )} -> ${this.formatValue(currentValue, fieldName)}`;
     }
 
-    return `${formatMessage(`Forms.${fieldName}`)}: ${currentValue}`;
+    return `${formatMessage(`Forms.${fieldName}`)}: ${this.formatValue(
+      currentValue,
+      fieldName,
+    )}`;
+  }
+
+  formatValue(value, parentKey) {
+    if (typeof value === 'boolean') {
+      return value ? 'Oui' : 'Non';
+    }
+
+    if (typeof value === 'number') {
+      return value === 0
+        ? '0'
+        : value > 1
+          ? toMoney(value)
+          : `${percentFormatters.format(value)}%`;
+    }
+
+    if (!value) {
+      return '-';
+    }
+
+    if (value instanceof Date) {
+      return moment(value).format('D/M/YYYY');
+    }
+
+    if (Array.isArray(value)) {
+      return value.map(item => this.formatValue(item, parentKey)).join('\n');
+    }
+
+    if (typeof value === 'object') {
+      return Object.keys(value)
+        .map((key) => {
+          const val = value[key];
+          return `${formatMessage(`Forms.${parentKey}.${key}`)}: ${this.formatValue(val, `${parentKey}.${key}`)}`;
+        })
+        .join(', ');
+    }
+
+    return value;
   }
 
   manageUpdateWatchers({ secondsFromNow }) {
