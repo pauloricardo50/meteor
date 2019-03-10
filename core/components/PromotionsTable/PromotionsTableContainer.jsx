@@ -24,11 +24,10 @@ const makeMapPromotion = history => ({
   id: _id,
   columns: [
     name,
-    <StatusLabel
-      status={status}
-      collection={PROMOTIONS_COLLECTION}
-      key="status"
-    />,
+    {
+      raw: status,
+      label: <StatusLabel status={status} collection={PROMOTIONS_COLLECTION} />,
+    },
     {
       raw: createdAt && createdAt.getTime(),
       label: moment(createdAt).fromNow(),
@@ -44,7 +43,7 @@ const makeMapPromotion = history => ({
 });
 
 const columnOptions = [
-  { id: 'name', label: 'dude' },
+  { id: 'name' },
   { id: 'status' },
   { id: 'createdAt' },
   { id: 'lots' },

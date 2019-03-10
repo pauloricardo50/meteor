@@ -17,6 +17,7 @@ import {
   generateApiToken,
   userUpdateOrganisations,
   testUserAccount,
+  proInviteUser,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -115,4 +116,31 @@ testUserAccount.setHandler((context, params) => {
   if (Meteor.isTest) {
     return UserService.testUserAccount(params);
   }
+});
+
+proInviteUser.setHandler((context, params) => {
+  const { userId } = context;
+  const { propertyId, promotionId, property, referOnly } = params;
+  SecurityService.checkUserIsPro(userId);
+
+  // Allow only one
+  if (propertyId ? promotionId || property : promotionId && property) {
+    SecurityService.handleUnauthorized('Can invite user to only one property exactly');
+  }
+
+  if (propertyId) {
+    SecurityService.properties.isAllowedToInviteCustomers({
+      userId,
+      propertyId,
+    });
+  } else if (promotionId) {
+    SecurityService.promotions.isAllowedToInviteCustomers({
+      promotionId,
+      userId,
+    });
+  } else if (property) {
+    // Not yet implemented
+  } 
+
+  return UserService.proInviteUser(params);
 });

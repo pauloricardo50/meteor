@@ -102,6 +102,8 @@ const LoanSchema = new SimpleSchema({
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
+  revenueLinks: { type: Array, defaultValue: [] },
+  'revenueLinks.$': String,
 });
 
 export default LoanSchema;

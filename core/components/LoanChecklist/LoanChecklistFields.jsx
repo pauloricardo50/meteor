@@ -10,31 +10,34 @@ type LoanChecklistFieldsProps = {};
 const LoanChecklistFields = ({
   loan,
   displayPropertyChecklist,
-}: LoanChecklistFieldsProps) => (
-  <div className="loan-checklist-section">
-    <h3>
-      <T id="LoanChecklist.missingFields" />
-    </h3>
-    {displayPropertyChecklist && (
-      <LoanChecklistList
-        title={loan.structure.property.address1 || <T id="general.property" />}
-        ids={Calculator.getMissingPropertyFields({ loan })}
-        intlPrefix="Forms"
-      />
-    )}
-    {loan.borrowers.map((borrower, index) => (
-      <LoanChecklistList
-        key={borrower._id}
-        title={
-          borrower.name || (
-            <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
-          )
-        }
-        ids={Calculator.getMissingBorrowerFields({ borrowers: borrower })}
-        intlPrefix="Forms"
-      />
-    ))}
-  </div>
-);
+}: LoanChecklistFieldsProps) => {
+  const property = Calculator.selectProperty({ loan });
+  return (
+    <div className="loan-checklist-section">
+      <h3>
+        <T id="LoanChecklist.missingFields" />
+      </h3>
+      {displayPropertyChecklist && (
+        <LoanChecklistList
+          title={(property && property.address1) || <T id="general.property" />}
+          ids={Calculator.getMissingPropertyFields({ loan })}
+          intlPrefix="Forms"
+        />
+      )}
+      {loan.borrowers.map((borrower, index) => (
+        <LoanChecklistList
+          key={borrower._id}
+          title={
+            borrower.name || (
+              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+            )
+          }
+          ids={Calculator.getMissingBorrowerFields({ borrowers: borrower })}
+          intlPrefix="Forms"
+        />
+      ))}
+    </div>
+  );
+};
 
 export default LoanChecklistFields;

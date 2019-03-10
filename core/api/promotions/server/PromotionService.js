@@ -119,7 +119,6 @@ export class PromotionService extends CollectionService {
           lastName,
           phoneNumbers: [phoneNumber],
         },
-        role: ROLES.USER,
         adminId: admin && admin._id,
       });
     } else {

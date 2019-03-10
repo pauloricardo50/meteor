@@ -19,7 +19,7 @@ const body = merge({}, userLoan(), {
 Loans.addReducers({
   ...filesReducer,
   ...assigneeReducer(),
-  promotionProgress: {
+  loanProgress: {
     body,
     reduce: loan => ({
       info: Calculator.personalInfoPercent({ loan }),

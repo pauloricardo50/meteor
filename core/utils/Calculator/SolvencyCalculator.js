@@ -1,4 +1,5 @@
 // @flow
+import { OWN_FUNDS_ROUNDING_AMOUNT } from '../../config/financeConstants';
 import {
   OWN_FUNDS_TYPES,
   RESIDENCE_TYPE,
@@ -12,8 +13,10 @@ const INITIAL_MIN_BOUND = 0;
 const INITIAL_MAX_BOUND = 1000000;
 const INITIAL_ABSOLUTE_MAX_BOUND = 100000000;
 const MAX_ITERATIONS = 50;
-const ACCURACY = 10000;
+const ACCURACY = 1000;
+const ROUNDING_DIGITS = Math.log10(ACCURACY);
 const MAX_BOUND_MULTIPLICATION_FACTOR = 2;
+const OWN_FUNDS_ROUNDING_ALGO = 100;
 
 export const withSolvencyCalculator = (SuperClass = class {}) =>
   class extends SuperClass {
@@ -22,9 +25,9 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         ? [
           OWN_FUNDS_TYPES.BANK_FORTUNE,
           OWN_FUNDS_TYPES.INSURANCE_2,
-          OWN_FUNDS_TYPES.INSURANCE_3B,
-          OWN_FUNDS_TYPES.BANK_3A,
           OWN_FUNDS_TYPES.INSURANCE_3A,
+          OWN_FUNDS_TYPES.BANK_3A,
+          OWN_FUNDS_TYPES.INSURANCE_3B,
           OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
         ]
         : [
@@ -162,9 +165,18 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       let absoluteMax = INITIAL_ABSOLUTE_MAX_BOUND;
       let iterations = 0;
 
+      // The rounding amount of 1000 is helpful when the user tries to
+      // fit his own funds into a structure without being overly accurate
+      // which is annoying.
+      // However for this calculation we don't need to round own funds as loosely
+      this.ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_ALGO;
+
       while (!foundValue) {
         iterations++;
-        const nextPropertyValue = roundValue((minBound + maxBound) / 2, 4);
+        const nextPropertyValue = roundValue(
+          (minBound + maxBound) / 2,
+          ROUNDING_DIGITS,
+        );
 
         const ownFunds = this.suggestStructure({
           borrowers,
@@ -202,6 +214,8 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           return minBound;
         }
       }
+
+      this.ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_AMOUNT;
 
       console.log('getMaxPropertyValue iterations:', iterations);
       return foundValue;
