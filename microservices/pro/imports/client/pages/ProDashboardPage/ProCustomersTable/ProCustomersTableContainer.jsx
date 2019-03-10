@@ -6,7 +6,7 @@ import moment from 'moment';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
-import { Money } from 'core/components/Translation';
+import T, { Money } from 'core/components/Translation';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -17,7 +17,7 @@ const columnOptions = [
   { id: 'referredBy' },
   { id: 'relatedTo' },
   { id: 'estimatedRevenues' },
-].map(({ id, label }) => ({ id, label }));
+].map(({ id }) => ({ id, label: <T id={`ProCustomersTable.${id}`} /> }));
 
 const makeMapLoan = history => (loan) => {
   const {
