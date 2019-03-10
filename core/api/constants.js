@@ -39,6 +39,7 @@ export * from './mortgageNotes/mortgageNoteConstants';
 export * from './contacts/contactsConstants';
 export * from './lenders/lenderConstants';
 export * from './lenderRules/lenderRulesConstants';
+export * from './updateWatchers/updateWatcherConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -60,5 +61,5 @@ export const COLLECTIONS = {
   MORTGAGE_NOTES_COLLECTION,
   CONTACTS_COLLECTION,
   LENDERS_COLLECTION,
-LENDER_RULES_COLLECTION,
+  LENDER_RULES_COLLECTION,
 };

@@ -29,9 +29,10 @@ export class SlackService {
       ...rest,
     };
 
-    if (shouldNotLog) {
-      return Promise.resolve(body);
-    }
+    // TODO: UNCOMMENT ME!
+    // if (shouldNotLog) {
+    //   return Promise.resolve(body);
+    // }
 
     return fetch(
       'https://hooks.slack.com/services/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',
@@ -154,11 +155,11 @@ export class SlackService {
       attachments: [{ title, title_link: link, text: message }],
     };
 
-    if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
-      console.log('Slack dev/staging notification');
-      console.log('Payload:', slackPayload);
-      return slackPayload;
-    }
+    // if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
+    //   console.log('Slack dev/staging notification');
+    //   console.log('Payload:', slackPayload);
+    //   return slackPayload;
+    // }
 
     return this.sendAttachments(slackPayload);
   };
