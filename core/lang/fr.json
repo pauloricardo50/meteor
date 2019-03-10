@@ -1,4 +1,7 @@
 {
+  "Forms.propertyId": "Bien immobilier",
+  "Forms.promotionId": "Promotion",
+  "Forms.referOnly": "Référer le client",
   "Forms.actions": "Actions",
   "ProPropertyPage.addUser.label": "Ajouter utilisateur",
   "ProPropertyPage.addUser.title": "Ajouter utilisateur",

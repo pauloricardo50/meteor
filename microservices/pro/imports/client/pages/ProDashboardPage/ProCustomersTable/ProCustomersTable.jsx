@@ -6,7 +6,13 @@ import ProCustomersTableContainer from './ProCustomersTableContainer';
 
 type ProCustomersTableProps = {};
 
-const ProCustomersTable = ({ rows, columnOptions }: ProCustomersTableProps) => (
+const ProCustomersTable = ({
+  rows,
+  columnOptions,
+  propertyIds,
+  promotionIds,
+  currentUser,
+}: ProCustomersTableProps) => (
   <>
     <h3 className="text-center">Clients</h3>
     <Table rows={rows} columnOptions={columnOptions} />

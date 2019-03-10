@@ -803,9 +803,15 @@ export const appUser = () => ({
 export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
-  promotions: { _id: 1 },
+  promotions: { _id: 1, name: 1, permissions: 1, status: 1, users: { _id: 1 } },
   properties: { _id: 1 },
-  proProperties: { _id: 1 },
+  proProperties: {
+    _id: 1,
+    address1: 1,
+    permissions: 1,
+    status: 1,
+    users: { _id: 1 },
+  },
 });
 
 // //
