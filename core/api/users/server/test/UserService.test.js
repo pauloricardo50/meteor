@@ -9,6 +9,9 @@ import UserService from '../UserService';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
+import generator from '../../../factories';
+import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
+import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
 
 describe('UserService', () => {
   const firstName = 'testFirstName';
@@ -308,6 +311,201 @@ describe('UserService', () => {
       })._id;
 
       expect(UserService.hasPromotion({ userId, promotionId: 'test2' })).to.equal(false);
+    });
+  });
+
+  describe('proInviteUser', () => {
+    const userToInvite = {
+      firstName: 'Bob',
+      lastName: 'Dylan',
+      email: 'bob@dylan.com',
+      phoneNumber: '12345',
+    };
+
+    beforeEach(() => {
+      generator({
+        users: [
+          { _id: 'adminId', _factory: 'admin' },
+          {
+            _id: 'proId',
+            assignedEmployeeId: 'adminId',
+            organisations: [
+              { _id: 'organisationId', _factory: 'organisation' },
+            ],
+            _factory: 'pro',
+          },
+        ],
+      });
+    });
+
+    it('invites user to refer only', () => {
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          referOnly: true,
+          proUserId: 'proId',
+        })).to.not.throw();
+
+      const userCreated = UserService.findOne({
+        'emails.address': { $in: [userToInvite.email] },
+      });
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+    });
+
+    it('does invites user to refer only if user already exists', () => {
+      generator({
+        users: [
+          {
+            emails: [{ address: userToInvite.email, verified: false }],
+            _factory: 'user',
+          },
+        ],
+      });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          referOnly: true,
+          proUserId: 'proId',
+        })).to.throw('Ce client a déjà été réferré');
+    });
+
+    it('invites user to promotion', () => {
+      generator({
+        promotions: [
+          {
+            _id: 'promotionId',
+            status: PROMOTION_STATUS.OPEN,
+            assignedEmployeeId: 'adminId',
+            users: [
+              {
+                _id: 'proId',
+                $metadata: { permissions: { canInviteCustomers: true } },
+              },
+            ],
+            _factory: 'promotion',
+          },
+        ],
+      });
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          promotionId: 'promotionId',
+          proUserId: 'proId',
+        })).to.not.throw();
+
+      const userCreated = UserService.findOne({
+        'emails.address': { $in: [userToInvite.email] },
+      });
+      const loan = LoanService.findOne({ userId: userCreated._id });
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      // TODO: set referredBy
+      // expect(userCreated.referredByUserLink).to.equal('proId');
+      // expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loan.promotionLinks[0]._id).to.equal('promotionId');
+      expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
+    });
+
+    it('throws if user is already invited to promotion', () => {
+      generator({
+        promotions: [
+          {
+            _id: 'promotionId',
+            status: PROMOTION_STATUS.OPEN,
+            assignedEmployeeId: 'adminId',
+            users: [
+              {
+                _id: 'proId',
+                $metadata: { permissions: { canInviteCustomers: true } },
+              },
+            ],
+            _factory: 'promotion',
+          },
+        ],
+      });
+
+      UserService.proInviteUser({
+        user: userToInvite,
+        promotionId: 'promotionId',
+        proUserId: 'proId',
+      });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          promotionId: 'promotionId',
+          proUserId: 'proId',
+        })).to.throw('Cet utilisateur est déjà invité à cette promotion');
+    });
+
+    it('invites user to pro property', () => {
+      generator({
+        properties: [
+          {
+            _id: 'propertyId',
+            category: PROPERTY_CATEGORY.PRO,
+            users: [
+              {
+                _id: 'proId',
+                $metadata: { permissions: { canInviteCustomers: true } },
+              },
+            ],
+            _factory: 'property',
+          },
+        ],
+      });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          propertyId: 'propertyId',
+          proUserId: 'proId',
+        })).to.not.throw();
+
+      const userCreated = UserService.findOne({
+        'emails.address': { $in: [userToInvite.email] },
+      });
+      const loan = LoanService.findOne({ userId: userCreated._id });
+
+      expect(userCreated.assignedEmployeeId).to.equal('adminId');
+      expect(userCreated.referredByUserLink).to.equal('proId');
+      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+      expect(loan.propertyIds[0]).to.equal('propertyId');
+    });
+
+    it('throws if user to is already invited pro property', () => {
+      generator({
+        properties: [
+          {
+            _id: 'propertyId',
+            category: PROPERTY_CATEGORY.PRO,
+            users: [
+              {
+                _id: 'proId',
+                $metadata: { permissions: { canInviteCustomers: true } },
+              },
+            ],
+            _factory: 'property',
+          },
+        ],
+      });
+
+      UserService.proInviteUser({
+        user: userToInvite,
+        propertyId: 'propertyId',
+        proUserId: 'proId',
+      });
+
+      expect(() =>
+        UserService.proInviteUser({
+          user: userToInvite,
+          propertyId: 'propertyId',
+          proUserId: 'proId',
+        })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
     });
   });
 });

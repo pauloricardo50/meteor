@@ -145,6 +145,7 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
+    'ProPropertyPage',
   ],
 };
 

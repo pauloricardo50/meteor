@@ -17,6 +17,7 @@ import DevTab from './DevTab/loadable';
 import PromotionsTab from './PromotionsTab';
 import RefinancingTab from './RefinancingTab';
 import LendersTab from './LendersTab';
+import RevenuesTab from './RevenuesTab';
 
 const getTabs = props =>
   [
@@ -38,6 +39,7 @@ const getTabs = props =>
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },
     { id: 'files', Component: FileTabs },
+    { id: 'revenues', Component: RevenuesTab },
     { id: 'actions', Component: ActionsTab },
     props.currentUser.roles.includes(ROLES.DEV) && {
       id: 'dev',

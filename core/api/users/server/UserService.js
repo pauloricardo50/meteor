@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
@@ -7,6 +8,8 @@ import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
 import { ROLES } from '../userConstants';
 import Users from '../users';
+import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
 
 class UserService extends CollectionService {
   constructor() {
@@ -29,7 +32,7 @@ class UserService extends CollectionService {
 
   adminCreateUser = ({
     options: { email, sendEnrollmentEmail, ...additionalData },
-    role,
+    role = ROLES.USER,
     adminId,
   }) => {
     const newUserId = this.createUser({ options: { email }, role });
@@ -105,6 +108,23 @@ class UserService extends CollectionService {
     );
   };
 
+  hasProperty = ({ userId, propertyId }) => {
+    if (!propertyId) {
+      return false;
+    }
+
+    const loans = LoanService.fetch({
+      $filters: { userId },
+      propertyIds: 1,
+    });
+
+    return (
+      loans
+      && loans.some(({ propertyIds = [] }) =>
+        propertyIds.some((id) => id === propertyId))
+    );
+  };
+
   changeEmail = ({ userId, newEmail }) => {
     const { emails } = Users.findOne(userId);
     Accounts.addEmail(userId, newEmail);
@@ -140,6 +160,87 @@ class UserService extends CollectionService {
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
     return this.get(userId);
+  };
+
+  proReferUser = ({ user, proUserId }) => {
+    const { email, firstName, lastName, phoneNumber } = user;
+    if (this.doesUserExist({ email })) {
+      throw new Meteor.Error('Ce client a déjà été réferré');
+    }
+
+    const pro = this.fetchOne({
+      $filters: { _id: proUserId },
+      assignedEmployeeId: 1,
+      organisations: { _id: 1 },
+    });
+    const {
+      assignedEmployeeId: proAssignedEmployeeId,
+      organisations = [],
+    } = pro;
+    const assignedEmployeeId = proAssignedEmployeeId;
+    const organisationId = !!organisations.length && organisations[0]._id;
+    const admin = this.get(assignedEmployeeId);
+
+    const userId = this.adminCreateUser({
+      options: {
+        email,
+        sendEnrollmentEmail: false, //Meteor toys is not defined... ?
+        firstName,
+        lastName,
+        phoneNumbers: [phoneNumber],
+      },
+      adminId: admin && admin._id,
+    });
+
+    const loanId = LoanService.adminLoanInsert({ userId });
+
+    this.addLink({
+      id: userId,
+      linkName: 'referredByUser',
+      linkId: proUserId,
+    });
+
+    if (organisationId) {
+      this.addLink({
+        id: userId,
+        linkName: 'referredByOrganisation',
+        linkId: organisationId,
+      });
+    }
+
+    return loanId;
+  };
+
+  proInviteUser = ({
+    user,
+    propertyId,
+    promotionId,
+    property,
+    proUserId,
+    referOnly,
+  }) => {
+    if (referOnly) {
+      return this.proReferUser({ user, proUserId });
+    }
+    if (propertyId) {
+      return PropertyService.inviteUser({
+        proUserId,
+        user,
+        propertyId,
+        sendInvitation: false,
+      }); // Don't send invitation yet
+    }
+    if (promotionId) {
+      return PromotionService.inviteUser({
+        promotionId,
+        user: { ...user, invitedBy: proUserId },
+      }); // Send invitation is true by default
+    }
+    if (property) {
+      // Not yet implemented
+    }
+
+    throw new Meteor.Error('No property given');
   };
 }
 

@@ -5,7 +5,7 @@ import PromotionUsersPage from 'core/components/PromotionUsersPage';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 import { withSmartQuery } from 'core/api';
-import proLoans from 'core/api/loans/queries/proLoans';
+import proPromotionLoans from 'core/api/loans/queries/proPromotionLoans';
 import { compose } from 'recompose';
 import withMatchParam from 'core/containers/withMatchParam';
 import { createRoute } from 'imports/core/utils/routerUtils';
@@ -33,7 +33,7 @@ const AdminPromotionUsersPage = (props: AdminPromotionUsersPageProps) => {
 export default compose(
   withMatchParam('promotionId'),
   withSmartQuery({
-    query: proLoans,
+    query: proPromotionLoans,
     params: ({ promotionId }) => ({ promotionId }),
     queryOptions: { reactive: false },
     dataName: 'loans',

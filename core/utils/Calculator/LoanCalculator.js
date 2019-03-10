@@ -377,6 +377,30 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return true;
     }
 
+    getEstimatedMortgageRevenues({ loan, structureId }) {
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      return loanValue * this.mortgageCommission;
+    }
+
+    getEstimatedIndirectAmortizationRevenues({ loan, structureId }) {
+      const loanValue = this.selectLoanValue({ loan, structureId });
+      return loanValue * this.indirectAmortizationCommission;
+    }
+
+    getEstimatedRevenues({ loan, structureId }) {
+      return (
+        this.getEstimatedIndirectAmortizationRevenues({ loan, structureId })
+        + this.getEstimatedMortgageRevenues({ loan, structureId })
+      );
+    }
+
+    getEstimatedReferralRevenues({ loan, structureId }) {
+      return (
+        this.getEstimatedRevenues({ loan, structureId })
+        * this.referralCommission
+      );
+    }
+
     getRequiredOwnFunds({ loan, structureId }) {
       const projectValue = this.getProjectValue({ loan, structureId });
       const loanValue = this.selectLoanValue({ loan, structureId });

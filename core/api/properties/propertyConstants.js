@@ -2,8 +2,9 @@
 export const PROPERTIES_COLLECTION = 'properties';
 
 export const PROPERTY_STATUS = {
-  SOLD: 'SOLD',
   FOR_SALE: 'FOR_SALE',
+  BOOKED: 'BOOKED',
+  SOLD: 'SOLD',
 };
 
 export const RESIDENCE_TYPE = {
@@ -37,6 +38,9 @@ export const PROPERTY_QUERIES = {
   ADMIN_PROPERTY: 'ADMIN_PROPERTY',
   ADMIN_PROPERTIES: 'ADMIN_PROPERTIES',
   PROPERTY_FILES: 'PROPERTY_FILES',
+  PRO_PROPERTIES: 'PRO_PROPERTIES',
+  PRO_PROPERTY: 'PRO_PROPERTY',
+  PRO_PROPERTY_USERS: 'PRO_PROPERTY_USERS',
 };
 
 export const VALUATION_STATUS = {
@@ -84,4 +88,30 @@ export const PROPERTY_CATEGORY = {
   USER: 'USER',
   PRO: 'PRO',
   PROMOTION: 'PROMOTION',
+};
+
+export const PROPERTY_REFERRED_BY_TYPE = {
+  ANY: 'ANY',
+  USER: 'USER',
+  ORGANISATION: 'ORGANISATION',
+};
+
+export const PROPERTY_PERMISSIONS = {
+  DISPLAY_CUSTOMER_NAMES: {
+    FOR_PROPERTY_STATUS: PROPERTY_STATUS,
+    REFERRED_BY: PROPERTY_REFERRED_BY_TYPE,
+  },
+};
+
+export const PROPERTY_PERMISSIONS_FULL_ACCESS = {
+  canInviteCustomers: true,
+  canInviteProUsers: true,
+  canModifyProperty: true,
+  canManagePermissions: true,
+  canSellProperty: true,
+  canBookProperty: true,
+  displayCustomerNames: {
+    forPropertyStatus: Object.values(PROPERTY_STATUS),
+    referredBy: PROPERTY_REFERRED_BY_TYPE.ANY,
+  },
 };

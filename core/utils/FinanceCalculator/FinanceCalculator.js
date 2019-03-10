@@ -31,6 +31,10 @@ import {
   OWN_FUNDS_ROUNDING_AMOUNT,
   PENSION_INCOME_CONSIDERATION,
   REAL_ESTATE_INCOME_CONSIDERATION,
+  MORTGAGE_COMMISSION,
+  INDIRECT_AMORTIZATION_COMMISSION,
+  REFERRAL_COMMISSION,
+  REFERRAL_COMMISSION_SPLIT,
 } from '../../config/financeConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
@@ -73,6 +77,10 @@ export class FinanceCalculator {
     theoreticalInterestRate = INTERESTS_FINMA,
     theoreticalInterestRate2ndRank = null,
     theoreticalMaintenanceRate = MAINTENANCE_FINMA,
+    mortgageCommission = MORTGAGE_COMMISSION,
+    indirectAmortizationCommission = INDIRECT_AMORTIZATION_COMMISSION,
+    referralCommission = REFERRAL_COMMISSION,
+    referralCommissionSplit = REFERRAL_COMMISSION_SPLIT,
     middlewares = [],
     middlewareObject,
   } = {}) {
@@ -102,6 +110,10 @@ export class FinanceCalculator {
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalInterestRate2ndRank = theoreticalInterestRate2ndRank;
     this.theoreticalMaintenanceRate = theoreticalMaintenanceRate;
+    this.mortgageCommission = mortgageCommission;
+    this.indirectAmortizationCommission = indirectAmortizationCommission;
+    this.referralCommission = referralCommission;
+    this.referralCommissionSplit = referralCommissionSplit;
     this.setMiddleware(middlewares, middlewareObject);
   }
 

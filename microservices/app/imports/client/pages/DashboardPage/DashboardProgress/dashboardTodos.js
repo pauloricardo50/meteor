@@ -4,6 +4,7 @@ import {
   LOAN_VERIFICATION_STATUS,
   VALUATION_STATUS,
   PURCHASE_TYPE,
+  PROPERTY_CATEGORY,
 } from 'core/api/constants';
 import {
   FINANCING_PAGE,
@@ -31,6 +32,9 @@ export const checkArrayIsDone = (array = [], params) =>
     .filter(({ id }) => id !== 'callEpotek')
     .every(({ isDone, hide }) =>
       (hide ? hide(params) || isDone(params) : isDone(params)));
+
+export const disablePropertyTodos = ({ structure: { property } }) =>
+  !property || property.category === PROPERTY_CATEGORY.PRO;
 
 export const promotionTodoList = {
   completeBorrowers: true,
@@ -90,7 +94,7 @@ export const getDashboardTodosArray = list =>
 
         return false;
       },
-      hide: ({ structure: { property } }) => !property,
+      hide: disablePropertyTodos,
       link: createSinglePropertyLink,
     },
     {
@@ -113,7 +117,7 @@ export const getDashboardTodosArray = list =>
         property
         && property.valuation
         && property.valuation.status !== VALUATION_STATUS.NONE,
-      hide: ({ structure: { property } }) => !property,
+      hide: disablePropertyTodos,
       link: createSinglePropertyLink,
     },
     {

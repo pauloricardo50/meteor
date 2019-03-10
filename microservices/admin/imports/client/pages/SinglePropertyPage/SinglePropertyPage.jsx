@@ -6,6 +6,8 @@ import Recap from 'core/components/Recap';
 import Valuation from 'core/components/Valuation';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import { PropertyForm } from 'core/components/forms';
+import { PROPERTY_CATEGORY } from 'core/api/constants';
+import AdminProPropertyPage from './AdminProPropertyPage';
 import LoanSummaryList from '../../components/LoanSummaryList';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 import SinglePropertyPageHeader from './SinglePropertyPageHeader';
@@ -21,6 +23,11 @@ const SinglePropertyPage = (props) => {
     loanResidenceType,
     loanId,
   } = props;
+
+  if (property.category === PROPERTY_CATEGORY.PRO) {
+    return <AdminProPropertyPage property={property} />;
+  }
+
   const { loans } = property;
   const address = getPropertyAddress(property);
   let residenceType = loanResidenceType;
