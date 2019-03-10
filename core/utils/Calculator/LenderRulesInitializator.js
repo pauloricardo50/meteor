@@ -12,7 +12,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     }
 
     initialize({ loan, structureId, lenderRules = [] }) {
-      if (!(loan && lenderRules)) {
+      if (!(loan && lenderRules && lenderRules.length > 0)) {
         return;
       }
 

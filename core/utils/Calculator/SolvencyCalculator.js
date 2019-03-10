@@ -122,6 +122,26 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       return ownFunds;
     }
 
+    createLoanObject({
+      residenceType,
+      borrowers,
+      wantedLoan,
+      propertyValue,
+      canton,
+      ownFunds = [],
+    }) {
+      return {
+        residenceType,
+        borrowers,
+        structure: {
+          wantedLoan,
+          propertyValue,
+          property: { canton },
+          ownFunds,
+        },
+      };
+    }
+
     suggestedStructureIsValid({
       borrowers,
       propertyValue,
@@ -132,16 +152,19 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       ownFunds,
     }) {
       const finalLoanValue = loanValue || Math.round(propertyValue * maxBorrowRatio);
-      const loanObject = {
+      const loanObject = this.createLoanObject({
         residenceType,
         borrowers,
-        structure: {
-          wantedLoan: finalLoanValue,
-          propertyValue,
-          property: { canton },
-          ownFunds,
-        },
-      };
+        wantedLoan: finalLoanValue,
+        propertyValue,
+        canton,
+        ownFunds,
+      });
+
+      // If the calculator has been initialized, reinitialize it according to this new potential loan
+      if (this.lenderRules) {
+        this.initialize({ loan: loanObject, lenderRules: this.lenderRules });
+      }
 
       if (this.isMissingOwnFunds({ loan: loanObject })) {
         return false;

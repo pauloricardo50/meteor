@@ -6,10 +6,12 @@ import Calculator from 'imports/core/utils/Calculator';
 import { Money } from 'core/components/Translation';
 import PercentInput from 'imports/core/components/PercentInput';
 import { RESIDENCE_TYPE } from 'core/api/constants';
+import SolvencyContainer from './SolvencyContainer';
+import SolvencyItem from './SolvencyItem';
 
 type SolvencyProps = {};
 
-const results = (loan, maxBorrowRatio) => (
+const results = (loan, maxBorrowRatio, organisations) => (
   <table style={{ tableLayout: 'fixed' }}>
     <tablebody>
       <tr>
@@ -20,46 +22,42 @@ const results = (loan, maxBorrowRatio) => (
       <tr>
         <td>Résidence principale</td>
         <td>
-          <Money
-            value={Calculator.getMaxPropertyValueForLoan({
-              loan,
-              maxBorrowRatio,
-              residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-              canton: 'GE',
-            })}
+          <SolvencyItem
+            loan={loan}
+            maxBorrowRatio={maxBorrowRatio}
+            residenceType={RESIDENCE_TYPE.MAIN_RESIDENCE}
+            canton="GE"
+            organisations={organisations}
           />
         </td>
         <td>
-          <Money
-            value={Calculator.getMaxPropertyValueForLoan({
-              loan,
-              maxBorrowRatio,
-              residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
-              canton: 'VD',
-            })}
+          <SolvencyItem
+            loan={loan}
+            maxBorrowRatio={maxBorrowRatio}
+            residenceType={RESIDENCE_TYPE.MAIN_RESIDENCE}
+            canton="VD"
+            organisations={organisations}
           />
         </td>
       </tr>
       <tr>
         <td>Résidence secondaire</td>
         <td>
-          <Money
-            value={Calculator.getMaxPropertyValueForLoan({
-              loan,
-              maxBorrowRatio,
-              residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
-              canton: 'GE',
-            })}
+          <SolvencyItem
+            loan={loan}
+            maxBorrowRatio={maxBorrowRatio}
+            residenceType={RESIDENCE_TYPE.SECOND_RESIDENCE}
+            canton="GE"
+            organisations={organisations}
           />
         </td>
         <td>
-          <Money
-            value={Calculator.getMaxPropertyValueForLoan({
-              loan,
-              maxBorrowRatio,
-              residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
-              canton: 'VD',
-            })}
+          <SolvencyItem
+            loan={loan}
+            maxBorrowRatio={maxBorrowRatio}
+            residenceType={RESIDENCE_TYPE.SECOND_RESIDENCE}
+            canton="VD"
+            organisations={organisations}
           />
         </td>
       </tr>
@@ -67,7 +65,7 @@ const results = (loan, maxBorrowRatio) => (
   </table>
 );
 
-const Solvency = ({ loan }: SolvencyProps) => {
+const Solvency = ({ loan, organisations }: SolvencyProps) => {
   const [showResults, setShowResults] = useState(false);
   const [maxBorrowRatio, setMaxborrowRatio] = useState(0.8);
 
@@ -91,9 +89,9 @@ const Solvency = ({ loan }: SolvencyProps) => {
         </Button>
       </div>
 
-      {showResults && results(loan, maxBorrowRatio)}
+      {showResults && results(loan, maxBorrowRatio, organisations)}
     </div>
   );
 };
 
-export default Solvency;
+export default SolvencyContainer(Solvency);
