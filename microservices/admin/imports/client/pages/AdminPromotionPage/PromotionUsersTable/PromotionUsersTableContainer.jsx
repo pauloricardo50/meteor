@@ -1,12 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { compose, withProps } from 'recompose';
+
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import IconButton from 'core/components/IconButton/IconButton';
+import IconButton from 'core/components/IconButton';
 import { removeProFromPromotion } from 'core/api';
 import { createRoute } from 'core/utils/routerUtils';
 import T from 'core/components/Translation';
-import { compose, withProps } from 'recompose';
-import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientHelpers';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 import PromotionUserPermissionsModifier from '../PromotionUserPermissionsModifier';
 
 const columnOptions = [

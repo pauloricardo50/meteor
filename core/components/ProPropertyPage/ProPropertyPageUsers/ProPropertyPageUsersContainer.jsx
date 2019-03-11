@@ -2,16 +2,15 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
-import IconButton from 'core/components/IconButton/IconButton';
-
-import T from 'core/components/Translation';
-import { getUserNameAndOrganisation } from 'core/api/promotions/promotionClientHelpers';
-import { createRoute } from 'core/utils/routerUtils';
+import { createRoute } from '../../../utils/routerUtils';
+import { getUserNameAndOrganisation } from '../../../api/helpers';
 import proPropertyUsers from '../../../api/properties/queries/proPropertyUsers';
 import { withSmartQuery } from '../../../api/containerToolkit';
-import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';
 import { removeProFromProperty } from '../../../api';
+import ProPropertyUserPermissionsModifier from '../../ProPropertyUserPermissions/ProPropertyUserPermissionsModifier';
+import ImpersonateLink from '../../Impersonate/ImpersonateLink';
+import IconButton from '../../IconButton/IconButton';
+import T from '../../Translation';
 
 const columnOptions = ({ permissions }) => {
   const { isAdmin, canManagePermissions } = permissions;
@@ -69,7 +68,10 @@ const makeMapProPropertyUser = ({
                 user,
               })} du bien immobilier ?`);
               if (confirm) {
-                return removeProFromProperty.run({ propertyId, proUserId: _id });
+                return removeProFromProperty.run({
+                  propertyId,
+                  proUserId: _id,
+                });
               }
               return Promise.resolve();
             }}
