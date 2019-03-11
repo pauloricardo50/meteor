@@ -22,7 +22,6 @@ export const updatedAt = {
       return new Date();
     }
   },
-  denyInsert: true,
   optional: true,
 };
 
