@@ -126,3 +126,11 @@ export const proInviteUser = new Method({
     proUserId: Match.Maybe(String),
   },
 });
+
+export const getUserByEmail = new Method({
+  name: 'getUserByEmail',
+  params: {
+    email: String,
+    roles: Match.Maybe(Array),
+  },
+});

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 import SecurityService from '../../security';
 import {
@@ -18,6 +19,7 @@ import {
   userUpdateOrganisations,
   testUserAccount,
   proInviteUser,
+  getUserByEmail,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -140,7 +142,23 @@ proInviteUser.setHandler((context, params) => {
     });
   } else if (property) {
     // Not yet implemented
-  } 
+  }
 
   return UserService.proInviteUser(params);
+});
+
+getUserByEmail.setHandler((context, params) => {
+  const { userId } = context;
+  const { email, roles } = params;
+  SecurityService.checkUserIsPro(userId);
+  return UserService.fetchOne({
+    $filters: {
+      $and: [
+        { 'emails.address': { $in: [email] } },
+        { roles: roles ? { $in: roles } : undefined },
+      ].filter(x => x),
+    },
+    name: 1,
+    organisations: { name: 1 },
+  });
 });

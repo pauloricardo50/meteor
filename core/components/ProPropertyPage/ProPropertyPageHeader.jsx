@@ -4,7 +4,6 @@ import React from 'react';
 import { Money } from 'core/components/Translation';
 import { ProPropertyModifier } from './ProPropertyForm';
 import PropertyDocumentsManager from './PropertyDocumentsManager';
-import PropertyCustomerAdder from './PropertyCustomerAdder';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
 
@@ -17,7 +16,7 @@ const ProPropertyPageHeader = ({
   permissions,
 }: ProPropertyPageHeaderProps) => {
   const { address1, totalValue, _id: propertyId, status } = property;
-  const { canModifyProperty, canInviteCustomers } = permissions;
+  const { canModifyProperty } = permissions;
 
   return (
     <div className="pro-property-page-header">

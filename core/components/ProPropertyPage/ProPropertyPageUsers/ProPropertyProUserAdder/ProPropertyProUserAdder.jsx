@@ -12,23 +12,56 @@ type ProPropertyProUserAdderProps = {
   searchQuery: String,
   onSearch: Function,
   setSearchQuery: Function,
-  searchResults: Array<Object>,
+  searchResult: Object,
   addUser: Function,
+  organisation: Object,
+};
+
+const showUsers = ({ users, searchResult, property, addUser, isAdmin }) => {
+  if (searchResult) {
+    if (searchResult.error) {
+      return <p>{searchResult.error}</p>;
+    }
+
+    return (
+      <UsersList users={searchResult} property={property} addUser={addUser} />
+    );
+  }
+
+  if (users.length) {
+    return <UsersList users={users} property={property} addUser={addUser} />;
+  }
+
+  return (
+    <p>
+      {isAdmin
+        ? 'Aucun utilisateur trouvé'
+        : 'Aucun utilisateur trouvé dans votre organisation'}
+    </p>
+  );
 };
 
 const ProPropertyProUserAdder = ({
   searchQuery,
   setSearchQuery,
   onSearch,
-  searchResults,
+  searchResult,
+  setSearchResult,
   addUser,
   property,
+  organisation: { users = [] } = {},
+  permissions: { isAdmin },
 }: ProPropertyProUserAdderProps) => (
   <DialogSimple
     primary
     raised
     label={<T id="ProPropertyPage.addUser.label" />}
     title={<T id="ProPropertyPage.addUser.title" />}
+    closeOnly
+    onClose={() => {
+      setSearchQuery(null);
+      setSearchResult(null);
+    }}
   >
     <div className="flex-col">
       <form onSubmit={onSearch}>
@@ -36,19 +69,11 @@ const ProPropertyProUserAdder = ({
           type="text"
           value={searchQuery}
           onChange={event => setSearchQuery(event.target.value)}
-          placeholder="Rechercher..."
+          placeholder={isAdmin ? 'Rechercher...' : 'Rechercher par email...'}
           style={{ width: '100%', marginBottom: '16px' }}
         />
       </form>
-      {typeof searchResults === 'object' && searchResults.error ? (
-        <p>{searchResults.error}</p>
-      ) : (
-        <UsersList
-          users={searchResults}
-          property={property}
-          addUser={addUser}
-        />
-      )}
+      {showUsers({ users, searchResult, property, addUser, isAdmin })}
     </div>
   </DialogSimple>
 );

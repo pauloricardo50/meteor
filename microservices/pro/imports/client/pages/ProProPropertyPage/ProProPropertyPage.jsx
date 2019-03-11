@@ -1,6 +1,7 @@
 import { compose } from 'recompose';
 
 import proProperty from 'core/api/properties/queries/proProperty';
+import proOrganisation from 'core/api/organisations/queries/proOrganisation';
 import propertyFiles from 'core/api/properties/queries/propertyFiles';
 import { withSmartQuery } from 'core/api/containerToolkit';
 import withMatchParam from 'core/containers/withMatchParam';
@@ -39,8 +40,20 @@ export default compose(
     ({ property: { _id: propertyId } }) => ({ propertyId }),
     'property',
   ),
+  withSmartQuery({
+    query: proOrganisation,
+    params: ({ currentUser: { organisations = [] } }) => ({
+      organisationId: organisations[0]._id,
+    }),
+    queryOptions: { reactive: false, single: true },
+    dataName: 'organisation',
+    $body: { users: { name: 1, organisations: { name: 1 } } },
+  }),
   withContextProvider({
     Context: ProPropertyPageContext,
-    value: props => ({ permissions: makePermissions(props) }),
+    value: ({ organisation, ...props }) => ({
+      permissions: makePermissions(props),
+      organisation,
+    }),
   }),
 )(ProPropertyPage);

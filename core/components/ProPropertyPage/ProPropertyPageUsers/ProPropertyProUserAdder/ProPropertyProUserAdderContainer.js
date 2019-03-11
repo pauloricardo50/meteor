@@ -1,27 +1,51 @@
 import { withState, compose, withProps } from 'recompose';
-import { addProUserToProperty } from 'core/api';
+
+import { addProUserToProperty, getUserByEmail } from 'core/api';
 import userSearch from 'core/api/users/queries/userSearch';
 import { ROLES } from 'core/api/constants';
+import withContextConsumer from 'core/api/containerToolkit/withContextConsumer';
+import { ProPropertyPageContext } from '../../ProPropertyPageContext';
+
+const searchUser = ({ isAdmin, searchQuery, setSearchResult }) => {
+  if (isAdmin) {
+    userSearch
+      .clone({ searchQuery, roles: [ROLES.PRO] })
+      .fetch((err, users) => {
+        if (err) {
+          setSearchResult({ error: err });
+        }
+
+        setSearchResult(users);
+      });
+    return;
+  }
+
+  getUserByEmail.run({ email: searchQuery, roles: [ROLES.PRO] }).then((user) => {
+    if (!user) {
+      setSearchResult({
+        error:
+          'Aucun utilisateur trouvé. Contactez e-Potek pour ajouter ce compte.',
+      });
+      return;
+    }
+
+    setSearchResult([user]);
+  });
+};
 
 export default compose(
-  withState('searchQuery', 'setSearchQuery', ''),
-  withState('searchResults', 'setSearchResults', []),
-  withProps(({ searchQuery, setSearchResults, property }) => ({
+  withContextConsumer({ Context: ProPropertyPageContext }),
+  withState('searchQuery', 'setSearchQuery', null),
+  withState('searchResult', 'setSearchResult', null),
+  withProps(({ searchQuery, setSearchResult, property, permissions: { isAdmin } }) => ({
     onSearch: (event) => {
       event.preventDefault();
-      userSearch
-        .clone({ searchQuery, roles: [ROLES.PRO] })
-        .fetch((err, users) => {
-          if (err) {
-            setSearchResults({error: err})
-            return;
-            throw err;
-          }
-          setSearchResults(property.users
-            ? users.filter(user =>
-              !property.users.map(({ _id }) => _id).includes(user._id))
-            : users);
-        });
+      if (searchQuery) {
+        searchUser({ isAdmin, searchQuery, setSearchResult });
+        return;
+      }
+
+      setSearchResult(null);
     },
     addUser: ({ userId }) =>
       addProUserToProperty.run({

@@ -32,7 +32,7 @@ const UsersList = ({ users, property, addUser }: UsersListProps) =>
                 && property.users.map(({ _id }) => _id).includes(user._id)
               }
             >
-              <T id="AdminPromotionPage.addUser" />
+            Ajouter
             </Button>
           </ListItemSecondaryAction>
         </ListItem>
