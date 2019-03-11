@@ -10,7 +10,6 @@ import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
-import Calculator from 'core/utils/Calculator';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
 import Page from 'core/components/Page';
@@ -31,7 +30,7 @@ const SinglePropertyPage = (props) => {
     history,
     currentUser: { loans },
   } = props;
-  const { borrowers, properties, residenceType, _id: loanId } = loan;
+  const { borrowers, properties, _id: loanId } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
@@ -44,9 +43,7 @@ const SinglePropertyPage = (props) => {
     return null;
   }
 
-  const { address1, zipCode, city, mortgageNotes } = property;
-  const { userFormsEnabled } = loan;
-  const progress = Calculator.propertyPercent({ property, loan });
+  const { address1, zipCode, city } = property;
 
   const title = address1 || <T id="SinglePropertyPage.title" />;
 

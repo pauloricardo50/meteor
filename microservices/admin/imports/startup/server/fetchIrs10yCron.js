@@ -12,6 +12,35 @@ const jobName = 'Fetch IRS 10Y';
 
 const cronitor = new CronitorService({ id: '19MCrQ' });
 
+// Make this a function so that randomMinute is always different
+const job = () => ({
+  name: jobName,
+  schedule(parser) {
+    const randomMinute = getRandomMinute();
+    const tomorrow = moment()
+      .add(1, 'days')
+      .format('dddd');
+    const parserText = `at 6:${randomMinute} on ${tomorrow}`;
+    const parsedText = parser.text(parserText);
+    console.log('CRON_DEBUG');
+    console.log(parserText);
+    console.log(parsedText);
+
+    return parsedText;
+  },
+  job() {
+    cronitor
+      .run()
+      .then(() => irs10yFetch.run({}))
+      .then(cronitor.complete)
+      .then(() => {
+        SyncedCron.remove(jobName);
+        SyncedCron.add(job());
+      })
+      .catch(cronitor.fail);
+  },
+});
+
 SyncedCron.config({
   logger: ({ level, message, tag }) => {
     if (Meteor.isProduction) {
@@ -23,33 +52,10 @@ SyncedCron.config({
   },
 });
 
+SyncedCron.add(job());
+
 Meteor.startup(() => {
   try {
-    // SyncedCron.stop();
-    // SyncedCron.remove(jobName);
-    SyncedCron.add({
-      name: jobName,
-      schedule(parser) {
-        const randomMinute = getRandomMinute();
-        const tomorrow = moment()
-          .add(1, 'days')
-          .format('dddd');
-        const parserText = `at 6:${randomMinute} on ${tomorrow}`;
-        const parsedText = parser.text(parserText);
-        console.log('CRON_DEBUG');
-        console.log(parserText);
-        console.log(parsedText);
-
-        return parsedText;
-      },
-      job() {
-        cronitor
-          .run()
-          .then(() => irs10yFetch.run({}))
-          .then(cronitor.complete)
-          .catch(cronitor.fail);
-      },
-    });
     SyncedCron.start();
   } catch (error) {
     logError.run({ error });
