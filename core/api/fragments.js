@@ -292,6 +292,7 @@ export const adminLoans = () => ({
 export const proLoans = () => ({
   createdAt: 1,
   name: 1,
+  status: 1,
   promotions: { name: 1, users: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
@@ -306,7 +307,7 @@ export const proLoans = () => ({
     phoneNumbers: 1,
     email: 1,
     referredByUser: { _id: 1, name: 1, organisations: { name: 1 } },
-    referredByOrganisation: { _id: 1 },
+    referredByOrganisation: { name: 1 },
   },
   hasPromotion: 1,
   hasProProperty: 1,

@@ -1,6 +1,7 @@
 {
   "Forms.phone": "Téléphone",
   "ProCustomersTable.loanName": "No. de dossier",
+  "ProCustomersTable.status": "Status du dossier",
   "ProCustomersTable.name": "Client",
   "ProCustomersTable.phone": "Téléphone",
   "ProCustomersTable.email": "Email",
