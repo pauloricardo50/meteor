@@ -47,7 +47,7 @@ describe('BorrowerCalculator', () => {
     });
   });
 
-  describe('getBonusIncome', () => {
+  describe.only('getBonusIncome', () => {
     it('returns half of 1 bonus', () => {
       expect(Calculator.getBonusIncome({
         borrowers: { bonusExists: true, bonus2018: 100 },
@@ -112,6 +112,25 @@ describe('BorrowerCalculator', () => {
           bonus2019: 200,
         },
       })).to.equal(200);
+    });
+
+    it('works with 2 borrowers', () => {
+      expect(Calculator.getBonusIncome({
+        borrowers: [
+          {
+            bonusExists: true,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+          {
+            bonusExists: false,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+        ],
+      })).to.equal(50);
     });
   });
 

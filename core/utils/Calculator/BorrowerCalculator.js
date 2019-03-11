@@ -55,7 +55,7 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       ];
       const total = arrayify(borrowers).reduce((acc, borrower) => {
         if (!borrower.bonusExists) {
-          return 0;
+          return acc + 0;
         }
 
         const arr = bonusKeys.map(key => borrower[key]);
