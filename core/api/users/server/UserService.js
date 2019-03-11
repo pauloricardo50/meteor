@@ -3,7 +3,8 @@ import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
 
-import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { EMAIL_IDS } from '../../email/emailConstants';
+import { sendEmail } from '../../methods';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
@@ -215,7 +216,10 @@ class UserService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
       userId,
-      params: { proName: getUserNameAndOrganisation({ user: pro }) },
+      params: {
+        proName: getUserNameAndOrganisation({ user: pro }),
+        ctaUrl: this.getEnrollmentUrl({ userId }),
+      },
     });
   };
 

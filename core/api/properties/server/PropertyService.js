@@ -1,6 +1,5 @@
-import { Accounts } from 'meteor/accounts-base';
-
 import { Meteor } from 'meteor/meteor';
+
 import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import { sendEmail } from 'core/api/methods/index';
 import LoanService from '../../loans/server/LoanService';
@@ -187,6 +186,8 @@ export class PropertyService extends CollectionService {
         proName: getUserNameAndOrganisation({ user: pro }),
       });
     }
+
+    return Promise.resolve();
   };
 
   sendPropertyInvitationEmail({ userId, isNewUser, proName, address }) {

@@ -1,10 +1,10 @@
 // @flow
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
+import { checkEmails } from '../../../../utils/testHelpers';
 import LenderService from '../../../lenders/server/LenderService';
 import { EMAIL_TEMPLATES, EMAIL_IDS } from '../../../email/emailConstants';
 import OfferService from '../OfferService';
@@ -73,12 +73,6 @@ describe('OfferService', () => {
   });
 
   describe('send feedback', () => {
-    const checkEmails = () =>
-      new Promise((resolve, reject) => {
-        Meteor.call('getAllTestEmails', (err, emails) =>
-          (err ? reject(err) : resolve(emails)));
-      });
-
     it('sends the feedback to the lender', () => {
       const adminId = Factory.create('admin', {
         firstName: 'Dev',
@@ -129,7 +123,6 @@ describe('OfferService', () => {
         expect(from_name).to.equal('Dev e-Potek');
         expect(subject).to.include('Feedback client sur');
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
-        expect(1).to.equal(1);
       });
     });
   });

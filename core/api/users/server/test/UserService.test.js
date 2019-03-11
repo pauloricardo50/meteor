@@ -3,15 +3,18 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
+import { Mongo } from 'meteor/mongo';
 
-import { ROLES } from '../../userConstants';
-import UserService from '../UserService';
+import { checkEmails } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import generator from '../../../factories';
 import { PROMOTION_STATUS } from '../../../promotions/promotionConstants';
 import { PROPERTY_CATEGORY } from '../../../properties/propertyConstants';
+import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
+import { ROLES } from '../../userConstants';
+import UserService from '../UserService';
 
 describe('UserService', () => {
   const firstName = 'testFirstName';
@@ -323,46 +326,68 @@ describe('UserService', () => {
     };
 
     beforeEach(() => {
+      resetDatabase();
       generator({
         users: [
           { _id: 'adminId', _factory: 'admin' },
           {
             _id: 'proId',
             assignedEmployeeId: 'adminId',
-            organisations: [
-              { _id: 'organisationId', _factory: 'organisation' },
-            ],
+            organisations: {
+              _id: 'organisationId',
+              _factory: 'organisation',
+              name: 'bank',
+            },
             _factory: 'pro',
+            firstName: 'John',
+            lastName: 'Doe',
           },
         ],
       });
     });
 
-    it('invites user to refer only', () => {
-      expect(() =>
-        UserService.proInviteUser({
-          user: userToInvite,
-          referOnly: true,
-          proUserId: 'proId',
-        })).to.not.throw();
+    it('invites user to refer only', () =>
+      UserService.proInviteUser({
+        user: userToInvite,
+        referOnly: true,
+        proUserId: 'proId',
+      }).then(() => {
+        const userCreated = UserService.findOne({
+          'emails.address': { $in: [userToInvite.email] },
+        });
 
-      const userCreated = UserService.findOne({
-        'emails.address': { $in: [userToInvite.email] },
-      });
+        expect(userCreated.assignedEmployeeId).to.equal('adminId');
+        expect(userCreated.referredByUserLink).to.equal('proId');
+        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
 
-      expect(userCreated.assignedEmployeeId).to.equal('adminId');
-      expect(userCreated.referredByUserLink).to.equal('proId');
-      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
-    });
+        return checkEmails(1).then((emails) => {
+          expect(emails.length).to.equal(1);
+          const {
+            emailId,
+            address,
+            response: { status },
+            template: {
+              template_name,
+              message: { from_email, subject, merge_vars, from_name },
+            },
+          } = emails[0];
+          expect(status).to.equal('sent');
+          expect(emailId).to.equal(EMAIL_IDS.REFER_USER);
+          expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+          expect(address).to.equal('bob@dylan.com');
+          expect(from_email).to.equal('info@e-potek.ch');
+          expect(from_name).to.equal('e-Potek');
+          expect(subject).to.equal('Vous avez été invité sur e-Potek');
+          expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('John Doe (bank)');
+        });
+      }));
 
-    it('does invites user to refer only if user already exists', () => {
+    it('throws if user already exists and it is referOnly', () => {
       generator({
-        users: [
-          {
-            emails: [{ address: userToInvite.email, verified: false }],
-            _factory: 'user',
-          },
-        ],
+        users: {
+          emails: [{ address: userToInvite.email, verified: false }],
+          _factory: 'user',
+        },
       });
 
       expect(() =>
@@ -375,137 +400,171 @@ describe('UserService', () => {
 
     it('invites user to promotion', () => {
       generator({
-        promotions: [
-          {
-            _id: 'promotionId',
-            status: PROMOTION_STATUS.OPEN,
-            assignedEmployeeId: 'adminId',
-            users: [
-              {
-                _id: 'proId',
-                $metadata: { permissions: { canInviteCustomers: true } },
-              },
-            ],
-            _factory: 'promotion',
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
           },
-        ],
-      });
-      expect(() =>
-        UserService.proInviteUser({
-          user: userToInvite,
-          promotionId: 'promotionId',
-          proUserId: 'proId',
-        })).to.not.throw();
 
-      const userCreated = UserService.findOne({
-        'emails.address': { $in: [userToInvite.email] },
+          _factory: 'promotion',
+        },
       });
-      const loan = LoanService.findOne({ userId: userCreated._id });
 
-      expect(userCreated.assignedEmployeeId).to.equal('adminId');
-      // TODO: set referredBy
-      // expect(userCreated.referredByUserLink).to.equal('proId');
-      // expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
-      expect(loan.promotionLinks[0]._id).to.equal('promotionId');
-      expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
+      return UserService.proInviteUser({
+        user: userToInvite,
+        promotionId: 'promotionId',
+        proUserId: 'proId',
+      }).then(() => {
+        const userCreated = UserService.findOne({
+          'emails.address': { $in: [userToInvite.email] },
+        });
+        const loan = LoanService.findOne({ userId: userCreated._id });
+
+        expect(userCreated.assignedEmployeeId).to.equal('adminId');
+        // TODO: set referredBy
+        // expect(userCreated.referredByUserLink).to.equal('proId');
+        // expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(loan.promotionLinks[0]._id).to.equal('promotionId');
+        expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
+
+        return checkEmails(1);
+      });
     });
 
     it('throws if user is already invited to promotion', () => {
       generator({
-        promotions: [
-          {
-            _id: 'promotionId',
-            status: PROMOTION_STATUS.OPEN,
-            assignedEmployeeId: 'adminId',
-            users: [
-              {
-                _id: 'proId',
-                $metadata: { permissions: { canInviteCustomers: true } },
-              },
-            ],
-            _factory: 'promotion',
+        promotions: {
+          _id: 'promotionId',
+          status: PROMOTION_STATUS.OPEN,
+          assignedEmployeeId: 'adminId',
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
           },
-        ],
+
+          _factory: 'promotion',
+        },
       });
 
-      UserService.proInviteUser({
+      return UserService.proInviteUser({
         user: userToInvite,
         promotionId: 'promotionId',
         proUserId: 'proId',
-      });
-
-      expect(() =>
-        UserService.proInviteUser({
-          user: userToInvite,
-          promotionId: 'promotionId',
-          proUserId: 'proId',
-        })).to.throw('Cet utilisateur est déjà invité à cette promotion');
+      })
+        .then(() => checkEmails(1))
+        .then(() => {
+          expect(() =>
+            UserService.proInviteUser({
+              user: userToInvite,
+              promotionId: 'promotionId',
+              proUserId: 'proId',
+            })).to.throw('Cet utilisateur est déjà invité à cette promotion');
+        });
     });
 
     it('invites user to pro property', () => {
       generator({
-        properties: [
-          {
-            _id: 'propertyId',
-            category: PROPERTY_CATEGORY.PRO,
-            users: [
-              {
-                _id: 'proId',
-                $metadata: { permissions: { canInviteCustomers: true } },
-              },
-            ],
-            _factory: 'property',
+        properties: {
+          _id: 'propertyId',
+          category: PROPERTY_CATEGORY.PRO,
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
           },
-        ],
+
+          _factory: 'property',
+        },
       });
 
-      expect(() =>
-        UserService.proInviteUser({
-          user: userToInvite,
-          propertyId: 'propertyId',
-          proUserId: 'proId',
-        })).to.not.throw();
+      return UserService.proInviteUser({
+        user: userToInvite,
+        propertyId: 'propertyId',
+        proUserId: 'proId',
+      }).then(() => {
+        const userCreated = UserService.findOne({
+          'emails.address': { $in: [userToInvite.email] },
+        });
+        const loan = LoanService.findOne({ userId: userCreated._id });
 
-      const userCreated = UserService.findOne({
-        'emails.address': { $in: [userToInvite.email] },
+        expect(userCreated.assignedEmployeeId).to.equal('adminId');
+        expect(userCreated.referredByUserLink).to.equal('proId');
+        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(loan.propertyIds[0]).to.equal('propertyId');
+
+        return checkEmails(1);
       });
-      const loan = LoanService.findOne({ userId: userCreated._id });
+    });
 
-      expect(userCreated.assignedEmployeeId).to.equal('adminId');
-      expect(userCreated.referredByUserLink).to.equal('proId');
-      expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
-      expect(loan.propertyIds[0]).to.equal('propertyId');
+    it('sends an invitation email', () => {
+      generator({
+        properties: {
+          address1: 'Rue du four 1',
+          _id: 'propertyId2',
+          category: PROPERTY_CATEGORY.PRO,
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
+          },
+          _factory: 'property',
+        },
+      });
+
+
+      return UserService.proInviteUser({
+        user: userToInvite,
+        propertyId: 'propertyId2',
+        proUserId: 'proId',
+      })
+        .then(checkEmails)
+        .then((emails) => {
+          expect(emails.length).to.equal(1);
+          const {
+            emailId,
+            address,
+            response: { status },
+            template: {
+              template_name,
+              message: { from_email, subject, merge_vars, from_name },
+            },
+          } = emails[0];
+          expect(status).to.equal('sent');
+          expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROPERTY);
+          expect(template_name).to.equal(EMAIL_TEMPLATES.NOTIFICATION_AND_CTA.mandrillId);
+          expect(address).to.equal('bob@dylan.com');
+          expect(from_email).to.equal('info@e-potek.ch');
+          expect(from_name).to.equal('e-Potek');
+          expect(subject).to.equal('e-Potek - Rue du four 1');
+        });
     });
 
     it('throws if user to is already invited pro property', () => {
       generator({
-        properties: [
-          {
-            _id: 'propertyId',
-            category: PROPERTY_CATEGORY.PRO,
-            users: [
-              {
-                _id: 'proId',
-                $metadata: { permissions: { canInviteCustomers: true } },
-              },
-            ],
-            _factory: 'property',
+        properties: {
+          _id: 'propertyId',
+          category: PROPERTY_CATEGORY.PRO,
+          users: {
+            _id: 'proId',
+            $metadata: { permissions: { canInviteCustomers: true } },
           },
-        ],
+          _factory: 'property',
+        },
       });
 
-      UserService.proInviteUser({
+      return UserService.proInviteUser({
         user: userToInvite,
         propertyId: 'propertyId',
         proUserId: 'proId',
+      }).then(() => {
+        expect(() =>
+          UserService.proInviteUser({
+            user: userToInvite,
+            propertyId: 'propertyId',
+            proUserId: 'proId',
+          })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
       });
-
-      expect(() =>
-        UserService.proInviteUser({
-          user: userToInvite,
-          propertyId: 'propertyId',
-          proUserId: 'proId',
-        })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
     });
   });
 });

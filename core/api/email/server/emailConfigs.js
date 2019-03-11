@@ -242,16 +242,15 @@ addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROPERTY, {
 // proName
 addEmailConfig(EMAIL_IDS.REFER_USER, {
   template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
-  createOverrides({ user, url }, { title, body, cta }) {
+  createOverrides({ ctaUrl }, { title, body, cta }) {
     const { variables } = this.template;
-    const enrollUrl = getAccountsUrl('enroll-account')(user, url);
 
     return {
       variables: [
         { name: variables.TITLE, content: title },
         { name: variables.BODY, content: body },
         { name: variables.CTA, content: cta },
-        { name: variables.CTA_URL, content: enrollUrl || CTA_URL_DEFAULT },
+        { name: variables.CTA_URL, content: ctaUrl },
       ],
     };
   },

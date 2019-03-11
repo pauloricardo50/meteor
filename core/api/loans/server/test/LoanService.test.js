@@ -1,10 +1,10 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker/locale/fr';
 
+import { checkEmails } from '../../../../utils/testHelpers';
 import '../../../factories';
 import LoanService from '../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
@@ -686,12 +686,6 @@ describe('LoanService', function () {
 
       return offerIds;
     };
-
-    const checkEmails = expected =>
-      new Promise((resolve, reject) => {
-        Meteor.call('getAllTestEmails', { expected }, (err, emails) =>
-          (err ? reject(err) : resolve(emails)));
-      });
 
     beforeEach(() => {
       resetDatabase();
