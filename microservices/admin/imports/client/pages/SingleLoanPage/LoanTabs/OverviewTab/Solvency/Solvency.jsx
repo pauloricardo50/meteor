@@ -1,10 +1,8 @@
 // @flow
 import React, { useState } from 'react';
 
-import Button from 'core/components/Button/Button';
-import Calculator from 'imports/core/utils/Calculator';
-import { Money } from 'core/components/Translation';
-import PercentInput from 'imports/core/components/PercentInput';
+import Button from 'core/components/Button';
+import PercentInput from 'core/components/PercentInput';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 import SolvencyContainer from './SolvencyContainer';
 import SolvencyItem from './SolvencyItem';

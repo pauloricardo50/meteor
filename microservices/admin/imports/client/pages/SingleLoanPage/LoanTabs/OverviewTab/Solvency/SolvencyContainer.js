@@ -1,11 +1,13 @@
 import { compose, withProps } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
+import { ORGANISATION_FEATURES } from 'core/api/constants';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 
 export default compose(
   withSmartQuery({
     query: adminOrganisations,
+    params: { features: ORGANISATION_FEATURES.LENDER },
     dataName: 'organisations',
     queryOptions: { reactive: false },
   }),
