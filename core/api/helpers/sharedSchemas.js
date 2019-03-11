@@ -18,7 +18,7 @@ export const createdAt = {
 export const updatedAt = {
   type: Date,
   autoValue() {
-    if (this.isUpdate) {
+    if (this.isUpdate || this.isInsert || this.isUpsert) {
       return new Date();
     }
   },
@@ -88,7 +88,7 @@ export const makePermissions = ({
         type: Object,
         optional: true,
         condition: autoFormDisplayCondition,
-        uniforms: {label: autoFormLabel || prefix}
+        uniforms: { label: autoFormLabel || prefix },
       },
     },
   );
