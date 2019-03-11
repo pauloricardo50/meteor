@@ -27,29 +27,29 @@ const schema = ({ proProperties, promotions }) =>
       optional: true,
       uniforms: { label: 'Téléphone', placeholder: '012 345 67 89' },
     },
-    referOnly: { type: Boolean, defaultValue: false },
+    // referOnly: { type: Boolean, defaultValue: false },
     propertyId: {
       optional: true,
       type: String,
       allowedValues: proProperties.map(({ _id }) => _id),
-      condition: ({ promotionId, referOnly }) => !referOnly && !promotionId,
+      condition: ({ promotionId }) => proProperties.length && !promotionId,
       uniforms: {
         transform: propertyId =>
           proProperties.find(({ _id }) => _id === propertyId).address1,
-        displayEmpty: false,
-        placeholder: '',
+        displayEmpty: true,
+        placeholder: 'Aucun',
       },
     },
     promotionId: {
       optional: true,
       type: String,
       allowedValues: promotions.map(({ _id }) => _id),
-      condition: ({ propertyId, referOnly }) => !referOnly && !propertyId,
+      condition: ({ propertyId }) => promotions.length && !propertyId,
       uniforms: {
         transform: promotionId =>
           promotions.find(({ _id }) => _id === promotionId).name,
-        displayEmpty: false,
-        placeholder: '',
+        displayEmpty: true,
+        placeholder: 'Aucune',
       },
     },
   });
@@ -65,7 +65,14 @@ export default withProps(({ currentUser }) => {
       proProperties: filteredProProperties,
       promotions: filteredPromotions,
     }),
-    onSubmit: model =>
-      proInviteUser.run({ ...model, proUserId: currentUser._id }),
+    onSubmit: (model) => {
+      const { propertyId, promotionId } = model;
+      const referOnly = !propertyId && !promotionId;
+      return proInviteUser.run({
+        ...model,
+        referOnly,
+        proUserId: currentUser._id,
+      });
+    },
   };
 });
