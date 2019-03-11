@@ -1,6 +1,8 @@
 import { Accounts } from 'meteor/accounts-base';
 
 import { Meteor } from 'meteor/meteor';
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { sendEmail } from 'core/api/methods/index';
 import LoanService from '../../loans/server/LoanService';
 import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
@@ -10,8 +12,8 @@ import {
 } from '../propertyConstants';
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
 import { removePropertyFromLoan } from './propertyServerHelpers';
+import { getUserNameAndOrganisation } from '../../helpers';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -107,17 +109,19 @@ export class PropertyService extends CollectionService {
     proUserId,
     user: { email, firstName, lastName, phoneNumber },
     propertyId,
-    sendInvitation,
+    sendInvitation = true,
   }) => {
     const property = this.get(propertyId);
     let assignedEmployeeId;
     let organisationId;
+    let pro;
 
     if (proUserId) {
-      const pro = UserService.fetchOne({
+      pro = UserService.fetchOne({
         $filters: { _id: proUserId },
+        name: 1,
         assignedEmployeeId: 1,
-        organisations: { _id: 1 },
+        organisations: { name: 1 },
       });
 
       if (pro) {
@@ -139,7 +143,9 @@ export class PropertyService extends CollectionService {
       userId = UserService.adminCreateUser({
         options: {
           email,
-          sendEnrollmentEmail: false,
+          // If an admin does the invitation, send him the default enrollment email
+          // and skip the property invitation email
+          sendEnrollmentEmail: sendInvitation && !pro,
           firstName,
           lastName,
           phoneNumbers: [phoneNumber],
@@ -173,11 +179,30 @@ export class PropertyService extends CollectionService {
 
     const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
 
-    console.log('Should send invitation to property loan!');
-    if (sendInvitation) {
-      // TODO:
+    if (sendInvitation && pro) {
+      return this.sendPropertyInvitationEmail({
+        userId,
+        isNewUser,
+        address: property.address1,
+        proName: getUserNameAndOrganisation({ user: pro }),
+      });
     }
   };
+
+  sendPropertyInvitationEmail({ userId, isNewUser, proName, address }) {
+    let ctaUrl = Meteor.settings.public.subdomains.app;
+
+    if (isNewUser) {
+      // Envoyer invitation avec enrollment link
+      ctaUrl = UserService.getEnrollmentUrl({ userId });
+    }
+
+    return sendEmail.run({
+      emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+      userId,
+      params: { proName, address, ctaUrl },
+    });
+  }
 
   addProUser({ propertyId, userId }) {
     this.addLink({

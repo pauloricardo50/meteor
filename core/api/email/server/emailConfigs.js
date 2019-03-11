@@ -216,4 +216,46 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
   },
   createIntlValues: params => params,
 });
+
+// Required params:
+// proName
+// address
+// ctaUrl
+addEmailConfig(EMAIL_IDS.INVITE_USER_TO_PROPERTY, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ ctaUrl }, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: ctaUrl },
+      ],
+    };
+  },
+  createIntlValues: params => params,
+});
+
+// Required params
+// proName
+addEmailConfig(EMAIL_IDS.REFER_USER, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ user, url }, { title, body, cta }) {
+    const { variables } = this.template;
+    const enrollUrl = getAccountsUrl('enroll-account')(user, url);
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        { name: variables.CTA_URL, content: enrollUrl || CTA_URL_DEFAULT },
+      ],
+    };
+  },
+  createIntlValues: params => params,
+});
+
 export default emailConfigs;

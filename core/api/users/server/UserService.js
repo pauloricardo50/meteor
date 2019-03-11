@@ -3,13 +3,16 @@ import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
 
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
 import LoanService from '../../loans/server/LoanService';
 import CollectionService from '../../helpers/CollectionService';
 import { fullUser } from '../../fragments';
-import { ROLES } from '../userConstants';
-import Users from '../users';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
+import SecurityService from '../../security';
+import { getUserNameAndOrganisation } from '../../helpers';
+import { ROLES } from '../userConstants';
+import Users from '../users';
 
 class UserService extends CollectionService {
   constructor() {
@@ -121,7 +124,7 @@ class UserService extends CollectionService {
     return (
       loans
       && loans.some(({ propertyIds = [] }) =>
-        propertyIds.some((id) => id === propertyId))
+        propertyIds.some(id => id === propertyId))
     );
   };
 
@@ -171,7 +174,8 @@ class UserService extends CollectionService {
     const pro = this.fetchOne({
       $filters: { _id: proUserId },
       assignedEmployeeId: 1,
-      organisations: { _id: 1 },
+      name: 1,
+      organisations: { name: 1 },
     });
     const {
       assignedEmployeeId: proAssignedEmployeeId,
@@ -184,7 +188,7 @@ class UserService extends CollectionService {
     const userId = this.adminCreateUser({
       options: {
         email,
-        sendEnrollmentEmail: false, //Meteor toys is not defined... ?
+        sendEnrollmentEmail: false,
         firstName,
         lastName,
         phoneNumbers: [phoneNumber],
@@ -208,7 +212,11 @@ class UserService extends CollectionService {
       });
     }
 
-    return loanId;
+    return sendEmail.run({
+      emailId: EMAIL_IDS.REFER_USER,
+      userId,
+      params: { proName: getUserNameAndOrganisation({ user: pro }) },
+    });
   };
 
   proInviteUser = ({
@@ -227,14 +235,13 @@ class UserService extends CollectionService {
         proUserId,
         user,
         propertyId,
-        sendInvitation: false,
-      }); // Don't send invitation yet
+      });
     }
     if (promotionId) {
       return PromotionService.inviteUser({
         promotionId,
         user: { ...user, invitedBy: proUserId },
-      }); // Send invitation is true by default
+      });
     }
     if (property) {
       // Not yet implemented
@@ -242,6 +249,21 @@ class UserService extends CollectionService {
 
     throw new Meteor.Error('No property given');
   };
+
+  getEnrollmentUrl({ userId }) {
+    let domain = Meteor.settings.public.subdomains.app;
+
+    if (SecurityService.hasRole(userId, ROLES.PRO)) {
+      domain = Meteor.settings.public.subdomains.pro;
+    }
+
+    const { token } = Accounts.generateResetToken(
+      userId,
+      null,
+      'enrollAccount',
+    );
+    return `${domain}/enroll-account/${token}`;
+  }
 }
 
 export default new UserService();

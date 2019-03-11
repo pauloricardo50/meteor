@@ -8,7 +8,6 @@ import CollectionService from '../../helpers/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
-  ROLES,
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS_FULL_ACCESS,
 } from '../../constants';
@@ -157,17 +156,9 @@ export class PromotionService extends CollectionService {
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
-        const { token } = Accounts.generateResetToken(
-          userId,
-          null,
-          'enrollAccount',
-        );
-        ctaUrl = `${
-          Meteor.settings.public.subdomains.app
-        }/enroll-account/${token}`;
+        ctaUrl = UserService.getEnrollmentUrl({ userId });
       }
 
-      // Envoyer invitation sans enrollment link
       return sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
