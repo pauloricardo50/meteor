@@ -107,16 +107,22 @@ class UpdateWatcherService extends CollectionService {
   }
 
   getUpdatedFieldDiffs({ updatedFields, doc }) {
-    return updatedFields.map((updatedField) => {
-      if (doc[updatedField.fieldName]) {
-        return {
-          ...updatedField,
-          currentValue: doc[updatedField.fieldName],
-        };
-      }
+    return updatedFields
+      .map((updatedField) => {
+        const newValue = doc[updatedField.fieldName];
 
-      return updatedField;
-    });
+        // If a value is changed back to its old value, remove it
+        if (newValue === updatedField.previousValue) {
+          return null;
+        }
+
+        if (newValue !== undefined) {
+          return { ...updatedField, currentValue: newValue };
+        }
+
+        return updatedField;
+      })
+      .filter(x => x);
   }
 
   update({ currentWatcher, doc, previousDoc, changedFields }) {
