@@ -16,7 +16,7 @@ const columnOptions = [
   { id: 'createdAt' },
   { id: 'referredBy' },
   { id: 'relatedTo' },
-  { id: 'estimatedRevenues' },
+  // { id: 'estimatedRevenues' },
 ].map(({ id }) => ({ id, label: <T id={`ProCustomersTable.${id}`} /> }));
 
 const makeMapLoan = history => (loan) => {
@@ -49,14 +49,14 @@ const makeMapLoan = history => (loan) => {
         raw: relatedTo,
         label: relatedTo || '-',
       },
-      {
-        raw: estimatedRevenues,
-        label: estimatedRevenues ? (
-          <Money value={estimatedRevenues} />
-        ) : (
-          '-'
-        ),
-      },
+      // {
+      //   raw: estimatedRevenues,
+      //   label: estimatedRevenues ? (
+      //     <Money value={estimatedRevenues} />
+      //   ) : (
+      //     '-'
+      //   ),
+      // },
     ],
   };
 };
