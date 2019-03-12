@@ -148,7 +148,7 @@ describe('PropertyService', function () {
     });
   });
 
-  describe.only('inviteUser', () => {
+  describe('inviteUser', () => {
     it('should invite and create a new user if it does not already exist', () => {
       generator({
         users: [
