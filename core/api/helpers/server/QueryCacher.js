@@ -17,18 +17,21 @@ export default class QueryCacher extends BaseResultCacher {
     return `${queryName}::${EJSON.stringify(params)}`;
   }
 
+  getHash(cacheId) {
+    const params = EJSON.parse(cacheId.split('::')[1]);
+    const { getDataToHash = () => null } = this.config;
+
+    const dataToHash = getDataToHash(params);
+    return hashObject.MD5(dataToHash);
+  }
+
   fetch(cacheId, { query, countCursor }) {
-    let hash;
     const cacheData = this.store[cacheId];
+    const hash = this.getHash(cacheId);
 
     if (cacheData !== undefined) {
-      const params = EJSON.parse(cacheId.split('::')[1]);
-      const { getDataToHash = () => null } = this.config;
-
-      const dataToHash = getDataToHash(params);
-      hash = hashObject.MD5(dataToHash);
-
       const { hash: cachedHash, data } = cacheData;
+
       if (hash === cachedHash) {
         return cloneDeep(data);
       }
