@@ -133,12 +133,12 @@ export class PropertyService extends CollectionService {
       }
     }
 
+    const isNewUser = !UserService.doesUserExist({ email });
     let userId;
-    let isNewUser = false;
+    let admin;
 
-    if (!UserService.doesUserExist({ email })) {
-      isNewUser = true;
-      const admin = UserService.get(assignedEmployeeId);
+    if (isNewUser) {
+      admin = UserService.get(assignedEmployeeId);
       userId = UserService.adminCreateUser({
         options: {
           email,
@@ -151,10 +151,19 @@ export class PropertyService extends CollectionService {
         },
         adminId: admin && admin._id,
       });
+
+      if (!pro) {
+        // The invitation has already been sent
+        sendInvitation = false;
+      }
     } else {
-      userId = UserService.findOne({
-        'emails.address': { $in: [email] },
-      })._id;
+      const {
+        _id: existingUserId,
+        assignedEmployeeId: existingAssignedEmployeeId,
+      } = UserService.findOne({ 'emails.address': { $in: [email] } });
+      admin = UserService.get(existingAssignedEmployeeId);
+      userId = existingUserId;
+
       if (UserService.hasProperty({ userId, propertyId })) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
       }
@@ -178,12 +187,12 @@ export class PropertyService extends CollectionService {
 
     const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
 
-    if (sendInvitation && pro) {
+    if (sendInvitation) {
       return this.sendPropertyInvitationEmail({
         userId,
         isNewUser,
         address: property.address1,
-        proName: getUserNameAndOrganisation({ user: pro }),
+        proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
       });
     }
 
