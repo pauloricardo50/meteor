@@ -212,19 +212,96 @@ class UpdateWatcherService extends CollectionService {
       || (Array.isArray(previousValue) && previousValue.length > 0);
 
     if (previousValueIsNonEmpty) {
-      return `${formatMessage(`Forms.${fieldName}`)}: ${this.formatValue(
+      if (Array.isArray(currentValue)) {
+        return this.formatArrayDiff(fieldName, previousValue, currentValue);
+      }
+
+      return `*${formatMessage(`Forms.${fieldName}`)}*: ${this.formatValue(
         previousValue,
         fieldName,
       )} -> ${this.formatValue(currentValue, fieldName)}`;
     }
 
-    return `${formatMessage(`Forms.${fieldName}`)}: ${this.formatValue(
+    return `*${formatMessage(`Forms.${fieldName}`)}*: ${this.formatValue(
       currentValue,
       fieldName,
     )}`;
   }
 
-  formatValue(value, parentKey) {
+  formatArrayDiff(fieldName, previousValue, currentValue) {
+    const stringifiedPrevious = previousValue.map(JSON.stringify);
+    const stringifiedCurrent = currentValue.map(JSON.stringify);
+    const differentValues = currentValue
+      .map((val, i) => ({
+        val,
+        _currIndex: i,
+        _atIndex: stringifiedPrevious.indexOf(stringifiedCurrent[i]),
+      }))
+      .filter(({ _atIndex }) => _atIndex < 0);
+
+    const diff = differentValues
+      .map(({ _currIndex, val }) => {
+        const prefix = `\`${_currIndex + 1}\`\n`;
+        const prev = previousValue && previousValue[_currIndex];
+
+        if (val && typeof val === 'object') {
+          return `${prefix}${this.formatObjectDiff(fieldName, prev, val)}`;
+        }
+
+        if (prev) {
+          const previous = this.formatValue(prev, fieldName);
+          const current = this.formatValue(val, fieldName, true);
+
+          return `${prefix}${previous} -> ${current}`;
+        }
+
+        return `${prefix}${this.formatValue(val, fieldName)}`;
+      })
+      .join('\n');
+
+    const removedValues = previousValue.length > currentValue.length
+      ? previousValue
+        .map((item, i) => {
+          if (i >= currentValue.length) {
+            const prefix = `\`${i + 1}\`\n`;
+
+            return `${prefix}${this.formatValue(
+              item,
+              fieldName,
+            )} -> _supprimé_`;
+          }
+          return null;
+        })
+        .filter(x => x)
+        .join('\n')
+      : '';
+
+    return `*${formatMessage(`Forms.${fieldName}`)}*:\n${diff}${removedValues}`;
+  }
+
+  formatObjectDiff(parentName, previousValue, currentValue) {
+    const updated = Object.keys(currentValue)
+      .map((key) => {
+        const value = currentValue[key];
+        const previous = previousValue && previousValue[key];
+
+        if (value === previous) {
+          return null;
+        }
+
+        if (previous !== undefined) {
+          return `*${formatMessage(`Forms.${parentName}.${key}`)}*: ${previous} -> ${value}`;
+        }
+
+        return `*${formatMessage(`Forms.${parentName}.${key}`)}*: ${value}`;
+      })
+      .filter(x => x)
+      .join('\n');
+
+    return updated;
+  }
+
+  formatValue(value, parentKey, skipPrefix) {
     if (typeof value === 'boolean') {
       return value ? 'Oui' : 'Non';
     }
@@ -253,7 +330,12 @@ class UpdateWatcherService extends CollectionService {
       return Object.keys(value)
         .map((key) => {
           const val = value[key];
-          return `${formatMessage(`Forms.${parentKey}.${key}`)}: ${this.formatValue(val, `${parentKey}.${key}`)}`;
+
+          if (skipPrefix) {
+            return this.formatValue(val, `${parentKey}.${key}`);
+          }
+
+          return `*${formatMessage(`Forms.${parentKey}.${key}`)}*: ${this.formatValue(val, `${parentKey}.${key}`)}`;
         })
         .join(', ');
     }
