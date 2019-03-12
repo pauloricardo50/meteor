@@ -12,7 +12,7 @@ if (isEmailTestEnv) {
 
   Meteor.methods({
     storeTestEmail(email) {
-      emailTestCollection.insert({ ...email });
+      return emailTestCollection.insert({ ...email });
     },
     getAllTestEmails({ expected = 1 } = {}) {
       // Because emails are sent asynchronously after the actions that trigger

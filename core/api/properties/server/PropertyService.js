@@ -1,6 +1,7 @@
-import { Accounts } from 'meteor/accounts-base';
-
 import { Meteor } from 'meteor/meteor';
+
+import { EMAIL_IDS } from 'core/api/email/emailConstants';
+import { sendEmail } from 'core/api/methods/index';
 import LoanService from '../../loans/server/LoanService';
 import WuestService from '../../wuest/server/WuestService';
 import CollectionService from '../../helpers/CollectionService';
@@ -10,8 +11,8 @@ import {
 } from '../propertyConstants';
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
-import { ROLES } from '../../users/userConstants';
 import { removePropertyFromLoan } from './propertyServerHelpers';
+import { getUserNameAndOrganisation } from '../../helpers';
 
 export class PropertyService extends CollectionService {
   constructor() {
@@ -107,17 +108,19 @@ export class PropertyService extends CollectionService {
     proUserId,
     user: { email, firstName, lastName, phoneNumber },
     propertyId,
-    sendInvitation,
+    sendInvitation = true,
   }) => {
     const property = this.get(propertyId);
     let assignedEmployeeId;
     let organisationId;
+    let pro;
 
     if (proUserId) {
-      const pro = UserService.fetchOne({
+      pro = UserService.fetchOne({
         $filters: { _id: proUserId },
+        name: 1,
         assignedEmployeeId: 1,
-        organisations: { _id: 1 },
+        organisations: { name: 1 },
       });
 
       if (pro) {
@@ -130,26 +133,37 @@ export class PropertyService extends CollectionService {
       }
     }
 
+    const isNewUser = !UserService.doesUserExist({ email });
     let userId;
-    let isNewUser = false;
+    let admin;
 
-    if (!UserService.doesUserExist({ email })) {
-      isNewUser = true;
-      const admin = UserService.get(assignedEmployeeId);
+    if (isNewUser) {
+      admin = UserService.get(assignedEmployeeId);
       userId = UserService.adminCreateUser({
         options: {
           email,
-          sendEnrollmentEmail: false,
+          // If an admin does the invitation, send him the default enrollment email
+          // and skip the property invitation email
+          sendEnrollmentEmail: sendInvitation && !pro,
           firstName,
           lastName,
           phoneNumbers: [phoneNumber],
         },
         adminId: admin && admin._id,
       });
+
+      if (!pro) {
+        // The invitation has already been sent
+        sendInvitation = false;
+      }
     } else {
-      userId = UserService.findOne({
-        'emails.address': { $in: [email] },
-      })._id;
+      const {
+        _id: existingUserId,
+        assignedEmployeeId: existingAssignedEmployeeId,
+      } = UserService.findOne({ 'emails.address': { $in: [email] } });
+      admin = UserService.get(existingAssignedEmployeeId);
+      userId = existingUserId;
+
       if (UserService.hasProperty({ userId, propertyId })) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
       }
@@ -173,11 +187,32 @@ export class PropertyService extends CollectionService {
 
     const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
 
-    console.log('Should send invitation to property loan!');
     if (sendInvitation) {
-      // TODO:
+      return this.sendPropertyInvitationEmail({
+        userId,
+        isNewUser,
+        address: property.address1,
+        proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
+      });
     }
+
+    return Promise.resolve();
   };
+
+  sendPropertyInvitationEmail({ userId, isNewUser, proName, address }) {
+    let ctaUrl = Meteor.settings.public.subdomains.app;
+
+    if (isNewUser) {
+      // Envoyer invitation avec enrollment link
+      ctaUrl = UserService.getEnrollmentUrl({ userId });
+    }
+
+    return sendEmail.run({
+      emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
+      userId,
+      params: { proName, address, ctaUrl },
+    });
+  }
 
   addProUser({ propertyId, userId }) {
     this.addLink({

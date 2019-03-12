@@ -6,10 +6,9 @@ import List, {
   ListItemText,
   ListItemSecondaryAction,
 } from 'core/components/List';
-import Button from 'core/components/Button/Button';
+import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-
-import { getUserNameAndOrganisation } from 'imports/core/api/helpers';
+import { getUserNameAndOrganisation } from 'core/api/helpers';
 
 type UsersListProps = {
   users: Array<Object>,

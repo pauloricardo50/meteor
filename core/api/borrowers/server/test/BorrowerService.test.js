@@ -75,8 +75,8 @@ describe('BorrowerService', () => {
     });
 
     it('only removes the link if the borrower has multiple loans', () => {
-      const loanId = Factory.create('loan', { borrowerIds: [borrowerId] });
-      const loanId2 = Factory.create('loan', { borrowerIds: [borrowerId] });
+      const loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
+      const loanId2 = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
 
       BorrowerService.remove({ borrowerId, loanId });
 
