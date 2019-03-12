@@ -3,67 +3,17 @@ import React, { useState } from 'react';
 
 import Button from 'core/components/Button';
 import PercentInput from 'core/components/PercentInput';
-import { RESIDENCE_TYPE } from 'core/api/constants';
 import SolvencyContainer from './SolvencyContainer';
-import SolvencyItem from './SolvencyItem';
+import SolvencyResults from './SolvencyResults';
 
 type SolvencyProps = {};
 
-const results = (loan, maxBorrowRatio, organisations) => (
-  <table style={{ tableLayout: 'fixed' }}>
-    <tablebody>
-      <tr>
-        <td />
-        <td>Genève</td>
-        <td>Vaud</td>
-      </tr>
-      <tr>
-        <td>Résidence principale</td>
-        <td>
-          <SolvencyItem
-            loan={loan}
-            maxBorrowRatio={maxBorrowRatio}
-            residenceType={RESIDENCE_TYPE.MAIN_RESIDENCE}
-            canton="GE"
-            organisations={organisations}
-          />
-        </td>
-        <td>
-          <SolvencyItem
-            loan={loan}
-            maxBorrowRatio={maxBorrowRatio}
-            residenceType={RESIDENCE_TYPE.MAIN_RESIDENCE}
-            canton="VD"
-            organisations={organisations}
-          />
-        </td>
-      </tr>
-      <tr>
-        <td>Résidence secondaire</td>
-        <td>
-          <SolvencyItem
-            loan={loan}
-            maxBorrowRatio={maxBorrowRatio}
-            residenceType={RESIDENCE_TYPE.SECOND_RESIDENCE}
-            canton="GE"
-            organisations={organisations}
-          />
-        </td>
-        <td>
-          <SolvencyItem
-            loan={loan}
-            maxBorrowRatio={maxBorrowRatio}
-            residenceType={RESIDENCE_TYPE.SECOND_RESIDENCE}
-            canton="VD"
-            organisations={organisations}
-          />
-        </td>
-      </tr>
-    </tablebody>
-  </table>
-);
-
-const Solvency = ({ loan, organisations }: SolvencyProps) => {
+const Solvency = ({
+  loan,
+  organisations,
+  showAll,
+  setShowAll,
+}: SolvencyProps) => {
   const [showResults, setShowResults] = useState(false);
   const [maxBorrowRatio, setMaxborrowRatio] = useState(0.8);
 
@@ -87,7 +37,15 @@ const Solvency = ({ loan, organisations }: SolvencyProps) => {
         </Button>
       </div>
 
-      {showResults && results(loan, maxBorrowRatio, organisations)}
+      {showResults && (
+        <SolvencyResults
+          loan={loan}
+          maxBorrowRatio={maxBorrowRatio}
+          organisations={organisations}
+          showAll={showAll}
+          setShowAll={setShowAll}
+        />
+      )}
     </div>
   );
 };

@@ -93,6 +93,10 @@
 
     td {
       padding: 8px;
+
+      .flex {
+        padding-bottom: 4px;
+      }
     }
 
     tr:not(:first-child) {

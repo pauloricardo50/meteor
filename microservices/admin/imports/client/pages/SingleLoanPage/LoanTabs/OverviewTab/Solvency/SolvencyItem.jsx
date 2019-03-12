@@ -14,6 +14,7 @@ const SolvencyItem = ({
   residenceType,
   maxBorrowRatio,
   organisations,
+  showAll,
 }: SolvencyItemProps) => {
   const defaultSolvency = Calculator.getMaxPropertyValueForLoan({
     loan,
@@ -42,10 +43,8 @@ const SolvencyItem = ({
     };
   });
 
-  const top3 = solvencies
-    .sort(({ solvency: solvencyA }, { solvency: solvencyB }) =>
-      solvencyB - solvencyA)
-    .slice(0, 3);
+  const sorted = solvencies.sort(({ solvency: solvencyA }, { solvency: solvencyB }) => solvencyB - solvencyA);
+  const toDisplay = showAll ? sorted : sorted.slice(0, 3);
 
   return (
     <div className="flex-col">
@@ -57,7 +56,7 @@ const SolvencyItem = ({
         />
         <Money value={defaultSolvency} />
       </div>
-      {top3.map(({ solvency, logo }) => (
+      {toDisplay.map(({ solvency, logo }) => (
         <div key={organisations._id} className="flex">
           <img src={logo} alt="" style={{ width: 100, maxHeight: 50 }} />
           <Money value={solvency} />

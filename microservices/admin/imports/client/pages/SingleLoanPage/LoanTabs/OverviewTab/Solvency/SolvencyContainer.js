@@ -1,4 +1,4 @@
-import { compose, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 
 import { withSmartQuery } from 'core/api';
 import { ORGANISATION_FEATURES } from 'core/api/constants';
@@ -14,4 +14,5 @@ export default compose(
   withProps(({ organisations }) => ({
     organisations: organisations.filter(({ lenderRules }) => lenderRules && lenderRules.length > 0),
   })),
+  withState('showAll', 'setShowAll', false),
 );
