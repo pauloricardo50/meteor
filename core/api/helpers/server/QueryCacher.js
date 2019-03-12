@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { BaseResultCacher } from 'meteor/cultofcoders:grapher';
 import { EJSON } from 'meteor/ejson';
-import cloneDeep from 'lodash/clonedeep';
-
 import hashObject from 'object-hash';
+
+const cloneDeep = require('lodash/cloneDeep');
 
 const DEFAULT_TTL = 1000 * 60 * 60; // 1 hour
 
