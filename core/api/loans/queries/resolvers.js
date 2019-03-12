@@ -157,3 +157,49 @@ export const proLoansResolver = ({
 
   return filterLoans(loans).map(getLoanEstimatedRevenues);
 };
+
+export const getLoanIds = (params = {}) => {
+  const { promotionId, propertyId, userId } = params;
+  const { organisations = [] } = UserService.fetch({
+    $filters: { _id: userId },
+    organisations: { _id: 1 },
+  });
+
+  const organisationId = !!organisations.length && organisations[0]._id;
+
+  const users = UserService.fetch({
+    $filters: {
+      $or: [
+        { referredByUserLink: userId },
+        organisationId && { referredByOrganisationLink: organisationId },
+      ].filter(x => x),
+    },
+    loans: { _id: 1 },
+  });
+
+  let loanIds = users.reduce(
+    (allLoans, { loans: userLoans = [] }) => [
+      ...allLoans,
+      ...userLoans.map(({ _id }) => _id),
+    ],
+    [],
+  );
+
+  if (promotionId) {
+    const promotionLoanIds = LoanService.fetch({
+      $filters: { 'promotionLinks._id': promotionId },
+      _id: 1,
+    });
+    loanIds = [...loanIds, ...promotionLoanIds.map(({ _id }) => _id)];
+  }
+
+  if (propertyId) {
+    const propertyLoanIds = LoanService.fetch({
+      $filters: { propertyIds: propertyId },
+      _id: 1,
+    });
+    loanIds = [...loanIds, ...propertyLoanIds.map(({ _id }) => _id)];
+  }
+
+  return loanIds;
+};
