@@ -773,12 +773,6 @@ export const organisationUser = () => ({
   organisations: baseOrganisation(),
 });
 
-export const adminUser = () => ({
-  ...fullUser(),
-  assignedEmployee: simpleUser(),
-  promotions: { name: 1, status: 1 },
-});
-
 export const fullUser = () => ({
   ...simpleUser(),
   apiToken: 1,
@@ -788,6 +782,12 @@ export const fullUser = () => ({
   loans: loanBase(),
   updatedAt: 1,
   organisations: fullOrganisation(),
+});
+
+export const adminUser = () => ({
+  ...fullUser(),
+  assignedEmployee: simpleUser(),
+  promotions: { name: 1, status: 1 },
 });
 
 export const appUser = () => ({
