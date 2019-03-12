@@ -7,6 +7,6 @@ SyncedCron.add({
     return parser.text('every 1 minute');
   },
   job() {
-    UpdateWatcherService.manageUpdateWatchers({ secondsFromNow: 300 });
+    UpdateWatcherService.manageUpdateWatchers({ secondsFromNow: 120 });
   },
 });
