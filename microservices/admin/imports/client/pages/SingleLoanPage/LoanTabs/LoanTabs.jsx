@@ -1,10 +1,11 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
-import T from 'core/components/Translation';
+import T, { Percent } from 'core/components/Translation';
 import { ROLES, PURCHASE_TYPE } from 'core/api/constants';
 import FileTabs from 'core/components/FileTabs';
 import { createRoute } from 'core/utils/routerUtils';
+import Calculator from 'core/utils/Calculator';
 import { SINGLE_LOAN_PAGE } from '../../../../startup/client/adminRoutes';
 import OverviewTab from './OverviewTab';
 import BorrowersTab from './BorrowersTab';
@@ -19,8 +20,13 @@ import RefinancingTab from './RefinancingTab';
 import LendersTab from './LendersTab';
 import RevenuesTab from './RevenuesTab';
 
-const getTabs = props =>
-  [
+const getTabs = (props) => {
+  const { loan } = props;
+  const borrowersProgress = Calculator.personalInfoPercent({ loan });
+  const propertyProgress = Calculator.propertyPercent({ loan });
+  const filesProgress = Calculator.filesProgress({ loan }).percent;
+
+  return [
     { id: 'overview', Component: OverviewTab },
     { id: 'structures', Component: StructuresTab },
     props.loan.hasPromotion && {
@@ -33,12 +39,24 @@ const getTabs = props =>
       Component: RefinancingTab,
       style: { color: 'red' },
     },
-    { id: 'borrowers', Component: BorrowersTab },
-    { id: 'properties', Component: PropertiesTab },
+    {
+      id: 'borrowers',
+      Component: BorrowersTab,
+      additionalLabel: <Percent value={borrowersProgress} rounded />,
+    },
+    {
+      id: 'properties',
+      Component: PropertiesTab,
+      additionalLabel: <Percent value={propertyProgress} rounded />,
+    },
     { id: 'lenders', Component: LendersTab },
     // { id: 'communication', Component: CommunicationTab },
     // { id: 'analytics', Component: MixpanelAnalytics },
-    { id: 'files', Component: FileTabs },
+    {
+      id: 'files',
+      Component: FileTabs,
+      additionalLabel: <Percent value={filesProgress} rounded />,
+    },
     { id: 'revenues', Component: RevenuesTab },
     { id: 'actions', Component: ActionsTab },
     props.currentUser.roles.includes(ROLES.DEV) && {
@@ -47,17 +65,23 @@ const getTabs = props =>
     },
   ]
     .filter(x => x)
-    .map(({ id, Component, style = {} }) => ({
+    .map(({ id, Component, style = {}, additionalLabel }) => ({
       id,
       content: <Component {...props} />,
       label: (
         <span style={style}>
           <T id={`LoanTabs.${id}`} noTooltips />
+          {additionalLabel && (
+            <>
+              {' - '}
+              {additionalLabel}
+            </>
+          )}
         </span>
       ),
       to: createRoute(SINGLE_LOAN_PAGE, { loanId: props.loan._id, tabId: id }),
     }));
-
+};
 const LoanTabs = (props) => {
   const tabs = getTabs(props);
 
