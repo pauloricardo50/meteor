@@ -126,4 +126,22 @@ describe('SolvencyCalculator', () => {
       })).to.equal(1000000);
     });
   });
+
+  describe('suggestStructureForLoan', () => {
+    it('suggests a structure including for property work', () => {
+      expect(Calculator.suggestStructureForLoan({
+        loan: {
+          borrowers: [
+            { bankFortune: 500000, salary: 180000, _id: 'borrower1' },
+          ],
+          structures: [
+            { id: 'struct1', propertyValue: 900000, propertyWork: 100000 },
+          ],
+        },
+        structureId: 'struct1',
+      })).to.deep.equal([
+        { type: 'bankFortune', value: 245000, borrowerId: 'borrower1' },
+      ]);
+    });
+  });
 });
