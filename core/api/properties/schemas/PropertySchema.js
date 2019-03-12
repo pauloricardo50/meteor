@@ -292,6 +292,7 @@ const protectedKeys = [
   'customFields',
   'latitude',
   'longitude',
+  'mortgageNoteLinks',
   'updatedAt',
   'userId',
   'valuation',

@@ -44,6 +44,7 @@ const protectedKeys = [
   'adminValidation',
   'createdAt',
   'logic',
+  'mortgageNoteLinks',
   'updatedAt',
   'userId',
 ];
