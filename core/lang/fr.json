@@ -1083,7 +1083,7 @@
   "emails.ENROLL_ACCOUNT.from": "Yannis d'e-Potek",
   "emails.ENROLL_ACCOUNT.SUBJECT": "Votre nouveau compte e-Potek",
   "emails.ENROLL_ACCOUNT.TITLE": "Bienvenue chez e-Potek",
-  "emails.REFER_USER.BODY": "{proName} vous a référé sur e-Potek. Notre plateforme vous permet de déterminer votre capacité d'achat, obtenir une attestation de financement, et de créer un dossier de recherche de financement hypothécaire afin de comparer le marché des prêteurs depuis le confort de chez vous. Vous serez accompagné par votre conseiller en financement dédié qui vous suivra tout le long de vos démarches.{verticalSpace}Vous pouvez dès à présent vous connecter sur votre compte e-Potek, et saisir votre nouveau mot de passe.",
+  "emails.REFER_USER.BODY": "{proName} vous a référé sur e-Potek. Notre plateforme vous permet de déterminer votre capacité d'achat, d'obtenir une attestation de financement, et de créer un dossier de recherche de financement hypothécaire afin de comparer le marché des prêteurs depuis le confort de chez vous. Vous serez accompagné par votre conseiller en financement dédié qui vous suivra tout le long de vos démarches.{verticalSpace}Vous pouvez dès à présent vous connecter sur votre compte e-Potek, et saisir votre nouveau mot de passe.",
   "emails.REFER_USER.CTA": "Démarrer",
   "emails.REFER_USER.from": "e-Potek",
   "emails.REFER_USER.SUBJECT": "Vous avez été invité sur e-Potek",
