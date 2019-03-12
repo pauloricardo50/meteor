@@ -20,14 +20,21 @@ describe('FinancingOwnFundsPickerHelpers', () => {
     it('returns the right values for main', () => {
       expect(chooseOwnFundsTypes({
         loan: { residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE },
-      })).to.deep.equal(Object.values(OWN_FUNDS_TYPES));
+      })).to.deep.equal([
+        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
+        OWN_FUNDS_TYPES.BANK_FORTUNE,
+        OWN_FUNDS_TYPES.INSURANCE_3A,
+        OWN_FUNDS_TYPES.BANK_3A,
+        OWN_FUNDS_TYPES.INSURANCE_3B,
+        OWN_FUNDS_TYPES.INSURANCE_2,
+      ]);
     });
 
     it('returns the right values for secondary and investment', () => {
       const expected = [
+        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
         OWN_FUNDS_TYPES.BANK_FORTUNE,
         OWN_FUNDS_TYPES.INSURANCE_3B,
-        OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE,
       ];
 
       expect(chooseOwnFundsTypes({
