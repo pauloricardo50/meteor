@@ -162,6 +162,7 @@ describe('PropertyService', function () {
               _factory: 'property',
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
+              address1: 'Rue du parc 3',
             },
           },
         ],
@@ -201,6 +202,16 @@ describe('PropertyService', function () {
 
         return checkEmails(1).then((emails) => {
           expect(emails.length).to.equal(1);
+          const {
+            emailId,
+            address,
+            response: { status },
+            template: {
+              template_name,
+              message: { from_email, subject, merge_vars, from_name },
+            },
+          } = emails[0];
+          expect(subject).to.equal('e-Potek - Rue du parc 3');
         });
       });
     });
@@ -219,6 +230,7 @@ describe('PropertyService', function () {
               _factory: 'property',
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
+              address1: 'Rue du parc 5',
             },
           },
         ],
@@ -278,6 +290,7 @@ describe('PropertyService', function () {
       });
 
       return checkEmails(1).then((emails) => {
+        console.log('emails:', emails);
         expect(emails.length).to.equal(1);
         const {
           emailId,

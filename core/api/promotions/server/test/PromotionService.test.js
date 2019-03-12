@@ -281,6 +281,8 @@ describe('PromotionService', function () {
         const user = Accounts.findUserByEmail(newUser.email);
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
+
+        return checkEmails(1);
       });
     });
   });
