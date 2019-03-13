@@ -13,8 +13,8 @@ import {
   ROLES,
   USERS_COLLECTION,
   ORGANISATIONS_COLLECTION,
-} from 'imports/core/api/constants';
-import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
+} from 'core/api/constants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import { UserModifier } from '../../components/UserDialogForm';

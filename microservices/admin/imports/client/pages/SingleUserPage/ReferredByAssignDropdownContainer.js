@@ -18,11 +18,7 @@ const getMenuItems = ({
       show: proId !== referredByUserId,
       label: userName,
       link: false,
-      onClick: () =>
-        setUserReferredBy.run({
-          userId,
-          proId,
-        }),
+      onClick: () => setUserReferredBy.run({userId,proId }),
     };
   });
 
