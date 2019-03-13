@@ -72,6 +72,7 @@ const DropdownMenu = ({
         anchorEl={anchorEl}
         open={isOpen}
         onClose={handleClose}
+        PaperProps={{ style: { maxHeight: 48 * 4.5 } }}
       >
         {options}
       </Menu>
