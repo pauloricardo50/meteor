@@ -22,7 +22,7 @@ query.resolve(({ userId, propertyId }) =>
   proPropertyLoansResolver({ calledByUserId: userId, propertyId }));
 
 const cacher = new QueryCacher({
-  getDataToHash: getLoanIds,
+  getDataToHash: getLoanIds(),
   ttl: 60 * 60 * 1000,
 });
 

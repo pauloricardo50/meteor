@@ -25,7 +25,7 @@ query.resolve(({ userId, promotionId }) =>
   proPromotionLoansResolver({ calledByUserId: userId, promotionId }));
 
 const cacher = new QueryCacher({
-  getDataToHash: getLoanIds,
+  getDataToHash: getLoanIds(),
   ttl: 60 * 60 * 1000,
 });
 
