@@ -37,7 +37,7 @@ export default class QueryCacher extends BaseResultCacher {
       }
     }
 
-    const data = BaseResultCacher.fetchData({ query, countCursor });
+    const data = BaseResultCacher.fetchData({ query, countCursor }); // this.fetchData is not a function
     this.storeData({ cacheId, data, hash });
 
     return data;

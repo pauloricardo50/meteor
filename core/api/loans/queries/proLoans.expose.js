@@ -29,7 +29,7 @@ query.expose({
 query.resolve(proLoansResolver);
 
 const cacher = new QueryCacher({
-  getDataToHash: getLoanIds({withReferredBy: true}),
+  getDataToHash: getLoanIds({ withReferredBy: true }),
   ttl: 60 * 60 * 1000,
 });
 
