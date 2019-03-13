@@ -306,7 +306,7 @@ export const proLoans = () => ({
     name: 1,
     phoneNumbers: 1,
     email: 1,
-    referredByUser: { _id: 1, name: 1, organisations: { name: 1 } },
+    referredByUser: { name: 1, organisations: { name: 1 } },
     referredByOrganisation: { name: 1 },
   },
   hasPromotion: 1,
@@ -788,6 +788,8 @@ export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
   promotions: { name: 1, status: 1 },
+  referredByUser: { name: 1, organisations: { name: 1 } },
+  referredByOrganisation: { name: 1 },
 });
 
 export const appUser = () => ({
