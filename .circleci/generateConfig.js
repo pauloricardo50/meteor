@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 10;
+const CACHE_VERSION = 11;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
