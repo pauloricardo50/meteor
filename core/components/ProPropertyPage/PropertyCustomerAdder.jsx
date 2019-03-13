@@ -18,8 +18,8 @@ const PropertyCustomerAdder = ({ propertyId }: PropertyCustomerAdderProps) => (
   <AutoFormDialog
     schema={customerSchema}
     onSubmit={user => inviteUserToProperty.run({ user, propertyId })}
-    buttonProps={{ raised: true, secondary: true, label: 'Ajouter client' }}
-    title="Ajouter client"
+    buttonProps={{ raised: true, secondary: true, label: 'Ajouter acheteur' }}
+    title="Ajouter acheteur"
   />
 );
 
