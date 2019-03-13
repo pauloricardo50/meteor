@@ -7,11 +7,14 @@ import proLoans from 'core/api/loans/queries/proLoans';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
-import {LOANS_COLLECTION} from 'core/api/constants'
+import LoanProgress from 'core/components/LoanProgress/LoanProgress';
+import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
+import { LOANS_COLLECTION } from 'core/api/constants';
 
 const columnOptions = [
   { id: 'loanName' },
-  { id: 'status'},
+  { id: 'status' },
+  { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -19,7 +22,10 @@ const columnOptions = [
   { id: 'referredBy' },
   { id: 'relatedTo' },
   // { id: 'estimatedRevenues' },
-].map(({ id }) => ({ id, label: <T id={`ProCustomersTable.${id}`} /> }));
+].map(({ id, label }) => ({
+  id,
+  label: label || <T id={`ProCustomersTable.${id}`} />,
+}));
 
 const getReferredBy = ({ user, currentUser }) => {
   const { referredByUser = {}, referredByOrganisation = {} } = user;
@@ -47,6 +53,7 @@ const makeMapLoan = currentUser => (loan) => {
     createdAt,
     name: loanName,
     relatedTo,
+    loanProgress,
     estimatedRevenues,
   } = loan;
 
@@ -56,7 +63,11 @@ const makeMapLoan = currentUser => (loan) => {
       loanName,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={LOANS_COLLECTION}/>,
+        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      },
+      {
+        raw: loanProgress.verificationStatus,
+        label: <LoanProgress loanProgress={loanProgress} />,
       },
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
