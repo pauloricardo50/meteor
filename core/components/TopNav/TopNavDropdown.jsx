@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
+import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
 
 import { ROLES } from '../../api/constants';
 import T from '../Translation';
@@ -46,6 +47,15 @@ const getMenuItems = (currentUser) => {
       },
     },
     {
+      id: 'app',
+      link: '/',
+      show: Meteor.microservice === 'pro' && (isPro || isDev),
+      icon: <FontAwesomeIcon icon={faUsdCircle} />,
+      onClick: () => {
+        window.location.replace(Meteor.settings.public.subdomains.app);
+      },
+    },
+    {
       id: 'logout',
       label: <T id="general.logout" />,
       onClick: () => {
@@ -61,6 +71,7 @@ const getMenuItems = (currentUser) => {
 
 const TopNavDropdown = ({ currentUser, history }) => (
   <DropdownMenu
+    maxHeight={false}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'left',
