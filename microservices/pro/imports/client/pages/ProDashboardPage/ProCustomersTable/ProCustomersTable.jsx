@@ -14,7 +14,7 @@ const ProCustomersTable = ({
   currentUser,
 }: ProCustomersTableProps) => (
   <>
-    <h3 className="text-center">Clients</h3>
+    <h3 className="text-center">Dossiers</h3>
     <Table rows={rows} columnOptions={columnOptions} />
   </>
 );

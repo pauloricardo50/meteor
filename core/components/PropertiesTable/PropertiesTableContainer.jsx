@@ -13,17 +13,26 @@ const columnOptions = [
   { id: 'address' },
   { id: 'status' },
   { id: 'value' },
+  { id: 'customers' },
 ].map(({ id }) => ({ id, label: <T id={`PropertiesTable.${id}`} /> }));
 
-const makeMapProperty = history => ({ _id, address1, status, totalValue }) => ({
+const makeMapProperty = history => ({
+  _id,
+  address1,
+  city,
+  status,
+  totalValue,
+  loans = [],
+}) => ({
   id: _id,
   columns: [
-    address1,
+    `${address1}, ${city}`,
     {
       raw: status,
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,
     },
     { raw: totalValue, label: <Money value={totalValue} /> },
+    loans.length,
   ],
   handleClick: () =>
     history.push(createRoute('/properties/:propertyId', { propertyId: _id })),

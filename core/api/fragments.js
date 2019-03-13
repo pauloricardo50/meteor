@@ -722,6 +722,7 @@ export const proPropertySummary = () => ({
   city: 1,
   status: 1,
   totalValue: 1,
+  loans: { _id: 1 },
 });
 
 export const proProperty = () => ({
