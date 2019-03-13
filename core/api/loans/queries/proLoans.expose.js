@@ -2,7 +2,8 @@ import { Match } from 'meteor/check';
 
 import SecurityService from '../../security';
 import query from './proLoans';
-import { proLoansResolver } from './resolvers';
+import { proLoansResolver, getLoanIds } from './resolvers';
+import QueryCacher from '../../helpers/server/QueryCacher';
 
 query.expose({
   firewall(userId, params) {
@@ -26,3 +27,10 @@ query.expose({
 });
 
 query.resolve(proLoansResolver);
+
+const cacher = new QueryCacher({
+  getDataToHash: getLoanIds({ withReferredBy: true }),
+  ttl: 60 * 60 * 1000,
+});
+
+query.cacheResults(cacher);

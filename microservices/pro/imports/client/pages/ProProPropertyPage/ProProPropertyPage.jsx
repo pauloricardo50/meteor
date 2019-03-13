@@ -44,10 +44,10 @@ export default compose(
     query: proOrganisation,
     params: ({ currentUser: { organisations = [] } }) => ({
       organisationId: organisations[0]._id,
+      $body: { name: 1, address1: 1, users: { name: 1 } },
     }),
     queryOptions: { reactive: false, single: true },
     dataName: 'organisation',
-    $body: { users: { name: 1, organisations: { name: 1 } } },
   }),
   withContextProvider({
     Context: ProPropertyPageContext,

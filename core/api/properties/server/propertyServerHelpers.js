@@ -5,7 +5,6 @@ import {
 } from '../propertyClientHelper';
 import PropertyService from './PropertyService';
 import LoanService from '../../loans/server/LoanService';
-import { ROLES } from '../../users/userConstants';
 
 const ANONYMIZED_STRING = 'XXX';
 const ANONYMIZED_USER = {
