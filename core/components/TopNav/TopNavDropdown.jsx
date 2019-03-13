@@ -41,7 +41,7 @@ const getMenuItems = (currentUser) => {
       id: 'pro',
       link: '/',
       show: Meteor.microservice === 'app' && (isPro || isDev),
-      icon: <FontAwesomeIcon icon={faCity} />,
+      icon: <FontAwesomeIcon icon={faCity} className="font-awesome" />,
       onClick: () => {
         window.location.replace(Meteor.settings.public.subdomains.pro);
       },
@@ -50,7 +50,7 @@ const getMenuItems = (currentUser) => {
       id: 'app',
       link: '/',
       show: Meteor.microservice === 'pro' && (isPro || isDev),
-      icon: <FontAwesomeIcon icon={faUsdCircle} />,
+      icon: <FontAwesomeIcon icon={faUsdCircle} className="font-awesome" />,
       onClick: () => {
         window.location.replace(Meteor.settings.public.subdomains.app);
       },
@@ -92,6 +92,7 @@ const TopNavDropdown = ({ currentUser, history }) => (
         label: label || <T id={`TopNavDropdown.${optionId}`} />,
         history, // required for Link to work
       }))}
+    paperClassName="top-nav-dropdown"
   />
 );
 
