@@ -87,18 +87,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_www-{{ checksum
-              "./microservices/www/.meteor/release" }}-{{ checksum
-              "./microservices/www/.meteor/packages" }}-{{ checksum
-              "./microservices/www/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_www-{{ checksum
-              "./microservices/www/.meteor/release" }}-{{ checksum
-              "./microservices/www/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_www-{{ checksum
-              "./microservices/www/.meteor/release" }}-
+            - 'meteor_microservice_10_www-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_www-{{ .Branch }}-'
             - meteor_microservice_10_www-
       - run:
           name: Install meteor
@@ -125,13 +115,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_www-{{ checksum
-            "./microservices/www/.meteor/release" }}-{{ checksum
-            "./microservices/www/.meteor/packages" }}-{{ checksum
-            "./microservices/www/.meteor/versions" }}
+          key: 'meteor_microservice_10_www-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/www/.meteor/local
+            - ./microservices/www/.meteor/local/bundler-cache
+            - ./microservices/www/.meteor/local/isopacks
+            - ./microservices/www/.meteor/local/plugin-cache
       - store_test_results:
           path: ./results
       - store_artifacts:
@@ -170,18 +158,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_app-{{ checksum
-              "./microservices/app/.meteor/release" }}-{{ checksum
-              "./microservices/app/.meteor/packages" }}-{{ checksum
-              "./microservices/app/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_app-{{ checksum
-              "./microservices/app/.meteor/release" }}-{{ checksum
-              "./microservices/app/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_app-{{ checksum
-              "./microservices/app/.meteor/release" }}-
+            - 'meteor_microservice_10_app-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_app-{{ .Branch }}-'
             - meteor_microservice_10_app-
       - run:
           name: Install meteor
@@ -208,13 +186,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_app-{{ checksum
-            "./microservices/app/.meteor/release" }}-{{ checksum
-            "./microservices/app/.meteor/packages" }}-{{ checksum
-            "./microservices/app/.meteor/versions" }}
+          key: 'meteor_microservice_10_app-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/app/.meteor/local
+            - ./microservices/app/.meteor/local/bundler-cache
+            - ./microservices/app/.meteor/local/isopacks
+            - ./microservices/app/.meteor/local/plugin-cache
       - store_test_results:
           path: ./results
       - store_artifacts:
@@ -253,18 +229,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_admin-{{ checksum
-              "./microservices/admin/.meteor/release" }}-{{ checksum
-              "./microservices/admin/.meteor/packages" }}-{{ checksum
-              "./microservices/admin/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_admin-{{ checksum
-              "./microservices/admin/.meteor/release" }}-{{ checksum
-              "./microservices/admin/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_admin-{{ checksum
-              "./microservices/admin/.meteor/release" }}-
+            - 'meteor_microservice_10_admin-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_admin-{{ .Branch }}-'
             - meteor_microservice_10_admin-
       - run:
           name: Install meteor
@@ -291,13 +257,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_admin-{{ checksum
-            "./microservices/admin/.meteor/release" }}-{{ checksum
-            "./microservices/admin/.meteor/packages" }}-{{ checksum
-            "./microservices/admin/.meteor/versions" }}
+          key: 'meteor_microservice_10_admin-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/admin/.meteor/local
+            - ./microservices/admin/.meteor/local/bundler-cache
+            - ./microservices/admin/.meteor/local/isopacks
+            - ./microservices/admin/.meteor/local/plugin-cache
       - store_test_results:
           path: ./results
       - store_artifacts:
@@ -336,18 +300,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_pro-{{ checksum
-              "./microservices/pro/.meteor/release" }}-{{ checksum
-              "./microservices/pro/.meteor/packages" }}-{{ checksum
-              "./microservices/pro/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_pro-{{ checksum
-              "./microservices/pro/.meteor/release" }}-{{ checksum
-              "./microservices/pro/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_pro-{{ checksum
-              "./microservices/pro/.meteor/release" }}-
+            - 'meteor_microservice_10_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_pro-{{ .Branch }}-'
             - meteor_microservice_10_pro-
       - run:
           name: Install meteor
@@ -374,13 +328,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_pro-{{ checksum
-            "./microservices/pro/.meteor/release" }}-{{ checksum
-            "./microservices/pro/.meteor/packages" }}-{{ checksum
-            "./microservices/pro/.meteor/versions" }}
+          key: 'meteor_microservice_10_pro-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/pro/.meteor/local
+            - ./microservices/pro/.meteor/local/bundler-cache
+            - ./microservices/pro/.meteor/local/isopacks
+            - ./microservices/pro/.meteor/local/plugin-cache
       - store_test_results:
           path: ./results
       - store_artifacts:
@@ -419,18 +371,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_www-{{ checksum
-              "./microservices/www/.meteor/release" }}-{{ checksum
-              "./microservices/www/.meteor/packages" }}-{{ checksum
-              "./microservices/www/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_www-{{ checksum
-              "./microservices/www/.meteor/release" }}-{{ checksum
-              "./microservices/www/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_www-{{ checksum
-              "./microservices/www/.meteor/release" }}-
+            - 'meteor_microservice_10_www-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_www-{{ .Branch }}-'
             - meteor_microservice_10_www-
       - run:
           name: Install meteor
@@ -457,13 +399,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_www-{{ checksum
-            "./microservices/www/.meteor/release" }}-{{ checksum
-            "./microservices/www/.meteor/packages" }}-{{ checksum
-            "./microservices/www/.meteor/versions" }}
+          key: 'meteor_microservice_10_www-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/www/.meteor/local
+            - ./microservices/www/.meteor/local/bundler-cache
+            - ./microservices/www/.meteor/local/isopacks
+            - ./microservices/www/.meteor/local/plugin-cache
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
@@ -502,18 +442,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_app-{{ checksum
-              "./microservices/app/.meteor/release" }}-{{ checksum
-              "./microservices/app/.meteor/packages" }}-{{ checksum
-              "./microservices/app/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_app-{{ checksum
-              "./microservices/app/.meteor/release" }}-{{ checksum
-              "./microservices/app/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_app-{{ checksum
-              "./microservices/app/.meteor/release" }}-
+            - 'meteor_microservice_10_app-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_app-{{ .Branch }}-'
             - meteor_microservice_10_app-
       - run:
           name: Install meteor
@@ -540,13 +470,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_app-{{ checksum
-            "./microservices/app/.meteor/release" }}-{{ checksum
-            "./microservices/app/.meteor/packages" }}-{{ checksum
-            "./microservices/app/.meteor/versions" }}
+          key: 'meteor_microservice_10_app-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/app/.meteor/local
+            - ./microservices/app/.meteor/local/bundler-cache
+            - ./microservices/app/.meteor/local/isopacks
+            - ./microservices/app/.meteor/local/plugin-cache
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
@@ -585,18 +513,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_admin-{{ checksum
-              "./microservices/admin/.meteor/release" }}-{{ checksum
-              "./microservices/admin/.meteor/packages" }}-{{ checksum
-              "./microservices/admin/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_admin-{{ checksum
-              "./microservices/admin/.meteor/release" }}-{{ checksum
-              "./microservices/admin/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_admin-{{ checksum
-              "./microservices/admin/.meteor/release" }}-
+            - 'meteor_microservice_10_admin-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_admin-{{ .Branch }}-'
             - meteor_microservice_10_admin-
       - run:
           name: Install meteor
@@ -623,13 +541,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_admin-{{ checksum
-            "./microservices/admin/.meteor/release" }}-{{ checksum
-            "./microservices/admin/.meteor/packages" }}-{{ checksum
-            "./microservices/admin/.meteor/versions" }}
+          key: 'meteor_microservice_10_admin-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/admin/.meteor/local
+            - ./microservices/admin/.meteor/local/bundler-cache
+            - ./microservices/admin/.meteor/local/isopacks
+            - ./microservices/admin/.meteor/local/plugin-cache
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
@@ -668,18 +584,8 @@ jobs:
       - restore_cache:
           name: Restore meteor microservice
           keys:
-            - >-
-              meteor_microservice_10_pro-{{ checksum
-              "./microservices/pro/.meteor/release" }}-{{ checksum
-              "./microservices/pro/.meteor/packages" }}-{{ checksum
-              "./microservices/pro/.meteor/versions" }}
-            - >-
-              meteor_microservice_10_pro-{{ checksum
-              "./microservices/pro/.meteor/release" }}-{{ checksum
-              "./microservices/pro/.meteor/packages" }}-
-            - >-
-              meteor_microservice_10_pro-{{ checksum
-              "./microservices/pro/.meteor/release" }}-
+            - 'meteor_microservice_10_pro-{{ .Branch }}-{{ .Revision }}'
+            - 'meteor_microservice_10_pro-{{ .Branch }}-'
             - meteor_microservice_10_pro-
       - run:
           name: Install meteor
@@ -706,13 +612,11 @@ jobs:
             - ~/.meteor
       - save_cache:
           name: Cache meteor microservice
-          key: >-
-            meteor_microservice_10_pro-{{ checksum
-            "./microservices/pro/.meteor/release" }}-{{ checksum
-            "./microservices/pro/.meteor/packages" }}-{{ checksum
-            "./microservices/pro/.meteor/versions" }}
+          key: 'meteor_microservice_10_pro-{{ .Branch }}-{{ .Revision }}'
           paths:
-            - ./microservices/pro/.meteor/local
+            - ./microservices/pro/.meteor/local/bundler-cache
+            - ./microservices/pro/.meteor/local/isopacks
+            - ./microservices/pro/.meteor/local/plugin-cache
       - store_test_results:
           path: ./e2e-results
       - store_artifacts:
