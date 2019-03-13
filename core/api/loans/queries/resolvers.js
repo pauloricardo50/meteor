@@ -5,6 +5,8 @@ import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
 
 const anonymizePromotionLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
@@ -137,7 +139,7 @@ export const proLoansResolver = ({
       promotionId,
     })
       .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
-      .map(loan => ({ ...loan, relatedTo: loan.promotions[0].name }));
+      .map(loan => ({ ...loan, relatedTo: {...loan.promotions[0], collection: PROMOTIONS_COLLECTION} }));
     loans = promotionLoans;
   }
 
@@ -145,7 +147,7 @@ export const proLoansResolver = ({
     const propertyLoans = proPropertyLoansResolver({
       calledByUserId,
       propertyId,
-    }).map(loan => ({ ...loan, relatedTo: loan.properties[0].address1 }));
+    }).map(loan => ({ ...loan, relatedTo: {...loan.properties[0], collection: PROPERTIES_COLLECTION} }));
     loans = [...loans, ...propertyLoans];
   }
 

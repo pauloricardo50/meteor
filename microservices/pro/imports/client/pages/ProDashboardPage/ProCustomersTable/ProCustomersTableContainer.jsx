@@ -10,6 +10,7 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 import LoanProgress from 'core/components/LoanProgress/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import { LOANS_COLLECTION } from 'core/api/constants';
+import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -52,7 +53,7 @@ const makeMapLoan = currentUser => (loan) => {
     user,
     createdAt,
     name: loanName,
-    relatedTo,
+    relatedTo: relatedDoc,
     loanProgress,
     estimatedRevenues,
   } = loan;
@@ -75,8 +76,8 @@ const makeMapLoan = currentUser => (loan) => {
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       getReferredBy({ user, currentUser }),
       {
-        raw: relatedTo,
-        label: relatedTo || '-',
+        raw: relatedDoc ? relatedDoc._id : '-',
+        label: relatedDoc ? <CollectionIconLink relatedDoc={relatedDoc} /> : '-',
       },
       // {
       //   raw: estimatedRevenues,
