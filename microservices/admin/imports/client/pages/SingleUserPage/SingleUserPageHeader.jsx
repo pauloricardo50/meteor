@@ -9,13 +9,18 @@ import Roles from 'core/components/Roles';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { sendEnrollmentEmail } from 'core/api';
-import { ROLES, USERS_COLLECTION, ORGANISATIONS_COLLECTION } from 'imports/core/api/constants';
-import CollectionIconLink from 'imports/core/components/IconLink/CollectionIconLink';
+import {
+  ROLES,
+  USERS_COLLECTION,
+  ORGANISATIONS_COLLECTION,
+} from 'core/api/constants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import RolePicker from '../../components/RolePicker';
 import UserAssignDropdown from '../../components/AssignAdminDropdown/UserAssignDropdown';
 import { UserModifier } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
 import EmailModifier from './EmailModifier';
+import ReferredByAssignDropdown from './ReferredByAssignDropdown';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
@@ -88,19 +93,24 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
         </p>
 
         {allowAssign && (
-          <div className="assigned-employee space-children">
-            {assignedEmployee && (
-              <>
-                <T id="UsersTable.assignedTo" />
-                <CollectionIconLink
-                  relatedDoc={{
-                    ...assignedEmployee,
-                    collection: USERS_COLLECTION,
-                  }}
-                />
-              </>
-            )}
-            <UserAssignDropdown doc={user} />
+          <div className="flex-col">
+            <div className="assigned-employee space-children">
+              {assignedEmployee && (
+                <>
+                  <T id="UsersTable.assignedTo" />
+                  <CollectionIconLink
+                    relatedDoc={{
+                      ...assignedEmployee,
+                      collection: USERS_COLLECTION,
+                    }}
+                  />
+                </>
+              )}
+              <UserAssignDropdown doc={user} />
+            </div>
+            <div className="assigned-employee space-children">
+              <ReferredByAssignDropdown user={user} />
+            </div>
           </div>
         )}
       </div>

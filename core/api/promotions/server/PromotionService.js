@@ -110,6 +110,14 @@ export class PromotionService extends CollectionService {
     if (!UserService.doesUserExist({ email })) {
       isNewUser = true;
       const admin = UserService.get(promotion.assignedEmployeeId);
+      const { organisations = [] } = UserService.fetchOne({
+        $filters: { _id: invitedBy },
+        organisations: { _id: 1 },
+      });
+      const organisationId = organisations.length
+        ? organisations[0]._id
+        : null;
+
       userId = UserService.adminCreateUser({
         options: {
           email,
@@ -117,6 +125,8 @@ export class PromotionService extends CollectionService {
           firstName,
           lastName,
           phoneNumbers: [phoneNumber],
+          referredByUserLink: invitedBy,
+          referredByOrganisationLink: organisationId,
         },
         adminId: admin && admin._id,
       });

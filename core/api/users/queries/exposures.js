@@ -7,3 +7,4 @@ import './proUser.expose';
 import './sideNavUsers.expose';
 import './userEmails.expose';
 import './userSearch.expose';
+import './pros.expose';

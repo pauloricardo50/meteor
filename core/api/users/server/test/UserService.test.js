@@ -424,9 +424,8 @@ describe('UserService', () => {
         const loan = LoanService.findOne({ userId: userCreated._id });
 
         expect(userCreated.assignedEmployeeId).to.equal('adminId');
-        // TODO: set referredBy
-        // expect(userCreated.referredByUserLink).to.equal('proId');
-        // expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
+        expect(userCreated.referredByUserLink).to.equal('proId');
+        expect(userCreated.referredByOrganisationLink).to.equal('organisationId');
         expect(loan.promotionLinks[0]._id).to.equal('promotionId');
         expect(loan.promotionLinks[0].invitedBy).to.equal('proId');
 

@@ -19,6 +19,7 @@ export const USER_QUERIES = {
   SIDENAV_USERS: 'SIDENAV_USERS',
   USER_SEARCH: 'USER_SEARCH',
   USER_EMAILS: 'USER_EMAILS',
+  PROS: 'PROS',
 };
 
 export const USER_EVENTS = {

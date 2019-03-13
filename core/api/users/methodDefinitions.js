@@ -134,3 +134,11 @@ export const getUserByEmail = new Method({
     roles: Match.Maybe(Array),
   },
 });
+
+export const setUserReferredBy = new Method({
+  name: 'setUserReferredBy',
+  params: {
+    userId: String,
+    proId: String,
+  },
+});

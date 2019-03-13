@@ -268,6 +268,21 @@ class UserService extends CollectionService {
     );
     return `${domain}/enroll-account/${token}`;
   }
+
+  setReferredBy({ userId, proId }) {
+    const { organisations = [] } = this.fetchOne({
+      $filters: { _id: proId },
+      organisations: { _id: 1 },
+    });
+    const organisationId = organisations.length ? organisations[0]._id : null;
+    return this.update({
+      userId,
+      object: {
+        referredByUserLink: proId,
+        referredByOrganisationLink: organisationId,
+      },
+    });
+  }
 }
 
 export default new UserService();
