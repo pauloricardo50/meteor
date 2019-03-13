@@ -36,7 +36,7 @@ const createProUser = userId =>
     },
   });
 
-describe.only('loanQueries', () => {
+describe('loanQueries', () => {
   beforeEach(() => {
     resetDatabase();
   });
