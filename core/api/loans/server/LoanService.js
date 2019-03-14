@@ -55,11 +55,7 @@ export class LoanService extends CollectionService {
 
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
-    const propertyId = PropertyService.insert({ userId });
-    const loanId = this.insert({
-      loan: { propertyIds: [propertyId], borrowerIds: [borrowerId] },
-      userId,
-    });
+    const loanId = this.insert({ loan: { borrowerIds: [borrowerId] }, userId });
     this.addNewStructure({ loanId });
     return loanId;
   };
