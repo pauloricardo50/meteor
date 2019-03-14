@@ -8,19 +8,23 @@ const columnOptions = [
   { id: 'lastName', label: <T id="Forms.lastName" /> },
   { id: 'email', label: <T id="Forms.email" /> },
   { id: 'phoneNumber', label: <T id="Forms.phoneNumber" /> },
+  { id: 'title', label: <T id="Forms.title" /> },
 ];
 
 const mapUser = (user) => {
-  const { _id: userId, firstName, lastName, email, phoneNumber } = user;
+  const {
+    _id: userId,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    $metadata,
+  } = user;
+  const title = $metadata.role;
 
   return {
     id: userId,
-    columns: [
-      { raw: firstName, label: firstName },
-      { raw: lastName, label: lastName },
-      { raw: email, label: email },
-      { raw: phoneNumber, label: phoneNumber },
-    ],
+    columns: [firstName, lastName, email, phoneNumber, title],
   };
 };
 
