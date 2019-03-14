@@ -19,7 +19,7 @@ const ProLayout = ({ children, redirect, ...props }: ProLayoutProps) => {
   return (
     <div className="pro-layout">
       <ProTopNav currentUser={props.currentUser} />
-      <ProSideNav />
+      <ProSideNav currentUser={props.currentUser} />
       <LayoutErrorBoundary>
         <div className="pro-layout-content">
           {React.cloneElement(children, props)}
