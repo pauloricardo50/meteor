@@ -1,4 +1,13 @@
 {
+  "CommissionRatesViewer.fromThreshold": "À partir de {value}",
+  "CommissionRatesViewer.commissionRatesList": "Votre structure de commissionement",
+  "CommissionRatesViewer.currentRate": "Votre commission d'apporteur d'affaires",
+  "CommissionRatesViewer.referredRevenues": "Revenus apportés",
+  "OrganisationTabs.commission": "Commissionnement",
+  "Forms.commissionRates": "Taux de commissionnement",
+  "Forms.commissionRates.rate": "Taux",
+  "Forms.commissionRates.threshold": "Seuil",
+  "Forms.commissionRates.threshold.placeholder": "0",
   "TopNavDropdown.app": "Interface App",
   "Forms.phone": "Téléphone",
   "ProCustomersTable.loanName": "No. de dossier",

@@ -23,6 +23,7 @@ const config = {
         'BorrowerRemover',
         'BorrowerReuser',
         'collections',
+        'CommissionRatesViewer',
         'ConditionsButton',
         'ConfirmMethod',
         'Contacts',
@@ -93,6 +94,7 @@ const config = {
       exceptions: [
         'AccountPage',
         'collections',
+        'CommissionRatesViewer',
         'ConfirmMethod',
         'ContactButton',
         'files',

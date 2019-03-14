@@ -12,6 +12,7 @@ import SingleOrganisationPageContainer from './SingleOrganisationPageContainer';
 import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
+import CommissionEditor from './CommissionEditor';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
@@ -19,8 +20,8 @@ type SingleOrganisationPageProps = {
 
 const tabs = organisation =>
   [
-    { id: 'contacts', Component: ContactsTable },
     { id: 'users', Component: OrganisationUsersTable },
+    { id: 'contacts', Component: ContactsTable },
     {
       id: 'offers',
       Component: OffersTable,
@@ -30,6 +31,10 @@ const tabs = organisation =>
       id: 'lenderRules',
       condition: organisation.features.includes(ORGANISATION_FEATURES.LENDER),
       Component: LenderRulesEditor,
+    },
+    {
+      id: 'commission',
+      Component: CommissionEditor,
     },
   ].map(({ id, Component, condition, style = {} }) => ({
     id,
