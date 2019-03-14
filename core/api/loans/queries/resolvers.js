@@ -146,7 +146,10 @@ export const proLoansResolver = ({
       .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
       .map(loan => ({
         ...loan,
-        relatedTo: { ...loan.promotions[0], collection: PROMOTIONS_COLLECTION },
+        relatedTo: loan.promotions.map(promotion => ({
+          ...promotion,
+          collection: PROMOTIONS_COLLECTION,
+        })),
       }));
     loans = promotionLoans;
   }
@@ -157,7 +160,10 @@ export const proLoansResolver = ({
       propertyId,
     }).map(loan => ({
       ...loan,
-      relatedTo: { ...loan.properties[0], collection: PROPERTIES_COLLECTION },
+      relatedTo: loan.properties
+        .filter(property => property.category === PROPERTY_CATEGORY.PRO)
+        .filter(({ users = [] }) => users.some(({ _id }) => _id === userId))
+        .map(property => ({ ...property, collection: PROPERTIES_COLLECTION })),
     }));
     loans = [...loans, ...propertyLoans];
   }

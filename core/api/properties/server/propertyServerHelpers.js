@@ -121,7 +121,7 @@ export const makeProPropertyLoanAnonymizer = ({
             propertyStatus,
           });
         })
-        .some(anonymizeForProperty => !anonymizeForProperty)
+        .every(anonymizeForProperty => anonymizeForProperty)
       : anonymize;
 
     return {

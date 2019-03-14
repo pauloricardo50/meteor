@@ -53,7 +53,7 @@ const makeMapLoan = currentUser => (loan) => {
     user,
     createdAt,
     name: loanName,
-    relatedTo: relatedDoc,
+    relatedTo: relatedDocs = [],
     loanProgress,
     estimatedRevenues,
   } = loan;
@@ -76,8 +76,15 @@ const makeMapLoan = currentUser => (loan) => {
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       getReferredBy({ user, currentUser }),
       {
-        raw: relatedDoc ? relatedDoc._id : '-',
-        label: relatedDoc ? <CollectionIconLink relatedDoc={relatedDoc} /> : '-',
+        raw: relatedDocs.length ? relatedDocs[0]._id : '-',
+        label: relatedDocs.length
+          ? relatedDocs.map(relatedDoc => (
+            <CollectionIconLink
+              key={relatedDoc._id}
+              relatedDoc={relatedDoc}
+            />
+          ))
+          : '-',
       },
       // {
       //   raw: estimatedRevenues,
