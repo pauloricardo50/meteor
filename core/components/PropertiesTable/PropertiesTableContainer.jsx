@@ -26,7 +26,7 @@ const makeMapProperty = history => ({
 }) => ({
   id: _id,
   columns: [
-    `${address1}, ${city}`,
+    [address1, city].filter(x => x).join(', '),
     {
       raw: status,
       label: <StatusLabel status={status} collection={PROPERTIES_COLLECTION} />,

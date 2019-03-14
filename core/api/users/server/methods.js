@@ -126,24 +126,23 @@ proInviteUser.setHandler((context, params) => {
   const { propertyIds, promotionIds, property } = params;
   SecurityService.checkUserIsPro(userId);
 
-  // // Allow only one
-  // if (propertyIds ? promotionIds || property : promotionIds && property) {
-  //   SecurityService.handleUnauthorized('Cannot invite user to properties and promotions at once');
-  // }
-
   if (propertyIds && propertyIds.length) {
     propertyIds.forEach(propertyId =>
       SecurityService.properties.isAllowedToInviteCustomers({
         userId,
         propertyId,
       }));
-  } else if (promotionIds && promotionIds.length) {
+  }
+
+  if (promotionIds && promotionIds.length) {
     promotionIds.forEach(promotionId =>
       SecurityService.promotions.isAllowedToInviteCustomers({
         promotionId,
         userId,
       }));
-  } else if (property) {
+  }
+
+  if (property) {
     // Not yet implemented
   }
 

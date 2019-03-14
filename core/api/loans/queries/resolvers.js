@@ -21,10 +21,13 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
 const anonymizePropertyLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { properties } = loan;
-    const propertyIds = properties
+    const proPropertyIds = properties
       .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
       .map(({ _id }) => _id);
-    return makeProPropertyLoanAnonymizer({ userId, propertyIds })(loan);
+    return makeProPropertyLoanAnonymizer({
+      userId,
+      propertyIds: proPropertyIds,
+    })(loan);
   });
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
@@ -129,6 +132,12 @@ const shouldShowPromotionLoan = ({
   return showAnonymizedPromotionLoans || invitedBy === userId;
 };
 
+const getRelatedProPropertiesOfUser = ({ loan, userId }) =>
+  loan.properties
+    .filter(property => property.category === PROPERTY_CATEGORY.PRO)
+    .filter(({ users = [] }) => users.some(({ _id }) => _id === userId))
+    .map(property => ({ ...property, collection: PROPERTIES_COLLECTION }));
+
 export const proLoansResolver = ({
   userId,
   calledByUserId,
@@ -160,10 +169,7 @@ export const proLoansResolver = ({
       propertyId,
     }).map(loan => ({
       ...loan,
-      relatedTo: loan.properties
-        .filter(property => property.category === PROPERTY_CATEGORY.PRO)
-        .filter(({ users = [] }) => users.some(({ _id }) => _id === userId))
-        .map(property => ({ ...property, collection: PROPERTIES_COLLECTION })),
+      relatedTo: getRelatedProPropertiesOfUser({ loan, userId }),
     }));
     loans = [...loans, ...propertyLoans];
   }

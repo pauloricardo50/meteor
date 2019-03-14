@@ -111,7 +111,6 @@ export class PropertyService extends CollectionService {
     sendInvitation = true,
   }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
-    // const property = this.get(propertyId);
     let assignedEmployeeId;
     let organisationId;
     let pro;
