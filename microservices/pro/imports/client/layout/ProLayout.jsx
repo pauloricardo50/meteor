@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import ProLayoutContainer from './ProLayoutContainer';
 import ProTopNav from './ProTopNav';
+import ProSideNav from './ProSideNav';
 
 type ProLayoutProps = {
   children: React.Node,
@@ -18,6 +19,7 @@ const ProLayout = ({ children, redirect, ...props }: ProLayoutProps) => {
   return (
     <div className="pro-layout">
       <ProTopNav currentUser={props.currentUser} />
+      <ProSideNav />
       <LayoutErrorBoundary>
         <div className="pro-layout-content">
           {React.cloneElement(children, props)}

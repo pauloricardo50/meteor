@@ -62,9 +62,7 @@ const makeMapUser = ({ history }) => (user) => {
     ],
     handleClick: (event) => {
       event.stopPropagation();
-      history.push(createRoute('/users/:userId', {
-        userId,
-      }));
+      history.push(createRoute('/users/:userId', { userId }));
     },
   };
 };

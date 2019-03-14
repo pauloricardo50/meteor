@@ -1,4 +1,9 @@
 {
+  "ProOrganisationPageTabs.users": "Utilisateurs",
+  "ProOrganisationPageTabs.contacts": "Contacts",
+  "ProOrganisationPageTabs.commission": "Commissions",
+  "ProSideNav.dashboard": "Dashboard",
+  "ProSideNav.organisation": "Organisation",
   "CommissionRatesViewer.fromThreshold": "À partir de {value}",
   "CommissionRatesViewer.commissionRatesList": "Votre structure de commissionement",
   "CommissionRatesViewer.currentRate": "Votre commission d'apporteur d'affaires",

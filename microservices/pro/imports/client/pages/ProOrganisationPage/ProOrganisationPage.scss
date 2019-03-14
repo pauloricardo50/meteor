@@ -1,0 +1,11 @@
+.pro-organisation-page {
+  display: flex;
+  flex-direction: column;
+
+  .org-logo {
+    align-self: center;
+    width: 50%;
+    max-width: 300px;
+    margin-bottom: 80px;
+  }
+}
