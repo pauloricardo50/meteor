@@ -29,20 +29,22 @@ const columnOptions = [
 }));
 
 const getReferredBy = ({ user, proUser, isAdmin }) => {
+  const { organisations = [] } = proUser;
+  const organisationUsers = organisations.length ? organisations[0].users : [];
   const { referredByUser = {}, referredByOrganisation = {} } = user;
-  const { _id: userId, organisations = [] } = proUser;
-  let label = 'XXX';
+
+  let label = 'Autre';
 
   if (
     isAdmin
-    || referredByUser._id === userId
-    || organisations.some(({ _id }) => _id === referredByOrganisation._id)
+    || organisations.some(({ _id }) => referredByOrganisation._id === _id)
+    || organisationUsers.some(({ _id }) => referredByUser._id === _id)
   ) {
     label = getUserNameAndOrganisation({ user: referredByUser });
   }
 
   return {
-    raw: user && user.referredByUser,
+    raw: referredByUser.name,
     label,
   };
 };

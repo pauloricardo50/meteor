@@ -54,6 +54,27 @@ const canRemoveCustomerFromProperty = ({
   });
 };
 
+const getReferredBy = ({ user, currentUser = {}, isAdmin }) => {
+  const { organisations = [] } = currentUser;
+  const organisationUsers = organisations.length ? organisations[0].users : [];
+  const { referredByUser = {}, referredByOrganisation = {} } = user;
+
+  let label = 'Autre';
+
+  if (
+    isAdmin
+    || organisations.some(({ _id }) => referredByOrganisation._id === _id)
+    || organisationUsers.some(({ _id }) => referredByUser._id === _id)
+  ) {
+    label = getUserNameAndOrganisation({ user: referredByUser });
+  }
+
+  return {
+    raw: referredByUser.name,
+    label,
+  };
+};
+
 const makeMapLoan = ({
   history,
   permissions,
@@ -77,12 +98,7 @@ const makeMapLoan = ({
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      {
-        raw: user.referredByUser && user.referredByUser.name,
-        label:
-          user.referredByUser
-          && getUserNameAndOrganisation({ user: user.referredByUser }),
-      },
+      getReferredBy({ user, currentUser, isAdmin }),
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
