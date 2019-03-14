@@ -46,6 +46,7 @@ export const promotionTodoList = {
 };
 
 export const defaultTodoList = {
+  addProperty: true,
   completeBorrowers: true,
   completeBorrowersFinance: true,
   completeProperty: true,
@@ -74,6 +75,16 @@ export const getDashboardTodosArray = list =>
       },
       link: ({ _id: loanId }) =>
         createRoute(BORROWERS_PAGE, { loanId, tabId: 'personal' }),
+    },
+    {
+      id: 'addProperty',
+      isDone: (loan) => {
+        const { properties } = loan;
+        return properties && properties.length > 0;
+      },
+      hide: ({ properties = [] }) =>
+        properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
+      link: createSinglePropertyLink,
     },
     {
       id: 'completeProperty',
