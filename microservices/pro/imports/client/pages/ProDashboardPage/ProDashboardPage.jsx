@@ -6,8 +6,8 @@ import { ProPropertyAdder } from 'core/components/ProPropertyPage/ProPropertyFor
 import PromotionAdder from './PromotionAdder';
 import ProPromotionsTable from './ProPromotionsTable';
 import ProPropertiesTable from './ProPropertiesTable';
-import ProCustomersTable from './ProCustomersTable/ProCustomersTable';
-import ProCustomerAdder from './ProCustomersTable/ProCustomerAdder';
+import ProCustomersTable from 'core/components/ProCustomersTable/ProCustomersTable';
+import ProCustomerAdder from 'core/components/ProCustomersTable/ProCustomerAdder';
 
 type ProDashboardPageProps = {};
 
@@ -23,7 +23,7 @@ const ProDashboardPage = (props: ProDashboardPageProps) => (
     </div>
     <ProPromotionsTable />
     <ProPropertiesTable />
-    <ProCustomersTable currentUser={props.currentUser} />
+    <ProCustomersTable proUser={props.currentUser} />
   </div>
 );
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { ROLES } from 'core/api/constants';
+import ProCustomersTable from 'core/components/ProCustomersTable/ProCustomersTable';
 import SingleUserPageContainer from './SingleUserPageContainer';
 import SingleUserPageHeader from './SingleUserPageHeader';
 import LoanSummaryList from '../../components/LoanSummaryList';
@@ -19,6 +20,7 @@ const SingleUserPage = ({ user, className, currentUser, children }) => {
     proProperties,
   } = user;
   const isUser = user.roles.includes(ROLES.USER);
+  const isPro = user.roles.includes(ROLES.PRO);
 
   return (
     <section
@@ -42,6 +44,8 @@ const SingleUserPage = ({ user, className, currentUser, children }) => {
       {proProperties && proProperties.length > 0 && (
         <ProPropertiesList properties={proProperties} />
       )}
+
+      {isPro && <ProCustomersTable proUser={user} isAdmin />}
 
       {/* Make sure this component reloads when the userId changes */}
       <EmailList userId={userId} key={userId} />

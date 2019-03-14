@@ -28,13 +28,14 @@ const columnOptions = [
   label: label || <T id={`ProCustomersTable.${id}`} />,
 }));
 
-const getReferredBy = ({ user, currentUser }) => {
+const getReferredBy = ({ user, proUser, isAdmin }) => {
   const { referredByUser = {}, referredByOrganisation = {} } = user;
-  const { _id: userId, organisations = [] } = currentUser;
+  const { _id: userId, organisations = [] } = proUser;
   let label = 'XXX';
 
   if (
-    referredByUser._id === userId
+    isAdmin
+    || referredByUser._id === userId
     || organisations.some(({ _id }) => _id === referredByOrganisation._id)
   ) {
     label = getUserNameAndOrganisation({ user: referredByUser });
@@ -46,7 +47,7 @@ const getReferredBy = ({ user, currentUser }) => {
   };
 };
 
-const makeMapLoan = currentUser => (loan) => {
+const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   const {
     _id: loanId,
     status,
@@ -61,7 +62,16 @@ const makeMapLoan = currentUser => (loan) => {
   return {
     id: loanId,
     columns: [
-      loanName,
+      {
+        raw: loanName,
+        label: isAdmin ? (
+          <CollectionIconLink
+            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          />
+        ) : (
+          loanName
+        ),
+      },
       {
         raw: status,
         label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
@@ -74,7 +84,7 @@ const makeMapLoan = currentUser => (loan) => {
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      getReferredBy({ user, currentUser }),
+      getReferredBy({ user, proUser, isAdmin }),
       {
         raw: relatedDocs.length ? relatedDocs[0]._id : '-',
         label: relatedDocs.length
@@ -99,26 +109,32 @@ const makeMapLoan = currentUser => (loan) => {
 };
 
 export default compose(
-  mapProps(({ currentUser, ...props }) => {
-    const { promotions = [], proProperties = [] } = currentUser;
+  mapProps(({ proUser, ...props }) => {
+    const { promotions = [], proProperties = [] } = proUser;
     return {
       ...props,
-      currentUser,
+      proUser,
       propertyIds: proProperties.map(({ _id }) => _id),
       promotionIds: promotions.map(({ _id }) => _id),
     };
   }),
   withSmartQuery({
     query: proLoans,
-    params: ({ propertyIds, promotionIds }) => ({
+    params: ({
+      propertyIds,
+      promotionIds,
+      proUser: { _id: userId },
+      isAdmin = false,
+    }) => ({
+      ...(isAdmin ? { userId } : {}),
       promotionId: { $in: promotionIds },
       propertyId: { $in: propertyIds },
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  withProps(({ loans, currentUser }) => ({
-    rows: loans.map(makeMapLoan(currentUser)),
+  withProps(({ loans, proUser, isAdmin = false }) => ({
+    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
     columnOptions,
   })),
 );
