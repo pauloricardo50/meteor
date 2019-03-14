@@ -16,7 +16,7 @@ const ProPropertyPageCustomers = ({
 }: ProPropertyPageCustomersProps) => (
   <div className="card1 card-top customers-table">
     <span className="flex customers-table-header">
-      <h2>Clients</h2>
+      <h2>Acheteurs</h2>
       {permissions.canInviteCustomers && (
         <PropertyCustomerAdder propertyId={property._id} />
       )}

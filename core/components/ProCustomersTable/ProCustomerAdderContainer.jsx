@@ -27,29 +27,42 @@ const schema = ({ proProperties, promotions }) =>
       optional: true,
       uniforms: { label: 'Téléphone', placeholder: '012 345 67 89' },
     },
-    // referOnly: { type: Boolean, defaultValue: false },
-    propertyId: {
+    propertyIds: {
       optional: true,
+      type: Array,
+      condition: () => proProperties && proProperties.length,
+      uniforms: {
+        displayEmpty: false,
+        placeholder: '',
+      },
+    },
+    'propertyIds.$': {
       type: String,
+      optional: true,
       allowedValues: proProperties.map(({ _id }) => _id),
-      condition: ({ promotionId }) => proProperties.length && !promotionId,
       uniforms: {
         transform: propertyId =>
           proProperties.find(({ _id }) => _id === propertyId).address1,
-        displayEmpty: true,
-        placeholder: 'Aucun',
+        displayEmpty: false,
       },
     },
-    promotionId: {
+    promotionIds: {
       optional: true,
+      type: Array,
+      condition: () => promotions && promotions.length,
+      uniforms: {
+        displayEmpty: false,
+        placeholder: '',
+      },
+    },
+    'promotionIds.$': {
       type: String,
+      optional: true,
       allowedValues: promotions.map(({ _id }) => _id),
-      condition: ({ propertyId }) => promotions.length && !propertyId,
       uniforms: {
         transform: promotionId =>
           promotions.find(({ _id }) => _id === promotionId).name,
-        displayEmpty: true,
-        placeholder: 'Aucune',
+        displayEmpty: false,
       },
     },
   });
@@ -66,10 +79,12 @@ export default withProps(({ currentUser }) => {
       promotions: filteredPromotions,
     }),
     onSubmit: (model) => {
-      const { propertyId, promotionId } = model;
-      const referOnly = !propertyId && !promotionId;
+      const { user, propertyIds = [], promotionIds = [] } = model;
+      const referOnly = !propertyIds.length && !promotionIds.length;
       return proInviteUser.run({
-        ...model,
+        user,
+        propertyIds: propertyIds.length ? propertyIds : undefined,
+        promotionIds: promotionIds.length ? promotionIds : undefined,
         referOnly,
         proUserId: currentUser._id,
       });

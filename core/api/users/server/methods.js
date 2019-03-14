@@ -123,25 +123,26 @@ testUserAccount.setHandler((context, params) => {
 
 proInviteUser.setHandler((context, params) => {
   const { userId } = context;
-  const { propertyId, promotionId, property, referOnly } = params;
+  const { propertyIds, promotionIds, property } = params;
   SecurityService.checkUserIsPro(userId);
 
-  // Allow only one
-  if (propertyId ? promotionId || property : promotionId && property) {
-    SecurityService.handleUnauthorized('Can invite user to only one property exactly');
+  if (propertyIds && propertyIds.length) {
+    propertyIds.forEach(propertyId =>
+      SecurityService.properties.isAllowedToInviteCustomers({
+        userId,
+        propertyId,
+      }));
   }
 
-  if (propertyId) {
-    SecurityService.properties.isAllowedToInviteCustomers({
-      userId,
-      propertyId,
-    });
-  } else if (promotionId) {
-    SecurityService.promotions.isAllowedToInviteCustomers({
-      promotionId,
-      userId,
-    });
-  } else if (property) {
+  if (promotionIds && promotionIds.length) {
+    promotionIds.forEach(promotionId =>
+      SecurityService.promotions.isAllowedToInviteCustomers({
+        promotionId,
+        userId,
+      }));
+  }
+
+  if (property) {
     // Not yet implemented
   }
 

@@ -68,7 +68,7 @@ export const propertyDataIsInvalid = new Method({
 
 export const inviteUserToProperty = new Method({
   name: 'inviteUserToProperty',
-  params: { user: Object, propertyId: String },
+  params: { user: Object, propertyIds: Array },
 });
 
 export const addProUserToProperty = new Method({

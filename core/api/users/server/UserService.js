@@ -225,8 +225,8 @@ class UserService extends CollectionService {
 
   proInviteUser = ({
     user,
-    propertyId,
-    promotionId,
+    propertyIds,
+    promotionIds,
     property,
     proUserId,
     referOnly,
@@ -234,24 +234,32 @@ class UserService extends CollectionService {
     if (referOnly) {
       return this.proReferUser({ user, proUserId });
     }
-    if (propertyId) {
-      return PropertyService.inviteUser({
+
+    if (!propertyIds && !promotionIds) {
+      throw new Meteor.Error('No property given');
+    }
+
+    let promises = [];
+
+    if (propertyIds && propertyIds.length) {
+      promises = [...promises, PropertyService.inviteUser({
         proUserId,
         user,
-        propertyId,
-      });
+        propertyIds,
+      })];
     }
-    if (promotionId) {
-      return PromotionService.inviteUser({
-        promotionId,
-        user: { ...user, invitedBy: proUserId },
-      });
+    if (promotionIds && promotionIds.length) {
+      promises = [...promises, ...promotionIds.map(promotionId =>
+        PromotionService.inviteUser({
+          promotionId,
+          user: { ...user, invitedBy: proUserId },
+        }))];
     }
     if (property) {
       // Not yet implemented
     }
 
-    throw new Meteor.Error('No property given');
+    return Promise.all(promises);
   };
 
   getEnrollmentUrl({ userId }) {
