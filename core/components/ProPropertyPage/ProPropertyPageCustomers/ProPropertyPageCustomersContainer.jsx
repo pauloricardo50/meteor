@@ -126,5 +126,6 @@ export default compose(
     columnOptions,
     permissions,
     property,
+    loans,
   })),
 );
