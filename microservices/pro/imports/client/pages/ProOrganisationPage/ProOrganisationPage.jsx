@@ -8,7 +8,6 @@ type ProOrganisationPageProps = {};
 
 const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
   const { organisations } = currentUser;
-  console.log('currentUser:', currentUser);
 
   if (!organisations || organisations.length === 0) {
     return (
@@ -16,6 +15,9 @@ const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
         <h1>
           <T id="ProOrganisationPage.empty" />
         </h1>
+        <p className="description">
+          <T id="ProOrganisationPage.empty.description" />
+        </p>
       </div>
     );
   }
