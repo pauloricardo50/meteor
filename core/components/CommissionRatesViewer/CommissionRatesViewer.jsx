@@ -7,6 +7,10 @@ import CommissionRatesViewerList from './CommissionRatesViewerList';
 type CommissionRatesViewerProps = {};
 
 export const getCurrentRate = (commissionRates, referredRevenues) => {
+  if (!commissionRates || commissionRates.length === 0) {
+    return 0;
+  }
+
   if (commissionRates.length === 1) {
     return commissionRates[0].rate;
   }

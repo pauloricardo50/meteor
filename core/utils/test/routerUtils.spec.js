@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { createRoute } from '../routerUtils';
 
-describe.only('routerUtils', () => {
+describe('routerUtils', () => {
   describe('createRoute', () => {
     it('replaces wildcard params with real value', () => {
       expect(createRoute(':hello', { ':hello': 'yo' })).to.equal('yo');

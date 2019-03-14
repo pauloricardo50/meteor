@@ -23,7 +23,7 @@ const getTabs = (organisation) => {
     // { id: 'contacts', condition: contacts && contacts.length > 0 },
     {
       id: 'commission',
-      condition: commissionRates && commissionRates.length > 0,
+      condition: !!(commissionRates && commissionRates.length > 0),
       Component: CommissionRatesViewer,
     },
   ].map((tab) => {
