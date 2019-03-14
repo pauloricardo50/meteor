@@ -1,12 +1,15 @@
 import Calculator from 'core/utils/Calculator';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_CATEGORY,
+} from 'core/api/properties/propertyConstants';
 import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
 import SecurityService from '../../security';
 import LoanService from '../server/LoanService';
 import { makeProPropertyLoanAnonymizer } from '../../properties/server/propertyServerHelpers';
-import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
-import { PROPERTIES_COLLECTION } from 'core/api/properties/propertyConstants';
 
 const anonymizePromotionLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
@@ -18,8 +21,10 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
 const anonymizePropertyLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { properties } = loan;
-    const propertyId = properties[0]._id;
-    return makeProPropertyLoanAnonymizer({ userId, propertyId })(loan);
+    const propertyIds = properties
+      .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
+      .map(({ _id }) => _id);
+    return makeProPropertyLoanAnonymizer({ userId, propertyIds })(loan);
   });
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
@@ -139,7 +144,10 @@ export const proLoansResolver = ({
       promotionId,
     })
       .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
-      .map(loan => ({ ...loan, relatedTo: {...loan.promotions[0], collection: PROMOTIONS_COLLECTION} }));
+      .map(loan => ({
+        ...loan,
+        relatedTo: { ...loan.promotions[0], collection: PROMOTIONS_COLLECTION },
+      }));
     loans = promotionLoans;
   }
 
@@ -147,7 +155,10 @@ export const proLoansResolver = ({
     const propertyLoans = proPropertyLoansResolver({
       calledByUserId,
       propertyId,
-    }).map(loan => ({ ...loan, relatedTo: {...loan.properties[0], collection: PROPERTIES_COLLECTION} }));
+    }).map(loan => ({
+      ...loan,
+      relatedTo: { ...loan.properties[0], collection: PROPERTIES_COLLECTION },
+    }));
     loans = [...loans, ...propertyLoans];
   }
 
