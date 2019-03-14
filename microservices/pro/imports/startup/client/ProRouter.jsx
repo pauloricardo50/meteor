@@ -23,6 +23,7 @@ import ProDashboardPage from '../../client/pages/ProDashboardPage/loadable';
 import ProPromotionPage from '../../client/pages/ProPromotionPage/loadable';
 import ProPromotionLotPage from '../../client/pages/ProPromotionLotPage/loadable';
 import ProPromotionUsersPage from '../../client/pages/ProPromotionUsersPage/loadable';
+import ProOrganisationPage from '../../client/pages/ProOrganisationPage/loadable';
 
 const ProRouter = () => (
   <BaseRouter
@@ -42,6 +43,10 @@ const ProRouter = () => (
           component={ProPromotionUsersPage}
         />
         <Route path={ROUTES.PRO_PROMOTION_PAGE} component={ProPromotionPage} />
+        <Route
+          path={ROUTES.PRO_ORGANISATION_PAGE}
+          component={ProOrganisationPage}
+        />
         <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
         <Route path={ROUTES.DEV_PAGE} component={DevPage} />
         <Route

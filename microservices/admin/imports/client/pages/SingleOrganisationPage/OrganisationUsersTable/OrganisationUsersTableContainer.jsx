@@ -28,14 +28,8 @@ const makeMapUser = ({ history }) => (user) => {
   return {
     id: userId,
     columns: [
-      {
-        raw: firstName,
-        label: firstName,
-      },
-      {
-        raw: lastName,
-        label: lastName,
-      },
+      firstName,
+      lastName,
       {
         raw: organisations && organisations.length > 0 && organisations[0].name,
         label:
@@ -51,20 +45,12 @@ const makeMapUser = ({ history }) => (user) => {
             />
           )),
       },
-      {
-        raw: email,
-        label: email,
-      },
-      {
-        raw: phoneNumber,
-        label: phoneNumber,
-      },
+      email,
+      phoneNumber,
     ],
     handleClick: (event) => {
       event.stopPropagation();
-      history.push(createRoute('/users/:userId', {
-        userId,
-      }));
+      history.push(createRoute('/users/:userId', { userId }));
     },
   };
 };

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { createRoute } from '../routerUtils';
 
-describe('routerUtils', () => {
+describe.only('routerUtils', () => {
   describe('createRoute', () => {
     it('replaces wildcard params with real value', () => {
       expect(createRoute(':hello', { ':hello': 'yo' })).to.equal('yo');
@@ -20,6 +20,10 @@ describe('routerUtils', () => {
     it('prefixes replacers with a colon if none is provided', () => {
       expect(createRoute(':hello', { hello: 'yo' })).to.equal('yo');
       expect(createRoute(':hello/:yo', { hello: 'yo', yo: 'dude' })).to.equal('yo/dude');
+    });
+
+    it('replaces wildcard params while removing interrogation marks', () => {
+      expect(createRoute('/abc/:hello?', { ':hello': '' })).to.equal('/abc/');
     });
   });
 });

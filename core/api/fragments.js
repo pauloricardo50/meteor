@@ -390,6 +390,7 @@ export const fullOrganisation = () => ({
   lenders: lender(),
   offers: fullOffer(),
   users: organisationUser(),
+  commissionRates: 1,
 });
 
 export const userOrganisation = () => ({

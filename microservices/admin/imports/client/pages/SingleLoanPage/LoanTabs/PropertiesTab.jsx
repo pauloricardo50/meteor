@@ -28,7 +28,7 @@ const PropertiesTab = ({ loan }: PropertiesTabProps) => {
     <div className="properties-tab">
       <div className="buttons">
         <PropertyAdder loanId={loanId} propertyUserId={userId} />
-        <PropertyReuser loanId={loanId} propertyUserId={userId} />
+        {userId && <PropertyReuser loanId={loanId} propertyUserId={userId} />}
       </div>
       {properties && properties.length > 0 && (
         <Tabs
