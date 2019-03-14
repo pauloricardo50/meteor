@@ -11,6 +11,7 @@ import { adminLoan } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
 import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import Loans from '../loans';
 
@@ -82,10 +83,15 @@ export class LoanService extends CollectionService {
 
   insertPromotionLoan = ({ userId, promotionId, invitedBy }) => {
     const borrowerId = BorrowerService.insert({ userId });
+    const customName = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      name: 1,
+    }).name;
     const loanId = this.insert({
       loan: {
         borrowerIds: [borrowerId],
         promotionLinks: [{ _id: promotionId, invitedBy }],
+        customName,
       },
       userId,
     });
@@ -97,8 +103,12 @@ export class LoanService extends CollectionService {
 
   insertPropertyLoan = ({ userId, propertyIds }) => {
     const borrowerId = BorrowerService.insert({ userId });
+    const customName = PropertyService.fetchOne({
+      $filters: { _id: propertyIds[0] },
+      address1: 1,
+    }).address1;
     const loanId = this.insert({
-      loan: { borrowerIds: [borrowerId], propertyIds },
+      loan: { borrowerIds: [borrowerId], propertyIds, customName },
       userId,
     });
     this.addNewStructure({ loanId });
