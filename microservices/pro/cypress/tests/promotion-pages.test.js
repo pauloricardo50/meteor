@@ -45,7 +45,7 @@ describe('Promotion pages', () => {
           .contains('Personne')
           .should('exist');
         cy.wrap(tr)
-          .get('button')
+          .get('.button')
           .should('not.exist');
       })
       .its('length')
@@ -67,7 +67,7 @@ describe('Promotion pages', () => {
           .contains('Personne')
           .should('not.exist');
         cy.wrap(tr)
-          .get('button')
+          .get('.button')
           .should('not.exist');
       });
 
@@ -87,7 +87,7 @@ describe('Promotion pages', () => {
           .contains('Personne')
           .should('not.exist');
         cy.wrap(tr)
-          .get('button')
+          .get('.button')
           .should('not.exist');
       });
 

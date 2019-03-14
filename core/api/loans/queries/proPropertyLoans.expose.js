@@ -1,9 +1,6 @@
-import { Match } from 'meteor/check';
-
 import SecurityService from '../../security';
 import query from './proPropertyLoans';
-import { proPropertyLoansResolver, getLoanIds } from './resolvers';
-import QueryCacher from '../../helpers/server/QueryCacher';
+import { proPropertyLoansResolver } from './resolvers';
 
 query.expose({
   firewall(userId, params) {
@@ -20,10 +17,3 @@ query.expose({
 
 query.resolve(({ userId, propertyId }) =>
   proPropertyLoansResolver({ calledByUserId: userId, propertyId }));
-
-const cacher = new QueryCacher({
-  getDataToHash: getLoanIds(),
-  ttl: 60 * 60 * 1000,
-});
-
-query.cacheResults(cacher);
