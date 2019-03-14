@@ -7,7 +7,6 @@ import FinancingSection, {
   CalculatedValue,
 } from '../FinancingSection';
 import FinancingPropertyPicker from './FinancingPropertyPicker';
-import { getProperty } from '../FinancingCalculator';
 import FinancingProjectFees from './FinancingProjectFees';
 import Calculator from '../../../../utils/Calculator';
 
@@ -40,7 +39,7 @@ const FinancingProject = (props: FinancingProjectProps) => (
       {
         Component: InputAndSlider,
         id: 'propertyValue',
-        calculatePlaceholder: data => getProperty(data).value,
+        calculatePlaceholder: data => Calculator.selectPropertyValue(data),
         max: 5000000,
         allowUndefined: true,
         forceUndefined: true,
