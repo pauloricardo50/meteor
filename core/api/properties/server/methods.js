@@ -66,10 +66,11 @@ propertyDataIsInvalid.setHandler(({ userId }, params) => {
 
 inviteUserToProperty.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
-  SecurityService.properties.isAllowedToInviteCustomers({
+  params.propertyIds.forEach(propertyId => SecurityService.properties.isAllowedToInviteCustomers({
     userId,
-    propertyId: params.propertyId,
-  });
+    propertyId,
+  }));
+
   if (SecurityService.currentUserHasRole(ROLES.PRO)) {
     return PropertyService.inviteUser({ ...params, proUserId: userId });
   }

@@ -17,7 +17,9 @@ const customerSchema = new SimpleSchema({
 const PropertyCustomerAdder = ({ propertyId }: PropertyCustomerAdderProps) => (
   <AutoFormDialog
     schema={customerSchema}
-    onSubmit={user => inviteUserToProperty.run({ user, propertyId })}
+    onSubmit={user =>
+      inviteUserToProperty.run({ user, propertyIds: [propertyId] })
+    }
     buttonProps={{ raised: true, secondary: true, label: 'Ajouter acheteur' }}
     title="Ajouter acheteur"
   />

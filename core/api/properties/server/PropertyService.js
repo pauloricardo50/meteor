@@ -107,10 +107,11 @@ export class PropertyService extends CollectionService {
   inviteUser = ({
     proUserId,
     user: { email, firstName, lastName, phoneNumber },
-    propertyId,
+    propertyIds,
     sendInvitation = true,
   }) => {
-    const property = this.get(propertyId);
+    const properties = propertyIds.map(propertyId => this.get(propertyId));
+    // const property = this.get(propertyId);
     let assignedEmployeeId;
     let organisationId;
     let pro;
@@ -164,7 +165,10 @@ export class PropertyService extends CollectionService {
       admin = UserService.get(existingAssignedEmployeeId);
       userId = existingUserId;
 
-      if (UserService.hasProperty({ userId, propertyId })) {
+      if (
+        propertyIds.some(propertyId =>
+          UserService.hasProperty({ userId, propertyId }))
+      ) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
       }
     }
@@ -185,13 +189,13 @@ export class PropertyService extends CollectionService {
       });
     }
 
-    const loanId = LoanService.insertPropertyLoan({ userId, propertyId });
+    const loanId = LoanService.insertPropertyLoan({ userId, propertyIds });
 
     if (sendInvitation) {
       return this.sendPropertyInvitationEmail({
         userId,
         isNewUser,
-        address: property.address1,
+        address: properties[0].address1, // TODO: all addresses
         proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
       });
     }

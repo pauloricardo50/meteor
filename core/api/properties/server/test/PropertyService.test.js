@@ -176,7 +176,7 @@ describe('PropertyService', function () {
           name: 'Doe',
           phoneNumber: '123',
         },
-        propertyId: 'proProperty',
+        propertyIds: ['proProperty'],
       }).then(() => {
         const user = UserService.fetchOne({
           $filters: { 'emails.address': 'john@doe.com' },
@@ -243,7 +243,7 @@ describe('PropertyService', function () {
           name: 'Doe',
           phoneNumber: '123',
         },
-        propertyId: 'proProperty',
+        propertyIds: ['proProperty'],
       });
 
       return checkEmails(1).then((emails) => {
@@ -286,11 +286,10 @@ describe('PropertyService', function () {
           name: 'Doe',
           phoneNumber: '123',
         },
-        propertyId: 'proProperty',
+        propertyIds: ['proProperty'],
       });
 
       return checkEmails(1).then((emails) => {
-        console.log('emails:', emails);
         expect(emails.length).to.equal(1);
         const {
           emailId,

@@ -480,7 +480,7 @@ describe('UserService', () => {
 
       return UserService.proInviteUser({
         user: userToInvite,
-        propertyId: 'propertyId',
+        propertyIds: ['propertyId'],
         proUserId: 'proId',
       }).then(() => {
         const userCreated = UserService.findOne({
@@ -514,7 +514,7 @@ describe('UserService', () => {
 
       return UserService.proInviteUser({
         user: userToInvite,
-        propertyId: 'propertyId2',
+        propertyIds: ['propertyId2'],
         proUserId: 'proId',
       })
         .then(checkEmails)
@@ -554,13 +554,13 @@ describe('UserService', () => {
 
       return UserService.proInviteUser({
         user: userToInvite,
-        propertyId: 'propertyId',
+        propertyIds: ['propertyId'],
         proUserId: 'proId',
       }).then(() => {
         expect(() =>
           UserService.proInviteUser({
             user: userToInvite,
-            propertyId: 'propertyId',
+            propertyIds: ['propertyId'],
             proUserId: 'proId',
           })).to.throw('Cet utilisateur est déjà invité à ce bien immobilier');
       });
