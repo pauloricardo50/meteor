@@ -21,6 +21,7 @@ import {
   proInviteUser,
   getUserByEmail,
   setUserReferredBy,
+  setUserReferredByOrganisation,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -168,4 +169,9 @@ getUserByEmail.setHandler((context, params) => {
 setUserReferredBy.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.setReferredBy(params);
+});
+
+setUserReferredByOrganisation.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setReferredByOrganisation(params);
 });

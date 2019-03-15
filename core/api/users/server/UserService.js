@@ -242,18 +242,24 @@ class UserService extends CollectionService {
     let promises = [];
 
     if (propertyIds && propertyIds.length) {
-      promises = [...promises, PropertyService.inviteUser({
-        proUserId,
-        user,
-        propertyIds,
-      })];
+      promises = [
+        ...promises,
+        PropertyService.inviteUser({
+          proUserId,
+          user,
+          propertyIds,
+        }),
+      ];
     }
     if (promotionIds && promotionIds.length) {
-      promises = [...promises, ...promotionIds.map(promotionId =>
-        PromotionService.inviteUser({
-          promotionId,
-          user: { ...user, invitedBy: proUserId },
-        }))];
+      promises = [
+        ...promises,
+        ...promotionIds.map(promotionId =>
+          PromotionService.inviteUser({
+            promotionId,
+            user: { ...user, invitedBy: proUserId },
+          })),
+      ];
     }
     if (property) {
       // Not yet implemented
@@ -287,6 +293,15 @@ class UserService extends CollectionService {
       userId,
       object: {
         referredByUserLink: proId,
+        referredByOrganisationLink: organisationId,
+      },
+    });
+  }
+
+  setReferredByOrganisation({ userId, organisationId }) {
+    return this.update({
+      userId,
+      object: {
         referredByOrganisationLink: organisationId,
       },
     });

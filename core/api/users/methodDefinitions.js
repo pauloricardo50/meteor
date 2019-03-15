@@ -142,3 +142,8 @@ export const setUserReferredBy = new Method({
     proId: String,
   },
 });
+
+export const setUserReferredByOrganisation = new Method({
+  name: 'setUserReferredByOrganisation',
+  params: { userId: String, organisationId: String },
+});
