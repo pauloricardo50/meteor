@@ -7,13 +7,14 @@ query.expose({
   firewall(userId, params) {
     const { userId: providedUserId } = params;
 
-    if (SecurityService.isUserAdmin(userId) && providedUserId) {
+    SecurityService.checkUserIsPro(userId);
+
+    if (providedUserId) {
+      SecurityService.checkUserIsAdmin(userId);
       params.userId = providedUserId;
     } else {
       params.userId = userId;
     }
-
-    SecurityService.checkUserIsPro(userId);
   },
   validateParams: {
     userId: String,

@@ -10,10 +10,7 @@ import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';
-import {
-  getUserNameAndOrganisation,
-  removeCustomerFromProperty,
-} from '../../../api';
+import { removeCustomerFromProperty, getReferredBy } from '../../../api';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 
@@ -54,27 +51,6 @@ const canRemoveCustomerFromProperty = ({
   });
 };
 
-const getReferredBy = ({ user, currentUser = {}, isAdmin }) => {
-  const { organisations = [] } = currentUser;
-  const organisationUsers = organisations.length ? organisations[0].users : [];
-  const { referredByUser = {}, referredByOrganisation = {} } = user;
-
-  let label = 'Autre';
-
-  if (
-    isAdmin
-    || organisations.some(({ _id }) => referredByOrganisation._id === _id)
-    || organisationUsers.some(({ _id }) => referredByUser._id === _id)
-  ) {
-    label = getUserNameAndOrganisation({ user: referredByUser });
-  }
-
-  return {
-    raw: referredByUser.name,
-    label,
-  };
-};
-
 const makeMapLoan = ({
   history,
   permissions,
@@ -98,7 +74,7 @@ const makeMapLoan = ({
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      getReferredBy({ user, currentUser, isAdmin }),
+      getReferredBy({ user, proUser: currentUser, isAdmin }),
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
