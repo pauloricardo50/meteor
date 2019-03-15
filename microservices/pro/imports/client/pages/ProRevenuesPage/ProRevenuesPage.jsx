@@ -30,4 +30,5 @@ const ProRevenuesPage = ({
     />
   </div>
 );
+
 export default ProRevenuesPageContainer(ProRevenuesPage);

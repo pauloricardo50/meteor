@@ -7,7 +7,7 @@ import RevenuesByStatusContainer from './RevenuesByStatusContainer';
 type RevenuesByStatusProps = {};
 
 const RevenuesByStatus = ({ rows, columnOptions }: RevenuesByStatusProps) => (
-  <Table rows={rows} columnOptions={columnOptions} />
+  <Table rows={rows} columnOptions={columnOptions} sortable={false} />
 );
 
 export default RevenuesByStatusContainer(RevenuesByStatus);
