@@ -31,16 +31,18 @@ const anonymizePropertyLoans = ({ loans = [], userId }) =>
   });
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
-  ...anonymizePromotionLoans({
-    loans: loans.filter(({ hasPromotion }) => hasPromotion),
-    userId,
-  }),
+  ...loans,
+  // Don't anonymize referred loans 
+  // ...anonymizePromotionLoans({
+  //   loans: loans.filter(({ hasPromotion }) => hasPromotion),
+  //   userId,
+  // }),
 
-  ...anonymizePropertyLoans({
-    loans: loans.filter(({ hasProProperty }) => hasProProperty),
-    userId,
-  }),
-  ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
+  // ...anonymizePropertyLoans({
+  //   loans: loans.filter(({ hasProProperty }) => hasProProperty),
+  //   userId,
+  // }),
+  // ...loans.filter(({ hasPromotion, hasProProperty }) => !hasPromotion && !hasProProperty),
 ];
 
 export const proReferredByLoansResolver = ({ userId, calledByUserId }) => {
