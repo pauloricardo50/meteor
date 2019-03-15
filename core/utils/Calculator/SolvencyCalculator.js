@@ -12,8 +12,12 @@ import { roundValue } from '../conversionFunctions';
 const INITIAL_MIN_BOUND = 0;
 const INITIAL_MAX_BOUND = 1000000;
 const INITIAL_ABSOLUTE_MAX_BOUND = 100000000;
+const INITIAL_MIN_BOUND_BORROW_RATIO = 0;
+const INITIAL_MAX_BOUND_BORROW_RATIO = 0.9;
+const INITIAL_ABSOLUTE_MAX_BOUND_BORROW_RATIO = 1;
 const MAX_ITERATIONS = 50;
 const ACCURACY = 1000;
+const BORROW_RATIO_ACCURACY = 0.05;
 const ROUNDING_DIGITS = Math.log10(ACCURACY);
 const MAX_BOUND_MULTIPLICATION_FACTOR = 2;
 const OWN_FUNDS_ROUNDING_ALGO = 100;
@@ -195,7 +199,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       this.ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_ALGO;
 
       while (!foundValue) {
-        iterations++;
+        iterations += 1;
         const nextPropertyValue = roundValue(
           (minBound + maxBound) / 2,
           ROUNDING_DIGITS,
@@ -230,18 +234,231 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
         }
 
         if (maxBound - minBound <= ACCURACY) {
-          foundValue = minBound;
+          foundValue = true;
         }
 
         if (iterations > MAX_ITERATIONS) {
-          return minBound;
+          foundValue = true;
         }
       }
 
       this.ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_AMOUNT;
 
       console.log('getMaxPropertyValue iterations:', iterations);
-      return foundValue;
+      return minBound;
+    }
+
+    getNextStepSize({
+      currentMax,
+      currentBorrowRatio,
+      stepSize,
+      borrowers,
+      residenceType,
+      canton,
+      direction,
+    }) {
+      let newStepSize = stepSize;
+      let foundBetterValue;
+
+      while (!foundBetterValue) {
+        let nextValue;
+        if (direction === 'upwards') {
+          nextValue = this.getMaxPropertyValue({
+            borrowers,
+            residenceType,
+            maxBorrowRatio: currentBorrowRatio + stepSize,
+            canton,
+          });
+        } else {
+          nextValue = this.getMaxPropertyValue({
+            borrowers,
+            residenceType,
+            maxBorrowRatio: currentBorrowRatio - stepSize,
+            canton,
+          });
+        }
+
+        if (nextValue > currentMax) {
+          foundBetterValue = true;
+        } else {
+          newStepSize /= 2;
+        }
+
+        if (newStepSize < 0.05) {
+          foundBetterValue = true;
+        }
+      }
+
+      return newStepSize;
+    }
+
+    getMaxPropertyValueWithoutBorrowRatio2({
+      borrowers,
+      residenceType,
+      canton,
+    }) {
+      let borrowRatio = 0.7;
+      let foundValue = false;
+      let iterations = 0;
+      let stepSize = 0.05;
+      const deltaX = 0.01;
+      let maxPropertyValue;
+      let optimalBorrowRatio;
+
+      const setMax = (ratio, propertyValue) => {
+        if (propertyValue > maxPropertyValue) {
+          maxPropertyValue = propertyValue;
+          optimalBorrowRatio = ratio;
+        }
+      };
+
+      while (!foundValue) {
+        iterations += 1;
+
+        const center = this.getMaxPropertyValue({
+          borrowers,
+          residenceType,
+          maxBorrowRatio: borrowRatio,
+          canton,
+        });
+        setMax(borrowRatio, center);
+
+        const yLeft = this.getMaxPropertyValue({
+          borrowers,
+          residenceType,
+          maxBorrowRatio: borrowRatio - deltaX,
+          canton,
+        });
+        setMax(borrowRatio - deltaX, yLeft);
+        const yRight = this.getMaxPropertyValue({
+          borrowers,
+          residenceType,
+          maxBorrowRatio: borrowRatio + deltaX,
+          canton,
+        });
+        setMax(borrowRatio + deltaX, yRight);
+
+        const slope = yRight - yLeft;
+
+        if (slope > 0) {
+          maxPropertyValue = yRight;
+          stepSize = this.getNextStepSize({
+            currentMax: center,
+            currentBorrowRatio: borrowRatio,
+            stepSize,
+            borrowers,
+            residenceType,
+            canton,
+            direction: 'upwards',
+          });
+          borrowRatio += stepSize;
+        } else {
+          maxPropertyValue = yLeft;
+          stepSize = this.getNextStepSize({
+            currentMax: center,
+            currentBorrowRatio: borrowRatio,
+            stepSize,
+            borrowers,
+            residenceType,
+            canton,
+            direction: 'downwards',
+          });
+          borrowRatio -= stepSize;
+        }
+        console.log('stepSize:', stepSize);
+        console.log('borrowRatio:', optimalBorrowRatio);
+        console.log('maxPropertyValue:', maxPropertyValue);
+
+        if (stepSize < deltaX / 2) {
+          foundValue = true;
+        }
+
+        if (iterations > 50) {
+          foundValue = true;
+        }
+      }
+
+      // Round the borrowRatio, and recompute the exact property value
+      const finalBorrowRatio = Math.round(optimalBorrowRatio * 10000) / 10000;
+      const finalPropertyValue = this.getMaxPropertyValue({
+        borrowers,
+        residenceType,
+        maxBorrowRatio: finalBorrowRatio,
+        canton,
+      });
+
+      console.log('iterations:', iterations);
+      return {
+        borrowRatio: finalBorrowRatio,
+        propertyValue: finalPropertyValue,
+      };
+    }
+
+    getMaxPropertyValueWithoutBorrowRatio({
+      borrowers,
+      residenceType,
+      canton,
+    }) {
+      let foundValue = false;
+      let minBound = INITIAL_MIN_BOUND_BORROW_RATIO;
+      let maxBound = INITIAL_MAX_BOUND_BORROW_RATIO;
+      let iterations = 0;
+      console.log('iterations:', iterations);
+
+      let lowerBound = this.getMaxPropertyValue({
+        borrowers,
+        residenceType,
+        maxBorrowRatio: minBound,
+        canton,
+      });
+      console.log('lowerBound:', lowerBound);
+      let upperBound = this.getMaxPropertyValue({
+        borrowers,
+        residenceType,
+        maxBorrowRatio: maxBound,
+        canton,
+      });
+      console.log('upperBound:', upperBound);
+      let borrowRatio;
+      let midValue;
+
+      while (!foundValue) {
+        iterations += 1;
+        borrowRatio = (minBound + maxBound) / 2;
+        console.log('borrowRatio:', borrowRatio);
+
+        midValue = this.getMaxPropertyValue({
+          borrowers,
+          residenceType,
+          maxBorrowRatio: borrowRatio,
+          canton,
+        });
+        console.log('midValue:', midValue);
+
+        const leftSideIsBetter = (lowerBound + midValue) / 2 > (upperBound + midValue) / 2;
+        console.log('leftSideIsBetter:', leftSideIsBetter);
+
+        if (leftSideIsBetter) {
+          maxBound = borrowRatio;
+          upperBound = midValue;
+        } else {
+          minBound = borrowRatio;
+          lowerBound = midValue;
+        }
+
+        const shouldStopIterating = maxBound - minBound <= BORROW_RATIO_ACCURACY;
+
+        if (shouldStopIterating) {
+          foundValue = true;
+        }
+
+        if (iterations > 1) {
+          foundValue = true;
+        }
+      }
+
+      console.log('iterations:', iterations);
+      return { propertyValue: midValue, borrowRatio };
     }
 
     getMaxPropertyValueForLoan({

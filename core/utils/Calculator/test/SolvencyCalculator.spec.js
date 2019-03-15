@@ -144,4 +144,39 @@ describe('SolvencyCalculator', () => {
       ]);
     });
   });
+
+  describe.only('getMaxPropertyValueWithoutBorrowRatio', () => {
+    it('finds the ideal borrowRatio', () => {
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxPropertyValueWithoutBorrowRatio2({
+        borrowers: [{ bankFortune: 500000, salary: 1000000 }],
+      });
+      expect(borrowRatio).to.equal(0.7938);
+      expect(propertyValue).to.equal(1951000);
+    });
+
+    it('finds the ideal borrowRatio', () => {
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxPropertyValueWithoutBorrowRatio2({
+        borrowers: [{ bankFortune: 250000, salary: 100000 }],
+      });
+      expect(borrowRatio).to.equal(0.6938);
+      expect(propertyValue).to.equal(700000);
+    });
+
+    it('finds the ideal borrowRatio', () => {
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxPropertyValueWithoutBorrowRatio2({
+        borrowers: [{ bankFortune: 250000, salary: 50000 }],
+      });
+      expect(borrowRatio).to.equal(0.5125);
+      expect(propertyValue).to.equal(465000);
+    });
+  });
 });
