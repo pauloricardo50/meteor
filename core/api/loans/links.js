@@ -1,4 +1,5 @@
 // @flow
+
 import Loans from './loans';
 import {
   Properties,
@@ -26,6 +27,13 @@ Loans.addLinks({
     field: 'userId',
     collection: Users,
     type: 'one',
+    denormalize: {
+      field: 'userCache',
+      body: {
+        referredByOrganisationLink: 1,
+      },
+      bypassSchema: false,
+    },
   },
   tasks: {
     collection: Tasks,

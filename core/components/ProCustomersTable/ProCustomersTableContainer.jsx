@@ -7,6 +7,7 @@ import proLoans from 'core/api/loans/queries/proLoans';
 import { getReferredBy } from 'core/api/helpers';
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+
 import LoanProgress from 'core/components/LoanProgress/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import { LOANS_COLLECTION } from 'core/api/constants';

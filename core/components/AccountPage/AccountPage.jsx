@@ -13,7 +13,7 @@ import AccountPageHeader from './AccountPageHeader';
 const AccountPage = ({ currentUser }) => {
   const { email, _id: userId, phoneNumbers } = currentUser;
   return (
-    <Page id="AccountPage" topFullWidth={Meteor.microservice === 'pro'}>
+    <Page id="AccountPage">
       <div className="card1 card-top account-page">
         <AccountPageHeader currentUser={currentUser} />
 

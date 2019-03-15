@@ -9,3 +9,4 @@ export const PRO_PROMOTION_PAGE = '/promotions/:promotionId';
 export const PRO_PROMOTION_USERS_PAGE = '/promotions/:promotionId/users';
 export const PRO_PROPERTY_PAGE = '/properties/:propertyId';
 export const PRO_ORGANISATION_PAGE = '/organisation/:tabId?';
+export const PRO_REVENUES_PAGE = '/revenues';
