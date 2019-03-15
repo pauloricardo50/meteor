@@ -24,6 +24,7 @@ import './server/hooks';
 import './server/queries';
 import './server/reducers';
 import './server/mongoIndexes';
+import './server/caches';
 
 import { COLLECTIONS } from './constants';
 import BorrowerService from './borrowers/server/BorrowerService';
@@ -79,3 +80,5 @@ export const Services = {
   [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
   [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
 };
+
+// should be called last in our server code, after all caches have been declared

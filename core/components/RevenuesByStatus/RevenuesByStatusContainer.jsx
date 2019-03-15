@@ -19,7 +19,7 @@ const columnOptions = [
 
 const getRevenuesByStatus = (revenueStatus, loans) =>
   loans
-    .reduce((arr, { revenues }) => [...arr, ...revenues], [])
+    .reduce((arr, { revenues = [] }) => [...arr, ...revenues], [])
     .filter(({ status }) => status === revenueStatus)
     .reduce((sum, { amount = 0 }) => sum + amount, 0);
 
@@ -32,7 +32,7 @@ const rows = [
         (sum, { estimatedRevenues = 0 }) => sum + estimatedRevenues,
         0,
       );
-      return <Money value={total} />;
+      return <Money value={total} displayZero={false} />;
     },
   },
   {
@@ -42,7 +42,7 @@ const rows = [
         REVENUE_STATUS.EXPECTED,
         loans,
       );
-      return <Money value={expectedRevenues} />;
+      return <Money value={expectedRevenues} displayZero={false} />;
     },
   },
   {
@@ -52,7 +52,7 @@ const rows = [
         REVENUE_STATUS.CASHED,
         loans,
       );
-      return <Money value={expectedRevenues} />;
+      return <Money value={expectedRevenues} displayZero={false} />;
     },
   },
 ];
@@ -70,7 +70,10 @@ const makeRow = loansByStatus => ({ id, func }) => ({
 
 export default withProps(({ loans = [] }) => {
   const loansByStatus = loans.reduce(
-    (obj, loan) => ({ ...obj, [loan.status]: [...obj[loan.status], loan] }),
+    (obj, loan) => ({
+      ...obj,
+      [loan.status]: [...(obj[loan.status] || []), loan],
+    }),
     {},
   );
 
