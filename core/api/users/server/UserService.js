@@ -306,6 +306,34 @@ class UserService extends CollectionService {
       },
     });
   }
+
+  proInviteUserToOrganisation({ user, organisationId, role, proId }) {
+    const { email } = user;
+
+    if (this.doesUserExist({ email })) {
+      throw new Meteor.Error('Cet utilisateur existe déjà');
+    }
+
+    const { assignedEmployeeId } = this.fetchOne({
+      $filters: { _id: proId },
+      assignedEmployeeId: 1,
+    });
+
+    const userId = this.adminCreateUser({
+      options: { ...user, sendEnrollmentEmail: true },
+      role: ROLES.PRO,
+      adminId: assignedEmployeeId,
+    });
+
+    this.addLink({
+      id: userId,
+      linkName: 'organisations',
+      linkId: organisationId,
+      metadata: { role },
+    });
+
+    return userId;
+  }
 }
 
 export default new UserService();
