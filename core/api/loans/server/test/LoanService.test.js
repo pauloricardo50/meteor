@@ -126,7 +126,7 @@ describe('LoanService', function () {
     });
   });
 
-  describe.only('addPropertyToLoan', () => {
+  describe('addPropertyToLoan', () => {
     it('adds the propertyId on all structures', () => {
       generator({
         loans: {
