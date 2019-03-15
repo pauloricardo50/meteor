@@ -5,7 +5,7 @@ import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker/locale/fr';
 
 import { checkEmails } from '../../../../utils/testHelpers';
-import '../../../factories';
+import generator from '../../../factories';
 import LoanService from '../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -108,13 +108,11 @@ describe('LoanService', function () {
     it('inserts a property, borrower and loan', () => {
       expect(LoanService.countAll()).to.equal(0, 'loans 0');
       expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
-      expect(PropertyService.countAll()).to.equal(0, 'properties 0');
 
       LoanService.adminLoanInsert({ userId });
 
       expect(LoanService.countAll()).to.equal(1, 'loans 1');
       expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
-      expect(PropertyService.countAll()).to.equal(1, 'properties 1');
     });
 
     it('adds the same userId on all 3 documents', () => {
@@ -124,10 +122,6 @@ describe('LoanService', function () {
       expect(BorrowerService.findOne({}).userId).to.equal(
         userId,
         'borrowers userId',
-      );
-      expect(PropertyService.findOne({}).userId).to.equal(
-        userId,
-        'properties userId',
       );
     });
   });
@@ -689,14 +683,32 @@ describe('LoanService', function () {
 
     beforeEach(() => {
       resetDatabase();
-      const adminId = Factory.create('adminEpotek')._id;
-      const userId = Factory.create('user', { assignedEmployeeId: adminId })
-        ._id;
-      loanId = LoanService.adminLoanInsert({ userId });
-      PropertyService.collection.update(
-        {},
-        { $set: { address1: 'rue du lac 31', zipCode: 1400, city: 'Yverdon' } },
-      );
+      loanId = 'someLoan';
+      generator({
+        users: [
+          { _id: 'adminId', _factory: 'adminEpotek' },
+          {
+            _id: 'userId',
+            _factory: 'user',
+            assignedEmployee: { _id: 'adminId' },
+            loans: {
+              _id: loanId,
+              _factory: 'loan',
+              borrowers: { _factory: 'borrower' },
+              properties: {
+                _id: 'propertyId',
+                _factory: 'property',
+                address1: 'rue du lac 31',
+                zipCode: 1400,
+                city: 'Yverdon',
+              },
+              structures: [{ id: 'struct', propertyId: 'propertyId' }],
+              selectedStructure: 'struct',
+            },
+          },
+        ],
+      });
+
       addresses = [];
     });
 
@@ -749,7 +761,7 @@ describe('LoanService', function () {
           expect(emails.length).to.equal(0);
         }));
 
-    it('does no send any feedback if there is no offer', () => {
+    it('does not send any feedback if there is no offer', () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 0;
 
