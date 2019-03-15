@@ -1,6 +1,7 @@
 import React from 'react';
 import { withProps } from 'recompose';
 
+import Calculator from '../../utils/Calculator/index';
 import { LOAN_STATUS, REVENUE_STATUS } from '../../api/constants';
 import T, { Money } from '../Translation';
 
@@ -28,8 +29,9 @@ const rows = [
   {
     id: 'estimatedRevenues',
     func: (loans) => {
-      const total = loans.reduce(
-        (sum, { estimatedRevenues = 0 }) => sum + estimatedRevenues,
+      const loansWithoutExplicitRevenues = loans.filter(({ revenues }) => revenues.length === 0);
+      const total = loansWithoutExplicitRevenues.reduce(
+        (sum, loan) => sum + Calculator.getEstimatedRevenues({ loan }),
         0,
       );
       return <Money value={total} displayZero={false} />;

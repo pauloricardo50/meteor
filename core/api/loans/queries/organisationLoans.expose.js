@@ -25,7 +25,6 @@ query.expose({
   validateParams: { organisationId: Match.Maybe(String) },
   embody: {
     $filter({ filters, params: { organisationId } }) {
-      console.log('organisationId:', organisationId);
       filters['userCache.referredByOrganisationLink'] = organisationId;
     },
     user: { organistationLink: 1 },
