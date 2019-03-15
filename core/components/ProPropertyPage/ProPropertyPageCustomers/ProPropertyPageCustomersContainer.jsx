@@ -10,10 +10,7 @@ import proPropertyLoans from '../../../api/loans/queries/proPropertyLoans';
 import { createRoute } from '../../../utils/routerUtils';
 import ConfirmMethod from '../../ConfirmMethod';
 import T from '../../Translation';
-import {
-  getUserNameAndOrganisation,
-  removeCustomerFromProperty,
-} from '../../../api';
+import { removeCustomerFromProperty, getReferredBy } from '../../../api';
 import { getProPropertyCustomerOwnerType } from '../../../api/properties/propertyClientHelper';
 import { isAllowedToRemoveCustomerFromProProperty } from '../../../api/security/clientSecurityHelpers';
 
@@ -77,12 +74,7 @@ const makeMapLoan = ({
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      {
-        raw: user.referredByUser && user.referredByUser.name,
-        label:
-          user.referredByUser
-          && getUserNameAndOrganisation({ user: user.referredByUser }),
-      },
+      getReferredBy({ user, proUser: currentUser, isAdmin }),
       {
         raw: loanProgress.verificationStatus,
         label: <LoanProgress loanProgress={loanProgress} />,
@@ -126,5 +118,6 @@ export default compose(
     columnOptions,
     permissions,
     property,
+    loans,
   })),
 );

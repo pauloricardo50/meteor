@@ -20,6 +20,7 @@ export const USER_QUERIES = {
   USER_SEARCH: 'USER_SEARCH',
   USER_EMAILS: 'USER_EMAILS',
   PROS: 'PROS',
+  PRO_REFERRED_BY: 'PRO_REFERRED_BY',
 };
 
 export const USER_EVENTS = {
