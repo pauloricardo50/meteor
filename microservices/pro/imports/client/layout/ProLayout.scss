@@ -12,6 +12,10 @@
     padding: 16px;
     padding-left: 136px;
   }
+
+  .page-title .top-bar {
+    width: calc(100% - 120px);
+  }
 }
 
 .pro-top-nav {

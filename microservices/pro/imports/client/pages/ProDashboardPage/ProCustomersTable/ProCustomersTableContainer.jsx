@@ -7,11 +7,11 @@ import proLoans from 'core/api/loans/queries/proLoans';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
-import {LOANS_COLLECTION} from 'core/api/constants'
+import { LOANS_COLLECTION } from 'core/api/constants';
 
 const columnOptions = [
   { id: 'loanName' },
-  { id: 'status'},
+  { id: 'status' },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -56,7 +56,7 @@ const makeMapLoan = currentUser => (loan) => {
       loanName,
       {
         raw: status,
-        label: <StatusLabel status={status} collection={LOANS_COLLECTION}/>,
+        label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
       },
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],

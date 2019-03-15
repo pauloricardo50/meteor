@@ -13,28 +13,42 @@ import { createRoute } from 'core/utils/routerUtils';
 import {
   PRO_DASHBOARD_PAGE,
   PRO_ORGANISATION_PAGE,
+  PRO_REVENUES_PAGE,
 } from '../../startup/client/proRoutes';
 
-const items = [
-  {
-    label: <T id="ProSideNav.dashboard" />,
-    to: PRO_DASHBOARD_PAGE,
-    icon: 'home',
-    exact: true,
-  },
-  {
-    label: <T id="ProSideNav.organisation" />,
-    to: createRoute(PRO_ORGANISATION_PAGE, { tabId: '' }),
-    icon: <FontAwesomeIcon icon={faBriefcase} className="collection-icon" />,
-  },
-];
+const getItems = (currentUser) => {
+  const { organisations = [] } = currentUser;
+  return [
+    {
+      label: <T id="ProSideNav.dashboard" />,
+      to: PRO_DASHBOARD_PAGE,
+      icon: 'home',
+      exact: true,
+    },
+    {
+      label: <T id="ProSideNav.revenues" />,
+      to: createRoute(PRO_REVENUES_PAGE),
+      icon: 'monetizationOn',
+      condition: !!(
+        organisations.length
+        && organisations[0].commissionRates
+        && organisations[0].commissionRates.length > 0
+      ),
+    },
+    {
+      label: <T id="ProSideNav.organisation" />,
+      to: createRoute(PRO_ORGANISATION_PAGE, { tabId: '' }),
+      icon: <FontAwesomeIcon icon={faBriefcase} className="collection-icon" />,
+    },
+  ].filter(({ condition = true }) => condition);
+};
 
 type ProSideNavProps = {};
 
-const ProSideNav = (props: ProSideNavProps) => (
+const ProSideNav = ({ currentUser }: ProSideNavProps) => (
   <Drawer variant="permanent" className="pro-side-nav">
     <List>
-      {items.map(({ to, icon, label, exact }) => (
+      {getItems(currentUser).map(({ to, icon, label, exact }) => (
         <ListItem button key={to} className="pro-side-nav-item">
           <NavLink to={to} exact={exact}>
             {typeof icon === 'string' ? <Icon type={icon} size={32} /> : icon}

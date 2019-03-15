@@ -19,3 +19,10 @@ Loans.allow({
 
 Loans.attachSchema(LoanSchema);
 export default Loans;
+
+Meteor.startup(() => {
+  const caches = Mongo.Collection.get('users')
+    .find({})
+    .fetch();
+  console.log('caches:', caches);
+});
