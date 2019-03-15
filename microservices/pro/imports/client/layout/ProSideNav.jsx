@@ -16,7 +16,7 @@ import {
   PRO_REVENUES_PAGE,
 } from '../../startup/client/proRoutes';
 
-const getItems = (currentUser) => {
+const getItems = (currentUser = {}) => {
   const { organisations = [] } = currentUser;
   return [
     {

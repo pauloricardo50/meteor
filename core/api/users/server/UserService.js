@@ -308,7 +308,7 @@ class UserService extends CollectionService {
   }
 
   proInviteUserToOrganisation({ user, organisationId, role, proId }) {
-    const { email } = user;
+    const { email, phoneNumber } = user;
 
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error('Cet utilisateur existe déjà');
@@ -320,10 +320,15 @@ class UserService extends CollectionService {
     });
 
     const userId = this.adminCreateUser({
-      options: { ...user, sendEnrollmentEmail: true },
-      role: ROLES.PRO,
+      options: {
+        ...user,
+        phoneNumbers: [phoneNumber],
+        sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
+      },
       adminId: assignedEmployeeId,
     });
+
+    this.setRole({ userId, role: ROLES.PRO });
 
     this.addLink({
       id: userId,
