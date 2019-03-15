@@ -1,6 +1,5 @@
 // @flow
 import { OWN_FUNDS_TYPES } from 'core/api/constants';
-import { OWN_FUNDS_ROUNDING_AMOUNT } from 'core/config/financeConstants';
 import { getLoanDocuments } from '../../api/files/documents';
 import { OWN_FUNDS_USAGE_TYPES } from '../../api/constants';
 import {
@@ -9,7 +8,7 @@ import {
 } from '../../api/files/fileHelpers';
 import getRefinancingFormArray from '../../arrays/RefinancingFormArray';
 import { getCountedArray } from '../formArrayHelpers';
-import { getPercent, arrayify } from '../general';
+import { getPercent } from '../general';
 import NotaryFeesCalculator from '../notaryFees/NotaryFeesCalculator';
 
 export const withLoanCalculator = (SuperClass = class {}) =>
@@ -377,21 +376,9 @@ export const withLoanCalculator = (SuperClass = class {}) =>
       return true;
     }
 
-    getEstimatedMortgageRevenues({ loan, structureId }) {
-      const loanValue = this.selectLoanValue({ loan, structureId });
-      return loanValue * this.mortgageCommission;
-    }
-
-    getEstimatedIndirectAmortizationRevenues({ loan, structureId }) {
-      const loanValue = this.selectLoanValue({ loan, structureId });
-      return loanValue * this.indirectAmortizationCommission;
-    }
-
     getEstimatedRevenues({ loan, structureId }) {
-      return (
-        this.getEstimatedIndirectAmortizationRevenues({ loan, structureId })
-        + this.getEstimatedMortgageRevenues({ loan, structureId })
-      );
+      const propertyValue = this.selectPropertyValue({ loan, structureId });
+      return propertyValue * this.estimatedCommission;
     }
 
     getEstimatedReferralRevenues({ loan, structureId }) {

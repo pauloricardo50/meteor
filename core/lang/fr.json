@@ -1,4 +1,6 @@
 {
+  "WwwTopNavLinks.appLogin": "Login Clients",
+  "WwwTopNavLinks.proLogin": "Login Pro",
   "RevenuesByStatus.estimatedRevenues": "Revenus estimés",
   "RevenuesByStatus.expectedRevenues": "Revenus attendus",
   "RevenuesByStatus.cashedRevenues": "Revenus encaissés",
