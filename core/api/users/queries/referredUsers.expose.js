@@ -37,7 +37,6 @@ query.expose({
       if (userId) {
         filters.referredByUserLink = userId;
       }
-      console.log('filters:', filters);
     },
   },
   validateParams: {
