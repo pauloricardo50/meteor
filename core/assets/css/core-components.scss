@@ -44,15 +44,13 @@
 @import '{}/imports/core/components/StatusLabel/StatusLabel.scss';
 @import '{}/imports/core/components/Table/Table.scss';
 @import '{}/imports/core/components/Tabs/Tabs.scss';
+@import '{}/imports/core/components/Toggle/Toggle.scss';
 @import '{}/imports/core/components/tooltips/Tooltip.scss';
 @import '{}/imports/core/components/TopNav/TopNav.scss';
 @import '{}/imports/core/components/TranchePicker/TranchePicker.scss';
 @import '{}/imports/core/components/UploaderArray/Uploader/Uploader.scss';
 @import '{}/imports/core/components/Valuation/Valuation.scss';
 @import '{}/imports/core/components/widget1/widget1.scss';
-
-// core components that extend Material UI components
-@import '{}/imports/core/components/Material/Toggle/Toggle.scss';
 
 // External components SCSS
 @import './external-styles/antd.scss';

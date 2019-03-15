@@ -24,7 +24,7 @@ const getRevenuesByStatus = (revenueStatus, loans) =>
     .filter(({ status }) => status === revenueStatus)
     .reduce((sum, { amount = 0 }) => sum + amount, 0);
 
-const rows = [
+const rows = multiplier => [
   { id: 'loanCount', func: loans => loans.length },
   {
     id: 'estimatedRevenues',
@@ -34,7 +34,12 @@ const rows = [
         (sum, loan) => sum + Calculator.getEstimatedRevenues({ loan }),
         0,
       );
-      return <Money value={total} displayZero={false} />;
+      return (
+        <span>
+          {total > 0 && '~'}
+          <Money value={total * multiplier} displayZero={false} />
+        </span>
+      );
     },
   },
   {
@@ -44,17 +49,19 @@ const rows = [
         REVENUE_STATUS.EXPECTED,
         loans,
       );
-      return <Money value={expectedRevenues} displayZero={false} />;
+      return (
+        <span>
+          {expectedRevenues > 0 && '~'}
+          <Money value={expectedRevenues * multiplier} displayZero={false} />
+        </span>
+      );
     },
   },
   {
     id: 'cashedRevenues',
     func: (loans) => {
-      const expectedRevenues = getRevenuesByStatus(
-        REVENUE_STATUS.CASHED,
-        loans,
-      );
-      return <Money value={expectedRevenues} displayZero={false} />;
+      const cashedRevenues = getRevenuesByStatus(REVENUE_STATUS.CASHED, loans);
+      return <Money value={cashedRevenues * multiplier} displayZero={false} />;
     },
   },
 ];
@@ -70,7 +77,7 @@ const makeRow = loansByStatus => ({ id, func }) => ({
   ],
 });
 
-export default withProps(({ loans = [] }) => {
+export default withProps(({ loans = [], multiplier = 1 }) => {
   const loansByStatus = loans.reduce(
     (obj, loan) => ({
       ...obj,
@@ -80,7 +87,7 @@ export default withProps(({ loans = [] }) => {
   );
 
   return {
-    rows: rows.map(makeRow(loansByStatus)),
+    rows: rows(multiplier).map(makeRow(loansByStatus)),
     columnOptions,
   };
 });
