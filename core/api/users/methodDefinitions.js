@@ -120,8 +120,8 @@ export const proInviteUser = new Method({
   params: {
     user: Object,
     referOnly: Boolean,
-    propertyId: Match.Maybe(String),
-    promotionId: Match.Maybe(String),
+    propertyIds: Match.Maybe(Array),
+    promotionIds: Match.Maybe(Array),
     property: Match.Maybe(Object),
     proUserId: Match.Maybe(String),
   },

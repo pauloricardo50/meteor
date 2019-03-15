@@ -5,13 +5,18 @@ import moment from 'moment';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
-import T, { Money } from 'core/components/Translation';
+import T from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+
+import LoanProgress from 'core/components/LoanProgress/LoanProgress';
+import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import { LOANS_COLLECTION } from 'core/api/constants';
+import { CollectionIconLink } from 'core/components/IconLink';
 
 const columnOptions = [
   { id: 'loanName' },
   { id: 'status' },
+  { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'name' },
   { id: 'phone' },
   { id: 'email' },
@@ -19,15 +24,19 @@ const columnOptions = [
   { id: 'referredBy' },
   { id: 'relatedTo' },
   // { id: 'estimatedRevenues' },
-].map(({ id }) => ({ id, label: <T id={`ProCustomersTable.${id}`} /> }));
+].map(({ id, label }) => ({
+  id,
+  label: label || <T id={`ProCustomersTable.${id}`} />,
+}));
 
-const getReferredBy = ({ user, currentUser }) => {
+const getReferredBy = ({ user, proUser, isAdmin }) => {
   const { referredByUser = {}, referredByOrganisation = {} } = user;
-  const { _id: userId, organisations = [] } = currentUser;
+  const { _id: userId, organisations = [] } = proUser;
   let label = 'XXX';
 
   if (
-    referredByUser._id === userId
+    isAdmin
+    || referredByUser._id === userId
     || organisations.some(({ _id }) => _id === referredByOrganisation._id)
   ) {
     label = getUserNameAndOrganisation({ user: referredByUser });
@@ -39,33 +48,54 @@ const getReferredBy = ({ user, currentUser }) => {
   };
 };
 
-const makeMapLoan = currentUser => (loan) => {
+const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   const {
     _id: loanId,
     status,
     user,
     createdAt,
     name: loanName,
-    relatedTo,
+    relatedTo: relatedDocs = [],
+    loanProgress,
     estimatedRevenues,
   } = loan;
 
   return {
     id: loanId,
     columns: [
-      loanName,
+      {
+        raw: loanName,
+        label: isAdmin ? (
+          <CollectionIconLink
+            relatedDoc={{ ...loan, collection: LOANS_COLLECTION }}
+          />
+        ) : (
+          loanName
+        ),
+      },
       {
         raw: status,
         label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
+      },
+      {
+        raw: loanProgress.verificationStatus,
+        label: <LoanProgress loanProgress={loanProgress} />,
       },
       user && user.name,
       user && user.phoneNumbers && user.phoneNumbers[0],
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
-      getReferredBy({ user, currentUser }),
+      getReferredBy({ user, proUser, isAdmin }),
       {
-        raw: relatedTo,
-        label: relatedTo || '-',
+        raw: relatedDocs.length ? relatedDocs[0]._id : '-',
+        label: relatedDocs.length
+          ? relatedDocs.map(relatedDoc => (
+            <CollectionIconLink
+              key={relatedDoc._id}
+              relatedDoc={relatedDoc}
+            />
+          ))
+          : '-',
       },
       // {
       //   raw: estimatedRevenues,
@@ -80,26 +110,32 @@ const makeMapLoan = currentUser => (loan) => {
 };
 
 export default compose(
-  mapProps(({ currentUser, ...props }) => {
-    const { promotions = [], proProperties = [] } = currentUser;
+  mapProps(({ proUser, ...props }) => {
+    const { promotions = [], proProperties = [] } = proUser;
     return {
       ...props,
-      currentUser,
+      proUser,
       propertyIds: proProperties.map(({ _id }) => _id),
       promotionIds: promotions.map(({ _id }) => _id),
     };
   }),
   withSmartQuery({
     query: proLoans,
-    params: ({ propertyIds, promotionIds }) => ({
+    params: ({
+      propertyIds,
+      promotionIds,
+      proUser: { _id: userId },
+      isAdmin = false,
+    }) => ({
+      ...(isAdmin ? { userId } : {}),
       promotionId: { $in: promotionIds },
       propertyId: { $in: propertyIds },
     }),
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
-  withProps(({ loans, currentUser }) => ({
-    rows: loans.map(makeMapLoan(currentUser)),
+  withProps(({ loans, proUser, isAdmin = false }) => ({
+    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
     columnOptions,
   })),
 );

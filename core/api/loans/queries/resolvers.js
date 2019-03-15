@@ -1,4 +1,9 @@
 import Calculator from 'core/utils/Calculator';
+import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
+import {
+  PROPERTIES_COLLECTION,
+  PROPERTY_CATEGORY,
+} from 'core/api/properties/propertyConstants';
 import UserService from '../../users/server/UserService';
 import { makeLoanAnonymizer as makePromotionLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
 import { proLoans } from '../../fragments';
@@ -16,8 +21,13 @@ const anonymizePromotionLoans = ({ loans = [], userId }) =>
 const anonymizePropertyLoans = ({ loans = [], userId }) =>
   loans.map((loan) => {
     const { properties } = loan;
-    const propertyId = properties[0]._id;
-    return makeProPropertyLoanAnonymizer({ userId, propertyId })(loan);
+    const proPropertyIds = properties
+      .filter(({ category }) => category === PROPERTY_CATEGORY.PRO)
+      .map(({ _id }) => _id);
+    return makeProPropertyLoanAnonymizer({
+      userId,
+      propertyIds: proPropertyIds,
+    })(loan);
   });
 
 const anonymizeReferredByLoans = ({ loans = [], userId }) => [
@@ -122,6 +132,12 @@ const shouldShowPromotionLoan = ({
   return showAnonymizedPromotionLoans || invitedBy === userId;
 };
 
+const getRelatedProPropertiesOfUser = ({ loan, userId }) =>
+  loan.properties
+    .filter(property => property.category === PROPERTY_CATEGORY.PRO)
+    .filter(({ users = [] }) => users.some(({ _id }) => _id === userId))
+    .map(property => ({ ...property, collection: PROPERTIES_COLLECTION }));
+
 export const proLoansResolver = ({
   userId,
   calledByUserId,
@@ -137,7 +153,13 @@ export const proLoansResolver = ({
       promotionId,
     })
       .filter(shouldShowPromotionLoan({ showAnonymizedPromotionLoans, userId }))
-      .map(loan => ({ ...loan, relatedTo: loan.promotions[0].name }));
+      .map(loan => ({
+        ...loan,
+        relatedTo: loan.promotions.map(promotion => ({
+          ...promotion,
+          collection: PROMOTIONS_COLLECTION,
+        })),
+      }));
     loans = promotionLoans;
   }
 
@@ -145,7 +167,10 @@ export const proLoansResolver = ({
     const propertyLoans = proPropertyLoansResolver({
       calledByUserId,
       propertyId,
-    }).map(loan => ({ ...loan, relatedTo: loan.properties[0].address1 }));
+    }).map(loan => ({
+      ...loan,
+      relatedTo: getRelatedProPropertiesOfUser({ loan, userId }),
+    }));
     loans = [...loans, ...propertyLoans];
   }
 

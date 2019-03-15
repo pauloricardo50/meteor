@@ -114,9 +114,7 @@ export class PromotionService extends CollectionService {
         $filters: { _id: invitedBy },
         organisations: { _id: 1 },
       }) || {};
-      const organisationId = organisations.length
-        ? organisations[0]._id
-        : null;
+      const organisationId = organisations.length ? organisations[0]._id : null;
 
       userId = UserService.adminCreateUser({
         options: {

@@ -43,6 +43,7 @@ const config = {
         'OfferAdder',
         'PasswordChange',
         'PDF',
+        'ProCustomersTable',
         'Promotion',
         'PromotionLotPage',
         'PropertyForm',

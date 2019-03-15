@@ -80,7 +80,7 @@ describe('Pro', () => {
           permissions: { canModifyPromotion: true, canManageDocuments: true },
         });
         cy.refetch();
-        cy.get('.buttons button')
+        cy.get('.buttons > span')
           .contains('Gérer documents')
           .should('exist');
 

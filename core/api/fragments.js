@@ -311,7 +311,7 @@ export const proLoans = () => ({
   },
   hasPromotion: 1,
   hasProProperty: 1,
-  properties: { address1: 1 },
+  properties: { address1: 1, category: 1, users: { _id: 1 } },
   structure: 1,
 });
 
@@ -723,6 +723,7 @@ export const proPropertySummary = () => ({
   city: 1,
   status: 1,
   totalValue: 1,
+  loans: { _id: 1 },
 });
 
 export const proProperty = () => ({
@@ -789,6 +790,7 @@ export const adminUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
   promotions: { name: 1, status: 1 },
+  proProperties: { address1: 1, status: 1 },
   referredByUser: { name: 1, organisations: { name: 1 } },
   referredByOrganisation: { name: 1 },
 });
