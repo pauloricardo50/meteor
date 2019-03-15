@@ -126,6 +126,60 @@ describe('LoanService', function () {
     });
   });
 
+  describe.only('addPropertyToLoan', () => {
+    it('adds the propertyId on all structures', () => {
+      generator({
+        loans: {
+          _factory: 'loan',
+          _id: 'loanId',
+          structures: [{ id: '1' }, { id: '2' }],
+        },
+        properties: { _factory: 'property', _id: 'propertyId' },
+      });
+
+      LoanService.addPropertyToLoan({
+        loanId: 'loanId',
+        propertyId: 'propertyId',
+      });
+
+      loan = LoanService.get('loanId');
+
+      loan.structures.forEach(({ propertyId }) => {
+        expect(propertyId).to.equal('propertyId');
+      });
+    });
+
+    it('only adds the property if it is not defined', () => {
+      generator({
+        loans: {
+          _factory: 'loan',
+          _id: 'loanId',
+          structures: [
+            { id: '1', propertyId: 'a' },
+            { id: '2', promotionOptionId: 'b' },
+            { id: '3' },
+          ],
+        },
+        properties: { _factory: 'property', _id: 'propertyId' },
+      });
+
+      LoanService.addPropertyToLoan({
+        loanId: 'loanId',
+        propertyId: 'propertyId',
+      });
+
+      loan = LoanService.get('loanId');
+
+      loan.structures.forEach(({ propertyId, promotionOptionId }, i) => {
+        if (i === 2) {
+          expect(propertyId).to.equal('propertyId');
+        } else {
+          expect(!!(propertyId || promotionOptionId)).to.equal(true);
+        }
+      });
+    });
+  });
+
   describe('addNewStructure', () => {
     it('adds a new structure to a loan', () => {
       loanId = Factory.create('loan')._id;

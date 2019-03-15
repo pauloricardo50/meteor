@@ -227,7 +227,20 @@ export class LoanService extends CollectionService {
   };
 
   addPropertyToLoan = ({ loanId, propertyId }) => {
-    this.pushValue({ loanId, object: { propertyIds: propertyId } });
+    const loan = this.get(loanId);
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+
+    // Add this property to all structures that don't have a property
+    // for a better user experience
+    loan.structures.forEach(({ id, propertyId: structurePropertyId, promotionOptionId }) => {
+      if (!structurePropertyId && !promotionOptionId) {
+        this.updateStructure({
+          loanId,
+          structureId: id,
+          structure: { propertyId },
+        });
+      }
+    });
   };
 
   cleanupRemovedBorrower = ({ borrowerId }) => {
