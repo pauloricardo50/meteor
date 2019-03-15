@@ -104,6 +104,16 @@ const LoanSchema = new SimpleSchema({
   ...additionalDocuments([]),
   revenueLinks: { type: Array, defaultValue: [] },
   'revenueLinks.$': String,
+  userCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
+  userCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
 });
 
 export default LoanSchema;

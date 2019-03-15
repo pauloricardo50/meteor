@@ -4,9 +4,10 @@ import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proLoans from 'core/api/loans/queries/proLoans';
-import { getUserNameAndOrganisation } from 'core/api/helpers';
+import { getReferredBy } from 'core/api/helpers';
 import T, { Money } from 'core/components/Translation';
 import StatusLabel from 'core/components/StatusLabel/StatusLabel';
+
 import LoanProgress from 'core/components/LoanProgress/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
 import { LOANS_COLLECTION } from 'core/api/constants';
@@ -28,24 +29,6 @@ const columnOptions = [
   label: label || <T id={`ProCustomersTable.${id}`} />,
 }));
 
-const getReferredBy = ({ user, proUser, isAdmin }) => {
-  const { referredByUser = {}, referredByOrganisation = {} } = user;
-  const { _id: userId, organisations = [] } = proUser;
-  let label = 'XXX';
-
-  if (
-    isAdmin
-    || referredByUser._id === userId
-    || organisations.some(({ _id }) => _id === referredByOrganisation._id)
-  ) {
-    label = getUserNameAndOrganisation({ user: referredByUser });
-  }
-
-  return {
-    raw: user && user.referredByUser,
-    label,
-  };
-};
 
 const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   const {

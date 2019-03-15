@@ -156,6 +156,22 @@ export class PropertyService extends CollectionService {
         // The invitation has already been sent
         sendInvitation = false;
       }
+
+      if (proUserId) {
+        UserService.addLink({
+          id: userId,
+          linkName: 'referredByUser',
+          linkId: proUserId,
+        });
+      }
+
+      if (organisationId) {
+        UserService.addLink({
+          id: userId,
+          linkName: 'referredByOrganisation',
+          linkId: organisationId,
+        });
+      }
     } else {
       const {
         _id: existingUserId,
@@ -170,22 +186,6 @@ export class PropertyService extends CollectionService {
       ) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
       }
-    }
-
-    if (proUserId) {
-      UserService.addLink({
-        id: userId,
-        linkName: 'referredByUser',
-        linkId: proUserId,
-      });
-    }
-
-    if (organisationId) {
-      UserService.addLink({
-        id: userId,
-        linkName: 'referredByOrganisation',
-        linkId: organisationId,
-      });
     }
 
     const loanId = LoanService.insertPropertyLoan({ userId, propertyIds });
