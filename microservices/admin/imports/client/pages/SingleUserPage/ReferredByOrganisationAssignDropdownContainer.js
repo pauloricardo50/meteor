@@ -26,7 +26,6 @@ export default compose(
   withSmartQuery({
     query,
     queryOptions: { reactive: false },
-    params: () => ({ features: ORGANISATION_FEATURES.PRO }),
     dataName: 'organisations',
   }),
   withProps(({
