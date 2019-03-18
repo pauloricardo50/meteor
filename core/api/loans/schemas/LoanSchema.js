@@ -6,6 +6,8 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
+  moneyField,
+  percentageField,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -109,6 +111,11 @@ const LoanSchema = new SimpleSchema({
     blackbox: true,
     optional: true,
   },
+  maxSolvency: { type: Object, optional: true },
+  'maxSolvency.propertyValue': moneyField,
+  'maxSolvency.borrowRatio': percentageField,
+  'maxSolvency.canton': { type: String, allowedValues: Object.values(CANTONS) },
+  'maxSolvency.date': Date,
 });
 
 export default LoanSchema;
