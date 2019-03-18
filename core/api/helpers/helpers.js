@@ -91,7 +91,7 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
   const organisationUsers = organisations.length ? organisations[0].users : [];
   const { referredByUser = {}, referredByOrganisation = {} } = user;
 
-  let label = 'Autre';
+  let label = 'Déjà référé';
 
   if (
     isAdmin
