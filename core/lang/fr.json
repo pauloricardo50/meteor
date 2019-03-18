@@ -9,6 +9,7 @@
   "RevenuesByStatus.revenues": "Revenus",
   "RevenuesByStatus.loanCount": "Dossiers",
   "ProRevenuesPage.title": "Revenus",
+  "ProRevenuesPage.loanCount": "{value} Dossiers",
   "PropertiesTable.customers": "Acheteurs",
   "ProOrganisationPage.empty": "Vous ne faites pas partie d'une organisation",
   "ProOrganisationPage.empty.description": "Contactez-nous pour en créer une (022 566 01 10). Vous pourrez inviter vos collègues, et partager les informations entre plusieurs utilisateurs.",
