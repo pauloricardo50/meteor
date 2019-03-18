@@ -6,8 +6,23 @@ import ImageCarrousel from '../ImageCarrousel';
 
 type ProPropertyheaderProps = {};
 
+const getImages = (documents, imageUrls = []) => {
+  if (imageUrls.length) {
+    return imageUrls;
+  }
+
+  return (
+    (documents
+      && documents.propertyImages
+      && documents.propertyImages.length
+      && documents.propertyImages.map(({ url }) => url)) || [
+      '/img/placeholder.png',
+    ]
+  );
+};
+
 const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
-  const { address1, totalValue, description, documents } = property;
+  const { address1, totalValue, description, documents, imageUrls } = property;
 
   return (
     <div className="header">
@@ -18,16 +33,7 @@ const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
         </h2>
         <p className="description">{description}</p>
       </div>
-      <ImageCarrousel
-        images={
-          (documents
-            && documents.propertyImages
-            && documents.propertyImages.length
-            && documents.propertyImages.map(({ url }) => url)) || [
-            '/img/placeholder.png',
-          ]
-        }
-      />
+      <ImageCarrousel images={getImages(documents, imageUrls)} />
     </div>
   );
 };
