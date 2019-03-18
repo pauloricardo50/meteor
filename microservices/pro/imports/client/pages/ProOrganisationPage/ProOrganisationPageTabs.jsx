@@ -7,6 +7,7 @@ import CommissionRatesViewer from 'core/components/CommissionRatesViewer';
 import { createRoute } from 'core/utils/routerUtils';
 import { PRO_ORGANISATION_PAGE } from '../../../startup/client/proRoutes';
 import ProOrganisationUsersTable from './ProOrganisationUsersTable';
+import ReferredCustomersTable from './ReferredCustomersTable';
 
 type ProOrganisationPageTabsProps = {
   organisation: Object,
@@ -20,6 +21,10 @@ const getTabs = ({ organisation, currentUser }) => {
     {
       id: 'users',
       Component: ProOrganisationUsersTable,
+    },
+    {
+      id: 'referredCustomers',
+      Component: ReferredCustomersTable,
     },
     // { id: 'contacts', condition: contacts && contacts.length > 0 },
     {

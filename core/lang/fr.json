@@ -1,7 +1,8 @@
 {
+  "ProOrganisationPageTabs.referredCustomers": "Clients référés",
   "Forms.role": "Titre",
   "Forms.role.placeholder": "Chef d'équipe",
-  "OrganisationTabs.referredUsers": "Utilisateurs référés",
+  "OrganisationTabs.referredUsers": "Clients référés",
   "WwwTopNavLinks.appLogin": "Login Clients",
   "WwwTopNavLinks.proLogin": "Login Pro",
   "RevenuesByStatus.revenues": "Revenus",
