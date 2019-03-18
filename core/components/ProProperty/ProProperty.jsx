@@ -18,6 +18,7 @@ const ProProperty = ({ property }: ProPropertyProps) => {
         city={city}
         zipCode={zipCode}
         options={{ zoom: 15 }}
+        showIncompleteAddress={false}
       />
       <DocumentDownloadList files={documents && documents.propertyDocuments} />
     </div>
