@@ -32,7 +32,8 @@ const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
     externalUrl,
   } = property;
 
-  const { ogTitle, ogDescription } = openGraphData;
+  const { ogTitle, ogDescription, ogSiteName } = openGraphData;
+  console.log('openGraphData:', openGraphData);
 
   return (
     <div className="header">
@@ -50,7 +51,8 @@ const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
             className="card1 card-top card-hover flex-col center external-link"
           >
             <Icon type="openInNew" className="external-link-icon" size={40} />
-            <h4>Ouvrir site externe</h4>
+            {ogSiteName && <h2>{ogSiteName}</h2>}
+            <h4 className="secondary">Ouvrir site externe</h4>
           </a>
         )}
       </div>
