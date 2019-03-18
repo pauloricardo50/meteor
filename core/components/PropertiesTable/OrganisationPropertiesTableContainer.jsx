@@ -4,7 +4,7 @@ import { compose, mapProps } from 'recompose';
 
 import { createRoute } from '../../utils/routerUtils';
 import { withSmartQuery } from '../../api/containerToolkit';
-import proProperties from '../../api/properties/queries/proProperties';
+import proOrganisationProperties from '../../api/properties/queries/proOrganisationProperties';
 import T, { Money } from '../Translation';
 import StatusLabel from '../StatusLabel';
 import { PROPERTIES_COLLECTION } from '../../api/constants';
@@ -34,13 +34,11 @@ const makeMapProperty = history => ({
     { raw: totalValue, label: <Money value={totalValue} /> },
     loans.length,
   ],
-  handleClick: () =>
-    history.push(createRoute('/properties/:propertyId', { propertyId: _id })),
 });
 
 export default compose(
   withSmartQuery({
-    query: proProperties,
+    query: proOrganisationProperties,
     queryOptions: { reactive: false },
     renderMissingDoc: false,
     dataName: 'properties',
@@ -49,6 +47,6 @@ export default compose(
   mapProps(({ properties, history }) => ({
     rows: properties.map(makeMapProperty(history)),
     columnOptions,
-    title: <T id="ProDashboardPage.properties" />,
+    title: <T id="ProDashboardPage.organisationProperties" />,
   })),
 );
