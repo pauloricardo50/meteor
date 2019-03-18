@@ -29,7 +29,7 @@ const rows = multiplier => [
   {
     id: 'estimatedRevenues',
     func: (loans) => {
-      const loansWithoutExplicitRevenues = loans.filter(({ revenues }) => revenues.length === 0);
+      const loansWithoutExplicitRevenues = loans.filter(({ revenues = [] }) => revenues.length === 0);
       const total = loansWithoutExplicitRevenues.reduce(
         (sum, loan) => sum + Calculator.getEstimatedRevenues({ loan }),
         0,
