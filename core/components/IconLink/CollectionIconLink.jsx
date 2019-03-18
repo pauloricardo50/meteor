@@ -74,7 +74,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   case ORGANISATIONS_COLLECTION: {
     let text;
 
-    if (data.$metadata.role) {
+    if (data.$metadata && data.$metadata.role) {
       text = `${data.$metadata.role} @ ${data.name}`;
     } else if (data.logo) {
       text = (

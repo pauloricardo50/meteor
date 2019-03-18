@@ -21,6 +21,7 @@ import { UserModifier } from '../../components/UserDialogForm';
 import UserDeleter from './UserDeleter';
 import EmailModifier from './EmailModifier';
 import ReferredByAssignDropdown from './ReferredByAssignDropdown';
+import ReferredByOrganisationAssignDropdown from './ReferredByOrganisationAssignDropdown';
 
 const SingleUserPageHeader = ({ user, currentUser }) => {
   const {
@@ -110,6 +111,8 @@ const SingleUserPageHeader = ({ user, currentUser }) => {
             </div>
             <div className="assigned-employee space-children">
               <ReferredByAssignDropdown user={user} />
+            </div><div className="assigned-employee space-children">
+              <ReferredByOrganisationAssignDropdown user={user} />
             </div>
           </div>
         )}

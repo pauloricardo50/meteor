@@ -31,7 +31,10 @@ const ProOrganisationPage = ({ currentUser }: ProOrganisationPageProps) => {
         alt={organisation.name}
         className="org-logo"
       />
-      <ProOrganisationPageTabs organisation={organisation} />
+      <ProOrganisationPageTabs
+        organisation={organisation}
+        currentUser={currentUser}
+      />
     </div>
   );
 };
