@@ -7,6 +7,7 @@ import {
   FEEDBACK_OPTIONS,
 } from 'core/components/OfferList/feedbackHelpers';
 import Calculator from 'core/utils/Calculator';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import OfferService from '../../offers/server/OfferService';
 import { adminLoan, loanBorrower } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
@@ -399,25 +400,44 @@ export class LoanService extends CollectionService {
   }
 
   getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const { borrowers = [], residenceType } = this.fetchOne({
+    const { borrowers = [] } = this.fetchOne({
       $filters: { _id: loanId },
       borrowers: loanBorrower(),
-      residenceType: 1,
     });
 
     const {
-      borrowRatio,
-      propertyValue,
+      borrowRatio: borrowRatioMain,
+      propertyValue: propertyValueMain,
     } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
       borrowers,
-      residenceType,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      canton,
+    });
+
+    const {
+      borrowRatio: borrowRatioSecond,
+      propertyValue: propertyValueSecond,
+    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+      borrowers,
+      residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
     });
 
     return this.update({
       loanId,
       object: {
-        maxSolvency: { propertyValue, borrowRatio, canton, date: new Date() },
+        maxSolvency: {
+          main: {
+            propertyValue: propertyValueMain,
+            borrowRatio: borrowRatioMain,
+          },
+          second: {
+            propertyValue: propertyValueSecond,
+            borrowRatio: borrowRatioSecond,
+          },
+          canton,
+          date: new Date(),
+        },
       },
     });
   }

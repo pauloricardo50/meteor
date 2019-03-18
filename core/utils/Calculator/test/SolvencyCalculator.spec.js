@@ -145,7 +145,7 @@ describe('SolvencyCalculator', () => {
     });
   });
 
-  describe.only('getMaxPropertyValueWithoutBorrowRatio', () => {
+  describe('getMaxPropertyValueWithoutBorrowRatio', () => {
     it('finds the ideal borrowRatio', () => {
       const {
         borrowRatio,
@@ -188,6 +188,42 @@ describe('SolvencyCalculator', () => {
       });
       expect(borrowRatio).to.equal(0.7);
       expect(propertyValue).to.equal(571000);
+    });
+
+    it('finds the ideal borrowRatio for main residence type with insurance2', () => {
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+        borrowers: [
+          {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+        ],
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      });
+      expect(borrowRatio).to.equal(0.8);
+      expect(propertyValue).to.equal(2400000);
+    });
+
+    it('finds the ideal borrowRatio for second residence type with insurance2', () => {
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+        borrowers: [
+          {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
+        ],
+        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+      });
+      expect(borrowRatio).to.equal(0.8);
+      expect(propertyValue).to.equal(2000000);
     });
   });
 });

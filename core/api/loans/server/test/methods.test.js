@@ -78,9 +78,13 @@ describe('Loan methods', () => {
         loans: {
           _id: 'loanId',
           _factory: 'loan',
-          residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
           borrowers: [
-            { _factory: 'borrower', bankFortune: 500000, salary: 1000000 },
+            {
+              _factory: 'borrower',
+              bankFortune: 500000,
+              salary: 1000000,
+              insurance2: [{ value: 100000 }],
+            },
           ],
         },
       });
@@ -88,14 +92,19 @@ describe('Loan methods', () => {
       return getMaxPropertyValueWithoutBorrowRatio
         .run({ loanId: 'loanId', canton: CANTONS.GE })
         .then(() => {
-          const { maxSolvency } = LoanService.fetchOne({
+          const {
+            maxSolvency: { canton, date, main, second },
+          } = LoanService.fetchOne({
             $filters: { _id: 'loanId' },
             maxSolvency: 1,
           });
-          expect(maxSolvency.propertyValue).to.equal(2000000);
-          expect(maxSolvency.borrowRatio).to.equal(0.8);
-          expect(maxSolvency.canton).to.equal(CANTONS.GE);
-          expect(moment(maxSolvency.date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+
+          expect(canton).to.equal(CANTONS.GE);
+          expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
+          expect(main.propertyValue).to.equal(2400000);
+          expect(main.borrowRatio).to.equal(0.8);
+          expect(second.propertyValue).to.equal(2000000);
+          expect(second.borrowRatio).to.equal(0.8);
         });
     });
   });

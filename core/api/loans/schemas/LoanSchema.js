@@ -15,6 +15,7 @@ import {
   PURCHASE_TYPE,
   OWNER,
   CANTONS,
+  SOLVENCY_TYPE,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
 import LogicSchema from './LogicSchema';
@@ -112,10 +113,19 @@ const LoanSchema = new SimpleSchema({
     optional: true,
   },
   maxSolvency: { type: Object, optional: true },
-  'maxSolvency.propertyValue': moneyField,
-  'maxSolvency.borrowRatio': percentageField,
+  'maxSolvency.type': {
+    type: String,
+    allowedValues: Object.values(SOLVENCY_TYPE),
+    defaultValue: SOLVENCY_TYPE.SIMPLE,
+  },
   'maxSolvency.canton': { type: String, allowedValues: Object.values(CANTONS) },
   'maxSolvency.date': Date,
+  'maxSolvency.main': Object,
+  'maxSolvency.main.propertyValue': moneyField,
+  'maxSolvency.main.borrowRatio': percentageField,
+  'maxSolvency.second': Object,
+  'maxSolvency.second.propertyValue': moneyField,
+  'maxSolvency.second.borrowRatio': percentageField,
 });
 
 export default LoanSchema;
