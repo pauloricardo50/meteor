@@ -109,11 +109,6 @@ const LoanSchema = new SimpleSchema({
     blackbox: true,
     optional: true,
   },
-  userCache: {
-    type: Object,
-    blackbox: true,
-    optional: true,
-  },
 });
 
 export default LoanSchema;
