@@ -55,7 +55,7 @@ const CustomerAdder = ({ promotion, promotionStatus }: CustomerAdderProps) => {
       schema={CustomerAdderUserSchema({ promotion })}
       onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}
       title="Inviter un client"
-      description="Invitez un utilisateur à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
+      description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
       onSuccessMessage={onSuccessMessage}
     />
   );

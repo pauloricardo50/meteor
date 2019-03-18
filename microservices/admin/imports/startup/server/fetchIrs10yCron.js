@@ -6,6 +6,7 @@ import moment from 'moment';
 import { logError } from 'core/api/methods';
 import { irs10yFetch } from 'core/api/irs10y/server/methods';
 import CronitorService from 'core/api/cronitor/server/CronitorService';
+import SlackService from 'core/api/slack/server/SlackService';
 
 const getRandomMinute = () => Math.floor(Math.random() * 49) + 10;
 const jobName = 'Fetch IRS 10Y';
@@ -29,15 +30,22 @@ const job = () => ({
     return parsedText;
   },
   job() {
-    cronitor
-      .run()
-      .then(() => irs10yFetch.run({}))
-      .then(cronitor.complete)
-      .then(() => {
-        SyncedCron.remove(jobName);
-        SyncedCron.add(job());
-      })
-      .catch(cronitor.fail);
+    try {
+      cronitor
+        .run()
+        .then(() => irs10yFetch.run({}))
+        .then(cronitor.complete)
+        .then(() => {
+          SyncedCron.remove(jobName);
+          SyncedCron.add(job());
+        })
+        .catch(cronitor.fail);
+    } catch (error) {
+      SlackService.sendError({
+        error,
+        additionalData: ['IRS 10Y CRON error'],
+      });
+    }
   },
 });
 

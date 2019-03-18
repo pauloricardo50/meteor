@@ -25,15 +25,16 @@ const onSubmit = ({ organisationId, currentUser }) => ({ role, ...user }) =>
 const ProOrganisationUserAdder = ({
   organisationId,
   currentUser,
+  organisationName,
 }: ProOrganisationUserAdderProps) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={onSubmit({ organisationId, currentUser })}
-    title="Inviter un utilisateur"
+    title={`Ajouter utilisateur à ${organisationName}`}
     buttonProps={{
       raised: true,
       primary: true,
-      label: 'Inviter un utilisateur',
+      label: `Ajouter utilisateur à ${organisationName}`,
     }}
   />
 );

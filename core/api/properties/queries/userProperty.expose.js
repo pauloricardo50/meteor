@@ -3,7 +3,7 @@ import query from './userProperty';
 
 query.expose({
   firewall(userId, { propertyId }) {
-    Security.property.isAlllowedToUpdate(propertyId);
+    Security.properties.hasAccessToProperty({ propertyId, userId });
   },
   validateParams: { propertyId: String },
 });

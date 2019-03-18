@@ -15,6 +15,7 @@ import {
   setProPropertyPermissions,
   removeProFromProperty,
   removeCustomerFromProperty,
+  insertExternalProperty,
 } from '../methodDefinitions';
 import { checkInsertUserId } from '../../helpers/server/methodServerHelpers';
 import { ROLES } from '../../users/userConstants';
@@ -66,10 +67,11 @@ propertyDataIsInvalid.setHandler(({ userId }, params) => {
 
 inviteUserToProperty.setHandler(({ userId }, params) => {
   SecurityService.checkUserIsPro(userId);
-  params.propertyIds.forEach(propertyId => SecurityService.properties.isAllowedToInviteCustomers({
-    userId,
-    propertyId,
-  }));
+  params.propertyIds.forEach(propertyId =>
+    SecurityService.properties.isAllowedToInviteCustomers({
+      userId,
+      propertyId,
+    }));
 
   if (SecurityService.currentUserHasRole(ROLES.PRO)) {
     return PropertyService.inviteUser({ ...params, proUserId: userId });
@@ -114,4 +116,9 @@ removeCustomerFromProperty.setHandler(({ userId }, params) => {
     loanId,
   });
   PropertyService.removeCustomerFromProperty(params);
+});
+
+insertExternalProperty.setHandler(({ userId }, params) => {
+  SecurityService.checkUserIsPro(userId);
+  PropertyService.insertExternalProperty({ userId, ...params });
 });

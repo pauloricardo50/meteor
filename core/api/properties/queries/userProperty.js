@@ -8,4 +8,5 @@ export default Properties.createQuery(PROPERTY_QUERIES.USER_PROPERTY, {
     filters._id = propertyId;
   },
   ...userProperty(),
+  openGraphData: 1,
 });

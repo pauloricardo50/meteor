@@ -31,7 +31,7 @@ const AppLayout = ({ children, redirect, history, ...props }) => {
         </LayoutErrorBoundary>
       </div>
 
-      <ContactButton history={history} />
+      <ContactButton />
     </div>
   );
 };

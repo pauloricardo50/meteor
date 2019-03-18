@@ -8,6 +8,7 @@ import CollectionService from '../../helpers/CollectionService';
 import {
   VALUATION_STATUS,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
+  PROPERTY_CATEGORY,
 } from '../propertyConstants';
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
@@ -227,7 +228,10 @@ export class PropertyService extends CollectionService {
   }
 
   proPropertyInsert({ property, userId }) {
-    const propertyId = Properties.insert(property);
+    const propertyId = Properties.insert({
+      ...property,
+      category: PROPERTY_CATEGORY.PRO,
+    });
     this.addLink({
       id: propertyId,
       linkName: 'users',
@@ -260,6 +264,16 @@ export class PropertyService extends CollectionService {
     }
 
     this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
+  }
+
+  insertExternalProperty({ userId, property: { externalId, ...property } }) {
+    const existingProperty = this.fetchOne({ $filters: { externalId } });
+
+    if (existingProperty) {
+      throw new Meteor.Error(`Property with externalId "${externalId}" exists already`);
+    }
+
+    this.proPropertyInsert({ userId, property: { externalId, ...property } });
   }
 }
 
