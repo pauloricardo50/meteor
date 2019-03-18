@@ -2,8 +2,13 @@ import React from 'react';
 import { withProps } from 'recompose';
 
 import Calculator from '../../utils/Calculator/index';
-import { LOAN_STATUS, REVENUE_STATUS } from '../../api/constants';
+import {
+  LOAN_STATUS,
+  REVENUE_STATUS,
+  LOANS_COLLECTION,
+} from '../../api/constants';
 import T, { Money } from '../Translation';
+import StatusLabel from '../StatusLabel';
 
 const statuses = Object.values(LOAN_STATUS).filter(status => status !== LOAN_STATUS.TEST);
 
@@ -17,7 +22,7 @@ const columnOptions = [
   },
   ...statuses.map(status => ({
     id: status,
-    label: <T id={`Forms.status.${status}`} />,
+    label: <StatusLabel status={status} collection={LOANS_COLLECTION} />,
   })),
 ];
 
