@@ -38,7 +38,7 @@ const renderDialog = ({ loan, state, calculateSolvency, style = {} }) => {
       schema={schema}
       onSubmit={calculateSolvency}
       title="Calculer ma capacité d'achat maximale"
-      description="Afin de calculer les frais de notaire, veuillez renseigner le canton dans lequel vous souhaitez acheter un bien immobilier."
+      description={<p className="description">Afin de calculer les frais de notaire, veuillez renseigner le canton dans lequel vous souhaitez acheter un bien immobilier.</p>}
       buttonProps={{
         raised: true,
         primary: true,
