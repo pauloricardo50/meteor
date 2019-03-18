@@ -42,14 +42,16 @@ const CommissionRatesViewer = ({
       <h1>
         <Percent value={currentRate} />
       </h1>
-      <h3 className="secondary">
-        <T id="CommissionRatesViewer.referredRevenues" />
-      </h3>
-      <h1>
-        <Money value={referredRevenues} />
-      </h1>
       {commissionRates.length > 1 && (
-        <CommissionRatesViewerList commissionRates={commissionRates} />
+        <>
+          <h3 className="secondary">
+            <T id="CommissionRatesViewer.referredRevenues" />
+          </h3>
+          <h1>
+            <Money value={referredRevenues} />
+          </h1>
+          <CommissionRatesViewerList commissionRates={commissionRates} />
+        </>
       )}
     </div>
   );
