@@ -169,7 +169,7 @@ class UserService extends CollectionService {
   proReferUser = ({ user, proUserId }) => {
     const { email, firstName, lastName, phoneNumber } = user;
     if (this.doesUserExist({ email })) {
-      throw new Meteor.Error('Ce client a déjà été réferré');
+      throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
     }
 
     const pro = this.fetchOne({

@@ -4,6 +4,7 @@ import './propertyAssignedTo.expose';
 import './propertyFiles.expose';
 import './propertySearch.expose';
 import './proProperties.expose';
+import './proOrganisationProperties.expose';
 import './proProperty.expose';
 import './sideNavProperties.expose';
 import './userProperty.expose';

@@ -3,10 +3,10 @@ import { compose } from 'recompose';
 
 import T from 'core/components/Translation';
 import { PropertiesTable } from 'core/components/PropertiesTable/PropertiesTable';
-import PropertiesTableContainer from 'core/components/PropertiesTable/PropertiesTableContainer';
+import OrganisationPropertiesTableContainer from 'core/components/PropertiesTable/OrganisationPropertiesTableContainer';
 
 export default compose(
-  PropertiesTableContainer,
+  OrganisationPropertiesTableContainer,
   Component => (props) => {
     if (!props.rows || !props.rows.length) {
       return null;
