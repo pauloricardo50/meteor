@@ -262,7 +262,7 @@ export class PropertyService extends CollectionService {
     this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
   }
 
-  insertExternalProperty({ userId, externalId, ...property }) {
+  insertExternalProperty({ userId, property: { externalId, ...property } }) {
     const existingProperty = this.fetchOne({ $filters: { externalId } });
 
     if (existingProperty) {

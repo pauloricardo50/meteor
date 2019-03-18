@@ -318,9 +318,11 @@ describe('PropertyService', function () {
 
       PropertyService.insertExternalProperty({
         userId: 'proId',
-        externalId: 'abcd',
-        imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
-        externalLink: 'www.e-potek.ch',
+        property: {
+          externalId: 'abcd',
+          imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
+          externalLink: 'www.e-potek.ch',
+        },
       });
 
       const properties = PropertyService.fetch({
@@ -343,9 +345,11 @@ describe('PropertyService', function () {
       expect(() =>
         PropertyService.insertExternalProperty({
           userId: 'proId',
-          externalId: 'abcd',
-          imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
-          externalLink: 'www.e-potek.ch',
+          property: {
+            externalId: 'abcd',
+            imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
+            externalLink: 'www.e-potek.ch',
+          },
         })).to.throw('externalId');
     });
   });

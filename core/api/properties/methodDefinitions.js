@@ -95,3 +95,8 @@ export const removeCustomerFromProperty = new Method({
   name: 'removeCustomerFromProperty',
   params: { propertyId: String, loanId: String },
 });
+
+export const insertExternalProperty = new Method({
+  name: 'insertExternalProperty',
+  params: { property: Object },
+});
