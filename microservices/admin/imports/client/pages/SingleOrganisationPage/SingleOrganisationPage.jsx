@@ -13,6 +13,7 @@ import SingleOrganisationPageHeader from './SingleOrganisationPageHeader';
 import OffersTable from './OffersTable/OffersTable';
 import OrganisationUsersTable from './OrganisationUsersTable/OrganisationUsersTable';
 import CommissionEditor from './CommissionEditor';
+import ReferredUsersTable from './ReferredUsersTable';
 
 type SingleOrganisationPageProps = {
   organisation: Object,
@@ -35,6 +36,10 @@ const tabs = organisation =>
     {
       id: 'commission',
       Component: CommissionEditor,
+    },
+    {
+      id: 'referredUsers',
+      Component: ReferredUsersTable,
     },
   ].map(({ id, Component, condition, style = {} }) => ({
     id,

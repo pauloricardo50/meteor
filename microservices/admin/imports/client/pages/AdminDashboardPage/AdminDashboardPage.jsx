@@ -31,9 +31,6 @@ const AdminDashboardPage = ({ currentUser, history }) => (
       </Button>
     </div>
 
-    <h2 className="text-center">Mes dossiers</h2>
-    <MyLoansTable currentUser={currentUser} />
-
     <h2 className="text-center">
       <T id="AdminDashboardPage.tasks" />
     </h2>
@@ -49,6 +46,9 @@ const AdminDashboardPage = ({ currentUser, history }) => (
         },
       }}
     />
+
+    <h2 className="text-center">Mes dossiers</h2>
+    <MyLoansTable currentUser={currentUser} />
   </section>
 );
 

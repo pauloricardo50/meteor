@@ -32,7 +32,6 @@ Loans.addLinks({
       body: {
         referredByOrganisationLink: 1,
       },
-      bypassSchema: false,
     },
   },
   tasks: {

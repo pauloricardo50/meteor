@@ -22,7 +22,7 @@ const makeMapUser = ({ history }) => (user) => {
     lastName,
     email,
     phoneNumber,
-    organisations,
+    organisations = [],
   } = user;
 
   return {
@@ -31,10 +31,9 @@ const makeMapUser = ({ history }) => (user) => {
       firstName,
       lastName,
       {
-        raw: organisations && organisations.length > 0 && organisations[0].name,
+        raw: !!organisations.length && organisations[0].name,
         label:
-          organisations
-          && !!organisations.length
+          !!organisations.length
           && organisations.map(organisation => (
             <CollectionIconLink
               key={organisation._id}

@@ -242,18 +242,24 @@ class UserService extends CollectionService {
     let promises = [];
 
     if (propertyIds && propertyIds.length) {
-      promises = [...promises, PropertyService.inviteUser({
-        proUserId,
-        user,
-        propertyIds,
-      })];
+      promises = [
+        ...promises,
+        PropertyService.inviteUser({
+          proUserId,
+          user,
+          propertyIds,
+        }),
+      ];
     }
     if (promotionIds && promotionIds.length) {
-      promises = [...promises, ...promotionIds.map(promotionId =>
-        PromotionService.inviteUser({
-          promotionId,
-          user: { ...user, invitedBy: proUserId },
-        }))];
+      promises = [
+        ...promises,
+        ...promotionIds.map(promotionId =>
+          PromotionService.inviteUser({
+            promotionId,
+            user: { ...user, invitedBy: proUserId },
+          })),
+      ];
     }
     if (property) {
       // Not yet implemented
@@ -290,6 +296,46 @@ class UserService extends CollectionService {
         referredByOrganisationLink: organisationId,
       },
     });
+  }
+
+  setReferredByOrganisation({ userId, organisationId }) {
+    return this.update({
+      userId,
+      object: { referredByOrganisationLink: organisationId },
+    });
+  }
+
+  proInviteUserToOrganisation({ user, organisationId, role, proId }) {
+    const { email, phoneNumber } = user;
+
+    if (this.doesUserExist({ email })) {
+      throw new Meteor.Error('Cet utilisateur existe déjà');
+    }
+
+    const { assignedEmployeeId } = this.fetchOne({
+      $filters: { _id: proId },
+      assignedEmployeeId: 1,
+    });
+
+    const userId = this.adminCreateUser({
+      options: {
+        ...user,
+        phoneNumbers: [phoneNumber],
+        sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
+      },
+      adminId: assignedEmployeeId,
+    });
+
+    this.setRole({ userId, role: ROLES.PRO });
+
+    this.addLink({
+      id: userId,
+      linkName: 'organisations',
+      linkId: organisationId,
+      metadata: { role },
+    });
+
+    return userId;
   }
 }
 
