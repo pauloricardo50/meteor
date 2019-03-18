@@ -153,8 +153,8 @@ describe('SolvencyCalculator', () => {
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio2({
         borrowers: [{ bankFortune: 500000, salary: 1000000 }],
       });
-      expect(borrowRatio).to.equal(0.7938);
-      expect(propertyValue).to.equal(1951000);
+      expect(borrowRatio).to.equal(0.8);
+      expect(propertyValue).to.equal(2000000);
     });
 
     it('finds the ideal borrowRatio', () => {
@@ -175,8 +175,19 @@ describe('SolvencyCalculator', () => {
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio2({
         borrowers: [{ bankFortune: 250000, salary: 50000 }],
       });
-      expect(borrowRatio).to.equal(0.5125);
-      expect(propertyValue).to.equal(465000);
+      expect(borrowRatio).to.equal(0.515);
+      expect(propertyValue).to.equal(466000);
+    });
+
+    it('finds the ideal borrowRatio', () => {
+      const {
+        borrowRatio,
+        propertyValue,
+      } = Calculator.getMaxPropertyValueWithoutBorrowRatio2({
+        borrowers: [{ bankFortune: 200000, salary: 83000 }],
+      });
+      expect(borrowRatio).to.equal(0.7);
+      expect(propertyValue).to.equal(571000);
     });
   });
 });
