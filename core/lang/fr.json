@@ -1,4 +1,6 @@
 {
+  "ProDashboardPage.organisationProperties": "Biens immobiliers de mon organisation",
+  "ProCustomersTable.maxSolvency": "Capacité d'achat max.",
   "Forms.externalId": "ID externe",
   "Forms.externalId.placeholder": "123-456-789",
   "Forms.useOpenGraph": "Utiliser données Open Graph",

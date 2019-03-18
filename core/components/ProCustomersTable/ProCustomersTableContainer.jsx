@@ -15,6 +15,7 @@ import {
   LOAN_STATUS,
   PROPERTIES_COLLECTION,
   PROMOTIONS_COLLECTION,
+  RESIDENCE_TYPE,
 } from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
@@ -28,6 +29,7 @@ const columnOptions = [
   { id: 'email' },
   { id: 'createdAt' },
   { id: 'referredBy' },
+  {id: 'maxSolvency'},
   { id: 'relatedTo' },
   // { id: 'estimatedRevenues' },
 ].map(({ id, label }) => ({
@@ -45,6 +47,8 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
     relatedTo: relatedDocs = [],
     loanProgress,
     estimatedRevenues,
+    maxSolvency,
+    residenceType,
   } = loan;
 
   return {
@@ -73,6 +77,10 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
       user && user.email,
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       getReferredBy({ user, proUser, isAdmin }),
+      {
+        raw: maxSolvency && (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? maxSolvency.second.propertyValue : maxSolvency.main.propertyValue),
+        label: maxSolvency ? (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? <Money value={maxSolvency.second.propertyValue} /> : <Money value={maxSolvency.main.propertyValue} />) : 'Pas encore calculé',
+      },
       {
         raw: relatedDocs.length ? relatedDocs[0]._id : '-',
         label: relatedDocs.length
