@@ -301,9 +301,7 @@ class UserService extends CollectionService {
   setReferredByOrganisation({ userId, organisationId }) {
     return this.update({
       userId,
-      object: {
-        referredByOrganisationLink: organisationId,
-      },
+      object: { referredByOrganisationLink: organisationId },
     });
   }
 
