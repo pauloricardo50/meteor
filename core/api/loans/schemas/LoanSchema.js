@@ -118,7 +118,7 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(SOLVENCY_TYPE),
     defaultValue: SOLVENCY_TYPE.SIMPLE,
   },
-  'maxSolvency.canton': { type: String, allowedValues: Object.values(CANTONS) },
+  'maxSolvency.canton': { type: String, allowedValues: Object.keys(CANTONS) },
   'maxSolvency.date': Date,
   'maxSolvency.main': Object,
   'maxSolvency.main.propertyValue': moneyField,

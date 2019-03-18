@@ -423,7 +423,7 @@ export class LoanService extends CollectionService {
       canton,
     });
 
-    return this.update({
+    this.update({
       loanId,
       object: {
         maxSolvency: {
@@ -440,6 +440,8 @@ export class LoanService extends CollectionService {
         },
       },
     });
+
+    return Promise.resolve('test');
   }
 }
 

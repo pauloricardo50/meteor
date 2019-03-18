@@ -129,5 +129,5 @@ reuseProperty.setHandler((context, params) => {
 
 getMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
-  LoanService.getMaxPropertyValueWithoutBorrowRatio(params);
+  return LoanService.getMaxPropertyValueWithoutBorrowRatio(params);
 });
