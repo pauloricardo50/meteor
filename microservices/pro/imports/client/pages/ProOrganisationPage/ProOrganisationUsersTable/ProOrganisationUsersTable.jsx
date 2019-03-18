@@ -11,12 +11,14 @@ const ProOrganisationUsersTable = ({
   rows,
   columnOptions,
   currentUser,
+  name,
   _id: organisationId,
 }: ProOrganisationUsersTableProps) => (
   <>
     <ProOrganisationUserAdder
       currentUser={currentUser}
       organisationId={organisationId}
+      organisationName={name}
     />
     <Table rows={rows} columnOptions={columnOptions} />
   </>

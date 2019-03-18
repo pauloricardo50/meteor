@@ -1,4 +1,6 @@
 {
+  "Forms.role": "Titre",
+  "Forms.role.placeholder": "Chef d'équipe",
   "OrganisationTabs.referredUsers": "Utilisateurs référés",
   "WwwTopNavLinks.appLogin": "Login Clients",
   "WwwTopNavLinks.proLogin": "Login Pro",
