@@ -1,13 +1,5 @@
 .revenues-by-status {
-  display: flex;
-
-  @include screen(large) {
-    flex-direction: column;
-  }
-
-  &-item {
-    margin: 8px;
-    display: flex;
-    flex-direction: column;
+  .col-FINALIZED {
+    border-right: 1px solid $border-grey;
   }
 }
