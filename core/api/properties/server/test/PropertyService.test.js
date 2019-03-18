@@ -311,4 +311,42 @@ describe('PropertyService', function () {
       });
     });
   });
+
+  describe('insertExternalProperty', () => {
+    it('inserts a property with external properties', () => {
+      generator({ users: { _factory: 'pro', _id: 'proId' } });
+
+      PropertyService.insertExternalProperty({
+        userId: 'proId',
+        externalId: 'abcd',
+        imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
+        externalLink: 'www.e-potek.ch',
+      });
+
+      const properties = PropertyService.fetch({
+        externalId: 1,
+      });
+
+      expect(properties.length).to.equal(1);
+      expect(properties[0].externalId).to.equal('abcd');
+    });
+
+    it('throws if a property with the same external id is inserted twice', () => {
+      generator({
+        properties: {
+          _factory: 'property',
+          externalId: 'abcd',
+        },
+        users: { _factory: 'pro', _id: 'proId' },
+      });
+
+      expect(() =>
+        PropertyService.insertExternalProperty({
+          userId: 'proId',
+          externalId: 'abcd',
+          imageUrls: ['https://www.e-potek.ch/img/logo_black.svg'],
+          externalLink: 'www.e-potek.ch',
+        })).to.throw('externalId');
+    });
+  });
 });

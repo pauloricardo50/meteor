@@ -261,6 +261,16 @@ export class PropertyService extends CollectionService {
 
     this.removeLink({ id: propertyId, linkName: 'loans', linkId: loanId });
   }
+
+  insertExternalProperty({ userId, externalId, ...property }) {
+    const existingProperty = this.fetchOne({ $filters: { externalId } });
+
+    if (existingProperty) {
+      throw new Meteor.Error(`Property with externalId "${externalId}" exists already`);
+    }
+
+    this.proPropertyInsert({ userId, property: { externalId, ...property } });
+  }
 }
 
 export default new PropertyService();
