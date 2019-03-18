@@ -295,7 +295,7 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
       return newStepSize;
     }
 
-    getMaxPropertyValueWithoutBorrowRatio2({
+    getMaxPropertyValueWithoutBorrowRatio({
       borrowers,
       residenceType,
       canton,
