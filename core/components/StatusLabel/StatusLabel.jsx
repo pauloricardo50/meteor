@@ -124,7 +124,7 @@ const StatusLabel = ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
-            additionalActions(stat).then(() =>
+            additionalActions(stat, status).then(() =>
               updateDocument.run({
                 collection,
                 object: { status: stat },
