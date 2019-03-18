@@ -8,6 +8,20 @@
     flex-wrap: wrap;
     justify-content: space-between;
 
+    &-left {
+      box-sizing: border-box;
+      padding-right: 8px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      margin-bottom: 0;
+    }
+    h2 {
+      margin-top: 0;
+    }
+
     > * {
       flex-basis: 50%;
       flex-grow: 1;
@@ -17,12 +31,24 @@
 
     .description {
       white-space: pre-line;
-      padding-right: 8px;
     }
   }
 
   .map-container {
     margin-top: 30px;
     height: 400px;
+  }
+
+  .external-link {
+    align-self: center;
+    margin: 8px;
+
+    &-icon {
+      margin-bottom: 16px;
+    }
+
+    h4 {
+      margin-bottom: 0;
+    }
   }
 }

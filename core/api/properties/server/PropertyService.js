@@ -8,6 +8,7 @@ import CollectionService from '../../helpers/CollectionService';
 import {
   VALUATION_STATUS,
   PROPERTY_PERMISSIONS_FULL_ACCESS,
+  PROPERTY_CATEGORY,
 } from '../propertyConstants';
 import Properties from '../properties';
 import UserService from '../../users/server/UserService';
@@ -227,7 +228,10 @@ export class PropertyService extends CollectionService {
   }
 
   proPropertyInsert({ property, userId }) {
-    const propertyId = Properties.insert(property);
+    const propertyId = Properties.insert({
+      ...property,
+      category: PROPERTY_CATEGORY.PRO,
+    });
     this.addLink({
       id: propertyId,
       linkName: 'users',

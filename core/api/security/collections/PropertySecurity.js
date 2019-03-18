@@ -108,6 +108,7 @@ class PropertySecurity {
 
   static isProUserAllowedToUpdate({ propertyId, userId }) {
     const { category } = Properties.findOne(propertyId);
+    console.log('category:', category);
     if (category === PROPERTY_CATEGORY.PRO) {
       this.checkPermissions({
         propertyId,
@@ -128,6 +129,8 @@ class PropertySecurity {
     }
 
     if (Security.hasMinimumRole({ role: ROLES.PRO, userId })) {
+      console.log('pro is allowed to update?');
+
       this.isProUserAllowedToUpdate({ propertyId, userId });
     } else {
       const property = Properties.findOne(propertyId);

@@ -4,6 +4,7 @@ import React from 'react';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import ProPropertyheader from './ProPropertyHeader';
 import DocumentDownloadList from '../DocumentDownloadList';
+import ProPropertyContainer from './ProPropertyContainer';
 
 type ProPropertyProps = {};
 
@@ -25,4 +26,4 @@ const ProProperty = ({ property }: ProPropertyProps) => {
   );
 };
 
-export default ProProperty;
+export default ProPropertyContainer(ProProperty);
