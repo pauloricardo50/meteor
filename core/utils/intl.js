@@ -1,9 +1,18 @@
 import IntlMessageFormat from 'intl-messageformat';
+import ReactDOMServer from 'react-dom/server';
+
 import {
   getUserLocale,
   getFormats,
 } from 'core/utils/localization/localization';
 import messagesFR from 'core/lang/fr.json';
+import defaultIntlValues from 'core/components/Translation/defaultIntlValues';
+
+const defaultValues = Object.keys(defaultIntlValues).reduce((obj, key) => {
+  const value = defaultIntlValues[key];
+
+  return { ...obj, [key]: ReactDOMServer.renderToString(value) };
+}, {});
 
 /**
  * formatMessage - A server-side method to use the intl package
@@ -32,7 +41,7 @@ const formatMessage = (id, values = {}, customFallback) => {
     getUserLocale(),
     // getFormats(),
   );
-  return message.format(values);
+  return message.format({ ...defaultValues, ...values });
 };
 
 export default formatMessage;

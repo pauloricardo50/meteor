@@ -149,6 +149,14 @@ describe('UpdateWatcherService', () => {
     });
   });
 
+  describe('formatUpdatedFields', () => {
+    it('does not fail when formatting value', () => {
+      expect(UpdateWatcherService.formatUpdatedFields([
+        { currentValue: 100, fieldName: 'value' },
+      ])).to.equal("*Prix d'achat*: 100");
+    });
+  });
+
   describe('formatValue', () => {
     it('renders booleans properly', () => {
       expect(UpdateWatcherService.formatValue(true)).to.equal('Oui');
