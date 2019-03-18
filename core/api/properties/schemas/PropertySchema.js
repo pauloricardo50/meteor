@@ -281,6 +281,28 @@ export const PropertySchema = new SimpleSchema({
   ...additionalDocuments(initialDocuments),
   ...mortgageNoteLinks,
   ...userLinksSchema(propertyPermissionsSchema),
+  externalId: {
+    type: String,
+    optional: true,
+  },
+  useOpenGraph: {
+    type: Boolean,
+    optional: true,
+  },
+  externalUrl: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true,
+  },
+  imageUrls: {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+  },
+  'imageUrls.$': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+  },
 });
 
 const protectedKeys = [
