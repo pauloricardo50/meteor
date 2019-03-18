@@ -53,11 +53,7 @@ export const createMeteorAsyncFunction = promiseFunc =>
   Meteor.wrapAsync((params, callback) =>
     promiseFunc(params)
       .then(result => callback(null, result))
-      .catch((err) => {
-        console.log('err:', err);
-
-        return callback(err);
-      }));
+      .catch(callback));
 
 export const flattenObject = (object, delimiter) => {
   const delim = delimiter || '.';

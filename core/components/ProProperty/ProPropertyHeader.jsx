@@ -7,14 +7,13 @@ import ImageCarrousel from '../ImageCarrousel';
 
 type ProPropertyheaderProps = {};
 
-const getImages = (documents, imageUrls = []) => {
+const getImages = (documents = {}, imageUrls = []) => {
   if (imageUrls.length) {
     return imageUrls;
   }
 
   return (
-    (documents
-      && documents.propertyImages
+    (documents.propertyImages
       && documents.propertyImages.length
       && documents.propertyImages.map(({ url }) => url)) || [
       '/img/placeholder.png',
