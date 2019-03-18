@@ -10,9 +10,10 @@ import ProOrganisationUsersTable from './ProOrganisationUsersTable';
 
 type ProOrganisationPageTabsProps = {
   organisation: Object,
+  currentUser: Object,
 };
 
-const getTabs = (organisation) => {
+const getTabs = ({ organisation, currentUser }) => {
   const { contacts, commissionRates } = organisation;
 
   return [
@@ -30,7 +31,7 @@ const getTabs = (organisation) => {
     const { id, Component } = tab;
     return {
       ...tab,
-      content: <Component {...organisation} />,
+      content: <Component {...organisation} currentUser={currentUser} />,
       label: <T id={`ProOrganisationPageTabs.${id}`} />,
       to: createRoute(PRO_ORGANISATION_PAGE, { tabId: id }),
     };
@@ -39,8 +40,9 @@ const getTabs = (organisation) => {
 
 const ProOrganisationPageTabs = ({
   organisation,
+  currentUser,
 }: ProOrganisationPageTabsProps) => (
-  <Tabs tabs={getTabs(organisation)} routerParamName="tabId" />
+  <Tabs tabs={getTabs({ organisation, currentUser })} routerParamName="tabId" />
 );
 
 export default ProOrganisationPageTabs;

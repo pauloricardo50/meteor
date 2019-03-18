@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps, withProps } from 'recompose';
+import { compose, mapProps, withProps, withState } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -10,8 +10,14 @@ import StatusLabel from 'core/components/StatusLabel/StatusLabel';
 
 import LoanProgress from 'core/components/LoanProgress/LoanProgress';
 import LoanProgressHeader from 'core/components/LoanProgress/LoanProgressHeader';
-import { LOANS_COLLECTION } from 'core/api/constants';
+import {
+  LOANS_COLLECTION,
+  LOAN_STATUS,
+  PROPERTIES_COLLECTION,
+  PROMOTIONS_COLLECTION,
+} from 'core/api/constants';
 import { CollectionIconLink } from 'core/components/IconLink';
+import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
 
 const columnOptions = [
   { id: 'loanName' },
@@ -28,7 +34,6 @@ const columnOptions = [
   id,
   label: label || <T id={`ProCustomersTable.${id}`} />,
 }));
-
 
 const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   const {
@@ -91,6 +96,21 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
   };
 };
 
+const customersTableFilters = {
+  filters: {
+    status: true,
+    relatedTo: [{collection: true}]
+  },
+  options: {
+    status: Object.values(LOAN_STATUS).map(id => ({id, label: id})),
+    collection: [PROPERTIES_COLLECTION, PROMOTIONS_COLLECTION].map(id => ({id, label: id})),
+  },
+  labels: {
+    status: 'Statut',
+    relatedTo: 'Lien'
+  }
+}
+
 export default compose(
   mapProps(({ proUser, ...props }) => {
     const { promotions = [], proProperties = [] } = proUser;
@@ -99,6 +119,7 @@ export default compose(
       proUser,
       propertyIds: proProperties.map(({ _id }) => _id),
       promotionIds: promotions.map(({ _id }) => _id),
+      tableFilters: customersTableFilters,
     };
   }),
   withSmartQuery({
@@ -116,8 +137,10 @@ export default compose(
     queryOptions: { reactive: false },
     dataName: 'loans',
   }),
+  // makeTableFiltersContainer(undefined, 'loans'),
   withProps(({ loans, proUser, isAdmin = false }) => ({
-    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
+    rows: loans
+      .map(makeMapLoan({ proUser, isAdmin })),
     columnOptions,
   })),
 );

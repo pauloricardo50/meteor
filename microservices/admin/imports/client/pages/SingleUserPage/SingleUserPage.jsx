@@ -45,7 +45,12 @@ const SingleUserPage = ({ user, className, currentUser, children }) => {
         <ProPropertiesList properties={proProperties} />
       )}
 
-      {isPro && <ProCustomersTable proUser={user} isAdmin />}
+      {isPro && (
+        <>
+          <h3>Dossiers</h3>
+          <ProCustomersTable proUser={user} isAdmin />
+        </>
+      )}
 
       {/* Make sure this component reloads when the userId changes */}
       <EmailList userId={userId} key={userId} />

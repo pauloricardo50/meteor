@@ -6,7 +6,8 @@ export { ORDER } from '../../utils/sortArrayOfObjects';
 // "raw" and "label" keys have to be present in the object to display it
 // this way
 export const shouldDisplayLabelAndData = columnValue =>
-  typeof columnValue === 'object'
+  columnValue !== null
+  && typeof columnValue === 'object'
   && 'raw' in columnValue
   && 'label' in columnValue;
 

@@ -21,6 +21,8 @@ import {
   proInviteUser,
   getUserByEmail,
   setUserReferredBy,
+  setUserReferredByOrganisation,
+  proInviteUserToOrganisation,
 } from '../methodDefinitions';
 import UserService from './UserService';
 
@@ -168,4 +170,19 @@ getUserByEmail.setHandler((context, params) => {
 setUserReferredBy.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.setReferredBy(params);
+});
+
+setUserReferredByOrganisation.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setReferredByOrganisation(params);
+});
+
+proInviteUserToOrganisation.setHandler(({ userId }, params) => {
+  const { organisationId } = params;
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.users.isAllowedToInviteUsersToOrganisation({
+    userId,
+    organisationId,
+  });
+  return UserService.proInviteUserToOrganisation(params);
 });
