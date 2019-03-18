@@ -73,6 +73,7 @@ import InsertChart from '@material-ui/icons/InsertChart';
 import Image from '@material-ui/icons/Image';
 import Delete from '@material-ui/icons/Delete';
 import Phonelink from '@material-ui/icons/Phonelink';
+import OpenInNew from '@material-ui/icons/OpenInNew';
 
 export const iconMap = {
   close: CloseIcon,
@@ -147,6 +148,7 @@ export const iconMap = {
   image: Image,
   delete: Delete,
   phoneLink: Phonelink,
+  openInNew: OpenInNew,
 };
 
 const Icon = ({
