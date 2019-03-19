@@ -27,11 +27,6 @@
     flex-direction: column;
     margin-top: 8px;
 
-    // .key-container {
-    //   display: flex;
-    //   flex-direction: column;
-    //   padding: 8px;
-
     .key {
       display: flex;
       flex-direction: row;
@@ -64,11 +59,9 @@
         }
       }
     }
-    // }
 
     .empty-state {
       align-self: center;
-      // width: 50% !important;
     }
 
     .generate-key-pair {
@@ -76,8 +69,6 @@
     }
 
     > * {
-      // display: flex;
-      // flex-direction: column;
       padding: 20px;
     }
 
