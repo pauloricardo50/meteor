@@ -14,15 +14,15 @@ export default `
     .property-page .property-tables {
         width: 100%;
         display: flex;
+        justify-content: space-between;
     }
 
     .property-page .property-tables > * {
-        // flex-shrink: 0;
-        flex-grow: 1;
-        flex-basis: 50%;
+        width: 49%;
+        flex-grow: 1; // Let table take full width if there is only 1 table
     }
 
     .other-real-estate {
-        margin-left: 16px;
+        // margin-left: 16px;
     }
 `;

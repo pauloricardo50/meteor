@@ -18,6 +18,8 @@ import {
   switchBorrower,
   sendNegativeFeedbackToAllLenders,
   loanUpdatePromotionInvitedBy,
+  reuseProperty,
+  getMaxPropertyValueWithoutBorrowRatio,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -118,4 +120,14 @@ sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
 loanUpdatePromotionInvitedBy.setHandler(({ userId }, params) => {
   Security.checkUserIsAdmin(userId);
   LoanService.updatePromotionInvitedBy(params);
+});
+
+reuseProperty.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  LoanService.reuseProperty(params);
+});
+
+getMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return LoanService.getMaxPropertyValueWithoutBorrowRatio(params);
 });

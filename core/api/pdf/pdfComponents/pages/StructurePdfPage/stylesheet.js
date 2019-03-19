@@ -1,4 +1,8 @@
 export default `
+    .balance-sheet-table {
+        width: 100%;
+    }
+
     .balance-sheet-table td {
         width: 25%;
     }
@@ -49,5 +53,9 @@ export default `
 
     .finma-ratio svg {
         width: 40px;
+    }
+
+    .remaining-own-funds-table {
+        width: 100%;
     }
 `;

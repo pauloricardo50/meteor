@@ -4,8 +4,6 @@ import { expect } from 'chai';
 
 import sinon from 'sinon';
 import Calculator from 'core/utils/Calculator';
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import {
   dashboardTodosObject,
   checkArrayIsDone,
@@ -16,14 +14,14 @@ import { VALUATION_STATUS } from '../../../../../core/api/constants';
 
 describe('dashboardTodos', () => {
   beforeEach(() => {
-    sinon.stub(BorrowerCalculator, 'personalInfoPercent').callsFake(() => 1);
-    sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 1);
+    sinon.stub(Calculator, 'personalInfoPercent').callsFake(() => 1);
+    sinon.stub(Calculator, 'propertyPercent').callsFake(() => 1);
     sinon.stub(Calculator, 'filesProgress').callsFake(() => ({ percent: 1 }));
   });
 
   afterEach(() => {
-    BorrowerCalculator.personalInfoPercent.restore();
-    PropertyCalculator.propertyPercent.restore();
+    Calculator.personalInfoPercent.restore();
+    Calculator.propertyPercent.restore();
     Calculator.filesProgress.restore();
   });
 
@@ -49,8 +47,8 @@ describe('dashboardTodos', () => {
 
   describe('completeProperty', () => {
     it('shows when property is missing things', () => {
-      PropertyCalculator.propertyPercent.restore();
-      sinon.stub(PropertyCalculator, 'propertyPercent').callsFake(() => 0.9);
+      Calculator.propertyPercent.restore();
+      sinon.stub(Calculator, 'propertyPercent').callsFake(() => 0.9);
       expect(dashboardTodosObject.completeProperty.isDone({
         structure: { property: {} },
         borrowers: [{}],
@@ -85,10 +83,8 @@ describe('dashboardTodos', () => {
 
   describe('completeBorrowers', () => {
     it('shows when borrowers are missing things', () => {
-      BorrowerCalculator.personalInfoPercent.restore();
-      sinon
-        .stub(BorrowerCalculator, 'personalInfoPercent')
-        .callsFake(() => 0.5);
+      Calculator.personalInfoPercent.restore();
+      sinon.stub(Calculator, 'personalInfoPercent').callsFake(() => 0.5);
       expect(dashboardTodosObject.completeBorrowers.isDone({
         borrowers: [{}],
       })).to.equal(false);

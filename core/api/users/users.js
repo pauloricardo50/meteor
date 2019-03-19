@@ -100,6 +100,8 @@ export const UserSchema = new SimpleSchema({
   'apiPublicKey.createdAt': {
     ...createdAt,
   },
+  referredByUserLink: { type: String, optional: true },
+  referredByOrganisationLink: { type: String, optional: true },
 });
 
 Meteor.users.attachSchema(UserSchema);

@@ -1,0 +1,28 @@
+// @flow
+import React from 'react';
+
+import DropdownMenu from 'core/components/DropdownMenu';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
+import { USERS_COLLECTION } from 'core/api/constants';
+import ReferredByAssignDropdownContainer from './ReferredByAssignDropdownContainer';
+
+type ReferredByAssignDropdownProps = {};
+
+const ReferredByAssignDropdown = ({
+  options,
+  referredByUser,
+}: ReferredByAssignDropdownProps) => (
+  <div className="flex-row center space-children">
+    {referredByUser && (
+      <span className="flex-row center space-children">
+        Référé par&nbsp;
+        <CollectionIconLink
+          relatedDoc={{ ...referredByUser, collection: USERS_COLLECTION }}
+        />
+      </span>
+    )}
+    <DropdownMenu iconType="personAdd" options={options} tooltip="Référé par" />
+  </div>
+);
+
+export default ReferredByAssignDropdownContainer(ReferredByAssignDropdown);

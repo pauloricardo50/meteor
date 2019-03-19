@@ -9,15 +9,22 @@ import { ERROR, SUCCESS } from '../../../../constants';
 
 type StructureRecapTableProps = {};
 
+const columnStyles = [
+  { width: '50%' },
+  { width: '20%', textAlign: 'right' },
+  { width: '15%', textAlign: 'right' },
+  { width: '15%', textAlign: 'right' },
+];
+
 const getRows = ({ loan, structureIds, organisation }) => {
   const { lenderRules } = organisation || {};
 
   return [
     <tr key="0" className={classes[ROW_TYPES.TITLE]}>
-      <td>Scénario</td>
-      <td>Prêt hypothécaire</td>
-      <td>Taux d'avance</td>
-      <td>Taux d'effort</td>
+      <td style={columnStyles[0]}>Scénario</td>
+      <td style={columnStyles[1]}>Prêt hypothécaire</td>
+      <td style={columnStyles[2]}>Taux d'avance</td>
+      <td style={columnStyles[3]}>Taux d'effort</td>
     </tr>,
     ...structureIds
       .map(structureId => loan.structures.find(({ id }) => id === structureId))
@@ -33,25 +40,41 @@ const getRows = ({ loan, structureIds, organisation }) => {
 
         return (
           <tr key={structureId}>
-            <td>
-              {name} (page {index + 2})
+            <td style={columnStyles[0]}>
+              {name || index + 1} (page {index + 2})
             </td>
-            <td>{toMoney(loanValue)}</td>
-            <td>
-              <PercentWithStatus
-                value={borrowRatio}
-                status={
-                  incomeRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS
-                }
-              />
+            <td style={columnStyles[1]}>{toMoney(loanValue)}</td>
+            <td style={columnStyles[2]}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <PercentWithStatus
+                  value={borrowRatio}
+                  status={
+                    incomeRatio > calculator.maxBorrowRatio ? ERROR : SUCCESS
+                  }
+                />
+              </div>
             </td>
-            <td>
-              <PercentWithStatus
-                value={incomeRatio}
-                status={
-                  incomeRatio > calculator.maxIncomeRatio ? ERROR : SUCCESS
-                }
-              />
+            <td style={columnStyles[3]}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <PercentWithStatus
+                  value={incomeRatio}
+                  status={
+                    incomeRatio > calculator.maxIncomeRatio ? ERROR : SUCCESS
+                  }
+                />
+              </div>
             </td>
           </tr>
         );

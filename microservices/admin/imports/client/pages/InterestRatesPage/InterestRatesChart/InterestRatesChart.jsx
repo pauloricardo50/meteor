@@ -4,7 +4,7 @@ import HighchartsExporting from 'highcharts-exporting';
 import HighchartsMore from 'highcharts-more';
 
 import LineChart from 'core/components/charts/LineChart';
-import Toggle from 'core/components/Material/Toggle/Toggle';
+import Toggle from 'core/components/Toggle';
 import InterestRatesChartContainer from './InterestRatesChartContainer';
 
 type InterestRatesChartProps = {

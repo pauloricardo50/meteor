@@ -18,14 +18,16 @@ generatePDF.setHandler((context, params) => {
 // Enable this to iterate faster on pdfs
 // Creates a new PDF on every startup to ~/Desktop/pdf-test.html
 const PDF_TESTING = false;
-const loanName = '19-0019';
-const orgName = 'UBS';
+const loanName = '19-0077';
+const orgName = 'Swisslife';
 
 Meteor.startup(() => {
   if (Meteor.isDevelopment && PDF_TESTING) {
     Meteor.defer(() => {
       const loanId = Loans.findOne({ name: loanName })._id;
-      const organisationId = Organisations.findOne({ name: orgName })._id;
+      const organisationId = orgName
+        ? Organisations.findOne({ name: orgName })._id
+        : '';
 
       if (!loanId) {
         console.log(`Loan ${loanName} not found`);

@@ -27,7 +27,7 @@ export default withProps(({ loanId, structureId, structure: { disabled }, select
       disabled: selected,
     },
     {
-      label: disabled ? '[ADMIN] Déverouiller' : '[ADMIN] Verouiller',
+      label: disabled ? '[ADMIN] Déverrouiller' : '[ADMIN] Verrouiller',
       onClick: () =>
         updateStructure.run({
           loanId,

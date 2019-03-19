@@ -62,6 +62,7 @@ class AutoFormTextInput extends Component {
   };
 
   handleChange = (_, value) => {
+    const { saveOnChange, showValidIconOnChange } = this.props;
     // Make sure value is a number if this is a number or money input
     // const safeValue =
     //   this.props.number || this.props.money
@@ -70,8 +71,8 @@ class AutoFormTextInput extends Component {
 
     this.setState({ value }, () => {
       // do not show saving icon when changing text, only show it on blur
-      if (this.props.saveOnChange) {
-        this.saveValue(false);
+      if (saveOnChange) {
+        this.saveValue(showValidIconOnChange);
       }
     });
   };
@@ -131,6 +132,7 @@ class AutoFormTextInput extends Component {
         ...otherProps
       },
       noValidator,
+      savingIconStyle,
       admin,
     } = this.props;
     const { value, errorText, saving, showInfo } = this.state;
@@ -173,7 +175,7 @@ class AutoFormTextInput extends Component {
         <ValidIcon
           saving={saving}
           error={!!errorText}
-          style={styles.savingIcon}
+          style={{ ...styles.savingIcon, ...savingIconStyle }}
           value={value}
           required={required}
           hide={admin}
@@ -209,21 +211,25 @@ AutoFormTextInput.propTypes = {
   number: PropTypes.bool,
   rows: PropTypes.number,
   saveOnChange: PropTypes.bool,
+  savingIconStyle: PropTypes.object,
+  showValidIconOnChange: PropTypes.bool,
   updateFunc: PropTypes.func,
 };
 
 AutoFormTextInput.defaultProps = {
-  currentValue: '',
   autocomplete: '',
-  rows: 1,
-  info: '',
-  number: false,
+  currentValue: '',
   decimal: false,
-  money: false,
-  inputStyle: undefined,
   floatingLabelFixed: true,
-  saveOnChange: true,
+  info: '',
+  inputStyle: undefined,
+  money: false,
   noValidator: false,
+  number: false,
+  rows: 1,
+  saveOnChange: true,
+  savingIconStyle: {},
+  showValidIconOnChange: false,
 };
 
 export default AutoFormTextInput;

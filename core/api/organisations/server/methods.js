@@ -6,6 +6,7 @@ import {
   addContactToOrgnaisation,
   addUserToOrganisation,
   removeUserFromOrganisation,
+  setCommissionRates,
 } from '../methodDefinitions';
 import OrganisationService from './OrganisationService';
 
@@ -51,4 +52,9 @@ removeUserFromOrganisation.setHandler((context, { organisationId, userId }) => {
     linkName: 'users',
     linkId: userId,
   });
+});
+
+setCommissionRates.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return OrganisationService.setCommissionRates(params);
 });

@@ -20,12 +20,12 @@ class SearchForm extends Component {
   };
 
   handleChange = ({ target: { value } }) => {
-    this.setState({ searchText: value });
-
-    if (value.length > 2) {
-      const { onSubmit } = this.props;
-      onSubmit(value);
-    }
+    this.setState({ searchText: value }, () => {
+      if (value.length > 0) {
+        const { onSubmit } = this.props;
+        onSubmit(value);
+      }
+    });
   };
 
   render() {

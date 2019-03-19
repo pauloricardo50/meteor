@@ -7,5 +7,8 @@ query.expose({
   firewall(userId) {
     SecurityService.checkUserIsAdmin(userId);
   },
-  validateParams: { assignedTo: Match.Maybe(String) },
+  validateParams: {
+    assignedTo: Match.Maybe(String),
+    $body: Match.Maybe(Object),
+  },
 });

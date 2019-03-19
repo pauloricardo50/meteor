@@ -23,7 +23,10 @@ const PropertyPdfPage = ({ loan, pageNb, pageCount }: PropertyPdfPageProps) => {
     >
       <PdfGoogleMap loan={loan} />
       <div className="property-tables">
-        <PdfPropertyDetails loan={loan} />
+        <PdfPropertyDetails
+          loan={loan}
+          style={realEstateExists ? {} : { width: '100%' }}
+        />
         {realEstateExists && <OtherRealEstateTable loan={loan} />}
       </div>
     </PdfPage>

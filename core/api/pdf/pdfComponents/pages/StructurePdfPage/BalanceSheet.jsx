@@ -34,16 +34,39 @@ const getCostLines = ({ loan, structureId, calculator }) => {
   ].filter(({ condition }) => shouldRenderRow(condition));
 };
 
-const ownFundLabel = (type, usageType) =>
-  (usageType ? (
-    <T id={`PDF.ownFund.${type}.${usageType}`} />
-  ) : (
-    <T id={`PDF.ownFund.${type}`} />
-  ));
+const ownFundLabel = ({ type, usageType, borrower, borrowerIndex }) => {
+  const borrowerSuffix = borrower ? (
+    <>
+      &nbsp;
+      <span className="secondary">
+        (
+        {borrower.firstName || (
+          <T
+            id="general.borrowerWithIndex"
+            values={{ index: borrowerIndex + 1 }}
+          />
+        )}
+        )
+      </span>
+    </>
+  ) : null;
 
+  return usageType ? (
+    <span>
+      <T id={`PDF.ownFund.${type}.${usageType}`} />
+      {borrowerSuffix}
+    </span>
+  ) : (
+    <span>
+      <T id={`PDF.ownFund.${type}`} />
+      {borrowerSuffix}
+    </span>
+  );
+};
 const getFinancingLines = ({ loan, structureId, calculator }) => {
+  const { borrowers } = loan;
+  const multipleBorrowers = borrowers.length > 1;
   const wantedLoan = calculator.selectLoanValue({ loan, structureId });
-  const borrowRatio = calculator.getBorrowRatio({ loan, structureId });
   const ownFunds = calculator.selectStructureKey({
     loan,
     structureId,
@@ -55,8 +78,6 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
       label: 'Prêt hypothécaire',
       value: (
         <span>
-          (<Percent value={borrowRatio} />
-          )&nbsp;
           <Money value={wantedLoan} currency={false} />
         </span>
       ),
@@ -64,15 +85,33 @@ const getFinancingLines = ({ loan, structureId, calculator }) => {
     },
     ...ownFunds
       .filter(({ usageType }) => usageType !== OWN_FUNDS_USAGE_TYPES.PLEDGE)
-      .map(({ value, type, usageType }) => ({
-        label: ownFundLabel(type, usageType),
+      .map(({ value, type, usageType, borrowerId }) => ({
+        label: ownFundLabel({
+          type,
+          usageType,
+          borrower:
+            multipleBorrowers
+            && borrowers.find(({ _id }) => _id === borrowerId),
+          borrowerIndex:
+            borrowers.findIndex(({ _id }) => _id === borrowerId) + 1,
+        }),
         value,
       })),
     ...ownFunds
       .filter(({ usageType }) => usageType === OWN_FUNDS_USAGE_TYPES.PLEDGE)
-      .map(({ value, type, usageType }) => ({
+      .map(({ value, type, usageType, borrowerId }) => ({
         label: (
-          <span className="secondary">{ownFundLabel(type, usageType)}</span>
+          <span className="secondary">
+            {ownFundLabel({
+              type,
+              usageType,
+              borrower:
+                multipleBorrowers
+                && borrowers.find(({ _id }) => _id === borrowerId),
+              borrowerIndex:
+                borrowers.findIndex(({ _id }) => _id === borrowerId) + 1,
+            })}
+          </span>
         ),
         value: <span className="secondary">({toMoney(value)})</span>,
         money: false,

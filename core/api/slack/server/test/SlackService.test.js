@@ -11,7 +11,7 @@ import LoanService from '../../../loans/server/LoanService';
 
 const TEST_CHANNEL = 'test';
 
-describe('SlackService - server', function () {
+describe('SlackService', function () {
   this.timeout(10000);
 
   beforeEach(() => {
@@ -53,7 +53,7 @@ describe('SlackService - server', function () {
         loanId: loanId2,
       }).then(({ attachments, channel }) => {
         expect(attachments[0].title).to.equal('John Doe a uploadé file.pdf dans Taxes pour 19-0002.');
-        expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `5.88%`, Documents: `0.00%`, Bien immo: `27.78%`');
+        expect(attachments[0].text).to.equal('*Progrès:* Emprunteurs `5.88%`, Documents: `0.00%`, Bien immo: `0.00%`');
         expect(channel).to.equal('#clients_yannis');
       });
     });

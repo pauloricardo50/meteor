@@ -27,11 +27,11 @@ export const incomeConsideration = {
   },
   dividendsConsideration: percentageField,
   dividendsHistoryToConsider: { type: SimpleSchema.Integer, optional: true },
-  realEstateIncomeConsiderationType: {
-    type: String,
-    allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
-    optional: true,
-  },
+  // realEstateIncomeConsiderationType: {
+  //   type: String,
+  //   allowedValues: Object.values(REAL_ESTATE_CONSIDERATION_TYPES),
+  //   optional: true,
+  // },
   investmentIncomeConsideration: percentageField,
   expensesSubtractFromIncome: {
     type: Array,

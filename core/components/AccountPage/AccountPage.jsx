@@ -8,44 +8,43 @@ import Page from '../Page';
 import AccountResetter from '../AccountResetter/AccountResetter';
 import PasswordChange from './PasswordChange';
 import DeveloperSection from './DeveloperSection';
-
-const styles = {
-  section: {
-    position: 'relative',
-  },
-  h: {
-    display: 'inline-block',
-    marginRight: 5,
-  },
-  div: {
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-};
+import AccountPageHeader from './AccountPageHeader';
 
 const AccountPage = ({ currentUser }) => {
-  const { email, _id: userId } = currentUser;
+  const { email, _id: userId, phoneNumbers } = currentUser;
   return (
-    <Page id="AccountPage" topFullWidth={Meteor.microservice === 'pro'}>
-      <div className="card1 card-top" style={styles.section}>
-        <div style={styles.div}>
-          <div className="form-group">
-            <h4 style={styles.h}>
+    <Page id="AccountPage">
+      <div className="card1 card-top account-page">
+        <AccountPageHeader currentUser={currentUser} />
+
+        <div className="account-page-info">
+          <div>
+            <h4>
               <T id="AccountPage.email" />
             </h4>
-            <br />
-            <p className="secondary">{email}</p>
+            <span className="secondary">{email}</span>
           </div>
-
-          <div className="account-page-buttons">
-            <PasswordChange />
-            {Meteor.microservice === 'pro' && (
-              <DeveloperSection user={currentUser} />
-            )}
-          </div>
-
-          {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
+          {phoneNumbers && phoneNumbers.length > 0 && (
+            <div>
+              <h4>
+                <T id="AccountPage.phone" />
+              </h4>
+              {phoneNumbers.map(number => (
+                <span className="secondary" key={number}>
+                  {number}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
+
+        <PasswordChange />
+
+        {Meteor.microservice === 'pro' && (
+          <DeveloperSection user={currentUser} />
+        )}
+
+        {email === 'y@nnis.ch' && <AccountResetter userId={userId} />}
       </div>
     </Page>
   );

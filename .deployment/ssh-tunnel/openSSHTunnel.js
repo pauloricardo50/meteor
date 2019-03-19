@@ -86,7 +86,7 @@ const openSSHTunnel = ({ sshIdNumber = 0, environmentOverride } = {}) => {
       const parsedCredentials = JSON.parse(`{${credentials}}`);
       return {
         ...parsedCredentials,
-        mongoPort: Number(parsedCredentials.ports.split(',')[0]),
+        mongoPort: Number(parsedCredentials.ports.split(',')[1]),
         sshId: SSH_ID,
         environment,
       };

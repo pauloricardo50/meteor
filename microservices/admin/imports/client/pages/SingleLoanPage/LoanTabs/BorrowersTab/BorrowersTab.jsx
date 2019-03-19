@@ -1,9 +1,17 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
-import ConfirmMethod from 'imports/core/components/ConfirmMethod';
-import { addBorrower } from 'imports/core/api/methods/index';
+import ConfirmMethod from 'core/components/ConfirmMethod';
+import { addBorrower } from 'core/api/methods';
+import Calculator from 'core/utils/Calculator';
+import { percentFormatters } from 'core/utils/formHelpers';
 import SingleBorrowerTab from './SingleBorrowerTab';
+
+const borrowersTabLabel = (borrower, index) => {
+  const progress = Calculator.personalInfoPercent({ borrowers: borrower });
+  return `${borrower.name
+    || `Emprunteur ${index + 1}`} - ${percentFormatters.format(progress)}%`;
+};
 
 const BorrowersTab = (props) => {
   const { borrowers, loan } = props;
@@ -23,10 +31,7 @@ const BorrowersTab = (props) => {
       <Tabs
         tabs={borrowers.map((borrower, i) => ({
           id: borrower._id,
-          label:
-            borrower.firstName || borrower.lastName
-              ? `${borrower.firstName} ${borrower.lastName}`
-              : `Emprunteur ${i + 1}`,
+          label: borrowersTabLabel(borrower, i),
           content: (
             <SingleBorrowerTab
               {...props}

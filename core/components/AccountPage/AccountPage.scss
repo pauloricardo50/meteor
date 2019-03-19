@@ -1,9 +1,34 @@
-.account-page-buttons {
+.account-page {
+  max-width: 500px;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
-  > * {
-    margin-bottom: 8px;
+  &-header {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+      margin-bottom: 0;
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+      color: #888;
+    }
+  }
+
+  &-info {
+    > div {
+      margin-bottom: 32px;
+    }
   }
 }

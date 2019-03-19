@@ -6,11 +6,14 @@ import {
   makeFeedback,
   FEEDBACK_OPTIONS,
 } from 'core/components/OfferList/feedbackHelpers';
+import Calculator from 'core/utils/Calculator';
+import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import OfferService from '../../offers/server/OfferService';
-import { adminLoan } from '../../fragments';
+import { adminLoan, loanBorrower } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
+import PromotionService from '../../promotions/server/PromotionService';
 import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import Loans from '../loans';
 
@@ -55,11 +58,7 @@ export class LoanService extends CollectionService {
 
   adminLoanInsert = ({ userId }) => {
     const borrowerId = BorrowerService.insert({ userId });
-    const propertyId = PropertyService.insert({ userId });
-    const loanId = this.insert({
-      loan: { propertyIds: [propertyId], borrowerIds: [borrowerId] },
-      userId,
-    });
+    const loanId = this.insert({ loan: { borrowerIds: [borrowerId] }, userId });
     this.addNewStructure({ loanId });
     return loanId;
   };
@@ -86,16 +85,35 @@ export class LoanService extends CollectionService {
 
   insertPromotionLoan = ({ userId, promotionId, invitedBy }) => {
     const borrowerId = BorrowerService.insert({ userId });
+    const customName = PromotionService.fetchOne({
+      $filters: { _id: promotionId },
+      name: 1,
+    }).name;
     const loanId = this.insert({
       loan: {
         borrowerIds: [borrowerId],
         promotionLinks: [{ _id: promotionId, invitedBy }],
+        customName,
       },
       userId,
     });
 
     this.addNewStructure({ loanId });
 
+    return loanId;
+  };
+
+  insertPropertyLoan = ({ userId, propertyIds }) => {
+    const borrowerId = BorrowerService.insert({ userId });
+    const customName = PropertyService.fetchOne({
+      $filters: { _id: propertyIds[0] },
+      address1: 1,
+    }).address1;
+    const loanId = this.insert({
+      loan: { borrowerIds: [borrowerId], propertyIds, customName },
+      userId,
+    });
+    this.addNewStructure({ loanId });
     return loanId;
   };
 
@@ -211,7 +229,20 @@ export class LoanService extends CollectionService {
   };
 
   addPropertyToLoan = ({ loanId, propertyId }) => {
-    this.pushValue({ loanId, object: { propertyIds: propertyId } });
+    const loan = this.get(loanId);
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+
+    // Add this property to all structures that don't have a property
+    // for a better user experience
+    loan.structures.forEach(({ id, propertyId: structurePropertyId, promotionOptionId }) => {
+      if (!structurePropertyId && !promotionOptionId) {
+        this.updateStructure({
+          loanId,
+          structureId: id,
+          structure: { propertyId },
+        });
+      }
+    });
   };
 
   cleanupRemovedBorrower = ({ borrowerId }) => {
@@ -356,6 +387,61 @@ export class LoanService extends CollectionService {
       linkId: promotionId,
       metadata: { invitedBy },
     });
+  }
+
+  reuseProperty({ loanId, propertyId }) {
+    const loan = this.get(loanId);
+
+    if (loan.propertyIds.includes(propertyId)) {
+      return false;
+    }
+
+    this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
+  }
+
+  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
+    const { borrowers = [] } = this.fetchOne({
+      $filters: { _id: loanId },
+      borrowers: loanBorrower(),
+    });
+
+    const {
+      borrowRatio: borrowRatioMain,
+      propertyValue: propertyValueMain,
+    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+      borrowers,
+      residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+      canton,
+    });
+
+    const {
+      borrowRatio: borrowRatioSecond,
+      propertyValue: propertyValueSecond,
+    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+      borrowers,
+      residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+      canton,
+    });
+
+    this.update({
+      loanId,
+      object: {
+        maxSolvency: {
+          main: {
+            propertyValue: propertyValueMain,
+            borrowRatio: borrowRatioMain,
+          },
+          second: {
+            propertyValue: propertyValueSecond,
+            borrowRatio: borrowRatioSecond,
+          },
+          canton,
+          date: new Date(),
+        },
+      },
+    });
+
+    return Promise.resolve('test');
   }
 }
 

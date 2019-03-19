@@ -17,9 +17,11 @@ const stylesheet = `
     }
 
     .cover-content .organisation-logo {
+        display: block;
+        width: auto;
+        height: auto;
         max-height: 80px;
         max-width: 200px;
-        width: 100%;
         align-self: center;
         margin-top: 40px;
         margin-bottom: -80px;
@@ -119,16 +121,7 @@ const stylesheet = `
 
     .structure-recap-table {
         margin-top: 100px;
-    }
-
-    .structure-recap-table tr td {
-        width: 25% !important;
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .structure-recap-table td:not(:first-child) {
-        justify-content: flex-end;
+        width: 100%;
     }
 
     .structure-recap-table svg {

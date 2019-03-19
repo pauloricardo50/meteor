@@ -27,7 +27,7 @@ const OtherRealEstateTable = ({
               <T id={`Forms.residenceType.${description}`} />
             </div>
           </td>
-          <td>
+          <td style={{ textAlign: 'right' }}>
             <div>
               <span className="secondary">Valeur:</span>&nbsp;{toMoney(value)}
             </div>

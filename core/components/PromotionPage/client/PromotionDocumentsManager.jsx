@@ -22,22 +22,20 @@ const PromotionDocumentsManager = ({
   promotion,
   currentUser,
 }: PromotionDocumentsManagerProps) => (
-  <>
-    <DialogSimple
-      primary
-      raised
-      label={<T id="PromotionPage.manageDocuments" />}
-      title={<T id="PromotionPage.manageDocuments" />}
-    >
-      <UploaderArray
-        doc={promotion}
-        collection={PROMOTIONS_COLLECTION}
-        documentArray={promotionDocuments}
-        currentUser={currentUser}
-        allowRequireByAdmin={false}
-      />
-    </DialogSimple>
-  </>
+  <DialogSimple
+    primary
+    raised
+    label={<T id="PromotionPage.manageDocuments" />}
+    title={<T id="PromotionPage.manageDocuments" />}
+  >
+    <UploaderArray
+      doc={promotion}
+      collection={PROMOTIONS_COLLECTION}
+      documentArray={promotionDocuments}
+      currentUser={currentUser}
+      allowRequireByAdmin={false}
+    />
+  </DialogSimple>
 );
 
 export default PromotionDocumentsManager;

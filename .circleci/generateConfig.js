@@ -1,7 +1,7 @@
 import { writeYAML } from '../.deployment/utils';
 
 const WORKING_DIRECTORY = '~/app';
-const CACHE_VERSION = 10;
+const CACHE_VERSION = 11;
 
 const defaultJobValues = {
   working_directory: WORKING_DIRECTORY,
@@ -37,7 +37,7 @@ const cacheKeys = {
   meteorSystem: name =>
     `meteor_system_${CACHE_VERSION}_${name}_{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
   meteorMicroservice: name =>
-    `meteor_microservice_${CACHE_VERSION}_${name}-{{ checksum "./microservices/${name}/.meteor/release" }}-{{ checksum "./microservices/${name}/.meteor/packages" }}-{{ checksum "./microservices/${name}/.meteor/versions" }}`,
+    `meteor_microservice_${CACHE_VERSION}_${name}-{{ .Branch }}-{{ .Revision }}`,
   nodeModules: () =>
     `node_modules_${CACHE_VERSION}-{{ checksum "./package-lock.json" }}`,
   source: () => `source_${CACHE_VERSION}-{{ .Branch }}-{{ .Revision }}`,
@@ -46,7 +46,11 @@ const cacheKeys = {
 const cachePaths = {
   global: () => '~/.cache',
   meteorSystem: () => '~/.meteor',
-  meteorMicroservice: name => `./microservices/${name}/.meteor/local`,
+  meteorMicroservice: name => [
+    `./microservices/${name}/.meteor/local/bundler-cache`,
+    `./microservices/${name}/.meteor/local/isopacks`,
+    `./microservices/${name}/.meteor/local/plugin-cache`,
+  ],
   nodeModules: () => './node_modules',
   source: () => '.',
 };
@@ -79,15 +83,15 @@ const restoreCache = (name, key) => ({
       .reduce(
         (keys, _, index, parts) => [
           ...keys,
-          parts.slice(0, parts.length - index).join('-') +
-            (index === 0 ? '' : '-'),
+          parts.slice(0, parts.length - index).join('-')
+            + (index === 0 ? '' : '-'),
         ],
         [],
       ),
   },
 });
 const saveCache = (name, key, path) => ({
-  save_cache: { name, key, paths: [path] },
+  save_cache: { name, key, paths: Array.isArray(path) ? path : [path] },
 });
 const storeTestResults = path => ({ store_test_results: { path } });
 const storeArtifacts = path => ({ store_artifacts: { path } });

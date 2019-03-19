@@ -18,6 +18,7 @@ const MicroserviceHead = (props: MicroserviceHeadProps) => {
   return (
     <Helmet>
       <title>{title}</title>
+      <link rel="manifest" href="/manifest-custom.json" />
 
       <meta charset="UTF-8" />
       <meta

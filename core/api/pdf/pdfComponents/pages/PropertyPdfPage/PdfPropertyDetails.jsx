@@ -160,8 +160,12 @@ const getPropertyRows = (loan) => {
   ];
 };
 
-const PdfPropertyDetails = ({ loan }: PdfPropertyDetailsProps) => (
-  <PdfTable rows={getPropertyRows(loan)} />
+const PdfPropertyDetails = ({ loan, style }: PdfPropertyDetailsProps) => (
+  <PdfTable
+    style={style}
+    rows={getPropertyRows(loan)}
+    columnOptions={[{}, { style: { textAlign: 'right' } }]}
+  />
 );
 
 export default PdfPropertyDetails;

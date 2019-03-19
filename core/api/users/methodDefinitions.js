@@ -121,3 +121,41 @@ export const generateApiKeyPair = new Method({
     userId: String,
   },
 });
+
+export const proInviteUser = new Method({
+  name: 'proInviteUser',
+  params: {
+    user: Object,
+    referOnly: Boolean,
+    propertyIds: Match.Maybe(Array),
+    promotionIds: Match.Maybe(Array),
+    property: Match.Maybe(Object),
+    proUserId: Match.Maybe(String),
+  },
+});
+
+export const getUserByEmail = new Method({
+  name: 'getUserByEmail',
+  params: {
+    email: String,
+    roles: Match.Maybe(Array),
+  },
+});
+
+export const setUserReferredBy = new Method({
+  name: 'setUserReferredBy',
+  params: {
+    userId: String,
+    proId: String,
+  },
+});
+
+export const setUserReferredByOrganisation = new Method({
+  name: 'setUserReferredByOrganisation',
+  params: { userId: String, organisationId: String },
+});
+
+export const proInviteUserToOrganisation = new Method({
+  name: 'proInviteUserToOrganisation',
+  params: { user: Object, organisationId: String, role: String, proId: String },
+});

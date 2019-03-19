@@ -10,7 +10,7 @@ import MortgageNotesForm from './MortgageNotesForm';
 
 type BorrowerFormProps = {};
 
-const personalFields = [
+export const personalFields = [
   'firstName',
   'lastName',
   'gender',
@@ -28,7 +28,7 @@ const personalFields = [
   'childrenCount',
   'company',
 ];
-const financeFields = [
+export const financeFields = [
   'salary',
   'netSalary',
   'bonusExists',

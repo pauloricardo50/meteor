@@ -3,6 +3,7 @@ import Loans from '.';
 import { formatLoanWithStructure } from '../../utils/loanFunctions';
 import { STEPS, STEP_ORDER } from './loanConstants';
 import { fullOffer, userProperty } from '../fragments';
+import { PROPERTY_CATEGORY } from '../properties/propertyConstants';
 
 Loans.addReducers({
   structure: {
@@ -37,5 +38,10 @@ Loans.addReducers({
         && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
       );
     },
+  },
+  hasProProperty: {
+    body: { properties: { category: 1 } },
+    reduce: ({ properties = [] }) =>
+      properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
   },
 });

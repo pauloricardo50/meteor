@@ -17,13 +17,14 @@ import './email/server';
 import './events/server/registerServerListeners';
 
 import './links';
-import './reducers';
+import './reducers/registerReducers';
 
 import './server/grapher-live';
 import './server/hooks';
 import './server/queries';
 import './server/reducers';
 import './server/mongoIndexes';
+import './server/caches';
 
 import { COLLECTIONS } from './constants';
 import BorrowerService from './borrowers/server/BorrowerService';
@@ -43,6 +44,7 @@ import TaskService from './tasks/server/TaskService';
 import UserService from './users/server/UserService';
 import SlackService from './slack/server/SlackService';
 import LenderRulesService from './lenderRules/server/LenderRulesService';
+import RevenueService from './revenues/server/RevenueService';
 
 process.on('uncaughtException', (error) => {
   console.log('uncaughtException error', JSON.stringify(error, null, 2));
@@ -76,4 +78,7 @@ export const Services = {
   [COLLECTIONS.CONTACTS_COLLECTION]: ContactService,
   [COLLECTIONS.LENDERS_COLLECTION]: LenderService,
   [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
+  [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
 };
+
+// should be called last in our server code, after all caches have been declared

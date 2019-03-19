@@ -96,8 +96,7 @@ class EmailService {
   emailLogger = ({ emailId, address, template, response }) => {
     if (isEmailTestEnv) {
       // Store all sent emails in the DB, to be asserted in tests
-      Meteor.call('storeTestEmail', { emailId, address, template, response });
-      return;
+     return Meteor.call('storeTestEmail', { emailId, address, template, response });
     }
     if (skipEmails) {
       if (address) {

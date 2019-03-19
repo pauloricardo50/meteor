@@ -11,6 +11,7 @@ import { PropertyModifier } from 'core/components/PropertyForm';
 import { toMoney } from 'core/utils/conversionFunctions';
 import SwitzerlandMap from 'core/components/maps/SwitzerlandMap';
 import { PROPERTY_PAGE } from '../../../../../startup/client/appRoutes';
+import DashboardRecapPropertyEmpty from './DashboardRecapPropertyEmpty';
 
 const getPropertyAddressString = ({ address1, zipCode, city }) =>
   `${address1}, ${zipCode} ${city}`;
@@ -86,27 +87,33 @@ const getContent = (property, loanId) => {
   );
 };
 
-const DashboardRecapProperty = ({ property, loanId }) => (
-  <Link
-    to={createRoute(PROPERTY_PAGE, {
-      ':propertyId': property._id,
-      ':loanId': loanId,
-    })}
-    className="dashboard-recap-property card1 card-hover"
-    onClick={(event) => {
-      // Do this to prevent the link from triggering if a form is submitted
-      // in the propertyModifier
-      // This hack skips the link in react-router
-      // https://github.com/ReactTraining/react-router/blob/0853628daff26a809e5384f352fada57753fc1c3/packages/react-router-dom/modules/Link.js#L7
-      if (event.target.type === 'submit') {
-        event.metaKey = true;
-      }
-    }}
-  >
-    {getContent(property, loanId)}
-  </Link>
-);
+const DashboardRecapProperty = ({ property, loanId }) => {
+  // Documents are merged into property, so check if the _id is defined
+  if (!property || !property._id) {
+    return <DashboardRecapPropertyEmpty loanId={loanId} />;
+  }
 
+  return (
+    <Link
+      to={createRoute(PROPERTY_PAGE, {
+        ':propertyId': property._id,
+        ':loanId': loanId,
+      })}
+      className="dashboard-recap-property card1 card-hover"
+      onClick={(event) => {
+        // Do this to prevent the link from triggering if a form is submitted
+        // in the propertyModifier
+        // This hack skips the link in react-router
+        // https://github.com/ReactTraining/react-router/blob/0853628daff26a809e5384f352fada57753fc1c3/packages/react-router-dom/modules/Link.js#L7
+        if (event.target.type === 'submit') {
+          event.metaKey = true;
+        }
+      }}
+    >
+      {getContent(property, loanId)}
+    </Link>
+  );
+};
 DashboardRecapProperty.propTypes = {
   loanId: PropTypes.string,
   property: PropTypes.object.isRequired,

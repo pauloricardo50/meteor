@@ -1,11 +1,11 @@
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker/locale/fr';
 
-import '../../../factories';
+import { checkEmails } from '../../../../utils/testHelpers';
+import generator from '../../../factories';
 import LoanService from '../LoanService';
 import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
@@ -108,13 +108,11 @@ describe('LoanService', function () {
     it('inserts a property, borrower and loan', () => {
       expect(LoanService.countAll()).to.equal(0, 'loans 0');
       expect(BorrowerService.countAll()).to.equal(0, 'borrowers 0');
-      expect(PropertyService.countAll()).to.equal(0, 'properties 0');
 
       LoanService.adminLoanInsert({ userId });
 
       expect(LoanService.countAll()).to.equal(1, 'loans 1');
       expect(BorrowerService.countAll()).to.equal(1, 'borrowers 1');
-      expect(PropertyService.countAll()).to.equal(1, 'properties 1');
     });
 
     it('adds the same userId on all 3 documents', () => {
@@ -125,10 +123,60 @@ describe('LoanService', function () {
         userId,
         'borrowers userId',
       );
-      expect(PropertyService.findOne({}).userId).to.equal(
-        userId,
-        'properties userId',
-      );
+    });
+  });
+
+  describe('addPropertyToLoan', () => {
+    it('adds the propertyId on all structures', () => {
+      generator({
+        loans: {
+          _factory: 'loan',
+          _id: 'loanId',
+          structures: [{ id: '1' }, { id: '2' }],
+        },
+        properties: { _factory: 'property', _id: 'propertyId' },
+      });
+
+      LoanService.addPropertyToLoan({
+        loanId: 'loanId',
+        propertyId: 'propertyId',
+      });
+
+      loan = LoanService.get('loanId');
+
+      loan.structures.forEach(({ propertyId }) => {
+        expect(propertyId).to.equal('propertyId');
+      });
+    });
+
+    it('only adds the property if it is not defined', () => {
+      generator({
+        loans: {
+          _factory: 'loan',
+          _id: 'loanId',
+          structures: [
+            { id: '1', propertyId: 'a' },
+            { id: '2', promotionOptionId: 'b' },
+            { id: '3' },
+          ],
+        },
+        properties: { _factory: 'property', _id: 'propertyId' },
+      });
+
+      LoanService.addPropertyToLoan({
+        loanId: 'loanId',
+        propertyId: 'propertyId',
+      });
+
+      loan = LoanService.get('loanId');
+
+      loan.structures.forEach(({ propertyId, promotionOptionId }, i) => {
+        if (i === 2) {
+          expect(propertyId).to.equal('propertyId');
+        } else {
+          expect(!!(propertyId || promotionOptionId)).to.equal(true);
+        }
+      });
     });
   });
 
@@ -687,22 +735,34 @@ describe('LoanService', function () {
       return offerIds;
     };
 
-    const checkEmails = expected =>
-      new Promise((resolve, reject) => {
-        Meteor.call('getAllTestEmails', { expected }, (err, emails) =>
-          (err ? reject(err) : resolve(emails)));
-      });
-
     beforeEach(() => {
       resetDatabase();
-      const adminId = Factory.create('adminEpotek')._id;
-      const userId = Factory.create('user', { assignedEmployeeId: adminId })
-        ._id;
-      loanId = LoanService.adminLoanInsert({ userId });
-      PropertyService.collection.update(
-        {},
-        { $set: { address1: 'rue du lac 31', zipCode: 1400, city: 'Yverdon' } },
-      );
+      loanId = 'someLoan';
+      generator({
+        users: [
+          { _id: 'adminId', _factory: 'adminEpotek' },
+          {
+            _id: 'userId',
+            _factory: 'user',
+            assignedEmployee: { _id: 'adminId' },
+            loans: {
+              _id: loanId,
+              _factory: 'loan',
+              borrowers: { _factory: 'borrower' },
+              properties: {
+                _id: 'propertyId',
+                _factory: 'property',
+                address1: 'rue du lac 31',
+                zipCode: 1400,
+                city: 'Yverdon',
+              },
+              structures: [{ id: 'struct', propertyId: 'propertyId' }],
+              selectedStructure: 'struct',
+            },
+          },
+        ],
+      });
+
       addresses = [];
     });
 
@@ -755,7 +815,7 @@ describe('LoanService', function () {
           expect(emails.length).to.equal(0);
         }));
 
-    it('does no send any feedback if there is no offer', () => {
+    it('does not send any feedback if there is no offer', () => {
       const numberOfLenders = 5;
       const numberOfOffersPerLender = 0;
 

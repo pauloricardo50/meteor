@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { ROW_TYPES } from './PdfTable';
+import PdfTableRow from './PdfTableRow';
 
 type PdfTableTooltipsProps = {
   tooltips: Array<Object>,
@@ -8,14 +9,11 @@ type PdfTableTooltipsProps = {
   startIndex: Number,
 };
 
-const PdfTableTooltips = ({
-  tooltips,
-  rowRenderFunc: row,
-  startIndex,
-}: PdfTableTooltipsProps) =>
-  tooltips.map(({ tooltip }, index) =>
-    row(
-      {
+const PdfTableTooltips = ({ tooltips, startIndex }: PdfTableTooltipsProps) =>
+  tooltips.map(({ tooltip }, index) => (
+    <PdfTableRow
+      key={index}
+      rowData={{
         label: (
           <small>
             <i>
@@ -25,8 +23,9 @@ const PdfTableTooltips = ({
         ),
         type: ROW_TYPES.TOOLTIP,
         colspan: 2,
-      },
-      startIndex + index,
-    ));
+      }}
+      index={startIndex + index}
+    />
+  ));
 
 export default PdfTableTooltips;

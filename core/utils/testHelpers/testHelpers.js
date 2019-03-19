@@ -84,3 +84,9 @@ export const userLogin = ({ email, password, role }) => {
       });
   }
 };
+
+export const checkEmails = expected =>
+  new Promise((resolve, reject) => {
+    Meteor.call('getAllTestEmails', { expected }, (err, emails) =>
+      (err ? reject(err) : resolve(emails)));
+  });

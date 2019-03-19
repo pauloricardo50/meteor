@@ -16,6 +16,7 @@ import { MORTGAGE_NOTES_COLLECTION } from './mortgageNotes/mortgageNoteConstants
 import { CONTACTS_COLLECTION } from './contacts/contactsConstants';
 import { LENDERS_COLLECTION } from './lenders/lenderConstants';
 import { LENDER_RULES_COLLECTION } from './lenderRules/lenderRulesConstants';
+import { REVENUES_COLLECTION } from './revenues/revenueConstants';
 
 export * from './borrowers/borrowerConstants';
 export * from './files/fileConstants';
@@ -39,6 +40,8 @@ export * from './mortgageNotes/mortgageNoteConstants';
 export * from './contacts/contactsConstants';
 export * from './lenders/lenderConstants';
 export * from './lenderRules/lenderRulesConstants';
+export * from './updateWatchers/updateWatcherConstants';
+export * from './revenues/revenueConstants';
 
 export const SUCCESS = 'SUCCESS';
 export const WARNING = 'WARNING';
@@ -60,5 +63,6 @@ export const COLLECTIONS = {
   MORTGAGE_NOTES_COLLECTION,
   CONTACTS_COLLECTION,
   LENDERS_COLLECTION,
-LENDER_RULES_COLLECTION,
+  LENDER_RULES_COLLECTION,
+  REVENUES_COLLECTION,
 };

@@ -8,7 +8,6 @@ import CollectionService from '../../helpers/CollectionService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionLotService from '../../promotionLots/server/PromotionLotService';
 import {
-  ROLES,
   PROMOTION_STATUS,
   PROMOTION_PERMISSIONS_FULL_ACCESS,
 } from '../../constants';
@@ -111,6 +110,12 @@ export class PromotionService extends CollectionService {
     if (!UserService.doesUserExist({ email })) {
       isNewUser = true;
       const admin = UserService.get(promotion.assignedEmployeeId);
+      const { organisations = [] } = UserService.fetchOne({
+        $filters: { _id: invitedBy },
+        organisations: { _id: 1 },
+      }) || {};
+      const organisationId = organisations.length ? organisations[0]._id : null;
+
       userId = UserService.adminCreateUser({
         options: {
           email,
@@ -118,8 +123,9 @@ export class PromotionService extends CollectionService {
           firstName,
           lastName,
           phoneNumbers: [phoneNumber],
+          referredByUserLink: invitedBy,
+          referredByOrganisationLink: organisationId,
         },
-        role: ROLES.USER,
         adminId: admin && admin._id,
       });
     } else {
@@ -158,17 +164,9 @@ export class PromotionService extends CollectionService {
 
       if (isNewUser) {
         // Envoyer invitation avec enrollment link
-        const { token } = Accounts.generateResetToken(
-          userId,
-          null,
-          'enrollAccount',
-        );
-        ctaUrl = `${
-          Meteor.settings.public.subdomains.app
-        }/enroll-account/${token}`;
+        ctaUrl = UserService.getEnrollmentUrl({ userId });
       }
 
-      // Envoyer invitation sans enrollment link
       return sendEmail.run({
         emailId: EMAIL_IDS.INVITE_USER_TO_PROMOTION,
         userId,
