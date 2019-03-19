@@ -16,6 +16,7 @@ import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
 import inviteUserToPromotion from '../inviteUserToPromotion';
 
+
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
 
 let user;

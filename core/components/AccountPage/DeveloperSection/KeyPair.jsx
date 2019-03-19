@@ -32,6 +32,13 @@ const copyKeyToClipboard = (key) => {
   message.success('Clé copiée dans le presse-papier !');
 };
 
+const formatKey = ({ key, type }) =>
+  key
+    .split(`-----BEGIN RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`)
+    .join(`-----BEGIN RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----\n`)
+    .split(`-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`)
+    .join(`\n-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`);
+
 const KeyPair = ({
   keyValue,
   createdAt,
@@ -57,7 +64,7 @@ const KeyPair = ({
         </p>
       </div>
     </div>
-    <RsaKey keyValue={keyValue} hide={hideKey} />
+    <RsaKey keyValue={formatKey({key: keyValue, type})} hide={hideKey} />
     {type === 'private' && (
       <p className="rsa-key-warning">
         Sauvegardez votre clé privée maintenant: vous ne pourrez plus y accéder

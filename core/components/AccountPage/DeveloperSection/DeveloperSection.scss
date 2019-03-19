@@ -81,8 +81,8 @@
     }
 
     .rsa-key {
-      width: 580px;
-      min-height: 150px;
+      width: 400px;
+      min-height: 230px;
       height: auto;
       line-height: 1.5em;
       overflow-y: hidden;
@@ -94,7 +94,7 @@
     }
 
     .rsa-key-warning {
-      width: 580px;
+      width: 400px;
       padding: 8px;
       border: 1px solid $error;
       border-radius: 4px;

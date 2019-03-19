@@ -17,12 +17,12 @@ export const REST_API_ERRORS = {
   WRONG_AUTHORIZATION_TYPE: {
     status: HTTP_STATUS_CODES.BAD_REQUEST,
     errorName: 'WRONG_AUTHORIZATION_TYPE',
-    message: 'Authorization must be of type Bearer Token',
+    message: 'Authorization must be of type Bearer PublicKey',
   },
   AUTHORIZATION_FAILED: {
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
-    message: 'Wrong token',
+    message: 'Wrong public key or signature',
   },
   UNKNOWN_ENDPOINT: ({ path, method }) => ({
     status: HTTP_STATUS_CODES.NOT_FOUND,
