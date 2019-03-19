@@ -215,15 +215,15 @@ describe('SolvencyCalculator', () => {
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
         borrowers: [
           {
-            bankFortune: 500000,
-            salary: 1000000,
-            insurance2: [{ value: 100000 }],
+            bankFortune: 230000,
+            salary: 120000,
           },
         ],
-        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        canton: 'GE',
       });
-      expect(borrowRatio).to.equal(0.8);
-      expect(propertyValue).to.equal(2000000);
+      expect(borrowRatio).to.equal(0.7313);
+      expect(propertyValue).to.equal(769000);
     });
   });
 });
