@@ -90,7 +90,7 @@ describe('Loan methods', () => {
       });
 
       return getMaxPropertyValueWithoutBorrowRatio
-        .run({ loanId: 'loanId', canton: CANTONS.GE })
+        .run({ loanId: 'loanId', canton: 'ZH' })
         .then(() => {
           const {
             maxSolvency: { canton, date, main, second },
@@ -99,7 +99,7 @@ describe('Loan methods', () => {
             maxSolvency: 1,
           });
 
-          expect(canton).to.equal(CANTONS.GE);
+          expect(canton).to.equal('ZH');
           expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
           expect(main.propertyValue).to.equal(2400000);
           expect(main.borrowRatio).to.equal(0.8);
