@@ -85,10 +85,6 @@ export const UserSchema = new SimpleSchema({
   'phoneNumbers.$': {
     type: String,
   },
-  apiToken: {
-    type: String,
-    optional: true,
-  },
   apiPublicKey: {
     type: Object,
     optional: true,
@@ -97,9 +93,7 @@ export const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  'apiPublicKey.createdAt': {
-    ...createdAt,
-  },
+  'apiPublicKey.createdAt': createdAt,
   referredByUserLink: { type: String, optional: true },
   referredByOrganisationLink: { type: String, optional: true },
 });

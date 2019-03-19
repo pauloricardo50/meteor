@@ -124,9 +124,9 @@ testUserAccount.setHandler((context, params) => {
   }
 });
 
-generateApiKeyPair.setHandler((context, { userId }) => {
+generateApiKeyPair.setHandler((context, params) => {
   SecurityService.checkUserIsPro(context.userId);
-  return UserService.generateKeyPair({ userId });
+  return UserService.generateKeyPair(params);
 });
 
 proInviteUser.setHandler((context, params) => {

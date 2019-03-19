@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import GenerateApiToken from './GenerateApiToken';
 import DeveloperSectionContainer from './DeveloperSectionContainer';
 import GenerateApiKeyPair from './GenerateApiKeyPair';
 
@@ -17,7 +16,6 @@ const DeveloperSection = ({ user }: DeveloperSectionProps) => (
       <a href="mailto:digital@e-potek.ch">digital@e-potek.ch</a> pour obtenir la
       documentation nécessaire à l'implémentation de l'API.
     </p>
-    {/* <GenerateApiToken user={user} /> */}
     <GenerateApiKeyPair user={user} />
   </div>
 );

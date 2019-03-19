@@ -27,43 +27,44 @@
     flex-direction: column;
     margin-top: 8px;
 
-    .key-pair {
+    // .key-container {
+    //   display: flex;
+    //   flex-direction: column;
+    //   padding: 8px;
+
+    .key {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
       padding: 8px;
 
-      .key {
+      > * {
+        margin-right: 16px;
+      }
+
+      .icon {
+        height: 30px;
+        width: 30px;
+      }
+
+      .public-key-icon {
+        color: $success;
+      }
+
+      .private-key-icon {
+        color: $error;
+      }
+
+      .key-infos {
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
 
         > * {
-          margin-right: 16px;
-        }
-
-        .icon {
-          height: 30px;
-          width: 30px;
-        }
-
-        .public-key-icon {
-          color: $success;
-        }
-
-        .private-key-icon {
-          color: $error;
-        }
-
-        .key-infos {
-          display: flex;
-          flex-direction: column;
-
-          > * {
-            margin: 0;
-          }
+          margin: 0;
         }
       }
     }
+    // }
 
     .empty-state {
       align-self: center;

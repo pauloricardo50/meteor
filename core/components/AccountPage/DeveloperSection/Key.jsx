@@ -14,7 +14,7 @@ const KEY_TYPES = {
   private: 'privée',
 };
 
-type KeyPairProps = {
+type KeyProps = {
   keyValue: String,
   createdAt: Date,
   type: String,
@@ -39,14 +39,14 @@ const formatKey = ({ key, type }) =>
     .split(`-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`)
     .join(`\n-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`);
 
-const KeyPair = ({
+const Key = ({
   keyValue,
   createdAt,
   type,
   hideKey,
   setHideKey,
-}: KeyPairProps) => (
-  <div className="key-pair">
+}: KeyProps) => (
+  <>
     <div className="key">
       <FontAwesomeIcon icon={faKey} className={`solid icon ${type}-key-icon`} />
       <div className="key-infos">
@@ -71,7 +71,7 @@ const KeyPair = ({
         !
       </p>
     )}
-  </div>
+    </>
 );
 
-export default withState('hideKey', 'setHideKey', ({ hidden }) => hidden)(KeyPair);
+export default withState('hideKey', 'setHideKey', ({ hidden }) => hidden)(Key);
