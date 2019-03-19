@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 

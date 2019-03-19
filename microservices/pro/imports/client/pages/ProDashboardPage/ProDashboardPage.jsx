@@ -22,7 +22,7 @@ const ProDashboardPage = (props: ProDashboardPageProps) => (
     <div className="buttons">
       <PromotionAdder currentUser={props.currentUser} />
       <ProPropertyAdder currentUser={props.currentUser} />
-      {props.currentUser && props.currentUser.apiToken && (
+      {props.currentUser && props.currentUser.apiPublicKey && (
         <ExternalPropertyAdder />
       )}
       <ProCustomerAdder currentUser={props.currentUser} />
