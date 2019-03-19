@@ -10,6 +10,13 @@ const ProCustomerAdder = ({ schema, onSubmit }: ProCustomerAdderProps) => (
     schema={schema}
     onSubmit={onSubmit}
     title="Inviter un client"
+    description={(
+      <p className="description">
+        Ajoute un compte pour ce client, et le notifiera par email que vous
+        l'avez invité sur e-Potek. Si c'est un client déjà existant chez
+        e-Potek, vous devez l'inviter à une promotion ou à un bien immobilier.
+      </p>
+    )}
     buttonProps={{
       raised: true,
       secondary: true,

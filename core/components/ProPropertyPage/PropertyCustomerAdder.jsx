@@ -65,6 +65,13 @@ const PropertyCustomerAdder = ({
     }
     buttonProps={{ raised: true, secondary: true, label: 'Ajouter acheteur' }}
     title="Ajouter acheteur"
+    description={(
+      <p className="description">
+        Ajoute un compte pour cet acheteur, et le notifiera par email que vous
+        l'avez invité sur e-Potek. Si c'est un client déjà existant chez
+        e-Potek, cette invitation lui créera un nouveau dossier hypothécaire.
+      </p>
+    )}
   >
     {() => inviteReferredUser({ referredUsers, setModel, loans })}
   </AutoFormDialog>
