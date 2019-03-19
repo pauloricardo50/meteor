@@ -169,9 +169,9 @@ class UserService extends CollectionService {
 
   generateKeyPair = ({ userId }) => {
     const key = new NodeRSA();
-    key.generateKeyPair(256);
-    const publicKey = key.exportKey('public');
-    const privateKey = key.exportKey('private');
+    key.generateKeyPair(512);
+    const publicKey = key.exportKey('pkcs1-public-pem').replace(/\r?\n|\r/g, '');
+    const privateKey = key.exportKey('pkcs1-private-pem').replace(/\r?\n|\r/g, '');
     this._update({
       id: userId,
       object: { apiPublicKey: { publicKey } },

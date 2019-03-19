@@ -6,9 +6,12 @@ import { Factory } from 'meteor/dburles:factory';
 
 import { expect } from 'chai';
 import fetch from 'node-fetch';
+import NodeRSA from 'node-rsa';
 
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
+import UserService from '../../../../users/server/UserService';
+import { sortObject } from '../../../../helpers';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
 import inviteUserToPromotion from '../inviteUserToPromotion';
@@ -16,7 +19,7 @@ import inviteUserToPromotion from '../inviteUserToPromotion';
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
 
 let user;
-let apiToken;
+let keyPair;
 let promotionId;
 const userToInvite = {
   email: 'test@example.com',
@@ -37,23 +40,37 @@ const fetchAndCheckResponse = ({ url, data, expectedResponse, status }) =>
 const api = new RESTAPI();
 api.addEndpoint('/inviteUserToPromotion', 'POST', inviteUserToPromotion);
 
-const inviteUser = ({ userData, expectedResponse, status, id }) =>
-  fetchAndCheckResponse({
+const signBody = (body) => {
+  const key = new NodeRSA();
+  key.importKey(keyPair.privateKey, 'pkcs1-private-pem');
+
+  const sortedBody = sortObject(body);
+
+  const signature = key.sign(JSON.stringify(sortedBody), 'base64', 'utf8');
+  return signature;
+};
+
+const inviteUser = ({ userData, expectedResponse, status, id }) => {
+  const body = { promotionId: id || promotionId, user: userData };
+  const filteredBody = Object.keys(body)
+    .filter(key => !!body[key])
+    .reduce((object, key) => ({ ...object, [key]: body[key] }), {});
+  const signature = signBody(filteredBody);
+
+  return fetchAndCheckResponse({
     url: '/inviteUserToPromotion',
     data: {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.apiToken}`,
+        Authorization: `Bearer ${keyPair.publicKey}`,
       },
-      body: JSON.stringify({
-        promotionId: id || promotionId,
-        user: userData,
-      }),
+      body: JSON.stringify({ ...filteredBody, signature }),
     },
     expectedResponse,
     status,
   });
+};
 
 const setupPromotion = () => {
   PromotionService.addProUser({ promotionId, userId: user._id });
@@ -68,7 +85,7 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function () {
+describe.only('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
   before(function () {
@@ -86,8 +103,8 @@ describe('REST: inviteUserToPromotion', function () {
 
   beforeEach(() => {
     resetDatabase();
-    apiToken = Random.id(24);
-    user = Factory.create('pro', { apiToken });
+    user = Factory.create('pro');
+    keyPair = UserService.generateKeyPair({ userId: user._id });
     promotionId = Factory.create('promotion')._id;
   });
 

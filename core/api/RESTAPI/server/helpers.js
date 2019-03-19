@@ -7,21 +7,19 @@ import { HTTP_STATUS_CODES } from './restApiConstants';
 
 export const getHeader = (req, name) => req.headers[name];
 
-export const getToken = (req) => {
+export const getPublicKey = (req) => {
   const authorization = getHeader(req, 'authorization');
   if (!authorization) {
     return undefined;
   }
 
-  const auth = authorization.split(' ');
-
-  if (auth.length !== 2 || !auth.includes('Bearer')) {
+  if (!authorization.includes('Bearer')) {
     return undefined;
   }
 
-  const token = auth[1];
+  const publicKey = authorization.replace('Bearer ', '');
 
-  return token;
+  return publicKey;
 };
 
 export const getRequestPath = (req) => {

@@ -1,15 +1,18 @@
 import bodyParser from 'body-parser';
+import NodeRSA from 'node-rsa';
 
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
 import { Services } from '../../api-server';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import {
   getRequestPath,
-  getToken,
   getHeader,
   getRequestMethod,
   getErrorObject,
+  getPublicKey,
 } from './helpers';
+
+import { sortObject } from '../../helpers';
 
 const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
@@ -29,17 +32,53 @@ const filterMiddleware = (req, res, next) => {
   next();
 };
 
-// Gets the token from the request, fetches the user and adds it to the request
-const authMiddleware = (req, res, next) => {
-  const token = getToken(req);
+const verifySignature = (req) => {
+  const {
+    publicKey,
+    body: { signature, ...body },
+  } = req;
 
-  if (!token) {
+  if (!signature) {
+    return false;
+  }
+
+  // Import public key
+  const key = new NodeRSA();
+  key.importKey(publicKey, 'pkcs1-public-pem');
+
+  // Sort body
+  const sortedBody = sortObject(body);
+
+  // Verify signature
+  const verified = key.verify(
+    JSON.stringify(sortedBody),
+    signature,
+    'utf8',
+    'base64',
+  );
+
+  return verified;
+};
+
+// Gets the public key from the request, fetches the user and adds it to the request
+const authMiddleware = (req, res, next) => {
+  const publicKey = getPublicKey(req);
+
+  if (!publicKey) {
     return next(REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE);
   }
 
-  const user = Services[USERS_COLLECTION].findOne({ apiToken: token });
+  const user = Services[USERS_COLLECTION].findOne({
+    'apiPublicKey.publicKey': publicKey,
+  });
 
   if (!user) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  }
+
+  req.publicKey = publicKey;
+
+  if (!verifySignature(req)) {
     return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
   }
 
