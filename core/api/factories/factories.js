@@ -1,28 +1,35 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { STEPS, TASK_STATUS, TASK_TYPE, PROMOTION_TYPES } from '../constants';
+import {
+  LOT_TYPES,
+  ORGANISATION_TYPES,
+  PROMOTION_TYPES,
+  REVENUE_TYPES,
+  ROLES,
+  STEPS,
+  TASK_STATUS,
+  TASK_TYPE,
+} from '../constants';
 import {
   Borrowers,
+  Contacts,
+  InterestRates,
+  LenderRules,
   Lenders,
   Loans,
   Lots,
+  MortgageNotes,
   Offers,
   Organisations,
   PromotionLots,
   PromotionOptions,
   Promotions,
   Properties,
+  Revenues,
   Tasks,
   Users,
-  LenderRules,
 } from '..';
-import { LOT_TYPES } from '../lots/lotConstants';
-import { ROLES } from '../users/userConstants';
-import MortgageNotes from '../mortgageNotes';
-import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
-import InterestRates from '../interestRates';
-import Contacts from '../contacts';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -145,4 +152,9 @@ Factory.define('contact', Contacts, {
 
 Factory.define('lenderRules', LenderRules, {
   filter: {},
+});
+
+Factory.define('revenues', Revenues, {
+  amount: 1000,
+  type: REVENUE_TYPES.MORTGAGE,
 });
