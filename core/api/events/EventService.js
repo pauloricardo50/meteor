@@ -60,7 +60,7 @@ export default class EventService {
   logListener(eventName, ...args) {
     if (IS_LOGGING && !Meteor.isTest) {
       console.log(`Event "${eventName}" listened to with args:`);
-      args.forEach(console.log);
+      args.forEach(arg => console.log(arg));
     }
   }
 

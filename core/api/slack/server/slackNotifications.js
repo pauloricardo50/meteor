@@ -3,11 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import SlackService from './SlackService';
 
 export const referralOnlyNotification = ({ currentUser, user }) => {
-  const { _id: userId, name } = user;
+  const { _id: userId, firstName, lastName } = user;
   SlackService.notifyAssignee({
     currentUser,
     link: `${Meteor.settings.public.subdomains.admin}/users/${userId}`,
-    title: `${name} a été invité sur e-Potek en referral uniquement"`,
+    title: `${firstName} ${lastName} a été invité sur e-Potek en referral uniquement"`,
   });
 };
 
