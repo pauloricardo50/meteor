@@ -179,10 +179,9 @@ export class SlackService {
       return false;
     }
 
-    const { name } = currentUser;
     const loan = loanId && fullLoan.clone({ loanId }).fetchOne();
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
-    const title = `${name} a uploadé ${fileName} dans ${docLabel}${loanNameEnd}`;
+    const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
     let link = `${Meteor.settings.public.subdomains.admin}/users/${
       currentUser._id
     }`;

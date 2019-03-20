@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 import intersection from 'lodash/intersection';
@@ -9,7 +8,7 @@ import formatMessage from '../../../utils/intl';
 import { toMoney } from '../../../utils/conversionFunctions';
 import { percentFormatters } from '../../../utils/formHelpers';
 import { BORROWERS_COLLECTION, PROPERTIES_COLLECTION } from '../../constants';
-import SlackService from '../../slack/server/SlackService';
+import { updateWatcherNotification } from '../../slack/server/slackNotifications';
 import UserService from '../../users/server/UserService';
 import CollectionService from '../../helpers/CollectionService';
 import UpdateWatchers from './updateWatchers';
@@ -25,8 +24,6 @@ class UpdateWatcherService extends CollectionService {
       userId,
       doc,
       fieldNames,
-      modifier,
-      options,
     ) {
       const collectionName = collection._name;
       const changedFields = that.getChangedFields({ fieldNames, fields });
@@ -172,34 +169,37 @@ class UpdateWatcherService extends CollectionService {
       return this.remove(updateWatcherId);
     }
 
-    const title = this.getNotificationTitle({ docId, collection, user });
-    SlackService.notifyAssignee({
-      currentUser: user,
+    const title = this.getNotificationTitle({ docId, collection });
+    const message = this.formatUpdatedFields(updatedFields);
+
+    updateWatcherNotification({
+      user,
       title,
-      link: `${Meteor.settings.public.subdomains.admin}/${collection}/${docId}`,
-      message: this.formatUpdatedFields(updatedFields),
+      collection,
+      docId,
+      message,
     });
 
     this.remove(updateWatcherId);
   }
 
-  getNotificationTitle({ docId, collection, user: { name } }) {
+  getNotificationTitle({ docId, collection }) {
     const doc = Mongo.Collection.get(collection).findOne({ _id: docId });
 
     switch (collection) {
     case BORROWERS_COLLECTION: {
       const { firstName, lastName } = doc;
       return `Modifications pour l'emprunteur "${firstName
-          || ''} ${lastName || ''}" par ${name}`;
+          || ''} ${lastName || ''}"`;
     }
 
     case PROPERTIES_COLLECTION: {
       const { address1 } = doc;
-      return `Modifications pour le bien immo "${address1}" par ${name}`;
+      return `Modifications pour le bien immo "${address1}"`;
     }
 
     default:
-      return `Modifications dans ${collection} par ${name}`;
+      return `Modifications dans ${collection}`;
     }
   }
 
