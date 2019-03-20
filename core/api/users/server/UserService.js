@@ -28,7 +28,7 @@ class UserService extends CollectionService {
   }
 
   getByEmail(email) {
-    return Accounts.findUserByEmail(email)
+    return Accounts.findUserByEmail(email);
   }
 
   createUser = ({ options, role }) => {
@@ -229,12 +229,12 @@ class UserService extends CollectionService {
 
   proInviteUser = ({
     user,
-    propertyIds,
-    promotionIds,
+    propertyIds = [],
+    promotionIds = [],
     property,
     proUserId,
-    referOnly,
   }) => {
+    const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
     if (referOnly) {
       return this.proReferUser({ user, proUserId });
     }
