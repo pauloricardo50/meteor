@@ -7,7 +7,7 @@ import generator from '../../../factories';
 import RevenueService from '../RevenueService';
 import { REVENUE_STATUS } from '../../revenueConstants';
 
-describe.only('RevenueService', () => {
+describe('RevenueService', () => {
   beforeEach(() => {
     resetDatabase();
   });
