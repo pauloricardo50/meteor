@@ -395,7 +395,7 @@ describe('UserService', () => {
           user: userToInvite,
           referOnly: true,
           proUserId: 'proId',
-        })).to.throw('Ce client a déjà été réferré');
+        })).to.throw('Ce client existe déjà');
     });
 
     it('invites user to promotion', () => {

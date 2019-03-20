@@ -16,7 +16,6 @@ import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
 import inviteUserToPromotion from '../inviteUserToPromotion';
 
-
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
 
 let user;
@@ -52,7 +51,14 @@ const signBody = (body) => {
 };
 
 const inviteUser = ({ userData, expectedResponse, status, id }) => {
-  const body = { promotionId: id || promotionId, user: userData };
+  const body = {
+    promotionId: id || promotionId,
+    user: userData,
+    timestamp: Math.round(new Date().valueOf() / 1000),
+    nonce: Math.random()
+      .toString(36)
+      .substr(2, 8),
+  };
   const filteredBody = Object.keys(body)
     .filter(key => !!body[key])
     .reduce((object, key) => ({ ...object, [key]: body[key] }), {});
