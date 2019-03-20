@@ -16,6 +16,7 @@
       "**/CVS": true,
       "**/.DS_Store": true
     },
-    "debug.node.autoAttach": "on"
+    "debug.node.autoAttach": "on",
+    "search.followSymlinks": false
   }
 }
