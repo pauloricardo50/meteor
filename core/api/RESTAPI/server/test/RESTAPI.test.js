@@ -12,7 +12,6 @@ import {
   makeHeaders,
 } from './apiTestHelpers.test';
 
-
 const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
   + 'MEgCQQCGZse2vDomKwX42nV3ZwJsbw/RGzbtCoz00xnciiHvJOGn\n'
   + '79MDLQ93aXJVJb0YwqwYIqQHqJI/I1/2inD353lnAgMBAAE=\n'
@@ -209,6 +208,17 @@ describe('RESTAPI', () => {
         method: 'POST',
         headers: makeHeaders({ publicKey }),
         body: makeBody({ privateKey }),
+      },
+      expectedResponse: makeTestRoute('POST')({ user }),
+    }));
+
+  it('removes old nonces', () =>
+    fetchAndCheckResponse({
+      url: '/test',
+      data: {
+        method: 'POST',
+        headers: makeHeaders({ publicKey }),
+        body: makeBody({ privateKey, nonceOverride: 'testNonce' }),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
     }));

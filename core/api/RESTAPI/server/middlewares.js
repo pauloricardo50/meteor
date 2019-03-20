@@ -16,7 +16,9 @@ import {
 import { sortObject } from '../../helpers';
 
 const NONCE_TTL = 30;
-const nonces = {};
+let nonces = {
+  testNonce: 1, // Used in tests
+};
 
 const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
@@ -28,7 +30,7 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
 // Handles replay attacks
 const replayHandlerMiddleware = (req, res, next) => {
   const deleteNonce = (nonce) => {
-    Object.keys(nonces).reduce((newNonces, key) => {
+    nonces = Object.keys(nonces).reduce((newNonces, key) => {
       if (key !== nonce) {
         return { ...newNonces, [key]: nonces[key] };
       }
