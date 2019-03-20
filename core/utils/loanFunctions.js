@@ -73,7 +73,7 @@ export const formatLoanWithDocuments = (loan) => {
     ...loan,
     structure: {
       ...structure,
-      property: {
+      property: property && {
         ...property,
         documents: propertyDocuments,
       },

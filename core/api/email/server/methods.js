@@ -6,7 +6,7 @@ import EmailService from './EmailService';
 sendEmail.setHandler((context, { emailId, userId, params }) => {
   context.unblock();
   try {
-    EmailService.sendEmailToUser({ emailId, userId, params });
+    return EmailService.sendEmailToUser({ emailId, userId, params });
   } catch (error) {
     console.log(`EmailService error for ${emailId}`, error);
     throw new Meteor.Error(error);
@@ -16,7 +16,7 @@ sendEmail.setHandler((context, { emailId, userId, params }) => {
 sendEmailToAddress.setHandler((context, { emailId, address, params }) => {
   context.unblock();
   try {
-    EmailService.sendEmail({ emailId, address, params });
+    return EmailService.sendEmail({ emailId, address, params });
   } catch (error) {
     console.log(`EmailService error for ${emailId}`, error);
     throw new Meteor.Error(error);

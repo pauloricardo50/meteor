@@ -11,7 +11,7 @@
     min-width: 200px;
   }
 
-   > * {
+  > * {
     margin-right: 8px;
   }
 }
@@ -73,5 +73,37 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+.overview-tab .solvency {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
+  .flex {
+    align-items: center;
+  }
+  .flex > * {
+    margin-right: 8px;
+  }
+
+  table {
+    align-self: center;
+
+    td {
+      padding: 8px;
+
+      .flex {
+        padding-bottom: 4px;
+      }
+    }
+
+    tr:not(:first-child) {
+      td:not(:first-child) {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
   }
 }

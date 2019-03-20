@@ -15,10 +15,23 @@ import Divider from '@material-ui/core/Divider';
 
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
-import { SUCCESS, PURCHASE_TYPE } from 'core/api/constants';
+import { SUCCESS, PURCHASE_TYPE, PROPERTY_CATEGORY } from 'core/api/constants';
 import Calculator from 'core/utils/Calculator';
 import * as ROUTES from '../../../startup/client/appRoutes';
 import PercentWithStatus from '../../../core/components/PercentWithStatus/PercentWithStatus';
+
+const isOnProProperty = (loan) => {
+  // If there's only one property, don't show the percentage
+  if (loan.properties && loan.properties.length === 1) {
+    return loan.properties[0].category === PROPERTY_CATEGORY.PRO;
+  }
+
+  // Else: show the percentage if the selected structure is not a pro property
+  return (
+    Calculator.selectPropertyKey({ loan, key: 'category' })
+    === PROPERTY_CATEGORY.PRO
+  );
+};
 
 type linksType = Array<{|
   id: string,
@@ -28,6 +41,7 @@ type linksType = Array<{|
   Component?: React.Node,
   percent?: Function,
 |}>;
+
 const sideNavLinks: linksType = [
   {
     id: 'DashboardPage',
@@ -55,7 +69,10 @@ const sideNavLinks: linksType = [
     id: 'PropertiesPage',
     to: ROUTES.PROPERTIES_PAGE,
     icon: faHome,
-    percent: loan => !loan.hasPromotion && Calculator.propertyPercent({ loan }),
+    percent: loan =>
+      !loan.hasPromotion
+      && !isOnProProperty(loan)
+      && Calculator.propertyPercent({ loan }),
   },
   {
     id: 'FilesPage',
@@ -69,6 +86,7 @@ const sideNavLinks: linksType = [
 export const LoanSideNav = ({
   loan,
   links,
+  closeDrawer,
 }: {
   loan: any,
   links: linksType,
@@ -98,6 +116,7 @@ export const LoanSideNav = ({
             key={to}
             to={to}
             className="loan-side-nav-link"
+            onClick={closeDrawer}
             {...otherProps}
           >
             <FontAwesomeIcon icon={icon} className="icon" />
@@ -120,6 +139,7 @@ export const LoanSideNav = ({
 );
 
 LoanSideNav.propTypes = {
+  closeDrawer: PropTypes.func.isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
   loan: PropTypes.object.isRequired,
 };

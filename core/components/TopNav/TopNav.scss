@@ -9,18 +9,23 @@
 
   border-bottom: 1px solid $border-grey;
   background-color: #fff;
-}
 
-.top-nav .top-nav-content {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  justify-content: space-between;
-}
+  .top-nav-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-between;
 
-.top-nav .top-nav-content .empty,
-.top-nav .top-nav-content .menu-button {
-  display: flex;
+    .empty,
+    .menu-button {
+      display: flex;
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .top-nav-logo {
@@ -36,7 +41,8 @@
   }
 }
 
-.top-nav .top-nav-content .buttons {
-  display: flex;
-  align-items: center;
+.top-nav-dropdown svg.font-awesome {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 2px;
 }

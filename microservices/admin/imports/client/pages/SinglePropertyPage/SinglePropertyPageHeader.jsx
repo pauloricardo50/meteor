@@ -20,6 +20,7 @@ const SinglePropertyHeader = ({
     createdAt,
     user,
   },
+  loanId,
 }) => (
   <div className="single-property-page-header">
     <div className="top">
@@ -33,9 +34,14 @@ const SinglePropertyHeader = ({
       <div>
         <ConfirmMethod
           label="Supprimer"
-          method={() => propertyDelete.run({ propertyId })}
+          method={() => propertyDelete.run({ propertyId, loanId })}
           buttonProps={{ error: true }}
-        />
+        >
+          <p>
+            Si ce bien immobilier est partagé entre plusieurs dossiers, il ne
+            sera pas supprimé, mais juste enlevé de ce dossier.
+          </p>
+        </ConfirmMethod>
       </div>
     </div>
 

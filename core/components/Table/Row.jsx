@@ -30,7 +30,7 @@ const Row = ({
         style={columnOptions[j].style}
         align={columnOptions[j].align}
         padding={columnOptions[j].padding || 'dense'}
-        data-id={columnOptions[j].id}
+        className={`col-${columnOptions[j].id}`}
       >
         {displayValue(column, columnOptions[j])}
       </TableCell>

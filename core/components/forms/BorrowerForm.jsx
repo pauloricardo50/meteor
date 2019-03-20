@@ -10,11 +10,11 @@ import MortgageNotesForm from './MortgageNotesForm';
 
 type BorrowerFormProps = {};
 
-const personalFields = [
+export const personalFields = [
   'firstName',
   'lastName',
   'gender',
-  'age',
+  'birthDate',
   'sameAddress',
   'address1',
   'address2',
@@ -28,7 +28,7 @@ const personalFields = [
   'childrenCount',
   'company',
 ];
-const financeFields = [
+export const financeFields = [
   'salary',
   'netSalary',
   'bonusExists',
@@ -46,6 +46,8 @@ const financeFields = [
   'insurance3B',
   'bank3A',
   'thirdPartyFortune',
+  'hasOwnCompany',
+  'ownCompanies',
 ];
 
 const omittedFields = [

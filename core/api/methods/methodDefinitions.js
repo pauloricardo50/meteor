@@ -97,3 +97,10 @@ export const updateDocument = new Method({
     object: Object,
   },
 });
+
+export const generateScenario = new Method({
+  name: 'generateScenario',
+  params: {
+    scenario: Object,
+  },
+});

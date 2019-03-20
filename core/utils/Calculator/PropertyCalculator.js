@@ -5,7 +5,6 @@ import {
 } from '../../arrays/PropertyFormArray';
 import { getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
-import { FinanceCalculator } from '../FinanceCalculator';
 import {
   filesPercent,
   getMissingDocumentIds,
@@ -54,10 +53,11 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
 
     getPropAndWork({ loan, structureId }) {
       const propertyValue = this.selectPropertyValue({ loan, structureId });
-      const propertyWork = this.makeSelectStructureKey('propertyWork')({
+      const propertyWork = this.selectStructureKey({
         loan,
         structureId,
-      });
+        key: 'propertyWork',
+      }) || 0;
       return super.getPropAndWork({ propertyValue, propertyWork });
     }
 
@@ -158,7 +158,3 @@ export const withPropertyCalculator = (SuperClass = class {}) =>
       return !!structure.promotionOptionId;
     }
   };
-
-export const PropertyCalculator = withPropertyCalculator(FinanceCalculator);
-
-export default new PropertyCalculator();

@@ -1,12 +1,14 @@
-import { Meteor } from 'meteor/meteor';
-import { Kadira } from 'meteor/lmachens:kadira';
+import { Meteor, global } from 'meteor/meteor';
 
 if (Meteor.settings.Kadira) {
   const { endpoint, pro } = Meteor.settings.Kadira;
 
-  Kadira.connect(
-    pro.appId,
-    pro.appSecret,
-    { endpoint },
-  );
+  if (!global.Package['lmachens:kadira']) {
+    console.log('missing kadira package!');
+    return;
+  }
+
+  const { Kadira } = require('meteor/lmachens:kadira');
+
+  Kadira.connect(pro.appId, pro.appSecret, { endpoint });
 }

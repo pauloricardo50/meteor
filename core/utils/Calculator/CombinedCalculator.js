@@ -1,5 +1,4 @@
 // @flow
-import { withSelector } from './Selector';
 import { getAggregatePercent } from '../general';
 
 export const withCombinedCalculator = (SuperClass = class {}) =>
@@ -12,12 +11,9 @@ export const withCombinedCalculator = (SuperClass = class {}) =>
         !hasPromotion && this.getPropertyFilesProgress,
       ]
         .filter(x => x !== false)
-        .map(f => f({ loan }));
+        .map(f => f({ loan }))
+        .filter(x => x);
 
       return getAggregatePercent(progress);
     }
   };
-
-export const CombinedCalculator = withSelector(withCombinedCalculator());
-
-export default new CombinedCalculator();

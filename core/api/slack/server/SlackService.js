@@ -85,12 +85,13 @@ export class SlackService {
       user = null;
     }
 
-    if (!user && userId && Meteor.isServer) {
-      user = UserService.findOne(userId);
+    if (!user && userId) {
+      user = UserService.get(userId);
     }
 
     return this.sendAttachments({
       channel: `errors-${Meteor.settings.public.environment}`,
+      username: user ? user.name : undefined,
       attachments: [
         {
           title: error && error.name,
@@ -152,6 +153,7 @@ export class SlackService {
     const slackPayload = {
       channel,
       attachments: [{ title, title_link: link, text: message }],
+      username: currentUser ? currentUser.name : undefined,
     };
 
     if ((Meteor.isStaging || Meteor.isDevelopment) && !Meteor.isTest) {
@@ -177,10 +179,9 @@ export class SlackService {
       return false;
     }
 
-    const { name } = currentUser;
     const loan = loanId && fullLoan.clone({ loanId }).fetchOne();
     const loanNameEnd = loan ? ` pour ${loan.name}.` : '.';
-    const title = `${name} a uploadé ${fileName} dans ${docLabel}${loanNameEnd}`;
+    const title = `Upload: ${fileName} dans ${docLabel}${loanNameEnd}`;
     let link = `${Meteor.settings.public.subdomains.admin}/users/${
       currentUser._id
     }`;

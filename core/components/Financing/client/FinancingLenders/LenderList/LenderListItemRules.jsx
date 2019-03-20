@@ -23,6 +23,20 @@ const LenderListItemRules = ({
 
   return (
     <>
+      {calc.adminComments && calc.adminComments.length > 0 && (
+        <Icon
+          type="warning"
+          style={{ color: colors.warning }}
+          tooltip={(
+            <ul style={{ padding: 0 }}>
+              {calc.adminComments.map(comment => (
+                <li key="comment">&bull; {comment}</li>
+              ))}
+            </ul>
+          )}
+        />
+      )}
+
       <Icon
         type="info"
         className="icon"
@@ -46,6 +60,7 @@ const LenderListItemRules = ({
           </div>
         )}
       />
+
       <StatusIcon
         status={incomeRatio > calc.maxIncomeRatio ? ERROR : SUCCESS}
         tooltip={(
@@ -61,6 +76,7 @@ const LenderListItemRules = ({
           </span>
         )}
       />
+
       <StatusIcon
         status={borrowRatio > calc.maxBorrowRatio ? ERROR : SUCCESS}
         tooltip={(
@@ -76,19 +92,6 @@ const LenderListItemRules = ({
           </span>
         )}
       />
-      {calc.adminComments && calc.adminComments.length > 0 && (
-        <Icon
-          type="warning"
-          style={{ color: colors.warning }}
-          tooltip={(
-            <ul style={{ padding: 0 }}>
-              {calc.adminComments.map(comment => (
-                <li key="comment">&bull; {comment}</li>
-              ))}
-            </ul>
-          )}
-        />
-      )}
     </>
   );
 };

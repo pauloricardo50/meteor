@@ -74,3 +74,35 @@ export const flattenObject = (object, delimiter) => {
 
   return flattened;
 };
+
+export const getUserNameAndOrganisation = ({ user }) => {
+  const { name, organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName ? `${name} (${organisationName})` : name;
+};
+
+const isReferredByOrganisation = ({ organisations, referredByOrganisation }) =>
+  organisations.some(({ _id }) => referredByOrganisation._id === _id);
+const isReferredByOrganisationUser = ({ organisationUsers, referredByUser }) =>
+  organisationUsers.some(({ _id }) => referredByUser._id === _id);
+
+export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
+  const { organisations = [] } = proUser;
+  const organisationUsers = organisations.length ? organisations[0].users : [];
+  const { referredByUser = {}, referredByOrganisation = {} } = user;
+
+  let label = 'Déjà référé';
+
+  if (
+    isAdmin
+    || isReferredByOrganisation({ organisations, referredByOrganisation })
+    || isReferredByOrganisationUser({ organisationUsers, referredByUser })
+  ) {
+    label = getUserNameAndOrganisation({ user: referredByUser });
+  }
+
+  return {
+    raw: referredByUser.name,
+    label,
+  };
+};

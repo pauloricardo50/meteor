@@ -44,9 +44,9 @@ class DateInput extends Component {
         classes={classes}
         className="date-input"
         id={id}
-        inputComponent={DatePicker}
         type="date"
         placeholder={undefined}
+        inputComponent={DatePicker}
         inputProps={{
           id,
           focused,

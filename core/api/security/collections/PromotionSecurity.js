@@ -31,7 +31,7 @@ class PromotionSecurity {
     checkingFunction,
     errorMessage,
   }) {
-    if (Security.currentUserIsAdmin()) {
+    if (Security.hasMinimumRole({ role: ROLES.ADMIN, userId })) {
       return;
     }
     const promotion = PromotionService.safeFetchOne({

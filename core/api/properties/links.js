@@ -27,4 +27,10 @@ Properties.addLinks({
     metadata: true,
     autoremove: true,
   },
+  users: {
+    field: 'userLinks',
+    collection: Users,
+    type: 'many',
+    metadata: true,
+  },
 });

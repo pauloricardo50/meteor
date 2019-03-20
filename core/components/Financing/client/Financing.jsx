@@ -26,27 +26,24 @@ const Financing = ({ loan }: FinancingProps) =>
     <ScrollSync proportional={false} vertical={false}>
       <div className="financing-structures">
         <FinancingHeader selectedStructure={loan.selectedStructure} />
+
         <FinancingProject />
+
         {loan.purchaseType === PURCHASE_TYPE.REFINANCING && (
           <FinancingRefinancing />
         )}
+
         <FinancingFinancing />
+
         <FinancingOwnFunds />
-        {Meteor.microservice === 'admin' && (
-          <span>
-            Offres{' '}
-            {loan.enableOffers ? (
-              <span className="success">Activées</span>
-            ) : (
-              <span className="error">Désactivées</span>
-            )}
-          </span>
-        )}
+
         {(Meteor.microservice === 'admin' || loan.enableOffers) && (
-          <FinancingOffers />
+          <FinancingOffers loan={loan} />
         )}
+
         <FinancingResult />
-        {Meteor.microservice === 'admin' && <FinancingLenders />}
+
+        {Meteor.microservice === 'admin' && <FinancingLenders loan={loan} />}
       </div>
     </ScrollSync>
   ) : (

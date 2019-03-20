@@ -23,6 +23,7 @@ const config = {
         'BorrowerRemover',
         'BorrowerReuser',
         'collections',
+        'CommissionRatesViewer',
         'ConditionsButton',
         'ConfirmMethod',
         'Contacts',
@@ -42,9 +43,11 @@ const config = {
         'OfferAdder',
         'PasswordChange',
         'PDF',
+        'ProCustomersTable',
         'Promotion',
         'PromotionLotPage',
         'PropertyForm',
+        'RevenuesByStatus',
         'StatusIconTooltip',
         'steps',
         'Table',
@@ -93,6 +96,7 @@ const config = {
       exceptions: [
         'AccountPage',
         'collections',
+        'CommissionRatesViewer',
         'ConfirmMethod',
         'ContactButton',
         'files',
@@ -103,6 +107,7 @@ const config = {
         'PasswordResetPage',
         'Promotion',
         'PromotionLotPage',
+        'RevenuesByStatus',
         'Uploader',
       ],
     },
@@ -145,6 +150,7 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
+    'ProPropertyPage',
   ],
 };
 

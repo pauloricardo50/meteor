@@ -1,33 +1,36 @@
-// import LoanService from 'core/api/loans/server/LoanService';
-import { makeLoanAnonymizer } from '../../promotions/server/promotionServerHelpers';
-import { proLoans } from '../../fragments';
+import { Match } from 'meteor/check';
+
 import SecurityService from '../../security';
-import LoanService from '../server/LoanService';
 import query from './proLoans';
+import { proLoansResolver, getLoanIds } from './resolvers';
+import QueryCacher from '../../helpers/server/QueryCacher';
 
 query.expose({
   firewall(userId, params) {
-    const { promotionId } = params;
-    params.userId = userId;
+    const { userId: providedUserId } = params;
+    params.calledByUserId = userId;
+
+    if (SecurityService.isUserAdmin(userId) && providedUserId) {
+      params.userId = providedUserId;
+    } else {
+      params.userId = userId;
+    }
+
     SecurityService.checkUserIsPro(userId);
-    SecurityService.promotions.isAllowedToView({
-      userId,
-      promotionId,
-    });
   },
-  validateParams: { promotionId: String, userId: String },
+  validateParams: {
+    promotionId: Match.Maybe(Match.OneOf(String, Object)),
+    propertyId: Match.Maybe(Match.OneOf(String, Object)),
+    userId: String,
+    calledByUserId: String,
+  },
 });
 
-query.resolve(({ userId, promotionId }) => {
-  const loans = LoanService.fetch({
-    $filters: { 'promotionLinks._id': promotionId },
-    ...proLoans(),
-  });
+query.resolve(proLoansResolver);
 
-  try {
-    SecurityService.checkUserIsAdmin(userId);
-    return loans;
-  } catch (error) {
-    return loans.map(makeLoanAnonymizer({ userId, promotionId }));
-  }
+const cacher = new QueryCacher({
+  getDataToHash: getLoanIds({ withReferredBy: true }),
+  ttl: 60 * 60 * 1000,
 });
+
+query.cacheResults(cacher);

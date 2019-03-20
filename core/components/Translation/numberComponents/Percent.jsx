@@ -11,7 +11,11 @@ const Percent = ({ value, rounded }) => (
 );
 
 Percent.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
+};
+
+Percent.defaultProps = {
+  value: undefined,
 };
 
 export default Percent;

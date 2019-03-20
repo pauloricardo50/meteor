@@ -49,7 +49,15 @@ const WwwTopNavLinksSmall = ({ open, toggleDrawer, classes: { fullList } }) => (
             className="www-top-nav-link"
           >
             <ListItem button>
-              <ListItemText primary={<T id="WwwTopNavLinks.login" />} />
+              <ListItemText primary={<T id="WwwTopNavLinks.appLogin" />} />
+            </ListItem>
+          </a>
+          <a
+            href={Meteor.settings.public.subdomains.pro}
+            className="www-top-nav-link"
+          >
+            <ListItem button>
+              <ListItemText primary={<T id="WwwTopNavLinks.proLogin" />} />
             </ListItem>
           </a>
         </List>

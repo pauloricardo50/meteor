@@ -15,7 +15,7 @@ const insertFakeBorrower = (userId) => {
     zipCode: 1201,
     city: 'Genève',
     citizenships: 'Suisse, Français',
-    age: 35,
+    birthDate: '1980-03-01',
     birthPlace: 'Plan-les-Ouates',
     civilStatus: 'SINGLE',
     childrenCount: 2,

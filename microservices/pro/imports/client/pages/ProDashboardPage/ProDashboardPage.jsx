@@ -1,28 +1,37 @@
 // @flow
 import React from 'react';
 
-import Button from 'core/components/Button';
 import T from 'core/components/Translation';
-import PromotionsTable from 'core/components/PromotionsTable';
-import { NEW_PROMOTION_PAGE } from '../../../startup/client/proRoutes';
+import { ProPropertyAdder } from 'core/components/ProPropertyPage/ProPropertyForm';
+import ProCustomersTable from 'core/components/ProCustomersTable/ProCustomersTable';
+import ProCustomerAdder from 'core/components/ProCustomersTable/ProCustomerAdder';
+import PromotionAdder from './PromotionAdder';
+import ProPromotionsTable from './ProPromotionsTable';
+import ProPropertiesTable from './ProPropertiesTable';
+import ProOrganisationPropertiesTable from './ProOrganisationPropertiesTable';
+
+import ExternalPropertyAdder from './ExternalPropertyAdder';
 
 type ProDashboardPageProps = {};
 
-const ProDashboardPage = ({ currentUser }: ProDashboardPageProps) => (
+const ProDashboardPage = (props: ProDashboardPageProps) => (
   <div className="card1 pro-dashboard-page">
     <h1>
       <T id="ProDashboardPage.title" />
     </h1>
     <div className="buttons">
-      <Button raised primary link to={NEW_PROMOTION_PAGE}>
-        <T id="ProDashboardPage.addPromotion" />
-      </Button>
+      <PromotionAdder currentUser={props.currentUser} />
+      <ProPropertyAdder currentUser={props.currentUser} />
+      {props.currentUser && props.currentUser.apiToken && (
+        <ExternalPropertyAdder />
+      )}
+      <ProCustomerAdder currentUser={props.currentUser} />
     </div>
-
-    <h3 className="text-center">
-      <T id="ProDashboardPage.promotions" />
-    </h3>
-    <PromotionsTable currentUser={currentUser} />
+    <ProPromotionsTable />
+    <ProPropertiesTable />
+    <ProOrganisationPropertiesTable />
+    <h3 className="text-center">Dossiers</h3>
+    <ProCustomersTable proUser={props.currentUser} />
   </div>
 );
 

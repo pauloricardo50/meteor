@@ -2,54 +2,44 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/pro-light-svg-icons/faFilePdf';
-
-import Button from 'core/components/Button/Button';
 
 import { ROLES } from 'core/api/constants';
 import Icon from 'core/components/Icon/Icon';
 import GetLoanPDFContainer from './GetLoanPDFContainer';
+import PdfDownloadDialog from './PdfDownloadDialog';
 
 type GetLoanPDFProps = {
   loan: Object,
-  loading: boolean,
-  handleClick: Function,
+  handlePDF: Function,
+  handleHTML: Function,
 };
 
-const GetLoanPDF = ({ loading, handlePDF, handleHTML }: GetLoanPDFProps) => (
+const GetLoanPDF = ({ handlePDF, handleHTML, loan }: GetLoanPDFProps) => (
   <>
-    <Button
-      raised
-      primary
-      onClick={() => handlePDF({})}
-      loading={loading}
+    <PdfDownloadDialog
+      onSubmit={values => handlePDF(values)}
+      buttonLabel="PDF"
       icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
-    >
-      PDF
-    </Button>
-
-    <Button
-      raised
-      primary
-      onClick={() => handlePDF({ anonymous: true })}
-      loading={loading}
-      style={{ marginLeft: 8 }}
+      loan={loan}
+      dialogTitle="Télécharger PDF"
+    />
+    <PdfDownloadDialog
+      onSubmit={values => handlePDF({ ...values, anonymous: true })}
+      buttonLabel="PDF anonyme"
       icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
-    >
-      PDF anonyme
-    </Button>
+      loan={loan}
+      dialogTitle="Télécharger PDF anonyme"
+    />
     {Meteor.user().roles.includes(ROLES.DEV) && (
-      <Button
-        raised
-        primary
-        onClick={() => handleHTML({ anonymous: false })}
-        loading={loading}
-        style={{ marginLeft: 8 }}
-      >
-        {'<HTML />'}
-      </Button>
+      <PdfDownloadDialog
+        onSubmit={values => handleHTML(values)}
+        buttonLabel={'<HTML />'}
+        icon={<Icon size={16} type={<FontAwesomeIcon icon={faFilePdf} />} />}
+        loan={loan}
+        dialogTitle="Télécharger HTML"
+      />
     )}
   </>
 );

@@ -6,6 +6,8 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
+  moneyField,
+  percentageField,
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -13,6 +15,7 @@ import {
   PURCHASE_TYPE,
   OWNER,
   CANTONS,
+  SOLVENCY_TYPE,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
 import LogicSchema from './LogicSchema';
@@ -102,6 +105,27 @@ const LoanSchema = new SimpleSchema({
   ...contactsSchema,
   ...previousLoanTranchesSchema,
   ...additionalDocuments([]),
+  revenueLinks: { type: Array, defaultValue: [] },
+  'revenueLinks.$': String,
+  userCache: {
+    type: Object,
+    blackbox: true,
+    optional: true,
+  },
+  maxSolvency: { type: Object, optional: true },
+  'maxSolvency.type': {
+    type: String,
+    allowedValues: Object.values(SOLVENCY_TYPE),
+    defaultValue: SOLVENCY_TYPE.SIMPLE,
+  },
+  'maxSolvency.canton': { type: String, allowedValues: Object.keys(CANTONS) },
+  'maxSolvency.date': Date,
+  'maxSolvency.main': Object,
+  'maxSolvency.main.propertyValue': moneyField,
+  'maxSolvency.main.borrowRatio': percentageField,
+  'maxSolvency.second': Object,
+  'maxSolvency.second.propertyValue': moneyField,
+  'maxSolvency.second.borrowRatio': percentageField,
 });
 
 export default LoanSchema;

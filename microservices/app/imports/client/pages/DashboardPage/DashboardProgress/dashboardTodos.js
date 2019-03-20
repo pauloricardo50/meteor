@@ -1,12 +1,11 @@
-import PropertyCalculator from 'core/utils/Calculator/PropertyCalculator';
-import BorrowerCalculator from 'core/utils/Calculator/BorrowerCalculator';
 import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
-import { LOAN_VERIFICATION_STATUS } from 'core/api/constants';
 import {
+  LOAN_VERIFICATION_STATUS,
   VALUATION_STATUS,
   PURCHASE_TYPE,
-} from '../../../../core/api/constants';
+  PROPERTY_CATEGORY,
+} from 'core/api/constants';
 import {
   FINANCING_PAGE,
   PROPERTY_PAGE,
@@ -15,7 +14,7 @@ import {
   PROPERTIES_PAGE,
   REFINANCING_PAGE,
 } from '../../../../startup/client/appRoutes';
-import VerificationRequester from './VerificationRequester/VerificationRequester';
+import VerificationRequester from './VerificationRequester';
 
 const createFinancingLink = ({ _id: loanId }) =>
   createRoute(FINANCING_PAGE, { ':loanId': loanId });
@@ -34,6 +33,9 @@ export const checkArrayIsDone = (array = [], params) =>
     .every(({ isDone, hide }) =>
       (hide ? hide(params) || isDone(params) : isDone(params)));
 
+export const disablePropertyTodos = ({ structure: { property } }) =>
+  !property || property.category === PROPERTY_CATEGORY.PRO;
+
 export const promotionTodoList = {
   completeBorrowers: true,
   completeBorrowersFinance: true,
@@ -44,6 +46,7 @@ export const promotionTodoList = {
 };
 
 export const defaultTodoList = {
+  addProperty: true,
   completeBorrowers: true,
   completeBorrowersFinance: true,
   completeProperty: true,
@@ -62,7 +65,7 @@ export const getDashboardTodosArray = list =>
       id: 'completeBorrowers',
       isDone: ({ borrowers }) => {
         const percentages = borrowers.map(borrower =>
-          BorrowerCalculator.personalInfoPercent({ borrowers: borrower }));
+          Calculator.personalInfoPercent({ borrowers: borrower }));
 
         if (percentages.some(percent => percent >= 1)) {
           return true;
@@ -72,6 +75,16 @@ export const getDashboardTodosArray = list =>
       },
       link: ({ _id: loanId }) =>
         createRoute(BORROWERS_PAGE, { loanId, tabId: 'personal' }),
+    },
+    {
+      id: 'addProperty',
+      isDone: (loan) => {
+        const { properties } = loan;
+        return properties && properties.length > 0;
+      },
+      hide: ({ properties = [] }) =>
+        properties.some(({ category }) => category === PROPERTY_CATEGORY.PRO),
+      link: createSinglePropertyLink,
     },
     {
       id: 'completeProperty',
@@ -84,7 +97,7 @@ export const getDashboardTodosArray = list =>
           return false;
         }
 
-        const percent = PropertyCalculator.propertyPercent({ loan, property });
+        const percent = Calculator.propertyPercent({ loan, property });
 
         if (percent >= 1) {
           return true;
@@ -92,7 +105,7 @@ export const getDashboardTodosArray = list =>
 
         return false;
       },
-      hide: ({ structure: { property } }) => !property,
+      hide: disablePropertyTodos,
       link: createSinglePropertyLink,
     },
     {
@@ -115,7 +128,7 @@ export const getDashboardTodosArray = list =>
         property
         && property.valuation
         && property.valuation.status !== VALUATION_STATUS.NONE,
-      hide: ({ structure: { property } }) => !property,
+      hide: disablePropertyTodos,
       link: createSinglePropertyLink,
     },
     {

@@ -117,8 +117,10 @@ export const financeInfoSchema = {
   ...makeArrayOfObjectsSchema(OWN_FUNDS_TYPES.INSURANCE_3B),
   [OWN_FUNDS_TYPES.THIRD_PARTY_FORTUNE]: moneyField,
   ...makeArrayOfObjectsSchema('otherIncome', Object.values(OTHER_INCOME)),
+  'otherIncome.$.comment': { type: String, optional: true },
   ...makeArrayOfObjectsSchema('otherFortune'),
   ...makeArrayOfObjectsSchema('expenses', Object.values(EXPENSES)),
+  'expenses.$.comment': { type: String, optional: true },
   ...makeArrayOfObjectsSchema('realEstate', Object.values(RESIDENCE_TYPE)),
   'realEstate.$.loan': {
     ...moneyField,

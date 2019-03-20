@@ -113,6 +113,25 @@ describe('BorrowerCalculator', () => {
         },
       })).to.equal(200);
     });
+
+    it('works with 2 borrowers', () => {
+      expect(Calculator.getBonusIncome({
+        borrowers: [
+          {
+            bonusExists: true,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+          {
+            bonusExists: false,
+            bonus2018: 100,
+            bonus2017: 0,
+            bonus2016: 200,
+          },
+        ],
+      })).to.equal(50);
+    });
   });
 
   describe('getBorrowerCompletion', () => {

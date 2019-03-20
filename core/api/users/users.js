@@ -89,6 +89,8 @@ export const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  referredByUserLink: { type: String, optional: true },
+  referredByOrganisationLink: { type: String, optional: true },
 });
 
 Meteor.users.attachSchema(UserSchema);

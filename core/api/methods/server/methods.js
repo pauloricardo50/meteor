@@ -18,7 +18,9 @@ import {
   setAdditionalDoc,
   migrateToLatest,
   updateDocument,
+  generateScenario,
 } from '../methodDefinitions';
+import generator from '../../factories';
 
 import { migrate } from '../../migrations/server';
 
@@ -149,4 +151,9 @@ updateDocument.setHandler(({ userId }, { collection, docId, object }) => {
   }
 
   return service._update({ id: docId, object });
+});
+
+generateScenario.setHandler(({ userId }, { scenario }) => {
+  SecurityService.checkUserIsAdmin(userId);
+  return generator(scenario);
 });

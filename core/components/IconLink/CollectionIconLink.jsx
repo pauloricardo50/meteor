@@ -5,6 +5,7 @@ import { faBriefcase } from '@fortawesome/pro-light-svg-icons/faBriefcase';
 import { faCity } from '@fortawesome/pro-light-svg-icons/faCity';
 import { faUserTie } from '@fortawesome/pro-light-svg-icons/faUserTie';
 
+import { getUserNameAndOrganisation } from '../../api/helpers';
 import IconLink from './IconLink';
 import {
   LOANS_COLLECTION,
@@ -35,11 +36,21 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
       link: `/loans/${docId}`,
       text: data.name,
     };
-  case USERS_COLLECTION:
+  case USERS_COLLECTION: {
+    let text;
+    const { organisations = [] } = data;
+
+    if (organisations.length) {
+      text = getUserNameAndOrganisation({ user: data });
+    } else {
+      text = data.name;
+    }
+
     return {
       link: `/users/${docId}`,
-      text: data.name,
+      text,
     };
+  }
   case BORROWERS_COLLECTION:
     return {
       link: `/borrowers/${docId}`,
@@ -63,7 +74,7 @@ const getIconConfig = ({ collection, _id: docId, ...data } = {}) => {
   case ORGANISATIONS_COLLECTION: {
     let text;
 
-    if (data.$metadata.role) {
+    if (data.$metadata && data.$metadata.role) {
       text = `${data.$metadata.role} @ ${data.name}`;
     } else if (data.logo) {
       text = (
@@ -108,12 +119,7 @@ const CollectionIconLink = ({ relatedDoc }: CollectionIconLinkProps) => {
   const { link, icon = collectionIcons[collection], text } = getIconConfig(relatedDoc);
 
   return (
-    <IconLink
-      link={link}
-      icon={icon}
-      text={text}
-      className="collection-icon"
-    />
+    <IconLink link={link} icon={icon} text={text} className="collection-icon" />
   );
 };
 

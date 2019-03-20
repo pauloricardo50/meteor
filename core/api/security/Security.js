@@ -82,8 +82,8 @@ export default class Security {
     }
   }
 
-  static checkOwnership(doc) {
-    const userId = Meteor.userId();
+  static checkOwnership(doc, userId) {
+    userId = userId || Meteor.userId();
     const userIdIsValid = doc && doc.userId === userId;
     const userLinksIsValid = doc
       && doc.userLinks
@@ -94,22 +94,11 @@ export default class Security {
     }
   }
 
-  static hasPermissionOnDoc({ doc, permissions, userId = Meteor.userId() }) {
-    const { userLinks = [], users = [] } = doc;
-
-    const user = userLinks.find(({ _id }) => _id === userId)
-      || users.find(({ _id }) => _id === userId);
-
-    if (!user) {
-      this.handleUnauthorized('Checking permissions');
-    }
-
-    const userPermissions = user.permissions || user.$metadata.permissions;
-
+  static checkRequiredPermissions({ requiredPermissions, userPermissions }) {
     if (
-      !Object.keys(flattenObject(permissions)).every((permission) => {
+      !Object.keys(flattenObject(requiredPermissions)).every((permission) => {
         const userPermission = get(userPermissions, permission);
-        const requiredPermission = get(permissions, permission);
+        const requiredPermission = get(requiredPermissions, permission);
 
         if (!userPermission) {
           return false;
@@ -130,13 +119,32 @@ export default class Security {
     }
   }
 
+  static hasPermissionOnDoc({
+    doc,
+    requiredPermissions,
+    userId = Meteor.userId(),
+  }) {
+    const { userLinks = [], users = [] } = doc;
+
+    const user = userLinks.find(({ _id }) => _id === userId)
+      || users.find(({ _id }) => _id === userId);
+
+    if (!user) {
+      this.handleUnauthorized('Checking permissions');
+    }
+
+    const userPermissions = user.permissions || user.$metadata.permissions;
+
+    this.checkRequiredPermissions({ requiredPermissions, userPermissions });
+  }
+
   static checkCurrentUserIsDev() {
     if (!this.currentUserHasRole(ROLES.DEV)) {
       this.handleUnauthorized('unauthorized developer');
     }
   }
 
-  static minimumRole(role) {
+  static hasMinimumRole({ role, userId }) {
     let allowedRoles;
 
     switch (role) {
@@ -157,16 +165,21 @@ export default class Security {
       throw new Meteor.Error(`Invalid role: ${role} at minimumRole`);
     }
 
-    return (userId) => {
-      const isAllowed = allowedRoles.some(allowedRole =>
-        this.hasRole(userId, allowedRole));
+    const isAllowed = allowedRoles.some(allowedRole =>
+      this.hasRole(userId, allowedRole));
 
-      if (!isAllowed) {
-        this.handleUnauthorized('Unauthorized role');
-      }
+    if (!isAllowed) {
+      return false;
+    }
 
-      return true;
-    };
+    return true;
+  }
+
+  static minimumRole(role) {
+    return userId =>
+      (this.hasMinimumRole({ userId, role })
+        ? undefined
+        : this.handleUnauthorized('Unauthorized role'));
   }
 
   static canModifyDoc = (doc) => {
@@ -214,7 +227,7 @@ export default class Security {
         break;
       }
 
-      this.properties.isAllowedToUpdate(docId);
+      this.properties.isAllowedToUpdate(docId, userId);
       break;
     }
     default:

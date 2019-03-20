@@ -14,6 +14,7 @@ import LoanObject from './LoanObject';
 import LoanStatusCheck from './LoanStatusCheck';
 import VerificationSetter from './VerificationSetter';
 import LoanStepSetter from './LoanStepSetter';
+import Solvency from './Solvency';
 
 const OverviewTab = (props) => {
   const {
@@ -37,7 +38,12 @@ const OverviewTab = (props) => {
           fields={['residenceType']}
           collection={COLLECTIONS.LOANS_COLLECTION}
         />
-        <UpdateField doc={loan} fields={['purchaseType']} collection={COLLECTIONS.LOANS_COLLECTION} disabled />
+        <UpdateField
+          doc={loan}
+          fields={['purchaseType']}
+          collection={COLLECTIONS.LOANS_COLLECTION}
+          disabled
+        />
         <LoanStepSetter loan={loan} />
         {['signingDate', 'closingDate'].map(dateType => (
           <DateModifier
@@ -49,6 +55,7 @@ const OverviewTab = (props) => {
         ))}
       </div>
       <LoanStatusCheck loan={loan} />
+      <Solvency loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">
           <h2 className="fixed-size">

@@ -21,12 +21,7 @@ const DashboardRecapFinanceEmpty = ({
     <p className="description">
       <T id="DashboardRecapFinance.emptyDescription" />
     </p>
-    <Button
-      link
-      to={createRoute(FINANCING_PAGE, { loanId: loan._id })}
-      // outlined
-      primary
-    >
+    <Button link to={createRoute(FINANCING_PAGE, { loanId: loan._id })} primary>
       <T id="DashboardRecapFinance.emptyButton" />
     </Button>
   </div>

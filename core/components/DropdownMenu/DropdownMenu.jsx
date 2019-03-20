@@ -47,6 +47,8 @@ const DropdownMenu = ({
   tooltip,
   tooltipPlacement,
   renderTrigger,
+  maxHeight,
+  paperClassName,
 }) => {
   const onClickHandler = (event) => {
     // Prevent background from receiving clicks
@@ -68,10 +70,20 @@ const DropdownMenu = ({
         tooltipPlacement,
       })}
       <Menu
-        id="long-menu"
         anchorEl={anchorEl}
         open={isOpen}
         onClose={handleClose}
+        classes={{ paper: paperClassName }}
+        PaperProps={{
+          style: {
+            maxHeight:
+              maxHeight >= 0
+                ? maxHeight === 0
+                  ? maxHeight
+                  : undefined
+                : 48 * 4.5,
+          },
+        }}
       >
         {options}
       </Menu>

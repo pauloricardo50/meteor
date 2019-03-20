@@ -1,4 +1,5 @@
 // @flow
+
 import Loans from './loans';
 import {
   Properties,
@@ -8,6 +9,7 @@ import {
   Promotions,
   PromotionOptions,
   Lenders,
+  Revenues,
 } from '..';
 
 Loans.addLinks({
@@ -25,6 +27,12 @@ Loans.addLinks({
     field: 'userId',
     collection: Users,
     type: 'one',
+    denormalize: {
+      field: 'userCache',
+      body: {
+        referredByOrganisationLink: 1,
+      },
+    },
   },
   tasks: {
     collection: Tasks,
@@ -49,5 +57,10 @@ Loans.addLinks({
     inversedBy: 'loan',
     unique: true,
     autoremove: true,
+  },
+  revenues: {
+    field: 'revenueLinks',
+    collection: Revenues,
+    type: 'many',
   },
 });

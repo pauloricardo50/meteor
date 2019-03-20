@@ -2,7 +2,6 @@
 import Calc, { FinanceCalculator } from 'core/utils/FinanceCalculator';
 import Calculator from 'core/utils/Calculator';
 import { makeArgumentMapper } from 'core/utils/MiddlewareManager';
-import { getPropertyValue } from './FinancingOwnFunds/ownFundsHelpers.js';
 
 export const getProperty = ({ loan, structureId }) =>
   Calculator.selectProperty({ loan, structureId });
@@ -15,7 +14,8 @@ export const getAmortizationRateMapper = (data) => {
     structure: { wantedLoan, propertyWork },
   } = data;
   return {
-    borrowRatio: wantedLoan / (getPropertyValue(data) + propertyWork),
+    borrowRatio:
+      wantedLoan / (Calculator.selectPropertyValue(data) + propertyWork),
   };
 };
 
@@ -23,21 +23,23 @@ const argumentMappings = {
   getIncomeRatio: data => ({
     monthlyIncome: Calculator.getTotalIncome(data) / 12,
     monthlyPayment: Calc.getTheoreticalMonthly({
-      propAndWork: getPropertyValue(data) + data.structure.propertyWork,
+      propAndWork:
+        Calculator.selectPropertyValue(data) + data.structure.propertyWork,
       loanValue: data.structure.wantedLoan,
       amortizationRate: Calc.getAmortizationRate(data),
     }).total,
   }),
 
   getBorrowRatio: data => ({
-    propertyValue: getPropertyValue(data) + data.structure.propertyWork,
+    propertyValue:
+      Calculator.selectPropertyValue(data) + data.structure.propertyWork,
     loan: data.structure.wantedLoan,
   }),
 
-  getLoanFromBorrowRatio: (borrowRatio, data) => ({
-    propertyValue: getPropertyValue(data) + data.structure.propertyWork,
-    borrowRatio,
-  }),
+  getLoanFromBorrowRatio: (borrowRatio, data) => {
+    const propertyValue = Calculator.selectPropertyValue(data) + data.structure.propertyWork;
+    return { propertyValue, borrowRatio };
+  },
 
   getAmortizationRateBase: getAmortizationRateMapper,
 
@@ -62,13 +64,13 @@ const argumentMappings = {
   },
 
   getMinCash: data => ({
-    propertyValue: getPropertyValue(data),
+    propertyValue: Calculator.selectPropertyValue(data),
     propertyWork: data.structure.propertyWork,
     fees: data.structure.notaryFees,
   }),
 
   getFeesBase: data => ({
-    propertyValue: getPropertyValue(data),
+    propertyValue: Calculator.selectPropertyValue(data),
     propertyWork: data.structure.propertyWork,
     fees: data.structure.notaryFees,
   }),

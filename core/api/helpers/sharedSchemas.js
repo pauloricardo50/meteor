@@ -18,11 +18,10 @@ export const createdAt = {
 export const updatedAt = {
   type: Date,
   autoValue() {
-    if (this.isUpdate) {
+    if (this.isUpdate || this.isInsert || this.isUpsert) {
       return new Date();
     }
   },
-  denyInsert: true,
   optional: true,
 };
 
@@ -76,6 +75,7 @@ export const makePermissions = ({
   permissionsSchema,
   prefix,
   autoFormDisplayCondition = () => true,
+  autoFormLabel,
 }) =>
   Object.keys(permissionsSchema).reduce(
     (permissions, key) => ({
@@ -87,6 +87,7 @@ export const makePermissions = ({
         type: Object,
         optional: true,
         condition: autoFormDisplayCondition,
+        uniforms: { label: autoFormLabel || prefix },
       },
     },
   );

@@ -1,11 +1,11 @@
 // @flow
 /* eslint-env mocha */
-import { Meteor } from 'meteor/meteor';
 import { expect } from 'chai';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 import { Accounts } from 'meteor/accounts-base';
 
+import { checkEmails } from '../../../../utils/testHelpers';
 import { PROMOTION_STATUS } from '../../../constants';
 import { EMAIL_IDS } from '../../../email/emailConstants';
 import UserService from '../../../users/server/UserService';
@@ -19,15 +19,6 @@ import PropertyService from '../../../properties/server/PropertyService';
 
 describe('PromotionService', function () {
   this.timeout(10000);
-  const checkEmails = () =>
-    new Promise((resolve, reject) => {
-      Meteor.call('getAllTestEmails', (err, emails) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(emails);
-      });
-    });
 
   beforeEach(() => {
     resetDatabase();
@@ -146,7 +137,7 @@ describe('PromotionService', function () {
 
       return PromotionService.inviteUser({ promotionId, user: newUser })
         .then((loanId) => {
-          const user = Accounts.findUserByEmail(newUser.email);
+          const user = UserService.getByEmail(newUser.email);
           const {
             _id: userId,
             services: {
@@ -162,7 +153,7 @@ describe('PromotionService', function () {
           expect(!!userId).to.equal(true);
           expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
-          return checkEmails();
+          return checkEmails(1);
         })
         .then((emails) => {
           expect(emails.length).to.equal(1);
@@ -176,10 +167,7 @@ describe('PromotionService', function () {
 
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-          expect(merge_vars[0].vars
-            .find(({ name }) => name === 'CTA_URL')
-            .content.split('/')
-            .slice(-1)[0]).to.equal(resetToken);
+          expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include(resetToken);
         });
     });
 
@@ -210,7 +198,7 @@ describe('PromotionService', function () {
           expect(!!loanId).to.equal(true);
           expect(UserService.hasPromotion({ userId, promotionId })).to.equal(true);
 
-          return checkEmails();
+          return checkEmails(1);
         })
         .then((emails) => {
           expect(emails.length).to.equal(1);
@@ -288,9 +276,11 @@ describe('PromotionService', function () {
         promotionId,
         user: newUser,
       }).then(() => {
-        const user = Accounts.findUserByEmail(newUser.email);
+        const user = UserService.getByEmail(newUser.email);
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
+
+        return checkEmails(1);
       });
     });
   });

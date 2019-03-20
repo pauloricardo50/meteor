@@ -46,13 +46,22 @@ const sendFeedbackToAllLenders = (loan) => {
   return Promise.resolve();
 };
 
-const additionalActions = loan => (status) => {
+const requiresRevenueStatus = status =>
+  [LOAN_STATUS.CLOSING, LOAN_STATUS.BILLING, LOAN_STATUS.FINALIZED].includes(status);
+
+const additionalActions = loan => (status, prevStatus) => {
   switch (status) {
   case LOAN_STATUS.UNSUCCESSFUL:
     return sendFeedbackToAllLenders(loan);
   default:
-    return Promise.resolve();
+    break;
   }
+
+  if (!requiresRevenueStatus(prevStatus) && requiresRevenueStatus(status)) {
+    const confirm = window.confirm('Attention, ce dossier requiert maintenant des revenus précis, veuillez les saisir dans l\'onglet "Revenus",');
+  }
+
+  return Promise.resolve();
 };
 
 const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (

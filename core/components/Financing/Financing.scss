@@ -327,3 +327,15 @@ $shadow1: 0 2px 60px 5px rgba(0, 0, 0, 0.05);
     width: calc(100% - 24px);
   }
 }
+
+.requiredOwnFunds-component-body {
+  display: flex;
+  justify-content: space-around;
+  align-self: stretch;
+
+  .text-and-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

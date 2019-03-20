@@ -15,11 +15,7 @@ const getMenuItems = ({ admins, relatedDoc, onAdminSelectHandler }) => {
       label: admin.name,
       link: false,
       onClick: () =>
-        onAdminSelectHandler({
-          newAdmin: admin,
-          relatedDoc,
-          oldAdmin,
-        }),
+        onAdminSelectHandler({ newAdmin: admin, relatedDoc, oldAdmin }),
     };
   });
   return options;

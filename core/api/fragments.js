@@ -228,6 +228,7 @@ export const loan = () => ({
   updatedAt: 1,
   userId: 1,
   verificationStatus: 1,
+  maxSolvency: 1,
 });
 
 export const loanBase = () => ({
@@ -277,6 +278,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   properties: adminProperty(),
   signingDate: 1,
   status: 1,
+  revenues: fullRevenues(),
 });
 export const adminLoans = () => ({
   ...loanBase(),
@@ -291,16 +293,31 @@ export const adminLoans = () => ({
 export const proLoans = () => ({
   createdAt: 1,
   name: 1,
-  promotions: { users: { _id: 1 }, status: 1 },
+  status: 1,
+  promotions: { name: 1, users: { _id: 1 }, status: 1 },
   promotionLinks: 1,
   promotionOptions: {
     name: 1,
     status: 1,
     promotionLots: { attributedTo: { user: { _id: 1 } } },
     solvency: 1,
+    value: 1,
   },
-  promotionProgress: 1,
-  user: { name: 1, phoneNumbers: 1, email: 1 },
+  loanProgress: 1,
+  user: {
+    name: 1,
+    phoneNumbers: 1,
+    email: 1,
+    referredByUser: { name: 1, organisations: { name: 1 } },
+    referredByOrganisation: { name: 1 },
+  },
+  hasPromotion: 1,
+  hasProProperty: 1,
+  properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
+  revenues: fullRevenues(),
+  structure: 1,
+  maxSolvency: 1,
+  residenceType: 1,
 });
 
 export const sideNavLoan = () => ({
@@ -378,6 +395,8 @@ export const fullOrganisation = () => ({
   lenders: lender(),
   offers: fullOffer(),
   users: organisationUser(),
+  commissionRates: 1,
+  generatedRevenues: 1,
 });
 
 export const userOrganisation = () => ({
@@ -456,7 +475,7 @@ export const proPromotionOption = () => ({
       promotionLots: { attributedTo: { user: { _id: 1 } } },
       solvency: 1,
     },
-    promotionProgress: 1,
+    loanProgress: 1,
   },
   lots: { name: 1, type: 1, description: 1 },
   priority: 1,
@@ -598,16 +617,20 @@ export const adminValuation = () => ({
 });
 
 export const propertySummary = () => ({
+  address: 1,
   address1: 1,
   address2: 1,
   canton: 1,
   city: 1,
+  externalId: 1,
+  externalUrl: 1,
+  imageUrls: 1,
   insideArea: 1,
   promotion: { name: 1 },
   propertyType: 1,
   status: 1,
-  userId: 1,
   totalValue: 1,
+  userId: 1,
   value: 1,
   zipCode: 1,
 });
@@ -656,6 +679,7 @@ export const fullProperty = ({ withSort } = {}) => ({
   totalValue: 1,
   updatedAt: 1,
   user: appUser(),
+  users: { _id: 1 },
   volume: 1,
   volumeNorm: 1,
   ...(withSort ? { $options: { sort: { createdAt: 1 } } } : {}),
@@ -703,6 +727,19 @@ export const userProperty = () => ({
   valuation: userValuation(),
 });
 
+export const proPropertySummary = () => ({
+  address1: 1,
+  city: 1,
+  status: 1,
+  totalValue: 1,
+  loans: { _id: 1 },
+});
+
+export const proProperty = () => ({
+  ...fullProperty(),
+  users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
+});
+
 // //
 // // Task fragments
 // //
@@ -747,12 +784,6 @@ export const organisationUser = () => ({
   organisations: baseOrganisation(),
 });
 
-export const adminUser = () => ({
-  ...fullUser(),
-  assignedEmployee: simpleUser(),
-  promotions: { name: 1, status: 1 },
-});
-
 export const fullUser = () => ({
   ...simpleUser(),
   apiToken: 1,
@@ -762,6 +793,15 @@ export const fullUser = () => ({
   loans: loanBase(),
   updatedAt: 1,
   organisations: fullOrganisation(),
+});
+
+export const adminUser = () => ({
+  ...fullUser(),
+  assignedEmployee: simpleUser(),
+  promotions: { name: 1, status: 1 },
+  proProperties: { address1: 1, status: 1 },
+  referredByUser: { name: 1, organisations: { name: 1 } },
+  referredByOrganisation: { name: 1 },
 });
 
 export const appUser = () => ({
@@ -781,5 +821,27 @@ export const appUser = () => ({
 export const proUser = () => ({
   ...fullUser(),
   assignedEmployee: simpleUser(),
-  promotions: { _id: 1 },
+  promotions: { _id: 1, name: 1, permissions: 1, status: 1, users: { _id: 1 } },
+  properties: { _id: 1 },
+  proProperties: {
+    _id: 1,
+    address1: 1,
+    permissions: 1,
+    status: 1,
+    users: { _id: 1 },
+  },
+});
+
+// //
+// // Revenues fragments
+// //
+export const fullRevenues = () => ({
+  status: 1,
+  createdAt: 1,
+  type: 1,
+  description: 1,
+  amount: 1,
+  approximation: 1,
+  organisationLinks: 1,
+  organisations: { name: 1 },
 });

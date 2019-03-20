@@ -25,8 +25,7 @@ describe('Pro', () => {
     it('should add a promotion', () => {
       cy.get('.pro-dashboard-page').contains('Rien à afficher');
 
-      cy.get('.buttons > a').click();
-      cy.location('pathname').should('eq', '/promotions/new');
+      cy.contains('Ajouter promotion immobilière').click();
 
       cy.get('input[name=name]').type('New promotion');
       cy.setSelect('type', 'CREDIT');
@@ -81,7 +80,7 @@ describe('Pro', () => {
           permissions: { canModifyPromotion: true, canManageDocuments: true },
         });
         cy.refetch();
-        cy.get('.buttons button')
+        cy.get('.buttons > span')
           .contains('Gérer documents')
           .should('exist');
 

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 import SecurityService from '../../security';
 import {
@@ -17,8 +18,14 @@ import {
   generateApiToken,
   userUpdateOrganisations,
   testUserAccount,
+  proInviteUser,
+  getUserByEmail,
+  setUserReferredBy,
+  setUserReferredByOrganisation,
+  proInviteUserToOrganisation,
 } from '../methodDefinitions';
 import UserService from './UserService';
+import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }));
@@ -115,4 +122,74 @@ testUserAccount.setHandler((context, params) => {
   if (Meteor.isTest) {
     return UserService.testUserAccount(params);
   }
+});
+
+proInviteUser.setHandler((context, params) => {
+  const { userId } = context;
+  const { propertyIds, promotionIds, property } = params;
+  SecurityService.checkUserIsPro(userId);
+
+  if (propertyIds && propertyIds.length) {
+    propertyIds.forEach(propertyId =>
+      SecurityService.properties.isAllowedToInviteCustomers({
+        userId,
+        propertyId,
+      }));
+  }
+
+  if (promotionIds && promotionIds.length) {
+    promotionIds.forEach(promotionId =>
+      SecurityService.promotions.isAllowedToInviteCustomers({
+        promotionId,
+        userId,
+      }));
+  }
+
+  if (property) {
+    // Not yet implemented
+  }
+
+  // Only pass proUserId if this is a pro user
+  const isProUser = SecurityService.hasRole(userId, ROLES.PRO);
+
+  return UserService.proInviteUser({
+    ...params,
+    proUserId: isProUser ? userId : undefined,
+  });
+});
+
+getUserByEmail.setHandler((context, params) => {
+  const { userId } = context;
+  const { email, roles } = params;
+  SecurityService.checkUserIsPro(userId);
+  return UserService.fetchOne({
+    $filters: {
+      $and: [
+        { 'emails.address': { $in: [email] } },
+        { roles: roles ? { $in: roles } : undefined },
+      ].filter(x => x),
+    },
+    name: 1,
+    organisations: { name: 1 },
+  });
+});
+
+setUserReferredBy.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setReferredBy(params);
+});
+
+setUserReferredByOrganisation.setHandler((context, params) => {
+  SecurityService.checkCurrentUserIsAdmin();
+  return UserService.setReferredByOrganisation(params);
+});
+
+proInviteUserToOrganisation.setHandler(({ userId }, params) => {
+  const { organisationId } = params;
+  SecurityService.checkUserIsPro(userId);
+  SecurityService.users.isAllowedToInviteUsersToOrganisation({
+    userId,
+    organisationId,
+  });
+  return UserService.proInviteUserToOrganisation(params);
 });

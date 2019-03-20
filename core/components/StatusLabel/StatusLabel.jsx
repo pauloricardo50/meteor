@@ -15,6 +15,8 @@ import {
   LOAN_STATUS,
   LENDERS_COLLECTION,
   LENDER_STATUS,
+  PROPERTIES_COLLECTION,
+  PROPERTY_STATUS,
 } from '../../api/constants';
 import T from '../Translation';
 import DropdownMenu from '../DropdownMenu';
@@ -75,8 +77,15 @@ const getStatuses = (collection) => {
       [LENDER_STATUS.TO_EXCLUDE]: colors.error,
     };
 
+  case PROPERTIES_COLLECTION:
+    return {
+      [PROPERTY_STATUS.FOR_SALE]: colors.success,
+      [PROPERTY_STATUS.BOOKED]: colors.primary,
+      [PROPERTY_STATUS.SOLD]: colors.error,
+    };
+
   default:
-    break;
+    throw new Error(`Unknown collection "${collection}" in StatusLabel`);
   }
 };
 
@@ -115,7 +124,7 @@ const StatusLabel = ({
           id: stat,
           label: <T id={`Forms.status.${stat}`} />,
           onClick: () =>
-            additionalActions(stat).then(() =>
+            additionalActions(stat, status).then(() =>
               updateDocument.run({
                 collection,
                 object: { status: stat },

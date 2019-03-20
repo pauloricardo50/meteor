@@ -9,27 +9,31 @@ import {
   EXPENSE_TYPES,
 } from '../../api/constants';
 import {
-  NOTARY_FEES,
   AMORTIZATION_STOP,
-  DEFAULT_AMORTIZATION,
+  AMORTIZATION_YEARS,
   AVERAGE_TAX_RATE,
-  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
-  MIN_CASH,
-  INTERESTS_FINMA,
-  MAINTENANCE_FINMA,
-  MAX_INCOME_RATIO,
-  MAX_INCOME_RATIO_TIGHT,
-  MAX_BORROW_RATIO_WITH_PLEDGE,
   BONUS_CONSIDERATION,
   BONUS_HISTORY_TO_CONSIDER,
   COMPANY_INCOME_TO_CONSIDER,
+  DEFAULT_AMORTIZATION,
   DIVIDENDS_CONSIDERATION,
   DIVIDENDS_HISTORY_TO_CONSIDER,
+  FORTUNE_RETURNS_RATIO,
+  INTERESTS_FINMA,
+  INVESTMENT_INCOME_CONSIDERATION,
+  MAINTENANCE_FINMA,
+  MAX_BORROW_RATIO_PRIMARY_PROPERTY,
+  MAX_BORROW_RATIO_WITH_PLEDGE,
+  MAX_INCOME_RATIO_TIGHT,
+  MAX_INCOME_RATIO,
+  MIN_CASH,
+  NOTARY_FEES,
+  OWN_FUNDS_ROUNDING_AMOUNT,
   PENSION_INCOME_CONSIDERATION,
   REAL_ESTATE_INCOME_CONSIDERATION,
-  INVESTMENT_INCOME_CONSIDERATION,
-  FORTUNE_RETURNS_RATIO,
-  AMORTIZATION_YEARS,
+  ESTIMATED_COMMISSION,
+  REFERRAL_COMMISSION,
+  REFERRAL_COMMISSION_SPLIT,
 } from '../../config/financeConstants';
 import MiddlewareManager from '../MiddlewareManager';
 import { precisionMiddleware } from './financeCalculatorMiddlewares';
@@ -55,6 +59,7 @@ export class FinanceCalculator {
     companyIncomeHistoryToConsider = COMPANY_INCOME_TO_CONSIDER,
     dividendsConsideration = DIVIDENDS_CONSIDERATION,
     dividendsHistoryToConsider = DIVIDENDS_HISTORY_TO_CONSIDER,
+    expensesSubtractFromIncome = Object.values(EXPENSE_TYPES),
     fortuneReturnsRatio = FORTUNE_RETURNS_RATIO,
     investmentIncomeConsideration = INVESTMENT_INCOME_CONSIDERATION,
     maxBorrowRatio = MAX_BORROW_RATIO_PRIMARY_PROPERTY,
@@ -63,14 +68,17 @@ export class FinanceCalculator {
     maxIncomeRatioTight = MAX_INCOME_RATIO_TIGHT,
     minCash = MIN_CASH,
     notaryFees = NOTARY_FEES,
-    expensesSubtractFromIncome = Object.values(EXPENSE_TYPES),
+    ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_AMOUNT,
     pensionIncomeConsideration = PENSION_INCOME_CONSIDERATION,
     realEstateIncomeConsideration = REAL_ESTATE_INCOME_CONSIDERATION,
     realEstateIncomeConsiderationType = REAL_ESTATE_CONSIDERATION_TYPES.ADD_TO_INCOME,
     taxRate = AVERAGE_TAX_RATE,
     theoreticalInterestRate = INTERESTS_FINMA,
-    theoreticalInterestRate2ndRank = INTERESTS_FINMA,
+    theoreticalInterestRate2ndRank = null,
     theoreticalMaintenanceRate = MAINTENANCE_FINMA,
+    estimatedCommission = ESTIMATED_COMMISSION,
+    referralCommission = REFERRAL_COMMISSION,
+    referralCommissionSplit = REFERRAL_COMMISSION_SPLIT,
     middlewares = [],
     middlewareObject,
   } = {}) {
@@ -83,6 +91,7 @@ export class FinanceCalculator {
     this.companyIncomeHistoryToConsider = companyIncomeHistoryToConsider;
     this.dividendsConsideration = dividendsConsideration;
     this.dividendsHistoryToConsider = dividendsHistoryToConsider;
+    this.expensesSubtractFromIncome = expensesSubtractFromIncome;
     this.fortuneReturnsRatio = fortuneReturnsRatio;
     this.investmentIncomeConsideration = investmentIncomeConsideration;
     this.maxBorrowRatio = maxBorrowRatio;
@@ -91,7 +100,7 @@ export class FinanceCalculator {
     this.maxIncomeRatioTight = maxIncomeRatioTight;
     this.minCash = minCash;
     this.notaryFees = notaryFees;
-    this.expensesSubtractFromIncome = expensesSubtractFromIncome;
+    this.ownFundsRoundingAmount = ownFundsRoundingAmount;
     this.pensionIncomeConsideration = pensionIncomeConsideration;
     this.realEstateIncomeConsideration = realEstateIncomeConsideration;
     this.realEstateIncomeConsiderationType = realEstateIncomeConsiderationType;
@@ -99,6 +108,9 @@ export class FinanceCalculator {
     this.theoreticalInterestRate = theoreticalInterestRate;
     this.theoreticalInterestRate2ndRank = theoreticalInterestRate2ndRank;
     this.theoreticalMaintenanceRate = theoreticalMaintenanceRate;
+    this.estimatedCommission = estimatedCommission;
+    this.referralCommission = referralCommission;
+    this.referralCommissionSplit = referralCommissionSplit;
     this.setMiddleware(middlewares, middlewareObject);
   }
 
