@@ -30,7 +30,10 @@ const CommissionEditor = ({ commissionRates = [], _id: organisationId }) => (
       </p>
     )}
     <hr />
-    <CommissionRatesViewer commissionRates={commissionRates} />
+    <CommissionRatesViewer
+      organisationId={organisationId}
+      commissionRates={commissionRates}
+    />
   </div>
 );
 
