@@ -106,3 +106,20 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
     label,
   };
 };
+
+export const sortObject = (object) => {
+  if (typeof object !== 'object' || object instanceof Array) {
+    return object;
+  }
+
+  const sortedObject = {};
+  const keys = Object.keys(object);
+
+  keys.sort();
+
+  keys.forEach((key) => {
+    sortedObject[key] = sortObject(object[key]);
+  });
+
+  return sortedObject;
+};

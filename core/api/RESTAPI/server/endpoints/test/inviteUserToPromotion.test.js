@@ -1,22 +1,22 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
-import { expect } from 'chai';
-import fetch from 'node-fetch';
-
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
+import UserService from '../../../../users/server/UserService';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
 import inviteUserToPromotion from '../inviteUserToPromotion';
-
-const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
+import {
+  fetchAndCheckResponse,
+  makeHeaders,
+  makeBody,
+} from '../../test/apiTestHelpers.test';
 
 let user;
-let apiToken;
+let keyPair;
 let promotionId;
 const userToInvite = {
   email: 'test@example.com',
@@ -24,15 +24,6 @@ const userToInvite = {
   lastName: 'User',
   phoneNumber: '1234',
 };
-
-const checkResponse = ({ res, expectedResponse, status = 200 }) =>
-  res.json().then((body) => {
-    expect(body).to.deep.equal(expectedResponse);
-  });
-
-const fetchAndCheckResponse = ({ url, data, expectedResponse, status }) =>
-  fetch(`http://localhost:${API_PORT}/api${url}`, data).then(res =>
-    checkResponse({ res, expectedResponse, status }));
 
 const api = new RESTAPI();
 api.addEndpoint('/inviteUserToPromotion', 'POST', inviteUserToPromotion);
@@ -42,13 +33,10 @@ const inviteUser = ({ userData, expectedResponse, status, id }) =>
     url: '/inviteUserToPromotion',
     data: {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.apiToken}`,
-      },
-      body: JSON.stringify({
-        promotionId: id || promotionId,
-        user: userData,
+      headers: makeHeaders({ publicKey: keyPair.publicKey }),
+      body: makeBody({
+        data: { promotionId: id || promotionId, user: userData },
+        privateKey: keyPair.privateKey,
       }),
     },
     expectedResponse,
@@ -86,8 +74,8 @@ describe('REST: inviteUserToPromotion', function () {
 
   beforeEach(() => {
     resetDatabase();
-    apiToken = Random.id(24);
-    user = Factory.create('pro', { apiToken });
+    user = Factory.create('pro');
+    keyPair = UserService.generateKeyPair({ userId: user._id });
     promotionId = Factory.create('promotion')._id;
   });
 

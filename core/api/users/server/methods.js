@@ -15,9 +15,9 @@ import {
   removeUser,
   sendEnrollmentEmail,
   changeEmail,
-  generateApiToken,
   userUpdateOrganisations,
   testUserAccount,
+  generateApiKeyPair,
   proInviteUser,
   getUserByEmail,
   setUserReferredBy,
@@ -108,11 +108,6 @@ changeEmail.setHandler((context, params) => {
   return UserService.changeEmail(params);
 });
 
-generateApiToken.setHandler((context, { userId }) => {
-  SecurityService.checkUserIsPro(context.userId);
-  return UserService.generateApiToken({ userId });
-});
-
 userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.updateOrganisations({ userId, newOrganisations });
@@ -122,6 +117,11 @@ testUserAccount.setHandler((context, params) => {
   if (Meteor.isTest) {
     return UserService.testUserAccount(params);
   }
+});
+
+generateApiKeyPair.setHandler((context, params) => {
+  SecurityService.checkUserIsPro(context.userId);
+  return UserService.generateKeyPair(params);
 });
 
 proInviteUser.setHandler((context, params) => {

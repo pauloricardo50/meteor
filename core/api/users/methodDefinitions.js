@@ -91,13 +91,6 @@ export const changeEmail = new Method({
   },
 });
 
-export const generateApiToken = new Method({
-  name: 'generateApiToken',
-  params: {
-    userId: String,
-  },
-});
-
 export const userUpdateOrganisations = new Method({
   name: 'userUpdateOrganisations',
   params: {
@@ -112,6 +105,13 @@ export const testUserAccount = new Method({
     email: String,
     password: String,
     role: String,
+  },
+});
+
+export const generateApiKeyPair = new Method({
+  name: 'generateApiKeyPair',
+  params: {
+    userId: String,
   },
 });
 

@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
 import { Random } from 'meteor/random';
+import NodeRSA from 'node-rsa';
 
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
@@ -140,11 +141,6 @@ class UserService extends CollectionService {
     Accounts.sendVerificationEmail(userId);
   };
 
-  generateApiToken = ({ userId }) => {
-    const apiToken = Random.id(24);
-    return this._update({ id: userId, object: { apiToken }, operator: '$set' });
-  };
-
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
     const { organisations: oldOrganisations = [] } = this.get(userId);
 
@@ -168,6 +164,23 @@ class UserService extends CollectionService {
     const userId = Accounts.createUser({ email, password });
     Roles.setUserRoles(userId, role);
     return this.get(userId);
+  };
+
+  generateKeyPair = ({ userId }) => {
+    const key = new NodeRSA();
+    key.generateKeyPair(512);
+    const publicKey = key
+      .exportKey('pkcs1-public-pem')
+      .replace(/\r?\n|\r/g, '');
+    const privateKey = key
+      .exportKey('pkcs1-private-pem')
+      .replace(/\r?\n|\r/g, '');
+    const createdAt = new Date();
+    this._update({
+      id: userId,
+      object: { apiPublicKey: { publicKey, createdAt } },
+    });
+    return { publicKey, privateKey, createdAt };
   };
 
   proReferUser = ({ user, proUserId }) => {
