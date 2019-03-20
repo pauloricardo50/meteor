@@ -6,7 +6,7 @@ import {
   PRO_PASSWORD,
 } from '../constants';
 
-describe('Promotion pages', () => {
+describe.only('Promotion pages', () => {
   before(() => {
     cy.initiateTest();
     cy.callMethod('resetDatabase');
@@ -139,7 +139,7 @@ describe('Promotion pages', () => {
     cy.refetch();
     cy.contains('En cours').click();
 
-    cy.get('.pro-promotion-lots-table td[data-id="loans"]').each((td) => {
+    cy.get('.pro-promotion-lots-table td.col-loans').each((td) => {
       const loans = td.text();
 
       if (loanCount) {
