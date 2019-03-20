@@ -9,6 +9,6 @@
   },
   "exclude": [
     "node_modules",
-    "microservices/*/node_modules"
+    "microservices",
   ]
 }
