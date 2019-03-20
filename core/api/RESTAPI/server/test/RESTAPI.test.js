@@ -1,11 +1,13 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
 
 import { expect } from 'chai';
 import fetch from 'node-fetch';
 import NodeRSA from 'node-rsa';
+import moment from 'moment';
 
 import { sortObject } from 'core/api/helpers';
 import { REST_API_ERRORS } from '../restApiConstants';
@@ -37,6 +39,7 @@ const makeTestRoute = method => ({ user }) => ({
 
 const checkResponse = ({ res, expectedResponse, status = 200 }) => {
   expect(res.status).to.equal(status);
+
   return res.json().then((body) => {
     expect(body).to.deep.equal(expectedResponse);
   });
@@ -56,15 +59,22 @@ const signBody = (body) => {
   return signature;
 };
 
+const generateBody = ({ timestampOverride, nonceOverride } = {}) => {
+  const now = timestampOverride || moment().unix();
+  const nonce = nonceOverride || Random.id(8);
+  const body = { timestamp: now, nonce };
+  const signature = signBody(body);
+  return JSON.stringify({ ...body, signature });
+};
+
 Meteor.methods({
   apiTestMethod() {
     return this.userId;
   },
 });
 
-describe.only('RESTAPI', () => {
+describe('RESTAPI', () => {
   let user;
-  let apiToken;
 
   const api = new RESTAPI();
   api.addEndpoint('/test', 'POST', makeTestRoute('POST'));
@@ -115,7 +125,7 @@ describe.only('RESTAPI', () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
           },
-          body: JSON.stringify({ signature: signBody({}) }),
+          body: generateBody(),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/unknown_endpoint',
@@ -136,7 +146,7 @@ describe.only('RESTAPI', () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
           },
-          body: JSON.stringify({ signature: signBody({}) }),
+          body: generateBody(),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/test',
@@ -179,22 +189,64 @@ describe.only('RESTAPI', () => {
             'Content-Type': 'application/json',
             Authorization: 'Bearer 12345',
           },
-          body: JSON.stringify({ signature: signBody({}) }),
+          body: generateBody(),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
-      it('signature is wrong', () =>
+    it('signature is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer 12345',
+            Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
           },
-          body: JSON.stringify({ signature: '' }),
+          body: JSON.stringify({ signature: '123' }),
+        },
+        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
+      }));
+
+    it('attemps a replay attack with same nonce', () =>
+      fetchAndCheckResponse({
+        url: '/test',
+        data: {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
+          },
+          body: generateBody({ nonceOverride: 12345 }),
+        },
+        expectedResponse: makeTestRoute('POST')({ user }),
+      }).then(() =>
+        fetchAndCheckResponse({
+          url: '/test',
+          data: {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
+            },
+            body: generateBody({ nonceOverride: 12345 }),
+          },
+          expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
+          status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
+        })));
+
+      it('attemps a replay attack with old timestamp', () =>
+      fetchAndCheckResponse({
+        url: '/test',
+        data: {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
+          },
+          body: generateBody({timestampOverride: moment().unix() - 31}),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
@@ -210,7 +262,7 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
+        body: generateBody(),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
     }));
@@ -224,12 +276,12 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
+        body: generateBody(),
       },
       expectedResponse: makeTestRoute('PUT')({ user }),
     }));
 
-  it.skip('returns an internal server error if the error is not a meteor.error', () =>
+  it('returns an internal server error if the error is not a meteor.error', () =>
     fetchAndCheckResponse({
       url: '/test',
       data: {
@@ -238,7 +290,6 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
       },
       expectedResponse: { message: 'Internal server error', status: 500 },
       status: 500,
@@ -253,13 +304,13 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
+        body: generateBody(),
       },
       expectedResponse: { message: '[meteor error]', status: 500 },
       status: 500,
     }));
 
-  it.skip('calls meteor methods with the right userId', () =>
+  it('calls meteor methods with the right userId', () =>
     fetchAndCheckResponse({
       url: '/method',
       data: {
@@ -268,12 +319,11 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
       },
       expectedResponse: user._id,
     }));
 
-  it.skip('does not crash if undefined is returned by the endpoint', () =>
+  it('does not crash if undefined is returned by the endpoint', () =>
     fetchAndCheckResponse({
       url: '/undefined',
       data: {
@@ -282,7 +332,6 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
       },
       expectedResponse: '',
     }));
@@ -296,7 +345,7 @@ describe.only('RESTAPI', () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
         },
-        body: JSON.stringify({ signature: signBody({}) }),
+        body: generateBody(),
       },
       expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
         path: '/api/test/subtest',
