@@ -786,7 +786,6 @@ export const organisationUser = () => ({
 
 export const fullUser = () => ({
   ...simpleUser(),
-  apiToken: 1,
   apiPublicKey: 1,
   assignedEmployee: simpleUser(),
   createdAt: 1,

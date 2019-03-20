@@ -15,7 +15,6 @@ import {
   removeUser,
   sendEnrollmentEmail,
   changeEmail,
-  generateApiToken,
   userUpdateOrganisations,
   testUserAccount,
   generateApiKeyPair,
@@ -107,11 +106,6 @@ sendEnrollmentEmail.setHandler((context, params) => {
 changeEmail.setHandler((context, params) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.changeEmail(params);
-});
-
-generateApiToken.setHandler((context, { userId }) => {
-  SecurityService.checkUserIsPro(context.userId);
-  return UserService.generateApiToken({ userId });
 });
 
 userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {

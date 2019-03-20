@@ -91,13 +91,6 @@ export const changeEmail = new Method({
   },
 });
 
-export const generateApiToken = new Method({
-  name: 'generateApiToken',
-  params: {
-    userId: String,
-  },
-});
-
 export const userUpdateOrganisations = new Method({
   name: 'userUpdateOrganisations',
   params: {

@@ -93,7 +93,7 @@ export const UserSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  'apiPublicKey.createdAt': createdAt,
+  'apiPublicKey.createdAt': { type: Date, optional: true },
   referredByUserLink: { type: String, optional: true },
   referredByOrganisationLink: { type: String, optional: true },
 });

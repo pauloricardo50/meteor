@@ -2,24 +2,6 @@
   padding: 16px;
   margin-top: 16px;
 
-  .api-token-generator {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 8px;
-
-    #apiToken {
-      padding: 4px;
-      border-radius: 4px;
-      background-color: rgba(241, 241, 241, 0.5);
-    }
-
-    > * {
-      margin: 0;
-      margin-right: 16px;
-    }
-  }
-
   .api-keyPair-generator {
     width: 100%;
     display: flex;

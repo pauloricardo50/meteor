@@ -1,5 +1,4 @@
 import bodyParser from 'body-parser';
-import NodeRSA from 'node-rsa';
 import moment from 'moment';
 
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
@@ -11,14 +10,9 @@ import {
   getRequestMethod,
   getErrorObject,
   getPublicKey,
+  verifySignature,
 } from './helpers';
-
-import { sortObject } from '../../helpers';
-
-const NONCE_TTL = 30;
-let nonces = {
-  testNonce: 1, // Used in tests
-};
+import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
 const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
@@ -29,33 +23,6 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
 
 // Handles replay attacks
 const replayHandlerMiddleware = (req, res, next) => {
-  const deleteNonce = (nonce) => {
-    nonces = Object.keys(nonces).reduce((newNonces, key) => {
-      if (key !== nonce) {
-        return { ...newNonces, [key]: nonces[key] };
-      }
-      return newNonces;
-    }, {});
-  };
-
-  const nonceExists = (nonce) => {
-    const now = moment().unix();
-
-    // First delete all old nonces
-    Object.keys(nonces).forEach((key) => {
-      if (now - nonces[key] > NONCE_TTL) {
-        deleteNonce(key);
-      }
-    });
-
-    return nonces[nonce] !== undefined;
-  };
-
-  const addNonce = (nonce) => {
-    const now = moment().unix();
-    nonces[nonce] = now;
-  };
-
   const {
     body: { timestamp, nonce },
   } = req;
@@ -99,41 +66,6 @@ const filterMiddleware = (req, res, next) => {
 
 // Gets the public key from the request, fetches the user and adds it to the request
 const authMiddleware = (req, res, next) => {
-  // Verifies RSA body signature
-  const verifySignature = (req) => {
-    const {
-      publicKey,
-      body: { signature, ...body },
-    } = req;
-
-    const method = getRequestMethod(req);
-
-    // Request with GET/HEAD method cannot have a body
-    if (method === 'GET' || method === 'HEAD') {
-      return true;
-    }
-
-    if (!signature) {
-      return false;
-    }
-
-    // Import public key
-    const key = new NodeRSA();
-    key.importKey(publicKey, 'pkcs1-public-pem');
-
-    // Sort body
-    const sortedBody = sortObject(body);
-
-    // Verify signature
-    const verified = key.verify(
-      JSON.stringify(sortedBody),
-      signature,
-      'utf8',
-      'base64',
-    );
-
-    return verified;
-  };
   const publicKey = getPublicKey(req);
 
   if (!publicKey) {
