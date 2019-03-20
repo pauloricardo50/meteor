@@ -22,7 +22,7 @@ export const REST_API_ERRORS = {
   AUTHORIZATION_FAILED: {
     status: HTTP_STATUS_CODES.FORBIDDEN,
     errorName: 'AUTHORIZATION_FAILED',
-    message: 'Wrong public key or signature',
+    message: 'Wrong public key, signature or nonce',
   },
   UNKNOWN_ENDPOINT: ({ path, method }) => ({
     status: HTTP_STATUS_CODES.NOT_FOUND,
