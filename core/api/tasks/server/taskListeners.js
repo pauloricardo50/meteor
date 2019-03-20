@@ -4,7 +4,10 @@ import TaskService from './TaskService';
 import { TASK_TYPE } from '../taskConstants';
 import { LOANS_COLLECTION } from '../../constants';
 
-ServerEventService.addMethodListener(requestLoanVerification, ({ loanId }) => {
-  const type = TASK_TYPE.VERIFY;
-  TaskService.insert({ type, docId: loanId, collection: LOANS_COLLECTION });
-});
+ServerEventService.addMethodListener(
+  requestLoanVerification,
+  (context, { loanId }) => {
+    const type = TASK_TYPE.VERIFY;
+    TaskService.insert({ type, docId: loanId, collection: LOANS_COLLECTION });
+  },
+);

@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
@@ -129,7 +128,7 @@ export class PromotionService extends CollectionService {
         adminId: admin && admin._id,
       });
     } else {
-      userId = Accounts.findUserByEmail(email)._id;
+      userId = UserService.getByEmail(email)._id;
       if (UserService.hasPromotion({ userId, promotionId })) {
         throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
       }

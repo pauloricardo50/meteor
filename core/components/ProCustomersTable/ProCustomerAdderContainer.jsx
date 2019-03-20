@@ -80,13 +80,10 @@ export default withProps(({ currentUser }) => {
     }),
     onSubmit: (model) => {
       const { user, propertyIds = [], promotionIds = [] } = model;
-      const referOnly = !propertyIds.length && !promotionIds.length;
       return proInviteUser.run({
         user,
         propertyIds: propertyIds.length ? propertyIds : undefined,
         promotionIds: promotionIds.length ? promotionIds : undefined,
-        referOnly,
-        proUserId: currentUser._id,
       });
     },
   };

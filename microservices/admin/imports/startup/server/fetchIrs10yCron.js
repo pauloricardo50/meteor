@@ -23,9 +23,6 @@ const job = () => ({
       .format('dddd');
     const parserText = `at 6:${randomMinute} on ${tomorrow}`;
     const parsedText = parser.text(parserText);
-    console.log('CRON_DEBUG');
-    console.log(parserText);
-    console.log(parsedText);
 
     return parsedText;
   },

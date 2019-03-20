@@ -28,6 +28,10 @@ class UserService extends CollectionService {
     });
   }
 
+  getByEmail(email) {
+    return Accounts.findUserByEmail(email);
+  }
+
   createUser = ({ options, role }) => {
     const newUserId = Accounts.createUser(options);
     Roles.addUsersToRoles(newUserId, role);
@@ -56,7 +60,7 @@ class UserService extends CollectionService {
   };
 
   // This should remain a simple inequality check
-  doesUserExist = ({ email }) => Accounts.findUserByEmail(email) != null;
+  doesUserExist = ({ email }) => this.getByEmail(email) != null;
 
   sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
@@ -239,12 +243,12 @@ class UserService extends CollectionService {
 
   proInviteUser = ({
     user,
-    propertyIds,
-    promotionIds,
+    propertyIds = [],
+    promotionIds = [],
     property,
     proUserId,
-    referOnly,
   }) => {
+    const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
     if (referOnly) {
       return this.proReferUser({ user, proUserId });
     }

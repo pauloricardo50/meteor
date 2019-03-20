@@ -26,6 +26,7 @@ import {
   proInviteUserToOrganisation,
 } from '../methodDefinitions';
 import UserService from './UserService';
+import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }));
@@ -154,7 +155,13 @@ proInviteUser.setHandler((context, params) => {
     // Not yet implemented
   }
 
-  return UserService.proInviteUser(params);
+  // Only pass proUserId if this is a pro user
+  const isProUser = SecurityService.hasRole(userId, ROLES.PRO);
+
+  return UserService.proInviteUser({
+    ...params,
+    proUserId: isProUser ? userId : undefined,
+  });
 });
 
 getUserByEmail.setHandler((context, params) => {

@@ -9,6 +9,7 @@ const defaultIntlValues = {
     </span>
   ),
   purchaseType: '',
+  name: '',
 };
 
 export default defaultIntlValues;

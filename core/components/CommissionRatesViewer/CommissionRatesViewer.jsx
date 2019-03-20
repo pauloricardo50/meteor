@@ -3,6 +3,7 @@ import React from 'react';
 
 import T, { Percent, Money } from '../Translation';
 import CommissionRatesViewerList from './CommissionRatesViewerList';
+import CommissionRatesViewerContainer from './CommissionRatesViewerContainer';
 
 type CommissionRatesViewerProps = {};
 
@@ -30,9 +31,9 @@ export const getCurrentRate = (commissionRates, referredRevenues) => {
 
 const CommissionRatesViewer = ({
   commissionRates = [],
-  referredRevenues = 0,
+  generatedRevenues = 0,
 }: CommissionRatesViewerProps) => {
-  const currentRate = getCurrentRate(commissionRates, referredRevenues);
+  const currentRate = getCurrentRate(commissionRates, generatedRevenues);
 
   return (
     <div>
@@ -48,7 +49,7 @@ const CommissionRatesViewer = ({
             <T id="CommissionRatesViewer.referredRevenues" />
           </h3>
           <h1>
-            <Money value={referredRevenues} />
+            <Money value={generatedRevenues} />
           </h1>
           <CommissionRatesViewerList commissionRates={commissionRates} />
         </>
@@ -57,4 +58,4 @@ const CommissionRatesViewer = ({
   );
 };
 
-export default CommissionRatesViewer;
+export default CommissionRatesViewerContainer(CommissionRatesViewer);
