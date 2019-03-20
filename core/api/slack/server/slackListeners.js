@@ -25,7 +25,7 @@ ServerEventService.addMethodListener(
     const promotion = PromotionService.fetchOne({
       $filters: { _id: promotionId },
       name: 1,
-      assignedEmployee: 1,
+      assignedEmployee: { email: 1 },
     });
 
     promotionInviteNotification({ promotion, user });

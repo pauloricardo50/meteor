@@ -1,22 +1,19 @@
 /* eslint-env mocha */
 import { Meteor } from 'meteor/meteor';
-import { Random } from 'meteor/random';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { Factory } from 'meteor/dburles:factory';
-
-import { expect } from 'chai';
-import fetch from 'node-fetch';
-import NodeRSA from 'node-rsa';
 
 import { PROMOTION_STATUS } from '../../../../constants';
 import PromotionService from '../../../../promotions/server/PromotionService';
 import UserService from '../../../../users/server/UserService';
-import { sortObject } from '../../../../helpers';
 import { HTTP_STATUS_CODES } from '../../restApiConstants';
 import RESTAPI from '../../RESTAPI';
 import inviteUserToPromotion from '../inviteUserToPromotion';
-
-const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106;
+import {
+  fetchAndCheckResponse,
+  makeHeaders,
+  makeBody,
+} from '../../test/apiTestHelpers.test';
 
 let user;
 let keyPair;
@@ -28,56 +25,23 @@ const userToInvite = {
   phoneNumber: '1234',
 };
 
-const checkResponse = ({ res, expectedResponse, status = 200 }) =>
-  res.json().then((body) => {
-    expect(body).to.deep.equal(expectedResponse);
-  });
-
-const fetchAndCheckResponse = ({ url, data, expectedResponse, status }) =>
-  fetch(`http://localhost:${API_PORT}/api${url}`, data).then(res =>
-    checkResponse({ res, expectedResponse, status }));
-
 const api = new RESTAPI();
 api.addEndpoint('/inviteUserToPromotion', 'POST', inviteUserToPromotion);
 
-const signBody = (body) => {
-  const key = new NodeRSA();
-  key.importKey(keyPair.privateKey, 'pkcs1-private-pem');
-
-  const sortedBody = sortObject(body);
-
-  const signature = key.sign(JSON.stringify(sortedBody), 'base64', 'utf8');
-  return signature;
-};
-
-const inviteUser = ({ userData, expectedResponse, status, id }) => {
-  const body = {
-    promotionId: id || promotionId,
-    user: userData,
-    timestamp: Math.round(new Date().valueOf() / 1000),
-    nonce: Math.random()
-      .toString(36)
-      .substr(2, 8),
-  };
-  const filteredBody = Object.keys(body)
-    .filter(key => !!body[key])
-    .reduce((object, key) => ({ ...object, [key]: body[key] }), {});
-  const signature = signBody(filteredBody);
-
-  return fetchAndCheckResponse({
+const inviteUser = ({ userData, expectedResponse, status, id }) =>
+  fetchAndCheckResponse({
     url: '/inviteUserToPromotion',
     data: {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${keyPair.publicKey}`,
-      },
-      body: JSON.stringify({ ...filteredBody, signature }),
+      headers: makeHeaders({ publicKey: keyPair.publicKey }),
+      body: makeBody({
+        data: { promotionId: id || promotionId, user: userData },
+        privateKey: keyPair.privateKey,
+      }),
     },
     expectedResponse,
     status,
   });
-};
 
 const setupPromotion = () => {
   PromotionService.addProUser({ promotionId, userId: user._id });
