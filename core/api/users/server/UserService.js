@@ -238,7 +238,7 @@ class UserService extends CollectionService {
       userId = this.adminCreateUser({
         options: {
           email,
-          sendEnrollmentEmail: sendInvitation && !pro,
+          sendEnrollmentEmail: sendInvitation && !pro && Meteor.isProduction,
           firstName,
           lastName,
           phoneNumbers: [phoneNumber],

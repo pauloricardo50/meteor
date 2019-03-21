@@ -91,7 +91,13 @@ export class PromotionService extends CollectionService {
     return super.remove(promotionId);
   }
 
-  inviteUser({ promotionId, userId, isNewUser, pro, sendInvitation = true }) {
+  inviteUser({
+    promotionId,
+    userId,
+    isNewUser,
+    pro = {},
+    sendInvitation = true,
+  }) {
     const promotion = this.get(promotionId);
     const user = UserService.get(userId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
@@ -109,6 +115,11 @@ export class PromotionService extends CollectionService {
       promotionId,
       invitedBy: pro._id,
     });
+
+    if (isNewUser) {
+      const admin = UserService.get(promotion.assignedEmployeeId);
+      UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
+    }
 
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({

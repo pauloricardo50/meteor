@@ -117,16 +117,12 @@ export class PropertyService extends CollectionService {
 
     LoanService.insertPropertyLoan({ userId, propertyIds });
 
-    if (pro) {
-      return this.sendPropertyInvitationEmail({
-        userId,
-        isNewUser,
-        address: properties[0].address1, // TODO: all addresses
-        proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
-      });
-    }
-
-    return Promise.resolve();
+    return this.sendPropertyInvitationEmail({
+      userId,
+      isNewUser,
+      address: properties[0].address1, // TODO: all addresses
+      proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
+    });
   };
 
   sendPropertyInvitationEmail({ userId, isNewUser, proName, address }) {
