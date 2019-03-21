@@ -5,6 +5,7 @@ import { withSmartQuery } from 'core/api';
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 import { ORGANISATION_FEATURES, ORGANISATION_TAGS } from 'core/api/constants';
 import { lenderInsert, lenderRemove } from 'core/api/methods';
+import { lenderRules } from 'core/api/fragments';
 
 const formatOrganisations = orgs =>
   orgs.reduce(
@@ -28,6 +29,7 @@ export default compose(
     params: ({ tags }) => ({
       features: [ORGANISATION_FEATURES.LENDER],
       tags,
+      $body: { name: 1, logo: 1, type: 1, lenderRules: lenderRules() },
     }),
     dataName: 'organisations',
   }),

@@ -2,8 +2,7 @@ import { withProps, compose } from 'recompose';
 
 import { setUserReferredByOrganisation } from 'core/api';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import query from 'core/api/organisations/queries/adminOrganisations';
-import { ORGANISATION_FEATURES } from 'core/api/constants';
+import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
 
 const getMenuItems = ({
   organisations,
@@ -24,8 +23,9 @@ const getMenuItems = ({
 
 export default compose(
   withSmartQuery({
-    query,
+    query: adminOrganisations,
     queryOptions: { reactive: false },
+    params: { $body: { name: 1 } },
     dataName: 'organisations',
   }),
   withProps(({
