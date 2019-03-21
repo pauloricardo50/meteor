@@ -38,7 +38,12 @@ const renderDialog = ({ loan, state, calculateSolvency, style = {} }) => {
       schema={schema}
       onSubmit={calculateSolvency}
       title="Calculer ma capacité d'achat maximale"
-      description={<p className="description">Afin de calculer les frais de notaire, veuillez renseigner le canton dans lequel vous souhaitez acheter un bien immobilier.</p>}
+      description={(
+        <p className="description">
+          Afin de calculer les frais de notaire, veuillez renseigner le canton
+          dans lequel vous souhaitez acheter un bien immobilier.
+        </p>
+      )}
       buttonProps={{
         raised: true,
         primary: true,
@@ -116,16 +121,32 @@ const renderSolvency = ({
       <table>
         <tr>
           <td>
-            <h4 className="secondary">Emprunt</h4>
+            <h4 className="secondary">Hypothèque</h4>
           </td>
           <td>
-            <h3>
+            <h4>
               {residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? (
                 <Money value={main.propertyValue * main.borrowRatio} />
               ) : (
                 <Money value={second.propertyValue * second.borrowRatio} />
               )}
-            </h3>
+            </h4>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h4 className="secondary">Fonds propres</h4>
+          </td>
+          <td>
+            <h4>
+              {residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? (
+                <Money value={main.propertyValue * (1 - main.borrowRatio)} />
+              ) : (
+                <Money
+                  value={second.propertyValue * (1 - second.borrowRatio)}
+                />
+              )}
+            </h4>
           </td>
         </tr>
         <tr>
@@ -138,22 +159,6 @@ const renderSolvency = ({
                 <Money value={main.propertyValue} />
               ) : (
                 <Money value={second.propertyValue} />
-              )}
-            </h3>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <h4 className="secondary">Fonds propres</h4>
-          </td>
-          <td>
-            <h3>
-              {residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? (
-                <Money value={main.propertyValue * (1 - main.borrowRatio)} />
-              ) : (
-                <Money
-                  value={second.propertyValue * (1 - second.borrowRatio)}
-                />
               )}
             </h3>
           </td>
@@ -172,14 +177,10 @@ const renderState = (props) => {
   return renderSolvency(props);
 };
 
-const SolvencyCalculator = (props: SolvencyCalculatorProps) => {
-  return (
-    <div className="flex-row center">
-      <div className="card1 solvency-calculator">
-        {renderState(props)}
-      </div>
-    </div>
-  );
-};
+const SolvencyCalculator = (props: SolvencyCalculatorProps) => (
+  <div className="flex-row center">
+    <div className="card1 solvency-calculator">{renderState(props)}</div>
+  </div>
+);
 
 export default SolvencyCalculatorContainer(SolvencyCalculator);
