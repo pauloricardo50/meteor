@@ -317,7 +317,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('proInviteUser', () => {
+  describe.only('proInviteUser', () => {
     const userToInvite = {
       firstName: 'Bob',
       lastName: 'Dylan',

@@ -105,93 +105,19 @@ export class PropertyService extends CollectionService {
     return false;
   };
 
-  inviteUser = ({
-    proUserId,
-    user: { email, firstName, lastName, phoneNumber },
-    propertyIds,
-    sendInvitation = true,
-  }) => {
+  inviteUser = ({ propertyIds, admin, pro, userId, isNewUser }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
-    let assignedEmployeeId;
-    let organisationId;
-    let pro;
 
-    if (proUserId) {
-      pro = UserService.fetchOne({
-        $filters: { _id: proUserId },
-        name: 1,
-        assignedEmployeeId: 1,
-        organisations: { name: 1 },
-      });
-
-      if (pro) {
-        const {
-          assignedEmployeeId: proAssignedEmployeeId,
-          organisations = [],
-        } = pro;
-        assignedEmployeeId = proAssignedEmployeeId;
-        organisationId = !!organisations.length && organisations[0]._id;
-      }
+    if (
+      propertyIds.some(propertyId =>
+        UserService.hasProperty({ userId, propertyId }))
+    ) {
+      throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
     }
 
-    const isNewUser = !UserService.doesUserExist({ email });
-    let userId;
-    let admin;
+    LoanService.insertPropertyLoan({ userId, propertyIds });
 
-    if (isNewUser) {
-      admin = UserService.get(assignedEmployeeId);
-      userId = UserService.adminCreateUser({
-        options: {
-          email,
-          // If an admin does the invitation, send him the default enrollment email
-          // and skip the property invitation email
-          sendEnrollmentEmail: sendInvitation && !pro,
-          firstName,
-          lastName,
-          phoneNumbers: [phoneNumber],
-        },
-        adminId: admin && admin._id,
-      });
-
-      if (!pro) {
-        // The invitation has already been sent
-        sendInvitation = false;
-      }
-
-      if (proUserId) {
-        UserService.addLink({
-          id: userId,
-          linkName: 'referredByUser',
-          linkId: proUserId,
-        });
-      }
-
-      if (organisationId) {
-        UserService.addLink({
-          id: userId,
-          linkName: 'referredByOrganisation',
-          linkId: organisationId,
-        });
-      }
-    } else {
-      const {
-        _id: existingUserId,
-        assignedEmployeeId: existingAssignedEmployeeId,
-      } = UserService.findOne({ 'emails.address': { $in: [email] } });
-      admin = UserService.get(existingAssignedEmployeeId);
-      userId = existingUserId;
-
-      if (
-        propertyIds.some(propertyId =>
-          UserService.hasProperty({ userId, propertyId }))
-      ) {
-        throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
-      }
-    }
-
-    const loanId = LoanService.insertPropertyLoan({ userId, propertyIds });
-
-    if (sendInvitation) {
+    if (pro) {
       return this.sendPropertyInvitationEmail({
         userId,
         isNewUser,

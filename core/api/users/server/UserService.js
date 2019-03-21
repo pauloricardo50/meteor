@@ -184,51 +184,18 @@ class UserService extends CollectionService {
   };
 
   proReferUser = ({ user, proUserId }) => {
-    const { email, firstName, lastName, phoneNumber } = user;
+    const { email } = user;
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
     }
 
-    const pro = this.fetchOne({
-      $filters: { _id: proUserId },
-      assignedEmployeeId: 1,
-      name: 1,
-      organisations: { name: 1 },
-    });
-    const {
-      assignedEmployeeId: proAssignedEmployeeId,
-      organisations = [],
-    } = pro;
-    const assignedEmployeeId = proAssignedEmployeeId;
-    const organisationId = !!organisations.length && organisations[0]._id;
-    const admin = this.get(assignedEmployeeId);
-
-    const userId = this.adminCreateUser({
-      options: {
-        email,
-        sendEnrollmentEmail: false,
-        firstName,
-        lastName,
-        phoneNumbers: [phoneNumber],
-      },
-      adminId: admin && admin._id,
+    const { userId, pro } = this.proCreateUser({
+      user,
+      proUserId,
+      sendInvitation: false,
     });
 
-    const loanId = LoanService.adminLoanInsert({ userId });
-
-    this.addLink({
-      id: userId,
-      linkName: 'referredByUser',
-      linkId: proUserId,
-    });
-
-    if (organisationId) {
-      this.addLink({
-        id: userId,
-        linkName: 'referredByOrganisation',
-        linkId: organisationId,
-      });
-    }
+    LoanService.adminLoanInsert({ userId });
 
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
@@ -238,6 +205,60 @@ class UserService extends CollectionService {
         ctaUrl: this.getEnrollmentUrl({ userId }),
       },
     });
+  };
+
+  proCreateUser = ({
+    user: { email, firstName, lastName, phoneNumber },
+    proUserId,
+    sendInvitation = true,
+  }) => {
+    let pro;
+    let assignedEmployeeId;
+
+    if (proUserId) {
+      pro = this.fetchOne({
+        $filters: { _id: proUserId },
+        name: 1,
+        assignedEmployeeId: 1,
+        organisations: { name: 1 },
+      });
+    }
+
+    if (pro) {
+      const { assignedEmployeeId: proAssignedEmployeeId } = pro;
+      assignedEmployeeId = proAssignedEmployeeId;
+    }
+
+    const isNewUser = !this.doesUserExist({ email });
+    let userId;
+    let admin;
+
+    if (isNewUser) {
+      admin = this.get(assignedEmployeeId);
+      userId = this.adminCreateUser({
+        options: {
+          email,
+          sendEnrollmentEmail: sendInvitation && !pro,
+          firstName,
+          lastName,
+          phoneNumbers: [phoneNumber],
+        },
+        adminId: admin && admin._id,
+      });
+
+      if (pro) {
+        this.setReferredBy({ userId, proId: proUserId });
+      }
+    } else {
+      const {
+        _id: existingUserId,
+        assignedEmployeeId: existingAssignedEmployeeId,
+      } = this.findOne({ 'emails.address': { $in: [email] } });
+      admin = this.get(existingAssignedEmployeeId);
+      userId = existingUserId;
+    }
+
+    return { userId, admin, pro, isNewUser };
   };
 
   proInviteUser = ({
@@ -256,15 +277,23 @@ class UserService extends CollectionService {
       throw new Meteor.Error('No property given');
     }
 
+    const { invitedBy } = user;
+    const { userId, admin, pro, isNewUser } = this.proCreateUser({
+      user,
+      proUserId: proUserId || invitedBy,
+    });
+
     let promises = [];
 
     if (propertyIds && propertyIds.length) {
       promises = [
         ...promises,
         PropertyService.inviteUser({
-          proUserId,
-          user,
           propertyIds,
+          admin,
+          pro,
+          userId,
+          isNewUser,
         }),
       ];
     }
@@ -274,7 +303,9 @@ class UserService extends CollectionService {
         ...promotionIds.map(promotionId =>
           PromotionService.inviteUser({
             promotionId,
-            user: { ...user, invitedBy: proUserId },
+            userId,
+            pro,
+            isNewUser,
           })),
       ];
     }
