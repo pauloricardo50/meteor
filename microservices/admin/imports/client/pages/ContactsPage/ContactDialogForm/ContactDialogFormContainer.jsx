@@ -22,7 +22,10 @@ const schema = existingOrganisations =>
     'organisations.$': Object,
     'organisations.$._id': {
       type: String,
-      customAllowedValues: { query: adminOrganisations },
+      customAllowedValues: {
+        query: adminOrganisations,
+        params: () => ({ $body: { name: 1 } }),
+      },
       uniforms: {
         transform: ({ name }) => name,
         labelProps: { shrink: true },
