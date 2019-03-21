@@ -32,6 +32,7 @@ const DashboardRecap = (props) => {
           <DashboardRecapProperty
             property={propertyToDisplay}
             loanId={loanId}
+            growRecap
           />
         )}
       </div>

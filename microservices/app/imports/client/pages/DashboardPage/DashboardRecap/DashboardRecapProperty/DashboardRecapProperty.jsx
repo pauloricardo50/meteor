@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+
 import Link from 'core/components/Link';
 import { createRoute } from 'core/utils/routerUtils';
-
 import { VALUATION_STATUS } from 'core/api/properties/propertyConstants';
 import MapWithMarker from 'core/components/maps/MapWithMarker';
 import Recap from 'core/components/Recap';
@@ -43,22 +44,22 @@ export const getRecapArray = (property) => {
       value: <MetricArea value={landArea} />,
       hide: !landArea,
     },
-    {
-      label: 'property.expertise',
-      value:
-        status === VALUATION_STATUS.DONE ? (
-          <p>{`CHF ${toMoney(min)} - ${toMoney(max)}`}</p>
-        ) : (
-          <T id={`property.expertiseStatus.${status}`} />
-        ),
-    },
+    // {
+    //   label: 'property.expertise',
+    //   value:
+    //     status === VALUATION_STATUS.DONE ? (
+    //       <p>{`CHF ${toMoney(min)} - ${toMoney(max)}`}</p>
+    //     ) : (
+    //       <T id={`property.expertiseStatus.${status}`} />
+    //     ),
+    // },
   ];
 };
 
 const shouldDisplay = ({ address1, zipCode, city }) =>
   address1 && city && zipCode;
 
-const getContent = (property, loanId) => {
+const getContent = (property, loanId, growRecap) => {
   const canDisplayDetails = shouldDisplay(property, loanId);
   const propertyAddress = getPropertyAddressString(property);
   return (
@@ -77,7 +78,10 @@ const getContent = (property, loanId) => {
         {canDisplayDetails ? propertyAddress : <T id="Recap.property" />}
       </h3>
       {canDisplayDetails ? (
-        <Recap array={getRecapArray(property)} className="recap" />
+        <Recap
+          array={getRecapArray(property)}
+          className={cx('recap', { large: growRecap })}
+        />
       ) : (
         <span className="dashboard-recap-property-modifier">
           <PropertyModifier property={property} />
@@ -87,7 +91,7 @@ const getContent = (property, loanId) => {
   );
 };
 
-const DashboardRecapProperty = ({ property, loanId }) => {
+const DashboardRecapProperty = ({ property, loanId, growRecap }) => {
   // Documents are merged into property, so check if the _id is defined
   if (!property || !property._id) {
     return <DashboardRecapPropertyEmpty loanId={loanId} />;
@@ -110,10 +114,11 @@ const DashboardRecapProperty = ({ property, loanId }) => {
         }
       }}
     >
-      {getContent(property, loanId)}
+      {getContent(property, loanId, growRecap)}
     </Link>
   );
 };
+
 DashboardRecapProperty.propTypes = {
   loanId: PropTypes.string,
   property: PropTypes.object.isRequired,
