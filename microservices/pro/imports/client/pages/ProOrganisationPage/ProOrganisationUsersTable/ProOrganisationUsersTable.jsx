@@ -2,8 +2,8 @@
 import React from 'react';
 
 import Table from 'core/components/Table';
+import ProOrganisationUserAdder from 'core/components/ProOrganisationUserAdder';
 import ProOrganisationUsersTableContainer from './ProOrganisationUsersTableContainer';
-import ProOrganisationUserAdder from './ProOrganisationUserAdder';
 
 type ProOrganisationUsersTableProps = {};
 
@@ -16,7 +16,6 @@ const ProOrganisationUsersTable = ({
 }: ProOrganisationUsersTableProps) => (
   <>
     <ProOrganisationUserAdder
-      currentUser={currentUser}
       organisationId={organisationId}
       organisationName={name}
     />

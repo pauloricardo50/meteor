@@ -191,5 +191,12 @@ proInviteUserToOrganisation.setHandler(({ userId }, params) => {
     userId,
     organisationId,
   });
+
+  if (SecurityService.currentUserIsAdmin()) {
+    params.adminId = userId;
+  } else {
+    params.proId = userId;
+  }
+
   return UserService.proInviteUserToOrganisation(params);
 });

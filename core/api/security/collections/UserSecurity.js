@@ -24,6 +24,10 @@ class UserSecurity {
   };
 
   isAllowedToInviteUsersToOrganisation = ({ userId, organisationId }) => {
+    if (Security.currentUserIsAdmin()) {
+      return;
+    }
+
     const { organisations = [] } = UserService.fetchOne({
       $filters: { _id: userId },
       organisations: { _id: 1 },

@@ -322,17 +322,23 @@ class UserService extends CollectionService {
     });
   }
 
-  proInviteUserToOrganisation({ user, organisationId, role, proId }) {
+  proInviteUserToOrganisation({ user, organisationId, role, proId, adminId }) {
     const { email, phoneNumber } = user;
+    let assigneeId;
 
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error('Cet utilisateur existe déjà');
     }
 
-    const { assignedEmployeeId } = this.fetchOne({
-      $filters: { _id: proId },
-      assignedEmployeeId: 1,
-    });
+    if (proId) {
+      const { assignedEmployeeId } = this.fetchOne({
+        $filters: { _id: proId },
+        assignedEmployeeId: 1,
+      });
+      assigneeId = assignedEmployeeId;
+    } else {
+      assigneeId = adminId;
+    }
 
     const userId = this.adminCreateUser({
       options: {
@@ -340,7 +346,7 @@ class UserService extends CollectionService {
         phoneNumbers: [phoneNumber],
         sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
       },
-      adminId: assignedEmployeeId,
+      adminId: assigneeId,
     });
 
     this.setRole({ userId, role: ROLES.PRO });

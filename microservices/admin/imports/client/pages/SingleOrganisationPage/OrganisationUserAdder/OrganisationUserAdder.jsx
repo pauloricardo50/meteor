@@ -115,8 +115,8 @@ const OrganisationUserAdder = (props: OrganisationUserAdderProps) => {
     <DialogSimple
       primary
       raised
-      label="Ajouter un utilisateur"
-      title="Nouvel utilisateur"
+      label="Ajouter un utilisateur existant"
+      title="Ajouter utilisateur"
       style={{ width: '100%' }}
       renderProps
       actions={handleClose => [

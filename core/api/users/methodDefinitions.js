@@ -148,5 +148,5 @@ export const setUserReferredByOrganisation = new Method({
 
 export const proInviteUserToOrganisation = new Method({
   name: 'proInviteUserToOrganisation',
-  params: { user: Object, organisationId: String, role: String, proId: String },
+  params: { user: Object, organisationId: String, role: String },
 });
