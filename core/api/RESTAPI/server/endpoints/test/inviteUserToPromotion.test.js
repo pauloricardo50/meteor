@@ -162,8 +162,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 500,
-          message:
-            'Match error: Expected string, got undefined in field promotionId',
+          message: 'Match error: Expected Array in field promotionIds',
         },
       });
     });

@@ -5,7 +5,6 @@ import {
   promotionUpdate,
   promotionRemove,
   insertPromotionProperty,
-  inviteUserToPromotion,
   setPromotionUserPermissions,
   addProUserToPromotion,
   removeProFromPromotion,
@@ -31,14 +30,6 @@ promotionRemove.setHandler(({ userId }, { promotionId }) => {
 insertPromotionProperty.setHandler(({ userId }, { promotionId, property }) => {
   SecurityService.promotions.isAllowedToAddLots({ promotionId, userId });
   return PromotionService.insertPromotionProperty({ promotionId, property });
-});
-
-inviteUserToPromotion.setHandler(({ userId }, { user, promotionId }) => {
-  SecurityService.promotions.isAllowedToInviteCustomers({
-    promotionId,
-    userId,
-  });
-  return PromotionService.inviteUser({ promotionId, user });
 });
 
 setPromotionUserPermissions.setHandler(({ userId: currentUserId }, { promotionId, userId, permissions }) => {

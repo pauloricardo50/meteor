@@ -1,4 +1,4 @@
-import { inviteUserToPromotion } from '../../../methods';
+import { proInviteUser } from 'core/api/users';
 import { withMeteorUserId } from '../helpers';
 
 const inviteUserToPromotionAPI = ({ user: { _id: userId }, body }) => {
@@ -13,8 +13,8 @@ const inviteUserToPromotionAPI = ({ user: { _id: userId }, body }) => {
   }
 
   return withMeteorUserId(userId, () =>
-    inviteUserToPromotion.run({
-      promotionId,
+    proInviteUser.run({
+      promotionIds: promotionId && [promotionId],
       user: { ...user, invitedBy: userId },
     })).then(() => ({
     message: `Successfully invited user "${

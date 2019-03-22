@@ -2,7 +2,7 @@
 import React from 'react';
 
 import SimpleSchema from 'simpl-schema';
-import { inviteUserToPromotion } from '../../../../api/promotions/methodDefinitions';
+import { proInviteUser } from 'core/api/users/';
 import { PROMOTION_STATUS } from '../../../../api/constants';
 import T from '../../../Translation';
 import { AutoFormDialog } from '../../../AutoForm2';
@@ -53,7 +53,9 @@ const CustomerAdder = ({ promotion, promotionStatus }: CustomerAdderProps) => {
           : undefined,
       }}
       schema={CustomerAdderUserSchema({ promotion })}
-      onSubmit={user => inviteUserToPromotion.run({ user, promotionId })}
+      onSubmit={user =>
+        proInviteUser.run({ user, promotionIds: [promotionId] })
+      }
       title="Inviter un client"
       description="Invitez un client à la promotion avec son addresse email. Il recevra un mail avec un lien pour se connecter à e-Potek."
       onSuccessMessage={onSuccessMessage}

@@ -3,11 +3,12 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withState } from 'recompose';
 
-import { inviteUserToProperty } from 'core/api/methods';
+import { proInviteUser } from 'core/api/methods';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proReferredByUsers from 'core/api/users/queries/proReferredByUsers';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { AutoFormDialog } from '../AutoForm2';
+
 
 type PropertyCustomerAdderProps = {};
 
@@ -59,7 +60,7 @@ const PropertyCustomerAdder = ({
     schema={customerSchema}
     model={model}
     onSubmit={user =>
-      inviteUserToProperty
+      proInviteUser
         .run({ user, propertyIds: [propertyId] })
         .then(() => setModel({}))
     }
