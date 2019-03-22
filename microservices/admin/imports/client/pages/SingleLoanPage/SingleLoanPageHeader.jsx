@@ -103,6 +103,11 @@ const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
           additionalActions={additionalActions(loan)}
         />
       </h1>
+      {loan.customName && !loan.hasPromotion && (
+        <h3 className="secondary" style={{ marginTop: 0 }}>
+          {loan.customName}
+        </h3>
+      )}
       {loan.hasPromotion && (
         <CollectionIconLink
           relatedDoc={{
