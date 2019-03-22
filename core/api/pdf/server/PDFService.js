@@ -89,7 +89,7 @@ class PDFService {
       const loan = adminLoan.clone({ loanId }).fetchOne();
 
       if (loan.hasPromotion) {
-        return { loan: formatLoanWithPromotion(loan), organisation };
+        return { ...params, loan: formatLoanWithPromotion(loan), organisation };
       }
 
       return { ...params, loan, organisation };
