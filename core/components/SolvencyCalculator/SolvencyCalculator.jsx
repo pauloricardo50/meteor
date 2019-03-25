@@ -62,13 +62,13 @@ const renderEmptyState = ({ loan, state, calculateSolvency }) => (
         <>
           <h3>Complétez vos informations</h3>
           <p className="description">
-            Vous pourrez calculer votre solvabilité une fois que vous aurez
-            renseigné vos revenus et votre fortune
+            Vous pourrez calculer votre capacité d'achat maximale une fois que
+            vous aurez renseigné vos revenus et votre fortune
           </p>
           <Button
             link
             primary
-            to={createRoute('/loans/:loanId/borrowers', { loanId: loan._id })}
+            to={createRoute('/loans/:loanId/borrowers/finance', { loanId: loan._id })}
           >
             Emprunteurs
           </Button>
