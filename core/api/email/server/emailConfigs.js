@@ -216,7 +216,6 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
   },
   createIntlValues: params => params,
 });
-
 // Required params:
 // proName
 // address

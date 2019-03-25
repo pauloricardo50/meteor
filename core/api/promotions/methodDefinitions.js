@@ -30,14 +30,6 @@ export const insertPromotionProperty = new Method({
   },
 });
 
-export const inviteUserToPromotion = new Method({
-  name: 'inviteUserToPromotion',
-  params: {
-    promotionId: String,
-    user: Object,
-  },
-});
-
 export const setPromotionUserPermissions = new Method({
   name: 'setPromotionUserPermissions',
   params: {

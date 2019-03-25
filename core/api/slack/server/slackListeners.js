@@ -1,10 +1,8 @@
-import { PropertyService } from 'core/api/properties/server/PropertyService';
+import PropertyService from 'core/api/properties/server/PropertyService';
 import ServerEventService from '../../events/server/ServerEventService';
 import {
-  inviteUserToPromotion,
   bookPromotionLot,
   sellPromotionLot,
-  inviteUserToProperty,
   proInviteUser,
 } from '../../methods';
 import PromotionService from '../../promotions/server/PromotionService';
@@ -18,19 +16,6 @@ import {
   propertyInviteNotification,
   referralOnlyNotification,
 } from './slackNotifications';
-
-ServerEventService.addMethodListener(
-  inviteUserToPromotion,
-  (context, { promotionId, user }) => {
-    const promotion = PromotionService.fetchOne({
-      $filters: { _id: promotionId },
-      name: 1,
-      assignedEmployee: { email: 1 },
-    });
-
-    promotionInviteNotification({ promotion, user });
-  },
-);
 
 ServerEventService.addMethodListener(
   bookPromotionLot,
@@ -68,19 +53,6 @@ ServerEventService.addMethodListener(
 );
 
 ServerEventService.addMethodListener(
-  inviteUserToProperty,
-  ({ userId }, { user, propertyIds }) => {
-    const currentUser = UserService.get(userId);
-    const invitedUser = UserService.getByEmail(user.email);
-
-    propertyIds.map((id) => {
-      const property = PropertyService.get(id);
-      propertyInviteNotification({ currentUser, user: invitedUser, property });
-    });
-  },
-);
-
-ServerEventService.addMethodListener(
   proInviteUser,
   ({ userId }, { propertyIds = [], promotionIds = [], user }) => {
     const currentUser = UserService.get(userId);
@@ -95,7 +67,7 @@ ServerEventService.addMethodListener(
       const promotion = PromotionService.fetchOne({
         $filters: { _id: id },
         name: 1,
-        assignedEmployee: 1,
+        assignedEmployee: { email: 1 },
       });
       promotionInviteNotification({ promotion, user: invitedUser });
     });

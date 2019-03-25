@@ -105,106 +105,36 @@ export class PropertyService extends CollectionService {
     return false;
   };
 
-  inviteUser = ({
-    proUserId,
-    user: { email, firstName, lastName, phoneNumber },
-    propertyIds,
-    sendInvitation = true,
-  }) => {
+  hasOneOfProperties = ({ userId, propertyIds }) =>
+    propertyIds.some(propertyId =>
+      UserService.hasProperty({ userId, propertyId }));
+
+  inviteUser = ({ propertyIds, admin, pro, userId, isNewUser }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
-    let assignedEmployeeId;
-    let organisationId;
-    let pro;
 
-    if (proUserId) {
-      pro = UserService.fetchOne({
-        $filters: { _id: proUserId },
-        name: 1,
-        assignedEmployeeId: 1,
-        organisations: { name: 1 },
-      });
-
-      if (pro) {
-        const {
-          assignedEmployeeId: proAssignedEmployeeId,
-          organisations = [],
-        } = pro;
-        assignedEmployeeId = proAssignedEmployeeId;
-        organisationId = !!organisations.length && organisations[0]._id;
-      }
+    if (this.hasOneOfProperties({ userId, propertyIds })) {
+      throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
     }
 
-    const isNewUser = !UserService.doesUserExist({ email });
-    let userId;
-    let admin;
+    LoanService.insertPropertyLoan({ userId, propertyIds });
 
-    if (isNewUser) {
-      admin = UserService.get(assignedEmployeeId);
-      userId = UserService.adminCreateUser({
-        options: {
-          email,
-          // If an admin does the invitation, send him the default enrollment email
-          // and skip the property invitation email
-          sendEnrollmentEmail: sendInvitation && !pro,
-          firstName,
-          lastName,
-          phoneNumbers: [phoneNumber],
-        },
-        adminId: admin && admin._id,
-      });
+    const addresses = properties.map(({ address1 }) => `"${address1}"`);
 
-      if (!pro) {
-        // The invitation has already been sent
-        sendInvitation = false;
-      }
-
-      if (proUserId) {
-        UserService.addLink({
-          id: userId,
-          linkName: 'referredByUser',
-          linkId: proUserId,
-        });
-      }
-
-      if (organisationId) {
-        UserService.addLink({
-          id: userId,
-          linkName: 'referredByOrganisation',
-          linkId: organisationId,
-        });
-      }
-    } else {
-      const {
-        _id: existingUserId,
-        assignedEmployeeId: existingAssignedEmployeeId,
-      } = UserService.findOne({ 'emails.address': { $in: [email] } });
-      admin = UserService.get(existingAssignedEmployeeId);
-      userId = existingUserId;
-
-      if (
-        propertyIds.some(propertyId =>
-          UserService.hasProperty({ userId, propertyId }))
-      ) {
-        throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
-      }
-    }
-
-    const loanId = LoanService.insertPropertyLoan({ userId, propertyIds });
-
-    if (sendInvitation) {
-      return this.sendPropertyInvitationEmail({
-        userId,
-        isNewUser,
-        address: properties[0].address1, // TODO: all addresses
-        proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
-      });
-    }
-
-    return Promise.resolve();
+    return this.sendPropertyInvitationEmail({
+      userId,
+      isNewUser,
+      addresses,
+      proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
+    });
   };
 
-  sendPropertyInvitationEmail({ userId, isNewUser, proName, address }) {
+  sendPropertyInvitationEmail({ userId, isNewUser, proName, addresses }) {
     let ctaUrl = Meteor.settings.public.subdomains.app;
+
+    const formattedAddresses = [
+      addresses.slice(0, -1).join(', '),
+      addresses.slice(-1)[0],
+    ].join(addresses.length < 2 ? '' : ' et ');
 
     if (isNewUser) {
       // Envoyer invitation avec enrollment link
@@ -214,7 +144,7 @@ export class PropertyService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
       userId,
-      params: { proName, address, ctaUrl },
+      params: { proName, address: formattedAddresses, ctaUrl, multiple: addresses.length > 1 },
     });
   }
 

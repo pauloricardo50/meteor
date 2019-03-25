@@ -168,15 +168,22 @@ describe('PropertyService', function () {
         ],
       });
 
-      return PropertyService.inviteUser({
-        proUserId: 'proUser',
+      const { userId, admin, pro, isNewUser } = UserService.proCreateUser({
         user: {
           email: 'john@doe.com',
           firstName: 'John',
           name: 'Doe',
           phoneNumber: '123',
         },
+        proUserId: 'proUser',
+      });
+
+      return PropertyService.inviteUser({
         propertyIds: ['proProperty'],
+        admin,
+        pro,
+        userId,
+        isNewUser,
       }).then(() => {
         const user = UserService.fetchOne({
           $filters: { 'emails.address': 'john@doe.com' },
@@ -211,7 +218,7 @@ describe('PropertyService', function () {
               message: { from_email, subject, merge_vars, from_name },
             },
           } = emails[0];
-          expect(subject).to.equal('e-Potek - Rue du parc 3');
+          expect(subject).to.equal(`e-Potek - "Rue du parc 3"`);
         });
       });
     });
@@ -279,14 +286,20 @@ describe('PropertyService', function () {
         ],
       });
 
-      PropertyService.inviteUser({
+      const { userId, admin, isNewUser } = UserService.proCreateUser({
         user: {
           email: 'john@doe.com',
           firstName: 'John',
           name: 'Doe',
           phoneNumber: '123',
         },
+      });
+
+      PropertyService.inviteUser({
         propertyIds: ['proProperty'],
+        userId,
+        admin,
+        isNewUser
       });
 
       return checkEmails(1).then((emails) => {
@@ -306,7 +319,8 @@ describe('PropertyService', function () {
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
-        expect(subject).to.equal('e-Potek - Rue du parc 4');
+        expect(subject).to.equal(`e-Potek - "Rue du parc 4"`);
+        console.log(merge_vars[0].vars.find(({ name }) => name === 'BODY').content)
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
       });
     });

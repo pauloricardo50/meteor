@@ -135,11 +135,14 @@ describe('PromotionService', function () {
 
       let resetToken;
 
-      return PromotionService.inviteUser({ promotionId, user: newUser })
+      const { userId, isNewUser } = UserService.proCreateUser({
+        user: newUser,
+      });
+
+      return PromotionService.inviteUser({ promotionId, userId, isNewUser })
         .then((loanId) => {
           const user = UserService.getByEmail(newUser.email);
           const {
-            _id: userId,
             services: {
               password: {
                 reset: { token },
@@ -192,7 +195,7 @@ describe('PromotionService', function () {
 
       return PromotionService.inviteUser({
         promotionId,
-        user: newUser,
+        userId,
       })
         .then((loanId) => {
           expect(!!loanId).to.equal(true);
@@ -272,9 +275,14 @@ describe('PromotionService', function () {
         phoneNumber: '1234',
       };
 
+      const { userId, isNewUser } = UserService.proCreateUser({
+        user: newUser,
+      });
+
       return PromotionService.inviteUser({
         promotionId,
-        user: newUser,
+        userId,
+        isNewUser,
       }).then(() => {
         const user = UserService.getByEmail(newUser.email);
         const { assignedEmployeeId } = user;

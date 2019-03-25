@@ -158,7 +158,7 @@ export const createPromotionDemo = async (
 
     const loanId = await PromotionService.inviteUser({
       promotionId,
-      user: { ...Meteor.user(), email: Meteor.user().emails[0].address },
+      userId: Meteor.userId(),
       sendInvitation: false,
     });
     if (withPromotionOptions) {
@@ -201,7 +201,9 @@ export const createPromotionDemo = async (
 
     const loanId = await PromotionService.inviteUser({
       promotionId,
-      user: {...user, ...(withInvitedBy ? {invitedBy: Meteor.userId()} : {})},
+      userId: promotionCustomerId,
+      sendInvitation: false,
+      ...(withInvitedBy ? { pro: { _id: Meteor.userId() } } : {}),
     });
 
     const promotionOptionIds = addPromotionOptions(loanId, promotion);

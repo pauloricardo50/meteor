@@ -719,7 +719,7 @@ describe('UserService', () => {
           expect(address).to.equal('bob@dylan.com');
           expect(from_email).to.equal('info@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
-          expect(subject).to.equal('e-Potek - Rue du four 1');
+          expect(subject).to.equal(`e-Potek - "Rue du four 1"`);
         });
     });
 
