@@ -11,7 +11,7 @@ import colors from '../../../../../config/colors';
 type LenderListItemRulesProps = {};
 
 const LenderListItemRules = ({
-  organisation: { name, lenderRules, logo },
+  organisation: { lenderRules },
   loan,
   structureId,
 }: LenderListItemRulesProps) => {
