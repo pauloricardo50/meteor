@@ -144,7 +144,7 @@ export class PropertyService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
       userId,
-      params: { proName, address: formattedAddresses, ctaUrl, plural: addresses.length > 1 },
+      params: { proName, address: formattedAddresses, ctaUrl, multiple: addresses.length > 1 },
     });
   }
 
