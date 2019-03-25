@@ -211,6 +211,7 @@ class UserService extends CollectionService {
     user: { email, firstName, lastName, phoneNumber },
     proUserId,
     sendInvitation = true,
+    adminId,
   }) => {
     let pro;
     let assignedEmployeeId;
@@ -224,10 +225,11 @@ class UserService extends CollectionService {
       });
 
       const { assignedEmployeeId: proAssignedEmployeeId } = pro;
-      
-      assignedEmployeeId = proAssignedEmployeeId;
-    }
 
+      assignedEmployeeId = proAssignedEmployeeId;
+    } else if (adminId) {
+      assignedEmployeeId = adminId;
+    }
 
     const isNewUser = !this.doesUserExist({ email });
     let userId;
@@ -267,6 +269,7 @@ class UserService extends CollectionService {
     promotionIds = [],
     property,
     proUserId,
+    adminId,
   }) => {
     const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
     if (referOnly) {
@@ -281,6 +284,7 @@ class UserService extends CollectionService {
     const { userId, admin, pro, isNewUser } = this.proCreateUser({
       user,
       proUserId: proUserId || invitedBy,
+      adminId,
     });
 
     let promises = [];
