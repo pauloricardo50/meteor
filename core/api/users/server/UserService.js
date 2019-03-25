@@ -222,12 +222,12 @@ class UserService extends CollectionService {
         assignedEmployeeId: 1,
         organisations: { name: 1 },
       });
-    }
 
-    if (pro) {
       const { assignedEmployeeId: proAssignedEmployeeId } = pro;
+      
       assignedEmployeeId = proAssignedEmployeeId;
     }
+
 
     const isNewUser = !this.doesUserExist({ email });
     let userId;

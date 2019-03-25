@@ -105,28 +105,36 @@ export class PropertyService extends CollectionService {
     return false;
   };
 
+  hasOneOfProperties = ({ userId, propertyIds }) =>
+    propertyIds.some(propertyId =>
+      UserService.hasProperty({ userId, propertyId }));
+
   inviteUser = ({ propertyIds, admin, pro, userId, isNewUser }) => {
     const properties = propertyIds.map(propertyId => this.get(propertyId));
 
-    if (
-      propertyIds.some(propertyId =>
-        UserService.hasProperty({ userId, propertyId }))
-    ) {
+    if (this.hasOneOfProperties({ userId, propertyIds })) {
       throw new Meteor.Error('Cet utilisateur est déjà invité à ce bien immobilier');
     }
 
     LoanService.insertPropertyLoan({ userId, propertyIds });
 
+    const addresses = properties.map(({ address1 }) => `"${address1}"`);
+
     return this.sendPropertyInvitationEmail({
       userId,
       isNewUser,
-      address: properties[0].address1, // TODO: all addresses
+      addresses,
       proName: pro ? getUserNameAndOrganisation({ user: pro }) : admin.name,
     });
   };
 
-  sendPropertyInvitationEmail({ userId, isNewUser, proName, address }) {
+  sendPropertyInvitationEmail({ userId, isNewUser, proName, addresses }) {
     let ctaUrl = Meteor.settings.public.subdomains.app;
+
+    const formattedAddresses = [
+      addresses.slice(0, -1).join(', '),
+      addresses.slice(-1)[0],
+    ].join(addresses.length < 2 ? '' : ' et ');
 
     if (isNewUser) {
       // Envoyer invitation avec enrollment link
@@ -136,7 +144,7 @@ export class PropertyService extends CollectionService {
     return sendEmail.run({
       emailId: EMAIL_IDS.INVITE_USER_TO_PROPERTY,
       userId,
-      params: { proName, address, ctaUrl },
+      params: { proName, address: formattedAddresses, ctaUrl, plural: addresses.length > 1 },
     });
   }
 

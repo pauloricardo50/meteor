@@ -629,7 +629,7 @@
   "emails.INVITE_USER_TO_PROMOTION.from": "{promotionName}",
   "emails.INVITE_USER_TO_PROMOTION.SUBJECT": "Promotion immobilière {promotionName}",
   "emails.INVITE_USER_TO_PROMOTION.TITLE": "Nous vous remercions de votre intérêt pour la promotion {promotionName}",
-  "emails.INVITE_USER_TO_PROPERTY.BODY": "Vous avez été invité par {proName} au bien immobilier \"{address}\" sur la plateforme e-Potek. Vous pouvez dès à présent vous connecter afin de monter un dossier de recherche de financement hypothécaire, et comparer tous les prêteurs du marché en quelques minutes.",
+  "emails.INVITE_USER_TO_PROPERTY.BODY": "Vous avez été invité par {proName} {plural, select, true {au bien immobilier} other {aux biens immobiliers}} \"{address}\" sur la plateforme e-Potek. Vous pouvez dès à présent vous connecter afin de monter un dossier de recherche de financement hypothécaire, et comparer tous les prêteurs du marché en quelques minutes.",
   "emails.INVITE_USER_TO_PROPERTY.CTA": "Se connecter",
   "emails.INVITE_USER_TO_PROPERTY.from": "e-Potek",
   "emails.INVITE_USER_TO_PROPERTY.SUBJECT": "e-Potek - {address}",

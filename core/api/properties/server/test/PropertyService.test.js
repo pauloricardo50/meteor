@@ -218,7 +218,7 @@ describe('PropertyService', function () {
               message: { from_email, subject, merge_vars, from_name },
             },
           } = emails[0];
-          expect(subject).to.equal('e-Potek - Rue du parc 3');
+          expect(subject).to.equal(`e-Potek - "Rue du parc 3"`);
         });
       });
     });
@@ -319,7 +319,7 @@ describe('PropertyService', function () {
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
-        expect(subject).to.equal('e-Potek - Rue du parc 4');
+        expect(subject).to.equal(`e-Potek - "Rue du parc 4"`);
         console.log(merge_vars[0].vars.find(({ name }) => name === 'BODY').content)
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
       });
