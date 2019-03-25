@@ -9,7 +9,7 @@ type ProRevenuesPageProps = {};
 
 const ProRevenuesPage = ({
   loans = [],
-  commissionRate = 0.25,
+  organisation: { commissionRate = 0 },
 }: ProRevenuesPageProps) => (
   <div className="pro-revenues-page card1 card-top">
     <h1>

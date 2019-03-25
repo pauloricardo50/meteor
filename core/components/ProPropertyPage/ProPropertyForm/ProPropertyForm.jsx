@@ -11,7 +11,7 @@ const proPropertySchema = new SimpleSchema({
   address1: String,
   address2: { type: String, optional: true },
   city: String,
-  zipCode: address.zipCode,
+  zipCode: { ...address.zipCode, optional: false },
   value: { ...moneyField, optional: false },
   description: {
     type: String,

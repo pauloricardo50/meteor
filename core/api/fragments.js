@@ -390,13 +390,14 @@ export const baseOrganisation = () => ({
 
 export const fullOrganisation = () => ({
   ...baseOrganisation(),
+  commissionRate: 1,
+  commissionRates: 1,
   contacts: contact(),
+  generatedRevenues: 1,
   lenderRules: lenderRules(),
   lenders: lender(),
   offers: fullOffer(),
   users: organisationUser(),
-  commissionRates: 1,
-  generatedRevenues: 1,
 });
 
 export const userOrganisation = () => ({

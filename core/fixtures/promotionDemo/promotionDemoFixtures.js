@@ -43,55 +43,6 @@ const DEMO_PROMOTION = {
   ],
 };
 
-export const createPromotionDemoUser = () => {
-  console.log('Creating promotion demo user...');
-  const userId = Accounts.createUser({
-    email: 'demo-promotion@epotek.ch',
-    password: '123456',
-  });
-
-  UserService.update({
-    userId,
-    object: { firstName: 'Marc', lastName: 'Dubois' },
-  });
-
-  return userId;
-};
-
-export const createPromotionDemoOwner = () => {
-  console.log('Creating promotion demo owner...');
-  const ownerId = Accounts.createUser({
-    email: 'demo-promotion-owner@epotek.ch',
-    password: '123456',
-  });
-
-  Roles.setUserRoles(ownerId, ROLES.PRO);
-
-  UserService.update({
-    userId: ownerId,
-    object: { firstName: 'Jean', lastName: 'Duvoisin' },
-  });
-
-  return ownerId;
-};
-
-export const createPromotionDemoViewer = () => {
-  console.log('Creating promotion demo viewer...');
-  const viewerId = Accounts.createUser({
-    email: 'demo-promotion-viewer@epotek.ch',
-    password: '123456',
-  });
-
-  Roles.setUserRoles(viewerId, ROLES.PRO);
-
-  UserService.update({
-    userId: viewerId,
-    object: { firstName: 'Marie', lastName: 'Lemarchand' },
-  });
-
-  return viewerId;
-};
-
 const createLots = (promotionId) => {
   properties.forEach(({ name, value, lots }) => {
     const promotionLotId = PromotionService.insertPromotionProperty({
