@@ -33,13 +33,20 @@ export default class Chart extends Component {
   constructor(props) {
     super(props);
     this.chart = null;
-    const { HighchartsExporting, HighchartsMore } = this.props;
+    const {
+      HighchartsExporting,
+      HighchartsMore,
+      HighchartsExportData,
+    } = this.props;
 
     if (HighchartsExporting) {
       HighchartsExporting(ReactHighcharts.Highcharts);
     }
     if (HighchartsMore) {
       HighchartsMore(ReactHighcharts.Highcharts);
+    }
+    if (HighchartsExportData) {
+      HighchartsExportData(ReactHighcharts.Highcharts);
     }
 
     initialazeHighcharts();

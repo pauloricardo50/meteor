@@ -186,6 +186,11 @@ class UpdateWatcherService extends CollectionService {
   getNotificationTitle({ docId, collection }) {
     const doc = Mongo.Collection.get(collection).findOne({ _id: docId });
 
+    // Document has been deleted
+    if(!doc){
+      return;
+    }
+
     switch (collection) {
     case BORROWERS_COLLECTION: {
       const { firstName, lastName } = doc;
