@@ -155,6 +155,7 @@ proInviteUser.setHandler((context, params) => {
   return UserService.proInviteUser({
     ...params,
     proUserId: isProUser ? userId : undefined,
+    adminId: !isProUser ? userId : undefined,
   });
 });
 
