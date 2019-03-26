@@ -8,6 +8,7 @@ import searchDatabase from './searchDatabase';
 import promotionSearch from '../promotions/queries/promotionSearch';
 import contactSearch from '../contacts/queries/contactSearch';
 import organisationSearch from '../organisations/queries/organisationSearch';
+import QueryCacher from '../helpers/server/QueryCacher';
 
 searchDatabase.expose({
   validateParams: { searchQuery: Match.Maybe(String) },
@@ -23,6 +24,7 @@ searchDatabase.resolve(({ searchQuery }) => {
   const organisations = organisationSearch.clone({ searchQuery }).fetch();
 
   return {
+    searchQuery,
     users,
     loans,
     contacts,
@@ -32,3 +34,7 @@ searchDatabase.resolve(({ searchQuery }) => {
     borrowers,
   };
 });
+
+const cacher = new QueryCacher({ ttl: 20 * 1000 });
+
+searchDatabase.cacheResults(cacher);
