@@ -45,8 +45,8 @@ const generateOrganisationsWithLenderRules = ({
     const secondaryRange = maxSecondaryBorrowRatio - minSecondaryBorrowRatio;
     const secondaryStep = secondaryRange / (number - 1);
 
-    const main = minMainBorrowRatio + (index * mainStep);
-    const secondary = minSecondaryBorrowRatio + (index * secondaryStep);
+    const main = minMainBorrowRatio + index * mainStep;
+    const secondary = minSecondaryBorrowRatio + index * secondaryStep;
 
     organisations = [
       ...organisations,
@@ -56,7 +56,7 @@ const generateOrganisationsWithLenderRules = ({
         type: ORGANISATION_TYPES.BANK,
         features: [ORGANISATION_FEATURES.LENDER],
         lenderRules: [
-          {_factory: 'lenderRulesAll'},
+          { _factory: 'lenderRulesAll' },
           { _factory: 'lenderRulesMain', maxBorrowRatio: main },
           { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary },
         ],
@@ -108,7 +108,7 @@ describe('Loan methods', () => {
     });
   });
 
-  describe.only('getMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('getMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
     beforeEach(() => {
       resetDatabase();
