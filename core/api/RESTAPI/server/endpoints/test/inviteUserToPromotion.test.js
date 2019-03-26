@@ -26,11 +26,11 @@ const userToInvite = {
 };
 
 const api = new RESTAPI();
-api.addEndpoint('/inviteUserToPromotion', 'POST', inviteUserToPromotion);
+api.addEndpoint('/promotions/inviteCustomer', 'POST', inviteUserToPromotion);
 
 const inviteUser = ({ userData, expectedResponse, status, id }) =>
   fetchAndCheckResponse({
-    url: '/inviteUserToPromotion',
+    url: '/promotions/inviteCustomer',
     data: {
       method: 'POST',
       headers: makeHeaders({ publicKey: keyPair.publicKey }),
