@@ -3,7 +3,8 @@ import { withProps, compose } from 'recompose';
 import { setUserReferredBy } from 'core/api';
 import { getUserNameAndOrganisation } from 'core/api/helpers';
 import { withSmartQuery } from 'core/api/containerToolkit';
-import query from 'core/api/users/queries/pros';
+import adminUsers from 'core/api/users/queries/adminUsers';
+import { ROLES } from 'core/api/constants';
 
 const getMenuItems = ({
   proUsers,
@@ -18,13 +19,17 @@ const getMenuItems = ({
       show: proId !== referredByUserId,
       label: userName,
       link: false,
-      onClick: () => setUserReferredBy.run({userId,proId }),
+      onClick: () => setUserReferredBy.run({ userId, proId }),
     };
   });
 
 export default compose(
   withSmartQuery({
-    query,
+    query: adminUsers,
+    params: {
+      roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV],
+      $body: { name: 1, organisations: { name: 1 } },
+    },
     queryOptions: { reactive: false },
     dataName: 'proUsers',
   }),
