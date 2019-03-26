@@ -6,14 +6,20 @@ import {
   makeFeedback,
   FEEDBACK_OPTIONS,
 } from 'core/components/OfferList/feedbackHelpers';
-import Calculator from 'core/utils/Calculator';
+import { Calculator } from 'core/utils/Calculator';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import OfferService from '../../offers/server/OfferService';
-import { adminLoan, loanBorrower } from '../../fragments';
+import {
+  adminLoan,
+  loanBorrower,
+  lenderRules as lenderRulesFragment,
+} from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import Loans from '../loans';
 
@@ -399,25 +405,67 @@ export class LoanService extends CollectionService {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
   }
 
+  getMaxPropertyValueRange({ lenderRules, borrowers, residenceType, canton }) {
+    const maxPropertyValues = lenderRules
+      .map((rules) => {
+        const calculator = new Calculator({});
+        calculator.lenderRules = rules;
+        const {
+          borrowRatio,
+          propertyValue,
+        } = calculator.getMaxPropertyValueWithoutBorrowRatio({
+          borrowers,
+          residenceType,
+          canton,
+        });
+        if (propertyValue > 0) {
+          return { borrowRatio, propertyValue };
+        }
+
+        return null;
+      })
+      .filter(x => x);
+
+    const min = maxPropertyValues.reduce(
+      (minValue, current) =>
+        (current.propertyValue < minValue.propertyValue ? current : minValue),
+      { propertyValue: 10000000000 },
+    );
+
+    const max = maxPropertyValues.reduce(
+      (maxValue, current) =>
+        (current.propertyValue > maxValue.propertyValue ? current : maxValue),
+      { propertyValue: 0 },
+    );
+
+    return { min, max };
+  }
+
   getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
     const { borrowers = [] } = this.fetchOne({
       $filters: { _id: loanId },
       borrowers: loanBorrower(),
     });
 
-    const {
-      borrowRatio: borrowRatioMain,
-      propertyValue: propertyValueMain,
-    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+    const lenders = OrganisationService.fetch({
+      $filters: {
+        features: { $in: [ORGANISATION_FEATURES.LENDER] },
+      },
+      lenderRules: lenderRulesFragment(),
+    });
+
+    const lenderRules = lenders
+      .reduce((allRules, org) => [...allRules, org.lenderRules], [])
+      .filter(x => x);
+
+    const mainMaxPropertyValueRange = this.getMaxPropertyValueRange({
+      lenderRules,
       borrowers,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
-
-    const {
-      borrowRatio: borrowRatioSecond,
-      propertyValue: propertyValueSecond,
-    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
+    const secondMaxPropertyValueRange = this.getMaxPropertyValueRange({
+      lenderRules,
       borrowers,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
@@ -427,21 +475,15 @@ export class LoanService extends CollectionService {
       loanId,
       object: {
         maxSolvency: {
-          main: {
-            propertyValue: propertyValueMain,
-            borrowRatio: borrowRatioMain,
-          },
-          second: {
-            propertyValue: propertyValueSecond,
-            borrowRatio: borrowRatioSecond,
-          },
+          main: mainMaxPropertyValueRange,
+          second: secondMaxPropertyValueRange,
           canton,
           date: new Date(),
         },
       },
     });
 
-    return Promise.resolve('test');
+    return Promise.resolve();
   }
 }
 
