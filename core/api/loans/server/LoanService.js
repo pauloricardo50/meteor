@@ -418,7 +418,7 @@ export class LoanService extends CollectionService {
           residenceType,
           canton,
         });
-        if (propertyValue > 0) {
+        if (propertyValue > 0 && borrowRatio > 0) {
           return { borrowRatio, propertyValue };
         }
 

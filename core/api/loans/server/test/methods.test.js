@@ -40,12 +40,14 @@ const generateOrganisationsWithLenderRules = ({
       .fill()
       .map((_, x) => x),
   ].forEach((index) => {
-    const main = Math.round((Math.random() * (maxMainBorrowRatio - minMainBorrowRatio)
-          + minMainBorrowRatio)
-          * 100) / 100;
-    const secondary = Math.round((Math.random() * (maxSecondaryBorrowRatio - minSecondaryBorrowRatio)
-          + minSecondaryBorrowRatio)
-          * 100) / 100;
+    const mainRange = maxMainBorrowRatio - minMainBorrowRatio;
+    const mainStep = mainRange / (number - 1);
+    const secondaryRange = maxSecondaryBorrowRatio - minSecondaryBorrowRatio;
+    const secondaryStep = secondaryRange / (number - 1);
+
+    const main = minMainBorrowRatio + (index * mainStep);
+    const secondary = minSecondaryBorrowRatio + (index * secondaryStep);
+
     organisations = [
       ...organisations,
       {
@@ -54,6 +56,7 @@ const generateOrganisationsWithLenderRules = ({
         type: ORGANISATION_TYPES.BANK,
         features: [ORGANISATION_FEATURES.LENDER],
         lenderRules: [
+          {_factory: 'lenderRulesAll'},
           { _factory: 'lenderRulesMain', maxBorrowRatio: main },
           { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary },
         ],
@@ -105,7 +108,7 @@ describe('Loan methods', () => {
     });
   });
 
-  describe.only('getMaxPropertyValueWithoutBorrowRatio', function() {
+  describe.only('getMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
     beforeEach(() => {
       resetDatabase();
@@ -135,19 +138,9 @@ describe('Loan methods', () => {
         organisations: [
           ...generateOrganisationsWithLenderRules({
             number: 5,
-            mainBorrowRatio: { min: 0.5, max: 0.9 },
-            secondaryBorrowRatio: { min: 0.3, max: 0.7 },
+            mainBorrowRatio: { min: 0.65, max: 0.9 },
+            secondaryBorrowRatio: { min: 0.5, max: 0.7 },
           }),
-          {
-            _factory: 'organisation',
-            name: 'zero borrow ratio',
-            type: ORGANISATION_TYPES.BANK,
-            features: [ORGANISATION_FEATURES.LENDER],
-            lenderRules: [
-              { _factory: 'lenderRulesMain', maxBorrowRatio: 0 },
-              { _factory: 'lenderRulesSecondary', maxBorrowRatio: 0 },
-            ],
-          },
           {
             _factory: 'organisation',
             name: 'no lender rules',
@@ -169,11 +162,14 @@ describe('Loan methods', () => {
 
           expect(canton).to.equal('GE');
           expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
-          // expect(main.min.propertyValue).to.equal(2378000);
-          expect(main.min.borrowRatio).to.be.within(0.5, 0.9);
-          expect(main.max.borrowRatio).to.be.within(0.5, 0.9);
-          // expect(second.propertyValue).to.equal(1977000);
-          expect(second.borrowRatio).to.equal(0.8);
+          expect(main.min.borrowRatio).to.equal(0.65);
+          expect(main.min.propertyValue).to.equal(1496000);
+          expect(main.max.borrowRatio).to.equal(0.8713);
+          expect(main.max.propertyValue).to.equal(3278000);
+          expect(second.min.borrowRatio).to.equal(0.65);
+          expect(second.min.propertyValue).to.equal(1244000);
+          expect(second.max.borrowRatio).to.equal(0.7);
+          expect(second.max.propertyValue).to.equal(1420000);
         });
     });
   });
