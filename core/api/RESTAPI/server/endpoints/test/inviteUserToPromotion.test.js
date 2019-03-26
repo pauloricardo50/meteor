@@ -162,7 +162,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 500,
-          message: 'Match error: Expected Array in field promotionIds',
+          message: '[promotionIds cannot be empty]',
         },
       });
     });

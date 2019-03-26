@@ -1,4 +1,6 @@
-import { Match } from 'meteor/check';
+import { check, Match } from 'meteor/check';
+import { Meteor } from 'meteor/meteor';
+
 import { Method } from '../methods/methods';
 
 export const doesUserExist = new Method({
@@ -119,8 +121,22 @@ export const proInviteUser = new Method({
   name: 'proInviteUser',
   params: {
     user: Object,
-    propertyIds: Match.Maybe(Array),
-    promotionIds: Match.Maybe(Array),
+    propertyIds: Match.Maybe(Match.Where((x) => {
+      check(x, [String]);
+      if (x && x.length === 0) {
+        throw new Meteor.Error('propertyIds cannot be empty');
+      }
+
+      return true;
+    })),
+    promotionIds: Match.Maybe(Match.Where((x) => {
+      check(x, [String]);
+      if (x && x.length === 0) {
+        throw new Meteor.Error('promotionIds cannot be empty');
+      }
+
+      return true;
+    })),
     property: Match.Maybe(Object),
   },
 });
