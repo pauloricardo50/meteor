@@ -30,7 +30,7 @@ export default compose(
       event.preventDefault();
       event.stopPropagation();
       userSearch
-        .clone({ searchQuery, roles: [ROLES.PRO] })
+        .clone({ searchQuery, roles: [ROLES.PRO, ROLES.ADMIN, ROLES.DEV] })
         .fetch((err, users) => {
           if (err) {
             throw err;
