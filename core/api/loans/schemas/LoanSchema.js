@@ -121,11 +121,19 @@ const LoanSchema = new SimpleSchema({
   'maxSolvency.canton': { type: String, allowedValues: Object.keys(CANTONS) },
   'maxSolvency.date': Date,
   'maxSolvency.main': Object,
-  'maxSolvency.main.propertyValue': moneyField,
-  'maxSolvency.main.borrowRatio': percentageField,
+  'maxSolvency.main.min': Object,
+  'maxSolvency.main.min.propertyValue': moneyField,
+  'maxSolvency.main.min.borrowRatio': percentageField,
+  'maxSolvency.main.max': Object,
+  'maxSolvency.main.max.propertyValue': moneyField,
+  'maxSolvency.main.max.borrowRatio': percentageField,
   'maxSolvency.second': Object,
-  'maxSolvency.second.propertyValue': moneyField,
-  'maxSolvency.second.borrowRatio': percentageField,
+  'maxSolvency.second.min': Object,
+  'maxSolvency.second.min.propertyValue': moneyField,
+  'maxSolvency.second.min.borrowRatio': percentageField,
+  'maxSolvency.second.max': Object,
+  'maxSolvency.second.max.propertyValue': moneyField,
+  'maxSolvency.second.max.borrowRatio': percentageField,
 });
 
 export default LoanSchema;
