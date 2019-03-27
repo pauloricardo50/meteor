@@ -75,6 +75,12 @@ export const flattenObject = (object, delimiter) => {
   return flattened;
 };
 
+export const getUserOrganisationName = ({ user }) => {
+  const { organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName;
+};
+
 export const getUserNameAndOrganisation = ({ user }) => {
   const { name, organisations = [] } = user;
   const organisationName = !!organisations.length && organisations[0].name;
