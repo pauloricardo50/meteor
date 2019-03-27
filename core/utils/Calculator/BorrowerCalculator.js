@@ -331,6 +331,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
       return getPercent(a);
     }
 
+    borrowerInfoPercent({ borrowers }) {
+      const a = [];
+      arrayify(borrowers).forEach((b) => {
+        const personalFormArray = getBorrowerInfoArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(personalFormArray, b, a);
+      });
+
+      return getPercent(a);
+    }
+
+    borrowerFinancePercent({ borrowers }) {
+      const a = [];
+      arrayify(borrowers).forEach((b) => {
+        const financeFormArray = getBorrowerFinanceArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(financeFormArray, b, a);
+      });
+
+      return getPercent(a);
+    }
+
     sumValues({ borrowers, keys }) {
       return arrayify(keys).reduce(
         (total, key) =>
