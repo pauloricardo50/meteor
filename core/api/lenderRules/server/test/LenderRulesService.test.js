@@ -8,7 +8,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import LenderRulesService from '../LenderRulesService';
 
-describe('LenderRulesService', () => {
+describe.only('LenderRulesService', () => {
   let organisationId;
   let lenderRulesId;
 
@@ -85,6 +85,18 @@ describe('LenderRulesService', () => {
       const lenderRules = LenderRulesService.get(lenderRulesId);
 
       expect(jsonLogic.apply(lenderRules.filter, { a: 3 })).to.equal(true);
+    });
+  });
+
+  describe('setOrder', () => {
+    it('changes the order of all rules', () => {
+      const id1 = Factory.create('lenderRules')._id;
+      const id2 = Factory.create('lenderRules')._id;
+
+      LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } });
+
+      expect(LenderRulesService.get(id1).order).to.equal(2);
+      expect(LenderRulesService.get(id2).order).to.equal(3);
     });
   });
 });
