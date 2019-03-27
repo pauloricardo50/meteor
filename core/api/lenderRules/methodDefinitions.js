@@ -44,6 +44,6 @@ export const lenderRulesUpdateFilter = new Method({
 export const setLenderRulesOrder = new Method({
   name: 'setLenderRulesOrder',
   params: {
-    order: Object,
+    orders: Object,
   },
 });

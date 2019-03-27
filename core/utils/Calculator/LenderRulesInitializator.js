@@ -16,21 +16,23 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
         return;
       }
 
+      const sortedlenderRules = lenderRules.sort(({ order: orderA }, { order: orderB }) => orderA - orderB);
+
       // Store the rules for retrieval later
-      this.lenderRules = lenderRules;
+      this.lenderRules = sortedlenderRules;
       this.ruleOrigin = {};
 
       const primaryRules = this.getPrimaryLenderRules({
         loan,
         structureId,
-        lenderRules,
+        lenderRules: sortedlenderRules,
       });
       this.applyRules(primaryRules);
 
       const secondaryRules = this.getSecondaryLenderRules({
         loan,
         structureId,
-        lenderRules,
+        lenderRules: sortedlenderRules,
       });
       this.applyRules(secondaryRules);
 
