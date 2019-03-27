@@ -26,11 +26,11 @@ const userToInvite = {
 };
 
 const api = new RESTAPI();
-api.addEndpoint('/inviteUserToPromotion', 'POST', inviteUserToPromotion);
+api.addEndpoint('/promotions/inviteCustomer', 'POST', inviteUserToPromotion);
 
 const inviteUser = ({ userData, expectedResponse, status, id }) =>
   fetchAndCheckResponse({
-    url: '/inviteUserToPromotion',
+    url: '/promotions/inviteCustomer',
     data: {
       method: 'POST',
       headers: makeHeaders({ publicKey: keyPair.publicKey }),
@@ -162,7 +162,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         expectedResponse: {
           status: 500,
-          message: 'Match error: Expected Array in field promotionIds',
+          message: '[promotionIds cannot be empty]',
         },
       });
     });

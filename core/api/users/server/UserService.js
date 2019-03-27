@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
-import { Random } from 'meteor/random';
 import NodeRSA from 'node-rsa';
 
 import { EMAIL_IDS } from '../../email/emailConstants';

@@ -191,6 +191,10 @@ export class PromotionService extends CollectionService {
   }
 
   setUserPermissions({ promotionId, userId, permissions }) {
+    console.log('setUserPermissions:');
+    console.log('permissions:', permissions);
+    console.log('userId:', userId);
+    console.log('promotionId:', promotionId);
     return Promotions.update(
       { _id: promotionId, 'userLinks._id': userId },
       { $set: { 'userLinks.$.permissions': permissions } },
