@@ -5,7 +5,7 @@ import T from 'core/components/Translation';
 
 const AboutPageTeamRecruiting = () => (
   <Link to="/careers" className="about-page-team-recruiting">
-    <span className="about-page-team-member-image">+</span>
+    <span className="about-page-team-member-image plus" />
     <div className="about-page-team-member-info">
       <h4>
         <T id="AboutPageTeamRecruiting.title" />
