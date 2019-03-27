@@ -6,14 +6,16 @@ import {
   makeFeedback,
   FEEDBACK_OPTIONS,
 } from 'core/components/OfferList/feedbackHelpers';
-import { Calculator } from 'core/utils/Calculator';
+import Calculator, {
+  Calculator as CalculatorClass,
+} from 'core/utils/Calculator';
 import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
 import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
 import OfferService from '../../offers/server/OfferService';
 import {
   adminLoan,
-  loanBorrower,
   lenderRules as lenderRulesFragment,
+  userLoan,
 } from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
@@ -405,11 +407,20 @@ export class LoanService extends CollectionService {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
   }
 
-  getMaxPropertyValueRange({ lenderRules, borrowers, residenceType, canton }) {
+  getMaxPropertyValueRange({ lenderRules, loan, residenceType, canton }) {
+    const { borrowers = [] } = loan;
+    const loanObject = Calculator.createLoanObject({
+      residenceType,
+      borrowers,
+      canton,
+    });
     const maxPropertyValues = lenderRules
       .map((rules) => {
-        const calculator = new Calculator({});
-        calculator.lenderRules = rules;
+        const calculator = new CalculatorClass({
+          loan: loanObject,
+          lenderRules: rules,
+        });
+
         const {
           borrowRatio,
           propertyValue,
@@ -442,10 +453,7 @@ export class LoanService extends CollectionService {
   }
 
   getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const { borrowers = [] } = this.fetchOne({
-      $filters: { _id: loanId },
-      borrowers: loanBorrower(),
-    });
+    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
 
     const lenders = OrganisationService.fetch({
       $filters: {
@@ -460,13 +468,13 @@ export class LoanService extends CollectionService {
 
     const mainMaxPropertyValueRange = this.getMaxPropertyValueRange({
       lenderRules,
-      borrowers,
+      loan,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
     const secondMaxPropertyValueRange = this.getMaxPropertyValueRange({
       lenderRules,
-      borrowers,
+      loan,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
     });
