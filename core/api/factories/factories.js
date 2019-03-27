@@ -152,6 +152,7 @@ Factory.define('contact', Contacts, {
 
 Factory.define('lenderRules', LenderRules, {
   filter: {},
+  order: 0,
 });
 
 Factory.define('revenues', Revenues, {

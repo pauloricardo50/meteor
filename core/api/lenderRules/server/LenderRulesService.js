@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
+import OrganisationService from '../../organisations/server/OrganisationService';
 import LenderRules from '../lenderRules';
 import CollectionService from '../../helpers/CollectionService';
 import {
@@ -38,9 +39,15 @@ class LenderRulesService extends CollectionService {
   }
 
   insert({ organisationId, object = {}, logicRules }) {
+    const { lenderRules = [] } = OrganisationService.fetchOne({
+      $filters: { _id: organisationId },
+      lenderRules: { _id: 1 },
+    });
+
     const lenderRulesId = super.insert({
       ...object,
       filter: { and: logicRules },
+      order: lenderRules.length,
     });
 
     this.addLink({
@@ -64,6 +71,13 @@ class LenderRulesService extends CollectionService {
     return this._update({
       id: lenderRulesId,
       object: { filter: { and: logicRules }, name },
+    });
+  }
+
+  setOrder({ orders }) {
+    Object.keys(orders).forEach((lenderRulesId) => {
+      const nextOrder = orders[lenderRulesId];
+      this.update({ lenderRulesId, object: { order: nextOrder } });
     });
   }
 }

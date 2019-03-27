@@ -14,7 +14,7 @@ describe('LenderRulesService', () => {
 
   beforeEach(() => {
     resetDatabase();
-    organisationId = Factory.create('organisation');
+    organisationId = Factory.create('organisation')._id;
     // Insert a document here, to avoid cases where all documents in a collection are changed
     Factory.create('lenderRules');
   });
@@ -44,6 +44,23 @@ describe('LenderRulesService', () => {
       });
 
       expect(name).to.not.equal(undefined);
+    });
+
+    it('sets the order of the lenderRules', () => {
+      const rulesId1 = LenderRulesService.insert({ organisationId });
+      const rulesId2 = LenderRulesService.insert({ organisationId });
+
+      const { order: order1 } = LenderRulesService.fetchOne({
+        $filters: { _id: rulesId1 },
+        order: 1,
+      });
+      const { order: order2 } = LenderRulesService.fetchOne({
+        $filters: { _id: rulesId2 },
+        order: 1,
+      });
+
+      expect(order1).to.equal(0);
+      expect(order2).to.equal(1);
     });
   });
 
