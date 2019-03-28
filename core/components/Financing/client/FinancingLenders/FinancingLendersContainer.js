@@ -8,7 +8,7 @@ import adminOrganisations from '../../../../api/organisations/queries/adminOrgan
 export default compose(
   withSmartQuery({
     query: adminOrganisations,
-    queryParams: {
+    params: {
       features: ORGANISATION_FEATURES.LENDER,
       $body: {
         lenderRules: lenderRules(),
