@@ -10,6 +10,10 @@
   .tab-content {
     padding-top: 32px;
   }
+
+  .borrower-tab-labels {
+    white-space: nowrap;
+  }
 }
 
 .borrower-finance-page {
@@ -95,10 +99,6 @@
 
       background: $primary;
     }
-  }
-
-  .borrower-tab-labels {
-    white-space: nowrap;
   }
 }
 
