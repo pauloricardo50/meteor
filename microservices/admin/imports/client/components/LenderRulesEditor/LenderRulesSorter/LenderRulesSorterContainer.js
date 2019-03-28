@@ -35,11 +35,7 @@ export default compose(
       };
     },
   }),
-  withProps(({ orders }) => {
-    console.log('orders:', orders);
-
-    return {
-      saveOrder: () => setLenderRulesOrder.run({ orders }),
-    };
-  }),
+  withProps(({ orders }) => ({
+    saveOrder: () => setLenderRulesOrder.run({ orders }),
+  })),
 );
