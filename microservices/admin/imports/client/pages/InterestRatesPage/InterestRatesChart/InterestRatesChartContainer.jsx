@@ -8,6 +8,12 @@ import colors from 'core/config/colors';
 
 const roundAndFormat = rate => Math.round(100000 * rate) / 1000;
 
+const DEFAULT_DISABLED_LINES = [
+  INTEREST_RATES.YEARS_1,
+  INTEREST_RATES.YEARS_2,
+  INTEREST_RATES.YEARS_20,
+];
+
 const getAverageRate = (rate) => {
   if (!rate || !rate.rateLow || !rate.rateHigh) {
     return null;
@@ -93,6 +99,7 @@ const getAllRatesOfTypeLines = ({ rates, type }) =>
         lineColor: colors.interestRates[type],
         symbol: 'circle',
       },
+      visible: !DEFAULT_DISABLED_LINES.includes(type),
     },
     {
       name: formatMessage(`InterestsChart.${type}.range`),

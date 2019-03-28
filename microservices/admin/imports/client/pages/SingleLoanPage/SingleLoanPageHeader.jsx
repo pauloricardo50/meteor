@@ -13,6 +13,7 @@ import {
   LOAN_STATUS,
 } from 'core/api/constants';
 import { sendNegativeFeedbackToAllLenders } from 'core/api';
+import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import GetLoanPDF from '../../components/GetLoanPDF/GetLoanPDF';
 
 type SingleLoanPageHeaderProps = {};
@@ -64,63 +65,68 @@ const additionalActions = loan => (status, prevStatus) => {
   return Promise.resolve();
 };
 
-const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => (
-  <div className="single-loan-page-header">
-    <div className="left">
-      <h1>
-        <T
-          id="SingleLoanPageHeader.title"
-          values={{
-            name: loan.name || <T id="general.mortgageLoan" />,
-            value: (
-              <IntlNumber
-                value={Calculator.selectLoanValue({ loan })}
-                format="money"
-              />
-            ),
-          }}
-        />
-        {loan.user ? (
-          <Link to={`/users/${loan.user._id}`}>
+const SingleLoanPageHeader = ({ loan }: SingleLoanPageHeaderProps) => {
+  const { user } = loan;
+
+  return (
+    <div className="single-loan-page-header">
+      <div className="left">
+        <h1>
+          <ImpersonateLink user={user} className="impersonate-link" />
+          <T
+            id="SingleLoanPageHeader.title"
+            values={{
+              name: loan.name || <T id="general.mortgageLoan" />,
+              value: (
+                <IntlNumber
+                  value={Calculator.selectLoanValue({ loan })}
+                  format="money"
+                />
+              ),
+            }}
+          />
+          {loan.user ? (
+            <Link to={`/users/${loan.user._id}`}>
+              <small className="secondary">
+                {' - '}
+                {loan.user.name}
+                {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+              </small>
+            </Link>
+          ) : (
             <small className="secondary">
               {' - '}
-              {loan.user.name}
-              {loan.user.phoneNumbers && `, ${loan.user.phoneNumbers}`}
+              Pas d'utilisateur
             </small>
-          </Link>
-        ) : (
-          <small className="secondary">
-            {' - '}
-            Pas d'utilisateur
-          </small>
-        )}
+          )}
 
-        <StatusLabel
-          collection={LOANS_COLLECTION}
-          status={loan.status}
-          allowModify
-          docId={loan._id}
-          additionalActions={additionalActions(loan)}
-        />
-      </h1>
-      {loan.customName && !loan.hasPromotion && (
-        <h3 className="secondary" style={{ marginTop: 0 }}>
-          {loan.customName}
-        </h3>
-      )}
-      {loan.hasPromotion && (
-        <CollectionIconLink
-          relatedDoc={{
-            ...loan.promotions[0],
-            collection: PROMOTIONS_COLLECTION,
-          }}
-        />
-      )}
+          <StatusLabel
+            collection={LOANS_COLLECTION}
+            status={loan.status}
+            allowModify
+            docId={loan._id}
+            additionalActions={additionalActions(loan)}
+          />
+        </h1>
+        {loan.customName && !loan.hasPromotion && (
+          <h3 className="secondary" style={{ marginTop: 0 }}>
+            {loan.customName}
+          </h3>
+        )}
+        {loan.hasPromotion && (
+          <CollectionIconLink
+            relatedDoc={{
+              ...loan.promotions[0],
+              collection: PROMOTIONS_COLLECTION,
+            }}
+          />
+        )}
+      </div>
+      <div className="right">
+        <GetLoanPDF loan={loan} />
+      </div>
     </div>
-    <div className="right">
-      <GetLoanPDF loan={loan} />
-    </div>
-  </div>
-);
+  );
+};
 
 export default SingleLoanPageHeader;

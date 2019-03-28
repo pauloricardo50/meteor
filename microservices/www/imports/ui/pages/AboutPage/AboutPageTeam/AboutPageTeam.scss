@@ -113,9 +113,8 @@
   }
 
   .about-page-team-member-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+    display: inline-block;
 
     box-sizing: border-box;
 
@@ -123,7 +122,30 @@
 
     border: 2px solid $border-grey;
 
-    font-size: 4em;
+    font-size: 2em;
+  }
+
+  .about-page-team-member-image:before,
+  .about-page-team-member-image:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .plus:before,
+  .plus:after {
+    background: black;
+  }
+  .plus:before {
+    width: 4px;
+    margin: 30px auto;
+  }
+  .plus:after {
+    height: 4px;
+    margin: auto 30px;
   }
 
   .hover-show {

@@ -6,7 +6,7 @@
 
 .single-loan-page {
   .single-loan-page-tasks {
-    margin: 16px 0;
+    margin-bottom: 16px;
   }
 
   .google-map {
@@ -68,6 +68,10 @@
         margin-right: 8px;
         padding: 8px;
       }
+    }
+
+    .impersonate-link {
+      margin-right: 8px;
     }
   }
 }

@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
-import T from 'core/components/Translation';
+import T, { Percent } from 'core/components/Translation';
 import withMatchParam from 'core/containers/withMatchParam';
 import Page from 'core/components/Page';
+import Calculator from 'core/utils/Calculator';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import Info from './Info';
 import Finance from './Finance';
@@ -15,8 +16,16 @@ import BorrowersPageNextTab from './BorrowersPageNextTab';
 const getTabs = (props) => {
   const { loan } = props;
   return [
-    { id: 'personal', content: <Info {...props} /> },
-    { id: 'finance', content: <Finance {...props} /> },
+    {
+      id: 'personal',
+      content: <Info {...props} />,
+      percent: Calculator.borrowerInfoPercent({ loan }),
+    },
+    {
+      id: 'finance',
+      content: <Finance {...props} />,
+      percent: Calculator.borrowerFinancePercent({ loan }),
+    },
   ].map(tab => ({
     ...tab,
     content: (
@@ -25,7 +34,13 @@ const getTabs = (props) => {
         {tab.content}
       </React.Fragment>
     ),
-    label: <T id={`BorrowersPage.${tab.id}`} noTooltips />,
+    label: (
+      <span className="borrower-tab-labels">
+        <T id={`BorrowersPage.${tab.id}`} noTooltips />
+        &nbsp; &bull; &nbsp;
+        <Percent value={tab.percent} rounded />
+      </span>
+    ),
     to: `/loans/${loan._id}/borrowers/${tab.id}`,
   }));
 };
@@ -63,7 +78,7 @@ BorrowersPage.propTypes = {
 };
 
 BorrowersPage.defaultProps = {
-  tabId: 'personal'
-}
+  tabId: 'personal',
+};
 
 export default withMatchParam('tabId')(BorrowersPage);
