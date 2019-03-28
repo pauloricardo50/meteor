@@ -51,7 +51,11 @@ export default class CronitorService {
         urlObj.qs = {};
       }
 
-      urlObj.qs.msg = JSON.stringify(msg);
+      if (msg.sanitizedError) {
+        urlObj.qs.msg = JSON.stringify(msg.sanitizedError.message);
+      } else {
+        urlObj.qs.msg = JSON.stringify(msg);
+      }
     }
     const url = this.buildUrl({ urlObj });
     return this.getWithTimeout({ url });
