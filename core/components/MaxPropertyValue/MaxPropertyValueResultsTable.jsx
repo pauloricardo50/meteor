@@ -27,7 +27,12 @@ const MaxPropertyValueResultsTable = ({
         <td>
           <h4 className="secondary">Hypothèque</h4>
         </td>
-        <MoneyRange min={minLoan} max={maxLoan} />
+        <MoneyRange
+          min={minLoan}
+          minRatio={minBorrowRatio}
+          max={maxLoan}
+          maxRatio={maxBorrowRatio}
+        />
       </tr>
       <tr>
         <td>
