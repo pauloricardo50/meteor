@@ -75,6 +75,27 @@ class LenderRulesService extends CollectionService {
   }
 
   setOrder({ orders }) {
+    const ids = Object.keys(orders);
+    const numbers = Object.values(orders).sort((a, b) => a - b);
+
+    const lenderRules = this.fetch({
+      $filters: { _id: { $in: ids } },
+      organisation: { _id: 1 },
+      organisationLink: 1,
+    });
+
+    lenderRules.forEach(({ organisation: { _id } }) => {
+      if (_id !== lenderRules[0].organisation._id) {
+        throw new Meteor.Error('Tous les filtres doivent appartenir à la même organisation');
+      }
+    });
+
+    numbers.forEach((num, index) => {
+      if (index !== num) {
+        throw new Meteor.Error("L'ordre des filtres doit commencer par 0 et être continu");
+      }
+    });
+
     Object.keys(orders).forEach((lenderRulesId) => {
       const nextOrder = orders[lenderRulesId];
       this.update({ lenderRulesId, object: { order: nextOrder } });

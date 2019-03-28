@@ -8,7 +8,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import LenderRulesService from '../LenderRulesService';
 
-describe('LenderRulesService', () => {
+describe.only('LenderRulesService', () => {
   let organisationId;
   let lenderRulesId;
 
@@ -90,13 +90,43 @@ describe('LenderRulesService', () => {
 
   describe('setOrder', () => {
     it('changes the order of all rules', () => {
-      const id1 = Factory.create('lenderRules')._id;
-      const id2 = Factory.create('lenderRules')._id;
+      const id1 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+      const id2 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
 
-      LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } });
+      LenderRulesService.setOrder({ orders: { [id1]: 1, [id2]: 0 } });
 
-      expect(LenderRulesService.get(id1).order).to.equal(2);
-      expect(LenderRulesService.get(id2).order).to.equal(3);
+      expect(LenderRulesService.get(id1).order).to.equal(1);
+      expect(LenderRulesService.get(id2).order).to.equal(0);
+    });
+
+    it('throws if you try to set an invalid order', () => {
+      const id1 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+      const id2 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+
+      expect(() =>
+        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } })).to.throw('ordre des filtres');
+    });
+
+    it("throws if lenderRules don't belong to the same org", () => {
+      const organisationId2 = Factory.create('organisation')._id;
+
+      const id1 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+      const id2 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId2,
+      })._id;
+
+      expect(() =>
+        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } })).to.throw('même organisation');
     });
   });
 });
