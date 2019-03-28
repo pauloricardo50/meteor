@@ -244,7 +244,6 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
 
       this.ownFundsRoundingAmount = OWN_FUNDS_ROUNDING_AMOUNT;
 
-      console.log('getMaxPropertyValue iterations:', iterations);
       return minBound;
     }
 
@@ -400,7 +399,6 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
           canton,
         });
 
-      console.log('iterations:', iterations);
       return {
         borrowRatio: finalBorrowRatio,
         propertyValue: finalPropertyValue,

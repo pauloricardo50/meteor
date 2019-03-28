@@ -10,6 +10,9 @@ import {
   STEPS,
   TASK_STATUS,
   TASK_TYPE,
+  DEFAULT_VALUE_FOR_ALL,
+  DEFAULT_MAIN_RESIDENCE_RULES,
+  DEFAULT_SECONDARY_RESIDENCE_RULES,
 } from '../constants';
 import {
   Borrowers,
@@ -157,4 +160,19 @@ Factory.define('lenderRules', LenderRules, {
 Factory.define('revenues', Revenues, {
   amount: 1000,
   type: REVENUE_TYPES.MORTGAGE,
+});
+
+Factory.define('lenderRulesAll', LenderRules, {
+  ...DEFAULT_VALUE_FOR_ALL,
+  filter: { and: [true] },
+});
+
+Factory.define('lenderRulesMain', LenderRules, {
+  maxBorrowRatio: 0.8,
+  filter: { and: DEFAULT_MAIN_RESIDENCE_RULES },
+});
+
+Factory.define('lenderRulesSecondary', LenderRules, {
+  maxBorrowRatio: 0.7,
+  filter: { and: DEFAULT_SECONDARY_RESIDENCE_RULES },
 });

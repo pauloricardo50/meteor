@@ -228,7 +228,7 @@ export const loan = () => ({
   updatedAt: 1,
   userId: 1,
   verificationStatus: 1,
-  maxSolvency: 1,
+  maxPropertyValue: 1,
 });
 
 export const loanBase = () => ({
@@ -316,7 +316,7 @@ export const proLoans = () => ({
   properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
   revenues: fullRevenues(),
   structure: 1,
-  maxSolvency: 1,
+  maxPropertyValue: 1,
   residenceType: 1,
 });
 

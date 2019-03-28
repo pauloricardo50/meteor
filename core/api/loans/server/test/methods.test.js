@@ -5,8 +5,8 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import generator from 'core/api/factories/index';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+import generator from '../../../factories';
+import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../../../constants';
 import TaskService from '../../../tasks/server/TaskService';
 import SecurityService from '../../../security';
 import { generateData } from '../../../../utils/testHelpers';
@@ -15,10 +15,51 @@ import {
   getMaxPropertyValueWithoutBorrowRatio,
 } from '../../methodDefinitions';
 import LoanService from '../LoanService';
-import { CANTONS } from '../../loanConstants';
 
 let userId;
 let adminId;
+
+const generateOrganisationsWithLenderRules = ({
+  number,
+  mainBorrowRatio,
+  secondaryBorrowRatio,
+}) => {
+  const { min: minMainBorrowRatio, max: maxMainBorrowRatio } = mainBorrowRatio;
+  const {
+    min: minSecondaryBorrowRatio,
+    max: maxSecondaryBorrowRatio,
+  } = secondaryBorrowRatio;
+  let organisations = [];
+  Array(number)
+    .fill()
+    .map((_, x) => x)
+    .forEach((index) => {
+      const mainRange = maxMainBorrowRatio - minMainBorrowRatio;
+      const mainStep = mainRange / (number - 1);
+      const secondaryRange = maxSecondaryBorrowRatio - minSecondaryBorrowRatio;
+      const secondaryStep = secondaryRange / (number - 1);
+
+      const main = minMainBorrowRatio + index * mainStep;
+      const secondary = minSecondaryBorrowRatio + index * secondaryStep;
+
+      organisations = [
+        ...organisations,
+        {
+          _factory: 'organisation',
+          name: `org${index}`,
+          type: ORGANISATION_TYPES.BANK,
+          features: [ORGANISATION_FEATURES.LENDER],
+          lenderRules: [
+            { _factory: 'lenderRulesAll' },
+            { _factory: 'lenderRulesMain', maxBorrowRatio: main },
+            { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary },
+          ],
+        },
+      ];
+    });
+
+  return organisations;
+};
 
 describe('Loan methods', () => {
   beforeEach(() => {
@@ -61,7 +102,8 @@ describe('Loan methods', () => {
     });
   });
 
-  describe('getMaxPropertyValueWithoutBorrowRatio', () => {
+  describe('getMaxPropertyValueWithoutBorrowRatio', function () {
+    this.timeout(10000);
     beforeEach(() => {
       resetDatabase();
       sinon
@@ -87,24 +129,41 @@ describe('Loan methods', () => {
             },
           ],
         },
+        organisations: [
+          ...generateOrganisationsWithLenderRules({
+            number: 5,
+            mainBorrowRatio: { min: 0.65, max: 0.9 },
+            secondaryBorrowRatio: { min: 0.5, max: 0.7 },
+          }),
+          {
+            _factory: 'organisation',
+            name: 'no lender rules',
+            type: ORGANISATION_TYPES.BANK,
+            features: [ORGANISATION_FEATURES.LENDER],
+          },
+        ],
       });
 
       return getMaxPropertyValueWithoutBorrowRatio
         .run({ loanId: 'loanId', canton: 'GE' })
         .then(() => {
           const {
-            maxSolvency: { canton, date, main, second },
+            maxPropertyValue: { canton, date, main, second },
           } = LoanService.fetchOne({
             $filters: { _id: 'loanId' },
-            maxSolvency: 1,
+            maxPropertyValue: 1,
           });
 
           expect(canton).to.equal('GE');
           expect(moment(date).format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
-          expect(main.propertyValue).to.equal(2378000);
-          expect(main.borrowRatio).to.equal(0.8);
-          expect(second.propertyValue).to.equal(1977000);
-          expect(second.borrowRatio).to.equal(0.8);
+          expect(main.min.borrowRatio).to.equal(0.65);
+          expect(main.min.propertyValue).to.equal(1496000);
+          expect(main.max.borrowRatio).to.equal(0.8713);
+          expect(main.max.propertyValue).to.equal(3278000);
+          expect(second.min.borrowRatio).to.equal(0.65);
+          expect(second.min.propertyValue).to.equal(1244000);
+          expect(second.max.borrowRatio).to.equal(0.7);
+          expect(second.max.propertyValue).to.equal(1420000);
         });
     });
   });

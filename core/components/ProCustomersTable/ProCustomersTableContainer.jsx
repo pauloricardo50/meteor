@@ -29,7 +29,7 @@ const columnOptions = [
   { id: 'email' },
   { id: 'createdAt' },
   { id: 'referredBy' },
-  {id: 'maxSolvency'},
+  { id: 'maxPropertyValue' },
   { id: 'relatedTo' },
   // { id: 'estimatedRevenues' },
 ].map(({ id, label }) => ({
@@ -47,7 +47,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
     relatedTo: relatedDocs = [],
     loanProgress,
     estimatedRevenues,
-    maxSolvency,
+    maxPropertyValue,
     residenceType,
   } = loan;
 
@@ -78,8 +78,20 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
       { raw: createdAt.getTime(), label: moment(createdAt).fromNow() },
       getReferredBy({ user, proUser, isAdmin }),
       {
-        raw: maxSolvency && (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? maxSolvency.second.propertyValue : maxSolvency.main.propertyValue),
-        label: maxSolvency ? (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? <Money value={maxSolvency.second.propertyValue} /> : <Money value={maxSolvency.main.propertyValue} />) : 'Pas encore calculé',
+        raw:
+          maxPropertyValue
+          && (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE
+            ? maxPropertyValue.second.propertyValue
+            : maxPropertyValue.main.propertyValue),
+        label: maxPropertyValue ? (
+          residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? (
+            <Money value={maxPropertyValue.second.max.propertyValue} />
+          ) : (
+            <Money value={maxPropertyValue.main.max.propertyValue} />
+          )
+        ) : (
+          'Pas encore calculé'
+        ),
       },
       {
         raw: relatedDocs.length ? relatedDocs[0]._id : '-',
@@ -107,17 +119,20 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
 const customersTableFilters = {
   filters: {
     status: true,
-    relatedTo: [{collection: true}]
+    relatedTo: [{ collection: true }],
   },
   options: {
-    status: Object.values(LOAN_STATUS).map(id => ({id, label: id})),
-    collection: [PROPERTIES_COLLECTION, PROMOTIONS_COLLECTION].map(id => ({id, label: id})),
+    status: Object.values(LOAN_STATUS).map(id => ({ id, label: id })),
+    collection: [PROPERTIES_COLLECTION, PROMOTIONS_COLLECTION].map(id => ({
+      id,
+      label: id,
+    })),
   },
   labels: {
     status: 'Statut',
-    relatedTo: 'Lien'
-  }
-}
+    relatedTo: 'Lien',
+  },
+};
 
 export default compose(
   mapProps(({ proUser, ...props }) => {
@@ -147,8 +162,7 @@ export default compose(
   }),
   // makeTableFiltersContainer(undefined, 'loans'),
   withProps(({ loans, proUser, isAdmin = false }) => ({
-    rows: loans
-      .map(makeMapLoan({ proUser, isAdmin })),
+    rows: loans.map(makeMapLoan({ proUser, isAdmin })),
     columnOptions,
   })),
 );
