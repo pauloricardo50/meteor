@@ -19,6 +19,7 @@ import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import LaunchValuationButton from './LaunchValuationButton';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
+import ResidenceTypeSetter from './ResidenceTypeSetter';
 
 const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
@@ -30,11 +31,16 @@ const SinglePropertyPage = (props) => {
     history,
     currentUser: { loans },
   } = props;
-  const { borrowers, properties, _id: loanId } = loan;
+  const { borrowers, properties, _id: loanId, residenceType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
-    return <ProProperty property={property} />;
+    return (
+      <>
+        <ResidenceTypeSetter loan={loan} />
+        {residenceType && <ProProperty property={property} />}
+      </>
+    );
   }
 
   if (!property) {
