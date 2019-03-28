@@ -165,15 +165,18 @@ Factory.define('revenues', Revenues, {
 
 Factory.define('lenderRulesAll', LenderRules, {
   ...DEFAULT_VALUE_FOR_ALL,
+  order: 0,
   filter: { and: [true] },
 });
 
 Factory.define('lenderRulesMain', LenderRules, {
   maxBorrowRatio: 0.8,
+  order: 0,
   filter: { and: DEFAULT_MAIN_RESIDENCE_RULES },
 });
 
 Factory.define('lenderRulesSecondary', LenderRules, {
   maxBorrowRatio: 0.7,
+  order: 0,
   filter: { and: DEFAULT_SECONDARY_RESIDENCE_RULES },
 });

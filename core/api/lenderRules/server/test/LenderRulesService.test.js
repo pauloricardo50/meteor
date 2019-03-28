@@ -8,7 +8,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 
 import LenderRulesService from '../LenderRulesService';
 
-describe.only('LenderRulesService', () => {
+describe('LenderRulesService', () => {
   let organisationId;
   let lenderRulesId;
 

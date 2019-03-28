@@ -36,7 +36,7 @@ describe('Irs10yService', () => {
     it('does not insert a rate if it already exists that day', () => {
       const newRate = { date: new Date(), rate: 0.01 };
       Irs10yService.insert(newRate);
-      Irs10yService.insert(newRate);
+      expect(() => Irs10yService.insert(newRate)).to.throw('existe déjà');
 
       const results = Irs10yService.find({}).fetch();
 

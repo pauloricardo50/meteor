@@ -19,9 +19,9 @@ describe('Migration 5', () => {
           type: ORGANISATION_TYPES.BANK,
           features: [ORGANISATION_FEATURES.LENDER],
           lenderRules: [
-            { _factory: 'lenderRulesAll' },
-            { _factory: 'lenderRulesMain', maxBorrowRatio: 0.9 },
-            { _factory: 'lenderRulesSecondary', maxBorrowRatio: 0.7 },
+            { _factory: 'lenderRulesAll', order: 0 },
+            { _factory: 'lenderRulesMain', maxBorrowRatio: 0.9, order: 1 },
+            { _factory: 'lenderRulesSecondary', maxBorrowRatio: 0.7, order: 2 },
           ],
         },
         {
@@ -30,9 +30,9 @@ describe('Migration 5', () => {
           type: ORGANISATION_TYPES.BANK,
           features: [ORGANISATION_FEATURES.LENDER],
           lenderRules: [
-            { _factory: 'lenderRulesAll' },
-            { _factory: 'lenderRulesMain', maxBorrowRatio: 0.7 },
-            { _factory: 'lenderRulesSecondary', maxBorrowRatio: 0.65 },
+            { _factory: 'lenderRulesAll', order: 0 },
+            { _factory: 'lenderRulesMain', maxBorrowRatio: 0.7, order: 1 },
+            { _factory: 'lenderRulesSecondary', maxBorrowRatio: 0.65, order: 2 },
           ],
         },
       ],

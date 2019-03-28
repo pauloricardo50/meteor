@@ -50,9 +50,9 @@ const generateOrganisationsWithLenderRules = ({
           type: ORGANISATION_TYPES.BANK,
           features: [ORGANISATION_FEATURES.LENDER],
           lenderRules: [
-            { _factory: 'lenderRulesAll' },
-            { _factory: 'lenderRulesMain', maxBorrowRatio: main },
-            { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary },
+            { _factory: 'lenderRulesAll', order: 0 },
+            { _factory: 'lenderRulesMain', maxBorrowRatio: main, order: 1 },
+            { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary, order: 2 },
           ],
         },
       ];
