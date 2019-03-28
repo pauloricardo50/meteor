@@ -276,7 +276,7 @@ export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   closingDate: 1,
   lenders: adminLender(),
-  properties: adminProperty(),
+  properties: adminProperty({ withSort }),
   signingDate: 1,
   status: 1,
   revenues: fullRevenues(),
@@ -724,8 +724,8 @@ export const sideNavProperty = () => ({
   zipCode: 1,
 });
 
-export const userProperty = () => ({
-  ...fullProperty(),
+export const userProperty = ({ withSort } = {}) => ({
+  ...fullProperty({ withSort }),
   valuation: userValuation(),
 });
 
@@ -737,8 +737,8 @@ export const proPropertySummary = () => ({
   loans: { _id: 1 },
 });
 
-export const proProperty = () => ({
-  ...fullProperty(),
+export const proProperty = ({ withSort } = {}) => ({
+  ...fullProperty({ withSort }),
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
