@@ -16,7 +16,6 @@ import Loading from '../Loading';
 import T from '../Translation';
 
 const FileTabs = ({ loan, borrowers, properties, disabled, currentUser }) => {
-  console.log('properties:', properties);
   if (!loan.documentsLoaded) {
     return <Loading />;
   }

@@ -2,9 +2,9 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 import { PropertyAdder, PropertyReuser } from 'core/components/PropertyForm';
 import Calculator from 'core/utils/Calculator';
-import { percentFormatters } from 'core/utils/formHelpers';
 import SinglePropertyPage from '../../SinglePropertyPage/SinglePropertyPage';
 
 type PropertiesTabProps = {
@@ -13,8 +13,17 @@ type PropertiesTabProps = {
 
 const propertiesTabLabel = (loan, property, index) => {
   const progress = Calculator.propertyPercent({ loan, property });
-  return `${property.address1
-    || `Bien immo ${index + 1}`} - ${percentFormatters.format(progress)}%`;
+  return (
+    <span className="single-loan-page-tabs-label">
+      {property.address1 || `Bien immo ${index + 1}`}
+      &nbsp;&bull;&nbsp;
+      <PercentWithStatus
+        status={progress < 1 ? null : undefined}
+        value={progress}
+        rounded
+      />
+    </span>
+  );
 };
 
 const PropertiesTab = ({ loan }: PropertiesTabProps) => {

@@ -19,7 +19,11 @@ const SinglePropertyPageTitle = ({
       {title}
       <small>
         &nbsp; - &nbsp;
-        <PercentWithStatus value={progress} status={progress >= 1 && SUCCESS} />
+        <PercentWithStatus
+          value={progress}
+          status={progress >= 1 && SUCCESS}
+          rounded
+        />
       </small>
     </span>
   );
