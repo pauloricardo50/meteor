@@ -411,7 +411,7 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe('getIncomeRatio', () => {
+  describe.only('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
       expect(Calculator.getIncomeRatio({
         loan: {
@@ -425,6 +425,23 @@ describe('LoanCalculator', () => {
         },
         interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
       })).to.be.within(0.33, 0.34);
+    });
+
+    it('returns 1 if the incomeRatio is negative', () => {
+      expect(Calculator.getIncomeRatio({
+        loan: {
+          structure: {
+            wantedLoan: 800000,
+            property: { value: 1000000 },
+            propertyWork: 0,
+            loanTranches: [{ type: INTEREST_RATES.YEARS_10, value: 1 }],
+          },
+          borrowers: [
+            { expenses: [{ value: 10000, description: EXPENSES.LEASING }] },
+          ],
+        },
+        interestRates: { [INTEREST_RATES.YEARS_10]: 0.01 },
+      })).to.equal(1);
     });
   });
 

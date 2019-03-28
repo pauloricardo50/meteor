@@ -203,7 +203,13 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     getIncomeRatio({ loan, structureId }) {
       const cost = this.getTheoreticalMonthly({ loan, structureId });
       const income = this.getTotalIncome({ borrowers: loan.borrowers });
-      return cost / (income / 12);
+      const ratio = cost / (income / 12);
+
+      if (ratio > 1 || ratio < 0) {
+        return 1;
+      }
+
+      return ratio;
     }
 
     getBorrowRatio({ loan, structureId }) {
