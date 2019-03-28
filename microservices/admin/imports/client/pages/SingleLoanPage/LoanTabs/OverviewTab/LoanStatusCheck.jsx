@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
+
 import Calculator from 'core/utils/Calculator';
-import { Percent } from 'core/components/Translation';
+import T, { Percent } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import { PURCHASE_TYPE } from 'core/api/constants';
 
@@ -12,13 +13,14 @@ const statusChecks = [
     label: 'Progrès emprunteurs',
     value: ({ borrowers }) => (
       <div className="borrowers">
-        {borrowers.map(borrower => (
+        {borrowers.map((borrower, index) => (
           <span key={borrower._id}>
-            {borrower.firstName}:{' '}
+            {borrower.firstName || (
+              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+            )}
+            :{' '}
             <Percent
-              value={Calculator.personalInfoPercent({
-                borrowers: borrower,
-              })}
+              value={Calculator.personalInfoPercent({ borrowers: borrower })}
             />
           </span>
         ))}
