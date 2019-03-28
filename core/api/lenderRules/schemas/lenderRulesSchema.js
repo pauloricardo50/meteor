@@ -8,7 +8,6 @@ import {
 } from '../../helpers/sharedSchemas';
 import {
   INCOME_CONSIDERATION_TYPES,
-  REAL_ESTATE_CONSIDERATION_TYPES,
   EXPENSE_TYPES,
 } from '../lenderRulesConstants';
 

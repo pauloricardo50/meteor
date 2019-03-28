@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Tabs from 'core/components/Tabs';
-import T, { Percent } from 'core/components/Translation';
+import T from 'core/components/Translation';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 import withMatchParam from 'core/containers/withMatchParam';
 import Page from 'core/components/Page';
 import Calculator from 'core/utils/Calculator';
@@ -37,8 +38,12 @@ const getTabs = (props) => {
     label: (
       <span className="borrower-tab-labels">
         <T id={`BorrowersPage.${tab.id}`} noTooltips />
-        &nbsp; &bull; &nbsp;
-        <Percent value={tab.percent} rounded />
+        &nbsp;&bull;&nbsp;
+        <PercentWithStatus
+          value={tab.percent}
+          status={tab.percent < 1 ? null : undefined}
+          rounded
+        />
       </span>
     ),
     to: `/loans/${loan._id}/borrowers/${tab.id}`,
