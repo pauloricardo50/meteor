@@ -411,7 +411,7 @@ describe('LoanCalculator', () => {
     });
   });
 
-  describe.only('getIncomeRatio', () => {
+  describe('getIncomeRatio', () => {
     it('compares theoretical monthly cost and income', () => {
       expect(Calculator.getIncomeRatio({
         loan: {
