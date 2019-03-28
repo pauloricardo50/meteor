@@ -5,21 +5,21 @@ import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
 
 import { createRoute } from '../../utils/routerUtils';
 import Button from '../Button';
-import SolvencyCalculatorDialog from './SolvencyCalculatorDialog';
-import { STATE } from './SolvencyCalculatorContainer';
+import MaxPropertyValueDialog from './MaxPropertyValueDialog';
+import { STATE } from './MaxPropertyValueContainer';
 
-type SolvencyCalculatorEmptyStateProps = {
+type MaxPropertyValueEmptyStateProps = {
   loan: Object,
   state: String,
   calculateSolvency: Function,
 };
 
-const SolvencyCalculatorEmptyState = ({
+const MaxPropertyValueEmptyState = ({
   loan,
   state,
   calculateSolvency,
-}: SolvencyCalculatorEmptyStateProps) => (
-  <div className="solvency-calculator-empty-state">
+}: MaxPropertyValueEmptyStateProps) => (
+  <div className="max-property-value-empty-state">
     <FontAwesomeIcon className="icon" icon={faUsers} />
     <div className="flex-col center">
       {state === STATE.MISSING_INFOS ? (
@@ -42,7 +42,7 @@ const SolvencyCalculatorEmptyState = ({
       ) : (
         <>
           <h3>Calculez votre capacité d'achat maximale</h3>
-          <SolvencyCalculatorDialog
+          <MaxPropertyValueDialog
             loan={loan}
             calculateSolvency={calculateSolvency}
             state={state}
@@ -54,4 +54,4 @@ const SolvencyCalculatorEmptyState = ({
   </div>
 );
 
-export default SolvencyCalculatorEmptyState;
+export default MaxPropertyValueEmptyState;

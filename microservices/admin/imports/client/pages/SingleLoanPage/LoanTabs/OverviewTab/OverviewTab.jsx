@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Recap from 'core/components/Recap';
+import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
 import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
@@ -55,6 +56,7 @@ const OverviewTab = (props) => {
         ))}
       </div>
       <LoanStatusCheck loan={loan} />
+      <MaxPropertyValue loan={loan} />
       <Solvency loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">

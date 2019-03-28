@@ -4,10 +4,10 @@ import React from 'react';
 import { RESIDENCE_TYPE } from '../../api/constants';
 import T from '../Translation';
 import Toggle from '../Toggle';
-import SolvencyCalculatorDialog from './SolvencyCalculatorDialog';
-import SolvencyCalculatorResultsTable from './SolvencyCalculatorResultsTable';
+import MaxPropertyValueDialog from './MaxPropertyValueDialog';
+import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 
-type SolvencyCalculatorResultsProps = {
+type MaxPropertyValueResultsProps = {
   loan: Object,
   calculateSolvency: Function,
   state: String,
@@ -15,26 +15,24 @@ type SolvencyCalculatorResultsProps = {
   setResidenceType: Function,
 };
 
-const SolvencyCalculatorResults = ({
+const MaxPropertyValueResults = ({
   loan,
   calculateSolvency,
   state,
   residenceType,
   setResidenceType,
-}: SolvencyCalculatorResultsProps) => {
+}: MaxPropertyValueResultsProps) => {
   const {
-    maxSolvency: { main, second, canton },
+    maxPropertyValue: { main, second, canton },
   } = loan;
 
   return (
-    <div className="solvency-calculator-results">
+    <div className="max-property-value-results">
       <h2>Capacité d'achat maximale</h2>
       <h2>
-        {canton && (
-          <small className="secondary">
-            <T id={`Forms.canton.${canton}`} />
-          </small>
-        )}
+        <small className="secondary">
+          <T id={`Forms.canton.${canton}`} />
+        </small>
       </h2>
       <Toggle
         toggled={residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE}
@@ -46,10 +44,10 @@ const SolvencyCalculatorResults = ({
         labelLeft="Résidence secondaire"
         labelRight="Résidence principale"
       />
-      <SolvencyCalculatorResultsTable
+      <MaxPropertyValueResultsTable
         {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
       />
-      <SolvencyCalculatorDialog
+      <MaxPropertyValueDialog
         loan={loan}
         calculateSolvency={calculateSolvency}
         state={state}
@@ -58,4 +56,4 @@ const SolvencyCalculatorResults = ({
   );
 };
 
-export default SolvencyCalculatorResults;
+export default MaxPropertyValueResults;

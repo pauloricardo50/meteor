@@ -5,12 +5,8 @@ import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import moment from 'moment';
 
-import generator from 'core/api/factories/index';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
-import {
-  ORGANISATION_TYPES,
-  ORGANISATION_FEATURES,
-} from 'core/api/organisations/organisationConstants';
+import generator from '../../../factories';
+import { ORGANISATION_TYPES, ORGANISATION_FEATURES } from '../../../constants';
 import TaskService from '../../../tasks/server/TaskService';
 import SecurityService from '../../../security';
 import { generateData } from '../../../../utils/testHelpers';
@@ -19,7 +15,6 @@ import {
   getMaxPropertyValueWithoutBorrowRatio,
 } from '../../methodDefinitions';
 import LoanService from '../LoanService';
-import { CANTONS } from '../../loanConstants';
 
 let userId;
 let adminId;
@@ -35,34 +30,33 @@ const generateOrganisationsWithLenderRules = ({
     max: maxSecondaryBorrowRatio,
   } = secondaryBorrowRatio;
   let organisations = [];
-  [
-    ...Array(number)
-      .fill()
-      .map((_, x) => x),
-  ].forEach((index) => {
-    const mainRange = maxMainBorrowRatio - minMainBorrowRatio;
-    const mainStep = mainRange / (number - 1);
-    const secondaryRange = maxSecondaryBorrowRatio - minSecondaryBorrowRatio;
-    const secondaryStep = secondaryRange / (number - 1);
+  Array(number)
+    .fill()
+    .map((_, x) => x)
+    .forEach((index) => {
+      const mainRange = maxMainBorrowRatio - minMainBorrowRatio;
+      const mainStep = mainRange / (number - 1);
+      const secondaryRange = maxSecondaryBorrowRatio - minSecondaryBorrowRatio;
+      const secondaryStep = secondaryRange / (number - 1);
 
-    const main = minMainBorrowRatio + index * mainStep;
-    const secondary = minSecondaryBorrowRatio + index * secondaryStep;
+      const main = minMainBorrowRatio + index * mainStep;
+      const secondary = minSecondaryBorrowRatio + index * secondaryStep;
 
-    organisations = [
-      ...organisations,
-      {
-        _factory: 'organisation',
-        name: `org${index}`,
-        type: ORGANISATION_TYPES.BANK,
-        features: [ORGANISATION_FEATURES.LENDER],
-        lenderRules: [
-          { _factory: 'lenderRulesAll' },
-          { _factory: 'lenderRulesMain', maxBorrowRatio: main },
-          { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary },
-        ],
-      },
-    ];
-  });
+      organisations = [
+        ...organisations,
+        {
+          _factory: 'organisation',
+          name: `org${index}`,
+          type: ORGANISATION_TYPES.BANK,
+          features: [ORGANISATION_FEATURES.LENDER],
+          lenderRules: [
+            { _factory: 'lenderRulesAll' },
+            { _factory: 'lenderRulesMain', maxBorrowRatio: main },
+            { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary },
+          ],
+        },
+      ];
+    });
 
   return organisations;
 };
@@ -154,10 +148,10 @@ describe('Loan methods', () => {
         .run({ loanId: 'loanId', canton: 'GE' })
         .then(() => {
           const {
-            maxSolvency: { canton, date, main, second },
+            maxPropertyValue: { canton, date, main, second },
           } = LoanService.fetchOne({
             $filters: { _id: 'loanId' },
-            maxSolvency: 1,
+            maxPropertyValue: 1,
           });
 
           expect(canton).to.equal('GE');

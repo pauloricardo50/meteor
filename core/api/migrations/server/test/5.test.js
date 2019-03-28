@@ -40,7 +40,7 @@ describe('Migration 5', () => {
   });
 
   describe('up', () => {
-    it('adds range on maxSolvency', () => {
+    it('adds range on maxPropertyValue', () => {
       const loanIds = ['loanId1', 'loanId2'];
       generator({
         loans: loanIds.map(_id => ({
@@ -76,15 +76,16 @@ describe('Migration 5', () => {
           const loan1 = Loans.findOne({ _id: 'loanId1' });
           const loan2 = Loans.findOne({ _id: 'loanId2' });
 
-          expect(loan2.maxSolvency).to.equal(undefined);
-          expect(loan1.maxSolvency).to.not.equal(undefined);
-          expect(loan1.maxSolvency.main).to.not.equal(undefined);
-          expect(loan1.maxSolvency.main).to.deep.equal({
+          expect(loan2.maxPropertyValue).to.equal(undefined);
+          expect(loan1.maxSolvency).to.equal(undefined);
+          expect(loan1.maxPropertyValue).to.not.equal(undefined);
+          expect(loan1.maxPropertyValue.main).to.not.equal(undefined);
+          expect(loan1.maxPropertyValue.main).to.deep.equal({
             min: { borrowRatio: 0.7, propertyValue: 1707000 },
             max: { borrowRatio: 0.8713, propertyValue: 3278000 },
           });
-          expect(loan1.maxSolvency.second).to.not.equal(undefined);
-          expect(loan1.maxSolvency.second).to.deep.equal({
+          expect(loan1.maxPropertyValue.second).to.not.equal(undefined);
+          expect(loan1.maxPropertyValue.second).to.deep.equal({
             min: { borrowRatio: 0.65, propertyValue: 1244000 },
             max: { borrowRatio: 0.7, propertyValue: 1420000 },
           });
@@ -93,7 +94,7 @@ describe('Migration 5', () => {
   });
 
   describe('down', () => {
-    it('removes range on maxSolvency', () => {
+    it('removes range on maxPropertyValue', () => {
       const loanIds = ['loanId1', 'loanId2'];
       generator({
         loans: loanIds.map(_id => ({
@@ -115,7 +116,7 @@ describe('Migration 5', () => {
           { _id: 'loanId1' },
           {
             $set: {
-              maxSolvency: {
+              maxPropertyValue: {
                 canton: 'GE',
                 date: new Date(),
                 main: {
@@ -135,7 +136,8 @@ describe('Migration 5', () => {
           const loan1 = Loans.findOne({ _id: 'loanId1' });
           const loan2 = Loans.findOne({ _id: 'loanId2' });
 
-          expect(loan2.maxSolvency).to.equal(undefined);
+          expect(loan2.maxPropertyValue).to.equal(undefined);
+          expect(loan1.maxPropertyValue).to.equal(undefined);
           expect(loan1.maxSolvency).to.not.equal(undefined);
           expect(loan1.maxSolvency.main).to.not.equal(undefined);
           expect(loan1.maxSolvency.main).to.deep.equal({

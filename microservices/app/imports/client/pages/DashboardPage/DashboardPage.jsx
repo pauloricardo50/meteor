@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Page from 'core/components/Page';
-import SolvencyCalculator from 'core/components/SolvencyCalculator';
+import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
@@ -11,7 +11,7 @@ import NewLoanForm from './NewLoanForm';
 const DashboardPage = props => (
   <Page id="DashboardPage" fullWidth>
     <DashboardProgress {...props} />
-    <SolvencyCalculator {...props} />
+    <MaxPropertyValue {...props} />
     <DashboardRecap {...props} />
     <DashboardInfo {...props} />
     {/* <NewLoanForm loan={loan} /> */}

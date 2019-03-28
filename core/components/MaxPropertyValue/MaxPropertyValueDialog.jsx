@@ -4,30 +4,30 @@ import SimpleSchema from 'simpl-schema';
 
 import { CANTONS } from '../../api/constants';
 import { AutoFormDialog } from '../AutoForm2';
-import { STATE } from './SolvencyCalculatorContainer';
+import { STATE } from './MaxPropertyValueContainer';
 
-type SolvencyCalculatorDialogProps = {
+type MaxPropertyValueDialogProps = {
   loan: Object,
   state: String,
   calculateSolvency: Function,
   style: Object,
 };
 
-const SolvencyCalculatorDialog = ({
+const schema = new SimpleSchema({
+  canton: {
+    type: String,
+    allowedValues: Object.keys(CANTONS),
+    uniforms: { displayEmpty: false, placeholder: '' },
+  },
+});
+
+const MaxPropertyValueDialog = ({
   loan,
   state,
   calculateSolvency,
   style = {},
-}: SolvencyCalculatorDialogProps) => {
-  const schema = new SimpleSchema({
-    canton: {
-      type: String,
-      allowedValues: Object.keys(CANTONS),
-      uniforms: { displayEmpty: false, placeholder: '' },
-    },
-  });
-
-  const { maxSolvency: model } = loan;
+}: MaxPropertyValueDialogProps) => {
+  const { maxPropertyValue: model } = loan;
 
   return (
     <AutoFormDialog
@@ -37,8 +37,9 @@ const SolvencyCalculatorDialog = ({
       title="Calculer ma capacité d'achat maximale"
       description={(
         <p className="description">
-          Afin de calculer les frais de notaire, veuillez renseigner le canton
-          dans lequel vous souhaitez acheter un bien immobilier.
+          Indiquez nous le canton dans lequel vous souhaitez acheter. Nous
+          pourrons alors calculer précisément les frais de notaire, et prendre
+          en compte les spécificités des prêteurs dans ce canton.
         </p>
       )}
       buttonProps={{
@@ -51,4 +52,4 @@ const SolvencyCalculatorDialog = ({
   );
 };
 
-export default SolvencyCalculatorDialog;
+export default MaxPropertyValueDialog;

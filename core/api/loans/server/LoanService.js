@@ -9,8 +9,12 @@ import {
 import Calculator, {
   Calculator as CalculatorClass,
 } from 'core/utils/Calculator';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
-import { ORGANISATION_FEATURES } from 'core/api/organisations/organisationConstants';
+import {
+  RESIDENCE_TYPE,
+  ORGANISATION_FEATURES,
+  LOAN_STATUS,
+  LOAN_VERIFICATION_STATUS,
+} from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
   adminLoan,
@@ -22,7 +26,6 @@ import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
-import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
 import Loans from '../loans';
 
 // Pads a number with zeros: 4 --> 0004
@@ -455,14 +458,12 @@ export class LoanService extends CollectionService {
   getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
     const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
 
-    const lenders = OrganisationService.fetch({
-      $filters: {
-        features: { $in: [ORGANISATION_FEATURES.LENDER] },
-      },
+    const lenderOrganisations = OrganisationService.fetch({
+      $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
       lenderRules: lenderRulesFragment(),
     });
 
-    const lenderRules = lenders
+    const lenderRules = lenderOrganisations
       .reduce((allRules, org) => [...allRules, org.lenderRules], [])
       .filter(x => x);
 
@@ -482,7 +483,7 @@ export class LoanService extends CollectionService {
     this.update({
       loanId,
       object: {
-        maxSolvency: {
+        maxPropertyValue: {
           main: mainMaxPropertyValueRange,
           second: secondMaxPropertyValueRange,
           canton,

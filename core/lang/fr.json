@@ -2,7 +2,7 @@
   "Forms.propertyIds": "Inviter aux biens immobiliers",
   "Forms.promotionIds": "Inviter aux promotions",
   "ProDashboardPage.organisationProperties": "Biens immobiliers de mon organisation",
-  "ProCustomersTable.maxSolvency": "Capacité d'achat max.",
+  "ProCustomersTable.maxPropertyValue": "Capacité d'achat max.",
   "Forms.externalId": "ID externe",
   "Forms.externalId.placeholder": "123-456-789",
   "Forms.useOpenGraph": "Utiliser données Open Graph",

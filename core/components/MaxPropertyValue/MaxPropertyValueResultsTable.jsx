@@ -3,15 +3,15 @@ import React from 'react';
 
 import MoneyRange from './MoneyRange';
 
-type SolvencyCalculatorResultsTableProps = {
+type MaxPropertyValueResultsTableProps = {
   min: Object,
   max: Object,
 };
 
-const SolvencyCalculatorResultsTable = ({
+const MaxPropertyValueResultsTable = ({
   min,
   max,
-}: SolvencyCalculatorResultsTableProps) => {
+}: MaxPropertyValueResultsTableProps) => {
   const { propertyValue: minPropertyValue, borrowRatio: minBorrowRatio } = min;
   const { propertyValue: maxPropertyValue, borrowRatio: maxBorrowRatio } = max;
 
@@ -27,34 +27,22 @@ const SolvencyCalculatorResultsTable = ({
         <td>
           <h4 className="secondary">Hypothèque</h4>
         </td>
-        <td>
-          <h4>
-            <MoneyRange min={minLoan} max={maxLoan} />
-          </h4>
-        </td>
+        <MoneyRange min={minLoan} max={maxLoan} />
       </tr>
       <tr>
         <td>
-          <h4 className="secondary">Fonds propres</h4>{' '}
+          <h4 className="secondary">Fonds propres</h4>
         </td>
-        <td>
-          <h4>
-            <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
-          </h4>
-        </td>
+        <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
       </tr>
-      <tr>
+      <tr className="money-range-big">
         <td>
-          <h4 className="secondary">Prix d'achat max.</h4>
+          <h3 className="secondary">Prix d'achat max.</h3>
         </td>
-        <td>
-          <h3>
-            <MoneyRange min={minPropertyValue} max={maxPropertyValue} />
-          </h3>
-        </td>
+        <MoneyRange min={minPropertyValue} max={maxPropertyValue} />
       </tr>
     </table>
   );
 };
 
-export default SolvencyCalculatorResultsTable;
+export default MaxPropertyValueResultsTable;

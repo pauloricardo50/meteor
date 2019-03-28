@@ -13,7 +13,11 @@ export const up = () => {
       return LoanService.getMaxPropertyValueWithoutBorrowRatio({
         loanId: loan._id,
         canton,
-      });
+      }).then(() =>
+        Loans.rawCollection().update(
+          { _id: loan._id },
+          { $unset: { maxSolvency: true } },
+        ));
     }
 
     return Promise.resolve();
@@ -24,15 +28,16 @@ export const down = () => {
   const allLoans = Loans.find().fetch();
 
   return Promise.all(allLoans.map((loan) => {
-    const { maxSolvency } = loan;
-    if (maxSolvency) {
+    const { maxPropertyValue } = loan;
+    if (maxPropertyValue) {
       const {
         main: { max: maxMain },
         second: { max: maxSecond },
         canton,
         date,
-      } = maxSolvency;
+      } = maxPropertyValue;
 
+      // Schema would not be valid if we used LoanService.baseUpdate
       return Loans.rawCollection().update(
         { _id: loan._id },
         {
@@ -44,6 +49,7 @@ export const down = () => {
               second: maxSecond,
             },
           },
+          $unset: { maxPropertyValue: true },
         },
       );
     }

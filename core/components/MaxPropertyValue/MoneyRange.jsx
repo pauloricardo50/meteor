@@ -8,11 +8,15 @@ type MoneyRangeProps = {
 };
 
 const MoneyRange = ({ min, max }: MoneyRangeProps) => (
-  <span>
-    <Money value={min} />
-    &nbsp;-&nbsp;
-    <Money value={max} />
-  </span>
+  <>
+    <td className="money-range">
+      <Money value={min} />
+    </td>
+    <td>-</td>
+    <td className="money-range">
+      <Money value={max} />
+    </td>
+  </>
 );
 
 export default MoneyRange;
