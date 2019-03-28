@@ -187,14 +187,27 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getMissingBorrowerFields({ borrowers }) {
-      return arrayify(borrowers).reduce((missingIds, borrower) => {
+      const res = arrayify(borrowers).reduce((missingIds, borrower) => {
         const formArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: borrower._id,
         });
+        console.log('formArray:', formArray);
+        const formArray2 = getBorrowerFinanceArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: borrower._id,
+        });
+        console.log('formArray2:', formArray2);
 
-        return [...missingIds, ...getMissingFieldIds(formArray, borrower)];
+        return [
+          ...missingIds,
+          ...getMissingFieldIds(formArray, borrower),
+          ...getMissingFieldIds(formArray2, borrower),
+        ];
       }, []);
+
+      console.log('res:', res);
+      return res;
     }
 
     getMissingBorrowerDocuments({ loan, borrowers }) {

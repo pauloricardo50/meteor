@@ -32,6 +32,7 @@ export const getPercent = (array) => {
 
   const percent = array.reduce((tot, val) => {
     if (isArray(val)) {
+      // Empty arrays need to be filled
       return tot + (val.length ? 1 : 0);
     }
     if (val !== undefined && val !== null) {

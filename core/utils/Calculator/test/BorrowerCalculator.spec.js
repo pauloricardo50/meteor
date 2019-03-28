@@ -324,7 +324,19 @@ describe('BorrowerCalculator', () => {
         'isUSPerson',
         'civilStatus',
         'childrenCount',
+        'salary',
+        'netSalary',
+        'bonusExists',
+        'hasOwnCompany',
+        'bankFortune',
       ]);
+    });
+
+    it('returns all missing ids for an empty borrower', () => {
+      const result = Calculator.getMissingBorrowerFields({
+        borrowers: { hasOwnCompany: true, ownCompanies: [] },
+      });
+      expect(result).to.include('ownCompanies');
     });
   });
 
