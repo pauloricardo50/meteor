@@ -4,6 +4,7 @@ import React from 'react';
 import Button from 'core/components/Button';
 import LenderRulesEditorContainer from './LenderRulesEditorContainer';
 import LenderRulesEditorSingle from './LenderRulesEditorSingle';
+import LenderRulesSorter from './LenderRulesSorter/LenderRulesSorter';
 import LenderRulesAdder from './LenderRulesForm/LenderRulesAdder';
 
 type LenderRulesEditorProps = {};
@@ -24,13 +25,16 @@ const LenderRulesEditor = ({
 
   return (
     <div className="lender-rules-editor">
-      {lenderRules.map(lenderRulesObject => (
-        <LenderRulesEditorSingle
-          key={lenderRulesObject._id}
-          lenderRules={lenderRulesObject}
-          updateLenderRules={makeUpdateLenderRules(lenderRulesObject._id)}
-        />
-      ))}
+      <LenderRulesSorter lenderRules={lenderRules} />
+      {lenderRules
+        .sort(({ order: orderA }, { order: orderB }) => orderA - orderB)
+        .map(lenderRulesObject => (
+          <LenderRulesEditorSingle
+            key={lenderRulesObject._id}
+            lenderRules={lenderRulesObject}
+            updateLenderRules={makeUpdateLenderRules(lenderRulesObject._id)}
+          />
+        ))}
       <LenderRulesAdder organisationId={organisationId} />
     </div>
   );
