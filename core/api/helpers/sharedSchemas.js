@@ -124,7 +124,7 @@ export const roundedInteger = (digits) => {
 
 export const percentageField = {
   type: Number,
-  min: 0,
+  min: -1,
   max: 1,
   optional: true,
   autoValue() {

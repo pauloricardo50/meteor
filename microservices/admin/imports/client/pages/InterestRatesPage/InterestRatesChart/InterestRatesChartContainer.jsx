@@ -28,7 +28,6 @@ const getConfig = ({ showRanges }) => ({
   },
   yAxis: {
     title: { text: 'Taux [%]' },
-    min: 0,
     tickInterval: 0.1,
   },
   chart: { height: 800, zoomType: 'x' },

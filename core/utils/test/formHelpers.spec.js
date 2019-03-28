@@ -10,5 +10,10 @@ describe('form helpers', () => {
       expect(percentFormatters.parse('')).to.equal('');
       expect(percentFormatters.format('')).to.equal('');
     });
+
+    it('does allows negative inputs', () => {
+      expect(percentFormatters.parse('-2.00%')).to.equal(-0.02);
+      expect(percentFormatters.format('-0.02')).to.equal('-2.00');
+    });
   });
 });

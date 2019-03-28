@@ -13,7 +13,12 @@ const irs10ySchema = new SimpleSchema({
     type: Date,
     uniforms: { type: CUSTOM_AUTOFIELD_TYPES.DATE },
   },
-  rate: { type: Number, min: 0, max: 1, uniforms: { component: PercentField } },
+  rate: {
+    type: Number,
+    min: -1,
+    max: 1,
+    uniforms: { component: PercentField },
+  },
 });
 
 export default compose(
