@@ -364,7 +364,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     structureIsValid({ loan, structureId }) {
       const incomeRatio = this.getIncomeRatio({ loan, structureId });
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
-
+      
       if (
         incomeRatio > this.maxIncomeRatio
         || borrowRatio > this.maxBorrowRatio
