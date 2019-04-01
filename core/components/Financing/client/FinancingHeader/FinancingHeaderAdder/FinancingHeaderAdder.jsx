@@ -18,7 +18,7 @@ const FinancingHeaderAdder = ({
   isAddingMaxStructure,
   loan,
   openDialog,
-  setDialogOpen
+  setDialogOpen,
 }: FinancingHeaderAdderProps) => (
   <div className="financing-structures-single-header structure structure-adder">
     {/* Add a span to absorb all CSS styles applied to direct children of .structure */}
@@ -33,13 +33,15 @@ const FinancingHeaderAdder = ({
       >
         <Icon type="addBasic" />
       </Button>
-      <FinancingHeaderAdderDropdown
-        handleAddMaxStructure={handleAddMaxStructure}
-        isLoading={isAddingMaxStructure}
-        loan={loan}
-        openDialog={openDialog}
-        setDialogOpen={setDialogOpen}
-      />
+      {!loan.hasPromotion && (
+        <FinancingHeaderAdderDropdown
+          handleAddMaxStructure={handleAddMaxStructure}
+          isLoading={isAddingMaxStructure}
+          loan={loan}
+          openDialog={openDialog}
+          setDialogOpen={setDialogOpen}
+        />
+      )}
     </span>
   </div>
 );
