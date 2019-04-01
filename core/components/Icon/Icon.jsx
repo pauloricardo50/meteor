@@ -74,11 +74,13 @@ import Image from '@material-ui/icons/Image';
 import Delete from '@material-ui/icons/Delete';
 import Phonelink from '@material-ui/icons/Phonelink';
 import OpenInNew from '@material-ui/icons/OpenInNew';
+import Add from '@material-ui/icons/Add';
 
 export const iconMap = {
   close: CloseIcon,
   check: CheckIcon,
   add: AddIcon,
+  addBasic: Add,
   remove: RemoveIcon,
   warning: WarningIcon,
   menu: MenuIcon,

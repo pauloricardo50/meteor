@@ -1,4 +1,7 @@
 {
+  "Financing.maxPropertyLabel": "Ajouter plan financier",
+  "Financing.maxPropertyDescription": "Capacité d'achat max.",
+  "Financing.maxPropertyDialogDescription": "Ajoute un nouveau plan financier qui représente votre capacité d'achat maximale dans le canton de votre choix.",
   "Forms.propertyPage.residenceTypeSetter.text": "Choisissez le type de résidence pour afficher le bien immobilier.",
   "Forms.propertyIds": "Inviter aux biens immobiliers",
   "Forms.promotionIds": "Inviter aux promotions",
