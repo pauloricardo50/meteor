@@ -30,5 +30,11 @@
 body,
 html,
 #react-root {
-  overflow: hidden; // Prevent double-scrollbars due to admin-layout
+  // Prevent double-scrollbars due to admin-layout
+  overflow: hidden;
+}
+
+.login-page.login-page {
+  // Due to the "overflow: hidden" above, the login page does not display well on mobile
+  min-height: unset;
 }
