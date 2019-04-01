@@ -7,7 +7,7 @@ const REPLACE_DOTS_WITH_COMMAS = false;
 const SAVE_PATH = '/tmp/IRS10Y_RAW.csv';
 
 const convertAndFormatUnixTimestamp = (timestamp) => {
-  const date = new Date(timestamp * 1000);
+  const date = new Date(timestamp);
   const year = date.getFullYear();
   const month = `0${date.getMonth() + 1}`.slice(-2);
   const day = `0${date.getDate()}`.slice(-2);
@@ -36,7 +36,9 @@ const makeRequest = url =>
 const saveRates = ({ prices }) => {
   const items = prices.map(({ d, c }) => ({
     date: convertAndFormatUnixTimestamp(d),
-    rate: REPLACE_DOTS_WITH_COMMAS ? c.toString().replace('.', ',') : c,
+    rate: REPLACE_DOTS_WITH_COMMAS
+      ? (c / 100).toString().replace('.', ',')
+      : c / 100,
   }));
 
   const replacer = (key, value) => (value === null ? '' : value);
