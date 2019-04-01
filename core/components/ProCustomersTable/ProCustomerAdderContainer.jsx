@@ -1,3 +1,4 @@
+import React from 'react';
 import { withProps } from 'recompose';
 import SimpleSchema from 'simpl-schema';
 
@@ -6,26 +7,16 @@ import {
   isAllowedToInviteCustomersToPromotion,
 } from 'core/api/security/clientSecurityHelpers/index';
 import { proInviteUser } from 'core/api/methods/index';
+import T from '../Translation';
 
 const schema = ({ proProperties, promotions }) =>
   new SimpleSchema({
-    user: Object,
-    'user.email': {
-      type: String,
-      uniforms: { label: 'Email', placeholder: 'jean.dupont@gmail.com' },
-    },
-    'user.firstName': {
-      type: String,
-      uniforms: { label: 'Prénom', placeholder: 'Jean' },
-    },
-    'user.lastName': {
-      type: String,
-      uniforms: { label: 'Nom', placeholder: 'Dupont' },
-    },
-    'user.phoneNumber': {
+    email: String,
+    firstName: String,
+    lastName: String,
+    phoneNumber: {
       type: String,
       optional: true,
-      uniforms: { label: 'Téléphone', placeholder: '012 345 67 89' },
     },
     propertyIds: {
       optional: true,
@@ -79,7 +70,7 @@ export default withProps(({ currentUser }) => {
       promotions: filteredPromotions,
     }),
     onSubmit: (model) => {
-      const { user, propertyIds = [], promotionIds = [] } = model;
+      const { propertyIds = [], promotionIds = [], ...user } = model;
       return proInviteUser.run({
         user,
         propertyIds: propertyIds.length ? propertyIds : undefined,

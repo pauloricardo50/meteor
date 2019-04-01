@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import T from 'core/components/Translation';
 import Key from './Key';
 
 type KeysProps = {
@@ -12,10 +13,11 @@ const Keys = ({ keyPair = {} }: KeysProps) => {
   if (!publicKey) {
     return (
       <>
-        <h3>Pas de clés API</h3>
+        <h3>
+          <T id="AccountPage.DevelopperSection.emptyState.title" />
+        </h3>
         <h4 className="secondary">
-          Vous pouvez générer une paire de clés pour commencer à utiliser notre
-          API REST.
+          <T id="AccountPage.DevelopperSection.emptyState.description" />
         </h4>
       </>
     );

@@ -76,7 +76,7 @@ const makeMapProPropertyUser = ({
               return Promise.resolve();
             }}
             type="close"
-            tooltip="Enlever du bien immobilier"
+            tooltip={<T id="ProPropertyPage.usersTable.removeUser.tooltip" />}
           />
         </div>
       ) : null,

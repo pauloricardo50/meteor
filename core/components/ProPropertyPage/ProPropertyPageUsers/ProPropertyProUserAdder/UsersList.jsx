@@ -31,7 +31,7 @@ const UsersList = ({ users, property, addUser }: UsersListProps) =>
                 && property.users.map(({ _id }) => _id).includes(user._id)
               }
             >
-            Ajouter
+              <T id="Forms.add" />
             </Button>
           </ListItemSecondaryAction>
         </ListItem>
