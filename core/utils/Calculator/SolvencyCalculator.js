@@ -186,6 +186,11 @@ export const withSolvencyCalculator = (SuperClass = class {}) =>
     }
 
     getMaxPropertyValue({ borrowers, maxBorrowRatio, canton, residenceType }) {
+      // Immediately stop iterating if maxBorrowRatio is above what is allowed
+      if (this.maxBorrowRatio < maxBorrowRatio) {
+        return 0;
+      }
+
       let foundValue = false;
       let minBound = INITIAL_MIN_BOUND;
       let maxBound = INITIAL_MAX_BOUND;

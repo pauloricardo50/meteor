@@ -11,7 +11,6 @@ type IncomeAndExpensesProps = {};
 const getIncomeRows = ({ loan, structureId, calculator }) => {
   const salary = calculator.getSalary({ loan, structureId });
   const bonus = calculator.getBonusIncome({ loan, structureId });
-  console.log('bonus:', bonus);
   const otherIncome = calculator.getOtherIncome({ loan, structureId });
   const fortuneReturns = calculator.getFortuneReturns({ loan, structureId });
   const realEstateIncome = calculator.getRealEstateIncome({
