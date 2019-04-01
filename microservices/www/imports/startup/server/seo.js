@@ -14,6 +14,10 @@ const setBlogHeaders = (sink, url) => {
   });
   if (slug) {
     return fetchBlogPostMeta(slug).then((post) => {
+      if (post.error) {
+        return;
+      }
+
       const { title, excerpt, post_thumbnail } = post;
       sink.appendToHead(renderToString(BlogPostSeo({ ...post })));
       sink.appendToHead('<meta property="og:url" content="http://localhost:3000" />');
