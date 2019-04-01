@@ -212,6 +212,7 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
       ],
       senderName: assigneeName,
       senderAddress: assigneeAddress,
+      bccAddress: assigneeAddress,
     };
   },
   createIntlValues: params => params,
