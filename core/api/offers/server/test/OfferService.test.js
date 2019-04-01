@@ -112,7 +112,13 @@ describe('OfferService', () => {
           response: { status },
           template: {
             template_name,
-            message: { from_email, subject, merge_vars, from_name },
+            message: {
+              from_email,
+              subject,
+              merge_vars,
+              from_name,
+              bcc_address,
+            },
           },
         } = emails[0];
         expect(status).to.equal('sent');
@@ -120,6 +126,7 @@ describe('OfferService', () => {
         expect(template_name).to.equal(EMAIL_TEMPLATES.SIMPLE.mandrillId);
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('dev@e-potek.ch');
+        expect(bcc_address).to.equal('dev@e-potek.ch');
         expect(from_name).to.equal('Dev e-Potek');
         expect(subject).to.include('Feedback client sur');
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include(feedback);
