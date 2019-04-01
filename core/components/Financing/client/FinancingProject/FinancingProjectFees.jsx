@@ -19,10 +19,17 @@ const FinancingProjectFees = ({
   ...props
 }: FinancingProjectFeesProps) => {
   const { loan, structureId } = props;
-  const canton = Calculator.makeSelectPropertyKey('canton')({
+  const canton = Calculator.selectPropertyKey({
     loan,
     structureId,
+    key: 'canton',
   });
+  const notaryFees = Calculator.selectStructureKey({
+    loan,
+    structureId,
+    key: 'notaryFees',
+  });
+  const hasNotaryFeesOverride = notaryFees >= 0 && notaryFees !== null;
   const hasDetailedFees = Calculator.getFeesCalculator({
     loan,
     structureId,
@@ -41,18 +48,28 @@ const FinancingProjectFees = ({
             <T id="general.notaryFees" />
           </h3>
           <div>
-            <T
-              id={
-                canton
-                  ? hasDetailedFees
-                    ? 'FinancingProjectFees.description'
-                    : 'FinancingProjectFees.descriptionNoDetail'
-                  : 'FinancingProjectFees.noCanton'
-              }
-              values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
-            />
+            {hasNotaryFeesOverride ? (
+              <T id="FinancingProjectFees.notaryFeesOverride" />
+            ) : (
+              <T
+                id={
+                  canton
+                    ? hasDetailedFees
+                      ? 'FinancingProjectFees.description'
+                      : 'FinancingProjectFees.descriptionNoDetail'
+                    : 'FinancingProjectFees.noCanton'
+                }
+                values={{ canton: <T id={`Forms.canton.${canton}`} /> }}
+              />
+            )}
           </div>
-          <Recap loan={loan} structureId={structureId} arrayName="notaryFees" />
+          {!hasNotaryFeesOverride && (
+            <Recap
+              loan={loan}
+              structureId={structureId}
+              arrayName="notaryFees"
+            />
+          )}
         </div>
       </DialogSimple>
     </div>
