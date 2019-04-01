@@ -36,7 +36,12 @@ const job = () => ({
           SyncedCron.remove(jobName);
           SyncedCron.add(job());
         })
-        .catch(cronitor.fail);
+        .catch((error) => {
+          if (error.message && error.message.includes('existe déjà')) {
+            return cronitor.complete(error.message);
+          }
+          return cronitor.fail(error);
+        });
     } catch (error) {
       SlackService.sendError({
         error,
