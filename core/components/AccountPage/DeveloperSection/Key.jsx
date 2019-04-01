@@ -7,12 +7,8 @@ import moment from 'moment';
 
 import message from 'core/utils/message';
 import Button from 'core/components/Button';
+import T from 'core/components/Translation';
 import RsaKey from './RsaKey';
-
-const KEY_TYPES = {
-  public: 'publique',
-  private: 'privée',
-};
 
 type KeyProps = {
   keyValue: String,
@@ -39,39 +35,39 @@ const formatKey = ({ key, type }) =>
     .split(`-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`)
     .join(`\n-----END RSA ${type === 'public' ? 'PUBLIC' : 'PRIVATE'} KEY-----`);
 
-const Key = ({
-  keyValue,
-  createdAt,
-  type,
-  hideKey,
-  setHideKey,
-}: KeyProps) => (
+const Key = ({ keyValue, createdAt, type, hideKey, setHideKey }: KeyProps) => (
   <>
     <div className="key">
       <FontAwesomeIcon icon={faKey} className={`solid icon ${type}-key-icon`} />
       <div className="key-infos">
         <h4>
-          Clé {KEY_TYPES[type]}
+          <T id={`AccountPage.DevelopperSection.keyType.${type}`} />
           <Button onClick={() => setHideKey(!hideKey)} primary>
-            {hideKey ? 'Afficher la clé' : 'Masquer la clé'}
+            {hideKey ? (
+              <T id="AccountPage.DevelopperSection.key.show" />
+            ) : (
+              <T id="AccountPage.DevelopperSection.key.hide" />
+            )}
           </Button>
           <Button onClick={() => copyKeyToClipboard(keyValue)} primary>
-            Copier la clé
+            <T id="AccountPage.DevelopperSection.key.copy" />
           </Button>
         </h4>
         <p className="secondary">
-          Générée le {moment(createdAt).format('DD MMM YYYY')}
+          <T
+            id="AccountPage.DevelopperSection.key.createdAt"
+            values={{ date: moment(createdAt).format('DD MMM YYYY') }}
+          />
         </p>
       </div>
     </div>
-    <RsaKey keyValue={formatKey({key: keyValue, type})} hide={hideKey} />
+    <RsaKey keyValue={formatKey({ key: keyValue, type })} hide={hideKey} />
     {type === 'private' && (
       <p className="rsa-key-warning">
-        Sauvegardez votre clé privée maintenant: vous ne pourrez plus y accéder
-        !
+        <T id="AccountPage.DevelopperSection.key.warning" />
       </p>
     )}
-    </>
+  </>
 );
 
 export default withState('hideKey', 'setHideKey', ({ hidden }) => hidden)(Key);

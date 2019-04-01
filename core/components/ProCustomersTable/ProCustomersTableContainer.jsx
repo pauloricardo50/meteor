@@ -90,7 +90,7 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
             <Money value={maxPropertyValue.main.max.propertyValue} />
           )
         ) : (
-          'Pas encore calculé'
+          <T id="ProCustomersTable.maxPropertyValue.placeHolder" />
         ),
       },
       {

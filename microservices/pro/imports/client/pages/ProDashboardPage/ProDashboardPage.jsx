@@ -30,7 +30,9 @@ const ProDashboardPage = (props: ProDashboardPageProps) => (
     <ProPromotionsTable />
     <ProPropertiesTable />
     <ProOrganisationPropertiesTable />
-    <h3 className="text-center">Dossiers</h3>
+    <h3 className="text-center">
+      <T id="Forms.loans" />
+    </h3>
     <ProCustomersTable proUser={props.currentUser} />
   </div>
 );

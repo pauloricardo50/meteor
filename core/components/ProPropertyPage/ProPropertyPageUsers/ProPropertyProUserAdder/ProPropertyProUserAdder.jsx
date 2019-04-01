@@ -34,9 +34,11 @@ const showUsers = ({ users, searchResult, property, addUser, isAdmin }) => {
 
   return (
     <p>
-      {isAdmin
-        ? 'Aucun utilisateur trouvé'
-        : 'Aucun utilisateur trouvé dans votre organisation'}
+      {isAdmin ? (
+        <T id="ProPropertyPage.proUserAdder.notFound" />
+      ) : (
+        <T id="ProPropertyPage.proUserAdder.notFoundInOrg" />
+      )}
     </p>
   );
 };

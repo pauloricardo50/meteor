@@ -88,8 +88,10 @@ const makeMapLoan = ({
           key="remove"
         >
           <p>
-            Êtes-vous sûr de vouloir enlever l\'accès à ce bien immobilier à{' '}
-            {user.name} ?
+            <T
+              id="ProPropertyPage.removeCustomer.alert"
+              values={{ customerName: user.name }}
+            />
           </p>
         </ConfirmMethod>
       ) : (

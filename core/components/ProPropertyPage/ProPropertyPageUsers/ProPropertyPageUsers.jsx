@@ -1,8 +1,10 @@
 // @flow
 import React from 'react';
+
 import Table from 'core/components/Table';
 import ProPropertyPageUsersContainer from './ProPropertyPageUsersContainer';
 import ProPropertyProUserAdder from './ProPropertyProUserAdder/ProPropertyProUserAdder';
+import T from '../../Translation';
 
 type ProPropertyPageUsersProps = {};
 
@@ -14,7 +16,9 @@ const ProPropertyPageUsers = ({
 }: ProPropertyPageUsersProps) => (
   <div className="card1 card-top users-table">
     <span className="flex users-table-header">
-      <h2>Utilisateurs</h2>
+      <h2>
+        <T id="ProPropertyPage.usersTable.title" />
+      </h2>
       {permissions.canInviteProUsers && (
         <ProPropertyProUserAdder property={property} />
       )}
