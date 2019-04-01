@@ -57,7 +57,7 @@ export const createOrganisations = () =>
       ContactService.changeOrganisations({
         contactId,
         newOrganisations: [
-          { _id: orgId, metadata: { role: faker.name.jobTitle() } },
+          { _id: orgId, metadata: { title: faker.name.jobTitle() } },
         ],
       });
     }

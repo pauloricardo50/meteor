@@ -258,7 +258,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
           name: 1,
           email: 1,
           phoneNumber: 1,
-          organisations: { users: { role: 1 } },
+          organisations: { users: { title: 1 } },
         },
         loans: {
           _id: 1,
@@ -379,7 +379,7 @@ export const baseOrganisation = () => ({
   address2: 1,
   canton: 1,
   city: 1,
-  contacts: { role: 1, email: 1, name: 1 },
+  contacts: { title: 1, email: 1, name: 1 },
   features: 1,
   logo: 1,
   name: 1,

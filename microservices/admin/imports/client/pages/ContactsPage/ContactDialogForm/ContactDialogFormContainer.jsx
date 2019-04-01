@@ -59,11 +59,11 @@ const schema = existingOrganisations =>
       uniforms: { label: null },
       optional: true,
     },
-    'organisations.$.$metadata.role': {
+    'organisations.$.$metadata.title': {
       type: String,
       optional: true,
       uniforms: {
-        label: <T id="Forms.contact.role" />,
+        label: <T id="Forms.contact.title" />,
         placeholder: 'Responsable Hypothèques',
         displayEmpty: true,
       },
