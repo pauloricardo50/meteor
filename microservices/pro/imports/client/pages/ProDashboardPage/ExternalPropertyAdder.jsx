@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 
 import { insertExternalProperty } from 'core/api/methods';
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import PropertySchema from 'core/api/properties/schemas/PropertySchema';
+import T from 'core/components/Translation';
 
 const schema = PropertySchema.pick(
   'address1',
@@ -24,7 +24,7 @@ const ExternalPropertyAdder = (props: ExternalPropertyAdderProps) => (
     schema={schema}
     onSubmit={property => insertExternalProperty.run({ property })}
     buttonProps={{
-      label: 'Ajouter bien immo API',
+      label: <T id="ProDashboardPage.ExternalPropertyAdder" />,
       raised: true,
       primary: true,
     }}

@@ -4,6 +4,7 @@ import { compose, withState, withProps } from 'recompose';
 
 import Button from 'core/components/Button';
 import { generateApiKeyPair } from 'core/api';
+import T from 'core/components/Translation';
 
 type KeyPairGeneratorProps = {
   loading: boolean,
@@ -23,9 +24,11 @@ const KeyPairGenerator = ({
     raised={!keyPair.publicKey}
     className="generate-key-pair"
   >
-    {keyPair.publicKey
-      ? 'Regénérer une paire de clés'
-      : 'Générer une paire de clés'}
+    {keyPair.publicKey ? (
+      <T id="AccountPage.DevelopperSection.keyPair.regenerate" />
+    ) : (
+      <T id="AccountPage.DevelopperSection.keyPair.generate" />
+    )}
   </Button>
 );
 

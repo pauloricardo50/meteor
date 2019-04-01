@@ -3,8 +3,8 @@ import React from 'react';
 
 import Table from '../../Table';
 import ProPropertyPageCustomersContainer from './ProPropertyPageCustomersContainer';
-import { Properties } from '../../../api';
 import PropertyCustomerAdder from '../PropertyCustomerAdder';
+import T from '../../Translation';
 
 type ProPropertyPageCustomersProps = {};
 
@@ -13,13 +13,15 @@ const ProPropertyPageCustomers = ({
   columnOptions,
   property,
   permissions,
-  loans
+  loans,
 }: ProPropertyPageCustomersProps) => (
   <div className="card1 card-top customers-table">
     <span className="flex customers-table-header">
-      <h2>Acheteurs</h2>
+      <h2>
+        <T id="ProPropertyPage.customersTable" />
+      </h2>
       {permissions.canInviteCustomers && (
-        <PropertyCustomerAdder propertyId={property._id} loans={loans}/>
+        <PropertyCustomerAdder propertyId={property._id} loans={loans} />
       )}
     </span>
     <Table rows={rows} columnOptions={columnOptions} />

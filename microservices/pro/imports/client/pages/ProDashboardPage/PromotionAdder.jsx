@@ -28,8 +28,8 @@ const PromotionAdder = ({ history }: PromotionAdderProps) => (
     }
     autoFieldProps={{
       labels: {
-        name: 'Nom de la promotion',
-        type: 'Type de promotion',
+        name: <T id="ProDashboardPage.PromotionAdder.name" />,
+        type: <T id="ProDashboardPage.PromotionAdder.type" />,
       },
     }}
   />

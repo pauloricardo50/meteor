@@ -47,5 +47,9 @@
       "});"
     ],
     "description": "Testing JS"
+  },
+  "Translation": {
+    "prefix": "t",
+    "body": "<T id={\"${0:id}\"} />"
   }
 }
