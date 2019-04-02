@@ -36,8 +36,8 @@ const ContactPage = () => (
         <Button
           className="directions-button"
           raised
-          link
-          to={`https://maps.google.com?daddr=${MAPS_ADDRESS}`}
+          component="a"
+          href={`https://maps.google.com?daddr=${MAPS_ADDRESS}`}
           target="_blank"
         >
           Directions
