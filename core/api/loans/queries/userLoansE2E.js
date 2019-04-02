@@ -11,7 +11,7 @@ export default Loans.createQuery(LOAN_QUERIES.USER_LOANS_E2E, {
     }
 
     if (step) {
-      filters['logic.step'] = step;
+      filters.step = step;
     }
   },
   ...loanBase(),

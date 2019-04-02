@@ -76,6 +76,10 @@ export class LoanService extends CollectionService {
     return loanId;
   };
 
+  setStep({ loanId, nextStep }) {
+    return this.update({ loanId, object: { step: nextStep } });
+  }
+
   askVerification = ({ loanId }) => {
     const loan = this.get(loanId);
 

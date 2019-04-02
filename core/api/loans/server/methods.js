@@ -21,9 +21,11 @@ import {
   reuseProperty,
   getMaxPropertyValueWithoutBorrowRatio,
   addNewMaxStructure,
+  setLoanStep,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
+import { STEPS } from '../loanConstants';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -112,8 +114,8 @@ switchBorrower.setHandler(({ userId }, params) => {
   return LoanService.switchBorrower(params);
 });
 
-sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+sendNegativeFeedbackToAllLenders.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
   context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
@@ -136,4 +138,13 @@ getMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
 addNewMaxStructure.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.addNewMaxStructure(params);
+});
+
+setLoanStep.setHandler(({ userId }, params) => {
+  if (params.nextStep === STEPS.PREPARATION) {
+    SecurityService.loans.isAllowedToUpdate(params.loanId);
+  } else {
+    Security.checkUserIsAdmin(userId);
+  }
+  return LoanService.setStep(params);
 });

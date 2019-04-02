@@ -46,7 +46,7 @@ export default class AllLoansTable extends Component {
         createdAt,
         updatedAt,
         structure,
-        logic,
+        step,
       } = loan;
 
       return {
@@ -81,8 +81,8 @@ export default class AllLoansTable extends Component {
             label: moment(updatedAt).fromNow(),
           },
           {
-            label: <T id={`Forms.steps.${logic.step}`} key="step" />,
-            raw: logic.step,
+            label: <T id={`Forms.steps.${step}`} key="step" />,
+            raw: step,
           },
           Calculator.selectPropertyValue({ loan }),
           Calculator.selectLoanValue({ loan }),

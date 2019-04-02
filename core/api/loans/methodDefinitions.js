@@ -148,3 +148,8 @@ export const addNewMaxStructure = new Method({
     canton: String,
   },
 });
+
+export const setLoanStep = new Method({
+  name: 'setLoanStep',
+  params: { loanId: String, nextStep: String },
+});

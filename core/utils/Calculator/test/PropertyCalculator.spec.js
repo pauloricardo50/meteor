@@ -17,7 +17,7 @@ describe('PropertyCalculator', () => {
         structure: { property },
         borrowers: [{}],
         properties: [property],
-        logic: { step: STEPS.PREPARATION },
+        step: STEPS.PREPARATION,
       },
     };
   });
