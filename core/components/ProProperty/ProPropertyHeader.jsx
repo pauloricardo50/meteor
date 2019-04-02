@@ -4,6 +4,7 @@ import React from 'react';
 import { Money } from '../Translation';
 import Icon from '../Icon';
 import ImageCarrousel from '../ImageCarrousel';
+import ProPropertyRecap from './ProPropertyRecap';
 
 type ProPropertyheaderProps = {};
 
@@ -46,6 +47,7 @@ const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
           <Money value={totalValue} />
         </h2>
         <p className="description">{ogDescription || description}</p>
+        <ProPropertyRecap property={property} />
         {externalUrl && (
           <a
             target="_blank"
