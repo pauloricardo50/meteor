@@ -31,6 +31,13 @@
 
     .description {
       white-space: pre-line;
+      font-size: 1.1em;
+    }
+
+    .pro-property-recap {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 250px);
     }
   }
 

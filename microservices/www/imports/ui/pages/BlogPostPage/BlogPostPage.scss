@@ -93,6 +93,14 @@
   .youtube-player {
     width: 100%;
   }
+
+  a {
+    color: $primary;
+    
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 }
 
 .blog-author {
