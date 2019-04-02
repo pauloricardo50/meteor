@@ -17,11 +17,7 @@ export const up = () => {
       promises = [
         Organisations.rawCollection().update(
           { _id: organisation._id },
-          {
-            $set: {
-              contactIds: newContactIds,
-            },
-          },
+          { $set: { contactIds: newContactIds } },
         ),
       ];
     }
@@ -36,11 +32,7 @@ export const up = () => {
         ...promises,
         Organisations.rawCollection().update(
           { _id: organisation._id },
-          {
-            $set: {
-              userLinks: newUserLinks,
-            },
-          },
+          { $set: { userLinks: newUserLinks } },
         ),
       ];
     }
@@ -68,11 +60,7 @@ export const down = () => {
       promises = [
         Organisations.rawCollection().update(
           { _id: organisation._id },
-          {
-            $set: {
-              contactIds: newContactIds,
-            },
-          },
+          { $set: { contactIds: newContactIds } },
         ),
       ];
     }
@@ -87,11 +75,7 @@ export const down = () => {
         ...promises,
         Organisations.rawCollection().update(
           { _id: organisation._id },
-          {
-            $set: {
-              userLinks: newUserLinks,
-            },
-          },
+          { $set: { userLinks: newUserLinks } },
         ),
       ];
     }
