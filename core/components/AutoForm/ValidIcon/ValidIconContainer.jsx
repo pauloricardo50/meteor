@@ -26,12 +26,15 @@ const ValidIconContainer = WrappedComponent =>
     }
 
     getStatus = () => {
-      const { error, required, value } = this.props;
+      const { error, required, value, todo } = this.props;
 
       if (error) {
         return STATUS.ERROR;
       }
-      if (required === true && [undefined, '', null].includes(value)) {
+      if (
+        todo
+        || (required === true && [undefined, '', null].includes(value))
+      ) {
         return STATUS.TODO;
       }
 

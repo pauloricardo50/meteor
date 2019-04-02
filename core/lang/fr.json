@@ -1,4 +1,5 @@
 {
+  "Forms.canton.placeholder": "Renseignez un code postal suisse",
   "ProOrganisationUserAdder.title": "Ajouter un utilisateur à {organisationName}",
   "ProOrganisationUserAdder.description": "Crée un nouveau compte qui sera automatiquement associé à votre organisation et aura accès à tous les biens immobiliers, promotions et clients de cette organisation.",
   "ProOrganisationUserAdder.tooltip": "Ajouter utilisateur à {organisationName}",
