@@ -15,7 +15,7 @@ const mergeContacts = ({ promotion, contacts }) => {
     && invitedByUser.organisations
     && !!invitedByUser.organisations.length
     && invitedByUser.organisations[0];
-  const title = organisation && organisation.$metadata.role;
+  const title = organisation && organisation.$metadata.title;
 
   return [
     ...promotionContacts.map(contact => ({

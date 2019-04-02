@@ -356,7 +356,7 @@ class UserService extends CollectionService {
     });
   }
 
-  proInviteUserToOrganisation({ user, organisationId, role, proId, adminId }) {
+  proInviteUserToOrganisation({ user, organisationId, title, proId, adminId }) {
     const { email, phoneNumber } = user;
     let assigneeId;
 
@@ -389,7 +389,7 @@ class UserService extends CollectionService {
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { role },
+      metadata: { title },
     });
 
     return userId;

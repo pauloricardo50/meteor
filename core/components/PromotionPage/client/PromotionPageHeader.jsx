@@ -25,7 +25,7 @@ const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
     && !!invitedByUser.organisations.length
     && invitedByUser.organisations[0];
 
-  const title = organisation && organisation.$metadata.role;
+  const title = organisation && organisation.$metadata.title;
 
   return [
     ...contacts,
