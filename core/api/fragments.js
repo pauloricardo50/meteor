@@ -229,13 +229,30 @@ export const loan = () => ({
   updatedAt: 1,
   userId: 1,
   verificationStatus: 1,
-  maxPropertyValue: 1,
 });
 
 export const loanBase = () => ({
   ...loan(),
   promotionOptions: loanPromotionOption(),
 });
+
+const userPropertyValue = { borrowRatio: 1, propertyValue: 1 };
+const userMaxPropertyValue = {
+  main: { min: userPropertyValue, max: userPropertyValue },
+  second: { min: userPropertyValue, max: userPropertyValue },
+  canton: 1,
+  date: 1,
+};
+const adminPropertyValue = {
+  ...userPropertyValue,
+  organisationName: 1,
+};
+const adminMaxPropertyValue = {
+  main: { min: adminPropertyValue, max: adminPropertyValue },
+  second: { min: adminPropertyValue, max: adminPropertyValue },
+  canton: 1,
+  date: 1,
+};
 
 export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   ...loanBase(),
@@ -246,6 +263,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   properties: userProperty({ withSort }),
   user: appUser(),
   userFormsEnabled: 1,
+  maxPropertyValue: userMaxPropertyValue,
   ...(withFilteredPromotions
     ? {
       promotions: {
@@ -276,10 +294,11 @@ export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   closingDate: 1,
   lenders: adminLender(),
+  maxPropertyValue: adminMaxPropertyValue,
   properties: adminProperty({ withSort }),
+  revenues: fullRevenues(),
   signingDate: 1,
   status: 1,
-  revenues: fullRevenues(),
 });
 export const adminLoans = () => ({
   ...loanBase(),
@@ -317,7 +336,7 @@ export const proLoans = () => ({
   properties: { address1: 1, category: 1, users: { _id: 1 }, totalValue: 1 },
   revenues: fullRevenues(),
   structure: 1,
-  maxPropertyValue: 1,
+  maxPropertyValue: userMaxPropertyValue,
   residenceType: 1,
 });
 

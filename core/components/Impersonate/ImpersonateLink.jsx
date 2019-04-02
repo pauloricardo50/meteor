@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 
 import T from '../Translation';
 import Icon from '../Icon';
+import Button from '../Button';
 import { generateImpersonateLink } from '../../api/impersonation/impersonation';
 import { isUser } from '../../utils/userFunctions';
 
@@ -34,9 +34,9 @@ const ImpersonateLink = ({ user, className, classes }) => {
         placement="bottom"
         title={<T id="Impersonation.impersonateLinkText" />}
       >
-        <Fab color="error" className={classes.cssRoot}>
+        <Button fab color="error" className={classes.cssRoot}>
           <Icon type="supervisorAccount" />
-        </Fab>
+        </Button>
       </Tooltip>
     </a>
   );

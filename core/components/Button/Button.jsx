@@ -5,6 +5,7 @@ import MuiButton from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
 import { mapProps, compose } from 'recompose';
 import cx from 'classnames';
 
@@ -69,8 +70,10 @@ const Button = (props) => {
   const variant = props.variant || getVariant(props);
   const color = props.color || getColor(props);
 
+  const Comp = props.fab ? Fab : MuiButton;
+
   const button = (
-    <MuiButton
+    <Comp
       {...childProps}
       color={color}
       variant={variant}
@@ -82,9 +85,11 @@ const Button = (props) => {
       })}
     >
       {props.icon}
-      {props.icon && <span style={{ height: '100%', width: 8 }} />}
+      {props.icon && !props.fab && (
+        <span style={{ height: '100%', width: 8 }} />
+      )}
       {props.label || props.children}
-    </MuiButton>
+    </Comp>
   );
 
   if (props.tooltip) {
@@ -120,7 +125,12 @@ Button.defaultProps = {
 
 const withLoadingProp = mapProps(({ loading, ...props }) =>
   (loading
-    ? { ...props, disabled: true, icon: <Icon type="loop-spin" /> }
+    ? {
+      ...props,
+      disabled: true,
+      icon: <Icon type="loop-spin" />,
+      children: props.fab ? null : props.children,
+    }
     : props));
 
 export default compose(

@@ -102,7 +102,7 @@ describe('Loan methods', () => {
     });
   });
 
-  describe('getMaxPropertyValueWithoutBorrowRatio', function () {
+  describe('setMaxPropertyValueWithoutBorrowRatio', function () {
     this.timeout(10000);
     beforeEach(() => {
       resetDatabase();
@@ -144,7 +144,7 @@ describe('Loan methods', () => {
         ],
       });
 
-      return getMaxPropertyValueWithoutBorrowRatio
+      return setMaxPropertyValueWithoutBorrowRatio
         .run({ loanId: 'loanId', canton: 'GE' })
         .then(() => {
           const {

@@ -139,3 +139,12 @@ export const getMaxPropertyValueWithoutBorrowRatio = new Method({
   name: 'getMaxPropertyValueWithoutBorrowRatio',
   params: { loanId: String, canton: String },
 });
+
+export const addNewMaxStructure = new Method({
+  name: 'addNewMaxStructure',
+  params: {
+    loanId: String,
+    residenceType: Match.Maybe(String),
+    canton: String,
+  },
+});

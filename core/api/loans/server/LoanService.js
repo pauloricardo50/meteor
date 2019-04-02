@@ -1,19 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import formatMessage from 'core/utils/intl';
+import formatMessage from '../../../utils/intl';
 import {
   makeFeedback,
   FEEDBACK_OPTIONS,
-} from 'core/components/OfferList/feedbackHelpers';
+} from '../../../components/OfferList/feedbackHelpers';
 import Calculator, {
   Calculator as CalculatorClass,
-} from 'core/utils/Calculator';
+} from '../../../utils/Calculator';
+import { getZipcodeForCanton } from '../../../utils/zipcodes';
 import {
   RESIDENCE_TYPE,
   ORGANISATION_FEATURES,
   LOAN_STATUS,
   LOAN_VERIFICATION_STATUS,
+  CANTONS,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -167,9 +169,9 @@ export class LoanService extends CollectionService {
     const newStructureId = this.addStructure({
       loanId,
       structure: {
-        ...structure,
         name: `Plan financier ${structures.length + 1}`,
         propertyId,
+        ...structure,
       },
     });
     this.update({
@@ -410,18 +412,18 @@ export class LoanService extends CollectionService {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
   }
 
-  getMaxPropertyValueRange({ lenderRules, loan, residenceType, canton }) {
+  getMaxPropertyValueRange({ organisations, loan, residenceType, canton }) {
     const { borrowers = [] } = loan;
     const loanObject = Calculator.createLoanObject({
       residenceType,
       borrowers,
       canton,
     });
-    const maxPropertyValues = lenderRules
-      .map((rules) => {
+    const maxPropertyValues = organisations
+      .map(({ lenderRules, name }) => {
         const calculator = new CalculatorClass({
           loan: loanObject,
-          lenderRules: rules,
+          lenderRules,
         });
 
         const {
@@ -433,7 +435,7 @@ export class LoanService extends CollectionService {
           canton,
         });
         if (propertyValue > 0 && borrowRatio > 0) {
-          return { borrowRatio, propertyValue };
+          return { borrowRatio, propertyValue, organisationName: name };
         }
 
         return null;
@@ -455,27 +457,31 @@ export class LoanService extends CollectionService {
     return { min, max };
   }
 
-  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
+  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton, residenceType }) {
     const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
 
     const lenderOrganisations = OrganisationService.fetch({
       $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
       lenderRules: lenderRulesFragment(),
+      name: 1,
     });
 
-    const lenderRules = lenderOrganisations
-      .reduce((allRules, org) => [...allRules, org.lenderRules], [])
-      .filter(x => x);
-
-    const mainMaxPropertyValueRange = this.getMaxPropertyValueRange({
-      lenderRules,
+    return this.getMaxPropertyValueRange({
+      organisations: lenderOrganisations.filter(({ lenderRules }) => lenderRules && lenderRules.length > 0),
       loan,
+      residenceType: residenceType || loan.residenceType,
+      canton,
+    });
+  }
+
+  setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
+    const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
+      loanId,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
-    const secondMaxPropertyValueRange = this.getMaxPropertyValueRange({
-      lenderRules,
-      loan,
+    const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
+      loanId,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
     });
@@ -493,6 +499,77 @@ export class LoanService extends CollectionService {
     });
 
     return Promise.resolve();
+  }
+
+  addNewMaxStructure({ loanId, residenceType: newResidenceType, canton }) {
+    if (newResidenceType) {
+      // Set residence type if it is given
+      this.update({ loanId, object: { residenceType: newResidenceType } });
+    }
+
+    const loan = this.fetchOne({
+      $filters: { _id: loanId },
+      ...userLoan(),
+    });
+    const { properties, userId, borrowers, residenceType } = loan;
+
+    // Get the highest property value
+    const {
+      max: { borrowRatio, propertyValue, organisationName },
+    } = this.getMaxPropertyValueWithoutBorrowRatio({
+      loanId,
+      canton,
+    });
+
+    const organisation = OrganisationService.fetchOne({
+      $filters: { name: organisationName },
+      lenderRules: lenderRulesFragment(),
+    });
+
+    const calculator = new CalculatorClass({
+      loan,
+      lenderRules: organisation.lenderRules,
+    });
+
+    // Recalculate the best structure for this propertyvalue
+    const ownFunds = calculator.suggestStructure({
+      borrowers,
+      propertyValue,
+      loanValue: Math.round(propertyValue * borrowRatio),
+      canton,
+      residenceType,
+    });
+
+    let propertyWithCanton = properties.find(({ canton: propertyCanton }) => propertyCanton === canton);
+    const createNewProperty = !propertyWithCanton;
+
+    // If there is no property from this canton, insert a new one
+    // with the right canton
+    if (createNewProperty) {
+      const propertyId = PropertyService.insert({
+        property: {
+          address1: `Bien immo ${CANTONS[canton]}`,
+          zipCode: getZipcodeForCanton(canton),
+          value: propertyValue,
+        },
+        loanId,
+        userId,
+      });
+
+      propertyWithCanton = { _id: propertyId };
+    }
+
+    this.addNewStructure({
+      loanId,
+      structure: {
+        name: "Capacité d'achat max.",
+        description: CANTONS[canton],
+        propertyId: propertyWithCanton._id,
+        ownFunds,
+        propertyValue: createNewProperty ? undefined : propertyValue,
+        wantedLoan: Math.round(propertyValue * borrowRatio),
+      },
+    });
   }
 }
 

@@ -1,5 +1,9 @@
 {
   "Forms.canton.placeholder": "Renseignez un code postal suisse",
+  "FinancingProjectFees.notaryFeesOverride": "Vous avez choisi des frais de notaire sur mesure. Pour accéder aux frais de notaire automatiques, supprimez le contenu du champ \"Frais de notaire\".",
+  "Financing.maxPropertyLabel": "Ajouter plan financier",
+  "Financing.maxPropertyDescription": "Capacité d'achat max.",
+  "Financing.maxPropertyDialogDescription": "Ajoute un nouveau plan financier qui représente votre capacité d'achat maximale dans le canton de votre choix.",
   "ProOrganisationUserAdder.title": "Ajouter un utilisateur à {organisationName}",
   "ProOrganisationUserAdder.description": "Crée un nouveau compte qui sera automatiquement associé à votre organisation et aura accès à tous les biens immobiliers, promotions et clients de cette organisation.",
   "ProOrganisationUserAdder.tooltip": "Ajouter utilisateur à {organisationName}",
