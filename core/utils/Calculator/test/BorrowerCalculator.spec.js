@@ -195,7 +195,7 @@ describe('BorrowerCalculator', () => {
             },
           ],
         },
-      })).to.be.within(0.14, 0.15);
+      })).to.be.within(0.13, 0.14);
     });
   });
 
@@ -318,6 +318,7 @@ describe('BorrowerCalculator', () => {
         'address1',
         'city',
         'zipCode',
+        'canton',
         'isSwiss',
         'birthDate',
         'citizenship',

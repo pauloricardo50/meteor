@@ -19,7 +19,7 @@ import {
   sendNegativeFeedbackToAllLenders,
   loanUpdatePromotionInvitedBy,
   reuseProperty,
-  getMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueWithoutBorrowRatio,
   addNewMaxStructure,
   setLoanStep,
 } from '../methodDefinitions';
@@ -130,7 +130,7 @@ reuseProperty.setHandler((context, params) => {
   LoanService.reuseProperty(params);
 });
 
-getMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
+setMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
   return LoanService.setMaxPropertyValueWithoutBorrowRatio(params);
 });

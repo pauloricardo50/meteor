@@ -12,7 +12,7 @@ import SecurityService from '../../../security';
 import { generateData } from '../../../../utils/testHelpers';
 import {
   requestLoanVerification,
-  getMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueWithoutBorrowRatio,
 } from '../../methodDefinitions';
 import LoanService from '../LoanService';
 
@@ -52,7 +52,11 @@ const generateOrganisationsWithLenderRules = ({
           lenderRules: [
             { _factory: 'lenderRulesAll', order: 0 },
             { _factory: 'lenderRulesMain', maxBorrowRatio: main, order: 1 },
-            { _factory: 'lenderRulesSecondary', maxBorrowRatio: secondary, order: 2 },
+            {
+              _factory: 'lenderRulesSecondary',
+              maxBorrowRatio: secondary,
+              order: 2,
+            },
           ],
         },
       ];

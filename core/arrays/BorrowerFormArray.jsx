@@ -89,6 +89,7 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       id: 'canton',
       component: <CantonField canton={b.canton} />,
       condition: !disableAddress,
+      required: addressFieldsAreNecessary,
     },
     {
       type: 'conditionalInput',

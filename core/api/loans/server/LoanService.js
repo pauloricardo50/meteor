@@ -173,9 +173,9 @@ export class LoanService extends CollectionService {
     const newStructureId = this.addStructure({
       loanId,
       structure: {
-        name: `Plan financier ${structures.length + 1}`,
-        propertyId,
         ...structure,
+        propertyId,
+        name: `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({
