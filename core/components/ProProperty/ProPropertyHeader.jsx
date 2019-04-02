@@ -8,17 +8,20 @@ import ImageCarrousel from '../ImageCarrousel';
 type ProPropertyheaderProps = {};
 
 const getImages = (documents = {}, imageUrls = []) => {
+  let images = [];
   if (imageUrls.length) {
-    return imageUrls;
+    images = imageUrls;
   }
 
-  return (
-    (documents.propertyImages
-      && documents.propertyImages.length
-      && documents.propertyImages.map(({ url }) => url)) || [
-      '/img/placeholder.png',
-    ]
-  );
+  if (documents.propertyImages && documents.propertyImages.length) {
+    images = [...images, documents.propertyImages.map(({ url }) => url)];
+  }
+
+  if (images.length === 0) {
+    images = ['/img/placeholder.png'];
+  }
+
+  return images;
 };
 
 const ProPropertyheader = ({ property }: ProPropertyheaderProps) => {
