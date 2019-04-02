@@ -237,12 +237,13 @@ export const loanBase = () => ({
 });
 
 const userPropertyValue = { borrowRatio: 1, propertyValue: 1 };
-const userMaxPropertyValue = {
-  main: { min: userPropertyValue, max: userPropertyValue },
-  second: { min: userPropertyValue, max: userPropertyValue },
-  canton: 1,
-  date: 1,
-};
+// const userMaxPropertyValue = {
+//   main: { min: userPropertyValue, max: userPropertyValue },
+//   second: { min: userPropertyValue, max: userPropertyValue },
+//   canton: 1,
+//   date: 1,
+// };
+const userMaxPropertyValue = 1;
 const adminPropertyValue = {
   ...userPropertyValue,
   organisationName: 1,

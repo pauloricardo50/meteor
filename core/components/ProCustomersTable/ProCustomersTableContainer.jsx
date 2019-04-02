@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps, withProps, withState } from 'recompose';
+import { compose, mapProps, withProps } from 'recompose';
 import moment from 'moment';
 
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
@@ -81,8 +81,8 @@ const makeMapLoan = ({ proUser, isAdmin }) => (loan) => {
         raw:
           maxPropertyValue
           && (residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE
-            ? maxPropertyValue.second.propertyValue
-            : maxPropertyValue.main.propertyValue),
+            ? maxPropertyValue.second.max.propertyValue
+            : maxPropertyValue.main.max.propertyValue),
         label: maxPropertyValue ? (
           residenceType === RESIDENCE_TYPE.SECOND_RESIDENCE ? (
             <Money value={maxPropertyValue.second.max.propertyValue} />
