@@ -22,6 +22,25 @@ const proPropertySchema = new SimpleSchema({
       rowsMax: 15,
     },
   },
+  externalUrl: {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true,
+  },
+  useOpenGraph: {
+    type: Boolean,
+    optional: true,
+    condition: ({ externalUrl }) => externalUrl,
+  },
+  imageUrls: {
+    type: Array,
+    optional: true,
+    defaultValue: [],
+  },
+  'imageUrls.$': {
+    type: String,
+    regEx: SimpleSchema.RegEx.Url,
+  },
 });
 
 const ProPropertyForm = ({

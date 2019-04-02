@@ -708,6 +708,7 @@ export const fullProperty = ({ withSort } = {}) => ({
 
 export const adminProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  useOpenGraph: 1,
   valuation: adminValuation(),
 });
 
@@ -758,6 +759,7 @@ export const proPropertySummary = () => ({
 
 export const proProperty = ({ withSort } = {}) => ({
   ...fullProperty({ withSort }),
+  useOpenGraph: 1,
   users: { name: 1, organisations: { name: 1 }, email: 1, phoneNumber: 1 },
 });
 
