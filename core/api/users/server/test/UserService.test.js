@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Mongo } from 'meteor/mongo';
 
 import { checkEmails } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
@@ -16,7 +15,9 @@ import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import { ROLES } from '../../userConstants';
 import UserService from '../UserService';
 
-describe('UserService', () => {
+describe('UserService', function () {
+  this.timeout(10000);
+
   const firstName = 'testFirstName';
   const lastName = 'testLastName';
   let user;

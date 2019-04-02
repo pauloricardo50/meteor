@@ -702,7 +702,7 @@ describe('LoanService', function () {
     }) => {
       let offerIds = [];
 
-      [...Array(numberOfLenders)].forEach(() => {
+      [...Array(numberOfLenders)].forEach((_, index) => {
         // Create contact
         const address = faker.internet.email();
         addresses = [...addresses, address];
@@ -712,6 +712,7 @@ describe('LoanService', function () {
         // Create org
         const organisationId = Factory.create('organisation', {
           contactIds: [{ _id: contactId }],
+          name: `org ${index}`,
         })._id;
 
         // Create lender
