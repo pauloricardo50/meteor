@@ -81,7 +81,7 @@ export default class AllLoansTable extends Component {
             label: moment(updatedAt).fromNow(),
           },
           {
-            label: <T id={`Forms.steps.${step}`} key="step" />,
+            label: <T id={`Forms.step.${step}`} key="step" />,
             raw: step,
           },
           Calculator.selectPropertyValue({ loan }),

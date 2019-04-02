@@ -16,6 +16,8 @@ import {
   LOAN_STATUS,
   LOAN_VERIFICATION_STATUS,
   CANTONS,
+  EMAIL_IDS,
+  STEPS,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -29,6 +31,7 @@ import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
 import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
+import { sendEmail } from '../../methods';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -77,7 +80,21 @@ export class LoanService extends CollectionService {
   };
 
   setStep({ loanId, nextStep }) {
-    return this.update({ loanId, object: { step: nextStep } });
+    const { step, userId } = this.fetchOne({
+      $filter: { _id: loanId },
+      step: 1,
+      userId: 1,
+    });
+
+    this.update({ loanId, object: { step: nextStep } });
+
+    if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+      sendEmail.run({
+        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
+        userId,
+        params: { loanId },
+      });
+    }
   }
 
   askVerification = ({ loanId }) => {

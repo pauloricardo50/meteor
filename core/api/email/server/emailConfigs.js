@@ -217,6 +217,7 @@ addEmailConfig(EMAIL_IDS.SEND_FEEDBACK_TO_LENDER, {
   },
   createIntlValues: params => params,
 });
+
 // Required params:
 // proName
 // address
@@ -255,6 +256,25 @@ addEmailConfig(EMAIL_IDS.REFER_USER, {
     };
   },
   createIntlValues: params => params,
+});
+
+addEmailConfig(EMAIL_IDS.FIND_LENDER_NOTIFICATION, {
+  template: EMAIL_TEMPLATES.NOTIFICATION_AND_CTA,
+  createOverrides({ loanId }, { title, body, cta }) {
+    const { variables } = this.template;
+
+    return {
+      variables: [
+        { name: variables.TITLE, content: title },
+        { name: variables.BODY, content: body },
+        { name: variables.CTA, content: cta },
+        {
+          name: variables.CTA_URL,
+          content: `${CTA_URL_DEFAULT}/loans/${loanId}`,
+        },
+      ],
+    };
+  },
 });
 
 export default emailConfigs;

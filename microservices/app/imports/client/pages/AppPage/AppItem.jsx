@@ -34,7 +34,7 @@ const AppItem = ({
       </h4>
       <BorrowersSummary borrowers={borrowers} />
       <h1 className="main-text text-center">
-        <T id={`Forms.steps.${step}`} />
+        <T id={`Forms.step.${step}`} />
       </h1>
     </Link>
     <LoanRenamer loanId={loanId} customName={customName} />

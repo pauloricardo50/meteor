@@ -140,6 +140,7 @@ const LoanSchema = new SimpleSchema({
     type: String,
     defaultValue: STEPS.PREPARATION,
     allowedValues: Object.values(STEPS),
+    uniforms: { placeholder: '' },
   },
 });
 

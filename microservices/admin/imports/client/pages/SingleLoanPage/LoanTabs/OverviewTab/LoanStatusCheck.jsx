@@ -21,6 +21,7 @@ const statusChecks = [
             :{' '}
             <Percent
               value={Calculator.personalInfoPercent({ borrowers: borrower })}
+              rounded
             />
           </span>
         ))}
@@ -29,11 +30,15 @@ const statusChecks = [
   },
   {
     label: 'Progrès bien immobilier',
-    value: loan => <Percent value={Calculator.propertyPercent({ loan })} />,
+    value: loan => (
+      <Percent value={Calculator.propertyPercent({ loan })} rounded />
+    ),
   },
   {
     label: 'Progrès refinancement',
-    value: loan => <Percent value={Calculator.refinancingPercent({ loan })} />,
+    value: loan => (
+      <Percent value={Calculator.refinancingPercent({ loan })} rounded />
+    ),
     hide: ({ purchaseType }) => purchaseType !== PURCHASE_TYPE.REFINANCING,
   },
   {
@@ -43,7 +48,7 @@ const statusChecks = [
   {
     label: 'Documents',
     value: loan => (
-      <Percent value={Calculator.filesProgress({ loan }).percent} />
+      <Percent value={Calculator.filesProgress({ loan }).percent} rounded />
     ),
   },
 ];
