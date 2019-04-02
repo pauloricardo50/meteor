@@ -1,4 +1,5 @@
 {
+  "Forms.canton.placeholder": "Renseignez un code postal suisse",
   "FinancingProjectFees.notaryFeesOverride": "Vous avez choisi des frais de notaire sur mesure. Pour accéder aux frais de notaire automatiques, supprimez le contenu du champ \"Frais de notaire\".",
   "Financing.maxPropertyLabel": "Ajouter plan financier",
   "Financing.maxPropertyDescription": "Capacité d'achat max.",
@@ -55,8 +56,6 @@
   "Forms.imageUrls.placeholder": "https://www.google.com/mon-bien-immo.jpg",
   "ProCustomersTable.cacheDisclaimer": "Les informations dans ce tableau peuvent prendre jusqu'à 1h pour se mettre à jour",
   "ProOrganisationPageTabs.referredCustomers": "Clients référés",
-  "Forms.role": "Titre",
-  "Forms.role.placeholder": "Chef d'équipe",
   "OrganisationTabs.referredUsers": "Clients référés",
   "WwwTopNavLinks.appLogin": "Login Clients",
   "WwwTopNavLinks.proLogin": "Login Pro",
@@ -418,7 +417,7 @@
   "Lenders.status": "Statut",
   "Forms.organisationName": "Organisation",
   "Forms.organisations": "Organisations",
-  "Forms.contact.role": "Titre",
+  "Forms.contact.title": "Titre",
   "Forms.useSameAddress": "Utiliser la même adresse",
   "Forms.emails": "Emails",
   "Contacts.insert": "Nouveau contact",

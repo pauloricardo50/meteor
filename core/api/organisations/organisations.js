@@ -49,7 +49,7 @@ export const OrganisationSchema = new SimpleSchema({
   contactIds: { type: Array, defaultValue: [] },
   'contactIds.$': Object,
   'contactIds.$._id': { type: String, optional: true },
-  'contactIds.$.role': { type: String, optional: true },
+  'contactIds.$.title': { type: String, optional: true },
   'contactIds.$.useSameAddress': { type: Boolean, optional: true },
   tags: {
     type: Array,
@@ -61,7 +61,7 @@ export const OrganisationSchema = new SimpleSchema({
   userLinks: { type: Array, defaultValue: [] },
   'userLinks.$': Object,
   'userLinks.$._id': { type: String, optional: true },
-  'userLinks.$.role': { type: String, optional: true },
+  'userLinks.$.title': { type: String, optional: true },
   commissionRates: { type: Array, defaultValue: [] },
   'commissionRates.$': Object,
   'commissionRates.$.rate': percentageField,

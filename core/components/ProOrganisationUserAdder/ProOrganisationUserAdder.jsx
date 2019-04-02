@@ -14,13 +14,13 @@ const schema = new SimpleSchema({
   firstName: String,
   lastName: String,
   phoneNumber: { type: String, optional: true },
-  role: { type: String, optional: true },
+  title: { type: String, optional: true },
 });
 
-const onSubmit = ({ organisationId }) => ({ role, ...user }) =>
+const onSubmit = ({ organisationId }) => ({ title, ...user }) =>
   proInviteUserToOrganisation.run({
     user,
-    role,
+    title,
     organisationId,
   });
 
