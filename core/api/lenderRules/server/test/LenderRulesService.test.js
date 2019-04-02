@@ -116,7 +116,8 @@ describe('LenderRulesService', () => {
     });
 
     it("throws if lenderRules don't belong to the same org", () => {
-      const organisationId2 = Factory.create('organisation')._id;
+      const organisationId2 = Factory.create('organisation', { name: 'org2' })
+        ._id;
 
       const id1 = Factory.create('lenderRules', {
         'organisationLink._id': organisationId,
