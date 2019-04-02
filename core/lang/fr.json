@@ -1,4 +1,9 @@
 {
+  "Forms.variable.gardenArea": "Jardin",
+  "Forms.variable.landArea": "Terrain",
+  "Forms.variable.terraceArea": "Terrasse",
+  "Forms.variable.roomCount": "Pièces",
+  "Forms.variable.constructionYear": "Année de construction",
   "Forms.canton.placeholder": "Renseignez un code postal suisse",
   "FinancingProjectFees.notaryFeesOverride": "Vous avez choisi des frais de notaire sur mesure. Pour accéder aux frais de notaire automatiques, supprimez le contenu du champ \"Frais de notaire\".",
   "Financing.maxPropertyLabel": "Ajouter plan financier",

@@ -8,13 +8,24 @@ import T from 'core/components/Translation';
 
 const schema = PropertySchema.pick(
   'address1',
+  'address2',
   'city',
   'zipCode',
   'value',
+  'description',
+  'propertyType',
+  'houseType',
+  'flatType',
+  'roomCount',
+  'insideArea',
+  'landArea',
+  'terraceArea',
+  'gardenArea',
+  'cnstructionYear',
   'externalUrl',
+  'useOpenGraph',
   'imageUrls',
   'externalId',
-  'useOpenGraph',
 );
 
 type ExternalPropertyAdderProps = {};

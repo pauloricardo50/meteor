@@ -87,7 +87,7 @@ export const PropertySchema = new SimpleSchema({
   description: {
     type: String,
     optional: true,
-    uniforms: { placeholder: null },
+    uniforms: { placeholder: null, multiline: true, rows: 5, rowsMax: 15 },
   },
   category: {
     type: String,
@@ -116,6 +116,8 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.HOUSE_TYPE.DETACHED,
     allowedValues: Object.values(propertyConstants.HOUSE_TYPE),
     uniforms: { placeholder: null },
+    condition: ({ propertyType }) =>
+      propertyType === propertyConstants.PROPERTY_TYPE.HOUSE,
   },
   flatType: {
     type: String,
@@ -123,6 +125,8 @@ export const PropertySchema = new SimpleSchema({
     defaultValue: propertyConstants.FLAT_TYPE.SINGLE_FLOOR_APARTMENT,
     allowedValues: Object.values(propertyConstants.FLAT_TYPE),
     uniforms: { placeholder: null },
+    condition: ({ propertyType }) =>
+      propertyType === propertyConstants.PROPERTY_TYPE.FLAT,
   },
   investmentRent: {
     // Rent of property if investment
@@ -288,6 +292,7 @@ export const PropertySchema = new SimpleSchema({
   useOpenGraph: {
     type: Boolean,
     optional: true,
+    condition: ({ externalUrl }) => externalUrl,
   },
   externalUrl: {
     type: String,
