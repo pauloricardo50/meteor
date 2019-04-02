@@ -7,7 +7,7 @@ import BorrowersSummary from 'core/components/BorrowersSummary';
 import LoanRenamer from './LoanRenamer';
 
 const AppItem = ({
-  loan: { _id: loanId, purchaseType, name, customName, borrowers, logic },
+  loan: { _id: loanId, purchaseType, name, customName, borrowers, step },
 }) => (
   <div className="app-item-wrapper">
     <Link
@@ -34,7 +34,7 @@ const AppItem = ({
       </h4>
       <BorrowersSummary borrowers={borrowers} />
       <h1 className="main-text text-center">
-        <T id={`steps.${logic.step}`} />
+        <T id={`Forms.step.${step}`} />
       </h1>
     </Link>
     <LoanRenamer loanId={loanId} customName={customName} />

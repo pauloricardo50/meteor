@@ -6,6 +6,7 @@ import {
   INTEREST_RATES,
   OWN_FUNDS_TYPES,
   OWN_FUNDS_USAGE_TYPES,
+  STEPS,
 } from '../api/constants';
 import { createFakeBorrowers } from './borrowerFixtures';
 import { createFakeProperty } from './propertyFixtures';
@@ -13,7 +14,6 @@ import adminLoan from '../api/loans/queries/adminLoan';
 import BorrowerService from '../api/borrowers/server/BorrowerService';
 import PropertyService from '../api/properties/server/PropertyService';
 import { createFakeOffer } from './offerFixtures';
-import { logic1, logic2, logic3 } from '../api/loans/fakes';
 
 const purchaseTypes = Object.values(PURCHASE_TYPE);
 
@@ -144,7 +144,7 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
 
   switch (step) {
   case 3:
-    loan.logic = logic3;
+    loan.step = STEPS.GET_CONTRACT;
     loan.adminValidation = {
       bonus2017: 'Does not match with taxes location',
       bankFortune: 'Not enough',
@@ -153,10 +153,10 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
     break;
   case 2:
-    loan.logic = logic2;
+    loan.step = STEPS.FIND_LENDER;
     break;
   default:
-    loan.logic = logic1;
+    loan.step = STEPS.PREPARATION;
   }
 
   return LoanService.insert({ loan, userId });

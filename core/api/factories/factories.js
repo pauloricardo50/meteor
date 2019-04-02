@@ -91,10 +91,7 @@ Factory.define('loan', Loans, {
   createdAt: () => new Date(),
   borrowerIds: [],
   documents: () => ({}),
-  logic: () => ({
-    verification: {},
-    step: STEPS.PREPARATION,
-  }),
+  step: STEPS.PREPARATION,
   name: () => `19-0${Math.floor(Math.random() * 899 + 100)}`,
   emails: () => [],
   propertyIds: [],

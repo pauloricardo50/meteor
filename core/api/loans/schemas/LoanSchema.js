@@ -16,9 +16,9 @@ import {
   OWNER,
   CANTONS,
   SOLVENCY_TYPE,
+  STEPS,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
-import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
 import {
@@ -52,7 +52,6 @@ const LoanSchema = new SimpleSchema({
   },
   general: { type: Object, optional: true, blackbox: true, defaultValue: {} }, // To be removed once migrations are done
   name: { type: String, unique: true, regEx: /^\d{2}-\d{4}$/ },
-  logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
@@ -137,6 +136,12 @@ const LoanSchema = new SimpleSchema({
   'maxPropertyValue.second.max': Object,
   'maxPropertyValue.second.max.propertyValue': moneyField,
   'maxPropertyValue.second.max.borrowRatio': percentageField,
+  step: {
+    type: String,
+    defaultValue: STEPS.PREPARATION,
+    allowedValues: Object.values(STEPS),
+    uniforms: { placeholder: '' },
+  },
 });
 
 export default LoanSchema;

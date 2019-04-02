@@ -1,28 +1,37 @@
 // @flow
 import React from 'react';
 
-import AutoForm from 'core/components/AutoForm';
-import { STEP_ORDER, LOANS_COLLECTION } from 'core/api/constants';
+import UpdateField from 'core/components/UpdateField';
+import { LOANS_COLLECTION, STEPS } from 'core/api/constants';
+import { setLoanStep } from 'core/api/methods';
 
 type LoanStepSetterProps = {};
 
-const LoanStepSetter = ({ loan }: LoanStepSetterProps) => (
-  <AutoForm
-    doc={loan}
-    collection={LOANS_COLLECTION}
-    docId={loan._id}
-    inputs={[
-      {
-        id: 'logic.step',
-        type: 'selectFieldInput',
-        options: STEP_ORDER.map(step => ({
-          id: step,
-          intlId: 'steps',
-        })),
-      },
-    ]}
-    admin
-  />
-);
+const LoanStepSetter = ({ loan }: LoanStepSetterProps) => {
+  const { _id: loanId, step } = loan;
+
+  return (
+    <UpdateField
+      doc={loan}
+      fields={['step']}
+      collection={LOANS_COLLECTION}
+      onSubmit={({ step: nextStep }) => {
+        let confirm = true;
+
+        if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+          confirm = window.confirm('Passer à l\'étape "Identification du prêteur" activera les offres et enverra un mail au client pour l\'inviter à  les consulter.');
+        }
+
+        if (confirm) {
+          return setLoanStep.run({ loanId, nextStep });
+        }
+
+        // Do this to reset the form state..
+        location.reload();
+        return Promise.resolve();
+      }}
+    />
+  );
+};
 
 export default LoanStepSetter;

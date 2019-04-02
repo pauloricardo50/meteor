@@ -6,7 +6,7 @@ import T from 'core/components/Translation';
 import { STEP_ORDER } from 'core/api/constants';
 
 const StepStatus = (props) => {
-  const currentStep = STEP_ORDER.indexOf(props.loan.logic.step);
+  const currentStep = STEP_ORDER.indexOf(props.loan.step);
   return (
     <ul
       style={{

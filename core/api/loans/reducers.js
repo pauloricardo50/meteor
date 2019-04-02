@@ -30,14 +30,11 @@ Loans.addReducers({
     reduce: ({ promotions }) => promotions && promotions.length > 0,
   },
   enableOffers: {
-    body: { logic: 1 },
-    reduce: ({ logic }) => {
-      const step = logic && logic.step;
-      return (
-        step
+    body: { step: 1 },
+    reduce: ({ step }) => (
+      step
         && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
-      );
-    },
+    ),
   },
   hasProProperty: {
     body: { properties: { category: 1 } },

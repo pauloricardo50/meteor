@@ -18,6 +18,7 @@ describe('RevenueService', () => {
         organisations: {
           _id: 'org',
           _factory: 'organisation',
+          name: 'org1',
         },
         revenues: [],
       });

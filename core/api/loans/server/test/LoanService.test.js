@@ -7,7 +7,7 @@ import faker from 'faker/locale/fr';
 import { checkEmails } from '../../../../utils/testHelpers';
 import generator from '../../../factories';
 import LoanService from '../LoanService';
-import { OWN_FUNDS_TYPES } from '../../../borrowers/borrowerConstants';
+import { OWN_FUNDS_TYPES, STEPS, EMAIL_IDS } from '../../../constants';
 import BorrowerService from '../../../borrowers/server/BorrowerService';
 import PropertyService from '../../../properties/server/PropertyService';
 import LenderService from '../../../lenders/server/LenderService';
@@ -702,7 +702,7 @@ describe('LoanService', function () {
     }) => {
       let offerIds = [];
 
-      [...Array(numberOfLenders)].forEach(() => {
+      [...Array(numberOfLenders)].forEach((_, index) => {
         // Create contact
         const address = faker.internet.email();
         addresses = [...addresses, address];
@@ -712,6 +712,7 @@ describe('LoanService', function () {
         // Create org
         const organisationId = Factory.create('organisation', {
           contactIds: [{ _id: contactId }],
+          name: `org ${index}`,
         })._id;
 
         // Create lender
@@ -832,6 +833,66 @@ describe('LoanService', function () {
         .then((emails) => {
           expect(emails.length).to.equal(0);
         });
+    });
+  });
+
+  describe('setStep', () => {
+    it('sets the step', () => {
+      generator({
+        loans: { _id: 'id', step: STEPS.FIND_LENDER, _factory: 'loan' },
+      });
+
+      LoanService.setStep({ loanId: 'id', nextStep: STEPS.GET_CONTRACT });
+
+      loan = LoanService.get('id');
+
+      expect(loan.step).to.equal(STEPS.GET_CONTRACT);
+    });
+
+    it('sends a notification email if the step goes from PREPARATION to FIND_LENDER', () => {
+      generator({
+        loans: {
+          _id: 'loanId',
+          step: STEPS.PREPARATION,
+          _factory: 'loan',
+          user: {
+            _factory: 'user',
+            emails: [{ address: 'john@doe.com', verified: false }],
+          },
+        },
+      });
+
+      LoanService.setStep({ loanId: 'loanId', nextStep: STEPS.FIND_LENDER });
+
+      loan = LoanService.get('loanId');
+
+      expect(loan.step).to.equal(STEPS.FIND_LENDER);
+
+      return checkEmails(1).then((emails) => {
+        const {
+          emailId,
+          address,
+          response: { status },
+          template: {
+            template_name,
+            message: {
+              from_email,
+              subject,
+              merge_vars,
+              from_name,
+              bcc_address,
+            },
+          },
+        } = emails[0];
+
+        expect(status).to.equal('sent');
+        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+        expect(address).to.equal('john@doe.com');
+        expect(from_email).to.equal('info@e-potek.ch');
+        expect(from_name).to.equal('e-Potek');
+        expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
+        expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/loanId');
+      });
     });
   });
 });

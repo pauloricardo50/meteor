@@ -1,6 +1,6 @@
 import { withProps, compose, withState } from 'recompose';
 
-import { getMaxPropertyValueWithoutBorrowRatio } from 'core/api/methods';
+import { setMaxPropertyValueWithoutBorrowRatio } from 'core/api/methods';
 import Calculator from 'core/utils/Calculator';
 import { RESIDENCE_TYPE } from 'core/api/constants';
 
@@ -48,6 +48,6 @@ export default compose(
   withProps(({ loan: { _id: loanId, borrowers = [], maxPropertyValue } }) => ({
     state: getState({ borrowers, maxPropertyValue }),
     calculateSolvency: ({ canton }) =>
-      getMaxPropertyValueWithoutBorrowRatio.run({ canton, loanId }),
+      setMaxPropertyValueWithoutBorrowRatio.run({ canton, loanId }),
   })),
 );

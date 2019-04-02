@@ -54,7 +54,13 @@ const getTabs = (props) => {
     {
       id: 'properties',
       Component: PropertiesTab,
-      additionalLabel: <Percent value={propertyProgress} rounded />,
+      additionalLabel: (
+        <PercentWithStatus
+          status={propertyProgress < 1 ? null : undefined}
+          value={propertyProgress}
+          rounded
+        />
+      ),
     },
     { id: 'lenders', Component: LendersTab },
     // { id: 'communication', Component: CommunicationTab },

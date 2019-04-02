@@ -1,13 +1,5 @@
 import Calculator from './Calculator';
 
-export const loanIsVerified = ({
-  loan: {
-    logic: {
-      verification: { validated },
-    },
-  },
-}) => validated !== undefined;
-
 export const formatLoanWithStructure = ({
   selectedStructure,
   structures,
