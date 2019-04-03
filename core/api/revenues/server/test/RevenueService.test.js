@@ -107,11 +107,12 @@ describe('RevenueService', () => {
         organisations: {
           _id: 'org',
           _factory: 'organisation',
+          name: 'org1',
         },
         revenues: [
           {
             organisations: [
-              { _id: 'org', name: 'org1' },
+              { _id: 'org' },
               { _id: 'org2', _factory: 'organisation' },
             ],
             amount: 100,

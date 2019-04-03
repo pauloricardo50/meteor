@@ -17,10 +17,12 @@ describe('Migration 3', () => {
         Loans.rawCollection().insert({
           _id: 'loan1',
           general: { residenceType: 'dude' },
+          name: 'a',
         }),
         Loans.rawCollection().insert({
           _id: 'loan2',
           general: { residenceType: 'dude' },
+          name: 'b',
         }),
       ])
         .then(up)
@@ -36,8 +38,16 @@ describe('Migration 3', () => {
   describe('down', () => {
     it('adds a category on all Loans', () =>
       Promise.all([
-        Loans.rawCollection().insert({ _id: 'loan1', residenceType: 'dude' }),
-        Loans.rawCollection().insert({ _id: 'loan2', residenceType: 'dude' }),
+        Loans.rawCollection().insert({
+          _id: 'loan1',
+          residenceType: 'dude',
+          name: 'a',
+        }),
+        Loans.rawCollection().insert({
+          _id: 'loan2',
+          residenceType: 'dude',
+          name: 'b',
+        }),
       ])
         .then(down)
         .then(() => {
