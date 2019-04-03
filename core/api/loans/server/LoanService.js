@@ -81,7 +81,7 @@ export class LoanService extends CollectionService {
 
   setStep({ loanId, nextStep }) {
     const { step, userId } = this.fetchOne({
-      $filter: { _id: loanId },
+      $filters: { _id: loanId },
       step: 1,
       userId: 1,
     });

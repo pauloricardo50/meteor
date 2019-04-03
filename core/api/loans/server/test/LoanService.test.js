@@ -852,7 +852,7 @@ describe('LoanService', function () {
     it('sends a notification email if the step goes from PREPARATION to FIND_LENDER', () => {
       generator({
         loans: {
-          _id: 'loanId',
+          _id: 'myLoan',
           step: STEPS.PREPARATION,
           _factory: 'loan',
           user: {
@@ -862,9 +862,9 @@ describe('LoanService', function () {
         },
       });
 
-      LoanService.setStep({ loanId: 'loanId', nextStep: STEPS.FIND_LENDER });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.FIND_LENDER });
 
-      loan = LoanService.get('loanId');
+      loan = LoanService.get('myLoan');
 
       expect(loan.step).to.equal(STEPS.FIND_LENDER);
 
@@ -891,7 +891,7 @@ describe('LoanService', function () {
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/loanId');
+        expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
       });
     });
   });
