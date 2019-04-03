@@ -56,14 +56,13 @@ describe('RESTAPI', () => {
   api.addEndpoint(
     '/method',
     'POST',
-    ({ user: { _id: userId }, body: { payload } }) =>
-      withMeteorUserId(
-        userId,
-        () =>
-          new Promise((resolve, reject) =>
-            Meteor.call('apiTestMethod', (err, res) =>
-              (err ? reject(err) : resolve(`${res} ${payload}`)))),
-      ),
+    ({ user: { _id: userId }, body: { payload }, query: { param } }) => withMeteorUserId(
+      userId,
+      () =>
+        new Promise((resolve, reject) =>
+          Meteor.call('apiTestMethod', (err, res) =>
+            (err ? reject(err) : resolve(`${res} ${payload} ${param}`)))),
+    ),
   );
 
   before(function () {
@@ -88,13 +87,12 @@ describe('RESTAPI', () => {
 
   context('returns an error when', () => {
     it('endpoint path is unknown', () => {
-      const query = getTimestampAndNonce();
+      const { timestamp, nonce } = getTimestampAndNonce();
       return fetchAndCheckResponse({
         url: '/unknown_endpoint',
-        query,
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey, privateKey, query }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/unknown_endpoint',
@@ -108,13 +106,12 @@ describe('RESTAPI', () => {
     });
 
     it('endpoint method is unknown', () => {
-      const query = getTimestampAndNonce();
+      const { timestamp, nonce } = getTimestampAndNonce();
       return fetchAndCheckResponse({
         url: '/test',
-        query,
         data: {
           method: 'PATCH',
-          headers: makeHeaders({ publicKey, privateKey, query }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/test',
@@ -172,23 +169,26 @@ describe('RESTAPI', () => {
       }));
 
     it('attemps a replay attack with same nonce', () => {
-      const query = getTimestampAndNonce();
+      const { timestamp, nonce } = getTimestampAndNonce();
 
       return fetchAndCheckResponse({
         url: '/test',
-        query,
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey, privateKey, query }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: makeTestRoute('POST')({ user }),
       }).then(() =>
         fetchAndCheckResponse({
           url: '/test',
-          query,
           data: {
             method: 'POST',
-            headers: makeHeaders({ publicKey, privateKey, query }),
+            headers: makeHeaders({
+              publicKey,
+              privateKey,
+              timestamp: Math.round(new Date().valueOf() / 1000).toString(),
+              nonce,
+            }),
           },
           expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
           status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
@@ -196,16 +196,16 @@ describe('RESTAPI', () => {
     });
 
     it('attemps a replay attack with old timestamp', () => {
-      const query = {
-        timestamp: (Math.round(new Date().valueOf() / 1000) - 32).toString(),
-        nonce: '1hkfi57g',
-      };
+      const timestamp = (
+        Math.round(new Date().valueOf() / 1000) - 32
+      ).toString();
+      const nonce = '1hkfi57g';
+
       return fetchAndCheckResponse({
         url: '/test',
-        query,
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey, privateKey, query }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
@@ -214,59 +214,54 @@ describe('RESTAPI', () => {
   });
 
   it('can authenticate and get a response', () => {
-    const query = getTimestampAndNonce();
+    const { timestamp, nonce } = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
       url: '/test',
-      query,
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
     });
   });
 
-  it('removes old nonces', () => {
-    const query = {
-      timestamp: Math.round(new Date().valueOf() / 1000).toString(),
-      nonce: 'testNonce',
-    };
-
-    return fetchAndCheckResponse({
+  it('removes old nonces', () =>
+    fetchAndCheckResponse({
       url: '/test',
-      query,
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({
+          publicKey,
+          privateKey,
+          timestamp: Math.round(new Date().valueOf() / 1000).toString(),
+          nonce: 'testNonce',
+        }),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
-    });
-  });
+    }));
 
   it('can authenticate and get a response from a different method for the same endpoint', () => {
-    const query = getTimestampAndNonce();
+    const { timestamp, nonce } = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
       url: '/test',
-      query,
       data: {
         method: 'PUT',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: makeTestRoute('PUT')({ user }),
     });
   });
 
   it('returns an internal server error if the error is not a meteor.error', () => {
-    const query = getTimestampAndNonce();
+    const { timestamp, nonce } = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
       url: '/test',
-      query,
       data: {
         method: 'GET',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: { message: 'Internal server error', status: 500 },
       status: 500,
@@ -274,14 +269,13 @@ describe('RESTAPI', () => {
   });
 
   it('displays the error if it is a meteor.error', () => {
-    const query = getTimestampAndNonce();
+    const { timestamp, nonce } = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
       url: '/test',
-      query,
       data: {
         method: 'DELETE',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: { message: '[meteor error]', status: 500 },
       status: 500,
@@ -289,44 +283,50 @@ describe('RESTAPI', () => {
   });
 
   it('calls meteor methods with the right userId', () => {
-    const query = getTimestampAndNonce();
-    const body = { payload: 'test' };
+    const { timestamp, nonce } = getTimestampAndNonce();
+    const body = { payload: 'testPayload' };
+    const query = { param: 'testParam' };
 
     return fetchAndCheckResponse({
       url: '/method',
       query,
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey, privateKey, query, body }),
+        headers: makeHeaders({
+          publicKey,
+          privateKey,
+          body,
+          timestamp,
+          nonce,
+          query,
+        }),
         body: JSON.stringify(body),
       },
-      expectedResponse: `${user._id} test`,
+      expectedResponse: `${user._id} testPayload testParam`,
     });
   });
 
   it('does not crash if undefined is returned by the endpoint', () => {
-    const query = getTimestampAndNonce();
+    const { timestamp, nonce } = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
       url: '/undefined',
-      query,
       data: {
         method: 'GET',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: '',
     });
   });
 
   it('does not match sub endpoints', () => {
-    const query = getTimestampAndNonce();
+    const { timestamp, nonce } = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
       url: '/test/subtest',
-      query,
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey, privateKey, query }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
         path: '/api/test/subtest',

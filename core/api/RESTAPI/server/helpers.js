@@ -16,7 +16,7 @@ export const AUTH_ITEMS = {
 export const getHeader = (req, name) => req.headers[name];
 
 const getAuthItem = ({ req, item }) => {
-  const authorization = getHeader(req, 'authorization');
+  const authorization = getHeader(req, 'x-epotek-authorization');
   if (!authorization) {
     return undefined;
   }
@@ -90,6 +90,8 @@ export const getErrorObject = (error, res) => {
 
 export const verifySignature = (req) => {
   const { publicKey, signature, body, query } = req;
+  const timestamp = getHeader(req, 'x-epotek-timestamp');
+  const nonce = getHeader(req, 'x-epotek-nonce');
 
   const method = getRequestMethod(req);
 
@@ -97,16 +99,17 @@ export const verifySignature = (req) => {
   const key = new NodeRSA();
   key.importKey(publicKey, 'pkcs1-public-pem');
 
-  let objectToVerify;
+  let objectToVerify = { security: { ...sortObject({ timestamp, nonce }) } };
 
-  // Sort query params
-  const sortedQuery = sortObject(query);
-  objectToVerify = { queryParams: { ...sortedQuery } };
+  if (Object.keys(query).length > 0) {
+    objectToVerify = {
+      ...objectToVerify,
+      queryParams: { ...sortObject(query) },
+    };
+  }
 
   if (!['GET', 'HEAD'].includes(method) && Object.keys(body).length > 0) {
-    // Sort body
-    const sortedBody = sortObject(body);
-    objectToVerify = { ...objectToVerify, body: { ...sortedBody } };
+    objectToVerify = { ...objectToVerify, body: { ...sortObject(body) } };
   }
 
   // Verify signature

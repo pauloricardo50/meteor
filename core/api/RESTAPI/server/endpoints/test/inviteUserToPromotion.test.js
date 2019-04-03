@@ -30,17 +30,17 @@ const api = new RESTAPI();
 api.addEndpoint('/promotions/inviteCustomer', 'POST', inviteUserToPromotion);
 
 const inviteUser = ({ userData, expectedResponse, status, id }) => {
-  const query = getTimestampAndNonce();
+  const { timestamp, nonce } = getTimestampAndNonce();
   const body = { promotionId: id || promotionId, user: userData };
   return fetchAndCheckResponse({
     url: '/promotions/inviteCustomer',
-    query,
     data: {
       method: 'POST',
       headers: makeHeaders({
         publicKey: keyPair.publicKey,
         privateKey: keyPair.privateKey,
-        query,
+        timestamp,
+        nonce,
         body,
       }),
       body: JSON.stringify(body),

@@ -24,7 +24,8 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
 
 // Handles replay attacks
 const replayHandlerMiddleware = (req, res, next) => {
-  const { query: { timestamp, nonce } = {} } = req;
+  const timestamp = getHeader(req, 'x-epotek-timestamp');
+  const nonce = getHeader(req, 'x-epotek-nonce');
 
   if (!timestamp || !nonce) {
     return next(REST_API_ERRORS.AUTHORIZATION_FAILED);

@@ -47,21 +47,22 @@ const signBody = ({ body, privateKey }) => {
   return signature;
 };
 
-const signRequest = ({ body, query, privateKey }) => {
+const signRequest = ({ body, query, timestamp, nonce, privateKey }) => {
   if (!privateKey) {
     return '12345';
   }
 
   const key = new NodeRSA();
   key.importKey(privateKey.replace(/\r?\n|\r/g, ''), 'pkcs1-private-pem');
-  let objectToSign;
 
-  const sortedQuery = sortObject(query);
-  objectToSign = { queryParams: { ...sortedQuery } };
+  let objectToSign = { security: sortObject({ timestamp, nonce }) };
+
+  if (query) {
+    objectToSign = { ...objectToSign, queryParams: sortObject(query) };
+  }
 
   if (body) {
-    const sortedBody = sortObject(body);
-    objectToSign = { ...objectToSign, body: { ...sortedBody } };
+    objectToSign = { ...objectToSign, body: sortObject(body) };
   }
 
   const signature = key.sign(JSON.stringify(objectToSign), 'base64', 'utf8');
@@ -91,11 +92,25 @@ export const makeBody = ({
   return JSON.stringify({ ...body, signature: signatureOverride || signature });
 };
 
-export const makeHeaders = ({ publicKey, body, query, privateKey }) => ({
+export const makeHeaders = ({
+  publicKey,
+  body,
+  timestamp,
+  nonce,
+  query,
+  privateKey,
+}) => ({
   'Content-Type': 'application/json',
-  Authorization: `EPOTEK ${publicKey.replace(/\r?\n|\r/g, '')}:${signRequest({
+  'X-EPOTEK-Authorization': `EPOTEK ${publicKey.replace(
+    /\r?\n|\r/g,
+    '',
+  )}:${signRequest({
     body,
     query,
     privateKey,
+    timestamp,
+    nonce,
   })}`,
+  'X-EPOTEK-Nonce': nonce,
+  'X-EPOTEK-Timestamp': timestamp,
 });
