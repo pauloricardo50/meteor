@@ -6,8 +6,7 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
-  moneyField,
-  percentageField,
+
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -15,7 +14,6 @@ import {
   PURCHASE_TYPE,
   OWNER,
   CANTONS,
-  SOLVENCY_TYPE,
   STEPS,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
@@ -25,6 +23,7 @@ import {
   borrowerIdsSchema,
   propertyIdsSchema,
   previousLoanTranchesSchema,
+  maxPropertyValueSchema,
 } from './otherSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
@@ -111,37 +110,13 @@ const LoanSchema = new SimpleSchema({
     blackbox: true,
     optional: true,
   },
-  maxPropertyValue: { type: Object, optional: true },
-  'maxPropertyValue.type': {
-    type: String,
-    allowedValues: Object.values(SOLVENCY_TYPE),
-    defaultValue: SOLVENCY_TYPE.SIMPLE,
-  },
-  'maxPropertyValue.canton': {
-    type: String,
-    allowedValues: Object.keys(CANTONS),
-  },
-  'maxPropertyValue.date': Date,
-  'maxPropertyValue.main': Object,
-  'maxPropertyValue.main.min': Object,
-  'maxPropertyValue.main.min.propertyValue': moneyField,
-  'maxPropertyValue.main.min.borrowRatio': percentageField,
-  'maxPropertyValue.main.max': Object,
-  'maxPropertyValue.main.max.propertyValue': moneyField,
-  'maxPropertyValue.main.max.borrowRatio': percentageField,
-  'maxPropertyValue.second': Object,
-  'maxPropertyValue.second.min': Object,
-  'maxPropertyValue.second.min.propertyValue': moneyField,
-  'maxPropertyValue.second.min.borrowRatio': percentageField,
-  'maxPropertyValue.second.max': Object,
-  'maxPropertyValue.second.max.propertyValue': moneyField,
-  'maxPropertyValue.second.max.borrowRatio': percentageField,
   step: {
     type: String,
     defaultValue: STEPS.PREPARATION,
     allowedValues: Object.values(STEPS),
     uniforms: { placeholder: '' },
   },
+  ...maxPropertyValueSchema,
 });
 
 export default LoanSchema;
