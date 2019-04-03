@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import fetch from 'node-fetch';
 import NodeRSA from 'node-rsa';
+import queryString from 'query-string';
 
 import { sortObject } from 'core/api/helpers/index';
 
@@ -14,14 +15,27 @@ const checkResponse = ({ res, expectedResponse, status }) =>
   res.json().then((body) => {
     expect(body).to.deep.equal(expectedResponse);
   });
+
+export const getTimestampAndNonce = () => {
+  const timestamp = Math.round(new Date().valueOf() / 1000).toString();
+  const nonce = Math.random()
+    .toString(36)
+    .substr(2, 8);
+
+  return { timestamp, nonce };
+};
+
 export const fetchAndCheckResponse = ({
   url,
+  query,
   data,
   expectedResponse,
   status,
 }) =>
-  fetch(`http://localhost:${API_PORT}/api${url}`, data).then(res =>
-    checkResponse({ res, expectedResponse, status }));
+  fetch(
+    `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query)}`,
+    data,
+  ).then(res => checkResponse({ res, expectedResponse, status }));
 
 const signBody = ({ body, privateKey }) => {
   const key = new NodeRSA();
@@ -33,13 +47,25 @@ const signBody = ({ body, privateKey }) => {
   return signature;
 };
 
-const getTimestampAndNonce = () => {
-  const timestamp = Math.round(new Date().valueOf() / 1000);
-  const nonce = Math.random()
-    .toString(36)
-    .substr(2, 8);
+const signRequest = ({ body, query, privateKey }) => {
+  if (!privateKey) {
+    return '12345';
+  }
 
-  return { timestamp, nonce };
+  const key = new NodeRSA();
+  key.importKey(privateKey.replace(/\r?\n|\r/g, ''), 'pkcs1-private-pem');
+  let objectToSign;
+
+  const sortedQuery = sortObject(query);
+  objectToSign = { queryParams: { ...sortedQuery } };
+
+  if (body) {
+    const sortedBody = sortObject(body);
+    objectToSign = { ...objectToSign, body: { ...sortedBody } };
+  }
+
+  const signature = key.sign(JSON.stringify(objectToSign), 'base64', 'utf8');
+  return signature;
 };
 
 export const makeBody = ({
@@ -65,7 +91,11 @@ export const makeBody = ({
   return JSON.stringify({ ...body, signature: signatureOverride || signature });
 };
 
-export const makeHeaders = ({ publicKey }) => ({
+export const makeHeaders = ({ publicKey, body, query, privateKey }) => ({
   'Content-Type': 'application/json',
-  Authorization: `Bearer ${publicKey.replace(/\r?\n|\r/g, '')}`,
+  Authorization: `EPOTEK ${publicKey.replace(/\r?\n|\r/g, '')}:${signRequest({
+    body,
+    query,
+    privateKey,
+  })}`,
 });

@@ -17,7 +17,7 @@ export const REST_API_ERRORS = {
   WRONG_AUTHORIZATION_TYPE: {
     status: HTTP_STATUS_CODES.BAD_REQUEST,
     errorName: 'WRONG_AUTHORIZATION_TYPE',
-    message: 'Authorization must be of type Bearer PublicKey',
+    message: 'Authorization must be of type EPOTEK PublicKey:Signature',
   },
   AUTHORIZATION_FAILED: {
     status: HTTP_STATUS_CODES.FORBIDDEN,

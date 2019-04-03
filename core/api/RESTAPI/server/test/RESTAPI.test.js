@@ -10,6 +10,7 @@ import {
   fetchAndCheckResponse,
   makeBody,
   makeHeaders,
+  getTimestampAndNonce,
 } from './apiTestHelpers.test';
 
 const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
@@ -39,7 +40,7 @@ Meteor.methods({
   },
 });
 
-describe('RESTAPI', () => {
+describe.only('RESTAPI', () => {
   let user;
 
   const api = new RESTAPI();
@@ -82,13 +83,14 @@ describe('RESTAPI', () => {
   });
 
   context('returns an error when', () => {
-    it('endpoint path is unknown', () =>
-      fetchAndCheckResponse({
+    it.only('endpoint path is unknown', () => {
+      const query = getTimestampAndNonce();
+      return fetchAndCheckResponse({
         url: '/unknown_endpoint',
+        query,
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey }),
+          headers: makeHeaders({ publicKey, privateKey, query }),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/unknown_endpoint',
@@ -98,15 +100,17 @@ describe('RESTAPI', () => {
           path: '/api/unknown_endpoint',
           method: 'POST',
         }).status,
-      }));
+      });
+    });
 
-    it('endpoint method is unknown', () =>
-      fetchAndCheckResponse({
+    it.only('endpoint method is unknown', () => {
+      const query = getTimestampAndNonce();
+      return fetchAndCheckResponse({
         url: '/test',
+        query,
         data: {
           method: 'PATCH',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey }),
+          headers: makeHeaders({ publicKey, privateKey, query }),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/test',
@@ -116,9 +120,10 @@ describe('RESTAPI', () => {
           path: '/api/test',
           method: 'PATCH',
         }).status,
-      }));
+      });
+    });
 
-    it('content type is wrong', () =>
+    it.only('content type is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
@@ -129,7 +134,7 @@ describe('RESTAPI', () => {
         status: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text').status,
       }));
 
-    it('authorization type is wrong', () =>
+    it.only('authorization type is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
@@ -140,88 +145,100 @@ describe('RESTAPI', () => {
         status: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE.status,
       }));
 
-    it('public key is wrong', () =>
+    it.only('public key is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'POST',
           headers: makeHeaders({ publicKey: '12345' }),
-          body: makeBody({ privateKey }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
-    it('signature is wrong', () =>
+    it.only('signature is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'POST',
           headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey, signatureOverride: '12345' }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
-    it('attemps a replay attack with same nonce', () =>
-      fetchAndCheckResponse({
+    it.only('attemps a replay attack with same nonce', () => {
+      const query = getTimestampAndNonce();
+
+      return fetchAndCheckResponse({
         url: '/test',
+        query,
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey, nonceOverride: 12345 }),
+          headers: makeHeaders({ publicKey, privateKey, query }),
         },
         expectedResponse: makeTestRoute('POST')({ user }),
       }).then(() =>
         fetchAndCheckResponse({
           url: '/test',
+          query,
           data: {
             method: 'POST',
-            headers: makeHeaders({ publicKey }),
-            body: makeBody({ privateKey, nonceOverride: 12345 }),
+            headers: makeHeaders({ publicKey, privateKey, query }),
           },
           expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
           status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
-        })));
+        }));
+    });
 
-    it('attemps a replay attack with old timestamp', () =>
-      fetchAndCheckResponse({
+    it.only('attemps a replay attack with old timestamp', () => {
+      const query = {
+        timestamp: (Math.round(new Date().valueOf() / 1000) - 32).toString(),
+        nonce: '1hkfi57g',
+      };
+      return fetchAndCheckResponse({
         url: '/test',
+        query,
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({
-            privateKey,
-            timestampOverride: Math.round(new Date().valueOf() / 1000) - 32,
-          }),
+          headers: makeHeaders({ publicKey, privateKey, query }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
-      }));
+      });
+    });
   });
 
-  it('can authenticate and get a response', () =>
-    fetchAndCheckResponse({
-      url: '/test',
-      data: {
-        method: 'POST',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
-      },
-      expectedResponse: makeTestRoute('POST')({ user }),
-    }));
+  it.only('can authenticate and get a response', () => {
+    const query = getTimestampAndNonce();
 
-  it('removes old nonces', () =>
-    fetchAndCheckResponse({
+    return fetchAndCheckResponse({
       url: '/test',
+      query,
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey, nonceOverride: 'testNonce' }),
+        headers: makeHeaders({ publicKey, privateKey, query }),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
-    }));
+    });
+  });
+
+  it.only('removes old nonces', () => {
+    const query = {
+      timestamp: Math.round(new Date().valueOf() / 1000).toString(),
+      nonce: 'testNonce',
+    };
+
+    return fetchAndCheckResponse({
+      url: '/test',
+      query,
+      data: {
+        method: 'POST',
+        headers: makeHeaders({ publicKey, privateKey, query }),
+      },
+      expectedResponse: makeTestRoute('POST')({ user }),
+    });
+  });
 
   it('can authenticate and get a response from a different method for the same endpoint', () =>
     fetchAndCheckResponse({
