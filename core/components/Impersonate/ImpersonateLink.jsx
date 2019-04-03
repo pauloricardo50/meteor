@@ -35,7 +35,7 @@ const ImpersonateLink = ({ user, className, classes }) => {
         title={<T id="Impersonation.impersonateLinkText" />}
       >
         <Button fab color="error" className={classes.cssRoot}>
-          <Icon type="supervisorAccount" />
+          <Icon type="supervisorAccount" size={32} />
         </Button>
       </Tooltip>
     </a>
