@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'core/components/Link';
 
 import { T, Money } from 'core/components/Translation';
 import FullDate from 'core/components/dateComponents/FullDate';
 import ConfirmMethod from 'core/components/ConfirmMethod';
-import { propertyDelete } from 'imports/core/api/methods/index';
+import { propertyDelete } from 'core/api/methods';
+import { USERS_COLLECTION } from 'core/api/constants';
+import CollectionIconLink from 'core/components/IconLink/CollectionIconLink';
 import { getPropertyAddress } from './SinglePropertyPage';
 
 const SinglePropertyHeader = ({
@@ -13,12 +14,11 @@ const SinglePropertyHeader = ({
     _id: propertyId,
     address1,
     city,
-    zipCode,
-    totalValue,
-    roomCount,
-    insideArea,
     createdAt,
+    totalValue,
+    updatedAt,
     user,
+    zipCode,
   },
   loanId,
 }) => (
@@ -45,25 +45,37 @@ const SinglePropertyHeader = ({
       </div>
     </div>
 
-    <h2>
+    <h2 className="secondary">
       <Money value={totalValue} />
     </h2>
 
     <div className="bottom">
       <p className="created-at">
         {user && (
-          <T
-            id="SinglePropertyPageHeader.metadata"
-            values={{
-              user: (
-                <Link to={`/users/${user._id}`} key="userLink">
-                  <b>{user.name}</b>
-                </Link>
-              ),
-              date: <FullDate date={createdAt} />,
-            }}
+          <CollectionIconLink
+            relatedDoc={{ ...user, collection: USERS_COLLECTION }}
           />
         )}
+        {user && user.assignedEmployee && (
+          <span>
+            <T id="SinglePropertyPageHeader.assignedTo" />
+            &nbsp;
+            <CollectionIconLink
+              relatedDoc={{
+                ...user.assignedEmployee,
+                collection: USERS_COLLECTION,
+              }}
+            />
+          </span>
+        )}
+        <span>
+          Créé à &nbsp;
+          <FullDate date={createdAt} />
+        </span>
+        <span>
+          Modifié à &nbsp;
+          <FullDate date={updatedAt} />
+        </span>
       </p>
     </div>
   </div>

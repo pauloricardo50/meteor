@@ -51,18 +51,11 @@
 
     margin-bottom: 32px;
 
-     > * {
+    > * {
       display: inline-flex;
       align-items: center;
 
       margin-bottom: 4px;
-    }
-
-    a:hover {
-      transform: scale(1.03);
-
-      opacity: 1;
-      color: #000;
     }
   }
 }
