@@ -52,11 +52,19 @@ class CollectionService {
     return this.collection.findOne(...args);
   }
 
+  checkQuery(body) {
+    if (body.$filter) {
+      throw new Meteor.Error('$filter found in query body, did you mean $filters?');
+    }
+  }
+
   createQuery(...args) {
+    this.checkQuery(args[0]);
     return this.collection.createQuery(...args);
   }
 
   fetchOne(...args) {
+    this.checkQuery(args[0]);
     return this.createQuery(...args).fetchOne();
   }
 
@@ -72,6 +80,7 @@ class CollectionService {
   }
 
   fetch(...args) {
+    this.checkQuery(args[0]);
     return this.createQuery(...args).fetch();
   }
 
@@ -80,7 +89,8 @@ class CollectionService {
   }
 
   count(...args) {
-    return this.collection.createQuery(...args).count();
+    this.checkQuery(args[0]);
+    return this.createQuery(...args).count();
   }
 
   countAll() {
@@ -118,7 +128,7 @@ class CollectionService {
 
   // Don't return the results from linker
   removeLink({ id, linkName, linkId }) {
-    const linker = this.collection.getLink(id, linkName);
+    const linker = this.getLink(id, linkName);
     const {
       linker: { strategy },
     } = linker;
@@ -136,7 +146,7 @@ class CollectionService {
   }
 
   updateLinkMetadata({ id, linkName, linkId, metadata }) {
-    const linker = this.collection.getLink(id, linkName);
+    const linker = this.getLink(id, linkName);
     const {
       linker: { strategy },
     } = linker;
@@ -154,9 +164,7 @@ class CollectionService {
   }
 
   getAssignedEmployee({ id }) {
-    const { assignee } = this.collection
-      .createQuery({ $filters: { _id: id }, assignee: 1 })
-      .fetchOne();
+    const { assignee } = this.fetchOne({ $filters: { _id: id }, assignee: 1 });
 
     return assignee;
   }
