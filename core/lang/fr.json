@@ -1013,7 +1013,7 @@
   "ContactButton.byPhone": "Par téléphone",
   "ContactButton.yourAdvisor": "Votre conseiller",
   "ContactPage.address": "Adresse",
-  "ContactPage.description": "Un de nos spécialistes hypothécaires va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes",
+  "ContactPage.description": "Un de nos spécialistes hypothécaires va vous contacter rapidement pour échanger plus amplement sur votre projet ainsi que pour orchestrer les prochaines étapes.{verticalSpace}Il/elle vous donnera accès à votre interface e-Potek où vous pourrez avancer sur votre demande de prêt ensemble.",
   "ContactPage.email": "Adresse email",
   "ContactPage.phone": "Téléphone",
   "ContactPage.title": "Merci de votre intérêt",
