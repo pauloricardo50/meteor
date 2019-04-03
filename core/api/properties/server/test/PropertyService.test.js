@@ -320,7 +320,6 @@ describe('PropertyService', function () {
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.equal(`e-Potek - "Rue du parc 4"`);
-        console.log(merge_vars[0].vars.find(({ name }) => name === 'BODY').content)
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
       });
     });
