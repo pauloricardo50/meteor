@@ -40,7 +40,7 @@ Meteor.methods({
   },
 });
 
-describe.only('RESTAPI', () => {
+describe('RESTAPI', () => {
   let user;
 
   const api = new RESTAPI();
@@ -53,14 +53,18 @@ describe.only('RESTAPI', () => {
     throw new Meteor.Error('meteor error');
   });
   api.addEndpoint('/undefined', 'GET', () => {});
-  api.addEndpoint('/method', 'POST', ({ user: { _id: userId }, body: {payload} }) =>
-    withMeteorUserId(
-      userId,
-      () =>
-        new Promise((resolve, reject) =>
-          Meteor.call('apiTestMethod', (err, res) =>
-            (err ? reject(err) : resolve(`${res} ${payload}`)))),
-    ));
+  api.addEndpoint(
+    '/method',
+    'POST',
+    ({ user: { _id: userId }, body: { payload } }) =>
+      withMeteorUserId(
+        userId,
+        () =>
+          new Promise((resolve, reject) =>
+            Meteor.call('apiTestMethod', (err, res) =>
+              (err ? reject(err) : resolve(`${res} ${payload}`)))),
+      ),
+  );
 
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
@@ -287,7 +291,6 @@ describe.only('RESTAPI', () => {
   it('calls meteor methods with the right userId', () => {
     const query = getTimestampAndNonce();
     const body = { payload: 'test' };
-
 
     return fetchAndCheckResponse({
       url: '/method',

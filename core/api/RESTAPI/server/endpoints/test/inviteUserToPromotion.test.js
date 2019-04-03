@@ -13,6 +13,7 @@ import {
   fetchAndCheckResponse,
   makeHeaders,
   makeBody,
+  getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 
 let user;
@@ -28,20 +29,26 @@ const userToInvite = {
 const api = new RESTAPI();
 api.addEndpoint('/promotions/inviteCustomer', 'POST', inviteUserToPromotion);
 
-const inviteUser = ({ userData, expectedResponse, status, id }) =>
-  fetchAndCheckResponse({
+const inviteUser = ({ userData, expectedResponse, status, id }) => {
+  const query = getTimestampAndNonce();
+  const body = { promotionId: id || promotionId, user: userData };
+  return fetchAndCheckResponse({
     url: '/promotions/inviteCustomer',
+    query,
     data: {
       method: 'POST',
-      headers: makeHeaders({ publicKey: keyPair.publicKey }),
-      body: makeBody({
-        data: { promotionId: id || promotionId, user: userData },
+      headers: makeHeaders({
+        publicKey: keyPair.publicKey,
         privateKey: keyPair.privateKey,
+        query,
+        body,
       }),
+      body: JSON.stringify(body),
     },
     expectedResponse,
     status,
   });
+};
 
 const setupPromotion = () => {
   PromotionService.addProUser({ promotionId, userId: user._id });
