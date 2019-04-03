@@ -53,13 +53,13 @@ describe.only('RESTAPI', () => {
     throw new Meteor.Error('meteor error');
   });
   api.addEndpoint('/undefined', 'GET', () => {});
-  api.addEndpoint('/method', 'GET', ({ user: { _id: userId } }) =>
+  api.addEndpoint('/method', 'POST', ({ user: { _id: userId }, body: {payload} }) =>
     withMeteorUserId(
       userId,
       () =>
         new Promise((resolve, reject) =>
           Meteor.call('apiTestMethod', (err, res) =>
-            (err ? reject(err) : resolve(res)))),
+            (err ? reject(err) : resolve(`${res} ${payload}`)))),
     ));
 
   before(function () {
@@ -83,7 +83,7 @@ describe.only('RESTAPI', () => {
   });
 
   context('returns an error when', () => {
-    it.only('endpoint path is unknown', () => {
+    it('endpoint path is unknown', () => {
       const query = getTimestampAndNonce();
       return fetchAndCheckResponse({
         url: '/unknown_endpoint',
@@ -103,7 +103,7 @@ describe.only('RESTAPI', () => {
       });
     });
 
-    it.only('endpoint method is unknown', () => {
+    it('endpoint method is unknown', () => {
       const query = getTimestampAndNonce();
       return fetchAndCheckResponse({
         url: '/test',
@@ -123,7 +123,7 @@ describe.only('RESTAPI', () => {
       });
     });
 
-    it.only('content type is wrong', () =>
+    it('content type is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
@@ -134,7 +134,7 @@ describe.only('RESTAPI', () => {
         status: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text').status,
       }));
 
-    it.only('authorization type is wrong', () =>
+    it('authorization type is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
@@ -145,7 +145,7 @@ describe.only('RESTAPI', () => {
         status: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE.status,
       }));
 
-    it.only('public key is wrong', () =>
+    it('public key is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
@@ -156,7 +156,7 @@ describe.only('RESTAPI', () => {
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
-    it.only('signature is wrong', () =>
+    it('signature is wrong', () =>
       fetchAndCheckResponse({
         url: '/test',
         data: {
@@ -167,7 +167,7 @@ describe.only('RESTAPI', () => {
         status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
-    it.only('attemps a replay attack with same nonce', () => {
+    it('attemps a replay attack with same nonce', () => {
       const query = getTimestampAndNonce();
 
       return fetchAndCheckResponse({
@@ -191,7 +191,7 @@ describe.only('RESTAPI', () => {
         }));
     });
 
-    it.only('attemps a replay attack with old timestamp', () => {
+    it('attemps a replay attack with old timestamp', () => {
       const query = {
         timestamp: (Math.round(new Date().valueOf() / 1000) - 32).toString(),
         nonce: '1hkfi57g',
@@ -209,7 +209,7 @@ describe.only('RESTAPI', () => {
     });
   });
 
-  it.only('can authenticate and get a response', () => {
+  it('can authenticate and get a response', () => {
     const query = getTimestampAndNonce();
 
     return fetchAndCheckResponse({
@@ -223,7 +223,7 @@ describe.only('RESTAPI', () => {
     });
   });
 
-  it.only('removes old nonces', () => {
+  it('removes old nonces', () => {
     const query = {
       timestamp: Math.round(new Date().valueOf() / 1000).toString(),
       nonce: 'testNonce',
@@ -240,72 +240,96 @@ describe.only('RESTAPI', () => {
     });
   });
 
-  it('can authenticate and get a response from a different method for the same endpoint', () =>
-    fetchAndCheckResponse({
+  it('can authenticate and get a response from a different method for the same endpoint', () => {
+    const query = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
+      query,
       data: {
         method: 'PUT',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, query }),
       },
       expectedResponse: makeTestRoute('PUT')({ user }),
-    }));
+    });
+  });
 
-  it('returns an internal server error if the error is not a meteor.error', () =>
-    fetchAndCheckResponse({
+  it('returns an internal server error if the error is not a meteor.error', () => {
+    const query = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
+      query,
       data: {
         method: 'GET',
-        headers: makeHeaders({ publicKey }),
+        headers: makeHeaders({ publicKey, privateKey, query }),
       },
       expectedResponse: { message: 'Internal server error', status: 500 },
       status: 500,
-    }));
+    });
+  });
 
-  it('displays the error if it is a meteor.error', () =>
-    fetchAndCheckResponse({
+  it('displays the error if it is a meteor.error', () => {
+    const query = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
+      query,
       data: {
         method: 'DELETE',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, query }),
       },
       expectedResponse: { message: '[meteor error]', status: 500 },
       status: 500,
-    }));
+    });
+  });
 
-  it('calls meteor methods with the right userId', () =>
-    fetchAndCheckResponse({
+  it('calls meteor methods with the right userId', () => {
+    const query = getTimestampAndNonce();
+    const body = { payload: 'test' };
+
+
+    return fetchAndCheckResponse({
       url: '/method',
-      data: {
-        method: 'GET',
-        headers: makeHeaders({ publicKey }),
-      },
-      expectedResponse: user._id,
-    }));
-
-  it('does not crash if undefined is returned by the endpoint', () =>
-    fetchAndCheckResponse({
-      url: '/undefined',
-      data: {
-        method: 'GET',
-        headers: makeHeaders({ publicKey }),
-      },
-      expectedResponse: '',
-    }));
-
-  it('does not match sub endpoints', () =>
-    fetchAndCheckResponse({
-      url: '/test/subtest',
+      query,
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, query, body }),
+        body: JSON.stringify(body),
+      },
+      expectedResponse: `${user._id} test`,
+    });
+  });
+
+  it('does not crash if undefined is returned by the endpoint', () => {
+    const query = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
+      url: '/undefined',
+      query,
+      data: {
+        method: 'GET',
+        headers: makeHeaders({ publicKey, privateKey, query }),
+      },
+      expectedResponse: '',
+    });
+  });
+
+  it('does not match sub endpoints', () => {
+    const query = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
+      url: '/test/subtest',
+      query,
+      data: {
+        method: 'POST',
+        headers: makeHeaders({ publicKey, privateKey, query }),
       },
       expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
         path: '/api/test/subtest',
         method: 'POST',
       }),
       status: 404,
-    }));
+    });
+  });
 });
