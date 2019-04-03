@@ -192,12 +192,10 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           borrowers: arrayify(borrowers),
           borrowerId: borrower._id,
         });
-        console.log('formArray:', formArray);
         const formArray2 = getBorrowerFinanceArray({
           borrowers: arrayify(borrowers),
           borrowerId: borrower._id,
         });
-        console.log('formArray2:', formArray2);
 
         return [
           ...missingIds,
@@ -206,7 +204,6 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         ];
       }, []);
 
-      console.log('res:', res);
       return res;
     }
 
