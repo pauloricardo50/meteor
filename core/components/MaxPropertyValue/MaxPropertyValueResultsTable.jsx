@@ -17,9 +17,13 @@ const MaxPropertyValueResultsTable = ({
   const {
     propertyValue: minPropertyValue,
     borrowRatio: minBorrowRatio,
-    organisationName,
+    organisationName: minOrganisationName,
   } = min;
-  const { propertyValue: maxPropertyValue, borrowRatio: maxBorrowRatio } = max;
+  const {
+    propertyValue: maxPropertyValue,
+    borrowRatio: maxBorrowRatio,
+    organisationName: maxOrganisationName,
+  } = max;
 
   const minLoan = minPropertyValue * minBorrowRatio;
   const maxLoan = maxPropertyValue * maxBorrowRatio;
@@ -35,7 +39,7 @@ const MaxPropertyValueResultsTable = ({
           <div className="flex-col">
             <span className="secondary">Prêteur le moins compétitif</span>
             {Meteor.microservice === 'admin' && (
-              <span>[ADMIN] {organisationName}</span>
+              <span>[ADMIN] {minOrganisationName}</span>
             )}
           </div>
         </td>
@@ -44,7 +48,7 @@ const MaxPropertyValueResultsTable = ({
           <div className="flex-col">
             <span className="secondary">Prêteur le plus compétitif</span>
             {Meteor.microservice === 'admin' && (
-              <span>[ADMIN] {organisationName}</span>
+              <span>[ADMIN] {maxOrganisationName}</span>
             )}
           </div>
         </td>

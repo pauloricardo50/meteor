@@ -6,6 +6,7 @@ import T from 'core/components/Translation';
 import { CollectionIconLink } from 'core/components/IconLink';
 import { LOANS_COLLECTION, CONTACTS_COLLECTION } from 'core/api/constants';
 import DialogSimple from 'imports/core/components/DialogSimple';
+import HtmlPreview from 'core/components/HtmlPreview';
 
 const columnOptions = [
   { id: 'createdAt', label: <T id="offer.createdAt" /> },
@@ -48,7 +49,8 @@ const makeMapOffer = ({ setOfferDialog }) => (offer) => {
         raw: feedback,
         label: feedback ? (
           <DialogSimple closeOnly label="Feedback">
-            <p style={{ whiteSpace: 'pre-line' }}>{feedback}</p>
+            <h4>Envoyé le {moment(feedback.date).format('D MMM YYYY')}</h4>
+            <HtmlPreview value={feedback.message} />
           </DialogSimple>
         ) : (
           'Pas encore de feedback'
