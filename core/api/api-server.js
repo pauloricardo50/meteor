@@ -80,5 +80,3 @@ export const Services = {
   [COLLECTIONS.LENDER_RULES_COLLECTION]: LenderRulesService,
   [COLLECTIONS.REVENUES_COLLECTION]: RevenueService,
 };
-
-// should be called last in our server code, after all caches have been declared

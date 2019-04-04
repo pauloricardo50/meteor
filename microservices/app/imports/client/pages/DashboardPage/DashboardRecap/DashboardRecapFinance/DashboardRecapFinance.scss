@@ -1,8 +1,8 @@
 .dashboard-recap-finance {
   display: flex;
+  flex-basis: 30%;
   flex-direction: column;
   flex-grow: 2;
-  flex-basis: 30%;
 
   h3 {
     margin-top: 0;
@@ -11,7 +11,7 @@
   .accounting {
     display: flex;
 
-    > * {
+     > * {
       display: flex;
       display: flex;
       align-items: center;
@@ -39,7 +39,7 @@
   .card-bottom {
     display: flex;
 
-    > * {
+     > * {
       flex-grow: 1;
     }
   }
@@ -52,7 +52,7 @@
 
   margin-top: 16px;
 
-  > * {
+   > * {
     margin: 0;
   }
 
@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
 
-    > *:not(:nth-child(2)) {
+     > *:not(:nth-child(2)) {
       flex-basis: 0;
       flex-grow: 1;
     }
@@ -126,9 +126,9 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  min-height: 400px;
-  box-sizing: border-box;
 
+  box-sizing: border-box;
+  min-height: 400px;
   padding: 32px;
 
   .icon {
