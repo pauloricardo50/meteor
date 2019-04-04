@@ -17,8 +17,7 @@ export default class BorrowerDeleter extends Component {
     this.setState({ loading: true });
     return removeBorrower
       .run({ borrowerId, loanId })
-      .then(() => this.setState({ loading: false }))
-      .catch(() => this.setState({ loading: false }));
+      .finally(() => this.setState({ loading: false }));
   };
 
   render() {

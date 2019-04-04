@@ -75,6 +75,12 @@ export const flattenObject = (object, delimiter) => {
   return flattened;
 };
 
+export const getUserOrganisationName = ({ user }) => {
+  const { organisations = [] } = user;
+  const organisationName = !!organisations.length && organisations[0].name;
+  return organisationName;
+};
+
 export const getUserNameAndOrganisation = ({ user }) => {
   const { name, organisations = [] } = user;
   const organisationName = !!organisations.length && organisations[0].name;
@@ -105,4 +111,21 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
     raw: referredByUser.name,
     label,
   };
+};
+
+export const sortObject = (object) => {
+  if (typeof object !== 'object' || object instanceof Array) {
+    return object;
+  }
+
+  const sortedObject = {};
+  const keys = Object.keys(object);
+
+  keys.sort();
+
+  keys.forEach((key) => {
+    sortedObject[key] = sortObject(object[key]);
+  });
+
+  return sortedObject;
 };

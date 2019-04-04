@@ -8,5 +8,7 @@ export default Properties.createQuery(PROPERTY_QUERIES.USER_PROPERTY, {
     filters._id = propertyId;
   },
   ...userProperty(),
+  // Ask these for non-reactive queries, like ProPropertyPage
   openGraphData: 1,
+  documents: 1,
 });

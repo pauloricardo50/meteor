@@ -48,6 +48,7 @@ export const getMandrillTemplate = ({
   sendAt,
   templateContent = [],
   replyTo,
+  bccAddress,
 }) => ({
   template_name: templateName,
   template_content: [
@@ -63,6 +64,7 @@ export const getMandrillTemplate = ({
     headers: {
       'Reply-To': replyTo || senderAddress,
     },
+    bcc_address: bccAddress,
   },
   send_at: sendAt ? sendAt.toISOString() : undefined,
 });

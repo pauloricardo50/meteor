@@ -187,14 +187,24 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
     }
 
     getMissingBorrowerFields({ borrowers }) {
-      return arrayify(borrowers).reduce((missingIds, borrower) => {
+      const res = arrayify(borrowers).reduce((missingIds, borrower) => {
         const formArray = getBorrowerInfoArray({
           borrowers: arrayify(borrowers),
           borrowerId: borrower._id,
         });
+        const formArray2 = getBorrowerFinanceArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: borrower._id,
+        });
 
-        return [...missingIds, ...getMissingFieldIds(formArray, borrower)];
+        return [
+          ...missingIds,
+          ...getMissingFieldIds(formArray, borrower),
+          ...getMissingFieldIds(formArray2, borrower),
+        ];
       }, []);
+
+      return res;
     }
 
     getMissingBorrowerDocuments({ loan, borrowers }) {
@@ -325,6 +335,32 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
           borrowerId: b._id,
         });
         getCountedArray(personalFormArray, b, a);
+        getCountedArray(financeFormArray, b, a);
+      });
+
+      return getPercent(a);
+    }
+
+    borrowerInfoPercent({ borrowers }) {
+      const a = [];
+      arrayify(borrowers).forEach((b) => {
+        const personalFormArray = getBorrowerInfoArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(personalFormArray, b, a);
+      });
+
+      return getPercent(a);
+    }
+
+    borrowerFinancePercent({ borrowers }) {
+      const a = [];
+      arrayify(borrowers).forEach((b) => {
+        const financeFormArray = getBorrowerFinanceArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
         getCountedArray(financeFormArray, b, a);
       });
 

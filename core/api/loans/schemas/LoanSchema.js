@@ -6,8 +6,7 @@ import {
   updatedAt,
   contactsSchema,
   additionalDocuments,
-  moneyField,
-  percentageField,
+
 } from '../../helpers/sharedSchemas';
 import {
   LOAN_STATUS,
@@ -15,16 +14,16 @@ import {
   PURCHASE_TYPE,
   OWNER,
   CANTONS,
-  SOLVENCY_TYPE,
+  STEPS,
 } from '../loanConstants';
 import { RESIDENCE_TYPE } from '../../constants';
-import LogicSchema from './LogicSchema';
 import StructureSchema from './StructureSchema';
 import promotionSchema from './promotionSchema';
 import {
   borrowerIdsSchema,
   propertyIdsSchema,
   previousLoanTranchesSchema,
+  maxPropertyValueSchema,
 } from './otherSchemas';
 import { CUSTOM_AUTOFIELD_TYPES } from '../../../components/AutoForm2/constants';
 
@@ -52,7 +51,6 @@ const LoanSchema = new SimpleSchema({
   },
   general: { type: Object, optional: true, blackbox: true, defaultValue: {} }, // To be removed once migrations are done
   name: { type: String, unique: true, regEx: /^\d{2}-\d{4}$/ },
-  logic: { type: LogicSchema, defaultValue: {} },
   adminValidation: { type: Object, defaultValue: {}, blackbox: true },
   userFormsEnabled: { type: Boolean, defaultValue: true, optional: true },
   structures: { type: Array, defaultValue: [] },
@@ -112,20 +110,13 @@ const LoanSchema = new SimpleSchema({
     blackbox: true,
     optional: true,
   },
-  maxSolvency: { type: Object, optional: true },
-  'maxSolvency.type': {
+  step: {
     type: String,
-    allowedValues: Object.values(SOLVENCY_TYPE),
-    defaultValue: SOLVENCY_TYPE.SIMPLE,
+    defaultValue: STEPS.PREPARATION,
+    allowedValues: Object.values(STEPS),
+    uniforms: { placeholder: '' },
   },
-  'maxSolvency.canton': { type: String, allowedValues: Object.keys(CANTONS) },
-  'maxSolvency.date': Date,
-  'maxSolvency.main': Object,
-  'maxSolvency.main.propertyValue': moneyField,
-  'maxSolvency.main.borrowRatio': percentageField,
-  'maxSolvency.second': Object,
-  'maxSolvency.second.propertyValue': moneyField,
-  'maxSolvency.second.borrowRatio': percentageField,
+  ...maxPropertyValueSchema,
 });
 
 export default LoanSchema;

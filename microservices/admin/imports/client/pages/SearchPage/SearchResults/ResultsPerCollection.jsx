@@ -25,12 +25,7 @@ const getBorrowerInfo = ({ name, createdAt, updatedAt }) => ({
 });
 
 const getLoanInfo = (loan) => {
-  const {
-    name,
-    createdAt,
-    updatedAt,
-    logic: { step },
-  } = loan;
+  const { name, createdAt, updatedAt, step } = loan;
   const value = Calculator.selectLoanValue({ loan });
 
   return {

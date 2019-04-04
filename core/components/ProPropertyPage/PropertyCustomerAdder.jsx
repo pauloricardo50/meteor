@@ -3,11 +3,12 @@ import React from 'react';
 import SimpleSchema from 'simpl-schema';
 import { compose, withState } from 'recompose';
 
-import { inviteUserToProperty } from 'core/api/methods';
+import { proInviteUser } from 'core/api/methods';
 import withSmartQuery from 'core/api/containerToolkit/withSmartQuery';
 import proReferredByUsers from 'core/api/users/queries/proReferredByUsers';
 import DropdownMenu from 'core/components/DropdownMenu';
 import { AutoFormDialog } from '../AutoForm2';
+import T from '../Translation';
 
 type PropertyCustomerAdderProps = {};
 
@@ -37,11 +38,13 @@ const inviteReferredUser = ({ referredUsers, setModel, loans }) => {
   return (
     !!referredUsers.length && (
       <div className="flex flex-row center space-children">
-        <h4>Vos clients existants</h4>
+        <h4>
+          <T id="PropertyCustomerAdder.referredUsers" />
+        </h4>
         <DropdownMenu
           iconType="personAdd"
           options={options}
-          tooltip="Sélectionner un de vos clients existants"
+          tooltip={<T id="PropertyCustomerAdder.referredUsers.tooltip" />}
         />
       </div>
     )
@@ -59,12 +62,21 @@ const PropertyCustomerAdder = ({
     schema={customerSchema}
     model={model}
     onSubmit={user =>
-      inviteUserToProperty
+      proInviteUser
         .run({ user, propertyIds: [propertyId] })
         .then(() => setModel({}))
     }
-    buttonProps={{ raised: true, secondary: true, label: 'Ajouter acheteur' }}
-    title="Ajouter acheteur"
+    buttonProps={{
+      raised: true,
+      secondary: true,
+      label: <T id="PropertyCustomerAdder.title" />,
+    }}
+    title={<T id="PropertyCustomerAdder.title" />}
+    description={(
+      <p className="description">
+        <T id="PropertyCustomerAdder.description" />
+      </p>
+    )}
   >
     {() => inviteReferredUser({ referredUsers, setModel, loans })}
   </AutoFormDialog>

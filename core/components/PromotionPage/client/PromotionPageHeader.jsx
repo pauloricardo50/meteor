@@ -2,6 +2,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 
+import ImageCarrousel from 'core/components/ImageCarrousel';
 import { PROMOTIONS_COLLECTION } from '../../../api/constants';
 import StatusLabel from '../../StatusLabel';
 import T from '../../Translation';
@@ -25,7 +26,7 @@ const mergeInvitedByWithContacts = ({ invitedByUser = {}, contacts = [] }) => {
     && !!invitedByUser.organisations.length
     && invitedByUser.organisations[0];
 
-  const title = organisation && organisation.$metadata.role;
+  const title = organisation && organisation.$metadata.title;
 
   return [
     ...contacts,
@@ -51,6 +52,7 @@ const PromotionPageHeader = ({
     invitedByUser,
   });
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
+  console.log('promotionImage:', promotionImage);
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
@@ -126,10 +128,11 @@ const PromotionPageHeader = ({
         )}
       </div>
       <div className="promotion-page-header-right">
-        <span
+      <ImageCarrousel images={promotionImage.map(({ url }) => url)} />
+      {/* <span
           style={{ backgroundImage: `url("${promotionImage[0].url}")` }}
           className="promotion-image animated fadeIn" // delay-400"
-        />
+        /> */}
       </div>
     </div>
   );

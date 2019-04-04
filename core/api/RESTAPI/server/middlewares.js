@@ -1,15 +1,18 @@
 import bodyParser from 'body-parser';
+import moment from 'moment';
 
 import { REST_API_ERRORS, BODY_SIZE_LIMIT } from './restApiConstants';
 import { Services } from '../../api-server';
 import { USERS_COLLECTION } from '../../users/userConstants';
 import {
   getRequestPath,
-  getToken,
   getHeader,
   getRequestMethod,
   getErrorObject,
+  getPublicKey,
+  verifySignature,
 } from './helpers';
+import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
 const bodyParserJsonMiddleware = bodyParser.json({ limit: BODY_SIZE_LIMIT });
 
@@ -17,6 +20,38 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
   extended: false,
   limit: BODY_SIZE_LIMIT,
 });
+
+// Handles replay attacks
+const replayHandlerMiddleware = (req, res, next) => {
+  const {
+    body: { timestamp, nonce },
+  } = req;
+
+  const method = getRequestMethod(req);
+
+  // Request with GET/HEAD method cannot have a body
+  if (method === 'GET' || method === 'HEAD') {
+    return next();
+  }
+
+  if (!timestamp || !nonce) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  }
+
+  const now = moment().unix();
+
+  // This is an old request
+  if (timestamp < now - NONCE_TTL) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  }
+  if (nonceExists(nonce)) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  }
+
+  addNonce(nonce);
+
+  next();
+};
 
 // Filters out badly formatted requests, or ones missing basic headers
 const filterMiddleware = (req, res, next) => {
@@ -29,17 +64,25 @@ const filterMiddleware = (req, res, next) => {
   next();
 };
 
-// Gets the token from the request, fetches the user and adds it to the request
+// Gets the public key from the request, fetches the user and adds it to the request
 const authMiddleware = (req, res, next) => {
-  const token = getToken(req);
+  const publicKey = getPublicKey(req);
 
-  if (!token) {
+  if (!publicKey) {
     return next(REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE);
   }
 
-  const user = Services[USERS_COLLECTION].findOne({ apiToken: token });
+  const user = Services[USERS_COLLECTION].findOne({
+    'apiPublicKey.publicKey': publicKey,
+  });
 
   if (!user) {
+    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+  }
+
+  req.publicKey = publicKey;
+
+  if (!verifySignature(req)) {
     return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
   }
 
@@ -70,5 +113,6 @@ export const preMiddlewares = [
   bodyParserJsonMiddleware,
   bodyParserUrlEncodedMiddleware,
   authMiddleware,
+  replayHandlerMiddleware,
 ];
 export const postMiddlewares = [unknownEndpointMiddleware, errorMiddleware];

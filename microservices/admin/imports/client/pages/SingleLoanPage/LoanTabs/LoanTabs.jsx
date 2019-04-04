@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 import T, { Percent } from 'core/components/Translation';
 import { ROLES, PURCHASE_TYPE } from 'core/api/constants';
 import FileTabs from 'core/components/FileTabs';
@@ -42,12 +43,24 @@ const getTabs = (props) => {
     {
       id: 'borrowers',
       Component: BorrowersTab,
-      additionalLabel: <Percent value={borrowersProgress} rounded />,
+      additionalLabel: (
+        <PercentWithStatus
+          status={borrowersProgress < 1 ? null : undefined}
+          value={borrowersProgress}
+          rounded
+        />
+      ),
     },
     {
       id: 'properties',
       Component: PropertiesTab,
-      additionalLabel: <Percent value={propertyProgress} rounded />,
+      additionalLabel: (
+        <PercentWithStatus
+          status={propertyProgress < 1 ? null : undefined}
+          value={propertyProgress}
+          rounded
+        />
+      ),
     },
     { id: 'lenders', Component: LendersTab },
     // { id: 'communication', Component: CommunicationTab },
@@ -55,7 +68,13 @@ const getTabs = (props) => {
     {
       id: 'files',
       Component: FileTabs,
-      additionalLabel: <Percent value={filesProgress} rounded />,
+      additionalLabel: (
+        <PercentWithStatus
+          status={filesProgress < 1 ? null : undefined}
+          value={filesProgress}
+          rounded
+        />
+      ),
     },
     { id: 'revenues', Component: RevenuesTab },
     { id: 'actions', Component: ActionsTab },
@@ -69,11 +88,11 @@ const getTabs = (props) => {
       id,
       content: <Component {...props} />,
       label: (
-        <span style={style}>
+        <span style={style} className="single-loan-page-tabs-label">
           <T id={`LoanTabs.${id}`} noTooltips />
           {additionalLabel && (
             <>
-              {' - '}
+              &nbsp;&bull;&nbsp;
               {additionalLabel}
             </>
           )}

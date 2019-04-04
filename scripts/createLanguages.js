@@ -46,6 +46,7 @@ const config = {
         'ProCustomersTable',
         'Promotion',
         'PromotionLotPage',
+        'ProOrganisationUserAdder',
         'PropertyForm',
         'RevenuesByStatus',
         'StatusIconTooltip',
@@ -107,6 +108,7 @@ const config = {
         'PasswordResetPage',
         'Promotion',
         'PromotionLotPage',
+        'ProOrganisationUserAdder',
         'RevenuesByStatus',
         'Uploader',
       ],
@@ -150,6 +152,7 @@ const config = {
     'TopNav',
     'TopNavDropdown',
     'UploaderArray',
+    'PropertyCustomerAdder',
     'ProPropertyPage',
   ],
 };

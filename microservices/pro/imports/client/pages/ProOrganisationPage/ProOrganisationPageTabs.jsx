@@ -36,7 +36,13 @@ const getTabs = ({ organisation, currentUser }) => {
     const { id, Component } = tab;
     return {
       ...tab,
-      content: <Component {...organisation} currentUser={currentUser} />,
+      content: (
+        <Component
+          {...organisation}
+          organisationId={organisation._id}
+          currentUser={currentUser}
+        />
+      ),
       label: <T id={`ProOrganisationPageTabs.${id}`} />,
       to: createRoute(PRO_ORGANISATION_PAGE, { tabId: id }),
     };

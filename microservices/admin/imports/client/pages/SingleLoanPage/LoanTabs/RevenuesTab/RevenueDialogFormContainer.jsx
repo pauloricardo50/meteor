@@ -27,7 +27,10 @@ const schema = RevenueSchema.omit(
   'organisationLinks.$': Object,
   'organisationLinks.$._id': {
     type: String,
-    customAllowedValues: { query: adminOrganisations },
+    customAllowedValues: {
+      query: adminOrganisations,
+      params: () => ({ $body: { name: 1 } }),
+    },
     uniforms: {
       transform: ({ name }) => name,
       displayEmpty: false,

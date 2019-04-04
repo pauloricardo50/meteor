@@ -1,21 +1,37 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
-import formatMessage from 'core/utils/intl';
+import formatMessage from '../../../utils/intl';
 import {
   makeFeedback,
   FEEDBACK_OPTIONS,
-} from 'core/components/OfferList/feedbackHelpers';
-import Calculator from 'core/utils/Calculator';
-import { RESIDENCE_TYPE } from 'core/api/properties/propertyConstants';
+} from '../../../components/OfferList/feedbackHelpers';
+import Calculator, {
+  Calculator as CalculatorClass,
+} from '../../../utils/Calculator';
+import { getZipcodeForCanton } from '../../../utils/zipcodes';
+import {
+  RESIDENCE_TYPE,
+  ORGANISATION_FEATURES,
+  LOAN_STATUS,
+  LOAN_VERIFICATION_STATUS,
+  CANTONS,
+  EMAIL_IDS,
+  STEPS,
+} from '../../constants';
 import OfferService from '../../offers/server/OfferService';
-import { adminLoan, loanBorrower } from '../../fragments';
+import {
+  adminLoan,
+  lenderRules as lenderRulesFragment,
+  userLoan,
+} from '../../fragments';
 import CollectionService from '../../helpers/CollectionService';
 import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import PromotionService from '../../promotions/server/PromotionService';
-import { LOAN_STATUS, LOAN_VERIFICATION_STATUS } from '../loanConstants';
+import OrganisationService from '../../organisations/server/OrganisationService';
 import Loans from '../loans';
+import { sendEmail } from '../../methods';
 
 // Pads a number with zeros: 4 --> 0004
 const zeroPadding = (num, places) => {
@@ -62,6 +78,24 @@ export class LoanService extends CollectionService {
     this.addNewStructure({ loanId });
     return loanId;
   };
+
+  setStep({ loanId, nextStep }) {
+    const { step, userId } = this.fetchOne({
+      $filters: { _id: loanId },
+      step: 1,
+      userId: 1,
+    });
+
+    this.update({ loanId, object: { step: nextStep } });
+
+    if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+      sendEmail.run({
+        emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
+        userId,
+        params: { loanId },
+      });
+    }
+  }
 
   askVerification = ({ loanId }) => {
     const loan = this.get(loanId);
@@ -157,8 +191,8 @@ export class LoanService extends CollectionService {
       loanId,
       structure: {
         ...structure,
-        name: `Plan financier ${structures.length + 1}`,
         propertyId,
+        name: `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({
@@ -399,26 +433,76 @@ export class LoanService extends CollectionService {
     this.addLink({ id: loanId, linkName: 'properties', linkId: propertyId });
   }
 
-  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
-    const { borrowers = [] } = this.fetchOne({
-      $filters: { _id: loanId },
-      borrowers: loanBorrower(),
+  getMaxPropertyValueRange({ organisations, loan, residenceType, canton }) {
+    const { borrowers = [] } = loan;
+    const loanObject = Calculator.createLoanObject({
+      residenceType,
+      borrowers,
+      canton,
+    });
+    const maxPropertyValues = organisations
+      .map(({ lenderRules, name }) => {
+        const calculator = new CalculatorClass({
+          loan: loanObject,
+          lenderRules,
+        });
+
+        const {
+          borrowRatio,
+          propertyValue,
+        } = calculator.getMaxPropertyValueWithoutBorrowRatio({
+          borrowers,
+          residenceType,
+          canton,
+        });
+        if (propertyValue > 0 && borrowRatio > 0) {
+          return { borrowRatio, propertyValue, organisationName: name };
+        }
+
+        return null;
+      })
+      .filter(x => x);
+
+    const min = maxPropertyValues.reduce(
+      (minValue, current) =>
+        (current.propertyValue < minValue.propertyValue ? current : minValue),
+      { propertyValue: 10000000000 },
+    );
+
+    const max = maxPropertyValues.reduce(
+      (maxValue, current) =>
+        (current.propertyValue > maxValue.propertyValue ? current : maxValue),
+      { propertyValue: 0 },
+    );
+
+    return { min, max };
+  }
+
+  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton, residenceType }) {
+    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+
+    const lenderOrganisations = OrganisationService.fetch({
+      $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
+      lenderRules: lenderRulesFragment(),
+      name: 1,
     });
 
-    const {
-      borrowRatio: borrowRatioMain,
-      propertyValue: propertyValueMain,
-    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
-      borrowers,
+    return this.getMaxPropertyValueRange({
+      organisations: lenderOrganisations.filter(({ lenderRules }) => lenderRules && lenderRules.length > 0),
+      loan,
+      residenceType: residenceType || loan.residenceType,
+      canton,
+    });
+  }
+
+  setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
+    const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
+      loanId,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
-
-    const {
-      borrowRatio: borrowRatioSecond,
-      propertyValue: propertyValueSecond,
-    } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
-      borrowers,
+    const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
+      loanId,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
     });
@@ -426,22 +510,87 @@ export class LoanService extends CollectionService {
     this.update({
       loanId,
       object: {
-        maxSolvency: {
-          main: {
-            propertyValue: propertyValueMain,
-            borrowRatio: borrowRatioMain,
-          },
-          second: {
-            propertyValue: propertyValueSecond,
-            borrowRatio: borrowRatioSecond,
-          },
+        maxPropertyValue: {
+          main: mainMaxPropertyValueRange,
+          second: secondMaxPropertyValueRange,
           canton,
           date: new Date(),
         },
       },
     });
 
-    return Promise.resolve('test');
+    return Promise.resolve();
+  }
+
+  addNewMaxStructure({ loanId, residenceType: newResidenceType, canton }) {
+    if (newResidenceType) {
+      // Set residence type if it is given
+      this.update({ loanId, object: { residenceType: newResidenceType } });
+    }
+
+    const loan = this.fetchOne({
+      $filters: { _id: loanId },
+      ...userLoan(),
+    });
+    const { properties, userId, borrowers, residenceType } = loan;
+
+    // Get the highest property value
+    const {
+      max: { borrowRatio, propertyValue, organisationName },
+    } = this.getMaxPropertyValueWithoutBorrowRatio({
+      loanId,
+      canton,
+    });
+
+    const organisation = OrganisationService.fetchOne({
+      $filters: { name: organisationName },
+      lenderRules: lenderRulesFragment(),
+    });
+
+    const calculator = new CalculatorClass({
+      loan,
+      lenderRules: organisation.lenderRules,
+    });
+
+    // Recalculate the best structure for this propertyvalue
+    const ownFunds = calculator.suggestStructure({
+      borrowers,
+      propertyValue,
+      loanValue: Math.round(propertyValue * borrowRatio),
+      canton,
+      residenceType,
+    });
+
+    let propertyWithCanton = properties.find(({ canton: propertyCanton }) => propertyCanton === canton);
+    const createNewProperty = !propertyWithCanton;
+
+    // If there is no property from this canton, insert a new one
+    // with the right canton
+    if (createNewProperty) {
+      const propertyId = PropertyService.insert({
+        property: {
+          address1: `Bien immo ${CANTONS[canton]}`,
+          zipCode: getZipcodeForCanton(canton),
+          value: propertyValue,
+        },
+        loanId,
+        userId,
+      });
+
+      propertyWithCanton = { _id: propertyId };
+    }
+
+    this.addNewStructure({
+      loanId,
+      structure: {
+        name: "Capacité d'achat max.",
+        description: CANTONS[canton],
+        propertyId: propertyWithCanton._id,
+        ownFunds,
+        propertyValue: createNewProperty ? undefined : propertyValue,
+        wantedLoan: Math.round(propertyValue * borrowRatio),
+      },
+    });
   }
 }
 

@@ -13,7 +13,7 @@ import StatusLabel from '../StatusLabel';
 const statuses = Object.values(LOAN_STATUS).filter(status => status !== LOAN_STATUS.TEST);
 
 const isEstimationStatus = status =>
-  [LOAN_STATUS.LEAD, LOAN_STATUS.LEAD].includes(status);
+  [LOAN_STATUS.LEAD, LOAN_STATUS.ONGOING].includes(status);
 
 const columnOptions = [
   {
@@ -101,6 +101,10 @@ const makeRow = (loansByStatus, multiplier) => ({
         const status = statuses[i];
 
         if (isEstimationStatus(status)) {
+          if (!amount) {
+            return <span key={status}>-</span>;
+          }
+
           return (
             <span key={status}>
               ~<Money value={amount} displayZero={false} />

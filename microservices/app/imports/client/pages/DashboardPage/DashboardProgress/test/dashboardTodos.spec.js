@@ -63,7 +63,7 @@ describe('dashboardTodos', () => {
     });
   });
 
-  describe('doAnExpertise', () => {
+  describe.skip('doAnExpertise', () => {
     it('shows when expertise status is NONE', () => {
       expect(dashboardTodosObject.doAnExpertise.isDone({
         structure: {

@@ -9,7 +9,11 @@ type ProCustomersTableProps = {};
 
 const ProCustomersTable = ({ rows, columnOptions }: ProCustomersTableProps) => (
   <>
-    <Table rows={rows} columnOptions={columnOptions} />
+    <Table
+      className="pro-customers"
+      rows={rows}
+      columnOptions={columnOptions}
+    />
     <small style={{ marginTop: 8 }}>
       <T id="ProCustomersTable.cacheDisclaimer" />
     </small>

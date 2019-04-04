@@ -2,9 +2,14 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Calculator from '..';
+import Calculator, { Calculator as CalculatorClass } from '..';
 import { OWN_FUNDS_USAGE_TYPES } from 'core/api/constants';
-import { OWN_FUNDS_TYPES, RESIDENCE_TYPE } from '../../../api/constants';
+import {
+  OWN_FUNDS_TYPES,
+  RESIDENCE_TYPE,
+  DEFAULT_SECONDARY_RESIDENCE_RULES,
+  INCOME_CONSIDERATION_TYPES,
+} from '../../../api/constants';
 
 describe('SolvencyCalculator', () => {
   describe('suggestStructure', () => {
@@ -215,15 +220,67 @@ describe('SolvencyCalculator', () => {
       } = Calculator.getMaxPropertyValueWithoutBorrowRatio({
         borrowers: [
           {
-            bankFortune: 500000,
-            salary: 1000000,
-            insurance2: [{ value: 100000 }],
+            bankFortune: 230000,
+            salary: 120000,
           },
         ],
+        residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
+        canton: 'GE',
+      });
+      expect(borrowRatio).to.equal(0.7313);
+      expect(propertyValue).to.equal(769000);
+    });
+
+    it('should not exceed max borrow ratio of a lender', () => {
+      const lenderRules = [
+        {
+          order: 0,
+          maxBorrowRatio: 0.9,
+          bonusConsideration: 0.7,
+          expensesSubtractFromIncome: [],
+          theoreticalInterestRate: 0.045,
+          theoreticalMaintenanceRate: 0.007,
+          maxIncomeRatio: 0.38,
+          filter: { and: [true] },
+          incomeConsiderationType: INCOME_CONSIDERATION_TYPES.NET,
+        },
+        {
+          order: 1,
+          maxBorrowRatio: 0.7,
+          filter: { and: DEFAULT_SECONDARY_RESIDENCE_RULES },
+          amortizationGoal: 0.5,
+          amortizationYears: 12,
+        },
+      ];
+
+      const borrowers = [
+        {
+          bankFortune: 130000,
+          insurance2: [{ value: 100000 }],
+          netSalary: 125000,
+          salary: 182000,
+          bonusExists: true,
+          bonus2015: 50000,
+          bonus2016: 50000,
+          bonus2017: 50000,
+          bonus2018: 50000,
+        },
+      ];
+      const loanObject = Calculator.createLoanObject({
+        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+        borrowers,
+        canton: 'GE',
+      });
+
+      const calc = new CalculatorClass({ lenderRules, loan: loanObject });
+      const results = calc.getMaxPropertyValueWithoutBorrowRatio({
+        borrowers,
+        canton: 'GE',
         residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       });
-      expect(borrowRatio).to.equal(0.8);
-      expect(propertyValue).to.equal(2000000);
+
+      expect(results.borrowRatio).to.equal(0.7);
+      expect(results.propertyValue).to.equal(362000);
     });
   });
 });

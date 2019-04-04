@@ -1,6 +1,7 @@
 import * as constants from 'core/api/constants';
 import React from 'react';
 
+import CantonField from 'core/components/CantonField/CantonField';
 import BorrowerAddPartner from '../components/BorrowerAddPartner';
 
 const shouldDisplayAddPartner = ({ b: { civilStatus }, multiple, isFirst }) =>
@@ -81,6 +82,13 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
       condition: !disableAddress,
       placeholder: disableAddress && borrowers[0].address1,
       noIntl: disableAddress,
+      required: addressFieldsAreNecessary,
+    },
+    {
+      type: 'custom',
+      id: 'canton',
+      component: <CantonField canton={b.canton} />,
+      condition: !disableAddress,
       required: addressFieldsAreNecessary,
     },
     {

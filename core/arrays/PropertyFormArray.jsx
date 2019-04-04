@@ -1,3 +1,7 @@
+import React from 'react';
+import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField';
+
 import {
   PROPERTY_TYPE,
   PURCHASE_TYPE,
@@ -9,7 +13,10 @@ import {
   VOLUME_NORM,
   AREA_NORM,
 } from 'core/api/constants';
+import AutoFormTextInput from 'core/components/AutoForm/AutoFormTextInput';
+import T from 'core/components/Translation';
 import { QUALITY } from '../api/constants';
+import CantonField from 'core/components/CantonField/CantonField';
 
 const mapInput = (input) => {
   const intlSafeObject = { ...input };
@@ -170,25 +177,18 @@ export const getPropertyArray = ({ loan, borrowers, property }) => {
       required: false,
     },
     {
+      id: 'zipCode',
+      type: 'textInput',
+    },
+    {
       id: 'city',
       type: 'textInput',
     },
     {
-      id: 'zipCode',
-      type: 'textInput',
+      type: 'custom',
+      id: 'canton',
+      component: (<CantonField canton={property.canton} />)
     },
-    // {
-    //   id: 'zipCode',
-    //   type: 'custom',
-    //   component: 'ZipAutoComplete',
-    //   componentProps: {
-    //     savePath: '',
-    //     initialValue:
-    //       property.zipCode && property.city
-    //         ? `${property.zipCode} ${property.city}`
-    //         : '',
-    //   },
-    // },
     {
       type: 'h3',
       id: 'propertyDetails',

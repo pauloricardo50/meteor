@@ -1,16 +1,25 @@
 import React from 'react';
 
 import Tabs from 'core/components/Tabs';
+import PercentWithStatus from 'core/components/PercentWithStatus';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import { addBorrower } from 'core/api/methods';
 import Calculator from 'core/utils/Calculator';
-import { percentFormatters } from 'core/utils/formHelpers';
 import SingleBorrowerTab from './SingleBorrowerTab';
 
 const borrowersTabLabel = (borrower, index) => {
   const progress = Calculator.personalInfoPercent({ borrowers: borrower });
-  return `${borrower.name
-    || `Emprunteur ${index + 1}`} - ${percentFormatters.format(progress)}%`;
+  return (
+    <span className="single-loan-page-tabs-label">
+      {borrower.name || `Emprunteur ${index + 1}`}
+      &nbsp;&bull;&nbsp;
+      <PercentWithStatus
+        status={progress < 1 ? null : undefined}
+        value={progress}
+        rounded
+      />
+    </span>
+  );
 };
 
 const BorrowersTab = (props) => {

@@ -15,6 +15,7 @@ describe('Migration 4', () => {
     it('modifies user promotion permissions', () => {
       const userId1 = Users.insert({ _id: 'userId1' });
       const userId2 = Users.insert({ _id: 'userId2' });
+
       Promotions.rawCollection().insert({
         _id: 'promotionId1',
         userLinks: [
@@ -38,7 +39,7 @@ describe('Migration 4', () => {
       });
 
       return up().then(() =>
-        Promotions.find().forEach(({ userLinks }) => {
+        Promotions.find({}).forEach(({ userLinks }) => {
           userLinks.forEach(({ permissions }) => {
             expect(typeof permissions).to.equal('object');
             expect(permissions).to.deep.equal(PERMISSIONS);
@@ -74,7 +75,7 @@ describe('Migration 4', () => {
       });
 
       return down().then(() =>
-        Promotions.find().forEach(({ userLinks }) => {
+        Promotions.find({}).forEach(({ userLinks }) => {
           userLinks.forEach(({ permissions }) => {
             expect(typeof permissions).to.equal('string');
             expect(permissions).to.equal('READ');

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import T, { Money, Percent } from '../../../../../components/Translation';
+import T, { Money } from '../../../../../components/Translation';
 import { shouldRenderRow } from '../../PdfTable/PdfTable';
 import { toMoney } from '../../../../../utils/conversionFunctions';
 import { OWN_FUNDS_USAGE_TYPES } from '../../../../loans/loanConstants';
@@ -12,7 +12,7 @@ type BalanceSheetTableProps = {};
 const getCostLines = ({ loan, structureId, calculator }) => {
   const propertyValue = calculator.selectPropertyValue({ loan, structureId });
   const notaryFees = calculator.getFees({ loan, structureId }).total;
-  const propertyWork = calculator.selectPropertyKey({
+  const propertyWork = calculator.selectStructureKey({
     loan,
     structureId,
     key: 'propertyWork',

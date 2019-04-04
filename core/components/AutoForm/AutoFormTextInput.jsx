@@ -54,6 +54,14 @@ class AutoFormTextInput extends Component {
     Meteor.clearTimeout(this.timeout);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.inputProps.currentValue !== this.props.inputProps.currentValue
+    ) {
+      this.handleChange(null, nextProps.inputProps.currentValue);
+    }
+  }
+
   handleBlur = () => {
     this.setState({ showInfo: false });
     // If the value has changed, save it
@@ -120,6 +128,7 @@ class AutoFormTextInput extends Component {
         percent,
         onFocusChange,
         focused,
+        todo,
 
         // Destructure these props to avoid warnings
         inputRef,
@@ -179,6 +188,7 @@ class AutoFormTextInput extends Component {
           value={value}
           required={required}
           hide={admin}
+          todo={todo}
         />
         {!noValidator && <FormValidator {...this.props} />}
       </div>

@@ -9,8 +9,8 @@ import LinkToCollection from '../../../components/LinkToCollection';
 import SearchResultsContainer from './SearchResultsContainer';
 import ResultsPerCollection from './ResultsPerCollection';
 
-const SearchResults = ({ isLoading, error, data: searchResults }) => {
-  if (isLoading) {
+const SearchResults = ({ isLoading, error, results }) => {
+  if (isLoading || !results) {
     return <Loading />;
   }
 
@@ -18,7 +18,7 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
     return <React.Fragment>Error: {error.reason}</React.Fragment>;
   }
 
-  const hasNoSearchResults = Object.values(searchResults).every(collection => collection.length === 0);
+  const hasNoSearchResults = Object.values(results).every(collection => collection.length === 0);
 
   if (hasNoSearchResults) {
     return (
@@ -32,8 +32,8 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
 
   return (
     <List className="search-results">
-      {Object.keys(searchResults).map((collectionName) => {
-        const resultsFromThisCollection = searchResults[collectionName];
+      {Object.keys(results).map((collectionName) => {
+        const resultsFromThisCollection = results[collectionName];
 
         if (resultsFromThisCollection.length === 0) {
           return null;
@@ -56,9 +56,9 @@ const SearchResults = ({ isLoading, error, data: searchResults }) => {
 };
 
 SearchResults.propTypes = {
-  data: PropTypes.any.isRequired,
   error: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
+  results: PropTypes.any.isRequired,
 };
 
 SearchResults.defaultProps = {

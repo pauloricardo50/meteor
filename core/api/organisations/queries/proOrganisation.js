@@ -4,7 +4,5 @@ import { fullOrganisation } from '../../fragments';
 
 export default Organisations.createQuery(
   ORGANISATION_QUERIES.PRO_ORGANISATION,
-  {
-    ...fullOrganisation(),
-  },
+  fullOrganisation(),
 );

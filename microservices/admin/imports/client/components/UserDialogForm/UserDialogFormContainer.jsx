@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 
 import adminOrganisations from 'core/api/organisations/queries/adminOrganisations';
-import { withSmartQuery } from 'core/api';
 import {
   adminCreateUser,
   updateUser,
@@ -26,7 +25,10 @@ const userSchema = new SimpleSchema({
     type: String,
     optional: true,
     defaultValue: null,
-    customAllowedValues: { query: adminOrganisations },
+    customAllowedValues: {
+      query: adminOrganisations,
+      params: () => ({ $body: { name: 1 } }),
+    },
     uniforms: {
       transform: ({ name }) => name,
       labelProps: { shrink: true },
@@ -40,11 +42,11 @@ const userSchema = new SimpleSchema({
     uniforms: { label: null },
     optional: true,
   },
-  'organisations.$.$metadata.role': {
+  'organisations.$.$metadata.title': {
     type: String,
     optional: true,
     uniforms: {
-      label: <T id="Forms.contact.role" />,
+      label: <T id="Forms.contact.title" />,
       placeholder: 'Responsable Hypothèques',
       displayEmpty: true,
     },

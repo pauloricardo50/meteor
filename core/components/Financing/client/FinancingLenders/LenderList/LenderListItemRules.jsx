@@ -11,7 +11,7 @@ import colors from '../../../../../config/colors';
 type LenderListItemRulesProps = {};
 
 const LenderListItemRules = ({
-  organisation: { name, lenderRules, logo },
+  organisation: { lenderRules },
   loan,
   structureId,
 }: LenderListItemRulesProps) => {
@@ -45,7 +45,7 @@ const LenderListItemRules = ({
           <div>
             <div>
               <span>
-                <T id="FinancingLenders.consideredIncome" /> Revenus
+                <T id="FinancingLenders.consideredIncome" />
               </span>
               :&nbsp;
               <Money value={totalIncome} />
@@ -66,7 +66,7 @@ const LenderListItemRules = ({
         tooltip={(
           <span>
             <T id="Financing.incomeRatio" />
-            <br />
+            :&nbsp;
             <Percent value={incomeRatio} />
             <br />
             <T
@@ -82,7 +82,7 @@ const LenderListItemRules = ({
         tooltip={(
           <span>
             <T id="Financing.borrowRatio" />
-            <br />
+            :&nbsp;
             <Percent value={borrowRatio} />
             <br />
             <T

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Accounts } from 'meteor/accounts-base';
-import { Random } from 'meteor/random';
+import NodeRSA from 'node-rsa';
 
 import { EMAIL_IDS } from '../../email/emailConstants';
 import { sendEmail } from '../../methods';
@@ -25,6 +25,10 @@ class UserService extends CollectionService {
       $filters: { _id: userId },
       ...fullUser(),
     });
+  }
+
+  getByEmail(email) {
+    return Accounts.findUserByEmail(email);
   }
 
   createUser = ({ options, role }) => {
@@ -55,7 +59,7 @@ class UserService extends CollectionService {
   };
 
   // This should remain a simple inequality check
-  doesUserExist = ({ email }) => Accounts.findUserByEmail(email) != null;
+  doesUserExist = ({ email }) => this.getByEmail(email) != null;
 
   sendVerificationEmail = ({ userId }) =>
     Accounts.sendVerificationEmail(userId);
@@ -136,11 +140,6 @@ class UserService extends CollectionService {
     Accounts.sendVerificationEmail(userId);
   };
 
-  generateApiToken = ({ userId }) => {
-    const apiToken = Random.id(24);
-    return this._update({ id: userId, object: { apiToken }, operator: '$set' });
-  };
-
   updateOrganisations = ({ userId, newOrganisations = [] }) => {
     const { organisations: oldOrganisations = [] } = this.get(userId);
 
@@ -166,52 +165,36 @@ class UserService extends CollectionService {
     return this.get(userId);
   };
 
+  generateKeyPair = ({ userId }) => {
+    const key = new NodeRSA();
+    key.generateKeyPair(512);
+    const publicKey = key
+      .exportKey('pkcs1-public-pem')
+      .replace(/\r?\n|\r/g, '');
+    const privateKey = key
+      .exportKey('pkcs1-private-pem')
+      .replace(/\r?\n|\r/g, '');
+    const createdAt = new Date();
+    this._update({
+      id: userId,
+      object: { apiPublicKey: { publicKey, createdAt } },
+    });
+    return { publicKey, privateKey, createdAt };
+  };
+
   proReferUser = ({ user, proUserId }) => {
-    const { email, firstName, lastName, phoneNumber } = user;
+    const { email } = user;
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error("Ce client existe déjà. Vous ne pouvez pas le référer, mais vous pouvez l'inviter sur un de vos biens immobiliers.");
     }
 
-    const pro = this.fetchOne({
-      $filters: { _id: proUserId },
-      assignedEmployeeId: 1,
-      name: 1,
-      organisations: { name: 1 },
-    });
-    const {
-      assignedEmployeeId: proAssignedEmployeeId,
-      organisations = [],
-    } = pro;
-    const assignedEmployeeId = proAssignedEmployeeId;
-    const organisationId = !!organisations.length && organisations[0]._id;
-    const admin = this.get(assignedEmployeeId);
-
-    const userId = this.adminCreateUser({
-      options: {
-        email,
-        sendEnrollmentEmail: false,
-        firstName,
-        lastName,
-        phoneNumbers: [phoneNumber],
-      },
-      adminId: admin && admin._id,
+    const { userId, pro } = this.proCreateUser({
+      user,
+      proUserId,
+      sendInvitation: false,
     });
 
-    const loanId = LoanService.adminLoanInsert({ userId });
-
-    this.addLink({
-      id: userId,
-      linkName: 'referredByUser',
-      linkId: proUserId,
-    });
-
-    if (organisationId) {
-      this.addLink({
-        id: userId,
-        linkName: 'referredByOrganisation',
-        linkId: organisationId,
-      });
-    }
+    LoanService.adminLoanInsert({ userId });
 
     return sendEmail.run({
       emailId: EMAIL_IDS.REFER_USER,
@@ -223,14 +206,71 @@ class UserService extends CollectionService {
     });
   };
 
+  proCreateUser = ({
+    user: { email, firstName, lastName, phoneNumber },
+    proUserId,
+    sendInvitation = true,
+    adminId,
+  }) => {
+    let pro;
+    let assignedEmployeeId;
+
+    if (proUserId) {
+      pro = this.fetchOne({
+        $filters: { _id: proUserId },
+        name: 1,
+        assignedEmployeeId: 1,
+        organisations: { name: 1 },
+      });
+
+      const { assignedEmployeeId: proAssignedEmployeeId } = pro;
+
+      assignedEmployeeId = proAssignedEmployeeId;
+    } else if (adminId) {
+      assignedEmployeeId = adminId;
+    }
+
+    const isNewUser = !this.doesUserExist({ email });
+    let userId;
+    let admin;
+
+    if (isNewUser) {
+      admin = this.get(assignedEmployeeId);
+      userId = this.adminCreateUser({
+        options: {
+          email,
+          sendEnrollmentEmail: sendInvitation && !pro && Meteor.isProduction,
+          firstName,
+          lastName,
+          phoneNumbers: [phoneNumber],
+        },
+        adminId: admin && admin._id,
+      });
+
+      if (pro) {
+        this.setReferredBy({ userId, proId: proUserId });
+      }
+    } else {
+      const {
+        _id: existingUserId,
+        assignedEmployeeId: existingAssignedEmployeeId,
+      } = this.findOne({ 'emails.address': { $in: [email] } });
+      admin = this.get(existingAssignedEmployeeId);
+      userId = existingUserId;
+    }
+
+    return { userId, admin, pro, isNewUser };
+  };
+
   proInviteUser = ({
     user,
-    propertyIds,
-    promotionIds,
+    propertyIds = [],
+    promotionIds = [],
     property,
     proUserId,
-    referOnly,
+    adminId,
   }) => {
+    const referOnly = propertyIds.length === 0 && promotionIds.length === 0;
     if (referOnly) {
       return this.proReferUser({ user, proUserId });
     }
@@ -239,15 +279,24 @@ class UserService extends CollectionService {
       throw new Meteor.Error('No property given');
     }
 
+    const { invitedBy } = user;
+    const { userId, admin, pro, isNewUser } = this.proCreateUser({
+      user,
+      proUserId: proUserId || invitedBy,
+      adminId,
+    });
+
     let promises = [];
 
     if (propertyIds && propertyIds.length) {
       promises = [
         ...promises,
         PropertyService.inviteUser({
-          proUserId,
-          user,
           propertyIds,
+          admin,
+          pro,
+          userId,
+          isNewUser,
         }),
       ];
     }
@@ -257,7 +306,9 @@ class UserService extends CollectionService {
         ...promotionIds.map(promotionId =>
           PromotionService.inviteUser({
             promotionId,
-            user: { ...user, invitedBy: proUserId },
+            userId,
+            pro,
+            isNewUser,
           })),
       ];
     }
@@ -305,17 +356,23 @@ class UserService extends CollectionService {
     });
   }
 
-  proInviteUserToOrganisation({ user, organisationId, role, proId }) {
+  proInviteUserToOrganisation({ user, organisationId, title, proId, adminId }) {
     const { email, phoneNumber } = user;
+    let assigneeId;
 
     if (this.doesUserExist({ email })) {
       throw new Meteor.Error('Cet utilisateur existe déjà');
     }
 
-    const { assignedEmployeeId } = this.fetchOne({
-      $filters: { _id: proId },
-      assignedEmployeeId: 1,
-    });
+    if (proId) {
+      const { assignedEmployeeId } = this.fetchOne({
+        $filters: { _id: proId },
+        assignedEmployeeId: 1,
+      });
+      assigneeId = assignedEmployeeId;
+    } else {
+      assigneeId = adminId;
+    }
 
     const userId = this.adminCreateUser({
       options: {
@@ -323,7 +380,7 @@ class UserService extends CollectionService {
         phoneNumbers: [phoneNumber],
         sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
       },
-      adminId: assignedEmployeeId,
+      adminId: assigneeId,
     });
 
     this.setRole({ userId, role: ROLES.PRO });
@@ -332,7 +389,7 @@ class UserService extends CollectionService {
       id: userId,
       linkName: 'organisations',
       linkId: organisationId,
-      metadata: { role },
+      metadata: { title },
     });
 
     return userId;

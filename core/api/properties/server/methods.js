@@ -9,7 +9,6 @@ import {
   pullPropertyValue,
   evaluateProperty,
   propertyDataIsInvalid,
-  inviteUserToProperty,
   addProUserToProperty,
   proPropertyInsert,
   setProPropertyPermissions,
@@ -63,20 +62,6 @@ propertyDataIsInvalid.setHandler(({ userId }, params) => {
   context.unblock();
   SecurityService.properties.isAllowedToUpdate(params.propertyId, userId);
   return PropertyService.propertyDataIsInvalid(params);
-});
-
-inviteUserToProperty.setHandler(({ userId }, params) => {
-  SecurityService.checkUserIsPro(userId);
-  params.propertyIds.forEach(propertyId =>
-    SecurityService.properties.isAllowedToInviteCustomers({
-      userId,
-      propertyId,
-    }));
-
-  if (SecurityService.currentUserHasRole(ROLES.PRO)) {
-    return PropertyService.inviteUser({ ...params, proUserId: userId });
-  }
-  return PropertyService.inviteUser(params);
 });
 
 addProUserToProperty.setHandler(({ userId }, params) => {

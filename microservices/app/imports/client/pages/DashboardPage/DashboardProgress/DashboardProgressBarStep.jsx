@@ -8,7 +8,7 @@ const DashboardProgressBarStep = ({ id, isDone, nb }) => (
   <div key={nb} className="dashboard-progress-bar-step">
     <span className={classnames({ step: true, done: isDone })}>{nb}</span>
     <span className="step-name">
-      <T id={`steps.${id}`} />
+      <T id={`Forms.step.${id}`} />
     </span>
   </div>
 );

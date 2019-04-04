@@ -19,10 +19,13 @@ import {
   sendNegativeFeedbackToAllLenders,
   loanUpdatePromotionInvitedBy,
   reuseProperty,
-  getMaxPropertyValueWithoutBorrowRatio,
+  setMaxPropertyValueWithoutBorrowRatio,
+  addNewMaxStructure,
+  setLoanStep,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
+import { STEPS } from '../loanConstants';
 
 loanInsert.setHandler((context, { loan, userId }) => {
   userId = checkInsertUserId(userId);
@@ -111,8 +114,8 @@ switchBorrower.setHandler(({ userId }, params) => {
   return LoanService.switchBorrower(params);
 });
 
-sendNegativeFeedbackToAllLenders.setHandler((context, params) => {
-  SecurityService.checkCurrentUserIsAdmin();
+sendNegativeFeedbackToAllLenders.setHandler(({ userId }, params) => {
+  Security.checkUserIsAdmin(userId);
   context.unblock();
   return LoanService.sendNegativeFeedbackToAllLenders(params);
 });
@@ -127,7 +130,22 @@ reuseProperty.setHandler((context, params) => {
   LoanService.reuseProperty(params);
 });
 
-getMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
+setMaxPropertyValueWithoutBorrowRatio.setHandler((context, params) => {
   SecurityService.loans.isAllowedToUpdate(params.loanId);
-  return LoanService.getMaxPropertyValueWithoutBorrowRatio(params);
+  return LoanService.setMaxPropertyValueWithoutBorrowRatio(params);
+});
+
+addNewMaxStructure.setHandler((context, params) => {
+  SecurityService.loans.isAllowedToUpdate(params.loanId);
+  return LoanService.addNewMaxStructure(params);
+});
+
+setLoanStep.setHandler((context, params) => {
+  if (params.nextStep === STEPS.PREPARATION) {
+    SecurityService.loans.isAllowedToUpdate(params.loanId);
+  } else {
+    Security.checkUserIsAdmin(context.userId);
+  }
+  context.unblock();
+  return LoanService.setStep(params);
 });

@@ -15,9 +15,9 @@ import {
   removeUser,
   sendEnrollmentEmail,
   changeEmail,
-  generateApiToken,
   userUpdateOrganisations,
   testUserAccount,
+  generateApiKeyPair,
   proInviteUser,
   getUserByEmail,
   setUserReferredBy,
@@ -25,6 +25,7 @@ import {
   proInviteUserToOrganisation,
 } from '../methodDefinitions';
 import UserService from './UserService';
+import { ROLES } from '../userConstants';
 
 doesUserExist.setHandler((context, { email }) =>
   UserService.doesUserExist({ email }));
@@ -107,11 +108,6 @@ changeEmail.setHandler((context, params) => {
   return UserService.changeEmail(params);
 });
 
-generateApiToken.setHandler((context, { userId }) => {
-  SecurityService.checkUserIsPro(context.userId);
-  return UserService.generateApiToken({ userId });
-});
-
 userUpdateOrganisations.setHandler((context, { userId, newOrganisations }) => {
   SecurityService.checkCurrentUserIsAdmin();
   return UserService.updateOrganisations({ userId, newOrganisations });
@@ -121,6 +117,11 @@ testUserAccount.setHandler((context, params) => {
   if (Meteor.isTest) {
     return UserService.testUserAccount(params);
   }
+});
+
+generateApiKeyPair.setHandler((context, params) => {
+  SecurityService.checkUserIsPro(context.userId);
+  return UserService.generateKeyPair(params);
 });
 
 proInviteUser.setHandler((context, params) => {
@@ -148,7 +149,14 @@ proInviteUser.setHandler((context, params) => {
     // Not yet implemented
   }
 
-  return UserService.proInviteUser(params);
+  // Only pass proUserId if this is a pro user
+  const isProUser = SecurityService.hasRole(userId, ROLES.PRO);
+
+  return UserService.proInviteUser({
+    ...params,
+    proUserId: isProUser ? userId : undefined,
+    adminId: !isProUser ? userId : undefined,
+  });
 });
 
 getUserByEmail.setHandler((context, params) => {
@@ -184,5 +192,12 @@ proInviteUserToOrganisation.setHandler(({ userId }, params) => {
     userId,
     organisationId,
   });
+
+  if (SecurityService.currentUserIsAdmin()) {
+    params.adminId = userId;
+  } else {
+    params.proId = userId;
+  }
+
   return UserService.proInviteUserToOrganisation(params);
 });

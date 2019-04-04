@@ -14,7 +14,7 @@ describe('LenderRulesService', () => {
 
   beforeEach(() => {
     resetDatabase();
-    organisationId = Factory.create('organisation');
+    organisationId = Factory.create('organisation')._id;
     // Insert a document here, to avoid cases where all documents in a collection are changed
     Factory.create('lenderRules');
   });
@@ -45,6 +45,23 @@ describe('LenderRulesService', () => {
 
       expect(name).to.not.equal(undefined);
     });
+
+    it('sets the order of the lenderRules', () => {
+      const rulesId1 = LenderRulesService.insert({ organisationId });
+      const rulesId2 = LenderRulesService.insert({ organisationId });
+
+      const { order: order1 } = LenderRulesService.fetchOne({
+        $filters: { _id: rulesId1 },
+        order: 1,
+      });
+      const { order: order2 } = LenderRulesService.fetchOne({
+        $filters: { _id: rulesId2 },
+        order: 1,
+      });
+
+      expect(order1).to.equal(0);
+      expect(order2).to.equal(1);
+    });
   });
 
   describe('update', () => {
@@ -68,6 +85,49 @@ describe('LenderRulesService', () => {
       const lenderRules = LenderRulesService.get(lenderRulesId);
 
       expect(jsonLogic.apply(lenderRules.filter, { a: 3 })).to.equal(true);
+    });
+  });
+
+  describe('setOrder', () => {
+    it('changes the order of all rules', () => {
+      const id1 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+      const id2 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+
+      LenderRulesService.setOrder({ orders: { [id1]: 1, [id2]: 0 } });
+
+      expect(LenderRulesService.get(id1).order).to.equal(1);
+      expect(LenderRulesService.get(id2).order).to.equal(0);
+    });
+
+    it('throws if you try to set an invalid order', () => {
+      const id1 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+      const id2 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+
+      expect(() =>
+        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } })).to.throw('ordre des filtres');
+    });
+
+    it("throws if lenderRules don't belong to the same org", () => {
+      const organisationId2 = Factory.create('organisation', { name: 'org2' })
+        ._id;
+
+      const id1 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId,
+      })._id;
+      const id2 = Factory.create('lenderRules', {
+        'organisationLink._id': organisationId2,
+      })._id;
+
+      expect(() =>
+        LenderRulesService.setOrder({ orders: { [id1]: 2, [id2]: 3 } })).to.throw('même organisation');
     });
   });
 });

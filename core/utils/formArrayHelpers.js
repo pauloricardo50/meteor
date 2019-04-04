@@ -46,6 +46,11 @@ export const getCountedArray = (formArray, doc, arr = []) => {
 
 const fieldIsValid = (field, doc) => {
   const currentValue = getCurrentValue(field, doc);
+
+  if (Array.isArray(currentValue)) {
+    return currentValue.length > 0;
+  }
+
   return currentValue !== undefined;
 };
 

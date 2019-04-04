@@ -1,28 +1,38 @@
 import { Factory } from 'meteor/dburles:factory';
 import faker from 'faker';
 
-import { STEPS, TASK_STATUS, TASK_TYPE, PROMOTION_TYPES } from '../constants';
+import {
+  LOT_TYPES,
+  ORGANISATION_TYPES,
+  PROMOTION_TYPES,
+  REVENUE_TYPES,
+  ROLES,
+  STEPS,
+  TASK_STATUS,
+  TASK_TYPE,
+  DEFAULT_VALUE_FOR_ALL,
+  DEFAULT_MAIN_RESIDENCE_RULES,
+  DEFAULT_SECONDARY_RESIDENCE_RULES,
+} from '../constants';
 import {
   Borrowers,
+  Contacts,
+  InterestRates,
+  LenderRules,
   Lenders,
   Loans,
   Lots,
+  MortgageNotes,
   Offers,
   Organisations,
   PromotionLots,
   PromotionOptions,
   Promotions,
   Properties,
+  Revenues,
   Tasks,
   Users,
-  LenderRules,
 } from '..';
-import { LOT_TYPES } from '../lots/lotConstants';
-import { ROLES } from '../users/userConstants';
-import MortgageNotes from '../mortgageNotes';
-import { ORGANISATION_TYPES } from '../organisations/organisationConstants';
-import InterestRates from '../interestRates';
-import Contacts from '../contacts';
 
 const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
@@ -81,10 +91,7 @@ Factory.define('loan', Loans, {
   createdAt: () => new Date(),
   borrowerIds: [],
   documents: () => ({}),
-  logic: () => ({
-    verification: {},
-    step: STEPS.PREPARATION,
-  }),
+  step: STEPS.PREPARATION,
   name: () => `19-0${Math.floor(Math.random() * 899 + 100)}`,
   emails: () => [],
   propertyIds: [],
@@ -145,4 +152,28 @@ Factory.define('contact', Contacts, {
 
 Factory.define('lenderRules', LenderRules, {
   filter: {},
+  order: 0,
+});
+
+Factory.define('revenues', Revenues, {
+  amount: 1000,
+  type: REVENUE_TYPES.MORTGAGE,
+});
+
+Factory.define('lenderRulesAll', LenderRules, {
+  ...DEFAULT_VALUE_FOR_ALL,
+  order: 0,
+  filter: { and: [true] },
+});
+
+Factory.define('lenderRulesMain', LenderRules, {
+  maxBorrowRatio: 0.8,
+  order: 0,
+  filter: { and: DEFAULT_MAIN_RESIDENCE_RULES },
+});
+
+Factory.define('lenderRulesSecondary', LenderRules, {
+  maxBorrowRatio: 0.7,
+  order: 0,
+  filter: { and: DEFAULT_SECONDARY_RESIDENCE_RULES },
 });

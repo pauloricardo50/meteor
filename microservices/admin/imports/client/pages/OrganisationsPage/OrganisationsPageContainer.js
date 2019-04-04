@@ -20,8 +20,10 @@ export default compose(
   })),
   withSmartQuery({
     query: adminOrganisations,
-    params: ({ filters }) => filters,
+    params: ({ filters }) => ({
+      ...filters,
+      $body: { name: 1, logo: 1, $filter: 1 },
+    }),
     dataName: 'organisations',
-    reactive: true,
   }),
 );

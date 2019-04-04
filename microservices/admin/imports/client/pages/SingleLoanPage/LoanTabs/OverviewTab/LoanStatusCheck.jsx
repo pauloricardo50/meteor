@@ -1,7 +1,8 @@
 // @flow
 import React from 'react';
+
 import Calculator from 'core/utils/Calculator';
-import { Percent } from 'core/components/Translation';
+import T, { Percent } from 'core/components/Translation';
 import { LoanChecklistDialog } from 'core/components/LoanChecklist';
 import { PURCHASE_TYPE } from 'core/api/constants';
 
@@ -12,13 +13,15 @@ const statusChecks = [
     label: 'Progrès emprunteurs',
     value: ({ borrowers }) => (
       <div className="borrowers">
-        {borrowers.map(borrower => (
+        {borrowers.map((borrower, index) => (
           <span key={borrower._id}>
-            {borrower.firstName}:{' '}
+            {borrower.firstName || (
+              <T id="general.borrowerWithIndex" values={{ index: index + 1 }} />
+            )}
+            :{' '}
             <Percent
-              value={Calculator.personalInfoPercent({
-                borrowers: borrower,
-              })}
+              value={Calculator.personalInfoPercent({ borrowers: borrower })}
+              rounded
             />
           </span>
         ))}
@@ -27,11 +30,15 @@ const statusChecks = [
   },
   {
     label: 'Progrès bien immobilier',
-    value: loan => <Percent value={Calculator.propertyPercent({ loan })} />,
+    value: loan => (
+      <Percent value={Calculator.propertyPercent({ loan })} rounded />
+    ),
   },
   {
     label: 'Progrès refinancement',
-    value: loan => <Percent value={Calculator.refinancingPercent({ loan })} />,
+    value: loan => (
+      <Percent value={Calculator.refinancingPercent({ loan })} rounded />
+    ),
     hide: ({ purchaseType }) => purchaseType !== PURCHASE_TYPE.REFINANCING,
   },
   {
@@ -41,7 +48,7 @@ const statusChecks = [
   {
     label: 'Documents',
     value: loan => (
-      <Percent value={Calculator.filesProgress({ loan }).percent} />
+      <Percent value={Calculator.filesProgress({ loan }).percent} rounded />
     ),
   },
 ];

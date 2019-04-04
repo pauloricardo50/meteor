@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
+
 import { AutoFormDialog } from 'core/components/AutoForm2';
 import ProCustomerAdderContainer from './ProCustomerAdderContainer';
+import T from '../Translation';
 
 type ProCustomerAdderProps = {};
 
@@ -9,11 +11,16 @@ const ProCustomerAdder = ({ schema, onSubmit }: ProCustomerAdderProps) => (
   <AutoFormDialog
     schema={schema}
     onSubmit={onSubmit}
-    title="Inviter un client"
+    title={<T id="ProCustomerAdder.title" />}
+    description={(
+      <p className="description">
+        <T id="ProCustomerAdder.description" />
+      </p>
+    )}
     buttonProps={{
       raised: true,
       secondary: true,
-      label: 'Inviter un client',
+      label: <T id="ProCustomerAdder.title" />,
     }}
   />
 );

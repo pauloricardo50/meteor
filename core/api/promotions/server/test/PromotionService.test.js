@@ -135,11 +135,14 @@ describe('PromotionService', function () {
 
       let resetToken;
 
-      return PromotionService.inviteUser({ promotionId, user: newUser })
+      const { userId, isNewUser } = UserService.proCreateUser({
+        user: newUser,
+      });
+
+      return PromotionService.inviteUser({ promotionId, userId, isNewUser })
         .then((loanId) => {
-          const user = Accounts.findUserByEmail(newUser.email);
+          const user = UserService.getByEmail(newUser.email);
           const {
-            _id: userId,
             services: {
               password: {
                 reset: { token },
@@ -167,9 +170,7 @@ describe('PromotionService', function () {
 
           expect(status).to.equal('sent');
           expect(emailId).to.equal(EMAIL_IDS.INVITE_USER_TO_PROMOTION);
-          expect(merge_vars[0].vars
-            .find(({ name }) => name === 'CTA_URL')
-            .content).to.include(resetToken);
+          expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include(resetToken);
         });
     });
 
@@ -194,7 +195,7 @@ describe('PromotionService', function () {
 
       return PromotionService.inviteUser({
         promotionId,
-        user: newUser,
+        userId,
       })
         .then((loanId) => {
           expect(!!loanId).to.equal(true);
@@ -274,11 +275,16 @@ describe('PromotionService', function () {
         phoneNumber: '1234',
       };
 
+      const { userId, isNewUser } = UserService.proCreateUser({
+        user: newUser,
+      });
+
       return PromotionService.inviteUser({
         promotionId,
-        user: newUser,
+        userId,
+        isNewUser,
       }).then(() => {
-        const user = Accounts.findUserByEmail(newUser.email);
+        const user = UserService.getByEmail(newUser.email);
         const { assignedEmployeeId } = user;
         expect(assignedEmployeeId).to.equal(adminId);
 

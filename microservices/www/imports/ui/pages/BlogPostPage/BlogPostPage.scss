@@ -14,7 +14,7 @@
 
 .blog-post-page-content {
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   margin-top: 40px;
   box-sizing: border-box;
 
@@ -23,12 +23,18 @@
     margin-bottom: 0;
   }
 
+  h2,
+  h3,
+  h4 {
+    margin-top: 40px;
+  }
+
   .date {
     margin-top: 0;
   }
 
   @include screen(med, min) {
-    padding: 32px;
+    padding: 40px;
   }
 
   .thumbnail {
@@ -41,16 +47,19 @@
   p {
     margin: 0;
     margin-top: 32px;
+    line-height: 1.5em;
   }
 
   blockquote {
-    padding-left: 48px;
+    padding-left: 16px;
     margin-top: 48px;
     margin-bottom: 24px;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+    border-left: 2px solid $primary;
+    margin-left: 0;
 
     @include screen(med) {
-      padding-left: 24px;
+      padding-left: 16px;
     }
 
     p {
@@ -58,10 +67,11 @@
     }
 
     cite {
-      font-size: 1.2rem;
+      font-size: 1rem;
       display: block;
       width: 100%;
-      text-align: right;
+      text-align: left;
+      opacity: 0.6;
     }
   }
 
@@ -78,6 +88,18 @@
 
   img {
     max-width: 100%;
+  }
+
+  .youtube-player {
+    width: 100%;
+  }
+
+  a {
+    color: $primary;
+    
+    &:hover {
+      opacity: 0.5;
+    }
   }
 }
 

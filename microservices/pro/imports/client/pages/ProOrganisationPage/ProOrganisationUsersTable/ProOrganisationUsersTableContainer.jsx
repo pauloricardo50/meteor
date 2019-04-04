@@ -12,7 +12,7 @@ const columnOptions = [
 
 const mapUser = (user) => {
   const { _id: userId, name, email, phoneNumber, $metadata } = user;
-  const title = $metadata.role;
+  const title = $metadata.title;
 
   return {
     id: userId,

@@ -1,5 +1,6 @@
 import { compose, mapProps, withState } from 'recompose';
 
+import { lenderRules } from 'core/api/fragments';
 import { withSmartQuery } from '../../../../api';
 import { ORGANISATION_FEATURES } from '../../../../api/constants';
 import adminOrganisations from '../../../../api/organisations/queries/adminOrganisations';
@@ -7,7 +8,13 @@ import adminOrganisations from '../../../../api/organisations/queries/adminOrgan
 export default compose(
   withSmartQuery({
     query: adminOrganisations,
-    queryParams: { features: ORGANISATION_FEATURES.LENDER },
+    params: {
+      features: ORGANISATION_FEATURES.LENDER,
+      $body: {
+        lenderRules: lenderRules(),
+        name: 1,
+      },
+    },
     queryOptions: {
       reactive: false,
       single: false,

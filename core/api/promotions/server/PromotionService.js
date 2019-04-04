@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 
 import UserService from '../../users/server/UserService';
 import LoanService from '../../loans/server/LoanService';
@@ -94,59 +93,40 @@ export class PromotionService extends CollectionService {
 
   inviteUser({
     promotionId,
-    user: { email, firstName, lastName, phoneNumber, invitedBy },
+    userId,
+    isNewUser,
+    pro = {},
     sendInvitation = true,
   }) {
     const promotion = this.get(promotionId);
+    const user = UserService.get(userId);
     const allowAddingUsers = promotion.status === PROMOTION_STATUS.OPEN;
 
     if (!allowAddingUsers) {
       throw new Meteor.Error("Vous ne pouvez pas inviter de clients lorsque la promotion n'est pas en vente, contactez-nous pour valider la promotion.");
     }
 
-    let userId;
-    let isNewUser = false;
-
-    if (!UserService.doesUserExist({ email })) {
-      isNewUser = true;
-      const admin = UserService.get(promotion.assignedEmployeeId);
-      const { organisations = [] } = UserService.fetchOne({
-        $filters: { _id: invitedBy },
-        organisations: { _id: 1 },
-      }) || {};
-      const organisationId = organisations.length ? organisations[0]._id : null;
-
-      userId = UserService.adminCreateUser({
-        options: {
-          email,
-          sendEnrollmentEmail: false,
-          firstName,
-          lastName,
-          phoneNumbers: [phoneNumber],
-          referredByUserLink: invitedBy,
-          referredByOrganisationLink: organisationId,
-        },
-        adminId: admin && admin._id,
-      });
-    } else {
-      userId = Accounts.findUserByEmail(email)._id;
-      if (UserService.hasPromotion({ userId, promotionId })) {
-        throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
-      }
+    if (UserService.hasPromotion({ userId, promotionId })) {
+      throw new Meteor.Error('Cet utilisateur est déjà invité à cette promotion');
     }
 
     const loanId = LoanService.insertPromotionLoan({
       userId,
       promotionId,
-      invitedBy,
+      invitedBy: pro._id,
     });
+
+    if (isNewUser) {
+      const admin = UserService.get(promotion.assignedEmployeeId);
+      UserService.assignAdminToUser({ userId, adminId: admin && admin._id });
+    }
 
     if (sendInvitation) {
       return this.sendPromotionInvitationEmail({
         userId,
         isNewUser,
         promotionId,
-        firstName,
+        firstName: user.firstName,
       }).then(() => loanId);
     }
 

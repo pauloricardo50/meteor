@@ -3,7 +3,7 @@ import BorrowerService from '../../borrowers/server/BorrowerService';
 import PropertyService from '../../properties/server/PropertyService';
 import UpdateWatcherService from '../../updateWatchers/server/UpdateWatcherService';
 import SecurityService from '../../security';
-import { ROLES } from '../../constants';
+import { ROLES, PROPERTY_CATEGORY } from '../../constants';
 
 // Autoremove borrowers and properties
 Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
@@ -18,12 +18,13 @@ Loans.before.remove((userId, { borrowerIds, propertyIds }) => {
     }
   });
   propertyIds.forEach((propertyId) => {
-    const { loans } = PropertyService.createQuery({
+    const { loans, category } = PropertyService.createQuery({
       $filters: { _id: propertyId },
       loans: { _id: 1 },
+      category: 1,
     }).fetchOne();
 
-    if (loans.length === 1) {
+    if (loans.length === 1 && category === PROPERTY_CATEGORY.USER) {
       PropertyService.remove({ propertyId });
     }
   });

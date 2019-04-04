@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Factory } from 'meteor/dburles:factory';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { Mongo } from 'meteor/mongo';
 
 import { checkEmails } from '../../../../utils/testHelpers';
 import LoanService from '../../../loans/server/LoanService';
@@ -16,7 +15,9 @@ import { EMAIL_IDS, EMAIL_TEMPLATES } from '../../../email/emailConstants';
 import { ROLES } from '../../userConstants';
 import UserService from '../UserService';
 
-describe('UserService', () => {
+describe('UserService', function () {
+  this.timeout(10000);
+
   const firstName = 'testFirstName';
   const lastName = 'testLastName';
   let user;
@@ -189,6 +190,47 @@ describe('UserService', () => {
       expect(LoanService.countAll()).to.equal(0);
       expect(BorrowerService.countAll()).to.equal(0);
       expect(PropertyService.countAll()).to.equal(0);
+    });
+
+    it('does not remove proProperties when it is not the only customer', () => {
+      // User property
+      Factory.create('property', { userId: user._id });
+      // Pro property
+      Factory.create('property', {
+        _id: 'propertyId',
+        category: PROPERTY_CATEGORY.PRO,
+      });
+
+      Factory.create('user', { _id: 'userId2' });
+
+      LoanService.insertPropertyLoan({
+        userId: user._id,
+        propertyIds: ['propertyId'],
+      });
+
+      LoanService.insertPropertyLoan({
+        userId: 'userId2',
+        propertyIds: ['propertyId'],
+      });
+
+      UserService.remove({ userId: user._id });
+      expect(PropertyService.countAll()).to.equal(1);
+    });
+
+    it('does not remove proProperties when it is the only customer', () => {
+      // User property
+      Factory.create('property', { userId: user._id });
+      // Pro property
+      Factory.create('property', {
+        _id: 'propertyId',
+        category: PROPERTY_CATEGORY.PRO,
+      });
+      LoanService.insertPropertyLoan({
+        userId: user._id,
+        propertyIds: ['propertyId'],
+      });
+      UserService.remove({ userId: user._id });
+      expect(PropertyService.countAll()).to.equal(1);
     });
   });
 
@@ -395,7 +437,7 @@ describe('UserService', () => {
           user: userToInvite,
           referOnly: true,
           proUserId: 'proId',
-        })).to.throw('Ce client a déjà été réferré');
+        })).to.throw('Ce client existe déjà');
     });
 
     it('invites user to promotion', () => {
@@ -676,7 +718,6 @@ describe('UserService', () => {
         expect(loans[1].promotionLinks[0].invitedBy).to.equal('proId');
         expect(loans[2].promotionLinks[0]._id).to.equal('promotionId2');
         expect(loans[2].promotionLinks[0].invitedBy).to.equal('proId');
-        
 
         return checkEmails(3);
       });
@@ -719,7 +760,7 @@ describe('UserService', () => {
           expect(address).to.equal('bob@dylan.com');
           expect(from_email).to.equal('info@e-potek.ch');
           expect(from_name).to.equal('e-Potek');
-          expect(subject).to.equal('e-Potek - Rue du four 1');
+          expect(subject).to.equal('e-Potek - "Rue du four 1"');
         });
     });
 

@@ -35,7 +35,7 @@ class PDFService {
     const html = this.getComponentAsHTML(component, props, pdfName);
 
     if (htmlOnly) {
-      return Promise.resolve(html);
+      return Promise.resolve({ html, pdfName });
     }
 
     return this.fetchPDF(html, fileName, pdfName);
@@ -89,7 +89,11 @@ class PDFService {
       const loan = adminLoan.clone({ loanId }).fetchOne();
 
       if (loan.hasPromotion) {
-        return { loan: formatLoanWithPromotion(loan), organisation };
+        return {
+          ...params,
+          loan: formatLoanWithPromotion(loan),
+          organisation,
+        };
       }
 
       return { ...params, loan, organisation };
@@ -104,12 +108,14 @@ class PDFService {
 
     switch (type) {
     case PDF_TYPES.LOAN: {
-      const { loan } = data;
+      const { loan, organisation } = data;
       return {
         component: LoanBankPDF,
         props: { ...data, options },
         fileName,
-        pdfName: `${loan.name} - ${type}`,
+        pdfName: organisation
+          ? `${loan.name} - ${organisation.name}`
+          : loan.name,
       };
     }
     default:
@@ -155,7 +161,8 @@ class PDFService {
           stream.on('finish', resolve);
         });
       })
-      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`));
+      .then(() => this.getBase64String(`/tmp/${fileName}.pdf`))
+      .then(base64 => ({ base64, pdfName }));
   };
 }
 

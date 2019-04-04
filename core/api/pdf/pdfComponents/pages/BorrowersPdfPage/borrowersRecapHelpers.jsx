@@ -28,10 +28,10 @@ export const getBorrowersOtherIncome = (borrowers, types, calculator) =>
 
     // Only render comments if this is for one single expense type
     const otherIncomeComments = types.length === 1
-      && calculator.getCommentsForExpenseType({
-        borrowers: borrower,
-        type: types[0],
-      });
+    && calculator.getCommentsForOtherIncomeType({
+      borrowers: borrower,
+      type: types[0],
+    });
 
     const renderFunction = ({ negative }) => (
       <div>

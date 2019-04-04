@@ -1,28 +1,31 @@
 // @flow
 import React from 'react';
-import SimpleSchema from 'simpl-schema';
 
-import { moneyField, address } from '../../../api/helpers/sharedSchemas';
+import PropertySchema from 'core/api/properties/schemas/PropertySchema';
 import { AutoFormDialog } from '../../AutoForm2';
 
 type ProPropertyFormProps = {};
 
-const proPropertySchema = new SimpleSchema({
-  address1: String,
-  address2: { type: String, optional: true },
-  city: String,
-  zipCode: address.zipCode,
-  value: { ...moneyField, optional: false },
-  description: {
-    type: String,
-    optional: true,
-    uniforms: {
-      multiline: true,
-      rows: 5,
-      rowsMax: 15,
-    },
-  },
-});
+const proPropertySchema = PropertySchema.pick(
+  'address1',
+  'address2',
+  'city',
+  'zipCode',
+  'value',
+  'description',
+  'propertyType',
+  'houseType',
+  'flatType',
+  'roomCount',
+  'insideArea',
+  'landArea',
+  'terraceArea',
+  'gardenArea',
+  'constructionYear',
+  'externalUrl',
+  'useOpenGraph',
+  'imageUrls',
+);
 
 const ProPropertyForm = ({
   model,

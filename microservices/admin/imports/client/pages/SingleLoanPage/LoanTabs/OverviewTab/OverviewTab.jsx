@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Recap from 'core/components/Recap';
-import ImpersonateLink from 'core/components/Impersonate/ImpersonateLink';
+import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import T from 'core/components/Translation';
 import UpdateField from 'core/components/UpdateField';
 import DateModifier from 'core/components/DateModifier';
@@ -30,7 +30,6 @@ const OverviewTab = (props) => {
   return (
     <div className="overview-tab">
       <div className="admin-section card1">
-        <ImpersonateLink user={user} />
         <DisableUserFormsToggle loan={loan} />
         <VerificationSetter loan={loan} />
         <UpdateField
@@ -55,6 +54,7 @@ const OverviewTab = (props) => {
         ))}
       </div>
       <LoanStatusCheck loan={loan} />
+      <MaxPropertyValue loan={loan} />
       <Solvency loan={loan} />
       <div className="overview-recap">
         <div className="recap-div">

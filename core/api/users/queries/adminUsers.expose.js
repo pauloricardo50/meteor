@@ -9,6 +9,18 @@ query.expose({
   },
   validateParams: {
     assignedTo: Match.Maybe(String),
+    roles: Match.Maybe([String]),
     $body: Match.Maybe(Object),
+  },
+  embody: {
+    $filter({ filters, params: { assignedTo, roles } }) {
+      if (assignedTo) {
+        filters.assignedEmployeeId = assignedTo;
+      }
+
+      if (roles) {
+        filters.roles = { $in: roles };
+      }
+    },
   },
 });

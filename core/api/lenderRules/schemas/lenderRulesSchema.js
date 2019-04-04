@@ -8,7 +8,6 @@ import {
 } from '../../helpers/sharedSchemas';
 import {
   INCOME_CONSIDERATION_TYPES,
-  REAL_ESTATE_CONSIDERATION_TYPES,
   EXPENSE_TYPES,
 } from '../lenderRulesConstants';
 
@@ -91,6 +90,7 @@ const LenderRulesSchema = new SimpleSchema({
   'organisationLink._id': { type: String, optional: true },
   filter: { type: Object, blackbox: true },
   name: { type: String, optional: true },
+  order: { type: Number, min: 0 },
   ...incomeConsideration,
   ...theoreticalExpenses,
   ...cutOffCriteria,

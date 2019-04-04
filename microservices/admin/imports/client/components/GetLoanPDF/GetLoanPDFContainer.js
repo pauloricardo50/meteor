@@ -6,27 +6,27 @@ import { generatePDF } from 'core/api/pdf/methodDefinitions';
 import message from 'core/utils/message';
 import { base64ToBlob } from './base64-to-blob';
 
-const makeSavePdf = name => (base64) => {
+const savePdf = ({ base64, pdfName }) => {
   if (!base64) {
     return false;
   }
 
   try {
-    return fileSaver.saveAs(base64ToBlob(base64), `${name}.pdf`);
+    return fileSaver.saveAs(base64ToBlob(base64), `${pdfName}.pdf`);
   } catch (error) {
     message.error(error.message, 5);
   }
 };
 
-const makeSaveHtmlFile = name => (html) => {
+const saveHtmlFile = ({ html, pdfName }) => {
   try {
-    return fileSaver.saveAs(new Blob([html]), `${name}.html`);
+    return fileSaver.saveAs(new Blob([html]), `${pdfName}.html`);
   } catch (error) {
     message.error(error.message, 5);
   }
 };
 
-export default compose(withProps(({ loan: { name, _id: loanId } }) => ({
+export default compose(withProps(({ loan: { _id: loanId } }) => ({
   handlePDF: ({ anonymous, organisationId, structureIds }) =>
     generatePDF
       .run({
@@ -34,7 +34,7 @@ export default compose(withProps(({ loan: { name, _id: loanId } }) => ({
         params: { loanId, organisationId, structureIds },
         options: { anonymous },
       })
-      .then(makeSavePdf(name))
+      .then(savePdf)
       .catch(error => message.error(error.message, 5)),
   handleHTML: ({ anonymous, organisationId, structureIds }) =>
     generatePDF
@@ -44,5 +44,5 @@ export default compose(withProps(({ loan: { name, _id: loanId } }) => ({
         options: { anonymous },
         htmlOnly: true,
       })
-      .then(makeSaveHtmlFile(name)),
+      .then(saveHtmlFile),
 })));

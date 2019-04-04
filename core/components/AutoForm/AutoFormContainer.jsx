@@ -10,7 +10,7 @@ import {
 
 const createParams = ({ id, ...rest }, idKey) => ({ [idKey]: id, ...rest });
 
-const ArrayInputContainer = withProps(({ collection }) => {
+const AutoFormContainer = withProps(({ collection, beforeUpdate }) => {
   let popFunc;
   let pushFunc;
   let updateFunc;
@@ -49,6 +49,10 @@ const ArrayInputContainer = withProps(({ collection }) => {
     updateFunc: rawParams =>
       new Promise((resolve, reject) => {
         const params = createParams(rawParams, idKey);
+        if (beforeUpdate) {
+          beforeUpdate(params);
+        }
+
         Meteor.call(updateFunc, params, (error, result) => {
           if (error) {
             reject(error);
@@ -57,29 +61,35 @@ const ArrayInputContainer = withProps(({ collection }) => {
           resolve(result);
         });
       }),
-    popFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        Meteor.call(popFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
-          }
+    popFunc: rawParams => new Promise((resolve, reject) => {
+      const params = createParams(rawParams, idKey);
+      if (beforeUpdate) {
+        beforeUpdate(params);
+      }
 
-          resolve(result);
-        });
-      }),
-    pushFunc: rawParams =>
-      new Promise((resolve, reject) => {
-        const params = createParams(rawParams, idKey);
-        Meteor.call(pushFunc, params, (error, result) => {
-          if (error) {
-            reject(error);
-          }
+      Meteor.call(popFunc, params, (error, result) => {
+        if (error) {
+          reject(error);
+        }
 
-          resolve(result);
-        });
-      }),
+        resolve(result);
+      });
+    }),
+    pushFunc: rawParams => new Promise((resolve, reject) => {
+      const params = createParams(rawParams, idKey);
+      if (beforeUpdate) {
+        beforeUpdate(params);
+      }
+
+      Meteor.call(pushFunc, params, (error, result) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(result);
+      });
+    }),
   };
 });
 
-export default ArrayInputContainer;
+export default AutoFormContainer;

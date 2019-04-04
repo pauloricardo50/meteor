@@ -1,4 +1,6 @@
-import { Match } from 'meteor/check';
+import { check, Match } from 'meteor/check';
+import { Meteor } from 'meteor/meteor';
+
 import { Method } from '../methods/methods';
 
 export const doesUserExist = new Method({
@@ -91,13 +93,6 @@ export const changeEmail = new Method({
   },
 });
 
-export const generateApiToken = new Method({
-  name: 'generateApiToken',
-  params: {
-    userId: String,
-  },
-});
-
 export const userUpdateOrganisations = new Method({
   name: 'userUpdateOrganisations',
   params: {
@@ -115,15 +110,34 @@ export const testUserAccount = new Method({
   },
 });
 
+export const generateApiKeyPair = new Method({
+  name: 'generateApiKeyPair',
+  params: {
+    userId: String,
+  },
+});
+
 export const proInviteUser = new Method({
   name: 'proInviteUser',
   params: {
     user: Object,
-    referOnly: Boolean,
-    propertyIds: Match.Maybe(Array),
-    promotionIds: Match.Maybe(Array),
+    propertyIds: Match.Maybe(Match.Where((x) => {
+      check(x, [String]);
+      if (x && x.length === 0) {
+        throw new Meteor.Error('propertyIds cannot be empty');
+      }
+
+      return true;
+    })),
+    promotionIds: Match.Maybe(Match.Where((x) => {
+      check(x, [String]);
+      if (x && x.length === 0) {
+        throw new Meteor.Error('promotionIds cannot be empty');
+      }
+
+      return true;
+    })),
     property: Match.Maybe(Object),
-    proUserId: Match.Maybe(String),
   },
 });
 
@@ -150,5 +164,5 @@ export const setUserReferredByOrganisation = new Method({
 
 export const proInviteUserToOrganisation = new Method({
   name: 'proInviteUserToOrganisation',
-  params: { user: Object, organisationId: String, role: String, proId: String },
+  params: { user: Object, organisationId: String, title: String },
 });

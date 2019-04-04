@@ -10,6 +10,14 @@
   &-modifier {
     padding: 32px;
   }
+
+  .recap.large {
+    font-size: 1.3em;
+
+    .recap-item {
+      margin-bottom: 16px;
+    }
+  }
 }
 
 .dashboard-recap-property .map {
