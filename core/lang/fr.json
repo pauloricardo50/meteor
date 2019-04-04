@@ -1,4 +1,6 @@
 {
+  "BorrowersProgress.fullApplication": "Remplir un dossier complet",
+  "BorrowersProgress.progress": "Formulaire remplis à {percent}",
   "BorrowersProgress.title": "Emprunteurs",
   "MaxPropertyValue.title": "Capacité d'achat",
   "Forms.variable.gardenArea": "Jardin",

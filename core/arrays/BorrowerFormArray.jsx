@@ -17,11 +17,11 @@ const makeArrayOfObjectsInput = id => ({
   ],
 });
 
-export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
-  const b = borrowers.find(borrower => borrower._id === id);
+export const getBorrowerInfoArray = ({ borrowers, borrowerId, loanId }) => {
+  const b = borrowers.find(({ _id }) => _id === borrowerId);
   const multiple = borrowers.length > 1;
   // If this is the first borrower in the array of borrowers, don't ask for same address
-  const isFirst = borrowers[0]._id === id;
+  const isFirst = borrowers[0]._id === borrowerId;
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -139,8 +139,8 @@ export const getBorrowerInfoArray = ({ borrowers, borrowerId: id, loanId }) => {
   ];
 };
 
-export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
-  const b = borrowers.find(borr => borr._id === id);
+export const getBorrowerFinanceArray = ({ borrowers, borrowerId }) => {
+  const b = borrowers.find(({ _id }) => _id === borrowerId);
 
   if (!b) {
     throw new Error("couldn't find borrower");
@@ -269,4 +269,18 @@ export const getBorrowerFinanceArray = ({ borrowers, borrowerId: id }) => {
   ];
 
   return incomeArray.concat([...fortuneArray, ...insuranceArray]);
+};
+
+export const getBorrowerSimpleArray = ({ borrowers, borrowerId }) => {
+  const b = borrowers.find(borrower => borrower._id === borrowerId);
+
+  if (!b) {
+    throw new Error("couldn't find borrower");
+  }
+
+  return [
+    { id: 'firstName', type: 'textInput' },
+    { id: 'lastName', type: 'textInput' },
+    ...getBorrowerFinanceArray({ borrowers, borrowerId }),
+  ];
 };

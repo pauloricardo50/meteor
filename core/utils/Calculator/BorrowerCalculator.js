@@ -8,6 +8,7 @@ import {
 import {
   getBorrowerInfoArray,
   getBorrowerFinanceArray,
+  getBorrowerSimpleArray,
 } from '../../arrays/BorrowerFormArray';
 import { arrayify, getPercent } from '../general';
 import { getCountedArray, getMissingFieldIds } from '../formArrayHelpers';
@@ -336,6 +337,19 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         });
         getCountedArray(personalFormArray, b, a);
         getCountedArray(financeFormArray, b, a);
+      });
+
+      return getPercent(a);
+    }
+
+    personalInfoPercentSimple({ borrowers }) {
+      const a = [];
+      arrayify(borrowers).forEach((b) => {
+        const simpleFormArray = getBorrowerSimpleArray({
+          borrowers: arrayify(borrowers),
+          borrowerId: b._id,
+        });
+        getCountedArray(simpleFormArray, b, a);
       });
 
       return getPercent(a);
