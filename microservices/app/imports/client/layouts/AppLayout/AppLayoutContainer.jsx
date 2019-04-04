@@ -15,6 +15,10 @@ import getBaseRedirect, {
   isLogin,
 } from 'core/utils/redirection';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import {
+  withSideNavContextProvider,
+  withSideNavContext,
+} from './SideNavContext';
 
 const WITHOUT_LOAN = [
   '/profile',
@@ -94,4 +98,6 @@ export default compose(
   withTranslationContext(({ loan = {} }) => ({
     purchaseType: loan.purchaseType,
   })),
+  withSideNavContextProvider,
+  withSideNavContext,
 );

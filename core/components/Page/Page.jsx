@@ -13,29 +13,34 @@ const Page = ({
   children,
   fullWidth,
   topFullWidth,
+  shouldShowSideNav,
   title,
-}) => (
-  <section id={id} className="page-title">
-    <PageHead titleId={id} title={title} />
-    <div
-      className={classnames('top-bar', className, {
-        'full-width': topFullWidth,
-      })}
-    >
-      <h3 className="title fixed-size bold secondary">
-        {title || <T id={`${id}.title`} />}
-      </h3>
-      {rightComponent}
-    </div>
-    <div
-      className={classnames('children animated fadeIn page', {
-        'full-width': fullWidth,
-      })}
-    >
-      {children}
-    </div>
-  </section>
-);
+}) => {
+  console.log('Page shouldShowSideNav:', shouldShowSideNav);
+
+  return (
+    <section id={id} className="page-title">
+      <PageHead titleId={id} title={title} />
+      <div
+        className={classnames('top-bar', className, {
+          'full-width': topFullWidth || !shouldShowSideNav,
+        })}
+      >
+        <h3 className="title fixed-size bold secondary">
+          {title || <T id={`${id}.title`} />}
+        </h3>
+        {rightComponent}
+      </div>
+      <div
+        className={classnames('children animated fadeIn page', {
+          'full-width': fullWidth,
+        })}
+      >
+        {children}
+      </div>
+    </section>
+  );
+};
 
 Page.propTypes = {
   children: PropTypes.any.isRequired,

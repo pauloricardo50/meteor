@@ -100,6 +100,7 @@ const LoanSchema = new SimpleSchema({
   applicationType: {
     type: String,
     allowedValues: Object.values(APPLICATION_TYPES),
+    defaultValue: APPLICATION_TYPES.SIMPLE,
   },
   ...promotionSchema,
   ...borrowerIdsSchema,

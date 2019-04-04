@@ -8,14 +8,14 @@ import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 
-const routesWithoutSidenav = ['/'];
-
-const getShowSideNav = ({ location }) =>
-  routesWithoutSidenav.indexOf(location.pathname) === -1;
-
-const AppLayout = ({ children, redirect, history, ...props }) => {
-  const showSideNav = getShowSideNav(history);
-  const classes = classnames('app-layout', { 'no-nav': !showSideNav });
+const AppLayout = ({
+  children,
+  redirect,
+  history,
+  shouldShowSideNav,
+  ...props
+}) => {
+  const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
 
   if (redirect) {
     return <Redirect to={redirect} />;
@@ -23,7 +23,7 @@ const AppLayout = ({ children, redirect, history, ...props }) => {
 
   return (
     <div className="app-root">
-      <Navs {...props} showSideNav={showSideNav} />
+      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
 
       <div className={classes}>
         <LayoutErrorBoundary>
@@ -40,6 +40,7 @@ AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  shouldShowSideNav: PropTypes.bool.isRequired,
 };
 
 AppLayout.defaultProps = {

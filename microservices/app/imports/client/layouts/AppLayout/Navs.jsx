@@ -18,13 +18,13 @@ export default class Navs extends Component {
 
   render() {
     const { open } = this.state;
-    const { showSideNav, currentUser } = this.props;
+    const { shouldShowSideNav, currentUser } = this.props;
 
     return (
       <div className="navs">
         <AppTopNav currentUser={currentUser} toggleDrawer={this.handleToggle} />
         <div className="permanent-side-nav">
-          {showSideNav && (
+          {shouldShowSideNav && (
             <PermanentSideNav
               open={open}
               closeDrawer={() => this.handleToggle(false)}
@@ -38,5 +38,5 @@ export default class Navs extends Component {
 }
 
 Navs.propTypes = {
-  showSideNav: PropTypes.bool.isRequired,
+  shouldShowSideNav: PropTypes.bool.isRequired,
 };
