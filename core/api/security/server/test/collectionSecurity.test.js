@@ -360,7 +360,7 @@ describe('Collection Security', () => {
       it('does not throw if user is admin', () => {
         generator({
           users: [{ _id: 'adminId', _factory: 'admin' }],
-          properties: [{ _id: 'propertyId', _factory: 'property' }],
+          properties: [{ _id: 'propertyId' }],
         });
 
         expect(() =>
@@ -370,7 +370,7 @@ describe('Collection Security', () => {
       it('does throw if user is pro and is not allowed to update', () => {
         generator({
           users: [{ _id: 'proId', _factory: 'pro' }],
-          properties: [{ _id: 'propertyId', _factory: 'property' }],
+          properties: [{ _id: 'propertyId' }],
         });
 
         expect(() =>
@@ -379,8 +379,8 @@ describe('Collection Security', () => {
 
       it('does throw if user is user and is not allowed to update', () => {
         generator({
-          users: [{ _id: 'userId', _factory: 'user' }],
-          properties: [{ _id: 'propertyId', _factory: 'property' }],
+          users: [{ _id: 'userId' }],
+          properties: [{ _id: 'propertyId' }],
         });
 
         expect(() =>
@@ -389,10 +389,8 @@ describe('Collection Security', () => {
 
       it('does not throw if user is user and is allowed to update', () => {
         generator({
-          users: [{ _id: 'userId', _factory: 'user' }],
-          properties: [
-            { _id: 'propertyId', userId: 'userId', _factory: 'property' },
-          ],
+          users: [{ _id: 'userId' }],
+          properties: [{ _id: 'propertyId', userId: 'userId' }],
         });
 
         expect(() =>
@@ -412,7 +410,6 @@ describe('Collection Security', () => {
                   $metadata: { permissions: { canModifyProperty: true } },
                 },
               ],
-              _factory: 'property',
             },
           ],
         });
@@ -434,7 +431,6 @@ describe('Collection Security', () => {
                   $metadata: { permissions: { canModifyProperty: false } },
                 },
               ],
-              _factory: 'property',
             },
           ],
         });
@@ -450,7 +446,6 @@ describe('Collection Security', () => {
             {
               _id: 'propertyId',
               category: PROPERTY_CATEGORY.PROMOTION,
-              _factory: 'property',
             },
           ],
           promotions: [
@@ -463,7 +458,6 @@ describe('Collection Security', () => {
                 },
               ],
               propertyLinks: [{ _id: 'propertyId' }],
-              _factory: 'promotion',
             },
           ],
         });
@@ -479,7 +473,6 @@ describe('Collection Security', () => {
             {
               _id: 'propertyId',
               category: PROPERTY_CATEGORY.PROMOTION,
-              _factory: 'property',
             },
           ],
           promotions: [
@@ -492,7 +485,6 @@ describe('Collection Security', () => {
                 },
               ],
               propertyLinks: [{ _id: 'propertyId' }],
-              _factory: 'promotion',
             },
           ],
         });

@@ -11,8 +11,8 @@ describe('Migration 6', () => {
   beforeEach(() => {
     resetDatabase();
     generator({
-      organisations: { _factory: 'organisation', _id: 'org' },
-      contacts: { _factory: 'contact', _id: 'contact' },
+      organisations: { _id: 'org' },
+      contacts: { _id: 'contact' },
       users: { _factory: 'pro', _id: 'user' },
     });
   });

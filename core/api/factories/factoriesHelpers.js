@@ -6,6 +6,42 @@ import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 
 import CollectionService from '../helpers/CollectionService';
+import { COLLECTIONS } from '../constants';
+
+const getSingularFactoryName = (collection) => {
+  switch (collection) {
+  case COLLECTIONS.LOANS_COLLECTION:
+    return 'loan';
+  case COLLECTIONS.BORROWERS_COLLECTION:
+    return 'borrower';
+  case COLLECTIONS.PROPERTIES_COLLECTION:
+    return 'property';
+  case COLLECTIONS.USERS_COLLECTION:
+    return 'user';
+  case COLLECTIONS.TASKS_COLLECTION:
+    return 'task';
+  case COLLECTIONS.OFFERS_COLLECTION:
+    return 'offer';
+  case COLLECTIONS.PROMOTIONS_COLLECTION:
+    return 'promotion';
+  case COLLECTIONS.PROMOTION_OPTIONS_COLLECTION:
+    return 'promotionOption';
+  case COLLECTIONS.PROMOTION_LOTS_COLLECTION:
+    return 'promotionLot';
+  case COLLECTIONS.LOTS_COLLECTION:
+    return 'lot';
+  case COLLECTIONS.MORTGAGE_NOTES_COLLECTION:
+    return 'mortgageNote';
+  case COLLECTIONS.ORGANISATIONS_COLLECTION:
+    return 'organisation';
+  case COLLECTIONS.LENDERS_COLLECTION:
+    return 'lender';
+  case COLLECTIONS.CONTACTS_COLLECTION:
+    return 'contact';
+  default:
+    throw new Error(`No singular factory name found for ${collection}, add it in the generator`);
+  }
+};
 
 const arrayify = maybeArray =>
   (Array.isArray(maybeArray) ? maybeArray : [maybeArray]);
@@ -31,8 +67,23 @@ const insertDoc = ({ doc, collection, useFactories, factory }) => {
   }
 
   if (useFactories && factory !== null) {
-    return Factory.create(factory || collection, doc);
+    if (factory) {
+      return Factory.create(factory, doc);
+    }
+
+    try {
+      return Factory.create(collection, doc);
+    } catch (error) {
+      if (
+        error.message
+        && error.message === `Factory: There is no factory named ${collection}`
+      ) {
+        return Factory.create(getSingularFactoryName(collection), doc);
+      }
+      throw error;
+    }
   }
+
   const _id = Mongo.Collection.get(collection).insert(doc);
   return Mongo.Collection.get(collection).findOne(_id);
 };
@@ -78,10 +129,10 @@ const generator = (scenario, { useFactories = true } = {}) => {
         collection,
         linkName,
       });
-      const docs = arrayify(linksToInsert[linkName]);
-      docs.forEach((doc) => {
+      const linkedDocs = arrayify(linksToInsert[linkName]);
+      linkedDocs.forEach((linkedDoc) => {
         const linkId = createNestedObject({
-          doc,
+          doc: linkedDoc,
           collection: linkCollection,
           parentId: id,
         });
@@ -90,7 +141,7 @@ const generator = (scenario, { useFactories = true } = {}) => {
           id,
           linkName,
           linkId,
-          metadata: doc.$metadata,
+          metadata: linkedDoc.$metadata,
         });
       });
     });
@@ -99,8 +150,8 @@ const generator = (scenario, { useFactories = true } = {}) => {
   };
 
   Object.keys(scenario).forEach((collection) => {
-    const docs = arrayify(scenario[collection]);
-    docs.forEach(doc => createNestedObject({ doc, collection }));
+    const docsInCollection = arrayify(scenario[collection]);
+    docsInCollection.forEach(doc => createNestedObject({ doc, collection }));
   });
 
   return { ids, docs, docsById };
