@@ -65,8 +65,9 @@ describe('LoanService', function () {
 
     it('does not remove if a borrower is linked to multiple loans', () => {
       const borrowerId = Factory.create('borrower')._id;
-      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
-      Factory.create('loan', { borrowerIds: [borrowerId] });
+      loanId = Factory.create('loan', { borrowerIds: [borrowerId], name: '18-0001' })
+        ._id;
+      Factory.create('loan', { borrowerIds: [borrowerId], name: '18-0002' });
 
       expect(LoanService.find({}).count()).to.equal(2);
       expect(BorrowerService.find({}).count()).to.equal(1);
