@@ -22,11 +22,11 @@
 
   white-space: nowrap;
 
-  & > * {
-    margin: 8px;
-  }
-
   @include screen(med, max) {
     flex-wrap: wrap;
+  }
+
+  & > * {
+    margin: 8px;
   }
 }

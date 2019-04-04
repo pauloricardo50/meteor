@@ -9,10 +9,11 @@
     justify-content: space-between;
 
     &-left {
-      box-sizing: border-box;
-      padding-right: 8px;
       display: flex;
       flex-direction: column;
+
+      box-sizing: border-box;
+      padding-right: 8px;
     }
 
     h1 {
@@ -22,32 +23,37 @@
       margin-top: 0;
     }
 
-    > * {
+     > * {
       flex-basis: 50%;
       flex-grow: 1;
-      min-height: 500px;
+
       min-width: 300px;
+      min-height: 500px;
     }
 
     .description {
       white-space: pre-line;
+
       font-size: 1.1em;
     }
 
     .pro-property-recap {
-      width: 100%;
       display: grid;
+
+      width: 100%;
+
       grid-template-columns: repeat(auto-fill, 250px);
     }
   }
 
   .map-container {
-    margin-top: 30px;
     height: 400px;
+    margin-top: 30px;
   }
 
   .external-link {
     align-self: center;
+
     margin: 8px;
 
     &-icon {

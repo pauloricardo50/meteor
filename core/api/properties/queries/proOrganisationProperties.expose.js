@@ -25,8 +25,9 @@ query.resolve(({ userId }) => {
     organisations: { users: { _id: 1 } },
   });
 
-  const otherOrganisationUsers = !!organisations.length
-    && organisations[0].users.map(({ _id }) => _id).filter(id => id !== userId);
+  const otherOrganisationUsers = organisations.length
+    ? organisations[0].users.map(({ _id }) => _id).filter(id => id !== userId)
+    : [];
 
   const properties = PropertyService.fetch({
     $filters: {
