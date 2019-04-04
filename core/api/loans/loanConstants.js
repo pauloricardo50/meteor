@@ -127,3 +127,8 @@ export const SOLVENCY_TYPE = {
   SIMPLE: 'SIMPLE',
   FULL: 'FULL',
 };
+
+export const APPLICATION_TYPES = {
+  SIMPLE: 'SIMPLE',
+  FULL: 'FULL',
+};
