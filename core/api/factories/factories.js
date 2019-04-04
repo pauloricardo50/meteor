@@ -96,7 +96,7 @@ Factory.define('loan', Loans, {
   step: STEPS.PREPARATION,
   name: () => {
     // there is a 1/900% chance that 2 loan names collide,
-    // make sure it never instead
+    // make sure it never happens instead
     while (true) {
       const name = getRandomLoanName();
 
