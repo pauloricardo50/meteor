@@ -12,6 +12,7 @@
   bottom: 72px;
 
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   justify-content: space-between;
 
@@ -23,7 +24,6 @@
 
   opacity: 1;
   box-shadow: 0 0 16px 0 rgba(33, 37, 41, 0.16);
-  overflow: hidden;
 
   &.closed {
     width: 0;
