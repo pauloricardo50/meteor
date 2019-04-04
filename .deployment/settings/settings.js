@@ -131,6 +131,7 @@ export const tmuxinatorPane = ({
 
 export const tmuxinatorScript = ({ panes, applicationsExpectedFilesList }) => ({
   name: TMUXINATOR_SESSION_NAME,
+  pre_window: 'bash',
   root: './',
   on_project_exit: `rm ${applicationsExpectedFilesList} && tmux kill-session -t ${TMUXINATOR_SESSION_NAME}`,
   windows: [{ deploy: { layout: 'tiled', panes } }],
