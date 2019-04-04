@@ -12,7 +12,6 @@ import inviteUserToPromotion from '../inviteUserToPromotion';
 import {
   fetchAndCheckResponse,
   makeHeaders,
-  makeBody,
   getTimestampAndNonce,
 } from '../../test/apiTestHelpers.test';
 
@@ -27,13 +26,17 @@ const userToInvite = {
 };
 
 const api = new RESTAPI();
-api.addEndpoint('/promotions/inviteCustomer', 'POST', inviteUserToPromotion);
+api.addEndpoint(
+  '/promotions/:promotionId/inviteCustomer',
+  'POST',
+  inviteUserToPromotion,
+);
 
 const inviteUser = ({ userData, expectedResponse, status, id }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { promotionId: id || promotionId, user: userData };
+  const body = { user: userData };
   return fetchAndCheckResponse({
-    url: '/promotions/inviteCustomer',
+    url: `/promotions/${id || promotionId}/inviteCustomer`,
     data: {
       method: 'POST',
       headers: makeHeaders({
@@ -63,7 +66,7 @@ const setupPromotion = () => {
   });
 };
 
-describe.only('REST: inviteUserToPromotion', function () {
+describe('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
   before(function () {

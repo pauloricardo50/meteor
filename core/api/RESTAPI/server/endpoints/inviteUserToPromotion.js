@@ -1,8 +1,9 @@
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
 
-const inviteUserToPromotionAPI = ({ user: { _id: userId }, body }) => {
-  const { promotionId, user, testing } = body;
+const inviteUserToPromotionAPI = ({ user: { _id: userId }, body, params }) => {
+  const { user, testing } = body;
+  const { promotionId } = params;
 
   if (testing) {
     return {

@@ -4,6 +4,7 @@ import connectRoute from 'connect-route';
 import Fiber from 'fibers';
 
 import * as defaultMiddlewares from './middlewares';
+import { stringToLiteral } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -56,13 +57,21 @@ export default class RESTAPI {
       router[method.toLowerCase()](endpoint, (req, res, next) => {
         Fiber(() => {
           try {
+            const { params = {} } = req;
+            const formattedParams = Object.keys(params).reduce(
+              (object, key) => ({
+                ...object,
+                [key]: stringToLiteral(params[key]),
+              }),
+              {},
+            );
             Promise.resolve()
               .then(() =>
                 func({
                   user: req.user,
                   body: req.body,
                   query: req.query,
-                  params: req.params,
+                  params: formattedParams,
                 }))
               .then(result => this.handleSuccess(result, res))
               .catch(next);

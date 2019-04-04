@@ -122,3 +122,17 @@ export const verifySignature = (req) => {
 
   return verified;
 };
+
+export const stringToLiteral = (value) => {
+  const maps = {
+    NaN,
+    null: null,
+    undefined,
+    true: true,
+    false: false,
+    Infinity,
+    '-Infinity': -Infinity,
+  };
+
+  return Object.keys(maps).includes(value) ? maps[value] : value;
+};
