@@ -1,6 +1,9 @@
+import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import connectRoute from 'connect-route';
+import Fiber from 'fibers';
+
 import * as defaultMiddlewares from './middlewares';
-import { getRequestMethod, getRequestPath } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -49,29 +52,26 @@ export default class RESTAPI {
   }
 
   registerEndpoint(endpoint, func, method) {
-    WebApp.connectHandlers.use(endpoint, (req, res, next) => {
-      if (getRequestMethod(req) !== method) {
-        // Not the right method, pass to the following middlewares
-        next();
-        return;
-      }
-
-      if (getRequestPath(req) !== endpoint) {
-        // Not an exact route match
-        next();
-        return;
-      }
-
-      try {
-        Promise.resolve()
-          .then(() =>
-            func({ user: req.user, body: req.body, query: req.query }))
-          .then(result => this.handleSuccess(result, res))
-          .catch(next);
-      } catch (error) {
-        next(error);
-      }
-    });
+    WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute((router) => {
+      router[method.toLowerCase()](endpoint, (req, res, next) => {
+        Fiber(() => {
+          try {
+            Promise.resolve()
+              .then(() =>
+                func({
+                  user: req.user,
+                  body: req.body,
+                  query: req.query,
+                  params: req.params,
+                }))
+              .then(result => this.handleSuccess(result, res))
+              .catch(next);
+          } catch (error) {
+            next(error);
+          }
+        }).run();
+      });
+    })));
   }
 
   handleSuccess(result = '', res) {

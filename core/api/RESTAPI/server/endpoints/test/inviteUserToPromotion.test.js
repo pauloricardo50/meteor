@@ -63,7 +63,7 @@ const setupPromotion = () => {
   });
 };
 
-describe('REST: inviteUserToPromotion', function () {
+describe.only('REST: inviteUserToPromotion', function () {
   this.timeout(10000);
 
   before(function () {

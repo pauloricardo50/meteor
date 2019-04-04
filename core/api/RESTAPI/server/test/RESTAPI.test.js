@@ -36,7 +36,11 @@ const makeTestRoute = method => ({ user }) => ({
 
 Meteor.methods({
   apiTestMethod() {
-    return this.userId;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.userId);
+      }, 1500);
+    });
   },
 });
 
@@ -54,15 +58,23 @@ describe('RESTAPI', () => {
   });
   api.addEndpoint('/undefined', 'GET', () => {});
   api.addEndpoint(
-    '/method',
+    '/method/:id/test',
     'POST',
-    ({ user: { _id: userId }, body: { payload }, query: { param } }) => withMeteorUserId(
-      userId,
-      () =>
-        new Promise((resolve, reject) =>
-          Meteor.call('apiTestMethod', (err, res) =>
-            (err ? reject(err) : resolve(`${res} ${payload} ${param}`)))),
-    ),
+    ({
+      user: { _id: userId },
+      body: { testBody },
+      query: { testQuery },
+      params: { id },
+    }) =>
+      withMeteorUserId(
+        userId,
+        () =>
+          new Promise((resolve, reject) =>
+            Meteor.call('apiTestMethod', (err, res) =>
+              (err
+                ? reject(err)
+                : resolve(`${res} ${testBody} ${testQuery} ${id}`)))),
+      ),
   );
 
   before(function () {
@@ -284,11 +296,12 @@ describe('RESTAPI', () => {
 
   it('calls meteor methods with the right userId', () => {
     const { timestamp, nonce } = getTimestampAndNonce();
-    const body = { payload: 'testPayload' };
-    const query = { param: 'testParam' };
+    const body = { testBody: 'testBody' };
+    const query = { testQuery: 'testQuery' };
+    const id = 'testId';
 
     return fetchAndCheckResponse({
-      url: '/method',
+      url: `/method/${id}/test`,
       query,
       data: {
         method: 'POST',
@@ -302,7 +315,7 @@ describe('RESTAPI', () => {
         }),
         body: JSON.stringify(body),
       },
-      expectedResponse: `${user._id} testPayload testParam`,
+      expectedResponse: `${user._id} testBody testQuery testId`,
     });
   });
 
