@@ -257,6 +257,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   adminValidation: 1,
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
+  displayWelcomeScreen: 1,
   offers: fullOffer(),
   properties: userProperty({ withSort }),
   user: appUser(),
@@ -291,6 +292,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   closingDate: 1,
+  displayWelcomeScreen: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
   properties: adminProperty({ withSort }),

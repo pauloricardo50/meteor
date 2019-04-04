@@ -1,0 +1,33 @@
+.welcome-screen {
+  display: flex;
+  flex-direction: column;
+
+  &-content {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+
+    .logo-welcome {
+      display: block;
+      margin: auto;
+      width: 200px;
+      height: 200px;
+    }
+
+    .item {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .checkbox {
+    display: flex;
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+
+  &-cta {
+  }
+}

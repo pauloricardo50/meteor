@@ -8,7 +8,7 @@ import BorrowersProgress from './BorrowersProgress';
 type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => (
-  <div className="simple-dashboard-page">
+  <div className="simple-dashboard-page animated fadeIn">
     <DashboardProgressBar {...props} />
 
     <div className="simple-dashboard-page-borrowers card1">

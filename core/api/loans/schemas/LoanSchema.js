@@ -121,6 +121,11 @@ const LoanSchema = new SimpleSchema({
     allowedValues: Object.values(STEPS),
     uniforms: { placeholder: '' },
   },
+  displayWelcomeScreen: {
+    type: Boolean,
+    defaultValue: true,
+    optional: true,
+  },
   ...maxPropertyValueSchema,
 });
 
