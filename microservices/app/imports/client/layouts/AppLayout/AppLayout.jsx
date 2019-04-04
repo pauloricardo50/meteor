@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
+import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 
@@ -16,13 +17,17 @@ const AppLayout = ({
   ...props
 }) => {
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
+  const rootClasses = classnames('app-root', {
+    mobile:
+      props.loan && props.loan.applicationType === APPLICATION_TYPES.SIMPLE,
+  });
 
   if (redirect) {
     return <Redirect to={redirect} />;
   }
 
   return (
-    <div className="app-root">
+    <div className={rootClasses}>
       <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
 
       <div className={classes}>

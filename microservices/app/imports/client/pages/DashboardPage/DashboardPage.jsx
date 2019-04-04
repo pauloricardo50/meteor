@@ -7,6 +7,7 @@ import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
 import DashboardInfo from './DashboardInfo';
 import NewLoanForm from './NewLoanForm';
+import DashboardPageContainer from './DashboardPageContainer';
 
 const DashboardPage = props => (
   <Page id="DashboardPage" fullWidth>
@@ -24,4 +25,4 @@ DashboardPage.propTypes = {
 
 DashboardPage.defaultProps = {};
 
-export default DashboardPage;
+export default DashboardPageContainer(DashboardPage);

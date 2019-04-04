@@ -1,0 +1,42 @@
+$borrowers-item-width: 500px;
+
+.simple-dashboard-page {
+  display: flex;
+  flex-direction: column;
+
+  &-borrowers {
+    align-self: center;
+    display: flex;
+    overflow: hidden;
+    margin-top: 40px;
+    width: 100%;
+    max-width: calc(#{$borrowers-item-width} * 2);
+
+    @include screen(med) {
+      flex-direction: column;
+    }
+
+    .borrowers-progress,
+    .max-property-value-2 {
+      flex-basis: 50%;
+      flex-shrink: 1;
+      flex-grow: 1;
+      max-width: $borrowers-item-width;
+      box-sizing: content-box;
+
+      @include screen(med) {
+        max-width: unset;
+      }
+    }
+
+    .borrowers-progress {
+      padding: 16px;
+    }
+
+    .max-property-value-2 {
+      padding: 16px;
+      background-color: $primary;
+      color: white;
+    }
+  }
+}

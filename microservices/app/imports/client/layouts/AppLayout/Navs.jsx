@@ -22,7 +22,11 @@ export default class Navs extends Component {
 
     return (
       <div className="navs">
-        <AppTopNav currentUser={currentUser} toggleDrawer={this.handleToggle} />
+        <AppTopNav
+          shouldShowSideNav={shouldShowSideNav}
+          currentUser={currentUser}
+          toggleDrawer={this.handleToggle}
+        />
         <div className="permanent-side-nav">
           {shouldShowSideNav && (
             <PermanentSideNav

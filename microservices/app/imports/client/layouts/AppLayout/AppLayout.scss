@@ -12,6 +12,10 @@
   @include screen(med, max) {
     min-width: 800px;
   }
+
+  &.mobile {
+    min-width: unset;
+  }
 }
 
 .app-layout {
