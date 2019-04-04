@@ -2,33 +2,28 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { Meteor } from 'meteor/meteor';
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 
-import { testCreateUser } from '../../../api';
+import { testCreateUser } from '../../../../api';
 import {
   shallow,
   getMountedComponent,
   pollUntilReady,
-} from '../../../utils/testHelpers';
-import Loading from '../../Loading/Loading';
-import HOCPasswordResetPage, { PasswordResetPage } from '../PasswordResetPage';
+} from '../../../../utils/testHelpers';
+import Loading from '../../../Loading/Loading';
+import PasswordResetPage, {
+  PasswordResetPage as PasswordResetPageDumb,
+} from '../../PasswordResetPage';
 
 describe('PasswordResetPage', () => {
   let props;
   const component = () =>
     getMountedComponent({
-      Component: HOCPasswordResetPage,
+      Component: PasswordResetPage,
       props,
       withRouter: true,
     });
-  const shallowComponent = () => shallow(<PasswordResetPage {...props} />);
-
-  before(function () {
-    if (!Meteor.isClient) {
-      this.skip();
-    }
-  });
+  const shallowComponent = () => shallow(<PasswordResetPageDumb {...props} />);
 
   beforeEach(() => {
     resetDatabase();
@@ -54,7 +49,7 @@ describe('PasswordResetPage', () => {
         pollUntilReady(() => {
           component().update();
           return !component().find(Loading).length;
-        }, 200))
+        }, 10))
       .then(() => expect(component().contains('John Doe')).to.equal(true));
   });
 

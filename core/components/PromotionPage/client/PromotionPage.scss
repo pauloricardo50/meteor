@@ -103,14 +103,15 @@
     &-right > * {
       flex-basis: 50%;
       flex-grow: 1;
-      min-height: 500px;
+
       min-width: 300px;
+      min-height: 500px;
     }
   }
 
   .buttons {
     margin: 40px 0;
-    > * {
+     > * {
       margin-right: 16px;
       margin-bottom: 8px;
     }
@@ -127,7 +128,7 @@
     display: flex;
     align-self: flex-start;
 
-    > * {
+     > * {
       margin-right: 8px;
     }
   }
@@ -148,7 +149,7 @@
     display: flex;
     align-items: center;
 
-    > * {
+     > * {
       margin-left: 4px;
     }
   }
@@ -163,7 +164,7 @@
     margin: 16px;
     padding: 16px;
 
-    > * {
+     > * {
       width: 80%;
     }
   }
