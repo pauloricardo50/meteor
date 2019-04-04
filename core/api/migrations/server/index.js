@@ -7,6 +7,7 @@ import './4';
 import './5';
 import './6';
 import './7';
+import './8';
 
 // To migrate to a specific version
 // Migrations.migrateTo(2);
