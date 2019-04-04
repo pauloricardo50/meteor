@@ -15,8 +15,9 @@ describe('Migration 8', () => {
   describe('up', () => {
     it('sets the applicationType to FULL on all loans', () =>
       Loans.rawCollection()
-        .insert({ _id: 'test' })
-        .then(() => Loans.rawCollection().insert({ _id: 'test2' }))
+        .insert({ _id: 'test', name: '18-0001' })
+        .then(() =>
+          Loans.rawCollection().insert({ _id: 'test2', name: '18-0002' }))
         .then(up)
         .then(() => {
           Loans.find({}).forEach(({ applicationType }) => {
@@ -28,8 +29,13 @@ describe('Migration 8', () => {
   describe('down', () => {
     it('removes applicationType', () =>
       Loans.rawCollection()
-        .insert({ _id: 'test', applicationType: 'FULL' })
-        .then(() => Loans.rawCollection().insert({ _id: 'test2', applicationType: 'SIMPLE' }))
+        .insert({ _id: 'test', applicationType: 'FULL', name: '18-0001' })
+        .then(() =>
+          Loans.rawCollection().insert({
+            _id: 'test2',
+            applicationType: 'SIMPLE',
+            name: '18-0002',
+          }))
         .then(down)
         .then(() => {
           Loans.find({}).forEach(({ applicationType }) => {
