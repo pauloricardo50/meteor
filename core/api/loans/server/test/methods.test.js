@@ -45,7 +45,6 @@ const generateOrganisationsWithLenderRules = ({
       organisations = [
         ...organisations,
         {
-          _factory: 'organisation',
           name: `org${index}`,
           type: ORGANISATION_TYPES.BANK,
           features: [ORGANISATION_FEATURES.LENDER],
@@ -123,15 +122,11 @@ describe('Loan methods', () => {
       generator({
         loans: {
           _id: 'loanId',
-          _factory: 'loan',
-          borrowers: [
-            {
-              _factory: 'borrower',
-              bankFortune: 500000,
-              salary: 1000000,
-              insurance2: [{ value: 100000 }],
-            },
-          ],
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
         },
         organisations: [
           ...generateOrganisationsWithLenderRules({
@@ -140,7 +135,6 @@ describe('Loan methods', () => {
             secondaryBorrowRatio: { min: 0.5, max: 0.7 },
           }),
           {
-            _factory: 'organisation',
             name: 'no lender rules',
             type: ORGANISATION_TYPES.BANK,
             features: [ORGANISATION_FEATURES.LENDER],
