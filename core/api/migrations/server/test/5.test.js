@@ -15,7 +15,6 @@ describe.skip('Migration 5', () => {
     generator({
       organisations: [
         {
-          _factory: 'organisation',
           name: 'org',
           type: ORGANISATION_TYPES.BANK,
           features: [ORGANISATION_FEATURES.LENDER],
@@ -26,7 +25,6 @@ describe.skip('Migration 5', () => {
           ],
         },
         {
-          _factory: 'organisation',
           name: 'org2',
           type: ORGANISATION_TYPES.BANK,
           features: [ORGANISATION_FEATURES.LENDER],
@@ -50,15 +48,11 @@ describe.skip('Migration 5', () => {
       generator({
         loans: loanIds.map(_id => ({
           _id,
-          _factory: 'loan',
-          borrowers: [
-            {
-              _factory: 'borrower',
-              bankFortune: 500000,
-              salary: 1000000,
-              insurance2: [{ value: 100000 }],
-            },
-          ],
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
         })),
       });
 
@@ -104,15 +98,11 @@ describe.skip('Migration 5', () => {
       generator({
         loans: loanIds.map(_id => ({
           _id,
-          _factory: 'loan',
-          borrowers: [
-            {
-              _factory: 'borrower',
-              bankFortune: 500000,
-              salary: 1000000,
-              insurance2: [{ value: 100000 }],
-            },
-          ],
+          borrowers: {
+            bankFortune: 500000,
+            salary: 1000000,
+            insurance2: [{ value: 100000 }],
+          },
         })),
       });
 

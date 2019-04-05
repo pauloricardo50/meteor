@@ -38,6 +38,8 @@ const TEST_LASTNAME = 'TestLastName';
 const TEST_FIRSTNAME = 'TestFirstName';
 const TEST_PHONE = '0123456789';
 
+const getRandomLoanName = () => `19-0${Math.floor(Math.random() * 899 + 100)}`;
+
 Factory.define('user', Users, {
   roles: [ROLES.USER],
   emails: () => [{ address: faker.internet.email(), verified: false }],
@@ -92,7 +94,17 @@ Factory.define('loan', Loans, {
   borrowerIds: [],
   documents: () => ({}),
   step: STEPS.PREPARATION,
-  name: () => `19-0${Math.floor(Math.random() * 899 + 100)}`,
+  name: () => {
+    // there is a 1/900% chance that 2 loan names collide,
+    // make sure it never happens instead
+    while (true) {
+      const name = getRandomLoanName();
+
+      if (!Loans.findOne({ name })) {
+        return name;
+      }
+    }
+  },
   emails: () => [],
   propertyIds: [],
 });

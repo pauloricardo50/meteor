@@ -15,11 +15,7 @@ describe('RevenueService', () => {
   describe('getGeneratedRevenues', () => {
     it('returns 0 if no revenues exist', () => {
       generator({
-        organisations: {
-          _id: 'org',
-          _factory: 'organisation',
-          name: 'org1',
-        },
+        organisations: { _id: 'org', name: 'org1' },
         revenues: [],
       });
 
@@ -32,14 +28,10 @@ describe('RevenueService', () => {
 
     it('only gets revenues of the requested org', () => {
       generator({
-        organisations: {
-          _id: 'org',
-          _factory: 'organisation',
-          name: 'org1',
-        },
+        organisations: { _id: 'org', name: 'org1' },
         revenues: [
           {
-            organisations: { _id: 'org2', _factory: 'organisation' },
+            organisations: { _id: 'org2' },
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
@@ -55,10 +47,7 @@ describe('RevenueService', () => {
 
     it('returns all of one revenue', () => {
       generator({
-        organisations: {
-          _id: 'org',
-          _factory: 'organisation',
-        },
+        organisations: { _id: 'org' },
         revenues: [
           {
             organisations: { _id: 'org' },
@@ -77,10 +66,7 @@ describe('RevenueService', () => {
 
     it('only counts closed revenues', () => {
       generator({
-        organisations: {
-          _id: 'org',
-          _factory: 'organisation',
-        },
+        organisations: { _id: 'org' },
         revenues: [
           {
             organisations: { _id: 'org' },
@@ -104,17 +90,10 @@ describe('RevenueService', () => {
 
     it('splits revenues if there are multiple organisations', () => {
       generator({
-        organisations: {
-          _id: 'org',
-          _factory: 'organisation',
-          name: 'org1',
-        },
+        organisations: { _id: 'org', name: 'org1' },
         revenues: [
           {
-            organisations: [
-              { _id: 'org' },
-              { _id: 'org2', _factory: 'organisation' },
-            ],
+            organisations: [{ _id: 'org' }, { _id: 'org2' }],
             amount: 100,
             status: REVENUE_STATUS.CLOSED,
           },
