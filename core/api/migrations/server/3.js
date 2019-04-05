@@ -5,15 +5,15 @@ import { Loans } from '../..';
 export const up = () => {
   const allLoans = Loans.find({}).fetch();
 
-  return Promise.all(allLoans.map(loan =>
+  return Promise.all(allLoans.map(({ _id, general }) =>
     Loans.rawCollection().update(
-      { _id: loan._id },
+      { _id },
       {
         $set: {
-          ...loan.general,
+          ...general,
           previousLoanTranches: [],
         },
-        $unset: { general: 1 },
+        $unset: { general: true },
       },
     )));
 };
@@ -44,12 +44,12 @@ export const down = () => {
           },
         },
         $unset: {
-          purchaseType: 1,
-          residenceType: 1,
-          canton: 1,
-          currentOwner: 1,
-          futureOwner: 1,
-          otherOwner: 1,
+          purchaseType: true,
+          residenceType: true,
+          canton: true,
+          currentOwner: true,
+          futureOwner: true,
+          otherOwner: true,
         },
       },
     )));

@@ -41,12 +41,12 @@ const MaxPropertyValueEmptyState = ({
         </>
       ) : (
         <>
-          <h3>Calculez votre capacité d'achat maximale</h3>
+          <h4>Calculez votre capacité d'achat maximale</h4>
           <MaxPropertyValueDialog
             loan={loan}
             calculateSolvency={calculateSolvency}
             state={state}
-            style={{ margin: 32 }}
+            style={{ marginTop: 16 }}
           />
         </>
       )}

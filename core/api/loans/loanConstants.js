@@ -126,4 +126,4 @@ export const LOAN_VERIFICATION_STATUS = {
 export const SOLVENCY_TYPE = {
   SIMPLE: 'SIMPLE',
   FULL: 'FULL',
-}
+};

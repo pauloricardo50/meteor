@@ -4,6 +4,7 @@ import SimpleSchema from 'simpl-schema';
 
 import { CANTONS } from '../../api/constants';
 import { AutoFormDialog } from '../AutoForm2';
+import Icon from '../Icon';
 import { STATE } from './MaxPropertyValueContainer';
 
 type MaxPropertyValueDialogProps = {
@@ -46,7 +47,8 @@ const MaxPropertyValueDialog = ({
         raised: true,
         primary: true,
         label: state === STATE.EMPTY ? 'Calculer' : 'Recalculer',
-        style: { aligSelf: 'center', marginTop: '8px', ...style },
+        icon: state === STATE.EMPTY ? null : <Icon type="loop" />,
+        style: { marginTop: 24, ...style },
       }}
     />
   );

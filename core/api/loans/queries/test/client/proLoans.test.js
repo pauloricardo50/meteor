@@ -20,13 +20,7 @@ const fetchLoans = userId =>
 
 const createUserWithLoan = referredByUserLink =>
   generateScenario.run({
-    scenario: {
-      users: {
-        _factory: 'user',
-        referredByUserLink,
-        loans: { _factory: 'loan' },
-      },
-    },
+    scenario: { users: { referredByUserLink, loans: {} } },
   });
 
 const createProUser = userId =>

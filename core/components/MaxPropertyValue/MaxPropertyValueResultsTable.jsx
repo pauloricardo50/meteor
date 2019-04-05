@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import MoneyRange from './MoneyRange';
@@ -12,8 +14,16 @@ const MaxPropertyValueResultsTable = ({
   min,
   max,
 }: MaxPropertyValueResultsTableProps) => {
-  const { propertyValue: minPropertyValue, borrowRatio: minBorrowRatio } = min;
-  const { propertyValue: maxPropertyValue, borrowRatio: maxBorrowRatio } = max;
+  const {
+    propertyValue: minPropertyValue,
+    borrowRatio: minBorrowRatio,
+    organisationName: minOrganisationName,
+  } = min;
+  const {
+    propertyValue: maxPropertyValue,
+    borrowRatio: maxBorrowRatio,
+    organisationName: maxOrganisationName,
+  } = max;
 
   const minLoan = minPropertyValue * minBorrowRatio;
   const maxLoan = maxPropertyValue * maxBorrowRatio;
@@ -23,6 +33,26 @@ const MaxPropertyValueResultsTable = ({
 
   return (
     <table>
+      <tr>
+        <td />
+        <td>
+          <div className="flex-col">
+            <span className="secondary">Prêteur le moins compétitif</span>
+            {Meteor.microservice === 'admin' && (
+              <span>[ADMIN] {minOrganisationName}</span>
+            )}
+          </div>
+        </td>
+        <td />
+        <td>
+          <div className="flex-col">
+            <span className="secondary">Prêteur le plus compétitif</span>
+            {Meteor.microservice === 'admin' && (
+              <span>[ADMIN] {maxOrganisationName}</span>
+            )}
+          </div>
+        </td>
+      </tr>
       <tr>
         <td>
           <h4 className="secondary">Hypothèque</h4>

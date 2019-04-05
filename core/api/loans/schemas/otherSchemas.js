@@ -1,6 +1,6 @@
 // @flow
-import { INTEREST_RATES } from '../../constants';
-import { moneyField } from '../../helpers/sharedSchemas';
+import { INTEREST_RATES, SOLVENCY_TYPE, CANTONS } from '../../constants';
+import { moneyField, percentageField } from '../../helpers/sharedSchemas';
 
 export const borrowerIdsSchema = {
   borrowerIds: { type: Array, defaultValue: [] },
@@ -55,4 +55,36 @@ export type loanTranchesType = Array<{
 export const propertyIdsSchema = {
   propertyIds: { type: Array, defaultValue: [], maxCount: 5 },
   'propertyIds.$': String,
+};
+
+export const maxPropertyValueSchema = {
+  maxPropertyValue: { type: Object, optional: true },
+  'maxPropertyValue.type': {
+    type: String,
+    allowedValues: Object.values(SOLVENCY_TYPE),
+    defaultValue: SOLVENCY_TYPE.SIMPLE,
+  },
+  'maxPropertyValue.canton': {
+    type: String,
+    allowedValues: Object.keys(CANTONS),
+  },
+  'maxPropertyValue.date': Date,
+  'maxPropertyValue.main': Object,
+  'maxPropertyValue.main.min': Object,
+  'maxPropertyValue.main.min.propertyValue': moneyField,
+  'maxPropertyValue.main.min.borrowRatio': percentageField,
+  'maxPropertyValue.main.min.organisationName': String,
+  'maxPropertyValue.main.max': Object,
+  'maxPropertyValue.main.max.propertyValue': moneyField,
+  'maxPropertyValue.main.max.borrowRatio': percentageField,
+  'maxPropertyValue.main.max.organisationName': String,
+  'maxPropertyValue.second': Object,
+  'maxPropertyValue.second.min': Object,
+  'maxPropertyValue.second.min.propertyValue': moneyField,
+  'maxPropertyValue.second.min.borrowRatio': percentageField,
+  'maxPropertyValue.second.min.organisationName': String,
+  'maxPropertyValue.second.max': Object,
+  'maxPropertyValue.second.max.propertyValue': moneyField,
+  'maxPropertyValue.second.max.borrowRatio': percentageField,
+  'maxPropertyValue.second.max.organisationName': String,
 };

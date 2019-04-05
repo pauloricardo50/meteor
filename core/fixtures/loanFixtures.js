@@ -175,7 +175,8 @@ export const addLoanWithData = ({
   const loanId = LoanService.adminLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
   const loan = adminLoan.clone({ loanId }).fetchOne();
-  const propertyId = loan.properties[0]._id;
+  const propertyId = PropertyService.insert({ property: {}, userId });
+  LoanService.addPropertyToLoan({ propertyId, loanId });
   const structureId = loan.structures[0].id;
   const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
   LoanService.updateStructure({

@@ -64,12 +64,8 @@ describe('LoanService', function () {
     });
 
     it('does not remove if a borrower is linked to multiple loans', () => {
-      const borrowerId = Factory.create('borrower')._id;
-      loanId = Factory.create('loan', { borrowerIds: [borrowerId] })._id;
-      Factory.create('loan', { borrowerIds: [borrowerId] });
-
-      expect(LoanService.find({}).count()).to.equal(2);
-      expect(BorrowerService.find({}).count()).to.equal(1);
+      const { ids } = generator({ borrowers: { loans: [{}, {}] } });
+      loanId = ids.loans[0];
 
       LoanService.remove({ loanId });
 
@@ -78,17 +74,8 @@ describe('LoanService', function () {
     });
 
     it('autoremoves lenders', () => {
-      loanId = Factory.create('loan')._id;
-      const lender1 = Factory.create('lender', { loanLink: { _id: 'asdf' } })
-        ._id;
-      const lender2 = Factory.create('lender', { loanLink: { _id: loanId } })
-        ._id;
-      const lender3 = Factory.create('lender', { loanLink: { _id: loanId } })
-        ._id;
-
-      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender1 });
-      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender2 });
-      LoanService.addLink({ id: loanId, linkName: 'lenders', linkId: lender3 });
+      const { ids } = generator({ loans: { lenders: [{}, {}, {}] } });
+      loanId = ids.loans[0];
 
       expect(LenderService.countAll()).to.equal(3);
 
@@ -129,12 +116,8 @@ describe('LoanService', function () {
   describe('addPropertyToLoan', () => {
     it('adds the propertyId on all structures', () => {
       generator({
-        loans: {
-          _factory: 'loan',
-          _id: 'loanId',
-          structures: [{ id: '1' }, { id: '2' }],
-        },
-        properties: { _factory: 'property', _id: 'propertyId' },
+        loans: { _id: 'loanId', structures: [{ id: '1' }, { id: '2' }] },
+        properties: { _id: 'propertyId' },
       });
 
       LoanService.addPropertyToLoan({
@@ -152,7 +135,6 @@ describe('LoanService', function () {
     it('only adds the property if it is not defined', () => {
       generator({
         loans: {
-          _factory: 'loan',
           _id: 'loanId',
           structures: [
             { id: '1', propertyId: 'a' },
@@ -160,7 +142,7 @@ describe('LoanService', function () {
             { id: '3' },
           ],
         },
-        properties: { _factory: 'property', _id: 'propertyId' },
+        properties: { _id: 'propertyId' },
       });
 
       LoanService.addPropertyToLoan({
@@ -744,15 +726,12 @@ describe('LoanService', function () {
           { _id: 'adminId', _factory: 'adminEpotek' },
           {
             _id: 'userId',
-            _factory: 'user',
             assignedEmployee: { _id: 'adminId' },
             loans: {
               _id: loanId,
-              _factory: 'loan',
-              borrowers: { _factory: 'borrower' },
+              borrowers: {},
               properties: {
                 _id: 'propertyId',
-                _factory: 'property',
                 address1: 'rue du lac 31',
                 zipCode: 1400,
                 city: 'Yverdon',
@@ -839,7 +818,7 @@ describe('LoanService', function () {
   describe('setStep', () => {
     it('sets the step', () => {
       generator({
-        loans: { _id: 'id', step: STEPS.FIND_LENDER, _factory: 'loan' },
+        loans: { _id: 'id', step: STEPS.FIND_LENDER },
       });
 
       LoanService.setStep({ loanId: 'id', nextStep: STEPS.GET_CONTRACT });
@@ -852,19 +831,15 @@ describe('LoanService', function () {
     it('sends a notification email if the step goes from PREPARATION to FIND_LENDER', () => {
       generator({
         loans: {
-          _id: 'loanId',
+          _id: 'myLoan',
           step: STEPS.PREPARATION,
-          _factory: 'loan',
-          user: {
-            _factory: 'user',
-            emails: [{ address: 'john@doe.com', verified: false }],
-          },
+          user: { emails: [{ address: 'john@doe.com', verified: false }] },
         },
       });
 
-      LoanService.setStep({ loanId: 'loanId', nextStep: STEPS.FIND_LENDER });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.FIND_LENDER });
 
-      loan = LoanService.get('loanId');
+      loan = LoanService.get('myLoan');
 
       expect(loan.step).to.equal(STEPS.FIND_LENDER);
 
@@ -891,7 +866,7 @@ describe('LoanService', function () {
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
-        expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/loanId');
+        expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
       });
     });
   });

@@ -13,5 +13,8 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "microservices/**/imports/core": true
+  },
+  "editor.suggest.filteredTypes": {
+    "keyword": true
   }
 }

@@ -51,7 +51,7 @@ import StarEmpty from '@material-ui/icons/StarBorder';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import OfflinePin from '@material-ui/icons/OfflinePin';
 import Save from '@material-ui/icons/Save';
-import SupervisorAccount from '@material-ui/icons/SupervisorAccount';
+import SupervisorAccount from '@material-ui/icons/SupervisedUserCircle';
 import FlashOn from '@material-ui/icons/FlashOn';
 import Report from '@material-ui/icons/Report';
 import DeleteForever from '@material-ui/icons/DeleteForever';

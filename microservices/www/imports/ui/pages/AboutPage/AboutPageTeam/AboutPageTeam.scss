@@ -114,6 +114,7 @@
 
   .about-page-team-member-image {
     position: relative;
+
     display: inline-block;
 
     box-sizing: border-box;
@@ -127,12 +128,13 @@
 
   .about-page-team-member-image:before,
   .about-page-team-member-image:after {
-    content: '';
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
+    left: 0;
+
+    content: '';
   }
 
   .plus:before,
