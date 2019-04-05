@@ -121,6 +121,7 @@ export const makeCustomAutoField = ({ labels = {}, intlPrefix } = {}) => {
         label={label}
         placeholder={placeholder}
         InputLabelProps={{ shrink: true }}
+        margin="normal"
       />
     );
   };

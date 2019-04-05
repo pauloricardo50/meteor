@@ -24,6 +24,10 @@
     width: 100%;
     max-width: 500px;
 
+    > * {
+      width: 100%;
+    }
+
     button {
       margin-top: 16px;
     }
