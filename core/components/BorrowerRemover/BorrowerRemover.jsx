@@ -15,7 +15,7 @@ const BorrowerRemover = ({ handleClick }: BorrowerRemoverProps) => (
     <ConfirmMethod
       method={handleClick}
       label={<T id="BorrowerRemover.button" />}
-      buttonProps={{ primary: true, outlined: true }}
+      buttonProps={{ error: true, outlined: true }}
     />
   </div>
 );

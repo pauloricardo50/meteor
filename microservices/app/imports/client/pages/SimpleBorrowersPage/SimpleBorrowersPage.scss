@@ -15,12 +15,12 @@ $footer-height: 64px;
     padding-bottom: calc(#{$footer-height});
   }
 
-  &-forms {
-    width: 100%;
-    max-width: 600px;
-    align-self: center;
+  &-header {
+    display: flex;
+    justify-content: space-between;
 
     h2 {
+      margin: 0;
       margin-bottom: 8px;
     }
 
@@ -30,11 +30,33 @@ $footer-height: 64px;
       display: flex;
       align-items: center;
     }
+  }
+
+  &-forms {
+    width: 100%;
+    max-width: 600px;
+    align-self: center;
 
     .forms {
       max-width: 400px;
       width: 100%;
       margin: auto;
+    }
+
+    .borrower-form {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .borrower-remover {
+      align-self: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .borrower-tab-labels {
+      display: flex;
+      align-items: center;
     }
   }
 

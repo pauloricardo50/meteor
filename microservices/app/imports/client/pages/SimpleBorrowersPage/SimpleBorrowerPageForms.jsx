@@ -10,8 +10,8 @@ import BorrowerForm from './BorrowerForm';
 type SimpleBorrowerPageFormsProps = {};
 
 const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
-  const { borrowers, userFormsEnabled } = loan;
-  
+  const { borrowers, userFormsEnabled, _id: loanId } = loan;
+
   return (
     <div className="forms">
       {borrowers.length === 1 && (
@@ -19,6 +19,7 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
           borrowers={borrowers}
           borrowerId={borrowers[0]._id}
           userFormsEnabled={userFormsEnabled}
+          loanId={loanId}
         />
       )}
       {borrowers.length === 2 && (
@@ -36,6 +37,7 @@ const SimpleBorrowerPageForms = ({ loan }: SimpleBorrowerPageFormsProps) => {
                   borrowerId={borrowers[index]._id}
                   userFormsEnabled={userFormsEnabled}
                   key={borrowers[index]._id}
+                  loanId={loanId}
                 />
               ),
               label: (
