@@ -102,81 +102,9 @@ describe('REST: testEndpoint', function () {
     },
   };
 
-  describe('works without params with method', () => {
+  describe('return the expected response with method', () => {
     context('GET', () => {
       it('without query', () =>
-        testEndpoint({
-          method: 'GET',
-          expectedResponse: JSON.stringify({
-            user,
-            body: {},
-            query: {},
-            params: {},
-          }),
-          status: HTTP_STATUS_CODES.OK,
-        }));
-
-      it('with query', () =>
-        testEndpoint({
-          method: 'GET',
-          query: testQuery,
-          expectedResponse: JSON.stringify({
-            user,
-            body: {},
-            query: testQuery,
-            params: {},
-          }),
-          status: HTTP_STATUS_CODES.OK,
-        }));
-    });
-
-    ['POST', 'PUT', 'DELETE'].forEach((method) => {
-      context(method, () => {
-        it('without query and body', () =>
-          testEndpoint({
-            method,
-            expectedResponse: JSON.stringify({
-              user,
-              body: {},
-              query: {},
-              params: {},
-            }),
-            status: HTTP_STATUS_CODES.OK,
-          }));
-
-        it('with query', () =>
-          testEndpoint({
-            method,
-            query: testQuery,
-            expectedResponse: JSON.stringify({
-              user,
-              body: {},
-              query: testQuery,
-              params: {},
-            }),
-            status: HTTP_STATUS_CODES.OK,
-          }));
-
-        it('with query and body', () =>
-          testEndpoint({
-            method,
-            query: testQuery,
-            body: testBody,
-            expectedResponse: JSON.stringify({
-              user,
-              body: testBody,
-              query: testQuery,
-              params: {},
-            }),
-            status: HTTP_STATUS_CODES.OK,
-          }));
-      });
-    });
-  });
-
-  describe('works with params with method', () => {
-    context('GET', () => {
-      it('without query and params', () =>
         testEndpoint({
           method: 'GET',
           expectedResponse: JSON.stringify({
