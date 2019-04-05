@@ -33,7 +33,9 @@ export const fetchAndCheckResponse = ({
   status,
 }) =>
   fetch(
-    `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query)}`,
+    `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
+      encode: true,
+    })}`,
     data,
   ).then(res => checkResponse({ res, expectedResponse, status }));
 

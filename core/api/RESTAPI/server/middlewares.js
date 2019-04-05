@@ -12,6 +12,7 @@ import {
   getPublicKey,
   verifySignature,
   getSignature,
+  stringToLiteral,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 

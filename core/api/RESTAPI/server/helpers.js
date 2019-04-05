@@ -111,7 +111,6 @@ export const verifySignature = (req) => {
   if (!['GET', 'HEAD'].includes(method) && Object.keys(body).length > 0) {
     objectToVerify = { ...objectToVerify, body: { ...sortObject(body) } };
   }
-
   // Verify signature
   const verified = key.verify(
     JSON.stringify(objectToVerify),

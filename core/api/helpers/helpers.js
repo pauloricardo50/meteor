@@ -114,7 +114,7 @@ export const getReferredBy = ({ user, proUser = {}, isAdmin }) => {
 };
 
 export const sortObject = (object) => {
-  if (typeof object !== 'object' || object instanceof Array) {
+  if (!object || typeof object !== 'object' || object instanceof Array) {
     return object;
   }
 
