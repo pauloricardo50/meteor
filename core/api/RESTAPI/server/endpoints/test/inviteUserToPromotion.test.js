@@ -27,7 +27,7 @@ const userToInvite = {
 
 const api = new RESTAPI();
 api.addEndpoint(
-  '/promotions/:promotionId/inviteCustomer',
+  '/promotions/:promotionId/invite-customer',
   'POST',
   inviteUserToPromotion,
 );
@@ -36,7 +36,7 @@ const inviteUser = ({ userData, expectedResponse, status, id }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
   const body = { user: userData };
   return fetchAndCheckResponse({
-    url: `/promotions/${id || promotionId}/inviteCustomer`,
+    url: `/promotions/${id || promotionId}/invite-customer`,
     data: {
       method: 'POST',
       headers: makeHeaders({
@@ -108,7 +108,7 @@ describe('REST: inviteUserToPromotion', function () {
       inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          status: 500,
+          status: 400,
           message:
             '[Could not find object with filters "{"_id":"12345"}" in collection "promotions"]',
         },
@@ -121,7 +121,7 @@ describe('REST: inviteUserToPromotion', function () {
         expectedResponse: {
           message:
             'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
-          status: 500,
+          status: 400,
         },
       }));
 
@@ -136,7 +136,7 @@ describe('REST: inviteUserToPromotion', function () {
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          status: 500,
+          status: 400,
           message:
             'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
@@ -155,7 +155,7 @@ describe('REST: inviteUserToPromotion', function () {
         userData: userToInvite,
         status: HTTP_STATUS_CODES.FORBIDDEN,
         expectedResponse: {
-          status: 500,
+          status: 400,
           message:
             'Vous ne pouvez pas inviter des clients à cette promotion [NOT_AUTHORIZED]',
         },
@@ -171,7 +171,7 @@ describe('REST: inviteUserToPromotion', function () {
       return inviteUser({
         userData: userToInvite,
         expectedResponse: {
-          status: 500,
+          status: 400,
           message: '[promotionIds cannot be empty]',
         },
       });
@@ -192,7 +192,7 @@ describe('REST: inviteUserToPromotion', function () {
         inviteUser({
           userData: userToInvite,
           expectedResponse: {
-            status: 500,
+            status: 400,
             message: '[Cet utilisateur est déjà invité à cette promotion]',
           },
         }));

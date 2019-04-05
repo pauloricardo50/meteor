@@ -7,11 +7,7 @@ import { sortObject } from 'core/api/helpers/index';
 
 const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 
-const checkResponse = ({ res, expectedResponse, status }) =>
-//   if (status) {
-//     expect(res.status).to.equal(status || 200);
-//   }
-
+const checkResponse = ({ res, expectedResponse }) =>
   res.json().then((body) => {
     expect(body).to.deep.equal(expectedResponse);
   });
@@ -30,14 +26,13 @@ export const fetchAndCheckResponse = ({
   query,
   data,
   expectedResponse,
-  status,
 }) =>
   fetch(
     `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
       encode: true,
     })}`,
     data,
-  ).then(res => checkResponse({ res, expectedResponse, status }));
+  ).then(res => checkResponse({ res, expectedResponse }));
 
 const signBody = ({ body, privateKey }) => {
   const key = new NodeRSA();

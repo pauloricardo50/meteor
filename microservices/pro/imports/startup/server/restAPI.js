@@ -8,7 +8,7 @@ import {
 
 const api = new RESTAPI();
 api.addEndpoint(
-  '/promotions/:promotionId/inviteCustomer',
+  '/promotions/:promotionId/invite-customer',
   'POST',
   inviteUserToPromotionAPI,
 );

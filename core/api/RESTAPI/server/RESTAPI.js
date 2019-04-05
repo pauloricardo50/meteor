@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import connectRoute from 'connect-route';
 import Fiber from 'fibers';
+import { compose } from 'recompose';
 
 import * as defaultMiddlewares from './middlewares';
-import { stringToLiteral } from './helpers';
+import { formatParams, getRequestPath } from './helpers';
 
 export default class RESTAPI {
   constructor({
@@ -52,35 +53,36 @@ export default class RESTAPI {
     });
   }
 
+  routeEndpointFunc(func) {
+    return (req, res, next) => {
+      Fiber(() => {
+        try {
+          const { params = {} } = req;
+          Promise.resolve()
+            .then(() =>
+              func({
+                user: req.user,
+                body: req.body,
+                query: req.query,
+                params: formatParams(params),
+              }))
+            .then(result => this.handleSuccess(result, res))
+            .catch(next);
+        } catch (error) {
+          next(error);
+        }
+      }).run();
+    };
+  }
+
   registerEndpoint(endpoint, func, method) {
-    WebApp.connectHandlers.use(Meteor.bindEnvironment(connectRoute((router) => {
-      router[method.toLowerCase()](endpoint, (req, res, next) => {
-        Fiber(() => {
-          try {
-            const { params = {} } = req;
-            const formattedParams = Object.keys(params).reduce(
-              (object, key) => ({
-                ...object,
-                [key]: stringToLiteral(params[key]),
-              }),
-              {},
-            );
-            Promise.resolve()
-              .then(() =>
-                func({
-                  user: req.user,
-                  body: req.body,
-                  query: req.query,
-                  params: formattedParams,
-                }))
-              .then(result => this.handleSuccess(result, res))
-              .catch(next);
-          } catch (error) {
-            next(error);
-          }
-        }).run();
-      });
-    })));
+    compose(
+      WebApp.connectHandlers.use.bind(WebApp.connectHandlers),
+      Meteor.bindEnvironment,
+      connectRoute,
+    )((router) => {
+      router[method.toLowerCase()](endpoint, this.routeEndpointFunc(func));
+    });
   }
 
   handleSuccess(result = '', res) {

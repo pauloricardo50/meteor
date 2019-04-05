@@ -74,6 +74,7 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
+    status = HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }
@@ -135,3 +136,12 @@ export const stringToLiteral = (value) => {
 
   return Object.keys(maps).includes(value) ? maps[value] : value;
 };
+
+export const formatParams = params =>
+  Object.keys(params).reduce(
+    (object, key) => ({
+      ...object,
+      [key]: stringToLiteral(params[key]),
+    }),
+    {},
+  );

@@ -29,17 +29,17 @@ const replayHandlerMiddleware = (req, res, next) => {
   const nonce = getHeader(req, 'x-epotek-nonce');
 
   if (!timestamp || !nonce) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
   }
 
   const now = moment().unix();
 
   // This is an old request
   if (timestamp < now - NONCE_TTL) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
   }
   if (nonceExists(nonce)) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
   }
 
   addNonce(nonce);

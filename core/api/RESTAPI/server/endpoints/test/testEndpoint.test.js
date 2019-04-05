@@ -102,7 +102,7 @@ describe('REST: testEndpoint', function () {
     },
   };
 
-  describe('return the expected response with method', () => {
+  describe('returns the expected response with method', () => {
     context('GET', () => {
       it('without query', () =>
         testEndpoint({

@@ -8,7 +8,6 @@ import RESTAPI from '../RESTAPI';
 import { withMeteorUserId } from '../helpers';
 import {
   fetchAndCheckResponse,
-  makeBody,
   makeHeaders,
   getTimestampAndNonce,
 } from './apiTestHelpers.test';
@@ -36,11 +35,7 @@ const makeTestRoute = method => ({ user }) => ({
 
 Meteor.methods({
   apiTestMethod() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.userId);
-      }, 1500);
-    });
+    return new Promise(resolve => setTimeout(() => resolve(this.userId), 1500));
   },
 });
 
@@ -110,10 +105,6 @@ describe('RESTAPI', () => {
           path: '/api/unknown_endpoint',
           method: 'POST',
         }),
-        status: REST_API_ERRORS.UNKNOWN_ENDPOINT({
-          path: '/api/unknown_endpoint',
-          method: 'POST',
-        }).status,
       });
     });
 
@@ -129,10 +120,6 @@ describe('RESTAPI', () => {
           path: '/api/test',
           method: 'PATCH',
         }),
-        status: REST_API_ERRORS.UNKNOWN_ENDPOINT({
-          path: '/api/test',
-          method: 'PATCH',
-        }).status,
       });
     });
 
@@ -144,7 +131,6 @@ describe('RESTAPI', () => {
           headers: { 'Content-Type': 'plain/text' },
         },
         expectedResponse: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text'),
-        status: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text').status,
       }));
 
     it('authorization type is wrong', () =>
@@ -155,7 +141,6 @@ describe('RESTAPI', () => {
           headers: { 'Content-Type': 'application/json' },
         },
         expectedResponse: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE,
-        status: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE.status,
       }));
 
     it('public key is wrong', () =>
@@ -166,7 +151,6 @@ describe('RESTAPI', () => {
           headers: makeHeaders({ publicKey: '12345' }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
     it('signature is wrong', () =>
@@ -177,7 +161,6 @@ describe('RESTAPI', () => {
           headers: makeHeaders({ publicKey }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
     it('attemps a replay attack with same nonce', () => {
@@ -202,8 +185,7 @@ describe('RESTAPI', () => {
               nonce,
             }),
           },
-          expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-          status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
+          expectedResponse: REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT,
         }));
     });
 
@@ -219,8 +201,7 @@ describe('RESTAPI', () => {
           method: 'POST',
           headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
-        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
+        expectedResponse: REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT,
       });
     });
   });
@@ -276,7 +257,6 @@ describe('RESTAPI', () => {
         headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: { message: 'Internal server error', status: 500 },
-      status: 500,
     });
   });
 
@@ -289,8 +269,7 @@ describe('RESTAPI', () => {
         method: 'DELETE',
         headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
-      expectedResponse: { message: '[meteor error]', status: 500 },
-      status: 500,
+      expectedResponse: { message: '[meteor error]', status: 400 },
     });
   });
 
@@ -345,7 +324,6 @@ describe('RESTAPI', () => {
         path: '/api/test/subtest',
         method: 'POST',
       }),
-      status: 404,
     });
   });
 });
