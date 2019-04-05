@@ -15,6 +15,7 @@ const WelcomeScreen = ({
   handleClick,
   setDontShowAgain,
   dontShowAgain,
+  handleContact,
 }: WelcomeScreenProps) => (
   <div className="welcome-screen animated fadeIn">
     <div className="welcome-screen-content">
@@ -67,7 +68,12 @@ const WelcomeScreen = ({
         <h3>
           <T id="WelcomeScreen.help" />
         </h3>
-        <Button primary icon={<Icon type="forum" />} iconAfter>
+        <Button
+          primary
+          icon={<Icon type="forum" />}
+          iconAfter
+          onClick={handleContact}
+        >
           <T id="WelcomeScreen.contactUs" />
         </Button>
       </div>

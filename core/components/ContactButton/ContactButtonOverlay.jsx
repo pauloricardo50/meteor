@@ -13,16 +13,16 @@ type ContactButtonOverlayProps = {
     phoneNumber: string,
     src: string,
   },
-  open: boolean,
+  openContact: boolean,
 };
 
 const ContactButtonOverlay = ({
   staff: { src, name, phoneNumber, email } = {},
-  open,
+  openContact,
 }: ContactButtonOverlayProps) => (
   <div
     className={cx('card1 shadow-2 card-top contact-button-overlay', {
-      closed: !open,
+      closed: !openContact,
     })}
   >
     <div className="top">

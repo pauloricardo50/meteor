@@ -15,6 +15,7 @@ import getBaseRedirect, {
   isLogin,
 } from 'core/utils/redirection';
 import withTranslationContext from 'core/components/Translation/withTranslationContext';
+import { withContactButtonProvider } from 'core/components/ContactButton/ContactButtonContext';
 import {
   withSideNavContextProvider,
   withSideNavContext,
@@ -100,4 +101,5 @@ export default compose(
   })),
   withSideNavContextProvider,
   withSideNavContext,
+  withContactButtonProvider,
 );
