@@ -9,7 +9,7 @@
   min-width: 1200px;
   height: 100%;
 
-  @include screen(med, max) {
+  @include screen(med) {
     min-width: 800px;
   }
 
@@ -30,7 +30,7 @@
   padding-bottom: 16px;
   padding-left: 266px; /* side-nav width + 16px  */
 
-  @include screen(med, max) {
+  @include screen(med) {
     padding-left: 16px;
   }
 }
@@ -72,7 +72,7 @@
 .app-layout .transition-wrapper {
   width: calc(100% - 250px - 32px);
 
-  @include screen(med, max) {
+  @include screen(med) {
     width: calc(100% - 32px);
   }
 }

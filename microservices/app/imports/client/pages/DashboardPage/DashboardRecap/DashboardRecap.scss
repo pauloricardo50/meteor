@@ -22,7 +22,7 @@
 
   white-space: nowrap;
 
-  @include screen(med, max) {
+  @include screen(med) {
     flex-wrap: wrap;
   }
 
