@@ -1,4 +1,63 @@
+$footer-height: 64px;
+
 .simple-borrowers-page {
   display: flex;
   flex-direction: column;
+  padding: 0 16px;
+
+  @include screen(large, min) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  @include screen(large) {
+    padding-bottom: calc(#{$footer-height});
+  }
+
+  &-forms {
+    width: 100%;
+    max-width: 600px;
+    align-self: center;
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    h4 {
+      margin-top: 0;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .forms {
+      max-width: 400px;
+      width: 100%;
+      margin: auto;
+    }
+  }
+
+  &-max-property-value {
+    background-color: $primary;
+    color: white;
+
+    @include screen(large, min) {
+      min-width: 400px;
+    }
+
+    &-sticky {
+      background-color: $primary;
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      left: 0;
+      height: $footer-height;
+
+      h2 {
+        margin: 0;
+      }
+    }
+  }
 }
