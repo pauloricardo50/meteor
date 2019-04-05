@@ -28,7 +28,7 @@ const WelcomeScreen = ({
         <T id="WelcomeScreen.title" />
       </h1>
 
-      <p>
+      <p className="description">
         <T id="WelcomeScreen.description" />
       </p>
 
@@ -116,7 +116,7 @@ const WelcomeScreen = ({
         onClick={handleClick}
         className="welcome-screen-cta"
       >
-        <T id="general.begin" />
+        <T id="general.continue" />
       </Button>
     </div>
   </div>

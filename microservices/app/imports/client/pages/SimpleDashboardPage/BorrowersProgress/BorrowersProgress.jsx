@@ -5,7 +5,10 @@ import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
 import { createRoute } from 'core/utils/routerUtils';
 import Button from 'core/components/Button';
+import ConfirmMethod from 'core/components/ConfirmMethod';
 import Calculator from 'core/utils/Calculator';
+import { loanUpdate } from 'core/api/methods';
+import { APPLICATION_TYPES } from 'core/api/constants';
 import { BORROWERS_PAGE_NO_TAB } from '../../../../startup/client/appRoutes';
 import BorrowersProgressRecap from './BorrowersProgressRecap';
 
@@ -55,9 +58,20 @@ const BorrowersProgress = ({ loan }: BorrowersProgressProps) => {
         />,
       ])}
 
-      <Button primary>
-        <T id="BorrowersProgress.fullApplication" />
-      </Button>
+      <ConfirmMethod
+        buttonProps={{
+          primary: true,
+          label: <T id="BorrowersProgress.fullApplication" />,
+        }}
+        method={() =>
+          loanUpdate.run({
+            loanId,
+            object: { applicationType: APPLICATION_TYPES.FULL },
+          })
+        }
+        title={<T id="BorrowersProgress.fullApplication" />}
+        description={<T id="BorrowersProgress.fullApplicationDescription" />}
+      />
     </div>
   );
 };
