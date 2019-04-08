@@ -12,8 +12,8 @@ import { CANTONS } from 'core/api/constants';
 
 type SimpleMaxPropertyValueProps = {};
 
-const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
-  const { state, changeCanton, canton: cantonValue, loading } = props;
+export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
+  const { state, onChangeCanton, canton: cantonValue, loading } = props;
 
   if (loading) {
     return (
@@ -43,7 +43,7 @@ const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
               <h4>Choisissez le canton dans lequel vous souhaitez acheter</h4>
               <Select
                 value={cantonValue}
-                onChange={changeCanton}
+                onChange={onChangeCanton}
                 options={Object.keys(CANTONS).map((shortCanton) => {
                   const canton = CANTONS[shortCanton];
                   return { id: shortCanton, label: canton };

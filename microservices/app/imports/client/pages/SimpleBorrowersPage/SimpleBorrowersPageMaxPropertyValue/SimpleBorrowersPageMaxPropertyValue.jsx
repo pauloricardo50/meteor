@@ -11,7 +11,7 @@ const SimpleBorrowersPageMaxPropertyValue = (props: SimpleBorrowersPageMaxProper
   const isMobile = useMedia({ maxWidth: 992 });
 
   if (isMobile) {
-    return <SimpleBorrowersPageMaxPropertyValueSticky />;
+    return <SimpleBorrowersPageMaxPropertyValueSticky {...props} />;
   }
 
   return (

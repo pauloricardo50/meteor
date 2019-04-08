@@ -501,13 +501,11 @@ export class LoanService extends CollectionService {
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
-    console.log('mainMaxPropertyValueRange:', mainMaxPropertyValueRange);
     const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
       loanId,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
     });
-    console.log('secondMaxPropertyValueRange:', secondMaxPropertyValueRange);
 
     this.update({
       loanId,
