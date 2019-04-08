@@ -10,6 +10,7 @@ const API_PORT = process.env.CIRCLE_CI ? 3000 : 4106; // API in on pro
 const checkResponse = ({ res, expectedResponse }) =>
   res.json().then((body) => {
     expect(body).to.deep.equal(expectedResponse);
+    return Promise.resolve();
   });
 
 export const getTimestampAndNonce = () => {
@@ -21,12 +22,7 @@ export const getTimestampAndNonce = () => {
   return { timestamp, nonce };
 };
 
-export const fetchAndCheckResponse = ({
-  url,
-  query,
-  data,
-  expectedResponse,
-}) =>
+export const fetchAndCheckResponse = ({ url, query, data, expectedResponse }) =>
   fetch(
     `http://localhost:${API_PORT}/api${url}?${queryString.stringify(query, {
       encode: true,
