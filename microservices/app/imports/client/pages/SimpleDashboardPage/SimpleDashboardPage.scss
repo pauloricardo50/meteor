@@ -98,4 +98,59 @@ $borrowers-item-width: 500px;
       }
     }
   }
+
+  .property-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: calc(#{$borrowers-item-width} * 2);
+
+    padding: 32px;
+    margin-top: 16px;
+    align-self: center;
+
+    @include screen(med) {
+      flex-wrap: wrap;
+    }
+
+    &-infos {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      img,
+      .icon {
+        height: 100px;
+        width: 100px;
+        margin-right: 32px;
+      }
+      img {
+        object-fit: cover;
+      }
+      .icon {
+        color: $primary;
+      }
+
+      &-description {
+        h3 {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .button {
+      padding: 8px 48px 8px 48px;
+      margin-right: 16px;
+
+      @include screen(med) {
+        padding: 8px 24px 8px 24px;
+        margin-right: 0;
+        margin-top: 16px;
+        width: 100%;
+      }
+    }
+  }
 }
