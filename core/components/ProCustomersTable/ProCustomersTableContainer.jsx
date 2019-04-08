@@ -21,7 +21,7 @@ import { CollectionIconLink } from 'core/components/IconLink';
 import { makeTableFiltersContainer } from 'core/containers/withTableFilters';
 
 const columnOptions = [
-  { id: 'loanName' },
+  { id: 'loanName', style: { whiteSpace: 'nowrap' } },
   { id: 'status' },
   { id: 'progress', label: <LoanProgressHeader /> },
   { id: 'name' },
@@ -29,7 +29,7 @@ const columnOptions = [
   { id: 'email' },
   { id: 'createdAt' },
   { id: 'referredBy' },
-  { id: 'maxPropertyValue' },
+  { id: 'maxPropertyValue', style: { whiteSpace: 'nowrap' } },
   { id: 'relatedTo' },
   // { id: 'estimatedRevenues' },
 ].map(({ id, label }) => ({

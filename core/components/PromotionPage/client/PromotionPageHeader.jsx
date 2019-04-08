@@ -52,7 +52,7 @@ const PromotionPageHeader = ({
     invitedByUser,
   });
   const { logos = [], promotionImage = [{ url: '/img/placeholder.png' }] } = documents || {};
-  console.log('promotionImage:', promotionImage);
+
   return (
     <div className="promotion-page-header">
       <div className="promotion-page-header-left">
@@ -128,8 +128,8 @@ const PromotionPageHeader = ({
         )}
       </div>
       <div className="promotion-page-header-right">
-      <ImageCarrousel images={promotionImage.map(({ url }) => url)} />
-      {/* <span
+        <ImageCarrousel images={promotionImage.map(({ url }) => url)} />
+        {/* <span
           style={{ backgroundImage: `url("${promotionImage[0].url}")` }}
           className="promotion-image animated fadeIn" // delay-400"
         /> */}

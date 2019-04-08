@@ -31,6 +31,10 @@ $borrowers-item-width: 500px;
         max-width: unset;
       }
 
+      @include screen(xsmall) {
+        padding: 16px;
+      }
+
       h3 {
         margin: 0;
       }
@@ -49,14 +53,16 @@ $borrowers-item-width: 500px;
         margin-bottom: 32px;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
 
         span {
           display: flex;
           align-items: center;
-        }
+          white-space: nowrap;
 
-        a {
-          margin-left: 16px;
+          &.secondary {
+            margin-right: 16px;
+          }
         }
       }
 
@@ -116,6 +122,10 @@ $borrowers-item-width: 500px;
       flex-wrap: wrap;
     }
 
+    @include screen(xsmall) {
+      padding: 16px;
+    }
+
     &-infos {
       display: flex;
       flex-direction: row;
@@ -126,10 +136,16 @@ $borrowers-item-width: 500px;
         height: 100px;
         width: 100px;
         margin-right: 32px;
+
+        @include screen(med) {
+          margin-right: 16px;
+        }
       }
+
       img {
         object-fit: cover;
       }
+
       .icon {
         color: $primary;
       }

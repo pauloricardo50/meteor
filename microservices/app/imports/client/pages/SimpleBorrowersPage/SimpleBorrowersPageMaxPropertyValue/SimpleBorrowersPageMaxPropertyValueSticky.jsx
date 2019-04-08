@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+import { compose } from 'recompose';
 
 import T from 'core/components/Translation';
 import DialogSimple from 'core/components/DialogSimple';
@@ -53,10 +55,11 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
         </ButtonBase>
       )}
       closeOnly
+      PaperProps={{ style: { margin: 0 } }}
     >
       <SimpleMaxPropertyValue {...props} />
     </DialogSimple>
   );
 };
 
-export default MaxPropertyValueContainer(SimpleBorrowersPageMaxPropertyValueSticky);
+export default compose(MaxPropertyValueContainer)(SimpleBorrowersPageMaxPropertyValueSticky);
