@@ -1,4 +1,7 @@
 {
+  "Forms.applicationType": "Interface",
+  "Forms.applicationType.SIMPLE": "Simplifiée",
+  "Forms.applicationType.FULL": "Complète",
   "SimpleDashboardPage.propertyCardButton.property": "Voir le bien immobilier",
   "SimpleDashboardPage.propertyCardButton.promotion": "Voir la promotion",
   "general.begin": "Commencer",

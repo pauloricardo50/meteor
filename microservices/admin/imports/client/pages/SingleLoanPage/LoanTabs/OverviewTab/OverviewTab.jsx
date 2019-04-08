@@ -43,6 +43,11 @@ const OverviewTab = (props) => {
           collection={COLLECTIONS.LOANS_COLLECTION}
           disabled
         />
+        <UpdateField
+          doc={loan}
+          fields={['applicationType']}
+          collection={COLLECTIONS.LOANS_COLLECTION}
+        />
         <LoanStepSetter loan={loan} />
         {['signingDate', 'closingDate'].map(dateType => (
           <DateModifier
