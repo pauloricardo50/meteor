@@ -84,6 +84,7 @@ const config = {
         'PasswordResetPage',
         'Promotion',
         'PropertyForm',
+        'SimpleDashboardPage',
         'StatusIconTooltip',
         'steps',
         'Uploader',

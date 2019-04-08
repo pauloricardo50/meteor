@@ -1,4 +1,8 @@
 {
+  "general.promotions": "Promotion",
+  "general.properties": "Bien immobilier",
+  "SimpleDashboardPage.propertyCardButton.properties": "Voir le bien immobilier",
+  "SimpleDashboardPage.propertyCardButton.promotions": "Voir la promotion",
   "general.begin": "Commencer",
   "WelcomeScreen.title": "Bienvenue sur e-Potek",
   "WelcomeScreen.description": "e-Potek vous permet de rapidement déterminer votre capacité d'achat, et d'obtenir des offres de prêt hypothécaire de tout le marché.",
