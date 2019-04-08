@@ -2,6 +2,7 @@
 import React from 'react';
 
 import SimpleMaxPropertyValue from '../../components/SimpleMaxPropertyValue';
+import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValueLightTheme';
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
 import BorrowersProgress from './BorrowersProgress';
 
@@ -13,7 +14,9 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => (
 
     <div className="simple-dashboard-page-borrowers card1">
       <BorrowersProgress {...props} />
-      <SimpleMaxPropertyValue {...props} />
+      <SimpleMaxPropertyValueLightTheme>
+        <SimpleMaxPropertyValue {...props} />
+      </SimpleMaxPropertyValueLightTheme>
     </div>
   </div>
 );

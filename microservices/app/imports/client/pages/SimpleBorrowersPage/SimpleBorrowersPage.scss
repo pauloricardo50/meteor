@@ -9,6 +9,10 @@ $footer-height: 64px;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+
+    .card1 {
+      padding: 32px;
+    }
   }
 
   @include screen(large) {
@@ -66,6 +70,7 @@ $footer-height: 64px;
 
     @include screen(large, min) {
       min-width: 400px;
+      min-height: 200px;
     }
 
     &-sticky {
@@ -80,7 +85,8 @@ $footer-height: 64px;
       flex-direction: column;
       align-items: center;
 
-      h2, h3 {
+      h2,
+      h3 {
         margin: 0;
       }
     }
