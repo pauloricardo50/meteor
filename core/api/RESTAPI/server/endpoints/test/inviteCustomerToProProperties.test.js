@@ -7,7 +7,7 @@ import PropertyService from '../../../../properties/server/PropertyService';
 import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
 import generator from '../../../../factories/index';
 import RESTAPI from '../../RESTAPI';
-import inviteCustomerToProPropertyAPI from '../inviteCustomerToProProperty';
+import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
 import {
   fetchAndCheckResponse,
   makeHeaders,
@@ -24,20 +24,20 @@ const customerToInvite = {
 
 const api = new RESTAPI();
 api.addEndpoint(
-  '/properties/:propertyId/invite-customer',
+  '/properties/invite-customer',
   'POST',
-  inviteCustomerToProPropertyAPI,
+  inviteCustomerToProPropertiesAPI,
 );
 
-const inviteCustomerToProProperty = ({
+const inviteCustomerToProProperties = ({
   userData,
   expectedResponse,
-  propertyId,
+  propertyIds,
 }) => {
   const { timestamp, nonce } = getTimestampAndNonce();
-  const body = { user: userData || customerToInvite };
+  const body = { user: userData || customerToInvite, propertyIds };
   return fetchAndCheckResponse({
-    url: `/properties/${propertyId}/invite-customer`,
+    url: '/properties/invite-customer',
     data: {
       method: 'POST',
       headers: makeHeaders({
@@ -53,7 +53,7 @@ const inviteCustomerToProProperty = ({
   });
 };
 
-describe('REST: inviteCustomerToProProperty', function () {
+describe('REST: inviteCustomerToProProperties', function () {
   this.timeout(10000);
 
   before(function () {
@@ -76,54 +76,90 @@ describe('REST: inviteCustomerToProProperty', function () {
         _factory: 'pro',
         _id: 'pro',
         organisations: [{ _id: 'org' }],
-        proProperties: [{ _id: 'property', category: PROPERTY_CATEGORY.PRO }],
+        proProperties: [
+          { _id: 'property1', category: PROPERTY_CATEGORY.PRO },
+          { _id: 'property2', category: PROPERTY_CATEGORY.PRO },
+          { _id: 'property3', category: PROPERTY_CATEGORY.PRO },
+        ],
       },
     });
     keyPair = UserService.generateKeyPair({ userId: 'pro' });
   });
 
-  it('invites a customer to property', () => {
+  it('invites a customer to multiple properties', () => {
     PropertyService.setProUserPermissions({
-      propertyId: 'property',
+      propertyId: 'property1',
       userId: 'pro',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperty({
-      propertyId: 'property',
+    PropertyService.setProUserPermissions({
+      propertyId: 'property2',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property3',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    return inviteCustomerToProProperties({
+      propertyIds: ['property1', 'property2', 'property3'],
       expectedResponse: {
         message: `Successfully invited user \"${
           customerToInvite.email
-        }\" to property id \"property\"`,
+        }\" to property ids property1, property2 and property3`,
       },
     });
   });
 
-  it('returns an error when the user has not the right permissions', () =>
-    inviteCustomerToProProperty({
-      propertyId: 'property',
+  it('returns an error when the user has not the right permissions', () => {
+    PropertyService.setProUserPermissions({
+      propertyId: 'property1',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property2',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+
+    return inviteCustomerToProProperties({
+      propertyIds: ['property1', 'property2', 'property3'],
       expectedResponse: {
         status: 400,
         message:
           'Vous ne pouvez pas inviter de clients sur ce bien immobilier [NOT_AUTHORIZED]',
       },
-    }));
+    });
+  });
 
-  it('returns an error if the customer is already invited to property', () => {
+  it('returns an error if the customer is already invited to one property', () => {
     PropertyService.setProUserPermissions({
-      propertyId: 'property',
+      propertyId: 'property1',
       userId: 'pro',
       permissions: { canInviteCustomers: true },
     });
-    return inviteCustomerToProProperty({
-      propertyId: 'property',
+    PropertyService.setProUserPermissions({
+      propertyId: 'property2',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    PropertyService.setProUserPermissions({
+      propertyId: 'property3',
+      userId: 'pro',
+      permissions: { canInviteCustomers: true },
+    });
+    return inviteCustomerToProProperties({
+      propertyIds: ['property2'],
       expectedResponse: {
         message: `Successfully invited user \"${
           customerToInvite.email
-        }\" to property id \"property\"`,
+        }\" to property ids property2`,
       },
     }).then(() =>
-      inviteCustomerToProProperty({
-        propertyId: 'property',
+      inviteCustomerToProProperties({
+        propertyIds: ['property1', 'property2', 'property3'],
         expectedResponse: {
           status: 400,
           message: '[Cet utilisateur est déjà invité à ce bien immobilier]',

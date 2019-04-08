@@ -44,7 +44,7 @@ const referCustomer = ({ userData, expectedResponse }) => {
   });
 };
 
-describe.only('REST: referCustomer', function () {
+describe('REST: referCustomer', function () {
   this.timeout(10000);
 
   before(function () {

@@ -15,7 +15,7 @@ const inviteCustomerToProPropertiesAPI = ({ user: { _id: userId }, body }) => {
     })).then(() => ({
     message: `Successfully invited user "${
       user.email
-    }" to property id "${formattedIds}"`,
+    }" to property ids ${formattedIds}`,
   }));
 };
 
