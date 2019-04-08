@@ -8,7 +8,7 @@ import PropertiesPagePromotions from './PropertiesPagePromotions';
 import PropertiesPageAdder from './PropertiesPageAdder';
 
 const PropertiesPage = ({ loan, currentUser }) => {
-  const { _id: loanId, properties, hasPromotion } = loan;
+  const { _id: loanId, properties = [], hasPromotion } = loan;
   return (
     <Page id="PropertiesPage" titleId="PropertiesPage.title">
       <section className="card1 card-top properties-page">
