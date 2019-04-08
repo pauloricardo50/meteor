@@ -16,6 +16,7 @@ const getFooter = (maxPropertyValue, residenceType) => {
     return <h2>Calculer</h2>;
   }
 
+  const { canton } = maxPropertyValue;
   const values = residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE
     ? maxPropertyValue.main
     : maxPropertyValue.second;
@@ -23,7 +24,8 @@ const getFooter = (maxPropertyValue, residenceType) => {
   return (
     <div>
       <label>
-        Capacité d'achat - <T id={`Forms.residenceType.${residenceType}`} />
+        Capacité d'achat - <T id={`Forms.canton.${canton}`} /> -{' '}
+        <T id={`Forms.residenceType.${residenceType}`} />
       </label>
       <h3>
         {toMoney(values.min.propertyValue)}&nbsp;-&nbsp;

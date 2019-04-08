@@ -16,4 +16,10 @@
     align-items: center;
     text-align: center;
   }
+
+  .mui-select {
+    max-width: 200px;
+    min-width: 160px;
+    width: calc(50% - 4px);
+  }
 }

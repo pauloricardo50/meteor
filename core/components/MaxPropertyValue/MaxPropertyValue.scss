@@ -29,6 +29,12 @@
     }
   }
 
+  .mui-select {
+    max-width: 200px;
+    min-width: 160px;
+    width: calc(50% - 4px);
+  }
+
   &-results {
     display: flex;
     flex-direction: column;
@@ -52,12 +58,6 @@
       align-self: stretch;
       flex-wrap: wrap;
       justify-content: space-between;
-
-      .mui-select {
-        max-width: 200px;
-        min-width: 160px;
-        width: calc(50% - 4px);
-      }
     }
 
     .money-range {
