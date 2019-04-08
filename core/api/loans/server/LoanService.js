@@ -478,9 +478,7 @@ export class LoanService extends CollectionService {
     return { min, max };
   }
 
-  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton, residenceType }) {
-    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
-
+  getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
     const lenderOrganisations = OrganisationService.fetch({
       $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
       lenderRules: lenderRulesFragment(),
@@ -496,15 +494,21 @@ export class LoanService extends CollectionService {
   }
 
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
+    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+
     const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
-      loanId,
+      loan,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
     const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
-      loanId,
+      loan,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
+    });
+
+    const borrowerHash = Calculator.getBorrowerFormHash({
+      borrowers: loan.borrowers,
     });
 
     this.update({
@@ -515,6 +519,7 @@ export class LoanService extends CollectionService {
           second: secondMaxPropertyValueRange,
           canton,
           date: new Date(),
+          borrowerHash,
         },
       },
     });
@@ -538,7 +543,7 @@ export class LoanService extends CollectionService {
     const {
       max: { borrowRatio, propertyValue, organisationName },
     } = this.getMaxPropertyValueWithoutBorrowRatio({
-      loanId,
+      loan,
       canton,
     });
 

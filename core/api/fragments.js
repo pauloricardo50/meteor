@@ -244,12 +244,14 @@ const userMaxPropertyValue = {
   second: { min: userPropertyValue, max: userPropertyValue },
   canton: 1,
   date: 1,
+  borrowerHash: 1,
 };
 const adminMaxPropertyValue = {
   main: { min: adminPropertyValue, max: adminPropertyValue },
   second: { min: adminPropertyValue, max: adminPropertyValue },
   canton: 1,
   date: 1,
+  borrowerHash: 1,
 };
 
 export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({

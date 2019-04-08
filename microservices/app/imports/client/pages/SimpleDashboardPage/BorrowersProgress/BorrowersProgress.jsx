@@ -23,21 +23,23 @@ const BorrowersProgress = ({ loan }: BorrowersProgressProps) => {
         <T id="BorrowersProgress.title" />
       </h3>
       <div className="borrowers-progress-cta">
-        <T
-          id="BorrowersProgress.progress"
-          values={{
-            percent: (
-              <>
-                &nbsp;
-                <PercentWithStatus
-                  value={progress}
-                  status={progress < 1 ? null : undefined}
-                  rounded
-                />
-              </>
-            ),
-          }}
-        />
+        <span className="secondary">
+          <T
+            id="BorrowersProgress.progress"
+            values={{
+              percent: (
+                <>
+                  &nbsp;
+                  <PercentWithStatus
+                    value={progress}
+                    status={progress < 1 ? null : undefined}
+                    rounded
+                  />
+                </>
+              ),
+            }}
+          />
+        </span>
 
         <Button
           raised={progress < 1}
@@ -49,14 +51,16 @@ const BorrowersProgress = ({ loan }: BorrowersProgressProps) => {
         </Button>
       </div>
 
-      {borrowers.map((borrower, index) => [
-        index !== 0 && <hr />,
-        <BorrowersProgressRecap
-          key={borrower._id}
-          borrower={borrower}
-          index={index}
-        />,
-      ])}
+      <div className="borrowers-progress-borrowers">
+        {borrowers.map((borrower, index) => [
+          index !== 0 && <hr />,
+          <BorrowersProgressRecap
+            key={borrower._id}
+            borrower={borrower}
+            index={index}
+          />,
+        ])}
+      </div>
 
       <ConfirmMethod
         buttonProps={{

@@ -13,7 +13,7 @@ const renderState = (props) => {
 
   if (loading) {
     return (
-      <div>
+      <div className="animated fadeIn">
         <Loading />
         <h5>Algorithmes au travail...</h5>
         <p>Détendez-vous</p>

@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import Calculator from 'core/utils/Calculator';
 import { RESIDENCE_TYPE, CANTONS } from '../../api/constants';
 import T from '../Translation';
 import Select from '../Select';
@@ -25,12 +26,13 @@ const MaxPropertyValueResults = ({
   recalculate,
 }: MaxPropertyValueResultsProps) => {
   const {
-    maxPropertyValue: { main, second },
+    maxPropertyValue: { main, second, borrowerHash },
   } = loan;
-  const shouldRecalculate = true;
+  const hash = Calculator.getBorrowerFormHash({ loan });
+  const shouldRecalculate = borrowerHash != hash;
 
   return (
-    <div className="max-property-value-results">
+    <div className="max-property-value-results animated fadeIn">
       <div className="top">
         <div>
           <h2>Capacité d'achat maximale</h2>
@@ -63,9 +65,11 @@ const MaxPropertyValueResults = ({
           />
         </div>
       </div>
-      <MaxPropertyValueResultsTable
-        {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
-      />
+      <div className="max-property-value-results-table">
+        <MaxPropertyValueResultsTable
+          {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
+        />
+      </div>
       <Button raised secondary={shouldRecalculate} onClick={recalculate}>
         Recalculer
       </Button>

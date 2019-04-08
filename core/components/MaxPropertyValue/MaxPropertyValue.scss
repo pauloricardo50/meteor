@@ -38,6 +38,7 @@
   &-results {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 
     .top {
       display: flex;
@@ -60,18 +61,61 @@
       justify-content: space-between;
     }
 
-    .money-range {
-      margin: 0;
+    &-table {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
 
-      white-space: nowrap;
-
-      font-size: 1.3em;
-    }
-
-    .money-range-big {
       .money-range {
-        font-size: 1.8em;
-        font-weight: bolder;
+        margin: 0;
+        display: flex;
+        align-items: center;
+
+        > * {
+          flex-basis: 45%;
+          flex-grow: 1;
+
+          &.divider {
+            flex-shrink: 1;
+            text-align: center;
+            flex-basis: 10%;
+
+            svg {
+              width: 24px;
+              height: 24px;
+            }
+          }
+
+          &:last-child {
+            text-align: right;
+          }
+        }
+
+        @include screen(med, min) {
+          font-size: 1.3em;
+        }
+
+        &.big {
+          font-size: 1.2em;
+
+          @include screen(med, min) {
+            font-size: 1.4em;
+          }
+        }
+
+        white-space: nowrap;
+      }
+
+      .labels {
+        justify-content: space-between;
+        margin-top: 16px;
+        margin-bottom: 32px;
+      }
+      .label {
+        margin-top: 16px;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        opacity: 0.8;
       }
     }
 
@@ -80,18 +124,6 @@
       margin: 0;
 
       white-space: nowrap;
-    }
-
-    td {
-      padding: 8px 0 0 0;
-    }
-
-    tr td:not(:first-of-type) {
-      text-align: right;
-    }
-
-    table {
-      margin-top: 24px;
     }
 
     button {
