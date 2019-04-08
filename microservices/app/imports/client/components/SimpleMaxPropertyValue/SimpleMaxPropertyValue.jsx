@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
 
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
@@ -36,6 +38,8 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
         <div className="empty">
           {state === STATE.MISSING_INFOS ? (
             <>
+              <FontAwesomeIcon className="icon" icon={faUsers} />
+
               <h4>
                 Complétez vos informations pour calculer votre capacité d'achat
                 maximale.

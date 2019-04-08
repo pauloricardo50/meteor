@@ -24,6 +24,8 @@ $borrowers-item-width: 500px;
       max-width: $borrowers-item-width;
       box-sizing: content-box;
       padding: 32px;
+      display: flex;
+      flex-direction: column;
 
       @include screen(med) {
         max-width: unset;
@@ -39,12 +41,21 @@ $borrowers-item-width: 500px;
         margin: 16px 0;
       }
 
+      &-borrowers {
+        flex-grow: 1;
+      }
+
       &-cta {
         margin-bottom: 32px;
         display: flex;
         align-items: center;
 
-        a  {
+        span {
+          display: flex;
+          align-items: center;
+        }
+
+        a {
           margin-left: 16px;
         }
       }
@@ -57,6 +68,11 @@ $borrowers-item-width: 500px;
         margin-bottom: 8px;
       }
 
+      .recap-value {
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
       .header {
         display: flex;
         align-items: center;
@@ -66,6 +82,7 @@ $borrowers-item-width: 500px;
           width: 40px;
           height: 40px;
           margin-right: 16px;
+          color: #666;
         }
       }
     }
@@ -73,6 +90,12 @@ $borrowers-item-width: 500px;
     .simple-max-property-value {
       background-color: $primary;
       color: white;
+
+      h2,
+      h3,
+      h4 {
+        color: white;
+      }
     }
   }
 }
