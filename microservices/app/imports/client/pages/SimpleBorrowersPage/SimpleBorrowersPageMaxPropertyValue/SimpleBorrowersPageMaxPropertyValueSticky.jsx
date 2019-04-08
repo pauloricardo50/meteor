@@ -46,7 +46,7 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
       renderTrigger={({ handleOpen }) => (
         <ButtonBase
           focusRipple
-          className="simple-borrowers-page-max-property-value-sticky"
+          className="simple-borrowers-page-max-property-value-sticky animated slideInUp"
           onClick={handleOpen}
         >
           {getFooter(maxPropertyValue, residenceType)}

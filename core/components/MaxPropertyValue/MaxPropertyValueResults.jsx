@@ -30,7 +30,7 @@ const MaxPropertyValueResults = ({
   const shouldRecalculate = true;
 
   return (
-    <div className="max-property-value-results">
+    <div className="max-property-value-results animated fadeIn">
       <div className="top">
         <div>
           <h2>Capacité d'achat maximale</h2>
@@ -63,9 +63,11 @@ const MaxPropertyValueResults = ({
           />
         </div>
       </div>
-      <MaxPropertyValueResultsTable
-        {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
-      />
+      <div style={{ flexGrow: 1 }}>
+        <MaxPropertyValueResultsTable
+          {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
+        />
+      </div>
       <Button raised secondary={shouldRecalculate} onClick={recalculate}>
         Recalculer
       </Button>

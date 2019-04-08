@@ -17,10 +17,12 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
 
   if (loading) {
     return (
-      <div className="simple-max-property-value loading animated zoomIn">
-        <Loading />
-        <h5>Algorithmes au travail...</h5>
-        <p>Détendez-vous un instant</p>
+      <div className="simple-max-property-value loading">
+        <div className="animated fadeIn">
+          <Loading />
+          <h5>Algorithmes au travail...</h5>
+          <p>Détendez-vous un instant</p>
+        </div>
       </div>
     );
   }
