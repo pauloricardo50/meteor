@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
 
+import useMedia from 'core/hooks/useMedia';
 import MoneyRange from './MoneyRange';
 
 type MaxPropertyValueResultsTableProps = {
@@ -14,6 +15,7 @@ const MaxPropertyValueResultsTable = ({
   min,
   max,
 }: MaxPropertyValueResultsTableProps) => {
+  const isSmallMobile = useMedia({ maxWidth: 480 });
   const {
     propertyValue: minPropertyValue,
     borrowRatio: minBorrowRatio,
@@ -32,62 +34,37 @@ const MaxPropertyValueResultsTable = ({
   const maxOwnFunds = maxPropertyValue * (1 - maxBorrowRatio);
 
   return (
-    <table>
-      <tr>
-        <td>
-          <div className="flex-col">
-            <span className="secondary">Prêteur le moins compétitif</span>
-            {Meteor.microservice === 'admin' && (
-              <span>[ADMIN] {minOrganisationName}</span>
-            )}
-          </div>
-        </td>
-        <td />
-        <td>
-          <div className="flex-col">
-            <span className="secondary">Prêteur le plus compétitif</span>
-            {Meteor.microservice === 'admin' && (
-              <span>[ADMIN] {maxOrganisationName}</span>
-            )}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <h4 className="secondary">Hypothèque</h4>
-        </td>
-        <td />
-        <td />
-      </tr>
-      <tr>
-        <MoneyRange
-          min={minLoan}
-          minRatio={minBorrowRatio}
-          max={maxLoan}
-          maxRatio={maxBorrowRatio}
-        />
-      </tr>
-      <tr>
-        <td>
-          <h4 className="secondary">Fonds propres</h4>
-        </td>
-        <td />
-        <td />
-      </tr>
-      <tr>
-        <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
-      </tr>
-      <tr>
-        <td>
-          <h3 className="secondary">Prix d'achat max.</h3>
-        </td>
-        <td />
-        <td />
-      </tr>
-      <tr className="money-range-big">
-        <MoneyRange min={minPropertyValue} max={maxPropertyValue} />
-      </tr>
-    </table>
+    <>
+      <span className="label">Hypothèque</span>
+      <MoneyRange
+        min={minLoan}
+        minRatio={minBorrowRatio}
+        max={maxLoan}
+        maxRatio={maxBorrowRatio}
+      />
+      <span className="label">Fonds propres</span>
+      <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
+      <span className="label">Prix d'achat max.</span>
+      <MoneyRange min={minPropertyValue} max={maxPropertyValue} big />
+      <div className="flex labels">
+        <div className="flex-col">
+          <span className="secondary">
+            {isSmallMobile ? '- compétitif' : 'Prêteur le - compétitif'}
+          </span>
+          {Meteor.microservice === 'admin' && (
+            <span>[ADMIN] {minOrganisationName}</span>
+          )}
+        </div>
+        <div className="flex-col">
+          <span className="secondary">
+            {isSmallMobile ? '+ compétitif' : 'Prêteur le + compétitif'}
+          </span>
+          {Meteor.microservice === 'admin' && (
+            <span>[ADMIN] {maxOrganisationName}</span>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

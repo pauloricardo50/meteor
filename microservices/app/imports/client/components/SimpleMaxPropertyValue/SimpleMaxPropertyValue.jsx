@@ -22,7 +22,7 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
       <div className="simple-max-property-value loading">
         <div className="animated fadeIn">
           <Loading />
-          <h5>Algorithmes au travail...</h5>
+          <h4>Algorithmes au travail...</h4>
           <p>Détendez-vous un instant</p>
         </div>
       </div>
