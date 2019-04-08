@@ -4,12 +4,12 @@ import React from 'react';
 import { RESIDENCE_TYPE, CANTONS } from '../../api/constants';
 import T from '../Translation';
 import Select from '../Select';
-import MaxPropertyValueDialog from './MaxPropertyValueDialog';
+import Button from '../Button';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 
 type MaxPropertyValueResultsProps = {
   loan: Object,
-  calculateSolvency: Function,
+  recalculate: Function,
   state: String,
   residenceType: String,
   setResidenceType: Function,
@@ -17,15 +17,15 @@ type MaxPropertyValueResultsProps = {
 
 const MaxPropertyValueResults = ({
   loan,
-  calculateSolvency,
-  state,
   residenceType,
   setResidenceType,
   onChangeCanton,
-  canton: cantonValue,
+  canton,
+  loading,
+  recalculate,
 }: MaxPropertyValueResultsProps) => {
   const {
-    maxPropertyValue: { main, second, canton },
+    maxPropertyValue: { main, second },
   } = loan;
 
   return (
@@ -36,12 +36,13 @@ const MaxPropertyValueResults = ({
         </div>
         <div className="max-property-value-results-selects">
           <Select
-            value={cantonValue}
+            value={canton}
             onChange={onChangeCanton}
             options={Object.keys(CANTONS).map((shortCanton) => {
               const cant = CANTONS[shortCanton];
               return { id: shortCanton, label: cant };
             })}
+            disabled={loading}
           />
 
           <Select
@@ -57,17 +58,16 @@ const MaxPropertyValueResults = ({
                 id: type,
                 label: <T id={`Forms.residenceType.${type}`} />,
               }))}
+            disabled={loading}
           />
         </div>
       </div>
       <MaxPropertyValueResultsTable
         {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
       />
-      <MaxPropertyValueDialog
-        loan={loan}
-        calculateSolvency={calculateSolvency}
-        state={state}
-      />
+      <Button raised primary onClick={recalculate}>
+        Recalculer
+      </Button>
     </div>
   );
 };

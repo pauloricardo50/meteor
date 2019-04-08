@@ -34,7 +34,6 @@ const MaxPropertyValueResultsTable = ({
   return (
     <table>
       <tr>
-        <td />
         <td>
           <div className="flex-col">
             <span className="secondary">Prêteur le moins compétitif</span>
@@ -57,6 +56,10 @@ const MaxPropertyValueResultsTable = ({
         <td>
           <h4 className="secondary">Hypothèque</h4>
         </td>
+        <td />
+        <td />
+      </tr>
+      <tr>
         <MoneyRange
           min={minLoan}
           minRatio={minBorrowRatio}
@@ -68,12 +71,20 @@ const MaxPropertyValueResultsTable = ({
         <td>
           <h4 className="secondary">Fonds propres</h4>
         </td>
+        <td />
+        <td />
+      </tr>
+      <tr>
         <MoneyRange min={minOwnFunds} max={maxOwnFunds} />
       </tr>
-      <tr className="money-range-big">
+      <tr>
         <td>
           <h3 className="secondary">Prix d'achat max.</h3>
         </td>
+        <td />
+        <td />
+      </tr>
+      <tr className="money-range-big">
         <MoneyRange min={minPropertyValue} max={maxPropertyValue} />
       </tr>
     </table>

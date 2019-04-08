@@ -54,15 +54,20 @@ export default compose(
     loan: { _id: loanId, borrowers = [], maxPropertyValue },
     setLoading,
     setCanton,
+    canton,
   }) => ({
     state: getState({ borrowers, maxPropertyValue }),
-    calculateSolvency: ({ canton }) =>
-      setMaxPropertyValueWithoutBorrowRatio.run({ canton, loanId }),
-    onChangeCanton: (_, canton) => {
-      setCanton(canton);
+    recalculate: () => {
       setLoading(true);
-      setMaxPropertyValueWithoutBorrowRatio
+      return setMaxPropertyValueWithoutBorrowRatio
         .run({ canton, loanId })
+        .finally(() => setLoading(false));
+    },
+    onChangeCanton: (_, newCanton) => {
+      setCanton(newCanton);
+      setLoading(true);
+      return setMaxPropertyValueWithoutBorrowRatio
+        .run({ canton: newCanton, loanId })
         .finally(() => setLoading(false));
     },
   })),

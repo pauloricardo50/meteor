@@ -3,10 +3,11 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
 
+import { CANTONS } from '../../api/constants';
 import { createRoute } from '../../utils/routerUtils';
 import Button from '../Button';
-import MaxPropertyValueDialog from './MaxPropertyValueDialog';
 import { STATE } from './MaxPropertyValueContainer';
+import Select from '../Select';
 
 type MaxPropertyValueEmptyStateProps = {
   loan: Object,
@@ -18,6 +19,9 @@ const MaxPropertyValueEmptyState = ({
   loan,
   state,
   calculateSolvency,
+  cantonValue,
+  onChangeCanton,
+  loading,
 }: MaxPropertyValueEmptyStateProps) => (
   <div className="max-property-value-empty-state">
     <FontAwesomeIcon className="icon" icon={faUsers} />
@@ -42,11 +46,14 @@ const MaxPropertyValueEmptyState = ({
       ) : (
         <>
           <h4>Calculez votre capacité d'achat maximale</h4>
-          <MaxPropertyValueDialog
-            loan={loan}
-            calculateSolvency={calculateSolvency}
-            state={state}
-            style={{ marginTop: 16 }}
+          <Select
+            value={cantonValue}
+            onChange={onChangeCanton}
+            options={Object.keys(CANTONS).map((shortCanton) => {
+              const cant = CANTONS[shortCanton];
+              return { id: shortCanton, label: cant };
+            })}
+            disabled={loading}
           />
         </>
       )}

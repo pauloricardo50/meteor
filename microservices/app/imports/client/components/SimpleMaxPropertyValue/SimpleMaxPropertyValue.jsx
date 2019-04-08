@@ -3,6 +3,7 @@ import React from 'react';
 
 import T from 'core/components/Translation';
 import Select from 'core/components/Select';
+import Loading from 'core/components/Loading';
 import MaxPropertyValueResults from 'core/components/MaxPropertyValue/MaxPropertyValueResults';
 import MaxPropertyValueContainer, {
   STATE,
@@ -13,13 +14,22 @@ type SimpleMaxPropertyValueProps = {};
 
 const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
   const { state, changeCanton, canton: cantonValue, loading } = props;
+
+  if (loading) {
+    return (
+      <div className="simple-max-property-value loading">
+        <Loading />
+        <h5>Calcul en cours</h5>
+      </div>
+    );
+  }
+
   if (state !== STATE.DONE) {
     return (
       <div className="simple-max-property-value">
         <h3>
           <T id="MaxPropertyValue.title" />
         </h3>
-        {loading && 'loading!'}
         <div className="empty">
           {state === STATE.MISSING_INFOS ? (
             <>
