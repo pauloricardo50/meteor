@@ -5,8 +5,8 @@ import cx from 'classnames';
 import { STEP_ORDER } from 'core/api/constants';
 import DashboardProgressBarStep from './DashboardProgressBarStep';
 
-const DashboardProgressBar = ({ currentStep }) => (
-  <div className="dashboard-progress-bar">
+const DashboardProgressBar = ({ currentStep, variant }) => (
+  <div className={cx('dashboard-progress-bar', { light: variant === 'light' })}>
     <div className="steps">
       {STEP_ORDER.map((step, index) => (
         <DashboardProgressBarStep

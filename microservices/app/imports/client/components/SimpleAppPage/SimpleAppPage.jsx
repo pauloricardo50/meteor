@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
 
 import { APPLICATION_TYPES } from 'core/api/constants';
 import Button from 'core/components/Button';
@@ -20,8 +22,9 @@ const withSimpleAppPage = Component => (props: SimpleAppPageProps) => {
           style={{ alignSelf: 'flex-start', marginBottom: 16 }}
           raised
           primary
+          icon={<FontAwesomeIcon icon={faTachometer} />}
         >
-          Home
+          Tableau de bord
         </Button>
         <Component {...props} />
       </>

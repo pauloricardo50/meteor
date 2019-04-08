@@ -141,3 +141,27 @@ $step-circle-size: 25px;
     background-color: $success;
   }
 }
+
+.dashboard-progress-bar.light {
+  .step {
+    background-color: $border-grey;
+    color: #aaa;
+
+    &.done {
+      color: white;
+      background-color: $success;
+    }
+  }
+
+  .step-name {
+    color: #888;
+  }
+
+  .absolute-lines .line {
+    background-color: $border-grey;
+
+    &.done {
+      background-color: $success;
+    }
+  }
+}

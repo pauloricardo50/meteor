@@ -9,7 +9,7 @@ type SimpleDashboardPageProps = {};
 
 const SimpleDashboardPage = (props: SimpleDashboardPageProps) => (
   <div className="simple-dashboard-page animated fadeIn">
-    <DashboardProgressBar {...props} />
+    <DashboardProgressBar currentStep={props.loan.step} variant="light" />
 
     <div className="simple-dashboard-page-borrowers card1">
       <BorrowersProgress {...props} />
