@@ -17,19 +17,19 @@ const Properties = ({ loan }: PropertiesProps) => {
   return (
     <>
       {[
-        ...properties.map(property => (
-          <PropertyCard
-            document={property}
-            key={property._id}
-            collection={PROPERTIES_COLLECTION}
-            loanId={loanId}
-          />
-        )),
         ...promotions.map(promotion => (
           <PromotionCard
             document={promotion}
             key={promotion._id}
             collection={PROMOTIONS_COLLECTION}
+            loanId={loanId}
+          />
+        )),
+        ...properties.map(property => (
+          <PropertyCard
+            document={property}
+            key={property._id}
+            collection={PROPERTIES_COLLECTION}
             loanId={loanId}
           />
         )),
