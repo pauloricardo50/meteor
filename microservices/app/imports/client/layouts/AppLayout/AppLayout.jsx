@@ -9,16 +9,26 @@ import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 
-const renderMobile = props =>
-  props.loan && props.loan.applicationType === APPLICATION_TYPES.SIMPLE;
+const mobilePaths = ['/account', '/'];
 
-const AppLayout = ({
-  children,
-  redirect,
-  history,
-  shouldShowSideNav,
-  ...props
-}) => {
+const renderMobile = (props) => {
+  const {
+    history: {
+      location: { pathname },
+    },
+    loan,
+  } = props;
+  const isSimple = loan && loan.applicationType === APPLICATION_TYPES.SIMPLE;
+
+  if (isSimple) {
+    return true;
+  }
+  if (mobilePaths.some(path => pathname === path)) {
+    return true;
+  }
+};
+
+const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
   const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
 

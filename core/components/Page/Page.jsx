@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import cx from 'classnames';
 import { injectIntl } from 'react-intl';
 
 import PageHead from '../PageHead';
@@ -17,11 +17,11 @@ const Page = ({
   title,
   displayTopBar = true,
 }) => (
-  <section id={id} className="page-title">
+  <section id={id} className={'page-title'}>
     <PageHead titleId={id} title={title} />
     {displayTopBar && (
       <div
-        className={classnames('top-bar', className, {
+        className={cx('top-bar', className, {
           'full-width': topFullWidth || !shouldShowSideNav,
         })}
       >
@@ -32,8 +32,9 @@ const Page = ({
       </div>
     )}
     <div
-      className={classnames('children animated fadeIn page', {
+      className={cx('children animated fadeIn page', {
         'full-width': fullWidth,
+        padding: displayTopBar,
       })}
     >
       {children}
