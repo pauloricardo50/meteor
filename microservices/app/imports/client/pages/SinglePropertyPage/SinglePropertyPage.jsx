@@ -3,13 +3,12 @@ import React from 'react';
 import { Element } from 'react-scroll';
 
 import T from 'core/components/Translation';
-import { VALUATION_STATUS, PROPERTY_CATEGORY } from 'core/api/constants';
+import { VALUATION_STATUS, PROPERTY_CATEGORY, APPLICATION_TYPES } from 'core/api/constants';
 import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import { propertyDelete } from 'core/api/methods/index';
 import { createRoute } from 'core/utils/routerUtils';
-import Page from 'core/components/Page';
 import ProProperty from 'core/components/ProProperty';
 import { PROPERTIES_PAGE } from '../../../startup/client/appRoutes';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
@@ -18,6 +17,7 @@ import LaunchValuationButton from './LaunchValuationButton';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
 import ResidenceTypeSetter from './ResidenceTypeSetter';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';
+import PageApp from '../../components/PageApp/PageApp';
 
 const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
@@ -29,7 +29,7 @@ const SinglePropertyPage = (props) => {
     history,
     currentUser: { loans },
   } = props;
-  const { borrowers, properties, _id: loanId, residenceType } = loan;
+  const { borrowers, properties, _id: loanId, residenceType, applicationType } = loan;
   const property = properties.find(({ _id }) => _id === propertyId);
 
   if (property.category === PROPERTY_CATEGORY.PRO) {
@@ -52,9 +52,10 @@ const SinglePropertyPage = (props) => {
   const title = address1 || <T id="SinglePropertyPage.title" />;
 
   return (
-    <Page
+    <PageApp
       id="SinglePropertyPage"
       title={<SinglePropertyPageTitle loan={loan} property={property} />}
+      displayTopBar={applicationType === APPLICATION_TYPES.FULL}
     >
       <section className="card1 card-top property-page">
         <h1 className="text-center">{title}</h1>
@@ -106,7 +107,7 @@ const SinglePropertyPage = (props) => {
           })}
         /> */}
       </div>
-    </Page>
+    </PageApp>
   );
 };
 
