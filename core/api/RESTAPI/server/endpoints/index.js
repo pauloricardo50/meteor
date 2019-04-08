@@ -6,3 +6,4 @@ export {
 export {
   default as inviteCustomerToProPropertiesAPI,
 } from './inviteCustomerToProProperties';
+export { default as referCustomerAPI } from './referCustomer';

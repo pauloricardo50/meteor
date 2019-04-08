@@ -6,6 +6,7 @@ import {
   inviteUserToProPropertyAPI,
   inviteUserToProPropertiesAPI,
   testEndpointAPI,
+  referCustomerAPI,
 } from 'core/api/RESTAPI/server/endpoints/';
 
 const api = new RESTAPI();
@@ -24,6 +25,7 @@ api.addEndpoint(
   'POST',
   inviteUserToProPropertiesAPI,
 );
+api.addEndpoint('/users', 'POST', referCustomerAPI);
 api.addEndpoint('/test', 'POST', testEndpointAPI);
 api.addEndpoint('/test', 'GET', testEndpointAPI);
 api.addEndpoint('/test', 'PUT', testEndpointAPI);
