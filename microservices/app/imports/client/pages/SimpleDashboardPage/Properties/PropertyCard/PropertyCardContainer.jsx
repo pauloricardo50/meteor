@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import { createRoute } from 'core/utils/routerUtils';
+import { PROPERTIES_COLLECTION } from 'core/api/constants';
 
 const getImage = ({ documents = {}, imageUrls = [] }) => {
   let images = [];
@@ -29,14 +30,14 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
 export default compose(
   withRouter,
   mapProps(({ history, document, collection, loanId, additionalInfos }) => ({
-    name: (
-      <span>
-        <T id={`general.${collection}`} />: {document.name || document.address1}
-      </span>
-    ),
+    name: <span>{document.name || document.address1}</span>,
     address: document.address,
     buttonLabel: (
-      <T id={`SimpleDashboardPage.propertyCardButton.${collection}`} />
+      <T
+        id={`SimpleDashboardPage.propertyCardButton.${
+          collection === PROPERTIES_COLLECTION ? 'property' : 'promotion'
+        }`}
+      />
     ),
     onClick: () =>
       history.push(createRoute('/loans/:loanId/:collection/:docId', {
