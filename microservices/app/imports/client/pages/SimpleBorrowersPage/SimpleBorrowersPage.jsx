@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 
+import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 import SimpleBorrowerPageForms from './SimpleBorrowerPageForms';
 import SimpleBorrowersPageMaxPropertyValue from './SimpleBorrowersPageMaxPropertyValue';
 import SimpleBorrowersPageHeader from './SimpleBorrowersPageHeader';
@@ -18,4 +19,4 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => (
   </div>
 );
 
-export default SimpleBorrowersPage;
+export default withSimpleAppPage(SimpleBorrowersPage);

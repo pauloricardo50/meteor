@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Page from 'core/components/Page';
+import withSimpleAppPage from '../../components/SimpleAppPage/SimpleAppPage';
 import PropertiesPageDetail from './PropertiesPageDetail';
 import PropertiesPagePromotions from './PropertiesPagePromotions';
 import PropertiesPageAdder from './PropertiesPageAdder';
@@ -35,4 +36,4 @@ PropertiesPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default PropertiesPage;
+export default withSimpleAppPage(PropertiesPage);

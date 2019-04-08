@@ -979,7 +979,7 @@
   "ArrayInput.add": "Ajouter",
   "AssignAdminDropdown.assignAdmin": "Assigner un conseiller",
   "bert.emailVerificationSent": "Vérification envoyée à {email}!",
-  "BorrowerAdder.label": "+ Ajouter un 2e emprunteur",
+  "BorrowerAdder.label": "+ Ajouter 2e emprunteur",
   "BorrowerAddPartner.label": "Ajouter votre partenaire comme 2e emprunteur",
   "BorrowerHeader.age": "{value} ans",
   "BorrowerHeader.firstName": "Prénom",

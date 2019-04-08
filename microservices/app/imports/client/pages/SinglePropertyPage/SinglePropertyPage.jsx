@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Element } from 'react-scroll';
-import { compose } from 'recompose';
-import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation';
 import { VALUATION_STATUS, PROPERTY_CATEGORY } from 'core/api/constants';
-import withMatchParam from 'core/containers/withMatchParam';
 import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
@@ -20,6 +17,7 @@ import SinglePropertyPageTitle from './SinglePropertyPageTitle';
 import LaunchValuationButton from './LaunchValuationButton';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
 import ResidenceTypeSetter from './ResidenceTypeSetter';
+import SinglePropertyPageContainer from './SinglePropertyPageContainer';
 
 const shouldDisplayLaunchValuationButton = ({ progress, status }) =>
   progress >= 1 && status !== VALUATION_STATUS.DONE;
@@ -116,7 +114,4 @@ SinglePropertyPage.propTypes = {
   loan: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-export default compose(
-  withMatchParam('propertyId'),
-  withRouter,
-)(SinglePropertyPage);
+export default SinglePropertyPageContainer(SinglePropertyPage);

@@ -9,6 +9,9 @@ import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 
+const renderMobile = props =>
+  props.loan && props.loan.applicationType === APPLICATION_TYPES.SIMPLE;
+
 const AppLayout = ({
   children,
   redirect,
@@ -17,10 +20,7 @@ const AppLayout = ({
   ...props
 }) => {
   const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
-  const rootClasses = classnames('app-root', {
-    mobile:
-      props.loan && props.loan.applicationType === APPLICATION_TYPES.SIMPLE,
-  });
+  const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
 
   if (redirect) {
     return <Redirect to={redirect} />;
