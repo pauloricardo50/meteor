@@ -27,6 +27,7 @@ const MaxPropertyValueResults = ({
   const {
     maxPropertyValue: { main, second },
   } = loan;
+  const shouldRecalculate = true;
 
   return (
     <div className="max-property-value-results">
@@ -65,7 +66,7 @@ const MaxPropertyValueResults = ({
       <MaxPropertyValueResultsTable
         {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
       />
-      <Button raised primary onClick={recalculate}>
+      <Button raised secondary={shouldRecalculate} onClick={recalculate}>
         Recalculer
       </Button>
     </div>

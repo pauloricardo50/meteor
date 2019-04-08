@@ -15,7 +15,8 @@ const renderState = (props) => {
     return (
       <div>
         <Loading />
-        <h5>Calcul en cours...</h5>
+        <h5>Algorithmes au travail...</h5>
+        <p>Détendez-vous</p>
       </div>
     );
   }
