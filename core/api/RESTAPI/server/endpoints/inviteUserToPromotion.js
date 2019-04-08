@@ -2,16 +2,8 @@ import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
 
 const inviteUserToPromotionAPI = ({ user: { _id: userId }, body, params }) => {
-  const { user, testing } = body;
+  const { user } = body;
   const { promotionId } = params;
-
-  if (testing) {
-    return {
-      message: `Test mode: user "${
-        user.email
-      }" would've been successfully invited to promotion id "${promotionId}"! Yay :)`,
-    };
-  }
 
   return withMeteorUserId(userId, () =>
     proInviteUser.run({
