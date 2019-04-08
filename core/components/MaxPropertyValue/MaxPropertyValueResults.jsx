@@ -6,6 +6,7 @@ import { RESIDENCE_TYPE, CANTONS } from '../../api/constants';
 import T from '../Translation';
 import Select from '../Select';
 import Button from '../Button';
+import Icon from '../Icon';
 import MaxPropertyValueResultsTable from './MaxPropertyValueResultsTable';
 
 type MaxPropertyValueResultsProps = {
@@ -70,7 +71,12 @@ const MaxPropertyValueResults = ({
           {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
         />
       </div>
-      <Button raised secondary={shouldRecalculate} onClick={recalculate}>
+      <Button
+        raised
+        secondary={shouldRecalculate}
+        onClick={recalculate}
+        icon={<Icon type="loop" />}
+      >
         Recalculer
       </Button>
     </div>
