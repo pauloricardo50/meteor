@@ -157,9 +157,8 @@ describe('PropertyService', function () {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _factory: 'organisation', _id: 'organisation' },
+            organisations: { _id: 'organisation' },
             properties: {
-              _factory: 'property',
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
               address1: 'Rue du parc 3',
@@ -218,7 +217,7 @@ describe('PropertyService', function () {
               message: { from_email, subject, merge_vars, from_name },
             },
           } = emails[0];
-          expect(subject).to.equal(`e-Potek - "Rue du parc 3"`);
+          expect(subject).to.equal('e-Potek - "Rue du parc 3"');
         });
       });
     });
@@ -232,9 +231,8 @@ describe('PropertyService', function () {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _factory: 'organisation', _id: 'organisation' },
+            organisations: { _id: 'organisation' },
             properties: {
-              _factory: 'property',
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
               address1: 'Rue du parc 5',
@@ -262,7 +260,6 @@ describe('PropertyService', function () {
       generator({
         users: [
           {
-            _factory: 'user',
             emails: [{ address: 'john@doe.com', verified: true }],
             assignedEmployee: {
               _factory: 'admin',
@@ -275,9 +272,8 @@ describe('PropertyService', function () {
             _factory: 'pro',
             _id: 'proUser',
             assignedEmployeeId: 'adminUser',
-            organisations: { _factory: 'organisation', _id: 'organisation' },
+            organisations: { _id: 'organisation' },
             properties: {
-              _factory: 'property',
               _id: 'proProperty',
               category: PROPERTY_CATEGORY.PRO,
               address1: 'Rue du parc 4',
@@ -299,7 +295,7 @@ describe('PropertyService', function () {
         propertyIds: ['proProperty'],
         userId,
         admin,
-        isNewUser
+        isNewUser,
       });
 
       return checkEmails(1).then((emails) => {
@@ -319,7 +315,7 @@ describe('PropertyService', function () {
         expect(address).to.equal('john@doe.com');
         expect(from_email).to.equal('info@e-potek.ch');
         expect(from_name).to.equal('e-Potek');
-        expect(subject).to.equal(`e-Potek - "Rue du parc 4"`);
+        expect(subject).to.equal('e-Potek - "Rue du parc 4"');
         expect(merge_vars[0].vars.find(({ name }) => name === 'BODY').content).to.include('Lydia Abraha');
       });
     });
@@ -348,10 +344,7 @@ describe('PropertyService', function () {
 
     it('throws if a property with the same external id is inserted twice', () => {
       generator({
-        properties: {
-          _factory: 'property',
-          externalId: 'abcd',
-        },
+        properties: { externalId: 'abcd' },
         users: { _factory: 'pro', _id: 'proId' },
       });
 

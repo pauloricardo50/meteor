@@ -375,11 +375,7 @@ describe('UserService', function () {
           {
             _id: 'proId',
             assignedEmployeeId: 'adminId',
-            organisations: {
-              _id: 'organisationId',
-              _factory: 'organisation',
-              name: 'bank',
-            },
+            organisations: { _id: 'organisationId', name: 'bank' },
             _factory: 'pro',
             firstName: 'John',
             lastName: 'Doe',
@@ -426,10 +422,7 @@ describe('UserService', function () {
 
     it('throws if user already exists and it is referOnly', () => {
       generator({
-        users: {
-          emails: [{ address: userToInvite.email, verified: false }],
-          _factory: 'user',
-        },
+        users: { emails: [{ address: userToInvite.email, verified: false }] },
       });
 
       expect(() =>
@@ -450,8 +443,6 @@ describe('UserService', function () {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
-
-          _factory: 'promotion',
         },
       });
 
@@ -486,8 +477,6 @@ describe('UserService', function () {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
-
-            _factory: 'promotion',
           },
           {
             _id: 'promotionId2',
@@ -498,8 +487,6 @@ describe('UserService', function () {
               $metadata: { permissions: { canInviteCustomers: true } },
             },
             promotionLotLinks: [{ _id: 'lotId2' }],
-
-            _factory: 'promotion',
           },
         ],
       });
@@ -540,8 +527,6 @@ describe('UserService', function () {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
-
-          _factory: 'promotion',
         },
       });
 
@@ -570,8 +555,6 @@ describe('UserService', function () {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
-
-          _factory: 'property',
         },
       });
 
@@ -604,8 +587,6 @@ describe('UserService', function () {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
-
-            _factory: 'property',
           },
           {
             _id: 'propertyId2',
@@ -614,8 +595,6 @@ describe('UserService', function () {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
-
-            _factory: 'property',
           },
         ],
       });
@@ -651,8 +630,6 @@ describe('UserService', function () {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
-
-            _factory: 'property',
           },
           {
             _id: 'propertyId2',
@@ -661,8 +638,6 @@ describe('UserService', function () {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
-
-            _factory: 'property',
           },
         ],
         promotions: [
@@ -674,8 +649,6 @@ describe('UserService', function () {
               _id: 'proId',
               $metadata: { permissions: { canInviteCustomers: true } },
             },
-
-            _factory: 'promotion',
           },
           {
             _id: 'promotionId2',
@@ -686,8 +659,6 @@ describe('UserService', function () {
               $metadata: { permissions: { canInviteCustomers: true } },
             },
             promotionLotLinks: [{ _id: 'lotId2' }],
-
-            _factory: 'promotion',
           },
         ],
       });
@@ -733,7 +704,6 @@ describe('UserService', function () {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
-          _factory: 'property',
         },
       });
 
@@ -773,7 +743,6 @@ describe('UserService', function () {
             _id: 'proId',
             $metadata: { permissions: { canInviteCustomers: true } },
           },
-          _factory: 'property',
         },
       });
 
