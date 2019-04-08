@@ -1,0 +1,19 @@
+.simple-max-property-value {
+  display: flex;
+  flex-direction: column;
+
+  .empty {
+    flex-grow: 1;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mui-select {
+    max-width: 200px;
+    min-width: 140px;
+  }
+}

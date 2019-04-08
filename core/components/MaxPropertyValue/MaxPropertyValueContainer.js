@@ -38,6 +38,9 @@ const getState = ({ borrowers, maxPropertyValue }) => {
   return STATE.DONE;
 };
 
+const getInitialCanton = ({ loan }) =>
+  loan && loan.maxPropertyValue && loan.maxPropertyValue.canton;
+
 export default compose(
   withState(
     'residenceType',
@@ -45,9 +48,22 @@ export default compose(
     ({ loan: { residenceType } }) =>
       residenceType || RESIDENCE_TYPE.MAIN_RESIDENCE,
   ),
-  withProps(({ loan: { _id: loanId, borrowers = [], maxPropertyValue } }) => ({
+  withState('canton', 'setCanton', getInitialCanton),
+  withState('loading', 'setLoading', null),
+  withProps(({
+    loan: { _id: loanId, borrowers = [], maxPropertyValue },
+    setLoading,
+    setCanton,
+  }) => ({
     state: getState({ borrowers, maxPropertyValue }),
     calculateSolvency: ({ canton }) =>
       setMaxPropertyValueWithoutBorrowRatio.run({ canton, loanId }),
+    onChangeCanton: (_, canton) => {
+      setCanton(canton);
+      setLoading(true);
+      setMaxPropertyValueWithoutBorrowRatio
+        .run({ canton, loanId })
+        .finally(() => setLoading(false));
+    },
   })),
 );

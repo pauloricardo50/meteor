@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-import { RESIDENCE_TYPE } from '../../api/constants';
+import { RESIDENCE_TYPE, CANTONS } from '../../api/constants';
 import T from '../Translation';
 import Select from '../Select';
 import MaxPropertyValueDialog from './MaxPropertyValueDialog';
@@ -21,6 +21,8 @@ const MaxPropertyValueResults = ({
   state,
   residenceType,
   setResidenceType,
+  onChangeCanton,
+  canton: cantonValue,
 }: MaxPropertyValueResultsProps) => {
   const {
     maxPropertyValue: { main, second, canton },
@@ -31,13 +33,17 @@ const MaxPropertyValueResults = ({
       <div className="top">
         <div>
           <h2>Capacité d'achat maximale</h2>
-          <h2>
-            <small className="secondary">
-              <T id={`Forms.canton.${canton}`} />
-            </small>
-          </h2>
         </div>
-        <div>
+        <div className="max-property-value-results-selects">
+          <Select
+            value={cantonValue}
+            onChange={onChangeCanton}
+            options={Object.keys(CANTONS).map((shortCanton) => {
+              const cant = CANTONS[shortCanton];
+              return { id: shortCanton, label: cant };
+            })}
+          />
+
           <Select
             value={residenceType}
             onChange={(_, val) => setResidenceType(val)}

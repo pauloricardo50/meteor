@@ -3,6 +3,7 @@ import React from 'react';
 
 import useMedia from 'core/hooks/useMedia';
 import SimpleBorrowersPageMaxPropertyValueSticky from './SimpleBorrowersPageMaxPropertyValueSticky';
+import SimpleMaxPropertyValue from '../../../components/SimpleMaxPropertyValue';
 
 type SimpleBorrowersPageMaxPropertyValueProps = {};
 
@@ -15,7 +16,7 @@ const SimpleBorrowersPageMaxPropertyValue = (props: SimpleBorrowersPageMaxProper
 
   return (
     <div className="card1 card-top simple-borrowers-page-max-property-value">
-      <h2>Votre capacité d'achat maximale</h2>
+      <SimpleMaxPropertyValue {...props} />
     </div>
   );
 };

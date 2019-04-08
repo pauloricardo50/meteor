@@ -17,7 +17,7 @@ $borrowers-item-width: 500px;
     }
 
     .borrowers-progress,
-    .max-property-value-2 {
+    .simple-max-property-value {
       flex-basis: 50%;
       flex-shrink: 1;
       flex-grow: 1;
@@ -70,7 +70,7 @@ $borrowers-item-width: 500px;
       }
     }
 
-    .max-property-value-2 {
+    .simple-max-property-value {
       background-color: $primary;
       color: white;
     }

@@ -466,7 +466,7 @@ export class LoanService extends CollectionService {
     const min = maxPropertyValues.reduce(
       (minValue, current) =>
         (current.propertyValue < minValue.propertyValue ? current : minValue),
-      { propertyValue: 10000000000 },
+      { propertyValue: 1000000000 },
     );
 
     const max = maxPropertyValues.reduce(
@@ -501,11 +501,13 @@ export class LoanService extends CollectionService {
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
+    console.log('mainMaxPropertyValueRange:', mainMaxPropertyValueRange);
     const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
       loanId,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
     });
+    console.log('secondMaxPropertyValueRange:', secondMaxPropertyValueRange);
 
     this.update({
       loanId,

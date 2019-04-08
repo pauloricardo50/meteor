@@ -15,7 +15,7 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => (
 
       <SimpleBorrowerPageForms loan={loan} />
     </div>
-    <SimpleBorrowersPageMaxPropertyValue />
+    <SimpleBorrowersPageMaxPropertyValue loan={loan} />
   </div>
 );
 
