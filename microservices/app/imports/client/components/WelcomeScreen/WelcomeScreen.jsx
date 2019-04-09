@@ -116,7 +116,7 @@ const WelcomeScreen = ({
         onClick={handleClick}
         className="welcome-screen-cta"
       >
-        <T id="general.continue" />
+        <T id="general.begin" />
       </Button>
     </div>
   </div>
