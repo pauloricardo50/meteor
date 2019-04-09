@@ -9,7 +9,7 @@ import {
 } from 'core/components/tooltips/TooltipContext';
 import { widget1Constants } from 'core/redux/widget1';
 import Widget1SingleInputForm from 'core/components/widget1/Widget1SingleInputForm';
-import Waves from '../../../components/Waves';
+import Waves from 'core/components/Waves';
 
 const HomePageHeader = ({ history }) => (
   <header>
