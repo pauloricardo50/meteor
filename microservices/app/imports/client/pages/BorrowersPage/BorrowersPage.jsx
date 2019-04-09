@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import Tabs from 'core/components/Tabs';
 import T from 'core/components/Translation';
 import PercentWithStatus from 'core/components/PercentWithStatus';
-import Page from 'core/components/Page';
 import Calculator from 'core/utils/Calculator';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
+import PageApp from '../../components/PageApp';
 import Info from './Info';
 import Finance from './Finance';
 import BorrowerHeader from './BorrowerHeader';
@@ -59,7 +59,7 @@ const BorrowersPage = (props) => {
   const initialIndex = tabs.map(({ id }) => id).indexOf(tabId);
 
   return (
-    <Page
+    <PageApp
       id="BorrowersPage"
       title={<BorrowersPageTitle borrowers={borrowers} />}
     >
@@ -73,7 +73,7 @@ const BorrowersPage = (props) => {
           makeLink={tab => `/loans/${props.loan._id}/borrowers/${tab}`}
         />
       </span>
-    </Page>
+    </PageApp>
   );
 };
 

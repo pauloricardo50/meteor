@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Element } from 'react-scroll';
+// import { Element } from 'react-scroll';
 
 import T from 'core/components/Translation';
 import { VALUATION_STATUS, PROPERTY_CATEGORY, APPLICATION_TYPES } from 'core/api/constants';
-import Valuation from 'core/components/Valuation';
+// import Valuation from 'core/components/Valuation';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import MapWithMarkerWrapper from 'core/components/maps/MapWithMarkerWrapper';
 import { propertyDelete } from 'core/api/methods/index';
@@ -13,7 +13,7 @@ import ProProperty from 'core/components/ProProperty';
 import { PROPERTIES_PAGE } from '../../../startup/client/appRoutes';
 import ReturnToDashboard from '../../components/ReturnToDashboard';
 import SinglePropertyPageTitle from './SinglePropertyPageTitle';
-import LaunchValuationButton from './LaunchValuationButton';
+// import LaunchValuationButton from './LaunchValuationButton';
 import SinglePropertyPageForms from './SinglePropertyPageForms';
 import ResidenceTypeSetter from './ResidenceTypeSetter';
 import SinglePropertyPageContainer from './SinglePropertyPageContainer';

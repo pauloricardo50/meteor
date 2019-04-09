@@ -17,7 +17,7 @@ const Page = ({
   title,
   displayTopBar = true,
 }) => (
-  <section id={id} className={'page-title'}>
+  <section id={id} className="page-title">
     <PageHead titleId={id} title={title} />
     {displayTopBar && (
       <div
