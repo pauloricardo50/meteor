@@ -818,30 +818,30 @@ describe('LoanService', function () {
   describe('setStep', () => {
     it('sets the step', () => {
       generator({
-        loans: { _id: 'id', step: STEPS.FIND_LENDER },
+        loans: { _id: 'id', step: STEPS.REQUEST },
       });
 
-      LoanService.setStep({ loanId: 'id', nextStep: STEPS.GET_CONTRACT });
+      LoanService.setStep({ loanId: 'id', nextStep: STEPS.OFFERS });
 
       loan = LoanService.get('id');
 
-      expect(loan.step).to.equal(STEPS.GET_CONTRACT);
+      expect(loan.step).to.equal(STEPS.OFFERS);
     });
 
-    it('sends a notification email if the step goes from PREPARATION to FIND_LENDER', () => {
+    it('sends a notification email if the step goes from SOLVENCY to OFFERS', () => {
       generator({
         loans: {
           _id: 'myLoan',
-          step: STEPS.PREPARATION,
+          step: STEPS.SOLVENCY,
           user: { emails: [{ address: 'john@doe.com', verified: false }] },
         },
       });
 
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.FIND_LENDER });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
 
       loan = LoanService.get('myLoan');
 
-      expect(loan.step).to.equal(STEPS.FIND_LENDER);
+      expect(loan.step).to.equal(STEPS.OFFERS);
 
       return checkEmails(1).then((emails) => {
         const {
@@ -867,6 +867,42 @@ describe('LoanService', function () {
         expect(from_name).to.equal('e-Potek');
         expect(subject).to.include('[e-Potek] Identifiez votre prêteur');
         expect(merge_vars[0].vars.find(({ name }) => name === 'CTA_URL').content).to.include('/loans/myLoan');
+      });
+    });
+
+    it('sends a notification email if the step goes from REQUEST to OFFERS', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          step: STEPS.REQUEST,
+          user: { emails: [{ address: 'john@doe.com', verified: false }] },
+        },
+      });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+
+      return checkEmails(1).then((emails) => {
+        const {
+          emailId,
+          response: { status },
+        } = emails[0];
+
+        expect(status).to.equal('sent');
+        expect(emailId).to.equal(EMAIL_IDS.FIND_LENDER_NOTIFICATION);
+      });
+    });
+
+    it('does not send a notification email if the step goes from REQUEST to OFFERS', () => {
+      generator({
+        loans: {
+          _id: 'myLoan',
+          step: STEPS.CLOSING,
+          user: { emails: [{ address: 'john@doe.com', verified: false }] },
+        },
+      });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.OFFERS });
+
+      return checkEmails(1).then((emails) => {
+        expect(emails.length).to.equal(0);
       });
     });
   });

@@ -153,3 +153,8 @@ export const setLoanStep = new Method({
   name: 'setLoanStep',
   params: { loanId: String, nextStep: String },
 });
+
+export const loanShareSolvency = new Method({
+  name: 'loanShareSolvency',
+  params: { loanId: String, shareSolvency: Boolean },
+});

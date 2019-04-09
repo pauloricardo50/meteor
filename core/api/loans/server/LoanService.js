@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
+import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import formatMessage from '../../../utils/intl';
 import {
   makeFeedback,
@@ -17,7 +18,6 @@ import {
   LOAN_VERIFICATION_STATUS,
   CANTONS,
   EMAIL_IDS,
-  STEPS,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -88,7 +88,7 @@ export class LoanService extends CollectionService {
 
     this.update({ loanId, object: { step: nextStep } });
 
-    if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+    if (shouldSendStepNotification(step, nextStep)) {
       sendEmail.run({
         emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
         userId,
@@ -192,7 +192,9 @@ export class LoanService extends CollectionService {
       structure: {
         ...structure,
         propertyId,
-        name: `Plan financier ${structures.length + 1}`,
+        name:
+          (structure && structure.name)
+          || `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({
@@ -466,7 +468,7 @@ export class LoanService extends CollectionService {
     const min = maxPropertyValues.reduce(
       (minValue, current) =>
         (current.propertyValue < minValue.propertyValue ? current : minValue),
-      { propertyValue: 10000000000 },
+      { propertyValue: 1000000000 },
     );
 
     const max = maxPropertyValues.reduce(
@@ -478,9 +480,7 @@ export class LoanService extends CollectionService {
     return { min, max };
   }
 
-  getMaxPropertyValueWithoutBorrowRatio({ loanId, canton, residenceType }) {
-    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
-
+  getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
     const lenderOrganisations = OrganisationService.fetch({
       $filters: { features: { $in: [ORGANISATION_FEATURES.LENDER] } },
       lenderRules: lenderRulesFragment(),
@@ -496,15 +496,21 @@ export class LoanService extends CollectionService {
   }
 
   setMaxPropertyValueWithoutBorrowRatio({ loanId, canton }) {
+    const loan = this.fetchOne({ $filters: { _id: loanId }, ...userLoan() });
+
     const mainMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
-      loanId,
+      loan,
       residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
       canton,
     });
     const secondMaxPropertyValueRange = this.getMaxPropertyValueWithoutBorrowRatio({
-      loanId,
+      loan,
       residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
       canton,
+    });
+
+    const borrowerHash = Calculator.getBorrowerFormHash({
+      borrowers: loan.borrowers,
     });
 
     this.update({
@@ -515,6 +521,7 @@ export class LoanService extends CollectionService {
           second: secondMaxPropertyValueRange,
           canton,
           date: new Date(),
+          borrowerHash,
         },
       },
     });
@@ -532,13 +539,13 @@ export class LoanService extends CollectionService {
       $filters: { _id: loanId },
       ...userLoan(),
     });
-    const { properties, userId, borrowers, residenceType } = loan;
+    const { properties = [], userId, borrowers, residenceType } = loan;
 
     // Get the highest property value
     const {
       max: { borrowRatio, propertyValue, organisationName },
     } = this.getMaxPropertyValueWithoutBorrowRatio({
-      loanId,
+      loan,
       canton,
     });
 

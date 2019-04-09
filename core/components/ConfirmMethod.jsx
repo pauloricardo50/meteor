@@ -50,7 +50,8 @@ export default class ConfirmMethod extends Component {
       keyword,
       buttonProps,
       children,
-      dialogTitle,
+      title,
+      description,
     } = this.props;
     const { open, text, loading } = this.state;
     const actions = [
@@ -81,10 +82,11 @@ export default class ConfirmMethod extends Component {
           {...buttonProps}
         />
         <Dialog
-          title={dialogTitle || <T id="ConfirmMethod.dialogTitle" />}
+          title={title}
           actions={actions}
           important
           open={open}
+          text={description}
         >
           {children}
           {keyword && (
@@ -111,9 +113,11 @@ ConfirmMethod.propTypes = {
   label: PropTypes.node.isRequired,
   method: PropTypes.func.isRequired,
   style: PropTypes.object,
+  title: PropTypes.node,
 };
 
 ConfirmMethod.defaultProps = {
+  title: <T id="ConfirmMethod.dialogTitle" />,
   disabled: false,
   keyword: undefined,
   style: {},

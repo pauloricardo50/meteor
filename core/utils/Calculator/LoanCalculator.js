@@ -308,9 +308,8 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     }
 
     refinancingPercent({ loan }) {
-      const a = [];
-      getCountedArray(getRefinancingFormArray({ loan }), loan, a);
-      return getPercent(a);
+      const array = getCountedArray(getRefinancingFormArray({ loan }), loan);
+      return getPercent(array);
     }
 
     getMortgageNoteIncrease({ loan, structureId }) {
@@ -364,7 +363,7 @@ export const withLoanCalculator = (SuperClass = class {}) =>
     structureIsValid({ loan, structureId }) {
       const incomeRatio = this.getIncomeRatio({ loan, structureId });
       const borrowRatio = this.getBorrowRatio({ loan, structureId });
-      
+
       if (
         incomeRatio > this.maxIncomeRatio
         || borrowRatio > this.maxBorrowRatio

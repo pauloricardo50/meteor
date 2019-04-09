@@ -13,22 +13,24 @@ import ImpersonatePage from 'core/components/Impersonate/ImpersonatePage';
 import { IMPERSONATE_ROUTE } from 'core/api/impersonation/impersonation';
 import PasswordResetPage from 'core/components/PasswordResetPage';
 import EmailVerificationPage from 'core/components/EmailVerificationPage';
-import AccountPage from 'core/components/AccountPage';
 import messagesFR from '../../../lang/fr.json';
 import AppStore from '../../client/components/AppStore';
-import AppWidget1Page from '../../client/pages/AppWidget1Page/loadable';
-import AppPage from '../../client/pages/AppPage/loadable';
-import BorrowersPage from '../../client/pages/BorrowersPage/loadable';
-import DashboardPage from '../../client/pages/DashboardPage/loadable';
-import FilesPage from '../../client/pages/FilesPage/loadable';
-import FinancingPage from '../../client/pages/FinancingPage/loadable';
-import RefinancingPage from '../../client/pages/RefinancingPage/loadable';
-import PropertiesPage from '../../client/pages/PropertiesPage/loadable';
-import SinglePropertyPage from '../../client/pages/SinglePropertyPage/loadable';
+import AppAccountPage from '../../client/pages/AppAccountPage';
+import AppWidget1Page from '../../client/pages/AppWidget1Page';
+import AppPage from '../../client/pages/AppPage';
+import BorrowersPage from '../../client/pages/BorrowersPage';
+import DashboardPage from '../../client/pages/DashboardPage';
+import FilesPage from '../../client/pages/FilesPage';
+import FinancingPage from '../../client/pages/FinancingPage';
+import RefinancingPage from '../../client/pages/RefinancingPage';
+import PropertiesPage from '../../client/pages/PropertiesPage';
+import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import AppLayout from '../../client/layouts/AppLayout';
-import AppPromotionPage from '../../client/pages/AppPromotionPage/loadable';
-import AppPromotionOptionPage from '../../client/pages/AppPromotionOptionPage/loadable';
-import AppPromotionLotPage from '../../client/pages/AppPromotionLotPage/loadable';
+import AppPromotionPage from '../../client/pages/AppPromotionPage';
+import AppPromotionOptionPage from '../../client/pages/AppPromotionOptionPage';
+import AppPromotionLotPage from '../../client/pages/AppPromotionLotPage';
+import WelcomePage from '../../client/pages/WelcomePage';
+import SolvencyPage from '../../client/pages/SolvencyPage';
 
 import * as ROUTES from './appRoutes';
 
@@ -42,7 +44,7 @@ const AppRouter = () => (
     <AppLayout>
       <Switch>
         <Route path={ROUTES.REFINANCING_PAGE} component={RefinancingPage} />
-        <Route path={ROUTES.ACCOUNT_PAGE} component={AccountPage} />
+        <Route path={ROUTES.ACCOUNT_PAGE} component={AppAccountPage} />
         <Route path={ROUTES.APP_WIDGET1_PAGE} component={AppWidget1Page} />
         {/* Keep BORROWERS_PAGE above BORROWERS_PAGE_NO_TAB */}
         <Route path={ROUTES.BORROWERS_PAGE} component={BorrowersPage} />
@@ -61,6 +63,8 @@ const AppRouter = () => (
           component={AppPromotionOptionPage}
         />
         <Route path={ROUTES.APP_PROMOTION_PAGE} component={AppPromotionPage} />
+        <Route path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
+        <Route path={ROUTES.SOLVENCY_PAGE} component={SolvencyPage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}

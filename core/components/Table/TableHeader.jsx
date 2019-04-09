@@ -37,7 +37,7 @@ const TableHeader = ({
           />
         </TableCell>
       )}
-      {columnOptions.map(({ id, style, intlValues, label, align, padding = 'dense' }, index) => (
+      {columnOptions.map(({ id, style, intlValues, label, align, padding }, index) => (
         <TableCell
           key={id}
           style={style || styles.cell}

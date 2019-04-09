@@ -28,6 +28,7 @@ class DateInput extends Component {
           onFocusChange: ({ focused: nextFocused }) =>
             this.setState({ focused: nextFocused }),
           focused,
+          placeholder: null,
         }}
       />
     );
@@ -35,8 +36,6 @@ class DateInput extends Component {
 }
 
 DateInput.propTypes = {
-  currentValue: PropTypes.object,
-  disabled: PropTypes.bool,
   docId: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.node.isRequired,
@@ -50,9 +49,7 @@ DateInput.propTypes = {
 DateInput.defaultProps = {
   maxDate: undefined,
   minDate: undefined,
-  currentValue: undefined,
   style: {},
-  disabled: false,
   openDirection: undefined,
 };
 

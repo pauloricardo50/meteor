@@ -1,3 +1,4 @@
+import { STEPS } from '../api/constants';
 import Calculator from './Calculator';
 
 export const formatLoanWithStructure = ({
@@ -86,3 +87,7 @@ export const formatLoanWithPromotion = (loan) => {
 
   return loan;
 };
+
+export const shouldSendStepNotification = (prevStep, nextStep) =>
+  (prevStep === STEPS.SOLVENCY || prevStep === STEPS.REQUEST)
+  && nextStep === STEPS.OFFERS;

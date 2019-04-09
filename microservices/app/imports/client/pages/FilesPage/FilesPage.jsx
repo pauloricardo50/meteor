@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FileTabs from 'core/components/FileTabs';
-import Page from 'core/components/Page';
+import PageApp from '../../components/PageApp';
 
 const FilesPage = props => (
-  <Page id="FilesPage">
+  <PageApp id="FilesPage">
     <FileTabs
       {...props}
       properties={props.loan.properties}
@@ -13,7 +13,7 @@ const FilesPage = props => (
       // disabled={!props.loan.userFormsEnabled}
       disabled={false}
     />
-  </Page>
+  </PageApp>
 );
 
 FilesPage.propTypes = {

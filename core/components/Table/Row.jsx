@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+
 import { shouldDisplayLabelAndData } from './tableHelpers';
 
 const displayValue = (columnValue, columnOptions) => {
@@ -29,7 +29,7 @@ const Row = ({
         key={j}
         style={columnOptions[j].style}
         align={columnOptions[j].align}
-        padding={columnOptions[j].padding || 'dense'}
+        padding={columnOptions[j].padding}
         className={`col-${columnOptions[j].id}`}
       >
         {displayValue(column, columnOptions[j])}

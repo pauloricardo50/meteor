@@ -55,7 +55,7 @@ const makeMapPromotionLot = ({ history, promotionId }) => ({
 const columnOptions = [
   { id: 'name' },
   { id: 'status' },
-  { id: 'totalValue' },
+  { id: 'totalValue', style: { whiteSpace: 'nowrap' } },
   { id: 'lots' },
   { id: 'loans' },
   { id: 'attributedTo' },

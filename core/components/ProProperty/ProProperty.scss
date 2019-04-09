@@ -5,7 +5,7 @@
   .header {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
     justify-content: space-between;
 
     &-left {
@@ -23,12 +23,17 @@
       margin-top: 0;
     }
 
-     > * {
+    > * {
       flex-basis: 50%;
       flex-grow: 1;
 
       min-width: 300px;
       min-height: 500px;
+
+      @include screen(small) {
+        min-width: unset;
+        min-height: 300px;
+      }
     }
 
     .description {

@@ -10,13 +10,19 @@ import useMedia from 'core/hooks/useMedia';
 
 type AppTopNavProps = {};
 
-const AppTopNav = ({ toggleDrawer, ...props }: AppTopNavProps) => {
+const AppTopNav = ({
+  toggleDrawer,
+  shouldShowSideNav,
+  ...props
+}: AppTopNavProps) => {
   const isMobile = useMedia({ maxWidth: 768 });
 
   return (
     <Toolbar className="top-nav">
       <div className={cx('top-nav-content', { mobile: isMobile })}>
-        {isMobile && <IconButton onClick={toggleDrawer} type="menu" />}
+        {shouldShowSideNav && isMobile && (
+          <IconButton onClick={toggleDrawer} type="menu" />
+        )}
         <TopNavlogo />
         <TopNavButtons {...props} />
       </div>

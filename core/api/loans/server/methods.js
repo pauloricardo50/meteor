@@ -22,6 +22,7 @@ import {
   setMaxPropertyValueWithoutBorrowRatio,
   addNewMaxStructure,
   setLoanStep,
+  loanShareSolvency,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -141,11 +142,23 @@ addNewMaxStructure.setHandler((context, params) => {
 });
 
 setLoanStep.setHandler((context, params) => {
-  if (params.nextStep === STEPS.PREPARATION) {
+  const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
+
+  if (userAllowedSteps.includes(params.nextStep)) {
     SecurityService.loans.isAllowedToUpdate(params.loanId);
   } else {
     Security.checkUserIsAdmin(context.userId);
   }
+
   context.unblock();
   return LoanService.setStep(params);
+});
+
+loanShareSolvency.setHandler((context, params) => {
+  const { loanId, shareSolvency } = params;
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.update({
+    loanId: params.loanId,
+    object: { shareSolvency },
+  });
 });

@@ -2,7 +2,6 @@ import Calculator from 'core/utils/Calculator';
 import { createRoute } from 'core/utils/routerUtils';
 import {
   LOAN_VERIFICATION_STATUS,
-  VALUATION_STATUS,
   PURCHASE_TYPE,
   PROPERTY_CATEGORY,
 } from 'core/api/constants';
@@ -13,6 +12,7 @@ import {
   FILES_PAGE,
   PROPERTIES_PAGE,
   REFINANCING_PAGE,
+  SOLVENCY_PAGE,
 } from '../../../../startup/client/appRoutes';
 import VerificationRequester from './VerificationRequester';
 
@@ -38,7 +38,7 @@ export const disablePropertyTodos = ({ structure: { property } }) =>
 
 export const promotionTodoList = {
   completeBorrowers: true,
-  completeBorrowersFinance: true,
+  solvency: true,
   uploadDocuments: true,
   chooseLots: true,
   verification: true,
@@ -48,7 +48,7 @@ export const promotionTodoList = {
 export const defaultTodoList = {
   addProperty: true,
   completeBorrowers: true,
-  completeBorrowersFinance: true,
+  solvency: true,
   completeProperty: true,
   completeRefinancing: true,
   doAnExpertise: true,
@@ -75,6 +75,13 @@ export const getDashboardTodosArray = list =>
       },
       link: ({ _id: loanId }) =>
         createRoute(BORROWERS_PAGE, { loanId, tabId: 'personal' }),
+    },
+    {
+      id: 'solvency',
+      isDone: ({ maxPropertyValue }) =>
+        maxPropertyValue && maxPropertyValue.date,
+      link: ({ _id: loanId }) =>
+        createRoute(SOLVENCY_PAGE, { loanId, tabId: 'personal' }),
     },
     {
       id: 'addProperty',

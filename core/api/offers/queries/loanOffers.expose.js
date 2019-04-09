@@ -1,6 +1,5 @@
-import { Match } from 'meteor/check';
 import SecurityService from '../../security';
-import query from './offers';
+import query from './loanOffers';
 
 query.expose({
   firewall(userId, { loanId }) {
@@ -10,5 +9,5 @@ query.expose({
       SecurityService.loans.isAllowedToUpdate(loanId);
     }
   },
-  validateParams: { loanId: Match.Maybe(String) },
+  validateParams: { loanId: String },
 });

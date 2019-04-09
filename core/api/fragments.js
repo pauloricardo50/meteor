@@ -197,6 +197,7 @@ export const lenderRules = () => ({
 // //
 export const loan = () => ({
   additionalDocuments: { id: 1, label: 1, requiredByAdmin: 1 },
+  applicationType: 1,
   borrowerIds: 1,
   borrowers: { firstName: 1, lastName: 1, name: 1 },
   canton: 1,
@@ -229,6 +230,7 @@ export const loan = () => ({
   updatedAt: 1,
   userId: 1,
   verificationStatus: 1,
+  shareSolvency: 1,
 });
 
 export const loanBase = () => ({
@@ -243,12 +245,14 @@ const userMaxPropertyValue = {
   second: { min: userPropertyValue, max: userPropertyValue },
   canton: 1,
   date: 1,
+  borrowerHash: 1,
 };
 const adminMaxPropertyValue = {
   main: { min: adminPropertyValue, max: adminPropertyValue },
   second: { min: adminPropertyValue, max: adminPropertyValue },
   canton: 1,
   date: 1,
+  borrowerHash: 1,
 };
 
 export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
@@ -256,6 +260,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
   adminValidation: 1,
   borrowers: loanBorrower({ withSort }),
   contacts: 1,
+  displayWelcomeScreen: 1,
   offers: fullOffer(),
   properties: userProperty({ withSort }),
   user: appUser(),
@@ -290,6 +295,7 @@ export const userLoan = ({ withSort, withFilteredPromotions } = {}) => ({
 export const adminLoan = ({ withSort } = {}) => ({
   ...userLoan({ withSort }),
   closingDate: 1,
+  displayWelcomeScreen: 1,
   lenders: adminLender(),
   maxPropertyValue: adminMaxPropertyValue,
   properties: adminProperty({ withSort }),
@@ -335,6 +341,7 @@ export const proLoans = () => ({
   structure: 1,
   maxPropertyValue: userMaxPropertyValue,
   residenceType: 1,
+  shareSolvency: 1,
 });
 
 export const sideNavLoan = () => ({

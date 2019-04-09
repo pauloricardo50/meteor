@@ -144,19 +144,14 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
 
   switch (step) {
   case 3:
-    loan.step = STEPS.GET_CONTRACT;
-    loan.adminValidation = {
-      bonus2017: 'Does not match with taxes location',
-      bankFortune: 'Not enough',
-    };
-
+    loan.step = STEPS.OFFERS;
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
     break;
   case 2:
-    loan.step = STEPS.FIND_LENDER;
+    loan.step = STEPS.REQUEST;
     break;
   default:
-    loan.step = STEPS.PREPARATION;
+    loan.step = STEPS.SOLVENCY;
   }
 
   return LoanService.insert({ loan, userId });
@@ -167,7 +162,7 @@ export const getRelatedLoansIds = usersIds =>
 
 export const addLoanWithData = ({
   borrowers,
-  properties,
+  properties = [],
   loan: loanData,
   userId,
   addOffers,
@@ -175,8 +170,14 @@ export const addLoanWithData = ({
   const loanId = LoanService.adminLoanInsert({ userId });
   LoanService.update({ loanId, object: loanData });
   const loan = adminLoan.clone({ loanId }).fetchOne();
-  const propertyId = PropertyService.insert({ property: {}, userId });
-  LoanService.addPropertyToLoan({ propertyId, loanId });
+  const propertyId = properties.length
+    ? PropertyService.insert({ property: {}, userId })
+    : undefined;
+
+  if (propertyId) {
+    LoanService.addPropertyToLoan({ propertyId, loanId });
+  }
+
   const structureId = loan.structures[0].id;
   const [borrowerId1] = loan.borrowers.map(({ _id }) => _id);
   LoanService.updateStructure({
@@ -203,10 +204,12 @@ export const addLoanWithData = ({
     });
   }
 
-  PropertyService.update({
-    propertyId,
-    object: properties[0],
-  });
+  if (propertyId) {
+    PropertyService.update({
+      propertyId,
+      object: properties[0],
+    });
+  }
 
   if (addOffers) {
     const offerIds = [1, 2, 3, 4, 5].map(() => createFakeOffer(loanId));

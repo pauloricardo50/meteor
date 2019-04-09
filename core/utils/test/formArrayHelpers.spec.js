@@ -5,6 +5,7 @@ import {
   shouldCountField,
   getCountedArray,
   getMissingFieldIds,
+  getFormValuesHash,
 } from '../formArrayHelpers';
 
 describe('formArrayHelpers', () => {
@@ -39,7 +40,7 @@ describe('formArrayHelpers', () => {
   describe('getCountedArray', () => {
     const dummyArray = [{ id: 'id1' }, { id: 'id2' }];
     it('returns an empty array if it is given an empty formArray', () => {
-      expect(getCountedArray([], {}, [])).to.deep.equal([]);
+      expect(getCountedArray([], {})).to.deep.equal([]);
     });
 
     it('should return an array with 2 undefined values for a simple array and an empty object', () => {
@@ -62,10 +63,14 @@ describe('formArrayHelpers', () => {
       })).to.deep.equal(['1', '2', '3']);
     });
 
-    it('pushes to the array passed in as 3rd param', () => {
-      expect(getCountedArray(dummyArray, { id1: '1', id2: '2', idx: 'x' }, [
-        'initialValue',
-      ])).to.deep.equal(['initialValue', '1', '2']);
+    it('should not count non required values', () => {
+      expect(getCountedArray([{ id: 'id', required: false }], {
+        id: 'yo',
+      })).to.deep.equal([]);
+    });
+
+    it('should count non required values if specified', () => {
+      expect(getCountedArray([{ id: 'id', required: false }], { id: 'yo' }, true)).to.deep.equal(['yo']);
     });
 
     describe('conditional values', () => {
@@ -173,6 +178,43 @@ describe('formArrayHelpers', () => {
       array = [{ id: 'test.value' }];
       doc.test = { value: 'stuff' };
       expect(getMissingFieldIds(array, doc)).to.deep.equal([]);
+    });
+  });
+
+  describe('getFormValuesHash', () => {
+    let array;
+    let doc;
+
+    beforeEach(() => {
+      array = [{ id: 'test' }];
+      doc = { test: { value: 'stuff' } };
+    });
+
+    it('returns a hash for the data', () => {
+      array = [{ id: 'test.value' }];
+
+      expect(getFormValuesHash(array, doc)).to.equal(272289896);
+    });
+
+    it('changes if the data changes', () => {
+      array = [{ id: 'test.value' }];
+      const doc2 = { test: { value: 'stuff2' } };
+
+      expect(getFormValuesHash(array, doc)).to.not.equal(getFormValuesHash(array, doc2));
+    });
+
+    it('ignores irrelevant fields', () => {
+      array = [{ id: 'test.value' }];
+      const doc2 = { test: { value: 'stuff' }, a: 'b' };
+
+      expect(getFormValuesHash(array, doc)).to.equal(getFormValuesHash(array, doc2));
+    });
+
+    it('counts non required values', () => {
+      array = [{ id: 'test.value' }, { id: 'stuff', required: false }];
+      const doc2 = { test: { value: 'stuff' }, stuff: 'r' };
+
+      expect(getFormValuesHash(array, doc)).to.not.equal(getFormValuesHash(array, doc2));
     });
   });
 });

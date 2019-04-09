@@ -9,7 +9,8 @@ import { faFolderOpen } from '@fortawesome/pro-light-svg-icons/faFolderOpen';
 import { faHome } from '@fortawesome/pro-light-svg-icons/faHome';
 import { faChartBar } from '@fortawesome/pro-light-svg-icons/faChartBar';
 import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
-import { faCalculator } from '@fortawesome/pro-light-svg-icons/faCalculator';
+// import { faCalculator } from '@fortawesome/pro-light-svg-icons/faCalculator';
+import { faScroll } from '@fortawesome/pro-light-svg-icons/faScroll';
 import { faUsdCircle } from '@fortawesome/pro-light-svg-icons/faUsdCircle';
 import Divider from '@material-ui/core/Divider';
 
@@ -50,7 +51,8 @@ const sideNavLinks: linksType = [
     icon: faTachometer,
   },
   { id: 'FinancingPage', to: ROUTES.FINANCING_PAGE, icon: faChartBar },
-  { id: 'AppWidget1Page', to: ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
+  // { id: 'AppWidget1Page', to: ROUTES.APP_WIDGET1_PAGE, icon: faCalculator },
+  { id: 'SolvencyPage', to: ROUTES.SOLVENCY_PAGE, icon: faScroll },
   { id: 'divider', Component: () => <Divider className="divider" /> },
   {
     id: 'RefinancingPage',

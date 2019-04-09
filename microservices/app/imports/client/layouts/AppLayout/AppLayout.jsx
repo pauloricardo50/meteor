@@ -5,25 +5,40 @@ import classnames from 'classnames';
 
 import ContactButton from 'core/components/ContactButton';
 import { LayoutErrorBoundary } from 'core/components/ErrorBoundary';
+import { APPLICATION_TYPES } from 'imports/core/api/constants';
 import Navs from './Navs';
 import AppLayoutContainer from './AppLayoutContainer';
 
-const routesWithoutSidenav = ['/'];
+const mobilePaths = ['/account', '/'];
 
-const getShowSideNav = ({ location }) =>
-  routesWithoutSidenav.indexOf(location.pathname) === -1;
+const renderMobile = (props) => {
+  const {
+    history: {
+      location: { pathname },
+    },
+    loan,
+  } = props;
+  const isSimple = loan && loan.applicationType === APPLICATION_TYPES.SIMPLE;
 
-const AppLayout = ({ children, redirect, history, ...props }) => {
-  const showSideNav = getShowSideNav(history);
-  const classes = classnames('app-layout', { 'no-nav': !showSideNav });
+  if (isSimple) {
+    return true;
+  }
+  if (mobilePaths.some(path => pathname === path)) {
+    return true;
+  }
+};
+
+const AppLayout = ({ children, redirect, shouldShowSideNav, ...props }) => {
+  const classes = classnames('app-layout', { 'no-nav': !shouldShowSideNav });
+  const rootClasses = classnames('app-root', { mobile: renderMobile(props) });
 
   if (redirect) {
     return <Redirect to={redirect} />;
   }
 
   return (
-    <div className="app-root">
-      <Navs {...props} showSideNav={showSideNav} />
+    <div className={rootClasses}>
+      <Navs {...props} shouldShowSideNav={shouldShowSideNav} />
 
       <div className={classes}>
         <LayoutErrorBoundary>
@@ -40,6 +55,7 @@ AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  shouldShowSideNav: PropTypes.bool.isRequired,
 };
 
 AppLayout.defaultProps = {

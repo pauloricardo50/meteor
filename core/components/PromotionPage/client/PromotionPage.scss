@@ -9,6 +9,10 @@
     align-items: stretch;
     flex-wrap: wrap-reverse;
 
+    @include screen(small) {
+      flex-direction: column-reverse;
+    }
+
     &-right,
     &-left {
       flex-basis: 50%;
@@ -106,6 +110,11 @@
 
       min-width: 300px;
       min-height: 500px;
+
+      @include screen(small) {
+        min-width: unset;
+        min-height: 300px;
+      }
     }
   }
 
@@ -161,11 +170,18 @@
     flex-direction: column;
 
     width: 50%;
-    margin: 16px;
+    margin: 16px 0;
     padding: 16px;
+
+    // On very small screens
+    min-width: 224px;
 
      > * {
       width: 80%;
+
+      @include screen(small) {
+        width: 100%;
+      }
     }
   }
 }
