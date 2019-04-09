@@ -145,11 +145,6 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
   switch (step) {
   case 3:
     loan.step = STEPS.OFFERS;
-    loan.adminValidation = {
-      bonus2017: 'Does not match with taxes location',
-      bankFortune: 'Not enough',
-    };
-
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
     break;
   case 2:

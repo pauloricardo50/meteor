@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
+import { shouldSendStepNotification } from '../../../utils/loanFunctions';
 import formatMessage from '../../../utils/intl';
 import {
   makeFeedback,
@@ -17,7 +18,6 @@ import {
   LOAN_VERIFICATION_STATUS,
   CANTONS,
   EMAIL_IDS,
-  STEPS,
 } from '../../constants';
 import OfferService from '../../offers/server/OfferService';
 import {
@@ -88,7 +88,7 @@ export class LoanService extends CollectionService {
 
     this.update({ loanId, object: { step: nextStep } });
 
-    if (step === STEPS.SOLVENCY && nextStep === STEPS.REQUEST) {
+    if (shouldSendStepNotification(step, nextStep)) {
       sendEmail.run({
         emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
         userId,
@@ -192,7 +192,9 @@ export class LoanService extends CollectionService {
       structure: {
         ...structure,
         propertyId,
-        name: (structure && structure.name) || `Plan financier ${structures.length + 1}`,
+        name:
+          (structure && structure.name)
+          || `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({
