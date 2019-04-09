@@ -30,7 +30,7 @@ query.resolve(proLoansResolver);
 
 const cacher = new QueryCacher({
   getDataToHash: getLoanIds({ withReferredBy: true }),
-  ttl: 60 * 60 * 1000,
+  ttl: 60 * 1000,
 });
 
 query.cacheResults(cacher);
