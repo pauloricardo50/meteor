@@ -19,16 +19,13 @@ const WelcomeScreen = ({
   <div className="welcome-screen animated fadeIn">
     <Waves noSlope={false} />
     <div className="welcome-screen-content">
-      <WelcomeScreenTop handleClick={handleClick} />
+      <WelcomeScreenTop
+        handleClick={handleClick}
+        setDontShowAgain={setDontShowAgain}
+        dontShowAgain={dontShowAgain}
+      />
 
       <WelcomeScreenLinks handleContact={handleContact} />
-      {/*
-      <Checkbox
-        value={dontShowAgain}
-        onChange={() => setDontShowAgain(!dontShowAgain)}
-        label={<T id="WelcomeScreen.dontShowAgain" />}
-        className="checkbox"
-      /> */}
     </div>
   </div>
 );
