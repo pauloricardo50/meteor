@@ -22,6 +22,7 @@ import {
   setMaxPropertyValueWithoutBorrowRatio,
   addNewMaxStructure,
   setLoanStep,
+  loanShareSolvency,
 } from '../methodDefinitions';
 import LoanService from './LoanService';
 import Security from '../../security/Security';
@@ -151,4 +152,13 @@ setLoanStep.setHandler((context, params) => {
 
   context.unblock();
   return LoanService.setStep(params);
+});
+
+loanShareSolvency.setHandler((context, params) => {
+  const { loanId, shareSolvency } = params;
+  SecurityService.loans.isAllowedToUpdate(loanId);
+  return LoanService.update({
+    loanId: params.loanId,
+    object: { shareSolvency },
+  });
 });

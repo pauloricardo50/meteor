@@ -18,6 +18,7 @@ type PropertyCardProps = {
 
 const PropertyCard = (props: PropertyCardProps) => {
   const { buttonLabel, onClick } = props;
+  console.log('props:', props);
 
   return (
     <div className="card1 property-card">

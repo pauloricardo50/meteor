@@ -128,6 +128,7 @@ const LoanSchema = new SimpleSchema({
     optional: true,
   },
   ...maxPropertyValueSchema,
+  shareSolvency: { type: Boolean, defaultValue: false, optional: true },
 });
 
 export default LoanSchema;

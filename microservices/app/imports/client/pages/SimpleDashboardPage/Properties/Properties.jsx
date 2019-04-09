@@ -12,7 +12,7 @@ type PropertiesProps = {
 };
 
 const Properties = ({ loan }: PropertiesProps) => {
-  const { properties = [], promotions = [], _id: loanId } = loan;
+  const { properties = [], promotions = [], _id: loanId, shareSolvency } = loan;
 
   return (
     <>
@@ -32,6 +32,7 @@ const Properties = ({ loan }: PropertiesProps) => {
             key={property._id}
             collection={PROPERTIES_COLLECTION}
             loanId={loanId}
+            shareSolvency={shareSolvency}
           />
         )),
       ]}

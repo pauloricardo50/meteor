@@ -1,4 +1,6 @@
 {
+  "SimpleDashboardPage.shareSolvency.title": "Activer le partage de solvabilité",
+  "SimpleDashboardPage.shareSolvency.disclaimer": "En activant le partage de solvabilité, vous donnez accès à votre courtier au montant de votre capacité d'achat maximale. Aucune autre information personnelle ne sera partagée.",
   "DashboardInfoInterests.link": "Consulter {count, plural, one {mon offre} other {mes offres}}",
   "DashboardInfoInterests.subtitle": "{count, plural, one {Une offre} other {# offres}}",
   "DashboardInfoInterests.offersTitle": "Vos taux d'intérêt",
@@ -75,7 +77,7 @@
   "Forms.loans": "Dossiers",
   "ProCustomerAdder.title": "Inviter un client",
   "ProCustomerAdder.description": "Ajoute un compte pour ce client, et le notifiera par email que vous l'avez invité sur e-Potek. Si c'est un client déjà existant chez e-Potek, vous devez l'inviter à une promotion ou à un bien immobilier.",
-  "ProCustomersTable.maxPropertyValue.placeHolder": "Pas encore calculé",
+  "ProCustomersTable.maxPropertyValue.placeHolder": "Pas encore {computed, select, true {partagé} other {calculé}}",
   "ProDashboardPage.PromotionAdder.name": "Nom de la promotion",
   "ProDashboardPage.PromotionAdder.type": "Type de la promotion",
   "ProDashboardPage.ExternalPropertyAdder": "Ajouter bien immo API",
