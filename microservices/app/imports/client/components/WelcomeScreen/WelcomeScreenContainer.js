@@ -28,8 +28,12 @@ export default compose(
       window.hideWelcomeScreen = true;
 
       if (page) {
+        // If this is the welcome page, simply route to the dashboard
         history.push(createRoute(DASHBOARD_PAGE, { loanId }));
       } else {
+        // Else, this is shown instead of the dashboard, so hide it using the
+        // `window` object, but react does not re-render when you change window
+        // So toggling this boolean state does the trick
         rerender(!rerenderState);
       }
 
