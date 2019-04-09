@@ -230,6 +230,7 @@ export const loan = () => ({
   updatedAt: 1,
   userId: 1,
   verificationStatus: 1,
+  shareSolvency: 1,
 });
 
 export const loanBase = () => ({
@@ -340,6 +341,7 @@ export const proLoans = () => ({
   structure: 1,
   maxPropertyValue: userMaxPropertyValue,
   residenceType: 1,
+  shareSolvency: 1,
 });
 
 export const sideNavLoan = () => ({
