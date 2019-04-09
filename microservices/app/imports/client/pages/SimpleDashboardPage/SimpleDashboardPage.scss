@@ -64,6 +64,11 @@
         flex-grow: 1;
       }
 
+      &-empty {
+        text-align: center;
+        margin: 40px 0;
+      }
+
       &-cta {
         margin-bottom: 32px;
         display: flex;
