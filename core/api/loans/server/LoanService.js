@@ -192,7 +192,7 @@ export class LoanService extends CollectionService {
       structure: {
         ...structure,
         propertyId,
-        name: `Plan financier ${structures.length + 1}`,
+        name: structure.name || `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({
@@ -537,7 +537,7 @@ export class LoanService extends CollectionService {
       $filters: { _id: loanId },
       ...userLoan(),
     });
-    const { properties, userId, borrowers, residenceType } = loan;
+    const { properties = [], userId, borrowers, residenceType } = loan;
 
     // Get the highest property value
     const {
