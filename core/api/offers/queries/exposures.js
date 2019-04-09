@@ -1,1 +1,1 @@
-import './offers.expose';
+import './loanOffers.expose';

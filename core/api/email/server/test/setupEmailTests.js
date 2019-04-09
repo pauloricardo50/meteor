@@ -5,7 +5,9 @@ import { isEmailTestEnv } from '../EmailService';
 let emailTestCollection;
 
 const POLLING_INTERVAL = 50;
-const TIMEOUT = 10000;
+// Most tests have a 10'000 timeout, so let them have an extra
+// 2000ms to wrap up
+const TIMEOUT = 8000;
 
 if (isEmailTestEnv) {
   emailTestCollection = new Mongo.Collection('emailTestCollection');

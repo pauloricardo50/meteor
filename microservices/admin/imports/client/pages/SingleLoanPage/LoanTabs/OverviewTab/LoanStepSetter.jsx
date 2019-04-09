@@ -2,8 +2,9 @@
 import React from 'react';
 
 import UpdateField from 'core/components/UpdateField';
-import { LOANS_COLLECTION, STEPS } from 'core/api/constants';
+import { LOANS_COLLECTION } from 'core/api/constants';
 import { setLoanStep } from 'core/api/methods';
+import { shouldSendStepNotification } from 'core/utils/loanFunctions';
 
 type LoanStepSetterProps = {};
 
@@ -18,7 +19,7 @@ const LoanStepSetter = ({ loan }: LoanStepSetterProps) => {
       onSubmit={({ step: nextStep }) => {
         let confirm = true;
 
-        if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+        if (shouldSendStepNotification(step, nextStep)) {
           confirm = window.confirm('Passer à l\'étape "Identification du prêteur" activera les offres et enverra un mail au client pour l\'inviter à  les consulter.');
         }
 

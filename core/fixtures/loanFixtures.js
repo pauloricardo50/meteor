@@ -144,19 +144,14 @@ export const createFakeLoan = ({ userId, step, twoBorrowers }) => {
 
   switch (step) {
   case 3:
-    loan.step = STEPS.GET_CONTRACT;
-    loan.adminValidation = {
-      bonus2017: 'Does not match with taxes location',
-      bankFortune: 'Not enough',
-    };
-
+    loan.step = STEPS.OFFERS;
     loan.loanTranches = [{ value: 750000, type: 'interest10' }];
     break;
   case 2:
-    loan.step = STEPS.FIND_LENDER;
+    loan.step = STEPS.REQUEST;
     break;
   default:
-    loan.step = STEPS.PREPARATION;
+    loan.step = STEPS.SOLVENCY;
   }
 
   return LoanService.insert({ loan, userId });

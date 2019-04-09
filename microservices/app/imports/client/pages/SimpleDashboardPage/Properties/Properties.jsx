@@ -23,6 +23,7 @@ const Properties = ({ loan }: PropertiesProps) => {
             key={promotion._id}
             collection={PROMOTIONS_COLLECTION}
             loanId={loanId}
+            loan={loan}
           />
         )),
         ...properties.map(property => (

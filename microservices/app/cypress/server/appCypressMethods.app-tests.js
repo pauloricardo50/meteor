@@ -29,7 +29,7 @@ Meteor.methods({
     );
 
     const preparationLoan = userLoansE2E
-      .clone({ userId, step: STEPS.PREPARATION })
+      .clone({ userId, step: STEPS.SOLVENCY })
       .fetchOne();
 
     const unownedLoan = userLoansE2E.clone({ owned: false }).fetchOne();

@@ -6,9 +6,11 @@ import { IntlDate } from 'core/components/Translation';
 const InterestRatesTable = ({ columnOptions, rows, date }) => (
   <div className="interests-page-table">
     <Table columnOptions={columnOptions} rows={rows} sortable={false} />
-    <small className="interests-table-date">
-      <IntlDate value={date} />
-    </small>
+    {date && (
+      <small className="interests-table-date">
+        <IntlDate value={date} />
+      </small>
+    )}
   </div>
 );
 

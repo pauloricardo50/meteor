@@ -142,11 +142,14 @@ addNewMaxStructure.setHandler((context, params) => {
 });
 
 setLoanStep.setHandler((context, params) => {
-  if (params.nextStep === STEPS.PREPARATION) {
+  const userAllowedSteps = [STEPS.SOLVENCY, STEPS.REQUEST];
+
+  if (userAllowedSteps.includes(params.nextStep)) {
     SecurityService.loans.isAllowedToUpdate(params.loanId);
   } else {
     Security.checkUserIsAdmin(context.userId);
   }
+
   context.unblock();
   return LoanService.setStep(params);
 });
