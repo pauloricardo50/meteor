@@ -74,7 +74,7 @@
   "Forms.loans": "Dossiers",
   "ProCustomerAdder.title": "Inviter un client",
   "ProCustomerAdder.description": "Ajoute un compte pour ce client, et le notifiera par email que vous l'avez invité sur e-Potek. Si c'est un client déjà existant chez e-Potek, vous devez l'inviter à une promotion ou à un bien immobilier.",
-  "ProCustomersTable.maxPropertyValue.placeHolder": "Pas encore calculé",
+  "ProCustomersTable.maxPropertyValue.placeHolder": "Pas encore {computed, select, true {partagé} other {calculé}}",
   "ProDashboardPage.PromotionAdder.name": "Nom de la promotion",
   "ProDashboardPage.PromotionAdder.type": "Type de la promotion",
   "ProDashboardPage.ExternalPropertyAdder": "Ajouter bien immo API",
