@@ -14,10 +14,15 @@ const BorrowersPageNextTab = ({
   const isFinance = tabId === 'finance';
   const nextTab = isFinance ? 'personal' : 'finance';
   return (
-    <Button raised primary link to={makeLink(nextTab)}>
-      {isFinance && <Icon type="left" />}
+    <Button
+      icon={<Icon type={isFinance ? 'left' : 'right'} />}
+      iconAfter={!isFinance}
+      raised
+      primary
+      link
+      to={makeLink(nextTab)}
+    >
       <T id={`BorrowersPage.${nextTab}`} />
-      {!isFinance && <Icon type="right" />}
     </Button>
   );
 };

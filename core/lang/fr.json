@@ -882,7 +882,7 @@
   "FinancingResultErrors.highIncomeRatio": "Vos revenus ne vous permettent pas de tenir les charges de ce plan financier",
   "FinancingResultErrors.missingCash": "Vous devez allouer au moins 10% de cash en plus des frais de notaire à votre projet",
 
-  "ReturnToDashboard.label": "Sauvegarder et retourner au Tableau de Bord",
+  "ReturnToDashboard.label": "Retourner au Tableau de Bord",
   "LoanSelector.empty": "Nouveau projet",
   "Financing.OwnFundsLabel.available": "Disponible:",
   "SingleLoanPageHeader.title": "{name} - Emprunt de {value}",

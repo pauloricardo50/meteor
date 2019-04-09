@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MaxPropertyValue from 'core/components/MaxPropertyValue';
 import PageApp from '../../components/PageApp';
 import DashboardProgress from './DashboardProgress';
 import DashboardRecap from './DashboardRecap';
@@ -12,7 +11,6 @@ import DashboardPageContainer from './DashboardPageContainer';
 const DashboardPage = props => (
   <PageApp id="DashboardPage" fullWidth>
     <DashboardProgress {...props} />
-    <MaxPropertyValue {...props} />
     <DashboardRecap {...props} />
     <DashboardInfo {...props} />
     {/* <NewLoanForm loan={loan} /> */}

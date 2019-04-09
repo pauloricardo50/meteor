@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTachometer } from '@fortawesome/pro-light-svg-icons/faTachometer';
 
-import Icon from 'core/components/Icon';
 import Button from 'core/components/Button';
 import T from 'core/components/Translation';
 
@@ -19,8 +20,8 @@ const ReturnToDashboard = ({ history }: ReturnToDashboardProps) => (
     raised
     primary
     className="return-to-dashboard"
+    icon={<FontAwesomeIcon icon={faTachometer} />}
   >
-    <Icon type="left" />
     <T id="ReturnToDashboard.label" />
   </Button>
 );
