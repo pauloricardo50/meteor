@@ -270,7 +270,7 @@ addEmailConfig(EMAIL_IDS.FIND_LENDER_NOTIFICATION, {
         { name: variables.CTA, content: cta },
         {
           name: variables.CTA_URL,
-          content: `${CTA_URL_DEFAULT}/loans/${loanId}`,
+          content: `${CTA_URL_DEFAULT}/loans/${loanId}/financing`,
         },
       ],
     };
