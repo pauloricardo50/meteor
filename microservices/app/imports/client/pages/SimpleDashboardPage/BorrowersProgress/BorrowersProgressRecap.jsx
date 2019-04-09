@@ -16,12 +16,12 @@ const getBorrowerArray = (borrower) => {
 
   return [
     {
-      label: 'Recap.availableFunds',
-      value: <b className="recap-value">{toMoney(totalFunds)}</b>,
-    },
-    {
       label: 'Recap.consideredIncome',
       value: <b className="recap-value">{toMoney(totalIncome)}</b>,
+    },
+    {
+      label: 'Recap.availableFunds',
+      value: <b className="recap-value">{toMoney(totalFunds)}</b>,
     },
   ];
 };

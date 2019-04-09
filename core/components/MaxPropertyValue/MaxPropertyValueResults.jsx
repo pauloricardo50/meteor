@@ -28,6 +28,7 @@ const MaxPropertyValueResults = ({
 }: MaxPropertyValueResultsProps) => {
   const {
     maxPropertyValue: { main, second, borrowerHash },
+    borrowers,
   } = loan;
   const hash = Calculator.getBorrowerFormHash({ loan });
   const shouldRecalculate = borrowerHash != hash;
@@ -69,6 +70,8 @@ const MaxPropertyValueResults = ({
       <div className="max-property-value-results-table">
         <MaxPropertyValueResultsTable
           {...(residenceType === RESIDENCE_TYPE.MAIN_RESIDENCE ? main : second)}
+          residenceType={residenceType}
+          canton={canton}
         />
       </div>
       <Button

@@ -41,13 +41,14 @@ export const SimpleMaxPropertyValue = (props: MaxPropertyValueProps) => {
               <FontAwesomeIcon className="icon" icon={faUsers} />
 
               <h4>
-                Complétez vos informations pour calculer votre capacité d'achat
-                maximale.
+                <T id="MaxPropertyValue.missingInfos" />
               </h4>
             </>
           ) : (
             <>
-              <h4>Choisissez le canton dans lequel vous souhaitez acheter</h4>
+              <h4>
+                <T id="MaxPropertyValue.empty" />
+              </h4>
               <Select
                 value={cantonValue}
                 onChange={onChangeCanton}

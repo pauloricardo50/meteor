@@ -3,6 +3,21 @@ $borrowers-item-width: 500px;
 .simple-dashboard-page {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  &-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+  }
 
   &-borrowers {
     align-self: center;

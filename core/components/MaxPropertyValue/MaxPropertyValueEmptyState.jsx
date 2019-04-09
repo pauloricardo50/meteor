@@ -6,8 +6,9 @@ import { faUsers } from '@fortawesome/pro-light-svg-icons/faUsers';
 import { CANTONS } from '../../api/constants';
 import { createRoute } from '../../utils/routerUtils';
 import Button from '../Button';
-import { STATE } from './MaxPropertyValueContainer';
 import Select from '../Select';
+import T from '../Translation';
+import { STATE } from './MaxPropertyValueContainer';
 
 type MaxPropertyValueEmptyStateProps = {
   loan: Object,
@@ -30,8 +31,7 @@ const MaxPropertyValueEmptyState = ({
         <>
           <h3>Complétez vos informations</h3>
           <p className="description">
-            Vous pourrez calculer votre capacité d'achat maximale une fois que
-            vous aurez renseigné vos revenus et votre fortune
+            <T id="MaxPropertyValue.missingInfos" />
           </p>
           <Button
             link
@@ -45,7 +45,9 @@ const MaxPropertyValueEmptyState = ({
         </>
       ) : (
         <>
-          <h4>Calculez votre capacité d'achat maximale</h4>
+          <h4>
+            <T id="MaxPropertyValue.empty" />
+          </h4>
           <Select
             value={cantonValue}
             onChange={onChangeCanton}

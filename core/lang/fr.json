@@ -1,4 +1,6 @@
 {
+  "MaxPropertyValue.missingInfos": "Vous pourrez calculer votre capacité d'achat maximale une fois que vous aurez renseigné vos revenus et votre fortune",
+  "MaxPropertyValue.empty": "Choisissez le canton dans lequel se situe le bien immobilier. Vous pourrez le changer plus tard.",
   "Forms.applicationType": "Interface",
   "Forms.applicationType.SIMPLE": "Simplifiée",
   "Forms.applicationType.FULL": "Complète",
