@@ -2,15 +2,19 @@
 import { Meteor } from 'meteor/meteor';
 
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAddressCard } from '@fortawesome/pro-light-svg-icons/faAddressCard';
+import { faCogs } from '@fortawesome/pro-light-svg-icons/faCogs';
+import { faFileChartLine } from '@fortawesome/pro-light-svg-icons/faFileChartLine';
+import { faHandsHelping } from '@fortawesome/pro-light-svg-icons/faHandsHelping';
 
 import T from 'core/components/Translation';
-import Icon from 'core/components/Icon';
 
 type WelcomeScreenLinksProps = {};
 
 const getLinks = ({ handleContact }) => [
   {
-    icon: 'openInNew',
+    icon: faAddressCard,
     label: 'WelcomeScreen.whoWeAre',
     items: [
       {
@@ -20,7 +24,7 @@ const getLinks = ({ handleContact }) => [
     ],
   },
   {
-    icon: 'openInNew',
+    icon: faCogs,
     label: 'WelcomeScreen.faq',
     items: [
       {
@@ -30,7 +34,7 @@ const getLinks = ({ handleContact }) => [
     ],
   },
   {
-    icon: 'openInNew',
+    icon: faHandsHelping,
     label: 'WelcomeScreen.help',
     items: [
       {
@@ -40,7 +44,7 @@ const getLinks = ({ handleContact }) => [
     ],
   },
   {
-    icon: 'openInNew',
+    icon: faFileChartLine,
     label: 'WelcomeScreen.other',
     items: [
       {
@@ -59,18 +63,19 @@ const WelcomeScreenLinks = ({ handleContact }: WelcomeScreenLinksProps) => (
   <div className="welcome-screen-links">
     {getLinks({ handleContact }).map(({ icon, label, items }, index) => (
       <div key={index} className="welcome-screen-links-link">
-        <Icon type={icon} className="icon" />
+        <FontAwesomeIcon icon={icon} className="icon" />
         <h4>
           <T id={label} />
         </h4>
         <div className="welcome-screen-links-link-items">
-          {items.map(({ href, label: itemLabel }, i) => (
+          {items.map(({ href, label: itemLabel, onClick }, i) => (
             <a
               primary
               href={href}
               key={i}
               target={href ? '_blank' : undefined}
               component={href ? 'a' : undefined}
+              onClick={onClick}
             >
               <T id={itemLabel} />
             </a>

@@ -4,6 +4,10 @@
 
   .waves {
     top: -200px;
+
+    &-wrapper {
+      overflow: hidden;
+    }
   }
 
   &-top {
@@ -116,8 +120,8 @@
       padding: 8px;
 
       .icon {
-        width: 40px;
-        height: 40px;
+        width: 64px;
+        height: 64px;
         opacity: 0.7;
         margin-bottom: 16px;
       }

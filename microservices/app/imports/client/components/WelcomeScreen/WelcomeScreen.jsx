@@ -1,8 +1,6 @@
 // @flow
 import React from 'react';
 
-import T from 'core/components/Translation';
-import Checkbox from 'core/components/Checkbox';
 import Waves from 'core/components/Waves';
 import WelcomeScreenContainer from './WelcomeScreenContainer';
 import WelcomeScreenLinks from './WelcomeScreenLinks';
