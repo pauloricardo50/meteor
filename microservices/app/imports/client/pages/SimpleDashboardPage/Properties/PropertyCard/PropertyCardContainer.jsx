@@ -32,6 +32,7 @@ export default compose(
   mapProps(({ history, document, collection, loanId, additionalInfos }) => ({
     name: <span>{document.name || document.address1}</span>,
     address: document.address,
+    category: document.category,
     buttonLabel: (
       <T
         id={`SimpleDashboardPage.propertyCardButton.${

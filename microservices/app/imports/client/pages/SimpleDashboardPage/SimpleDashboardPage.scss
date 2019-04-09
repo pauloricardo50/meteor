@@ -1,4 +1,4 @@
-$borrowers-item-width: 500px;
+@import './Properties/PropertyCard/PropertyCard.scss';
 
 .simple-dashboard-page {
   display: flex;
@@ -116,71 +116,6 @@ $borrowers-item-width: 500px;
       h3,
       h4 {
         color: white;
-      }
-    }
-  }
-
-  .property-card {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: calc(#{$borrowers-item-width} * 2);
-
-    padding: 32px;
-    margin-top: 16px;
-    align-self: center;
-
-    @include screen(med) {
-      flex-wrap: wrap;
-    }
-
-    @include screen(xsmall) {
-      padding: 16px;
-    }
-
-    &-infos {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      img,
-      .icon {
-        height: 100px;
-        width: 100px;
-        margin-right: 32px;
-
-        @include screen(med) {
-          margin-right: 16px;
-        }
-      }
-
-      img {
-        object-fit: cover;
-      }
-
-      .icon {
-        color: $primary;
-      }
-
-      &-description {
-        h3,
-        p {
-          margin-right: 8px;
-        }
-      }
-    }
-
-    .button {
-      padding: 8px 48px 8px 48px;
-      width: 300px;
-
-      @include screen(med) {
-        padding: 8px 24px 8px 24px;
-        margin-top: 16px;
-        width: 100%;
       }
     }
   }

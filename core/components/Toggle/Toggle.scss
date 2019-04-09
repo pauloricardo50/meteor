@@ -6,11 +6,9 @@
   .toggle-label-top {
     font-size: $font-size-s;
   }
+}
 
-  .toggle-content {
-    .toggle-label-left,
-    .toggle-label-right {
-      font-size: $font-size-m;
-    }
-  }
+.toggle-label-left,
+.toggle-label-right {
+  font-size: $font-size-m;
 }
