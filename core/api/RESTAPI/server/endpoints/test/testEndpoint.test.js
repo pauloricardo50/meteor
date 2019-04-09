@@ -79,8 +79,6 @@ describe('REST: testEndpoint', function () {
     keyPair = UserService.generateKeyPair({ userId: createdUser._id });
     user = pick(UserService.get(createdUser._id), [
       'emails',
-      'createdAt',
-      'updatedAt',
       'firstName',
       'lastName',
       'phoneNumbers',
@@ -95,10 +93,8 @@ describe('REST: testEndpoint', function () {
     testString: 'hello',
     testNumber: 12345,
     testObject: {
-      testNull: null,
-      testUndefined: undefined,
-      testNaN: NaN,
-      testInfinity: Infinity,
+      testNumberArray: [123, 456, 789],
+      testBoolean: true,
     },
   };
 
@@ -107,12 +103,12 @@ describe('REST: testEndpoint', function () {
       it('without query', () =>
         testEndpoint({
           method: 'GET',
-          expectedResponse: JSON.stringify({
+          expectedResponse: {
             user,
             body: {},
             query: {},
             params: {},
-          }),
+          },
           status: HTTP_STATUS_CODES.OK,
         }));
 
@@ -120,12 +116,12 @@ describe('REST: testEndpoint', function () {
         testEndpoint({
           method: 'GET',
           query: testQuery,
-          expectedResponse: JSON.stringify({
+          expectedResponse: {
             user,
             body: {},
             query: testQuery,
             params: {},
-          }),
+          },
           status: HTTP_STATUS_CODES.OK,
         }));
 
@@ -134,12 +130,12 @@ describe('REST: testEndpoint', function () {
           method: 'GET',
           query: testQuery,
           id: '123abc',
-          expectedResponse: JSON.stringify({
+          expectedResponse: {
             user,
             body: {},
             query: testQuery,
             params: { id: '123abc' },
-          }),
+          },
           status: HTTP_STATUS_CODES.OK,
         }));
     });
@@ -149,12 +145,12 @@ describe('REST: testEndpoint', function () {
         it('without query and body', () =>
           testEndpoint({
             method,
-            expectedResponse: JSON.stringify({
+            expectedResponse: {
               user,
               body: {},
               query: {},
               params: {},
-            }),
+            },
             status: HTTP_STATUS_CODES.OK,
           }));
 
@@ -162,12 +158,12 @@ describe('REST: testEndpoint', function () {
           testEndpoint({
             method,
             query: testQuery,
-            expectedResponse: JSON.stringify({
+            expectedResponse: {
               user,
               body: {},
               query: testQuery,
               params: {},
-            }),
+            },
             status: HTTP_STATUS_CODES.OK,
           }));
 
@@ -176,12 +172,12 @@ describe('REST: testEndpoint', function () {
             method,
             query: testQuery,
             body: testBody,
-            expectedResponse: JSON.stringify({
+            expectedResponse: {
               user,
               body: testBody,
               query: testQuery,
               params: {},
-            }),
+            },
             status: HTTP_STATUS_CODES.OK,
           }));
 
@@ -191,12 +187,12 @@ describe('REST: testEndpoint', function () {
             query: testQuery,
             body: testBody,
             id: 'abc123',
-            expectedResponse: JSON.stringify({
+            expectedResponse: {
               user,
               body: testBody,
               query: testQuery,
               params: { id: 'abc123' },
-            }),
+            },
             status: HTTP_STATUS_CODES.OK,
           }));
       });

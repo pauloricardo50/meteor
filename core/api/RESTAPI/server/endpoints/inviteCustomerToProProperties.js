@@ -1,12 +1,14 @@
 import { proInviteUser } from '../../../methods';
 import { withMeteorUserId } from '../helpers';
 
+const formatPropertyIds = (propertyIds) => {
+  const ids = propertyIds.map(id => `"${id}"`);
+  return [ids.slice(0, -1).join(', '), ids.slice(-1)[0]].join(ids.length < 2 ? '' : ' and ');
+};
+
 const inviteCustomerToProPropertiesAPI = ({ user: { _id: userId }, body }) => {
   const { user, propertyIds } = body;
-  const formattedIds = [
-    propertyIds.slice(0, -1).join(', '),
-    propertyIds.slice(-1)[0],
-  ].join(propertyIds.length < 2 ? '' : ' and ');
+  const formattedIds = formatPropertyIds(propertyIds);
 
   return withMeteorUserId(userId, () =>
     proInviteUser.run({

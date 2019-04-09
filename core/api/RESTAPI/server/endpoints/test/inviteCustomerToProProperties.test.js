@@ -5,7 +5,7 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import UserService from '../../../../users/server/UserService';
 import PropertyService from '../../../../properties/server/PropertyService';
 import { PROPERTY_CATEGORY } from '../../../../properties/propertyConstants';
-import generator from '../../../../factories/index';
+import generator from '../../../../factories';
 import RESTAPI from '../../RESTAPI';
 import inviteCustomerToProPropertiesAPI from '../inviteCustomerToProProperties';
 import {
@@ -107,7 +107,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       expectedResponse: {
         message: `Successfully invited user \"${
           customerToInvite.email
-        }\" to property ids property1, property2 and property3`,
+        }\" to property ids \"property1\", \"property2\" and \"property3\"`,
       },
     });
   });
@@ -155,7 +155,7 @@ describe('REST: inviteCustomerToProProperties', function () {
       expectedResponse: {
         message: `Successfully invited user \"${
           customerToInvite.email
-        }\" to property ids property2`,
+        }\" to property ids \"property2\"`,
       },
     }).then(() =>
       inviteCustomerToProProperties({

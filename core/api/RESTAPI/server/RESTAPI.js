@@ -46,21 +46,21 @@ export default class RESTAPI {
 
       methods.forEach((method) => {
         const finalEndpoint = this.makeEndpoint(endpoint);
-        const func = this.endpoints[endpoint][method];
+        const handler = this.endpoints[endpoint][method];
 
-        this.registerEndpoint(finalEndpoint, func, method);
+        this.registerEndpoint(finalEndpoint, handler, method);
       });
     });
   }
 
-  routeEndpointFunc(func) {
+  wrapHandler(handler) {
     return (req, res, next) => {
       Fiber(() => {
         try {
           const { params = {} } = req;
           Promise.resolve()
             .then(() =>
-              func({
+              handler({
                 user: req.user,
                 body: req.body,
                 query: req.query,
@@ -75,13 +75,13 @@ export default class RESTAPI {
     };
   }
 
-  registerEndpoint(endpoint, func, method) {
+  registerEndpoint(endpoint, handler, method) {
     compose(
       WebApp.connectHandlers.use.bind(WebApp.connectHandlers),
       Meteor.bindEnvironment,
       connectRoute,
     )((router) => {
-      router[method.toLowerCase()](endpoint, this.routeEndpointFunc(func));
+      router[method.toLowerCase()](endpoint, this.wrapHandler(handler));
     });
   }
 
