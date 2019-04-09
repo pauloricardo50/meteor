@@ -1,4 +1,5 @@
 {
+  "DashboardProgressInfo.solvency": "Calculez votre capacité d'achat pour obtenir une attestation de financement",
   "SolvencyPage.title": "Attestation de financement",
   "BorrowersProgress.welcomePage": "Écran d'accueil",
   "MaxPropertyValue.missingInfos": "Vous pourrez calculer votre capacité d'achat maximale une fois que vous aurez renseigné vos revenus et votre fortune",
@@ -695,7 +696,6 @@
   "Forms.contacts": "Personnes de contact pour les clients",
   "Forms.city.placeholder": "Genève",
   "Forms.isForeignAddress": "Addresse à l'étranger",
-  "DashboardProgressInfo.completeBorrowersFinance": "Complétez vos informations financières",
   "DashboardProgressInfo.chooseLots": "Choisissez vos lots dans la promotion",
   "DashboardProgressInfo.verification": "Obtenez votre confirmation de financement hypothécaire",
   "emails.INVITE_USER_TO_PROMOTION.BODY": "e-Potek SA a été mandaté pour la gestion de la relation avec la banque du promoteur immobilier. Grâce à votre interface personnelle, vous pourrez parcourir le programme de la promotion immobilière, souscrire aux lots de votre convenance, ainsi que tester votre capacité d'emprunt.{verticalSpace}N'hésitez pas à contacter {name} au {phoneNumber} pour toute question relative au programme.{verticalSpace}Pour vos questions relatives à votre interface personnelle e-Potek, {assignedEmployeeName} se tient à votre disposition au {assignedEmployeePhone}. {assignedEmployeeFirstName} vous assistera tout au long du processus et pourra répondre à toute question relative au financement du logement de votre choix.",
