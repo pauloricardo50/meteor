@@ -29,7 +29,7 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
 
 export default compose(
   withRouter,
-  mapProps(({ history, document, collection, loanId, additionalInfos }) => ({
+  mapProps(({ history, document, collection, loanId, additionalInfos, shareSolvency }) => ({
     name: <span>{document.name || document.address1}</span>,
     address: document.address,
     category: document.category,
@@ -48,5 +48,7 @@ export default compose(
       })),
     image: getImage(document),
     additionalInfos,
+    loanId,
+    shareSolvency
   })),
 );
