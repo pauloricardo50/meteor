@@ -8,26 +8,44 @@ import NodeRSA from 'node-rsa';
 import { sortObject } from '../../helpers';
 import { HTTP_STATUS_CODES } from './restApiConstants';
 
+export const AUTH_ITEMS = {
+  RSA_PUBLIC_KEY: 'RSA_PUBLIC_KEY',
+  RSA_SIGNATURE: 'RSA_SIGNATURE',
+};
+
 export const getHeader = (req, name) => req.headers[name];
 
-export const getPublicKey = (req) => {
-  const authorization = getHeader(req, 'authorization');
+const getAuthItem = ({ req, item }) => {
+  const authorization = getHeader(req, 'x-epotek-authorization');
   if (!authorization) {
     return undefined;
   }
 
-  if (!authorization.includes('Bearer')) {
+  if (!authorization.includes('EPOTEK')) {
     return undefined;
   }
 
-  const publicKey = authorization.replace('Bearer ', '');
-
-  return publicKey;
+  switch (item) {
+  case AUTH_ITEMS.RSA_PUBLIC_KEY: {
+    return authorization.replace('EPOTEK ', '').split(':')[0];
+  }
+  case AUTH_ITEMS.RSA_SIGNATURE: {
+    return authorization.replace('EPOTEK ', '').split(':')[1];
+  }
+  default:
+    return undefined;
+  }
 };
+
+export const getPublicKey = req =>
+  getAuthItem({ req, item: AUTH_ITEMS.RSA_PUBLIC_KEY });
+
+export const getSignature = req =>
+  getAuthItem({ req, item: AUTH_ITEMS.RSA_SIGNATURE });
 
 export const getRequestPath = (req) => {
   const { _parsedUrl: parsedUrl } = req;
-  return parsedUrl && parsedUrl.path;
+  return parsedUrl && parsedUrl.pathname;
 };
 
 export const getRequestMethod = req => req.method;
@@ -56,6 +74,7 @@ export const getErrorObject = (error, res) => {
 
   if (error instanceof Meteor.Error || error instanceof Match.Error) {
     message = error.message;
+    status = HTTP_STATUS_CODES.BAD_REQUEST;
   } else {
     message = 'Internal server error';
   }
@@ -71,32 +90,31 @@ export const getErrorObject = (error, res) => {
 };
 
 export const verifySignature = (req) => {
-  const {
-    publicKey,
-    body: { signature, ...body },
-  } = req;
+  const { publicKey, signature, body, query } = req;
+  const timestamp = getHeader(req, 'x-epotek-timestamp');
+  const nonce = getHeader(req, 'x-epotek-nonce');
 
   const method = getRequestMethod(req);
-
-  // Request with GET/HEAD method cannot have a body
-  if (method === 'GET' || method === 'HEAD') {
-    return true;
-  }
-
-  if (!signature) {
-    return false;
-  }
 
   // Import public key
   const key = new NodeRSA();
   key.importKey(publicKey, 'pkcs1-public-pem');
 
-  // Sort body
-  const sortedBody = sortObject(body);
+  let objectToVerify = { security: sortObject({ timestamp, nonce }) };
 
+  if (Object.keys(query).length > 0) {
+    objectToVerify = {
+      ...objectToVerify,
+      queryParams: sortObject(query),
+    };
+  }
+
+  if (!['GET', 'HEAD'].includes(method) && Object.keys(body).length > 0) {
+    objectToVerify = { ...objectToVerify, body: sortObject(body) };
+  }
   // Verify signature
   const verified = key.verify(
-    JSON.stringify(sortedBody),
+    JSON.stringify(objectToVerify),
     signature,
     'utf8',
     'base64',
@@ -104,3 +122,26 @@ export const verifySignature = (req) => {
 
   return verified;
 };
+
+export const stringToLiteral = (value) => {
+  const maps = {
+    NaN,
+    null: null,
+    undefined,
+    true: true,
+    false: false,
+    Infinity,
+    '-Infinity': -Infinity,
+  };
+
+  return Object.keys(maps).includes(value) ? maps[value] : value;
+};
+
+export const formatParams = params =>
+  Object.keys(params).reduce(
+    (object, key) => ({
+      ...object,
+      [key]: stringToLiteral(params[key]),
+    }),
+    {},
+  );

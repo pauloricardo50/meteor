@@ -11,6 +11,7 @@ import {
   getErrorObject,
   getPublicKey,
   verifySignature,
+  getSignature,
 } from './helpers';
 import { nonceExists, addNonce, NONCE_TTL } from './noncesHandler';
 
@@ -23,29 +24,21 @@ const bodyParserUrlEncodedMiddleware = bodyParser.urlencoded({
 
 // Handles replay attacks
 const replayHandlerMiddleware = (req, res, next) => {
-  const {
-    body: { timestamp, nonce },
-  } = req;
-
-  const method = getRequestMethod(req);
-
-  // Request with GET/HEAD method cannot have a body
-  if (method === 'GET' || method === 'HEAD') {
-    return next();
-  }
+  const timestamp = getHeader(req, 'x-epotek-timestamp');
+  const nonce = getHeader(req, 'x-epotek-nonce');
 
   if (!timestamp || !nonce) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
   }
 
   const now = moment().unix();
 
   // This is an old request
   if (timestamp < now - NONCE_TTL) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
   }
   if (nonceExists(nonce)) {
-    return next(REST_API_ERRORS.AUTHORIZATION_FAILED);
+    return next(REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT);
   }
 
   addNonce(nonce);
@@ -67,8 +60,9 @@ const filterMiddleware = (req, res, next) => {
 // Gets the public key from the request, fetches the user and adds it to the request
 const authMiddleware = (req, res, next) => {
   const publicKey = getPublicKey(req);
+  const signature = getSignature(req);
 
-  if (!publicKey) {
+  if (!publicKey || !signature) {
     return next(REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE);
   }
 
@@ -81,6 +75,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   req.publicKey = publicKey;
+  req.signature = signature;
 
   if (!verifySignature(req)) {
     return next(REST_API_ERRORS.AUTHORIZATION_FAILED);

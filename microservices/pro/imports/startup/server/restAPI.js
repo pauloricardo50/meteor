@@ -1,10 +1,39 @@
 import { Meteor } from 'meteor/meteor';
 
 import RESTAPI from 'core/api/RESTAPI/server/RESTAPI';
-import inviteUserToPromotion from 'core/api/RESTAPI/server/endpoints/inviteUserToPromotion';
+import {
+  inviteUserToPromotionAPI,
+  inviteUserToProPropertyAPI,
+  inviteUserToProPropertiesAPI,
+  testEndpointAPI,
+  referCustomerAPI,
+} from 'core/api/RESTAPI/server/endpoints/';
 
 const api = new RESTAPI();
-api.addEndpoint('/promotions/inviteCustomer', 'POST', inviteUserToPromotion);
+api.addEndpoint(
+  '/promotions/:promotionId/invite-customer',
+  'POST',
+  inviteUserToPromotionAPI,
+);
+api.addEndpoint(
+  '/properties/:propertyId/invite-customer',
+  'POST',
+  inviteUserToProPropertyAPI,
+);
+api.addEndpoint(
+  '/properties/invite-customer',
+  'POST',
+  inviteUserToProPropertiesAPI,
+);
+api.addEndpoint('/users', 'POST', referCustomerAPI);
+api.addEndpoint('/test', 'POST', testEndpointAPI);
+api.addEndpoint('/test', 'GET', testEndpointAPI);
+api.addEndpoint('/test', 'PUT', testEndpointAPI);
+api.addEndpoint('/test', 'DELETE', testEndpointAPI);
+api.addEndpoint('/test/:id', 'POST', testEndpointAPI);
+api.addEndpoint('/test/:id', 'GET', testEndpointAPI);
+api.addEndpoint('/test/:id', 'PUT', testEndpointAPI);
+api.addEndpoint('/test/:id', 'DELETE', testEndpointAPI);
 
 Meteor.startup(() => {
   api.start();

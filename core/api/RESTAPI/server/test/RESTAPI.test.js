@@ -8,8 +8,8 @@ import RESTAPI from '../RESTAPI';
 import { withMeteorUserId } from '../helpers';
 import {
   fetchAndCheckResponse,
-  makeBody,
   makeHeaders,
+  getTimestampAndNonce,
 } from './apiTestHelpers.test';
 
 const publicKey = '-----BEGIN RSA PUBLIC KEY-----\n'
@@ -35,7 +35,7 @@ const makeTestRoute = method => ({ user }) => ({
 
 Meteor.methods({
   apiTestMethod() {
-    return this.userId;
+    return new Promise(resolve => setTimeout(() => resolve(this.userId), 1500));
   },
 });
 
@@ -52,14 +52,25 @@ describe('RESTAPI', () => {
     throw new Meteor.Error('meteor error');
   });
   api.addEndpoint('/undefined', 'GET', () => {});
-  api.addEndpoint('/method', 'GET', ({ user: { _id: userId } }) =>
-    withMeteorUserId(
-      userId,
-      () =>
-        new Promise((resolve, reject) =>
-          Meteor.call('apiTestMethod', (err, res) =>
-            (err ? reject(err) : resolve(res)))),
-    ));
+  api.addEndpoint(
+    '/method/:id/test',
+    'POST',
+    ({
+      user: { _id: userId },
+      body: { testBody },
+      query: { testQuery },
+      params: { id },
+    }) =>
+      withMeteorUserId(
+        userId,
+        () =>
+          new Promise((resolve, reject) =>
+            Meteor.call('apiTestMethod', (err, res) =>
+              (err
+                ? reject(err)
+                : resolve(`${res} ${testBody} ${testQuery} ${id}`)))),
+      ),
+  );
 
   before(function () {
     if (Meteor.settings.public.microservice !== 'pro') {
@@ -82,41 +93,35 @@ describe('RESTAPI', () => {
   });
 
   context('returns an error when', () => {
-    it('endpoint path is unknown', () =>
-      fetchAndCheckResponse({
+    it('endpoint path is unknown', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+      return fetchAndCheckResponse({
         url: '/unknown_endpoint',
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/unknown_endpoint',
           method: 'POST',
         }),
-        status: REST_API_ERRORS.UNKNOWN_ENDPOINT({
-          path: '/api/unknown_endpoint',
-          method: 'POST',
-        }).status,
-      }));
+      });
+    });
 
-    it('endpoint method is unknown', () =>
-      fetchAndCheckResponse({
+    it('endpoint method is unknown', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+      return fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'PATCH',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
           path: '/api/test',
           method: 'PATCH',
         }),
-        status: REST_API_ERRORS.UNKNOWN_ENDPOINT({
-          path: '/api/test',
-          method: 'PATCH',
-        }).status,
-      }));
+      });
+    });
 
     it('content type is wrong', () =>
       fetchAndCheckResponse({
@@ -126,7 +131,6 @@ describe('RESTAPI', () => {
           headers: { 'Content-Type': 'plain/text' },
         },
         expectedResponse: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text'),
-        status: REST_API_ERRORS.WRONG_CONTENT_TYPE('plain/text').status,
       }));
 
     it('authorization type is wrong', () =>
@@ -137,7 +141,6 @@ describe('RESTAPI', () => {
           headers: { 'Content-Type': 'application/json' },
         },
         expectedResponse: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE,
-        status: REST_API_ERRORS.WRONG_AUTHORIZATION_TYPE.status,
       }));
 
     it('public key is wrong', () =>
@@ -146,10 +149,8 @@ describe('RESTAPI', () => {
         data: {
           method: 'POST',
           headers: makeHeaders({ publicKey: '12345' }),
-          body: makeBody({ privateKey }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
     it('signature is wrong', () =>
@@ -158,19 +159,18 @@ describe('RESTAPI', () => {
         data: {
           method: 'POST',
           headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey, signatureOverride: '12345' }),
         },
         expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
       }));
 
-    it('attemps a replay attack with same nonce', () =>
-      fetchAndCheckResponse({
+    it('attemps a replay attack with same nonce', () => {
+      const { timestamp, nonce } = getTimestampAndNonce();
+
+      return fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({ privateKey, nonceOverride: 12345 }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
         expectedResponse: makeTestRoute('POST')({ user }),
       }).then(() =>
@@ -178,117 +178,152 @@ describe('RESTAPI', () => {
           url: '/test',
           data: {
             method: 'POST',
-            headers: makeHeaders({ publicKey }),
-            body: makeBody({ privateKey, nonceOverride: 12345 }),
+            headers: makeHeaders({
+              publicKey,
+              privateKey,
+              timestamp: Math.round(new Date().valueOf() / 1000).toString(),
+              nonce,
+            }),
           },
-          expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-          status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
-        })));
+          expectedResponse: REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT,
+        }));
+    });
 
-    it('attemps a replay attack with old timestamp', () =>
-      fetchAndCheckResponse({
+    it('attemps a replay attack with old timestamp', () => {
+      const timestamp = (
+        Math.round(new Date().valueOf() / 1000) - 32
+      ).toString();
+      const nonce = '1hkfi57g';
+
+      return fetchAndCheckResponse({
         url: '/test',
         data: {
           method: 'POST',
-          headers: makeHeaders({ publicKey }),
-          body: makeBody({
-            privateKey,
-            timestampOverride: Math.round(new Date().valueOf() / 1000) - 32,
-          }),
+          headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
         },
-        expectedResponse: REST_API_ERRORS.AUTHORIZATION_FAILED,
-        status: REST_API_ERRORS.AUTHORIZATION_FAILED.status,
-      }));
+        expectedResponse: REST_API_ERRORS.REPLAY_ATTACK_ATTEMPT,
+      });
+    });
   });
 
-  it('can authenticate and get a response', () =>
-    fetchAndCheckResponse({
+  it('can authenticate and get a response', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
-    }));
+    });
+  });
 
   it('removes old nonces', () =>
     fetchAndCheckResponse({
       url: '/test',
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey, nonceOverride: 'testNonce' }),
+        headers: makeHeaders({
+          publicKey,
+          privateKey,
+          timestamp: Math.round(new Date().valueOf() / 1000).toString(),
+          nonce: 'testNonce',
+        }),
       },
       expectedResponse: makeTestRoute('POST')({ user }),
     }));
 
-  it('can authenticate and get a response from a different method for the same endpoint', () =>
-    fetchAndCheckResponse({
+  it('can authenticate and get a response from a different method for the same endpoint', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
       data: {
         method: 'PUT',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: makeTestRoute('PUT')({ user }),
-    }));
+    });
+  });
 
-  it('returns an internal server error if the error is not a meteor.error', () =>
-    fetchAndCheckResponse({
+  it('returns an internal server error if the error is not a meteor.error', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
       data: {
         method: 'GET',
-        headers: makeHeaders({ publicKey }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: { message: 'Internal server error', status: 500 },
-      status: 500,
-    }));
+    });
+  });
 
-  it('displays the error if it is a meteor.error', () =>
-    fetchAndCheckResponse({
+  it('displays the error if it is a meteor.error', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test',
       data: {
         method: 'DELETE',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
-      expectedResponse: { message: '[meteor error]', status: 500 },
-      status: 500,
-    }));
+      expectedResponse: { message: '[meteor error]', status: 400 },
+    });
+  });
 
-  it('calls meteor methods with the right userId', () =>
-    fetchAndCheckResponse({
-      url: '/method',
+  it('calls meteor methods with the right userId', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+    const body = { testBody: 'testBody' };
+    const query = { testQuery: 'testQuery' };
+    const id = 'testId';
+
+    return fetchAndCheckResponse({
+      url: `/method/${id}/test`,
+      query,
       data: {
-        method: 'GET',
-        headers: makeHeaders({ publicKey }),
+        method: 'POST',
+        headers: makeHeaders({
+          publicKey,
+          privateKey,
+          body,
+          timestamp,
+          nonce,
+          query,
+        }),
+        body: JSON.stringify(body),
       },
-      expectedResponse: user._id,
-    }));
+      expectedResponse: `${user._id} testBody testQuery testId`,
+    });
+  });
 
-  it('does not crash if undefined is returned by the endpoint', () =>
-    fetchAndCheckResponse({
+  it('does not crash if undefined is returned by the endpoint', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/undefined',
       data: {
         method: 'GET',
-        headers: makeHeaders({ publicKey }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: '',
-    }));
+    });
+  });
 
-  it('does not match sub endpoints', () =>
-    fetchAndCheckResponse({
+  it('does not match sub endpoints', () => {
+    const { timestamp, nonce } = getTimestampAndNonce();
+
+    return fetchAndCheckResponse({
       url: '/test/subtest',
       data: {
         method: 'POST',
-        headers: makeHeaders({ publicKey }),
-        body: makeBody({ privateKey }),
+        headers: makeHeaders({ publicKey, privateKey, timestamp, nonce }),
       },
       expectedResponse: REST_API_ERRORS.UNKNOWN_ENDPOINT({
         path: '/api/test/subtest',
         method: 'POST',
       }),
-      status: 404,
-    }));
+    });
+  });
 });
