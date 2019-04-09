@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { loanUpdate } from 'core/api/methods';
-import { APPLICATION_TYPES } from 'core/api/constants';
+import { APPLICATION_TYPES, STEPS } from 'core/api/constants';
 import ConfirmMethod from 'core/components/ConfirmMethod';
 import T from 'core/components/Translation';
 import Icon from 'core/components/Icon';
@@ -28,7 +28,10 @@ const SimpleDashboardPageCTAs = ({ loanId }: SimpleDashboardPageCTAsProps) => (
       method={() =>
         loanUpdate.run({
           loanId,
-          object: { applicationType: APPLICATION_TYPES.FULL },
+          object: {
+            applicationType: APPLICATION_TYPES.FULL,
+            step: STEPS.REQUEST,
+          },
         })
       }
       title={<T id="BorrowersProgress.fullApplication" />}
