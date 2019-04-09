@@ -1,3 +1,5 @@
+import intersectDeep from 'meteor/cultofcoders:grapher/lib/query/lib/intersectDeep';
+
 import Calculator from 'core/utils/Calculator';
 import { PROMOTIONS_COLLECTION } from 'core/api/promotions/promotionConstants';
 import {
@@ -90,7 +92,10 @@ export const proPromotionLoansResolver = ({ calledByUserId, promotionId }) => {
   }
 };
 
-export const proPropertyLoansResolver = ({ calledByUserId, propertyId }) => {
+export const proPropertyLoansResolver = ({
+  calledByUserId,
+  propertyId,
+}) => {
   const loans = LoanService.fetch({
     $filters: { propertyIds: propertyId },
     ...proLoans(),
