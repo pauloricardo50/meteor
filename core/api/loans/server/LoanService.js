@@ -192,7 +192,7 @@ export class LoanService extends CollectionService {
       structure: {
         ...structure,
         propertyId,
-        name: structure.name || `Plan financier ${structures.length + 1}`,
+        name: (structure && structure.name) || `Plan financier ${structures.length + 1}`,
       },
     });
     this.update({

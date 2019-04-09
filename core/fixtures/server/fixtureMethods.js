@@ -150,7 +150,7 @@ Meteor.methods({
 
   async purgeDatabase(currentUserId) {
     check(currentUserId, String);
-    if (SecurityService.checkCurrentUserIsDev(ROLES.DEV) && isAuthorizedToRun()) {
+    if (SecurityService.checkCurrentUserIsDev() && isAuthorizedToRun()) {
       await Promise.all([
         Borrowers.rawCollection().remove({}),
         Contacts.rawCollection().remove({}),

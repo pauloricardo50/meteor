@@ -142,6 +142,8 @@ export default class Security {
     if (!this.currentUserHasRole(ROLES.DEV)) {
       this.handleUnauthorized('unauthorized developer');
     }
+
+    return true;
   }
 
   static hasMinimumRole({ role, userId }) {
