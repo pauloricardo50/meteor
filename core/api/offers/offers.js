@@ -75,6 +75,7 @@ export const AdminOfferSchema = OfferSchema.omit(
   'createdAt',
   'updatedAt',
   'feedback',
+  'lenderCache',
 );
 
 // Attach schema
