@@ -94,14 +94,14 @@ const createTestUserWithData = () => {
 
   // Create 2 loans to check AppPage, which requires multiple loans to display
   createFakeLoanFixture({
-    step: STEPS.PREPARATION,
+    step: STEPS.SOLVENCY,
     userId: testUserId,
     adminId: admins[0]._id,
     completeFiles: true,
     twoBorrowers: true,
   });
   createFakeLoanFixture({
-    step: STEPS.PREPARATION,
+    step: STEPS.SOLVENCY,
     userId: testUserId,
     adminId: admins[0]._id,
     completeFiles: true,

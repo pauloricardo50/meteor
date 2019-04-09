@@ -33,7 +33,7 @@ Loans.addReducers({
     body: { step: 1 },
     reduce: ({ step }) => (
       step
-        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.FIND_LENDER)
+        && STEP_ORDER.indexOf(step) >= STEP_ORDER.indexOf(STEPS.REQUEST)
     ),
   },
   hasProProperty: {

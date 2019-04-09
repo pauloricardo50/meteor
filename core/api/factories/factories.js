@@ -93,7 +93,7 @@ Factory.define('loan', Loans, {
   createdAt: () => new Date(),
   borrowerIds: [],
   documents: () => ({}),
-  step: STEPS.PREPARATION,
+  step: STEPS.SOLVENCY,
   name: () => {
     // there is a 1/900% chance that 2 loan names collide,
     // make sure it never happens instead

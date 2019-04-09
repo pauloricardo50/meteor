@@ -818,30 +818,30 @@ describe('LoanService', function () {
   describe('setStep', () => {
     it('sets the step', () => {
       generator({
-        loans: { _id: 'id', step: STEPS.FIND_LENDER },
+        loans: { _id: 'id', step: STEPS.REQUEST },
       });
 
-      LoanService.setStep({ loanId: 'id', nextStep: STEPS.GET_CONTRACT });
+      LoanService.setStep({ loanId: 'id', nextStep: STEPS.OFFERS });
 
       loan = LoanService.get('id');
 
-      expect(loan.step).to.equal(STEPS.GET_CONTRACT);
+      expect(loan.step).to.equal(STEPS.OFFERS);
     });
 
     it('sends a notification email if the step goes from PREPARATION to FIND_LENDER', () => {
       generator({
         loans: {
           _id: 'myLoan',
-          step: STEPS.PREPARATION,
+          step: STEPS.SOLVENCY,
           user: { emails: [{ address: 'john@doe.com', verified: false }] },
         },
       });
 
-      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.FIND_LENDER });
+      LoanService.setStep({ loanId: 'myLoan', nextStep: STEPS.REQUEST });
 
       loan = LoanService.get('myLoan');
 
-      expect(loan.step).to.equal(STEPS.FIND_LENDER);
+      expect(loan.step).to.equal(STEPS.REQUEST);
 
       return checkEmails(1).then((emails) => {
         const {
