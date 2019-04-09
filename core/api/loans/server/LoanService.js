@@ -88,7 +88,7 @@ export class LoanService extends CollectionService {
 
     this.update({ loanId, object: { step: nextStep } });
 
-    if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+    if (step === STEPS.SOLVENCY && nextStep === STEPS.REQUEST) {
       sendEmail.run({
         emailId: EMAIL_IDS.FIND_LENDER_NOTIFICATION,
         userId,

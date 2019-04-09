@@ -1,7 +1,7 @@
 import { RESIDENCE_TYPE, STEPS } from '../constants';
 
 export const emptyLoan = {
-  step: STEPS.PREPARATION,
+  step: STEPS.SOLVENCY,
   documents: {},
   contacts: [],
 };
@@ -9,7 +9,7 @@ export const emptyLoan = {
 export const loanStep1 = {
   residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
   purchaseType: 'ACQUISITION',
-  step: STEPS.PREPARATION,
+  step: STEPS.SOLVENCY,
   structures: [
     {
       id: 'randomStructureId',
@@ -22,7 +22,7 @@ export const loanStep1 = {
 export const loanStep2 = {
   residenceType: RESIDENCE_TYPE.MAIN_RESIDENCE,
   purchaseType: 'ACQUISITION',
-  step: STEPS.FIND_LENDER,
+  step: STEPS.REQUEST,
   structures: [
     {
       id: 'randomStructureId',

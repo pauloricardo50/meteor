@@ -18,7 +18,7 @@ const LoanStepSetter = ({ loan }: LoanStepSetterProps) => {
       onSubmit={({ step: nextStep }) => {
         let confirm = true;
 
-        if (step === STEPS.PREPARATION && nextStep === STEPS.FIND_LENDER) {
+        if (step === STEPS.SOLVENCY && nextStep === STEPS.REQUEST) {
           confirm = window.confirm('Passer à l\'étape "Identification du prêteur" activera les offres et enverra un mail au client pour l\'inviter à  les consulter.');
         }
 

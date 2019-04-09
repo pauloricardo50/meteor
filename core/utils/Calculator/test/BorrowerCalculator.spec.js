@@ -303,7 +303,7 @@ describe('BorrowerCalculator', () => {
           borrowers: [
             { _id: 'borrowerId', additionalDocuments: initialDocuments },
           ],
-          step: STEPS.PREPARATION,
+          step: STEPS.SOLVENCY,
         },
       })).to.deep.equal(initialDocuments.map(({ id }) => id));
     });
