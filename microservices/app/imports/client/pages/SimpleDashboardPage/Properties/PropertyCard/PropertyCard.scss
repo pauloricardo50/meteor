@@ -3,9 +3,8 @@ $borrowers-item-width: 500px;
 .property-card {
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
   width: 100%;
   max-width: calc(#{$borrowers-item-width} * 2);
 
@@ -13,12 +12,19 @@ $borrowers-item-width: 500px;
   margin-top: 16px;
   align-self: center;
 
-  @include screen(med) {
-    flex-wrap: wrap;
+  @include screen(small) {
+    padding: 16px;
   }
 
-  @include screen(xsmall) {
-    padding: 16px;
+  .top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    @include screen(med) {
+      flex-wrap: wrap;
+    }
   }
 
   &-infos {

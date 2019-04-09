@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import T from 'core/components/Translation';
@@ -29,7 +29,7 @@ const getImage = ({ documents = {}, imageUrls = [] }) => {
 
 export default compose(
   withRouter,
-  mapProps(({ history, document, collection, loanId, additionalInfos }) => ({
+  withProps(({ history, document, collection, loanId, additionalInfos }) => ({
     name: <span>{document.name || document.address1}</span>,
     address: document.address,
     category: document.category,
