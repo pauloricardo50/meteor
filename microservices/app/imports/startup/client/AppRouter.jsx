@@ -29,6 +29,7 @@ import AppLayout from '../../client/layouts/AppLayout';
 import AppPromotionPage from '../../client/pages/AppPromotionPage';
 import AppPromotionOptionPage from '../../client/pages/AppPromotionOptionPage';
 import AppPromotionLotPage from '../../client/pages/AppPromotionLotPage';
+import WelcomePage from '../../client/pages/WelcomePage';
 
 import * as ROUTES from './appRoutes';
 
@@ -61,6 +62,7 @@ const AppRouter = () => (
           component={AppPromotionOptionPage}
         />
         <Route path={ROUTES.APP_PROMOTION_PAGE} component={AppPromotionPage} />
+        <Route path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
         <Route path={ROUTES.DASHBOARD_PAGE} component={DashboardPage} />
         <Route
           path={ROUTES.PASSWORD_RESET_PAGE}

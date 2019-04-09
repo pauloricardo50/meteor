@@ -184,4 +184,14 @@ $borrowers-item-width: 500px;
       }
     }
   }
+
+  &-ctas {
+    width: 100%;
+    max-width: calc(#{$borrowers-item-width} * 2);
+    margin: auto;
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
 }

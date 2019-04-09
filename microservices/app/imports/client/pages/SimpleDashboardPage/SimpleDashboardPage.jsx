@@ -7,6 +7,7 @@ import SimpleMaxPropertyValueLightTheme from '../../components/SimpleMaxProperty
 import DashboardProgressBar from '../DashboardPage/DashboardProgress/DashboardProgressBar';
 import BorrowersProgress from './BorrowersProgress';
 import Properties from './Properties';
+import SimpleDashboardPageCTAs from './SimpleDashboardPageCTAs';
 
 type SimpleDashboardPageProps = {};
 
@@ -23,7 +24,8 @@ const SimpleDashboardPage = (props: SimpleDashboardPageProps) => {
             <SimpleMaxPropertyValue {...props} />
           </SimpleMaxPropertyValueLightTheme>
         </div>
-        <Properties loan={props.loan} />
+        <Properties loan={loan} />
+        <SimpleDashboardPageCTAs loanId={loan._id} />
       </div>
       <div className="simple-dashboard-page-footer">
         <span>
