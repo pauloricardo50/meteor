@@ -10,24 +10,8 @@ export const STATE = {
   DONE: 'DONE',
 };
 
-const canCalculateSolvency = ({ borrowers }) => {
-  if (!borrowers.length) {
-    return false;
-  }
-
-  if (Calculator.getTotalFunds({ borrowers }) === 0) {
-    return false;
-  }
-
-  if (Calculator.getSalary({ borrowers }) === 0) {
-    return false;
-  }
-
-  return true;
-};
-
 const getState = ({ borrowers, maxPropertyValue }) => {
-  if (!canCalculateSolvency({ borrowers })) {
+  if (!Calculator.canCalculateSolvency({ borrowers })) {
     return STATE.MISSING_INFOS;
   }
 

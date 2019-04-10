@@ -547,4 +547,20 @@ export const withBorrowerCalculator = (SuperClass = class {}) =>
         ].filter(x => x);
       }, []);
     }
+
+    canCalculateSolvency({ borrowers }) {
+      if (!borrowers.length) {
+        return false;
+      }
+
+      if (this.getCashFortune({ borrowers }) === 0) {
+        return false;
+      }
+
+      if (this.getSalary({ borrowers }) === 0) {
+        return false;
+      }
+
+      return true;
+    }
   };
