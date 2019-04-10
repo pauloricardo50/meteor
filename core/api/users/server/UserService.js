@@ -380,10 +380,9 @@ class UserService extends CollectionService {
         phoneNumbers: [phoneNumber],
         sendEnrollmentEmail: !Meteor.isDevelopment, // Meteor toys is not defined
       },
+      role: ROLES.PRO,
       adminId: assigneeId,
     });
-
-    this.setRole({ userId, role: ROLES.PRO });
 
     this.addLink({
       id: userId,
