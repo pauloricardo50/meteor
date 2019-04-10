@@ -465,19 +465,25 @@ export class LoanService extends CollectionService {
       })
       .filter(x => x);
 
-    const min = maxPropertyValues.reduce(
-      (minValue, current) =>
-        (current.propertyValue < minValue.propertyValue ? current : minValue),
-      { propertyValue: 1000000000 },
-    );
+    const sortedValues = maxPropertyValues.sort(({ propertyValue: propertyValueA }, { propertyValue: propertyValueB }) =>
+      propertyValueA - propertyValueB);
 
-    const max = maxPropertyValues.reduce(
-      (maxValue, current) =>
-        (current.propertyValue > maxValue.propertyValue ? current : maxValue),
-      { propertyValue: 0 },
-    );
+    const min = sortedValues[0];
 
-    return { min, max };
+    // Don't take the max value, because that means there is only one single
+    // lender who can make an offer on this loan
+    const secondMax = sortedValues[sortedValues.length - 2];
+    const max = sortedValues[sortedValues.length - 1];
+
+    return {
+      min,
+      max: {
+        ...secondMax,
+        organisationName: `${secondMax.organisationName} / ${
+          max.organisationName
+        } (${(max.borrowRatio * 100).toFixed(2)}%)`,
+      },
+    };
   }
 
   getMaxPropertyValueWithoutBorrowRatio({ loan, canton, residenceType }) {
