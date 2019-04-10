@@ -9,13 +9,19 @@ import DialogSimple from 'core/components/DialogSimple';
 import { toMoney } from 'core/utils/conversionFunctions';
 import MaxPropertyValueContainer from 'core/components/MaxPropertyValue/MaxPropertyValueContainer';
 import { RESIDENCE_TYPE } from 'core/api/constants';
+import Calculator from 'core/utils/Calculator';
 import { SimpleMaxPropertyValue } from '../../../components/SimpleMaxPropertyValue/SimpleMaxPropertyValue';
 
 type SimpleBorrowersPageMaxPropertyValueStickyProps = {};
 
-const getFooter = (maxPropertyValue, residenceType) => {
-  if (!maxPropertyValue) {
-    return <h2>Calculer</h2>;
+const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
+  const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+  if (!maxPropertyValue && !canCalculateSolvency) {
+    return <h2>Renseignez vos revenus et fortune</h2>;
+  }
+
+  if (!maxPropertyValue && canCalculateSolvency) {
+    return <h2 className="animated bounceIn">Calculer</h2>;
   }
 
   const { canton } = maxPropertyValue;
@@ -39,7 +45,7 @@ const getFooter = (maxPropertyValue, residenceType) => {
 
 const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMaxPropertyValueStickyProps) => {
   const {
-    loan: { maxPropertyValue },
+    loan: { maxPropertyValue, borrowers },
     residenceType,
   } = props;
 
@@ -51,7 +57,7 @@ const SimpleBorrowersPageMaxPropertyValueSticky = (props: SimpleBorrowersPageMax
           className="simple-borrowers-page-max-property-value-sticky animated slideInUp"
           onClick={handleOpen}
         >
-          {getFooter(maxPropertyValue, residenceType)}
+          {getFooter({ maxPropertyValue, residenceType, borrowers })}
         </ButtonBase>
       )}
       closeOnly
