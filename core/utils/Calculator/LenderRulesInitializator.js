@@ -55,7 +55,11 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     getLenderRulesVariables({ loan, structureId }) {
       return {
         [LENDER_RULES_VARIABLES.RESIDENCE_TYPE]: loan.residenceType,
-        [LENDER_RULES_VARIABLES.CANTON]: this.makeSelectPropertyKey(LENDER_RULES_VARIABLES.CANTON)({ loan, structureId }),
+        [LENDER_RULES_VARIABLES.CANTON]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.CANTON,
+        }),
         [LENDER_RULES_VARIABLES.WANTED_LOAN]: this.selectStructureKey({
           loan,
           structureId,
@@ -65,13 +69,22 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
           loan,
           structureId,
         }),
-        [LENDER_RULES_VARIABLES.INSIDE_AREA]: this.makeSelectPropertyKey(LENDER_RULES_VARIABLES.INSIDE_AREA)({ loan, structureId }),
+        [LENDER_RULES_VARIABLES.INSIDE_AREA]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.INSIDE_AREA,
+        }),
         [LENDER_RULES_VARIABLES.BANK_FORTUNE]: this.getFortune({ loan }),
         [LENDER_RULES_VARIABLES.BORROW_RATIO]: this.getBorrowRatio({
           loan,
           structureId,
         }),
         [LENDER_RULES_VARIABLES.INCOME]: this.getTotalIncome({ loan }),
+        [LENDER_RULES_VARIABLES.PROPERTY_TYPE]: this.selectPropertyKey({
+          loan,
+          structureId,
+          key: LENDER_RULES_VARIABLES.PROPERTY_TYPE,
+        }),
       };
     }
 

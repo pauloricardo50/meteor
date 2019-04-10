@@ -1,4 +1,5 @@
 {
+  "Forms.variable.propertyType": "Type de bien immobilier",
   "SimpleDashboardPage.shareSolvency.title": "Activer le partage de solvabilité",
   "SimpleDashboardPage.shareSolvency.disclaimer": "En activant le partage de solvabilité, vous donnez accès à votre courtier au montant de votre capacité d'achat maximale. Aucune autre information personnelle ne sera partagée.",
   "DashboardInfoInterests.link": "Consulter {count, plural, one {mon offre} other {mes offres}}",
