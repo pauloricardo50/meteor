@@ -21,6 +21,7 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
       // Store the rules for retrieval later
       this.lenderRules = sortedlenderRules;
       this.ruleOrigin = {};
+      this.matchedRules = [];
 
       const primaryRules = this.getPrimaryLenderRules({
         loan,
@@ -107,6 +108,10 @@ export const withLenderRulesInitializator = (SuperClass = class {}) =>
     }
 
     applyRules(rules) {
+      if (rules.name) {
+        this.matchedRules = [...this.matchedRules, rules.name];
+      }
+
       const rulesToApply = [
         'adminComments',
         'allowPledge',
