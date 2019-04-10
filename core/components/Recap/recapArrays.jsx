@@ -2,6 +2,7 @@ import React from 'react';
 import Calculator from '../../utils/Calculator';
 import { T, Percent, MetricArea } from '../Translation';
 import { toMoney } from '../../utils/conversionFunctions';
+import { Money } from '../Translation/numberComponents/index';
 
 export const getDashboardArray = (props) => {
   const bonusIncome = Calculator.getBonusIncome(props);
@@ -513,6 +514,12 @@ const getRecapForObject = obj =>
   }));
 
 export const getNotaryFeesArray = ({ loan, structureId }) => {
+  const propAndWork = Calculator.getPropAndWork({ loan, structureId });
+  const propertyValue = Calculator.selectPropertyValue({ loan, structureId });
+  const mortgageNoteIncrease = Calculator.getMortgageNoteIncrease({
+    loan,
+    structureId,
+  });
   const calc = Calculator.getFeesCalculator({ loan, structureId });
   const {
     total,
@@ -543,6 +550,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       title: true,
       label: 'Recap.buyersContract',
+      intlValues: { value: toMoney(propertyValue) },
     },
     ...getRecapForObject(buyersContractValues),
     {
@@ -569,6 +577,7 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
     {
       title: true,
       label: 'Recap.mortgageNote',
+      intlValues: { value: toMoney(mortgageNoteIncrease) },
     },
     ...getRecapForObject(mortgageNoteValues),
     {
@@ -597,6 +606,11 @@ export const getNotaryFeesArray = ({ loan, structureId }) => {
       value: <span className="sum">{toMoney(total)}</span>,
       spacingTop: true,
       bold: true,
+    },
+    {
+      label: 'Recap.notaryFeesRatio',
+      value: `${((total / propAndWork) * 100).toFixed(2)}%`,
+      spacingTop: true,
     },
   ];
 };
