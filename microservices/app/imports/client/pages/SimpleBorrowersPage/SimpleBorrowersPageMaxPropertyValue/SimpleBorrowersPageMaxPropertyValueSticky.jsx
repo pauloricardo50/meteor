@@ -16,6 +16,7 @@ type SimpleBorrowersPageMaxPropertyValueStickyProps = {};
 
 const getFooter = ({ maxPropertyValue, residenceType, borrowers = [] }) => {
   const canCalculateSolvency = Calculator.canCalculateSolvency({ borrowers });
+
   if (!maxPropertyValue && !canCalculateSolvency) {
     return <h2>Renseignez vos revenus et fortune</h2>;
   }

@@ -20,7 +20,10 @@ const SimpleBorrowersPage = ({ loan }: SimpleBorrowersPageProps) => (
       </div>
       <MaxPropertyValueCTA loan={loan} />
     </div>
-    <Element name="maxPropertyValue" className="maxPropertyValue">
+    <Element
+      name="max-property-value-element"
+      className="max-property-value-element"
+    >
       <SimpleBorrowersPageMaxPropertyValue loan={loan} />
     </Element>
   </div>
