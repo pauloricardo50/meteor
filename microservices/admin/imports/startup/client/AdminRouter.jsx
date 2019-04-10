@@ -2,7 +2,6 @@ import React from 'react';
 
 import BaseRouter, { Route, Switch } from 'core/components/BaseRouter';
 import NotFound from 'core/components/NotFound';
-
 import { getUserLocale, getFormats } from 'core/utils/localization';
 import DevPage from 'core/components/DevPage';
 
@@ -30,7 +29,6 @@ import SinglePropertyPage from '../../client/pages/SinglePropertyPage';
 import SingleUserPage from '../../client/pages/SingleUserPage';
 import TasksPage from '../../client/pages/TasksPage';
 import UsersPage from '../../client/pages/UsersPage';
-
 import AdminStore from '../../client/components/AdminStore';
 
 import * as adminRoutes from './adminRoutes';

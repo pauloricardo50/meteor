@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 
-import formatMessage from 'core/utils/intl';
+import Intl from 'core/utils/server/intl';
 import {
   FROM_DEFAULT,
   CTA_URL_DEFAULT,
@@ -23,11 +23,16 @@ const PRO_URL = Meteor.settings.public.subdomains.pro;
  * @return {type} a HTML string
  */
 export const getEmailFooter = (footerType, allowUnsubscribe) =>
-  formatMessage(`emails.${footerType}`, {
-    url: `<a href="${WWW_URL}" target="_blank" style="color:inherit;">e-potek.ch</a><br />`,
-    unsubscribe: allowUnsubscribe
-      ? `<a href="*|UNSUB|*" style="color:inherit;">${formatMessage('emails.unsubscribe')}</a>`
-      : '',
+  Intl.formatMessage({
+    id: `emails.${footerType}`,
+    values: {
+      url: `<a href="${WWW_URL}" target="_blank" style="color:inherit;">e-potek.ch</a><br />`,
+      unsubscribe: allowUnsubscribe
+        ? `<a href="*|UNSUB|*" style="color:inherit;">${Intl.formatMessage({
+          id: 'emails.unsubscribe',
+        })}</a>`
+        : '',
+    },
   });
 
 export const getEmailPart = ({
@@ -36,11 +41,11 @@ export const getEmailPart = ({
   intlValues = {},
   intlFallback = '',
 }) =>
-  formatMessage(
-    `${EMAIL_I18N_NAMESPACE}.${emailId}.${part}`,
-    intlValues,
-    intlFallback,
-  );
+  Intl.formatMessage({
+    id: `${EMAIL_I18N_NAMESPACE}.${emailId}.${part}`,
+    values: intlValues,
+    fallback: intlFallback,
+  });
 
 /**
  * getEmailContent - Returns all the fields for an email
