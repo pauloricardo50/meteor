@@ -28,8 +28,12 @@ Meteor.methods({
       { fields: { _id: 1 } },
     );
 
-    const preparationLoan = userLoansE2E
+    const solvencyLoan = userLoansE2E
       .clone({ userId, step: STEPS.SOLVENCY })
+      .fetchOne();
+
+    const requestLoan = userLoansE2E
+      .clone({ userId, step: STEPS.REQUEST })
       .fetchOne();
 
     const unownedLoan = userLoansE2E.clone({ owned: false }).fetchOne();
@@ -41,7 +45,8 @@ Meteor.methods({
     );
 
     return {
-      preparationLoan,
+      solvencyLoan,
+      requestLoan,
       unownedLoan,
       adminLoginToken,
       emailVerificationToken,
