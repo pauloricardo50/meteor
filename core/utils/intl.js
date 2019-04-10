@@ -22,7 +22,8 @@ export class Intl {
     this.messages = messages;
   }
 
-  formatMessage({ id, values = {}, fallback } = {}) {
+  formatMessage({ id, values = {}, fallback } = {}, legacyValues = {}) {
+    const allValues = { ...values, ...legacyValues };
     if (id === undefined) {
       throw new Error('an id is required in formatMessage');
     }
@@ -32,7 +33,7 @@ export class Intl {
       getUserLocale(),
       // getFormats(),
     );
-    return message.format({ ...defaultValues, ...values });
+    return message.format({ ...defaultValues, ...allValues });
   }
 }
 

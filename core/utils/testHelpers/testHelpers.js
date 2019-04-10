@@ -1,13 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { Accounts } from 'meteor/accounts-base';
-import { Roles } from 'meteor/alanning:roles';
 
 import faker from 'faker';
 
-import { testCreateUser, Users, testUserAccount } from '../../api';
+import { Users, testUserAccount } from '../../api';
 import { ROLES } from '../../api/constants';
-import { fullUser } from '../../api/fragments';
 
 /**
  * createLoginToken - Generate & saves a login token on the user with the given id

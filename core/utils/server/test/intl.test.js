@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
 
-import Intl from '../server/intl';
+import Intl from '../intl';
 
 describe('intl-server', () => {
   it('works for an existing id', () => {
