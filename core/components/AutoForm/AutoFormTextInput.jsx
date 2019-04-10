@@ -53,6 +53,7 @@ class AutoFormTextInput extends Component {
       errorText: '',
       saving: false,
       showInfo: false,
+      history: [cleanValue(currentValue)],
     };
 
     if (number) {
@@ -71,10 +72,17 @@ class AutoFormTextInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.inputProps.currentValue !== this.props.inputProps.currentValue
-    ) {
-      this.handleChange(null, nextProps.inputProps.currentValue);
+    const valueIsDifferent = nextProps.inputProps.currentValue !== this.props.inputProps.currentValue;
+    if (valueIsDifferent) {
+      // To handle race conditions, check if the new value from the DB
+      // has been typed in the past
+      // If it has, then don't update the textfield
+      // If it hasn't, override it, because the backend says it should be a new value
+      const valueExistsInHistory = this.state.history.includes(nextProps.inputProps.currentValue);
+
+      if (!valueExistsInHistory) {
+        this.handleChange(null, nextProps.inputProps.currentValue);
+      }
     }
   }
 
@@ -102,12 +110,15 @@ class AutoFormTextInput extends Component {
       return;
     }
 
-    this.setState({ value }, () => {
-      // do not show saving icon when changing text, only show it on blur
-      if (saveOnChange) {
-        this.saveValue(showValidIconOnChange);
-      }
-    });
+    this.setState(
+      ({ history }) => ({ value, history: [...history, value] }),
+      () => {
+        // do not show saving icon when changing text, only show it on blur
+        if (saveOnChange) {
+          this.saveValue(showValidIconOnChange);
+        }
+      },
+    );
   };
 
   handleFocus = () => {
