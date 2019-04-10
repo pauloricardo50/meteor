@@ -1,10 +1,9 @@
 import '../shared-startup';
+import './init';
 
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
-// Keep localization before api to translate simple schema
-import { localizationStartup } from 'core/utils/localization';
 import 'core/api/api';
 import 'core/api/client/api';
 
@@ -26,8 +25,6 @@ const start = (testElement) => {
   if (loader) {
     loader.parentNode.removeChild(loader);
   }
-
-  localizationStartup();
 
   // Render react-router routes
   render(AdminRouter(), testElement || document.getElementById('react-root'));

@@ -3,7 +3,7 @@ import { Random } from 'meteor/random';
 import omit from 'lodash/omit';
 
 import { shouldSendStepNotification } from '../../../utils/loanFunctions';
-import formatMessage from '../../../utils/intl';
+import Intl from '../../../utils/server/intl';
 import {
   makeFeedback,
   FEEDBACK_OPTIONS,
@@ -407,7 +407,7 @@ export class LoanService extends CollectionService {
       const feedback = makeFeedback({
         offer: { ...offer, property },
         model: { option: FEEDBACK_OPTIONS.NEGATIVE_WITHOUT_FOLLOW_UP },
-        formatMessage,
+        formatMessage: Intl.formatMessage.bind(Intl),
       });
       return OfferService.sendFeedback({
         offerId: offer._id,

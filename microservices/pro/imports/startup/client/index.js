@@ -1,9 +1,9 @@
 import '../shared-startup';
+import './init';
 
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
-import { localizationStartup } from 'core/utils/localization';
 import 'url-search-params-polyfill';
 import 'core/api/api';
 import 'core/api/client/api';
@@ -19,8 +19,6 @@ const start = (testElement) => {
   if (loader) {
     loader.parentNode.removeChild(loader);
   }
-
-  localizationStartup();
 
   // Render react-router routes
   render(ProRouter(), testElement || document.getElementById('react-root'));
