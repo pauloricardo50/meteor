@@ -282,5 +282,50 @@ describe('SolvencyCalculator', () => {
       expect(results.borrowRatio).to.equal(0.7);
       expect(results.propertyValue).to.equal(362000);
     });
+
+    it('should work with a very small borrowRatio', () => {
+      const lenderRules = [
+        {
+          order: 0,
+          maxBorrowRatio: 0.5,
+          bonusConsideration: 0.7,
+          expensesSubtractFromIncome: [],
+          theoreticalInterestRate: 0.045,
+          theoreticalMaintenanceRate: 0.007,
+          maxIncomeRatio: 0.38,
+          filter: { and: [true] },
+          incomeConsiderationType: INCOME_CONSIDERATION_TYPES.NET,
+        },
+      ];
+
+      const borrowers = [
+        {
+          bankFortune: 130000,
+          insurance2: [{ value: 100000 }],
+          netSalary: 125000,
+          salary: 182000,
+          bonusExists: true,
+          bonus2015: 50000,
+          bonus2016: 50000,
+          bonus2017: 50000,
+          bonus2018: 50000,
+        },
+      ];
+      const loanObject = Calculator.createLoanObject({
+        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+        borrowers,
+        canton: 'GE',
+      });
+
+      const calc = new CalculatorClass({ lenderRules, loan: loanObject });
+      const results = calc.getMaxPropertyValueWithoutBorrowRatio({
+        borrowers,
+        canton: 'GE',
+        residenceType: RESIDENCE_TYPE.SECOND_RESIDENCE,
+      });
+
+      expect(results.borrowRatio).to.equal(0.5);
+      expect(results.propertyValue).to.equal(232000);
+    });
   });
 });
