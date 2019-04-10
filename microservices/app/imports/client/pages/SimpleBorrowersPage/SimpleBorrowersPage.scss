@@ -36,6 +36,18 @@ $footer-height: 64px;
     }
   }
 
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 32px;
+    align-self: center;
+
+    .max-property-value-cta {
+      margin-top: 16px;
+    }
+  }
+
   &-forms {
     width: 100%;
     max-width: 600px;
