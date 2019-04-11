@@ -1,4 +1,6 @@
 // @flow
+import { Meteor } from 'meteor/meteor';
+
 import React from 'react';
 
 import Calculator from 'core/utils/Calculator';
@@ -80,6 +82,7 @@ const MaxPropertyValueResults = ({
       </div>
       <Button
         raised
+        disabled={Meteor.microservice === 'app' && !shouldRecalculate}
         secondary={shouldRecalculate}
         onClick={recalculate}
         icon={<Icon type="loop" />}

@@ -32,7 +32,7 @@ const MaxPropertyValueSharing = ({
   switch (shareSolvency) {
   case null:
   case undefined: {
-    label = 'Activer partage de solvabilité';
+    label = <T id="MaxPropertyValueSharing.buttonLabel" />;
     secondary = true;
     raised = true;
     onClick = () => setOpenDialog(true);
